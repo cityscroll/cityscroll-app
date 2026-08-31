@@ -1,0 +1,21 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-civic-action-paths/cap-7",
+  "status": "implemented",
+  "fingerprint": "cap-7-generalization-audit.v1",
+  "updated_at": "2026-08-30T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "action-path-generalization-audit",
+      "path": "docs/evidence/civic-action-paths/generalization-audit.json"
+    },
+    {
+      "id": "action-path-generalization-audit-report",
+      "path": "docs/evidence/civic-action-paths/generalization-audit.md"
+    },
+    {
+      "id": "civic-action-paths-coverage-boundary",
+      "path": "docs/civic-action-paths.md"
+    }
+  ]
+}

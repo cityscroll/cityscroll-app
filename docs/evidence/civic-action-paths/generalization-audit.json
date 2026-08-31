@@ -1,0 +1,829 @@
+{
+  "schema": "cityscroll.action_path_generalization_audit.v1",
+  "method": "action_path_generalization_audit_v1",
+  "version": 1,
+  "stopping_rule": true,
+  "rebuild_every_domain": false,
+  "exact_replay_family": "rules.request_ids",
+  "dot_bicycle_racks": {
+    "rulemaking_subject": "rulemaking:dot:bicycle-owned-racks",
+    "same_rulemaking": true,
+    "broad_fallback": false,
+    "snapshots": [
+      {
+        "snapshot": "t1_before_hearing",
+        "as_of": "2026-04-01",
+        "rulemaking_state": "hearing",
+        "next_event": "public_hearing",
+        "subject_ref": "notice:20260317026",
+        "target_ref": "notice:20260317026",
+        "process_ref": "rulemaking:dot:bicycle-owned-racks",
+        "action_type": "comment",
+        "action_available": true,
+        "comment_cta": true,
+        "continuation_ref": "rulemaking:dot:bicycle-owned-racks",
+        "continuation_cta": true,
+        "continuation_present": true,
+        "exact_replay": true,
+        "replay_subject_ref": "rulemaking:dot:bicycle-owned-racks",
+        "request_ids": [
+          "20260317026",
+          "20260706041"
+        ]
+      },
+      {
+        "snapshot": "t2_after_adoption",
+        "as_of": "2026-07-20",
+        "rulemaking_state": "adopted",
+        "next_event": "adoption",
+        "subject_ref": "notice:20260706041",
+        "target_ref": "notice:20260706041",
+        "process_ref": "rulemaking:dot:bicycle-owned-racks",
+        "action_type": "document",
+        "action_available": true,
+        "comment_cta": false,
+        "continuation_ref": "rulemaking:dot:bicycle-owned-racks",
+        "continuation_cta": true,
+        "continuation_present": true,
+        "exact_replay": true,
+        "replay_subject_ref": "rulemaking:dot:bicycle-owned-racks",
+        "request_ids": [
+          "20260317026",
+          "20260706041"
+        ]
+      },
+      {
+        "snapshot": "t3_after_effective_date",
+        "as_of": "2026-08-20",
+        "rulemaking_state": "effective",
+        "next_event": "effective",
+        "subject_ref": "notice:20260706041",
+        "target_ref": "notice:20260706041",
+        "process_ref": "rulemaking:dot:bicycle-owned-racks",
+        "action_type": "document",
+        "action_available": true,
+        "comment_cta": false,
+        "continuation_ref": "rulemaking:dot:bicycle-owned-racks",
+        "continuation_cta": true,
+        "continuation_present": true,
+        "exact_replay": true,
+        "replay_subject_ref": "rulemaking:dot:bicycle-owned-racks",
+        "request_ids": [
+          "20260317026",
+          "20260706041"
+        ]
+      }
+    ]
+  },
+  "domains": [
+    {
+      "domain": "meetings",
+      "action": {
+        "domain": "meetings",
+        "column": "action",
+        "status": "established",
+        "claim": "Existing meeting actions include attend, calendar, watch.",
+        "evidence": [
+          {
+            "kind": "source",
+            "ref": "docs/evidence/civic-action-paths/before/characterization-receipt.md",
+            "locator": "Meeting action rail"
+          },
+          {
+            "kind": "test",
+            "ref": "test/action-rail.test.mjs",
+            "locator": "open rule comments and upcoming hearings use their joined deadlines and handoffs"
+          }
+        ],
+        "notes": null
+      },
+      "continuation": {
+        "domain": "meetings",
+        "column": "continuation",
+        "status": "established",
+        "claim": "One exact Council matter continuation is published; multiple matters remain a choice and unmatched hearings omit a CTA (single=matter:79200, multiple_cta=true, unmatched_cta=true).",
+        "evidence": [
+          {
+            "kind": "fixture",
+            "ref": "site/data/meeting_outcomes_snapshot.json",
+            "locator": "by_notice.20260707022 / 20260707021 / 20260728026"
+          },
+          {
+            "kind": "test",
+            "ref": "test/council_hearing_matter_continuation.test.mjs",
+            "locator": null
+          }
+        ],
+        "notes": "Continuation availability is not inferred from unmatched or multi-matter rows."
+      },
+      "grounding": {
+        "domain": "meetings",
+        "column": "grounding",
+        "status": "established",
+        "claim": "Matter joins are grounded only by exact_date_body_tokens on retained Council fixtures 20260707022, 20260707021, 20260728026.",
+        "evidence": [
+          {
+            "kind": "source",
+            "ref": "site/council_hearing_matter_continuation.mjs",
+            "locator": "STRICT_COUNCIL_MEETING_JOIN_METHOD"
+          },
+          {
+            "kind": "fixture",
+            "ref": "site/data/meeting_outcomes_snapshot.json",
+            "locator": null
+          }
+        ],
+        "notes": null
+      },
+      "replay": {
+        "domain": "meetings",
+        "column": "replay",
+        "status": "not-established",
+        "claim": "Exact matter replay is not-established; the current exact family remains rules.request_ids, and a matter probe returns no continuation.",
+        "evidence": [
+          {
+            "kind": "test",
+            "ref": "worker/test/continuation_replay.test.mjs",
+            "locator": "matter continuation remains absent until an exact relation compiler exists"
+          },
+          {
+            "kind": "source",
+            "ref": "worker/src/lib/continuation_replay.mjs",
+            "locator": "rules.request_ids"
+          }
+        ],
+        "notes": null
+      },
+      "card_decision": {
+        "domain": "meetings",
+        "column": "card_decision",
+        "status": "established",
+        "shipped_cards": [
+          "cityscroll-civic-action-paths/cap-3",
+          "cityscroll-civic-action-paths/cap-4"
+        ],
+        "additional": "follow-on",
+        "follow_on_work": "Exact compiler family for matter:{legistar_id} continuation replay",
+        "cost": "substantial-ingestion-or-compiler",
+        "rebuild_domain": false,
+        "low_risk_adapter": false,
+        "claim": "CAP-3/CAP-4 cover hearing→matter display and post-event outcomes; exact matter replay remains ranked follow-on work.",
+        "evidence": [
+          {
+            "kind": "source",
+            "ref": "site/council_hearing_action_path.mjs",
+            "locator": null
+          },
+          {
+            "kind": "test",
+            "ref": "test/civic_outcome_transition.test.mjs",
+            "locator": null
+          }
+        ]
+      }
+    },
+    {
+      "domain": "rules",
+      "action": {
+        "domain": "rules",
+        "column": "action",
+        "status": "established",
+        "claim": "T1 retains an available comment action on the DOT City-Owned Bicycle Racks proposal; later snapshots do not keep that comment CTA.",
+        "evidence": [
+          {
+            "kind": "fixture",
+            "ref": "test/fixtures/action_path_v0.json",
+            "locator": "dot_bicycle_racks.t1_before_hearing"
+          },
+          {
+            "kind": "test",
+            "ref": "test/action_path_v0.test.mjs",
+            "locator": "DOT City-Owned Bicycle Racks keeps one rulemaking subject"
+          }
+        ],
+        "notes": "Action availability is snapshot-specific. T2/T3 may have no comment CTA."
+      },
+      "continuation": {
+        "domain": "rules",
+        "column": "continuation",
+        "status": "established",
+        "claim": "T1/T2/T3 remain on rulemaking:dot:bicycle-owned-racks. Continuation CTAs are t1_before_hearing:true; t2_after_adoption:true; t3_after_effective_date:true.",
+        "evidence": [
+          {
+            "kind": "fixture",
+            "ref": "test/fixtures/action_path_v0.json",
+            "locator": "dot_bicycle_racks T1/T2/T3"
+          },
+          {
+            "kind": "receipt",
+            "ref": "site/data/rules_sources/verification_receipts/rulemaking_sibling_stitch_2026-08-02.json",
+            "locator": null
+          }
+        ],
+        "notes": "A snapshot may omit a continuation CTA without inventing a broader DOT follow."
+      },
+      "grounding": {
+        "domain": "rules",
+        "column": "grounding",
+        "status": "established",
+        "claim": "Grounded rulemaking subject rulemaking:dot:bicycle-owned-racks is retained from proposal notice 20260317026 and adoption notice 20260706041.",
+        "evidence": [
+          {
+            "kind": "source",
+            "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260317026",
+            "locator": null
+          },
+          {
+            "kind": "source",
+            "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260706041",
+            "locator": null
+          },
+          {
+            "kind": "fixture",
+            "ref": "test/fixtures/action_path_v0.json",
+            "locator": null
+          }
+        ],
+        "notes": null
+      },
+      "replay": {
+        "domain": "rules",
+        "column": "replay",
+        "status": "established",
+        "claim": "Exact replay is proven for rules.request_ids membership of the two retained DOT notices.",
+        "evidence": [
+          {
+            "kind": "test",
+            "ref": "worker/test/continuation_replay.test.mjs",
+            "locator": "DOT canary T1 through T3"
+          },
+          {
+            "kind": "source",
+            "ref": "worker/src/lib/filter.mjs",
+            "locator": "LENSES.rules request_ids"
+          }
+        ],
+        "notes": null
+      },
+      "card_decision": {
+        "domain": "rules",
+        "column": "card_decision",
+        "status": "established",
+        "shipped_cards": [
+          "cityscroll-civic-action-paths/cap-1",
+          "cityscroll-civic-action-paths/cap-2",
+          "cityscroll-civic-action-paths/cap-4"
+        ],
+        "additional": "none",
+        "follow_on_work": null,
+        "cost": "none",
+        "rebuild_domain": false,
+        "low_risk_adapter": false,
+        "claim": "Rules generalization is proven by the DOT canary; no domain rebuild and no extra adapter in this card.",
+        "evidence": [
+          {
+            "kind": "test",
+            "ref": "test/civic_outcome_transition.test.mjs",
+            "locator": "DOT adoption and effectiveness"
+          },
+          {
+            "kind": "source",
+            "ref": "site/civic_outcome_transition.mjs",
+            "locator": null
+          }
+        ]
+      }
+    },
+    {
+      "domain": "land",
+      "action": {
+        "domain": "land",
+        "column": "action",
+        "status": "established",
+        "claim": "Existing land actions include bid_checklist, calendar, watch.",
+        "evidence": [
+          {
+            "kind": "test",
+            "ref": "test/land_action_rail.test.mjs",
+            "locator": null
+          },
+          {
+            "kind": "source",
+            "ref": "docs/evidence/civic-action-paths/before/characterization-receipt.md",
+            "locator": "zoning / land use rail"
+          }
+        ],
+        "notes": null
+      },
+      "continuation": {
+        "domain": "land",
+        "column": "continuation",
+        "status": "established",
+        "claim": "A notice-to-ZAP adapter can name a project subject, but the published destination is a land document route rather than an exact Following continuation.",
+        "evidence": [
+          {
+            "kind": "source",
+            "ref": "site/app/feed-actions.mjs",
+            "locator": "exactLandActionPath"
+          },
+          {
+            "kind": "test",
+            "ref": "test/notice_land_spine.test.mjs",
+            "locator": "Timbale Terrace 20230912001"
+          }
+        ],
+        "notes": "A #land/{projectId} document link is not exact replay."
+      },
+      "grounding": {
+        "domain": "land",
+        "column": "grounding",
+        "status": "established",
+        "claim": "Strict notice-land join grounds project 2022M0258 from notice 20230912001.",
+        "evidence": [
+          {
+            "kind": "test",
+            "ref": "test/notice_land_spine.test.mjs",
+            "locator": "notice 20230912001 → project 2022M0258"
+          },
+          {
+            "kind": "source",
+            "ref": "site/notice_land_spine.mjs",
+            "locator": null
+          }
+        ],
+        "notes": null
+      },
+      "replay": {
+        "domain": "land",
+        "column": "replay",
+        "status": "not-established",
+        "claim": "Exact land project replay is not-established; the land lens has no project identifier family, and rules.request_ids is the only proven exact family.",
+        "evidence": [
+          {
+            "kind": "source",
+            "ref": "worker/src/lib/filter.mjs",
+            "locator": "LENSES.land=[\"keywords\",\"boro\",\"status\",\"communityDistrict\",\"councilDistrict\",\"nearMe\",\"procedure\",\"family\",\"regulatoryEffect\",\"futureAction\",\"attendance\",\"geographies\"]"
+          },
+          {
+            "kind": "source",
+            "ref": "worker/src/lib/continuation_replay.mjs",
+            "locator": "rules.request_ids"
+          }
+        ],
+        "notes": null
+      },
+      "card_decision": {
+        "domain": "land",
+        "column": "card_decision",
+        "status": "established",
+        "shipped_cards": [],
+        "additional": "follow-on",
+        "follow_on_work": "Exact land-project continuation family and compiler support",
+        "cost": "substantial-ingestion-or-compiler",
+        "rebuild_domain": false,
+        "low_risk_adapter": false,
+        "claim": "Do not rebuild Land in this card. Rank exact project-scope replay as follow-on work.",
+        "evidence": [
+          {
+            "kind": "source",
+            "ref": "site/app/feed-actions.mjs",
+            "locator": "hash document destination is not Following replay"
+          }
+        ]
+      }
+    },
+    {
+      "domain": "money",
+      "action": {
+        "domain": "money",
+        "column": "action",
+        "status": "established",
+        "claim": "Existing procurement actions include official_application, calendar, watch.",
+        "evidence": [
+          {
+            "kind": "fixture",
+            "ref": "test/fixtures/wave4/action-fixtures.json",
+            "locator": null
+          },
+          {
+            "kind": "test",
+            "ref": "test/action-rail.test.mjs",
+            "locator": "open solicitations compile a searchable handoff"
+          }
+        ],
+        "notes": null
+      },
+      "continuation": {
+        "domain": "money",
+        "column": "continuation",
+        "status": "not-established",
+        "claim": "Natural continuation is a procurement object, but an Action Path continuation adapter is not-established.",
+        "evidence": [
+          {
+            "kind": "source",
+            "ref": "site/app/feed-actions.mjs",
+            "locator": "no exactMoneyActionPath"
+          },
+          {
+            "kind": "test",
+            "ref": "test/action-rail.test.mjs",
+            "locator": null
+          }
+        ],
+        "notes": null
+      },
+      "grounding": {
+        "domain": "money",
+        "column": "grounding",
+        "status": "established",
+        "claim": "Money watches can name a procurement_id in the compiler, which is identity evidence, not a shipped Action Path continuation.",
+        "evidence": [
+          {
+            "kind": "source",
+            "ref": "worker/src/lib/filter.mjs",
+            "locator": "LENSES.money procurement_id"
+          },
+          {
+            "kind": "source",
+            "ref": "worker/src/lib/compile.mjs",
+            "locator": "procurementId branch"
+          }
+        ],
+        "notes": null
+      },
+      "replay": {
+        "domain": "money",
+        "column": "replay",
+        "status": "not-established",
+        "claim": "Exact procurement Action Path replay is not-established; compiler support for procurement_id is not the CAP-2 relation family.",
+        "evidence": [
+          {
+            "kind": "source",
+            "ref": "worker/src/lib/continuation_replay.mjs",
+            "locator": "rules.request_ids"
+          },
+          {
+            "kind": "test",
+            "ref": "worker/test/continuation_replay.test.mjs",
+            "locator": null
+          }
+        ],
+        "notes": null
+      },
+      "card_decision": {
+        "domain": "money",
+        "column": "card_decision",
+        "status": "established",
+        "shipped_cards": [],
+        "additional": "follow-on",
+        "follow_on_work": "Action Path procurement continuation plus an exact relation family",
+        "cost": "substantial-ingestion-or-compiler",
+        "rebuild_domain": false,
+        "low_risk_adapter": false,
+        "claim": "Do not rebuild Money in this card. Rank a new exact continuation family as follow-on work.",
+        "evidence": [
+          {
+            "kind": "source",
+            "ref": "worker/src/lib/compile.mjs",
+            "locator": "procurement_id compile support is not an Action Path continuation family"
+          }
+        ]
+      }
+    },
+    {
+      "domain": "staffing",
+      "action": {
+        "domain": "staffing",
+        "column": "action",
+        "status": "established",
+        "claim": "Existing exam actions include official_application, calendar, document.",
+        "evidence": [
+          {
+            "kind": "test",
+            "ref": "test/action-rail.test.mjs",
+            "locator": "exam apply prefers a non-landing official_application_url"
+          },
+          {
+            "kind": "fixture",
+            "ref": "test/fixtures/exam_process_spine/field_cases.json",
+            "locator": null
+          }
+        ],
+        "notes": null
+      },
+      "continuation": {
+        "domain": "staffing",
+        "column": "continuation",
+        "status": "not-established",
+        "claim": "Natural continuation is an exam or eligible list, but an Action Path continuation adapter is not-established.",
+        "evidence": [
+          {
+            "kind": "source",
+            "ref": "site/app/feed-actions.mjs",
+            "locator": "no exactExamActionPath"
+          },
+          {
+            "kind": "test",
+            "ref": "test/exam_process_spine.test.mjs",
+            "locator": null
+          }
+        ],
+        "notes": null
+      },
+      "grounding": {
+        "domain": "staffing",
+        "column": "grounding",
+        "status": "established",
+        "claim": "Exam 7016 is a retained identity for apply-window actions and the exam process spine.",
+        "evidence": [
+          {
+            "kind": "test",
+            "ref": "test/action-rail.test.mjs",
+            "locator": "exam 7016"
+          },
+          {
+            "kind": "source",
+            "ref": "site/exam_process_spine.mjs",
+            "locator": null
+          }
+        ],
+        "notes": null
+      },
+      "replay": {
+        "domain": "staffing",
+        "column": "replay",
+        "status": "not-established",
+        "claim": "Exact exam Action Path replay is not-established; people-lens examNumber filtering is not the CAP-2 relation family.",
+        "evidence": [
+          {
+            "kind": "source",
+            "ref": "worker/src/lib/filter.mjs",
+            "locator": "LENSES.people examNumber"
+          },
+          {
+            "kind": "source",
+            "ref": "worker/src/lib/continuation_replay.mjs",
+            "locator": "rules.request_ids"
+          }
+        ],
+        "notes": null
+      },
+      "card_decision": {
+        "domain": "staffing",
+        "column": "card_decision",
+        "status": "established",
+        "shipped_cards": [],
+        "additional": "follow-on",
+        "follow_on_work": "Action Path exam continuation plus an exact exam-number relation family",
+        "cost": "substantial-ingestion-or-compiler",
+        "rebuild_domain": false,
+        "low_risk_adapter": false,
+        "claim": "Do not rebuild Staffing in this card. Rank exact exam-scope replay as follow-on work.",
+        "evidence": [
+          {
+            "kind": "test",
+            "ref": "test/exam_process_spine.test.mjs",
+            "locator": null
+          }
+        ]
+      }
+    },
+    {
+      "domain": "community_boards",
+      "action": {
+        "domain": "community_boards",
+        "column": "action",
+        "status": "established",
+        "claim": "Source-qualified Ways to participate paths include attend_meeting, add_to_calendar, follow_board, follow_committee, speak_or_comment, contact_board, apply_public_committee_membership, apply_full_board_membership.",
+        "evidence": [
+          {
+            "kind": "test",
+            "ref": "test/community_board_participation.test.mjs",
+            "locator": null
+          },
+          {
+            "kind": "receipt",
+            "ref": "docs/evidence/civic-action-paths/after/ways-to-participate-capture.json",
+            "locator": null
+          }
+        ],
+        "notes": null
+      },
+      "continuation": {
+        "domain": "community_boards",
+        "column": "continuation",
+        "status": "established",
+        "claim": "Board follow uses exact board identity community-board:manhattan-cb-06. Committee follow remains omitted.",
+        "evidence": [
+          {
+            "kind": "source",
+            "ref": "site/community_board_participation.mjs",
+            "locator": "boardWatch + follow_committee omitted"
+          },
+          {
+            "kind": "test",
+            "ref": "test/community_board_participation.test.mjs",
+            "locator": null
+          }
+        ],
+        "notes": "Follow committee is withheld until meetings watches can replay a committee without falling back to the whole board."
+      },
+      "grounding": {
+        "domain": "community_boards",
+        "column": "grounding",
+        "status": "established",
+        "claim": "Participation remains board-local; cross-board inference is false and unknown boards omit unsupported apply/speak paths.",
+        "evidence": [
+          {
+            "kind": "fixture",
+            "ref": "site/data/community_board_bylaws.json",
+            "locator": "manhattan-cb-06 / manhattan-cb-02"
+          },
+          {
+            "kind": "test",
+            "ref": "test/community_board_participation.test.mjs",
+            "locator": "cross_board_inference remains false"
+          }
+        ],
+        "notes": null
+      },
+      "replay": {
+        "domain": "community_boards",
+        "column": "replay",
+        "status": "not-established",
+        "claim": "Board-scoped meetings watches exist, but committee identity replay is not-established and is not the CAP-2 rules.request_ids family.",
+        "evidence": [
+          {
+            "kind": "source",
+            "ref": "site/community_board_participation.mjs",
+            "locator": "Follow committee remains omitted"
+          },
+          {
+            "kind": "source",
+            "ref": "worker/src/lib/continuation_replay.mjs",
+            "locator": "rules.request_ids"
+          }
+        ],
+        "notes": null
+      },
+      "card_decision": {
+        "domain": "community_boards",
+        "column": "card_decision",
+        "status": "established",
+        "shipped_cards": [
+          "cityscroll-civic-action-paths/cap-5",
+          "cityscroll-civic-action-paths/cap-6"
+        ],
+        "additional": "follow-on",
+        "follow_on_work": "Exact committee-identity replay without board fallback",
+        "cost": "substantial-ingestion-or-compiler",
+        "rebuild_domain": false,
+        "low_risk_adapter": false,
+        "claim": "CAP-5/CAP-6 already compose source-qualified participation. Committee replay is ranked follow-on work and is not inherited across boards.",
+        "evidence": [
+          {
+            "kind": "receipt",
+            "ref": "docs/evidence/civic-action-paths/after/ways-to-participate-capture.json",
+            "locator": null
+          },
+          {
+            "kind": "test",
+            "ref": "test/community_board_constellation.test.mjs",
+            "locator": null
+          }
+        ]
+      }
+    },
+    {
+      "domain": "property",
+      "action": {
+        "domain": "property",
+        "column": "action",
+        "status": "established",
+        "claim": "Existing property actions vary by stage and include document, watch.",
+        "evidence": [
+          {
+            "kind": "source",
+            "ref": "docs/evidence/civic-action-paths/before/characterization-receipt.md",
+            "locator": "property disposition rail"
+          },
+          {
+            "kind": "test",
+            "ref": "test/property_commercial.test.mjs",
+            "locator": null
+          }
+        ],
+        "notes": null
+      },
+      "continuation": {
+        "domain": "property",
+        "column": "continuation",
+        "status": "not-established",
+        "claim": "Natural continuation is a disposition process, but an Action Path continuation adapter is not-established.",
+        "evidence": [
+          {
+            "kind": "source",
+            "ref": "site/app/feed-actions.mjs",
+            "locator": "no exactPropertyActionPath"
+          },
+          {
+            "kind": "test",
+            "ref": "test/property_disposition_spine.test.mjs",
+            "locator": null
+          }
+        ],
+        "notes": null
+      },
+      "grounding": {
+        "domain": "property",
+        "column": "grounding",
+        "status": "established",
+        "claim": "Disposition spines join on exact BBL or borough + block/lot; stages are hearing → auction_or_rfp → award_or_conveyance.",
+        "evidence": [
+          {
+            "kind": "fixture",
+            "ref": "test/fixtures/property_disposition/multi_notice_bbl.json",
+            "locator": null
+          },
+          {
+            "kind": "test",
+            "ref": "test/property_disposition_spine.test.mjs",
+            "locator": null
+          }
+        ],
+        "notes": null
+      },
+      "replay": {
+        "domain": "property",
+        "column": "replay",
+        "status": "not-established",
+        "claim": "Exact disposition-subject replay is not-established; the property lens has process/stage filters but no disposition subject family.",
+        "evidence": [
+          {
+            "kind": "source",
+            "ref": "worker/src/lib/filter.mjs",
+            "locator": "LENSES.property=[\"keywords\",\"agency\",\"process\",\"stage\",\"asset\",\"saleMethod\",\"priceBand\",\"sort\",\"borough\",\"neighborhood\",\"communityDistrict\",\"nearMe\",\"geographies\"]"
+          },
+          {
+            "kind": "source",
+            "ref": "worker/src/lib/continuation_replay.mjs",
+            "locator": "rules.request_ids"
+          }
+        ],
+        "notes": null
+      },
+      "card_decision": {
+        "domain": "property",
+        "column": "card_decision",
+        "status": "established",
+        "shipped_cards": [],
+        "additional": "follow-on",
+        "follow_on_work": "Action Path disposition continuation plus an exact process-subject family",
+        "cost": "substantial-ingestion-or-compiler",
+        "rebuild_domain": false,
+        "low_risk_adapter": false,
+        "claim": "Do not rebuild Property in this card. Rank exact disposition-scope replay as follow-on work.",
+        "evidence": [
+          {
+            "kind": "test",
+            "ref": "test/property_disposition_spine.test.mjs",
+            "locator": null
+          }
+        ]
+      }
+    }
+  ],
+  "low_risk_adapters": [],
+  "follow_on_cards": [
+    {
+      "domain": "meetings",
+      "work": "Exact compiler family for matter:{legistar_id} continuation replay",
+      "cost": "substantial-ingestion-or-compiler"
+    },
+    {
+      "domain": "land",
+      "work": "Exact land-project continuation family and compiler support",
+      "cost": "substantial-ingestion-or-compiler"
+    },
+    {
+      "domain": "money",
+      "work": "Action Path procurement continuation plus an exact relation family",
+      "cost": "substantial-ingestion-or-compiler"
+    },
+    {
+      "domain": "staffing",
+      "work": "Action Path exam continuation plus an exact exam-number relation family",
+      "cost": "substantial-ingestion-or-compiler"
+    },
+    {
+      "domain": "community_boards",
+      "work": "Exact committee-identity replay without board fallback",
+      "cost": "substantial-ingestion-or-compiler"
+    },
+    {
+      "domain": "property",
+      "work": "Action Path disposition continuation plus an exact process-subject family",
+      "cost": "substantial-ingestion-or-compiler"
+    }
+  ]
+}
