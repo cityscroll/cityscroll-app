@@ -2,75 +2,28 @@
   "schema": "cityscroll.rule_document_characterization.v1",
   "characterization_completed_at": "2026-08-28T00:00:00Z",
   "collector_started_after_characterization": true,
+  "bounded_denominator": { "rule_pages": 9, "documents": 10, "basis": "stratified_characterization_sample" },
   "observations": [
-    {
-      "agency": "Transportation",
-      "lifecycle_stage": "proposed",
-      "rule_page_id": "city-owned-bicycle-racks",
-      "document_placement": "detail_page_linked_pdf",
-      "link_stability": "stable_official_url",
-      "authority_location": "document_body",
-      "citation_extractability": "text_extractable",
-      "proposed_adopted_pairability": "explicit_source_pairing_key",
-      "source_url": "https://rules.cityofnewyork.us/rule/city-owned-bicycle-racks/"
-    },
-    {
-      "agency": "Transportation",
-      "lifecycle_stage": "adopted",
-      "rule_page_id": "city-owned-bicycle-racks",
-      "document_placement": "detail_page_linked_pdf",
-      "link_stability": "stable_official_url",
-      "authority_location": "document_body",
-      "citation_extractability": "text_extractable",
-      "proposed_adopted_pairability": "explicit_source_pairing_key",
-      "source_url": "https://rules.cityofnewyork.us/rule/city-owned-bicycle-racks/"
-    },
-    {
-      "agency": "Buildings",
-      "lifecycle_stage": "hearing",
-      "rule_page_id": "incomplete-inspections",
-      "document_placement": "city_record_attachment",
-      "link_stability": "stable_request_detail_url",
-      "authority_location": "not_yet_acquired",
-      "citation_extractability": "not_yet_acquired",
-      "proposed_adopted_pairability": "not_yet_acquired",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260728026"
-    },
-    {
-      "agency": "Sanitation",
-      "lifecycle_stage": "effective",
-      "rule_page_id": "commercial-waste-zones",
-      "document_placement": "detail_page_linked_pdf",
-      "link_stability": "stable_official_url",
-      "authority_location": "document_body",
-      "citation_extractability": "text_extractable",
-      "proposed_adopted_pairability": "source_ids_unpairable",
-      "source_url": "https://rules.cityofnewyork.us/"
-    }
+    { "agency": "Transportation", "lifecycle_stage": "proposed", "rule_page_id": "city-owned-bicycle-racks", "document_placement": "html_detail_body", "link_stability": "stable_official_url", "authority_location": "document_body", "citation_extractability": "text_extractable", "proposed_adopted_pairability": "explicit_source_pairing_key", "source_url": "https://rules.cityofnewyork.us/rule/city-owned-bicycle-racks/" },
+    { "agency": "Transportation", "lifecycle_stage": "adopted", "rule_page_id": "city-owned-bicycle-racks", "document_placement": "detail_page_linked_pdf", "link_stability": "stable_official_url", "authority_location": "document_body", "citation_extractability": "text_extractable", "proposed_adopted_pairability": "explicit_source_pairing_key", "source_url": "https://rules.cityofnewyork.us/rule/city-owned-bicycle-racks/" },
+    { "agency": "Buildings", "lifecycle_stage": "hearing", "rule_page_id": "incomplete-inspections", "document_placement": "city_record_attachment", "link_stability": "stable_request_detail_url", "authority_location": "not_yet_acquired", "citation_extractability": "not_yet_acquired", "proposed_adopted_pairability": "not_yet_acquired", "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260728026" },
+    { "agency": "Sanitation", "lifecycle_stage": "effective", "rule_page_id": "commercial-waste-zones", "document_placement": "detail_page_linked_pdf", "link_stability": "stable_official_url", "authority_location": "document_body", "citation_extractability": "text_extractable", "proposed_adopted_pairability": "explicit_source_pairing_key", "source_url": "https://rules.cityofnewyork.us/rule/commercial-waste-zones/" },
+    { "agency": "Health", "lifecycle_stage": "proposed", "rule_page_id": "food-service", "document_placement": "detail_page_linked_pdf", "link_stability": "unstable_query_url", "authority_location": "document_body", "citation_extractability": "scanned_non_text", "proposed_adopted_pairability": "source_ids_unpairable", "source_url": "https://rules.cityofnewyork.us/rule/food-service/" },
+    { "agency": "Consumer and Worker Protection", "lifecycle_stage": "adopted", "rule_page_id": "worker-protection", "document_placement": "html_detail_body", "link_stability": "stable_official_url", "authority_location": "document_body", "citation_extractability": "text_extractable", "proposed_adopted_pairability": "adopted_only", "source_url": "https://rules.cityofnewyork.us/rule/worker-protection/" },
+    { "agency": "Environmental Protection", "lifecycle_stage": "proposed", "rule_page_id": "water-use", "document_placement": "detail_page_linked_pdf", "link_stability": "stable_official_url", "authority_location": "document_body", "citation_extractability": "acquisition_failed", "proposed_adopted_pairability": "proposed_only", "source_url": "https://rules.cityofnewyork.us/rule/water-use/" },
+    { "agency": "Parks and Recreation", "lifecycle_stage": "proposed", "rule_page_id": "park-use", "document_placement": "source_did_not_publish", "link_stability": "stable_official_url", "authority_location": "source_not_published", "citation_extractability": "source_not_published", "proposed_adopted_pairability": "proposed_only", "source_url": "https://rules.cityofnewyork.us/rule/park-use/" },
+    { "agency": "Taxi and Limousine Commission", "lifecycle_stage": "adopted", "rule_page_id": "vehicle-license", "document_placement": "detail_page_linked_pdf", "link_stability": "unstable_query_url", "authority_location": "not_attempted", "citation_extractability": "not_attempted", "proposed_adopted_pairability": "adopted_only", "source_url": "https://rules.cityofnewyork.us/rule/vehicle-license/" }
   ],
   "documents": [
-    {
-      "source_id": "city_record:20260708002",
-      "request_id": "20260708002",
-      "version_kind": "proposed",
-      "pairing_key": "dsny-commercial-waste-zones",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260708002",
-      "source_label": "City Record proposed rule attachment",
-      "published_at": "2026-07-15",
-      "expected_citation_keys": ["nyc-charter:753", "nyc-charter:1043(g)"],
-      "text_fixture": "20260708002"
-    },
-    {
-      "source_id": "city_record:20260605008",
-      "request_id": "20260605008",
-      "version_kind": "adopted",
-      "pairing_key": "dsny-commercial-waste-zones",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260605008",
-      "source_label": "City Record adopted rule attachment",
-      "published_at": "2026-06-11",
-      "effective_date": "2026-08-13",
-      "expected_citation_keys": ["nyc-charter:753", "nyc-charter:1043(g)"],
-      "text_fixture": "20260605008"
-    }
+    { "source_id": "city_record:20260708002", "request_id": "20260708002", "rulemaking_id": "rulemaking:dsny:commercial-waste-zones", "version_kind": "proposed", "pairing_key": "source-case:dsny-cwz", "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260708002", "source_label": "City Record proposed rule attachment", "publisher": "NYC City Record", "observed_at": "2026-08-28T00:00:00Z", "downloaded_at": "2026-08-28T00:05:00Z", "document_identity": "city-record-attachment:20260708002:proposed-rule", "document_placement": "detail_page_linked_pdf", "extraction_method": "fixture_text_layer", "extraction_version": "rd-m3-v1", "published_at": "2026-07-15", "expected_citation_keys": ["nyc-charter:753", "nyc-charter:1043(g)", "nyc-admin-code:16-120", "rcny:16:1-01"], "text_fixture": "20260708002" },
+    { "source_id": "city_record:20260605008", "request_id": "20260605008", "rulemaking_id": "rulemaking:dsny:commercial-waste-zones", "version_kind": "adopted", "pairing_key": "source-case:dsny-cwz", "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260605008", "source_label": "City Record adopted rule attachment", "publisher": "NYC City Record", "observed_at": "2026-08-28T00:00:00Z", "downloaded_at": "2026-08-28T00:06:00Z", "document_identity": "city-record-attachment:20260605008:adopted-rule", "document_placement": "detail_page_linked_pdf", "extraction_method": "fixture_text_layer", "extraction_version": "rd-m3-v1", "published_at": "2026-06-11", "effective_date": "2026-08-13", "expected_citation_keys": ["nyc-charter:753", "nyc-admin-code:16-120", "rcny:16:1-01"], "text_fixture": "20260605008" },
+    { "source_id": "nyc_rules:dot:bicycle-racks:proposed", "rulemaking_id": "rulemaking:dot:bicycle-racks", "version_kind": "proposed", "source_url": "https://rules.cityofnewyork.us/rule/city-owned-bicycle-racks/", "publisher": "NYC Rules", "observed_at": "2026-08-28T00:00:00Z", "downloaded_at": "2026-08-28T00:07:00Z", "document_identity": "nyc-rules:city-owned-bicycle-racks:proposed", "document_placement": "html_detail_body", "extraction_method": "fixture_html", "extraction_version": "rd-m3-v1", "expected_citation_keys": ["nyc-charter:2903(a)", "rcny:34:4-12(q)"], "text_fixture": "dot-proposed" },
+    { "source_id": "nyc_rules:dcwp:worker-protection:adopted", "rulemaking_id": "rulemaking:dcwp:worker-protection", "version_kind": "adopted", "source_url": "https://rules.cityofnewyork.us/rule/worker-protection/", "publisher": "NYC Rules", "observed_at": "2026-08-28T00:00:00Z", "downloaded_at": "2026-08-28T00:08:00Z", "document_identity": "nyc-rules:worker-protection:adopted", "document_placement": "html_detail_body", "extraction_method": "fixture_html", "extraction_version": "rd-m3-v1", "expected_citation_keys": ["nyc-charter:2203", "rcny:6:2-317"], "text_fixture": "dcwp-adopted" },
+    { "source_id": "nyc_rules:dohmh:food-service:proposed", "rulemaking_id": "rulemaking:dohmh:food-service", "version_kind": "proposed", "source_url": "https://rules.cityofnewyork.us/rule/food-service/", "publisher": "NYC Rules", "observed_at": "2026-08-28T00:00:00Z", "document_identity": "nyc-rules:food-service:proposed", "document_placement": "detail_page_linked_pdf", "extraction_method": "pdf_text_probe", "extraction_version": "rd-m3-v1", "text_status": "scanned_non_text", "acquisition_status": "scanned_non_text" },
+    { "source_id": "nyc_rules:dep:water-use:proposed", "rulemaking_id": "rulemaking:dep:water-use", "version_kind": "proposed", "source_url": "https://rules.cityofnewyork.us/rule/water-use/", "publisher": "NYC Rules", "observed_at": "2026-08-28T00:00:00Z", "document_identity": "nyc-rules:water-use:proposed", "document_placement": "detail_page_linked_pdf", "extraction_method": "bounded_fetch", "extraction_version": "rd-m3-v1", "text_status": "acquisition_failed", "acquisition_status": "fetch_failed" },
+    { "source_id": "city_record:singleton-external", "request_id": "singleton-external", "rulemaking_id": "notice:singleton-external", "version_kind": "proposed", "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/singleton-external", "publisher": "NYC City Record", "observed_at": "2026-08-28T00:00:00Z", "downloaded_at": "2026-08-28T00:09:00Z", "document_identity": "city-record:singleton-external", "document_placement": "city_record_attachment", "extraction_method": "fixture_text_layer", "extraction_version": "rd-m3-v1", "text_fixture": "external-ambiguous" },
+    { "source_id": "nyc_rules:empty", "rulemaking_id": "rulemaking:unknown:empty", "version_kind": "adopted", "source_url": "https://rules.cityofnewyork.us/rule/empty/", "publisher": "NYC Rules", "observed_at": "2026-08-28T00:00:00Z", "downloaded_at": "2026-08-28T00:10:00Z", "document_identity": "nyc-rules:empty:adopted", "document_placement": "html_detail_body", "extraction_method": "fixture_html", "extraction_version": "rd-m3-v1", "text_status": "extracted_empty", "acquisition_status": "extracted_empty" },
+    { "source_id": "nyc_rules:parks:no-document", "rulemaking_id": "rulemaking:parks:park-use", "version_kind": "proposed", "source_url": "https://rules.cityofnewyork.us/rule/park-use/", "publisher": "NYC Rules", "observed_at": "2026-08-28T00:00:00Z", "document_identity": "nyc-rules:park-use:no-document", "document_placement": "source_did_not_publish", "extraction_method": "not_applicable", "extraction_version": "rd-m3-v1", "text_status": "source_not_published", "acquisition_status": "source_not_published" },
+    { "source_id": "nyc_rules:tlc:not-attempted", "rulemaking_id": "rulemaking:tlc:vehicle-license", "version_kind": "adopted", "source_url": "https://rules.cityofnewyork.us/rule/vehicle-license/", "publisher": "NYC Rules", "observed_at": "2026-08-28T00:00:00Z", "document_identity": "nyc-rules:vehicle-license:not-attempted", "document_placement": "detail_page_linked_pdf", "extraction_method": "not_attempted", "extraction_version": "rd-m3-v1", "text_status": "not_attempted", "acquisition_status": "not_attempted" }
   ]
 }

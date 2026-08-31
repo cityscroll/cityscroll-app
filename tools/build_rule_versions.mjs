@@ -52,10 +52,16 @@ function materialize() {
       ].every((field) => Object.prototype.hasOwnProperty.call(row, field))),
     },
     rule_documents: {
+      bounded_document_denominator: documents.length,
       proposed_documents: projections.coverage.proposed_documents,
       adopted_documents: projections.coverage.adopted_documents,
+      cases_with_both_versions: projections.pairs.length,
       paired_versions: projections.coverage.paired_versions,
       acquisition_failures: projections.coverage.acquisition_failures,
+      source_not_published: documents.filter((document) => document.acquisition_status === "source_not_published").length,
+      fetch_not_attempted: documents.filter((document) => document.acquisition_status === "not_attempted").length,
+      extracted_empty: documents.filter((document) => document.acquisition_status === "extracted_empty").length,
+      scanned_or_non_text: documents.filter((document) => /scanned|non_text/.test(document.text_status || "")).length,
     },
     legal_citations: {
       exact_citation_count: projections.coverage.exact_citations,
@@ -66,11 +72,23 @@ function materialize() {
         basis: "source_sample_expected_citation_keys",
       },
       resolvable_targets: projections.coverage.resolvable_targets,
+      canonical_resolutions_by_corpus: Object.fromEntries(["rcny", "nyc-charter", "nyc-admin-code"].map((corpus) => [
+        corpus,
+        projections.versions.flatMap((version) => [...version.authority, ...version.legal_effects])
+          .filter((reference) => reference.target ? reference.target.kind === corpus && reference.target.resolution === "resolved" : reference.kind === corpus && reference.resolution === "resolved").length,
+      ])),
       ambiguous_references: projections.coverage.ambiguous_references,
     },
     version_pairing: {
       proposed_adopted_pairs: projections.pairs.length,
       source_id_pairing_evidence: projections.pairs.map((pair) => pair.basis),
+      pair_rate: {
+        numerator: projections.pairs.length,
+        denominator: documents.filter((document) => ["adopted", "emergency"].includes(document.version_kind)).length,
+        value: documents.filter((document) => ["adopted", "emergency"].includes(document.version_kind)).length
+          ? projections.pairs.length / documents.filter((document) => ["adopted", "emergency"].includes(document.version_kind)).length
+          : null,
+      },
       unpairable_or_non_text_cases: documents.filter((document) => !document.text || !document.pairing_key).length,
     },
     version_diff: projections.coverage.version_diff,

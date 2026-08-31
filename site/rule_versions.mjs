@@ -94,7 +94,10 @@ function citationTarget(key) {
     citation,
     label: citationLabel(value),
     href: null,
-    resolution: "unresolved",
+    // RCNY and Charter targets are canonical citation identities even though
+    // CityScroll does not retain either complete corpus. Exact syntax resolves
+    // identity; it does not imply that statutory text is locally available.
+    resolution: "resolved",
   };
 }
 
@@ -243,6 +246,15 @@ export function normalizeRuleVersionDocument(document = {}, context = {}) {
     source_id: source,
     source_url: versionHref(document),
     source_label: clean(document.source_label || document.title, 300) || null,
+    source_document: {
+      publisher: clean(document.publisher, 200) || null,
+      observed_at: document.observed_at || null,
+      downloaded_at: document.downloaded_at || null,
+      document_identity: clean(document.document_identity || source, 300) || null,
+      placement: clean(document.document_placement, 80) || null,
+      extraction_method: clean(document.extraction_method, 120) || null,
+      extraction_version: clean(document.extraction_version, 80) || null,
+    },
     published_at: isoDay(document.published_at || document.publication_date || document.notice_date),
     effective_date: effective.value,
     effective_date_basis: effective.basis,

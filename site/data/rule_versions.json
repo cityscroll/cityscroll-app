@@ -12,7 +12,7 @@
         "agency": "Transportation",
         "lifecycle_stage": "proposed",
         "rule_page_id": "city-owned-bicycle-racks",
-        "document_placement": "detail_page_linked_pdf",
+        "document_placement": "html_detail_body",
         "link_stability": "stable_official_url",
         "authority_location": "document_body",
         "citation_extractability": "text_extractable",
@@ -49,8 +49,63 @@
         "link_stability": "stable_official_url",
         "authority_location": "document_body",
         "citation_extractability": "text_extractable",
+        "proposed_adopted_pairability": "explicit_source_pairing_key",
+        "source_url": "https://rules.cityofnewyork.us/rule/commercial-waste-zones/"
+      },
+      {
+        "agency": "Health",
+        "lifecycle_stage": "proposed",
+        "rule_page_id": "food-service",
+        "document_placement": "detail_page_linked_pdf",
+        "link_stability": "unstable_query_url",
+        "authority_location": "document_body",
+        "citation_extractability": "scanned_non_text",
         "proposed_adopted_pairability": "source_ids_unpairable",
-        "source_url": "https://rules.cityofnewyork.us/"
+        "source_url": "https://rules.cityofnewyork.us/rule/food-service/"
+      },
+      {
+        "agency": "Consumer and Worker Protection",
+        "lifecycle_stage": "adopted",
+        "rule_page_id": "worker-protection",
+        "document_placement": "html_detail_body",
+        "link_stability": "stable_official_url",
+        "authority_location": "document_body",
+        "citation_extractability": "text_extractable",
+        "proposed_adopted_pairability": "adopted_only",
+        "source_url": "https://rules.cityofnewyork.us/rule/worker-protection/"
+      },
+      {
+        "agency": "Environmental Protection",
+        "lifecycle_stage": "proposed",
+        "rule_page_id": "water-use",
+        "document_placement": "detail_page_linked_pdf",
+        "link_stability": "stable_official_url",
+        "authority_location": "document_body",
+        "citation_extractability": "acquisition_failed",
+        "proposed_adopted_pairability": "proposed_only",
+        "source_url": "https://rules.cityofnewyork.us/rule/water-use/"
+      },
+      {
+        "agency": "Parks and Recreation",
+        "lifecycle_stage": "proposed",
+        "rule_page_id": "park-use",
+        "document_placement": "source_did_not_publish",
+        "link_stability": "stable_official_url",
+        "authority_location": "source_not_published",
+        "citation_extractability": "source_not_published",
+        "proposed_adopted_pairability": "proposed_only",
+        "source_url": "https://rules.cityofnewyork.us/rule/park-use/"
+      },
+      {
+        "agency": "Taxi and Limousine Commission",
+        "lifecycle_stage": "adopted",
+        "rule_page_id": "vehicle-license",
+        "document_placement": "detail_page_linked_pdf",
+        "link_stability": "unstable_query_url",
+        "authority_location": "not_attempted",
+        "citation_extractability": "not_attempted",
+        "proposed_adopted_pairability": "adopted_only",
+        "source_url": "https://rules.cityofnewyork.us/rule/vehicle-license/"
       }
     ]
   },
@@ -58,33 +113,182 @@
     {
       "source_id": "city_record:20260708002",
       "request_id": "20260708002",
+      "rulemaking_id": "rulemaking:dsny:commercial-waste-zones",
       "version_kind": "proposed",
-      "pairing_key": "dsny-commercial-waste-zones",
+      "pairing_key": "source-case:dsny-cwz",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260708002",
       "source_label": "City Record proposed rule attachment",
+      "publisher": "NYC City Record",
+      "observed_at": "2026-08-28T00:00:00Z",
+      "downloaded_at": "2026-08-28T00:05:00Z",
+      "document_identity": "city-record-attachment:20260708002:proposed-rule",
+      "document_placement": "detail_page_linked_pdf",
+      "extraction_method": "fixture_text_layer",
+      "extraction_version": "rd-m3-v1",
       "published_at": "2026-07-15",
       "expected_citation_keys": [
         "nyc-charter:753",
-        "nyc-charter:1043(g)"
+        "nyc-charter:1043(g)",
+        "nyc-admin-code:16-120",
+        "rcny:16:1-01"
       ],
       "text_fixture": "20260708002",
-      "text": "New York City Department of Sanitation\nNotice of Public Hearing and Opportunity to Comment on Proposed Rules\nWhat are we proposing? The Department of Sanitation (DSNY) is proposing\nto amend its rules regarding commercial waste to include the\nimplementation schedule for Commercial Waste Zones (CWZs).\nWhat authorizes DSNY to make this rule? Section 753 and Section 1043(g) of the New York\nCity Charter and Title 16-B of the New York City Administrative Code authorize DSNY to make\nthis proposed rule.\nIn 2019, New York City enacted Local Law 199 requiring the establishment of a new\nprogram for the collection of commercial waste. The program, known as the Commercial Waste\nZones (CWZ) program.\n"
+      "text": "The Department of Sanitation proposes rules for the commercial waste zones program and its implementation schedule. Authority: Sections 753 and 1043(g) of the New York City Charter and Section 16-120 of the New York City Administrative Code authorize DSNY to make this rule. The proposed rule amends 16 RCNY § 1-01 and amends New York City Administrative Code § 16-120."
     },
     {
       "source_id": "city_record:20260605008",
       "request_id": "20260605008",
+      "rulemaking_id": "rulemaking:dsny:commercial-waste-zones",
       "version_kind": "adopted",
-      "pairing_key": "dsny-commercial-waste-zones",
+      "pairing_key": "source-case:dsny-cwz",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260605008",
       "source_label": "City Record adopted rule attachment",
+      "publisher": "NYC City Record",
+      "observed_at": "2026-08-28T00:00:00Z",
+      "downloaded_at": "2026-08-28T00:06:00Z",
+      "document_identity": "city-record-attachment:20260605008:adopted-rule",
+      "document_placement": "detail_page_linked_pdf",
+      "extraction_method": "fixture_text_layer",
+      "extraction_version": "rd-m3-v1",
       "published_at": "2026-06-11",
       "effective_date": "2026-08-13",
       "expected_citation_keys": [
         "nyc-charter:753",
-        "nyc-charter:1043(g)"
+        "nyc-admin-code:16-120",
+        "rcny:16:1-01"
       ],
       "text_fixture": "20260605008",
-      "text": "New York City Department of Sanitation\nNotice of Public Hearing and Opportunity to Comment on Final Rules\nWhat are we adopting? The Department of Sanitation (DSNY) is proposing\nto amend its rules regarding commercial waste to include the\nimplementation schedule for Commercial Waste Zones (CWZs).\nWhat authorizes DSNY to make this rule? Section 753 and Section 1043(g) of the New York\nCity Charter and Title 16-B of the New York City Administrative Code authorize DSNY to make\nthis proposed rule.\nIn 2019, New York City enacted Local Law 199 requiring the establishment of a new\nprogram for the collection of commercial waste. The program, known as the Commercial Waste\nZones (CWZ) program.\n"
+      "text": "The Department of Sanitation adopts rules for the commercial waste zones program and its implementation schedule. Authority: Section 753 of the New York City Charter and Section 16-120 of the New York City Administrative Code authorize DSNY to make this rule. The adopted rule amends 16 RCNY § 1-01 and amends New York City Administrative Code § 16-120."
+    },
+    {
+      "source_id": "nyc_rules:dot:bicycle-racks:proposed",
+      "rulemaking_id": "rulemaking:dot:bicycle-racks",
+      "version_kind": "proposed",
+      "source_url": "https://rules.cityofnewyork.us/rule/city-owned-bicycle-racks/",
+      "publisher": "NYC Rules",
+      "observed_at": "2026-08-28T00:00:00Z",
+      "downloaded_at": "2026-08-28T00:07:00Z",
+      "document_identity": "nyc-rules:city-owned-bicycle-racks:proposed",
+      "document_placement": "html_detail_body",
+      "extraction_method": "fixture_html",
+      "extraction_version": "rd-m3-v1",
+      "expected_citation_keys": [
+        "nyc-charter:2903(a)",
+        "rcny:34:4-12(q)"
+      ],
+      "text_fixture": "dot-proposed",
+      "text": "Authority: Section 2903(a) of the New York City Charter. The proposed rule adds 34 RCNY § 4-12(q)."
+    },
+    {
+      "source_id": "nyc_rules:dcwp:worker-protection:adopted",
+      "rulemaking_id": "rulemaking:dcwp:worker-protection",
+      "version_kind": "adopted",
+      "source_url": "https://rules.cityofnewyork.us/rule/worker-protection/",
+      "publisher": "NYC Rules",
+      "observed_at": "2026-08-28T00:00:00Z",
+      "downloaded_at": "2026-08-28T00:08:00Z",
+      "document_identity": "nyc-rules:worker-protection:adopted",
+      "document_placement": "html_detail_body",
+      "extraction_method": "fixture_html",
+      "extraction_version": "rd-m3-v1",
+      "expected_citation_keys": [
+        "nyc-charter:2203",
+        "rcny:6:2-317"
+      ],
+      "text_fixture": "dcwp-adopted",
+      "text": "Authority: Section 2203 of the New York City Charter. The adopted rule repeals 6 RCNY § 2-317."
+    },
+    {
+      "source_id": "nyc_rules:dohmh:food-service:proposed",
+      "rulemaking_id": "rulemaking:dohmh:food-service",
+      "version_kind": "proposed",
+      "source_url": "https://rules.cityofnewyork.us/rule/food-service/",
+      "publisher": "NYC Rules",
+      "observed_at": "2026-08-28T00:00:00Z",
+      "document_identity": "nyc-rules:food-service:proposed",
+      "document_placement": "detail_page_linked_pdf",
+      "extraction_method": "pdf_text_probe",
+      "extraction_version": "rd-m3-v1",
+      "text_status": "scanned_non_text",
+      "acquisition_status": "scanned_non_text",
+      "text": null
+    },
+    {
+      "source_id": "nyc_rules:dep:water-use:proposed",
+      "rulemaking_id": "rulemaking:dep:water-use",
+      "version_kind": "proposed",
+      "source_url": "https://rules.cityofnewyork.us/rule/water-use/",
+      "publisher": "NYC Rules",
+      "observed_at": "2026-08-28T00:00:00Z",
+      "document_identity": "nyc-rules:water-use:proposed",
+      "document_placement": "detail_page_linked_pdf",
+      "extraction_method": "bounded_fetch",
+      "extraction_version": "rd-m3-v1",
+      "text_status": "acquisition_failed",
+      "acquisition_status": "fetch_failed",
+      "text": null
+    },
+    {
+      "source_id": "city_record:singleton-external",
+      "request_id": "singleton-external",
+      "rulemaking_id": "notice:singleton-external",
+      "version_kind": "proposed",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/singleton-external",
+      "publisher": "NYC City Record",
+      "observed_at": "2026-08-28T00:00:00Z",
+      "downloaded_at": "2026-08-28T00:09:00Z",
+      "document_identity": "city-record:singleton-external",
+      "document_placement": "city_record_attachment",
+      "extraction_method": "fixture_text_layer",
+      "extraction_version": "rd-m3-v1",
+      "text_fixture": "external-ambiguous",
+      "text": "The agency amends its rules and references 42 U.S.C. § 1983 and State law. A number resembling 16-120 appears in a table without a corpus label or effect statement."
+    },
+    {
+      "source_id": "nyc_rules:empty",
+      "rulemaking_id": "rulemaking:unknown:empty",
+      "version_kind": "adopted",
+      "source_url": "https://rules.cityofnewyork.us/rule/empty/",
+      "publisher": "NYC Rules",
+      "observed_at": "2026-08-28T00:00:00Z",
+      "downloaded_at": "2026-08-28T00:10:00Z",
+      "document_identity": "nyc-rules:empty:adopted",
+      "document_placement": "html_detail_body",
+      "extraction_method": "fixture_html",
+      "extraction_version": "rd-m3-v1",
+      "text_status": "extracted_empty",
+      "acquisition_status": "extracted_empty",
+      "text": null
+    },
+    {
+      "source_id": "nyc_rules:parks:no-document",
+      "rulemaking_id": "rulemaking:parks:park-use",
+      "version_kind": "proposed",
+      "source_url": "https://rules.cityofnewyork.us/rule/park-use/",
+      "publisher": "NYC Rules",
+      "observed_at": "2026-08-28T00:00:00Z",
+      "document_identity": "nyc-rules:park-use:no-document",
+      "document_placement": "source_did_not_publish",
+      "extraction_method": "not_applicable",
+      "extraction_version": "rd-m3-v1",
+      "text_status": "source_not_published",
+      "acquisition_status": "source_not_published",
+      "text": null
+    },
+    {
+      "source_id": "nyc_rules:tlc:not-attempted",
+      "rulemaking_id": "rulemaking:tlc:vehicle-license",
+      "version_kind": "adopted",
+      "source_url": "https://rules.cityofnewyork.us/rule/vehicle-license/",
+      "publisher": "NYC Rules",
+      "observed_at": "2026-08-28T00:00:00Z",
+      "document_identity": "nyc-rules:vehicle-license:not-attempted",
+      "document_placement": "detail_page_linked_pdf",
+      "extraction_method": "not_attempted",
+      "extraction_version": "rd-m3-v1",
+      "text_status": "not_attempted",
+      "acquisition_status": "not_attempted",
+      "text": null
     }
   ],
   "projections": [
@@ -100,13 +304,22 @@
           "source_id": "city_record:20260708002",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260708002",
           "source_label": "City Record proposed rule attachment",
+          "source_document": {
+            "publisher": "NYC City Record",
+            "observed_at": "2026-08-28T00:00:00Z",
+            "downloaded_at": "2026-08-28T00:05:00Z",
+            "document_identity": "city-record-attachment:20260708002:proposed-rule",
+            "placement": "detail_page_linked_pdf",
+            "extraction_method": "fixture_text_layer",
+            "extraction_version": "rd-m3-v1"
+          },
           "published_at": "2026-07-15",
           "effective_date": null,
           "effective_date_basis": "unknown",
           "effective_date_source_field": null,
           "text_status": "available",
-          "text": "New York City Department of Sanitation Notice of Public Hearing and Opportunity to Comment on Proposed Rules What are we proposing? The Department of Sanitation (DSNY) is proposing to amend its rules regarding commercial waste to include the implementation schedule for Commercial Waste Zones (CWZs). What authorizes DSNY to make this rule? Section 753 and Section 1043(g) of the New York City Charter and Title 16-B of the New York City Administrative Code authorize DSNY to make this proposed rule. In 2019, New York City enacted Local Law 199 requiring the establishment of a new program for the collection of commercial waste. The program, known as the Commercial Waste Zones (CWZ) program.",
-          "text_preview": "New York City Department of Sanitation Notice of Public Hearing and Opportunity to Comment on Proposed Rules What are we proposing? The Department of Sanitation (DSNY) is proposing to amend its rules regarding commercial waste to include the implementation schedule for Commercial Waste Zones (CWZs). What authorizes DSNY to make this rule? Section 753 and Section 1043(g) of the New York City Charter and Title 16-B of the New York City Administrative Code authorize DSNY to make…",
+          "text": "The Department of Sanitation proposes rules for the commercial waste zones program and its implementation schedule. Authority: Sections 753 and 1043(g) of the New York City Charter and Section 16-120 of the New York City Administrative Code authorize DSNY to make this rule. The proposed rule amends 16 RCNY § 1-01 and amends New York City Administrative Code § 16-120.",
+          "text_preview": "The Department of Sanitation proposes rules for the commercial waste zones program and its implementation schedule. Authority: Sections 753 and 1043(g) of the New York City Charter and Section 16-120 of the New York City Administrative Code authorize DSNY to make this rule. The proposed rule amends 16 RCNY § 1-01 and amends New York City Administrative Code § 16-120.",
           "authority": [
             {
               "ref": "legal-code:nyc-charter:753",
@@ -114,13 +327,13 @@
               "citation": "753",
               "label": "NYC Charter § 753",
               "href": null,
-              "resolution": "unresolved",
+              "resolution": "resolved",
               "basis": "source_stated",
               "source_span": {
                 "field": "document_text",
-                "start": 306,
-                "end": 499,
-                "text": "authorizes DSNY to make this rule? Section 753 and Section 1043(g) of the New York City Charter and Title 16-B of the New York City Administrative Code authorize DSNY to make this proposed rule"
+                "start": 116,
+                "end": 273,
+                "text": "Authority: Sections 753 and 1043(g) of the New York City Charter and Section 16-120 of the New York City Administrative Code authorize DSNY to make this rule"
               },
               "evidence": "The source document states this authority."
             },
@@ -130,17 +343,143 @@
               "citation": "1043(g)",
               "label": "NYC Charter § 1043(g)",
               "href": null,
+              "resolution": "resolved",
+              "basis": "source_stated",
+              "source_span": {
+                "field": "document_text",
+                "start": 116,
+                "end": 273,
+                "text": "Authority: Sections 753 and 1043(g) of the New York City Charter and Section 16-120 of the New York City Administrative Code authorize DSNY to make this rule"
+              },
+              "evidence": "The source document states this authority."
+            },
+            {
+              "ref": "legal-code:nyc-admin-code:16-120",
+              "kind": "nyc-admin-code",
+              "citation": "16-120",
+              "label": "NYC Administrative Code § 16-120",
+              "href": "/administrative-code/16-120/",
+              "resolution": "resolved",
+              "basis": "source_stated",
+              "source_span": {
+                "field": "document_text",
+                "start": 116,
+                "end": 273,
+                "text": "Authority: Sections 753 and 1043(g) of the New York City Charter and Section 16-120 of the New York City Administrative Code authorize DSNY to make this rule"
+              },
+              "evidence": "The source document states this authority."
+            },
+            {
+              "ref": "legal-code:nyc-admin-code:16",
+              "kind": "nyc-admin-code",
+              "citation": "16",
+              "label": "NYC Administrative Code § 16",
+              "href": null,
               "resolution": "unresolved",
               "basis": "source_stated",
               "source_span": {
                 "field": "document_text",
-                "start": 306,
-                "end": 499,
-                "text": "authorizes DSNY to make this rule? Section 753 and Section 1043(g) of the New York City Charter and Title 16-B of the New York City Administrative Code authorize DSNY to make this proposed rule"
+                "start": 116,
+                "end": 273,
+                "text": "Authority: Sections 753 and 1043(g) of the New York City Charter and Section 16-120 of the New York City Administrative Code authorize DSNY to make this rule"
               },
               "evidence": "The source document states this authority."
             }
           ],
+          "legal_effects": [
+            {
+              "schema": "cityscroll.rule_effect.v1",
+              "kind": "amends",
+              "target": {
+                "ref": "legal-code:rcny:16:1-01",
+                "kind": "rcny",
+                "citation": "16:1-01",
+                "label": "RCNY § 1-01",
+                "href": null,
+                "resolution": "resolved"
+              },
+              "status": "published",
+              "basis": "source_stated",
+              "source_span": {
+                "field": "document_text",
+                "start": 293,
+                "end": 319,
+                "text": "amends 16 RCNY § 1-01 and"
+              }
+            },
+            {
+              "schema": "cityscroll.rule_effect.v1",
+              "kind": "amends",
+              "target": {
+                "ref": "legal-code:nyc-admin-code:16-120",
+                "kind": "nyc-admin-code",
+                "citation": "16-120",
+                "label": "NYC Administrative Code § 16-120",
+                "href": "/administrative-code/16-120/",
+                "resolution": "resolved"
+              },
+              "status": "published",
+              "basis": "source_stated",
+              "source_span": {
+                "field": "document_text",
+                "start": 319,
+                "end": 368,
+                "text": "amends New York City Administrative Code § 16-120"
+              }
+            },
+            {
+              "schema": "cityscroll.rule_effect.v1",
+              "kind": "amends",
+              "target": {
+                "ref": "legal-code:nyc-admin-code:16",
+                "kind": "nyc-admin-code",
+                "citation": "16",
+                "label": "NYC Administrative Code § 16",
+                "href": null,
+                "resolution": "unresolved"
+              },
+              "status": "published",
+              "basis": "source_stated",
+              "source_span": {
+                "field": "document_text",
+                "start": 319,
+                "end": 368,
+                "text": "amends New York City Administrative Code § 16-120"
+              }
+            }
+          ],
+          "held_references": [],
+          "comment_observation": null,
+          "agency_explanation": null,
+          "pairing_key": "source-case:dsny-cwz",
+          "source_span": null,
+          "superseded_by": "rule-version:rulemaking:dsny:commercial-waste-zones:adopted:city-record-20260605008"
+        },
+        {
+          "schema": "cityscroll.rule_version.v1",
+          "id": "rule-version:notice:singleton-external:proposed:city-record-singleton-external",
+          "rulemaking_id": "notice:singleton-external",
+          "kind": "proposed",
+          "source_id": "city_record:singleton-external",
+          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/singleton-external",
+          "source_label": null,
+          "source_document": {
+            "publisher": "NYC City Record",
+            "observed_at": "2026-08-28T00:00:00Z",
+            "downloaded_at": "2026-08-28T00:09:00Z",
+            "document_identity": "city-record:singleton-external",
+            "placement": "city_record_attachment",
+            "extraction_method": "fixture_text_layer",
+            "extraction_version": "rd-m3-v1"
+          },
+          "published_at": null,
+          "effective_date": null,
+          "effective_date_basis": "unknown",
+          "effective_date_source_field": null,
+          "text_status": "available",
+          "text": "The agency amends its rules and references 42 U.S.C. § 1983 and State law. A number resembling 16-120 appears in a table without a corpus label or effect statement.",
+          "text_preview": "The agency amends its rules and references 42 U.S.C. § 1983 and State law. A number resembling 16-120 appears in a table without a corpus label or effect statement.",
+          "authority": [],
           "legal_effects": [],
           "held_references": [
             {
@@ -148,17 +487,182 @@
               "reason": "effect verb has no exact supported legal-code citation",
               "source_span": {
                 "field": "document_text",
-                "start": 184,
-                "end": 299,
-                "text": "amend its rules regarding commercial waste to include the implementation schedule for Commercial Waste Zones (CWZs)"
+                "start": 11,
+                "end": 47,
+                "text": "amends its rules and references 42 U"
               }
             }
           ],
           "comment_observation": null,
           "agency_explanation": null,
-          "pairing_key": "dsny-commercial-waste-zones",
-          "source_span": null,
-          "superseded_by": "rule-version:rulemaking:dsny:commercial-waste-zones:adopted:city-record-20260605008"
+          "pairing_key": null,
+          "source_span": null
+        },
+        {
+          "schema": "cityscroll.rule_version.v1",
+          "id": "rule-version:rulemaking:dep:water-use:proposed:nyc-rules-dep-water-use-proposed",
+          "rulemaking_id": "rulemaking:dep:water-use",
+          "kind": "proposed",
+          "source_id": "nyc_rules:dep:water-use:proposed",
+          "source_url": "https://rules.cityofnewyork.us/rule/water-use/",
+          "source_label": null,
+          "source_document": {
+            "publisher": "NYC Rules",
+            "observed_at": "2026-08-28T00:00:00Z",
+            "downloaded_at": null,
+            "document_identity": "nyc-rules:water-use:proposed",
+            "placement": "detail_page_linked_pdf",
+            "extraction_method": "bounded_fetch",
+            "extraction_version": "rd-m3-v1"
+          },
+          "published_at": null,
+          "effective_date": null,
+          "effective_date_basis": "unknown",
+          "effective_date_source_field": null,
+          "text_status": "acquisition_failed",
+          "text": null,
+          "text_preview": null,
+          "authority": [],
+          "legal_effects": [],
+          "held_references": [],
+          "comment_observation": null,
+          "agency_explanation": null,
+          "pairing_key": null,
+          "source_span": null
+        },
+        {
+          "schema": "cityscroll.rule_version.v1",
+          "id": "rule-version:rulemaking:dohmh:food-service:proposed:nyc-rules-dohmh-food-service-proposed",
+          "rulemaking_id": "rulemaking:dohmh:food-service",
+          "kind": "proposed",
+          "source_id": "nyc_rules:dohmh:food-service:proposed",
+          "source_url": "https://rules.cityofnewyork.us/rule/food-service/",
+          "source_label": null,
+          "source_document": {
+            "publisher": "NYC Rules",
+            "observed_at": "2026-08-28T00:00:00Z",
+            "downloaded_at": null,
+            "document_identity": "nyc-rules:food-service:proposed",
+            "placement": "detail_page_linked_pdf",
+            "extraction_method": "pdf_text_probe",
+            "extraction_version": "rd-m3-v1"
+          },
+          "published_at": null,
+          "effective_date": null,
+          "effective_date_basis": "unknown",
+          "effective_date_source_field": null,
+          "text_status": "scanned_non_text",
+          "text": null,
+          "text_preview": null,
+          "authority": [],
+          "legal_effects": [],
+          "held_references": [],
+          "comment_observation": null,
+          "agency_explanation": null,
+          "pairing_key": null,
+          "source_span": null
+        },
+        {
+          "schema": "cityscroll.rule_version.v1",
+          "id": "rule-version:rulemaking:dot:bicycle-racks:proposed:nyc-rules-dot-bicycle-racks-proposed",
+          "rulemaking_id": "rulemaking:dot:bicycle-racks",
+          "kind": "proposed",
+          "source_id": "nyc_rules:dot:bicycle-racks:proposed",
+          "source_url": "https://rules.cityofnewyork.us/rule/city-owned-bicycle-racks/",
+          "source_label": null,
+          "source_document": {
+            "publisher": "NYC Rules",
+            "observed_at": "2026-08-28T00:00:00Z",
+            "downloaded_at": "2026-08-28T00:07:00Z",
+            "document_identity": "nyc-rules:city-owned-bicycle-racks:proposed",
+            "placement": "html_detail_body",
+            "extraction_method": "fixture_html",
+            "extraction_version": "rd-m3-v1"
+          },
+          "published_at": null,
+          "effective_date": null,
+          "effective_date_basis": "unknown",
+          "effective_date_source_field": null,
+          "text_status": "available",
+          "text": "Authority: Section 2903(a) of the New York City Charter. The proposed rule adds 34 RCNY § 4-12(q).",
+          "text_preview": "Authority: Section 2903(a) of the New York City Charter. The proposed rule adds 34 RCNY § 4-12(q).",
+          "authority": [
+            {
+              "ref": "legal-code:nyc-charter:2903(a)",
+              "kind": "nyc-charter",
+              "citation": "2903(a)",
+              "label": "NYC Charter § 2903(a)",
+              "href": null,
+              "resolution": "resolved",
+              "basis": "source_stated",
+              "source_span": {
+                "field": "document_text",
+                "start": 0,
+                "end": 55,
+                "text": "Authority: Section 2903(a) of the New York City Charter"
+              },
+              "evidence": "The source document states this authority."
+            }
+          ],
+          "legal_effects": [
+            {
+              "schema": "cityscroll.rule_effect.v1",
+              "kind": "adds",
+              "target": {
+                "ref": "legal-code:rcny:34:4-12(q)",
+                "kind": "rcny",
+                "citation": "34:4-12(q)",
+                "label": "RCNY § 4-12(q)",
+                "href": null,
+                "resolution": "resolved"
+              },
+              "status": "published",
+              "basis": "source_stated",
+              "source_span": {
+                "field": "document_text",
+                "start": 75,
+                "end": 97,
+                "text": "adds 34 RCNY § 4-12(q)"
+              }
+            }
+          ],
+          "held_references": [],
+          "comment_observation": null,
+          "agency_explanation": null,
+          "pairing_key": null,
+          "source_span": null
+        },
+        {
+          "schema": "cityscroll.rule_version.v1",
+          "id": "rule-version:rulemaking:parks:park-use:proposed:nyc-rules-parks-no-document",
+          "rulemaking_id": "rulemaking:parks:park-use",
+          "kind": "proposed",
+          "source_id": "nyc_rules:parks:no-document",
+          "source_url": "https://rules.cityofnewyork.us/rule/park-use/",
+          "source_label": null,
+          "source_document": {
+            "publisher": "NYC Rules",
+            "observed_at": "2026-08-28T00:00:00Z",
+            "downloaded_at": null,
+            "document_identity": "nyc-rules:park-use:no-document",
+            "placement": "source_did_not_publish",
+            "extraction_method": "not_applicable",
+            "extraction_version": "rd-m3-v1"
+          },
+          "published_at": null,
+          "effective_date": null,
+          "effective_date_basis": "unknown",
+          "effective_date_source_field": null,
+          "text_status": "source_not_published",
+          "text": null,
+          "text_preview": null,
+          "authority": [],
+          "legal_effects": [],
+          "held_references": [],
+          "comment_observation": null,
+          "agency_explanation": null,
+          "pairing_key": null,
+          "source_span": null
         },
         {
           "schema": "cityscroll.rule_version.v1",
@@ -168,13 +672,22 @@
           "source_id": "city_record:20260605008",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260605008",
           "source_label": "City Record adopted rule attachment",
+          "source_document": {
+            "publisher": "NYC City Record",
+            "observed_at": "2026-08-28T00:00:00Z",
+            "downloaded_at": "2026-08-28T00:06:00Z",
+            "document_identity": "city-record-attachment:20260605008:adopted-rule",
+            "placement": "detail_page_linked_pdf",
+            "extraction_method": "fixture_text_layer",
+            "extraction_version": "rd-m3-v1"
+          },
           "published_at": "2026-06-11",
           "effective_date": "2026-08-13",
           "effective_date_basis": "source_stated",
           "effective_date_source_field": "effective_date",
           "text_status": "available",
-          "text": "New York City Department of Sanitation Notice of Public Hearing and Opportunity to Comment on Final Rules What are we adopting? The Department of Sanitation (DSNY) is proposing to amend its rules regarding commercial waste to include the implementation schedule for Commercial Waste Zones (CWZs). What authorizes DSNY to make this rule? Section 753 and Section 1043(g) of the New York City Charter and Title 16-B of the New York City Administrative Code authorize DSNY to make this proposed rule. In 2019, New York City enacted Local Law 199 requiring the establishment of a new program for the collection of commercial waste. The program, known as the Commercial Waste Zones (CWZ) program.",
-          "text_preview": "New York City Department of Sanitation Notice of Public Hearing and Opportunity to Comment on Final Rules What are we adopting? The Department of Sanitation (DSNY) is proposing to amend its rules regarding commercial waste to include the implementation schedule for Commercial Waste Zones (CWZs). What authorizes DSNY to make this rule? Section 753 and Section 1043(g) of the New York City Charter and Title 16-B of the New York City Administrative Code authorize DSNY to make thi…",
+          "text": "The Department of Sanitation adopts rules for the commercial waste zones program and its implementation schedule. Authority: Section 753 of the New York City Charter and Section 16-120 of the New York City Administrative Code authorize DSNY to make this rule. The adopted rule amends 16 RCNY § 1-01 and amends New York City Administrative Code § 16-120.",
+          "text_preview": "The Department of Sanitation adopts rules for the commercial waste zones program and its implementation schedule. Authority: Section 753 of the New York City Charter and Section 16-120 of the New York City Administrative Code authorize DSNY to make this rule. The adopted rule amends 16 RCNY § 1-01 and amends New York City Administrative Code § 16-120.",
           "authority": [
             {
               "ref": "legal-code:nyc-charter:753",
@@ -182,78 +695,443 @@
               "citation": "753",
               "label": "NYC Charter § 753",
               "href": null,
-              "resolution": "unresolved",
+              "resolution": "resolved",
               "basis": "source_stated",
               "source_span": {
                 "field": "document_text",
-                "start": 302,
-                "end": 495,
-                "text": "authorizes DSNY to make this rule? Section 753 and Section 1043(g) of the New York City Charter and Title 16-B of the New York City Administrative Code authorize DSNY to make this proposed rule"
+                "start": 114,
+                "end": 258,
+                "text": "Authority: Section 753 of the New York City Charter and Section 16-120 of the New York City Administrative Code authorize DSNY to make this rule"
               },
               "evidence": "The source document states this authority."
             },
             {
-              "ref": "legal-code:nyc-charter:1043(g)",
-              "kind": "nyc-charter",
-              "citation": "1043(g)",
-              "label": "NYC Charter § 1043(g)",
+              "ref": "legal-code:nyc-admin-code:16-120",
+              "kind": "nyc-admin-code",
+              "citation": "16-120",
+              "label": "NYC Administrative Code § 16-120",
+              "href": "/administrative-code/16-120/",
+              "resolution": "resolved",
+              "basis": "source_stated",
+              "source_span": {
+                "field": "document_text",
+                "start": 114,
+                "end": 258,
+                "text": "Authority: Section 753 of the New York City Charter and Section 16-120 of the New York City Administrative Code authorize DSNY to make this rule"
+              },
+              "evidence": "The source document states this authority."
+            },
+            {
+              "ref": "legal-code:nyc-admin-code:16",
+              "kind": "nyc-admin-code",
+              "citation": "16",
+              "label": "NYC Administrative Code § 16",
               "href": null,
               "resolution": "unresolved",
               "basis": "source_stated",
               "source_span": {
                 "field": "document_text",
-                "start": 302,
-                "end": 495,
-                "text": "authorizes DSNY to make this rule? Section 753 and Section 1043(g) of the New York City Charter and Title 16-B of the New York City Administrative Code authorize DSNY to make this proposed rule"
+                "start": 114,
+                "end": 258,
+                "text": "Authority: Section 753 of the New York City Charter and Section 16-120 of the New York City Administrative Code authorize DSNY to make this rule"
               },
               "evidence": "The source document states this authority."
             }
           ],
-          "legal_effects": [],
-          "held_references": [
+          "legal_effects": [
             {
-              "status": "held_ambiguous",
-              "reason": "effect verb has no exact supported legal-code citation",
+              "schema": "cityscroll.rule_effect.v1",
+              "kind": "amends",
+              "target": {
+                "ref": "legal-code:rcny:16:1-01",
+                "kind": "rcny",
+                "citation": "16:1-01",
+                "label": "RCNY § 1-01",
+                "href": null,
+                "resolution": "resolved"
+              },
+              "status": "published",
+              "basis": "source_stated",
               "source_span": {
                 "field": "document_text",
-                "start": 180,
-                "end": 295,
-                "text": "amend its rules regarding commercial waste to include the implementation schedule for Commercial Waste Zones (CWZs)"
+                "start": 277,
+                "end": 303,
+                "text": "amends 16 RCNY § 1-01 and"
+              }
+            },
+            {
+              "schema": "cityscroll.rule_effect.v1",
+              "kind": "amends",
+              "target": {
+                "ref": "legal-code:nyc-admin-code:16-120",
+                "kind": "nyc-admin-code",
+                "citation": "16-120",
+                "label": "NYC Administrative Code § 16-120",
+                "href": "/administrative-code/16-120/",
+                "resolution": "resolved"
+              },
+              "status": "published",
+              "basis": "source_stated",
+              "source_span": {
+                "field": "document_text",
+                "start": 303,
+                "end": 352,
+                "text": "amends New York City Administrative Code § 16-120"
+              }
+            },
+            {
+              "schema": "cityscroll.rule_effect.v1",
+              "kind": "amends",
+              "target": {
+                "ref": "legal-code:nyc-admin-code:16",
+                "kind": "nyc-admin-code",
+                "citation": "16",
+                "label": "NYC Administrative Code § 16",
+                "href": null,
+                "resolution": "unresolved"
+              },
+              "status": "published",
+              "basis": "source_stated",
+              "source_span": {
+                "field": "document_text",
+                "start": 303,
+                "end": 352,
+                "text": "amends New York City Administrative Code § 16-120"
               }
             }
           ],
+          "held_references": [],
           "comment_observation": null,
           "agency_explanation": null,
-          "pairing_key": "dsny-commercial-waste-zones",
+          "pairing_key": "source-case:dsny-cwz",
           "source_span": null,
           "supersedes": "rule-version:rulemaking:dsny:commercial-waste-zones:proposed:city-record-20260708002"
+        },
+        {
+          "schema": "cityscroll.rule_version.v1",
+          "id": "rule-version:rulemaking:dcwp:worker-protection:adopted:nyc-rules-dcwp-worker-protection-adopted",
+          "rulemaking_id": "rulemaking:dcwp:worker-protection",
+          "kind": "adopted",
+          "source_id": "nyc_rules:dcwp:worker-protection:adopted",
+          "source_url": "https://rules.cityofnewyork.us/rule/worker-protection/",
+          "source_label": null,
+          "source_document": {
+            "publisher": "NYC Rules",
+            "observed_at": "2026-08-28T00:00:00Z",
+            "downloaded_at": "2026-08-28T00:08:00Z",
+            "document_identity": "nyc-rules:worker-protection:adopted",
+            "placement": "html_detail_body",
+            "extraction_method": "fixture_html",
+            "extraction_version": "rd-m3-v1"
+          },
+          "published_at": null,
+          "effective_date": null,
+          "effective_date_basis": "unknown",
+          "effective_date_source_field": null,
+          "text_status": "available",
+          "text": "Authority: Section 2203 of the New York City Charter. The adopted rule repeals 6 RCNY § 2-317.",
+          "text_preview": "Authority: Section 2203 of the New York City Charter. The adopted rule repeals 6 RCNY § 2-317.",
+          "authority": [
+            {
+              "ref": "legal-code:nyc-charter:2203",
+              "kind": "nyc-charter",
+              "citation": "2203",
+              "label": "NYC Charter § 2203",
+              "href": null,
+              "resolution": "resolved",
+              "basis": "source_stated",
+              "source_span": {
+                "field": "document_text",
+                "start": 0,
+                "end": 52,
+                "text": "Authority: Section 2203 of the New York City Charter"
+              },
+              "evidence": "The source document states this authority."
+            }
+          ],
+          "legal_effects": [
+            {
+              "schema": "cityscroll.rule_effect.v1",
+              "kind": "repeals",
+              "target": {
+                "ref": "legal-code:rcny:6:2-317",
+                "kind": "rcny",
+                "citation": "6:2-317",
+                "label": "RCNY § 2-317",
+                "href": null,
+                "resolution": "resolved"
+              },
+              "status": "published",
+              "basis": "source_stated",
+              "source_span": {
+                "field": "document_text",
+                "start": 71,
+                "end": 93,
+                "text": "repeals 6 RCNY § 2-317"
+              }
+            }
+          ],
+          "held_references": [],
+          "comment_observation": null,
+          "agency_explanation": null,
+          "pairing_key": null,
+          "source_span": null
+        },
+        {
+          "schema": "cityscroll.rule_version.v1",
+          "id": "rule-version:rulemaking:unknown:empty:adopted:nyc-rules-empty",
+          "rulemaking_id": "rulemaking:unknown:empty",
+          "kind": "adopted",
+          "source_id": "nyc_rules:empty",
+          "source_url": "https://rules.cityofnewyork.us/rule/empty/",
+          "source_label": null,
+          "source_document": {
+            "publisher": "NYC Rules",
+            "observed_at": "2026-08-28T00:00:00Z",
+            "downloaded_at": "2026-08-28T00:10:00Z",
+            "document_identity": "nyc-rules:empty:adopted",
+            "placement": "html_detail_body",
+            "extraction_method": "fixture_html",
+            "extraction_version": "rd-m3-v1"
+          },
+          "published_at": null,
+          "effective_date": null,
+          "effective_date_basis": "unknown",
+          "effective_date_source_field": null,
+          "text_status": "extracted_empty",
+          "text": null,
+          "text_preview": null,
+          "authority": [],
+          "legal_effects": [],
+          "held_references": [],
+          "comment_observation": null,
+          "agency_explanation": null,
+          "pairing_key": null,
+          "source_span": null
+        },
+        {
+          "schema": "cityscroll.rule_version.v1",
+          "id": "rule-version:rulemaking:tlc:vehicle-license:adopted:nyc-rules-tlc-not-attempted",
+          "rulemaking_id": "rulemaking:tlc:vehicle-license",
+          "kind": "adopted",
+          "source_id": "nyc_rules:tlc:not-attempted",
+          "source_url": "https://rules.cityofnewyork.us/rule/vehicle-license/",
+          "source_label": null,
+          "source_document": {
+            "publisher": "NYC Rules",
+            "observed_at": "2026-08-28T00:00:00Z",
+            "downloaded_at": null,
+            "document_identity": "nyc-rules:vehicle-license:not-attempted",
+            "placement": "detail_page_linked_pdf",
+            "extraction_method": "not_attempted",
+            "extraction_version": "rd-m3-v1"
+          },
+          "published_at": null,
+          "effective_date": null,
+          "effective_date_basis": "unknown",
+          "effective_date_source_field": null,
+          "text_status": "not_attempted",
+          "text": null,
+          "text_preview": null,
+          "authority": [],
+          "legal_effects": [],
+          "held_references": [],
+          "comment_observation": null,
+          "agency_explanation": null,
+          "pairing_key": null,
+          "source_span": null
         }
       ],
-      "legal_effects": [],
+      "legal_effects": [
+        {
+          "schema": "cityscroll.rule_effect.v1",
+          "kind": "amends",
+          "target": {
+            "ref": "legal-code:rcny:16:1-01",
+            "kind": "rcny",
+            "citation": "16:1-01",
+            "label": "RCNY § 1-01",
+            "href": null,
+            "resolution": "resolved"
+          },
+          "status": "published",
+          "basis": "source_stated",
+          "source_span": {
+            "field": "document_text",
+            "start": 293,
+            "end": 319,
+            "text": "amends 16 RCNY § 1-01 and"
+          },
+          "version_id": "rule-version:rulemaking:dsny:commercial-waste-zones:proposed:city-record-20260708002",
+          "source_id": "city_record:20260708002"
+        },
+        {
+          "schema": "cityscroll.rule_effect.v1",
+          "kind": "amends",
+          "target": {
+            "ref": "legal-code:nyc-admin-code:16-120",
+            "kind": "nyc-admin-code",
+            "citation": "16-120",
+            "label": "NYC Administrative Code § 16-120",
+            "href": "/administrative-code/16-120/",
+            "resolution": "resolved"
+          },
+          "status": "published",
+          "basis": "source_stated",
+          "source_span": {
+            "field": "document_text",
+            "start": 319,
+            "end": 368,
+            "text": "amends New York City Administrative Code § 16-120"
+          },
+          "version_id": "rule-version:rulemaking:dsny:commercial-waste-zones:proposed:city-record-20260708002",
+          "source_id": "city_record:20260708002"
+        },
+        {
+          "schema": "cityscroll.rule_effect.v1",
+          "kind": "amends",
+          "target": {
+            "ref": "legal-code:nyc-admin-code:16",
+            "kind": "nyc-admin-code",
+            "citation": "16",
+            "label": "NYC Administrative Code § 16",
+            "href": null,
+            "resolution": "unresolved"
+          },
+          "status": "published",
+          "basis": "source_stated",
+          "source_span": {
+            "field": "document_text",
+            "start": 319,
+            "end": 368,
+            "text": "amends New York City Administrative Code § 16-120"
+          },
+          "version_id": "rule-version:rulemaking:dsny:commercial-waste-zones:proposed:city-record-20260708002",
+          "source_id": "city_record:20260708002"
+        },
+        {
+          "schema": "cityscroll.rule_effect.v1",
+          "kind": "adds",
+          "target": {
+            "ref": "legal-code:rcny:34:4-12(q)",
+            "kind": "rcny",
+            "citation": "34:4-12(q)",
+            "label": "RCNY § 4-12(q)",
+            "href": null,
+            "resolution": "resolved"
+          },
+          "status": "published",
+          "basis": "source_stated",
+          "source_span": {
+            "field": "document_text",
+            "start": 75,
+            "end": 97,
+            "text": "adds 34 RCNY § 4-12(q)"
+          },
+          "version_id": "rule-version:rulemaking:dot:bicycle-racks:proposed:nyc-rules-dot-bicycle-racks-proposed",
+          "source_id": "nyc_rules:dot:bicycle-racks:proposed"
+        },
+        {
+          "schema": "cityscroll.rule_effect.v1",
+          "kind": "amends",
+          "target": {
+            "ref": "legal-code:rcny:16:1-01",
+            "kind": "rcny",
+            "citation": "16:1-01",
+            "label": "RCNY § 1-01",
+            "href": null,
+            "resolution": "resolved"
+          },
+          "status": "published",
+          "basis": "source_stated",
+          "source_span": {
+            "field": "document_text",
+            "start": 277,
+            "end": 303,
+            "text": "amends 16 RCNY § 1-01 and"
+          },
+          "version_id": "rule-version:rulemaking:dsny:commercial-waste-zones:adopted:city-record-20260605008",
+          "source_id": "city_record:20260605008"
+        },
+        {
+          "schema": "cityscroll.rule_effect.v1",
+          "kind": "amends",
+          "target": {
+            "ref": "legal-code:nyc-admin-code:16-120",
+            "kind": "nyc-admin-code",
+            "citation": "16-120",
+            "label": "NYC Administrative Code § 16-120",
+            "href": "/administrative-code/16-120/",
+            "resolution": "resolved"
+          },
+          "status": "published",
+          "basis": "source_stated",
+          "source_span": {
+            "field": "document_text",
+            "start": 303,
+            "end": 352,
+            "text": "amends New York City Administrative Code § 16-120"
+          },
+          "version_id": "rule-version:rulemaking:dsny:commercial-waste-zones:adopted:city-record-20260605008",
+          "source_id": "city_record:20260605008"
+        },
+        {
+          "schema": "cityscroll.rule_effect.v1",
+          "kind": "amends",
+          "target": {
+            "ref": "legal-code:nyc-admin-code:16",
+            "kind": "nyc-admin-code",
+            "citation": "16",
+            "label": "NYC Administrative Code § 16",
+            "href": null,
+            "resolution": "unresolved"
+          },
+          "status": "published",
+          "basis": "source_stated",
+          "source_span": {
+            "field": "document_text",
+            "start": 303,
+            "end": 352,
+            "text": "amends New York City Administrative Code § 16-120"
+          },
+          "version_id": "rule-version:rulemaking:dsny:commercial-waste-zones:adopted:city-record-20260605008",
+          "source_id": "city_record:20260605008"
+        },
+        {
+          "schema": "cityscroll.rule_effect.v1",
+          "kind": "repeals",
+          "target": {
+            "ref": "legal-code:rcny:6:2-317",
+            "kind": "rcny",
+            "citation": "6:2-317",
+            "label": "RCNY § 2-317",
+            "href": null,
+            "resolution": "resolved"
+          },
+          "status": "published",
+          "basis": "source_stated",
+          "source_span": {
+            "field": "document_text",
+            "start": 71,
+            "end": 93,
+            "text": "repeals 6 RCNY § 2-317"
+          },
+          "version_id": "rule-version:rulemaking:dcwp:worker-protection:adopted:nyc-rules-dcwp-worker-protection-adopted",
+          "source_id": "nyc_rules:dcwp:worker-protection:adopted"
+        }
+      ],
       "held_references": [
         {
           "status": "held_ambiguous",
           "reason": "effect verb has no exact supported legal-code citation",
           "source_span": {
             "field": "document_text",
-            "start": 184,
-            "end": 299,
-            "text": "amend its rules regarding commercial waste to include the implementation schedule for Commercial Waste Zones (CWZs)"
+            "start": 11,
+            "end": 47,
+            "text": "amends its rules and references 42 U"
           },
-          "version_id": "rule-version:rulemaking:dsny:commercial-waste-zones:proposed:city-record-20260708002",
-          "source_id": "city_record:20260708002"
-        },
-        {
-          "status": "held_ambiguous",
-          "reason": "effect verb has no exact supported legal-code citation",
-          "source_span": {
-            "field": "document_text",
-            "start": 180,
-            "end": 295,
-            "text": "amend its rules regarding commercial waste to include the implementation schedule for Commercial Waste Zones (CWZs)"
-          },
-          "version_id": "rule-version:rulemaking:dsny:commercial-waste-zones:adopted:city-record-20260605008",
-          "source_id": "city_record:20260605008"
+          "version_id": "rule-version:notice:singleton-external:proposed:city-record-singleton-external",
+          "source_id": "city_record:singleton-external"
         }
       ],
       "pairs": [
@@ -289,13 +1167,13 @@
               "href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260605008"
             }
           ],
-          "changed_region_count": 2,
+          "changed_region_count": 4,
           "alignment": {
             "status": "aligned",
             "method": "ordered-section-lcs",
-            "proposed_sections": 6,
-            "adopted_sections": 6,
-            "aligned_sections": 6,
+            "proposed_sections": 3,
+            "adopted_sections": 3,
+            "aligned_sections": 3,
             "deterministic": true
           },
           "regions": [
@@ -303,21 +1181,21 @@
               "id": "change-region:rule-version:rulemaking:dsny:commercial-waste-zones:proposed:city-record-20260708002:rule-version:rulemaking:dsny:commercial-waste-zones:adopted:city-record-20260605008:1",
               "kind": "changed",
               "section_index": 0,
-              "section_label": "New York City Department of Sanitation Notice of Public Hearing and Opportunity to Comment on Propos",
+              "section_label": "The Department of Sanitation proposes rules for the commercial waste zones program and its implement",
               "proposed_span": {
                 "field": "text",
-                "start": 94,
-                "end": 102,
-                "text": "Proposed",
+                "start": 29,
+                "end": 37,
+                "text": "proposes",
                 "version_id": "rule-version:rulemaking:dsny:commercial-waste-zones:proposed:city-record-20260708002",
                 "source_id": "city_record:20260708002",
                 "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260708002"
               },
               "adopted_span": {
                 "field": "text",
-                "start": 94,
-                "end": 99,
-                "text": "Final",
+                "start": 29,
+                "end": 35,
+                "text": "adopts",
                 "version_id": "rule-version:rulemaking:dsny:commercial-waste-zones:adopted:city-record-20260605008",
                 "source_id": "city_record:20260605008",
                 "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260605008"
@@ -338,22 +1216,81 @@
             {
               "id": "change-region:rule-version:rulemaking:dsny:commercial-waste-zones:proposed:city-record-20260708002:rule-version:rulemaking:dsny:commercial-waste-zones:adopted:city-record-20260605008:2",
               "kind": "changed",
-              "section_index": 0,
-              "section_label": "New York City Department of Sanitation Notice of Public Hearing and Opportunity to Comment on Propos",
+              "section_index": 1,
+              "section_label": "Authority: Sections 753 and 1043(g) of the New York City Charter and Section 16-120 of the New York ",
               "proposed_span": {
                 "field": "text",
-                "start": 121,
-                "end": 131,
-                "text": "proposing?",
+                "start": 127,
+                "end": 135,
+                "text": "Sections",
                 "version_id": "rule-version:rulemaking:dsny:commercial-waste-zones:proposed:city-record-20260708002",
                 "source_id": "city_record:20260708002",
                 "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260708002"
               },
               "adopted_span": {
                 "field": "text",
-                "start": 118,
-                "end": 127,
-                "text": "adopting?",
+                "start": 125,
+                "end": 132,
+                "text": "Section",
+                "version_id": "rule-version:rulemaking:dsny:commercial-waste-zones:adopted:city-record-20260605008",
+                "source_id": "city_record:20260605008",
+                "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260605008"
+              },
+              "source_links": [
+                {
+                  "version_id": "rule-version:rulemaking:dsny:commercial-waste-zones:proposed:city-record-20260708002",
+                  "source_id": "city_record:20260708002",
+                  "href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260708002"
+                },
+                {
+                  "version_id": "rule-version:rulemaking:dsny:commercial-waste-zones:adopted:city-record-20260605008",
+                  "source_id": "city_record:20260605008",
+                  "href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260605008"
+                }
+              ]
+            },
+            {
+              "id": "change-region:rule-version:rulemaking:dsny:commercial-waste-zones:proposed:city-record-20260708002:rule-version:rulemaking:dsny:commercial-waste-zones:adopted:city-record-20260605008:3",
+              "kind": "removed",
+              "section_index": 1,
+              "section_label": "Authority: Sections 753 and 1043(g) of the New York City Charter and Section 16-120 of the New York ",
+              "proposed_span": {
+                "field": "text",
+                "start": 140,
+                "end": 151,
+                "text": "and 1043(g)",
+                "version_id": "rule-version:rulemaking:dsny:commercial-waste-zones:proposed:city-record-20260708002",
+                "source_id": "city_record:20260708002",
+                "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260708002"
+              },
+              "adopted_span": null,
+              "source_links": [
+                {
+                  "version_id": "rule-version:rulemaking:dsny:commercial-waste-zones:proposed:city-record-20260708002",
+                  "source_id": "city_record:20260708002",
+                  "href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260708002"
+                }
+              ]
+            },
+            {
+              "id": "change-region:rule-version:rulemaking:dsny:commercial-waste-zones:proposed:city-record-20260708002:rule-version:rulemaking:dsny:commercial-waste-zones:adopted:city-record-20260605008:4",
+              "kind": "changed",
+              "section_index": 2,
+              "section_label": "The proposed rule amends 16 RCNY § 1-01 and amends New York City Administrative Code § 16-120.",
+              "proposed_span": {
+                "field": "text",
+                "start": 279,
+                "end": 287,
+                "text": "proposed",
+                "version_id": "rule-version:rulemaking:dsny:commercial-waste-zones:proposed:city-record-20260708002",
+                "source_id": "city_record:20260708002",
+                "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260708002"
+              },
+              "adopted_span": {
+                "field": "text",
+                "start": 264,
+                "end": 271,
+                "text": "adopted",
                 "version_id": "rule-version:rulemaking:dsny:commercial-waste-zones:adopted:city-record-20260605008",
                 "source_id": "city_record:20260605008",
                 "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260605008"
@@ -372,29 +1309,302 @@
               ]
             }
           ]
+        },
+        {
+          "schema": "cityscroll.rule_version_diff.v1",
+          "status": "unavailable",
+          "reason_code": "unpaired_versions",
+          "pair": {
+            "basis": "pairing_key",
+            "pairing_key": null,
+            "proposed_version_ids": [
+              "rule-version:notice:singleton-external:proposed:city-record-singleton-external"
+            ],
+            "adopted_version_ids": []
+          },
+          "proposed_version_id": "rule-version:notice:singleton-external:proposed:city-record-singleton-external",
+          "adopted_version_id": null,
+          "source_links": [
+            {
+              "version_id": "rule-version:notice:singleton-external:proposed:city-record-singleton-external",
+              "kind": "proposed",
+              "label": "Proposed source",
+              "href": "https://a856-cityrecord.nyc.gov/RequestDetail/singleton-external"
+            }
+          ],
+          "changed_region_count": null,
+          "alignment": null,
+          "regions": []
+        },
+        {
+          "schema": "cityscroll.rule_version_diff.v1",
+          "status": "unavailable",
+          "reason_code": "unpaired_versions",
+          "pair": {
+            "basis": "pairing_key",
+            "pairing_key": null,
+            "proposed_version_ids": [
+              "rule-version:rulemaking:dep:water-use:proposed:nyc-rules-dep-water-use-proposed"
+            ],
+            "adopted_version_ids": []
+          },
+          "proposed_version_id": "rule-version:rulemaking:dep:water-use:proposed:nyc-rules-dep-water-use-proposed",
+          "adopted_version_id": null,
+          "source_links": [
+            {
+              "version_id": "rule-version:rulemaking:dep:water-use:proposed:nyc-rules-dep-water-use-proposed",
+              "kind": "proposed",
+              "label": "Proposed source",
+              "href": "https://rules.cityofnewyork.us/rule/water-use/"
+            }
+          ],
+          "changed_region_count": null,
+          "alignment": null,
+          "regions": []
+        },
+        {
+          "schema": "cityscroll.rule_version_diff.v1",
+          "status": "unavailable",
+          "reason_code": "unpaired_versions",
+          "pair": {
+            "basis": "pairing_key",
+            "pairing_key": null,
+            "proposed_version_ids": [
+              "rule-version:rulemaking:dohmh:food-service:proposed:nyc-rules-dohmh-food-service-proposed"
+            ],
+            "adopted_version_ids": []
+          },
+          "proposed_version_id": "rule-version:rulemaking:dohmh:food-service:proposed:nyc-rules-dohmh-food-service-proposed",
+          "adopted_version_id": null,
+          "source_links": [
+            {
+              "version_id": "rule-version:rulemaking:dohmh:food-service:proposed:nyc-rules-dohmh-food-service-proposed",
+              "kind": "proposed",
+              "label": "Proposed source",
+              "href": "https://rules.cityofnewyork.us/rule/food-service/"
+            }
+          ],
+          "changed_region_count": null,
+          "alignment": null,
+          "regions": []
+        },
+        {
+          "schema": "cityscroll.rule_version_diff.v1",
+          "status": "unavailable",
+          "reason_code": "unpaired_versions",
+          "pair": {
+            "basis": "pairing_key",
+            "pairing_key": null,
+            "proposed_version_ids": [
+              "rule-version:rulemaking:dot:bicycle-racks:proposed:nyc-rules-dot-bicycle-racks-proposed"
+            ],
+            "adopted_version_ids": []
+          },
+          "proposed_version_id": "rule-version:rulemaking:dot:bicycle-racks:proposed:nyc-rules-dot-bicycle-racks-proposed",
+          "adopted_version_id": null,
+          "source_links": [
+            {
+              "version_id": "rule-version:rulemaking:dot:bicycle-racks:proposed:nyc-rules-dot-bicycle-racks-proposed",
+              "kind": "proposed",
+              "label": "Proposed source",
+              "href": "https://rules.cityofnewyork.us/rule/city-owned-bicycle-racks/"
+            }
+          ],
+          "changed_region_count": null,
+          "alignment": null,
+          "regions": []
+        },
+        {
+          "schema": "cityscroll.rule_version_diff.v1",
+          "status": "unavailable",
+          "reason_code": "unpaired_versions",
+          "pair": {
+            "basis": "pairing_key",
+            "pairing_key": null,
+            "proposed_version_ids": [
+              "rule-version:rulemaking:parks:park-use:proposed:nyc-rules-parks-no-document"
+            ],
+            "adopted_version_ids": []
+          },
+          "proposed_version_id": "rule-version:rulemaking:parks:park-use:proposed:nyc-rules-parks-no-document",
+          "adopted_version_id": null,
+          "source_links": [
+            {
+              "version_id": "rule-version:rulemaking:parks:park-use:proposed:nyc-rules-parks-no-document",
+              "kind": "proposed",
+              "label": "Proposed source",
+              "href": "https://rules.cityofnewyork.us/rule/park-use/"
+            }
+          ],
+          "changed_region_count": null,
+          "alignment": null,
+          "regions": []
+        },
+        {
+          "schema": "cityscroll.rule_version_diff.v1",
+          "status": "unavailable",
+          "reason_code": "unpaired_versions",
+          "pair": {
+            "basis": "pairing_key",
+            "pairing_key": null,
+            "proposed_version_ids": [],
+            "adopted_version_ids": [
+              "rule-version:rulemaking:dcwp:worker-protection:adopted:nyc-rules-dcwp-worker-protection-adopted"
+            ]
+          },
+          "proposed_version_id": null,
+          "adopted_version_id": "rule-version:rulemaking:dcwp:worker-protection:adopted:nyc-rules-dcwp-worker-protection-adopted",
+          "source_links": [
+            {
+              "version_id": "rule-version:rulemaking:dcwp:worker-protection:adopted:nyc-rules-dcwp-worker-protection-adopted",
+              "kind": "adopted",
+              "label": "Adopted source",
+              "href": "https://rules.cityofnewyork.us/rule/worker-protection/"
+            }
+          ],
+          "changed_region_count": null,
+          "alignment": null,
+          "regions": []
+        },
+        {
+          "schema": "cityscroll.rule_version_diff.v1",
+          "status": "unavailable",
+          "reason_code": "unpaired_versions",
+          "pair": {
+            "basis": "pairing_key",
+            "pairing_key": null,
+            "proposed_version_ids": [],
+            "adopted_version_ids": [
+              "rule-version:rulemaking:unknown:empty:adopted:nyc-rules-empty"
+            ]
+          },
+          "proposed_version_id": null,
+          "adopted_version_id": "rule-version:rulemaking:unknown:empty:adopted:nyc-rules-empty",
+          "source_links": [
+            {
+              "version_id": "rule-version:rulemaking:unknown:empty:adopted:nyc-rules-empty",
+              "kind": "adopted",
+              "label": "Adopted source",
+              "href": "https://rules.cityofnewyork.us/rule/empty/"
+            }
+          ],
+          "changed_region_count": null,
+          "alignment": null,
+          "regions": []
+        },
+        {
+          "schema": "cityscroll.rule_version_diff.v1",
+          "status": "unavailable",
+          "reason_code": "unpaired_versions",
+          "pair": {
+            "basis": "pairing_key",
+            "pairing_key": null,
+            "proposed_version_ids": [],
+            "adopted_version_ids": [
+              "rule-version:rulemaking:tlc:vehicle-license:adopted:nyc-rules-tlc-not-attempted"
+            ]
+          },
+          "proposed_version_id": null,
+          "adopted_version_id": "rule-version:rulemaking:tlc:vehicle-license:adopted:nyc-rules-tlc-not-attempted",
+          "source_links": [
+            {
+              "version_id": "rule-version:rulemaking:tlc:vehicle-license:adopted:nyc-rules-tlc-not-attempted",
+              "kind": "adopted",
+              "label": "Adopted source",
+              "href": "https://rules.cityofnewyork.us/rule/vehicle-license/"
+            }
+          ],
+          "changed_region_count": null,
+          "alignment": null,
+          "regions": []
         }
       ],
       "comment_observations": [],
       "agency_explanations": [],
-      "pairing_issues": [],
+      "pairing_issues": [
+        {
+          "reason_code": "unpaired_versions",
+          "pairing_key": null,
+          "proposed_version_ids": [
+            "rule-version:notice:singleton-external:proposed:city-record-singleton-external"
+          ],
+          "adopted_version_ids": []
+        },
+        {
+          "reason_code": "unpaired_versions",
+          "pairing_key": null,
+          "proposed_version_ids": [
+            "rule-version:rulemaking:dep:water-use:proposed:nyc-rules-dep-water-use-proposed"
+          ],
+          "adopted_version_ids": []
+        },
+        {
+          "reason_code": "unpaired_versions",
+          "pairing_key": null,
+          "proposed_version_ids": [
+            "rule-version:rulemaking:dohmh:food-service:proposed:nyc-rules-dohmh-food-service-proposed"
+          ],
+          "adopted_version_ids": []
+        },
+        {
+          "reason_code": "unpaired_versions",
+          "pairing_key": null,
+          "proposed_version_ids": [
+            "rule-version:rulemaking:dot:bicycle-racks:proposed:nyc-rules-dot-bicycle-racks-proposed"
+          ],
+          "adopted_version_ids": []
+        },
+        {
+          "reason_code": "unpaired_versions",
+          "pairing_key": null,
+          "proposed_version_ids": [
+            "rule-version:rulemaking:parks:park-use:proposed:nyc-rules-parks-no-document"
+          ],
+          "adopted_version_ids": []
+        },
+        {
+          "reason_code": "unpaired_versions",
+          "pairing_key": null,
+          "proposed_version_ids": [],
+          "adopted_version_ids": [
+            "rule-version:rulemaking:dcwp:worker-protection:adopted:nyc-rules-dcwp-worker-protection-adopted"
+          ]
+        },
+        {
+          "reason_code": "unpaired_versions",
+          "pairing_key": null,
+          "proposed_version_ids": [],
+          "adopted_version_ids": [
+            "rule-version:rulemaking:unknown:empty:adopted:nyc-rules-empty"
+          ]
+        },
+        {
+          "reason_code": "unpaired_versions",
+          "pairing_key": null,
+          "proposed_version_ids": [],
+          "adopted_version_ids": [
+            "rule-version:rulemaking:tlc:vehicle-license:adopted:nyc-rules-tlc-not-attempted"
+          ]
+        }
+      ],
       "coverage": {
-        "documents": 2,
-        "proposed_documents": 1,
-        "adopted_documents": 1,
+        "documents": 10,
+        "proposed_documents": 6,
+        "adopted_documents": 4,
         "paired_versions": 1,
-        "acquisition_failures": 0,
-        "exact_citations": 4,
-        "resolvable_targets": 0,
-        "ambiguous_references": 2,
-        "unpaired_versions": 0,
+        "acquisition_failures": 5,
+        "exact_citations": 17,
+        "resolvable_targets": 6,
+        "ambiguous_references": 1,
+        "unpaired_versions": 8,
         "ambiguous_pairings": 0,
         "version_diff": {
-          "pairs_considered": 1,
+          "pairs_considered": 9,
           "usable_version_pairs": 1,
           "text_extraction": {
-            "available_versions": 2,
-            "unavailable_versions": 0,
-            "non_text_failures": 0
+            "available_versions": 5,
+            "unavailable_versions": 5,
+            "non_text_failures": 1
           },
           "section_alignment": {
             "deterministic_pairs": 1,
@@ -402,7 +1612,7 @@
             "rate": 1
           },
           "non_text_failures": 0,
-          "changed_regions": 2,
+          "changed_regions": 4,
           "observed_comments": 0,
           "published_agency_explanations": 0
         }
@@ -411,10 +1621,15 @@
   ],
   "checks": {
     "characterization": {
-      "sample_count": 4,
+      "sample_count": 9,
       "agencies": [
         "Buildings",
+        "Consumer and Worker Protection",
+        "Environmental Protection",
+        "Health",
+        "Parks and Recreation",
         "Sanitation",
+        "Taxi and Limousine Commission",
         "Transportation"
       ],
       "lifecycle_stages": [
@@ -426,36 +1641,52 @@
       "required_fields_present": true
     },
     "rule_documents": {
-      "proposed_documents": 1,
-      "adopted_documents": 1,
+      "bounded_document_denominator": 10,
+      "proposed_documents": 6,
+      "adopted_documents": 4,
+      "cases_with_both_versions": 1,
       "paired_versions": 1,
-      "acquisition_failures": 0
+      "acquisition_failures": 5,
+      "source_not_published": 1,
+      "fetch_not_attempted": 1,
+      "extracted_empty": 1,
+      "scanned_or_non_text": 1
     },
     "legal_citations": {
-      "exact_citation_count": 4,
+      "exact_citation_count": 17,
       "exact_citation_precision": {
-        "numerator": 4,
-        "denominator": 4,
-        "value": 1,
+        "numerator": 7,
+        "denominator": 9,
+        "value": 0.7777777777777778,
         "basis": "source_sample_expected_citation_keys"
       },
-      "resolvable_targets": 0,
-      "ambiguous_references": 2
+      "resolvable_targets": 6,
+      "canonical_resolutions_by_corpus": {
+        "rcny": 4,
+        "nyc-charter": 5,
+        "nyc-admin-code": 4
+      },
+      "ambiguous_references": 1
     },
     "version_pairing": {
       "proposed_adopted_pairs": 1,
       "source_id_pairing_evidence": [
         "shared_source_pairing_key"
       ],
-      "unpairable_or_non_text_cases": 0
+      "pair_rate": {
+        "numerator": 1,
+        "denominator": 4,
+        "value": 0.25
+      },
+      "unpairable_or_non_text_cases": 8
     },
     "version_diff": {
-      "pairs_considered": 1,
+      "pairs_considered": 9,
       "usable_version_pairs": 1,
       "text_extraction": {
-        "available_versions": 2,
-        "unavailable_versions": 0,
-        "non_text_failures": 0
+        "available_versions": 5,
+        "unavailable_versions": 5,
+        "non_text_failures": 1
       },
       "section_alignment": {
         "deterministic_pairs": 1,
@@ -463,7 +1694,7 @@
         "rate": 1
       },
       "non_text_failures": 0,
-      "changed_regions": 2,
+      "changed_regions": 4,
       "observed_comments": 0,
       "published_agency_explanations": 0
     }
