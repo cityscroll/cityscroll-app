@@ -1,0 +1,88 @@
+{
+  "schema": "cityscroll.agents_router_receipt.v1",
+  "card": "cityscroll-repository-control-plane/rcp-02",
+  "inputs": {
+    "main_commit": "2c310bcff9b71c3704493801ef23182375c5357d",
+    "register_revision": "32727924c5f546ce5c41d0f68cb324fde7c7425b",
+    "classification_manifest": "docs/repository-control-plane/classification.v1.json",
+    "semantic_owner_mapping": "docs/repository-control-plane/semantic-owner-mapping.v1.json"
+  },
+  "root_agents": {
+    "grounded_rcp00_before": {
+      "bytes": 321000,
+      "lines": 4621
+    },
+    "implementation_start_before": {
+      "bytes": 322384,
+      "lines": 4641
+    },
+    "after": {
+      "bytes": 6214,
+      "lines": 88
+    },
+    "initial_ceiling_bytes": 12000,
+    "current_ceiling_bytes": 12000
+  },
+  "retained_sections": [
+    "sources of truth",
+    "repository-wide invariants",
+    "editing and verification",
+    "directory guidance",
+    "maintaining this file"
+  ],
+  "removed_or_routed_categories": [
+    "per-card delivery histories",
+    "mutable status and future-work ledgers",
+    "duplicated module and component catalogs",
+    "prose recoverable from code or generated architecture facts"
+  ],
+  "content_rules": [
+    "card-heading",
+    "rollout-history",
+    "mutable-status-ledger",
+    "duplicated-module-catalog"
+  ],
+  "clean_checkout_instruction_findings": {
+    "per_card_ledgers": 0,
+    "mutable_status_catalogs": 0,
+    "duplicated_or_code_recoverable_catalogs": 0
+  },
+  "ratchet_proof": {
+    "initial_ceiling_bytes": 12000,
+    "permitted_downward_fixture_bytes": 11000,
+    "rejected_increase_fixture_bytes": 13000
+  },
+  "directory_guidance_audit": {
+    "tracked_instruction_paths": [
+      "AGENTS.md"
+    ],
+    "retained_local_files": [],
+    "materiality": "No independent subtree-local instruction file exists. CLAUDE.md is a compatibility symlink to the root authority."
+  },
+  "pointer_resolution": {
+    "README.md": "resolved",
+    "ARCHITECTURE.md": "resolved",
+    "docs/architecture.md": "resolved",
+    "docs/adr": "resolved",
+    "docs/module-map.md": "resolved",
+    "site/data/source_contracts.json": "resolved",
+    "docs/data-sources.md": "resolved",
+    "architecture/resident-read-policy.json": "resolved",
+    "architecture/evidence.d/README.md": "resolved",
+    "docs/repository-control-plane/classification.v1.json": "resolved",
+    "docs/repository-control-plane/semantic-owner-mapping.v1.json": "resolved",
+    "test": "resolved",
+    "worker/test": "resolved",
+    "tools/preflight-required-checks.sh": "resolved",
+    "tools/architecture_evidence_shards.mjs": "resolved",
+    "tools/reconcile_architecture.mjs": "resolved",
+    "docs/release/cloudflare-native-builds.md": "resolved"
+  },
+  "architecture_preflight": {
+    "observed_surface_affected": false,
+    "basis": "Instruction and repository-governance paths are outside architecture/observer-canaries.json; the card-owned evidence shard records the governance change.",
+    "card_owned_shard": "architecture/evidence.d/cityscroll-repository-control-plane--rcp-02.json",
+    "generated_aggregate_paths_changed": false
+  },
+  "product_or_served_artifact_changed": false
+}

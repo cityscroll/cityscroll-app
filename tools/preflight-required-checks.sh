@@ -236,6 +236,7 @@ run_and_fail python3 test/standards/genai_disclosure.py
 run_and_fail python3 test/standards/nl_input_clarity.py
 run_and_fail python3 test/standards/demo_links.py
 run_and_fail node tools/check_stale_repo_name.mjs
+run_and_fail node tools/agents_router_guard.mjs --check
 run_and_fail python3 test/functional/a11y_gate_test.py
 run_and_fail python3 test/functional/ci_waits_test.py
 
