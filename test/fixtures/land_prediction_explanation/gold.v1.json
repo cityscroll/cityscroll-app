@@ -1,0 +1,78 @@
+{
+  "schema": "cityscroll.land_prediction_explanation_fixture.v1",
+  "before": {
+    "prediction_id": "landpred:before",
+    "subject_ref": "project:fixture-1",
+    "application_id": "fixture-1",
+    "prediction_as_of": "2024-06-01T00:00:00.000Z",
+    "model_name": "land_use_approval_logistic",
+    "model_version": "2.0.0",
+    "probability": 0.61,
+    "major_contributors": [
+      {
+        "key": "feature:cpc_disposition:value=approved",
+        "feature_key": "cpc_disposition",
+        "value": "approved",
+        "state": "known",
+        "contribution": 0.4,
+        "direction": "toward_approved",
+        "evidence_ids": ["cpc-1"],
+        "evidence": [{"evidence_id":"cpc-1","evidence_type":"official_record","observed_at":"2024-05-10T00:00:00.000Z","effective_at":"2024-05-10T00:00:00.000Z","source":{"url":"/land/fixture-1/#cpc-1"}}]
+      },
+      {
+        "key": "feature:community_board_action:value=favorable",
+        "feature_key": "community_board_action",
+        "value": "favorable",
+        "state": "known",
+        "contribution": 0.1,
+        "direction": "toward_approved",
+        "evidence_ids": ["cb-unresolved"],
+        "evidence": [{"evidence_id":"cb-unresolved","evidence_type":"official_record","observed_at":"2024-04-01T00:00:00.000Z","effective_at":"2024-04-01T00:00:00.000Z","source":{"record_id":"cb-unresolved"}}]
+      }
+    ],
+    "feature_state": {"features":[{"key":"modifications_or_conditions","state":"unknown","value":null}]}
+  },
+  "after": {
+    "prediction_id": "landpred:after",
+    "subject_ref": "project:fixture-1",
+    "application_id": "fixture-1",
+    "prediction_as_of": "2024-07-01T00:00:00.000Z",
+    "model_name": "land_use_approval_logistic",
+    "model_version": "2.0.0",
+    "probability": 0.68,
+    "major_contributors": [
+      {
+        "key": "feature:cpc_disposition:value=approved",
+        "feature_key": "cpc_disposition",
+        "value": "approved",
+        "state": "known",
+        "contribution": 0.5,
+        "direction": "toward_approved",
+        "evidence_ids": ["cpc-2"],
+        "evidence": [{"evidence_id":"cpc-2","evidence_type":"official_record","observed_at":"2024-06-10T00:00:00.000Z","effective_at":"2024-06-10T00:00:00.000Z","source":{"url":"/land/fixture-1/#cpc-2"}}]
+      },
+      {
+        "key": "feature:local_council_member_stance:value=support",
+        "feature_key": "local_council_member_stance",
+        "value": "support",
+        "state": "known",
+        "contribution": 0.2,
+        "direction": "toward_approved",
+        "evidence_ids": ["stance-1"],
+        "evidence": [{"evidence_id":"stance-1","evidence_type":"retained_statement","observed_at":"2024-06-20T00:00:00.000Z","effective_at":"2024-06-20T00:00:00.000Z","source":{"url":"https://example.invalid/stance-1"}}]
+      }
+    ],
+    "feature_state": {"features":[{"key":"modifications_or_conditions","state":"unknown","value":null}]}
+  },
+  "empty": {
+    "prediction_id": "landpred:empty",
+    "subject_ref": "project:fixture-empty",
+    "application_id": "fixture-empty",
+    "prediction_as_of": "2024-06-01T00:00:00.000Z",
+    "model_name": "land_use_approval_logistic",
+    "model_version": "2.0.0",
+    "probability": 0.5,
+    "major_contributors": [],
+    "feature_state": {"features":[]}
+  }
+}

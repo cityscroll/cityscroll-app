@@ -11,6 +11,7 @@ import {
   buildLandPredictionFeatureVector,
   validateLandPredictionFeatureVector,
 } from "./land_prediction_features.mjs";
+import { buildLandPredictionExplanation } from "./land_prediction_explanation.mjs";
 
 export const LAND_PREDICTION_PREDICTOR_SCHEMA =
   "cityscroll.land_prediction_predictor.v2";
@@ -490,7 +491,7 @@ export function predictLandPrediction(model, input, options = {}) {
   }
   const subjectRef = String(options.subject_ref || `project:${vector.application_id}`).trim();
   const majorContributors = sortContributors(contributions).slice(0, maxContributors);
-  return {
+  const prediction = {
     schema: LAND_PREDICTION_PREDICTOR_SCHEMA,
     schema_version: LAND_PREDICTION_PREDICTOR_VERSION,
     prediction_id: `landpred:${sha256Hex(`${subjectRef}|${vector.prediction_as_of}|${model.model_name}|${model.model_version}|${model.training.training_fingerprint}`).slice(0, 24)}`,
@@ -509,7 +510,7 @@ export function predictLandPrediction(model, input, options = {}) {
     promotion_status: model.promotion_status,
     feature_state: featureState(vector),
     major_contributors: majorContributors,
-    explanation: {
+    model_explanation: {
       intercept: model.intercept,
       log_odds: round(logOdds),
       active_feature_count: active.size,
@@ -522,6 +523,10 @@ export function predictLandPrediction(model, input, options = {}) {
       used: false,
       reason: null,
     },
+  };
+  return {
+    ...prediction,
+    explanation: buildLandPredictionExplanation(prediction),
   };
 }
 
