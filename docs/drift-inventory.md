@@ -80,7 +80,7 @@ The focused fixture pass found one permalink defect and no currency or feed/card
   items below) are covered by a second, informational layer — see "Layer 2: local drift-synthesis
   runner" below.
 
-## Layer 2: local drift-synthesis runner (pending design, not automatically invoked)
+## Local drift-synthesis runner
 
 `tools/drift_synthesis.mjs` reads this document and a PR's diff, asks Claude Code to review the
 diff for cross-implementation drift the fixture tests above can't catch, and posts one comment on
@@ -98,8 +98,6 @@ operator already uses to notice new PRs. Proven against a real PR while building
 against this PR's own diff caught the `awardContext()` gap in row #1 above that the first
 fixture-test pass had missed.
 
-**What's pending:** wiring an actual per-PR trigger for this script. The script itself and its
-prompt are complete and working; deciding what invokes it automatically (and whether its output
-should ever be promoted toward a required, blocking check, the same way a deterministic
-`test/contract/` failure already is) is a separate, later decision — not something this change
-makes on its own.
+The runner is intentionally manual and informational in the current commit. Its trigger and
+enforcement status are not decided by this document; the RCP-01 receipt records that no unique
+semantic owner was established during migration.

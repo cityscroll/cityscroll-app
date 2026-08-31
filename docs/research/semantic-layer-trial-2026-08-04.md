@@ -17,7 +17,7 @@ candidate survived review, but represented 1 of 10 residual records, below the
 existing 30% usefulness gate. Exact body and date filters already isolated that
 pair, so this trial did not demonstrate that embeddings caused join uplift.
 
-The near-term opportunity is ranked lexical retrieval. BM25 improved the fixed
+The trial's strongest measured baseline was ranked lexical retrieval. BM25 improved the fixed
 query set from 3 to 28 queries with a relevant result in the top five without a
 model or vector index. The existing precomputed related-reading path should stay
 in place. A learned-layer trial becomes worth repeating only when a larger
@@ -75,7 +75,7 @@ not measure a reranker. [Sentence Transformers retrieve-and-rerank guide](https:
 
 | Option | Appropriate use | Added mechanics | Trial finding |
 |---|---|---|---|
-| BM25 or another ranked lexical index | Reader search over the existing corpus | Tokenization, ranking, refresh | Best next step; 28/30 queries had a relevant top-five result |
+| BM25 or another ranked lexical index | Reader search over the existing corpus | Tokenization, ranking, refresh | Trial result: 28/30 queries had a relevant top-five result; not a current implementation directive |
 | `sqlite-vec` in an offline build | Bounded experiments and review queues | Local extension, model cache, rebuild receipts | Sufficient for the trial; it keeps candidate generation off the request path |
 | Cloudflare Vectorize with Workers AI | Arbitrary semantic queries at runtime, after measured adoption evidence | Remote index, embedding call, bindings, versioned refresh and failure behavior | Platform-native fit for the current Worker stack, but unneeded for the observed uplift |
 | No vector database | Static related-reading edges | Rebuild the committed artifact | Already fits the T3 path and remains the lowest-complexity choice |

@@ -63,12 +63,11 @@ The repository is a modular monolith with separate browser, edge, and host-data 
 - **Shared pure seams.** Browser and Worker implementations share small pure adapters for scopes, geography, process stages, relation policy, and read-model shapes. Tests protect parity at those seams instead of relying on one large runtime module.
 - **Architecture as code.** This page is the human narrative; [`docs/architecture.md`](docs/architecture.md) is the canonical detailed reference for invariants. ADRs, source contracts, builder checks, and generated facts remain the machine-near records and should link to the canonical reference rather than duplicate it.
 
-## Proposed invariant: resident-surface rendering standard
+## Resident-surface rendering standard
 
-**Status: PROPOSED — rationale-to-confirm by the site owner.** This standard protects plain-language
-and cognitive accessibility for residents. It describes the intended public rendering boundary;
-the implementation and its machine check are present, while the broader rationale remains open for
-confirmation.
+This enforced standard protects plain-language and cognitive accessibility for residents. Its
+canonical decision owner is recorded in the
+[RCP-01 semantic-owner receipt](docs/repository-control-plane/semantic-owner-mapping.v1.json).
 
 Resident-facing surfaces must not expose implementation-facing snake_case schema, column, or method
 vocabulary, `Unavailable` debug rows, or reconciliation disclaimers in their default content.
@@ -85,15 +84,15 @@ resident renderers must keep this invariant and its full built-site sweep green.
 
 ## Important decisions
 
-## Proposed rationale: home cold-load wire budget
+## Home cold-load wire budget
 
-**Status: PROPOSED — rationale-to-confirm by the site owner.** This section records the
-reasoning behind the current deliberate ceiling; it is not a settled product or performance
-policy until confirmed.
+This section records the current measured ceiling and its operational tradeoff. Its canonical
+decision owner is recorded in the
+[RCP-01 semantic-owner receipt](docs/repository-control-plane/semantic-owner-mapping.v1.json).
 
 The `home.cold` `wireBytes` budget protects the weight of the first uncached visit to the home
 surface, including the resources needed before the browser has a warm cache. Audience impact is
-an assumption to confirm: this budget is intended to protect NYC residents opening the site on
+the operating assumption is that this budget protects NYC residents opening the site on
 slow networks, lower-end mobile devices, or data-capped connections. The measurement is a
 compressed-byte guard for page weight, not a claim about any particular resident's connection or
 device.
@@ -101,9 +100,9 @@ device.
 A hard number and ratchet exist to make silent page-weight creep visible. Every new home-surface
 dependency or user-facing card consumes part of a shared allowance, so adding it should be a
 conscious trade rather than the default outcome of an otherwise successful feature merge. The
-proposed `460000`-byte ceiling is deliberately above the current main measurement of about
-`447729` bytes, leaving `12271` bytes of near-term headroom. Those values and the audience
-assumption remain proposed until the site owner confirms them.
+`460000`-byte ceiling is deliberately above the recorded measurement of about
+`447729` bytes, leaving `12271` bytes of headroom at that observation. Those values and the
+audience assumption are retained as the evidence basis for the current guard.
 
 Loosening the ceiling has a real cost: a higher ceiling can make first paint slower on weak
 connections and transfers more data on each uncached visit. Holding it too tightly has a

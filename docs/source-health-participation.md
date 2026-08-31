@@ -28,7 +28,7 @@ delivery must be present:
 | `code_references` | At least one in-repo path that still contains the cited token. |
 
 Socrata rows still carry a top-level `max_stale_days` for the live probe in
-`tools/verify_source_contracts.mjs`. That probe window should match
+`tools/verify_source_contracts.mjs`. That probe window matches
 `freshness_contract.max_stale_days` when both apply. Optional
 `freshness_policy` records how a measured limit was derived; `limit_days` must
 equal the top-level Socrata window.
@@ -95,10 +95,11 @@ the receipt names the contract another honest way.
 
 The resident `/data-health/` page lists every source CityScroll serves or
 copies. A served source is never omitted because clocks are still UNKNOWN.
-Follow-up: remaining runtime caches (PASSPort D1 ingest meta, Rules RSS,
-Legistar, live SODA lenses) still need dated receipts before their three
-clocks fill like City Record. Until then the page keeps those cards with
-honest UNKNOWN clocks. Do not invent `last_refresh` or publisher dates.
+Runtime caches without dated receipts (including PASSPort D1 ingest metadata,
+Rules RSS, Legistar, and live SODA lenses) retain honest UNKNOWN clocks. This
+is the current projection contract, not a follow-up queue; do not invent
+`last_refresh` or publisher dates. Ownership disposition is recorded in the
+[RCP-01 receipt](repository-control-plane/semantic-owner-mapping.v1.json).
 
 The observation file is the private current-state read model. It is excluded
 from Pages in `site/_config.yml`. Rebuild it after contract or receipt changes;

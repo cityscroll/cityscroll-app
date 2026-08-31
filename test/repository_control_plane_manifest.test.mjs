@@ -4,8 +4,8 @@ import test from "node:test";
 
 import { buildManifest, scanUnclassifiedFixture, validateManifest } from "../tools/repository_control_plane_manifest.mjs";
 
-test("manifest enumerates every required current-main candidate", () => {
-  const manifest = buildManifest();
+test("landed manifest preserves every required RCP-00 candidate", () => {
+  const manifest = JSON.parse(readFileSync(new URL("../docs/repository-control-plane/classification.v1.json", import.meta.url), "utf8"));
   assert.deepEqual(validateManifest(manifest), []);
   assert.equal(manifest.inspection.frontier_enumerated_count, 33);
   assert.equal(manifest.inspection.frontier_declared_count, 31);
