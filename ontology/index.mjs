@@ -46,6 +46,15 @@ export {
 } from "./actionability_sample.mjs";
 
 export {
+  ACTION_PATH_COVERAGE_SCHEMA,
+  ACTION_PATH_COVERAGE_CLASSIFICATIONS,
+  classifyActionPathCoverageRow,
+  measureActionPathCoverage,
+  actionPathCoverageFindings,
+  assertActionPathCoverageContract,
+} from "./action_path_coverage.mjs";
+
+export {
   validateCrossSpineBundle,
   CROSS_SPINE_SCHEMA,
 } from "./cross_spine.mjs";

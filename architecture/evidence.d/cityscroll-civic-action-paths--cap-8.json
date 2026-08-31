@@ -1,0 +1,21 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-civic-action-paths/cap-8",
+  "status": "implemented",
+  "fingerprint": "cap-8-action-path-coverage.v1",
+  "updated_at": "2026-08-31T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "action-path-coverage",
+      "path": "docs/evidence/civic-action-paths/action-path-coverage.json"
+    },
+    {
+      "id": "action-path-coverage-report",
+      "path": "docs/evidence/civic-action-paths/action-path-coverage.md"
+    },
+    {
+      "id": "civic-action-paths-coverage-boundary",
+      "path": "docs/civic-action-paths.md"
+    }
+  ]
+}

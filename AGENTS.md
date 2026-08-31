@@ -52,6 +52,17 @@
   with `node tools/build_action_path_generalization_audit.mjs`; `--check` verifies the committed
   receipt. Focused proof is `test/action_path_generalization_audit.test.mjs`.
 
+- **Action Path coverage (CAP-8):** `ontology/action_path_coverage.mjs` is the bounded
+  action-path evaluation dimension over Action Path v0, exact continuation replay, and
+  source-qualified Community Board participation. It reports measured grounded-target,
+  grounded-continuation, exact-replay, current-action, and current-application-CTA ratios,
+  plus diagnostic classes `no_action`, `action_only`, `target_unknown`,
+  `continuation_unknown`, `continuation_not_replayable`, `grounded_path`, and
+  `stale_opportunity`. Legitimate absence stays valid; unknown never becomes zero; a stale
+  source never becomes a current opportunity; cross-board inference stays 0. Rebuild with
+  `node tools/build_action_path_coverage.mjs`; `--check` verifies the committed receipt.
+  Focused proof is `test/action_path_coverage.test.mjs`.
+
 - **Council hearing matter continuation:** `site/council_hearing_matter_continuation.mjs` projects
   only the materialized `exact_date_body_tokens` City Record → Council join; it preserves every
   exact matter, keeps multiple matters as choices, and omits continuation for unmatched/no-matter
