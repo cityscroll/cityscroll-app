@@ -847,6 +847,48 @@ select {
   background: var(--color-surface);
 }
 
+.rulemaking-document .rule-exception-modes {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.rulemaking-document .rule-exception-modes h2,
+.rulemaking-document .rule-exception-assertion h3,
+.rulemaking-document .rule-exception-ordinary h3 {
+  margin: 0;
+}
+
+.rulemaking-document .rule-exception-lede,
+.rulemaking-document .rule-exception-date,
+.rulemaking-document .rule-exception-source,
+.rulemaking-document .rule-exception-ordinary p {
+  margin: 0;
+  max-width: 65ch;
+  line-height: 1.55;
+}
+
+.rulemaking-document .rule-exception-assertion,
+.rulemaking-document .rule-exception-ordinary {
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+}
+
+.rulemaking-document .rule-exception-passage {
+  margin: 0;
+  padding-inline-start: var(--space-3);
+  border-inline-start: 3px solid var(--color-border);
+  line-height: 1.5;
+}
+
+.rulemaking-document .rule-exception-ordinary ul {
+  margin: 0;
+  padding-inline-start: 1.4rem;
+}
+
 .rule-petition-handoff h2 {
   margin-block: 0 var(--space-3);
   font-size: clamp(1.25rem, 2.4vw, 1.65rem);

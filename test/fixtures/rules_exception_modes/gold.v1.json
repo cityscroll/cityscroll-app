@@ -1,0 +1,328 @@
+{
+  "schema": "cityscroll.rules_exception_modes_gold.v1",
+  "characterization_completed_at": "2026-08-31T00:00:00Z",
+  "cases": [
+    {
+      "id": "confirmed-emergency",
+      "rulemaking_id": "rulemaking:dohmh:emergency-lead",
+      "documents": [
+        {
+          "source_id": "nyc_rules:dohmh:emergency-lead:finding",
+          "source_system": "nyc_rules",
+          "source_url": "https://rules.cityofnewyork.us/rule/emergency-lead/",
+          "source_label": "DOHMH emergency rule",
+          "source_vintage": "2026-05",
+          "published_at": "2026-05-03",
+          "title": "Emergency Rule Relating to Lead Paint",
+          "text": "The Department finds that an imminent threat to public health requires adoption of this emergency rule. This emergency rule shall take effect immediately on May 3, 2026. This emergency rule expires on July 2, 2026 unless qualifying continuation procedures occur."
+        }
+      ],
+      "events": [],
+      "expected": {
+        "procedure_mode": "emergency",
+        "emergency_finding": "established",
+        "emergency_effective_date": "established",
+        "emergency_expiration": "established",
+        "effective_date": "2026-05-03",
+        "expiration_date": "2026-07-02",
+        "effective_precision": "day"
+      }
+    },
+    {
+      "id": "immediate-effectiveness",
+      "rulemaking_id": "rulemaking:fdny:emergency-immediate",
+      "documents": [
+        {
+          "source_id": "nyc_rules:fdny:emergency-immediate",
+          "source_system": "nyc_rules",
+          "source_url": "https://rules.cityofnewyork.us/rule/emergency-immediate/",
+          "source_label": "FDNY emergency rule",
+          "source_vintage": "2026-04",
+          "published_at": "2026-04-01",
+          "title": "Emergency Rule Relating to Fire Safety",
+          "text": "The Department finds that an imminent threat of fire requires this emergency rule. This emergency rule shall take effect immediately."
+        }
+      ],
+      "events": [],
+      "expected": {
+        "procedure_mode": "emergency",
+        "emergency_finding": "established",
+        "emergency_effective_date": "established",
+        "effective_precision": "immediate",
+        "emergency_expiration": "unknown"
+      }
+    },
+    {
+      "id": "expiry",
+      "rulemaking_id": "rulemaking:dep:emergency-expiry",
+      "documents": [
+        {
+          "source_id": "nyc_rules:dep:emergency-expiry",
+          "source_system": "nyc_rules",
+          "source_url": "https://rules.cityofnewyork.us/rule/emergency-expiry/",
+          "source_label": "DEP emergency rule",
+          "source_vintage": "2026-03",
+          "published_at": "2026-03-01",
+          "title": "Emergency Rule Relating to Water Supply",
+          "text": "The Department finds that an imminent threat to the public water supply requires this emergency rule. Temporary authority ends July 2, 2026."
+        }
+      ],
+      "events": [],
+      "expected": {
+        "procedure_mode": "emergency",
+        "emergency_expiration": "established",
+        "expiration_date": "2026-07-02",
+        "emergency_extension": "unknown"
+      }
+    },
+    {
+      "id": "qualifying-extension",
+      "rulemaking_id": "rulemaking:dohmh:emergency-extension",
+      "documents": [
+        {
+          "source_id": "nyc_rules:dohmh:emergency-extension",
+          "source_system": "nyc_rules",
+          "source_url": "https://rules.cityofnewyork.us/rule/emergency-extension/",
+          "source_label": "DOHMH emergency continuation",
+          "source_vintage": "2026-07",
+          "published_at": "2026-07-01",
+          "title": "Emergency Rule Relating to Lead Paint, continuation",
+          "text": "The Department finds that an imminent threat to public health continues. The emergency rule is extended for an additional 60 days through September 1, 2026 as a qualifying continuation while notice-and-comment proceeds."
+        }
+      ],
+      "events": [],
+      "expected": {
+        "procedure_mode": "emergency",
+        "emergency_extension": "established",
+        "extension_date": "2026-09-01"
+      }
+    },
+    {
+      "id": "ordinary-plus-exception-branch",
+      "rulemaking_id": "rulemaking:dot:emergency-then-ordinary",
+      "documents": [
+        {
+          "source_id": "nyc_rules:dot:emergency-then-ordinary",
+          "source_system": "nyc_rules",
+          "source_url": "https://rules.cityofnewyork.us/rule/emergency-then-ordinary/",
+          "source_label": "DOT emergency and proposed rule",
+          "source_vintage": "2026-05",
+          "published_at": "2026-05-03",
+          "title": "Emergency Rule and Notice of Proposed Rule Relating to Street Safety",
+          "text": "The Department finds that an imminent threat to public safety requires this emergency rule. This emergency rule shall take effect immediately on May 3, 2026. This emergency rule expires on July 2, 2026 unless qualifying continuation procedures occur. A proposed rule is also published so that ordinary notice-and-comment may proceed."
+        }
+      ],
+      "events": [
+        {
+          "event_type": "proposal_published",
+          "valid_at": "2026-05-28",
+          "source_url": "https://rules.cityofnewyork.us/rule/emergency-then-ordinary/",
+          "status": "occurred"
+        },
+        {
+          "event_type": "comment_close",
+          "valid_at": "2026-06-30",
+          "source_url": "https://rules.cityofnewyork.us/rule/emergency-then-ordinary/",
+          "status": "scheduled"
+        }
+      ],
+      "expected": {
+        "procedure_mode": "emergency",
+        "emergency_finding": "established",
+        "emergency_effective_date": "established",
+        "emergency_expiration": "established",
+        "ordinary_event_types": ["proposal_published", "comment_close"],
+        "fabricated_events": []
+      }
+    },
+    {
+      "id": "explicit-unanticipated",
+      "rulemaking_id": "rulemaking:dcwp:unanticipated",
+      "documents": [
+        {
+          "source_id": "nyc_rules:dcwp:unanticipated",
+          "source_system": "nyc_rules",
+          "source_url": "https://rules.cityofnewyork.us/rule/unanticipated/",
+          "source_label": "DCWP proposed rule",
+          "source_vintage": "2026-02",
+          "published_at": "2026-02-10",
+          "title": "Proposed Rule Relating to Consumer Protection",
+          "text": "This rulemaking was not anticipated in the agency's regulatory agenda. The proposed rule would amend existing consumer protections."
+        }
+      ],
+      "events": [
+        {
+          "event_type": "proposal_published",
+          "valid_at": "2026-02-10",
+          "status": "occurred"
+        }
+      ],
+      "expected": {
+        "procedure_mode": "standard",
+        "unanticipated_in_agenda": "established"
+      }
+    },
+    {
+      "id": "absent-unanticipated",
+      "rulemaking_id": "rulemaking:dot:bicycle-racks",
+      "documents": [
+        {
+          "source_id": "nyc_rules:dot:bicycle-racks:proposed",
+          "source_system": "nyc_rules",
+          "source_url": "https://rules.cityofnewyork.us/rule/city-owned-bicycle-racks/",
+          "source_label": "DOT proposed rule document",
+          "source_vintage": "2026-03",
+          "published_at": "2026-03-25",
+          "title": "DOT Proposed Rules Relating to City-Owned Bicycle Racks",
+          "text": "Authority: pursuant to Section 2903(a) of the New York City Charter. The proposed rule amends 34 RCNY § 4-12(p)."
+        }
+      ],
+      "events": [
+        {
+          "event_type": "proposal_published",
+          "valid_at": "2026-03-25",
+          "status": "occurred"
+        }
+      ],
+      "expected": {
+        "procedure_mode": "standard",
+        "unanticipated_in_agenda": "absent",
+        "emergency_finding": "absent"
+      }
+    },
+    {
+      "id": "hearing-waived",
+      "rulemaking_id": "rulemaking:dob:hearing-waived",
+      "documents": [
+        {
+          "source_id": "nyc_rules:dob:hearing-waived",
+          "source_system": "nyc_rules",
+          "source_url": "https://rules.cityofnewyork.us/rule/hearing-waived/",
+          "source_label": "DOB rule",
+          "source_vintage": "2026-01",
+          "published_at": "2026-01-15",
+          "title": "Rule Relating to Incomplete Inspections",
+          "text": "The department hereby waives the public hearing after finding that a public hearing would serve no public purpose."
+        }
+      ],
+      "events": [
+        {
+          "event_type": "proposal_published",
+          "valid_at": "2026-01-15",
+          "status": "occurred"
+        }
+      ],
+      "expected": {
+        "procedure_mode": "standard",
+        "hearing_waived": "established",
+        "public_purpose": "established"
+      }
+    },
+    {
+      "id": "public-purpose",
+      "rulemaking_id": "rulemaking:dcwp:public-purpose",
+      "documents": [
+        {
+          "source_id": "nyc_rules:dcwp:public-purpose",
+          "source_system": "nyc_rules",
+          "source_url": "https://rules.cityofnewyork.us/rule/public-purpose/",
+          "source_label": "DCWP technical amendment",
+          "source_vintage": "2026-06",
+          "published_at": "2026-06-01",
+          "title": "Technical Amendment",
+          "text": "The department finds that a public hearing would serve no public purpose."
+        }
+      ],
+      "events": [],
+      "expected": {
+        "procedure_mode": "standard",
+        "public_purpose": "established",
+        "hearing_waived": "absent"
+      }
+    },
+    {
+      "id": "conflicting-dates",
+      "rulemaking_id": "rulemaking:dohmh:date-conflict",
+      "documents": [
+        {
+          "source_id": "city_record:20260503001",
+          "source_system": "city_record",
+          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260503001",
+          "source_label": "City Record emergency notice",
+          "source_vintage": "2026-05",
+          "published_at": "2026-05-03",
+          "request_id": "20260503001",
+          "title": "Emergency Rule Relating to Lead Paint",
+          "text": "The Department finds that an imminent threat to public health requires this emergency rule. This emergency rule expires on July 2, 2026."
+        },
+        {
+          "source_id": "nyc_rules:dohmh:date-conflict",
+          "source_system": "nyc_rules",
+          "source_url": "https://rules.cityofnewyork.us/rule/date-conflict/",
+          "source_label": "NYC Rules emergency page",
+          "source_vintage": "2026-05",
+          "published_at": "2026-05-04",
+          "title": "Emergency Rule Relating to Lead Paint",
+          "text": "The Department finds that an imminent threat to public health requires this emergency rule. This emergency rule expires on August 1, 2026."
+        }
+      ],
+      "events": [],
+      "expected": {
+        "procedure_mode": "emergency",
+        "emergency_expiration": "conflict",
+        "expiration_values": ["2026-07-02", "2026-08-01"]
+      }
+    },
+    {
+      "id": "weak-missing-passage",
+      "rulemaking_id": "rulemaking:parks:weak-emergency",
+      "documents": [
+        {
+          "source_id": "nyc_rules:parks:weak-emergency",
+          "source_system": "nyc_rules",
+          "source_url": "https://rules.cityofnewyork.us/rule/weak-emergency/",
+          "source_label": "Parks proposed rule",
+          "source_vintage": "2026-04",
+          "published_at": "2026-04-12",
+          "title": "Emergency Rule Relating to Park Hours",
+          "text": "The agency may proceed on an emergency basis if needed. This proposal would change park hours."
+        }
+      ],
+      "events": [],
+      "expected": {
+        "procedure_mode": "standard",
+        "emergency_finding": "unsupported"
+      }
+    },
+    {
+      "id": "unsupported-candidate",
+      "rulemaking_id": "rulemaking:dcwp:unsupported",
+      "documents": [
+        {
+          "source_id": "nyc_rules:dcwp:unsupported",
+          "source_system": "nyc_rules",
+          "source_url": "https://rules.cityofnewyork.us/rule/unsupported/",
+          "source_label": "DCWP notice",
+          "source_vintage": "2026-08",
+          "published_at": "2026-08-01",
+          "title": "Notice of Opportunity to Comment",
+          "text": "Comments are invited. A hearing is scheduled. No exception procedure is described."
+        }
+      ],
+      "events": [
+        {
+          "event_type": "public_hearing",
+          "valid_at": "2026-08-20",
+          "status": "scheduled"
+        }
+      ],
+      "expected": {
+        "procedure_mode": "standard",
+        "emergency_finding": "absent",
+        "hearing_waived": "absent",
+        "unanticipated_in_agenda": "absent",
+        "public_purpose": "absent"
+      }
+    }
+  ]
+}
