@@ -18,6 +18,14 @@ test("compileSub_d1 returns null for land", () => {
   assert.equal(compileSub_d1({ lens: "land", filter: { keywords: ["rezoning"] } }, "2026-07-10"), null);
 });
 
+test("legal_code provision watches stay off the City Record D1 mirror", () => {
+  assert.ok(OFF_MIRROR_LENSES.has("legal_code"));
+  assert.equal(compileSub_d1({
+    lens: "legal_code",
+    filter: { provision_id: "nyc-administrative-code:16-120" },
+  }, "2026-07-10"), null);
+});
+
 // ---- money lens --------------------------------------------------------
 
 test("money/minAmount → Award notice type, minAmount forwarded, start_date order for digest parity", () => {

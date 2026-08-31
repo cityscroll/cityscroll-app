@@ -28,7 +28,7 @@ import { appendWatchLog, watchLabel } from "./lib/watchlog.mjs";
 
 const SUBSCRIBABLE = new Set([
   "money", "people", "land", "property", "rules", "meetings", "district", "entity", "award",
-  "mandates", "obligations",
+  "mandates", "obligations", "legal_code",
 ]);
 const UNSUBSCRIBE_TTL_SECONDS = 60 * 24 * 3600;
 const MAX_SUB_PER_IP_DAY = 20;
@@ -68,10 +68,14 @@ export async function handleSubscribe(req, env) {
   if (await overLimit(env, ip, email)) return reply(req, { ok: false, reason: "rate-limited" }, 429, cors);
 
   const lang = typeof body.lang === "string" ? body.lang : "en";
+  const filter = sanitize(lens, body.filter);
+  if (lens === "legal_code" && !filter.provision_id) {
+    return reply(req, { ok: false, reason: "unsupported-scope" }, 400, cors);
+  }
   const sub = buildSubscription({
     email,
     lens,
-    filter: sanitize(lens, body.filter),
+    filter,
     channel: "email",
     freq: body.freq,
     lang,
@@ -197,6 +201,7 @@ function reply(req, obj, status, cors) {
     "topic-required": ["Choose a topic", "Return to Following, preview a topic, and submit the watch when the sentence looks right."],
     "bad-intent": ["Check the form", "That signup source is not recognized."],
     "bad-lens": ["Check the saved scope", "That topic cannot be followed. Return to Following and choose another topic."],
+    "unsupported-scope": ["Check the saved scope", "That Administrative Code provision cannot be followed exactly. Return to the provision page and try again."],
     "channel-unsupported": ["Email only", "CityScroll currently sends watches by email."],
     "rate-limited": ["Try again tomorrow", "Too many signup requests were made for this address or network."],
     "send-failed": obj.subscribed

@@ -336,6 +336,16 @@ test("generic geography keys round-trip through Near You and watches without cha
   assert.equal(watch.filter.communityDistrict, "Q04");
 });
 
+test("exact Administrative Code provision watch round-trips through scope", () => {
+  const watch = {
+    lens: "legal_code",
+    filter: { provision_id: "nyc-administrative-code:16-120" },
+  };
+  const scope = scopeFromWatch(watch);
+  assert.equal(scope.facets.values.provision_id, "nyc-administrative-code:16-120");
+  assert.deepEqual(watchFromScope(scope, { lens: "legal_code" }), watch);
+});
+
 test("exact mandate_id free-watch filter round-trips through scope", () => {
   const watch = {
     lens: "mandates",

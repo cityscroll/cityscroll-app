@@ -26,6 +26,7 @@ test("reviewed lenses fail closed instead of remapping unknown values to Contrac
   assert.equal(reviewedFollowingLens("meetings").lens, "meetings");
   assert.equal(reviewedFollowingLens("obligations").lens, "mandates");
   assert.equal(reviewedFollowingLens("award").lens, "money");
+  assert.equal(reviewedFollowingLens("legal_code").lens, "legal_code");
   assert.equal(reviewedFollowingLens("not-a-lens").status, "unrecognized_scope");
   assert.equal(reviewedFollowingLens("").status, "missing_scope");
 });

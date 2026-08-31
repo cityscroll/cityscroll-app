@@ -14,6 +14,7 @@ const LENS_LABEL = {
   district: "City Council District weekly",
   mandates: "Mandates",
   obligations: "Mandates",
+  legal_code: "Administrative Code provisions",
   entity: "Agency or vendor",
 };
 const usd = (n) => "$" + Number(n).toLocaleString("en-US");
@@ -40,6 +41,10 @@ export function describeFilter(lens, filter) {
   }
   if (lens === "district") {
     return `City Council District ${f.councilDistrict || "?"} weekly digest`;
+  }
+  if (lens === "legal_code") {
+    const citation = String(f.provision_id || "").replace(/^nyc-administrative-code:/i, "§ ");
+    return `Administrative Code ${citation || "provision"} — exact provision changes`;
   }
   if (lens === "mandates" || lens === "obligations") {
     const who = f.agency || f.agency_id || "?";

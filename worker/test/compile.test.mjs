@@ -145,6 +145,21 @@ test("an un-offered lens compiles to null (cron skips it)", () => {
   assert.equal(compileSub({ lens: "nonsense", filter: {} }, "2026-06-30"), null);
 });
 
+test("legal_code compiles an exact provision replay and rejects broadening extras", () => {
+  const q = compileSub({
+    lens: "legal_code",
+    filter: { provision_id: "nyc-administrative-code:16-120" },
+  }, "2026-11-01");
+  assert.equal(q.kind, "legal_code");
+  assert.equal(q.idField, "alert_id");
+  assert.match(q.url, /code_provision_watch_events\.json/);
+  assert.equal(compileSub({ lens: "legal_code", filter: {} }, "2026-11-01"), null);
+  assert.equal(compileSub({
+    lens: "legal_code",
+    filter: { provision_id: "nyc-administrative-code:16-120", keywords: ["housing"] },
+  }, "2026-11-01"), null);
+});
+
 test("exam interest-area watch replays the staffing artifact and keys NOE-posted transitions", () => {
   const q=compileSub({lens:"people",filter:{view:"guide",interestArea:"public-safety"}},"2026-08-03");
   assert.equal(q.kind,"exam");
