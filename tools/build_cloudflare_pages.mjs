@@ -57,6 +57,7 @@ runNode(sourceDir, "no_live_external_reads.mjs", ["--check"]);
 runNode(sourceDir, "build_geocoder_address_index.mjs", ["--check"]);
 runNode(sourceDir, "build_bbl_mappluto_centroids.mjs", ["--check"]);
 runNode(sourceDir, "build_land_project_map_points.mjs", ["--check"]);
+runNode(sourceDir, "build_land_authority_summary.mjs", ["--check"]);
 
 // Rebuild the shared freshness seam before the desk graph. The external
 // scheduler state directory is optional in local/Pages builds; when absent the

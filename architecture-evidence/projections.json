@@ -27,6 +27,30 @@
       ]
     },
     {
+      "id": "land-authority-summary",
+      "path": "site/data/land_authority_summary.json",
+      "cards": [
+        {
+          "id": "cityscroll-land-decision-path/ldp-05-authority-summary-materializer",
+          "status": "implemented",
+          "source_fingerprint": "ldp-05-authority-summary-materializer.v1",
+          "source_updated_at": "2026-08-30T00:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "id": "land-authority-summary-receipt",
+      "path": "site/data/land_authority_summary_receipt.json",
+      "cards": [
+        {
+          "id": "cityscroll-land-decision-path/ldp-05-authority-summary-materializer",
+          "status": "implemented",
+          "source_fingerprint": "ldp-05-authority-summary-materializer.v1",
+          "source_updated_at": "2026-08-30T00:00:00.000Z"
+        }
+      ]
+    },
+    {
       "id": "land-project-map-points",
       "path": "site/data/land_project_map_points.json",
       "cards": [
