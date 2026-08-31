@@ -1,0 +1,13 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "fixture-stream/card-bravo",
+  "status": "implemented",
+  "fingerprint": "card-bravo.v1",
+  "updated_at": "2026-08-30T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "bravo-surface",
+      "path": "site/data/bravo.json"
+    }
+  ]
+}

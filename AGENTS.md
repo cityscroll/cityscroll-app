@@ -210,7 +210,10 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   compares a source card inventory with declared projection paths by stable card id.
   Missing, omitted, stale, mismatched, or malformed inventories fail closed and name the
   card plus the affected projection; a complete check does not rewrite card status.
-  Sibling projections stay represented when one projection is incomplete. Verify with
+  Sibling projections stay represented when one projection is incomplete. Source-owned
+  entries live in `architecture/evidence.d/`; `tools/architecture_evidence_shards.mjs`
+  aggregates them into `architecture-evidence/` compatibility inventories. Verify with
+  `node tools/architecture_evidence_shards.mjs --check`,
   `node tools/check_card_reconciliation.mjs --check` and
   `test/card_reconciliation_guard.test.mjs`. Keep this guard separate from generation-output
   and freshness checks.

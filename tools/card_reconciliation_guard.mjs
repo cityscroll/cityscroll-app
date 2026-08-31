@@ -90,11 +90,18 @@ function indexRows(rows, missingIdFinding, duplicateFinding) {
   return { byId, findings, issues };
 }
 
+function inventoryMembership(projections) {
+  const value = valueFrom(projections, ["membership", "card_membership"]);
+  if (value === "declared") return "declared";
+  return "complete";
+}
+
 function declaredProjections({ generatedBoard, projections, projectionPath } = {}) {
   if (projections !== undefined && projections !== null) {
     const rows = rowsFrom(projections, ["projections", "boards", "entries"]);
     if (!rows) return { error: "projection inventory is malformed" };
     return {
+      membership: inventoryMembership(projections),
       projections: rows.map((row, index) => {
         const path = valueFrom(row, ["path", "projection_path", "id", "name"]) || `projection-${index + 1}`;
         const id = valueFrom(row, ["id", "name"]) || path;
@@ -112,7 +119,7 @@ function declaredProjections({ generatedBoard, projections, projectionPath } = {
   return { error: "generated projection inventory is missing" };
 }
 
-function compareProjection({ sourceById, projection, sourceIssues }) {
+function compareProjection({ sourceById, projection, sourceIssues, membership = "complete" }) {
   const path = projectionLabel(projection);
   const findings = [];
   const issues = [];
@@ -143,6 +150,7 @@ function compareProjection({ sourceById, projection, sourceIssues }) {
   for (const [id, source] of sourceById) {
     const projected = indexed.byId.get(id);
     if (!projected) {
+      if (membership === "declared") continue;
       const message = `source card ${id} is missing from projection ${path}`;
       findings.push(message);
       issues.push(issue(ISSUE_CLASS.MISSING_SOURCE_CARD, id, path, message));
@@ -229,6 +237,7 @@ export function evaluateCardReconciliation({
   }
 
   const projectionResults = [];
+  const membership = declared.membership || "complete";
   if (Array.isArray(declared.projections)) {
     const seenPaths = new Set();
     for (const projection of declared.projections) {
@@ -240,10 +249,25 @@ export function evaluateCardReconciliation({
         continue;
       }
       seenPaths.add(path);
-      const result = compareProjection({ sourceById, projection, sourceIssues: [] });
+      const result = compareProjection({
+        sourceById,
+        projection,
+        sourceIssues: [],
+        membership,
+      });
       projectionResults.push(result);
       findings.push(...result.findings);
       issues.push(...result.issues);
+    }
+    if (membership === "declared" && sourceById.size) {
+      const represented = new Set(projectionResults.flatMap((row) => row.represented_card_ids));
+      for (const id of sourceById.keys()) {
+        if (!represented.has(id)) {
+          const message = `source card ${id} is missing from all declared projections`;
+          findings.push(message);
+          issues.push(issue(ISSUE_CLASS.MISSING_SOURCE_CARD, id, null, message));
+        }
+      }
     }
   }
 
@@ -306,10 +330,12 @@ export function buildCardReconciliationReceipt({
   };
 }
 
-export function writeCardReconciliationReceipt(receipt, receiptPath) {
+export function writeCardReconciliationReceipt(receipt, receiptPath, { write = false } = {}) {
   const path = resolve(receiptPath);
-  mkdirSync(dirname(path), { recursive: true });
-  writeFileSync(path, `${JSON.stringify(receipt, null, 2)}\n`, "utf8");
+  if (write) {
+    mkdirSync(dirname(path), { recursive: true });
+    writeFileSync(path, `${JSON.stringify(receipt, null, 2)}\n`, "utf8");
+  }
   return receipt;
 }
 

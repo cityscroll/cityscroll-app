@@ -20,6 +20,7 @@ import {
   loadWatermark,
   projectForDiff,
 } from "./architecture_watermark.mjs";
+import { checkArchitectureEvidence } from "./architecture_evidence_shards.mjs";
 import {
   existsSync,
   mkdirSync,
@@ -633,19 +634,32 @@ function main() {
   const facts = buildFacts();
   const report = buildReport({ facts });
 
+  const evidence = check
+    ? checkArchitectureEvidence({ root: ROOT })
+    : null;
+
   if (!noWrite) {
+    // determinism-lint: allow write check-mode facts go only to --output-dir or gitignored generated files
     mkdirSync(outputDir, { recursive: true });
+    // determinism-lint: allow write check-mode facts go only to --output-dir or gitignored generated files
     writeFileSync(join(outputDir, "facts.json"), render(facts));
+    // determinism-lint: allow write check-mode facts go only to --output-dir or gitignored generated files
     writeFileSync(join(outputDir, "reconciliation.json"), render(report));
   }
   if (writeWatermark) {
     const target = join(ROOT, WATERMARK_RELATIVE);
+    // determinism-lint: allow write watermark advancement is a reviewed non-check step
     mkdirSync(dirname(target), { recursive: true });
+    // determinism-lint: allow write watermark advancement is a reviewed non-check step
     writeFileSync(target, render(buildWatermark(facts)));
   }
 
   process.stdout.write(render(report));
   if (check && report.status !== "healthy") process.exitCode = 1;
+  if (check && evidence?.status !== "PASS") {
+    for (const row of evidence.findings) console.error(`architecture-evidence: ${row}`);
+    process.exitCode = 1;
+  }
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) main();
