@@ -100,7 +100,7 @@ test("reviewed watermark shards have deterministic ids, owners, and paths", () =
   assert.ok(shards.every((shard) => shard.owner === shard.id));
   assert.deepEqual(aggregateWatermarkShards(shards), committed);
   const rendered = `${JSON.stringify(committed, null, 2)}\n`;
-  assert.equal(createHash("sha256").update(rendered).digest("hex"), "d08ab51671330b48b167416ba96dffce509668539225ec818caa31fafe587532");
+  assert.equal(createHash("sha256").update(rendered).digest("hex"), "efbe98a484b208676052cb69afd19e2cad9f50e44dd0fc2dd2fda386ff8316f0");
 });
 
 test("same-key candidates fail instead of resolving by order", () => {
@@ -109,6 +109,20 @@ test("same-key candidates fail instead of resolving by order", () => {
     () => aggregateWatermarkShards([...loadWatermarkShards(), structuredClone(shard)]),
     /duplicate semantic key ontology; reviewed handoff required/,
   );
+});
+
+test("projection metadata uses chronological shard time across timezone offsets", () => {
+  const shards = structuredClone(loadWatermarkShards());
+  for (const shard of shards) {
+    shard.updated_at = "2026-08-31T11:57:44Z";
+    shard.commit = "older";
+  }
+  const ontology = shards.find((entry) => entry.id === "ontology");
+  ontology.updated_at = "2026-08-31T10:09:01-04:00";
+  ontology.commit = "newer";
+  const projected = aggregateWatermarkShards(shards);
+  assert.equal(projected.generated_at, "2026-08-31T10:09:01-04:00");
+  assert.equal(projected.commit, "newer");
 });
 
 test("reviewed advancement is explicit and changes only the selected owner shard", () => {

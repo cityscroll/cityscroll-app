@@ -259,7 +259,7 @@ export function aggregateWatermarkShards(shards) {
     if (!byId.has(required)) throw new Error(`missing required baseline key ${required}`);
   }
   const latest = [...shards].sort((left, right) => {
-    const clock = left.updated_at.localeCompare(right.updated_at);
+    const clock = Date.parse(left.updated_at) - Date.parse(right.updated_at);
     return clock || left.id.localeCompare(right.id);
   }).at(-1);
   return {
