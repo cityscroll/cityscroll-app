@@ -10,8 +10,12 @@
       "path": "site/code_provision_history.mjs"
     },
     {
-      "id": "provision-history-fixtures",
-      "path": "test/fixtures/code_provision_history.json"
+      "id": "administrative-code-pages-routes",
+      "path": "site/_routes.json"
+    },
+    {
+      "id": "administrative-code-provision-document",
+      "path": "site/admin_code.mjs"
     }
   ]
 }
