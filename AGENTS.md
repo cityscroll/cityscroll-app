@@ -36,6 +36,15 @@
   broaden to an agency, topic, or all-legislation watch. Proof:
   `test/code_provision_watch.test.mjs` plus `test/fixtures/code_provision_watch.json`.
 
+- **Statutory mandate provision joins (LL-P2A):** `site/statutory_mandate_provision_join.mjs`
+  is the evidence-qualified `CodeProvision → creates_mandate → StatutoryMandate → obligates → Agency`
+  join over existing mandate identity. Exact Administrative Code citations resolve to one
+  retained provision; RCNY, Charter, malformed, ambiguous, missing-source, and unsupported
+  citations stay visibly unresolved and never mint a provision or a second mandate. Later
+  CodeVersion history may mark that the legal basis changed without inferring a new duty,
+  deadline, power, or agency. Proof: `test/statutory_mandate_provision_join.test.mjs` plus
+  `test/fixtures/statutory_mandate_provision_join.json`.
+
 - **Rulemaking petition handoff:** `site/rules_petition.mjs` is the source-qualified
   official NYC Rules petition envelope. Eligible agency pages expose “Petition this
   agency”; effective-rule case files expose “How to petition [agency]”. Missing form

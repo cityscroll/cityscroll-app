@@ -7,6 +7,7 @@ import {
   procurementObjectTarget,
 } from "./notice_object_links.mjs";
 import { canonicalMandateId } from "./mandate_subject_ref.mjs";
+import { renderMandateProvisionJoin } from "./statutory_mandate_provision_join.mjs";
 
 export const MANDATE_DOCUMENT_SCHEMA = "cityscroll.mandate_document.v1";
 
@@ -152,7 +153,7 @@ function deadlineText(row) {
 }
 
 /** Empty string means the record did not pass the deontic-object gate. */
-export function renderMandateDocument(row = {}, { noticeEvidence = [], relatedEdges = [] } = {}) {
+export function renderMandateDocument(row = {}, { noticeEvidence = [], relatedEdges = [], provisionJoin = null } = {}) {
   const target = mandateObjectTarget(row);
   if (!target) return "";
   const id = target.id;
@@ -219,6 +220,7 @@ export function renderMandateDocument(row = {}, { noticeEvidence = [], relatedEd
   <p class="node-back"><a href="${esc(backHref)}">${backLabel}</a></p>
   <section class="node-hero civic-object-hero mandate-hero"><p class="node-kicker civic-object-kicker">Statutory mandate</p><h1>${esc(duty)}</h1><p class="node-lede">${esc(agency)}</p></section>
   <section class="node-section civic-object-section mandate-facts"><h2>Mandate</h2><dl>${facts.map(([label, value]) => `<dt>${esc(label)}</dt><dd>${esc(value)}</dd>`).join("")}</dl>${source ? `<p>${source}</p>` : ""}</section>
+  ${renderMandateProvisionJoin(provisionJoin)}
   ${evidenceSection}
   ${relationSection}
 </main>

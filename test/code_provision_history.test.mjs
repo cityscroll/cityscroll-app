@@ -313,7 +313,11 @@ test("Pages edge as-of query is a legal-code document route", async () => {
     {
       ASSETS: {
         async fetch(request) {
-          assert.equal(new URL(request.url).pathname, `/data/legal_code/${entry.shard}`);
+          const path = new URL(request.url).pathname;
+          if (path === "/data/agency_obligations_lookup.json") {
+            return Response.json({ by_agency: {} });
+          }
+          assert.equal(path, `/data/legal_code/${entry.shard}`);
           return new Response(JSON.stringify({ rows: [row] }), {
             headers: { "Content-Type": "application/json" },
           });

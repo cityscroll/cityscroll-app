@@ -17,6 +17,11 @@ import {
   relatedCivicEdgesForMandate,
   renderMandateDocument,
 } from "./mandate_document.mjs";
+import {
+  joinMandateToProvisions,
+  joinsForProvision,
+  mandateRowsFromLookup,
+} from "./statutory_mandate_provision_join.mjs";
 import { canonicalizeBrowseUrl } from "./route_migration.mjs";
 import { entityHref, entityRouteRef } from "./entity_pivot.mjs";
 import { renderEntityPivotLink } from "./edge_summary.mjs";
@@ -257,7 +262,17 @@ async function handleAdminCode(request, env, encodedCitation) {
     row = null;
   }
   if (!row) return adminCodeUnavailableResponse(request);
-  const html = renderAdminCodeProvisionDocument(row, { currentHref: request.url });
+  let mandateJoins = [];
+  try {
+    const obligationsResponse = await staticAsset(env, snapshotRequest, "/data/agency_obligations_lookup.json");
+    const lookup = obligationsResponse.ok ? await obligationsResponse.json() : null;
+    mandateJoins = joinsForProvision(row.id, mandateRowsFromLookup(lookup), {
+      lookupProvision: lookupAdminCodeCitation,
+    });
+  } catch (_error) {
+    mandateJoins = [];
+  }
+  const html = renderAdminCodeProvisionDocument(row, { currentHref: request.url, mandateJoins });
   const headers = {
     "Content-Type": "text/html; charset=utf-8",
     "Cache-Control": "public, max-age=300, s-maxage=1800, stale-while-revalidate=86400",
@@ -935,6 +950,7 @@ async function handleMandate(request, env, id) {
   const html = row ? renderMandateDocument(row, {
     noticeEvidence: noticeEvidenceForMandate(backlinks, id),
     relatedEdges: relatedCivicEdgesForMandate(conformance, id),
+    provisionJoin: joinMandateToProvisions(row, { lookupProvision: lookupAdminCodeCitation }),
   }) : "";
   if (!html) {
     return new Response(

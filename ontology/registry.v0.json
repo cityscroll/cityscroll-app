@@ -378,6 +378,24 @@
       "grounding": "partial"
     },
     {
+      "id": "code_provision",
+      "status": "registered",
+      "layer": "semantic",
+      "reason": "Persistent Administrative Code provision identity. Mandate joins attach through exact citations and never rewrite provision text, versions, or mandate duties.",
+      "primary_key_pattern": "nyc-administrative-code:{section}",
+      "families": [],
+      "backing": [
+        "cityscroll.code_provision.v1",
+        "legal_code"
+      ],
+      "properties_ref": [
+        "citation",
+        "heading",
+        "corpus_id"
+      ],
+      "grounding": "partial"
+    },
+    {
       "id": "procedure",
       "status": "registered",
       "layer": "spine",
@@ -1867,6 +1885,50 @@
         "subject_registry"
       ],
       "label": "Mandate governs procedure",
+      "grounding": "partial"
+    },
+    {
+      "id": "creates_mandate",
+      "status": "registered",
+      "from": "code_provision",
+      "to": "mandate",
+      "relation": "creates_mandate",
+      "inverse": "created_by_provision",
+      "reason": "Exact Administrative Code citation join from a retained statutory mandate. RCNY, Charter, malformed, ambiguous, and missing-source citations stay unresolved and never mint a provision or a second mandate.",
+      "edge_schema": "cityscroll.creates_mandate.v1",
+      "allowed_methods": [
+        "exact_statutory_citation_v1"
+      ],
+      "allowed_statuses": [
+        "accepted",
+        "unknown",
+        "held",
+        "unresolved"
+      ],
+      "negative_rule": "Never infer a new duty, deadline, power, agency, or mandate meaning from later CodeVersion text. Never treat RCNY or external statutes as Administrative Code.",
+      "label": "Creates mandate",
+      "grounding": "partial"
+    },
+    {
+      "id": "obligates",
+      "status": "registered",
+      "from": "mandate",
+      "to": "agency",
+      "relation": "obligates",
+      "inverse": "obligated_by",
+      "reason": "Existing agency obligation edge on a statutory mandate. The provision join reuses this identity and does not invent an agency from duty text.",
+      "allowed_methods": [
+        "exact_source_identifier",
+        "reviewed_publisher_alias"
+      ],
+      "allowed_statuses": [
+        "accepted",
+        "unknown",
+        "held",
+        "unresolved"
+      ],
+      "negative_rule": "Never mint an agency obligation from a provision citation or changed statutory text.",
+      "label": "Obligates",
       "grounding": "partial"
     },
     {
