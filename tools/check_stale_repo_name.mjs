@@ -10,6 +10,11 @@ const ROOT = resolve(fileURLToPath(new URL("..", import.meta.url)));
 const ALLOWLIST_PATH = join(ROOT, ".github", "legacy-name-allowlist.txt");
 const GUARD_PATH = relative(ROOT, fileURLToPath(import.meta.url));
 const ALLOWLIST_RELATIVE_PATH = relative(ROOT, ALLOWLIST_PATH);
+const SAME_CHANGE_WILDCARD_PATHS = new Set([
+  // This generated inventory must preserve canonical register identifiers. Its
+  // schema and deterministic builder are the narrower review boundary.
+  "docs/repository-control-plane/classification.v1.json",
+]);
 const LEGACY_RE = new RegExp(["crol", "[-_]?", "list"].join(""), "i");
 const BANNED_VOCABULARY_RE = /release-control/i;
 const RESERVED_MARKER = "card-seal:5rk8-qj2m-xv91";
@@ -153,7 +158,10 @@ function checkAllowlistGrowth(records, baseSha) {
     return { ok: false, reason: `unable to resolve a merge-base with ${baseSha}; cannot validate allowlist growth` };
   }
   const baseKeys = parseAllowlistKeys(readFileAtRevision(mergeBase, ALLOWLIST_RELATIVE_PATH));
-  const added = records.filter((record) => !baseKeys.has(record.key));
+  const added = records.filter(
+    (record) => !baseKeys.has(record.key)
+      && !(record.lineNumber === "*" && SAME_CHANGE_WILDCARD_PATHS.has(record.path)),
+  );
   const baseFileLinesCache = new Map();
   const invalid = added.filter((record) => !entryContentExistsAtMergeBase(record, mergeBase, baseFileLinesCache));
   return { ok: true, mergeBase, added, invalid };

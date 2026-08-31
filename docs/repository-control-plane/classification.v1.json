@@ -1,0 +1,1792 @@
+{
+  "schema": "cityscroll.repository_control_plane_classification.v1",
+  "inspection": {
+    "main_commit": "f4974efeaab38c6224844a0ad0bc78bbe0aa1a75",
+    "register_card": "cityscroll-repository-control-plane/rcp-00",
+    "frontier_declared_count": 31,
+    "frontier_enumerated_count": 33,
+    "frontier_discrepancy": 2,
+    "root_agents_bytes": 321388,
+    "root_agents_lines": 4627,
+    "scrim_occurrences_declared": 1144,
+    "private_uri_document_count": 50
+  },
+  "entries": [
+    {
+      "id": "agents:durable-routing",
+      "path": "AGENTS.md",
+      "selector": "durable routing and current invariants",
+      "content_class": "current-maintainer-routing",
+      "canonical_owner": "repository",
+      "register_id": "not-applicable",
+      "disposition": "split",
+      "stable_replacement_reference": "repo:AGENTS.md#durable-routing",
+      "history_treatment": "none",
+      "source": {
+        "path": "AGENTS.md",
+        "selector": "durable routing and current invariants",
+        "sha256": "5f3f75b2bb4663388e735a78084291f19c7e1d3e0f1b190909d0bd4f94a34964"
+      }
+    },
+    {
+      "id": "agents:implementation-scrapbook",
+      "path": "AGENTS.md",
+      "selector": "implementation-history and temporal status entries",
+      "content_class": "implementation-history-scrapbook",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-02",
+      "register_id": "cityscroll-repository-control-plane/rcp-02",
+      "disposition": "migrate",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-02#root-guidance-rewrite",
+      "history_treatment": "none",
+      "source": {
+        "path": "AGENTS.md",
+        "selector": "implementation-history and temporal status entries",
+        "sha256": "5f3f75b2bb4663388e735a78084291f19c7e1d3e0f1b190909d0bd4f94a34964"
+      }
+    },
+    {
+      "id": "architecture-decision:home-wire-budget-rationale",
+      "path": "ARCHITECTURE.md",
+      "selector": "heading:Proposed rationale: home cold-load wire budget",
+      "content_class": "unresolved-owner-decision",
+      "canonical_owner": "cityscroll-living-architecture",
+      "register_id": "cityscroll-release-control/cs-living-architecture-la1-architecture-narrative",
+      "disposition": "migrate",
+      "stable_replacement_reference": "register:cityscroll-release-control/cs-living-architecture-la1-architecture-narrative#home-wire-budget-rationale",
+      "history_treatment": "none",
+      "source": {
+        "path": "ARCHITECTURE.md",
+        "selector": "heading:Proposed rationale: home cold-load wire budget",
+        "sha256": "8a447e4dacd43630b4030c4fa76958a6a8cf6bf9f71c7a61c8226501238ed6b2"
+      }
+    },
+    {
+      "id": "architecture-decision:resident-rendering-rationale",
+      "path": "ARCHITECTURE.md",
+      "selector": "heading:Proposed invariant: resident-surface rendering standard",
+      "content_class": "unresolved-owner-decision",
+      "canonical_owner": "cityscroll-living-architecture",
+      "register_id": "cityscroll-release-control/cs-living-architecture-la1-architecture-narrative",
+      "disposition": "migrate",
+      "stable_replacement_reference": "register:cityscroll-release-control/cs-living-architecture-la1-architecture-narrative#resident-rendering-rationale",
+      "history_treatment": "none",
+      "source": {
+        "path": "ARCHITECTURE.md",
+        "selector": "heading:Proposed invariant: resident-surface rendering standard",
+        "sha256": "8a447e4dacd43630b4030c4fa76958a6a8cf6bf9f71c7a61c8226501238ed6b2"
+      }
+    },
+    {
+      "id": "architecture:accepted-current-contracts",
+      "path": "ARCHITECTURE.md",
+      "selector": "sections excluding the two rationale-to-confirm requests",
+      "content_class": "accepted-architecture",
+      "canonical_owner": "cityscroll-living-architecture",
+      "register_id": "cityscroll-release-control/cs-living-architecture-la1-architecture-narrative",
+      "disposition": "keep",
+      "stable_replacement_reference": "repo:ARCHITECTURE.md",
+      "history_treatment": "none",
+      "source": {
+        "path": "ARCHITECTURE.md",
+        "selector": "sections excluding the two rationale-to-confirm requests",
+        "sha256": "8a447e4dacd43630b4030c4fa76958a6a8cf6bf9f71c7a61c8226501238ed6b2"
+      }
+    },
+    {
+      "id": "drift-inventory:pending-work",
+      "path": "docs/drift-inventory.md",
+      "selector": "pending implementation design and unwired triggers",
+      "content_class": "mixed-current-contract-and-temporal-intent",
+      "canonical_owner": "cityscroll-living-architecture",
+      "register_id": "unresolved",
+      "disposition": "split",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-01#drift-inventory:pending-work",
+      "history_treatment": "none",
+      "source": {
+        "path": "docs/drift-inventory.md",
+        "selector": "pending implementation design and unwired triggers",
+        "sha256": "2d136df2209683e998af64e2bf7e444c21fc4c3aa2b00159b5d8d6ad2937a5ae"
+      }
+    },
+    {
+      "id": "frontier-projection:future-queue",
+      "path": "docs/data-frontiers-2026-08.md",
+      "selector": "Ready-to-card bodies and Next joinable cards sections",
+      "content_class": "mixed-current-contract-and-temporal-intent",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-01",
+      "register_id": "cityscroll-repository-control-plane/rcp-01",
+      "disposition": "split",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-01#frontier-projection:future-queue",
+      "history_treatment": "none",
+      "source": {
+        "path": "docs/data-frontiers-2026-08.md",
+        "selector": "Ready-to-card bodies and Next joinable cards sections",
+        "sha256": "ebdd0e2838bb4908d11b2ac070c247599d0d5763188554947a5b9f1ce9498705"
+      }
+    },
+    {
+      "id": "frontier:city-record-attachment-export-cliff",
+      "path": "docs/data-frontiers/2026-08/entries/21-city-record-attachment-export-cliff.json",
+      "selector": "entry:city-record-attachment-export-cliff",
+      "content_class": "mixed-measurement-and-temporal-intent",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-01",
+      "register_id": "cityscroll-repository-control-plane/rcp-01",
+      "disposition": "split",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-01#frontier-city-record-attachment-export-cliff",
+      "history_treatment": "none",
+      "source": {
+        "path": "docs/data-frontiers/2026-08/entries/21-city-record-attachment-export-cliff.json",
+        "selector": "entry:city-record-attachment-export-cliff",
+        "sha256": "7506c78c90ec4677d68cbc23e13dd40c232792634520e8e8fd055b392fdb3a3e"
+      }
+    },
+    {
+      "id": "frontier:committee-node-membership",
+      "path": "docs/data-frontiers/2026-08/entries/32-committee-node-membership.json",
+      "selector": "entry:committee-node-membership",
+      "content_class": "mixed-measurement-and-temporal-intent",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-01",
+      "register_id": "cityscroll-repository-control-plane/rcp-01",
+      "disposition": "split",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-01#frontier-committee-node-membership",
+      "history_treatment": "none",
+      "source": {
+        "path": "docs/data-frontiers/2026-08/entries/32-committee-node-membership.json",
+        "selector": "entry:committee-node-membership",
+        "sha256": "833b09c041d58d74caa93600d74aace8b706c5930746aa557908d51adb9c03ec"
+      }
+    },
+    {
+      "id": "frontier:community-board-geography",
+      "path": "docs/data-frontiers/2026-08/entries/33-community-board-geography.json",
+      "selector": "entry:community-board-geography",
+      "content_class": "mixed-measurement-and-temporal-intent",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-01",
+      "register_id": "cityscroll-repository-control-plane/rcp-01",
+      "disposition": "split",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-01#frontier-community-board-geography",
+      "history_treatment": "none",
+      "source": {
+        "path": "docs/data-frontiers/2026-08/entries/33-community-board-geography.json",
+        "selector": "entry:community-board-geography",
+        "sha256": "71ec6bef77457a4032104400fa2696e9c63d09c160480415e5cbc9ee3f4bf8d9"
+      }
+    },
+    {
+      "id": "frontier:dcas-nonfleet-surplus-listings",
+      "path": "docs/data-frontiers/2026-08/entries/19-dcas-nonfleet-surplus-listings.json",
+      "selector": "entry:dcas-nonfleet-surplus-listings",
+      "content_class": "mixed-measurement-and-temporal-intent",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-01",
+      "register_id": "cityscroll-repository-control-plane/rcp-01",
+      "disposition": "split",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-01#frontier-dcas-nonfleet-surplus-listings",
+      "history_treatment": "none",
+      "source": {
+        "path": "docs/data-frontiers/2026-08/entries/19-dcas-nonfleet-surplus-listings.json",
+        "selector": "entry:dcas-nonfleet-surplus-listings",
+        "sha256": "6dea6394caff1cda58f1faf013fdc2e6b6acd47646858f5242840ec417ecdc65"
+      }
+    },
+    {
+      "id": "frontier:declared-count-discrepancy",
+      "path": "docs/data-frontiers/2026-08/meta.json",
+      "selector": "json-pointer:/entry_count",
+      "content_class": "stale-measurement-and-reconciliation-intent",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-01",
+      "register_id": "cityscroll-repository-control-plane/rcp-01",
+      "disposition": "split",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-01#frontier-count-reconciliation",
+      "history_treatment": "none",
+      "source": {
+        "path": "docs/data-frontiers/2026-08/meta.json",
+        "selector": "json-pointer:/entry_count",
+        "sha256": "9d6329e76a1be22d00b540d8bb14b1ec900d990d0e6ec1debdc0e0472dfd537e"
+      }
+    },
+    {
+      "id": "frontier:exam-outcome-aggregate",
+      "path": "docs/data-frontiers/2026-08/entries/29-exam-outcome-aggregate.json",
+      "selector": "entry:exam-outcome-aggregate",
+      "content_class": "mixed-measurement-and-temporal-intent",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-01",
+      "register_id": "cityscroll-repository-control-plane/rcp-01",
+      "disposition": "split",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-01#frontier-exam-outcome-aggregate",
+      "history_treatment": "none",
+      "source": {
+        "path": "docs/data-frontiers/2026-08/entries/29-exam-outcome-aggregate.json",
+        "selector": "entry:exam-outcome-aggregate",
+        "sha256": "dab128a228ed7efd4893de1fdba4c3a12d61047f49b02b9aa40fcb484e5911ec"
+      }
+    },
+    {
+      "id": "frontier:exam-outcome-individual",
+      "path": "docs/data-frontiers/2026-08/entries/17-exam-outcome-individual.json",
+      "selector": "entry:exam-outcome-individual",
+      "content_class": "mixed-measurement-and-temporal-intent",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-01",
+      "register_id": "cityscroll-repository-control-plane/rcp-01",
+      "disposition": "split",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-01#frontier-exam-outcome-individual",
+      "history_treatment": "none",
+      "source": {
+        "path": "docs/data-frontiers/2026-08/entries/17-exam-outcome-individual.json",
+        "selector": "entry:exam-outcome-individual",
+        "sha256": "a4db865b3d1fce3fff665754c1453b6924a213618f3aafd580b69bb725d97661"
+      }
+    },
+    {
+      "id": "frontier:exam-salary-fee-not-published",
+      "path": "docs/data-frontiers/2026-08/entries/30-exam-salary-fee-not-published.json",
+      "selector": "entry:exam-salary-fee-not-published",
+      "content_class": "mixed-measurement-and-temporal-intent",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-01",
+      "register_id": "cityscroll-repository-control-plane/rcp-01",
+      "disposition": "split",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-01#frontier-exam-salary-fee-not-published",
+      "history_treatment": "none",
+      "source": {
+        "path": "docs/data-frontiers/2026-08/entries/30-exam-salary-fee-not-published.json",
+        "selector": "entry:exam-salary-fee-not-published",
+        "sha256": "b62868fc7bfc5de29b9925079157e92f854b6a93f11ed2b1a0699ae38ee87fec"
+      }
+    },
+    {
+      "id": "frontier:external-awards-abo-none",
+      "path": "docs/data-frontiers/2026-08/entries/04-external-awards-abo-none.json",
+      "selector": "entry:external-awards-abo-none",
+      "content_class": "mixed-measurement-and-temporal-intent",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-01",
+      "register_id": "cityscroll-repository-control-plane/rcp-01",
+      "disposition": "split",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-01#frontier-external-awards-abo-none",
+      "history_treatment": "none",
+      "source": {
+        "path": "docs/data-frontiers/2026-08/entries/04-external-awards-abo-none.json",
+        "selector": "entry:external-awards-abo-none",
+        "sha256": "27cc4ebeb8d600f3be290b4090cbc5bd80535648a299970d39c0f09d80bdb69b"
+      }
+    },
+    {
+      "id": "frontier:external-awards-agency-absent",
+      "path": "docs/data-frontiers/2026-08/entries/12-external-awards-agency-absent.json",
+      "selector": "entry:external-awards-agency-absent",
+      "content_class": "mixed-measurement-and-temporal-intent",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-01",
+      "register_id": "cityscroll-repository-control-plane/rcp-01",
+      "disposition": "split",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-01#frontier-external-awards-agency-absent",
+      "history_treatment": "none",
+      "source": {
+        "path": "docs/data-frontiers/2026-08/entries/12-external-awards-agency-absent.json",
+        "selector": "entry:external-awards-agency-absent",
+        "sha256": "736a168d668dbf059b93e6c709e6c404d441df2219e8cd61d7f777b2688441f2"
+      }
+    },
+    {
+      "id": "frontier:land-outcome-detail",
+      "path": "docs/data-frontiers/2026-08/entries/31-land-outcome-detail.json",
+      "selector": "entry:land-outcome-detail",
+      "content_class": "mixed-measurement-and-temporal-intent",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-01",
+      "register_id": "cityscroll-repository-control-plane/rcp-01",
+      "disposition": "split",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-01#frontier-land-outcome-detail",
+      "history_treatment": "none",
+      "source": {
+        "path": "docs/data-frontiers/2026-08/entries/31-land-outcome-detail.json",
+        "selector": "entry:land-outcome-detail",
+        "sha256": "75093bd62c8509473d4001b7ebcd13c844023c3e054239b59d9197d36dfa2ae6"
+      }
+    },
+    {
+      "id": "frontier:meeting-community-board-votes",
+      "path": "docs/data-frontiers/2026-08/entries/03-meeting-community-board-votes.json",
+      "selector": "entry:meeting-community-board-votes",
+      "content_class": "mixed-measurement-and-temporal-intent",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-01",
+      "register_id": "cityscroll-repository-control-plane/rcp-01",
+      "disposition": "split",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-01#frontier-meeting-community-board-votes",
+      "history_treatment": "none",
+      "source": {
+        "path": "docs/data-frontiers/2026-08/entries/03-meeting-community-board-votes.json",
+        "selector": "entry:meeting-community-board-votes",
+        "sha256": "e6c19c1bee0b946bd7534b90203eb41e6dc71986aee84c9c70d2d708dea5f8fc"
+      }
+    },
+    {
+      "id": "frontier:meeting-matters-absent",
+      "path": "docs/data-frontiers/2026-08/entries/27-meeting-matters-absent.json",
+      "selector": "entry:meeting-matters-absent",
+      "content_class": "mixed-measurement-and-temporal-intent",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-01",
+      "register_id": "cityscroll-repository-control-plane/rcp-01",
+      "disposition": "split",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-01#frontier-meeting-matters-absent",
+      "history_treatment": "none",
+      "source": {
+        "path": "docs/data-frontiers/2026-08/entries/27-meeting-matters-absent.json",
+        "selector": "entry:meeting-matters-absent",
+        "sha256": "72124794d0ac39d73aa8349caf9238b32edb18362ecde0e3620863c6cbecba0b"
+      }
+    },
+    {
+      "id": "frontier:meeting-outcomes-unmatched",
+      "path": "docs/data-frontiers/2026-08/entries/25-meeting-outcomes-unmatched.json",
+      "selector": "entry:meeting-outcomes-unmatched",
+      "content_class": "mixed-measurement-and-temporal-intent",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-01",
+      "register_id": "cityscroll-repository-control-plane/rcp-01",
+      "disposition": "split",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-01#frontier-meeting-outcomes-unmatched",
+      "history_treatment": "none",
+      "source": {
+        "path": "docs/data-frontiers/2026-08/entries/25-meeting-outcomes-unmatched.json",
+        "selector": "entry:meeting-outcomes-unmatched",
+        "sha256": "55c2b5aeced04bcd8e26e855d723c936a6b3ad6c48008eeaa49c19e0ca3756bb"
+      }
+    },
+    {
+      "id": "frontier:meeting-votes-absent",
+      "path": "docs/data-frontiers/2026-08/entries/26-meeting-votes-absent.json",
+      "selector": "entry:meeting-votes-absent",
+      "content_class": "mixed-measurement-and-temporal-intent",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-01",
+      "register_id": "cityscroll-repository-control-plane/rcp-01",
+      "disposition": "split",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-01#frontier-meeting-votes-absent",
+      "history_treatment": "none",
+      "source": {
+        "path": "docs/data-frontiers/2026-08/entries/26-meeting-votes-absent.json",
+        "selector": "entry:meeting-votes-absent",
+        "sha256": "93a33b0219bb283d384c9339ce8c652728e3f7146d0e76da6bd770d222a7cbb4"
+      }
+    },
+    {
+      "id": "frontier:meetings-location-residual",
+      "path": "docs/data-frontiers/2026-08/entries/10-meetings-location-residual.json",
+      "selector": "entry:meetings-location-residual",
+      "content_class": "mixed-measurement-and-temporal-intent",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-01",
+      "register_id": "cityscroll-repository-control-plane/rcp-01",
+      "disposition": "split",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-01#frontier-meetings-location-residual",
+      "history_treatment": "none",
+      "source": {
+        "path": "docs/data-frontiers/2026-08/entries/10-meetings-location-residual.json",
+        "selector": "entry:meetings-location-residual",
+        "sha256": "43b44c28e38fefde5095f5453ed7622f8c90542baa53dcbc985521841eaed53f"
+      }
+    },
+    {
+      "id": "frontier:money-location-residual",
+      "path": "docs/data-frontiers/2026-08/entries/05-money-location-residual.json",
+      "selector": "entry:money-location-residual",
+      "content_class": "mixed-measurement-and-temporal-intent",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-01",
+      "register_id": "cityscroll-repository-control-plane/rcp-01",
+      "disposition": "split",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-01#frontier-money-location-residual",
+      "history_treatment": "none",
+      "source": {
+        "path": "docs/data-frontiers/2026-08/entries/05-money-location-residual.json",
+        "selector": "entry:money-location-residual",
+        "sha256": "bd60ceeb5010c769c20b48bfa80a643f1dff88011d622ccf6122f4f1101fc0ea"
+      }
+    },
+    {
+      "id": "frontier:procurement-bid-counts",
+      "path": "docs/data-frontiers/2026-08/entries/15-procurement-bid-counts.json",
+      "selector": "entry:procurement-bid-counts",
+      "content_class": "mixed-measurement-and-temporal-intent",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-01",
+      "register_id": "cityscroll-repository-control-plane/rcp-01",
+      "disposition": "split",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-01#frontier-procurement-bid-counts",
+      "history_treatment": "none",
+      "source": {
+        "path": "docs/data-frontiers/2026-08/entries/15-procurement-bid-counts.json",
+        "selector": "entry:procurement-bid-counts",
+        "sha256": "e583fe2ea2ca1f5d3058d67ff3db6f37a9d3cf2b8c805191d7e4872a30a50fd3"
+      }
+    },
+    {
+      "id": "frontier:procurement-no-pin",
+      "path": "docs/data-frontiers/2026-08/entries/13-procurement-no-pin.json",
+      "selector": "entry:procurement-no-pin",
+      "content_class": "mixed-measurement-and-temporal-intent",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-01",
+      "register_id": "cityscroll-repository-control-plane/rcp-01",
+      "disposition": "split",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-01#frontier-procurement-no-pin",
+      "history_treatment": "none",
+      "source": {
+        "path": "docs/data-frontiers/2026-08/entries/13-procurement-no-pin.json",
+        "selector": "entry:procurement-no-pin",
+        "sha256": "a034b701905c198978912b8122aba03222b932beeb7f6fb4b4897ae3a818db61"
+      }
+    },
+    {
+      "id": "frontier:procurement-ocp-recent-awards",
+      "path": "docs/data-frontiers/2026-08/entries/20-procurement-ocp-recent-awards.json",
+      "selector": "entry:procurement-ocp-recent-awards",
+      "content_class": "mixed-measurement-and-temporal-intent",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-01",
+      "register_id": "cityscroll-repository-control-plane/rcp-01",
+      "disposition": "split",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-01#frontier-procurement-ocp-recent-awards",
+      "history_treatment": "none",
+      "source": {
+        "path": "docs/data-frontiers/2026-08/entries/20-procurement-ocp-recent-awards.json",
+        "selector": "entry:procurement-ocp-recent-awards",
+        "sha256": "493d37ee180425c5538db31e8813e2e1408994aae41d9f6a34e98e80f9abcfc8"
+      }
+    },
+    {
+      "id": "frontier:procurement-payment-unmatched",
+      "path": "docs/data-frontiers/2026-08/entries/24-procurement-payment-unmatched.json",
+      "selector": "entry:procurement-payment-unmatched",
+      "content_class": "mixed-measurement-and-temporal-intent",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-01",
+      "register_id": "cityscroll-repository-control-plane/rcp-01",
+      "disposition": "split",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-01#frontier-procurement-payment-unmatched",
+      "history_treatment": "none",
+      "source": {
+        "path": "docs/data-frontiers/2026-08/entries/24-procurement-payment-unmatched.json",
+        "selector": "entry:procurement-payment-unmatched",
+        "sha256": "6878dea4dd3d5726db0bd0e3603a190080a2ed7185093a0b01cf2448fe1a96f9"
+      }
+    },
+    {
+      "id": "frontier:procurement-pending-unmatched",
+      "path": "docs/data-frontiers/2026-08/entries/22-procurement-pending-unmatched.json",
+      "selector": "entry:procurement-pending-unmatched",
+      "content_class": "mixed-measurement-and-temporal-intent",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-01",
+      "register_id": "cityscroll-repository-control-plane/rcp-01",
+      "disposition": "split",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-01#frontier-procurement-pending-unmatched",
+      "history_treatment": "none",
+      "source": {
+        "path": "docs/data-frontiers/2026-08/entries/22-procurement-pending-unmatched.json",
+        "selector": "entry:procurement-pending-unmatched",
+        "sha256": "fcf0808a42d3c6c208a731591d58b3af02af12831a5dabdd995179c1dd02489c"
+      }
+    },
+    {
+      "id": "frontier:procurement-planning-budget",
+      "path": "docs/data-frontiers/2026-08/entries/01-procurement-planning-budget.json",
+      "selector": "entry:procurement-planning-budget",
+      "content_class": "mixed-measurement-and-temporal-intent",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-01",
+      "register_id": "cityscroll-repository-control-plane/rcp-01",
+      "disposition": "split",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-01#frontier-procurement-planning-budget",
+      "history_treatment": "none",
+      "source": {
+        "path": "docs/data-frontiers/2026-08/entries/01-procurement-planning-budget.json",
+        "selector": "entry:procurement-planning-budget",
+        "sha256": "0cc1f90f465dcb81ea6747a599c018e162cd3e833ebabbd3b8170e9f79f046ce"
+      }
+    },
+    {
+      "id": "frontier:procurement-registered-unmatched",
+      "path": "docs/data-frontiers/2026-08/entries/23-procurement-registered-unmatched.json",
+      "selector": "entry:procurement-registered-unmatched",
+      "content_class": "mixed-measurement-and-temporal-intent",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-01",
+      "register_id": "cityscroll-repository-control-plane/rcp-01",
+      "disposition": "split",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-01#frontier-procurement-registered-unmatched",
+      "history_treatment": "none",
+      "source": {
+        "path": "docs/data-frontiers/2026-08/entries/23-procurement-registered-unmatched.json",
+        "selector": "entry:procurement-registered-unmatched",
+        "sha256": "8c9751f0992ac49e1e70beec0a8b506dc7ab229e3fc3522920182d40b77195d0"
+      }
+    },
+    {
+      "id": "frontier:procurement-solicitation-documents",
+      "path": "docs/data-frontiers/2026-08/entries/14-procurement-solicitation-documents.json",
+      "selector": "entry:procurement-solicitation-documents",
+      "content_class": "mixed-measurement-and-temporal-intent",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-01",
+      "register_id": "cityscroll-repository-control-plane/rcp-01",
+      "disposition": "split",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-01#frontier-procurement-solicitation-documents",
+      "history_treatment": "none",
+      "source": {
+        "path": "docs/data-frontiers/2026-08/entries/14-procurement-solicitation-documents.json",
+        "selector": "entry:procurement-solicitation-documents",
+        "sha256": "40328e45ea408e5655cfdcf54dd05d3aff4a1f1059a2322f0adf4001e8ef8b86"
+      }
+    },
+    {
+      "id": "frontier:procurement-subcontract-goal-percent",
+      "path": "docs/data-frontiers/2026-08/entries/11-procurement-subcontract-goal-percent.json",
+      "selector": "entry:procurement-subcontract-goal-percent",
+      "content_class": "mixed-measurement-and-temporal-intent",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-01",
+      "register_id": "cityscroll-repository-control-plane/rcp-01",
+      "disposition": "split",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-01#frontier-procurement-subcontract-goal-percent",
+      "history_treatment": "none",
+      "source": {
+        "path": "docs/data-frontiers/2026-08/entries/11-procurement-subcontract-goal-percent.json",
+        "selector": "entry:procurement-subcontract-goal-percent",
+        "sha256": "472419e67ee22d604b240f00d283475cdf3a8b10efe964773589a700f6f3f37b"
+      }
+    },
+    {
+      "id": "frontier:property-parcel-key-residual",
+      "path": "docs/data-frontiers/2026-08/entries/18-property-parcel-key-residual.json",
+      "selector": "entry:property-parcel-key-residual",
+      "content_class": "mixed-measurement-and-temporal-intent",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-01",
+      "register_id": "cityscroll-repository-control-plane/rcp-01",
+      "disposition": "split",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-01#frontier-property-parcel-key-residual",
+      "history_treatment": "none",
+      "source": {
+        "path": "docs/data-frontiers/2026-08/entries/18-property-parcel-key-residual.json",
+        "selector": "entry:property-parcel-key-residual",
+        "sha256": "2f3fe192f3fc631e8a1d36f50cacb762afbaf7516ee17579c50250954a395046"
+      }
+    },
+    {
+      "id": "frontier:rules-event-date-unpublished",
+      "path": "docs/data-frontiers/2026-08/entries/16-rules-event-date-unpublished.json",
+      "selector": "entry:rules-event-date-unpublished",
+      "content_class": "mixed-measurement-and-temporal-intent",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-01",
+      "register_id": "cityscroll-repository-control-plane/rcp-01",
+      "disposition": "split",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-01#frontier-rules-event-date-unpublished",
+      "history_treatment": "none",
+      "source": {
+        "path": "docs/data-frontiers/2026-08/entries/16-rules-event-date-unpublished.json",
+        "selector": "entry:rules-event-date-unpublished",
+        "sha256": "13abbf7566c8d9f9abc84b420c61fa9a7c6d4242021b5f7c24b0042860258a92"
+      }
+    },
+    {
+      "id": "frontier:rules-event-spine-unmatched",
+      "path": "docs/data-frontiers/2026-08/entries/28-rules-event-spine-unmatched.json",
+      "selector": "entry:rules-event-spine-unmatched",
+      "content_class": "mixed-measurement-and-temporal-intent",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-01",
+      "register_id": "cityscroll-repository-control-plane/rcp-01",
+      "disposition": "split",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-01#frontier-rules-event-spine-unmatched",
+      "history_treatment": "none",
+      "source": {
+        "path": "docs/data-frontiers/2026-08/entries/28-rules-event-spine-unmatched.json",
+        "selector": "entry:rules-event-spine-unmatched",
+        "sha256": "93714d2812a1fb4ed4fca6220d8b9f6b9ba2d1fc7c753ac17148815cc0d36a52"
+      }
+    },
+    {
+      "id": "frontier:subsidy-field-city-record-hearing-feed",
+      "path": "docs/data-frontiers/2026-08/entries/09-subsidy-field-city-record-hearing-feed.json",
+      "selector": "entry:subsidy-field-city-record-hearing-feed",
+      "content_class": "mixed-measurement-and-temporal-intent",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-01",
+      "register_id": "cityscroll-repository-control-plane/rcp-01",
+      "disposition": "split",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-01#frontier-subsidy-field-city-record-hearing-feed",
+      "history_treatment": "none",
+      "source": {
+        "path": "docs/data-frontiers/2026-08/entries/09-subsidy-field-city-record-hearing-feed.json",
+        "selector": "entry:subsidy-field-city-record-hearing-feed",
+        "sha256": "60e07bd3b84f0762a339b2d1c7787b8fc831b82d1cc4e00bd8cfc777fd2a1419"
+      }
+    },
+    {
+      "id": "frontier:subsidy-field-company-place-money",
+      "path": "docs/data-frontiers/2026-08/entries/08-subsidy-field-company-place-money.json",
+      "selector": "entry:subsidy-field-company-place-money",
+      "content_class": "mixed-measurement-and-temporal-intent",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-01",
+      "register_id": "cityscroll-repository-control-plane/rcp-01",
+      "disposition": "split",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-01#frontier-subsidy-field-company-place-money",
+      "history_treatment": "none",
+      "source": {
+        "path": "docs/data-frontiers/2026-08/entries/08-subsidy-field-company-place-money.json",
+        "selector": "entry:subsidy-field-company-place-money",
+        "sha256": "fe75dcf09bd51b65f52ae224a85d1049aa2339383a06ff556a320113e6170c34"
+      }
+    },
+    {
+      "id": "frontier:subsidy-outcome-absent",
+      "path": "docs/data-frontiers/2026-08/entries/07-subsidy-outcome-absent.json",
+      "selector": "entry:subsidy-outcome-absent",
+      "content_class": "mixed-measurement-and-temporal-intent",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-01",
+      "register_id": "cityscroll-repository-control-plane/rcp-01",
+      "disposition": "split",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-01#frontier-subsidy-outcome-absent",
+      "history_treatment": "none",
+      "source": {
+        "path": "docs/data-frontiers/2026-08/entries/07-subsidy-outcome-absent.json",
+        "selector": "entry:subsidy-outcome-absent",
+        "sha256": "30f306b85c0ffd6e652e103ee7de160bc61248bc4b6f5e3584d002d2f1549caa"
+      }
+    },
+    {
+      "id": "frontier:subsidy-project-unmatched",
+      "path": "docs/data-frontiers/2026-08/entries/02-subsidy-project-unmatched.json",
+      "selector": "entry:subsidy-project-unmatched",
+      "content_class": "mixed-measurement-and-temporal-intent",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-01",
+      "register_id": "cityscroll-repository-control-plane/rcp-01",
+      "disposition": "split",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-01#frontier-subsidy-project-unmatched",
+      "history_treatment": "none",
+      "source": {
+        "path": "docs/data-frontiers/2026-08/entries/02-subsidy-project-unmatched.json",
+        "selector": "entry:subsidy-project-unmatched",
+        "sha256": "ab29c6fdb7c3a2093c36f2e43dd07fa7f7bf4f003c3e3b2fe95963df9e4073ed"
+      }
+    },
+    {
+      "id": "frontier:subsidy-stage-unmatched",
+      "path": "docs/data-frontiers/2026-08/entries/06-subsidy-stage-unmatched.json",
+      "selector": "entry:subsidy-stage-unmatched",
+      "content_class": "mixed-measurement-and-temporal-intent",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-01",
+      "register_id": "cityscroll-repository-control-plane/rcp-01",
+      "disposition": "split",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-01#frontier-subsidy-stage-unmatched",
+      "history_treatment": "none",
+      "source": {
+        "path": "docs/data-frontiers/2026-08/entries/06-subsidy-stage-unmatched.json",
+        "selector": "entry:subsidy-stage-unmatched",
+        "sha256": "79ba17ef52d45ec7620b0ac771ac60515990d74265f1cd45cba720b3a46e1d9b"
+      }
+    },
+    {
+      "id": "lens:lens-tmpl-01",
+      "path": "docs/lens-filter-template.md",
+      "selector": "heading:card lens-tmpl-01",
+      "content_class": "repo-only-rollout-register",
+      "canonical_owner": "unresolved",
+      "register_id": "unresolved",
+      "disposition": "migrate",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-01#unresolved-lens-tmpl-01",
+      "history_treatment": "none",
+      "source": {
+        "path": "docs/lens-filter-template.md",
+        "selector": "heading:card lens-tmpl-01",
+        "sha256": "3d07d0e3c5cc80c94e48691310b679a82f89292fe275e1ddc3c0a3a0c13c9001"
+      }
+    },
+    {
+      "id": "lens:lens-tmpl-02",
+      "path": "docs/lens-filter-template.md",
+      "selector": "heading:card lens-tmpl-02",
+      "content_class": "repo-only-rollout-register",
+      "canonical_owner": "unresolved",
+      "register_id": "unresolved",
+      "disposition": "migrate",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-01#unresolved-lens-tmpl-02",
+      "history_treatment": "none",
+      "source": {
+        "path": "docs/lens-filter-template.md",
+        "selector": "heading:card lens-tmpl-02",
+        "sha256": "3d07d0e3c5cc80c94e48691310b679a82f89292fe275e1ddc3c0a3a0c13c9001"
+      }
+    },
+    {
+      "id": "lens:lens-tmpl-03",
+      "path": "docs/lens-filter-template.md",
+      "selector": "heading:card lens-tmpl-03",
+      "content_class": "repo-only-rollout-register",
+      "canonical_owner": "unresolved",
+      "register_id": "unresolved",
+      "disposition": "migrate",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-01#unresolved-lens-tmpl-03",
+      "history_treatment": "none",
+      "source": {
+        "path": "docs/lens-filter-template.md",
+        "selector": "heading:card lens-tmpl-03",
+        "sha256": "3d07d0e3c5cc80c94e48691310b679a82f89292fe275e1ddc3c0a3a0c13c9001"
+      }
+    },
+    {
+      "id": "lens:lens-tmpl-04",
+      "path": "docs/lens-filter-template.md",
+      "selector": "heading:card lens-tmpl-04",
+      "content_class": "repo-only-rollout-register",
+      "canonical_owner": "unresolved",
+      "register_id": "unresolved",
+      "disposition": "migrate",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-01#unresolved-lens-tmpl-04",
+      "history_treatment": "none",
+      "source": {
+        "path": "docs/lens-filter-template.md",
+        "selector": "heading:card lens-tmpl-04",
+        "sha256": "3d07d0e3c5cc80c94e48691310b679a82f89292fe275e1ddc3c0a3a0c13c9001"
+      }
+    },
+    {
+      "id": "lens:lens-tmpl-05",
+      "path": "docs/lens-filter-template.md",
+      "selector": "heading:card lens-tmpl-05",
+      "content_class": "repo-only-rollout-register",
+      "canonical_owner": "unresolved",
+      "register_id": "unresolved",
+      "disposition": "migrate",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-01#unresolved-lens-tmpl-05",
+      "history_treatment": "none",
+      "source": {
+        "path": "docs/lens-filter-template.md",
+        "selector": "heading:card lens-tmpl-05",
+        "sha256": "3d07d0e3c5cc80c94e48691310b679a82f89292fe275e1ddc3c0a3a0c13c9001"
+      }
+    },
+    {
+      "id": "precompute-first:migration-plan",
+      "path": "docs/precompute-first-inventory-2026-07-29.md",
+      "selector": "mutable migration-plan sections",
+      "content_class": "mixed-current-contract-and-temporal-intent",
+      "canonical_owner": "unresolved",
+      "register_id": "unresolved",
+      "disposition": "split",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-01#precompute-first:migration-plan",
+      "history_treatment": "none",
+      "source": {
+        "path": "docs/precompute-first-inventory-2026-07-29.md",
+        "selector": "mutable migration-plan sections",
+        "sha256": "5fdf620c67fd532804faffa80ddc43c58ac5bf0c74a71506619456bd8809e73f"
+      }
+    },
+    {
+      "id": "private-uri:docs/analytics-readiness-audit.md",
+      "path": "docs/analytics-readiness-audit.md",
+      "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+      "content_class": "private-evidence-reference",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-03",
+      "register_id": "cityscroll-repository-control-plane/rcp-03",
+      "disposition": "privatize",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-03#private-uri-e8e37bf655b0",
+      "history_treatment": "review-required",
+      "source": {
+        "path": "docs/analytics-readiness-audit.md",
+        "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+        "sha256": "1910e297a0a7ccd9078809c9ef472ed89e519e39b0f9b15ae74ac4640c152602"
+      }
+    },
+    {
+      "id": "private-uri:docs/api-parity-b2-additional-migrations.md",
+      "path": "docs/api-parity-b2-additional-migrations.md",
+      "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+      "content_class": "private-evidence-reference",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-03",
+      "register_id": "cityscroll-repository-control-plane/rcp-03",
+      "disposition": "privatize",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-03#private-uri-5c489f08108b",
+      "history_treatment": "review-required",
+      "source": {
+        "path": "docs/api-parity-b2-additional-migrations.md",
+        "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+        "sha256": "787a8188b5cdc3335f3a57790c2b72dab54d2da9e17e9cbc7ba8158261a58a8f"
+      }
+    },
+    {
+      "id": "private-uri:docs/api-parity-b2.md",
+      "path": "docs/api-parity-b2.md",
+      "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+      "content_class": "private-evidence-reference",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-03",
+      "register_id": "cityscroll-repository-control-plane/rcp-03",
+      "disposition": "privatize",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-03#private-uri-f8eda723187f",
+      "history_treatment": "review-required",
+      "source": {
+        "path": "docs/api-parity-b2.md",
+        "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+        "sha256": "8e2d96d19f21c01fd4189f567ddc215a6a9865b3613a19c6c315375a12e2e14b"
+      }
+    },
+    {
+      "id": "private-uri:docs/evidence-tip-migration.json",
+      "path": "docs/evidence-tip-migration.json",
+      "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+      "content_class": "private-evidence-reference",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-03",
+      "register_id": "cityscroll-repository-control-plane/rcp-03",
+      "disposition": "privatize",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-03#private-uri-56f5fa6791ff",
+      "history_treatment": "review-required",
+      "source": {
+        "path": "docs/evidence-tip-migration.json",
+        "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+        "sha256": "9ab0f3e53ea533b893a8b52824efffc75511f66fe13647ce68f66163db329038"
+      }
+    },
+    {
+      "id": "private-uri:docs/evidence/authority-native-procurement/before/capture.json",
+      "path": "docs/evidence/authority-native-procurement/before/capture.json",
+      "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+      "content_class": "private-evidence-reference",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-03",
+      "register_id": "cityscroll-repository-control-plane/rcp-03",
+      "disposition": "privatize",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-03#private-uri-52ec473e2820",
+      "history_treatment": "review-required",
+      "source": {
+        "path": "docs/evidence/authority-native-procurement/before/capture.json",
+        "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+        "sha256": "ec09e6b9e910d1f190d5c10eabba8068504d316a45cd9c8c07113aaeebb5dc0d"
+      }
+    },
+    {
+      "id": "private-uri:docs/evidence/cc7-round-trip/README.md",
+      "path": "docs/evidence/cc7-round-trip/README.md",
+      "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+      "content_class": "private-evidence-reference",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-03",
+      "register_id": "cityscroll-repository-control-plane/rcp-03",
+      "disposition": "privatize",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-03#private-uri-e3b4bb611e3a",
+      "history_treatment": "review-required",
+      "source": {
+        "path": "docs/evidence/cc7-round-trip/README.md",
+        "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+        "sha256": "37892675face9862b8fa93d4ad663332f099524bf15d0d293215f6e32f5e8fbb"
+      }
+    },
+    {
+      "id": "private-uri:docs/evidence/civic-action-paths/after/capture-manifest.json",
+      "path": "docs/evidence/civic-action-paths/after/capture-manifest.json",
+      "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+      "content_class": "private-evidence-reference",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-03",
+      "register_id": "cityscroll-repository-control-plane/rcp-03",
+      "disposition": "privatize",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-03#private-uri-361f5870d57f",
+      "history_treatment": "review-required",
+      "source": {
+        "path": "docs/evidence/civic-action-paths/after/capture-manifest.json",
+        "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+        "sha256": "49282ce42a75a04846fd90c51759895a47ebf94b8bb940218dda35460f80c22a"
+      }
+    },
+    {
+      "id": "private-uri:docs/evidence/civic-action-paths/after/ways-to-participate-capture.json",
+      "path": "docs/evidence/civic-action-paths/after/ways-to-participate-capture.json",
+      "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+      "content_class": "private-evidence-reference",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-03",
+      "register_id": "cityscroll-repository-control-plane/rcp-03",
+      "disposition": "privatize",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-03#private-uri-c8734e102230",
+      "history_treatment": "review-required",
+      "source": {
+        "path": "docs/evidence/civic-action-paths/after/ways-to-participate-capture.json",
+        "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+        "sha256": "9fc2af53c4d93c6b5605329bca84b89fe4c91340b9c7f5fe4ef11647924fd536"
+      }
+    },
+    {
+      "id": "private-uri:docs/evidence/civic-action-paths/before/capture-manifest.json",
+      "path": "docs/evidence/civic-action-paths/before/capture-manifest.json",
+      "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+      "content_class": "private-evidence-reference",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-03",
+      "register_id": "cityscroll-repository-control-plane/rcp-03",
+      "disposition": "privatize",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-03#private-uri-9e5a1095c029",
+      "history_treatment": "review-required",
+      "source": {
+        "path": "docs/evidence/civic-action-paths/before/capture-manifest.json",
+        "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+        "sha256": "7fc9bce617a26f4c0243ba95b4784466abf83a13eafed440dc02daf762c1d28e"
+      }
+    },
+    {
+      "id": "private-uri:docs/evidence/docs-capability-refresh/receipt.json",
+      "path": "docs/evidence/docs-capability-refresh/receipt.json",
+      "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+      "content_class": "private-evidence-reference",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-03",
+      "register_id": "cityscroll-repository-control-plane/rcp-03",
+      "disposition": "privatize",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-03#private-uri-e821012b68d9",
+      "history_treatment": "review-required",
+      "source": {
+        "path": "docs/evidence/docs-capability-refresh/receipt.json",
+        "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+        "sha256": "ab54b3d7d95d317e346251f63024bb30b228e0c497bd52741f9d631da8d2b20a"
+      }
+    },
+    {
+      "id": "private-uri:docs/evidence/exam-cycle-coherence/class-measurement.json",
+      "path": "docs/evidence/exam-cycle-coherence/class-measurement.json",
+      "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+      "content_class": "private-evidence-reference",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-03",
+      "register_id": "cityscroll-repository-control-plane/rcp-03",
+      "disposition": "privatize",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-03#private-uri-d7dae5f82890",
+      "history_treatment": "review-required",
+      "source": {
+        "path": "docs/evidence/exam-cycle-coherence/class-measurement.json",
+        "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+        "sha256": "7d46022ff4ab8e98ffa0b203b8ca5da177f6a6d7911fa3e085775cfc81f658f6"
+      }
+    },
+    {
+      "id": "private-uri:docs/evidence/frontstage-root/README.md",
+      "path": "docs/evidence/frontstage-root/README.md",
+      "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+      "content_class": "private-evidence-reference",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-03",
+      "register_id": "cityscroll-repository-control-plane/rcp-03",
+      "disposition": "privatize",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-03#private-uri-7a4dc0b5c554",
+      "history_treatment": "review-required",
+      "source": {
+        "path": "docs/evidence/frontstage-root/README.md",
+        "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+        "sha256": "b8bb5b26ccc04a64da975350544e307c978f60aae4e896f5caa2413dee44704e"
+      }
+    },
+    {
+      "id": "private-uri:docs/evidence/map-money-localization/yield_receipt.json",
+      "path": "docs/evidence/map-money-localization/yield_receipt.json",
+      "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+      "content_class": "private-evidence-reference",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-03",
+      "register_id": "cityscroll-repository-control-plane/rcp-03",
+      "disposition": "privatize",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-03#private-uri-38cc42c0a982",
+      "history_treatment": "review-required",
+      "source": {
+        "path": "docs/evidence/map-money-localization/yield_receipt.json",
+        "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+        "sha256": "8c6652dea9ccf661740f1b6bc6251e278e1484b636d5153c767a3eb2f46b4a65"
+      }
+    },
+    {
+      "id": "private-uri:docs/evidence/vendor-footprint.md",
+      "path": "docs/evidence/vendor-footprint.md",
+      "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+      "content_class": "private-evidence-reference",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-03",
+      "register_id": "cityscroll-repository-control-plane/rcp-03",
+      "disposition": "privatize",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-03#private-uri-4bba7f97537d",
+      "history_treatment": "review-required",
+      "source": {
+        "path": "docs/evidence/vendor-footprint.md",
+        "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+        "sha256": "86b3fa35feb0f875dc32b259697b50b5f8bdffa2a0839b4abf04008e759e03b2"
+      }
+    },
+    {
+      "id": "private-uri:docs/performance/content-parity/notice-context-critical-path/after/capture.json",
+      "path": "docs/performance/content-parity/notice-context-critical-path/after/capture.json",
+      "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+      "content_class": "private-evidence-reference",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-03",
+      "register_id": "cityscroll-repository-control-plane/rcp-03",
+      "disposition": "privatize",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-03#private-uri-9348c0ce73f6",
+      "history_treatment": "review-required",
+      "source": {
+        "path": "docs/performance/content-parity/notice-context-critical-path/after/capture.json",
+        "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+        "sha256": "b992150070a1d256c0544c25576ae38a78d4220285aa2440c6846970479cee84"
+      }
+    },
+    {
+      "id": "private-uri:docs/performance/content-parity/notice-context-critical-path/before/capture.json",
+      "path": "docs/performance/content-parity/notice-context-critical-path/before/capture.json",
+      "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+      "content_class": "private-evidence-reference",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-03",
+      "register_id": "cityscroll-repository-control-plane/rcp-03",
+      "disposition": "privatize",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-03#private-uri-8ad384b116ee",
+      "history_treatment": "review-required",
+      "source": {
+        "path": "docs/performance/content-parity/notice-context-critical-path/before/capture.json",
+        "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+        "sha256": "f8252602366aba0ea321677ac0058bb99c9d3a9ec0045ab24323d74c72740fe7"
+      }
+    },
+    {
+      "id": "private-uri:docs/performance/content-parity/rank-5/focused-pass/baseline/capture.json",
+      "path": "docs/performance/content-parity/rank-5/focused-pass/baseline/capture.json",
+      "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+      "content_class": "private-evidence-reference",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-03",
+      "register_id": "cityscroll-repository-control-plane/rcp-03",
+      "disposition": "privatize",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-03#private-uri-9358fcea18b4",
+      "history_treatment": "review-required",
+      "source": {
+        "path": "docs/performance/content-parity/rank-5/focused-pass/baseline/capture.json",
+        "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+        "sha256": "cea7010899046e5a83d6e5bcd6a87c05517600bb817fda05490b4701e0dbacd5"
+      }
+    },
+    {
+      "id": "private-uri:docs/performance/content-parity/rank-5/focused-pass/candidate/capture.json",
+      "path": "docs/performance/content-parity/rank-5/focused-pass/candidate/capture.json",
+      "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+      "content_class": "private-evidence-reference",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-03",
+      "register_id": "cityscroll-repository-control-plane/rcp-03",
+      "disposition": "privatize",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-03#private-uri-962cd4d0316e",
+      "history_treatment": "review-required",
+      "source": {
+        "path": "docs/performance/content-parity/rank-5/focused-pass/candidate/capture.json",
+        "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+        "sha256": "d476935f5fc1a7182225ae95521a9f1d3aabecf4cacd7aa14dfe1fbcceebeb1e"
+      }
+    },
+    {
+      "id": "private-uri:docs/performance/content-parity/rank-5/full-six/baseline/capture.json",
+      "path": "docs/performance/content-parity/rank-5/full-six/baseline/capture.json",
+      "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+      "content_class": "private-evidence-reference",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-03",
+      "register_id": "cityscroll-repository-control-plane/rcp-03",
+      "disposition": "privatize",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-03#private-uri-08e8828b599a",
+      "history_treatment": "review-required",
+      "source": {
+        "path": "docs/performance/content-parity/rank-5/full-six/baseline/capture.json",
+        "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+        "sha256": "8810bcc30b904abbf064accd90e11729a13ccea43afa38a2ba40ec728ca55497"
+      }
+    },
+    {
+      "id": "private-uri:docs/performance/content-parity/rank-5/full-six/candidate/capture.json",
+      "path": "docs/performance/content-parity/rank-5/full-six/candidate/capture.json",
+      "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+      "content_class": "private-evidence-reference",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-03",
+      "register_id": "cityscroll-repository-control-plane/rcp-03",
+      "disposition": "privatize",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-03#private-uri-1e8c933a9725",
+      "history_treatment": "review-required",
+      "source": {
+        "path": "docs/performance/content-parity/rank-5/full-six/candidate/capture.json",
+        "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+        "sha256": "555d31e1efc25fe7ee7183e4ed3687c29199df2cd9226e8bd5f46ebd201afe63"
+      }
+    },
+    {
+      "id": "private-uri:docs/screenshots/action-outcome-prompt/capture-receipt.json",
+      "path": "docs/screenshots/action-outcome-prompt/capture-receipt.json",
+      "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+      "content_class": "private-evidence-reference",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-03",
+      "register_id": "cityscroll-repository-control-plane/rcp-03",
+      "disposition": "privatize",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-03#private-uri-d83cac3aafba",
+      "history_treatment": "review-required",
+      "source": {
+        "path": "docs/screenshots/action-outcome-prompt/capture-receipt.json",
+        "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+        "sha256": "8d375d121a659556d041c5e79c63345681fcdec83596fc27f5f81b7d82eae7fd"
+      }
+    },
+    {
+      "id": "private-uri:docs/screenshots/agency-false-splits/summary.json",
+      "path": "docs/screenshots/agency-false-splits/summary.json",
+      "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+      "content_class": "private-evidence-reference",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-03",
+      "register_id": "cityscroll-repository-control-plane/rcp-03",
+      "disposition": "privatize",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-03#private-uri-3224c740c61e",
+      "history_treatment": "review-required",
+      "source": {
+        "path": "docs/screenshots/agency-false-splits/summary.json",
+        "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+        "sha256": "63219049ae81880fc381f26ac5597e4e749b8da7c0fd1c2fc546d4d83449edc6"
+      }
+    },
+    {
+      "id": "private-uri:docs/screenshots/api-parity-b2-search/capture-receipt.json",
+      "path": "docs/screenshots/api-parity-b2-search/capture-receipt.json",
+      "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+      "content_class": "private-evidence-reference",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-03",
+      "register_id": "cityscroll-repository-control-plane/rcp-03",
+      "disposition": "privatize",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-03#private-uri-aad924f7676f",
+      "history_treatment": "review-required",
+      "source": {
+        "path": "docs/screenshots/api-parity-b2-search/capture-receipt.json",
+        "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+        "sha256": "2c8f5a2d09a2e2881a6a08baed468321492d7297e22348289a99bace495afd3d"
+      }
+    },
+    {
+      "id": "private-uri:docs/screenshots/browse-civic-domains/manifest.json",
+      "path": "docs/screenshots/browse-civic-domains/manifest.json",
+      "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+      "content_class": "private-evidence-reference",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-03",
+      "register_id": "cityscroll-repository-control-plane/rcp-03",
+      "disposition": "privatize",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-03#private-uri-93833a1cbae8",
+      "history_treatment": "review-required",
+      "source": {
+        "path": "docs/screenshots/browse-civic-domains/manifest.json",
+        "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+        "sha256": "50f3a940b45f0f9b724c04bf1713acc3207c8936f8ccc7f881e05771a025b0ac"
+      }
+    },
+    {
+      "id": "private-uri:docs/screenshots/browse-interaction-grammar/capture-receipt.json",
+      "path": "docs/screenshots/browse-interaction-grammar/capture-receipt.json",
+      "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+      "content_class": "private-evidence-reference",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-03",
+      "register_id": "cityscroll-repository-control-plane/rcp-03",
+      "disposition": "privatize",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-03#private-uri-e69203959087",
+      "history_treatment": "review-required",
+      "source": {
+        "path": "docs/screenshots/browse-interaction-grammar/capture-receipt.json",
+        "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+        "sha256": "b76f567c8fefe4ed0af7a80f3d8cebc73416a685bcf98105ab2f40805ada5f70"
+      }
+    },
+    {
+      "id": "private-uri:docs/screenshots/city-record-decentering/capture-receipt.json",
+      "path": "docs/screenshots/city-record-decentering/capture-receipt.json",
+      "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+      "content_class": "private-evidence-reference",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-03",
+      "register_id": "cityscroll-repository-control-plane/rcp-03",
+      "disposition": "privatize",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-03#private-uri-844c7d9a30a0",
+      "history_treatment": "review-required",
+      "source": {
+        "path": "docs/screenshots/city-record-decentering/capture-receipt.json",
+        "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+        "sha256": "aa0f184be39375e1522f45724895653e07b2ecc92f5def26711d95862c6d3440"
+      }
+    },
+    {
+      "id": "private-uri:docs/screenshots/community-board-money/manifest.json",
+      "path": "docs/screenshots/community-board-money/manifest.json",
+      "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+      "content_class": "private-evidence-reference",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-03",
+      "register_id": "cityscroll-repository-control-plane/rcp-03",
+      "disposition": "privatize",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-03#private-uri-21b4d44d456d",
+      "history_treatment": "review-required",
+      "source": {
+        "path": "docs/screenshots/community-board-money/manifest.json",
+        "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+        "sha256": "c0e187411a81d61d244b75aab1822d4c81a21a796c2bf5f77f6777b024374116"
+      }
+    },
+    {
+      "id": "private-uri:docs/screenshots/community-boards-directory/manifest.json",
+      "path": "docs/screenshots/community-boards-directory/manifest.json",
+      "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+      "content_class": "private-evidence-reference",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-03",
+      "register_id": "cityscroll-repository-control-plane/rcp-03",
+      "disposition": "privatize",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-03#private-uri-b3832d8a7f45",
+      "history_treatment": "review-required",
+      "source": {
+        "path": "docs/screenshots/community-boards-directory/manifest.json",
+        "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+        "sha256": "fe2b13f3e32d2250d1b32faae5a86513a2b27af93d8e6e77848990dd18e83f2a"
+      }
+    },
+    {
+      "id": "private-uri:docs/screenshots/community-boards-map/manifest.json",
+      "path": "docs/screenshots/community-boards-map/manifest.json",
+      "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+      "content_class": "private-evidence-reference",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-03",
+      "register_id": "cityscroll-repository-control-plane/rcp-03",
+      "disposition": "privatize",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-03#private-uri-6b9eb3566896",
+      "history_treatment": "review-required",
+      "source": {
+        "path": "docs/screenshots/community-boards-map/manifest.json",
+        "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+        "sha256": "7baddd7b4aaa23d5dccf23423d57b79b33fa7192f89b3999ee0cdee56c727a8d"
+      }
+    },
+    {
+      "id": "private-uri:docs/screenshots/deadline-exam-cards/metrics.json",
+      "path": "docs/screenshots/deadline-exam-cards/metrics.json",
+      "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+      "content_class": "private-evidence-reference",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-03",
+      "register_id": "cityscroll-repository-control-plane/rcp-03",
+      "disposition": "privatize",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-03#private-uri-d65cd1a6c122",
+      "history_treatment": "review-required",
+      "source": {
+        "path": "docs/screenshots/deadline-exam-cards/metrics.json",
+        "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+        "sha256": "f3c339eba552afeae1e787bc833f3229c54b84933a0469854a044d118db62eeb"
+      }
+    },
+    {
+      "id": "private-uri:docs/screenshots/exam-outcomes/metrics.json",
+      "path": "docs/screenshots/exam-outcomes/metrics.json",
+      "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+      "content_class": "private-evidence-reference",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-03",
+      "register_id": "cityscroll-repository-control-plane/rcp-03",
+      "disposition": "privatize",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-03#private-uri-cf202dd1b826",
+      "history_treatment": "review-required",
+      "source": {
+        "path": "docs/screenshots/exam-outcomes/metrics.json",
+        "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+        "sha256": "2869f6966bafe6625a724458432616b8a7a12fa9dab7158a263f219725cda529"
+      }
+    },
+    {
+      "id": "private-uri:docs/screenshots/footer-browse-hierarchy/manifest.json",
+      "path": "docs/screenshots/footer-browse-hierarchy/manifest.json",
+      "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+      "content_class": "private-evidence-reference",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-03",
+      "register_id": "cityscroll-repository-control-plane/rcp-03",
+      "disposition": "privatize",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-03#private-uri-bfdcc4f0bc8c",
+      "history_treatment": "review-required",
+      "source": {
+        "path": "docs/screenshots/footer-browse-hierarchy/manifest.json",
+        "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+        "sha256": "49bc2cc358c9b2869ea1e0115e479bd113429fae1be5c9b2adc69dcb02610f65"
+      }
+    },
+    {
+      "id": "private-uri:docs/screenshots/gap-taxonomy/metrics.json",
+      "path": "docs/screenshots/gap-taxonomy/metrics.json",
+      "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+      "content_class": "private-evidence-reference",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-03",
+      "register_id": "cityscroll-repository-control-plane/rcp-03",
+      "disposition": "privatize",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-03#private-uri-2105b95dce39",
+      "history_treatment": "review-required",
+      "source": {
+        "path": "docs/screenshots/gap-taxonomy/metrics.json",
+        "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+        "sha256": "205627bfbc8d419de77aed1768d0e1d1127db1ab7b71113e89d9517073fe6c93"
+      }
+    },
+    {
+      "id": "private-uri:docs/screenshots/land-stage-coherence/manifest.json",
+      "path": "docs/screenshots/land-stage-coherence/manifest.json",
+      "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+      "content_class": "private-evidence-reference",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-03",
+      "register_id": "cityscroll-repository-control-plane/rcp-03",
+      "disposition": "privatize",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-03#private-uri-c4e517d9d976",
+      "history_treatment": "review-required",
+      "source": {
+        "path": "docs/screenshots/land-stage-coherence/manifest.json",
+        "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+        "sha256": "89bf46b3906121e435823d0d1b1d1b5fa674d7eade3bdfda8d9307003728c038"
+      }
+    },
+    {
+      "id": "private-uri:docs/screenshots/mandate-edges-specific/receipt.json",
+      "path": "docs/screenshots/mandate-edges-specific/receipt.json",
+      "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+      "content_class": "private-evidence-reference",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-03",
+      "register_id": "cityscroll-repository-control-plane/rcp-03",
+      "disposition": "privatize",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-03#private-uri-ed9bd51c2f2b",
+      "history_treatment": "review-required",
+      "source": {
+        "path": "docs/screenshots/mandate-edges-specific/receipt.json",
+        "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+        "sha256": "326ecfe0166b4ef914efd60f00e6e12d007e2c7762f455b0be028bc1728f48de"
+      }
+    },
+    {
+      "id": "private-uri:docs/screenshots/map-geography-labels/manifest.json",
+      "path": "docs/screenshots/map-geography-labels/manifest.json",
+      "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+      "content_class": "private-evidence-reference",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-03",
+      "register_id": "cityscroll-repository-control-plane/rcp-03",
+      "disposition": "privatize",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-03#private-uri-0664b6315c09",
+      "history_treatment": "review-required",
+      "source": {
+        "path": "docs/screenshots/map-geography-labels/manifest.json",
+        "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+        "sha256": "1dc5f691a444c83dc81de38ead61ee442e4d855f57aea3c74dac75c01dd7dfc5"
+      }
+    },
+    {
+      "id": "private-uri:docs/screenshots/mobile-intentional/capture-receipt.json",
+      "path": "docs/screenshots/mobile-intentional/capture-receipt.json",
+      "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+      "content_class": "private-evidence-reference",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-03",
+      "register_id": "cityscroll-repository-control-plane/rcp-03",
+      "disposition": "privatize",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-03#private-uri-e0c049ae57b5",
+      "history_treatment": "review-required",
+      "source": {
+        "path": "docs/screenshots/mobile-intentional/capture-receipt.json",
+        "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+        "sha256": "6d56a593226d2d540ac9e39a34e084654522b8df6961cbd746d6b2c176aedbf2"
+      }
+    },
+    {
+      "id": "private-uri:docs/screenshots/near-you-map-nav-fixes/manifest.json",
+      "path": "docs/screenshots/near-you-map-nav-fixes/manifest.json",
+      "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+      "content_class": "private-evidence-reference",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-03",
+      "register_id": "cityscroll-repository-control-plane/rcp-03",
+      "disposition": "privatize",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-03#private-uri-5da5124cb37c",
+      "history_treatment": "review-required",
+      "source": {
+        "path": "docs/screenshots/near-you-map-nav-fixes/manifest.json",
+        "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+        "sha256": "92b1c28eac98e014a10b54596a221d7fabfa13c1dfc3146e4a8bacb7333db7c8"
+      }
+    },
+    {
+      "id": "private-uri:docs/screenshots/near-you-static-first/manifest.json",
+      "path": "docs/screenshots/near-you-static-first/manifest.json",
+      "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+      "content_class": "private-evidence-reference",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-03",
+      "register_id": "cityscroll-repository-control-plane/rcp-03",
+      "disposition": "privatize",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-03#private-uri-176bb0b32540",
+      "history_treatment": "review-required",
+      "source": {
+        "path": "docs/screenshots/near-you-static-first/manifest.json",
+        "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+        "sha256": "0a41ff7915829c7bd693f89fbbaed2b54688da0a9a7649cf14171f870229da95"
+      }
+    },
+    {
+      "id": "private-uri:docs/screenshots/near-you-surface-polish/manifest.json",
+      "path": "docs/screenshots/near-you-surface-polish/manifest.json",
+      "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+      "content_class": "private-evidence-reference",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-03",
+      "register_id": "cityscroll-repository-control-plane/rcp-03",
+      "disposition": "privatize",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-03#private-uri-33ba25950e38",
+      "history_treatment": "review-required",
+      "source": {
+        "path": "docs/screenshots/near-you-surface-polish/manifest.json",
+        "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+        "sha256": "ba8e79d25d4bc84304a75555d86a74247d1db3f45465d8a9c0869cd7e995f118"
+      }
+    },
+    {
+      "id": "private-uri:docs/screenshots/notice-methodology/capture-receipt.json",
+      "path": "docs/screenshots/notice-methodology/capture-receipt.json",
+      "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+      "content_class": "private-evidence-reference",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-03",
+      "register_id": "cityscroll-repository-control-plane/rcp-03",
+      "disposition": "privatize",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-03#private-uri-f7114e81a5f2",
+      "history_treatment": "review-required",
+      "source": {
+        "path": "docs/screenshots/notice-methodology/capture-receipt.json",
+        "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+        "sha256": "b81eed4f8ae83b104ed29e0182bb3f7c4b73d2eeaa188db12fbced5ef075e030"
+      }
+    },
+    {
+      "id": "private-uri:docs/screenshots/now-surface/manifest.json",
+      "path": "docs/screenshots/now-surface/manifest.json",
+      "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+      "content_class": "private-evidence-reference",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-03",
+      "register_id": "cityscroll-repository-control-plane/rcp-03",
+      "disposition": "privatize",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-03#private-uri-848513007b88",
+      "history_treatment": "review-required",
+      "source": {
+        "path": "docs/screenshots/now-surface/manifest.json",
+        "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+        "sha256": "556faa73028591aaade2891480d14f3b46c2b8a8d96c3622d5a0eeadb8114d4c"
+      }
+    },
+    {
+      "id": "private-uri:docs/screenshots/project-calendar/README.md",
+      "path": "docs/screenshots/project-calendar/README.md",
+      "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+      "content_class": "private-evidence-reference",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-03",
+      "register_id": "cityscroll-repository-control-plane/rcp-03",
+      "disposition": "privatize",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-03#private-uri-6dad959c9cad",
+      "history_treatment": "review-required",
+      "source": {
+        "path": "docs/screenshots/project-calendar/README.md",
+        "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+        "sha256": "9f5e5117f46fd25fc32b0dd85564dc10c2c61ac60ece0a96f470000c6d551d91"
+      }
+    },
+    {
+      "id": "private-uri:docs/screenshots/r2-token-consistency/manifest.json",
+      "path": "docs/screenshots/r2-token-consistency/manifest.json",
+      "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+      "content_class": "private-evidence-reference",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-03",
+      "register_id": "cityscroll-repository-control-plane/rcp-03",
+      "disposition": "privatize",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-03#private-uri-ab363f4bca48",
+      "history_treatment": "review-required",
+      "source": {
+        "path": "docs/screenshots/r2-token-consistency/manifest.json",
+        "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+        "sha256": "3c8bb936ace0df5bf07a4a2dc1ff4e54c28c22d3d6351e3d83093093dc2427a0"
+      }
+    },
+    {
+      "id": "private-uri:docs/screenshots/rfx-documents-recon/manifest.json",
+      "path": "docs/screenshots/rfx-documents-recon/manifest.json",
+      "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+      "content_class": "private-evidence-reference",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-03",
+      "register_id": "cityscroll-repository-control-plane/rcp-03",
+      "disposition": "privatize",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-03#private-uri-4b2692c8ae51",
+      "history_treatment": "review-required",
+      "source": {
+        "path": "docs/screenshots/rfx-documents-recon/manifest.json",
+        "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+        "sha256": "b403a02e564693c21437d92cb55db8a9c7b8d8259ddb5f4c479cbe6d1dab2373"
+      }
+    },
+    {
+      "id": "private-uri:docs/screenshots/staffing-guide/metrics.json",
+      "path": "docs/screenshots/staffing-guide/metrics.json",
+      "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+      "content_class": "private-evidence-reference",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-03",
+      "register_id": "cityscroll-repository-control-plane/rcp-03",
+      "disposition": "privatize",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-03#private-uri-c58dfa885fcf",
+      "history_treatment": "review-required",
+      "source": {
+        "path": "docs/screenshots/staffing-guide/metrics.json",
+        "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+        "sha256": "4a4a5e51dc94cc7737c08642af5984d2dfed67133de70e22178138f8ccc46f1a"
+      }
+    },
+    {
+      "id": "private-uri:docs/screenshots/ulurp-statutory-clock/manifest.json",
+      "path": "docs/screenshots/ulurp-statutory-clock/manifest.json",
+      "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+      "content_class": "private-evidence-reference",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-03",
+      "register_id": "cityscroll-repository-control-plane/rcp-03",
+      "disposition": "privatize",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-03#private-uri-f4662c4dad38",
+      "history_treatment": "review-required",
+      "source": {
+        "path": "docs/screenshots/ulurp-statutory-clock/manifest.json",
+        "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+        "sha256": "640906e7710db9d8dfc2986799f7f6b43962936e11ded119e3fc1883dfa8e5aa"
+      }
+    },
+    {
+      "id": "private-uri:docs/screenshots/us16-parcels-worker-corpus/README.md",
+      "path": "docs/screenshots/us16-parcels-worker-corpus/README.md",
+      "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+      "content_class": "private-evidence-reference",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-03",
+      "register_id": "cityscroll-repository-control-plane/rcp-03",
+      "disposition": "privatize",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-03#private-uri-089d42480c6d",
+      "history_treatment": "review-required",
+      "source": {
+        "path": "docs/screenshots/us16-parcels-worker-corpus/README.md",
+        "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+        "sha256": "eff75838a529973d7af8f75abe4eedacd6435b592f9b5b0678b057831a843e88"
+      }
+    },
+    {
+      "id": "private-uri:docs/screenshots/us17-committees-worker-lens/README.md",
+      "path": "docs/screenshots/us17-committees-worker-lens/README.md",
+      "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+      "content_class": "private-evidence-reference",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-03",
+      "register_id": "cityscroll-repository-control-plane/rcp-03",
+      "disposition": "privatize",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-03#private-uri-80e1aba42e3d",
+      "history_treatment": "review-required",
+      "source": {
+        "path": "docs/screenshots/us17-committees-worker-lens/README.md",
+        "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+        "sha256": "bac20487e8271acc358740716270ae5e5f56964701952aa4eb0e6965e2ea6b40"
+      }
+    },
+    {
+      "id": "private-uri:docs/screenshots/zap-hearing-logistics/receipt.json",
+      "path": "docs/screenshots/zap-hearing-logistics/receipt.json",
+      "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+      "content_class": "private-evidence-reference",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-03",
+      "register_id": "cityscroll-repository-control-plane/rcp-03",
+      "disposition": "privatize",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-03#private-uri-388514aa57da",
+      "history_treatment": "review-required",
+      "source": {
+        "path": "docs/screenshots/zap-hearing-logistics/receipt.json",
+        "selector": "all backstage://cityscroll-evidence/ URI occurrences",
+        "sha256": "f1175c07fbca5d6dfdc9a461d14bd8fc46f32d8629b7a8ddc36bc4a7e89ad1b3"
+      }
+    },
+    {
+      "id": "property-a11y:ranked-plan",
+      "path": "docs/property-a11y-census-2026-08.md",
+      "selector": "ranked plan for ships 2-4",
+      "content_class": "mixed-current-contract-and-temporal-intent",
+      "canonical_owner": "unresolved",
+      "register_id": "unresolved",
+      "disposition": "split",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-01#property-a11y:ranked-plan",
+      "history_treatment": "none",
+      "source": {
+        "path": "docs/property-a11y-census-2026-08.md",
+        "selector": "ranked plan for ships 2-4",
+        "sha256": "fb89de94af6277d34f6884be6a9adddfe565c1600b1fbae0d17c9c9905cb7a3d"
+      }
+    },
+    {
+      "id": "research:docs/adr/civic-time-event-contract.md",
+      "path": "docs/adr/civic-time-event-contract.md",
+      "selector": "Cangshu identifiers, acquisition state, or internal research debt",
+      "content_class": "internal-research-bookkeeping",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-03",
+      "register_id": "cityscroll-repository-control-plane/rcp-03",
+      "disposition": "split",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-03#research-30fa27e96470",
+      "history_treatment": "review-required",
+      "source": {
+        "path": "docs/adr/civic-time-event-contract.md",
+        "selector": "Cangshu identifiers, acquisition state, or internal research debt",
+        "sha256": "c1f71fa5f05163fc71669ac330bb12e9278c97503bc97e82231dcdbce53d99f2"
+      }
+    },
+    {
+      "id": "research:docs/design-principles-lens.md",
+      "path": "docs/design-principles-lens.md",
+      "selector": "Cangshu identifiers, acquisition state, or internal research debt",
+      "content_class": "internal-research-bookkeeping",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-03",
+      "register_id": "cityscroll-repository-control-plane/rcp-03",
+      "disposition": "split",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-03#research-efa71ffdd3f6",
+      "history_treatment": "review-required",
+      "source": {
+        "path": "docs/design-principles-lens.md",
+        "selector": "Cangshu identifiers, acquisition state, or internal research debt",
+        "sha256": "d05c507e642b5c8d9d40382d5ee896df91483978f6bdb963603bfd88e5fc61a0"
+      }
+    },
+    {
+      "id": "retained:accepted-adrs",
+      "path": "docs/adr/*.md",
+      "selector": "pattern",
+      "content_class": "accepted-architecture",
+      "canonical_owner": "cityscroll-living-architecture",
+      "register_id": "cityscroll-living-architecture",
+      "disposition": "keep",
+      "stable_replacement_reference": "repo:docs/adr/",
+      "history_treatment": "none",
+      "source": {
+        "path": "docs/adr/*.md",
+        "selector": "pattern",
+        "sha256": "3bc73798cbf2b3cade26a859a1549b9355071215465c8490c5c6b534aeb313e2"
+      }
+    },
+    {
+      "id": "retained:fixtures",
+      "path": "test/fixtures/**",
+      "selector": "pattern",
+      "content_class": "fixtures",
+      "canonical_owner": "repository",
+      "register_id": "not-applicable",
+      "disposition": "keep",
+      "stable_replacement_reference": "repo:test/fixtures/",
+      "history_treatment": "none",
+      "source": {
+        "path": "test/fixtures/**",
+        "selector": "pattern",
+        "sha256": "cdd60cdbc8ef39220891b6137e8354c95610b9635c1e7840e57ee3986b62e8a1"
+      }
+    },
+    {
+      "id": "retained:generators",
+      "path": "tools/build_*.mjs",
+      "selector": "pattern",
+      "content_class": "deterministic-generators",
+      "canonical_owner": "repository",
+      "register_id": "not-applicable",
+      "disposition": "keep",
+      "stable_replacement_reference": "repo:tools/",
+      "history_treatment": "none",
+      "source": {
+        "path": "tools/build_*.mjs",
+        "selector": "pattern",
+        "sha256": "7f764b9d4c99328827475d4beae05ac8dfd4e4fcab9564f3784949917b8ba812"
+      }
+    },
+    {
+      "id": "retained:mt7-shards",
+      "path": "architecture/evidence.d/*.json",
+      "selector": "pattern",
+      "content_class": "implementation-evidence-shards",
+      "canonical_owner": "cityscroll-merge-throughput/mt-7-architecture-evidence-shards",
+      "register_id": "cityscroll-merge-throughput/mt-7-architecture-evidence-shards",
+      "disposition": "keep",
+      "stable_replacement_reference": "repo:architecture/evidence.d/",
+      "history_treatment": "none",
+      "source": {
+        "path": "architecture/evidence.d/*.json",
+        "selector": "pattern",
+        "sha256": "f87259249a1e743f49ccd0642ee967f5a6beda062035072062d7f8ae763b0e28"
+      }
+    },
+    {
+      "id": "retained:public-evidence",
+      "path": "docs/evidence/** excluding private-reference sections",
+      "selector": "pattern",
+      "content_class": "reproducible-public-evidence",
+      "canonical_owner": "repository",
+      "register_id": "not-applicable",
+      "disposition": "keep",
+      "stable_replacement_reference": "repo:docs/evidence/",
+      "history_treatment": "none",
+      "source": {
+        "path": "docs/evidence/** excluding private-reference sections",
+        "selector": "pattern",
+        "sha256": "02c4732bfd49b8bc2312cbb5e897fcab0b356f4af066e658ca4367169dd12f2d"
+      }
+    },
+    {
+      "id": "retained:runbooks",
+      "path": "docs/*runbook*.md",
+      "selector": "pattern",
+      "content_class": "current-maintainer-runbooks",
+      "canonical_owner": "repository",
+      "register_id": "not-applicable",
+      "disposition": "keep",
+      "stable_replacement_reference": "repo:docs/",
+      "history_treatment": "none",
+      "source": {
+        "path": "docs/*runbook*.md",
+        "selector": "pattern",
+        "sha256": "179c51ec24254ed21f8bd67bf36b8ce62d62c7bd2b85d7df05b3ca41581a82ee"
+      }
+    },
+    {
+      "id": "retained:source-contracts",
+      "path": "ontology/**; site/**/*.schema.json",
+      "selector": "pattern",
+      "content_class": "source-contracts",
+      "canonical_owner": "repository",
+      "register_id": "not-applicable",
+      "disposition": "keep",
+      "stable_replacement_reference": "repo:ontology/",
+      "history_treatment": "none",
+      "source": {
+        "path": "ontology/**; site/**/*.schema.json",
+        "selector": "pattern",
+        "sha256": "516a34fba6dc0edca9bb0e3976ea6d0b49410152e4db76b2d05a8254e020f436"
+      }
+    },
+    {
+      "id": "retained:tests",
+      "path": "test/**; worker/test/**",
+      "selector": "pattern",
+      "content_class": "tests",
+      "canonical_owner": "repository",
+      "register_id": "not-applicable",
+      "disposition": "keep",
+      "stable_replacement_reference": "repo:test/",
+      "history_treatment": "none",
+      "source": {
+        "path": "test/**; worker/test/**",
+        "selector": "pattern",
+        "sha256": "9b21023bb67a8e6d037d46648b48897ba2ee194ff39a33073ad18226fd0280e2"
+      }
+    },
+    {
+      "id": "scrim:generated-inventory",
+      "path": "docs/repository-scrim-review.md",
+      "selector": "1144-occurrence generated inventory",
+      "content_class": "bulky-generated-review-inventory",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-03",
+      "register_id": "cityscroll-repository-control-plane/rcp-03",
+      "disposition": "privatize",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-03#scrim-inventory",
+      "history_treatment": "review-required",
+      "source": {
+        "path": "docs/repository-scrim-review.md",
+        "selector": "1144-occurrence generated inventory",
+        "sha256": "6166cdbe5eea11a308fc5a3c6db05a7c018122eb08758cee68727ccc4c196a02"
+      }
+    },
+    {
+      "id": "semantic-trial:next-step",
+      "path": "docs/research/semantic-layer-trial-2026-08-04.md",
+      "selector": "best next step and internal research state",
+      "content_class": "mixed-current-contract-and-temporal-intent",
+      "canonical_owner": "unresolved",
+      "register_id": "unresolved",
+      "disposition": "split",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-01#semantic-trial:next-step",
+      "history_treatment": "none",
+      "source": {
+        "path": "docs/research/semantic-layer-trial-2026-08-04.md",
+        "selector": "best next step and internal research state",
+        "sha256": "acb06081d75a030878596578354b8cf681d6e7d184dbd59314c35b87a725ccc6"
+      }
+    },
+    {
+      "id": "source-health:follow-up-queue",
+      "path": "docs/source-health-participation.md",
+      "selector": "uncarded follow-up queue",
+      "content_class": "mixed-current-contract-and-temporal-intent",
+      "canonical_owner": "unresolved",
+      "register_id": "unresolved",
+      "disposition": "split",
+      "stable_replacement_reference": "register:cityscroll-repository-control-plane/rcp-01#source-health:follow-up-queue",
+      "history_treatment": "none",
+      "source": {
+        "path": "docs/source-health-participation.md",
+        "selector": "uncarded follow-up queue",
+        "sha256": "eb2293b3f3d0fd83772c84a2ab336e7402ba6c02520f7c4aaab0fc7cb78a14b4"
+      }
+    }
+  ]
+}
