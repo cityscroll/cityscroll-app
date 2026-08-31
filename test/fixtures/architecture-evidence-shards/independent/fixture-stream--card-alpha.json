@@ -1,0 +1,13 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "fixture-stream/card-alpha",
+  "status": "implemented",
+  "fingerprint": "card-alpha.v1",
+  "updated_at": "2026-08-30T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "alpha-surface",
+      "path": "site/data/alpha.json"
+    }
+  ]
+}

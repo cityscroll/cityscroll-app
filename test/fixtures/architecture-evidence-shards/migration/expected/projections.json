@@ -1,0 +1,29 @@
+{
+  "schema": "cityscroll.card-projection-inventory.v1",
+  "projections": [
+    {
+      "id": "land-project-map-points",
+      "path": "site/data/land_project_map_points.json",
+      "cards": [
+        {
+          "id": "cityscroll-land-map-view/lm-02-project-point-materializer",
+          "status": "implemented",
+          "source_fingerprint": "lm-02-project-point-materializer.v1",
+          "source_updated_at": "2026-08-30T00:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "id": "land-project-map-points-receipt",
+      "path": "site/data/land_project_map_points_receipt.json",
+      "cards": [
+        {
+          "id": "cityscroll-land-map-view/lm-02-project-point-materializer",
+          "status": "implemented",
+          "source_fingerprint": "lm-02-project-point-materializer.v1",
+          "source_updated_at": "2026-08-30T00:00:00.000Z"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,444 @@
+#!/usr/bin/env node
+
+/**
+ * Architecture-evidence entry shards.
+ *
+ * architecture/evidence.d/<stable-entry-id>.json is the source-owned registry.
+ * This aggregator discovers those entries, validates identity and schema, and
+ * emits the existing card-inventory / card-projection-inventory aggregates.
+ * --check never writes; --write refreshes generated compatibility files.
+ */
+
+import { createHash } from "node:crypto";
+import {
+  existsSync,
+  mkdirSync,
+  readdirSync,
+  readFileSync,
+  statSync,
+  writeFileSync,
+} from "node:fs";
+import { dirname, join, relative, resolve } from "node:path";
+import { fileURLToPath, pathToFileURL } from "node:url";
+
+import { evaluateCardReconciliation } from "./card_reconciliation_guard.mjs";
+
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
+
+export const ENTRY_SCHEMA = "cityscroll.architecture-evidence-entry.v1";
+export const ENTRY_SCHEMA_PATH = "architecture/evidence-entry.v1.schema.json";
+export const ENTRY_DIR = "architecture/evidence.d";
+export const SOURCE_CARDS_SCHEMA = "cityscroll.card-inventory.v1";
+export const PROJECTION_INVENTORY_SCHEMA = "cityscroll.card-projection-inventory.v1";
+export const SOURCE_CARDS_RELATIVE = "architecture-evidence/source-cards.json";
+export const PROJECTIONS_RELATIVE = "architecture-evidence/projections.json";
+export const AGGREGATE_RECEIPT_SCHEMA = "cityscroll.architecture-evidence-aggregate.v1";
+export const SUPPORTED_ENTRY_SCHEMAS = Object.freeze([ENTRY_SCHEMA]);
+
+const ENTRY_SEGMENT = "[a-z0-9]+(?:[._-][a-z0-9]+)*";
+const ENTRY_ID_PATTERN = new RegExp(`^${ENTRY_SEGMENT}(?:/${ENTRY_SEGMENT})*$`);
+const IGNORED_ENTRY_NAMES = new Set(["README.md"]);
+
+function posix(root, filePath) {
+  return relative(root, filePath).split("\\").join("/");
+}
+
+function compareText(a, b) {
+  if (a < b) return -1;
+  if (a > b) return 1;
+  return 0;
+}
+
+export function encodeEntryId(id) {
+  return String(id || "").split("/").join("--");
+}
+
+export function decodeEntryFilename(name) {
+  const fileName = String(name || "");
+  if (!fileName.endsWith(".json")) return null;
+  return fileName.slice(0, -".json".length).split("--").join("/");
+}
+
+export function entryRelativePath(id) {
+  return `${ENTRY_DIR}/${encodeEntryId(id)}.json`;
+}
+
+export function renderJson(value) {
+  return `${JSON.stringify(value, null, 2)}\n`;
+}
+
+export function sha256Text(text) {
+  return createHash("sha256").update(text, "utf8").digest("hex");
+}
+
+function finding(message, extra = {}) {
+  return { message, ...extra };
+}
+
+function validateEntryIdentity(id) {
+  if (!id || typeof id !== "string" || !id.trim()) {
+    return "entry is missing a required id";
+  }
+  if (id.includes("--")) {
+    return `entry id ${id} is not collision-safe; path segments must not contain --`;
+  }
+  if (!ENTRY_ID_PATTERN.test(id)) {
+    return `entry id ${id} is not a deterministic collision-safe identity`;
+  }
+  return null;
+}
+
+function validateEntryShape(entry, filePath) {
+  if (!entry || typeof entry !== "object" || Array.isArray(entry)) {
+    return `entry ${filePath} is malformed`;
+  }
+  const schema = entry.schema;
+  if (!schema) return `entry ${filePath} is missing schema`;
+  if (!SUPPORTED_ENTRY_SCHEMAS.includes(schema)) {
+    return `entry ${filePath} has unsupported schema version ${schema}`;
+  }
+  const identityError = validateEntryIdentity(entry.id);
+  if (identityError) return `${identityError} (${filePath})`;
+  if (!entry.status || typeof entry.status !== "string") {
+    return `entry ${filePath} is missing required identity field status`;
+  }
+  if (!entry.fingerprint || typeof entry.fingerprint !== "string") {
+    return `entry ${filePath} is missing required identity field fingerprint`;
+  }
+  if (!entry.updated_at || typeof entry.updated_at !== "string") {
+    return `entry ${filePath} is missing required identity field updated_at`;
+  }
+  if (!Array.isArray(entry.projections)) {
+    return `entry ${filePath} is missing required projections array`;
+  }
+  for (const [index, projection] of entry.projections.entries()) {
+    if (!projection || typeof projection !== "object" || Array.isArray(projection)) {
+      return `entry ${filePath} projection ${index} is malformed`;
+    }
+    if (!projection.id || typeof projection.id !== "string") {
+      return `entry ${filePath} projection ${index} is missing id`;
+    }
+    if (!projection.path || typeof projection.path !== "string") {
+      return `entry ${filePath} projection ${index} is missing path`;
+    }
+  }
+  return null;
+}
+
+function cardRecord(entry) {
+  return {
+    id: entry.id,
+    status: entry.status,
+    fingerprint: entry.fingerprint,
+    updated_at: entry.updated_at,
+  };
+}
+
+function projectionCardRecord(entry) {
+  return {
+    id: entry.id,
+    status: entry.status,
+    source_fingerprint: entry.fingerprint,
+    source_updated_at: entry.updated_at,
+  };
+}
+
+export function buildInventories(entries) {
+  const sorted = [...entries].sort((left, right) => compareText(left.id, right.id));
+  const sourceCards = {
+    schema: SOURCE_CARDS_SCHEMA,
+    cards: sorted.map(cardRecord),
+  };
+  const byProjection = new Map();
+  for (const entry of sorted) {
+    for (const projection of entry.projections) {
+      const key = projection.path;
+      let bucket = byProjection.get(key);
+      if (!bucket) {
+        bucket = {
+          id: projection.id,
+          path: projection.path,
+          cards: [],
+        };
+        byProjection.set(key, bucket);
+      } else if (bucket.id !== projection.id) {
+        throw new Error(`projection path ${key} has colliding ids ${bucket.id} and ${projection.id}`);
+      }
+      if (bucket.cards.some((card) => card.id === entry.id)) {
+        throw new Error(`duplicate projection entry for card ${entry.id} in ${key}`);
+      }
+      bucket.cards.push(projectionCardRecord(entry));
+    }
+  }
+  const projections = {
+    schema: PROJECTION_INVENTORY_SCHEMA,
+    membership: "declared",
+    projections: [...byProjection.values()]
+      .sort((left, right) => compareText(left.id, right.id) || compareText(left.path, right.path))
+      .map((row) => ({
+        id: row.id,
+        path: row.path,
+        cards: [...row.cards].sort((left, right) => compareText(left.id, right.id)),
+      })),
+  };
+  return { sourceCards, projections };
+}
+
+function listEntryFiles(root, directory) {
+  const findings = [];
+  if (!existsSync(directory)) {
+    return {
+      files: [],
+      findings: [finding(`${ENTRY_DIR} is missing`, { class: "missing_entry" })],
+    };
+  }
+  const listed = readdirSync(directory, { withFileTypes: true });
+  const files = [];
+  for (const item of listed.sort((left, right) => compareText(left.name, right.name))) {
+    const filePath = join(directory, item.name);
+    const repoPath = posix(root, filePath);
+    if (IGNORED_ENTRY_NAMES.has(item.name)) continue;
+    if (item.isDirectory()) {
+      findings.push(finding(`unexpected directory in ${ENTRY_DIR}: ${item.name}`, {
+        class: "unregistered_entry",
+        path: repoPath,
+      }));
+      continue;
+    }
+    if (!item.name.endsWith(".json")) {
+      findings.push(finding(`unexpected unregistered entry ${repoPath}`, {
+        class: "unregistered_entry",
+        path: repoPath,
+      }));
+      continue;
+    }
+    files.push({ name: item.name, filePath, repoPath });
+  }
+  return { files, findings };
+}
+
+export function loadArchitectureEvidenceEntries({ root = ROOT, entriesDir = ENTRY_DIR } = {}) {
+  const base = resolve(root);
+  const directory = resolve(base, entriesDir);
+  const listed = listEntryFiles(base, directory);
+  const findings = [...listed.findings];
+  const entries = [];
+  const ids = new Map();
+  const paths = new Map();
+
+  for (const file of listed.files) {
+    let parsed;
+    try {
+      parsed = JSON.parse(readFileSync(file.filePath, "utf8"));
+    } catch {
+      findings.push(finding(`entry ${file.repoPath} is malformed`, {
+        class: "malformed_entry",
+        path: file.repoPath,
+      }));
+      continue;
+    }
+    const shapeError = validateEntryShape(parsed, file.repoPath);
+    if (shapeError) {
+      const unsupported = String(shapeError).includes("unsupported schema version");
+      findings.push(finding(shapeError, {
+        class: unsupported ? "unsupported_version" : "invalid_entry",
+        path: file.repoPath,
+        id: parsed?.id || null,
+      }));
+      continue;
+    }
+    const expectedName = `${encodeEntryId(parsed.id)}.json`;
+    if (file.name !== expectedName) {
+      findings.push(finding(
+        `entry id ${parsed.id} does not match path ${file.repoPath}; expected ${entryRelativePath(parsed.id)}`,
+        { class: "collision", path: file.repoPath, id: parsed.id },
+      ));
+      continue;
+    }
+    if (ids.has(parsed.id)) {
+      findings.push(finding(
+        `duplicate entry id ${parsed.id} in ${file.repoPath} and ${ids.get(parsed.id)}`,
+        { class: "duplicate_entry", path: file.repoPath, id: parsed.id },
+      ));
+      continue;
+    }
+    if (paths.has(expectedName)) {
+      findings.push(finding(
+        `colliding entry path ${file.repoPath}`,
+        { class: "collision", path: file.repoPath, id: parsed.id },
+      ));
+      continue;
+    }
+    ids.set(parsed.id, file.repoPath);
+    paths.set(expectedName, parsed.id);
+    entries.push({
+      ...parsed,
+      projections: parsed.projections.map((row) => ({ id: row.id, path: row.path })),
+      _path: file.repoPath,
+    });
+  }
+
+  entries.sort((left, right) => compareText(left.id, right.id));
+  return { entries, findings };
+}
+
+function committedText(root, relativePath) {
+  const filePath = resolve(root, relativePath);
+  if (!existsSync(filePath) || !statSync(filePath).isFile()) {
+    return { path: relativePath, text: null, missing: true };
+  }
+  return { path: relativePath, text: readFileSync(filePath, "utf8"), missing: false };
+}
+
+export function aggregateArchitectureEvidence({
+  root = ROOT,
+  entriesDir = ENTRY_DIR,
+  compareCommitted = false,
+} = {}) {
+  const loaded = loadArchitectureEvidenceEntries({ root, entriesDir });
+  const findings = loaded.findings.map((row) => row.message);
+  const issueRows = [...loaded.findings];
+  let sourceCards = null;
+  let projections = null;
+  let sourceCardsText = null;
+  let projectionsText = null;
+  if (!loaded.findings.length) {
+    try {
+      const inventories = buildInventories(loaded.entries);
+      sourceCards = inventories.sourceCards;
+      projections = inventories.projections;
+      sourceCardsText = renderJson(sourceCards);
+      projectionsText = renderJson(projections);
+    } catch (error) {
+      const message = error?.message || String(error);
+      findings.push(message);
+      issueRows.push(finding(message, { class: "collision" }));
+    }
+  }
+
+  if (compareCommitted && sourceCardsText && projectionsText) {
+    const committedSource = committedText(root, SOURCE_CARDS_RELATIVE);
+    const committedProjections = committedText(root, PROJECTIONS_RELATIVE);
+    if (committedSource.missing) {
+      const message = `generated projection inventory ${SOURCE_CARDS_RELATIVE} is missing`;
+      findings.push(message);
+      issueRows.push(finding(message, { class: "stale_aggregate", path: SOURCE_CARDS_RELATIVE }));
+    } else if (committedSource.text !== sourceCardsText) {
+      const message = `generated projection inventory ${SOURCE_CARDS_RELATIVE} is stale`;
+      findings.push(message);
+      issueRows.push(finding(message, { class: "stale_aggregate", path: SOURCE_CARDS_RELATIVE }));
+    }
+    if (committedProjections.missing) {
+      const message = `generated projection inventory ${PROJECTIONS_RELATIVE} is missing`;
+      findings.push(message);
+      issueRows.push(finding(message, { class: "stale_aggregate", path: PROJECTIONS_RELATIVE }));
+    } else if (committedProjections.text !== projectionsText) {
+      const message = `generated projection inventory ${PROJECTIONS_RELATIVE} is stale`;
+      findings.push(message);
+      issueRows.push(finding(message, { class: "stale_aggregate", path: PROJECTIONS_RELATIVE }));
+    }
+  }
+
+  const receipt = {
+    schema: AGGREGATE_RECEIPT_SCHEMA,
+    entry_count: loaded.entries.length,
+    entry_ids: loaded.entries.map((entry) => entry.id),
+    source_cards_sha256: sourceCardsText ? sha256Text(sourceCardsText) : null,
+    projections_sha256: projectionsText ? sha256Text(projectionsText) : null,
+  };
+
+  if (!findings.length && sourceCards && projections) {
+    const reconciliation = evaluateCardReconciliation({ sourceCards, projections });
+    if (reconciliation.status !== "PASS") {
+      findings.push(...reconciliation.findings);
+      issueRows.push(...(reconciliation.evidence?.issues || []).map((row) => (
+        finding(row.message, { class: row.class, path: row.projection, id: row.card_id })
+      )));
+    }
+  }
+
+  return {
+    status: findings.length ? "FAIL" : "PASS",
+    reason: findings[0] || "architecture-evidence shards aggregated",
+    findings,
+    issues: issueRows,
+    entries: loaded.entries,
+    sourceCards,
+    projections,
+    sourceCardsText,
+    projectionsText,
+    receipt,
+  };
+}
+
+export function checkArchitectureEvidence(options = {}) {
+  return aggregateArchitectureEvidence({ compareCommitted: true, ...options });
+}
+
+export function writeArchitectureEvidenceAggregates({
+  root = ROOT,
+  sourceCardsText,
+  projectionsText,
+  write = false,
+} = {}) {
+  const sourcePath = resolve(root, SOURCE_CARDS_RELATIVE);
+  const projectionsPath = resolve(root, PROJECTIONS_RELATIVE);
+  if (write) {
+    mkdirSync(dirname(sourcePath), { recursive: true });
+    mkdirSync(dirname(projectionsPath), { recursive: true });
+    writeFileSync(sourcePath, sourceCardsText, "utf8");
+    writeFileSync(projectionsPath, projectionsText, "utf8");
+  }
+  return { sourcePath, projectionsPath };
+}
+
+function argument(argv, name, fallback = null) {
+  const index = argv.indexOf(name);
+  return index >= 0 ? argv[index + 1] || fallback : fallback;
+}
+
+function main(argv = process.argv.slice(2)) {
+  const check = argv.includes("--check");
+  const write = argv.includes("--write");
+  const root = resolve(argument(argv, "--root", ROOT));
+  const result = aggregateArchitectureEvidence({
+    root,
+    compareCommitted: check,
+  });
+  process.stdout.write(renderJson({
+    status: result.status,
+    reason: result.reason,
+    findings: result.findings,
+    receipt: result.receipt,
+  }));
+  if (result.status !== "PASS") {
+    for (const row of result.findings) {
+      console.error(`architecture-evidence: ${row}`);
+    }
+    process.exitCode = 1;
+    return;
+  }
+  if (check) return;
+  if (write) {
+    writeArchitectureEvidenceAggregates({
+      write: true,
+      root,
+      sourceCardsText: result.sourceCardsText,
+      projectionsText: result.projectionsText,
+    });
+  }
+}
+
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  try {
+    main();
+  } catch (error) {
+    console.error(error?.stack || error);
+    process.exitCode = 1;
+  }
+}
+
+export {
+  ROOT,
+  main,
+};
