@@ -1,0 +1,46 @@
+{
+  "schema": "cityscroll.council_committee_proceedings.v1",
+  "source_contract": "cityscroll.council_committee_proceeding_source_contract.v1",
+  "generated_at": "2026-08-10T13:08:13.019Z",
+  "negative_rule": "Never mint a Council committee, meeting, chair, or land-use matter edge from a display name, a City Council publisher label, or a nearby meeting date.",
+  "rows": [
+    {
+      "body_id": "34",
+      "committee_id": "committee:34",
+      "committee_name": "Subcommittee on Zoning and Franchises",
+      "meeting_id": "meeting:city_record:20260707021",
+      "request_id": "20260707021",
+      "event_id": "22502",
+      "event_body_id": "34",
+      "event_date": "2026-07-21",
+      "join_method": "exact_event_body_id",
+      "source_system": "nyc_legistar_events",
+      "source_record_id": "22502",
+      "source_field": "eventbodyid",
+      "source_value": "34",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260707021",
+      "legistar_event_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22502&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+      "source_receipt": "legistar:event:22502:eventbodyid",
+      "observed_at": "2026-08-10T13:08:13.019Z"
+    }
+  ],
+  "gaps": [
+    {
+      "kind": "meeting",
+      "target": "2026-08-12",
+      "body_id": "34",
+      "status": "unavailable",
+      "reason": "no_retained_source_record",
+      "label": "August 12, 2026 proceeding is not in the current snapshot"
+    },
+    {
+      "kind": "land-matter",
+      "target": "LU-0120-2026",
+      "meeting_id": "meeting:city_record:20260707021",
+      "body_id": "34",
+      "status": "unavailable",
+      "reason": "matter_join_unavailable",
+      "label": "Land-use matter LU 0120-2026 has no exact Legistar or ZAP receipt"
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "as_of": "2026-07-21",
+  "council_id": "city-council",
+  "body_id": "34",
+  "committee_id": "committee:34",
+  "meeting_id": "meeting:city_record:20260707021",
+  "request_id": "20260707021",
+  "event_id": "22502",
+  "land_matter_id": "LU-0120-2026",
+  "target_meeting_date": "2026-08-12",
+  "chair": {
+    "official_id": "official:7785",
+    "title": "CHAIRPERSON",
+    "is_chair": true,
+    "valid_from": "2026-01-15",
+    "valid_to": "2029-12-31",
+    "source_row_hash": "996f9bda601b6b347d408a1a4c1749c4b7903dd7f8faa7f2d43bd697cba22016"
+  },
+  "member": {
+    "official_id": "official:5289",
+    "title": "Committee Member",
+    "is_chair": false,
+    "valid_from": "2006-01-18",
+    "valid_to": "2009-12-31",
+    "source_row_hash": "8ac925a89c86f1019aa3eb8759ccada8768ec037407a099a5bcf625ce4276723"
+  },
+  "negatives": {
+    "name_only_committee": "Subcommittee on Zoning and Franchises",
+    "nearby_date": "2026-07-22",
+    "publisher_only": "City Council",
+    "similar_committee_name": "Committee on Zoning and Franchises"
+  }
+}

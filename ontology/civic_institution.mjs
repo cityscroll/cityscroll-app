@@ -358,6 +358,7 @@ export const AGENCY_ROLE_COMPATIBILITY_SCHEMA = "cityscroll.agency_role_compatib
 const MUST_REPORT_NEGATIVE_RULE = "Never infer a report-recipient or oversight edge from duty-text names, OTI reports_to, a shared publisher label, or related_to.";
 const DUTY_BEARER_NEGATIVE_RULE = "Never infer a duty bearer or oversight edge from a generic DOC obligation, generic board language, a Board of Correction meeting, or a shared agency label.";
 const DEVELOPMENT_ROLE_NEGATIVE_RULE = "Never infer an applicant from a project mention, a contractor from a publisher notice, or a selected developer from a company name; require exact party or actor evidence.";
+const COUNCIL_COMMITTEE_NEGATIVE_RULE = "Never connect a committee because its display name resembles Zoning and Franchises, because a City Record notice is published by Council, or because a meeting date is nearby. Do not infer chair status without valid dates and exact is_chair evidence.";
 const ROLE_EVIDENCE = Object.freeze([
   "exact_source_observation",
   "exact_ids",
@@ -466,6 +467,94 @@ export const CIVIC_INSTITUTION_ROLE_RELATIONS = Object.freeze({
     ]),
     methods: ENTITY_LINK_METHODS,
     negative_rule: DEVELOPMENT_ROLE_NEGATIVE_RULE,
+  }),
+  has_committee: Object.freeze({
+    relation: "has_committee",
+    inverse: "part_of",
+    role: "parent_body",
+    inverse_role: "committee",
+    source_contract: "cityscroll.council_committee_proceeding_source_contract.v1",
+    from_kind: "civic-institution",
+    object_kind: "committee",
+    legacy_relation_id: null,
+    required_evidence: Object.freeze([
+      ...ROLE_EVIDENCE,
+      "exact_body_id",
+    ]),
+    methods: ENTITY_LINK_METHODS,
+    negative_rule: COUNCIL_COMMITTEE_NEGATIVE_RULE,
+  }),
+  hosts_meeting: Object.freeze({
+    relation: "hosts_meeting",
+    inverse: "hosted_by",
+    role: "meeting_host",
+    inverse_role: "hosted_by",
+    source_contract: "cityscroll.council_committee_proceeding_source_contract.v1",
+    from_kind: "committee",
+    object_kind: "meeting",
+    legacy_relation_id: null,
+    required_evidence: Object.freeze([
+      ...ROLE_EVIDENCE,
+      "exact_body_id",
+      "exact_meeting_id",
+      "verified_join",
+    ]),
+    methods: ENTITY_LINK_METHODS,
+    negative_rule: COUNCIL_COMMITTEE_NEGATIVE_RULE,
+  }),
+  member_of: Object.freeze({
+    relation: "member_of",
+    inverse: "has_member",
+    role: "committee_member",
+    inverse_role: "has_member",
+    source_contract: "nyc_legistar_office_records",
+    from_kind: "official",
+    object_kind: "committee",
+    legacy_relation_id: null,
+    required_evidence: Object.freeze([
+      ...ROLE_EVIDENCE,
+      "exact_official_id",
+      "exact_body_id",
+      "valid_time",
+    ]),
+    methods: ENTITY_LINK_METHODS,
+    negative_rule: COUNCIL_COMMITTEE_NEGATIVE_RULE,
+  }),
+  chairs: Object.freeze({
+    relation: "chairs",
+    inverse: "chaired_by",
+    role: "chair",
+    inverse_role: "chaired_by",
+    source_contract: "nyc_legistar_office_records",
+    from_kind: "official",
+    object_kind: "committee",
+    legacy_relation_id: null,
+    required_evidence: Object.freeze([
+      ...ROLE_EVIDENCE,
+      "exact_official_id",
+      "exact_body_id",
+      "exact_is_chair",
+      "valid_time",
+    ]),
+    methods: ENTITY_LINK_METHODS,
+    negative_rule: COUNCIL_COMMITTEE_NEGATIVE_RULE,
+  }),
+  considers: Object.freeze({
+    relation: "considers",
+    inverse: "considered_at",
+    role: "considering_body",
+    inverse_role: "considered_at",
+    source_contract: "cityscroll.council_committee_proceeding_source_contract.v1",
+    from_kind: "meeting",
+    object_kind: "land-matter",
+    legacy_relation_id: null,
+    required_evidence: Object.freeze([
+      ...ROLE_EVIDENCE,
+      "exact_matter_id",
+      "verified_join",
+    ]),
+    methods: ENTITY_LINK_METHODS,
+    negative_rule: COUNCIL_COMMITTEE_NEGATIVE_RULE,
   }),
 });
 
@@ -590,7 +679,18 @@ function tryTypedObject(value, kind) {
     });
   }
   if (kind === "meeting") {
-    const match = raw.match(/^(?:meetings:notice:|meeting:city_record:|notice:)?(\d{8,12})$/);
+    const cityRecord = raw.match(/^meeting:city_record:(\d{8,12})$/);
+    if (cityRecord) {
+      const noticeId = cityRecord[1];
+      const meetingId = `meeting:city_record:${noticeId}`;
+      return Object.freeze({
+        id: meetingId,
+        canonical_id: noticeId,
+        kind: "meeting",
+        href: `/meetings/${encodeURIComponent(meetingId)}`,
+      });
+    }
+    const match = raw.match(/^(?:meetings:notice:|notice:)?(\d{8,12})$/);
     if (!match) return null;
     const noticeId = match[1];
     return Object.freeze({
@@ -598,6 +698,39 @@ function tryTypedObject(value, kind) {
       canonical_id: noticeId,
       kind: "meeting",
       href: `/notices/${encodeURIComponent(noticeId)}`,
+    });
+  }
+  if (kind === "committee") {
+    const match = raw.match(/^(?:committee:)?(\d+)$/);
+    if (!match) return null;
+    const bodyId = match[1];
+    return Object.freeze({
+      id: `committee:${bodyId}`,
+      canonical_id: bodyId,
+      kind: "committee",
+      href: `/committees/${encodeURIComponent(bodyId)}/`,
+    });
+  }
+  if (kind === "official") {
+    const match = raw.match(/^(?:official:)?(\d+)$/);
+    if (!match) return null;
+    const personId = match[1];
+    return Object.freeze({
+      id: `official:${personId}`,
+      canonical_id: personId,
+      kind: "official",
+      href: `/officials/${encodeURIComponent(personId)}/`,
+    });
+  }
+  if (kind === "land-matter") {
+    const match = raw.match(/^(?:land-matter:)?(LU[-\s]?\d{4}-\d{4})$/i);
+    if (!match) return null;
+    const matterId = match[1].toUpperCase().replace(/\s+/, "-").replace(/^LU(?!-)/, "LU-");
+    return Object.freeze({
+      id: `land-matter:${matterId}`,
+      canonical_id: matterId,
+      kind: "land-matter",
+      href: null,
     });
   }
   if (kind === "obligation") {
@@ -645,6 +778,13 @@ function roleEdgeProvenance(sourceObservation, observed, basis, vintage) {
   });
 }
 
+function dateOnly(value, field) {
+  const result = clean(value, 20);
+  if (!result) return null;
+  if (!/^\d{4}-\d{2}-\d{2}/.test(result)) throw new TypeError(`${field} must be a calendar date`);
+  return result.slice(0, 10);
+}
+
 function roleEdgeEnvelope({
   spec,
   from,
@@ -663,6 +803,8 @@ function roleEdgeEnvelope({
   subjectHref = null,
   objectDisplayName = null,
   reversed = false,
+  validFrom = null,
+  validTo = null,
 }) {
   const observed = sourceObservation?.observed_at
     ? timestamp(sourceObservation.observed_at, "observed_at")
@@ -704,6 +846,8 @@ function roleEdgeEnvelope({
     basis: clean(basis, 240) || null,
     as_of: asOfStamp,
     vintage: vintageStamp,
+    valid_from: dateOnly(validFrom, "valid_from"),
+    valid_to: dateOnly(validTo, "valid_to"),
     status,
     reason,
     linking,
@@ -784,6 +928,8 @@ export function buildCivicInstitutionRoleEdge({
   objectHref = null,
   subjectHref = null,
   reason = null,
+  validFrom = null,
+  validTo = null,
 } = {}) {
   const relationToken = clean(relation, 80).toLowerCase();
   if (GENERIC_RELATIONS.has(relationToken)) {
@@ -901,6 +1047,8 @@ export function buildCivicInstitutionRoleEdge({
     subjectHref,
     objectDisplayName,
     reversed: oriented.reversed,
+    validFrom,
+    validTo,
   });
 }
 

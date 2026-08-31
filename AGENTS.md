@@ -179,11 +179,18 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   `site/civic_institution_accountability.mjs`: only obligation `63842-001`
   mints `duty_bearer` plus `must_report_to` City Council and Board of Correction
   edges from quote-verified recipient phrases; the reciprocal
-  `receives_report_from` view stays on that same duty. Focused proof is in
+  `receives_report_from` view stays on that same duty. Council legislative
+  navigation is `site/civic_institution_council_committees.mjs`: exact Legistar
+  body id `34` mints `has_committee`; `hosts_meeting` requires an
+  `exact_event_body_id` receipt for City Record `20260707021`; `member_of` /
+  `chairs` keep official ids and valid-time; LU `0120-2026` and the Aug 12
+  proceeding stay explicit gaps. Names, Council publication, and nearby dates
+  never mint an edge. Focused proof is in
   `test/civic_institution.test.mjs`,
   `test/civic_institution_role_edge.test.mjs`, `test/civic_institution_profile.test.mjs`,
-  `test/civic_institution_development_roles.test.mjs`, and
-  `test/civic_institution_accountability.test.mjs`.
+  `test/civic_institution_development_roles.test.mjs`,
+  `test/civic_institution_accountability.test.mjs`, and
+  `test/civic_institution_council_committees.test.mjs`.
 
 - Add durable project-specific notes here as they are discovered through real work.
 - **Legacy repository-name prevention:** `tools/check_stale_repo_name.mjs` is the CI and local

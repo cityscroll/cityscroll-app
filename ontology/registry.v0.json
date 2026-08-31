@@ -1397,9 +1397,9 @@
     {
       "id": "chairs",
       "status": "registered",
-      "from": "community-board-person",
-      "to": "community-board|community-board-committee",
-      "reason": "Temporal chairship from a source-qualified board person to a board or board-local committee; chairship is not collapsed into ordinary membership.",
+      "from": "community-board-person|official",
+      "to": "community-board|community-board-committee|committee",
+      "reason": "Temporal chairship from a source-qualified board person or Legistar official to a board, board-local committee, or Council committee; chairship is not collapsed into ordinary membership and requires exact is_chair evidence plus valid dates.",
       "contract_ref": "cityscroll.community_board_person_role_source_contract.v1",
       "edge_schema": "cityscroll.community_board_person_role_edge.v1",
       "label": "Chairs",
@@ -1430,9 +1430,9 @@
     {
       "id": "hosts_meeting",
       "status": "registered",
-      "from": "community-board",
+      "from": "community-board|committee",
       "to": "meeting",
-      "reason": "Organization-facing meeting family is published only from exact board/date/publisher joins with a retained source receipt.",
+      "reason": "Organization-facing meeting family is published only from exact board/date/publisher joins or an exact Council committee EventBodyId join with a retained source receipt.",
       "contract_ref": "cityscroll.community_board_hosts_meeting_source_contract.v1",
       "edge_schema": "cityscroll.community_board_hosts_meeting_edge.v1",
       "required_evidence": [
@@ -1500,7 +1500,7 @@
       "status": "unregistered",
       "from": "community-board-committee",
       "to": "matter",
-      "reason": "Declared for a committee source that explicitly identifies a publisher-keyed matter; an agenda string or topic similarity cannot create a canonical matter.",
+      "reason": "Declared for a committee source that explicitly identifies a publisher-keyed matter; an agenda string or topic similarity cannot create a canonical matter. Council meeting→LU joins stay an explicit gap until an exact Legistar or ZAP receipt exists.",
       "contract_ref": "cityscroll.community_board_agenda_item_source_contract.v1",
       "edge_schema": "cityscroll.community_board_considers_matter_edge.v1",
       "required_evidence": [
@@ -1520,9 +1520,9 @@
     {
       "id": "has_committee",
       "status": "registered",
-      "from": "community-board",
-      "to": "community-board-committee",
-      "reason": "First materialized edge from a Community Board to a reviewed board-local committee record backed by an official publisher source. Same-named committees on different boards remain distinct identities.",
+      "from": "community-board|civic-institution",
+      "to": "community-board-committee|committee",
+      "reason": "Materialized from a Community Board to a reviewed board-local committee, or from City Council to an exact Legistar body id. Same-named committees remain distinct identities and are never joined by display name.",
       "contract_ref": "cityscroll.community_board_has_committee_source_contract.v1",
       "edge_schema": "cityscroll.community_board_has_committee_edge.v1",
       "required_evidence": [
