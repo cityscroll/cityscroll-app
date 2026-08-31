@@ -242,7 +242,7 @@ test("primary Following and home journey stay preview-first form-first without s
     assert.equal(findSubscribeMailtoAddresses(source).length, 0, relative);
   }
   const home = readFileSync(join(ROOT, "site/index.html"), "utf8");
-  assert.match(home, /href="\/following\/"[^>]*id="homeCtaTopics"/);
+  assert.match(home, /href="\/following\/\?onboarding=1"[^>]*id="homeCtaTopics"/);
   assert.doesNotMatch(home, /id="homeCtaEmail"|id="homeCtaForm"/);
 });
 

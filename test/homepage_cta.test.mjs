@@ -6,6 +6,11 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
+import {
+  HOME_FOLLOWING_ONBOARDING_HREF,
+  homeFollowingEntryHref,
+} from "../site/home_following_entry.mjs";
+import { canonicalFollowingScope, watchFromFollowingParams } from "../site/following_view.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const index = SITE_SOURCE;
@@ -46,11 +51,15 @@ test("language control is a top-right labelled select with all shipping locales"
 test("homepage CTA routes readers into Following before any watch exists", () => {
   assert.match(index, /id="homeCta"/);
   assert.match(index, /data-i18n="home_cta_prompt"/);
-  assert.doesNotMatch(index, /id="homeCtaEmail"|id="homeCtaForm"/);
-  assert.match(index, /href="\/following\/"[^>]*id="homeCtaTopics"/);
+  assert.doesNotMatch(index, /id="homeCtaEmail"|id="homeCtaForm"|id="homeCtaSubmit"/);
+  assert.match(index, /href="\/following\/\?onboarding=1"[^>]*id="homeCtaTopics"/);
   assert.match(index, /data-i18n="home_cta_topics"/);
   const entry = readFileSync(join(ROOT, "site/home_entry.mjs"), "utf8");
-  assert.doesNotMatch(entry, /homeCtaEmail|homeCtaForm|onboarding=1/);
+  assert.doesNotMatch(entry, /homeCtaEmail|homeCtaForm|workerFetch\(["']\/subscribe/);
+  const boot = readFileSync(join(ROOT, "site/app/boot.mjs"), "utf8");
+  assert.match(boot, /homeFollowingEntryHref/);
+  assert.match(boot, /\/following\/\?onboarding=1/);
+  assert.doesNotMatch(boot, /homeCtaEmail|homeCtaForm|homeCtaSubmit/);
   assert.match(index, /id="homeCtaManage"/);
   assert.match(index, /sessionShowBanner[\s\S]*homeCtaManage/);
 });
@@ -94,4 +103,62 @@ test("i18n carries homepage CTA keys in English", () => {
   assert.match(i18n, /home_cta_prompt:\s*"Want email updates on this\?"/);
   assert.match(i18n, /home_cta_submit:\s*"Sign up"/);
   assert.match(i18n, /home_cta_topics:\s*"Choose what to follow"/);
+});
+
+test("homepage Following entry is generic onboarding without an email", () => {
+  assert.equal(homeFollowingEntryHref(), HOME_FOLLOWING_ONBOARDING_HREF);
+  assert.equal(homeFollowingEntryHref({}), HOME_FOLLOWING_ONBOARDING_HREF);
+  assert.equal(homeFollowingEntryHref({ email: "reader@example.com" }), HOME_FOLLOWING_ONBOARDING_HREF);
+  assert.equal(homeFollowingEntryHref({ lens: "money", filter: {} }), HOME_FOLLOWING_ONBOARDING_HREF);
+  assert.doesNotMatch(HOME_FOLLOWING_ONBOARDING_HREF, /email=/);
+  const watch = watchFromFollowingParams(new URL(HOME_FOLLOWING_ONBOARDING_HREF, "https://cityscroll.org").searchParams);
+  assert.equal(watch.onboarding, true);
+  assert.equal(watch.requested, false);
+});
+
+test("validated homepage context deep-links into the canonical Following scope", () => {
+  const topic = homeFollowingEntryHref({ lens: "money", filter: { keywords: ["elevator"] } });
+  const place = homeFollowingEntryHref({
+    lens: "meetings",
+    filter: { keywords: ["curb"], borough: "Queens" },
+  });
+  const agency = homeFollowingEntryHref({
+    lens: "rules",
+    filter: { agency: "Housing Preservation and Development" },
+  });
+  const record = homeFollowingEntryHref({
+    lens: "meetings",
+    filter: { agency: "Transportation" },
+    noticeId: "20260716009",
+  });
+  const topicWatch = watchFromFollowingParams(new URL(topic, "https://cityscroll.org").searchParams);
+  assert.deepEqual(
+    canonicalFollowingScope(topicWatch),
+    canonicalFollowingScope({ lens: "money", filter: { keywords: ["elevator"] } }),
+  );
+  const placeWatch = watchFromFollowingParams(new URL(place, "https://cityscroll.org").searchParams);
+  assert.deepEqual(
+    canonicalFollowingScope(placeWatch),
+    canonicalFollowingScope({ lens: "meetings", filter: { keywords: ["curb"], borough: "Queens" } }),
+  );
+  const agencyWatch = watchFromFollowingParams(new URL(agency, "https://cityscroll.org").searchParams);
+  assert.equal(agencyWatch.lens, "rules");
+  assert.equal(agencyWatch.filter.agency, "Housing Preservation and Development");
+  const recordWatch = watchFromFollowingParams(new URL(record, "https://cityscroll.org").searchParams);
+  assert.equal(recordWatch.noticeId, "20260716009");
+  assert.match(record, /notice=20260716009/);
+  assert.doesNotMatch(record, /email=/);
+});
+
+test("invalid homepage context falls back to generic Following onboarding", () => {
+  assert.equal(homeFollowingEntryHref({ lens: "not-a-lens", filter: { keywords: ["housing"] } }), HOME_FOLLOWING_ONBOARDING_HREF);
+  assert.equal(homeFollowingEntryHref({ utm: "ad", foo: "bar" }), HOME_FOLLOWING_ONBOARDING_HREF);
+  assert.equal(homeFollowingEntryHref({ lens: "money", noticeId: "!!" }), HOME_FOLLOWING_ONBOARDING_HREF);
+  const scoped = homeFollowingEntryHref({
+    lens: "money",
+    filter: { keywords: ["elevator"] },
+    email: "reader@example.com",
+  });
+  assert.doesNotMatch(scoped, /email=/);
+  assert.notEqual(scoped, HOME_FOLLOWING_ONBOARDING_HREF);
 });

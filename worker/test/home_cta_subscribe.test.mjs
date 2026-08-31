@@ -54,11 +54,13 @@ async function submit(environment, body, sent) {
 
 test("homepage CTA links into Following without subscribing", () => {
   const homepage = readFileSync(new URL("../../site/index.html", import.meta.url), "utf8");
-  assert.match(homepage, /id="homeCtaTopics"[^>]*href="\/following\/"|href="\/following\/"[^>]*id="homeCtaTopics"/);
+  assert.match(homepage, /id="homeCtaTopics"[^>]*href="\/following\/\?onboarding=1"|href="\/following\/\?onboarding=1"[^>]*id="homeCtaTopics"/);
   assert.doesNotMatch(homepage, /id="homeCtaEmail"|id="homeCtaForm"|id="homeCtaSubmit"/);
+  const helper = readFileSync(new URL("../../site/home_following_entry.mjs", import.meta.url), "utf8");
+  assert.match(helper, /HOME_FOLLOWING_ONBOARDING_HREF = "\/following\/\?onboarding=1"/);
+  assert.doesNotMatch(helper, /workerFetch\(["']\/subscribe["']/);
   for (const path of ["../../site/home_entry.mjs", "../../site/app/boot.mjs", "../../site/app/alerts.mjs"]) {
     const source = readFileSync(new URL(path, import.meta.url), "utf8");
-    assert.doesNotMatch(source, /\/following\/\?onboarding=1/, path);
     assert.doesNotMatch(source, /homeCtaEmail|homeCtaForm|homeCtaSubmit/, path);
     if (!path.endsWith("alerts.mjs")) {
       assert.doesNotMatch(source, /no_topic\s*:/, path);

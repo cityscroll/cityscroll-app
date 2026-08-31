@@ -1022,7 +1022,11 @@ are not public). Detector: `detectNodePageCruft` in `civic_document_chrome.mjs`.
   `test/project_connections_smoke.test.mjs` so source-data drift cannot mask a successful deploy.
 - Following is static-first at `site/following/index.html` and edge-rendered at `GET /following`
   through the shared `site/following_view.mjs` renderer. A saved scope is the single contract for
-  its summary, preview count, results, and `/subscribe` form. Result and detail entry preserve
+  its summary, preview count, results, and `/subscribe` form. The homepage “Want email updates
+  on this?” control is a route into that builder (`site/home_following_entry.mjs`): generic
+  entry is `/following/?onboarding=1`; validated topic/place/agency/record context deep-links
+  the canonical scope URL; invalid or absent context falls back to onboarding. The homepage
+  never posts `/subscribe` or collects an email. Result and detail entry preserve
   that same watch plus compact preview focus through `site/following_preview_handoff.mjs`
   (`notice` / `project` / `from`); unrecognized lenses stay honest and never remap to Contracts.
   Create flow: compact topic-and-place start (`step=choose`) with progressive
@@ -2688,12 +2692,15 @@ Docs: `docs/digest-rollup-prefs.md`.
 ## Context-carrying alert entry
 
 "Watch this notice" / header "Want email updates?" / "Watch this search" land on
-`#alerts?lens=&filter=&notice=` (same hash-param shape as saved-search health
-fix links). Pure scope helpers: `site/alerts_context_carry.mjs`. Prefill +
-seeded `digItemHTML` preview (real email template, not a mock):
-`prefillAlertFromLink` in `site/app/boot.mjs`. Header CTA hrefs update via
-`syncAlertsEntryHrefs`. Verify: `node --test test/alerts_context_carry.test.mjs
-test/prefill_alert_from_link.test.mjs test/digest_preview_awareness.test.mjs`.
+the canonical `/following/` builder. Generic homepage entry is
+`/following/?onboarding=1`; scoped entry uses `lens`/`filter` plus optional
+`notice`/`project`/`from` through `site/home_following_entry.mjs` and
+`site/alerts_context_carry.mjs`. Prefill + seeded `digItemHTML` preview (real
+email template, not a mock): `prefillAlertFromLink` in `site/app/boot.mjs`.
+Header CTA hrefs update via `syncAlertsEntryHrefs`. Verify:
+`node --test test/homepage_cta.test.mjs test/following_route.test.mjs
+test/alerts_context_carry.test.mjs test/prefill_alert_from_link.test.mjs
+test/digest_preview_awareness.test.mjs`.
 Capture: `python3 tools/capture_alerts_context_carry.py`. Demo:
 `alerts-context-carry-notice` → notice `20260716009`.
 
