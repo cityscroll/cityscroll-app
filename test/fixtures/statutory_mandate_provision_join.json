@@ -1,0 +1,133 @@
+{
+  "schema": "cityscroll.statutory_mandate_provision_join_fixtures.v1",
+  "corpus": {
+    "11-2901": {
+      "id": "nyc-administrative-code:11-2901",
+      "citation": "§ 11-2901",
+      "href": "/administrative-code/11-2901/",
+      "content_hash": "sha256:11-2901",
+      "source_ref": "alp:11-2901"
+    },
+    "11-2902": {
+      "id": "nyc-administrative-code:11-2902",
+      "citation": "§ 11-2902",
+      "href": "/administrative-code/11-2902/",
+      "content_hash": "sha256:11-2902",
+      "source_ref": "alp:11-2902"
+    },
+    "16-120": {
+      "id": "nyc-administrative-code:16-120",
+      "citation": "§ 16-120",
+      "href": "/administrative-code/16-120/",
+      "content_hash": "sha256:16-120-old",
+      "source_ref": "alp:16-120"
+    }
+  },
+  "base_mandate": {
+    "obligation_id": "ibo-eval-001",
+    "matter_id": "81290",
+    "agency_id": "independent-budget-office",
+    "agency_name": "Independent Budget Office",
+    "duty_text": "Evaluate economic development tax expenditures.",
+    "deliverable_type": "report",
+    "deadline": {
+      "kind": "fixed_date",
+      "computed_date": "2020-12-31",
+      "text": "by December 31, 2020"
+    },
+    "recurrence": "annual",
+    "citation": "Administrative Code § 11-2901(b)(1)",
+    "enactment_date": "2019-01-15",
+    "effective_date": "2019-07-01",
+    "source": {
+      "matter_id": "81290",
+      "legistar_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=81290",
+      "law_text_url": "https://nyc.legistar1.com/nyc/attachments/ibo-eval.docx",
+      "citation": "Administrative Code § 11-2901(b)(1)"
+    }
+  },
+  "cases": {
+    "exact_join": {
+      "citation": "Administrative Code § 11-2901(b)(1)"
+    },
+    "multiple_exact": {
+      "citation": "Administrative Code §§ 11-2901(b)(1) and 11-2902"
+    },
+    "changed_provision": {
+      "citation": "Administrative Code § 16-120",
+      "obligation_id": "sanitation-receptacles-001",
+      "duty_text": "Require receptacles for waste material.",
+      "deadline": {
+        "kind": "fixed_date",
+        "computed_date": "2018-06-01",
+        "text": "by June 1, 2018"
+      },
+      "effective_date": "2018-01-01",
+      "enactment_date": "2017-12-01"
+    },
+    "malformed_citation": {
+      "citation": "Administrative Code § 153(b)"
+    },
+    "ambiguous_citation": {
+      "citation": "Administrative Code § 11-2901 or § 11-2902"
+    },
+    "rcny_boundary": {
+      "citation": "34 RCNY § 4-01"
+    },
+    "external_citation": {
+      "citation": "New York City Charter § 753(e)(2)"
+    },
+    "missing_source_document": {
+      "citation": "Administrative Code § 11-2901(b)(2)",
+      "source": {
+        "matter_id": null,
+        "legistar_url": null,
+        "law_text_url": null,
+        "citation": "Administrative Code § 11-2901(b)(2)"
+      },
+      "matter_id": null
+    },
+    "unresolved_basis": {
+      "citation": "pursuant to applicable authority"
+    }
+  },
+  "changed_provision_history": {
+    "changes": [
+      {
+        "schema": "cityscroll.code_change.v1",
+        "id": "local-law:123-2026:amend",
+        "operation": "amend",
+        "state": "enacted",
+        "matter_id": "79102",
+        "legal_instrument_id": "local-law:123-2026",
+        "effective_at": "2026-11-01",
+        "materialization_status": "materialized",
+        "target": {
+          "corpus_id": "nyc-administrative-code",
+          "provision_id": "nyc-administrative-code:16-120",
+          "citation": "§ 16-120"
+        },
+        "source": {
+          "source_ref": "council:local-law:123-2026",
+          "url": "https://legistar.council.nyc.gov/LegislationDetail.aspx?ID=79102"
+        }
+      }
+    ],
+    "versions": [
+      {
+        "provision_id": "nyc-administrative-code:16-120",
+        "valid_from": "2017-01-01",
+        "valid_to": "2026-11-01",
+        "text": "Old receptacle text.",
+        "content_hash": "sha256:old"
+      },
+      {
+        "provision_id": "nyc-administrative-code:16-120",
+        "valid_from": "2026-11-01",
+        "valid_to": null,
+        "text": "New receptacle text with a different deadline of 90 days.",
+        "content_hash": "sha256:new"
+      }
+    ]
+  }
+}

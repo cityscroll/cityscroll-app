@@ -13,6 +13,7 @@ import {
 } from "./agency_obligations.mjs";
 import { mandateObjectTarget, noticeEvidenceTarget } from "./notice_object_links.mjs";
 import { SEARCH_DOCUMENT_SCHEMA, admitSearchDocument } from "./search_document_contract.mjs";
+import { joinMandateToProvisions } from "./statutory_mandate_provision_join.mjs";
 
 export const UNIVERSAL_SEARCH_MANDATE_PRODUCER_SCHEMA =
   "cityscroll.universal_search_mandate_producer.v1";
@@ -95,7 +96,7 @@ function noticeEvidence(row) {
   return targets;
 }
 
-function candidateFor(row, target, lawMatterId) {
+function candidateFor(row, target, lawMatterId, lookupProvision = null) {
   const evidence = noticeEvidence(row);
   const duty = clean(row.duty_text || row.required_action || row.expected_event, 700);
   const agency = clean(row.agency_name || row.agency_id || row.subject_name || row.subject_id, 200);
@@ -108,6 +109,12 @@ function candidateFor(row, target, lawMatterId) {
   const lawNumber = clean(row.law_number_display || row.source?.law_number_display, 80);
   const legistarHref = clean(row.source?.legistar_url || row.source_href, 600);
   const lawTextHref = clean(row.source?.law_text_url, 600);
+  const provisionJoin = lookupProvision
+    ? joinMandateToProvisions(row, { lookupProvision })
+    : null;
+  const provisionIds = (provisionJoin?.edges || [])
+    .filter((edge) => edge.status === "accepted" && edge.provision_id)
+    .map((edge) => edge.provision_id);
 
   return {
     schema: SEARCH_DOCUMENT_SCHEMA,
@@ -151,6 +158,7 @@ function candidateFor(row, target, lawMatterId) {
       },
       notice_evidence_refs: evidence.map(({ ref }) => ref),
       evidence_hrefs: evidence.map(({ href }) => href),
+      ...(provisionIds.length ? { provision_ids: provisionIds } : {}),
     },
   };
 }
@@ -192,7 +200,7 @@ function projectionEnvelope({ documents = [], sourceCount = 0, reasons = {}, loo
  * Rows that fail quote certification or the existing mandate object gate remain
  * explicit in coverage and never reach the search admission boundary.
  */
-export function projectMandateSearchDocuments(lookup = {}) {
+export function projectMandateSearchDocuments(lookup = {}, { lookupProvision = null } = {}) {
   if (!validLookup(lookup)) {
     return projectionEnvelope({ reason: "invalid_law_mandate_lookup" });
   }
@@ -223,7 +231,7 @@ export function projectMandateSearchDocuments(lookup = {}) {
       reject("duplicate_object_ref");
       continue;
     }
-    const admitted = admitSearchDocument(candidateFor(row, target, lawMatterId), {
+    const admitted = admitSearchDocument(candidateFor(row, target, lawMatterId, lookupProvision), {
       outcome: "indexed",
     });
     if (!admitted.document) {

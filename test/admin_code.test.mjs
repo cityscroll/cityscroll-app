@@ -97,7 +97,11 @@ test("Pages edge serves provision detail from a committed shard", async () => {
     {
       ASSETS: {
         async fetch(request) {
-          assert.equal(new URL(request.url).pathname, `/data/legal_code/${entry.shard}`);
+          const path = new URL(request.url).pathname;
+          if (path === "/data/agency_obligations_lookup.json") {
+            return Response.json({ by_agency: {} });
+          }
+          assert.equal(path, `/data/legal_code/${entry.shard}`);
           return new Response(JSON.stringify({ rows: [shard] }), {
             headers: { "Content-Type": "application/json" },
           });
