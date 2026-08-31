@@ -21,6 +21,10 @@ function headSha() {
   return execFileSync("git", ["rev-parse", "HEAD"], { cwd: ROOT_PATH, encoding: "utf8" }).trim();
 }
 
+function mainMergeBaseSha() {
+  return execFileSync("git", ["merge-base", "HEAD", "origin/main"], { cwd: ROOT_PATH, encoding: "utf8" }).trim();
+}
+
 function withAllowlist(mutate, fn) {
   const original = readFileSync(ALLOWLIST, "utf8");
   writeFileSync(ALLOWLIST, mutate(original));
@@ -33,6 +37,12 @@ function withAllowlist(mutate, fn) {
 
 test("the checked-in compatibility inventory is accepted", () => {
   assert.match(runGuard(), /guard passed/i);
+});
+
+test("the classification manifest preserves canonical register identifiers", () => {
+  const output = runGuard({ LEGACY_ALLOWLIST_BASE_SHA: mainMergeBaseSha() });
+  assert.match(output, /guard passed/i);
+  assert.doesNotMatch(output, /covers content that does not exist/);
 });
 
 test("a novel unallowlisted reference fails the guard", () => {

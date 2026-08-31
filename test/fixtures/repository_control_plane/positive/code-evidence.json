@@ -1,0 +1,5 @@
+{
+  "schema": "cityscroll.card-projection.v1",
+  "card_id": "fixture/card",
+  "projection_paths": ["site/example.mjs"]
+}
