@@ -1,0 +1,282 @@
+{
+  "schema": "cityscroll.civic_action_paths_after_capture.v1",
+  "capture_mode": "headless_playwright_loopback_static_server",
+  "viewports": [
+    {
+      "name": "desktop",
+      "width": 1440,
+      "height": 1000
+    },
+    {
+      "name": "mobile",
+      "width": 390,
+      "height": 844
+    }
+  ],
+  "captures": [
+    {
+      "fixture": "strict_matter_join",
+      "route": "/meetings/strict-matter/",
+      "viewport": "desktop",
+      "file": "backstage://cityscroll-evidence/objects/sha256/ec/ec87c3fa293218447ac6e50be3bd36f22e79577629c1ee172c61c4f04cee412b.webp",
+      "sha256": "ec87c3fa293218447ac6e50be3bd36f22e79577629c1ee172c61c4f04cee412b",
+      "commit": "0246fb74e04cca4ffe9f02f5ca66db2e99e16cd7",
+      "observations": {
+        "follow_cta": true,
+        "calendar": true,
+        "calendar_creates_watch": false,
+        "apply_now": false,
+        "attend": false,
+        "public_committee_membership": false,
+        "continuation_state": "single",
+        "later_state": true,
+        "adopted": false,
+        "effective": false,
+        "causal": false,
+        "reports_what_happened": false
+      }
+    },
+    {
+      "fixture": "strict_matter_join",
+      "route": "/meetings/strict-matter/",
+      "viewport": "mobile",
+      "file": "backstage://cityscroll-evidence/objects/sha256/20/20f35e90fbd8a681ba2a90341b5939d7451c9c3a38a178eb7c80707e900bbff6.webp",
+      "sha256": "20f35e90fbd8a681ba2a90341b5939d7451c9c3a38a178eb7c80707e900bbff6",
+      "commit": "0246fb74e04cca4ffe9f02f5ca66db2e99e16cd7",
+      "observations": {
+        "follow_cta": true,
+        "calendar": true,
+        "calendar_creates_watch": false,
+        "apply_now": false,
+        "attend": false,
+        "public_committee_membership": false,
+        "continuation_state": "single",
+        "later_state": true,
+        "adopted": false,
+        "effective": false,
+        "causal": false,
+        "reports_what_happened": false
+      }
+    },
+    {
+      "fixture": "unmatched_hearing",
+      "route": "/meetings/unmatched/",
+      "viewport": "desktop",
+      "file": "backstage://cityscroll-evidence/objects/sha256/dc/dc78bc4ef70c67b2f24606065caa4797e589068aa0056049722727a2de07a9ed.webp",
+      "sha256": "dc78bc4ef70c67b2f24606065caa4797e589068aa0056049722727a2de07a9ed",
+      "commit": "0246fb74e04cca4ffe9f02f5ca66db2e99e16cd7",
+      "observations": {
+        "follow_cta": false,
+        "calendar": true,
+        "calendar_creates_watch": false,
+        "apply_now": false,
+        "attend": false,
+        "public_committee_membership": false,
+        "continuation_state": "unmatched",
+        "later_state": false,
+        "adopted": false,
+        "effective": false,
+        "causal": false,
+        "reports_what_happened": false
+      }
+    },
+    {
+      "fixture": "unmatched_hearing",
+      "route": "/meetings/unmatched/",
+      "viewport": "mobile",
+      "file": "backstage://cityscroll-evidence/objects/sha256/a7/a7bde3c3c789716d9b04826a961524219c24f2d2a5e1904f412ff5c572efc0b2.webp",
+      "sha256": "a7bde3c3c789716d9b04826a961524219c24f2d2a5e1904f412ff5c572efc0b2",
+      "commit": "0246fb74e04cca4ffe9f02f5ca66db2e99e16cd7",
+      "observations": {
+        "follow_cta": false,
+        "calendar": true,
+        "calendar_creates_watch": false,
+        "apply_now": false,
+        "attend": false,
+        "public_committee_membership": false,
+        "continuation_state": "unmatched",
+        "later_state": false,
+        "adopted": false,
+        "effective": false,
+        "causal": false,
+        "reports_what_happened": false
+      }
+    },
+    {
+      "fixture": "cb_source_backed",
+      "route": "/community-boards/manhattan-cb-02/",
+      "viewport": "desktop",
+      "file": "backstage://cityscroll-evidence/objects/sha256/f9/f9febeb2782f715b20b2f804532e361ad04b6d3a94e3db6b6d0666f79f003382.webp",
+      "sha256": "f9febeb2782f715b20b2f804532e361ad04b6d3a94e3db6b6d0666f79f003382",
+      "commit": "0246fb74e04cca4ffe9f02f5ca66db2e99e16cd7",
+      "observations": {
+        "follow_cta": false,
+        "calendar": true,
+        "calendar_creates_watch": false,
+        "apply_now": false,
+        "attend": true,
+        "public_committee_membership": true,
+        "continuation_state": null,
+        "later_state": false,
+        "adopted": false,
+        "effective": false,
+        "causal": false,
+        "reports_what_happened": false
+      }
+    },
+    {
+      "fixture": "cb_source_backed",
+      "route": "/community-boards/manhattan-cb-02/",
+      "viewport": "mobile",
+      "file": "backstage://cityscroll-evidence/objects/sha256/e9/e9cd92897537c2d0ab4f34df4b8970a3dc1b1cb93e8c17b6a225325b07ad756c.webp",
+      "sha256": "e9cd92897537c2d0ab4f34df4b8970a3dc1b1cb93e8c17b6a225325b07ad756c",
+      "commit": "0246fb74e04cca4ffe9f02f5ca66db2e99e16cd7",
+      "observations": {
+        "follow_cta": false,
+        "calendar": true,
+        "calendar_creates_watch": false,
+        "apply_now": false,
+        "attend": true,
+        "public_committee_membership": true,
+        "continuation_state": null,
+        "later_state": false,
+        "adopted": false,
+        "effective": false,
+        "causal": false,
+        "reports_what_happened": false
+      }
+    },
+    {
+      "fixture": "cb_unknown",
+      "route": "/community-boards/bronx-cb-02/",
+      "viewport": "desktop",
+      "file": "backstage://cityscroll-evidence/objects/sha256/6d/6da70a7322c390b6defc7b33363ffb77050410d1fffe56c12f1163dc9176e36b.webp",
+      "sha256": "6da70a7322c390b6defc7b33363ffb77050410d1fffe56c12f1163dc9176e36b",
+      "commit": "0246fb74e04cca4ffe9f02f5ca66db2e99e16cd7",
+      "observations": {
+        "follow_cta": false,
+        "calendar": false,
+        "calendar_creates_watch": false,
+        "apply_now": false,
+        "attend": false,
+        "public_committee_membership": false,
+        "continuation_state": null,
+        "later_state": false,
+        "adopted": false,
+        "effective": false,
+        "causal": false,
+        "reports_what_happened": false
+      }
+    },
+    {
+      "fixture": "cb_unknown",
+      "route": "/community-boards/bronx-cb-02/",
+      "viewport": "mobile",
+      "file": "backstage://cityscroll-evidence/objects/sha256/c6/c638a9b5826ca8f3c34ca6ad0beb73af5920a5d261142f05d33e3f2f3587b7ea.webp",
+      "sha256": "c638a9b5826ca8f3c34ca6ad0beb73af5920a5d261142f05d33e3f2f3587b7ea",
+      "commit": "0246fb74e04cca4ffe9f02f5ca66db2e99e16cd7",
+      "observations": {
+        "follow_cta": false,
+        "calendar": false,
+        "calendar_creates_watch": false,
+        "apply_now": false,
+        "attend": false,
+        "public_committee_membership": false,
+        "continuation_state": null,
+        "later_state": false,
+        "adopted": false,
+        "effective": false,
+        "causal": false,
+        "reports_what_happened": false
+      }
+    },
+    {
+      "fixture": "dot_t2_adoption",
+      "route": "/rules/dot-t2-adoption/",
+      "viewport": "desktop",
+      "file": "backstage://cityscroll-evidence/objects/sha256/d9/d9e749cdbacc1f83cb9370fd61d06f814d397acbb8ac6152bdbcf9b841454dc1.webp",
+      "sha256": "d9e749cdbacc1f83cb9370fd61d06f814d397acbb8ac6152bdbcf9b841454dc1",
+      "commit": "0246fb74e04cca4ffe9f02f5ca66db2e99e16cd7",
+      "observations": {
+        "follow_cta": false,
+        "calendar": false,
+        "calendar_creates_watch": false,
+        "apply_now": false,
+        "attend": false,
+        "public_committee_membership": false,
+        "continuation_state": null,
+        "later_state": false,
+        "adopted": true,
+        "effective": false,
+        "causal": false,
+        "reports_what_happened": true
+      }
+    },
+    {
+      "fixture": "dot_t2_adoption",
+      "route": "/rules/dot-t2-adoption/",
+      "viewport": "mobile",
+      "file": "backstage://cityscroll-evidence/objects/sha256/1b/1bb01e09a7f869ce00b5c7baa58759dfbcb9ce7daec0c026f76d6332b3afd7f2.webp",
+      "sha256": "1bb01e09a7f869ce00b5c7baa58759dfbcb9ce7daec0c026f76d6332b3afd7f2",
+      "commit": "0246fb74e04cca4ffe9f02f5ca66db2e99e16cd7",
+      "observations": {
+        "follow_cta": false,
+        "calendar": false,
+        "calendar_creates_watch": false,
+        "apply_now": false,
+        "attend": false,
+        "public_committee_membership": false,
+        "continuation_state": null,
+        "later_state": false,
+        "adopted": true,
+        "effective": false,
+        "causal": false,
+        "reports_what_happened": true
+      }
+    },
+    {
+      "fixture": "dot_t3_effective",
+      "route": "/rules/dot-t3-effective/",
+      "viewport": "desktop",
+      "file": "backstage://cityscroll-evidence/objects/sha256/c0/c0f21ba558fecf24f364160501ad91773244c271da39006c6853df2c690607dc.webp",
+      "sha256": "c0f21ba558fecf24f364160501ad91773244c271da39006c6853df2c690607dc",
+      "commit": "0246fb74e04cca4ffe9f02f5ca66db2e99e16cd7",
+      "observations": {
+        "follow_cta": false,
+        "calendar": false,
+        "calendar_creates_watch": false,
+        "apply_now": false,
+        "attend": false,
+        "public_committee_membership": false,
+        "continuation_state": null,
+        "later_state": false,
+        "adopted": false,
+        "effective": true,
+        "causal": false,
+        "reports_what_happened": true
+      }
+    },
+    {
+      "fixture": "dot_t3_effective",
+      "route": "/rules/dot-t3-effective/",
+      "viewport": "mobile",
+      "file": "backstage://cityscroll-evidence/objects/sha256/ee/ee4834e38bec42047bc3acdaeb4ea517ef234af6e2ed5b5b028561f501bb3f6d.webp",
+      "sha256": "ee4834e38bec42047bc3acdaeb4ea517ef234af6e2ed5b5b028561f501bb3f6d",
+      "commit": "0246fb74e04cca4ffe9f02f5ca66db2e99e16cd7",
+      "observations": {
+        "follow_cta": false,
+        "calendar": false,
+        "calendar_creates_watch": false,
+        "apply_now": false,
+        "attend": false,
+        "public_committee_membership": false,
+        "continuation_state": null,
+        "later_state": false,
+        "adopted": false,
+        "effective": true,
+        "causal": false,
+        "reports_what_happened": true
+      }
+    }
+  ]
+}

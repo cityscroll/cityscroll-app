@@ -73,6 +73,15 @@
   `node tools/build_action_path_coverage.mjs`; `--check` verifies the committed receipt.
   Focused proof is `test/action_path_coverage.test.mjs`.
 
+- **Action Path documentation receipt (CAP-9):** `docs/civic-action-paths.md` is the
+  architecture receipt for the derived Action Path v0 projection, continuation safety,
+  Community Board evidence policy, domain coverage, remaining gaps, and future adapters.
+  Before/after desktop and mobile captures live under
+  `docs/evidence/civic-action-paths/`. Rebuild the closing receipt with
+  `node tools/build_civic_action_paths_documentation.mjs`; `--check` verifies it.
+  Visual evidence: `python3 tools/capture_civic_action_paths_after.py --check`.
+  Focused proof is `test/civic_action_paths_documentation.test.mjs`.
+
 - **Council hearing matter continuation:** `site/council_hearing_matter_continuation.mjs` projects
   only the materialized `exact_date_body_tokens` City Record → Council join; it preserves every
   exact matter, keeps multiple matters as choices, and omits continuation for unmatched/no-matter
