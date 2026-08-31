@@ -3,6 +3,30 @@
   "membership": "declared",
   "projections": [
     {
+      "id": "action-path-generalization-audit",
+      "path": "docs/evidence/civic-action-paths/generalization-audit.json",
+      "cards": [
+        {
+          "id": "cityscroll-civic-action-paths/cap-7",
+          "status": "implemented",
+          "source_fingerprint": "cap-7-generalization-audit.v1",
+          "source_updated_at": "2026-08-30T00:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "id": "action-path-generalization-audit-report",
+      "path": "docs/evidence/civic-action-paths/generalization-audit.md",
+      "cards": [
+        {
+          "id": "cityscroll-civic-action-paths/cap-7",
+          "status": "implemented",
+          "source_fingerprint": "cap-7-generalization-audit.v1",
+          "source_updated_at": "2026-08-30T00:00:00.000Z"
+        }
+      ]
+    },
+    {
       "id": "architecture-evidence-entry-schema",
       "path": "architecture/evidence-entry.v1.schema.json",
       "cards": [
@@ -22,6 +46,18 @@
           "id": "cityscroll-merge-throughput/mt-7-architecture-evidence-shards",
           "status": "implemented",
           "source_fingerprint": "mt-7-architecture-evidence-shards.v1",
+          "source_updated_at": "2026-08-30T00:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "id": "civic-action-paths-coverage-boundary",
+      "path": "docs/civic-action-paths.md",
+      "cards": [
+        {
+          "id": "cityscroll-civic-action-paths/cap-7",
+          "status": "implemented",
+          "source_fingerprint": "cap-7-generalization-audit.v1",
           "source_updated_at": "2026-08-30T00:00:00.000Z"
         }
       ]

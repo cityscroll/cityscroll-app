@@ -2,6 +2,12 @@
   "schema": "cityscroll.card-inventory.v1",
   "cards": [
     {
+      "id": "cityscroll-civic-action-paths/cap-7",
+      "status": "implemented",
+      "fingerprint": "cap-7-generalization-audit.v1",
+      "updated_at": "2026-08-30T00:00:00.000Z"
+    },
+    {
       "id": "cityscroll-land-decision-path/ldp-05-authority-summary-materializer",
       "status": "implemented",
       "fingerprint": "ldp-05-authority-summary-materializer.v1",

@@ -43,6 +43,15 @@
   `rules.request_ids` membership; matter and broad/body-level fallbacks remain unsupported. Proof
   is `worker/test/continuation_replay.test.mjs`.
 
+- **Action Path generalization audit (CAP-7):**
+  `tools/lib/action_path_generalization_audit.mjs` is the fail-closed seven-domain matrix over
+  Meetings, Rules, Land, Money, Staffing, Community Boards, and Property. Every cell cites a
+  retained fixture, source, or explicit `not-established` finding; exact replay stays the CAP-2
+  `rules.request_ids` family, and the DOT City-Owned Bicycle Racks T1/T2/T3 snapshots remain the
+  Rules canary. Substantial ingestion or a new compiler family is ranked follow-on work. Rebuild
+  with `node tools/build_action_path_generalization_audit.mjs`; `--check` verifies the committed
+  receipt. Focused proof is `test/action_path_generalization_audit.test.mjs`.
+
 - **Council hearing matter continuation:** `site/council_hearing_matter_continuation.mjs` projects
   only the materialized `exact_date_body_tokens` City Record → Council join; it preserves every
   exact matter, keeps multiple matters as choices, and omits continuation for unmatched/no-matter

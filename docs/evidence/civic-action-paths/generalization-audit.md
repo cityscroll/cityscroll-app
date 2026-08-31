@@ -1,0 +1,30 @@
+# Action Path generalization audit
+
+This matrix is a stopping rule. It compares existing actions, natural continuations, grounded targets, exact replay, and card decisions across seven domains. It does not rebuild those domains and it does not treat button density as coverage.
+
+Exact replay family in force: `rules.request_ids`.
+
+| Domain | Existing action | Natural continuation | Grounded now? | Exactly replayable? | Card needed? |
+| --- | --- | --- | --- | --- | --- |
+| meetings | established: Existing meeting actions include attend, calendar, watch. | established: One exact Council matter continuation is published; multiple matters remain a choice and unmatched hearings omit a CTA (single=matter:79200, multiple_cta=true, unmatched_cta=true). | established: Matter joins are grounded only by exact_date_body_tokens on retained Council fixtures 20260707022, 20260707021, 20260728026. | not-established: Exact matter replay is not-established; the current exact family remains rules.request_ids, and a matter probe returns no continuation. | CAP-3; CAP-4; follow-on: Exact compiler family for matter:{legistar_id} continuation replay |
+| rules | established: T1 retains an available comment action on the DOT City-Owned Bicycle Racks proposal; later snapshots do not keep that comment CTA. | established: T1/T2/T3 remain on rulemaking:dot:bicycle-owned-racks. Continuation CTAs are t1_before_hearing:true; t2_after_adoption:true; t3_after_effective_date:true. | established: Grounded rulemaking subject rulemaking:dot:bicycle-owned-racks is retained from proposal notice 20260317026 and adoption notice 20260706041. | established: Exact replay is proven for rules.request_ids membership of the two retained DOT notices. | CAP-1; CAP-2; CAP-4 |
+| land | established: Existing land actions include bid_checklist, calendar, watch. | established: A notice-to-ZAP adapter can name a project subject, but the published destination is a land document route rather than an exact Following continuation. | established: Strict notice-land join grounds project 2022M0258 from notice 20230912001. | not-established: Exact land project replay is not-established; the land lens has no project identifier family, and rules.request_ids is the only proven exact family. | follow-on: Exact land-project continuation family and compiler support |
+| money | established: Existing procurement actions include official_application, calendar, watch. | not-established: Natural continuation is a procurement object, but an Action Path continuation adapter is not-established. | established: Money watches can name a procurement_id in the compiler, which is identity evidence, not a shipped Action Path continuation. | not-established: Exact procurement Action Path replay is not-established; compiler support for procurement_id is not the CAP-2 relation family. | follow-on: Action Path procurement continuation plus an exact relation family |
+| staffing | established: Existing exam actions include official_application, calendar, document. | not-established: Natural continuation is an exam or eligible list, but an Action Path continuation adapter is not-established. | established: Exam 7016 is a retained identity for apply-window actions and the exam process spine. | not-established: Exact exam Action Path replay is not-established; people-lens examNumber filtering is not the CAP-2 relation family. | follow-on: Action Path exam continuation plus an exact exam-number relation family |
+| community_boards | established: Source-qualified Ways to participate paths include attend_meeting, add_to_calendar, follow_board, follow_committee, speak_or_comment, contact_board, apply_public_committee_membership, apply_full_board_membership. | established: Board follow uses exact board identity community-board:manhattan-cb-06. Committee follow remains omitted. | established: Participation remains board-local; cross-board inference is false and unknown boards omit unsupported apply/speak paths. | not-established: Board-scoped meetings watches exist, but committee identity replay is not-established and is not the CAP-2 rules.request_ids family. | CAP-5; CAP-6; follow-on: Exact committee-identity replay without board fallback |
+| property | established: Existing property actions vary by stage and include document, watch. | not-established: Natural continuation is a disposition process, but an Action Path continuation adapter is not-established. | established: Disposition spines join on exact BBL or borough + block/lot; stages are hearing → auction_or_rfp → award_or_conveyance. | not-established: Exact disposition-subject replay is not-established; the property lens has process/stage filters but no disposition subject family. | follow-on: Action Path disposition continuation plus an exact process-subject family |
+
+## DOT City-Owned Bicycle Racks canary
+
+- t1_before_hearing: action=comment available=true comment_cta=true continuation=rulemaking:dot:bicycle-owned-racks continuation_cta=true exact_replay=true
+- t2_after_adoption: action=document available=true comment_cta=false continuation=rulemaking:dot:bicycle-owned-racks continuation_cta=true exact_replay=true
+- t3_after_effective_date: action=document available=true comment_cta=false continuation=rulemaking:dot:bicycle-owned-racks continuation_cta=true exact_replay=true
+
+## Ranked follow-on work
+
+- meetings: Exact compiler family for matter:{legistar_id} continuation replay (substantial-ingestion-or-compiler)
+- land: Exact land-project continuation family and compiler support (substantial-ingestion-or-compiler)
+- money: Action Path procurement continuation plus an exact relation family (substantial-ingestion-or-compiler)
+- staffing: Action Path exam continuation plus an exact exam-number relation family (substantial-ingestion-or-compiler)
+- community_boards: Exact committee-identity replay without board fallback (substantial-ingestion-or-compiler)
+- property: Action Path disposition continuation plus an exact process-subject family (substantial-ingestion-or-compiler)
