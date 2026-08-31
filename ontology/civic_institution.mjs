@@ -359,6 +359,7 @@ const MUST_REPORT_NEGATIVE_RULE = "Never infer a report-recipient or oversight e
 const DUTY_BEARER_NEGATIVE_RULE = "Never infer a duty bearer or oversight edge from a generic DOC obligation, generic board language, a Board of Correction meeting, or a shared agency label.";
 const DEVELOPMENT_ROLE_NEGATIVE_RULE = "Never infer an applicant from a project mention, a contractor from a publisher notice, or a selected developer from a company name; require exact party or actor evidence.";
 const COUNCIL_COMMITTEE_NEGATIVE_RULE = "Never connect a committee because its display name resembles Zoning and Franchises, because a City Record notice is published by Council, or because a meeting date is nearby. Do not infer chair status without valid dates and exact is_chair evidence.";
+const BOROUGH_OFFICE_NEGATIVE_RULE = "Never infer an appointment from a Borough President title, board geography, a person on a board roster, a publisher label, or generic appointed-member wording. Do not re-key a Community Board as an agency or mint a parent-child agency edge.";
 const ROLE_EVIDENCE = Object.freeze([
   "exact_source_observation",
   "exact_ids",
@@ -491,6 +492,7 @@ export const CIVIC_INSTITUTION_ROLE_RELATIONS = Object.freeze({
     inverse_role: "hosted_by",
     source_contract: "cityscroll.council_committee_proceeding_source_contract.v1",
     from_kind: "committee",
+    from_kinds: Object.freeze(["committee", "civic-institution"]),
     object_kind: "meeting",
     legacy_relation_id: null,
     required_evidence: Object.freeze([
@@ -501,6 +503,44 @@ export const CIVIC_INSTITUTION_ROLE_RELATIONS = Object.freeze({
     ]),
     methods: ENTITY_LINK_METHODS,
     negative_rule: COUNCIL_COMMITTEE_NEGATIVE_RULE,
+  }),
+  holds_office: Object.freeze({
+    relation: "holds_office",
+    inverse: "officeholder_of",
+    role: "elected_office",
+    inverse_role: "officeholder",
+    source_contract: "cityscroll.borough_office_role_source_contract.v1",
+    from_kind: "civic-institution",
+    object_kind: "person-leader",
+    legacy_relation_id: null,
+    required_evidence: Object.freeze([
+      ...ROLE_EVIDENCE,
+      "exact_office_id",
+      "exact_person_leader_key",
+      "valid_time",
+    ]),
+    methods: ENTITY_LINK_METHODS,
+    negative_rule: BOROUGH_OFFICE_NEGATIVE_RULE,
+  }),
+  appoints_members_of: Object.freeze({
+    relation: "appoints_members_of",
+    inverse: "members_appointed_by",
+    role: "appointing_office",
+    inverse_role: "appointed_body",
+    source_contract: "cityscroll.borough_office_appointment_source_contract.v1",
+    from_kind: "civic-institution",
+    object_kind: "community-board",
+    legacy_relation_id: null,
+    required_evidence: Object.freeze([
+      ...ROLE_EVIDENCE,
+      "exact_office_id",
+      "exact_board_body_id",
+      "official_appointment_source",
+      "named_board_scope",
+      "valid_time",
+    ]),
+    methods: ENTITY_LINK_METHODS,
+    negative_rule: BOROUGH_OFFICE_NEGATIVE_RULE,
   }),
   member_of: Object.freeze({
     relation: "member_of",
@@ -653,6 +693,19 @@ function compatibilityHref(canonicalId) {
   return canonicalId ? `/agencies/${canonicalId}/` : null;
 }
 
+function kindList(kind) {
+  if (Array.isArray(kind)) return kind.map((item) => clean(item, 80)).filter(Boolean);
+  return String(kind || "civic-institution").split("|").map((item) => clean(item, 80)).filter(Boolean);
+}
+
+function tryTypedObjectAny(value, kind) {
+  for (const item of kindList(kind)) {
+    const parsed = tryTypedObject(value, item);
+    if (parsed) return parsed;
+  }
+  return null;
+}
+
 function tryTypedObject(value, kind) {
   if (kind === "civic-institution") return tryInstitution(value);
   const raw = clean(value?.id || value?.object_ref || value?.ref || value, 320);
@@ -720,6 +773,29 @@ function tryTypedObject(value, kind) {
       canonical_id: personId,
       kind: "official",
       href: `/officials/${encodeURIComponent(personId)}/`,
+    });
+  }
+  if (kind === "person-leader") {
+    const match = raw.match(/^person-leader:([a-z0-9-]+):(id|name):(.+)$/i);
+    if (!match) return null;
+    const agencyId = match[1];
+    const id = `person-leader:${agencyId}:${match[2].toLowerCase()}:${match[3]}`;
+    return Object.freeze({
+      id,
+      canonical_id: id.slice("person-leader:".length),
+      kind: "person-leader",
+      href: `/agencies/${agencyId}/#agency-institution-office-roles`,
+    });
+  }
+  if (kind === "community-board") {
+    const match = raw.match(/^(?:community-board:)?([a-z]+(?:-[a-z]+)*-cb-\d{2})$/i);
+    if (!match) return null;
+    const bodyId = match[1].toLowerCase();
+    return Object.freeze({
+      id: `community-board:${bodyId}`,
+      canonical_id: bodyId,
+      kind: "community-board",
+      href: `/community-boards/${encodeURIComponent(bodyId)}/`,
     });
   }
   if (kind === "land-matter") {
@@ -963,10 +1039,14 @@ export function buildCivicInstitutionRoleEdge({
     });
   }
   const spec = oriented.spec;
-  const fromKind = oriented.reversed ? spec.object_kind : (spec.from_kind || "civic-institution");
-  const toKind = oriented.reversed ? (spec.from_kind || "civic-institution") : spec.object_kind;
-  const from = tryTypedObject(oriented.reversed ? object : subject, fromKind);
-  const to = tryTypedObject(oriented.reversed ? subject : object, toKind);
+  const fromKind = oriented.reversed
+    ? (spec.object_kinds || spec.object_kind)
+    : (spec.from_kinds || spec.from_kind || "civic-institution");
+  const toKind = oriented.reversed
+    ? (spec.from_kinds || spec.from_kind || "civic-institution")
+    : (spec.object_kinds || spec.object_kind);
+  const from = tryTypedObjectAny(oriented.reversed ? object : subject, fromKind);
+  const to = tryTypedObjectAny(oriented.reversed ? subject : object, toKind);
   if (!from || !to) {
     return unresolvedRoleResult({
       spec,

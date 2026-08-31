@@ -33,6 +33,10 @@ import { buildAgencyVendorRollups } from "../site/agency_vendor_rollup.mjs";
 import { ACCEPTED_IDENTITY_CLASSIFICATIONS } from "../site/agency_search_producer.mjs";
 import { buildAgencyIdentityEvidence } from "./lib/agency_identity_evidence.mjs";
 import { accountabilitySourcesFromLookup } from "../site/civic_institution_accountability.mjs";
+import {
+  BROOKLYN_OFFICE_CANONICAL_ID,
+  SPECIMEN_OFFICE_NOTICE_IDS,
+} from "../site/civic_institution_borough_office.mjs";
 import defaultProceedings from "../site/data/council_committee_proceedings.json" with { type: "json" };
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -113,6 +117,22 @@ function loadSources() {
     meeting_outcomes: existsSync(join(SITE, "data/meeting_outcomes_snapshot.json"))
       ? readJson(join(SITE, "data/meeting_outcomes_snapshot.json"))
       : null,
+  };
+}
+
+function boroughOfficeSourcesFor(id, sources) {
+  if (id !== BROOKLYN_OFFICE_CANONICAL_ID) return null;
+  const meetings = sources.meetings_domain?.meetings
+    || sources.meetings_domain?.rows
+    || sources.meetings_domain
+    || [];
+  const meetingList = Array.isArray(meetings) ? meetings : [];
+  const wanted = new Set(SPECIMEN_OFFICE_NOTICE_IDS);
+  return {
+    publisherRow: sources.publisher_crosswalk?.entries?.[id] || null,
+    meetings: meetingList.filter((row) => wanted.has(String(row?.request_id || "").trim())),
+    appointmentRecords: sources.borough_office_appointments || [],
+    generatedAt: sources.generated_at || sources.publisher_crosswalk?.generated_at,
   };
 }
 
@@ -474,6 +494,7 @@ export function buildAgencyConstellationMaterialization(sources = loadSources())
       developmentRoleSources: developmentRoleSourcesFor(id, sources),
       accountabilitySources: accountabilitySourcesFromLookup(sources.obligations),
       committeeRoleSources: committeeRoleSourcesFor(id, sources),
+      boroughOfficeSources: boroughOfficeSourcesFor(id, sources),
     });
     // Keep pages for agencies with at least one matched category, plus demos.
     if (view.summary.matched_categories === 0 && !DEMO_IDS.includes(id)) continue;

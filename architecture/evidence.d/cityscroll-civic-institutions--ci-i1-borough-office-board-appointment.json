@@ -1,0 +1,21 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-civic-institutions/ci-i1-borough-office-board-appointment",
+  "status": "implemented",
+  "fingerprint": "ci-i1-borough-office-board-appointment.v1",
+  "updated_at": "2026-08-31T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "borough-office-role-resolver",
+      "path": "site/civic_institution_borough_office.mjs"
+    },
+    {
+      "id": "borough-office-role-fixtures",
+      "path": "test/fixtures/civic_institution_borough_office/cases.json"
+    },
+    {
+      "id": "borough-office-role-tests",
+      "path": "test/civic_institution_borough_office.test.mjs"
+    }
+  ]
+}
