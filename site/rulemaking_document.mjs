@@ -11,6 +11,7 @@ import { rulesCardInteractionProjection } from "./rules_card_interaction.mjs";
 import { buildRulesPhaseView } from "./rules_phase_spine.mjs";
 import { renderPetitionHandoff } from "./rules_petition.mjs";
 import { renderRulesExceptionModes } from "./rules_exception_modes.mjs";
+import { attachRulemakingAuthority, renderRulemakingAuthority } from "./rulemaking_authority.mjs";
 
 const esc = (value) => String(value ?? "").replace(/[&<>"']/g, (char) => ({
   "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
@@ -228,37 +229,40 @@ function ruleVersionsMarkup(object) {
   </div>`;
 }
 
-export function renderRulemakingDocument(object, { currentHref = "", now = null } = {}) {
+export function renderRulemakingDocument(object, { currentHref = "", now = null, versions = [], changes = [], provision = null } = {}) {
   if (!object || object.schema !== "cityscroll.rulemaking.v1" || !object.rulemaking_id) return "";
-  const title = clean(object.title, 500) || "Rulemaking";
-  const agency = clean(object.agency, 300);
-  const sourceDocs = Array.isArray(object.source_documents) ? object.source_documents : [];
+  const document = object.authority
+    ? object
+    : attachRulemakingAuthority(object, { versions, changes, provision });
+  const title = clean(document.title, 500) || "Rulemaking";
+  const agency = clean(document.agency, 300);
+  const sourceDocs = Array.isArray(document.source_documents) ? document.source_documents : [];
   // The materialized object carries a build-time projection, but a cached page
   // must still retire a deadline when it is rendered after that date.
   const interaction = rulesCardInteractionProjection({
-    request_id: object.notices?.[0]?.request_id,
-    rulemaking_id: object.rulemaking_id,
+    request_id: document.notices?.[0]?.request_id,
+    rulemaking_id: document.rulemaking_id,
     title,
-    fine_stage: object.current_stage,
-    rule_url: object.nyc_rules?.url,
-    comment_url: object.nyc_rules?.comment_url,
-    comment_by_date: object.nyc_rules?.comment_by_date,
-    hearing_date: object.nyc_rules?.hearing_date,
-    events: object.events,
+    fine_stage: document.current_stage,
+    rule_url: document.nyc_rules?.url,
+    comment_url: document.nyc_rules?.comment_url,
+    comment_by_date: document.nyc_rules?.comment_by_date,
+    hearing_date: document.nyc_rules?.hearing_date,
+    events: document.events,
     now: now || new Date().toISOString().slice(0, 10),
-    nyc_rules: object.nyc_rules,
+    nyc_rules: document.nyc_rules,
     source_documents: sourceDocs,
-    proposed_rule_url: object.proposed_rule_url || object.nyc_rules?.proposed_rule_url,
-    final_rule_url: object.final_rule_url || object.nyc_rules?.final_rule_url,
-    hearing_url: object.hearing_url,
-    hearing_record_url: object.hearing_record_url,
-    comments_url: object.comments_url,
-    comment_channel_url: object.comment_channel_url,
-    testimony_url: object.testimony_url,
-    petition_url: object.petition_url,
-    petition_handoff: object.petition_handoff,
-    follow_href: object.follow_href,
-    history_url: object.history_url || object.canonical_href,
+    proposed_rule_url: document.proposed_rule_url || document.nyc_rules?.proposed_rule_url,
+    final_rule_url: document.final_rule_url || document.nyc_rules?.final_rule_url,
+    hearing_url: document.hearing_url,
+    hearing_record_url: document.hearing_record_url,
+    comments_url: document.comments_url,
+    comment_channel_url: document.comment_channel_url,
+    testimony_url: document.testimony_url,
+    petition_url: document.petition_url,
+    petition_handoff: document.petition_handoff,
+    follow_href: document.follow_href,
+    history_url: document.history_url || document.canonical_href,
   });
   const participationItems = (interaction.kinetic_actions || [])
     .filter((action) => action?.href && action?.label)
@@ -276,11 +280,11 @@ export function renderRulemakingDocument(object, { currentHref = "", now = null 
     })
     : "";
   const petition = interaction.lifecycle_state === "effective"
-    ? renderPetitionHandoff(object.petition_handoff, { mode: "rule" })
+    ? renderPetitionHandoff(document.petition_handoff, { mode: "rule" })
     : "";
-  const exceptions = renderRulesExceptionModes(object.exception_modes);
+  const exceptions = renderRulesExceptionModes(document.exception_modes);
   const actionItems = [];
-  const officialHref = clean(object.nyc_rules?.url || object.nyc_rules?.comment_url);
+  const officialHref = clean(document.nyc_rules?.url || document.nyc_rules?.comment_url);
   if (officialHref) actionItems.push({ kind: "source", href: officialHref, label: "Open official rule page" });
   const actions = renderNodeActions(actionItems, { ariaLabel: "Rulemaking actions", extraClass: "civic-object-actions" });
   const lifecycleStatus = (() => {
@@ -304,15 +308,20 @@ export function renderRulemakingDocument(object, { currentHref = "", now = null 
   const ruleItems = sourceDocs.filter((item) => item.kind === "nyc_rules").map((item) =>
     `<li><a class="ui-official-source-link" href="${esc(item.href)}" target="_blank" rel="noopener noreferrer">${esc(item.label)}<span aria-hidden="true">↗</span></a></li>`
   ).join("");
-  const timeline = historyTimelineMarkup(object);
+  const timeline = historyTimelineMarkup(document);
+  const authority = renderNodeSection({
+    heading: "Statutory authority",
+    body: renderRulemakingAuthority(document.authority),
+    extraClass: "rulemaking-authority-section",
+  });
   const html = `<!doctype html>
 <html lang="en">
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>${esc(title)} · CityScroll</title><link rel="canonical" href="https://cityscroll.org${esc(object.canonical_href)}">
-<meta property="og:title" content="${esc(title)} · CityScroll"><meta property="og:url" content="https://cityscroll.org${esc(object.canonical_href)}">
+<title>${esc(title)} · CityScroll</title><link rel="canonical" href="https://cityscroll.org${esc(document.canonical_href)}">
+<meta property="og:title" content="${esc(title)} · CityScroll"><meta property="og:url" content="https://cityscroll.org${esc(document.canonical_href)}">
 ${renderCivicDocumentAssets()}</head>
 <body>${renderCivicDocumentMast({ current: "browse" })}
-<main id="main" class="node-document civic-object-document rulemaking-document" data-civic-object-kind="rulemaking" data-rulemaking-id="${esc(object.rulemaking_id)}" tabindex="-1">
+<main id="main" class="node-document civic-object-document rulemaking-document" data-civic-object-kind="rulemaking" data-rulemaking-id="${esc(document.rulemaking_id)}" tabindex="-1">
 ${renderNodeBack({ href: "/browse/rules/", label: "Back to Rules", currentHref })}
 <header class="node-hero civic-object-hero" data-export-class="object_identity">
 <p class="node-kicker civic-object-kicker">Rulemaking case file</p>
@@ -322,8 +331,9 @@ ${agency ? `<p class="node-lede">${esc(agency)}</p>` : ""}
 <p class="node-lede">One case file for the published proposal, public process, adoption, and effective date.</p>
 </header>
 ${actions}
-${renderNodeSection({ heading: "What the agency proposes", body: object.proposal_summary ? `<p>${esc(object.proposal_summary)}</p>` : "" })}
-${renderNodeSection({ heading: "What this changes", body: ruleVersionsMarkup(object), extraClass: "rulemaking-versions" })}
+${renderNodeSection({ heading: "What the agency proposes", body: document.proposal_summary ? `<p>${esc(document.proposal_summary)}</p>` : "" })}
+${renderNodeSection({ heading: "What this changes", body: ruleVersionsMarkup(document), extraClass: "rulemaking-versions" })}
+${authority}
 ${renderNodeSection({
   body: exceptions,
   extraClass: "rulemaking-exceptions",
