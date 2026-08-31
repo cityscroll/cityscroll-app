@@ -45,6 +45,10 @@ const CLAIM_KEY_TYPES = Object.freeze({
   vendor: "field",
   identity: "identity",
   parcel: "relationship",
+  agency: "relationship",
+  "community-board": "relationship",
+  project: "relationship",
+  related_object: "relationship",
   "collapsed_notices": "grouping",
   lifecycle: "lifecycle",
   "regulatory-effect": "interpretation",
@@ -198,6 +202,8 @@ export function parseReportClaimAnchor(value) {
   } else if (parts.namespace === "entity") {
     claim.subject_id = parsed.object_ref;
   } else if (parts.namespace === "meeting") {
+    claim.subject_id = parsed.object_ref;
+  } else if (parts.namespace === "notice") {
     claim.subject_id = parsed.object_ref;
   } else if (parts.namespace === "rulemaking") {
     claim.subject_id = parsed.object_ref;
@@ -425,6 +431,11 @@ function objectDescriptorFromContext(parsed, context) {
     object_id ||= parsed.object_ref;
     canonical_url ||= `/meetings/${encodeURIComponent(object_id)}`;
     object_label ||= `Meeting ${parts.value}`;
+  } else if (parts.namespace === "notice") {
+    object_type ||= "notice";
+    object_id ||= parsed.object_ref;
+    canonical_url ||= `/notices/${encodeURIComponent(parts.value)}`;
+    object_label ||= `Notice ${parts.value}`;
   } else if (parts.namespace === "rulemaking") {
     object_type ||= "rulemaking";
     object_id ||= parsed.object_ref;

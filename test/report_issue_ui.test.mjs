@@ -74,6 +74,30 @@ test("report target builders and markup stay total for incomplete rows", () => {
   assert.equal(renderReportIssueAffordance({ bad: true }), "");
 });
 
+test("canonical meeting and notice documents load the shared report module without unanchored fallbacks", async () => {
+  const { renderMeetingDocument } = await import("../site/meeting_document.mjs");
+  const { renderEdgeNotice } = await import("../site/pages_edge.mjs");
+  const meeting = renderMeetingDocument({
+    meeting_id: "meeting:city_record:20260820001",
+    source_system: "city_record",
+    title: "Public hearing",
+    agency_name: "Buildings",
+    event_date: "2026-08-20T14:00:00Z",
+  });
+  const notice = renderEdgeNotice({
+    request_id: "20240515016",
+    short_title: "Forest management",
+    agency_name: "Parks & Recreation",
+    type_of_notice_description: "Solicitation",
+  }, "20240515016");
+  assert.match(meeting, /<script type="module" src="\/report_issue\.mjs"><\/script>/);
+  assert.match(meeting, /data-report-target=/);
+  assert.match(notice, /data-report-target=/);
+  assert.match(notice, />Report an issue<\/button>/);
+  assert.doesNotMatch(meeting, /data-report-fallback/);
+  assert.doesNotMatch(notice, /data-report-fallback/);
+});
+
 test("static Contract documents expose the same report target and browser module", () => {
   const html = renderProcurementDocument({
     ...contract,

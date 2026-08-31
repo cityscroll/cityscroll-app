@@ -714,6 +714,101 @@ export function buildLandRegulatoryEffectReportTarget(record = {}) {
   }
 }
 
+const CANONICAL_DOCUMENT_ROUTES = Object.freeze({
+  meeting: "/meetings/",
+  notice: "/notices/",
+});
+
+const CANONICAL_DOCUMENT_RELATIONSHIPS = Object.freeze({
+  agency: Object.freeze(["published_by_agency", "organized_by_agency"]),
+  vendor: Object.freeze(["named_vendor"]),
+  project: Object.freeze(["related_land_use_project"]),
+  "community-board": Object.freeze(["hosted_by_community_board"]),
+  related_object: Object.freeze(["identified_canonical_object"]),
+});
+
+function canonicalDocumentParts({ object_type, object_id, canonical_url } = {}) {
+  const type = reportClean(object_type, 40);
+  const id = reportClean(object_id, 500);
+  const href = reportClean(canonical_url, 600);
+  const prefix = CANONICAL_DOCUMENT_ROUTES[type];
+  if (!prefix || !id || !href?.startsWith(prefix)) return null;
+  if (type === "meeting" && !id.startsWith("meeting:")) return null;
+  if (type === "notice" && !/^notice:[A-Za-z0-9_-]{1,80}$/.test(id)) return null;
+  return { type, id, href };
+}
+
+/** Whole-object target for a canonical meeting or notice document. */
+export function buildCanonicalDocumentReportTarget({
+  object_type,
+  object_id,
+  canonical_url,
+  object_label,
+  source = null,
+} = {}) {
+  const parts = canonicalDocumentParts({ object_type, object_id, canonical_url });
+  if (!parts) return null;
+  const label = reportClean(object_label, 1_000)
+    || (parts.type === "notice"
+      ? `Notice ${parts.id.slice("notice:".length)}`
+      : `Meeting ${parts.id.slice("meeting:".length)}`);
+  try {
+    return buildReportTarget({
+      object_type: parts.type,
+      object_id: parts.id,
+      canonical_url: parts.href,
+      object_label: label,
+      source,
+    });
+  } catch {
+    return null;
+  }
+}
+
+/** Target for one displayed CityScroll relationship on a meeting or notice document. */
+export function buildCanonicalDocumentRelationshipReportTarget({
+  object_type,
+  object_id,
+  canonical_url,
+  object_label,
+  semantic_key,
+  relation_type,
+  related_object_id,
+  related_object_label,
+  source = null,
+  edge = null,
+} = {}) {
+  const parts = canonicalDocumentParts({ object_type, object_id, canonical_url });
+  const key = reportClean(semantic_key, 80);
+  const relation = reportClean(relation_type, 80);
+  const relatedId = reportClean(related_object_id, 500);
+  const allowedRelations = CANONICAL_DOCUMENT_RELATIONSHIPS[key];
+  if (!parts || !relatedId || !allowedRelations?.includes(relation)) return null;
+  const label = reportClean(object_label, 1_000)
+    || (parts.type === "notice"
+      ? `Notice ${parts.id.slice("notice:".length)}`
+      : `Meeting ${parts.id.slice("meeting:".length)}`);
+  try {
+    return buildRelationshipReportTarget({
+      object_type: parts.type,
+      object_id: parts.id,
+      canonical_url: parts.href,
+      object_label: label,
+      anchor: `${parts.id}#${key}`,
+      relation_type: relation,
+      subject_id: parts.id,
+      subject_label: label,
+      related_object_id: relatedId,
+      related_object_label: reportClean(related_object_label, 500) || relatedId,
+      field_or_semantic_key: key,
+      source,
+      edge,
+    });
+  } catch {
+    return null;
+  }
+}
+
 export function reportIssueAction(target, options = {}) {
   const fallbackHref = options?.fallbackHref || DEFAULT_FALLBACK_HREF;
   if (!target) {

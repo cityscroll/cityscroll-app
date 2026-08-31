@@ -4516,6 +4516,15 @@ Verify: `node --test test/checkbook_spending_collector.test.mjs` and
   Focused proof is `worker/test/feedback_desk.test.mjs` plus the admin feedback
   cases in `worker/test/admin.test.mjs`.
 
+- **Canonical document report actions:** `site/report_issue.mjs`
+  (`buildCanonicalDocumentReportTarget` /
+  `buildCanonicalDocumentRelationshipReportTarget`) is the fail-closed
+  meeting/notice report seam. Canonical meeting documents and edge notice
+  documents expose a document action plus selected displayed relationships
+  (agency, vendor, project, community board, identified object). Construction
+  failures omit the control; source links stay intact. Proof:
+  `test/canonical_document_report_actions.test.mjs`.
+
 - **Private report adjudication (CC-9):** `worker/src/lib/report_adjudication.mjs`
   is the bounded private verdict contract (`confirmed`, `correct-as-displayed`,
   `ambiguous-or-insufficient-evidence`, `upstream-source-error`, `duplicate`)
