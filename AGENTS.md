@@ -1648,6 +1648,13 @@ rejected, and source-missing rows stay on
 `node tools/build_land_project_map_points.mjs`; `--check` verifies. Focused proof:
 `test/land_project_map_points.test.mjs`.
 
+**Land Map filtered-result model:** `site/land_map_model.mjs` is the pure
+projection of already filtered Land rows onto that point lookup. Join only by
+canonical `project_id`; preserve input order; never mint a project from a
+point key; keep filtering on `landSearch()` / `filterLandSnapshot`. Mapped
+markers plus explicit unmapped ids must equal the List id set. Focused proof:
+`test/land_map_model.test.mjs`.
+
 **WH-07 City Record PIN-chain serve (first history projection):** materialize
 procurement-with-pin siblings from the WH-07 `city_record` bulk into
 `site/data/city_record_pin_chain_warehouse_lookup.json` (+ Worker twin).
