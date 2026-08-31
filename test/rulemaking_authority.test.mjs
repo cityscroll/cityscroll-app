@@ -114,11 +114,11 @@ test("amended or repealed authority is a possible basis change only", () => {
   assert.equal(amended.edges[0].possible_basis_change.copy, POSSIBLE_AUTHORITY_BASIS_CHANGE_COPY);
   assert.deepEqual(amended.edges[0].possible_basis_change.later_operations, ["amend"]);
   assert.equal(repealed.edges[0].possible_basis_change.copy, POSSIBLE_AUTHORITY_BASIS_CHANGE_COPY);
-  assert.match(amended.edges[0].possible_basis_change.copy, /not a new duty, deadline, power, or compliance result/);
+  assert.doesNotMatch(amended.edges[0].possible_basis_change.copy, /deadline|duty|power|compliance/i);
   const html = renderRulemakingAuthority(amended);
   assert.match(html, /possible authority-basis change/);
   assert.match(html, /data-authority-basis-change="possible"/);
-  assert.equal(html.includes("not a new duty, deadline, power, or compliance result"), true);
+  assert.doesNotMatch(html, /deadline|duty|power|compliance/i);
 });
 
 test("ambiguous, RCNY, external, malformed, missing, unsupported, and generic citations stay unresolved", () => {

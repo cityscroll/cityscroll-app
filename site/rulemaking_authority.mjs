@@ -25,7 +25,7 @@ export const RULEMAKING_AUTHORITY_SCHEMA = "cityscroll.rulemaking_authority.v1";
 export const CITES_AUTHORITY_METHOD = "exact_admin_code_authority_citation_v1";
 export const CITES_AUTHORITY_EXTRACTION_VERSION = "1.0.0";
 export const POSSIBLE_AUTHORITY_BASIS_CHANGE_COPY =
-  "The cited provision later changed. This is a possible authority-basis change, not a new duty, deadline, power, or compliance result.";
+  "The cited provision later changed. This records a possible authority-basis change. Open the provision history to inspect the later amendment.";
 
 export const AUTHORITY_UNRESOLVED_REASONS = Object.freeze({
   missing_source_document: "missing_source_document",
