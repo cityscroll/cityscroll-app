@@ -62,6 +62,7 @@ export function buildIntelligenceReceipt(input = {}) {
   const shadow = input.shadow_monitor || {};
   const cross = input.cross_spine || {};
   const actionability = input.actionability || {};
+  const actionPath = input.action_path || input.action_path_coverage || {};
   const registrySync = input.registry_sync || {};
   let registry = input.registry || null;
   if (!registry) {
@@ -92,6 +93,26 @@ export function buildIntelligenceReceipt(input = {}) {
     cross_spine_contradictions: numberOrNull(cross.contradictions),
     actionability_rate_sample: numberOrNull(actionability.rate),
     actionability_sample_size: numberOrNull(actionability.sample_size),
+    action_path_grounded_target_rate: labeledNumber(
+      actionPath.grounded_target_rate ?? actionPath.metrics?.grounded_target_rate,
+    ),
+    action_path_grounded_continuation_rate: labeledNumber(
+      actionPath.grounded_continuation_rate ?? actionPath.metrics?.grounded_continuation_rate,
+    ),
+    action_path_exact_replay_rate: labeledNumber(
+      actionPath.exact_replay_rate ?? actionPath.metrics?.exact_replay_rate,
+    ),
+    action_path_current_action_rate: labeledNumber(
+      actionPath.current_action_rate ?? actionPath.metrics?.current_action_rate,
+    ),
+    action_path_current_application_cta_rate: labeledNumber(
+      actionPath.current_application_cta_rate ?? actionPath.metrics?.current_application_cta_rate,
+    ),
+    action_path_cross_board_inference_violations: labeledNumber(
+      actionPath.cross_board_inference_violations
+      ?? actionPath.metrics?.cross_board_inference_violations
+      ?? actionPath.gate?.cross_board_inference_violations,
+    ),
     registry_sync_ok: typeof registrySync.ok === "boolean" ? registrySync.ok : null,
     ...grounding,
   };
@@ -120,6 +141,7 @@ export function buildIntelligenceReceipt(input = {}) {
         shadow_monitor: Boolean(input.shadow_monitor),
         cross_spine: Boolean(input.cross_spine),
         actionability: Boolean(input.actionability),
+        action_path: Boolean(input.action_path || input.action_path_coverage),
         registry_sync: Boolean(input.registry_sync),
         registry_grounding: Boolean(registry),
       },
@@ -140,6 +162,11 @@ function numberOrNull(value) {
   if (value == null || value === "") return null;
   const n = Number(value);
   return Number.isFinite(n) ? n : null;
+}
+
+function labeledNumber(value) {
+  if (value && typeof value === "object") return numberOrNull(value.value);
+  return numberOrNull(value);
 }
 
 function metricDeltas(previous, current) {
@@ -270,6 +297,23 @@ export function planEnrichmentCards({
       verify: "node entity_resolution/eval/run_metrics.mjs --gold entity_resolution/eval/gold_v0.jsonl --blocker token_v0",
       needs_human: "gold_label",
       context: ["entity_resolution/eval/gold_v0.jsonl", "entity_resolution/matchers"],
+    }));
+  }
+
+  // Action-path policy: never queue missing actions; only inheritance/broadening defects.
+  const crossBoard = receipt?.metrics?.action_path_cross_board_inference_violations;
+  if (Number.isFinite(crossBoard) && crossBoard > 0) {
+    cards.push(makeCard({
+      class: "actionability",
+      id_slug: "action-path-cross-board-inference",
+      title: "Stop Community Board policy inheritance across boards",
+      rank_score: 92,
+      evidence: {
+        action_path_cross_board_inference_violations: crossBoard,
+      },
+      verify: "node --test test/action_path_coverage.test.mjs",
+      needs_human: null,
+      context: ["ontology/action_path_coverage.mjs", "site/community_board_participation.mjs"],
     }));
   }
 
