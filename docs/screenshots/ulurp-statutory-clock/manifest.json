@@ -5,17 +5,17 @@
   "certified_date": "2024-01-15",
   "files": [
     {
-      "name": "backstage://cityscroll-evidence/objects/sha256/29/2955d67da2c03b448ebf270d0cff1667e318266ee59f0f97169d9e2f0790d039.webp",
+      "name": null,
       "bytes": 154544,
       "sha256": "21263c4ddf8ee5a32c2d39ebf4d549c700c467d8723bfb65649c4bb97ef0a50e"
     },
     {
-      "name": "backstage://cityscroll-evidence/objects/sha256/6f/6f2b52d84b1d1588cc74ca401ac514864d6ab7a1b01348ca0d90a7f51dfdb7bf.webp",
+      "name": null,
       "bytes": 174104,
       "sha256": "607b493b1e1d705bf2d8a51a0b2abed6349855f10401c7776f358a63f0f525c9"
     },
     {
-      "name": "backstage://cityscroll-evidence/objects/sha256/73/73d5fe81579b4eb7647cbedda3d9c510aef3a520cc418c36d2059bfa43168a68.webp",
+      "name": null,
       "bytes": 169307,
       "sha256": "525357657711cdb9537189bf40090c19f9b23ebf4265863e5d8ed69fa857f338"
     }

@@ -8,7 +8,7 @@ tip-only: deleting these files from the current tree does not rewrite historical
 
 | Population | Current policy |
 | --- | --- |
-| Raster captures under `docs/screenshots/`, `docs/performance/`, and `docs/evidence/` | Migrated to WebP objects under `.artifacts/evidence-store/`; the committed [`evidence-tip-migration.json`](evidence-tip-migration.json) maps each former path to its source digest, object digest, metadata, and stable store URL. |
+| Raster captures under `docs/screenshots/`, `docs/performance/`, and `docs/evidence/` | Migrated to content-addressed WebP objects outside the public repository. The committed [`evidence-tip-migration.json`](evidence-tip-migration.json) records the source digest, private-reference count, set digest, and registered maintainer disposition without publishing private locators. |
 | Four paths listed in `docs/public-capture-allowlist.json` | Retained as intentional public documentation captures. |
 | `artifacts/content-parity-r3/` and the checksum-pinned capture sets under `docs/screenshots/` | Retained as functional visual golden and acceptance corpora used by CI comparison/checksum tests. These are test inputs, not owner-proof captures. The retained sets are recorded explicitly in the manifest. |
 | `test/**` visual fixtures and `docs/readme/` images | Retained as test or public documentation inputs; they are outside the migration roots. |
@@ -30,6 +30,6 @@ python3 tools/migrate_evidence_tip.py check
 node tools/verify_evidence_store.mjs --check --root .artifacts/evidence-store --require-rows
 ```
 
-The store is host-side and is intentionally ignored by Git. A CI or hosted artifact URL can be
-provided to the store pipeline for newly captured evidence; the historical migration uses stable
-`backstage://` content-addressed references until such a hosted backing store is provisioned.
+The store is host-side and intentionally ignored by Git. A legitimate CI or hosted artifact URL
+may be provided to the store pipeline for newly captured evidence. Until one exists, the registered
+RCP-03 disposition is the maintainer resolution path; this document does not invent a public URL.

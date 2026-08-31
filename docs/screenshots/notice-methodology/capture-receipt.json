@@ -8,28 +8,28 @@
       "width": 390,
       "methodology_panels": 1,
       "dollars_methodology_line": true,
-      "file": "backstage://cityscroll-evidence/objects/sha256/e6/e6528e5a378400c884d6df5cf3bbe41f09eb3f3bc96d9ec71b5055fca10a2a11.webp"
+      "file": null
     },
     {
       "state": "after",
       "width": 390,
       "methodology_panels": 0,
       "dollars_methodology_line": false,
-      "file": "backstage://cityscroll-evidence/objects/sha256/e9/e9d8bf7de513ebac9c3c9d23740e449faec5b918bab1b93663d54a2ad4c878e1.webp"
+      "file": null
     },
     {
       "state": "before",
       "width": 1440,
       "methodology_panels": 1,
       "dollars_methodology_line": true,
-      "file": "backstage://cityscroll-evidence/objects/sha256/86/86a1ef00ca13236b3a0367de8fbd01c2d228925558225c55c61e98a6243a59bb.webp"
+      "file": null
     },
     {
       "state": "after",
       "width": 1440,
       "methodology_panels": 0,
       "dollars_methodology_line": false,
-      "file": "backstage://cityscroll-evidence/objects/sha256/3d/3def418a6d0ecf049a12fce563eddf19d203285226647a17487d38f15bea8352.webp"
+      "file": null
     }
   ]
 }

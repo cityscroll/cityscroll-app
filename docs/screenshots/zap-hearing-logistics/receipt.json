@@ -1,10 +1,10 @@
 {
   "project_id": "2024Q0292",
   "paths": {
-    "before_1440": "backstage://cityscroll-evidence/objects/sha256/48/48c579ef27dbdd8ce43529108ad106a022fbee7167efd2f0f3ef693ee451355d.webp",
-    "after_1440": "backstage://cityscroll-evidence/objects/sha256/5b/5b805f381be49f679ea188179ed60083fb7a2d8a4bc0c7dbbee5ed08f9e5d5cf.webp",
-    "before_390": "backstage://cityscroll-evidence/objects/sha256/66/669c68e8dd4cb1c7c70892b24a64cc65aee5a9804ea79324c6a9fa3f4b46fac4.webp",
-    "after_390": "backstage://cityscroll-evidence/objects/sha256/85/8501c54022b90d5e427229302edd9dfda349e8838c8cc2c7eaccce0022172c2f.webp"
+    "before_1440": null,
+    "after_1440": null,
+    "before_390": null,
+    "after_390": null
   },
   "fixture_sha256": "54627d656af547f8e7a961f450ecd56a10615ee248f0f90c43e5ac180d7346a2"
 }

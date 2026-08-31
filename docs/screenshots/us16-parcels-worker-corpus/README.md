@@ -10,7 +10,7 @@ Live `api.cityscroll.org/search` reports Properties/Parcels as not indexed and r
 - `indexed_count`: null
 - Typed Parcel results: 0
 
-![Before coverage panel](backstage://cityscroll-evidence/objects/sha256/6d/6dc932bb8ba0a42428904f49393bd6497c553f867b97d521947f785a1edcf61e.webp)
+!Before coverage panel (owner-only evidence retained under the registered RCP-03 disposition)
 
 ## After (this branch)
 
@@ -20,4 +20,4 @@ The worker indexes all 320 exact-BBL Parcel documents through the production col
 - `indexed_count`: 320
 - Address query returns `bbl:1000730008` → `/parcels/1000730008/`
 
-![After coverage panel](backstage://cityscroll-evidence/objects/sha256/3e/3e3a4227571ad087e831117a4bf7a7a080fad54e975bfac801289488604bd2f0.webp)
+!After coverage panel (owner-only evidence retained under the registered RCP-03 disposition)

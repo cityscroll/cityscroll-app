@@ -54,7 +54,7 @@ with the same artifact name after the two captures:
     retention-days: 90
 ```
 
-Outside CI, object URLs use the `backstage://` scheme and the receipt retains the local object
+Outside CI, object URLs use an owner-only evidence scheme and the receipt retains the local object
 path separately. A `file://` or other local filesystem URL is rejected by
 `tools/verify_evidence_store.mjs`.
 

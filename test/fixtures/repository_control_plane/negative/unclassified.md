@@ -4,4 +4,4 @@
 
 **Status: PROPOSED — rationale-to-confirm by the site owner.**
 
-Proof: backstage://cityscroll-evidence/example/private-capture
+Proof: owner-only evidence locator omitted.

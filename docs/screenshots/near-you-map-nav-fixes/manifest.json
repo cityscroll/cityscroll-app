@@ -2,8 +2,8 @@
   "feature": "near-you-map-label-contrast",
   "route": "/near-you/?v=0&lens=meetings&boro=Bronx&cd=X01&level=community_district&id=X01&parent=Bronx",
   "viewports": [390, 1440],
-  "before": ["backstage://cityscroll-evidence/objects/sha256/9b/9b3e01c1fda62be90db3e02617bcab8c15bf3b73addd87747fa65b9ae79906d7.webp", "backstage://cityscroll-evidence/objects/sha256/a3/a30eaf550e9e85ce19af28a4022cbbc9f8b948915c390e0aac98000fdfa14fe5.webp"],
-  "after": ["backstage://cityscroll-evidence/objects/sha256/a0/a054fe52fe28b654e1c24678ec36e0447d95c1a757ec72ca423c79896faf69e5.webp", "backstage://cityscroll-evidence/objects/sha256/bb/bb46d03d605afe2af6dd87c0720fa6cb8a7fe33e3598c0cb81220a99c1cedb07.webp"],
+  "before": [null, null],
+  "after": [null, null],
   "before_note": "Headless capture with the pre-change white central label keyline.",
   "after_note": "Headless capture with a dark keyline around light central text; adjacent labels retain dark ink and light keylines."
 }

@@ -6,7 +6,7 @@
     "height": 1000,
     "javascript_enabled": false
   },
-  "before": "backstage://cityscroll-evidence/objects/sha256/a9/a95c776798433ab2cae1adc926da68ca064f32d25835ee07c29ad1944e5ef9e2.webp",
-  "after": "backstage://cityscroll-evidence/objects/sha256/5c/5c4b2c84c8a4ed4f559550e9efc1dcb0159c45144595dcc3ded005eba771a33d.webp",
+  "before": null,
+  "after": null,
   "url_contract": "Canonical dynamic links use https://cityscroll.org/near-you?v=0&...; v=0 remains the documented shared URL version parameter."
 }

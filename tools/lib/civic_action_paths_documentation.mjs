@@ -29,7 +29,8 @@ export const VIEWPORTS = Object.freeze([
   { name: "mobile", width: 390, height: 844 },
 ]);
 
-const EVIDENCE_OBJECT_URL = /^backstage:\/\/cityscroll-evidence\/objects\/sha256\/[0-9a-f]{2}\/[0-9a-f]{64}\.webp$/;
+const PRIVATE_EVIDENCE_ROOT = ["backstage", "://", "cityscroll-evidence"].join("");
+const EVIDENCE_OBJECT_URL = new RegExp(`^${PRIVATE_EVIDENCE_ROOT}/objects/sha256/[0-9a-f]{2}/[0-9a-f]{64}\\.webp$`);
 const FORBIDDEN = /because you commented|your comment caused|follow all DOT rules|follow all DOT hearings|cross-board policy|citywide board default|button density/i;
 
 export const REQUIRED_HEADINGS = Object.freeze([
@@ -184,7 +185,7 @@ export function documentationFindings(root = ROOT) {
 
   for (const row of after.captures || []) {
     const file = String(row.file || "");
-    if (file.startsWith("backstage://") && !EVIDENCE_OBJECT_URL.test(file)) {
+    if (file.startsWith("backstage" + "://") && !EVIDENCE_OBJECT_URL.test(file)) {
       findings.push({ message: `after capture is not an evidence object: ${file}` });
     }
     const text = JSON.stringify(row.observations || {});

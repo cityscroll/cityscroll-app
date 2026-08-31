@@ -17,12 +17,12 @@
     "7331"
   ],
   "captures": [
-    "backstage://cityscroll-evidence/objects/sha256/e0/e0a13d33a025ca965a1ab13a3e03bb9a322465443c651dafdb64e2819fcc857b.webp",
-    "backstage://cityscroll-evidence/objects/sha256/14/148e516e582b5017be2e3204a6c624bc22855746f80f5e5b63ab7b5cb93af842.webp",
-    "backstage://cityscroll-evidence/objects/sha256/33/33f0e8a40cd24e6178a8d4feb55bbcc62bcc24f086bac046572159158808c832.webp",
-    "backstage://cityscroll-evidence/objects/sha256/b4/b408f7305d1b503ca7e42a7bdc637c9501a8b33f8d3e32c0b5522cd780e25c6b.webp",
-    "backstage://cityscroll-evidence/objects/sha256/1d/1d47adc7526d1e8890cd7b31b2998d2ebe63313fa427aa6915dc86d1a73f1519.webp",
-    "backstage://cityscroll-evidence/objects/sha256/19/19d6034e2282025a8c91059af792dbbe944cda09406f5aab694b5f2bd75bf8a2.webp"
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
   ],
   "verify_only": false
 }
