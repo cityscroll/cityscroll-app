@@ -16,7 +16,7 @@ export const OPS_ALERT_HISTORY_KEY = "ops:alert:history:v1";
 export const OPS_ALERT_HISTORY_LIMIT = 50;
 export const MAIL_CANARY_TOKEN_PREFIX_LENGTH = 8;
 export const HUMAN_OPS_MAILBOXES = Object.freeze([
-  "team@cityscroll.org",
+  "james@cityscroll.org",
   "alerts@cityscroll.org",
 ]);
 
