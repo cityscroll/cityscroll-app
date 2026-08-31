@@ -40,7 +40,7 @@ function treeDigest(prefixes, ref = BASE) {
 }
 
 function servedVerificationRef() {
-  if (process.env.GITHUB_EVENT_NAME !== "pull_request" || !process.env.GITHUB_SHA) return "HEAD";
+  if (!["pull_request", "merge_group"].includes(process.env.GITHUB_EVENT_NAME) || !process.env.GITHUB_SHA) return "HEAD";
   const parents = execFileSync("git", ["rev-list", "--parents", "-n", "1", process.env.GITHUB_SHA], {
     cwd: ROOT,
     encoding: "utf8"
@@ -79,7 +79,7 @@ function buildReceipt() {
     byVerdict[verdict] = (byVerdict[verdict] || 0) + 1;
   }
 
-  const served = treeDigest(["site", "worker"]);
+  const served = treeDigest(["site", "worker"], servedVerificationRef());
   return {
     schema: "cityscroll.repository_evidence_placement.v1",
     card: CARD,
