@@ -12,7 +12,7 @@ import {
   reconstructAtCutoff,
   sealHistoricalSource,
 } from "../warehouse/lib/procurement_intent_corpus.mjs";
-import { evaluateCardReconciliationFromPaths } from "../tools/card_reconciliation_guard.mjs";
+import { reconcileDerivedArchitectureEvidence } from "../tools/architecture_evidence_shards.mjs";
 
 test("PIR-4 backtest reports all required aggregates and withholds promotion", () => {
   const artifact = buildBacktestArtifact();
@@ -135,10 +135,7 @@ test("committed JSON, report, and coverage receipt stay in lockstep", () => {
 });
 
 test("architecture-evidence projections reconcile the PIR-4 card", () => {
-  const result = evaluateCardReconciliationFromPaths({
-    sourceCardsPath: "architecture-evidence/source-cards.json",
-    projectionsPath: "architecture-evidence/projections.json",
-  });
+  const result = reconcileDerivedArchitectureEvidence();
   assert.equal(result.status, "PASS", result.findings.join("; "));
   assert.equal(
     result.evidence.projections["warehouse/fixtures/procurement-intent-radar/corpus_backtest.v1.json"]

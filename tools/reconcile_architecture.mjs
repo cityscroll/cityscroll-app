@@ -645,6 +645,16 @@ function main() {
     writeFileSync(join(outputDir, "facts.json"), render(facts));
     // determinism-lint: allow write check-mode facts go only to --output-dir or gitignored generated files
     writeFileSync(join(outputDir, "reconciliation.json"), render(report));
+    if (
+      evidence?.sourceCardsText &&
+      evidence?.projectionsText &&
+      resolve(outputDir) !== resolve(DEFAULT_OUTPUT_DIR)
+    ) {
+      // determinism-lint: allow write derived inventories go only to an explicit --output-dir
+      writeFileSync(join(outputDir, "source-cards.json"), evidence.sourceCardsText);
+      // determinism-lint: allow write derived inventories go only to an explicit --output-dir
+      writeFileSync(join(outputDir, "projections.json"), evidence.projectionsText);
+    }
   }
   if (writeWatermark) {
     const target = join(ROOT, WATERMARK_RELATIVE);

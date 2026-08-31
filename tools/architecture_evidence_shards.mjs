@@ -5,10 +5,13 @@
  *
  * architecture/evidence.d/<stable-entry-id>.json is the source-owned registry.
  * This aggregator discovers those entries, validates identity and schema, and
- * emits the existing card-inventory / card-projection-inventory aggregates.
- * --check never writes; --write refreshes generated compatibility files.
+ * derives the existing card-inventory / card-projection-inventory aggregates
+ * in memory or into an untracked check/build destination.
+ * --check never writes and must not regenerate tracked files.
+ * --write may emit gitignored compatibility files under .artifacts/.
  */
 
+import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import {
   existsSync,
@@ -32,6 +35,13 @@ export const SOURCE_CARDS_SCHEMA = "cityscroll.card-inventory.v1";
 export const PROJECTION_INVENTORY_SCHEMA = "cityscroll.card-projection-inventory.v1";
 export const SOURCE_CARDS_RELATIVE = "architecture-evidence/source-cards.json";
 export const PROJECTIONS_RELATIVE = "architecture-evidence/projections.json";
+export const FORBIDDEN_TRACKED_AGGREGATES = Object.freeze([
+  SOURCE_CARDS_RELATIVE,
+  PROJECTIONS_RELATIVE,
+]);
+export const GENERATED_AGGREGATE_DIR = ".artifacts/architecture-evidence";
+export const GENERATED_SOURCE_CARDS_RELATIVE = `${GENERATED_AGGREGATE_DIR}/source-cards.json`;
+export const GENERATED_PROJECTIONS_RELATIVE = `${GENERATED_AGGREGATE_DIR}/projections.json`;
 export const AGGREGATE_RECEIPT_SCHEMA = "cityscroll.architecture-evidence-aggregate.v1";
 export const SUPPORTED_ENTRY_SCHEMAS = Object.freeze([ENTRY_SCHEMA]);
 
@@ -69,6 +79,67 @@ export function renderJson(value) {
 
 export function sha256Text(text) {
   return createHash("sha256").update(text, "utf8").digest("hex");
+}
+
+export function generatedAggregatePaths(outputDir = GENERATED_AGGREGATE_DIR) {
+  const directory = String(outputDir || GENERATED_AGGREGATE_DIR).split("\\").join("/").replace(/\/+$/, "");
+  return {
+    directory,
+    sourceCards: `${directory}/source-cards.json`,
+    projections: `${directory}/projections.json`,
+  };
+}
+
+function isForbiddenAggregatePath(relativePath) {
+  return FORBIDDEN_TRACKED_AGGREGATES.includes(String(relativePath || "").split("\\").join("/"));
+}
+
+const GIT_BINDINGS = [
+  "GIT_DIR",
+  "GIT_WORK_TREE",
+  "GIT_INDEX_FILE",
+  "GIT_OBJECT_DIRECTORY",
+  "GIT_ALTERNATE_OBJECT_DIRECTORIES",
+  "GIT_PREFIX",
+  "GIT_COMMON_DIR",
+];
+
+export function isolatedGitEnv(extra = {}) {
+  const env = { ...process.env, ...extra };
+  for (const key of GIT_BINDINGS) delete env[key];
+  return env;
+}
+
+export function listedTrackedFiles(root, paths) {
+  const result = spawnSync("git", ["-C", root, "ls-files", "--", ...paths], {
+    encoding: "utf8",
+    env: isolatedGitEnv(),
+  });
+  if (result.status !== 0) return [];
+  return result.stdout.split(/\r?\n/).filter(Boolean);
+}
+
+export function inspectForbiddenAggregates(root) {
+  const base = resolve(root);
+  const tracked = new Set(listedTrackedFiles(base, FORBIDDEN_TRACKED_AGGREGATES));
+  const findings = [];
+  for (const relativePath of FORBIDDEN_TRACKED_AGGREGATES) {
+    if (tracked.has(relativePath)) {
+      findings.push(finding(
+        `generated architecture-evidence aggregate ${relativePath} must not be tracked`,
+        { class: "stale_aggregate", path: relativePath },
+      ));
+      continue;
+    }
+    const filePath = resolve(base, relativePath);
+    if (existsSync(filePath) && statSync(filePath).isFile()) {
+      findings.push(finding(
+        `generated architecture-evidence aggregate ${relativePath} must not be committed; derive it at check/build time`,
+        { class: "stale_aggregate", path: relativePath },
+      ));
+    }
+  }
+  return findings;
 }
 
 function finding(message, extra = {}) {
@@ -282,22 +353,14 @@ export function loadArchitectureEvidenceEntries({ root = ROOT, entriesDir = ENTR
   return { entries, findings };
 }
 
-function committedText(root, relativePath) {
-  const filePath = resolve(root, relativePath);
-  if (!existsSync(filePath) || !statSync(filePath).isFile()) {
-    return { path: relativePath, text: null, missing: true };
-  }
-  return { path: relativePath, text: readFileSync(filePath, "utf8"), missing: false };
-}
-
 export function aggregateArchitectureEvidence({
   root = ROOT,
   entriesDir = ENTRY_DIR,
-  compareCommitted = false,
 } = {}) {
   const loaded = loadArchitectureEvidenceEntries({ root, entriesDir });
-  const findings = loaded.findings.map((row) => row.message);
-  const issueRows = [...loaded.findings];
+  const forbidden = inspectForbiddenAggregates(root);
+  const issueRows = [...loaded.findings, ...forbidden];
+  const findings = issueRows.map((row) => row.message);
   let sourceCards = null;
   let projections = null;
   let sourceCardsText = null;
@@ -313,29 +376,6 @@ export function aggregateArchitectureEvidence({
       const message = error?.message || String(error);
       findings.push(message);
       issueRows.push(finding(message, { class: "collision" }));
-    }
-  }
-
-  if (compareCommitted && sourceCardsText && projectionsText) {
-    const committedSource = committedText(root, SOURCE_CARDS_RELATIVE);
-    const committedProjections = committedText(root, PROJECTIONS_RELATIVE);
-    if (committedSource.missing) {
-      const message = `generated projection inventory ${SOURCE_CARDS_RELATIVE} is missing`;
-      findings.push(message);
-      issueRows.push(finding(message, { class: "stale_aggregate", path: SOURCE_CARDS_RELATIVE }));
-    } else if (committedSource.text !== sourceCardsText) {
-      const message = `generated projection inventory ${SOURCE_CARDS_RELATIVE} is stale`;
-      findings.push(message);
-      issueRows.push(finding(message, { class: "stale_aggregate", path: SOURCE_CARDS_RELATIVE }));
-    }
-    if (committedProjections.missing) {
-      const message = `generated projection inventory ${PROJECTIONS_RELATIVE} is missing`;
-      findings.push(message);
-      issueRows.push(finding(message, { class: "stale_aggregate", path: PROJECTIONS_RELATIVE }));
-    } else if (committedProjections.text !== projectionsText) {
-      const message = `generated projection inventory ${PROJECTIONS_RELATIVE} is stale`;
-      findings.push(message);
-      issueRows.push(finding(message, { class: "stale_aggregate", path: PROJECTIONS_RELATIVE }));
     }
   }
 
@@ -372,24 +412,45 @@ export function aggregateArchitectureEvidence({
 }
 
 export function checkArchitectureEvidence(options = {}) {
-  return aggregateArchitectureEvidence({ compareCommitted: true, ...options });
+  return aggregateArchitectureEvidence(options);
+}
+
+export function reconcileDerivedArchitectureEvidence(options = {}) {
+  const derived = checkArchitectureEvidence(options);
+  if (derived.status !== "PASS" || !derived.sourceCards || !derived.projections) {
+    return {
+      status: "FAIL",
+      reason: derived.findings[0] || "architecture-evidence shards failed",
+      findings: derived.findings,
+      evidence: derived,
+    };
+  }
+  return evaluateCardReconciliation({
+    sourceCards: derived.sourceCards,
+    projections: derived.projections,
+  });
 }
 
 export function writeArchitectureEvidenceAggregates({
   root = ROOT,
   sourceCardsText,
   projectionsText,
+  outputDir = GENERATED_AGGREGATE_DIR,
   write = false,
 } = {}) {
-  const sourcePath = resolve(root, SOURCE_CARDS_RELATIVE);
-  const projectionsPath = resolve(root, PROJECTIONS_RELATIVE);
+  const paths = generatedAggregatePaths(outputDir);
+  if (isForbiddenAggregatePath(paths.sourceCards) || isForbiddenAggregatePath(paths.projections)) {
+    throw new Error(`refusing to write tracked architecture-evidence aggregate ${paths.sourceCards}`);
+  }
+  const sourcePath = resolve(root, paths.sourceCards);
+  const projectionsPath = resolve(root, paths.projections);
   if (write) {
     mkdirSync(dirname(sourcePath), { recursive: true });
     mkdirSync(dirname(projectionsPath), { recursive: true });
     writeFileSync(sourcePath, sourceCardsText, "utf8");
     writeFileSync(projectionsPath, projectionsText, "utf8");
   }
-  return { sourcePath, projectionsPath };
+  return { sourcePath, projectionsPath, relative: paths };
 }
 
 function argument(argv, name, fallback = null) {
@@ -401,10 +462,8 @@ function main(argv = process.argv.slice(2)) {
   const check = argv.includes("--check");
   const write = argv.includes("--write");
   const root = resolve(argument(argv, "--root", ROOT));
-  const result = aggregateArchitectureEvidence({
-    root,
-    compareCommitted: check,
-  });
+  const outputDir = argument(argv, "--output-dir", GENERATED_AGGREGATE_DIR);
+  const result = aggregateArchitectureEvidence({ root });
   process.stdout.write(renderJson({
     status: result.status,
     reason: result.reason,
@@ -423,6 +482,7 @@ function main(argv = process.argv.slice(2)) {
     writeArchitectureEvidenceAggregates({
       write: true,
       root,
+      outputDir,
       sourceCardsText: result.sourceCardsText,
       projectionsText: result.projectionsText,
     });

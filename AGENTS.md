@@ -230,7 +230,10 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   card plus the affected projection; a complete check does not rewrite card status.
   Sibling projections stay represented when one projection is incomplete. Source-owned
   entries live in `architecture/evidence.d/`; `tools/architecture_evidence_shards.mjs`
-  aggregates them into `architecture-evidence/` compatibility inventories. Verify with
+  derives the `cityscroll.card-inventory.v1` /
+  `cityscroll.card-projection-inventory.v1` inventories at check/build time.
+  Do not commit `architecture-evidence/source-cards.json` or
+  `architecture-evidence/projections.json`. Verify with
   `node tools/architecture_evidence_shards.mjs --check`,
   `node tools/check_card_reconciliation.mjs --check` and
   `test/card_reconciliation_guard.test.mjs`. Keep this guard separate from generation-output

@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { evaluateCardReconciliationFromPaths } from "../tools/card_reconciliation_guard.mjs";
+import { reconcileDerivedArchitectureEvidence } from "../tools/architecture_evidence_shards.mjs";
 import {
   CAPA_ADDENDUM_FIXTURE_IDS,
   evaluateCapaAddendumFixtures,
@@ -38,10 +38,7 @@ test("the shared matrix proves handoff, source, and absence behavior without aut
 });
 
 test("architecture-evidence projections include the petition-handoff card", () => {
-  const result = evaluateCardReconciliationFromPaths({
-    sourceCardsPath: "architecture-evidence/source-cards.json",
-    projectionsPath: "architecture-evidence/projections.json",
-  });
+  const result = reconcileDerivedArchitectureEvidence();
   assert.equal(result.status, "PASS", result.findings.join("; "));
   assert.equal(
     result.evidence.projections["site/rules_petition.mjs"].represented_card_ids.includes(

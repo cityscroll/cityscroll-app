@@ -30,7 +30,7 @@ import {
   RECEIPT_JSON,
   buildLandProjectMapPointsFromRepo,
 } from "../tools/build_land_project_map_points.mjs";
-import { evaluateCardReconciliationFromPaths } from "../tools/card_reconciliation_guard.mjs";
+import { reconcileDerivedArchitectureEvidence } from "../tools/architecture_evidence_shards.mjs";
 
 const requireJson = createRequire(import.meta.url);
 const fixture = requireJson("./fixtures/land_project_map_points/inputs.json");
@@ -273,10 +273,7 @@ test("resident payload stays bounded and does not copy the WH-06 corpus", () => 
 });
 
 test("architecture-evidence projections reconcile the materializer card", () => {
-  const result = evaluateCardReconciliationFromPaths({
-    sourceCardsPath: "architecture-evidence/source-cards.json",
-    projectionsPath: "architecture-evidence/projections.json",
-  });
+  const result = reconcileDerivedArchitectureEvidence();
   assert.equal(result.status, "PASS", result.findings.join("; "));
   assert.equal(
     result.evidence.projections["site/data/land_project_map_points.json"].represented_card_ids.includes(

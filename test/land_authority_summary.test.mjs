@@ -29,7 +29,7 @@ import {
   RECEIPT_JSON,
   buildLandAuthoritySummaryFromRepo,
 } from "../tools/build_land_authority_summary.mjs";
-import { evaluateCardReconciliationFromPaths } from "../tools/card_reconciliation_guard.mjs";
+import { reconcileDerivedArchitectureEvidence } from "../tools/architecture_evidence_shards.mjs";
 import { SITE_SOURCE } from "./helpers/site_source.mjs";
 
 const requireJson = createRequire(import.meta.url);
@@ -251,10 +251,7 @@ test("A4 stamping is additive and existing land row/phase/outcome contracts stay
 });
 
 test("architecture-evidence projections reconcile the materializer card", () => {
-  const result = evaluateCardReconciliationFromPaths({
-    sourceCardsPath: "architecture-evidence/source-cards.json",
-    projectionsPath: "architecture-evidence/projections.json",
-  });
+  const result = reconcileDerivedArchitectureEvidence();
   assert.equal(result.status, "PASS", result.findings.join("; "));
   assert.equal(
     result.evidence.projections["site/data/land_authority_summary.json"].represented_card_ids.includes(
