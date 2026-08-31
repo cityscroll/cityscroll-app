@@ -25,6 +25,7 @@ import {
   aggregateArchitectureEvidence,
   encodeEntryId,
   entryRelativePath,
+  isolatedGitEnv,
   listedTrackedFiles,
   renderJson,
   sha256Text,
@@ -321,7 +322,16 @@ test("CLI --check is read-only and --write emits untracked generated inventories
 });
 
 function git(cwd, args) {
-  return spawnSync("git", args, { cwd, encoding: "utf8" });
+  return spawnSync("git", args, {
+    cwd,
+    encoding: "utf8",
+    env: isolatedGitEnv({
+      GIT_AUTHOR_NAME: "CI",
+      GIT_AUTHOR_EMAIL: "ci@example.test",
+      GIT_COMMITTER_NAME: "CI",
+      GIT_COMMITTER_EMAIL: "ci@example.test",
+    }),
+  });
 }
 
 function initFixtureRepo(root) {

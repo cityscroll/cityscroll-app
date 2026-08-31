@@ -94,9 +94,26 @@ function isForbiddenAggregatePath(relativePath) {
   return FORBIDDEN_TRACKED_AGGREGATES.includes(String(relativePath || "").split("\\").join("/"));
 }
 
+const GIT_BINDINGS = [
+  "GIT_DIR",
+  "GIT_WORK_TREE",
+  "GIT_INDEX_FILE",
+  "GIT_OBJECT_DIRECTORY",
+  "GIT_ALTERNATE_OBJECT_DIRECTORIES",
+  "GIT_PREFIX",
+  "GIT_COMMON_DIR",
+];
+
+export function isolatedGitEnv(extra = {}) {
+  const env = { ...process.env, ...extra };
+  for (const key of GIT_BINDINGS) delete env[key];
+  return env;
+}
+
 export function listedTrackedFiles(root, paths) {
   const result = spawnSync("git", ["-C", root, "ls-files", "--", ...paths], {
     encoding: "utf8",
+    env: isolatedGitEnv(),
   });
   if (result.status !== 0) return [];
   return result.stdout.split(/\r?\n/).filter(Boolean);
