@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.e_designation_source_receipt.v1",
+  "dataset_id": "hxm3-23vy",
+  "source_vintage": "2026-08-12",
+  "source_url": "https://data.cityofnewyork.us/resource/hxm3-23vy.json",
+  "source_row_count": 13956,
+  "eligible_project_count": 238,
+  "eligible_lot_count": 1142,
+  "retained_row_count": 119,
+  "retention_basis": "exact BBL membership in the committed Land project universe"
+}

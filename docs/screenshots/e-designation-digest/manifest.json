@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "project_id": "2026Q0210",
+  "files": [
+    {
+      "name": "before-390.png",
+      "viewport": [
+        390,
+        844
+      ],
+      "bytes": 15197,
+      "sha256": "004f7d3cc3352a8cdc9c8537736a62aa7e647db6d25abe3c8ba5e37054339e65"
+    },
+    {
+      "name": "before-1440.png",
+      "viewport": [
+        1440,
+        900
+      ],
+      "bytes": 14469,
+      "sha256": "9c0a0087e00431c5f1c762a5e3d1b28b3a0499138aa71c72fcbdeb4d0c6fb4df"
+    },
+    {
+      "name": "after-390.png",
+      "viewport": [
+        390,
+        844
+      ],
+      "bytes": 178819,
+      "sha256": "6a3c41210d877c2409b163269ca41ff165bc4f90b8fbd859f44645073b231114"
+    },
+    {
+      "name": "after-1440.png",
+      "viewport": [
+        1440,
+        900
+      ],
+      "bytes": 175953,
+      "sha256": "8b468167b1d9bcae2791d4b36d74cbcb07f36745308632623f04e400e4a44a25"
+    }
+  ]
+}
