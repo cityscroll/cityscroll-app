@@ -1,4 +1,7 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 import test from "node:test";
 
 import {
@@ -20,6 +23,11 @@ import {
   buildProjectParcelRelationshipReportTarget,
   buildRulemakingLifecycleReportTarget,
 } from "../site/report_issue.mjs";
+
+const RULEMAKING_LIFECYCLE_FIXTURES = JSON.parse(readFileSync(
+  join(dirname(fileURLToPath(import.meta.url)), "fixtures/report_target/rulemaking_lifecycle.json"),
+  "utf8",
+));
 
 test("whole-object target uses the existing object id and Copy link route", () => {
   const target = buildReportTarget({
@@ -276,30 +284,61 @@ test("meeting grouping target preserves constituent notices and source provenanc
 });
 
 test("rulemaking lifecycle target retains notice ids and is stable across member order", () => {
-  const entry = {
-    kind: "rulemaking",
-    notice_count: 2,
-    subject_ref: "rulemaking:hpd:natural-gas-detectors",
-    title: "Natural gas detector rule",
-    rule_url: "https://rules.cityofnewyork.us/?p=9001",
-    members: [
-      { request_id: "20260301011", source_record_id: "20260301011", source_url: "https://example.test/proposal" },
-      { request_id: "20260701011", source_record_id: "20260701011", source_url: "https://example.test/adoption" },
-    ],
-  };
+  const entry = RULEMAKING_LIFECYCLE_FIXTURES.eligible;
   const first = buildRulemakingLifecycleReportTarget(entry);
   const second = buildRulemakingLifecycleReportTarget({
     ...entry,
     members: [...entry.members].reverse(),
   });
 
+  assert.equal(first.object_id, "rulemaking:hpd:natural-gas-detectors");
+  assert.equal(first.claim_anchor.claim_type, "lifecycle");
   assert.equal(first.claim_anchor.anchor, "rulemaking:hpd:natural-gas-detectors#lifecycle");
   assert.equal(first.canonical_url, "/#rules");
-  assert.deepEqual(first.constituent_object_ids, ["notice:20260301011", "notice:20260701011"]);
-  assert.deepEqual(first.provenance.source_record_ids, ["20260301011", "20260701011"]);
+  assert.deepEqual(first.constituent_object_ids, [
+    "notice:20260301011",
+    "notice:20260415011",
+    "notice:20260701011",
+  ]);
+  assert.deepEqual(first.provenance.source_record_ids, [
+    "20260301011",
+    "20260415011",
+    "20260701011",
+  ]);
   assert.ok(first.provenance.source_urls.includes(entry.rule_url));
+  for (const member of entry.members) {
+    assert.ok(first.provenance.source_urls.includes(member.source_url));
+  }
   assert.match(first.asserted_meaning, /one rulemaking lifecycle/);
+  assert.match(first.description, /one rulemaking lifecycle: Natural gas detector rule/);
   assert.equal(first.target_id, second.target_id);
+  assert.equal(
+    first.target_id,
+    reportTargetIdentity({
+      ...first,
+      object_label: "A differently formatted title",
+      canonical_url: "/browse/rules/",
+      asserted_meaning: "Display-only restatement",
+    }),
+  );
+  assert.equal(
+    serializeReportTarget(first),
+    serializeReportTarget(resolveReportTarget(JSON.parse(serializeReportTarget(first)))),
+  );
+  assert.notEqual(first.claim_anchor.claim_type, "field");
+  assert.ok(first.constituent_object_ids.every((id) => id.startsWith("notice:")));
+});
+
+test("ineligible Rules browse cards do not mint a lifecycle report target", () => {
+  for (const { name, entry } of RULEMAKING_LIFECYCLE_FIXTURES.ineligible) {
+    assert.equal(
+      buildRulemakingLifecycleReportTarget(entry),
+      null,
+      `${name} must fail closed`,
+    );
+  }
+  assert.equal(buildRulemakingLifecycleReportTarget(null), null);
+  assert.equal(buildRulemakingLifecycleReportTarget({}), null);
 });
 
 test("land regulatory-effect target carries the derived meaning and cited source material", () => {
