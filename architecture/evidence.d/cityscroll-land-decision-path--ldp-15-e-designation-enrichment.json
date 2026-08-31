@@ -1,0 +1,13 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-land-decision-path/ldp-15-e-designation-enrichment",
+  "status": "implemented",
+  "fingerprint": "ldp-15-e-designation-project-digest.v1",
+  "updated_at": "2026-08-31T00:00:00.000Z",
+  "projections": [
+    { "id": "e-designation-project-digest", "path": "warehouse/lib/e_designation_digest.mjs" },
+    { "id": "e-designation-source-receipt", "path": "warehouse/receipts/proof/e_designation_source_latest.json" },
+    { "id": "e-designation-project-digest-receipt", "path": "warehouse/receipts/proof/e_designation_project_digest_latest.json" },
+    { "id": "e-designation-land-renderer", "path": "site/e_designation_digest_view.mjs" }
+  ]
+}

@@ -56,6 +56,10 @@ function main() {
       name: "keyword_index",
       out: runNode(path.join(ROOT, "tools/build_keyword_search_index.mjs"), ["--check"]),
     });
+    steps.push({
+      name: "e_designation_digest",
+      out: runNode(path.join(ROOT, "tools/build_e_designation_digest.mjs"), ["--check"]),
+    });
   } else {
     steps.push({
       name: "wh05_from_soda",
@@ -66,6 +70,14 @@ function main() {
     steps.push({
       name: "wh05_check",
       out: runNode(path.join(ROOT, "tools/build_zap_warehouse_lookup.mjs"), ["--check"]),
+    });
+    steps.push({
+      name: "e_designation_digest",
+      out: runNode(path.join(ROOT, "warehouse/scripts/refresh_e_designations.mjs")),
+    });
+    steps.push({
+      name: "e_designation_digest_check",
+      out: runNode(path.join(ROOT, "tools/build_e_designation_digest.mjs"), ["--check"]),
     });
     steps.push({
       name: "keyword_index",

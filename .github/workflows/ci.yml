@@ -227,6 +227,7 @@ jobs:
           node tools/build_ocp_warehouse_lookup.mjs --check
           node tools/build_zap_warehouse_lookup.mjs --check
           node tools/build_zap_bbl_warehouse_lookup.mjs --check
+          node tools/build_e_designation_digest.mjs --check
           node tools/build_doing_business_warehouse_lookup.mjs --check
           node tools/build_city_record_pin_chain_lookup.mjs --check
       - name: Depot re-derivation drift gate

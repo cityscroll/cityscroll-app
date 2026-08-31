@@ -58,6 +58,7 @@ import {
 import { zoningHearingRowsForScope } from "../zoning_hearing_calendar.mjs";
 import { projectCalendarActionsHTML as projectCalendarActions } from "../project_calendar.mjs";
 import { attachAuth, authHTML, loadAuth } from "../land_authority_summary_view.mjs";
+import { attachEDesignationDigests, eDesignationDigestHTML, loadEDesignations } from "../e_designation_digest_view.mjs";
 
 /* ===================== LAND ===================== */
 const ZAP = "https://data.cityofnewyork.us/resource/hgx4-8ukb.json";
@@ -143,7 +144,8 @@ function loadLandDefaultSnapshot(){
     landDefaultSnapshotPromise=Promise.all([
       fetch(LAND_DEFAULT_SNAPSHOT_URL).then(r=>r.ok?r.json():null),
       loadAuth(),
-    ]).then(([s,a])=>{ seedLandOutcomeSnapshot(s); return attachAuth(s,a); }).catch(()=>null);
+      loadEDesignations(),
+    ]).then(([s,a,e])=>{ seedLandOutcomeSnapshot(s); attachAuth(s,a); return attachEDesignationDigests(s,e); }).catch(()=>null);
   }
   return landDefaultSnapshotPromise;
 }
@@ -785,12 +787,7 @@ function landRenderList(kw, kwIsTextMatch, boro, autoSelect){
     clearLandDetail();
     return;
   }
-  // A resolved block/nearby lookup filters rows by a BBL join, not kw as text -- only pass kw
-  // through as a match term when it actually became the $q text filter (see landSearch()).
   const terms = (kw && kwIsTextMatch) ? [kw] : [];
-  // boro is a structured `borough=` filter, not a $q text search -- passed as a contextTerm so
-  // matchEvidence() can still surface it when a project_brief happens to name the borough in its
-  // own text (common in ZAP data), without ever guessing a fallback "unknown" match for it.
   const contextTerms = boro ? [boro] : [];
   $("#llist").innerHTML=head+lRows.map((r,i)=>landRowHTML(r,i,terms,contextTerms)).join("");
   document.querySelectorAll("#llist .row").forEach(el=>el.addEventListener("click",event=>{
@@ -848,6 +845,7 @@ async function landSelect(i, el){
   if(r.project_brief) html+=`<div class="scope" id="land-brief"><span class="lbl">${t("in_plain_english")}</span>${excerptHtml(r.project_brief,900)}</div>`;
   else html+=`<div class="scope" id="land-brief" hidden></div>`;
   html+=authHTML(r.authority_summary,{t,escape:escUiHtml});
+  html+=eDesignationDigestHTML(r.e_designation_digest,{escape:escUiHtml});
   if(actList.length) html+=`<div class="rmeta2" style="margin-top:10px"><b>${t("actions_lbl")}</b> ${actList.join(" · ")}</div>`;
   const area=(r.project_name||r.borough||"").replace(/(rezoning|demapping|rezone|special permit|special district|text amendment|mapping actions?|modification|disposition|non-?ulurp).*/i,"").trim().split(/\s+/).slice(0,3).join(" ")||r.borough||"";
   // Action rail first (what can I do now); utility controls stay secondary.
