@@ -1,0 +1,18 @@
+{
+  "schema": "cityscroll.cold_build_timing_fixture.v1",
+  "description": "Deterministic representative hit/miss samples for threshold audit; not a live-run receipt.",
+  "hit_seconds": [
+    4.7,
+    5.0,
+    5.3,
+    5.6,
+    6.1
+  ],
+  "miss_seconds": [
+    1014,
+    1038,
+    1051,
+    1062,
+    1062
+  ]
+}

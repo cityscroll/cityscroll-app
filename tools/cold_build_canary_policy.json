@@ -1,0 +1,31 @@
+{
+  "schema": "cityscroll.cold_build_canary_policy.v1",
+  "scope": "provider-neutral Pages build",
+  "thresholds": {
+    "hit_max_seconds": 30,
+    "miss_max_seconds": 1200
+  },
+  "calibration": {
+    "mode": "cache-miss",
+    "source": "Measured full cold Pages builds recorded by the site owner; the upper observed run was 1062 seconds.",
+    "rationale": "The miss budget is derived from the cold path and retains 138 seconds of headroom; cache-hit timings never set this threshold.",
+    "observed_cold_build_upper_seconds": 1062,
+    "headroom_seconds": 138
+  },
+  "samples": {
+    "hit_seconds": [
+      4.7,
+      5.0,
+      5.3,
+      5.6,
+      6.1
+    ],
+    "miss_seconds": [
+      1014,
+      1038,
+      1051,
+      1062,
+      1062
+    ]
+  }
+}
