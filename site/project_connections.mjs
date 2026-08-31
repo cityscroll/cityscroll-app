@@ -13,6 +13,12 @@ import {
   WILLETS_POINT_PROJECT_ID,
   isNycEdcApplicantSpelling,
 } from "./civic_institution_development_specimens.mjs";
+import {
+  DECIDES_LAND_PROJECT_COMPATIBILITY,
+  adaptDecidesLandProjectEdge,
+  classifyLandDispositionRelation,
+  isMeetingLandGraphType,
+} from "./land_project_decision_relations.mjs";
 
 export const PROJECT_CONNECTION_GROUPS = Object.freeze([
   { id: "applicant", relation: "applicant_agency", surface: "land" },
@@ -235,7 +241,7 @@ export function buildProjectConnectionEvidence({
   parcels.gap = parcels.items.length ? null : "no_exact_bbl_edge";
 
   const exactGraph = (Array.isArray(graphLinks) ? graphLinks : [])
-    .filter((link) => clean(link?.type, 80) === "decides_land_project"
+    .filter((link) => isMeetingLandGraphType(link?.type)
       && clean(link?.to) === ref
       && publicConfidence(link?.confidence));
   const joinedOutcome = exactOutcome(outcome, id);
@@ -244,6 +250,7 @@ export function buildProjectConnectionEvidence({
     .filter((notice) => notice?.join?.matched !== false && clean(notice?.request_id, 40));
   const meetingItems = [
     ...exactGraph.map((link) => {
+      const adapted = adaptDecidesLandProjectEdge(link, { project_id: id });
       const noticeId = clean(link.from).match(/^notice:(.+)$/)?.[1] || "";
       return {
         ref: noticeId ? `notice:${noticeId}` : null,
@@ -251,7 +258,11 @@ export function buildProjectConnectionEvidence({
         label: clean(link.label) || clean(link.agency_name) || noticeId,
         agency_name: clean(link.agency_name) || null,
         when: clean(link.when, 40) || null,
-        relation: "decides_land_project",
+        relation: DECIDES_LAND_PROJECT_COMPATIBILITY,
+        canonical_relation: adapted.canonical_relation,
+        semantic_threshold: adapted.semantic_threshold,
+        reader_label: adapted.reader_label,
+        is_decision: false,
         confidence: publicConfidence(link.confidence),
         evidence: clean(link.method, 120) || "exact project reference",
         ...(link.when ? {
@@ -268,21 +279,42 @@ export function buildProjectConnectionEvidence({
               record_id: noticeId || clean(link.from, 120) || null,
               ...(noticeId ? { url: `https://a856-cityrecord.nyc.gov/RequestDetail/${encodeURIComponent(noticeId)}` } : {}),
             },
-            provenance: { basis: clean(link.method, 120) || "accepted_graph_edge", relation: "decides_land_project" },
+            provenance: {
+              basis: clean(link.method, 120) || "accepted_graph_edge",
+              relation: DECIDES_LAND_PROJECT_COMPATIBILITY,
+              canonical_relation: adapted.canonical_relation,
+            },
           },
         } : {}),
       };
     }),
-    ...exactNotices.filter((notice) => notice.event_date).map((notice) => ({
-      ref: `notice:${clean(notice.request_id, 40)}`,
-      href: `#notice/${encodeURIComponent(clean(notice.request_id, 40))}`,
-      label: clean(notice.short_title) || clean(notice.agency_name) || clean(notice.request_id, 40),
-      agency_name: clean(notice.agency_name) || null,
-      when: clean(notice.event_date, 40) || null,
-      relation: "decides_land_project",
-      confidence: "strong",
-      evidence: clean(notice.join?.method, 120) || "exact ULURP token",
-    })),
+    ...exactNotices.filter((notice) => notice.event_date).map((notice) => {
+      const adapted = adaptDecidesLandProjectEdge({
+        type: DECIDES_LAND_PROJECT_COMPATIBILITY,
+        from: `notice:${clean(notice.request_id, 40)}`,
+        to: ref,
+        request_id: clean(notice.request_id, 40),
+        agency_name: notice.agency_name,
+        label: notice.short_title,
+        when: notice.event_date,
+        method: notice.join?.method || "exact_ulurp_token",
+        type_of_notice_description: notice.type_of_notice_description,
+      }, { project_id: id });
+      return {
+        ref: `notice:${clean(notice.request_id, 40)}`,
+        href: `#notice/${encodeURIComponent(clean(notice.request_id, 40))}`,
+        label: clean(notice.short_title) || clean(notice.agency_name) || clean(notice.request_id, 40),
+        agency_name: clean(notice.agency_name) || null,
+        when: clean(notice.event_date, 40) || null,
+        relation: DECIDES_LAND_PROJECT_COMPATIBILITY,
+        canonical_relation: adapted.canonical_relation,
+        semantic_threshold: adapted.semantic_threshold,
+        reader_label: adapted.reader_label,
+        is_decision: false,
+        confidence: "strong",
+        evidence: clean(notice.join?.method, 120) || "exact ULURP token",
+      };
+    }),
   ];
   const meetings = groups.find((group) => group.id === "meetings");
   meetings.items = uniqueBy(meetingItems, (item) => item.ref || item.href);
@@ -292,35 +324,56 @@ export function buildProjectConnectionEvidence({
   const dispositions = Array.isArray(joinedOutcome?.dispositions) ? joinedOutcome.dispositions : [];
   const documents = Array.isArray(joinedOutcome?.documents) ? joinedOutcome.documents : [];
   const decisions = groups.find((group) => group.id === "decisions");
-  decisions.items = dispositions.map((item, index) => ({
-    ref: `project:${id}:decision:${clean(item.id, 120) || index}`,
-    label: clean(item.representing || item.name) || "Published disposition",
-    outcome: clean(item.community_board || item.borough_president || item.borough_board || item.status) || null,
-    board_id: clean(item.board_id, 80) || null,
-    href: communityBoardPageHref(item.board_id),
-    when: clean(item.vote_date || item.hearing_date, 40) || null,
-    relation: "project_disposition",
-    confidence: "strong",
-    evidence: "ZAP disposition",
-    ...((item.hearing_at || item.hearing_date || item.vote_date) ? {
-      calendar_record: {
-        object_ref: `project:${id}:decision:${clean(item.id, 120) || index}`,
-        title: `${clean(item.representing) || "Project review"} — ${clean(project?.project_name) || id}`,
-        event_date: clean(item.hearing_at || item.hearing_date || item.vote_date, 40),
-        canonical_url: `https://cityscroll.org/#land/${encodeURIComponent(id)}`,
-        source: {
-          system: "zap-api-outcomes",
-          record_id: clean(item.id, 120) || `${id}:decision:${index}`,
-          ...(project?.portal_url ? { url: project.portal_url } : {}),
+  decisions.items = dispositions.map((item, index) => {
+    const classified = classifyLandDispositionRelation({
+      disposition: item,
+      project_id: id,
+      source_record: clean(item.id, 120) || `${id}:disposition:${index}`,
+      join_key: "project_id",
+      join_value: id,
+      source_fields: ["dispositions", "status"],
+      method: "zap_disposition",
+      method_version: "1",
+      observed_time: item.vote_date || item.hearing_date || item.hearing_at || id,
+    });
+    if (!classified.accepted) return null;
+    const calendarWhen = classified.calendar_when
+      || clean(item.hearing_at || item.hearing_date || item.vote_date, 40);
+    return {
+      ref: `project:${id}:decision:${clean(item.id, 120) || index}`,
+      label: clean(item.representing || item.name) || "Published disposition",
+      outcome: clean(item.community_board || item.borough_president || item.borough_board || item.status) || null,
+      board_id: clean(item.board_id, 80) || null,
+      href: communityBoardPageHref(item.board_id),
+      when: clean(item.vote_date || item.hearing_date, 40) || classified.calendar_when || null,
+      relation: classified.compatibility_relation || classified.canonical_relation || "project_disposition",
+      canonical_relation: classified.canonical_relation,
+      semantic_threshold: classified.semantic_threshold,
+      reader_label: classified.reader_label,
+      is_decision: classified.is_decision === true,
+      confidence: "strong",
+      evidence: "ZAP disposition",
+      ...(calendarWhen ? {
+        calendar_record: {
+          object_ref: `project:${id}:decision:${clean(item.id, 120) || index}`,
+          title: `${clean(item.representing) || "Project review"} — ${clean(project?.project_name) || id}`,
+          event_date: calendarWhen,
+          canonical_url: `https://cityscroll.org/#land/${encodeURIComponent(id)}`,
+          source: {
+            system: "zap-api-outcomes",
+            record_id: clean(item.id, 120) || `${id}:decision:${index}`,
+            ...(project?.portal_url ? { url: project.portal_url } : {}),
+          },
+          provenance: {
+            basis: "publisher_record",
+            source_fields: [item.hearing_at ? "hearing_at" : item.hearing_date ? "hearing_date" : "vote_date"],
+            relation: classified.compatibility_relation || "project_disposition",
+            canonical_relation: classified.canonical_relation,
+          },
         },
-        provenance: {
-          basis: "publisher_record",
-          source_fields: [item.hearing_at ? "hearing_at" : item.hearing_date ? "hearing_date" : "vote_date"],
-          relation: "project_disposition",
-        },
-      },
-    } : {}),
-  }));
+      } : {}),
+    };
+  }).filter(Boolean);
   decisions.documents = documents.map((document) => ({
     label: clean(document?.name) || "Decision document",
     href: /^https:\/\//.test(clean(document?.url, 1_000)) ? clean(document.url, 1_000) : null,
@@ -417,6 +470,9 @@ export function buildProjectConnectionView(
     ...evidence,
     groups: (evidence?.groups || []).map((group) => ({
       ...group,
+      items: group.id === "decisions"
+        ? (group.items || []).filter((item) => item?.is_decision !== false)
+        : group.items,
       view_all_href: projectConnectionScopeHash(evidence, group.id, {
         language,
         scope: providedScopeApi,

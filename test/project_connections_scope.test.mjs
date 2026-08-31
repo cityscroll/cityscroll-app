@@ -350,4 +350,7 @@ test("constellation edges provide multiple future project-calendar processes", (
     "project_disposition",
   ]);
   assert.deepEqual(occurrences.map((item) => item.source.system), ["city_record", "zap-api-outcomes"]);
+  const view = buildProjectConnectionView(result, { scope: CrolScope });
+  const visibleDecisions = view.groups.find((group) => group.id === "decisions").items;
+  assert.equal(visibleDecisions.every((item) => item.is_decision !== false), true);
 });
