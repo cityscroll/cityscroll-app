@@ -377,8 +377,8 @@ function verifyRemoteMcpEvidence(receipt) {
       || receipt.protocol?.stateless !== true) {
     throw new Error("remote MCP transport evidence drifted");
   }
-  const lock = JSON.parse(readFileSync(new URL("../worker/package-lock.json", import.meta.url), "utf8"));
-  const pinnedClientVersion = lock.packages?.["node_modules/@modelcontextprotocol/sdk"]?.version;
+  const workerPackage = JSON.parse(readFileSync(new URL("../worker/package.json", import.meta.url), "utf8"));
+  const pinnedClientVersion = workerPackage.devDependencies?.["@modelcontextprotocol/sdk"];
   if (receipt.client?.package !== "@modelcontextprotocol/sdk"
       || receipt.client?.version !== pinnedClientVersion
       || receipt.client?.transport !== "StreamableHTTPClientTransport") {

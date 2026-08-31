@@ -17,7 +17,7 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
 const fixtures = JSON.parse(readFileSync(join(ROOT, "test/contract/fixtures/rolling_deadline.json"), "utf8"));
 
 // alerts.mjs imports npm packages (@jimdc/sendcap, optin-token) not available until worker/'s own
-// `npm ci` step — extract dueLabel()'s source text directly, same approach site_extract.mjs uses
+// Worker dependency-install step — extract dueLabel()'s source text directly, same approach site_extract.mjs uses
 // for index.html, rather than importing the module and needing worker/node_modules here too.
 const alertsSrc = readFileSync(join(ROOT, "worker/src/alerts.mjs"), "utf8");
 const workerDueLabel = new Function(extractFn("dueLabel", alertsSrc) + "\nreturn dueLabel;")();

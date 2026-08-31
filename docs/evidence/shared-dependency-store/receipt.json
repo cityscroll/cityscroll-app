@@ -1,0 +1,73 @@
+{
+  "schema": "cityscroll.shared-dependency-store-receipt.v1",
+  "revision": "5f3cdd3474a0e993964ea6d941dcd3d82ec4ec54",
+  "lockfile": {
+    "path": "worker/pnpm-lock.yaml",
+    "sha256": "e8ddb27a2738f3582d45feb8aa03c3f0fb823b261c9aa274cf8c80cc4148ccb0"
+  },
+  "package_manager": "pnpm@10.15.1",
+  "node_version": "v24.16.0",
+  "measured_baseline": {
+    "package_manager": "npm",
+    "duration_ms": 2918,
+    "logical_bytes": 219824128,
+    "allocated_bytes": 207275008
+  },
+  "store": {
+    "configured_outside_checkout": true,
+    "identity": {
+      "object_count": 4656,
+      "inventory_sha256": "f0a93924b6a80cfb678d36730e04bb8f3016441fba5396b11f505e91e702387e"
+    },
+    "logical_bytes": 217997312,
+    "allocated_bytes": 206821376
+  },
+  "cold_install": {
+    "network_mode": "online",
+    "duration_ms": 4384,
+    "store_identity": {
+      "object_count": 4656,
+      "inventory_sha256": "f0a93924b6a80cfb678d36730e04bb8f3016441fba5396b11f505e91e702387e"
+    }
+  },
+  "warm_install": {
+    "network_mode": "offline",
+    "duration_ms": 2431,
+    "reused_identical_store_objects": true,
+    "store_identity": {
+      "object_count": 4656,
+      "inventory_sha256": "f0a93924b6a80cfb678d36730e04bb8f3016441fba5396b11f505e91e702387e"
+    }
+  },
+  "materialization": {
+    "mode": "pnpm virtual store with clone-or-copy package import",
+    "sibling_node_modules_reference": false
+  },
+  "dependency_views": [
+    {
+      "id": "a",
+      "logical_bytes": 219860992,
+      "allocated_bytes": 207600640,
+      "physical_budget_bytes": 524288000,
+      "pass": true
+    },
+    {
+      "id": "b",
+      "logical_bytes": 344707072,
+      "allocated_bytes": 332449792,
+      "physical_budget_bytes": 524288000,
+      "pass": true
+    }
+  ],
+  "measurement": {
+    "logical": "du -sk on each isolated worker/node_modules view",
+    "allocated": "du -skA on each isolated worker/node_modules view where supported; du -sk fallback",
+    "filesystem": "/",
+    "shared_store_counted_once": true
+  },
+  "fail_closed": {
+    "missing_store_offline_failed": true,
+    "package_manager_mismatch_failed": true
+  },
+  "pass": true
+}

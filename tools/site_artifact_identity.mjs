@@ -50,7 +50,7 @@ function option(options, name, fallback) {
 }
 
 function sourceIdentity(options) {
-  const lockfile = option(options, "lockfile", "worker/package-lock.json");
+  const lockfile = option(options, "lockfile", "worker/pnpm-lock.yaml");
   const commitSha = git("rev-parse", "HEAD");
   const expectedCommit = option(options, "commit-sha", commitSha);
   if (commitSha !== expectedCommit) {
