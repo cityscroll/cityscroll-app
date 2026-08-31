@@ -20,6 +20,10 @@
     {
       "id": "mandate-search-producer",
       "path": "site/universal_search_mandate_producer.mjs"
+    },
+    {
+      "id": "borough-office-role-registry",
+      "path": "ontology/registry.v0.json"
     }
   ]
 }

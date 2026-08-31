@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.architecture.watermark.v1",
-  "generated_at": "2026-08-31T04:02:09-04:00",
-  "commit": "365eb13eb9c42f835640bc4ffaf3e42f83adfefa",
+  "generated_at": "2026-08-31T05:54:11-04:00",
+  "commit": "4a6052697cd5c230e6deddcb3085da08a5d6b0e9",
   "observer_coverage_hash": "74d0f8dbc819fc002708d521e67a58f87238e4c21a8d255e513ca2f27a6d47d5",
   "canaries": {
     "agency-constellation-model": {
@@ -46,8 +46,8 @@
     },
     "ontology-registry": {
       "path": "ontology/registry.v0.json",
-      "count": 152,
-      "fingerprint": "4cbd474191242d0340ae5869b92e0cb7392576275ac1e4089a7b6310440eea78"
+      "count": 155,
+      "fingerprint": "c464cbf81276d07c307a0ce486af861bfb9c579dca47d0dcbda5d9bf37c3477a"
     },
     "pages-edge-renderer": {
       "path": "site/pages_edge.mjs",
@@ -99,8 +99,8 @@
     "schema": "cityscroll.ontology.registry.v0",
     "version": "0.7.0",
     "collection_counts": {
-      "object_types": 41,
-      "link_types": 62,
+      "object_types": 42,
+      "link_types": 64,
       "event_kinds": 37,
       "assertion_classifications": 2,
       "assertion_facts": 10
