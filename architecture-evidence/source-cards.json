@@ -18,6 +18,12 @@
       "status": "implemented",
       "fingerprint": "pir-4-corpus-backtest.v1",
       "updated_at": "2026-08-30T00:00:00.000Z"
+    },
+    {
+      "id": "cityscroll-rules-decrol/rd-m5",
+      "status": "implemented",
+      "fingerprint": "rd-m5-petition-handoff.v1",
+      "updated_at": "2026-08-30T00:00:00.000Z"
     }
   ]
 }

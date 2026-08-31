@@ -252,11 +252,20 @@ export function rulemakingActionMatrix({
   const commentUrl = sourceUrl(rules.comment_url) || sourceUrl(comments_url) || sourceUrl(rules.url);
   const testimonyUrlValue = sourceUrl(testimony_url) || sourceUrl(comment_channel_url);
   const followUrl = text(follow_href);
-  const petitionHref = sourceUrl(petition_url) || sourceUrl(petition_handoff?.official?.form_url);
+  const petitionHref = sourceUrl(petition_url)
+    || sourceUrl(petition_handoff?.official?.form_url)
+    || sourceUrl(petition_handoff?.official?.guidance_url)
+    || sourceUrl(petition_handoff?.official?.page_url);
   const petitionAgency = text(petition_handoff?.agency?.name);
   const petitionLabel = petitionAgency
     ? `How to petition ${petitionAgency}`
     : "Petition agency to amend or repeal";
+  const petitionActionTarget = petition_handoff?.action_target
+    || (state.state === "effective"
+      ? (petitionAgency && sourceUrl(petition_handoff?.official?.form_url)
+        ? "exact_petition_target"
+        : (petitionHref ? "action_only_guidance" : "target_unknown"))
+      : "no_supported_workflow");
   const watch = followUrl ? internalAction({ id: "watch_rulemaking", label: "Watch this rulemaking", href: followUrl }) : null;
   const out = [];
   const add = (item) => { if (item) out.push(item); };
@@ -300,14 +309,15 @@ export function rulemakingActionMatrix({
   } else if (state.state === "effective") {
     add(action({ id: "read_final", label: "Read final rule", href: finalUrl, primary: true }));
     add(internalAction({ id: "rulemaking_history", label: "View rulemaking history", href: history_url }));
-    add(action({ id: "petition", label: petitionLabel, href: petitionHref, kind: "petition" }));
+    const petitionAction = action({ id: "petition", label: petitionLabel, href: petitionHref, kind: "petition" });
+    add(petitionAction ? { ...petitionAction, action_target: petitionActionTarget } : null);
   }
 
   const missing = [];
   if (state.state === "comment_hearing_open" && !state.comment_deadline) missing.push("comment_deadline");
   if (["comment_hearing_open", "comment_closed_awaiting_action"].includes(state.state) && !state.hearing_date) missing.push("hearing_date");
   if ((state.state === "adopted" || state.state === "effective") && !finalUrl) missing.push("final_rule");
-  if (state.state === "effective" && !petitionHref) missing.push("petition_workflow");
+  if (state.state === "effective" && !petitionHref) missing.push("petition_workflow_source");
 
   return {
     state: state.state,

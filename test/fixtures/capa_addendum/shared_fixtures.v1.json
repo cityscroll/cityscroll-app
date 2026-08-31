@@ -1,0 +1,285 @@
+{
+  "schema": "cityscroll.capa_addendum_shared_fixtures.v1",
+  "note": "Seven CAPA addendum cases. The DOT City-Owned Bicycle Racks rulemaking is the required real NYC Rules end-to-end canary; other rows are time-sliced or sparse absence cases.",
+  "fixtures": [
+    {
+      "id": "proposed_comments_open_hearing",
+      "kind": "rulemaking",
+      "real_nyc_rules": true,
+      "now": "2026-04-01",
+      "expected": {
+        "lifecycle_state": "comment_hearing_open",
+        "actions": ["comment", "attend_hearing", "watch_rulemaking"],
+        "forbidden_actions": ["petition"],
+        "html_matches": ["Comment/hearing open"],
+        "html_forbids": ["How to petition", "Petition this agency"],
+        "petition_action_target": "no_supported_workflow"
+      },
+      "rows": [
+        {
+          "request_id": "20260317026",
+          "agency": "DOT",
+          "title": "DOT Proposed Rules Relating to City-Owned Bicycle Racks",
+          "notice_date": "2026-03-25",
+          "stage": "comment-open",
+          "rulemaking_subject_ref": "rulemaking:dot:bicycle-racks",
+          "rulemaking_join": { "matched": true, "confidence": "high", "notice_count": 2 },
+          "nyc_rules": {
+            "url": "https://rules.cityofnewyork.us/rule/city-owned-bicycle-racks/",
+            "agency_name": "DOT",
+            "title": "City-Owned Bicycle Racks",
+            "comment_by_date": "2026-04-24",
+            "hearing_date": "2026-04-24",
+            "comment_url": "https://rules.cityofnewyork.us/rule/city-owned-bicycle-racks/"
+          },
+          "events": [
+            { "event_type": "public_hearing", "valid_at": "2026-04-24", "status": "scheduled", "source_url": "https://rules.cityofnewyork.us/rule/city-owned-bicycle-racks/" }
+          ]
+        },
+        {
+          "request_id": "20260325011",
+          "agency": "DOT",
+          "title": "Public Hearing: City-Owned Bicycle Racks",
+          "notice_date": "2026-03-26",
+          "stage": "hearing",
+          "rulemaking_subject_ref": "rulemaking:dot:bicycle-racks",
+          "rulemaking_join": { "matched": true, "confidence": "high", "notice_count": 2 }
+        }
+      ]
+    },
+    {
+      "id": "comment_deadline_passed",
+      "kind": "rulemaking",
+      "real_nyc_rules": true,
+      "now": "2026-05-01",
+      "expected": {
+        "lifecycle_state": "comment_closed_awaiting_action",
+        "actions": ["watch_adoption"],
+        "forbidden_actions": ["comment", "petition"],
+        "html_matches": ["Awaiting agency action"],
+        "html_forbids": ["How to petition"],
+        "petition_action_target": "no_supported_workflow"
+      },
+      "rows": [
+        {
+          "request_id": "20260317026",
+          "agency": "DOT",
+          "title": "DOT Proposed Rules Relating to City-Owned Bicycle Racks",
+          "notice_date": "2026-03-25",
+          "stage": "comment-closed",
+          "rulemaking_subject_ref": "rulemaking:dot:bicycle-racks",
+          "rulemaking_join": { "matched": true, "confidence": "high", "notice_count": 2 },
+          "nyc_rules": {
+            "url": "https://rules.cityofnewyork.us/rule/city-owned-bicycle-racks/",
+            "agency_name": "DOT",
+            "comment_by_date": "2026-04-24",
+            "hearing_date": "2026-04-24"
+          },
+          "events": [
+            { "event_type": "comment_close", "valid_at": "2026-04-24", "status": "occurred" },
+            { "event_type": "public_hearing", "valid_at": "2026-04-24", "status": "occurred" }
+          ]
+        },
+        {
+          "request_id": "20260317027",
+          "agency": "DOT",
+          "title": "DOT Proposed Rules Relating to City-Owned Bicycle Racks — hearing",
+          "notice_date": "2026-03-26",
+          "stage": "hearing",
+          "rulemaking_subject_ref": "rulemaking:dot:bicycle-racks",
+          "rulemaking_join": { "matched": true, "confidence": "high", "notice_count": 2 }
+        }
+      ]
+    },
+    {
+      "id": "adopted_future_effective",
+      "kind": "rulemaking",
+      "real_nyc_rules": true,
+      "now": "2026-07-20",
+      "expected": {
+        "lifecycle_state": "adopted",
+        "actions": ["read_final", "watch_effective"],
+        "forbidden_actions": ["petition", "comment", "attend_hearing"],
+        "html_matches": ["Takes effect August 13, 2026"],
+        "html_forbids": ["How to petition", "In effect since"],
+        "petition_action_target": "no_supported_workflow"
+      },
+      "rows": [
+        {
+          "request_id": "20260317026",
+          "agency": "DOT",
+          "title": "DOT Proposed Rules Relating to City-Owned Bicycle Racks",
+          "notice_date": "2026-03-25",
+          "stage": "proposed",
+          "rulemaking_subject_ref": "rulemaking:dot:bicycle-racks",
+          "rulemaking_join": { "matched": true, "confidence": "high", "notice_count": 2 },
+          "nyc_rules": {
+            "url": "https://rules.cityofnewyork.us/rule/city-owned-bicycle-racks/",
+            "agency_name": "DOT",
+            "adoption_published_at": "2026-07-14",
+            "effective_date": "2026-08-13"
+          }
+        },
+        {
+          "request_id": "20260706041",
+          "agency": "DOT",
+          "title": "Notice of Adoption: City-Owned Bicycle Racks",
+          "notice_date": "2026-07-14",
+          "stage": "adopted",
+          "rulemaking_subject_ref": "rulemaking:dot:bicycle-racks",
+          "rulemaking_join": { "matched": true, "confidence": "high", "notice_count": 2 }
+        }
+      ]
+    },
+    {
+      "id": "effective_in_force",
+      "kind": "rulemaking",
+      "real_nyc_rules": true,
+      "now": "2026-08-27",
+      "expected": {
+        "lifecycle_state": "effective",
+        "actions": ["read_final", "petition"],
+        "forbidden_actions": ["comment"],
+        "html_matches": ["In effect since August 13, 2026", "How to petition Transportation", "official petition form", "within 60 days"],
+        "html_forbids": ["type=\"submit\""],
+        "petition_action_target": "exact_petition_target"
+      },
+      "rows": [
+        {
+          "request_id": "20260317026",
+          "agency": "DOT",
+          "title": "DOT Proposed Rules Relating to City-Owned Bicycle Racks",
+          "notice_date": "2026-03-25",
+          "stage": "proposed",
+          "rulemaking_subject_ref": "rulemaking:dot:bicycle-racks",
+          "rulemaking_join": { "matched": true, "confidence": "high", "notice_count": 2 },
+          "nyc_rules": {
+            "url": "https://rules.cityofnewyork.us/rule/city-owned-bicycle-racks/",
+            "agency_name": "DOT",
+            "adoption_published_at": "2026-07-14",
+            "effective_date": "2026-08-13"
+          },
+          "events": [
+            { "event_type": "adoption", "valid_at": "2026-07-14", "status": "occurred" },
+            { "event_type": "effective", "valid_at": "2026-08-13", "status": "occurred" }
+          ]
+        },
+        {
+          "request_id": "20260706041",
+          "agency": "DOT",
+          "title": "Notice of Adoption: City-Owned Bicycle Racks",
+          "notice_date": "2026-07-14",
+          "stage": "effective",
+          "rulemaking_subject_ref": "rulemaking:dot:bicycle-racks",
+          "rulemaking_join": { "matched": true, "confidence": "high", "notice_count": 2 }
+        }
+      ]
+    },
+    {
+      "id": "sparse_proposal_missing_hearing",
+      "kind": "rulemaking",
+      "now": "2026-04-01",
+      "expected": {
+        "lifecycle_state": "proposed",
+        "actions": ["read_proposed"],
+        "forbidden_actions": ["attend_hearing", "petition"],
+        "html_forbids": ["Attend hearing", "How to petition"],
+        "petition_action_target": "no_supported_workflow",
+        "no_invented_hearing": true
+      },
+      "rows": [
+        {
+          "request_id": "20260401001",
+          "agency": "DOT",
+          "title": "Proposed rule with no hearing information",
+          "notice_date": "2026-03-20",
+          "stage": "proposed",
+          "rulemaking_subject_ref": "rulemaking:dot:sparse-proposal",
+          "rulemaking_join": { "matched": true, "confidence": "high", "notice_count": 2 },
+          "nyc_rules": {
+            "url": "https://rules.cityofnewyork.us/rule/sparse-proposal/",
+            "agency_name": "DOT"
+          }
+        },
+        {
+          "request_id": "20260401002",
+          "agency": "DOT",
+          "title": "Proposed rule sibling",
+          "notice_date": "2026-03-21",
+          "stage": "proposed",
+          "rulemaking_subject_ref": "rulemaking:dot:sparse-proposal",
+          "rulemaking_join": { "matched": true, "confidence": "high", "notice_count": 2 }
+        }
+      ]
+    },
+    {
+      "id": "agency_no_active_proposal",
+      "kind": "agency",
+      "agency": "DOT",
+      "sources": {},
+      "expected": {
+        "petition_action_target": "exact_petition_target",
+        "html_matches": ["Petition this agency", "adopted, amended, or repealed", "different from commenting on an already-proposed rule"],
+        "html_forbids": ["type=\"submit\"", "CityScroll submitted"]
+      }
+    },
+    {
+      "id": "source_stated_citations",
+      "kind": "rulemaking",
+      "real_nyc_rules": true,
+      "now": "2026-08-27",
+      "expected": {
+        "lifecycle_state": "effective",
+        "actions": ["petition"],
+        "html_matches": ["How to petition Transportation"],
+        "petition_action_target": "exact_petition_target",
+        "citations_basis": "source_stated"
+      },
+      "rows": [
+        {
+          "request_id": "20260317026",
+          "agency": "DOT",
+          "title": "DOT Proposed Rules Relating to City-Owned Bicycle Racks",
+          "notice_date": "2026-03-25",
+          "stage": "proposed",
+          "rulemaking_subject_ref": "rulemaking:dot:bicycle-racks",
+          "rulemaking_join": { "matched": true, "confidence": "high", "notice_count": 2 },
+          "nyc_rules": {
+            "url": "https://rules.cityofnewyork.us/rule/city-owned-bicycle-racks/",
+            "agency_name": "DOT",
+            "adoption_published_at": "2026-07-14",
+            "effective_date": "2026-08-13"
+          },
+          "rule_version_documents": [
+            {
+              "source_id": "nyc_rules:dot:bicycle-racks:proposed",
+              "source_url": "https://rules.cityofnewyork.us/rule/city-owned-bicycle-racks/",
+              "version_kind": "proposed",
+              "pairing_key": "dot-bicycle-racks",
+              "published_at": "2026-03-25",
+              "text": "Authority: pursuant to Section 2903(a) of the New York City Charter. The proposed rule amends 34 RCNY § 4-12(p) and adds 34 RCNY § 4-12(q)."
+            },
+            {
+              "source_id": "nyc_rules:dot:bicycle-racks:adopted",
+              "source_url": "https://rules.cityofnewyork.us/rule/city-owned-bicycle-racks/",
+              "version_kind": "adopted",
+              "pairing_key": "dot-bicycle-racks",
+              "published_at": "2026-07-14",
+              "effective_date": "2026-08-13",
+              "text": "Authority: pursuant to Section 2903(a) of the New York City Charter. The adopted rule amends 34 RCNY § 4-12(p) and adds 34 RCNY § 4-12(q)."
+            }
+          ]
+        },
+        {
+          "request_id": "20260706041",
+          "agency": "DOT",
+          "title": "Notice of Adoption: City-Owned Bicycle Racks",
+          "notice_date": "2026-07-14",
+          "stage": "effective",
+          "rulemaking_subject_ref": "rulemaking:dot:bicycle-racks",
+          "rulemaking_join": { "matched": true, "confidence": "high", "notice_count": 2 }
+        }
+      ]
+    }
+  ]
+}

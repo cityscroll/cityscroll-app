@@ -1,0 +1,51 @@
+{
+  "schema": "cityscroll.rulemaking_petition_coverage.v1",
+  "generated_from": "test/fixtures/capa_addendum/shared_fixtures.v1.json",
+  "real_nyc_rules_canary": "rulemaking:dot:bicycle-racks",
+  "action_targets": {
+    "exact_petition_target": 3,
+    "action_only_guidance": 0,
+    "target_unknown": 0,
+    "no_supported_workflow": 4
+  },
+  "response_expectation": {
+    "source_backed": 7,
+    "unknown": 0
+  },
+  "contacts": {
+    "resolved": 0,
+    "unresolved": 0,
+    "lookup_fallback": 7
+  },
+  "petition_contract": {
+    "agency_entry_points": 1,
+    "effective_rule_entry_points": 2,
+    "official_form": 7,
+    "official_guidance": 7,
+    "explicit_contacts": 0,
+    "two_outcome_explanations": 7
+  },
+  "workflow_by_procedure_mode": {
+    "rulemaking_petition": {
+      "form_available": 7,
+      "form_missing": 0,
+      "guidance_available": 7,
+      "guidance_missing": 0,
+      "procedure_page_available": 7,
+      "procedure_page_missing": 0,
+      "form_vintages": [
+        "2025-06"
+      ],
+      "guidance_vintages": [
+        "2026-02"
+      ],
+      "procedure_page_vintages": [],
+      "missing_workflow_is_not_unavailable": true
+    }
+  },
+  "auto_submission": {
+    "cityscroll_submits": 0,
+    "tracks_submission": 0
+  },
+  "case_count": 7
+}

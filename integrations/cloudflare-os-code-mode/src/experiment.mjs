@@ -75,15 +75,16 @@ export function sha256(value) {
   return createHash("sha256").update(value).digest("hex");
 }
 
+function scrubVolatile(value) {
+  if (Array.isArray(value)) return value.map(scrubVolatile);
+  if (!value || typeof value !== "object") return value;
+  return Object.fromEntries(Object.entries(value)
+    .filter(([key]) => key !== "duration_ms")
+    .map(([key, child]) => [key, scrubVolatile(child)]));
+}
+
 function stableSemanticHash(value) {
-  const scrub = (candidate) => {
-    if (Array.isArray(candidate)) return candidate.map(scrub);
-    if (!candidate || typeof candidate !== "object") return candidate;
-    return Object.fromEntries(Object.entries(candidate)
-      .filter(([key]) => key !== "duration_ms")
-      .map(([key, child]) => [key, scrub(child)]));
-  };
-  return sha256(JSON.stringify(canonicalize(scrub(value))));
+  return sha256(JSON.stringify(canonicalize(scrubVolatile(value))));
 }
 
 function readJson(path) {
@@ -180,14 +181,14 @@ export function modelInputTokens({ arm, protocol, fixture, records, compactResul
     let total = estimateTokens(conversation);
     for (const record of records) {
       conversation += `\n${JSON.stringify({ tool: record.tool, arguments: record.arguments })}`;
-      conversation += `\n${JSON.stringify(canonicalize(record.structured_content))}`;
+      conversation += `\n${JSON.stringify(canonicalize(scrubVolatile(record.structured_content)))}`;
       total += estimateTokens(conversation);
     }
     return total;
   }
   const typedSdk = typedSdkFromTools(grantedToolSchemas());
   const prompt0 = `${SYSTEM_PROMPT}\n${typedSdk}\n${JSON.stringify(CODE_TOOL_SCHEMA)}\n${user}`;
-  const prompt1 = `${prompt0}\n${PINNED_PROGRAM_SOURCE}\n${JSON.stringify(canonicalize(compactResult))}`;
+  const prompt1 = `${prompt0}\n${PINNED_PROGRAM_SOURCE}\n${JSON.stringify(canonicalize(scrubVolatile(compactResult)))}`;
   return estimateTokens(prompt0) + estimateTokens(prompt1);
 }
 
