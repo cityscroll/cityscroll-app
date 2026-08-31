@@ -4,22 +4,22 @@
     {
       "board": "manhattan-cb-02",
       "viewport": "desktop",
-      "path": "cb_source_backed-desktop.png"
+      "path": "backstage://cityscroll-evidence/objects/sha256/f9/f9febeb2782f715b20b2f804532e361ad04b6d3a94e3db6b6d0666f79f003382.webp"
     },
     {
       "board": "manhattan-cb-02",
       "viewport": "mobile",
-      "path": "cb_source_backed-mobile.png"
+      "path": "backstage://cityscroll-evidence/objects/sha256/e9/e9cd92897537c2d0ab4f34df4b8970a3dc1b1cb93e8c17b6a225325b07ad756c.webp"
     },
     {
       "board": "bronx-cb-02",
       "viewport": "desktop",
-      "path": "cb_unknown-desktop.png"
+      "path": "backstage://cityscroll-evidence/objects/sha256/6d/6da70a7322c390b6defc7b33363ffb77050410d1fffe56c12f1163dc9176e36b.webp"
     },
     {
       "board": "bronx-cb-02",
       "viewport": "mobile",
-      "path": "cb_unknown-mobile.png"
+      "path": "backstage://cityscroll-evidence/objects/sha256/c6/c638a9b5826ca8f3c34ca6ad0beb73af5920a5d261142f05d33e3f2f3587b7ea.webp"
     }
   ]
 }
