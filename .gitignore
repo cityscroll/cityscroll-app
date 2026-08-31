@@ -21,6 +21,11 @@ architecture/generated/facts.json
 architecture/generated/reconciliation.json
 # architecture/generated/watermark.json is the committed LA9 baseline; do not ignore it.
 
+# Compatibility aggregates derived from architecture/evidence.d/ at check/build
+# time. Never reintroduce these generated files into version control.
+architecture-evidence/source-cards.json
+architecture-evidence/projections.json
+
 # Agency constellation HTML (build/deploy artifact only).
 # Built by tools/build_agency_constellation_documents.mjs during
 # tools/build_cloudflare_pages.mjs — never commit per-agency pages.
