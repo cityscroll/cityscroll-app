@@ -2,6 +2,7 @@
 // (works identically under Node tests and the Cloudflare Workers runtime).
 
 import { canonicalMandateId } from "../../../site/mandate_subject_ref.mjs";
+import { canonicalCodeProvisionId } from "../../../site/code_provision_watch_scope.mjs";
 import { normalizeGeographyKey } from "../../../site/scope_v0.mjs";
 import { normalizeCommunityBoardRef } from "../../../site/community_board_watch.mjs";
 
@@ -56,6 +57,9 @@ export const LENSES = {
   // legacy/upstream alias (storage + old links).
   mandates: ["agency_id", "agency", "mandate_id", "deliverable_type", "windowDays"],
   obligations: ["agency_id", "agency", "mandate_id", "deliverable_type", "windowDays"],
+  // Exact Administrative Code provision identity. Wording, agency, and corpus
+  // search never enter this schema.
+  legal_code: ["provision_id"],
   // "alerts" has no single-payload classifier (bigaward xor rfpkw xor rezone) — it reuses
   // money's full general schema so a query naming any combination of category/agency/
   // amount/notice-type/deadline keeps all of them, not just whichever one field a fixed enum
@@ -106,6 +110,8 @@ function clampField(name, v) {
     case "mandate_id":
       // Exact statutory duty id — bare id or legacy mandate:/obligation: subject ref.
       return canonicalMandateId(v);
+    case "provision_id":
+      return canonicalCodeProvisionId(v);
     case "deliverable_type": {
       const s = typeof v === "string" ? v.trim().toLowerCase() : "";
       return MANDATE_DELIVERABLE_TYPES.includes(s) ? s : null;
@@ -286,6 +292,7 @@ export function sanitize(lens, input) {
   if (!out.geographies?.length) delete out.geographies;
   if (!out.request_ids?.length) delete out.request_ids;
   if (!out.procurement_id) delete out.procurement_id;
+  if (!out.provision_id) delete out.provision_id;
   if (!out.interest) delete out.interest;
   return out;
 }

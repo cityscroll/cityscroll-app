@@ -33,6 +33,7 @@ import {
   reviewedFollowingLens,
 } from "./following_preview_handoff.mjs";
 import { followingPersonalIslandHtml } from "./following_personal_state.mjs";
+import { exactProvisionWatch } from "./code_provision_watch_scope.mjs";
 
 const API_BASE = "https://api.cityscroll.org";
 const SITE_BASE = "https://cityscroll.org";
@@ -40,6 +41,7 @@ const SITE_BASE = "https://cityscroll.org";
 /** Canonical public watch lenses (product identity). */
 const LENSES = Object.freeze([
   "money", "people", "land", "property", "rules", "meetings", "district", "entity", "mandates",
+  "legal_code",
 ]);
 /** Legacy URL / storage aliases → canonical lens. */
 const LENS_ALIASES = Object.freeze({
@@ -56,6 +58,7 @@ const LENS_LABELS = Object.freeze({
   district: "City Council District weekly",
   entity: "Agency, vendor, or project",
   mandates: "Mandates",
+  legal_code: "Administrative Code provisions",
 });
 /** Compact start topics; remaining lenses stay behind an accessible disclosure. */
 const PRIMARY_LENSES = Object.freeze(["money", "land", "property", "rules", "meetings"]);
@@ -75,6 +78,7 @@ const LENS_SUMMARY_SUBJECT = Object.freeze({
   rules: "new rules",
   meetings: "new hearings and meetings",
   mandates: "new mandates",
+  legal_code: "Administrative Code provision changes",
   district: "City Council District activity",
   entity: "new connected civic records",
 });
@@ -200,6 +204,35 @@ export function watchFromFollowingParams(input) {
   }
   if (params.has("type")) setOrDelete("noticeType", params.get("type"));
   const watch = normalizedWatch(lens, filter);
+  if (watch.lens === "legal_code") {
+    const exact = exactProvisionWatch(watch);
+    if (exact.status !== "ok") {
+      return {
+        lens: null,
+        filter: {},
+        requested: true,
+        frequency: cleanFrequency(params.get("freq")),
+        matchCount: cleanCount(params.get("count")),
+        onboarding: params.get("onboarding") === "1",
+        handoff: {
+          schema: "cityscroll.following_preview_handoff.v1",
+          status: "unrecognized_scope",
+          lens: null,
+          filter: {},
+          frequency: cleanFrequency(params.get("freq")),
+          matchCount: null,
+          focus: null,
+          originRoute: null,
+        },
+        noticeId: null,
+        projectId: null,
+        originRoute: null,
+        scopeStatus: "unrecognized_scope",
+      };
+    }
+    watch.lens = exact.lens;
+    watch.filter = exact.filter;
+  }
   const nextHandoff = followingPreviewHandoffFromScope({
     ...watch,
     freq: cleanFrequency(params.get("freq")),
@@ -249,6 +282,11 @@ export function followingUrlFromWatch(watch, options = {}) {
   const base = String(options.base || `${SITE_BASE}/following`).replace(/\/$/, "");
   const reviewed = reviewedFollowingLens(watch?.lens);
   if (!watch || reviewed.status !== "ok") return options.emptyBase || "/following/";
+  if (reviewed.lens === "legal_code") {
+    const exact = exactProvisionWatch({ lens: reviewed.lens, filter: watch.filter });
+    if (exact.status !== "ok") return options.emptyBase || "/following/";
+    watch = { ...watch, lens: exact.lens, filter: exact.filter };
+  }
   const normalized = normalizedWatch(reviewed.lens, watch.filter);
   const params = subscriptionParamsFromWatch(normalized);
   const frequency = String(options.frequency || watch.freq || "").toLowerCase();
@@ -503,6 +541,7 @@ function scopeSummary(lens, filter) {
     ["name", filter.name],
     ["agency id", filter.agency_id],
     ["mandate", filter.mandate_id],
+    ["provision", filter.provision_id],
     ["deliverable type", filter.deliverable_type],
     ["deadline window", typeof filter.windowDays === "number" ? `next ${filter.windowDays} days` : null],
     ["exam number", Array.isArray(filter.examNumber) ? filter.examNumber.join(", ") : filter.examNumber],
@@ -532,6 +571,10 @@ export function composeWatchRuleSentence(lens, filter = {}, options = {}) {
   if (wanted === "district") {
     const n = f.councilDistrict || "?";
     return `Notify me for City Council District ${n}, weekly digest.`;
+  }
+  if (wanted === "legal_code") {
+    const citation = String(f.provision_id || "").replace(/^nyc-administrative-code:/, "§ ");
+    return `Notify me when Administrative Code ${citation || "this provision"} is proposed, passed, or becomes effective.`;
   }
   if (wanted === "mandates" || wanted === "obligations") {
     const who = f.agency || f.agency_id || "this agency";

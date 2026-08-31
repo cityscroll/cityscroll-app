@@ -10,6 +10,7 @@ export const FOLLOWING_PREVIEW_HANDOFF_SCHEMA = "cityscroll.following_preview_ha
 
 export const FOLLOWING_HANDOFF_LENSES = Object.freeze([
   "money", "people", "land", "property", "rules", "meetings", "district", "entity", "mandates",
+  "legal_code",
 ]);
 
 export const FOLLOWING_HANDOFF_LENS_ALIASES = Object.freeze({

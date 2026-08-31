@@ -214,6 +214,16 @@ test("mandates: mandate_id is exact-id only with legacy subject-ref compatibilit
   assert.equal(sanitize("obligations", { mandate_id: "cross-bridge-obligation-001" }).mandate_id, "cross-bridge-obligation-001");
 });
 
+test("legal_code: provision_id is exact Administrative Code identity only", () => {
+  assert.equal(
+    sanitize("legal_code", { provision_id: "nyc-administrative-code:16-120" }).provision_id,
+    "nyc-administrative-code:16-120",
+  );
+  assert.equal(sanitize("legal_code", { provision_id: "§ 16-120" }).provision_id, "nyc-administrative-code:16-120");
+  assert.equal(sanitize("legal_code", { provision_id: "not-a-section" }).provision_id, undefined);
+  assert.equal(sanitize("legal_code", { provision_id: "nyc-administrative-code:16-120", keywords: ["housing"] }).keywords, undefined);
+});
+
 // w12-12: digest deep-links. Before, a digest item's link carried nothing about the watch
 // that surfaced it — a click landed on the plain notice view with no sign of why it matched.
 // encodeWatchFilter() is what a notice link's ?w= param is built from.

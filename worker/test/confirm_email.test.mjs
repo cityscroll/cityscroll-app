@@ -3,6 +3,13 @@ import assert from "node:assert/strict";
 import { describeFilter, welcomeEmailHtml } from "../src/lib/confirm_email.mjs";
 import { subCanonical } from "../src/lib/subscriptions.mjs";
 
+test("describeFilter names an exact Administrative Code provision watch", () => {
+  assert.equal(
+    describeFilter("legal_code", { provision_id: "nyc-administrative-code:16-120" }),
+    "Administrative Code § 16-120 — exact provision changes",
+  );
+});
+
 test("describeFilter renders a money threshold query", () => {
   assert.equal(
     describeFilter("money", { minAmount: 1000000, keywords: ["construction"] }),

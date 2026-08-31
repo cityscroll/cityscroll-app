@@ -133,6 +133,27 @@ export function feedItems(kind, rows) {
         nextStep: r.public_status ? `Status: ${r.public_status}` : null,
       };
     }
+    if (kind === "legal_code") {
+      const citation = String(r.provision_id || "").replace(/^nyc-administrative-code:/i, "§ ");
+      return {
+        id: String(r.alert_id || r.replay_key || ""),
+        url: r.href || r.source_url || `https://cityscroll.org/administrative-code/${encodeURIComponent(String(citation).replace(/^§\s+/, ""))}/`,
+        title: r.short_title || `Administrative Code ${citation}`,
+        date: r.start_date || r.effective_at || null,
+        summary: [r.event_kind, citation, r.source_record].filter(Boolean).join(" · "),
+        eventDate: r.effective_at || r.start_date || null,
+        phase: r.event_kind || "Provision change",
+        nextStep: r.event_kind === "proposed"
+          ? "Proposed change"
+          : r.event_kind === "passed"
+            ? "Amendment passed"
+            : r.event_kind === "effective"
+              ? "Amendment effective"
+              : r.event_kind === "rule_citation"
+                ? "Cited by a rule"
+                : null,
+      };
+    }
     if (kind === "obligation") {
       // World-state mandate rows: alert_id is the idempotency key; link the agency constellation.
       // Prediction branch deep-links expected-event surface and names the event + window.

@@ -1,0 +1,101 @@
+{
+  "schema": "cityscroll.code_provision_watch_fixtures.v1",
+  "provision": {
+    "id": "nyc-administrative-code:16-120",
+    "citation": "§ 16-120",
+    "current_text": "Old statutory text.\nSecond paragraph."
+  },
+  "amended_provision": {
+    "id": "nyc-administrative-code:16-120",
+    "citation": "§ 16-120",
+    "current_text": "New statutory text after amendment.",
+    "current_version_id": "code-version:16-120:2026-11-01"
+  },
+  "proposed": {
+    "schema": "cityscroll.code_change.v1",
+    "id": "intro:79102:amend",
+    "operation": "amend",
+    "state": "prospective",
+    "matter_id": "79102",
+    "introduced_at": "2026-07-15",
+    "target": {
+      "corpus_id": "nyc-administrative-code",
+      "provision_id": "nyc-administrative-code:16-120",
+      "citation": "§ 16-120"
+    },
+    "source": {
+      "source_ref": "council:intro:79102",
+      "instruction_text": "Section 16-120 is amended to read as follows.",
+      "url": "https://legistar.council.nyc.gov/LegislationDetail.aspx?ID=79102",
+      "observed_at": "2026-07-15"
+    }
+  },
+  "passed": {
+    "schema": "cityscroll.code_change.v1",
+    "id": "local-law:123-2026:amend",
+    "operation": "amend",
+    "state": "enacted",
+    "matter_id": "79102",
+    "legal_instrument_id": "local-law:123-2026",
+    "enacted_at": "2026-08-01",
+    "passed_at": "2026-08-01",
+    "effective_at": "2026-11-01",
+    "target": {
+      "corpus_id": "nyc-administrative-code",
+      "provision_id": "nyc-administrative-code:16-120",
+      "citation": "§ 16-120"
+    },
+    "source": {
+      "source_ref": "council:local-law:123-2026",
+      "instruction_text": "Section 16-120 is amended to read as follows.",
+      "url": "https://legistar.council.nyc.gov/LegislationDetail.aspx?ID=79102",
+      "observed_at": "2026-08-01"
+    },
+    "patch": {
+      "before_text": "Old statutory text.",
+      "after_text": "New statutory text."
+    }
+  },
+  "conditional": {
+    "schema": "cityscroll.code_change.v1",
+    "id": "local-law:123-2026:conditional",
+    "operation": "amend",
+    "state": "enacted",
+    "matter_id": "79102",
+    "legal_instrument_id": "local-law:123-2026",
+    "enacted_at": "2026-08-01",
+    "passed_at": "2026-08-01",
+    "effective_at": null,
+    "effective_date_text": "This section takes effect upon certification by the commissioner.",
+    "target": {
+      "corpus_id": "nyc-administrative-code",
+      "provision_id": "nyc-administrative-code:16-120",
+      "citation": "§ 16-120"
+    },
+    "source": {
+      "source_ref": "council:local-law:123-2026:conditional",
+      "instruction_text": "Section 16-120 is amended.",
+      "url": "https://legistar.council.nyc.gov/LegislationDetail.aspx?ID=79102",
+      "observed_at": "2026-08-01"
+    }
+  },
+  "rule_citation": {
+    "provision_id": "nyc-administrative-code:16-120",
+    "rule_id": "rule:dot-city-owned-bicycle-racks",
+    "source_ref": "nyc-rules:dot-bicycle-racks",
+    "source_url": "https://rules.cityofnewyork.us/rule/dot-city-owned-bicycle-racks/",
+    "observed_at": "2026-08-20",
+    "citation_span": "Administrative Code § 16-120"
+  },
+  "inferred_rule_citation": {
+    "rule_id": "rule:unrelated",
+    "source_ref": "nyc-rules:unrelated",
+    "observed_at": "2026-08-20",
+    "inferred_from_text": "receptacles"
+  },
+  "stale_lookup": {
+    "schema": "cityscroll.code_provision_watch_events.v1",
+    "stale": true,
+    "changes": []
+  }
+}
