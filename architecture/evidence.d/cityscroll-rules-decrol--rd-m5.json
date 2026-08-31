@@ -1,0 +1,17 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-rules-decrol/rd-m5",
+  "status": "implemented",
+  "fingerprint": "rd-m5-petition-handoff.v1",
+  "updated_at": "2026-08-30T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "rules-petition-handoff",
+      "path": "site/rules_petition.mjs"
+    },
+    {
+      "id": "rules-petition-coverage",
+      "path": "docs/evidence/rules-petition-handoff/coverage.json"
+    }
+  ]
+}

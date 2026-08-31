@@ -3,6 +3,8 @@ import assert from "node:assert/strict";
 import {
   NYC_RULES_PETITION_SOURCES,
   buildPetitionHandoff,
+  classifyPetitionActionTarget,
+  measurePetitionCoverage,
   renderPetitionHandoff,
 } from "../site/rules_petition.mjs";
 import { buildRulemakingObjects } from "../worker/src/lib/rulemaking.mjs";
@@ -37,6 +39,12 @@ test("petition workflow keeps official purpose, response, and outcomes source-qu
   assert.equal(handoff.outcomes_source.source_url, NYC_RULES_PETITION_SOURCES.page_url);
   assert.deepEqual(handoff.outcomes.map((outcome) => outcome.id), ["decline", "proceed"]);
   assert.deepEqual(handoff.submission, { cityscroll_submits: false, tracks_submission: false });
+  assert.equal(handoff.action_target, "exact_petition_target");
+  assert.equal(handoff.official.workflow_availability.form_vintage, "2025-06");
+  assert.equal(handoff.official.workflow_availability.guidance_vintage, "2026-02");
+  assert.equal(handoff.official.workflow_availability.procedure_page_vintage, null);
+  assert.equal(handoff.coverage.workflow_missing_is_not_unavailable, true);
+  assert.equal(handoff.coverage.unsupported_dates, "unknown");
 });
 
 test("unresolved agency identity never becomes a named petition destination", () => {
@@ -47,6 +55,7 @@ test("unresolved agency identity never becomes a named petition destination", ()
   const html = renderPetitionHandoff(handoff);
   assert.match(html, /official agency-contact lookup/);
   assert.doesNotMatch(html, /mailto:/);
+  assert.equal(handoff.action_target, "action_only_guidance");
 });
 
 test("unresolved contacts use the official lookup, while source-backed contacts remain explicit", () => {
@@ -166,4 +175,60 @@ test("resolved agency page exposes the petition entry point and complete officia
   assert.match(html, /agency-petition/);
   assert.match(html, /official petition form/);
   assert.match(html, /official guidance/);
+});
+
+test("generic rulemaking clocks never invent the 60-day petition expectation", () => {
+  const handoff = buildPetitionHandoff({
+    agency_resolution: RESOLUTION,
+    sources: { page_url: null, response_source_url: null, form_url: null, guidance_url: null },
+    rulemaking_clock_days: 60,
+    generic_clock_days: 60,
+    emergency_clock_days: 60,
+  });
+  assert.equal(handoff.response.days, null);
+  assert.equal(handoff.response.basis, "unknown");
+  assert.equal(handoff.action_target, "target_unknown");
+  assert.equal(handoff.official.workflow_availability.form, "missing");
+  assert.equal(handoff.coverage.official_form, "missing");
+  assert.equal(handoff.coverage.workflow_missing_is_not_unavailable, true);
+  const html = renderPetitionHandoff(handoff);
+  assert.doesNotMatch(html, /within 60 days/);
+  assert.match(html, /not stated in the indexed official sources/);
+});
+
+test("proposed rulemaking is not a petition workflow even when official form URLs exist", () => {
+  assert.equal(classifyPetitionActionTarget({
+    agency: { name: "Transportation" },
+    form_url: NYC_RULES_PETITION_SOURCES.form_url,
+    entry_point: "effective_rule",
+    lifecycle_state: "comment_hearing_open",
+  }), "no_supported_workflow");
+  const proposed = buildPetitionHandoff({
+    agency_resolution: RESOLUTION,
+    entry_point: "effective_rule",
+    lifecycle_state: "proposed",
+  });
+  assert.equal(proposed.action_target, "no_supported_workflow");
+  assert.equal(renderPetitionHandoff(proposed, { mode: "rule" }), "");
+});
+
+test("contact coverage keeps resolved, unresolved, and lookup fallbacks separate", () => {
+  const resolved = buildPetitionHandoff({
+    agency_resolution: RESOLUTION,
+    contact: {
+      email: "rules@example.gov",
+      source_url: NYC_RULES_PETITION_SOURCES.contact_lookup_url,
+    },
+  });
+  const fallback = buildPetitionHandoff({ agency_resolution: RESOLUTION });
+  const unresolved = buildPetitionHandoff({
+    agency_resolution: RESOLUTION,
+    sources: { contact_lookup_url: null },
+  });
+  assert.equal(resolved.contact_state, "resolved");
+  assert.equal(fallback.contact_state, "lookup_fallback");
+  assert.equal(unresolved.contact_state, "unresolved");
+  const coverage = measurePetitionCoverage([resolved, fallback, unresolved]);
+  assert.deepEqual(coverage.contacts, { resolved: 1, unresolved: 1, lookup_fallback: 1 });
+  assert.equal(coverage.action_targets.exact_petition_target, 3);
 });

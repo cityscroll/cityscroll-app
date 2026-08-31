@@ -85,6 +85,30 @@
           "source_updated_at": "2026-08-30T00:00:00.000Z"
         }
       ]
+    },
+    {
+      "id": "rules-petition-coverage",
+      "path": "docs/evidence/rules-petition-handoff/coverage.json",
+      "cards": [
+        {
+          "id": "cityscroll-rules-decrol/rd-m5",
+          "status": "implemented",
+          "source_fingerprint": "rd-m5-petition-handoff.v1",
+          "source_updated_at": "2026-08-30T00:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "id": "rules-petition-handoff",
+      "path": "site/rules_petition.mjs",
+      "cards": [
+        {
+          "id": "cityscroll-rules-decrol/rd-m5",
+          "status": "implemented",
+          "source_fingerprint": "rd-m5-petition-handoff.v1",
+          "source_updated_at": "2026-08-30T00:00:00.000Z"
+        }
+      ]
     }
   ]
 }

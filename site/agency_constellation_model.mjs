@@ -1027,6 +1027,8 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
     contact: sources.rules_petition_contacts?.by_agency?.[identity.canonical_id]
       || sources.rules_petition_contacts?.[identity.canonical_id]
       || null,
+    entry_point: "agency",
+    target: "adopt_amend_repeal",
   });
   const intelligence = sources.intelligence?.by_ref?.[ref]
     || sources.intelligence?.by_subject_ref?.[ref]
