@@ -121,7 +121,7 @@ function roleRow(edge) {
     edge.method ? `Method: ${methodLabel(edge.method)}` : "",
     edge.reason === "appointment_source_missing"
       ? "No official appointment source names this board and scope yet"
-      : (edge.reason && edge.status !== "accepted" ? "This role is not linked until exact source evidence is retained" : ""),
+      : (edge.reason && edge.status !== "accepted" ? `Status: ${edge.status} (${edge.reason})` : ""),
   ].filter(Boolean).join(" · ");
   return `<li class="node-record agency-role-edge-record" data-role-relation="${esc(edge.relation_id || "")}" data-role-status="${esc(edge.status || "")}" data-role-linking="${edge.linking ? "1" : "0"}" data-role-object-kind="${esc(edge.object_kind || "")}" data-body-id="${esc(edge.body_id || edge.object_canonical_id || "")}" data-valid-from="${esc(edge.valid_from || "")}" data-source-receipt="${esc(edge.source_receipt || edge.provenance?.source_receipt || "")}" data-jurisdiction="${esc(edge.jurisdiction || "")}" data-join-method="${esc(edge.join_method || "")}" data-person-leader-id="${esc(edge.person_leader_id || "")}">
     <div class="node-record-main">${roleEndpoint(edge.from, edge.inverse_href, edge.linking)} <span aria-hidden="true">→</span> ${esc(roleLabel(edge))} ${roleEndpoint(edge.to, edge.href, edge.linking, edge.object_display_name)}</div>
