@@ -22,6 +22,7 @@ import {
 import {
   noticeContextReady,
   noticeContextTimingMark,
+  noticeContextTimingMeasure,
   noticePrimaryOutcomeFromEdge,
   noticePrimaryReady,
   runtimeRumSemanticMilestones,
@@ -1410,10 +1411,12 @@ async function showNotice(id, watch){
     attachmentDataPromise = noticeAttachmentMetadata(id,r)
       .then(data=>{
         noticeContextTimingMark("attachment-end");
+        noticeContextTimingMeasure("attachment");
         return data;
       })
       .catch(()=>{
         noticeContextTimingMark("attachment-end");
+        noticeContextTimingMeasure("attachment");
         return null;
       });
   }catch(e){}

@@ -16,6 +16,7 @@ import {
   homeEntryReady,
   noticeContextReady,
   noticeContextTimingMark,
+  noticeContextTimingMeasure,
   noticePrimaryOutcomeFromEdge,
   noticePrimaryReady,
 } from "../site/rum_static_record_instrumentation.mjs";
@@ -199,6 +200,30 @@ test("Notice timing marks are bounded browser diagnostics, not RUM dimensions", 
     globalThis.performance = original;
   }
   assert.deepEqual(marks, ["cityscroll.notice-context.notice-read-start"]);
+});
+
+test("Notice branch measures reuse the same diagnostic prefix and stay off RUM dimensions", () => {
+  const measures = [];
+  const original = globalThis.performance;
+  globalThis.performance = {
+    measure: (name, start, end) => measures.push({ name, start, end }),
+    getEntriesByName: () => [{ duration: 8 }],
+  };
+  try {
+    assert.deepEqual(noticeContextTimingMeasure("tables"), {
+      state: "recorded",
+      branch: "tables",
+      duration_ms: 8,
+    });
+    assert.deepEqual(noticeContextTimingMeasure("tables/secret"), { state: "invalid" });
+  } finally {
+    globalThis.performance = original;
+  }
+  assert.deepEqual(measures, [{
+    name: "cityscroll.notice-context.tables",
+    start: "cityscroll.notice-context.tables-start",
+    end: "cityscroll.notice-context.tables-end",
+  }]);
 });
 
 test("Notice primary readiness is ordered before optional route modules and client enrichment", () => {
