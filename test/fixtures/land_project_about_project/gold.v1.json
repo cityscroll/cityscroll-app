@@ -1,0 +1,82 @@
+{
+  "schema": "cityscroll.land_project_about_project.gold.v1",
+  "specimen": {
+    "id": "notice-20260603044-project-2023X0149",
+    "request_id": "20260603044",
+    "project_id": "2023X0149",
+    "ulurp_token": "240206ZMX",
+    "source_fields": ["body", "ulurp_numbers"],
+    "method": "exact_ulurp_token_v1",
+    "tier": "deterministic_exact_key",
+    "canonical_relation": "about_project",
+    "compatibility_relation": "decides_land_project",
+    "inverse": "has_notice",
+    "is_decision": false
+  },
+  "positive": [
+    {
+      "id": "exact-ulurp-20260603044",
+      "notice": {
+        "request_id": "20260603044",
+        "agency_name": "Community Boards",
+        "short_title": "JUNE 9, 2026 PUBLIC HEARING",
+        "event_date": "2026-06-09T18:30:00.000",
+        "type_of_notice_description": "Public Hearings",
+        "source_system": "city_record",
+        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260603044",
+        "additional_description_1": "BOROUGH OF THE BRONX, Community Board 6 public hearing on Uniform Land Use Review Procedure applications #240206ZMX and #N240207ZRX, Sojourner Truth-Mapes Rezoning."
+      },
+      "project": {
+        "project_id": "2023X0149",
+        "project_name": "Sojourner Truth-Mapes Rezoning",
+        "primary_applicant": "Applicant",
+        "ulurp_numbers": "240206ZMX; N240207ZRX"
+      },
+      "expect": {
+        "accepted": true,
+        "canonical_relation": "about_project",
+        "compatibility_relation": "decides_land_project",
+        "join_value": "240206ZMX",
+        "method": "exact_ulurp_token_v1"
+      }
+    },
+    {
+      "id": "exact-zap-url",
+      "notice": {
+        "request_id": "20240801002",
+        "agency_name": "City Planning Commission",
+        "short_title": "ZAP project hearing",
+        "event_date": "2024-10-01",
+        "type_of_notice_description": "Public Hearings",
+        "source_system": "city_record",
+        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20240801002",
+        "additional_description_1": "The project record is at https://zap.planning.nyc.gov/projects/2023X0149."
+      },
+      "project": {
+        "project_id": "2023X0149",
+        "project_name": "Sojourner Truth-Mapes Rezoning",
+        "primary_applicant": "Applicant",
+        "ulurp_numbers": "240206ZMX; N240207ZRX"
+      },
+      "expect": {
+        "accepted": true,
+        "canonical_relation": "about_project",
+        "compatibility_relation": "decides_land_project",
+        "join_value": "2023X0149",
+        "method": "zap_project_ref_v1"
+      }
+    }
+  ],
+  "negative": [
+    { "id": "unknown-ulurp", "reason": "missing_project", "missing_project": true },
+    { "id": "no-reference", "reason": "no_reference", "no_reference": true },
+    { "id": "ambiguous-key", "reason": "ambiguous_key", "ambiguous": true, "candidates": ["2023X0149", "2022M0258"] },
+    { "id": "title-only", "reason": "title_only", "title_only": true },
+    { "id": "address-only", "reason": "address_only", "address_only": true },
+    { "id": "date-only", "reason": "date_only", "date_only": true },
+    { "id": "draft-only", "reason": "draft_only", "draft_only": true },
+    { "id": "publisher-only", "reason": "publisher_only", "publisher_only": true },
+    { "id": "fuzzy", "reason": "fuzzy_join", "fuzzy": true },
+    { "id": "missing-identifier", "reason": "missing_identifier", "from": "", "project_id": "" }
+  ]
+}

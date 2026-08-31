@@ -1797,7 +1797,7 @@ function noticeLandSpineHTML(record, phaseTools, joinMeta){
   if(!record) return "";
   const projectId=record.project_id || joinMeta?.project_id || "";
   const landLink=projectId
-    ?`<div class="lc-pct"><a class="view" href="#land/${escUiHtml(projectId)}">${t("notice_land_open_land_detail")}</a></div>`
+    ?`<div class="lc-pct about-project"><a class="view" href="#land/${escUiHtml(projectId)}">${t("notice_about_project")}</a></div>`
     :"";
   // Reuse phase-grouped land spine (statutory clocks + zoning stats ride on the record).
   const spineHTML=landSpineHTML(record.spine, record, phaseTools);

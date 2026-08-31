@@ -10,18 +10,24 @@ import { test } from "node:test";
 import { fileURLToPath } from "node:url";
 
 import {
+  ABOUT_PROJECT_INVERSE,
+  ABOUT_PROJECT_READER_LABEL,
+  ABOUT_PROJECT_RELATION,
   DECIDES_LAND_PROJECT_COMPATIBILITY,
   EXACT_KEY_EDGE_TIER,
   LAND_PROJECT_DECISION_RELATION_SCHEMA,
   LAND_PROJECT_RELATION_VOCABULARY,
+  aboutProjectReaderProjection,
   adaptDecidesLandProjectEdge,
   classifyLandDispositionRelation,
   classifyLandRecommendationRelation,
   classifyMeetingLandProjectRelation,
   documentedDecisionFromDisposition,
+  materializeExactNoticeProjectEdge,
 } from "../site/land_project_decision_relations.mjs";
 import {
   MEETING_LAND_ULURP_METHOD,
+  MEETING_LAND_ZAP_METHOD,
   joinMeetingsToLandProjects,
   observationFromLandRow,
   observationFromMeetingsRow,
@@ -89,12 +95,18 @@ test("canonical vocabulary distinguishes concern, review, recommendation, and de
   assert.equal(vocab.about_project.semantic_threshold, "exact_project_or_application_or_ulurp_reference");
   assert.equal(vocab.issues_recommendation.semantic_threshold, "documentary_recommendation_evidence");
   assert.equal(vocab.project_disposition.semantic_threshold, "explicit_authoritative_disposition");
+  assert.equal(vocab.about_project.inverse, ABOUT_PROJECT_INVERSE);
+  assert.equal(vocab.about_project.reader_label, ABOUT_PROJECT_READER_LABEL);
   for (const id of ["about_project", "reviews_project", "issues_recommendation", "project_disposition"]) {
     assert.ok(vocab[id].inverse);
     assert.ok(vocab[id].domain);
-    assert.ok(vocab[id].required_evidence.includes("source_record"));
-    assert.ok(vocab[id].required_evidence.includes("semantic_threshold"));
+    assert.ok(
+      vocab[id].required_evidence.includes("source_record")
+        || vocab[id].required_evidence.includes("source_record_id"),
+      id,
+    );
   }
+  assert.ok(vocab.reviews_project.required_evidence.includes("semantic_threshold"));
 });
 
 test("registry registers the split vocabulary with inverses and evidence thresholds", () => {
@@ -160,9 +172,10 @@ test("A1 hearing 2023X0149 is an exact project-related proceeding, not a decisio
   const meetings = connections.groups.find((group) => group.id === "meetings");
   const decisions = connections.groups.find((group) => group.id === "decisions");
   assert.equal(meetings.items[0].relation, DECIDES_LAND_PROJECT_COMPATIBILITY);
-  assert.equal(meetings.items[0].canonical_relation, "reviews_project");
+  assert.equal(meetings.items[0].canonical_relation, ABOUT_PROJECT_RELATION);
+  assert.equal(meetings.items[0].proceeding_relation, "reviews_project");
   assert.equal(meetings.items[0].is_decision, false);
-  assert.match(meetings.items[0].reader_label, /project-related proceeding|reviews this project/i);
+  assert.equal(meetings.items[0].reader_label, ABOUT_PROJECT_READER_LABEL);
   assert.equal(decisions.items.length, 0);
   assert.equal(audit.specimens.hearing_2023X0149.project_id, "2023X0149");
 });
@@ -247,6 +260,129 @@ test("architecture-evidence projections reconcile the audit card", () => {
       .represented_card_ids.includes("cityscroll-land-decision-path/ldp-06-decides-land-project-audit"),
     true,
   );
+  assert.equal(
+    result.evidence.projections["docs/evidence/land-decision-path/about-project-edge.json"]
+      .represented_card_ids.includes("cityscroll-land-decision-path/ldp-07-exact-notice-project-edge"),
+    true,
+  );
   assert.equal(audit.schema, "cityscroll.land_project_decision_relation.audit.v1");
   assert.equal(LAND_PROJECT_DECISION_RELATION_SCHEMA, "cityscroll.land_project_decision_relation.v1");
+});
+
+const gold = JSON.parse(
+  readFileSync(join(ROOT, "test/fixtures/land_project_about_project/gold.v1.json"), "utf8"),
+);
+const aboutReceipt = JSON.parse(
+  readFileSync(join(ROOT, "docs/evidence/land-decision-path/about-project-edge.json"), "utf8"),
+);
+
+function goldEvidence(caseRow) {
+  const notice = caseRow.notice;
+  const hearing = observationFromMeetingsRow(notice);
+  const land = observationFromLandRow(caseRow.project);
+  const join = joinMeetingsToLandProjects([hearing], [land]);
+  const compatibility = join.links.find((link) => link.type === DECIDES_LAND_PROJECT_COMPATIBILITY);
+  const about = join.links.find((link) => link.type === ABOUT_PROJECT_RELATION);
+  return { hearing, land, join, compatibility, about };
+}
+
+test("A1 notice 20260603044 reaches 2023X0149 through about_project with source proof", () => {
+  const specimen = gold.positive.find((row) => row.id === "exact-ulurp-20260603044");
+  const { join, compatibility, about } = goldEvidence(specimen);
+  assert.ok(compatibility, "compatibility decides_land_project remains");
+  assert.ok(about, "canonical about_project is materialized");
+  assert.equal(about.from, "notice:20260603044");
+  assert.equal(about.to, "project:2023X0149");
+  assert.equal(about.method, MEETING_LAND_ULURP_METHOD);
+  assert.equal(about.tier, EXACT_KEY_EDGE_TIER);
+  assert.equal(about.provenance.join_value, "240206ZMX");
+  assert.deepEqual(about.provenance.source_fields, ["body", "ulurp_numbers"]);
+  assert.equal(about.is_decision, false);
+  assert.equal(about.inverse, ABOUT_PROJECT_INVERSE);
+  assert.equal(about.reader_label, ABOUT_PROJECT_READER_LABEL);
+
+  const material = materializeExactNoticeProjectEdge({
+    ...exactEvidence({
+      from: "notice:20260603044",
+      source_record: "city_record:20260603044",
+      observed_time: specimen.notice.event_date,
+      agency_name: specimen.notice.agency_name,
+      label: specimen.notice.short_title,
+      type_of_notice_description: specimen.notice.type_of_notice_description,
+      source_system: "city_record",
+      source_url: specimen.notice.source_url,
+    }),
+  });
+  assert.equal(material.accepted, true);
+  assert.equal(material.canonical_relation, ABOUT_PROJECT_RELATION);
+  assert.equal(material.compatibility_relation, DECIDES_LAND_PROJECT_COMPATIBILITY);
+  assert.equal(material.is_decision, false);
+  assert.notEqual(material.canonical_relation, "issues_recommendation");
+  assert.notEqual(material.canonical_relation, "project_disposition");
+  const reader = aboutProjectReaderProjection(material);
+  assert.equal(reader.visible, true);
+  assert.equal(reader.href, "#land/2023X0149");
+  assert.equal(reader.proof.identifier, "240206ZMX");
+  assert.equal(reader.proof.source_system, "city_record");
+  assert.equal(reader.proof.source_url, specimen.notice.source_url);
+  assert.equal(join.by_notice["20260603044"].status, "matched");
+  assert.equal(aboutReceipt.specimen.notice_id, "20260603044");
+  assert.equal(aboutReceipt.specimen.project_id, "2023X0149");
+});
+
+test("exact ZAP URL fixture materializes about_project with full provenance", () => {
+  const specimen = gold.positive.find((row) => row.id === "exact-zap-url");
+  const { about, compatibility } = goldEvidence(specimen);
+  assert.ok(compatibility);
+  assert.ok(about);
+  assert.equal(about.method, MEETING_LAND_ZAP_METHOD);
+  assert.equal(about.to, "project:2023X0149");
+  assert.equal(about.provenance.join_key, "project_id");
+  assert.equal(about.is_decision, false);
+});
+
+test("A2 subject edge never labels a recommendation or decision", () => {
+  const material = materializeExactNoticeProjectEdge(exactEvidence({
+    from: "notice:20260603044",
+    source_record: "city_record:20260603044",
+    source_system: "city_record",
+    source_url: "https://a856-cityrecord.nyc.gov/RequestDetail/20260603044",
+    agency_name: "Community Boards",
+    label: "JUNE 9, 2026 PUBLIC HEARING",
+    type_of_notice_description: "Public Hearings",
+    observed_time: "2026-06-09T18:30:00.000",
+  }));
+  assert.equal(material.accepted, true);
+  assert.equal(material.canonical_relation, ABOUT_PROJECT_RELATION);
+  assert.equal(material.canonical_edge.type, ABOUT_PROJECT_RELATION);
+  assert.equal(material.compatibility_edge.type, DECIDES_LAND_PROJECT_COMPATIBILITY);
+  assert.match(material.reader_label, /about this project/i);
+  assert.doesNotMatch(material.reader_label, /recommend|decid/i);
+  assert.equal(material.is_decision, false);
+});
+
+test("A4 unknown, ambiguous, title, address, date, draft, and missing-project stop unresolved", () => {
+  const base = exactEvidence({
+    from: "notice:20260603044",
+    source_record: "city_record:20260603044",
+    source_system: "city_record",
+    source_url: "https://a856-cityrecord.nyc.gov/RequestDetail/20260603044",
+  });
+  for (const row of gold.negative) {
+    const result = materializeExactNoticeProjectEdge({
+      ...base,
+      ...row,
+      from: row.from === "" ? "" : base.from,
+      to: row.from === "" ? "" : base.to,
+      project_id: row.project_id === "" ? "" : base.project_id,
+    });
+    assert.equal(result.accepted, false, row.id);
+    assert.equal(result.canonical_edge, null, row.id);
+    assert.equal(result.unresolved.status, "unresolved", row.id);
+    assert.equal(result.unresolved.inspectable, true, row.id);
+    assert.equal(result.unresolved.reason, row.reason, row.id);
+    const reader = aboutProjectReaderProjection(result);
+    assert.equal(reader.visible, false, row.id);
+    assert.equal(reader.href, null, row.id);
+  }
 });
