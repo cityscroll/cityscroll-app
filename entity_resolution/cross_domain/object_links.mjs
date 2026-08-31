@@ -153,7 +153,19 @@ export const CROSS_DOMAIN_LINK_TYPES = Object.freeze({
   },
   decides_land_project: {
     description:
-      "Hearing/meeting body cites a ULURP application number or ZAP project that the hearing decides",
+      "Compatibility projection of an exact meeting→land-project join. Canonical semantics are about_project or reviews_project; this id does not mean the meeting decided the project.",
+    domains: Object.freeze(["meetings"]),
+    registry: false,
+  },
+  about_project: {
+    description:
+      "A meeting or notice concerns a land project through an exact project, application, or ULURP reference",
+    domains: Object.freeze(["meetings"]),
+    registry: false,
+  },
+  reviews_project: {
+    description:
+      "A hearing or review proceeding concerns a land project through an exact project, application, or ULURP reference",
     domains: Object.freeze(["meetings"]),
     registry: false,
   },
@@ -1077,8 +1089,9 @@ export function stampMeetingLandLinksOnCorpus(observations = []) {
 }
 
 /**
- * Corpus-level join: emit decides_land_project edges for meetings that resolve
- * to known land projects. Pure — does not mutate inputs.
+ * Corpus-level join: emit compatibility decides_land_project edges for meetings
+ * that resolve to known land projects. Those edges are exact concern/review
+ * joins, not documented decisions. Pure — does not mutate inputs.
  * @param {object[]} meetingObservations
  * @param {object[]} landObservations
  * @returns {{ links: object[], by_notice: object, metrics: object }}
@@ -1133,7 +1146,10 @@ export function joinMeetingsToLandProjects(meetingObservations = [], landObserva
 }
 
 /**
- * Build one decides_land_project edge (meeting notice → land project).
+ * Build one compatibility decides_land_project edge (meeting notice → land
+ * project). Canonical concern/review semantics live in
+ * site/land_project_decision_relations.mjs; this helper keeps the existing
+ * consumer identifier.
  * @param {object} meetingObs
  * @param {object} project — { project_id, subject_ref, join_method, join_keys }
  */

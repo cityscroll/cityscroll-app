@@ -1950,6 +1950,17 @@ phase-spine inputs unchanged. Specimens: `2024M0244` mixed, `2025K0305` uniform,
   mixed/unknown procedure stay unresolved. Focused proof:
   `test/land_affected_review_body.test.mjs`.
 
+- **Land meeting-project relations (LDP-06):** `site/land_project_decision_relations.mjs`
+  is the audited vocabulary and compatibility adapter over exact meeting→project
+  joins. Canonical types are `about_project` / `reviews_project` (concern and
+  review), `issues_recommendation` (documentary recommendation), and
+  `project_disposition` / `adopts` / `rejects` (documented decision). Existing
+  graph, calendar, agency, and pivot consumers keep `decides_land_project` as a
+  staged compatibility projection; that id is not a decision. Draft
+  `2025K0305` rows and hearing-only joins stay non-decisional. ADR:
+  `docs/adr/decides-land-project-vocabulary.md`. Focused proof:
+  `test/land_project_decision_relations.test.mjs`.
+
 - **Land authority summary (LDP-05):** `site/land_authority_summary.mjs` materializes
   a bounded Tier A `authority_summary` for Land first paint. Current actor, stage,
   role, and effect stay source-backed and separate from expected next stage and a
