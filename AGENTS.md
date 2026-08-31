@@ -4404,6 +4404,19 @@ Verify: `node --test test/checkbook_spending_collector.test.mjs` and
   Focused proof is `worker/test/feedback_desk.test.mjs` plus the admin feedback
   cases in `worker/test/admin.test.mjs`.
 
+- **Private report adjudication (CC-9):** `worker/src/lib/report_adjudication.mjs`
+  is the bounded private verdict contract (`confirmed`, `correct-as-displayed`,
+  `ambiguous-or-insufficient-evidence`, `upstream-source-error`, `duplicate`)
+  with actor, time, evidence, scope, and an explicit outbox handoff chain.
+  Authenticated `GET/POST /admin/report-adjudication` persists private records
+  on the FEEDBACK namespace (`adj:state:` / `adj:cmd:`); `GET /admin/feedback`
+  stays read-only and does not leak review fields. Civic results change only
+  after a named source-of-truth change plus guarded reprojection. The public
+  seam is `site/report_verdict_public.mjs` plus
+  `site/data/report_verdict_labels.json` (id and label only). Rebuild the
+  rehearsal with `node tools/cc9_adjudication_rehearsal.mjs`; `--check`
+  verifies it. Focused proof is `test/report_adjudication.test.mjs`.
+
 - **Federated search scope:** `capabilities/federated_search.mjs` owns the additive
   closed `scope` allowlist over registered lenses. Adapters must not rank, rewrite
   identity, or query an arbitrary store. Omitted scope keeps all-lens federation;

@@ -7,7 +7,7 @@
 // Desk panels pin min_version and validate fixtures against this schema so hard-coded
 // key prefixes, digest modes, and daylog actions cannot drift silently.
 
-export const OPS_CONTRACT_VERSION = "1.9.1";
+export const OPS_CONTRACT_VERSION = "1.9.2";
 export const OPS_CONTRACT_ID = "ops-contract.v1";
 
 /** Digest delivery / evaluation modes the worker may stamp on receipts and daylogs. */
@@ -384,7 +384,13 @@ export const ADMIN_ROUTES = Object.freeze([
     path: "/admin/feedback",
     methods: ["GET"],
     auth: "ADMIN_KEY",
-    description: "Stored feedback rows (operator inbox).",
+    description: "Stored feedback rows (operator inbox). Read-only; writes use /admin/report-adjudication.",
+  },
+  {
+    path: "/admin/report-adjudication",
+    methods: ["GET", "POST"],
+    auth: "ADMIN_KEY",
+    description: "Private report adjudication: bounded verdicts with actor, time, evidence, and scope. POST never auto-applies a civic correction.",
   },
   {
     path: "/admin/possibly-same",
@@ -570,6 +576,8 @@ export const KV_NAMESPACES = Object.freeze([
     binding: "FEEDBACK",
     prefixes: [
       { prefix: "fb:", semantics: "Stored feedback rows for /admin/feedback." },
+      { prefix: "adj:state:", semantics: "Private report adjudication state keyed by report id." },
+      { prefix: "adj:cmd:", semantics: "Idempotency pointers for report adjudication commands." },
     ],
   },
 ]);

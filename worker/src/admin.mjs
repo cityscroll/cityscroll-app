@@ -65,6 +65,11 @@ import {
   readAdminPerformance,
 } from "./admin_performance.mjs";
 import { projectFeedbackDeskItem } from "./lib/feedback_desk.mjs";
+import {
+  loadReportAdjudication,
+  listReportAdjudications,
+  persistReportAdjudication,
+} from "./lib/report_adjudication_store.mjs";
 import { timingSafeEqualString } from "./lib/secret_compare.mjs";
 import { ingestPassportPublic } from "./passport.mjs";
 import { readDigestShadow, runDigestShadow } from "./digest_shadow.mjs";
@@ -516,6 +521,7 @@ async function liveWatchRecordsByMask(store) {
 export async function handleAdminFeedback(req, env) {
   const auth = checkAdminKey(req, env);
   if (!auth.ok) return auth.res;
+  if (req.method !== "GET") return json({ error: "method not allowed" }, 405);
   if (!env.FEEDBACK) return json({ error: "no-store" }, 503);
 
   const items = [];
@@ -533,6 +539,62 @@ export async function handleAdminFeedback(req, env) {
 
   items.sort((a, b) => (String(a.at) < String(b.at) ? 1 : -1)); // newest first
   return json({ feedbackCount: items.length, totalFbKeys: totalKeys, items }, 200);
+}
+
+// GET/POST /admin/report-adjudication?key=… — private, evidence-bearing
+// adjudication loop over stored contextual reports. GET is read-only. POST
+// records a bounded verdict with actor, time, evidence, and scope; civic
+// reprojection happens only when a named source change is explicitly requested.
+export async function handleAdminReportAdjudication(req, env) {
+  const auth = checkAdminKey(req, env);
+  if (!auth.ok) return auth.res;
+  if (!new Set(["GET", "POST"]).has(req.method)) return json({ error: "method not allowed" }, 405);
+  if (!env.FEEDBACK) return json({ error: "no-store" }, 503);
+
+  if (req.method === "GET") {
+    const reportId = new URL(req.url).searchParams.get("report_id");
+    if (reportId) {
+      const state = await loadReportAdjudication(env.FEEDBACK, reportId);
+      if (!state) return privateJson({ error: "not-found" }, 404);
+      return privateJson({ item: state }, 200);
+    }
+    const items = await listReportAdjudications(env.FEEDBACK);
+    return privateJson({ count: items.length, items }, 200);
+  }
+
+  let body;
+  try {
+    body = (req.headers.get("content-type") || "").includes("application/json")
+      ? await req.json()
+      : Object.fromEntries(await req.formData());
+  } catch {
+    return json({ error: "invalid-body" }, 400);
+  }
+  const reportId = String(body?.report_id || "").trim();
+  if (!reportId) return json({ error: "report_id_required" }, 400);
+  let stored = null;
+  try { stored = JSON.parse(await env.FEEDBACK.get(reportId)); } catch { stored = null; }
+  if (!stored) return json({ error: "report-not-found" }, 404);
+
+  let result;
+  try {
+    result = await persistReportAdjudication(env.FEEDBACK, {
+      ...body,
+      report: { ...stored, id: reportId },
+      report_id: reportId,
+    });
+  } catch {
+    return json({ error: "adjudication-write-failed" }, 503);
+  }
+  if (!result.ok) {
+    const status = result.error === "idempotency-key-conflict"
+      ? 409
+      : result.error === "no-store" || result.error === "write-failed"
+        ? 503
+        : 400;
+    return json({ error: result.error }, status);
+  }
+  return privateJson({ ok: true, replayed: result.replayed, item: result.state }, result.replayed ? 200 : 201);
 }
 
 // GET/POST /admin/possibly-same?key=… — desk evidence for candidate vendor pairs.

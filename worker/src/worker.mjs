@@ -22,6 +22,7 @@ import {
   handleAdminWatchLogEnrich,
   handleAdminDeprecatedOptInRecovery,
   handleAdminFeedback,
+  handleAdminReportAdjudication,
   handleAdminPossiblySame,
   handleAdminPinFamilyVerify,
   handleAdminOpsContract,
@@ -203,6 +204,7 @@ export default {
     if (pathname === "/admin/watch-log/enrich") return handleAdminWatchLogEnrich(request, env);
     if (pathname === "/admin/recover-deprecated-opt-in") return handleAdminDeprecatedOptInRecovery(request, env);
     if (pathname === "/admin/feedback") return handleAdminFeedback(request, env);
+    if (pathname === "/admin/report-adjudication") return handleAdminReportAdjudication(request, env);
     if (pathname === "/admin/possibly-same") return handleAdminPossiblySame(request, env);
     if (pathname === "/admin/pin-family-verify") return handleAdminPinFamilyVerify(request, env);
     if (pathname === "/admin/ops-contract") return handleAdminOpsContract(request, env);

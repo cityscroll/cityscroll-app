@@ -10,6 +10,7 @@ import {
   checkDigestShadowAuth,
   handleAdminDigestSendTest,
   handleAdminFeedback,
+  handleAdminReportAdjudication,
   handleAdminStats,
   renderAdminStatsPage,
 } from "../src/admin.mjs";
@@ -473,4 +474,93 @@ test("handleAdminFeedback: contextual report fields round-trip; private metadata
       "reporter@example.com", "203.0.113.88", "CityScrollTest/1.0", "keep this adjudication private",
     ]), false);
   }
+});
+
+test("handleAdminFeedback refuses writes so listing cannot become an accidental write surface", async () => {
+  const store = feedbackKv({
+    "fb:1": JSON.stringify({ category: "bug", message: "Something broke on the money tab.", at: "2026-08-29T00:00:00.000Z" }),
+  });
+  const response = await handleAdminFeedback(
+    new Request("https://w/admin/feedback?key=s3cr3t", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ verdict: "confirmed", actor: "someone" }),
+    }),
+    { ADMIN_KEY: "s3cr3t", FEEDBACK: store },
+  );
+  assert.equal(response.status, 405);
+});
+
+test("handleAdminReportAdjudication records a bounded private verdict and keeps it off the public desk listing", async () => {
+  const target = buildContractReportTarget({
+    procurement_id: "procurement:contract:CT123",
+    canonical_href: "/procurements/procurement%3Acontract%3ACT123",
+    short_title: "Street repair contract",
+    vendor_name: "Acme Works",
+    source_observation_refs: ["passport_public_contracts:row-1"],
+  });
+  const sourceIds = target.provenance?.source_record_ids?.length
+    ? target.provenance.source_record_ids
+    : ["passport_public_contracts:row-1"];
+  const map = {
+    "fb:100:one": JSON.stringify({
+      category: "report",
+      message: "The published vendor name does not match the source record.",
+      evidence: "Public contract source row",
+      report_target: target,
+      report: {
+        category: "information_wrong",
+        explanation: "The published vendor name does not match the source record.",
+        evidence: "Public contract source row",
+      },
+      at: "2026-08-29T18:00:00.000Z",
+      email: "reporter@example.com",
+    }),
+  };
+  const store = feedbackKv(map);
+  const posted = await handleAdminReportAdjudication(
+    new Request("https://w/admin/report-adjudication?key=s3cr3t", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        report_id: "fb:100:one",
+        command_id: "cmd-admin-1",
+        actor: "maintainer:desk",
+        at: "2026-08-31T18:00:00.000Z",
+        verdict: "correct-as-displayed",
+        evidence: sourceIds,
+        scope: { source_record_ids: sourceIds },
+        reporter_resolution: true,
+      }),
+    }),
+    { ADMIN_KEY: "s3cr3t", FEEDBACK: store },
+  );
+  assert.equal(posted.status, 201);
+  const recorded = await posted.json();
+  assert.equal(recorded.item.verdict, "correct-as-displayed");
+  assert.equal(recorded.item.actor, "maintainer:desk");
+  assert.equal(recorded.item.civic_result_changed, false);
+
+  const missingActor = await handleAdminReportAdjudication(
+    new Request("https://w/admin/report-adjudication?key=s3cr3t", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        report_id: "fb:100:one",
+        verdict: "confirmed",
+        evidence: ["src-1"],
+      }),
+    }),
+    { ADMIN_KEY: "s3cr3t", FEEDBACK: store },
+  );
+  assert.equal(missingActor.status, 400);
+
+  const listing = await handleAdminFeedback(
+    new Request("https://w/admin/feedback?key=s3cr3t"),
+    { ADMIN_KEY: "s3cr3t", FEEDBACK: store },
+  );
+  const body = await listing.json();
+  assert.equal(body.items.length, 1);
+  assert.equal(JSON.stringify(body).includes("maintainer:desk"), false);
+  assert.equal(JSON.stringify(body).includes("correct-as-displayed"), false);
 });
