@@ -39,6 +39,16 @@ function treeDigest(prefixes, ref = BASE) {
   return { file_count: rows.length, sha256: sha(rows.join("")) };
 }
 
+function servedVerificationRef() {
+  if (process.env.GITHUB_EVENT_NAME !== "pull_request" || !process.env.GITHUB_SHA) return "HEAD";
+  const parents = execFileSync("git", ["rev-list", "--parents", "-n", "1", process.env.GITHUB_SHA], {
+    cwd: ROOT,
+    encoding: "utf8"
+  }).trim().split(/\s+/);
+  if (parents.length !== 3) throw new Error("pull-request checkout is not a two-parent merge commit");
+  return parents[2];
+}
+
 function buildReceipt() {
   const classification = JSON.parse(fromBase("docs/repository-control-plane/classification.v1.json"));
   const classified = classification.entries.filter((entry) => entry.canonical_owner === CARD && entry.id.startsWith("private-uri:"));
@@ -140,7 +150,7 @@ function verifyCurrent(receipt) {
   for (const path of ["ARCHITECTURE.md", "docs/architecture.md", "tools/architecture_evidence_shards.mjs", "architecture/evidence.d/cityscroll-merge-throughput--mt-7-architecture-evidence-shards.json"]) {
     if (!existsSync(resolve(ROOT, path))) errors.push(`${path}: retained proof missing`);
   }
-  const currentServed = treeDigest(["site", "worker"], "HEAD");
+  const currentServed = treeDigest(["site", "worker"], servedVerificationRef());
   if (currentServed.sha256 !== receipt.served_artifact_baseline.expected_after_sha256) errors.push("served site/worker artifacts changed");
   if (errors.length) throw new Error(errors.join("\n"));
 }
