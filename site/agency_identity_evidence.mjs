@@ -76,6 +76,10 @@ const ROLE_LABELS = Object.freeze({
   chaired_by: "chaired by",
   considers: "considers",
   considered_at: "considered at",
+  holds_office: "holds office",
+  officeholder_of: "officeholder of",
+  appoints_members_of: "appoints members of",
+  members_appointed_by: "members appointed by",
 });
 
 function roleLabel(edge) {
@@ -91,6 +95,8 @@ function roleEndpoint(id, href, linking, displayName = null) {
     .replace(/^meeting:city_record:/, "")
     .replace(/^committee:/, "committee ")
     .replace(/^official:/, "")
+    .replace(/^person-leader:[^:]+:(?:id|name):/, "")
+    .replace(/^community-board:/, "")
     .replace(/^land-matter:/, "")
     .replace(/^obligation:/, "duty ");
   if (linking && href) {
@@ -108,13 +114,16 @@ function roleRow(edge) {
     edge.vintage ? `Vintage ${edge.vintage}` : "",
     edge.provenance?.source_system ? `Source ${edge.provenance.source_system}` : "",
     edge.provenance?.source_field && edge.provenance?.source_value
-      ? `${edge.provenance.source_field}: “${edge.provenance.source_value}”`
+      ? `${fieldLabel(edge.provenance.source_field)}: “${edge.provenance.source_value}”`
       : "",
     edge.provenance?.source_receipt ? `Receipt ${edge.provenance.source_receipt}` : "",
+    edge.jurisdiction ? `Jurisdiction ${edge.jurisdiction}` : "",
     edge.method ? `Method: ${methodLabel(edge.method)}` : "",
-    edge.reason && edge.status !== "accepted" ? `Status: ${edge.status} (${edge.reason})` : "",
+    edge.reason === "appointment_source_missing"
+      ? "No official appointment source names this board and scope yet"
+      : (edge.reason && edge.status !== "accepted" ? `Status: ${edge.status} (${edge.reason})` : ""),
   ].filter(Boolean).join(" · ");
-  return `<li class="node-record agency-role-edge-record" data-role-relation="${esc(edge.relation_id || "")}" data-role-status="${esc(edge.status || "")}" data-role-linking="${edge.linking ? "1" : "0"}" data-role-object-kind="${esc(edge.object_kind || "")}" data-body-id="${esc(edge.body_id || edge.object_canonical_id || "")}" data-valid-from="${esc(edge.valid_from || "")}" data-source-receipt="${esc(edge.source_receipt || edge.provenance?.source_receipt || "")}">
+  return `<li class="node-record agency-role-edge-record" data-role-relation="${esc(edge.relation_id || "")}" data-role-status="${esc(edge.status || "")}" data-role-linking="${edge.linking ? "1" : "0"}" data-role-object-kind="${esc(edge.object_kind || "")}" data-body-id="${esc(edge.body_id || edge.object_canonical_id || "")}" data-valid-from="${esc(edge.valid_from || "")}" data-source-receipt="${esc(edge.source_receipt || edge.provenance?.source_receipt || "")}" data-jurisdiction="${esc(edge.jurisdiction || "")}" data-join-method="${esc(edge.join_method || "")}" data-person-leader-id="${esc(edge.person_leader_id || "")}">
     <div class="node-record-main">${roleEndpoint(edge.from, edge.inverse_href, edge.linking)} <span aria-hidden="true">→</span> ${esc(roleLabel(edge))} ${roleEndpoint(edge.to, edge.href, edge.linking, edge.object_display_name)}</div>
     <span class="muted node-muted">${esc(details)}</span>
     ${Array.isArray(edge.parcel_trail) && edge.parcel_trail.length
@@ -151,6 +160,19 @@ const COMMITTEE_RELATIONS = new Set([
   "has_committee",
   "part_of",
 ]);
+const OFFICE_RELATIONS = new Set([
+  "holds_office",
+  "officeholder_of",
+  "appoints_members_of",
+  "members_appointed_by",
+]);
+
+function isOfficeEdge(edge) {
+  if (OFFICE_RELATIONS.has(edge?.relation_id)) return true;
+  if (edge?.relation_id === "hosts_meeting" && edge.from_kind === "civic-institution") return true;
+  if (edge?.relation_id === "hosted_by" && edge.object_kind === "civic-institution") return true;
+  return false;
+}
 
 function renderRoleGroup({
   rows,
@@ -173,6 +195,7 @@ function renderRoleGroup({
       id: sectionId,
       "data-role-schema": evidence.role_edge_schema || "cityscroll.civic_institution_role_edge.v1",
       ...(sectionId === "agency-institution-committees" ? { "data-committee-rail": "1" } : {}),
+      ...(sectionId === "agency-institution-office-roles" ? { "data-office-rail": "1" } : {}),
     },
     body,
   });
@@ -252,8 +275,17 @@ export function renderAgencyRoleEdgeSection(view = {}) {
     && !PROCUREMENT_RELATIONS.has(edge.relation_id)
     && !PROCEEDING_RELATIONS.has(edge.relation_id)
     && !COMMITTEE_RELATIONS.has(edge.relation_id)
+    && !isOfficeEdge(edge)
     && !isAccountabilityEdge(edge));
   return `${renderRoleGroup({
+    rows: rows.filter((edge) => isOfficeEdge(edge)),
+    heading: "Office roles",
+    headingId: "agency-institution-office-roles-heading",
+    sectionId: "agency-institution-office-roles",
+    extraClass: "agency-institution-office-roles",
+    intro: "These office roles use the retained leadership record and exact City Record proceedings. Appointment authority appears only from an official source that names the board and scope; a missing source stays an evidence gap.",
+    evidence,
+  })}${renderRoleGroup({
     rows: rows.filter((edge) => PROJECT_RELATIONS.has(edge.relation_id)),
     heading: "Projects",
     headingId: "agency-institution-projects-heading",

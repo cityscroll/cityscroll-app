@@ -1,0 +1,138 @@
+{
+  "as_of": "2026-06-02",
+  "office_id": "borough-president-brooklyn",
+  "office_subject": "civic-institution:borough-president-brooklyn",
+  "agency_ref": "agency:id:borough-president-brooklyn",
+  "officeholder_name": "Antonio Reynoso",
+  "person_leader_id": "person-leader:borough-president-brooklyn:name:antonio%20reynoso",
+  "board_id": "brooklyn-cb-15",
+  "board_path": "/community-boards/brooklyn-cb-15/",
+  "jurisdiction": "Brooklyn",
+  "head_title": "Brooklyn Borough President",
+  "publisher": {
+    "canonical_name": "Office of the Borough President of Brooklyn",
+    "org_type": "Elected Office",
+    "url": "https://www.brooklynbp.nyc.gov/",
+    "head_name": "Antonio Reynoso",
+    "head_title": "Brooklyn Borough President",
+    "variants": [
+      "BOROUGH PRESIDENT-BROOKLYN",
+      "Borough President - Brooklyn"
+    ],
+    "match_method": "normalized+budget"
+  },
+  "meetings": [
+    {
+      "request_id": "20260618050",
+      "agency_name": "Borough President - Brooklyn",
+      "short_title": "Brooklyn Borough President ULURP Public Hearing",
+      "start_date": "2026-06-26T00:00:00.000",
+      "event_date": "2026-07-08T18:00:00.000",
+      "source_system": "city_record",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260618050",
+      "meeting_id": "meeting:city_record:20260618050"
+    },
+    {
+      "request_id": "20260601042",
+      "agency_name": "Borough President - Brooklyn",
+      "short_title": "Brooklyn Borough President ULURP Hearing",
+      "start_date": "2026-06-08T00:00:00.000",
+      "event_date": "2026-06-10T18:00:00.000",
+      "source_system": "city_record",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260601042",
+      "meeting_id": "meeting:city_record:20260601042"
+    },
+    {
+      "request_id": "20260518003",
+      "agency_name": "Borough President - Brooklyn",
+      "short_title": "BROOKLYN BOROUGH BOARD PUBLIC HEARING AND MEETING",
+      "start_date": "2026-05-26T00:00:00.000",
+      "event_date": "2026-06-02T18:00:00.000",
+      "source_system": "city_record",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260518003",
+      "meeting_id": "meeting:city_record:20260518003"
+    }
+  ],
+  "official_appointment": {
+    "office_id": "borough-president-brooklyn",
+    "board_id": "brooklyn-cb-15",
+    "appointment_scope": "members of Brooklyn Community Board 15",
+    "appointment_wording": "The Brooklyn Borough President appoints the members of Community Board 15",
+    "source_system": "brooklyn_borough_president",
+    "source_record_id": "cb15-appointment-authority-2024",
+    "source_url": "https://www.brooklynbp.nyc.gov/community-boards/",
+    "source_field": "appointment_authority",
+    "source_value": "Community Board 15",
+    "jurisdiction": "Brooklyn",
+    "observed_at": "2024-04-01T00:00:00.000Z",
+    "valid_from": "2024-04-01",
+    "valid_to": null
+  },
+  "negatives": {
+    "roster_member": {
+      "inference": "roster",
+      "member_id": "community-board-person:brooklyn-cb-15:jane-doe",
+      "role_label": "appointed member",
+      "board_id": "brooklyn-cb-15",
+      "office_id": "borough-president-brooklyn",
+      "source_system": "community_board_roster",
+      "source_record_id": "roster-jane-doe",
+      "source_url": "https://www.nyc.gov/site/brooklyncb15/index.page",
+      "source_field": "role_label",
+      "source_value": "appointed member"
+    },
+    "geography_only": {
+      "basis": "geography",
+      "borough": "Brooklyn",
+      "board_id": "brooklyn-cb-15",
+      "office_id": "borough-president-brooklyn",
+      "source_system": "city_record",
+      "source_record_id": "geo-only",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260518003",
+      "source_field": "borough",
+      "source_value": "Brooklyn"
+    },
+    "title_only": {
+      "basis": "title_only",
+      "head_title": "Brooklyn Borough President",
+      "board_id": "brooklyn-cb-15",
+      "office_id": "borough-president-brooklyn",
+      "source_system": "oti",
+      "source_record_id": "title-only",
+      "source_url": "https://data.cityofnewyork.us/d/t3jq-9nkf",
+      "source_field": "head_title",
+      "source_value": "Brooklyn Borough President"
+    },
+    "generic_appointed": {
+      "office_id": "borough-president-brooklyn",
+      "board_id": "brooklyn-cb-15",
+      "role_label": "appointed member",
+      "appointment_wording": "appointed member",
+      "appointment_scope": "members of Brooklyn Community Board 15",
+      "source_system": "brooklyn_borough_president",
+      "source_record_id": "generic-appointed",
+      "source_url": "https://www.brooklynbp.nyc.gov/community-boards/",
+      "source_field": "role_label",
+      "source_value": "appointed member"
+    },
+    "wrong_board": {
+      "office_id": "borough-president-brooklyn",
+      "board_id": "brooklyn-cb-01",
+      "appointment_scope": "members of Brooklyn Community Board 1",
+      "appointment_wording": "The Brooklyn Borough President appoints the members of Community Board 1",
+      "source_system": "brooklyn_borough_president",
+      "source_record_id": "cb01-appointment",
+      "source_url": "https://www.brooklynbp.nyc.gov/community-boards/",
+      "source_field": "appointment_authority",
+      "source_value": "Community Board 1"
+    },
+    "title_only_meeting": {
+      "request_id": "20260518003",
+      "agency_name": "",
+      "short_title": "Brooklyn Borough President ULURP Public Hearing",
+      "meeting_id": "meeting:city_record:20260518003",
+      "source_system": "city_record",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260518003"
+    }
+  }
+}

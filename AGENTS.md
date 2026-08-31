@@ -223,12 +223,21 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   `exact_event_body_id` receipt for City Record `20260707021`; `member_of` /
   `chairs` keep official ids and valid-time; LU `0120-2026` and the Aug 12
   proceeding stay explicit gaps. Names, Council publication, and nearby dates
-  never mint an edge. Focused proof is in
+  never mint an edge. Borough President office roles are
+  `site/civic_institution_borough_office.mjs`: the Brooklyn office mints
+  `holds_office` from the crosswalk head observation onto the
+  `person-leader:{agency_id}:{person_id|name}` key, reuses City Record
+  `20260618050`, `20260601042`, and `20260518003` as `hosts_meeting` from
+  exact publisher identity, and keeps `appoints_members_of` Brooklyn CB-15
+  unresolved until an official appointment source names the board and scope.
+  Titles, geography, rosters, and generic “appointed member” wording never
+  mint appointment. Focused proof is in
   `test/civic_institution.test.mjs`,
   `test/civic_institution_role_edge.test.mjs`, `test/civic_institution_profile.test.mjs`,
   `test/civic_institution_development_roles.test.mjs`,
-  `test/civic_institution_accountability.test.mjs`, and
-  `test/civic_institution_council_committees.test.mjs`.
+  `test/civic_institution_accountability.test.mjs`,
+  `test/civic_institution_council_committees.test.mjs`, and
+  `test/civic_institution_borough_office.test.mjs`.
 
 - Add durable project-specific notes here as they are discovered through real work.
 - **Legacy repository-name prevention:** `tools/check_stale_repo_name.mjs` is the CI and local
