@@ -4390,6 +4390,19 @@ Verify: `node --test test/checkbook_spending_collector.test.mjs` and
   Contract: `docs/federated-search-scope.md`. Proof:
   `test/federated_search_scope.test.mjs` plus `test/federated_search_capability.test.mjs`.
 
+- **Notice context readiness boundary:** `site/notice_context_readiness.mjs` keeps
+  primary Notice context (host plus any row-local attachment chip, or an honest
+  unavailable/error terminal) independent of optional flags, award, related,
+  mandate, table, lookup, and late attachment work. `fillContext` in
+  `site/app/notice-context.mjs` records the existing `notice-context` owner
+  milestone first; optional branches keep Performance-timeline timings and do
+  not enter the production RUM allowlist. Rebuild
+  `docs/evidence/notice-context-readiness/read-back.json` with
+  `node tools/build_notice_context_readiness_evidence.mjs`; `--check` verifies
+  it. Incomplete windows stay `insufficient_sample` and do not publish
+  percentiles. Proof: `test/notice_context_readiness.test.mjs` and
+  `test/notice_context_progressive.test.mjs`.
+
 ## Maintaining this file
 
 Keep this file for knowledge useful to almost every future agent session in this project.

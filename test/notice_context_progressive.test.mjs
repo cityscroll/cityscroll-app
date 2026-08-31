@@ -51,7 +51,10 @@ function buildFill({ noticeFlags, awardContext, related, mandate, tables }) {
   const document = { contains: (node) => node?.dataset === elementDataset }; // replaced per call
   const sourceForFunction = [
     "const CONTEXT_SLOTS=[\"mandate\",\"related\",\"flags\",\"award\"];",
+    "const NOTICE_CONTEXT_OPTIONAL_BRANCHES=[\"flags\",\"award\",\"related\",\"mandate\",\"tables\"];",
     "const noticeContextTimingMark=()=>{};",
+    "const noticeContextTimingMeasure=()=>{};",
+    "const noticeContextPrimaryResultState=(hasHtml)=>hasHtml?\"content\":\"empty\";",
     extractFn("contextSlotsHTML"),
     extractFn("contextSlot"),
     extractFn("contextReady"),
@@ -115,6 +118,44 @@ test("Notice context reports its first card before deferred owners and settles w
   assert.match(element.innerHTML, /flag/);
   assert.match(element.innerHTML, /award context/);
   assert.match(element.innerHTML, /attachment table/);
+});
+
+test("Notice context reports an error terminal without waiting for optional branches", async () => {
+  states = [];
+  const fill = new Function(
+    "attachmentChipHTML", "noticeFlags", "awardContext", "attachmentRelatedHTMLFor",
+    "mandateBacklinksHTMLFor", "attachmentTablesHTMLFor", "attachmentTablesTools",
+    "noticeContextReady", "runtimeRumSemanticMilestones", "document",
+    [
+      "const CONTEXT_SLOTS=[\"mandate\",\"related\",\"flags\",\"award\"];",
+      "const NOTICE_CONTEXT_OPTIONAL_BRANCHES=[\"flags\",\"award\",\"related\",\"mandate\",\"tables\"];",
+      "const noticeContextTimingMark=()=>{};",
+      "const noticeContextTimingMeasure=()=>{};",
+      "const noticeContextPrimaryResultState=(hasHtml)=>hasHtml?\"content\":\"empty\";",
+      extractFn("contextSlotsHTML"),
+      extractFn("contextSlot"),
+      extractFn("contextReady"),
+      extractFn("timedContextBranch"),
+      extractFn("fillContext"),
+      "return fillContext;",
+    ].join("\n"),
+  )(
+    () => { throw new Error("attachment chip failed"); },
+    async () => { throw new Error("flags should not run"); },
+    async () => { throw new Error("award should not run"); },
+    async () => { throw new Error("related should not run"); },
+    async () => { throw new Error("mandate should not run"); },
+    async () => { throw new Error("tables should not run"); },
+    async () => ({ bindAttachmentTableSort() {} }),
+    (_rum, { resultState }) => states.push(resultState),
+    () => ({}),
+    { contains() { return true; } },
+  );
+  const element = createElement();
+  await fill({ request_id: "notice-error" }, element);
+  assert.deepEqual(states, ["error"]);
+  assert.equal(element.dataset.noticeContextReady, "true");
+  assert.notEqual(element.dataset.noticeContextSettled, "true");
 });
 
 test("Notice context can include late attachment hydration in the settled boundary", async () => {

@@ -20,6 +20,27 @@ export function noticeContextTimingMark(phase) {
   }
 }
 
+// Optional-branch durations stay on the Performance timeline. They are not a
+// second production RUM identity and must not carry record identifiers.
+export function noticeContextTimingMeasure(phase) {
+  const value = String(phase || "");
+  if (!/^[a-z0-9-]+$/.test(value)) return { state: "invalid" };
+  const name = `cityscroll.notice-context.${value}`;
+  try {
+    globalThis.performance?.measure?.(name, `${name}-start`, `${name}-end`);
+    const entries = globalThis.performance?.getEntriesByName?.(name, "measure") || [];
+    const last = entries[entries.length - 1];
+    const duration = Number(last?.duration);
+    return {
+      state: "recorded",
+      branch: value,
+      duration_ms: Number.isFinite(duration) && duration >= 0 ? duration : null,
+    };
+  } catch {
+    return { state: "unavailable", branch: value, duration_ms: null };
+  }
+}
+
 /**
  * Owner instrumentation reports through this accessor. When the production
  * reporter is not yet installed, readiness calls buffer so first-paint

@@ -2,8 +2,13 @@
 // download alerts.mjs. The helpers still publish the legacy globals used by route modules.
 import { officialSourceLink } from "../affordance_grammar.mjs";
 import {
+  NOTICE_CONTEXT_OPTIONAL_BRANCHES,
+  noticeContextPrimaryResultState,
+} from "../notice_context_readiness.mjs";
+import {
   noticeContextReady,
   noticeContextTimingMark,
+  noticeContextTimingMeasure,
   runtimeRumSemanticMilestones,
 } from "../rum_static_record_instrumentation.mjs";
 const SECTION_LENS={"Procurement":"money","Public Hearings and Meetings":"meetings","Agency Rules":"rules","Property Disposition":"property","Changes in Personnel":"people"};
@@ -17,7 +22,10 @@ function loadNoticeContextLookup(){
     noticeContextLookupPromise=fetch(NOTICE_CONTEXT_LOOKUP_URL,{cache:"force-cache",credentials:"omit"})
       .then(response=>response.ok?response.json():null)
       .catch(()=>null)
-      .finally(()=>noticeContextTimingMark("lookup-end"));
+      .finally(()=>{
+        noticeContextTimingMark("lookup-end");
+        noticeContextTimingMeasure("lookup");
+      });
   }
   return noticeContextLookupPromise;
 }
@@ -52,7 +60,15 @@ async function awardContext(r){
 }
 function timedContextBranch(label,work){
   noticeContextTimingMark(`${label}-start`);
-  return Promise.resolve().then(work).then(value=>{noticeContextTimingMark(`${label}-end`);return value;},error=>{noticeContextTimingMark(`${label}-end`);throw error;});
+  return Promise.resolve().then(work).then(value=>{
+    noticeContextTimingMark(`${label}-end`);
+    noticeContextTimingMeasure(label);
+    return value;
+  },error=>{
+    noticeContextTimingMark(`${label}-end`);
+    noticeContextTimingMeasure(label);
+    throw error;
+  });
 }
 function parcelLinksHTML(links,provenanceKey,displayBbl=links.bbl){if(!links)return "";return `<div class="rmeta2 property-parcel-links" style="margin:8px 0">${t("parcel_elsewhere_label")} <a href="${escUiHtml(links.zola_url)}" ${EXT_ATTRS}>${t("parcel_link_zola")}${extSR()}</a> · <a href="${escUiHtml(links.acris_url)}" ${EXT_ATTRS}>${t("parcel_link_acris")}${extSR()}</a> · <a href="${escUiHtml(links.who_owns_what_url)}" ${EXT_ATTRS}>${t("parcel_link_wow")}${extSR()}</a> <span class="muted" style="font-size:12px">· ${t(provenanceKey,{bbl:displayBbl})}</span></div>`;}
 async function fillAddressLinks(r,el){
@@ -125,23 +141,29 @@ function contextReady(el,resultState){
 }
 async function fillContext(r,el,settledWith=[]){
   if(!el)return;
-  const attachmentHTML=attachmentChipHTML(r);
-  // Mount the first useful card synchronously. The slots preserve the old visual
-  // order while allowing each optional owner to append without replacing prior work.
-  el.innerHTML=attachmentHTML+contextSlotsHTML();
-  contextReady(el,attachmentHTML?"content":"empty");
+  // Primary owner: the context host, plus any attachment chip already on the
+  // notice row. Optional flags/award/related/mandate/table work, lookup, and
+  // late attachment hydration must not gate this milestone.
+  try{
+    const attachmentHTML=attachmentChipHTML(r);
+    el.innerHTML=attachmentHTML+contextSlotsHTML();
+    contextReady(el,noticeContextPrimaryResultState(Boolean(attachmentHTML)));
+  }catch{
+    contextReady(el,"error");
+    return;
+  }
 
   // Keep all optional owners independent: one rejected import/fetch must not prevent
   // the remaining context cards from arriving. Their final settled marker is the
   // content-parity harness boundary, not the component-ready boundary above.
-  const settled=[
-    timedContextBranch("flags",()=>noticeFlags(r)).then(flags=>{
+  const optionalWork={
+    flags:()=>noticeFlags(r).then(flags=>{
       if(flags.length)contextSlot(el,"flags",`<div style="margin:6px 0 4px">${flags.map(f=>`<span class="tag ${f.lvl}" style="margin-bottom:4px">${f.t}</span>`).join(" ")}</div>`);
     }),
-    timedContextBranch("award",()=>awardContext(r)).then(ctx=>contextSlot(el,"award",ctx)),
-    timedContextBranch("related",()=>attachmentRelatedHTMLFor(r)).then(relatedHTML=>contextSlot(el,"related",relatedHTML)),
-    timedContextBranch("mandate",()=>mandateBacklinksHTMLFor(r)).then(mandateHTML=>contextSlot(el,"mandate",mandateHTML)),
-    timedContextBranch("tables",()=>attachmentTablesHTMLFor(r)).then(async tablesHTML=>{
+    award:()=>awardContext(r).then(ctx=>contextSlot(el,"award",ctx)),
+    related:()=>attachmentRelatedHTMLFor(r).then(relatedHTML=>contextSlot(el,"related",relatedHTML)),
+    mandate:()=>mandateBacklinksHTMLFor(r).then(mandateHTML=>contextSlot(el,"mandate",mandateHTML)),
+    tables:()=>attachmentTablesHTMLFor(r).then(async tablesHTML=>{
       if(!tablesHTML||!document.contains(el))return;
       const host=el.querySelector("[data-attachment-tables-host]");
       if(host)host.outerHTML=tablesHTML;
@@ -149,7 +171,8 @@ async function fillContext(r,el,settledWith=[]){
       const tools=await attachmentTablesTools();
       if(tools&&document.contains(el))tools.bindAttachmentTableSort(el);
     }),
-  ].map(branch=>branch.catch(()=>{}));
+  };
+  const settled=NOTICE_CONTEXT_OPTIONAL_BRANCHES.map(branch=>timedContextBranch(branch,optionalWork[branch]).catch(()=>{}));
   const additionalSettled=Array.isArray(settledWith)?settledWith:[settledWith];
   Promise.allSettled([...settled,...additionalSettled]).then(()=>{
     if(document.contains(el)){
