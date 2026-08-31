@@ -25,7 +25,9 @@ are predictive associations rather than causal claims.
 Calibration is measured with Brier score, log loss, and fixed probability bins.
 The training report is labeled as in-sample; callers can use
 `measureLandPredictionCalibration` on a held-out set. Card 7 owns the
-out-of-sample backtest and Card 9 owns any promotion decision.
+out-of-sample backtest in `worker/src/lib/land_prediction_backtest.mjs`
+(`docs/land-use-prediction-backtest-v2.md`) and Card 9 owns any promotion
+decision.
 
 V2 is explicitly `shadow_only_until_backtest_gate`. `predictLandUse` preserves
 the incumbent `land_prediction_baseline_v1` path: a supplied

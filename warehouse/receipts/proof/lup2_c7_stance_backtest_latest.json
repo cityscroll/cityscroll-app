@@ -1,0 +1,44 @@
+{
+  "artifact": "warehouse/fixtures/land-use-prediction-v2/stance_backtest.v1.json",
+  "generated_at": "2026-08-31T00:00:00.000Z",
+  "kill_criterion": {
+    "interpretation": "Held-out stance lift after formal signals is above the recorded threshold and is not dominated by late evidence. That measurement still does not authorize a causal deference claim or production promotion.",
+    "late_stages": [
+      "city_council",
+      "mayoral_appeals"
+    ],
+    "late_stance_share": 0.25,
+    "meaningful_brier_lift": 0.01,
+    "median_lead_days": 121.5,
+    "met": false,
+    "minimum_forecast_lead_days": 14,
+    "null_result_recorded_as_success": false,
+    "reasons": [],
+    "stance_lift_after_formal_brier": 0.03661574,
+    "stance_lift_vs_baseline_brier": 0.04118008,
+    "stance_promoted_as_major_feature": false
+  },
+  "promotion": {
+    "incumbent_authoritative": true,
+    "incumbent_contract": "land_prediction_baseline_v1",
+    "product_promotion_allowed": false,
+    "reason": "Measured held-out lift does not authorize production promotion or a causal institutional-deference claim. The incumbent heuristic remains authoritative until a later gate.",
+    "resident_facing_predictions_unchanged": true,
+    "stance_promoted_as_major_feature": false,
+    "v2_status": "shadow_only_until_backtest_gate"
+  },
+  "report": "docs/evidence/land-use-prediction-v2/stance-backtest.md",
+  "schema": "cityscroll.land_prediction_backtest.proof.v1",
+  "sha256": "e43be55e5ae77f8651018ab6c9e8873893cdc11c66fcb6546c5ff821727b172b",
+  "split": {
+    "excluded_n": 0,
+    "rule": "A case is train when prediction_as_of is on or before train_to, and test when prediction_as_of is on or after test_from. Labels use outcome_at strictly after the cutoff.",
+    "test_from": "2024-01-01",
+    "test_n": 16,
+    "test_to": "2024-12-31",
+    "train_from": "2022-01-01",
+    "train_n": 16,
+    "train_to": "2023-12-31"
+  },
+  "version": "lup2-c7-gold.v1"
+}
