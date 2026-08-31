@@ -4,13 +4,13 @@ import {
   mergeRulemakingEvents,
   stitchRulemakingRecord,
 } from "../../../site/rules_phase_spine.mjs";
-import { rulesCardInteractionProjection } from "../../../site/rules_card_interaction.mjs";
+import {
+  deriveRulemakingLifecycleState,
+  rulesCardInteractionProjection,
+} from "../../../site/rules_card_interaction.mjs";
 import { buildRuleVersionsProjection } from "../../../site/rule_versions.mjs";
 import { resolveAgencyIdentity } from "../../../site/agency_identity.mjs";
-import {
-  NYC_RULES_PETITION_SOURCES,
-  buildPetitionHandoff,
-} from "../../../site/rules_petition.mjs";
+import { buildPetitionHandoff } from "../../../site/rules_petition.mjs";
 
 export const RULEMAKING_OBJECT_SCHEMA = "cityscroll.rulemaking.v1";
 
@@ -200,10 +200,18 @@ function objectForRows(rows, { now = null, ruleVersionDocumentsByRequestId = {} 
   });
   const documents = sourceDocuments(rows, nycRules);
   const followHref = exactFollowingHref(rows);
+  const lifecycle = deriveRulemakingLifecycleState({
+    fine_stage: stitched?.stage,
+    nyc_rules: nycRules,
+    events,
+    now,
+  });
   const petitionHandoff = buildPetitionHandoff({
     agency_resolution: petitionAgencyResolution(primary),
     contact: primary?.petition_contact || nycRules?.petition_contact,
-    target: "amend_repeal",
+    target: lifecycle.state === "effective" ? "amend_repeal" : "adopt_amend_repeal",
+    entry_point: "effective_rule",
+    lifecycle_state: lifecycle.state,
   });
   const notices = rows
     .map((row) => {

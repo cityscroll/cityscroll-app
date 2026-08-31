@@ -18,6 +18,15 @@
   `test/code_version_materialization.test.mjs` plus
   `test/fixtures/code_version_materialization.json`.
 
+- **Rulemaking petition handoff:** `site/rules_petition.mjs` is the source-qualified
+  official NYC Rules petition envelope. Eligible agency pages expose “Petition this
+  agency”; effective-rule case files expose “How to petition [agency]”. Missing form
+  or guidance is not proof that petitioning is unavailable, and generic rulemaking
+  clocks never fill the 60-day response. Coverage and the seven-case CAPA matrix
+  live in `docs/evidence/rules-petition-handoff/` and
+  `test/capa_addendum_shared_fixtures.test.mjs`. CityScroll never submits or tracks
+  petitions.
+
 - **Action Path v0:** `site/action_path_v0.mjs` is the pure, actorless projection over the
   authoritative `site/action_registry.js` action object. It requires provenance-bearing evidence,
   preserves multiple continuation candidates without selecting one, and suppresses unsupported or
