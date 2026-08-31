@@ -1,0 +1,8 @@
+{
+  "schema": "cityscroll.land_prediction_shadow.gold.v1",
+  "cases": {
+    "small_difference": { "incumbent_probability": 0.75, "expected_magnitude": "small" },
+    "large_difference": { "incumbent_probability": 0, "expected_magnitude": "large" },
+    "storage_failure": { "incumbent_probability": 0.61, "expected_authoritative_probability": 0.61 }
+  }
+}
