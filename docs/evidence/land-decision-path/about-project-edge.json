@@ -1,0 +1,34 @@
+{
+  "schema": "cityscroll.land_project_about_project.receipt.v1",
+  "id": "cityscroll-land-decision-path/ldp-07-exact-notice-project-edge",
+  "method": "exact_ulurp_token_v1",
+  "method_version": "1",
+  "tier": "deterministic_exact_key",
+  "canonical_relation": "about_project",
+  "inverse": "has_notice",
+  "compatibility_relation": "decides_land_project",
+  "reader_label": "About this project",
+  "specimen": {
+    "notice_id": "20260603044",
+    "project_id": "2023X0149",
+    "ulurp_token": "240206ZMX",
+    "source_system": "city_record",
+    "source_fields": ["body", "ulurp_numbers"],
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260603044",
+    "project_href": "#land/2023X0149",
+    "is_decision": false
+  },
+  "negative_reasons": [
+    "unknown_join",
+    "missing_project",
+    "no_reference",
+    "ambiguous_key",
+    "title_only",
+    "address_only",
+    "date_only",
+    "draft_only",
+    "publisher_only",
+    "fuzzy_join",
+    "missing_identifier"
+  ]
+}

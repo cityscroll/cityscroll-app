@@ -11,7 +11,25 @@ export const LAND_PROJECT_DECISION_RELATION_SCHEMA = "cityscroll.land_project_de
 export const LAND_PROJECT_DECISION_RELATION_VERSION = "1.0.0";
 export const LAND_PROJECT_DECISION_RELATION_METHOD = "land_project_decision_relation_v1";
 export const DECIDES_LAND_PROJECT_COMPATIBILITY = "decides_land_project";
+export const ABOUT_PROJECT_RELATION = "about_project";
+export const ABOUT_PROJECT_INVERSE = "has_notice";
+export const ABOUT_PROJECT_READER_LABEL = "About this project";
 export const EXACT_KEY_EDGE_TIER = "deterministic_exact_key";
+
+const ABOUT_PROJECT_EVIDENCE = Object.freeze([
+  "source_system",
+  "source_record_id",
+  "source_fields",
+  "retained_identifier",
+  "exact_join_key",
+  "exact_join_value",
+  "method_version",
+  "observed_time",
+  "source_url",
+  "confidence",
+  "tier",
+  "project_id",
+]);
 
 export const LAND_PROJECT_SEMANTIC_THRESHOLDS = Object.freeze({
   CONCERN: "exact_project_or_application_or_ulurp_reference",
@@ -37,12 +55,12 @@ export const LAND_PROJECT_RELATION_VOCABULARY = Object.freeze({
     domain: "meetings",
     from: "notice|meeting",
     to: "project",
-    inverse: "has_related_proceeding",
+    inverse: ABOUT_PROJECT_INVERSE,
     compatibility_relation: DECIDES_LAND_PROJECT_COMPATIBILITY,
     is_decision: false,
     semantic_threshold: LAND_PROJECT_SEMANTIC_THRESHOLDS.CONCERN,
-    required_evidence: REQUIRED_EVIDENCE,
-    reader_label: "Exact project-related proceeding",
+    required_evidence: ABOUT_PROJECT_EVIDENCE,
+    reader_label: ABOUT_PROJECT_READER_LABEL,
     negative_rule: "A meeting title, venue, body identity, date, draft row, or exact project join never proves a decision, recommendation, adoption, or rejection.",
   }),
   reviews_project: Object.freeze({
@@ -138,7 +156,7 @@ export const LAND_PROJECT_RELATION_VOCABULARY = Object.freeze({
     is_decision: false,
     semantic_threshold: LAND_PROJECT_SEMANTIC_THRESHOLDS.CONCERN,
     required_evidence: REQUIRED_EVIDENCE,
-    projects_canonical: Object.freeze(["about_project", "reviews_project"]),
+    projects_canonical: Object.freeze([ABOUT_PROJECT_RELATION, "reviews_project"]),
     reader_label: "Exact project-related proceeding",
     negative_rule: "Compatibility only. Existing consumers keep this id until migration is complete; it does not mean the meeting decided the project.",
   }),
@@ -146,7 +164,7 @@ export const LAND_PROJECT_RELATION_VOCABULARY = Object.freeze({
 
 export const MEETING_LAND_GRAPH_TYPES = Object.freeze([
   DECIDES_LAND_PROJECT_COMPATIBILITY,
-  "about_project",
+  ABOUT_PROJECT_RELATION,
   "reviews_project",
 ]);
 
@@ -400,6 +418,239 @@ export function classifyLandRecommendationRelation(input = {}) {
   });
 }
 
+function noticeIdFromRef(value) {
+  const match = clean(value, 80).match(/^notice:(.+)$/);
+  return match ? match[1] : "";
+}
+
+function cityRecordNoticeUrl(noticeId) {
+  return noticeId
+    ? `https://a856-cityrecord.nyc.gov/RequestDetail/${encodeURIComponent(noticeId)}`
+    : "";
+}
+
+function detectNonExactBridge(input = {}) {
+  const bridge = clean(input.bridge || input.match_kind || input.join_basis, 40).toLowerCase();
+  if (input.title_only || bridge === "title") return "title_only";
+  if (input.address_only || bridge === "address") return "address_only";
+  if (input.date_only || bridge === "date") return "date_only";
+  if (input.publisher_only || bridge === "publisher") return "publisher_only";
+  if (input.draft || input.draft_only || DRAFT_STATUS.test(clean(input.status, 40))) {
+    return "draft_only";
+  }
+  if (input.fuzzy || input.match === "fuzzy" || input.provenance?.match === "fuzzy") {
+    return "fuzzy_join";
+  }
+  if (input.unknown || input.status === "unknown") return "unknown_join";
+  if (input.ambiguous || (Array.isArray(input.candidates) && input.candidates.length > 1)) {
+    return "ambiguous_key";
+  }
+  if (input.no_reference || input.status === "no_ref") return "no_reference";
+  if (input.missing_project || input.status === "no_land_match") return "missing_project";
+  return null;
+}
+
+function unresolvedStop(reason, extras = {}) {
+  return Object.freeze({
+    schema: LAND_PROJECT_DECISION_RELATION_SCHEMA,
+    version: LAND_PROJECT_DECISION_RELATION_VERSION,
+    accepted: false,
+    canonical_relation: null,
+    compatibility_relation: null,
+    family: null,
+    is_decision: false,
+    reader_label: null,
+    inverse: ABOUT_PROJECT_INVERSE,
+    canonical_edge: null,
+    compatibility_edge: null,
+    evidence: null,
+    project_href: null,
+    notice_href: null,
+    reason,
+    unresolved: Object.freeze({
+      status: "unresolved",
+      reason,
+      inspectable: true,
+    }),
+    ...extras,
+  });
+}
+
+/**
+ * Materialize the canonical notice→project subject edge.
+ *
+ * Exact ULURP / application / ZAP identifiers mint `about_project`. The
+ * compatibility identifier stays `decides_land_project`. Hearing or review
+ * wording may ride as `proceeding_relation`; the subject edge never asserts a
+ * recommendation or documented decision.
+ */
+export function materializeExactNoticeProjectEdge(input = {}, extras = {}) {
+  const stop = detectNonExactBridge({ ...input, ...extras });
+  if (stop) return unresolvedStop(stop);
+  const filled = compatibilityMeetingDefaults(input, extras);
+  const classified = classifyMeetingLandProjectRelation({
+    ...input,
+    ...extras,
+    ...filled,
+  });
+  if (!classified.accepted) {
+    return unresolvedStop(classified.reason || "unsupported_join_method");
+  }
+  const projectId = classified.evidence.project_id;
+  const fromRef = classified.evidence.from;
+  const noticeId = noticeIdFromRef(fromRef) || clean(input.request_id || extras.request_id, 40);
+  const sourceSystem = clean(
+    input.source_system
+      || extras.source_system
+      || input.provenance?.source_system,
+    80,
+  ) || "city_record";
+  const sourceUrl = clean(
+    input.source_url
+      || extras.source_url
+      || input.provenance?.source_url
+      || cityRecordNoticeUrl(noticeId),
+    500,
+  );
+  const retained = clean(
+    input.retained_identifier
+      || extras.retained_identifier
+      || classified.evidence.join_value,
+    80,
+  );
+  const confidence = publicConfidence(input.confidence || extras.confidence) || "strong";
+  const evidence = Object.freeze({
+    source_system: sourceSystem,
+    source_record_id: classified.evidence.source_record,
+    source_fields: classified.evidence.source_fields,
+    retained_identifier: retained,
+    join_key: classified.evidence.join_key,
+    join_value: classified.evidence.join_value,
+    method: classified.evidence.method,
+    method_version: classified.evidence.method_version,
+    observed_time: classified.evidence.observed_time,
+    source_url: sourceUrl || null,
+    confidence,
+    tier: classified.evidence.tier || EXACT_KEY_EDGE_TIER,
+    project_id: projectId,
+  });
+  const missingField = ABOUT_PROJECT_EVIDENCE.find((field) => {
+    if (field === "exact_join_key") return !evidence.join_key;
+    if (field === "exact_join_value") return !evidence.join_value;
+    if (field === "source_fields") return !evidence.source_fields?.length;
+    if (field === "source_url") return !evidence.source_url;
+    return evidence[field] == null || evidence[field] === "";
+  });
+  if (missingField) return unresolvedStop(`missing_${missingField}`);
+
+  const toRef = `project:${projectId}`;
+  const vocab = LAND_PROJECT_RELATION_VOCABULARY.about_project;
+  const provenance = Object.freeze({
+    source_system: evidence.source_system,
+    source_record_id: evidence.source_record_id,
+    source_fields: evidence.source_fields,
+    join_key: evidence.join_key,
+    join_value: evidence.join_value,
+    retained_identifier: evidence.retained_identifier,
+    observed_at: evidence.observed_time,
+    source_url: evidence.source_url,
+    match: "exact",
+    tier: evidence.tier,
+    basis: evidence.method,
+  });
+  const edgeBase = {
+    from: fromRef,
+    to: toRef,
+    domain: "meetings",
+    confidence,
+    method: evidence.method,
+    method_version: evidence.method_version,
+    tier: evidence.tier,
+    is_decision: false,
+    project_id: projectId,
+    inverse: ABOUT_PROJECT_INVERSE,
+    reader_label: ABOUT_PROJECT_READER_LABEL,
+    provenance,
+  };
+  return Object.freeze({
+    schema: LAND_PROJECT_DECISION_RELATION_SCHEMA,
+    version: LAND_PROJECT_DECISION_RELATION_VERSION,
+    accepted: true,
+    canonical_relation: ABOUT_PROJECT_RELATION,
+    proceeding_relation: classified.canonical_relation,
+    compatibility_relation: DECIDES_LAND_PROJECT_COMPATIBILITY,
+    family: vocab.family,
+    is_decision: false,
+    reader_label: ABOUT_PROJECT_READER_LABEL,
+    inverse: ABOUT_PROJECT_INVERSE,
+    semantic_threshold: vocab.semantic_threshold,
+    reason: null,
+    evidence,
+    project_href: `#land/${projectId}`,
+    notice_href: noticeId ? `/notices/${encodeURIComponent(noticeId)}` : null,
+    canonical_edge: Object.freeze({
+      ...edgeBase,
+      type: ABOUT_PROJECT_RELATION,
+      canonical_relation: ABOUT_PROJECT_RELATION,
+      compatibility_relation: DECIDES_LAND_PROJECT_COMPATIBILITY,
+    }),
+    compatibility_edge: Object.freeze({
+      ...edgeBase,
+      type: DECIDES_LAND_PROJECT_COMPATIBILITY,
+      canonical_relation: ABOUT_PROJECT_RELATION,
+      compatibility_relation: DECIDES_LAND_PROJECT_COMPATIBILITY,
+    }),
+    unresolved: null,
+  });
+}
+
+function publicConfidence(value) {
+  const confidence = clean(value, 24).toLowerCase();
+  return confidence === "strong" || confidence === "tentative" ? confidence : "";
+}
+
+export function aboutProjectReaderProjection(materialization) {
+  if (!materialization?.accepted) {
+    return Object.freeze({
+      visible: false,
+      label: null,
+      href: null,
+      project_id: null,
+      relation: null,
+      is_decision: false,
+      proof: null,
+      unresolved: materialization?.unresolved || Object.freeze({
+        status: "unresolved",
+        reason: materialization?.reason || "missing",
+        inspectable: true,
+      }),
+    });
+  }
+  return Object.freeze({
+    visible: true,
+    label: materialization.reader_label,
+    href: materialization.project_href,
+    project_id: materialization.evidence.project_id,
+    relation: ABOUT_PROJECT_RELATION,
+    is_decision: false,
+    proof: Object.freeze({
+      identifier: materialization.evidence.retained_identifier,
+      join_key: materialization.evidence.join_key,
+      join_value: materialization.evidence.join_value,
+      method: materialization.evidence.method,
+      method_version: materialization.evidence.method_version,
+      source_fields: materialization.evidence.source_fields,
+      source_system: materialization.evidence.source_system,
+      source_record_id: materialization.evidence.source_record_id,
+      source_url: materialization.evidence.source_url,
+      observed_time: materialization.evidence.observed_time,
+      tier: materialization.evidence.tier,
+      confidence: materialization.evidence.confidence,
+    }),
+    unresolved: null,
+  });
+}
+
 /**
  * Stamp canonical semantics onto a compatibility meeting-land edge without
  * changing its public `type`. Stored graph rows stay `decides_land_project`.
@@ -420,12 +671,14 @@ function compatibilityMeetingDefaults(edge = {}, extras = {}) {
     source_fields: extras.source_fields
       || edge.provenance?.source_fields
       || (zap ? ["body", "zap_project_url"] : ["body", "ulurp_numbers"]),
-    join_key: extras.join_key || edge.provenance?.join_key || (zap ? "project_id" : "ulurp_number"),
+    join_key: extras.join_key || edge.join_key || edge.provenance?.join_key || (zap ? "project_id" : "ulurp_number"),
     join_value: extras.join_value
+      || edge.join_value
       || edge.provenance?.join_value
       || edge.provenance?.input_value
       || projectId,
     observed_time: extras.observed_time
+      || edge.observed_time
       || edge.when
       || edge.event_date
       || edge.provenance?.observed_at,

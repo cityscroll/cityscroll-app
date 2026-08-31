@@ -1,0 +1,17 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-land-decision-path/ldp-07-exact-notice-project-edge",
+  "status": "implemented",
+  "fingerprint": "ldp-07-exact-notice-project-edge.v1",
+  "updated_at": "2026-08-31T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "land-project-about-project-receipt",
+      "path": "docs/evidence/land-decision-path/about-project-edge.json"
+    },
+    {
+      "id": "land-project-about-project-fixtures",
+      "path": "test/fixtures/land_project_about_project/gold.v1.json"
+    }
+  ]
+}

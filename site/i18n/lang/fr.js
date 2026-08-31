@@ -1845,6 +1845,8 @@
     notice_land_join_method_ulurp: "numéro ULURP exact",
     notice_land_join_method_project_id: "identifiant de projet exact",
     notice_land_open_land_detail: "Ouvrir la page complète du projet de zonage",
+    notice_about_project: "À propos de ce projet",
+    notice_about_project_proof: "Lié par {identifier} depuis {fields} avec {method}. Ce n’est pas une recommandation ni une décision.",
     notice_land_ambiguous_html: "Plusieurs projets ZAP partagent ces numéros ULURP ({keys}). Ouvrez un projet ci-dessous — nous n’inventons pas une seule chronologie.",
     notice_land_this_notice_html: "Cet avis du City Record fait partie du dossier d’audience publique du projet.",
     notice_land_provenance_html: "Les numéros ULURP proviennent du texte de l’avis. L’identité du projet provient du catalogue de données ouvertes du Zoning Application Portal. Les dates et résultats de la chronologie proviennent de l’enregistrement de projet mis en cache par CityScroll — pas d’un appel en direct au portail depuis votre navigateur.",

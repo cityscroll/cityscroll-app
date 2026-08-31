@@ -14,10 +14,14 @@ import {
   isNycEdcApplicantSpelling,
 } from "./civic_institution_development_specimens.mjs";
 import {
+  ABOUT_PROJECT_READER_LABEL,
+  ABOUT_PROJECT_RELATION,
   DECIDES_LAND_PROJECT_COMPATIBILITY,
+  aboutProjectReaderProjection,
   adaptDecidesLandProjectEdge,
   classifyLandDispositionRelation,
   isMeetingLandGraphType,
+  materializeExactNoticeProjectEdge,
 } from "./land_project_decision_relations.mjs";
 
 export const PROJECT_CONNECTION_GROUPS = Object.freeze([
@@ -243,7 +247,9 @@ export function buildProjectConnectionEvidence({
   const exactGraph = (Array.isArray(graphLinks) ? graphLinks : [])
     .filter((link) => isMeetingLandGraphType(link?.type)
       && clean(link?.to) === ref
-      && publicConfidence(link?.confidence));
+      && publicConfidence(link?.confidence))
+    .sort((left, right) => Number(clean(right?.type) === ABOUT_PROJECT_RELATION)
+      - Number(clean(left?.type) === ABOUT_PROJECT_RELATION));
   const joinedOutcome = exactOutcome(outcome, id);
   const exactNotices = (Array.isArray(joinedOutcome?.city_record_notices)
     ? joinedOutcome.city_record_notices : [])
@@ -252,17 +258,22 @@ export function buildProjectConnectionEvidence({
     ...exactGraph.map((link) => {
       const adapted = adaptDecidesLandProjectEdge(link, { project_id: id });
       const noticeId = clean(link.from).match(/^notice:(.+)$/)?.[1] || "";
+      const material = materializeExactNoticeProjectEdge(link, { project_id: id });
+      const reader = aboutProjectReaderProjection(material);
       return {
         ref: noticeId ? `notice:${noticeId}` : null,
         href: noticeId ? `#notice/${encodeURIComponent(noticeId)}` : null,
+        project_href: reader.href,
         label: clean(link.label) || clean(link.agency_name) || noticeId,
         agency_name: clean(link.agency_name) || null,
         when: clean(link.when, 40) || null,
         relation: DECIDES_LAND_PROJECT_COMPATIBILITY,
-        canonical_relation: adapted.canonical_relation,
+        canonical_relation: material.accepted ? ABOUT_PROJECT_RELATION : adapted.canonical_relation,
+        proceeding_relation: material.proceeding_relation || adapted.canonical_relation,
         semantic_threshold: adapted.semantic_threshold,
-        reader_label: adapted.reader_label,
+        reader_label: material.accepted ? ABOUT_PROJECT_READER_LABEL : adapted.reader_label,
         is_decision: false,
+        source_proof: reader.proof,
         confidence: publicConfidence(link.confidence),
         evidence: clean(link.method, 120) || "exact project reference",
         ...(link.when ? {
@@ -289,28 +300,35 @@ export function buildProjectConnectionEvidence({
       };
     }),
     ...exactNotices.filter((notice) => notice.event_date).map((notice) => {
-      const adapted = adaptDecidesLandProjectEdge({
+      const noticeId = clean(notice.request_id, 40);
+      const linkLike = {
         type: DECIDES_LAND_PROJECT_COMPATIBILITY,
-        from: `notice:${clean(notice.request_id, 40)}`,
+        from: `notice:${noticeId}`,
         to: ref,
-        request_id: clean(notice.request_id, 40),
+        request_id: noticeId,
         agency_name: notice.agency_name,
         label: notice.short_title,
         when: notice.event_date,
         method: notice.join?.method || "exact_ulurp_token",
         type_of_notice_description: notice.type_of_notice_description,
-      }, { project_id: id });
+      };
+      const adapted = adaptDecidesLandProjectEdge(linkLike, { project_id: id });
+      const material = materializeExactNoticeProjectEdge(linkLike, { project_id: id });
+      const reader = aboutProjectReaderProjection(material);
       return {
-        ref: `notice:${clean(notice.request_id, 40)}`,
-        href: `#notice/${encodeURIComponent(clean(notice.request_id, 40))}`,
-        label: clean(notice.short_title) || clean(notice.agency_name) || clean(notice.request_id, 40),
+        ref: `notice:${noticeId}`,
+        href: `#notice/${encodeURIComponent(noticeId)}`,
+        project_href: reader.href,
+        label: clean(notice.short_title) || clean(notice.agency_name) || noticeId,
         agency_name: clean(notice.agency_name) || null,
         when: clean(notice.event_date, 40) || null,
         relation: DECIDES_LAND_PROJECT_COMPATIBILITY,
-        canonical_relation: adapted.canonical_relation,
+        canonical_relation: material.accepted ? ABOUT_PROJECT_RELATION : adapted.canonical_relation,
+        proceeding_relation: material.proceeding_relation || adapted.canonical_relation,
         semantic_threshold: adapted.semantic_threshold,
-        reader_label: adapted.reader_label,
+        reader_label: material.accepted ? ABOUT_PROJECT_READER_LABEL : adapted.reader_label,
         is_decision: false,
+        source_proof: reader.proof,
         confidence: "strong",
         evidence: clean(notice.join?.method, 120) || "exact ULURP token",
       };

@@ -70,5 +70,7 @@ outcomes stay “Decided by”. Draft `2025K0305` rows stay out of that group.
 
 Exact join tests remain on `decides_land_project`. New tests assert canonical
 concern/review labels for `2023X0149` and reject draft/fuzzy/unknown decision
-claims. A later card may retire the compatibility identifier after consumers
+claims. The exact notice→project subject edge is materialized as
+`about_project` with inverse `has_notice` and inspectable source proof;
+`decides_land_project` stays the compatibility identifier until consumers
 read `canonical_relation`.

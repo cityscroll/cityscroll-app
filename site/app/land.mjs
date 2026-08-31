@@ -1796,8 +1796,17 @@ function loadZapProjectJoinIndex(){
 function noticeLandSpineHTML(record, phaseTools, joinMeta){
   if(!record) return "";
   const projectId=record.project_id || joinMeta?.project_id || "";
+  const proof=joinMeta?.about_project?.proof;
+  const identifier=escUiHtml(proof?.identifier || (joinMeta?.keys||[]).join(", ") || projectId);
+  const fields=escUiHtml((proof?.source_fields||["body","ulurp_numbers"]).join(", "));
+  const method=escUiHtml(proof?.method || joinMeta?.method || "");
   const landLink=projectId
-    ?`<div class="lc-pct"><a class="view" href="#land/${escUiHtml(projectId)}">${t("notice_land_open_land_detail")}</a></div>`
+    ?`<div class="about-project lc-pct" data-canonical-relation="about_project" data-project-id="${escUiHtml(projectId)}" data-is-decision="false">
+      <a class="view" href="#land/${escUiHtml(projectId)}">${t("notice_about_project")}</a>
+      <details class="about-project-proof"><summary>${t("notice_land_open_land_detail")}</summary>
+        <p>${t("notice_about_project_proof",{identifier,fields,method})}</p>
+      </details>
+    </div>`
     :"";
   // Reuse phase-grouped land spine (statutory clocks + zoning stats ride on the record).
   const spineHTML=landSpineHTML(record.spine, record, phaseTools);
@@ -1851,7 +1860,18 @@ async function loadNoticeLandSpine(r, el){
   r._notice_land_join={
     method:resolution.method,
     keys:resolution.keys,
-    project_id:resolution.project_id
+    project_id:resolution.project_id,
+    about_project: {
+      relation: "about_project",
+      is_decision: false,
+      proof: {
+        identifier: (resolution.keys||[])[0] || resolution.project_id,
+        method: resolution.method,
+        source_fields: resolution.method==="exact_project_id"
+          ? ["body","zap_project_url"]
+          : ["body","ulurp_numbers"],
+      },
+    },
   };
 
   const phaseToolsP=ensureLandPhaseSpineTools();
@@ -1867,7 +1887,8 @@ async function loadNoticeLandSpine(r, el){
   el.innerHTML=noticeLandSpineHTML(data.record, phaseTools, {
     method:resolution.method,
     keys:resolution.keys,
-    project_id:resolution.project_id
+    project_id:resolution.project_id,
+    about_project: r._notice_land_join.about_project,
   });
   bindLandSpineUI(el);
   // Re-mount action rail so land/testify affordances can see the joined project id.

@@ -1998,6 +1998,17 @@ phase-spine inputs unchanged. Specimens: `2024M0244` mixed, `2025K0305` uniform,
   `docs/adr/decides-land-project-vocabulary.md`. Focused proof:
   `test/land_project_decision_relations.test.mjs`.
 
+- **Exact notice-to-project subject edge (LDP-07):** `materializeExactNoticeProjectEdge`
+  in `site/land_project_decision_relations.mjs` emits canonical `about_project`
+  (inverse `has_notice`) from exact ULURP/ZAP identifiers, with source system,
+  record, fields, retained identifier, join key/value, method, observation time,
+  source URL, confidence/tier, and target project id. `decides_land_project`
+  remains the compatibility projection. Specimen: notice `20260603044` → project
+  `2023X0149` via `240206ZMX`. Title, address, date, draft, publisher-only,
+  unknown, and ambiguous joins stay unresolved. Focused proof:
+  `test/land_project_decision_relations.test.mjs` plus
+  `test/fixtures/land_project_about_project/gold.v1.json`.
+
 - **Land authority summary (LDP-05):** `site/land_authority_summary.mjs` materializes
   a bounded Tier A `authority_summary` for Land first paint. Current actor, stage,
   role, and effect stay source-backed and separate from expected next stage and a

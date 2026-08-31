@@ -1126,8 +1126,9 @@ export function joinMeetingsToLandProjects(meetingObservations = [], landObserva
     matched += 1;
 
     for (const project of related) {
-      const edge = makeMeetingLandProjectLink(obs, project);
-      if (edge) links.push(edge);
+      for (const edge of meetingLandEdgesForProject(obs, project)) {
+        links.push(edge);
+      }
     }
   }
 
@@ -1195,6 +1196,40 @@ export function makeMeetingLandProjectLink(meetingObs, project) {
     method_version,
     provenance: { ...provenance, join_key, join_value },
   });
+}
+
+function meetingLandEdgesForProject(meetingObs, project) {
+  const compatibility = makeMeetingLandProjectLink(meetingObs, project);
+  if (!compatibility) return [];
+  const about = makeExactKeyObjectLink({
+    type: "about_project",
+    from: compatibility.from,
+    to: compatibility.to,
+    domain: "meetings",
+    confidence: compatibility.confidence,
+    method: compatibility.method,
+    method_version: compatibility.method_version,
+    provenance: {
+      ...compatibility.provenance,
+      source_url: meetingObs.source_url
+        || (meetingObs.request_id
+          ? `https://a856-cityrecord.nyc.gov/RequestDetail/${encodeURIComponent(meetingObs.request_id)}`
+          : compatibility.provenance?.source_url),
+    },
+  });
+  const edges = [compatibility];
+  if (about) {
+    edges.push({
+      ...about,
+      canonical_relation: "about_project",
+      compatibility_relation: "decides_land_project",
+      inverse: "has_notice",
+      reader_label: "About this project",
+      is_decision: false,
+      project_id: project.project_id,
+    });
+  }
+  return edges;
 }
 
 /**
@@ -2055,8 +2090,9 @@ export function meetingLandLinksForObservation(obs) {
   if (!related.length) return [];
   const edges = [];
   for (const project of related) {
-    const edge = makeMeetingLandProjectLink(obs, project);
-    if (edge) edges.push(edge);
+    for (const edge of meetingLandEdgesForProject(obs, project)) {
+      edges.push(edge);
+    }
   }
   return edges;
 }
@@ -2284,6 +2320,7 @@ const SIDE_LINK_TYPES = new Set([
   "contract_published_by_agency",
   "corroborates_contract",
   "decides_land_project",
+  "about_project",
 ]);
 
 export function indexObservationsByRoot(observations) {
@@ -2661,6 +2698,7 @@ export function buildEntityIntelligenceFromBucket(root, bucket, opts = {}) {
     "paid_to_vendor",
     "contract_published_by_agency",
     "decides_land_project",
+    "about_project",
   ];
   const join_key_link_count = links.filter((l) => joinKeyTypes.includes(l.type)).length;
 

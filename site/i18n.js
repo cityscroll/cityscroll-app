@@ -2372,6 +2372,8 @@ const STRINGS = {
     notice_land_join_method_ulurp: "exact ULURP number",
     notice_land_join_method_project_id: "project number",
     notice_land_open_land_detail: "Open full Zoning project page",
+    notice_about_project: "About this project",
+    notice_about_project_proof: "Linked by {identifier} from {fields} using {method}. This is not a recommendation or decision.",
     notice_land_ambiguous_html: "More than one ZAP project shares these ULURP numbers ({keys}). Open a project below to see its timeline.",
     notice_land_this_notice_html: "This City Record notice is part of the project’s public hearing record.",
     notice_land_provenance_html: "ULURP numbers come from the notice text. Project identity, timeline dates, and outcomes come from the city’s Zoning Application Portal records.",
