@@ -29,8 +29,8 @@ function occurrences(value) {
   return value.toString("utf8").split(PRIVATE_MARKER).length - 1;
 }
 
-function treeDigest(prefixes) {
-  const listing = execFileSync("git", ["ls-tree", "-r", BASE, "--", ...prefixes], { cwd: ROOT, encoding: "utf8" });
+function treeDigest(prefixes, ref = BASE) {
+  const listing = execFileSync("git", ["ls-tree", "-r", ref, "--", ...prefixes], { cwd: ROOT, encoding: "utf8" });
   const rows = listing.trim().split("\n").filter(Boolean).map((line) => {
     const match = line.match(/^\d+ blob ([0-9a-f]+)\t(.+)$/);
     if (!match) throw new Error(`unexpected git tree row: ${line}`);
@@ -140,11 +140,8 @@ function verifyCurrent(receipt) {
   for (const path of ["ARCHITECTURE.md", "docs/architecture.md", "tools/architecture_evidence_shards.mjs", "architecture/evidence.d/cityscroll-merge-throughput--mt-7-architecture-evidence-shards.json"]) {
     if (!existsSync(resolve(ROOT, path))) errors.push(`${path}: retained proof missing`);
   }
-  const currentRows = tracked().filter((path) => path.startsWith("site/") || path.startsWith("worker/")).map((path) => {
-    const oid = execFileSync("git", ["hash-object", "--", path], { cwd: ROOT, encoding: "utf8" }).trim();
-    return `${path}\0${oid}\n`;
-  });
-  if (sha(currentRows.join("")) !== receipt.served_artifact_baseline.expected_after_sha256) errors.push("served site/worker artifacts changed");
+  const currentServed = treeDigest(["site", "worker"], "HEAD");
+  if (currentServed.sha256 !== receipt.served_artifact_baseline.expected_after_sha256) errors.push("served site/worker artifacts changed");
   if (errors.length) throw new Error(errors.join("\n"));
 }
 
