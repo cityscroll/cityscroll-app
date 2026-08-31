@@ -421,6 +421,232 @@ export function buildMeetingGroupingReportTarget(entry = {}) {
   }
 }
 
+const CONSTELLATION_CLAIM_RELATIONS = Object.freeze({
+  staffing: "certified_to_agency",
+  contracts: "published_by_agency",
+  meetings: "hosts_meeting",
+  rules: "issued_rule",
+  vendors: "top_vendor_by_award_12mo",
+  obligations: "statute_duty",
+});
+
+function availableClaimSlot(slot) {
+  const value = slot && typeof slot === "object" && Object.prototype.hasOwnProperty.call(slot, "value")
+    ? slot.value
+    : slot;
+  return typeof value === "string" ? reportClean(value, 2_000) : null;
+}
+
+function parseConstellationClaimId(value) {
+  const claimId = reportClean(value, 200);
+  if (!claimId || claimId.includes("#") || /\s/.test(claimId)) return null;
+  const separator = claimId.indexOf(":");
+  if (separator < 1 || separator === claimId.length - 1) return null;
+  const category = claimId.slice(0, separator);
+  const subject = claimId.slice(separator + 1);
+  if (!/^[a-z][a-z0-9_-]*$/.test(category) || !subject) return null;
+  return { claim_id: claimId, category, subject_ref: subject };
+}
+
+function constellationClaimHref(profileHref, claimId, inspectHref) {
+  const explicit = reportClean(inspectHref, 600);
+  if (explicit?.startsWith("/") && explicit.includes("claim=")) return explicit;
+  const base = reportClean(profileHref, 600);
+  if (!base?.startsWith("/") || !claimId) return null;
+  const path = base.split("?")[0];
+  const prefix = path.endsWith("/") ? path : `${path}/`;
+  return `${prefix}?claim=${encodeURIComponent(claimId)}`;
+}
+
+function constellationClaimSource(claim) {
+  const where = claim?.where && typeof claim.where === "object" ? claim.where : {};
+  return {
+    source_record_id: availableClaimSlot(where.source_record_id) || reportClean(claim?.source_record_id, 500),
+    source_url: availableClaimSlot(where.source_href) || reportClean(claim?.source_url, 600),
+    source_system: availableClaimSlot(where.source_system) || reportClean(claim?.source_system, 120),
+  };
+}
+
+/** Build a report for the exact agency-constellation claim on a deep-link,
+ * keeping the surrounding agency profile as distinct object context. */
+export function buildAgencyConstellationClaimReportTarget({
+  entity_ref,
+  canonical_url,
+  object_label,
+  claim = null,
+  activeClaimId = null,
+} = {}) {
+  const profileRef = identityRef(entity_ref);
+  const profileHref = identityCanonicalUrl(profileRef, String(canonical_url || "").split("?")[0]);
+  const profileLabel = reportClean(object_label, 1_000);
+  if (!claim || typeof claim !== "object") return null;
+  const parsed = parseConstellationClaimId(claim.claim_id || activeClaimId);
+  if (!profileRef || !profileHref || !profileLabel || !parsed) return null;
+  if (activeClaimId && parseConstellationClaimId(activeClaimId)?.claim_id !== parsed.claim_id) return null;
+  if (claim?.claim_id && parseConstellationClaimId(claim.claim_id)?.claim_id !== parsed.claim_id) return null;
+  const category = reportClean(claim?.category_id, 40) || parsed.category;
+  if (category !== parsed.category) return null;
+  const relation = CONSTELLATION_CLAIM_RELATIONS[category];
+  if (!relation) return null;
+  const relatedId = identityRef(claim?.subject_ref) || reportClean(claim?.subject_ref, 320) || parsed.subject_ref;
+  if (!relatedId || relatedId !== parsed.subject_ref) return null;
+  const rootRef = identityRef(claim?.root_ref);
+  if (rootRef && rootRef !== profileRef) return null;
+  const relatedLabel = reportClean(claim?.label, 1_000) || relatedId;
+  const href = constellationClaimHref(profileHref, parsed.claim_id, claim?.inspect_href || claim?.share_href);
+  if (!href) return null;
+  try {
+    return buildReportTarget({
+      object_type: "entity",
+      object_id: profileRef,
+      canonical_url: href,
+      object_label: profileLabel,
+      claim_anchor: {
+        anchor: `${parsed.claim_id}#${relation}`,
+        claim_type: "relationship",
+        relation_type: relation,
+        subject_id: profileRef,
+        subject_label: profileLabel,
+        object_id: relatedId,
+        object_label: relatedLabel,
+        field_or_semantic_key: relation,
+        rendered_value: `${profileLabel} is connected to ${relatedLabel}`,
+      },
+      constituent_object_ids: [profileRef, relatedId],
+      source: constellationClaimSource(claim),
+    });
+  } catch {
+    return null;
+  }
+}
+
+/** Profile identity unless a claim deep-link is present; never fall back from
+ * an addressable or requested claim to a profile-only identity target. */
+export function buildAgencyConstellationReportTarget({
+  entity_ref,
+  canonical_url,
+  object_label,
+  identity_lookup_href = "/data/people_organizations_read_model.json",
+  claim = null,
+  activeClaimId = null,
+} = {}) {
+  const claimId = reportClean(activeClaimId || claim?.claim_id, 200);
+  if (claimId) {
+    return buildAgencyConstellationClaimReportTarget({
+      entity_ref,
+      canonical_url,
+      object_label,
+      claim,
+      activeClaimId: claimId,
+    });
+  }
+  return buildEntityProfileReportTarget({
+    entity_ref,
+    canonical_url,
+    object_label,
+    identity_lookup_href,
+  });
+}
+
+function agencyReportLocation(documentRef) {
+  return documentRef?.defaultView?.location || globalThis.location || null;
+}
+
+/** Keep the page-level report attached to the claim actually being viewed. */
+export function syncAgencyConstellationClaimReport(documentRef = globalThis.document, options = {}) {
+  const host = documentRef?.querySelector?.("[data-agency-report]");
+  if (!host) return false;
+  const locationObject = agencyReportLocation(documentRef);
+  let claimId = "";
+  try {
+    claimId = String(new URLSearchParams(locationObject?.search || "").get("claim") || "").trim();
+  } catch {
+    claimId = "";
+  }
+  if (!claimId) {
+    claimId = String(documentRef.querySelector("[data-edge-provenance-panel]")?.getAttribute("data-active-claim") || "").trim();
+  }
+  const profile = {
+    entity_ref: host.getAttribute("data-report-entity-ref"),
+    canonical_url: host.getAttribute("data-report-canonical-url"),
+    object_label: host.getAttribute("data-report-object-label"),
+  };
+  let profileTarget = null;
+  try {
+    profileTarget = host.getAttribute("data-report-profile-target")
+      ? JSON.parse(host.getAttribute("data-report-profile-target"))
+      : null;
+  } catch {
+    profileTarget = null;
+  }
+  if (!claimId) {
+    const html = renderReportIssueAffordance(
+      profileTarget || buildEntityProfileReportTarget(profile),
+      { label: "Report an issue" },
+    );
+    host.innerHTML = html;
+    host.hidden = !html;
+    host.removeAttribute("data-report-claim-id");
+    host.removeAttribute("data-report-awaiting-claim");
+    return Boolean(html);
+  }
+  const supplied = Array.isArray(options.claims) ? options.claims : null;
+  const claim = supplied?.find((entry) => entry?.claim_id === claimId) || null;
+  if (!claim) {
+    host.innerHTML = "";
+    host.hidden = true;
+    host.setAttribute("data-report-awaiting-claim", "1");
+    return false;
+  }
+  const target = buildAgencyConstellationClaimReportTarget({
+    ...profile,
+    claim,
+    activeClaimId: claimId,
+  });
+  const html = renderReportIssueAffordance(target, { label: "Report an issue" });
+  host.innerHTML = html;
+  host.hidden = !html;
+  if (html) {
+    host.setAttribute("data-report-claim-id", claimId);
+    host.removeAttribute("data-report-awaiting-claim");
+  } else {
+    host.removeAttribute("data-report-claim-id");
+    host.setAttribute("data-report-awaiting-claim", "1");
+  }
+  return Boolean(html);
+}
+
+export function installAgencyConstellationClaimReportSync(documentRef = globalThis.document) {
+  const host = documentRef?.querySelector?.("[data-agency-report]");
+  if (!host || host.dataset.claimReportSync === "1") return false;
+  host.dataset.claimReportSync = "1";
+  let frame = 0;
+  const sync = () => {
+    if (frame) return;
+    frame = globalThis.requestAnimationFrame
+      ? globalThis.requestAnimationFrame(() => {
+        frame = 0;
+        syncAgencyConstellationClaimReport(documentRef);
+      })
+      : (frame = 1, syncAgencyConstellationClaimReport(documentRef), frame = 0);
+  };
+  syncAgencyConstellationClaimReport(documentRef);
+  const observer = typeof MutationObserver === "function"
+    ? new MutationObserver(sync)
+    : null;
+  observer?.observe(documentRef.documentElement || host, {
+    subtree: true,
+    childList: true,
+    attributes: true,
+    attributeFilter: ["data-active-claim"],
+  });
+  documentRef.addEventListener("click", (event) => {
+    if (event.target?.closest?.("[data-edge-claim]")) sync();
+  });
+  documentRef.defaultView?.addEventListener("popstate", sync);
+  return true;
+}
+
 /** Build a hypothesis about a multi-notice rulemaking lifecycle. */
 export function buildRulemakingLifecycleReportTarget(entry = {}) {
   if (!entry || entry.kind !== "rulemaking" || Number(entry.notice_count) < 2) return null;
@@ -869,6 +1095,7 @@ export function installReportIssueUI(documentRef = globalThis.document) {
   const dialog = wrapper.firstElementChild;
   documentRef.body.appendChild(dialog);
   installHandlers(dialog, documentRef);
+  installAgencyConstellationClaimReportSync(documentRef);
   return true;
 }
 

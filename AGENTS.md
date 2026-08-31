@@ -4479,6 +4479,15 @@ Verify: `node --test test/checkbook_spending_collector.test.mjs` and
   `test/report_target.test.mjs`, `test/report_issue_ui.test.mjs`, and
   `test/rules_explorer.test.mjs`.
 
+- **Agency constellation claim deep-link reports (CC-12):**
+  `buildAgencyConstellationClaimReportTarget` in `site/report_issue.mjs` attaches
+  the viewed `?claim=` assertion (for example `staffing:exam:6306`) while keeping
+  the agency profile as surrounding object context. Profile-only URLs still use
+  `buildEntityProfileReportTarget`; a requested but unaddressable claim fails
+  closed instead of falling back to profile identity. Proof:
+  `test/report_target.test.mjs`, `test/agency_constellation.test.mjs`, and
+  `test/report_issue_ui.test.mjs`.
+
 - **Federated search scope:** `capabilities/federated_search.mjs` owns the additive
   closed `scope` allowlist over registered lenses. Adapters must not rank, rewrite
   identity, or query an arbitrary store. Omitted scope keeps all-lens federation;

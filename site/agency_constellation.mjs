@@ -29,7 +29,12 @@ import {
   renderCivicTimeLedgerPanel,
 } from "./civic_time_ledger.mjs";
 import { buildAgencyEdgeSummary } from "./agency_constellation_model.mjs";
-import { buildEntityProfileReportTarget, renderReportIssueAffordance } from "./report_issue.mjs";
+import {
+  buildAgencyConstellationClaimReportTarget,
+  buildEntityProfileReportTarget,
+  renderReportIssueAffordance,
+} from "./report_issue.mjs";
+import { serializeReportTarget } from "./report_target.mjs";
 import { renderPetitionHandoff } from "./rules_petition.mjs";
 
 const clean = (value, max = 500) => String(value ?? "")
@@ -246,12 +251,27 @@ export function renderAgencyConstellationDocument(view, options = {}) {
     extraClass: "civic-object-actions agency-primary-actions",
   });
   const assetPrefix = options.assetPrefix || "/";
-  const identityReport = renderReportIssueAffordance(buildEntityProfileReportTarget({
+  const identityLookupHref = `${assetPrefix || "/"}data/people_organizations_read_model.json`;
+  const profileReportTarget = buildEntityProfileReportTarget({
     entity_ref: view.subject_ref,
     canonical_url: view.path,
     object_label: title,
-    identity_lookup_href: `${assetPrefix || "/"}data/people_organizations_read_model.json`,
-  }), { label: "Report an issue" });
+    identity_lookup_href: identityLookupHref,
+  });
+  const activeClaim = activeClaimId
+    ? (Array.isArray(view.claims) ? view.claims.find((entry) => entry?.claim_id === activeClaimId) : null) || null
+    : null;
+  const reportTarget = activeClaimId
+    ? buildAgencyConstellationClaimReportTarget({
+      entity_ref: view.subject_ref,
+      canonical_url: view.path,
+      object_label: title,
+      claim: activeClaim,
+      activeClaimId,
+    })
+    : profileReportTarget;
+  const identityReport = renderReportIssueAffordance(reportTarget, { label: "Report an issue" });
+  const profileTargetAttr = profileReportTarget ? esc(serializeReportTarget(profileReportTarget)) : "";
   const runtimeSrc = `${assetPrefix.endsWith("/") ? assetPrefix : `${assetPrefix}/`}civic_time_ledger_runtime.mjs`;
   const traversalSrc = `${assetPrefix.endsWith("/") ? assetPrefix : `${assetPrefix}/`}app/traversal.mjs`;
   const updatedDay = readerDay(displayView.summary.generated_at || view.summary.generated_at);
@@ -285,7 +305,18 @@ export function renderAgencyConstellationDocument(view, options = {}) {
     </header>
     ${primaryActions}
     ${petition}
-    ${identityReport ? `<div class="agency-identity-report civic-object-actions">${identityReport}</div>` : ""}
+    <div class="agency-identity-report civic-object-actions" data-agency-report="1" data-report-entity-ref="${esc(view.subject_ref || "")}" data-report-canonical-url="${esc(view.path || "")}" data-report-object-label="${esc(title || "")}"${profileTargetAttr ? ` data-report-profile-target="${profileTargetAttr}"` : ""}${activeClaimId && reportTarget ? ` data-report-claim-id="${esc(activeClaimId)}"` : ""}>${identityReport}</div>
+    <script>
+(() => {
+  const params = new URLSearchParams(location.search);
+  const claim = (params.get("claim") || "").trim();
+  const host = document.querySelector("[data-agency-report]");
+  if (!claim || !host) return;
+  if (host.getAttribute("data-report-claim-id") === claim) return;
+  host.hidden = true;
+  host.setAttribute("data-report-awaiting-claim", "1");
+})();
+    </script>
     ${initialLedger}
     <div data-civic-object-deferred data-civic-object-deferred-state="loading" role="status">Loading public relationships…</div>
     ${secondaryActions}
