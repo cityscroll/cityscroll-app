@@ -45,6 +45,9 @@ function servedVerificationRef() {
     cwd: ROOT,
     encoding: "utf8"
   }).trim().split(/\s+/);
+  // Merge-group refs can be materialized as a single-parent commit whose tree is
+  // the tested queue tree, rather than the two-parent PR merge ref.
+  if (process.env.GITHUB_EVENT_NAME === "merge_group" && parents.length === 2) return process.env.GITHUB_SHA;
   if (parents.length !== 3) throw new Error("pull-request checkout is not a two-parent merge commit");
   return parents[2];
 }

@@ -15,4 +15,11 @@ test("RCP-03 receipt covers private evidence and preserves served artifacts", ()
 
   const output = execFileSync("node", ["tools/rcp03_evidence_placement.mjs", "--check"], { encoding: "utf8" });
   assert.match(output, /served artifacts unchanged/);
+
+  const mergeGroupHead = execFileSync("git", ["rev-parse", "HEAD"], { encoding: "utf8" }).trim();
+  const mergeGroupOutput = execFileSync("node", ["tools/rcp03_evidence_placement.mjs", "--check"], {
+    encoding: "utf8",
+    env: { ...process.env, GITHUB_EVENT_NAME: "merge_group", GITHUB_SHA: mergeGroupHead },
+  });
+  assert.match(mergeGroupOutput, /served artifacts unchanged/);
 });
