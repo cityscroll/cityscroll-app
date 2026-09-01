@@ -2,7 +2,7 @@
 {"command": "bash -c node --test test/*.test.mjs", "exit_status": 0, "id": "site-unit", "test_counts": {"fail": 0, "pass": 5183, "skipped": 1, "tests": 5184}}
 {"command": "bash -c node --test test/contract/*.test.mjs", "exit_status": 0, "id": "contract-unit", "test_counts": {"fail": 0, "pass": 181, "skipped": 0, "tests": 181}}
 {"command": "node tools/architecture_evidence_shards.mjs --check", "exit_status": 0, "id": "architecture-evidence-shards", "test_counts": null}
-{"command": "node tools/reconcile_architecture.mjs --check --output-dir /var/folders/l9/mkvjytkd2b950fftgggqfn0r0000gn/T//cityscroll-architecture-evidence.ki74U8", "exit_status": 0, "id": "architecture-reconcile", "test_counts": null}
+{"command": "node tools/reconcile_architecture.mjs --check --output-dir /var/folders/l9/mkvjytkd2b950fftgggqfn0r0000gn/T//cityscroll-architecture-evidence.keGZo1", "exit_status": 0, "id": "architecture-reconcile", "test_counts": null}
 {"command": "node tools/backtest_architecture_canaries.mjs --check", "exit_status": 0, "id": "architecture-canaries", "test_counts": null}
 {"command": "node tools/card_reconciliation_guard.mjs", "exit_status": 0, "id": "card-reconciliation", "test_counts": null}
 {"command": "node tools/build_capability_topology.mjs --check", "exit_status": 0, "id": "card-projection", "test_counts": null}

@@ -25,11 +25,11 @@
       "logical_pct": 0.0
     },
     "git_metadata": {
-      "allocated_bytes": 522891264,
+      "allocated_bytes": 522895360,
       "allocated_pct": 30.966,
       "entries": 45,
       "kind": "metadata",
-      "logical_bytes": 512713358,
+      "logical_bytes": 512722183,
       "logical_pct": 31.036
     },
     "other_overhead": {
@@ -37,15 +37,15 @@
       "allocated_pct": 0.0,
       "entries": 1397,
       "kind": "untracked",
-      "logical_bytes": 317376,
+      "logical_bytes": 317440,
       "logical_pct": 0.019
     },
     "tracked_other": {
-      "allocated_bytes": 230596608,
-      "allocated_pct": 13.656,
-      "entries": 3274,
+      "allocated_bytes": 230604800,
+      "allocated_pct": 13.657,
+      "entries": 3276,
       "kind": "tracked",
-      "logical_bytes": 223296959,
+      "logical_bytes": 223304096,
       "logical_pct": 13.517
     },
     "tracked_site_data": {
@@ -54,7 +54,7 @@
       "entries": 689,
       "kind": "tracked",
       "logical_bytes": 467174007,
-      "logical_pct": 28.28
+      "logical_pct": 28.279
     },
     "tracked_site_other": {
       "allocated_bytes": 83025920,
@@ -83,8 +83,8 @@
   "scope": "checkout",
   "shared_git_metadata_outside_checkout": null,
   "total": {
-    "allocated_bytes": 1688588288,
-    "logical_bytes": 1651983819
+    "allocated_bytes": 1688600576,
+    "logical_bytes": 1651999845
   },
-  "tracked_file_count": 5726
+  "tracked_file_count": 5728
 }

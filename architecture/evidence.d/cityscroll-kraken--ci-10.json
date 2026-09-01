@@ -24,6 +24,14 @@
     {
       "id": "card-profile-routing-tests",
       "path": "test/card_profile_router.test.mjs"
+    },
+    {
+      "id": "card-profile-routing-evidence-summary",
+      "path": "tools/summarize_card_profile_routing_evidence.py"
+    },
+    {
+      "id": "card-profile-routing-evidence",
+      "path": "docs/evidence/ci-10-default-reduced-profile/README.md"
     }
   ]
 }
