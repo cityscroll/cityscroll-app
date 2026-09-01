@@ -27,6 +27,10 @@ architecture/generated/watermark.json
 architecture-evidence/source-cards.json
 architecture-evidence/projections.json
 
+# Whole-repository evidence-placement receipt derived from the reviewed inputs in
+# docs/repository-control-plane/evidence-placement.d/ at check time. Never commit it.
+docs/repository-control-plane/evidence-placement.v1.json
+
 # Agency constellation HTML (build/deploy artifact only).
 # Built by tools/build_agency_constellation_documents.mjs during
 # tools/build_cloudflare_pages.mjs — never commit per-agency pages.

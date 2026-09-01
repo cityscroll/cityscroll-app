@@ -1,0 +1,78 @@
+{
+  "schema": "cityscroll.repository-control-plane.evidence-placement-shard.v1",
+  "id": "document-tree:docs/performance",
+  "owner": "document-tree:docs/performance",
+  "card": "cityscroll-repository-control-plane/rcp-03",
+  "input_revision": "21c3d22a3b2314506fda73229e77c80cc3c26de4",
+  "updated_at": "2026-08-31T00:00:00.000Z",
+  "value": {
+    "tree": "docs/performance",
+    "document_count": 7,
+    "reference_count": 58,
+    "documents": [
+      {
+        "path": "docs/performance/content-parity/notice-context-critical-path/after/capture.json",
+        "source_sha256": "b992150070a1d256c0544c25576ae38a78d4220285aa2440c6846970479cee84",
+        "private_reference_count": 12,
+        "private_reference_set_sha256": "9f705c0d33eba7eb3f977672ced7973665424ce213ccddbbf8ef2627cb2e28a4",
+        "classification": "owner-only-evidence-reference",
+        "disposition": "register:cityscroll-repository-control-plane/rcp-03#private-evidence",
+        "maintainer_resolution": "register:cityscroll-repository-control-plane/rcp-03#authorized-maintainer-access"
+      },
+      {
+        "path": "docs/performance/content-parity/notice-context-critical-path/before/capture.json",
+        "source_sha256": "f8252602366aba0ea321677ac0058bb99c9d3a9ec0045ab24323d74c72740fe7",
+        "private_reference_count": 12,
+        "private_reference_set_sha256": "66339c4d42d46ad4c6af46d688774fcd3945513956067879f2f6eded2369ae6b",
+        "classification": "owner-only-evidence-reference",
+        "disposition": "register:cityscroll-repository-control-plane/rcp-03#private-evidence",
+        "maintainer_resolution": "register:cityscroll-repository-control-plane/rcp-03#authorized-maintainer-access"
+      },
+      {
+        "path": "docs/performance/content-parity/notice-context-critical-path/reports/index.html",
+        "source_sha256": "bf2d4339b6736ddc6a895d5d300886d704249933bf648bd32b6f0b83216784e4",
+        "private_reference_count": 2,
+        "private_reference_set_sha256": "1559928c7926bad43d5359f00b09e919ba798b286d1f45c3c3fb99234ab2d850",
+        "classification": "owner-only-evidence-reference",
+        "disposition": "register:cityscroll-repository-control-plane/rcp-03#private-evidence",
+        "maintainer_resolution": "register:cityscroll-repository-control-plane/rcp-03#authorized-maintainer-access"
+      },
+      {
+        "path": "docs/performance/content-parity/rank-5/focused-pass/baseline/capture.json",
+        "source_sha256": "cea7010899046e5a83d6e5bcd6a87c05517600bb817fda05490b4701e0dbacd5",
+        "private_reference_count": 4,
+        "private_reference_set_sha256": "720cda359de3ead5febca6706d4bf33c6506f50b0b1c6f69c759712c10e19eb5",
+        "classification": "owner-only-evidence-reference",
+        "disposition": "register:cityscroll-repository-control-plane/rcp-03#private-evidence",
+        "maintainer_resolution": "register:cityscroll-repository-control-plane/rcp-03#authorized-maintainer-access"
+      },
+      {
+        "path": "docs/performance/content-parity/rank-5/focused-pass/candidate/capture.json",
+        "source_sha256": "d476935f5fc1a7182225ae95521a9f1d3aabecf4cacd7aa14dfe1fbcceebeb1e",
+        "private_reference_count": 4,
+        "private_reference_set_sha256": "2449595322d99dc6442236c1dd457e852d249fa42ae162c0e84dfd4f6654726a",
+        "classification": "owner-only-evidence-reference",
+        "disposition": "register:cityscroll-repository-control-plane/rcp-03#private-evidence",
+        "maintainer_resolution": "register:cityscroll-repository-control-plane/rcp-03#authorized-maintainer-access"
+      },
+      {
+        "path": "docs/performance/content-parity/rank-5/full-six/baseline/capture.json",
+        "source_sha256": "8810bcc30b904abbf064accd90e11729a13ccea43afa38a2ba40ec728ca55497",
+        "private_reference_count": 12,
+        "private_reference_set_sha256": "b93b432e96fad48666034686e7ec483cfbd31f65a6433bc70c38e7ef524bf3fd",
+        "classification": "owner-only-evidence-reference",
+        "disposition": "register:cityscroll-repository-control-plane/rcp-03#private-evidence",
+        "maintainer_resolution": "register:cityscroll-repository-control-plane/rcp-03#authorized-maintainer-access"
+      },
+      {
+        "path": "docs/performance/content-parity/rank-5/full-six/candidate/capture.json",
+        "source_sha256": "555d31e1efc25fe7ee7183e4ed3687c29199df2cd9226e8bd5f46ebd201afe63",
+        "private_reference_count": 12,
+        "private_reference_set_sha256": "2e63b1afdf3e19e9a96f04e94f920ad273ccd7aff7b7146365cc0a4a282e72bf",
+        "classification": "owner-only-evidence-reference",
+        "disposition": "register:cityscroll-repository-control-plane/rcp-03#private-evidence",
+        "maintainer_resolution": "register:cityscroll-repository-control-plane/rcp-03#authorized-maintainer-access"
+      }
+    ]
+  }
+}
