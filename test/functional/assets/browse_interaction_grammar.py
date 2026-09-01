@@ -20,6 +20,9 @@ OWNED_HOSTS = {
     "www.crol-list.org",
     "api.crol-list.org",
 }
+# The committed open-notices snapshot includes its required handoff on this date.
+# Pin the browser clock so the functional matrix does not change at the UTC boundary.
+BROWSE_FIXTURE_NOW = "2026-08-31T12:00:00.000Z"
 NAVIGATION_ONLY_ACTION = re.compile(
     r"^(?:open (?:notice|materials|project)|copy (?:notice )?link|watch(?: this)?(?: .*)?)$",
     re.IGNORECASE,
@@ -163,6 +166,22 @@ def _effective_contrast(element) -> float:
 
 def open_lens(page, base: str, lens: Lens) -> None:
     install_routes(page)
+    page.add_init_script(
+        f"""(() => {{
+          const RealDate = Date;
+          const fixedNow = RealDate.parse({BROWSE_FIXTURE_NOW!r});
+          class FixtureDate extends RealDate {{
+            constructor(...args) {{
+              if (args.length === 0) super(fixedNow);
+              else super(...args);
+            }}
+            static now() {{ return fixedNow; }}
+          }}
+          FixtureDate.parse = RealDate.parse;
+          FixtureDate.UTC = RealDate.UTC;
+          window.Date = FixtureDate;
+        }})();"""
+    )
     page.goto(f"{base}{lens.route}", wait_until="domcontentloaded", timeout=45_000)
     wait_for_locator(
         page.locator(lens.card_selector).first,
