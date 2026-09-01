@@ -3,15 +3,15 @@
   "id": "cityscroll-repository-control-plane/rcp-03",
   "status": "implemented",
   "fingerprint": "rcp-03-private-generated-evidence-placement.v1",
-  "updated_at": "2026-08-31T00:00:00.000Z",
+  "updated_at": "2026-09-01T00:00:00.000Z",
   "projections": [
-    {
-      "id": "repository-evidence-placement-receipt",
-      "path": "docs/repository-control-plane/evidence-placement.v1.json"
-    },
     {
       "id": "repository-evidence-placement-validator",
       "path": "tools/rcp03_evidence_placement.mjs"
+    },
+    {
+      "id": "repository-scrim-public-result",
+      "path": "docs/repository-scrim-review.md"
     }
   ]
 }

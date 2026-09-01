@@ -1,0 +1,16 @@
+{
+  "schema": "cityscroll.repository-control-plane.cutover-shard.v1",
+  "id": "private-access",
+  "owner": "private-access",
+  "card": "cityscroll-repository-control-plane/rcp-05",
+  "kind": "constant",
+  "updated_at": "2026-09-01T00:00:00.000Z",
+  "value": {
+    "resolution_scheme": "register",
+    "expected_resolution": "register:cityscroll-repository-control-plane/rcp-03#authorized-maintainer-access",
+    "expected_disposition_count": 52,
+    "proof_method": "Every privatized disposition resolves through the evidence-placement receipt to one named register reference that an authorized maintainer follows. The check asserts the reference exists for every disposition, uses the register scheme, and is never an invented public URL.",
+    "public_url_resolutions_permitted": 0,
+    "payload_published": false
+  }
+}
