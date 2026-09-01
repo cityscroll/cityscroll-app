@@ -173,6 +173,7 @@
 /site/agency_scope_links.mjs
 /site/agency_scope_route.mjs
 /site/agency_search_producer.mjs
+/site/agency_source_identity_contract.mjs
 /site/agency_vendor_rollup.mjs
 /site/alerts_context_carry.mjs
 /site/alerts_rollup_prefs.mjs
@@ -231,6 +232,7 @@
 /site/civic_time_ledger.mjs
 /site/civic_time_ledger_runtime.mjs
 /site/clarity.js
+/site/code_history_backfill.mjs
 /site/code_provision_history.mjs
 /site/code_provision_watch.mjs
 /site/code_provision_watch_scope.mjs
@@ -562,6 +564,7 @@
 /site/scope_v0.mjs
 /site/search.css
 /site/search/
+/site/search_activity_receipt.mjs
 /site/search_capability_projection.mjs
 /site/search_document.mjs
 /site/search_document_contract.mjs
@@ -569,6 +572,7 @@
 /site/search_intent.mjs
 /site/search_lens_handoff.mjs
 /site/search_producer_support.mjs
+/site/search_render_plan.mjs
 /site/semantic_topic_search.mjs
 /site/shared_meeting_read_model.mjs
 /site/shared_procurement_read_model.mjs
@@ -754,6 +758,7 @@
 /worker/src/reliability_watchdogs.mjs
 /worker/src/rules.mjs
 /worker/src/search.mjs
+/worker/src/search_activity.mjs
 /worker/src/semantic_candidates.mjs
 /worker/src/session.mjs
 /worker/src/source_health.mjs
