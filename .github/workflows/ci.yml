@@ -236,6 +236,12 @@ jobs:
           node tools/build_later_housing_activity.mjs --check
           node tools/build_doing_business_warehouse_lookup.mjs --check
           node tools/build_city_record_pin_chain_lookup.mjs --check
+      - name: Committed keyword search read-model freshness
+        if: matrix.family == 'static-standards'
+        # This required PR gate runs for every change, before the deploy workflow. The builder
+        # reconstructs all registered data inputs and producer projections and fails closed when
+        # either compressed family transport or the committed manifest is not synchronized.
+        run: node tools/build_keyword_search_index.mjs --check
       - name: Depot re-derivation drift gate
         if: matrix.family == 'static-standards'
         # Gauge-fired on PR/push (never cron). Re-derives the join graph from the committed

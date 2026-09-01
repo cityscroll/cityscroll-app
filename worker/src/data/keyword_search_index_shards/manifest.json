@@ -1,15 +1,15 @@
 {
   "schema": "cityscroll.keyword_search_index.v1",
   "version": 1,
-  "generated_at": "2026-08-28T16:31:37.977Z",
+  "generated_at": "2026-08-30T16:27:58.717Z",
   "match_mode": "keyword",
   "representation": "family-sharded-compressed",
   "shard_schema": "cityscroll.keyword_search_index_shard.v1",
   "logical_index": {
-    "sha256": "6cec66ace865b4f45f530ca9dfad2480df8d646edaa6c8cc97c90e1666ba902f",
-    "bytes": 54378092,
+    "sha256": "465f1ef42c8bdcb4c868a3dd30e631aec3ba7f51dc495bbfb8cbf4052eca2037",
+    "bytes": 54372249,
     "family_count": 11,
-    "document_count": 15782
+    "document_count": 15779
   },
   "build_receipt": {
     "source_artifacts": {
@@ -33,8 +33,8 @@
     ],
     "excluded_vendor_roots": [],
     "vendor_root_counts": {
-      "source_roots": 133,
-      "eligible_indexed": 133,
+      "source_roots": 132,
+      "eligible_indexed": 132,
       "excluded": 0
     }
   },
@@ -66,40 +66,40 @@
       "family": "agencies",
       "path": "agencies.json.br",
       "gzip_path": "agencies.json.gz",
-      "document_count": 87,
-      "uncompressed_bytes": 202909,
-      "gzip_bytes": 8478,
-      "brotli_bytes": 6968,
-      "sha256": "d235c49793f9d00481660cf3a6fd49fac63a642f98bbaba23f9469f85f1975c5",
-      "gzip_sha256": "ae7284ccf2296fc143d376fd7b92f3500167b0a252abc4a66e7a85d3d986f79b",
-      "brotli_sha256": "e627f3f1664064e6c58a0b8b57582b21a541c5525de7d2f562707667afdda5fa",
-      "receipt_sha256": "9203efc9c7c96008f04fff7e6a6f92704f381f6319a91ac356f13e47d94e99fb"
+      "document_count": 86,
+      "uncompressed_bytes": 200721,
+      "gzip_bytes": 8418,
+      "brotli_bytes": 6936,
+      "sha256": "4a58cba9902a280475e6e169eb09483e44156b80cc954488c5eaa773028d2899",
+      "gzip_sha256": "9fd8c27050aeb398a773ea9e66b24dc0069ba8a4a9a995264f68491088ef67ed",
+      "brotli_sha256": "79470cfaed4d81950dc3f974df52be98ba0b0923d76963e21717750878e72331",
+      "receipt_sha256": "18cdd4a38eec3e798c99dca4cae9d2a9d9dad30a133f85ae9ebcc5094d36741f"
     },
     {
       "family": "people-organizations",
       "path": "people-organizations.json.br",
       "gzip_path": "people-organizations.json.gz",
-      "document_count": 87,
-      "uncompressed_bytes": 202933,
-      "gzip_bytes": 8495,
-      "brotli_bytes": 6978,
-      "sha256": "6f346d267ba76e151554a9a1c6734fecf41798b9d4a9c7ab01f866078f41d152",
-      "gzip_sha256": "b1018d310403c0938803cb97b96d175ff86315e2ee393f38ce5a52e32485dd08",
-      "brotli_sha256": "589375e585d0e1a0b478c81b68bb56f3d19a1c90c37640105a03d6e21ecb32f2",
-      "receipt_sha256": "49dd92e9c105464ec036d3cfdcc9cc0f9f63aa0e2afaf927f0f7c3dfad384d4d"
+      "document_count": 86,
+      "uncompressed_bytes": 200745,
+      "gzip_bytes": 8442,
+      "brotli_bytes": 6950,
+      "sha256": "59f8feb52b89a2df12a312d6d45107d782937e3718ccfdeafe7b89be1b53ee4f",
+      "gzip_sha256": "238dc72d5baae92f03cb22e6d550e93710155c56544b246b58086da4563b0350",
+      "brotli_sha256": "4501176ae11e92c87a25c35c1094cc782ea289553146a728a89690e41a767158",
+      "receipt_sha256": "44e764e2e2b8c6a50fa0b6965bca29fc023f783af3b9b5791438681c5a795681"
     },
     {
       "family": "vendors",
       "path": "vendors.json.br",
       "gzip_path": "vendors.json.gz",
-      "document_count": 133,
-      "uncompressed_bytes": 198198,
-      "gzip_bytes": 13217,
-      "brotli_bytes": 11555,
-      "sha256": "bce1f3c7c604edbc8df73af4aa3c964e4bda71a63419bfbdd0843d4349a1dc26",
-      "gzip_sha256": "aa48bfe3774579d9aeb156eb8d037fb200e3c7b92b41cbb03d088deb40e532dd",
-      "brotli_sha256": "99520dc0d6d7b1500f68389f020e77806f4d5f4f0096f2948723a6feed914f98",
-      "receipt_sha256": "959544c101627be35ab7ab568e8b0944757eda1e4e5b04d5827b7b1d045785f9"
+      "document_count": 132,
+      "uncompressed_bytes": 196818,
+      "gzip_bytes": 13174,
+      "brotli_bytes": 11524,
+      "sha256": "fe5df698ab8a390d2c282bbbf54ab6b9f50a1879eba5c12c0f20a79d08f26b03",
+      "gzip_sha256": "551914c5a20818b3246cd506fe35da3e9c97a0a8418b76c53c3f713784016bbd",
+      "brotli_sha256": "b2633c4636a9fae633655835eb43308789b35106e139c9e4bc1ea91c39ae750a",
+      "receipt_sha256": "46878ad7a68d329472a0106bda5f26c148191a5e21e960bc8d2911e82d1fa360"
     },
     {
       "family": "community_boards",
@@ -184,13 +184,13 @@
       "path": "procurements.json.br",
       "gzip_path": "procurements.json.gz",
       "document_count": 13791,
-      "uncompressed_bytes": 46323716,
-      "gzip_bytes": 2717913,
-      "brotli_bytes": 2011555,
-      "sha256": "938e6c5858e3f9e07e77da87db808c7d26b77ed7fc5d887dd7b11c9aef02b2b2",
-      "gzip_sha256": "5fb33be528c3142eb23c28b9cc04ee929dd058498ec08f551306eadd2cefae8d",
-      "brotli_sha256": "d55be1f6d05aa018894dd62dac8b8d2d071dcd5f11f94ab641cc0700e120748f",
-      "receipt_sha256": "5b7cf27d7aee264f9e8ef9f3c9ed1a815b60910b1a1febb6ea52e9d225a94bef"
+      "uncompressed_bytes": 46324085,
+      "gzip_bytes": 2718026,
+      "brotli_bytes": 2011479,
+      "sha256": "afa2116cc501f87e7b7b42ec684f0861ff759d2e183a78218f81ae0d06c99fe7",
+      "gzip_sha256": "18f082caae024c681ffd7a11af4efc48b74d47b95e0f98ea2b9d3b6aa7ce2304",
+      "brotli_sha256": "e8898d3121d01a46f081289d3e83270ae0ab0b459c79d5ef9ef4eb0c076d3bdf",
+      "receipt_sha256": "66615547a49a0117e546ac9470445fb0a6fa89c5f607b5fba45cdb1b39617fcf"
     }
   ]
 }
