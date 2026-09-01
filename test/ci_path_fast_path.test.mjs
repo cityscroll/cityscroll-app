@@ -12,6 +12,18 @@ function read(rel) {
   return fs.readFileSync(path.join(ROOT, rel), "utf8");
 }
 
+function jobBlock(workflow, name) {
+  const start = workflow.indexOf(`  ${name}:\n`);
+  assert.notEqual(start, -1, `expected ${name} job`);
+  const headerLength = `  ${name}:\n`.length;
+  const remainder = workflow.slice(start + headerLength);
+  const nextJobOffset = remainder.search(/\n  [A-Za-z0-9_-]+:/);
+  return workflow.slice(
+    start,
+    nextJobOffset === -1 ? workflow.length : start + headerLength + nextJobOffset,
+  );
+}
+
 test("ci.yml emits docs_only and unit_full and wires unit fast path", () => {
   const ci = read(".github/workflows/ci.yml");
   const frontend = ci.match(/\n\s+frontend:\n([\s\S]*?)\n\s+# Subset of frontend/);
@@ -79,6 +91,99 @@ test("merge-group path classification evaluates the queued tree against its base
   );
   assert.match(shardRunner, /Inline-to-module rendered DOM equivalence gate/);
   assert.match(ci, /Aggregate the complete raw sample set/);
+});
+
+test("shared browser artifact starts with path detection while unit remains a required verdict", () => {
+  const ci = read(".github/workflows/ci.yml");
+  const browser = jobBlock(ci, "browser-pr-site");
+  const unit = jobBlock(ci, "unit");
+  const unitFamily = jobBlock(ci, "unit-family");
+  const accessibility = jobBlock(ci, "a11y-pr");
+  const policy = JSON.parse(read("tools/merge_queue_policy.json"));
+
+  assert.match(browser, /needs:\s*\[changes\]/);
+  assert.doesNotMatch(browser, /needs:\s*\[changes,\s*unit\]/);
+  assert.doesNotMatch(browser, /needs\.unit(?:\.result)?/, "artifact production must not wait for Unit");
+  assert.match(browser, /needs\.changes\.outputs\.frontend/);
+  assert.match(browser, /needs\.changes\.outputs\.perf/);
+
+  assert.match(unitFamily, /family: \[static-standards, site-node, contract, worker\]/);
+  assert.match(unitFamily, /if: matrix\.family == 'site-node'[\s\S]*?run: node --test test\/\*\.test\.mjs/);
+  assert.match(unit, /needs: \[changes, unit-family\]/);
+  assert.match(unit, /Fail when a Unit family fails or is missing[\s\S]*?needs\.unit-family\.result != 'success'[\s\S]*?exit 1/);
+
+  // Unit and Accessibility remain required merge checks; a passing artifact is only
+  // an input to the browser consumers, not a substitute for either verdict.
+  assert.deepEqual(policy.required_status_checks, [
+    "Unit tests (site + worker)",
+    "Accessibility + language gate (axe on every PR)",
+    "Reading-level ratchet gate (readable-or-else)",
+  ]);
+  assert.match(
+    accessibility,
+    /needs:\s*\[changes,\s*unit,\s*a11y-pr-shard,\s*a11y-routes-focus-primary,\s*a11y-routes-focus-retry\]/,
+  );
+
+  const requiredChecksPass = (statuses) => policy.required_status_checks.every(
+    (check) => statuses[check] === "success",
+  );
+  const unitFailureWithHealthyBrowser = {
+    "Unit tests (site + worker)": "failure",
+    "Accessibility + language gate (axe on every PR)": "success",
+    "Reading-level ratchet gate (readable-or-else)": "success",
+    "Shared browser site artifact": "success",
+  };
+  assert.equal(
+    requiredChecksPass(unitFailureWithHealthyBrowser),
+    false,
+    "a site-node regression such as RCP-03 must keep the merge verdict red",
+  );
+  assert.equal(
+    requiredChecksPass({
+      ...unitFailureWithHealthyBrowser,
+      "Unit tests (site + worker)": "success",
+    }),
+    true,
+  );
+});
+
+test("browser consumers remain downstream of the successfully built artifact", () => {
+  const ci = read(".github/workflows/ci.yml");
+  for (const job of [
+    "performance-serial",
+    "performance-shard",
+    "performance",
+    "a11y-pr-shard",
+    "a11y-routes-focus-primary",
+    "a11y-routes-focus-retry",
+  ]) {
+    assert.match(jobBlock(ci, job), /needs:[^\n]*browser-pr-site/, `${job} must wait for browser-pr-site`);
+  }
+  assert.match(
+    jobBlock(ci, "a11y-pr"),
+    /needs:[^\n]*unit[^\n]*a11y-pr-shard/,
+    "the required accessibility aggregate must retain the unit and artifact-backed shard inputs",
+  );
+});
+
+test("private capture redaction keeps the accessibility receipt contract fail-closed", () => {
+  const ci = read(".github/workflows/ci.yml");
+  const shardRunner = read("tools/run_a11y_ci_shard.sh");
+  const capture = read("tools/capture_browse_interaction_grammar.py");
+
+  // PR-1498 intentionally removed private screenshot locators from the public tree.
+  // Null is accepted only as that explicit redaction state, while the full capture
+  // matrix, hydrated phase, and positive dimensions remain required.
+  assert.match(capture, /if relative is None:/);
+  assert.match(capture, /row\.get\("phase"\) == "hydrated"/);
+  assert.match(capture, /redacted capture pixel_size is incomplete/);
+  assert.match(capture, /assert isinstance\(relative, str\), f"capture path is missing/);
+
+  // The functional route grammar and the receipt verifier remain in the required
+  // routes-focus shard; this repair does not skip or demote accessibility coverage.
+  assert.match(shardRunner, /test\/functional\/30_browse_interaction_grammar\.py/);
+  assert.match(shardRunner, /capture_browse_interaction_grammar\.py --verify-only/);
+  assert.match(ci, /Accessibility \+ language gate \(axe on every PR\)/);
 });
 
 test("browser jobs use the Playwright cache composite action", () => {
