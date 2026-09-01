@@ -475,9 +475,12 @@ for field in ("tests", "pass", "fail", "skipped"):
     match = re.search(rf"^(?:#|\u2139) {field} (\d+)\s*$", text, re.MULTILINE)
     if match:
         counts[field] = int(match.group(1))
+# A recorded command can carry a scratch directory. Absolute path tokens are
+# replaced rather than trusted, because every command this harness runs is
+# repository-relative by construction, so an absolute one is always incidental.
 record = {
     "id": os.environ["ID"],
-    "command": os.environ["CMD"],
+    "command": re.sub(r"(?<![\w/])/(?:[\w.@%+-]+/)*[\w.@%+-]+", "<temp-dir>", os.environ["CMD"]),
     "exit_status": int(os.environ["STATUS"]),
     "test_counts": counts or None,
 }
@@ -561,8 +564,37 @@ if [[ "$KEEP" != "1" ]]; then
   rm -rf "$FOCUSED_DEST" "$CONTROL_DEST" "$MISSING_BLOB_DEST"
 fi
 
-if [[ "$PROBE_FAILURES" -ne 0 || "$GATE_FAILURES" -ne 0 || "$CONTROL_FAILURES" -ne 0 ]]; then
-  echo "evidence run failed: $PROBE_FAILURES probe expectation(s) unmet, $GATE_FAILURES gate class failure(s), $CONTROL_FAILURES full-checkout control failure(s)" >&2
+# --- 8. host neutrality ------------------------------------------------------
+
+# The receipts are published. A run that emitted a home path, a scratch path, a
+# user name or a host name fails rather than shipping one, because a receipt is
+# not something a reviewer should have to scan by hand.
+heartbeat "checking every emitted receipt is host-neutral"
+NEUTRAL_FAILURES=0
+OUT="$OUT" python3 - <<'PYEOF' || NEUTRAL_FAILURES=1
+import os, re, socket, sys
+
+banned = [
+    ("an absolute home path", re.compile(r"/Users/|/home/")),
+    ("an absolute temporary path", re.compile(r"/var/folders/|/private/tmp|(?<![\w])/tmp/")),
+    ("the current user name", re.compile(rf"\b{re.escape(os.environ.get('USER', '\0'))}\b")),
+    ("the current host name", re.compile(rf"\b{re.escape(socket.gethostname().split('.')[0])}\b")),
+]
+problems = []
+for directory, _, names in os.walk(os.environ["OUT"]):
+    for name in sorted(names):
+        path = os.path.join(directory, name)
+        text = open(path, encoding="utf-8", errors="replace").read()
+        for label, pattern in banned:
+            if pattern.search(text):
+                problems.append(f"{os.path.relpath(path, os.environ['OUT'])}: {label}")
+for problem in problems:
+    print(f"RECEIPT NOT HOST-NEUTRAL: {problem}", file=sys.stderr)
+sys.exit(1 if problems else 0)
+PYEOF
+
+if [[ "$PROBE_FAILURES" -ne 0 || "$GATE_FAILURES" -ne 0 || "$CONTROL_FAILURES" -ne 0 || "$NEUTRAL_FAILURES" -ne 0 ]]; then
+  echo "evidence run failed: $PROBE_FAILURES probe expectation(s) unmet, $GATE_FAILURES gate class failure(s), $CONTROL_FAILURES full-checkout control failure(s), $NEUTRAL_FAILURES host-neutrality failure(s)" >&2
   exit 1
 fi
 heartbeat "done; receipts are in $OUT"

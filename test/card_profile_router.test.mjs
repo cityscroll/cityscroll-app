@@ -244,10 +244,11 @@ test("caller-supplied context does not move the deterministic digest", () => {
 });
 
 test("a receipt that would leak a host detail fails closed instead of being redacted", () => {
-  assert.throws(
-    () => buildReceipt({ fallbackReason: "fell back after reading /Users/someone/scratch/checkout" }),
-    /not host-neutral/
-  );
+  // Assembled rather than written out, for the same reason the home-path guard
+  // builds its own expression in pieces: a tracked file containing the literal
+  // string would trip the guard this test exists to complement.
+  const homePath = ["", "User" + "s", "someone", "scratch", "checkout"].join("/");
+  assert.throws(() => buildReceipt({ fallbackReason: `fell back after reading ${homePath}` }), /not host-neutral/);
 });
 
 test("byte accounting is refused unless its categories partition the total", () => {
