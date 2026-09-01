@@ -20,6 +20,7 @@ import {
   loadPlacementShards,
   shardPathForId,
 } from "../tools/rcp03_evidence_placement.mjs";
+import { aggregateArchitectureEvidence } from "../tools/architecture_evidence_shards.mjs";
 
 const FACTS = derivePlacementFacts();
 
@@ -332,6 +333,28 @@ test("reintroducing the whole-repository aggregate fails the check", () => {
   } finally {
     rmSync(root, { recursive: true, force: true });
   }
+});
+
+
+test("every disposition and maintainer resolution names a registered card", () => {
+  const architecture = aggregateArchitectureEvidence({});
+  assert.equal(architecture.status, "PASS");
+  const registered = new Set(architecture.sourceCards.cards.map((row) => row.id));
+  const receipt = aggregatePlacementShards(loadFixture(SHARD_DIRECTORY_RELATIVE), { directory: SHARD_DIRECTORY_RELATIVE });
+  const references = [
+    receipt.private_inventory.scrim_review.disposition,
+    receipt.private_inventory.scrim_review.maintainer_resolution,
+    receipt.private_inventory.unresolved_research_owner,
+    ...receipt.private_inventory.private_reference_documents.flatMap((row) => [row.disposition, row.maintainer_resolution]),
+    ...receipt.bibliography_mapping.map((row) => row.disposition).filter(Boolean),
+  ];
+  assert.ok(references.length > 100);
+  for (const reference of references) {
+    const match = /^register:([^#]+)#([a-z-]+)$/.exec(reference);
+    assert.ok(match, `${reference} must be a register reference`);
+    assert.ok(registered.has(match[1]), `${match[1]} must be a registered card`);
+  }
+  assert.ok(registered.has("cityscroll-repository-control-plane/rcp-06"), "this change registers its own entry");
 });
 
 test("the placement check passes on the current tip and under a merge-group ref", () => {
