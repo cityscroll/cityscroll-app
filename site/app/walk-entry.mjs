@@ -44,16 +44,21 @@ function hydrate() {
     };
   });
   const actionHref = source === "near_you" ? walkEntryHref(location.href, { source, query, place }) : "/browse/";
+  // The rendered document decides whether its control is record search or a
+  // walk; hydration keeps whichever contract the static document already states.
+  const recordSearch = root.querySelector("[data-walk-search-form]")?.dataset.walkRecordSearch === "true";
   const title = root.querySelector("#walk-entry-heading")?.textContent || undefined;
   const description = root.querySelector("#walk-entry-heading + p")?.textContent || undefined;
   const actionLabel = root.querySelector("button")?.textContent || undefined;
   root.outerHTML = renderWalkEntry({
     source,
     query,
+    place,
     placeLabel: placeLabel(params),
     families,
     actionHref,
     actionLabel,
+    recordSearch,
     ...(title ? { title } : {}),
     ...(description ? { description } : {}),
     ...(actionLabel ? { actionLabel } : {}),
