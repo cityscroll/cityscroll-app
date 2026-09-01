@@ -2957,6 +2957,7 @@ const STRINGS = {
     // Accessible names (aria-label via data-i18n-aria — 2026-07-13 label-census remediation)
     nl_aria: "Describe what you're looking for in plain English",
     invnote_aria: "Note for this pinned item",
+    brand_home_aria: "CityScroll home",
 
     // ---- Subpage chrome + content (about/data/stats/api/changelog) ----
     site_kicker: "NYC’s public record, linked",

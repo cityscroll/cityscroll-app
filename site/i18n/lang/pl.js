@@ -2348,6 +2348,7 @@
     invnote_aria: "Notatka do tego przypiętego elementu",
     site_kicker: "Publiczne rejestry NYC, połączone",
     back_home_aria: "Powrót do strony głównej CityScroll",
+    brand_home_aria: "Strona główna CityScroll",
     back_to_crol: "← Powrót do CityScroll",
     home_link: "Strona główna",
     data_page_h1: "Dane",

@@ -2434,6 +2434,7 @@
     // ---- Subpage chrome + content (about/data/stats/api/changelog) ----
     site_kicker: "Les archives publiques de NYC, reliées",
     back_home_aria: "Retour à l'accueil de CityScroll",
+    brand_home_aria: "Accueil CityScroll",
     back_to_crol: "← Retour à CityScroll",
     home_link: "Accueil",
     data_page_h1: "Les données",

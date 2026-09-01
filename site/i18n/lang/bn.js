@@ -2329,6 +2329,7 @@
     invnote_aria: "এই পিন করা আইটেমের জন্য নোট",
     site_kicker: "নিউ ইয়র্ক সিটির সরকারি নথি, সংযুক্ত",
     back_home_aria: "CityScroll হোমে ফিরে যান",
+    brand_home_aria: "CityScroll হোম",
     back_to_crol: "← CityScroll-এ ফিরে যান",
     home_link: "হোম",
     data_page_h1: "উপাত্ত",
