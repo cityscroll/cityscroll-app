@@ -50,3 +50,36 @@ node tools/rcp03_evidence_placement.mjs --write-shards \
 `--write` emits the derived compatibility receipt under `.artifacts/` (or
 `--output-dir <dir>`) for local inspection and CI upload. That projection is a
 build output; it must not be committed.
+
+## Why these inputs replaced the committed receipt
+
+The receipt used to be one committed whole-repository file. Every field but one
+was pinned to the inspected commit and never moved; the exception was the served
+`site/` and `worker/` blob digest, which was recomputed from the current tip on
+every write. Any change that touched a served artifact therefore made the
+committed file stale and had to rewrite it, which turned an unrelated refresh
+into a merge dependency between independent changes. The comparison was also
+circular: the recorded baseline was refreshed to the same tip it was compared
+against, so it could collide but never fail.
+
+Document-tree inputs plus check-time aggregation were selected over deriving
+everything with no reviewed source because the placement facts are reviewed
+assertions a person should be able to read and diff, and because private
+evidence under `docs/evidence` and under `docs/screenshots` genuinely have
+different owners. Check-time aggregation keeps the receipt a derived view of
+those inputs rather than a second authority.
+
+## Compatibility
+
+The derived receipt keeps the `cityscroll.repository_evidence_placement.v1`
+schema, field names, key order, counts, digests, dispositions, maintainer
+resolutions, citations, and retained proof paths. It adds a `materialization`
+block naming the inputs it aggregated.
+
+`served_artifact_baseline` is deliberately re-anchored from "the tip at the last
+write" to the inspected commit, and records the digest it supersedes in
+`superseded_head_derived_sha256`. The invariant it now proves is stronger and
+cannot collide: the served blob set at the inspected commit is unchanged, no
+placement input overlaps `site/` or `worker/`, and the private evidence scheme
+is absent from served scripts, styles, and text assets as well as from retained
+public Markdown, JSON, and HTML.
