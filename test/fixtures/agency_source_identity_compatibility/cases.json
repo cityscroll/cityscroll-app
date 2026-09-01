@@ -1,0 +1,89 @@
+{
+  "specimens": {
+    "dsny": "sanitation",
+    "nycedc": "economic-development-corporation",
+    "housing_alias": "n-y-c-housing-authority",
+    "housing_canonical": "housing-authority"
+  },
+  "reviewed_alias": {
+    "source_id": "n-y-c-housing-authority",
+    "canonical_id": "housing-authority",
+    "redirect_path": "/agencies/n-y-c-housing-authority/",
+    "destination_path": "/agencies/housing-authority/",
+    "disposition_basis": "punctuation-only publisher alias",
+    "collision": false,
+    "source_contract": "cityscroll.agency_route_identity_report.v1"
+  },
+  "collision": {
+    "comparison_key": "EQUAL EMPLOYMENT PRACTICES COMMISSION",
+    "source_ids": ["equal-employ-practices-comm", "equal-employment-practices-commission"],
+    "links_to_canonical": false,
+    "institution_kind": null
+  },
+  "unresolved": {
+    "source_ids": ["nyc-taxi-and-limousine-commission", "office-of-criminal-justice-128"],
+    "links_to_canonical": false,
+    "institution_kind": null
+  },
+  "route_only": {
+    "source_ids": ["board-meetings", "employees-retirement-system", "long-island-rail-road"],
+    "links_to_canonical": false,
+    "institution_kind": null
+  },
+  "source_only_specimens": [
+    "board-of-education-retirement-system",
+    "banking-commission",
+    "civic-engagement-commission"
+  ],
+  "key_shape_cases": {
+    "agency_subject_refs": {
+      "positive": ["agency:id:sanitation", "agency:id:economic-development-corporation", "agency:id:housing-authority"],
+      "negative": ["agency:Sanitation", "agency:id:", "sanitation", "agency:id:Sanitation"]
+    },
+    "agency_object_keys": {
+      "positive": ["agency:sanitation", "agency:Sanitation", "agency:Housing Authority"],
+      "negative": ["agency:id:sanitation", "agency:", "agency:sanitation;drop", "agency:sanitation/extra"]
+    },
+    "property_disposition_keys": {
+      "positive": [
+        "disposition:housing-preservation-and-development:bbl:1000740001",
+        "disposition:small-business-services:bbl:1006440001",
+        "disposition:economic-development-corporation:bbl:2027810500",
+        "notice:20211118008"
+      ],
+      "negative": [
+        "disposition::bbl:5006840261",
+        "disposition:hpd:bbl:",
+        "notice:",
+        "disposition:hpd:parcel:5006840261"
+      ]
+    },
+    "person_leader_keys": {
+      "positive": [
+        "person-leader:police-department:name:jessica%20tisch",
+        "person-leader:sanitation:name:gregory%20anderson"
+      ],
+      "negative": ["person-leader::name:x", "person-leader:sanitation:", "person-leader:sanitation:name:"]
+    },
+    "community_board_body_ids": {
+      "positive": ["brooklyn-cb-15", "bronx-cb-01", "queens-cb-14"],
+      "negative": ["brooklyn-cb-1", "brooklyncb15", "cb-15", "Brooklyn-cb-15"]
+    }
+  },
+  "community_boards": {
+    "count": 59,
+    "body_id": "brooklyn-cb-15"
+  },
+  "identity_counts": {
+    "matched": 78,
+    "source_only": 36,
+    "route_only": 3,
+    "alias_route": 16,
+    "legitimate_external": 5,
+    "collision": 2,
+    "unresolved": 2
+  },
+  "alias_edge_count": 15,
+  "route_count": 87,
+  "subject_ref_count": 86
+}
