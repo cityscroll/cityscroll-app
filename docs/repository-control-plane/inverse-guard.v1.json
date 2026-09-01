@@ -105,6 +105,24 @@
       "allowed_evidence_contract": "rcp01-semantic-owner-receipt"
     },
     {
+      "id": "rcp-evidence-placement-inputs",
+      "path_pattern": "docs/repository-control-plane/evidence-placement.d/*",
+      "content_class": "repository-migration-receipt",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-03",
+      "register_id": "cityscroll-repository-control-plane/rcp-06",
+      "disposition": "retain",
+      "allowed_evidence_contract": "rcp03-evidence-placement"
+    },
+    {
+      "id": "rcp-evidence-placement-input-schema",
+      "path_pattern": "docs/repository-control-plane/evidence-placement-shard.v1.schema.json",
+      "content_class": "repository-migration-receipt",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-03",
+      "register_id": "cityscroll-repository-control-plane/rcp-06",
+      "disposition": "retain",
+      "allowed_evidence_contract": "rcp03-evidence-placement"
+    },
+    {
       "id": "calendar-contract-evidence",
       "path_pattern": "docs/calendar-contract.md",
       "content_class": "public-code-coupled-evidence",

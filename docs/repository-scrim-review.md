@@ -13,4 +13,5 @@ tip, and none required credential rotation or history rewriting.
 
 The complete row-level inventory is owner-only evidence under the registered
 `cityscroll-repository-control-plane/rcp-03` disposition. Its public, digest-backed placement
-receipt is [`repository-control-plane/evidence-placement.v1.json`](repository-control-plane/evidence-placement.v1.json).
+proof is derived at check time from the reviewed inputs in
+[`repository-control-plane/evidence-placement.d/`](repository-control-plane/evidence-placement.d/README.md).

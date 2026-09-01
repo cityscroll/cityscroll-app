@@ -22,6 +22,10 @@ contracts. Do not turn it into a delivery log, roadmap, module inventory, or car
   and [`docs/repository-control-plane/semantic-owner-mapping.v1.json`](docs/repository-control-plane/semantic-owner-mapping.v1.json)
   classify repository guidance and route temporal intent to its canonical owner. The public
   repository is the implementation and reproducible-evidence plane, not a planning register.
+- [`docs/repository-control-plane/evidence-placement.d/README.md`](docs/repository-control-plane/evidence-placement.d/README.md)
+  owns the reviewed evidence-placement inputs, one file per semantic key and one key per document
+  tree. `docs/repository-control-plane/evidence-placement.v1.json` is derived from them at check
+  time and must not be committed.
 
 ## Repository-wide invariants
 
