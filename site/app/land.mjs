@@ -48,7 +48,6 @@ import {
   landRegulatoryEffectChipHTML,
   normalizeLandRegulatoryEffect,
 } from "../land_regulatory_effect.mjs";
-import { lookupBblCentroid } from "../bbl_mappluto_centroids.mjs";
 import { zapActionDisplayLabels } from "../zap_action_labels.mjs";
 import {
   buildProjectParcelRelationshipReportTarget,
@@ -172,143 +171,6 @@ function loadLandBblCentroidSnapshot(){
       .catch(()=>null);
   }
   return landBblCentroidSnapshotPromise;
-}
-function toFiniteCoordinates(lat, lon){
-  const y = Number(lat);
-  const x = Number(lon);
-  if(!Number.isFinite(y)||!Number.isFinite(x)) return null;
-  return [y, x];
-}
-function toFinitePoint(record){
-  const pairs = [
-    [record?.latitude, record?.longitude],
-    [record?.lat, record?.lon],
-    [record?.latlng?.lat, record?.latlng?.lng],
-    [record?.y, record?.x],
-    [record?.geometry?.latitude, record?.geometry?.longitude],
-    [record?.location?.latitude, record?.location?.longitude],
-  ];
-  for(const [lat, lon] of pairs){
-    const point = toFiniteCoordinates(lat, lon);
-    if(point) return point;
-  }
-  if(record?.geometry?.type==="Point" && Array.isArray(record.geometry.coordinates) && record.geometry.coordinates.length>=2){
-    const point = toFiniteCoordinates(record.geometry.coordinates[1], record.geometry.coordinates[0]);
-    if(point) return point;
-  }
-  return null;
-}
-function normalizeLandBbl(value){
-  const bbl = String(value || "").trim();
-  if(!bbl) return null;
-  const normalized = bbl.replace(/\D/g, "");
-  return normalized ? normalized : bbl;
-}
-function collectProjectBbls(record, outcomeRecord, bblRows){
-  const out = new Set();
-  const add=(value)=>{
-    const b=normalizeLandBbl(value);
-    if(b) out.add(b);
-  };
-  if(Array.isArray(record?.bbls)) for(const b of record.bbls) add(b);
-  if(Array.isArray(record?.bbls_list)) for(const b of record.bbls_list) add(b);
-  if(record?.bbl) add(record.bbl);
-  if(Array.isArray(outcomeRecord?.bbls)) for(const b of outcomeRecord.bbls) add(b);
-  const id=String(record?.project_id || "").trim();
-  if(id && Array.isArray(bblRows)){
-    const hit=bblRows.find((item)=>String(item?.project_id || "").trim()===id);
-    if(Array.isArray(hit?.bbls)) for(const b of hit.bbls) add(b);
-  }
-  for(const filing of outcomeRecord?.dob?.filings || []){
-    add(filing?.bbl);
-  }
-  const groups = Array.isArray(outcomeRecord?.project_connections?.groups) ? outcomeRecord.project_connections.groups : [];
-  for(const group of groups){
-    if(!group || group.id !== "parcels" || !Array.isArray(group.items)) continue;
-    for(const item of group.items){
-      if(typeof item?.ref === "string" && item.ref.startsWith("bbl:")) add(item.ref.slice(4));
-    }
-  }
-  return [...out];
-}
-function collectAddressCandidates(record, outcomeRecord){
-  const seen = new Set();
-  const out = [];
-  const add=(value)=>{
-    const valueKey = cleanText(value || "").toLowerCase();
-    if(!valueKey || seen.has(valueKey)) return;
-    seen.add(valueKey);
-    out.push(value);
-  };
-  const boro = cleanText(record?.borough || outcomeRecord?.open_data?.borough || outcomeRecord?.borough || "");
-  const filings = Array.isArray(outcomeRecord?.dob?.filings) ? outcomeRecord.dob.filings : [];
-  for(const filing of filings){
-    const label = `${cleanText(filing?.house_no)} ${cleanText(filing?.street_name)}`.trim();
-    if(!label) continue;
-    add(`${label}${boro ? ` ${boro}` : ""}`);
-    add(`${label}${boro ? `, ${boro}` : ""}`);
-  }
-  const base = cleanText(record?.project_name || outcomeRecord?.project_name || "");
-  if(base){
-    add(
-      base.replace(/rezoning|demapping|rezone|special (mixed use )?district|text amendment|special permit|special district|mapping actions?|modification|disposition|non-?ulurp|public hearing|notice/ig, "")
-        .replace(/\bnos?\.?\b/ig, "")
-        .replace(/\s+/g, " ")
-        .trim()
-    );
-  }
-  return out.map((q)=>`${q}${boro?` ${boro}`:""} New York`).map((q)=>q.replace(/\s+,/g,",").replace(/\s+/g," ").trim());
-}
-async function resolveLandMapLocation(record, outcomeRecord, {propertyPayload, geocode, centroidLookup, bblSnapshot} = {}){
-  const outcome = outcomeRecord || null;
-  const geoPoint = toFinitePoint(record) || toFinitePoint(outcome);
-  if(geoPoint){
-    return {status:"exact", precision:"exact", lat:geoPoint[0], lon:geoPoint[1], label: cleanText(record?.project_name || record?.borough || outcome?.project_name || outcome?.borough || ""), method:"authoritative_point"};
-  }
-  const bbls = collectProjectBbls(record, outcome, bblSnapshot?.rows).slice(0,25);
-  if(bbls.length && centroidLookup){
-    const centroid = lookupBblCentroid(centroidLookup, bbls);
-    if(centroid){
-      return {
-        status:"exact",
-        precision:"exact",
-        lat:centroid.lat,
-        lon:centroid.lon,
-        bbl:centroid.bbl,
-        method:"bbl_mappluto_centroid",
-        label:cleanText(record?.project_name || outcome?.project_name || record?.borough || outcome?.borough || ""),
-      };
-    }
-  }
-  const propertyRows = propertyPayload?.property_rows || [];
-  if(bbls.length && propertyRows.length){
-    const bblSet = new Set(bbls);
-    const address = propertyRows.flatMap(item=>item?.property_location?.addresses||[])
-      .find((item)=> bblSet.has(String(item?.bbl||"")) && Number.isFinite(Number(item?.latitude)) && Number.isFinite(Number(item?.longitude)));
-    if(address){
-      return {status:"exact", precision:"exact", lat:Number(address.latitude), lon:Number(address.longitude), label:address.label||record?.project_name||"", method:"property_address"};
-    }
-    const geometryPoint = propertyRows.find((row)=>{
-      const bblMatch = bblSet.has(String(row?.property_location?.bbl||"")) ||
-        (Array.isArray(row?.property_location?.bbls) && row.property_location.bbls.some((b)=>bblSet.has(String(b||""))));
-      if(!bblMatch) return false;
-      const toPoint = toFinitePoint(row?.property_location);
-      return Boolean(toPoint);
-    });
-    if(geometryPoint){
-      const toPoint = toFinitePoint(geometryPoint?.property_location);
-      if(toPoint) return {status:"exact", precision:"exact", lat:toPoint[0], lon:toPoint[1], label:geometryPoint?.short_title||record?.project_name||"", method:"property_geometry"};
-    }
-  }
-  if(!geocode) return {status:"unresolved", reason:"no-resolution"};
-  const candidates = collectAddressCandidates(record, outcome);
-  for(const query of candidates){
-    const next = await Promise.resolve(geocode?.(query)).catch(()=>null);
-    if(next?.status==="matched"&&Number.isFinite(next?.lat)&&Number.isFinite(next?.lon)){
-      return {status:"approximate", precision:"approximate", lat:next.lat, lon:next.lon, label: next.label || record?.project_name || outcome?.borough || "", method:"address_geocode"};
-    }
-  }
-  return {status:"unresolved", reason:"no-resolution"};
 }
 function hideLandMap(selection, reason){
   if(selection!==undefined && selection!==landSelectionSeq) return;
@@ -881,15 +743,20 @@ async function landSelect(i, el){
   if(crterm.length>3){ loadLandMeetingsSnapshot().then(payload=>{ const query=crterm.toLowerCase(); const row=(payload?.rows||[]).find(item=>(item.zap_project_ids||[]).includes(r.project_id)||matchText(item).toLowerCase().includes(query)); if(selection!==landSelectionSeq) return; const cr=$("#land-city-record-source"); if(cr&&row?.request_id){ cr.outerHTML=officialSourceLink({ href:REQ_URL(row.request_id), label:t("rezoning_notice_link"), className:"land-city-record-source", escape:escUiHtml }); } }).catch(()=>{}); }
   let drew=false;
   try{
+    // Map assets, point resolution, and the map DOM live in map_runtime.mjs. Picking a row is
+    // the detail map's activation, so the runtime is fetched here rather than on Land entry --
+    // and beside the snapshots the resolution needs, not before them. The List auto-selects
+    // its first row, so fetching it any earlier would put it back on the first-paint path.
     const outcomePayload = await fetchZapOutcomesPayload(r.project_id,{allowStatic:true}).catch(()=>null);
     const outcomeRecord = outcomePayload?.record ? normalizeLandRecord(outcomePayload.record) : null;
     if(selection!==landSelectionSeq) return;
-    const [propertyPayload, centroidLookup, bblSnapshot] = await Promise.all([
+    const [runtime, propertyPayload, centroidLookup, bblSnapshot] = await Promise.all([
+      ensureLandMapRuntime(),
       loadLandPropertySnapshot().catch(()=>null),
       loadLandBblCentroidSnapshot(),
       loadLandBblSnapshot().catch(()=>null),
     ]);
-    const resolution = await resolveLandMapLocation(r, outcomeRecord, {
+    const resolution = await runtime.resolveLandMapLocation(r, outcomeRecord, {
       propertyPayload,
       centroidLookup,
       bblSnapshot,
@@ -897,7 +764,7 @@ async function landSelect(i, el){
     });
     if(selection!==landSelectionSeq) return;
     if(resolution.status==="exact"||resolution.status==="approximate"){
-      landShowMap(
+      runtime.landShowMap(
         Number(resolution.lat),
         Number(resolution.lon),
         resolution.label || r.project_name || r.borough || "",
@@ -979,68 +846,6 @@ async function showLandEntry(id){
   }
 }
 
-/* Leaflet loads on demand: the map is a detail of one lens, not a cost every visitor pays.
-   showTab("land") warms it in the background, so it's usually ready before a row is picked. */
-let leafletP=null;
-function loadLeaflet(){
-  if(window.L) return Promise.resolve();
-  if(!leafletP) leafletP = new Promise((res,rej)=>{
-    const l=document.createElement("link"); l.rel="stylesheet"; l.href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css";
-    document.head.appendChild(l);
-    const s=document.createElement("script"); s.src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js";
-    s.onload=res; s.onerror=()=>{ leafletP=null; rej(new Error("leaflet")); };
-    document.head.appendChild(s);
-  });
-  return leafletP;
-}
-// WCAG 2.2 SC 2.5.7: Leaflet supports drag-to-pan, so expose the same map movement as
-// four ordinary single-pointer buttons. Keyboard panning remains Leaflet's responsibility.
-function wireLandPanControls(map){
-  const controls=$("#landpan"); if(!controls) return;
-  const offsets={west:[-80,0],north:[0,-80],south:[0,80],east:[80,0]};
-  controls.hidden=false;
-  controls.querySelectorAll("[data-map-pan]").forEach(button=>{
-    button.addEventListener("click",()=>map.panBy(offsets[button.dataset.mapPan],{animate:false}));
-  });
-}
-async function landShowMap(lat, lon, label, selection, precision="approximate"){
-  const el=$("#landmap"); if(!el) return; el.style.display="none";
-  const note = precision==="exact" ? "" : t("map_approx_note_html",{label});
-  if($("#landmapnote")) $("#landmapnote").innerHTML=note;
-  try{ await loadLeaflet(); }catch(e){}
-  if(selection!==undefined && selection!==landSelectionSeq) return;
-  if(typeof L==="undefined"){
-    const controls=$("#landpan"); if(controls) controls.hidden=true;
-    return;
-  }
-  el.style.display="block";
-  landMap=L.map(el).setView([lat,lon],15);
-  wireLandPanControls(landMap);
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{attribution:'© OpenStreetMap © CARTO',subdomains:'abcd',maxZoom:19}).addTo(landMap);
-  // w9-10: Leaflet's marker icon renders as an <img> -- `alt` is its accessible name
-  // (the list view, #llist, remains the real keyboard/SR-equivalent; this is a small assist).
-  landMarker=L.marker([lat,lon],{alt:label||t("map_marker_alt")}).addTo(landMap);
-  if(label) landMarker.bindPopup(label).openPopup();
-  setTimeout(()=>{ if(landMap) landMap.invalidateSize(); },150);
-}
-
-async function landShowLots(gj, n, selection){
-  const el=$("#landmap"); if(!el) return; el.style.display="none";
-  $("#landmapnote").innerHTML=t("showing_lots_note_html",{n, s:n===1?"":"s"});
-  try{ await loadLeaflet(); }catch(e){}
-  if(selection!==undefined && selection!==landSelectionSeq) return;
-  if(typeof L==="undefined"){
-    const controls=$("#landpan"); if(controls) controls.hidden=true;
-    return;
-  }
-  el.style.display="block";
-  landMap=L.map(el);
-  wireLandPanControls(landMap);
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{attribution:'© OpenStreetMap © CARTO · lots © NYC MapPLUTO',subdomains:'abcd',maxZoom:19}).addTo(landMap);
-  const layer=L.geoJSON(gj,{style:{color:'#1a44e0',weight:2,fillColor:'#1b3a8f',fillOpacity:.35}}).addTo(landMap);
-  try{ landMap.fitBounds(layer.getBounds(),{padding:[20,20],maxZoom:17}); }catch(e){ landMap.setView([40.71,-73.96],12); }
-  setTimeout(()=>{ if(landMap) landMap.invalidateSize(); },160);
-}
 
 function landToAlert(term){
   const keywords = term ? [String(term).toLowerCase().trim()].filter(Boolean) : [];
@@ -1901,8 +1706,6 @@ globalThis.landRenderList = landRenderList;
 globalThis.landRowHTML = landRowHTML;
 globalThis.landSearch = landSearch;
 globalThis.landSelect = landSelect;
-globalThis.landShowLots = landShowLots;
-globalThis.landShowMap = landShowMap;
 globalThis.landSpineEventRowHTML = landSpineEventRowHTML;
 globalThis.landSpineGapsHTML = landSpineGapsHTML;
 globalThis.landSpineHTML = landSpineHTML;
@@ -1913,7 +1716,6 @@ globalThis.landToAlert = landToAlert;
 globalThis.landZoningStatisticsHTML = landZoningStatisticsHTML;
 globalThis.loadLandDefaultSnapshot = loadLandDefaultSnapshot;
 globalThis.loadLandProjectsSnapshot = loadLandProjectsSnapshot;
-globalThis.loadLeaflet = loadLeaflet;
 globalThis.loadNoticeLandSpine = loadNoticeLandSpine;
 globalThis.loadZapOutcomes = loadZapOutcomes;
 globalThis.loadZapProjectJoinIndex = loadZapProjectJoinIndex;
@@ -1923,7 +1725,6 @@ globalThis.paintLandRows = paintLandRows;
 globalThis.prefetchZapOutcomesForList = prefetchZapOutcomesForList;
 globalThis.renderLandEntryNotFound = renderLandEntryNotFound;
 globalThis.showLandEntry = showLandEntry;
-globalThis.wireLandPanControls = wireLandPanControls;
 globalThis.zapCouncilWhere = zapCouncilWhere;
 globalThis.zapDistrictWhere = zapDistrictWhere;
 globalThis.zapOutcomesMemGet = zapOutcomesMemGet;
@@ -1943,6 +1744,5 @@ Object.defineProperty(globalThis, "landMarker", { configurable: true, get: () =>
 Object.defineProperty(globalThis, "landPhaseSpineToolsPromise", { configurable: true, get: () => landPhaseSpineToolsPromise, set: value => { landPhaseSpineToolsPromise = value; } });
 Object.defineProperty(globalThis, "landResolvedArea", { configurable: true, get: () => landResolvedArea, set: value => { landResolvedArea = value; } });
 Object.defineProperty(globalThis, "landSelectionSeq", { configurable: true, get: () => landSelectionSeq, set: value => { landSelectionSeq = value; } });
-Object.defineProperty(globalThis, "leafletP", { configurable: true, get: () => leafletP, set: value => { leafletP = value; } });
 Object.defineProperty(globalThis, "noticeLandSpineToolsPromise", { configurable: true, get: () => noticeLandSpineToolsPromise, set: value => { noticeLandSpineToolsPromise = value; } });
 Object.defineProperty(globalThis, "zapProjectJoinIndexPromise", { configurable: true, get: () => zapProjectJoinIndexPromise, set: value => { zapProjectJoinIndexPromise = value; } });

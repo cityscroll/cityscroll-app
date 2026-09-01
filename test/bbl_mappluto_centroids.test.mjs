@@ -18,7 +18,8 @@ import {
 } from "../site/bbl_mappluto_centroids.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-const landSrc = readFileSync(new URL("../site/app/land.mjs", import.meta.url), "utf8");
+// Point resolution moved to the activation-gated map runtime; land.mjs no longer owns it.
+const landSrc = readFileSync(new URL("../site/app/map_runtime.mjs", import.meta.url), "utf8");
 
 function extractFunction(source, name) {
   let start = source.indexOf(`async function ${name}(`);

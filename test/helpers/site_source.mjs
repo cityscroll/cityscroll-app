@@ -10,6 +10,7 @@ export const SITE_MODULES = [
   "exams.mjs",
   "staffing.mjs",
   "land.mjs",
+  "map_runtime.mjs",
   "feed-actions.mjs",
   "result-match.mjs",
   "notice-context.mjs",

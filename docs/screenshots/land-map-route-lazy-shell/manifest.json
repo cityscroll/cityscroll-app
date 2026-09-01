@@ -1,0 +1,360 @@
+{
+  "schema": "cityscroll.capture_receipt.v1",
+  "capture": "land-map-route-lazy-shell",
+  "routes": {
+    "list": "/browse/zoning/?boro=Queens&stage=public_review",
+    "map": "/browse/zoning/?boro=Queens&stage=public_review&view=map"
+  },
+  "viewports": [
+    [
+      390,
+      844
+    ],
+    [
+      1440,
+      900
+    ]
+  ],
+  "before_source": "git worktree at HEAD + node tools/build_primary_documents.mjs",
+  "after_source": "working tree site/",
+  "files": [
+    {
+      "name": "before/land-list-390.png",
+      "bytes": 73822,
+      "sha256": "e8a8a07b39b4d6db6529a7184e455ac2c44e5fc869f04dbccacd42fd8ecfd809",
+      "viewport": [
+        390,
+        844
+      ],
+      "observed": {
+        "url": "/browse/zoning/?boro=Queens&stage=public_review",
+        "semantic": [
+          "boro=Queens",
+          "stage=public_review"
+        ],
+        "view": null,
+        "controls": [
+          {
+            "view": "list",
+            "pressed": true
+          },
+          {
+            "view": "map",
+            "pressed": false
+          }
+        ],
+        "note": "",
+        "rows": 18,
+        "count": "18 results",
+        "map_state": "absent",
+        "map_markers": 0,
+        "map_summary": "",
+        "map_retry": false,
+        "list_visible": true
+      },
+      "head_entry": {
+        "route": "/browse/zoning/?boro=Queens&stage=public_review",
+        "requests": 221,
+        "first_paint_requests": 210,
+        "first_paint_ordering": {
+          "first_row_at_ms": 318,
+          "resources_before_first_row": 182,
+          "map_dependencies_before_first_row": [
+            "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css",
+            "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+          ],
+          "blocking_map_dependencies_before_first_row": [
+            "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css",
+            "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+          ]
+        },
+        "map_dependency_requests": [
+          "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css",
+          "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js",
+          "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
+          "https://b.basemaps.cartocdn.com/light_all/15/9661/12324.png",
+          "https://c.basemaps.cartocdn.com/light_all/15/9661/12325.png",
+          "https://a.basemaps.cartocdn.com/light_all/15/9660/12324.png",
+          "https://c.basemaps.cartocdn.com/light_all/15/9662/12324.png",
+          "https://b.basemaps.cartocdn.com/light_all/15/9660/12325.png",
+          "https://d.basemaps.cartocdn.com/light_all/15/9662/12325.png",
+          "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png"
+        ]
+      }
+    },
+    {
+      "name": "before/land-list-1440.png",
+      "bytes": 129995,
+      "sha256": "3e36bb4a616dae7decfb994bc1fdcead53ee7808d1933fa3158e57cfdcf1703f",
+      "viewport": [
+        1440,
+        900
+      ],
+      "observed": {
+        "url": "/browse/zoning/?boro=Queens&stage=public_review",
+        "semantic": [
+          "boro=Queens",
+          "stage=public_review"
+        ],
+        "view": null,
+        "controls": [
+          {
+            "view": "list",
+            "pressed": true
+          },
+          {
+            "view": "map",
+            "pressed": false
+          }
+        ],
+        "note": "",
+        "rows": 18,
+        "count": "18 results",
+        "map_state": "absent",
+        "map_markers": 0,
+        "map_summary": "",
+        "map_retry": false,
+        "list_visible": true
+      },
+      "head_entry": {
+        "route": "/browse/zoning/?boro=Queens&stage=public_review",
+        "requests": 221,
+        "first_paint_requests": 210,
+        "first_paint_ordering": {
+          "first_row_at_ms": 318,
+          "resources_before_first_row": 182,
+          "map_dependencies_before_first_row": [
+            "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css",
+            "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+          ],
+          "blocking_map_dependencies_before_first_row": [
+            "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css",
+            "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+          ]
+        },
+        "map_dependency_requests": [
+          "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css",
+          "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js",
+          "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
+          "https://b.basemaps.cartocdn.com/light_all/15/9661/12324.png",
+          "https://c.basemaps.cartocdn.com/light_all/15/9661/12325.png",
+          "https://a.basemaps.cartocdn.com/light_all/15/9660/12324.png",
+          "https://c.basemaps.cartocdn.com/light_all/15/9662/12324.png",
+          "https://b.basemaps.cartocdn.com/light_all/15/9660/12325.png",
+          "https://d.basemaps.cartocdn.com/light_all/15/9662/12325.png",
+          "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png"
+        ]
+      }
+    },
+    {
+      "name": "after/land-list-390.png",
+      "bytes": 73822,
+      "sha256": "e8a8a07b39b4d6db6529a7184e455ac2c44e5fc869f04dbccacd42fd8ecfd809",
+      "viewport": [
+        390,
+        844
+      ],
+      "observed": {
+        "url": "/browse/zoning/?boro=Queens&stage=public_review",
+        "semantic": [
+          "boro=Queens",
+          "stage=public_review"
+        ],
+        "view": null,
+        "controls": [
+          {
+            "view": "list",
+            "pressed": true
+          },
+          {
+            "view": "map",
+            "pressed": false
+          }
+        ],
+        "note": "",
+        "rows": 18,
+        "count": "18 results",
+        "map_state": "absent",
+        "map_markers": 0,
+        "map_summary": "",
+        "map_retry": false,
+        "list_visible": true
+      }
+    },
+    {
+      "name": "after/land-map-390.png",
+      "bytes": 90247,
+      "sha256": "59bfa192bddf1ae3b8b13cbb9ed0c77bed1b1dcf0718eae02a6b7f941d14fd6d",
+      "viewport": [
+        390,
+        844
+      ],
+      "observed": {
+        "url": "/browse/zoning/?boro=Queens&stage=public_review&view=map",
+        "semantic": [
+          "boro=Queens",
+          "stage=public_review"
+        ],
+        "view": "map",
+        "controls": [
+          {
+            "view": "list",
+            "pressed": false
+          },
+          {
+            "view": "map",
+            "pressed": true
+          }
+        ],
+        "note": "",
+        "rows": 18,
+        "count": "18 results",
+        "map_state": "ready",
+        "map_markers": 6,
+        "map_summary": "6 of 18 projects are on the map.",
+        "map_retry": false,
+        "list_visible": true
+      }
+    },
+    {
+      "name": "after/land-list-1440.png",
+      "bytes": 129995,
+      "sha256": "3e36bb4a616dae7decfb994bc1fdcead53ee7808d1933fa3158e57cfdcf1703f",
+      "viewport": [
+        1440,
+        900
+      ],
+      "observed": {
+        "url": "/browse/zoning/?boro=Queens&stage=public_review",
+        "semantic": [
+          "boro=Queens",
+          "stage=public_review"
+        ],
+        "view": null,
+        "controls": [
+          {
+            "view": "list",
+            "pressed": true
+          },
+          {
+            "view": "map",
+            "pressed": false
+          }
+        ],
+        "note": "",
+        "rows": 18,
+        "count": "18 results",
+        "map_state": "absent",
+        "map_markers": 0,
+        "map_summary": "",
+        "map_retry": false,
+        "list_visible": true
+      }
+    },
+    {
+      "name": "after/land-map-1440.png",
+      "bytes": 164296,
+      "sha256": "d8d1cf517bd26e8f9d977436d5efab75ae0e475d3e629af062a78c8cbf0ce1c0",
+      "viewport": [
+        1440,
+        900
+      ],
+      "observed": {
+        "url": "/browse/zoning/?boro=Queens&stage=public_review&view=map",
+        "semantic": [
+          "boro=Queens",
+          "stage=public_review"
+        ],
+        "view": "map",
+        "controls": [
+          {
+            "view": "list",
+            "pressed": false
+          },
+          {
+            "view": "map",
+            "pressed": true
+          }
+        ],
+        "note": "",
+        "rows": 18,
+        "count": "18 results",
+        "map_state": "ready",
+        "map_markers": 6,
+        "map_summary": "6 of 18 projects are on the map.",
+        "map_retry": false,
+        "list_visible": true
+      }
+    },
+    {
+      "name": "after/land-map-blocked-390.png",
+      "bytes": 86765,
+      "sha256": "5f9a00cdcff2b294c4bf3b8fac5485bb55919b86c37ff204d51cba4ead679b70",
+      "viewport": [
+        390,
+        844
+      ],
+      "observed": {
+        "url": "/browse/zoning/?boro=Queens&stage=public_review&view=map",
+        "semantic": [
+          "boro=Queens",
+          "stage=public_review"
+        ],
+        "view": "map",
+        "controls": [
+          {
+            "view": "list",
+            "pressed": true
+          },
+          {
+            "view": "map",
+            "pressed": false
+          }
+        ],
+        "note": "The map could not load. The same filtered results are showing as a list.",
+        "rows": 18,
+        "count": "18 results",
+        "map_state": "failed",
+        "map_markers": 0,
+        "map_summary": "",
+        "map_retry": true,
+        "list_visible": true
+      }
+    },
+    {
+      "name": "after/land-map-blocked-1440.png",
+      "bytes": 143866,
+      "sha256": "2f76bb91ce73540b134d7d14cae677402b7973956f4154a7a187422e3821694a",
+      "viewport": [
+        1440,
+        900
+      ],
+      "observed": {
+        "url": "/browse/zoning/?boro=Queens&stage=public_review&view=map",
+        "semantic": [
+          "boro=Queens",
+          "stage=public_review"
+        ],
+        "view": "map",
+        "controls": [
+          {
+            "view": "list",
+            "pressed": true
+          },
+          {
+            "view": "map",
+            "pressed": false
+          }
+        ],
+        "note": "The map could not load. The same filtered results are showing as a list.",
+        "rows": 18,
+        "count": "18 results",
+        "map_state": "failed",
+        "map_markers": 0,
+        "map_summary": "",
+        "map_retry": true,
+        "list_visible": true
+      }
+    }
+  ]
+}
