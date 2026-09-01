@@ -185,22 +185,21 @@ export function readKeywordSearchIndexShardManifest(pathOrDir) {
 function readCompressedShard(dir, descriptor) {
   const brPath = join(dir, descriptor.path);
   const gzipPath = join(dir, descriptor.gzip_path);
-  let compressed;
-  let content;
-  if (existsSync(brPath)) {
-    compressed = readFileSync(brPath);
-    if (sha256(compressed) !== descriptor.brotli_sha256) {
-      throw new Error(`keyword search Brotli shard hash mismatch: ${descriptor.family}`);
-    }
-    content = brotliDecompressSync(compressed);
-  } else if (existsSync(gzipPath)) {
-    compressed = readFileSync(gzipPath);
-    if (sha256(compressed) !== descriptor.gzip_sha256) {
-      throw new Error(`keyword search gzip shard hash mismatch: ${descriptor.family}`);
-    }
-    content = gunzipSync(compressed);
-  } else {
+  if (!existsSync(brPath) || !existsSync(gzipPath)) {
     throw new Error(`keyword search shard missing: ${descriptor.family}`);
+  }
+  const brotliBytes = readFileSync(brPath);
+  const gzipBytes = readFileSync(gzipPath);
+  if (brotliBytes.byteLength !== descriptor.brotli_bytes || sha256(brotliBytes) !== descriptor.brotli_sha256) {
+    throw new Error(`keyword search Brotli shard hash or byte-count mismatch: ${descriptor.family}`);
+  }
+  if (gzipBytes.byteLength !== descriptor.gzip_bytes || sha256(gzipBytes) !== descriptor.gzip_sha256) {
+    throw new Error(`keyword search gzip shard hash or byte-count mismatch: ${descriptor.family}`);
+  }
+  const content = brotliDecompressSync(brotliBytes);
+  const gzipContent = gunzipSync(gzipBytes);
+  if (!content.equals(gzipContent)) {
+    throw new Error(`keyword search compressed shard transports disagree: ${descriptor.family}`);
   }
   if (content.byteLength !== descriptor.uncompressed_bytes || sha256(content) !== descriptor.sha256) {
     throw new Error(`keyword search shard content mismatch: ${descriptor.family}`);
@@ -213,6 +212,8 @@ function readCompressedShard(dir, descriptor) {
     || receipt?.schema !== KEYWORD_SEARCH_INDEX_SHARD_RECEIPT_SCHEMA
     || receipt.family !== descriptor.family
     || receipt.document_count !== shard.documents?.length
+    || descriptor.document_count !== shard.documents?.length
+    || shard.indexed_count !== shard.documents?.length
     || receipt.content_sha256 !== sha256(serialized(body))
     || receipt.content_bytes !== serialized(body).byteLength
   ) {
@@ -223,10 +224,25 @@ function readCompressedShard(dir, descriptor) {
 
 export function readKeywordSearchIndexFromShards(pathOrDir) {
   const { dir, manifest } = readKeywordSearchIndexShardManifest(pathOrDir);
-  if (manifest.representation !== "family-sharded-compressed") {
+  if (
+    manifest.schema !== "cityscroll.keyword_search_index.v1"
+    || manifest.shard_schema !== KEYWORD_SEARCH_INDEX_SHARD_SCHEMA
+    || manifest.representation !== "family-sharded-compressed"
+  ) {
     throw new Error("keyword search shard manifest has unsupported representation");
   }
-  const shards = (manifest.shards || []).map((descriptor) => readCompressedShard(dir, descriptor));
+  const descriptors = manifest.shards || [];
+  const families = descriptors.map(({ family }) => family);
+  if (
+    descriptors.length !== manifest.logical_index?.family_count
+    || new Set(families).size !== families.length
+  ) {
+    throw new Error("keyword search shard manifest family set is incomplete or duplicated");
+  }
+  const shards = descriptors.map((descriptor) => readCompressedShard(dir, descriptor));
+  if (shards.reduce((sum, shard) => sum + shard.documents.length, 0) !== manifest.logical_index?.document_count) {
+    throw new Error("keyword search shard manifest document count mismatch");
+  }
   const index = logicalIndexFromManifest(manifest, shards);
   const logicalBytes = serialized(index);
   if (keywordSearchIndexFingerprint(index) !== manifest.logical_index?.sha256) {
