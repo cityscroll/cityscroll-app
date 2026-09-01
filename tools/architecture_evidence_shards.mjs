@@ -25,6 +25,11 @@ import { dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 import { evaluateCardReconciliation } from "./card_reconciliation_guard.mjs";
+import {
+  inspectForbiddenFields,
+  inspectPublicIdentity,
+  inspectRawIdentityEscapes,
+} from "./public_identity_contract.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -48,6 +53,11 @@ export const SUPPORTED_ENTRY_SCHEMAS = Object.freeze([ENTRY_SCHEMA]);
 const ENTRY_SEGMENT = "[a-z0-9]+(?:[._-][a-z0-9]+)*";
 const ENTRY_ID_PATTERN = new RegExp(`^${ENTRY_SEGMENT}(?:/${ENTRY_SEGMENT})*$`);
 const IGNORED_ENTRY_NAMES = new Set(["README.md"]);
+
+// Identity-bearing fields whose source text must be spelled plainly. A JSON
+// parser resolves an escape before any value-level rule can see it, so these are
+// checked against the raw file text rather than the parsed document.
+export const RAW_IDENTITY_FIELDS = Object.freeze(["id", "schema", "fingerprint"]);
 
 function posix(root, filePath) {
   return relative(root, filePath).split("\\").join("/");
@@ -299,8 +309,10 @@ export function loadArchitectureEvidenceEntries({ root = ROOT, entriesDir = ENTR
 
   for (const file of listed.files) {
     let parsed;
+    let rawText;
     try {
-      parsed = JSON.parse(readFileSync(file.filePath, "utf8"));
+      rawText = readFileSync(file.filePath, "utf8");
+      parsed = JSON.parse(rawText);
     } catch {
       findings.push(finding(`entry ${file.repoPath} is malformed`, {
         class: "malformed_entry",
@@ -318,6 +330,24 @@ export function loadArchitectureEvidenceEntries({ root = ROOT, entriesDir = ENTR
       }));
       continue;
     }
+    // The positive public identity contract. These rules say what a public
+    // identity must look like, so the repository never has to carry a list of
+    // what it must not look like.
+    const contractViolations = [
+      ...inspectRawIdentityEscapes(rawText, { path: file.repoPath, fields: RAW_IDENTITY_FIELDS }),
+      ...inspectPublicIdentity(parsed.id, { path: file.repoPath, field: "id" }),
+      ...inspectForbiddenFields(parsed, { path: file.repoPath }),
+    ];
+    if (contractViolations.length) {
+      for (const row of contractViolations) {
+        findings.push(finding(
+          `entry ${row.path} violates the public identity contract (${row.rule} at ${row.field}): ${row.detail}`,
+          { class: "public_identity_contract", path: row.path, id: null },
+        ));
+      }
+      continue;
+    }
+
     const expectedName = `${encodeEntryId(parsed.id)}.json`;
     if (file.name !== expectedName) {
       findings.push(finding(

@@ -4,7 +4,6 @@
 /.gitattributes
 /.github/
 /.gitignore
-/.legacy-name-guard-probe.txt
 /.scrimignore
 /AGENTS.md
 /AP-EVIDENCE.md

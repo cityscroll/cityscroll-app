@@ -6,11 +6,25 @@ import { dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { aggregateArchitectureEvidence } from "./architecture_evidence_shards.mjs";
+import {
+  buildReceipt as buildPrivateIdentifierReceipt,
+  loadTermSet,
+  scanPrivateIdentifiers,
+} from "./private_identifier_scan.mjs";
+import {
+  inspectForbiddenFields,
+  inspectPublicIdentity,
+  inspectPublicReference,
+  inspectRawIdentityEscapes,
+  PUBLIC_NAMESPACE,
+  REFERENCE_SCHEME,
+} from "./public_identity_contract.mjs";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const MANIFEST_PATH = "docs/repository-control-plane/inverse-guard.v1.json";
 const SCHEMA = "cityscroll.repository_inverse_guard.v1";
 const TEXT_PATH = /\.(?:md|json|ya?ml)$/i;
+const IDENTITY_FIELDS = ["id", "register_id", "canonical_owner", "stable_replacement_reference"];
 const RETAINED_CLASSES = new Set([
   "accepted-architecture-decision", "public-source-contract", "test",
   "implementation-evidence-shard", "public-code-coupled-evidence", "current-maintainer-runbook",
@@ -100,6 +114,49 @@ export function scanDocument({ path, text, classification }) {
   return results;
 }
 
+/**
+ * The positive half of the repository naming boundary, applied to any public
+ * JSON document that participates in it. A document only reaches the parser when
+ * it actually mentions the public namespace or reference scheme, so the common
+ * case stays a substring test.
+ */
+export function scanPublicIdentityContract({ path, text }) {
+  if (!/\.json$/i.test(path)) return [];
+  if (!text.includes(PUBLIC_NAMESPACE) && !text.includes(`${REFERENCE_SCHEME}:`)) return [];
+  let document;
+  try {
+    document = JSON.parse(text);
+  } catch {
+    return [];
+  }
+  const violations = [
+    ...inspectRawIdentityEscapes(text, { path, fields: IDENTITY_FIELDS }),
+    ...inspectForbiddenFields(document, { path }),
+  ];
+  const walk = (node) => {
+    if (!node || typeof node !== "object") return;
+    if (Array.isArray(node)) {
+      node.forEach(walk);
+      return;
+    }
+    for (const [key, value] of Object.entries(node)) {
+      if (typeof value === "string" && IDENTITY_FIELDS.includes(key)) {
+        violations.push(...inspectPublicIdentity(value, { path, field: key }));
+        violations.push(...inspectPublicReference(value, { path, field: key }));
+      }
+      walk(value);
+    }
+  };
+  walk(document);
+  return violations.map((row) => finding(
+    row.path,
+    "public-identity-contract",
+    "public-identity-contract",
+    "repository",
+    `${row.rule} at ${row.field}: ${row.detail}`,
+  ));
+}
+
 export function evaluate({ root = ROOT, manifest, paths, sourceCards }) {
   const results = [...validateManifest(manifest, sourceCards)];
   for (const path of [...new Set(paths)].sort()) {
@@ -109,6 +166,7 @@ export function evaluate({ root = ROOT, manifest, paths, sourceCards }) {
     const classification = classifyPath(path, manifest);
     if (!classification) results.push(finding(path, "unclassified-path", "unclassified", "unresolved", "text document has no classification contract"));
     results.push(...scanDocument({ path, text, classification }));
+    results.push(...scanPublicIdentityContract({ path, text }));
   }
   return results.sort((a, b) => `${a.path}\0${a.rule}\0${a.detail}`.localeCompare(`${b.path}\0${b.rule}\0${b.detail}`));
 }
@@ -123,24 +181,69 @@ function selectedPaths(root, argv) {
   return git(root, ["diff", "--name-only", "--diff-filter=AMR", `${base}...HEAD`]);
 }
 
+function argumentValue(argv, name) {
+  const index = argv.indexOf(name);
+  return index >= 0 ? argv[index + 1] || null : null;
+}
+
+/**
+ * Run the generic private-identifier scan as part of this one boundary check, so
+ * the repository has a single documented gate rather than two that can drift.
+ *
+ * The scan is term-agnostic. Public CI supplies no term set and the scan reports
+ * SKIPPED, which keeps public CI credential-free: a term set is configuration for
+ * this check, never authorization to reach any private system. An owner-controlled
+ * run supplies the term set and `--private`, and then a missing term set is a hard
+ * failure rather than a quiet pass.
+ */
+function runPrivateIdentifierScan(argv) {
+  const termsFile = argumentValue(argv, "--private-identifier-terms");
+  const loaded = loadTermSet({ termsFile });
+  const mode = argv.includes("--private") ? "private" : "public";
+  let result = {
+    status: "PASS",
+    findings: [],
+    inventory: [],
+    scanned_path_count: 0,
+    scanned_textual_path_count: 0,
+    scanned_symlink_count: 0,
+  };
+  if (loaded.terms.length && !loaded.error) {
+    result = scanPrivateIdentifiers({ root: ROOT, terms: loaded.terms });
+  }
+  const receipt = buildPrivateIdentifierReceipt({
+    mode,
+    revision: null,
+    terms: loaded.terms,
+    result,
+    termError: loaded.error,
+  });
+  // The receipt is public output, so it carries the aggregate and the redacted
+  // locations only. The detailed inventory stays with the owner-controlled run.
+  return receipt;
+}
+
 function main(argv = process.argv.slice(2)) {
   const manifest = JSON.parse(readFileSync(join(ROOT, MANIFEST_PATH), "utf8"));
   const architecture = aggregateArchitectureEvidence({ root: ROOT });
   if (architecture.status !== "PASS") throw new Error(`source-card inventory unavailable: ${architecture.findings.join("; ")}`);
   const paths = selectedPaths(ROOT, argv);
   const findings = evaluate({ root: ROOT, manifest, paths, sourceCards: architecture.sourceCards });
+  const privateIdentifierScan = runPrivateIdentifierScan(argv);
+  const failed = findings.length > 0 || privateIdentifierScan.status === "FAIL";
   const receipt = {
     schema: "cityscroll.repository_inverse_guard_receipt.v1",
-    status: findings.length ? "FAIL" : "PASS",
+    status: failed ? "FAIL" : "PASS",
     mode: argv.includes("--all") ? "clean-checkout" : "changed-paths",
     scanned_paths: paths.filter((path) => TEXT_PATH.test(path)).sort(),
     source_card_inventory_schema: architecture.sourceCards.schema,
     source_card_inventory_sha256: architecture.receipt.source_cards_sha256,
     credential_free: true,
+    private_identifier_scan: privateIdentifierScan,
     findings,
   };
   process.stdout.write(`${JSON.stringify(receipt, null, 2)}\n`);
-  if (findings.length) process.exitCode = 1;
+  if (failed) process.exitCode = 1;
 }
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) main();

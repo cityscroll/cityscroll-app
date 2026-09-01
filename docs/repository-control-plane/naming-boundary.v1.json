@@ -1,0 +1,49 @@
+{
+  "schema": "cityscroll.repository_naming_boundary.v1",
+  "summary": "The public/private naming boundary for this repository, stated positively and checked by one gate.",
+  "public_identity_contract": {
+    "contract": "cityscroll.public-engineering-record-identity.v1",
+    "concept": "CityScroll Engineering Record",
+    "namespace": "cityscroll-engineering",
+    "reference_scheme": "engineering-record",
+    "reference_form": "engineering-record:cityscroll-engineering/<descriptive-public-id>#<fragment>",
+    "rules": [
+      "A public cross-boundary identity is cityscroll-engineering/<descriptive-public-id>.",
+      "The descriptive part is hyphen-separated words that each begin with a letter, so a public identity cannot encode a queue position or an ordering.",
+      "A raw identity field is spelled plainly; a character escape in the source text is rejected even when it parses to a legal identity.",
+      "A file path decodes to exactly the identity the document declares.",
+      "A private source id or a private alias mapping is not a valid public field.",
+      "A violation names the contract and the field, and never echoes the value it rejected."
+    ],
+    "implementation": "tools/public_identity_contract.mjs"
+  },
+  "private_identifier_scan": {
+    "implementation": "tools/private_identifier_scan.mjs",
+    "normalization_version": "private-identifier-normalization.v1",
+    "normalization_rules": [
+      "literal",
+      "case-fold",
+      "unicode-normalize",
+      "json-unicode-escape",
+      "braced-unicode-escape",
+      "hex-escape",
+      "percent-encoding",
+      "html-entity-decimal",
+      "html-entity-hex",
+      "base64-run",
+      "char-code-sequence",
+      "quoted-fragment-join"
+    ],
+    "scope": "every tracked path, every tracked non-binary file regardless of extension, and every symlink target",
+    "term_set": "supplied at run time from an owner-controlled input outside this repository; no private identifier is committed here",
+    "public_mode": "without a term set the scan reports SKIPPED and asserts nothing, so public CI stays credential-free",
+    "private_mode": "with --private a missing term set is a hard failure; the scan never reports a pass with nothing to match",
+    "output_discipline": "a finding names a surface, a normalization rule, and an opaque term reference; a matching path is reported as an ordinal, and the detailed inventory is written only to an explicit destination outside this repository",
+    "limits": "this is a normalization contract over mechanical, reversible representations; it does not detect encryption or arbitrary obfuscation"
+  },
+  "gate": {
+    "front_door": "node tools/inverse_control_plane_guard.mjs --check --all",
+    "receipt": "derived at check time and printed; never tracked, so no change has to rewrite a shared aggregate",
+    "owner_controlled_run": "node tools/inverse_control_plane_guard.mjs --check --all --private --private-identifier-terms <path outside this repository>"
+  }
+}
