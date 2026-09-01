@@ -283,6 +283,36 @@ def identity_table(raw: str) -> str:
     return "\n".join(rows) + "\n"
 
 
+def control_table(raw: str) -> str:
+    path = os.path.join(raw, "full-checkout-controls.jsonl")
+    if not os.path.exists(path):
+        return "_not recorded_\n"
+    rows = ["| Gate class | Result | Observed test counts |", "| --- | --- | --- |"]
+    for record in read_jsonl(path):
+        counts = record.get("test_counts") or {}
+        observed = " ".join(f"{k} {v}" for k, v in sorted(counts.items()))
+        result = "pass" if record["exit_status"] == 0 else f"**exit {record['exit_status']}**"
+        rows.append(f"| `{record['id']}` | {result} | {observed} |")
+    return "\n".join(rows) + "\n"
+
+
+def product_surface_table(raw: str) -> str:
+    path = os.path.join(raw, "product-surface.json")
+    if not os.path.exists(path):
+        return "_not recorded_\n"
+    record = read_json(path)
+    rows = [
+        "| Surface | Files | Digest at merge base | Digest at measured revision | Identical |",
+        "| --- | ---: | --- | --- | --- |",
+    ]
+    for row in record["surfaces"]:
+        rows.append(
+            f"| `{row['surface']}/` | {row['files']:,} | `{row['merge_base_digest']}` "
+            f"| `{row['measured_revision_digest']}` | {'yes' if row['identical'] else '**no**'} |"
+        )
+    return "\n".join(rows) + "\n"
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
@@ -318,6 +348,10 @@ def main() -> int:
     print(integrity_table(raw))
     print("### Gate classes run in both provisioned profiles\n")
     print(gate_probe_table(raw))
+    print("### Full-checkout controls\n")
+    print(control_table(raw))
+    print("### Product surface, unchanged\n")
+    print(product_surface_table(raw))
     return 0
 
 

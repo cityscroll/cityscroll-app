@@ -7,8 +7,8 @@
     "provisioned_profile_name": "card-work",
     "manifest_version": 1,
     "manifest_digest": "1aefe6db83d05317e2dc176eca8ff358d36bbdc246d1b998abab869b8ae0de1f",
-    "provision_identity": "f9cf2a0f72f9af11918746b606378c10625dbb3910e22a60fdabacd780267f05",
-    "revision": "05421f08d291795ffefd60cf866c8276a390c53b",
+    "provision_identity": "8b58e63b13c3e083153263ac79e2a44a76506b3dfa1f6697250de05c5f5dcdbc",
+    "revision": "06f22391d04d47ada344d3a7b88d3b862e5ccfdc",
     "identity_inputs": [
       {
         "id": "routing-manifest",
@@ -93,7 +93,7 @@
     "integrity": {
       "fsck_connectivity_only_exit": 0,
       "fsck_method": "--connectivity-only verifies the object graph without demanding blobs a partial clone deliberately did not fetch, so it is the meaningful integrity check in both profiles",
-      "commits_reachable_from_head": 1587,
+      "commits_reachable_from_head": 1588,
       "working_tree_clean": true,
       "tracked_paths_not_materialised": 1907
     },
@@ -107,7 +107,7 @@
       "stale": false
     }
   },
-  "deterministic_digest": "6727fe428b9d5f10d9220d9bb259c3231e5ed543b2a5c9fd71a90af086a581f8",
+  "deterministic_digest": "a72e6ff825a9ec6cefd0a8943f2d60228efc460a067a63c77789b7bea7c36ad5",
   "context": {
     "note": "Supplied by the caller, not observed here, so it is reported rather than digested.",
     "routing_decision": null,
@@ -133,16 +133,16 @@
           "allocated_bytes": 0
         },
         "git_metadata": {
-          "logical_bytes": 40804470,
-          "allocated_bytes": 41832448
+          "logical_bytes": 40797473,
+          "allocated_bytes": 41127936
         },
         "other_overhead": {
           "logical_bytes": 188768,
           "allocated_bytes": 0
         },
         "tracked_other": {
-          "logical_bytes": 65558777,
-          "allocated_bytes": 71921664
+          "logical_bytes": 65564740,
+          "allocated_bytes": 71925760
         },
         "tracked_site_data": {
           "logical_bytes": 63802082,
@@ -158,8 +158,8 @@
         }
       },
       "total": {
-        "logical_bytes": 519959744,
-        "allocated_bytes": 543309824
+        "logical_bytes": 519958710,
+        "allocated_bytes": 542609408
       },
       "hardlink_dedup": {
         "entries": 0,
@@ -169,7 +169,7 @@
     },
     "provisioning_timing": null,
     "packs": 3,
-    "pack_size_kib": 38494,
+    "pack_size_kib": 38487,
     "loose_objects": 0
   }
 }

@@ -349,8 +349,11 @@ import json, os, re
 
 text = open(os.environ["LOG"], encoding="utf-8", errors="replace").read()
 counts = {}
+# node --test uses the spec reporter's "\u2139 tests 1755" form on a pipe here and
+# the TAP "# tests 1755" form elsewhere; accept either rather than silently
+# recording no counts, which is what the first version did.
 for field in ("tests", "pass", "fail", "skipped"):
-    match = re.search(rf"^# {field} (\d+)$", text, re.MULTILINE)
+    match = re.search(rf"^(?:#|\u2139) {field} (\d+)\s*$", text, re.MULTILINE)
     if match:
         counts[field] = int(match.group(1))
 record = {
@@ -380,12 +383,119 @@ for pair in "routed-focused:$FOCUSED_DEST" "routed-ci:$CONTROL_DEST"; do
   rm -rf "$reconcile_out"
 done
 
+# --- 6. full-checkout controls for the gate classes this card must not move ---
+
+# A provisioning change earns trust by leaving the full control exactly where it
+# was. These run in the clean full checkout the router provisioned for the CI
+# surface, not in the working copy this harness was launched from.
+CONTROL_FAILURES=0
+control_gate() {
+  local id="$1"; shift
+  local status=0 log
+  log="$(mktemp -t card-profile-control)"
+  ( cd "$CONTROL_DEST" && "$@" ) > "$log" 2>&1 || status=$?
+  if [[ "$status" -ne 0 ]]; then
+    echo "FULL-CHECKOUT CONTROL FAILED: $id (exit $status)" >&2
+    tail -20 "$log" >&2
+    CONTROL_FAILURES=$((CONTROL_FAILURES + 1))
+  fi
+  ID="$id" STATUS="$status" OUT="$OUT" LOG="$log" CMD="$*" python3 - <<'PYEOF'
+import json, os, re
+
+text = open(os.environ["LOG"], encoding="utf-8", errors="replace").read()
+counts = {}
+for field in ("tests", "pass", "fail", "skipped"):
+    match = re.search(rf"^(?:#|\u2139) {field} (\d+)\s*$", text, re.MULTILINE)
+    if match:
+        counts[field] = int(match.group(1))
+record = {
+    "id": os.environ["ID"],
+    "command": os.environ["CMD"],
+    "exit_status": int(os.environ["STATUS"]),
+    "test_counts": counts or None,
+}
+with open(os.path.join(os.environ["OUT"], "full-checkout-controls.jsonl"), "a", encoding="utf-8") as handle:
+    handle.write(json.dumps(record, sort_keys=True) + "\n")
+PYEOF
+  rm -f "$log"
+}
+
+heartbeat "running full-checkout controls"
+: > "$OUT/full-checkout-controls.jsonl"
+CONTROL_RECONCILE_OUT="$(mktemp -d "${TMPDIR:-/tmp}/cityscroll-architecture-evidence.XXXXXX")"
+control_gate worker-unit bash -c 'cd worker && node --test'
+control_gate site-unit bash -c 'node --test test/*.test.mjs'
+control_gate contract-unit bash -c 'node --test test/contract/*.test.mjs'
+control_gate architecture-evidence-shards node tools/architecture_evidence_shards.mjs --check
+control_gate architecture-reconcile node tools/reconcile_architecture.mjs --check --output-dir "$CONTROL_RECONCILE_OUT"
+control_gate architecture-canaries node tools/backtest_architecture_canaries.mjs --check
+control_gate card-reconciliation node tools/card_reconciliation_guard.mjs
+control_gate card-projection node tools/build_capability_topology.mjs --check
+control_gate evidence-placement node tools/rcp03_evidence_placement.mjs --check
+control_gate cutover-receipt node tools/rcp05_cutover_receipt.mjs --check
+control_gate agents-router node tools/agents_router_guard.mjs --check
+control_gate legacy-name-guard node tools/check_stale_repo_name.mjs
+control_gate source-contracts node tools/verify_source_contracts.mjs
+control_gate card-profile-contract node tools/verify_card_profile.mjs --check
+control_gate card-profile-derivation node tools/derive_card_profile.mjs --check
+control_gate card-profile-routing node tools/card_profile_router.mjs --check
+rm -rf "$CONTROL_RECONCILE_OUT"
+
+# --- 7. product surface, unchanged -------------------------------------------
+
+# The provisioning contract must not move a resident-facing byte. Comparing the
+# tracked-tree digest of each product surface at the merge base and at the
+# measured revision is what makes "unchanged" a measurement rather than a claim.
+heartbeat "comparing product surfaces against the merge base"
+CONTROL="$CONTROL_DEST" REV="$REV" OUT="$OUT" python3 - <<'PYEOF'
+import hashlib, json, os, subprocess
+
+directory, revision = os.environ["CONTROL"], os.environ["REV"]
+
+
+def git(*args):
+    return subprocess.run(["git", "-C", directory, *args], capture_output=True, text=True, check=True).stdout
+
+
+base = git("merge-base", revision, "origin/main").strip()
+surfaces = ["artifacts", "capabilities", "data", "entity_resolution", "ontology", "site", "warehouse", "worker"]
+rows = []
+for surface in surfaces:
+    digests = {}
+    for label, rev in (("merge_base", base), ("measured_revision", revision)):
+        listing = git("ls-tree", "-r", rev, "--", surface)
+        digests[label] = hashlib.sha256(listing.encode("utf-8")).hexdigest()
+        if label == "measured_revision":
+            files = len([line for line in listing.splitlines() if line.strip()])
+    rows.append(
+        {
+            "surface": surface,
+            "files": files,
+            "merge_base_digest": digests["merge_base"][:12],
+            "measured_revision_digest": digests["measured_revision"][:12],
+            "identical": digests["merge_base"] == digests["measured_revision"],
+        }
+    )
+
+record = {
+    "schema": "cityscroll.card-profile-routing-product-surface.v1",
+    "method": "sha256 over `git ls-tree -r <rev> -- <surface>`, which covers every tracked path and blob id beneath the surface.",
+    "merge_base": base,
+    "measured_revision": revision,
+    "surfaces": rows,
+}
+with open(os.path.join(os.environ["OUT"], "product-surface.json"), "w", encoding="utf-8") as handle:
+    json.dump(record, handle, indent=2, sort_keys=True)
+    handle.write("\n")
+print(f"  {sum(1 for row in rows if row['identical'])}/{len(rows)} product surfaces identical to the merge base")
+PYEOF
+
 if [[ "$KEEP" != "1" ]]; then
   rm -rf "$FOCUSED_DEST" "$CONTROL_DEST" "$MISSING_BLOB_DEST"
 fi
 
-if [[ "$PROBE_FAILURES" -ne 0 || "$GATE_FAILURES" -ne 0 ]]; then
-  echo "evidence run failed: $PROBE_FAILURES probe expectation(s) unmet, $GATE_FAILURES gate class failure(s)" >&2
+if [[ "$PROBE_FAILURES" -ne 0 || "$GATE_FAILURES" -ne 0 || "$CONTROL_FAILURES" -ne 0 ]]; then
+  echo "evidence run failed: $PROBE_FAILURES probe expectation(s) unmet, $GATE_FAILURES gate class failure(s), $CONTROL_FAILURES full-checkout control failure(s)" >&2
   exit 1
 fi
 heartbeat "done; receipts are in $OUT"
