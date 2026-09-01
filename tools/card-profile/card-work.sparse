@@ -4,6 +4,7 @@
 /.gitattributes
 /.github/
 /.gitignore
+/.legacy-name-guard-probe.txt
 /.scrimignore
 /AGENTS.md
 /AP-EVIDENCE.md
@@ -60,6 +61,7 @@
 /docs/formulas/
 /docs/gap-taxonomy.md
 /docs/ibo-fiscal-history.md
+/docs/land-map-view-default-question.md
 /docs/land-use-prediction-actor-resolution-v1.md
 /docs/land-use-prediction-backtest-v2.md
 /docs/land-use-prediction-baseline-v1.md
@@ -385,6 +387,8 @@
 /site/land_status_facets.mjs
 /site/land_use_action_codes.mjs
 /site/land_use_action_type.mjs
+/site/land_view_state.mjs
+/site/land_view_switch.mjs
 /site/later_housing_activity_view.mjs
 /site/legacy_hash_forward.mjs
 /site/legal_change_edges.mjs
