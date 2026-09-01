@@ -44,14 +44,10 @@ function git(args, options = {}) {
   });
 }
 
-// The repository's legacy-name guard bans one vocabulary token in tracked text.
-// These generated inventories list tracked paths, and one architecture-evidence
-// shard filename contains that token, so the token is written as a JSON unicode
-// escape. JSON.parse restores the identical string, which is the same encoding
-// the existing shard for the shared dependency store uses.
-function encodeInventory(value) {
-  const banned = String.fromCharCode(107, 114, 97, 107, 101, 110);
-  return JSON.stringify(value, null, 2).split(banned).join(`\\u006b${banned.slice(1)}`);
+// Receipts list tracked paths verbatim. Every public cross-boundary identity is
+// spelled plainly, so no path in a receipt needs an escape to be written down.
+function renderReceipt(value) {
+  return JSON.stringify(value, null, 2);
 }
 
 function readJson(path) {
@@ -278,7 +274,7 @@ function recordGate(argv) {
     paths
   };
   const target = resolve(OBSERVATION_DIR, gate.observation);
-  writeFileSync(target, `${encodeInventory(receipt)}\n`);
+  writeFileSync(target, `${renderReceipt(receipt)}\n`);
   console.log(`recorded ${paths.length} tracked paths for gate class "${id}" (gate exit ${receipt.exit_status})`);
   return result.status === 0 ? 0 : 1;
 }

@@ -1,0 +1,37 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-repository-control-plane/rcp-07",
+  "status": "implemented",
+  "fingerprint": "rcp-07-public-engineering-record-identity.v1",
+  "updated_at": "2026-09-01T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "public-engineering-record-identity-contract",
+      "path": "tools/public_identity_contract.mjs"
+    },
+    {
+      "id": "private-identifier-scanner",
+      "path": "tools/private_identifier_scan.mjs"
+    },
+    {
+      "id": "repository-inverse-guard",
+      "path": "tools/inverse_control_plane_guard.mjs"
+    },
+    {
+      "id": "architecture-evidence-public-contract",
+      "path": "architecture/evidence.d/README.md"
+    },
+    {
+      "id": "public-identity-contract-tests",
+      "path": "test/public_identity_contract.test.mjs"
+    },
+    {
+      "id": "private-identifier-scanner-tests",
+      "path": "test/private_identifier_scan.test.mjs"
+    },
+    {
+      "id": "repository-naming-boundary-receipt",
+      "path": "docs/repository-control-plane/naming-boundary.v1.json"
+    }
+  ]
+}

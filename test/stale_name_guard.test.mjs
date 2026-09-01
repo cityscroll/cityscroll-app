@@ -10,7 +10,6 @@ const GUARD = new URL("../tools/check_stale_repo_name.mjs", import.meta.url);
 const ALLOWLIST = new URL("../.github/legacy-name-allowlist.txt", import.meta.url);
 const PROBE = new URL("../.legacy-name-guard-probe.txt", import.meta.url);
 const legacyName = ["crol", "-", "list"].join("");
-const bannedVocabulary = ["kra", "ken"].join("");
 const reservedMarker = ["card-seal", "5rk8-qj2m-xv91"].join(":");
 
 function runGuard(env) {
@@ -54,10 +53,10 @@ test("a novel unallowlisted reference fails the guard", () => {
   }
 });
 
-test("a novel banned vocabulary reference fails the guard", () => {
-  writeFileSync(PROBE, `new ${bannedVocabulary} reference\n`);
+test("a novel legacy-name reference fails the guard", () => {
+  writeFileSync(PROBE, `new ${legacyName} reference\n`);
   try {
-    assert.throws(() => runGuard(), new RegExp(`legacy-name-guard-probe.*${bannedVocabulary}`, "i"));
+    assert.throws(() => runGuard(), new RegExp(`legacy-name-guard-probe.*${legacyName}`, "i"));
   } finally {
     if (existsSync(PROBE)) unlinkSync(PROBE);
   }
@@ -108,9 +107,9 @@ test("a same-PR allowlist entry covering a same-PR new line fails the guard", ()
 });
 
 test("a 'future:' entry covering a same-PR new line still fails the guard", () => {
-  writeFileSync(PROBE, `new ${bannedVocabulary} reference\n`);
+  writeFileSync(PROBE, `new ${legacyName} reference\n`);
   const probeName = ".legacy-name-guard-probe.txt";
-  const digest = Buffer.from(`new ${bannedVocabulary} reference`, "utf8").toString("base64");
+  const digest = Buffer.from(`new ${legacyName} reference`, "utf8").toString("base64");
   try {
     withAllowlist(
       (original) => `${original}future:${probeName}\t1\t${digest}\t# test: future-prefixed same-PR cover attempt.\n`,
@@ -145,7 +144,7 @@ test("a same-PR wildcard entry covering a modified pre-existing file fails the g
   const targetPath = "README.md";
   const targetUrl = new URL(`../${targetPath}`, import.meta.url);
   const original = readFileSync(targetUrl, "utf8");
-  writeFileSync(targetUrl, `${original}new ${bannedVocabulary} reference\n`);
+  writeFileSync(targetUrl, `${original}new ${legacyName} reference\n`);
   try {
     withAllowlist(
       (allowlist) => `${allowlist}${targetPath}\t*\t*\t# test: same-PR wildcard cover attempt.\n`,

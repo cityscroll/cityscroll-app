@@ -141,6 +141,15 @@
       "allowed_evidence_contract": "cutover-input-schema"
     },
     {
+      "id": "rcp-naming-boundary-contract",
+      "path_pattern": "docs/repository-control-plane/naming-boundary.v1.json",
+      "content_class": "public-source-contract",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-07",
+      "register_id": "cityscroll-repository-control-plane/rcp-07",
+      "disposition": "retain",
+      "allowed_evidence_contract": "public-engineering-record-identity-contract"
+    },
+    {
       "id": "calendar-contract-evidence",
       "path_pattern": "docs/calendar-contract.md",
       "content_class": "public-code-coupled-evidence",

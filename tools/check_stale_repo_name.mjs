@@ -10,13 +10,15 @@ const ROOT = resolve(fileURLToPath(new URL("..", import.meta.url)));
 const ALLOWLIST_PATH = join(ROOT, ".github", "legacy-name-allowlist.txt");
 const GUARD_PATH = relative(ROOT, fileURLToPath(import.meta.url));
 const ALLOWLIST_RELATIVE_PATH = relative(ROOT, ALLOWLIST_PATH);
-const SAME_CHANGE_WILDCARD_PATHS = new Set([
-  // This generated inventory must preserve canonical register identifiers. Its
-  // schema and deterministic builder are the narrower review boundary.
-  "docs/repository-control-plane/classification.v1.json",
-]);
+// Paths whose whole-file exemption may be added in the same change that edits
+// them. The classification inventory was the only member, and it needed one only
+// for the private-term rule this guard no longer carries.
+const SAME_CHANGE_WILDCARD_PATHS = new Set([]);
 const LEGACY_RE = new RegExp(["crol", "[-_]?", "list"].join(""), "i");
-const BANNED_VOCABULARY_RE = /kraken/i;
+// Private development identifiers are deliberately NOT listed here. A committed
+// denylist would publish the very name it exists to keep out, so that half of the
+// boundary lives in tools/private_identifier_scan.mjs, which takes its term set
+// from an owner-controlled input outside this repository.
 const RESERVED_MARKER = "card-seal:5rk8-qj2m-xv91";
 
 function fail(message) {
@@ -233,7 +235,6 @@ function main() {
     source.split(/\r?\n/).forEach((line, index) => {
       const matches = [];
       if (LEGACY_RE.test(line)) matches.push("legacy repository name");
-      if (BANNED_VOCABULARY_RE.test(line)) matches.push("banned vocabulary");
       if (line.includes(RESERVED_MARKER)) matches.push("reserved content marker");
       if (!matches.length) return;
       occurrences += matches.length;

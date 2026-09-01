@@ -51,9 +51,9 @@
         "worker"
       ],
       "scan_hops": 1,
-      "scanned_source_count": 2121,
+      "scanned_source_count": 2122,
       "sources_skipped_not_materialised": 0,
-      "path_count": 1869,
+      "path_count": 1871,
       "worker_to_site_reference_count": 187,
       "worker_to_site_data_reference_count": 28,
       "worker_to_site_data_targets": [
@@ -113,7 +113,7 @@
         "warehouse",
         "worker/src/data"
       ],
-      "path_count": 3628
+      "path_count": 3639
     }
   },
   "required_paths": [
@@ -143,9 +143,9 @@
     "architecture/evidence.d/cityscroll-civic-institutions--ci-i1-borough-office-board-appointment.json",
     "architecture/evidence.d/cityscroll-civic-institutions--ci-j1-governing-board-committee-meetings.json",
     "architecture/evidence.d/cityscroll-civic-institutions--ci-k1-compatibility-uncertainty-navigation.json",
+    "architecture/evidence.d/cityscroll-engineering--shared-dependency-store.json",
+    "architecture/evidence.d/cityscroll-engineering--working-copy-footprint.json",
     "architecture/evidence.d/cityscroll-frictionless-subscribe--fs-14-home-following-entry.json",
-    "architecture/evidence.d/cityscroll-\u006braken--ci-07-shared-dependency-store.json",
-    "architecture/evidence.d/cityscroll-\u006braken--ci-09-act-working-copy-footprint.json",
     "architecture/evidence.d/cityscroll-land-decision-path--ldp-05-authority-summary-materializer.json",
     "architecture/evidence.d/cityscroll-land-decision-path--ldp-06-decides-land-project-audit.json",
     "architecture/evidence.d/cityscroll-land-decision-path--ldp-07-exact-notice-project-edge.json",
@@ -2873,7 +2873,7 @@
       "site/data/zap_outcome_sources/verification_receipts/zap_api_outcomes_2026-07-30.json"
     ]
   },
-  "patterns_sha256": "2882b8f8ab846dfb8a3de8ee6e032bb6f58b3e62f0a286773de5ef86e1a7ef63",
+  "patterns_sha256": "b2ffbbb87697eb3214ff1ba6579d2fbbeacf8b680c5ea80af2dad66729dae2e9",
   "supported_gate_classes": [
     "worker-unit",
     "architecture-evidence-shards",
@@ -2938,30 +2938,30 @@
   "missing_path_behaviour": "A tracked path the profile does not materialise is marked skip-worktree in the index. tools/card_profile_sentinel.cjs turns a missing-file error on such a path into CardProfileMissingPath and records it, so a profile gap fails closed instead of passing by omission. tools/provision_card_profile.sh hydrate is the documented route to materialise one.",
   "measured": {
     "note": "A snapshot of what the profile costs at the revision named here. These figures are reporting only; they are not part of the checked contract, because a byte total moves whenever any tracked file does.",
-    "revision": "ff7fe30875ac71faa3f5cfa3db326350129f56b6",
+    "revision": "0763af1a08a4949a7d8ebbf90b194603b08e3a27",
     "computed_in_reduced_checkout": false,
     "profile_paths": {
-      "count": 3825,
-      "logical_bytes": 148555739
+      "count": 3836,
+      "logical_bytes": 148741841
     },
     "deferred_paths": {
       "count": 310,
       "logical_bytes": 241221095
     },
     "excluded_paths": {
-      "count": 1907,
-      "logical_bytes": 659973918
+      "count": 1916,
+      "logical_bytes": 660876925
     },
     "site_data": {
       "tracked_count": 689,
-      "tracked_logical_bytes": 467174007,
+      "tracked_logical_bytes": 467174014,
       "profile_count": 28,
-      "profile_logical_bytes": 63802082
+      "profile_logical_bytes": 63802089
     },
     "tracked_total": {
-      "count": 5732,
-      "logical_bytes": 808529657
+      "count": 5752,
+      "logical_bytes": 809618766
     },
-    "pattern_count": 773
+    "pattern_count": 772
   }
 }
