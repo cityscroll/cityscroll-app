@@ -1,0 +1,505 @@
+{
+  "schema": "cityscroll.later_housing_activity_receipt.v1",
+  "generated_at": "2026-08-31T00:00:00.000Z",
+  "source": {
+    "dataset_id": "br6q-ssj3",
+    "dataset_name": "Housing Database Project Level Files",
+    "vintage": "2026-03-16",
+    "url": "https://data.cityofnewyork.us/resource/br6q-ssj3.json",
+    "coverage_note": "DOB residential job records since 2010, as published by the Housing Database project-level file.",
+    "acquisition": "scheduled_warehouse_materialization"
+  },
+  "match": {
+    "method": "exact_bbl_and_post_milestone_event",
+    "version": "ldp17_exact_bbl_post_milestone_v1",
+    "required_keys": [
+      "exact_bbl"
+    ],
+    "required_order": "housing event date strictly after the selected land-use milestone date",
+    "milestone_precedence": [
+      "completed_date",
+      "approval_date"
+    ],
+    "retained_event_types": [
+      "application_filed",
+      "permit_issued",
+      "construction_completed"
+    ],
+    "prohibited_keys": [
+      "address",
+      "title",
+      "owner",
+      "name",
+      "spatial_proximity"
+    ],
+    "emits_causal_claim": false
+  },
+  "denominator": {
+    "eligible_completed_projects": 7,
+    "eligible_project_lots": 25
+  },
+  "counts": {
+    "projects_with_later_activity": 4,
+    "projects_without_later_activity": 3,
+    "later_activity_events": 6,
+    "matched_jobs": 4,
+    "rejected": 39
+  },
+  "specimens": {
+    "positive": {
+      "schema": "cityscroll.later_housing_activity.v1",
+      "project_id": "2022M0258",
+      "coverage": "partial",
+      "land_use_milestone": "approval_date",
+      "land_use_milestone_date": "2024-03-07",
+      "eligible_lot_count": 11,
+      "matched_lot_count": 1,
+      "matched_lots": [
+        "1017670001"
+      ],
+      "unmatched_lots": [
+        "1017670002",
+        "1017670003",
+        "1017670004",
+        "1017670067",
+        "1017670068",
+        "1017670069",
+        "1017670071",
+        "1017670072",
+        "1017670168",
+        "1017670169"
+      ],
+      "matched_job_count": 1,
+      "pre_milestone_event_count": 1,
+      "source_dataset": "br6q-ssj3",
+      "source_vintage": "2026-03-16",
+      "match_version": "ldp17_exact_bbl_post_milestone_v1",
+      "events": [
+        {
+          "project_id": "2022M0258",
+          "bbl": "1017670001",
+          "housing_job_number": "M08028552",
+          "event_type": "permit_issued",
+          "event_label": "Permit issued",
+          "event_date": "2025-12-18",
+          "land_use_milestone": "approval_date",
+          "land_use_milestone_date": "2024-03-07",
+          "job_type": "New Building",
+          "job_status": "3. Permitted for Construction",
+          "job_filed_date": "2022-10-31",
+          "filed_before_land_use_milestone": true,
+          "units_existing": 0,
+          "units_proposed": 341,
+          "units_net": 341,
+          "units_certificate_of_occupancy": null,
+          "ownership": "Government, City: City Agency",
+          "source_dataset": "br6q-ssj3",
+          "source_dataset_name": "Housing Database Project Level Files",
+          "source_row_id": "row-6m8p.f92y-bnxw",
+          "source_vintage": "2026-03-16",
+          "source_url": "https://data.cityofnewyork.us/resource/br6q-ssj3.json?$where=:id='row-6m8p.f92y-bnxw'",
+          "match_method": "exact_bbl_and_post_milestone_event",
+          "match_version": "ldp17_exact_bbl_post_milestone_v1",
+          "match_basis": {
+            "exact_bbl": true,
+            "event_strictly_after_land_use_milestone": true
+          }
+        }
+      ]
+    }
+  },
+  "rejected": [
+    {
+      "project_id": "2022K0441",
+      "source_row_id": "row-5auv-b2vm-n22c",
+      "bbl": "3017470054",
+      "housing_job_number": "321042616",
+      "event_type": "application_filed",
+      "event_date": "2014-12-08",
+      "land_use_milestone_date": "2023-11-09",
+      "reason": "event_before_milestone"
+    },
+    {
+      "project_id": "2022K0441",
+      "source_row_id": "row-5auv-b2vm-n22c",
+      "bbl": "3017470054",
+      "housing_job_number": "321042616",
+      "event_type": "permit_issued",
+      "event_date": "2015-06-05",
+      "land_use_milestone_date": "2023-11-09",
+      "reason": "event_before_milestone"
+    },
+    {
+      "project_id": "2022K0441",
+      "source_row_id": "row-5auv-b2vm-n22c",
+      "bbl": "3017470054",
+      "housing_job_number": "321042616",
+      "event_type": "construction_completed",
+      "event_date": "2021-07-15",
+      "land_use_milestone_date": "2023-11-09",
+      "reason": "event_before_milestone"
+    },
+    {
+      "project_id": "2022K0441",
+      "source_row_id": "row-6hg9.d5vp~nqnt",
+      "bbl": "3017477504",
+      "housing_job_number": "321042518",
+      "event_type": "application_filed",
+      "event_date": "2014-12-08",
+      "land_use_milestone_date": "2023-11-09",
+      "reason": "event_before_milestone"
+    },
+    {
+      "project_id": "2022K0441",
+      "source_row_id": "row-6hg9.d5vp~nqnt",
+      "bbl": "3017477504",
+      "housing_job_number": "321042518",
+      "event_type": "permit_issued",
+      "event_date": "2015-06-09",
+      "land_use_milestone_date": "2023-11-09",
+      "reason": "event_before_milestone"
+    },
+    {
+      "project_id": "2022K0441",
+      "source_row_id": "row-6hg9.d5vp~nqnt",
+      "bbl": "3017477504",
+      "housing_job_number": "321042518",
+      "event_type": "construction_completed",
+      "event_date": "2018-06-27",
+      "land_use_milestone_date": "2023-11-09",
+      "reason": "event_before_milestone"
+    },
+    {
+      "project_id": "2022K0441",
+      "source_row_id": "row-bujp_hqsj-5t4m",
+      "bbl": "3017477508",
+      "housing_job_number": "321042509",
+      "event_type": "application_filed",
+      "event_date": "2014-12-08",
+      "land_use_milestone_date": "2023-11-09",
+      "reason": "event_before_milestone"
+    },
+    {
+      "project_id": "2022K0441",
+      "source_row_id": "row-bujp_hqsj-5t4m",
+      "bbl": "3017477508",
+      "housing_job_number": "321042509",
+      "event_type": "permit_issued",
+      "event_date": "2015-06-08",
+      "land_use_milestone_date": "2023-11-09",
+      "reason": "event_before_milestone"
+    },
+    {
+      "project_id": "2022K0441",
+      "source_row_id": "row-bujp_hqsj-5t4m",
+      "bbl": "3017477508",
+      "housing_job_number": "321042509",
+      "event_type": "construction_completed",
+      "event_date": "2020-12-10",
+      "land_use_milestone_date": "2023-11-09",
+      "reason": "event_before_milestone"
+    },
+    {
+      "project_id": "2022K0441",
+      "source_row_id": "row-d73t-gzt2.jztd",
+      "bbl": "3017477503",
+      "housing_job_number": "321042536",
+      "event_type": "application_filed",
+      "event_date": "2014-12-08",
+      "land_use_milestone_date": "2023-11-09",
+      "reason": "event_before_milestone"
+    },
+    {
+      "project_id": "2022K0441",
+      "source_row_id": "row-d73t-gzt2.jztd",
+      "bbl": "3017477503",
+      "housing_job_number": "321042536",
+      "event_type": "permit_issued",
+      "event_date": "2015-06-03",
+      "land_use_milestone_date": "2023-11-09",
+      "reason": "event_before_milestone"
+    },
+    {
+      "project_id": "2022K0441",
+      "source_row_id": "row-d73t-gzt2.jztd",
+      "bbl": "3017477503",
+      "housing_job_number": "321042536",
+      "event_type": "construction_completed",
+      "event_date": "2018-06-27",
+      "land_use_milestone_date": "2023-11-09",
+      "reason": "event_before_milestone"
+    },
+    {
+      "project_id": "2022K0441",
+      "source_row_id": "row-ezez-sd6z~8j45",
+      "bbl": "3017477505",
+      "housing_job_number": "321042607",
+      "event_type": "application_filed",
+      "event_date": "2014-12-08",
+      "land_use_milestone_date": "2023-11-09",
+      "reason": "event_before_milestone"
+    },
+    {
+      "project_id": "2022K0441",
+      "source_row_id": "row-ezez-sd6z~8j45",
+      "bbl": "3017477505",
+      "housing_job_number": "321042607",
+      "event_type": "permit_issued",
+      "event_date": "2015-06-08",
+      "land_use_milestone_date": "2023-11-09",
+      "reason": "event_before_milestone"
+    },
+    {
+      "project_id": "2022K0441",
+      "source_row_id": "row-ezez-sd6z~8j45",
+      "bbl": "3017477505",
+      "housing_job_number": "321042607",
+      "event_type": "construction_completed",
+      "event_date": "2018-06-27",
+      "land_use_milestone_date": "2023-11-09",
+      "reason": "event_before_milestone"
+    },
+    {
+      "project_id": "2022K0441",
+      "source_row_id": "row-gc2h.4hkz-wc9y",
+      "bbl": "3017470054",
+      "housing_job_number": "B00865416",
+      "event_type": "application_filed",
+      "event_date": "2023-04-27",
+      "land_use_milestone_date": "2023-11-09",
+      "reason": "event_before_milestone"
+    },
+    {
+      "project_id": "2022K0441",
+      "source_row_id": "row-gc2h.4hkz-wc9y",
+      "bbl": "3017470054",
+      "housing_job_number": "B00865416",
+      "event_type": "permit_issued",
+      "event_date": "2023-06-16",
+      "land_use_milestone_date": "2023-11-09",
+      "reason": "event_before_milestone"
+    },
+    {
+      "project_id": "2022K0441",
+      "source_row_id": "row-ghis~mqw8~vueg",
+      "bbl": "3017470054",
+      "housing_job_number": "321270904",
+      "event_type": "application_filed",
+      "event_date": "2016-01-20",
+      "land_use_milestone_date": "2023-11-09",
+      "reason": "event_before_milestone"
+    },
+    {
+      "project_id": "2022K0441",
+      "source_row_id": "row-ghis~mqw8~vueg",
+      "bbl": "3017470054",
+      "housing_job_number": "321270904",
+      "event_type": "permit_issued",
+      "event_date": "2018-11-07",
+      "land_use_milestone_date": "2023-11-09",
+      "reason": "event_before_milestone"
+    },
+    {
+      "project_id": "2022K0441",
+      "source_row_id": "row-ghis~mqw8~vueg",
+      "bbl": "3017470054",
+      "housing_job_number": "321270904",
+      "event_type": "construction_completed",
+      "event_date": "2018-11-07",
+      "land_use_milestone_date": "2023-11-09",
+      "reason": "event_before_milestone"
+    },
+    {
+      "project_id": "2022K0441",
+      "source_row_id": "row-z7i9~gz72_ucu5",
+      "bbl": "3017477509",
+      "housing_job_number": "321042527",
+      "event_type": "application_filed",
+      "event_date": "2014-12-08",
+      "land_use_milestone_date": "2023-11-09",
+      "reason": "event_before_milestone"
+    },
+    {
+      "project_id": "2022K0441",
+      "source_row_id": "row-z7i9~gz72_ucu5",
+      "bbl": "3017477509",
+      "housing_job_number": "321042527",
+      "event_type": "permit_issued",
+      "event_date": "2015-06-08",
+      "land_use_milestone_date": "2023-11-09",
+      "reason": "event_before_milestone"
+    },
+    {
+      "project_id": "2022K0441",
+      "source_row_id": "row-z7i9~gz72_ucu5",
+      "bbl": "3017477509",
+      "housing_job_number": "321042527",
+      "event_type": "construction_completed",
+      "event_date": "2022-08-23",
+      "land_use_milestone_date": "2023-11-09",
+      "reason": "event_before_milestone"
+    },
+    {
+      "project_id": "2022K0441",
+      "source_row_id": "row-zj4h_vuqw-at2k",
+      "bbl": "3017477507",
+      "housing_job_number": "321042590",
+      "event_type": "application_filed",
+      "event_date": "2014-12-08",
+      "land_use_milestone_date": "2023-11-09",
+      "reason": "event_before_milestone"
+    },
+    {
+      "project_id": "2022K0441",
+      "source_row_id": "row-zj4h_vuqw-at2k",
+      "bbl": "3017477507",
+      "housing_job_number": "321042590",
+      "event_type": "permit_issued",
+      "event_date": "2015-06-08",
+      "land_use_milestone_date": "2023-11-09",
+      "reason": "event_before_milestone"
+    },
+    {
+      "project_id": "2022K0441",
+      "source_row_id": "row-zj4h_vuqw-at2k",
+      "bbl": "3017477507",
+      "housing_job_number": "321042590",
+      "event_type": "construction_completed",
+      "event_date": "2020-12-02",
+      "land_use_milestone_date": "2023-11-09",
+      "reason": "event_before_milestone"
+    },
+    {
+      "project_id": "2022M0258",
+      "source_row_id": "row-6m8p.f92y-bnxw",
+      "bbl": "1017670001",
+      "housing_job_number": "M08028552",
+      "event_type": "application_filed",
+      "event_date": "2022-10-31",
+      "land_use_milestone_date": "2024-03-07",
+      "reason": "event_before_milestone"
+    },
+    {
+      "project_id": "2023K0126",
+      "source_row_id": "row-bbad.jhhv~bnsr",
+      "bbl": "3072690001",
+      "housing_job_number": "B00646589",
+      "event_type": "application_filed",
+      "event_date": "2021-12-22",
+      "land_use_milestone_date": "2024-07-31",
+      "reason": "event_before_milestone"
+    },
+    {
+      "project_id": "2023K0126",
+      "source_row_id": "row-bbad.jhhv~bnsr",
+      "bbl": "3072690001",
+      "housing_job_number": "B00646589",
+      "event_type": "permit_issued",
+      "event_date": "2022-04-26",
+      "land_use_milestone_date": "2024-07-31",
+      "reason": "event_before_milestone"
+    },
+    {
+      "project_id": "2023K0248",
+      "source_row_id": "row-mt4u.kq55-jpsd",
+      "bbl": "3004710200",
+      "housing_job_number": "B00649561",
+      "event_type": "application_filed",
+      "event_date": "2021-12-24",
+      "land_use_milestone_date": "2024-02-13",
+      "reason": "event_before_milestone"
+    },
+    {
+      "project_id": "2023K0248",
+      "source_row_id": "row-mt4u.kq55-jpsd",
+      "bbl": "3004710200",
+      "housing_job_number": "B00649561",
+      "event_type": "permit_issued",
+      "event_date": "2022-05-04",
+      "land_use_milestone_date": "2024-02-13",
+      "reason": "event_before_milestone"
+    },
+    {
+      "project_id": "2023K0248",
+      "source_row_id": "row-z3m2-rwv2_ihkj",
+      "bbl": "3004710200",
+      "housing_job_number": "B00643705",
+      "event_type": "application_filed",
+      "event_date": "2021-12-16",
+      "land_use_milestone_date": "2024-02-13",
+      "reason": "event_before_milestone"
+    },
+    {
+      "project_id": "2023K0248",
+      "source_row_id": "row-zzfw~t82r~ceiy",
+      "bbl": "3004710200",
+      "housing_job_number": "B00625252",
+      "event_type": "application_filed",
+      "event_date": "2021-11-16",
+      "land_use_milestone_date": "2024-02-13",
+      "reason": "event_before_milestone"
+    },
+    {
+      "project_id": "2023K0248",
+      "source_row_id": "row-zzfw~t82r~ceiy",
+      "bbl": "3004710200",
+      "housing_job_number": "B00625252",
+      "event_type": "permit_issued",
+      "event_date": "2022-05-17",
+      "land_use_milestone_date": "2024-02-13",
+      "reason": "event_before_milestone"
+    },
+    {
+      "project_id": "2023K0276",
+      "source_row_id": "row-e7s3-gbk9_agyi",
+      "bbl": "3004380007",
+      "housing_job_number": "B00591118",
+      "event_type": "application_filed",
+      "event_date": "2021-09-24",
+      "land_use_milestone_date": "2024-02-05",
+      "reason": "event_before_milestone"
+    },
+    {
+      "project_id": "2023K0276",
+      "source_row_id": "row-e7s3-gbk9_agyi",
+      "bbl": "3004380007",
+      "housing_job_number": "B00591118",
+      "event_type": "permit_issued",
+      "event_date": "2022-04-04",
+      "land_use_milestone_date": "2024-02-05",
+      "reason": "event_before_milestone"
+    },
+    {
+      "project_id": "2023R0329",
+      "source_row_id": "row-hup8.rpah.zjum",
+      "bbl": "5061640030",
+      "housing_job_number": "520466834",
+      "event_type": "application_filed",
+      "event_date": "2022-11-23",
+      "land_use_milestone_date": "2023-08-10",
+      "reason": "event_before_milestone"
+    },
+    {
+      "project_id": "2023R0329",
+      "source_row_id": "row-hup8.rpah.zjum",
+      "bbl": "5061640030",
+      "housing_job_number": "520466834",
+      "event_type": "permit_issued",
+      "event_date": "2023-02-07",
+      "land_use_milestone_date": "2023-08-10",
+      "reason": "event_before_milestone"
+    },
+    {
+      "project_id": "2023R0329",
+      "source_row_id": "row-hup8.rpah.zjum",
+      "bbl": "5061640030",
+      "housing_job_number": "520466834",
+      "event_type": "construction_completed",
+      "event_date": "2023-02-07",
+      "land_use_milestone_date": "2023-08-10",
+      "reason": "event_before_milestone"
+    }
+  ],
+  "resident_request_fetches": 0,
+  "bounded_output": true
+}
