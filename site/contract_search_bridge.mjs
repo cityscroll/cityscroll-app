@@ -76,6 +76,13 @@ export function contractSearchDocumentToMoneyRow(candidate = {}) {
     vendor_name: contractSearchBridgeClean(carried?.vendor_name, 240) || null,
     official_url: contractSearchBridgeClean(carried?.official_url, 600) || null,
     selection_method_description: contractSearchBridgeClean(carried?.selection_method_description, 240) || null,
+    ...(Array.isArray(carried?.process_states) && carried.process_states.length
+      ? {
+        process_states: Object.freeze(carried.process_states
+          .map((state) => contractSearchBridgeClean(state, 80))
+          .filter(Boolean)),
+      }
+      : {}),
     ...(Array.isArray(carried?.entity_refs_all)
       ? { entity_refs_all: Object.freeze(carried.entity_refs_all.map((ref) => contractSearchBridgeClean(ref, 240)).filter(Boolean)) }
       : {}),

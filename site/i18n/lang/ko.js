@@ -1041,6 +1041,7 @@
     nl_filter_about_label: "관련",
     nl_filter_category_label: "범주",
     nl_filter_min_label: "금액 ≥",
+    nl_filter_process_state_label: "절차 상태",
     nl_filter_max_label: "금액 ≤",
     nl_filter_months: "{n}개월 이내 마감",
     nl_filter_standard_only: "표준 방식만",

@@ -76,6 +76,7 @@ import { CUTOVER_COPY, UNSUB_IMMEDIATE_COPY } from "./lib/prefs.mjs";
 import { RULES_KV_KEY } from "./rules.mjs";
 import { buildHearingView, HEARINGS_KV_KEY } from "./hearings.mjs";
 import { reconcileTemporalCandidates } from "./lib/alert_temporal.mjs";
+import { evaluateProcurementProcessWatch } from "../../site/procurement_process_watch.mjs";
 import { renderCivicOutcomeTransition } from "../../site/civic_outcome_transition.mjs";
 import {
   SECTION_STATUS,
@@ -930,15 +931,26 @@ export async function processOneSub(env, s, ctx) {
       rows = evaluated.rows;
       propertyStageSeenIds = evaluated.markSeenIds;
     }
+    // Procurement process transitions are an additive decoration on the same money
+    // delivery rows: a later source-backed observation that advances the object's
+    // known state. Never a timer, an expiry, or an absent record.
+    let procurementProcessSeenIds = [];
+    if (s.lens === "money") {
+      const evaluated = evaluateProcurementProcessWatch(rows, seen);
+      rows = evaluated.rows;
+      procurementProcessSeenIds = evaluated.markSeenIds;
+    }
     const rulesView = s.lens === "rules" ? await readJsonKv(env.ALERT_STATE, RULES_KV_KEY) : null;
     if (s.lens === "rules") {
       const hearingView = await hearingViewForAlertRows(env, rows);
       rows = attachMaterializedHearing(rows, hearingView);
     }
     const reconciled = reconcileTemporalCandidates({ lens: s.lens, rows, seen, rulesView, idField: q.idField });
-    reconciled.markSeenIds.push(...propertyStageSeenIds);
+    reconciled.markSeenIds.push(...propertyStageSeenIds, ...procurementProcessSeenIds);
     for (const row of rows) {
       if (row.property_watch?.transition && !reconciled.fresh.some((freshRow) => freshRow.request_id === row.request_id)) reconciled.fresh.push(row);
+      if (row.procurement_process_watch?.transition
+        && !reconciled.fresh.some((freshRow) => freshRow[q.idField] === row[q.idField])) reconciled.fresh.push(row);
     }
     let fresh = dedupeFreshByContent(reconciled.fresh);
 
@@ -1413,11 +1425,22 @@ async function evaluateSubSection(env, s, ctx) {
       rows = evaluated.rows;
       propertyStageSeenIds = evaluated.markSeenIds;
     }
+    // Procurement process transitions are an additive decoration on the same money
+    // delivery rows: a later source-backed observation that advances the object's
+    // known state. Never a timer, an expiry, or an absent record.
+    let procurementProcessSeenIds = [];
+    if (s.lens === "money") {
+      const evaluated = evaluateProcurementProcessWatch(rows, seen);
+      rows = evaluated.rows;
+      procurementProcessSeenIds = evaluated.markSeenIds;
+    }
     const rulesView = s.lens === "rules" ? await readJsonKv(env.ALERT_STATE, RULES_KV_KEY) : null;
     const reconciled = reconcileTemporalCandidates({ lens: s.lens, rows, seen, rulesView, idField: q.idField });
-    reconciled.markSeenIds.push(...propertyStageSeenIds);
+    reconciled.markSeenIds.push(...propertyStageSeenIds, ...procurementProcessSeenIds);
     for (const row of rows) {
       if (row.property_watch?.transition && !reconciled.fresh.some((freshRow) => freshRow.request_id === row.request_id)) reconciled.fresh.push(row);
+      if (row.procurement_process_watch?.transition
+        && !reconciled.fresh.some((freshRow) => freshRow[q.idField] === row[q.idField])) reconciled.fresh.push(row);
     }
     const fresh = dedupeFreshByContent(reconciled.fresh);
 

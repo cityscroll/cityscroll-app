@@ -1041,6 +1041,7 @@
     nl_filter_about_label: "О чём",
     nl_filter_category_label: "Категория",
     nl_filter_min_label: "Сумма ≥",
+    nl_filter_process_state_label: "Стадия процесса",
     nl_filter_max_label: "Сумма ≤",
     nl_filter_months: "Срок в течение {n} мес.",
     nl_filter_standard_only: "Только стандартные методы",

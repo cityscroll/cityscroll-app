@@ -78,6 +78,7 @@ const {
   extractDecl("DEEPLINK_LENSES") +
   extractDecl("DEEPLINK_CATEGORIES") +
   extractDecl("DEEPLINK_BOROS") +
+  extractDecl("DEEPLINK_PROCESS_STATES") +
   extractFn("deeplinkClampField") +
   extractFn("sanitizeDeepLinkFilter") +
   extractFn("parseWatchParam") +

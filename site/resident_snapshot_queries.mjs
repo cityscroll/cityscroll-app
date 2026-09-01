@@ -1,4 +1,5 @@
 import { vendorStem } from "./vendor_stem.mjs";
+import { isKnownProcurementProcessState } from "./procurement_process_state_vocabulary.mjs";
 import {
   DEFAULT_LAND_FAMILY,
   landActionEvidenceByProject,
@@ -80,6 +81,7 @@ export function filterMoneySnapshot(rows, {
   entityRefs = [],
   contractObjectRef = "",
   stages = [],
+  processStates = [],
   sort = "deadline",
   today,
   weekEnd,
@@ -91,6 +93,12 @@ export function filterMoneySnapshot(rows, {
   const requiredPin = residentSnapshotClean(contractObjectRef).replace(/^procurement:/, "");
   const requiredStages = new Set((Array.isArray(stages) ? stages : [stages])
     .map((stage) => residentSnapshotLower(stage)).filter(Boolean));
+  // Only exact known publisher-observed states are predicates. An unknown or
+  // unobserved value narrows to nothing rather than widening the collection.
+  const requestedProcessStates = (Array.isArray(processStates) ? processStates : [processStates])
+    .map((state) => residentSnapshotLower(state)).filter(Boolean);
+  const requiredProcessStates = new Set(requestedProcessStates.filter(isKnownProcurementProcessState));
+  const processStateFilterActive = requestedProcessStates.length > 0;
   const requiredVendorStems = vendorStemsFromEntityRefs(entityRefs);
   const selected = (Array.isArray(rows) ? rows : []).filter((row) => {
     const type = residentSnapshotClean(row?.type_of_notice_description);
@@ -103,6 +111,10 @@ export function filterMoneySnapshot(rows, {
     if (mode === "archive" && !isAward && !isSolicitation) return false;
     if ((mode === "open" || mode === "allrfp") && !isSolicitation) return false;
     if (requiredStages.size && !typedStages.some((stage) => requiredStages.has(stage))) return false;
+    if (processStateFilterActive) {
+      if (!requiredProcessStates.size) return false;
+      if (!procurementProcessStatesForRow(row).some((state) => requiredProcessStates.has(state))) return false;
+    }
     const due = String(row?.due_date || "").slice(0, 10);
     if (mode === "open" && (!due || (floor && due <= floor))) return false;
     if (mode === "open" && closingWeek && weekEnd && due > String(weekEnd).slice(0, 10)) return false;
@@ -131,6 +143,12 @@ export function filterMoneySnapshot(rows, {
     return String(left?.due_date || "").localeCompare(String(right?.due_date || ""));
   });
   return selected.slice(0, limit);
+}
+
+/** Known source-backed process states already materialized on one Browse row. */
+export function procurementProcessStatesForRow(row) {
+  const states = Array.isArray(row?.process_states) ? row.process_states : [];
+  return [...new Set(states.map(residentSnapshotLower).filter(isKnownProcurementProcessState))];
 }
 
 export function procurementStagesForRow(row) {

@@ -7,6 +7,8 @@
  */
 
 import { procurementCanonicalHref } from "./procurement_object_contract.mjs";
+import { procurementProcessStates } from "./procurement_process_state_vocabulary.mjs";
+import { compactProcurementProcessEvents } from "./procurement_process_watch.mjs";
 import { vendorStem } from "./vendor_stem.mjs";
 
 export const PROCUREMENT_DIGEST_SNAPSHOT_SCHEMA = "cityscroll.procurement_digest_snapshot.v1";
@@ -116,6 +118,7 @@ export function procurementDigestRow(object = {}, model = {}) {
     "start_date", "registered", "registration_date", "start", "issue_date", "date",
   ], 40));
   const href = object.canonical_href || object.compatibility?.canonical_href || procurementCanonicalHref(id);
+  const processEvents = compactProcurementProcessEvents(object.process_events);
   return Object.freeze({
     procurement_id: id,
     digest_id: id,
@@ -130,12 +133,19 @@ export function procurementDigestRow(object = {}, model = {}) {
     procurement_stages: Object.freeze(stages),
     primary_stage: stages.at(-1) || null,
     source_systems: Object.freeze(sourceSystemsFor(object, model)),
+    ...(processEvents.length
+      ? {
+        process_states: Object.freeze(procurementProcessStates(processEvents)),
+        process_events: Object.freeze(processEvents.map((event) => Object.freeze({ ...event }))),
+      }
+      : {}),
     type_of_notice_description: null,
   });
 }
 
 function compactRowFromDigest(row) {
   if (!row?.procurement_id) return null;
+  const processEvents = compactProcurementProcessEvents(row.process_events);
   return {
     procurement_id: row.procurement_id,
     digest_id: row.digest_id || row.procurement_id,
@@ -150,6 +160,9 @@ function compactRowFromDigest(row) {
     procurement_stages: Array.isArray(row.procurement_stages) ? [...row.procurement_stages] : [],
     primary_stage: row.primary_stage || null,
     source_systems: Array.isArray(row.source_systems) ? [...row.source_systems] : [],
+    ...(processEvents.length
+      ? { process_states: procurementProcessStates(processEvents), process_events: processEvents }
+      : {}),
     type_of_notice_description: null,
   };
 }
@@ -183,9 +196,25 @@ function snapshotRows(source) {
 
 function wantsAwardFilter(filter = {}) {
   if (filter.procurement_id) return true;
+  // A source-backed process state is itself a procurement-object predicate, so it
+  // selects the canonical projection without a dollar amount or notice type.
+  if (text(filter.processState, 80)) return true;
   if (filter.noticeType === "solicitation") return false;
   if (filter.noticeType === "award") return true;
   return Boolean(filter.minAmount || filter.maxAmount);
+}
+
+/**
+ * Only an exact known publisher-observed state narrows a watch. An unknown or
+ * unobserved value matches nothing rather than silently widening the watch.
+ */
+function rowMatchesProcessState(row, filter = {}) {
+  const requested = text(filter.processState, 80)?.toLowerCase();
+  if (!requested) return true;
+  const states = Array.isArray(row?.process_states) && row.process_states.length
+    ? row.process_states
+    : procurementProcessStates(row?.process_events);
+  return states.includes(requested);
 }
 
 function rowMatchesFilter(row, filter = {}, lens = "money") {
@@ -203,6 +232,7 @@ function rowMatchesFilter(row, filter = {}, lens = "money") {
   }
   if (filter.procurement_id) return true;
   if (filter.agency && text(row.agency_name, 240) !== text(filter.agency, 240)) return false;
+  if (!rowMatchesProcessState(row, filter)) return false;
   if (filter.minAmount != null && (row.contract_amount == null || Number(row.contract_amount) < Number(filter.minAmount))) {
     return false;
   }
@@ -211,7 +241,9 @@ function rowMatchesFilter(row, filter = {}, lens = "money") {
   }
   if (!wantsAwardFilter(filter)) return false;
   const stages = stagesFor(row);
-  if (stages.length && !stages.some((stage) => AWARD_STAGES.has(String(stage).toLowerCase()))) return false;
+  if (!text(filter.processState, 80)
+    && stages.length
+    && !stages.some((stage) => AWARD_STAGES.has(String(stage).toLowerCase()))) return false;
   const keywords = Array.isArray(filter.keywords) ? filter.keywords.map((value) => String(value || "").trim().toLowerCase()).filter(Boolean) : [];
   if (keywords.length) {
     const haystack = [

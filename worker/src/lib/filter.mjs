@@ -5,6 +5,7 @@ import { canonicalMandateId } from "../../../site/mandate_subject_ref.mjs";
 import { canonicalCodeProvisionId } from "../../../site/code_provision_watch_scope.mjs";
 import { normalizeGeographyKey } from "../../../site/scope_v0.mjs";
 import { normalizeCommunityBoardRef } from "../../../site/community_board_watch.mjs";
+import { KNOWN_PROCUREMENT_PROCESS_STATES } from "../../../site/procurement_process_state_vocabulary.mjs";
 
 export const MAX_INPUT = 600;          // characters of NL we accept (a paragraph, not a novel)
 export const MAX_CALLS_PER_DAY = 300;  // denial-of-wallet ceiling
@@ -41,7 +42,7 @@ export const LENSES = {
   // Discovery parity (2026-08): district/process/deadline/entity fields are first-class so
   // NL can route to the same deep links the UI already supports (council/cd, process rails,
   // closing-this-week, agency forecast tab) — not only keyword lists.
-  money:    ["keywords", "agency", "minAmount", "maxAmount", "category", "months", "noticeType", "excludeSpecial", "closingWeek", "route", "name", "tab", "entity_refs_all", "connection_relation", "geographies", "procurement_id"],
+  money:    ["keywords", "agency", "minAmount", "maxAmount", "category", "months", "noticeType", "excludeSpecial", "closingWeek", "route", "name", "tab", "entity_refs_all", "connection_relation", "geographies", "procurement_id", "processState"],
   people:   ["keywords", "lookupType", "view", "interest", "interestArea", "interestLabel", "examNumber", "subject_refs_all"],
   land:     ["keywords", "boro", "status", "communityDistrict", "councilDistrict", "nearMe", "procedure", "family", "regulatoryEffect", "futureAction", "attendance", "geographies"],
   property: ["keywords", "agency", "process", "stage", "asset", "saleMethod", "priceBand", "sort", "borough", "neighborhood", "communityDistrict", "nearMe", "geographies"],
@@ -217,6 +218,13 @@ function clampField(name, v) {
       const s = typeof v === "string" ? v.trim() : "";
       return /^procurement:[a-z0-9_-]+:[A-Za-z0-9._:-]{3,120}$/.test(s) ? s : null;
     }
+    case "processState": {
+      // Exactly one known publisher-observed procurement state. An unknown or
+      // unobserved value clamps to null, so a watch never targets a state no
+      // source reported.
+      const s = typeof v === "string" ? v.trim().toLowerCase() : "";
+      return KNOWN_PROCUREMENT_PROCESS_STATES.includes(s) ? s : null;
+    }
     case "closingWeek":
       return !!v;
     case "route":
@@ -292,6 +300,7 @@ export function sanitize(lens, input) {
   if (!out.geographies?.length) delete out.geographies;
   if (!out.request_ids?.length) delete out.request_ids;
   if (!out.procurement_id) delete out.procurement_id;
+  if (!out.processState) delete out.processState;
   if (!out.provision_id) delete out.provision_id;
   if (!out.interest) delete out.interest;
   return out;

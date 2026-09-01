@@ -1045,6 +1045,7 @@
     nl_filter_about_label: "حول",
     nl_filter_category_label: "الفئة",
     nl_filter_min_label: "القيمة ≥",
+    nl_filter_process_state_label: "حالة العملية",
     nl_filter_max_label: "القيمة ≤",
     nl_filter_months: "مستحق خلال {n} شهر",
     nl_filter_standard_only: "الطرق القياسية فقط",
