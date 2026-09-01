@@ -9,7 +9,9 @@ const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const OUTPUT = join(ROOT, "docs/repository-control-plane/classification.v1.json");
 const SCHEMA = "cityscroll.repository_control_plane_classification.v1";
 const CARD = "cityscroll-repository-control-plane/rcp-00";
-const LIVING_ARCHITECTURE_CARD = ["cityscroll-", "kra", "ken/cs-living-architecture-la1-architecture-narrative"].join("");
+// The public CityScroll Engineering Record for the living-architecture narrative.
+// Any private owner record it corresponds to is not part of this repository.
+const LIVING_ARCHITECTURE_RECORD = "cityscroll-engineering/living-architecture-narrative";
 const MAIN_COMMIT = "f4974efeaab38c6224844a0ad0bc78bbe0aa1a75";
 const DISPOSITIONS = new Set(["keep", "split", "migrate", "privatize", "archive", "delete-from-tip"]);
 const HISTORY = new Set(["none", "review-required"]);
@@ -73,13 +75,13 @@ export function buildManifest() {
   ]) {
     entries.push(entry(
       `architecture-decision:${id}`, "ARCHITECTURE.md", selector, "unresolved-owner-decision",
-      "cityscroll-living-architecture", LIVING_ARCHITECTURE_CARD,
-      "migrate", `register:${LIVING_ARCHITECTURE_CARD}#${id}`,
+      "cityscroll-living-architecture", LIVING_ARCHITECTURE_RECORD,
+      "migrate", `engineering-record:${LIVING_ARCHITECTURE_RECORD}#${id}`,
     ));
   }
   entries.push(entry(
     "architecture:accepted-current-contracts", "ARCHITECTURE.md", "sections excluding the two rationale-to-confirm requests",
-    "accepted-architecture", "cityscroll-living-architecture", LIVING_ARCHITECTURE_CARD,
+    "accepted-architecture", "cityscroll-living-architecture", LIVING_ARCHITECTURE_RECORD,
     "keep", "repo:ARCHITECTURE.md",
   ));
 

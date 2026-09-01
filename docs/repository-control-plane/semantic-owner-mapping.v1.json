@@ -5,7 +5,7 @@
     "main_commit": "f2b31a001c2ceb796dc145987efed989f9035b37",
     "register_revision": "32727924c5f546ce5c41d0f68cb324fde7c7425b",
     "classification_manifest": "docs/repository-control-plane/classification.v1.json",
-    "classification_manifest_sha256": "864128bac0e9a3d5add11b6a5efcf37d6dc5495c3ff78576256ad370074d853f"
+    "classification_manifest_sha256": "32f6a257f6cad21b6c64347cd2c8eda6b2127f7f79a0733e38151f0179bbde66"
   },
   "register_search": {
     "method": "case-insensitive semantic phrase and stable-ID search over the register at the pinned revision",
