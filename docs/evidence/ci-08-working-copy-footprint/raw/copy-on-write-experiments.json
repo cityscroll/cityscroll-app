@@ -1,0 +1,25 @@
+{
+  "schema": "cityscroll.working-copy-cow-experiment.v1",
+  "revision": "f095d4b8d844d1a969c70e4909dc0f65960f1a7d",
+  "filesystem_class": "APFS",
+  "method": "Free-space delta on the measured volume, sampled with `df -k /` immediately before and after the operation with a `sync` on each side. Free-space delta is the only way to observe copy-on-write sharing on APFS, because st_blocks reports every clone at full size.",
+  "caveat": "The host is a shared workstation, so free-space delta carries background noise. It is used only where the signal dwarfs that noise (two orders of magnitude), and never as the source for a headline byte total.",
+  "experiments": [
+    {
+      "id": "fresh-local-clone",
+      "operation": "git clone --no-hardlinks <local object source> && git checkout --detach <revision>",
+      "du_reported_logical_bytes": 1389363200,
+      "du_reported_allocated_bytes": 1400897536,
+      "true_incremental_disk_bytes": 1405091840,
+      "interpretation": "A fresh clone genuinely consumes its reported size. Git writes new object files rather than cloning blocks, so copy-on-write does not reduce the cost of an additional full checkout."
+    },
+    {
+      "id": "warm-store-dependency-view",
+      "operation": "tools/install_worker_dependencies.sh --offline against an already-populated shared store",
+      "du_reported_logical_bytes": 332398592,
+      "true_incremental_disk_bytes": 2097152,
+      "interpretation": "The dependency view costs about 2 MiB of real disk despite reporting roughly 317 MiB. pnpm imports packages with clone-or-copy, which resolves to an APFS clonefile, so the view shares blocks with the shared store. On this filesystem class the second and later dependency views are effectively free, and node_modules is not a meaningful footprint-reduction target."
+    }
+  ],
+  "portability_warning": "This result is filesystem-class specific. On a filesystem without reflink support (for example ext4 on the hosted CI runners) pnpm falls back to hard links, which also share blocks, but on a filesystem with neither reflink nor hard-link support the same install would copy the full payload. Do not generalise the 2 MiB figure beyond copy-on-write or hard-link capable filesystems."
+}

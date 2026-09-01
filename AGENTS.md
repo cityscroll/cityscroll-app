@@ -74,6 +74,16 @@ contracts. Do not turn it into a delivery log, roadmap, module inventory, or car
 
 ## Directory guidance
 
+- `site/` is predominantly **tracked source**, not build output. Most of the working copy's bytes
+  live in tracked `site/data`. Only the paths named in `.gitignore` (`_site/`, `site/browse/`,
+  `site/now/`, the bounded procurement query artifacts, and the per-agency and per-community-board
+  `index.html` documents) are generated. Do not assume a path under `site/` is regenerable.
+- `worker/` is not package-isolated from `site/`: Worker sources import modules and data files
+  across that boundary, so the Worker unit family needs more than `worker/` present to run.
+- Measured working-copy sizes, provisioning phase timings, and the cost of the Pages build are in
+  [`docs/evidence/ci-08-working-copy-footprint/`](docs/evidence/ci-08-working-copy-footprint/);
+  regenerate its tables with `python3 tools/summarize_working_copy_evidence.py`.
+
 There are currently no tracked directory-local `AGENTS.md` or `CLAUDE.md` files. Add local guidance
 only when a documented material subtree rule changes how files there must be edited or verified;
 keep it current-contract-only and register it in the instruction audit policy.

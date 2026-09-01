@@ -1,0 +1,3 @@
+{"detail": "test at test/zap_warehouse_lookup.test.mjs:1:1 \u2716 test/zap_warehouse_lookup.test.mjs (51.792834ms)   test failed ", "exit_code": 1, "expectation": "passes without site/data", "probe": "worker unit family (node --test)", "variant": "sparse-worker-card"}
+{"detail": " Node.js v24.16.0 ", "exit_code": 1, "expectation": "fails without site/ payload", "probe": "capability topology contract (--check)", "variant": "sparse-worker-card"}
+{"detail": "capability topology, API catalog, and MCP catalog are current ", "exit_code": 0, "expectation": "passes with full payload", "probe": "capability topology contract (--check)", "variant": "full-checkout"}
