@@ -1,0 +1,12 @@
+{
+  "schema": "cityscroll.architecture.watermark-shard.v1",
+  "id": "canary:performance-observability-registry",
+  "owner": "canary:performance-observability-registry",
+  "updated_at": "2026-08-31T11:57:44Z",
+  "commit": "9a29cbe2ec285d832e95902f3e1015ec81784707",
+  "value": {
+    "path": "architecture/performance-observability.v1.json",
+    "count": 57,
+    "fingerprint": "97f91383e3d8863b4fbc2b4dd69966e67a35237a66db7e4443bdb619c95b001c"
+  }
+}

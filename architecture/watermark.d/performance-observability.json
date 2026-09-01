@@ -1,0 +1,80 @@
+{
+  "schema": "cityscroll.architecture.watermark-shard.v1",
+  "id": "performance-observability",
+  "owner": "performance-observability",
+  "updated_at": "2026-08-31T11:57:44Z",
+  "commit": "9a29cbe2ec285d832e95902f3e1015ec81784707",
+  "value": {
+    "catalog": {
+      "schema": "cityscroll.performance_observability.v1",
+      "version": "1.0.0",
+      "metric_count": 13,
+      "registry_hash": "35353472a6794f7482d84beb60936d92bb6356da14b5fd2f71b99584784ff886"
+    },
+    "registry": {
+      "version": "1.0.0",
+      "manifest_version": "rum-surfaces-v1",
+      "surface_count": 37,
+      "component_count": 20,
+      "classifications": {
+        "surfaces": {
+          "instrumented": 6,
+          "registered_no_data": 0,
+          "planned": 31,
+          "not_user_facing": 0,
+          "not_performance_relevant": 0,
+          "intentionally_unmeasured": 0,
+          "retired": 0
+        },
+        "components": {
+          "instrumented": 10,
+          "registered_no_data": 0,
+          "planned": 10,
+          "not_user_facing": 0,
+          "not_performance_relevant": 0,
+          "intentionally_unmeasured": 0,
+          "retired": 0
+        }
+      }
+    },
+    "topology": {
+      "collector": {
+        "state": "production_pilot",
+        "production_enabled": true,
+        "classification_manifest_path": "site/data/performance-classification-manifest.v1.json",
+        "implementation_path": "site/rum_collector.mjs",
+        "bootstrap_path": "site/rum_bootstrap.mjs",
+        "library": {
+          "name": "web-vitals",
+          "version": "6.0.1",
+          "build": "standard",
+          "path": "site/vendor/web-vitals-6.0.1.mjs"
+        },
+        "overhead_evidence_path": "docs/evidence/rum-collector-foundation/overhead.json",
+        "network_transport_path": "site/rum_delivery.mjs"
+      },
+      "intake": {
+        "state": "planned",
+        "route_path": "/performance-events",
+        "implementation_path": null
+      },
+      "storage": {
+        "state": "planned",
+        "binding": "RUM_ANALYTICS",
+        "dataset": "crol_rum_observations_v1"
+      },
+      "private_read_model": {
+        "state": "planned",
+        "route_path": "/admin/performance",
+        "visibility": "private"
+      },
+      "desk": {
+        "state": "cross_repo_planned",
+        "system": "desk.cityscroll.org",
+        "relationship": "private_server_to_server_consumer"
+      }
+    },
+    "coverage_policy": "advisory",
+    "measurements_included": false
+  }
+}

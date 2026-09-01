@@ -33,13 +33,14 @@ import {
   checkProductUpdatesArtifact,
   generateProductUpdatesArtifact,
 } from "../tools/build_product_updates.mjs";
+import { loadWatermark } from "../tools/architecture_watermark.mjs";
 
 const ROOT = fileURLToPath(new URL("..", import.meta.url));
 const ARTIFACT_PATH = new URL("../site/product-updates.json", import.meta.url);
 const BUILDER_PATH = new URL("../tools/build_product_updates.mjs", import.meta.url);
 const DEMO_MANIFEST = JSON.parse(readFileSync(new URL("../site/demo/demo-links.json", import.meta.url), "utf8"));
 const CHANGELOG = JSON.parse(readFileSync(new URL("../site/changelog-data.json", import.meta.url), "utf8"));
-const WATERMARK = JSON.parse(readFileSync(new URL("../architecture/generated/watermark.json", import.meta.url), "utf8"));
+const WATERMARK = loadWatermark();
 
 const HOUSING_JOIN = PRODUCT_UPDATE_JOINS.find((join) => join.demo_id === "semantic-search-housing");
 const NOTICE_JOIN = PRODUCT_UPDATE_JOINS.find((join) => join.demo_id === "notice-sanitation-connected-mandate");
@@ -51,7 +52,7 @@ function healthyReconciliation(overrides = {}) {
     path: "architecture/generated/reconciliation.json",
     observed_commit: WATERMARK.commit,
     as_of: WATERMARK.generated_at,
-    baseline: "architecture/generated/watermark.json",
+    baseline: "architecture/watermark.d",
     ...overrides,
   };
 }

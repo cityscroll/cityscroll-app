@@ -1,0 +1,12 @@
+{
+  "schema": "cityscroll.architecture.watermark-shard.v1",
+  "id": "canary:browser-rum-collector",
+  "owner": "canary:browser-rum-collector",
+  "updated_at": "2026-08-31T11:57:44Z",
+  "commit": "9a29cbe2ec285d832e95902f3e1015ec81784707",
+  "value": {
+    "path": "site/rum_collector.mjs",
+    "count": 1,
+    "fingerprint": "6e0e49e5fdddade3c3e2decc67903189c30e6af1f13dd76bd86b9979428b8a32"
+  }
+}

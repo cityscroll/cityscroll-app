@@ -7,13 +7,15 @@
  * Advancement is an explicit reviewed write, never a --check side effect.
  */
 import { createHash } from "node:crypto";
-import { existsSync, readFileSync } from "node:fs";
-import { dirname, join } from "node:path";
+import { existsSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
+import { dirname, join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 
 export const WATERMARK_SCHEMA = "cityscroll.architecture.watermark.v1";
+export const WATERMARK_SHARD_SCHEMA = "cityscroll.architecture.watermark-shard.v1";
+export const WATERMARK_DIRECTORY_RELATIVE = "architecture/watermark.d";
 export const WATERMARK_RELATIVE = "architecture/generated/watermark.json";
 
 const CANARY_SLICES = {
@@ -144,6 +146,158 @@ export function watermarkPath(root = ROOT) {
   return join(root, WATERMARK_RELATIVE);
 }
 
+export function watermarkShardDirectory(root = ROOT) {
+  return join(root, WATERMARK_DIRECTORY_RELATIVE);
+}
+
+export function watermarkShardPathForId(id) {
+  if (id === "observer-coverage" || id === "ontology" || id === "bindings" || id === "performance-observability") {
+    return `${id}.json`;
+  }
+  const match = /^canary:([a-z0-9][a-z0-9-]*)$/.exec(id);
+  if (match) return `canary--${match[1]}.json`;
+  throw new Error(`unsupported architecture watermark key: ${id}`);
+}
+
+function semanticEntries(watermark) {
+  return [
+    ["observer-coverage", watermark.observer_coverage_hash],
+    ...Object.entries(watermark.canaries ?? {}).sort(([left], [right]) => left.localeCompare(right))
+      .map(([id, value]) => [`canary:${id}`, value]),
+    ["ontology", watermark.ontology],
+    ["bindings", watermark.bindings],
+    ["performance-observability", watermark.performance_observability],
+  ];
+}
+
+function validateShard(document, name) {
+  const findings = [];
+  if (!document || typeof document !== "object" || Array.isArray(document)) findings.push(`${name}: malformed shard`);
+  if (document?.schema !== WATERMARK_SHARD_SCHEMA) findings.push(`${name}: unsupported schema ${document?.schema ?? "missing"}`);
+  if (typeof document?.id !== "string") findings.push(`${name}: missing id`);
+  else {
+    try {
+      const expected = watermarkShardPathForId(document.id);
+      if (name !== expected) findings.push(`${name}: id/path mismatch; ${document.id} belongs at ${expected}`);
+    } catch (error) {
+      findings.push(`${name}: ${error.message}`);
+    }
+  }
+  if (document?.owner !== document?.id) findings.push(`${name}: owner must equal stable semantic key ${document?.id ?? "missing"}`);
+  if (typeof document?.updated_at !== "string" || !Number.isFinite(Date.parse(document.updated_at))) findings.push(`${name}: invalid updated_at`);
+  if (!(typeof document?.commit === "string" || document?.commit === null)) findings.push(`${name}: commit must be a string or null`);
+  if (!("value" in (document ?? {}))) findings.push(`${name}: missing value`);
+  const allowed = new Set(["schema", "id", "owner", "updated_at", "commit", "value"]);
+  for (const key of Object.keys(document ?? {})) if (!allowed.has(key)) findings.push(`${name}: unsupported field ${key}`);
+  const value = document?.value;
+  const sha = (entry) => typeof entry === "string" && /^[a-f0-9]{64}$/.test(entry);
+  if (document?.id === "observer-coverage" && !sha(value)) findings.push(`${name}: observer coverage value must be a SHA-256 hash`);
+  if (document?.id?.startsWith("canary:") && !(
+    value && typeof value === "object" && !Array.isArray(value)
+    && typeof value.path === "string" && Number.isInteger(value.count) && value.count >= 0
+    && sha(value.fingerprint)
+  )) findings.push(`${name}: malformed canary baseline value`);
+  if (document?.id === "ontology" && !(
+    value && typeof value === "object" && typeof value.schema === "string"
+    && typeof value.version === "string" && value.collection_counts && typeof value.collection_counts === "object"
+  )) findings.push(`${name}: malformed ontology baseline value`);
+  if (document?.id === "bindings" && !(
+    value && Array.isArray(value.topology) && value.topology.every((row) =>
+      row && typeof row.environment === "string" && typeof row.section === "string" && typeof row.binding === "string")
+  )) findings.push(`${name}: malformed bindings baseline value`);
+  if (document?.id === "performance-observability" && !(
+    value && typeof value === "object" && value.catalog && value.registry && "topology" in value
+    && typeof value.coverage_policy === "string" && typeof value.measurements_included === "boolean"
+  )) findings.push(`${name}: malformed performance-observability baseline value`);
+  return findings;
+}
+
+export function loadWatermarkShards({ root = ROOT, directory = null } = {}) {
+  const shardDir = directory ?? watermarkShardDirectory(root);
+  if (!existsSync(shardDir)) return null;
+  const names = readdirSync(shardDir).filter((name) => name.endsWith(".json")).sort();
+  if (names.length === 0) throw new Error(`${WATERMARK_DIRECTORY_RELATIVE}: missing baseline shards`);
+  const findings = [];
+  const byId = new Map();
+  for (const name of names) {
+    let document;
+    try {
+      document = JSON.parse(readFileSync(join(shardDir, name), "utf8"));
+    } catch (error) {
+      findings.push(`${name}: malformed JSON (${error.message})`);
+      continue;
+    }
+    findings.push(...validateShard(document, name));
+    if (typeof document?.id === "string") {
+      if (byId.has(document.id)) findings.push(`${name}: duplicate semantic key ${document.id}`);
+      else byId.set(document.id, document);
+    }
+  }
+  for (const required of ["observer-coverage", "ontology", "bindings", "performance-observability"]) {
+    if (!byId.has(required)) findings.push(`missing required baseline key ${required}`);
+  }
+  if (![...byId.keys()].some((id) => id.startsWith("canary:"))) findings.push("missing required baseline canary keys");
+  const registryPath = join(root, "architecture", "observer-canaries.json");
+  if (existsSync(registryPath)) {
+    const registry = JSON.parse(readFileSync(registryPath, "utf8"));
+    const expected = new Set((registry.canaries ?? []).map((entry) => `canary:${entry.id}`));
+    const actual = new Set([...byId.keys()].filter((id) => id.startsWith("canary:")));
+    for (const id of expected) if (!actual.has(id)) findings.push(`missing required baseline key ${id}`);
+    for (const id of actual) if (!expected.has(id)) findings.push(`stale or unregistered baseline key ${id}`);
+  }
+  if (findings.length) throw new Error(`invalid architecture watermark shards:\n- ${findings.join("\n- ")}`);
+  return [...byId.values()].sort((left, right) => left.id.localeCompare(right.id));
+}
+
+export function aggregateWatermarkShards(shards) {
+  const byId = new Map();
+  for (const shard of shards) {
+    if (byId.has(shard.id)) throw new Error(`duplicate semantic key ${shard.id}; reviewed handoff required`);
+    byId.set(shard.id, shard);
+  }
+  for (const required of ["observer-coverage", "ontology", "bindings", "performance-observability"]) {
+    if (!byId.has(required)) throw new Error(`missing required baseline key ${required}`);
+  }
+  const latest = [...shards].sort((left, right) => {
+    const clock = Date.parse(left.updated_at) - Date.parse(right.updated_at);
+    return clock || left.id.localeCompare(right.id);
+  }).at(-1);
+  return {
+    schema: WATERMARK_SCHEMA,
+    generated_at: latest?.updated_at ?? null,
+    commit: latest?.commit ?? null,
+    observer_coverage_hash: byId.get("observer-coverage").value,
+    canaries: Object.fromEntries([...byId.entries()]
+      .filter(([id]) => id.startsWith("canary:"))
+      .sort(([left], [right]) => left.localeCompare(right))
+      .map(([id, shard]) => [id.slice("canary:".length), shard.value])),
+    ontology: byId.get("ontology").value,
+    bindings: byId.get("bindings").value,
+    performance_observability: byId.get("performance-observability").value,
+  };
+}
+
+export function writeWatermarkShards(watermark, { root = ROOT, keys = [] } = {}) {
+  if (!keys.length) throw new Error("--write-watermark requires at least one explicit --watermark-key");
+  const available = new Map(semanticEntries(watermark));
+  const existing = new Map(loadWatermarkShards({ root }).map((shard) => [shard.id, shard]));
+  for (const key of keys) {
+    if (!available.has(key)) throw new Error(`unsupported or absent --watermark-key ${key}`);
+    const previous = existing.get(key);
+    if (previous && previous.owner !== key) throw new Error(`${key}: owned by ${previous.owner}; reviewed handoff required`);
+    const document = {
+      schema: WATERMARK_SHARD_SCHEMA,
+      id: key,
+      owner: key,
+      updated_at: watermark.generated_at,
+      commit: watermark.commit,
+      value: available.get(key),
+    };
+    // determinism-lint: allow write reviewed advancement is called only from the non-check CLI branch
+    writeFileSync(join(watermarkShardDirectory(root), watermarkShardPathForId(key)), `${JSON.stringify(document, null, 2)}\n`);
+  }
+}
+
 function stableValue(value) {
   if (Array.isArray(value)) return value.map((item) => stableValue(item));
   if (value && typeof value === "object") {
@@ -264,14 +418,13 @@ export function buildWatermark(facts, { generatedAt, commit } = {}) {
   };
 }
 
-export function loadWatermark({ root = ROOT, path = null } = {}) {
-  const file = path ?? watermarkPath(root);
-  if (!existsSync(file)) return null;
-  const document = JSON.parse(readFileSync(file, "utf8"));
-  if (!isWatermark(document)) {
-    throw new Error(`${WATERMARK_RELATIVE} must use schema ${WATERMARK_SCHEMA}`);
+export function loadWatermark({ root = ROOT, directory = null } = {}) {
+  const legacy = watermarkPath(root);
+  if (existsSync(legacy)) {
+    throw new Error(`${relative(root, legacy)} is a generated projection and must not be present as baseline input`);
   }
-  return document;
+  const shards = loadWatermarkShards({ root, directory });
+  return shards === null ? null : aggregateWatermarkShards(shards);
 }
 
 export function projectForDiff(value, counterpart) {

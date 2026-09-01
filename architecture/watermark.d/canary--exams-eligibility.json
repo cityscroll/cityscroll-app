@@ -1,0 +1,12 @@
+{
+  "schema": "cityscroll.architecture.watermark-shard.v1",
+  "id": "canary:exams-eligibility",
+  "owner": "canary:exams-eligibility",
+  "updated_at": "2026-08-31T11:57:44Z",
+  "commit": "9a29cbe2ec285d832e95902f3e1015ec81784707",
+  "value": {
+    "path": "site/exams_surface.mjs",
+    "count": 1,
+    "fingerprint": "72a4b772bae603b956465624471fc1cc5d86b8b4c0323d11293cd5e45bc4942b"
+  }
+}

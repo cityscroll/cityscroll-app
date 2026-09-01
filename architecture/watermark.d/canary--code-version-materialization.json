@@ -1,0 +1,12 @@
+{
+  "schema": "cityscroll.architecture.watermark-shard.v1",
+  "id": "canary:code-version-materialization",
+  "owner": "canary:code-version-materialization",
+  "updated_at": "2026-08-31T11:57:44Z",
+  "commit": "9a29cbe2ec285d832e95902f3e1015ec81784707",
+  "value": {
+    "path": "site/code_version_materialization.mjs",
+    "count": 1,
+    "fingerprint": "5ff3c148b16a68e1317366a36a9dc13e3006f6ca0009a8ae1339b3ffae664141"
+  }
+}

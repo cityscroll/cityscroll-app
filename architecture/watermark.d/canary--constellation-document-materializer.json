@@ -1,0 +1,12 @@
+{
+  "schema": "cityscroll.architecture.watermark-shard.v1",
+  "id": "canary:constellation-document-materializer",
+  "owner": "canary:constellation-document-materializer",
+  "updated_at": "2026-08-31T11:57:44Z",
+  "commit": "9a29cbe2ec285d832e95902f3e1015ec81784707",
+  "value": {
+    "path": "tools/build_agency_constellation_documents.mjs",
+    "count": 1,
+    "fingerprint": "2585a7342268ee1bde77e3ed7debeb56a2b6f4ecb09d08cced8bbea50f79c2eb"
+  }
+}
