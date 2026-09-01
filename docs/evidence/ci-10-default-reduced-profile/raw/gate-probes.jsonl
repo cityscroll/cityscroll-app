@@ -4,11 +4,11 @@
 {"exit_status": 0, "gate_class": "architecture-canaries", "test_counts": null, "variant": "routed-focused"}
 {"exit_status": 0, "gate_class": "card-reconciliation", "test_counts": null, "variant": "routed-focused"}
 {"exit_status": 0, "gate_class": "agents-router", "test_counts": null, "variant": "routed-focused"}
-{"exit_status": 0, "gate_class": "worker-unit", "test_counts": null, "variant": "routed-focused"}
+{"exit_status": 0, "gate_class": "worker-unit", "test_counts": {"fail": 0, "pass": 1754, "skipped": 1, "tests": 1755}, "variant": "routed-focused"}
 {"exit_status": 0, "gate_class": "card-profile-contract", "test_counts": null, "variant": "routed-ci"}
 {"exit_status": 0, "gate_class": "architecture-evidence-shards", "test_counts": null, "variant": "routed-ci"}
 {"exit_status": 0, "gate_class": "architecture-reconcile", "test_counts": null, "variant": "routed-ci"}
 {"exit_status": 0, "gate_class": "architecture-canaries", "test_counts": null, "variant": "routed-ci"}
 {"exit_status": 0, "gate_class": "card-reconciliation", "test_counts": null, "variant": "routed-ci"}
 {"exit_status": 0, "gate_class": "agents-router", "test_counts": null, "variant": "routed-ci"}
-{"exit_status": 0, "gate_class": "worker-unit", "test_counts": null, "variant": "routed-ci"}
+{"exit_status": 0, "gate_class": "worker-unit", "test_counts": {"fail": 0, "pass": 1754, "skipped": 1, "tests": 1755}, "variant": "routed-ci"}

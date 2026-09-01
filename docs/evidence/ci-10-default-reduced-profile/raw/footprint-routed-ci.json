@@ -6,7 +6,7 @@
       "entries": 6563,
       "kind": "installed",
       "logical_bytes": 330479970,
-      "logical_pct": 20.015
+      "logical_pct": 20.005
     },
     "generated_site_output": {
       "allocated_bytes": 0,
@@ -29,8 +29,8 @@
       "allocated_pct": 30.966,
       "entries": 45,
       "kind": "metadata",
-      "logical_bytes": 511928095,
-      "logical_pct": 31.004
+      "logical_bytes": 512713358,
+      "logical_pct": 31.036
     },
     "other_overhead": {
       "allocated_bytes": 0,
@@ -41,12 +41,12 @@
       "logical_pct": 0.019
     },
     "tracked_other": {
-      "allocated_bytes": 230588416,
+      "allocated_bytes": 230596608,
       "allocated_pct": 13.656,
       "entries": 3274,
       "kind": "tracked",
-      "logical_bytes": 223289969,
-      "logical_pct": 13.523
+      "logical_bytes": 223296959,
+      "logical_pct": 13.517
     },
     "tracked_site_data": {
       "allocated_bytes": 468582400,
@@ -54,7 +54,7 @@
       "entries": 689,
       "kind": "tracked",
       "logical_bytes": 467174007,
-      "logical_pct": 28.293
+      "logical_pct": 28.28
     },
     "tracked_site_other": {
       "allocated_bytes": 83025920,
@@ -62,7 +62,7 @@
       "entries": 1498,
       "kind": "tracked",
       "logical_bytes": 79829883,
-      "logical_pct": 4.835
+      "logical_pct": 4.832
     },
     "tracked_warehouse": {
       "allocated_bytes": 38785024,
@@ -70,7 +70,7 @@
       "entries": 265,
       "kind": "tracked",
       "logical_bytes": 38171978,
-      "logical_pct": 2.312
+      "logical_pct": 2.311
     }
   },
   "hardlink_dedup": {
@@ -83,8 +83,8 @@
   "scope": "checkout",
   "shared_git_metadata_outside_checkout": null,
   "total": {
-    "allocated_bytes": 1688580096,
-    "logical_bytes": 1651191566
+    "allocated_bytes": 1688588288,
+    "logical_bytes": 1651983819
   },
   "tracked_file_count": 5726
 }

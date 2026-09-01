@@ -54,6 +54,73 @@ heartbeat() { echo "[$(date -u +%H:%M:%S)] $*"; }
 : > "$OUT/charged-disk.jsonl"
 : > "$OUT/fail-closed-probes.jsonl"
 
+# --- 0. environment ----------------------------------------------------------
+
+heartbeat "recording the environment"
+REV="$REV" OUT="$OUT" ROOT="$ROOT" TRIALS="$TRIALS" python3 - <<'PYEOF'
+import json, os, platform, subprocess
+
+root = os.environ["ROOT"]
+
+
+def version(*command):
+    try:
+        result = subprocess.run(command, capture_output=True, text=True, check=False, cwd=root)
+        return result.stdout.strip().splitlines()[0]
+    except Exception:
+        return "unavailable"
+
+
+def pinned_pnpm():
+    try:
+        with open(os.path.join(root, "worker/package.json"), encoding="utf-8") as handle:
+            return json.load(handle)["packageManager"]
+    except Exception:
+        return "unavailable"
+
+
+identity = json.loads(
+    subprocess.run(
+        ["node", "tools/card_profile_router.mjs", "--identity", "--json"],
+        cwd=root, capture_output=True, text=True, check=True,
+    ).stdout
+)
+
+record = {
+    "schema": "cityscroll.card-profile-routing-environment.v1",
+    "revision": os.environ["REV"],
+    "source_class": "remote",
+    "trials_per_variant": int(os.environ["TRIALS"]),
+    "manifest_version": identity["manifest_version"],
+    "manifest_digest": identity["manifest_digest"],
+    "operating_system": f"{platform.system()} {platform.release()} ({platform.machine()})",
+    "cpu_count": os.cpu_count(),
+    "filesystem_class": "APFS - hard links and copy-on-write file clones both supported",
+    "tools": {
+        "git": version("git", "--version"),
+        "node": version("node", "--version"),
+        "python3": version("python3", "--version"),
+        "pnpm_pinned_by_worker_package": pinned_pnpm(),
+        "pnpm_corepack_default": version("corepack", "pnpm", "--version"),
+    },
+    "cache_conditions": {
+        "dependency_store": "warm - the host shared pnpm store is already populated, and the install runs against it",
+        "page_cache": "not purged - purging is a whole-machine operation on a shared host, so cold and warm describe tool-level caches only",
+        "git_objects": "cold per trial - every trial clones into a fresh directory with no pre-existing objects",
+    },
+    "measurement_methods": {
+        "logical_bytes": "st_size, summed by tools/measure_working_copy_footprint.py",
+        "allocated_bytes": "st_blocks * 512; on APFS this counts every copy-on-write clone at full size and therefore cannot see sharing",
+        "charged_disk_bytes": "free-space delta across the provisioning run, which is the only measure that sees copy-on-write sharing on this filesystem class",
+        "profile_identity": "sha256 over the manifest version and the Git blob id of each declared identity input; the revision is bound separately into provision_identity",
+    },
+}
+with open(os.path.join(os.environ["OUT"], "environment.json"), "w", encoding="utf-8") as handle:
+    json.dump(record, handle, indent=2, sort_keys=True)
+    handle.write("\n")
+print(f"  manifest {record['manifest_digest'][:12]} at revision {record['revision'][:12]}")
+PYEOF
+
 # --- 1. the decision table, taken from the router itself ---------------------
 
 heartbeat "recording routing decisions"

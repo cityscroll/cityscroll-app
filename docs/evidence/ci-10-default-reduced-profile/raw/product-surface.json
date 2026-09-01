@@ -1,0 +1,64 @@
+{
+  "measured_revision": "b84a7f56bafa56b8f4dfd31b52cf455b11a5e101",
+  "merge_base": "ff99f523cc3353f6ec2ec69e5158bc9ed238c525",
+  "method": "sha256 over `git ls-tree -r <rev> -- <surface>`, which covers every tracked path and blob id beneath the surface.",
+  "schema": "cityscroll.card-profile-routing-product-surface.v1",
+  "surfaces": [
+    {
+      "files": 72,
+      "identical": true,
+      "measured_revision_digest": "587d8d622e8a",
+      "merge_base_digest": "587d8d622e8a",
+      "surface": "artifacts"
+    },
+    {
+      "files": 13,
+      "identical": true,
+      "measured_revision_digest": "6ade326942c8",
+      "merge_base_digest": "6ade326942c8",
+      "surface": "capabilities"
+    },
+    {
+      "files": 18,
+      "identical": true,
+      "measured_revision_digest": "33d67d5ce9da",
+      "merge_base_digest": "33d67d5ce9da",
+      "surface": "data"
+    },
+    {
+      "files": 130,
+      "identical": true,
+      "measured_revision_digest": "f21961e54f3c",
+      "merge_base_digest": "f21961e54f3c",
+      "surface": "entity_resolution"
+    },
+    {
+      "files": 58,
+      "identical": true,
+      "measured_revision_digest": "b0693914e6af",
+      "merge_base_digest": "b0693914e6af",
+      "surface": "ontology"
+    },
+    {
+      "files": 2187,
+      "identical": true,
+      "measured_revision_digest": "275907225881",
+      "merge_base_digest": "275907225881",
+      "surface": "site"
+    },
+    {
+      "files": 265,
+      "identical": true,
+      "measured_revision_digest": "905e3f9fd791",
+      "merge_base_digest": "905e3f9fd791",
+      "surface": "warehouse"
+    },
+    {
+      "files": 570,
+      "identical": true,
+      "measured_revision_digest": "dc9a4dee5861",
+      "merge_base_digest": "dc9a4dee5861",
+      "surface": "worker"
+    }
+  ]
+}

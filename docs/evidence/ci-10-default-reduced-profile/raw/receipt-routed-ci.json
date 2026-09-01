@@ -7,8 +7,8 @@
     "provisioned_profile_name": "full-checkout",
     "manifest_version": 1,
     "manifest_digest": "1aefe6db83d05317e2dc176eca8ff358d36bbdc246d1b998abab869b8ae0de1f",
-    "provision_identity": "8b58e63b13c3e083153263ac79e2a44a76506b3dfa1f6697250de05c5f5dcdbc",
-    "revision": "06f22391d04d47ada344d3a7b88d3b862e5ccfdc",
+    "provision_identity": "2bec0eed24f272fc807bd4ddd5bf129cab19604196df866f0785504d3cae3e4f",
+    "revision": "b84a7f56bafa56b8f4dfd31b52cf455b11a5e101",
     "identity_inputs": [
       {
         "id": "routing-manifest",
@@ -93,7 +93,7 @@
     "integrity": {
       "fsck_connectivity_only_exit": 0,
       "fsck_method": "--connectivity-only verifies the object graph without demanding blobs a partial clone deliberately did not fetch, so it is the meaningful integrity check in both profiles",
-      "commits_reachable_from_head": 1588,
+      "commits_reachable_from_head": 1589,
       "working_tree_clean": true,
       "tracked_paths_not_materialised": 0
     },
@@ -107,7 +107,7 @@
       "stale": false
     }
   },
-  "deterministic_digest": "e46477deb28e7802919cc0a217cf1d3b3cc763eb9daefb7093e4fc21e10b07a1",
+  "deterministic_digest": "ca5ef77d336f0125f0638ba86143c46d4ef3a185ac9d0465586959f02a738927",
   "context": {
     "note": "Supplied by the caller, not observed here, so it is reported rather than digested.",
     "routing_decision": null,
@@ -133,7 +133,7 @@
           "allocated_bytes": 0
         },
         "git_metadata": {
-          "logical_bytes": 511928095,
+          "logical_bytes": 512713358,
           "allocated_bytes": 522891264
         },
         "other_overhead": {
@@ -141,8 +141,8 @@
           "allocated_bytes": 0
         },
         "tracked_other": {
-          "logical_bytes": 223289969,
-          "allocated_bytes": 230588416
+          "logical_bytes": 223296959,
+          "allocated_bytes": 230596608
         },
         "tracked_site_data": {
           "logical_bytes": 467174007,
@@ -158,8 +158,8 @@
         }
       },
       "total": {
-        "logical_bytes": 1651191566,
-        "allocated_bytes": 1688580096
+        "logical_bytes": 1651983819,
+        "allocated_bytes": 1688588288
       },
       "hardlink_dedup": {
         "entries": 0,
@@ -169,7 +169,7 @@
     },
     "provisioning_timing": null,
     "packs": 1,
-    "pack_size_kib": 498992,
+    "pack_size_kib": 499758,
     "loose_objects": 0
   }
 }
