@@ -1,0 +1,5 @@
+{
+  "schema": "cityscroll.source-contract.v1",
+  "status": "published",
+  "dependencies": ["publisher-dataset"]
+}
