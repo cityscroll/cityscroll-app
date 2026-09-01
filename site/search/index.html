@@ -1330,6 +1330,8 @@
   /* Zoning lens template */
   .land-method-copy{max-width:var(--measure);margin:var(--space-2) 0 0;padding:var(--space-3);border:1px solid var(--color-border);border-radius:var(--radius-md);background:var(--color-canvas-subtle);font:13px/1.5 var(--font-interface);color:var(--color-text-soft)}
   #land-toolbar .field.kw{flex:1 1 320px}
+  .land-view-switch{display:flex;gap:var(--space-1);margin-inline-start:auto}
+  .land-view-note{margin:var(--space-2) 0 0;font:13px/1.4 var(--font-interface);color:var(--color-text-soft)}
   #land-toolbar .lens-toolbar-actions{margin-inline-start:auto}
   #land-toolbar .lens-more-content{inset-inline-start:auto;inset-inline-end:0}
   .land-control-button{align-self:flex-end}
@@ -2281,7 +2283,9 @@
     <div class="lens-resultbar" id="land-resultbar">
       <span class="land-result-heading" id="lreshead" data-i18n="recent_rezonings_heading">Recent land-use applications</span>
       <span class="lens-count" id="lrescount" aria-live="polite"></span>
+      <div class="land-view-switch" id="land-view-switch" role="group" aria-label="Show results as" data-i18n-aria="land_view_switch_label"></div>
     </div>
+    <p class="land-view-note" id="land-view-note" role="status" hidden></p>
     <div id="land-status" role="status"></div>
     <div class="exportbar">
       <span class="export-band" id="land-export-band" hidden>

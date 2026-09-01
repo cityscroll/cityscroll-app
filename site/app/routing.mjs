@@ -9,6 +9,20 @@ import { resolveTraversalBackHref, traversalFromHref } from "../traversal_path.m
 import { renderNoticeBitemporalHistory } from "../civic_time_ledger.mjs";
 import { retainSearchHandoffForQuery } from "../search_lens_handoff.mjs";
 import { normalizeCommunityBoardRef } from "../community_board_watch.mjs";
+import {
+  LAND_VIEW_FALLBACK_REASONS,
+  LAND_VIEW_LIST,
+  LAND_VIEW_MAP,
+  landViewFromRouteHash,
+  landViewFromSearchParams,
+  normalizeLandView,
+  routeHashWithLandView,
+} from "../land_view_state.mjs";
+import {
+  installLandViewSwitch,
+  landMapRenderer,
+  paintLandViewPresentation,
+} from "../land_view_switch.mjs";
 import { ANALYTICAL_PROJECTION_QUERY_KEYS, preserveAnalyticalProjectionQuery } from "../analytical_projection.mjs";
 import {
   EXAMS_SURFACE,
@@ -118,6 +132,11 @@ const landLink = id => {
   return path?currentLanguageURL(location.origin+path):"";
 };
 let hashLock = false;
+// Land presentation state. `landView` selects which renderer paints the already filtered
+// Land result set; it is a sibling of the Land filter keys, never one of them. Scope v0
+// drops it for the Land surface, so it can never reach a Land facet or a saved watch.
+let landView = LAND_VIEW_LIST;
+let landMapPresentationFailure = null;
 let focusedItemRouteHash = "";
 let activeRouteFacetValues = {};
 
@@ -343,7 +362,11 @@ function serializeState(){
       scope.facets.values.entity_refs_all=[...new Set([...refs, ref])];
     }
   }
-  return carryWalk(CrolScope.routeHashFromScope(scope,{surface:tab}));
+  const canonicalHash=CrolScope.routeHashFromScope(scope,{surface:tab});
+  // Land carries `view` as a sibling presentation parameter. Scope v0 deliberately drops it
+  // so it can never become a Land facet or watch field, so it is re-applied here, beside the
+  // canonical semantic keys, after the scope round trip.
+  return carryWalk(tab==="land"?routeHashWithLandView(canonicalHash,landView):canonicalHash);
 }
 function nearYouHref(scope){
   const normalized=CrolScope.normalizeScope(scope,{language:window.LANG||"en"});
@@ -362,6 +385,57 @@ function syncNearYouLinks(currentHash){
     link.href=nearYouHref(scope);
   });
 }
+function onLandMapPresentationFailure(){
+  // A map that cannot paint is a presentation failure, never a scope failure. The filtered
+  // population and every semantic filter stay exactly as they are while List paints.
+  if(landMapPresentationFailure) return;
+  landMapPresentationFailure=LAND_VIEW_FALLBACK_REASONS.RENDERER_FAILED;
+  applyLandPresentation();
+}
+function applyLandPresentation(currentHash){
+  if(!document.getElementById("land-view-switch")) return null;
+  const renderer=landMapRenderer();
+  const presentation=paintLandViewPresentation({
+    view:landView,
+    currentHash:currentHash||location.hash||serializeState(),
+    rendererReady:!!renderer,
+    failure:landMapPresentationFailure,
+    t,
+    escape:escUiHtml,
+  });
+  installLandViewSwitch(document,setLandView);
+  if(presentation.view===LAND_VIEW_MAP&&renderer){
+    try{
+      Promise.resolve(renderer.mount(document.getElementById("land-results-grid"),{rows:globalThis.lRows||[]}))
+        .catch(onLandMapPresentationFailure);
+    }catch(_e){ onLandMapPresentationFailure(); }
+  }
+  return presentation;
+}
+// Back and Forward across a presentation change arrive as a popstate on the canonical Land
+// document route, not as a hashchange, so nothing else re-reads the route. Restore the view the
+// entry names; otherwise the control and the fallback note keep describing the previous entry.
+addEventListener("popstate",()=>{
+  const raw=location.hash.slice(1)||documentRouteRaw();
+  if(raw.split("?",1)[0]!=="land") return;
+  const restored=landViewFromRouteHash(`#${raw}`);
+  if(restored!==landView){
+    landView=restored;
+    landMapPresentationFailure=null;
+  }
+  applyLandPresentation(`#${raw}`);
+});
+/** Switch presentation in place. The filtered population is never rebuilt. */
+function setLandView(view){
+  const next=normalizeLandView(view);
+  if(next!==landView){
+    landView=next;
+    landMapPresentationFailure=null;
+    // A view change is a navigation a resident can undo with Back.
+    pushHash();
+  }
+  return applyLandPresentation();
+}
 function updateHash(){ // filter changes rewrite the current entry
   if(hashLock) return;
   const h = serializeState();
@@ -374,6 +448,7 @@ function updateHash(){ // filter changes rewrite the current entry
     history.replaceState(routeHistoryState({entry}), "", url);
   }
   syncNearYouLinks(h);
+  if(h.startsWith("#land")) applyLandPresentation(h);
 }
 function pushHash(){ // tab changes create a history entry (back returns to the prior tab)
   if(hashLock) return;
@@ -385,6 +460,7 @@ function pushHash(){ // tab changes create a history entry (back returns to the 
     history.pushState(routeHistoryState({entry, back:null}), "", url);
   }
   syncNearYouLinks(h);
+  if(h.startsWith("#land")) applyLandPresentation(h);
 }
 
 // ===== Digest deep-links (w12-12) =====
@@ -991,7 +1067,11 @@ function applyHash(){
   const scope=["money","people","land","property","rules","meetings","map","now"].includes(scopeSurface)
     ?CrolScope.scopeFromRouteHash("#"+raw,{language:window.LANG||"en"}):null;
   if(scope){
-    const adapted=CrolScope.routeHashFromScope(scope,{surface:scopeSurface});
+    const rebuilt=CrolScope.routeHashFromScope(scope,{surface:scopeSurface});
+    // Canonicalizing a Land route must not drop its presentation state. An unknown or
+    // default view normalizes away here, which is how `view=globe` and `view=list` both
+    // settle on the legacy List address without touching a semantic key.
+    const adapted=scopeSurface==="land"?routeHashWithLandView(rebuilt,landViewFromRouteHash("#"+raw)):rebuilt;
     const canonical = preserveAnalyticalProjectionQuery("#"+raw, carryWalk(adapted, "#"+raw));
     if(canonical!=="#"+raw){
       history.replaceState(routeHistoryState({entry:{hash:canonical,x:normalizeHistoryPoint(scrollX),y:normalizeHistoryPoint(scrollY)}}),"",routeUrlForHash(canonical));
@@ -1138,6 +1218,8 @@ function applyHash(){
       loadCareerGuide();
     } else if(tab === "land"){
       landResolvedArea=null;
+      landView=landViewFromSearchParams(q);
+      landMapPresentationFailure=null;
       landBorough = DEEPLINK_BOROS.includes(q.get("boro"))?q.get("boro"):"";
       landCommunityDistrict=/^(?:M|X|K|Q|R)\d{2}$/.test(q.get("cd")||"")?q.get("cd"):"";
       landCouncilDistrict=/^(?:[1-9]|[1-4]\d|5[01])$/.test(q.get("council")||"")?q.get("council"):"";
@@ -1189,6 +1271,7 @@ function applyHash(){
       const att=q.get("attendance");
       landAttendance=adoptedFuture==="hearing" && ["in_person","livestream","hybrid"].includes(att||"") ? att : "";
       landClosingWeek=adoptedFuture==="hearing" && q.get("closing")==="week";
+      applyLandPresentation();
       let scopedProjectId="";
       try{
         const facet=JSON.parse(q.get("facet")||"{}");
@@ -1601,6 +1684,9 @@ globalThis.parseLandHashSegment = parseLandHashSegment;
 globalThis.parseNoticeHashSegment = parseNoticeHashSegment;
 globalThis.parseWatchParam = parseWatchParam;
 globalThis.prepareHistoryRouteScroll = prepareHistoryRouteScroll;
+globalThis.applyLandPresentation = applyLandPresentation;
+globalThis.setLandView = setLandView;
+Object.defineProperty(globalThis, "landView", { configurable: true, get: () => landView, set: value => { landView = normalizeLandView(value); } });
 globalThis.pushHash = pushHash;
 globalThis.rememberItemRouteContext = rememberItemRouteContext;
 globalThis.restoreHistoryRouteScroll = restoreHistoryRouteScroll;
