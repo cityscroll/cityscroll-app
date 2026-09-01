@@ -20,17 +20,27 @@
 #                  tools/card_profile_sentinel.cjs rather than passing by
 #                  omission.
 #
+# Which profile a request gets is not a flag the caller has to know: it is a
+# routing decision. tools/card_profile_router.mjs turns a declared work surface
+# into exactly one profile, and the reduced one is the supported default for
+# focused card work only. Every other surface, and every request the router
+# cannot classify, takes the full-checkout control.
+#
 # Usage:
-#   provision_card_profile.sh provision --dest <dir> [--profile card|full]
+#   provision_card_profile.sh provision --dest <dir>
+#       [--surface <work-surface>]          # routed; defaults to focused-card-work
+#       [--profile focused-reduced|full]    # overrides routing, still recorded
 #       [--rev <sha>] [--source <url-or-path>] [--store <dir>] [--depth <n>]
 #       [--no-install] [--timing-out <jsonl>] [--label <text>]
+#       [--receipt-out <json>] [--gate <class>]... [--require-complete-history]
+#   provision_card_profile.sh decide [--surface <id>] [--gate <class>]...
 #   provision_card_profile.sh hydrate <path>...      # materialise tracked paths
 #   provision_card_profile.sh hydrate --full         # become the full control
 #   provision_card_profile.sh unshallow              # restore complete history
 #   provision_card_profile.sh status                 # report the active profile
 #
-# Timing records carry the source class and phase durations only: never a local
-# path, user name or host name.
+# Timing records and receipts carry the source class and phase durations only:
+# never a local path, user name or host name.
 
 set -euo pipefail
 
@@ -40,12 +50,50 @@ PATTERN_FILE_PATH="tools/card-profile/card-work.sparse"
 die() { echo "$*" >&2; exit 1; }
 now_ms() { python3 -c 'import time; print(int(time.monotonic()*1000))'; }
 
-usage() { sed -n '2,36p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; }
+usage() { sed -n '2,48p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; }
 
 # --- hydrate / unshallow / status: act on the checkout we are standing in -----
 
 cmd_status() {
   node "$ROOT/tools/verify_card_profile.mjs" --status
+  echo
+  node "$ROOT/tools/card_profile_router.mjs" --identity --json
+  local recorded computed
+  recorded="$(recorded_manifest_digest)"
+  if [[ -n "$recorded" ]]; then
+    computed="$(node "$ROOT/tools/card_profile_router.mjs" --identity)"
+    if [[ "$recorded" == "$computed" ]]; then
+      echo "recorded profile identity matches this revision's inputs"
+    else
+      echo "STALE: this checkout was provisioned from manifest digest $recorded but this revision computes $computed" >&2
+      echo "  routing will select the full-checkout control until it is reprovisioned" >&2
+    fi
+  fi
+}
+
+# The digest a checkout was provisioned under, recorded outside the working tree
+# so it survives a sparse-checkout change and is never mistaken for tracked
+# content. Absent in a checkout this tool did not provision.
+recorded_manifest_digest() {
+  local file
+  file="$(git -C "$ROOT" rev-parse --absolute-git-dir)/card-profile-identity.json"
+  [[ -f "$file" ]] || return 0
+  python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["manifest_digest"])' "$file"
+}
+
+cmd_decide() {
+  local args=(--decide)
+  local surface="focused-card-work"
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --surface) surface="$2"; shift 2 ;;
+      *) args+=("$1"); shift ;;
+    esac
+  done
+  local recorded
+  recorded="$(recorded_manifest_digest)"
+  if [[ -n "$recorded" ]]; then args+=(--recorded-digest "$recorded"); fi
+  node "$ROOT/tools/card_profile_router.mjs" "${args[@]}" --surface "$surface"
 }
 
 cmd_unshallow() {
@@ -84,12 +132,16 @@ cmd_hydrate() {
 # --- provision: build a new checkout -----------------------------------------
 
 cmd_provision() {
-  local dest="" profile="card" rev="" source="" store="" depth="" install=1
-  local timing_out="" label="" 
+  local dest="" profile="" rev="" source="" store="" depth="" install=1
+  local timing_out="" label="" receipt_out="" surface="focused-card-work"
+  local history_flag="" gates=()
   while [[ $# -gt 0 ]]; do
     case "$1" in
       --dest) dest="$2"; shift 2 ;;
       --profile) profile="$2"; shift 2 ;;
+      --surface) surface="$2"; shift 2 ;;
+      --gate) gates+=(--gate "$2"); shift 2 ;;
+      --require-complete-history) history_flag="--require-complete-history"; shift ;;
       --rev) rev="$2"; shift 2 ;;
       --source) source="$2"; shift 2 ;;
       --store) store="$2"; shift 2 ;;
@@ -97,13 +149,44 @@ cmd_provision() {
       --no-install) install=0; shift ;;
       --timing-out) timing_out="$2"; shift 2 ;;
       --label) label="$2"; shift 2 ;;
+      --receipt-out) receipt_out="$2"; shift 2 ;;
       *) die "unknown argument: $1" ;;
     esac
   done
 
   [[ -n "$dest" ]] || die "--dest is required"
-  [[ "$profile" == "card" || "$profile" == "full" ]] || die "--profile must be card or full"
   [[ -e "$dest" ]] && die "destination already exists: $dest"
+
+  # Route first. The decision is taken in the source checkout, because the
+  # destination does not exist yet, and it is written into the receipt whether
+  # it was followed or overridden.
+  local decision_file
+  decision_file="$(mktemp -t card-profile-decision)"
+  node "$ROOT/tools/card_profile_router.mjs" --decide --surface "$surface" \
+    ${gates[@]+"${gates[@]}"} ${history_flag:+$history_flag} --json > "$decision_file" \
+    || { rm -f "$decision_file"; die "provisioning request failed closed; nothing was created"; }
+  local routed
+  routed="$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["profile"])' "$decision_file")"
+
+  # --profile is an override, not the normal path. "card" is accepted as the
+  # name CI-09 provisioned under so its measurement harness keeps working.
+  local requested="$profile"
+  case "$profile" in
+    "") profile="$routed" ;;
+    card|card-work) profile="focused-reduced" ;;
+    focused-reduced|full) ;;
+    *) rm -f "$decision_file"; die "--profile must be focused-reduced or full" ;;
+  esac
+  [[ -z "$requested" ]] && echo "routed $surface to the $profile profile (${routed})"
+  local override_note=""
+  if [[ -n "$requested" && "$profile" != "$routed" ]]; then
+    override_note="explicitly requested $profile; the router would have selected $routed for surface $surface"
+    echo "note: $override_note" >&2
+  fi
+
+  # The rest of this function speaks CI-09's internal vocabulary.
+  local mode="full"
+  [[ "$profile" == "focused-reduced" ]] && mode="card"
 
   rev="${rev:-$(git -C "$ROOT" rev-parse HEAD)}"
   source="${source:-$(git -C "$ROOT" remote get-url origin)}"
@@ -117,13 +200,13 @@ cmd_provision() {
   # loses nothing by staying complete.
   local filter_args=()
   local partial="false"
-  if [[ "$profile" == "card" && "$source_class" == "remote" ]]; then
+  if [[ "$mode" == "card" && "$source_class" == "remote" ]]; then
     filter_args=(--filter=blob:none)
     partial="true"
   fi
   local depth_args=()
   if [[ -n "$depth" ]]; then
-    [[ "$profile" == "card" ]] || die "--depth applies to the card profile only"
+    [[ "$mode" == "card" ]] || die "--depth applies to the focused-reduced profile only"
     depth_args=(--depth "$depth")
   fi
 
@@ -136,7 +219,7 @@ cmd_provision() {
   prepare_ms=$(( $(now_ms) - start ))
 
   sparse_ms=0
-  if [[ "$profile" == "card" ]]; then
+  if [[ "$mode" == "card" ]]; then
     start="$(now_ms)"
     # The pattern list is read out of the object store, because the working tree
     # that would contain it does not exist yet.
@@ -168,16 +251,18 @@ cmd_provision() {
   echo "provisioned $profile profile at $rev"
   git -C "$dest" rev-parse --is-shallow-repository | sed 's/^/  shallow: /'
   echo "  partial clone: $partial"
-  if [[ "$profile" == "card" ]]; then
+  if [[ "$mode" == "card" ]]; then
     echo "  tracked paths not materialised: $(git -C "$dest" ls-files -t | grep -c '^S ' || true)"
   fi
 
   if [[ -n "$timing_out" ]]; then
-    PROV_OUT="$timing_out" PROV_LABEL="$label" PROV_PROFILE="$profile" \
+    PROV_OUT="$timing_out" PROV_LABEL="$label" PROV_PROFILE="$mode" \
     PROV_SOURCE="$source_class" PROV_REV="$rev" PROV_PARTIAL="$partial" \
     PROV_DEPTH="${depth:-}" PROV_PREPARE="$prepare_ms" PROV_SPARSE="$sparse_ms" \
     PROV_CHECKOUT="$checkout_ms" PROV_INSTALL="$install_ms" \
     PROV_LOAD_BEFORE="$load_before" PROV_LOAD_AFTER="$load_after" \
+    PROV_ROUTED="$profile" PROV_SURFACE="$surface" \
+    PROV_RULE="$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["rule"])' "$decision_file")" \
     python3 - <<'PYEOF'
 import json, os
 
@@ -190,7 +275,12 @@ def optional_ms(name):
 record = {
     "schema": "cityscroll.card-profile-provisioning.v1",
     "label": os.environ["PROV_LABEL"],
+    # The CI-09 vocabulary this file has always used, so its summarizer keeps
+    # reading the same records. The routed names are additive.
     "profile": os.environ["PROV_PROFILE"],
+    "routed_profile": os.environ.get("PROV_ROUTED"),
+    "work_surface": os.environ.get("PROV_SURFACE"),
+    "routing_rule": os.environ.get("PROV_RULE"),
     "source_class": os.environ["PROV_SOURCE"],
     "revision": os.environ["PROV_REV"],
     "partial_clone": os.environ["PROV_PARTIAL"] == "true",
@@ -210,10 +300,46 @@ with open(os.environ["PROV_OUT"], "a", encoding="utf-8") as handle:
 print(json.dumps(record, sort_keys=True))
 PYEOF
   fi
+
+  # Bind the checkout to the profile it was provisioned under. This lives in the
+  # Git directory rather than the working tree, so it survives a sparse-checkout
+  # change and can never be mistaken for tracked content. A later routing
+  # request compares it against the computed digest, which is how a profile that
+  # has drifted from its revision is caught instead of trusted.
+  local dest_identity
+  dest_identity="$(git -C "$dest" rev-parse --absolute-git-dir)/card-profile-identity.json"
+  ( cd "$dest" && node tools/card_profile_router.mjs --identity --json ) > "$dest_identity"
+  PROV_DECISION="$decision_file" PROV_IDENT="$dest_identity" PROV_ROUTED="$profile" \
+  PROV_OVERRIDE="$override_note" PROV_SURFACE="$surface" python3 - <<'PYEOF'
+import json, os
+
+path = os.environ["PROV_IDENT"]
+with open(path, encoding="utf-8") as handle:
+    identity = json.load(handle)
+with open(os.environ["PROV_DECISION"], encoding="utf-8") as handle:
+    decision = json.load(handle)
+identity["provisioned_profile"] = os.environ["PROV_ROUTED"]
+identity["work_surface"] = os.environ["PROV_SURFACE"]
+identity["routing_rule"] = decision["rule"]
+identity["routing_reason"] = decision["reason"]
+identity["profile_override"] = os.environ["PROV_OVERRIDE"] or None
+with open(path, "w", encoding="utf-8") as handle:
+    json.dump(identity, handle, indent=2, sort_keys=True)
+    handle.write("\n")
+PYEOF
+
+  if [[ -n "$receipt_out" ]]; then
+    local receipt_abs
+    receipt_abs="$(cd "$(dirname "$receipt_out")" && pwd -P)/$(basename "$receipt_out")"
+    ( cd "$dest" && node tools/card_profile_receipt.mjs --decision "$decision_file" \
+        ${override_note:+--fallback-reason "$override_note"} --out "$receipt_abs" )
+  fi
+  rm -f "$decision_file"
 }
 
 case "${1:-}" in
   provision) shift; cmd_provision "$@" ;;
+  decide) shift; cmd_decide "$@" ;;
   hydrate) shift; cmd_hydrate "$@" ;;
   unshallow) shift; cmd_unshallow ;;
   status) shift; cmd_status ;;

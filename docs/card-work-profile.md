@@ -1,31 +1,124 @@
-# Reduced provisioning profile for focused work
+# Provisioning profiles for focused work
 
 A fresh full working copy costs about 1.4-1.6 GiB and spends most of its
 provisioning time transferring Git objects. Two thirds of the bytes are Git
 repository metadata and the tracked `site/data` payload; the measurements are in
 [`docs/evidence/ci-08-working-copy-footprint/`](evidence/ci-08-working-copy-footprint/).
 
-The **card-work profile** is a supported smaller checkout for focused work. It is
-a development convenience only: it changes no product behaviour, no served
-output, no Worker bundle and no deployment path, and CI continues to use the
-full checkout.
+There are two profiles, and **`focused-reduced` is the supported default for
+focused card work**. Everything else — CI, deployment, release, architecture and
+control-plane runs, evidence production, and anything declaring that it needs
+complete history — is provisioned as the `full` checkout control. Which one a
+request gets is a routing decision, not a flag the caller has to remember.
+
+This is a development-provisioning contract only: it changes no product
+behaviour, no served output, no Worker bundle and no deployment path, and CI
+continues to use the full checkout.
 
 ## Provisioning
 
 ```bash
-# Reduced card-work profile
-tools/provision_card_profile.sh provision --dest ../cityscroll-card --profile card
+# Routed. Focused card work gets the reduced profile; the router says so out loud.
+tools/provision_card_profile.sh provision --dest ../cityscroll-card
 
-# Full-checkout control, the same thing CI provisions
-tools/provision_card_profile.sh provision --dest ../cityscroll-full --profile full
+# Any other work surface routes to the full control.
+tools/provision_card_profile.sh provision --dest ../cityscroll-ci --surface ci
+
+# Ask without provisioning anything.
+tools/provision_card_profile.sh decide --surface focused-card-work --gate worker-unit
 ```
 
-Both accept `--rev`, `--source`, `--store`, `--no-install`, and `--timing-out`
-for a JSON timing record. `--profile card --depth 1` is available and **not
-recommended**: it was measured slower overall, and it removes the history a
-merge-base guard needs until `tools/provision_card_profile.sh unshallow` runs.
+`--profile focused-reduced|full` overrides the routing decision. The override is
+recorded in the receipt rather than hidden, because a checkout that was not
+routed to its profile is a thing a reviewer should be able to see.
 
-`tools/provision_card_profile.sh status` reports which profile a checkout is.
+All forms accept `--rev`, `--source`, `--store`, `--no-install`, `--timing-out`
+for a JSON timing record and `--receipt-out` for a provisioning receipt.
+`--depth 1` is available on the reduced profile and **not recommended**: it was
+measured slower overall, and it removes the history a merge-base guard needs
+until `tools/provision_card_profile.sh unshallow` runs.
+
+`tools/provision_card_profile.sh status` reports which profile a checkout is,
+its recorded profile identity, and whether that identity has gone stale.
+
+## The routing decision
+
+A request names a **work surface**. The router turns it into exactly one
+profile, records which rule fired, and never selects the reduced profile by
+omission: an undeclared surface or an unclassified gate class is an error, and
+the last rule in the list is the control.
+
+<!-- generated: card-profile-decision-table -->
+| Work surface | Provisioned profile | Why |
+| --- | --- | --- |
+| `focused-card-work` | `focused-reduced` | Implementing one card against a bounded set of profile-supported gate classes. This is the surface the reduced profile was measured for, and the only one it may be handed to. |
+| `ci` | `full` | CI runs the whole required gate set, including the site standards, site and contract unit, generated-document and reading-level families that read across the excluded byte-heavy trees. CI is unchanged by this card and continues to provision the full checkout. |
+| `unit` | `full` | test/*.test.mjs and test/contract/*.test.mjs read tracked builder inputs across site/data, data/ and entity_resolution/, which the reduced profile deliberately defers. |
+| `accessibility` | `full` | They serve the built site, which requires the generated Pages build over the complete tracked payload. |
+| `artifact` | `full` | The Pages build and the served-artifact checks read the complete tracked site payload and the tracked artifacts/ tree. |
+| `deployment` | `full` | A deployment publishes the built site and the Worker bundle. Provisioning a deployment from anything but the full control would make the published artifact depend on a development convenience. |
+| `release-surface` | `full` | Release evidence is derived from the full tracked tree and from generated build output. |
+| `architecture` | `full` | The reconciliation run projects and publishes evidence over the whole declared architecture surface, not one --check invocation, and its output is an artifact other work is judged against. |
+| `repository-control-plane` | `full` | The RCP-03 evidence-placement receipt was measured reading 3,535 tracked paths totalling 615.4 MiB, close to the whole tracked tree, and the per-tree inputs it derives from span every documentation tree. |
+| `evidence` | `full` | Producing or placing evidence reads and writes across documentation trees the reduced profile defers, and an evidence receipt taken in a partial working copy would record an incomplete tree as if it were the tree. |
+| `complete-history` | `full` | Declared explicitly by a caller that needs history beyond what its checkout carries. The default reduced profile keeps complete history, so this normally costs nothing extra; it is declared full because a caller that says it needs complete history must not be handed a checkout whose history depends on a profile option. |
+
+| Order | Rule | When | Outcome |
+| ---: | --- | --- | --- |
+| 1 | `unknown-surface` | the requested work surface is not declared in this manifest | `error` |
+| 2 | `unknown-gate-class` | a requested gate class is declared neither profile-supported nor full-checkout-only | `error` |
+| 3 | `full-only-surface` | the requested surface is declared full_only | `full` |
+| 4 | `complete-history-required` | the caller declares that the work needs complete commit history | `full` |
+| 5 | `full-only-gate-class` | a requested gate class is full-checkout-only, or is not declared profile-supported | `full` |
+| 6 | `path-outside-closure` | a requested path is in the deferred hydration set, or is not materialised by the committed pattern list | `full` |
+| 7 | `stale-profile` | a recorded manifest digest is present and does not equal the computed one | `full` |
+| 8 | `closure-unverified` | the closure manifest is not current, or a requested gate class has no non-empty observation receipt | `full` |
+| 9 | `focused-card-work-verified` | the surface is focused-card-work and every precondition above is satisfied | `focused-reduced` |
+| 10 | `default-full` | no rule above matched | `full` |
+<!-- /generated: card-profile-decision-table -->
+
+Regenerate that table with `node tools/card_profile_router.mjs --table`; a test
+fails if it drifts from the manifest.
+
+Two surfaces need a word of explanation. `architecture` and
+`repository-control-plane` are full-checkout-only as **run surfaces** — the runs
+that produce and publish evidence over a whole declared surface — while several
+of their individual `--check` commands are profile-supported gate classes that do
+run in a reduced checkout through the gate front door. The manifest records that
+distinction against each surface.
+
+## Profile identity, and when a profile goes stale
+
+The reduced profile is bound to what it was derived from. `manifest_digest`
+covers the routing manifest, the profile config, the generated pattern list and
+closure, the dependency lock and the toolchain pin; `provision_identity`
+additionally binds the revision.
+
+```bash
+node tools/card_profile_router.mjs --identity --json
+```
+
+Provisioning records the digest in the new checkout's Git directory. When a
+later request computes a different one, the checkout was provisioned from a
+profile that no longer describes this revision's inputs, so routing selects the
+control until it is reprovisioned. `status` reports this as `STALE`.
+
+## Proving which profile you got
+
+```bash
+tools/provision_card_profile.sh provision --dest <dir> --receipt-out <receipt.json>
+node tools/card_profile_receipt.mjs --out <receipt.json>        # from inside a checkout
+node tools/card_profile_receipt.mjs --check <receipt.json>      # does it still reproduce?
+```
+
+The receipt carries profile identity, revision, Git object mode, the closure it
+was provisioned against, any explicitly hydrated paths, integrity checks, byte
+accounting and the routing decision. Its `deterministic` block is exactly the
+part that is a property of the checkout rather than of the run, and
+`deterministic_digest` covers that block, so `--check` is a real reproduction
+test. Byte accounting is refused unless its categories partition the total, and
+a receipt that would carry an absolute path, a user name or a host name fails
+closed rather than being quietly trimmed.
 
 ## What the two levers do
 
