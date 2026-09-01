@@ -26,6 +26,10 @@ contracts. Do not turn it into a delivery log, roadmap, module inventory, or car
   owns the reviewed evidence-placement inputs, one file per semantic key and one key per document
   tree. `docs/repository-control-plane/evidence-placement.v1.json` is derived from them at check
   time and must not be committed.
+- [`docs/repository-control-plane/cutover.d/README.md`](docs/repository-control-plane/cutover.d/README.md)
+  owns the reviewed cutover inputs proving the control-plane migrations moved content without
+  losing product behavior or evidence. `docs/repository-control-plane/cutover.v1.json` is derived
+  from them at check time and must not be committed.
 
 ## Repository-wide invariants
 
@@ -73,6 +77,10 @@ contracts. Do not turn it into a delivery log, roadmap, module inventory, or car
 - For root or local instruction changes, run `node tools/agents_router_guard.mjs --check` and
   `node --test test/agents_router_guard.test.mjs`. The content classifier is primary; the byte
   ceiling is a downward-only backstop.
+- For changes to repository content classification, placement, or the cutover proof, run
+  `node tools/inverse_control_plane_guard.mjs --check --all` and
+  `node tools/rcp05_cutover_receipt.mjs --check`. Both reuse the architecture-evidence card
+  inventory and need no register credentials.
 - Treat deployment and source refresh as separate from code verification. Release boundaries and
   required production evidence are documented in [`docs/release/cloudflare-native-builds.md`](docs/release/cloudflare-native-builds.md).
 

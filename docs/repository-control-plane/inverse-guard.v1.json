@@ -123,6 +123,24 @@
       "allowed_evidence_contract": "rcp03-evidence-placement"
     },
     {
+      "id": "rcp-cutover-inputs",
+      "path_pattern": "docs/repository-control-plane/cutover.d/*",
+      "content_class": "repository-migration-receipt",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-05",
+      "register_id": "cityscroll-repository-control-plane/rcp-05",
+      "disposition": "retain",
+      "allowed_evidence_contract": "cutover-before-after-receipt"
+    },
+    {
+      "id": "rcp-cutover-input-schema",
+      "path_pattern": "docs/repository-control-plane/cutover-shard.v1.schema.json",
+      "content_class": "repository-migration-receipt",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-05",
+      "register_id": "cityscroll-repository-control-plane/rcp-05",
+      "disposition": "retain",
+      "allowed_evidence_contract": "cutover-input-schema"
+    },
+    {
       "id": "calendar-contract-evidence",
       "path_pattern": "docs/calendar-contract.md",
       "content_class": "public-code-coupled-evidence",
