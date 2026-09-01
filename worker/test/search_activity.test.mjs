@@ -273,7 +273,7 @@ test("the visitor cookie is first-party, HttpOnly, Secure, SameSite=Lax, and ~1 
   assert.match(header, /HttpOnly/);
   assert.match(header, /Secure/);
   assert.match(header, /SameSite=Lax/);
-  assert.match(header, /Domain=cityscroll\.org/);
+  assert.doesNotMatch(header, /Domain=/, "host-only: the id stays off the static site hosts");
   assert.match(header, /Path=\//);
   const maxAge = Number(header.match(/Max-Age=(\d+)/)[1]);
   assert.equal(maxAge, 365 * 24 * 3600);
@@ -322,8 +322,8 @@ test("visitor, network, and subscriber observations stay in separate fields", as
   assert.equal(receipt.network.retention_days, receipt.retention_days);
 });
 
-test("the cookie is only issued from the host that can share it with the site", () => {
-  assert.match(visitorCookieHeader("v1_abc"), /Domain=cityscroll\.org/);
+test("the cookie stays scoped to the intake host that issued it", () => {
+  assert.doesNotMatch(visitorCookieHeader("v1_abc"), /Domain=/);
   // A compatibility or preview host must not mint a cookie the site cannot read.
   assert.equal(readVisitorCookie(""), null);
 });

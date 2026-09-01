@@ -21,8 +21,7 @@ import {
 } from "../../../capabilities/search_activity.mjs";
 
 export const VISITOR_COOKIE_NAME = "cs_visitor";
-export const VISITOR_COOKIE_DOMAIN = "cityscroll.org";
-/** Only this host can set a cookie the canonical Search document also carries. */
+/** Only this host issues the cookie, and host-only scope keeps it here too. */
 export const VISITOR_COOKIE_ISSUER_HOST = "api.cityscroll.org";
 /** ~1 year, matching the "recognize this browser across visits" intent. */
 export const VISITOR_COOKIE_TTL_SECONDS = 365 * 24 * 3600;
@@ -87,7 +86,8 @@ export function readVisitorCookie(cookieHeader) {
 /**
  * First-party visitor cookie. HttpOnly so page scripts cannot read or forge it,
  * Secure so it never crosses plaintext, SameSite=Lax so it is not a cross-site
- * tracking primitive, and domain-scoped to the site it belongs to.
+ * tracking primitive, and host-only (no Domain attribute) so it travels only to
+ * the intake host and never rides page views on the static site hosts.
  */
 export function visitorCookieHeader(visitorId, { maxAge = VISITOR_COOKIE_TTL_SECONDS } = {}) {
   return [
@@ -95,7 +95,6 @@ export function visitorCookieHeader(visitorId, { maxAge = VISITOR_COOKIE_TTL_SEC
     "HttpOnly",
     "Secure",
     "SameSite=Lax",
-    `Domain=${VISITOR_COOKIE_DOMAIN}`,
     "Path=/",
     `Max-Age=${maxAge}`,
   ].join("; ");

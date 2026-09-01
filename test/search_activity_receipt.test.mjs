@@ -3,16 +3,13 @@
  *
  * These tests exercise the render plan the canonical Search document paints from,
  * so a receipt is compared against the document's real render inputs rather than
- * against scraped DOM. `search_document.mjs` calls `buildSearchRenderPlan` and then
- * iterates that plan's families — the drift guard at the bottom of this file keeps
- * that true, which is what makes the plan a valid stand-in for the rendered page.
+ * against scraped DOM. That the document really paints from this plan is proven
+ * behaviorally by test/functional/33_search_activity_receipt.py, which compares a
+ * submitted receipt against the page rendered in a real browser.
  *
  * verify: node --test test/search_activity_receipt.test.mjs
  */
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
-import { dirname, join } from "node:path";
-import { fileURLToPath } from "node:url";
 import { test } from "node:test";
 
 import {
@@ -30,8 +27,6 @@ import {
   submitSearchExecutionReceipt,
 } from "../site/search_activity_receipt.mjs";
 import { isSafeSearchCanonicalRoute } from "../site/search_document_contract.mjs";
-
-const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 
 // ---- fixtures: the shapes `/search` and `/search/candidates` actually return ----
 
@@ -383,23 +378,4 @@ test("place context travels as bounded scope, not as free-form fields", () => {
     normalizeSearchExecutionSubmission({ ...submission, scope: { boro: "manhattan", note: "x" } }).reason,
     "unknown_field",
   );
-});
-
-// ---- drift guard: the document must paint from the same plan it reports ----
-
-test("the Search document paints from the render plan it observes", () => {
-  const source = readFileSync(join(ROOT, "site/search_document.mjs"), "utf8");
-  assert.match(source, /import \{ buildSearchRenderPlan \} from "\.\/search_render_plan\.mjs";/);
-  assert.match(source, /const plan = buildSearchRenderPlan\(lastResponse\);/);
-  assert.match(source, /paintResults\(root, plan\);/);
-  assert.match(source, /observeSearchExecution\(query, plan\);/);
-  // Each renderer must consume plan.families rather than regroup results itself.
-  for (const renderer of ["renderResults", "renderSemanticResults", "renderCombinedResults"]) {
-    const body = source.slice(source.indexOf(`function ${renderer}(`));
-    assert.match(
-      body.slice(0, body.indexOf("\n}\n")),
-      /plan\.families/,
-      `${renderer} must render from the plan, not from its own grouping`,
-    );
-  }
 });
