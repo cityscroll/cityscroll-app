@@ -390,11 +390,21 @@ test("Browse landing and every bounded child are exact build outputs with useful
   assert.doesNotMatch(now, /class="browse-child-nav"[^>]*>[\s\S]{0,300}data-tab=/);
   const landing = output("/site/browse/index.html");
   assert.match(landing, /data-build-rendered="browse-landing"/);
-  assert.match(landing, /<h2[^>]*>Browse NYC’s public record<\/h2>/);
+  assert.match(landing, /<h2[^>]*>Browse NYC public records<\/h2>/);
   assert.match(landing, /href="\/browse\/contracts\/"/);
   assert.match(landing, /40 open opportunities/);
   assert.match(landing, /228 civil-service exams/);
-  assert.match(landing, /Pick a civic object\. Follow the edges between people, places, agencies, contracts, and decisions\./);
+  assert.match(landing, /Choose a type of record, then search or filter that collection\./);
+  // Browse is the filter-first record-family entrance: the built document puts
+  // the family choices ahead of the secondary graph-traversal journey.
+  const landingGrid = landing.indexOf("browse-source-grid");
+  assert.ok(landingGrid > 0, "the built landing renders the record-family grid");
+  for (const traversal of ["data-browse-explore-connections", "Explore connections", "Start a walk", "Graph entry", "data-walk-entry"]) {
+    assert.ok(landing.indexOf(traversal) > landingGrid, `${traversal} follows the record families in the built landing`);
+  }
+  for (const route of ["/browse/contracts/", "/browse/zoning/", "/browse/meetings/", "/browse/people/", "/browse/rules/", "/browse/exams/"]) {
+    assert.ok(landing.indexOf(`href="${route}"`) < landing.indexOf("data-browse-explore-connections"), `${route} is reachable before any graph step`);
+  }
   const exams = output("/site/browse/exams/index.html");
   assert.match(exams, /data-browse-surface="exams"/);
   assert.match(exams, /id="tab-exams" class="tabpane active"/);

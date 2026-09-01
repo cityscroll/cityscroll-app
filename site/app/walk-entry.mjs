@@ -50,6 +50,10 @@ function hydrate() {
   const title = root.querySelector("#walk-entry-heading")?.textContent || undefined;
   const description = root.querySelector("#walk-entry-heading + p")?.textContent || undefined;
   const actionLabel = root.querySelector("button")?.textContent || undefined;
+  // On the Browse landing the walk lives inside a secondary disclosure, because
+  // choosing a record family is the primary task. An arrival that already names
+  // its traversal context is here for the walk, so its context opens with it.
+  const disclosure = root.closest("details");
   root.outerHTML = renderWalkEntry({
     source,
     query,
@@ -63,6 +67,7 @@ function hydrate() {
     ...(description ? { description } : {}),
     ...(actionLabel ? { actionLabel } : {}),
   });
+  if (disclosure) disclosure.open = true;
 }
 
 if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", hydrate, { once: true });

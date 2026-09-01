@@ -6,7 +6,34 @@ import {
   walkEntryHref,
   walkEntryPlaceLabel,
 } from "../site/walk_entry.mjs";
-import { renderBrowseLanding } from "../site/browse_view.mjs";
+import { readFileSync } from "node:fs";
+import { fileURLToPath } from "node:url";
+import { dirname, join } from "node:path";
+
+import { BROWSE_GROUPS, buildBrowseLanding, renderBrowseLanding } from "../site/browse_view.mjs";
+
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
+const read = (relative) => readFileSync(join(ROOT, relative), "utf8");
+
+// The six canonical record families, and the payloads that give each one a
+// measured primary count, so a landing test reasons about the real taxonomy.
+const CANONICAL_FAMILIES = ["Contracts", "People + organizations", "Land", "Rules", "Meetings", "Exams"];
+const LANDING_PAYLOADS = {
+  contracts: { open_as_of: "2026-08-03", notices: [{ request_id: "C1" }] },
+  staffing: { generated_at: "2026-08-02T12:00:00Z", notices: [{ request_id: "S1" }] },
+  zoning: { generated_at: "2026-08-05T12:00:00Z", projects: [{ project_id: "P1" }] },
+  property: { generated_at: "2026-08-02T12:00:00Z", property_rows: [{ request_id: "PR1" }] },
+  rules: { retrieved_at: "2026-08-03T12:00:00Z", rows: [{ request_id: "R1" }] },
+  meetings: { retrieved_at: "2026-08-02T12:00:00Z", rows: [{ request_id: "M1" }] },
+};
+const LANDING_METRICS = {
+  "people-organizations": { count: 12, countLabel: "people" },
+  exams: { count: 9, countLabel: "civil-service exams" },
+};
+
+function landingHtml() {
+  return renderBrowseLanding(buildBrowseLanding(LANDING_PAYLOADS, { groupMetrics: LANDING_METRICS }));
+}
 
 test("walk entry URLs carry source, query, and explicit place fields only", () => {
   const href = walkEntryHref("/browse/?latitude=40.7&longitude=-73.9&council=C01", {
@@ -136,4 +163,120 @@ test("place labels remain human-readable and coordinate-free", () => {
     walkEntryPlaceLabel({ place: { boroughs: ["Queens"], community_districts: ["Q04"] } }),
     "Queens · CD Q04",
   );
+});
+
+// --- Browse is the filter-first record-family entrance -----------------------
+
+test("the Browse landing puts record-family choices before graph traversal", () => {
+  const html = landingHtml();
+  const families = html.indexOf("data-browse-families");
+  const grid = html.indexOf("browse-source-grid");
+  const explore = html.indexOf("data-browse-explore-connections");
+  assert.ok(families >= 0 && grid > families, "the family grid is rendered as its own section");
+  assert.ok(explore > grid, "graph traversal follows the family choices");
+  // Nothing that announces traversal may precede the family choices.
+  for (const marker of ["Graph entry", "Start a walk", "data-walk-entry", "Explore connections"]) {
+    const at = html.indexOf(marker);
+    assert.ok(at > grid, `${marker} appears after the record families, not before them`);
+  }
+});
+
+test("the Browse landing opens with resident-task language, not graph language", () => {
+  const html = landingHtml();
+  assert.match(html, /<h2>Browse NYC public records<\/h2>/);
+  assert.match(html, /Choose a type of record, then search or filter that collection\./);
+  const head = html.slice(0, html.indexOf("data-browse-families"));
+  assert.doesNotMatch(head, /Follow the edges|civic object|Graph entry|Start a walk/);
+});
+
+test("every canonical record family offers a direct, queryless collection entrance", () => {
+  const html = landingHtml();
+  const cards = [...html.matchAll(/<article class="browse-source-card"[\s\S]*?<\/article>/g)].map((match) => match[0]);
+  assert.equal(cards.length, 6, "all six canonical families are presented");
+  for (const label of CANONICAL_FAMILIES) {
+    const card = cards.find((markup) => markup.includes(`<h3>${label}</h3>`));
+    assert.ok(card, `${label} is presented as a record family`);
+    const actions = card.slice(card.indexOf('class="browse-source-actions"'));
+    assert.match(actions, /href="\/browse\/[a-z-]+\//, `${label} links straight to a /browse/ collection`);
+    // A family entrance carries no topic, walk, or graph state.
+    assert.doesNotMatch(actions, /walk_query|walk_source|[?&]q=/, `${label} needs no query to be useful`);
+  }
+});
+
+test("the three named resident journeys reach their typed collection in one step", () => {
+  const html = landingHtml();
+  for (const [label, route] of [["Contracts", "/browse/contracts/"], ["Land", "/browse/zoning/"], ["Meetings", "/browse/meetings/"]]) {
+    const start = html.indexOf(`<h3>${label}</h3>`);
+    const card = html.slice(start, html.indexOf("</article>", start));
+    assert.ok(card.includes(`href="${route}"`), `${label} opens ${route} directly`);
+    assert.ok(card.indexOf(`href="${route}"`) < html.indexOf("data-browse-explore-connections"), `${label} needs no intermediate graph step`);
+  }
+});
+
+test("advertised family filters name controls the destination actually renders", () => {
+  // The root advertises refinement only where the typed destination owns it, so
+  // every named control is read back out of the markup that renders it.
+  const destinations = [read("site/index.html"), read("site/browse_concept_view.mjs")];
+  for (const group of BROWSE_GROUPS) {
+    assert.ok(group.filters, `${group.label} explains how its collection is refined`);
+    assert.ok(Array.isArray(group.filterControls) && group.filterControls.length, `${group.label} names its controls`);
+    for (const control of group.filterControls) {
+      assert.ok(
+        destinations.some((source) => source.includes(`id="${control}"`)),
+        `${group.label} advertises "${control}", which its destination renders`,
+      );
+    }
+  }
+  const html = landingHtml();
+  for (const group of BROWSE_GROUPS) {
+    assert.ok(html.includes(group.filters), `${group.label} shows its supported refinement`);
+  }
+  // The root selects a family; it never grows a universal filter of its own.
+  const root = html.slice(0, html.indexOf("data-browse-explore-connections"));
+  assert.doesNotMatch(root, /<select|<input/, "the root page adds no filter controls of its own");
+});
+
+test("graph traversal stays reachable as a clearly secondary Explore connections journey", () => {
+  const html = landingHtml();
+  const section = html.slice(html.indexOf("data-browse-explore-connections"));
+  assert.match(section, /<h2 id="browse-explore-connections-heading">Explore connections<\/h2>/);
+  assert.match(section, /Follow the relationships between civic objects/);
+  // Progressive disclosure keeps it from competing with the primary Browse task.
+  assert.match(section, /<details class="browse-explore-disclosure"[^>]*>\s*<summary>Start a walk<\/summary>/);
+  // The traversal contract itself is preserved, not rewritten.
+  assert.match(section, /data-walk-entry/);
+  assert.match(section, /Graph entry/);
+  assert.equal([...section.matchAll(/data-walk-family="/g)].length, 6);
+  assert.match(section, /data-walk-family-state="available"/);
+});
+
+test("the Browse landing's Search records form never posts walk state back to Browse", () => {
+  const html = landingHtml();
+  const form = html.slice(html.indexOf("<form"), html.indexOf("</form>"));
+  assert.ok(form.includes("Search records") || html.includes("<button type=\"submit\">Search records</button>"));
+  assert.match(form, /action="\/search\/"/);
+  assert.match(form, /name="q"/);
+  assert.doesNotMatch(form, /name="walk_query"/);
+  assert.doesNotMatch(form, /name="walk_source"/);
+  assert.doesNotMatch(form, /action="\/browse\/"/);
+});
+
+test("family coverage states stay honest when a family has no measured count", () => {
+  // Contracts alone is measured, so no other family may claim a positive count.
+  const html = renderBrowseLanding(buildBrowseLanding({ contracts: { open_as_of: "2026-08-03", notices: [{ request_id: "C1" }] } }));
+  assert.match(html, /id="source-contracts"/);
+  assert.equal([...html.matchAll(/<article class="browse-source-card"/g)].length, 1, "unmeasured families are not fabricated into cards");
+  const section = html.slice(html.indexOf("data-browse-explore-connections"));
+  assert.match(section, /data-walk-family-state="unknown"/);
+  assert.match(section, /Records not shown/);
+  assert.doesNotMatch(html, /0 records in this family/);
+});
+
+test("an explicit traversal arrival opens the connections disclosure it lands in", () => {
+  // The static landing keeps the walk folded; hydration runs only for an arrival
+  // that already names its traversal context, and opens that context with it.
+  const hydration = read("site/app/walk-entry.mjs");
+  assert.match(hydration, /const disclosure = root\.closest\("details"\);/);
+  assert.match(hydration, /if \(disclosure\) disclosure\.open = true;/);
+  assert.match(hydration, /if \(!\["search", "near_you", "object"\]\.includes\(source\)\) return;/);
 });
