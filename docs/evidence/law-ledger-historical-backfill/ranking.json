@@ -1,0 +1,1650 @@
+{
+  "schema": "cityscroll.code_history_backfill_ranking_evidence.v1",
+  "source": {
+    "system": "american_legal_publishing",
+    "landing_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-1",
+    "observed_at": "2026-08-24T08:25:03.900Z",
+    "content_hash": "sha256:516028f853930773763a1ffcc40316445b8505ad092945be58c435a704d643ca",
+    "publisher_current_through": "Local Law 2026/134, enacted August 18, 2026,"
+  },
+  "weights": {
+    "inbound_reference": 3,
+    "retained_change": 12,
+    "distinct_instrument": 4,
+    "mandate_join": 4,
+    "authority_citation": 4
+  },
+  "tie_break": "score, then inbound references, then recorded changes, then citation order",
+  "candidate_count": 8542,
+  "measurement": {
+    "provision_count": 8598,
+    "provisions_with_history_note": 2156,
+    "cited_provision_count": 2314,
+    "mandate_joined_provision_count": 619,
+    "ranking_candidate_count": 8542,
+    "ranking_fingerprint": "sha256:6000ab43f8fac3c58a6682dc132d544eacbd485c23ea80b0bfcc7eaa457bfeaf"
+  },
+  "unavailable_inputs": [
+    {
+      "input": "authority_citation_count",
+      "weight": 4,
+      "status": "not_materialized",
+      "reason": "Agency rulemaking authority citations are served from the rules read model rather than retained in this repository.",
+      "effect": "Every candidate scores zero for this input, so it moves no candidate above another in this batch."
+    }
+  ],
+  "read_model_fingerprint": "sha256:5bb0722b2f8e2350938df98363ceb62659fb460f0cdb0b8b15d7135b26f6f2e5",
+  "ranking_fingerprint": "sha256:6000ab43f8fac3c58a6682dc132d544eacbd485c23ea80b0bfcc7eaa457bfeaf",
+  "eligibility": {
+    "rule": "a section joins a backfill batch only when a source already records at least one change to it",
+    "minimum_recorded_changes": 1,
+    "recoverable_count": 2156,
+    "without_recorded_change_count": 6386,
+    "highest_ranked_without_recorded_change": [
+      {
+        "provision_id": "nyc-administrative-code:25-412",
+        "citation": "§ 25-412",
+        "score": 300,
+        "inbound_reference_count": 100,
+        "reason": "no source in this repository records a change to this section, so no historical interval can be bounded yet"
+      },
+      {
+        "provision_id": "nyc-administrative-code:25-410",
+        "citation": "§ 25-410",
+        "score": 297,
+        "inbound_reference_count": 99,
+        "reason": "no source in this repository records a change to this section, so no historical interval can be bounded yet"
+      },
+      {
+        "provision_id": "nyc-administrative-code:25-406",
+        "citation": "§ 25-406",
+        "score": 243,
+        "inbound_reference_count": 81,
+        "reason": "no source in this repository records a change to this section, so no historical interval can be bounded yet"
+      },
+      {
+        "provision_id": "nyc-administrative-code:25-403",
+        "citation": "§ 25-403",
+        "score": 240,
+        "inbound_reference_count": 80,
+        "reason": "no source in this repository records a change to this section, so no historical interval can be bounded yet"
+      },
+      {
+        "provision_id": "nyc-administrative-code:25-407",
+        "citation": "§ 25-407",
+        "score": 240,
+        "inbound_reference_count": 80,
+        "reason": "no source in this repository records a change to this section, so no historical interval can be bounded yet"
+      }
+    ]
+  },
+  "cutoff": {
+    "rule": "highest measured score first among recoverable sections, bounded by limit and minimum score",
+    "limit": 24,
+    "minimum_score": 60,
+    "lowest_selected_score": 99,
+    "next_excluded": {
+      "provision_id": "nyc-administrative-code:14-155",
+      "citation": "§ 14-155",
+      "score": 99
+    }
+  },
+  "sources": [
+    {
+      "id": "american-legal-publishing-current-snapshot",
+      "name": "American Legal Publishing, current Administrative Code snapshot",
+      "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-1",
+      "role": "publisher amendment notes and current text, already retained",
+      "acquisition_status": "retained",
+      "acquisition_note": "Retained by the current-code builder; supplies the recorded change spine for this batch.",
+      "observed_at": null
+    },
+    {
+      "id": "nyc-council-legislation-local-law-texts",
+      "name": "New York City Council legislation records, enacted Local Law texts",
+      "url": "https://legistar.council.nyc.gov/Legislation.aspx",
+      "role": "enacted Local Law text and effective-date clauses for each recorded change",
+      "acquisition_status": "not_acquired",
+      "acquisition_note": "Per-law document retrieval and matter identity resolution are outside this card.",
+      "observed_at": null
+    },
+    {
+      "id": "nys-legislature-chapter-laws",
+      "name": "New York State Legislature, chapter laws",
+      "url": "https://www.nysenate.gov/legislation",
+      "role": "state chapter laws that the publisher records as amending Administrative Code sections",
+      "acquisition_status": "not_acquired",
+      "acquisition_note": "State chapter laws keep their own instrument identity and are never recorded as Local Laws.",
+      "observed_at": null
+    },
+    {
+      "id": "american-legal-publishing-superseded-editions",
+      "name": "American Legal Publishing, superseded Administrative Code editions",
+      "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-1",
+      "role": "historical provision text for a retained change interval",
+      "acquisition_status": "not_acquired",
+      "acquisition_note": "No superseded edition is published at a stable public address that this repository already retains.",
+      "observed_at": null
+    }
+  ],
+  "coverage_summary": {
+    "selected_sections": 24,
+    "retained_changes": 122,
+    "unresolved_note_entries": 0,
+    "distinct_local_laws": 61,
+    "distinct_state_chapter_laws": 41,
+    "coverage_intervals": 131,
+    "unknown_intervals": 94,
+    "materialized_versions": 0,
+    "unresolved_materializations": 122,
+    "sections_with_no_open_period": 3
+  },
+  "conflicts": {
+    "total": 54,
+    "duplicate_publisher_record": 54,
+    "effective_date_disagreement": 0,
+    "resolution": "every conflicting observation is retained; no source is promoted over another"
+  },
+  "top": [
+    {
+      "provision_id": "nyc-administrative-code:25-412",
+      "citation": "§ 25-412",
+      "heading": "Tax and debt limitations.",
+      "inputs": {
+        "inbound_reference_count": 100,
+        "retained_change_count": 0,
+        "distinct_instrument_count": 0,
+        "mandate_join_count": 0,
+        "authority_citation_count": 0
+      },
+      "score": 300,
+      "conflict_count": 0,
+      "rank": 1
+    },
+    {
+      "provision_id": "nyc-administrative-code:23-1101",
+      "citation": "§ 23-1101",
+      "heading": "Definitions.",
+      "inputs": {
+        "inbound_reference_count": 94,
+        "retained_change_count": 1,
+        "distinct_instrument_count": 1,
+        "mandate_join_count": 0,
+        "authority_citation_count": 0
+      },
+      "score": 298,
+      "conflict_count": 0,
+      "rank": 2
+    },
+    {
+      "provision_id": "nyc-administrative-code:25-410",
+      "citation": "§ 25-410",
+      "heading": "Amendments to the district plan.",
+      "inputs": {
+        "inbound_reference_count": 99,
+        "retained_change_count": 0,
+        "distinct_instrument_count": 0,
+        "mandate_join_count": 0,
+        "authority_citation_count": 0
+      },
+      "score": 297,
+      "conflict_count": 0,
+      "rank": 3
+    },
+    {
+      "provision_id": "nyc-administrative-code:25-406",
+      "citation": "§ 25-406",
+      "heading": "Notice and hearing",
+      "inputs": {
+        "inbound_reference_count": 81,
+        "retained_change_count": 0,
+        "distinct_instrument_count": 0,
+        "mandate_join_count": 0,
+        "authority_citation_count": 0
+      },
+      "score": 243,
+      "conflict_count": 0,
+      "rank": 4
+    },
+    {
+      "provision_id": "nyc-administrative-code:25-403",
+      "citation": "§ 25-403",
+      "heading": "Contents of the district plan.",
+      "inputs": {
+        "inbound_reference_count": 80,
+        "retained_change_count": 0,
+        "distinct_instrument_count": 0,
+        "mandate_join_count": 0,
+        "authority_citation_count": 0
+      },
+      "score": 240,
+      "conflict_count": 0,
+      "rank": 5
+    },
+    {
+      "provision_id": "nyc-administrative-code:25-407",
+      "citation": "§ 25-407",
+      "heading": "Establishment or extension of the district.",
+      "inputs": {
+        "inbound_reference_count": 80,
+        "retained_change_count": 0,
+        "distinct_instrument_count": 0,
+        "mandate_join_count": 0,
+        "authority_citation_count": 0
+      },
+      "score": 240,
+      "conflict_count": 0,
+      "rank": 6
+    },
+    {
+      "provision_id": "nyc-administrative-code:13-638.2",
+      "citation": "§ 13-638.2",
+      "heading": "Supplementary provisions regarding employer contributions to retirement systems for fiscal years beginning on or after July first, nineteen hundred eighty-nine, for amortization of consolidated unfunded accrued liabilities and balance sheet liabilities for the nineteen hundred ninety – nineteen hundred ninety-one, nineteen hundred ninety-one – nineteen hundred ninety-two and nineteen hundred ninety-two – nineteen hundred ninety-three fiscal years, and for amortization of such liabilities and certain other unfunded accrued liabilities pursuant to the level percentage of payroll method in certain fiscal years thereafter; rates of interest.",
+      "inputs": {
+        "inbound_reference_count": 21,
+        "retained_change_count": 8,
+        "distinct_instrument_count": 8,
+        "mandate_join_count": 0,
+        "authority_citation_count": 0
+      },
+      "score": 191,
+      "conflict_count": 0,
+      "rank": 7
+    },
+    {
+      "provision_id": "nyc-administrative-code:9-163",
+      "citation": "§ 9-163",
+      "heading": "Medical care and outcomes for incarcerated pregnant persons.",
+      "inputs": {
+        "inbound_reference_count": 0,
+        "retained_change_count": 1,
+        "distinct_instrument_count": 1,
+        "mandate_join_count": 41,
+        "authority_citation_count": 0
+      },
+      "score": 180,
+      "conflict_count": 0,
+      "rank": 8
+    },
+    {
+      "provision_id": "nyc-administrative-code:21-955",
+      "citation": "§ 21-955",
+      "heading": "Reporting on special education services.",
+      "inputs": {
+        "inbound_reference_count": 0,
+        "retained_change_count": 8,
+        "distinct_instrument_count": 8,
+        "mandate_join_count": 9,
+        "authority_citation_count": 0
+      },
+      "score": 164,
+      "conflict_count": 0,
+      "rank": 9
+    },
+    {
+      "provision_id": "nyc-administrative-code:21-145",
+      "citation": "§ 21-145",
+      "heading": "Use of rental assistance vouchers.",
+      "inputs": {
+        "inbound_reference_count": 0,
+        "retained_change_count": 6,
+        "distinct_instrument_count": 6,
+        "mandate_join_count": 16,
+        "authority_citation_count": 0
+      },
+      "score": 160,
+      "conflict_count": 0,
+      "rank": 10
+    },
+    {
+      "provision_id": "nyc-administrative-code:11-652",
+      "citation": "§ 11-652",
+      "heading": "Definitions.",
+      "inputs": {
+        "inbound_reference_count": 7,
+        "retained_change_count": 8,
+        "distinct_instrument_count": 8,
+        "mandate_join_count": 0,
+        "authority_citation_count": 0
+      },
+      "score": 149,
+      "conflict_count": 0,
+      "rank": 11
+    },
+    {
+      "provision_id": "nyc-administrative-code:14-150",
+      "citation": "§ 14-150",
+      "heading": "Police department reporting requirements.",
+      "inputs": {
+        "inbound_reference_count": 1,
+        "retained_change_count": 7,
+        "distinct_instrument_count": 7,
+        "mandate_join_count": 8,
+        "authority_citation_count": 0
+      },
+      "score": 147,
+      "conflict_count": 0,
+      "rank": 12
+    },
+    {
+      "provision_id": "nyc-administrative-code:11-602",
+      "citation": "§ 11-602",
+      "heading": "Definitions.",
+      "inputs": {
+        "inbound_reference_count": 6,
+        "retained_change_count": 8,
+        "distinct_instrument_count": 8,
+        "mandate_join_count": 0,
+        "authority_citation_count": 0
+      },
+      "score": 146,
+      "conflict_count": 0,
+      "rank": 13
+    },
+    {
+      "provision_id": "nyc-administrative-code:22-1002",
+      "citation": "§ 22-1002",
+      "heading": "Online business supports.",
+      "inputs": {
+        "inbound_reference_count": 2,
+        "retained_change_count": 6,
+        "distinct_instrument_count": 6,
+        "mandate_join_count": 10,
+        "authority_citation_count": 0
+      },
+      "score": 142,
+      "conflict_count": 0,
+      "rank": 14
+    },
+    {
+      "provision_id": "nyc-administrative-code:11-654",
+      "citation": "§ 11-654",
+      "heading": "Computation of tax.",
+      "inputs": {
+        "inbound_reference_count": 9,
+        "retained_change_count": 7,
+        "distinct_instrument_count": 7,
+        "mandate_join_count": 0,
+        "authority_citation_count": 0
+      },
+      "score": 139,
+      "conflict_count": 0,
+      "rank": 15
+    },
+    {
+      "provision_id": "nyc-administrative-code:26-405",
+      "citation": "§ 26-405",
+      "heading": "General powers and duties of the city rent agency.",
+      "inputs": {
+        "inbound_reference_count": 8,
+        "retained_change_count": 6,
+        "distinct_instrument_count": 6,
+        "mandate_join_count": 0,
+        "authority_citation_count": 0
+      },
+      "score": 120,
+      "conflict_count": 0,
+      "rank": 16
+    },
+    {
+      "provision_id": "nyc-administrative-code:11-1706",
+      "citation": "§ 11-1706",
+      "heading": "Credits against tax.",
+      "inputs": {
+        "inbound_reference_count": 2,
+        "retained_change_count": 7,
+        "distinct_instrument_count": 7,
+        "mandate_join_count": 0,
+        "authority_citation_count": 0
+      },
+      "score": 118,
+      "conflict_count": 0,
+      "rank": 17
+    },
+    {
+      "provision_id": "nyc-administrative-code:11-1701",
+      "citation": "§ 11-1701",
+      "heading": "Imposition of tax.",
+      "inputs": {
+        "inbound_reference_count": 7,
+        "retained_change_count": 6,
+        "distinct_instrument_count": 6,
+        "mandate_join_count": 0,
+        "authority_citation_count": 0
+      },
+      "score": 117,
+      "conflict_count": 0,
+      "rank": 18
+    },
+    {
+      "provision_id": "nyc-administrative-code:19-101.2",
+      "citation": "§ 19-101.2",
+      "heading": "Review of major transportation projects.",
+      "inputs": {
+        "inbound_reference_count": 6,
+        "retained_change_count": 4,
+        "distinct_instrument_count": 4,
+        "mandate_join_count": 8,
+        "authority_citation_count": 0
+      },
+      "score": 114,
+      "conflict_count": 0,
+      "rank": 19
+    },
+    {
+      "provision_id": "nyc-administrative-code:13-101",
+      "citation": "§ 13-101",
+      "heading": "Definitions.",
+      "inputs": {
+        "inbound_reference_count": 32,
+        "retained_change_count": 1,
+        "distinct_instrument_count": 1,
+        "mandate_join_count": 0,
+        "authority_citation_count": 0
+      },
+      "score": 112,
+      "conflict_count": 0,
+      "rank": 20
+    },
+    {
+      "provision_id": "nyc-administrative-code:9-156",
+      "citation": "§ 9-156",
+      "heading": "Sexual abuse reporting.",
+      "inputs": {
+        "inbound_reference_count": 0,
+        "retained_change_count": 4,
+        "distinct_instrument_count": 4,
+        "mandate_join_count": 12,
+        "authority_citation_count": 0
+      },
+      "score": 112,
+      "conflict_count": 0,
+      "rank": 21
+    },
+    {
+      "provision_id": "nyc-administrative-code:20-1208",
+      "citation": "§ 20-1208",
+      "heading": "Specific administrative remedies.",
+      "inputs": {
+        "inbound_reference_count": 2,
+        "retained_change_count": 5,
+        "distinct_instrument_count": 5,
+        "mandate_join_count": 6,
+        "authority_citation_count": 0
+      },
+      "score": 110,
+      "conflict_count": 0,
+      "rank": 22
+    },
+    {
+      "provision_id": "nyc-administrative-code:13-313",
+      "citation": "§ 13-313",
+      "heading": "Definitions.",
+      "inputs": {
+        "inbound_reference_count": 35,
+        "retained_change_count": 0,
+        "distinct_instrument_count": 0,
+        "mandate_join_count": 0,
+        "authority_citation_count": 0
+      },
+      "score": 105,
+      "conflict_count": 0,
+      "rank": 23
+    },
+    {
+      "provision_id": "nyc-administrative-code:20-1522",
+      "citation": "§ 20-1522",
+      "heading": "Minimum payment.",
+      "inputs": {
+        "inbound_reference_count": 3,
+        "retained_change_count": 6,
+        "distinct_instrument_count": 6,
+        "mandate_join_count": 0,
+        "authority_citation_count": 0
+      },
+      "score": 105,
+      "conflict_count": 0,
+      "rank": 24
+    },
+    {
+      "provision_id": "nyc-administrative-code:26-511",
+      "citation": "§ 26-511",
+      "heading": "Real estate industry stabilization association.",
+      "inputs": {
+        "inbound_reference_count": 3,
+        "retained_change_count": 6,
+        "distinct_instrument_count": 6,
+        "mandate_join_count": 0,
+        "authority_citation_count": 0
+      },
+      "score": 105,
+      "conflict_count": 0,
+      "rank": 25
+    },
+    {
+      "provision_id": "nyc-administrative-code:9-140",
+      "citation": "§ 9-140",
+      "heading": "Jail visitation statistics.",
+      "inputs": {
+        "inbound_reference_count": 0,
+        "retained_change_count": 4,
+        "distinct_instrument_count": 4,
+        "mandate_join_count": 10,
+        "authority_citation_count": 0
+      },
+      "score": 104,
+      "conflict_count": 0,
+      "rank": 26
+    },
+    {
+      "provision_id": "nyc-administrative-code:9-141",
+      "citation": "§ 9-141",
+      "heading": "Menstrual products.",
+      "inputs": {
+        "inbound_reference_count": 0,
+        "retained_change_count": 4,
+        "distinct_instrument_count": 4,
+        "mandate_join_count": 10,
+        "authority_citation_count": 0
+      },
+      "score": 104,
+      "conflict_count": 0,
+      "rank": 27
+    },
+    {
+      "provision_id": "nyc-administrative-code:12-212",
+      "citation": "§ 12-212",
+      "heading": "Public service corps program.",
+      "inputs": {
+        "inbound_reference_count": 0,
+        "retained_change_count": 1,
+        "distinct_instrument_count": 1,
+        "mandate_join_count": 22,
+        "authority_citation_count": 0
+      },
+      "score": 104,
+      "conflict_count": 0,
+      "rank": 28
+    },
+    {
+      "provision_id": "nyc-administrative-code:18-150",
+      "citation": "§ 18-150",
+      "heading": "Defibrillators at youth baseball games and youth softball games and practices in parks.",
+      "inputs": {
+        "inbound_reference_count": 0,
+        "retained_change_count": 5,
+        "distinct_instrument_count": 5,
+        "mandate_join_count": 5,
+        "authority_citation_count": 0
+      },
+      "score": 100,
+      "conflict_count": 0,
+      "rank": 29
+    },
+    {
+      "provision_id": "nyc-administrative-code:17-911",
+      "citation": "§ 17-911",
+      "heading": "Required investigation.",
+      "inputs": {
+        "inbound_reference_count": 1,
+        "retained_change_count": 3,
+        "distinct_instrument_count": 3,
+        "mandate_join_count": 12,
+        "authority_citation_count": 0
+      },
+      "score": 99,
+      "conflict_count": 0,
+      "rank": 30
+    },
+    {
+      "provision_id": "nyc-administrative-code:14-155",
+      "citation": "§ 14-155",
+      "heading": "Enforcement criteria.",
+      "inputs": {
+        "inbound_reference_count": 1,
+        "retained_change_count": 1,
+        "distinct_instrument_count": 1,
+        "mandate_join_count": 20,
+        "authority_citation_count": 0
+      },
+      "score": 99,
+      "conflict_count": 0,
+      "rank": 31
+    },
+    {
+      "provision_id": "nyc-administrative-code:13-501",
+      "citation": "§ 13-501",
+      "heading": "Definitions.",
+      "inputs": {
+        "inbound_reference_count": 22,
+        "retained_change_count": 2,
+        "distinct_instrument_count": 2,
+        "mandate_join_count": 0,
+        "authority_citation_count": 0
+      },
+      "score": 98,
+      "conflict_count": 0,
+      "rank": 32
+    },
+    {
+      "provision_id": "nyc-administrative-code:17-194.1",
+      "citation": "§ 17-194.1",
+      "heading": "Cooling towers; maintenance, inspection and testing.",
+      "inputs": {
+        "inbound_reference_count": 2,
+        "retained_change_count": 5,
+        "distinct_instrument_count": 5,
+        "mandate_join_count": 3,
+        "authority_citation_count": 0
+      },
+      "score": 98,
+      "conflict_count": 0,
+      "rank": 33
+    },
+    {
+      "provision_id": "nyc-administrative-code:11-320",
+      "citation": "§ 11-320",
+      "heading": "Notice of sale to be advertised and mailed.",
+      "inputs": {
+        "inbound_reference_count": 8,
+        "retained_change_count": 0,
+        "distinct_instrument_count": 0,
+        "mandate_join_count": 18,
+        "authority_citation_count": 0
+      },
+      "score": 96,
+      "conflict_count": 0,
+      "rank": 34
+    },
+    {
+      "provision_id": "nyc-administrative-code:28-1001.1.1",
+      "citation": "§ 28-1001.1.1",
+      "heading": "Definitions.",
+      "inputs": {
+        "inbound_reference_count": 0,
+        "retained_change_count": 6,
+        "distinct_instrument_count": 6,
+        "mandate_join_count": 0,
+        "authority_citation_count": 0
+      },
+      "score": 96,
+      "conflict_count": 0,
+      "rank": 35
+    },
+    {
+      "provision_id": "nyc-administrative-code:11-506",
+      "citation": "§ 11-506",
+      "heading": "Unincorporated business gross income.",
+      "inputs": {
+        "inbound_reference_count": 4,
+        "retained_change_count": 5,
+        "distinct_instrument_count": 5,
+        "mandate_join_count": 0,
+        "authority_citation_count": 0
+      },
+      "score": 92,
+      "conflict_count": 0,
+      "rank": 36
+    },
+    {
+      "provision_id": "nyc-administrative-code:11-1715",
+      "citation": "§ 11-1715",
+      "heading": "City itemized deduction of a city resident individual.",
+      "inputs": {
+        "inbound_reference_count": 4,
+        "retained_change_count": 5,
+        "distinct_instrument_count": 5,
+        "mandate_join_count": 0,
+        "authority_citation_count": 0
+      },
+      "score": 92,
+      "conflict_count": 0,
+      "rank": 37
+    },
+    {
+      "provision_id": "nyc-administrative-code:7-628",
+      "citation": "§ 7-628",
+      "heading": "Notification of recording of real estate instruments.",
+      "inputs": {
+        "inbound_reference_count": 1,
+        "retained_change_count": 4,
+        "distinct_instrument_count": 4,
+        "mandate_join_count": 6,
+        "authority_citation_count": 0
+      },
+      "score": 91,
+      "conflict_count": 0,
+      "rank": 38
+    },
+    {
+      "provision_id": "nyc-administrative-code:14-188",
+      "citation": "§ 14-188",
+      "heading": "Annual surveillance reporting and evaluation.",
+      "inputs": {
+        "inbound_reference_count": 0,
+        "retained_change_count": 3,
+        "distinct_instrument_count": 3,
+        "mandate_join_count": 10,
+        "authority_citation_count": 0
+      },
+      "score": 88,
+      "conflict_count": 0,
+      "rank": 39
+    },
+    {
+      "provision_id": "nyc-administrative-code:20-1501",
+      "citation": "§ 20-1501",
+      "heading": "Definitions.",
+      "inputs": {
+        "inbound_reference_count": 2,
+        "retained_change_count": 5,
+        "distinct_instrument_count": 5,
+        "mandate_join_count": 0,
+        "authority_citation_count": 0
+      },
+      "score": 86,
+      "conflict_count": 0,
+      "rank": 40
+    },
+    {
+      "provision_id": "nyc-administrative-code:11-641",
+      "citation": "§ 11-641",
+      "heading": "Computations of entire net income.",
+      "inputs": {
+        "inbound_reference_count": 7,
+        "retained_change_count": 4,
+        "distinct_instrument_count": 4,
+        "mandate_join_count": 0,
+        "authority_citation_count": 0
+      },
+      "score": 85,
+      "conflict_count": 0,
+      "rank": 41
+    },
+    {
+      "provision_id": "nyc-administrative-code:11-124",
+      "citation": "§ 11-124",
+      "heading": "Conciliation conferences.",
+      "inputs": {
+        "inbound_reference_count": 28,
+        "retained_change_count": 0,
+        "distinct_instrument_count": 0,
+        "mandate_join_count": 0,
+        "authority_citation_count": 0
+      },
+      "score": 84,
+      "conflict_count": 0,
+      "rank": 42
+    },
+    {
+      "provision_id": "nyc-administrative-code:3-119.6",
+      "citation": "§ 3-119.6",
+      "heading": "Public education on reproductive health care.",
+      "inputs": {
+        "inbound_reference_count": 0,
+        "retained_change_count": 5,
+        "distinct_instrument_count": 5,
+        "mandate_join_count": 1,
+        "authority_citation_count": 0
+      },
+      "score": 84,
+      "conflict_count": 0,
+      "rank": 43
+    },
+    {
+      "provision_id": "nyc-administrative-code:9-136",
+      "citation": "§ 9-136",
+      "heading": "Grievance process.",
+      "inputs": {
+        "inbound_reference_count": 0,
+        "retained_change_count": 4,
+        "distinct_instrument_count": 4,
+        "mandate_join_count": 5,
+        "authority_citation_count": 0
+      },
+      "score": 84,
+      "conflict_count": 0,
+      "rank": 44
+    },
+    {
+      "provision_id": "nyc-administrative-code:20-1207",
+      "citation": "§ 20-1207",
+      "heading": "Administrative enforcement; jurisdiction and complaint procedures.",
+      "inputs": {
+        "inbound_reference_count": 5,
+        "retained_change_count": 3,
+        "distinct_instrument_count": 3,
+        "mandate_join_count": 5,
+        "authority_citation_count": 0
+      },
+      "score": 83,
+      "conflict_count": 0,
+      "rank": 45
+    },
+    {
+      "provision_id": "nyc-administrative-code:17-180.1",
+      "citation": "§ 17-180.1",
+      "heading": "Overdose prevention and reversal training; needle, syringe, and sharps buyback.",
+      "inputs": {
+        "inbound_reference_count": 1,
+        "retained_change_count": 5,
+        "distinct_instrument_count": 5,
+        "mandate_join_count": 0,
+        "authority_citation_count": 0
+      },
+      "score": 83,
+      "conflict_count": 0,
+      "rank": 46
+    },
+    {
+      "provision_id": "nyc-administrative-code:17-1702",
+      "citation": "§ 17-1702",
+      "heading": "Sales of animals.",
+      "inputs": {
+        "inbound_reference_count": 1,
+        "retained_change_count": 5,
+        "distinct_instrument_count": 5,
+        "mandate_join_count": 0,
+        "authority_citation_count": 0
+      },
+      "score": 83,
+      "conflict_count": 0,
+      "rank": 47
+    },
+    {
+      "provision_id": "nyc-administrative-code:19-157",
+      "citation": "§ 19-157",
+      "heading": "Pedestrian plazas.",
+      "inputs": {
+        "inbound_reference_count": 1,
+        "retained_change_count": 3,
+        "distinct_instrument_count": 3,
+        "mandate_join_count": 8,
+        "authority_citation_count": 0
+      },
+      "score": 83,
+      "conflict_count": 0,
+      "rank": 48
+    },
+    {
+      "provision_id": "nyc-administrative-code:11-704",
+      "citation": "§ 11-704",
+      "heading": "Exemptions and deductions from base rent.",
+      "inputs": {
+        "inbound_reference_count": 6,
+        "retained_change_count": 4,
+        "distinct_instrument_count": 4,
+        "mandate_join_count": 0,
+        "authority_citation_count": 0
+      },
+      "score": 82,
+      "conflict_count": 0,
+      "rank": 49
+    },
+    {
+      "provision_id": "nyc-administrative-code:22-622",
+      "citation": "§ 22-622",
+      "heading": "Authorization to provide relocation and employment assistance credits.",
+      "inputs": {
+        "inbound_reference_count": 6,
+        "retained_change_count": 4,
+        "distinct_instrument_count": 4,
+        "mandate_join_count": 0,
+        "authority_citation_count": 0
+      },
+      "score": 82,
+      "conflict_count": 0,
+      "rank": 50
+    },
+    {
+      "provision_id": "nyc-administrative-code:11-271",
+      "citation": "§ 11-271",
+      "heading": "Applying for benefits.",
+      "inputs": {
+        "inbound_reference_count": 0,
+        "retained_change_count": 5,
+        "distinct_instrument_count": 5,
+        "mandate_join_count": 0,
+        "authority_citation_count": 0
+      },
+      "score": 80,
+      "conflict_count": 0,
+      "rank": 51
+    },
+    {
+      "provision_id": "nyc-administrative-code:20-845",
+      "citation": "§ 20-845",
+      "heading": "Definitions.",
+      "inputs": {
+        "inbound_reference_count": 0,
+        "retained_change_count": 5,
+        "distinct_instrument_count": 5,
+        "mandate_join_count": 0,
+        "authority_citation_count": 0
+      },
+      "score": 80,
+      "conflict_count": 0,
+      "rank": 52
+    },
+    {
+      "provision_id": "nyc-administrative-code:25-472.1",
+      "citation": "§ 25-472.1",
+      "heading": "Court-Livingston-Schermerhorn business improvement district.",
+      "inputs": {
+        "inbound_reference_count": 0,
+        "retained_change_count": 5,
+        "distinct_instrument_count": 5,
+        "mandate_join_count": 0,
+        "authority_citation_count": 0
+      },
+      "score": 80,
+      "conflict_count": 0,
+      "rank": 53
+    },
+    {
+      "provision_id": "nyc-administrative-code:28-320.1",
+      "citation": "§ 28-320.1",
+      "heading": "Definitions.",
+      "inputs": {
+        "inbound_reference_count": 0,
+        "retained_change_count": 5,
+        "distinct_instrument_count": 5,
+        "mandate_join_count": 0,
+        "authority_citation_count": 0
+      },
+      "score": 80,
+      "conflict_count": 0,
+      "rank": 54
+    },
+    {
+      "provision_id": "nyc-administrative-code:4-209",
+      "citation": "§ 4-209",
+      "heading": "Automated external defibrillators at youth baseball and youth softball games and practices on city land leased to youth leagues.",
+      "inputs": {
+        "inbound_reference_count": 0,
+        "retained_change_count": 4,
+        "distinct_instrument_count": 4,
+        "mandate_join_count": 4,
+        "authority_citation_count": 0
+      },
+      "score": 80,
+      "conflict_count": 0,
+      "rank": 55
+    },
+    {
+      "provision_id": "nyc-administrative-code:11-356",
+      "citation": "§ 11-356",
+      "heading": "Reporting on unresolved tax liens.",
+      "inputs": {
+        "inbound_reference_count": 0,
+        "retained_change_count": 4,
+        "distinct_instrument_count": 4,
+        "mandate_join_count": 4,
+        "authority_citation_count": 0
+      },
+      "score": 80,
+      "conflict_count": 0,
+      "rank": 56
+    },
+    {
+      "provision_id": "nyc-administrative-code:9-139",
+      "citation": "§ 9-139",
+      "heading": "Bill of rights for incarcerated individuals.",
+      "inputs": {
+        "inbound_reference_count": 0,
+        "retained_change_count": 3,
+        "distinct_instrument_count": 3,
+        "mandate_join_count": 8,
+        "authority_citation_count": 0
+      },
+      "score": 80,
+      "conflict_count": 0,
+      "rank": 57
+    },
+    {
+      "provision_id": "nyc-administrative-code:14-193",
+      "citation": "§ 14-193",
+      "heading": "Autism spectrum disorder safety training.",
+      "inputs": {
+        "inbound_reference_count": 0,
+        "retained_change_count": 1,
+        "distinct_instrument_count": 1,
+        "mandate_join_count": 16,
+        "authority_citation_count": 0
+      },
+      "score": 80,
+      "conflict_count": 0,
+      "rank": 58
+    },
+    {
+      "provision_id": "nyc-administrative-code:15-130",
+      "citation": "§ 15-130",
+      "heading": "Applicants for firefighter civil service examinations and admission and graduation statistics from the probationary firefighter school.",
+      "inputs": {
+        "inbound_reference_count": 0,
+        "retained_change_count": 1,
+        "distinct_instrument_count": 1,
+        "mandate_join_count": 16,
+        "authority_citation_count": 0
+      },
+      "score": 80,
+      "conflict_count": 0,
+      "rank": 59
+    },
+    {
+      "provision_id": "nyc-administrative-code:21-922",
+      "citation": "§ 21-922",
+      "heading": "Juvenile justice advisory board.*",
+      "inputs": {
+        "inbound_reference_count": 0,
+        "retained_change_count": 1,
+        "distinct_instrument_count": 1,
+        "mandate_join_count": 16,
+        "authority_citation_count": 0
+      },
+      "score": 80,
+      "conflict_count": 1,
+      "rank": 60
+    },
+    {
+      "provision_id": "nyc-administrative-code:9-306",
+      "citation": "§ 9-306",
+      "heading": "Annual reporting on bail and the criminal justice system.*",
+      "inputs": {
+        "inbound_reference_count": 1,
+        "retained_change_count": 4,
+        "distinct_instrument_count": 4,
+        "mandate_join_count": 3,
+        "authority_citation_count": 0
+      },
+      "score": 79,
+      "conflict_count": 0,
+      "rank": 61
+    },
+    {
+      "provision_id": "nyc-administrative-code:11-654.2",
+      "citation": "§ 11-654.2",
+      "heading": "Receipts allocation.",
+      "inputs": {
+        "inbound_reference_count": 4,
+        "retained_change_count": 4,
+        "distinct_instrument_count": 4,
+        "mandate_join_count": 0,
+        "authority_citation_count": 0
+      },
+      "score": 76,
+      "conflict_count": 0,
+      "rank": 62
+    },
+    {
+      "provision_id": "nyc-administrative-code:22-821",
+      "citation": "§ 22-821",
+      "heading": "Definitions.",
+      "inputs": {
+        "inbound_reference_count": 4,
+        "retained_change_count": 4,
+        "distinct_instrument_count": 4,
+        "mandate_join_count": 0,
+        "authority_citation_count": 0
+      },
+      "score": 76,
+      "conflict_count": 0,
+      "rank": 63
+    },
+    {
+      "provision_id": "nyc-administrative-code:28-401.3",
+      "citation": "§ 28-401.3",
+      "heading": "Definitions.",
+      "inputs": {
+        "inbound_reference_count": 4,
+        "retained_change_count": 4,
+        "distinct_instrument_count": 4,
+        "mandate_join_count": 0,
+        "authority_citation_count": 0
+      },
+      "score": 76,
+      "conflict_count": 0,
+      "rank": 64
+    },
+    {
+      "provision_id": "nyc-administrative-code:11-322.1",
+      "citation": "§ 11-322.1",
+      "heading": "Hardship installment agreements.",
+      "inputs": {
+        "inbound_reference_count": 2,
+        "retained_change_count": 3,
+        "distinct_instrument_count": 3,
+        "mandate_join_count": 5,
+        "authority_citation_count": 0
+      },
+      "score": 74,
+      "conflict_count": 0,
+      "rank": 65
+    },
+    {
+      "provision_id": "nyc-administrative-code:17-307",
+      "citation": "§ 17-307",
+      "heading": "Licenses, permits required; restrictions; term.",
+      "inputs": {
+        "inbound_reference_count": 11,
+        "retained_change_count": 0,
+        "distinct_instrument_count": 0,
+        "mandate_join_count": 10,
+        "authority_citation_count": 0
+      },
+      "score": 73,
+      "conflict_count": 0,
+      "rank": 66
+    },
+    {
+      "provision_id": "nyc-administrative-code:27-2093.1",
+      "citation": "§ 27-2093.1",
+      "heading": "Certification of no harassment with respect to pilot program buildings.",
+      "inputs": {
+        "inbound_reference_count": 7,
+        "retained_change_count": 3,
+        "distinct_instrument_count": 3,
+        "mandate_join_count": 1,
+        "authority_citation_count": 0
+      },
+      "score": 73,
+      "conflict_count": 0,
+      "rank": 67
+    },
+    {
+      "provision_id": "nyc-administrative-code:25-408",
+      "citation": "§ 25-408",
+      "heading": "Review by the state comptroller.",
+      "inputs": {
+        "inbound_reference_count": 24,
+        "retained_change_count": 0,
+        "distinct_instrument_count": 0,
+        "mandate_join_count": 0,
+        "authority_citation_count": 0
+      },
+      "score": 72,
+      "conflict_count": 0,
+      "rank": 68
+    },
+    {
+      "provision_id": "nyc-administrative-code:11-1712",
+      "citation": "§ 11-1712",
+      "heading": "City adjusted gross income of a city resident individual.",
+      "inputs": {
+        "inbound_reference_count": 8,
+        "retained_change_count": 3,
+        "distinct_instrument_count": 3,
+        "mandate_join_count": 0,
+        "authority_citation_count": 0
+      },
+      "score": 72,
+      "conflict_count": 0,
+      "rank": 69
+    },
+    {
+      "provision_id": "nyc-administrative-code:21-957",
+      "citation": "§ 21-957",
+      "heading": "Annual report on the demographics of students in grades kindergarten through 8.",
+      "inputs": {
+        "inbound_reference_count": 0,
+        "retained_change_count": 4,
+        "distinct_instrument_count": 4,
+        "mandate_join_count": 2,
+        "authority_citation_count": 0
+      },
+      "score": 72,
+      "conflict_count": 0,
+      "rank": 70
+    },
+    {
+      "provision_id": "nyc-administrative-code:28-320.3.1.1",
+      "citation": "§ 28-320.3.1.1",
+      "heading": "Greenhouse gas coefficient of energy consumption for calendar years 2024 through 2029.",
+      "inputs": {
+        "inbound_reference_count": 0,
+        "retained_change_count": 4,
+        "distinct_instrument_count": 4,
+        "mandate_join_count": 2,
+        "authority_citation_count": 0
+      },
+      "score": 72,
+      "conflict_count": 0,
+      "rank": 71
+    },
+    {
+      "provision_id": "nyc-administrative-code:3-703",
+      "citation": "§ 3-703",
+      "heading": "Eligibility and other requirements.",
+      "inputs": {
+        "inbound_reference_count": 9,
+        "retained_change_count": 0,
+        "distinct_instrument_count": 0,
+        "mandate_join_count": 11,
+        "authority_citation_count": 0
+      },
+      "score": 71,
+      "conflict_count": 0,
+      "rank": 72
+    },
+    {
+      "provision_id": "nyc-administrative-code:7-114",
+      "citation": "§ 7-114",
+      "heading": "Civil actions regarding the police department and covered individuals.",
+      "inputs": {
+        "inbound_reference_count": 1,
+        "retained_change_count": 3,
+        "distinct_instrument_count": 3,
+        "mandate_join_count": 5,
+        "authority_citation_count": 0
+      },
+      "score": 71,
+      "conflict_count": 0,
+      "rank": 73
+    },
+    {
+      "provision_id": "nyc-administrative-code:16-1002",
+      "citation": "§ 16-1002",
+      "heading": "Agreements.",
+      "inputs": {
+        "inbound_reference_count": 14,
+        "retained_change_count": 1,
+        "distinct_instrument_count": 1,
+        "mandate_join_count": 3,
+        "authority_citation_count": 0
+      },
+      "score": 70,
+      "conflict_count": 0,
+      "rank": 74
+    },
+    {
+      "provision_id": "nyc-administrative-code:3-180",
+      "citation": "§ 3-180",
+      "heading": "Definitions.",
+      "inputs": {
+        "inbound_reference_count": 2,
+        "retained_change_count": 4,
+        "distinct_instrument_count": 4,
+        "mandate_join_count": 0,
+        "authority_citation_count": 0
+      },
+      "score": 70,
+      "conflict_count": 0,
+      "rank": 75
+    },
+    {
+      "provision_id": "nyc-administrative-code:11-2040",
+      "citation": "§ 11-2040",
+      "heading": "Imposition of tax.",
+      "inputs": {
+        "inbound_reference_count": 2,
+        "retained_change_count": 4,
+        "distinct_instrument_count": 4,
+        "mandate_join_count": 0,
+        "authority_citation_count": 0
+      },
+      "score": 70,
+      "conflict_count": 0,
+      "rank": 76
+    },
+    {
+      "provision_id": "nyc-administrative-code:11-2102",
+      "citation": "§ 11-2102",
+      "heading": "Imposition of tax.",
+      "inputs": {
+        "inbound_reference_count": 2,
+        "retained_change_count": 4,
+        "distinct_instrument_count": 4,
+        "mandate_join_count": 0,
+        "authority_citation_count": 0
+      },
+      "score": 70,
+      "conflict_count": 0,
+      "rank": 77
+    },
+    {
+      "provision_id": "nyc-administrative-code:16-526",
+      "citation": "§ 16-526",
+      "heading": "Side guards.",
+      "inputs": {
+        "inbound_reference_count": 2,
+        "retained_change_count": 4,
+        "distinct_instrument_count": 4,
+        "mandate_join_count": 0,
+        "authority_citation_count": 0
+      },
+      "score": 70,
+      "conflict_count": 0,
+      "rank": 78
+    },
+    {
+      "provision_id": "nyc-administrative-code:20-1523",
+      "citation": "§ 20-1523",
+      "heading": "Payments to workers.",
+      "inputs": {
+        "inbound_reference_count": 2,
+        "retained_change_count": 4,
+        "distinct_instrument_count": 4,
+        "mandate_join_count": 0,
+        "authority_citation_count": 0
+      },
+      "score": 70,
+      "conflict_count": 0,
+      "rank": 79
+    },
+    {
+      "provision_id": "nyc-administrative-code:28-505.3",
+      "citation": "§ 28-505.3",
+      "heading": "Covered categories of work.",
+      "inputs": {
+        "inbound_reference_count": 2,
+        "retained_change_count": 4,
+        "distinct_instrument_count": 4,
+        "mandate_join_count": 0,
+        "authority_citation_count": 0
+      },
+      "score": 70,
+      "conflict_count": 0,
+      "rank": 80
+    },
+    {
+      "provision_id": "nyc-administrative-code:11-3001",
+      "citation": "§ 11-3001",
+      "heading": "Definitions.",
+      "inputs": {
+        "inbound_reference_count": 2,
+        "retained_change_count": 2,
+        "distinct_instrument_count": 2,
+        "mandate_join_count": 8,
+        "authority_citation_count": 0
+      },
+      "score": 70,
+      "conflict_count": 0,
+      "rank": 81
+    },
+    {
+      "provision_id": "nyc-administrative-code:20-1287",
+      "citation": "§ 20-1287",
+      "heading": "Informal resolution process.",
+      "inputs": {
+        "inbound_reference_count": 3,
+        "retained_change_count": 1,
+        "distinct_instrument_count": 1,
+        "mandate_join_count": 11,
+        "authority_citation_count": 0
+      },
+      "score": 69,
+      "conflict_count": 0,
+      "rank": 82
+    },
+    {
+      "provision_id": "nyc-administrative-code:20-1212",
+      "citation": "§ 20-1212",
+      "heading": "Civil action by corporation counsel for pattern or practice of violations.",
+      "inputs": {
+        "inbound_reference_count": 0,
+        "retained_change_count": 4,
+        "distinct_instrument_count": 4,
+        "mandate_join_count": 1,
+        "authority_citation_count": 0
+      },
+      "score": 68,
+      "conflict_count": 0,
+      "rank": 83
+    },
+    {
+      "provision_id": "nyc-administrative-code:9-148",
+      "citation": "§ 9-148",
+      "heading": "Bail payments and processing.",
+      "inputs": {
+        "inbound_reference_count": 0,
+        "retained_change_count": 3,
+        "distinct_instrument_count": 3,
+        "mandate_join_count": 5,
+        "authority_citation_count": 0
+      },
+      "score": 68,
+      "conflict_count": 0,
+      "rank": 84
+    },
+    {
+      "provision_id": "nyc-administrative-code:21-910",
+      "citation": "§ 21-910",
+      "heading": "Foster care experience surveys.",
+      "inputs": {
+        "inbound_reference_count": 0,
+        "retained_change_count": 3,
+        "distinct_instrument_count": 3,
+        "mandate_join_count": 5,
+        "authority_citation_count": 0
+      },
+      "score": 68,
+      "conflict_count": 0,
+      "rank": 85
+    },
+    {
+      "provision_id": "nyc-administrative-code:21-960",
+      "citation": "§ 21-960",
+      "heading": "Reporting on physical education.",
+      "inputs": {
+        "inbound_reference_count": 0,
+        "retained_change_count": 3,
+        "distinct_instrument_count": 3,
+        "mandate_join_count": 5,
+        "authority_citation_count": 0
+      },
+      "score": 68,
+      "conflict_count": 0,
+      "rank": 86
+    },
+    {
+      "provision_id": "nyc-administrative-code:21-136",
+      "citation": "§ 21-136",
+      "heading": "Semiannual reports regarding referrals to adult protective services.",
+      "inputs": {
+        "inbound_reference_count": 0,
+        "retained_change_count": 1,
+        "distinct_instrument_count": 1,
+        "mandate_join_count": 13,
+        "authority_citation_count": 0
+      },
+      "score": 68,
+      "conflict_count": 0,
+      "rank": 87
+    },
+    {
+      "provision_id": "nyc-administrative-code:11-1704.1",
+      "citation": "§ 11-1704.1",
+      "heading": "Additional tax.",
+      "inputs": {
+        "inbound_reference_count": 1,
+        "retained_change_count": 4,
+        "distinct_instrument_count": 4,
+        "mandate_join_count": 0,
+        "authority_citation_count": 0
+      },
+      "score": 67,
+      "conflict_count": 0,
+      "rank": 88
+    },
+    {
+      "provision_id": "nyc-administrative-code:20-1211",
+      "citation": "§ 20-1211",
+      "heading": "Private cause of action.",
+      "inputs": {
+        "inbound_reference_count": 1,
+        "retained_change_count": 4,
+        "distinct_instrument_count": 4,
+        "mandate_join_count": 0,
+        "authority_citation_count": 0
+      },
+      "score": 67,
+      "conflict_count": 0,
+      "rank": 89
+    },
+    {
+      "provision_id": "nyc-administrative-code:22-601",
+      "citation": "§ 22-601",
+      "heading": "Definitions.",
+      "inputs": {
+        "inbound_reference_count": 1,
+        "retained_change_count": 4,
+        "distinct_instrument_count": 4,
+        "mandate_join_count": 0,
+        "authority_citation_count": 0
+      },
+      "score": 67,
+      "conflict_count": 0,
+      "rank": 90
+    },
+    {
+      "provision_id": "nyc-administrative-code:22-902",
+      "citation": "§ 22-902",
+      "heading": "Commercial tenant harassment.",
+      "inputs": {
+        "inbound_reference_count": 1,
+        "retained_change_count": 4,
+        "distinct_instrument_count": 4,
+        "mandate_join_count": 0,
+        "authority_citation_count": 0
+      },
+      "score": 67,
+      "conflict_count": 0,
+      "rank": 91
+    },
+    {
+      "provision_id": "nyc-administrative-code:24-309.1",
+      "citation": "§ 24-309.1",
+      "heading": "Tracking lead water service lines; online interactive map.",
+      "inputs": {
+        "inbound_reference_count": 1,
+        "retained_change_count": 1,
+        "distinct_instrument_count": 1,
+        "mandate_join_count": 12,
+        "authority_citation_count": 0
+      },
+      "score": 67,
+      "conflict_count": 0,
+      "rank": 92
+    },
+    {
+      "provision_id": "nyc-administrative-code:27-2004",
+      "citation": "§ 27-2004",
+      "heading": "Definitions.",
+      "inputs": {
+        "inbound_reference_count": 22,
+        "retained_change_count": 0,
+        "distinct_instrument_count": 0,
+        "mandate_join_count": 0,
+        "authority_citation_count": 0
+      },
+      "score": 66,
+      "conflict_count": 0,
+      "rank": 93
+    },
+    {
+      "provision_id": "nyc-administrative-code:22-624",
+      "citation": "§ 22-624",
+      "heading": "Authorization to provide relocation and employment assistance credits in Lower Manhattan.",
+      "inputs": {
+        "inbound_reference_count": 6,
+        "retained_change_count": 3,
+        "distinct_instrument_count": 3,
+        "mandate_join_count": 0,
+        "authority_citation_count": 0
+      },
+      "score": 66,
+      "conflict_count": 0,
+      "rank": 94
+    },
+    {
+      "provision_id": "nyc-administrative-code:11-2002",
+      "citation": "§ 11-2002",
+      "heading": "Imposition of special sales taxes.",
+      "inputs": {
+        "inbound_reference_count": 0,
+        "retained_change_count": 4,
+        "distinct_instrument_count": 4,
+        "mandate_join_count": 0,
+        "authority_citation_count": 0
+      },
+      "score": 64,
+      "conflict_count": 0,
+      "rank": 95
+    },
+    {
+      "provision_id": "nyc-administrative-code:14-161",
+      "citation": "§ 14-161",
+      "heading": "Online reporting of domestic violence and hate crime statistics.",
+      "inputs": {
+        "inbound_reference_count": 0,
+        "retained_change_count": 4,
+        "distinct_instrument_count": 4,
+        "mandate_join_count": 0,
+        "authority_citation_count": 0
+      },
+      "score": 64,
+      "conflict_count": 0,
+      "rank": 96
+    },
+    {
+      "provision_id": "nyc-administrative-code:20-241.1",
+      "citation": "§ 20-241.1",
+      "heading": "Penalties.",
+      "inputs": {
+        "inbound_reference_count": 0,
+        "retained_change_count": 4,
+        "distinct_instrument_count": 4,
+        "mandate_join_count": 0,
+        "authority_citation_count": 0
+      },
+      "score": 64,
+      "conflict_count": 0,
+      "rank": 97
+    },
+    {
+      "provision_id": "nyc-administrative-code:20-563",
+      "citation": "§ 20-563",
+      "heading": "Definitions.",
+      "inputs": {
+        "inbound_reference_count": 0,
+        "retained_change_count": 4,
+        "distinct_instrument_count": 4,
+        "mandate_join_count": 0,
+        "authority_citation_count": 0
+      },
+      "score": 64,
+      "conflict_count": 0,
+      "rank": 98
+    },
+    {
+      "provision_id": "nyc-administrative-code:20-846",
+      "citation": "§ 20-846",
+      "heading": "Fees.",
+      "inputs": {
+        "inbound_reference_count": 0,
+        "retained_change_count": 4,
+        "distinct_instrument_count": 4,
+        "mandate_join_count": 0,
+        "authority_citation_count": 0
+      },
+      "score": 64,
+      "conflict_count": 0,
+      "rank": 99
+    },
+    {
+      "provision_id": "nyc-administrative-code:20-847",
+      "citation": "§ 20-847",
+      "heading": "Telephone orders.",
+      "inputs": {
+        "inbound_reference_count": 0,
+        "retained_change_count": 4,
+        "distinct_instrument_count": 4,
+        "mandate_join_count": 0,
+        "authority_citation_count": 0
+      },
+      "score": 64,
+      "conflict_count": 0,
+      "rank": 100
+    }
+  ]
+}

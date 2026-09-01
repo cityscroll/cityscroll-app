@@ -1,0 +1,285 @@
+{
+  "schema": "cityscroll.code_history_backfill_fixtures.v1",
+  "notes": {
+    "add_then_amend": "(L.L. 2015/027, 3/30/2015, eff. 5/29/2015; Am. L.L. 2017/183, 10/8/2017, eff. 10/8/2017)",
+    "repeal": "(L.L. 2015/024, 3/18/2015, eff. 4/17/2015; Repealed L.L. 2015/113, 12/10/2015, eff. 4/8/2016)",
+    "redesignate_from_former": "(L.L. 2018/060, 1/19/2018, eff. 1/19/2018; renumbered from former \u00a7 3-120, L.L. 2021/046, 4/25/2021, eff. 1/20/2022)",
+    "renumbered_and_amended": "(Renumbered and amended, L.L. 2021/080, 7/18/2021, eff. 3/15/2022)",
+    "state_chapter_law": "(Am. 2022 N.Y. Laws Ch. 555, 8/31/2022, retro. eff. 1/1/2021)",
+    "delayed_effect": "(L.L. 2021/080, 7/18/2021, eff. 11/15/2021)",
+    "effective_date_absent": "(Am. L.L. 2024/010, 2/2/2024)",
+    "no_instrument": "(see the rules of the department)",
+    "conditional_clause": "(L.L. 2023/151, 11/17/2023, eff. 5/15/2024; Am. L.L. 2024/077, 6/1/2024)",
+    "effective_after_snapshot": "(L.L. 2021/080, 7/18/2021, eff. 11/15/2021; Am. L.L. 2026/140, 9/2/2026, eff. 12/31/2026)"
+  },
+  "provision": {
+    "schema": "cityscroll.code_provision.v1",
+    "id": "nyc-administrative-code:21-955",
+    "corpus_id": "nyc-administrative-code",
+    "citation": "\u00a7 21-955",
+    "heading": "Reporting on shelter capacity.",
+    "level": "section",
+    "status": "current",
+    "current_text": "Current statutory text.\n\n(L.L. 2015/027, 3/30/2015, eff. 5/29/2015; Am. L.L. 2017/183, 10/8/2017, eff. 10/8/2017)",
+    "source": {
+      "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-38527",
+      "system": "american_legal_publishing",
+      "source_ref": "american_legal_publishing:admin-xml:0-0-0-260.xml:0-0-0-38527",
+      "observed_at": "2026-08-24T08:25:03.900Z",
+      "content_hash": "sha256:0e1c4c0e2f6cf03b6f4a7d5a1c4a2f0b3f5b7c9d1e3f5a7b9c1d3e5f7a9b1c3d"
+    }
+  },
+  "repealed_provision": {
+    "schema": "cityscroll.code_provision.v1",
+    "id": "nyc-administrative-code:3-132",
+    "corpus_id": "nyc-administrative-code",
+    "citation": "\u00a7 3-132",
+    "heading": "Office of labor standards outreach.",
+    "level": "section",
+    "status": "repealed",
+    "current_text": "(L.L. 2015/024, 3/18/2015, eff. 4/17/2015; Repealed L.L. 2015/113, 12/10/2015, eff. 4/8/2016)",
+    "source": {
+      "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-11402",
+      "system": "american_legal_publishing",
+      "source_ref": "american_legal_publishing:admin-xml:0-0-0-108.xml:0-0-0-11402",
+      "observed_at": "2026-08-24T08:25:03.900Z",
+      "content_hash": "sha256:1a2b3c4d5e6f708192a3b4c5d6e7f8091a2b3c4d5e6f708192a3b4c5d6e7f809"
+    }
+  },
+  "redesignated_provision": {
+    "schema": "cityscroll.code_provision.v1",
+    "id": "nyc-administrative-code:3-119.3",
+    "corpus_id": "nyc-administrative-code",
+    "citation": "\u00a7 3-119.3",
+    "heading": "Accepting public assistance applications.",
+    "level": "section",
+    "status": "current",
+    "current_text": "Current statutory text for the renumbered section.\n\n(L.L. 2018/060, 1/19/2018, eff. 1/19/2018; renumbered from former \u00a7 3-120, L.L. 2021/046, 4/25/2021, eff. 1/20/2022)",
+    "source": {
+      "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-11290",
+      "system": "american_legal_publishing",
+      "source_ref": "american_legal_publishing:admin-xml:0-0-0-108.xml:0-0-0-11290",
+      "observed_at": "2026-08-24T08:25:03.900Z",
+      "content_hash": "sha256:2b3c4d5e6f708192a3b4c5d6e7f8091a2b3c4d5e6f708192a3b4c5d6e7f8091a"
+    }
+  },
+  "state_amended_provision": {
+    "schema": "cityscroll.code_provision.v1",
+    "id": "nyc-administrative-code:11-602",
+    "corpus_id": "nyc-administrative-code",
+    "citation": "\u00a7 11-602",
+    "heading": "Definitions.",
+    "level": "section",
+    "status": "current",
+    "current_text": "Current statutory text.\n\n(Am. 2022 N.Y. Laws Ch. 555, 8/31/2022, retro. eff. 1/1/2021)",
+    "source": {
+      "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-10195",
+      "system": "american_legal_publishing",
+      "source_ref": "american_legal_publishing:admin-xml:0-0-0-10063.xml:0-0-0-10195",
+      "observed_at": "2026-08-24T08:25:03.900Z",
+      "content_hash": "sha256:3c4d5e6f708192a3b4c5d6e7f8091a2b3c4d5e6f708192a3b4c5d6e7f8091a2b"
+    }
+  },
+  "multi_target_provisions": [
+    {
+      "schema": "cityscroll.code_provision.v1",
+      "id": "nyc-administrative-code:20-626",
+      "corpus_id": "nyc-administrative-code",
+      "citation": "\u00a7 20-626",
+      "heading": "Definitions.",
+      "level": "section",
+      "status": "current",
+      "current_text": "Current statutory text.\n\n(Renumbered and amended, L.L. 2021/080, 7/18/2021, eff. 3/15/2022)",
+      "source": {
+        "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-31122",
+        "system": "american_legal_publishing",
+        "source_ref": "american_legal_publishing:admin-xml:0-0-0-260.xml:0-0-0-31122",
+        "observed_at": "2026-08-24T08:25:03.900Z",
+        "content_hash": "sha256:4d5e6f708192a3b4c5d6e7f8091a2b3c4d5e6f708192a3b4c5d6e7f8091a2b3c"
+      }
+    },
+    {
+      "schema": "cityscroll.code_provision.v1",
+      "id": "nyc-administrative-code:20-628",
+      "corpus_id": "nyc-administrative-code",
+      "citation": "\u00a7 20-628",
+      "heading": "Enforcement.",
+      "level": "section",
+      "status": "current",
+      "current_text": "Current statutory text.\n\n(Renumbered L.L. 2021/080, 7/18/2021, eff. 3/15/2022)",
+      "source": {
+        "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-31130",
+        "system": "american_legal_publishing",
+        "source_ref": "american_legal_publishing:admin-xml:0-0-0-260.xml:0-0-0-31130",
+        "observed_at": "2026-08-24T08:25:03.900Z",
+        "content_hash": "sha256:5e6f708192a3b4c5d6e7f8091a2b3c4d5e6f708192a3b4c5d6e7f8091a2b3c4d"
+      }
+    }
+  ],
+  "acquired": {
+    "well_evidenced": [
+      {
+        "id": "nyc-administrative-code:21-955@2015-05-29",
+        "provision_id": "nyc-administrative-code:21-955",
+        "valid_from": "2015-05-29",
+        "valid_to": "2017-10-08",
+        "text": "Original statutory text as enacted in 2015.",
+        "source_ref": "nyc-council:local-law:27-2015:enacted-text",
+        "source_url": "https://legistar.council.nyc.gov/LegislationDetail.aspx?ID=2015027",
+        "observed_at": "2026-08-24T08:25:03.900Z",
+        "status": "superseded",
+        "batch_id": "batch-1"
+      },
+      {
+        "id": "nyc-administrative-code:21-955@2017-10-08",
+        "provision_id": "nyc-administrative-code:21-955",
+        "valid_from": "2017-10-08",
+        "valid_to": null,
+        "text": "Current statutory text.",
+        "source_ref": "nyc-council:local-law:183-2017:enacted-text",
+        "observed_at": "2026-08-24T08:25:03.900Z",
+        "status": "current",
+        "batch_id": "batch-1"
+      }
+    ],
+    "patch_failure": [
+      {
+        "id": "nyc-administrative-code:21-955@unresolved",
+        "provision_id": "nyc-administrative-code:21-955",
+        "valid_from": null,
+        "text": "Reconstructed text with an unresolved effective date.",
+        "source_ref": "nyc-council:local-law:183-2017:enacted-text",
+        "observed_at": "2026-08-24T08:25:03.900Z"
+      },
+      {
+        "id": "nyc-administrative-code:21-955@no-text",
+        "provision_id": "nyc-administrative-code:21-955",
+        "valid_from": "2017-10-08",
+        "text": "   ",
+        "source_ref": "nyc-council:local-law:183-2017:enacted-text"
+      },
+      {
+        "id": "nyc-administrative-code:21-955@no-source",
+        "provision_id": "nyc-administrative-code:21-955",
+        "valid_from": "2017-10-08",
+        "text": "Reconstructed text with no source reference."
+      },
+      {
+        "id": "nyc-administrative-code:16-120@wrong-identity",
+        "provision_id": "nyc-administrative-code:16-120",
+        "valid_from": "2017-10-08",
+        "text": "Text that belongs to a different provision.",
+        "source_ref": "nyc-council:local-law:183-2017:enacted-text"
+      }
+    ]
+  },
+  "conflicting_observations": [
+    {
+      "schema": "cityscroll.code_history_observation.v1",
+      "status": "retained",
+      "id": "nyc-administrative-code:21-955:1:amend:local-law:183-2017:publisher",
+      "corpus_id": "nyc-administrative-code",
+      "provision_id": "nyc-administrative-code:21-955",
+      "citation": "\u00a7 21-955",
+      "sequence": 1,
+      "operation": "amend",
+      "operation_basis": "source_stated",
+      "instrument_kind": "local_law",
+      "instrument_ref": "local-law:183-2017",
+      "instrument_label": "Local Law 183 of 2017",
+      "signed_at": "2017-10-08",
+      "effective_at": "2017-10-08",
+      "effective_basis": "stated",
+      "former_citation": null,
+      "source_system": "american_legal_publishing",
+      "source_ref": "american_legal_publishing:admin-xml:0-0-0-260.xml:0-0-0-38527",
+      "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-38527",
+      "observed_at": "2026-08-24T08:25:03.900Z",
+      "raw": "Am. L.L. 2017/183, 10/8/2017, eff. 10/8/2017"
+    },
+    {
+      "schema": "cityscroll.code_history_observation.v1",
+      "status": "retained",
+      "id": "nyc-administrative-code:21-955:1:amend:local-law:183-2017:council",
+      "corpus_id": "nyc-administrative-code",
+      "provision_id": "nyc-administrative-code:21-955",
+      "citation": "\u00a7 21-955",
+      "sequence": 1,
+      "operation": "amend",
+      "operation_basis": "source_stated",
+      "instrument_kind": "local_law",
+      "instrument_ref": "local-law:183-2017",
+      "instrument_label": "Local Law 183 of 2017",
+      "signed_at": "2017-10-08",
+      "effective_at": "2018-01-06",
+      "effective_basis": "stated",
+      "former_citation": null,
+      "source_system": "nyc_council_legislation",
+      "source_ref": "nyc-council:local-law:183-2017",
+      "source_url": "https://legistar.council.nyc.gov/LegislationDetail.aspx?ID=2017183",
+      "observed_at": "2026-08-24T08:25:03.900Z",
+      "raw": "This local law takes effect ninety days after it becomes law."
+    }
+  ],
+  "duplicate_records": [
+    {
+      "provision_id": "nyc-administrative-code:3-119.5",
+      "records": [
+        "shards/0-0-0-108.json#american_legal_publishing:admin-xml:0-0-0-108.xml:0-0-0-132890",
+        "shards/0-0-0-108.json#american_legal_publishing:admin-xml:0-0-0-108.xml:0-0-0-236016"
+      ]
+    }
+  ],
+  "ranking_candidates": [
+    {
+      "provision_id": "nyc-administrative-code:21-955",
+      "citation": "\u00a7 21-955",
+      "heading": "Reporting on shelter capacity.",
+      "inbound_reference_count": 0,
+      "retained_change_count": 8,
+      "distinct_instrument_count": 8,
+      "mandate_join_count": 9,
+      "authority_citation_count": 0
+    },
+    {
+      "provision_id": "nyc-administrative-code:23-1101",
+      "citation": "\u00a7 23-1101",
+      "heading": "Definitions.",
+      "inbound_reference_count": 94,
+      "retained_change_count": 1,
+      "distinct_instrument_count": 1,
+      "mandate_join_count": 0,
+      "authority_citation_count": 0
+    },
+    {
+      "provision_id": "nyc-administrative-code:25-412",
+      "citation": "\u00a7 25-412",
+      "heading": "Tax and debt limitations.",
+      "inbound_reference_count": 100,
+      "retained_change_count": 0,
+      "distinct_instrument_count": 0,
+      "mandate_join_count": 0,
+      "authority_citation_count": 0
+    },
+    {
+      "provision_id": "nyc-administrative-code:20-10",
+      "citation": "\u00a7 20-10",
+      "heading": "Tied candidate, higher section number.",
+      "inbound_reference_count": 2,
+      "retained_change_count": 2,
+      "distinct_instrument_count": 2,
+      "mandate_join_count": 0,
+      "authority_citation_count": 0
+    },
+    {
+      "provision_id": "nyc-administrative-code:20-9",
+      "citation": "\u00a7 20-9",
+      "heading": "Tied candidate, lower section number.",
+      "inbound_reference_count": 2,
+      "retained_change_count": 2,
+      "distinct_instrument_count": 2,
+      "mandate_join_count": 0,
+      "authority_citation_count": 0
+    }
+  ]
+}

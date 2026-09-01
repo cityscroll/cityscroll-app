@@ -65,6 +65,7 @@ import {
   lookupAdminCodeCitation,
   renderAdminCodeProvisionDocument,
 } from "./admin_code.mjs";
+import { provisionBackfill, provisionHistoricalChanges } from "./code_history_backfill.mjs";
 
 const CITY_RECORD_SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
 const NOTICE_READ_MODEL = "https://api.cityscroll.org/notice";
@@ -283,7 +284,12 @@ async function handleAdminCode(request, env, encodedCitation) {
   } catch (_error) {
     mandateJoins = [];
   }
-  const html = renderAdminCodeProvisionDocument(row, { currentHref: request.url, mandateJoins });
+  const html = renderAdminCodeProvisionDocument(row, {
+    currentHref: request.url,
+    mandateJoins,
+    backfill: provisionBackfill(row.id),
+    changes: provisionHistoricalChanges(row.id),
+  });
   const headers = {
     "Content-Type": "text/html; charset=utf-8",
     "Cache-Control": "public, max-age=300, s-maxage=1800, stale-while-revalidate=86400",
