@@ -147,5 +147,6 @@ link[data-route-style="
 property.css
 
 # Versioned machine contract checked before a suggestion receipt is admitted; never rendered.
+cityscroll.land_map_shell.v1
 cityscroll.money_suggestion_destination.v1
 cityscroll.near_you_deferred.v1

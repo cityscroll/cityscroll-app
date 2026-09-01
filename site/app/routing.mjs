@@ -392,6 +392,21 @@ function onLandMapPresentationFailure(){
   landMapPresentationFailure=LAND_VIEW_FALLBACK_REASONS.RENDERER_FAILED;
   applyLandPresentation();
 }
+// Map activation. This is the only place the Land route pulls map code, and it runs only for a
+// route that asks for Map or a resident who presses it -- never on Land tab entry. The runtime
+// registers the renderer seam as it loads, so the next paint finds Map ready; until then the
+// switch honestly reports Map as pending and List keeps the same filtered rows on screen.
+let landMapActivation=null;
+function activateLandMapRuntime(){
+  if(landMapActivation) return landMapActivation;
+  const ensure=globalThis.ensureLandMapRuntime;
+  if(typeof ensure!=="function"){ onLandMapPresentationFailure(); return null; }
+  landMapActivation=Promise.resolve()
+    .then(ensure)
+    .then(()=>{ applyLandPresentation(); })
+    .catch(()=>{ landMapActivation=null; onLandMapPresentationFailure(); });
+  return landMapActivation;
+}
 function applyLandPresentation(currentHash){
   if(!document.getElementById("land-view-switch")) return null;
   const renderer=landMapRenderer();
@@ -404,13 +419,26 @@ function applyLandPresentation(currentHash){
     escape:escUiHtml,
   });
   installLandViewSwitch(document,setLandView);
+  if(presentation.requested===LAND_VIEW_MAP&&!renderer&&!landMapPresentationFailure) activateLandMapRuntime();
   if(presentation.view===LAND_VIEW_MAP&&renderer){
     try{
       Promise.resolve(renderer.mount(document.getElementById("land-results-grid"),{rows:globalThis.lRows||[]}))
         .catch(onLandMapPresentationFailure);
     }catch(_e){ onLandMapPresentationFailure(); }
   }
+  // Only an explicit List request tears the Map surface down. A Map request that fell back
+  // keeps the shell's own retry on screen beside the list it never replaced.
+  if(presentation.requested===LAND_VIEW_LIST){
+    try{ renderer?.unmount?.(); }catch(_e){}
+  }
   return presentation;
+}
+/** Ask for the Map again after a failure, without touching the filtered population. */
+function retryLandMapPresentation(){
+  landMapPresentationFailure=null;
+  landMapActivation=null;
+  landView=LAND_VIEW_MAP;
+  return applyLandPresentation();
 }
 // Back and Forward across a presentation change arrive as a popstate on the canonical Land
 // document route, not as a hashchange, so nothing else re-reads the route. Restore the view the
@@ -1685,6 +1713,7 @@ globalThis.parseNoticeHashSegment = parseNoticeHashSegment;
 globalThis.parseWatchParam = parseWatchParam;
 globalThis.prepareHistoryRouteScroll = prepareHistoryRouteScroll;
 globalThis.applyLandPresentation = applyLandPresentation;
+globalThis.retryLandMapPresentation = retryLandMapPresentation;
 globalThis.setLandView = setLandView;
 Object.defineProperty(globalThis, "landView", { configurable: true, get: () => landView, set: value => { landView = normalizeLandView(value); } });
 globalThis.pushHash = pushHash;

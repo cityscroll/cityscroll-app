@@ -7,7 +7,10 @@ import assert from "node:assert/strict";
 import { lookupBblCentroid } from "../site/bbl_mappluto_centroids.mjs";
 
 const ROOT = dirname(fileURLToPath(import.meta.url));
-const landSrc = readFileSync(new URL("../site/app/land.mjs", import.meta.url), "utf8");
+// Point resolution moved to the activation-gated map runtime; land.mjs keeps the route and
+// the list, so both sources are read here and each function is extracted from its owner.
+const landSrc = readFileSync(new URL("../site/app/map_runtime.mjs", import.meta.url), "utf8");
+const landRouteSrc = readFileSync(new URL("../site/app/land.mjs", import.meta.url), "utf8");
 
 function extractFunction(source, name){
   let start = source.indexOf(`async function ${name}(`);
@@ -381,7 +384,7 @@ test("2024Q0419 committed WH-06 lots pin without /zap-outcomes BBLs", async () =
 });
 
 test("showLandEntry opens a WH-06-only completed ULURP permalink the sell-facing warehouse dropped", async () => {
-  const showLandSrc = extractFunction(landSrc, "showLandEntry");
+  const showLandSrc = extractFunction(landRouteSrc, "showLandEntry");
   const calls = { selected: [] };
   const row = { dataset: { i: "0" } };
   const elements = {

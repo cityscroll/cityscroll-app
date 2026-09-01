@@ -69,5 +69,7 @@ test("pan controls meet the 24 CSS pixel target-size floor and label every direc
   for (const direction of ["west", "north", "south", "east"]) {
     assert.match(source, new RegExp(`data-map-pan="${direction}"[^>]+aria-label=`));
   }
-  assert.match(source, /wireLandPanControls\(landMap\)/);
+  // The detail map moved into the activation-gated map_runtime.mjs, where `landMap` is
+  // land.mjs state reached through the published global rather than a local binding.
+  assert.match(source, /wireLandPanControls\(globalThis\.landMap\)/);
 });
