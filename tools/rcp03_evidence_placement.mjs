@@ -51,8 +51,14 @@ function sha(value) {
   return createHash("sha256").update(value).digest("hex");
 }
 
+// An ambient GIT_DIR, GIT_WORK_TREE, or GIT_INDEX_FILE — which git exports into hook
+// environments — would override the directory this check is asked about. Resolve the
+// repository from the working directory instead, so the check always reads the tree it
+// was pointed at.
+const GIT_ENVIRONMENT = Object.fromEntries(Object.entries(process.env).filter(([key]) => !key.startsWith("GIT_")));
+
 function git(args, options = {}) {
-  return execFileSync("git", args, { cwd: ROOT, maxBuffer: 256 * 1024 * 1024, ...options });
+  return execFileSync("git", args, { cwd: ROOT, env: GIT_ENVIRONMENT, maxBuffer: 256 * 1024 * 1024, ...options });
 }
 
 function fromBase(path) {

@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { execFileSync, spawnSync } from "node:child_process";
-import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, realpathSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
@@ -51,11 +51,28 @@ function failure(directory) {
   return null;
 }
 
+// A hook or CI step can export GIT_DIR, GIT_WORK_TREE, or GIT_INDEX_FILE, and those
+// override -C. Fixture repositories must never inherit them, or a fixture commit lands
+// in the surrounding checkout instead of the temporary tree.
+function fixtureGitEnvironment() {
+  const environment = { ...process.env };
+  for (const key of Object.keys(environment)) if (key.startsWith("GIT_")) delete environment[key];
+  return environment;
+}
+
 function repository() {
-  const root = mkdtempSync(join(tmpdir(), "rcp06-repo-"));
-  const run = (...args) => execFileSync("git", ["-C", root, "-c", "user.name=Check", "-c", "user.email=check@example.test", ...args], { encoding: "utf8" });
-  run("init", "--initial-branch=main", "--quiet");
-  return { root, run };
+  const root = realpathSync(mkdtempSync(join(tmpdir(), "rcp06-repo-")));
+  assert.ok(!root.startsWith(realpathSync(process.cwd())), "fixture repositories live outside the checkout");
+  const environment = fixtureGitEnvironment();
+  const invoke = (command, args) => command("git", [
+    "-C", root, "--git-dir", join(root, ".git"), "--work-tree", root,
+    "-c", "user.name=Check", "-c", "user.email=check@example.test", ...args,
+  ], { encoding: "utf8", env: environment });
+  execFileSync("git", ["init", "--initial-branch=main", "--quiet", root], { encoding: "utf8", env: environment });
+  const run = (...args) => invoke(execFileSync, args);
+  const attempt = (...args) => invoke(spawnSync, args);
+  assert.equal(run("rev-parse", "--show-toplevel").trim(), root, "fixture git commands must stay in the fixture repository");
+  return { root, run, attempt };
 }
 
 test("the whole-repository placement receipt is no longer a tracked file", () => {
@@ -239,7 +256,7 @@ test("retained public policy, contracts, and merge-throughput evidence stay acce
 
 test("independent changes to different document trees do not collide", () => {
   const merged = (setup) => {
-    const { root, run } = repository();
+    const { root, run, attempt } = repository();
     try {
       setup.baseline(root);
       run("add", "-A");
@@ -252,9 +269,8 @@ test("independent changes to different document trees do not collide", () => {
       }
       const branches = Object.keys(setup.changes);
       run("checkout", "--quiet", branches[0]);
-      const merge = spawnSync("git", ["-C", root, "-c", "user.name=Check", "-c", "user.email=check@example.test", "merge", "--no-edit", branches[1]], { encoding: "utf8" });
-      const conflicted = execFileSync("git", ["-C", root, "diff", "--name-only", "--diff-filter=U"], { encoding: "utf8" })
-        .trim().split("\n").filter(Boolean);
+      const merge = attempt("merge", "--no-edit", branches[1]);
+      const conflicted = run("diff", "--name-only", "--diff-filter=U").trim().split("\n").filter(Boolean);
       return { status: merge.status, conflicted };
     } finally {
       rmSync(root, { recursive: true, force: true });
@@ -369,6 +385,20 @@ test("the placement check passes on the current tip and under a merge-group ref"
     env: { ...process.env, GITHUB_EVENT_NAME: "merge_group", GITHUB_SHA: mergeGroupHead },
   });
   assert.match(mergeGroupOutput, /served artifacts unchanged/);
+});
+
+
+test("an ambient GIT_DIR does not steer the placement check", () => {
+  const { root } = repository();
+  try {
+    const output = execFileSync("node", ["tools/rcp03_evidence_placement.mjs", "--check"], {
+      encoding: "utf8",
+      env: { ...process.env, GIT_DIR: join(root, ".git"), GIT_WORK_TREE: root },
+    });
+    assert.match(output, /served artifacts unchanged/);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
 });
 
 test("the derived receipt cannot be written back into the tracked tree", () => {
