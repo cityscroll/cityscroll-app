@@ -8,17 +8,18 @@
  * change therefore carries a null rationale and the literal status
  * "rationale required" for human adjudication.
  *
- * Over-time comparison uses the committed compact watermark at
- * architecture/generated/watermark.json as baselineFacts. Advance that
- * baseline with --write-watermark after review. --check never writes it.
+ * Over-time comparison derives a compact watermark from the reviewed shards
+ * under architecture/watermark.d/. Advance named semantic keys only with
+ * --write-watermark --watermark-key <key>. --check never writes source shards.
  */
 import { buildFacts } from "./build_architecture_facts.mjs";
 import {
-  WATERMARK_RELATIVE,
+  WATERMARK_DIRECTORY_RELATIVE,
   buildWatermark,
   isWatermark,
   loadWatermark,
   projectForDiff,
+  writeWatermarkShards,
 } from "./architecture_watermark.mjs";
 import { checkArchitectureEvidence } from "./architecture_evidence_shards.mjs";
 import {
@@ -355,7 +356,7 @@ function proposalFor(item) {
     removal: "Decide whether to remove or retain the C4 declaration.",
     contradiction: documentInvariant
       ? "Align the human architecture narrative with the canonical resident-read invariant and its policy gate."
-      : item.target === WATERMARK_RELATIVE || String(item.target || "").startsWith("facts:canaries.")
+      : item.target === WATERMARK_DIRECTORY_RELATIVE || String(item.target || "").startsWith("facts:canaries.")
         ? "Review the compact watermark against current observed canary fingerprints, then advance it with --write-watermark or restore the prior topology."
         : "Resolve the implementation/model state mismatch.",
     unknown_surface: "Extend the facts observer to cover this known canary, or record an ADR explaining the unobserved architecture-affecting surface.",
@@ -367,8 +368,8 @@ function proposalFor(item) {
       ? [ARCHITECTURE_NARRATIVE_RELATIVE, CANONICAL_ARCHITECTURE_RELATIVE, RESIDENT_READ_POLICY_RELATIVE]
       : item.type === "unknown_surface"
       ? ["architecture/observer-canaries.json", "tools/build_architecture_facts.mjs", "ARCHITECTURE.md", "docs/adr/"]
-      : item.target === WATERMARK_RELATIVE || String(item.target || "").startsWith("facts:canaries.")
-        ? [WATERMARK_RELATIVE, "ARCHITECTURE.md", "docs/adr/"]
+      : item.target === WATERMARK_DIRECTORY_RELATIVE || String(item.target || "").startsWith("facts:canaries.")
+        ? [WATERMARK_DIRECTORY_RELATIVE, "ARCHITECTURE.md", "docs/adr/"]
         : ["architecture/workspace.dsl", "ARCHITECTURE.md", "docs/adr/"],
     action,
     rationale: null,
@@ -401,10 +402,10 @@ function apparentSupersededAdrs(adrs) {
 }
 
 function missingWatermarkIssue() {
-  return issue("contradiction", WATERMARK_RELATIVE, {
+  return issue("contradiction", WATERMARK_DIRECTORY_RELATIVE, {
     before: null,
     after: "required compact baseline",
-    source: WATERMARK_RELATIVE,
+    source: WATERMARK_DIRECTORY_RELATIVE,
   });
 }
 
@@ -560,7 +561,7 @@ function collectSourceNulls(facts) {
 
 function baselineLabel(baselineFacts) {
   if (baselineFacts == null) return null;
-  if (isWatermark(baselineFacts)) return WATERMARK_RELATIVE;
+  if (isWatermark(baselineFacts)) return WATERMARK_DIRECTORY_RELATIVE;
   return "supplied";
 }
 
@@ -623,6 +624,17 @@ function optionValue(argv, name) {
   return value;
 }
 
+function optionValues(argv, name) {
+  const values = [];
+  for (let index = 0; index < argv.length; index += 1) {
+    if (argv[index] !== name) continue;
+    const value = argv[index + 1];
+    if (!value || value.startsWith("--")) throw new Error(`${name} requires a semantic key`);
+    values.push(value);
+  }
+  return values;
+}
+
 function main() {
   const argv = process.argv.slice(2);
   const args = new Set(argv);
@@ -633,6 +645,7 @@ function main() {
   const outputDir = resolve(ROOT, optionValue(argv, "--output-dir") || DEFAULT_OUTPUT_DIR);
   const facts = buildFacts();
   const report = buildReport({ facts });
+  const derivedWatermark = loadWatermark({ root: ROOT });
 
   const evidence = check
     ? checkArchitectureEvidence({ root: ROOT })
@@ -645,6 +658,10 @@ function main() {
     writeFileSync(join(outputDir, "facts.json"), render(facts));
     // determinism-lint: allow write check-mode facts go only to --output-dir or gitignored generated files
     writeFileSync(join(outputDir, "reconciliation.json"), render(report));
+    if (resolve(outputDir) !== resolve(DEFAULT_OUTPUT_DIR)) {
+      // determinism-lint: allow write derived baseline only to an explicit output directory
+      writeFileSync(join(outputDir, "watermark.json"), render(derivedWatermark));
+    }
     if (
       evidence?.sourceCardsText &&
       evidence?.projectionsText &&
@@ -657,11 +674,11 @@ function main() {
     }
   }
   if (writeWatermark) {
-    const target = join(ROOT, WATERMARK_RELATIVE);
-    // determinism-lint: allow write watermark advancement is a reviewed non-check step
-    mkdirSync(dirname(target), { recursive: true });
-    // determinism-lint: allow write watermark advancement is a reviewed non-check step
-    writeFileSync(target, render(buildWatermark(facts)));
+    if (check) throw new Error("--check and --write-watermark are mutually exclusive");
+    writeWatermarkShards(buildWatermark(facts), {
+      root: ROOT,
+      keys: optionValues(argv, "--watermark-key"),
+    });
   }
 
   process.stdout.write(render(report));

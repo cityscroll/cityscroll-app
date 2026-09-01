@@ -1,0 +1,21 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-merge-throughput/mt-9",
+  "status": "implemented",
+  "fingerprint": "mt-9-conflict-free-architecture-watermark.v1",
+  "updated_at": "2026-08-31T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "architecture-watermark-shards",
+      "path": "architecture/watermark.d"
+    },
+    {
+      "id": "architecture-watermark-aggregator",
+      "path": "tools/architecture_watermark.mjs"
+    },
+    {
+      "id": "architecture-watermark-reconciler",
+      "path": "tools/reconcile_architecture.mjs"
+    }
+  ]
+}

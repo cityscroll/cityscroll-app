@@ -8,7 +8,6 @@ import { fileURLToPath } from "node:url";
 
 import { buildFacts } from "../tools/build_architecture_facts.mjs";
 import {
-  WATERMARK_RELATIVE,
   buildWatermark,
 } from "../tools/architecture_watermark.mjs";
 import {
@@ -268,7 +267,7 @@ test("a missing committed watermark is drift, not a self-compare healthy", () =>
       root: emptyRoot,
     });
     assert.equal(report.status, "drift");
-    const finding = report.outcomes.contradictions.find((item) => item.target === WATERMARK_RELATIVE);
+    const finding = report.outcomes.contradictions.find((item) => item.target === "architecture/watermark.d");
     assert.ok(finding);
     assert.equal(finding.before, null);
   } finally {
@@ -278,8 +277,7 @@ test("a missing committed watermark is drift, not a self-compare healthy", () =>
 
 test("--check does not advance the committed watermark", () => {
   const root = fileURLToPath(new URL("..", import.meta.url));
-  const committed = join(root, WATERMARK_RELATIVE);
-  const before = readFileSync(committed);
+  const before = spawnSync("git", ["diff", "--", "architecture/watermark.d"], { cwd: root, encoding: "utf8" }).stdout;
   const outputDir = mkdtempSync(join(tmpdir(), "la9-reconcile-"));
   try {
     const result = spawnSync(process.execPath, [
@@ -291,9 +289,9 @@ test("--check does not advance the committed watermark", () => {
     const written = JSON.parse(readFileSync(join(outputDir, "reconciliation.json"), "utf8"));
     assert.equal(written.schema, "cityscroll.architecture.reconciliation.v1");
     assert.ok(written.status === "healthy" || written.status === "drift");
-    assert.equal(written.facts.baseline, WATERMARK_RELATIVE);
-    assert.equal(existsSync(join(outputDir, "watermark.json")), false);
-    assert.deepEqual(readFileSync(committed), before);
+    assert.equal(written.facts.baseline, "architecture/watermark.d");
+    assert.equal(existsSync(join(outputDir, "watermark.json")), true);
+    assert.equal(spawnSync("git", ["diff", "--", "architecture/watermark.d"], { cwd: root, encoding: "utf8" }).stdout, before);
     assert.notEqual(result.status, null);
   } finally {
     rmSync(outputDir, { recursive: true, force: true });

@@ -9,10 +9,37 @@ import {
   detectPropertyJargon,
   detectPropertySignals,
   evaluatePropertyA11yRatchet,
+  fetchCorpus,
   propertyA11yRatchetMetrics,
   renderedNoticeSurfaces,
   searchExcerptForTerm,
 } from "../tools/property_a11y_census.mjs";
+
+test("City Record census retries transient service failures", async () => {
+  const statuses = [503, 503, 200];
+  const delays = [];
+  const result = await fetchCorpus({}, {
+    fetchImpl: async () => {
+      const status = statuses.shift();
+      return { ok: status === 200, status, json: async () => [{ request_id: "retry-proof" }] };
+    },
+    sleep: async (milliseconds) => { delays.push(milliseconds); },
+  });
+  assert.deepEqual(result.rows, [{ request_id: "retry-proof" }]);
+  assert.deepEqual(delays, [250, 500]);
+});
+
+test("City Record census does not retry permanent request failures", async () => {
+  let requests = 0;
+  await assert.rejects(
+    fetchCorpus({}, {
+      fetchImpl: async () => { requests += 1; return { ok: false, status: 400 }; },
+      sleep: async () => assert.fail("permanent failures must not sleep"),
+    }),
+    /HTTP 400 after 1 attempt/,
+  );
+  assert.equal(requests, 1);
+});
 
 function ratchetReport(gradeLevel, templatedFraction, lensGradeLevel) {
   return {

@@ -40,11 +40,14 @@ function treeDigest(prefixes, ref = BASE) {
 }
 
 function servedVerificationRef() {
-  if (process.env.GITHUB_EVENT_NAME !== "pull_request" || !process.env.GITHUB_SHA) return "HEAD";
+  if (!["pull_request", "merge_group"].includes(process.env.GITHUB_EVENT_NAME) || !process.env.GITHUB_SHA) return "HEAD";
   const parents = execFileSync("git", ["rev-list", "--parents", "-n", "1", process.env.GITHUB_SHA], {
     cwd: ROOT,
     encoding: "utf8"
   }).trim().split(/\s+/);
+  // Merge-group refs can be materialized as a single-parent commit whose tree is
+  // the tested queue tree, rather than the two-parent PR merge ref.
+  if (process.env.GITHUB_EVENT_NAME === "merge_group" && parents.length === 2) return process.env.GITHUB_SHA;
   if (parents.length !== 3) throw new Error("pull-request checkout is not a two-parent merge commit");
   return parents[2];
 }
@@ -79,7 +82,7 @@ function buildReceipt() {
     byVerdict[verdict] = (byVerdict[verdict] || 0) + 1;
   }
 
-  const served = treeDigest(["site", "worker"]);
+  const served = treeDigest(["site", "worker"], servedVerificationRef());
   return {
     schema: "cityscroll.repository_evidence_placement.v1",
     card: CARD,

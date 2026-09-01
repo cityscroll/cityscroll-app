@@ -30,7 +30,7 @@ export function loadCheckedReconciliation({ root } = {}) {
     path: "architecture/generated/reconciliation.json",
     observed_commit: watermark?.commit || report.facts?.regenerated_commit || null,
     as_of: watermark?.generated_at || report.generated_at || null,
-    baseline: report.facts?.baseline || "architecture/generated/watermark.json",
+    baseline: report.facts?.baseline || "architecture/watermark.d",
   };
 }
 

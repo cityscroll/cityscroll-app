@@ -1,0 +1,12 @@
+{
+  "schema": "cityscroll.architecture.watermark-shard.v1",
+  "id": "canary:pages-edge-routes",
+  "owner": "canary:pages-edge-routes",
+  "updated_at": "2026-08-31T11:57:44Z",
+  "commit": "9a29cbe2ec285d832e95902f3e1015ec81784707",
+  "value": {
+    "path": "site/_routes.json",
+    "count": 18,
+    "fingerprint": "b8c0cc5b30fc4ecdb2b80f2092dcdc07a8dd4f6910411c3416f589932a4941b0"
+  }
+}

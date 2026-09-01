@@ -19,7 +19,8 @@ site/data/procurement_browse_rows/
 # Architecture evidence is generated at verification time and uploaded from CI.
 architecture/generated/facts.json
 architecture/generated/reconciliation.json
-# architecture/generated/watermark.json is the committed LA9 baseline; do not ignore it.
+# Derived compact baseline output. Reviewed source shards live in architecture/watermark.d/.
+architecture/generated/watermark.json
 
 # Compatibility aggregates derived from architecture/evidence.d/ at check/build
 # time. Never reintroduce these generated files into version control.

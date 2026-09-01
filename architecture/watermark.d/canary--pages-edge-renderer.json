@@ -1,0 +1,12 @@
+{
+  "schema": "cityscroll.architecture.watermark-shard.v1",
+  "id": "canary:pages-edge-renderer",
+  "owner": "canary:pages-edge-renderer",
+  "updated_at": "2026-08-31T11:57:44Z",
+  "commit": "9a29cbe2ec285d832e95902f3e1015ec81784707",
+  "value": {
+    "path": "site/pages_edge.mjs",
+    "count": 18,
+    "fingerprint": "b95baf55b2173633b4de0a45f24d2eda9c6a8bfd05a9ea04d845df7e6c179a31"
+  }
+}
