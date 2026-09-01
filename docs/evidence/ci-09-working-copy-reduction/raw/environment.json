@@ -1,0 +1,26 @@
+{
+  "cache_conditions": {
+    "dependency_store": "warm - the host shared pnpm store is already populated, and the install runs against it",
+    "git_objects": "cold per trial - every trial clones into a fresh directory with no pre-existing objects",
+    "page_cache": "not purged - purging is a whole-machine operation on a shared host, so cold and warm describe tool-level caches only"
+  },
+  "cpu_count": 10,
+  "filesystem_class": "APFS - hard links and copy-on-write file clones both supported",
+  "measurement_methods": {
+    "allocated_bytes": "st_blocks * 512; on APFS this counts every copy-on-write clone at full size and therefore cannot see sharing",
+    "charged_disk_bytes": "free-space delta across the provisioning run, which is the only measure that sees copy-on-write sharing on this filesystem class",
+    "logical_bytes": "st_size, summed by tools/measure_working_copy_footprint.py"
+  },
+  "operating_system": "Darwin 25.5.0 (arm64)",
+  "revision": "be4f842ea237001e49e605a63233828a26753beb",
+  "schema": "cityscroll.card-profile-environment.v1",
+  "source_class": "remote",
+  "tools": {
+    "git": "git version 2.54.0",
+    "node": "v24.16.0",
+    "pnpm_corepack_default": "11.24.0",
+    "pnpm_pinned_by_worker_package": "pnpm@10.15.1",
+    "python3": "Python 3.14.6"
+  },
+  "trials_per_variant": 3
+}

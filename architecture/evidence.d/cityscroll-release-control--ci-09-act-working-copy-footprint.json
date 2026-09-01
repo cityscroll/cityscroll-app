@@ -1,0 +1,41 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-\u006braken/ci-09-act-working-copy-footprint",
+  "status": "implemented",
+  "fingerprint": "ci-09-act-working-copy-footprint.v1",
+  "updated_at": "2026-09-01T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "card-work-profile-provisioner",
+      "path": "tools/provision_card_profile.sh"
+    },
+    {
+      "id": "card-work-profile-closure-deriver",
+      "path": "tools/derive_card_profile.mjs"
+    },
+    {
+      "id": "card-work-profile-config",
+      "path": "tools/card-profile/profile.config.v1.json"
+    },
+    {
+      "id": "card-work-profile-closure-manifest",
+      "path": "tools/card-profile/closure.v1.json"
+    },
+    {
+      "id": "card-work-profile-sparse-patterns",
+      "path": "tools/card-profile/card-work.sparse"
+    },
+    {
+      "id": "card-work-profile-missing-path-sentinel",
+      "path": "tools/card_profile_sentinel.cjs"
+    },
+    {
+      "id": "card-work-profile-gate-front-door",
+      "path": "tools/verify_card_profile.mjs"
+    },
+    {
+      "id": "card-work-profile-contract",
+      "path": "docs/card-work-profile.md"
+    }
+  ]
+}

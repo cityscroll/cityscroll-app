@@ -1,0 +1,134 @@
+{
+  "changed_path_count": 35,
+  "changed_paths": [
+    "AGENTS.md",
+    "architecture/evidence.d/cityscroll-\u006braken--ci-09-act-working-copy-footprint.json",
+    "docs/card-work-profile.md",
+    "docs/evidence/ci-09-working-copy-reduction/README.md",
+    "docs/evidence/ci-09-working-copy-reduction/commands.md",
+    "docs/evidence/ci-09-working-copy-reduction/raw/behaviour-probes.jsonl",
+    "docs/evidence/ci-09-working-copy-reduction/raw/charged-disk.jsonl",
+    "docs/evidence/ci-09-working-copy-reduction/raw/closure/agents-router.json",
+    "docs/evidence/ci-09-working-copy-reduction/raw/closure/architecture-canaries.json",
+    "docs/evidence/ci-09-working-copy-reduction/raw/closure/architecture-evidence-shards.json",
+    "docs/evidence/ci-09-working-copy-reduction/raw/closure/architecture-reconcile.json",
+    "docs/evidence/ci-09-working-copy-reduction/raw/closure/card-profile-contract.json",
+    "docs/evidence/ci-09-working-copy-reduction/raw/closure/card-reconciliation.json",
+    "docs/evidence/ci-09-working-copy-reduction/raw/closure/worker-unit.json",
+    "docs/evidence/ci-09-working-copy-reduction/raw/environment.json",
+    "docs/evidence/ci-09-working-copy-reduction/raw/footprint-card-depth1.json",
+    "docs/evidence/ci-09-working-copy-reduction/raw/footprint-card.json",
+    "docs/evidence/ci-09-working-copy-reduction/raw/footprint-full.json",
+    "docs/evidence/ci-09-working-copy-reduction/raw/footprint-shared-store.json",
+    "docs/evidence/ci-09-working-copy-reduction/raw/gate-probes.jsonl",
+    "docs/evidence/ci-09-working-copy-reduction/raw/object-integrity.json",
+    "docs/evidence/ci-09-working-copy-reduction/raw/product-surface.json",
+    "docs/evidence/ci-09-working-copy-reduction/raw/provisioning-timings.jsonl",
+    "docs/repository-control-plane/agents-router-receipt.v1.json",
+    "test/card_profile.test.mjs",
+    "test/fixtures/card-profile/swallowed-missing-input.mjs",
+    "tools/card-profile/card-work.sparse",
+    "tools/card-profile/closure.v1.json",
+    "tools/card-profile/profile.config.v1.json",
+    "tools/card_profile_sentinel.cjs",
+    "tools/derive_card_profile.mjs",
+    "tools/measure_card_profile_evidence.sh",
+    "tools/provision_card_profile.sh",
+    "tools/summarize_card_profile_evidence.py",
+    "tools/verify_card_profile.mjs"
+  ],
+  "measured_revision": "be4f842ea237001e49e605a63233828a26753beb",
+  "merge_base_with_default_branch": "7e9c857b4fc1adf9d821fc0ea8a892413660968b",
+  "method": "Per-surface content digest over the tracked tree at the merge base and at the measured revision. An identical digest means every tracked file under that surface has the same content, so served output, Worker bundle contents and public data semantics cannot have changed.",
+  "schema": "cityscroll.card-profile-product-surface.v1",
+  "surfaces": {
+    "artifacts": {
+      "identical": true,
+      "measured_revision": {
+        "file_count": 72,
+        "sha256": "2829dadde6a4b8079987534f7d662e7287d4a8818e8dc105ecf2d944beab2be2"
+      },
+      "merge_base": {
+        "file_count": 72,
+        "sha256": "2829dadde6a4b8079987534f7d662e7287d4a8818e8dc105ecf2d944beab2be2"
+      }
+    },
+    "capabilities": {
+      "identical": true,
+      "measured_revision": {
+        "file_count": 13,
+        "sha256": "2a32856074500dd5a3a4e4cfee2c4b3b539a9b5b0449ee2aa2c97b81862fe9da"
+      },
+      "merge_base": {
+        "file_count": 13,
+        "sha256": "2a32856074500dd5a3a4e4cfee2c4b3b539a9b5b0449ee2aa2c97b81862fe9da"
+      }
+    },
+    "data": {
+      "identical": true,
+      "measured_revision": {
+        "file_count": 18,
+        "sha256": "b80c5fabad8d92970d5052af08984e7f2b27d7fdfc2037880c01fd4e5d493131"
+      },
+      "merge_base": {
+        "file_count": 18,
+        "sha256": "b80c5fabad8d92970d5052af08984e7f2b27d7fdfc2037880c01fd4e5d493131"
+      }
+    },
+    "entity_resolution": {
+      "identical": true,
+      "measured_revision": {
+        "file_count": 130,
+        "sha256": "ef32968a0b2edb5ddf75b76f5d4cba3fa818ce346088688b5b4318d35356c989"
+      },
+      "merge_base": {
+        "file_count": 130,
+        "sha256": "ef32968a0b2edb5ddf75b76f5d4cba3fa818ce346088688b5b4318d35356c989"
+      }
+    },
+    "ontology": {
+      "identical": true,
+      "measured_revision": {
+        "file_count": 58,
+        "sha256": "f351e3186458a9ba48b503cf548876ca85dcf82ab078f47e24b69521b947a1f0"
+      },
+      "merge_base": {
+        "file_count": 58,
+        "sha256": "f351e3186458a9ba48b503cf548876ca85dcf82ab078f47e24b69521b947a1f0"
+      }
+    },
+    "site": {
+      "identical": true,
+      "measured_revision": {
+        "file_count": 2185,
+        "sha256": "75db8753ee81ecb768c22ada1683e2934a6b0dbc9d3b4db88210b278ca85578b"
+      },
+      "merge_base": {
+        "file_count": 2185,
+        "sha256": "75db8753ee81ecb768c22ada1683e2934a6b0dbc9d3b4db88210b278ca85578b"
+      }
+    },
+    "warehouse": {
+      "identical": true,
+      "measured_revision": {
+        "file_count": 265,
+        "sha256": "4000a34a52f36e1e5e673a718b063b144cb1ee0bf51ab72a16766eb856172f86"
+      },
+      "merge_base": {
+        "file_count": 265,
+        "sha256": "4000a34a52f36e1e5e673a718b063b144cb1ee0bf51ab72a16766eb856172f86"
+      }
+    },
+    "worker": {
+      "identical": true,
+      "measured_revision": {
+        "file_count": 570,
+        "sha256": "10438dce1ef71066fbfdd80745996c437108f08428cae4e7b4479191d7441a49"
+      },
+      "merge_base": {
+        "file_count": 570,
+        "sha256": "10438dce1ef71066fbfdd80745996c437108f08428cae4e7b4479191d7441a49"
+      }
+    }
+  }
+}
