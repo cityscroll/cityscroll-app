@@ -1,8 +1,8 @@
 {
   "schema": "cityscroll.architecture-evidence-entry.v1",
-  "id": "cityscroll-\u006braken/ci-10",
+  "id": "cityscroll-engineering/default-reduced-card-work-profile",
   "status": "implemented",
-  "fingerprint": "ci-10-default-reduced-profile.v1",
+  "fingerprint": "default-reduced-card-work-profile.v1",
   "updated_at": "2026-09-01T00:00:00.000Z",
   "projections": [
     {

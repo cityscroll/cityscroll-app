@@ -7,8 +7,8 @@
     "provisioned_profile_name": "card-work",
     "manifest_version": 1,
     "manifest_digest": "1aefe6db83d05317e2dc176eca8ff358d36bbdc246d1b998abab869b8ae0de1f",
-    "provision_identity": "d41084a2631e02c77d08913b58b71ffead2eb82b6af87865fd72befd40436102",
-    "revision": "8d4ae48de83dcd5f14286dc0579d715b25dfdc20",
+    "provision_identity": "9b206c4d071ea3a8797706807492228bc10815aaa6858fad74b911d08091b639",
+    "revision": "ff7fe30875ac71faa3f5cfa3db326350129f56b6",
     "identity_inputs": [
       {
         "id": "routing-manifest",
@@ -93,9 +93,9 @@
     "integrity": {
       "fsck_connectivity_only_exit": 0,
       "fsck_method": "--connectivity-only verifies the object graph without demanding blobs a partial clone deliberately did not fetch, so it is the meaningful integrity check in both profiles",
-      "commits_reachable_from_head": 1590,
+      "commits_reachable_from_head": 1592,
       "working_tree_clean": true,
-      "tracked_paths_not_materialised": 1907
+      "tracked_paths_not_materialised": 1908
     },
     "recorded_identity": {
       "present": true,
@@ -107,7 +107,7 @@
       "stale": false
     }
   },
-  "deterministic_digest": "1c4a11f81806b45605a2e945d450aab658fae283e41016af99d080a5bc63772e",
+  "deterministic_digest": "ab5abe5d3d774a7bffead1a61f3f8a7996ad3f83c55a0acd57174aa92df16caa",
   "context": {
     "note": "Supplied by the caller, not observed here, so it is reported rather than digested.",
     "routing_decision": null,
@@ -118,7 +118,7 @@
     "byte_accounting": {
       "method": "tools/measure_working_copy_footprint.py, CI-08's ordered exhaustive path partition with first rule wins",
       "categories_partition_total": true,
-      "tracked_file_count": 5728,
+      "tracked_file_count": 5732,
       "categories": {
         "dependency_view": {
           "logical_bytes": 330480550,
@@ -133,16 +133,16 @@
           "allocated_bytes": 0
         },
         "git_metadata": {
-          "logical_bytes": 40814134,
-          "allocated_bytes": 41324544
+          "logical_bytes": 41021048,
+          "allocated_bytes": 42160128
         },
         "other_overhead": {
-          "logical_bytes": 188832,
+          "logical_bytes": 188928,
           "allocated_bytes": 0
         },
         "tracked_other": {
-          "logical_bytes": 65578867,
-          "allocated_bytes": 71942144
+          "logical_bytes": 65612361,
+          "allocated_bytes": 71987200
         },
         "tracked_site_data": {
           "logical_bytes": 63802082,
@@ -158,8 +158,8 @@
         }
       },
       "total": {
-        "logical_bytes": 519989562,
-        "allocated_bytes": 542822400
+        "logical_bytes": 520230066,
+        "allocated_bytes": 543703040
       },
       "hardlink_dedup": {
         "entries": 0,
@@ -169,7 +169,7 @@
     },
     "provisioning_timing": null,
     "packs": 3,
-    "pack_size_kib": 38502,
+    "pack_size_kib": 38703,
     "loose_objects": 0
   }
 }

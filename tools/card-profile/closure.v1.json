@@ -53,7 +53,7 @@
       "scan_hops": 1,
       "scanned_source_count": 2121,
       "sources_skipped_not_materialised": 0,
-      "path_count": 1868,
+      "path_count": 1869,
       "worker_to_site_reference_count": 187,
       "worker_to_site_data_reference_count": 28,
       "worker_to_site_data_targets": [
@@ -113,7 +113,7 @@
         "warehouse",
         "worker/src/data"
       ],
-      "path_count": 3614
+      "path_count": 3628
     }
   },
   "required_paths": [
@@ -2873,7 +2873,7 @@
       "site/data/zap_outcome_sources/verification_receipts/zap_api_outcomes_2026-07-30.json"
     ]
   },
-  "patterns_sha256": "b2ffbbb87697eb3214ff1ba6579d2fbbeacf8b680c5ea80af2dad66729dae2e9",
+  "patterns_sha256": "2882b8f8ab846dfb8a3de8ee6e032bb6f58b3e62f0a286773de5ef86e1a7ef63",
   "supported_gate_classes": [
     "worker-unit",
     "architecture-evidence-shards",
@@ -2938,11 +2938,11 @@
   "missing_path_behaviour": "A tracked path the profile does not materialise is marked skip-worktree in the index. tools/card_profile_sentinel.cjs turns a missing-file error on such a path into CardProfileMissingPath and records it, so a profile gap fails closed instead of passing by omission. tools/provision_card_profile.sh hydrate is the documented route to materialise one.",
   "measured": {
     "note": "A snapshot of what the profile costs at the revision named here. These figures are reporting only; they are not part of the checked contract, because a byte total moves whenever any tracked file does.",
-    "revision": "aada32830a21fbba5413d1ccf2ef2f29b1381c53",
+    "revision": "ff7fe30875ac71faa3f5cfa3db326350129f56b6",
     "computed_in_reduced_checkout": false,
     "profile_paths": {
-      "count": 3811,
-      "logical_bytes": 148468648
+      "count": 3825,
+      "logical_bytes": 148555739
     },
     "deferred_paths": {
       "count": 310,
@@ -2959,9 +2959,9 @@
       "profile_logical_bytes": 63802082
     },
     "tracked_total": {
-      "count": 5718,
-      "logical_bytes": 808442566
+      "count": 5732,
+      "logical_bytes": 808529657
     },
-    "pattern_count": 772
+    "pattern_count": 773
   }
 }
