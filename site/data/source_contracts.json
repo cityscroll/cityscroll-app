@@ -878,15 +878,20 @@
       "landing_page": "https://data.cityofnewyork.us/d/k397-673e",
       "required_fields": [
         "fiscal_year",
+        "payroll_number",
         "agency_name",
         "last_name",
         "first_name",
-        "title_description"
+        "title_description",
+        "leave_status_as_of_june_30",
+        "regular_gross_paid",
+        "total_ot_paid",
+        "total_other_pay"
       ],
       "max_stale_days": 550,
       "publisher_cadence": "Fiscal-year releases",
-      "product_freshness": "FY title mart (count + min/max/avg base) is committed and refreshed weekly from a SODA group-by. People title/payroll suggestion counts prefer that mart; live SODA remains the miss fallback. Individual employee rows are never served.",
-      "used_for": "Title and pay history in the Staffing experience.",
+      "product_freshness": "FY title mart and exact Community Board aggregate payroll context are committed from SODA group-bys. The board context carries published-row counts, title counts, and board-level sums of regular gross paid, overtime paid, and other pay with leave-status basis. Individual employee rows are never served.",
+      "used_for": "Title and pay history in the Staffing experience and source-qualified institutional payroll context on exact Community Board dossiers.",
       "code_references": [
         {
           "path": "site/app/core.mjs",
@@ -903,6 +908,14 @@
         {
           "path": "tools/build_payroll_title_warehouse_lookup.mjs",
           "contains": "k397-673e"
+        },
+        {
+          "path": "tools/build_community_board_payroll_staff_count.mjs",
+          "contains": "fy2025_payroll_context"
+        },
+        {
+          "path": "site/community_board_payroll_context.mjs",
+          "contains": "regular_gross_paid"
         }
       ],
       "delivery_tier": "edge-materialized",

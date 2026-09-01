@@ -1,0 +1,17 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-cb-money/cb-money-06b",
+  "status": "implemented",
+  "fingerprint": "cb-money-06b-community-board-payroll-context.v1",
+  "updated_at": "2026-08-31T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "community-board-payroll-context-read-model",
+      "path": "site/data/community_board_payroll_staff_count.json"
+    },
+    {
+      "id": "community-board-payroll-context-dossier",
+      "path": "site/community_board_payroll_context.mjs"
+    }
+  ]
+}

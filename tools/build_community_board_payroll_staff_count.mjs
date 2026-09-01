@@ -23,6 +23,7 @@ import {
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const REGISTRY = join(ROOT, "site/data/community_board_financial_identity_crosswalk.json");
 const INVENTORY = join(ROOT, "warehouse/fixtures/community-board-payroll/fy2025_identity_inventory.json");
+const CONTEXT = join(ROOT, "warehouse/fixtures/community-board-payroll/fy2025_payroll_context.json");
 const OUTPUT = join(ROOT, "site/data/community_board_payroll_staff_count.json");
 const RECEIPT = join(ROOT, "warehouse/receipts/proof/community_board_payroll_identity_latest.json");
 const GENERATED_AT = "2026-08-29T20:00:00.000Z";
@@ -41,7 +42,8 @@ function collect() {
   if (!existsSync(INVENTORY)) throw new Error("missing Citywide Payroll Community Board identity inventory");
   const registry = json(REGISTRY);
   const inventory = json(INVENTORY);
-  const { model, receipt } = buildCommunityBoardPayrollStaffCount(registry, inventory, {
+  const context = json(CONTEXT);
+  const { model, receipt } = buildCommunityBoardPayrollStaffCount(registry, inventory, context, {
     generatedAt: GENERATED_AT,
     reviewedAt: GENERATED_AT,
   });
@@ -73,8 +75,7 @@ function check() {
     `community board payroll staff count ok: boards=${expected.model.rows.length} ` +
       `active_rows=${expected.receipt.measurement.active_rows} ` +
       `precision=${expected.receipt.measurement.reviewed_precision} ` +
-      `dollars_withheld=${expected.model.withheld.payroll_measures} ` +
-      `titles_withheld=${expected.model.withheld.title_mix}`,
+      `aggregate_dollars=true aggregate_titles=true`,
   );
 }
 
