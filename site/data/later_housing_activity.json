@@ -1,0 +1,349 @@
+{
+  "schema": "cityscroll.later_housing_activity.v1",
+  "generated_at": "2026-08-31T00:00:00.000Z",
+  "source_dataset": "br6q-ssj3",
+  "source_dataset_name": "Housing Database Project Level Files",
+  "source_vintage": "2026-03-16",
+  "match_version": "ldp17_exact_bbl_post_milestone_v1",
+  "digests": {
+    "2022K0441": {
+      "schema": "cityscroll.later_housing_activity.v1",
+      "project_id": "2022K0441",
+      "coverage": "partial",
+      "land_use_milestone": "completed_date",
+      "land_use_milestone_date": "2023-11-09",
+      "eligible_lot_count": 7,
+      "matched_lot_count": 1,
+      "matched_lots": [
+        "3017470054"
+      ],
+      "unmatched_lots": [
+        "3017477503",
+        "3017477504",
+        "3017477505",
+        "3017477507",
+        "3017477508",
+        "3017477509"
+      ],
+      "matched_job_count": 1,
+      "pre_milestone_event_count": 26,
+      "source_dataset": "br6q-ssj3",
+      "source_vintage": "2026-03-16",
+      "match_version": "ldp17_exact_bbl_post_milestone_v1",
+      "events": [
+        {
+          "project_id": "2022K0441",
+          "bbl": "3017470054",
+          "housing_job_number": "B00865416",
+          "event_type": "construction_completed",
+          "event_label": "Construction completed",
+          "event_date": "2024-05-24",
+          "land_use_milestone": "completed_date",
+          "land_use_milestone_date": "2023-11-09",
+          "job_type": "Alteration",
+          "job_status": "5. Completed Construction",
+          "job_filed_date": "2023-04-27",
+          "filed_before_land_use_milestone": true,
+          "units_existing": 59,
+          "units_proposed": 59,
+          "units_net": 0,
+          "units_certificate_of_occupancy": 59,
+          "ownership": "Private For-Profit: Corporation",
+          "source_dataset": "br6q-ssj3",
+          "source_dataset_name": "Housing Database Project Level Files",
+          "source_row_id": "row-gc2h.4hkz-wc9y",
+          "source_vintage": "2026-03-16",
+          "source_url": "https://data.cityofnewyork.us/resource/br6q-ssj3.json?$where=:id='row-gc2h.4hkz-wc9y'",
+          "match_method": "exact_bbl_and_post_milestone_event",
+          "match_version": "ldp17_exact_bbl_post_milestone_v1",
+          "match_basis": {
+            "exact_bbl": true,
+            "event_strictly_after_land_use_milestone": true
+          }
+        }
+      ]
+    },
+    "2022M0258": {
+      "schema": "cityscroll.later_housing_activity.v1",
+      "project_id": "2022M0258",
+      "coverage": "partial",
+      "land_use_milestone": "approval_date",
+      "land_use_milestone_date": "2024-03-07",
+      "eligible_lot_count": 11,
+      "matched_lot_count": 1,
+      "matched_lots": [
+        "1017670001"
+      ],
+      "unmatched_lots": [
+        "1017670002",
+        "1017670003",
+        "1017670004",
+        "1017670067",
+        "1017670068",
+        "1017670069",
+        "1017670071",
+        "1017670072",
+        "1017670168",
+        "1017670169"
+      ],
+      "matched_job_count": 1,
+      "pre_milestone_event_count": 1,
+      "source_dataset": "br6q-ssj3",
+      "source_vintage": "2026-03-16",
+      "match_version": "ldp17_exact_bbl_post_milestone_v1",
+      "events": [
+        {
+          "project_id": "2022M0258",
+          "bbl": "1017670001",
+          "housing_job_number": "M08028552",
+          "event_type": "permit_issued",
+          "event_label": "Permit issued",
+          "event_date": "2025-12-18",
+          "land_use_milestone": "approval_date",
+          "land_use_milestone_date": "2024-03-07",
+          "job_type": "New Building",
+          "job_status": "3. Permitted for Construction",
+          "job_filed_date": "2022-10-31",
+          "filed_before_land_use_milestone": true,
+          "units_existing": 0,
+          "units_proposed": 341,
+          "units_net": 341,
+          "units_certificate_of_occupancy": null,
+          "ownership": "Government, City: City Agency",
+          "source_dataset": "br6q-ssj3",
+          "source_dataset_name": "Housing Database Project Level Files",
+          "source_row_id": "row-6m8p.f92y-bnxw",
+          "source_vintage": "2026-03-16",
+          "source_url": "https://data.cityofnewyork.us/resource/br6q-ssj3.json?$where=:id='row-6m8p.f92y-bnxw'",
+          "match_method": "exact_bbl_and_post_milestone_event",
+          "match_version": "ldp17_exact_bbl_post_milestone_v1",
+          "match_basis": {
+            "exact_bbl": true,
+            "event_strictly_after_land_use_milestone": true
+          }
+        }
+      ]
+    },
+    "2023K0126": {
+      "schema": "cityscroll.later_housing_activity.v1",
+      "project_id": "2023K0126",
+      "coverage": "partial",
+      "land_use_milestone": "completed_date",
+      "land_use_milestone_date": "2024-07-31",
+      "eligible_lot_count": 2,
+      "matched_lot_count": 1,
+      "matched_lots": [
+        "3072690001"
+      ],
+      "unmatched_lots": [
+        "3072690050"
+      ],
+      "matched_job_count": 1,
+      "pre_milestone_event_count": 2,
+      "source_dataset": "br6q-ssj3",
+      "source_vintage": "2026-03-16",
+      "match_version": "ldp17_exact_bbl_post_milestone_v1",
+      "events": [
+        {
+          "project_id": "2023K0126",
+          "bbl": "3072690001",
+          "housing_job_number": "B00646589",
+          "event_type": "construction_completed",
+          "event_label": "Construction completed",
+          "event_date": "2025-01-23",
+          "land_use_milestone": "completed_date",
+          "land_use_milestone_date": "2024-07-31",
+          "job_type": "New Building",
+          "job_status": "5. Completed Construction",
+          "job_filed_date": "2021-12-22",
+          "filed_before_land_use_milestone": true,
+          "units_existing": 0,
+          "units_proposed": 189,
+          "units_net": 189,
+          "units_certificate_of_occupancy": 189,
+          "ownership": "Private For-Profit: Corporation",
+          "source_dataset": "br6q-ssj3",
+          "source_dataset_name": "Housing Database Project Level Files",
+          "source_row_id": "row-bbad.jhhv~bnsr",
+          "source_vintage": "2026-03-16",
+          "source_url": "https://data.cityofnewyork.us/resource/br6q-ssj3.json?$where=:id='row-bbad.jhhv~bnsr'",
+          "match_method": "exact_bbl_and_post_milestone_event",
+          "match_version": "ldp17_exact_bbl_post_milestone_v1",
+          "match_basis": {
+            "exact_bbl": true,
+            "event_strictly_after_land_use_milestone": true
+          }
+        }
+      ]
+    },
+    "2023K0248": {
+      "schema": "cityscroll.later_housing_activity.v1",
+      "project_id": "2023K0248",
+      "coverage": "none",
+      "land_use_milestone": "completed_date",
+      "land_use_milestone_date": "2024-02-13",
+      "eligible_lot_count": 1,
+      "matched_lot_count": 0,
+      "matched_lots": [],
+      "unmatched_lots": [
+        "3004710200"
+      ],
+      "matched_job_count": 0,
+      "pre_milestone_event_count": 5,
+      "source_dataset": "br6q-ssj3",
+      "source_vintage": "2026-03-16",
+      "match_version": "ldp17_exact_bbl_post_milestone_v1",
+      "events": []
+    },
+    "2023K0276": {
+      "schema": "cityscroll.later_housing_activity.v1",
+      "project_id": "2023K0276",
+      "coverage": "none",
+      "land_use_milestone": "completed_date",
+      "land_use_milestone_date": "2024-02-05",
+      "eligible_lot_count": 1,
+      "matched_lot_count": 0,
+      "matched_lots": [],
+      "unmatched_lots": [
+        "3004380007"
+      ],
+      "matched_job_count": 0,
+      "pre_milestone_event_count": 2,
+      "source_dataset": "br6q-ssj3",
+      "source_vintage": "2026-03-16",
+      "match_version": "ldp17_exact_bbl_post_milestone_v1",
+      "events": []
+    },
+    "2023M0399": {
+      "schema": "cityscroll.later_housing_activity.v1",
+      "project_id": "2023M0399",
+      "coverage": "none",
+      "land_use_milestone": "completed_date",
+      "land_use_milestone_date": "2024-05-20",
+      "eligible_lot_count": 1,
+      "matched_lot_count": 0,
+      "matched_lots": [],
+      "unmatched_lots": [
+        "1009230001"
+      ],
+      "matched_job_count": 0,
+      "pre_milestone_event_count": 0,
+      "source_dataset": "br6q-ssj3",
+      "source_vintage": "2026-03-16",
+      "match_version": "ldp17_exact_bbl_post_milestone_v1",
+      "events": []
+    },
+    "2023R0329": {
+      "schema": "cityscroll.later_housing_activity.v1",
+      "project_id": "2023R0329",
+      "coverage": "partial",
+      "land_use_milestone": "completed_date",
+      "land_use_milestone_date": "2023-08-10",
+      "eligible_lot_count": 2,
+      "matched_lot_count": 1,
+      "matched_lots": [
+        "5061640030"
+      ],
+      "unmatched_lots": [
+        "4061640028"
+      ],
+      "matched_job_count": 1,
+      "pre_milestone_event_count": 3,
+      "source_dataset": "br6q-ssj3",
+      "source_vintage": "2026-03-16",
+      "match_version": "ldp17_exact_bbl_post_milestone_v1",
+      "events": [
+        {
+          "project_id": "2023R0329",
+          "bbl": "5061640030",
+          "housing_job_number": "S00923238",
+          "event_type": "application_filed",
+          "event_label": "Application filed",
+          "event_date": "2023-12-26",
+          "land_use_milestone": "completed_date",
+          "land_use_milestone_date": "2023-08-10",
+          "job_type": "New Building",
+          "job_status": "5. Completed Construction",
+          "job_filed_date": "2023-12-26",
+          "filed_before_land_use_milestone": false,
+          "units_existing": 0,
+          "units_proposed": 2,
+          "units_net": 2,
+          "units_certificate_of_occupancy": 2,
+          "ownership": "Private For-Profit: Corporation",
+          "source_dataset": "br6q-ssj3",
+          "source_dataset_name": "Housing Database Project Level Files",
+          "source_row_id": "row-kq4r.2v6i~v9pu",
+          "source_vintage": "2026-03-16",
+          "source_url": "https://data.cityofnewyork.us/resource/br6q-ssj3.json?$where=:id='row-kq4r.2v6i~v9pu'",
+          "match_method": "exact_bbl_and_post_milestone_event",
+          "match_version": "ldp17_exact_bbl_post_milestone_v1",
+          "match_basis": {
+            "exact_bbl": true,
+            "event_strictly_after_land_use_milestone": true
+          }
+        },
+        {
+          "project_id": "2023R0329",
+          "bbl": "5061640030",
+          "housing_job_number": "S00923238",
+          "event_type": "permit_issued",
+          "event_label": "Permit issued",
+          "event_date": "2024-03-26",
+          "land_use_milestone": "completed_date",
+          "land_use_milestone_date": "2023-08-10",
+          "job_type": "New Building",
+          "job_status": "5. Completed Construction",
+          "job_filed_date": "2023-12-26",
+          "filed_before_land_use_milestone": false,
+          "units_existing": 0,
+          "units_proposed": 2,
+          "units_net": 2,
+          "units_certificate_of_occupancy": 2,
+          "ownership": "Private For-Profit: Corporation",
+          "source_dataset": "br6q-ssj3",
+          "source_dataset_name": "Housing Database Project Level Files",
+          "source_row_id": "row-kq4r.2v6i~v9pu",
+          "source_vintage": "2026-03-16",
+          "source_url": "https://data.cityofnewyork.us/resource/br6q-ssj3.json?$where=:id='row-kq4r.2v6i~v9pu'",
+          "match_method": "exact_bbl_and_post_milestone_event",
+          "match_version": "ldp17_exact_bbl_post_milestone_v1",
+          "match_basis": {
+            "exact_bbl": true,
+            "event_strictly_after_land_use_milestone": true
+          }
+        },
+        {
+          "project_id": "2023R0329",
+          "bbl": "5061640030",
+          "housing_job_number": "S00923238",
+          "event_type": "construction_completed",
+          "event_label": "Construction completed",
+          "event_date": "2025-04-14",
+          "land_use_milestone": "completed_date",
+          "land_use_milestone_date": "2023-08-10",
+          "job_type": "New Building",
+          "job_status": "5. Completed Construction",
+          "job_filed_date": "2023-12-26",
+          "filed_before_land_use_milestone": false,
+          "units_existing": 0,
+          "units_proposed": 2,
+          "units_net": 2,
+          "units_certificate_of_occupancy": 2,
+          "ownership": "Private For-Profit: Corporation",
+          "source_dataset": "br6q-ssj3",
+          "source_dataset_name": "Housing Database Project Level Files",
+          "source_row_id": "row-kq4r.2v6i~v9pu",
+          "source_vintage": "2026-03-16",
+          "source_url": "https://data.cityofnewyork.us/resource/br6q-ssj3.json?$where=:id='row-kq4r.2v6i~v9pu'",
+          "match_method": "exact_bbl_and_post_milestone_event",
+          "match_version": "ldp17_exact_bbl_post_milestone_v1",
+          "match_basis": {
+            "exact_bbl": true,
+            "event_strictly_after_land_use_milestone": true
+          }
+        }
+      ]
+    }
+  }
+}

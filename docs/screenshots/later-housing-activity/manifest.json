@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "project_id": "2022M0258",
+  "files": [
+    {
+      "name": "before-390.png",
+      "viewport": [
+        390,
+        844
+      ],
+      "bytes": 12765,
+      "sha256": "05d664ff1b861f1c49ce95887e0901cab9c3d670c4a81c5a7815dc53ab95d1ed"
+    },
+    {
+      "name": "before-1440.png",
+      "viewport": [
+        1440,
+        900
+      ],
+      "bytes": 12730,
+      "sha256": "d81f2a6f2da741b2f6bf103e502ede9f5422429b22f1790ee3924557a85fbee7"
+    },
+    {
+      "name": "after-390.png",
+      "viewport": [
+        390,
+        844
+      ],
+      "bytes": 94054,
+      "sha256": "9af2037d7da55613ddaf8c23c410944e622eb4f3ebe026fa95e8a4a5fcb17e33"
+    },
+    {
+      "name": "after-1440.png",
+      "viewport": [
+        1440,
+        900
+      ],
+      "bytes": 95150,
+      "sha256": "d09e5ee9d5945dc0ca0a8b01603e62b22ea816ac03f03876f86123acea4f52cb"
+    }
+  ]
+}

@@ -58,7 +58,7 @@ import {
 import { zoningHearingRowsForScope } from "../zoning_hearing_calendar.mjs";
 import { projectCalendarActionsHTML as projectCalendarActions } from "../project_calendar.mjs";
 import { attachAuth, authHTML, loadAuth } from "../land_authority_summary_view.mjs";
-import { attachEDesignationDigests, eDesignationDigestHTML, loadEDesignations } from "../e_designation_digest_view.mjs";
+import { attachLandLotSourceDigests, landLotSourceDigestsHTML, loadLandLotSourceDigests } from "../land_lot_source_digests.mjs";
 
 /* ===================== LAND ===================== */
 const ZAP = "https://data.cityofnewyork.us/resource/hgx4-8ukb.json";
@@ -144,8 +144,8 @@ function loadLandDefaultSnapshot(){
     landDefaultSnapshotPromise=Promise.all([
       fetch(LAND_DEFAULT_SNAPSHOT_URL).then(r=>r.ok?r.json():null),
       loadAuth(),
-      loadEDesignations(),
-    ]).then(([s,a,e])=>{ seedLandOutcomeSnapshot(s); attachAuth(s,a); return attachEDesignationDigests(s,e); }).catch(()=>null);
+      loadLandLotSourceDigests(),
+    ]).then(([s,a,d])=>{ seedLandOutcomeSnapshot(s); attachAuth(s,a); return attachLandLotSourceDigests(s,d); }).catch(()=>null);
   }
   return landDefaultSnapshotPromise;
 }
@@ -845,7 +845,7 @@ async function landSelect(i, el){
   if(r.project_brief) html+=`<div class="scope" id="land-brief"><span class="lbl">${t("in_plain_english")}</span>${excerptHtml(r.project_brief,900)}</div>`;
   else html+=`<div class="scope" id="land-brief" hidden></div>`;
   html+=authHTML(r.authority_summary,{t,escape:escUiHtml});
-  html+=eDesignationDigestHTML(r.e_designation_digest,{escape:escUiHtml});
+  html+=landLotSourceDigestsHTML(r,{escape:escUiHtml});
   if(actList.length) html+=`<div class="rmeta2" style="margin-top:10px"><b>${t("actions_lbl")}</b> ${actList.join(" · ")}</div>`;
   const area=(r.project_name||r.borough||"").replace(/(rezoning|demapping|rezone|special permit|special district|text amendment|mapping actions?|modification|disposition|non-?ulurp).*/i,"").trim().split(/\s+/).slice(0,3).join(" ")||r.borough||"";
   // Action rail first (what can I do now); utility controls stay secondary.
