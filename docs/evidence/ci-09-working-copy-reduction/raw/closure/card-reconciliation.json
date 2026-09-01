@@ -1,0 +1,13 @@
+{
+  "schema": "cityscroll.card-profile.observation.v1",
+  "gate_class": "card-reconciliation",
+  "title": "Card reconciliation guard",
+  "command": "node tools/card_reconciliation_guard.mjs",
+  "revision": "44056320378103ce9b20dc3ff676ac535d9d8798",
+  "exit_status": 0,
+  "method": "Recorded by tools/card_profile_sentinel.cjs on a full checkout. Every repository-relative path the process read through fs or loaded as a module, filtered to tracked paths and de-duplicated.",
+  "path_count": 1,
+  "paths": [
+    "tools/card_reconciliation_guard.mjs"
+  ]
+}
