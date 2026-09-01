@@ -27,8 +27,8 @@ Exact commands for every receipt are in [`commands.md`](commands.md).
 
 Provisioning now takes a **work surface**, not a profile flag. Focused card work
 is routed to `focused-reduced` without being asked for it, and provisions in
-**7.3 s** charging **200.7 MB**, against **39.5 s** and **1,349.3 MB** for the
-full control at the same revision: **5.4x faster and 6.7x smaller**, which
+**8.1 s** charging **200.4 MB**, against **38.9 s** and **1,348.2 MB** for the
+full control at the same revision: **4.8x faster and 6.7x smaller**, which
 reproduces CI-09's result to within 1% on bytes. Every other declared surface —
 CI, unit, accessibility, artifact, deployment, release-surface, architecture,
 repository-control-plane, evidence and complete-history — selects the control,
@@ -37,7 +37,7 @@ error, not a default: an undeclared surface and an unclassified gate class both
 fail closed at exit 2, and the terminal rule in the ordered list is the control,
 so a routing gap cannot produce a smaller checkout. The profile is bound to what
 it was derived from, and a checkout whose recorded manifest digest no longer
-matches this revision's inputs routes to the control. Seventeen probes each
+matches this revision's inputs routes to the control. Eighteen probes each
 declared the exit they expected and every one was met. The Worker unit family
 ran **1,755 tests with 1,754 passing and 1 skipped in both profiles** — identical
 counts, which is what rules out a pass reached by skipping work whose input was
@@ -116,9 +116,9 @@ figures are unaffected by load.
 
 | Field | Value |
 | --- | --- |
-| Revision | `8d4ae48de83dcd5f14286dc0579d715b25dfdc20` |
+| Revision | `0763af1a08a4949a7d8ebbf90b194603b08e3a27` |
 | Routing manifest version | 1 |
-| Routing manifest digest | `1aefe6db83d05317e2dc176eca8ff358d36bbdc246d1b998abab869b8ae0de1f` |
+| Routing manifest digest | `971306899e0794a89e895f0c8c66e9478ca2f3c154ce459477d453531112466a` |
 | Operating system | Darwin 25.5.0 (arm64) |
 | Cores | 10 |
 | Filesystem class | APFS - hard links and copy-on-write file clones both supported |
@@ -132,11 +132,10 @@ figures are unaffected by load.
 | Page cache | not purged - purging is a whole-machine operation on a shared host, so cold and warm describe tool-level caches only |
 | Git objects | cold per trial - every trial clones into a fresh directory with no pre-existing objects |
 
-The measurement revision is the commit that carries the complete implementation.
-The commit that adds this directory's receipts and generated tables follows it.
-Adding evidence files moves no identity input, so `manifest_digest` is the same
-at both revisions and the receipts here describe the profile the merged branch
-provisions.
+The measurement revision is the merged commit that carries the routing contract,
+so every figure here was taken against exactly what the default branch holds.
+Adding evidence files moves no identity input, so `manifest_digest` is unchanged
+by the commit that lands these receipts.
 
 Full detail is in [`raw/environment.json`](raw/environment.json).
 
@@ -205,8 +204,8 @@ a refusal to work: both are refusals to guess.
 
 | Provisioned profile | Manifest digest | Provision identity | Receipt deterministic digest | Reproduces |
 | --- | --- | --- | --- | --- |
-| Routed focused card work (`focused-reduced`) | `1aefe6db83d05317` | `d41084a2631e02c7` | `1c4a11f81806b456` | yes |
-| Routed CI surface (`full` control) | `1aefe6db83d05317` | `d41084a2631e02c7` | `d678cf136b33debf` | yes |
+| Routed focused card work (`focused-reduced`) | `971306899e0794a8` | `8fd906227c696e64` | `8cf857f20cdc469b` | yes |
+| Routed CI surface (`full` control) | `971306899e0794a8` | `8fd906227c696e64` | `4f06b33d190dfb2f` | yes |
 
 Both profiles share a manifest digest and a provision identity, because both were
 provisioned from the same inputs at the same revision; what differs is the
@@ -224,24 +223,24 @@ the committed pattern list names, with nothing added by hand.
 
 | Category | Routed focused card work (`focused-reduced`) (MiB) | Routed CI surface (`full` control) (MiB) |
 | --- | ---: | ---: |
-| Git objects and repository metadata | 38.92 | 488.97 |
+| Git objects and repository metadata | 38.90 | 487.30 |
 | Tracked `site/data` payload | 60.85 | 445.53 |
-| Tracked `site/` payload outside `site/data` | 17.15 | 76.13 |
-| Tracked payload elsewhere (tests, tools, docs, artifacts) | 62.54 | 212.96 |
+| Tracked `site/` payload outside `site/data` | 17.17 | 76.15 |
+| Tracked payload elsewhere (tests, tools, docs, artifacts) | 62.69 | 213.97 |
 | Tracked warehouse code, schemas and fixtures | 1.09 | 36.40 |
 | Dependency view (`worker/node_modules`) after store install | 315.17 | 315.17 |
 | Generated site output | 0.00 | 0.00 |
 | Generated warehouse bulk | 0.00 | 0.00 |
 | Other overhead (untracked, directory inodes) | 0.18 | 0.30 |
-| **Declared total, logical** | **495.90** | **1,575.47** |
-| Declared total, allocated | 517.68 | 1,610.38 |
+| **Declared total, logical** | **496.05** | **1,574.84** |
+| Declared total, allocated | 517.79 | 1,611.46 |
 
 ### Charged disk — the free-space delta of one provisioning run
 
 | Provisioned profile | n | Median charged MB | Observed min | Observed max | Allocated minus the shared dependency view, MB | Under 400 MB |
 | --- | ---: | ---: | ---: | ---: | ---: | --- |
-| Routed focused card work (`focused-reduced`) | 5 | **200.7** | 200.1 | 203.6 | 198.1 | yes |
-| Routed CI surface (`full` control) | 5 | **1,349.3** | 1,347.4 | 1,362.8 | 1,343.9 | no |
+| Routed focused card work (`focused-reduced`) | 5 | **200.4** | 200.2 | 202.5 | 198.2 | yes |
+| Routed CI surface (`full` control) | 5 | **1,348.2** | 1,345.0 | 1,388.4 | 1,345.0 | no |
 
 The last column is an independent, deterministic cross-check: allocated bytes with
 the copy-on-write dependency view removed, which is what the disk is charged for
@@ -252,15 +251,15 @@ charged figure to within 1.3%.
 
 | Provisioned profile | n | Phase | Median ms | p95 ms | Min ms | Max ms |
 | --- | ---: | --- | ---: | ---: | ---: | ---: |
-| Routed focused card work (`focused-reduced`) | 5 | prepare | 814 | 896 | 726 | 864 |
-| Routed focused card work (`focused-reduced`) | 5 | sparse | 235 | 279 | 231 | 261 |
-| Routed focused card work (`focused-reduced`) | 5 | checkout | 3,792 | 5,228 | 3,620 | 4,772 |
-| Routed focused card work (`focused-reduced`) | 5 | install | 2,462 | 2,544 | 2,430 | 2,524 |
-| Routed focused card work (`focused-reduced`) | 5 | **total** | **7,326** | 8,853 | 7,180 | 8,299 |
-| Routed CI surface (`full` control) | 5 | prepare | 35,176 | 42,901 | 32,112 | 40,540 |
-| Routed CI surface (`full` control) | 5 | checkout | 1,755 | 2,046 | 1,739 | 1,940 |
-| Routed CI surface (`full` control) | 5 | install | 2,579 | 2,657 | 2,515 | 2,637 |
-| Routed CI surface (`full` control) | 5 | **total** | **39,544** | 47,334 | 36,382 | 44,916 |
+| Routed focused card work (`focused-reduced`) | 5 | prepare | 800 | 4,260 | 755 | 2,845 |
+| Routed focused card work (`focused-reduced`) | 5 | sparse | 249 | 252 | 241 | 251 |
+| Routed focused card work (`focused-reduced`) | 5 | checkout | 4,240 | 5,803 | 3,728 | 5,195 |
+| Routed focused card work (`focused-reduced`) | 5 | install | 2,646 | 2,785 | 2,562 | 2,731 |
+| Routed focused card work (`focused-reduced`) | 5 | **total** | **8,088** | 10,065 | 7,368 | 9,588 |
+| Routed CI surface (`full` control) | 5 | prepare | 34,629 | 1,098,358 | 33,948 | 660,530 |
+| Routed CI surface (`full` control) | 5 | checkout | 1,691 | 1,968 | 1,686 | 1,859 |
+| Routed CI surface (`full` control) | 5 | install | 2,576 | 2,709 | 2,502 | 2,659 |
+| Routed CI surface (`full` control) | 5 | **total** | **38,904** | 1,102,954 | 38,298 | 664,965 |
 
 ---
 
@@ -293,14 +292,14 @@ charged figure to within 1.3%.
 
 | Field | Routed focused card work (`focused-reduced`) | Routed CI surface (`full` control) |
 | --- | --- | --- |
-| Commits reachable from HEAD | 1590 | 1590 |
+| Commits reachable from HEAD | 1585 | 1585 |
 | Shallow repository | False | False |
 | Promisor remote configured | True | False |
 | Partial clone filter | blob:none | None |
 | Packs | 3 | 1 |
-| Pack size (KiB) | 38502 | 499766 |
+| Pack size (KiB) | 38473 | 498055 |
 | Loose objects | 0 | 0 |
-| Tracked paths not materialised | 1907 | 0 |
+| Tracked paths not materialised | 1916 | 0 |
 | Working tree clean at the pinned revision | True | True |
 | `git fsck --connectivity-only` exit | 0 | 0 |
 | `git merge-base HEAD origin/main` exit | 0 | 0 |
@@ -326,7 +325,7 @@ charged figure to within 1.3%.
 | Gate class | Result | Observed test counts |
 | --- | --- | --- |
 | `worker-unit` | pass | fail 0 pass 1754 skipped 1 tests 1755 |
-| `site-unit` | pass | fail 0 pass 5183 skipped 1 tests 5184 |
+| `site-unit` | pass | fail 0 pass 5200 skipped 1 tests 5201 |
 | `contract-unit` | pass | fail 0 pass 181 skipped 0 tests 181 |
 | `architecture-evidence-shards` | pass |  |
 | `architecture-reconcile` | pass |  |
@@ -356,7 +355,7 @@ not in the working copy the harness was launched from.
 | `data/` | 18 | `33d67d5ce9da` | `33d67d5ce9da` | yes |
 | `entity_resolution/` | 130 | `f21961e54f3c` | `f21961e54f3c` | yes |
 | `ontology/` | 58 | `b0693914e6af` | `b0693914e6af` | yes |
-| `site/` | 2,187 | `275907225881` | `275907225881` | yes |
+| `site/` | 2,188 | `92548e99ee6b` | `92548e99ee6b` | yes |
 | `warehouse/` | 265 | `905e3f9fd791` | `905e3f9fd791` | yes |
 | `worker/` | 570 | `dc9a4dee5861` | `dc9a4dee5861` | yes |
 
@@ -392,7 +391,7 @@ This is the gap the card named as G2, observed rather than argued.
 reports 315.2 MiB and charges about 2 MiB because pnpm imports through
 copy-on-write clones on APFS. On a filesystem with neither reflink nor hard-link
 support the same install would copy in full and the profile would charge roughly
-496 MB rather than 201 MB, over the target. The routing contract is unaffected
+496 MB rather than 200 MB, over the target. The routing contract is unaffected
 either way; the headline figure would not survive that filesystem class, and
 saying so is part of the measurement.
 
