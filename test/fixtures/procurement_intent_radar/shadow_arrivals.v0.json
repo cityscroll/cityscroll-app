@@ -1,0 +1,369 @@
+{
+  "schema": "cityscroll.procurement_intent_radar.shadow_arrivals.v0",
+  "stream_version": "pir-shadow-arrivals.v0",
+  "as_of": "2026-08-31",
+  "observation_window": {
+    "from": "2026-01-01",
+    "through": "2026-08-31"
+  },
+  "provenance": {
+    "role": "retained_prospective_arrival_stream",
+    "note": "Synthetic, versioned arrivals used to exercise prospective shadow mode. Source spans and solicitation rows are fixture material, not retained city evidence, and carry no claim about real agencies or real solicitations.",
+    "recurrent_corpus_claim": false,
+    "runtime_dependencies": []
+  },
+  "arrivals": [
+    {
+      "arrival_id": "arr-2026-0001",
+      "arrival_kind": "source_observation",
+      "arrived_at": "2026-01-16",
+      "source": {
+        "source_record_id": "council:transcript:juvenile-justice-2026-01-14",
+        "source_event_id": "council:hearing:2026-01-14:juvenile-justice-oversight",
+        "observed_at": "2026-01-14",
+        "observed_at_precision": "day",
+        "speaker": {
+          "person_ref": "person:fixture:acs-deputy-commissioner",
+          "display_name": "ACS Deputy Commissioner",
+          "role": "ACS Deputy Commissioner"
+        },
+        "source_type": "council_transcript",
+        "source_title": "Council oversight hearing on juvenile justice",
+        "source_span_text": "ACS intends to issue a request for proposals for Alternative to Detention services covering 240 slots in Brooklyn this summer.",
+        "span_text_status": "verbatim",
+        "citations": [
+          {
+            "label": "Council transcript",
+            "url": "https://legistar.council.nyc.gov/View.ashx?ID=fixture-2026-01-14",
+            "authority": "nyc_council"
+          }
+        ]
+      }
+    },
+    {
+      "arrival_id": "arr-2026-0002",
+      "arrival_kind": "source_observation",
+      "arrived_at": "2026-02-06",
+      "source": {
+        "source_record_id": "council:transcript:adult-protective-services-2026-02-04",
+        "source_event_id": "council:hearing:2026-02-04:adult-protective-services",
+        "observed_at": "2026-02-04",
+        "observed_at_precision": "day",
+        "speaker": {
+          "person_ref": "person:fixture:hra-administrator",
+          "display_name": "HRA Administrator",
+          "role": "HRA Administrator"
+        },
+        "source_type": "council_transcript",
+        "source_title": "Council oversight hearing on adult protective services",
+        "source_span_text": "HRA expects to publish a solicitation for additional case management capacity later this year.",
+        "span_text_status": "verbatim",
+        "citations": [
+          {
+            "label": "Council transcript",
+            "url": "https://legistar.council.nyc.gov/View.ashx?ID=fixture-2026-02-04",
+            "authority": "nyc_council"
+          }
+        ]
+      }
+    },
+    {
+      "arrival_id": "arr-2026-0003",
+      "arrival_kind": "source_observation",
+      "arrived_at": "2026-02-19",
+      "source": {
+        "source_record_id": "council:briefing:language-access-2026-02-18",
+        "source_event_id": "council:hearing:2026-02-18:language-access",
+        "observed_at": "2026-02-18",
+        "observed_at_precision": "day",
+        "speaker": {
+          "person_ref": null,
+          "display_name": "Finance Division",
+          "role": "Council Finance Division"
+        },
+        "source_type": "council_briefing_paper",
+        "source_title": "Finance Division briefing paper on language access",
+        "source_span_text": "The department plans to issue a solicitation for translation services in June.",
+        "span_text_status": "verbatim",
+        "citations": [
+          {
+            "label": "Finance Division briefing paper",
+            "url": "https://legistar.council.nyc.gov/View.ashx?ID=fixture-2026-02-18",
+            "authority": "nyc_council"
+          }
+        ]
+      }
+    },
+    {
+      "arrival_id": "arr-2026-0004",
+      "arrival_kind": "source_observation",
+      "arrived_at": "2026-02-24",
+      "source": {
+        "source_record_id": "council:transcript:sanitation-2026-02-23",
+        "source_event_id": "council:hearing:2026-02-23:sanitation-oversight",
+        "observed_at": "2026-02-23",
+        "observed_at_precision": "day",
+        "speaker": {
+          "person_ref": null,
+          "display_name": "Unknown witness",
+          "role": "Agency witness"
+        },
+        "source_type": "council_transcript",
+        "source_title": "Council oversight hearing on sanitation",
+        "source_span_text": "",
+        "span_text_status": "unavailable",
+        "citations": [
+          {
+            "label": "Council hearing notice",
+            "url": "https://legistar.council.nyc.gov/View.ashx?ID=fixture-2026-02-23",
+            "authority": "nyc_council"
+          }
+        ]
+      }
+    },
+    {
+      "arrival_id": "arr-2026-0005",
+      "arrival_kind": "source_observation",
+      "arrived_at": "2026-02-26",
+      "source": {
+        "source_record_id": "council:transcript:shelter-maintenance-2026-02-25",
+        "source_event_id": "council:hearing:2026-02-25:shelter-maintenance",
+        "observed_at": "2026-02-25",
+        "observed_at_precision": "day",
+        "speaker": {
+          "person_ref": "person:fixture:dss-deputy",
+          "display_name": "DSS Deputy Commissioner",
+          "role": "DSS Deputy Commissioner"
+        },
+        "source_type": "council_transcript",
+        "source_title": "Council oversight hearing on shelter maintenance",
+        "source_span_text": "DSS plans to release a competitive procurement for shelter maintenance in the spring.",
+        "span_text_status": "paraphrase",
+        "citations": []
+      }
+    },
+    {
+      "arrival_id": "arr-2026-0006",
+      "arrival_kind": "source_observation",
+      "arrived_at": "2026-03-04",
+      "source": {
+        "source_record_id": "council:transcript:youth-services-2026-03-03",
+        "source_event_id": "council:hearing:2026-03-03:youth-services",
+        "observed_at": "2026-03-03",
+        "observed_at_precision": "day",
+        "speaker": {
+          "person_ref": "person:fixture:dycd-commissioner",
+          "display_name": "DYCD Commissioner",
+          "role": "DYCD Commissioner"
+        },
+        "source_type": "council_transcript",
+        "source_title": "Council oversight hearing on youth services",
+        "source_span_text": "DYCD released the COMPASS RFP last fall and completed the awards in December.",
+        "span_text_status": "verbatim",
+        "citations": [
+          {
+            "label": "Council transcript",
+            "url": "https://legistar.council.nyc.gov/View.ashx?ID=fixture-2026-03-03",
+            "authority": "nyc_council"
+          }
+        ]
+      }
+    },
+    {
+      "arrival_id": "arr-2026-0007",
+      "arrival_kind": "source_observation",
+      "arrived_at": "2026-03-12",
+      "source": {
+        "source_record_id": "council:testimony:dycd-preliminary-budget-2026-03-11",
+        "source_event_id": "council:hearing:2026-03-11:dycd-preliminary-budget",
+        "observed_at": "2026-03-11",
+        "observed_at_precision": "day",
+        "speaker": {
+          "person_ref": "person:fixture:dycd-commissioner",
+          "display_name": "DYCD Commissioner",
+          "role": "DYCD Commissioner"
+        },
+        "source_type": "agency_testimony",
+        "source_title": "Council preliminary budget hearing",
+        "source_span_text": "DYCD will release the COMPASS request for proposals for 1,200 slots in the spring.",
+        "span_text_status": "verbatim",
+        "citations": [
+          {
+            "label": "Council transcript",
+            "url": "https://legistar.council.nyc.gov/View.ashx?ID=fixture-2026-03-11",
+            "authority": "nyc_council"
+          }
+        ]
+      }
+    },
+    {
+      "arrival_id": "arr-2026-0008",
+      "arrival_kind": "solicitation_observation",
+      "arrived_at": "2026-05-14",
+      "solicitation": {
+        "source_system": "city_record",
+        "source_system_id": "26069P0044",
+        "epin": "26069P0044",
+        "published_at": "2026-05-12",
+        "agency": "Human Resources Administration",
+        "title": "Case Management Services for Adult Protective Services",
+        "procurement_method": "Negotiated Acquisition",
+        "citation_url": "https://a856-cityrecord.nyc.gov/RequestDetail/fixture-20260512004"
+      }
+    },
+    {
+      "arrival_id": "arr-2026-0009",
+      "arrival_kind": "solicitation_observation",
+      "arrived_at": "2026-06-16",
+      "solicitation": {
+        "source_system": "city_record",
+        "source_system_id": "26026P0031",
+        "epin": "26026P0031",
+        "published_at": "2026-06-15",
+        "agency": "Department of Youth and Community Development",
+        "title": "COMPASS Elementary Programs Request for Proposals — 1,200 slots",
+        "procurement_method": "RFP",
+        "citation_url": "https://a856-cityrecord.nyc.gov/RequestDetail/fixture-20260615002"
+      }
+    },
+    {
+      "arrival_id": "arr-2026-0010",
+      "arrival_kind": "solicitation_observation",
+      "arrived_at": "2026-06-24",
+      "solicitation": {
+        "source_system": "city_record",
+        "source_system_id": "26026P0032",
+        "epin": "26026P0032",
+        "published_at": "2026-06-22",
+        "agency": "Department of Youth and Community Development",
+        "title": "COMPASS Middle School Programs Request for Proposals",
+        "procurement_method": "RFP",
+        "citation_url": "https://a856-cityrecord.nyc.gov/RequestDetail/fixture-20260622007"
+      }
+    },
+    {
+      "arrival_id": "arr-2026-0011",
+      "arrival_kind": "solicitation_observation",
+      "arrived_at": "2026-07-10",
+      "solicitation": {
+        "source_system": "city_record",
+        "source_system_id": "26068P0021",
+        "epin": "26068P0021",
+        "published_at": "2026-07-08",
+        "agency": "Administration for Children's Services",
+        "title": "Alternative to Detention Program Services (Request for Proposals) — 240 slots, Brooklyn",
+        "procurement_method": "RFP",
+        "citation_url": "https://a856-cityrecord.nyc.gov/RequestDetail/fixture-20260708001"
+      }
+    },
+    {
+      "arrival_id": "arr-2026-0012",
+      "arrival_kind": "source_observation",
+      "arrived_at": "2026-07-20",
+      "replay_of": "arr-2026-0007",
+      "source": {
+        "source_record_id": "council:testimony:dycd-preliminary-budget-2026-03-11",
+        "source_event_id": "council:hearing:2026-03-11:dycd-preliminary-budget",
+        "observed_at": "2026-03-11",
+        "observed_at_precision": "day",
+        "speaker": {
+          "person_ref": "person:fixture:dycd-commissioner",
+          "display_name": "DYCD Commissioner",
+          "role": "DYCD Commissioner"
+        },
+        "source_type": "agency_testimony",
+        "source_title": "Council preliminary budget hearing",
+        "source_span_text": "DYCD will release the COMPASS request for proposals for 1,200 slots in the spring.",
+        "span_text_status": "verbatim",
+        "citations": [
+          {
+            "label": "Council transcript",
+            "url": "https://legistar.council.nyc.gov/View.ashx?ID=fixture-2026-03-11",
+            "authority": "nyc_council"
+          }
+        ]
+      }
+    },
+    {
+      "arrival_id": "arr-2026-0013",
+      "arrival_kind": "source_observation",
+      "arrived_at": "2026-08-04",
+      "source": {
+        "source_record_id": "council:transcript:supportive-housing-2026-07-15",
+        "source_event_id": "council:hearing:2026-07-15:supportive-housing",
+        "observed_at": "2026-07-15",
+        "observed_at_precision": "day",
+        "speaker": {
+          "person_ref": "person:fixture:acs-associate-commissioner",
+          "display_name": "ACS Associate Commissioner",
+          "role": "ACS Associate Commissioner"
+        },
+        "source_type": "council_transcript",
+        "source_title": "Council oversight hearing on supportive housing",
+        "source_span_text": "ACS plans to publish a solicitation for supportive housing case aides in the fall.",
+        "span_text_status": "verbatim",
+        "citations": [
+          {
+            "label": "Council transcript",
+            "url": "https://legistar.council.nyc.gov/View.ashx?ID=fixture-2026-07-15",
+            "authority": "nyc_council"
+          }
+        ]
+      }
+    },
+    {
+      "arrival_id": "arr-2026-0014",
+      "arrival_kind": "source_observation",
+      "arrived_at": "2026-08-19",
+      "source": {
+        "source_record_id": "council:testimony:acs-supportive-housing-update-2026-08-12",
+        "source_event_id": "council:hearing:2026-08-12:acs-supportive-housing-update",
+        "observed_at": "2026-08-12",
+        "observed_at_precision": "day",
+        "speaker": {
+          "person_ref": "person:fixture:acs-associate-commissioner",
+          "display_name": "ACS Associate Commissioner",
+          "role": "ACS Associate Commissioner"
+        },
+        "source_type": "agency_testimony",
+        "source_title": "Council update hearing on supportive housing",
+        "source_span_text": "ACS now expects to publish that solicitation for supportive housing case aides by the end of the year.",
+        "span_text_status": "verbatim",
+        "citations": [
+          {
+            "label": "Council transcript",
+            "url": "https://legistar.council.nyc.gov/View.ashx?ID=fixture-2026-08-12",
+            "authority": "nyc_council"
+          }
+        ]
+      }
+    },
+    {
+      "arrival_id": "arr-2026-0015",
+      "arrival_kind": "source_observation",
+      "arrived_at": "2026-08-27",
+      "source": {
+        "source_record_id": "council:transcript:afterschool-programming-2026-07-22",
+        "source_event_id": "council:hearing:2026-07-22:afterschool-programming",
+        "observed_at": "2026-07-22",
+        "observed_at_precision": "day",
+        "speaker": {
+          "person_ref": "person:fixture:dycd-commissioner",
+          "display_name": "DYCD Commissioner",
+          "role": "DYCD Commissioner"
+        },
+        "source_type": "council_transcript",
+        "source_title": "Council oversight hearing on afterschool programming",
+        "source_span_text": "DYCD plans to release a competitive procurement for expanded afterschool programming in the fall.",
+        "span_text_status": "verbatim",
+        "citations": [
+          {
+            "label": "Council transcript",
+            "url": "https://legistar.council.nyc.gov/View.ashx?ID=fixture-2026-07-22",
+            "authority": "nyc_council"
+          }
+        ]
+      }
+    }
+  ]
+}

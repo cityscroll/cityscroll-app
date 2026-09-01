@@ -1,0 +1,2411 @@
+{
+  "schema": "cityscroll.procurement_intent_radar.shadow_mode.v1",
+  "shadow_mode_version": "pir-shadow-mode.v1",
+  "visibility": "internal_only",
+  "as_of": "2026-08-31",
+  "observation_window": {
+    "from": "2026-01-01",
+    "through": "2026-08-31"
+  },
+  "input_coverage": {
+    "stream_artifact": "test/fixtures/procurement_intent_radar/shadow_arrivals.v0.json",
+    "stream_schema": "cityscroll.procurement_intent_radar.shadow_arrivals.v0",
+    "stream_version": "pir-shadow-arrivals.v0",
+    "stream_sha256": "1d2eeda4241dca1bf53986d29b2ceaf34b14ddb67cf496b758ded9452a89bdf3",
+    "recurrent_corpus_claim": false,
+    "arrivals": 15,
+    "source_observations": 11,
+    "solicitation_observations": 4,
+    "malformed_arrivals": 0,
+    "role": "retained_prospective_arrival_stream",
+    "limitation": "The arrival stream is a bounded, retained fixture stream. It is not a recurrent estimate of arriving Council material and cannot authorize promotion."
+  },
+  "protocol": {
+    "kind": "two_phase_prospective_observation",
+    "assertion_phase": {
+      "inputs": [
+        "arriving source span",
+        "source metadata",
+        "source citations",
+        "publication clock",
+        "arrival clock"
+      ],
+      "sealed_fields": [
+        "epin",
+        "pin",
+        "vendor",
+        "vendor_ref",
+        "vendor_name",
+        "published_at",
+        "realized_at",
+        "realized_by",
+        "later_title",
+        "coverage",
+        "procurement_id",
+        "solicitation_id",
+        "solicitation_title"
+      ],
+      "solicitation_evidence_visible": false
+    },
+    "resolution_phase": {
+      "inputs": [
+        "later solicitation observations that arrived at or after the intent arrival clock"
+      ],
+      "rewrites_earlier_assertion": false,
+      "matcher": "warehouse/lib/procurement_intent_realization_matcher.mjs"
+    },
+    "excluded_from_assertion_inputs": [
+      "future EPIN/PIN",
+      "solicitation title",
+      "vendor",
+      "later coverage",
+      "future naming features",
+      "future publication clock"
+    ],
+    "evaluator_versions": {
+      "extractor": "pir-phase1.0",
+      "prospective_ontology": "0.1.0",
+      "realization_matcher": "pir-realization-matcher.v1",
+      "shadow_mode": "pir-shadow-mode.v1"
+    },
+    "runtime_dependencies": {
+      "network_access": false,
+      "citymeetings_runtime_dependency": false,
+      "reproducible_from_retained_inputs": true,
+      "note": "Citation URLs are retained strings. Shadow mode never fetches them and reads no live service."
+    }
+  },
+  "intents": [
+    {
+      "intent_id": "pir-shadow-intent:32bf817debcde2260c7f695aa57cb63c9bc5bbcd59420e",
+      "process_ref": "procurement-intent:acs-request-for-proposals-2026",
+      "state": "resolved",
+      "resolution_state": "resolved",
+      "content_key": "c4f4cf4062fdddaee942f333f03600ce09dcd8c49af46a52a72ec7ccb5e32f7b",
+      "assertion_fingerprint": "a1494ddf514640f8af716f469858a96b5963f77a85adf249bc2492e1d6b99aa8",
+      "assertion_immutable": true,
+      "freshness": {
+        "published_at": "2026-01-14",
+        "arrived_at": "2026-01-16",
+        "arrival_lag_days": 2,
+        "stale_arrival": false,
+        "stale_threshold_days": 30
+      },
+      "supersession": {
+        "superseded": false,
+        "superseded_by": null,
+        "superseded_by_arrival_id": null,
+        "supersedes": null,
+        "basis": null
+      },
+      "assertion": {
+        "intent_id": "pir-shadow-intent:32bf817debcde2260c7f695aa57cb63c9bc5bbcd59420e",
+        "process_ref": "procurement-intent:acs-request-for-proposals-2026",
+        "assertion_id": "faa:618466f305d890715ebc",
+        "arrival_id": "arr-2026-0001",
+        "asserted_at": "2026-01-14",
+        "arrived_at": "2026-01-16",
+        "source_evidence": {
+          "source_record_id": "council:transcript:juvenile-justice-2026-01-14",
+          "source_event_id": "council:hearing:2026-01-14:juvenile-justice-oversight",
+          "source_type": "council_transcript",
+          "source_title": "Council oversight hearing on juvenile justice",
+          "span_text_status": "verbatim",
+          "source_span_text": "ACS intends to issue a request for proposals for Alternative to Detention services covering 240 slots in Brooklyn this summer.",
+          "speaker": {
+            "person_ref": "person:fixture:acs-deputy-commissioner",
+            "display_name": "ACS Deputy Commissioner",
+            "role": "ACS Deputy Commissioner"
+          },
+          "citations": [
+            {
+              "label": "Council transcript",
+              "url": "https://legistar.council.nyc.gov/View.ashx?ID=fixture-2026-01-14",
+              "authority": "nyc_council"
+            }
+          ]
+        },
+        "stated_intent": {
+          "responsible_agency_ref": "agency:id:acs",
+          "action_kind": "procurement.solicitation_publish",
+          "object_text": "request for proposals",
+          "procurement_type": "RFP",
+          "program_refs": [
+            "program:acs:alternative-to-detention"
+          ],
+          "quantity_assertions": [
+            {
+              "kind": "slots",
+              "value": 240,
+              "unit": "slots",
+              "raw_text": "240 slots"
+            }
+          ],
+          "money_assertions": [],
+          "geography_refs": [
+            "place:nyc:brooklyn"
+          ],
+          "population_terms": [],
+          "expected_window": {
+            "earliest": "2026-06-01",
+            "latest": "2026-08-31",
+            "precision": "season",
+            "raw_text": "summer"
+          },
+          "modality": "planned",
+          "conditions": [],
+          "extraction_method": "deterministic_rules_v1",
+          "extraction_version": "pir-phase1.0",
+          "extraction_confidence": "high"
+        },
+        "provisional_identity": {
+          "schema": "cityscroll.provisional_procurement_identity.v0",
+          "object_type": "procurement_identity",
+          "identity_kind": "provisional_procurement_intent",
+          "subject_ref": "procurement-intent:acs-request-for-proposals-2026",
+          "status": "prospective",
+          "epin": null,
+          "pin": null,
+          "procurement_id": null,
+          "publisher_identity": null,
+          "realized_by": [],
+          "superseded_by": [],
+          "unknowns": [
+            "publisher_native_procurement_identity",
+            "realized_procurement_records",
+            "realization_cardinality",
+            "superseding_intent"
+          ]
+        },
+        "claims": {
+          "occurrence": {
+            "claim": "occurrence",
+            "status": "open",
+            "abstention_reason": null,
+            "predicted_window": {
+              "p10": "2026-06-01",
+              "p50": "2026-07-16",
+              "p90": "2026-08-31"
+            },
+            "probability": 0.5,
+            "probability_basis": "uncalibrated_neutral_placeholder"
+          },
+          "timing": {
+            "claim": "timing",
+            "status": "open",
+            "abstention_reason": null,
+            "predicted_window": {
+              "p10": "2026-06-01",
+              "p50": "2026-07-16",
+              "p90": "2026-08-31"
+            },
+            "probability": 0.5,
+            "probability_basis": "uncalibrated_neutral_placeholder"
+          }
+        },
+        "edges": [
+          {
+            "relation": "asserted_in",
+            "from": "procurement-intent:acs-request-for-proposals-2026",
+            "to": "source_record:council:transcript:juvenile-justice-2026-01-14",
+            "target_type": "source_record",
+            "status": "accepted",
+            "basis": "source_record_id"
+          },
+          {
+            "relation": "asserted_by",
+            "from": "procurement-intent:acs-request-for-proposals-2026",
+            "to": "person:fixture:acs-deputy-commissioner",
+            "target_type": "person",
+            "status": "accepted",
+            "basis": "source speaker identity"
+          },
+          {
+            "relation": "owned_by",
+            "from": "procurement-intent:acs-request-for-proposals-2026",
+            "to": "agency:id:acs",
+            "target_type": "agency",
+            "status": "accepted",
+            "basis": "responsible_agency_ref"
+          },
+          {
+            "relation": "expects_event",
+            "from": "procurement-intent:acs-request-for-proposals-2026",
+            "to": "procurement.notice_published",
+            "target_type": "event_kind",
+            "status": "accepted",
+            "basis": "action_kind"
+          },
+          {
+            "relation": "realized_by",
+            "from": "procurement-intent:acs-request-for-proposals-2026",
+            "to": null,
+            "target_type": "procurement",
+            "status": "not_yet_observed",
+            "basis": "publisher identity absent at creation"
+          },
+          {
+            "relation": "superseded_by",
+            "from": "procurement-intent:acs-request-for-proposals-2026",
+            "to": null,
+            "target_type": "procurement-intent",
+            "status": "not_observed",
+            "basis": "no later intent supplied"
+          },
+          {
+            "relation": "concerns",
+            "from": "procurement-intent:acs-request-for-proposals-2026",
+            "to": "program:acs:alternative-to-detention",
+            "target_type": "program",
+            "status": "accepted",
+            "basis": "program_refs"
+          }
+        ],
+        "unknowns": [
+          "publisher_native_procurement_identity",
+          "realized_procurement_records",
+          "realization_cardinality",
+          "superseding_intent"
+        ],
+        "controls": {
+          "contains_rfp_baseline": true,
+          "extractor_status": "candidate"
+        }
+      },
+      "resolution": {
+        "resolution_state": "resolved",
+        "observed_solicitation_arrivals": 4,
+        "first_observable_arrival_clock": "2026-01-16",
+        "matcher_version": "pir-realization-matcher.v1",
+        "horizon": {
+          "from": "2026-01-14",
+          "through": "2027-07-14",
+          "months": 18,
+          "agency_family": "acs"
+        },
+        "candidates": [
+          {
+            "realization_ref": "procurement:city_record:26068P0021",
+            "observed_in_arrival_id": "arr-2026-0011",
+            "observed_at": "2026-07-10",
+            "published_at": "2026-07-08",
+            "title": "Alternative to Detention Program Services (Request for Proposals) — 240 slots, Brooklyn",
+            "source_system": "city_record",
+            "citation_url": "https://a856-cityrecord.nyc.gov/RequestDetail/fixture-20260708001",
+            "decision": "auto_link",
+            "match_confidence": "extremely_high",
+            "score": 14,
+            "evidence": [
+              {
+                "kind": "strong",
+                "field": "program_refs",
+                "matched_terms": [
+                  "alternative to detention"
+                ],
+                "realization_fields": [
+                  "title",
+                  "short_title",
+                  "procurement_name",
+                  "main_commodity",
+                  "industry",
+                  "description",
+                  "additional_description_1",
+                  "object_text",
+                  "service",
+                  "program_name",
+                  "population",
+                  "geography"
+                ]
+              },
+              {
+                "kind": "strong",
+                "field": "quantity_assertions",
+                "matched_terms": [
+                  "240"
+                ],
+                "realization_fields": [
+                  "title",
+                  "short_title",
+                  "procurement_name",
+                  "main_commodity",
+                  "industry",
+                  "description",
+                  "additional_description_1",
+                  "object_text",
+                  "service",
+                  "program_name",
+                  "population",
+                  "geography"
+                ]
+              },
+              {
+                "kind": "medium",
+                "field": "responsible_agency_ref",
+                "matched_terms": [
+                  "acs"
+                ],
+                "realization_fields": [
+                  "agency",
+                  "agency_name"
+                ]
+              },
+              {
+                "kind": "medium",
+                "field": "geography_refs",
+                "matched_terms": [
+                  "BROOKLYN"
+                ],
+                "realization_fields": [
+                  "title",
+                  "short_title",
+                  "procurement_name",
+                  "main_commodity",
+                  "industry",
+                  "description",
+                  "additional_description_1",
+                  "object_text",
+                  "service",
+                  "program_name",
+                  "population",
+                  "geography"
+                ]
+              },
+              {
+                "kind": "medium",
+                "field": "procurement_type",
+                "matched_terms": [
+                  "RFP"
+                ],
+                "realization_fields": [
+                  "title",
+                  "short_title",
+                  "procurement_name",
+                  "main_commodity",
+                  "industry",
+                  "description",
+                  "additional_description_1",
+                  "object_text",
+                  "service",
+                  "program_name",
+                  "population",
+                  "geography"
+                ]
+              }
+            ]
+          }
+        ],
+        "review_candidates": [],
+        "accepted_edges": [
+          {
+            "relation": "realized_by",
+            "from": "procurement-intent:acs-request-for-proposals-2026",
+            "to": "procurement:city_record:26068P0021",
+            "status": "accepted",
+            "basis": "historical_realization_match",
+            "match_confidence": "extremely_high",
+            "published_publicly": false
+          }
+        ],
+        "matcher_outcome": {
+          "status": "matched",
+          "occurrence": "hit",
+          "timing": "hit",
+          "lead_days": 175,
+          "match_confidence": "extremely_high",
+          "cardinality": {
+            "intent_count": 1,
+            "realized_count": 1,
+            "relation": "one_to_one"
+          }
+        },
+        "prospective_outcome": {
+          "occurrence": "realized",
+          "timing": "hit",
+          "lead_days": 175,
+          "cardinality": {
+            "intent_count": 1,
+            "realized_count": 1,
+            "relation": "one_to_one"
+          }
+        },
+        "review_required": false,
+        "resolution_recorded_at": "2026-07-10",
+        "resolved_by_arrival_id": "arr-2026-0011",
+        "assertion_rewritten": false
+      },
+      "published_publicly": false
+    },
+    {
+      "intent_id": "pir-shadow-intent:ef8ff6f81224f8aaf871fe75f25e332d4380a47970bd7f",
+      "process_ref": "procurement-intent:dss-solicitation-2026",
+      "state": "ambiguous",
+      "resolution_state": "ambiguous",
+      "content_key": "83c257302994a2b54979f95d9c55b5cbf39cc86b9684585452ceae4f0d2622e8",
+      "assertion_fingerprint": "76abb5ab947de4a3606b87096449628642c70fdae6944d40baec67c730a82524",
+      "assertion_immutable": true,
+      "freshness": {
+        "published_at": "2026-02-04",
+        "arrived_at": "2026-02-06",
+        "arrival_lag_days": 2,
+        "stale_arrival": false,
+        "stale_threshold_days": 30
+      },
+      "supersession": {
+        "superseded": false,
+        "superseded_by": null,
+        "superseded_by_arrival_id": null,
+        "supersedes": null,
+        "basis": null
+      },
+      "assertion": {
+        "intent_id": "pir-shadow-intent:ef8ff6f81224f8aaf871fe75f25e332d4380a47970bd7f",
+        "process_ref": "procurement-intent:dss-solicitation-2026",
+        "assertion_id": "faa:957873310a4f26978896",
+        "arrival_id": "arr-2026-0002",
+        "asserted_at": "2026-02-04",
+        "arrived_at": "2026-02-06",
+        "source_evidence": {
+          "source_record_id": "council:transcript:adult-protective-services-2026-02-04",
+          "source_event_id": "council:hearing:2026-02-04:adult-protective-services",
+          "source_type": "council_transcript",
+          "source_title": "Council oversight hearing on adult protective services",
+          "span_text_status": "verbatim",
+          "source_span_text": "HRA expects to publish a solicitation for additional case management capacity later this year.",
+          "speaker": {
+            "person_ref": "person:fixture:hra-administrator",
+            "display_name": "HRA Administrator",
+            "role": "HRA Administrator"
+          },
+          "citations": [
+            {
+              "label": "Council transcript",
+              "url": "https://legistar.council.nyc.gov/View.ashx?ID=fixture-2026-02-04",
+              "authority": "nyc_council"
+            }
+          ]
+        },
+        "stated_intent": {
+          "responsible_agency_ref": "agency:id:dss",
+          "action_kind": "procurement.solicitation_publish",
+          "object_text": "SOLICITATION",
+          "procurement_type": "SOLICITATION",
+          "program_refs": [],
+          "quantity_assertions": [],
+          "money_assertions": [],
+          "geography_refs": [],
+          "population_terms": [],
+          "expected_window": {
+            "earliest": null,
+            "latest": null,
+            "precision": "unknown",
+            "raw_text": ""
+          },
+          "modality": "anticipated",
+          "conditions": [],
+          "extraction_method": "deterministic_rules_v1",
+          "extraction_version": "pir-phase1.0",
+          "extraction_confidence": "high"
+        },
+        "provisional_identity": {
+          "schema": "cityscroll.provisional_procurement_identity.v0",
+          "object_type": "procurement_identity",
+          "identity_kind": "provisional_procurement_intent",
+          "subject_ref": "procurement-intent:dss-solicitation-2026",
+          "status": "prospective",
+          "epin": null,
+          "pin": null,
+          "procurement_id": null,
+          "publisher_identity": null,
+          "realized_by": [],
+          "superseded_by": [],
+          "unknowns": [
+            "publisher_native_procurement_identity",
+            "realized_procurement_records",
+            "realization_cardinality",
+            "superseding_intent"
+          ]
+        },
+        "claims": {
+          "occurrence": {
+            "claim": "occurrence",
+            "status": "abstained",
+            "abstention_reason": "no_stated_timing_window_in_source",
+            "predicted_window": null,
+            "probability": null
+          },
+          "timing": {
+            "claim": "timing",
+            "status": "abstained",
+            "abstention_reason": "no_stated_timing_window_in_source",
+            "predicted_window": null,
+            "probability": null
+          }
+        },
+        "edges": [
+          {
+            "relation": "asserted_in",
+            "from": "procurement-intent:dss-solicitation-2026",
+            "to": "source_record:council:transcript:adult-protective-services-2026-02-04",
+            "target_type": "source_record",
+            "status": "accepted",
+            "basis": "source_record_id"
+          },
+          {
+            "relation": "asserted_by",
+            "from": "procurement-intent:dss-solicitation-2026",
+            "to": "person:fixture:hra-administrator",
+            "target_type": "person",
+            "status": "accepted",
+            "basis": "source speaker identity"
+          },
+          {
+            "relation": "owned_by",
+            "from": "procurement-intent:dss-solicitation-2026",
+            "to": "agency:id:dss",
+            "target_type": "agency",
+            "status": "accepted",
+            "basis": "responsible_agency_ref"
+          },
+          {
+            "relation": "expects_event",
+            "from": "procurement-intent:dss-solicitation-2026",
+            "to": "procurement.notice_published",
+            "target_type": "event_kind",
+            "status": "accepted",
+            "basis": "action_kind"
+          },
+          {
+            "relation": "realized_by",
+            "from": "procurement-intent:dss-solicitation-2026",
+            "to": null,
+            "target_type": "procurement",
+            "status": "not_yet_observed",
+            "basis": "publisher identity absent at creation"
+          },
+          {
+            "relation": "superseded_by",
+            "from": "procurement-intent:dss-solicitation-2026",
+            "to": null,
+            "target_type": "procurement-intent",
+            "status": "not_observed",
+            "basis": "no later intent supplied"
+          },
+          {
+            "relation": "concerns",
+            "from": "procurement-intent:dss-solicitation-2026",
+            "to": null,
+            "target_type": "program",
+            "status": "unknown",
+            "basis": "no program reference in source assertion"
+          }
+        ],
+        "unknowns": [
+          "publisher_native_procurement_identity",
+          "realized_procurement_records",
+          "realization_cardinality",
+          "superseding_intent",
+          "timing_prediction_window"
+        ],
+        "controls": {
+          "contains_rfp_baseline": false,
+          "extractor_status": "candidate"
+        }
+      },
+      "resolution": {
+        "resolution_state": "ambiguous",
+        "observed_solicitation_arrivals": 4,
+        "first_observable_arrival_clock": "2026-02-06",
+        "matcher_version": "pir-realization-matcher.v1",
+        "horizon": {
+          "from": "2026-02-04",
+          "through": "2027-08-04",
+          "months": 18,
+          "agency_family": "dss"
+        },
+        "candidates": [
+          {
+            "realization_ref": "procurement:city_record:26069P0044",
+            "observed_in_arrival_id": "arr-2026-0008",
+            "observed_at": "2026-05-14",
+            "published_at": "2026-05-12",
+            "title": "Case Management Services for Adult Protective Services",
+            "source_system": "city_record",
+            "citation_url": "https://a856-cityrecord.nyc.gov/RequestDetail/fixture-20260512004",
+            "decision": "review",
+            "match_confidence": "ambiguous",
+            "score": 2,
+            "evidence": [
+              {
+                "kind": "medium",
+                "field": "responsible_agency_ref",
+                "matched_terms": [
+                  "dss"
+                ],
+                "realization_fields": [
+                  "agency",
+                  "agency_name"
+                ]
+              }
+            ]
+          }
+        ],
+        "review_candidates": [
+          "procurement:city_record:26069P0044"
+        ],
+        "accepted_edges": [],
+        "matcher_outcome": {
+          "status": "review",
+          "occurrence": "unresolved",
+          "timing": "unresolved",
+          "lead_days": null,
+          "match_confidence": "ambiguous",
+          "cardinality": {
+            "intent_count": 1,
+            "realized_count": 0,
+            "relation": "none"
+          }
+        },
+        "prospective_outcome": {
+          "occurrence": "review_required",
+          "timing": "review_required",
+          "lead_days": null,
+          "cardinality": {
+            "intent_count": 1,
+            "realized_count": 0,
+            "relation": "none"
+          }
+        },
+        "review_required": true,
+        "resolution_recorded_at": null,
+        "resolved_by_arrival_id": null,
+        "assertion_rewritten": false
+      },
+      "published_publicly": false
+    },
+    {
+      "intent_id": "pir-shadow-intent:895a7935639b09f76fa5a7efc7ea3667ed6143f68f7356",
+      "process_ref": "procurement-intent:agency-unresolved-solicitation-2026",
+      "state": "unmatched",
+      "resolution_state": "unmatched",
+      "content_key": "5232b6d19233070c13a8f4be4d6e1a00e87d9a301ea791a4eb2e829e8d23e097",
+      "assertion_fingerprint": "3c327054216482633da8e598836f82e4b8719d574d15ae3d3b422907cab37dd9",
+      "assertion_immutable": true,
+      "freshness": {
+        "published_at": "2026-02-18",
+        "arrived_at": "2026-02-19",
+        "arrival_lag_days": 1,
+        "stale_arrival": false,
+        "stale_threshold_days": 30
+      },
+      "supersession": {
+        "superseded": false,
+        "superseded_by": null,
+        "superseded_by_arrival_id": null,
+        "supersedes": null,
+        "basis": null
+      },
+      "assertion": {
+        "intent_id": "pir-shadow-intent:895a7935639b09f76fa5a7efc7ea3667ed6143f68f7356",
+        "process_ref": "procurement-intent:agency-unresolved-solicitation-2026",
+        "assertion_id": "faa:97e2ea6ab062d9dacc89",
+        "arrival_id": "arr-2026-0003",
+        "asserted_at": "2026-02-18",
+        "arrived_at": "2026-02-19",
+        "source_evidence": {
+          "source_record_id": "council:briefing:language-access-2026-02-18",
+          "source_event_id": "council:hearing:2026-02-18:language-access",
+          "source_type": "council_briefing_paper",
+          "source_title": "Finance Division briefing paper on language access",
+          "span_text_status": "verbatim",
+          "source_span_text": "The department plans to issue a solicitation for translation services in June.",
+          "speaker": {
+            "person_ref": null,
+            "display_name": "Finance Division",
+            "role": "Council Finance Division"
+          },
+          "citations": [
+            {
+              "label": "Finance Division briefing paper",
+              "url": "https://legistar.council.nyc.gov/View.ashx?ID=fixture-2026-02-18",
+              "authority": "nyc_council"
+            }
+          ]
+        },
+        "stated_intent": {
+          "responsible_agency_ref": "agency:unresolved",
+          "action_kind": "procurement.solicitation_publish",
+          "object_text": "SOLICITATION",
+          "procurement_type": "SOLICITATION",
+          "program_refs": [],
+          "quantity_assertions": [],
+          "money_assertions": [],
+          "geography_refs": [],
+          "population_terms": [],
+          "expected_window": {
+            "earliest": "2026-06-01",
+            "latest": "2026-06-30",
+            "precision": "month",
+            "raw_text": "in June"
+          },
+          "modality": "planned",
+          "conditions": [],
+          "extraction_method": "deterministic_rules_v1",
+          "extraction_version": "pir-phase1.0",
+          "extraction_confidence": "high"
+        },
+        "provisional_identity": {
+          "schema": "cityscroll.provisional_procurement_identity.v0",
+          "object_type": "procurement_identity",
+          "identity_kind": "provisional_procurement_intent",
+          "subject_ref": "procurement-intent:agency-unresolved-solicitation-2026",
+          "status": "prospective",
+          "epin": null,
+          "pin": null,
+          "procurement_id": null,
+          "publisher_identity": null,
+          "realized_by": [],
+          "superseded_by": [],
+          "unknowns": [
+            "publisher_native_procurement_identity",
+            "realized_procurement_records",
+            "realization_cardinality",
+            "superseding_intent"
+          ]
+        },
+        "claims": {
+          "occurrence": {
+            "claim": "occurrence",
+            "status": "open",
+            "abstention_reason": null,
+            "predicted_window": {
+              "p10": "2026-06-01",
+              "p50": "2026-06-15",
+              "p90": "2026-06-30"
+            },
+            "probability": 0.5,
+            "probability_basis": "uncalibrated_neutral_placeholder"
+          },
+          "timing": {
+            "claim": "timing",
+            "status": "open",
+            "abstention_reason": null,
+            "predicted_window": {
+              "p10": "2026-06-01",
+              "p50": "2026-06-15",
+              "p90": "2026-06-30"
+            },
+            "probability": 0.5,
+            "probability_basis": "uncalibrated_neutral_placeholder"
+          }
+        },
+        "edges": [
+          {
+            "relation": "asserted_in",
+            "from": "procurement-intent:agency-unresolved-solicitation-2026",
+            "to": "source_record:council:briefing:language-access-2026-02-18",
+            "target_type": "source_record",
+            "status": "accepted",
+            "basis": "source_record_id"
+          },
+          {
+            "relation": "asserted_by",
+            "from": "procurement-intent:agency-unresolved-solicitation-2026",
+            "to": null,
+            "target_type": "person",
+            "status": "unknown",
+            "basis": "source speaker identity"
+          },
+          {
+            "relation": "owned_by",
+            "from": "procurement-intent:agency-unresolved-solicitation-2026",
+            "to": null,
+            "target_type": "agency",
+            "status": "unknown",
+            "basis": "responsible_agency_ref"
+          },
+          {
+            "relation": "expects_event",
+            "from": "procurement-intent:agency-unresolved-solicitation-2026",
+            "to": "procurement.notice_published",
+            "target_type": "event_kind",
+            "status": "accepted",
+            "basis": "action_kind"
+          },
+          {
+            "relation": "realized_by",
+            "from": "procurement-intent:agency-unresolved-solicitation-2026",
+            "to": null,
+            "target_type": "procurement",
+            "status": "not_yet_observed",
+            "basis": "publisher identity absent at creation"
+          },
+          {
+            "relation": "superseded_by",
+            "from": "procurement-intent:agency-unresolved-solicitation-2026",
+            "to": null,
+            "target_type": "procurement-intent",
+            "status": "not_observed",
+            "basis": "no later intent supplied"
+          },
+          {
+            "relation": "concerns",
+            "from": "procurement-intent:agency-unresolved-solicitation-2026",
+            "to": null,
+            "target_type": "program",
+            "status": "unknown",
+            "basis": "no program reference in source assertion"
+          }
+        ],
+        "unknowns": [
+          "publisher_native_procurement_identity",
+          "realized_procurement_records",
+          "realization_cardinality",
+          "superseding_intent"
+        ],
+        "controls": {
+          "contains_rfp_baseline": false,
+          "extractor_status": "candidate"
+        }
+      },
+      "resolution": {
+        "resolution_state": "unmatched",
+        "observed_solicitation_arrivals": 4,
+        "first_observable_arrival_clock": "2026-02-19",
+        "matcher_version": "pir-realization-matcher.v1",
+        "horizon": {
+          "from": "2026-02-18",
+          "through": "2027-08-18",
+          "months": 18,
+          "agency_family": "agency-unresolved"
+        },
+        "candidates": [],
+        "review_candidates": [],
+        "accepted_edges": [],
+        "matcher_outcome": {
+          "status": "unmatched",
+          "occurrence": "unmatched",
+          "timing": "unmatched",
+          "lead_days": null,
+          "match_confidence": "unmatched",
+          "cardinality": {
+            "intent_count": 1,
+            "realized_count": 0,
+            "relation": "none"
+          }
+        },
+        "prospective_outcome": {
+          "occurrence": "not_observed_in_stated_window",
+          "timing": "not_observed_in_stated_window",
+          "lead_days": null,
+          "cardinality": {
+            "intent_count": 1,
+            "realized_count": 0,
+            "relation": "none"
+          }
+        },
+        "review_required": false,
+        "resolution_recorded_at": null,
+        "resolved_by_arrival_id": null,
+        "assertion_rewritten": false
+      },
+      "published_publicly": false
+    },
+    {
+      "intent_id": "pir-shadow-intent:cd58acbc16370055f6a3b39f0fbbb22007cd778f44f58c",
+      "process_ref": "procurement-intent:dycd-request-for-proposals-2026",
+      "state": "resolved",
+      "resolution_state": "resolved",
+      "content_key": "4147f4de09052137718923a686fdfc3c8e5e6ec59ecffe7ac530c9e9bf8dab72",
+      "assertion_fingerprint": "2b545d311f76f73a2e5a5f9d978db43482a5690705fac436d60f6b785242daa6",
+      "assertion_immutable": true,
+      "freshness": {
+        "published_at": "2026-03-11",
+        "arrived_at": "2026-03-12",
+        "arrival_lag_days": 1,
+        "stale_arrival": false,
+        "stale_threshold_days": 30
+      },
+      "supersession": {
+        "superseded": false,
+        "superseded_by": null,
+        "superseded_by_arrival_id": null,
+        "supersedes": null,
+        "basis": null
+      },
+      "assertion": {
+        "intent_id": "pir-shadow-intent:cd58acbc16370055f6a3b39f0fbbb22007cd778f44f58c",
+        "process_ref": "procurement-intent:dycd-request-for-proposals-2026",
+        "assertion_id": "faa:13902868979fa16e80aa",
+        "arrival_id": "arr-2026-0007",
+        "asserted_at": "2026-03-11",
+        "arrived_at": "2026-03-12",
+        "source_evidence": {
+          "source_record_id": "council:testimony:dycd-preliminary-budget-2026-03-11",
+          "source_event_id": "council:hearing:2026-03-11:dycd-preliminary-budget",
+          "source_type": "agency_testimony",
+          "source_title": "Council preliminary budget hearing",
+          "span_text_status": "verbatim",
+          "source_span_text": "DYCD will release the COMPASS request for proposals for 1,200 slots in the spring.",
+          "speaker": {
+            "person_ref": "person:fixture:dycd-commissioner",
+            "display_name": "DYCD Commissioner",
+            "role": "DYCD Commissioner"
+          },
+          "citations": [
+            {
+              "label": "Council transcript",
+              "url": "https://legistar.council.nyc.gov/View.ashx?ID=fixture-2026-03-11",
+              "authority": "nyc_council"
+            }
+          ]
+        },
+        "stated_intent": {
+          "responsible_agency_ref": "agency:id:dycd",
+          "action_kind": "procurement.solicitation_publish",
+          "object_text": "request for proposals",
+          "procurement_type": "RFP",
+          "program_refs": [
+            "program:dycd:compass"
+          ],
+          "quantity_assertions": [
+            {
+              "kind": "slots",
+              "value": 1200,
+              "unit": "slots",
+              "raw_text": "1,200 slots"
+            }
+          ],
+          "money_assertions": [],
+          "geography_refs": [],
+          "population_terms": [],
+          "expected_window": {
+            "earliest": "2026-03-01",
+            "latest": "2026-05-31",
+            "precision": "season",
+            "raw_text": "in the spring"
+          },
+          "modality": "committed",
+          "conditions": [],
+          "extraction_method": "deterministic_rules_v1",
+          "extraction_version": "pir-phase1.0",
+          "extraction_confidence": "high"
+        },
+        "provisional_identity": {
+          "schema": "cityscroll.provisional_procurement_identity.v0",
+          "object_type": "procurement_identity",
+          "identity_kind": "provisional_procurement_intent",
+          "subject_ref": "procurement-intent:dycd-request-for-proposals-2026",
+          "status": "prospective",
+          "epin": null,
+          "pin": null,
+          "procurement_id": null,
+          "publisher_identity": null,
+          "realized_by": [],
+          "superseded_by": [],
+          "unknowns": [
+            "publisher_native_procurement_identity",
+            "realized_procurement_records",
+            "realization_cardinality",
+            "superseding_intent"
+          ]
+        },
+        "claims": {
+          "occurrence": {
+            "claim": "occurrence",
+            "status": "open",
+            "abstention_reason": null,
+            "predicted_window": {
+              "p10": "2026-03-01",
+              "p50": "2026-04-15",
+              "p90": "2026-05-31"
+            },
+            "probability": 0.5,
+            "probability_basis": "uncalibrated_neutral_placeholder"
+          },
+          "timing": {
+            "claim": "timing",
+            "status": "open",
+            "abstention_reason": null,
+            "predicted_window": {
+              "p10": "2026-03-01",
+              "p50": "2026-04-15",
+              "p90": "2026-05-31"
+            },
+            "probability": 0.5,
+            "probability_basis": "uncalibrated_neutral_placeholder"
+          }
+        },
+        "edges": [
+          {
+            "relation": "asserted_in",
+            "from": "procurement-intent:dycd-request-for-proposals-2026",
+            "to": "source_record:council:testimony:dycd-preliminary-budget-2026-03-11",
+            "target_type": "source_record",
+            "status": "accepted",
+            "basis": "source_record_id"
+          },
+          {
+            "relation": "asserted_by",
+            "from": "procurement-intent:dycd-request-for-proposals-2026",
+            "to": "person:fixture:dycd-commissioner",
+            "target_type": "person",
+            "status": "accepted",
+            "basis": "source speaker identity"
+          },
+          {
+            "relation": "owned_by",
+            "from": "procurement-intent:dycd-request-for-proposals-2026",
+            "to": "agency:id:dycd",
+            "target_type": "agency",
+            "status": "accepted",
+            "basis": "responsible_agency_ref"
+          },
+          {
+            "relation": "expects_event",
+            "from": "procurement-intent:dycd-request-for-proposals-2026",
+            "to": "procurement.notice_published",
+            "target_type": "event_kind",
+            "status": "accepted",
+            "basis": "action_kind"
+          },
+          {
+            "relation": "realized_by",
+            "from": "procurement-intent:dycd-request-for-proposals-2026",
+            "to": null,
+            "target_type": "procurement",
+            "status": "not_yet_observed",
+            "basis": "publisher identity absent at creation"
+          },
+          {
+            "relation": "superseded_by",
+            "from": "procurement-intent:dycd-request-for-proposals-2026",
+            "to": null,
+            "target_type": "procurement-intent",
+            "status": "not_observed",
+            "basis": "no later intent supplied"
+          },
+          {
+            "relation": "concerns",
+            "from": "procurement-intent:dycd-request-for-proposals-2026",
+            "to": "program:dycd:compass",
+            "target_type": "program",
+            "status": "accepted",
+            "basis": "program_refs"
+          }
+        ],
+        "unknowns": [
+          "publisher_native_procurement_identity",
+          "realized_procurement_records",
+          "realization_cardinality",
+          "superseding_intent"
+        ],
+        "controls": {
+          "contains_rfp_baseline": true,
+          "extractor_status": "candidate"
+        }
+      },
+      "resolution": {
+        "resolution_state": "resolved",
+        "observed_solicitation_arrivals": 4,
+        "first_observable_arrival_clock": "2026-03-12",
+        "matcher_version": "pir-realization-matcher.v1",
+        "horizon": {
+          "from": "2026-03-11",
+          "through": "2027-09-11",
+          "months": 18,
+          "agency_family": "dycd"
+        },
+        "candidates": [
+          {
+            "realization_ref": "procurement:city_record:26026P0031",
+            "observed_in_arrival_id": "arr-2026-0009",
+            "observed_at": "2026-06-16",
+            "published_at": "2026-06-15",
+            "title": "COMPASS Elementary Programs Request for Proposals — 1,200 slots",
+            "source_system": "city_record",
+            "citation_url": "https://a856-cityrecord.nyc.gov/RequestDetail/fixture-20260615002",
+            "decision": "auto_link",
+            "match_confidence": "extremely_high",
+            "score": 13,
+            "evidence": [
+              {
+                "kind": "strong",
+                "field": "program_refs",
+                "matched_terms": [
+                  "compass"
+                ],
+                "realization_fields": [
+                  "title",
+                  "short_title",
+                  "procurement_name",
+                  "main_commodity",
+                  "industry",
+                  "description",
+                  "additional_description_1",
+                  "object_text",
+                  "service",
+                  "program_name",
+                  "population",
+                  "geography"
+                ]
+              },
+              {
+                "kind": "strong",
+                "field": "quantity_assertions",
+                "matched_terms": [
+                  "1",
+                  "200"
+                ],
+                "realization_fields": [
+                  "title",
+                  "short_title",
+                  "procurement_name",
+                  "main_commodity",
+                  "industry",
+                  "description",
+                  "additional_description_1",
+                  "object_text",
+                  "service",
+                  "program_name",
+                  "population",
+                  "geography"
+                ]
+              },
+              {
+                "kind": "medium",
+                "field": "responsible_agency_ref",
+                "matched_terms": [
+                  "dycd"
+                ],
+                "realization_fields": [
+                  "agency",
+                  "agency_name"
+                ]
+              },
+              {
+                "kind": "medium",
+                "field": "procurement_type",
+                "matched_terms": [
+                  "RFP"
+                ],
+                "realization_fields": [
+                  "title",
+                  "short_title",
+                  "procurement_name",
+                  "main_commodity",
+                  "industry",
+                  "description",
+                  "additional_description_1",
+                  "object_text",
+                  "service",
+                  "program_name",
+                  "population",
+                  "geography"
+                ]
+              }
+            ]
+          },
+          {
+            "realization_ref": "procurement:city_record:26026P0032",
+            "observed_in_arrival_id": "arr-2026-0010",
+            "observed_at": "2026-06-24",
+            "published_at": "2026-06-22",
+            "title": "COMPASS Middle School Programs Request for Proposals",
+            "source_system": "city_record",
+            "citation_url": "https://a856-cityrecord.nyc.gov/RequestDetail/fixture-20260622007",
+            "decision": "auto_link",
+            "match_confidence": "high",
+            "score": 8,
+            "evidence": [
+              {
+                "kind": "strong",
+                "field": "program_refs",
+                "matched_terms": [
+                  "compass"
+                ],
+                "realization_fields": [
+                  "title",
+                  "short_title",
+                  "procurement_name",
+                  "main_commodity",
+                  "industry",
+                  "description",
+                  "additional_description_1",
+                  "object_text",
+                  "service",
+                  "program_name",
+                  "population",
+                  "geography"
+                ]
+              },
+              {
+                "kind": "medium",
+                "field": "responsible_agency_ref",
+                "matched_terms": [
+                  "dycd"
+                ],
+                "realization_fields": [
+                  "agency",
+                  "agency_name"
+                ]
+              },
+              {
+                "kind": "medium",
+                "field": "procurement_type",
+                "matched_terms": [
+                  "RFP"
+                ],
+                "realization_fields": [
+                  "title",
+                  "short_title",
+                  "procurement_name",
+                  "main_commodity",
+                  "industry",
+                  "description",
+                  "additional_description_1",
+                  "object_text",
+                  "service",
+                  "program_name",
+                  "population",
+                  "geography"
+                ]
+              }
+            ]
+          }
+        ],
+        "review_candidates": [],
+        "accepted_edges": [
+          {
+            "relation": "realized_by",
+            "from": "procurement-intent:dycd-request-for-proposals-2026",
+            "to": "procurement:city_record:26026P0031",
+            "status": "accepted",
+            "basis": "historical_realization_match",
+            "match_confidence": "extremely_high",
+            "published_publicly": false
+          },
+          {
+            "relation": "realized_by",
+            "from": "procurement-intent:dycd-request-for-proposals-2026",
+            "to": "procurement:city_record:26026P0032",
+            "status": "accepted",
+            "basis": "historical_realization_match",
+            "match_confidence": "high",
+            "published_publicly": false
+          }
+        ],
+        "matcher_outcome": {
+          "status": "matched",
+          "occurrence": "hit",
+          "timing": "miss",
+          "lead_days": 96,
+          "match_confidence": "high",
+          "cardinality": {
+            "intent_count": 1,
+            "realized_count": 2,
+            "relation": "one_to_many"
+          }
+        },
+        "prospective_outcome": {
+          "occurrence": "realized",
+          "timing": "miss",
+          "lead_days": 96,
+          "cardinality": {
+            "intent_count": 1,
+            "realized_count": 2,
+            "relation": "one_to_many"
+          }
+        },
+        "review_required": false,
+        "resolution_recorded_at": "2026-06-16",
+        "resolved_by_arrival_id": "arr-2026-0009",
+        "assertion_rewritten": false
+      },
+      "published_publicly": false
+    },
+    {
+      "intent_id": "pir-shadow-intent:03444c1b32d3bae888b6aaf78b994174dd6c23463d28d6",
+      "process_ref": "procurement-intent:acs-solicitation-2026",
+      "state": "superseded",
+      "resolution_state": "open",
+      "content_key": "7e9cc5df265737bce7683c2fd7612ca4eac7dc3b5840d22cb4ff6a9e2b796846",
+      "assertion_fingerprint": "f9fd64e80ea54aeba4955203a95df07594819c231b03d081f4db361fde768668",
+      "assertion_immutable": true,
+      "freshness": {
+        "published_at": "2026-07-15",
+        "arrived_at": "2026-08-04",
+        "arrival_lag_days": 20,
+        "stale_arrival": false,
+        "stale_threshold_days": 30
+      },
+      "supersession": {
+        "superseded": true,
+        "superseded_by": "pir-shadow-intent:5415e3a70df8069b02f1f6b9ac8f5d214a7a9f80531a70",
+        "superseded_by_arrival_id": "arr-2026-0014",
+        "supersedes": null,
+        "basis": "same_provisional_subject_ref_later_source_arrival"
+      },
+      "assertion": {
+        "intent_id": "pir-shadow-intent:03444c1b32d3bae888b6aaf78b994174dd6c23463d28d6",
+        "process_ref": "procurement-intent:acs-solicitation-2026",
+        "assertion_id": "faa:739a634f2f7a91d1c4e9",
+        "arrival_id": "arr-2026-0013",
+        "asserted_at": "2026-07-15",
+        "arrived_at": "2026-08-04",
+        "source_evidence": {
+          "source_record_id": "council:transcript:supportive-housing-2026-07-15",
+          "source_event_id": "council:hearing:2026-07-15:supportive-housing",
+          "source_type": "council_transcript",
+          "source_title": "Council oversight hearing on supportive housing",
+          "span_text_status": "verbatim",
+          "source_span_text": "ACS plans to publish a solicitation for supportive housing case aides in the fall.",
+          "speaker": {
+            "person_ref": "person:fixture:acs-associate-commissioner",
+            "display_name": "ACS Associate Commissioner",
+            "role": "ACS Associate Commissioner"
+          },
+          "citations": [
+            {
+              "label": "Council transcript",
+              "url": "https://legistar.council.nyc.gov/View.ashx?ID=fixture-2026-07-15",
+              "authority": "nyc_council"
+            }
+          ]
+        },
+        "stated_intent": {
+          "responsible_agency_ref": "agency:id:acs",
+          "action_kind": "procurement.solicitation_publish",
+          "object_text": "SOLICITATION",
+          "procurement_type": "SOLICITATION",
+          "program_refs": [],
+          "quantity_assertions": [],
+          "money_assertions": [],
+          "geography_refs": [],
+          "population_terms": [],
+          "expected_window": {
+            "earliest": "2026-09-01",
+            "latest": "2026-11-30",
+            "precision": "season",
+            "raw_text": "in the fall"
+          },
+          "modality": "planned",
+          "conditions": [],
+          "extraction_method": "deterministic_rules_v1",
+          "extraction_version": "pir-phase1.0",
+          "extraction_confidence": "high"
+        },
+        "provisional_identity": {
+          "schema": "cityscroll.provisional_procurement_identity.v0",
+          "object_type": "procurement_identity",
+          "identity_kind": "provisional_procurement_intent",
+          "subject_ref": "procurement-intent:acs-solicitation-2026",
+          "status": "prospective",
+          "epin": null,
+          "pin": null,
+          "procurement_id": null,
+          "publisher_identity": null,
+          "realized_by": [],
+          "superseded_by": [],
+          "unknowns": [
+            "publisher_native_procurement_identity",
+            "realized_procurement_records",
+            "realization_cardinality",
+            "superseding_intent"
+          ]
+        },
+        "claims": {
+          "occurrence": {
+            "claim": "occurrence",
+            "status": "open",
+            "abstention_reason": null,
+            "predicted_window": {
+              "p10": "2026-09-01",
+              "p50": "2026-10-16",
+              "p90": "2026-11-30"
+            },
+            "probability": 0.5,
+            "probability_basis": "uncalibrated_neutral_placeholder"
+          },
+          "timing": {
+            "claim": "timing",
+            "status": "open",
+            "abstention_reason": null,
+            "predicted_window": {
+              "p10": "2026-09-01",
+              "p50": "2026-10-16",
+              "p90": "2026-11-30"
+            },
+            "probability": 0.5,
+            "probability_basis": "uncalibrated_neutral_placeholder"
+          }
+        },
+        "edges": [
+          {
+            "relation": "asserted_in",
+            "from": "procurement-intent:acs-solicitation-2026",
+            "to": "source_record:council:transcript:supportive-housing-2026-07-15",
+            "target_type": "source_record",
+            "status": "accepted",
+            "basis": "source_record_id"
+          },
+          {
+            "relation": "asserted_by",
+            "from": "procurement-intent:acs-solicitation-2026",
+            "to": "person:fixture:acs-associate-commissioner",
+            "target_type": "person",
+            "status": "accepted",
+            "basis": "source speaker identity"
+          },
+          {
+            "relation": "owned_by",
+            "from": "procurement-intent:acs-solicitation-2026",
+            "to": "agency:id:acs",
+            "target_type": "agency",
+            "status": "accepted",
+            "basis": "responsible_agency_ref"
+          },
+          {
+            "relation": "expects_event",
+            "from": "procurement-intent:acs-solicitation-2026",
+            "to": "procurement.notice_published",
+            "target_type": "event_kind",
+            "status": "accepted",
+            "basis": "action_kind"
+          },
+          {
+            "relation": "realized_by",
+            "from": "procurement-intent:acs-solicitation-2026",
+            "to": null,
+            "target_type": "procurement",
+            "status": "not_yet_observed",
+            "basis": "publisher identity absent at creation"
+          },
+          {
+            "relation": "superseded_by",
+            "from": "procurement-intent:acs-solicitation-2026",
+            "to": null,
+            "target_type": "procurement-intent",
+            "status": "not_observed",
+            "basis": "no later intent supplied"
+          },
+          {
+            "relation": "concerns",
+            "from": "procurement-intent:acs-solicitation-2026",
+            "to": null,
+            "target_type": "program",
+            "status": "unknown",
+            "basis": "no program reference in source assertion"
+          }
+        ],
+        "unknowns": [
+          "publisher_native_procurement_identity",
+          "realized_procurement_records",
+          "realization_cardinality",
+          "superseding_intent"
+        ],
+        "controls": {
+          "contains_rfp_baseline": false,
+          "extractor_status": "candidate"
+        }
+      },
+      "resolution": {
+        "resolution_state": "open",
+        "observed_solicitation_arrivals": 0,
+        "first_observable_arrival_clock": "2026-08-04",
+        "matcher_version": "pir-realization-matcher.v1",
+        "horizon": {
+          "from": "2026-07-15",
+          "through": "2028-01-15",
+          "months": 18,
+          "agency_family": "acs"
+        },
+        "candidates": [],
+        "review_candidates": [],
+        "accepted_edges": [],
+        "matcher_outcome": {
+          "status": "unmatched",
+          "occurrence": "unmatched",
+          "timing": "unmatched",
+          "lead_days": null,
+          "match_confidence": "unmatched",
+          "cardinality": {
+            "intent_count": 1,
+            "realized_count": 0,
+            "relation": "none"
+          }
+        },
+        "prospective_outcome": {
+          "occurrence": "not_observed_yet",
+          "timing": "not_observed_yet",
+          "lead_days": null,
+          "cardinality": {
+            "intent_count": 1,
+            "realized_count": 0,
+            "relation": "none"
+          }
+        },
+        "review_required": false,
+        "resolution_recorded_at": null,
+        "resolved_by_arrival_id": null,
+        "assertion_rewritten": false
+      },
+      "published_publicly": false
+    },
+    {
+      "intent_id": "pir-shadow-intent:5415e3a70df8069b02f1f6b9ac8f5d214a7a9f80531a70",
+      "process_ref": "procurement-intent:acs-solicitation-2026",
+      "state": "open",
+      "resolution_state": "open",
+      "content_key": "5e2c0eb84634808c8045534bec77b94f97882c4f1307efd96386e794283cb279",
+      "assertion_fingerprint": "e458b0cb9f04f8b63bb7556125ae2df28c22cb6b98fe11d482f5a18bd4cb3ce6",
+      "assertion_immutable": true,
+      "freshness": {
+        "published_at": "2026-08-12",
+        "arrived_at": "2026-08-19",
+        "arrival_lag_days": 7,
+        "stale_arrival": false,
+        "stale_threshold_days": 30
+      },
+      "supersession": {
+        "superseded": false,
+        "superseded_by": null,
+        "superseded_by_arrival_id": null,
+        "supersedes": "pir-shadow-intent:03444c1b32d3bae888b6aaf78b994174dd6c23463d28d6",
+        "basis": "same_provisional_subject_ref_later_source_arrival"
+      },
+      "assertion": {
+        "intent_id": "pir-shadow-intent:5415e3a70df8069b02f1f6b9ac8f5d214a7a9f80531a70",
+        "process_ref": "procurement-intent:acs-solicitation-2026",
+        "assertion_id": "faa:74d7a02bf22ad8259465",
+        "arrival_id": "arr-2026-0014",
+        "asserted_at": "2026-08-12",
+        "arrived_at": "2026-08-19",
+        "source_evidence": {
+          "source_record_id": "council:testimony:acs-supportive-housing-update-2026-08-12",
+          "source_event_id": "council:hearing:2026-08-12:acs-supportive-housing-update",
+          "source_type": "agency_testimony",
+          "source_title": "Council update hearing on supportive housing",
+          "span_text_status": "verbatim",
+          "source_span_text": "ACS now expects to publish that solicitation for supportive housing case aides by the end of the year.",
+          "speaker": {
+            "person_ref": "person:fixture:acs-associate-commissioner",
+            "display_name": "ACS Associate Commissioner",
+            "role": "ACS Associate Commissioner"
+          },
+          "citations": [
+            {
+              "label": "Council transcript",
+              "url": "https://legistar.council.nyc.gov/View.ashx?ID=fixture-2026-08-12",
+              "authority": "nyc_council"
+            }
+          ]
+        },
+        "stated_intent": {
+          "responsible_agency_ref": "agency:id:acs",
+          "action_kind": "procurement.solicitation_publish",
+          "object_text": "SOLICITATION",
+          "procurement_type": "SOLICITATION",
+          "program_refs": [],
+          "quantity_assertions": [],
+          "money_assertions": [],
+          "geography_refs": [],
+          "population_terms": [],
+          "expected_window": {
+            "earliest": null,
+            "latest": "2026-12-31",
+            "precision": "deadline",
+            "raw_text": "by the end of the year"
+          },
+          "modality": "anticipated",
+          "conditions": [],
+          "extraction_method": "deterministic_rules_v1",
+          "extraction_version": "pir-phase1.0",
+          "extraction_confidence": "high"
+        },
+        "provisional_identity": {
+          "schema": "cityscroll.provisional_procurement_identity.v0",
+          "object_type": "procurement_identity",
+          "identity_kind": "provisional_procurement_intent",
+          "subject_ref": "procurement-intent:acs-solicitation-2026",
+          "status": "prospective",
+          "epin": null,
+          "pin": null,
+          "procurement_id": null,
+          "publisher_identity": null,
+          "realized_by": [],
+          "superseded_by": [],
+          "unknowns": [
+            "publisher_native_procurement_identity",
+            "realized_procurement_records",
+            "realization_cardinality",
+            "superseding_intent"
+          ]
+        },
+        "claims": {
+          "occurrence": {
+            "claim": "occurrence",
+            "status": "open",
+            "abstention_reason": null,
+            "predicted_window": {
+              "p10": "2026-08-12",
+              "p50": "2026-10-21",
+              "p90": "2026-12-31"
+            },
+            "probability": 0.5,
+            "probability_basis": "uncalibrated_neutral_placeholder"
+          },
+          "timing": {
+            "claim": "timing",
+            "status": "open",
+            "abstention_reason": null,
+            "predicted_window": {
+              "p10": "2026-08-12",
+              "p50": "2026-10-21",
+              "p90": "2026-12-31"
+            },
+            "probability": 0.5,
+            "probability_basis": "uncalibrated_neutral_placeholder"
+          }
+        },
+        "edges": [
+          {
+            "relation": "asserted_in",
+            "from": "procurement-intent:acs-solicitation-2026",
+            "to": "source_record:council:testimony:acs-supportive-housing-update-2026-08-12",
+            "target_type": "source_record",
+            "status": "accepted",
+            "basis": "source_record_id"
+          },
+          {
+            "relation": "asserted_by",
+            "from": "procurement-intent:acs-solicitation-2026",
+            "to": "person:fixture:acs-associate-commissioner",
+            "target_type": "person",
+            "status": "accepted",
+            "basis": "source speaker identity"
+          },
+          {
+            "relation": "owned_by",
+            "from": "procurement-intent:acs-solicitation-2026",
+            "to": "agency:id:acs",
+            "target_type": "agency",
+            "status": "accepted",
+            "basis": "responsible_agency_ref"
+          },
+          {
+            "relation": "expects_event",
+            "from": "procurement-intent:acs-solicitation-2026",
+            "to": "procurement.notice_published",
+            "target_type": "event_kind",
+            "status": "accepted",
+            "basis": "action_kind"
+          },
+          {
+            "relation": "realized_by",
+            "from": "procurement-intent:acs-solicitation-2026",
+            "to": null,
+            "target_type": "procurement",
+            "status": "not_yet_observed",
+            "basis": "publisher identity absent at creation"
+          },
+          {
+            "relation": "superseded_by",
+            "from": "procurement-intent:acs-solicitation-2026",
+            "to": null,
+            "target_type": "procurement-intent",
+            "status": "not_observed",
+            "basis": "no later intent supplied"
+          },
+          {
+            "relation": "concerns",
+            "from": "procurement-intent:acs-solicitation-2026",
+            "to": null,
+            "target_type": "program",
+            "status": "unknown",
+            "basis": "no program reference in source assertion"
+          }
+        ],
+        "unknowns": [
+          "publisher_native_procurement_identity",
+          "realized_procurement_records",
+          "realization_cardinality",
+          "superseding_intent"
+        ],
+        "controls": {
+          "contains_rfp_baseline": false,
+          "extractor_status": "candidate"
+        }
+      },
+      "resolution": {
+        "resolution_state": "open",
+        "observed_solicitation_arrivals": 0,
+        "first_observable_arrival_clock": "2026-08-19",
+        "matcher_version": "pir-realization-matcher.v1",
+        "horizon": {
+          "from": "2026-08-12",
+          "through": "2028-02-12",
+          "months": 18,
+          "agency_family": "acs"
+        },
+        "candidates": [],
+        "review_candidates": [],
+        "accepted_edges": [],
+        "matcher_outcome": {
+          "status": "unmatched",
+          "occurrence": "unmatched",
+          "timing": "unmatched",
+          "lead_days": null,
+          "match_confidence": "unmatched",
+          "cardinality": {
+            "intent_count": 1,
+            "realized_count": 0,
+            "relation": "none"
+          }
+        },
+        "prospective_outcome": {
+          "occurrence": "not_observed_yet",
+          "timing": "not_observed_yet",
+          "lead_days": null,
+          "cardinality": {
+            "intent_count": 1,
+            "realized_count": 0,
+            "relation": "none"
+          }
+        },
+        "review_required": false,
+        "resolution_recorded_at": null,
+        "resolved_by_arrival_id": null,
+        "assertion_rewritten": false
+      },
+      "published_publicly": false
+    },
+    {
+      "intent_id": "pir-shadow-intent:e9d7f9bbc2836ab07f3e96efdd35adf84467dd04076cbc",
+      "process_ref": "procurement-intent:dycd-competitive-procurement-2026",
+      "state": "open",
+      "resolution_state": "open",
+      "content_key": "1e52f2ae023780ca091d6606f9effbdadf87a5ac2129ed4104f9a57aa10f0adc",
+      "assertion_fingerprint": "15101ce0487b327dc2ad4eb7e6ce50aa1cd62d555a6ebde90f1e896df49fd5af",
+      "assertion_immutable": true,
+      "freshness": {
+        "published_at": "2026-07-22",
+        "arrived_at": "2026-08-27",
+        "arrival_lag_days": 36,
+        "stale_arrival": true,
+        "stale_threshold_days": 30
+      },
+      "supersession": {
+        "superseded": false,
+        "superseded_by": null,
+        "superseded_by_arrival_id": null,
+        "supersedes": null,
+        "basis": null
+      },
+      "assertion": {
+        "intent_id": "pir-shadow-intent:e9d7f9bbc2836ab07f3e96efdd35adf84467dd04076cbc",
+        "process_ref": "procurement-intent:dycd-competitive-procurement-2026",
+        "assertion_id": "faa:502d7c9a0408428e4168",
+        "arrival_id": "arr-2026-0015",
+        "asserted_at": "2026-07-22",
+        "arrived_at": "2026-08-27",
+        "source_evidence": {
+          "source_record_id": "council:transcript:afterschool-programming-2026-07-22",
+          "source_event_id": "council:hearing:2026-07-22:afterschool-programming",
+          "source_type": "council_transcript",
+          "source_title": "Council oversight hearing on afterschool programming",
+          "span_text_status": "verbatim",
+          "source_span_text": "DYCD plans to release a competitive procurement for expanded afterschool programming in the fall.",
+          "speaker": {
+            "person_ref": "person:fixture:dycd-commissioner",
+            "display_name": "DYCD Commissioner",
+            "role": "DYCD Commissioner"
+          },
+          "citations": [
+            {
+              "label": "Council transcript",
+              "url": "https://legistar.council.nyc.gov/View.ashx?ID=fixture-2026-07-22",
+              "authority": "nyc_council"
+            }
+          ]
+        },
+        "stated_intent": {
+          "responsible_agency_ref": "agency:id:dycd",
+          "action_kind": "procurement.solicitation_publish",
+          "object_text": "COMPETITIVE PROCUREMENT",
+          "procurement_type": "COMPETITIVE PROCUREMENT",
+          "program_refs": [],
+          "quantity_assertions": [],
+          "money_assertions": [],
+          "geography_refs": [],
+          "population_terms": [],
+          "expected_window": {
+            "earliest": "2026-09-01",
+            "latest": "2026-11-30",
+            "precision": "season",
+            "raw_text": "in the fall"
+          },
+          "modality": "planned",
+          "conditions": [],
+          "extraction_method": "deterministic_rules_v1",
+          "extraction_version": "pir-phase1.0",
+          "extraction_confidence": "high"
+        },
+        "provisional_identity": {
+          "schema": "cityscroll.provisional_procurement_identity.v0",
+          "object_type": "procurement_identity",
+          "identity_kind": "provisional_procurement_intent",
+          "subject_ref": "procurement-intent:dycd-competitive-procurement-2026",
+          "status": "prospective",
+          "epin": null,
+          "pin": null,
+          "procurement_id": null,
+          "publisher_identity": null,
+          "realized_by": [],
+          "superseded_by": [],
+          "unknowns": [
+            "publisher_native_procurement_identity",
+            "realized_procurement_records",
+            "realization_cardinality",
+            "superseding_intent"
+          ]
+        },
+        "claims": {
+          "occurrence": {
+            "claim": "occurrence",
+            "status": "open",
+            "abstention_reason": null,
+            "predicted_window": {
+              "p10": "2026-09-01",
+              "p50": "2026-10-16",
+              "p90": "2026-11-30"
+            },
+            "probability": 0.5,
+            "probability_basis": "uncalibrated_neutral_placeholder"
+          },
+          "timing": {
+            "claim": "timing",
+            "status": "open",
+            "abstention_reason": null,
+            "predicted_window": {
+              "p10": "2026-09-01",
+              "p50": "2026-10-16",
+              "p90": "2026-11-30"
+            },
+            "probability": 0.5,
+            "probability_basis": "uncalibrated_neutral_placeholder"
+          }
+        },
+        "edges": [
+          {
+            "relation": "asserted_in",
+            "from": "procurement-intent:dycd-competitive-procurement-2026",
+            "to": "source_record:council:transcript:afterschool-programming-2026-07-22",
+            "target_type": "source_record",
+            "status": "accepted",
+            "basis": "source_record_id"
+          },
+          {
+            "relation": "asserted_by",
+            "from": "procurement-intent:dycd-competitive-procurement-2026",
+            "to": "person:fixture:dycd-commissioner",
+            "target_type": "person",
+            "status": "accepted",
+            "basis": "source speaker identity"
+          },
+          {
+            "relation": "owned_by",
+            "from": "procurement-intent:dycd-competitive-procurement-2026",
+            "to": "agency:id:dycd",
+            "target_type": "agency",
+            "status": "accepted",
+            "basis": "responsible_agency_ref"
+          },
+          {
+            "relation": "expects_event",
+            "from": "procurement-intent:dycd-competitive-procurement-2026",
+            "to": "procurement.notice_published",
+            "target_type": "event_kind",
+            "status": "accepted",
+            "basis": "action_kind"
+          },
+          {
+            "relation": "realized_by",
+            "from": "procurement-intent:dycd-competitive-procurement-2026",
+            "to": null,
+            "target_type": "procurement",
+            "status": "not_yet_observed",
+            "basis": "publisher identity absent at creation"
+          },
+          {
+            "relation": "superseded_by",
+            "from": "procurement-intent:dycd-competitive-procurement-2026",
+            "to": null,
+            "target_type": "procurement-intent",
+            "status": "not_observed",
+            "basis": "no later intent supplied"
+          },
+          {
+            "relation": "concerns",
+            "from": "procurement-intent:dycd-competitive-procurement-2026",
+            "to": null,
+            "target_type": "program",
+            "status": "unknown",
+            "basis": "no program reference in source assertion"
+          }
+        ],
+        "unknowns": [
+          "publisher_native_procurement_identity",
+          "realized_procurement_records",
+          "realization_cardinality",
+          "superseding_intent"
+        ],
+        "controls": {
+          "contains_rfp_baseline": false,
+          "extractor_status": "candidate"
+        }
+      },
+      "resolution": {
+        "resolution_state": "open",
+        "observed_solicitation_arrivals": 0,
+        "first_observable_arrival_clock": "2026-08-27",
+        "matcher_version": "pir-realization-matcher.v1",
+        "horizon": {
+          "from": "2026-07-22",
+          "through": "2028-01-22",
+          "months": 18,
+          "agency_family": "dycd"
+        },
+        "candidates": [],
+        "review_candidates": [],
+        "accepted_edges": [],
+        "matcher_outcome": {
+          "status": "unmatched",
+          "occurrence": "unmatched",
+          "timing": "unmatched",
+          "lead_days": null,
+          "match_confidence": "unmatched",
+          "cardinality": {
+            "intent_count": 1,
+            "realized_count": 0,
+            "relation": "none"
+          }
+        },
+        "prospective_outcome": {
+          "occurrence": "not_observed_yet",
+          "timing": "not_observed_yet",
+          "lead_days": null,
+          "cardinality": {
+            "intent_count": 1,
+            "realized_count": 0,
+            "relation": "none"
+          }
+        },
+        "review_required": false,
+        "resolution_recorded_at": null,
+        "resolved_by_arrival_id": null,
+        "assertion_rewritten": false
+      },
+      "published_publicly": false
+    }
+  ],
+  "arrivals": [
+    {
+      "arrival_id": "arr-2026-0001",
+      "arrived_at": "2026-01-16",
+      "published_at": "2026-01-14",
+      "content_key": "c4f4cf4062fdddaee942f333f03600ce09dcd8c49af46a52a72ec7ccb5e32f7b",
+      "declared_replay_of": null,
+      "disposition": "opened_intent",
+      "reasons": [],
+      "intent_id": "pir-shadow-intent:32bf817debcde2260c7f695aa57cb63c9bc5bbcd59420e",
+      "freshness": {
+        "published_at": "2026-01-14",
+        "arrived_at": "2026-01-16",
+        "arrival_lag_days": 2,
+        "stale_arrival": false,
+        "stale_threshold_days": 30
+      }
+    },
+    {
+      "arrival_id": "arr-2026-0002",
+      "arrived_at": "2026-02-06",
+      "published_at": "2026-02-04",
+      "content_key": "83c257302994a2b54979f95d9c55b5cbf39cc86b9684585452ceae4f0d2622e8",
+      "declared_replay_of": null,
+      "disposition": "opened_intent",
+      "reasons": [],
+      "intent_id": "pir-shadow-intent:ef8ff6f81224f8aaf871fe75f25e332d4380a47970bd7f",
+      "freshness": {
+        "published_at": "2026-02-04",
+        "arrived_at": "2026-02-06",
+        "arrival_lag_days": 2,
+        "stale_arrival": false,
+        "stale_threshold_days": 30
+      }
+    },
+    {
+      "arrival_id": "arr-2026-0003",
+      "arrived_at": "2026-02-19",
+      "published_at": "2026-02-18",
+      "content_key": "5232b6d19233070c13a8f4be4d6e1a00e87d9a301ea791a4eb2e829e8d23e097",
+      "declared_replay_of": null,
+      "disposition": "opened_intent",
+      "reasons": [],
+      "intent_id": "pir-shadow-intent:895a7935639b09f76fa5a7efc7ea3667ed6143f68f7356",
+      "freshness": {
+        "published_at": "2026-02-18",
+        "arrived_at": "2026-02-19",
+        "arrival_lag_days": 1,
+        "stale_arrival": false,
+        "stale_threshold_days": 30
+      }
+    },
+    {
+      "arrival_id": "arr-2026-0004",
+      "arrived_at": "2026-02-24",
+      "published_at": "2026-02-23",
+      "content_key": "e741af335e5fe270d6b7b5cbd59d4c470ffdf0ab694206feb482efb773d04d98",
+      "declared_replay_of": null,
+      "disposition": "insufficient_evidence",
+      "reasons": [
+        "missing_source_span"
+      ],
+      "intent_id": null,
+      "freshness": {
+        "published_at": "2026-02-23",
+        "arrived_at": "2026-02-24",
+        "arrival_lag_days": 1,
+        "stale_arrival": false,
+        "stale_threshold_days": 30
+      }
+    },
+    {
+      "arrival_id": "arr-2026-0005",
+      "arrived_at": "2026-02-26",
+      "published_at": "2026-02-25",
+      "content_key": "0ed56deff116d7b6f1bdfbd278c4acd5eb610a46be8451aef59e7e0f7ae06950",
+      "declared_replay_of": null,
+      "disposition": "insufficient_evidence",
+      "reasons": [
+        "missing_source_citation"
+      ],
+      "intent_id": null,
+      "freshness": {
+        "published_at": "2026-02-25",
+        "arrived_at": "2026-02-26",
+        "arrival_lag_days": 1,
+        "stale_arrival": false,
+        "stale_threshold_days": 30
+      }
+    },
+    {
+      "arrival_id": "arr-2026-0006",
+      "arrived_at": "2026-03-04",
+      "published_at": "2026-03-03",
+      "content_key": "91c2aba53cc61ea6b84de7d45d03ef341a5073830ee1ba66d3a37ea05f5048e1",
+      "declared_replay_of": null,
+      "disposition": "abstained",
+      "reasons": [
+        "past_tense",
+        "completed_action",
+        "not_future_intent",
+        "contains_rfp_baseline_must_fail"
+      ],
+      "intent_id": null,
+      "contains_rfp_baseline": true,
+      "freshness": {
+        "published_at": "2026-03-03",
+        "arrived_at": "2026-03-04",
+        "arrival_lag_days": 1,
+        "stale_arrival": false,
+        "stale_threshold_days": 30
+      }
+    },
+    {
+      "arrival_id": "arr-2026-0007",
+      "arrived_at": "2026-03-12",
+      "published_at": "2026-03-11",
+      "content_key": "4147f4de09052137718923a686fdfc3c8e5e6ec59ecffe7ac530c9e9bf8dab72",
+      "declared_replay_of": null,
+      "disposition": "opened_intent",
+      "reasons": [],
+      "intent_id": "pir-shadow-intent:cd58acbc16370055f6a3b39f0fbbb22007cd778f44f58c",
+      "freshness": {
+        "published_at": "2026-03-11",
+        "arrived_at": "2026-03-12",
+        "arrival_lag_days": 1,
+        "stale_arrival": false,
+        "stale_threshold_days": 30
+      }
+    },
+    {
+      "arrival_id": "arr-2026-0008",
+      "arrived_at": "2026-05-14",
+      "published_at": "2026-05-12",
+      "disposition": "resolution_observation",
+      "freshness": {
+        "published_at": "2026-05-12",
+        "arrived_at": "2026-05-14",
+        "arrival_lag_days": 2,
+        "stale_arrival": false,
+        "stale_threshold_days": 30
+      },
+      "observed_only_in_resolution_phase": true
+    },
+    {
+      "arrival_id": "arr-2026-0009",
+      "arrived_at": "2026-06-16",
+      "published_at": "2026-06-15",
+      "disposition": "resolution_observation",
+      "freshness": {
+        "published_at": "2026-06-15",
+        "arrived_at": "2026-06-16",
+        "arrival_lag_days": 1,
+        "stale_arrival": false,
+        "stale_threshold_days": 30
+      },
+      "observed_only_in_resolution_phase": true
+    },
+    {
+      "arrival_id": "arr-2026-0010",
+      "arrived_at": "2026-06-24",
+      "published_at": "2026-06-22",
+      "disposition": "resolution_observation",
+      "freshness": {
+        "published_at": "2026-06-22",
+        "arrived_at": "2026-06-24",
+        "arrival_lag_days": 2,
+        "stale_arrival": false,
+        "stale_threshold_days": 30
+      },
+      "observed_only_in_resolution_phase": true
+    },
+    {
+      "arrival_id": "arr-2026-0011",
+      "arrived_at": "2026-07-10",
+      "published_at": "2026-07-08",
+      "disposition": "resolution_observation",
+      "freshness": {
+        "published_at": "2026-07-08",
+        "arrived_at": "2026-07-10",
+        "arrival_lag_days": 2,
+        "stale_arrival": false,
+        "stale_threshold_days": 30
+      },
+      "observed_only_in_resolution_phase": true
+    },
+    {
+      "arrival_id": "arr-2026-0012",
+      "arrived_at": "2026-07-20",
+      "published_at": "2026-03-11",
+      "content_key": "4147f4de09052137718923a686fdfc3c8e5e6ec59ecffe7ac530c9e9bf8dab72",
+      "declared_replay_of": "arr-2026-0007",
+      "disposition": "duplicate_replay",
+      "reasons": [
+        "identical_sealed_source_already_observed"
+      ],
+      "first_arrival_id": "arr-2026-0007",
+      "intent_id": "pir-shadow-intent:cd58acbc16370055f6a3b39f0fbbb22007cd778f44f58c",
+      "assertion_rewritten": false,
+      "freshness": {
+        "published_at": "2026-03-11",
+        "arrived_at": "2026-07-20",
+        "arrival_lag_days": 131,
+        "stale_arrival": true,
+        "stale_threshold_days": 30
+      }
+    },
+    {
+      "arrival_id": "arr-2026-0013",
+      "arrived_at": "2026-08-04",
+      "published_at": "2026-07-15",
+      "content_key": "7e9cc5df265737bce7683c2fd7612ca4eac7dc3b5840d22cb4ff6a9e2b796846",
+      "declared_replay_of": null,
+      "disposition": "opened_intent",
+      "reasons": [],
+      "intent_id": "pir-shadow-intent:03444c1b32d3bae888b6aaf78b994174dd6c23463d28d6",
+      "freshness": {
+        "published_at": "2026-07-15",
+        "arrived_at": "2026-08-04",
+        "arrival_lag_days": 20,
+        "stale_arrival": false,
+        "stale_threshold_days": 30
+      }
+    },
+    {
+      "arrival_id": "arr-2026-0014",
+      "arrived_at": "2026-08-19",
+      "published_at": "2026-08-12",
+      "content_key": "5e2c0eb84634808c8045534bec77b94f97882c4f1307efd96386e794283cb279",
+      "declared_replay_of": null,
+      "disposition": "opened_intent",
+      "reasons": [],
+      "intent_id": "pir-shadow-intent:5415e3a70df8069b02f1f6b9ac8f5d214a7a9f80531a70",
+      "freshness": {
+        "published_at": "2026-08-12",
+        "arrived_at": "2026-08-19",
+        "arrival_lag_days": 7,
+        "stale_arrival": false,
+        "stale_threshold_days": 30
+      }
+    },
+    {
+      "arrival_id": "arr-2026-0015",
+      "arrived_at": "2026-08-27",
+      "published_at": "2026-07-22",
+      "content_key": "1e52f2ae023780ca091d6606f9effbdadf87a5ac2129ed4104f9a57aa10f0adc",
+      "declared_replay_of": null,
+      "disposition": "opened_intent",
+      "reasons": [],
+      "intent_id": "pir-shadow-intent:e9d7f9bbc2836ab07f3e96efdd35adf84467dd04076cbc",
+      "freshness": {
+        "published_at": "2026-07-22",
+        "arrived_at": "2026-08-27",
+        "arrival_lag_days": 36,
+        "stale_arrival": true,
+        "stale_threshold_days": 30
+      }
+    }
+  ],
+  "malformed_arrivals": [],
+  "metrics": {
+    "intent_states": {
+      "value_type": "measured",
+      "denominator": 7,
+      "open": 2,
+      "resolved": 2,
+      "ambiguous": 1,
+      "unmatched": 1,
+      "superseded": 1
+    },
+    "resolution_states": {
+      "value_type": "measured",
+      "denominator": 7,
+      "open": 3,
+      "resolved": 2,
+      "ambiguous": 1,
+      "unmatched": 1
+    },
+    "arrival_dispositions": {
+      "value_type": "measured",
+      "denominator": 15,
+      "opened_intent": 7,
+      "duplicate_replay": 1,
+      "insufficient_evidence": 2,
+      "abstained": 1,
+      "resolution_observation": 4,
+      "malformed": 0
+    },
+    "occurrence": {
+      "value_type": "measured",
+      "cutoff": "per-intent publication clock",
+      "denominator": 7,
+      "realized": 2,
+      "review_required": 1,
+      "not_observed_yet": 3,
+      "not_observed_in_stated_window": 1
+    },
+    "timing": {
+      "value_type": "measured",
+      "cutoff": "agency-stated expected window",
+      "denominator": 7,
+      "claims_made": 6,
+      "claims_abstained": 1,
+      "hit": 1,
+      "miss": 1,
+      "not_scored": 0,
+      "review_required": 1,
+      "not_observed_yet": 3,
+      "not_observed_in_stated_window": 1
+    },
+    "abstention": {
+      "value_type": "measured",
+      "denominator": 11,
+      "extraction_abstentions": 1,
+      "insufficient_source_evidence": 2,
+      "timing_claim_abstentions": 1,
+      "review_required": 1
+    },
+    "freshness": {
+      "value_type": "measured",
+      "denominator": 15,
+      "stale_threshold_days": 30,
+      "stale_arrivals": 2,
+      "stale_arrival_ids": [
+        "arr-2026-0012",
+        "arr-2026-0015"
+      ],
+      "maximum_arrival_lag_days": 131
+    },
+    "idempotency": {
+      "value_type": "measured",
+      "denominator": 11,
+      "duplicate_replays": 1,
+      "duplicate_arrival_ids": [
+        "arr-2026-0012"
+      ],
+      "assertions_rewritten_by_replay": 0
+    },
+    "supersession": {
+      "value_type": "measured",
+      "denominator": 7,
+      "superseded_intents": 1,
+      "superseded_intent_ids": [
+        "pir-shadow-intent:03444c1b32d3bae888b6aaf78b994174dd6c23463d28d6"
+      ],
+      "superseded_assertions_retained": 1
+    },
+    "realization_cardinality": {
+      "value_type": "measured",
+      "denominator": 7,
+      "none": 5,
+      "one_to_one": 1,
+      "one_to_many": 1,
+      "one_to_many_intent_ids": [
+        "pir-shadow-intent:cd58acbc16370055f6a3b39f0fbbb22007cd778f44f58c"
+      ]
+    }
+  },
+  "temporal_integrity": {
+    "value_type": "measured",
+    "leakage_failures": [],
+    "tolerated_failures": 0,
+    "assertion_phase_saw_solicitations": false,
+    "assertions_rewritten_after_resolution": 0,
+    "passed": true
+  },
+  "publication_boundary": {
+    "visibility": "internal_only",
+    "public_routes": [],
+    "public_search_documents": 0,
+    "public_follow_targets": 0,
+    "notifications_emitted": 0,
+    "resident_facing_claims": 0,
+    "public_realized_edges": 0,
+    "internal_realized_edges": 3,
+    "open_internal_intents": 2,
+    "authorization": "none; PIR-6 public surfaces remain paused and this card does not authorize them"
+  },
+  "promotion": {
+    "status": "withheld",
+    "product_promotion_allowed": false,
+    "gates": {
+      "public_exposure": {
+        "observed_public_surfaces": 0,
+        "threshold": 0,
+        "passed": true
+      },
+      "temporal_integrity": {
+        "observed_failures": 0,
+        "threshold": 0,
+        "passed": true
+      },
+      "recurrent_arrival_corpus": {
+        "observed_source_observations": 11,
+        "threshold": "a recurrent retained arrival corpus",
+        "passed": false
+      }
+    },
+    "reason": "Shadow mode is a bounded prospective observation on a retained fixture stream. It measures prospective behavior; it does not establish recurrence and does not authorize any public surface."
+  }
+}
