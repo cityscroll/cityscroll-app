@@ -1,0 +1,90 @@
+{
+  "categories": {
+    "dependency_view": {
+      "allocated_bytes": 219860992,
+      "allocated_pct": 14.287,
+      "entries": 6567,
+      "kind": "installed",
+      "logical_bytes": 205636881,
+      "logical_pct": 13.607
+    },
+    "generated_site_output": {
+      "allocated_bytes": 0,
+      "allocated_pct": 0.0,
+      "entries": 0,
+      "kind": "generated",
+      "logical_bytes": 0,
+      "logical_pct": 0.0
+    },
+    "generated_warehouse": {
+      "allocated_bytes": 0,
+      "allocated_pct": 0.0,
+      "entries": 3,
+      "kind": "generated",
+      "logical_bytes": 288,
+      "logical_pct": 0.0
+    },
+    "git_metadata": {
+      "allocated_bytes": 506036224,
+      "allocated_pct": 32.883,
+      "entries": 44,
+      "kind": "metadata",
+      "logical_bytes": 504369027,
+      "logical_pct": 33.374
+    },
+    "other_overhead": {
+      "allocated_bytes": 0,
+      "allocated_pct": 0.0,
+      "entries": 1377,
+      "kind": "untracked",
+      "logical_bytes": 310112,
+      "logical_pct": 0.021
+    },
+    "tracked_other": {
+      "allocated_bytes": 223019008,
+      "allocated_pct": 14.492,
+      "entries": 3121,
+      "kind": "tracked",
+      "logical_bytes": 216126224,
+      "logical_pct": 14.301
+    },
+    "tracked_site_data": {
+      "allocated_bytes": 468516864,
+      "allocated_pct": 30.445,
+      "entries": 688,
+      "kind": "tracked",
+      "logical_bytes": 467113457,
+      "logical_pct": 30.909
+    },
+    "tracked_site_other": {
+      "allocated_bytes": 82956288,
+      "allocated_pct": 5.391,
+      "entries": 1491,
+      "kind": "tracked",
+      "logical_bytes": 79779599,
+      "logical_pct": 5.279
+    },
+    "tracked_warehouse": {
+      "allocated_bytes": 38526976,
+      "allocated_pct": 2.504,
+      "entries": 259,
+      "kind": "tracked",
+      "logical_bytes": 37923422,
+      "logical_pct": 2.509
+    }
+  },
+  "hardlink_dedup": {
+    "entries": 2,
+    "logical_bytes": 124850426
+  },
+  "label": "checkout-A",
+  "no_double_counting_rule": "Every entry beneath the checkout root is assigned to exactly one category by an ordered, exhaustive path partition (first rule wins), so per-category sums equal the directory total. Hard-linked content is counted once per device/inode within a run. A shared dependency store, and a shared Git object directory for a linked working tree, live outside the checkout root and are reported separately; neither is ever added to a checkout total.",
+  "schema": "cityscroll.working-copy-footprint.v1",
+  "scope": "checkout",
+  "shared_git_metadata_outside_checkout": null,
+  "total": {
+    "allocated_bytes": 1538916352,
+    "logical_bytes": 1511259010
+  },
+  "tracked_file_count": 5559
+}

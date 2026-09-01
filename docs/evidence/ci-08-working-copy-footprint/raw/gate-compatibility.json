@@ -1,0 +1,60 @@
+{
+  "schema": "cityscroll.working-copy-gate-compatibility.v1",
+  "revision": "f095d4b8d844d1a969c70e4909dc0f65960f1a7d",
+  "purpose": "Establish which gate classes tolerate a reduced checkout, by running real gates against reduced checkouts rather than reasoning about them.",
+  "probes": [
+    {
+      "id": "worker-unit-family-under-naive-cone",
+      "reduced_checkout": "cone-mode sparse checkout: worker tools .github test",
+      "gate": "Worker unit family (node --test in worker/, per .github/workflows/ci.yml)",
+      "exit_code": 1,
+      "result": "FAILS",
+      "cause": "worker/src reaches across the package boundary into site/. The first failure is worker/src/lib/confirm_email.mjs importing site/community_board_watch.mjs.",
+      "significance": "A worker-only cone is not a valid profile for Worker card work. Any sparse profile proposal that assumes package-shaped isolation is wrong for this repository."
+    },
+    {
+      "id": "worker-unit-family-under-derived-cone",
+      "reduced_checkout": "non-cone sparse checkout: everything except site/data, plus the site/data files named by static analysis, then extended by iterating against the gate",
+      "gate": "Worker unit family (node --test in worker/)",
+      "exit_code": 1,
+      "result": "STILL FAILING AFTER THREE ITERATIONS",
+      "cause": "The needed set is not statically derivable. Static import analysis found 22 site/data dependencies; running the gate revealed further paths loaded at runtime through filesystem reads (for example site/data/legal_code/manifest.json, site/data/land_procedure_profiles.json, site/data/abo_award_residual_lookup.json, site/data/source_contracts.json) which no import-specifier scan can see.",
+      "significance": "Sparse profiles are achievable but require a maintained, gate-verified path manifest. Deriving one from source analysis alone silently under-includes and breaks a required gate."
+    },
+    {
+      "id": "capability-topology-contract-under-naive-cone",
+      "reduced_checkout": "cone-mode sparse checkout: worker tools .github test",
+      "gate": "node tools/build_capability_topology.mjs --check (static-standards family)",
+      "exit_code": 1,
+      "result": "FAILS",
+      "significance": "The static-standards family reads the tracked site/ payload and requires it present."
+    },
+    {
+      "id": "capability-topology-contract-under-full-checkout",
+      "reduced_checkout": "none (full checkout, same clone with sparse-checkout disabled)",
+      "gate": "node tools/build_capability_topology.mjs --check",
+      "exit_code": 0,
+      "result": "PASSES",
+      "detail": "capability topology, API catalog, and MCP catalog are current",
+      "significance": "Control: the failure above is attributable to the reduced checkout, not to the clone or the environment."
+    }
+  ],
+  "cross_boundary_measurements": {
+    "static_imports_from_worker_into_site": 124,
+    "static_imports_from_worker_into_site_data": 22,
+    "site_data_bytes_needed_by_those_static_imports": 47277666,
+    "site_data_total_bytes": 467128320,
+    "site_data_share_needed_by_static_worker_imports_pct": 10.12,
+    "additional_paths_discovered_only_by_running_the_gate": 4,
+    "converged": false,
+    "note": "The iteration was stopped after three rounds without convergence. The unconverged state is itself the finding and is reported rather than hidden."
+  },
+  "full_checkout_requirements": {
+    "shallow_clone_blocked_by": "Three checkout steps in .github/workflows/ci.yml pin fetch-depth: 0. The legacy repository-name guard resolves a merge-base against main, which a depth-1 clone cannot satisfy. Two other workflows (merge-pipeline-guard, cold-build-canary) already use fetch-depth: 1 and are unaffected.",
+    "gate_classes_requiring_the_full_tracked_payload": [
+      "static-standards family (reads the tracked site/ payload; 141 tools reference site/data)",
+      "accessibility and browser families (serve the built site)",
+      "the generated site build itself (node tools/build_cloudflare_pages.mjs)"
+    ]
+  }
+}

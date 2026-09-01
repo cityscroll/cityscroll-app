@@ -1,0 +1,7 @@
+{
+  "allocated_bytes": 217997312,
+  "entries": 5171,
+  "label": "shared-store",
+  "logical_bytes": 205359047,
+  "scope": "shared_dependency_store"
+}
