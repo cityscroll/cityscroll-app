@@ -6,7 +6,7 @@
       "entries": 6563,
       "kind": "installed",
       "logical_bytes": 330479970,
-      "logical_pct": 20.033
+      "logical_pct": 20.027
     },
     "generated_site_output": {
       "allocated_bytes": 0,
@@ -29,24 +29,24 @@
       "allocated_pct": 30.965,
       "entries": 45,
       "kind": "metadata",
-      "logical_bytes": 510372241,
-      "logical_pct": 30.938
+      "logical_bytes": 510812706,
+      "logical_pct": 30.956
     },
     "other_overhead": {
       "allocated_bytes": 0,
       "allocated_pct": 0.0,
       "entries": 1397,
       "kind": "untracked",
-      "logical_bytes": 317568,
+      "logical_bytes": 317536,
       "logical_pct": 0.019
     },
     "tracked_other": {
-      "allocated_bytes": 230653952,
-      "allocated_pct": 13.659,
-      "entries": 3280,
+      "allocated_bytes": 230666240,
+      "allocated_pct": 13.66,
+      "entries": 3279,
       "kind": "tracked",
-      "logical_bytes": 223337624,
-      "logical_pct": 13.538
+      "logical_bytes": 223353819,
+      "logical_pct": 13.535
     },
     "tracked_site_data": {
       "allocated_bytes": 468582400,
@@ -54,7 +54,7 @@
       "entries": 689,
       "kind": "tracked",
       "logical_bytes": 467174007,
-      "logical_pct": 28.319
+      "logical_pct": 28.311
     },
     "tracked_site_other": {
       "allocated_bytes": 83025920,
@@ -62,7 +62,7 @@
       "entries": 1498,
       "kind": "tracked",
       "logical_bytes": 79829883,
-      "logical_pct": 4.839
+      "logical_pct": 4.838
     },
     "tracked_warehouse": {
       "allocated_bytes": 38785024,
@@ -70,7 +70,7 @@
       "entries": 265,
       "kind": "tracked",
       "logical_bytes": 38171978,
-      "logical_pct": 2.314
+      "logical_pct": 2.313
     }
   },
   "hardlink_dedup": {
@@ -83,8 +83,8 @@
   "scope": "checkout",
   "shared_git_metadata_outside_checkout": null,
   "total": {
-    "allocated_bytes": 1688649728,
-    "logical_bytes": 1649683559
+    "allocated_bytes": 1688662016,
+    "logical_bytes": 1650140187
   },
-  "tracked_file_count": 5732
+  "tracked_file_count": 5731
 }

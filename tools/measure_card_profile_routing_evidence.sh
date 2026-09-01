@@ -456,6 +456,9 @@ done
 # was. These run in the clean full checkout the router provisioned for the CI
 # surface, not in the working copy this harness was launched from.
 CONTROL_FAILURES=0
+# CONTROL_DISPLAY_CMD, when set, is what the receipt records instead of the
+# executed argv. A scratch --output-dir is not part of the command a reader
+# should run, and a random temp suffix would make the receipt non-deterministic.
 control_gate() {
   local id="$1"; shift
   local status=0 log
@@ -466,7 +469,8 @@ control_gate() {
     tail -20 "$log" >&2
     CONTROL_FAILURES=$((CONTROL_FAILURES + 1))
   fi
-  ID="$id" STATUS="$status" OUT="$OUT" LOG="$log" CMD="$*" python3 - <<'PYEOF'
+  ID="$id" STATUS="$status" OUT="$OUT" LOG="$log" CMD="$*" \
+  DISPLAY_CMD="${CONTROL_DISPLAY_CMD:-}" python3 - <<'PYEOF'
 import json, os, re
 
 text = open(os.environ["LOG"], encoding="utf-8", errors="replace").read()
@@ -480,7 +484,12 @@ for field in ("tests", "pass", "fail", "skipped"):
 # repository-relative by construction, so an absolute one is always incidental.
 record = {
     "id": os.environ["ID"],
-    "command": re.sub(r"(?<![\w/])/(?:[\w.@%+-]+/)*[\w.@%+-]+", "<temp-dir>", os.environ["CMD"]),
+    # The placeholder wins when the caller set one; the substitution is the
+    # backstop. /+ rather than / because a TMPDIR that already ends in a
+    # separator yields a doubled one, which a single-slash pattern leaves half
+    # scrubbed.
+    "command": os.environ.get("DISPLAY_CMD")
+    or re.sub(r"(?<![\w/])/+(?:[\w.@%+-]+/+)*[\w.@%+-]+", "<temp-dir>", os.environ["CMD"]),
     "exit_status": int(os.environ["STATUS"]),
     "test_counts": counts or None,
 }
@@ -497,7 +506,9 @@ control_gate worker-unit bash -c 'cd worker && node --test'
 control_gate site-unit bash -c 'node --test test/*.test.mjs'
 control_gate contract-unit bash -c 'node --test test/contract/*.test.mjs'
 control_gate architecture-evidence-shards node tools/architecture_evidence_shards.mjs --check
-control_gate architecture-reconcile node tools/reconcile_architecture.mjs --check --output-dir "$CONTROL_RECONCILE_OUT"
+CONTROL_DISPLAY_CMD="node tools/reconcile_architecture.mjs --check --output-dir <fresh-temp-dir>" \
+  control_gate architecture-reconcile node tools/reconcile_architecture.mjs --check --output-dir "$CONTROL_RECONCILE_OUT"
+CONTROL_DISPLAY_CMD=""
 control_gate architecture-canaries node tools/backtest_architecture_canaries.mjs --check
 control_gate card-reconciliation node tools/card_reconciliation_guard.mjs
 control_gate card-projection node tools/build_capability_topology.mjs --check

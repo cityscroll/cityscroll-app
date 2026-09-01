@@ -13,13 +13,13 @@
       "source": "worktree"
     },
     {
-      "blob": "768531ff140adbdc8307a436ab8079b73b6819f6",
+      "blob": "855ce032078b22e959ab7d3794b9b10034e87938",
       "id": "sparse-patterns",
       "path": "tools/card-profile/card-work.sparse",
       "source": "worktree"
     },
     {
-      "blob": "442cef0800f6e0a564693d42e3bf67b7c64b2809",
+      "blob": "544ef7bacbb6ab6192c32bae0053bc801d5a3545",
       "id": "closure-manifest",
       "path": "tools/card-profile/closure.v1.json",
       "source": "worktree"
@@ -37,12 +37,12 @@
       "source": "worktree"
     }
   ],
-  "manifest_digest": "1aefe6db83d05317e2dc176eca8ff358d36bbdc246d1b998abab869b8ae0de1f",
+  "manifest_digest": "971306899e0794a89e895f0c8c66e9478ca2f3c154ce459477d453531112466a",
   "manifest_version": 1,
   "profile_override": null,
-  "provision_identity": "9b206c4d071ea3a8797706807492228bc10815aaa6858fad74b911d08091b639",
+  "provision_identity": "4ee840e68bea4ae7d1e3f47d52f13f84276803295830229140963c8f3222338d",
   "provisioned_profile": "focused-reduced",
-  "revision": "ff7fe30875ac71faa3f5cfa3db326350129f56b6",
+  "revision": "da42d81c487f03b210723d949de6bf730787b833",
   "routing_reason": "Implementing one card against a bounded set of profile-supported gate classes. This is the surface the reduced profile was measured for, and the only one it may be handed to.",
   "routing_rule": "focused-card-work-verified",
   "schema": "cityscroll.card-profile.identity.v1",

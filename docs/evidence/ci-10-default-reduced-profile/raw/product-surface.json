@@ -1,5 +1,5 @@
 {
-  "measured_revision": "ff7fe30875ac71faa3f5cfa3db326350129f56b6",
+  "measured_revision": "da42d81c487f03b210723d949de6bf730787b833",
   "merge_base": "ff99f523cc3353f6ec2ec69e5158bc9ed238c525",
   "method": "sha256 over `git ls-tree -r <rev> -- <surface>`, which covers every tracked path and blob id beneath the surface.",
   "schema": "cityscroll.card-profile-routing-product-surface.v1",

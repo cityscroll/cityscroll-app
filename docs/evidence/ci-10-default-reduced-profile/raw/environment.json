@@ -6,7 +6,7 @@
   },
   "cpu_count": 10,
   "filesystem_class": "APFS - hard links and copy-on-write file clones both supported",
-  "manifest_digest": "1aefe6db83d05317e2dc176eca8ff358d36bbdc246d1b998abab869b8ae0de1f",
+  "manifest_digest": "971306899e0794a89e895f0c8c66e9478ca2f3c154ce459477d453531112466a",
   "manifest_version": 1,
   "measurement_methods": {
     "allocated_bytes": "st_blocks * 512; on APFS this counts every copy-on-write clone at full size and therefore cannot see sharing",
@@ -15,7 +15,7 @@
     "profile_identity": "sha256 over the manifest version and the Git blob id of each declared identity input; the revision is bound separately into provision_identity"
   },
   "operating_system": "Darwin 25.5.0 (arm64)",
-  "revision": "ff7fe30875ac71faa3f5cfa3db326350129f56b6",
+  "revision": "da42d81c487f03b210723d949de6bf730787b833",
   "schema": "cityscroll.card-profile-routing-environment.v1",
   "source_class": "remote",
   "tools": {

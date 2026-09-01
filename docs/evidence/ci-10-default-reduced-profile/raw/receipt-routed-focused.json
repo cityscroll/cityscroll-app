@@ -6,9 +6,9 @@
     "profile_title": "Reduced working copy for focused card work",
     "provisioned_profile_name": "card-work",
     "manifest_version": 1,
-    "manifest_digest": "1aefe6db83d05317e2dc176eca8ff358d36bbdc246d1b998abab869b8ae0de1f",
-    "provision_identity": "9b206c4d071ea3a8797706807492228bc10815aaa6858fad74b911d08091b639",
-    "revision": "ff7fe30875ac71faa3f5cfa3db326350129f56b6",
+    "manifest_digest": "971306899e0794a89e895f0c8c66e9478ca2f3c154ce459477d453531112466a",
+    "provision_identity": "4ee840e68bea4ae7d1e3f47d52f13f84276803295830229140963c8f3222338d",
+    "revision": "da42d81c487f03b210723d949de6bf730787b833",
     "identity_inputs": [
       {
         "id": "routing-manifest",
@@ -26,13 +26,13 @@
         "id": "sparse-patterns",
         "path": "tools/card-profile/card-work.sparse",
         "source": "worktree",
-        "blob": "768531ff140adbdc8307a436ab8079b73b6819f6"
+        "blob": "855ce032078b22e959ab7d3794b9b10034e87938"
       },
       {
         "id": "closure-manifest",
         "path": "tools/card-profile/closure.v1.json",
         "source": "worktree",
-        "blob": "442cef0800f6e0a564693d42e3bf67b7c64b2809"
+        "blob": "544ef7bacbb6ab6192c32bae0053bc801d5a3545"
       },
       {
         "id": "dependency-lock",
@@ -59,7 +59,7 @@
       "verified": true,
       "problems": [],
       "config_sha256": "547a19c53ce4b5999f21bbbecd6feb50dab3c65742dd890cd415507243d795e9",
-      "patterns_sha256": "b2ffbbb87697eb3214ff1ba6579d2fbbeacf8b680c5ea80af2dad66729dae2e9",
+      "patterns_sha256": "2882b8f8ab846dfb8a3de8ee6e032bb6f58b3e62f0a286773de5ef86e1a7ef63",
       "required_paths": 2408,
       "deferred_paths": 310,
       "site_data_paths_in_profile": 28,
@@ -93,13 +93,13 @@
     "integrity": {
       "fsck_connectivity_only_exit": 0,
       "fsck_method": "--connectivity-only verifies the object graph without demanding blobs a partial clone deliberately did not fetch, so it is the meaningful integrity check in both profiles",
-      "commits_reachable_from_head": 1592,
+      "commits_reachable_from_head": 1593,
       "working_tree_clean": true,
-      "tracked_paths_not_materialised": 1908
+      "tracked_paths_not_materialised": 1907
     },
     "recorded_identity": {
       "present": true,
-      "manifest_digest": "1aefe6db83d05317e2dc176eca8ff358d36bbdc246d1b998abab869b8ae0de1f",
+      "manifest_digest": "971306899e0794a89e895f0c8c66e9478ca2f3c154ce459477d453531112466a",
       "provisioned_profile": "focused-reduced",
       "work_surface": "focused-card-work",
       "routing_rule": "focused-card-work-verified",
@@ -107,7 +107,7 @@
       "stale": false
     }
   },
-  "deterministic_digest": "ab5abe5d3d774a7bffead1a61f3f8a7996ad3f83c55a0acd57174aa92df16caa",
+  "deterministic_digest": "401ff389875561a54caa472ea76a79bdccebb602808e91fbd209d7cfb9b5a1f6",
   "context": {
     "note": "Supplied by the caller, not observed here, so it is reported rather than digested.",
     "routing_decision": null,
@@ -118,7 +118,7 @@
     "byte_accounting": {
       "method": "tools/measure_working_copy_footprint.py, CI-08's ordered exhaustive path partition with first rule wins",
       "categories_partition_total": true,
-      "tracked_file_count": 5732,
+      "tracked_file_count": 5731,
       "categories": {
         "dependency_view": {
           "logical_bytes": 330480550,
@@ -133,16 +133,16 @@
           "allocated_bytes": 0
         },
         "git_metadata": {
-          "logical_bytes": 41021048,
-          "allocated_bytes": 42160128
+          "logical_bytes": 41043756,
+          "allocated_bytes": 41758720
         },
         "other_overhead": {
           "logical_bytes": 188928,
           "allocated_bytes": 0
         },
         "tracked_other": {
-          "logical_bytes": 65612361,
-          "allocated_bytes": 71987200
+          "logical_bytes": 65628590,
+          "allocated_bytes": 72003584
         },
         "tracked_site_data": {
           "logical_bytes": 63802082,
@@ -158,8 +158,8 @@
         }
       },
       "total": {
-        "logical_bytes": 520230066,
-        "allocated_bytes": 543703040
+        "logical_bytes": 520269003,
+        "allocated_bytes": 543318016
       },
       "hardlink_dedup": {
         "entries": 0,
@@ -169,7 +169,7 @@
     },
     "provisioning_timing": null,
     "packs": 3,
-    "pack_size_kib": 38703,
+    "pack_size_kib": 38726,
     "loose_objects": 0
   }
 }
