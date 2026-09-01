@@ -1,0 +1,256 @@
+{
+  "schema": "cityscroll.card-profile.manifest.v1",
+  "manifest_version": 1,
+  "description": "The versioned provisioning routing contract. CI-09 measured and built the reduced card-work profile; this manifest is the policy that says which working-copy profile a given unit of work is provisioned with, why, and what has to be true before the reduced one may be handed out. tools/card_profile_router.mjs is the only reader; it never guesses a profile and never selects the reduced one by omission.",
+  "default_profile": {
+    "focused_card_work": "focused-reduced",
+    "every_other_surface": "full",
+    "note": "The reduced profile is the supported default for focused card work only, and only once its closure verifies against the revision it was derived from. Every other work surface is provisioned as the full-checkout control. An unrecognised request is an error, never a default."
+  },
+  "identity": {
+    "algorithm": "sha256",
+    "note": "Two digests, because they answer different questions. manifest_digest covers the routing manifest and the inputs the profile was derived from, so it is stable across unrelated commits and is what staleness is judged on. provision_identity additionally binds the revision, so a receipt names the exact provisioned instance. Each input is resolved from the working tree when the path is materialised and from the index otherwise, hashed as a Git blob either way, so a reduced checkout that defers a path still computes the same digest as the full control.",
+    "manifest_digest_inputs": [
+      {
+        "id": "routing-manifest",
+        "path": "tools/card-profile/profiles.v1.json",
+        "why": "The routing policy itself. A changed decision table is a changed profile."
+      },
+      {
+        "id": "profile-config",
+        "path": "tools/card-profile/profile.config.v1.json",
+        "why": "The declared inputs the closure is derived from: seed trees, excluded trees, gate classes."
+      },
+      {
+        "id": "sparse-patterns",
+        "path": "tools/card-profile/card-work.sparse",
+        "why": "The generated pattern list a reduced checkout is materialised from."
+      },
+      {
+        "id": "closure-manifest",
+        "path": "tools/card-profile/closure.v1.json",
+        "why": "The generated closure: required paths, deferred hydration set, supported and full-only gate classes."
+      },
+      {
+        "id": "dependency-lock",
+        "path": "worker/pnpm-lock.yaml",
+        "why": "The dependency view a provisioned checkout installs. A lockfile change can move what a supported gate class reads."
+      },
+      {
+        "id": "toolchain-pin",
+        "path": "worker/package.json",
+        "why": "The pinned package manager and Worker entry points."
+      }
+    ],
+    "provision_identity_inputs": [
+      "manifest_digest",
+      "revision"
+    ]
+  },
+  "profiles": {
+    "focused-reduced": {
+      "title": "Reduced working copy for focused card work",
+      "provisioned_profile_name": "card-work",
+      "provision_argument": "--profile focused-reduced",
+      "object_mode": "partial clone, --filter=blob:none, against the durable origin as promisor remote",
+      "history": "complete - every commit and tree is fetched, so a merge base still resolves",
+      "worktree_mode": "sparse checkout over the derived closure in tools/card-profile/card-work.sparse",
+      "measured_reference": "docs/evidence/ci-09-working-copy-reduction/",
+      "eligible_surfaces": [
+        "focused-card-work"
+      ],
+      "preconditions": [
+        "the closure manifest was generated from the current profile config",
+        "the committed pattern list covers every required path and materialises nothing deferred",
+        "every requested gate class is declared profile-supported and carries a non-empty observation receipt",
+        "no requested path is in the deferred hydration set or an excluded tree",
+        "the recorded manifest digest, when one is present, equals the computed one"
+      ],
+      "missing_input_behaviour": "A tracked path the profile does not hold is marked skip-worktree; tools/card_profile_sentinel.cjs escalates a read of one into CardProfileMissingPath and tools/verify_card_profile.mjs --gate fails the run on a recorded violation whatever the gate returned."
+    },
+    "full": {
+      "title": "Full-checkout control",
+      "provisioned_profile_name": "full-checkout",
+      "provision_argument": "--profile full",
+      "object_mode": "complete clone, every blob present, no promisor remote",
+      "history": "complete",
+      "worktree_mode": "every tracked path materialised",
+      "measured_reference": "docs/evidence/ci-09-working-copy-reduction/",
+      "eligible_surfaces": [
+        "focused-card-work",
+        "ci",
+        "unit",
+        "accessibility",
+        "artifact",
+        "deployment",
+        "release-surface",
+        "architecture",
+        "repository-control-plane",
+        "evidence",
+        "complete-history"
+      ],
+      "preconditions": [],
+      "missing_input_behaviour": "A missing path in the full control is a genuine absence at the revision, not a profile gap. This is the compatibility escape hatch: anything the reduced profile cannot serve is served here."
+    }
+  },
+  "surfaces": [
+    {
+      "id": "focused-card-work",
+      "title": "Focused card work",
+      "profile": "focused-reduced",
+      "full_only": false,
+      "reason": "Implementing one card against a bounded set of profile-supported gate classes. This is the surface the reduced profile was measured for, and the only one it may be handed to.",
+      "fallback": "full"
+    },
+    {
+      "id": "ci",
+      "title": "Continuous integration",
+      "profile": "full",
+      "full_only": true,
+      "reason": "CI runs the whole required gate set, including the site standards, site and contract unit, generated-document and reading-level families that read across the excluded byte-heavy trees. CI is unchanged by this card and continues to provision the full checkout."
+    },
+    {
+      "id": "unit",
+      "title": "Unit suites as CI runs them",
+      "profile": "full",
+      "full_only": true,
+      "reason": "test/*.test.mjs and test/contract/*.test.mjs read tracked builder inputs across site/data, data/ and entity_resolution/, which the reduced profile deliberately defers.",
+      "local_gate_note": "The Worker unit family alone is a profile-supported gate class and may be run in a reduced checkout through tools/verify_card_profile.mjs --gate worker-unit. This surface is the whole CI unit job, which is a superset of it."
+    },
+    {
+      "id": "accessibility",
+      "title": "Accessibility, language, browser and performance families",
+      "profile": "full",
+      "full_only": true,
+      "reason": "They serve the built site, which requires the generated Pages build over the complete tracked payload."
+    },
+    {
+      "id": "artifact",
+      "title": "Artifact build and served-artifact freshness",
+      "profile": "full",
+      "full_only": true,
+      "reason": "The Pages build and the served-artifact checks read the complete tracked site payload and the tracked artifacts/ tree."
+    },
+    {
+      "id": "deployment",
+      "title": "Deployment",
+      "profile": "full",
+      "full_only": true,
+      "reason": "A deployment publishes the built site and the Worker bundle. Provisioning a deployment from anything but the full control would make the published artifact depend on a development convenience."
+    },
+    {
+      "id": "release-surface",
+      "title": "Release-surface and release-evidence checks",
+      "profile": "full",
+      "full_only": true,
+      "reason": "Release evidence is derived from the full tracked tree and from generated build output."
+    },
+    {
+      "id": "architecture",
+      "title": "Architecture reconciliation as a run surface",
+      "profile": "full",
+      "full_only": true,
+      "reason": "The reconciliation run projects and publishes evidence over the whole declared architecture surface, not one --check invocation, and its output is an artifact other work is judged against.",
+      "local_gate_note": "The architecture shard, reconcile and canary --check commands are individually profile-supported gate classes and may be run in a reduced checkout through the gate front door. This surface is the evidence-producing run."
+    },
+    {
+      "id": "repository-control-plane",
+      "title": "Repository control-plane checks",
+      "profile": "full",
+      "full_only": true,
+      "reason": "The RCP-03 evidence-placement receipt was measured reading 3,535 tracked paths totalling 615.4 MiB, close to the whole tracked tree, and the per-tree inputs it derives from span every documentation tree.",
+      "local_gate_note": "No control-plane check is profile-supported. CI-09 declared the RCP-05 cutover receipt supported on a recorded read set of 66 tracked paths; that recording could not see the check's existence assertions over retained evidence projections, which reach into deferred trees, and this card measured it failing in a provisioned reduced checkout and reclassified it."
+    },
+    {
+      "id": "evidence",
+      "title": "Evidence production and evidence placement",
+      "profile": "full",
+      "full_only": true,
+      "reason": "Producing or placing evidence reads and writes across documentation trees the reduced profile defers, and an evidence receipt taken in a partial working copy would record an incomplete tree as if it were the tree."
+    },
+    {
+      "id": "complete-history",
+      "title": "Work requiring complete commit history",
+      "profile": "full",
+      "full_only": true,
+      "reason": "Declared explicitly by a caller that needs history beyond what its checkout carries. The default reduced profile keeps complete history, so this normally costs nothing extra; it is declared full because a caller that says it needs complete history must not be handed a checkout whose history depends on a profile option."
+    }
+  ],
+  "routing_rules": [
+    {
+      "order": 1,
+      "id": "unknown-surface",
+      "when": "the requested work surface is not declared in this manifest",
+      "outcome": "error",
+      "reason": "An unrecognised request fails closed. Defaulting it to the reduced profile would let an unclassified surface inherit a smaller checkout by omission."
+    },
+    {
+      "order": 2,
+      "id": "unknown-gate-class",
+      "when": "a requested gate class is declared neither profile-supported nor full-checkout-only",
+      "outcome": "error",
+      "reason": "A gate class with no classification has no recorded reads, so nothing is known about what it needs."
+    },
+    {
+      "order": 3,
+      "id": "full-only-surface",
+      "when": "the requested surface is declared full_only",
+      "outcome": "full",
+      "reason": "CI, unit, accessibility, artifact, deployment, release-surface, architecture, repository-control-plane, evidence and complete-history work is provisioned as the full-checkout control."
+    },
+    {
+      "order": 4,
+      "id": "complete-history-required",
+      "when": "the caller declares that the work needs complete commit history",
+      "outcome": "full",
+      "reason": "Recorded explicitly rather than relying on the reduced profile happening to keep history."
+    },
+    {
+      "order": 5,
+      "id": "full-only-gate-class",
+      "when": "a requested gate class is full-checkout-only, or is not declared profile-supported",
+      "outcome": "full",
+      "reason": "The gate class carries its own recorded reason in tools/card-profile/closure.v1.json. This is the explicit full fallback, not a skip."
+    },
+    {
+      "order": 6,
+      "id": "path-outside-closure",
+      "when": "a requested path is in the deferred hydration set, or is not materialised by the committed pattern list",
+      "outcome": "full",
+      "reason": "The work names an input the reduced profile does not hold. Taking the control is the documented alternative to hydrating it."
+    },
+    {
+      "order": 7,
+      "id": "stale-profile",
+      "when": "a recorded manifest digest is present and does not equal the computed one",
+      "outcome": "full",
+      "reason": "The checkout was provisioned from a profile that no longer describes this revision's inputs, so its closure cannot be trusted."
+    },
+    {
+      "order": 8,
+      "id": "closure-unverified",
+      "when": "the closure manifest is not current, or a requested gate class has no non-empty observation receipt",
+      "outcome": "full",
+      "reason": "The reduced profile is only safe where its closure is verified. Unverified means the control."
+    },
+    {
+      "order": 9,
+      "id": "focused-card-work-verified",
+      "when": "the surface is focused-card-work and every precondition above is satisfied",
+      "outcome": "focused-reduced",
+      "reason": "The measured default for focused card work."
+    },
+    {
+      "order": 10,
+      "id": "default-full",
+      "when": "no rule above matched",
+      "outcome": "full",
+      "reason": "The terminal rule is the control, so a routing gap can never produce a reduced checkout."
+    }
+  ],
+  "exit_codes": {
+    "0": "a decision was reached and reported",
+    "2": "the request failed closed: an unknown surface, an unknown gate class, or a malformed manifest",
+    "5": "a decision was reached but did not match the profile the caller required with --require"
+  }
+}

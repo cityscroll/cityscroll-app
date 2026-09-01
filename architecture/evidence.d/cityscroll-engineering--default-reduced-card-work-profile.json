@@ -1,0 +1,37 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/default-reduced-card-work-profile",
+  "status": "implemented",
+  "fingerprint": "default-reduced-card-work-profile.v1",
+  "updated_at": "2026-09-01T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "card-profile-routing-manifest",
+      "path": "tools/card-profile/profiles.v1.json"
+    },
+    {
+      "id": "card-profile-router",
+      "path": "tools/card_profile_router.mjs"
+    },
+    {
+      "id": "card-profile-provisioning-receipt",
+      "path": "tools/card_profile_receipt.mjs"
+    },
+    {
+      "id": "card-profile-routing-evidence-harness",
+      "path": "tools/measure_card_profile_routing_evidence.sh"
+    },
+    {
+      "id": "card-profile-routing-tests",
+      "path": "test/card_profile_router.test.mjs"
+    },
+    {
+      "id": "card-profile-routing-evidence-summary",
+      "path": "tools/summarize_card_profile_routing_evidence.py"
+    },
+    {
+      "id": "card-profile-routing-evidence",
+      "path": "docs/evidence/ci-10-default-reduced-profile/README.md"
+    }
+  ]
+}

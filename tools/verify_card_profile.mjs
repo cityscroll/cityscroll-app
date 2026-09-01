@@ -27,6 +27,8 @@ import { dirname, resolve } from "node:path";
 import { tmpdir } from "node:os";
 import { fileURLToPath } from "node:url";
 
+import { decide } from "./card_profile_router.mjs";
+
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const CONFIG_PATH = resolve(ROOT, "tools/card-profile/profile.config.v1.json");
 const CLOSURE_PATH = resolve(ROOT, "tools/card-profile/closure.v1.json");
@@ -178,22 +180,24 @@ function withSentinel(env, extra) {
 
 function runGate(argv) {
   const { id, command } = splitCommand(argv, "--gate");
-  const config = readJson(CONFIG_PATH);
-  const gate = config.gate_classes.find((entry) => entry.id === id);
-  const blocked = config.full_checkout_only.find((entry) => entry.id === id);
   const state = status();
   // A test seam that can only make the front door stricter: it forces the
   // reduced-profile refusal path on a full checkout so the contract can be
   // exercised without provisioning one.
   const reduced = state.sparse_checkout || process.env.CITYSCROLL_CARD_PROFILE_ASSUME_REDUCED === "1";
 
-  if (!gate && !blocked) {
-    console.error(`unknown gate class: ${id}`);
+  // One router, not two. The front door asks tools/card_profile_router.mjs the
+  // same question the provisioner asks it, so a gate class can never be
+  // runnable here and unroutable there.
+  const decision = decide({ surface: "focused-card-work", gates: [id] });
+  if (decision.outcome === "error") {
+    console.error(`${decision.reason} (rule ${decision.rule})`);
     return 2;
   }
-  if (reduced && (blocked || !gate.profile_supported)) {
+  if (reduced && decision.profile !== "focused-reduced") {
     console.error(`gate class "${id}" requires the full-checkout control.`);
-    console.error(`  reason: ${blocked ? blocked.reason : "not declared profile-supported"}`);
+    console.error(`  reason: ${decision.reason}`);
+    console.error(`  routing rule: ${decision.rule} (order ${decision.rule_order})`);
     console.error("  provision it with: tools/provision_card_profile.sh provision --profile full --dest <dir>");
     console.error("  or hydrate this checkout with: tools/provision_card_profile.sh hydrate --full");
     return 3;

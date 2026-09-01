@@ -1,0 +1,50 @@
+{
+  "inputs": [
+    {
+      "blob": "ea144938587223f1295e3c4dd1d183ef69498ddd",
+      "id": "routing-manifest",
+      "path": "tools/card-profile/profiles.v1.json",
+      "source": "worktree"
+    },
+    {
+      "blob": "3eb8a3ecf66b275efaff16d1a6a819f785ab7b9e",
+      "id": "profile-config",
+      "path": "tools/card-profile/profile.config.v1.json",
+      "source": "worktree"
+    },
+    {
+      "blob": "855ce032078b22e959ab7d3794b9b10034e87938",
+      "id": "sparse-patterns",
+      "path": "tools/card-profile/card-work.sparse",
+      "source": "worktree"
+    },
+    {
+      "blob": "544ef7bacbb6ab6192c32bae0053bc801d5a3545",
+      "id": "closure-manifest",
+      "path": "tools/card-profile/closure.v1.json",
+      "source": "worktree"
+    },
+    {
+      "blob": "78ebb540d87a0bcc9823a4d73e444eef0e5ea592",
+      "id": "dependency-lock",
+      "path": "worker/pnpm-lock.yaml",
+      "source": "worktree"
+    },
+    {
+      "blob": "52c424b2d36387ec6c65b11626bf912d591be9a1",
+      "id": "toolchain-pin",
+      "path": "worker/package.json",
+      "source": "worktree"
+    }
+  ],
+  "manifest_digest": "971306899e0794a89e895f0c8c66e9478ca2f3c154ce459477d453531112466a",
+  "manifest_version": 1,
+  "profile_override": null,
+  "provision_identity": "4ee840e68bea4ae7d1e3f47d52f13f84276803295830229140963c8f3222338d",
+  "provisioned_profile": "full",
+  "revision": "da42d81c487f03b210723d949de6bf730787b833",
+  "routing_reason": "CI runs the whole required gate set, including the site standards, site and contract unit, generated-document and reading-level families that read across the excluded byte-heavy trees. CI is unchanged by this card and continues to provision the full checkout.",
+  "routing_rule": "full-only-surface",
+  "schema": "cityscroll.card-profile.identity.v1",
+  "work_surface": "ci"
+}

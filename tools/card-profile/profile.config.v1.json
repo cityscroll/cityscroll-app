@@ -118,13 +118,6 @@
       "observation": "agents-router.json"
     },
     {
-      "id": "cutover-receipt",
-      "title": "Repository control-plane cutover receipt",
-      "command": "node tools/rcp05_cutover_receipt.mjs --check",
-      "profile_supported": true,
-      "observation": "cutover-receipt.json"
-    },
-    {
       "id": "card-profile-contract",
       "title": "Card-profile contract check",
       "command": "node tools/verify_card_profile.mjs --check",
@@ -177,6 +170,11 @@
       "id": "full-history-guards",
       "title": "Guards that resolve a merge base against main",
       "reason": "A depth-limited profile cannot supply a merge base. The default card profile keeps complete commit history for exactly this reason; the opt-in --depth variant must be unshallowed first."
+    },
+    {
+      "id": "cutover-receipt",
+      "title": "Repository control-plane cutover receipt",
+      "reason": "It asserts that every retained evidence projection resolves on disk, and it does so with an existence check rather than a content read. CI-09's recorder deliberately records only content reads, because recording metadata probes grew the closure to the whole tracked tree, so this gate's true closure was never observed. Its retained set reaches into site/data, warehouse/ and docs/screenshots, which the profile defers, and it was measured failing in a reduced checkout at this revision."
     }
   ]
 }
