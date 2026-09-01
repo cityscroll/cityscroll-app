@@ -1,5 +1,5 @@
 /**
- * SAH-01 — private search-activity intake and its authenticated read model.
+ * Private search-activity intake and its authenticated read model.
  *
  * Covers the Worker-owned half of the receipt: the first-party visitor cookie and
  * its security attributes, recognized-account resolution, developer traffic
@@ -140,9 +140,9 @@ function storedReceipts(env, prefix = SEARCH_ACTIVITY_KEY_PREFIX) {
     .map(([, value]) => JSON.parse(value));
 }
 
-// ---- A1 / A2: what a completed Search stores ----
+// ---- what a completed Search stores ----
 
-test("A1: one completed search stores exactly one receipt with the rendered rows", async () => {
+test("one completed search stores exactly one receipt with the rendered rows", async () => {
   const env = productionEnv();
   const response = await handleSearchActivity(intake(), env);
   assert.equal(response.status, 202);
@@ -164,7 +164,7 @@ test("A1: one completed search stores exactly one receipt with the rendered rows
   assert.ok(receipt.received_at);
 });
 
-test("A2: distinct outcomes survive the authenticated read path", async () => {
+test("distinct outcomes survive the authenticated read path", async () => {
   const env = productionEnv();
   const cases = [
     ["matched", submission()],
@@ -194,7 +194,7 @@ test("A2: distinct outcomes survive the authenticated read path", async () => {
   assert.deepEqual(unavailable.incomplete_families, [...SEARCH_ACTIVITY_FAMILIES]);
 });
 
-test("A2: the read model returns newest executions first and honors its bound", async () => {
+test("the read model returns newest executions first and honors its bound", async () => {
   const env = productionEnv();
   for (const query of ["one", "two", "three"]) {
     await handleSearchActivity(intake(submission({ query: { raw: query, normalized: query } })), env);
@@ -210,9 +210,9 @@ test("A2: the read model returns newest executions first and honors its bound", 
   assert.deepEqual([...times].sort().reverse(), times, "newest first");
 });
 
-// ---- A3: browser identity vs account identity ----
+// ---- browser identity vs account identity ----
 
-test("A3: two searches from one browser share one visitor id", async () => {
+test("two searches from one browser share one visitor id", async () => {
   const env = productionEnv();
   const first = await handleSearchActivity(intake(), env);
   const visitorId = visitorCookieFrom(first);
@@ -225,7 +225,7 @@ test("A3: two searches from one browser share one visitor id", async () => {
   assert.equal(receipts[0].visitor_id, visitorId);
 });
 
-test("A3: two browser profiles with the same User-Agent get different visitor ids", async () => {
+test("two browser profiles with the same User-Agent get different visitor ids", async () => {
   const env = productionEnv();
   const sameUserAgent = { "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) Chrome/141.0.0.0 Safari/537.36" };
   const one = visitorCookieFrom(await handleSearchActivity(intake(submission(), sameUserAgent), env));
@@ -234,7 +234,7 @@ test("A3: two browser profiles with the same User-Agent get different visitor id
   assert.notEqual(one, two, "a visitor id is random, never derived from the browser");
 });
 
-test("A3: a recognized session records visitor, subscriber, and a redacted label", async () => {
+test("a recognized session records visitor, subscriber, and a redacted label", async () => {
   const env = productionEnv();
   const email = "resident@example.org";
   const sessionToken = await signToken(TOKEN_SECRET, sessionPayload(email), { ttlSeconds: 3600 });
@@ -253,7 +253,7 @@ test("A3: a recognized session records visitor, subscriber, and a redacted label
   assert.ok(!JSON.stringify(receipt).includes(email), "the raw address never reaches the receipt");
 });
 
-test("A3: an unrecognized search stays anonymous without losing its browser identity", async () => {
+test("an unrecognized search stays anonymous without losing its browser identity", async () => {
   const env = productionEnv();
   await handleSearchActivity(intake(), env);
   const [receipt] = storedReceipts(env);
@@ -263,9 +263,9 @@ test("A3: an unrecognized search stays anonymous without losing its browser iden
   assert.ok(isWellFormedVisitorId(receipt.visitor_id));
 });
 
-// ---- A4: cookie and identity boundaries ----
+// ---- cookie and identity boundaries ----
 
-test("A4: the visitor cookie is first-party, HttpOnly, Secure, SameSite=Lax, and ~1 year", async () => {
+test("the visitor cookie is first-party, HttpOnly, Secure, SameSite=Lax, and ~1 year", async () => {
   const env = productionEnv();
   const header = setCookieValues(await handleSearchActivity(intake(), env))
     .find((value) => value.startsWith(`${VISITOR_COOKIE_NAME}=`));
@@ -279,7 +279,7 @@ test("A4: the visitor cookie is first-party, HttpOnly, Secure, SameSite=Lax, and
   assert.equal(maxAge, 365 * 24 * 3600);
 });
 
-test("A4: a visitor id carries at least 128 bits of randomness and is not a credential", async () => {
+test("a visitor id carries at least 128 bits of randomness and is not a credential", async () => {
   const ids = new Set(Array.from({ length: 200 }, () => newVisitorId()));
   assert.equal(ids.size, 200, "ids are unique across a large sample");
   const [sample] = ids;
@@ -296,7 +296,7 @@ test("A4: a visitor id carries at least 128 bits of randomness and is not a cred
   assert.equal(receipt.subscriber_id, null);
 });
 
-test("A4: a forged or malformed visitor cookie is replaced, not trusted", async () => {
+test("a forged or malformed visitor cookie is replaced, not trusted", async () => {
   const env = productionEnv();
   const response = await handleSearchActivity(
     intake(submission(), { Cookie: `${VISITOR_COOKIE_NAME}=../../etc/passwd` }),
@@ -309,7 +309,7 @@ test("A4: a forged or malformed visitor cookie is replaced, not trusted", async 
   assert.equal(readVisitorCookie(`cs_visitor=${issued}`), issued);
 });
 
-test("A4: visitor, network, and subscriber observations stay in separate fields", async () => {
+test("visitor, network, and subscriber observations stay in separate fields", async () => {
   const env = productionEnv();
   await handleSearchActivity(
     intake(submission(), { "CF-Connecting-IP": "203.0.113.10", "CF-IPCountry": "US" }),
@@ -322,15 +322,15 @@ test("A4: visitor, network, and subscriber observations stay in separate fields"
   assert.equal(receipt.network.retention_days, receipt.retention_days);
 });
 
-test("A4: the cookie is only issued from the host that can share it with the site", () => {
+test("the cookie is only issued from the host that can share it with the site", () => {
   assert.match(visitorCookieHeader("v1_abc"), /Domain=cityscroll\.org/);
   // A compatibility or preview host must not mint a cookie the site cannot read.
   assert.equal(readVisitorCookie(""), null);
 });
 
-// ---- A5: bounds, malformed input, and developer classification ----
+// ---- bounds, malformed input, and developer classification ----
 
-test("A5: unknown fields, malformed references, and bad JSON are rejected", async () => {
+test("unknown fields, malformed references, and bad JSON are rejected", async () => {
   const env = productionEnv();
   const cases = [
     [submission({ visitor_id: "v1_forged" }), "unknown_field"],
@@ -351,7 +351,7 @@ test("A5: unknown fields, malformed references, and bad JSON are rejected", asyn
   assert.equal(storedReceipts(env).length, 0, "nothing malformed is ever stored");
 });
 
-test("A5: oversized requests are refused by declared length and by actual body", async () => {
+test("oversized requests are refused by declared length and by actual body", async () => {
   const env = productionEnv();
   const declared = await handleSearchActivity(
     intake(submission(), { "Content-Length": String(SEARCH_ACTIVITY_MAX_REQUEST_BYTES + 1) }),
@@ -364,14 +364,14 @@ test("A5: oversized requests are refused by declared length and by actual body",
   assert.equal(storedReceipts(env).length, 0);
 });
 
-test("A5: a malformed body never mints a visitor cookie", async () => {
+test("a malformed body never mints a visitor cookie", async () => {
   const env = productionEnv();
   const response = await handleSearchActivity(intake(submission({ search_path: "/browse/" })), env);
   assert.equal(response.status, 400);
   assert.equal(visitorCookieFrom(response), null, "identity is resolved only after validation");
 });
 
-test("A5: developer activity is classified and kept out of the production cut", async () => {
+test("developer activity is classified and kept out of the production cut", async () => {
   const env = productionEnv();
   await handleSearchActivity(intake(), env);
   await handleSearchActivity(intake(submission(), { "X-CROL-Analytics-Dev": devToken() }), env);
@@ -395,21 +395,21 @@ test("A5: developer activity is classified and kept out of the production cut", 
   assert.equal(developerRead.count, 1);
 });
 
-test("A5: an invalid developer token counts as ordinary production traffic", async () => {
+test("an invalid developer token counts as ordinary production traffic", async () => {
   const env = productionEnv();
   await handleSearchActivity(intake(submission(), { "X-CROL-Analytics-Dev": devToken("wrong-secret-but-long-enough-here") }), env);
   assert.equal(storedReceipts(env, SEARCH_ACTIVITY_KEY_PREFIX).length, 1);
   assert.equal(storedReceipts(env, SEARCH_ACTIVITY_DEVELOPER_KEY_PREFIX).length, 0);
 });
 
-test("A5: a non-production runtime never writes into the production cut", async () => {
+test("a non-production runtime never writes into the production cut", async () => {
   const env = productionEnv({ ANALYTICS_ENVIRONMENT: undefined });
   await handleSearchActivity(intake(), env);
   assert.equal(storedReceipts(env, SEARCH_ACTIVITY_KEY_PREFIX).length, 0);
   assert.equal(storedReceipts(env, SEARCH_ACTIVITY_DEVELOPER_KEY_PREFIX).length, 1);
 });
 
-test("A5: retention is enforced by the store, not by a sweep", async () => {
+test("retention is enforced by the store, not by a sweep", async () => {
   const env = productionEnv();
   await handleSearchActivity(intake(), env);
   const [key] = [...env.ALERT_STATE.store.keys()];
@@ -417,7 +417,7 @@ test("A5: retention is enforced by the store, not by a sweep", async () => {
   assert.equal(storedReceipts(env)[0].retention_days, 30);
 });
 
-test("A5: receipt keys sort newest-first within their traffic class", () => {
+test("receipt keys sort newest-first within their traffic class", () => {
   const older = searchActivityKey({ receivedAtMs: 1_000, receiptId: "rcpt_a", trafficClass: "production" });
   const newer = searchActivityKey({ receivedAtMs: 2_000, receiptId: "rcpt_b", trafficClass: "production" });
   assert.ok(newer < older, "a later receipt sorts first");
@@ -430,9 +430,9 @@ test("A5: receipt keys sort newest-first within their traffic class", () => {
     .startsWith(SEARCH_ACTIVITY_KEY_PREFIX), "the two prefixes are disjoint");
 });
 
-// ---- A6: boundaries and fail-soft behavior ----
+// ---- boundaries and fail-soft behavior ----
 
-test("A6: the read route fails closed and stays private", async () => {
+test("the read route fails closed and stays private", async () => {
   const unset = await handleAdminSearchActivity(
     new Request("https://api.cityscroll.org/admin/search-activity"), { ALERT_STATE: kv() },
   );
@@ -456,7 +456,7 @@ test("A6: the read route fails closed and stays private", async () => {
   assert.equal(write.status, 405, "the read model is read-only");
 });
 
-test("A6: intake never fails hard when private storage is missing or broken", async () => {
+test("intake never fails hard when private storage is missing or broken", async () => {
   const missing = await handleSearchActivity(intake(), productionEnv({ ALERT_STATE: undefined }));
   assert.equal(missing.status, 202);
   assert.equal((await missing.json()).reason, "not-configured");
@@ -470,7 +470,7 @@ test("A6: intake never fails hard when private storage is missing or broken", as
   assert.equal((await response.json()).reason, "store-failed");
 });
 
-test("A6: intake rejects foreign origins and non-POST methods", async () => {
+test("intake rejects foreign origins and non-POST methods", async () => {
   const env = productionEnv();
   const foreign = await handleSearchActivity(
     new Request(INTAKE_URL, { method: "POST", headers: { Origin: "https://evil.example" }, body: "{}" }),
@@ -492,7 +492,7 @@ test("A6: intake rejects foreign origins and non-POST methods", async () => {
   assert.equal(storedReceipts(env).length, 0);
 });
 
-test("A6: /events keeps working and never gains a visitor cookie", async () => {
+test("/events keeps working and never gains a visitor cookie", async () => {
   const env = productionEnv();
   const response = await handleEvent(
     new Request("https://api.cityscroll.org/events", {

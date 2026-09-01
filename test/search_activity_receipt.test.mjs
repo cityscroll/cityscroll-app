@@ -1,5 +1,5 @@
 /**
- * SAH-01 — browser half of the search-execution receipt.
+ * Browser half of the search-execution receipt.
  *
  * These tests exercise the render plan the canonical Search document paints from,
  * so a receipt is compared against the document's real render inputs rather than
@@ -131,9 +131,9 @@ function submissionFor(plan, query) {
   });
 }
 
-// ---- A1: the `rats` receipt carries the rows the document actually rendered ----
+// ---- the `rats` receipt carries the rows the document actually rendered ----
 
-test("A1: a rats search records exactly the Contract and Meeting rows rendered", () => {
+test("a rats search records exactly the Contract and Meeting rows rendered", () => {
   const plan = buildSearchRenderPlan({
     state: "legacy",
     payload: RATS_KEYWORD_PAYLOAD,
@@ -177,9 +177,9 @@ test("A1: a rats search records exactly the Contract and Meeting rows rendered",
   assert.equal(normalized.value.producers.search_schema, "cityscroll.keyword_search_response.v1");
 });
 
-// ---- A2: CB3, empty, partial, and unavailable stay distinct ----
+// ---- CB3, empty, partial, and unavailable stay distinct ----
 
-test("A2: a CB3 search preserves the displayed community-board rows and ranks", () => {
+test("a CB3 search preserves the displayed community-board rows and ranks", () => {
   const plan = buildSearchRenderPlan({
     state: "legacy",
     payload: CB3_KEYWORD_PAYLOAD,
@@ -199,7 +199,7 @@ test("A2: a CB3 search preserves the displayed community-board rows and ranks", 
   ]);
 });
 
-test("A2: empty, partial, and unavailable executions carry distinct outcomes", () => {
+test("empty, partial, and unavailable executions carry distinct outcomes", () => {
   const empty = buildSearchRenderPlan({
     state: "legacy", payload: emptyPayload(), coverage: emptyPayload().coverage,
   });
@@ -227,15 +227,15 @@ test("A2: empty, partial, and unavailable executions carry distinct outcomes", (
   }
 });
 
-test("A2: a keyword producer outage leaves every family incomplete, not empty", () => {
+test("a keyword producer outage leaves every family incomplete, not empty", () => {
   const plan = buildSearchRenderPlan({ state: "semantic", semantic: { groups: [] }, keyword: null });
   assert.equal(plan.outcome, "partial");
   assert.deepEqual(plan.incomplete_families, [...SEARCH_ACTIVITY_FAMILIES]);
 });
 
-// ---- A5: strict, bounded validation ----
+// ---- strict, bounded validation ----
 
-test("A5: unknown fields are rejected rather than quietly dropped", () => {
+test("unknown fields are rejected rather than quietly dropped", () => {
   const plan = buildSearchRenderPlan({
     state: "legacy", payload: RATS_KEYWORD_PAYLOAD, coverage: RATS_KEYWORD_PAYLOAD.coverage,
   });
@@ -255,7 +255,7 @@ test("A5: unknown fields are rejected rather than quietly dropped", () => {
   );
 });
 
-test("A5: excessive result lists, malformed references, and bad ranks are rejected", () => {
+test("excessive result lists, malformed references, and bad ranks are rejected", () => {
   const plan = buildSearchRenderPlan({
     state: "legacy", payload: RATS_KEYWORD_PAYLOAD, coverage: RATS_KEYWORD_PAYLOAD.coverage,
   });
@@ -296,7 +296,7 @@ test("A5: excessive result lists, malformed references, and bad ranks are reject
   assert.equal(normalizeSearchExecutionSubmission("not-an-object").reason, "not_an_object");
 });
 
-test("A5: accepted canonical links stay in lockstep with the Search renderer", () => {
+test("accepted canonical links stay in lockstep with the Search renderer", () => {
   for (const root of SEARCH_ACTIVITY_SAFE_LINK_ROOTS) {
     const route = `${root}example-record`;
     const rendererAccepts = isSafeSearchCanonicalRoute(route)
@@ -310,9 +310,9 @@ test("A5: accepted canonical links stay in lockstep with the Search renderer", (
   assert.equal(isSafeSearchActivityLink("/unlisted-root/thing"), false);
 });
 
-// ---- A6: fail-soft intake never changes Search ----
+// ---- fail-soft intake never changes Search ----
 
-test("A6: intake failure, rejection, and absence are all silent to the caller", async () => {
+test("intake failure, rejection, and absence are all silent to the caller", async () => {
   const plan = buildSearchRenderPlan({
     state: "legacy", payload: RATS_KEYWORD_PAYLOAD, coverage: RATS_KEYWORD_PAYLOAD.coverage,
   });
@@ -340,7 +340,7 @@ test("A6: intake failure, rejection, and absence are all silent to the caller", 
   assert.equal(await submitSearchExecutionReceipt(null, { origins: ["https://api.cityscroll.org"] }), "skipped");
 });
 
-test("A6: a submitted receipt is credentialed, bounded, and posted to /search-activity", async () => {
+test("a submitted receipt is credentialed, bounded, and posted to /search-activity", async () => {
   const plan = buildSearchRenderPlan({
     state: "legacy", payload: RATS_KEYWORD_PAYLOAD, coverage: RATS_KEYWORD_PAYLOAD.coverage,
   });
