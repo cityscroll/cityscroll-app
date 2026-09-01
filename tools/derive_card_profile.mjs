@@ -285,9 +285,13 @@ function emitPatterns(profileSet, tracked) {
   return patterns.sort();
 }
 
-function bytesOf(paths) {
+// Only paths this working tree actually holds are stat-ed. Probing one the
+// profile deliberately excluded is itself a profile violation, and the reporting
+// block is not worth tripping the sentinel for.
+function bytesOf(paths, notMaterialised) {
   let total = 0;
   for (const path of paths) {
+    if (notMaterialised.has(path)) continue;
     try {
       total += statSync(resolve(ROOT, path)).size;
     } catch {
@@ -302,10 +306,10 @@ function build() {
   const tracked = trackedFiles();
   const trackedSet = new Set(tracked);
 
+  const notMaterialised = notMaterialisedPaths();
   const observed = observedClosure(config, tracked);
   const observedAll = new Set();
   for (const [, entry] of observed) for (const path of entry.paths) observedAll.add(path);
-  const notMaterialised = notMaterialisedPaths();
   const staticScan = staticClosure(tracked, observedAll, config, notMaterialised);
   const declared = declaredClosure(config, tracked);
 
@@ -406,16 +410,17 @@ function build() {
     note:
       "A snapshot of what the profile costs at the revision named here. These figures are reporting only; they are not part of the checked contract, because a byte total moves whenever any tracked file does.",
     revision: headRevision(),
-    profile_paths: { count: profileSet.size, logical_bytes: bytesOf(profileSet) },
-    deferred_paths: { count: hydrationSet.size, logical_bytes: bytesOf(hydrationSet) },
-    excluded_paths: { count: excludedTracked.length, logical_bytes: bytesOf(excludedTracked) },
+    computed_in_reduced_checkout: notMaterialised.size > 0,
+    profile_paths: { count: profileSet.size, logical_bytes: bytesOf(profileSet, notMaterialised) },
+    deferred_paths: { count: hydrationSet.size, logical_bytes: bytesOf(hydrationSet, notMaterialised) },
+    excluded_paths: { count: excludedTracked.length, logical_bytes: bytesOf(excludedTracked, notMaterialised) },
     site_data: {
       tracked_count: siteData.length,
-      tracked_logical_bytes: bytesOf(siteData),
+      tracked_logical_bytes: bytesOf(siteData, notMaterialised),
       profile_count: siteDataIncluded.length,
-      profile_logical_bytes: bytesOf(siteDataIncluded)
+      profile_logical_bytes: bytesOf(siteDataIncluded, notMaterialised)
     },
-    tracked_total: { count: tracked.length, logical_bytes: bytesOf(tracked) },
+    tracked_total: { count: tracked.length, logical_bytes: bytesOf(tracked, notMaterialised) },
     pattern_count: patterns.length
   };
 
