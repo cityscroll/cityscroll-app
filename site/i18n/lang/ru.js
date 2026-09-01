@@ -2340,6 +2340,7 @@
     invnote_aria: "Заметка к этому закреплённому элементу",
     site_kicker: "Публичные документы Нью-Йорка, связанные вместе",
     back_home_aria: "Вернуться на главную CityScroll",
+    brand_home_aria: "Главная страница CityScroll",
     back_to_crol: "← Вернуться в CityScroll",
     home_link: "Главная",
     data_page_h1: "Данные",

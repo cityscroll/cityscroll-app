@@ -227,6 +227,16 @@ body {
   color: var(--color-brand);
 }
 
+a.brand-lockup {
+  text-decoration: none;
+}
+
+a.brand-lockup:focus-visible {
+  outline: 2px solid var(--color-focus, var(--color-action, #1b3a8f));
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+
 .brand-lockup--masthead {
   gap: clamp(var(--space-3), 2vw, var(--space-5));
 }
@@ -268,7 +278,8 @@ body {
   height: 34px;
 }
 
-.home.brand-lockup:hover {
+.home.brand-lockup:hover,
+.brand-lockup--masthead:hover {
   color: var(--color-action);
 }
 

@@ -2327,6 +2327,7 @@
     invnote_aria: "Nòt pou eleman epingle sa a",
     site_kicker: "Dosye piblik Vil Nouyòk la, relye",
     back_home_aria: "Retounen nan paj akèy CityScroll",
+    brand_home_aria: "Paj akèy CityScroll",
     back_to_crol: "← Retounen nan CityScroll",
     home_link: "Akèy",
     data_page_h1: "Done yo",

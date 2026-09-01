@@ -2328,6 +2328,7 @@
     invnote_aria: "Nota para este elemento fijado",
     site_kicker: "El registro público de NYC, conectado",
     back_home_aria: "Volver al inicio de CityScroll",
+    brand_home_aria: "Inicio de CityScroll",
     back_to_crol: "← Volver a CityScroll",
     home_link: "Inicio",
     data_page_h1: "Los datos",

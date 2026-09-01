@@ -2342,6 +2342,7 @@
     invnote_aria: "ملاحظة لهذا العنصر المثبّت",
     site_kicker: "السجل العام لمدينة نيويورك، مترابط",
     back_home_aria: "العودة إلى الصفحة الرئيسية لـ CityScroll",
+    brand_home_aria: "الصفحة الرئيسية لـ CityScroll",
     back_to_crol: "→ العودة إلى CityScroll",
     home_link: "الرئيسية",
     data_page_h1: "البيانات",

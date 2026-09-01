@@ -2328,6 +2328,7 @@
     invnote_aria: "此固定项的备注",
     site_kicker: "纽约市公共记录，彼此相连",
     back_home_aria: "返回 CityScroll 首页",
+    brand_home_aria: "CityScroll 首页",
     back_to_crol: "← 返回 CityScroll",
     home_link: "首页",
     data_page_h1: "数据",
