@@ -1,8 +1,8 @@
 {"command": "bash -c cd worker && node --test", "exit_status": 0, "id": "worker-unit", "test_counts": {"fail": 0, "pass": 1754, "skipped": 1, "tests": 1755}}
-{"command": "bash -c node --test test/*.test.mjs", "exit_status": 0, "id": "site-unit", "test_counts": {"fail": 0, "pass": 5183, "skipped": 1, "tests": 5184}}
+{"command": "bash -c node --test test/*.test.mjs", "exit_status": 0, "id": "site-unit", "test_counts": {"fail": 0, "pass": 5200, "skipped": 1, "tests": 5201}}
 {"command": "bash -c node --test test/contract/*.test.mjs", "exit_status": 0, "id": "contract-unit", "test_counts": {"fail": 0, "pass": 181, "skipped": 0, "tests": 181}}
 {"command": "node tools/architecture_evidence_shards.mjs --check", "exit_status": 0, "id": "architecture-evidence-shards", "test_counts": null}
-{"command": "node tools/reconcile_architecture.mjs --check --output-dir <temp-dir>//cityscroll-architecture-evidence.EyuEzC", "exit_status": 0, "id": "architecture-reconcile", "test_counts": null}
+{"command": "node tools/reconcile_architecture.mjs --check --output-dir <fresh-temp-dir>", "exit_status": 0, "id": "architecture-reconcile", "test_counts": null}
 {"command": "node tools/backtest_architecture_canaries.mjs --check", "exit_status": 0, "id": "architecture-canaries", "test_counts": null}
 {"command": "node tools/card_reconciliation_guard.mjs", "exit_status": 0, "id": "card-reconciliation", "test_counts": null}
 {"command": "node tools/build_capability_topology.mjs --check", "exit_status": 0, "id": "card-projection", "test_counts": null}
