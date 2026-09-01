@@ -1,0 +1,41 @@
+{
+  "schema": "cityscroll.working-copy-measurement-environment.v1",
+  "revision": "f095d4b8d844d1a969c70e4909dc0f65960f1a7d",
+  "revision_branch": "main",
+  "operating_system": {
+    "family": "macOS",
+    "product_version": "26.5.2",
+    "build_version": "25F84",
+    "architecture": "arm64",
+    "cpu_cores": 4
+  },
+  "filesystem": {
+    "class": "APFS",
+    "mount": "/",
+    "copy_on_write_clone": true,
+    "hardlink_support": true,
+    "note": "APFS supports both hard links and copy-on-write file clones. st_blocks reports each clone at full size, so allocated bytes cannot see copy-on-write sharing; the free-space-delta experiments record the true incremental cost."
+  },
+  "tool_versions": {
+    "git": "2.54.0",
+    "node": "v24.16.0",
+    "npm": "11.13.0",
+    "pnpm": "10.15.1 (pinned via worker/package.json packageManager, resolved through corepack)",
+    "pnpm_on_path": "11.24.0 (not used; the install script pins the version)",
+    "corepack": "0.35.0",
+    "python": "3.14.6",
+    "du": "BSD du (macOS); -A reports apparent size, default reports allocated blocks"
+  },
+  "measurement_tools": {
+    "footprint": "tools/measure_working_copy_footprint.py",
+    "timing": "tools/measure_provisioning_time.sh",
+    "summary": "tools/summarize_working_copy_evidence.py"
+  },
+  "conditions": {
+    "shared_machine": true,
+    "load_recorded_per_trial": true,
+    "os_page_cache_purged": false,
+    "cold_definition": "cold = no pre-existing content-addressed store objects and no pre-existing local Git objects for the measured source. The operating-system page cache is deliberately not purged, because purging is a whole-machine operation on a shared host; cold and warm therefore describe tool-level caches only and are never blended in a single row.",
+    "warm_definition": "warm = a populated shared dependency store, installed with the network disabled (--offline) so a warm row can never silently include a network fetch."
+  }
+}
