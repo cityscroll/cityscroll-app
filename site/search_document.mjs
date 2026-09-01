@@ -14,6 +14,8 @@ import {
   searchDestinationForResult,
   searchFamilyForResult,
 } from "./search_lens_handoff.mjs";
+import { buildSearchRenderPlan } from "./search_render_plan.mjs";
+import { recordSearchExecution, searchActivityScope } from "./search_activity_receipt.mjs";
 
 const MAX_QUERY_LENGTH = 240;
 const SEARCH_TIMEOUT_MS = 12000;
@@ -207,18 +209,13 @@ function appendFamilyReceipt(body, family) {
   body.append(receipt);
 }
 
-function renderResults(root, payload) {
-  const results = Array.isArray(payload?.results) ? payload.results : [];
+function renderResults(root, plan) {
+  const payload = plan.keyword_payload;
   const families = new Map((payload?.lanes || []).map((family) => [family?.id, family]));
-  const grouped = Object.fromEntries(LANES.map((lane) => [lane, []]));
-  for (const record of results) {
-    const lane = searchResultLane(record);
-    if (!lane || !searchResultHref(record)) continue;
-    grouped[lane].push(record);
-  }
   let renderedCount = 0;
-  for (const lane of LANES) {
-    const items = grouped[lane];
+  for (const group of plan.families) {
+    const lane = group.id;
+    const items = group.items;
     const elements = laneElements(root, lane);
     if (!elements.body) continue;
     const family = families.get(lane);
@@ -245,8 +242,8 @@ function renderResults(root, payload) {
     }
     const list = document.createElement("div");
     list.className = "topic-search-results";
-    for (const record of items) {
-      const rendered = renderResult(record, payload);
+    for (const item of items) {
+      const rendered = renderResult(item.record, payload);
       if (rendered) {
         list.append(rendered);
         renderedCount += 1;
@@ -421,21 +418,18 @@ function renderSemanticCandidate(candidate) {
   return article;
 }
 
-function renderSemanticResults(root, response, keywordCoverage = null) {
+function renderSemanticResults(root, plan) {
   root.querySelector("[data-semantic-lanes]")?.removeAttribute("hidden");
   root.querySelector("[data-keyword-lanes]")?.setAttribute("hidden", "");
-  renderCoverage(root, keywordCoverage, response.groups.reduce(
-    (total, group) => total + group.candidates.length,
-    0,
-  ));
+  renderCoverage(root, plan.coverage, plan.rendered_count);
 
-  for (const group of response.groups) {
+  for (const group of plan.families) {
     const elements = semanticLaneElements(root, group.id);
     if (!elements.body || !elements.status) continue;
     elements.body.className = "topic-search-lane-body";
     elements.body.setAttribute("aria-busy", "false");
     elements.body.replaceChildren();
-    if (!group.candidates.length) {
+    if (!group.count) {
       elements.status.textContent = tr("topic_search_no_matches_status", null, "No matches");
       elements.body.textContent = tr(
         "topic_search_bounded_empty",
@@ -444,39 +438,28 @@ function renderSemanticResults(root, response, keywordCoverage = null) {
       );
       continue;
     }
-    elements.status.textContent = group.candidates.length === 1
+    elements.status.textContent = group.count === 1
       ? tr("one_result", null, "1 result")
-      : tr("results_count", { n: group.candidates.length }, "{n} results");
+      : tr("results_count", { n: group.count }, "{n} results");
     const list = document.createElement("div");
     list.className = "topic-search-results";
-    group.candidates.forEach((candidate) => list.append(renderSemanticCandidate(candidate)));
+    group.items.forEach((item) => list.append(renderSemanticCandidate(item.candidate)));
     elements.body.append(list);
   }
 }
 
-function renderCombinedResults(root, response, keywordPayload, keywordCoverage = null) {
+function renderCombinedResults(root, plan) {
   root.querySelector("[data-semantic-lanes]")?.removeAttribute("hidden");
   root.querySelector("[data-keyword-lanes]")?.setAttribute("hidden", "");
 
+  const keywordPayload = plan.keyword_payload;
   const families = new Map((keywordPayload?.lanes || []).map((family) => [family?.id, family]));
-  const grouped = Object.fromEntries(LANES.map((lane) => [lane, []]));
-  for (const record of keywordPayload?.results || []) {
-    const lane = searchResultLane(record);
-    if (!lane || !searchResultHref(record)) continue;
-    grouped[lane].push(record);
-  }
 
   let renderedCount = 0;
-  for (const group of response.groups) {
+  for (const group of plan.families) {
     const elements = semanticLaneElements(root, group.id);
     if (!elements.body || !elements.status) continue;
-    const semanticHrefs = new Set(group.candidates
-      .map((candidate) => candidate.source.canonical_href)
-      .filter(Boolean));
-    const keywordResults = grouped[group.id].filter((record) => (
-      !semanticHrefs.has(searchResultHref(record))
-    ));
-    const count = group.candidates.length + keywordResults.length;
+    const count = group.count;
     elements.body.className = "topic-search-lane-body";
     elements.body.setAttribute("aria-busy", "false");
     elements.body.replaceChildren();
@@ -496,12 +479,13 @@ function renderCombinedResults(root, response, keywordPayload, keywordCoverage =
     }
     const list = document.createElement("div");
     list.className = "topic-search-results";
-    group.candidates.forEach((candidate) => {
-      list.append(renderSemanticCandidate(candidate));
-      renderedCount += 1;
-    });
-    for (const record of keywordResults) {
-      const rendered = renderResult(record, keywordPayload);
+    for (const item of group.items) {
+      if (item.kind === "semantic") {
+        list.append(renderSemanticCandidate(item.candidate));
+        renderedCount += 1;
+        continue;
+      }
+      const rendered = renderResult(item.record, keywordPayload);
       if (rendered) {
         list.append(rendered);
         renderedCount += 1;
@@ -510,14 +494,35 @@ function renderCombinedResults(root, response, keywordPayload, keywordCoverage =
     elements.body.append(list);
     appendFamilyReceipt(elements.body, families.get(group.id));
   }
-  renderCoverage(root, keywordCoverage, renderedCount);
+  renderCoverage(root, plan.coverage, renderedCount);
 }
 
-function renderLegacyResults(root, payload, coverage = null) {
+function renderLegacyResults(root, plan) {
   root.querySelector("[data-semantic-lanes]")?.setAttribute("hidden", "");
   root.querySelector("[data-keyword-lanes]")?.removeAttribute("hidden");
-  const matchCount = renderResults(root, payload);
-  renderCoverage(root, coverage, matchCount);
+  const matchCount = renderResults(root, plan);
+  renderCoverage(root, plan.coverage, matchCount);
+}
+
+function renderUnavailableState(root) {
+  renderCoverage(root, null);
+  for (const family of SEMANTIC_CIVIC_OBJECT_FAMILIES) {
+    setSemanticLaneState(
+      root,
+      family,
+      tr("topic_search_unavailable_status", null, "Unavailable"),
+      tr("could_not_reach", null, "The latest CityScroll snapshot is unavailable. Retry."),
+      "is-error",
+    );
+  }
+}
+
+/** Paint the settled execution. Every mode paints from the same render plan. */
+function paintResults(root, plan) {
+  if (plan.mode === "combined") renderCombinedResults(root, plan);
+  else if (plan.mode === "semantic") renderSemanticResults(root, plan);
+  else if (plan.mode === "legacy") renderLegacyResults(root, plan);
+  else renderUnavailableState(root);
 }
 
 function renderInitialState(root, query) {
@@ -623,60 +628,72 @@ async function loadResults(root, query) {
     && semantic.groups.some((group) => group.candidates.length);
   const hasKeywordResults = Boolean(keywordPayload?.results.length);
 
+  lastResponse = await settledResponse({
+    semantic,
+    hasSemanticResults,
+    keywordPayload,
+    hasKeywordResults,
+    keywordCoverage,
+    candidateLegacy,
+  });
+  const plan = buildSearchRenderPlan(lastResponse);
+  paintResults(root, plan);
+  observeSearchExecution(query, plan);
+}
+
+/** Resolve which response the reader actually ends up looking at. */
+async function settledResponse({
+  semantic,
+  hasSemanticResults,
+  keywordPayload,
+  hasKeywordResults,
+  keywordCoverage,
+  candidateLegacy,
+}) {
   if (semantic?.state === "typed" && hasSemanticResults && hasKeywordResults) {
-    lastResponse = { state: "combined", semantic, keyword: keywordPayload, keywordCoverage };
-    renderCombinedResults(root, semantic, keywordPayload, keywordCoverage);
-    return;
+    return { state: "combined", semantic, keyword: keywordPayload, keywordCoverage };
   }
   if (keywordPayload && hasKeywordResults) {
-    lastResponse = { state: "legacy", payload: keywordPayload, coverage: keywordCoverage };
-    renderLegacyResults(root, keywordPayload, keywordCoverage);
-    return;
+    return { state: "legacy", payload: keywordPayload, coverage: keywordCoverage };
   }
   if (semantic?.state === "typed") {
-    renderSemanticResults(root, semantic, keywordCoverage);
-    lastResponse = {
-      state: "semantic",
-      semantic,
-      keywordCoverage,
-    };
-    return;
+    return { state: "semantic", semantic, keyword: keywordPayload, keywordCoverage };
   }
   if (candidateLegacy) {
-    const candidateCoverage = await canonicalSearchCoverage(candidateLegacy);
-    lastResponse = { state: "legacy", payload: candidateLegacy, coverage: candidateCoverage };
-    renderLegacyResults(root, candidateLegacy, candidateCoverage);
-    return;
+    return {
+      state: "legacy",
+      payload: candidateLegacy,
+      coverage: await canonicalSearchCoverage(candidateLegacy),
+    };
   }
   if (keywordPayload) {
-    lastResponse = { state: "legacy", payload: keywordPayload, coverage: keywordCoverage };
-    renderLegacyResults(root, keywordPayload, keywordCoverage);
-    return;
+    return { state: "legacy", payload: keywordPayload, coverage: keywordCoverage };
   }
-  renderCoverage(root, null);
-  for (const family of SEMANTIC_CIVIC_OBJECT_FAMILIES) {
-    setSemanticLaneState(
-      root,
-      family,
-      tr("topic_search_unavailable_status", null, "Unavailable"),
-      tr("could_not_reach", null, "The latest CityScroll snapshot is unavailable. Retry."),
-      "is-error",
-    );
+  return { state: "unavailable" };
+}
+
+/**
+ * Observe the settled execution once, from the same plan that just painted.
+ * Fail-soft by construction: nothing here is awaited and nothing can throw into
+ * the render path, so Search behaves identically whether or not intake works.
+ */
+function observeSearchExecution(query, plan) {
+  try {
+    void recordSearchExecution(plan, {
+      query,
+      scope: searchActivityScope(new URLSearchParams(location.search)),
+      origins: apiOrigins(),
+    });
+  } catch {
+    // A completed Search never depends on its own observation.
   }
 }
 
 let lastResponse = null;
 
 function repaintResults(root) {
-  if (lastResponse?.state === "semantic") {
-    renderSemanticResults(root, lastResponse.semantic, lastResponse.keywordCoverage);
-  }
-  else if (lastResponse?.state === "combined") {
-    renderCombinedResults(root, lastResponse.semantic, lastResponse.keyword, lastResponse.keywordCoverage);
-  }
-  else if (lastResponse?.state === "legacy") {
-    renderLegacyResults(root, lastResponse.payload, lastResponse.coverage);
-  }
+  // Language switches repaint the same settled execution; they never re-observe it.
+  if (lastResponse) paintResults(root, buildSearchRenderPlan(lastResponse));
 }
 
 function render() {

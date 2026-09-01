@@ -69,6 +69,12 @@ import {
 } from "./admin_performance.mjs";
 import { projectFeedbackDeskItem } from "./lib/feedback_desk.mjs";
 import {
+  SEARCH_ACTIVITY_DEFAULT_READ_LIMIT,
+  SEARCH_ACTIVITY_DEVELOPER_KEY_PREFIX,
+  SEARCH_ACTIVITY_KEY_PREFIX,
+  SEARCH_ACTIVITY_MAX_READ_LIMIT,
+} from "./lib/search_activity.mjs";
+import {
   loadReportAdjudication,
   listReportAdjudications,
   persistReportAdjudication,
@@ -1479,6 +1485,51 @@ function privateJson(obj, status) {
     status,
     headers: { "Content-Type": "application/json", "Cache-Control": "private, no-store" },
   });
+}
+
+// GET /admin/search-activity?key=… — private read model over recent search-execution
+// receipts. FAIL CLOSED: 404 until ADMIN_KEY is set. Read-only, newest first, and
+// bounded: receipt keys sort descending by time, so `limit` reads exactly one page
+// instead of scanning the namespace. Production and developer receipts live under
+// disjoint prefixes, so developer activity is inspectable without ever being mixed
+// into a production cut. Nothing here is served publicly or on /stats.
+export async function handleAdminSearchActivity(req, env) {
+  const auth = checkAdminKey(req, env);
+  if (!auth.ok) return auth.res;
+  if (req.method !== "GET") return json({ error: "method not allowed" }, 405);
+  if (!env.ALERT_STATE) return json({ error: "no-store" }, 503);
+
+  const url = new URL(req.url);
+  const requestedLimit = Number(url.searchParams.get("limit") || SEARCH_ACTIVITY_DEFAULT_READ_LIMIT);
+  const limit = Number.isSafeInteger(requestedLimit) && requestedLimit > 0
+    ? Math.min(requestedLimit, SEARCH_ACTIVITY_MAX_READ_LIMIT)
+    : SEARCH_ACTIVITY_DEFAULT_READ_LIMIT;
+  const trafficClass = url.searchParams.get("traffic_class") === "developer"
+    ? "developer"
+    : "production";
+  const prefix = trafficClass === "developer"
+    ? SEARCH_ACTIVITY_DEVELOPER_KEY_PREFIX
+    : SEARCH_ACTIVITY_KEY_PREFIX;
+
+  const items = [];
+  try {
+    const listed = await env.ALERT_STATE.list({ prefix, limit });
+    for (const key of listed.keys || []) {
+      let value = null;
+      try { value = JSON.parse(await env.ALERT_STATE.get(key.name)); } catch { /* skip */ }
+      if (value) items.push(value);
+      if (items.length >= limit) break;
+    }
+  } catch {
+    return json({ error: "read-failed" }, 503);
+  }
+
+  return privateJson({
+    traffic_class: trafficClass,
+    limit,
+    count: items.length,
+    items,
+  }, 200);
 }
 
 // POST /admin/digest-catchup?key=… — operator-triggered catch-up evaluation. Selects subs
