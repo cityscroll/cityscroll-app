@@ -1,0 +1,50 @@
+{
+  "inputs": [
+    {
+      "blob": "0b74a1cb5466d7c8e71ec69dee771681d334bc25",
+      "id": "routing-manifest",
+      "path": "tools/card-profile/profiles.v1.json",
+      "source": "worktree"
+    },
+    {
+      "blob": "dcc4b48f6fcd198fda76b2067df090c6827369c1",
+      "id": "profile-config",
+      "path": "tools/card-profile/profile.config.v1.json",
+      "source": "worktree"
+    },
+    {
+      "blob": "1c0baa0d5938d078ff9d4d84fe2a66f2df1f0f54",
+      "id": "sparse-patterns",
+      "path": "tools/card-profile/card-work.sparse",
+      "source": "worktree"
+    },
+    {
+      "blob": "532e144133e2181562e40ca6ef6039d27d4545fb",
+      "id": "closure-manifest",
+      "path": "tools/card-profile/closure.v1.json",
+      "source": "worktree"
+    },
+    {
+      "blob": "78ebb540d87a0bcc9823a4d73e444eef0e5ea592",
+      "id": "dependency-lock",
+      "path": "worker/pnpm-lock.yaml",
+      "source": "worktree"
+    },
+    {
+      "blob": "52c424b2d36387ec6c65b11626bf912d591be9a1",
+      "id": "toolchain-pin",
+      "path": "worker/package.json",
+      "source": "worktree"
+    }
+  ],
+  "manifest_digest": "c3d7223179021b4bf455e726c7f6bd58c4aabff735c0d7cc6f0fac154d9a3830",
+  "manifest_version": 1,
+  "profile_override": null,
+  "provision_identity": "6d3ddcbc0aa6dca1bf12da39c80cb4af8f6b4bfd53071b0522c3b47ffe9f4f03",
+  "provisioned_profile": "focused-reduced",
+  "revision": "aada32830a21fbba5413d1ccf2ef2f29b1381c53",
+  "routing_reason": "Implementing one card against a bounded set of profile-supported gate classes. This is the surface the reduced profile was measured for, and the only one it may be handed to.",
+  "routing_rule": "focused-card-work-verified",
+  "schema": "cityscroll.card-profile.identity.v1",
+  "work_surface": "focused-card-work"
+}

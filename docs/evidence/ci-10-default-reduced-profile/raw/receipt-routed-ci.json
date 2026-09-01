@@ -2,9 +2,9 @@
   "schema": "cityscroll.card-profile.provision-receipt.v1",
   "note": "deterministic_digest covers the deterministic block only, which is exactly what this tool observes about the checkout. The context block records caller-supplied inputs and the measurement block holds figures a second run may legitimately move; neither is digested, so --check re-derives the digest from the checkout alone.",
   "deterministic": {
-    "profile": "focused-reduced",
-    "profile_title": "Reduced working copy for focused card work",
-    "provisioned_profile_name": "card-work",
+    "profile": "full",
+    "profile_title": "Full-checkout control",
+    "provisioned_profile_name": "full-checkout",
     "manifest_version": 1,
     "manifest_digest": "c3d7223179021b4bf455e726c7f6bd58c4aabff735c0d7cc6f0fac154d9a3830",
     "provision_identity": "6d3ddcbc0aa6dca1bf12da39c80cb4af8f6b4bfd53071b0522c3b47ffe9f4f03",
@@ -48,10 +48,10 @@
       }
     ],
     "object_mode": {
-      "sparse_checkout": true,
+      "sparse_checkout": false,
       "shallow_repository": false,
-      "promisor_remote": true,
-      "partial_clone_filter": "blob:none",
+      "promisor_remote": false,
+      "partial_clone_filter": null,
       "full_history_available": true,
       "full_history_fallback": "already complete"
     },
@@ -86,8 +86,8 @@
       ]
     },
     "hydration": {
-      "applicable": true,
-      "note": "tracked paths materialised beyond the committed pattern list",
+      "applicable": false,
+      "note": "the full-checkout control materialises every tracked path",
       "paths": []
     },
     "integrity": {
@@ -95,19 +95,19 @@
       "fsck_method": "--connectivity-only verifies the object graph without demanding blobs a partial clone deliberately did not fetch, so it is the meaningful integrity check in both profiles",
       "commits_reachable_from_head": 1586,
       "working_tree_clean": true,
-      "tracked_paths_not_materialised": 1910
+      "tracked_paths_not_materialised": 0
     },
     "recorded_identity": {
       "present": true,
       "manifest_digest": "c3d7223179021b4bf455e726c7f6bd58c4aabff735c0d7cc6f0fac154d9a3830",
-      "provisioned_profile": "focused-reduced",
-      "work_surface": "focused-card-work",
-      "routing_rule": "focused-card-work-verified",
+      "provisioned_profile": "full",
+      "work_surface": "ci",
+      "routing_rule": "full-only-surface",
       "profile_override": null,
       "stale": false
     }
   },
-  "deterministic_digest": "d265f58f0cbb4ad89eca1c735e529a51fbc894618c3afb426bdacced68f11ef6",
+  "deterministic_digest": "c242d977913110a5975ca338f84ab439b248d94a4e39c09acdb49e988e870c48",
   "context": {
     "note": "Supplied by the caller, not observed here, so it is reported rather than digested.",
     "routing_decision": null,
@@ -121,7 +121,7 @@
       "tracked_file_count": 5718,
       "categories": {
         "dependency_view": {
-          "logical_bytes": 330480550,
+          "logical_bytes": 330479970,
           "allocated_bytes": 344707072
         },
         "generated_site_output": {
@@ -129,37 +129,37 @@
           "allocated_bytes": 0
         },
         "generated_warehouse": {
-          "logical_bytes": 0,
+          "logical_bytes": 288,
           "allocated_bytes": 0
         },
         "git_metadata": {
-          "logical_bytes": 40806392,
-          "allocated_bytes": 41525248
+          "logical_bytes": 511883182,
+          "allocated_bytes": 522891264
         },
         "other_overhead": {
-          "logical_bytes": 188416,
+          "logical_bytes": 317120,
           "allocated_bytes": 0
         },
         "tracked_other": {
-          "logical_bytes": 65529423,
-          "allocated_bytes": 71864320
+          "logical_bytes": 223257385,
+          "allocated_bytes": 230531072
         },
         "tracked_site_data": {
-          "logical_bytes": 63802082,
-          "allocated_bytes": 63864832
+          "logical_bytes": 467174007,
+          "allocated_bytes": 468582400
         },
         "tracked_site_other": {
-          "logical_bytes": 17971358,
-          "allocated_bytes": 19714048
+          "logical_bytes": 79829883,
+          "allocated_bytes": 83025920
         },
         "tracked_warehouse": {
-          "logical_bytes": 1140095,
-          "allocated_bytes": 1249280
+          "logical_bytes": 38171978,
+          "allocated_bytes": 38785024
         }
       },
       "total": {
-        "logical_bytes": 519918316,
-        "allocated_bytes": 542924800
+        "logical_bytes": 1651113813,
+        "allocated_bytes": 1688522752
       },
       "hardlink_dedup": {
         "entries": 0,
@@ -168,8 +168,8 @@
       "shared_dependency_store_note": "The shared dependency store is measured separately and is never folded into a checkout total; see docs/evidence/ci-09-working-copy-reduction/raw/footprint-shared-store.json"
     },
     "provisioning_timing": null,
-    "packs": 3,
-    "pack_size_kib": 38498,
+    "packs": 1,
+    "pack_size_kib": 498949,
     "loose_objects": 0
   }
 }

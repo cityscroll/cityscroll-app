@@ -176,16 +176,32 @@ python3 "$ROOT/tools/measure_working_copy_footprint.py" \
 
 # --- 3. fail-closed probes in the provisioned reduced checkout ---------------
 
+# Every probe declares what it expects. A probe that merely records an exit
+# status is a log, not a check: the first version of the missing-blob probes
+# recorded exit 0 under descriptions asserting failure, and nothing noticed.
+PROBE_FAILURES=0
 probe() {
-  local id="$1" dir="$2" description="$3"; shift 3
+  local id="$1" dir="$2" expect="$3" description="$4"; shift 4
   local status=0
   ( cd "$dir" && "$@" ) >/dev/null 2>&1 || status=$?
+  local met="yes"
+  case "$expect" in
+    zero) [[ "$status" -eq 0 ]] || met="no" ;;
+    non-zero) [[ "$status" -ne 0 ]] || met="no" ;;
+    *) [[ "$status" -eq "$expect" ]] || met="no" ;;
+  esac
+  if [[ "$met" == "no" ]]; then
+    echo "PROBE EXPECTATION NOT MET: $id expected $expect, got $status" >&2
+    PROBE_FAILURES=$((PROBE_FAILURES + 1))
+  fi
   PROBE_ID="$id" PROBE_STATUS="$status" PROBE_DESC="$description" OUT="$OUT" \
-  PROBE_CMD="$*" python3 - <<'PYEOF'
+  PROBE_EXPECT="$expect" PROBE_MET="$met" PROBE_CMD="$*" python3 - <<'PYEOF'
 import json, os
 record = {
     "id": os.environ["PROBE_ID"],
     "exit_status": int(os.environ["PROBE_STATUS"]),
+    "expected": os.environ["PROBE_EXPECT"],
+    "expectation_met": os.environ["PROBE_MET"] == "yes",
     "command": os.environ["PROBE_CMD"],
     "description": os.environ["PROBE_DESC"],
 }
@@ -197,67 +213,73 @@ PYEOF
 heartbeat "running fail-closed probes in the provisioned reduced checkout"
 DEFERRED="$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["deferred_hydration_set"]["paths"][0])' "$ROOT/tools/card-profile/closure.v1.json")"
 
-probe routed-status "$FOCUSED_DEST" \
+probe routed-status "$FOCUSED_DEST" zero \
   "The provisioned checkout reports itself as the reduced profile and its recorded identity matches this revision's inputs." \
   tools/provision_card_profile.sh status
-probe undeclared-surface-fails-closed "$FOCUSED_DEST" \
+probe undeclared-surface-fails-closed "$FOCUSED_DEST" 2 \
   "A work surface the manifest does not declare is refused before anything is provisioned, rather than defaulting to the reduced profile." \
   node tools/card_profile_router.mjs --decide --surface an-undeclared-work-surface
-probe undeclared-gate-fails-closed "$FOCUSED_DEST" \
+probe undeclared-gate-fails-closed "$FOCUSED_DEST" 2 \
   "A gate class classified neither way is refused, because nothing is known about what it reads." \
   node tools/card_profile_router.mjs --decide --surface focused-card-work --gate an-undeclared-gate-class
-probe full-only-surface-takes-control "$FOCUSED_DEST" \
-  "A full-checkout-only surface selects the control explicitly, exit 5 recording that the reduced profile was required and refused." \
+probe full-only-surface-takes-control "$FOCUSED_DEST" 5 \
+  "A full-checkout-only surface selects the control explicitly; exit 5 records that the reduced profile was required and refused." \
   node tools/card_profile_router.mjs --decide --surface deployment --require focused-reduced
-probe stale-profile-takes-control "$FOCUSED_DEST" \
+probe stale-profile-takes-control "$FOCUSED_DEST" 5 \
   "A recorded manifest digest that does not match this revision's inputs routes to the control instead of trusting the closure." \
   node tools/card_profile_router.mjs --decide --surface focused-card-work --recorded-digest 0000000000000000000000000000000000000000000000000000000000000000 --require focused-reduced
-probe deferred-path-takes-control "$FOCUSED_DEST" \
+probe deferred-path-takes-control "$FOCUSED_DEST" 5 \
   "Work naming a path the profile defers routes to the control rather than being handed a checkout that lacks it." \
   node tools/card_profile_router.mjs --decide --surface focused-card-work --path "$DEFERRED" --require focused-reduced
-probe missing-path-named "$FOCUSED_DEST" \
+probe missing-path-named "$FOCUSED_DEST" non-zero \
   "A direct read of a deferred tracked path raises the named profile failure carrying the hydrate command, not a bare missing file." \
   node --require ./tools/card_profile_sentinel.cjs -e "require('node:fs').readFileSync('$DEFERRED','utf8')"
-probe swallowed-miss-bare "$FOCUSED_DEST" \
+probe swallowed-miss-bare "$FOCUSED_DEST" zero \
   "A check that swallows the missing input and asserts nothing exits 0 on its own. This is the pass-by-omission the contract has to prevent." \
   node test/fixtures/card-profile/swallowed-missing-input.mjs
-probe swallowed-miss-gated "$FOCUSED_DEST" \
+probe swallowed-miss-gated "$FOCUSED_DEST" 4 \
   "The same check through the gate front door fails, because the sentinel recorded a missing tracked path whatever the check returned." \
   node tools/verify_card_profile.mjs --gate worker-unit -- node test/fixtures/card-profile/swallowed-missing-input.mjs
-probe gate-refused-evidence-placement "$FOCUSED_DEST" \
+probe gate-refused-evidence-placement "$FOCUSED_DEST" 3 \
   "A full-checkout-only gate class is refused by the front door before it runs, carrying the routing rule that refused it." \
   node tools/verify_card_profile.mjs --gate evidence-placement
-probe merge-base-resolves "$FOCUSED_DEST" \
+probe gate-refused-cutover-receipt "$FOCUSED_DEST" 3 \
+  "The control-plane cutover receipt is refused too. CI-09 declared it profile-supported on a recorded read set; it asserts that retained evidence projections resolve with an existence check, which that recording could not see, so this card reclassified it." \
+  node tools/verify_card_profile.mjs --gate cutover-receipt
+probe merge-base-resolves "$FOCUSED_DEST" zero \
   "The routed reduced profile keeps complete commit history, so a guard that resolves a merge base against the default branch still works in it." \
   git merge-base HEAD origin/main
 
-# The distinct failure mode a partial clone introduces: the path is in the
-# working tree, but its bytes live behind the promisor remote. With the remote
-# unreachable the read must fail loudly rather than yield an empty or truncated
-# object.
+# The distinct failure mode a partial clone introduces: the path is named in the
+# tree, but its bytes live behind the promisor remote. GIT_NO_LAZY_FETCH is what
+# makes the first probe meaningful — without it, asking whether the object is
+# present is itself a request to go and fetch it.
 heartbeat "forcing the missing-blob case"
 MISSING_BLOB_DEST="$SCRATCH/missing-blob"
 rm -rf "$MISSING_BLOB_DEST"
 "$ROOT/tools/provision_card_profile.sh" provision --dest "$MISSING_BLOB_DEST" --rev "$REV" \
   --source "$SOURCE" --surface focused-card-work --no-install >/dev/null
 DEFERRED_BLOB="$(git -C "$MISSING_BLOB_DEST" rev-parse "HEAD:$DEFERRED")"
-probe missing-blob-not-fetched-locally "$MISSING_BLOB_DEST" \
-  "The blob behind a deferred path is genuinely absent from the local object store, so the reduction is real rather than a working-tree trick." \
-  git cat-file -e "$DEFERRED_BLOB"
+probe missing-blob-absent-locally "$MISSING_BLOB_DEST" non-zero \
+  "With lazy fetching disabled, the blob behind a deferred path is genuinely absent from the local object store, so the reduction is real rather than a working-tree trick." \
+  env GIT_NO_LAZY_FETCH=1 git cat-file -e "$DEFERRED_BLOB"
 git -C "$MISSING_BLOB_DEST" remote set-url origin "file:///nonexistent-promisor-remote-for-this-probe"
-probe missing-blob-unreachable-promisor "$MISSING_BLOB_DEST" \
-  "With the promisor remote unreachable, hydrating a deferred blob fails loudly instead of materialising an empty file." \
+probe missing-blob-unreachable-promisor "$MISSING_BLOB_DEST" non-zero \
+  "With the promisor remote unreachable, reading a deferred blob fails loudly instead of yielding an empty or truncated object." \
   git cat-file blob "$DEFERRED_BLOB"
-probe missing-blob-hydration-refused "$MISSING_BLOB_DEST" \
+probe missing-blob-hydration-refused "$MISSING_BLOB_DEST" non-zero \
   "The documented hydrate route fails the same way rather than reporting success over an object it could not fetch." \
   tools/provision_card_profile.sh hydrate "$DEFERRED"
-probe missing-blob-path-still-absent "$MISSING_BLOB_DEST" \
+probe missing-blob-path-still-absent "$MISSING_BLOB_DEST" non-zero \
   "After the refused hydration the path is still absent, so a failed fetch never leaves a partial input behind that a later check could read as present." \
   test -f "$DEFERRED"
 git -C "$MISSING_BLOB_DEST" remote set-url origin "$SOURCE"
-probe missing-blob-hydration-succeeds-when-reachable "$MISSING_BLOB_DEST" \
+probe missing-blob-hydration-succeeds-when-reachable "$MISSING_BLOB_DEST" zero \
   "With the promisor remote restored the same hydration succeeds, so the failure above was the unreachable remote and not a broken profile." \
   tools/provision_card_profile.sh hydrate "$DEFERRED"
+probe missing-blob-present-after-hydration "$MISSING_BLOB_DEST" zero \
+  "And the path is present afterwards, which is what makes the deferred set one documented command away rather than lost." \
+  test -f "$DEFERRED"
 
 # --- 4. object integrity and history in both provisioned profiles ------------
 
@@ -303,10 +325,20 @@ PYEOF
 
 # --- 5. supported gate classes, run in both provisioned profiles -------------
 
+# A gate class the manifest declares profile-supported has to actually pass in a
+# provisioned reduced checkout. Recording the exit status without asserting it is
+# how a misclassification survives: cutover-receipt was declared supported on a
+# recorded read set that could not see its existence checks, and only running it
+# in the real profile exposed that.
+GATE_FAILURES=0
 run_gate() {
   local gate="$1" dir="$2" variant="$3"; shift 3
   local status=0
   ( cd "$dir" && node tools/verify_card_profile.mjs --gate "$gate" -- "$@" ) >/dev/null 2>&1 || status=$?
+  if [[ "$status" -ne 0 ]]; then
+    echo "GATE CLASS FAILED: $gate in $variant (exit $status)" >&2
+    GATE_FAILURES=$((GATE_FAILURES + 1))
+  fi
   GATE="$gate" VARIANT="$variant" STATUS="$status" OUT="$OUT" python3 - <<'PYEOF'
 import json, os
 record = {"gate_class": os.environ["GATE"], "variant": os.environ["VARIANT"], "exit_status": int(os.environ["STATUS"])}
@@ -315,19 +347,27 @@ with open(os.path.join(os.environ["OUT"], "gate-probes.jsonl"), "a", encoding="u
 PYEOF
 }
 
-heartbeat "running supported gate classes in both provisioned profiles"
+heartbeat "running every profile-supported gate class in both provisioned profiles"
 : > "$OUT/gate-probes.jsonl"
 for pair in "routed-focused:$FOCUSED_DEST" "routed-ci:$CONTROL_DEST"; do
   variant="${pair%%:*}"; dir="${pair#*:}"
+  reconcile_out="$(mktemp -d "${TMPDIR:-/tmp}/cityscroll-architecture-evidence.XXXXXX")"
   run_gate card-profile-contract "$dir" "$variant" node tools/verify_card_profile.mjs --check
   run_gate architecture-evidence-shards "$dir" "$variant" node tools/architecture_evidence_shards.mjs --check
+  run_gate architecture-reconcile "$dir" "$variant" node tools/reconcile_architecture.mjs --check --output-dir "$reconcile_out"
   run_gate architecture-canaries "$dir" "$variant" node tools/backtest_architecture_canaries.mjs --check
   run_gate card-reconciliation "$dir" "$variant" node tools/card_reconciliation_guard.mjs
   run_gate agents-router "$dir" "$variant" node tools/agents_router_guard.mjs --check
-  run_gate cutover-receipt "$dir" "$variant" node tools/rcp05_cutover_receipt.mjs --check
+  run_gate worker-unit "$dir" "$variant" bash -c 'cd worker && node --test'
+  rm -rf "$reconcile_out"
 done
 
 if [[ "$KEEP" != "1" ]]; then
   rm -rf "$FOCUSED_DEST" "$CONTROL_DEST" "$MISSING_BLOB_DEST"
+fi
+
+if [[ "$PROBE_FAILURES" -ne 0 || "$GATE_FAILURES" -ne 0 ]]; then
+  echo "evidence run failed: $PROBE_FAILURES probe expectation(s) unmet, $GATE_FAILURES gate class failure(s)" >&2
+  exit 1
 fi
 heartbeat "done; receipts are in $OUT"

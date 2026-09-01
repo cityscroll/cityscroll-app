@@ -160,7 +160,8 @@ returned** — so a check that swallows an absent input cannot pass by omission.
 The supported and full-checkout-only gate classes, each with its reason, are
 listed in `tools/card-profile/closure.v1.json`. The site standards, site unit,
 generated-document, evidence-placement, reading-level, accessibility, browser,
-Pages build and release-surface families all require the full checkout.
+Pages build, release-surface and control-plane cutover-receipt families all
+require the full checkout.
 
 ## When a path is missing
 

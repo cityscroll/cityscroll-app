@@ -159,7 +159,7 @@
       "profile": "full",
       "full_only": true,
       "reason": "The RCP-03 evidence-placement receipt was measured reading 3,535 tracked paths totalling 615.4 MiB, close to the whole tracked tree, and the per-tree inputs it derives from span every documentation tree.",
-      "local_gate_note": "The RCP-05 cutover receipt check is a profile-supported gate class on its own, measured at 66 tracked paths. This surface is the control-plane check set, which includes evidence placement."
+      "local_gate_note": "No control-plane check is profile-supported. CI-09 declared the RCP-05 cutover receipt supported on a recorded read set of 66 tracked paths; that recording could not see the check's existence assertions over retained evidence projections, which reach into deferred trees, and this card measured it failing in a provisioned reduced checkout and reclassified it."
     },
     {
       "id": "evidence",

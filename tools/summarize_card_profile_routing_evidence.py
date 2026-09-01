@@ -206,9 +206,12 @@ def timing_table(raw: str) -> str:
 
 def probe_table(raw: str) -> str:
     records = read_jsonl(os.path.join(raw, "fail-closed-probes.jsonl"))
-    rows = ["| Probe | Exit | What it shows |", "| --- | ---: | --- |"]
+    rows = ["| Probe | Expected | Exit | Met | What it shows |", "| --- | --- | ---: | --- | --- |"]
     for record in records:
-        rows.append(f"| `{record['id']}` | {record['exit_status']} | {cell(record['description'])} |")
+        rows.append(
+            f"| `{record['id']}` | `{record.get('expected', '')}` | {record['exit_status']} "
+            f"| {'yes' if record.get('expectation_met') else '**no**'} | {cell(record['description'])} |"
+        )
     return "\n".join(rows) + "\n"
 
 

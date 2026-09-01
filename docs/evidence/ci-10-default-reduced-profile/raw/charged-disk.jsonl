@@ -1,1 +1,6 @@
-{"charged_bytes": -619814912, "method": "free-space delta across one provisioning run on the scratch volume", "schema": "cityscroll.card-profile-charged-disk.v1", "trial": 1, "variant": "routed-focused"}
+{"charged_bytes": 251027456, "method": "free-space delta across one provisioning run on the scratch volume", "schema": "cityscroll.card-profile-charged-disk.v1", "trial": 1, "variant": "routed-focused"}
+{"charged_bytes": 202653696, "method": "free-space delta across one provisioning run on the scratch volume", "schema": "cityscroll.card-profile-charged-disk.v1", "trial": 2, "variant": "routed-focused"}
+{"charged_bytes": 203321344, "method": "free-space delta across one provisioning run on the scratch volume", "schema": "cityscroll.card-profile-charged-disk.v1", "trial": 3, "variant": "routed-focused"}
+{"charged_bytes": 1351979008, "method": "free-space delta across one provisioning run on the scratch volume", "schema": "cityscroll.card-profile-charged-disk.v1", "trial": 1, "variant": "routed-ci"}
+{"charged_bytes": 1517756416, "method": "free-space delta across one provisioning run on the scratch volume", "schema": "cityscroll.card-profile-charged-disk.v1", "trial": 2, "variant": "routed-ci"}
+{"charged_bytes": 1348354048, "method": "free-space delta across one provisioning run on the scratch volume", "schema": "cityscroll.card-profile-charged-disk.v1", "trial": 3, "variant": "routed-ci"}
