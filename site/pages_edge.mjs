@@ -28,7 +28,7 @@ import {
   joinsForProvision,
   mandateRowsFromLookup,
 } from "./statutory_mandate_provision_join.mjs";
-import { canonicalizeBrowseUrl } from "./route_migration.mjs";
+import { canonicalizeBrowseUrl, legacyBrowseRecordSearchTarget } from "./route_migration.mjs";
 import { entityHref, entityRouteRef } from "./entity_pivot.mjs";
 import { renderEntityPivotLink } from "./edge_summary.mjs";
 import { buildLocalConstellation, renderLocalConstellationHTML } from "./local_constellation.mjs";
@@ -1307,6 +1307,12 @@ export default {
     const adminCode = safeAdminCode(url.pathname);
     if (adminCode) return handleAdminCode(request, env, adminCode);
     const browse = browseRoute(url.pathname);
+    if (browse.kind === "landing") {
+      // A record search that was posted back to Browse as traversal metadata is
+      // canonically a Search request.
+      const recordSearch = legacyBrowseRecordSearchTarget(url.href);
+      if (recordSearch) return Response.redirect(new URL(recordSearch, url.origin), 302);
+    }
     if (browse.kind === "facet") return handleBrowse(request, env, browse.facet);
     if (browse.kind === "concept") return handleBrowseConcept(request, env, browse.concept);
     if (browse.kind === "object") return handleBrowseObject(request, env, browse.object);

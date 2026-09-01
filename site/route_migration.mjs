@@ -5,6 +5,12 @@ import {
   PEOPLE_ORGANIZATIONS_SURFACE,
   STAFFING_SURFACE,
 } from "./browse_surface_contracts.mjs";
+import {
+  PLACE_KEYS,
+  RECORD_SEARCH_QUERY_KEY,
+  RECORD_SEARCH_ROUTE,
+  normalizeTopicQuery,
+} from "./walk_entry.mjs";
 
 export const CANONICAL_ORIGIN = "https://cityscroll.org";
 
@@ -54,6 +60,36 @@ export function canonicalizeBrowseUrl(value, { origin = CANONICAL_ORIGIN } = {})
     url.searchParams.set("facet", JSON.stringify(values));
   }
   return `${url.pathname}${url.search}`;
+}
+
+/** The root Browse landing, with or without its trailing slash. */
+const BROWSE_LANDING_PATH = /^\/browse\/?$/;
+
+/** Canonicalize the legacy root-Browse record search into canonical Search state.
+ *
+ * The root Browse record-search control once posted its topic back to `/browse/`
+ * as `walk_query`, where nothing consumed it. That exact shape — the landing
+ * route, a browse-origin walk, and a non-empty topic — is a record search that
+ * was serialized as traversal metadata, so it canonicalizes to `/search/?q=`.
+ *
+ * An explicitly chosen traversal (`search`, `near_you`, `object`) means what it
+ * says and is never rewritten, even though it also carries `walk_query`.
+ */
+export function legacyBrowseRecordSearchTarget(value, { origin = CANONICAL_ORIGIN } = {}) {
+  const url = safeUrl(value, origin);
+  if (!BROWSE_LANDING_PATH.test(url.pathname)) return null;
+  if (url.searchParams.get("walk_source") !== "browse") return null;
+  const query = normalizeTopicQuery(url.searchParams.get("walk_query"));
+  if (!query) return null;
+  const params = new URLSearchParams();
+  params.set(RECORD_SEARCH_QUERY_KEY, query);
+  const language = safeLanguage(url.searchParams.get("lang"));
+  if (language && language !== "en") params.set("lang", language);
+  for (const key of PLACE_KEYS) {
+    const place = normalizeTopicQuery(url.searchParams.get(key), 80);
+    if (place) params.set(key, place);
+  }
+  return `${RECORD_SEARCH_ROUTE}?${params}`;
 }
 
 export const LEGACY_ROUTE_PARAMETERS = Object.freeze({

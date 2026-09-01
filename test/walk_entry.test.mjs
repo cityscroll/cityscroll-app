@@ -58,10 +58,77 @@ test("Browse landing exposes all measured entry families, including Places", () 
       { id: "places", label: "Places", primaryFacet: null, count: 1, description: "Places", children: [{ id: "near-you", label: "Near you", route: "/near-you/" }] },
     ],
   });
-  assert.match(html, /Start a walk/);
   assert.match(html, /data-walk-family="money"/);
   assert.match(html, /data-walk-family="places"/);
   assert.match(html, /href="\/near-you\/"/);
+});
+
+test("the Browse record-search control submits canonical Search state, not traversal metadata", () => {
+  const html = renderWalkEntry({ source: "browse", recordSearch: true, actionLabel: "Search records" });
+  assert.match(html, /<form[^>]*action="\/search\/"[^>]*data-walk-record-search="true"/);
+  assert.match(html, /<input id="walk-entry-query" name="q"/);
+  assert.match(html, /<button type="submit">Search records<\/button>/);
+  assert.doesNotMatch(html, /name="walk_query"/);
+  assert.doesNotMatch(html, /name="walk_source"/);
+  // The control is record search, so it no longer announces itself as a walk.
+  assert.doesNotMatch(html, /Start a walk/);
+});
+
+test("a record-search control carries explicit place context into canonical Search", () => {
+  const html = renderWalkEntry({
+    source: "browse",
+    recordSearch: true,
+    place: { borough: "Queens", community_district: "Q04", latitude: "40.7" },
+  });
+  assert.match(html, /<input type="hidden" name="boro" value="Queens">/);
+  assert.match(html, /<input type="hidden" name="cd" value="Q04">/);
+  assert.doesNotMatch(html, /name="latitude"/);
+});
+
+test("an explicit walk control keeps its own traversal fields", () => {
+  const html = renderWalkEntry({
+    source: "near_you",
+    query: "rats",
+    actionHref: "/near-you/?v=0&q=rats&walk_source=near_you&walk_query=rats",
+    actionLabel: "Walk this place",
+  });
+  assert.match(html, /Start a walk/);
+  assert.match(html, /<input id="walk-entry-query" name="walk_query" value="rats"/);
+  assert.match(html, /<input type="hidden" name="walk_source" value="near_you">/);
+  assert.doesNotMatch(html, /data-walk-record-search/);
+});
+
+test("a query-bearing walk hands the topic to a typed destination as canonical q", () => {
+  for (const [route, expected] of [
+    ["/browse/contracts/", "/browse/contracts/?q=rats"],
+    ["/browse/meetings/", "/browse/meetings/?q=rats"],
+  ]) {
+    const href = walkEntryHref(route, { source: "search", query: "rats" });
+    assert.ok(href.includes(expected), `${href} carries ${expected}`);
+    const url = new URL(href, "https://cityscroll.org");
+    assert.equal(url.searchParams.get("q"), "rats");
+    // T7 traversal context survives beside the canonical topic.
+    assert.equal(url.searchParams.get("walk_source"), "search");
+    assert.equal(url.searchParams.get("walk_query"), "rats");
+  }
+});
+
+test("the Browse landing itself stays a walk address rather than a record-search address", () => {
+  const href = walkEntryHref("/browse/", { source: "search", query: "rats" });
+  const url = new URL(href, "https://cityscroll.org");
+  assert.equal(url.searchParams.has("q"), false);
+  assert.equal(url.searchParams.get("walk_query"), "rats");
+});
+
+test("a typed destination receives a normalized topic and escapes it in rendered markup", () => {
+  const malicious = '<script>alert("x")</script>';
+  const href = walkEntryHref("/browse/meetings/", { source: "object", query: `  ${malicious}  ` });
+  const url = new URL(href, "https://cityscroll.org");
+  assert.equal(url.searchParams.get("q"), malicious);
+  assert.ok(!href.includes("<script>"), "the topic is percent-encoded in the address");
+  const html = renderWalkEntry({ source: "browse", recordSearch: true, query: malicious });
+  assert.match(html, /value="&lt;script&gt;alert\(&quot;x&quot;\)&lt;\/script&gt;"/);
+  assert.doesNotMatch(html, /<script>alert/);
 });
 
 test("place labels remain human-readable and coordinate-free", () => {
