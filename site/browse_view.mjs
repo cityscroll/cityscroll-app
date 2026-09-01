@@ -1179,8 +1179,9 @@ export function renderBrowseLanding(landing) {
   const walkEntry = renderWalkEntry({
     source: "browse",
     families: walkFamilies,
-    actionHref: "/browse/",
     actionLabel: "Search records",
+    recordSearch: true,
+    description: "Search every record type at once, then open the collection you want.",
   });
   return `<div class="browse-landing" data-build-rendered="browse-landing">
     <header class="browse-landing-head">

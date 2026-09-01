@@ -1,0 +1,522 @@
+{
+  "schema": "cityscroll.capture_receipt.v1",
+  "capture": "search-to-browse-query-handoff",
+  "topic": "rats",
+  "routes": {
+    "legacy-browse-search": "/browse/?walk_query=rats&walk_source=browse",
+    "canonical-search": "/search/?q=rats",
+    "explicit-walk": "/browse/?walk_query=rats&walk_source=search"
+  },
+  "viewports": [
+    [
+      390,
+      844
+    ],
+    [
+      1440,
+      900
+    ]
+  ],
+  "before_source": "git worktree at origin/main + node tools/build_primary_documents.mjs",
+  "after_source": "working tree site/ + node tools/build_primary_documents.mjs",
+  "files": [
+    {
+      "name": "before/legacy-browse-search-390.png",
+      "bytes": 62995,
+      "sha256": "84830e071108f1f636312c89f8e27374da3afd93a3c5407b5e620f34641ecfb1",
+      "viewport": [
+        390,
+        844
+      ],
+      "observed": {
+        "url": "/browse/?walk_query=rats&walk_source=browse",
+        "canonical_query": null,
+        "walk_source": "browse",
+        "walk_query": "rats",
+        "document": "browse-landing",
+        "control": {
+          "action": "/browse/",
+          "field": "walk_query",
+          "value": "",
+          "submit": "Search records",
+          "posts_walk_fields": true
+        },
+        "walk_kicker": "Start a walk",
+        "family_links": [
+          "/browse/contracts/",
+          "/browse/people/",
+          "/browse/zoning/",
+          "/browse/rules/",
+          "/browse/meetings/",
+          "/browse/exams/"
+        ],
+        "coverage_state": null,
+        "coverage_text": "",
+        "lanes": [],
+        "records": [],
+        "typed_handoffs": []
+      }
+    },
+    {
+      "name": "before/canonical-search-390.png",
+      "bytes": 59931,
+      "sha256": "3ea8667688d195c5194b618941d23f545001d6d488e00c7c15a62e9d20ab5c36",
+      "viewport": [
+        390,
+        844
+      ],
+      "observed": {
+        "url": "/search/?q=rats",
+        "canonical_query": "rats",
+        "walk_source": null,
+        "walk_query": null,
+        "document": "search",
+        "control": {
+          "action": "/search/",
+          "field": "q",
+          "value": "rats",
+          "submit": "Search",
+          "posts_walk_fields": false
+        },
+        "walk_kicker": "",
+        "family_links": [],
+        "coverage_state": "complete",
+        "coverage_text": "2 matches",
+        "lanes": [],
+        "records": [
+          "Mayoral Rat Reduction Initiative",
+          "Continue in Contracts",
+          "New Rules Relating to Rat Inspections",
+          "Continue in Meetings"
+        ],
+        "typed_handoffs": [
+          {
+            "surface": "money",
+            "route": "/browse/contracts/",
+            "canonical_query": "rats"
+          },
+          {
+            "surface": "meetings",
+            "route": "/browse/meetings/",
+            "canonical_query": "rats"
+          }
+        ]
+      }
+    },
+    {
+      "name": "before/explicit-walk-390.png",
+      "bytes": 61462,
+      "sha256": "c34fbbf7a1f4c0a08255bc24f48c3da42525ec88a7b67d3ce430574087ac8922",
+      "viewport": [
+        390,
+        844
+      ],
+      "observed": {
+        "url": "/browse/?walk_query=rats&walk_source=search",
+        "canonical_query": null,
+        "walk_source": "search",
+        "walk_query": "rats",
+        "document": "browse-landing",
+        "control": {
+          "action": "/browse/",
+          "field": "walk_query",
+          "value": "rats",
+          "submit": "Search records",
+          "posts_walk_fields": true
+        },
+        "walk_kicker": "Start a walk",
+        "family_links": [
+          "/browse/contracts/?walk_source=search&walk_query=rats",
+          "/browse/people/?walk_source=search&walk_query=rats",
+          "/browse/zoning/?walk_source=search&walk_query=rats",
+          "/browse/rules/?walk_source=search&walk_query=rats",
+          "/browse/meetings/?walk_source=search&walk_query=rats",
+          "/browse/exams/?walk_source=search&walk_query=rats"
+        ],
+        "coverage_state": null,
+        "coverage_text": "",
+        "lanes": [],
+        "records": [],
+        "typed_handoffs": []
+      }
+    },
+    {
+      "name": "before/legacy-browse-search-1440.png",
+      "bytes": 156276,
+      "sha256": "02afc9a47b2a30b7127931979d46067b20d524de7b78930ddd1b01110627488a",
+      "viewport": [
+        1440,
+        900
+      ],
+      "observed": {
+        "url": "/browse/?walk_query=rats&walk_source=browse",
+        "canonical_query": null,
+        "walk_source": "browse",
+        "walk_query": "rats",
+        "document": "browse-landing",
+        "control": {
+          "action": "/browse/",
+          "field": "walk_query",
+          "value": "",
+          "submit": "Search records",
+          "posts_walk_fields": true
+        },
+        "walk_kicker": "Start a walk",
+        "family_links": [
+          "/browse/contracts/",
+          "/browse/people/",
+          "/browse/zoning/",
+          "/browse/rules/",
+          "/browse/meetings/",
+          "/browse/exams/"
+        ],
+        "coverage_state": null,
+        "coverage_text": "",
+        "lanes": [],
+        "records": [],
+        "typed_handoffs": []
+      }
+    },
+    {
+      "name": "before/canonical-search-1440.png",
+      "bytes": 109524,
+      "sha256": "d4b861ef52e9eca1ac095ebed96eff4971ff2ef8ace566ee7c0c0250f10fada0",
+      "viewport": [
+        1440,
+        900
+      ],
+      "observed": {
+        "url": "/search/?q=rats",
+        "canonical_query": "rats",
+        "walk_source": null,
+        "walk_query": null,
+        "document": "search",
+        "control": {
+          "action": "/search/",
+          "field": "q",
+          "value": "rats",
+          "submit": "Search",
+          "posts_walk_fields": false
+        },
+        "walk_kicker": "",
+        "family_links": [],
+        "coverage_state": "complete",
+        "coverage_text": "2 matches",
+        "lanes": [],
+        "records": [
+          "Mayoral Rat Reduction Initiative",
+          "Continue in Contracts",
+          "New Rules Relating to Rat Inspections",
+          "Continue in Meetings"
+        ],
+        "typed_handoffs": [
+          {
+            "surface": "money",
+            "route": "/browse/contracts/",
+            "canonical_query": "rats"
+          },
+          {
+            "surface": "meetings",
+            "route": "/browse/meetings/",
+            "canonical_query": "rats"
+          }
+        ]
+      }
+    },
+    {
+      "name": "before/explicit-walk-1440.png",
+      "bytes": 162669,
+      "sha256": "294f49baa1cc3fc7be03f5bfda95f425ad8d52ff10016f9d4253d34a0d72ba61",
+      "viewport": [
+        1440,
+        900
+      ],
+      "observed": {
+        "url": "/browse/?walk_query=rats&walk_source=search",
+        "canonical_query": null,
+        "walk_source": "search",
+        "walk_query": "rats",
+        "document": "browse-landing",
+        "control": {
+          "action": "/browse/",
+          "field": "walk_query",
+          "value": "rats",
+          "submit": "Search records",
+          "posts_walk_fields": true
+        },
+        "walk_kicker": "Start a walk",
+        "family_links": [
+          "/browse/contracts/?walk_source=search&walk_query=rats",
+          "/browse/people/?walk_source=search&walk_query=rats",
+          "/browse/zoning/?walk_source=search&walk_query=rats",
+          "/browse/rules/?walk_source=search&walk_query=rats",
+          "/browse/meetings/?walk_source=search&walk_query=rats",
+          "/browse/exams/?walk_source=search&walk_query=rats"
+        ],
+        "coverage_state": null,
+        "coverage_text": "",
+        "lanes": [],
+        "records": [],
+        "typed_handoffs": []
+      }
+    },
+    {
+      "name": "after/legacy-browse-search-390.png",
+      "bytes": 59931,
+      "sha256": "3ea8667688d195c5194b618941d23f545001d6d488e00c7c15a62e9d20ab5c36",
+      "viewport": [
+        390,
+        844
+      ],
+      "observed": {
+        "url": "/search/?q=rats",
+        "canonical_query": "rats",
+        "walk_source": null,
+        "walk_query": null,
+        "document": "search",
+        "control": {
+          "action": "/search/",
+          "field": "q",
+          "value": "rats",
+          "submit": "Search",
+          "posts_walk_fields": false
+        },
+        "walk_kicker": "",
+        "family_links": [],
+        "coverage_state": "complete",
+        "coverage_text": "2 matches",
+        "lanes": [],
+        "records": [
+          "Mayoral Rat Reduction Initiative",
+          "Continue in Contracts",
+          "New Rules Relating to Rat Inspections",
+          "Continue in Meetings"
+        ],
+        "typed_handoffs": [
+          {
+            "surface": "money",
+            "route": "/browse/contracts/",
+            "canonical_query": "rats"
+          },
+          {
+            "surface": "meetings",
+            "route": "/browse/meetings/",
+            "canonical_query": "rats"
+          }
+        ]
+      }
+    },
+    {
+      "name": "after/canonical-search-390.png",
+      "bytes": 59931,
+      "sha256": "3ea8667688d195c5194b618941d23f545001d6d488e00c7c15a62e9d20ab5c36",
+      "viewport": [
+        390,
+        844
+      ],
+      "observed": {
+        "url": "/search/?q=rats",
+        "canonical_query": "rats",
+        "walk_source": null,
+        "walk_query": null,
+        "document": "search",
+        "control": {
+          "action": "/search/",
+          "field": "q",
+          "value": "rats",
+          "submit": "Search",
+          "posts_walk_fields": false
+        },
+        "walk_kicker": "",
+        "family_links": [],
+        "coverage_state": "complete",
+        "coverage_text": "2 matches",
+        "lanes": [],
+        "records": [
+          "Mayoral Rat Reduction Initiative",
+          "Continue in Contracts",
+          "New Rules Relating to Rat Inspections",
+          "Continue in Meetings"
+        ],
+        "typed_handoffs": [
+          {
+            "surface": "money",
+            "route": "/browse/contracts/",
+            "canonical_query": "rats"
+          },
+          {
+            "surface": "meetings",
+            "route": "/browse/meetings/",
+            "canonical_query": "rats"
+          }
+        ]
+      }
+    },
+    {
+      "name": "after/explicit-walk-390.png",
+      "bytes": 61353,
+      "sha256": "a0d89e889b0df90b33e78d632557bf4dcd0803646d0079bc5103414036221ca1",
+      "viewport": [
+        390,
+        844
+      ],
+      "observed": {
+        "url": "/browse/?walk_query=rats&walk_source=search",
+        "canonical_query": null,
+        "walk_source": "search",
+        "walk_query": "rats",
+        "document": "browse-landing",
+        "control": {
+          "action": "/search/",
+          "field": "q",
+          "value": "rats",
+          "submit": "Search records",
+          "posts_walk_fields": false
+        },
+        "walk_kicker": "Search",
+        "family_links": [
+          "/browse/contracts/?q=rats&walk_source=search&walk_query=rats",
+          "/browse/people/?q=rats&walk_source=search&walk_query=rats",
+          "/browse/zoning/?q=rats&walk_source=search&walk_query=rats",
+          "/browse/rules/?q=rats&walk_source=search&walk_query=rats",
+          "/browse/meetings/?q=rats&walk_source=search&walk_query=rats",
+          "/browse/exams/?q=rats&walk_source=search&walk_query=rats"
+        ],
+        "coverage_state": null,
+        "coverage_text": "",
+        "lanes": [],
+        "records": [],
+        "typed_handoffs": []
+      }
+    },
+    {
+      "name": "after/legacy-browse-search-1440.png",
+      "bytes": 109564,
+      "sha256": "d8142a57076751b5a75a7e210b3eff2bf165cc89702b583b69beca19f13b31f1",
+      "viewport": [
+        1440,
+        900
+      ],
+      "observed": {
+        "url": "/search/?q=rats",
+        "canonical_query": "rats",
+        "walk_source": null,
+        "walk_query": null,
+        "document": "search",
+        "control": {
+          "action": "/search/",
+          "field": "q",
+          "value": "rats",
+          "submit": "Search",
+          "posts_walk_fields": false
+        },
+        "walk_kicker": "",
+        "family_links": [],
+        "coverage_state": "complete",
+        "coverage_text": "2 matches",
+        "lanes": [],
+        "records": [
+          "Mayoral Rat Reduction Initiative",
+          "Continue in Contracts",
+          "New Rules Relating to Rat Inspections",
+          "Continue in Meetings"
+        ],
+        "typed_handoffs": [
+          {
+            "surface": "money",
+            "route": "/browse/contracts/",
+            "canonical_query": "rats"
+          },
+          {
+            "surface": "meetings",
+            "route": "/browse/meetings/",
+            "canonical_query": "rats"
+          }
+        ]
+      }
+    },
+    {
+      "name": "after/canonical-search-1440.png",
+      "bytes": 109571,
+      "sha256": "f93db174165c1d4a18941b684316be4dcdfa2a111f0a3095998e2643c9600428",
+      "viewport": [
+        1440,
+        900
+      ],
+      "observed": {
+        "url": "/search/?q=rats",
+        "canonical_query": "rats",
+        "walk_source": null,
+        "walk_query": null,
+        "document": "search",
+        "control": {
+          "action": "/search/",
+          "field": "q",
+          "value": "rats",
+          "submit": "Search",
+          "posts_walk_fields": false
+        },
+        "walk_kicker": "",
+        "family_links": [],
+        "coverage_state": "complete",
+        "coverage_text": "2 matches",
+        "lanes": [],
+        "records": [
+          "Mayoral Rat Reduction Initiative",
+          "Continue in Contracts",
+          "New Rules Relating to Rat Inspections",
+          "Continue in Meetings"
+        ],
+        "typed_handoffs": [
+          {
+            "surface": "money",
+            "route": "/browse/contracts/",
+            "canonical_query": "rats"
+          },
+          {
+            "surface": "meetings",
+            "route": "/browse/meetings/",
+            "canonical_query": "rats"
+          }
+        ]
+      }
+    },
+    {
+      "name": "after/explicit-walk-1440.png",
+      "bytes": 162242,
+      "sha256": "f7ce177586488091a96f5df1d4643cef6d7f38623eaa97acf0456de0a950d034",
+      "viewport": [
+        1440,
+        900
+      ],
+      "observed": {
+        "url": "/browse/?walk_query=rats&walk_source=search",
+        "canonical_query": null,
+        "walk_source": "search",
+        "walk_query": "rats",
+        "document": "browse-landing",
+        "control": {
+          "action": "/search/",
+          "field": "q",
+          "value": "rats",
+          "submit": "Search records",
+          "posts_walk_fields": false
+        },
+        "walk_kicker": "Search",
+        "family_links": [
+          "/browse/contracts/?q=rats&walk_source=search&walk_query=rats",
+          "/browse/people/?q=rats&walk_source=search&walk_query=rats",
+          "/browse/zoning/?q=rats&walk_source=search&walk_query=rats",
+          "/browse/rules/?q=rats&walk_source=search&walk_query=rats",
+          "/browse/meetings/?q=rats&walk_source=search&walk_query=rats",
+          "/browse/exams/?q=rats&walk_source=search&walk_query=rats"
+        ],
+        "coverage_state": null,
+        "coverage_text": "",
+        "lanes": [],
+        "records": [],
+        "typed_handoffs": []
+      }
+    }
+  ]
+}
