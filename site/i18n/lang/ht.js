@@ -1040,6 +1040,7 @@
     nl_filter_about_label: "Konsènan",
     nl_filter_category_label: "Kategori",
     nl_filter_min_label: "Valè ≥",
+    nl_filter_process_state_label: "Eta pwosesis la",
     nl_filter_max_label: "Valè ≤",
     nl_filter_months: "Dwe fèt nan {n} mwa",
     nl_filter_standard_only: "Metòd estanda sèlman",

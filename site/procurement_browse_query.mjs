@@ -22,7 +22,7 @@ export const PROCUREMENT_BROWSE_FIRST_PAGE_MODES = Object.freeze(["award", "arch
 // added to either consumer must be added here and covered by the equivalence
 // test below; otherwise the bounded projection must fail closed.
 export const PROCUREMENT_BROWSE_QUERY_FIELDS = Object.freeze([
-  "procurement_id", "canonical_href", "procurement_stages", "primary_stage",
+  "procurement_id", "canonical_href", "procurement_stages", "primary_stage", "process_states",
   "request_id", "start_date", "due_date", "agency_name", "short_title", "pin",
   "contract_id", "contract_amount", "vendor_name", "selection_method_description",
   "category_description", "type_of_notice_description", "source_system",
@@ -57,6 +57,9 @@ function queryOptions(options = {}) {
     months: options.months ?? null,
     excludeSpecial: Boolean(options.excludeSpecial),
     entityRefs: Array.isArray(options.entityRefs) ? options.entityRefs : [],
+    processStates: Array.isArray(options.processStates)
+      ? options.processStates
+      : options.processStates ? [options.processStates] : [],
     contractObjectRef: options.contractObjectRef || "",
     sort: options.sort || "newest",
     today: options.today,
@@ -79,6 +82,7 @@ export function procurementBrowseFirstPageKey(options = {}) {
   if (opts.minAmount != null || opts.maxAmount != null || opts.category) return null;
   if (opts.months != null || opts.excludeSpecial) return null;
   if (opts.entityRefs.length || opts.contractObjectRef) return null;
+  if (opts.processStates.length) return null;
   if (opts.sort !== "newest") return null;
   if (opts.limit !== DEFAULT_BROWSE_QUERY_PAGE_SIZE) return null;
   return opts.mode;

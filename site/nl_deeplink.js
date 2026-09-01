@@ -301,7 +301,8 @@ function moneyActiveFilterItems(filter) {
     ? Math.round(Number(f.months))
     : null;
   var excludeSpecial = f.excludeSpecial === true;
-  if (!category && !maxAmount && !months && !excludeSpecial) return [];
+  var processState = compactText(f.processState, 80).toLowerCase();
+  if (!category && !maxAmount && !months && !excludeSpecial && !processState) return [];
 
   var noticeType = f.noticeType === "award" || f.noticeType === "allrfp"
     ? f.noticeType
@@ -321,6 +322,7 @@ function moneyActiveFilterItems(filter) {
   if (maxAmount) items.push({ kind: "maxAmount", value: maxAmount });
   if (months) items.push({ kind: "months", value: months });
   if (excludeSpecial) items.push({ kind: "excludeSpecial", value: true });
+  if (processState) items.push({ kind: "processState", value: processState });
   return items;
 }
 
