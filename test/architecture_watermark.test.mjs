@@ -100,7 +100,7 @@ test("reviewed watermark shards have deterministic ids, owners, and paths", () =
   assert.ok(shards.every((shard) => shard.owner === shard.id));
   assert.deepEqual(aggregateWatermarkShards(shards), committed);
   const rendered = `${JSON.stringify(committed, null, 2)}\n`;
-  assert.equal(createHash("sha256").update(rendered).digest("hex"), "efbe98a484b208676052cb69afd19e2cad9f50e44dd0fc2dd2fda386ff8316f0");
+  assert.equal(createHash("sha256").update(rendered).digest("hex"), "856d57a409ee4515a691666f41eb7814bc9b6a6e1018ff8000b5b2555b4b7ba8");
 });
 
 test("same-key candidates fail instead of resolving by order", () => {
