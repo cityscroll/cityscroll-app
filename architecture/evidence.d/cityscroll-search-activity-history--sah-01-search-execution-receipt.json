@@ -44,6 +44,10 @@
     {
       "id": "search-execution-receipt-worker-tests",
       "path": "worker/test/search_activity.test.mjs"
+    },
+    {
+      "id": "search-execution-receipt-browser-gate",
+      "path": "test/functional/33_search_activity_receipt.py"
     }
   ]
 }
