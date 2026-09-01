@@ -104,7 +104,9 @@ that feed authenticated `/admin/stats`. Missing, expired, malformed, or incorrec
 `production`. Non-production `ANALYTICS_ENVIRONMENT` values also classify as developer and fail
 closed on the writer. All accepted event requests return the same empty HTTP 204 response, so
 token validity is not exposed as a response oracle. The token itself is never written to Analytics
-Engine. Never commit signing material.
+Engine. The private `/search-activity` receipt intake classifies its own `traffic_class` through
+this same token (developer receipts land under a disjoint KV prefix), so one exclusion covers both
+surfaces. Never commit signing material.
 
 Configure the signing secret with `wrangler secret put ANALYTICS_DEV_KEY` (minimum 32 characters).
 That secret is the **developer key** documented in the ops contract (`GET /admin/ops-contract` /
