@@ -1,0 +1,13 @@
+{
+  "schema": "cityscroll.repository-control-plane.evidence-placement-shard.v1",
+  "id": "placement-attestation",
+  "owner": "placement-attestation",
+  "card": "cityscroll-repository-control-plane/rcp-03",
+  "input_revision": "21c3d22a3b2314506fda73229e77c80cc3c26de4",
+  "updated_at": "2026-08-31T00:00:00.000Z",
+  "value": {
+    "privacy_model": "placement-not-deletion",
+    "inspected_main_commit": "21c3d22a3b2314506fda73229e77c80cc3c26de4",
+    "history_treatment": "none; this is a tip-level placement change"
+  }
+}

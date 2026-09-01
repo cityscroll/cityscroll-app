@@ -1,0 +1,21 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-repository-control-plane/rcp-06",
+  "status": "implemented",
+  "fingerprint": "rcp-06-noncolliding-evidence-placement-receipt.v1",
+  "updated_at": "2026-09-01T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "repository-evidence-placement-inputs",
+      "path": "docs/repository-control-plane/evidence-placement.d"
+    },
+    {
+      "id": "repository-evidence-placement-input-schema",
+      "path": "docs/repository-control-plane/evidence-placement-shard.v1.schema.json"
+    },
+    {
+      "id": "repository-evidence-placement-validator",
+      "path": "tools/rcp03_evidence_placement.mjs"
+    }
+  ]
+}

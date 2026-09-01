@@ -1,0 +1,40 @@
+{
+  "schema": "cityscroll.repository-control-plane.evidence-placement-shard.v1",
+  "id": "preservation",
+  "owner": "preservation",
+  "card": "cityscroll-repository-control-plane/rcp-03",
+  "input_revision": "21c3d22a3b2314506fda73229e77c80cc3c26de4",
+  "updated_at": "2026-08-31T00:00:00.000Z",
+  "value": {
+    "architecture": [
+      "ARCHITECTURE.md",
+      "docs/architecture.md",
+      "docs/adr/"
+    ],
+    "runbooks": [
+      "docs/*runbook*.md"
+    ],
+    "source_contracts": [
+      "ontology/",
+      "site/**/*.schema.json"
+    ],
+    "tests": [
+      "test/",
+      "worker/test/"
+    ],
+    "fixtures": [
+      "test/fixtures/"
+    ],
+    "generators": [
+      "tools/build_*.mjs"
+    ],
+    "receipts": [
+      "docs/evidence/",
+      "warehouse/receipts/proof/"
+    ],
+    "mt7_evidence": [
+      "architecture/evidence.d/cityscroll-merge-throughput--mt-7-architecture-evidence-shards.json",
+      "architecture/evidence.d/"
+    ]
+  }
+}
