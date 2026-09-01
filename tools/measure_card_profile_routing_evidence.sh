@@ -333,18 +333,36 @@ PYEOF
 GATE_FAILURES=0
 run_gate() {
   local gate="$1" dir="$2" variant="$3"; shift 3
-  local status=0
-  ( cd "$dir" && node tools/verify_card_profile.mjs --gate "$gate" -- "$@" ) >/dev/null 2>&1 || status=$?
+  local status=0 log
+  log="$(mktemp -t card-profile-gate)"
+  ( cd "$dir" && node tools/verify_card_profile.mjs --gate "$gate" -- "$@" ) > "$log" 2>&1 || status=$?
   if [[ "$status" -ne 0 ]]; then
     echo "GATE CLASS FAILED: $gate in $variant (exit $status)" >&2
+    tail -20 "$log" >&2
     GATE_FAILURES=$((GATE_FAILURES + 1))
   fi
-  GATE="$gate" VARIANT="$variant" STATUS="$status" OUT="$OUT" python3 - <<'PYEOF'
-import json, os
-record = {"gate_class": os.environ["GATE"], "variant": os.environ["VARIANT"], "exit_status": int(os.environ["STATUS"])}
+  # A test family that runs fewer tests in the reduced profile has skipped work
+  # its inputs were missing for, which is a pass by omission even when the exit
+  # status is 0. Recording the counts is what makes that visible.
+  GATE="$gate" VARIANT="$variant" STATUS="$status" OUT="$OUT" LOG="$log" python3 - <<'PYEOF'
+import json, os, re
+
+text = open(os.environ["LOG"], encoding="utf-8", errors="replace").read()
+counts = {}
+for field in ("tests", "pass", "fail", "skipped"):
+    match = re.search(rf"^# {field} (\d+)$", text, re.MULTILINE)
+    if match:
+        counts[field] = int(match.group(1))
+record = {
+    "gate_class": os.environ["GATE"],
+    "variant": os.environ["VARIANT"],
+    "exit_status": int(os.environ["STATUS"]),
+    "test_counts": counts or None,
+}
 with open(os.path.join(os.environ["OUT"], "gate-probes.jsonl"), "a", encoding="utf-8") as handle:
     handle.write(json.dumps(record, sort_keys=True) + "\n")
 PYEOF
+  rm -f "$log"
 }
 
 heartbeat "running every profile-supported gate class in both provisioned profiles"

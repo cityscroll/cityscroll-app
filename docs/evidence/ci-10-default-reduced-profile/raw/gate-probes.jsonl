@@ -1,12 +1,14 @@
 {"exit_status": 0, "gate_class": "card-profile-contract", "variant": "routed-focused"}
 {"exit_status": 0, "gate_class": "architecture-evidence-shards", "variant": "routed-focused"}
+{"exit_status": 0, "gate_class": "architecture-reconcile", "variant": "routed-focused"}
 {"exit_status": 0, "gate_class": "architecture-canaries", "variant": "routed-focused"}
 {"exit_status": 0, "gate_class": "card-reconciliation", "variant": "routed-focused"}
 {"exit_status": 0, "gate_class": "agents-router", "variant": "routed-focused"}
-{"exit_status": 1, "gate_class": "cutover-receipt", "variant": "routed-focused"}
+{"exit_status": 0, "gate_class": "worker-unit", "variant": "routed-focused"}
 {"exit_status": 0, "gate_class": "card-profile-contract", "variant": "routed-ci"}
 {"exit_status": 0, "gate_class": "architecture-evidence-shards", "variant": "routed-ci"}
+{"exit_status": 0, "gate_class": "architecture-reconcile", "variant": "routed-ci"}
 {"exit_status": 0, "gate_class": "architecture-canaries", "variant": "routed-ci"}
 {"exit_status": 0, "gate_class": "card-reconciliation", "variant": "routed-ci"}
 {"exit_status": 0, "gate_class": "agents-router", "variant": "routed-ci"}
-{"exit_status": 0, "gate_class": "cutover-receipt", "variant": "routed-ci"}
+{"exit_status": 0, "gate_class": "worker-unit", "variant": "routed-ci"}

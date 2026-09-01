@@ -1,25 +1,25 @@
 {
   "inputs": [
     {
-      "blob": "0b74a1cb5466d7c8e71ec69dee771681d334bc25",
+      "blob": "ea144938587223f1295e3c4dd1d183ef69498ddd",
       "id": "routing-manifest",
       "path": "tools/card-profile/profiles.v1.json",
       "source": "worktree"
     },
     {
-      "blob": "dcc4b48f6fcd198fda76b2067df090c6827369c1",
+      "blob": "3eb8a3ecf66b275efaff16d1a6a819f785ab7b9e",
       "id": "profile-config",
       "path": "tools/card-profile/profile.config.v1.json",
       "source": "worktree"
     },
     {
-      "blob": "1c0baa0d5938d078ff9d4d84fe2a66f2df1f0f54",
+      "blob": "768531ff140adbdc8307a436ab8079b73b6819f6",
       "id": "sparse-patterns",
       "path": "tools/card-profile/card-work.sparse",
       "source": "worktree"
     },
     {
-      "blob": "532e144133e2181562e40ca6ef6039d27d4545fb",
+      "blob": "442cef0800f6e0a564693d42e3bf67b7c64b2809",
       "id": "closure-manifest",
       "path": "tools/card-profile/closure.v1.json",
       "source": "worktree"
@@ -37,12 +37,12 @@
       "source": "worktree"
     }
   ],
-  "manifest_digest": "c3d7223179021b4bf455e726c7f6bd58c4aabff735c0d7cc6f0fac154d9a3830",
+  "manifest_digest": "1aefe6db83d05317e2dc176eca8ff358d36bbdc246d1b998abab869b8ae0de1f",
   "manifest_version": 1,
   "profile_override": null,
-  "provision_identity": "6d3ddcbc0aa6dca1bf12da39c80cb4af8f6b4bfd53071b0522c3b47ffe9f4f03",
+  "provision_identity": "f9cf2a0f72f9af11918746b606378c10625dbb3910e22a60fdabacd780267f05",
   "provisioned_profile": "focused-reduced",
-  "revision": "aada32830a21fbba5413d1ccf2ef2f29b1381c53",
+  "revision": "05421f08d291795ffefd60cf866c8276a390c53b",
   "routing_reason": "Implementing one card against a bounded set of profile-supported gate classes. This is the surface the reduced profile was measured for, and the only one it may be handed to.",
   "routing_rule": "focused-card-work-verified",
   "schema": "cityscroll.card-profile.identity.v1",

@@ -243,14 +243,23 @@ def gate_probe_table(raw: str) -> str:
     records = read_jsonl(os.path.join(raw, "gate-probes.jsonl"))
     gates = {}
     for record in records:
-        gates.setdefault(record["gate_class"], {})[record["variant"]] = record["exit_status"]
+        gates.setdefault(record["gate_class"], {})[record["variant"]] = record
     rows = [
-        "| Gate class | " + " | ".join(label for _, label in VARIANTS) + " |",
-        "| --- | " + " | ".join("---" for _ in VARIANTS) + " |",
+        "| Gate class | " + " | ".join(label for _, label in VARIANTS) + " | Observed test counts |",
+        "| --- | " + " | ".join("---" for _ in VARIANTS) + " | --- |",
     ]
     for gate, byvariant in gates.items():
-        cells = ["pass" if byvariant.get(v) == 0 else f"exit {byvariant.get(v)}" for v, _ in VARIANTS]
-        rows.append(f"| `{gate}` | " + " | ".join(cells) + " |")
+        cells = []
+        counts = []
+        for variant, _ in VARIANTS:
+            record = byvariant.get(variant, {})
+            cells.append("pass" if record.get("exit_status") == 0 else f"exit {record.get('exit_status')}")
+            if record.get("test_counts"):
+                counts.append(" ".join(f"{k} {v}" for k, v in sorted(record["test_counts"].items())))
+        # Identical counts in both profiles is the property that rules out a
+        # pass reached by skipping work whose input was not materialised.
+        observed = counts[0] if counts and len(set(counts)) == 1 else " / ".join(counts)
+        rows.append(f"| `{gate}` | " + " | ".join(cells) + f" | {observed} |")
     return "\n".join(rows) + "\n"
 
 

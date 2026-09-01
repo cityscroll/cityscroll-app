@@ -1,11 +1,11 @@
 {
   "note": "--connectivity-only is the meaningful integrity check in a partial clone: it verifies the object graph without demanding blobs the profile deliberately did not fetch.",
   "routed-ci": {
-    "commits_reachable_from_head": 1586,
+    "commits_reachable_from_head": 1587,
     "fsck_connectivity_only_exit": 0,
     "loose_objects": 0,
     "merge_base_against_default_branch_exit": 0,
-    "pack_size_kib": 498949,
+    "pack_size_kib": 498968,
     "packs": 1,
     "partial_clone_filter": null,
     "promisor_remote": false,
@@ -14,16 +14,16 @@
     "working_tree_clean": true
   },
   "routed-focused": {
-    "commits_reachable_from_head": 1586,
+    "commits_reachable_from_head": 1587,
     "fsck_connectivity_only_exit": 0,
     "loose_objects": 0,
     "merge_base_against_default_branch_exit": 0,
-    "pack_size_kib": 38498,
+    "pack_size_kib": 38494,
     "packs": 3,
     "partial_clone_filter": "blob:none",
     "promisor_remote": true,
     "shallow_repository": false,
-    "tracked_paths_not_materialised": 1910,
+    "tracked_paths_not_materialised": 1907,
     "working_tree_clean": true
   },
   "schema": "cityscroll.card-profile-routing-integrity.v1"

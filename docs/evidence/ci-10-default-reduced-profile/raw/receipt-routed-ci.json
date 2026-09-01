@@ -6,33 +6,33 @@
     "profile_title": "Full-checkout control",
     "provisioned_profile_name": "full-checkout",
     "manifest_version": 1,
-    "manifest_digest": "c3d7223179021b4bf455e726c7f6bd58c4aabff735c0d7cc6f0fac154d9a3830",
-    "provision_identity": "6d3ddcbc0aa6dca1bf12da39c80cb4af8f6b4bfd53071b0522c3b47ffe9f4f03",
-    "revision": "aada32830a21fbba5413d1ccf2ef2f29b1381c53",
+    "manifest_digest": "1aefe6db83d05317e2dc176eca8ff358d36bbdc246d1b998abab869b8ae0de1f",
+    "provision_identity": "f9cf2a0f72f9af11918746b606378c10625dbb3910e22a60fdabacd780267f05",
+    "revision": "05421f08d291795ffefd60cf866c8276a390c53b",
     "identity_inputs": [
       {
         "id": "routing-manifest",
         "path": "tools/card-profile/profiles.v1.json",
         "source": "worktree",
-        "blob": "0b74a1cb5466d7c8e71ec69dee771681d334bc25"
+        "blob": "ea144938587223f1295e3c4dd1d183ef69498ddd"
       },
       {
         "id": "profile-config",
         "path": "tools/card-profile/profile.config.v1.json",
         "source": "worktree",
-        "blob": "dcc4b48f6fcd198fda76b2067df090c6827369c1"
+        "blob": "3eb8a3ecf66b275efaff16d1a6a819f785ab7b9e"
       },
       {
         "id": "sparse-patterns",
         "path": "tools/card-profile/card-work.sparse",
         "source": "worktree",
-        "blob": "1c0baa0d5938d078ff9d4d84fe2a66f2df1f0f54"
+        "blob": "768531ff140adbdc8307a436ab8079b73b6819f6"
       },
       {
         "id": "closure-manifest",
         "path": "tools/card-profile/closure.v1.json",
         "source": "worktree",
-        "blob": "532e144133e2181562e40ca6ef6039d27d4545fb"
+        "blob": "442cef0800f6e0a564693d42e3bf67b7c64b2809"
       },
       {
         "id": "dependency-lock",
@@ -58,9 +58,9 @@
     "closure": {
       "verified": true,
       "problems": [],
-      "config_sha256": "c018bc8640f91c75f8a27a63bfc9da045087c341321ee7ccc5695827de05eb4f",
-      "patterns_sha256": "045df883c86f32d0f797dd0c842e22234c502c14b3e6117c7290efcedf076561",
-      "required_paths": 2418,
+      "config_sha256": "547a19c53ce4b5999f21bbbecd6feb50dab3c65742dd890cd415507243d795e9",
+      "patterns_sha256": "b2ffbbb87697eb3214ff1ba6579d2fbbeacf8b680c5ea80af2dad66729dae2e9",
+      "required_paths": 2408,
       "deferred_paths": 310,
       "site_data_paths_in_profile": 28,
       "supported_gate_classes": [
@@ -70,7 +70,6 @@
         "architecture-canaries",
         "card-reconciliation",
         "agents-router",
-        "cutover-receipt",
         "card-profile-contract"
       ],
       "full_checkout_only_gate_classes": [
@@ -82,7 +81,8 @@
         "accessibility-browser",
         "pages-build",
         "release-surface",
-        "full-history-guards"
+        "full-history-guards",
+        "cutover-receipt"
       ]
     },
     "hydration": {
@@ -93,13 +93,13 @@
     "integrity": {
       "fsck_connectivity_only_exit": 0,
       "fsck_method": "--connectivity-only verifies the object graph without demanding blobs a partial clone deliberately did not fetch, so it is the meaningful integrity check in both profiles",
-      "commits_reachable_from_head": 1586,
+      "commits_reachable_from_head": 1587,
       "working_tree_clean": true,
       "tracked_paths_not_materialised": 0
     },
     "recorded_identity": {
       "present": true,
-      "manifest_digest": "c3d7223179021b4bf455e726c7f6bd58c4aabff735c0d7cc6f0fac154d9a3830",
+      "manifest_digest": "1aefe6db83d05317e2dc176eca8ff358d36bbdc246d1b998abab869b8ae0de1f",
       "provisioned_profile": "full",
       "work_surface": "ci",
       "routing_rule": "full-only-surface",
@@ -107,7 +107,7 @@
       "stale": false
     }
   },
-  "deterministic_digest": "c242d977913110a5975ca338f84ab439b248d94a4e39c09acdb49e988e870c48",
+  "deterministic_digest": "90170cfb1e7a23c182752630eb589388a2f6a16bd5b24a673b98bd7bda5427b7",
   "context": {
     "note": "Supplied by the caller, not observed here, so it is reported rather than digested.",
     "routing_decision": null,
@@ -118,7 +118,7 @@
     "byte_accounting": {
       "method": "tools/measure_working_copy_footprint.py, CI-08's ordered exhaustive path partition with first rule wins",
       "categories_partition_total": true,
-      "tracked_file_count": 5718,
+      "tracked_file_count": 5726,
       "categories": {
         "dependency_view": {
           "logical_bytes": 330479970,
@@ -133,16 +133,16 @@
           "allocated_bytes": 0
         },
         "git_metadata": {
-          "logical_bytes": 511883182,
+          "logical_bytes": 511904264,
           "allocated_bytes": 522891264
         },
         "other_overhead": {
-          "logical_bytes": 317120,
+          "logical_bytes": 317376,
           "allocated_bytes": 0
         },
         "tracked_other": {
-          "logical_bytes": 223257385,
-          "allocated_bytes": 230531072
+          "logical_bytes": 223284006,
+          "allocated_bytes": 230584320
         },
         "tracked_site_data": {
           "logical_bytes": 467174007,
@@ -158,8 +158,8 @@
         }
       },
       "total": {
-        "logical_bytes": 1651113813,
-        "allocated_bytes": 1688522752
+        "logical_bytes": 1651161772,
+        "allocated_bytes": 1688576000
       },
       "hardlink_dedup": {
         "entries": 0,
@@ -169,7 +169,7 @@
     },
     "provisioning_timing": null,
     "packs": 1,
-    "pack_size_kib": 498949,
+    "pack_size_kib": 498968,
     "loose_objects": 0
   }
 }

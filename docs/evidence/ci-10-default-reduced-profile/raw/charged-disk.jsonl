@@ -1,6 +1,10 @@
-{"charged_bytes": 251027456, "method": "free-space delta across one provisioning run on the scratch volume", "schema": "cityscroll.card-profile-charged-disk.v1", "trial": 1, "variant": "routed-focused"}
-{"charged_bytes": 202653696, "method": "free-space delta across one provisioning run on the scratch volume", "schema": "cityscroll.card-profile-charged-disk.v1", "trial": 2, "variant": "routed-focused"}
-{"charged_bytes": 203321344, "method": "free-space delta across one provisioning run on the scratch volume", "schema": "cityscroll.card-profile-charged-disk.v1", "trial": 3, "variant": "routed-focused"}
-{"charged_bytes": 1351979008, "method": "free-space delta across one provisioning run on the scratch volume", "schema": "cityscroll.card-profile-charged-disk.v1", "trial": 1, "variant": "routed-ci"}
-{"charged_bytes": 1517756416, "method": "free-space delta across one provisioning run on the scratch volume", "schema": "cityscroll.card-profile-charged-disk.v1", "trial": 2, "variant": "routed-ci"}
-{"charged_bytes": 1348354048, "method": "free-space delta across one provisioning run on the scratch volume", "schema": "cityscroll.card-profile-charged-disk.v1", "trial": 3, "variant": "routed-ci"}
+{"charged_bytes": 231866368, "method": "free-space delta across one provisioning run on the scratch volume", "schema": "cityscroll.card-profile-charged-disk.v1", "trial": 1, "variant": "routed-focused"}
+{"charged_bytes": 198975488, "method": "free-space delta across one provisioning run on the scratch volume", "schema": "cityscroll.card-profile-charged-disk.v1", "trial": 2, "variant": "routed-focused"}
+{"charged_bytes": 200212480, "method": "free-space delta across one provisioning run on the scratch volume", "schema": "cityscroll.card-profile-charged-disk.v1", "trial": 3, "variant": "routed-focused"}
+{"charged_bytes": 200515584, "method": "free-space delta across one provisioning run on the scratch volume", "schema": "cityscroll.card-profile-charged-disk.v1", "trial": 4, "variant": "routed-focused"}
+{"charged_bytes": 201904128, "method": "free-space delta across one provisioning run on the scratch volume", "schema": "cityscroll.card-profile-charged-disk.v1", "trial": 5, "variant": "routed-focused"}
+{"charged_bytes": 1344671744, "method": "free-space delta across one provisioning run on the scratch volume", "schema": "cityscroll.card-profile-charged-disk.v1", "trial": 1, "variant": "routed-ci"}
+{"charged_bytes": 1348591616, "method": "free-space delta across one provisioning run on the scratch volume", "schema": "cityscroll.card-profile-charged-disk.v1", "trial": 2, "variant": "routed-ci"}
+{"charged_bytes": 1347170304, "method": "free-space delta across one provisioning run on the scratch volume", "schema": "cityscroll.card-profile-charged-disk.v1", "trial": 3, "variant": "routed-ci"}
+{"charged_bytes": 1345703936, "method": "free-space delta across one provisioning run on the scratch volume", "schema": "cityscroll.card-profile-charged-disk.v1", "trial": 4, "variant": "routed-ci"}
+{"charged_bytes": 1389355008, "method": "free-space delta across one provisioning run on the scratch volume", "schema": "cityscroll.card-profile-charged-disk.v1", "trial": 5, "variant": "routed-ci"}
