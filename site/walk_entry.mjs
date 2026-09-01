@@ -17,13 +17,13 @@ export const RECORD_SEARCH_QUERY_KEY = "q";
 // so the destination filters records instead of only remembering a journey.
 const TYPED_COLLECTION_ROUTE = /^\/browse\/[a-z][a-z0-9-]*\/?$/;
 
-function clean(value, max = 240) {
+function cleanWalkText(value, max = 240) {
   return String(value ?? "").replace(/[\u0000-\u001f\u007f]/g, " ").replace(/\s+/g, " ").trim().slice(0, max);
 }
 
 /** The shared topic normalizer, so a route reading a topic reads it this way. */
 export function normalizeTopicQuery(value, max = 240) {
-  return clean(value, max);
+  return cleanWalkText(value, max);
 }
 
 function esc(value) {
@@ -37,7 +37,7 @@ function esc(value) {
 }
 
 function first(values) {
-  return Array.isArray(values) && values.length ? clean(values[0], 80) : "";
+  return Array.isArray(values) && values.length ? cleanWalkText(values[0], 80) : "";
 }
 
 function sourceLabel(source) {
@@ -48,11 +48,11 @@ function scopePlaceValues(place = {}) {
   const raw = place && typeof place === "object" ? place : {};
   const nested = raw.place && typeof raw.place === "object" ? raw.place : raw;
   return {
-    boro: first(nested.boroughs) || clean(nested.borough ?? nested.boro, 80),
-    cd: first(nested.community_districts) || clean(nested.community_district ?? nested.communityDistrict ?? nested.cd, 20),
-    council: first(nested.council_districts) || clean(nested.council_district ?? nested.councilDistrict ?? nested.council, 20),
-    neighborhood: clean(nested.neighborhood, 80),
-    scope: clean(nested.location_scope ?? nested.locationScope ?? nested.scope, 40),
+    boro: first(nested.boroughs) || cleanWalkText(nested.borough ?? nested.boro, 80),
+    cd: first(nested.community_districts) || cleanWalkText(nested.community_district ?? nested.communityDistrict ?? nested.cd, 20),
+    council: first(nested.council_districts) || cleanWalkText(nested.council_district ?? nested.councilDistrict ?? nested.council, 20),
+    neighborhood: cleanWalkText(nested.neighborhood, 80),
+    scope: cleanWalkText(nested.location_scope ?? nested.locationScope ?? nested.scope, 40),
   };
 }
 
@@ -65,7 +65,7 @@ export function walkEntryHref(baseHref = "/browse/", { source = "search", query 
     url = new URL("/browse/", "https://cityscroll.org");
   }
   for (const key of COORDINATE_KEYS) url.searchParams.delete(key);
-  const safeQuery = clean(query, 240);
+  const safeQuery = cleanWalkText(query, 240);
   // Canonical topic first: a typed destination reads `q`, and the walk fields
   // that follow describe the journey rather than the search.
   if (safeQuery && TYPED_COLLECTION_ROUTE.test(url.pathname)) {
@@ -117,8 +117,8 @@ export function renderWalkEntry({
   recordSearch = false,
 } = {}) {
   const safeSource = Object.hasOwn(SOURCE_LABELS, source) ? source : "browse";
-  const safeQuery = clean(query, 240);
-  const safePlace = clean(placeLabel, 160);
+  const safeQuery = cleanWalkText(query, 240);
+  const safePlace = cleanWalkText(placeLabel, 160);
   const chips = [
     safeQuery ? `<span class="walk-entry-chip"><b>TEXT</b> ${esc(safeQuery)}</span>` : "",
     safePlace ? `<span class="walk-entry-chip walk-entry-chip-place"><b>PLACE</b> ${esc(safePlace)}</span>` : "",
@@ -126,8 +126,8 @@ export function renderWalkEntry({
   ].filter(Boolean).join("");
   const lanes = (Array.isArray(families) ? families : []).map((family) => {
     const state = familyState(family);
-    const label = clean(family?.label || "Records", 80);
-    const href = clean(family?.href, 1000);
+    const label = cleanWalkText(family?.label || "Records", 80);
+    const href = cleanWalkText(family?.href, 1000);
     const target = href && state !== "unsupported"
       ? `<a data-walk-family="${esc(family.id || label)}" href="${esc(href)}">${esc(label)}</a>`
       : `<span>${esc(label)}</span>`;
