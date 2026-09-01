@@ -1,0 +1,46 @@
+{
+  "schema": "cityscroll.repository-control-plane.cutover-shard.v1",
+  "id": "rcp-01-shadow-planning",
+  "owner": "rcp-01-shadow-planning",
+  "card": "cityscroll-repository-control-plane/rcp-05",
+  "kind": "migration",
+  "updated_at": "2026-09-01T00:00:00.000Z",
+  "value": {
+    "register_card": "cityscroll-repository-control-plane/rcp-01",
+    "migration_commit": "2c310bcff9b71c3704493801ef23182375c5357d",
+    "summary": "Repository-authored planning language left the public documents while every measured value, source record, and reproducible inventory stayed in place.",
+    "manifest_entry_count": 47,
+    "dispositions": { "migrate": 7, "split": 40 },
+    "measurements": [
+      {
+        "id": "lens-rollout-register",
+        "kind": "pattern-count",
+        "path": "docs/lens-filter-template.md",
+        "pattern": "lens-tmpl-0[1-5]",
+        "before": 5,
+        "after": 0,
+        "tip_relation": "equal-to-after"
+      },
+      {
+        "id": "frontier-entry-records",
+        "kind": "tree-file-count",
+        "path": "docs/data-frontiers/2026-08/entries",
+        "before": 33,
+        "after": 33,
+        "tip_relation": "equal-to-after"
+      },
+      {
+        "id": "frontier-declared-count",
+        "kind": "json-number",
+        "path": "docs/data-frontiers/2026-08/meta.json",
+        "pointer": "/entry_count",
+        "before": 31,
+        "after": 33,
+        "tip_relation": "equal-to-after"
+      }
+    ],
+    "served_artifact_delta_paths": 0,
+    "history_treatment": "none",
+    "reversible": true
+  }
+}
