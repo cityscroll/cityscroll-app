@@ -3,7 +3,7 @@
   "gate_class": "architecture-canaries",
   "title": "Architecture canary backtest",
   "command": "node tools/backtest_architecture_canaries.mjs --check",
-  "revision": "763b589a580fe9958099e22f31e0623b1a37cb02",
+  "revision": "58e30dcbd49b1a720c38cde74f87cce1d61b044c",
   "exit_status": 0,
   "method": "Recorded by tools/card_profile_sentinel.cjs on a full checkout. Every repository-relative path the process read through fs or loaded as a module, filtered to tracked paths and de-duplicated.",
   "path_count": 2032,

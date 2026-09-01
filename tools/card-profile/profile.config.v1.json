@@ -144,7 +144,7 @@
     {
       "id": "evidence-placement",
       "title": "RCP-03 evidence placement receipt",
-      "reason": "Measured to read 2,571 tracked paths totalling 601.8 MiB, which is close to the whole tracked tree."
+      "reason": "Measured to read 3,535 tracked paths totalling 615.4 MiB, which is close to the whole tracked tree."
     },
     {
       "id": "reading-level",

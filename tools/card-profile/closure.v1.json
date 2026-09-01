@@ -2,7 +2,7 @@
   "schema": "cityscroll.card-profile.closure.v1",
   "profile": "card-work",
   "generated_by": "node tools/derive_card_profile.mjs",
-  "config_sha256": "242925c71351bf0b18ac99b1a48f5a19411e2d36c1a366e00c85c21156abb3ec",
+  "config_sha256": "54b779526a8dc43469d27e5d5b54f7c7cc9f251f449edc2dee5470a06c4325b5",
   "sources": {
     "observed": {
       "description": "Repository paths recorded by tools/card_profile_sentinel.cjs while each supported gate class ran on a full checkout.",
@@ -15,12 +15,12 @@
         {
           "id": "architecture-evidence-shards",
           "recorded": true,
-          "path_count": 51
+          "path_count": 52
         },
         {
           "id": "architecture-reconcile",
           "recorded": true,
-          "path_count": 2101
+          "path_count": 2102
         },
         {
           "id": "architecture-canaries",
@@ -43,7 +43,7 @@
           "path_count": 2128
         }
       ],
-      "path_count": 2397
+      "path_count": 2398
     },
     "static": {
       "description": "Repository paths named by an import specifier or a path-shaped string literal in worker/, site/, tools/ and test/ sources.",
@@ -53,7 +53,7 @@
       "scan_hops": 1,
       "scanned_source_count": 2118,
       "sources_skipped_not_materialised": 0,
-      "path_count": 1857,
+      "path_count": 1862,
       "worker_to_site_reference_count": 187,
       "worker_to_site_data_reference_count": 28,
       "worker_to_site_data_targets": [
@@ -113,7 +113,7 @@
         "warehouse",
         "worker/src/data"
       ],
-      "path_count": 3568
+      "path_count": 3581
     }
   },
   "required_paths": [
@@ -175,6 +175,7 @@
     "architecture/evidence.d/cityscroll-repository-control-plane--rcp-02.json",
     "architecture/evidence.d/cityscroll-repository-control-plane--rcp-03.json",
     "architecture/evidence.d/cityscroll-repository-control-plane--rcp-04.json",
+    "architecture/evidence.d/cityscroll-repository-control-plane--rcp-06.json",
     "architecture/evidence.d/cityscroll-rules-decrol--rd-m3.json",
     "architecture/evidence.d/cityscroll-rules-decrol--rd-m5.json",
     "architecture/evidence.d/cityscroll-rules-decrol--rd-m6.json",
@@ -2898,7 +2899,7 @@
     {
       "id": "evidence-placement",
       "title": "RCP-03 evidence placement receipt",
-      "reason": "Measured to read 2,571 tracked paths totalling 601.8 MiB, which is close to the whole tracked tree."
+      "reason": "Measured to read 3,535 tracked paths totalling 615.4 MiB, which is close to the whole tracked tree."
     },
     {
       "id": "reading-level",
@@ -2929,11 +2930,11 @@
   "missing_path_behaviour": "A tracked path the profile does not materialise is marked skip-worktree in the index. tools/card_profile_sentinel.cjs turns a missing-file error on such a path into CardProfileMissingPath and records it, so a profile gap fails closed instead of passing by omission. tools/provision_card_profile.sh hydrate is the documented route to materialise one.",
   "measured": {
     "note": "A snapshot of what the profile costs at the revision named here. These figures are reporting only; they are not part of the checked contract, because a byte total moves whenever any tracked file does.",
-    "revision": "89533982f9afc6969c8a6c976071b9de488e1d8f",
+    "revision": "58e30dcbd49b1a720c38cde74f87cce1d61b044c",
     "computed_in_reduced_checkout": false,
     "profile_paths": {
-      "count": 3765,
-      "logical_bytes": 148163719
+      "count": 3778,
+      "logical_bytes": 148207751
     },
     "deferred_paths": {
       "count": 310,
@@ -2950,8 +2951,8 @@
       "profile_logical_bytes": 63802082
     },
     "tracked_total": {
-      "count": 5666,
-      "logical_bytes": 807584053
+      "count": 5679,
+      "logical_bytes": 807628085
     },
     "pattern_count": 769
   }

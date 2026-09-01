@@ -342,8 +342,8 @@ did not earn its place is not quietly dropped.
 full-checkout-only in `tools/card-profile/closure.v1.json`, each with its
 reason, and each was probed to confirm it is refused rather than degraded: the
 site standards family, the site and contract unit suites, the generated-document
-and source-contract checks, the evidence-placement receipt (measured at 2,571
-tracked paths and 601.8 MiB, close to the whole tree), the reading-level
+and source-contract checks, the evidence-placement proof (measured at 3,535
+tracked paths and 615.4 MiB, close to the whole tree), the reading-level
 ratchet, the accessibility and browser families, the generated Pages build, the
 release-surface and deployment checks, and any guard needing an ancestor beyond
 a shallow boundary. Four of them were also run green against the control here.
