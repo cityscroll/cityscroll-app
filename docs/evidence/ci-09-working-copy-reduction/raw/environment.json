@@ -12,7 +12,7 @@
     "logical_bytes": "st_size, summed by tools/measure_working_copy_footprint.py"
   },
   "operating_system": "Darwin 25.5.0 (arm64)",
-  "revision": "89533982f9afc6969c8a6c976071b9de488e1d8f",
+  "revision": "be4f842ea237001e49e605a63233828a26753beb",
   "schema": "cityscroll.card-profile-environment.v1",
   "source_class": "remote",
   "tools": {

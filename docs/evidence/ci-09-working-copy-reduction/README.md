@@ -27,13 +27,13 @@ Exact commands for every receipt are in [`commands.md`](commands.md).
 
 ## 1. What the change did, in one paragraph
 
-A fresh reduced profile provisions in **7.9 s** and charges **205.2 MB** of
-disk, against **41.4 s** and **1,353.6 MB** for the full-checkout control at the
-same revision: **5.2x faster and 6.6x smaller**. Both dominants moved. Git
-repository metadata went from **486.8 to 38.8 MiB** (-92.0%), and the tracked
+A fresh reduced profile provisions in **7.8 s** and charges **202.4 MB** of
+disk, against **41.4 s** and **1,348.4 MB** for the full-checkout control at the
+same revision: **5.3x faster and 6.7x smaller**. Both dominants moved. Git
+repository metadata went from **486.8 to 38.9 MiB** (-92.0%), and the tracked
 `site/data` payload went from **445.5 to 60.9 MiB** (-86.3%), 28 of 689 files.
 The saving is not bought by weakening anything: complete commit history survives
-in full (1,584 commits reachable in both profiles), the Worker unit family runs
+in full (1,588 commits reachable in both profiles), the Worker unit family runs
 **1,755 tests with 1,754 passing and 1 skipped in both profiles** — identical
 counts, which is what rules out a pass by omission — and every gate class
 exercised here passes in whichever profile it belongs to. The nine
@@ -137,7 +137,7 @@ is reported only where a group has at least five trials, and smaller groups prin
 
 | Field | Value |
 | --- | --- |
-| Revision | `89533982f9afc6969c8a6c976071b9de488e1d8f` |
+| Revision | `be4f842ea237001e49e605a63233828a26753beb` |
 | Operating system | Darwin 25.5.0 (arm64) |
 | Cores | 10 |
 | Filesystem class | APFS - hard links and copy-on-write file clones both supported |
@@ -166,10 +166,10 @@ Full detail, including the definition of each byte measure, is in
 
 | Set | Files | Logical MiB | Share of tracked payload |
 | --- | ---: | ---: | ---: |
-| Materialised by the profile | 3,765 | 141.30 | 18.3% |
-| Not materialised by the profile | 1,901 | 628.87 | 81.7% |
+| Materialised by the profile | 3,778 | 141.34 | 18.4% |
+| Not materialised by the profile | 1,901 | 628.87 | 81.6% |
 | — of those, named in the deferred hydration set | 310 | 230.05 | 29.9% |
-| **Tracked payload at this revision** | **5,666** | **770.17** | 100.0% |
+| **Tracked payload at this revision** | **5,679** | **770.21** | 100.0% |
 | — of which tracked `site/data` | 689 | 445.53 | 57.8% |
 | — of which `site/data` in the profile | 28 | 60.85 | 13.7% of tracked `site/data` |
 
@@ -179,9 +179,9 @@ The first two rows partition the tracked payload and sum to 100%. The deferred h
 
 | Closure source | What it contributes | Paths |
 | --- | --- | ---: |
-| observed | Repository paths recorded by tools/card_profile_sentinel.cjs while each supported gate class ran on a full checkout. | 2,397 |
-| static | Repository paths named by an import specifier or a path-shaped string literal in worker/, site/, tools/ and test/ sources. | 1,857 |
-| declared | Structural trees a card-work checkout holds regardless of gate reads, minus the byte-heavy excluded trees. | 3,568 |
+| observed | Repository paths recorded by tools/card_profile_sentinel.cjs while each supported gate class ran on a full checkout. | 2,398 |
+| static | Repository paths named by an import specifier or a path-shaped string literal in worker/, site/, tools/ and test/ sources. | 1,862 |
+| declared | Structural trees a card-work checkout holds regardless of gate reads, minus the byte-heavy excluded trees. | 3,581 |
 
 ---
 
@@ -191,25 +191,25 @@ The first two rows partition the tracked payload and sum to 100%. The deferred h
 
 | Category | Reduced card-work profile (MiB) | Card-work profile, opt-in `--depth 1` (MiB) | Full-checkout control (MiB) |
 | --- | ---: | ---: | ---: |
-| Git objects and repository metadata | 38.79 | 37.50 | 486.79 |
+| Git objects and repository metadata | 38.85 | 33.98 | 486.83 |
 | Tracked `site/data` payload | 60.85 | 60.85 | 445.53 |
 | Tracked `site/` payload outside `site/data` | 17.13 | 17.13 | 76.11 |
-| Tracked payload elsewhere (tests, tools, docs, artifacts) | 62.23 | 62.23 | 212.12 |
+| Tracked payload elsewhere (tests, tools, docs, artifacts) | 62.28 | 62.28 | 212.17 |
 | Tracked warehouse code, schemas and fixtures | 1.09 | 1.09 | 36.40 |
 | Dependency view (`worker/node_modules`) after store install | 315.18 | 315.18 | 315.18 |
 | Generated site output | 0.00 | 0.00 | 0.00 |
 | Generated warehouse bulk | 0.00 | 0.00 | 0.00 |
 | Other overhead (untracked, directory inodes) | 0.18 | 0.18 | 0.30 |
-| **Declared total, logical** | **495.44** | **494.15** | **1,572.43** |
-| Declared total, allocated | 517.69 | 515.51 | 1,609.35 |
+| **Declared total, logical** | **495.55** | **490.68** | **1,572.53** |
+| Declared total, allocated | 517.46 | 512.22 | 1,609.43 |
 
 ### Charged disk — the free-space delta of one provisioning run
 
 | Provisioned profile | n | Median charged MB | Observed min | Observed max | Allocated minus the shared dependency view, MB | Under 400 MB |
 | --- | ---: | ---: | ---: | ---: | ---: | --- |
-| Reduced card-work profile | 3 | **205.2** | 200.3 | 222.8 | 198.1 | yes |
-| Card-work profile, opt-in `--depth 1` | 3 | **200.6** | 199.3 | 203.8 | 195.8 | yes |
-| Full-checkout control | 3 | **1,353.6** | 1,347.2 | 1,370.5 | 1,342.8 | no |
+| Reduced card-work profile | 3 | **202.4** | 199.9 | 202.4 | 197.9 | yes |
+| Card-work profile, opt-in `--depth 1` | 3 | **197.7** | 196.7 | 1,927.1 | 192.4 | yes |
+| Full-checkout control | 3 | **1,348.4** | 1,346.8 | 2,030.6 | 1,342.9 | no |
 
 A free-space delta measures the whole volume, so on a shared host a concurrent writer moves an individual trial in either direction; the observed minimum and maximum are printed as evidence of that noise, not as a range claim. The median is the reported figure. The last column is an independent, deterministic cross-check: allocated bytes with the copy-on-write dependency view removed, which is what the disk is charged for everything the checkout does not share with the store.
 
@@ -217,20 +217,20 @@ A free-space delta measures the whole volume, so on a shared host a concurrent w
 
 | Provisioned profile | n | Phase | Median ms | p95 ms | Min ms | Max ms |
 | --- | ---: | --- | ---: | ---: | ---: | ---: |
-| Reduced card-work profile | 3 | prepare | 831 | n/a | 817 | 918 |
-| Reduced card-work profile | 3 | sparse | 249 | n/a | 237 | 277 |
-| Reduced card-work profile | 3 | checkout | 3,843 | n/a | 3,406 | 4,521 |
-| Reduced card-work profile | 3 | install | 2,879 | n/a | 2,610 | 2,926 |
-| Reduced card-work profile | 3 | **total** | **7,877** | n/a | 7,171 | 8,466 |
-| Card-work profile, opt-in `--depth 1` | 3 | prepare | 448 | n/a | 407 | 466 |
-| Card-work profile, opt-in `--depth 1` | 3 | sparse | 1,088 | n/a | 1,059 | 1,107 |
-| Card-work profile, opt-in `--depth 1` | 3 | checkout | 8,297 | n/a | 8,197 | 8,464 |
-| Card-work profile, opt-in `--depth 1` | 3 | install | 3,510 | n/a | 2,561 | 3,964 |
-| Card-work profile, opt-in `--depth 1` | 3 | **total** | **13,528** | n/a | 12,324 | 13,716 |
-| Full-checkout control | 3 | prepare | 36,494 | n/a | 32,731 | 39,664 |
-| Full-checkout control | 3 | checkout | 2,184 | n/a | 1,934 | 3,987 |
-| Full-checkout control | 3 | install | 2,777 | n/a | 2,673 | 2,972 |
-| Full-checkout control | 3 | **total** | **41,351** | n/a | 39,690 | 44,375 |
+| Reduced card-work profile | 3 | prepare | 842 | n/a | 837 | 896 |
+| Reduced card-work profile | 3 | sparse | 266 | n/a | 251 | 269 |
+| Reduced card-work profile | 3 | checkout | 3,858 | n/a | 3,675 | 4,117 |
+| Reduced card-work profile | 3 | install | 2,995 | n/a | 2,854 | 3,555 |
+| Reduced card-work profile | 3 | **total** | **7,832** | n/a | 7,818 | 8,765 |
+| Card-work profile, opt-in `--depth 1` | 3 | prepare | 437 | n/a | 434 | 483 |
+| Card-work profile, opt-in `--depth 1` | 3 | sparse | 600 | n/a | 569 | 658 |
+| Card-work profile, opt-in `--depth 1` | 3 | checkout | 8,602 | n/a | 8,529 | 10,536 |
+| Card-work profile, opt-in `--depth 1` | 3 | install | 4,119 | n/a | 2,660 | 7,083 |
+| Card-work profile, opt-in `--depth 1` | 3 | **total** | **15,796** | n/a | 12,265 | 16,649 |
+| Full-checkout control | 3 | prepare | 35,859 | n/a | 35,372 | 40,239 |
+| Full-checkout control | 3 | checkout | 2,327 | n/a | 2,319 | 2,434 |
+| Full-checkout control | 3 | install | 3,035 | n/a | 2,981 | 3,224 |
+| Full-checkout control | 3 | **total** | **41,402** | n/a | 40,680 | 45,708 |
 
 ---
 
@@ -287,12 +287,12 @@ probe in §6, which materialised one path on purpose.
 
 | Field | Reduced card-work profile | Full-checkout control |
 | --- | --- | --- |
-| Commits reachable from HEAD | 1584 | 1584 |
+| Commits reachable from HEAD | 1588 | 1588 |
 | Shallow repository | False | False |
 | Promisor remote configured | True | False |
 | Partial clone filter | blob:none | None |
 | Packs | 83 | 1 |
-| Pack size (KiB) | 39720 | 497545 |
+| Pack size (KiB) | 39780 | 497588 |
 | Loose objects | 0 | 0 |
 | Tracked paths not materialised | 1900 | 0 |
 | Working tree clean at the pinned revision | True | True |
@@ -307,13 +307,13 @@ did not earn its place is not quietly dropped.
 
 | Candidate | Measured here | Decision |
 | --- | --- | --- |
-| **Partial clone, `--filter=blob:none`** | Git metadata 486.8 to 38.8 MiB; object transfer 39.7 s to 0.8 s; complete history preserved, 1,584 commits reachable in both profiles | **Adopted as the default.** It is the only variant that takes the metadata cost down without taking history with it |
-| **Shallow clone, `--depth 1`** | Metadata 37.5 MiB, barely below the partial clone's 38.8 MiB, and total provisioning is markedly slower: 13.4 s against 7.9 s, because a shallow partial clone hydrates blobs in far smaller batches. It also cannot resolve an ancestor beyond the shallow boundary until unshallowed | **Kept as an opt-in, rejected as the default.** CI-08 ranked shallow first on its own numbers; combined with a sparse profile it loses to the partial clone on both axes |
+| **Partial clone, `--filter=blob:none`** | Git metadata 486.8 to 38.9 MiB; object transfer 35.9 s to 0.8 s; complete history preserved, 1,588 commits reachable in both profiles | **Adopted as the default.** It is the only variant that takes the metadata cost down without taking history with it |
+| **Shallow clone, `--depth 1`** | Metadata 34.0 MiB, 4.9 MiB below the partial clone, and total provisioning is twice as slow: 15.8 s against 7.8 s, because a shallow partial clone hydrates blobs in far smaller batches. It also cannot resolve an ancestor beyond the shallow boundary until unshallowed | **Kept as an opt-in, rejected as the default.** CI-08 ranked shallow first on its own numbers; combined with a sparse profile it buys 1% of the total footprint for double the wall clock and the loss of history |
 | **Durable shared-object alternate** | Not adopted | **Rejected.** An alternate binds a checkout to another object store's lifetime. A partial clone reaches the same metadata reduction while depending only on the durable remote, and CI-08's boundary forbids leaving a checkout dependent on a disposable object source |
 | **Naive sparse cone, CI-08's `worker tools .github test`** | Working tree 79.5 MiB, but the Worker unit family fails outright | **Rejected, as CI-08 recorded.** It is the failure this change had to solve, not a profile to adopt |
 | **Sparse cone extended by static analysis** | Did not converge after three rounds in CI-08 | **Rejected.** Extending a cone by specifier scanning cannot see a path assembled at runtime. The observed-read closure sees it because it watches the gate run |
 | **Materialising the full statically-referenced `site/data` set** | Would have put 197 files and 240.1 MiB in the working tree instead of 28 files and 60.9 MiB | **Rejected.** Those references reach `site/data` through browser modules that only full-checkout-only gates load. They became the deferred hydration set instead: named, one command away, and loud if a supported gate touches one |
-| **Recording metadata probes as closure members** | An early iteration recorded every `stat` as well as every read, which grew the closure to the entire tracked tree, 5,633 paths and 769.5 MiB | **Rejected.** The sentinel still escalates on every entry point that can hit an absent path; only content reads feed the recorder |
+| **Recording metadata probes as closure members** | An early iteration recorded every `stat` as well as every read, which grew the closure to the entire tracked tree | **Rejected.** The sentinel still escalates on every entry point that can hit an absent path; only content reads feed the recorder |
 | **Reducing the dependency view** | 315.2 MiB reported, about 2 MiB charged, identical across all three profiles | **Not a target,** as CI-08 established. CI-07 already solved this category on a filesystem class that can share |
 | **Lazy generated site or warehouse output** | 0 bytes and 288 bytes respectively in a fresh checkout | **Not a target,** as CI-08 established. The payload is tracked source, not build output |
 
@@ -353,7 +353,7 @@ a shallow boundary. Four of them were also run green against the control here.
 condition.** The dependency view reports 315.2 MiB and charges about 2 MiB
 because pnpm imports through copy-on-write clones on APFS. On a filesystem with
 neither reflink nor hard-link support the same install would copy in full, and
-the profile would charge roughly 495 MB rather than 205 MB, over the target. The
+the profile would charge roughly 495 MB rather than 202 MB, over the target. The
 reduction this change implements is unaffected either way, because it reduces
 Git metadata and tracked payload; but the headline figure would not survive that
 filesystem class, and saying so is part of the measurement.
@@ -361,7 +361,7 @@ filesystem class, and saying so is part of the measurement.
 **The free-space delta is noisy on a shared host,** because it measures the whole
 volume. The median across three trials is the reported figure, and the
 deterministic allocated-minus-dependency-view cross-check agrees with it to
-within 3.5%, which is why the claim does not rest on a single trial.
+within 2.3%, which is why the claim does not rest on a single trial.
 
 **The closure is derived from one recorded run per gate class.** A branch that no
 recorded run exercised, and that no scanned source names, is not in the closure.
@@ -376,7 +376,7 @@ because their inputs are already materialised, but it cannot hydrate.
 
 **A partial clone accumulates packs.** The reduced profile finishes with 83 packs
 against the control's 1, because each lazy fetch lands its own. Total pack size
-is 39.7 MiB against 497.5 MiB, so this costs bytes only in inodes, but a
+is 38.8 MiB against 485.9 MiB, so this costs bytes only in inodes, but a
 long-lived reduced checkout will want an occasional `git gc`.
 
 **Timing carries host contention.** Every trial records its own load average in
