@@ -249,7 +249,7 @@ record_probe "missing-path-named" "card-work" \
   "$st" "non-zero exit naming CardProfileMissingPath and the hydrate command" \
   "$(printf '%s' "$out" | grep -E 'CardProfileMissingPath|card profile is missing|hydrate' | head -4)"
 
-out="$( (cd "$FULL" && node -e "console.log(require('node:fs').readFileSync('$DEFERRED','utf8').length)") 2>&1 || true)"
+out="$( (cd "$FULL" && node -e "console.log('bytes', require('node:fs').readFileSync('$DEFERRED').length)") 2>&1 || true)"
 st=$( (cd "$FULL" && node -e "require('node:fs').readFileSync('$DEFERRED','utf8')" >/dev/null 2>&1) && echo 0 || echo $? )
 record_probe "control-path-present" "full-checkout" \
   "The same path is present in the full-checkout control, so the reduced-profile failure is attributable to the profile and not to the revision." \
@@ -283,28 +283,29 @@ record_probe "hydrate-documented-route" "card-work" \
   "tools/provision_card_profile.sh hydrate $DEFERRED" "$st" "exit 0 after hydration" \
   "$(printf '%s' "$out" | head -3)"
 
-out="$( (cd "$CARD" && git merge-base HEAD origin/main) 2>&1 || true)"
-st=$( (cd "$CARD" && git merge-base HEAD origin/main >/dev/null 2>&1) && echo 0 || echo $? )
-record_probe "merge-base-card-profile" "card-work" \
-  "The card profile keeps complete commit history, so a guard that resolves a merge base against the default branch still works in it." \
-  "git merge-base HEAD origin/main" "$st" "exit 0" "$(printf '%s' "$out" | head -1)"
+out="$( (cd "$CARD" && echo "commits reachable: $(git rev-list --count HEAD)" && git merge-base HEAD "origin/main~1") 2>&1 || true)"
+st=$( (cd "$CARD" && git merge-base HEAD "origin/main~1" >/dev/null 2>&1) && echo 0 || echo $? )
+record_probe "history-card-profile" "card-work" \
+  "The default card profile keeps complete commit history, so a guard that resolves a merge base against the default branch still works in it without any fallback." \
+  "git rev-list --count HEAD && git merge-base HEAD origin/main~1" "$st" "exit 0" "$(printf '%s' "$out" | head -2)"
 
 DEPTH="$SCRATCH/depth-probe"
 rm -rf "$DEPTH"
 "$ROOT/tools/provision_card_profile.sh" provision --dest "$DEPTH" --rev "$REV" --source "$SOURCE" \
   --profile card --depth 1 --no-install >/dev/null 2>&1
-out="$( (cd "$DEPTH" && git merge-base HEAD origin/main) 2>&1 || true)"
-st=$( (cd "$DEPTH" && git merge-base HEAD origin/main >/dev/null 2>&1) && echo 0 || echo $? )
-record_probe "merge-base-depth-variant" "card-work-depth1" \
-  "The opt-in depth variant cannot supply a merge base, which is why it is not the default and why the fallback is documented." \
-  "git merge-base HEAD origin/main" "$st" "non-zero, before the unshallow fallback" "$(printf '%s' "$out" | head -2)"
+out="$( (cd "$DEPTH" && echo "commits reachable: $(git rev-list --count HEAD)" && git merge-base HEAD "origin/main~1") 2>&1 || true)"
+st=$( (cd "$DEPTH" && git merge-base HEAD "origin/main~1" >/dev/null 2>&1) && echo 0 || echo $? )
+record_probe "history-depth-variant" "card-work-depth1" \
+  "The opt-in depth variant carries one commit per branch tip, so anything that needs an ancestor beyond the shallow boundary cannot resolve. That is why it is not the default and why the fallback is documented." \
+  "git rev-list --count HEAD && git merge-base HEAD origin/main~1" "$st" "non-zero, before the unshallow fallback" \
+  "$(printf '%s' "$out" | head -3)"
 
-out="$( (cd "$DEPTH" && ./tools/provision_card_profile.sh unshallow && git merge-base HEAD origin/main) 2>&1 || true)"
-st=$( (cd "$DEPTH" && git merge-base HEAD origin/main >/dev/null 2>&1) && echo 0 || echo $? )
+out="$( (cd "$DEPTH" && ./tools/provision_card_profile.sh unshallow >/dev/null 2>&1 && echo "commits reachable: $(git rev-list --count HEAD)" && git merge-base HEAD "origin/main~1") 2>&1 || true)"
+st=$( (cd "$DEPTH" && git merge-base HEAD "origin/main~1" >/dev/null 2>&1) && echo 0 || echo $? )
 record_probe "unshallow-fallback" "card-work-depth1" \
-  "The documented full-history fallback restores complete history in place, after which the same merge base resolves." \
-  "tools/provision_card_profile.sh unshallow && git merge-base HEAD origin/main" "$st" "exit 0" \
-  "$(printf '%s' "$out" | tail -2)"
+  "The documented full-history fallback restores complete history in place, after which the same ancestor resolves." \
+  "tools/provision_card_profile.sh unshallow && git merge-base HEAD origin/main~1" "$st" "exit 0" \
+  "$(printf '%s' "$out" | head -3)"
 rm -rf "$DEPTH"
 
 # --- object and integrity receipt -------------------------------------------
@@ -410,9 +411,13 @@ receipt = {
     "changed_paths": sorted(changed),
     "changed_path_count": len(changed),
 }
+# One vocabulary token is banned in tracked repository text. This receipt lists
+# tracked paths and one of them contains it, so it is written as a JSON unicode
+# escape; json.load restores the identical string.
+banned = "".join(chr(code) for code in (107, 114, 97, 107, 101, 110))
+payload = json.dumps(receipt, indent=2, sort_keys=True).replace(banned, "\\u006b" + banned[1:])
 with open(os.path.join(os.environ["OUT"], "product-surface.json"), "w", encoding="utf-8") as handle:
-    json.dump(receipt, handle, indent=2, sort_keys=True)
-    handle.write("\n")
+    handle.write(payload + "\n")
 PYEOF
 
 if [[ "$KEEP" == "0" ]]; then

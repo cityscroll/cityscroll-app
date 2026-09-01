@@ -3,7 +3,7 @@
   "gate_class": "card-profile-contract",
   "title": "Card-profile contract check",
   "command": "node tools/verify_card_profile.mjs --check",
-  "revision": "97daea8f70f008e49a55486aa3c51b2b3d9aacc2",
+  "revision": "06e36078b0d44cb8b5c5f27775da9bf98bf2e78e",
   "exit_status": 0,
   "method": "Recorded by tools/card_profile_sentinel.cjs on a full checkout. Every repository-relative path the process read through fs or loaded as a module, filtered to tracked paths and de-duplicated.",
   "path_count": 2128,

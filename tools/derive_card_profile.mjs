@@ -67,6 +67,20 @@ function sha256(value) {
   return createHash("sha256").update(value).digest("hex");
 }
 
+// Paths the index carries but this working tree does not hold. Reading one
+// would be a profile violation, so the scan skips them and says so rather than
+// tripping the sentinel it exists to serve.
+function notMaterialisedPaths() {
+  const excluded = new Set();
+  try {
+    const listing = execFileSync("git", ["ls-files", "-t"], { cwd: ROOT, encoding: "utf8", maxBuffer: 64 * 1024 * 1024 });
+    for (const line of listing.split("\n")) if (line.startsWith("S ")) excluded.add(line.slice(2));
+  } catch {
+    /* a repository without sparse checkout has nothing to exclude */
+  }
+  return excluded;
+}
+
 function trackedFiles() {
   return execFileSync("git", ["ls-files"], { cwd: ROOT, encoding: "utf8", maxBuffer: 64 * 1024 * 1024 })
     .split("\n")
@@ -173,8 +187,9 @@ function referencesFrom(file, trackedSet) {
 // then followed transitively. Seeding from whole trees instead would drag in
 // the data references of browser modules that only a full-checkout-only gate
 // ever loads, which is how a profile grows back to the size it exists to avoid.
-function staticClosure(tracked, seeds, config) {
+function staticClosure(tracked, seeds, config, notMaterialised) {
   const trackedSet = new Set(tracked);
+  let skipped = 0;
   const seedTrees = config.static_seed_trees;
   const queue = [];
   const scanned = new Set();
@@ -191,6 +206,10 @@ function staticClosure(tracked, seeds, config) {
   while (queue.length > 0) {
     const { file, hop } = queue.pop();
     if (scanned.has(file)) continue;
+    if (notMaterialised.has(file)) {
+      skipped += 1;
+      continue;
+    }
     scanned.add(file);
     const inSeedTree = underAny(file, seedTrees);
     for (const target of referencesFrom(file, trackedSet)) {
@@ -206,7 +225,8 @@ function staticClosure(tracked, seeds, config) {
     paths: [...found].sort(),
     fromSeedTree: [...fromSeedTree].sort(),
     crossBoundary,
-    scanned_count: scanned.size
+    scanned_count: scanned.size,
+    skipped_not_materialised: skipped
   };
 }
 
@@ -285,7 +305,8 @@ function build() {
   const observed = observedClosure(config, tracked);
   const observedAll = new Set();
   for (const [, entry] of observed) for (const path of entry.paths) observedAll.add(path);
-  const staticScan = staticClosure(tracked, observedAll, config);
+  const notMaterialised = notMaterialisedPaths();
+  const staticScan = staticClosure(tracked, observedAll, config, notMaterialised);
   const declared = declaredClosure(config, tracked);
 
   const profileSet = new Set(declared);
@@ -344,6 +365,7 @@ function build() {
         seed_trees: config.static_seed_trees,
         scan_hops: config.static_scan_hops,
         scanned_source_count: staticScan.scanned_count,
+        sources_skipped_not_materialised: staticScan.skipped_not_materialised,
         path_count: staticScan.paths.length,
         worker_to_site_reference_count: staticScan.crossBoundary.length,
         worker_to_site_data_reference_count: staticScan.crossBoundary.filter((edge) =>
@@ -435,6 +457,9 @@ function main() {
       pattern.endsWith("/") ? path.startsWith(pattern.slice(1)) : path === pattern.slice(1)
     );
 
+  // A source the active profile does not materialise cannot be scanned, so its
+  // references are not part of what this run can require. The count is printed
+  // so a reduced-profile run is never mistaken for a full-checkout one.
   const uncovered = [...built.requiredPaths].filter((path) => !matches(path));
   if (uncovered.length > 0) {
     problems.push(
@@ -456,8 +481,10 @@ function main() {
     for (const problem of problems) console.error(`  - ${problem}`);
     return 1;
   }
+  const skipped = JSON.parse(built.closure).sources.static.sources_skipped_not_materialised;
+  const scope = skipped > 0 ? ` (${skipped} source(s) not materialised here were not scanned)` : "";
   console.log(
-    `card profile patterns cover all ${built.requiredPaths.size} required paths and no deferred path`
+    `card profile patterns cover all ${built.requiredPaths.size} required paths and no deferred path${scope}`
   );
   return 0;
 }
