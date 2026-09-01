@@ -15,7 +15,7 @@
     "profile_identity": "sha256 over the manifest version and the Git blob id of each declared identity input; the revision is bound separately into provision_identity"
   },
   "operating_system": "Darwin 25.5.0 (arm64)",
-  "revision": "da42d81c487f03b210723d949de6bf730787b833",
+  "revision": "0763af1a08a4949a7d8ebbf90b194603b08e3a27",
   "schema": "cityscroll.card-profile-routing-environment.v1",
   "source_class": "remote",
   "tools": {

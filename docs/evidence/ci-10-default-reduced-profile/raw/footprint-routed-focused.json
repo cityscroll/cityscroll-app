@@ -2,11 +2,11 @@
   "categories": {
     "dependency_view": {
       "allocated_bytes": 344707072,
-      "allocated_pct": 63.445,
+      "allocated_pct": 63.489,
       "entries": 6563,
       "kind": "installed",
       "logical_bytes": 330480550,
-      "logical_pct": 63.521
+      "logical_pct": 63.536
     },
     "generated_site_output": {
       "allocated_bytes": 0,
@@ -25,44 +25,44 @@
       "logical_pct": 0.0
     },
     "git_metadata": {
-      "allocated_bytes": 41758720,
-      "allocated_pct": 7.686,
+      "allocated_bytes": 41238528,
+      "allocated_pct": 7.595,
       "entries": 60,
       "kind": "metadata",
-      "logical_bytes": 41043756,
-      "logical_pct": 7.889
+      "logical_bytes": 40788459,
+      "logical_pct": 7.842
     },
     "other_overhead": {
       "allocated_bytes": 0,
       "allocated_pct": 0.0,
       "entries": 693,
       "kind": "untracked",
-      "logical_bytes": 188928,
+      "logical_bytes": 189120,
       "logical_pct": 0.036
     },
     "tracked_other": {
-      "allocated_bytes": 72003584,
-      "allocated_pct": 13.253,
-      "entries": 2883,
+      "allocated_bytes": 72122368,
+      "allocated_pct": 13.284,
+      "entries": 2888,
       "kind": "tracked",
-      "logical_bytes": 65628590,
-      "logical_pct": 12.614
+      "logical_bytes": 65737548,
+      "logical_pct": 12.638
     },
     "tracked_site_data": {
       "allocated_bytes": 63864832,
-      "allocated_pct": 11.755,
+      "allocated_pct": 11.763,
       "entries": 28,
       "kind": "tracked",
-      "logical_bytes": 63802082,
-      "logical_pct": 12.263
+      "logical_bytes": 63802089,
+      "logical_pct": 12.266
     },
     "tracked_site_other": {
-      "allocated_bytes": 19734528,
-      "allocated_pct": 3.632,
-      "entries": 859,
+      "allocated_bytes": 19759104,
+      "allocated_pct": 3.639,
+      "entries": 860,
       "kind": "tracked",
-      "logical_bytes": 17985002,
-      "logical_pct": 3.457
+      "logical_bytes": 18007811,
+      "logical_pct": 3.462
     },
     "tracked_warehouse": {
       "allocated_bytes": 1249280,
@@ -83,8 +83,8 @@
   "scope": "checkout",
   "shared_git_metadata_outside_checkout": null,
   "total": {
-    "allocated_bytes": 543318016,
-    "logical_bytes": 520269003
+    "allocated_bytes": 542941184,
+    "logical_bytes": 520145672
   },
-  "tracked_file_count": 5731
+  "tracked_file_count": 5746
 }
