@@ -32,7 +32,10 @@ export const LAND_MAP_UNMAPPED_REASONS = Object.freeze({
 
 const ACCEPTED_METHOD_SET = new Set(LAND_MAP_ACCEPTED_POINT_METHODS);
 const ACCEPTED_PRECISION_SET = new Set(Object.values(KNOWN_LAND_POINT_PRECISIONS));
-const REJECTED_METHOD_SET = new Set(REJECTED_KNOWN_LAND_POINT_METHODS);
+// Named apart from the resolver's own set of the same values: the pre-split inline fixture
+// in test/functional/21_module_dom_equivalence.py flattens this module and its dependency
+// into one classic script, where two module-private `const`s of one name collide.
+const REJECTED_MAP_MODEL_METHOD_SET = new Set(REJECTED_KNOWN_LAND_POINT_METHODS);
 
 const METHOD_PRECISION = Object.freeze({
   [KNOWN_LAND_POINT_METHODS.PUBLISHER_POINT]: KNOWN_LAND_POINT_PRECISIONS.EXACT,
@@ -116,7 +119,7 @@ function resolveJoin(entry) {
     return { status: "unmapped", reason: LAND_MAP_UNMAPPED_REASONS.NO_ACCEPTED_POINT };
   }
   const method = trimId(record.method);
-  if (REJECTED_METHOD_SET.has(method)) {
+  if (REJECTED_MAP_MODEL_METHOD_SET.has(method)) {
     return { status: "unmapped", reason: rejectedReason(method) };
   }
   if (method && !ACCEPTED_METHOD_SET.has(method)) {

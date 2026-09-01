@@ -32,6 +32,12 @@ await import("./search-share.mjs");
 await import("./exams.mjs");
 await import("./staffing.mjs");
 await import("./land.mjs");
+// Every Land map dependency -- browse Map shell, point projection, detail-map assets -- lives
+// behind this gate. Opening the Land tab must not pull it: List first paint is the civic task,
+// and the map is the sibling a resident asks for. Activation is `view=map`, the Map control, or
+// selecting one project row.
+let landMapRuntimePromise;
+globalThis.ensureLandMapRuntime = () => landMapRuntimePromise ||= import("./map_runtime.mjs");
 await import("./feed-actions.mjs");
 await import("./result-match.mjs");
 // Entity profiles use this shared section vocabulary without needing the notice-only context island.

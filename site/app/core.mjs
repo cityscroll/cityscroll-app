@@ -336,7 +336,10 @@ function showTab(name, push){
   // Push BEFORE any lazy load below runs updateHash(), or the load's replaceState
   // rewrites the prior entry and the push turns into a no-op (Back would skip a tab).
   if(push) pushHash();
-  if(name==="land"){ loadLeaflet().catch(()=>{}); if(!landLoaded || leavingLandEntry){ landLoaded=true; landSearch(); } if(landMap) setTimeout(()=>landMap.invalidateSize(),120); }
+  // Land entry paints the List and nothing else. It used to warm Leaflet here, which made a
+  // visual sibling a dependency of the canonical Land search; map assets now wait for Map
+  // activation or a row selection. `landMap` only exists once the runtime has loaded.
+  if(name==="land"){ if(!landLoaded || leavingLandEntry){ landLoaded=true; landSearch(); } if(globalThis.landMap) setTimeout(()=>globalThis.landMap.invalidateSize(),120); }
   if(name==="money" && !moneyLoaded) search(); // deep links land on other tabs; Money lazy-loads like the rest
   if(name==="money" && matchMedia("(max-width:680px)").matches){
     const controls=document.getElementById("tab-money").querySelector(".controls");
