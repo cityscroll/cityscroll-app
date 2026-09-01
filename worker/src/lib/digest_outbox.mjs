@@ -143,6 +143,19 @@ export function extractLensIdentity(input, maybeRow) {
   }
 
   if (NOTICE_LENSES.has(lens)) {
+    // A procurement object can legitimately be delivered more than once: an
+    // observed process transition is a distinct delivery event on the same
+    // canonical identity, so it carries the transition key as its identity in
+    // the same way a rules action key does.
+    const transitionKey = firstText(row.procurement_process_watch?.transition?.transition_key);
+    if (transitionKey) {
+      return {
+        identityField: "transition_key",
+        identityValue: transitionKey,
+        itemId: transitionKey,
+        itemKind: text(kind) || "procurement",
+      };
+    }
     const requestId = firstText(row.request_id);
     if (requestId) {
       return { identityField: "request_id", identityValue: requestId, itemId: `notice:${requestId}`, itemKind: text(kind) || lens };

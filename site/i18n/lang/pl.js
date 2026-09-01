@@ -1049,6 +1049,7 @@
     nl_filter_about_label: "Temat",
     nl_filter_category_label: "Kategoria",
     nl_filter_min_label: "Wartość ≥",
+    nl_filter_process_state_label: "Stan procesu",
     nl_filter_max_label: "Wartość ≤",
     nl_filter_months: "Termin w ciągu {n} mies.",
     nl_filter_standard_only: "Tylko standardowe metody",

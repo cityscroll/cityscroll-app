@@ -1042,6 +1042,7 @@
     nl_filter_about_label: "বিষয়",
     nl_filter_category_label: "বিভাগ",
     nl_filter_min_label: "মূল্য ≥",
+    nl_filter_process_state_label: "প্রক্রিয়ার অবস্থা",
     nl_filter_max_label: "মূল্য ≤",
     nl_filter_months: "{n} মাসের মধ্যে শেষ",
     nl_filter_standard_only: "শুধু মানক পদ্ধতি",

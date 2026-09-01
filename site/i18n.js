@@ -1568,6 +1568,7 @@ const STRINGS = {
     nl_filter_about_label: "About",
     nl_filter_category_label: "Category",
     nl_filter_min_label: "Value ≥",
+    nl_filter_process_state_label: "Process state",
     nl_filter_max_label: "Value ≤",
     nl_filter_months: "Due within {n} mo",
     nl_filter_standard_only: "Standard methods only",

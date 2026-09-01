@@ -51,6 +51,8 @@ Start here for JavaScript work on the main site. Read the named module and `core
 | `site/app/procurement-lifecycle.mjs` | Contract-lifecycle stages, sources, documents, payment state, and lifecycle cards. |
 | `site/app/procurement-phase.mjs` | Procurement phase grouping, stepper, dollars panel, lifecycle loading, M/WBE solicitation detail, and prime sub-outreach mount. |
 | `site/procurement_planning_surface.mjs` | Pure receipt-gated MOCS plan-row joins that add the optional Money planning phase; an absent or edge-empty payload is inert. |
+| `site/procurement_process_state_vocabulary.mjs` | The one closed procurement process-state list, order, and label map, with no imports of its own. `scope_v0.mjs` route facets, `resident_snapshot_queries.mjs` predicates, `procurement_search_producer.mjs` browse records, `procurement_process_events.mjs` observed events, and the money watch schema in `worker/src/lib/filter.mjs` all read it; never add a second copy. |
+| `site/procurement_process_watch.mjs` | Pure Following transition projection over retained process events: bounded event compaction, observed/transition deduplication keys, and the `{ rows, markSeenIds }` evaluation the money digest path applies. It reads no clock, so a deadline, an expiry, or an absent record is never a transition. |
 | `site/sub_outreach.mjs` | Pure prime-win sub-outreach view + HTML from `award_prime_goal` (facts only; no goal-gap apology). |
 | `site/app/subsidy.mjs` | Subsidy eligibility, phase timeline, facts, gaps, and lifecycle loading. |
 | `site/app/authority-award.mjs` | Receipt-gated ABO award detail on eligible authority notices. |

@@ -1045,6 +1045,7 @@
     nl_filter_about_label: "متعلق",
     nl_filter_category_label: "زمرہ",
     nl_filter_min_label: "قیمت ≥",
+    nl_filter_process_state_label: "عمل کی حالت",
     nl_filter_max_label: "قیمت ≤",
     nl_filter_months: "{n} ماہ میں واجب",
     nl_filter_standard_only: "صرف معیاری طریقے",

@@ -53,6 +53,7 @@ import {
   performanceEvidenceDrillThroughHref,
 } from "../analytical_performance_evidence.mjs";
 import { buildContractReportTarget, renderReportIssueAffordance } from "../report_issue.mjs";
+import { PROCUREMENT_PROCESS_STATE_LABELS } from "../procurement_process_state_vocabulary.mjs";
 
 const MONEY_DEFAULT_SNAPSHOT_URL="data/money_default_open.json";
 const MONEY_AGENCIES_SNAPSHOT_URL="data/money_procurement_agencies.json";
@@ -275,6 +276,7 @@ function moneyActiveFilterChip(item){
   if(item.kind==="minAmount") return `<span class="qchip">${t("nl_filter_min_label")} <b>${money(value)}</b></span>`;
   if(item.kind==="maxAmount") return `<span class="qchip">${t("nl_filter_max_label")} <b>${money(value)}</b></span>`;
   if(item.kind==="months") return `<span class="qchip">${t("nl_filter_months",{n:value})}</span>`;
+  if(item.kind==="processState") return `<span class="qchip">${t("nl_filter_process_state_label")} <b>${escUiHtml(PROCUREMENT_PROCESS_STATE_LABELS[value] || value)}</b></span>`;
   return `<span class="qchip"><b>${t("nl_filter_standard_only")}</b></span>`;
 }
 function routeScopeFacetChip(){
@@ -320,6 +322,7 @@ function updateMoneyMoreFiltersState(){
     nl.maxAmount!=null,
     nl.months!=null,
     !!nl.excludeSpecial,
+    !!nl.processState,
     !!moneyLocationFilter.borough,
     !!moneyLocationFilter.communityDistrict,
     !!moneyLocationFilter.councilDistrict,
@@ -1060,7 +1063,7 @@ async function search(){
     return true;
   }
 
-  const {category=null, maxAmount=null, months=null, excludeSpecial=false} = moneyNlResolved;
+  const {category=null, maxAmount=null, months=null, excludeSpecial=false, processState=null} = moneyNlResolved;
   updateHash();
   syncProcurementFacetRails();
   const heads = {
@@ -1090,6 +1093,7 @@ async function search(){
     const common={
       mode,agency,keyword:kw,closingWeek,minAmount:minamt||null,maxAmount,category,months,
       excludeSpecial,entityRefs,contractObjectRef:contractIdentity?.object_ref||"",sort,today:todayISO(),weekEnd:weekOutISO(),
+      processStates:processState?[processState]:[],
       monthEnd:months?addMonthsISO(todayISO(),months):null,
     };
     const analyticalScope = mode === "award" ? analyticalUrlFilters() : {};
@@ -1097,7 +1101,7 @@ async function search(){
       || Object.entries(analyticalScope).some(([key, value]) => !["fact", "payment_view"].includes(key) && value != null && value !== "");
     const compactFirstPage=awardArchive && !needsSearch && !analyticalScopeActive
       && !agency && !methodSel && !closingWeek && !minamt
-      && !category && maxAmount==null && months==null && !excludeSpecial
+      && !category && maxAmount==null && months==null && !excludeSpecial && !processState
       && !entityRefs.length && !contractIdentity
       && (!sort || sort==="newest");
     const firstPageProcurementPromise=compactFirstPage

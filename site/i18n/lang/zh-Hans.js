@@ -1041,6 +1041,7 @@
     nl_filter_about_label: "关于",
     nl_filter_category_label: "类别",
     nl_filter_min_label: "金额 ≥",
+    nl_filter_process_state_label: "流程状态",
     nl_filter_max_label: "金额 ≤",
     nl_filter_months: "{n} 个月内截止",
     nl_filter_standard_only: "仅标准方式",

@@ -1086,6 +1086,7 @@
     nl_filter_about_label: "Sujet",
     nl_filter_category_label: "Catégorie",
     nl_filter_min_label: "Valeur ≥",
+    nl_filter_process_state_label: "État du processus",
     nl_filter_max_label: "Valeur ≤",
     nl_filter_months: "Échéance dans {n} mois",
     nl_filter_standard_only: "Méthodes standard uniquement",

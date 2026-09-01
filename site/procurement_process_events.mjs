@@ -9,27 +9,21 @@
 import { officialSourceLink } from "./affordance_grammar.mjs";
 import { passportPublicOfficialSource } from "../worker/src/lib/passport_parse.mjs";
 import { isPassportPendingStatus, isPassportRegisteredStatus } from "../worker/src/lib/passport_join.mjs";
+import {
+  PROCUREMENT_PROCESS_STATE_LABELS,
+  procurementProcessStateRank,
+} from "./procurement_process_state_vocabulary.mjs";
+
+export {
+  KNOWN_PROCUREMENT_PROCESS_STATES,
+  PROCUREMENT_PROCESS_STATES,
+  isKnownProcurementProcessState,
+  procurementProcessStateRank,
+  procurementProcessStates,
+} from "./procurement_process_state_vocabulary.mjs";
 
 export const PROCUREMENT_PROCESS_EVENT_SCHEMA = "cityscroll.procurement_process_event.v1";
 export const PROCUREMENT_PROCESS_EVENT_VERSION = 1;
-
-export const PROCUREMENT_PROCESS_STATES = Object.freeze([
-  "planned",
-  "open",
-  "responses_closed",
-  "evaluation",
-  "selection_made",
-  "intent_to_negotiate",
-  "intent_to_award",
-  "award",
-  "contract_in_progress",
-  "pending_registration",
-  "registered",
-  "payment",
-  "closed",
-  "vendor_list",
-  "unknown",
-]);
 
 export const PASSPORT_RFX_STATE_MAP = Object.freeze({
   planned: "planned",
@@ -38,10 +32,6 @@ export const PASSPORT_RFX_STATE_MAP = Object.freeze({
   "selections made": "selection_made",
   closed: "closed",
 });
-
-const PROCESS_STATE_ORDER = Object.freeze(Object.fromEntries(
-  PROCUREMENT_PROCESS_STATES.map((state, index) => [state, index]),
-));
 
 const SOURCE_LABELS = Object.freeze({
   city_record: "City Record",
@@ -62,23 +52,7 @@ const CONTRACT_SOURCES = new Set([
   "checkbook_nycha_contracts",
 ]);
 
-const PROCESS_EVENT_LABELS = Object.freeze({
-  planned: "Planned",
-  open: "Open",
-  responses_closed: "Responses closed",
-  evaluation: "Evaluation · responses no longer accepted",
-  selection_made: "Selection made",
-  intent_to_negotiate: "Intent to negotiate",
-  intent_to_award: "Intent to award",
-  award: "Award",
-  contract_in_progress: "Contract in progress",
-  pending_registration: "Pending registration",
-  registered: "Registered",
-  payment: "Payment",
-  closed: "Closed",
-  vendor_list: "Vendor list",
-  unknown: "Unknown publisher state",
-});
+const PROCESS_EVENT_LABELS = PROCUREMENT_PROCESS_STATE_LABELS;
 
 function text(value) {
   const result = String(value ?? "").trim();
@@ -355,7 +329,7 @@ function processEventFromObservation({ procurementId, observation, observations 
 
 function compareProcessEvents(left, right) {
   return String(left.effective_at || "9999-99-99").localeCompare(String(right.effective_at || "9999-99-99"))
-    || ((PROCESS_STATE_ORDER[left.state] ?? 99) - (PROCESS_STATE_ORDER[right.state] ?? 99))
+    || (procurementProcessStateRank(left.state) - procurementProcessStateRank(right.state))
     || String(left.source_observation_ref || "").localeCompare(String(right.source_observation_ref || ""));
 }
 

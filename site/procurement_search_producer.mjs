@@ -12,6 +12,7 @@ import {
   admitSearchDocument,
 } from "./search_document_contract.mjs";
 import { snapshotsForPublicAmount } from "./checkbook_passport_corroboration.mjs";
+import { procurementProcessStates } from "./procurement_process_state_vocabulary.mjs";
 import { agencyRouteAliasTarget, resolveAgencyIdentity } from "./agency_identity.mjs";
 
 const MTA_PARENT_AGENCY_ID = "metropolitan-transportation-authority";
@@ -137,7 +138,7 @@ function coverageFields(object, observations) {
   };
 }
 
-function browseRecord(object, observations, stages, evidence, facts) {
+function browseRecord(object, observations, stages, evidence, facts, processStates) {
   const requestId = evidence.length === 1 ? evidence[0].request_id : null;
   const entityRefs = new Set();
   const snapshots = observations.map((entry) => entry.snapshot || {});
@@ -173,6 +174,7 @@ function browseRecord(object, observations, stages, evidence, facts) {
     canonical_href: procurementCanonicalHref(object),
     procurement_stages: Object.freeze([...stages]),
     primary_stage: processRole(stages),
+    ...(processStates.length ? { process_states: Object.freeze([...processStates]) } : {}),
     source_observation_refs: Object.freeze([...object.source_observation_refs]),
     ...(requestId ? { request_id: requestId } : {}),
     start_date: facts.startDate,
@@ -213,6 +215,7 @@ export function materializeProcurementSearchDocument(object = {}, readModel = {}
   const contractId = object.identity_keys?.contract_ids?.[0] || null;
   const epin = object.identity_keys?.epins?.[0] || null;
   const stages = stagesFor(object);
+  const processStates = procurementProcessStates(object.process_events);
   const facts = {
     title: first(rows, ["short_title", "title", "description"], 500)
       || `Contract ${contractId || epin || object.procurement_id}`,
@@ -262,7 +265,7 @@ export function materializeProcurementSearchDocument(object = {}, readModel = {}
         ingested_at: entry.ingested_at,
       })),
       notice_evidence: evidence,
-      browse_record: browseRecord(object, observations, stages, evidence, facts),
+      browse_record: browseRecord(object, observations, stages, evidence, facts, processStates),
       lifecycle: object.lifecycle,
       alias_object_refs: [...new Set([...(object.identity_keys?.epins || []).map((id) => `procurement:${id}`)])],
     },

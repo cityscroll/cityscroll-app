@@ -1041,6 +1041,7 @@
     nl_filter_about_label: "Acerca de",
     nl_filter_category_label: "Categoría",
     nl_filter_min_label: "Valor ≥",
+    nl_filter_process_state_label: "Estado del proceso",
     nl_filter_max_label: "Valor ≤",
     nl_filter_months: "Vence dentro de {n} meses",
     nl_filter_standard_only: "Solo métodos estándar",
