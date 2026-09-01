@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "citation": "\u00a7 21-955",
+  "provision_id": "nyc-administrative-code:21-955",
+  "surface": "Administrative Code provision page, historical coverage section",
+  "files": [
+    {
+      "name": "before-390.png",
+      "viewport": [
+        390,
+        844
+      ],
+      "bytes": 62728,
+      "sha256": "af05f97d6fbe92b251e151f2a9a019aff0064737c67f9498791a6ea6c6aef1d7"
+    },
+    {
+      "name": "before-1440.png",
+      "viewport": [
+        1440,
+        900
+      ],
+      "bytes": 135863,
+      "sha256": "8c962d2823ff3c5f24a536b11466b1a48b721b341985bc60aa50c001f8630216"
+    },
+    {
+      "name": "after-390.png",
+      "viewport": [
+        390,
+        844
+      ],
+      "bytes": 70574,
+      "sha256": "fbb7c8a61a123c11b703affba6ee3e0f7af844123710132cbd09a5c62fe9a029"
+    },
+    {
+      "name": "after-1440.png",
+      "viewport": [
+        1440,
+        900
+      ],
+      "bytes": 133261,
+      "sha256": "d2fe4b1fdc5c3a7c2e2e0672429ccd20d23f61a5c3c7e9686bb42f6c3de86c99"
+    }
+  ]
+}

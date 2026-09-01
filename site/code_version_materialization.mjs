@@ -262,6 +262,11 @@ function normalizeVersion(version, fallback = {}) {
   };
 }
 
+/** The shared CodeVersion record shape, including its content hash. */
+export function codeVersionRecord(version, fallback = {}) {
+  return freeze(normalizeVersion(version, fallback));
+}
+
 function provisionIdFor(change, provision) {
   return provision?.id || change?.target?.provision_id || null;
 }
