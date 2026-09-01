@@ -1,0 +1,78 @@
+{
+  "viewports": [
+    1440,
+    390
+  ],
+  "captured_routes": [
+    "/",
+    "/search/?q=rats"
+  ],
+  "asserted_routes": [
+    "/",
+    "/search/?q=rats",
+    "/following/",
+    "/near-you/",
+    "/exams/7311/"
+  ],
+  "captures": [
+    "home-desktop.png",
+    "home-desktop-focus.png",
+    "search-rats-desktop.png",
+    "search-rats-desktop-focus.png",
+    "home-mobile.png",
+    "home-mobile-focus.png",
+    "search-rats-mobile.png",
+    "search-rats-mobile-focus.png"
+  ],
+  "results": [
+    {
+      "surface": "home@1440",
+      "path": "",
+      "click_mark": "svg.brand-mark",
+      "click_wordmark": "opens /",
+      "keyboard": "single tab stop, Enter opens /"
+    },
+    {
+      "surface": "search-rats@1440",
+      "path": "search/?q=rats",
+      "click_mark": "svg.brand-mark",
+      "click_wordmark": "opens /",
+      "keyboard": "single tab stop, Enter opens /"
+    },
+    {
+      "surface": "home@390",
+      "path": "",
+      "click_mark": "svg.brand-mark",
+      "click_wordmark": "opens /",
+      "keyboard": "single tab stop, Enter opens /"
+    },
+    {
+      "surface": "search-rats@390",
+      "path": "search/?q=rats",
+      "click_mark": "svg.brand-mark",
+      "click_wordmark": "opens /",
+      "keyboard": "single tab stop, Enter opens /"
+    },
+    {
+      "surface": "following",
+      "path": "following/",
+      "click_mark": "svg.brand-mark",
+      "click_wordmark": "opens /",
+      "keyboard": "single tab stop, Enter opens /"
+    },
+    {
+      "surface": "near-you",
+      "path": "near-you/",
+      "click_mark": "svg.brand-mark",
+      "click_wordmark": "opens /",
+      "keyboard": "single tab stop, Enter opens /"
+    },
+    {
+      "surface": "civic-document-exam",
+      "path": "exams/7311/",
+      "click_mark": "svg.brand-mark",
+      "click_wordmark": "opens /",
+      "keyboard": "single tab stop, Enter opens /"
+    }
+  ]
+}

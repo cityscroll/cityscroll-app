@@ -2334,6 +2334,7 @@
     invnote_aria: "이 고정 항목에 대한 메모",
     site_kicker: "서로 연결된 뉴욕시 공공 기록",
     back_home_aria: "CityScroll 홈으로 돌아가기",
+    brand_home_aria: "CityScroll 홈",
     back_to_crol: "← CityScroll로 돌아가기",
     home_link: "홈",
     data_page_h1: "데이터",

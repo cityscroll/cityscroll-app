@@ -62,7 +62,7 @@ export function renderCivicDocumentMast({ current, siteBase = "", surfaceClass =
   }).join("");
   const classes = classNames("document-mast", surfaceClass);
   return `<header class="${esc(classes)}"><div class="document-mast-inner">
-    <a class="document-brand brand-lockup home" href="${esc(home)}">${brandMark()}<span>CityScroll</span></a>
+    <a class="document-brand brand-lockup home" href="${esc(home)}" aria-label="CityScroll home">${brandMark()}<span>CityScroll</span></a>
     <nav class="document-nav" aria-label="Primary">${links}</nav>
   </div></header>`;
 }

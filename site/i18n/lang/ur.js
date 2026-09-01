@@ -2342,6 +2342,7 @@
     invnote_aria: "اس پن شدہ آئٹم کے لیے نوٹ",
     site_kicker: "نیویارک سٹی کا عوامی ریکارڈ، باہم منسلک",
     back_home_aria: "CityScroll کے ہوم پیج پر واپس جائیں",
+    brand_home_aria: "CityScroll ہوم پیج",
     back_to_crol: "→ CityScroll پر واپس جائیں",
     home_link: "ہوم",
     data_page_h1: "ڈیٹا",
