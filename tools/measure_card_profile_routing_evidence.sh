@@ -42,6 +42,10 @@ REV="${REV:-$(git -C "$ROOT" rev-parse HEAD)}"
 SOURCE="${SOURCE:-$(git -C "$ROOT" remote get-url origin)}"
 
 mkdir -p "$SCRATCH" "$OUT"
+# Both are absolutised before anything runs, because several steps execute from
+# inside a provisioned checkout and a relative output path would resolve there.
+SCRATCH="$(cd "$SCRATCH" && pwd -P)"
+OUT="$(cd "$OUT" && pwd -P)"
 free_kib() { df -k "$SCRATCH" | awk 'NR==2{print $4}'; }
 heartbeat() { echo "[$(date -u +%H:%M:%S)] $*"; }
 

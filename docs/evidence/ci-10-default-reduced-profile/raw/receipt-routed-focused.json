@@ -1,0 +1,163 @@
+{
+  "schema": "cityscroll.card-profile.provision-receipt.v1",
+  "note": "deterministic_digest covers the deterministic block only. The measurement block holds figures a second run may legitimately move and is excluded by design.",
+  "deterministic": {
+    "profile": "focused-reduced",
+    "profile_title": "Reduced working copy for focused card work",
+    "provisioned_profile_name": "card-work",
+    "manifest_version": 1,
+    "manifest_digest": "c3d7223179021b4bf455e726c7f6bd58c4aabff735c0d7cc6f0fac154d9a3830",
+    "provision_identity": "8a11585d016f54bd53c6cb70515d1bcf278f2d24090046a7413c92e0a87f55fe",
+    "revision": "d1904ae8bc622be288a096d28e853ebeb315e81b",
+    "identity_inputs": [
+      {
+        "id": "routing-manifest",
+        "path": "tools/card-profile/profiles.v1.json",
+        "source": "worktree",
+        "blob": "0b74a1cb5466d7c8e71ec69dee771681d334bc25"
+      },
+      {
+        "id": "profile-config",
+        "path": "tools/card-profile/profile.config.v1.json",
+        "source": "worktree",
+        "blob": "dcc4b48f6fcd198fda76b2067df090c6827369c1"
+      },
+      {
+        "id": "sparse-patterns",
+        "path": "tools/card-profile/card-work.sparse",
+        "source": "worktree",
+        "blob": "1c0baa0d5938d078ff9d4d84fe2a66f2df1f0f54"
+      },
+      {
+        "id": "closure-manifest",
+        "path": "tools/card-profile/closure.v1.json",
+        "source": "worktree",
+        "blob": "532e144133e2181562e40ca6ef6039d27d4545fb"
+      },
+      {
+        "id": "dependency-lock",
+        "path": "worker/pnpm-lock.yaml",
+        "source": "worktree",
+        "blob": "78ebb540d87a0bcc9823a4d73e444eef0e5ea592"
+      },
+      {
+        "id": "toolchain-pin",
+        "path": "worker/package.json",
+        "source": "worktree",
+        "blob": "52c424b2d36387ec6c65b11626bf912d591be9a1"
+      }
+    ],
+    "object_mode": {
+      "sparse_checkout": true,
+      "shallow_repository": false,
+      "promisor_remote": true,
+      "partial_clone_filter": "blob:none",
+      "full_history_available": true,
+      "full_history_fallback": "already complete"
+    },
+    "closure": {
+      "verified": true,
+      "problems": [],
+      "config_sha256": "c018bc8640f91c75f8a27a63bfc9da045087c341321ee7ccc5695827de05eb4f",
+      "patterns_sha256": "045df883c86f32d0f797dd0c842e22234c502c14b3e6117c7290efcedf076561",
+      "required_paths": 2418,
+      "deferred_paths": 310,
+      "site_data_paths_in_profile": 28,
+      "supported_gate_classes": [
+        "worker-unit",
+        "architecture-evidence-shards",
+        "architecture-reconcile",
+        "architecture-canaries",
+        "card-reconciliation",
+        "agents-router",
+        "cutover-receipt",
+        "card-profile-contract"
+      ],
+      "full_checkout_only_gate_classes": [
+        "site-standards",
+        "site-unit",
+        "generated-source-docs",
+        "evidence-placement",
+        "reading-level",
+        "accessibility-browser",
+        "pages-build",
+        "release-surface",
+        "full-history-guards"
+      ]
+    },
+    "hydration": {
+      "applicable": true,
+      "note": "tracked paths materialised beyond the committed pattern list",
+      "paths": []
+    },
+    "integrity": {
+      "fsck_connectivity_only_exit": 0,
+      "fsck_method": "--connectivity-only verifies the object graph without demanding blobs a partial clone deliberately did not fetch, so it is the meaningful integrity check in both profiles",
+      "commits_reachable_from_head": 1585,
+      "working_tree_clean": true,
+      "tracked_paths_not_materialised": 1910
+    },
+    "routing_decision": null,
+    "fallback_reason": null,
+    "byte_accounting": {
+      "method": "tools/measure_working_copy_footprint.py, CI-08's ordered exhaustive path partition with first rule wins",
+      "categories_partition_total": true,
+      "tracked_file_count": 5710,
+      "categories": {
+        "dependency_view": {
+          "logical_bytes": 330480550,
+          "allocated_bytes": 344707072
+        },
+        "generated_site_output": {
+          "logical_bytes": 0,
+          "allocated_bytes": 0
+        },
+        "generated_warehouse": {
+          "logical_bytes": 0,
+          "allocated_bytes": 0
+        },
+        "git_metadata": {
+          "logical_bytes": 40803453,
+          "allocated_bytes": 41299968
+        },
+        "other_overhead": {
+          "logical_bytes": 187968,
+          "allocated_bytes": 0
+        },
+        "tracked_other": {
+          "logical_bytes": 65489122,
+          "allocated_bytes": 71806976
+        },
+        "tracked_site_data": {
+          "logical_bytes": 63802082,
+          "allocated_bytes": 63864832
+        },
+        "tracked_site_other": {
+          "logical_bytes": 17971358,
+          "allocated_bytes": 19714048
+        },
+        "tracked_warehouse": {
+          "logical_bytes": 1140095,
+          "allocated_bytes": 1249280
+        }
+      },
+      "total": {
+        "logical_bytes": 519874628,
+        "allocated_bytes": 542642176
+      },
+      "hardlink_dedup": {
+        "entries": 0,
+        "logical_bytes": 0
+      },
+      "shared_dependency_store_note": "The shared dependency store is measured separately and is never folded into a checkout total; see docs/evidence/ci-09-working-copy-reduction/raw/footprint-shared-store.json"
+    }
+  },
+  "deterministic_digest": "794d6fdb684468e633724879d5ce9b294d30ef7c4dc722a07199b04a78a104e9",
+  "measurement": {
+    "note": "Reported, not part of the digest.",
+    "provisioning_timing": null,
+    "packs": 3,
+    "pack_size_kib": 38497,
+    "loose_objects": 0
+  }
+}

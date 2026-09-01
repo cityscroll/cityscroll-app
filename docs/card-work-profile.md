@@ -112,13 +112,21 @@ node tools/card_profile_receipt.mjs --check <receipt.json>      # does it still 
 ```
 
 The receipt carries profile identity, revision, Git object mode, the closure it
-was provisioned against, any explicitly hydrated paths, integrity checks, byte
-accounting and the routing decision. Its `deterministic` block is exactly the
-part that is a property of the checkout rather than of the run, and
-`deterministic_digest` covers that block, so `--check` is a real reproduction
-test. Byte accounting is refused unless its categories partition the total, and
-a receipt that would carry an absolute path, a user name or a host name fails
-closed rather than being quietly trimmed.
+was provisioned against, any explicitly hydrated paths, integrity checks, the
+recorded-versus-computed identity, the routing decision, byte accounting and
+provisioning timing. It is in three blocks:
+
+| Block | Holds | Digested |
+| --- | --- | --- |
+| `deterministic` | What the tool observes about the checkout: identity, object mode, closure, hydration, integrity, recorded identity | yes |
+| `context` | What the caller supplied: the routing decision and any fallback reason | no |
+| `measurement` | Figures a second run may move: byte accounting, provisioning timing, pack counts | no |
+
+`deterministic_digest` covers the first block only, which is what makes
+`--check` a real reproduction test: it re-derives the digest from the checkout
+alone, with no arguments to replay. Byte accounting is refused unless its
+categories partition the total, and a receipt that would carry an absolute path,
+a user name or a host name fails closed rather than being quietly trimmed.
 
 ## What the two levers do
 

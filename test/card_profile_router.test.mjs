@@ -211,16 +211,36 @@ test("the provisioning receipt reproduces deterministically and reports every de
     "closure",
     "hydration",
     "integrity",
-    "byte_accounting",
-    "fallback_reason"
+    "recorded_identity"
   ]) {
     assert.ok(field in block, `the receipt does not report ${field}`);
+  }
+  for (const field of ["routing_decision", "fallback_reason"]) {
+    assert.ok(field in first.receipt.context, `the receipt does not report ${field}`);
+  }
+  for (const field of ["byte_accounting", "provisioning_timing", "packs"]) {
+    assert.ok(field in first.receipt.measurement, `the receipt does not report ${field}`);
   }
   // The integrity check is recorded, not asserted, so a checkout with a damaged
   // object store produces a receipt that says so rather than one that omits it.
   assert.equal(typeof block.integrity.fsck_connectivity_only_exit, "number");
   assert.ok(block.integrity.commits_reachable_from_head > 0);
   assert.equal(typeof block.integrity.working_tree_clean, "boolean");
+});
+
+test("caller-supplied context does not move the deterministic digest", () => {
+  // The digest covers what the tool observes about the checkout, not what it
+  // was told. If a routing decision or a fallback note changed it, --check
+  // would only reproduce when the caller replayed the same arguments, which is
+  // not a reproduction test.
+  const bare = buildReceipt();
+  const withContext = buildReceipt({
+    decision: decide({ surface: "focused-card-work", gates: ["worker-unit"] }),
+    fallbackReason: "provisioned as the control for a full-only surface"
+  });
+  assert.equal(withContext.receipt.deterministic_digest, bare.receipt.deterministic_digest);
+  assert.equal(withContext.receipt.context.routing_decision.rule, "focused-card-work-verified");
+  assert.equal(bare.receipt.context.routing_decision, null);
 });
 
 test("a receipt that would leak a host detail fails closed instead of being redacted", () => {

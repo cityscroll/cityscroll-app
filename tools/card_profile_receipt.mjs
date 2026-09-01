@@ -7,17 +7,27 @@
 // explicitly hydrated paths, integrity checks, byte accounting, provisioning
 // timing and any fallback reason, in one file.
 //
-// It is split into two blocks on purpose.
+// It is split into three blocks on purpose, and the split is what makes
+// --check a real reproduction test rather than a restatement.
 //
-//   deterministic   Everything that is a property of the checkout rather than
-//                   of the run: identity, object mode, closure, hydration,
-//                   reachable history, cleanliness. Two runs against the same
-//                   checkout produce byte-identical content here, and
-//                   deterministic_digest covers exactly this block.
+//   deterministic   What the tool observes about the checkout itself: identity,
+//                   object mode, closure, hydration, reachable history,
+//                   cleanliness. Nothing here is supplied by the caller, so a
+//                   second run against the same checkout re-derives it exactly.
+//                   deterministic_digest covers this block and only this block.
 //
-//   measurement     Everything a second run may legitimately move: pack counts
-//                   after lazy fetches, wall-clock timings, charged bytes.
-//                   Reported, never folded into the digest.
+//   context         What the caller was told or asked: the routing decision that
+//                   produced this profile, and any fallback reason. Recorded
+//                   because a receipt has to say why this profile, but it is an
+//                   input rather than an observation, so it is not digested.
+//
+//   measurement     Figures a second run may legitimately move: byte accounting
+//                   whose dependency view depends on the install, wall-clock
+//                   timings, pack counts after lazy fetches.
+//
+// An earlier version digested the whole receipt including the caller-supplied
+// blocks. --check then failed against its own output unless the caller replayed
+// the same arguments, which is not a reproduction test at all.
 //
 // Nothing host-specific is written. A field carrying an absolute path, a user
 // name or a host name is a hard failure rather than a redaction, because a
@@ -96,6 +106,28 @@ function hydration(sparseActive) {
     .filter((path) => !excluded.has(path) && !matches(path))
     .sort();
   return { applicable: true, note: "tracked paths materialised beyond the committed pattern list", paths };
+}
+
+// Provisioning writes the digest it routed under into the Git directory. A
+// checkout whose recorded digest no longer equals the computed one was
+// provisioned from a profile that has since drifted, and routing sends it to the
+// control. Reporting that here means a receipt says so rather than leaving a
+// reader to compare two files.
+function recordedIdentity(identity) {
+  const path = resolve(git(["rev-parse", "--absolute-git-dir"]).trim(), "card-profile-identity.json");
+  if (!existsSync(path)) {
+    return { present: false, note: "this checkout was not provisioned by tools/provision_card_profile.sh", stale: null };
+  }
+  const recorded = readJson(path);
+  return {
+    present: true,
+    manifest_digest: recorded.manifest_digest,
+    provisioned_profile: recorded.provisioned_profile ?? null,
+    work_surface: recorded.work_surface ?? null,
+    routing_rule: recorded.routing_rule ?? null,
+    profile_override: recorded.profile_override ?? null,
+    stale: recorded.manifest_digest !== identity.manifest_digest
+  };
 }
 
 function integrity() {
@@ -196,28 +228,32 @@ export function buildReceipt({ decision = null, footprint = null, timing = null,
     },
     hydration: hydration(mode.sparse_checkout),
     integrity: integrity(),
-    routing_decision: decision
-      ? {
-          rule: decision.rule,
-          rule_order: decision.rule_order,
-          surface: decision.request.surface,
-          gate_classes: decision.request.gate_classes,
-          profile: decision.profile,
-          reason: decision.reason
-        }
-      : null,
-    fallback_reason: fallbackReason,
-    byte_accounting: byteAccounting(footprint)
+    recorded_identity: recordedIdentity(identity)
   };
 
   const receipt = {
     schema: "cityscroll.card-profile.provision-receipt.v1",
     note:
-      "deterministic_digest covers the deterministic block only. The measurement block holds figures a second run may legitimately move and is excluded by design.",
+      "deterministic_digest covers the deterministic block only, which is exactly what this tool observes about the checkout. The context block records caller-supplied inputs and the measurement block holds figures a second run may legitimately move; neither is digested, so --check re-derives the digest from the checkout alone.",
     deterministic,
     deterministic_digest: sha256(JSON.stringify(deterministic)),
+    context: {
+      note: "Supplied by the caller, not observed here, so it is reported rather than digested.",
+      routing_decision: decision
+        ? {
+            rule: decision.rule,
+            rule_order: decision.rule_order,
+            surface: decision.request.surface,
+            gate_classes: decision.request.gate_classes,
+            profile: decision.profile,
+            reason: decision.reason
+          }
+        : null,
+      fallback_reason: fallbackReason
+    },
     measurement: {
       note: "Reported, not part of the digest.",
+      byte_accounting: byteAccounting(footprint),
       provisioning_timing: timing,
       packs: Number((gitOptional(["count-objects", "-v"]) ?? "").match(/^packs: (\d+)$/m)?.[1] ?? -1),
       pack_size_kib: Number((gitOptional(["count-objects", "-v"]) ?? "").match(/^size-pack: (\d+)$/m)?.[1] ?? -1),
