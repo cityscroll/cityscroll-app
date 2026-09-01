@@ -425,7 +425,7 @@ test("Vendors uses its complete production provider for worker recall and covera
   }, {
     participated: true,
     state: "matched",
-    indexed_count: 133,
+    indexed_count: KEYWORD_INDEX.families.vendors.indexed_count,
   });
 
   const vendorsCoverage = buildUniversalSearchCoverageView(body.coverage).lenses

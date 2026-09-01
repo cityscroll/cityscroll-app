@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { mkdtempSync, readFileSync, rmSync, unlinkSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
@@ -65,6 +65,40 @@ test("the shard reader fails closed when a compressed family is stale", () => {
     manifest.logical_index.sha256 = "0".repeat(64);
     writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`);
     assert.throws(() => readKeywordSearchIndexFromShards(dir), /source\/index mismatch/);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test("the shard reader fails closed when either compressed transport is missing or tampered", () => {
+  for (const mode of ["missing", "tampered"]) {
+    const dir = mkdtempSync(join(tmpdir(), "keyword-search-shards-"));
+    try {
+      const artifacts = buildKeywordSearchIndexShardArtifacts(index);
+      writeKeywordSearchIndexShardArtifacts(artifacts, dir);
+      const gzipPath = join(dir, artifacts.shards[0].descriptor.gzip_path);
+      if (mode === "missing") unlinkSync(gzipPath);
+      else writeFileSync(gzipPath, Buffer.from("tampered"));
+      assert.throws(
+        () => readKeywordSearchIndexFromShards(dir),
+        mode === "missing" ? /shard missing: people/ : /gzip shard hash or byte-count mismatch: people/,
+      );
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
+    }
+  }
+});
+
+test("the shard reader fails closed when the family set is incomplete", () => {
+  const dir = mkdtempSync(join(tmpdir(), "keyword-search-shards-"));
+  try {
+    const artifacts = buildKeywordSearchIndexShardArtifacts(index);
+    writeKeywordSearchIndexShardArtifacts(artifacts, dir);
+    const manifestPath = join(dir, "manifest.json");
+    const manifest = JSON.parse(readFileSync(manifestPath, "utf8"));
+    manifest.shards.pop();
+    writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`);
+    assert.throws(() => readKeywordSearchIndexFromShards(dir), /family set is incomplete or duplicated/);
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }

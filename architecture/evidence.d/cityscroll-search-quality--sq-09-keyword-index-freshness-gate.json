@@ -1,0 +1,25 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-search-quality/sq-09-keyword-index-freshness-gate",
+  "status": "implemented",
+  "fingerprint": "sq-09-keyword-index-freshness-gate.v1",
+  "updated_at": "2026-09-01T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "keyword-index-family-shards",
+      "path": "worker/src/data/keyword_search_index_shards/manifest.json"
+    },
+    {
+      "id": "keyword-index-shard-validator",
+      "path": "site/keyword_search_index_shards.mjs"
+    },
+    {
+      "id": "keyword-index-dependency-boundary",
+      "path": "warehouse/derived_json_build_manifest.json"
+    },
+    {
+      "id": "keyword-index-shard-regressions",
+      "path": "test/keyword_search_index_shards.test.mjs"
+    }
+  ]
+}

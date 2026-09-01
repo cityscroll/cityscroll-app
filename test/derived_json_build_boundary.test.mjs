@@ -40,6 +40,24 @@ test("keyword search boundary tracks the committed sharded output tree", () => {
   assert.deepEqual(family.output_paths, ["worker/src/data/keyword_search_index_shards"]);
   assert.ok(existsSync(path.join(ROOT, family.output_paths[0])));
   assert.equal(existsSync(path.join(ROOT, "worker/src/data/keyword_search_index.json")), false);
+  for (const producer of [
+    "site/agency_search_producer.mjs",
+    "site/board_search_producer.mjs",
+    "site/committee_search_producer.mjs",
+    "site/community_board_people_search_producer.mjs",
+    "site/exam_search_producer.mjs",
+    "site/land_search_producer.mjs",
+    "site/meeting_search_producer.mjs",
+    "site/parcel_search_producer.mjs",
+    "site/people_search_producer.mjs",
+    "site/procurement_search_producer.mjs",
+    "site/vendor_search_producer.mjs",
+  ]) assert.ok(family.source_paths.includes(producer), producer);
+});
+
+test("required PR CI catches a stale keyword read model before Worker deployment", () => {
+  const workflow = readFileSync(path.join(ROOT, ".github/workflows/ci.yml"), "utf8");
+  assert.match(workflow, /name: Committed keyword search read-model freshness[\s\S]*?node tools\/build_keyword_search_index\.mjs --check/);
 });
 
 test("the retained source snapshot validation fails closed before generation", () => {

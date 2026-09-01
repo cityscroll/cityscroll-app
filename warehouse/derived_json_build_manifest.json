@@ -113,7 +113,19 @@
         "site/data/committee_graph_lookup.json",
         "site/data/community_board_people.json",
         "site/data/non_council_outcome_sources/community_board_committees.json",
-        "site/data/shared_procurement_read_model.json"
+        "site/data/shared_procurement_read_model.json",
+        "entity_resolution/review/alias_registry.json",
+        "site/agency_search_producer.mjs",
+        "site/board_search_producer.mjs",
+        "site/committee_search_producer.mjs",
+        "site/community_board_people_search_producer.mjs",
+        "site/exam_search_producer.mjs",
+        "site/land_search_producer.mjs",
+        "site/meeting_search_producer.mjs",
+        "site/parcel_search_producer.mjs",
+        "site/people_search_producer.mjs",
+        "site/procurement_search_producer.mjs",
+        "site/vendor_search_producer.mjs"
       ],
       "output_paths": ["worker/src/data/keyword_search_index_shards"]
     },
