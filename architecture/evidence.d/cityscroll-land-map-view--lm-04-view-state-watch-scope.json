@@ -1,0 +1,17 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-land-map-view/lm-04-view-state-watch-scope",
+  "status": "implemented",
+  "fingerprint": "lm-04-view-state-watch-scope.v1",
+  "updated_at": "2026-09-01T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "land-view-state",
+      "path": "site/land_view_state.mjs"
+    },
+    {
+      "id": "land-view-switch",
+      "path": "site/land_view_switch.mjs"
+    }
+  ]
+}
