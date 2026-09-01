@@ -256,20 +256,26 @@ def closure_table(closure: dict) -> str:
     deferred = measured["deferred_paths"]
     tracked = measured["tracked_total"]
     site_data = measured["site_data"]
+    total = tracked["logical_bytes"]
     lines = [
         "| Set | Files | Logical MiB | Share of tracked payload |",
         "| --- | ---: | ---: | ---: |",
         f"| Materialised by the profile | {profile['count']:,} | {mib(profile['logical_bytes'])} | "
-        f"{100 * profile['logical_bytes'] / tracked['logical_bytes']:.1f}% |",
-        f"| Deferred to explicit hydration | {deferred['count']:,} | {mib(deferred['logical_bytes'])} | "
-        f"{100 * deferred['logical_bytes'] / tracked['logical_bytes']:.1f}% |",
-        f"| Left out of the profile entirely | {excluded['count']:,} | {mib(excluded['logical_bytes'])} | "
-        f"{100 * excluded['logical_bytes'] / tracked['logical_bytes']:.1f}% |",
-        f"| **Tracked payload at this revision** | **{tracked['count']:,}** | **{mib(tracked['logical_bytes'])}** | 100.0% |",
-        f"| of which tracked `site/data` | {site_data['tracked_count']:,} | {mib(site_data['tracked_logical_bytes'])} | "
-        f"{100 * site_data['tracked_logical_bytes'] / tracked['logical_bytes']:.1f}% |",
-        f"| of which `site/data` in the profile | {site_data['profile_count']:,} | {mib(site_data['profile_logical_bytes'])} | "
+        f"{100 * profile['logical_bytes'] / total:.1f}% |",
+        f"| Not materialised by the profile | {excluded['count']:,} | {mib(excluded['logical_bytes'])} | "
+        f"{100 * excluded['logical_bytes'] / total:.1f}% |",
+        f"| — of those, named in the deferred hydration set | {deferred['count']:,} | {mib(deferred['logical_bytes'])} | "
+        f"{100 * deferred['logical_bytes'] / total:.1f}% |",
+        f"| **Tracked payload at this revision** | **{tracked['count']:,}** | **{mib(total)}** | 100.0% |",
+        f"| — of which tracked `site/data` | {site_data['tracked_count']:,} | {mib(site_data['tracked_logical_bytes'])} | "
+        f"{100 * site_data['tracked_logical_bytes'] / total:.1f}% |",
+        f"| — of which `site/data` in the profile | {site_data['profile_count']:,} | {mib(site_data['profile_logical_bytes'])} | "
         f"{100 * site_data['profile_logical_bytes'] / site_data['tracked_logical_bytes']:.1f}% of tracked `site/data` |",
+        "",
+        "The first two rows partition the tracked payload and sum to 100%. The deferred "
+        "hydration set is a named subset of what the profile does not materialise: those paths "
+        "are the ones a scanned source references, so they are the ones most likely to be wanted, "
+        "and they are one documented command away.",
     ]
     return "\n".join(lines) + "\n"
 

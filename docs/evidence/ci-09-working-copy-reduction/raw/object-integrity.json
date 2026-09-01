@@ -1,39 +1,41 @@
 {
   "checkouts": [
     {
-      "commit_count_reachable_from_head": 1583,
+      "commit_count_reachable_from_head": 1584,
       "fsck_connectivity_only": {
         "exit_status": 0,
-        "output": "dangling commit 763b589a580fe9958099e22f31e0623b1a37cb02\ndangling tree fd6700ec607f66a49f8784471768862d96df0e4b\ndangling tree 9d6c78bff1058ac0cd814409abcd3290f45bacbd\ndangling commit 6f806afd102040092e34030df970eb319e410239\ndangling commit e5bc64f9ea439157c7d2542a37f4db958da8afb8\ndangling tree b8ceda5989d711d21b807b4580567ebcf9657acd\ndangling tree 5ad0a4268e803f2fe5ec2d6e223ab0b52ec44084\ndangling commit 37e026da59877d1588044f7c192d40c82d26e97e\ndangling tree 86f70ac992dd2de0851a86ab014443eb352c80db\ndangling tree f70f81ca502e2bee063ce8146ebbaf286f5ffcd5\ndangling commit b4202b853ca793495fe6c979cde3ccc989ecdc15\ndangling tree 452545e521c4bf10d82bcedd34c134db993d3f62\ndangling commit 38381fd145ee6fdb1f138c961d066cb5427687d7\ndangling commit 344301f5d77411a9f7d9857e60bfdde06d38e155\ndangling tree c54d27d8f21ab43e7c0ca6df773cc303236c9ba9\ndangling tree d44f1d91ed937013b83a7ab827b216b42b2a5017\ndangling tree b053f91d57ce78e471d1fbd9f4fbd0229d332503\ndangling tree 226023b18bb5c80bf586d1a55731830475458f2e\ndangling tree 456697da8a8dd56a8ce42ee7be4465f3541b0203\ndangling commit 056c57c2366ff10eed651166c30230baf752e58c\ndangling tree 237527d05760cecd66564409a55bdb7a9aa88f53\ndangling tree b690232cc28f4a691b73883a59efb8e4e555e7c7\ndangling commit bbb36911dec825c518e958f1b097961c7347673a\ndangling tree 8ed91de68c164a0e23c463551d98dfe92237eab0"
+        "output": "dangling tree fd6700ec607f66a49f8784471768862d96df0e4b\ndangling tree 9d6c78bff1058ac0cd814409abcd3290f45bacbd\ndangling commit b16d7e92235b2f2d959dad80d58aaf123fbbbbb3\ndangling commit 6f806afd102040092e34030df970eb319e410239\ndangling commit e5bc64f9ea439157c7d2542a37f4db958da8afb8\ndangling tree b8ceda5989d711d21b807b4580567ebcf9657acd\ndangling tree 5ad0a4268e803f2fe5ec2d6e223ab0b52ec44084\ndangling commit 37e026da59877d1588044f7c192d40c82d26e97e\ndangling tree 86f70ac992dd2de0851a86ab014443eb352c80db\ndangling tree f70f81ca502e2bee063ce8146ebbaf286f5ffcd5\ndangling commit b4202b853ca793495fe6c979cde3ccc989ecdc15\ndangling tree 452545e521c4bf10d82bcedd34c134db993d3f62\ndangling commit 38381fd145ee6fdb1f138c961d066cb5427687d7\ndangling commit 344301f5d77411a9f7d9857e60bfdde06d38e155\ndangling tree c54d27d8f21ab43e7c0ca6df773cc303236c9ba9\ndangling tree d44f1d91ed937013b83a7ab827b216b42b2a5017\ndangling tree b053f91d57ce78e471d1fbd9f4fbd0229d332503\ndangling tree 226023b18bb5c80bf586d1a55731830475458f2e\ndangling tree 456697da8a8dd56a8ce42ee7be4465f3541b0203\ndangling commit 056c57c2366ff10eed651166c30230baf752e58c\ndangling tree 237527d05760cecd66564409a55bdb7a9aa88f53\ndangling tree b690232cc28f4a691b73883a59efb8e4e555e7c7\ndangling commit bbb36911dec825c518e958f1b097961c7347673a\ndangling tree 8ed91de68c164a0e23c463551d98dfe92237eab0"
       },
-      "head": "b16d7e92235b2f2d959dad80d58aaf123fbbbbb3",
+      "head": "89533982f9afc6969c8a6c976071b9de488e1d8f",
       "label": "card-work",
       "loose_objects": 0,
-      "pack_size_kib": 39713,
+      "pack_size_kib": 39720,
       "packs": 83,
       "partial_clone_filter": "blob:none",
       "promisor_remote": true,
       "shallow": false,
-      "tracked_paths_not_materialised": 1900
+      "tracked_paths_not_materialised": 1900,
+      "working_tree_clean": true
     },
     {
-      "commit_count_reachable_from_head": 1583,
+      "commit_count_reachable_from_head": 1584,
       "fsck_connectivity_only": {
         "exit_status": 0,
         "output": ""
       },
-      "head": "b16d7e92235b2f2d959dad80d58aaf123fbbbbb3",
+      "head": "89533982f9afc6969c8a6c976071b9de488e1d8f",
       "label": "full-checkout",
       "loose_objects": 0,
-      "pack_size_kib": 497517,
+      "pack_size_kib": 497545,
       "packs": 1,
       "partial_clone_filter": null,
       "promisor_remote": false,
       "shallow": false,
-      "tracked_paths_not_materialised": 0
+      "tracked_paths_not_materialised": 0,
+      "working_tree_clean": true
     }
   ],
   "note": "git fsck --connectivity-only is the integrity check that is meaningful in a partial clone: it verifies the object graph without demanding blobs the profile deliberately did not fetch. The promisor remote is the durable origin, so a deferred blob is served on demand rather than lost.",
-  "revision": "b16d7e92235b2f2d959dad80d58aaf123fbbbbb3",
+  "revision": "89533982f9afc6969c8a6c976071b9de488e1d8f",
   "schema": "cityscroll.card-profile-integrity.v1"
 }

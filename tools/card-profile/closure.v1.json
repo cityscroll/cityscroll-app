@@ -2929,11 +2929,11 @@
   "missing_path_behaviour": "A tracked path the profile does not materialise is marked skip-worktree in the index. tools/card_profile_sentinel.cjs turns a missing-file error on such a path into CardProfileMissingPath and records it, so a profile gap fails closed instead of passing by omission. tools/provision_card_profile.sh hydrate is the documented route to materialise one.",
   "measured": {
     "note": "A snapshot of what the profile costs at the revision named here. These figures are reporting only; they are not part of the checked contract, because a byte total moves whenever any tracked file does.",
-    "revision": "b16d7e92235b2f2d959dad80d58aaf123fbbbbb3",
+    "revision": "89533982f9afc6969c8a6c976071b9de488e1d8f",
     "computed_in_reduced_checkout": false,
     "profile_paths": {
       "count": 3765,
-      "logical_bytes": 148139082
+      "logical_bytes": 148163719
     },
     "deferred_paths": {
       "count": 310,
@@ -2951,7 +2951,7 @@
     },
     "tracked_total": {
       "count": 5666,
-      "logical_bytes": 807559416
+      "logical_bytes": 807584053
     },
     "pattern_count": 769
   }
