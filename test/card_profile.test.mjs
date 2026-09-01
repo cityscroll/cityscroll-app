@@ -37,7 +37,7 @@ const sparseActive = (() => {
   }
 })();
 
-test("the generated profile outputs are derived from the committed config", { skip: sparseActive }, () => {
+test("the committed patterns cover the closure and materialise nothing deferred", () => {
   const result = spawnSync(process.execPath, ["tools/derive_card_profile.mjs", "--check"], {
     cwd: ROOT,
     encoding: "utf8"
@@ -65,9 +65,20 @@ test("no directory pattern reaches into an excluded byte-heavy tree", () => {
 });
 
 test("the profile leaves most of the measured site/data dominant out of the working tree", () => {
-  assert.ok(closure.site_data.tracked_count > closure.site_data.profile_count);
-  const share = closure.site_data.profile_logical_bytes / closure.site_data.tracked_logical_bytes;
+  const measured = closure.measured.site_data;
+  assert.ok(measured.tracked_count > measured.profile_count);
+  const share = measured.profile_logical_bytes / measured.tracked_logical_bytes;
   assert.ok(share < 0.5, `profile holds ${(share * 100).toFixed(1)}% of tracked site/data bytes`);
+});
+
+test("every deferred path is a tracked path that the patterns do not materialise", () => {
+  const matches = (path) =>
+    patterns.some((pattern) => (pattern.endsWith("/") ? path.startsWith(pattern.slice(1)) : path === pattern.slice(1)));
+  assert.ok(closure.deferred_hydration_set.paths.length > 0);
+  for (const path of closure.deferred_hydration_set.paths) {
+    assert.ok(tracked.has(path), `deferred path is not tracked: ${path}`);
+    assert.ok(!matches(path), `deferred path is materialised by the patterns: ${path}`);
+  }
 });
 
 test("the cross-boundary risk CI-08 measured is represented in the closure", () => {
@@ -101,12 +112,12 @@ test("every observed read of a supported gate class is inside the profile", () =
       .split("\n")
       .filter(Boolean)
   );
-  const excluded = new Set(closure.excluded_paths.sample ?? []);
+  const deferred = new Set(closure.deferred_hydration_set.paths);
   for (const gate of config.gate_classes.filter((entry) => entry.profile_supported)) {
     const receipt = readJson(`docs/evidence/ci-09-working-copy-reduction/raw/closure/${gate.observation}`);
     for (const path of receipt.paths) {
       assert.ok(profilePaths.has(path), `observed path is not tracked: ${path}`);
-      assert.ok(!excluded.has(path), `observed path is excluded from the profile: ${path}`);
+      assert.ok(!deferred.has(path), `an observed path was deferred out of the profile: ${path}`);
     }
   }
 });

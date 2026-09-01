@@ -132,7 +132,7 @@ cmd_provision() {
 
   local start prepare_ms sparse_ms checkout_ms install_ms
   start="$(now_ms)"
-  git clone --no-checkout "${filter_args[@]}" "${depth_args[@]}" "$source" "$dest" >/dev/null 2>&1
+  git clone --no-checkout ${filter_args[@]+"${filter_args[@]}"} ${depth_args[@]+"${depth_args[@]}"} "$source" "$dest" >/dev/null 2>&1
   prepare_ms=$(( $(now_ms) - start ))
 
   sparse_ms=0
