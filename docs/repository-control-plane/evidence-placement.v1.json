@@ -561,9 +561,9 @@
       "site/",
       "worker/"
     ],
-    "file_count": 2749,
-    "sha256": "ee239d23297b8cf00feacf342ca4defc57d9138e70d86de466be8c7aacc93b10",
-    "expected_after_sha256": "ee239d23297b8cf00feacf342ca4defc57d9138e70d86de466be8c7aacc93b10"
+    "file_count": 2752,
+    "sha256": "bc0c006f6315c4b8549434c5ac7c7d4807f9219b39d164a4140948ab15d36f76",
+    "expected_after_sha256": "bc0c006f6315c4b8549434c5ac7c7d4807f9219b39d164a4140948ab15d36f76"
   },
   "history_treatment": "none; this is a tip-level placement change"
 }

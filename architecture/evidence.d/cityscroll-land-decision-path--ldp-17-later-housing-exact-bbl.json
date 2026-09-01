@@ -1,0 +1,29 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-land-decision-path/ldp-17-later-housing-exact-bbl",
+  "status": "implemented",
+  "fingerprint": "ldp-17-later-housing-exact-bbl.v1",
+  "updated_at": "2026-08-31T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "later-housing-activity-materializer",
+      "path": "warehouse/lib/later_housing_activity.mjs"
+    },
+    {
+      "id": "later-housing-activity-source-receipt",
+      "path": "warehouse/receipts/proof/housing_project_activity_source_latest.json"
+    },
+    {
+      "id": "later-housing-activity-receipt",
+      "path": "warehouse/receipts/proof/later_housing_activity_latest.json"
+    },
+    {
+      "id": "later-housing-activity-land-renderer",
+      "path": "site/later_housing_activity_view.mjs"
+    },
+    {
+      "id": "land-lot-source-digest-composition",
+      "path": "site/land_lot_source_digests.mjs"
+    }
+  ]
+}

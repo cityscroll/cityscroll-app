@@ -60,6 +60,10 @@ function main() {
       name: "e_designation_digest",
       out: runNode(path.join(ROOT, "tools/build_e_designation_digest.mjs"), ["--check"]),
     });
+    steps.push({
+      name: "later_housing_activity",
+      out: runNode(path.join(ROOT, "tools/build_later_housing_activity.mjs"), ["--check"]),
+    });
   } else {
     steps.push({
       name: "wh05_from_soda",
@@ -78,6 +82,14 @@ function main() {
     steps.push({
       name: "e_designation_digest_check",
       out: runNode(path.join(ROOT, "tools/build_e_designation_digest.mjs"), ["--check"]),
+    });
+    steps.push({
+      name: "later_housing_activity",
+      out: runNode(path.join(ROOT, "warehouse/scripts/refresh_housing_project_activity.mjs")),
+    });
+    steps.push({
+      name: "later_housing_activity_check",
+      out: runNode(path.join(ROOT, "tools/build_later_housing_activity.mjs"), ["--check"]),
     });
     steps.push({
       name: "keyword_index",
