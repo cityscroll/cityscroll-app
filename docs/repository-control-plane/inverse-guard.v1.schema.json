@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cityscroll.org/schemas/repository-inverse-guard.v1.schema.json",
+  "title": "CityScroll repository inverse guard v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "source_card_inventory", "classifications"],
+  "properties": {
+    "schema": { "const": "cityscroll.repository_inverse_guard.v1" },
+    "source_card_inventory": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["provider", "schema"],
+      "properties": {
+        "provider": { "const": "architecture-evidence-shards" },
+        "schema": { "const": "cityscroll.card-inventory.v1" }
+      }
+    },
+    "classifications": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "path_pattern", "content_class", "canonical_owner", "register_id", "disposition", "allowed_evidence_contract"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "path_pattern": { "type": "string", "minLength": 1 },
+          "content_class": { "type": "string", "minLength": 1 },
+          "canonical_owner": { "type": "string", "minLength": 1 },
+          "register_id": { "type": "string", "minLength": 1 },
+          "disposition": { "enum": ["retain", "scan"] },
+          "allowed_evidence_contract": { "type": "string", "minLength": 1 }
+        }
+      }
+    }
+  }
+}

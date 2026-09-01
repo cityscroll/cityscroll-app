@@ -1,0 +1,162 @@
+{
+  "schema": "cityscroll.repository_inverse_guard.v1",
+  "source_card_inventory": {
+    "provider": "architecture-evidence-shards",
+    "schema": "cityscroll.card-inventory.v1"
+  },
+  "classifications": [
+    {
+      "id": "architecture-evidence-shards",
+      "path_pattern": "architecture/evidence.d/*.json",
+      "content_class": "implementation-evidence-shard",
+      "canonical_owner": "cityscroll-merge-throughput/mt-7-architecture-evidence-shards",
+      "register_id": "cityscroll-merge-throughput/mt-7-architecture-evidence-shards",
+      "disposition": "retain",
+      "allowed_evidence_contract": "mt7-architecture-evidence-entry-v1"
+    },
+    {
+      "id": "accepted-adrs",
+      "path_pattern": "docs/adr/*.md",
+      "content_class": "accepted-architecture-decision",
+      "canonical_owner": "repository",
+      "register_id": "not-applicable",
+      "disposition": "retain",
+      "allowed_evidence_contract": "accepted-adr-status"
+    },
+    {
+      "id": "source-contract-registry",
+      "path_pattern": "site/data/source_contracts.json",
+      "content_class": "public-source-contract",
+      "canonical_owner": "repository",
+      "register_id": "not-applicable",
+      "disposition": "retain",
+      "allowed_evidence_contract": "source-contract-status-fields"
+    },
+    {
+      "id": "source-contract-schemas",
+      "path_pattern": "site/**/*.schema.json",
+      "content_class": "public-source-contract",
+      "canonical_owner": "repository",
+      "register_id": "not-applicable",
+      "disposition": "retain",
+      "allowed_evidence_contract": "protocol-status-fields"
+    },
+    {
+      "id": "ontology-contracts",
+      "path_pattern": "ontology/**",
+      "content_class": "public-source-contract",
+      "canonical_owner": "repository",
+      "register_id": "not-applicable",
+      "disposition": "retain",
+      "allowed_evidence_contract": "source-contract-status-fields"
+    },
+    {
+      "id": "tests",
+      "path_pattern": "test/**",
+      "content_class": "test",
+      "canonical_owner": "repository",
+      "register_id": "not-applicable",
+      "disposition": "retain",
+      "allowed_evidence_contract": "test-input-and-assertion"
+    },
+    {
+      "id": "worker-tests",
+      "path_pattern": "worker/test/**",
+      "content_class": "test",
+      "canonical_owner": "repository",
+      "register_id": "not-applicable",
+      "disposition": "retain",
+      "allowed_evidence_contract": "test-input-and-assertion"
+    },
+    {
+      "id": "public-evidence",
+      "path_pattern": "docs/evidence/**",
+      "content_class": "public-code-coupled-evidence",
+      "canonical_owner": "repository",
+      "register_id": "not-applicable",
+      "disposition": "retain",
+      "allowed_evidence_contract": "reproducible-public-evidence"
+    },
+    {
+      "id": "maintainer-runbooks",
+      "path_pattern": "docs/*runbook*.md",
+      "content_class": "current-maintainer-runbook",
+      "canonical_owner": "repository",
+      "register_id": "not-applicable",
+      "disposition": "retain",
+      "allowed_evidence_contract": "current-operation-instructions"
+    },
+    {
+      "id": "rcp-classification-receipt",
+      "path_pattern": "docs/repository-control-plane/classification.v1.json",
+      "content_class": "repository-migration-receipt",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-00",
+      "register_id": "cityscroll-repository-control-plane/rcp-00",
+      "disposition": "retain",
+      "allowed_evidence_contract": "rcp00-classification-receipt"
+    },
+    {
+      "id": "rcp-owner-mapping-receipt",
+      "path_pattern": "docs/repository-control-plane/semantic-owner-mapping.v1.json",
+      "content_class": "repository-migration-receipt",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-01",
+      "register_id": "cityscroll-repository-control-plane/rcp-01",
+      "disposition": "retain",
+      "allowed_evidence_contract": "rcp01-semantic-owner-receipt"
+    },
+    {
+      "id": "calendar-contract-evidence",
+      "path_pattern": "docs/calendar-contract.md",
+      "content_class": "public-code-coupled-evidence",
+      "canonical_owner": "repository",
+      "register_id": "not-applicable",
+      "disposition": "retain",
+      "allowed_evidence_contract": "replay-findings-for-current-contract"
+    },
+    {
+      "id": "performance-budget-contract",
+      "path_pattern": "performance-budgets.json",
+      "content_class": "public-source-contract",
+      "canonical_owner": "repository",
+      "register_id": "not-applicable",
+      "disposition": "retain",
+      "allowed_evidence_contract": "product-performance-budget-status"
+    },
+    {
+      "id": "root-markdown-contracts",
+      "path_pattern": "*.md",
+      "content_class": "public-current-contract",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-04",
+      "register_id": "cityscroll-repository-control-plane/rcp-04",
+      "disposition": "scan",
+      "allowed_evidence_contract": "current-contract-only"
+    },
+    {
+      "id": "root-record-contracts",
+      "path_pattern": "*.{json,yaml,yml}",
+      "content_class": "public-current-contract",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-04",
+      "register_id": "cityscroll-repository-control-plane/rcp-04",
+      "disposition": "scan",
+      "allowed_evidence_contract": "current-contract-only"
+    },
+    {
+      "id": "public-documents",
+      "path_pattern": "**/*.md",
+      "content_class": "public-current-contract",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-04",
+      "register_id": "cityscroll-repository-control-plane/rcp-04",
+      "disposition": "scan",
+      "allowed_evidence_contract": "current-contract-only"
+    },
+    {
+      "id": "public-records",
+      "path_pattern": "**/*.{json,yaml,yml}",
+      "content_class": "public-current-contract",
+      "canonical_owner": "cityscroll-repository-control-plane/rcp-04",
+      "register_id": "cityscroll-repository-control-plane/rcp-04",
+      "disposition": "scan",
+      "allowed_evidence_contract": "current-contract-only"
+    }
+  ]
+}

@@ -125,6 +125,11 @@ jobs:
             echo "unit_full=${unit_full}"
           } >> "$GITHUB_OUTPUT"
 
+      - name: Repository inverse control-plane guard
+        env:
+          INVERSE_GUARD_BASE_SHA: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || (github.event_name == 'merge_group' && github.event.merge_group.base_sha || 'origin/main') }}
+        run: node tools/inverse_control_plane_guard.mjs --check --base "$INVERSE_GUARD_BASE_SHA"
+
   public-image-guard:
     name: Public image capture guard
     if: github.event.repository.visibility == 'public' && (github.event_name == 'pull_request' || github.event_name == 'merge_group')
