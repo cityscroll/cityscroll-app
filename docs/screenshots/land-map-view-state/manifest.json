@@ -1,0 +1,267 @@
+{
+  "schema": "cityscroll.capture_receipt.v1",
+  "capture": "land-map-view-state",
+  "route": "/browse/zoning/?boro=Queens&stage=public_review&view=map",
+  "viewports": [
+    [
+      390,
+      844
+    ],
+    [
+      1440,
+      900
+    ]
+  ],
+  "before_source": "git archive HEAD site",
+  "after_source": "working tree site/",
+  "files": [
+    {
+      "name": "before/land-view-state-390.png",
+      "bytes": 70795,
+      "sha256": "cf966551d8b128e27fa342602911584974014199c2357404a1d57326ee8270f7",
+      "viewport": [
+        390,
+        844
+      ],
+      "observed": {
+        "url": "/browse/zoning/?boro=Queens&stage=public_review&facet=%7B%22view%22%3A%22map%22%7D",
+        "semantic": [
+          "boro=Queens",
+          "facet={\"view\":\"map\"}",
+          "stage=public_review"
+        ],
+        "view": null,
+        "controls": [],
+        "note": "",
+        "rows": 18,
+        "count": "18 results"
+      }
+    },
+    {
+      "name": "before/land-view-state-1440.png",
+      "bytes": 126840,
+      "sha256": "c5beeaa97877868be4af43468175271e475470aff9dd01172aa10fc879837140",
+      "viewport": [
+        1440,
+        900
+      ],
+      "observed": {
+        "url": "/browse/zoning/?boro=Queens&stage=public_review&facet=%7B%22view%22%3A%22map%22%7D",
+        "semantic": [
+          "boro=Queens",
+          "facet={\"view\":\"map\"}",
+          "stage=public_review"
+        ],
+        "view": null,
+        "controls": [],
+        "note": "",
+        "rows": 18,
+        "count": "18 results"
+      }
+    },
+    {
+      "name": "after/land-view-state-390.png",
+      "bytes": 79116,
+      "sha256": "eaf217fe38c50d71c3cad96e06b95db7cb8c17ac05b0111e669d7d342323457f",
+      "viewport": [
+        390,
+        844
+      ],
+      "observed": {
+        "url": "/browse/zoning/?boro=Queens&stage=public_review&view=map",
+        "semantic": [
+          "boro=Queens",
+          "stage=public_review"
+        ],
+        "view": "map",
+        "controls": [
+          {
+            "view": "list",
+            "pressed": true
+          },
+          {
+            "view": "map",
+            "pressed": false
+          }
+        ],
+        "note": "Map view is not ready yet. The same filtered results are showing as a list.",
+        "rows": 18,
+        "count": "18 results"
+      }
+    },
+    {
+      "name": "after/land-view-state-1440.png",
+      "bytes": 135374,
+      "sha256": "7d53e98d549bb078e2bcbe961ab1eeb9c0e9d60dd7d05ef4752658573f5a76c2",
+      "viewport": [
+        1440,
+        900
+      ],
+      "observed": {
+        "url": "/browse/zoning/?boro=Queens&stage=public_review&view=map",
+        "semantic": [
+          "boro=Queens",
+          "stage=public_review"
+        ],
+        "view": "map",
+        "controls": [
+          {
+            "view": "list",
+            "pressed": true
+          },
+          {
+            "view": "map",
+            "pressed": false
+          }
+        ],
+        "note": "Map view is not ready yet. The same filtered results are showing as a list.",
+        "rows": 18,
+        "count": "18 results"
+      }
+    },
+    {
+      "name": "after/land-view-state-map-failure-1440.png",
+      "bytes": 134889,
+      "sha256": "53401e4e4da4a9024433b0c4eee66fc33ee00702b54335a0672ed97e5d5f33fd",
+      "viewport": [
+        1440,
+        900
+      ],
+      "observed": {
+        "url": "/browse/zoning/?boro=Queens&stage=public_review&view=map",
+        "semantic": [
+          "boro=Queens",
+          "stage=public_review"
+        ],
+        "view": "map",
+        "controls": [
+          {
+            "view": "list",
+            "pressed": true
+          },
+          {
+            "view": "map",
+            "pressed": false
+          }
+        ],
+        "note": "The map could not load. The same filtered results are showing as a list.",
+        "rows": 18,
+        "count": "18 results"
+      }
+    }
+  ],
+  "history": {
+    "route": "/browse/zoning/?boro=Queens&stage=public_review",
+    "steps": [
+      {
+        "step": "list",
+        "url": "/browse/zoning/?boro=Queens&stage=public_review",
+        "semantic": [
+          "boro=Queens",
+          "stage=public_review"
+        ],
+        "view": null,
+        "controls": [
+          {
+            "view": "list",
+            "pressed": true
+          },
+          {
+            "view": "map",
+            "pressed": false
+          }
+        ],
+        "note": "",
+        "rows": 18,
+        "count": "18 results"
+      },
+      {
+        "step": "clicked-map",
+        "url": "/browse/zoning/?boro=Queens&stage=public_review&view=map",
+        "semantic": [
+          "boro=Queens",
+          "stage=public_review"
+        ],
+        "view": "map",
+        "controls": [
+          {
+            "view": "list",
+            "pressed": true
+          },
+          {
+            "view": "map",
+            "pressed": false
+          }
+        ],
+        "note": "Map view is not ready yet. The same filtered results are showing as a list.",
+        "rows": 18,
+        "count": "18 results"
+      },
+      {
+        "step": "back",
+        "url": "/browse/zoning/?boro=Queens&stage=public_review",
+        "semantic": [
+          "boro=Queens",
+          "stage=public_review"
+        ],
+        "view": null,
+        "controls": [
+          {
+            "view": "list",
+            "pressed": true
+          },
+          {
+            "view": "map",
+            "pressed": false
+          }
+        ],
+        "note": "",
+        "rows": 18,
+        "count": "18 results"
+      },
+      {
+        "step": "forward",
+        "url": "/browse/zoning/?boro=Queens&stage=public_review&view=map",
+        "semantic": [
+          "boro=Queens",
+          "stage=public_review"
+        ],
+        "view": "map",
+        "controls": [
+          {
+            "view": "list",
+            "pressed": true
+          },
+          {
+            "view": "map",
+            "pressed": false
+          }
+        ],
+        "note": "Map view is not ready yet. The same filtered results are showing as a list.",
+        "rows": 18,
+        "count": "18 results"
+      }
+    ]
+  },
+  "map_load_failure": {
+    "url": "/browse/zoning/?boro=Queens&stage=public_review&view=map",
+    "semantic": [
+      "boro=Queens",
+      "stage=public_review"
+    ],
+    "view": "map",
+    "controls": [
+      {
+        "view": "list",
+        "pressed": true
+      },
+      {
+        "view": "map",
+        "pressed": false
+      }
+    ],
+    "note": "The map could not load. The same filtered results are showing as a list.",
+    "rows": 18,
+    "count": "18 results"
+  }
+}
