@@ -3,7 +3,7 @@
   "gate_class": "card-reconciliation",
   "title": "Card reconciliation guard",
   "command": "node tools/card_reconciliation_guard.mjs",
-  "revision": "58e30dcbd49b1a720c38cde74f87cce1d61b044c",
+  "revision": "f146620ae301631cf10b6897ba02d1eb843cdf20",
   "exit_status": 0,
   "method": "Recorded by tools/card_profile_sentinel.cjs on a full checkout. Every repository-relative path the process read through fs or loaded as a module, filtered to tracked paths and de-duplicated.",
   "path_count": 1,

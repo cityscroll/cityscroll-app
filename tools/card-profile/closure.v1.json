@@ -2,7 +2,7 @@
   "schema": "cityscroll.card-profile.closure.v1",
   "profile": "card-work",
   "generated_by": "node tools/derive_card_profile.mjs",
-  "config_sha256": "54b779526a8dc43469d27e5d5b54f7c7cc9f251f449edc2dee5470a06c4325b5",
+  "config_sha256": "c018bc8640f91c75f8a27a63bfc9da045087c341321ee7ccc5695827de05eb4f",
   "sources": {
     "observed": {
       "description": "Repository paths recorded by tools/card_profile_sentinel.cjs while each supported gate class ran on a full checkout.",
@@ -15,17 +15,17 @@
         {
           "id": "architecture-evidence-shards",
           "recorded": true,
-          "path_count": 52
+          "path_count": 53
         },
         {
           "id": "architecture-reconcile",
           "recorded": true,
-          "path_count": 2102
+          "path_count": 2105
         },
         {
           "id": "architecture-canaries",
           "recorded": true,
-          "path_count": 2032
+          "path_count": 2034
         },
         {
           "id": "card-reconciliation",
@@ -38,12 +38,17 @@
           "path_count": 4
         },
         {
+          "id": "cutover-receipt",
+          "recorded": true,
+          "path_count": 66
+        },
+        {
           "id": "card-profile-contract",
           "recorded": true,
-          "path_count": 2128
+          "path_count": 2130
         }
       ],
-      "path_count": 2398
+      "path_count": 2411
     },
     "static": {
       "description": "Repository paths named by an import specifier or a path-shaped string literal in worker/, site/, tools/ and test/ sources.",
@@ -51,9 +56,9 @@
         "worker"
       ],
       "scan_hops": 1,
-      "scanned_source_count": 2118,
+      "scanned_source_count": 2120,
       "sources_skipped_not_materialised": 0,
-      "path_count": 1862,
+      "path_count": 1864,
       "worker_to_site_reference_count": 187,
       "worker_to_site_data_reference_count": 28,
       "worker_to_site_data_targets": [
@@ -113,7 +118,7 @@
         "warehouse",
         "worker/src/data"
       ],
-      "path_count": 3581
+      "path_count": 3593
     }
   },
   "required_paths": [
@@ -175,6 +180,7 @@
     "architecture/evidence.d/cityscroll-repository-control-plane--rcp-02.json",
     "architecture/evidence.d/cityscroll-repository-control-plane--rcp-03.json",
     "architecture/evidence.d/cityscroll-repository-control-plane--rcp-04.json",
+    "architecture/evidence.d/cityscroll-repository-control-plane--rcp-05.json",
     "architecture/evidence.d/cityscroll-repository-control-plane--rcp-06.json",
     "architecture/evidence.d/cityscroll-rules-decrol--rd-m3.json",
     "architecture/evidence.d/cityscroll-rules-decrol--rd-m5.json",
@@ -260,6 +266,16 @@
     "docs/evidence/ci-09-working-copy-reduction/raw/closure/worker-unit.json",
     "docs/repository-control-plane/agents-router-policy.v1.json",
     "docs/repository-control-plane/agents-router-receipt.v1.json",
+    "docs/repository-control-plane/classification.v1.json",
+    "docs/repository-control-plane/cutover.d/coverage-reconciliation.json",
+    "docs/repository-control-plane/cutover.d/history-decision.json",
+    "docs/repository-control-plane/cutover.d/private-access.json",
+    "docs/repository-control-plane/cutover.d/rcp-01-shadow-planning.json",
+    "docs/repository-control-plane/cutover.d/rcp-02-root-router.json",
+    "docs/repository-control-plane/cutover.d/rcp-03-private-evidence.json",
+    "docs/repository-control-plane/cutover.d/retained-in-place.json",
+    "docs/repository-control-plane/inverse-guard.v1.json",
+    "docs/repository-control-plane/semantic-owner-mapping.v1.json",
     "entity_resolution/README.md",
     "entity_resolution/authority_keys/index.mjs",
     "entity_resolution/candidate_generation/boards_wall.mjs",
@@ -1431,6 +1447,7 @@
     "test/rc2_dependent_fields.test.mjs",
     "test/rcp01_semantic_owner_receipt.test.mjs",
     "test/rcp03_evidence_placement.test.mjs",
+    "test/rcp05_cutover_receipt.test.mjs",
     "test/reconcile_architecture.test.mjs",
     "test/refresh_live_derived_kv_workflows.test.mjs",
     "test/refresh_preset_fallback_workflow.test.mjs",
@@ -1894,6 +1911,7 @@
     "tools/property_a11y_census.mjs",
     "tools/rcp01_semantic_owner_receipt.mjs",
     "tools/rcp03_evidence_placement.mjs",
+    "tools/rcp05_cutover_receipt.mjs",
     "tools/read_rum_drift.mjs",
     "tools/rebuild_flywheel_ledger.mjs",
     "tools/reconcile-money-ledger.mjs",
@@ -2878,6 +2896,7 @@
     "architecture-canaries",
     "card-reconciliation",
     "agents-router",
+    "cutover-receipt",
     "card-profile-contract"
   ],
   "full_checkout_only": [
@@ -2930,11 +2949,11 @@
   "missing_path_behaviour": "A tracked path the profile does not materialise is marked skip-worktree in the index. tools/card_profile_sentinel.cjs turns a missing-file error on such a path into CardProfileMissingPath and records it, so a profile gap fails closed instead of passing by omission. tools/provision_card_profile.sh hydrate is the documented route to materialise one.",
   "measured": {
     "note": "A snapshot of what the profile costs at the revision named here. These figures are reporting only; they are not part of the checked contract, because a byte total moves whenever any tracked file does.",
-    "revision": "be4f842ea237001e49e605a63233828a26753beb",
+    "revision": "f146620ae301631cf10b6897ba02d1eb843cdf20",
     "computed_in_reduced_checkout": false,
     "profile_paths": {
-      "count": 3778,
-      "logical_bytes": 148207857
+      "count": 3790,
+      "logical_bytes": 148272154
     },
     "deferred_paths": {
       "count": 310,
@@ -2951,8 +2970,8 @@
       "profile_logical_bytes": 63802082
     },
     "tracked_total": {
-      "count": 5679,
-      "logical_bytes": 807628191
+      "count": 5691,
+      "logical_bytes": 807692488
     },
     "pattern_count": 769
   }
