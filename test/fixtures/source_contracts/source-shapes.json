@@ -244,10 +244,15 @@
       "sample_type": "array<object>",
       "fields": [
         "fiscal_year",
+        "payroll_number",
         "agency_name",
         "last_name",
         "first_name",
-        "title_description"
+        "title_description",
+        "leave_status_as_of_june_30",
+        "regular_gross_paid",
+        "total_ot_paid",
+        "total_other_pay"
       ]
     },
     {

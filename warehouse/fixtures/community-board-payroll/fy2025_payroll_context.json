@@ -1,0 +1,1959 @@
+{
+  "schema": "cityscroll.community_board_payroll_context_fixture.v1",
+  "fiscal_year": 2025,
+  "source_vintage": "2026-04-16",
+  "dataset_id": "k397-673e",
+  "landing_page": "https://data.cityofnewyork.us/d/k397-673e",
+  "query_basis": "fiscal_year=2025 AND (upper(agency_name) like '%COMMUNITY BOARD%' OR upper(agency_name) like '%COMMUNITY BD%')",
+  "field_semantics": {
+    "leave_status_as_of_june_30": "Status of employee as of the close of the relevant fiscal year: Active, Ceased, or On Leave.",
+    "title_description": "Civil service title description of the employee.",
+    "regular_gross_paid": "Amount paid for base salary during the fiscal year.",
+    "total_ot_paid": "Total overtime pay paid during the fiscal year.",
+    "total_other_pay": "Compensation in addition to gross salary and overtime pay, including differentials, lump sums, allowances, retroactive pay, settlements, and bonus pay when applicable."
+  },
+  "aggregation": {
+    "totals": "sum by exact payroll_number, agency_name, and leave_status_as_of_june_30",
+    "titles": "row count by exact payroll_number, agency_name, leave_status_as_of_june_30, and title_description",
+    "unique_people": false
+  },
+  "totals": [
+    {
+      "payroll_number": "341",
+      "agency_name": "MANHATTAN COMMUNITY BOARD #1",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "published_row_count": "3",
+      "regular_gross_paid": "242559.86",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "2634.65"
+    },
+    {
+      "payroll_number": "342",
+      "agency_name": "MANHATTAN COMMUNITY BOARD #2",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "published_row_count": "3",
+      "regular_gross_paid": "214991.21",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "1385.51"
+    },
+    {
+      "payroll_number": "343",
+      "agency_name": "MANHATTAN COMMUNITY BOARD #3",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "published_row_count": "3",
+      "regular_gross_paid": "181041.74",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "1612.51"
+    },
+    {
+      "payroll_number": "343",
+      "agency_name": "MANHATTAN COMMUNITY BOARD #3",
+      "leave_status_as_of_june_30": "CEASED",
+      "published_row_count": "3",
+      "regular_gross_paid": "36355.12",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "835.23"
+    },
+    {
+      "payroll_number": "344",
+      "agency_name": "MANHATTAN COMMUNITY BOARD #4",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "published_row_count": "3",
+      "regular_gross_paid": "237873.87",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "2009.76"
+    },
+    {
+      "payroll_number": "345",
+      "agency_name": "MANHATTAN COMMUNITY BOARD #5",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "published_row_count": "2",
+      "regular_gross_paid": "177099.94",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "0.00"
+    },
+    {
+      "payroll_number": "345",
+      "agency_name": "MANHATTAN COMMUNITY BOARD #5",
+      "leave_status_as_of_june_30": "CEASED",
+      "published_row_count": "1",
+      "regular_gross_paid": "67819.57",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "1340.90"
+    },
+    {
+      "payroll_number": "346",
+      "agency_name": "MANHATTAN COMMUNITY BOARD #6",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "published_row_count": "3",
+      "regular_gross_paid": "276898.12",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "1090.92"
+    },
+    {
+      "payroll_number": "347",
+      "agency_name": "MANHATTAN COMMUNITY BOARD #7",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "published_row_count": "3",
+      "regular_gross_paid": "266492.87",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "1497.01"
+    },
+    {
+      "payroll_number": "348",
+      "agency_name": "MANHATTAN COMMUNITY BOARD #8",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "published_row_count": "3",
+      "regular_gross_paid": "163700.16",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "1067.37"
+    },
+    {
+      "payroll_number": "348",
+      "agency_name": "MANHATTAN COMMUNITY BOARD #8",
+      "leave_status_as_of_june_30": "CEASED",
+      "published_row_count": "2",
+      "regular_gross_paid": "27906.89",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "1969.75"
+    },
+    {
+      "payroll_number": "348",
+      "agency_name": "MANHATTAN COMMUNITY BOARD #8",
+      "leave_status_as_of_june_30": "ON SEPARATION LEAVE",
+      "published_row_count": "1",
+      "regular_gross_paid": "52086.96",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "231.00"
+    },
+    {
+      "payroll_number": "349",
+      "agency_name": "MANHATTAN COMMUNITY BOARD #9",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "published_row_count": "3",
+      "regular_gross_paid": "160392.53",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "297.00"
+    },
+    {
+      "payroll_number": "349",
+      "agency_name": "MANHATTAN COMMUNITY BOARD #9",
+      "leave_status_as_of_june_30": "CEASED",
+      "published_row_count": "1",
+      "regular_gross_paid": "10446.69",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "2395.79"
+    },
+    {
+      "payroll_number": "350",
+      "agency_name": "MANHATTAN COMMUNITY BOARD #10",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "published_row_count": "3",
+      "regular_gross_paid": "189507.79",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "292.49"
+    },
+    {
+      "payroll_number": "351",
+      "agency_name": "MANHATTAN COMMUNITY BOARD #11",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "published_row_count": "3",
+      "regular_gross_paid": "238383.33",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "586.25"
+    },
+    {
+      "payroll_number": "352",
+      "agency_name": "MANHATTAN COMMUNITY BOARD #12",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "published_row_count": "3",
+      "regular_gross_paid": "223754.20",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "2017.26"
+    },
+    {
+      "payroll_number": "381",
+      "agency_name": "BRONX COMMUNITY BOARD #1",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "published_row_count": "3",
+      "regular_gross_paid": "206018.45",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "638.25"
+    },
+    {
+      "payroll_number": "381",
+      "agency_name": "BRONX COMMUNITY BOARD #1",
+      "leave_status_as_of_june_30": "CEASED",
+      "published_row_count": "1",
+      "regular_gross_paid": "159.63",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "1.16"
+    },
+    {
+      "payroll_number": "382",
+      "agency_name": "BRONX COMMUNITY BOARD #2",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "published_row_count": "2",
+      "regular_gross_paid": "237650.96",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "1505.26"
+    },
+    {
+      "payroll_number": "383",
+      "agency_name": "BRONX COMMUNITY BOARD #3",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "published_row_count": "2",
+      "regular_gross_paid": "193538.84",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "397.50"
+    },
+    {
+      "payroll_number": "384",
+      "agency_name": "BRONX COMMUNITY BOARD #4",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "published_row_count": "2",
+      "regular_gross_paid": "120641.52",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "1572.39"
+    },
+    {
+      "payroll_number": "384",
+      "agency_name": "BRONX COMMUNITY BOARD #4",
+      "leave_status_as_of_june_30": "CEASED",
+      "published_row_count": "2",
+      "regular_gross_paid": "47434.40",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "416.07"
+    },
+    {
+      "payroll_number": "385",
+      "agency_name": "BRONX COMMUNITY BOARD #5",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "published_row_count": "2",
+      "regular_gross_paid": "168356.72",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "1942.26"
+    },
+    {
+      "payroll_number": "386",
+      "agency_name": "BRONX COMMUNITY BOARD #6",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "published_row_count": "3",
+      "regular_gross_paid": "231273.08",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "-40.69"
+    },
+    {
+      "payroll_number": "387",
+      "agency_name": "BRONX COMMUNITY BOARD #7",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "published_row_count": "3",
+      "regular_gross_paid": "224621.44",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "308.75"
+    },
+    {
+      "payroll_number": "388",
+      "agency_name": "BRONX COMMUNITY BOARD #8",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "published_row_count": "2",
+      "regular_gross_paid": "176216.80",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "2243.75"
+    },
+    {
+      "payroll_number": "388",
+      "agency_name": "BRONX COMMUNITY BOARD #8",
+      "leave_status_as_of_june_30": "CEASED",
+      "published_row_count": "1",
+      "regular_gross_paid": "0.00",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "28209.45"
+    },
+    {
+      "payroll_number": "389",
+      "agency_name": "BRONX COMMUNITY BOARD #9",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "published_row_count": "3",
+      "regular_gross_paid": "243185.95",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "115.50"
+    },
+    {
+      "payroll_number": "389",
+      "agency_name": "BRONX COMMUNITY BOARD #9",
+      "leave_status_as_of_june_30": "CEASED",
+      "published_row_count": "1",
+      "regular_gross_paid": "5556.25",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "0.00"
+    },
+    {
+      "payroll_number": "390",
+      "agency_name": "BRONX COMMUNITY BOARD #10",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "published_row_count": "4",
+      "regular_gross_paid": "241943.26",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "7164.57"
+    },
+    {
+      "payroll_number": "391",
+      "agency_name": "BRONX COMMUNITY BOARD #11",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "published_row_count": "3",
+      "regular_gross_paid": "271775.67",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "3612.51"
+    },
+    {
+      "payroll_number": "392",
+      "agency_name": "BRONX COMMUNITY BOARD #12",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "published_row_count": "2",
+      "regular_gross_paid": "252347.48",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "1828.01"
+    },
+    {
+      "payroll_number": "431",
+      "agency_name": "QUEENS COMMUNITY BOARD #1",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "published_row_count": "4",
+      "regular_gross_paid": "205163.01",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "0.00"
+    },
+    {
+      "payroll_number": "432",
+      "agency_name": "QUEENS COMMUNITY BOARD #2",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "published_row_count": "3",
+      "regular_gross_paid": "232580.58",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "982.91"
+    },
+    {
+      "payroll_number": "432",
+      "agency_name": "QUEENS COMMUNITY BOARD #2",
+      "leave_status_as_of_june_30": "ON SEPARATION LEAVE",
+      "published_row_count": "1",
+      "regular_gross_paid": "39454.18",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "0.00"
+    },
+    {
+      "payroll_number": "433",
+      "agency_name": "QUEENS COMMUNITY BOARD #3",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "published_row_count": "2",
+      "regular_gross_paid": "238768.49",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "101.37"
+    },
+    {
+      "payroll_number": "434",
+      "agency_name": "QUEENS COMMUNITY BOARD #4",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "published_row_count": "2",
+      "regular_gross_paid": "233412.23",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "1497.01"
+    },
+    {
+      "payroll_number": "435",
+      "agency_name": "QUEENS COMMUNITY BOARD #5",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "published_row_count": "3",
+      "regular_gross_paid": "256256.88",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "1497.01"
+    },
+    {
+      "payroll_number": "435",
+      "agency_name": "QUEENS COMMUNITY BOARD #5",
+      "leave_status_as_of_june_30": "CEASED",
+      "published_row_count": "1",
+      "regular_gross_paid": "15728.49",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "0.00"
+    },
+    {
+      "payroll_number": "436",
+      "agency_name": "QUEENS COMMUNITY BOARD #6",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "published_row_count": "3",
+      "regular_gross_paid": "173123.88",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "957.40"
+    },
+    {
+      "payroll_number": "436",
+      "agency_name": "QUEENS COMMUNITY BOARD #6",
+      "leave_status_as_of_june_30": "CEASED",
+      "published_row_count": "1",
+      "regular_gross_paid": "0.00",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "49688.31"
+    },
+    {
+      "payroll_number": "437",
+      "agency_name": "QUEENS COMMUNITY BOARD #7",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "published_row_count": "3",
+      "regular_gross_paid": "228959.16",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "236.00"
+    },
+    {
+      "payroll_number": "438",
+      "agency_name": "QUEENS COMMUNITY BOARD #8",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "published_row_count": "3",
+      "regular_gross_paid": "250000.88",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "839.25"
+    },
+    {
+      "payroll_number": "438",
+      "agency_name": "QUEENS COMMUNITY BOARD #8",
+      "leave_status_as_of_june_30": "CEASED",
+      "published_row_count": "2",
+      "regular_gross_paid": "7385.30",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "57.75"
+    },
+    {
+      "payroll_number": "439",
+      "agency_name": "QUEENS COMMUNITY BOARD #9",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "published_row_count": "3",
+      "regular_gross_paid": "221756.82",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "1591.26"
+    },
+    {
+      "payroll_number": "440",
+      "agency_name": "QUEENS COMMUNITY BOARD #10",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "published_row_count": "1",
+      "regular_gross_paid": "147009.13",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "0.00"
+    },
+    {
+      "payroll_number": "441",
+      "agency_name": "QUEENS COMMUNITY BOARD #11",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "published_row_count": "3",
+      "regular_gross_paid": "258255.80",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "1621.26"
+    },
+    {
+      "payroll_number": "442",
+      "agency_name": "QUEENS COMMUNITY BOARD #12",
+      "leave_status_as_of_june_30": "CEASED",
+      "published_row_count": "2",
+      "regular_gross_paid": "165600.01",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "99.00"
+    },
+    {
+      "payroll_number": "442",
+      "agency_name": "QUEENS COMMUNITY BOARD #12",
+      "leave_status_as_of_june_30": "ON SEPARATION LEAVE",
+      "published_row_count": "1",
+      "regular_gross_paid": "46274.39",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "1728.13"
+    },
+    {
+      "payroll_number": "443",
+      "agency_name": "QUEENS COMMUNITY BOARD #13",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "published_row_count": "1",
+      "regular_gross_paid": "161256.39",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "0.00"
+    },
+    {
+      "payroll_number": "444",
+      "agency_name": "QUEENS COMMUNITY BOARD #14",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "published_row_count": "3",
+      "regular_gross_paid": "124562.49",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "8.25"
+    },
+    {
+      "payroll_number": "444",
+      "agency_name": "QUEENS COMMUNITY BOARD #14",
+      "leave_status_as_of_june_30": "CEASED",
+      "published_row_count": "1",
+      "regular_gross_paid": "31479.29",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "569.03"
+    },
+    {
+      "payroll_number": "471",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #1",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "published_row_count": "3",
+      "regular_gross_paid": "172400.59",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "646.80"
+    },
+    {
+      "payroll_number": "471",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #1",
+      "leave_status_as_of_june_30": "CEASED",
+      "published_row_count": "2",
+      "regular_gross_paid": "26828.76",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "0.00"
+    },
+    {
+      "payroll_number": "472",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #2",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "published_row_count": "3",
+      "regular_gross_paid": "185337.68",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "355.76"
+    },
+    {
+      "payroll_number": "472",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #2",
+      "leave_status_as_of_june_30": "CEASED",
+      "published_row_count": "1",
+      "regular_gross_paid": "6246.57",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "0.00"
+    },
+    {
+      "payroll_number": "472",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #2",
+      "leave_status_as_of_june_30": "ON SEPARATION LEAVE",
+      "published_row_count": "1",
+      "regular_gross_paid": "16319.78",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "0.00"
+    },
+    {
+      "payroll_number": "473",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #3",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "published_row_count": "2",
+      "regular_gross_paid": "184133.45",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "1564.01"
+    },
+    {
+      "payroll_number": "474",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #4",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "published_row_count": "3",
+      "regular_gross_paid": "214136.85",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "152.67"
+    },
+    {
+      "payroll_number": "475",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #5",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "published_row_count": "2",
+      "regular_gross_paid": "169387.91",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "49.50"
+    },
+    {
+      "payroll_number": "475",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #5",
+      "leave_status_as_of_june_30": "CEASED",
+      "published_row_count": "1",
+      "regular_gross_paid": "24988.96",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "24.75"
+    },
+    {
+      "payroll_number": "476",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #6",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "published_row_count": "3",
+      "regular_gross_paid": "264622.63",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "2923.32"
+    },
+    {
+      "payroll_number": "477",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #7",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "published_row_count": "3",
+      "regular_gross_paid": "258616.95",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "3234.27"
+    },
+    {
+      "payroll_number": "478",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #8",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "published_row_count": "3",
+      "regular_gross_paid": "239769.39",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "1705.76"
+    },
+    {
+      "payroll_number": "479",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #9",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "published_row_count": "3",
+      "regular_gross_paid": "229361.34",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "1021.16"
+    },
+    {
+      "payroll_number": "480",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #10",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "published_row_count": "3",
+      "regular_gross_paid": "270576.12",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "1590.26"
+    },
+    {
+      "payroll_number": "480",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #10",
+      "leave_status_as_of_june_30": "CEASED",
+      "published_row_count": "1",
+      "regular_gross_paid": "77.50",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "0.00"
+    },
+    {
+      "payroll_number": "481",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #11",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "published_row_count": "3",
+      "regular_gross_paid": "214496.05",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "0.00"
+    },
+    {
+      "payroll_number": "482",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #12",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "published_row_count": "2",
+      "regular_gross_paid": "246293.67",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "33.00"
+    },
+    {
+      "payroll_number": "483",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #13",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "published_row_count": "4",
+      "regular_gross_paid": "266411.74",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "390.08"
+    },
+    {
+      "payroll_number": "484",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #14",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "published_row_count": "3",
+      "regular_gross_paid": "268861.36",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "7.69"
+    },
+    {
+      "payroll_number": "485",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #15",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "published_row_count": "2",
+      "regular_gross_paid": "114831.45",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "74.25"
+    },
+    {
+      "payroll_number": "486",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #16",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "published_row_count": "2",
+      "regular_gross_paid": "92605.41",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "244.52"
+    },
+    {
+      "payroll_number": "486",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #16",
+      "leave_status_as_of_june_30": "CEASED",
+      "published_row_count": "1",
+      "regular_gross_paid": "17785.28",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "648.77"
+    },
+    {
+      "payroll_number": "487",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #17",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "published_row_count": "3",
+      "regular_gross_paid": "206532.48",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "1174.78"
+    },
+    {
+      "payroll_number": "488",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #18",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "published_row_count": "3",
+      "regular_gross_paid": "228668.10",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "1634.03"
+    },
+    {
+      "payroll_number": "491",
+      "agency_name": "STATEN ISLAND COMMUNITY BD #1",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "published_row_count": "2",
+      "regular_gross_paid": "201698.36",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "99.00"
+    },
+    {
+      "payroll_number": "492",
+      "agency_name": "STATEN ISLAND COMMUNITY BD #2",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "published_row_count": "1",
+      "regular_gross_paid": "149093.83",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "1000.00"
+    },
+    {
+      "payroll_number": "492",
+      "agency_name": "STATEN ISLAND COMMUNITY BD #2",
+      "leave_status_as_of_june_30": "CEASED",
+      "published_row_count": "1",
+      "regular_gross_paid": "13247.57",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "0.00"
+    },
+    {
+      "payroll_number": "493",
+      "agency_name": "STATEN ISLAND COMMUNITY BD #3",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "published_row_count": "2",
+      "regular_gross_paid": "150595.06",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "3212.67"
+    },
+    {
+      "payroll_number": "493",
+      "agency_name": "STATEN ISLAND COMMUNITY BD #3",
+      "leave_status_as_of_june_30": "CEASED",
+      "published_row_count": "1",
+      "regular_gross_paid": "36488.24",
+      "total_ot_paid": "0.00",
+      "total_other_pay": "48928.47"
+    }
+  ],
+  "titles": [
+    {
+      "payroll_number": "341",
+      "agency_name": "MANHATTAN COMMUNITY BOARD #1",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY ASSOCIATE",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "341",
+      "agency_name": "MANHATTAN COMMUNITY BOARD #1",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY COORDINATOR",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "341",
+      "agency_name": "MANHATTAN COMMUNITY BOARD #1",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "DISTRICT MANAGER",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "342",
+      "agency_name": "MANHATTAN COMMUNITY BOARD #2",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY ASSOCIATE",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "342",
+      "agency_name": "MANHATTAN COMMUNITY BOARD #2",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY COORDINATOR",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "342",
+      "agency_name": "MANHATTAN COMMUNITY BOARD #2",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "DISTRICT MANAGER",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "343",
+      "agency_name": "MANHATTAN COMMUNITY BOARD #3",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY ASSOCIATE",
+      "published_row_count": "2"
+    },
+    {
+      "payroll_number": "343",
+      "agency_name": "MANHATTAN COMMUNITY BOARD #3",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "DISTRICT MANAGER",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "343",
+      "agency_name": "MANHATTAN COMMUNITY BOARD #3",
+      "leave_status_as_of_june_30": "CEASED",
+      "title_description": "ASSISTANT DISTRICT MANAGER",
+      "published_row_count": "2"
+    },
+    {
+      "payroll_number": "343",
+      "agency_name": "MANHATTAN COMMUNITY BOARD #3",
+      "leave_status_as_of_june_30": "CEASED",
+      "title_description": "COMMUNITY ASSOCIATE",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "344",
+      "agency_name": "MANHATTAN COMMUNITY BOARD #4",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY ASSOCIATE",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "344",
+      "agency_name": "MANHATTAN COMMUNITY BOARD #4",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY COORDINATOR",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "344",
+      "agency_name": "MANHATTAN COMMUNITY BOARD #4",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "DISTRICT MANAGER",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "345",
+      "agency_name": "MANHATTAN COMMUNITY BOARD #5",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY COORDINATOR",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "345",
+      "agency_name": "MANHATTAN COMMUNITY BOARD #5",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "DISTRICT MANAGER",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "345",
+      "agency_name": "MANHATTAN COMMUNITY BOARD #5",
+      "leave_status_as_of_june_30": "CEASED",
+      "title_description": "COMMUNITY COORDINATOR",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "346",
+      "agency_name": "MANHATTAN COMMUNITY BOARD #6",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY COORDINATOR",
+      "published_row_count": "2"
+    },
+    {
+      "payroll_number": "346",
+      "agency_name": "MANHATTAN COMMUNITY BOARD #6",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "DISTRICT MANAGER",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "347",
+      "agency_name": "MANHATTAN COMMUNITY BOARD #7",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY COORDINATOR",
+      "published_row_count": "2"
+    },
+    {
+      "payroll_number": "347",
+      "agency_name": "MANHATTAN COMMUNITY BOARD #7",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "DISTRICT MANAGER",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "348",
+      "agency_name": "MANHATTAN COMMUNITY BOARD #8",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY ASSOCIATE",
+      "published_row_count": "2"
+    },
+    {
+      "payroll_number": "348",
+      "agency_name": "MANHATTAN COMMUNITY BOARD #8",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "DISTRICT MANAGER",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "348",
+      "agency_name": "MANHATTAN COMMUNITY BOARD #8",
+      "leave_status_as_of_june_30": "CEASED",
+      "title_description": "COMMUNITY ASSOCIATE",
+      "published_row_count": "2"
+    },
+    {
+      "payroll_number": "348",
+      "agency_name": "MANHATTAN COMMUNITY BOARD #8",
+      "leave_status_as_of_june_30": "ON SEPARATION LEAVE",
+      "title_description": "ASSISTANT DISTRICT MANAGER",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "349",
+      "agency_name": "MANHATTAN COMMUNITY BOARD #9",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY ASSOCIATE",
+      "published_row_count": "2"
+    },
+    {
+      "payroll_number": "349",
+      "agency_name": "MANHATTAN COMMUNITY BOARD #9",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "DISTRICT MANAGER",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "349",
+      "agency_name": "MANHATTAN COMMUNITY BOARD #9",
+      "leave_status_as_of_june_30": "CEASED",
+      "title_description": "COMMUNITY ASSOCIATE",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "350",
+      "agency_name": "MANHATTAN COMMUNITY BOARD #10",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY ASSISTANT",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "350",
+      "agency_name": "MANHATTAN COMMUNITY BOARD #10",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY ASSOCIATE",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "350",
+      "agency_name": "MANHATTAN COMMUNITY BOARD #10",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "DISTRICT MANAGER",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "351",
+      "agency_name": "MANHATTAN COMMUNITY BOARD #11",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "ASSISTANT DISTRICT MANAGER",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "351",
+      "agency_name": "MANHATTAN COMMUNITY BOARD #11",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY ASSOCIATE",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "351",
+      "agency_name": "MANHATTAN COMMUNITY BOARD #11",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "DISTRICT MANAGER",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "352",
+      "agency_name": "MANHATTAN COMMUNITY BOARD #12",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY ASSOCIATE",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "352",
+      "agency_name": "MANHATTAN COMMUNITY BOARD #12",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY COORDINATOR",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "352",
+      "agency_name": "MANHATTAN COMMUNITY BOARD #12",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "DISTRICT MANAGER",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "381",
+      "agency_name": "BRONX COMMUNITY BOARD #1",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY ASSOCIATE",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "381",
+      "agency_name": "BRONX COMMUNITY BOARD #1",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY COORDINATOR",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "381",
+      "agency_name": "BRONX COMMUNITY BOARD #1",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "DISTRICT MANAGER",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "381",
+      "agency_name": "BRONX COMMUNITY BOARD #1",
+      "leave_status_as_of_june_30": "CEASED",
+      "title_description": "COMMUNITY COORDINATOR",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "382",
+      "agency_name": "BRONX COMMUNITY BOARD #2",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY COORDINATOR",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "382",
+      "agency_name": "BRONX COMMUNITY BOARD #2",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "DISTRICT MANAGER",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "383",
+      "agency_name": "BRONX COMMUNITY BOARD #3",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY COORDINATOR",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "383",
+      "agency_name": "BRONX COMMUNITY BOARD #3",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "DISTRICT MANAGER",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "384",
+      "agency_name": "BRONX COMMUNITY BOARD #4",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY COORDINATOR",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "384",
+      "agency_name": "BRONX COMMUNITY BOARD #4",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "DISTRICT MANAGER",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "384",
+      "agency_name": "BRONX COMMUNITY BOARD #4",
+      "leave_status_as_of_june_30": "CEASED",
+      "title_description": "COMMUNITY COORDINATOR",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "384",
+      "agency_name": "BRONX COMMUNITY BOARD #4",
+      "leave_status_as_of_june_30": "CEASED",
+      "title_description": "DISTRICT MANAGER",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "385",
+      "agency_name": "BRONX COMMUNITY BOARD #5",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY COORDINATOR",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "385",
+      "agency_name": "BRONX COMMUNITY BOARD #5",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "DISTRICT MANAGER",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "386",
+      "agency_name": "BRONX COMMUNITY BOARD #6",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY ASSOCIATE",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "386",
+      "agency_name": "BRONX COMMUNITY BOARD #6",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY COORDINATOR",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "386",
+      "agency_name": "BRONX COMMUNITY BOARD #6",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "DISTRICT MANAGER",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "387",
+      "agency_name": "BRONX COMMUNITY BOARD #7",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY ASSOCIATE",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "387",
+      "agency_name": "BRONX COMMUNITY BOARD #7",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY COORDINATOR",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "387",
+      "agency_name": "BRONX COMMUNITY BOARD #7",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "DISTRICT MANAGER",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "388",
+      "agency_name": "BRONX COMMUNITY BOARD #8",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY COORDINATOR",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "388",
+      "agency_name": "BRONX COMMUNITY BOARD #8",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "DISTRICT MANAGER",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "388",
+      "agency_name": "BRONX COMMUNITY BOARD #8",
+      "leave_status_as_of_june_30": "CEASED",
+      "title_description": "COMMUNITY ASSOCIATE",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "389",
+      "agency_name": "BRONX COMMUNITY BOARD #9",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY ASSOCIATE",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "389",
+      "agency_name": "BRONX COMMUNITY BOARD #9",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY COORDINATOR",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "389",
+      "agency_name": "BRONX COMMUNITY BOARD #9",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "DISTRICT MANAGER",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "389",
+      "agency_name": "BRONX COMMUNITY BOARD #9",
+      "leave_status_as_of_june_30": "CEASED",
+      "title_description": "COMMUNITY ASSOCIATE",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "390",
+      "agency_name": "BRONX COMMUNITY BOARD #10",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "CLERICAL ASSOCIATE MOST MAYORAL AG",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "390",
+      "agency_name": "BRONX COMMUNITY BOARD #10",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY ASSISTANT",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "390",
+      "agency_name": "BRONX COMMUNITY BOARD #10",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY ASSOCIATE",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "390",
+      "agency_name": "BRONX COMMUNITY BOARD #10",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "DISTRICT MANAGER",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "391",
+      "agency_name": "BRONX COMMUNITY BOARD #11",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY COORDINATOR",
+      "published_row_count": "2"
+    },
+    {
+      "payroll_number": "391",
+      "agency_name": "BRONX COMMUNITY BOARD #11",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "DISTRICT MANAGER",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "392",
+      "agency_name": "BRONX COMMUNITY BOARD #12",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY COORDINATOR",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "392",
+      "agency_name": "BRONX COMMUNITY BOARD #12",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "DISTRICT MANAGER",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "431",
+      "agency_name": "QUEENS COMMUNITY BOARD #1",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY ASSISTANT",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "431",
+      "agency_name": "QUEENS COMMUNITY BOARD #1",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY SERVICE AIDE",
+      "published_row_count": "2"
+    },
+    {
+      "payroll_number": "431",
+      "agency_name": "QUEENS COMMUNITY BOARD #1",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "DISTRICT MANAGER",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "432",
+      "agency_name": "QUEENS COMMUNITY BOARD #2",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY ASSISTANT",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "432",
+      "agency_name": "QUEENS COMMUNITY BOARD #2",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY COORDINATOR",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "432",
+      "agency_name": "QUEENS COMMUNITY BOARD #2",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "DISTRICT MANAGER",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "432",
+      "agency_name": "QUEENS COMMUNITY BOARD #2",
+      "leave_status_as_of_june_30": "ON SEPARATION LEAVE",
+      "title_description": "COMMUNITY SERVICE AIDE",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "433",
+      "agency_name": "QUEENS COMMUNITY BOARD #3",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY COORDINATOR",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "433",
+      "agency_name": "QUEENS COMMUNITY BOARD #3",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "DISTRICT MANAGER",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "434",
+      "agency_name": "QUEENS COMMUNITY BOARD #4",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY COORDINATOR",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "434",
+      "agency_name": "QUEENS COMMUNITY BOARD #4",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "DISTRICT MANAGER",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "435",
+      "agency_name": "QUEENS COMMUNITY BOARD #5",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY ASSOCIATE",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "435",
+      "agency_name": "QUEENS COMMUNITY BOARD #5",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY COORDINATOR",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "435",
+      "agency_name": "QUEENS COMMUNITY BOARD #5",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "DISTRICT MANAGER",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "435",
+      "agency_name": "QUEENS COMMUNITY BOARD #5",
+      "leave_status_as_of_june_30": "CEASED",
+      "title_description": "COMMUNITY ASSOCIATE",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "436",
+      "agency_name": "QUEENS COMMUNITY BOARD #6",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY ASSISTANT",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "436",
+      "agency_name": "QUEENS COMMUNITY BOARD #6",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY SERVICE AIDE",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "436",
+      "agency_name": "QUEENS COMMUNITY BOARD #6",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "DISTRICT MANAGER",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "436",
+      "agency_name": "QUEENS COMMUNITY BOARD #6",
+      "leave_status_as_of_june_30": "CEASED",
+      "title_description": "DISTRICT MANAGER",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "437",
+      "agency_name": "QUEENS COMMUNITY BOARD #7",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY ASSISTANT",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "437",
+      "agency_name": "QUEENS COMMUNITY BOARD #7",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY COORDINATOR",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "437",
+      "agency_name": "QUEENS COMMUNITY BOARD #7",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "DISTRICT MANAGER",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "438",
+      "agency_name": "QUEENS COMMUNITY BOARD #8",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY ASSOCIATE",
+      "published_row_count": "2"
+    },
+    {
+      "payroll_number": "438",
+      "agency_name": "QUEENS COMMUNITY BOARD #8",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "DISTRICT MANAGER",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "438",
+      "agency_name": "QUEENS COMMUNITY BOARD #8",
+      "leave_status_as_of_june_30": "CEASED",
+      "title_description": "COMMUNITY SERVICE AIDE",
+      "published_row_count": "2"
+    },
+    {
+      "payroll_number": "439",
+      "agency_name": "QUEENS COMMUNITY BOARD #9",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY ASSISTANT",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "439",
+      "agency_name": "QUEENS COMMUNITY BOARD #9",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY ASSOCIATE",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "439",
+      "agency_name": "QUEENS COMMUNITY BOARD #9",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "DISTRICT MANAGER",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "440",
+      "agency_name": "QUEENS COMMUNITY BOARD #10",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "DISTRICT MANAGER",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "441",
+      "agency_name": "QUEENS COMMUNITY BOARD #11",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY ASSOCIATE",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "441",
+      "agency_name": "QUEENS COMMUNITY BOARD #11",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY COORDINATOR",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "441",
+      "agency_name": "QUEENS COMMUNITY BOARD #11",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "DISTRICT MANAGER",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "442",
+      "agency_name": "QUEENS COMMUNITY BOARD #12",
+      "leave_status_as_of_june_30": "CEASED",
+      "title_description": "COMMUNITY ASSISTANT",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "442",
+      "agency_name": "QUEENS COMMUNITY BOARD #12",
+      "leave_status_as_of_june_30": "CEASED",
+      "title_description": "DISTRICT MANAGER",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "442",
+      "agency_name": "QUEENS COMMUNITY BOARD #12",
+      "leave_status_as_of_june_30": "ON SEPARATION LEAVE",
+      "title_description": "COMMUNITY ASSISTANT",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "443",
+      "agency_name": "QUEENS COMMUNITY BOARD #13",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "DISTRICT MANAGER",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "444",
+      "agency_name": "QUEENS COMMUNITY BOARD #14",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY ASSOCIATE",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "444",
+      "agency_name": "QUEENS COMMUNITY BOARD #14",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY COORDINATOR",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "444",
+      "agency_name": "QUEENS COMMUNITY BOARD #14",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "DISTRICT MANAGER",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "444",
+      "agency_name": "QUEENS COMMUNITY BOARD #14",
+      "leave_status_as_of_june_30": "CEASED",
+      "title_description": "COMMUNITY COORDINATOR",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "471",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #1",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY COORDINATOR",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "471",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #1",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY SERVICE AIDE",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "471",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #1",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "DISTRICT MANAGER",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "471",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #1",
+      "leave_status_as_of_june_30": "CEASED",
+      "title_description": "COMMUNITY ASSOCIATE",
+      "published_row_count": "2"
+    },
+    {
+      "payroll_number": "472",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #2",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY ASSOCIATE",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "472",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #2",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY COORDINATOR",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "472",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #2",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "DISTRICT MANAGER",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "472",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #2",
+      "leave_status_as_of_june_30": "CEASED",
+      "title_description": "COMMUNITY ASSOCIATE",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "472",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #2",
+      "leave_status_as_of_june_30": "ON SEPARATION LEAVE",
+      "title_description": "COMMUNITY ASSISTANT",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "473",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #3",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY COORDINATOR",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "473",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #3",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "DISTRICT MANAGER",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "474",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #4",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY COORDINATOR",
+      "published_row_count": "2"
+    },
+    {
+      "payroll_number": "474",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #4",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "DISTRICT MANAGER",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "475",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #5",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY ASSOCIATE",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "475",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #5",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "DISTRICT MANAGER",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "475",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #5",
+      "leave_status_as_of_june_30": "CEASED",
+      "title_description": "COMMUNITY ASSOCIATE",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "476",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #6",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY ASSOCIATE",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "476",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #6",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY COORDINATOR",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "476",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #6",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "DISTRICT MANAGER",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "477",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #7",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY ASSOCIATE",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "477",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #7",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY COORDINATOR",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "477",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #7",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "DISTRICT MANAGER",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "478",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #8",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COLLEGE AIDE",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "478",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #8",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY COORDINATOR",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "478",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #8",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "DISTRICT MANAGER",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "479",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #9",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY ASSOCIATE",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "479",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #9",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY COORDINATOR",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "479",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #9",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "DISTRICT MANAGER",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "480",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #10",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY ASSOCIATE",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "480",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #10",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY COORDINATOR",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "480",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #10",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "DISTRICT MANAGER",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "480",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #10",
+      "leave_status_as_of_june_30": "CEASED",
+      "title_description": "COLLEGE AIDE",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "481",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #11",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY ASSISTANT",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "481",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #11",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY COORDINATOR",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "481",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #11",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "DISTRICT MANAGER",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "482",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #12",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY ASSOCIATE",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "482",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #12",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "DISTRICT MANAGER",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "483",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #13",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY ASSISTANT",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "483",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #13",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY ASSOCIATE",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "483",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #13",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY COORDINATOR",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "483",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #13",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "DISTRICT MANAGER",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "484",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #14",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY COORDINATOR",
+      "published_row_count": "2"
+    },
+    {
+      "payroll_number": "484",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #14",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "DISTRICT MANAGER",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "485",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #15",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY ASSISTANT",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "485",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #15",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "DISTRICT MANAGER",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "486",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #16",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "ASSISTANT DISTRICT MANAGER",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "486",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #16",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "DISTRICT MANAGER",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "486",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #16",
+      "leave_status_as_of_june_30": "CEASED",
+      "title_description": "COMMUNITY ASSISTANT",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "487",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #17",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "ASSISTANT DISTRICT MANAGER",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "487",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #17",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY ASSISTANT",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "487",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #17",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "DISTRICT MANAGER",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "488",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #18",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY ASSISTANT",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "488",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #18",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY ASSOCIATE",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "488",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #18",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "DISTRICT MANAGER",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "491",
+      "agency_name": "STATEN ISLAND COMMUNITY BD #1",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY COORDINATOR",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "491",
+      "agency_name": "STATEN ISLAND COMMUNITY BD #1",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "DISTRICT MANAGER",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "492",
+      "agency_name": "STATEN ISLAND COMMUNITY BD #2",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "DISTRICT MANAGER",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "492",
+      "agency_name": "STATEN ISLAND COMMUNITY BD #2",
+      "leave_status_as_of_june_30": "CEASED",
+      "title_description": "COMMUNITY ASSOCIATE",
+      "published_row_count": "1"
+    },
+    {
+      "payroll_number": "493",
+      "agency_name": "STATEN ISLAND COMMUNITY BD #3",
+      "leave_status_as_of_june_30": "ACTIVE",
+      "title_description": "COMMUNITY COORDINATOR",
+      "published_row_count": "2"
+    },
+    {
+      "payroll_number": "493",
+      "agency_name": "STATEN ISLAND COMMUNITY BD #3",
+      "leave_status_as_of_june_30": "CEASED",
+      "title_description": "DISTRICT MANAGER",
+      "published_row_count": "1"
+    }
+  ]
+}

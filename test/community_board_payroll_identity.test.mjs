@@ -24,6 +24,7 @@ import {
 const registry = JSON.parse(readFileSync("site/data/community_board_financial_identity_crosswalk.json", "utf8"));
 const identityReceipt = JSON.parse(readFileSync("warehouse/receipts/proof/community_board_financial_identity_latest.json", "utf8"));
 const inventory = JSON.parse(readFileSync("warehouse/fixtures/community-board-payroll/fy2025_identity_inventory.json", "utf8"));
+const contextFixture = JSON.parse(readFileSync("warehouse/fixtures/community-board-payroll/fy2025_payroll_context.json", "utf8"));
 const titleMart = JSON.parse(readFileSync("site/data/payroll_title_warehouse_lookup.json", "utf8"));
 const sourceContract = JSON.parse(readFileSync("site/data/source_contracts.json", "utf8"));
 
@@ -140,27 +141,27 @@ test("CB-MONEY-00 financial identity is unchanged and still exact-only", () => {
   assert.equal(resolveAgencyIdentity("Brooklyn Community Board #15").canonical_name, "Community Boards");
 });
 
-test("per-board payroll dollars and titles are not semantically justified under k-suppression", () => {
+test("site-owner policy permits full board aggregate context without k-suppression", () => {
   const receipt = measureCommunityBoardPayrollIdentity(registry, inventory, {
     generatedAt: "2026-08-29T00:00:00.000Z",
   });
-  assert.ok(receipt.measurement.max_active_rows < receipt.measurement.k_suppression_threshold);
-  assert.equal(receipt.measurement.boards_at_or_above_k_suppression, 0);
+  assert.equal(receipt.measurement.max_active_rows, 4);
+  assert.equal(receipt.measurement.owner_approved_full_aggregate_context, true);
+  assert.equal("k_suppression_threshold" in receipt.measurement, false);
   assert.equal(receipt.aggregate_semantics.staff_count.justified, true);
-  assert.equal(receipt.aggregate_semantics.title_mix.justified, false);
-  assert.equal(receipt.aggregate_semantics.payroll_measures.justified, false);
+  assert.equal(receipt.aggregate_semantics.title_mix.justified, true);
+  assert.equal(receipt.aggregate_semantics.payroll_measures.justified, true);
 });
 
-test("staff-count artifact publishes ACTIVE rows only and withholds dollars and titles", () => {
-  const { model, receipt } = buildCommunityBoardPayrollStaffCount(registry, inventory, {
+test("aggregate context publishes titles and payroll dollars while withholding employee rows", () => {
+  const { model, receipt } = buildCommunityBoardPayrollStaffCount(registry, inventory, contextFixture, {
     generatedAt: "2026-08-29T20:00:00.000Z",
     reviewedAt: "2026-08-29T20:00:00.000Z",
   });
   assert.deepEqual(validateCommunityBoardPayrollStaffCount(model, receipt), { ok: true, errors: [] });
   assert.equal(model.rows.length, 59);
-  assert.equal(model.withheld.payroll_measures, true);
-  assert.equal(model.withheld.title_mix, true);
-  assert.equal(model.withheld.employee_rows, true);
+  assert.equal(model.serving_boundary.employee_rows, true);
+  assert.equal(model.serving_boundary.row_level_salary, true);
   const brooklyn15 = model.rows.find((row) => row.board_id === "brooklyn-cb-15");
   const brooklyn16 = model.rows.find((row) => row.board_id === "brooklyn-cb-16");
   const staten1 = model.rows.find((row) => row.board_id === "staten-island-cb-01");
@@ -170,11 +171,16 @@ test("staff-count artifact publishes ACTIVE rows only and withholds dollars and 
   assert.equal(staten1.publisher_identity, "STATEN ISLAND COMMUNITY BD #1");
   assert.equal(queens12.active_row_count, 0);
   assert.ok(queens12.published_row_count > 0);
+  assert.deepEqual(queens12.title_context, []);
+  assert.equal(queens12.payroll_dollars.regular_gross_paid.active_rows, 0);
+  assert.ok(brooklyn15.title_context.length > 0);
+  assert.ok(brooklyn15.payroll_dollars.regular_gross_paid.all_published_rows > 0);
   assert.equal(payrollIdentityServeContractFindings(model).length, 0);
   const served = JSON.parse(readFileSync("site/data/community_board_payroll_staff_count.json", "utf8"));
   const committedReceipt = JSON.parse(readFileSync("warehouse/receipts/proof/community_board_payroll_identity_latest.json", "utf8"));
   assert.deepEqual(validateCommunityBoardPayrollStaffCount(served, committedReceipt), { ok: true, errors: [] });
-  assert.equal(JSON.stringify(served.rows).includes("DISTRICT MANAGER"), false);
-  assert.equal(JSON.stringify(served.rows).includes("regular_gross_paid"), false);
+  assert.equal(JSON.stringify(served.rows).includes("DISTRICT MANAGER"), true);
+  assert.equal(JSON.stringify(served.rows).includes("regular_gross_paid"), true);
+  assert.equal(JSON.stringify(served.rows).includes("last_name"), false);
   assert.equal(JSON.stringify(served.rows).includes("DOE"), false);
 });
