@@ -113,18 +113,34 @@ def charged_table(raw: str) -> str:
     for record in records:
         groups.setdefault(record["variant"], []).append(record["charged_bytes"])
     lines = [
-        "| Provisioned profile | n | Median charged MB | Min MB | Max MB | Under 400 MB |",
-        "| --- | ---: | ---: | ---: | ---: | --- |",
+        "| Provisioned profile | n | Median charged MB | Observed min | Observed max | "
+        "Allocated minus the shared dependency view, MB | Under 400 MB |",
+        "| --- | ---: | ---: | ---: | ---: | ---: | --- |",
     ]
     for variant, label in VARIANT_LABELS.items():
         values = groups.get(variant)
         if not values:
             continue
         median = statistics.median(values)
+        footprint_path = os.path.join(raw, f"footprint-{variant}.json")
+        corroboration = "n/a"
+        if os.path.exists(footprint_path):
+            receipt = read_json(footprint_path)
+            view = receipt["categories"].get("dependency_view", {}).get("allocated_bytes", 0)
+            corroboration = mb(receipt["total"]["allocated_bytes"] - view)
         lines.append(
             f"| {label} | {len(values)} | **{mb(median)}** | {mb(min(values))} | {mb(max(values))} | "
-            f"{'yes' if median < 400 * MB else 'no'} |"
+            f"{corroboration} | {'yes' if median < 400 * MB else 'no'} |"
         )
+    lines.append("")
+    lines.append(
+        "A free-space delta measures the whole volume, so on a shared host a concurrent writer "
+        "moves an individual trial in either direction; the observed minimum and maximum are "
+        "printed as evidence of that noise, not as a range claim. The median is the reported "
+        "figure. The last column is an independent, deterministic cross-check: allocated bytes "
+        "with the copy-on-write dependency view removed, which is what the disk is charged for "
+        "everything the checkout does not share with the store."
+    )
     return "\n".join(lines) + "\n"
 
 
@@ -210,6 +226,7 @@ def integrity_table(raw: str) -> str:
         ("Pack size (KiB)", "pack_size_kib"),
         ("Loose objects", "loose_objects"),
         ("Tracked paths not materialised", "tracked_paths_not_materialised"),
+        ("Working tree clean at the pinned revision", "working_tree_clean"),
     ]
     for label, key in fields:
         lines.append(f"| {label} | {card.get(key)} | {full.get(key)} |")

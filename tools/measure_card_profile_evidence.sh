@@ -59,6 +59,14 @@ REV="$REV" SOURCE_CLASS="remote" OUT="$OUT" TRIALS="$TRIALS" python3 - <<'PYEOF'
 import json, os, platform, shutil, subprocess
 
 
+def pinned_pnpm():
+    try:
+        with open("worker/package.json", encoding="utf-8") as handle:
+            return json.load(handle)["packageManager"]
+    except Exception:
+        return "unavailable"
+
+
 def version(*command):
     try:
         return subprocess.run(command, capture_output=True, text=True, check=False).stdout.strip().splitlines()[0]
@@ -78,7 +86,8 @@ record = {
         "git": version("git", "--version"),
         "node": version("node", "--version"),
         "python3": version("python3", "--version"),
-        "pnpm": version("corepack", "pnpm", "--version"),
+        "pnpm_pinned_by_worker_package": pinned_pnpm(),
+        "pnpm_corepack_default": version("corepack", "pnpm", "--version"),
     },
     "cache_conditions": {
         "dependency_store": "warm - the host shared pnpm store is already populated, and the install runs against it",
@@ -269,12 +278,14 @@ record_probe "swallowed-miss-gated" "card-work" \
   "node tools/verify_card_profile.mjs --gate worker-unit -- node $FIXTURE" \
   "$st" "exit 4 naming the missing path" "$(printf '%s' "$out" | grep -E 'violation|site/data' | head -3)"
 
-out="$( (cd "$CARD" && node tools/verify_card_profile.mjs --gate evidence-placement) 2>&1 || true)"
-st=$( (cd "$CARD" && node tools/verify_card_profile.mjs --gate evidence-placement >/dev/null 2>&1) && echo 0 || echo $? )
-record_probe "full-checkout-only-refused" "card-work" \
-  "A gate class the profile does not support is refused before it runs, with the reason and the command that provisions the control." \
-  "node tools/verify_card_profile.mjs --gate evidence-placement" "$st" "exit 3 naming the full-checkout control" \
-  "$(printf '%s' "$out" | head -3)"
+for blocked in evidence-placement site-unit generated-source-docs site-standards reading-level pages-build release-surface full-history-guards accessibility-browser; do
+  out="$( (cd "$CARD" && node tools/verify_card_profile.mjs --gate "$blocked") 2>&1 || true)"
+  st=$( (cd "$CARD" && node tools/verify_card_profile.mjs --gate "$blocked" >/dev/null 2>&1) && echo 0 || echo $? )
+  record_probe "refused-$blocked" "card-work" \
+    "The full-checkout-only gate class \"$blocked\" is refused before it runs, with the reason and the command that provisions the control." \
+    "node tools/verify_card_profile.mjs --gate $blocked" "$st" "exit 3 naming the full-checkout control" \
+    "$(printf '%s' "$out" | head -2)"
+done
 
 out="$( (cd "$CARD" && ./tools/provision_card_profile.sh hydrate "$DEFERRED" && node -e "console.log('bytes', require('node:fs').readFileSync('$DEFERRED').length)") 2>&1 || true)"
 st=$( (cd "$CARD" && node -e "require('node:fs').readFileSync('$DEFERRED')" >/dev/null 2>&1) && echo 0 || echo $? )
@@ -328,6 +339,7 @@ def describe(cwd, label):
     _, shallow, _ = run(cwd, "git", "rev-parse", "--is-shallow-repository")
     _, commits, _ = run(cwd, "git", "rev-list", "--count", "HEAD")
     _, head, _ = run(cwd, "git", "rev-parse", "HEAD")
+    _, dirty, _ = run(cwd, "git", "status", "--porcelain")
     _, skipped, _ = run(cwd, "git", "ls-files", "-t")
     not_materialised = sum(1 for line in skipped.splitlines() if line.startswith("S "))
     return {
@@ -341,6 +353,7 @@ def describe(cwd, label):
         "packs": int(stats.get("packs", 0)),
         "pack_size_kib": int(stats.get("size-pack", 0)),
         "tracked_paths_not_materialised": not_materialised,
+        "working_tree_clean": dirty == "",
         "fsck_connectivity_only": {
             "exit_status": fsck_status,
             "output": (fsck_out + "\n" + fsck_err).strip(),

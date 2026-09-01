@@ -37,7 +37,7 @@
     "tools/summarize_card_profile_evidence.py",
     "tools/verify_card_profile.mjs"
   ],
-  "measured_revision": "763b589a580fe9958099e22f31e0623b1a37cb02",
+  "measured_revision": "b16d7e92235b2f2d959dad80d58aaf123fbbbbb3",
   "merge_base_with_default_branch": "44056320378103ce9b20dc3ff676ac535d9d8798",
   "method": "Per-surface content digest over the tracked tree at the merge base and at the measured revision. An identical digest means every tracked file under that surface has the same content, so served output, Worker bundle contents and public data semantics cannot have changed.",
   "schema": "cityscroll.card-profile-product-surface.v1",
