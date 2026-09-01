@@ -99,13 +99,13 @@ Payroll in this product is **board/agency identity**, not a natural-person ident
 | Source authority | Citywide Payroll `k397-673e` (`site/data/source_contracts.json:870-888`). Product freshness: title mart and board staff counts; “Individual employee rows are never served.” |
 | Source-local identifier | `payroll_number` bound to `community-board:{borough-cb-NN}` after exact `agency_name` corroboration (`site/community_board_payroll_identity.mjs:1-8,49-53,64-71,123-139`). Staff-count artifact `site/data/community_board_payroll_staff_count.json`. Title mart `site/data/payroll_title_warehouse_lookup.json` (`pii.employee_rows: false`). |
 | Exact vs name-only | Exact payroll number plus exact publisher agency label. Geography and similar names are not identity (`site/community_board_payroll_identity.mjs:59-63,136-139`; `test/community_board_payroll_identity.test.mjs`). |
-| Roles / tenure | ACTIVE-row staff **counts** per board. Dollars and title mix withheld under the five-row suppression floor (`site/data/community_board_payroll_staff_count.json:18-24`; `site/community_board_payroll_identity.mjs:16-31`). |
+| Roles / tenure | Source-qualified FY payroll-row counts, ACTIVE title context, and board-level publisher pay-field totals. These are institutional aggregates, not unique-person counts or a roster (`site/data/community_board_payroll_staff_count.json`; `site/community_board_payroll_context.mjs`). |
 | Routes | None for employees. Board money/staff counts attach to Community Board documents, not people routes. |
 | Search producers | None for employees. Title-mart counts feed People/Staffing suggestions, not person SearchDocuments. |
 | Downstream assumptions | Employee field names (`last_name`, `first_name`, `employee_id`, …) in a served contract are a fitness failure (`site/community_board_payroll_identity.mjs:36-45,93-115`; `test/community_board_payroll_identity.test.mjs:30-41,120-133`). |
 | Same-human proof | Not applicable as a person representation. Binding is board↔payroll_number. Person-level payroll identity is **unknown** and must stay unpublished. |
 
-Authoritative files: `site/community_board_payroll_identity.mjs`, `site/data/community_board_payroll_staff_count.json`, `site/data/payroll_title_warehouse_lookup.json`, `test/community_board_payroll_identity.test.mjs`.
+Authoritative files: `site/community_board_payroll_identity.mjs`, `site/community_board_payroll_context.mjs`, `site/data/community_board_payroll_staff_count.json`, `site/data/payroll_title_warehouse_lookup.json`, `test/community_board_payroll_identity.test.mjs`.
 
 ## 7. Community Board roster identities
 

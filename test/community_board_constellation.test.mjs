@@ -21,6 +21,7 @@ const scorecard = JSON.parse(readFileSync(new URL("../site/data/community_board_
 const geography = JSON.parse(readFileSync(new URL("../site/data/community_board_geography_lookup.json", import.meta.url)));
 const communityBoardMoney = JSON.parse(readFileSync(new URL("../site/data/community_board_money.json", import.meta.url)));
 const communityBoardParticipation = JSON.parse(readFileSync(new URL("../site/data/community_board_participation.json", import.meta.url)));
+const communityBoardPayrollContext = JSON.parse(readFileSync(new URL("../site/data/community_board_payroll_staff_count.json", import.meta.url)));
 const meetingIndex = readCommunityBoardMeetingIndex(new URL("../site/data/community_board_meeting_index.json", import.meta.url));
 
 const sources = { sourceRegistry, sourceInventory, scorecard, geography };
@@ -87,6 +88,31 @@ test("board dossier embeds the exact read-model money card without changing its 
   assert.match(html, /Payments posted through June 30, 2026/);
   assert.match(html, /Sources and coverage/);
   assert.match(html, /data-community-board-constellation-category="committees"/);
+});
+
+test("board dossier renders owner-approved payroll context for a two-row board", () => {
+  const view = buildCommunityBoardConstellationView("bronx-cb-02", {
+    ...sources,
+    communityBoardPayrollContext,
+  });
+  const html = renderCommunityBoardConstellationDocument(view);
+  assert.equal(view.payroll.active_row_count, 2);
+  assert.match(html, /data-community-board-payroll="1"/);
+  assert.match(html, /DISTRICT MANAGER/);
+  assert.match(html, /Regular gross paid/);
+  assert.match(html, /not unique people/);
+  assert.doesNotMatch(html, /too few|k-suppress|employee_id|last_name/i);
+});
+
+test("Queens CB12 renders an honest zero-ACTIVE payroll state", () => {
+  const view = buildCommunityBoardConstellationView("queens-cb-12", {
+    ...sources,
+    communityBoardPayrollContext,
+  });
+  const html = renderCommunityBoardConstellationDocument(view);
+  assert.equal(view.payroll.state, "zero_active");
+  assert.match(html, /0 ACTIVE payroll rows; 3 non-ACTIVE published rows/);
+  assert.match(html, /No ACTIVE title rows were published/);
 });
 
 test("partial board dossier keeps the money card inside the existing hierarchy", () => {
@@ -378,4 +404,3 @@ test("a board without equivalent participation evidence keeps records and omits 
   assert.doesNotMatch(html, /No meetings exist/);
   assert.deepEqual(detectNodePageCruft(html), []);
 });
-

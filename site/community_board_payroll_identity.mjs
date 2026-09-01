@@ -12,22 +12,17 @@ export const COMMUNITY_BOARD_PAYROLL_IDENTITY_VERSION = 1;
 export const COMMUNITY_BOARD_PAYROLL_SOURCE = "citywide_payroll";
 export const COMMUNITY_BOARD_PAYROLL_NATIVE_KEY_FIELD = "payroll_number";
 export const COMMUNITY_BOARD_PAYROLL_DATASET = "k397-673e";
-export const COMMUNITY_BOARD_PAYROLL_K_SUPPRESSION = 5;
-export const COMMUNITY_BOARD_PAYROLL_STAFF_COUNT_SCHEMA = "cityscroll.community_board_payroll_staff_count.v1";
-export const COMMUNITY_BOARD_PAYROLL_STAFF_COUNT_VERSION = 1;
+export const COMMUNITY_BOARD_PAYROLL_CONTEXT_SCHEMA = "cityscroll.community_board_payroll_context.v2";
+export const COMMUNITY_BOARD_PAYROLL_CONTEXT_VERSION = 2;
+export const COMMUNITY_BOARD_PAYROLL_STAFF_COUNT_SCHEMA = COMMUNITY_BOARD_PAYROLL_CONTEXT_SCHEMA;
+export const COMMUNITY_BOARD_PAYROLL_STAFF_COUNT_VERSION = COMMUNITY_BOARD_PAYROLL_CONTEXT_VERSION;
 const WITHHELD_VALUE_FIELDS = Object.freeze([
   "base_salary",
-  "regular_gross_paid",
-  "total_ot_paid",
-  "total_other_pay",
   "gross",
   "ot",
   "avg",
   "mn",
   "mx",
-  "title_description",
-  "title_mix",
-  "titles",
 ]);
 
 const BOARD_ID = /^[a-z]+(?:-[a-z]+)*-cb-\d{2}$/;
@@ -211,7 +206,6 @@ export function measureCommunityBoardPayrollIdentity(registry, inventory, opts =
   const maxActive = accepted.reduce((max, binding) => Math.max(max, binding.active_rows), 0);
   const coveredRows = accepted.reduce((sum, binding) => sum + binding.candidate_rows, 0);
   const candidateRows = identities.reduce((sum, row) => sum + (Number(row.candidate_rows) || 0), 0);
-  const kSafeDollarOrTitle = accepted.filter((binding) => binding.active_rows >= COMMUNITY_BOARD_PAYROLL_K_SUPPRESSION);
   const employeeFindings = payrollIdentityEmployeeFindings(inventory);
 
   return {
@@ -260,8 +254,7 @@ export function measureCommunityBoardPayrollIdentity(registry, inventory, opts =
       active_rows: accepted.reduce((sum, binding) => sum + binding.active_rows, 0),
       min_active_rows: accepted.reduce((min, binding) => Math.min(min, binding.active_rows), Infinity),
       max_active_rows: maxActive,
-      k_suppression_threshold: COMMUNITY_BOARD_PAYROLL_K_SUPPRESSION,
-      boards_at_or_above_k_suppression: kSafeDollarOrTitle.length,
+      owner_approved_full_aggregate_context: true,
       acceptance_gate: accepted.length === 59 && unmatched.length === 0 && ambiguous.length === 0 && employeeFindings.length === 0,
     },
     aggregate_semantics: {
@@ -271,16 +264,18 @@ export function measureCommunityBoardPayrollIdentity(registry, inventory, opts =
         note: "ACTIVE staff_count is the published FY payroll-row count at fiscal-year close.",
       },
       title_count: {
-        justified: false,
-        reason: `every board has fewer than ${COMMUNITY_BOARD_PAYROLL_K_SUPPRESSION} ACTIVE payroll rows, so a per-board title list reconstructs an org chart`,
+        justified: true,
+        grain: "published FY payroll rows grouped by title_description and leave_status_as_of_june_30",
       },
       title_mix: {
-        justified: false,
-        reason: "per-board title mix is withheld at this grain; citywide Community Board title mix may stay a source-level disclosure",
+        justified: true,
+        grain: "publisher title_description with published-row counts; not a unique-person roster",
       },
       payroll_measures: {
-        justified: false,
-        reason: `per-board dollars and averages would identify compensation on boards with 1–${maxActive} ACTIVE rows`,
+        justified: true,
+        fields: ["regular_gross_paid", "total_ot_paid", "total_other_pay"],
+        grain: "publisher dollar fields summed by exact board for the selected fiscal year, shown separately for ACTIVE and all published rows",
+        note: "These are Citywide Payroll pay fields, not adopted budget, personnel budget, registered value, payments, or unique-person compensation.",
       },
     },
     hard_rules: {
@@ -303,7 +298,7 @@ export function measureCommunityBoardPayrollIdentity(registry, inventory, opts =
         "active_rows",
         "leave_status_counts",
       ],
-      withheld_fields: ["last_name", "first_name", "mid_init", "base_salary", "regular_gross_paid", "title_description"],
+      withheld_fields: ["last_name", "first_name", "mid_init", "employee_id", "base_salary"],
     },
     employee_field_findings: employeeFindings,
     bindings: accepted,
@@ -313,7 +308,9 @@ export function measureCommunityBoardPayrollIdentity(registry, inventory, opts =
 export function payrollIdentityServeContractFindings(doc) {
   const findings = [];
   findings.push(...payrollIdentityEmployeeFindings(doc));
-  if (doc?.served_contract?.employee_rows !== false && doc?.withheld?.employee_rows !== true) {
+  if (doc?.served_contract?.employee_rows !== false
+      && doc?.withheld?.employee_rows !== true
+      && doc?.serving_boundary?.employee_rows !== true) {
     findings.push("served contract does not declare employee_rows false");
   }
   const blob = JSON.stringify(doc || {});
@@ -340,23 +337,61 @@ function leaveStatusCounts(value) {
   return counts;
 }
 
-export function buildCommunityBoardPayrollStaffCount(registry, inventory, opts = {}) {
+function numeric(value) {
+  const number = Number(value);
+  return Number.isFinite(number) ? number : 0;
+}
+
+function money(value) {
+  return Math.round(numeric(value) * 100) / 100;
+}
+
+export function buildCommunityBoardPayrollStaffCount(registry, inventory, context = {}, opts = {}) {
+  if (context && !Array.isArray(context?.totals) && (context.generatedAt || context.reviewedAt)) {
+    opts = context;
+    context = {};
+  }
   const receipt = measureCommunityBoardPayrollIdentity(registry, inventory, opts);
   const fiscalYear = Number(inventory?.fiscal_year);
   const rows = [...receipt.bindings]
     .sort((left, right) => String(left.board_id).localeCompare(String(right.board_id)))
-    .map((binding) => ({
+    .map((binding) => {
+      const exact = (row) => payrollNumberKey(row?.payroll_number) === binding.source_native_board_key
+        && clean(row?.agency_name) === binding.publisher_identity;
+      const totals = (context?.totals || []).filter(exact);
+      const titles = (context?.titles || []).filter(exact);
+      const activeTotals = totals.filter((row) => clean(row.leave_status_as_of_june_30).toUpperCase() === "ACTIVE");
+      const sum = (rows, field) => money(rows.reduce((total, row) => total + numeric(row[field]), 0));
+      const titleContext = titles
+        .filter((row) => clean(row.leave_status_as_of_june_30).toUpperCase() === "ACTIVE")
+        .map((row) => ({
+          title_description: clean(row.title_description),
+          published_row_count: Number(row.published_row_count) || 0,
+        }))
+        .filter((row) => row.title_description)
+        .sort((left, right) => left.title_description.localeCompare(right.title_description));
+      const measures = Object.fromEntries(["regular_gross_paid", "total_ot_paid", "total_other_pay"].map((field) => [field, {
+        active_rows: sum(activeTotals, field),
+        all_published_rows: sum(totals, field),
+      }]));
+      return ({
       board_id: binding.board_id,
       fiscal_year: fiscalYear,
       source_native_key_field: COMMUNITY_BOARD_PAYROLL_NATIVE_KEY_FIELD,
       source_native_board_key: binding.source_native_board_key,
       publisher_identity: binding.publisher_identity,
       active_row_count: binding.active_rows,
+      non_active_row_count: binding.candidate_rows - binding.active_rows,
       published_row_count: binding.candidate_rows,
       leave_status_counts: leaveStatusCounts(binding.leave_status_counts),
+      title_context: titleContext,
+      payroll_dollars: measures,
+      measure_state: totals.length ? "available" : "unknown",
+      measure_unknown_reason: totals.length ? null : "No matching aggregate source slice was available.",
       binding_status: "accepted",
       identity_binding: COMMUNITY_BOARD_PAYROLL_IDENTITY_SCHEMA,
-    }));
+      });
+    });
   return {
     model: {
       schema: COMMUNITY_BOARD_PAYROLL_STAFF_COUNT_SCHEMA,
@@ -372,12 +407,18 @@ export function buildCommunityBoardPayrollStaffCount(registry, inventory, opts =
         source_vintage: receipt.sources.citywide_payroll.source_vintage,
         query_slice: receipt.sources.citywide_payroll.query_slice,
       },
-      withheld: {
+      serving_boundary: {
         employee_rows: true,
-        payroll_measures: true,
-        title_mix: true,
-        title_count: true,
-        reason: receipt.aggregate_semantics.payroll_measures.reason,
+        employee_names: true,
+        employee_ids: true,
+        row_level_salary: true,
+        roster_route: true,
+      },
+      aggregate_semantics: {
+        staff_count: receipt.aggregate_semantics.staff_count,
+        title_context: receipt.aggregate_semantics.title_mix,
+        payroll_dollars: receipt.aggregate_semantics.payroll_measures,
+        field_meanings: context?.field_semantics || {},
       },
       coverage: {
         accepted_boards: rows.length,
@@ -397,11 +438,7 @@ export function validateCommunityBoardPayrollStaffCount(model, receipt = null) {
   if (model?.schema !== COMMUNITY_BOARD_PAYROLL_STAFF_COUNT_SCHEMA) errors.push("invalid staff-count schema");
   if (Number(model?.version) !== COMMUNITY_BOARD_PAYROLL_STAFF_COUNT_VERSION) errors.push("invalid staff-count version");
   if (!Number.isInteger(Number(model?.fiscal_year))) errors.push("staff-count fiscal year is missing");
-  if (model?.withheld?.employee_rows !== true) errors.push("staff-count must withhold employee rows");
-  if (model?.withheld?.payroll_measures !== true) errors.push("staff-count must withhold payroll dollars");
-  if (model?.withheld?.title_mix !== true || model?.withheld?.title_count !== true) {
-    errors.push("staff-count must withhold per-board titles");
-  }
+  if (model?.serving_boundary?.employee_rows !== true) errors.push("payroll context must withhold employee rows");
   const rows = Array.isArray(model?.rows) ? model.rows : [];
   const boardIds = new Set(rows.map((row) => row?.board_id).filter(Boolean));
   if (rows.length !== 59 || boardIds.size !== 59) errors.push("staff-count must enumerate 59 unique boards");
@@ -418,23 +455,19 @@ export function validateCommunityBoardPayrollStaffCount(model, receipt = null) {
     if (row.active_row_count > row.published_row_count) {
       errors.push(`staff-count row has more ACTIVE rows than published rows: ${row?.board_id}`);
     }
-    if ("title_description" in (row || {}) || "title_mix" in (row || {})) {
-      errors.push(`staff-count row includes withheld titles: ${row?.board_id}`);
-    }
-    if ("regular_gross_paid" in (row || {}) || "base_salary" in (row || {})) {
-      errors.push(`staff-count row includes withheld dollars: ${row?.board_id}`);
-    }
+    if (!Array.isArray(row?.title_context)) errors.push(`payroll context row lacks title context: ${row?.board_id}`);
+    if (!row?.payroll_dollars || "base_salary" in row.payroll_dollars) errors.push(`payroll context row has invalid dollar measures: ${row?.board_id}`);
   }
   errors.push(...payrollIdentityServeContractFindings(model));
   if (receipt) {
     if (receipt.schema !== "cityscroll.community_board_payroll_identity_receipt.v1") errors.push("invalid payroll identity receipt schema");
     if (receipt.measurement?.acceptance_gate !== true) errors.push("payroll identity acceptance gate is not clear");
     if (receipt.measurement?.reviewed_precision !== 1) errors.push("payroll identity reviewed precision is not 1");
-    if (receipt.aggregate_semantics?.payroll_measures?.justified !== false) {
-      errors.push("receipt must keep per-board payroll measures unjustified");
+    if (receipt.aggregate_semantics?.payroll_measures?.justified !== true) {
+      errors.push("receipt must permit per-board aggregate payroll measures");
     }
-    if (receipt.aggregate_semantics?.title_mix?.justified !== false) {
-      errors.push("receipt must keep per-board title mix unjustified");
+    if (receipt.aggregate_semantics?.title_mix?.justified !== true) {
+      errors.push("receipt must permit per-board aggregate title context");
     }
     if (receipt.accepted_bindings?.citywide_payroll !== rows.length) {
       errors.push("staff-count row count does not match accepted payroll bindings");

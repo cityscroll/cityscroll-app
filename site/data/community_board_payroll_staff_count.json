@@ -1,6 +1,6 @@
 {
-  "schema": "cityscroll.community_board_payroll_staff_count.v1",
-  "version": 1,
+  "schema": "cityscroll.community_board_payroll_context.v2",
+  "version": 2,
   "generated_at": "2026-08-29T20:00:00.000Z",
   "fiscal_year": 2025,
   "source": {
@@ -15,12 +15,40 @@
       "window": "fiscal_year=2025 AND (upper(agency_name) like '%COMMUNITY BOARD%' OR upper(agency_name) like '%COMMUNITY BD%')"
     }
   },
-  "withheld": {
+  "serving_boundary": {
     "employee_rows": true,
-    "payroll_measures": true,
-    "title_mix": true,
-    "title_count": true,
-    "reason": "per-board dollars and averages would identify compensation on boards with 1–4 ACTIVE rows"
+    "employee_names": true,
+    "employee_ids": true,
+    "row_level_salary": true,
+    "roster_route": true
+  },
+  "aggregate_semantics": {
+    "staff_count": {
+      "justified": true,
+      "grain": "published FY payroll rows with leave_status_as_of_june_30=ACTIVE",
+      "note": "ACTIVE staff_count is the published FY payroll-row count at fiscal-year close."
+    },
+    "title_context": {
+      "justified": true,
+      "grain": "publisher title_description with published-row counts; not a unique-person roster"
+    },
+    "payroll_dollars": {
+      "justified": true,
+      "fields": [
+        "regular_gross_paid",
+        "total_ot_paid",
+        "total_other_pay"
+      ],
+      "grain": "publisher dollar fields summed by exact board for the selected fiscal year, shown separately for ACTIVE and all published rows",
+      "note": "These are Citywide Payroll pay fields, not adopted budget, personnel budget, registered value, payments, or unique-person compensation."
+    },
+    "field_meanings": {
+      "leave_status_as_of_june_30": "Status of employee as of the close of the relevant fiscal year: Active, Ceased, or On Leave.",
+      "title_description": "Civil service title description of the employee.",
+      "regular_gross_paid": "Amount paid for base salary during the fiscal year.",
+      "total_ot_paid": "Total overtime pay paid during the fiscal year.",
+      "total_other_pay": "Compensation in addition to gross salary and overtime pay, including differentials, lump sums, allowances, retroactive pay, settlements, and bonus pay when applicable."
+    }
   },
   "coverage": {
     "accepted_boards": 59,
@@ -39,11 +67,42 @@
       "source_native_board_key": "381",
       "publisher_identity": "BRONX COMMUNITY BOARD #1",
       "active_row_count": 3,
+      "non_active_row_count": 1,
       "published_row_count": 4,
       "leave_status_counts": {
         "ACTIVE": 3,
         "CEASED": 1
       },
+      "title_context": [
+        {
+          "title_description": "COMMUNITY ASSOCIATE",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "COMMUNITY COORDINATOR",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "DISTRICT MANAGER",
+          "published_row_count": 1
+        }
+      ],
+      "payroll_dollars": {
+        "regular_gross_paid": {
+          "active_rows": 206018.45,
+          "all_published_rows": 206178.08
+        },
+        "total_ot_paid": {
+          "active_rows": 0,
+          "all_published_rows": 0
+        },
+        "total_other_pay": {
+          "active_rows": 638.25,
+          "all_published_rows": 639.41
+        }
+      },
+      "measure_state": "available",
+      "measure_unknown_reason": null,
       "binding_status": "accepted",
       "identity_binding": "cityscroll.community_board_payroll_identity.v1"
     },
@@ -54,10 +113,37 @@
       "source_native_board_key": "382",
       "publisher_identity": "BRONX COMMUNITY BOARD #2",
       "active_row_count": 2,
+      "non_active_row_count": 0,
       "published_row_count": 2,
       "leave_status_counts": {
         "ACTIVE": 2
       },
+      "title_context": [
+        {
+          "title_description": "COMMUNITY COORDINATOR",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "DISTRICT MANAGER",
+          "published_row_count": 1
+        }
+      ],
+      "payroll_dollars": {
+        "regular_gross_paid": {
+          "active_rows": 237650.96,
+          "all_published_rows": 237650.96
+        },
+        "total_ot_paid": {
+          "active_rows": 0,
+          "all_published_rows": 0
+        },
+        "total_other_pay": {
+          "active_rows": 1505.26,
+          "all_published_rows": 1505.26
+        }
+      },
+      "measure_state": "available",
+      "measure_unknown_reason": null,
       "binding_status": "accepted",
       "identity_binding": "cityscroll.community_board_payroll_identity.v1"
     },
@@ -68,10 +154,37 @@
       "source_native_board_key": "383",
       "publisher_identity": "BRONX COMMUNITY BOARD #3",
       "active_row_count": 2,
+      "non_active_row_count": 0,
       "published_row_count": 2,
       "leave_status_counts": {
         "ACTIVE": 2
       },
+      "title_context": [
+        {
+          "title_description": "COMMUNITY COORDINATOR",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "DISTRICT MANAGER",
+          "published_row_count": 1
+        }
+      ],
+      "payroll_dollars": {
+        "regular_gross_paid": {
+          "active_rows": 193538.84,
+          "all_published_rows": 193538.84
+        },
+        "total_ot_paid": {
+          "active_rows": 0,
+          "all_published_rows": 0
+        },
+        "total_other_pay": {
+          "active_rows": 397.5,
+          "all_published_rows": 397.5
+        }
+      },
+      "measure_state": "available",
+      "measure_unknown_reason": null,
       "binding_status": "accepted",
       "identity_binding": "cityscroll.community_board_payroll_identity.v1"
     },
@@ -82,11 +195,38 @@
       "source_native_board_key": "384",
       "publisher_identity": "BRONX COMMUNITY BOARD #4",
       "active_row_count": 2,
+      "non_active_row_count": 2,
       "published_row_count": 4,
       "leave_status_counts": {
         "ACTIVE": 2,
         "CEASED": 2
       },
+      "title_context": [
+        {
+          "title_description": "COMMUNITY COORDINATOR",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "DISTRICT MANAGER",
+          "published_row_count": 1
+        }
+      ],
+      "payroll_dollars": {
+        "regular_gross_paid": {
+          "active_rows": 120641.52,
+          "all_published_rows": 168075.92
+        },
+        "total_ot_paid": {
+          "active_rows": 0,
+          "all_published_rows": 0
+        },
+        "total_other_pay": {
+          "active_rows": 1572.39,
+          "all_published_rows": 1988.46
+        }
+      },
+      "measure_state": "available",
+      "measure_unknown_reason": null,
       "binding_status": "accepted",
       "identity_binding": "cityscroll.community_board_payroll_identity.v1"
     },
@@ -97,10 +237,37 @@
       "source_native_board_key": "385",
       "publisher_identity": "BRONX COMMUNITY BOARD #5",
       "active_row_count": 2,
+      "non_active_row_count": 0,
       "published_row_count": 2,
       "leave_status_counts": {
         "ACTIVE": 2
       },
+      "title_context": [
+        {
+          "title_description": "COMMUNITY COORDINATOR",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "DISTRICT MANAGER",
+          "published_row_count": 1
+        }
+      ],
+      "payroll_dollars": {
+        "regular_gross_paid": {
+          "active_rows": 168356.72,
+          "all_published_rows": 168356.72
+        },
+        "total_ot_paid": {
+          "active_rows": 0,
+          "all_published_rows": 0
+        },
+        "total_other_pay": {
+          "active_rows": 1942.26,
+          "all_published_rows": 1942.26
+        }
+      },
+      "measure_state": "available",
+      "measure_unknown_reason": null,
       "binding_status": "accepted",
       "identity_binding": "cityscroll.community_board_payroll_identity.v1"
     },
@@ -111,10 +278,41 @@
       "source_native_board_key": "386",
       "publisher_identity": "BRONX COMMUNITY BOARD #6",
       "active_row_count": 3,
+      "non_active_row_count": 0,
       "published_row_count": 3,
       "leave_status_counts": {
         "ACTIVE": 3
       },
+      "title_context": [
+        {
+          "title_description": "COMMUNITY ASSOCIATE",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "COMMUNITY COORDINATOR",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "DISTRICT MANAGER",
+          "published_row_count": 1
+        }
+      ],
+      "payroll_dollars": {
+        "regular_gross_paid": {
+          "active_rows": 231273.08,
+          "all_published_rows": 231273.08
+        },
+        "total_ot_paid": {
+          "active_rows": 0,
+          "all_published_rows": 0
+        },
+        "total_other_pay": {
+          "active_rows": -40.69,
+          "all_published_rows": -40.69
+        }
+      },
+      "measure_state": "available",
+      "measure_unknown_reason": null,
       "binding_status": "accepted",
       "identity_binding": "cityscroll.community_board_payroll_identity.v1"
     },
@@ -125,10 +323,41 @@
       "source_native_board_key": "387",
       "publisher_identity": "BRONX COMMUNITY BOARD #7",
       "active_row_count": 3,
+      "non_active_row_count": 0,
       "published_row_count": 3,
       "leave_status_counts": {
         "ACTIVE": 3
       },
+      "title_context": [
+        {
+          "title_description": "COMMUNITY ASSOCIATE",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "COMMUNITY COORDINATOR",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "DISTRICT MANAGER",
+          "published_row_count": 1
+        }
+      ],
+      "payroll_dollars": {
+        "regular_gross_paid": {
+          "active_rows": 224621.44,
+          "all_published_rows": 224621.44
+        },
+        "total_ot_paid": {
+          "active_rows": 0,
+          "all_published_rows": 0
+        },
+        "total_other_pay": {
+          "active_rows": 308.75,
+          "all_published_rows": 308.75
+        }
+      },
+      "measure_state": "available",
+      "measure_unknown_reason": null,
       "binding_status": "accepted",
       "identity_binding": "cityscroll.community_board_payroll_identity.v1"
     },
@@ -139,11 +368,38 @@
       "source_native_board_key": "388",
       "publisher_identity": "BRONX COMMUNITY BOARD #8",
       "active_row_count": 2,
+      "non_active_row_count": 1,
       "published_row_count": 3,
       "leave_status_counts": {
         "ACTIVE": 2,
         "CEASED": 1
       },
+      "title_context": [
+        {
+          "title_description": "COMMUNITY COORDINATOR",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "DISTRICT MANAGER",
+          "published_row_count": 1
+        }
+      ],
+      "payroll_dollars": {
+        "regular_gross_paid": {
+          "active_rows": 176216.8,
+          "all_published_rows": 176216.8
+        },
+        "total_ot_paid": {
+          "active_rows": 0,
+          "all_published_rows": 0
+        },
+        "total_other_pay": {
+          "active_rows": 2243.75,
+          "all_published_rows": 30453.2
+        }
+      },
+      "measure_state": "available",
+      "measure_unknown_reason": null,
       "binding_status": "accepted",
       "identity_binding": "cityscroll.community_board_payroll_identity.v1"
     },
@@ -154,11 +410,42 @@
       "source_native_board_key": "389",
       "publisher_identity": "BRONX COMMUNITY BOARD #9",
       "active_row_count": 3,
+      "non_active_row_count": 1,
       "published_row_count": 4,
       "leave_status_counts": {
         "ACTIVE": 3,
         "CEASED": 1
       },
+      "title_context": [
+        {
+          "title_description": "COMMUNITY ASSOCIATE",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "COMMUNITY COORDINATOR",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "DISTRICT MANAGER",
+          "published_row_count": 1
+        }
+      ],
+      "payroll_dollars": {
+        "regular_gross_paid": {
+          "active_rows": 243185.95,
+          "all_published_rows": 248742.2
+        },
+        "total_ot_paid": {
+          "active_rows": 0,
+          "all_published_rows": 0
+        },
+        "total_other_pay": {
+          "active_rows": 115.5,
+          "all_published_rows": 115.5
+        }
+      },
+      "measure_state": "available",
+      "measure_unknown_reason": null,
       "binding_status": "accepted",
       "identity_binding": "cityscroll.community_board_payroll_identity.v1"
     },
@@ -169,10 +456,45 @@
       "source_native_board_key": "390",
       "publisher_identity": "BRONX COMMUNITY BOARD #10",
       "active_row_count": 4,
+      "non_active_row_count": 0,
       "published_row_count": 4,
       "leave_status_counts": {
         "ACTIVE": 4
       },
+      "title_context": [
+        {
+          "title_description": "CLERICAL ASSOCIATE MOST MAYORAL AG",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "COMMUNITY ASSISTANT",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "COMMUNITY ASSOCIATE",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "DISTRICT MANAGER",
+          "published_row_count": 1
+        }
+      ],
+      "payroll_dollars": {
+        "regular_gross_paid": {
+          "active_rows": 241943.26,
+          "all_published_rows": 241943.26
+        },
+        "total_ot_paid": {
+          "active_rows": 0,
+          "all_published_rows": 0
+        },
+        "total_other_pay": {
+          "active_rows": 7164.57,
+          "all_published_rows": 7164.57
+        }
+      },
+      "measure_state": "available",
+      "measure_unknown_reason": null,
       "binding_status": "accepted",
       "identity_binding": "cityscroll.community_board_payroll_identity.v1"
     },
@@ -183,10 +505,37 @@
       "source_native_board_key": "391",
       "publisher_identity": "BRONX COMMUNITY BOARD #11",
       "active_row_count": 3,
+      "non_active_row_count": 0,
       "published_row_count": 3,
       "leave_status_counts": {
         "ACTIVE": 3
       },
+      "title_context": [
+        {
+          "title_description": "COMMUNITY COORDINATOR",
+          "published_row_count": 2
+        },
+        {
+          "title_description": "DISTRICT MANAGER",
+          "published_row_count": 1
+        }
+      ],
+      "payroll_dollars": {
+        "regular_gross_paid": {
+          "active_rows": 271775.67,
+          "all_published_rows": 271775.67
+        },
+        "total_ot_paid": {
+          "active_rows": 0,
+          "all_published_rows": 0
+        },
+        "total_other_pay": {
+          "active_rows": 3612.51,
+          "all_published_rows": 3612.51
+        }
+      },
+      "measure_state": "available",
+      "measure_unknown_reason": null,
       "binding_status": "accepted",
       "identity_binding": "cityscroll.community_board_payroll_identity.v1"
     },
@@ -197,10 +546,37 @@
       "source_native_board_key": "392",
       "publisher_identity": "BRONX COMMUNITY BOARD #12",
       "active_row_count": 2,
+      "non_active_row_count": 0,
       "published_row_count": 2,
       "leave_status_counts": {
         "ACTIVE": 2
       },
+      "title_context": [
+        {
+          "title_description": "COMMUNITY COORDINATOR",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "DISTRICT MANAGER",
+          "published_row_count": 1
+        }
+      ],
+      "payroll_dollars": {
+        "regular_gross_paid": {
+          "active_rows": 252347.48,
+          "all_published_rows": 252347.48
+        },
+        "total_ot_paid": {
+          "active_rows": 0,
+          "all_published_rows": 0
+        },
+        "total_other_pay": {
+          "active_rows": 1828.01,
+          "all_published_rows": 1828.01
+        }
+      },
+      "measure_state": "available",
+      "measure_unknown_reason": null,
       "binding_status": "accepted",
       "identity_binding": "cityscroll.community_board_payroll_identity.v1"
     },
@@ -211,11 +587,42 @@
       "source_native_board_key": "471",
       "publisher_identity": "BROOKLYN COMMUNITY BOARD #1",
       "active_row_count": 3,
+      "non_active_row_count": 2,
       "published_row_count": 5,
       "leave_status_counts": {
         "ACTIVE": 3,
         "CEASED": 2
       },
+      "title_context": [
+        {
+          "title_description": "COMMUNITY COORDINATOR",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "COMMUNITY SERVICE AIDE",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "DISTRICT MANAGER",
+          "published_row_count": 1
+        }
+      ],
+      "payroll_dollars": {
+        "regular_gross_paid": {
+          "active_rows": 172400.59,
+          "all_published_rows": 199229.35
+        },
+        "total_ot_paid": {
+          "active_rows": 0,
+          "all_published_rows": 0
+        },
+        "total_other_pay": {
+          "active_rows": 646.8,
+          "all_published_rows": 646.8
+        }
+      },
+      "measure_state": "available",
+      "measure_unknown_reason": null,
       "binding_status": "accepted",
       "identity_binding": "cityscroll.community_board_payroll_identity.v1"
     },
@@ -226,12 +633,43 @@
       "source_native_board_key": "472",
       "publisher_identity": "BROOKLYN COMMUNITY BOARD #2",
       "active_row_count": 3,
+      "non_active_row_count": 2,
       "published_row_count": 5,
       "leave_status_counts": {
         "ACTIVE": 3,
         "CEASED": 1,
         "ON SEPARATION LEAVE": 1
       },
+      "title_context": [
+        {
+          "title_description": "COMMUNITY ASSOCIATE",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "COMMUNITY COORDINATOR",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "DISTRICT MANAGER",
+          "published_row_count": 1
+        }
+      ],
+      "payroll_dollars": {
+        "regular_gross_paid": {
+          "active_rows": 185337.68,
+          "all_published_rows": 207904.03
+        },
+        "total_ot_paid": {
+          "active_rows": 0,
+          "all_published_rows": 0
+        },
+        "total_other_pay": {
+          "active_rows": 355.76,
+          "all_published_rows": 355.76
+        }
+      },
+      "measure_state": "available",
+      "measure_unknown_reason": null,
       "binding_status": "accepted",
       "identity_binding": "cityscroll.community_board_payroll_identity.v1"
     },
@@ -242,10 +680,37 @@
       "source_native_board_key": "473",
       "publisher_identity": "BROOKLYN COMMUNITY BOARD #3",
       "active_row_count": 2,
+      "non_active_row_count": 0,
       "published_row_count": 2,
       "leave_status_counts": {
         "ACTIVE": 2
       },
+      "title_context": [
+        {
+          "title_description": "COMMUNITY COORDINATOR",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "DISTRICT MANAGER",
+          "published_row_count": 1
+        }
+      ],
+      "payroll_dollars": {
+        "regular_gross_paid": {
+          "active_rows": 184133.45,
+          "all_published_rows": 184133.45
+        },
+        "total_ot_paid": {
+          "active_rows": 0,
+          "all_published_rows": 0
+        },
+        "total_other_pay": {
+          "active_rows": 1564.01,
+          "all_published_rows": 1564.01
+        }
+      },
+      "measure_state": "available",
+      "measure_unknown_reason": null,
       "binding_status": "accepted",
       "identity_binding": "cityscroll.community_board_payroll_identity.v1"
     },
@@ -256,10 +721,37 @@
       "source_native_board_key": "474",
       "publisher_identity": "BROOKLYN COMMUNITY BOARD #4",
       "active_row_count": 3,
+      "non_active_row_count": 0,
       "published_row_count": 3,
       "leave_status_counts": {
         "ACTIVE": 3
       },
+      "title_context": [
+        {
+          "title_description": "COMMUNITY COORDINATOR",
+          "published_row_count": 2
+        },
+        {
+          "title_description": "DISTRICT MANAGER",
+          "published_row_count": 1
+        }
+      ],
+      "payroll_dollars": {
+        "regular_gross_paid": {
+          "active_rows": 214136.85,
+          "all_published_rows": 214136.85
+        },
+        "total_ot_paid": {
+          "active_rows": 0,
+          "all_published_rows": 0
+        },
+        "total_other_pay": {
+          "active_rows": 152.67,
+          "all_published_rows": 152.67
+        }
+      },
+      "measure_state": "available",
+      "measure_unknown_reason": null,
       "binding_status": "accepted",
       "identity_binding": "cityscroll.community_board_payroll_identity.v1"
     },
@@ -270,11 +762,38 @@
       "source_native_board_key": "475",
       "publisher_identity": "BROOKLYN COMMUNITY BOARD #5",
       "active_row_count": 2,
+      "non_active_row_count": 1,
       "published_row_count": 3,
       "leave_status_counts": {
         "ACTIVE": 2,
         "CEASED": 1
       },
+      "title_context": [
+        {
+          "title_description": "COMMUNITY ASSOCIATE",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "DISTRICT MANAGER",
+          "published_row_count": 1
+        }
+      ],
+      "payroll_dollars": {
+        "regular_gross_paid": {
+          "active_rows": 169387.91,
+          "all_published_rows": 194376.87
+        },
+        "total_ot_paid": {
+          "active_rows": 0,
+          "all_published_rows": 0
+        },
+        "total_other_pay": {
+          "active_rows": 49.5,
+          "all_published_rows": 74.25
+        }
+      },
+      "measure_state": "available",
+      "measure_unknown_reason": null,
       "binding_status": "accepted",
       "identity_binding": "cityscroll.community_board_payroll_identity.v1"
     },
@@ -285,10 +804,41 @@
       "source_native_board_key": "476",
       "publisher_identity": "BROOKLYN COMMUNITY BOARD #6",
       "active_row_count": 3,
+      "non_active_row_count": 0,
       "published_row_count": 3,
       "leave_status_counts": {
         "ACTIVE": 3
       },
+      "title_context": [
+        {
+          "title_description": "COMMUNITY ASSOCIATE",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "COMMUNITY COORDINATOR",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "DISTRICT MANAGER",
+          "published_row_count": 1
+        }
+      ],
+      "payroll_dollars": {
+        "regular_gross_paid": {
+          "active_rows": 264622.63,
+          "all_published_rows": 264622.63
+        },
+        "total_ot_paid": {
+          "active_rows": 0,
+          "all_published_rows": 0
+        },
+        "total_other_pay": {
+          "active_rows": 2923.32,
+          "all_published_rows": 2923.32
+        }
+      },
+      "measure_state": "available",
+      "measure_unknown_reason": null,
       "binding_status": "accepted",
       "identity_binding": "cityscroll.community_board_payroll_identity.v1"
     },
@@ -299,10 +849,41 @@
       "source_native_board_key": "477",
       "publisher_identity": "BROOKLYN COMMUNITY BOARD #7",
       "active_row_count": 3,
+      "non_active_row_count": 0,
       "published_row_count": 3,
       "leave_status_counts": {
         "ACTIVE": 3
       },
+      "title_context": [
+        {
+          "title_description": "COMMUNITY ASSOCIATE",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "COMMUNITY COORDINATOR",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "DISTRICT MANAGER",
+          "published_row_count": 1
+        }
+      ],
+      "payroll_dollars": {
+        "regular_gross_paid": {
+          "active_rows": 258616.95,
+          "all_published_rows": 258616.95
+        },
+        "total_ot_paid": {
+          "active_rows": 0,
+          "all_published_rows": 0
+        },
+        "total_other_pay": {
+          "active_rows": 3234.27,
+          "all_published_rows": 3234.27
+        }
+      },
+      "measure_state": "available",
+      "measure_unknown_reason": null,
       "binding_status": "accepted",
       "identity_binding": "cityscroll.community_board_payroll_identity.v1"
     },
@@ -313,10 +894,41 @@
       "source_native_board_key": "478",
       "publisher_identity": "BROOKLYN COMMUNITY BOARD #8",
       "active_row_count": 3,
+      "non_active_row_count": 0,
       "published_row_count": 3,
       "leave_status_counts": {
         "ACTIVE": 3
       },
+      "title_context": [
+        {
+          "title_description": "COLLEGE AIDE",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "COMMUNITY COORDINATOR",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "DISTRICT MANAGER",
+          "published_row_count": 1
+        }
+      ],
+      "payroll_dollars": {
+        "regular_gross_paid": {
+          "active_rows": 239769.39,
+          "all_published_rows": 239769.39
+        },
+        "total_ot_paid": {
+          "active_rows": 0,
+          "all_published_rows": 0
+        },
+        "total_other_pay": {
+          "active_rows": 1705.76,
+          "all_published_rows": 1705.76
+        }
+      },
+      "measure_state": "available",
+      "measure_unknown_reason": null,
       "binding_status": "accepted",
       "identity_binding": "cityscroll.community_board_payroll_identity.v1"
     },
@@ -327,10 +939,41 @@
       "source_native_board_key": "479",
       "publisher_identity": "BROOKLYN COMMUNITY BOARD #9",
       "active_row_count": 3,
+      "non_active_row_count": 0,
       "published_row_count": 3,
       "leave_status_counts": {
         "ACTIVE": 3
       },
+      "title_context": [
+        {
+          "title_description": "COMMUNITY ASSOCIATE",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "COMMUNITY COORDINATOR",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "DISTRICT MANAGER",
+          "published_row_count": 1
+        }
+      ],
+      "payroll_dollars": {
+        "regular_gross_paid": {
+          "active_rows": 229361.34,
+          "all_published_rows": 229361.34
+        },
+        "total_ot_paid": {
+          "active_rows": 0,
+          "all_published_rows": 0
+        },
+        "total_other_pay": {
+          "active_rows": 1021.16,
+          "all_published_rows": 1021.16
+        }
+      },
+      "measure_state": "available",
+      "measure_unknown_reason": null,
       "binding_status": "accepted",
       "identity_binding": "cityscroll.community_board_payroll_identity.v1"
     },
@@ -341,11 +984,42 @@
       "source_native_board_key": "480",
       "publisher_identity": "BROOKLYN COMMUNITY BOARD #10",
       "active_row_count": 3,
+      "non_active_row_count": 1,
       "published_row_count": 4,
       "leave_status_counts": {
         "ACTIVE": 3,
         "CEASED": 1
       },
+      "title_context": [
+        {
+          "title_description": "COMMUNITY ASSOCIATE",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "COMMUNITY COORDINATOR",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "DISTRICT MANAGER",
+          "published_row_count": 1
+        }
+      ],
+      "payroll_dollars": {
+        "regular_gross_paid": {
+          "active_rows": 270576.12,
+          "all_published_rows": 270653.62
+        },
+        "total_ot_paid": {
+          "active_rows": 0,
+          "all_published_rows": 0
+        },
+        "total_other_pay": {
+          "active_rows": 1590.26,
+          "all_published_rows": 1590.26
+        }
+      },
+      "measure_state": "available",
+      "measure_unknown_reason": null,
       "binding_status": "accepted",
       "identity_binding": "cityscroll.community_board_payroll_identity.v1"
     },
@@ -356,10 +1030,41 @@
       "source_native_board_key": "481",
       "publisher_identity": "BROOKLYN COMMUNITY BOARD #11",
       "active_row_count": 3,
+      "non_active_row_count": 0,
       "published_row_count": 3,
       "leave_status_counts": {
         "ACTIVE": 3
       },
+      "title_context": [
+        {
+          "title_description": "COMMUNITY ASSISTANT",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "COMMUNITY COORDINATOR",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "DISTRICT MANAGER",
+          "published_row_count": 1
+        }
+      ],
+      "payroll_dollars": {
+        "regular_gross_paid": {
+          "active_rows": 214496.05,
+          "all_published_rows": 214496.05
+        },
+        "total_ot_paid": {
+          "active_rows": 0,
+          "all_published_rows": 0
+        },
+        "total_other_pay": {
+          "active_rows": 0,
+          "all_published_rows": 0
+        }
+      },
+      "measure_state": "available",
+      "measure_unknown_reason": null,
       "binding_status": "accepted",
       "identity_binding": "cityscroll.community_board_payroll_identity.v1"
     },
@@ -370,10 +1075,37 @@
       "source_native_board_key": "482",
       "publisher_identity": "BROOKLYN COMMUNITY BOARD #12",
       "active_row_count": 2,
+      "non_active_row_count": 0,
       "published_row_count": 2,
       "leave_status_counts": {
         "ACTIVE": 2
       },
+      "title_context": [
+        {
+          "title_description": "COMMUNITY ASSOCIATE",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "DISTRICT MANAGER",
+          "published_row_count": 1
+        }
+      ],
+      "payroll_dollars": {
+        "regular_gross_paid": {
+          "active_rows": 246293.67,
+          "all_published_rows": 246293.67
+        },
+        "total_ot_paid": {
+          "active_rows": 0,
+          "all_published_rows": 0
+        },
+        "total_other_pay": {
+          "active_rows": 33,
+          "all_published_rows": 33
+        }
+      },
+      "measure_state": "available",
+      "measure_unknown_reason": null,
       "binding_status": "accepted",
       "identity_binding": "cityscroll.community_board_payroll_identity.v1"
     },
@@ -384,10 +1116,45 @@
       "source_native_board_key": "483",
       "publisher_identity": "BROOKLYN COMMUNITY BOARD #13",
       "active_row_count": 4,
+      "non_active_row_count": 0,
       "published_row_count": 4,
       "leave_status_counts": {
         "ACTIVE": 4
       },
+      "title_context": [
+        {
+          "title_description": "COMMUNITY ASSISTANT",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "COMMUNITY ASSOCIATE",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "COMMUNITY COORDINATOR",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "DISTRICT MANAGER",
+          "published_row_count": 1
+        }
+      ],
+      "payroll_dollars": {
+        "regular_gross_paid": {
+          "active_rows": 266411.74,
+          "all_published_rows": 266411.74
+        },
+        "total_ot_paid": {
+          "active_rows": 0,
+          "all_published_rows": 0
+        },
+        "total_other_pay": {
+          "active_rows": 390.08,
+          "all_published_rows": 390.08
+        }
+      },
+      "measure_state": "available",
+      "measure_unknown_reason": null,
       "binding_status": "accepted",
       "identity_binding": "cityscroll.community_board_payroll_identity.v1"
     },
@@ -398,10 +1165,37 @@
       "source_native_board_key": "484",
       "publisher_identity": "BROOKLYN COMMUNITY BOARD #14",
       "active_row_count": 3,
+      "non_active_row_count": 0,
       "published_row_count": 3,
       "leave_status_counts": {
         "ACTIVE": 3
       },
+      "title_context": [
+        {
+          "title_description": "COMMUNITY COORDINATOR",
+          "published_row_count": 2
+        },
+        {
+          "title_description": "DISTRICT MANAGER",
+          "published_row_count": 1
+        }
+      ],
+      "payroll_dollars": {
+        "regular_gross_paid": {
+          "active_rows": 268861.36,
+          "all_published_rows": 268861.36
+        },
+        "total_ot_paid": {
+          "active_rows": 0,
+          "all_published_rows": 0
+        },
+        "total_other_pay": {
+          "active_rows": 7.69,
+          "all_published_rows": 7.69
+        }
+      },
+      "measure_state": "available",
+      "measure_unknown_reason": null,
       "binding_status": "accepted",
       "identity_binding": "cityscroll.community_board_payroll_identity.v1"
     },
@@ -412,10 +1206,37 @@
       "source_native_board_key": "485",
       "publisher_identity": "BROOKLYN COMMUNITY BOARD #15",
       "active_row_count": 2,
+      "non_active_row_count": 0,
       "published_row_count": 2,
       "leave_status_counts": {
         "ACTIVE": 2
       },
+      "title_context": [
+        {
+          "title_description": "COMMUNITY ASSISTANT",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "DISTRICT MANAGER",
+          "published_row_count": 1
+        }
+      ],
+      "payroll_dollars": {
+        "regular_gross_paid": {
+          "active_rows": 114831.45,
+          "all_published_rows": 114831.45
+        },
+        "total_ot_paid": {
+          "active_rows": 0,
+          "all_published_rows": 0
+        },
+        "total_other_pay": {
+          "active_rows": 74.25,
+          "all_published_rows": 74.25
+        }
+      },
+      "measure_state": "available",
+      "measure_unknown_reason": null,
       "binding_status": "accepted",
       "identity_binding": "cityscroll.community_board_payroll_identity.v1"
     },
@@ -426,11 +1247,38 @@
       "source_native_board_key": "486",
       "publisher_identity": "BROOKLYN COMMUNITY BOARD #16",
       "active_row_count": 2,
+      "non_active_row_count": 1,
       "published_row_count": 3,
       "leave_status_counts": {
         "ACTIVE": 2,
         "CEASED": 1
       },
+      "title_context": [
+        {
+          "title_description": "ASSISTANT DISTRICT MANAGER",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "DISTRICT MANAGER",
+          "published_row_count": 1
+        }
+      ],
+      "payroll_dollars": {
+        "regular_gross_paid": {
+          "active_rows": 92605.41,
+          "all_published_rows": 110390.69
+        },
+        "total_ot_paid": {
+          "active_rows": 0,
+          "all_published_rows": 0
+        },
+        "total_other_pay": {
+          "active_rows": 244.52,
+          "all_published_rows": 893.29
+        }
+      },
+      "measure_state": "available",
+      "measure_unknown_reason": null,
       "binding_status": "accepted",
       "identity_binding": "cityscroll.community_board_payroll_identity.v1"
     },
@@ -441,10 +1289,41 @@
       "source_native_board_key": "487",
       "publisher_identity": "BROOKLYN COMMUNITY BOARD #17",
       "active_row_count": 3,
+      "non_active_row_count": 0,
       "published_row_count": 3,
       "leave_status_counts": {
         "ACTIVE": 3
       },
+      "title_context": [
+        {
+          "title_description": "ASSISTANT DISTRICT MANAGER",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "COMMUNITY ASSISTANT",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "DISTRICT MANAGER",
+          "published_row_count": 1
+        }
+      ],
+      "payroll_dollars": {
+        "regular_gross_paid": {
+          "active_rows": 206532.48,
+          "all_published_rows": 206532.48
+        },
+        "total_ot_paid": {
+          "active_rows": 0,
+          "all_published_rows": 0
+        },
+        "total_other_pay": {
+          "active_rows": 1174.78,
+          "all_published_rows": 1174.78
+        }
+      },
+      "measure_state": "available",
+      "measure_unknown_reason": null,
       "binding_status": "accepted",
       "identity_binding": "cityscroll.community_board_payroll_identity.v1"
     },
@@ -455,10 +1334,41 @@
       "source_native_board_key": "488",
       "publisher_identity": "BROOKLYN COMMUNITY BOARD #18",
       "active_row_count": 3,
+      "non_active_row_count": 0,
       "published_row_count": 3,
       "leave_status_counts": {
         "ACTIVE": 3
       },
+      "title_context": [
+        {
+          "title_description": "COMMUNITY ASSISTANT",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "COMMUNITY ASSOCIATE",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "DISTRICT MANAGER",
+          "published_row_count": 1
+        }
+      ],
+      "payroll_dollars": {
+        "regular_gross_paid": {
+          "active_rows": 228668.1,
+          "all_published_rows": 228668.1
+        },
+        "total_ot_paid": {
+          "active_rows": 0,
+          "all_published_rows": 0
+        },
+        "total_other_pay": {
+          "active_rows": 1634.03,
+          "all_published_rows": 1634.03
+        }
+      },
+      "measure_state": "available",
+      "measure_unknown_reason": null,
       "binding_status": "accepted",
       "identity_binding": "cityscroll.community_board_payroll_identity.v1"
     },
@@ -469,10 +1379,41 @@
       "source_native_board_key": "341",
       "publisher_identity": "MANHATTAN COMMUNITY BOARD #1",
       "active_row_count": 3,
+      "non_active_row_count": 0,
       "published_row_count": 3,
       "leave_status_counts": {
         "ACTIVE": 3
       },
+      "title_context": [
+        {
+          "title_description": "COMMUNITY ASSOCIATE",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "COMMUNITY COORDINATOR",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "DISTRICT MANAGER",
+          "published_row_count": 1
+        }
+      ],
+      "payroll_dollars": {
+        "regular_gross_paid": {
+          "active_rows": 242559.86,
+          "all_published_rows": 242559.86
+        },
+        "total_ot_paid": {
+          "active_rows": 0,
+          "all_published_rows": 0
+        },
+        "total_other_pay": {
+          "active_rows": 2634.65,
+          "all_published_rows": 2634.65
+        }
+      },
+      "measure_state": "available",
+      "measure_unknown_reason": null,
       "binding_status": "accepted",
       "identity_binding": "cityscroll.community_board_payroll_identity.v1"
     },
@@ -483,10 +1424,41 @@
       "source_native_board_key": "342",
       "publisher_identity": "MANHATTAN COMMUNITY BOARD #2",
       "active_row_count": 3,
+      "non_active_row_count": 0,
       "published_row_count": 3,
       "leave_status_counts": {
         "ACTIVE": 3
       },
+      "title_context": [
+        {
+          "title_description": "COMMUNITY ASSOCIATE",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "COMMUNITY COORDINATOR",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "DISTRICT MANAGER",
+          "published_row_count": 1
+        }
+      ],
+      "payroll_dollars": {
+        "regular_gross_paid": {
+          "active_rows": 214991.21,
+          "all_published_rows": 214991.21
+        },
+        "total_ot_paid": {
+          "active_rows": 0,
+          "all_published_rows": 0
+        },
+        "total_other_pay": {
+          "active_rows": 1385.51,
+          "all_published_rows": 1385.51
+        }
+      },
+      "measure_state": "available",
+      "measure_unknown_reason": null,
       "binding_status": "accepted",
       "identity_binding": "cityscroll.community_board_payroll_identity.v1"
     },
@@ -497,11 +1469,38 @@
       "source_native_board_key": "343",
       "publisher_identity": "MANHATTAN COMMUNITY BOARD #3",
       "active_row_count": 3,
+      "non_active_row_count": 3,
       "published_row_count": 6,
       "leave_status_counts": {
         "ACTIVE": 3,
         "CEASED": 3
       },
+      "title_context": [
+        {
+          "title_description": "COMMUNITY ASSOCIATE",
+          "published_row_count": 2
+        },
+        {
+          "title_description": "DISTRICT MANAGER",
+          "published_row_count": 1
+        }
+      ],
+      "payroll_dollars": {
+        "regular_gross_paid": {
+          "active_rows": 181041.74,
+          "all_published_rows": 217396.86
+        },
+        "total_ot_paid": {
+          "active_rows": 0,
+          "all_published_rows": 0
+        },
+        "total_other_pay": {
+          "active_rows": 1612.51,
+          "all_published_rows": 2447.74
+        }
+      },
+      "measure_state": "available",
+      "measure_unknown_reason": null,
       "binding_status": "accepted",
       "identity_binding": "cityscroll.community_board_payroll_identity.v1"
     },
@@ -512,10 +1511,41 @@
       "source_native_board_key": "344",
       "publisher_identity": "MANHATTAN COMMUNITY BOARD #4",
       "active_row_count": 3,
+      "non_active_row_count": 0,
       "published_row_count": 3,
       "leave_status_counts": {
         "ACTIVE": 3
       },
+      "title_context": [
+        {
+          "title_description": "COMMUNITY ASSOCIATE",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "COMMUNITY COORDINATOR",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "DISTRICT MANAGER",
+          "published_row_count": 1
+        }
+      ],
+      "payroll_dollars": {
+        "regular_gross_paid": {
+          "active_rows": 237873.87,
+          "all_published_rows": 237873.87
+        },
+        "total_ot_paid": {
+          "active_rows": 0,
+          "all_published_rows": 0
+        },
+        "total_other_pay": {
+          "active_rows": 2009.76,
+          "all_published_rows": 2009.76
+        }
+      },
+      "measure_state": "available",
+      "measure_unknown_reason": null,
       "binding_status": "accepted",
       "identity_binding": "cityscroll.community_board_payroll_identity.v1"
     },
@@ -526,11 +1556,38 @@
       "source_native_board_key": "345",
       "publisher_identity": "MANHATTAN COMMUNITY BOARD #5",
       "active_row_count": 2,
+      "non_active_row_count": 1,
       "published_row_count": 3,
       "leave_status_counts": {
         "ACTIVE": 2,
         "CEASED": 1
       },
+      "title_context": [
+        {
+          "title_description": "COMMUNITY COORDINATOR",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "DISTRICT MANAGER",
+          "published_row_count": 1
+        }
+      ],
+      "payroll_dollars": {
+        "regular_gross_paid": {
+          "active_rows": 177099.94,
+          "all_published_rows": 244919.51
+        },
+        "total_ot_paid": {
+          "active_rows": 0,
+          "all_published_rows": 0
+        },
+        "total_other_pay": {
+          "active_rows": 0,
+          "all_published_rows": 1340.9
+        }
+      },
+      "measure_state": "available",
+      "measure_unknown_reason": null,
       "binding_status": "accepted",
       "identity_binding": "cityscroll.community_board_payroll_identity.v1"
     },
@@ -541,10 +1598,37 @@
       "source_native_board_key": "346",
       "publisher_identity": "MANHATTAN COMMUNITY BOARD #6",
       "active_row_count": 3,
+      "non_active_row_count": 0,
       "published_row_count": 3,
       "leave_status_counts": {
         "ACTIVE": 3
       },
+      "title_context": [
+        {
+          "title_description": "COMMUNITY COORDINATOR",
+          "published_row_count": 2
+        },
+        {
+          "title_description": "DISTRICT MANAGER",
+          "published_row_count": 1
+        }
+      ],
+      "payroll_dollars": {
+        "regular_gross_paid": {
+          "active_rows": 276898.12,
+          "all_published_rows": 276898.12
+        },
+        "total_ot_paid": {
+          "active_rows": 0,
+          "all_published_rows": 0
+        },
+        "total_other_pay": {
+          "active_rows": 1090.92,
+          "all_published_rows": 1090.92
+        }
+      },
+      "measure_state": "available",
+      "measure_unknown_reason": null,
       "binding_status": "accepted",
       "identity_binding": "cityscroll.community_board_payroll_identity.v1"
     },
@@ -555,10 +1639,37 @@
       "source_native_board_key": "347",
       "publisher_identity": "MANHATTAN COMMUNITY BOARD #7",
       "active_row_count": 3,
+      "non_active_row_count": 0,
       "published_row_count": 3,
       "leave_status_counts": {
         "ACTIVE": 3
       },
+      "title_context": [
+        {
+          "title_description": "COMMUNITY COORDINATOR",
+          "published_row_count": 2
+        },
+        {
+          "title_description": "DISTRICT MANAGER",
+          "published_row_count": 1
+        }
+      ],
+      "payroll_dollars": {
+        "regular_gross_paid": {
+          "active_rows": 266492.87,
+          "all_published_rows": 266492.87
+        },
+        "total_ot_paid": {
+          "active_rows": 0,
+          "all_published_rows": 0
+        },
+        "total_other_pay": {
+          "active_rows": 1497.01,
+          "all_published_rows": 1497.01
+        }
+      },
+      "measure_state": "available",
+      "measure_unknown_reason": null,
       "binding_status": "accepted",
       "identity_binding": "cityscroll.community_board_payroll_identity.v1"
     },
@@ -569,12 +1680,39 @@
       "source_native_board_key": "348",
       "publisher_identity": "MANHATTAN COMMUNITY BOARD #8",
       "active_row_count": 3,
+      "non_active_row_count": 3,
       "published_row_count": 6,
       "leave_status_counts": {
         "ACTIVE": 3,
         "CEASED": 2,
         "ON SEPARATION LEAVE": 1
       },
+      "title_context": [
+        {
+          "title_description": "COMMUNITY ASSOCIATE",
+          "published_row_count": 2
+        },
+        {
+          "title_description": "DISTRICT MANAGER",
+          "published_row_count": 1
+        }
+      ],
+      "payroll_dollars": {
+        "regular_gross_paid": {
+          "active_rows": 163700.16,
+          "all_published_rows": 243694.01
+        },
+        "total_ot_paid": {
+          "active_rows": 0,
+          "all_published_rows": 0
+        },
+        "total_other_pay": {
+          "active_rows": 1067.37,
+          "all_published_rows": 3268.12
+        }
+      },
+      "measure_state": "available",
+      "measure_unknown_reason": null,
       "binding_status": "accepted",
       "identity_binding": "cityscroll.community_board_payroll_identity.v1"
     },
@@ -585,11 +1723,38 @@
       "source_native_board_key": "349",
       "publisher_identity": "MANHATTAN COMMUNITY BOARD #9",
       "active_row_count": 3,
+      "non_active_row_count": 1,
       "published_row_count": 4,
       "leave_status_counts": {
         "ACTIVE": 3,
         "CEASED": 1
       },
+      "title_context": [
+        {
+          "title_description": "COMMUNITY ASSOCIATE",
+          "published_row_count": 2
+        },
+        {
+          "title_description": "DISTRICT MANAGER",
+          "published_row_count": 1
+        }
+      ],
+      "payroll_dollars": {
+        "regular_gross_paid": {
+          "active_rows": 160392.53,
+          "all_published_rows": 170839.22
+        },
+        "total_ot_paid": {
+          "active_rows": 0,
+          "all_published_rows": 0
+        },
+        "total_other_pay": {
+          "active_rows": 297,
+          "all_published_rows": 2692.79
+        }
+      },
+      "measure_state": "available",
+      "measure_unknown_reason": null,
       "binding_status": "accepted",
       "identity_binding": "cityscroll.community_board_payroll_identity.v1"
     },
@@ -600,10 +1765,41 @@
       "source_native_board_key": "350",
       "publisher_identity": "MANHATTAN COMMUNITY BOARD #10",
       "active_row_count": 3,
+      "non_active_row_count": 0,
       "published_row_count": 3,
       "leave_status_counts": {
         "ACTIVE": 3
       },
+      "title_context": [
+        {
+          "title_description": "COMMUNITY ASSISTANT",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "COMMUNITY ASSOCIATE",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "DISTRICT MANAGER",
+          "published_row_count": 1
+        }
+      ],
+      "payroll_dollars": {
+        "regular_gross_paid": {
+          "active_rows": 189507.79,
+          "all_published_rows": 189507.79
+        },
+        "total_ot_paid": {
+          "active_rows": 0,
+          "all_published_rows": 0
+        },
+        "total_other_pay": {
+          "active_rows": 292.49,
+          "all_published_rows": 292.49
+        }
+      },
+      "measure_state": "available",
+      "measure_unknown_reason": null,
       "binding_status": "accepted",
       "identity_binding": "cityscroll.community_board_payroll_identity.v1"
     },
@@ -614,10 +1810,41 @@
       "source_native_board_key": "351",
       "publisher_identity": "MANHATTAN COMMUNITY BOARD #11",
       "active_row_count": 3,
+      "non_active_row_count": 0,
       "published_row_count": 3,
       "leave_status_counts": {
         "ACTIVE": 3
       },
+      "title_context": [
+        {
+          "title_description": "ASSISTANT DISTRICT MANAGER",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "COMMUNITY ASSOCIATE",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "DISTRICT MANAGER",
+          "published_row_count": 1
+        }
+      ],
+      "payroll_dollars": {
+        "regular_gross_paid": {
+          "active_rows": 238383.33,
+          "all_published_rows": 238383.33
+        },
+        "total_ot_paid": {
+          "active_rows": 0,
+          "all_published_rows": 0
+        },
+        "total_other_pay": {
+          "active_rows": 586.25,
+          "all_published_rows": 586.25
+        }
+      },
+      "measure_state": "available",
+      "measure_unknown_reason": null,
       "binding_status": "accepted",
       "identity_binding": "cityscroll.community_board_payroll_identity.v1"
     },
@@ -628,10 +1855,41 @@
       "source_native_board_key": "352",
       "publisher_identity": "MANHATTAN COMMUNITY BOARD #12",
       "active_row_count": 3,
+      "non_active_row_count": 0,
       "published_row_count": 3,
       "leave_status_counts": {
         "ACTIVE": 3
       },
+      "title_context": [
+        {
+          "title_description": "COMMUNITY ASSOCIATE",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "COMMUNITY COORDINATOR",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "DISTRICT MANAGER",
+          "published_row_count": 1
+        }
+      ],
+      "payroll_dollars": {
+        "regular_gross_paid": {
+          "active_rows": 223754.2,
+          "all_published_rows": 223754.2
+        },
+        "total_ot_paid": {
+          "active_rows": 0,
+          "all_published_rows": 0
+        },
+        "total_other_pay": {
+          "active_rows": 2017.26,
+          "all_published_rows": 2017.26
+        }
+      },
+      "measure_state": "available",
+      "measure_unknown_reason": null,
       "binding_status": "accepted",
       "identity_binding": "cityscroll.community_board_payroll_identity.v1"
     },
@@ -642,10 +1900,41 @@
       "source_native_board_key": "431",
       "publisher_identity": "QUEENS COMMUNITY BOARD #1",
       "active_row_count": 4,
+      "non_active_row_count": 0,
       "published_row_count": 4,
       "leave_status_counts": {
         "ACTIVE": 4
       },
+      "title_context": [
+        {
+          "title_description": "COMMUNITY ASSISTANT",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "COMMUNITY SERVICE AIDE",
+          "published_row_count": 2
+        },
+        {
+          "title_description": "DISTRICT MANAGER",
+          "published_row_count": 1
+        }
+      ],
+      "payroll_dollars": {
+        "regular_gross_paid": {
+          "active_rows": 205163.01,
+          "all_published_rows": 205163.01
+        },
+        "total_ot_paid": {
+          "active_rows": 0,
+          "all_published_rows": 0
+        },
+        "total_other_pay": {
+          "active_rows": 0,
+          "all_published_rows": 0
+        }
+      },
+      "measure_state": "available",
+      "measure_unknown_reason": null,
       "binding_status": "accepted",
       "identity_binding": "cityscroll.community_board_payroll_identity.v1"
     },
@@ -656,11 +1945,42 @@
       "source_native_board_key": "432",
       "publisher_identity": "QUEENS COMMUNITY BOARD #2",
       "active_row_count": 3,
+      "non_active_row_count": 1,
       "published_row_count": 4,
       "leave_status_counts": {
         "ACTIVE": 3,
         "ON SEPARATION LEAVE": 1
       },
+      "title_context": [
+        {
+          "title_description": "COMMUNITY ASSISTANT",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "COMMUNITY COORDINATOR",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "DISTRICT MANAGER",
+          "published_row_count": 1
+        }
+      ],
+      "payroll_dollars": {
+        "regular_gross_paid": {
+          "active_rows": 232580.58,
+          "all_published_rows": 272034.76
+        },
+        "total_ot_paid": {
+          "active_rows": 0,
+          "all_published_rows": 0
+        },
+        "total_other_pay": {
+          "active_rows": 982.91,
+          "all_published_rows": 982.91
+        }
+      },
+      "measure_state": "available",
+      "measure_unknown_reason": null,
       "binding_status": "accepted",
       "identity_binding": "cityscroll.community_board_payroll_identity.v1"
     },
@@ -671,10 +1991,37 @@
       "source_native_board_key": "433",
       "publisher_identity": "QUEENS COMMUNITY BOARD #3",
       "active_row_count": 2,
+      "non_active_row_count": 0,
       "published_row_count": 2,
       "leave_status_counts": {
         "ACTIVE": 2
       },
+      "title_context": [
+        {
+          "title_description": "COMMUNITY COORDINATOR",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "DISTRICT MANAGER",
+          "published_row_count": 1
+        }
+      ],
+      "payroll_dollars": {
+        "regular_gross_paid": {
+          "active_rows": 238768.49,
+          "all_published_rows": 238768.49
+        },
+        "total_ot_paid": {
+          "active_rows": 0,
+          "all_published_rows": 0
+        },
+        "total_other_pay": {
+          "active_rows": 101.37,
+          "all_published_rows": 101.37
+        }
+      },
+      "measure_state": "available",
+      "measure_unknown_reason": null,
       "binding_status": "accepted",
       "identity_binding": "cityscroll.community_board_payroll_identity.v1"
     },
@@ -685,10 +2032,37 @@
       "source_native_board_key": "434",
       "publisher_identity": "QUEENS COMMUNITY BOARD #4",
       "active_row_count": 2,
+      "non_active_row_count": 0,
       "published_row_count": 2,
       "leave_status_counts": {
         "ACTIVE": 2
       },
+      "title_context": [
+        {
+          "title_description": "COMMUNITY COORDINATOR",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "DISTRICT MANAGER",
+          "published_row_count": 1
+        }
+      ],
+      "payroll_dollars": {
+        "regular_gross_paid": {
+          "active_rows": 233412.23,
+          "all_published_rows": 233412.23
+        },
+        "total_ot_paid": {
+          "active_rows": 0,
+          "all_published_rows": 0
+        },
+        "total_other_pay": {
+          "active_rows": 1497.01,
+          "all_published_rows": 1497.01
+        }
+      },
+      "measure_state": "available",
+      "measure_unknown_reason": null,
       "binding_status": "accepted",
       "identity_binding": "cityscroll.community_board_payroll_identity.v1"
     },
@@ -699,11 +2073,42 @@
       "source_native_board_key": "435",
       "publisher_identity": "QUEENS COMMUNITY BOARD #5",
       "active_row_count": 3,
+      "non_active_row_count": 1,
       "published_row_count": 4,
       "leave_status_counts": {
         "ACTIVE": 3,
         "CEASED": 1
       },
+      "title_context": [
+        {
+          "title_description": "COMMUNITY ASSOCIATE",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "COMMUNITY COORDINATOR",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "DISTRICT MANAGER",
+          "published_row_count": 1
+        }
+      ],
+      "payroll_dollars": {
+        "regular_gross_paid": {
+          "active_rows": 256256.88,
+          "all_published_rows": 271985.37
+        },
+        "total_ot_paid": {
+          "active_rows": 0,
+          "all_published_rows": 0
+        },
+        "total_other_pay": {
+          "active_rows": 1497.01,
+          "all_published_rows": 1497.01
+        }
+      },
+      "measure_state": "available",
+      "measure_unknown_reason": null,
       "binding_status": "accepted",
       "identity_binding": "cityscroll.community_board_payroll_identity.v1"
     },
@@ -714,11 +2119,42 @@
       "source_native_board_key": "436",
       "publisher_identity": "QUEENS COMMUNITY BOARD #6",
       "active_row_count": 3,
+      "non_active_row_count": 1,
       "published_row_count": 4,
       "leave_status_counts": {
         "ACTIVE": 3,
         "CEASED": 1
       },
+      "title_context": [
+        {
+          "title_description": "COMMUNITY ASSISTANT",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "COMMUNITY SERVICE AIDE",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "DISTRICT MANAGER",
+          "published_row_count": 1
+        }
+      ],
+      "payroll_dollars": {
+        "regular_gross_paid": {
+          "active_rows": 173123.88,
+          "all_published_rows": 173123.88
+        },
+        "total_ot_paid": {
+          "active_rows": 0,
+          "all_published_rows": 0
+        },
+        "total_other_pay": {
+          "active_rows": 957.4,
+          "all_published_rows": 50645.71
+        }
+      },
+      "measure_state": "available",
+      "measure_unknown_reason": null,
       "binding_status": "accepted",
       "identity_binding": "cityscroll.community_board_payroll_identity.v1"
     },
@@ -729,10 +2165,41 @@
       "source_native_board_key": "437",
       "publisher_identity": "QUEENS COMMUNITY BOARD #7",
       "active_row_count": 3,
+      "non_active_row_count": 0,
       "published_row_count": 3,
       "leave_status_counts": {
         "ACTIVE": 3
       },
+      "title_context": [
+        {
+          "title_description": "COMMUNITY ASSISTANT",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "COMMUNITY COORDINATOR",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "DISTRICT MANAGER",
+          "published_row_count": 1
+        }
+      ],
+      "payroll_dollars": {
+        "regular_gross_paid": {
+          "active_rows": 228959.16,
+          "all_published_rows": 228959.16
+        },
+        "total_ot_paid": {
+          "active_rows": 0,
+          "all_published_rows": 0
+        },
+        "total_other_pay": {
+          "active_rows": 236,
+          "all_published_rows": 236
+        }
+      },
+      "measure_state": "available",
+      "measure_unknown_reason": null,
       "binding_status": "accepted",
       "identity_binding": "cityscroll.community_board_payroll_identity.v1"
     },
@@ -743,11 +2210,38 @@
       "source_native_board_key": "438",
       "publisher_identity": "QUEENS COMMUNITY BOARD #8",
       "active_row_count": 3,
+      "non_active_row_count": 2,
       "published_row_count": 5,
       "leave_status_counts": {
         "ACTIVE": 3,
         "CEASED": 2
       },
+      "title_context": [
+        {
+          "title_description": "COMMUNITY ASSOCIATE",
+          "published_row_count": 2
+        },
+        {
+          "title_description": "DISTRICT MANAGER",
+          "published_row_count": 1
+        }
+      ],
+      "payroll_dollars": {
+        "regular_gross_paid": {
+          "active_rows": 250000.88,
+          "all_published_rows": 257386.18
+        },
+        "total_ot_paid": {
+          "active_rows": 0,
+          "all_published_rows": 0
+        },
+        "total_other_pay": {
+          "active_rows": 839.25,
+          "all_published_rows": 897
+        }
+      },
+      "measure_state": "available",
+      "measure_unknown_reason": null,
       "binding_status": "accepted",
       "identity_binding": "cityscroll.community_board_payroll_identity.v1"
     },
@@ -758,10 +2252,41 @@
       "source_native_board_key": "439",
       "publisher_identity": "QUEENS COMMUNITY BOARD #9",
       "active_row_count": 3,
+      "non_active_row_count": 0,
       "published_row_count": 3,
       "leave_status_counts": {
         "ACTIVE": 3
       },
+      "title_context": [
+        {
+          "title_description": "COMMUNITY ASSISTANT",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "COMMUNITY ASSOCIATE",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "DISTRICT MANAGER",
+          "published_row_count": 1
+        }
+      ],
+      "payroll_dollars": {
+        "regular_gross_paid": {
+          "active_rows": 221756.82,
+          "all_published_rows": 221756.82
+        },
+        "total_ot_paid": {
+          "active_rows": 0,
+          "all_published_rows": 0
+        },
+        "total_other_pay": {
+          "active_rows": 1591.26,
+          "all_published_rows": 1591.26
+        }
+      },
+      "measure_state": "available",
+      "measure_unknown_reason": null,
       "binding_status": "accepted",
       "identity_binding": "cityscroll.community_board_payroll_identity.v1"
     },
@@ -772,10 +2297,33 @@
       "source_native_board_key": "440",
       "publisher_identity": "QUEENS COMMUNITY BOARD #10",
       "active_row_count": 1,
+      "non_active_row_count": 0,
       "published_row_count": 1,
       "leave_status_counts": {
         "ACTIVE": 1
       },
+      "title_context": [
+        {
+          "title_description": "DISTRICT MANAGER",
+          "published_row_count": 1
+        }
+      ],
+      "payroll_dollars": {
+        "regular_gross_paid": {
+          "active_rows": 147009.13,
+          "all_published_rows": 147009.13
+        },
+        "total_ot_paid": {
+          "active_rows": 0,
+          "all_published_rows": 0
+        },
+        "total_other_pay": {
+          "active_rows": 0,
+          "all_published_rows": 0
+        }
+      },
+      "measure_state": "available",
+      "measure_unknown_reason": null,
       "binding_status": "accepted",
       "identity_binding": "cityscroll.community_board_payroll_identity.v1"
     },
@@ -786,10 +2334,41 @@
       "source_native_board_key": "441",
       "publisher_identity": "QUEENS COMMUNITY BOARD #11",
       "active_row_count": 3,
+      "non_active_row_count": 0,
       "published_row_count": 3,
       "leave_status_counts": {
         "ACTIVE": 3
       },
+      "title_context": [
+        {
+          "title_description": "COMMUNITY ASSOCIATE",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "COMMUNITY COORDINATOR",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "DISTRICT MANAGER",
+          "published_row_count": 1
+        }
+      ],
+      "payroll_dollars": {
+        "regular_gross_paid": {
+          "active_rows": 258255.8,
+          "all_published_rows": 258255.8
+        },
+        "total_ot_paid": {
+          "active_rows": 0,
+          "all_published_rows": 0
+        },
+        "total_other_pay": {
+          "active_rows": 1621.26,
+          "all_published_rows": 1621.26
+        }
+      },
+      "measure_state": "available",
+      "measure_unknown_reason": null,
       "binding_status": "accepted",
       "identity_binding": "cityscroll.community_board_payroll_identity.v1"
     },
@@ -800,11 +2379,29 @@
       "source_native_board_key": "442",
       "publisher_identity": "QUEENS COMMUNITY BOARD #12",
       "active_row_count": 0,
+      "non_active_row_count": 3,
       "published_row_count": 3,
       "leave_status_counts": {
         "CEASED": 2,
         "ON SEPARATION LEAVE": 1
       },
+      "title_context": [],
+      "payroll_dollars": {
+        "regular_gross_paid": {
+          "active_rows": 0,
+          "all_published_rows": 211874.4
+        },
+        "total_ot_paid": {
+          "active_rows": 0,
+          "all_published_rows": 0
+        },
+        "total_other_pay": {
+          "active_rows": 0,
+          "all_published_rows": 1827.13
+        }
+      },
+      "measure_state": "available",
+      "measure_unknown_reason": null,
       "binding_status": "accepted",
       "identity_binding": "cityscroll.community_board_payroll_identity.v1"
     },
@@ -815,10 +2412,33 @@
       "source_native_board_key": "443",
       "publisher_identity": "QUEENS COMMUNITY BOARD #13",
       "active_row_count": 1,
+      "non_active_row_count": 0,
       "published_row_count": 1,
       "leave_status_counts": {
         "ACTIVE": 1
       },
+      "title_context": [
+        {
+          "title_description": "DISTRICT MANAGER",
+          "published_row_count": 1
+        }
+      ],
+      "payroll_dollars": {
+        "regular_gross_paid": {
+          "active_rows": 161256.39,
+          "all_published_rows": 161256.39
+        },
+        "total_ot_paid": {
+          "active_rows": 0,
+          "all_published_rows": 0
+        },
+        "total_other_pay": {
+          "active_rows": 0,
+          "all_published_rows": 0
+        }
+      },
+      "measure_state": "available",
+      "measure_unknown_reason": null,
       "binding_status": "accepted",
       "identity_binding": "cityscroll.community_board_payroll_identity.v1"
     },
@@ -829,11 +2449,42 @@
       "source_native_board_key": "444",
       "publisher_identity": "QUEENS COMMUNITY BOARD #14",
       "active_row_count": 3,
+      "non_active_row_count": 1,
       "published_row_count": 4,
       "leave_status_counts": {
         "ACTIVE": 3,
         "CEASED": 1
       },
+      "title_context": [
+        {
+          "title_description": "COMMUNITY ASSOCIATE",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "COMMUNITY COORDINATOR",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "DISTRICT MANAGER",
+          "published_row_count": 1
+        }
+      ],
+      "payroll_dollars": {
+        "regular_gross_paid": {
+          "active_rows": 124562.49,
+          "all_published_rows": 156041.78
+        },
+        "total_ot_paid": {
+          "active_rows": 0,
+          "all_published_rows": 0
+        },
+        "total_other_pay": {
+          "active_rows": 8.25,
+          "all_published_rows": 577.28
+        }
+      },
+      "measure_state": "available",
+      "measure_unknown_reason": null,
       "binding_status": "accepted",
       "identity_binding": "cityscroll.community_board_payroll_identity.v1"
     },
@@ -844,10 +2495,37 @@
       "source_native_board_key": "491",
       "publisher_identity": "STATEN ISLAND COMMUNITY BD #1",
       "active_row_count": 2,
+      "non_active_row_count": 0,
       "published_row_count": 2,
       "leave_status_counts": {
         "ACTIVE": 2
       },
+      "title_context": [
+        {
+          "title_description": "COMMUNITY COORDINATOR",
+          "published_row_count": 1
+        },
+        {
+          "title_description": "DISTRICT MANAGER",
+          "published_row_count": 1
+        }
+      ],
+      "payroll_dollars": {
+        "regular_gross_paid": {
+          "active_rows": 201698.36,
+          "all_published_rows": 201698.36
+        },
+        "total_ot_paid": {
+          "active_rows": 0,
+          "all_published_rows": 0
+        },
+        "total_other_pay": {
+          "active_rows": 99,
+          "all_published_rows": 99
+        }
+      },
+      "measure_state": "available",
+      "measure_unknown_reason": null,
       "binding_status": "accepted",
       "identity_binding": "cityscroll.community_board_payroll_identity.v1"
     },
@@ -858,11 +2536,34 @@
       "source_native_board_key": "492",
       "publisher_identity": "STATEN ISLAND COMMUNITY BD #2",
       "active_row_count": 1,
+      "non_active_row_count": 1,
       "published_row_count": 2,
       "leave_status_counts": {
         "ACTIVE": 1,
         "CEASED": 1
       },
+      "title_context": [
+        {
+          "title_description": "DISTRICT MANAGER",
+          "published_row_count": 1
+        }
+      ],
+      "payroll_dollars": {
+        "regular_gross_paid": {
+          "active_rows": 149093.83,
+          "all_published_rows": 162341.4
+        },
+        "total_ot_paid": {
+          "active_rows": 0,
+          "all_published_rows": 0
+        },
+        "total_other_pay": {
+          "active_rows": 1000,
+          "all_published_rows": 1000
+        }
+      },
+      "measure_state": "available",
+      "measure_unknown_reason": null,
       "binding_status": "accepted",
       "identity_binding": "cityscroll.community_board_payroll_identity.v1"
     },
@@ -873,11 +2574,34 @@
       "source_native_board_key": "493",
       "publisher_identity": "STATEN ISLAND COMMUNITY BD #3",
       "active_row_count": 2,
+      "non_active_row_count": 1,
       "published_row_count": 3,
       "leave_status_counts": {
         "ACTIVE": 2,
         "CEASED": 1
       },
+      "title_context": [
+        {
+          "title_description": "COMMUNITY COORDINATOR",
+          "published_row_count": 2
+        }
+      ],
+      "payroll_dollars": {
+        "regular_gross_paid": {
+          "active_rows": 150595.06,
+          "all_published_rows": 187083.3
+        },
+        "total_ot_paid": {
+          "active_rows": 0,
+          "all_published_rows": 0
+        },
+        "total_other_pay": {
+          "active_rows": 3212.67,
+          "all_published_rows": 52141.14
+        }
+      },
+      "measure_state": "available",
+      "measure_unknown_reason": null,
       "binding_status": "accepted",
       "identity_binding": "cityscroll.community_board_payroll_identity.v1"
     }

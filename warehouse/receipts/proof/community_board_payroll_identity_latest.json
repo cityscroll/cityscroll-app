@@ -462,8 +462,7 @@
     "active_rows": 155,
     "min_active_rows": 0,
     "max_active_rows": 4,
-    "k_suppression_threshold": 5,
-    "boards_at_or_above_k_suppression": 0,
+    "owner_approved_full_aggregate_context": true,
     "acceptance_gate": true
   },
   "aggregate_semantics": {
@@ -473,16 +472,22 @@
       "note": "ACTIVE staff_count is the published FY payroll-row count at fiscal-year close."
     },
     "title_count": {
-      "justified": false,
-      "reason": "every board has fewer than 5 ACTIVE payroll rows, so a per-board title list reconstructs an org chart"
+      "justified": true,
+      "grain": "published FY payroll rows grouped by title_description and leave_status_as_of_june_30"
     },
     "title_mix": {
-      "justified": false,
-      "reason": "per-board title mix is withheld at this grain; citywide Community Board title mix may stay a source-level disclosure"
+      "justified": true,
+      "grain": "publisher title_description with published-row counts; not a unique-person roster"
     },
     "payroll_measures": {
-      "justified": false,
-      "reason": "per-board dollars and averages would identify compensation on boards with 1–4 ACTIVE rows"
+      "justified": true,
+      "fields": [
+        "regular_gross_paid",
+        "total_ot_paid",
+        "total_other_pay"
+      ],
+      "grain": "publisher dollar fields summed by exact board for the selected fiscal year, shown separately for ACTIVE and all published rows",
+      "note": "These are Citywide Payroll pay fields, not adopted budget, personnel budget, registered value, payments, or unique-person compensation."
     }
   },
   "hard_rules": {
@@ -509,9 +514,8 @@
       "last_name",
       "first_name",
       "mid_init",
-      "base_salary",
-      "regular_gross_paid",
-      "title_description"
+      "employee_id",
+      "base_salary"
     ]
   },
   "employee_field_findings": [],
@@ -1426,5 +1430,5 @@
     }
   ],
   "artifact": "site/data/community_board_payroll_staff_count.json",
-  "artifact_sha256": "9e4b3973ccfe6a866c9059d5a8482e9825e21186120dd2e9d53c277151b6dd66"
+  "artifact_sha256": "0e4d0931f4e774863a540277bec3f558099b963eefdd9271922f0a923b6a5daa"
 }
