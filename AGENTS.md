@@ -95,6 +95,10 @@ contracts. Do not turn it into a delivery log, roadmap, module inventory, or car
 - Measured working-copy sizes, provisioning phase timings, and the cost of the Pages build are in
   [`docs/evidence/ci-08-working-copy-footprint/`](docs/evidence/ci-08-working-copy-footprint/);
   regenerate its tables with `python3 tools/summarize_working_copy_evidence.py`.
+- [`docs/card-work-profile.md`](docs/card-work-profile.md) owns the reduced card-work checkout: how
+  to provision it or the full-checkout control, which gate classes it supports, and how a missing
+  tracked path fails closed. Run a gate in it through
+  `node tools/verify_card_profile.mjs --gate <class> -- <command>`, never bare.
 
 There are currently no tracked directory-local `AGENTS.md` or `CLAUDE.md` files. Add local guidance
 only when a documented material subtree rule changes how files there must be edited or verified;
