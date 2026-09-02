@@ -22,6 +22,8 @@ import { existsSync, mkdirSync, readdirSync, readFileSync, realpathSync, statSyn
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
+import { isolatedGitEnv } from "./architecture_evidence_shards.mjs";
+
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const SOURCE_EXTENSIONS = new Set([".cjs", ".js", ".mjs", ".py", ".sh"]);
 const RECEIPT_SCHEMA = "cityscroll.determinism-lint.receipt.v1";
@@ -394,7 +396,15 @@ export function analyzeSiteSource({ root = ROOT, filePath, source } = {}) {
  * walk alone would then report a smaller site than the one that ships.
  */
 function trackedSiteModules(root) {
-  const git = (...args) => execFileSync("git", ["-C", root, ...args], { encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] });
+  const git = (...args) => execFileSync("git", ["-C", root, ...args], {
+    encoding: "utf8",
+    stdio: ["ignore", "pipe", "ignore"],
+    // A hook exports GIT_DIR into everything the preflight runs. Inheriting it
+    // would answer about the exported repository instead of `root`, and the
+    // toplevel check below could not tell: with no work tree exported, that
+    // resolves to `root` while `ls-files` reads the other index.
+    env: isolatedGitEnv(),
+  });
   try {
     // Only trust Git when `root` is the checkout itself; a fixture tree nested
     // inside this repository must not inherit the repository's own site/.
@@ -435,7 +445,11 @@ export function discoverSiteModules({ root = ROOT, siteDir = path.join(root, "si
 /* The committed contents of a path, for a module a reduced checkout omits. */
 function committedSource(root, modulePath) {
   try {
-    return execFileSync("git", ["-C", root, "show", `HEAD:${modulePath}`], { encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] });
+    return execFileSync("git", ["-C", root, "show", `HEAD:${modulePath}`], {
+      encoding: "utf8",
+      stdio: ["ignore", "pipe", "ignore"],
+      env: isolatedGitEnv(),
+    });
   } catch {
     return null;
   }
@@ -674,7 +688,11 @@ export function discoverGateRoots({ root = ROOT, workflowDir = path.join(root, "
 }
 
 function gitChangedPaths(root) {
-  const runGit = (...args) => execFileSync("git", ["-C", root, ...args], { encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] });
+  const runGit = (...args) => execFileSync("git", ["-C", root, ...args], {
+    encoding: "utf8",
+    stdio: ["ignore", "pipe", "ignore"],
+    env: isolatedGitEnv(),
+  });
   let tracked = "";
   for (const base of ["origin/main", "main", "HEAD^"]) {
     try {

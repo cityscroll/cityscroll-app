@@ -27,6 +27,7 @@ import {
   lintSiteProduction,
 } from "../tools/determinism_lint.mjs";
 import { findUninjectedClockAdditions } from "../tools/audit-test-clocks.mjs";
+import { isolatedGitEnv } from "../tools/architecture_evidence_shards.mjs";
 
 const ROOT = fileURLToPath(new URL("..", import.meta.url));
 const TOOL = path.join(ROOT, "tools", "determinism_lint.mjs");
@@ -146,7 +147,13 @@ test("A1 a reduced working copy still covers a module it did not materialise", (
   // from disk. Coverage must follow what ships, not what this clone happens to
   // hold, or the reduced profile becomes a way to hide a production clock.
   const root = mkdtempSync(path.join(tmpdir(), "cityscroll-site-reduced-"));
-  const git = (...args) => spawnSync("git", ["-C", root, ...args], { encoding: "utf8" });
+  // Stripped Git bindings, not inherited ones: `tools/git-hooks/pre-push` runs
+  // this suite with GIT_DIR exported, and an inherited binding would send this
+  // fixture's `add -A` and `commit` to the repository being pushed.
+  const git = (...args) => spawnSync("git", ["-C", root, ...args], {
+    encoding: "utf8",
+    env: isolatedGitEnv(),
+  });
   try {
     git("init", "-q");
     git("config", "user.email", "test@example.invalid");
