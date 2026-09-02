@@ -38,7 +38,7 @@ import {
   buildMeetingGroupingReportTarget,
   renderReportIssueAffordance,
 } from "../report_issue.mjs";
-import { meetingScopedDisclosureHTML, meetingScopedKeywordState, refreshFeedScopedKeyword, startMeetingScopedKeyword } from "./feed_scoped_keyword.mjs";
+import { meetingScopedDisclosureHTML, meetingScopedKeywordState, refreshFeedScopedKeyword, startMeetingScopedKeyword } from "../feed_scoped_keyword.mjs";
 const SECTIONS={
   property:{section:"Property Disposition", showAddr:true},
   rules:{section:"Agency Rules"},
@@ -160,7 +160,7 @@ async function resolveFeedNeighborhood(key, query){
 async function loadSection(key){
   if(key==="rules")await globalThis.ensureRules?.();
   const keepHash=hashLock
-  let kw=($("#"+key+"kw").value||"").trim();
+  let kw=($("#"+key+"kw").value||"").trim()
   const resolvedNeighborhood=await resolveFeedNeighborhood(key, kw);
   if(resolvedNeighborhood)kw="";
   else if(key==="property" && kw){ propertyResolvedNeighborhood=null; propertyCommunityDistrict=""; }

@@ -1,7 +1,7 @@
 import {
   fetchBrowseScoped,
   projectBrowseScopedRows,
-} from "../browse_scoped_adapters.mjs";
+} from "./browse_scoped_adapters.mjs";
 
 const serials = {};
 const meetingState = { query: "", outcome: null, serial: 0 };

@@ -32,7 +32,6 @@ await import("./search-share.mjs");
 await import("./exams.mjs");
 await import("./staffing.mjs");
 await import("./land.mjs");
-await import("./feed_scoped_keyword.mjs");
 // Every Land map dependency -- browse Map shell, point projection, detail-map assets -- lives
 // behind this gate. Opening the Land tab must not pull it: List first paint is the civic task,
 // and the map is the sibling a resident asks for. Activation is `view=map`, the Map control, or
