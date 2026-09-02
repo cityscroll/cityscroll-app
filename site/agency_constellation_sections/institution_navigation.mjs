@@ -1,7 +1,7 @@
+import { renderAgencyIdentityCoverageSection } from "../civic_institution_identity_coverage.mjs";
 import {
   defaultRouteIdentityReport,
   projectInstitutionProfileNavigation,
-  renderInstitutionProfileNavigation,
 } from "../civic_institution_profile_navigation.mjs";
 
 export const institutionNavigationSection = Object.freeze({
@@ -23,6 +23,6 @@ export const institutionNavigationSection = Object.freeze({
       routeIdentityReport: constellation.route_identity_report || defaultRouteIdentityReport,
       hasRoute: true,
     });
-    return renderInstitutionProfileNavigation(projection);
+    return renderAgencyIdentityCoverageSection(projection);
   },
 });

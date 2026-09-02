@@ -1,0 +1,108 @@
+{
+  "before_revision": "013d9aba7c9596d680997fff174e42ca1d031118",
+  "card": "cityscroll-civic-institutions/ci-k1-reader-profile-disclosure",
+  "demonstrates": "Before, the ordinary agency route shows no identity-and-coverage disclosure. After, DSNY and NYCEDC expose a concise capability summary with an inspectable disclosure, and the EEP comparison-key collision names its evidence state instead of claiming zero activity.",
+  "observations": [
+    {
+      "disclosure_present": false,
+      "headline": "",
+      "route": "/agencies/sanitation/",
+      "specimen": "dsny",
+      "state": "before",
+      "viewport": "390x844"
+    },
+    {
+      "disclosure_present": false,
+      "headline": "",
+      "route": "/agencies/economic-development-corporation/",
+      "specimen": "nycedc",
+      "state": "before",
+      "viewport": "390x844"
+    },
+    {
+      "disclosure_present": false,
+      "headline": "",
+      "route": "/agencies/equal-employ-practices-comm/",
+      "specimen": "eep-collision",
+      "state": "before",
+      "viewport": "390x844"
+    },
+    {
+      "disclosure_present": true,
+      "headline": "5 supported \u00b7 5 empty in this snapshot \u00b7 2 not inferred",
+      "route": "/agencies/sanitation/",
+      "specimen": "dsny",
+      "state": "after",
+      "viewport": "390x844"
+    },
+    {
+      "disclosure_present": true,
+      "headline": "4 supported \u00b7 6 empty in this snapshot \u00b7 2 not inferred",
+      "route": "/agencies/economic-development-corporation/",
+      "specimen": "nycedc",
+      "state": "after",
+      "viewport": "390x844"
+    },
+    {
+      "disclosure_present": true,
+      "headline": "5 empty in this snapshot \u00b7 5 not joined yet \u00b7 2 not inferred",
+      "route": "/agencies/equal-employ-practices-comm/",
+      "specimen": "eep-collision",
+      "state": "after",
+      "viewport": "390x844"
+    },
+    {
+      "disclosure_present": false,
+      "headline": "",
+      "route": "/agencies/sanitation/",
+      "specimen": "dsny",
+      "state": "before",
+      "viewport": "1440x900"
+    },
+    {
+      "disclosure_present": false,
+      "headline": "",
+      "route": "/agencies/economic-development-corporation/",
+      "specimen": "nycedc",
+      "state": "before",
+      "viewport": "1440x900"
+    },
+    {
+      "disclosure_present": false,
+      "headline": "",
+      "route": "/agencies/equal-employ-practices-comm/",
+      "specimen": "eep-collision",
+      "state": "before",
+      "viewport": "1440x900"
+    },
+    {
+      "disclosure_present": true,
+      "headline": "5 supported \u00b7 5 empty in this snapshot \u00b7 2 not inferred",
+      "route": "/agencies/sanitation/",
+      "specimen": "dsny",
+      "state": "after",
+      "viewport": "1440x900"
+    },
+    {
+      "disclosure_present": true,
+      "headline": "4 supported \u00b7 6 empty in this snapshot \u00b7 2 not inferred",
+      "route": "/agencies/economic-development-corporation/",
+      "specimen": "nycedc",
+      "state": "after",
+      "viewport": "1440x900"
+    },
+    {
+      "disclosure_present": true,
+      "headline": "5 empty in this snapshot \u00b7 5 not joined yet \u00b7 2 not inferred",
+      "route": "/agencies/equal-employ-practices-comm/",
+      "specimen": "eep-collision",
+      "state": "after",
+      "viewport": "1440x900"
+    }
+  ],
+  "schema": "cityscroll.agency_identity_coverage_capture.v1",
+  "viewports": [
+    "390x844",
+    "1440x900"
+  ]
+}
