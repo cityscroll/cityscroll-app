@@ -2,6 +2,7 @@ import { BROWSE_FACETS, BROWSE_OBJECTS, buildBrowseView, renderBrowseView } from
 import { BROWSE_CONCEPTS } from "./browse_concept_view.mjs";
 import { constellationLink, officialSourceLink } from "./affordance_grammar.mjs";
 import { agencyRouteAliasTarget, resolveAgencyIdentity } from "./agency_identity.mjs";
+import { renderAgencyIdentityCoverageSection } from "./civic_institution_identity_coverage.mjs";
 import {
   agencyRouteUncertaintyKind,
   defaultRouteIdentityReport,
@@ -1189,6 +1190,7 @@ async function handleEntity(request, env, entity) {
       });
       const body = renderInstitutionUncertaintyDocument(projection, {
         title: uncertaintyKind === "collision" ? "Publisher identity collision" : "Unresolved agency route",
+        renderNavigation: renderAgencyIdentityCoverageSection,
       });
       return new Response(request.method === "HEAD" ? null : body, {
         status: 200,
