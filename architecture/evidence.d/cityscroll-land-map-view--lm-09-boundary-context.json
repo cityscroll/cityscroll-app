@@ -1,0 +1,21 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-land-map-view/lm-09-boundary-context",
+  "status": "implemented",
+  "fingerprint": "lm-09-boundary-context.v1",
+  "updated_at": "2026-09-02T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "land-boundary-context-model",
+      "path": "site/land_map_boundary_context.mjs"
+    },
+    {
+      "id": "land-boundary-context-contract",
+      "path": "test/land_map_boundary_context.test.mjs"
+    },
+    {
+      "id": "land-boundary-context-evidence",
+      "path": "docs/evidence/land-map-boundary-context.json"
+    }
+  ]
+}
