@@ -390,6 +390,7 @@
 /site/land_authority_summary.mjs
 /site/land_authority_summary_view.mjs
 /site/land_detail_coherence.mjs
+/site/land_filter_parity.mjs
 /site/land_hearings_empty.mjs
 /site/land_keyword_soda_missfill.mjs
 /site/land_lot_source_digests.mjs
