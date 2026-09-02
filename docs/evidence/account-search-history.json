@@ -1,0 +1,298 @@
+{
+  "schema": "cityscroll.account-search-history-receipt.v1",
+  "change": "cityscroll-search-activity-history/sah-04-account-search-history",
+  "browser_mode": "headless chromium (playwright), remote hosts stubbed or blocked",
+  "revision": {
+    "before_commit": "f56843c6b591ca762b2dd07a48bf0b8208aedc2d",
+    "after_tree": "working tree at the commit above plus this change",
+    "after_changed_paths": [
+      "architecture/site-production-determinism.json",
+      "capabilities/search_history.mjs",
+      "docs/evidence/account-search-history.json",
+      "docs/screenshots/account-search-history/",
+      "site/primary_document_view.mjs",
+      "site/search.css",
+      "site/search/index.html",
+      "site/search_document.mjs",
+      "site/search_history_client.mjs",
+      "site/search_history_state.mjs",
+      "test/functional/42_account_search_history.py",
+      "test/search_history.test.mjs",
+      "tools/capture_account_search_history.py",
+      "worker/src/lib/search_history.mjs",
+      "worker/src/search_history.mjs",
+      "worker/src/worker.mjs",
+      "worker/test/search_history.test.mjs"
+    ]
+  },
+  "routes": {
+    "search": "/search/?q=rats",
+    "continuation": "/search/"
+  },
+  "viewports": [
+    [
+      390,
+      844
+    ],
+    [
+      1440,
+      900
+    ]
+  ],
+  "privacy": "No address, subscriber id, visitor id, network observation, private receipt, or stored result appears in any frame or reading: the continuation renders only a query, its place context, a canonical Search URL, and the day it ran.",
+  "demonstrates": {
+    "recognized-device-a": "Device A, recognized: the search just run is remembered under the results, as a link back to the same canonical Search.",
+    "recognized-device-b": "Device B, recognized by the same account: the search from device A is here on first load, with no second sign-in.",
+    "empty": "Recognized with nothing remembered yet: one plain sentence and no controls.",
+    "anonymous": "Anonymous: ordinary Search and no continuation at all \u2014 browser-local behavior is untouched.",
+    "unavailable": "Personal storage unavailable: Search is unchanged and the continuation stays away rather than showing an error."
+  },
+  "before": {
+    "recognized-device-a@390": {
+      "url": "/search/?q=rats",
+      "result_titles": [
+        "Rats abatement services contract"
+      ],
+      "continuation_present": false,
+      "continuation_state": null,
+      "continuation_visible": false,
+      "remembered": [],
+      "controls": 0,
+      "screenshot": "docs/screenshots/account-search-history/before-recognized-device-a-390.png"
+    },
+    "recognized-device-a@1440": {
+      "url": "/search/?q=rats",
+      "result_titles": [
+        "Rats abatement services contract"
+      ],
+      "continuation_present": false,
+      "continuation_state": null,
+      "continuation_visible": false,
+      "remembered": [],
+      "controls": 0,
+      "screenshot": "docs/screenshots/account-search-history/before-recognized-device-a-1440.png"
+    },
+    "recognized-device-b@390": {
+      "url": "/search/",
+      "result_titles": [],
+      "continuation_present": false,
+      "continuation_state": null,
+      "continuation_visible": false,
+      "remembered": [],
+      "controls": 0,
+      "screenshot": "docs/screenshots/account-search-history/before-recognized-device-b-390.png"
+    },
+    "recognized-device-b@1440": {
+      "url": "/search/",
+      "result_titles": [],
+      "continuation_present": false,
+      "continuation_state": null,
+      "continuation_visible": false,
+      "remembered": [],
+      "controls": 0,
+      "screenshot": "docs/screenshots/account-search-history/before-recognized-device-b-1440.png"
+    },
+    "empty@390": {
+      "url": "/search/",
+      "result_titles": [],
+      "continuation_present": false,
+      "continuation_state": null,
+      "continuation_visible": false,
+      "remembered": [],
+      "controls": 0,
+      "screenshot": "docs/screenshots/account-search-history/before-empty-390.png"
+    },
+    "empty@1440": {
+      "url": "/search/",
+      "result_titles": [],
+      "continuation_present": false,
+      "continuation_state": null,
+      "continuation_visible": false,
+      "remembered": [],
+      "controls": 0,
+      "screenshot": "docs/screenshots/account-search-history/before-empty-1440.png"
+    },
+    "anonymous@390": {
+      "url": "/search/?q=rats",
+      "result_titles": [
+        "Rats abatement services contract"
+      ],
+      "continuation_present": false,
+      "continuation_state": null,
+      "continuation_visible": false,
+      "remembered": [],
+      "controls": 0,
+      "screenshot": "docs/screenshots/account-search-history/before-anonymous-390.png"
+    },
+    "anonymous@1440": {
+      "url": "/search/?q=rats",
+      "result_titles": [
+        "Rats abatement services contract"
+      ],
+      "continuation_present": false,
+      "continuation_state": null,
+      "continuation_visible": false,
+      "remembered": [],
+      "controls": 0,
+      "screenshot": "docs/screenshots/account-search-history/before-anonymous-1440.png"
+    },
+    "unavailable@390": {
+      "url": "/search/?q=rats",
+      "result_titles": [
+        "Rats abatement services contract"
+      ],
+      "continuation_present": false,
+      "continuation_state": null,
+      "continuation_visible": false,
+      "remembered": [],
+      "controls": 0,
+      "screenshot": "docs/screenshots/account-search-history/before-unavailable-390.png"
+    },
+    "unavailable@1440": {
+      "url": "/search/?q=rats",
+      "result_titles": [
+        "Rats abatement services contract"
+      ],
+      "continuation_present": false,
+      "continuation_state": null,
+      "continuation_visible": false,
+      "remembered": [],
+      "controls": 0,
+      "screenshot": "docs/screenshots/account-search-history/before-unavailable-1440.png"
+    }
+  },
+  "after": {
+    "recognized-device-a@390": {
+      "url": "/search/?q=rats",
+      "result_titles": [
+        "Rats abatement services contract"
+      ],
+      "continuation_present": true,
+      "continuation_state": "recognized",
+      "continuation_visible": true,
+      "remembered": [
+        {
+          "text": "rats",
+          "href": "/search/?q=rats"
+        }
+      ],
+      "controls": 2,
+      "screenshot": "docs/screenshots/account-search-history/after-recognized-device-a-390.png"
+    },
+    "recognized-device-a@1440": {
+      "url": "/search/?q=rats",
+      "result_titles": [
+        "Rats abatement services contract"
+      ],
+      "continuation_present": true,
+      "continuation_state": "recognized",
+      "continuation_visible": true,
+      "remembered": [
+        {
+          "text": "rats",
+          "href": "/search/?q=rats"
+        }
+      ],
+      "controls": 2,
+      "screenshot": "docs/screenshots/account-search-history/after-recognized-device-a-1440.png"
+    },
+    "recognized-device-b@390": {
+      "url": "/search/",
+      "result_titles": [],
+      "continuation_present": true,
+      "continuation_state": "recognized",
+      "continuation_visible": true,
+      "remembered": [
+        {
+          "text": "rats",
+          "href": "/search/?q=rats"
+        }
+      ],
+      "controls": 2,
+      "screenshot": "docs/screenshots/account-search-history/after-recognized-device-b-390.png"
+    },
+    "recognized-device-b@1440": {
+      "url": "/search/",
+      "result_titles": [],
+      "continuation_present": true,
+      "continuation_state": "recognized",
+      "continuation_visible": true,
+      "remembered": [
+        {
+          "text": "rats",
+          "href": "/search/?q=rats"
+        }
+      ],
+      "controls": 2,
+      "screenshot": "docs/screenshots/account-search-history/after-recognized-device-b-1440.png"
+    },
+    "empty@390": {
+      "url": "/search/",
+      "result_titles": [],
+      "continuation_present": true,
+      "continuation_state": "empty",
+      "continuation_visible": true,
+      "remembered": [],
+      "controls": 0,
+      "screenshot": "docs/screenshots/account-search-history/after-empty-390.png"
+    },
+    "empty@1440": {
+      "url": "/search/",
+      "result_titles": [],
+      "continuation_present": true,
+      "continuation_state": "empty",
+      "continuation_visible": true,
+      "remembered": [],
+      "controls": 0,
+      "screenshot": "docs/screenshots/account-search-history/after-empty-1440.png"
+    },
+    "anonymous@390": {
+      "url": "/search/?q=rats",
+      "result_titles": [
+        "Rats abatement services contract"
+      ],
+      "continuation_present": true,
+      "continuation_state": "unrecognized",
+      "continuation_visible": false,
+      "remembered": [],
+      "controls": 0,
+      "screenshot": "docs/screenshots/account-search-history/after-anonymous-390.png"
+    },
+    "anonymous@1440": {
+      "url": "/search/?q=rats",
+      "result_titles": [
+        "Rats abatement services contract"
+      ],
+      "continuation_present": true,
+      "continuation_state": "unrecognized",
+      "continuation_visible": false,
+      "remembered": [],
+      "controls": 0,
+      "screenshot": "docs/screenshots/account-search-history/after-anonymous-1440.png"
+    },
+    "unavailable@390": {
+      "url": "/search/?q=rats",
+      "result_titles": [
+        "Rats abatement services contract"
+      ],
+      "continuation_present": true,
+      "continuation_state": "unavailable",
+      "continuation_visible": false,
+      "remembered": [],
+      "controls": 0,
+      "screenshot": "docs/screenshots/account-search-history/after-unavailable-390.png"
+    },
+    "unavailable@1440": {
+      "url": "/search/?q=rats",
+      "result_titles": [
+        "Rats abatement services contract"
+      ],
+      "continuation_present": true,
+      "continuation_state": "unavailable",
+      "continuation_visible": false,
+      "remembered": [],
+      "controls": 0,
+      "screenshot": "docs/screenshots/account-search-history/after-unavailable-1440.png"
+    }
+  }
+}

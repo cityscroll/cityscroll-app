@@ -32,7 +32,7 @@ import {
   SEARCH_USAGE_WINDOW_DAYS,
 } from "./search_usage.mjs";
 
-export const OPS_CONTRACT_VERSION = "1.12.0";
+export const OPS_CONTRACT_VERSION = "1.13.0";
 export const OPS_CONTRACT_ID = "ops-contract.v1";
 
 /** Digest delivery / evaluation modes the worker may stamp on receipts and daylogs. */
@@ -638,6 +638,7 @@ export const KV_NAMESPACES = Object.freeze([
       { prefix: "pins:", semantics: "Opaque actor pin store (session sync); id is not email." },
       { prefix: "inv:", semantics: "Shared investigation snapshots (bounded TTL)." },
       { prefix: "rl:", semantics: "Rate-limit counters (addr / IP day keys)." },
+      { prefix: "search-history:", semantics: "A recognized account's own recent searches, keyed by derived subscriber id; resident-readable through /search-history only, never an operator surface." },
     ],
   },
   {

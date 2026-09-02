@@ -93,7 +93,7 @@ test("committed fixture matches builder (desk CI pin)", () => {
 
 test("performance discovery advertises the cross-repository Desk consumer handoff", () => {
   const doc = buildOpsContract({ generated_at: "2026-08-01T00:00:00.000Z" });
-  assert.equal(doc.version, "1.12.0", "receipt-derived completed-search statistics are additive on the existing ops-contract");
+  assert.equal(doc.version, "1.13.0", "the account search-history key prefix is additive on the receipt-derived completed-search statistics");
   assert.equal(doc.signup_lifecycle.contract, "cityscroll.signup_lifecycle.v1");
   assert.equal(doc.signup_lifecycle.endpoint, "/admin/subs");
   assert.deepEqual(doc.signup_lifecycle.states.map((state) => state.id), [

@@ -1,6 +1,6 @@
 {
   "contract": "ops-contract.v1",
-  "version": "1.12.0",
+  "version": "1.13.0",
   "generated_at": "2026-08-05T13:55:23.589Z",
   "min_compatible_version": "1.0.0",
   "note": "Machine-readable ops contract for desk panels. No secrets. Not served on public /stats.",
@@ -1119,6 +1119,10 @@
         {
           "prefix": "rl:",
           "semantics": "Rate-limit counters (addr / IP day keys)."
+        },
+        {
+          "prefix": "search-history:",
+          "semantics": "A recognized account's own recent searches, keyed by derived subscriber id; resident-readable through /search-history only, never an operator surface."
         }
       ]
     },

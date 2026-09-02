@@ -56,9 +56,9 @@
         "worker"
       ],
       "scan_hops": 1,
-      "scanned_source_count": 2130,
+      "scanned_source_count": 2138,
       "sources_skipped_not_materialised": 0,
-      "path_count": 1883,
+      "path_count": 1892,
       "worker_to_site_reference_count": 187,
       "worker_to_site_data_reference_count": 28,
       "worker_to_site_data_targets": [
@@ -118,7 +118,7 @@
         "warehouse",
         "worker/src/data"
       ],
-      "path_count": 3703
+      "path_count": 3755
     }
   },
   "required_paths": [
@@ -232,6 +232,7 @@
     "capabilities/people_organizations_provider.mjs",
     "capabilities/registry.mjs",
     "capabilities/search_activity.mjs",
+    "capabilities/search_history.mjs",
     "data/rum-09-desk-contract-fixtures/desk-consumer-contract.v1.json",
     "docs/adr/attachment-tables-storage.md",
     "docs/adr/attachment-text-embeddings.md",
@@ -2266,8 +2267,11 @@
     "worker/src/lib/rules_action_bands.mjs",
     "worker/src/lib/rules_adoption_lag.mjs",
     "worker/src/lib/search_activity.mjs",
+    "worker/src/lib/search_activity_view.mjs",
     "worker/src/lib/search_health.mjs",
+    "worker/src/lib/search_history.mjs",
     "worker/src/lib/search_read_model.mjs",
+    "worker/src/lib/search_usage.mjs",
     "worker/src/lib/secret_compare.mjs",
     "worker/src/lib/session.mjs",
     "worker/src/lib/solicitation_procurement_method.mjs",
@@ -2323,6 +2327,7 @@
     "worker/src/rules.mjs",
     "worker/src/search.mjs",
     "worker/src/search_activity.mjs",
+    "worker/src/search_history.mjs",
     "worker/src/semantic_candidates.mjs",
     "worker/src/session.mjs",
     "worker/src/source_health.mjs",
@@ -2911,7 +2916,7 @@
       "site/data/zap_projects_warehouse_lookup.json"
     ]
   },
-  "patterns_sha256": "14c56c50a0e14897a0f740ad6c4974c103bd8b33e46434f3212297acb28b0598",
+  "patterns_sha256": "d7b3bea47fc6f680c8858b0ccb0616b73aa6c67c172b4db3d946fc45e02ba167",
   "supported_gate_classes": [
     "worker-unit",
     "architecture-evidence-shards",
@@ -3035,19 +3040,19 @@
   },
   "measured": {
     "note": "A snapshot of what the profile costs at the revision named here. These figures are reporting only; they are not part of the checked contract, because a byte total moves whenever any tracked file does.",
-    "revision": "9ae3afd8e4f1b403beda6dfec9ce005983a08ebd",
+    "revision": "16df6107c313c2070a2a5a42dbafce58db837929",
     "computed_in_reduced_checkout": false,
     "profile_paths": {
-      "count": 3920,
-      "logical_bytes": 195056219
+      "count": 3972,
+      "logical_bytes": 195571855
     },
     "deferred_paths": {
       "count": 296,
       "logical_bytes": 221499332
     },
     "excluded_paths": {
-      "count": 1990,
-      "logical_bytes": 627187330
+      "count": 2030,
+      "logical_bytes": 632427024
     },
     "site_data": {
       "tracked_count": 690,
@@ -3056,9 +3061,9 @@
       "profile_logical_bytes": 109040965
     },
     "tracked_total": {
-      "count": 5910,
-      "logical_bytes": 822243549
+      "count": 6002,
+      "logical_bytes": 827998879
     },
-    "pattern_count": 795
+    "pattern_count": 799
   }
 }
