@@ -10,6 +10,18 @@ export const PERFORMANCE_COVERAGE_STATES = Object.freeze([
   "insufficient_sample",
   "no_data",
 ]);
+export const PERFORMANCE_COVERAGE_INSUFFICIENT_REASONS = Object.freeze([
+  "window_partial",
+  "below_floor",
+  "percentiles_missing",
+]);
+export const PERFORMANCE_COVERAGE_READ_STATUSES = Object.freeze([
+  "available",
+  "not_read",
+  "unavailable",
+]);
+export const PERFORMANCE_COVERAGE_WINDOW = coverageContract.window;
+export const PERFORMANCE_COVERAGE_TRAFFIC_CLASS = coverageContract.traffic_class;
 export const PERFORMANCE_COVERAGE_SAMPLE_FLOOR = coverageContract.sample_floor;
 export const PERFORMANCE_COVERAGE_SURFACES = Object.freeze(
   coverageContract.surfaces.map((surface) => Object.freeze({
@@ -37,11 +49,14 @@ const PHASES_BY_METRIC = new Map(
 );
 
 function finite(value) {
-  return typeof value === "number" && Number.isFinite(value) ? value : null;
+  if (value == null || value === "" || typeof value === "boolean") return null;
+  const number = Number(value);
+  return Number.isFinite(number) ? number : null;
 }
 
 function integer(value) {
-  return Number.isSafeInteger(value) && value >= 0 ? value : null;
+  const number = finite(value);
+  return Number.isSafeInteger(number) && number >= 0 ? number : null;
 }
 
 function rowValues(row) {
@@ -72,22 +87,18 @@ export function classifyPerformanceCoverage(row, {
   if (values.sampled_count == null || values.sampled_count === 0) {
     return Object.freeze({ state: "no_data", sampled_count: values.sampled_count });
   }
-  if (windowStatus !== "complete" || values.sampled_count < sampleFloor) {
-    return Object.freeze({
-      state: "insufficient_sample",
-      sampled_count: values.sampled_count,
-      estimated_count: values.estimated_count,
-      sample_floor: sampleFloor,
-    });
-  }
+  const insufficient = (reason) => Object.freeze({
+    state: "insufficient_sample",
+    reason,
+    sampled_count: values.sampled_count,
+    estimated_count: values.estimated_count,
+    sample_floor: sampleFloor,
+  });
+  if (windowStatus !== "complete") return insufficient("window_partial");
+  if (values.sampled_count < sampleFloor) return insufficient("below_floor");
   const { p50, p75, p95 } = values.percentiles;
   if (p50 == null || p75 == null || p95 == null || p50 > p75 || p75 > p95) {
-    return Object.freeze({
-      state: "insufficient_sample",
-      sampled_count: values.sampled_count,
-      estimated_count: values.estimated_count,
-      sample_floor: sampleFloor,
-    });
+    return insufficient("percentiles_missing");
   }
   return Object.freeze({
     state: "measured",
@@ -99,14 +110,15 @@ export function classifyPerformanceCoverage(row, {
 
 function cell({ dimensions, row, windowStatus, sampleFloor }) {
   const classification = classifyPerformanceCoverage(row, { windowStatus, sampleFloor });
-  const values = rowValues(row);
   return {
     ...dimensions,
     state: classification.state,
     sampled_count: classification.sampled_count ?? null,
     estimated_count: classification.estimated_count ?? null,
     ...(classification.state === "measured" ? { percentiles: classification.percentiles } : {}),
-    ...(classification.state === "insufficient_sample" ? { sample_floor: sampleFloor } : {}),
+    ...(classification.state === "insufficient_sample"
+      ? { reason: classification.reason, sample_floor: sampleFloor }
+      : {}),
   };
 }
 
@@ -187,6 +199,8 @@ export function buildPerformanceCoverageLattice({
   readinessRows = [],
   deviceRows = [],
   phaseRows = [],
+  window = PERFORMANCE_COVERAGE_WINDOW,
+  trafficClass = PERFORMANCE_COVERAGE_TRAFFIC_CLASS,
   windowStatus = "complete",
   sampleFloor = PERFORMANCE_COVERAGE_SAMPLE_FLOOR,
   readStatus = "available",
@@ -198,6 +212,9 @@ export function buildPerformanceCoverageLattice({
     schema: PERFORMANCE_COVERAGE_SCHEMA,
     version: 1,
     read_status: readStatus,
+    window,
+    window_status: windowStatus,
+    traffic_class: trafficClass,
     sample_floor: sampleFloor,
     dimensions: {
       surfaces: PERFORMANCE_COVERAGE_SURFACES.map(({ surface_id, operator_label }) => ({ surface_id, operator_label })),

@@ -2,6 +2,7 @@
   "schema": "cityscroll.performance.coverage_contract.v1",
   "version": 1,
   "window": "7d",
+  "traffic_class": "production",
   "sample_floor": 30,
   "surfaces": [
     {

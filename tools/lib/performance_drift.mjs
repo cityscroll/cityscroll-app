@@ -280,10 +280,8 @@ export function buildDriftOverlay(snapshot, {
       measurement_origin: "field",
     },
     coverage: snapshot?.coverage_lattice || buildPerformanceCoverageLattice({
-      readinessRows: snapshot?.series,
-      windowStatus: snapshot?.retention?.current?.status || "complete",
       sampleFloor: snapshot?.sample_floor || PERFORMANCE_SAMPLE_FLOOR,
-      readStatus: snapshot?.status === "unavailable" ? "unavailable" : "available",
+      readStatus: snapshot?.status === "unavailable" ? "unavailable" : "not_read",
     }),
     lab: buildLabEvidence(labSnapshot, now),
     generation: generation || null,

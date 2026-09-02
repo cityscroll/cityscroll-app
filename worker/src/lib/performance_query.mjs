@@ -9,6 +9,8 @@ import {
   PERFORMANCE_COVERAGE_METRICS,
   PERFORMANCE_COVERAGE_SAMPLE_FLOOR,
   PERFORMANCE_COVERAGE_SURFACES,
+  PERFORMANCE_COVERAGE_TRAFFIC_CLASS,
+  PERFORMANCE_COVERAGE_WINDOW,
   buildPerformanceCoverageLattice,
   classifyPerformanceCoverage,
 } from "./performance_coverage.mjs";
@@ -349,9 +351,9 @@ export function performanceCoverageQueryPlan(options = {}) {
   const configuredSince = checkedDate(options.configuredSince, "RUM measured-since date");
   const dataset = checkedDataset(options.dataset);
   const sampleFloor = checkedSampleFloor(options.sampleFloor ?? PERFORMANCE_COVERAGE_SAMPLE_FLOOR);
-  const window = options.window || "7d";
+  const window = options.window || PERFORMANCE_COVERAGE_WINDOW;
   if (!Object.hasOwn(PERFORMANCE_WINDOWS, window)) throw new PerformanceQueryError("Unsupported performance window");
-  const trafficClass = options.trafficClass || "production";
+  const trafficClass = options.trafficClass || PERFORMANCE_COVERAGE_TRAFFIC_CLASS;
   if (!trafficClasses.has(trafficClass)) throw new PerformanceQueryError("Unsupported traffic class");
   const windowMs = PERFORMANCE_WINDOWS[window];
   const currentStartMs = now.getTime() - windowMs;
@@ -387,6 +389,8 @@ export function performanceCoverageQueryPlan(options = {}) {
   return Object.freeze({
     query,
     dataset,
+    window,
+    traffic_class: trafficClass,
     sample_floor: sampleFloor,
     queried_at: now.toISOString(),
     current,
@@ -413,37 +417,27 @@ function observedCounts(row) {
 
 function distributionFromRow(row, coverage, sampleFloor) {
   const counts = observedCounts(row);
-  if (counts && counts.sampled_count >= sampleFloor && coverage.status === "complete") {
-    const p50 = finiteNonnegative(row.p50);
-    const p75 = finiteNonnegative(row.p75);
-    const p95 = finiteNonnegative(row.p95);
-    if (p50 === null || p75 === null || p95 === null || p50 > p75 || p75 > p95) {
-      throw new PerformanceSqlError("invalid-query-result");
-    }
-  }
-  const classification = classifyPerformanceCoverage(row, {
-    windowStatus: coverage.status,
-    sampleFloor,
-  });
   if (!counts || counts.sampled_count === 0) {
     return {
       status: coverage.status === "complete" ? "no_data" : "retention_partial",
     };
   }
-  if (classification.state === "insufficient_sample") {
-    return { status: "insufficient_sample", ...counts, sample_floor: sampleFloor };
-  }
-
   const p50 = finiteNonnegative(row.p50);
   const p75 = finiteNonnegative(row.p75);
   const p95 = finiteNonnegative(row.p95);
-  if (p50 === null || p75 === null || p95 === null || p50 > p75 || p75 > p95) {
-    throw new PerformanceSqlError("invalid-query-result");
+  const classification = classifyPerformanceCoverage({ ...counts, p50, p75, p95 }, {
+    windowStatus: coverage.status,
+    sampleFloor,
+  });
+  if (classification.state === "measured") {
+    return { status: "available", ...counts, percentiles: { p50, p75, p95 } };
   }
+  if (classification.reason === "percentiles_missing") throw new PerformanceSqlError("invalid-query-result");
   return {
-    status: "available",
+    status: "insufficient_sample",
+    reason: classification.reason,
     ...counts,
-    percentiles: { p50, p75, p95 },
+    sample_floor: sampleFloor,
   };
 }
 
@@ -767,11 +761,16 @@ function unavailableSnapshot(plan, reason, dataHealth, coverageLattice) {
   };
 }
 
-function unavailableCoverageLattice(plan) {
+function coverageLatticeFor(coveragePlan, rows, readStatus) {
   return buildPerformanceCoverageLattice({
-    windowStatus: plan?.current?.status || "complete",
-    sampleFloor: plan?.sample_floor || PERFORMANCE_COVERAGE_SAMPLE_FLOOR,
-    readStatus: "unavailable",
+    readinessRows: rows?.readiness,
+    deviceRows: rows?.devices,
+    phaseRows: rows?.phases,
+    window: coveragePlan.window,
+    trafficClass: coveragePlan.traffic_class,
+    windowStatus: coveragePlan.current.status,
+    sampleFloor: coveragePlan.sample_floor,
+    readStatus,
   });
 }
 
@@ -790,6 +789,14 @@ export async function readPerformanceAnalytics(env, input = {}, options = {}) {
   }
 
   const now = new Date(plan.queried_at);
+  const coveragePlan = options.coverage === true
+    ? performanceCoverageQueryPlan({
+      now,
+      configuredSince: env?.RUM_MEASURED_SINCE,
+      dataset: env?.RUM_ANALYTICS_DATASET,
+      sampleFloor: options.sampleFloor ?? env?.RUM_MIN_SAMPLED_ROWS,
+    })
+    : null;
   const health = () => readPerformanceDataHealth(env, now, options.healthWindowDays);
   const readConfiguration = performanceReadConfiguration(env);
   if (!readConfiguration.configured) {
@@ -797,7 +804,7 @@ export async function readPerformanceAnalytics(env, input = {}, options = {}) {
       plan,
       readConfiguration.reason,
       await health(),
-      options.coverage === true ? unavailableCoverageLattice(plan) : null,
+      coveragePlan ? coverageLatticeFor(coveragePlan, null, "unavailable") : null,
     );
   }
 
@@ -807,15 +814,7 @@ export async function readPerformanceAnalytics(env, input = {}, options = {}) {
     const responses = await fetchAnalyticsRows(fetchImpl, endpoint, env.ANALYTICS_READ_TOKEN, plan.requests);
     await recordLatestQuery(env, now);
     let coverageLattice;
-    if (options.coverage === true) {
-      const coveragePlan = performanceCoverageQueryPlan({
-        now,
-        configuredSince: env?.RUM_MEASURED_SINCE,
-        dataset: env?.RUM_ANALYTICS_DATASET,
-        sampleFloor: options.sampleFloor ?? env?.RUM_MIN_SAMPLED_ROWS,
-        window: input.window,
-        trafficClass: input.filters?.traffic_class || "production",
-      });
+    if (coveragePlan) {
       try {
         const coverageRows = await fetchAnalyticsRows(
           fetchImpl,
@@ -823,19 +822,9 @@ export async function readPerformanceAnalytics(env, input = {}, options = {}) {
           env.ANALYTICS_READ_TOKEN,
           coveragePlan.requests,
         );
-        coverageLattice = buildPerformanceCoverageLattice({
-          readinessRows: coverageRows.readiness,
-          deviceRows: coverageRows.devices,
-          phaseRows: coverageRows.phases,
-          windowStatus: coveragePlan.current.status,
-          sampleFloor: coveragePlan.sample_floor,
-        });
+        coverageLattice = coverageLatticeFor(coveragePlan, coverageRows, "available");
       } catch {
-        coverageLattice = buildPerformanceCoverageLattice({
-          windowStatus: coveragePlan.current.status,
-          sampleFloor: coveragePlan.sample_floor,
-          readStatus: "unavailable",
-        });
+        coverageLattice = coverageLatticeFor(coveragePlan, null, "unavailable");
       }
     }
     return buildPerformanceSnapshot(responses, plan, {
@@ -848,7 +837,7 @@ export async function readPerformanceAnalytics(env, input = {}, options = {}) {
       plan,
       reason,
       await health(),
-      options.coverage === true ? unavailableCoverageLattice(plan) : null,
+      coveragePlan ? coverageLatticeFor(coveragePlan, null, "unavailable") : null,
     );
   }
 }

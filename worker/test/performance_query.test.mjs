@@ -146,6 +146,7 @@ test("the sampled-row floor withholds a heavily weighted low-sample distribution
   const browse = findSeries(snapshot, "browse-contracts");
   assert.deepEqual(browse.current, {
     status: "insufficient_sample",
+    reason: "below_floor",
     sampled_count: 2,
     estimated_count: 100,
     sample_floor: 4,
@@ -201,9 +202,11 @@ test("no-data and retention-partial windows never synthesize zero percentiles", 
   for (const series of partial.series) {
     if (series.current.sampled_count >= fixture.sample_floor) {
       assert.equal(series.current.status, "insufficient_sample");
+      assert.equal(series.current.reason, "window_partial");
       assert.equal(Object.hasOwn(series.current, "percentiles"), false);
     } else {
       assert.equal(series.current.status, "insufficient_sample");
+      assert.equal(series.current.reason, "window_partial");
     }
     assert.ok(["available", "retention_partial", "insufficient_sample"].includes(series.comparison.status));
   }
@@ -216,6 +219,26 @@ test("no-data and retention-partial windows never synthesize zero percentiles", 
   assert.equal(ninetyDay.current.status, "complete");
   assert.equal(ninetyDay.previous.status, "partial");
   assert.equal(ninetyDay.requests.some(({ id }) => id === "previous"), false);
+});
+
+test("quoted provider counts still enforce the sample floor before percentiles", () => {
+  const quoted = buildPerformanceSnapshot({
+    current: [{
+      sampled_count: "2",
+      estimated_count: "2",
+      p50: "10",
+      p75: "20",
+      p95: "30",
+      first_observation_at: "2026-08-19T12:00:00Z",
+      latest_observation_at: "2026-08-19T13:00:00Z",
+    }],
+    previous: [],
+    trend: [],
+  }, plan({ query: { window: "24h", filters: { metric_id: "lcp_ms" } } }));
+  assert.equal(quoted.series[0].current.status, "insufficient_sample");
+  assert.equal(quoted.series[0].current.reason, "below_floor");
+  assert.equal(quoted.series[0].current.sampled_count, 2);
+  assert.equal(Object.hasOwn(quoted.series[0].current, "percentiles"), false);
 });
 
 test("query grammar rejects arbitrary windows, dimensions, filters, and unsafe scopes", () => {

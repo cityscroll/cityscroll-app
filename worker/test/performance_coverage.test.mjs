@@ -5,7 +5,9 @@ import test from "node:test";
 import {
   PERFORMANCE_ATTRIBUTION_PHASES,
   PERFORMANCE_COVERAGE_DEVICE_CLASSES,
+  PERFORMANCE_COVERAGE_INSUFFICIENT_REASONS,
   PERFORMANCE_COVERAGE_METRICS,
+  PERFORMANCE_COVERAGE_READ_STATUSES,
   PERFORMANCE_COVERAGE_SAMPLE_FLOOR,
   PERFORMANCE_COVERAGE_STATES,
   PERFORMANCE_COVERAGE_SURFACES,
@@ -82,6 +84,60 @@ test("missing measurements and zero-valued measurements stay distinct", () => {
     classifyPerformanceCoverage({ sampled_count: 30, estimated_count: 30, ...pcts }, { windowStatus: "partial" }).state,
     "insufficient_sample",
   );
+});
+
+test("the shared classifier enforces the floor whether provider counts arrive as numbers or strings", () => {
+  const quoted = classifyPerformanceCoverage({ sampled_count: "20", estimated_count: "20", p50: "1", p75: "2", p95: "3" });
+  assert.equal(quoted.state, "insufficient_sample");
+  assert.equal(quoted.reason, "below_floor");
+  assert.equal(quoted.sampled_count, 20);
+  const measured = classifyPerformanceCoverage({ sampled_count: "30", estimated_count: "90", p50: "10", p75: "20", p95: "30" });
+  assert.equal(measured.state, "measured");
+  assert.deepEqual(measured.percentiles, pcts);
+  assert.equal(classifyPerformanceCoverage({ sampled_count: true, estimated_count: 30, ...pcts }).state, "no_data");
+  assert.equal(classifyPerformanceCoverage({ sampled_count: "", estimated_count: 30, ...pcts }).state, "no_data");
+});
+
+test("an insufficient cell names why it is insufficient instead of contradicting its own counts", () => {
+  assert.deepEqual(PERFORMANCE_COVERAGE_INSUFFICIENT_REASONS, ["window_partial", "below_floor", "percentiles_missing"]);
+  assert.equal(
+    classifyPerformanceCoverage({ sampled_count: 400, estimated_count: 400, ...pcts }, { windowStatus: "partial" }).reason,
+    "window_partial",
+  );
+  assert.equal(classifyPerformanceCoverage({ sampled_count: 29, estimated_count: 29, ...pcts }).reason, "below_floor");
+  assert.equal(
+    classifyPerformanceCoverage({ sampled_count: 30, estimated_count: 30, p50: null, p75: 1, p95: 2 }).reason,
+    "percentiles_missing",
+  );
+  assert.equal(classifyPerformanceCoverage({ sampled_count: 30, estimated_count: 30, ...pcts }).reason, undefined);
+  const lattice = buildPerformanceCoverageLattice({
+    readinessRows: [
+      { surface_id: "home", metric_id: "content_ready_ms", component_id: "none", sampled_count: 400, estimated_count: 400, ...pcts },
+    ],
+    windowStatus: "partial",
+  });
+  const home = lattice.readiness.cells.find((cell) => cell.surface_id === "home" && cell.metric_id === "content_ready_ms");
+  assert.equal(lattice.window_status, "partial");
+  assert.equal(home.state, "insufficient_sample");
+  assert.equal(home.reason, "window_partial");
+  assert.equal(home.sampled_count, 400);
+  assert.equal(home.sample_floor, PERFORMANCE_COVERAGE_SAMPLE_FLOOR);
+  assert.equal(home.percentiles, undefined);
+  const nearYou = lattice.readiness.cells.find((cell) => cell.surface_id === "near-you" && cell.metric_id === "content_ready_ms");
+  assert.equal(nearYou.state, "no_data");
+  assert.equal(nearYou.reason, undefined);
+});
+
+test("the lattice is labelled with the seven-day production window it describes", () => {
+  assert.deepEqual(PERFORMANCE_COVERAGE_READ_STATUSES, ["available", "not_read", "unavailable"]);
+  const lattice = buildPerformanceCoverageLattice();
+  assert.equal(lattice.read_status, "available");
+  assert.equal(lattice.window, "7d");
+  assert.equal(lattice.window_status, "complete");
+  assert.equal(lattice.traffic_class, "production");
+  const plan = performanceCoverageQueryPlan({ now: "2026-08-26T15:30:00.000Z", configuredSince: "2026-08-01T00:00:00.000Z" });
+  assert.equal(plan.window, "7d");
+  assert.equal(plan.traffic_class, "production");
 });
 
 test("the lattice emits every target cell, including zero-row Near You and Agency", () => {
@@ -221,6 +277,41 @@ test("the authenticated read path attaches coverage without exposing query or tr
   assert.ok(calls.every(({ body }) => !/trace|record|session|query/i.test(body)));
 });
 
+test("the coverage read stays pinned to the seven-day production window whatever series was requested", async () => {
+  const kv = new Map();
+  const now = new Date("2026-08-26T15:30:00.000Z");
+  const pinned = performanceCoverageQueryPlan({ now, configuredSince: "2026-08-01T00:00:00.000Z" });
+  const bodies = [];
+  const snapshot = await readPerformanceAnalytics({
+    ANALYTICS_ACCOUNT_ID: "a".repeat(32),
+    ANALYTICS_READ_TOKEN: "opaque-test-token",
+    RUM_MEASURED_SINCE: "2026-08-01T00:00:00.000Z",
+    ALERT_STATE: {
+      async get(key) { return kv.get(key) ?? null; },
+      async put(key, value) { kv.set(key, value); },
+    },
+  }, {
+    window: "30d",
+    filters: { metric_id: "content_ready_ms", traffic_class: "lab" },
+    group_by: "surface_id",
+  }, {
+    now,
+    coverage: true,
+    fetchImpl: async (_url, init) => {
+      bodies.push(init.body);
+      return { ok: true, status: 200, async json() { return { data: [] }; } };
+    },
+  });
+  assert.equal(snapshot.query.window, "30d");
+  assert.equal(snapshot.retention.current.status, "partial");
+  assert.deepEqual(bodies.slice(-3), pinned.requests.map(({ sql }) => sql));
+  assert.ok(bodies.slice(-3).every((sql) => /blob10 = 'production'/.test(sql)));
+  assert.equal(snapshot.coverage_lattice.window, "7d");
+  assert.equal(snapshot.coverage_lattice.window_status, "complete");
+  assert.equal(snapshot.coverage_lattice.traffic_class, "production");
+  assert.equal(snapshot.coverage_lattice.read_status, "available");
+});
+
 test("an unavailable provider still returns every coverage cell with explicit states", async () => {
   const snapshot = await readPerformanceAnalytics({}, {
     window: "7d",
@@ -232,6 +323,8 @@ test("an unavailable provider still returns every coverage cell with explicit st
   });
   assert.equal(snapshot.status, "unavailable");
   assert.equal(snapshot.coverage_lattice.read_status, "unavailable");
+  assert.equal(snapshot.coverage_lattice.window, "7d");
+  assert.equal(snapshot.coverage_lattice.traffic_class, "production");
   for (const dimension of ["readiness", "devices", "phases"]) {
     assert.ok(snapshot.coverage_lattice[dimension].cells.every((cell) => cell.state === "no_data"));
   }

@@ -169,10 +169,8 @@ export function buildAdminPerformanceResponse(snapshot) {
   );
   const unknownCount = unclassifiedCount(snapshot.data_health);
   const coverageLattice = snapshot.coverage_lattice || buildPerformanceCoverageLattice({
-    readinessRows: snapshot.series,
-    windowStatus: snapshot.retention?.current?.status || "complete",
     sampleFloor: snapshot.sample_floor,
-    readStatus: snapshot.status === "unavailable" ? "unavailable" : "available",
+    readStatus: snapshot.status === "unavailable" ? "unavailable" : "not_read",
   });
   return {
     schema: ADMIN_PERFORMANCE_SCHEMA,

@@ -175,6 +175,7 @@ test("admin response is a dedicated versioned read model with registered invento
   assert.equal(body.coverage.unclassified_observations.status, "unclassified");
   assert.equal(body.coverage.unclassified_observations.count, 2);
   assert.equal(body.coverage.lattice.schema, "cityscroll.performance.coverage_contract.v1");
+  assert.equal(body.coverage.lattice.read_status, "not_read");
   assert.equal(body.coverage.lattice.readiness.cells.length, 23);
   assert.equal(body.coverage.lattice.devices.cells.length, 48);
   assert.equal(body.coverage.lattice.phases.cells.length, 36);

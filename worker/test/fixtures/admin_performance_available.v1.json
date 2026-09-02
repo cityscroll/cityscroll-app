@@ -1967,7 +1967,10 @@
     "lattice": {
       "schema": "cityscroll.performance.coverage_contract.v1",
       "version": 1,
-      "read_status": "available",
+      "read_status": "not_read",
+      "window": "7d",
+      "window_status": "complete",
+      "traffic_class": "production",
       "sample_floor": 4,
       "dimensions": {
         "surfaces": [
@@ -2960,12 +2963,14 @@
       },
       "current": {
         "status": "insufficient_sample",
+        "reason": "below_floor",
         "sampled_count": 2,
         "estimated_count": 100,
         "sample_floor": 4
       },
       "previous": {
         "status": "insufficient_sample",
+        "reason": "below_floor",
         "sampled_count": 1,
         "estimated_count": 1,
         "sample_floor": 4
@@ -3005,6 +3010,7 @@
         {
           "day": "2026-08-19",
           "status": "insufficient_sample",
+          "reason": "below_floor",
           "sampled_count": 2,
           "estimated_count": 100,
           "sample_floor": 4

@@ -59,6 +59,7 @@ test("full SLO catches a p95-only breach and emits a proposed candidate without 
   assert.equal(overlay.enforcement.auto_merge, false);
   assert.equal(overlay.enforcement.ownership_changes, false);
   assert.equal(overlay.coverage.schema, "cityscroll.performance.coverage_contract.v1");
+  assert.equal(overlay.coverage.read_status, "not_read");
   assert.equal(overlay.coverage.readiness.cells.length, 23);
   assert.equal(overlay.coverage.devices.cells.length, 48);
   assert.equal(overlay.coverage.phases.cells.length, 36);
