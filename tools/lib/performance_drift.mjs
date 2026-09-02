@@ -1,6 +1,10 @@
 import { createHash } from "node:crypto";
 
 import performanceInventory from "../../worker/src/data/performance-operator-labels.v1.json" with { type: "json" };
+import {
+  buildPerformanceCoverageLattice,
+  classifyPerformanceCoverage,
+} from "../../worker/src/lib/performance_coverage.mjs";
 
 export const PERFORMANCE_DRIFT_SCHEMA = "cityscroll.performance.drift_overlay.v1";
 export const PERFORMANCE_CANDIDATE_SCHEMA = "cityscroll.performance.drift_candidate.v1";
@@ -80,13 +84,15 @@ function metricReasons(p75, p95) {
   ];
 }
 
-function statusFor(snapshot, series, instrumented) {
+function statusFor(snapshot, series, instrumented, window, sampleFloor) {
   if (!instrumented) return "uninstrumented";
   if (snapshot?.status === "unavailable") return "unavailable";
-  if (!series) return "no_data";
-  if (series.current?.status === "available") return "flowing";
-  if (series.current?.status === "insufficient_sample") return "insufficient_sample";
-  if (series.current?.status === "unavailable") return "unavailable";
+  const state = classifyPerformanceCoverage(series?.current, {
+    windowStatus: window.status,
+    sampleFloor,
+  }).state;
+  if (state === "measured") return "flowing";
+  if (state === "insufficient_sample") return "insufficient_sample";
   return "no_data";
 }
 
@@ -157,10 +163,14 @@ function metricEvidence({
   trafficClass = "production",
   measurementOrigin = "field",
 }) {
-  const dataStatus = statusFor(snapshot, series, instrumented);
+  const sampleFloor = snapshot?.sample_floor || PERFORMANCE_SAMPLE_FLOOR;
+  const dataStatus = statusFor(snapshot, series, instrumented, window, sampleFloor);
   const current = series?.current || {};
   const distribution = current.percentiles || {};
   const hasPercentiles = dataStatus === "flowing"
+    && window.status === "complete"
+    && Number.isSafeInteger(current.sampled_count)
+    && current.sampled_count >= sampleFloor
     && Number.isFinite(distribution.p50)
     && Number.isFinite(distribution.p75)
     && Number.isFinite(distribution.p95);
@@ -269,6 +279,10 @@ export function buildDriftOverlay(snapshot, {
       traffic_class: "production",
       measurement_origin: "field",
     },
+    coverage: snapshot?.coverage_lattice || buildPerformanceCoverageLattice({
+      sampleFloor: snapshot?.sample_floor || PERFORMANCE_SAMPLE_FLOOR,
+      readStatus: snapshot?.status === "unavailable" ? "unavailable" : "not_read",
+    }),
     lab: buildLabEvidence(labSnapshot, now),
     generation: generation || null,
     surfaces,

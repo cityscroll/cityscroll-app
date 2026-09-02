@@ -74,6 +74,7 @@ async function readSnapshot(now, trafficClass) {
     }, {
       now,
       sampleFloor: process.env.RUM_MIN_SAMPLED_ROWS || 30,
+      coverage: trafficClass === "production",
     });
   } catch (error) {
     // A read failure is evidence, not an enforcement signal. Keep the run

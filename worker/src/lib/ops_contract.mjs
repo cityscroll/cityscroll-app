@@ -367,7 +367,7 @@ export const PERFORMANCE_CONTRACT = Object.freeze({
   ],
   response: {
     distributions: ["p50", "p75", "p95"],
-    distribution_rule: "Present only when retained sampled rows meet the configured floor; missing values are never encoded as zero.",
+    distribution_rule: "Present only when the window is complete and retained sampled rows meet the configured floor; an insufficient_sample record names its reason (window_partial or below_floor); missing values are never encoded as zero.",
     counts: ["sampled_count", "estimated_count"],
     sampling: "Cloudflare weighted adaptive sampling; sampled_count determines sufficiency.",
     comparison: "Equal-length previous window with absolute and relative changes when both distributions are sufficient.",
