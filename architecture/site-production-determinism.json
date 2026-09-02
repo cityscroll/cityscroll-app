@@ -61,7 +61,6 @@
     "site/app/entities.mjs",
     "site/app/entity_identity_report.mjs",
     "site/app/exams.mjs",
-    "site/app/feed_scoped_keyword.mjs",
     "site/app/feed-actions.mjs",
     "site/app/following.mjs",
     "site/app/land.mjs",
