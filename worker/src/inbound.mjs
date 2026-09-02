@@ -8,7 +8,7 @@
 
 import PostalMime from "postal-mime";
 import { parseLensFilter } from "./nl.mjs";
-import { isValidEmail, buildSubscription, redactEmail } from "./lib/subscriptions.mjs";
+import { isValidEmail, buildSubscription, redactEmail, isSelfOriginEmail } from "./lib/subscriptions.mjs";
 import { describeFilter } from "./lib/confirm_email.mjs";
 import { compileSub } from "./lib/compile.mjs";
 import { enrollAndWelcome } from "./subscribe.mjs";
@@ -27,10 +27,12 @@ export function pickLens(text) {
   return "money";
 }
 
-// True for senders we must never auto-reply to (loops, bounces, ourselves).
+// True for senders we must never auto-reply to (loops, bounces, ourselves). "Ourselves" means
+// any address on an owned sending domain OR a subdomain of one (e.g. send.cityscroll.org): an
+// apex-only match would let the sending subdomain's own mail loop back in and enroll as a user.
 export function shouldIgnore(from, headers = new Map()) {
   const f = String(from || "").toLowerCase();
-  if (!f || f.endsWith("@crol-list.org") || f.endsWith("@cityscroll.org")) return true;
+  if (!f || isSelfOriginEmail(f)) return true;
   if (/mailer-daemon|no-?reply|postmaster|bounce/.test(f)) return true;
   const auto = headers.get?.("auto-submitted") || "";
   if (auto && auto.toLowerCase() !== "no") return true;
