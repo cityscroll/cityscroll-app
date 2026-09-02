@@ -420,7 +420,7 @@ export const ADMIN_ROUTES = Object.freeze([
     path: "/admin/ops-alert",
     methods: ["POST"],
     auth: "ADMIN_KEY",
-    description: "Private relay for operational alarms; sends only to the operations mailbox through Resend and deduplicates by guard fingerprint.",
+    description: "Private relay for operational alarms; sends only to the operations mailbox through Resend and deduplicates by guard fingerprint. Scheduler and served-artifact guards must supply workflow, source revision, a validated run link and a validated raw-receipt link, otherwise the relay refuses with 400.",
   },
   {
     path: "/admin/reliability/digest",
@@ -432,7 +432,7 @@ export const ADMIN_ROUTES = Object.freeze([
     path: "/admin/reliability/scheduler",
     methods: ["POST", "GET"],
     auth: "ADMIN_KEY",
-    description: "Records an external scheduler heartbeat or checks heartbeat age, pending outbox, and mail-leg receipts; returns 503 when unhealthy.",
+    description: "POST records one external scheduler heartbeat and accepts it only with concrete workflow, run identity, source revision and cycle result; an unattributable heartbeat is rejected with 400 and never stored. GET reports scheduler liveness as its own leg alongside mail-leg receipts and returns 503 when unhealthy; scheduler alerts carry the observing workflow, run link, source revision and this route as the raw receipt, and are held rather than sent when that evidence is absent.",
   },
   {
     path: "/admin/reliability/mail",

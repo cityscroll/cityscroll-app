@@ -133,11 +133,15 @@ async function main(argv = process.argv.slice(2)) {
 
   const liveManifestPath = argument(argv, "--live-manifest");
   const liveOrigin = argument(argv, "--live-origin");
+  // The revision main is on right now, so a served artifact that matches its
+  // deploy exactly can still be reported as behind, with its own finding.
+  const mainRevision = argument(argv, "--main-revision");
   if (liveManifestPath && expectedManifestPath) {
     stages.served_artifact_freshness = evaluateServedArtifactFreshness({
       liveManifest: json(liveManifestPath),
       expectedManifest,
       freshnessFindings,
+      mainRevision,
     });
   } else if (liveOrigin && expectedManifestPath) {
     const result = await checkServedArtifactFreshness({
@@ -148,6 +152,7 @@ async function main(argv = process.argv.slice(2)) {
       liveManifest: result.live,
       expectedManifest,
       freshnessFindings: () => result.findings,
+      mainRevision,
     });
   } else {
     stages.served_artifact_freshness = {

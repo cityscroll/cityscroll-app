@@ -489,7 +489,22 @@ export function evaluateGeneratedEvidenceFreshness({
   });
 }
 
-export function evaluateServedArtifactFreshness({ liveManifest, expectedManifest, freshnessFindings } = {}) {
+/**
+ * The served artifact is compared against the manifest a deploy actually
+ * published, not against a fresh local rebuild. The production build refreshes
+ * decision outcomes from live sources, so rebuilding the same revision does not
+ * reproduce the deployed bytes and a hash comparison against it can never pass.
+ *
+ * Deploy lag is a separate finding from a byte mismatch: an artifact that is
+ * exactly some earlier deploy is a different failure from one that matches no
+ * deploy at all, and neither is allowed to pass.
+ */
+export function evaluateServedArtifactFreshness({
+  liveManifest,
+  expectedManifest,
+  freshnessFindings,
+  mainRevision = null,
+} = {}) {
   if (!liveManifest) return statusResult("UNKNOWN", ["served artifact manifest was not observed"]);
   if (!expectedManifest) return statusResult("UNKNOWN", ["expected artifact manifest was not supplied"]);
   const findings = typeof freshnessFindings === "function"
@@ -499,9 +514,16 @@ export function evaluateServedArtifactFreshness({ liveManifest, expectedManifest
       liveManifest.artifact_hash !== expectedManifest.artifact_hash ? "artifact hash mismatch" : null,
       liveManifest.source_commit_sha !== expectedManifest.source_commit_sha ? "source commit mismatch" : null,
     ].filter(Boolean);
+  if (mainRevision && expectedManifest.source_commit_sha
+    && String(expectedManifest.source_commit_sha) !== String(mainRevision)) {
+    findings.push(`deployed revision ${expectedManifest.source_commit_sha} is behind main revision ${mainRevision}`);
+  }
   return statusResult(findings.length ? "FAIL" : "PASS", findings, {
     live_artifact_hash: liveManifest.artifact_hash || null,
     live_source_commit_sha: liveManifest.source_commit_sha || null,
+    deployed_artifact_hash: expectedManifest.artifact_hash || null,
+    deployed_source_commit_sha: expectedManifest.source_commit_sha || null,
+    main_source_commit_sha: mainRevision || null,
   });
 }
 

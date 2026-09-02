@@ -20,9 +20,15 @@ jobs:
           set -euo pipefail
           : "${CITYSCROLL_ADMIN_KEY:?CITYSCROLL_ADMIN_KEY is required}"
           auth=(-H "authorization: Bearer $CITYSCROLL_ADMIN_KEY")
+          # The observing run is the concrete evidence behind a scheduler
+          # finding when the scheduled cycle left no receipt to cite. Without it
+          # the endpoint stays red and holds the alert instead of mailing nulls.
+          observer="observer_workflow=$(printf %s "$GITHUB_WORKFLOW" | tr ' ' '+')"
+          observer="$observer&observer_run_url=$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+          observer="$observer&observer_revision=$GITHUB_SHA"
           case "${{ github.event.schedule || '' }}" in
             "50 * * * *")
-              curl --fail-with-body --retry 2 "https://api.cityscroll.org/admin/reliability/scheduler" "${auth[@]}"
+              curl --fail-with-body --retry 2 "https://api.cityscroll.org/admin/reliability/scheduler?$observer" "${auth[@]}"
               ;;
             *)
               curl --fail-with-body --retry 2 -X POST "https://api.cityscroll.org/admin/reliability/mail" \

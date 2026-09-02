@@ -9,7 +9,7 @@ import {
   replayOutbox,
 } from "../tools/external_schedule_outbox.mjs";
 import { auditSchedulerOwnership } from "../tools/audit_scheduler_ownership.mjs";
-import { publishHeartbeat } from "../tools/external_schedule_runner.mjs";
+import { SCHEDULER_WORKFLOW, publishHeartbeat, schedulerRunId } from "../tools/external_schedule_runner.mjs";
 
 function fakeGithub() {
   const issues = [];
@@ -92,6 +92,16 @@ test("targeted scheduled ownership is independent of GitHub Actions", async () =
   assert.deepEqual(audit.targets, ["action-links-live", "source-contracts-live", "digest-shadow-monitor"]);
 });
 
+const RUN_ID = "2026-08-31T12-00:runner-7:4821";
+const REVISION = "dd4b708b6fe39bf8b2ea635ef3d4f493c4751ace";
+
+test("scheduler run identity names the cycle, host, and process", () => {
+  assert.equal(
+    schedulerRunId(new Date("2026-08-31T12:00:00.000Z"), { host: "runner-7", pid: 4821 }),
+    RUN_ID,
+  );
+});
+
 test("scheduler heartbeat distinguishes missing credential, rejection, and verified liveness", async () => {
   const stateDir = await mkdtemp(join(tmpdir(), "crol-heartbeat-"));
   const now = new Date("2026-08-31T12:00:00.000Z");
@@ -100,20 +110,71 @@ test("scheduler heartbeat distinguishes missing credential, rejection, and verif
   process.env.CITYSCROLL_SCHEDULER_HEARTBEAT_URL = "https://api.example.test/admin/reliability/scheduler";
   try {
     delete process.env.CITYSCROLL_ADMIN_KEY;
-    assert.equal((await publishHeartbeat(stateDir, now, [])).status, "unconfigured");
+    // A credential the launchd job never received is a failed cycle, not a
+    // quiet one, and the reason is left on disk for the next operator.
+    const unconfigured = await publishHeartbeat(stateDir, now, [], { runId: RUN_ID, sourceRevision: REVISION });
+    assert.equal(unconfigured.status, "failed");
+    assert.equal(unconfigured.reason, "admin-credential-missing");
+    assert.equal(
+      JSON.parse(await readFile(join(stateDir, "heartbeat", "latest.json"), "utf8")).reason,
+      "admin-credential-missing",
+    );
+
     process.env.CITYSCROLL_ADMIN_KEY = "secret";
-    assert.equal((await publishHeartbeat(stateDir, now, [], { fetchImpl: async () => ({ ok: false, status: 403 }) })).status, "failed");
+    const refused = await publishHeartbeat(stateDir, now, [], {
+      runId: RUN_ID, sourceRevision: REVISION,
+      fetchImpl: async () => ({ ok: false, status: 403 }),
+    });
+    assert.equal(refused.status, "failed");
+    assert.equal(refused.reason, "heartbeat-write-refused");
+
+    // An explicitly rejected heartbeat is distinct from a refused one.
+    const rejected = await publishHeartbeat(stateDir, now, [], {
+      runId: RUN_ID, sourceRevision: REVISION,
+      fetchImpl: async () => ({ ok: false, status: 400, json: async () => ({ rejected: ["heartbeat evidence field run_id is missing"] }) }),
+    });
+    assert.equal(rejected.reason, "heartbeat-rejected");
+    assert.deepEqual(rejected.rejected, ["heartbeat evidence field run_id is missing"]);
+
     let requests = 0;
+    let posted = null;
     const success = await publishHeartbeat(stateDir, now, ["controlled-job"], {
+      runId: RUN_ID, sourceRevision: REVISION,
       fetchImpl: async (_url, options = {}) => {
         requests += 1;
-        if (options.method === "POST") return { ok: true, status: 200 };
-        return { ok: true, status: 200, json: async () => ({ ok: true }) };
+        if (options.method === "POST") { posted = JSON.parse(options.body); return { ok: true, status: 200 }; }
+        return { ok: true, status: 200, json: async () => ({ ok: true, heartbeat: { ...posted, schema: "cityscroll.external-scheduler-heartbeat.v1" } }) };
       },
     });
     assert.equal(success.status, "succeeded");
     assert.equal(success.verified, true);
     assert.equal(requests, 2);
+    assert.equal(posted.workflow, SCHEDULER_WORKFLOW);
+    assert.equal(posted.run_id, RUN_ID);
+    assert.equal(posted.source_revision, REVISION);
+    assert.equal(posted.result, "succeeded");
+
+    // A mail-leg finding makes the endpoint report ok:false. Liveness is proven
+    // by the round-tripped run identity, so the write still verifies.
+    const mailDegraded = await publishHeartbeat(stateDir, now, [], {
+      runId: RUN_ID, sourceRevision: REVISION,
+      fetchImpl: async (_url, options = {}) => {
+        if (options.method === "POST") { posted = JSON.parse(options.body); return { ok: true, status: 200 }; }
+        return { ok: false, status: 503, json: async () => ({ ok: false, heartbeat: { ...posted } }) };
+      },
+    });
+    assert.equal(mailDegraded.status, "succeeded");
+
+    // Someone else's heartbeat is not proof that this cycle wrote one.
+    const foreign = await publishHeartbeat(stateDir, now, [], {
+      runId: RUN_ID, sourceRevision: REVISION,
+      fetchImpl: async (_url, options = {}) => {
+        if (options.method === "POST") return { ok: true, status: 200 };
+        return { ok: true, status: 200, json: async () => ({ ok: true, heartbeat: { workflow: SCHEDULER_WORKFLOW, run_id: "someone-else" } }) };
+      },
+    });
+    assert.equal(foreign.status, "failed");
+    assert.equal(foreign.reason, "heartbeat-not-verified");
   } finally {
     if (priorKey == null) delete process.env.CITYSCROLL_ADMIN_KEY; else process.env.CITYSCROLL_ADMIN_KEY = priorKey;
     if (priorUrl == null) delete process.env.CITYSCROLL_SCHEDULER_HEARTBEAT_URL; else process.env.CITYSCROLL_SCHEDULER_HEARTBEAT_URL = priorUrl;
