@@ -3,7 +3,9 @@
 
 from __future__ import annotations
 
+import json
 import os
+import pathlib
 
 import pathlib
 import sys
@@ -15,6 +17,15 @@ from fixture_clock import pin_fixture_clock  # noqa: E402
 
 
 BASE = os.environ.get("CROL_BASE", "http://127.0.0.1:8000/").rstrip("/")
+# This spec renders the committed retained snapshots exactly as shipped, but the
+# contracts lens filters notices by due_date > today, so the committed artifact
+# goes dark once the wall clock passes its last due date. Freeze the browser's
+# Date at the snapshot's own generation instant (real timers keep running) so
+# the spec asserts "the committed artifact renders as of when it was captured"
+# instead of racing the calendar.
+SNAPSHOT_EPOCH = json.loads(
+    (pathlib.Path(__file__).resolve().parents[2] / "site" / "data" / "money_default_open.json").read_text()
+)["generated_at"]
 PUBLISHER_PATTERNS = (
     "**/data.cityofnewyork.us/**",
     "**/data.ny.gov/**",
@@ -67,6 +78,7 @@ def main() -> None:
         for name, path, selector in SURFACES:
             active_surface["name"] = name
             page = context.new_page()
+            page.clock.set_fixed_time(SNAPSHOT_EPOCH)
             page.goto(BASE + path, wait_until="domcontentloaded", timeout=30_000)
             try:
                 page.locator(selector).first.wait_for(state="visible", timeout=30_000)
