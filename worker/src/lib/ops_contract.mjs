@@ -22,8 +22,17 @@ import {
   SEARCH_ACTIVITY_MAX_FILTER_SCAN,
   SEARCH_ACTIVITY_READ_PARAMS,
 } from "./search_activity_view.mjs";
+import {
+  SEARCH_USAGE_FAMILY_APPEARANCE_SEMANTICS,
+  SEARCH_USAGE_IDENTITY_NOTE,
+  SEARCH_USAGE_MAX_HYDRATE,
+  SEARCH_USAGE_MAX_SCAN_KEYS,
+  SEARCH_USAGE_OPTIONAL_CUTS,
+  SEARCH_USAGE_SCHEMA,
+  SEARCH_USAGE_WINDOW_DAYS,
+} from "./search_usage.mjs";
 
-export const OPS_CONTRACT_VERSION = "1.11.0";
+export const OPS_CONTRACT_VERSION = "1.12.0";
 export const OPS_CONTRACT_ID = "ops-contract.v1";
 
 /** Digest delivery / evaluation modes the worker may stamp on receipts and daylogs. */
@@ -285,6 +294,48 @@ export const STATS_METRICS = Object.freeze([
     exclude_developer_traffic: true,
     description: "First-party aggregate events; production traffic_class only.",
   },
+  {
+    path: "search_executions.windows.*.completed",
+    source: "ALERT_STATE search:exec: accepted execution receipts",
+    exclude_developer_traffic: true,
+    description: "Completed visible searches per window, one per accepted production execution.",
+  },
+  {
+    path: "search_executions.windows.*.outcomes.*",
+    source: "ALERT_STATE search:exec: accepted execution receipts",
+    exclude_developer_traffic: true,
+    description: "Terminal states of those executions; they sum to completed for the window.",
+  },
+  {
+    path: "search_executions.windows.*.recognition.*",
+    source: "ALERT_STATE search:exec: accepted execution receipts",
+    exclude_developer_traffic: true,
+    description: "Recognized vs unrecognized executions; they sum to completed for the window.",
+  },
+  {
+    path: "search_executions.windows.*.unique_visitors",
+    source: "ALERT_STATE search:exec: accepted execution receipts",
+    exclude_developer_traffic: true,
+    description: "Distinct browsers that completed a search. Not a person count, never summed with accounts.",
+  },
+  {
+    path: "search_executions.windows.*.recognized_accounts",
+    source: "ALERT_STATE search:exec: accepted execution receipts",
+    exclude_developer_traffic: true,
+    description: "Distinct recognized subscribers that completed a search. Not a person count.",
+  },
+  {
+    path: "search_executions.windows.*.family_appearances.*",
+    source: "ALERT_STATE search:exec: accepted execution receipts",
+    exclude_developer_traffic: true,
+    description: "Executions that rendered at least one row in the family. Not a row count.",
+  },
+  {
+    path: "search_executions.optional_cuts.*",
+    source: "Landed history / account / handoff signals only",
+    exclude_developer_traffic: true,
+    description: "Reports available:false with a reason until a landed signal can measure it; never a zero.",
+  },
 ]);
 
 /** Dedicated field-performance contract. This is separate from usage.* and /admin/stats. */
@@ -358,7 +409,7 @@ export const ADMIN_ROUTES = Object.freeze([
     path: "/admin/stats",
     methods: ["GET"],
     auth: "ADMIN_KEY",
-    description: "Private product activity, subscriptions, and delivery operations (JSON or ?view=html). The HTML view adds receipt-backed Search activity; the JSON body is unchanged.",
+    description: "Private product activity, subscriptions, and delivery operations (JSON or ?view=html). The JSON body additively carries receipt-derived completed-search statistics in search_executions; every earlier field keeps its meaning. The HTML view adds receipt-backed Search activity.",
   },
   {
     path: "/admin/owed-backlog",
@@ -762,6 +813,68 @@ export const SEARCH_ACTIVITY_CONTRACT = Object.freeze({
 });
 
 /**
+ * Completed-search usage statistics inside the private stats body
+ * (`GET /admin/stats` → `search_executions`).
+ *
+ * Additive to this contract and to that response: every field that existed before it
+ * keeps its name, its source, and its meaning. Its purpose here is to make the counting
+ * rules checkable by a consumer — what one count means, what is excluded and by which
+ * mechanism, which reconciliation must hold, and which cuts have no landed signal yet
+ * and therefore report unavailable rather than zero.
+ */
+export const SEARCH_USAGE_CONTRACT = Object.freeze({
+  contract: SEARCH_USAGE_SCHEMA,
+  version: "1.0.0",
+  response_field: "search_executions",
+  endpoint: "/admin/stats",
+  desk_surface: "/admin/stats?view=html#completed-searches-heading",
+  desk_renderer: "worker/src/admin.mjs#renderCompletedSearchesPanel",
+  projector: "worker/src/lib/search_usage.mjs#foldSearchUsage",
+  cache_control: "private, no-store",
+  event_authority: "Accepted production search-execution receipts (cityscroll.search_execution.v1).",
+  counting_rule:
+    "One accepted production execution increments exactly one completed count per window it falls in.",
+  identity: {
+    field: "execution_fingerprint",
+    derivation:
+      "SHA-256 over the browser-owned execution facts plus the resolved visitor identity; "
+      + "a duplicate intake repeats them, a reload does not.",
+    reload_is_new_execution: true,
+    duplicate_intake_is_new_execution: false,
+  },
+  excluded_by_construction: [
+    "Developer and e2e traffic — classified by ANALYTICS_ENVIRONMENT plus the developer-exclusion secret and stored under the disjoint search:exec-dev: prefix this read never lists.",
+    "Rejected intake — refused by the receipt contract before storage.",
+    "Duplicate intake of one execution — folded onto the earliest instant the store learned of it.",
+    "Input events (nl_search, search_run) — a different question, reported separately and never merged.",
+  ],
+  windows: SEARCH_USAGE_WINDOW_DAYS,
+  window_boundary:
+    "Inclusive UTC day buckets ending at the generated instant, matching the established private windows. "
+    + "A receipt at exactly the opening midnight is inside the window.",
+  outcome_states: SEARCH_ACTIVITY_OUTCOME_STATES,
+  reconciliation: "matched + partial + empty + unavailable = completed, and recognized + unrecognized = completed, for every window.",
+  result_families: SEARCH_ACTIVITY_FAMILIES,
+  family_appearance_semantics: SEARCH_USAGE_FAMILY_APPEARANCE_SEMANTICS,
+  identity_measures: [
+    { id: "unique_visitors", counts: "distinct visitor_id" },
+    { id: "recognized_accounts", counts: "distinct subscriber_id on recognized executions" },
+  ],
+  identity_note: SEARCH_USAGE_IDENTITY_NOTE,
+  privacy:
+    "Counts only. Query text, result rows, visitor ids, subscriber ids, and account labels stay on the "
+    + "separately authenticated Search activity surface and never appear in this aggregate.",
+  scan_bounds: { key_ceiling: SEARCH_USAGE_MAX_SCAN_KEYS, hydrate_ceiling: SEARCH_USAGE_MAX_HYDRATE },
+  optional_cuts: SEARCH_USAGE_OPTIONAL_CUTS.map(({ id, label, requires, unavailable_reason }) => ({
+    id,
+    label,
+    requires,
+    unavailable_reason,
+    reports_zero_when_unavailable: false,
+  })),
+});
+
+/**
  * Build the v1 ops contract document (pure, no I/O, no secrets).
  * @param {{ generated_at?: string }} [opts]
  */
@@ -787,6 +900,7 @@ export function buildOpsContract(opts = {}) {
     performance: PERFORMANCE_CONTRACT,
     signup_lifecycle: SIGNUP_LIFECYCLE_CONTRACT,
     search_activity: SEARCH_ACTIVITY_CONTRACT,
+    search_usage: SEARCH_USAGE_CONTRACT,
     admin_routes: ADMIN_ROUTES,
     auth_classes: AUTH_CLASSES,
     kv_namespaces: KV_NAMESPACES,

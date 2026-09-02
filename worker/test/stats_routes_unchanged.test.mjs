@@ -18,6 +18,14 @@ function sha256(value) {
   return createHash("sha256").update(value).digest("hex");
 }
 
+/**
+ * Fields added since the baseline. Each entry is an additive top-level key: removing
+ * it must leave the response byte-identical to the RUM-07 capture, which is a stronger
+ * claim than "the old keys are still present" — it also proves none of them moved,
+ * changed value, or changed order.
+ */
+const ADDITIVE_SINCE_RUM07 = Object.freeze(["search_executions"]);
+
 test("RUM-08 leaves authenticated /admin/stats byte-compatible with the RUM-07 baseline", async () => {
   const response = await handleAdminStats(
     new Request("https://api.cityscroll.org/admin/stats?key=secret"),
@@ -29,7 +37,31 @@ test("RUM-08 leaves authenticated /admin/stats byte-compatible with the RUM-07 b
     "cache-control": "no-store",
     "content-type": "application/json",
   });
-  assert.equal(sha256(await response.text()), ADMIN_STATS_RUM07_SHA256);
+  const text = await response.text();
+  const body = JSON.parse(text);
+  for (const field of ADDITIVE_SINCE_RUM07) {
+    assert.ok(field in body, `${field} is present and accounted for as an additive field`);
+    delete body[field];
+  }
+  assert.equal(
+    sha256(`${JSON.stringify(body, null, 2)}`),
+    ADMIN_STATS_RUM07_SHA256,
+    "every field the baseline captured keeps its name, order, and value",
+  );
+});
+
+test("SAH-05 reports completed searches additively, and honestly when there is no store", async () => {
+  const response = await handleAdminStats(
+    new Request("https://api.cityscroll.org/admin/stats?key=secret"),
+    { ADMIN_KEY: "secret" },
+    { now: NOW },
+  );
+  const body = JSON.parse(await response.text());
+  assert.equal(body.search_executions.schema, "cityscroll.search_usage.v1");
+  assert.equal(body.search_executions.available, false);
+  assert.equal(body.search_executions.unavailable_reason, "no-store");
+  // An absent receipt store is not evidence that nobody searched.
+  assert.deepEqual(body.search_executions.windows, {});
 });
 
 test("RUM-08 leaves public /stats byte-compatible and performance-free", async () => {

@@ -1,6 +1,6 @@
 {
   "contract": "ops-contract.v1",
-  "version": "1.11.0",
+  "version": "1.12.0",
   "generated_at": "2026-08-05T13:55:23.589Z",
   "min_compatible_version": "1.0.0",
   "note": "Machine-readable ops contract for desk panels. No secrets. Not served on public /stats.",
@@ -395,6 +395,48 @@
       "source": "Analytics Engine + ALERT_STATE dual-write",
       "exclude_developer_traffic": true,
       "description": "First-party aggregate events; production traffic_class only."
+    },
+    {
+      "path": "search_executions.windows.*.completed",
+      "source": "ALERT_STATE search:exec: accepted execution receipts",
+      "exclude_developer_traffic": true,
+      "description": "Completed visible searches per window, one per accepted production execution."
+    },
+    {
+      "path": "search_executions.windows.*.outcomes.*",
+      "source": "ALERT_STATE search:exec: accepted execution receipts",
+      "exclude_developer_traffic": true,
+      "description": "Terminal states of those executions; they sum to completed for the window."
+    },
+    {
+      "path": "search_executions.windows.*.recognition.*",
+      "source": "ALERT_STATE search:exec: accepted execution receipts",
+      "exclude_developer_traffic": true,
+      "description": "Recognized vs unrecognized executions; they sum to completed for the window."
+    },
+    {
+      "path": "search_executions.windows.*.unique_visitors",
+      "source": "ALERT_STATE search:exec: accepted execution receipts",
+      "exclude_developer_traffic": true,
+      "description": "Distinct browsers that completed a search. Not a person count, never summed with accounts."
+    },
+    {
+      "path": "search_executions.windows.*.recognized_accounts",
+      "source": "ALERT_STATE search:exec: accepted execution receipts",
+      "exclude_developer_traffic": true,
+      "description": "Distinct recognized subscribers that completed a search. Not a person count."
+    },
+    {
+      "path": "search_executions.windows.*.family_appearances.*",
+      "source": "ALERT_STATE search:exec: accepted execution receipts",
+      "exclude_developer_traffic": true,
+      "description": "Executions that rendered at least one row in the family. Not a row count."
+    },
+    {
+      "path": "search_executions.optional_cuts.*",
+      "source": "Landed history / account / handoff signals only",
+      "exclude_developer_traffic": true,
+      "description": "Reports available:false with a reason until a landed signal can measure it; never a zero."
     }
   ],
   "performance": {
@@ -609,6 +651,90 @@
     ],
     "identity_note": "Browser visitor, recognized subscriber, and network observation stay separate fields; a later recognized receipt never rewrites an earlier anonymous one."
   },
+  "search_usage": {
+    "contract": "cityscroll.search_usage.v1",
+    "version": "1.0.0",
+    "response_field": "search_executions",
+    "endpoint": "/admin/stats",
+    "desk_surface": "/admin/stats?view=html#completed-searches-heading",
+    "desk_renderer": "worker/src/admin.mjs#renderCompletedSearchesPanel",
+    "projector": "worker/src/lib/search_usage.mjs#foldSearchUsage",
+    "cache_control": "private, no-store",
+    "event_authority": "Accepted production search-execution receipts (cityscroll.search_execution.v1).",
+    "counting_rule": "One accepted production execution increments exactly one completed count per window it falls in.",
+    "identity": {
+      "field": "execution_fingerprint",
+      "derivation": "SHA-256 over the browser-owned execution facts plus the resolved visitor identity; a duplicate intake repeats them, a reload does not.",
+      "reload_is_new_execution": true,
+      "duplicate_intake_is_new_execution": false
+    },
+    "excluded_by_construction": [
+      "Developer and e2e traffic — classified by ANALYTICS_ENVIRONMENT plus the developer-exclusion secret and stored under the disjoint search:exec-dev: prefix this read never lists.",
+      "Rejected intake — refused by the receipt contract before storage.",
+      "Duplicate intake of one execution — folded onto the earliest instant the store learned of it.",
+      "Input events (nl_search, search_run) — a different question, reported separately and never merged."
+    ],
+    "windows": [
+      7,
+      30
+    ],
+    "window_boundary": "Inclusive UTC day buckets ending at the generated instant, matching the established private windows. A receipt at exactly the opening midnight is inside the window.",
+    "outcome_states": [
+      "matched",
+      "partial",
+      "empty",
+      "unavailable"
+    ],
+    "reconciliation": "matched + partial + empty + unavailable = completed, and recognized + unrecognized = completed, for every window.",
+    "result_families": [
+      "contracts",
+      "people-organizations",
+      "land",
+      "rules",
+      "meetings",
+      "exams"
+    ],
+    "family_appearance_semantics": "One execution that rendered at least one row in the family. Never a count of result rows, and never a coverage gap.",
+    "identity_measures": [
+      {
+        "id": "unique_visitors",
+        "counts": "distinct visitor_id"
+      },
+      {
+        "id": "recognized_accounts",
+        "counts": "distinct subscriber_id on recognized executions"
+      }
+    ],
+    "identity_note": "Unique visitors counts distinct browsers, recognized accounts counts distinct recognized subscribers. They overlap, they are not people, and they are never summed.",
+    "privacy": "Counts only. Query text, result rows, visitor ids, subscriber ids, and account labels stay on the separately authenticated Search activity surface and never appear in this aggregate.",
+    "scan_bounds": {
+      "key_ceiling": 5000,
+      "hydrate_ceiling": 200
+    },
+    "optional_cuts": [
+      {
+        "id": "history_reruns",
+        "label": "Searches rerun from browser search history",
+        "requires": "A landed browser search-history action signal carrying the execution identity it reran.",
+        "unavailable_reason": "no-landed-history-action-signal",
+        "reports_zero_when_unavailable": false
+      },
+      {
+        "id": "recognized_account_history",
+        "label": "Account-specific search history cuts",
+        "requires": "A landed recognized-history session contract tying retained history to an account.",
+        "unavailable_reason": "no-landed-account-history-contract",
+        "reports_zero_when_unavailable": false
+      },
+      {
+        "id": "searches_leading_to_following",
+        "label": "Searches that led to a Following watch",
+        "requires": "A stable execution or handoff identity carried from a search into the Following watch it produced.",
+        "unavailable_reason": "no-stable-handoff-identity",
+        "reports_zero_when_unavailable": false
+      }
+    ]
+  },
   "admin_routes": [
     {
       "path": "/admin/ops-contract",
@@ -632,7 +758,7 @@
         "GET"
       ],
       "auth": "ADMIN_KEY",
-      "description": "Private product activity, subscriptions, and delivery operations (JSON or ?view=html). The HTML view adds receipt-backed Search activity; the JSON body is unchanged."
+      "description": "Private product activity, subscriptions, and delivery operations (JSON or ?view=html). The JSON body additively carries receipt-derived completed-search statistics in search_executions; every earlier field keeps its meaning. The HTML view adds receipt-backed Search activity."
     },
     {
       "path": "/admin/owed-backlog",
