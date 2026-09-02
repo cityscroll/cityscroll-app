@@ -1,0 +1,179 @@
+{
+  "schema": "cityscroll.notice_primary_readiness_evidence.v1",
+  "version": 1,
+  "primary_owners": [
+    "edge-primary-body",
+    "edge-unavailable-terminal",
+    "client-fallback-body",
+    "client-unavailable-terminal"
+  ],
+  "deferred_owners": [
+    "money-history",
+    "rules",
+    "notice-read",
+    "attachment-metadata",
+    "notice-context",
+    "property-action-matter"
+  ],
+  "identity": {
+    "metric_id": "content_ready_ms",
+    "surface_id": "notice",
+    "component_id": "none",
+    "new_rum_identity": false,
+    "record_identifiers": false
+  },
+  "before": {
+    "label": "before",
+    "metric_id": "content_ready_ms",
+    "surface_id": "notice",
+    "component_id": "none",
+    "sampled_count": 2,
+    "window_complete": false,
+    "sample_floor": 30,
+    "sufficiency": "insufficient_sample",
+    "p50_ms": null,
+    "p75_ms": null,
+    "p95_ms": null,
+    "result_states": {
+      "content": 1,
+      "empty": 0,
+      "unavailable": 1,
+      "error": 0
+    },
+    "population": {
+      "device_class": [
+        "mobile"
+      ],
+      "navigation_type": [
+        "navigate"
+      ],
+      "delivery_class": [
+        "pages_edge"
+      ],
+      "traffic_class": [
+        "lab"
+      ]
+    },
+    "measurement_class": "lab",
+    "window": null,
+    "revision": "9d8777d15"
+  },
+  "after": {
+    "label": "after",
+    "metric_id": "content_ready_ms",
+    "surface_id": "notice",
+    "component_id": "none",
+    "sampled_count": 2,
+    "window_complete": false,
+    "sample_floor": 30,
+    "sufficiency": "insufficient_sample",
+    "p50_ms": null,
+    "p75_ms": null,
+    "p95_ms": null,
+    "result_states": {
+      "content": 1,
+      "empty": 0,
+      "unavailable": 1,
+      "error": 0
+    },
+    "population": {
+      "device_class": [
+        "mobile"
+      ],
+      "navigation_type": [
+        "navigate"
+      ],
+      "delivery_class": [
+        "pages_edge"
+      ],
+      "traffic_class": [
+        "lab"
+      ]
+    },
+    "measurement_class": "lab",
+    "window": null,
+    "revision": "cfa0f25c7"
+  },
+  "comparison": {
+    "state": "insufficient_sample",
+    "reason": "before/after windows must both be complete and meet the sample floor",
+    "measurement_class": "lab",
+    "metric_id": "content_ready_ms",
+    "surface_id": "notice",
+    "component_id": "none",
+    "population_matched": true,
+    "delta_p50_ms": null,
+    "delta_p75_ms": null,
+    "delta_p95_ms": null
+  },
+  "estimate": {
+    "low_ms": 3000,
+    "high_ms": 7000,
+    "basis": "planning projection",
+    "applies_to": "slow devices",
+    "measured": false
+  },
+  "owner_call_timing": [
+    {
+      "trace": "cold-mobile-edge-content",
+      "owner": "edge-primary-body",
+      "deferred": false,
+      "called_at_ms": 0,
+      "settled_at_ms": 96,
+      "blocking": true
+    },
+    {
+      "trace": "cold-mobile-edge-content",
+      "owner": "money-history",
+      "deferred": true,
+      "called_at_ms": 97,
+      "settled_at_ms": null,
+      "blocking": false
+    },
+    {
+      "trace": "cold-mobile-edge-content",
+      "owner": "rules",
+      "deferred": true,
+      "called_at_ms": 97,
+      "settled_at_ms": null,
+      "blocking": false
+    },
+    {
+      "trace": "cold-mobile-edge-content",
+      "owner": "notice-read",
+      "deferred": true,
+      "called_at_ms": 98,
+      "settled_at_ms": null,
+      "blocking": false
+    },
+    {
+      "trace": "cold-mobile-edge-unavailable",
+      "owner": "edge-unavailable-terminal",
+      "deferred": false,
+      "called_at_ms": 0,
+      "settled_at_ms": 88,
+      "blocking": true
+    },
+    {
+      "trace": "cold-mobile-edge-unavailable",
+      "owner": "notice-context",
+      "deferred": true,
+      "called_at_ms": 89,
+      "settled_at_ms": null,
+      "blocking": false
+    }
+  ],
+  "field_baseline": {
+    "source": "field-rum-readiness-2026-08-26",
+    "surface_id": "notice",
+    "component_id": "none",
+    "sampled_count": 64,
+    "estimated_count": 66,
+    "p50_ms": 2073.8,
+    "p75_ms": 3798.1,
+    "p95_ms": 8615.2,
+    "window": "2026-08-20T01:49:06Z/2026-08-26T13:10:50Z",
+    "predates_owner_boundary": true,
+    "not_a_result": true
+  }
+}

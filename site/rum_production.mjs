@@ -196,19 +196,22 @@ export function createBufferedSemanticMilestones(runtime = globalThis) {
       return null;
     }
   }
-  function enqueue(kind, args) {
+  // An owner that already read its own clock at the boundary passes that value
+  // through; otherwise the buffer stamps enqueue time, which is the same moment.
+  function enqueue(kind, args, ownerProvided = null) {
     if (queued.length >= MAX_BUFFERED_MILESTONES) return { state: "disabled" };
-    queued.push({ kind, args, timestamp: ownerTimestamp() });
+    const provided = Number.isFinite(ownerProvided) && ownerProvided >= 0 ? ownerProvided : null;
+    queued.push({ kind, args, timestamp: provided ?? ownerTimestamp() });
     return { state: "buffered" };
   }
 
   const buffer = Object.freeze({
     state: "buffering",
-    surfaceReady(args) {
-      return enqueue("surfaceReady", args);
+    surfaceReady(args, ownerTimestampOverride = null) {
+      return enqueue("surfaceReady", args, ownerTimestampOverride);
     },
-    componentReady(args) {
-      return enqueue("componentReady", args);
+    componentReady(args, ownerTimestampOverride = null) {
+      return enqueue("componentReady", args, ownerTimestampOverride);
     },
     interactionStart() {
       return Object.freeze({

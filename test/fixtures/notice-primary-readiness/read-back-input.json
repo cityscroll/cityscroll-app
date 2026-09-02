@@ -1,0 +1,119 @@
+{
+  "sampleFloor": 30,
+  "beforeWindowComplete": false,
+  "afterWindowComplete": false,
+  "beforeWindow": null,
+  "afterWindow": null,
+  "beforeRevision": "9d8777d15",
+  "afterRevision": "cfa0f25c7",
+  "fieldBaseline": {
+    "source": "field-rum-readiness-2026-08-26",
+    "sampled_count": 64,
+    "estimated_count": 66,
+    "p50_ms": 2073.8,
+    "p75_ms": 3798.1,
+    "p95_ms": 8615.2,
+    "window": "2026-08-20T01:49:06Z/2026-08-26T13:10:50Z",
+    "predates_owner_boundary": true
+  },
+  "beforeObservations": [
+    {
+      "metric_id": "content_ready_ms",
+      "surface_id": "notice",
+      "component_id": "none",
+      "result_state": "content",
+      "value": 4120,
+      "trace_key": "lab-before-edge-content",
+      "device_class": "mobile",
+      "navigation_type": "navigate",
+      "delivery_class": "pages_edge",
+      "traffic_class": "lab",
+      "observed_at": "lab"
+    },
+    {
+      "metric_id": "content_ready_ms",
+      "surface_id": "notice",
+      "component_id": "none",
+      "result_state": "unavailable",
+      "value": 3980,
+      "trace_key": "lab-before-edge-unavailable",
+      "device_class": "mobile",
+      "navigation_type": "navigate",
+      "delivery_class": "pages_edge",
+      "traffic_class": "lab",
+      "observed_at": "lab"
+    }
+  ],
+  "afterObservations": [
+    {
+      "metric_id": "content_ready_ms",
+      "surface_id": "notice",
+      "component_id": "none",
+      "result_state": "content",
+      "value": 96,
+      "trace_key": "lab-after-edge-content",
+      "device_class": "mobile",
+      "navigation_type": "navigate",
+      "delivery_class": "pages_edge",
+      "traffic_class": "lab",
+      "observed_at": "lab"
+    },
+    {
+      "metric_id": "content_ready_ms",
+      "surface_id": "notice",
+      "component_id": "none",
+      "result_state": "unavailable",
+      "value": 88,
+      "trace_key": "lab-after-edge-unavailable",
+      "device_class": "mobile",
+      "navigation_type": "navigate",
+      "delivery_class": "pages_edge",
+      "traffic_class": "lab",
+      "observed_at": "lab"
+    }
+  ],
+  "ownerCallTiming": [
+    {
+      "trace": "cold-mobile-edge-content",
+      "owner": "edge-primary-body",
+      "called_at_ms": 0,
+      "settled_at_ms": 96,
+      "blocking": true
+    },
+    {
+      "trace": "cold-mobile-edge-content",
+      "owner": "money-history",
+      "called_at_ms": 97,
+      "settled_at_ms": null,
+      "blocking": false
+    },
+    {
+      "trace": "cold-mobile-edge-content",
+      "owner": "rules",
+      "called_at_ms": 97,
+      "settled_at_ms": null,
+      "blocking": false
+    },
+    {
+      "trace": "cold-mobile-edge-content",
+      "owner": "notice-read",
+      "called_at_ms": 98,
+      "settled_at_ms": null,
+      "blocking": false
+    },
+    {
+      "trace": "cold-mobile-edge-unavailable",
+      "owner": "edge-unavailable-terminal",
+      "called_at_ms": 0,
+      "settled_at_ms": 88,
+      "blocking": true
+    },
+    {
+      "trace": "cold-mobile-edge-unavailable",
+      "owner": "notice-context",
+      "called_at_ms": 89,
+      "settled_at_ms": null,
+      "blocking": false
+    }
+  ]
+}
