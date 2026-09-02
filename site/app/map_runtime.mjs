@@ -24,6 +24,7 @@
 
 import { lookupBblCentroid } from "../bbl_mappluto_centroids.mjs";
 import { buildLandMapModel } from "../land_map_model.mjs";
+import { landProjectPath } from "../land_project_route.mjs";
 import {
   BOROUGH_HULLS,
   NYC_BOUNDS,
@@ -314,7 +315,71 @@ function landMapViewBox(bounds){
   return bboxToViewBox([minLon, minLat, maxLon, maxLat], 0.06);
 }
 
-export function landMapCanvasSvg(model, {t: copy = mapCopy, escape = escapeMapHtml} = {}){
+/* Resident-facing names for the placement methods and precisions the model accepts.
+   A marker that cannot say how it was placed implies an exactness the projection never
+   claimed, so a label always carries the method AND its precision -- an anchor for a
+   25-lot rezoning and a single lot centre are both "on the map", and only the label
+   keeps them from reading the same. */
+const LAND_MAP_METHOD_COPY = Object.freeze({
+  publisher_point: "land_map_method_publisher_point",
+  single_bbl_centroid: "land_map_method_single_bbl_centroid",
+  multi_bbl_anchor: "land_map_method_multi_bbl_anchor",
+  property_coordinate: "land_map_method_property_coordinate",
+  geometry_representative_point: "land_map_method_geometry_representative_point",
+});
+const LAND_MAP_PRECISION_COPY = Object.freeze({
+  exact: "land_map_precision_exact",
+  anchor: "land_map_precision_anchor",
+  representative: "land_map_precision_representative",
+});
+
+/* The one route a marker may lead to: the canonical Land detail path a List card already
+   links to. `landProjectPath` validates the id shape and returns null for anything that is
+   not a real project id, so a malformed row can never mint a link to a route that is not
+   there. A marker is a second way to reach one project, never a second identity for it. */
+export function landMarkerDetailHref(projectId){
+  const canonical = landProjectPath(projectId);
+  if(!canonical) return null;
+  // Prefer the app's own link builder when it is published: it carries the resident's
+  // language exactly the way a List card's link does, so following a marker cannot quietly
+  // drop a Spanish reader onto an English page. Same canonical path underneath; the
+  // fallback keeps this function pure for the node contract tests.
+  const link = globalThis.landLink;
+  return (typeof link === "function" ? link(projectId) : "") || canonical;
+}
+
+/**
+ * The marker layer for one model: one record per mapped filtered row, in the model's own
+ * order, each carrying the identity, point, placement method, precision, and projection
+ * vintage the evidence contract requires. Pure, so the join can be read without a browser.
+ *
+ * It renders `model.markers` and nothing else. There is no path here from a point-artifact
+ * key to a marker: an entry the filtered rows did not produce never reaches this function.
+ */
+export function landMapMarkerLayer(model, {t: copy = mapCopy, sourceVintage = null} = {}){
+  return Object.freeze((model?.markers || []).map(marker=>{
+    const title = String(marker.title ?? "").trim() || marker.projectId;
+    const methodKey = LAND_MAP_METHOD_COPY[marker.method];
+    const precisionKey = LAND_MAP_PRECISION_COPY[marker.precision];
+    const method = methodKey ? copy(methodKey,{n:marker.bblCount ?? 0}) : marker.method;
+    const precision = precisionKey ? copy(precisionKey) : marker.precision;
+    return Object.freeze({
+      projectId: marker.projectId,
+      title,
+      lat: marker.lat,
+      lon: marker.lon,
+      method: marker.method,
+      precision: marker.precision,
+      bblCount: marker.bblCount,
+      href: landMarkerDetailHref(marker.projectId),
+      label: copy("land_map_marker_label",{title, method, precision}),
+      selected: marker.selected,
+      sourceVintage,
+    });
+  }));
+}
+
+export function landMapCanvasSvg(model, {t: copy = mapCopy, escape = escapeMapHtml, sourceVintage = null} = {}){
   const viewBox = landMapViewBox(model.bounds);
   const width = Number(String(viewBox).split(/\s+/)[2]) || 1000;
   const radius = Math.max(1.2, width/90).toFixed(2);
@@ -323,14 +388,25 @@ export function landMapCanvasSvg(model, {t: copy = mapCopy, escape = escapeMapHt
     .filter(Boolean)
     .map(d=>`<path class="land-map-outline" d="${d}"/>`)
     .join("");
-  const markers = model.markers.map(marker=>{
+  const markers = landMapMarkerLayer(model,{t:copy, sourceVintage}).map(marker=>{
     const [x,y] = projectLonLat(marker.lon, marker.lat);
-    const title = escape(marker.title || marker.projectId);
-    return `<circle class="land-map-marker" data-land-map-precision="${escape(marker.precision)}"`
+    const label = escape(marker.label);
+    const circle = `<circle class="land-map-marker" data-land-map-precision="${escape(marker.precision)}"`
+      + ` data-land-map-method="${escape(marker.method)}"`
       + ` data-land-map-project="${escape(marker.projectId)}"`
-      + ` cx="${x.toFixed(2)}" cy="${y.toFixed(2)}" r="${radius}"><title>${title}</title></circle>`;
+      + ` cx="${x.toFixed(2)}" cy="${y.toFixed(2)}" r="${radius}"><title>${label}</title></circle>`;
+    // An id the canonical Land route will not accept gets a point but never a link: a
+    // marker that cannot be traced back to a real project row must not offer a route
+    // that is not there.
+    if(!marker.href) return circle;
+    return `<a class="land-map-marker-link" href="${escape(marker.href)}"`
+      + ` data-land-map-project="${escape(marker.projectId)}"`
+      + ` aria-label="${label}">${circle}</a>`;
   }).join("");
-  return `<svg class="land-map-canvas" viewBox="${viewBox}" role="img" preserveAspectRatio="xMidYMid meet"`
+  // `role="group"`, not `role="img"`: the markers are the canonical way into each project
+  // from here, and an image role would hide every one of those links from assistive tech.
+  return `<svg class="land-map-canvas" viewBox="${viewBox}" role="group" preserveAspectRatio="xMidYMid meet"`
+    + (sourceVintage ? ` data-land-map-source-vintage="${escape(sourceVintage)}"` : "")
     + ` aria-label="${escape(copy("land_map_canvas_alt",{n:model.counts.mapped}))}">`
     + `<g class="land-map-outlines" aria-hidden="true">${outlines}</g>`
     + `<g class="land-map-markers">${markers}</g></svg>`;
@@ -341,13 +417,19 @@ export function landMapCanvasSvg(model, {t: copy = mapCopy, escape = escapeMapHt
  * count, and the marker geometry are all decided here so a contract test can read them
  * without a browser.
  */
-export function landMapPanelHTML(model, {t: copy = mapCopy, escape = escapeMapHtml} = {}){
+export function landMapPanelHTML(model, {t: copy = mapCopy, escape = escapeMapHtml, sourceVintage = null} = {}){
   const summary = copy("land_map_summary",{mapped:model.counts.mapped, total:model.counts.total});
   const unmapped = model.counts.unmapped
     ? `<p class="land-map-unmapped">${escape(copy("land_map_unmapped_note",{n:model.counts.unmapped}))}</p>`
     : "";
-  return landMapCanvasSvg(model,{t:copy,escape})
-    + `<p class="land-map-summary" id="land-map-summary" role="status">${escape(summary)}</p>`
+  // All three counts, always, and on the same element: the mapped count is what the map can
+  // show, the total is what the List holds, and the difference is the part of the answer the
+  // map cannot draw. Publishing only the first would let the marker count read as the total.
+  return landMapCanvasSvg(model,{t:copy,escape,sourceVintage})
+    + `<p class="land-map-summary" id="land-map-summary" role="status"`
+    + ` data-land-map-total="${model.counts.total}"`
+    + ` data-land-map-mapped="${model.counts.mapped}"`
+    + ` data-land-map-unmapped="${model.counts.unmapped}">${escape(summary)}</p>`
     + unmapped;
 }
 
@@ -362,9 +444,9 @@ export function landMapFailureHTML({t: copy = mapCopy, escape = escapeMapHtml} =
     + `</div>`;
 }
 
-function renderLandMapModel(panel, model){
+function renderLandMapModel(panel, model, sourceVintage){
   panel.dataset.landMapState = "ready";
-  panel.innerHTML = landMapPanelHTML(model);
+  panel.innerHTML = landMapPanelHTML(model,{sourceVintage});
 }
 
 function renderLandMapLoading(panel){
@@ -408,7 +490,7 @@ export async function mountLandBrowseMap(host, {rows, selectedProjectId, filters
       pointLookup: payload,
       selectedProjectId,
       filters,
-    }));
+    }), payload.schema ?? null);
   }catch(error){
     renderLandMapFailure(panel);
     throw error;

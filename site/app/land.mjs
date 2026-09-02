@@ -496,6 +496,11 @@ function paintLandRows(rows, banner, kw, block, boro, stale, autoSelect, statusM
       if(el) el.classList.add("sel");
     }
   }
+  // Map is a second rendering of exactly these rows, so a repaint of the filtered population
+  // has to reach it too. Without this a cold `view=map` deep link mounts the map before the
+  // search has returned and leaves it reporting an empty result set it never revisits. This
+  // re-renders the same rows List just painted; it adds no map-side filter of its own.
+  globalThis.applyLandPresentation?.();
 }
 async function landSearch(){
   let boro=landBorough, kw=$("#lkw").value.trim();
