@@ -26,6 +26,12 @@ import { lookupBblCentroid } from "../bbl_mappluto_centroids.mjs";
 import { buildLandMapModel } from "../land_map_model.mjs";
 import { landProjectPath } from "../land_project_route.mjs";
 import {
+  landMapSelectionFocusIntent,
+  landSelectionFromHistoryState,
+  landSelectionHistoryPatch,
+  nextLandMapSelection,
+} from "../land_map_selection.mjs";
+import {
   BOROUGH_HULLS,
   NYC_BOUNDS,
   bboxToViewBox,
@@ -241,14 +247,18 @@ async function landShowLots(gj, n, selection){
 /* ===================== BROWSE MAP SHELL (route-lazy) =====================
    The spatial sibling of the Land List. It paints the population List already built —
    it never filters, searches, reorders, or re-queries — using the local SVG substrate
-   and the committed point projection. Marker interaction is deliberately not here yet;
-   this card owns the activation boundary, not the marker behaviour on top of it. */
+   and the committed point projection.
+
+   Selecting a marker is exploration within that population, never a query against it: the
+   selected project is one of the rows already on screen, described from that row, and the
+   only thing an activation costs is a repaint. */
 
 export const LAND_MAP_SHELL_SCHEMA = "cityscroll.land_map_shell.v1";
 /* The only network dependency browse Map activation adds: a committed, versioned, bounded
    projection served from this origin. No publisher call, no live GIS, no tile provider. */
 export const LAND_MAP_POINTS_URL = "data/land_project_map_points.json";
 export const LAND_MAP_PANEL_ID = "land-map-panel";
+export const LAND_MAP_SELECTION_ID = "land-map-selected";
 
 let landMapPointsPromise = null;
 function loadLandMapPoints(){
@@ -281,6 +291,160 @@ function escapeMapHtml(value){
     .replaceAll('"',"&quot;").replaceAll("'","&#39;");
 }
 
+/* ===================== SELECTION STATE =====================
+   Selection belongs to the module that owns the map, and it lives here rather than in the route
+   for two reasons. It is meaningless without a painted map: there is nothing to select when the
+   Map is not the view, and this module only exists once Map has been activated. And it costs the
+   route nothing, because the state itself is not held here -- it is held on the history entry,
+   which survives the document reload that following a project detail causes. See
+   land_map_selection.mjs for what a remembered id means and when it stops meaning it.
+
+   The route's own seams are reused as published: `routeHistoryState` to write a history note
+   without clobbering the entry's scroll and back context, `applyLandPresentation` to repaint,
+   `setLandView` for the List handoff, and `landFocusListProject` to land on the row. Selection
+   adds no seam of its own to the route. */
+
+/** Where focus belongs after the next paint, and nothing after that. One-shot. */
+let landMapFocusIntent = null;
+/** True once this document has adopted whatever selection its history entry remembered. */
+let landSelectionHydrated = false;
+
+function currentLandSelection(){
+  return landSelectionFromHistoryState(globalThis.history?.state);
+}
+
+function rememberLandSelection(projectId){
+  const patch = landSelectionHistoryPatch(projectId);
+  const build = globalThis.routeHistoryState;
+  try{
+    history.replaceState(typeof build === "function" ? build(patch) : patch, "", location.href);
+  }catch(_e){ /* a history that will not take a note is not a reason to refuse a selection */ }
+}
+
+/* The Back half of the round trip. Following the canonical detail route leaves this document,
+   so returning reloads it: the resident comes back to an entry that still remembers the project
+   they left from, and the marker that sent them there takes focus again. A `view=map` link
+   opened cold carries no such note, so nothing is selected and nothing takes focus. */
+function hydrateLandSelectionFocus(){
+  if(landSelectionHydrated) return;
+  landSelectionHydrated = true;
+  const remembered = currentLandSelection();
+  if(remembered) landMapFocusIntent = landMapSelectionFocusIntent({projectId:remembered, kind:"marker"});
+}
+
+/**
+ * Select one project on the Map, or clear the selection with a null id.
+ *
+ * This repaints and does nothing else. It runs no search, fetches no project, and touches no
+ * filter: the id it is given already belongs to a row the current result set holds, and the
+ * summary is written from that row.
+ */
+export function setLandMapSelection(projectId, {focus = "selection"} = {}){
+  landSelectionHydrated = true;
+  landMapFocusIntent = landMapSelectionFocusIntent({projectId, kind:focus});
+  rememberLandSelection(projectId);
+  return globalThis.applyLandPresentation?.();
+}
+
+/** Remember which marker sent the resident into a project detail, for the return trip. */
+function noteLandMapDetailDeparture(projectId){
+  const id = String(projectId ?? "").trim();
+  if(!id || id !== currentLandSelection()) return;
+  landMapFocusIntent = landMapSelectionFocusIntent({projectId:id, kind:"marker"});
+}
+
+/* The explicit Map -> List handoff: switch presentation, then point List at the project the
+   resident was already looking at, using List's own row selection. No query is issued and no
+   population is rebuilt -- the row is one of the rows already on screen. */
+export function landMapListHandoff(projectId){
+  const id = String(projectId ?? "").trim();
+  landMapFocusIntent = null;
+  globalThis.setLandView?.("list");
+  if(!id) return false;
+  return globalThis.landFocusListProject?.(id) === true;
+}
+
+/* What painted is the truth. A refusal is written straight back to the entry, so a project the
+   filter no longer holds cannot return selected when the resident widens the filter again. */
+function reconcileLandMapSelection(panel, population){
+  const requested = currentLandSelection();
+  if(!requested) return panel;
+  const next = nextLandMapSelection({
+    requested,
+    painted: panel?.dataset?.landMapSelected || "",
+    population,
+  });
+  if(next !== requested) rememberLandSelection(null);
+  return panel;
+}
+
+/* Selection interaction, delegated once onto the panel.
+ *
+ * Delegated because every repaint replaces the panel's children, so a listener bound to a
+ * marker would be thrown away with it; the panel element itself survives.
+ *
+ * Keyboard is wired explicitly and not inherited from the pointer. An SVG group with a button
+ * role gets no free activation from the browser the way a real button element does, so Enter
+ * and Space are handled here; without them the whole map would be pointer-only, which is
+ * exactly the failure this card exists to prevent.
+ *
+ * The route owns the state. This module reports the resident's intent and paints what it is
+ * told; it holds no selection of its own, so the map can never disagree with the route about
+ * which project is selected. */
+function installLandMapSelection(panel){
+  // The panel is an ordinary element in the browser, and a minimal host in the pure contract
+  // fixtures. A host that cannot take listeners still gets a painted map; it just gets no
+  // interaction, which is the honest degradation rather than a thrown mount.
+  if(typeof panel?.addEventListener !== "function") return;
+  if(panel.dataset.landMapSelectionInstalled === "true") return;
+  panel.dataset.landMapSelectionInstalled = "true";
+  const activate = (target)=>{
+    const marker = target?.closest?.("[data-land-map-project][role='button']");
+    if(marker && panel.contains(marker)){
+      // Idempotent by construction: the id is the whole message, so activating the marker
+      // that is already selected re-states the same selection instead of adding one.
+      setLandMapSelection(marker.dataset.landMapProject);
+      return true;
+    }
+    return false;
+  };
+  panel.addEventListener("click",(event)=>{
+    const clear = event.target?.closest?.("[data-land-map-clear]");
+    if(clear && panel.contains(clear)){
+      event.preventDefault();
+      setLandMapSelection(null);
+      return;
+    }
+    const handoff = event.target?.closest?.("[data-land-map-list-handoff]");
+    if(handoff && panel.contains(handoff)){
+      event.preventDefault();
+      landMapListHandoff(handoff.dataset.landMapListHandoff);
+      return;
+    }
+    // The detail action is an ordinary link and is left alone to navigate. The route is told
+    // which marker sent the resident there so Back can put focus back on it.
+    const detail = event.target?.closest?.("[data-land-map-detail]");
+    if(detail && panel.contains(detail)){
+      noteLandMapDetailDeparture(detail.dataset.landMapDetail);
+      return;
+    }
+    if(activate(event.target)) event.preventDefault();
+  });
+  panel.addEventListener("keydown",(event)=>{
+    if(event.key==="Escape"){
+      if(!panel.querySelector(`#${LAND_MAP_SELECTION_ID}`)) return;
+      event.preventDefault();
+      setLandMapSelection(null);
+      return;
+    }
+    if(event.key!=="Enter" && event.key!==" " && event.key!=="Spacebar") return;
+    const marker = event.target?.closest?.("[data-land-map-project][role='button']");
+    if(!marker || !panel.contains(marker)) return;
+    event.preventDefault();
+    activate(marker);
+  });
+}
+
 /** The panel is a sibling of the list and detail panels, never a replacement for them. */
 function landMapPanel(host){
   const grid = host || document.getElementById("land-results-grid");
@@ -290,9 +454,11 @@ function landMapPanel(host){
     panel = document.createElement("section");
     panel.className = "land-map-panel";
     panel.id = LAND_MAP_PANEL_ID;
+    panel.tabIndex = -1;
     panel.setAttribute("aria-label", mapCopy("land_map_panel_label"));
     grid.insertBefore(panel, grid.firstChild);
   }
+  installLandMapSelection(panel);
   return panel;
 }
 
@@ -395,13 +561,20 @@ export function landMapCanvasSvg(model, {t: copy = mapCopy, escape = escapeMapHt
       + ` data-land-map-method="${escape(marker.method)}"`
       + ` data-land-map-project="${escape(marker.projectId)}"`
       + ` cx="${x.toFixed(2)}" cy="${y.toFixed(2)}" r="${radius}"><title>${label}</title></circle>`;
-    // An id the canonical Land route will not accept gets a point but never a link: a
-    // marker that cannot be traced back to a real project row must not offer a route
-    // that is not there.
+    // An id the canonical Land route will not accept gets a point but never a control: a
+    // marker that cannot be traced back to a real project row must not offer a way into a
+    // record that is not there.
     if(!marker.href) return circle;
-    return `<a class="land-map-marker-link" href="${escape(marker.href)}"`
+    // A button, not a link, and the distinction is the whole selection contract. Activating
+    // a marker does not leave the map: it selects one project and paints the summary below,
+    // where the canonical detail route lives as a real link. An anchor whose activation did
+    // not navigate would announce a destination it never goes to. The canonical href still
+    // rides on the control, so the marker's identity stays checkable from the marker itself.
+    return `<g class="land-map-marker-control" role="button" tabindex="0"`
       + ` data-land-map-project="${escape(marker.projectId)}"`
-      + ` aria-label="${label}">${circle}</a>`;
+      + ` data-land-map-href="${escape(marker.href)}"`
+      + (marker.selected ? ` aria-current="true" data-land-map-selected="true"` : "")
+      + ` aria-label="${label}">${circle}</g>`;
   }).join("");
   // `role="group"`, not `role="img"`: the markers are the canonical way into each project
   // from here, and an image role would hide every one of those links from assistive tech.
@@ -410,6 +583,57 @@ export function landMapCanvasSvg(model, {t: copy = mapCopy, escape = escapeMapHt
     + ` aria-label="${escape(copy("land_map_canvas_alt",{n:model.counts.mapped}))}">`
     + `<g class="land-map-outlines" aria-hidden="true">${outlines}</g>`
     + `<g class="land-map-markers">${markers}</g></svg>`;
+}
+
+/**
+ * The selected project summary: what one marker turned out to be, and the two ways on.
+ *
+ * It is written from `model.selectedRow` — the row the List already filtered — and from the
+ * point the same model joined to it. Nothing here is fetched, and no project is reconstructed
+ * from a point: an id the filtered rows do not hold has no `selectedMarker`, so this renders
+ * nothing at all rather than inventing a record to describe.
+ *
+ * Compact on purpose. The full dossier lives one canonical link away, and repeating it here
+ * would make the map a second, staler copy of the project record.
+ */
+export function landMapSelectionHTML(model, {t: copy = mapCopy, escape = escapeMapHtml, sourceVintage = null} = {}){
+  const selectedId = model?.selectedProjectId;
+  if(!selectedId || !model?.selectedMarker) return "";
+  const marker = landMapMarkerLayer(model,{t:copy, sourceVintage}).find(item=>item.projectId===selectedId);
+  if(!marker) return "";
+  const row = model.selectedRow || null;
+  const title = marker.title;
+  // The row's own status, exactly as the List card states it. No inference and no default:
+  // a project whose status the row does not carry gets no status line rather than a guess.
+  const status = String(row?.public_status ?? row?.project_status ?? "").trim();
+  const methodKey = LAND_MAP_METHOD_COPY[marker.method];
+  const precisionKey = LAND_MAP_PRECISION_COPY[marker.precision];
+  const method = methodKey ? copy(methodKey,{n:marker.bblCount ?? 0}) : marker.method;
+  const precision = precisionKey ? copy(precisionKey) : marker.precision;
+  // Each control is built as one whole element in one template literal. Splitting an opening
+  // tag from its closing tag across concatenated strings hides the control's real label from
+  // the control-label lint, which then reads everything between them as the label.
+  const detailLabel = escape(copy("land_map_selected_detail"));
+  const detail = marker.href
+    ? `<a class="land-map-selected-detail" href="${escape(marker.href)}" data-land-map-detail="${escape(selectedId)}">${detailLabel}</a>`
+    : "";
+  const handoff = `<button class="act mini" type="button" data-land-map-list-handoff="${escape(selectedId)}">${escape(copy("land_map_selected_list"))}</button>`;
+  const clear = `<button class="act mini" type="button" data-land-map-clear="1">${escape(copy("land_map_selected_clear"))}</button>`;
+  return `<section class="land-map-selected" id="${LAND_MAP_SELECTION_ID}" tabindex="-1"`
+    + ` data-land-map-project="${escape(selectedId)}"`
+    + ` data-land-map-method="${escape(marker.method)}"`
+    + ` data-land-map-precision="${escape(marker.precision)}"`
+    // The projection this placement came from travels with the selection, the same vintage the
+    // canvas carries. A summary that outlived its source would otherwise read as current.
+    + (sourceVintage ? ` data-land-map-source-vintage="${escape(sourceVintage)}"` : "")
+    + ` aria-label="${escape(copy("land_map_selected_region",{title}))}">`
+    + `<h3 class="land-map-selected-title">${escape(title)}</h3>`
+    + (status ? `<p class="land-map-selected-status">${escape(status)}</p>` : "")
+    // Method and precision together, never one without the other: this is the line that keeps
+    // a 25-lot anchor from reading as a doorstep.
+    + `<p class="land-map-selected-placement">${escape(copy("land_map_selected_placement",{method, precision}))}</p>`
+    + `<p class="land-map-selected-source">${escape(copy("land_map_selected_source"))}</p>`
+    + `<div class="land-map-selected-actions">${detail}${handoff}${clear}</div></section>`;
 }
 
 /**
@@ -425,12 +649,16 @@ export function landMapPanelHTML(model, {t: copy = mapCopy, escape = escapeMapHt
   // All three counts, always, and on the same element: the mapped count is what the map can
   // show, the total is what the List holds, and the difference is the part of the answer the
   // map cannot draw. Publishing only the first would let the marker count read as the total.
+  // Order is the reader journey. The population comes first — how many results there are and
+  // how many the map can draw — and the selected project comes last, because it is one
+  // resident's exploration of that population and not the orientation itself.
   return landMapCanvasSvg(model,{t:copy,escape,sourceVintage})
     + `<p class="land-map-summary" id="land-map-summary" role="status"`
     + ` data-land-map-total="${model.counts.total}"`
     + ` data-land-map-mapped="${model.counts.mapped}"`
     + ` data-land-map-unmapped="${model.counts.unmapped}">${escape(summary)}</p>`
-    + unmapped;
+    + unmapped
+    + landMapSelectionHTML(model,{t:copy,escape,sourceVintage});
 }
 
 /* The resident keeps the list they already have. This adds the two ways forward the
@@ -444,9 +672,62 @@ export function landMapFailureHTML({t: copy = mapCopy, escape = escapeMapHtml} =
     + `</div>`;
 }
 
+/* Focus survives a repaint.
+ *
+ * The Map repaints for reasons that have nothing to do with where the resident is: a Back that
+ * re-runs the filtered search paints two or three times before it settles. `innerHTML` destroys
+ * whatever was focused, and a destroyed focus target sends focus to the document root, which is
+ * how a keyboard resident silently loses their place mid-journey. So the panel remembers which
+ * of its own controls held focus, keyed by project id rather than by node, and puts focus back
+ * on the equivalent control in the new paint.
+ *
+ * When the equivalent control is gone -- the filter no longer holds that project -- focus lands
+ * on the panel itself. Never on <body>. */
+function landMapFocusKey(panel){
+  const active = panel?.ownerDocument?.activeElement;
+  if(!active || typeof panel.contains !== "function" || !panel.contains(active)) return null;
+  const marker = active.closest?.("[data-land-map-project][role='button']");
+  if(marker) return {kind:"marker", projectId:marker.dataset.landMapProject};
+  if(active.id===LAND_MAP_SELECTION_ID) return {kind:"selection"};
+  return null;
+}
+
+export function landMapFocusTarget(panel, intent){
+  if(!panel || !intent || typeof panel.querySelector !== "function") return null;
+  const escapeId = (value) => (typeof CSS?.escape === "function" ? CSS.escape(value) : value);
+  if(intent.kind==="marker" && intent.projectId){
+    const marker = panel.querySelector(
+      `[data-land-map-project="${escapeId(intent.projectId)}"][role="button"]`);
+    if(marker) return marker;
+  }
+  if(intent.kind==="selection" || intent.kind==="marker"){
+    const selection = panel.querySelector(`#${LAND_MAP_SELECTION_ID}`);
+    if(selection) return selection;
+  }
+  return panel;
+}
+
+function restoreLandMapFocus(panel, intent){
+  const target = landMapFocusTarget(panel, intent);
+  if(!target || typeof target.focus !== "function") return null;
+  try{ target.focus({preventScroll:true}); }catch(_e){ try{ target.focus(); }catch(_ignored){} }
+  return target;
+}
+
 function renderLandMapModel(panel, model, sourceVintage){
+  const carried = landMapFocusKey(panel);
   panel.dataset.landMapState = "ready";
+  // What actually painted, which is not always what was asked for: the model refuses a
+  // selection whose project the current filter does not hold, and the route reads this back
+  // to forget the id instead of holding it against a later, wider filter.
+  if(model.selectedProjectId) panel.dataset.landMapSelected = model.selectedProjectId;
+  else delete panel.dataset.landMapSelected;
+  // How many rows this paint actually had an opinion about. A paint over an empty population
+  // -- the cold `view=map` load, before the search has returned -- is not evidence that a
+  // remembered project has left the filter; it is evidence of nothing yet.
+  panel.dataset.landMapPopulation = String(model.counts.total);
   panel.innerHTML = landMapPanelHTML(model,{sourceVintage});
+  if(carried) restoreLandMapFocus(panel, carried);
 }
 
 function renderLandMapLoading(panel){
@@ -484,18 +765,29 @@ export async function mountLandBrowseMap(host, {rows, selectedProjectId, filters
     renderLandMapFailure(panel);
     throw error;
   }
+  const population = Array.isArray(rows) ? rows : [];
+  hydrateLandSelectionFocus();
+  // The one-shot focus waits for a population. The Map paints more than once on the way back
+  // from a project detail -- the reloaded document paints an empty map before its search
+  // returns -- and spending the focus on that paint would put the resident on the panel instead
+  // of the marker they left from. The caller may still name a selection explicitly; when it does
+  // not, the history entry is the answer.
+  const havePopulation = population.length > 0;
+  const intent = havePopulation ? landMapFocusIntent : null;
+  if(havePopulation) landMapFocusIntent = null;
   try{
     renderLandMapModel(panel, buildLandMapModel({
-      rows: Array.isArray(rows) ? rows : [],
+      rows: population,
       pointLookup: payload,
-      selectedProjectId,
+      selectedProjectId: selectedProjectId ?? currentLandSelection(),
       filters,
     }), payload.schema ?? null);
   }catch(error){
     renderLandMapFailure(panel);
     throw error;
   }
-  return panel;
+  if(intent) restoreLandMapFocus(panel, intent);
+  return reconcileLandMapSelection(panel, population.length);
 }
 
 /** Leave the Land results exactly as List owns them. */

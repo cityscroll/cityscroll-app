@@ -6,7 +6,9 @@ Four things a source assertion cannot prove:
   1. The three counts agree in the live document: the map draws fewer projects than the List
      holds, and says so, rather than letting the marker count stand in for the total.
   2. A marker leads to the same project a List card leads to -- same id, same href, same
-     detail -- so the two views never diverge on identity.
+     detail -- so the two views never diverge on identity. Since LM-07 the marker is a
+     selection control that carries that route and hands it to the selected summary, so the
+     path is marker -> selection -> canonical detail; the identity asserted is unchanged.
   3. A marker says how it was placed, so a 25-lot anchor cannot read as an exact address.
   4. A project with no published point gets no marker anywhere on the canvas, and stays
      reachable through the List.
@@ -72,7 +74,7 @@ def read_map(page) -> dict:
         """() => {
           const summary = document.getElementById('land-map-summary');
           const markers = [...document.querySelectorAll('#land-map-panel .land-map-marker')];
-          const links = [...document.querySelectorAll('#land-map-panel .land-map-marker-link')];
+          const links = [...document.querySelectorAll('#land-map-panel .land-map-marker-control')];
           return {
             counts: summary ? {
               total: Number(summary.dataset.landMapTotal),
@@ -87,8 +89,8 @@ def read_map(page) -> dict:
             precisions: markers.map((m) => m.dataset.landMapPrecision),
             links: links.map((a) => ({
               id: a.dataset.landMapProject,
-              href: a.getAttribute('href'),
-              resolved: new URL(a.getAttribute('href'), location.href).href,
+              href: a.dataset.landMapHref,
+              resolved: new URL(a.dataset.landMapHref, location.href).href,
               label: a.getAttribute('aria-label') || '',
             })),
             list_ids: [...document.querySelectorAll('#llist a[href*="#land/"]')]
@@ -141,8 +143,12 @@ def check_marker_and_list_share_one_identity(page, state: dict) -> None:
     assert specimen["resolved"] == list_href, (
         f"marker links to {specimen['resolved']} but the List card links to {list_href}")
 
-    # Follow the marker, land on the project, then come back to List and find the same id.
-    page.locator(f'.land-map-marker-link[data-land-map-project="{MAPPED_SPECIMEN}"]').click()
+    # Follow the marker to the project. LM-07 made activation select the marker first, so the
+    # route is reached through the selected summary's canonical detail action -- the same href
+    # asserted above, and the same one the List card carries.
+    page.locator(f'.land-map-marker-control[data-land-map-project="{MAPPED_SPECIMEN}"]').click()
+    page.wait_for_selector("#land-map-selected", timeout=15_000)
+    page.locator(".land-map-selected-detail").click()
     page.wait_for_function(
         "(id) => location.hash.includes(`#land/${id}`)", arg=MAPPED_SPECIMEN, timeout=20_000)
     page.wait_for_function(

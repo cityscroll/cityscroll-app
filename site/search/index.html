@@ -1364,7 +1364,15 @@
   .land-map-canvas{display:block;width:100%;max-height:360px;background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-md)}
   .land-map-outline{fill:var(--color-canvas-subtle);stroke:var(--color-border-strong);stroke-width:1.5;vector-effect:non-scaling-stroke}
   .land-map-marker{fill:var(--color-action);fill-opacity:.75;stroke:var(--color-surface);stroke-width:1;vector-effect:non-scaling-stroke}
-  .land-map-marker-link:hover .land-map-marker,.land-map-marker-link:focus-visible .land-map-marker{fill-opacity:1;stroke:var(--color-action)}
+  .land-map-marker-control{cursor:pointer}
+  .land-map-marker-control:hover .land-map-marker,.land-map-marker-control:focus-visible .land-map-marker{fill-opacity:1;stroke:var(--color-action)}
+  .land-map-marker-control:focus-visible{outline:2px solid var(--color-action);outline-offset:2px}
+  .land-map-marker-control[aria-current="true"] .land-map-marker{fill-opacity:1;stroke:var(--color-text);stroke-width:2}
+  .land-map-selected{margin-top:var(--space-3);padding-top:var(--space-3);border-top:1px solid var(--color-border)}
+  .land-map-selected:focus-visible{outline:2px solid var(--color-action);outline-offset:2px}
+  .land-map-selected-title{margin:0;font:600 15px/1.3 var(--font-interface)}
+  .land-map-selected-status,.land-map-selected-placement,.land-map-selected-source{margin:var(--space-1) 0 0;font:13px/1.4 var(--font-interface);color:var(--color-text-soft)}
+  .land-map-selected-actions{display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-2);margin-top:var(--space-2)}
   .land-map-summary,.land-map-unmapped,.land-map-status{margin:var(--space-2) 0 0;font:13px/1.4 var(--font-interface);color:var(--color-text-soft)}
   .land-map-recovery{display:flex;flex-wrap:wrap;gap:var(--space-2);margin-top:var(--space-2)}
   .landbanner{font:13px/1.5 var(--font-interface);background:var(--color-canvas-subtle);border-inline-start:3px solid var(--color-action);padding:var(--space-2) var(--space-3);color:var(--color-text-soft);margin-bottom:0}

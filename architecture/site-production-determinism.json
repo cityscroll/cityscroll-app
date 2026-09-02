@@ -241,6 +241,7 @@
     "site/land_keyword_soda_missfill.mjs",
     "site/land_lot_source_digests.mjs",
     "site/land_map_model.mjs",
+    "site/land_map_selection.mjs",
     "site/land_phase_spine.mjs",
     "site/land_procedure_facet.mjs",
     "site/land_procedure_profiles.mjs",

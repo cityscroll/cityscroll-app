@@ -678,6 +678,28 @@ function landPermalinkActionHTML(r){
   return `${renderObjectCardCopy(interaction,{label:t("copy_link"),escape:escUiHtml})}${qrButtonHTML("landqr","act")}`;
 }
 
+/**
+ * Locate one project in the List that is already on screen.
+ *
+ * The Map's handoff target. It reuses List's own row selection, so the project a resident
+ * came from opens exactly the record a List click opens -- one selection path, not a second
+ * one that could drift from it. It searches `lRows`, the filtered population, and returns
+ * false rather than fetching when the project is not among them: a handoff is a way to find
+ * a row that exists, never a way to make one appear.
+ */
+function landFocusListProject(projectId){
+  const id=String(projectId??"").trim();
+  if(!id||!Array.isArray(lRows)) return false;
+  const index=lRows.findIndex(row=>String(row?.project_id??"")===id);
+  if(index<0) return false;
+  const el=document.querySelector(`#llist .row[data-i="${index}"]`);
+  if(!el) return false;
+  landSelect(index, el);
+  try{ el.scrollIntoView({block:"nearest"}); }catch(_e){}
+  try{ el.focus({preventScroll:true}); }catch(_e){ try{ el.focus(); }catch(_ignored){} }
+  return true;
+}
+
 async function landSelect(i, el){
   const selection=++landSelectionSeq;
   const itemCard=$("#land-item-card");
@@ -1715,6 +1737,7 @@ globalThis.landRenderList = landRenderList;
 globalThis.landRowHTML = landRowHTML;
 globalThis.landSearch = landSearch;
 globalThis.landSelect = landSelect;
+globalThis.landFocusListProject = landFocusListProject;
 globalThis.landSpineEventRowHTML = landSpineEventRowHTML;
 globalThis.landSpineGapsHTML = landSpineGapsHTML;
 globalThis.landSpineHTML = landSpineHTML;
