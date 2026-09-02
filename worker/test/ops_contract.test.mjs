@@ -74,6 +74,15 @@ test("buildOpsContract: stable id/version and required sections", () => {
   assert.ok(doc.feature_flags.some((f) => f.name === "DIGEST_CATCH_UP"));
   assert.ok(doc.traffic_class.usage.some((t) => t.id === "production"));
   assert.ok(doc.traffic_class.usage.some((t) => t.id === "developer"));
+  for (const filter of doc.search_activity.filters) {
+    assert.ok(Array.isArray(filter.backing_fields) && filter.backing_fields.length >= 1,
+      `search-activity filter ${filter.key} names its retained fields`);
+  }
+  assert.deepEqual(
+    doc.search_activity.filters.find((f) => f.key === "query").backing_fields,
+    ["query.raw", "query.normalized"],
+    "the machine-checkable claim covers every field the query filter reads",
+  );
 });
 
 test("committed fixture matches builder (desk CI pin)", () => {
@@ -84,7 +93,7 @@ test("committed fixture matches builder (desk CI pin)", () => {
 
 test("performance discovery advertises the cross-repository Desk consumer handoff", () => {
   const doc = buildOpsContract({ generated_at: "2026-08-01T00:00:00.000Z" });
-  assert.equal(doc.version, "1.10.0", "the private search-activity read route is additive on the existing ops-contract");
+  assert.equal(doc.version, "1.11.0", "the receipt-backed Search activity desk section is additive on the existing ops-contract");
   assert.equal(doc.signup_lifecycle.contract, "cityscroll.signup_lifecycle.v1");
   assert.equal(doc.signup_lifecycle.endpoint, "/admin/subs");
   assert.deepEqual(doc.signup_lifecycle.states.map((state) => state.id), [
@@ -117,7 +126,8 @@ test("performance discovery advertises the cross-repository Desk consumer handof
   });
   assert.equal(doc.admin_routes.filter(({ path }) => path === "/admin/performance").length, 1);
   assert.equal(doc.admin_routes.find(({ path }) => path === "/admin/stats").description,
-    "Private product activity, subscriptions, and delivery operations (JSON or ?view=html).");
+    "Private product activity, subscriptions, and delivery operations (JSON or ?view=html). "
+    + "The HTML view adds receipt-backed Search activity; the JSON body is unchanged.");
 });
 
 test("daylog actions the worker writes are covered by the contract", () => {

@@ -7,7 +7,23 @@
 // Desk panels pin min_version and validate fixtures against this schema so hard-coded
 // key prefixes, digest modes, and daylog actions cannot drift silently.
 
-export const OPS_CONTRACT_VERSION = "1.10.0";
+import {
+  SEARCH_ACTIVITY_ADMIN_PATH,
+  SEARCH_ACTIVITY_FAMILIES,
+  SEARCH_ACTIVITY_OUTCOME_STATES,
+  SEARCH_ACTIVITY_RETENTION_DAYS,
+} from "../../../capabilities/search_activity.mjs";
+import {
+  SEARCH_ACTIVITY_DEFAULT_READ_LIMIT,
+  SEARCH_ACTIVITY_MAX_READ_LIMIT,
+} from "./search_activity.mjs";
+import {
+  SEARCH_ACTIVITY_FILTERS,
+  SEARCH_ACTIVITY_MAX_FILTER_SCAN,
+  SEARCH_ACTIVITY_READ_PARAMS,
+} from "./search_activity_view.mjs";
+
+export const OPS_CONTRACT_VERSION = "1.11.0";
 export const OPS_CONTRACT_ID = "ops-contract.v1";
 
 /** Digest delivery / evaluation modes the worker may stamp on receipts and daylogs. */
@@ -342,7 +358,7 @@ export const ADMIN_ROUTES = Object.freeze([
     path: "/admin/stats",
     methods: ["GET"],
     auth: "ADMIN_KEY",
-    description: "Private product activity, subscriptions, and delivery operations (JSON or ?view=html).",
+    description: "Private product activity, subscriptions, and delivery operations (JSON or ?view=html). The HTML view adds receipt-backed Search activity; the JSON body is unchanged.",
   },
   {
     path: "/admin/owed-backlog",
@@ -390,7 +406,7 @@ export const ADMIN_ROUTES = Object.freeze([
     path: "/admin/search-activity",
     methods: ["GET"],
     auth: "ADMIN_KEY",
-    description: "Private search-execution receipts, newest first and bounded by limit. Production and developer receipts read from disjoint prefixes; never served publicly or on /stats.",
+    description: "Private search-execution receipts, newest first and bounded by limit, filterable only by retained receipt fields. Production and developer receipts read from disjoint prefixes; never served publicly or on /stats.",
   },
   {
     path: "/admin/report-adjudication",
@@ -709,6 +725,43 @@ export const SIGNUP_LIFECYCLE_CONTRACT = Object.freeze({
 });
 
 /**
+ * Search activity on the Product Activity desk surface (`GET /admin/stats?view=html`)
+ * and its authenticated JSON representation (`GET /admin/search-activity`).
+ *
+ * The offered filter vocabulary is closed and every entry names the retained fields
+ * behind it. Publishing it here is what makes "only stored-field filters are
+ * offered" checkable by a consumer rather than a claim in prose: a filter that
+ * cannot name a receipt field does not belong on this surface.
+ */
+export const SEARCH_ACTIVITY_CONTRACT = Object.freeze({
+  contract: "cityscroll.search_execution.v1",
+  version: "1.0.0",
+  endpoint: SEARCH_ACTIVITY_ADMIN_PATH,
+  desk_surface: "/admin/stats?view=html#search-activity-heading",
+  desk_renderer: "worker/src/admin.mjs#renderSearchActivityPanel",
+  projector: "worker/src/lib/search_activity_view.mjs#buildSearchActivityDeskModel",
+  cache_control: "private, no-store",
+  reruns_historical_queries: false,
+  outcome_states: SEARCH_ACTIVITY_OUTCOME_STATES,
+  result_families: SEARCH_ACTIVITY_FAMILIES,
+  retention_days: SEARCH_ACTIVITY_RETENTION_DAYS,
+  default_read_limit: SEARCH_ACTIVITY_DEFAULT_READ_LIMIT,
+  max_read_limit: SEARCH_ACTIVITY_MAX_READ_LIMIT,
+  max_filter_scan: SEARCH_ACTIVITY_MAX_FILTER_SCAN,
+  read_params: SEARCH_ACTIVITY_READ_PARAMS,
+  filters: SEARCH_ACTIVITY_FILTERS.map(({ key, backing_fields, description }) => ({
+    key,
+    backing_fields,
+    description,
+  })),
+  unsupported_filter_response: "HTTP 400 unsupported-filter; an unknown parameter is never silently ignored",
+  identity_fields: ["visitor_id", "subscriber_id", "account_label", "recognition"],
+  identity_note:
+    "Browser visitor, recognized subscriber, and network observation stay separate fields; "
+    + "a later recognized receipt never rewrites an earlier anonymous one.",
+});
+
+/**
  * Build the v1 ops contract document (pure, no I/O, no secrets).
  * @param {{ generated_at?: string }} [opts]
  */
@@ -733,6 +786,7 @@ export function buildOpsContract(opts = {}) {
     stats_metrics: STATS_METRICS,
     performance: PERFORMANCE_CONTRACT,
     signup_lifecycle: SIGNUP_LIFECYCLE_CONTRACT,
+    search_activity: SEARCH_ACTIVITY_CONTRACT,
     admin_routes: ADMIN_ROUTES,
     auth_classes: AUTH_CLASSES,
     kv_namespaces: KV_NAMESPACES,

@@ -1,6 +1,6 @@
 {
   "contract": "ops-contract.v1",
-  "version": "1.10.0",
+  "version": "1.11.0",
   "generated_at": "2026-08-05T13:55:23.589Z",
   "min_compatible_version": "1.0.0",
   "note": "Machine-readable ops contract for desk panels. No secrets. Not served on public /stats.",
@@ -352,7 +352,7 @@
       "path": "digests.lagging_subs",
       "source": "SUBS + lastsent:*",
       "exclude_developer_traffic": true,
-      "description": "Count of watches whose lastsent lags \u2265 2 days (no PII)."
+      "description": "Count of watches whose lastsent lags ≥ 2 days (no PII)."
     },
     {
       "path": "digests.last_run",
@@ -515,6 +515,100 @@
       "developerTestAccounts"
     ]
   },
+  "search_activity": {
+    "contract": "cityscroll.search_execution.v1",
+    "version": "1.0.0",
+    "endpoint": "/admin/search-activity",
+    "desk_surface": "/admin/stats?view=html#search-activity-heading",
+    "desk_renderer": "worker/src/admin.mjs#renderSearchActivityPanel",
+    "projector": "worker/src/lib/search_activity_view.mjs#buildSearchActivityDeskModel",
+    "cache_control": "private, no-store",
+    "reruns_historical_queries": false,
+    "outcome_states": [
+      "matched",
+      "partial",
+      "empty",
+      "unavailable"
+    ],
+    "result_families": [
+      "contracts",
+      "people-organizations",
+      "land",
+      "rules",
+      "meetings",
+      "exams"
+    ],
+    "retention_days": 30,
+    "default_read_limit": 25,
+    "max_read_limit": 100,
+    "max_filter_scan": 500,
+    "read_params": [
+      "key",
+      "limit",
+      "traffic_class"
+    ],
+    "filters": [
+      {
+        "key": "since",
+        "backing_fields": [
+          "received_at"
+        ],
+        "description": "Receipts recorded at or after this UTC instant (accepts YYYY-MM-DD)."
+      },
+      {
+        "key": "until",
+        "backing_fields": [
+          "received_at"
+        ],
+        "description": "Receipts recorded at or before this UTC instant (YYYY-MM-DD covers the whole day)."
+      },
+      {
+        "key": "query",
+        "backing_fields": [
+          "query.raw",
+          "query.normalized"
+        ],
+        "description": "Case-insensitive substring of the raw or normalized query the reader submitted."
+      },
+      {
+        "key": "visitor",
+        "backing_fields": [
+          "visitor_id"
+        ],
+        "description": "Exact opaque browser visitor id; returns every retained execution for that browser."
+      },
+      {
+        "key": "subscriber",
+        "backing_fields": [
+          "subscriber_id"
+        ],
+        "description": "Exact recognized subscriber id; anonymous receipts are never back-filled with it."
+      },
+      {
+        "key": "outcome",
+        "backing_fields": [
+          "outcome"
+        ],
+        "description": "Stored terminal state: matched, partial, empty, or unavailable."
+      },
+      {
+        "key": "family",
+        "backing_fields": [
+          "family_counts",
+          "incomplete_families"
+        ],
+        "description": "Executions that rendered rows in this family or recorded it incomplete."
+      }
+    ],
+    "unsupported_filter_response": "HTTP 400 unsupported-filter; an unknown parameter is never silently ignored",
+    "identity_fields": [
+      "visitor_id",
+      "subscriber_id",
+      "account_label",
+      "recognition"
+    ],
+    "identity_note": "Browser visitor, recognized subscriber, and network observation stay separate fields; a later recognized receipt never rewrites an earlier anonymous one."
+  },
   "admin_routes": [
     {
       "path": "/admin/ops-contract",
@@ -538,7 +632,7 @@
         "GET"
       ],
       "auth": "ADMIN_KEY",
-      "description": "Private product activity, subscriptions, and delivery operations (JSON or ?view=html)."
+      "description": "Private product activity, subscriptions, and delivery operations (JSON or ?view=html). The HTML view adds receipt-backed Search activity; the JSON body is unchanged."
     },
     {
       "path": "/admin/owed-backlog",
@@ -602,7 +696,7 @@
         "GET"
       ],
       "auth": "ADMIN_KEY",
-      "description": "Private search-execution receipts, newest first and bounded by limit. Production and developer receipts read from disjoint prefixes; never served publicly or on /stats."
+      "description": "Private search-execution receipts, newest first and bounded by limit, filterable only by retained receipt fields. Production and developer receipts read from disjoint prefixes; never served publicly or on /stats."
     },
     {
       "path": "/admin/report-adjudication",
@@ -629,7 +723,7 @@
         "POST"
       ],
       "auth": "ADMIN_KEY",
-      "description": "PIN-family Checkbook \u2194 PASSPort contract-id review; GET lists genuinely-ambiguous pairs with evidence, POST writes a same-contract or related-instrument verdict."
+      "description": "PIN-family Checkbook ↔ PASSPort contract-id review; GET lists genuinely-ambiguous pairs with evidence, POST writes a same-contract or related-instrument verdict."
     },
     {
       "path": "/admin/digest-rollup",
@@ -680,7 +774,7 @@
         "POST"
       ],
       "auth": "ADMIN_KEY",
-      "description": "Mail-leg health snapshot and canary. POST {action:canary} probes Resend \u2192 the worker-consumed subscribe address only; healthy rounds do not email team@. GET returns 503 when a canary is unmatched, stale, or a send failed, and exception-alerts team@ once per finding fingerprint per day. A rejected exception stays red through HTTP/GitHub-red rather than retrying the dead mail rail. Additive findings_history, canary_state, envelope, and token_prefix fields are source-labeled. The Gmail forward leg stays dashboard-gated."
+      "description": "Mail-leg health snapshot and canary. POST {action:canary} probes Resend → the worker-consumed subscribe address only; healthy rounds do not email team@. GET returns 503 when a canary is unmatched, stale, or a send failed, and exception-alerts team@ once per finding fingerprint per day. A rejected exception stays red through HTTP/GitHub-red rather than retrying the dead mail rail. Additive findings_history, canary_state, envelope, and token_prefix fields are source-labeled. The Gmail forward leg stays dashboard-gated."
     },
     {
       "path": "/admin/digest-send-test",
@@ -744,7 +838,7 @@
         "GET"
       ],
       "auth": "none",
-      "description": "Public corpus and coverage aggregates only \u2014 no product usage fields."
+      "description": "Public corpus and coverage aggregates only — no product usage fields."
     }
   ],
   "auth_classes": [
@@ -973,7 +1067,7 @@
       "values": [
         "always-on"
       ],
-      "description": "Account rollup is code-path default when an email has >1 active watch \u2014 not an env flag."
+      "description": "Account rollup is code-path default when an email has >1 active watch — not an env flag."
     },
     {
       "name": "ANALYTICS_ENVIRONMENT",
@@ -1016,6 +1110,6 @@
         "description": "Watermark recovery or multi-day lag stamp; desk correctnessCheck exempts."
       }
     ],
-    "developer_key": "ANALYTICS_DEV_KEY \u2014 signs X-CROL-Analytics-Dev tokens; also operator probe for digest-send-test. USAGE_KEY is separate (Haiku /usage report only)."
+    "developer_key": "ANALYTICS_DEV_KEY — signs X-CROL-Analytics-Dev tokens; also operator probe for digest-send-test. USAGE_KEY is separate (Haiku /usage report only)."
   }
 }
