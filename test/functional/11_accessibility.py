@@ -52,6 +52,7 @@ sys.path.insert(0, str(ROOT / "test" / "functional" / "assets"))
 from a11y_gate import failing_violations  # noqa: E402
 from ci_waits import wait_for_app_ready, wait_for_function, wait_for_locator  # noqa: E402
 from i18n_fixtures import install_routes  # noqa: E402
+from fixture_clock import pin_fixture_clock  # noqa: E402
 
 BASE = os.environ.get("CROL_BASE", "http://localhost:8000/")
 AXE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets", "axe.min.js")
@@ -283,6 +284,7 @@ def run_index_states(pw, lang, viewport, failures):
     width, height = viewport
     viewport_name = f"{width}x{height}"
     ctx = browser.new_context(viewport={"width": width, "height": height})
+    pin_fixture_clock(ctx)
     ctx.add_init_script(
         f"localStorage.setItem('crd_invs_v1', JSON.stringify({json.dumps(workspace_seed())}))")
     page = ctx.new_page()
@@ -487,7 +489,9 @@ def run_subpage(pw, path, viewport, failures):
     browser = pw.chromium.launch()
     width, height = viewport
     viewport_name = f"{width}x{height}"
-    page = browser.new_context(viewport={"width": width, "height": height}).new_page()
+    axe_ctx = browser.new_context(viewport={"width": width, "height": height})
+    pin_fixture_clock(axe_ctx)
+    page = axe_ctx.new_page()
     install_routes(page)
     target = BASE + path
     page.goto(target, wait_until="domcontentloaded", timeout=30000)

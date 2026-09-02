@@ -90,7 +90,17 @@ const MONEY_HONESTY_CAP = 10000000000;
 const EXPORT_BAND_THRESHOLD = 25;
 
 const $ = s => document.querySelector(s);
-const todayISO = () => new Date().toISOString().slice(0,10) + "T00:00:00";
+// The day the app reasons about. A committed fixture carries deadlines that fall behind a
+// real clock, so a browser fixture may pin this day before any application script runs and
+// judge that fixture against a date on which it was true. Nothing in the shipped product sets
+// the pin, so a resident is always shown the real day: this is a seam for harnesses, never a
+// way to change what the city is told.
+const CROL_PINNED_DAY = /^\d{4}-\d{2}-\d{2}$/;
+const pinnedTodayISO = () => {
+  const pinned = globalThis.CROL_PINNED_TODAY;
+  return typeof pinned === "string" && CROL_PINNED_DAY.test(pinned) ? pinned : null;
+};
+const todayISO = () => (pinnedTodayISO() || new Date().toISOString().slice(0,10)) + "T00:00:00";
 let exportWorkflowLoad;
 globalThis.ensureCrolExports = () => {
   if (globalThis.CrolExports) return Promise.resolve(globalThis.CrolExports);

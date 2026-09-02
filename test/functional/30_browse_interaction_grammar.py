@@ -14,6 +14,7 @@ sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(pathlib.Path(__file__).parent / "assets"))
 
 from browse_interaction_grammar import LENSES, assert_lens_grammar, open_lens  # noqa: E402
+from fixture_clock import pin_fixture_clock  # noqa: E402
 
 
 def main() -> None:
@@ -37,6 +38,7 @@ def main() -> None:
                     viewport={"width": 1440, "height": 1000},
                     permissions=["clipboard-read", "clipboard-write"],
                 )
+                pin_fixture_clock(context)
                 page = context.new_page()
                 open_lens(page, base, lens)
                 result = assert_lens_grammar(page, lens)
