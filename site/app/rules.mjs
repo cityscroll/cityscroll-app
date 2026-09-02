@@ -738,6 +738,7 @@ function ruleEventICS(r,event){
   const end=endDate.toISOString().slice(0,10).replace(/-/g,"");
   const esc=s=>String(s||"").replace(/([,;\\])/g,"\\$1").replace(/\n/g,"\\n");
   return ["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//CityScroll//EN","CALSCALE:GREGORIAN","METHOD:PUBLISH",
+    // determinism-lint: allow clock DTSTAMP is the instant the calendar file was created, which RFC 5545 requires to be the real creation time.
     "BEGIN:VEVENT",`UID:rule-comment-close-${r.request_id}@cityscroll.org`,`DTSTAMP:${new Date().toISOString().replace(/[-:]/g,"").replace(/\.\d{3}/,"")}`,
     `DTSTART;VALUE=DATE:${start}`,`DTEND;VALUE=DATE:${end}`,
     `SUMMARY:${esc(t("rule_event_calendar_title",{title:cleanText(r.short_title)}))}`,
@@ -1037,9 +1038,11 @@ async function downloadEventICS(r){
     return;
   }
   const d=new Date(r.event_date), pad=n=>String(n).padStart(2,"0");
+  // determinism-lint: allow timezone an iCalendar floating DTSTART is local wall time by RFC 5545; the reader's calendar resolves it in their own zone.
   const fl=dt=>`${dt.getFullYear()}${pad(dt.getMonth()+1)}${pad(dt.getDate())}T${pad(dt.getHours())}${pad(dt.getMinutes())}00`;
   const esc=s=>String(s||"").replace(/([,;\\])/g,"\\$1").replace(/\n/g,"\\n");
   const ics=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//CityScroll//EN","CALSCALE:GREGORIAN","METHOD:PUBLISH",
+    // determinism-lint: allow clock DTSTAMP is the instant the calendar file was created, which RFC 5545 requires to be the real creation time.
     "BEGIN:VEVENT","UID:"+r.request_id+"@crol-list","DTSTAMP:"+fl(new Date()),"DTSTART:"+fl(d),"DTEND:"+fl(d),
     "SUMMARY:"+esc(cleanText(r.short_title)),
     "DESCRIPTION:"+esc(`${r.agency_name||""}${goodAddr(r.street_address_1)?" · "+cleanText(r.street_address_1):""} · ${REQ_URL(r.request_id)}`),

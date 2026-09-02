@@ -1049,6 +1049,7 @@ const SECTION_LENS = {"Procurement":"money","Public Hearings and Meetings":"meet
    SODA aggregates and cached per agency for the session. Formulas + false-positive modes are
    documented on about.html#context, which every flag links to. */
 const BM_CACHE = {};
+// determinism-lint: allow clock a rolling twelve-month benchmark window is relative to now by definition; it bounds a SODA aggregate, not a rendered date.
 const yearCut = () => new Date(Date.now()-365*86400000).toISOString().slice(0,10) + "T00:00:00";
 function ordinal(n){ const s=["th","st","nd","rd"], v=n%100; return n+(s[(v-20)%10]||s[v]||s[0]); }
 
@@ -1087,6 +1088,7 @@ async function noticeFlags(r){
   }
   if(r.type_of_notice_description === "Award" && r.vendor_name){
     try{
+      // determinism-lint: allow clock the ninety-day repeat-award window is relative to now by definition; it bounds a SODA count, not a rendered date.
       const cut90 = new Date(Date.now()-90*86400000).toISOString().slice(0,10) + "T00:00:00";
       const [c] = await soda({"$select":"count(1) as n","$where":`agency_name='${r.agency_name.replace(/'/g,"''")}' AND vendor_name='${cleanText(r.vendor_name).replace(/'/g,"''")}' AND type_of_notice_description='Award' AND start_date > '${cut90}'`}, 8000);
       if(c && +c.n >= 3) flags.push({lvl:"soon", t:`⚑ ${ordinal(+c.n)} award to this vendor at this agency in 90 days`});
