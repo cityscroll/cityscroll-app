@@ -728,7 +728,7 @@ export const SIGNUP_LIFECYCLE_CONTRACT = Object.freeze({
  * Search activity on the Product Activity desk surface (`GET /admin/stats?view=html`)
  * and its authenticated JSON representation (`GET /admin/search-activity`).
  *
- * The offered filter vocabulary is closed and every entry names the retained field
+ * The offered filter vocabulary is closed and every entry names the retained fields
  * behind it. Publishing it here is what makes "only stored-field filters are
  * offered" checkable by a consumer rather than a claim in prose: a filter that
  * cannot name a receipt field does not belong on this surface.
@@ -749,9 +749,9 @@ export const SEARCH_ACTIVITY_CONTRACT = Object.freeze({
   max_read_limit: SEARCH_ACTIVITY_MAX_READ_LIMIT,
   max_filter_scan: SEARCH_ACTIVITY_MAX_FILTER_SCAN,
   read_params: SEARCH_ACTIVITY_READ_PARAMS,
-  filters: SEARCH_ACTIVITY_FILTERS.map(({ key, backing_field, description }) => ({
+  filters: SEARCH_ACTIVITY_FILTERS.map(({ key, backing_fields, description }) => ({
     key,
-    backing_field,
+    backing_fields,
     description,
   })),
   unsupported_filter_response: "HTTP 400 unsupported-filter; an unknown parameter is never silently ignored",

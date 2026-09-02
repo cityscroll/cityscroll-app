@@ -82,6 +82,7 @@ import {
   SEARCH_ACTIVITY_FILTERS,
   SEARCH_ACTIVITY_FILTER_KEYS,
   SEARCH_ACTIVITY_MAX_FILTER_SCAN,
+  SEARCH_ACTIVITY_READ_PARAMS,
   buildSearchActivityDeskModel,
   matchesSearchActivityFilters,
   parseSearchActivityFilters,
@@ -1387,7 +1388,9 @@ export function renderSearchActivityPanel(model, { formAction = "/admin/stats", 
   if (!model || model.available === false) {
     const reason = model?.unavailable_reason === "unsupported-filter"
       ? `Unsupported filter: ${[...(model.unsupported_filters || []), ...(model.invalid_filters || [])].map((name) => escapeHtml(name)).join(", ")}. Only stored receipt fields can be filtered.`
-      : "Search activity is unavailable until the receipt store is configured.";
+      : model?.unavailable_reason === "read-failed"
+        ? "The receipt store could not be read. This is a read failure, not a configuration problem — retry."
+        : "Search activity is unavailable until the receipt store is configured.";
     return `<section class="panel search-activity-panel" aria-labelledby="search-activity-heading"><div class="panel-heading"><div>${heading}<p class="panel-note">${reason}</p></div></div></section>`;
   }
 
@@ -1469,6 +1472,11 @@ async function buildSearchActivityDeskContext(req, env) {
 
   const jsonUrl = new URL(readUrl);
   const hidden = { key: url.searchParams.get("key") || "", view: "html" };
+  for (const name of SEARCH_ACTIVITY_READ_PARAMS) {
+    if (Object.hasOwn(hidden, name)) continue;
+    const value = url.searchParams.get(name);
+    if (value) hidden[name] = value;
+  }
   return {
     model,
     formAction: url.pathname,
@@ -1655,6 +1663,10 @@ function privateJson(obj, status) {
   });
 }
 
+// How many receipt bodies are fetched concurrently while resolving a page. The
+// list() call names every candidate key up front, so gets need not be serial.
+const SEARCH_ACTIVITY_GET_BATCH = 10;
+
 // A filtered read must reach every retained execution that matches, so it scans
 // past non-matching receipts up to a hard bound and reports where it stopped.
 // An unfiltered read still costs exactly one page.
@@ -1686,16 +1698,19 @@ async function readSearchActivityPage(env, url) {
   let scanComplete = true;
   try {
     const listed = await env.ALERT_STATE.list({ prefix, limit: scanCeiling });
-    const keys = listed.keys || [];
-    for (const key of keys) {
-      if (items.length >= limit) break;
-      if (scanned >= scanCeiling) break;
-      scanned += 1;
-      let value = null;
-      try { value = JSON.parse(await env.ALERT_STATE.get(key.name)); } catch { /* skip */ }
-      if (!value) continue;
-      if (!matchesSearchActivityFilters(value, filters)) continue;
-      items.push(value);
+    const keys = (listed.keys || []).slice(0, scanCeiling);
+    for (let start = 0; start < keys.length && items.length < limit; start += SEARCH_ACTIVITY_GET_BATCH) {
+      const batch = keys.slice(start, start + SEARCH_ACTIVITY_GET_BATCH);
+      const bodies = await Promise.all(batch.map((key) => env.ALERT_STATE.get(key.name)));
+      for (const body of bodies) {
+        if (items.length >= limit) break;
+        scanned += 1;
+        let value = null;
+        try { value = JSON.parse(body); } catch { /* skip */ }
+        if (!value) continue;
+        if (!matchesSearchActivityFilters(value, filters)) continue;
+        items.push(value);
+      }
     }
     // Complete means the read ran out of receipts rather than out of budget: the
     // store reported no more keys, the page never filled, and the scan ceiling was

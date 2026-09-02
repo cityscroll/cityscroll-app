@@ -74,6 +74,15 @@ test("buildOpsContract: stable id/version and required sections", () => {
   assert.ok(doc.feature_flags.some((f) => f.name === "DIGEST_CATCH_UP"));
   assert.ok(doc.traffic_class.usage.some((t) => t.id === "production"));
   assert.ok(doc.traffic_class.usage.some((t) => t.id === "developer"));
+  for (const filter of doc.search_activity.filters) {
+    assert.ok(Array.isArray(filter.backing_fields) && filter.backing_fields.length >= 1,
+      `search-activity filter ${filter.key} names its retained fields`);
+  }
+  assert.deepEqual(
+    doc.search_activity.filters.find((f) => f.key === "query").backing_fields,
+    ["query.raw", "query.normalized"],
+    "the machine-checkable claim covers every field the query filter reads",
+  );
 });
 
 test("committed fixture matches builder (desk CI pin)", () => {

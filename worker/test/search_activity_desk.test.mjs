@@ -19,7 +19,7 @@ import {
 } from "../../capabilities/search_activity.mjs";
 import { handleAdminSearchActivity, handleAdminStats } from "../src/admin.mjs";
 import { handleSearchActivity } from "../src/search_activity.mjs";
-import { VISITOR_COOKIE_NAME } from "../src/lib/search_activity.mjs";
+import { SEARCH_ACTIVITY_KEY_PREFIX, VISITOR_COOKIE_NAME } from "../src/lib/search_activity.mjs";
 import { SEARCH_ACTIVITY_FILTER_KEYS } from "../src/lib/search_activity_view.mjs";
 import { deriveSubscriberId } from "../src/lib/subscriptions.mjs";
 import { sessionPayload } from "../src/lib/session.mjs";
@@ -452,6 +452,81 @@ test("the existing Product Activity summary and JSON body are unchanged", async 
   assert.equal(jsonResponse.headers.get("content-type"), "application/json");
   assert.doesNotMatch(jsonText, /search_activity|execution_id|visitor_id/,
     "receipt detail stays on its own authenticated route, out of the stats body");
+});
+
+// ---- A5: an honest read — preserved read params, failures, truncation ----
+
+test("applying a filter keeps the operator on the same receipt set: read params ride the form", async () => {
+  const env = deskEnv();
+  await seedSpecimens(env);
+
+  const html = await productActivity(env, "&traffic_class=developer&limit=5");
+  const form = html.slice(html.indexOf('<form class="search-activity-filters"'), html.indexOf("</form>"));
+  assert.match(form, new RegExp(`<input type="hidden" name="key" value="${ADMIN_KEY}">`));
+  assert.match(form, /<input type="hidden" name="view" value="html">/);
+  assert.match(form, /<input type="hidden" name="limit" value="5">/);
+  assert.match(form, /<input type="hidden" name="traffic_class" value="developer">/,
+    "a developer cut never silently becomes a production cut on submit");
+
+  const production = await productActivity(env);
+  const productionForm = production.slice(production.indexOf('<form class="search-activity-filters"'), production.indexOf("</form>"));
+  assert.ok(!productionForm.includes('name="traffic_class"'), "absent read params stay absent");
+  assert.ok(!productionForm.includes('name="limit"'));
+});
+
+test("a receipt-store read failure reports read-failed, never a complete scan or missing config", async () => {
+  const env = deskEnv();
+  await seedSpecimens(env);
+  const realGet = env.ALERT_STATE.get;
+  env.ALERT_STATE.get = async (key) => {
+    if (key.startsWith(SEARCH_ACTIVITY_KEY_PREFIX)) throw new Error("kv unavailable");
+    return realGet(key);
+  };
+
+  const { status, body } = await readModel(env);
+  assert.equal(status, 503);
+  assert.equal(body.error, "read-failed");
+  assert.equal(body.scan_complete, undefined, "a read that could not read claims no scan at all");
+
+  const html = await productActivity(env);
+  assert.match(html, /The receipt store could not be read\. This is a read failure, not a configuration problem — retry\./);
+  assert.ok(!html.includes("until the receipt store is configured"),
+    "a transient read failure is not dressed as missing configuration");
+});
+
+test("a corrupt stored receipt is skipped while the rest of the read stays honest", async () => {
+  const env = deskEnv();
+  await seedSpecimens(env);
+  const [key] = [...env.ALERT_STATE.store.keys()];
+  env.ALERT_STATE.store.set(key, "{not json");
+
+  const { status, body } = await readModel(env);
+  assert.equal(status, 200);
+  assert.equal(body.count, 3, "the readable receipts still come back");
+  assert.equal(body.scanned, 4, "the unreadable receipt still counts against the scan");
+  assert.equal(body.scan_complete, true);
+});
+
+test("a filtered page that fills before the scan bound reports possible older matches", async () => {
+  const env = deskEnv();
+  await seedSpecimens(env);
+
+  const { body } = await readModel(env, "&outcome=matched&limit=1");
+  assert.equal(body.count, 1);
+  assert.equal(body.scan_complete, false, "a filled page never claims the end of retention");
+  assert.ok(body.scanned >= body.count && body.scanned <= 4);
+});
+
+test("the query filter matches the stored normalized query, not only the raw text", async () => {
+  const env = deskEnv();
+  await record(env, ratsSubmission({
+    query: { raw: "colour of money", normalized: "color of money" },
+  }));
+
+  const viaNormalized = await readModel(env, `&query=${encodeURIComponent("color of")}`);
+  assert.equal(viaNormalized.body.count, 1);
+  const viaRaw = await readModel(env, `&query=${encodeURIComponent("colour")}`);
+  assert.equal(viaRaw.body.count, 1);
 });
 
 // ---- escaping ----

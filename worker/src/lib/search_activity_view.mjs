@@ -7,7 +7,7 @@
  * actually saw — not what the same query would return now.
  *
  * The filter vocabulary is deliberately closed and each entry names the stored
- * field that backs it. A filter with no retained field behind it would be a
+ * fields that back it. A filter with no retained field behind it would be a
  * query engine wearing a receipt's clothes, so it is rejected rather than
  * approximated.
  */
@@ -28,49 +28,49 @@ export const SEARCH_ACTIVITY_VIEW_SCHEMA = "cityscroll.search_activity.desk_view
 export const SEARCH_ACTIVITY_READ_PARAMS = Object.freeze(["key", "limit", "traffic_class"]);
 
 /**
- * The complete offered filter vocabulary. `backing_field` is the retained field
- * the filter reads; there is no entry without one.
+ * The complete offered filter vocabulary. `backing_fields` names every retained
+ * field the filter reads; there is no entry without one.
  */
 export const SEARCH_ACTIVITY_FILTERS = Object.freeze([
   Object.freeze({
     key: "since",
     label: "From",
-    backing_field: "received_at",
+    backing_fields: Object.freeze(["received_at"]),
     input: "date",
     description: "Receipts recorded at or after this UTC instant (accepts YYYY-MM-DD).",
   }),
   Object.freeze({
     key: "until",
     label: "To",
-    backing_field: "received_at",
+    backing_fields: Object.freeze(["received_at"]),
     input: "date",
     description: "Receipts recorded at or before this UTC instant (YYYY-MM-DD covers the whole day).",
   }),
   Object.freeze({
     key: "query",
     label: "Query contains",
-    backing_field: "query.raw",
+    backing_fields: Object.freeze(["query.raw", "query.normalized"]),
     input: "text",
     description: "Case-insensitive substring of the raw or normalized query the reader submitted.",
   }),
   Object.freeze({
     key: "visitor",
     label: "Visitor ID",
-    backing_field: "visitor_id",
+    backing_fields: Object.freeze(["visitor_id"]),
     input: "text",
     description: "Exact opaque browser visitor id; returns every retained execution for that browser.",
   }),
   Object.freeze({
     key: "subscriber",
     label: "Subscriber ID",
-    backing_field: "subscriber_id",
+    backing_fields: Object.freeze(["subscriber_id"]),
     input: "text",
     description: "Exact recognized subscriber id; anonymous receipts are never back-filled with it.",
   }),
   Object.freeze({
     key: "outcome",
     label: "Terminal state",
-    backing_field: "outcome",
+    backing_fields: Object.freeze(["outcome"]),
     input: "enum",
     options: SEARCH_ACTIVITY_OUTCOME_STATES,
     description: "Stored terminal state: matched, partial, empty, or unavailable.",
@@ -78,7 +78,7 @@ export const SEARCH_ACTIVITY_FILTERS = Object.freeze([
   Object.freeze({
     key: "family",
     label: "Result family",
-    backing_field: "family_counts",
+    backing_fields: Object.freeze(["family_counts", "incomplete_families"]),
     input: "enum",
     options: SEARCH_ACTIVITY_FAMILIES,
     description: "Executions that rendered rows in this family or recorded it incomplete.",
