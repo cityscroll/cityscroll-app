@@ -642,7 +642,13 @@ export function landMapSelectionHTML(model, {t: copy = mapCopy, escape = escapeM
  * without a browser.
  */
 export function landMapPanelHTML(model, {t: copy = mapCopy, escape = escapeMapHtml, sourceVintage = null} = {}){
-  const summary = copy("land_map_summary",{mapped:model.counts.mapped, total:model.counts.total});
+  // "0 of 0 projects are on the map." beside a blank canvas reads as a map that failed. An
+  // empty result is a fact about the filter, not about the map, and the List's own empty state
+  // sits directly below with the way to widen it -- so this says which of the two happened and
+  // leaves the recovery where it already is.
+  const summary = model.counts.total === 0
+    ? copy("land_map_empty")
+    : copy("land_map_summary",{mapped:model.counts.mapped, total:model.counts.total});
   const unmapped = model.counts.unmapped
     ? `<p class="land-map-unmapped">${escape(copy("land_map_unmapped_note",{n:model.counts.unmapped}))}</p>`
     : "";

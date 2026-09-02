@@ -831,6 +831,7 @@
     land_map_loading: "Ładowanie mapy tych wyników…",
     land_map_summary: "{mapped} z {total} projektów jest na mapie.",
     land_map_unmapped_note: "{n} nie ma opublikowanej lokalizacji, więc zostaje tylko na liście.",
+    land_map_empty: "Żaden projekt nie pasuje do tych filtrów, więc mapa nie ma czego pokazać.",
     land_map_failed_heading: "Możesz spróbować mapy ponownie albo dalej czytać listę.",
     land_map_retry: "Spróbuj mapy ponownie",
     land_map_show_list: "Zostań przy liście",

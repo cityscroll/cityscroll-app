@@ -9,6 +9,7 @@ import { resolveTraversalBackHref, traversalFromHref } from "../traversal_path.m
 import { renderNoticeBitemporalHistory } from "../civic_time_ledger.mjs";
 import { retainSearchHandoffForQuery } from "../search_lens_handoff.mjs";
 import { normalizeCommunityBoardRef } from "../community_board_watch.mjs";
+import { landFilterStateFromRouteParams } from "../land_filter_parity.mjs";
 import {
   LAND_VIEW_FALLBACK_REASONS,
   LAND_VIEW_LIST,
@@ -1248,57 +1249,30 @@ function applyHash(){
       landResolvedArea=null;
       landView=landViewFromSearchParams(q);
       landMapPresentationFailure=null;
-      landBorough = DEEPLINK_BOROS.includes(q.get("boro"))?q.get("boro"):"";
-      landCommunityDistrict=/^(?:M|X|K|Q|R)\d{2}$/.test(q.get("cd")||"")?q.get("cd"):"";
-      landCouncilDistrict=/^(?:[1-9]|[1-4]\d|5[01])$/.test(q.get("council")||"")?q.get("council"):"";
+      // One parser for the Land route. land_filter_parity.mjs owns which values are accepted,
+      // which legacy `status` spellings still adopt a stage, and what an unrecognized value falls
+      // back to, so the page and the parity evidence can never read the same URL differently.
+      const landState=landFilterStateFromRouteParams(q,{facetValues:activeRouteFacetValues});
+      landBorough=landState.borough;
+      landCommunityDistrict=landState.communityDistrict;
+      landCouncilDistrict=landState.councilDistrict;
+      // The raw text, not the query's collapsed form: the field shows what the resident typed.
       $("#lkw").value = q.get("q") || "";
-      const landStatus=q.get("status");
-      const explicitStage=q.get("stage");
-      const explicitFuture=q.get("future");
-      const explicitProcedure=q.get("procedure");
-      const explicitFamily=q.get("family");
-      const explicitRegulatoryEffect=activeRouteFacetValues.regulatoryEffect;
-      const validStage=["any","active","public_review","pre_certification","community_board","borough_president","cpc","city_council","completed"].includes(explicitStage||"");
-      const validFuture=["any","any_future","hearing","other","none"].includes(explicitFuture||"");
-      const validProcedure=["review","ulurp","elurp","non_ulurp"].includes(explicitProcedure||"");
-      const validFamily=[
-        "any","acquisition","disposition","certification","renewal","major_concession","legal_document",
-        "rezoning","special_permit","authorization","site_selection","mapping","demapping",
-        "urban_renewal","landmark","follow_up","office_space","bid","franchise_consent",
-        "housing_plan","pops","landfill",
-      ].includes(explicitFamily||"");
-      const validRegulatoryEffect=["any","upzone","downzone","mixed","no_density_change"].includes(explicitRegulatoryEffect||"");
-      const legacyExactStatus=/^(?:project|public):.{1,80}$/.test(landStatus||"");
-      const legacyPublicReview=["public","In Public Review"].join(":");
-      const legacyProjectActive=["project","Active"].join(":");
-      let adoptedStage=validStage?explicitStage:"active";
-      let adoptedFuture=validFuture?explicitFuture:"any";
-      let adoptedStatus="all";
-      if(!validStage){
-        if(landStatus==="all") adoptedStage="any";
-        else if(landStatus==="active"||!landStatus) adoptedStage="active";
-        else if(landStatus===legacyPublicReview) adoptedStage="public_review";
-        else if(landStatus===legacyProjectActive) adoptedStage="active";
-        else adoptedStage="any";
-      }
-      if(!validFuture && landStatus==="hearings") adoptedFuture="hearing";
-      if(legacyExactStatus && ![legacyPublicReview,legacyProjectActive].includes(landStatus)) adoptedStatus=landStatus;
       const landStatusSelect=$("#lstatus");
-      if(adoptedStatus!=="all" && ![...landStatusSelect.options].some(option=>option.value===adoptedStatus)){
+      if(landState.status!=="all" && ![...landStatusSelect.options].some(option=>option.value===landState.status)){
         const option=document.createElement("option");
-        option.value=adoptedStatus;
-        option.textContent=adoptedStatus.split(":").slice(1).join(":");
+        option.value=landState.status;
+        option.textContent=landState.status.split(":").slice(1).join(":");
         landStatusSelect.append(option);
       }
-      landStatusSelect.value=adoptedStatus;
-      $("#lstage").value=adoptedStage;
-      $("#lfuture").value=adoptedFuture;
-      if($("#lprocedure")) $("#lprocedure").value=validProcedure?explicitProcedure:"review";
-      if($("#lfamily")) $("#lfamily").value=validFamily?explicitFamily:"any";
-      if($("#leffect")) $("#leffect").value=validRegulatoryEffect?explicitRegulatoryEffect:"any";
-      const att=q.get("attendance");
-      landAttendance=adoptedFuture==="hearing" && ["in_person","livestream","hybrid"].includes(att||"") ? att : "";
-      landClosingWeek=adoptedFuture==="hearing" && q.get("closing")==="week";
+      landStatusSelect.value=landState.status;
+      $("#lstage").value=landState.stage;
+      $("#lfuture").value=landState.futureAction;
+      if($("#lprocedure")) $("#lprocedure").value=landState.procedure;
+      if($("#lfamily")) $("#lfamily").value=landState.family;
+      if($("#leffect")) $("#leffect").value=landState.regulatoryEffect;
+      landAttendance=landState.attendance;
+      landClosingWeek=landState.closingWeek;
       applyLandPresentation();
       let scopedProjectId="";
       try{
