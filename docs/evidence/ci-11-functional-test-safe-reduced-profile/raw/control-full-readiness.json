@@ -1,0 +1,68 @@
+{
+  "schema": "cityscroll.functional-corpus-readiness.v1",
+  "outcome": "ready",
+  "functional_coverage": "the functional suite may run",
+  "coverage_statement": "The declared corpus is present at the recorded revision. Whatever the functional suite reports next is a product result and is not qualified by this receipt.",
+  "profile": {
+    "active": "full-checkout",
+    "sparse_checkout": false,
+    "closure_config_sha256": "31e2bc99b2bc13eaddf6e43b25d5a211ed14ddc87a38bdc7002080771491a5c8",
+    "closure_patterns_sha256": "14c56c50a0e14897a0f740ad6c4974c103bd8b33e46434f3212297acb28b0598",
+    "synthetic_root": false
+  },
+  "revision": "f680f672e0b395a25fcda6d3db01d569ffdf9445",
+  "corpus": {
+    "gate_class": "functional-site",
+    "builder": "tools/build_primary_documents.mjs",
+    "builder_role": "Reads the procurement, land, rules, property, staffing and meeting read models and writes the Browse and Now documents the served site routes resolve to.",
+    "declared_path_count": 30,
+    "materialised_path_count": 30,
+    "fingerprint": "0bb40d3e9f60bcadecc8df9df92577c2742d5ef0c7479e053036571295b2660d",
+    "logical_bytes": 77367810,
+    "materialised_logical_bytes": 77367810,
+    "paths": [
+      "site/data/abo_award_residual_lookup.json",
+      "site/data/agency_constellation_lookup.json",
+      "site/data/agency_obligations_lookup.json",
+      "site/data/committee_graph_lookup.json",
+      "site/data/community_board_geography_lookup.json",
+      "site/data/community_board_meeting_index.json",
+      "site/data/community_board_meeting_index/shard-000.json",
+      "site/data/community_board_meeting_index/shard-001.json",
+      "site/data/community_board_meeting_index/shard-002.json",
+      "site/data/community_board_meeting_index/shard-003.json",
+      "site/data/community_board_people.json",
+      "site/data/land_default_ulurp.json",
+      "site/data/land_upcoming_hearings.json",
+      "site/data/meeting_notice_materialization.json",
+      "site/data/meeting_outcomes_snapshot.json",
+      "site/data/meetings_domain_observations.json",
+      "site/data/money_default_open.json",
+      "site/data/money_resident_snapshot.json",
+      "site/data/non_council_outcome_sources/community_board_committees.json",
+      "site/data/ocp_awards_warehouse_lookup.json",
+      "site/data/people_examples.json",
+      "site/data/people_organizations_read_model.json",
+      "site/data/person_hub_lookup.json",
+      "site/data/property_domain_observations.json",
+      "site/data/rules_domain_observations.json",
+      "site/data/rules_semantic_lane.json",
+      "site/data/shared_meeting_read_model.json",
+      "site/data/staffing_default_hires.json",
+      "site/data/staffing_exams.json",
+      "site/data/zap_projects_warehouse_lookup.json"
+    ]
+  },
+  "source_vintage": {
+    "path": "site/data/money_default_open.json",
+    "day": "2026-08-15",
+    "key": "open_as_of"
+  },
+  "measured_functional_tests": [
+    "test/functional/23_mobile_viewport.py"
+  ],
+  "coverage_note": "The corpus is a precondition of the preparation step, so every functional test served from the prepared _site depends on it. Only the tests named in measured_functional_tests were run end to end in a provisioned reduced checkout, so only those are claimed as measured coverage.",
+  "blocked_reasons": [],
+  "remediation": null,
+  "check_duration_ms": 103
+}
