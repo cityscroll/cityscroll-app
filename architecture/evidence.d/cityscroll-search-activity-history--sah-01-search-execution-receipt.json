@@ -30,7 +30,7 @@
       "path": "worker/src/lib/search_activity.mjs"
     },
     {
-      "id": "search-activity-admin-read-model",
+      "id": "scheduler-heartbeat-admin-contract",
       "path": "worker/src/admin.mjs"
     },
     {
