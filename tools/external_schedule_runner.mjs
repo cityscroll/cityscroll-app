@@ -305,6 +305,140 @@ export function schedulerRunId(now = new Date(), { host = hostname(), pid = proc
   return `${runKey(now)}:${host}:${pid}`;
 }
 
+// rel-12: the bounded debug/fix task the cycle runs for one leased repair item.
+// The command is operator configuration, never anything a queue record carries —
+// an item can describe a failure but can never name something to execute.
+export const REPAIR_DISPATCH_TIMEOUT_MS = 10 * 60 * 1000;
+export const REPAIR_SUMMARY_LIMIT = 400;
+const REPAIR_RESULTS_FILE = "pending-results.json";
+
+export function repairDispatchCommand(env = process.env) {
+  const command = String(env.CITYSCROLL_REPAIR_DISPATCH_COMMAND || "").trim();
+  return command || null;
+}
+
+function repairResultsPath(stateDir) {
+  return join(stateDir, "repair", REPAIR_RESULTS_FILE);
+}
+
+/**
+ * Results outlive the process. A cycle that dies between running a repair and
+ * reporting it re-reports on the next heartbeat rather than losing the outcome,
+ * and the worker's lease check discards a report whose lease has moved on.
+ */
+async function readPendingRepairResults(stateDir) {
+  try {
+    const parsed = JSON.parse(await readFile(repairResultsPath(stateDir), "utf8"));
+    return Array.isArray(parsed?.results) ? parsed.results : [];
+  } catch { return []; }
+}
+
+async function writePendingRepairResults(stateDir, results) {
+  const dir = join(stateDir, "repair");
+  await mkdir(dir, { recursive: true });
+  await writeFile(repairResultsPath(stateDir), `${JSON.stringify({
+    schema: "cityscroll.repair-dispatch-pending-results.v1",
+    results,
+  }, null, 2)}\n`, "utf8");
+  return results;
+}
+
+export function repairOutcomeFromExit(code, signal) {
+  if (signal) return "failed";
+  if (code === 0) return "repaired";
+  // A dispatcher exits 2 when the fix needs a decision it is not allowed to
+  // make — a security-sensitive change, a destructive step, an ambiguous root
+  // cause. That is the judgment boundary, not a retry.
+  if (code === 2) return "judgment";
+  return "failed";
+}
+
+/**
+ * One leased item, one bounded task. The item arrives on stdin so nothing from
+ * the queue can reach a shell, output is capped, and the summary that travels
+ * back is prose rather than a log.
+ */
+export async function runRepairTask(item, options = {}) {
+  const command = options.command ?? repairDispatchCommand();
+  const timeoutMs = options.timeoutMs || REPAIR_DISPATCH_TIMEOUT_MS;
+  if (!command) {
+    return {
+      signature: item.signature,
+      lease_id: item.lease?.lease_id || null,
+      outcome: "judgment",
+      judgment_reason: "no repair dispatcher is configured for this cycle",
+      summary: "The cycle leased this item but has no configured repair dispatcher.",
+    };
+  }
+  const spawnImpl = options.spawnImpl || spawn;
+  const child = spawnImpl(command, ["--repair-item"], {
+    stdio: ["pipe", "pipe", "pipe"],
+    env: {
+      ...process.env,
+      CITYSCROLL_REPAIR_SCOPE: String(item.repair_scope || ""),
+      CITYSCROLL_REPAIR_SIGNATURE: String(item.signature || ""),
+    },
+  });
+  return new Promise((resolveResult) => {
+    let stdout = "";
+    let stderr = "";
+    let settled = false;
+    const timer = setTimeout(() => {
+      if (settled) return;
+      settled = true;
+      try { child.kill("SIGKILL"); } catch {}
+      resolveResult({
+        signature: item.signature,
+        lease_id: item.lease?.lease_id || null,
+        outcome: "failed",
+        summary: `The repair task exceeded its ${Math.round(timeoutMs / 1000)}s bound and was stopped.`,
+      });
+    }, timeoutMs);
+    child.stdout.on("data", (chunk) => { stdout = `${stdout}${chunk}`.slice(-8000); });
+    child.stderr.on("data", (chunk) => { stderr = `${stderr}${chunk}`.slice(-8000); });
+    child.on("error", (error) => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timer);
+      resolveResult({
+        signature: item.signature,
+        lease_id: item.lease?.lease_id || null,
+        outcome: "failed",
+        summary: sanitize(String(error?.message || error)).slice(0, REPAIR_SUMMARY_LIMIT),
+      });
+    });
+    child.on("close", (code, signal) => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timer);
+      const outcome = repairOutcomeFromExit(code, signal);
+      const text = sanitize(`${stdout}${stderr}`).replace(/\s+/g, " ").trim();
+      resolveResult({
+        signature: item.signature,
+        lease_id: item.lease?.lease_id || null,
+        outcome,
+        summary: text.slice(-REPAIR_SUMMARY_LIMIT),
+        ...(outcome === "judgment" ? { judgment_reason: text.slice(-REPAIR_SUMMARY_LIMIT) } : {}),
+      });
+    });
+    try {
+      child.stdin.end(JSON.stringify(item));
+    } catch {
+      /* the error handler above reports a dispatcher that never opened stdin */
+    }
+  });
+}
+
+export async function runLeasedRepairTasks(stateDir, items, options = {}) {
+  const results = [];
+  for (const item of Array.isArray(items) ? items : []) {
+    if (!item?.signature || !item?.lease?.lease_id) continue;
+    results.push(await runRepairTask(item, options));
+  }
+  await writePendingRepairResults(stateDir, results);
+  return results;
+}
+
 async function persistHeartbeatReceipt(stateDir, receipt) {
   // A local receipt outlives the process, so a restarted or paused scheduler
   // still shows what its last cycle attempted and how the write was answered.
@@ -343,13 +477,30 @@ export async function publishHeartbeat(stateDir, now, dueJobs, options = {}) {
   if (!url) return persistHeartbeatReceipt(stateDir, { ...base, status: "failed", reason: "heartbeat-url-missing" });
   if (!key) return persistHeartbeatReceipt(stateDir, { ...base, status: "failed", reason: "admin-credential-missing" });
   if (!revision) return persistHeartbeatReceipt(stateDir, { ...base, status: "failed", reason: "source-revision-unresolved" });
-  const payload = { ...base, pending_outbox: await pendingOutboxCount(stateDir) };
+  // rel-12: the same heartbeat reports the previous cycle's repair outcomes and
+  // asks for the next leases. A cycle with no dispatcher says so, and the queue
+  // then declines to lease rather than promising a pickup it cannot make.
+  const repairResults = options.repairResults ?? await readPendingRepairResults(stateDir);
+  const canDispatch = options.repairDispatch ?? Boolean(repairDispatchCommand());
+  const payload = {
+    ...base,
+    pending_outbox: await pendingOutboxCount(stateDir),
+    repair_dispatch: canDispatch,
+    repair_results: repairResults,
+  };
   delete payload.schema;
   const response = await fetchImpl(url, {
     method: "POST",
     headers: { authorization: `Bearer ${key}`, "content-type": "application/json" },
     body: JSON.stringify(payload),
   });
+  let accepted = null;
+  if (response.ok) {
+    try { accepted = await response.json(); } catch { accepted = null; }
+    // Results are cleared only once the worker has taken them, so a refused or
+    // unparseable answer re-reports them next cycle instead of dropping them.
+    if (accepted?.ok === true && repairResults.length) await writePendingRepairResults(stateDir, []);
+  }
   if (!response.ok) {
     let rejected = null;
     try { rejected = (await response.json())?.rejected || null; } catch {}
@@ -377,6 +528,10 @@ export async function publishHeartbeat(stateDir, now, dueJobs, options = {}) {
     verified,
     stored_run_id: stored?.run_id || null,
     pending_outbox: payload.pending_outbox,
+    repair_dispatch: canDispatch,
+    repair_reported: repairResults.length,
+    repair_leased: Array.isArray(accepted?.repair_queue?.items) ? accepted.repair_queue.items.length : 0,
+    repair_items: Array.isArray(accepted?.repair_queue?.items) ? accepted.repair_queue.items : [],
   });
 }
 
@@ -402,7 +557,21 @@ async function main() {
   const heartbeat = await publishHeartbeat(stateDir, new Date(), due.map((job) => job.id), {
     cycleResult: degraded ? "degraded" : "succeeded",
   });
-  process.stdout.write(`${JSON.stringify({ replayBefore, heartbeat, due: summaries, replayAfter }, null, 2)}\n`);
+  // Repair runs after liveness is proven, on the leases this cycle was granted.
+  // Outcomes are reported on the next heartbeat, so a repair never becomes mail
+  // and a crashed cycle re-reports rather than losing the result.
+  const repairResults = heartbeat.repair_items?.length
+    ? await runLeasedRepairTasks(stateDir, heartbeat.repair_items)
+    : [];
+  const heartbeatReceipt = { ...heartbeat };
+  delete heartbeatReceipt.repair_items;
+  process.stdout.write(`${JSON.stringify({
+    replayBefore,
+    heartbeat: heartbeatReceipt,
+    due: summaries,
+    replayAfter,
+    repair: { dispatched: repairResults.length, outcomes: repairResults.map((row) => row.outcome) },
+  }, null, 2)}\n`);
   if (heartbeat.status !== "succeeded" || degraded) process.exitCode = 1;
 }
 

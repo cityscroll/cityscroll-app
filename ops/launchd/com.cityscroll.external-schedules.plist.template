@@ -22,6 +22,12 @@
     <string>__CITYSCROLL_ADMIN_KEY_FILE__</string>
     <key>CITYSCROLL_SCHEDULER_HEARTBEAT_URL</key>
     <string>https://api.cityscroll.org/admin/reliability/scheduler</string>
+    <!-- The bounded debug/fix task the cycle runs for one leased repair item.
+         It is operator configuration and provider-neutral: the queue describes
+         a failure and never names anything to execute. Leave it empty and the
+         cycle publishes liveness without leasing repair work. -->
+    <key>CITYSCROLL_REPAIR_DISPATCH_COMMAND</key>
+    <string>__CITYSCROLL_REPAIR_DISPATCH_COMMAND__</string>
   </dict>
   <key>StartInterval</key>
   <integer>60</integer>
