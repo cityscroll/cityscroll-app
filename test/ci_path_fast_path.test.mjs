@@ -109,8 +109,11 @@ test("shared browser artifact starts with path detection while unit remains a re
 
   assert.match(unitFamily, /family: \[static-standards, site-node, contract, worker\]/);
   assert.match(unitFamily, /if: matrix\.family == 'site-node'[\s\S]*?run: node --test test\/\*\.test\.mjs/);
-  assert.match(unit, /needs: \[changes, unit-family\]/);
+  assert.match(unit, /needs: \[changes, unit-family, merge-group-preflight\]/);
   assert.match(unit, /Fail when a Unit family fails or is missing[\s\S]*?needs\.unit-family\.result != 'success'[\s\S]*?exit 1/);
+  // The merge-group preflight is folded into the required Unit verdict so a
+  // branch that would poison the queue's combined tree turns red pre-queue.
+  assert.match(unit, /Fail when the merge-group preflight is not green[\s\S]*?needs\.merge-group-preflight\.result != 'success'[\s\S]*?exit 1/);
 
   // Unit and Accessibility remain required merge checks; a passing artifact is only
   // an input to the browser consumers, not a substitute for either verdict.
