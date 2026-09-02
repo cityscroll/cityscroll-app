@@ -39,7 +39,9 @@ import {
   noticeContextTimingMark,
   noticeContextTimingMeasure,
   noticePrimaryOutcomeFromEdge,
+  noticePrimaryOwnerNow,
   noticePrimaryReady,
+  noticePrimaryTimingMark,
   runtimeRumSemanticMilestones,
 } from "../rum_static_record_instrumentation.mjs";
 
@@ -1494,10 +1496,17 @@ async function showNotice(id, watch){
   const safeId = String(id).replace(/[<>&]/g,"");
   const edgeNotice=box.querySelector(`[data-edge-rendered][data-notice-id="${CSS.escape(String(id))}"]`);
   const edgePrimaryState=noticePrimaryOutcomeFromEdge(edgeNotice?.dataset.edgeRendered);
-  if(edgePrimaryState) noticePrimaryReady(runtimeRumSemanticMilestones(),{resultState:edgePrimaryState});
+  if(edgePrimaryState){
+    // Read the owner clock at the boundary itself so content_ready_ms stays the
+    // owner's timing even when the production reporter installs later.
+    const edgePrimaryAt=noticePrimaryOwnerNow();
+    noticePrimaryTimingMark("edge-primary-ready");
+    noticePrimaryReady(runtimeRumSemanticMilestones(),{resultState:edgePrimaryState},edgePrimaryAt);
+  }
   // The edge-rendered body is the primary interaction boundary. Optional route
   // modules and the client read/enrichment path may start after that boundary,
   // but must not delay its semantic readiness measurement.
+  noticePrimaryTimingMark("deferred-owners-start");
   const optionalRouteModules = Promise.allSettled([
     globalThis.ensureMoneyHistory?.(),
     globalThis.ensureRules?.(),
@@ -1540,7 +1549,8 @@ async function showNotice(id, watch){
       ? ` · ${officialSourceLink({ href: cityRecordUrl, label: t("try_city_record"), escape: taskEsc })}`
       : "";
     box.innerHTML = `<div class="empty">${t("notice_not_found_html",{id:safeId})} <br><br>${routeBackHTML("#money")}${cityRecordAction}</div>`;
-    noticePrimaryReady(runtimeRumSemanticMilestones(),{resultState:"unavailable"});
+    noticePrimaryTimingMark("client-unavailable-terminal");
+    noticePrimaryReady(runtimeRumSemanticMilestones(),{resultState:"unavailable"},noticePrimaryOwnerNow());
     noticeContextReady(runtimeRumSemanticMilestones(),{resultState:"unavailable"});
     applyActiveHistoryRouteScroll();
     if(typeof syncAlertsEntryHrefs === "function") Promise.resolve(syncAlertsEntryHrefs()).catch(()=>{});
@@ -1590,7 +1600,9 @@ async function showNotice(id, watch){
       <div id="nchain" data-export-class="paper_trail"></div>
       <div class="note" style="margin-top:14px">${t("permalink_note_html",{link, id:r.request_id})}</div>
   </div></div>`;
-  noticePrimaryReady(runtimeRumSemanticMilestones(),{resultState:"content"});
+  const clientPrimaryAt=noticePrimaryOwnerNow();
+  noticePrimaryTimingMark("client-primary-ready");
+  noticePrimaryReady(runtimeRumSemanticMilestones(),{resultState:"content"},clientPrimaryAt);
   $("#ncopy").addEventListener("click", ()=>copyText(link, $("#ncopy")));
   bindQRShare($("#nqr"), link);
   $("#nxlsx").addEventListener("click", async ()=>exportNoticeXlsx(r,await loadChain(r)));
@@ -1618,6 +1630,7 @@ async function showNotice(id, watch){
   optionalRouteModules
     .then(()=>{
       noticeContextTimingMark("route-modules-end");
+      noticePrimaryTimingMark("deferred-owners-end");
       return typeof hydratePropertyActionMatter==="function" ? hydratePropertyActionMatter(r) : r;
     })
     .then(()=>{

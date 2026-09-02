@@ -1,0 +1,79 @@
+{
+  "schema": "cityscroll.notice_primary_readiness_cold_trace.v1",
+  "version": 1,
+  "measurement_class": "lab",
+  "revision": "9ae3afd8e-dirty",
+  "route": "/notices/20260710020",
+  "cache_state": "cold",
+  "deferred_owner_delay_ms": 3000,
+  "identity": {
+    "metric_id": "content_ready_ms",
+    "surface_id": "notice",
+    "component_id": "none"
+  },
+  "owner_call_timing_ms": {
+    "before": 3132,
+    "after": 0.2,
+    "observed_difference": 3131.8,
+    "difference_is_bounded_by_injected_delay": true,
+    "injected_delay_ms": 3000
+  },
+  "deferred_owners": [
+    {
+      "owner": "money-history",
+      "settled_at_ms": 3129.699999988079
+    },
+    {
+      "owner": "rules",
+      "settled_at_ms": 3131.7999999523163
+    },
+    {
+      "owner": "notice-read",
+      "settled_at_ms": 3131.899999976158
+    }
+  ],
+  "body_usable_while_deferred_pending": true,
+  "captures": [
+    {
+      "scenario": "primary-body",
+      "route": "/notices/20260710020",
+      "viewport_px": 390,
+      "cache_state": "cold",
+      "deferred_owners": "blocked",
+      "screenshot": "docs/screenshots/notice-primary-readiness/primary-body-390.png",
+      "edge_result_state": "notice",
+      "demonstrates": "the edge-rendered primary body is usable with every optional owner blocked"
+    },
+    {
+      "scenario": "primary-body",
+      "route": "/notices/20260710020",
+      "viewport_px": 1440,
+      "cache_state": "cold",
+      "deferred_owners": "blocked",
+      "screenshot": "docs/screenshots/notice-primary-readiness/primary-body-1440.png",
+      "edge_result_state": "notice",
+      "demonstrates": "the edge-rendered primary body is usable with every optional owner blocked"
+    },
+    {
+      "scenario": "unavailable",
+      "route": "/notices/20991231999",
+      "viewport_px": 390,
+      "cache_state": "cold",
+      "deferred_owners": "blocked",
+      "screenshot": "docs/screenshots/notice-primary-readiness/unavailable-390.png",
+      "edge_result_state": "notice-unavailable",
+      "demonstrates": "an edge failure renders an honest unavailable state, never a success"
+    },
+    {
+      "scenario": "unavailable",
+      "route": "/notices/20991231999",
+      "viewport_px": 1440,
+      "cache_state": "cold",
+      "deferred_owners": "blocked",
+      "screenshot": "docs/screenshots/notice-primary-readiness/unavailable-1440.png",
+      "edge_result_state": "notice-unavailable",
+      "demonstrates": "an edge failure renders an honest unavailable state, never a success"
+    }
+  ],
+  "interpretation": "A single cold lab trace. 'before' is the pre-boundary semantics in which readiness waits for the deferred owners; 'after' is the shipped boundary. What this trace establishes is the ordering property: the primary body is usable and readiness is recorded while every deferred owner is still in flight. The size of the gap is an artifact of the delay the trace injects, not a measured saving, so it corroborates neither the projected 3,000-7,000 ms range nor any production p50/p75/p95 result. Only a grouped production before/after window can do that, and no such window has been collected; see read-back.json."
+}
