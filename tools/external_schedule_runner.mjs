@@ -1,7 +1,9 @@
 #!/usr/bin/env node
 
 import { readFile, readdir, mkdir, writeFile } from "node:fs/promises";
-import { spawn } from "node:child_process";
+import { readFileSync } from "node:fs";
+import { hostname } from "node:os";
+import { spawn, spawnSync } from "node:child_process";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { dirname, join, resolve } from "node:path";
 import {
@@ -274,33 +276,108 @@ async function pendingOutboxCount(stateDir) {
   } catch { return 0; }
 }
 
-export async function publishHeartbeat(stateDir, now, dueJobs, { fetchImpl = fetch } = {}) {
+export const SCHEDULER_WORKFLOW = "com.cityscroll.external-schedules";
+
+function adminKey() {
+  const inline = process.env.CITYSCROLL_ADMIN_KEY || process.env.ADMIN_KEY;
+  if (inline) return inline;
+  // launchd starts an agent with no login shell, so the credential arrives as a
+  // mode-0600 file named by the job definition rather than an inherited export.
+  const file = process.env.CITYSCROLL_ADMIN_KEY_FILE;
+  if (!file) return null;
+  try { return readFileSync(file, "utf8").trim() || null; } catch { return null; }
+}
+
+/**
+ * The source revision the cycle is actually running, so a heartbeat can be
+ * matched back to the code that produced it. Recorded as unknown rather than
+ * guessed when the checkout cannot answer.
+ */
+export function sourceRevision(root = ROOT) {
+  const env = process.env.CITYSCROLL_SOURCE_REVISION || process.env.GITHUB_SHA;
+  if (env && /^[0-9a-f]{7,40}$/i.test(env.trim())) return env.trim().toLowerCase();
+  const head = spawnSync("git", ["-C", root, "rev-parse", "HEAD"], { encoding: "utf8" });
+  const sha = String(head.stdout || "").trim();
+  return /^[0-9a-f]{40}$/.test(sha) ? sha : null;
+}
+
+export function schedulerRunId(now = new Date(), { host = hostname(), pid = process.pid } = {}) {
+  return `${runKey(now)}:${host}:${pid}`;
+}
+
+async function persistHeartbeatReceipt(stateDir, receipt) {
+  // A local receipt outlives the process, so a restarted or paused scheduler
+  // still shows what its last cycle attempted and how the write was answered.
+  const dir = join(stateDir, "heartbeat");
+  await mkdir(dir, { recursive: true });
+  await writeFile(join(dir, "latest.json"), `${JSON.stringify(receipt, null, 2)}\n`, "utf8");
+  await writeFile(join(dir, `${receipt.run_id.replaceAll(":", "_")}.json`), `${JSON.stringify(receipt, null, 2)}\n`, "utf8");
+  return receipt;
+}
+
+/**
+ * Scheduler liveness is a postcondition of the real cycle: this writes the
+ * heartbeat, then re-reads it and confirms the stored receipt carries THIS
+ * run's identity. The endpoint's overall ok folds in the mail leg, so it is not
+ * evidence that the write landed; the round-tripped run_id is.
+ */
+export async function publishHeartbeat(stateDir, now, dueJobs, options = {}) {
+  const { fetchImpl = fetch, cycleResult = "succeeded" } = options;
   const url = process.env.CITYSCROLL_SCHEDULER_HEARTBEAT_URL
     || "https://api.cityscroll.org/admin/reliability/scheduler";
-  const key = process.env.CITYSCROLL_ADMIN_KEY || process.env.ADMIN_KEY;
-  if (!url || !key) return { status: "unconfigured" };
+  const runId = options.runId || schedulerRunId(now);
+  const revision = options.sourceRevision === undefined ? sourceRevision() : options.sourceRevision;
+  const base = {
+    schema: "cityscroll.external-scheduler-heartbeat-attempt.v1",
+    workflow: SCHEDULER_WORKFLOW,
+    run_id: runId,
+    source_revision: revision,
+    result: cycleResult,
+    observed_at: now.toISOString(),
+    run_key: runKey(now),
+    due_jobs: dueJobs,
+  };
+  const key = adminKey();
+  // An unpublishable heartbeat is a failed cycle, not a quiet one: the runner
+  // exits nonzero and leaves the reason behind instead of returning silently.
+  if (!url) return persistHeartbeatReceipt(stateDir, { ...base, status: "failed", reason: "heartbeat-url-missing" });
+  if (!key) return persistHeartbeatReceipt(stateDir, { ...base, status: "failed", reason: "admin-credential-missing" });
+  if (!revision) return persistHeartbeatReceipt(stateDir, { ...base, status: "failed", reason: "source-revision-unresolved" });
+  const payload = { ...base, pending_outbox: await pendingOutboxCount(stateDir) };
+  delete payload.schema;
   const response = await fetchImpl(url, {
     method: "POST",
     headers: { authorization: `Bearer ${key}`, "content-type": "application/json" },
-    body: JSON.stringify({
-      observed_at: now.toISOString(),
-      run_key: runKey(now),
-      pending_outbox: await pendingOutboxCount(stateDir),
-      due_jobs: dueJobs,
-    }),
+    body: JSON.stringify(payload),
   });
-  if (!response.ok) return { status: "failed", http_status: response.status };
-  const verification = await fetchImpl(url, {
-    headers: { authorization: `Bearer ${key}` },
-  });
+  if (!response.ok) {
+    let rejected = null;
+    try { rejected = (await response.json())?.rejected || null; } catch {}
+    return persistHeartbeatReceipt(stateDir, {
+      ...base,
+      status: "failed",
+      reason: response.status === 400 ? "heartbeat-rejected" : "heartbeat-write-refused",
+      http_status: response.status,
+      rejected,
+    });
+  }
+  const verification = await fetchImpl(url, { headers: { authorization: `Bearer ${key}` } });
   let snapshot = null;
   try { snapshot = await verification.json(); } catch {}
-  return {
-    status: verification.ok && snapshot?.ok === true ? "succeeded" : "failed",
+  const stored = snapshot?.heartbeat || null;
+  // The response status folds in the mail leg and the cycle result, so only the
+  // round-tripped identity proves this run's write actually landed.
+  const verified = Boolean(stored?.run_id === runId && stored?.workflow === SCHEDULER_WORKFLOW);
+  return persistHeartbeatReceipt(stateDir, {
+    ...base,
+    status: verified ? "succeeded" : "failed",
+    reason: verified ? null : "heartbeat-not-verified",
     http_status: response.status,
     verification_status: verification.status,
-    verified: verification.ok && snapshot?.ok === true,
-  };
+    verified,
+    stored_run_id: stored?.run_id || null,
+    pending_outbox: payload.pending_outbox,
+  });
 }
 
 async function main() {
@@ -319,9 +396,14 @@ async function main() {
   const replayAfter = await replayOutbox({ stateDir, github });
   // Scheduler liveness is a postcondition of the real cycle, distinct from every
   // scheduled-job and digest-shadow receipt. A rejected write makes the cycle fail.
-  const heartbeat = await publishHeartbeat(stateDir, new Date(), due.map((job) => job.id));
+  // The cycle result travels with the heartbeat so a degraded run cannot read as
+  // healthy liveness, and a healthy digest cannot stand in for a missing write.
+  const degraded = summaries.some((summary) => summary.status !== "healthy");
+  const heartbeat = await publishHeartbeat(stateDir, new Date(), due.map((job) => job.id), {
+    cycleResult: degraded ? "degraded" : "succeeded",
+  });
   process.stdout.write(`${JSON.stringify({ replayBefore, heartbeat, due: summaries, replayAfter }, null, 2)}\n`);
-  if (heartbeat.status !== "succeeded" || summaries.some((summary) => summary.status !== "healthy")) process.exitCode = 1;
+  if (heartbeat.status !== "succeeded" || degraded) process.exitCode = 1;
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) main().catch((error) => { console.error(error?.stack || error); process.exitCode = 1; });

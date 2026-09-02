@@ -1,0 +1,21 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-reliability/rel-11-scheduler-heartbeat-repair",
+  "status": "proposed",
+  "fingerprint": "rel-11-scheduler-heartbeat-repair.v1",
+  "updated_at": "2026-09-02T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "scheduler-heartbeat-admin-contract",
+      "path": "worker/src/admin.mjs"
+    },
+    {
+      "id": "scheduler-heartbeat-trigger",
+      "path": "ops/launchd/com.cityscroll.external-schedules.plist.template"
+    },
+    {
+      "id": "served-artifact-freshness-deploy-basis",
+      "path": ".github/workflows/served-artifact-freshness.yml"
+    }
+  ]
+}

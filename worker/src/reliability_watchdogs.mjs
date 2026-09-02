@@ -3,6 +3,15 @@ import { digestDayLogKey, sentWatchKeysFromDayLog } from "./lib/digest_ops.mjs";
 export const DIGEST_SHADOW_LEDGER_PREFIX = "ops:digest:shadow:";
 export const DIGEST_DELIVERY_LEDGER_PREFIX = "ops:digest:delivery:";
 export const SCHEDULER_HEARTBEAT_KEY = "ops:scheduler:heartbeat";
+export const SCHEDULER_HEARTBEAT_SCHEMA = "cityscroll.external-scheduler-heartbeat.v1";
+// The scheduled cycle proves itself by naming these fields; the store stamps
+// observed_at on acceptance. Liveness is a property of the run that wrote the
+// receipt, never of a downstream digest or shadow rehearsal.
+export const SCHEDULER_HEARTBEAT_EVIDENCE_FIELDS = Object.freeze([
+  "workflow", "run_id", "source_revision", "result",
+]);
+export const SCHEDULER_HEARTBEAT_RESULTS = Object.freeze(["succeeded", "degraded", "failed"]);
+const GENERIC_EVIDENCE = new Set(["", "null", "none", "unknown", "n/a", "na", "-", "scheduler", "workflow"]);
 export const MAIL_INBOUND_LATEST_KEY = "ops:mail:inbound:latest";
 export const MAIL_OUTBOUND_LATEST_KEY = "ops:mail:outbound:latest";
 export const MAIL_CANARY_LATEST_KEY = "ops:mail:canary:latest";
@@ -84,16 +93,57 @@ export async function recordDigestQueueFailure(env, now = new Date()) {
   return current + 1;
 }
 
+function trimmed(value, limit = 200) {
+  const text = typeof value === "string" ? value.trim() : "";
+  return text ? text.slice(0, limit) : "";
+}
+
+/**
+ * A heartbeat only proves liveness when it names the cycle that wrote it.
+ * Anything absent, blank, or generic is rejected rather than stored, so a
+ * completed scheduled job can never leave an unattributable receipt behind.
+ */
+export function schedulerHeartbeatEvidenceFindings(heartbeat = {}) {
+  const findings = [];
+  for (const field of SCHEDULER_HEARTBEAT_EVIDENCE_FIELDS) {
+    if (!trimmed(heartbeat?.[field])) findings.push(`heartbeat evidence field ${field} is missing`);
+  }
+  const workflow = trimmed(heartbeat?.workflow);
+  if (workflow && GENERIC_EVIDENCE.has(workflow.toLowerCase())) {
+    findings.push("heartbeat evidence field workflow is generic");
+  }
+  const runId = trimmed(heartbeat?.run_id);
+  if (runId && GENERIC_EVIDENCE.has(runId.toLowerCase())) {
+    findings.push("heartbeat evidence field run_id is generic");
+  }
+  const revision = trimmed(heartbeat?.source_revision);
+  if (revision && !/^[0-9a-f]{7,40}$/i.test(revision)) {
+    findings.push("heartbeat evidence field source_revision is not a source revision");
+  }
+  const result = trimmed(heartbeat?.result);
+  if (result && !SCHEDULER_HEARTBEAT_RESULTS.includes(result)) {
+    findings.push(`heartbeat result ${result} is not a recognized cycle result`);
+  }
+  return findings;
+}
+
 export async function recordSchedulerHeartbeat(env, heartbeat = {}, now = new Date()) {
+  const rejected = schedulerHeartbeatEvidenceFindings(heartbeat);
+  if (rejected.length) return { accepted: false, rejected, heartbeat: null };
   const result = {
-    schema: "cityscroll.external-scheduler-heartbeat.v1",
+    schema: SCHEDULER_HEARTBEAT_SCHEMA,
+    workflow: trimmed(heartbeat.workflow),
+    run_id: trimmed(heartbeat.run_id),
+    source_revision: trimmed(heartbeat.source_revision).toLowerCase(),
+    result: trimmed(heartbeat.result),
     observed_at: now.toISOString(),
     pending_outbox: Number(heartbeat.pending_outbox) || 0,
     due_jobs: Array.isArray(heartbeat.due_jobs) ? heartbeat.due_jobs.slice(0, 30) : [],
     run_key: heartbeat.run_key || null,
   };
-  await putJson(env?.ALERT_STATE, SCHEDULER_HEARTBEAT_KEY, result);
-  return result;
+  const stored = await putJson(env?.ALERT_STATE, SCHEDULER_HEARTBEAT_KEY, result);
+  if (!stored) return { accepted: false, rejected: ["scheduler heartbeat store is unavailable"], heartbeat: null };
+  return { accepted: true, rejected: [], heartbeat: result };
 }
 
 function priorUtcDay(value) {
@@ -424,16 +474,39 @@ export async function digestWatchdogSnapshot(env, { now = new Date(), deadlineHo
   };
 }
 
+/**
+ * Scheduler liveness reads only the heartbeat the scheduled cycle wrote.
+ * Absent, unparseable, malformed, stale, or non-succeeding state all fail
+ * closed, and mail findings stay a separate leg so neither can clear the other.
+ */
 export async function schedulerWatchdogSnapshot(env, { now = new Date(), maxAgeMs = 90 * 60 * 1000 } = {}) {
   const heartbeat = await readJson(env?.ALERT_STATE, SCHEDULER_HEARTBEAT_KEY);
   const mail = await mailWatchdogSnapshot(env, { now });
-  const findings = [];
+  const schedulerFindings = [];
   const observed = Date.parse(heartbeat?.observed_at || "");
-  if (!heartbeat || !Number.isFinite(observed)) findings.push("scheduler heartbeat missing");
-  else if (now.getTime() - observed > maxAgeMs) findings.push("scheduler heartbeat expired");
-  if (heartbeat?.pending_outbox > 0) findings.push(`scheduler outbox has ${heartbeat.pending_outbox} pending item(s)`);
-  for (const item of mail.findings) findings.push(`mail: ${item}`);
-  return { ok: findings.length === 0, findings, heartbeat, mail };
+  if (!heartbeat) {
+    schedulerFindings.push("scheduler heartbeat missing");
+  } else if (heartbeat.schema !== SCHEDULER_HEARTBEAT_SCHEMA) {
+    schedulerFindings.push(`scheduler heartbeat has an unrecognized schema ${heartbeat.schema || "(absent)"}`);
+  } else if (!Number.isFinite(observed)) {
+    schedulerFindings.push("scheduler heartbeat observed_at is missing or unparseable");
+  } else {
+    schedulerFindings.push(...schedulerHeartbeatEvidenceFindings(heartbeat).map((item) => `scheduler ${item}`));
+    if (now.getTime() - observed > maxAgeMs) schedulerFindings.push("scheduler heartbeat expired");
+    if (heartbeat.result && heartbeat.result !== "succeeded") {
+      schedulerFindings.push(`scheduler cycle ${heartbeat.run_id} reported result ${heartbeat.result}`);
+    }
+  }
+  if (heartbeat?.pending_outbox > 0) schedulerFindings.push(`scheduler outbox has ${heartbeat.pending_outbox} pending item(s)`);
+  const findings = [...schedulerFindings, ...mail.findings.map((item) => `mail: ${item}`)];
+  return {
+    ok: findings.length === 0,
+    scheduler_ok: schedulerFindings.length === 0,
+    findings,
+    scheduler_findings: schedulerFindings,
+    heartbeat,
+    mail,
+  };
 }
 
 function normalizedFinding(value) {
@@ -457,7 +530,31 @@ export async function canonicalOpsFailureSignature({ guard, stage = "unknown", f
 function alertParagraph(record, { rollup = false } = {}) {
   const what = record.findings[0] || `${record.guard} failed`;
   const prefix = rollup ? `${record.guard} repeated ${record.count} times` : `${record.guard} broke`;
-  return `${prefix}: ${what}. First seen ${record.first_seen}; last seen ${record.last_seen}. Workflow run: ${record.latest_run_url}. Raw receipt: ${record.latest_receipt_url}.`;
+  const workflow = record.workflow ? ` Workflow: ${record.workflow}.` : "";
+  const revision = record.source_revision ? ` Source revision: ${record.source_revision}.` : "";
+  return `${prefix}: ${what}. First seen ${record.first_seen}; last seen ${record.last_seen}.${workflow}${revision}`
+    + ` Workflow run: ${record.latest_run_url}. Raw receipt: ${record.latest_receipt_url}.`;
+}
+
+// Guards whose findings are only actionable with run and receipt evidence in
+// hand. A caller cannot opt out: an alert with nothing to dereference is held
+// back and reported as a delivery failure rather than emailed as "null".
+export const EVIDENCE_REQUIRED_GUARDS = Object.freeze(["scheduler-heartbeat", "served-artifact-freshness"]);
+
+export function opsAlertEvidenceFindings(input = {}) {
+  const findings = [];
+  const concrete = (value) => {
+    const text = typeof value === "string" ? value.trim() : "";
+    return text && !GENERIC_EVIDENCE.has(text.toLowerCase()) ? text : "";
+  };
+  if (!concrete(input.workflow)) findings.push("alert evidence field workflow is missing or generic");
+  if (!concrete(input.workflow_run_url)) findings.push("alert evidence field workflow_run_url is missing or generic");
+  if (!concrete(input.receipt_url)) findings.push("alert evidence field receipt_url is missing or generic");
+  const revision = concrete(input.source_revision);
+  if (!revision) findings.push("alert evidence field source_revision is missing or generic");
+  else if (!/^[0-9a-f]{7,40}$/i.test(revision)) findings.push("alert evidence field source_revision is not a source revision");
+  if (!Number.isFinite(Date.parse(input.last_seen || ""))) findings.push("alert evidence field last_seen is missing or unparseable");
+  return findings;
 }
 
 async function updateAlertHistory(kv, record) {
@@ -479,6 +576,7 @@ export async function emitOpsAlertOnce(env, input = {}) {
   const alertKey = `ops:alert:signature:${signature}`;
   const prior = await readJson(env?.ALERT_STATE, alertKey);
   const firstSeen = prior?.first_seen || input.first_seen || now.toISOString();
+  const lastSeen = input.last_seen || now.toISOString();
   const record = {
     schema: "cityscroll.ops-alert-signature.v1",
     signature,
@@ -486,14 +584,25 @@ export async function emitOpsAlertOnce(env, input = {}) {
     stage: String(input.stage || prior?.stage || "unknown").slice(0, 80),
     findings,
     first_seen: firstSeen,
-    last_seen: input.last_seen || now.toISOString(),
+    last_seen: lastSeen,
     count: (Number(prior?.count) || 0) + 1,
+    workflow: trimmed(input.workflow) || prior?.workflow || null,
+    source_revision: trimmed(input.source_revision).toLowerCase() || prior?.source_revision || null,
     latest_run_url: input.workflow_run_url || prior?.latest_run_url || null,
     latest_receipt_url: input.receipt_url || prior?.latest_receipt_url || null,
     sent_at: prior?.sent_at || null,
     rollup_day: prior?.rollup_day || null,
     delivery_finding: prior?.delivery_finding || null,
   };
+  if (EVIDENCE_REQUIRED_GUARDS.includes(guard)) {
+    const missing = opsAlertEvidenceFindings({ ...input, last_seen: lastSeen });
+    if (missing.length) {
+      record.delivery_finding = { observed_at: lastSeen, reason: "evidence-required", findings: missing };
+      await putJson(env?.ALERT_STATE, alertKey, record);
+      await updateAlertHistory(env?.ALERT_STATE, record);
+      return { sent: false, reason: "evidence-required", evidence_findings: missing, signature, record };
+    }
+  }
   const today = day(now);
   const rollup = !!prior && prior.rollup_day !== today && day(prior.last_seen) !== today;
   const shouldSend = !prior || rollup;

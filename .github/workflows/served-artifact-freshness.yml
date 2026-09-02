@@ -1,5 +1,11 @@
 name: Served artifact freshness
 
+# The comparison basis is the manifest the last successful production deploy
+# actually published, not a fresh rebuild of main. The production build refreshes
+# decision outcomes from live sources, so rebuilding the same revision never
+# reproduces the deployed bytes and an artifact-hash comparison against a rebuild
+# can only ever fail. Deploy lag is reported as its own finding so a served
+# artifact that matches an older deploy is still red, with a distinct signature.
 on:
   schedule:
     - cron: "25 * * * *"
@@ -7,6 +13,7 @@ on:
 
 permissions:
   contents: read
+  actions: read
 
 jobs:
   freshness:
@@ -16,21 +23,54 @@ jobs:
         with:
           ref: main
           persist-credentials: false
-      - name: Build expected main artifact manifest
-        uses: ./.github/actions/build-site
+      - uses: actions/setup-node@v4
         with:
-          site-dir: _site
-      - name: Compare the served artifact with main
+          node-version: 22
+      - name: Resolve the last successful production deploy
+        id: deploy
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          run_json="$(gh run list --workflow deploy-cloudflare-pages.yml --branch main \
+            --status success --limit 1 --json databaseId,headSha,url)"
+          run_id="$(printf %s "$run_json" | node -e 'const r=JSON.parse(require("fs").readFileSync(0,"utf8")); process.stdout.write(String(r[0]?.databaseId||""))')"
+          if [ -z "$run_id" ]; then
+            echo "no successful production deploy run is available to compare against" >&2
+            exit 1
+          fi
+          {
+            echo "run_id=$run_id"
+            printf %s "$run_json" | node -e 'const r=JSON.parse(require("fs").readFileSync(0,"utf8")); process.stdout.write(`head_sha=${r[0].headSha}\nrun_url=${r[0].url}\n`)'
+          } >> "$GITHUB_OUTPUT"
+      - name: Download the published deploy evidence
+        env:
+          GH_TOKEN: ${{ github.token }}
+          DEPLOY_RUN_ID: ${{ steps.deploy.outputs.run_id }}
+        run: |
+          set -euo pipefail
+          mkdir -p .artifacts .deployed
+          # Without the published deploy evidence there is no truthful basis to
+          # compare against, so the check goes red rather than inventing one.
+          if ! gh run download "$DEPLOY_RUN_ID" \
+            --name "cloudflare-pages-release-evidence-$DEPLOY_RUN_ID" --dir .deployed; then
+            echo "deploy run $DEPLOY_RUN_ID retained no release evidence to compare against" >&2
+            exit 1
+          fi
+      - name: Compare the served artifact with the published deploy
         id: probe
         env:
           CITYSCROLL_ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
+          DEPLOY_RUN_URL: ${{ steps.deploy.outputs.run_url }}
+          DEPLOYED_SHA: ${{ steps.deploy.outputs.head_sha }}
         run: |
           set -euo pipefail
           set +e
-          mkdir -p .artifacts
           findings="$(node tools/check_release_surface_reconciliation.mjs \
-            --generation-receipt .artifacts/generation-output-receipt.json \
-            --expected-manifest _site/artifact-manifest.json \
+            --generation-receipt .deployed/.artifacts/generation-output-receipt.json \
+            --expected-manifest .deployed/_site/artifact-manifest.json \
+            --source-commit "$DEPLOYED_SHA" \
+            --main-revision "$GITHUB_SHA" \
             --live-origin https://cityscroll.org \
             --required-stages generation_output,card_reconciliation,served_artifact_freshness \
             --output .artifacts/release-surface-receipt.json 2>&1)"
@@ -45,8 +85,9 @@ jobs:
           FINDINGS="$findings" curl --fail-with-body --retry 2 -X POST "https://api.cityscroll.org/admin/ops-alert" \
             -H "authorization: Bearer $CITYSCROLL_ADMIN_KEY" \
             -H "content-type: application/json" \
-            --data "$(FINDINGS="$findings" node -e 'console.log(JSON.stringify({guard:"served-artifact-freshness",stage:"served_artifact_freshness",findings:(process.env.FINDINGS||"The served artifact is stale or mismatched.").split(/\n/).filter(Boolean).slice(0,20),first_seen:new Date().toISOString(),last_seen:new Date().toISOString(),workflow_run_url:`${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}`,receipt_url:`${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}#artifacts`}))')"
+            --data "$(FINDINGS="$findings" node -e 'console.log(JSON.stringify({guard:"served-artifact-freshness",stage:"served_artifact_freshness",findings:(process.env.FINDINGS||"The served artifact is stale or mismatched.").split(/\n/).filter(Boolean).slice(0,20),first_seen:new Date().toISOString(),last_seen:new Date().toISOString(),workflow:process.env.GITHUB_WORKFLOW,source_revision:process.env.GITHUB_SHA,workflow_run_url:`${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}`,receipt_url:`${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}#artifacts`}))')"
           echo "$findings"
+          echo "Compared against deploy run $DEPLOY_RUN_URL (revision $DEPLOYED_SHA)."
           exit 1
       - name: Retain freshness release-surface receipt
         if: always()
