@@ -1,6 +1,7 @@
 import {
   FEDERATED_SEARCH_CAPABILITY_REFERENCE,
   FEDERATED_SEARCH_LIMITS,
+  normalizeFederatedSearchScope,
 } from "../capabilities/federated_search.mjs";
 
 const SEARCH_TIMEOUT_MS = 12000;
@@ -44,12 +45,10 @@ export function scopedFederatedSearchPath(query, lenses = []) {
   if (normalizedQuery.length > FEDERATED_SEARCH_LIMITS.queryMaximumLength) {
     throw new TypeError("federated search query is too long");
   }
+  const scope = normalizeFederatedSearchScope({ lenses });
   const params = new URLSearchParams();
   params.set("q", normalizedQuery);
-  for (const lens of Array.isArray(lenses) ? lenses : []) {
-    const normalizedLens = String(lens ?? "").trim();
-    if (normalizedLens) params.append("scope", normalizedLens);
-  }
+  for (const lens of scope.lenses) params.append("scope", lens);
   return `/search?${params.toString()}`;
 }
 

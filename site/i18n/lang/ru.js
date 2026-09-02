@@ -1098,6 +1098,8 @@
     could_not_reach: "Последний снимок данных CityScroll недоступен. Повторите попытку.",
     address_snapshot_not_covered: "Адрес не найден в текущем снимке CityScroll. Приблизительное местоположение не использовалось.",
     shared_meeting_read_model_unavailable: "Снимок встреч недоступен. Повторите попытку.",
+    browse_scope_unavailable_snapshot: "Служба поиска недоступна; показывается опубликованный снимок: {source}.",
+    browse_scope_partial_records: "Охват поиска неполный; показываются доступные опубликованные записи: {source}.",
     open_notice_btn: "Открыть уведомление",
     city_record_link: "Городской вестник / The City Record",
     copy_link_btn: "Копировать ссылку",

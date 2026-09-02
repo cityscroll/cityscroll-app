@@ -1102,6 +1102,8 @@
     could_not_reach: "أحدث لقطة بيانات من CityScroll غير متاحة. أعد المحاولة.",
     address_snapshot_not_covered: "لم يُعثر على العنوان في لقطة CityScroll الحالية. لم يُستخدم موقع تقريبي.",
     shared_meeting_read_model_unavailable: "لقطة الاجتماعات غير متاحة. أعد المحاولة.",
+    browse_scope_unavailable_snapshot: "خدمة البحث غير متاحة؛ يتم عرض لقطة {source} المنشورة.",
+    browse_scope_partial_records: "تغطية البحث جزئية؛ يتم عرض سجلات {source} المنشورة المتاحة.",
     open_notice_btn: "فتح الإشعار",
     city_record_link: "السجل البلدي",
     copy_link_btn: "نسخ الرابط",

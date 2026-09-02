@@ -1098,6 +1098,8 @@
     could_not_reach: "La instantánea más reciente de CityScroll no está disponible. Intente de nuevo.",
     address_snapshot_not_covered: "La dirección no aparece en la instantánea actual de CityScroll. No se usó ninguna ubicación aproximada.",
     shared_meeting_read_model_unavailable: "La instantánea de reuniones no está disponible. Intente de nuevo.",
+    browse_scope_unavailable_snapshot: "El servicio de búsqueda no está disponible; se muestra la instantánea publicada de {source}.",
+    browse_scope_partial_records: "La cobertura de búsqueda es parcial; se muestran los {source} publicados disponibles.",
     open_notice_btn: "Abrir aviso",
     city_record_link: "Registro municipal",
     copy_link_btn: "Copiar enlace",

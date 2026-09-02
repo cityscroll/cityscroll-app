@@ -27,15 +27,49 @@ export const FEDERATED_SEARCH_LENS_IDS = Object.freeze([
 
 // Registered presentation scopes. A form factor asks for a named civic scope and
 // never invents its own lens list, so a source Browse and the search front door
-// cannot drift into asking the capability two different questions. Scopes join
-// this registry as their surface adapters land; the remaining lanes stay inline
-// in the worker until then.
+// cannot drift into asking the capability two different questions.
 export const FEDERATED_SEARCH_PRESENTATION_SCOPES = Object.freeze({
   contracts: Object.freeze({
     id: "contracts",
     lenses: Object.freeze(["notices", "vendors"]),
     domains: Object.freeze(["contracts"]),
     source: "City Record, PASSPort, Checkbook NYC, and CityScroll vendor profiles",
+  }),
+  people: Object.freeze({
+    id: "people",
+    lenses: Object.freeze(["people", "agencies", "vendors", "committees", "community_boards"]),
+    domains: Object.freeze(["people", "places", "contracts"]),
+    source: "City Council, Community Boards, agency, committee, and vendor read models",
+  }),
+  property: Object.freeze({
+    id: "property",
+    lenses: Object.freeze(["parcels"]),
+    domains: Object.freeze(["property"]),
+    source: "Bounded parcel and property disposition read models",
+  }),
+  land: Object.freeze({
+    id: "land",
+    lenses: Object.freeze(["land"]),
+    domains: Object.freeze(["zoning"]),
+    source: "Bounded land-use keyword read model",
+  }),
+  rules: Object.freeze({
+    id: "rules",
+    lenses: Object.freeze(["notices"]),
+    domains: Object.freeze(["rules"]),
+    source: "City Record daily mirror and bounded Rules projection",
+  }),
+  meetings: Object.freeze({
+    id: "meetings",
+    lenses: Object.freeze(["meetings", "committees"]),
+    domains: Object.freeze(["meetings"]),
+    source: "Bounded meeting and committee read models",
+  }),
+  exams: Object.freeze({
+    id: "exams",
+    lenses: Object.freeze(["exams"]),
+    domains: Object.freeze(["staffing"]),
+    source: "Bounded civil-service exam read model",
   }),
 });
 
