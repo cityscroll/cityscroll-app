@@ -187,6 +187,86 @@ export function networkObservation(req) {
   };
 }
 
+/**
+ * Stable execution identity for usage aggregation.
+ *
+ * `execution_id` identifies one INTAKE and is minted fresh per accepted POST, so a
+ * browser that retries a keepalive beacon stores the same execution twice under two
+ * ids. Usage statistics must count that execution once, so they need an identity
+ * derived from the execution itself rather than from its arrival.
+ *
+ * The fingerprint covers exactly the browser-owned facts that make one execution
+ * that execution — when it settled, which browser saw it, what was asked, where,
+ * and what came back — so:
+ *
+ *   · a duplicate intake of one execution repeats every input  → one fingerprint;
+ *   · a reload re-observes a new render at a new `occurred_at` → a new fingerprint.
+ *
+ * Known limit, deliberately not papered over: a cookie-less client is issued a new
+ * visitor id per request, so its retry is indistinguishable from a second browser
+ * and counts twice. That is the honest reading of the evidence, not a defect to
+ * hide behind a looser identity that would merge two real readers.
+ */
+export const SEARCH_EXECUTION_FINGERPRINT_VERSION = "cityscroll.search_execution.fingerprint.v1";
+export const SEARCH_ACTIVITY_DIMENSIONS_VERSION = 1;
+
+/** Key-order-independent JSON so an object literal cannot change the fingerprint. */
+function canonicalJson(value) {
+  if (Array.isArray(value)) return `[${value.map(canonicalJson).join(",")}]`;
+  if (value && typeof value === "object") {
+    const entries = Object.keys(value).sort()
+      .map((key) => `${JSON.stringify(key)}:${canonicalJson(value[key])}`);
+    return `{${entries.join(",")}}`;
+  }
+  return JSON.stringify(value ?? null);
+}
+
+/** The exact bytes hashed into a fingerprint. Exported so a test can pin them. */
+export function searchExecutionFingerprintPayload(submission = {}, visitorId = "") {
+  return canonicalJson([
+    SEARCH_EXECUTION_FINGERPRINT_VERSION,
+    String(visitorId || ""),
+    submission.occurred_at ?? null,
+    submission.search_path ?? null,
+    submission.query?.normalized ?? null,
+    submission.scope ?? {},
+    submission.outcome ?? null,
+    submission.rendered_count ?? null,
+    submission.family_counts ?? {},
+  ]);
+}
+
+export async function searchExecutionFingerprint(submission, visitorId) {
+  const bytes = new TextEncoder().encode(searchExecutionFingerprintPayload(submission, visitorId));
+  const digest = await crypto.subtle.digest("SHA-256", bytes);
+  return `exf_${base64Url(new Uint8Array(digest)).slice(0, 22)}`;
+}
+
+/**
+ * The aggregation dimensions carried as KV key metadata beside a stored receipt.
+ *
+ * Statistics fold these out of one bounded `list()` instead of reading every receipt
+ * body, which is what keeps a 30-day window inside Worker and storage limits. They
+ * are the receipt's own values, under the same key, with the same TTL and the same
+ * authenticated boundary — no new retention and no new exposure. Only counts derived
+ * from them ever leave the worker.
+ */
+export function searchExecutionDimensions(receipt = {}) {
+  const families = Object.entries(receipt.family_counts || {})
+    .filter(([, count]) => Number(count) > 0)
+    .map(([family]) => family)
+    .sort();
+  return {
+    v: SEARCH_ACTIVITY_DIMENSIONS_VERSION,
+    execution: receipt.execution_fingerprint || receipt.execution_id || null,
+    outcome: receipt.outcome || null,
+    recognized: receipt.recognition === "recognized",
+    visitor: receipt.visitor_id || null,
+    subscriber: receipt.subscriber_id || null,
+    families,
+  };
+}
+
 /** Descending-by-time key so a bounded list() reads the newest receipts first. */
 export function searchActivityKey({ receivedAtMs, receiptId, trafficClass }) {
   const prefix = trafficClass === "developer"
@@ -196,10 +276,23 @@ export function searchActivityKey({ receivedAtMs, receiptId, trafficClass }) {
   return `${prefix}${stamp}:${receiptId}`;
 }
 
+/**
+ * Recover the receipt's received instant from its own key. The key already encodes
+ * the time it sorts by, so a windowed read needs no metadata and no body read to
+ * place a receipt in a day — including receipts stored before this code existed.
+ */
+export function searchActivityKeyReceivedAtMs(name) {
+  const match = /^search:exec(?:-dev)?:(\d{16}):/.exec(String(name || ""));
+  if (!match) return null;
+  const ms = KEY_TIME_BASE - Number(match[1]);
+  return Number.isSafeInteger(ms) && ms >= 0 ? ms : null;
+}
+
 /** Assemble the stored receipt. Worker-owned fields always win over submitted ones. */
 export function buildSearchExecutionReceipt(submission, {
   receiptId,
   executionId,
+  executionFingerprint = null,
   receivedAt,
   visitorId,
   subscriberId = null,
@@ -213,6 +306,7 @@ export function buildSearchExecutionReceipt(submission, {
     ...submission,
     receipt_id: receiptId,
     execution_id: executionId,
+    execution_fingerprint: executionFingerprint,
     received_at: receivedAt,
     visitor_id: visitorId,
     subscriber_id: subscriberId,
