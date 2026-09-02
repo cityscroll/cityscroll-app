@@ -4,6 +4,7 @@ import {
   executeFederatedSearch,
   FEDERATED_SEARCH_CAPABILITY_REFERENCE,
   FEDERATED_SEARCH_LIMITS,
+  FEDERATED_SEARCH_PRESENTATION_SCOPES,
   FEDERATED_SEARCH_PROVIDER_ID,
 } from "../../capabilities/federated_search.mjs";
 import {
@@ -897,10 +898,12 @@ export async function handleSearch(request, env, {
   const communityBoardsLane = federatedCollectionLane("community_boards", federation, resolved);
   const agencyLane = federatedCollectionLane("agencies", federation, resolved);
   const committeesLane = federatedCollectionLane("committees", federation, resolved);
+  // The Contracts lane and Contracts Browse read the same registered scope, so the
+  // front door and the source Browse cannot ask the capability different questions.
   const contractsLane = federatedPresentationLane("contracts", federation, {
-    lenses: ["notices", "vendors"],
-    domains: ["contracts"],
-    source: "City Record, PASSPort, Checkbook NYC, and CityScroll vendor profiles",
+    lenses: [...FEDERATED_SEARCH_PRESENTATION_SCOPES.contracts.lenses],
+    domains: [...FEDERATED_SEARCH_PRESENTATION_SCOPES.contracts.domains],
+    source: FEDERATED_SEARCH_PRESENTATION_SCOPES.contracts.source,
   });
   const peopleOrganizationsLane = combinedStaticLane(
     "people-organizations",

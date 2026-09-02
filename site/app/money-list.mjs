@@ -19,7 +19,15 @@ import {
   procurementStagesForRow,
   vendorStemsFromEntityRefs,
 } from "../resident_snapshot_queries.mjs";
-import { mergeCanonicalProcurementBrowseRows, mergeContractSearchRows } from "../contract_search_bridge.mjs";
+import {
+  CONTRACTS_BROWSE_SCOPE,
+  CONTRACT_SCOPED_RETRIEVAL_IDLE,
+  contractScopedRetrievalOutcome,
+  contractScopedRetrievalRequest,
+  contractScopedRetrievalUnavailable,
+  mergeCanonicalProcurementBrowseRows,
+  mergeContractSearchRows,
+} from "../contract_search_bridge.mjs";
 import { renderProcurementRowCoverageHtml } from "../procurement_coverage_labels.mjs";
 import {
   ANALYTICAL_PROJECTION_URL,
@@ -203,26 +211,25 @@ function loadAnalyticalProjection(){
 async function residentMoneyRows(){
   return moneySnapshotRows(await loadMoneyResidentSnapshot());
 }
-async function loadContractSearchDocuments(query, identity=null){
-  const lexical=String(query||"").replace(/\s+/g," ").trim().slice(0,240);
-  const params=new URLSearchParams();
-  if(identity){
-    params.set("object_ref",identity.object_ref);
-    params.set("source_ref",identity.source_observation_ref);
-  }else if(lexical){
-    params.set("q",lexical);
-  }else return [];
-  const key=params.toString();
-  if(!contractSearchDocumentPromises.has(key)){
-    contractSearchDocumentPromises.set(key,workerFetch(`/search?${key}`,null,SLOW_MS)
+// Contracts Browse is a scoped form factor of the federated capability: keyword
+// candidates come from the registered Contracts scope, and the retained local
+// snapshot is the disclosed fallback rather than the primary keyword index.
+// The retrieval receipt is returned whole so a provider failure can never be
+// painted as "no contracts matched".
+async function loadContractScopedRetrieval(query, identity=null){
+  const request=contractScopedRetrievalRequest({query,identity});
+  if(!request) return CONTRACT_SCOPED_RETRIEVAL_IDLE;
+  if(!contractSearchDocumentPromises.has(request.path)){
+    contractSearchDocumentPromises.set(request.path,workerFetch(request.path,null,SLOW_MS)
       .then(async response=>{
         if(!response.ok) throw new Error(`HTTP ${response.status}`);
         const payload=await response.json();
-        return Array.isArray(payload?.results)?payload.results:[];
+        if(!payload||!Array.isArray(payload.results)) throw new Error("scoped-search-response-invalid");
+        return contractScopedRetrievalOutcome(payload,request);
       })
-      .catch(()=>[]));
+      .catch(error=>contractScopedRetrievalUnavailable(request,error?.message)));
   }
-  return contractSearchDocumentPromises.get(key);
+  return contractSearchDocumentPromises.get(request.path);
 }
 function isDefaultMoneySearchState({mode, agency, kw, methodSel, closingWeek, minAmount, sort, nlResolved}={}){
   const nl=nlResolved&&typeof nlResolved==="object"?nlResolved:{};
@@ -346,6 +353,59 @@ function scopedHistoryGap(rows){
     receipt: globalThis.CROL_SCOPE_RESULT_COUNT_RECEIPT,
     scoped: hasScopedMoneyReceipt(),
   });
+}
+// Contracts Browse renders scoped coverage in the same vocabulary the search
+// front door uses, so a resident reading "Vendors results temporarily
+// unavailable" on either surface is reading the same claim about the same lens.
+const MONEY_SCOPE_RECEIPT_CLASS = "contracts-scope-receipt";
+const MONEY_STATUS_ROLE = "status";
+const CONTRACT_SCOPE_LENS_NOTE_KEYS = Object.freeze({
+  provider_unavailable: "topic_search_coverage_provider_unavailable",
+  stale: "topic_search_coverage_stale",
+  not_indexed: "topic_search_coverage_not_indexed",
+});
+function contractScopeLensLabel(lens){
+  return t(`topic_search_coverage_lens_${lens}`);
+}
+function contractScopeReceiptHTML(retrieval){
+  if(!retrieval || retrieval.outcome==="idle") return "";
+  const lensCoverage=Array.isArray(retrieval.lens_coverage)?retrieval.lens_coverage:[];
+  const requested=Array.isArray(retrieval.requested_lenses)?retrieval.requested_lenses:[];
+  const parts=[];
+  if(retrieval.outcome==="unavailable"){
+    const failedLenses=lensCoverage.filter(row=>row.state==="provider_unavailable").map(row=>row.lens);
+    const named=(failedLenses.length?failedLenses:requested).map(contractScopeLensLabel).filter(Boolean);
+    // Say the source could not be reached and that what follows is the retained
+    // snapshot. An unreachable provider is not a city that awarded no contracts.
+    parts.push(`<p data-scope-note="provider_unavailable">${escUiHtml(t("now_source_unavailable",{
+      sources:named.length?named.join(", "):CONTRACTS_BROWSE_SCOPE.source,
+    }))}</p>`);
+  }else{
+    for(const row of lensCoverage){
+      const key=CONTRACT_SCOPE_LENS_NOTE_KEYS[row.state];
+      if(!key) continue;
+      parts.push(`<p data-coverage-lens="${escUiHtml(row.lens)}" data-coverage-state="${escUiHtml(row.state)}">${escUiHtml(t(key,{source:contractScopeLensLabel(row.lens)}))}</p>`);
+    }
+  }
+  if(retrieval.as_of) parts.push(`<p data-scope-as-of="${escUiHtml(retrieval.as_of)}">${escUiHtml(t("stats_public_asof",{date:retrieval.as_of}))}</p>`);
+  // The receipt is always emitted so the scoped provenance of a rendered result
+  // set is inspectable, and carries resident copy only when there is something a
+  // resident needs told — the same rule the search front door's coverage uses.
+  const receiptData=[
+    ["data-contracts-scope-receipt","1"],
+    ["data-scope-outcome",retrieval.outcome],
+    ["data-scope-match-mode",retrieval.match_mode||""],
+    ["data-scope-capability",retrieval.capability_reference||""],
+    ["data-scope-lenses",requested.join(",")],
+    ["data-scope-coverage-state",retrieval.coverage_state||""],
+    ["data-scope-coverage-reported",retrieval.coverage_reported?"1":"0"],
+    ["data-scope-query",retrieval.query||""],
+    ["data-scope-candidates",String(retrieval.candidate_count??0)],
+    ["data-scope-bound",String(retrieval.result_bound??"")],
+    ["data-scope-fallback",retrieval.outcome==="unavailable"?"local_snapshot":""],
+  ].map(([name,value])=>`${name}="${escUiHtml(value)}"`).join(" ");
+  const receiptClass=`note ${retrieval.outcome==="unavailable"?"warn ":""}${MONEY_SCOPE_RECEIPT_CLASS}`;
+  return `<div class="${receiptClass}" role="${MONEY_STATUS_ROLE}" ${receiptData}${parts.length?"":" hidden"}>${parts.join("")}</div>`;
 }
 function scopedHistoryNoteHTML(count, observed = 0, narrowed = false){
   const key = !narrowed
@@ -1090,7 +1150,10 @@ async function search(){
     const contractIdentity=contractIdentityFromFacetValues(activeFacetValues);
     const scopedVendorStem=vendorStemsFromEntityRefs(entityRefs)[0]||"";
     const retrievalQuery=kw||scopedVendorStem;
-    const needsSearch=Boolean((contractIdentity||retrievalQuery)&&awardArchive);
+    // Every keyword and exact-reference retrieval goes to the capability, in every
+    // mode. The mode, facets and sort narrow the answer locally; they never make
+    // Browse ask a different question than the search front door would ask.
+    const needsSearch=Boolean(contractIdentity||retrievalQuery);
     const common={
       mode,agency,keyword:kw,closingWeek,minAmount:minamt||null,maxAmount,category,months,
       excludeSpecial,entityRefs,contractObjectRef:contractIdentity?.object_ref||"",sort,today:todayISO(),weekEnd:weekOutISO(),
@@ -1142,10 +1205,17 @@ async function search(){
     const retainedRows=defaultSearch
       ? filterStillOpenMoneyNotices(snapshot?.notices,todayISO())
       : moneySnapshotRows(snapshot);
-    const searchDocuments=needsSearch
-      ? await loadContractSearchDocuments(retrievalQuery,contractIdentity)
-      : [];
-    const searchedRows=mergeContractSearchRows(retainedRows,searchDocuments);
+    const scopedRetrievalPromise=needsSearch
+      ? loadContractScopedRetrieval(retrievalQuery,contractIdentity)
+      : Promise.resolve(CONTRACT_SCOPED_RETRIEVAL_IDLE);
+    // The award and archive read models fold the scoped candidates into their own
+    // canonical query, so those modes wait for the answer. Every other mode keeps
+    // painting the retained snapshot first and folds the scoped candidates in when
+    // the capability replies: static-first survives a slow or failing provider.
+    const scopedRetrieval=awardArchive
+      ? await scopedRetrievalPromise
+      : CONTRACT_SCOPED_RETRIEVAL_IDLE;
+    const searchedRows=mergeContractSearchRows(retainedRows,scopedRetrieval.documents);
     const canonicalSnapshot=awardArchive
       ? await loadMoneyProcurementSnapshot({...common,method:methodSel},searchedRows)
       : {rows:[],facets:{},hydrate:Promise.resolve({rows:[]})};
@@ -1169,22 +1239,61 @@ async function search(){
       });
       return true;
     }
-    const facetRows=(mode==="award"||mode==="archive")
-      ? snapshotRows
-      : filterMoneySnapshot(snapshotRows,{...common,method:"",limit:snapshotRows.length});
-    loadMethodFacet(facetRows,(mode==="award"||mode==="archive") ? canonicalSnapshot?.facets?.method : null);
-    const rows=(mode==="award"||mode==="archive")
-      ? snapshotRows.slice(0,40)
-      : methodSel
-        ? filterMoneySnapshot(snapshotRows,{...common,method:methodSel,limit:40})
-        : facetRows.slice(0,40);
+    // Outside the award/archive read models the snapshot is still filtered exactly
+    // as before. The capability's candidates are added alongside it under the same
+    // mode and facets, minus the local keyword predicate — re-running that
+    // predicate would let local text matching overrule what the capability matched,
+    // which is the divergence this surface exists to remove.
+    const composeBrowseRows=(documents)=>{
+      const scopedCandidateRows=awardArchive?[]:mergeContractSearchRows([],documents);
+      const scopedFacetRows=scopedCandidateRows.length
+        ? filterMoneySnapshot(scopedCandidateRows,{...common,keyword:"",method:"",limit:scopedCandidateRows.length})
+        : [];
+      const facetRows=awardArchive
+        ? snapshotRows
+        : mergeCanonicalProcurementBrowseRows(
+          filterMoneySnapshot(snapshotRows,{...common,method:"",limit:snapshotRows.length}),
+          scopedFacetRows,
+        );
+      const rows=awardArchive
+        ? snapshotRows.slice(0,40)
+        : methodSel
+          ? mergeCanonicalProcurementBrowseRows(
+            filterMoneySnapshot(snapshotRows,{...common,method:methodSel,limit:40}),
+            filterMoneySnapshot(scopedFacetRows,{...common,keyword:"",method:methodSel,limit:40}),
+          ).slice(0,40)
+          : facetRows.slice(0,40);
+      return {facetRows,rows,scopedFacetRows};
+    };
+    const painted=composeBrowseRows(scopedRetrieval.documents);
+    loadMethodFacet(painted.facetRows,awardArchive ? canonicalSnapshot?.facets?.method : null);
     if(stale()) return;
-    paintMoneyRows(rows,{
+    paintMoneyRows(painted.rows,{
       autoSelect:true,
       narrowed:false,
-      lineageRows:snapshotRows,
+      lineageRows:awardArchive
+        ? snapshotRows
+        : mergeCanonicalProcurementBrowseRows(snapshotRows,painted.scopedFacetRows),
       rumInteraction,
+      scopedRetrieval,
     });
+    if(!awardArchive && needsSearch){
+      // Second paint, same composition: the scoped candidates and the coverage
+      // the capability reported, added to rows the reader already has. Local rows
+      // keep their positions, so an open row keeps pointing at the same record.
+      scopedRetrievalPromise.then((retrieval)=>{
+        if(stale()) return;
+        const enriched=composeBrowseRows(retrieval.documents);
+        loadMethodFacet(enriched.facetRows,null);
+        paintMoneyRows(enriched.rows,{
+          autoSelect:false,
+          narrowed:false,
+          lineageRows:mergeCanonicalProcurementBrowseRows(snapshotRows,enriched.scopedFacetRows),
+          rumInteraction,
+          scopedRetrieval:retrieval,
+        });
+      }).catch(()=>{});
+    }
     const hydration=typeof canonicalSnapshot?.hydrate === "function" ? canonicalSnapshot.hydrate() : canonicalSnapshot?.hydrate;
     Promise.resolve(hydration)?.then((hydrated)=>{
       if(stale() || !Array.isArray(hydrated?.rows)) return;
@@ -1201,7 +1310,7 @@ async function search(){
     return false;
   }
 }
-function paintMoneyRows(rows, {autoSelect=true, narrowed=false, lineageRows=null,rumInteraction=null}={}){
+function paintMoneyRows(rows, {autoSelect=true, narrowed=false, lineageRows=null,rumInteraction=null,scopedRetrieval=null}={}){
   currentRows = rows;
   globalThis.syncCalendarSubscription?.("money", rows);
   currentMoneyLineageRows = lineageRows || rows;
@@ -1223,7 +1332,17 @@ function paintMoneyRows(rows, {autoSelect=true, narrowed=false, lineageRows=null
     $("#list").insertAdjacentHTML("afterbegin",
       `<div class="note warn" style="margin:10px 12px 0">${t("narrowed_note",{date:recentCutLabel()})}</div>`);
   }
-  reportContractsRumResults(rumInteraction,currentRows.length?"content":"empty");
+  const scopeReceipt=contractScopeReceiptHTML(scopedRetrieval);
+  if(scopeReceipt){
+    // A failed capability with nothing else to show replaces the empty state
+    // outright: "Nothing found" would be a claim about the city, not about us.
+    if(!currentRows.length && scopedRetrieval?.outcome==="unavailable") $("#list").innerHTML=scopeReceipt;
+    else $("#list").insertAdjacentHTML("afterbegin",scopeReceipt);
+  }
+  reportContractsRumResults(
+    rumInteraction,
+    currentRows.length ? "content" : scopedRetrieval?.outcome==="unavailable" ? "unavailable" : "empty",
+  );
 }
 
 function loadMethodFacet(rows, precomputedFacets=null){

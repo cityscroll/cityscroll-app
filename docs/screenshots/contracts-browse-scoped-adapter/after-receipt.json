@@ -1,0 +1,336 @@
+{
+  "schema": "cityscroll.contracts-browse-scoped-adapter-capture.v1",
+  "phase": "after",
+  "base_revision": "77bb5ca6d697aee7dd32b8f1975a1fccc87e8eea",
+  "source_state": "runtime modules carrying the Contracts scoped-adapter change",
+  "viewports": [
+    390,
+    1440
+  ],
+  "registered_scope": {
+    "lenses": [
+      "notices",
+      "vendors"
+    ],
+    "domains": [
+      "contracts"
+    ]
+  },
+  "query": "aircraft",
+  "scenarios": [
+    {
+      "scenario": "contracts-query",
+      "route": "browse/contracts/?mode=award&q=aircraft",
+      "capability_mode": "matched",
+      "capture": "contracts-query-mobile-390.png",
+      "search_requests": [
+        "q=aircraft&scope=notices&scope=vendors"
+      ],
+      "requested_scope": [
+        "notices",
+        "vendors"
+      ],
+      "rendered_references": [
+        "05626S0012",
+        "05626W0023001"
+      ],
+      "rendered_row_count": 2,
+      "scope_receipt": {
+        "outcome": "matched",
+        "match_mode": "scoped_keyword",
+        "capability": "search.federated@1",
+        "lenses": "notices,vendors",
+        "coverage_state": "matched",
+        "fallback": "",
+        "copy": "As of 2026-09-01."
+      },
+      "shows_nothing_found": false
+    },
+    {
+      "scenario": "contracts-provider-failure",
+      "route": "browse/contracts/?mode=award&q=aircraft",
+      "capability_mode": "provider_failure",
+      "capture": "contracts-provider-failure-mobile-390.png",
+      "search_requests": [
+        "q=aircraft&scope=notices&scope=vendors"
+      ],
+      "requested_scope": [
+        "notices",
+        "vendors"
+      ],
+      "rendered_references": [],
+      "rendered_row_count": 0,
+      "scope_receipt": {
+        "outcome": "unavailable",
+        "match_mode": "scoped_keyword",
+        "capability": "search.federated@1",
+        "lenses": "notices,vendors",
+        "coverage_state": "provider_unavailable",
+        "fallback": "local_snapshot",
+        "copy": "Some sources could not be reached: Published notices, Vendors. Counts below cover the available sources."
+      },
+      "shows_nothing_found": false
+    },
+    {
+      "scenario": "contracts-provider-failure-snapshot-fallback",
+      "route": "browse/contracts/?mode=award&q=maintenance",
+      "capability_mode": "provider_failure",
+      "capture": "contracts-provider-failure-snapshot-fallback-mobile-390.png",
+      "search_requests": [
+        "q=maintenance&scope=notices&scope=vendors"
+      ],
+      "requested_scope": [
+        "notices",
+        "vendors"
+      ],
+      "rendered_references": [
+        "06926W0028001",
+        "84126W0076001",
+        "127FY2700016",
+        "84626W0038001",
+        "84126B0023001",
+        "06926W0046001",
+        "84126W0067001",
+        "82026W0013001",
+        "84126B0023003",
+        "127FY2700013",
+        "84126B0023002",
+        "X39-SB-R",
+        "06826W0053001",
+        "84124W0120001",
+        "82622B0035001R001",
+        "03026O0001001",
+        "07222B0004001R001",
+        "85626W0067001",
+        "05726S0005001",
+        "05724P0016001",
+        "83626S0005001",
+        "84626T0001001",
+        "00226W0013001",
+        "06926G0010001",
+        "81626W0024001",
+        "05620B8152KXLR002",
+        "07226W0044001",
+        "83626W0012001",
+        "03026W0003001",
+        "06826W0040001",
+        "84122B0026001R001",
+        "84126W0059001",
+        "82026W0006001",
+        "82621B0104001R001",
+        "84625B0164001",
+        "06826W0034001",
+        "06926W0032001",
+        "84625B0118001",
+        "82723N0004001R001",
+        "05615P8237KXLR002"
+      ],
+      "rendered_row_count": 40,
+      "scope_receipt": {
+        "outcome": "unavailable",
+        "match_mode": "scoped_keyword",
+        "capability": "search.federated@1",
+        "lenses": "notices,vendors",
+        "coverage_state": "provider_unavailable",
+        "fallback": "local_snapshot",
+        "copy": "Some sources could not be reached: Published notices, Vendors. Counts below cover the available sources."
+      },
+      "shows_nothing_found": false
+    },
+    {
+      "scenario": "contracts-empty",
+      "route": "browse/contracts/?mode=award&q=zzzznotacontract",
+      "capability_mode": "empty",
+      "capture": "contracts-empty-mobile-390.png",
+      "search_requests": [
+        "q=zzzznotacontract&scope=notices&scope=vendors"
+      ],
+      "requested_scope": [
+        "notices",
+        "vendors"
+      ],
+      "rendered_references": [],
+      "rendered_row_count": 0,
+      "scope_receipt": {
+        "outcome": "empty",
+        "match_mode": "scoped_keyword",
+        "capability": "search.federated@1",
+        "lenses": "notices,vendors",
+        "coverage_state": "empty",
+        "fallback": "",
+        "copy": "As of 2026-09-01."
+      },
+      "shows_nothing_found": true
+    },
+    {
+      "scenario": "search-front-door",
+      "route": "/search/?q=aircraft",
+      "capability_mode": "matched",
+      "capture": "search-front-door-mobile-390.png",
+      "search_requests": [
+        "q=aircraft"
+      ],
+      "rendered_references": [
+        "05626S0012",
+        "05626W0023001"
+      ]
+    },
+    {
+      "scenario": "contracts-query",
+      "route": "browse/contracts/?mode=award&q=aircraft",
+      "capability_mode": "matched",
+      "capture": "contracts-query-desktop-1440.png",
+      "search_requests": [
+        "q=aircraft&scope=notices&scope=vendors"
+      ],
+      "requested_scope": [
+        "notices",
+        "vendors"
+      ],
+      "rendered_references": [
+        "05626S0012",
+        "05626W0023001"
+      ],
+      "rendered_row_count": 2,
+      "scope_receipt": {
+        "outcome": "matched",
+        "match_mode": "scoped_keyword",
+        "capability": "search.federated@1",
+        "lenses": "notices,vendors",
+        "coverage_state": "matched",
+        "fallback": "",
+        "copy": "As of 2026-09-01."
+      },
+      "shows_nothing_found": false
+    },
+    {
+      "scenario": "contracts-provider-failure",
+      "route": "browse/contracts/?mode=award&q=aircraft",
+      "capability_mode": "provider_failure",
+      "capture": "contracts-provider-failure-desktop-1440.png",
+      "search_requests": [
+        "q=aircraft&scope=notices&scope=vendors"
+      ],
+      "requested_scope": [
+        "notices",
+        "vendors"
+      ],
+      "rendered_references": [],
+      "rendered_row_count": 0,
+      "scope_receipt": {
+        "outcome": "unavailable",
+        "match_mode": "scoped_keyword",
+        "capability": "search.federated@1",
+        "lenses": "notices,vendors",
+        "coverage_state": "provider_unavailable",
+        "fallback": "local_snapshot",
+        "copy": "Some sources could not be reached: Published notices, Vendors. Counts below cover the available sources."
+      },
+      "shows_nothing_found": false
+    },
+    {
+      "scenario": "contracts-provider-failure-snapshot-fallback",
+      "route": "browse/contracts/?mode=award&q=maintenance",
+      "capability_mode": "provider_failure",
+      "capture": "contracts-provider-failure-snapshot-fallback-desktop-1440.png",
+      "search_requests": [
+        "q=maintenance&scope=notices&scope=vendors"
+      ],
+      "requested_scope": [
+        "notices",
+        "vendors"
+      ],
+      "rendered_references": [
+        "06926W0028001",
+        "84126W0076001",
+        "127FY2700016",
+        "84626W0038001",
+        "84126B0023001",
+        "06926W0046001",
+        "84126W0067001",
+        "82026W0013001",
+        "84126B0023003",
+        "127FY2700013",
+        "84126B0023002",
+        "X39-SB-R",
+        "06826W0053001",
+        "84124W0120001",
+        "82622B0035001R001",
+        "03026O0001001",
+        "07222B0004001R001",
+        "85626W0067001",
+        "05726S0005001",
+        "05724P0016001",
+        "83626S0005001",
+        "84626T0001001",
+        "00226W0013001",
+        "06926G0010001",
+        "81626W0024001",
+        "05620B8152KXLR002",
+        "07226W0044001",
+        "83626W0012001",
+        "03026W0003001",
+        "06826W0040001",
+        "84122B0026001R001",
+        "84126W0059001",
+        "82026W0006001",
+        "82621B0104001R001",
+        "84625B0164001",
+        "06826W0034001",
+        "06926W0032001",
+        "84625B0118001",
+        "82723N0004001R001",
+        "05615P8237KXLR002"
+      ],
+      "rendered_row_count": 40,
+      "scope_receipt": {
+        "outcome": "unavailable",
+        "match_mode": "scoped_keyword",
+        "capability": "search.federated@1",
+        "lenses": "notices,vendors",
+        "coverage_state": "provider_unavailable",
+        "fallback": "local_snapshot",
+        "copy": "Some sources could not be reached: Published notices, Vendors. Counts below cover the available sources."
+      },
+      "shows_nothing_found": false
+    },
+    {
+      "scenario": "contracts-empty",
+      "route": "browse/contracts/?mode=award&q=zzzznotacontract",
+      "capability_mode": "empty",
+      "capture": "contracts-empty-desktop-1440.png",
+      "search_requests": [
+        "q=zzzznotacontract&scope=notices&scope=vendors"
+      ],
+      "requested_scope": [
+        "notices",
+        "vendors"
+      ],
+      "rendered_references": [],
+      "rendered_row_count": 0,
+      "scope_receipt": {
+        "outcome": "empty",
+        "match_mode": "scoped_keyword",
+        "capability": "search.federated@1",
+        "lenses": "notices,vendors",
+        "coverage_state": "empty",
+        "fallback": "",
+        "copy": "As of 2026-09-01."
+      },
+      "shows_nothing_found": true
+    },
+    {
+      "scenario": "search-front-door",
+      "route": "/search/?q=aircraft",
+      "capability_mode": "matched",
+      "capture": "search-front-door-desktop-1440.png",
+      "search_requests": [
+        "q=aircraft"
+      ],
+      "rendered_references": [
+        "05626S0012",
+        "05626W0023001"
+      ]
+    }
+  ]
+}
