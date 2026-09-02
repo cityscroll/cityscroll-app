@@ -1,0 +1,29 @@
+{
+  "as_of": "2026-08-31",
+  "dsny": {
+    "canonical_id": "sanitation",
+    "canonical_name": "New York City Department of Sanitation",
+    "subject_ref": "agency:id:sanitation",
+    "expected_matched_categories": ["contracts", "vendors", "meetings", "rules", "obligations", "staffing"]
+  },
+  "nycedc": {
+    "canonical_id": "economic-development-corporation",
+    "canonical_name": "Economic Development Corporation",
+    "subject_ref": "agency:id:economic-development-corporation",
+    "expected_matched_categories": ["contracts"],
+    "expected_empty_categories": ["vendors", "meetings", "rules", "obligations", "staffing"]
+  },
+  "eep": {
+    "route_id": "equal-employ-practices-comm",
+    "comparison_key": "EQUAL EMPLOYMENT PRACTICES COMMISSION",
+    "collision_ids": ["equal-employ-practices-comm", "equal-employment-practices-commission"]
+  },
+  "unresolved": [
+    "nyc-taxi-and-limousine-commission",
+    "office-of-criminal-justice-128"
+  ],
+  "empty_category_agency": "campaign-finance-board",
+  "housing_alias": "n-y-c-housing-authority",
+  "board_id": "brooklyn-cb-15",
+  "board_body_id": "brooklyn-cb-15"
+}

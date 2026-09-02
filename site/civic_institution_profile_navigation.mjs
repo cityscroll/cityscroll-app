@@ -135,6 +135,11 @@ const BASIS_LABELS = Object.freeze({
   entity_link: "source identity",
 });
 
+/** Reader vocabulary for a source basis or relation token. */
+export function institutionReaderToken(value) {
+  return readerToken(value);
+}
+
 function readerToken(value) {
   const raw = clean(value, 240);
   if (!raw) return "";
@@ -707,7 +712,10 @@ export function renderInstitutionProfileNavigation(projection) {
   });
 }
 
-export function renderInstitutionUncertaintyDocument(projection, { title = "Agency identity" } = {}) {
+export function renderInstitutionUncertaintyDocument(projection, {
+  title = "Agency identity",
+  renderNavigation = renderInstitutionProfileNavigation,
+} = {}) {
   const identity = projection?.identity_evidence_state || {};
   const heading = identity.status === "collision"
     ? "More than one identity shares this name"
@@ -723,7 +731,7 @@ ${renderNodeBack({ href: "/agencies/", label: "Back to agencies" })}
 <h1>${esc(heading)}</h1>
 <p class="node-lede">${esc(identity.copy || IDENTITY_COPY.unresolved)}</p>
 </header>
-${renderInstitutionProfileNavigation(projection)}
+${renderNavigation(projection)}
 <p class="node-inline-actions civic-object-inline-actions"><a class="node-action civic-object-action" href="/agencies/">Browse reviewed agencies</a></p>
 </main>
 ${renderNodeFooter()}
