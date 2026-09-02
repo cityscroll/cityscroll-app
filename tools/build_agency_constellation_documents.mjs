@@ -12,7 +12,7 @@
  * so production still ships the pages without storing them in git.
  */
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
-import { dirname, join } from "node:path";
+import { basename, dirname, join, relative } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 import {
@@ -53,6 +53,15 @@ const DEMO_IDS = Object.freeze(["parks-and-recreation", "housing-preservation-an
 
 function readJson(path) {
   return JSON.parse(readFileSync(path, "utf8"));
+}
+
+// Mandate predictions are timed against the obligations lookup's own vintage.
+// Reading the ambient clock here would make every committed document differ the
+// next day, so a rebuild could never reproduce a commit.
+function mandateVintage(sources) {
+  const obligations = sources?.obligations;
+  const stamp = obligations?.as_of || obligations?.generated_at || null;
+  return typeof stamp === "string" && stamp.length >= 10 ? stamp.slice(0, 10) : null;
 }
 
 function loadSources() {
@@ -414,7 +423,7 @@ export function buildAgencyRouteIdentityReport(rawSources, publisherRows, genera
   // census. Browse snapshots drive category membership, but must not make a
   // previously reviewed route disappear merely because its current open
   // snapshot is empty.
-  const identitySources = { ...rawSources, money_open: null };
+  const identitySources = { ...rawSources, money_open: null, todayISO: mandateVintage(rawSources) };
   const cases = activeAgencySources(rawSources)
     .filter((row) => !publisherIds.has(row.source_id))
     // The residual is defined over public constellation candidates, not every
@@ -506,6 +515,7 @@ export function buildAgencyConstellationMaterialization(sources = loadSources())
       native_procurements: sources.procurement_browse,
       authority_procurement: sources.authority_procurement,
       generated_at: generatedAt,
+      todayISO: mandateVintage(sources),
     });
     if (!view) continue;
     const identity = reconcileAgencyIdentity(id, publisherRows);
@@ -614,40 +624,67 @@ export function buildAgencyConstellationMaterialization(sources = loadSources())
   return { lookup, documents, identityReport };
 }
 
+// The freshness contract covers committed artifacts only. Per-agency index.html is a
+// gitignored build/deploy artifact (see the module header), so a clean checkout has none
+// and its absence is not drift. Comparing it would only pass on a machine that had
+// already run a write-mode build.
+const COMMITTED_DOCUMENT_NAMES = Object.freeze(["relationships.json", "relationships-data.json"]);
+const STALE_REPORT_LIMIT = 20;
+
+export function isCommittedAgencyArtifact(path) {
+  return path === LOOKUP || path === IDENTITY_REPORT || COMMITTED_DOCUMENT_NAMES.includes(basename(path));
+}
+
+// Pure comparison: what the committed tree would have to change to match the builder.
+// Takes expected [absolutePath, content] pairs so a test can reconcile a synthetic tree
+// without touching the working copy.
+//
+// Documents the builder does not emit are deliberately not reported. A route directory
+// may exist as a reviewed route alias that this builder never materializes (the agency
+// source-identity contract counts those directories), so treating "not emitted" as drift
+// would delete a live route.
+export function findStaleAgencyArtifacts({ expected, rootDir = ROOT }) {
+  const stale = [];
+  for (const [path, content] of expected) {
+    const missing = !existsSync(path);
+    if (!missing && readFileSync(path, "utf8") === content) continue;
+    stale.push({ path, repoPath: relative(rootDir, path), reason: missing ? "missing" : "differs", content });
+  }
+  return stale;
+}
+
 export function writeAgencyConstellationArtifacts({ check = false } = {}) {
   const { lookup, documents, identityReport } = buildAgencyConstellationMaterialization();
-  const lookupJson = `${JSON.stringify(lookup, null, 2)}\n`;
-  const identityReportJson = `${JSON.stringify(identityReport, null, 2)}\n`;
-  let stale = 0;
+  const everything = [
+    [LOOKUP, `${JSON.stringify(lookup, null, 2)}\n`],
+    [IDENTITY_REPORT, `${JSON.stringify(identityReport, null, 2)}\n`],
+    ...documents,
+  ];
+  const stalePaths = findStaleAgencyArtifacts({
+    expected: everything.filter(([path]) => isCommittedAgencyArtifact(path)),
+  });
 
-  if (!existsSync(LOOKUP) || readFileSync(LOOKUP, "utf8") !== lookupJson) {
-    stale += 1;
-    if (!check) {
-      mkdirSync(dirname(LOOKUP), { recursive: true });
-      writeFileSync(LOOKUP, lookupJson);
+  if (!check) {
+    // Write mode still materializes every document, including the gitignored pages
+    // production serves.
+    for (const [path, content] of everything) {
+      if (existsSync(path) && readFileSync(path, "utf8") === content) continue;
+      // determinism-lint: allow write non-check materialization output
+      mkdirSync(dirname(path), { recursive: true });
+      // determinism-lint: allow write non-check materialization output
+      writeFileSync(path, content);
     }
   }
 
-  if (!existsSync(IDENTITY_REPORT) || readFileSync(IDENTITY_REPORT, "utf8") !== identityReportJson) {
-    stale += 1;
-    if (!check) {
-      mkdirSync(dirname(IDENTITY_REPORT), { recursive: true });
-      writeFileSync(IDENTITY_REPORT, identityReportJson);
-    }
-  }
-
-  for (const [path, content] of documents) {
-    if (!existsSync(path) || readFileSync(path, "utf8") !== content) {
-      stale += 1;
-      if (!check) {
-        mkdirSync(dirname(path), { recursive: true });
-        writeFileSync(path, content);
-      }
-    }
-  }
-
+  const stale = stalePaths.length;
   if (check && stale) {
     console.error(`${stale} agency constellation artifact(s) are stale; rebuild with node tools/build_agency_constellation_documents.mjs`);
+    for (const entry of stalePaths.slice(0, STALE_REPORT_LIMIT)) {
+      console.error(`  ${entry.reason}: ${entry.repoPath}`);
+    }
+    if (stale > STALE_REPORT_LIMIT) {
+      console.error(`  ... and ${stale - STALE_REPORT_LIMIT} more`);
+    }
     process.exit(1);
   }
 
@@ -656,7 +693,7 @@ export function writeAgencyConstellationArtifacts({ check = false } = {}) {
       ? `Agency constellation documents are current (${documents.length} pages, ${lookup.agency_count} agencies)`
       : `Agency constellation documents built (${documents.length} pages, ${lookup.agency_count} agencies)`,
   );
-  return { lookup, documents, stale };
+  return { lookup, documents, stale, stalePaths };
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
