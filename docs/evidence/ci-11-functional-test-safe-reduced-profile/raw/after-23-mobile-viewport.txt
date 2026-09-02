@@ -1,0 +1,4 @@
+$ python3 test/functional/23_mobile_viewport.py   # served from _site, as tools/preflight-required-checks.sh serves it
+OK mobile viewport: 360px overflow, touch targets, phase disclosure, and table containment
+exit status: 0
+wall clock: 5610 ms

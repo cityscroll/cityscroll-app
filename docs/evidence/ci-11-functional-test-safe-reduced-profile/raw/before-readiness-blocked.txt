@@ -1,0 +1,18 @@
+$ node tools/verify_functional_corpus.mjs --check
+functional corpus BLOCKED - the functional suite was not run and no coverage was obtained.
+  missing-corpus: 20 declared functional corpus path(s) are not materialised in the active card-work profile.
+    site/data/agency_constellation_lookup.json
+    site/data/agency_obligations_lookup.json
+    site/data/committee_graph_lookup.json
+    site/data/community_board_geography_lookup.json
+    site/data/community_board_meeting_index.json
+    site/data/community_board_meeting_index/shard-000.json
+    site/data/community_board_meeting_index/shard-001.json
+    site/data/community_board_meeting_index/shard-002.json
+    site/data/community_board_meeting_index/shard-003.json
+    site/data/community_board_people.json
+    ... and 10 more
+  builder that needs them: tools/build_primary_documents.mjs
+  remediation: tools/provision_card_profile.sh hydrate site/data/agency_constellation_lookup.json site/data/agency_obligations_lookup.json site/data/committee_graph_lookup.json site/data/community_board_geography_lookup.json site/data/community_board_meeting_index.json site/data/community_board_meeting_index/shard-000.json site/data/community_board_meeting_index/shard-001.json site/data/community_board_meeting_index/shard-002.json site/data/community_board_meeting_index/shard-003.json site/data/community_board_people.json site/data/meeting_notice_materialization.json site/data/meeting_outcomes_snapshot.json site/data/meetings_domain_observations.json site/data/money_default_open.json site/data/non_council_outcome_sources/community_board_committees.json site/data/people_examples.json site/data/property_domain_observations.json site/data/rules_semantic_lane.json site/data/staffing_default_hires.json site/data/zap_projects_warehouse_lookup.json
+  or take the full-checkout control: tools/provision_card_profile.sh hydrate --full
+exit status: 6

@@ -41,7 +41,7 @@
 
 import { createHash } from "node:crypto";
 import { execFileSync } from "node:child_process";
-import { existsSync, readFileSync, statSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -282,20 +282,116 @@ function emitPatterns(profileSet, tracked) {
   return patterns.sort();
 }
 
-// Only paths this working tree actually holds are stat-ed. Probing one the
-// profile deliberately excluded is itself a profile violation, and the reporting
-// block is not worth tripping the sentinel for.
-function bytesOf(paths, notMaterialised) {
+// Logical size of every tracked path, taken from the index blob rather than the
+// working tree. A statSync walk silently scores a deferred path as zero, so a
+// figure derived in a reduced checkout would report the bytes the profile defers
+// as costing nothing and the corpus it hydrates as free. Blob sizes are the same
+// number in either profile, which is what makes the measurement reproducible
+// from a clean checkout and keeps hydrated bytes visible.
+function blobSizes() {
+  const sizes = new Map();
+  const listing = execFileSync("git", ["ls-files", "-s", "-z"], {
+    cwd: ROOT,
+    encoding: "utf8",
+    maxBuffer: 256 * 1024 * 1024
+  });
+  const oids = new Map();
+  for (const record of listing.split("\0")) {
+    if (!record) continue;
+    const tab = record.indexOf("\t");
+    if (tab < 0) continue;
+    const [, oid] = record.slice(0, tab).split(" ");
+    oids.set(record.slice(tab + 1), oid);
+  }
+  if (oids.size === 0) return sizes;
+  const unique = [...new Set(oids.values())];
+  const report = execFileSync("git", ["cat-file", "--batch-check=%(objectname) %(objectsize)"], {
+    cwd: ROOT,
+    encoding: "utf8",
+    input: `${unique.join("\n")}\n`,
+    maxBuffer: 256 * 1024 * 1024
+  });
+  const byOid = new Map();
+  for (const line of report.split("\n")) {
+    const [oid, size] = line.split(" ");
+    if (oid && size && /^\d+$/.test(size)) byOid.set(oid, Number(size));
+  }
+  for (const [path, oid] of oids) sizes.set(path, byOid.get(oid) ?? 0);
+  return sizes;
+}
+
+function bytesOf(paths, sizes) {
   let total = 0;
-  for (const path of paths) {
-    if (notMaterialised.has(path)) continue;
+  for (const path of paths) total += sizes.get(path) ?? 0;
+  return total;
+}
+
+// --- derived: the functional read-model corpus ------------------------------
+//
+// tools/prepare_functional_site.sh materialises the static-first document routes
+// the functional browser family is served from, and the builder it runs first
+// reads tracked read models. A reduced checkout defers some of them, so the
+// preparation step fails on an absent input with nothing to say about why. The
+// corpus names that dependency so it can be materialised at provision time and
+// asserted before the step runs.
+//
+// It has two halves. The sentinel records what Node reads, so the builder's
+// inputs are observed. The functional harness is Python: it pins its fixtures
+// and its browser clock against tracked read models it opens directly, and no
+// Node recording can see those, so they are scanned out of the declared harness
+// sources rather than carried as a hand-written list. A harness that starts
+// reading another read model is then picked up by regenerating the profile,
+// rather than by a test failing in someone's reduced checkout.
+const HARNESS_SEGMENTED = /"([A-Za-z0-9_.-]+)"\s*\/\s*"([A-Za-z0-9_.-]+)"\s*\/\s*"([A-Za-z0-9_.-]+)"/g;
+const HARNESS_LITERAL = /\b((?:[A-Za-z0-9_-]+\/)+[A-Za-z0-9_.-]+\.json)\b/g;
+
+function harnessClosure(declaration, trackedSet) {
+  const found = new Set();
+  for (const source of declaration.harness_sources ?? []) {
+    let text;
     try {
-      total += statSync(resolve(ROOT, path)).size;
+      text = readFileSync(resolve(ROOT, source), "utf8");
     } catch {
-      /* a path absent from this working tree contributes no measured bytes */
+      continue;
+    }
+    for (const pattern of [HARNESS_SEGMENTED, HARNESS_LITERAL]) {
+      pattern.lastIndex = 0;
+      let match;
+      while ((match = pattern.exec(text)) !== null) {
+        const candidate = pattern === HARNESS_SEGMENTED ? `${match[1]}/${match[2]}/${match[3]}` : match[1];
+        if (trackedSet.has(candidate)) found.add(candidate);
+      }
     }
   }
-  return total;
+  return found;
+}
+
+function functionalCorpus(config, observed, sizes, trackedSet) {
+  const declaration = config.functional_corpus;
+  if (!declaration?.gate_class || !Array.isArray(declaration.corpus_trees)) {
+    throw new Error("profile.config.v1.json declares no usable functional_corpus block");
+  }
+  const entry = observed.get(declaration.gate_class);
+  const harness = harnessClosure(declaration, trackedSet);
+  const paths = [
+    ...new Set([...(entry?.paths ?? []), ...harness].filter((path) => underAny(path, declaration.corpus_trees)))
+  ].sort();
+  return {
+    description: declaration.description,
+    gate_class: declaration.gate_class,
+    builder: declaration.builder,
+    builder_role: declaration.builder_role,
+    corpus_trees: declaration.corpus_trees,
+    vintage_anchor: declaration.vintage_anchor,
+    measured_functional_tests: declaration.measured_functional_tests,
+    coverage_note: declaration.coverage_note,
+    recorded: entry?.recorded ?? false,
+    remediation:
+      "node tools/verify_functional_corpus.mjs --check names the paths this checkout is missing and the exact tools/provision_card_profile.sh hydrate command that materialises them.",
+    path_count: paths.length,
+    logical_bytes: bytesOf(paths, sizes),
+    paths
+  };
 }
 
 function build() {
@@ -304,6 +400,7 @@ function build() {
   const trackedSet = new Set(tracked);
 
   const notMaterialised = notMaterialisedPaths();
+  const sizes = blobSizes();
   const observed = observedClosure(config, tracked);
   const observedAll = new Set();
   for (const [, entry] of observed) for (const path of entry.paths) observedAll.add(path);
@@ -312,6 +409,13 @@ function build() {
 
   const profileSet = new Set(declared);
   for (const path of observedAll) profileSet.add(path);
+
+  // The functional read-model corpus is part of the profile, not an optional
+  // extra. It is derived before the static split so a corpus path can never be
+  // routed into the deferred hydration set, which is what would leave a fresh
+  // reduced checkout unable to prepare the functional site.
+  const corpus = functionalCorpus(config, observed, sizes, trackedSet);
+  for (const path of corpus.paths) profileSet.add(path);
 
   // Static references split in two. A reference from the seed trees is always
   // materialised: every Worker source is present and any of them can be loaded,
@@ -339,6 +443,7 @@ function build() {
   // list names, and every static reference from the seed trees.
   const requiredPaths = new Set([...observedAll, ...config.always_include_paths.filter((path) => trackedSet.has(path))]);
   for (const path of staticScan.fromSeedTree) if (trackedSet.has(path)) requiredPaths.add(path);
+  for (const path of corpus.paths) requiredPaths.add(path);
 
   const excludedTracked = tracked.filter((file) => !profileSet.has(file));
   const siteData = tracked.filter((file) => file.startsWith("site/data/"));
@@ -401,6 +506,13 @@ function build() {
       "A tracked path the profile does not materialise is marked skip-worktree in the index. tools/card_profile_sentinel.cjs turns a missing-file error on such a path into CardProfileMissingPath and records it, so a profile gap fails closed instead of passing by omission. tools/provision_card_profile.sh hydrate is the documented route to materialise one."
   };
 
+  // The functional read-model corpus, derived rather than declared. It is the
+  // part of the functional-site observation and the functional harness scan that
+  // falls inside a tree the profile otherwise defers, which is exactly the part
+  // a reduced checkout can be missing. Everything else those read is structural
+  // and always held.
+  closure.functional_corpus = corpus;
+
   // Volatile figures live in their own block and are excluded from the
   // coverage check, because they move whenever any tracked file changes size.
   closure.measured = {
@@ -408,16 +520,16 @@ function build() {
       "A snapshot of what the profile costs at the revision named here. These figures are reporting only; they are not part of the checked contract, because a byte total moves whenever any tracked file does.",
     revision: headRevision(),
     computed_in_reduced_checkout: notMaterialised.size > 0,
-    profile_paths: { count: profileSet.size, logical_bytes: bytesOf(profileSet, notMaterialised) },
-    deferred_paths: { count: hydrationSet.size, logical_bytes: bytesOf(hydrationSet, notMaterialised) },
-    excluded_paths: { count: excludedTracked.length, logical_bytes: bytesOf(excludedTracked, notMaterialised) },
+    profile_paths: { count: profileSet.size, logical_bytes: bytesOf(profileSet, sizes) },
+    deferred_paths: { count: hydrationSet.size, logical_bytes: bytesOf(hydrationSet, sizes) },
+    excluded_paths: { count: excludedTracked.length, logical_bytes: bytesOf(excludedTracked, sizes) },
     site_data: {
       tracked_count: siteData.length,
-      tracked_logical_bytes: bytesOf(siteData, notMaterialised),
+      tracked_logical_bytes: bytesOf(siteData, sizes),
       profile_count: siteDataIncluded.length,
-      profile_logical_bytes: bytesOf(siteDataIncluded, notMaterialised)
+      profile_logical_bytes: bytesOf(siteDataIncluded, sizes)
     },
-    tracked_total: { count: tracked.length, logical_bytes: bytesOf(tracked, notMaterialised) },
+    tracked_total: { count: tracked.length, logical_bytes: bytesOf(tracked, sizes) },
     pattern_count: patterns.length
   };
 

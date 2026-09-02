@@ -1,0 +1,5 @@
+$ python3 test/functional/23_mobile_viewport.py   # full-checkout control
+OK mobile viewport: 360px overflow, touch targets, phase disclosure, and table containment
+exit status: 0
+wall clock: 12649 ms
+control _site: 583.0 MiB

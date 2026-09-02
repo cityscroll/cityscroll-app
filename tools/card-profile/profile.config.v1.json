@@ -123,6 +123,13 @@
       "command": "node tools/verify_card_profile.mjs --check",
       "profile_supported": true,
       "observation": "card-profile-contract.json"
+    },
+    {
+      "id": "functional-site",
+      "title": "Functional site preparation",
+      "command": "node tools/build_primary_documents.mjs (the read-model builder tools/prepare_functional_site.sh runs before it serves the site)",
+      "profile_supported": true,
+      "observation": "functional-site.json"
     }
   ],
   "full_checkout_only": [
@@ -176,5 +183,34 @@
       "title": "Repository control-plane cutover receipt",
       "reason": "It asserts that every retained evidence projection resolves on disk, and it does so with an existence check rather than a content read. CI-09's recorder deliberately records only content reads, because recording metadata probes grew the closure to the whole tracked tree, so this gate's true closure was never observed. Its retained set reaches into site/data, warehouse/ and docs/screenshots, which the profile defers, and it was measured failing in a reduced checkout at this revision."
     }
-  ]
+  ],
+  "functional_corpus": {
+    "description": "The tracked read-model corpus tools/prepare_functional_site.sh must hold before it can materialise the static-first document routes the functional browser family is served from. It is derived from the functional-site gate class observation, never hand-written: the deriver keeps the subset that falls inside the byte-heavy trees the profile otherwise defers, which is the part a reduced checkout can be missing.",
+    "gate_class": "functional-site",
+    "builder": "tools/build_primary_documents.mjs",
+    "builder_role": "Reads the procurement, land, rules, property, staffing and meeting read models and writes the Browse and Now documents the served site routes resolve to.",
+    "corpus_trees": [
+      "site/data"
+    ],
+    "measured_functional_tests": [
+      "test/functional/23_mobile_viewport.py"
+    ],
+    "coverage_note": "The corpus is a precondition of the preparation step, so every functional test served from the prepared _site depends on it. Only the tests named in measured_functional_tests were run end to end in a provisioned reduced checkout, so only those are claimed as measured coverage.",
+    "harness_sources": [
+      "test/functional/assets/i18n_fixtures.py",
+      "test/functional/assets/fixture_clock.py",
+      "test/functional/assets/ci_waits.py",
+      "test/functional/23_mobile_viewport.py"
+    ],
+    "harness_scan_note": "The sentinel records Node reads, so the builder's inputs are observed. The functional harness is Python: it pins its fixtures and its fixture clock against a few tracked read models it opens directly, and no Node recording can see those. The deriver scans the declared harness sources for tracked read-model references instead of carrying a hand-written list, so a harness that starts reading another read model is picked up by regenerating the profile rather than by a test failing in someone's reduced checkout.",
+    "vintage_anchor": {
+      "path": "site/data/money_default_open.json",
+      "keys": [
+        "open_as_of",
+        "generated_at",
+        "retrieved_at"
+      ],
+      "why": "The day the functional harness pins its browser clock to, read by test/functional/assets/fixture_clock.py from this snapshot's own vintage. The readiness receipt reports the same anchor so a corpus and the clock it implies are one fact rather than two."
+    }
+  }
 }

@@ -163,6 +163,58 @@ generated-document, evidence-placement, reading-level, accessibility, browser,
 Pages build, release-surface and control-plane cutover-receipt families all
 require the full checkout.
 
+## Functional tests, and the corpus they need
+
+Browser and accessibility families are full-checkout-only and stay that way. The
+step that prepares the site they are served from is not: it runs a read-model
+builder over tracked inputs the profile used to defer, and it does so on the way
+into every functional run, reduced or not.
+
+That combination used to fail badly. The builder died on a bare `ENOENT`, and the
+copy step after it **cannot** fail on an absent input — it copies whatever the
+working tree holds — so a partially materialised checkout served a smaller site
+and the browser check timed out on a row that was never going to render. A
+provisioning gap looked like an empty Browse result.
+
+So the corpus is declared, and it is asserted before the work starts:
+
+```bash
+node tools/verify_functional_corpus.mjs --check                       # ready, or blocked with reasons
+node tools/verify_functional_corpus.mjs --check --receipt-out <path>  # and a receipt
+```
+
+`tools/prepare_functional_site.sh` runs that check as its first statement, so a
+missing input is reported as a missing input. The corpus itself lives in the
+`functional_corpus` block of `tools/card-profile/closure.v1.json` and is derived,
+never hand-written: the deriver unions the `functional-site` gate-class
+observation with a scan of the declared functional harness sources — the Python
+files that read a tracked read model directly, which no Node sentinel can see —
+and keeps the part that falls inside a deferred tree. It is materialised by the
+reduced profile, so a fresh reduced checkout is ready without hydrating anything.
+
+A blocked result names the missing paths, the builder that wants them, the
+remediation, and — the part that matters — that **no functional coverage was
+obtained**. It is a statement about inputs, never about the product:
+
+```
+functional corpus BLOCKED - the functional suite was not run and no coverage was obtained.
+  missing-corpus: 20 declared functional corpus path(s) are not materialised ...
+  builder that needs them: tools/build_primary_documents.mjs
+  remediation: tools/provision_card_profile.sh hydrate site/data/...
+```
+
+The check runs *before* the functional command and never wraps it, so a real
+functional failure keeps its own exit status and its own message. There is no
+skip branch, and no exit path on which a missing corpus reports success.
+
+Two bounds are worth stating plainly. The reduced profile still serves a smaller
+site than the control, so the corpus makes the *measured* functional tests
+correct rather than the whole site complete; `measured_functional_tests` in the
+closure records which those are. And the harness scan is a scan: a harness that
+starts reading another tracked read model is caught by regenerating the profile,
+which a test enforces. The measurements are in
+[`docs/evidence/ci-11-functional-test-safe-reduced-profile/`](evidence/ci-11-functional-test-safe-reduced-profile/).
+
 ## When a path is missing
 
 A tracked path the profile does not hold is marked skip-worktree. Reading one

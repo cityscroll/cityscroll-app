@@ -261,6 +261,11 @@ function recordGate(argv) {
   rmSync(log, { force: true });
 
   mkdirSync(OBSERVATION_DIR, { recursive: true });
+  // The recording profile is reported, not assumed. A receipt that claims a full
+  // checkout it was not taken on would make the closure it feeds look better
+  // evidenced than it is, which is the one thing an observation receipt exists
+  // to prevent.
+  const recordedIn = status();
   const receipt = {
     schema: "cityscroll.card-profile.observation.v1",
     gate_class: id,
@@ -268,8 +273,12 @@ function recordGate(argv) {
     command: gate.command,
     revision: git(["rev-parse", "HEAD"]).trim(),
     exit_status: result.status ?? 1,
+    recorded_profile: recordedIn.profile,
     method:
-      "Recorded by tools/card_profile_sentinel.cjs on a full checkout. Every repository-relative path the process read through fs or loaded as a module, filtered to tracked paths and de-duplicated.",
+      `Recorded by tools/card_profile_sentinel.cjs on a ${recordedIn.profile} checkout. Every repository-relative path the process read through fs or loaded as a module, filtered to tracked paths and de-duplicated.` +
+      (recordedIn.sparse_checkout
+        ? " Taken in a reduced checkout, so it is complete only for a command that ran to completion there: the gate exit status below is what makes that claim checkable."
+        : ""),
     path_count: paths.length,
     paths
   };

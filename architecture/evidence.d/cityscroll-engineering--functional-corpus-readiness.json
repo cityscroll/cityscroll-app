@@ -1,0 +1,25 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/functional-corpus-readiness",
+  "status": "implemented",
+  "fingerprint": "functional-corpus-readiness.v1",
+  "updated_at": "2026-09-02T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "functional-corpus-readiness-gate",
+      "path": "tools/verify_functional_corpus.mjs"
+    },
+    {
+      "id": "functional-site-preparation",
+      "path": "tools/prepare_functional_site.sh"
+    },
+    {
+      "id": "functional-corpus-readiness-tests",
+      "path": "test/functional_corpus_readiness.test.mjs"
+    },
+    {
+      "id": "functional-corpus-readiness-evidence",
+      "path": "docs/evidence/ci-11-functional-test-safe-reduced-profile/README.md"
+    }
+  ]
+}
