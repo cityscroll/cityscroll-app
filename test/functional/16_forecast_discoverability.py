@@ -30,6 +30,7 @@ import pathlib
 
 sys.path.insert(0, str(pathlib.Path(__file__).parent / "assets"))
 from ci_waits import wait_for_function, wait_for_locator  # noqa: E402
+from fixture_clock import pin_fixture_clock  # noqa: E402
 from i18n_fixtures import install_routes  # noqa: E402
 from playwright.sync_api import TimeoutError as PlaywrightTimeoutError  # noqa: E402
 
@@ -47,7 +48,9 @@ def reachable_from_notice_detail(pw):
     """AFTER: the notice-detail teaser renders unprompted and its link opens the forecast pane."""
     failures = []
     browser = pw.chromium.launch()
-    page = browser.new_context().new_page()
+    ctx = browser.new_context()
+    pin_fixture_clock(ctx)
+    page = ctx.new_page()
     install_routes(page)
 
     # (a) the #notice/<id> permalink page — showNotice()'s #nforecast slot.
@@ -85,7 +88,9 @@ def reachable_from_notice_detail(pw):
     # (b) the Money tab's split-pane notice detail — renderDetail()'s #dforecast slot,
     # reached the way a reader actually gets there: pick a notice, no extra click.
     browser = pw.chromium.launch()
-    page = browser.new_context().new_page()
+    ctx = browser.new_context()
+    pin_fixture_clock(ctx)
+    page = ctx.new_page()
     install_routes(page)
     page.goto(f"{BASE}browse/contracts/#money", timeout=30000)
     wait_for_function(
@@ -108,6 +113,7 @@ def forecast_strings_translate_in_a_sampled_language(pw, lang="es"):
     failures = []
     browser = pw.chromium.launch()
     ctx = browser.new_context()
+    pin_fixture_clock(ctx)
     ctx.add_init_script(f"localStorage.setItem('crol_lang', {lang!r})")
     page = ctx.new_page()
     install_routes(page)

@@ -31,6 +31,7 @@ from playwright.sync_api import sync_playwright
 sys.path.insert(0, str(pathlib.Path(__file__).parent / "assets"))
 from ci_waits import wait_for_function, wait_for_locator  # noqa: E402
 from i18n_fixtures import install_routes  # noqa: E402
+from fixture_clock import pin_fixture_clock  # noqa: E402
 
 ROOT = pathlib.Path(__file__).parents[2]
 BASE = os.environ.get("CROL_BASE", "")
@@ -45,6 +46,7 @@ def check_lang(pw, lang):
     failures = []
     browser = pw.chromium.launch()
     ctx = browser.new_context(viewport={"width": 1280, "height": 900})
+    pin_fixture_clock(ctx)
     page = ctx.new_page()
     install_routes(page)
     page.goto(BASE, timeout=30000)
