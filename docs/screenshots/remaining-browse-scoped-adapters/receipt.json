@@ -1,0 +1,320 @@
+{
+  "schema": "cityscroll.remaining-browse-scoped-adapter-capture.v1",
+  "build_revision": "a9952b1d403ba51391e9f27891d124bc0cb57e6e",
+  "source_revision": "a9952b1d403ba51391e9f27891d124bc0cb57e6e",
+  "viewports": [
+    390,
+    1440
+  ],
+  "sources": {
+    "people": {
+      "lenses": [
+        "people",
+        "agencies",
+        "vendors",
+        "committees",
+        "community_boards"
+      ]
+    },
+    "property": {
+      "lenses": [
+        "parcels"
+      ]
+    },
+    "land": {
+      "lenses": [
+        "land"
+      ]
+    },
+    "rules": {
+      "lenses": [
+        "notices"
+      ]
+    },
+    "meetings": {
+      "lenses": [
+        "meetings",
+        "committees"
+      ]
+    },
+    "exams": {
+      "lenses": [
+        "exams"
+      ]
+    }
+  },
+  "records": [
+    {
+      "source": "people",
+      "route": "http://127.0.0.1:53839/browse/people/?q=parks",
+      "viewport": 390,
+      "mode": "static-first then scoped capability",
+      "cache_mode": "stubbed search, retained committed snapshots",
+      "before_capture": "people-before-390.png",
+      "after_capture": "people-after-390.png",
+      "before": {
+        "scope_state": "matched",
+        "visible_text_sha256": "99a2d94ff64525d335c76a3d4e17600dec71e5e2b5e340e9b44c37e4ba1baa04",
+        "visible_text_excerpt": "\u2039\n\u21ba\n\nPeople and organizations \u00b7 0 available records \u00b7 updated 2026-08-11"
+      },
+      "after": {
+        "scope_state": "matched",
+        "visible_text_sha256": "99a2d94ff64525d335c76a3d4e17600dec71e5e2b5e340e9b44c37e4ba1baa04",
+        "visible_text_excerpt": "\u2039\n\u21ba\n\nPeople and organizations \u00b7 0 available records \u00b7 updated 2026-08-11"
+      },
+      "search_requests": [
+        "q=parks&scope=people&scope=agencies&scope=vendors&scope=committees&scope=community_boards"
+      ],
+      "assertion": "static-first paint remains useful; settled keyword candidates carry the registered scope"
+    },
+    {
+      "source": "property",
+      "route": "http://127.0.0.1:53839/browse/property/?q=parks",
+      "viewport": 390,
+      "mode": "static-first then scoped capability",
+      "cache_mode": "stubbed search, retained committed snapshots",
+      "before_capture": "property-before-390.png",
+      "after_capture": "property-after-390.png",
+      "before": {
+        "scope_state": null,
+        "visible_text_sha256": "e055ea2573a660c4fb36676a96d132197ffb3ef1e280368caff45e5e785b9f20",
+        "visible_text_excerpt": "The latest CityScroll snapshot is unavailable. Retry."
+      },
+      "after": {
+        "scope_state": null,
+        "visible_text_sha256": "e055ea2573a660c4fb36676a96d132197ffb3ef1e280368caff45e5e785b9f20",
+        "visible_text_excerpt": "The latest CityScroll snapshot is unavailable. Retry."
+      },
+      "search_requests": [],
+      "assertion": "static-first paint remains useful; settled keyword candidates carry the registered scope"
+    },
+    {
+      "source": "land",
+      "route": "http://127.0.0.1:53839/browse/zoning/?q=parks",
+      "viewport": 390,
+      "mode": "static-first then scoped capability",
+      "cache_mode": "stubbed search, retained committed snapshots",
+      "before_capture": "land-before-390.png",
+      "after_capture": "land-after-390.png",
+      "before": {
+        "scope_state": null,
+        "visible_text_sha256": "839d99cd375585bcb54d70a09c759d43ad92ffe8551c4d7c86dda07e1e956e05",
+        "visible_text_excerpt": "\u2039\n\u21ba\n\nZoning \u00b7 40 available records \u00b7 updated 2026-08-23\n\nRELATED RECORDS \u00b7 AS OF 2026-08-23\nParks and Recreation\nrelated to this zoning scope \u00b7 Available: 3 records\nGo Quay Llc\nrelated to this zoning scope \u00b7 Available: 2 records\nNeil Weisba"
+      },
+      "after": {
+        "scope_state": "matched",
+        "visible_text_sha256": "4ae85f95e9164f7c6d58234177cf9882a85bbaa9baa98f926fd262be1d3f7c56",
+        "visible_text_excerpt": "No zoning projects match these filters yet\n\nYour place and status choices are still applied. Widen the view to see every zoning project.\n\nClear filters, show all"
+      },
+      "search_requests": [
+        "q=parks&scope=land"
+      ],
+      "assertion": "static-first paint remains useful; settled keyword candidates carry the registered scope"
+    },
+    {
+      "source": "rules",
+      "route": "http://127.0.0.1:53839/browse/rules/?q=parks",
+      "viewport": 390,
+      "mode": "static-first then scoped capability",
+      "cache_mode": "stubbed search, retained committed snapshots",
+      "before_capture": "rules-before-390.png",
+      "after_capture": "rules-after-390.png",
+      "before": {
+        "scope_state": null,
+        "visible_text_sha256": "6aaa31a49f33d9050c6786bc064162a766fe3f685dea77837c1d6ccefddc864e",
+        "visible_text_excerpt": "Related-language matches\n\nThis reviewed pilot does not cover that search yet.\n\nOTHER RULE NOTICES4\nNOTICE \u00b7 \n\u25c6\nPARKS AND RECREATION\nUnstaged\n\u25c6\nUpdate to Parks List of Qualifying Documents for Disability Membership Fee\nCopy link\nCitywide\nPUB"
+      },
+      "after": {
+        "scope_state": null,
+        "visible_text_sha256": "6aaa31a49f33d9050c6786bc064162a766fe3f685dea77837c1d6ccefddc864e",
+        "visible_text_excerpt": "Related-language matches\n\nThis reviewed pilot does not cover that search yet.\n\nOTHER RULE NOTICES4\nNOTICE \u00b7 \n\u25c6\nPARKS AND RECREATION\nUnstaged\n\u25c6\nUpdate to Parks List of Qualifying Documents for Disability Membership Fee\nCopy link\nCitywide\nPUB"
+      },
+      "search_requests": [
+        "q=parks&scope=notices"
+      ],
+      "assertion": "static-first paint remains useful; settled keyword candidates carry the registered scope"
+    },
+    {
+      "source": "meetings",
+      "route": "http://127.0.0.1:53839/browse/meetings/?q=parks",
+      "viewport": 390,
+      "mode": "static-first then scoped capability",
+      "cache_mode": "stubbed search, retained committed snapshots",
+      "before_capture": "meetings-before-390.png",
+      "after_capture": "meetings-after-390.png",
+      "before": {
+        "scope_state": null,
+        "visible_text_sha256": "e7cc25b488025a397c3da572daa06065f90b3eca1a30f053222b481f3383f65d",
+        "visible_text_excerpt": "Browse community boards as institutions"
+      },
+      "after": {
+        "scope_state": null,
+        "visible_text_sha256": "e7cc25b488025a397c3da572daa06065f90b3eca1a30f053222b481f3383f65d",
+        "visible_text_excerpt": "Browse community boards as institutions"
+      },
+      "search_requests": [
+        "q=parks&scope=committees&scope=meetings"
+      ],
+      "assertion": "static-first paint remains useful; settled keyword candidates carry the registered scope"
+    },
+    {
+      "source": "exams",
+      "route": "http://127.0.0.1:53839/browse/exams/?q=caseworker",
+      "viewport": 390,
+      "mode": "static-first then scoped capability",
+      "cache_mode": "stubbed search, retained committed snapshots",
+      "before_capture": "exams-before-390.png",
+      "after_capture": "exams-after-390.png",
+      "before": {
+        "scope_state": null,
+        "visible_text_sha256": "05ad9cde0140bb63980b9e20971e0080d9da2e7a177141d803f8832dd386dc7a",
+        "visible_text_excerpt": "No exams match these filters. Try all interests or all scheduled exams."
+      },
+      "after": {
+        "scope_state": "matched",
+        "visible_text_sha256": "05ad9cde0140bb63980b9e20971e0080d9da2e7a177141d803f8832dd386dc7a",
+        "visible_text_excerpt": "No exams match these filters. Try all interests or all scheduled exams."
+      },
+      "search_requests": [
+        "q=caseworker&scope=exams"
+      ],
+      "assertion": "static-first paint remains useful; settled keyword candidates carry the registered scope"
+    },
+    {
+      "source": "people",
+      "route": "http://127.0.0.1:53839/browse/people/?q=parks",
+      "viewport": 1440,
+      "mode": "static-first then scoped capability",
+      "cache_mode": "stubbed search, retained committed snapshots",
+      "before_capture": "people-before-1440.png",
+      "after_capture": "people-after-1440.png",
+      "before": {
+        "scope_state": "matched",
+        "visible_text_sha256": "99a2d94ff64525d335c76a3d4e17600dec71e5e2b5e340e9b44c37e4ba1baa04",
+        "visible_text_excerpt": "\u2039\n\u21ba\n\nPeople and organizations \u00b7 0 available records \u00b7 updated 2026-08-11"
+      },
+      "after": {
+        "scope_state": "matched",
+        "visible_text_sha256": "99a2d94ff64525d335c76a3d4e17600dec71e5e2b5e340e9b44c37e4ba1baa04",
+        "visible_text_excerpt": "\u2039\n\u21ba\n\nPeople and organizations \u00b7 0 available records \u00b7 updated 2026-08-11"
+      },
+      "search_requests": [
+        "q=parks&scope=people&scope=agencies&scope=vendors&scope=committees&scope=community_boards"
+      ],
+      "assertion": "static-first paint remains useful; settled keyword candidates carry the registered scope"
+    },
+    {
+      "source": "property",
+      "route": "http://127.0.0.1:53839/browse/property/?q=parks",
+      "viewport": 1440,
+      "mode": "static-first then scoped capability",
+      "cache_mode": "stubbed search, retained committed snapshots",
+      "before_capture": "property-before-1440.png",
+      "after_capture": "property-after-1440.png",
+      "before": {
+        "scope_state": null,
+        "visible_text_sha256": "e055ea2573a660c4fb36676a96d132197ffb3ef1e280368caff45e5e785b9f20",
+        "visible_text_excerpt": "The latest CityScroll snapshot is unavailable. Retry."
+      },
+      "after": {
+        "scope_state": null,
+        "visible_text_sha256": "e055ea2573a660c4fb36676a96d132197ffb3ef1e280368caff45e5e785b9f20",
+        "visible_text_excerpt": "The latest CityScroll snapshot is unavailable. Retry."
+      },
+      "search_requests": [],
+      "assertion": "static-first paint remains useful; settled keyword candidates carry the registered scope"
+    },
+    {
+      "source": "land",
+      "route": "http://127.0.0.1:53839/browse/zoning/?q=parks",
+      "viewport": 1440,
+      "mode": "static-first then scoped capability",
+      "cache_mode": "stubbed search, retained committed snapshots",
+      "before_capture": "land-before-1440.png",
+      "after_capture": "land-after-1440.png",
+      "before": {
+        "scope_state": null,
+        "visible_text_sha256": "6360c30a714c1f80d9e60829ffa4bfb1ded5c2187803c6ae82acdada3e009c34",
+        "visible_text_excerpt": "No zoning projects match these filters yet\n\nYour place and status choices are still applied. Widen the view to see every zoning project.\n\nClear filters, show all"
+      },
+      "after": {
+        "scope_state": "matched",
+        "visible_text_sha256": "4ae85f95e9164f7c6d58234177cf9882a85bbaa9baa98f926fd262be1d3f7c56",
+        "visible_text_excerpt": "No zoning projects match these filters yet\n\nYour place and status choices are still applied. Widen the view to see every zoning project.\n\nClear filters, show all"
+      },
+      "search_requests": [
+        "q=parks&scope=land"
+      ],
+      "assertion": "static-first paint remains useful; settled keyword candidates carry the registered scope"
+    },
+    {
+      "source": "rules",
+      "route": "http://127.0.0.1:53839/browse/rules/?q=parks",
+      "viewport": 1440,
+      "mode": "static-first then scoped capability",
+      "cache_mode": "stubbed search, retained committed snapshots",
+      "before_capture": "rules-before-1440.png",
+      "after_capture": "rules-after-1440.png",
+      "before": {
+        "scope_state": null,
+        "visible_text_sha256": "6aaa31a49f33d9050c6786bc064162a766fe3f685dea77837c1d6ccefddc864e",
+        "visible_text_excerpt": "Related-language matches\n\nThis reviewed pilot does not cover that search yet.\n\nOTHER RULE NOTICES4\nNOTICE \u00b7 \n\u25c6\nPARKS AND RECREATION\nUnstaged\n\u25c6\nUpdate to Parks List of Qualifying Documents for Disability Membership Fee\nCopy link\nCitywide\nPUB"
+      },
+      "after": {
+        "scope_state": null,
+        "visible_text_sha256": "6aaa31a49f33d9050c6786bc064162a766fe3f685dea77837c1d6ccefddc864e",
+        "visible_text_excerpt": "Related-language matches\n\nThis reviewed pilot does not cover that search yet.\n\nOTHER RULE NOTICES4\nNOTICE \u00b7 \n\u25c6\nPARKS AND RECREATION\nUnstaged\n\u25c6\nUpdate to Parks List of Qualifying Documents for Disability Membership Fee\nCopy link\nCitywide\nPUB"
+      },
+      "search_requests": [
+        "q=parks&scope=notices"
+      ],
+      "assertion": "static-first paint remains useful; settled keyword candidates carry the registered scope"
+    },
+    {
+      "source": "meetings",
+      "route": "http://127.0.0.1:53839/browse/meetings/?q=parks",
+      "viewport": 1440,
+      "mode": "static-first then scoped capability",
+      "cache_mode": "stubbed search, retained committed snapshots",
+      "before_capture": "meetings-before-1440.png",
+      "after_capture": "meetings-after-1440.png",
+      "before": {
+        "scope_state": null,
+        "visible_text_sha256": "e7cc25b488025a397c3da572daa06065f90b3eca1a30f053222b481f3383f65d",
+        "visible_text_excerpt": "Browse community boards as institutions"
+      },
+      "after": {
+        "scope_state": null,
+        "visible_text_sha256": "e7cc25b488025a397c3da572daa06065f90b3eca1a30f053222b481f3383f65d",
+        "visible_text_excerpt": "Browse community boards as institutions"
+      },
+      "search_requests": [
+        "q=parks&scope=committees&scope=meetings"
+      ],
+      "assertion": "static-first paint remains useful; settled keyword candidates carry the registered scope"
+    },
+    {
+      "source": "exams",
+      "route": "http://127.0.0.1:53839/browse/exams/?q=caseworker",
+      "viewport": 1440,
+      "mode": "static-first then scoped capability",
+      "cache_mode": "stubbed search, retained committed snapshots",
+      "before_capture": "exams-before-1440.png",
+      "after_capture": "exams-after-1440.png",
+      "before": {
+        "scope_state": "matched",
+        "visible_text_sha256": "05ad9cde0140bb63980b9e20971e0080d9da2e7a177141d803f8832dd386dc7a",
+        "visible_text_excerpt": "No exams match these filters. Try all interests or all scheduled exams."
+      },
+      "after": {
+        "scope_state": "matched",
+        "visible_text_sha256": "05ad9cde0140bb63980b9e20971e0080d9da2e7a177141d803f8832dd386dc7a",
+        "visible_text_excerpt": "No exams match these filters. Try all interests or all scheduled exams."
+      },
+      "search_requests": [
+        "q=caseworker&scope=exams"
+      ],
+      "assertion": "static-first paint remains useful; settled keyword candidates carry the registered scope"
+    }
+  ]
+}

@@ -1147,6 +1147,8 @@
     could_not_reach:   "Le dernier instantané CityScroll est indisponible. Réessayez.",
     address_snapshot_not_covered: "Cette adresse ne figure pas dans l’instantané CityScroll actuel. Aucune localisation approximative n’a été utilisée.",
     shared_meeting_read_model_unavailable: "L’instantané des réunions est indisponible. Réessayez.",
+    browse_scope_unavailable_snapshot: "Le service de recherche est indisponible ; l’instantané publié de {source} est affiché.",
+    browse_scope_partial_records: "La couverture de recherche est partielle ; les {source} publiés disponibles sont affichés.",
 
     // Feed card actions
     open_notice_btn:        "Ouvrir l'avis",

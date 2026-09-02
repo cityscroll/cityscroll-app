@@ -1099,6 +1099,8 @@
     could_not_reach: "CityScroll-এর সর্বশেষ ডেটা স্ন্যাপশট পাওয়া যাচ্ছে না। আবার চেষ্টা করুন।",
     address_snapshot_not_covered: "বর্তমান CityScroll স্ন্যাপশটে ঠিকানাটি পাওয়া যায়নি। কোনো আনুমানিক অবস্থান ব্যবহার করা হয়নি।",
     shared_meeting_read_model_unavailable: "সভাগুলোর স্ন্যাপশটটি পাওয়া যাচ্ছে না। আবার চেষ্টা করুন।",
+    browse_scope_unavailable_snapshot: "অনুসন্ধান পরিষেবা পাওয়া যাচ্ছে না; প্রকাশিত {source} স্ন্যাপশট দেখানো হচ্ছে।",
+    browse_scope_partial_records: "অনুসন্ধানের কভারেজ আংশিক; উপলভ্য প্রকাশিত {source} দেখানো হচ্ছে।",
     open_notice_btn: "বিজ্ঞপ্তি খুলুন",
     city_record_link: "নগর নথি",
     copy_link_btn: "লিংক কপি করুন",

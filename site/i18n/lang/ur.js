@@ -1102,6 +1102,8 @@
     could_not_reach: "CityScroll کا تازہ ترین ڈیٹا اسنیپ شاٹ دستیاب نہیں ہے۔ دوبارہ کوشش کریں۔",
     address_snapshot_not_covered: "موجودہ CityScroll اسنیپ شاٹ میں پتہ نہیں ملا۔ کوئی تخمینی مقام استعمال نہیں کیا گیا۔",
     shared_meeting_read_model_unavailable: "اجلاس کا اسنیپ شاٹ دستیاب نہیں۔ دوبارہ کوشش کریں۔",
+    browse_scope_unavailable_snapshot: "تلاش کی سروس دستیاب نہیں؛ شائع کردہ {source} اسنیپ شاٹ دکھایا جا رہا ہے۔",
+    browse_scope_partial_records: "تلاش کی کوریج جزوی ہے؛ دستیاب شائع کردہ {source} ریکارڈ دکھائے جا رہے ہیں۔",
     open_notice_btn: "نوٹس کھولیں",
     city_record_link: "City Record",
     copy_link_btn: "لنک کاپی کریں",

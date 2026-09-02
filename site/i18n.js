@@ -1629,6 +1629,8 @@ const STRINGS = {
     could_not_reach:   "The latest CityScroll snapshot is unavailable. Retry.",
     address_snapshot_not_covered: "Address not found in the current CityScroll snapshot. No location match was used.",
     shared_meeting_read_model_unavailable: "The meetings snapshot is unavailable. Retry.",
+    browse_scope_unavailable_snapshot: "Search service unavailable. Showing the published {source} snapshot.",
+    browse_scope_partial_records: "Search coverage is partial. Showing the available published {source}.",
 
     // Feed card actions
     open_notice_btn:        "Open notice",

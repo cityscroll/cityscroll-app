@@ -912,9 +912,9 @@ export async function handleSearch(request, env, {
   );
   const lanes = {
     rules: federatedPresentationLane("rules", federation, {
-      lenses: ["notices"],
-      domains: ["rules"],
-      source: "City Record daily mirror and bounded Rules projection",
+      lenses: [...FEDERATED_SEARCH_PRESENTATION_SCOPES.rules.lenses],
+      domains: [...FEDERATED_SEARCH_PRESENTATION_SCOPES.rules.domains],
+      source: FEDERATED_SEARCH_PRESENTATION_SCOPES.rules.source,
     }),
     people: peopleLane,
     vendors: vendorLane,
@@ -925,19 +925,19 @@ export async function handleSearch(request, env, {
     committees: committeesLane,
     "people-organizations": peopleOrganizationsLane,
     land: federatedPresentationLane("land", federation, {
-      lenses: ["land"],
-      domains: ["zoning"],
-      source: "Bounded land-use keyword read model",
+      lenses: [...FEDERATED_SEARCH_PRESENTATION_SCOPES.land.lenses],
+      domains: [...FEDERATED_SEARCH_PRESENTATION_SCOPES.land.domains],
+      source: FEDERATED_SEARCH_PRESENTATION_SCOPES.land.source,
     }),
     meetings: federatedPresentationLane("meetings", federation, {
-      lenses: ["meetings", "committees"],
-      domains: ["meetings"],
-      source: "Bounded meeting and committee read models",
+      lenses: [...FEDERATED_SEARCH_PRESENTATION_SCOPES.meetings.lenses],
+      domains: [...FEDERATED_SEARCH_PRESENTATION_SCOPES.meetings.domains],
+      source: FEDERATED_SEARCH_PRESENTATION_SCOPES.meetings.source,
     }),
     exams: federatedPresentationLane("exams", federation, {
-      lenses: ["exams"],
-      domains: ["civil_service_exam"],
-      source: "Bounded civil-service exam read model",
+      lenses: [...FEDERATED_SEARCH_PRESENTATION_SCOPES.exams.lenses],
+      domains: [...FEDERATED_SEARCH_PRESENTATION_SCOPES.exams.domains],
+      source: FEDERATED_SEARCH_PRESENTATION_SCOPES.exams.source,
     }),
   };
   const results = federation.results.map(federatedPublicCard).slice(0, RESULT_LIMIT);

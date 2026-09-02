@@ -58,6 +58,10 @@ import { zoningHearingRowsForScope } from "../zoning_hearing_calendar.mjs";
 import { projectCalendarActionsHTML as projectCalendarActions } from "../project_calendar.mjs";
 import { attachAuth, authHTML, loadAuth } from "../land_authority_summary_view.mjs";
 import { attachLandLotSourceDigests, landLotSourceDigestsHTML, loadLandLotSourceDigests } from "../land_lot_source_digests.mjs";
+import {
+  fetchBrowseScoped,
+  projectBrowseScopedRows,
+} from "../browse_scoped_adapters.mjs";
 
 /* ===================== LAND ===================== */
 const ZAP = "https://data.cityofnewyork.us/resource/hgx4-8ukb.json";
@@ -585,6 +589,31 @@ async function landSearch(){
       if(projectIds?.length) banner=t(status==="active"?"banner_none_active_nearest":"banner_none_nearest",{area:geo.neighbourhood||geo.borough});
     }
     paintLandRows(rows,banner,kw,!!block,boro,stale,true,addressStatus);
+    // A lexical project query is federated once, then projected through the
+    // existing status/geography/map read model. Address and block queries keep
+    // their local geocode semantics because the capability accepts text, not
+    // an address interpretation.
+    if(kw&&!block){
+      const scoped=await fetchBrowseScoped("land",kw);
+      if(stale()) return;
+      const note=scoped.outcome==="unavailable"
+        ? t("browse_scope_unavailable_snapshot",{source:"land"})
+        : scoped.outcome==="partial" ? t("browse_scope_partial_records",{source:"land"}) : "";
+      const list=document.querySelector("#llist");
+      if(list) list.dataset.browseScopeState=scoped.outcome;
+      if(scoped.outcome==="unavailable"){
+        // Keep the exact local keyword projection painted above. A provider
+        // failure is not an instruction to widen the snapshot to every row.
+        paintLandRows(rows,banner,kw,false,boro,stale,false,note);
+      }else{
+        const scopedRows=projectBrowseScopedRows(scoped,projects,row=>["land_use_project",row?.project_id||""].join(":")).rows;
+        const projected=filterLandSnapshot(scopedRows,{
+          status,stage,futureAction,procedure,family,regulatoryEffect,actionRows,today:todayISO(),borough:boro,
+          keyword:"",communityDistrict:landCommunityDistrict,councilDistrict:landCouncilDistrict,limit:40,
+        });
+        paintLandRows(projected,banner,"",false,boro,stale,false,note);
+      }
+    }
   }catch(e){
     if(!stale()){
       unbusy("#llist");

@@ -12,6 +12,10 @@ import {
   parseSearchLensHandoff,
   renderSearchLensHandoffHtml,
 } from "./search_lens_handoff.mjs";
+import {
+  fetchBrowseScoped,
+  projectBrowseScopedRows,
+} from "./browse_scoped_adapters.mjs";
 
 const root = document.querySelector("[data-people-organizations]");
 const input = root?.querySelector("[data-people-organizations-search]");
@@ -55,6 +59,27 @@ if (root && input && type && institution && role && summary && empty && list) {
   const initialSummary = summary.textContent;
   let filteredCount = allRows.length;
   let shownLimit = PEOPLE_ORGANIZATIONS_BROWSE_CONFIG.initialPageSize;
+  let scopedOutcome = null;
+  let scopedQuery = "";
+  let scopedRequestSerial = 0;
+
+  function peopleRowReference(row) {
+    const id = String(row?.id || row?.entity_ref || "").trim();
+    if (!id) return "";
+    if (row.kind === "official" || row.kind === "exact-person-appointment") {
+      const officialId = id.split(":")[1] || "";
+      return officialId ? `person:${officialId}` : "";
+    }
+    return row.entity_ref || id;
+  }
+
+  function modelForQuery(query) {
+    if (!query || scopedQuery !== query || !scopedOutcome || scopedOutcome.outcome === "unavailable") return model;
+    return {
+      ...model,
+      rows: projectBrowseScopedRows(scopedOutcome, allRows, peopleRowReference).rows,
+    };
+  }
 
   function updateSummary({ shownCount = null } = {}) {
     const { query, facet, institution: institutionFilter, role: roleFilter } = browseListParams(location.search, PEOPLE_ORGANIZATIONS_BROWSE_CONFIG);
@@ -69,6 +94,11 @@ if (root && input && type && institution && role && summary && empty && list) {
         summary.textContent = `Showing ${shownCount.toLocaleString("en-US")} of ${filteredCount.toLocaleString("en-US")} matching typed rows`;
       }
     }
+    if (query && scopedQuery === query && scopedOutcome?.outcome === "unavailable") {
+      summary.textContent = `Search service unavailable; showing the published snapshot (${filteredCount.toLocaleString("en-US")} matching typed rows)`;
+    } else if (query && scopedQuery === query && scopedOutcome?.outcome === "partial") {
+      summary.textContent += " · Search coverage is partial";
+    }
   }
 
   function render({ reset = false, canonicalize = false } = {}) {
@@ -82,10 +112,18 @@ if (root && input && type && institution && role && summary && empty && list) {
     // otherwise a legacy deep link such as #people?q=RODRIGUEZ is erased by
     // canonicalization before the shared capability sees its query.
     if (canonicalize) updateShareState();
-    const capabilityResult = buildPeopleListCapabilityPage(model, location.search, { limit: shownLimit });
+    const activeModel = modelForQuery(query);
+    const capabilityResult = buildPeopleListCapabilityPage(activeModel, location.search, { limit: shownLimit });
     filteredCount = capabilityResult.total_matches;
-    list.dataset.browseListStatus = model.generated_at ? (allRows.length ? "published" : "empty") : "unknown";
-    list.innerHTML = renderBrowseView(buildPeopleListBrowseView(model, location.search, {
+    list.dataset.browseListStatus = activeModel.generated_at ? (allRows.length ? "published" : "empty") : "unknown";
+    if (scopedOutcome && scopedQuery === query) {
+      list.dataset.browseScopeState = scopedOutcome.outcome;
+      list.dataset.browseScopeCoverage = scopedOutcome.coverage_state || "";
+    } else {
+      delete list.dataset.browseScopeState;
+      delete list.dataset.browseScopeCoverage;
+    }
+    list.innerHTML = renderBrowseView(buildPeopleListBrowseView(activeModel, location.search, {
       limit: shownLimit,
       capabilityResult,
     }));
@@ -99,9 +137,25 @@ if (root && input && type && institution && role && summary && empty && list) {
     empty.hidden = filteredCount !== 0;
   }
 
+  async function refreshScoped(query) {
+    const normalized = String(query || "").trim();
+    const serial = ++scopedRequestSerial;
+    if (!normalized) {
+      scopedQuery = "";
+      scopedOutcome = null;
+      return;
+    }
+    const outcome = await fetchBrowseScoped("people", normalized);
+    if (serial !== scopedRequestSerial) return;
+    scopedQuery = normalized;
+    scopedOutcome = outcome;
+    render({ reset: true });
+  }
+
   input.addEventListener("input", () => {
     updateShareState();
     render({ reset: true });
+    refreshScoped(input.value);
   });
   type.addEventListener("change", () => {
     updateShareState();
@@ -121,4 +175,5 @@ if (root && input && type && institution && role && summary && empty && list) {
   });
   root.querySelector("[data-people-organizations-search-form]")?.addEventListener("submit", (event) => event.preventDefault());
   render({ canonicalize: true });
+  refreshScoped(input.value);
 }
