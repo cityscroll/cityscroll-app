@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.remaining-browse-scoped-adapter-capture.v1",
-  "build_revision": "88f10a36096caef3a4a5d59a5d31fd20c4c69e68",
-  "source_revision": "88f10a36096caef3a4a5d59a5d31fd20c4c69e68",
+  "build_revision": "681b2a3559c31581e46c82d06f6688f88bb6a05d",
+  "source_revision": "681b2a3559c31581e46c82d06f6688f88bb6a05d",
   "viewports": [
     390,
     1440
@@ -46,7 +46,7 @@
   "records": [
     {
       "source": "people",
-      "route": "http://127.0.0.1:54517/browse/people/?q=parks",
+      "route": "http://127.0.0.1:65474/browse/people/?q=parks",
       "viewport": 390,
       "mode": "static-first then scoped capability",
       "cache_mode": "stubbed search, retained committed snapshots",
@@ -69,7 +69,7 @@
     },
     {
       "source": "property",
-      "route": "http://127.0.0.1:54517/browse/property/?q=parks",
+      "route": "http://127.0.0.1:65474/browse/property/?q=parks",
       "viewport": 390,
       "mode": "static-first then scoped capability",
       "cache_mode": "stubbed search, retained committed snapshots",
@@ -92,7 +92,7 @@
     },
     {
       "source": "land",
-      "route": "http://127.0.0.1:54517/browse/zoning/?q=parks",
+      "route": "http://127.0.0.1:65474/browse/zoning/?q=parks",
       "viewport": 390,
       "mode": "static-first then scoped capability",
       "cache_mode": "stubbed search, retained committed snapshots",
@@ -115,7 +115,7 @@
     },
     {
       "source": "rules",
-      "route": "http://127.0.0.1:54517/browse/rules/?q=parks",
+      "route": "http://127.0.0.1:65474/browse/rules/?q=parks",
       "viewport": 390,
       "mode": "static-first then scoped capability",
       "cache_mode": "stubbed search, retained committed snapshots",
@@ -136,7 +136,7 @@
     },
     {
       "source": "meetings",
-      "route": "http://127.0.0.1:54517/browse/meetings/?q=parks",
+      "route": "http://127.0.0.1:65474/browse/meetings/?q=parks",
       "viewport": 390,
       "mode": "static-first then scoped capability",
       "cache_mode": "stubbed search, retained committed snapshots",
@@ -159,7 +159,7 @@
     },
     {
       "source": "exams",
-      "route": "http://127.0.0.1:54517/browse/exams/?q=caseworker",
+      "route": "http://127.0.0.1:65474/browse/exams/?q=caseworker",
       "viewport": 390,
       "mode": "static-first then scoped capability",
       "cache_mode": "stubbed search, retained committed snapshots",
@@ -182,7 +182,7 @@
     },
     {
       "source": "people",
-      "route": "http://127.0.0.1:54517/browse/people/?q=parks",
+      "route": "http://127.0.0.1:65474/browse/people/?q=parks",
       "viewport": 1440,
       "mode": "static-first then scoped capability",
       "cache_mode": "stubbed search, retained committed snapshots",
@@ -205,7 +205,7 @@
     },
     {
       "source": "property",
-      "route": "http://127.0.0.1:54517/browse/property/?q=parks",
+      "route": "http://127.0.0.1:65474/browse/property/?q=parks",
       "viewport": 1440,
       "mode": "static-first then scoped capability",
       "cache_mode": "stubbed search, retained committed snapshots",
@@ -228,16 +228,16 @@
     },
     {
       "source": "land",
-      "route": "http://127.0.0.1:54517/browse/zoning/?q=parks",
+      "route": "http://127.0.0.1:65474/browse/zoning/?q=parks",
       "viewport": 1440,
       "mode": "static-first then scoped capability",
       "cache_mode": "stubbed search, retained committed snapshots",
       "before_capture": "land-before-1440.png",
       "after_capture": "land-after-1440.png",
       "before": {
-        "scope_state": "matched",
-        "visible_text_sha256": "4ae85f95e9164f7c6d58234177cf9882a85bbaa9baa98f926fd262be1d3f7c56",
-        "visible_text_excerpt": "No zoning projects match these filters yet\n\nYour place and status choices are still applied. Widen the view to see every zoning project.\n\nClear filters, show all"
+        "scope_state": null,
+        "visible_text_sha256": "839d99cd375585bcb54d70a09c759d43ad92ffe8551c4d7c86dda07e1e956e05",
+        "visible_text_excerpt": "\u2039\n\u21ba\n\nZoning \u00b7 40 available records \u00b7 updated 2026-08-23\n\nRELATED RECORDS \u00b7 AS OF 2026-08-23\nParks and Recreation\nrelated to this zoning scope \u00b7 Available: 3 records\nGo Quay Llc\nrelated to this zoning scope \u00b7 Available: 2 records\nNeil Weisba"
       },
       "after": {
         "scope_state": "matched",
@@ -251,7 +251,7 @@
     },
     {
       "source": "rules",
-      "route": "http://127.0.0.1:54517/browse/rules/?q=parks",
+      "route": "http://127.0.0.1:65474/browse/rules/?q=parks",
       "viewport": 1440,
       "mode": "static-first then scoped capability",
       "cache_mode": "stubbed search, retained committed snapshots",
@@ -272,7 +272,7 @@
     },
     {
       "source": "meetings",
-      "route": "http://127.0.0.1:54517/browse/meetings/?q=parks",
+      "route": "http://127.0.0.1:65474/browse/meetings/?q=parks",
       "viewport": 1440,
       "mode": "static-first then scoped capability",
       "cache_mode": "stubbed search, retained committed snapshots",
@@ -295,7 +295,7 @@
     },
     {
       "source": "exams",
-      "route": "http://127.0.0.1:54517/browse/exams/?q=caseworker",
+      "route": "http://127.0.0.1:65474/browse/exams/?q=caseworker",
       "viewport": 1440,
       "mode": "static-first then scoped capability",
       "cache_mode": "stubbed search, retained committed snapshots",
