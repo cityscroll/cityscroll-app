@@ -25,6 +25,7 @@ sys.path.insert(0, str(ROOT / "test" / "functional" / "assets"))
 from ci_waits import wait_for_app_ready, wait_for_function, wait_for_locator  # noqa: E402
 from i18n_fixtures import install_routes  # noqa: E402
 from tools.local_site_server import QuietHandler  # noqa: E402
+from fixture_clock import pin_fixture_clock  # noqa: E402
 
 BASE = os.environ.get("CROL_BASE", "")
 MOBILE_CONTRACTS_LIST_NO_ROWS = json.loads(
@@ -139,6 +140,7 @@ def run(base: str) -> None:
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=True)
         context = browser.new_context(viewport=VIEWPORT, has_touch=True)
+        pin_fixture_clock(context)
         page = context.new_page()
         install_routes(page)
 
@@ -262,6 +264,7 @@ def run(base: str) -> None:
         context.close()
 
         no_js = browser.new_context(viewport=VIEWPORT, has_touch=True, java_script_enabled=False)
+        pin_fixture_clock(no_js)
         no_js_page = no_js.new_page()
         no_js_page.goto(f"{base}near-you/", wait_until="domcontentloaded", timeout=30_000)
         wait_for_locator(

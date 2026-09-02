@@ -5,7 +5,13 @@ from __future__ import annotations
 
 import os
 
+import pathlib
+import sys
+
 from playwright.sync_api import Route, TimeoutError as PlaywrightTimeoutError, sync_playwright
+
+sys.path.insert(0, str(pathlib.Path(__file__).parent / "assets"))
+from fixture_clock import pin_fixture_clock  # noqa: E402
 
 
 BASE = os.environ.get("CROL_BASE", "http://127.0.0.1:8000/").rstrip("/")
@@ -52,6 +58,7 @@ def main() -> None:
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=True)
         context = browser.new_context()
+        pin_fixture_clock(context)
         for pattern in PUBLISHER_PATTERNS:
             context.route(pattern, block_publisher)
         for pattern in FIRST_PARTY_API_PATTERNS:
