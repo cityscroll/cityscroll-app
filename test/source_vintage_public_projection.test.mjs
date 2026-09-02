@@ -93,7 +93,7 @@ test("IBO public vintage keeps FY2022 coverage beside a FY2025 ACFR pointer", ()
   assert.equal(vintage.expected_lag_tolerance_days, 550);
   assert.deepEqual(vintage.current_lag, { value: 3, unit: "fiscal_years" });
   assert.equal(vintage.newer_source.url, "https://comptroller.nyc.gov/reports/annual-comprehensive-financial-reports/");
-  assert.equal(vintage.newer_source.artifact_url, "https://comptroller.nyc.gov/wp-content/uploads/2025/11/ACFR-2025.pdf");
+  assert.equal(vintage.newer_source.artifact_url, "https://comptroller.nyc.gov/wp-content/uploads/documents/ACFR-2025-7-28-2026.pdf");
   assert.equal(vintage.newer_source.observed_coverage.max_fiscal_year, 2025);
   assert.equal(vintage.newer_source.relation, "newer-official-context");
   assert.equal(vintage.newer_source.replacement_eligible, false);
