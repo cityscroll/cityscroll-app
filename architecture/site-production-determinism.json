@@ -310,6 +310,7 @@
     "site/notice_mandate_backlinks.mjs",
     "site/notice_object_links.mjs",
     "site/notice_permalink.mjs",
+    "site/notice_primary_readiness.mjs",
     "site/notice-read.mjs",
     "site/now_surface.mjs",
     "site/now_view.mjs",
