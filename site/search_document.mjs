@@ -16,6 +16,19 @@ import {
 } from "./search_lens_handoff.mjs";
 import { buildSearchRenderPlan } from "./search_render_plan.mjs";
 import { recordSearchExecution, searchActivityScope } from "./search_activity_receipt.mjs";
+import {
+  appendAccountSearchHistory,
+  buildSearchHistoryEntry,
+  clearAccountSearchHistory,
+  newSearchHistoryExecutionId,
+  readAccountSearchHistory,
+  removeAccountSearchHistoryEntry,
+  searchHistoryScope,
+} from "./search_history_client.mjs";
+import {
+  searchHistoryIslandHtml,
+  searchHistoryUiState,
+} from "./search_history_state.mjs";
 
 const MAX_QUERY_LENGTH = 240;
 const SEARCH_TIMEOUT_MS = 12000;
@@ -638,7 +651,7 @@ async function loadResults(root, query) {
   });
   const plan = buildSearchRenderPlan(lastResponse);
   paintResults(root, plan);
-  observeSearchExecution(query, plan);
+  observeSearchExecution(root, query, plan);
 }
 
 /** Resolve which response the reader actually ends up looking at. */
@@ -676,8 +689,14 @@ async function settledResponse({
  * Observe the settled execution once, from the same plan that just painted.
  * Fail-soft by construction: nothing here is awaited and nothing can throw into
  * the render path, so Search behaves identically whether or not intake works.
+ *
+ * Two projections leave here and they are independent of one another: the
+ * private operational receipt, and — only if the reader is recognized, which
+ * the Worker decides — this account's own recent-search continuation. Either
+ * can fail without touching the other or the page.
  */
-function observeSearchExecution(query, plan) {
+function observeSearchExecution(root, query, plan) {
+  const executionId = newSearchHistoryExecutionId();
   try {
     void recordSearchExecution(plan, {
       query,
@@ -687,6 +706,96 @@ function observeSearchExecution(query, plan) {
   } catch {
     // A completed Search never depends on its own observation.
   }
+  try {
+    void rememberSearchExecution(root, query, executionId);
+  } catch {
+    // Nor on whether the reader has an account that could remember it.
+  }
+}
+
+/* ---- recognized-account recent searches (a continuation, never a dependency) ---- */
+
+function searchHistoryIsland(root) {
+  return root?.querySelector("[data-search-history]") || null;
+}
+
+/*
+ * The read, the append after a settled search, and each removal are independent
+ * requests that can answer out of order. A ticket taken when a request is issued
+ * decides which answer is allowed to paint, so a slow earlier read can never
+ * restore a search the reader just removed.
+ */
+let searchHistoryIssued = 0;
+let searchHistoryPainted = 0;
+
+function searchHistoryTicket() {
+  searchHistoryIssued += 1;
+  return searchHistoryIssued;
+}
+
+/**
+ * Paint the island from one endpoint answer. States a reader cannot act on
+ * render nothing and stay hidden, so an expired session or an unavailable store
+ * leaves the Search page exactly as it is for an anonymous reader.
+ */
+function paintSearchHistory(root, result, ticket = searchHistoryTicket()) {
+  const island = searchHistoryIsland(root);
+  if (!island || ticket < searchHistoryPainted) return null;
+  searchHistoryPainted = ticket;
+  const state = searchHistoryUiState({
+    fetchFailed: !!result?.failed,
+    responseOk: result?.ok !== false,
+    responseState: result?.state ?? null,
+    entryCount: result?.entries?.length || 0,
+  });
+  const html = searchHistoryIslandHtml(state, { entries: result?.entries || [] });
+  island.dataset.searchHistoryState = state;
+  island.innerHTML = html;
+  island.hidden = !html;
+  return state;
+}
+
+/** Read this account's remembered searches once per page load. */
+async function loadSearchHistory(root) {
+  if (!searchHistoryIsland(root)) return;
+  const ticket = searchHistoryTicket();
+  paintSearchHistory(root, { ok: true, state: null, entries: [], failed: false }, ticket);
+  paintSearchHistory(root, await readAccountSearchHistory({ origins: apiOrigins() }), ticket);
+}
+
+/**
+ * Offer the settled search to the account history. An anonymous browser is told
+ * it is anonymous and nothing is stored, so recognition later cannot adopt a
+ * search that was run without it.
+ */
+async function rememberSearchExecution(root, query, executionId) {
+  const entry = buildSearchHistoryEntry({
+    query,
+    scope: searchHistoryScope(new URLSearchParams(location.search)),
+    executionId,
+  });
+  if (!entry) return;
+  const ticket = searchHistoryTicket();
+  const result = await appendAccountSearchHistory(entry, { origins: apiOrigins() });
+  if (result?.state === "recognized") paintSearchHistory(root, result, ticket);
+}
+
+/** Remove one remembered search, or all of them, and repaint from the answer. */
+function installSearchHistoryControls(root) {
+  const island = searchHistoryIsland(root);
+  if (!island) return;
+  island.addEventListener("click", (event) => {
+    const remove = event.target.closest?.("[data-search-history-remove]");
+    const clear = event.target.closest?.("[data-search-history-clear]");
+    if (!remove && !clear) return;
+    event.preventDefault();
+    const origins = apiOrigins();
+    const ticket = searchHistoryTicket();
+    const pending = remove
+      ? removeAccountSearchHistoryEntry(remove.dataset.searchHistoryRemove, { origins })
+      : clearAccountSearchHistory({ origins });
+    void pending.then((result) => paintSearchHistory(root, result, ticket)).catch(() => {});
+  });
 }
 
 let lastResponse = null;
@@ -719,6 +828,8 @@ function render() {
   const form = root.querySelector("[data-search-form]");
   if (form) preservePlaceFields(form);
   renderInitialState(root, query);
+  installSearchHistoryControls(root);
+  void loadSearchHistory(root);
   void loadResults(root, query);
   window.initSubpageLangSwitcher?.(() => {
     paintHeading();

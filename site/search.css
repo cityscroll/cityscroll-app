@@ -55,6 +55,20 @@
 .topic-search-result-passage{margin:9px 0 0;padding:9px 10px;background:var(--card);border:1px solid var(--rule);border-radius:5px;color:var(--ink-soft);font:12.5px/1.5 var(--font-body);overflow-wrap:anywhere;white-space:pre-line}
 .topic-search-result-limit{margin:9px 0 0;color:var(--muted);font:12px/1.45 ui-sans-serif,system-ui,sans-serif}
 .topic-search-result-source{display:inline-flex;align-items:center;gap:4px;min-height:44px;margin-top:5px;color:var(--oxblood);font:700 12px/1.3 ui-sans-serif,system-ui,sans-serif;text-underline-offset:3px}
+.topic-search-history{margin:26px 0 0;padding-top:14px;border-top:3px solid var(--ink)}
+.topic-search-history[hidden]{display:none}
+.topic-search-history-heading{margin:0;color:var(--ink);font:700 20px/1.15 var(--font-display)}
+.topic-search-history-note{margin:6px 0 0;color:var(--muted);font:13px/1.45 ui-sans-serif,system-ui,sans-serif}
+.topic-search-history-list{display:grid;gap:7px;margin:12px 0 0;padding:0;list-style:none}
+.topic-search-history-item{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;min-width:0;padding:8px 11px;border:1px solid var(--rule);border-radius:7px;background:var(--paper-2)}
+.topic-search-history-link{flex:1 1 200px;min-width:0;color:var(--oxblood);font:700 15px/1.3 var(--font-body);text-underline-offset:3px;overflow-wrap:anywhere}
+.topic-search-history-link:focus-visible{outline:3px solid var(--color-focus,var(--oxblood));outline-offset:3px;border-radius:2px}
+.topic-search-history-scope{color:var(--ink-soft);font:700 11px/1.25 ui-sans-serif,system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase}
+.topic-search-history-when{color:var(--muted);font:12px/1.3 ui-sans-serif,system-ui,sans-serif;font-variant-numeric:tabular-nums}
+.topic-search-history-remove,.topic-search-history-clear{min-height:44px;padding:6px 13px;border:1px solid var(--rule-strong);border-radius:7px;background:var(--card);color:var(--ink);font:700 12px/1.2 ui-sans-serif,system-ui,sans-serif;cursor:pointer}
+.topic-search-history-remove{flex:0 0 auto;margin-inline-start:auto}
+.topic-search-history-clear{margin-top:12px}
+.topic-search-history-remove:focus-visible,.topic-search-history-clear:focus-visible{outline:3px solid var(--color-focus,var(--oxblood));outline-offset:3px}
 @media(max-width:680px){
   .topic-search-document{padding-top:2px}
   .topic-search-lanes{grid-template-columns:minmax(0,1fr)}
@@ -62,4 +76,5 @@
   .topic-search-lane-status{display:inline-block;margin-top:8px}
   .topic-search-result-status{margin-left:0}
   .topic-search-result-evidence{grid-template-columns:minmax(0,1fr)}
+  .topic-search-history-remove{margin-inline-start:0}
 }

@@ -285,6 +285,7 @@ export function renderSearchDocument() {
       ${searchLane("meetings", "Meetings", { description: "Public meetings and decisions.", titleKey: "tab_meetings" })}
       ${searchLane("exams", "Exams", { description: "Civil-service exams and published schedules." })}
     </div>
+    <section class="topic-search-history" data-search-history hidden></section>
   </div>`;
 }
 

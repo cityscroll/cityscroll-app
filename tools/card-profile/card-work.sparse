@@ -393,6 +393,7 @@
 /site/land_keyword_soda_missfill.mjs
 /site/land_lot_source_digests.mjs
 /site/land_map_model.mjs
+/site/land_map_selection.mjs
 /site/land_phase_spine.mjs
 /site/land_procedure_facet.mjs
 /site/land_procedure_profiles.mjs
@@ -587,6 +588,8 @@
 /site/search_document.mjs
 /site/search_document_contract.mjs
 /site/search_entry.mjs
+/site/search_history_client.mjs
+/site/search_history_state.mjs
 /site/search_intent.mjs
 /site/search_lens_handoff.mjs
 /site/search_producer_support.mjs
@@ -777,6 +780,7 @@
 /worker/src/rules.mjs
 /worker/src/search.mjs
 /worker/src/search_activity.mjs
+/worker/src/search_history.mjs
 /worker/src/semantic_candidates.mjs
 /worker/src/session.mjs
 /worker/src/source_health.mjs
