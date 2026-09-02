@@ -197,11 +197,11 @@ test("no-data and retention-partial windows never synthesize zero percentiles", 
   const partial = buildPerformanceSnapshot(fixture.sql_results, partialPlan);
   assert.equal(partial.status, "retention_partial");
   assert.equal(partial.retention.current.status, "partial");
-  assert.ok(partial.series.some((series) => series.current.status === "available"));
+  assert.ok(partial.series.some((series) => series.current.status === "insufficient_sample"));
   for (const series of partial.series) {
     if (series.current.sampled_count >= fixture.sample_floor) {
-      assert.equal(series.current.status, "available");
-      assert.equal(Object.hasOwn(series.current, "percentiles"), true);
+      assert.equal(series.current.status, "insufficient_sample");
+      assert.equal(Object.hasOwn(series.current, "percentiles"), false);
     } else {
       assert.equal(series.current.status, "insufficient_sample");
     }

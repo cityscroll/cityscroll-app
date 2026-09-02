@@ -56,9 +56,9 @@
         "worker"
       ],
       "scan_hops": 1,
-      "scanned_source_count": 2138,
-      "sources_skipped_not_materialised": 0,
-      "path_count": 1894,
+      "scanned_source_count": 2140,
+      "sources_skipped_not_materialised": 1,
+      "path_count": 1900,
       "worker_to_site_reference_count": 187,
       "worker_to_site_data_reference_count": 28,
       "worker_to_site_data_targets": [
@@ -118,7 +118,7 @@
         "warehouse",
         "worker/src/data"
       ],
-      "path_count": 3766
+      "path_count": 3796
     }
   },
   "required_paths": [
@@ -2108,6 +2108,7 @@
     "worker/src/data/keyword_search_index_shards/vendors.json.gz",
     "worker/src/data/passport_ei_graph.json",
     "worker/src/data/payroll_title_warehouse_lookup.json",
+    "worker/src/data/performance-coverage-contract.v1.json",
     "worker/src/data/performance-operator-labels.v1.json",
     "worker/src/data/performance-validation-allowlist.v1.json",
     "worker/src/data/pin_family_mismatch_review.json",
@@ -2234,6 +2235,7 @@
     "worker/src/lib/passport_lifecycle.mjs",
     "worker/src/lib/passport_parse.mjs",
     "worker/src/lib/payroll_title_mart_kv.mjs",
+    "worker/src/lib/performance_coverage.mjs",
     "worker/src/lib/performance_query.mjs",
     "worker/src/lib/person_hub_source_records.mjs",
     "worker/src/lib/pin_family_verify.mjs",
@@ -2440,6 +2442,7 @@
     "worker/test/fixtures/lifecycle-coherence/procurement_cases.json",
     "worker/test/fixtures/mirror_redirect_regressions.json",
     "worker/test/fixtures/normalize_pairs.json",
+    "worker/test/fixtures/performance_coverage_historical.v1.json",
     "worker/test/fixtures/performance_query_weighted.json",
     "worker/test/fixtures/predictions/build_cases.mjs",
     "worker/test/fixtures/predictions/expected_calibration.json",
@@ -2916,7 +2919,7 @@
       "site/data/zap_projects_warehouse_lookup.json"
     ]
   },
-  "patterns_sha256": "19c4a0a22b5bbf57b47006e8a4aeb42a9927cd07dfa5015934e3f5a3bd480864",
+  "patterns_sha256": "c23e75e8d50e8b290972b0ce75d2844660a853ffb3c696070466596efcdcc818",
   "supported_gate_classes": [
     "worker-unit",
     "architecture-evidence-shards",
@@ -3040,30 +3043,30 @@
   },
   "measured": {
     "note": "A snapshot of what the profile costs at the revision named here. These figures are reporting only; they are not part of the checked contract, because a byte total moves whenever any tracked file does.",
-    "revision": "a1111cb49a9e425bacfadd0ec4b5002b3e3cb272",
-    "computed_in_reduced_checkout": false,
+    "revision": "ac666f460a9275cf0ca1d178c3d007812bf80565",
+    "computed_in_reduced_checkout": true,
     "profile_paths": {
-      "count": 3983,
-      "logical_bytes": 195739631
+      "count": 4014,
+      "logical_bytes": 196192104
     },
     "deferred_paths": {
       "count": 296,
-      "logical_bytes": 221499332
+      "logical_bytes": 221499484
     },
     "excluded_paths": {
-      "count": 2065,
-      "logical_bytes": 635823090
+      "count": 2119,
+      "logical_bytes": 644107216
     },
     "site_data": {
       "tracked_count": 690,
-      "tracked_logical_bytes": 467503706,
+      "tracked_logical_bytes": 467503870,
       "profile_count": 48,
-      "profile_logical_bytes": 109040965
+      "profile_logical_bytes": 109040977
     },
     "tracked_total": {
-      "count": 6048,
-      "logical_bytes": 831562721
+      "count": 6133,
+      "logical_bytes": 840299320
     },
-    "pattern_count": 802
+    "pattern_count": 808
   }
 }

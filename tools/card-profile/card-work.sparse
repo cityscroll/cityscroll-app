@@ -734,6 +734,7 @@
 /worker/src/data/keyword_search_index_shards/
 /worker/src/data/passport_ei_graph.json
 /worker/src/data/payroll_title_warehouse_lookup.json
+/worker/src/data/performance-coverage-contract.v1.json
 /worker/src/data/performance-operator-labels.v1.json
 /worker/src/data/performance-validation-allowlist.v1.json
 /worker/src/data/pin_family_mismatch_review.json

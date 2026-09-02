@@ -9,6 +9,7 @@ import {
   normalizePerformanceQuery,
   readPerformanceAnalytics,
 } from "./lib/performance_query.mjs";
+import { buildPerformanceCoverageLattice } from "./lib/performance_coverage.mjs";
 
 export const ADMIN_PERFORMANCE_SCHEMA = "cityscroll.admin.performance.v1";
 export const ADMIN_PERFORMANCE_STATES = Object.freeze([
@@ -167,6 +168,12 @@ export function buildAdminPerformanceResponse(snapshot) {
     snapshot.query.filters.component_id,
   );
   const unknownCount = unclassifiedCount(snapshot.data_health);
+  const coverageLattice = snapshot.coverage_lattice || buildPerformanceCoverageLattice({
+    readinessRows: snapshot.series,
+    windowStatus: snapshot.retention?.current?.status || "complete",
+    sampleFloor: snapshot.sample_floor,
+    readStatus: snapshot.status === "unavailable" ? "unavailable" : "available",
+  });
   return {
     schema: ADMIN_PERFORMANCE_SCHEMA,
     generated_at: snapshot.freshness?.queried_at || null,
@@ -206,6 +213,7 @@ export function buildAdminPerformanceResponse(snapshot) {
         count: unknownCount,
         source: "bounded intake rejection counters",
       },
+      lattice: coverageLattice,
     },
     sample_floor: snapshot.sample_floor,
     sampling: snapshot.sampling,
@@ -221,6 +229,6 @@ export function buildAdminPerformanceResponse(snapshot) {
 export async function readAdminPerformance(env, req, options = {}) {
   const query = parseAdminPerformanceRequest(req);
   const readPerformance = options.readPerformance || readPerformanceAnalytics;
-  const snapshot = await readPerformance(env, query, options);
+  const snapshot = await readPerformance(env, query, options.readPerformance ? options : { ...options, coverage: true });
   return buildAdminPerformanceResponse(snapshot);
 }

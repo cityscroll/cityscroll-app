@@ -174,6 +174,11 @@ test("admin response is a dedicated versioned read model with registered invento
   assert.equal(body.coverage.selection.surface.lifecycle_state, "instrumented");
   assert.equal(body.coverage.unclassified_observations.status, "unclassified");
   assert.equal(body.coverage.unclassified_observations.count, 2);
+  assert.equal(body.coverage.lattice.schema, "cityscroll.performance.coverage_contract.v1");
+  assert.equal(body.coverage.lattice.readiness.cells.length, 23);
+  assert.equal(body.coverage.lattice.devices.cells.length, 48);
+  assert.equal(body.coverage.lattice.phases.cells.length, 36);
+  assert.equal(body.coverage.lattice.readiness.cells.find((cell) => cell.surface_id === "near-you" && cell.metric_id === "content_ready_ms").state, "no_data");
   assert.deepEqual(body.series[0].current.percentiles, { p50: 120, p75: 180, p95: 310 });
   assert.equal(Object.hasOwn(body, "credentials"), false);
 });

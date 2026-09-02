@@ -1963,6 +1963,967 @@
       "status": "unclassified",
       "count": 2,
       "source": "bounded intake rejection counters"
+    },
+    "lattice": {
+      "schema": "cityscroll.performance.coverage_contract.v1",
+      "version": 1,
+      "read_status": "available",
+      "sample_floor": 4,
+      "dimensions": {
+        "surfaces": [
+          {
+            "surface_id": "home",
+            "operator_label": "Home"
+          },
+          {
+            "surface_id": "near-you",
+            "operator_label": "Near You"
+          },
+          {
+            "surface_id": "following",
+            "operator_label": "Following"
+          },
+          {
+            "surface_id": "browse-contracts",
+            "operator_label": "Browse Contracts"
+          },
+          {
+            "surface_id": "notice",
+            "operator_label": "Notice"
+          },
+          {
+            "surface_id": "agency",
+            "operator_label": "Agency"
+          }
+        ],
+        "readiness_metrics": [
+          {
+            "metric_id": "content_ready_ms",
+            "component_id": "none"
+          },
+          {
+            "metric_id": "component_ready_ms",
+            "component_id": "registered"
+          }
+        ],
+        "device_classes": [
+          "desktop",
+          "mobile",
+          "tablet",
+          "unknown"
+        ],
+        "attribution_phases": [
+          {
+            "phase_id": "route-import",
+            "metric_ids": [
+              "first_render_to_main_ms"
+            ]
+          },
+          {
+            "phase_id": "response",
+            "metric_ids": [
+              "ttfb_ms",
+              "response_to_first_render_ms"
+            ]
+          },
+          {
+            "phase_id": "owner-settlement",
+            "metric_ids": [
+              "main_to_useful_ms"
+            ]
+          },
+          {
+            "phase_id": "semantic-readiness",
+            "metric_ids": [
+              "content_ready_ms",
+              "component_ready_ms"
+            ]
+          }
+        ]
+      },
+      "readiness": {
+        "state_counts": {
+          "measured": 0,
+          "insufficient_sample": 0,
+          "no_data": 23
+        },
+        "cells": [
+          {
+            "surface_id": "home",
+            "metric_id": "content_ready_ms",
+            "component_id": "none",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "home",
+            "metric_id": "component_ready_ms",
+            "component_id": "home-search-submit",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "home",
+            "metric_id": "component_ready_ms",
+            "component_id": "home-topic-entry",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "near-you",
+            "metric_id": "content_ready_ms",
+            "component_id": "none",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "near-you",
+            "metric_id": "component_ready_ms",
+            "component_id": "near-you-borough",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "near-you",
+            "metric_id": "component_ready_ms",
+            "component_id": "near-you-community-district",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "near-you",
+            "metric_id": "component_ready_ms",
+            "component_id": "near-you-council-district",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "near-you",
+            "metric_id": "component_ready_ms",
+            "component_id": "near-you-map",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "near-you",
+            "metric_id": "component_ready_ms",
+            "component_id": "near-you-map-data",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "near-you",
+            "metric_id": "component_ready_ms",
+            "component_id": "near-you-scope-change",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "following",
+            "metric_id": "content_ready_ms",
+            "component_id": "none",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "following",
+            "metric_id": "component_ready_ms",
+            "component_id": "following-watch-change",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "following",
+            "metric_id": "component_ready_ms",
+            "component_id": "following-watch-list",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "browse-contracts",
+            "metric_id": "content_ready_ms",
+            "component_id": "none",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "browse-contracts",
+            "metric_id": "component_ready_ms",
+            "component_id": "browse-contracts-filter-apply",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "browse-contracts",
+            "metric_id": "component_ready_ms",
+            "component_id": "browse-contracts-results",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "browse-contracts",
+            "metric_id": "component_ready_ms",
+            "component_id": "browse-filter-apply",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "browse-contracts",
+            "metric_id": "component_ready_ms",
+            "component_id": "browse-results",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "notice",
+            "metric_id": "content_ready_ms",
+            "component_id": "none",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "notice",
+            "metric_id": "component_ready_ms",
+            "component_id": "notice-context",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "agency",
+            "metric_id": "content_ready_ms",
+            "component_id": "none",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "agency",
+            "metric_id": "component_ready_ms",
+            "component_id": "agency-identity",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "agency",
+            "metric_id": "component_ready_ms",
+            "component_id": "agency-relationships",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          }
+        ]
+      },
+      "devices": {
+        "state_counts": {
+          "measured": 0,
+          "insufficient_sample": 0,
+          "no_data": 48
+        },
+        "cells": [
+          {
+            "surface_id": "home",
+            "metric_id": "content_ready_ms",
+            "device_class": "desktop",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "home",
+            "metric_id": "content_ready_ms",
+            "device_class": "mobile",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "home",
+            "metric_id": "content_ready_ms",
+            "device_class": "tablet",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "home",
+            "metric_id": "content_ready_ms",
+            "device_class": "unknown",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "home",
+            "metric_id": "component_ready_ms",
+            "device_class": "desktop",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "home",
+            "metric_id": "component_ready_ms",
+            "device_class": "mobile",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "home",
+            "metric_id": "component_ready_ms",
+            "device_class": "tablet",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "home",
+            "metric_id": "component_ready_ms",
+            "device_class": "unknown",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "near-you",
+            "metric_id": "content_ready_ms",
+            "device_class": "desktop",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "near-you",
+            "metric_id": "content_ready_ms",
+            "device_class": "mobile",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "near-you",
+            "metric_id": "content_ready_ms",
+            "device_class": "tablet",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "near-you",
+            "metric_id": "content_ready_ms",
+            "device_class": "unknown",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "near-you",
+            "metric_id": "component_ready_ms",
+            "device_class": "desktop",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "near-you",
+            "metric_id": "component_ready_ms",
+            "device_class": "mobile",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "near-you",
+            "metric_id": "component_ready_ms",
+            "device_class": "tablet",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "near-you",
+            "metric_id": "component_ready_ms",
+            "device_class": "unknown",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "following",
+            "metric_id": "content_ready_ms",
+            "device_class": "desktop",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "following",
+            "metric_id": "content_ready_ms",
+            "device_class": "mobile",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "following",
+            "metric_id": "content_ready_ms",
+            "device_class": "tablet",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "following",
+            "metric_id": "content_ready_ms",
+            "device_class": "unknown",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "following",
+            "metric_id": "component_ready_ms",
+            "device_class": "desktop",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "following",
+            "metric_id": "component_ready_ms",
+            "device_class": "mobile",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "following",
+            "metric_id": "component_ready_ms",
+            "device_class": "tablet",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "following",
+            "metric_id": "component_ready_ms",
+            "device_class": "unknown",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "browse-contracts",
+            "metric_id": "content_ready_ms",
+            "device_class": "desktop",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "browse-contracts",
+            "metric_id": "content_ready_ms",
+            "device_class": "mobile",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "browse-contracts",
+            "metric_id": "content_ready_ms",
+            "device_class": "tablet",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "browse-contracts",
+            "metric_id": "content_ready_ms",
+            "device_class": "unknown",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "browse-contracts",
+            "metric_id": "component_ready_ms",
+            "device_class": "desktop",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "browse-contracts",
+            "metric_id": "component_ready_ms",
+            "device_class": "mobile",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "browse-contracts",
+            "metric_id": "component_ready_ms",
+            "device_class": "tablet",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "browse-contracts",
+            "metric_id": "component_ready_ms",
+            "device_class": "unknown",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "notice",
+            "metric_id": "content_ready_ms",
+            "device_class": "desktop",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "notice",
+            "metric_id": "content_ready_ms",
+            "device_class": "mobile",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "notice",
+            "metric_id": "content_ready_ms",
+            "device_class": "tablet",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "notice",
+            "metric_id": "content_ready_ms",
+            "device_class": "unknown",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "notice",
+            "metric_id": "component_ready_ms",
+            "device_class": "desktop",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "notice",
+            "metric_id": "component_ready_ms",
+            "device_class": "mobile",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "notice",
+            "metric_id": "component_ready_ms",
+            "device_class": "tablet",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "notice",
+            "metric_id": "component_ready_ms",
+            "device_class": "unknown",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "agency",
+            "metric_id": "content_ready_ms",
+            "device_class": "desktop",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "agency",
+            "metric_id": "content_ready_ms",
+            "device_class": "mobile",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "agency",
+            "metric_id": "content_ready_ms",
+            "device_class": "tablet",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "agency",
+            "metric_id": "content_ready_ms",
+            "device_class": "unknown",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "agency",
+            "metric_id": "component_ready_ms",
+            "device_class": "desktop",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "agency",
+            "metric_id": "component_ready_ms",
+            "device_class": "mobile",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "agency",
+            "metric_id": "component_ready_ms",
+            "device_class": "tablet",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "agency",
+            "metric_id": "component_ready_ms",
+            "device_class": "unknown",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          }
+        ]
+      },
+      "phases": {
+        "state_counts": {
+          "measured": 0,
+          "insufficient_sample": 0,
+          "no_data": 36
+        },
+        "cells": [
+          {
+            "surface_id": "home",
+            "phase_id": "route-import",
+            "metric_id": "first_render_to_main_ms",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "home",
+            "phase_id": "response",
+            "metric_id": "ttfb_ms",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "home",
+            "phase_id": "response",
+            "metric_id": "response_to_first_render_ms",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "home",
+            "phase_id": "owner-settlement",
+            "metric_id": "main_to_useful_ms",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "home",
+            "phase_id": "semantic-readiness",
+            "metric_id": "content_ready_ms",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "home",
+            "phase_id": "semantic-readiness",
+            "metric_id": "component_ready_ms",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "near-you",
+            "phase_id": "route-import",
+            "metric_id": "first_render_to_main_ms",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "near-you",
+            "phase_id": "response",
+            "metric_id": "ttfb_ms",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "near-you",
+            "phase_id": "response",
+            "metric_id": "response_to_first_render_ms",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "near-you",
+            "phase_id": "owner-settlement",
+            "metric_id": "main_to_useful_ms",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "near-you",
+            "phase_id": "semantic-readiness",
+            "metric_id": "content_ready_ms",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "near-you",
+            "phase_id": "semantic-readiness",
+            "metric_id": "component_ready_ms",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "following",
+            "phase_id": "route-import",
+            "metric_id": "first_render_to_main_ms",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "following",
+            "phase_id": "response",
+            "metric_id": "ttfb_ms",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "following",
+            "phase_id": "response",
+            "metric_id": "response_to_first_render_ms",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "following",
+            "phase_id": "owner-settlement",
+            "metric_id": "main_to_useful_ms",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "following",
+            "phase_id": "semantic-readiness",
+            "metric_id": "content_ready_ms",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "following",
+            "phase_id": "semantic-readiness",
+            "metric_id": "component_ready_ms",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "browse-contracts",
+            "phase_id": "route-import",
+            "metric_id": "first_render_to_main_ms",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "browse-contracts",
+            "phase_id": "response",
+            "metric_id": "ttfb_ms",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "browse-contracts",
+            "phase_id": "response",
+            "metric_id": "response_to_first_render_ms",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "browse-contracts",
+            "phase_id": "owner-settlement",
+            "metric_id": "main_to_useful_ms",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "browse-contracts",
+            "phase_id": "semantic-readiness",
+            "metric_id": "content_ready_ms",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "browse-contracts",
+            "phase_id": "semantic-readiness",
+            "metric_id": "component_ready_ms",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "notice",
+            "phase_id": "route-import",
+            "metric_id": "first_render_to_main_ms",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "notice",
+            "phase_id": "response",
+            "metric_id": "ttfb_ms",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "notice",
+            "phase_id": "response",
+            "metric_id": "response_to_first_render_ms",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "notice",
+            "phase_id": "owner-settlement",
+            "metric_id": "main_to_useful_ms",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "notice",
+            "phase_id": "semantic-readiness",
+            "metric_id": "content_ready_ms",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "notice",
+            "phase_id": "semantic-readiness",
+            "metric_id": "component_ready_ms",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "agency",
+            "phase_id": "route-import",
+            "metric_id": "first_render_to_main_ms",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "agency",
+            "phase_id": "response",
+            "metric_id": "ttfb_ms",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "agency",
+            "phase_id": "response",
+            "metric_id": "response_to_first_render_ms",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "agency",
+            "phase_id": "owner-settlement",
+            "metric_id": "main_to_useful_ms",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "agency",
+            "phase_id": "semantic-readiness",
+            "metric_id": "content_ready_ms",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          },
+          {
+            "surface_id": "agency",
+            "phase_id": "semantic-readiness",
+            "metric_id": "component_ready_ms",
+            "state": "no_data",
+            "sampled_count": null,
+            "estimated_count": null
+          }
+        ]
+      }
     }
   },
   "sample_floor": 4,

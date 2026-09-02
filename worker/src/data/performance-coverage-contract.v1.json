@@ -1,0 +1,64 @@
+{
+  "schema": "cityscroll.performance.coverage_contract.v1",
+  "version": 1,
+  "window": "7d",
+  "sample_floor": 30,
+  "surfaces": [
+    {
+      "surface_id": "home",
+      "operator_label": "Home",
+      "component_ids": ["home-search-submit", "home-topic-entry"]
+    },
+    {
+      "surface_id": "near-you",
+      "operator_label": "Near You",
+      "component_ids": [
+        "near-you-borough",
+        "near-you-community-district",
+        "near-you-council-district",
+        "near-you-map",
+        "near-you-map-data",
+        "near-you-scope-change"
+      ]
+    },
+    {
+      "surface_id": "following",
+      "operator_label": "Following",
+      "component_ids": ["following-watch-change", "following-watch-list"]
+    },
+    {
+      "surface_id": "browse-contracts",
+      "operator_label": "Browse Contracts",
+      "component_ids": [
+        "browse-contracts-filter-apply",
+        "browse-contracts-results",
+        "browse-filter-apply",
+        "browse-results"
+      ]
+    },
+    {
+      "surface_id": "notice",
+      "operator_label": "Notice",
+      "component_ids": ["notice-context"]
+    },
+    {
+      "surface_id": "agency",
+      "operator_label": "Agency",
+      "component_ids": ["agency-identity", "agency-relationships"]
+    }
+  ],
+  "readiness_metrics": [
+    {"metric_id": "content_ready_ms", "component_id": "none"},
+    {"metric_id": "component_ready_ms", "component_id": "registered"}
+  ],
+  "device_classes": ["desktop", "mobile", "tablet", "unknown"],
+  "attribution_phases": [
+    {"phase_id": "route-import", "metric_ids": ["first_render_to_main_ms"]},
+    {"phase_id": "response", "metric_ids": ["ttfb_ms", "response_to_first_render_ms"]},
+    {"phase_id": "owner-settlement", "metric_ids": ["main_to_useful_ms"]},
+    {
+      "phase_id": "semantic-readiness",
+      "metric_ids": ["content_ready_ms", "component_ready_ms"]
+    }
+  ]
+}
