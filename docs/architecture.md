@@ -28,7 +28,7 @@ summary: >-
   a Cloudflare Queue (per-subscriber retries, DLQ; daily send caps unchanged).
   The source vault retains approved public documents by content hash and
   preserves their official source links.
-updated: 2026-09-01
+updated: 2026-09-02
 sources:
   - README.md
   - site/index.html
@@ -72,6 +72,9 @@ sources:
   - worker/src/search_activity.mjs
   - worker/src/lib/search_activity.mjs
   - capabilities/search_activity.mjs
+  - site/search_recent_history.mjs
+  - site/search_recent_history_view.mjs
+  - test/functional/42_search_recent_history.py
   - worker/src/worker.mjs
   - worker/src/alerts.mjs
   - worker/src/ingest.mjs
@@ -187,7 +190,7 @@ Bottom-up, the way it's built: public Socrata feeds and Checkbook are the ground
 - **KV `NL_METER`** — daily spend metering for `/nl` (the denial-of-wallet ceiling on the only Claude-billed route).
 - **KV `ALERT_STATE`** — digest/cron bookkeeping plus read models: `hearings:location:v1` → rules hearings and public meetings normalized into separate affected-area and venue fields (subject addresses may carry coordinates/BBL for place mapping), `property:location:v1` → Property Disposition notices with extracted site addresses/tax lots/BBLs and scheduled-acquisition geometry, `fc:<stem>` → estimated contract expirations from retained Checkbook contract terms, versioned `vp:v1:*` whole-profile buckets behind `/vendor-profile`, and `search:exec:` / `search:exec-dev:` private search-execution receipts (disjoint production/developer prefixes, 30-day TTL; the machine-readable prefix registry is `worker/ops-contract.v1.json`, the receipt contract `capabilities/search_activity.mjs`). Stale views remain readable with their vintage; a missing view returns a deterministic unavailable response and never starts source acquisition. The daily cleanup removes retired `plan:` keys so disabled MOCS rows cannot reappear.
 - **KV `FEEDBACK`** — stored feedback rows (`fb:<ts>:<rand>`) + rate-limit counters.
-- **Browser localStorage (`site/app/`)** — client-side only: investigation workspace (pinned notices + notes), query cache, saved searches, plain/rigor toggle.
+- **Browser localStorage** — client-side only, never synchronized and never sent: the `site/app/` investigation workspace (pinned notices + notes), query cache, saved searches and plain/rigor toggle, plus the canonical Search document's bounded recent-search list (`crol_search_recent_v1`: at most ten deduplicated canonical `/search/` paths with their place context, execution time, and the opaque execution id the private intake accepted). It holds navigation metadata only — no result rows, coverage, or identity — is validated on every read, and a blocked, full, or malformed store degrades to no history without changing Search.
 - **Public beta flag localStorage** — one registered, default-off experiment slug selected by `?beta=<slug>`; `?beta=0` clears it. The registry enforces a removal date and on/off tests. It is presentation state only, never access control.
 - **Wave-4 process-spine contracts** — required process-spine fixtures and matching code live in `test/fixtures/wave4/generated/` and `worker/src/lib/process_spine.mjs`; PR and CI tests validate confidence gates and required fields via `test/process-spine.test.mjs`.
 - **D1 `crol-notices`** — mirror of recent notices (`notices` table: parsed columns + honest-data fields `contract_amount_valid`, `due_year`, plus the raw source row for schema-drift recovery), `ingest_state` (Socrata ingest cursor), rebuildable external-content `notices_fts` (FTS5/BM25 over `notices.haystack`, shared by public `GET /search?q=` and MCP notice search, with structured filters before rank/limit and the prior `LIKE` query as a missing-index fallback), `prior_cycle_matches` (per-notice precomputed `{strict, near, eligibleCount}` prior-cycle match sets, pre-warmed by cron for freshly ingested Award notices), and `notice_translations` (informal per-`(request_id, lang)` translations generated only by an explicit translation transaction, edge-cached, and invariant-checked so amounts/dates/PINs/agencies/addresses survive verbatim or the translation is not shown). Refreshed by the daily cron (`worker/src/ingest.mjs`); Socrata remains the source of truth. Exact legacy miss/fallback paths are temporary ratcheted debt, not the serving contract. D1 export drops the virtual index and its triggers, exports ordinary tables, then replays migration `0016_notice_fts.sql` on live and restored databases. English notice text remains the official record.

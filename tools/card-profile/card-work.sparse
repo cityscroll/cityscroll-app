@@ -42,6 +42,7 @@
 /docs/civic-scope-schema.md
 /docs/community-board-minutes-scorecard.md
 /docs/content-parity-harness.md
+/docs/contracts-browse-scoped-adapter.md
 /docs/data-frontiers-2026-08.md
 /docs/data-frontiers/
 /docs/data-sources.md
@@ -593,6 +594,8 @@
 /site/search_intent.mjs
 /site/search_lens_handoff.mjs
 /site/search_producer_support.mjs
+/site/search_recent_history.mjs
+/site/search_recent_history_view.mjs
 /site/search_render_plan.mjs
 /site/semantic_topic_search.mjs
 /site/shared_meeting_read_model.mjs

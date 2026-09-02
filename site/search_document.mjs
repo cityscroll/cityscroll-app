@@ -29,6 +29,13 @@ import {
   searchHistoryIslandHtml,
   searchHistoryUiState,
 } from "./search_history_state.mjs";
+import {
+  clearRecentSearches,
+  readRecentSearches,
+  recordRecentSearch,
+  removeRecentSearch,
+} from "./search_recent_history.mjs";
+import { renderRecentSearches } from "./search_recent_history_view.mjs";
 
 const MAX_QUERY_LENGTH = 240;
 const SEARCH_TIMEOUT_MS = 12000;
@@ -685,24 +692,49 @@ async function settledResponse({
   return { state: "unavailable" };
 }
 
+/** Repaint the browser-local recent searches. Never throws into the render path. */
+function paintRecentSearches(root, entries) {
+  const region = root?.querySelector("[data-search-recent-region]");
+  if (!region) return;
+  try {
+    renderRecentSearches(region, {
+      entries: entries ?? readRecentSearches(),
+      translate: tr,
+      onRemove: (path) => removeRecentSearch(path),
+      onClear: () => clearRecentSearches(),
+      fallbackFocus: root.querySelector("#search-query"),
+    });
+  } catch {
+    // A convenience list must never cost the reader the search itself.
+  }
+}
+
 /**
  * Observe the settled execution once, from the same plan that just painted.
  * Fail-soft by construction: nothing here is awaited and nothing can throw into
  * the render path, so Search behaves identically whether or not intake works.
  *
- * Two projections leave here and they are independent of one another: the
- * private operational receipt, and — only if the reader is recognized, which
- * the Worker decides — this account's own recent-search continuation. Either
- * can fail without touching the other or the page.
+ * Three projections leave here and they are independent of one another: the
+ * private operational receipt; this browser's own local recent-search trail; and
+ * — only if the reader is recognized, which the Worker decides — this account's
+ * recent-search continuation. Any of them can fail without touching the others
+ * or the page.
+ *
+ * All three describe one execution, so they share one execution identity minted
+ * here. The browser-local trail is written first and never waits on anything, so
+ * a reader keeps a way back to this search whether the intake is reachable,
+ * hostile, or absent, and whether or not an account is recognized.
  */
 function observeSearchExecution(root, query, plan) {
   const executionId = newSearchHistoryExecutionId();
+  const scope = searchActivityScope(new URLSearchParams(location.search));
   try {
-    void recordSearchExecution(plan, {
-      query,
-      scope: searchActivityScope(new URLSearchParams(location.search)),
-      origins: apiOrigins(),
-    });
+    paintRecentSearches(root, recordRecentSearch({ query, scope, searchExecutionId: executionId }));
+  } catch {
+    // Storage that is blocked, full, or hostile leaves Search untouched.
+  }
+  try {
+    void recordSearchExecution(plan, { query, scope, origins: apiOrigins() });
   } catch {
     // A completed Search never depends on its own observation.
   }
@@ -827,12 +859,14 @@ function render() {
   }
   const form = root.querySelector("[data-search-form]");
   if (form) preservePlaceFields(form);
+  paintRecentSearches(root);
   renderInitialState(root, query);
   installSearchHistoryControls(root);
   void loadSearchHistory(root);
   void loadResults(root, query);
   window.initSubpageLangSwitcher?.(() => {
     paintHeading();
+    paintRecentSearches(root);
     if (lastResponse) repaintResults(root);
     else renderInitialState(root, query);
   });

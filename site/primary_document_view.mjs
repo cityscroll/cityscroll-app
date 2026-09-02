@@ -268,6 +268,19 @@ export function renderSearchDocument() {
       <div class="topic-search-form-row"><input id="search-query" name="q" type="search" maxlength="240" autocomplete="off" placeholder="Try a topic, place, or agency" data-i18n-placeholder="topic_search_placeholder"><button type="submit" data-i18n="search_label">Search</button></div>
     </form>
     <div class="topic-search-context" data-search-place hidden></div>
+    <div class="topic-search-recent-region" data-search-recent-region>
+      <section class="topic-search-recent" data-search-recent aria-labelledby="search-recent-heading" hidden>
+        <div class="topic-search-recent-head">
+          <div>
+            <h3 id="search-recent-heading" data-i18n="search_recent_heading">Recent searches</h3>
+            <p class="topic-search-recent-note" data-i18n="search_recent_note">Kept in this browser only.</p>
+          </div>
+          <button type="button" class="topic-search-recent-clear" data-search-recent-clear data-i18n="search_recent_clear" data-i18n-aria="search_recent_clear_aria" aria-label="Clear recent searches">Clear</button>
+        </div>
+        <ul class="topic-search-recent-list" data-search-recent-list></ul>
+      </section>
+      <p class="topic-search-recent-status" data-search-recent-status role="status" aria-live="polite"></p>
+    </div>
     <section class="topic-search-coverage is-unavailable" data-search-coverage data-coverage-state="unavailable" role="status" hidden></section>
     <div class="topic-search-lanes" data-semantic-lanes aria-label="Search results by civic object" data-i18n-aria="topic_search_results_aria">
       ${searchLane("contracts", "Contracts", { semantic: true, titleKey: "tab_money" })}
