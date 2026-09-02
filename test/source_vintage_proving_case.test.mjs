@@ -198,9 +198,13 @@ test("an attempted cross-series extension fails without changing the IBO corpus"
   const before = digest(OBSERVATIONS_PATH);
   const firstRow = JSON.parse(observationsText.split("\n").find(Boolean));
   firstRow.fiscal_year = 2023;
-  const result = audit({ observationsText: `${observationsText}${JSON.stringify(firstRow)}\n` });
+  const extension = `${JSON.stringify(firstRow)}\n`;
+  const result = audit({ observationsText: `${observationsText}${extension}${extension}` });
   assert.ok(result.findings.includes("cross-series-extension"));
   assert.equal(result.measured.fiscal_year_max, 2023);
+  // Two rows share one fiscal year beyond the vintage: the boundary counts
+  // observation rows, not distinct fiscal years.
+  assert.equal(result.receipt.boundary.observations_beyond_publisher_vintage, 2);
   assert.equal(result.receipt.boundary.series_extension, "out-of-scope-follow-on");
   assert.equal(digest(OBSERVATIONS_PATH), before);
 });
