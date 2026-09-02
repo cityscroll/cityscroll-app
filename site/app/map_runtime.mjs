@@ -29,6 +29,7 @@ import {
   landMapBoundarySvg,
   loadLandMapBoundaryContext,
 } from "../land_map_boundary_context.mjs";
+import { landMapAuthorityHandoff } from "../land_map_authority_handoff.mjs";
 import { landProjectPath } from "../land_project_route.mjs";
 import {
   landMapSelectionFocusIntent,
@@ -632,6 +633,24 @@ export function landMapSelectionHTML(model, {t: copy = mapCopy, escape = escapeM
     : "";
   const handoff = `<button class="act mini" type="button" data-land-map-list-handoff="${escape(selectedId)}">${escape(copy("land_map_selected_list"))}</button>`;
   const clear = `<button class="act mini" type="button" data-land-map-clear="1">${escape(copy("land_map_selected_clear"))}</button>`;
+  const authority = landMapAuthorityHandoff({
+    projectId: selectedId,
+    row,
+    panelHref: marker.href,
+  });
+  const authorityLabel = authority.state === "available"
+    ? copy("land_map_authority_available")
+    : authority.state === "partial"
+      ? copy("land_map_authority_partial")
+      : copy("land_map_authority_unavailable");
+  const authorityFields = authority.state === "unavailable" ? ""
+    : `<span data-land-map-authority-procedure="${escape(authority.procedure_id || "")}">${escape(authority.procedure_id || copy("land_authority_unknown"))}</span>`
+      + ` · <span data-land-map-authority-stage="${escape(authority.stage?.stage_id || "")}">${escape(authority.stage?.stage_id || copy("land_authority_unknown"))}</span>`;
+  const authorityHandoff = `<div class="land-map-authority-handoff" data-land-map-authority="1" data-land-map-authority-state="${escape(authority.state)}" data-land-map-authority-project="${escape(selectedId)}" data-land-map-authority-projection="${escape(authority.projection_version)}" data-land-map-authority-source-receipt="${escape(authority.source_receipt || "")}" data-land-map-authority-source-vintage="${escape(authority.source_vintage || "")}" data-land-map-location-state="mapped">`
+    + `<strong>${escape(copy("land_map_authority_heading"))}</strong> <span data-land-map-authority-state-label="1">${escape(authorityLabel)}</span>`
+    + (authorityFields ? `<div data-land-map-authority-supplied="1">${authorityFields}</div>` : "")
+    + (authority.panel_href ? `<a class="land-map-authority-link" href="${escape(authority.panel_href)}" data-land-map-authority-detail="${escape(selectedId)}">${escape(copy("land_map_authority_detail"))}</a>` : "")
+    + `</div>`;
   return `<section class="land-map-selected" id="${LAND_MAP_SELECTION_ID}" tabindex="-1"`
     + ` data-land-map-project="${escape(selectedId)}"`
     + ` data-land-map-method="${escape(marker.method)}"`
@@ -646,6 +665,7 @@ export function landMapSelectionHTML(model, {t: copy = mapCopy, escape = escapeM
     // a 25-lot anchor from reading as a doorstep.
     + `<p class="land-map-selected-placement">${escape(copy("land_map_selected_placement",{method, precision}))}</p>`
     + `<p class="land-map-selected-source">${escape(copy("land_map_selected_source"))}</p>`
+    + authorityHandoff
     + `<div class="land-map-selected-actions">${detail}${handoff}${clear}</div></section>`;
 }
 
