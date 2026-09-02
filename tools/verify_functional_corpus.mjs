@@ -236,8 +236,12 @@ function buildReceipt(result, elapsedMs) {
     profile: {
       active: state.profile,
       sparse_checkout: state.sparse_checkout,
-      manifest_digest: result.closure.config_sha256 ?? null,
-      patterns_sha256: result.closure.patterns_sha256 ?? null,
+      // Named after the closure fields they are copied from. "manifest_digest"
+      // is deliberately not reused here: it means something else in
+      // cityscroll.card-profile.identity.v1, and one name for two digests is
+      // how a reader ends up comparing values that were never comparable.
+      closure_config_sha256: result.closure.config_sha256 ?? null,
+      closure_patterns_sha256: result.closure.patterns_sha256 ?? null,
       // Present and true only under the test seam. A receipt that carries it is
       // describing a synthetic repository and is not evidence about this one.
       synthetic_root: ROOT_OVERRIDE ? true : false

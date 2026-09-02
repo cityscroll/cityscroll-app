@@ -6,11 +6,11 @@
   "profile": {
     "active": "full-checkout",
     "sparse_checkout": false,
-    "manifest_digest": "31e2bc99b2bc13eaddf6e43b25d5a211ed14ddc87a38bdc7002080771491a5c8",
-    "patterns_sha256": "14c56c50a0e14897a0f740ad6c4974c103bd8b33e46434f3212297acb28b0598",
+    "closure_config_sha256": "31e2bc99b2bc13eaddf6e43b25d5a211ed14ddc87a38bdc7002080771491a5c8",
+    "closure_patterns_sha256": "14c56c50a0e14897a0f740ad6c4974c103bd8b33e46434f3212297acb28b0598",
     "synthetic_root": false
   },
-  "revision": "9ae3afd8e4f1b403beda6dfec9ce005983a08ebd",
+  "revision": "f680f672e0b395a25fcda6d3db01d569ffdf9445",
   "corpus": {
     "gate_class": "functional-site",
     "builder": "tools/build_primary_documents.mjs",
@@ -64,5 +64,5 @@
   "coverage_note": "The corpus is a precondition of the preparation step, so every functional test served from the prepared _site depends on it. Only the tests named in measured_functional_tests were run end to end in a provisioned reduced checkout, so only those are claimed as measured coverage.",
   "blocked_reasons": [],
   "remediation": null,
-  "check_duration_ms": 44
+  "check_duration_ms": 103
 }

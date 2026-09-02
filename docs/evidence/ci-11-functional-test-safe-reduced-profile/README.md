@@ -61,9 +61,18 @@ dependency skip.
 | Corpus fingerprint | `0bb40d3e9f60…` | `0bb40d3e9f60…` | `0bb40d3e9f60…` |
 | Readiness outcome | **blocked** (exit 6) | ready (exit 0) | ready (exit 0) |
 | Source vintage | not readable — the anchor itself was deferred | `2026-08-15` | `2026-08-15` |
-| `prepare_functional_site.sh` | exit 1, bare `ENOENT` | exit 0, 2,606 ms | exit 0, 3,795 ms |
-| `23_mobile_viewport.py` | not run | **OK**, 5,610 ms | **OK**, 12,649 ms |
+| `prepare_functional_site.sh` | exit 1, bare `ENOENT` | exit 0, 21,591 ms | exit 0, 17,112 ms |
+| `23_mobile_viewport.py` | not run | **OK**, 29,061 ms | **OK**, 35,755 ms |
 | Served `_site` | — | 140.3 MiB | 583.0 MiB |
+
+Wall-clock figures were taken while two other working copies on the same machine
+were running full preflight gates. They are recorded because the card asks for
+timing, not because they are a benchmark: the same reduced-profile preparation
+measured 2,606 ms and the same test 5,610 ms on a quiet machine. Read them as
+"seconds, not minutes", and note that the reduced profile appearing *slower*
+than the control here is contention noise rather than a property of the profile.
+Everything else in this table — exit statuses, counts, fingerprints, bytes — is
+contention-independent.
 
 The corpus fingerprint is identical in all three columns because it is taken from
 index blob identity rather than the working tree. That is what makes it the same

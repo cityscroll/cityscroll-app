@@ -4,7 +4,7 @@
   "sparse_checkout": true,
   "shallow_repository": false,
   "partial_clone_promisor_remote": false,
-  "tracked_paths_not_materialised": 2010,
+  "tracked_paths_not_materialised": 2008,
   "full_history_available": true,
   "full_history_fallback": "already complete",
   "hydrate_command": "tools/provision_card_profile.sh hydrate <path>",

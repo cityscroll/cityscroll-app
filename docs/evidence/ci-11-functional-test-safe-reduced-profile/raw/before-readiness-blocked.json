@@ -6,11 +6,11 @@
   "profile": {
     "active": "card-work",
     "sparse_checkout": true,
-    "manifest_digest": "31e2bc99b2bc13eaddf6e43b25d5a211ed14ddc87a38bdc7002080771491a5c8",
-    "patterns_sha256": "14c56c50a0e14897a0f740ad6c4974c103bd8b33e46434f3212297acb28b0598",
+    "closure_config_sha256": "31e2bc99b2bc13eaddf6e43b25d5a211ed14ddc87a38bdc7002080771491a5c8",
+    "closure_patterns_sha256": "14c56c50a0e14897a0f740ad6c4974c103bd8b33e46434f3212297acb28b0598",
     "synthetic_root": false
   },
-  "revision": "9ae3afd8e4f1b403beda6dfec9ce005983a08ebd",
+  "revision": "f680f672e0b395a25fcda6d3db01d569ffdf9445",
   "corpus": {
     "gate_class": "functional-site",
     "builder": "tools/build_primary_documents.mjs",
@@ -95,5 +95,5 @@
     "regenerate": "node tools/derive_card_profile.mjs",
     "full_control": "tools/provision_card_profile.sh hydrate --full"
   },
-  "check_duration_ms": 44
+  "check_duration_ms": 129
 }

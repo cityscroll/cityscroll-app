@@ -1,4 +1,5 @@
-$ python3 test/functional/23_mobile_viewport.py   # served from _site, as tools/preflight-required-checks.sh serves it
+$ python3 test/functional/23_mobile_viewport.py   # reduced card-work profile, served from _site
 OK mobile viewport: 360px overflow, touch targets, phase disclosure, and table containment
 exit status: 0
-wall clock: 5610 ms
+wall clock: 29061 ms
+reduced _site: 140.3 MiB

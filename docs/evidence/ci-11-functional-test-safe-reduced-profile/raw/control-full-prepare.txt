@@ -3,4 +3,4 @@ functional corpus ready: 30 declared path(s), 73.78 MiB, fingerprint 0bb40d3e9f6
 Primary documents built
 Built public site from site to _site
 exit status: 0
-wall clock: 3795 ms
+wall clock: 17112 ms
