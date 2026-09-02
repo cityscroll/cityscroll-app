@@ -63,6 +63,7 @@ const SCRATCH_REPO_SUITES = Object.freeze([
   "test/architecture_evidence_shards.test.mjs",
   "test/ci_exact_commit_artifact.test.mjs",
   "test/functional_corpus_readiness.test.mjs",
+  "test/i18n_cache_build.test.mjs",
   "test/prepare_changelog_base.test.mjs",
   "test/private_identifier_scan.test.mjs",
   "test/rcp03_evidence_placement.test.mjs",
@@ -84,8 +85,8 @@ function ambientStandIn() {
   mkdirSync(path.join(root, "nested"), { recursive: true });
   writeFileSync(path.join(root, "nested", "also-kept.txt"), "and so must this one\n");
   assert.equal(git(root, ["init", "-q", "-b", "main"]).status, 0);
-  git(root, ["config", "user.email", "test@example.invalid"]);
-  git(root, ["config", "user.name", "test"]);
+  git(root, ["config", "user.email", "baseline@example.invalid"]);
+  git(root, ["config", "user.name", "Baseline"]);
   git(root, ["add", "-A"]);
   assert.equal(git(root, ["commit", "-qm", "ambient baseline"]).status, 0);
   return root;
@@ -98,6 +99,7 @@ function repositoryState(root) {
     commits: git(root, ["rev-list", "--count", "HEAD"]).stdout.trim(),
     status: git(root, ["status", "--porcelain"]).stdout,
     tracked: git(root, ["ls-files"]).stdout,
+    config: git(root, ["config", "--local", "--null", "--list"]).stdout,
   };
 }
 
@@ -199,6 +201,28 @@ test("the detector fails when a subprocess really does leak", () => {
       rmSync(clean, { recursive: true, force: true });
       rmSync(guarded, { recursive: true, force: true });
     }
+  } finally {
+    rmSync(fixture, { recursive: true, force: true });
+    rmSync(standIn, { recursive: true, force: true });
+  }
+});
+
+test("the detector observes a leaked repository-config write", () => {
+  const standIn = ambientStandIn();
+  const fixture = mkdtempSync(path.join(tmpdir(), "cityscroll-config-leak-"));
+  try {
+    const before = repositoryState(standIn);
+    const leaked = hookEnvironment(standIn);
+    const written = spawnSync("git", ["-C", fixture, "config", "user.name", "test"], {
+      env: leaked,
+      encoding: "utf8",
+    });
+    assert.equal(written.status, 0, written.stderr);
+    assert.notEqual(
+      repositoryState(standIn).config,
+      before.config,
+      "a leaked git config write must be visible to the ambient-repository guard",
+    );
   } finally {
     rmSync(fixture, { recursive: true, force: true });
     rmSync(standIn, { recursive: true, force: true });
