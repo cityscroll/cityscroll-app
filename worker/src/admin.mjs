@@ -389,6 +389,7 @@ export async function handleAdminSubs(req, env) {
   const subs = [];
   const topiclessIntents = [];
   const developerTestAccounts = [];
+  const machineAccounts = [];
   const recoveredPending = [];
   const enrolled = [];
   const sampleKeys = [];
@@ -429,6 +430,20 @@ export async function handleAdminSubs(req, env) {
             recovery_explanation: v.recovery_explanation,
             developer_test: isTestSubscriber(v) || undefined,
           };
+          if (lifecycle.status === SIGNUP_LIFECYCLE.SELF_ORIGIN) {
+            machineAccounts.push({
+              key: item.key,
+              email: item.email,
+              status: SIGNUP_LIFECYCLE.SELF_ORIGIN,
+              signup_lifecycle: SIGNUP_LIFECYCLE.SELF_ORIGIN,
+              source: item.source,
+              original_signup_at: v.original_signup_at,
+              createdAt: v.createdAt,
+              marked_at: v.recovered_at || v.createdAt,
+              reason: v.reason || "sender on the product's own outbound domain (self-origin loop); excluded from real enrollment and digest delivery",
+            });
+            continue;
+          }
           if (lifecycle.status === SIGNUP_LIFECYCLE.TEST) {
             developerTestAccounts.push({
               key: item.key,
@@ -474,7 +489,7 @@ export async function handleAdminSubs(req, env) {
   } while (cursor);
 
   const confirmedSubs = subs.filter((row) => row.status === SIGNUP_LIFECYCLE.CONFIRMED).length;
-  const signupLifecycle = summarizeSignupLifecycle([...subs, ...developerTestAccounts]);
+  const signupLifecycle = summarizeSignupLifecycle([...subs, ...developerTestAccounts, ...machineAccounts]);
   const body = {
     confirmedSubs,
     recoveredPendingCount: recoveredPending.length,
@@ -482,6 +497,7 @@ export async function handleAdminSubs(req, env) {
     topiclessIntentCount: topiclessIntents.length,
     topiclessIntents,
     developerTestAccounts,
+    machineAccounts,
     recoveredPending,
     enrolled,
     signup_lifecycle: {
@@ -489,6 +505,7 @@ export async function handleAdminSubs(req, env) {
       enrolled: signupLifecycle.enrolled,
       confirmed: signupLifecycle.confirmed,
       test: signupLifecycle.test,
+      self_origin: signupLifecycle.self_origin,
       summary: signupLifecycle.summary,
       categories: signupLifecycle.categories.map((category) => ({
         id: category.id,
@@ -542,6 +559,12 @@ export function renderSignupLifecyclePage(body = {}) {
       label: "test",
       count: lifecycle.test ?? (body.developerTestAccounts || []).length,
       rows: body.developerTestAccounts || [],
+    },
+    {
+      id: "self_origin",
+      label: "machine / self-origin",
+      count: lifecycle.self_origin ?? (body.machineAccounts || []).length,
+      rows: body.machineAccounts || [],
     },
   ];
   const sections = categories.map((category) => {

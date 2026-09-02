@@ -7,7 +7,9 @@ import {
   buildSubscription,
   buildTopiclessIntent,
   isDeveloperTestEmail,
+  isSelfOriginEmail,
   isTestSubscriber,
+  isRealSubscriber,
   isTopiclessIntent,
   isValidEmail,
   normalizeEmail,
@@ -129,6 +131,35 @@ test("isDeveloperTestEmail recognizes plus-tagged e2e and scope-watch addresses 
   assert.equal(isTestSubscriber({ email: "jamesca2ro+scope-watch-e2e-20260806@gmail.com" }), true);
   assert.equal(isTestSubscriber({ email: "reader@example.com", developer_test: true }), true);
   assert.equal(isTestSubscriber({ email: "reader@example.com" }), false);
+});
+
+test("isSelfOriginEmail recognizes owned sending domains and any subdomain, not lookalikes", () => {
+  assert.equal(isSelfOriginEmail("delivery@send.cityscroll.org"), true);
+  assert.equal(isSelfOriginEmail("hello@send.crol-list.org"), true);
+  assert.equal(isSelfOriginEmail("alerts@cityscroll.org"), true, "apex is owned too");
+  assert.equal(isSelfOriginEmail("subscribe@crol-list.org"), true);
+  assert.equal(isSelfOriginEmail("reader@gmail.com"), false);
+  assert.equal(isSelfOriginEmail("reader@notcityscroll.org"), false, "must not match a domain that merely ends in the same text");
+  assert.equal(isSelfOriginEmail(""), false);
+});
+
+test("self-origin addresses are machine accounts, kept in their own lifecycle bucket", () => {
+  const machine = { email: "delivery@send.cityscroll.org" };
+  assert.equal(isTestSubscriber(machine), true, "excluded from real delivery/counts");
+  assert.equal(isRealSubscriber(machine), false);
+  assert.deepEqual(signupLifecycleFromRecord(machine), {
+    signup_lifecycle: SIGNUP_LIFECYCLE.SELF_ORIGIN,
+    status: SIGNUP_LIFECYCLE.SELF_ORIGIN,
+  });
+  const summary = summarizeSignupLifecycle([
+    { email: machine.email, ...signupLifecycleFromRecord(machine) },
+    { email: "person@gmail.com", signup_lifecycle: SIGNUP_LIFECYCLE.ENROLLED, status: SIGNUP_LIFECYCLE.ENROLLED },
+  ]);
+  assert.equal(summary.self_origin, 1);
+  assert.equal(summary.enrolled, 1, "a real user is not miscounted as machine");
+  const selfOrigin = summary.categories.find((c) => c.id === "self_origin");
+  assert.equal(selfOrigin.count, 1);
+  assert.equal(selfOrigin.label, "machine / self-origin");
 });
 
 test("signupLifecycleFromRecord projects recovered pending-enrollment before first digest", () => {
