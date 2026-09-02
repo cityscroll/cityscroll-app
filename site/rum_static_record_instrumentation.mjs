@@ -20,6 +20,21 @@ export function noticeContextTimingMark(phase) {
   }
 }
 
+// The Notice primary boundary keeps its own bounded diagnostic namespace so a
+// cold trace shows when the primary owner reported relative to the deferred
+// owners. Like the notice-context marks these are browser timeline entries, not
+// RUM dimensions, and they carry no identifiers.
+export function noticePrimaryTimingMark(phase) {
+  const value = String(phase || "");
+  if (!/^[a-z0-9-]+$/.test(value)) return { state: "invalid" };
+  try {
+    globalThis.performance?.mark?.(`cityscroll.notice-primary.${value}`);
+    return { state: "recorded" };
+  } catch {
+    return { state: "unavailable" };
+  }
+}
+
 // Optional-branch durations stay on the Performance timeline. They are not a
 // second production RUM identity and must not carry record identifiers.
 export function noticeContextTimingMeasure(phase) {
@@ -89,13 +104,25 @@ export function noticePrimaryOutcomeFromEdge(edgeRendered) {
   return SEMANTIC_READINESS_MARKERS.notice_primary.result_states[edgeRendered] || null;
 }
 
-export function noticePrimaryReady(rum, { resultState } = {}) {
+// Owner-call time for the Notice primary boundary. Reading it at the boundary
+// keeps `content_ready_ms` the owner's clock even when the production reporter
+// installs later, so a before/after comparison stays comparable.
+export function noticePrimaryOwnerNow(runtime = globalThis) {
+  try {
+    const value = runtime?.performance?.now?.();
+    return Number.isFinite(value) && value >= 0 ? value : null;
+  } catch {
+    return null;
+  }
+}
+
+export function noticePrimaryReady(rum, { resultState } = {}, ownerTimestamp = null) {
   const bounded = boundedTerminalState(resultState);
   if (!bounded) return { state: "not_ready" };
   return rum.surfaceReady({
     surfaceId: "notice",
     resultState: bounded,
-  });
+  }, ownerTimestamp);
 }
 
 export function noticeContextReady(rum, { resultState } = {}) {
