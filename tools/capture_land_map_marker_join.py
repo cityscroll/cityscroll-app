@@ -116,7 +116,7 @@ def observe(page: Page) -> dict:
         """(ids) => {
           const summary = document.getElementById('land-map-summary');
           const markers = [...document.querySelectorAll('#land-map-panel .land-map-marker')];
-          const links = [...document.querySelectorAll('#land-map-panel .land-map-marker-link')];
+          const links = [...document.querySelectorAll('#land-map-panel .land-map-marker-control')];
           const byId = (id) => links.find((a) => a.dataset.landMapProject === id) || null;
           const specimen = byId(ids.mapped);
           return {
@@ -134,7 +134,7 @@ def observe(page: Page) -> dict:
             markers: markers.length,
             marker_links: links.length,
             methods_published: markers.filter((m) => m.dataset.landMapMethod).length,
-            specimen_href: specimen ? specimen.getAttribute('href') : null,
+            specimen_href: specimen ? (specimen.dataset.landMapHref || null) : null,
             specimen_label: specimen ? (specimen.getAttribute('aria-label') || '') : '',
             unmapped_drawn: markers.some((m) => m.dataset.landMapProject === ids.unmapped),
           };
