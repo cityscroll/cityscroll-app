@@ -56,7 +56,7 @@
     },
     "after": {
       "site/app/land.mjs": 94114,
-      "site/app/map_runtime.mjs": 41115
+      "site/app/map_runtime.mjs": 41505
     }
   },
   "dependency_identity": {
@@ -94,7 +94,7 @@
     "cold": {
       "cache_state": "cold",
       "route": "/browse/zoning/?boro=Queens&stage=public_review",
-      "list_first_paint_ms": 731.1,
+      "list_first_paint_ms": 735.3,
       "list_requests": [
         {
           "url": "/browse/zoning/?boro=Queens&stage=public_review",
@@ -119,7 +119,7 @@
         {
           "url": "/i18n.js?v=__I18N_ASSET_VERSION__",
           "resource_type": "script",
-          "bytes": 247473
+          "bytes": 248015
         },
         {
           "url": "/nl_deeplink.js",
@@ -174,7 +174,7 @@
         {
           "url": "/app/main.mjs",
           "resource_type": "script",
-          "bytes": 6269
+          "bytes": 6226
         },
         {
           "url": "/route_migration.mjs",
@@ -284,17 +284,12 @@
         {
           "url": "https://www.clarity.ms/tag/xusuca7gsv",
           "resource_type": "script",
-          "bytes": 723
+          "bytes": 769
         },
         {
           "url": "/app/core.mjs",
           "resource_type": "script",
           "bytes": 27532
-        },
-        {
-          "url": "/traversal_path.mjs",
-          "resource_type": "script",
-          "bytes": 12515
         },
         {
           "url": "/place_context.mjs",
@@ -307,14 +302,14 @@
           "bytes": 33025
         },
         {
+          "url": "/traversal_path.mjs",
+          "resource_type": "script",
+          "bytes": 12515
+        },
+        {
           "url": "/city_record_id.mjs",
           "resource_type": "script",
           "bytes": 390
-        },
-        {
-          "url": "/edge_summary.mjs",
-          "resource_type": "script",
-          "bytes": 27723
         },
         {
           "url": "/procurement_process_state_vocabulary.mjs",
@@ -325,6 +320,16 @@
           "url": "/land_view_state.mjs",
           "resource_type": "script",
           "bytes": 8198
+        },
+        {
+          "url": "/edge_summary.mjs",
+          "resource_type": "script",
+          "bytes": 27723
+        },
+        {
+          "url": "/report_issue.mjs",
+          "resource_type": "script",
+          "bytes": 48219
         },
         {
           "url": "/cross_spine_confidence.mjs",
@@ -342,16 +347,6 @@
           "bytes": 2393
         },
         {
-          "url": "/traversal.css",
-          "resource_type": "stylesheet",
-          "bytes": 1673
-        },
-        {
-          "url": "/report_issue.mjs",
-          "resource_type": "script",
-          "bytes": 48219
-        },
-        {
           "url": "/report_target.mjs",
           "resource_type": "script",
           "bytes": 19750
@@ -360,6 +355,11 @@
           "url": "/land_regulatory_effect.mjs",
           "resource_type": "script",
           "bytes": 12855
+        },
+        {
+          "url": "/traversal.css",
+          "resource_type": "stylesheet",
+          "bytes": 1673
         },
         {
           "url": "/land_use_action_codes.mjs",
@@ -467,6 +467,16 @@
           "bytes": 14100
         },
         {
+          "url": "/land_status_facets.mjs",
+          "resource_type": "script",
+          "bytes": 15976
+        },
+        {
+          "url": "/land_procedure_facet.mjs",
+          "resource_type": "script",
+          "bytes": 5327
+        },
+        {
           "url": "/capabilities/federated_search.mjs",
           "resource_type": "script",
           "bytes": 18787
@@ -482,29 +492,9 @@
           "bytes": 8702
         },
         {
-          "url": "/land_status_facets.mjs",
-          "resource_type": "script",
-          "bytes": 15976
-        },
-        {
-          "url": "/land_procedure_facet.mjs",
-          "resource_type": "script",
-          "bytes": 5327
-        },
-        {
           "url": "/capabilities/contracts_analysis.mjs",
           "resource_type": "script",
           "bytes": 12007
-        },
-        {
-          "url": "/civic_geography.mjs",
-          "resource_type": "script",
-          "bytes": 8132
-        },
-        {
-          "url": "/civic_geography_registry.mjs",
-          "resource_type": "script",
-          "bytes": 9023
         },
         {
           "url": "/land_phase_spine.mjs",
@@ -515,6 +505,16 @@
           "url": "/land_use_action_type.mjs",
           "resource_type": "script",
           "bytes": 4447
+        },
+        {
+          "url": "/civic_geography.mjs",
+          "resource_type": "script",
+          "bytes": 8132
+        },
+        {
+          "url": "/civic_geography_registry.mjs",
+          "resource_type": "script",
+          "bytes": 9023
         },
         {
           "url": "/land_action_procedure_resolution.mjs",
@@ -634,7 +634,7 @@
         {
           "url": "/app/land.mjs",
           "resource_type": "script",
-          "bytes": 93691
+          "bytes": 94114
         },
         {
           "url": "/borough_scope_links.mjs",
@@ -685,722 +685,6 @@
           "url": "/land_lot_source_digests.mjs",
           "resource_type": "script",
           "bytes": 946
-        },
-        {
-          "url": "/near_you_scope.mjs",
-          "resource_type": "script",
-          "bytes": 281
-        },
-        {
-          "url": "/e_designation_digest_view.mjs",
-          "resource_type": "script",
-          "bytes": 2202
-        },
-        {
-          "url": "/later_housing_activity_view.mjs",
-          "resource_type": "script",
-          "bytes": 3961
-        },
-        {
-          "url": "/app/feed_scoped_keyword.mjs",
-          "resource_type": "script",
-          "bytes": 3969
-        },
-        {
-          "url": "/app/feed-actions.mjs",
-          "resource_type": "script",
-          "bytes": 99999
-        },
-        {
-          "url": "/franchise_notice.mjs",
-          "resource_type": "script",
-          "bytes": 2148
-        },
-        {
-          "url": "/agency_scope_links.mjs",
-          "resource_type": "script",
-          "bytes": 3982
-        },
-        {
-          "url": "/cardinality_adaptive_facets.mjs",
-          "resource_type": "script",
-          "bytes": 5686
-        },
-        {
-          "url": "/meeting_origin.mjs",
-          "resource_type": "script",
-          "bytes": 2019
-        },
-        {
-          "url": "/meeting_capability_projection.mjs",
-          "resource_type": "script",
-          "bytes": 2702
-        },
-        {
-          "url": "/meetings_card_interaction.mjs",
-          "resource_type": "script",
-          "bytes": 1767
-        },
-        {
-          "url": "/council_hearing_matter_continuation.mjs",
-          "resource_type": "script",
-          "bytes": 6270
-        },
-        {
-          "url": "/action_path_v0.mjs",
-          "resource_type": "script",
-          "bytes": 14247
-        },
-        {
-          "url": "/council_hearing_action_path.mjs",
-          "resource_type": "script",
-          "bytes": 2601
-        },
-        {
-          "url": "/community_board_search.mjs",
-          "resource_type": "script",
-          "bytes": 10775
-        },
-        {
-          "url": "https://scripts.clarity.ms/0.8.69/clarity.js",
-          "resource_type": "script",
-          "bytes": 0
-        },
-        {
-          "url": "/capabilities/meetings.mjs",
-          "resource_type": "script",
-          "bytes": 8180
-        },
-        {
-          "url": "/meeting_object_contract.mjs",
-          "resource_type": "script",
-          "bytes": 11396
-        },
-        {
-          "url": "/action_registry.js",
-          "resource_type": "script",
-          "bytes": 94600
-        },
-        {
-          "url": "/meeting_process_profile.mjs",
-          "resource_type": "script",
-          "bytes": 7996
-        },
-        {
-          "url": "/app/result-match.mjs",
-          "resource_type": "script",
-          "bytes": 10095
-        },
-        {
-          "url": "/app/procurement-lifecycle.mjs",
-          "resource_type": "script",
-          "bytes": 33875
-        },
-        {
-          "url": "/app/procurement-phase.mjs",
-          "resource_type": "script",
-          "bytes": 29098
-        },
-        {
-          "url": "/sub_outreach.mjs",
-          "resource_type": "script",
-          "bytes": 10333
-        },
-        {
-          "url": "/app/subsidy.mjs",
-          "resource_type": "script",
-          "bytes": 22816
-        },
-        {
-          "url": "/app/meetings.mjs",
-          "resource_type": "script",
-          "bytes": 32532
-        },
-        {
-          "url": "/app/entities.mjs",
-          "resource_type": "script",
-          "bytes": 68496
-        },
-        {
-          "url": "/official_profile_navigation.mjs",
-          "resource_type": "script",
-          "bytes": 1822
-        },
-        {
-          "url": "/app/entity_identity_report.mjs",
-          "resource_type": "script",
-          "bytes": 2572
-        },
-        {
-          "url": "/app/workspace.mjs",
-          "resource_type": "script",
-          "bytes": 45758
-        },
-        {
-          "url": "/investigation_comparative_signal.mjs",
-          "resource_type": "script",
-          "bytes": 9835
-        },
-        {
-          "url": "/research_package.mjs",
-          "resource_type": "script",
-          "bytes": 20151
-        },
-        {
-          "url": "/app/now.mjs",
-          "resource_type": "script",
-          "bytes": 288
-        },
-        {
-          "url": "/app/routing.mjs",
-          "resource_type": "script",
-          "bytes": 98491
-        },
-        {
-          "url": "/notice_permalink.mjs",
-          "resource_type": "script",
-          "bytes": 662
-        },
-        {
-          "url": "/land_project_route.mjs",
-          "resource_type": "script",
-          "bytes": 502
-        },
-        {
-          "url": "/agency_scope_route.mjs",
-          "resource_type": "script",
-          "bytes": 1279
-        },
-        {
-          "url": "/civic_time_ledger.mjs",
-          "resource_type": "script",
-          "bytes": 37935
-        },
-        {
-          "url": "/community_board_watch.mjs",
-          "resource_type": "script",
-          "bytes": 2506
-        },
-        {
-          "url": "/land_view_switch.mjs",
-          "resource_type": "script",
-          "bytes": 5446
-        },
-        {
-          "url": "/derived_feature_rollup.mjs",
-          "resource_type": "script",
-          "bytes": 11614
-        },
-        {
-          "url": "/app/boot.mjs",
-          "resource_type": "script",
-          "bytes": 42316
-        },
-        {
-          "url": "https://api.cityscroll.org/suggestions",
-          "resource_type": "fetch",
-          "bytes": 2
-        },
-        {
-          "url": "/data/money_procurement_agencies.json",
-          "resource_type": "fetch",
-          "bytes": 4103
-        },
-        {
-          "url": "/alerts_context_carry.mjs",
-          "resource_type": "script",
-          "bytes": 15362
-        },
-        {
-          "url": "https://api.cityscroll.org/session",
-          "resource_type": "fetch",
-          "bytes": 2
-        },
-        {
-          "url": "/following_view.mjs",
-          "resource_type": "script",
-          "bytes": 56416
-        },
-        {
-          "url": "/home_following_entry.mjs",
-          "resource_type": "script",
-          "bytes": 4332
-        },
-        {
-          "url": "/data/land_default_ulurp.json",
-          "resource_type": "fetch",
-          "bytes": 249323
-        },
-        {
-          "url": "/data/land_authority_summary.json",
-          "resource_type": "fetch",
-          "bytes": 114468
-        },
-        {
-          "url": "/data/e_designation_project_digest.json",
-          "resource_type": "fetch",
-          "bytes": 223515
-        },
-        {
-          "url": "/data/later_housing_activity.json",
-          "resource_type": "fetch",
-          "bytes": 12892
-        },
-        {
-          "url": "https://api.cityscroll.org/zap-projects-lookup",
-          "resource_type": "fetch",
-          "bytes": 2
-        },
-        {
-          "url": "https://api.cityscroll.org/land-upcoming-hearings",
-          "resource_type": "fetch",
-          "bytes": 2
-        },
-        {
-          "url": "/following_preview_handoff.mjs",
-          "resource_type": "script",
-          "bytes": 7641
-        },
-        {
-          "url": "/watch_templates.mjs",
-          "resource_type": "script",
-          "bytes": 7219
-        },
-        {
-          "url": "/civic_document_chrome.mjs",
-          "resource_type": "script",
-          "bytes": 9181
-        },
-        {
-          "url": "/following_personal_state.mjs",
-          "resource_type": "script",
-          "bytes": 4399
-        },
-        {
-          "url": "/code_provision_watch_scope.mjs",
-          "resource_type": "script",
-          "bytes": 5199
-        },
-        {
-          "url": "/data/zap_projects_warehouse_lookup.json",
-          "resource_type": "fetch",
-          "bytes": 752786
-        },
-        {
-          "url": "/data/land_upcoming_hearings.json",
-          "resource_type": "fetch",
-          "bytes": 255777
-        },
-        {
-          "url": "/project_connections.mjs",
-          "resource_type": "script",
-          "bytes": 21532
-        },
-        {
-          "url": "/land_record_links.mjs",
-          "resource_type": "script",
-          "bytes": 3952
-        },
-        {
-          "url": "/ulurp_statutory_clock.mjs",
-          "resource_type": "script",
-          "bytes": 31997
-        },
-        {
-          "url": "/ulurp_recommendation_panel.mjs",
-          "resource_type": "script",
-          "bytes": 7569
-        },
-        {
-          "url": "/data/shared_meeting_read_model.json",
-          "resource_type": "fetch",
-          "bytes": 8079622
-        },
-        {
-          "url": "/app/map_runtime.mjs",
-          "resource_type": "script",
-          "bytes": 41115
-        },
-        {
-          "url": "/data/property_domain_observations.json",
-          "resource_type": "fetch",
-          "bytes": 311773
-        },
-        {
-          "url": "/data/bbl_mappluto_centroids_lookup.json",
-          "resource_type": "fetch",
-          "bytes": 84725
-        },
-        {
-          "url": "/data/zap_bbl_warehouse_lookup.json",
-          "resource_type": "fetch",
-          "bytes": 0
-        },
-        {
-          "url": "/civic_institution_development_specimens.mjs",
-          "resource_type": "script",
-          "bytes": 830
-        },
-        {
-          "url": "/land_project_decision_relations.mjs",
-          "resource_type": "script",
-          "bytes": 0
-        },
-        {
-          "url": "/district_scope_facets.mjs",
-          "resource_type": "script",
-          "bytes": 0
-        },
-        {
-          "url": "/bbl_mappluto_centroids.mjs",
-          "resource_type": "script",
-          "bytes": 0
-        },
-        {
-          "url": "/data/ulurp_recommendations_lookup.json",
-          "resource_type": "fetch",
-          "bytes": 0
-        },
-        {
-          "url": "/land_map_model.mjs",
-          "resource_type": "script",
-          "bytes": 0
-        },
-        {
-          "url": "/land_map_selection.mjs",
-          "resource_type": "script",
-          "bytes": 0
-        },
-        {
-          "url": "/map_exploration.mjs",
-          "resource_type": "script",
-          "bytes": 0
-        },
-        {
-          "url": "https://api.cityscroll.org/zap-outcomes?id=2025Q0304",
-          "resource_type": "fetch",
-          "bytes": 0
-        }
-      ],
-      "list_bytes": 13277627,
-      "list_first_paint_ordering": {
-        "first_row_at_ms": 312,
-        "resources_before_first_row": 181,
-        "map_dependencies_before_first_row": [],
-        "blocking_map_dependencies_before_first_row": []
-      },
-      "post_paint_detail_map": {
-        "cause": "the List auto-selects its first row; the selected project's detail map is existing behavior this card preserves rather than a browse dependency",
-        "requests": [
-          "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css",
-          "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js",
-          "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
-          "https://b.basemaps.cartocdn.com/light_all/15/9661/12324.png",
-          "https://c.basemaps.cartocdn.com/light_all/15/9661/12325.png",
-          "https://a.basemaps.cartocdn.com/light_all/15/9660/12324.png",
-          "https://c.basemaps.cartocdn.com/light_all/15/9662/12324.png",
-          "https://b.basemaps.cartocdn.com/light_all/15/9660/12325.png",
-          "https://d.basemaps.cartocdn.com/light_all/15/9662/12325.png",
-          "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png"
-        ],
-        "bytes": 318225
-      },
-      "list_observed": {
-        "url": "/browse/zoning/?boro=Queens&stage=public_review",
-        "semantic": [
-          "boro=Queens",
-          "stage=public_review"
-        ],
-        "view": null,
-        "controls": [
-          {
-            "view": "list",
-            "pressed": true
-          },
-          {
-            "view": "map",
-            "pressed": false
-          }
-        ],
-        "note": "",
-        "rows": 18,
-        "count": "18 results",
-        "map_state": "absent",
-        "map_markers": 0,
-        "map_summary": "",
-        "map_retry": false,
-        "list_visible": true
-      },
-      "map_activation_ms": 88.0,
-      "map_activation_requests": [
-        {
-          "url": "https://cloudflareinsights.com/cdn-cgi/rum",
-          "resource_type": "xhr",
-          "bytes": 0
-        },
-        {
-          "url": "https://cloudflareinsights.com/cdn-cgi/rum",
-          "resource_type": "ping",
-          "bytes": 0
-        },
-        {
-          "url": "https://l.clarity.ms/collect",
-          "resource_type": "ping",
-          "bytes": 0
-        },
-        {
-          "url": "/data/land_project_map_points.json",
-          "resource_type": "fetch",
-          "bytes": 4822
-        }
-      ],
-      "map_activation_bytes": 4822,
-      "map_observed": {
-        "url": "/browse/zoning/?boro=Queens&stage=public_review&view=map",
-        "semantic": [
-          "boro=Queens",
-          "stage=public_review"
-        ],
-        "view": "map",
-        "controls": [
-          {
-            "view": "list",
-            "pressed": false
-          },
-          {
-            "view": "map",
-            "pressed": true
-          }
-        ],
-        "note": "",
-        "rows": 18,
-        "count": "18 results",
-        "map_state": "ready",
-        "map_markers": 6,
-        "map_summary": "6 of 18 projects are on the map.",
-        "map_retry": false,
-        "list_visible": true
-      }
-    },
-    "warm": {
-      "cache_state": "warm",
-      "route": "/browse/zoning/?boro=Queens&stage=public_review",
-      "list_first_paint_ms": 744.8,
-      "list_requests": [
-        {
-          "url": "/browse/zoning/?boro=Queens&stage=public_review",
-          "resource_type": "document",
-          "bytes": 379084
-        },
-        {
-          "url": "/legacy_hash_forward.mjs",
-          "resource_type": "script",
-          "bytes": 1315
-        },
-        {
-          "url": "https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap",
-          "resource_type": "stylesheet",
-          "bytes": 16527
-        },
-        {
-          "url": "/brand.css",
-          "resource_type": "stylesheet",
-          "bytes": 23229
-        },
-        {
-          "url": "/i18n.js?v=__I18N_ASSET_VERSION__",
-          "resource_type": "script",
-          "bytes": 247473
-        },
-        {
-          "url": "/nl_deeplink.js",
-          "resource_type": "script",
-          "bytes": 18041
-        },
-        {
-          "url": "/location_awareness.js",
-          "resource_type": "script",
-          "bytes": 11602
-        },
-        {
-          "url": "/hearing_location.js",
-          "resource_type": "script",
-          "bytes": 29328
-        },
-        {
-          "url": "/qr_share.js",
-          "resource_type": "script",
-          "bytes": 18410
-        },
-        {
-          "url": "/external_awards.js",
-          "resource_type": "script",
-          "bytes": 9040
-        },
-        {
-          "url": "/staffing.js",
-          "resource_type": "script",
-          "bytes": 18442
-        },
-        {
-          "url": "/action_link_health.js",
-          "resource_type": "script",
-          "bytes": 736
-        },
-        {
-          "url": "/action_registry.js",
-          "resource_type": "script",
-          "bytes": 94600
-        },
-        {
-          "url": "/task_first.js",
-          "resource_type": "script",
-          "bytes": 9860
-        },
-        {
-          "url": "/browse.css",
-          "resource_type": "stylesheet",
-          "bytes": 14305
-        },
-        {
-          "url": "/app/main.mjs",
-          "resource_type": "script",
-          "bytes": 6269
-        },
-        {
-          "url": "/route_migration.mjs",
-          "resource_type": "script",
-          "bytes": 10502
-        },
-        {
-          "url": "/beta_flags.js?v=1.0.0",
-          "resource_type": "script",
-          "bytes": 3958
-        },
-        {
-          "url": "/entity_pivot.mjs",
-          "resource_type": "script",
-          "bytes": 10110
-        },
-        {
-          "url": "/analytical_projection.mjs",
-          "resource_type": "script",
-          "bytes": 22540
-        },
-        {
-          "url": "/browse_surface_contracts.mjs",
-          "resource_type": "script",
-          "bytes": 2241
-        },
-        {
-          "url": "/walk_entry.mjs",
-          "resource_type": "script",
-          "bytes": 8052
-        },
-        {
-          "url": "/agency_identity.mjs",
-          "resource_type": "script",
-          "bytes": 16539
-        },
-        {
-          "url": "/text_clean.mjs",
-          "resource_type": "script",
-          "bytes": 3738
-        },
-        {
-          "url": "/bbl_reader.mjs",
-          "resource_type": "script",
-          "bytes": 695
-        },
-        {
-          "url": "/affordance_grammar.mjs",
-          "resource_type": "script",
-          "bytes": 15048
-        },
-        {
-          "url": "/vendor_stem.mjs",
-          "resource_type": "script",
-          "bytes": 672
-        },
-        {
-          "url": "/analytical_projection_contract.mjs",
-          "resource_type": "script",
-          "bytes": 13498
-        },
-        {
-          "url": "/analytics.js?v=1.3.0",
-          "resource_type": "script",
-          "bytes": 7274
-        },
-        {
-          "url": "/clarity.js?v=1.0.0",
-          "resource_type": "script",
-          "bytes": 4866
-        },
-        {
-          "url": "https://static.cloudflareinsights.com/beacon.min.js",
-          "resource_type": "script",
-          "bytes": 30294
-        },
-        {
-          "url": "/app/place-context.mjs",
-          "resource_type": "script",
-          "bytes": 6410
-        },
-        {
-          "url": "/app/traversal.mjs",
-          "resource_type": "script",
-          "bytes": 5905
-        },
-        {
-          "url": "/beta-flags.json",
-          "resource_type": "fetch",
-          "bytes": 435
-        },
-        {
-          "url": "https://api.cityscroll.org/events",
-          "resource_type": "ping",
-          "bytes": 2
-        },
-        {
-          "url": "https://www.clarity.ms/tag/xusuca7gsv",
-          "resource_type": "script",
-          "bytes": 586
-        },
-        {
-          "url": "/app/core.mjs",
-          "resource_type": "script",
-          "bytes": 27532
-        },
-        {
-          "url": "https://fonts.gstatic.com/s/spacegrotesk/v22/V8mDoQDjQSkFtoMM3T6r8E7mPbF4C_k3HqU.woff2",
-          "resource_type": "font",
-          "bytes": 22320
-        },
-        {
-          "url": "https://fonts.gstatic.com/s/notosans/v42/o-0bIpQlx3QUlC5A4PNB6Ryti20_6n1iPHjc5a7du3mhPy0.woff2",
-          "resource_type": "font",
-          "bytes": 35856
-        },
-        {
-          "url": "/place_context.mjs",
-          "resource_type": "script",
-          "bytes": 7185
-        },
-        {
-          "url": "/scope_v0.mjs",
-          "resource_type": "script",
-          "bytes": 33025
-        },
-        {
-          "url": "/traversal_path.mjs",
-          "resource_type": "script",
-          "bytes": 12515
-        },
-        {
-          "url": "/city_record_id.mjs",
-          "resource_type": "script",
-          "bytes": 390
         },
         {
           "url": "https://scripts.clarity.ms/0.8.69/clarity.js",
@@ -1408,386 +692,6 @@
           "bytes": 74499
         },
         {
-          "url": "/procurement_process_state_vocabulary.mjs",
-          "resource_type": "script",
-          "bytes": 2951
-        },
-        {
-          "url": "/land_view_state.mjs",
-          "resource_type": "script",
-          "bytes": 8198
-        },
-        {
-          "url": "/edge_summary.mjs",
-          "resource_type": "script",
-          "bytes": 27723
-        },
-        {
-          "url": "/cross_spine_confidence.mjs",
-          "resource_type": "script",
-          "bytes": 574
-        },
-        {
-          "url": "/provenance_disclosure.mjs",
-          "resource_type": "script",
-          "bytes": 4020
-        },
-        {
-          "url": "/reader_surface_labels.mjs",
-          "resource_type": "script",
-          "bytes": 2393
-        },
-        {
-          "url": "/report_issue.mjs",
-          "resource_type": "script",
-          "bytes": 48219
-        },
-        {
-          "url": "/traversal.css",
-          "resource_type": "stylesheet",
-          "bytes": 1673
-        },
-        {
-          "url": "/report_target.mjs",
-          "resource_type": "script",
-          "bytes": 19750
-        },
-        {
-          "url": "/land_regulatory_effect.mjs",
-          "resource_type": "script",
-          "bytes": 12855
-        },
-        {
-          "url": "/land_use_action_codes.mjs",
-          "resource_type": "script",
-          "bytes": 1088
-        },
-        {
-          "url": "/agency_connections.mjs",
-          "resource_type": "script",
-          "bytes": 6557
-        },
-        {
-          "url": "/app/contracts-rum.mjs",
-          "resource_type": "script",
-          "bytes": 870
-        },
-        {
-          "url": "/contracts_rum.mjs",
-          "resource_type": "script",
-          "bytes": 3589
-        },
-        {
-          "url": "/rum_static_record_instrumentation.mjs",
-          "resource_type": "script",
-          "bytes": 3826
-        },
-        {
-          "url": "/rum_semantic_milestones.mjs",
-          "resource_type": "script",
-          "bytes": 10835
-        },
-        {
-          "url": "/rum_production.mjs",
-          "resource_type": "script",
-          "bytes": 7356
-        },
-        {
-          "url": "https://cloudflareinsights.com/cdn-cgi/rum",
-          "resource_type": "xhr",
-          "bytes": 0
-        },
-        {
-          "url": "/app/money-list.mjs",
-          "resource_type": "script",
-          "bytes": 98636
-        },
-        {
-          "url": "/display_title.mjs",
-          "resource_type": "script",
-          "bytes": 2524
-        },
-        {
-          "url": "/money_scope_consistency.mjs",
-          "resource_type": "script",
-          "bytes": 333
-        },
-        {
-          "url": "/money_scope_links.mjs",
-          "resource_type": "script",
-          "bytes": 3295
-        },
-        {
-          "url": "/list_entity_pivots.mjs",
-          "resource_type": "script",
-          "bytes": 1256
-        },
-        {
-          "url": "/solicitation_response_context.mjs",
-          "resource_type": "script",
-          "bytes": 691
-        },
-        {
-          "url": "/resident_snapshot_queries.mjs",
-          "resource_type": "script",
-          "bytes": 16537
-        },
-        {
-          "url": "/contract_search_bridge.mjs",
-          "resource_type": "script",
-          "bytes": 16355
-        },
-        {
-          "url": "/procurement_coverage_labels.mjs",
-          "resource_type": "script",
-          "bytes": 14751
-        },
-        {
-          "url": "/contracts_analysis_projection.mjs",
-          "resource_type": "script",
-          "bytes": 8798
-        },
-        {
-          "url": "/analytical_payment_projection.mjs",
-          "resource_type": "script",
-          "bytes": 7549
-        },
-        {
-          "url": "/analytical_performance_evidence.mjs",
-          "resource_type": "script",
-          "bytes": 11842
-        },
-        {
-          "url": "/action_location_keys.mjs",
-          "resource_type": "script",
-          "bytes": 433
-        },
-        {
-          "url": "/council_district_lookup.mjs",
-          "resource_type": "script",
-          "bytes": 14100
-        },
-        {
-          "url": "/capabilities/federated_search.mjs",
-          "resource_type": "script",
-          "bytes": 18787
-        },
-        {
-          "url": "/federated_search_client.mjs",
-          "resource_type": "script",
-          "bytes": 2930
-        },
-        {
-          "url": "/search_document_contract.mjs",
-          "resource_type": "script",
-          "bytes": 8702
-        },
-        {
-          "url": "/land_status_facets.mjs",
-          "resource_type": "script",
-          "bytes": 15976
-        },
-        {
-          "url": "/land_procedure_facet.mjs",
-          "resource_type": "script",
-          "bytes": 5327
-        },
-        {
-          "url": "/capabilities/contracts_analysis.mjs",
-          "resource_type": "script",
-          "bytes": 12007
-        },
-        {
-          "url": "/civic_geography.mjs",
-          "resource_type": "script",
-          "bytes": 8132
-        },
-        {
-          "url": "/civic_geography_registry.mjs",
-          "resource_type": "script",
-          "bytes": 9023
-        },
-        {
-          "url": "/land_phase_spine.mjs",
-          "resource_type": "script",
-          "bytes": 27113
-        },
-        {
-          "url": "/land_use_action_type.mjs",
-          "resource_type": "script",
-          "bytes": 4447
-        },
-        {
-          "url": "/land_action_procedure_resolution.mjs",
-          "resource_type": "script",
-          "bytes": 13930
-        },
-        {
-          "url": "/land_affected_review_body.mjs",
-          "resource_type": "script",
-          "bytes": 13761
-        },
-        {
-          "url": "/land_procedure_profiles.mjs",
-          "resource_type": "script",
-          "bytes": 11435
-        },
-        {
-          "url": "/community_board_links.mjs",
-          "resource_type": "script",
-          "bytes": 4752
-        },
-        {
-          "url": "/borough_board_identity.mjs",
-          "resource_type": "script",
-          "bytes": 1882
-        },
-        {
-          "url": "/ulurp_tokens.mjs",
-          "resource_type": "script",
-          "bytes": 3873
-        },
-        {
-          "url": "/data/land_procedure_profiles.json",
-          "resource_type": "script",
-          "bytes": 25893
-        },
-        {
-          "url": "/app/search-share.mjs",
-          "resource_type": "script",
-          "bytes": 83520
-        },
-        {
-          "url": "/ask_cited_synthesis.mjs",
-          "resource_type": "script",
-          "bytes": 5627
-        },
-        {
-          "url": "/interpret_preview.mjs",
-          "resource_type": "script",
-          "bytes": 2155
-        },
-        {
-          "url": "/universal_search_relevance_ux.mjs",
-          "resource_type": "script",
-          "bytes": 11797
-        },
-        {
-          "url": "/search_lens_handoff.mjs",
-          "resource_type": "script",
-          "bytes": 14939
-        },
-        {
-          "url": "/calendar_subscription.mjs",
-          "resource_type": "script",
-          "bytes": 9619
-        },
-        {
-          "url": "/watch_family_capabilities.mjs",
-          "resource_type": "script",
-          "bytes": 4879
-        },
-        {
-          "url": "/zoning_hearing_calendar.mjs",
-          "resource_type": "script",
-          "bytes": 9731
-        },
-        {
-          "url": "/calendar_occurrence.mjs",
-          "resource_type": "script",
-          "bytes": 24695
-        },
-        {
-          "url": "/app/exams.mjs",
-          "resource_type": "script",
-          "bytes": 62829
-        },
-        {
-          "url": "/exam_detail_facets.mjs",
-          "resource_type": "script",
-          "bytes": 5427
-        },
-        {
-          "url": "/staffing_agency_scope.mjs",
-          "resource_type": "script",
-          "bytes": 3708
-        },
-        {
-          "url": "/incremental_list.mjs",
-          "resource_type": "script",
-          "bytes": 2319
-        },
-        {
-          "url": "/exam_reader_copy.mjs",
-          "resource_type": "script",
-          "bytes": 14088
-        },
-        {
-          "url": "/browse_scoped_adapters.mjs",
-          "resource_type": "script",
-          "bytes": 11415
-        },
-        {
-          "url": "/app/staffing.mjs",
-          "resource_type": "script",
-          "bytes": 19636
-        },
-        {
-          "url": "/app/land.mjs",
-          "resource_type": "script",
-          "bytes": 93691
-        },
-        {
-          "url": "/borough_scope_links.mjs",
-          "resource_type": "script",
-          "bytes": 6417
-        },
-        {
-          "url": "/attendance_scope_links.mjs",
-          "resource_type": "script",
-          "bytes": 3945
-        },
-        {
-          "url": "/precomputed_address_geocoder.mjs",
-          "resource_type": "script",
-          "bytes": 7537
-        },
-        {
-          "url": "/json_prefer_worker.mjs",
-          "resource_type": "script",
-          "bytes": 632
-        },
-        {
-          "url": "/land_detail_coherence.mjs",
-          "resource_type": "script",
-          "bytes": 14850
-        },
-        {
-          "url": "/rum_maps_entities_async_instrumentation.mjs",
-          "resource_type": "script",
-          "bytes": 6481
-        },
-        {
-          "url": "/zap_action_labels.mjs",
-          "resource_type": "script",
-          "bytes": 1744
-        },
-        {
-          "url": "/project_calendar.mjs",
-          "resource_type": "script",
-          "bytes": 9535
-        },
-        {
-          "url": "/land_authority_summary_view.mjs",
-          "resource_type": "script",
-          "bytes": 18393
-        },
-        {
-          "url": "/land_lot_source_digests.mjs",
-          "resource_type": "script",
-          "bytes": 946
-        },
-        {
           "url": "/near_you_scope.mjs",
           "resource_type": "script",
           "bytes": 281
@@ -1801,11 +705,6 @@
           "url": "/later_housing_activity_view.mjs",
           "resource_type": "script",
           "bytes": 3961
-        },
-        {
-          "url": "/app/feed_scoped_keyword.mjs",
-          "resource_type": "script",
-          "bytes": 3969
         },
         {
           "url": "/app/feed-actions.mjs",
@@ -1863,14 +762,19 @@
           "bytes": 10775
         },
         {
-          "url": "/capabilities/meetings.mjs",
+          "url": "/feed_scoped_keyword.mjs",
           "resource_type": "script",
-          "bytes": 8180
+          "bytes": 3968
         },
         {
           "url": "/meeting_object_contract.mjs",
           "resource_type": "script",
           "bytes": 11396
+        },
+        {
+          "url": "/capabilities/meetings.mjs",
+          "resource_type": "script",
+          "bytes": 8180
         },
         {
           "url": "/action_registry.js",
@@ -1943,11 +847,6 @@
           "bytes": 20151
         },
         {
-          "url": "https://l.clarity.ms/collect",
-          "resource_type": "xhr",
-          "bytes": 0
-        },
-        {
           "url": "/app/now.mjs",
           "resource_type": "script",
           "bytes": 288
@@ -1955,7 +854,7 @@
         {
           "url": "/app/routing.mjs",
           "resource_type": "script",
-          "bytes": 98491
+          "bytes": 96647
         },
         {
           "url": "/notice_permalink.mjs",
@@ -1981,6 +880,11 @@
           "url": "/community_board_watch.mjs",
           "resource_type": "script",
           "bytes": 2506
+        },
+        {
+          "url": "/land_filter_parity.mjs",
+          "resource_type": "script",
+          "bytes": 21783
         },
         {
           "url": "/land_view_switch.mjs",
@@ -2120,7 +1024,7 @@
         {
           "url": "/app/map_runtime.mjs",
           "resource_type": "script",
-          "bytes": 41115
+          "bytes": 41505
         },
         {
           "url": "/data/property_domain_observations.json",
@@ -2183,10 +1087,10 @@
           "bytes": 0
         }
       ],
-      "list_bytes": 13391240,
+      "list_bytes": 13412673,
       "list_first_paint_ordering": {
-        "first_row_at_ms": 310,
-        "resources_before_first_row": 183,
+        "first_row_at_ms": 305,
+        "resources_before_first_row": 182,
         "map_dependencies_before_first_row": [],
         "blocking_map_dependencies_before_first_row": []
       },
@@ -2232,7 +1136,7 @@
         "map_retry": false,
         "list_visible": true
       },
-      "map_activation_ms": 82.8,
+      "map_activation_ms": 73.9,
       "map_activation_requests": [
         {
           "url": "https://cloudflareinsights.com/cdn-cgi/rum",
@@ -2245,7 +1149,1153 @@
           "bytes": 0
         },
         {
-          "url": "https://l.clarity.ms/collect",
+          "url": "https://f.clarity.ms/collect",
+          "resource_type": "ping",
+          "bytes": 0
+        },
+        {
+          "url": "/data/land_project_map_points.json",
+          "resource_type": "fetch",
+          "bytes": 4822
+        }
+      ],
+      "map_activation_bytes": 4822,
+      "map_observed": {
+        "url": "/browse/zoning/?boro=Queens&stage=public_review&view=map",
+        "semantic": [
+          "boro=Queens",
+          "stage=public_review"
+        ],
+        "view": "map",
+        "controls": [
+          {
+            "view": "list",
+            "pressed": false
+          },
+          {
+            "view": "map",
+            "pressed": true
+          }
+        ],
+        "note": "",
+        "rows": 18,
+        "count": "18 results",
+        "map_state": "ready",
+        "map_markers": 6,
+        "map_summary": "6 of 18 projects are on the map.",
+        "map_retry": false,
+        "list_visible": true
+      }
+    },
+    "warm": {
+      "cache_state": "warm",
+      "route": "/browse/zoning/?boro=Queens&stage=public_review",
+      "list_first_paint_ms": 799.1,
+      "list_requests": [
+        {
+          "url": "/browse/zoning/?boro=Queens&stage=public_review",
+          "resource_type": "document",
+          "bytes": 379084
+        },
+        {
+          "url": "/legacy_hash_forward.mjs",
+          "resource_type": "script",
+          "bytes": 1315
+        },
+        {
+          "url": "https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap",
+          "resource_type": "stylesheet",
+          "bytes": 16527
+        },
+        {
+          "url": "/brand.css",
+          "resource_type": "stylesheet",
+          "bytes": 23229
+        },
+        {
+          "url": "/i18n.js?v=__I18N_ASSET_VERSION__",
+          "resource_type": "script",
+          "bytes": 248015
+        },
+        {
+          "url": "/nl_deeplink.js",
+          "resource_type": "script",
+          "bytes": 18041
+        },
+        {
+          "url": "/location_awareness.js",
+          "resource_type": "script",
+          "bytes": 11602
+        },
+        {
+          "url": "/hearing_location.js",
+          "resource_type": "script",
+          "bytes": 29328
+        },
+        {
+          "url": "/qr_share.js",
+          "resource_type": "script",
+          "bytes": 18410
+        },
+        {
+          "url": "/external_awards.js",
+          "resource_type": "script",
+          "bytes": 9040
+        },
+        {
+          "url": "/staffing.js",
+          "resource_type": "script",
+          "bytes": 18442
+        },
+        {
+          "url": "/action_link_health.js",
+          "resource_type": "script",
+          "bytes": 736
+        },
+        {
+          "url": "/action_registry.js",
+          "resource_type": "script",
+          "bytes": 94600
+        },
+        {
+          "url": "/task_first.js",
+          "resource_type": "script",
+          "bytes": 9860
+        },
+        {
+          "url": "/browse.css",
+          "resource_type": "stylesheet",
+          "bytes": 14305
+        },
+        {
+          "url": "/app/main.mjs",
+          "resource_type": "script",
+          "bytes": 6226
+        },
+        {
+          "url": "/route_migration.mjs",
+          "resource_type": "script",
+          "bytes": 10502
+        },
+        {
+          "url": "/beta_flags.js?v=1.0.0",
+          "resource_type": "script",
+          "bytes": 3958
+        },
+        {
+          "url": "/entity_pivot.mjs",
+          "resource_type": "script",
+          "bytes": 10110
+        },
+        {
+          "url": "/analytical_projection.mjs",
+          "resource_type": "script",
+          "bytes": 22540
+        },
+        {
+          "url": "/browse_surface_contracts.mjs",
+          "resource_type": "script",
+          "bytes": 2241
+        },
+        {
+          "url": "/walk_entry.mjs",
+          "resource_type": "script",
+          "bytes": 8052
+        },
+        {
+          "url": "/agency_identity.mjs",
+          "resource_type": "script",
+          "bytes": 16539
+        },
+        {
+          "url": "/text_clean.mjs",
+          "resource_type": "script",
+          "bytes": 3738
+        },
+        {
+          "url": "/bbl_reader.mjs",
+          "resource_type": "script",
+          "bytes": 695
+        },
+        {
+          "url": "/affordance_grammar.mjs",
+          "resource_type": "script",
+          "bytes": 15048
+        },
+        {
+          "url": "/vendor_stem.mjs",
+          "resource_type": "script",
+          "bytes": 672
+        },
+        {
+          "url": "/analytical_projection_contract.mjs",
+          "resource_type": "script",
+          "bytes": 13498
+        },
+        {
+          "url": "/analytics.js?v=1.3.0",
+          "resource_type": "script",
+          "bytes": 7274
+        },
+        {
+          "url": "/clarity.js?v=1.0.0",
+          "resource_type": "script",
+          "bytes": 4866
+        },
+        {
+          "url": "https://static.cloudflareinsights.com/beacon.min.js",
+          "resource_type": "script",
+          "bytes": 30294
+        },
+        {
+          "url": "https://fonts.gstatic.com/s/spacegrotesk/v22/V8mDoQDjQSkFtoMM3T6r8E7mPbF4C_k3HqU.woff2",
+          "resource_type": "font",
+          "bytes": 22320
+        },
+        {
+          "url": "https://fonts.gstatic.com/s/notosans/v42/o-0bIpQlx3QUlC5A4PNB6Ryti20_6n1iPHjc5a7du3mhPy0.woff2",
+          "resource_type": "font",
+          "bytes": 35856
+        },
+        {
+          "url": "/app/place-context.mjs",
+          "resource_type": "script",
+          "bytes": 6410
+        },
+        {
+          "url": "/app/traversal.mjs",
+          "resource_type": "script",
+          "bytes": 5905
+        },
+        {
+          "url": "/beta-flags.json",
+          "resource_type": "fetch",
+          "bytes": 435
+        },
+        {
+          "url": "https://api.cityscroll.org/events",
+          "resource_type": "ping",
+          "bytes": 2
+        },
+        {
+          "url": "https://www.clarity.ms/tag/xusuca7gsv",
+          "resource_type": "script",
+          "bytes": 586
+        },
+        {
+          "url": "/app/core.mjs",
+          "resource_type": "script",
+          "bytes": 27532
+        },
+        {
+          "url": "/place_context.mjs",
+          "resource_type": "script",
+          "bytes": 7185
+        },
+        {
+          "url": "/scope_v0.mjs",
+          "resource_type": "script",
+          "bytes": 33025
+        },
+        {
+          "url": "/traversal_path.mjs",
+          "resource_type": "script",
+          "bytes": 12515
+        },
+        {
+          "url": "/city_record_id.mjs",
+          "resource_type": "script",
+          "bytes": 390
+        },
+        {
+          "url": "/edge_summary.mjs",
+          "resource_type": "script",
+          "bytes": 27723
+        },
+        {
+          "url": "/procurement_process_state_vocabulary.mjs",
+          "resource_type": "script",
+          "bytes": 2951
+        },
+        {
+          "url": "/land_view_state.mjs",
+          "resource_type": "script",
+          "bytes": 8198
+        },
+        {
+          "url": "/cross_spine_confidence.mjs",
+          "resource_type": "script",
+          "bytes": 574
+        },
+        {
+          "url": "/provenance_disclosure.mjs",
+          "resource_type": "script",
+          "bytes": 4020
+        },
+        {
+          "url": "/reader_surface_labels.mjs",
+          "resource_type": "script",
+          "bytes": 2393
+        },
+        {
+          "url": "/report_issue.mjs",
+          "resource_type": "script",
+          "bytes": 48219
+        },
+        {
+          "url": "/traversal.css",
+          "resource_type": "stylesheet",
+          "bytes": 1673
+        },
+        {
+          "url": "/report_target.mjs",
+          "resource_type": "script",
+          "bytes": 19750
+        },
+        {
+          "url": "/land_regulatory_effect.mjs",
+          "resource_type": "script",
+          "bytes": 12855
+        },
+        {
+          "url": "/land_use_action_codes.mjs",
+          "resource_type": "script",
+          "bytes": 1088
+        },
+        {
+          "url": "/agency_connections.mjs",
+          "resource_type": "script",
+          "bytes": 6557
+        },
+        {
+          "url": "https://scripts.clarity.ms/0.8.69/clarity.js",
+          "resource_type": "script",
+          "bytes": 74499
+        },
+        {
+          "url": "/app/contracts-rum.mjs",
+          "resource_type": "script",
+          "bytes": 870
+        },
+        {
+          "url": "/contracts_rum.mjs",
+          "resource_type": "script",
+          "bytes": 3589
+        },
+        {
+          "url": "/rum_static_record_instrumentation.mjs",
+          "resource_type": "script",
+          "bytes": 3826
+        },
+        {
+          "url": "/rum_semantic_milestones.mjs",
+          "resource_type": "script",
+          "bytes": 10835
+        },
+        {
+          "url": "/rum_production.mjs",
+          "resource_type": "script",
+          "bytes": 7356
+        },
+        {
+          "url": "/app/money-list.mjs",
+          "resource_type": "script",
+          "bytes": 98636
+        },
+        {
+          "url": "/display_title.mjs",
+          "resource_type": "script",
+          "bytes": 2524
+        },
+        {
+          "url": "/money_scope_consistency.mjs",
+          "resource_type": "script",
+          "bytes": 333
+        },
+        {
+          "url": "/money_scope_links.mjs",
+          "resource_type": "script",
+          "bytes": 3295
+        },
+        {
+          "url": "/list_entity_pivots.mjs",
+          "resource_type": "script",
+          "bytes": 1256
+        },
+        {
+          "url": "/solicitation_response_context.mjs",
+          "resource_type": "script",
+          "bytes": 691
+        },
+        {
+          "url": "/resident_snapshot_queries.mjs",
+          "resource_type": "script",
+          "bytes": 16537
+        },
+        {
+          "url": "/contract_search_bridge.mjs",
+          "resource_type": "script",
+          "bytes": 16355
+        },
+        {
+          "url": "/procurement_coverage_labels.mjs",
+          "resource_type": "script",
+          "bytes": 14751
+        },
+        {
+          "url": "/contracts_analysis_projection.mjs",
+          "resource_type": "script",
+          "bytes": 8798
+        },
+        {
+          "url": "/analytical_payment_projection.mjs",
+          "resource_type": "script",
+          "bytes": 7549
+        },
+        {
+          "url": "/analytical_performance_evidence.mjs",
+          "resource_type": "script",
+          "bytes": 11842
+        },
+        {
+          "url": "/action_location_keys.mjs",
+          "resource_type": "script",
+          "bytes": 433
+        },
+        {
+          "url": "/council_district_lookup.mjs",
+          "resource_type": "script",
+          "bytes": 14100
+        },
+        {
+          "url": "/capabilities/federated_search.mjs",
+          "resource_type": "script",
+          "bytes": 18787
+        },
+        {
+          "url": "/federated_search_client.mjs",
+          "resource_type": "script",
+          "bytes": 2930
+        },
+        {
+          "url": "/search_document_contract.mjs",
+          "resource_type": "script",
+          "bytes": 8702
+        },
+        {
+          "url": "/land_status_facets.mjs",
+          "resource_type": "script",
+          "bytes": 15976
+        },
+        {
+          "url": "/land_procedure_facet.mjs",
+          "resource_type": "script",
+          "bytes": 5327
+        },
+        {
+          "url": "/capabilities/contracts_analysis.mjs",
+          "resource_type": "script",
+          "bytes": 12007
+        },
+        {
+          "url": "/civic_geography.mjs",
+          "resource_type": "script",
+          "bytes": 8132
+        },
+        {
+          "url": "/civic_geography_registry.mjs",
+          "resource_type": "script",
+          "bytes": 9023
+        },
+        {
+          "url": "/land_phase_spine.mjs",
+          "resource_type": "script",
+          "bytes": 27113
+        },
+        {
+          "url": "/land_use_action_type.mjs",
+          "resource_type": "script",
+          "bytes": 4447
+        },
+        {
+          "url": "/land_action_procedure_resolution.mjs",
+          "resource_type": "script",
+          "bytes": 13930
+        },
+        {
+          "url": "/land_affected_review_body.mjs",
+          "resource_type": "script",
+          "bytes": 13761
+        },
+        {
+          "url": "/land_procedure_profiles.mjs",
+          "resource_type": "script",
+          "bytes": 11435
+        },
+        {
+          "url": "/community_board_links.mjs",
+          "resource_type": "script",
+          "bytes": 4752
+        },
+        {
+          "url": "/borough_board_identity.mjs",
+          "resource_type": "script",
+          "bytes": 1882
+        },
+        {
+          "url": "/ulurp_tokens.mjs",
+          "resource_type": "script",
+          "bytes": 3873
+        },
+        {
+          "url": "/data/land_procedure_profiles.json",
+          "resource_type": "script",
+          "bytes": 25893
+        },
+        {
+          "url": "/app/search-share.mjs",
+          "resource_type": "script",
+          "bytes": 83520
+        },
+        {
+          "url": "/ask_cited_synthesis.mjs",
+          "resource_type": "script",
+          "bytes": 5627
+        },
+        {
+          "url": "/interpret_preview.mjs",
+          "resource_type": "script",
+          "bytes": 2155
+        },
+        {
+          "url": "/universal_search_relevance_ux.mjs",
+          "resource_type": "script",
+          "bytes": 11797
+        },
+        {
+          "url": "/search_lens_handoff.mjs",
+          "resource_type": "script",
+          "bytes": 14939
+        },
+        {
+          "url": "/calendar_subscription.mjs",
+          "resource_type": "script",
+          "bytes": 9619
+        },
+        {
+          "url": "/watch_family_capabilities.mjs",
+          "resource_type": "script",
+          "bytes": 4879
+        },
+        {
+          "url": "/zoning_hearing_calendar.mjs",
+          "resource_type": "script",
+          "bytes": 9731
+        },
+        {
+          "url": "https://cloudflareinsights.com/cdn-cgi/rum",
+          "resource_type": "xhr",
+          "bytes": 0
+        },
+        {
+          "url": "/calendar_occurrence.mjs",
+          "resource_type": "script",
+          "bytes": 24695
+        },
+        {
+          "url": "/app/exams.mjs",
+          "resource_type": "script",
+          "bytes": 62829
+        },
+        {
+          "url": "/exam_detail_facets.mjs",
+          "resource_type": "script",
+          "bytes": 5427
+        },
+        {
+          "url": "/staffing_agency_scope.mjs",
+          "resource_type": "script",
+          "bytes": 3708
+        },
+        {
+          "url": "/incremental_list.mjs",
+          "resource_type": "script",
+          "bytes": 2319
+        },
+        {
+          "url": "/exam_reader_copy.mjs",
+          "resource_type": "script",
+          "bytes": 14088
+        },
+        {
+          "url": "/browse_scoped_adapters.mjs",
+          "resource_type": "script",
+          "bytes": 11415
+        },
+        {
+          "url": "/app/staffing.mjs",
+          "resource_type": "script",
+          "bytes": 19636
+        },
+        {
+          "url": "/app/land.mjs",
+          "resource_type": "script",
+          "bytes": 94114
+        },
+        {
+          "url": "/borough_scope_links.mjs",
+          "resource_type": "script",
+          "bytes": 6417
+        },
+        {
+          "url": "/attendance_scope_links.mjs",
+          "resource_type": "script",
+          "bytes": 3945
+        },
+        {
+          "url": "/precomputed_address_geocoder.mjs",
+          "resource_type": "script",
+          "bytes": 7537
+        },
+        {
+          "url": "/json_prefer_worker.mjs",
+          "resource_type": "script",
+          "bytes": 632
+        },
+        {
+          "url": "/land_detail_coherence.mjs",
+          "resource_type": "script",
+          "bytes": 14850
+        },
+        {
+          "url": "/rum_maps_entities_async_instrumentation.mjs",
+          "resource_type": "script",
+          "bytes": 6481
+        },
+        {
+          "url": "/zap_action_labels.mjs",
+          "resource_type": "script",
+          "bytes": 1744
+        },
+        {
+          "url": "/project_calendar.mjs",
+          "resource_type": "script",
+          "bytes": 9535
+        },
+        {
+          "url": "/land_authority_summary_view.mjs",
+          "resource_type": "script",
+          "bytes": 18393
+        },
+        {
+          "url": "/land_lot_source_digests.mjs",
+          "resource_type": "script",
+          "bytes": 946
+        },
+        {
+          "url": "/near_you_scope.mjs",
+          "resource_type": "script",
+          "bytes": 281
+        },
+        {
+          "url": "/e_designation_digest_view.mjs",
+          "resource_type": "script",
+          "bytes": 2202
+        },
+        {
+          "url": "/later_housing_activity_view.mjs",
+          "resource_type": "script",
+          "bytes": 3961
+        },
+        {
+          "url": "/app/feed-actions.mjs",
+          "resource_type": "script",
+          "bytes": 99999
+        },
+        {
+          "url": "/franchise_notice.mjs",
+          "resource_type": "script",
+          "bytes": 2148
+        },
+        {
+          "url": "/agency_scope_links.mjs",
+          "resource_type": "script",
+          "bytes": 3982
+        },
+        {
+          "url": "/cardinality_adaptive_facets.mjs",
+          "resource_type": "script",
+          "bytes": 5686
+        },
+        {
+          "url": "/meeting_origin.mjs",
+          "resource_type": "script",
+          "bytes": 2019
+        },
+        {
+          "url": "/meeting_capability_projection.mjs",
+          "resource_type": "script",
+          "bytes": 2702
+        },
+        {
+          "url": "/meetings_card_interaction.mjs",
+          "resource_type": "script",
+          "bytes": 1767
+        },
+        {
+          "url": "/council_hearing_matter_continuation.mjs",
+          "resource_type": "script",
+          "bytes": 6270
+        },
+        {
+          "url": "/action_path_v0.mjs",
+          "resource_type": "script",
+          "bytes": 14247
+        },
+        {
+          "url": "/council_hearing_action_path.mjs",
+          "resource_type": "script",
+          "bytes": 2601
+        },
+        {
+          "url": "/community_board_search.mjs",
+          "resource_type": "script",
+          "bytes": 10775
+        },
+        {
+          "url": "/feed_scoped_keyword.mjs",
+          "resource_type": "script",
+          "bytes": 3968
+        },
+        {
+          "url": "/capabilities/meetings.mjs",
+          "resource_type": "script",
+          "bytes": 8180
+        },
+        {
+          "url": "/meeting_object_contract.mjs",
+          "resource_type": "script",
+          "bytes": 11396
+        },
+        {
+          "url": "/action_registry.js",
+          "resource_type": "script",
+          "bytes": 94600
+        },
+        {
+          "url": "/meeting_process_profile.mjs",
+          "resource_type": "script",
+          "bytes": 7996
+        },
+        {
+          "url": "/app/result-match.mjs",
+          "resource_type": "script",
+          "bytes": 10095
+        },
+        {
+          "url": "/app/procurement-lifecycle.mjs",
+          "resource_type": "script",
+          "bytes": 33875
+        },
+        {
+          "url": "/app/procurement-phase.mjs",
+          "resource_type": "script",
+          "bytes": 29098
+        },
+        {
+          "url": "/sub_outreach.mjs",
+          "resource_type": "script",
+          "bytes": 10333
+        },
+        {
+          "url": "/app/subsidy.mjs",
+          "resource_type": "script",
+          "bytes": 22816
+        },
+        {
+          "url": "/app/meetings.mjs",
+          "resource_type": "script",
+          "bytes": 32532
+        },
+        {
+          "url": "/app/entities.mjs",
+          "resource_type": "script",
+          "bytes": 68496
+        },
+        {
+          "url": "/official_profile_navigation.mjs",
+          "resource_type": "script",
+          "bytes": 1822
+        },
+        {
+          "url": "/app/entity_identity_report.mjs",
+          "resource_type": "script",
+          "bytes": 2572
+        },
+        {
+          "url": "/app/workspace.mjs",
+          "resource_type": "script",
+          "bytes": 45758
+        },
+        {
+          "url": "/investigation_comparative_signal.mjs",
+          "resource_type": "script",
+          "bytes": 9835
+        },
+        {
+          "url": "/research_package.mjs",
+          "resource_type": "script",
+          "bytes": 20151
+        },
+        {
+          "url": "/app/now.mjs",
+          "resource_type": "script",
+          "bytes": 288
+        },
+        {
+          "url": "/app/routing.mjs",
+          "resource_type": "script",
+          "bytes": 96647
+        },
+        {
+          "url": "/notice_permalink.mjs",
+          "resource_type": "script",
+          "bytes": 662
+        },
+        {
+          "url": "/land_project_route.mjs",
+          "resource_type": "script",
+          "bytes": 502
+        },
+        {
+          "url": "/agency_scope_route.mjs",
+          "resource_type": "script",
+          "bytes": 1279
+        },
+        {
+          "url": "/civic_time_ledger.mjs",
+          "resource_type": "script",
+          "bytes": 37935
+        },
+        {
+          "url": "/community_board_watch.mjs",
+          "resource_type": "script",
+          "bytes": 2506
+        },
+        {
+          "url": "/land_filter_parity.mjs",
+          "resource_type": "script",
+          "bytes": 21783
+        },
+        {
+          "url": "/land_view_switch.mjs",
+          "resource_type": "script",
+          "bytes": 5446
+        },
+        {
+          "url": "/derived_feature_rollup.mjs",
+          "resource_type": "script",
+          "bytes": 11614
+        },
+        {
+          "url": "/app/boot.mjs",
+          "resource_type": "script",
+          "bytes": 42316
+        },
+        {
+          "url": "https://api.cityscroll.org/suggestions",
+          "resource_type": "fetch",
+          "bytes": 2
+        },
+        {
+          "url": "/data/money_procurement_agencies.json",
+          "resource_type": "fetch",
+          "bytes": 4103
+        },
+        {
+          "url": "/alerts_context_carry.mjs",
+          "resource_type": "script",
+          "bytes": 15362
+        },
+        {
+          "url": "https://api.cityscroll.org/session",
+          "resource_type": "fetch",
+          "bytes": 2
+        },
+        {
+          "url": "/following_view.mjs",
+          "resource_type": "script",
+          "bytes": 56416
+        },
+        {
+          "url": "/home_following_entry.mjs",
+          "resource_type": "script",
+          "bytes": 4332
+        },
+        {
+          "url": "https://f.clarity.ms/collect",
+          "resource_type": "xhr",
+          "bytes": 0
+        },
+        {
+          "url": "/data/land_default_ulurp.json",
+          "resource_type": "fetch",
+          "bytes": 249323
+        },
+        {
+          "url": "/data/land_authority_summary.json",
+          "resource_type": "fetch",
+          "bytes": 114468
+        },
+        {
+          "url": "/data/e_designation_project_digest.json",
+          "resource_type": "fetch",
+          "bytes": 223515
+        },
+        {
+          "url": "/data/later_housing_activity.json",
+          "resource_type": "fetch",
+          "bytes": 12892
+        },
+        {
+          "url": "https://api.cityscroll.org/zap-projects-lookup",
+          "resource_type": "fetch",
+          "bytes": 2
+        },
+        {
+          "url": "https://api.cityscroll.org/land-upcoming-hearings",
+          "resource_type": "fetch",
+          "bytes": 2
+        },
+        {
+          "url": "/following_preview_handoff.mjs",
+          "resource_type": "script",
+          "bytes": 7641
+        },
+        {
+          "url": "/watch_templates.mjs",
+          "resource_type": "script",
+          "bytes": 7219
+        },
+        {
+          "url": "/civic_document_chrome.mjs",
+          "resource_type": "script",
+          "bytes": 9181
+        },
+        {
+          "url": "/following_personal_state.mjs",
+          "resource_type": "script",
+          "bytes": 4399
+        },
+        {
+          "url": "/code_provision_watch_scope.mjs",
+          "resource_type": "script",
+          "bytes": 5199
+        },
+        {
+          "url": "/data/zap_projects_warehouse_lookup.json",
+          "resource_type": "fetch",
+          "bytes": 752786
+        },
+        {
+          "url": "/data/land_upcoming_hearings.json",
+          "resource_type": "fetch",
+          "bytes": 255777
+        },
+        {
+          "url": "/project_connections.mjs",
+          "resource_type": "script",
+          "bytes": 21532
+        },
+        {
+          "url": "/land_record_links.mjs",
+          "resource_type": "script",
+          "bytes": 3952
+        },
+        {
+          "url": "/ulurp_statutory_clock.mjs",
+          "resource_type": "script",
+          "bytes": 31997
+        },
+        {
+          "url": "/ulurp_recommendation_panel.mjs",
+          "resource_type": "script",
+          "bytes": 7569
+        },
+        {
+          "url": "/data/shared_meeting_read_model.json",
+          "resource_type": "fetch",
+          "bytes": 8079622
+        },
+        {
+          "url": "/app/map_runtime.mjs",
+          "resource_type": "script",
+          "bytes": 41505
+        },
+        {
+          "url": "/data/property_domain_observations.json",
+          "resource_type": "fetch",
+          "bytes": 311773
+        },
+        {
+          "url": "/data/bbl_mappluto_centroids_lookup.json",
+          "resource_type": "fetch",
+          "bytes": 84725
+        },
+        {
+          "url": "/data/zap_bbl_warehouse_lookup.json",
+          "resource_type": "fetch",
+          "bytes": 2828163
+        },
+        {
+          "url": "/civic_institution_development_specimens.mjs",
+          "resource_type": "script",
+          "bytes": 830
+        },
+        {
+          "url": "/district_scope_facets.mjs",
+          "resource_type": "script",
+          "bytes": 12384
+        },
+        {
+          "url": "/land_project_decision_relations.mjs",
+          "resource_type": "script",
+          "bytes": 26867
+        },
+        {
+          "url": "/bbl_mappluto_centroids.mjs",
+          "resource_type": "script",
+          "bytes": 9569
+        },
+        {
+          "url": "/land_map_model.mjs",
+          "resource_type": "script",
+          "bytes": 9005
+        },
+        {
+          "url": "/land_map_selection.mjs",
+          "resource_type": "script",
+          "bytes": 4825
+        },
+        {
+          "url": "/map_exploration.mjs",
+          "resource_type": "script",
+          "bytes": 45846
+        },
+        {
+          "url": "/data/ulurp_recommendations_lookup.json",
+          "resource_type": "fetch",
+          "bytes": 190270
+        },
+        {
+          "url": "https://api.cityscroll.org/zap-outcomes?id=2025Q0304",
+          "resource_type": "fetch",
+          "bytes": 0
+        },
+        {
+          "url": "https://api.cityscroll.org/zap-outcomes?id=2025Q0331",
+          "resource_type": "fetch",
+          "bytes": 0
+        },
+        {
+          "url": "https://api.cityscroll.org/zap-outcomes?id=2023Q0125",
+          "resource_type": "fetch",
+          "bytes": 0
+        },
+        {
+          "url": "https://api.cityscroll.org/zap-outcomes?id=2025Q0155",
+          "resource_type": "fetch",
+          "bytes": 0
+        },
+        {
+          "url": "https://api.cityscroll.org/zap-outcomes?id=2023Q0177",
+          "resource_type": "fetch",
+          "bytes": 0
+        },
+        {
+          "url": "https://api.cityscroll.org/zap-outcomes?id=2023Q0211",
+          "resource_type": "fetch",
+          "bytes": 0
+        },
+        {
+          "url": "https://api.cityscroll.org/zap-outcomes?id=2024Q0219",
+          "resource_type": "fetch",
+          "bytes": 0
+        },
+        {
+          "url": "/land_project_geography.mjs",
+          "resource_type": "script",
+          "bytes": 0
+        },
+        {
+          "url": "/data/district_boundaries.json",
+          "resource_type": "fetch",
+          "bytes": 0
+        }
+      ],
+      "list_bytes": 16500168,
+      "list_first_paint_ordering": {
+        "first_row_at_ms": 316,
+        "resources_before_first_row": 184,
+        "map_dependencies_before_first_row": [],
+        "blocking_map_dependencies_before_first_row": []
+      },
+      "post_paint_detail_map": {
+        "cause": "the List auto-selects its first row; the selected project's detail map is existing behavior this card preserves rather than a browse dependency",
+        "requests": [
+          "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css",
+          "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js",
+          "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
+          "https://b.basemaps.cartocdn.com/light_all/15/9661/12324.png",
+          "https://c.basemaps.cartocdn.com/light_all/15/9661/12325.png",
+          "https://a.basemaps.cartocdn.com/light_all/15/9660/12324.png",
+          "https://c.basemaps.cartocdn.com/light_all/15/9662/12324.png",
+          "https://b.basemaps.cartocdn.com/light_all/15/9660/12325.png",
+          "https://d.basemaps.cartocdn.com/light_all/15/9662/12325.png",
+          "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png"
+        ],
+        "bytes": 318225
+      },
+      "list_observed": {
+        "url": "/browse/zoning/?boro=Queens&stage=public_review",
+        "semantic": [
+          "boro=Queens",
+          "stage=public_review"
+        ],
+        "view": null,
+        "controls": [
+          {
+            "view": "list",
+            "pressed": true
+          },
+          {
+            "view": "map",
+            "pressed": false
+          }
+        ],
+        "note": "",
+        "rows": 18,
+        "count": "18 results",
+        "map_state": "absent",
+        "map_markers": 0,
+        "map_summary": "",
+        "map_retry": false,
+        "list_visible": true
+      },
+      "map_activation_ms": 86.5,
+      "map_activation_requests": [
+        {
+          "url": "https://cloudflareinsights.com/cdn-cgi/rum",
+          "resource_type": "xhr",
+          "bytes": 0
+        },
+        {
+          "url": "https://cloudflareinsights.com/cdn-cgi/rum",
+          "resource_type": "ping",
+          "bytes": 0
+        },
+        {
+          "url": "https://f.clarity.ms/collect",
           "resource_type": "ping",
           "bytes": 0
         },
@@ -2334,13 +2384,13 @@
       },
       "head_entry": {
         "route": "/browse/zoning/?boro=Queens&stage=public_review",
-        "requests": 227,
-        "first_paint_requests": 212,
+        "requests": 229,
+        "first_paint_requests": 208,
         "first_paint_ordering": {
-          "first_row_at_ms": 363,
-          "resources_before_first_row": 181,
+          "first_row_at_ms": 317,
+          "resources_before_first_row": 183,
           "map_dependencies_before_first_row": [
-            "http://127.0.0.1:51613/app/map_runtime.mjs"
+            "http://127.0.0.1:62987/app/map_runtime.mjs"
           ],
           "blocking_map_dependencies_before_first_row": []
         },
@@ -2395,13 +2445,13 @@
       },
       "head_entry": {
         "route": "/browse/zoning/?boro=Queens&stage=public_review",
-        "requests": 227,
-        "first_paint_requests": 212,
+        "requests": 229,
+        "first_paint_requests": 208,
         "first_paint_ordering": {
-          "first_row_at_ms": 363,
-          "resources_before_first_row": 181,
+          "first_row_at_ms": 317,
+          "resources_before_first_row": 183,
           "map_dependencies_before_first_row": [
-            "http://127.0.0.1:51613/app/map_runtime.mjs"
+            "http://127.0.0.1:62987/app/map_runtime.mjs"
           ],
           "blocking_map_dependencies_before_first_row": []
         },
@@ -2598,7 +2648,7 @@
     {
       "name": "after/land-map-blocked-1440.png",
       "bytes": 143866,
-      "sha256": "2f76bb91ce73540b134d7d14cae677402b7973956f4154a7a187422e3821694a",
+      "sha256": "f4aa8de63c690e96cdf2bbe8b989d865dff02c09b7b7569863d8fbd6fc5d9df0",
       "viewport": [
         1440,
         900
