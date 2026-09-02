@@ -83,3 +83,40 @@ node tools/backtest_procurement_intent_radar.mjs
 node tools/backtest_procurement_intent_radar.mjs --check
 node --test test/procurement_intent_radar_backtest.test.mjs
 ```
+
+## Prospective shadow mode
+
+`tools/run_procurement_intent_shadow_mode.mjs` replays the retained arrival
+stream `test/fixtures/procurement_intent_radar/shadow_arrivals.v0.json` through
+two ordered phases. The assertion phase is handed the source projection of the
+stream only: each arriving span is sealed at its own publication clock, run
+through the extractor and the PIR-2 ontology, and recorded as an open internal
+intent with a provisional identity and separate occurrence and timing claims.
+The resolution phase is the only phase that reads later solicitations, and it
+records a resolution or review outcome beside the earlier assertion. Every
+assertion is fingerprinted before resolution and re-checked after it, so a later
+realization can never become a feature of the earlier candidate.
+
+Open, resolved, ambiguous, unmatched, superseded, insufficient-evidence, and
+abstention states are all explicit. An intent that has simply not been observed
+yet is reported separately from one whose stated window closed with nothing
+observed. Identity is content-addressed from the sealed source, so a replayed
+arrival is a recorded duplicate rather than a second intent, and a later arrival
+for the same provisional subject supersedes the earlier one without editing it.
+
+Shadow mode is a measurement mode. The artifact is internal-only: it creates no
+route, search document, follow target, notification, or resident-facing claim,
+publishes no realized edge, and authorizes no promotion. It performs no network
+access and has no CityMeetings runtime dependency; citation URLs are retained
+strings that are never fetched. The run is reproducible from the retained,
+versioned stream alone.
+
+```sh
+node tools/run_procurement_intent_shadow_mode.mjs
+node tools/run_procurement_intent_shadow_mode.mjs --check
+node --test test/procurement_intent_radar_shadow_mode.test.mjs
+```
+
+The internal outputs are
+`warehouse/fixtures/procurement-intent-radar/shadow_mode.v1.json` and
+`docs/evidence/procurement-intent-radar/shadow-mode.md`.
