@@ -347,6 +347,29 @@ LAND_DEFAULT_SNAPSHOT = {
     "projects": [{k: r[k] for k in _LAND_LIST_FIELDS if k in r} for r in ZAP_ROWS],
 }
 
+# Default Money tab first paint (site/data/money_default_open.json) renders the committed
+# open-solicitations snapshot filtered by due_date > today, so the committed artifact goes
+# dark once its last due date passes the wall clock. Hermetic routes serve the committed
+# artifact with the fixture solicitations (due dates relative to _now) merged in by
+# request_id — the same move as the resident-snapshot merge in install_routes: pinned-clock
+# specs keep seeing the committed rows they were written against, while real-clock specs
+# always have still-open rows, so date-relative assertions stay stable.
+_MONEY_DEFAULT_OPEN_COMMITTED = json.loads(
+    (_ROOT / "site" / "data" / "money_default_open.json").read_text()
+)
+_MONEY_DEFAULT_OPEN_ROWS = {
+    str(row.get("request_id", "")): row
+    for row in _MONEY_DEFAULT_OPEN_COMMITTED.get("notices", [])
+    if row.get("request_id")
+}
+for _row in (RFP_OPEN, RFP_OPEN_2, MWBE_SOLICITATION_ROW, NOTICE_PERMALINK_ROW):
+    _MONEY_DEFAULT_OPEN_ROWS[str(_row["request_id"])] = _row
+MONEY_DEFAULT_OPEN_SNAPSHOT = {
+    **_MONEY_DEFAULT_OPEN_COMMITTED,
+    "count": len(_MONEY_DEFAULT_OPEN_ROWS),
+    "notices": sorted(_MONEY_DEFAULT_OPEN_ROWS.values(), key=lambda r: str(r.get("due_date", ""))),
+}
+
 # Production-stable Property Disposition notice used by the property-bbl-fallback demo.
 # Site geography is only in the body (Block/Lot + borough) — no usable street_address_1.
 # Exemplar for propertyLocationFromRow body-fallback → BBL 1006440001.
@@ -1123,6 +1146,7 @@ def install_routes(page):
     # The bare Staffing example is a committed product seed, so the guard never depends on
     # the live payroll aggregation merely to open the page.
     page.route("**/data/people_examples.json", fixed(PEOPLE_EXAMPLES))
+    page.route("**/data/money_default_open.json", fixed(MONEY_DEFAULT_OPEN_SNAPSHOT))
     page.route("**/data/money_resident_snapshot.json", fixed(money_snapshot))
     page.route("**/data/property_resident_snapshot.json", fixed(property_snapshot))
     page.route("**/data/rules_domain_observations.json", fixed(rules_snapshot))

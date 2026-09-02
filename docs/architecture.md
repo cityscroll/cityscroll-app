@@ -13,7 +13,7 @@ summary: >-
   CityScroll-owned projections; the worker adds scheduled Checkbook acquisition and projection reads,
   email alerts, feeds, plain-English search, forecasting, precomputed vendor
   identity headers, resilient public coverage stats, private aggregate first-party usage
-  analytics, and a Wave-4 process-spine layer (`process_id` / `project_id` /
+  analytics, private bounded search-execution receipts, and a Wave-4 process-spine layer (`process_id` / `project_id` /
   `event_id`) for contract-lifecycle joins with confidence checks.
   A D1 mirror of
   recent notices (daily ingest; Socrata stays the source of truth) backs alert
@@ -28,7 +28,7 @@ summary: >-
   a Cloudflare Queue (per-subscriber retries, DLQ; daily send caps unchanged).
   The source vault retains approved public documents by content hash and
   preserves their official source links.
-updated: 2026-08-29
+updated: 2026-09-01
 sources:
   - README.md
   - site/index.html
@@ -69,6 +69,9 @@ sources:
   - test/live_url_smoke.test.mjs
   - worker/wrangler.toml
   - worker/src/events.mjs
+  - worker/src/search_activity.mjs
+  - worker/src/lib/search_activity.mjs
+  - capabilities/search_activity.mjs
   - worker/src/worker.mjs
   - worker/src/alerts.mjs
   - worker/src/ingest.mjs
@@ -104,7 +107,7 @@ sources_hash: 595fad1b4566d6eee49943039cdc30cdeb4e37babbf51d35f62b18b11c34ec0e
 
 ## What & why
 
-The NYC City Record publishes every agency contract, hearing, rule change, rezoning, and property disposition — by City Charter §1066 — but the raw record is hard to follow by interest. CityScroll re-stitches it into seven navigable lenses, adds cross-references to Checkbook NYC (contract payments and NYCHA contracts), official NYS Authorities Budget Office award filings, ZAP (rezoning detail), and BBL lookups, delivers standing watches as email digests, and estimates contract-renewal timing from historical Checkbook terms. The constraint is no accounts and no per-user tracking. CityScroll-owned materialized read models are the exclusive delivery path for resident and required-CI reads; scheduled public-source acquisition and durable snapshots provide graceful degradation and reproducibility.
+The NYC City Record publishes every agency contract, hearing, rule change, rezoning, and property disposition — by City Charter §1066 — but the raw record is hard to follow by interest. CityScroll re-stitches it into seven navigable lenses, adds cross-references to Checkbook NYC (contract payments and NYCHA contracts), official NYS Authorities Budget Office award filings, ZAP (rezoning detail), and BBL lookups, delivers standing watches as email digests, and estimates contract-renewal timing from historical Checkbook terms. The constraint is no required accounts, no fingerprinting, and no cross-site tracking; per-visitor state is limited to opt-in email identity, the first-party `cs_visitor` cookie, and private, 30-day-bounded search-execution receipts. CityScroll-owned materialized read models are the exclusive delivery path for resident and required-CI reads; scheduled public-source acquisition and durable snapshots provide graceful degradation and reproducibility.
 
 ### Resident-read invariant
 
@@ -147,8 +150,9 @@ Browser (cityscroll.org — Cloudflare Pages production site with Worker routes)
         ├──  /stats             public corpus and coverage aggregates
         ├──  /admin/stats /usage authenticated product activity / keyed model-spend report
         ├──  /events            bounded aggregate usage events (no visitor identifiers)
+        ├──  /search-activity   private bounded search-execution receipts (first-party cs_visitor cookie; 30-day KV retention)
         ├──  /r/<kind>/<id>     count-only digest click-through → 302
-        └──  /admin/subs /admin/feedback        keyed operator views
+        └──  /admin/subs /admin/feedback /admin/search-activity   keyed operator views
 
 Inbound email (Email Routing: subscribe@crol-list.org → this worker): plain
 English → LLM-parsed immediate watch + welcome reply (metered, loop-guarded).
@@ -179,7 +183,7 @@ Bottom-up, the way it's built: public Socrata feeds and Checkbook are the ground
 
 - **KV `SUBS`** — confirmed subscriptions: `sub:<token>` → `{email, lens, filters, frequency}`, plus per-IP/per-address rate-limit counters for `/subscribe`.
 - **KV `NL_METER`** — daily spend metering for `/nl` (the denial-of-wallet ceiling on the only Claude-billed route).
-- **KV `ALERT_STATE`** — digest/cron bookkeeping plus read models: `hearings:location:v1` → rules hearings and public meetings normalized into separate affected-area and venue fields (subject addresses may carry coordinates/BBL for place mapping), `property:location:v1` → Property Disposition notices with extracted site addresses/tax lots/BBLs and scheduled-acquisition geometry, `fc:<stem>` → estimated contract expirations from retained Checkbook contract terms, and versioned `vp:v1:*` whole-profile buckets behind `/vendor-profile`. Stale views remain readable with their vintage; a missing view returns a deterministic unavailable response and never starts source acquisition. The daily cleanup removes retired `plan:` keys so disabled MOCS rows cannot reappear.
+- **KV `ALERT_STATE`** — digest/cron bookkeeping plus read models: `hearings:location:v1` → rules hearings and public meetings normalized into separate affected-area and venue fields (subject addresses may carry coordinates/BBL for place mapping), `property:location:v1` → Property Disposition notices with extracted site addresses/tax lots/BBLs and scheduled-acquisition geometry, `fc:<stem>` → estimated contract expirations from retained Checkbook contract terms, versioned `vp:v1:*` whole-profile buckets behind `/vendor-profile`, and `search:exec:` / `search:exec-dev:` private search-execution receipts (disjoint production/developer prefixes, 30-day TTL; the machine-readable prefix registry is `worker/ops-contract.v1.json`, the receipt contract `capabilities/search_activity.mjs`). Stale views remain readable with their vintage; a missing view returns a deterministic unavailable response and never starts source acquisition. The daily cleanup removes retired `plan:` keys so disabled MOCS rows cannot reappear.
 - **KV `FEEDBACK`** — stored feedback rows (`fb:<ts>:<rand>`) + rate-limit counters.
 - **Browser localStorage (`site/app/`)** — client-side only: investigation workspace (pinned notices + notes), query cache, saved searches, plain/rigor toggle.
 - **Public beta flag localStorage** — one registered, default-off experiment slug selected by `?beta=<slug>`; `?beta=0` clears it. The registry enforces a removal date and on/off tests. It is presentation state only, never access control.
@@ -241,13 +245,13 @@ Bottom-up, the way it's built: public Socrata feeds and Checkbook are the ground
 
 ## TL;DR
 
-1 static site (`site/index.html` + window-sized `site/app/` modules + `site/data.html`) + 1 Cloudflare Worker, 7 lenses, public and operator API routes plus an inbound-email handler and queue consumer, 1 daily cron (ingest → normalization/materialization → edge prewarm → queue fan-out), 4 KV namespaces + 1 D1 database (notices mirror + prior-cycle cache) + 1 R2 source vault + 1 Analytics Engine dataset + 2 queues, 6 secrets, 2 hard send caps — under one hard rule: no accounts, cookies, fingerprinting, or visitor profiles; CityScroll-owned materialized read models serve ordinary views, while public-source access and durable snapshots provide graceful degradation and reproducibility.
+1 static site (`site/index.html` + window-sized `site/app/` modules + `site/data.html`) + 1 Cloudflare Worker, 7 lenses, public and operator API routes plus an inbound-email handler and queue consumer, 1 daily cron (ingest → normalization/materialization → edge prewarm → queue fan-out), 4 KV namespaces + 1 D1 database (notices mirror + prior-cycle cache) + 1 R2 source vault + 1 Analytics Engine dataset + 2 queues, 6 secrets, 2 hard send caps — under one hard rule: no required accounts, no fingerprinting, no third-party trackers, and no visitor profiles beyond the first-party `cs_visitor` cookie's private, 30-day-bounded search-execution receipts; CityScroll-owned materialized read models serve ordinary views, while public-source access and durable snapshots provide graceful degradation and reproducibility.
 
 1. A visitor loads `site/index.html` (inline CSS + markup) and the ordered browser-native modules from `site/app/main.mjs` at canonical `cityscroll.org`, served by Cloudflare Pages — no application backend or build step required.
 2. Picking a lens consumes page-specific materialized read models and snapshot-only Worker projections. Publisher APIs are confined to scheduled/manual acquisition and non-required source-contract monitors; request-dependent search executes over retained indexes.
 3. Server-only features route to `api.cityscroll.org`: `/nl` (plain English → filters via Claude Haiku, metered by `NL_METER`), `/subscribe`→`/unsubscribe` (immediate enrollment with welcome/manage links; rate-limited and fail-closed without token/send secrets), feeds, `/batch`, `/agencies`, `/inv`, `/stats`, `/feedback` (rate-limited; notifies `feedback@cityscroll.org`), keyed `/admin/*` and `/usage`.
 4. The forecasting layer (`/checkbook` + `/forecast`) parses historical Checkbook NYC contract terms into estimated expirations (`fc:<stem>` in `ALERT_STATE`) and renders them in the profile timeline. Official procurement-plan rows are disabled; the cleanup job removes stale `plan:` keys.
-5. Subscriptions land immediately in KV `SUBS`; legacy aggregate integers accrue in stats counters, while bounded page and interaction events accrue in Analytics Engine without visitor identifiers. The only personal data is the subscription email.
+5. Subscriptions land immediately in KV `SUBS`; legacy aggregate integers accrue in stats counters, while bounded page and interaction events accrue in Analytics Engine without visitor identifiers, and each completed Universal Search leaves one bounded private receipt in KV (first-party `cs_visitor` id, 30-day TTL, read only via keyed `/admin/search-activity`). The only durable personal data is the subscription email.
 6. The daily cron (13:00 UTC) first refreshes the D1 notices mirror from Socrata (cursored, fail-soft — a failed ingest never blocks alerts), pre-warms prior-cycle match sets for freshly-ingested Award notices, rebuilds the hearings, Property, and versioned whole-profile vendor projections in KV, then replays active subscriptions and forecast milestones, sending digests and early-warning emails via Resend — hard-capped at 25/run, 50/day. Each cache job is fail-soft; Money digests exclude data-entry-error amounts (≥ $10B) and label rolling year-2090 deadlines honestly.
 7. Cloudflare Pages serves the static site from the `main` production branch, and Workers Builds deploys Worker changes from `main`. The Worker mirror's Cloudflare Pages fallback covers the full site; its raw-repository fallback is intentionally limited to `/docs/*` and `/README.md` and may contain unsubstituted build tokens.
 

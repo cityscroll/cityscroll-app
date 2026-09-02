@@ -21,7 +21,12 @@ function decodeBase64Url(value) {
   }
 }
 
-async function hasValidDeveloperExclusion(req, env, nowMs) {
+/**
+ * Verify a short-lived developer-exclusion token. Exported so private
+ * search-activity intake classifies traffic through this exact mechanism rather
+ * than inventing a second, drifting notion of "developer".
+ */
+export async function hasValidDeveloperExclusion(req, env, nowMs) {
   const secret = String(env?.ANALYTICS_DEV_KEY || "");
   const token = req.headers.get(ANALYTICS_DEV_HEADER) || "";
   if (secret.length < 32 || token.length > 160) return false;
