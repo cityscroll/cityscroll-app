@@ -570,10 +570,12 @@ function mailtoFor(r){
 function icsForRFP(r){
   if(!r.due_date || isRollingDeadline(r.due_date)) return null; // no real date to remind about
   const d = new Date(r.due_date), pad = n=>String(n).padStart(2,"0");
+  // determinism-lint: allow timezone an iCalendar floating DTSTART is local wall time by RFC 5545; the reader's calendar resolves it in their own zone.
   const fl = dt=>`${dt.getFullYear()}${pad(dt.getMonth()+1)}${pad(dt.getDate())}T${pad(dt.getHours())}${pad(dt.getMinutes())}00`;
   const esc = s=>String(s||"").replace(/([,;\\])/g,"\\$1").replace(/\n/g,"\\n");
   return [
     "BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//CityScroll//EN","CALSCALE:GREGORIAN","METHOD:PUBLISH",
+    // determinism-lint: allow clock DTSTAMP is the instant the calendar file was created, which RFC 5545 requires to be the real creation time.
     "BEGIN:VEVENT","UID:"+(r.request_id||fl(d))+"@crol-list.demo","DTSTAMP:"+fl(new Date()),
     "DTSTART:"+fl(d),"DTEND:"+fl(d),
     "SUMMARY:"+esc("RFP due: "+cleanText(r.short_title)),

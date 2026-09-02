@@ -14,6 +14,7 @@ import {
 const SECTION_LENS={"Procurement":"money","Public Hearings and Meetings":"meetings","Agency Rules":"rules","Property Disposition":"property","Changes in Personnel":"people"};
 const NOTICE_CONTEXT_LOOKUP_URL="data/notice_context_lookup.json";
 let noticeContextLookupPromise=null;
+// determinism-lint: allow clock a rolling twelve-month benchmark window is relative to now by definition; it bounds a SODA aggregate, not a rendered date.
 const yearCut=()=>new Date(Date.now()-365*86400000).toISOString().slice(0,10)+"T00:00:00";
 function ordinal(n){const s=["th","st","nd","rd"],v=n%100;return n+(s[(v-20)%10]||s[v]||s[0]);}
 function loadNoticeContextLookup(){

@@ -26,6 +26,7 @@ let invSessionRecognized = false;
 let invServerHydrated = false;
 let invSyncTimer = null;
 function invDefaultStore(){
+  // determinism-lint: allow clock the day the reader's first investigation was created, which is a fact about their action.
   return {current:"inv1", invs:{inv1:{name:t("inv_default_name"), created:new Date().toISOString().slice(0,10), items:[]}}};
 }
 function invStore(){
@@ -123,8 +124,10 @@ document.addEventListener("click", e=>{
     let p; try{ p = JSON.parse(b.dataset.pin); }catch(_){ return; }
     const s = invStore(), inv = s.invs[s.current];
     if(p.t===INVESTIGATION_SIGNAL_TYPE){
+      // determinism-lint: allow clock the day the reader pinned this signal, which is a fact about their action.
       if(addInvestigationComparativeSignal(inv.items,p,{added:new Date().toISOString().slice(0,10)})) invSave(s);
     } else if(!inv.items.some(i=>i.t===p.t && i.id===p.id)){
+      // determinism-lint: allow clock the day the reader pinned this item, which is a fact about their action.
       inv.items.push({...p, note:"", added:new Date().toISOString().slice(0,10)});
       invSave(s);
     }
@@ -182,6 +185,7 @@ function invSignalDetailsHtml(item){
     <span class="rmeta inv-signal-evidence" style="display:block;margin-top:4px;overflow-wrap:anywhere">${evidence} · Receipt <code>${invEsc(signal.comparison_receipt.receipt_id)}</code></span>`;
 }
 function invItemsHtml(items, readonly){
+  // determinism-lint: allow clock the day the rendered list was accessed, used only to age the reader's own pins.
   const acc = new Date().toISOString().slice(0,10);
   return items.map((i,idx)=>`<div class="tl" data-idx="${idx}" style="align-items:flex-start">
     <span class="pin" style="flex:0 0 auto">${i.t===INVESTIGATION_SIGNAL_TYPE?"signal":t(PINTYPE_KEY[i.t]||"pintype_notice")}</span>
@@ -337,8 +341,10 @@ async function showSharedInv(id){
     const s=invStore(), inv=s.invs[s.current];
     j.items.forEach(p=>{
       if(p.t===INVESTIGATION_SIGNAL_TYPE){
+        // determinism-lint: allow clock an imported signal keeps its own pinned-on day; this covers an export that carried none.
         addInvestigationComparativeSignal(inv.items,p,{added:p.added||new Date().toISOString().slice(0,10)});
       } else if(!inv.items.some(i=>i.t===p.t&&i.id===p.id)){
+        // determinism-lint: allow clock an imported item keeps its own pinned-on day; this covers an export that carried none.
         inv.items.push({...p, added:p.added||new Date().toISOString().slice(0,10)});
       }
     });
@@ -362,6 +368,7 @@ async function showSignalInvestigation(signalId){
       const item=storySignalInvestigationItem(signal,{peerSetHref:`/experimental/worth-a-look/#${peerAnchor}`});
       if(item){
         const s=invStore(), inv=s.invs[s.current];
+        // determinism-lint: allow clock the day the reader added this signal, which is a fact about their action.
         added=addInvestigationComparativeSignal(inv.items,item,{added:new Date().toISOString().slice(0,10)});
         if(added){
           invSave(s);

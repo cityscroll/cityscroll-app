@@ -3448,6 +3448,7 @@ function fdtLocale(s, lang) {
   const d = new Date(s);
   const meta = LANG_META[lang || window.LANG || "en"];
   const locale = meta ? meta.intlDate : "en-US";
+  // determinism-lint: allow timezone a locale-aware date is rendered in the reader's own locale and zone; that is the whole purpose of this formatter.
   return d.toLocaleDateString(locale, { year: "numeric", month: "long", day: "numeric" });
 }
 window.fdtLocale = fdtLocale;

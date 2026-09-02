@@ -40,6 +40,7 @@ export function buildCommitteeMembershipLookup(sourceRows = [], peopleDoc = {}) 
     schema_version: 1,
     title: "City Council committee memberships by exact Legistar member ID",
     source_contract: COMMITTEE_MEMBERSHIP_SOURCE,
+    // determinism-lint: allow clock generated_at stamps when this read model was built, which is the instant of the build itself; vintage below carries the source's own date.
     generated_at: new Date().toISOString(),
     vintage: "2026-08-05",
     join: { key: "member_id", source: "aabe-yfm9", corpus: "people_domain_observations" },

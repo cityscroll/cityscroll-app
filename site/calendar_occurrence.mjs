@@ -138,6 +138,7 @@ function dateIsOnly(value) {
 function asOfDate(value) {
   const supplied = text(value);
   if (supplied && ISO_DATE.test(supplied)) return supplied;
+  // determinism-lint: allow clock the caller-supplied as-of wins on the line above; this is the arm taken when nothing was supplied.
   return new Date().toISOString().slice(0, 10);
 }
 

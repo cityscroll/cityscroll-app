@@ -911,10 +911,12 @@ async function handleRulemaking(request, encodedId) {
       const payload = await response.json();
       object = Array.isArray(payload?.rulemakings)
         ? payload.rulemakings.find((row) => row?.rulemaking_id === id) || null
+        // determinism-lint: allow clock the edge worker is the boundary that reads the day and passes it in; rulemakingObjectForId() itself stays a pure function of its arguments.
         : rulemakingObjectForId(payload?.rules || [], id, { now: new Date().toISOString().slice(0, 10) });
       // A materialized object is authoritative; this fallback only supports a
       // young API snapshot while the v8 view rolls out.
       if (!object && Array.isArray(payload?.rules)) {
+        // determinism-lint: allow clock the edge worker is the boundary that reads the day and passes it in; buildRulemakingObjects() itself stays a pure function of its arguments.
         object = buildRulemakingObjects(payload.rules, { now: new Date().toISOString().slice(0, 10) })
           .find((row) => row.rulemaking_id === id) || null;
       }

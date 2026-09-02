@@ -449,8 +449,11 @@ export function commercialCloseDate(row, commercial) {
 export function civicTodayIso(now = new Date()) {
   const d = now instanceof Date ? now : new Date(now);
   if (Number.isNaN(d.getTime())) return null;
+  // determinism-lint: allow timezone the caller supplies the instant; this deliberately returns the reader's local calendar day, as the name and docblock state.
   const y = d.getFullYear();
+  // determinism-lint: allow timezone the caller supplies the instant; this deliberately returns the reader's local calendar day, as the name and docblock state.
   const m = String(d.getMonth() + 1).padStart(2, "0");
+  // determinism-lint: allow timezone the caller supplies the instant; this deliberately returns the reader's local calendar day, as the name and docblock state.
   const day = String(d.getDate()).padStart(2, "0");
   return `${y}-${m}-${day}`;
 }

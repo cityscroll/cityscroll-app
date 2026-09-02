@@ -27,6 +27,7 @@ function defaultAsOf(rows) {
     .filter(Boolean)
     .sort()
     .at(-1);
+  // determinism-lint: allow clock the rollup's as-of falls back to the real day only when no row carries a start date; the caller supplies it otherwise.
   return latest || new Date().toISOString().slice(0, 10);
 }
 

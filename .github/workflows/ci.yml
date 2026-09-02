@@ -346,6 +346,9 @@ jobs:
         if: matrix.family == 'static-standards'
         # Required checks must not acquire ambient clock, timezone, random, network,
         # external-data, or write-mode dependencies. Scheduled monitors are excluded.
+        # The same run scans every JavaScript module the public site ships, so a
+        # production clock read cannot land outside the gate helpers the traversal
+        # reaches. Its coverage is architecture/site-production-determinism.json.
         run: |
           node tools/determinism_lint.mjs --check
           node tools/determinism_lint.mjs --check --fixture test/fixtures/determinism-lint

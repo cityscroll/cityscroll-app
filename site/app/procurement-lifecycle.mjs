@@ -282,6 +282,7 @@ function lifecycleTermEnded(endDate){
   if(m) iso = m[3] + "-" + m[1].padStart(2, "0") + "-" + m[2].padStart(2, "0");
   const t = Date.parse(iso);
   if(!Number.isFinite(t)) return false;
+  // determinism-lint: allow clock whether a term has already ended is a question about now; the end date itself arrives from the record.
   return t < Date.now() - 86400000;
 }
 

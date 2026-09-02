@@ -105,6 +105,7 @@ function syncExamsModeUI(){
   guide.hidden=false;
   if(careerSelected || careerData) prepareCareerHow();
 }
+// determinism-lint: allow clock the career-path guide answers 'where would I be today', so the day is the question rather than an input to it.
 function careerToday(){ return new Date().toISOString().slice(0,10); }
 function careerDate(value){ return value ? fdt(value+"T12:00:00Z") : t("career_date_unknown"); }
 function careerMoney(value, gapClass){
