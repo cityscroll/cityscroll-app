@@ -853,6 +853,7 @@
     land_map_loading: "이 결과의 지도를 불러오는 중…",
     land_map_summary: "{total}개 사업 중 {mapped}개가 지도에 있습니다.",
     land_map_unmapped_note: "{n}개는 공개된 위치가 없어 목록에만 남습니다.",
+    land_map_empty: "이 필터와 일치하는 프로젝트가 없어 지도에 표시할 내용이 없습니다.",
     land_map_failed_heading: "지도를 다시 시도하거나 목록을 계속 읽을 수 있습니다.",
     land_map_retry: "지도 다시 시도",
     land_map_show_list: "목록 유지",

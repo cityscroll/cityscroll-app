@@ -852,6 +852,7 @@
     land_map_loading: "N ap chaje kat rezilta sa yo…",
     land_map_summary: "{mapped} nan {total} pwoje yo sou kat la.",
     land_map_unmapped_note: "{n} pa gen yon kote ki pibliye, kidonk yo rete sou lis la sèlman.",
+    land_map_empty: "Pa gen pwojè ki koresponn ak filt sa yo, kidonk kat la pa gen anyen pou l montre.",
     land_map_failed_heading: "Ou ka eseye kat la ankò, oswa kontinye li lis la.",
     land_map_retry: "Eseye kat la ankò",
     land_map_show_list: "Kenbe lis la",

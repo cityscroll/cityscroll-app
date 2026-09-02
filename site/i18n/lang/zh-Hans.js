@@ -853,6 +853,7 @@
     land_map_loading: "正在加载这些结果的地图…",
     land_map_summary: "{total} 个项目中有 {mapped} 个在地图上。",
     land_map_unmapped_note: "有 {n} 个没有公开的位置，只出现在列表中。",
+    land_map_empty: "没有项目符合这些筛选条件，因此地图上没有可显示的内容。",
     land_map_failed_heading: "您可以重试地图，也可以继续看列表。",
     land_map_retry: "重试地图",
     land_map_show_list: "保留列表",

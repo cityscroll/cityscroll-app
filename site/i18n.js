@@ -1178,6 +1178,7 @@ const STRINGS = {
     land_map_loading: "Loading the map for these results…",
     land_map_summary: "{mapped} of {total} projects are on the map.",
     land_map_unmapped_note: "{n} have no published location, so they stay in the list only.",
+    land_map_empty: "No projects match these filters, so the map has nothing to draw.",
     land_map_failed_heading: "You can try the map again, or keep reading the list.",
     land_map_retry: "Try the map again",
     land_map_show_list: "Keep the list",
