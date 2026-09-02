@@ -1,7 +1,9 @@
 import assert from "node:assert/strict";
-import { spawnSync } from "node:child_process";
-import { readFileSync } from "node:fs";
-import { dirname, join } from "node:path";
+import { existsSync, readFileSync, readdirSync } from "node:fs";
+import http from "node:http";
+import https from "node:https";
+import net from "node:net";
+import { dirname, join, resolve } from "node:path";
 import { test } from "node:test";
 import { fileURLToPath } from "node:url";
 
@@ -20,6 +22,7 @@ import {
   shadowLeakageFindings,
 } from "../warehouse/lib/procurement_intent_shadow.mjs";
 import { reconcileDerivedArchitectureEvidence } from "../tools/architecture_evidence_shards.mjs";
+import { discoverClientModuleGraph } from "../tools/client_module_graph.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const STREAM_PATH = join(ROOT, "test/fixtures/procurement_intent_radar/shadow_arrivals.v0.json");
@@ -81,17 +84,34 @@ test("A2: nothing is published, and no public realized edge is created before au
   assert.equal(artifact.promotion.gates.recurrent_arrival_corpus.passed, false);
 });
 
-test("A2: no public surface references the shadow runner or its artifact", () => {
-  // git grep exits 1 when nothing matches, which is the passing condition here.
-  const result = spawnSync("git", [
-    "grep", "--cached", "-l",
-    "-e", "procurement_intent_shadow",
-    "-e", "shadow_mode.v1.json",
-    "-e", "shadow_arrivals.v0.json",
-    "--", "site", "worker",
-  ], { cwd: ROOT, encoding: "utf8", maxBuffer: 8 * 1024 * 1024 });
-  assert.ok([0, 1].includes(result.status), `git grep failed: ${result.stderr}`);
-  assert.deepEqual(result.stdout.split("\n").filter(Boolean), []);
+test("A2: the public payload contract ships neither the shadow module nor its artifacts", () => {
+  // The site build publishes exactly the client module graph reachable from
+  // site/ HTML (which may pull repository-level modules) plus the served data
+  // trees. Assert against those contracts rather than the source text.
+  const graph = discoverClientModuleGraph({
+    rootDir: join(ROOT, "site"),
+    sourceRoots: [join(ROOT, "site"), ROOT],
+  });
+  const shadowSources = new Set([
+    resolve(ROOT, "warehouse/lib/procurement_intent_shadow.mjs"),
+    resolve(ROOT, "tools/run_procurement_intent_shadow_mode.mjs"),
+  ]);
+  for (const { sourcePath } of graph.modules.values()) {
+    assert.ok(!shadowSources.has(resolve(sourcePath)), `${sourcePath} is publicly served`);
+  }
+
+  const servedFiles = (root) => {
+    if (!existsSync(root)) return [];
+    return readdirSync(root, { recursive: true, withFileTypes: true })
+      .filter((entry) => entry.isFile())
+      .map((entry) => entry.name);
+  };
+  const shadowArtifacts = ["shadow_mode.v1.json", "shadow_arrivals.v0.json"];
+  for (const dataRoot of [join(ROOT, "site/data"), join(ROOT, "worker/src/data")]) {
+    for (const name of servedFiles(dataRoot)) {
+      assert.ok(!shadowArtifacts.includes(name), `${name} is in the served payload tree ${dataRoot}`);
+    }
+  }
 });
 
 test("A2: the assertion-time projection cannot read a later solicitation title, vendor, EPIN, or coverage", () => {
@@ -174,7 +194,7 @@ test("A3: later solicitations resolve or flag review without rewriting the earli
   assert.equal(resolved.resolution.prospective_outcome.lead_days, 175);
   assert.equal(resolved.resolution.accepted_edges.length, 1);
   assert.equal(resolved.resolution.resolved_by_arrival_id, "arr-2026-0011");
-  // The resolving observation arrived after the assertion, never before it.
+  // In this stream the resolving observation arrived after the assertion did.
   assert.ok(resolved.resolution.resolution_recorded_at > resolved.assertion.arrived_at);
   assert.equal(resolved.resolution.assertion_rewritten, false);
   assert.equal(resolved.assertion_immutable, true);
@@ -192,14 +212,33 @@ test("A3: shadow mode declares and needs no CityMeetings runtime dependency", ()
   assert.equal(artifact.protocol.runtime_dependencies.citymeetings_runtime_dependency, false);
   assert.equal(artifact.protocol.runtime_dependencies.network_access, false);
   assert.equal(artifact.protocol.runtime_dependencies.reproducible_from_retained_inputs, true);
-  const sources = [
-    "warehouse/lib/procurement_intent_shadow.mjs",
-    "tools/run_procurement_intent_shadow_mode.mjs",
-  ].map((path) => readFileSync(join(ROOT, path), "utf8"));
-  for (const source of sources) {
-    assert.equal(/\bfetch\s*\(/u.test(source), false);
-    assert.equal(/node:https?|undici|axios/u.test(source), false);
+  // Prove the no-network claim behaviorally: with every network entry point
+  // replaced by a throwing recorder, a full replay still completes and no
+  // entry point is ever invoked, whatever code path would have reached one.
+  const invoked = [];
+  const entryPoints = [
+    [globalThis, "fetch"],
+    [http, "request"],
+    [http, "get"],
+    [https, "request"],
+    [https, "get"],
+    [net, "connect"],
+    [net, "createConnection"],
+  ];
+  const saved = entryPoints.map(([holder, key]) => [holder, key, holder[key]]);
+  for (const [holder, key] of entryPoints) {
+    holder[key] = () => {
+      invoked.push(key);
+      throw new Error(`network entry point ${key} invoked in shadow mode`);
+    };
   }
+  try {
+    const replayed = buildShadowArtifact();
+    assert.equal(replayed.schema, SHADOW_MODE_SCHEMA);
+  } finally {
+    for (const [holder, key, original] of saved) holder[key] = original;
+  }
+  assert.deepEqual(invoked, []);
 });
 
 test("open, unmatched, ambiguous, one-to-many, and superseded states stay distinct", () => {

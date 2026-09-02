@@ -227,9 +227,6 @@ export const LATER_IDENTITY_FIELDS = Object.freeze([
   "citation_url",
 ]);
 
-/** Later-observation clocks, scanned outside the source-derived timing registers. */
-export const LATER_CLOCK_FIELDS = Object.freeze(["published_at"]);
-
 function isEmptyValue(value) {
   if (value === null || value === undefined) return true;
   if (typeof value === "string") return value.trim() === "";
@@ -257,26 +254,20 @@ export function populatedHindsightFindings(value, path = "") {
 }
 
 /**
- * The registers a later publication clock is scanned against. The stated
- * window and the derived prediction windows are deterministic functions of the
- * source span alone, so a source-stated month can legitimately coincide with a
- * later publication date; scanning them by substring would report that
- * coincidence as leakage. Identity and evidence registers have no such excuse.
- */
-export function clockScanProjection(projection) {
-  const { claims, stated_intent: statedIntent, ...rest } = projection || {};
-  const { expected_window: expectedWindow, ...intentWithoutWindow } = statedIntent || {};
-  return { ...rest, stated_intent: intentWithoutWindow };
-}
-
-/**
  * Scan an assertion-time projection for any value that could only have come
  * from a later observation. A finding here is a hard failure, not a caveat.
+ *
+ * Only identity and free-text registers are substring-scanned. Later clocks
+ * are guarded structurally instead: sealing strips published_at and every
+ * other hindsight field before extraction, and a populated hindsight field is
+ * flagged by name wherever it appears. A date substring scan would report a
+ * benign same-day coincidence between a later publication and the assertion's
+ * own clocks or source-stated windows as leakage, which is unsound in a
+ * document that legitimately contains dates.
  */
 export function shadowLeakageFindings(projection, solicitations = []) {
   const findings = populatedHindsightFindings(projection);
   const serialized = JSON.stringify(projection);
-  const clockSerialized = JSON.stringify(clockScanProjection(projection));
   const retainedSpan = String(projection?.source_evidence?.source_span_text || "");
   for (const row of solicitations) {
     const solicitation = row?.solicitation || row || {};
@@ -284,11 +275,6 @@ export function shadowLeakageFindings(projection, solicitations = []) {
       const value = String(solicitation[field] ?? "").trim();
       if (!value || retainedSpan.includes(value)) continue;
       if (serialized.includes(value)) findings.push({ type: "future_value_in_assertion", field, value });
-    }
-    for (const field of LATER_CLOCK_FIELDS) {
-      const value = String(solicitation[field] ?? "").trim();
-      if (!value || retainedSpan.includes(value)) continue;
-      if (clockSerialized.includes(value)) findings.push({ type: "future_clock_in_assertion", field, value });
     }
   }
   return findings;
@@ -538,16 +524,18 @@ function resolutionState(match, intent, asOf) {
 }
 
 /**
- * Phase two. This is the only place later solicitation evidence is read, and
- * it only reads observations that arrived after the intent was asserted.
+ * Phase two. This is the only place solicitation evidence is read. Visibility
+ * is bounded by the as-of arrival clock alone; the matcher's own
+ * publication-clock horizon keeps anything published before the intent was
+ * asserted from resolving it, so a lagged source arrival can still resolve
+ * against a solicitation that happened to arrive earlier.
  */
 export function runResolutionPhase(intents = [], solicitationArrivals = [], { asOf } = {}) {
   const cutoff = isoDay(asOf);
   if (!cutoff) throw new TypeError("resolution phase needs an ISO as_of clock");
   return intents.map((intent) => {
     const before = intent.assertion_fingerprint;
-    const visible = solicitationArrivals.filter((arrival) => arrival.arrived_at >= intent.assertion.arrived_at
-      && arrival.arrived_at <= cutoff);
+    const visible = solicitationArrivals.filter((arrival) => arrival.arrived_at <= cutoff);
     const arrivalByRef = new Map();
     const realizations = visible.map((arrival) => {
       const row = realizationRow(arrival);
@@ -576,7 +564,7 @@ export function runResolutionPhase(intents = [], solicitationArrivals = [], { as
     const resolution = {
       resolution_state: state,
       observed_solicitation_arrivals: visible.length,
-      first_observable_arrival_clock: intent.assertion.arrived_at,
+      arrival_clock_cutoff: cutoff,
       matcher_version: match.matcher_version,
       horizon: clone(match.horizon),
       candidates: match.candidates.map((candidate) => candidateRow(candidate, arrivalByRef)),
@@ -696,7 +684,7 @@ export function runShadowMode(stream, { streamSha256 = null, streamArtifact = nu
         solicitation_evidence_visible: false,
       },
       resolution_phase: {
-        inputs: ["later solicitation observations that arrived at or after the intent arrival clock"],
+        inputs: ["solicitation observations that arrived by the as-of clock, matched only inside the publication-clock horizon that starts at each intent's assertion"],
         rewrites_earlier_assertion: false,
         matcher: "warehouse/lib/procurement_intent_realization_matcher.mjs",
       },

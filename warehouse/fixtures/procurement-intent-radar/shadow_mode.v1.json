@@ -49,7 +49,7 @@
     },
     "resolution_phase": {
       "inputs": [
-        "later solicitation observations that arrived at or after the intent arrival clock"
+        "solicitation observations that arrived by the as-of clock, matched only inside the publication-clock horizon that starts at each intent's assertion"
       ],
       "rewrites_earlier_assertion": false,
       "matcher": "warehouse/lib/procurement_intent_realization_matcher.mjs"
@@ -275,7 +275,7 @@
       "resolution": {
         "resolution_state": "resolved",
         "observed_solicitation_arrivals": 4,
-        "first_observable_arrival_clock": "2026-01-16",
+        "arrival_clock_cutoff": "2026-08-31",
         "matcher_version": "pir-realization-matcher.v1",
         "horizon": {
           "from": "2026-01-14",
@@ -614,7 +614,7 @@
       "resolution": {
         "resolution_state": "ambiguous",
         "observed_solicitation_arrivals": 4,
-        "first_observable_arrival_clock": "2026-02-06",
+        "arrival_clock_cutoff": "2026-08-31",
         "matcher_version": "pir-realization-matcher.v1",
         "horizon": {
           "from": "2026-02-04",
@@ -870,7 +870,7 @@
       "resolution": {
         "resolution_state": "unmatched",
         "observed_solicitation_arrivals": 4,
-        "first_observable_arrival_clock": "2026-02-19",
+        "arrival_clock_cutoff": "2026-08-31",
         "matcher_version": "pir-realization-matcher.v1",
         "horizon": {
           "from": "2026-02-18",
@@ -1107,7 +1107,7 @@
       "resolution": {
         "resolution_state": "resolved",
         "observed_solicitation_arrivals": 4,
-        "first_observable_arrival_clock": "2026-03-12",
+        "arrival_clock_cutoff": "2026-08-31",
         "matcher_version": "pir-realization-matcher.v1",
         "horizon": {
           "from": "2026-03-11",
@@ -1510,8 +1510,8 @@
       },
       "resolution": {
         "resolution_state": "open",
-        "observed_solicitation_arrivals": 0,
-        "first_observable_arrival_clock": "2026-08-04",
+        "observed_solicitation_arrivals": 4,
+        "arrival_clock_cutoff": "2026-08-31",
         "matcher_version": "pir-realization-matcher.v1",
         "horizon": {
           "from": "2026-07-15",
@@ -1738,8 +1738,8 @@
       },
       "resolution": {
         "resolution_state": "open",
-        "observed_solicitation_arrivals": 0,
-        "first_observable_arrival_clock": "2026-08-19",
+        "observed_solicitation_arrivals": 4,
+        "arrival_clock_cutoff": "2026-08-31",
         "matcher_version": "pir-realization-matcher.v1",
         "horizon": {
           "from": "2026-08-12",
@@ -1966,8 +1966,8 @@
       },
       "resolution": {
         "resolution_state": "open",
-        "observed_solicitation_arrivals": 0,
-        "first_observable_arrival_clock": "2026-08-27",
+        "observed_solicitation_arrivals": 4,
+        "arrival_clock_cutoff": "2026-08-31",
         "matcher_version": "pir-realization-matcher.v1",
         "horizon": {
           "from": "2026-07-22",
