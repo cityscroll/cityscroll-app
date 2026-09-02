@@ -1047,6 +1047,9 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
   const committed = sources.process_conformance?.by_agency?.[identity.canonical_id] || null;
   if (committed && obligations) {
     const live = buildAgencyConformanceView(identity.canonical_id, {
+      // Same vintage as the predictions view: expected-vs-observed is timed
+      // against the mandate data, so a rebuild reproduces the commit.
+      asOf: sources.todayISO,
       obligationsLookup: obligations,
       rulesDomain: sources.rules_domain || null,
       meetingsDomain: sources.meetings_domain || null,
@@ -1102,6 +1105,9 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
     }
   } else if (obligations) {
     conformanceView = buildAgencyConformanceView(identity.canonical_id, {
+      // Same vintage as the predictions view: expected-vs-observed is timed
+      // against the mandate data, so a rebuild reproduces the commit.
+      asOf: sources.todayISO,
       obligationsLookup: obligations,
       rulesDomain: sources.rules_domain || null,
       meetingsDomain: sources.meetings_domain || null,
@@ -1234,6 +1240,9 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
   // Mandates prediction-alerts: expected public-record events timed from
   // deadline + recurrence (earlier-stage watch path for free-watch digests).
   const mandatesPredictions = buildAgencyMandatePredictionsView(identity.canonical_id, {
+    // Timed against the mandate data's own vintage, not the ambient clock, so a
+    // committed document is reproducible on any later day.
+    todayISO: sources.todayISO,
     obligationsLookup: obligations,
     conformanceItems: conformanceView?.items || [],
     rulesBrowseHref,

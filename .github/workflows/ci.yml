@@ -242,6 +242,14 @@ jobs:
         # reconstructs all registered data inputs and producer projections and fails closed when
         # either compressed family transport or the committed manifest is not synchronized.
         run: node tools/build_keyword_search_index.mjs --check
+      - name: Committed agency constellation document freshness
+        if: matrix.family == 'static-standards'
+        # Required PR gate for the generated agency constellation read model. Re-derives the
+        # materialization from committed sources and fails closed when a committed relationship
+        # document, the companion lookup, or the route identity report drifts from the owning
+        # builder — including a document orphaned for an agency the builder no longer emits.
+        # Read-only: writes nothing in CI.
+        run: node tools/build_agency_constellation_documents.mjs --check
       - name: Depot re-derivation drift gate
         if: matrix.family == 'static-standards'
         # Gauge-fired on PR/push (never cron). Re-derives the join graph from the committed

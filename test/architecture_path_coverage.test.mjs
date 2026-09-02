@@ -46,6 +46,15 @@ test("filter covers site search, constellation, and materialization canaries", (
     "tools/build_agency_constellation_documents.mjs",
     "tools/build_keyword_search_index.mjs",
     "tools/build_primary_documents.mjs",
+    // Renderer, section registry, and the generated read model the agency
+    // constellation freshness gate reconciles. A source or renderer change must
+    // fire reconciliation alongside its regenerated documents.
+    "site/agency_constellation_section_registry.mjs",
+    "site/agency_constellation_sections/institution_navigation.mjs",
+    "site/civic_institution_profile_navigation.mjs",
+    "site/agencies/parks-and-recreation/relationships.json",
+    "site/data/agency_constellation_lookup.json",
+    "site/data/agency_route_identity_report.json",
   ]) {
     assert.ok(pathMatchesTriggerFilter(path, patterns), path);
   }
