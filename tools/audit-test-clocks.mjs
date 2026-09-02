@@ -3,6 +3,8 @@ import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 
+import { isolatedGitEnv } from "./architecture_evidence_shards.mjs";
+
 const TEST_PATH = /^(?:test|worker\/test)\/(?!fixtures\/).*\.(?:js|mjs|cjs)$/;
 const WALL_CLOCK = /\b(?:new\s+Date\s*\(\s*\)|Date\.now\s*\(\s*\))/;
 const INJECTED_DEFAULT = /\b(?:now|clock|nowMs)\s*=\s*(?:new\s+Date\s*\(\s*\)|Date\.now\s*\(\s*\))/i;
@@ -37,7 +39,15 @@ export function findUninjectedClockAdditions(diff) {
 }
 
 function git(...args) {
-  return execFileSync("git", args, { encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] }).trim();
+  return execFileSync("git", args, {
+    encoding: "utf8",
+    stdio: ["ignore", "pipe", "pipe"],
+    // The comparison base has to come from the checkout this audit is standing
+    // in. A hook exports GIT_DIR, and inheriting it would resolve the merge base
+    // in another repository — which silently changes which added lines are
+    // audited at all.
+    env: isolatedGitEnv(),
+  }).trim();
 }
 
 function comparisonBase() {

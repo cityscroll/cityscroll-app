@@ -313,7 +313,10 @@ test("the reduced profile does not silently widen: the corpus stays inside the d
     assert.ok(excluded.has(tree), `corpus tree ${tree} is not one of the profile's excluded trees`);
   }
   // The corpus is a bounded subset of its trees, not the trees themselves.
-  const treeTracked = execFileSync("git", ["ls-files", "--", ...trees], { cwd: ROOT, encoding: "utf8", maxBuffer: 64 * 1024 * 1024 })
+  // `cwd` picks the repository, not an inherited GIT_DIR: under `pre-push` this
+  // would otherwise count the pushed-to repository's files and read as a corpus
+  // that does not widen when in fact nothing was measured.
+  const treeTracked = execFileSync("git", ["ls-files", "--", ...trees], { cwd: ROOT, encoding: "utf8", maxBuffer: 64 * 1024 * 1024, env: isolatedEnv() })
     .split("\n")
     .filter(Boolean);
   assert.ok(
