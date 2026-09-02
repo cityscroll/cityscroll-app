@@ -93,6 +93,7 @@ function measureObservations(observationsText) {
   const contiguous = sorted.length > 0
     && sorted.every((year, position) => position === 0 || year === sorted[position - 1] + 1);
   return {
+    rowsByYear: years,
     row_count: rowCount,
     fiscal_years: sorted,
     fiscal_year_min: sorted[0] ?? null,
@@ -171,7 +172,7 @@ export function auditSourceVintage({
 
   // Measured coverage is recomputed from the observation corpus, never copied
   // from the receipt or the card.
-  const measured = measureObservations(observationsText);
+  const { rowsByYear, ...measured } = measureObservations(observationsText);
   if (measured.malformed.length) {
     findings.push("observations-malformed");
   }
@@ -359,7 +360,10 @@ export function auditSourceVintage({
     boundary: {
       observations_beyond_publisher_vintage: vintageFiscalYear === null
         ? null
-        : measured.fiscal_years.filter((year) => year > vintageFiscalYear).length,
+        : [...rowsByYear].reduce(
+          (sum, [year, count]) => (year > vintageFiscalYear ? sum + count : sum),
+          0,
+        ),
       series_extension: "out-of-scope-follow-on",
     },
   };
@@ -438,6 +442,7 @@ function main(argv = process.argv.slice(2)) {
     console.log(`wrote ${goldenPath(ROOT, sourceId)}`);
     return;
   }
+  if (json) return;
   const coverage = receipt.materialization_health.measured_coverage;
   const vintage = receipt.publisher_vintage.label;
   const status = receipt.classification.status;
