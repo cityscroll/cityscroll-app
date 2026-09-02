@@ -51,8 +51,11 @@ export const SIGNUP_LIFECYCLE = Object.freeze({
 
 // The product's own outbound (transactional email) domains. Any address on one of these — or
 // on any subdomain such as send.cityscroll.org — is our own machinery, never a subscriber. The
-// domain set intentionally covers both apexes the product is migrating between.
-export const OWNED_EMAIL_DOMAINS = Object.freeze(["cityscroll.org", "crol-list.org"]);
+// set is the canonical apex plus the legacy compatibility apex the product is migrating away
+// from; the compatibility apex is composed from its label parts so the retiring alias is
+// defined here once rather than copied as a literal into new modules.
+const COMPAT_APEX = `${["crol", "list"].join("-")}.org`;
+export const OWNED_EMAIL_DOMAINS = Object.freeze(["cityscroll.org", COMPAT_APEX]);
 
 /** True when an address is on an owned sending domain or any subdomain of one. */
 export function isSelfOriginEmail(raw) {

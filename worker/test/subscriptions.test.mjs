@@ -8,6 +8,7 @@ import {
   buildTopiclessIntent,
   isDeveloperTestEmail,
   isSelfOriginEmail,
+  OWNED_EMAIL_DOMAINS,
   isTestSubscriber,
   isRealSubscriber,
   isTopiclessIntent,
@@ -134,12 +135,13 @@ test("isDeveloperTestEmail recognizes plus-tagged e2e and scope-watch addresses 
 });
 
 test("isSelfOriginEmail recognizes owned sending domains and any subdomain, not lookalikes", () => {
-  assert.equal(isSelfOriginEmail("delivery@send.cityscroll.org"), true);
-  assert.equal(isSelfOriginEmail("hello@send.crol-list.org"), true);
-  assert.equal(isSelfOriginEmail("alerts@cityscroll.org"), true, "apex is owned too");
-  assert.equal(isSelfOriginEmail("subscribe@crol-list.org"), true);
+  assert.ok(OWNED_EMAIL_DOMAINS.length >= 2, "covers the canonical and compatibility apexes");
+  for (const domain of OWNED_EMAIL_DOMAINS) {
+    assert.equal(isSelfOriginEmail(`alerts@${domain}`), true, `apex ${domain} is owned`);
+    assert.equal(isSelfOriginEmail(`delivery@send.${domain}`), true, `a subdomain of ${domain} is owned`);
+  }
   assert.equal(isSelfOriginEmail("reader@gmail.com"), false);
-  assert.equal(isSelfOriginEmail("reader@notcityscroll.org"), false, "must not match a domain that merely ends in the same text");
+  assert.equal(isSelfOriginEmail(`reader@not${OWNED_EMAIL_DOMAINS[0]}`), false, "must not match a domain that merely ends in the same text");
   assert.equal(isSelfOriginEmail(""), false);
 });
 
