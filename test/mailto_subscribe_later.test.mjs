@@ -213,7 +213,8 @@ test("loop guard and inbound enrollment reuse stay on the shared inbound path", 
   assert.match(inbound, /const MAX_BODY = 2000/);
   assert.match(inbound, /overActorLimit\(env\.SUBS, "inbound", from, 5\)/);
   assert.match(inbound, /INBOUND_MAX_PER_DAY/);
-  assert.match(inbound, /f\.endsWith\("@/);
+  // The loop guard ignores our own senders — including owned sending subdomains — via isSelfOriginEmail.
+  assert.match(inbound, /isSelfOriginEmail\(f\)/);
   assert.match(subscribe, /Shared immediate-enrollment transaction for web, inbound email, and MCP surfaces/);
   assert.doesNotMatch(inbound, /double opt-in|confirmation link/i);
 });

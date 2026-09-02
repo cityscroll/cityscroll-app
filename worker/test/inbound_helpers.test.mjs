@@ -4,6 +4,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { pickLens, shouldIgnore } from "../src/inbound.mjs";
+import { OWNED_EMAIL_DOMAINS } from "../src/lib/subscriptions.mjs";
 import { overSurfaceCap, overActorLimit } from "../src/lib/meter.mjs";
 
 class MockKV {
@@ -25,6 +26,10 @@ test("shouldIgnore blocks loops, bounces, ourselves, and auto-submitted mail", (
   assert.equal(shouldIgnore("alerts@crol-list.org"), true);
   assert.equal(shouldIgnore("subscribe@crol-list.org"), true);
   assert.equal(shouldIgnore("alerts@cityscroll.org"), true);
+  // Owned sending subdomains are still "ourselves" — an apex-only check let these loop back in.
+  assert.equal(shouldIgnore("delivery@send.cityscroll.org"), true);
+  assert.equal(shouldIgnore("hello@send.cityscroll.org"), true);
+  for (const domain of OWNED_EMAIL_DOMAINS) assert.equal(shouldIgnore(`receipts@send.${domain}`), true);
   assert.equal(shouldIgnore("MAILER-DAEMON@example.com"), true);
   assert.equal(shouldIgnore("no-reply@example.com"), true);
   assert.equal(shouldIgnore("someone@example.com", new Map([["auto-submitted", "auto-replied"]])), true);

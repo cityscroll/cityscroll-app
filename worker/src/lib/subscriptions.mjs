@@ -43,7 +43,28 @@ export const SIGNUP_LIFECYCLE = Object.freeze({
   ENROLLED: "enrolled",
   CONFIRMED: "confirmed",
   TEST: "test",
+  // A sender on the product's own outbound sending domain (or a subdomain of it). These are
+  // the app's own mail infrastructure looping back, never a person — kept in their own bucket
+  // so the ops view separates them from real users at a glance.
+  SELF_ORIGIN: "self-origin",
 });
+
+// The product's own outbound (transactional email) domains. Any address on one of these — or
+// on any subdomain such as send.cityscroll.org — is our own machinery, never a subscriber. The
+// set is the canonical apex plus the legacy compatibility apex the product is migrating away
+// from; the compatibility apex is composed from its label parts so the retiring alias is
+// defined here once rather than copied as a literal into new modules.
+const COMPAT_APEX = `${["crol", "list"].join("-")}.org`;
+export const OWNED_EMAIL_DOMAINS = Object.freeze(["cityscroll.org", COMPAT_APEX]);
+
+/** True when an address is on an owned sending domain or any subdomain of one. */
+export function isSelfOriginEmail(raw) {
+  const email = normalizeEmail(raw);
+  const at = email.lastIndexOf("@");
+  if (at < 0) return false;
+  const host = email.slice(at + 1);
+  return OWNED_EMAIL_DOMAINS.some((domain) => host === domain || host.endsWith(`.${domain}`));
+}
 
 export const RECOVERY_EXPLANATION = "signed up in the legacy pre-double-opt-in period, has not been sent an email yet, and will be emailed starting the next scheduled digest";
 
@@ -57,7 +78,9 @@ export function isTestSubscriber(record) {
   return record.developer_test === true
     || record.status === "developer/test"
     || record.signup_lifecycle === SIGNUP_LIFECYCLE.TEST
-    || isDeveloperTestEmail(record.email);
+    || record.signup_lifecycle === SIGNUP_LIFECYCLE.SELF_ORIGIN
+    || isDeveloperTestEmail(record.email)
+    || isSelfOriginEmail(record.email);
 }
 
 export function isRealSubscriber(record) {
@@ -82,6 +105,14 @@ export function recoveredSignupReceivedDigest(record, lastSent) {
  */
 export function signupLifecycleFromRecord(record, { lastSent = null } = {}) {
   if (!record || typeof record !== "object") return null;
+  // Self-origin is checked before the generic test bucket so the app's own sending-domain
+  // addresses land in their own ops panel rather than being folded in with e2e fixtures.
+  if (isSelfOriginEmail(record.email) || record.signup_lifecycle === SIGNUP_LIFECYCLE.SELF_ORIGIN) {
+    return {
+      signup_lifecycle: SIGNUP_LIFECYCLE.SELF_ORIGIN,
+      status: SIGNUP_LIFECYCLE.SELF_ORIGIN,
+    };
+  }
   if (isTestSubscriber(record)) {
     return {
       signup_lifecycle: SIGNUP_LIFECYCLE.TEST,
@@ -118,6 +149,7 @@ export const SIGNUP_LIFECYCLE_CATEGORY = Object.freeze({
   ENROLLED: "enrolled",
   CONFIRMED: "confirmed",
   TEST: "test",
+  SELF_ORIGIN: "self_origin",
 });
 
 export const SIGNUP_LIFECYCLE_CATEGORY_ORDER = Object.freeze([
@@ -125,6 +157,7 @@ export const SIGNUP_LIFECYCLE_CATEGORY_ORDER = Object.freeze([
   SIGNUP_LIFECYCLE_CATEGORY.ENROLLED,
   SIGNUP_LIFECYCLE_CATEGORY.CONFIRMED,
   SIGNUP_LIFECYCLE_CATEGORY.TEST,
+  SIGNUP_LIFECYCLE_CATEGORY.SELF_ORIGIN,
 ]);
 
 export const SIGNUP_LIFECYCLE_CATEGORY_LABELS = Object.freeze({
@@ -132,12 +165,16 @@ export const SIGNUP_LIFECYCLE_CATEGORY_LABELS = Object.freeze({
   enrolled: "enrolled",
   confirmed: "confirmed",
   test: "test",
+  self_origin: "machine / self-origin",
 });
 
 export function signupLifecycleBucket(row) {
   if (!row || typeof row !== "object") return null;
   const status = row.status;
   const life = row.signup_lifecycle;
+  if (status === SIGNUP_LIFECYCLE.SELF_ORIGIN || life === SIGNUP_LIFECYCLE.SELF_ORIGIN) {
+    return SIGNUP_LIFECYCLE_CATEGORY.SELF_ORIGIN;
+  }
   if (status === SIGNUP_LIFECYCLE.TEST || life === SIGNUP_LIFECYCLE.TEST) {
     return SIGNUP_LIFECYCLE_CATEGORY.TEST;
   }
@@ -174,6 +211,7 @@ export function summarizeSignupLifecycle(rows = []) {
     enrolled: [],
     confirmed: [],
     test: [],
+    self_origin: [],
   };
   for (const row of rows) {
     const bucket = signupLifecycleBucket(row);
@@ -184,6 +222,7 @@ export function summarizeSignupLifecycle(rows = []) {
     enrolled: groups.enrolled.length,
     confirmed: groups.confirmed.length,
     test: groups.test.length,
+    self_origin: groups.self_origin.length,
   };
   return {
     ...counts,
