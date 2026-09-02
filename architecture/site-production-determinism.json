@@ -430,6 +430,8 @@
     "site/search_intent.mjs",
     "site/search_lens_handoff.mjs",
     "site/search_producer_support.mjs",
+    "site/search_recent_history_view.mjs",
+    "site/search_recent_history.mjs",
     "site/search_render_plan.mjs",
     "site/semantic_topic_search.mjs",
     "site/shared_meeting_read_model.mjs",
