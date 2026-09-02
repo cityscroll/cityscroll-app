@@ -1,0 +1,18 @@
+{
+  "schema": "cityscroll.capture_receipt.v1",
+  "surface": "browser-local recent searches on the canonical Search document",
+  "route": "/search/",
+  "base_revision": "a9952b1d403ba51391e9f27891d124bc0cb57e6e",
+  "after_side": "working tree of this change",
+  "captured_at_head": "a1111cb49a9e425bacfadd0ec4b5002b3e3cb272",
+  "viewports": [
+    1440,
+    390
+  ],
+  "fixture": "test/functional/42_search_recent_history.py",
+  "states": {
+    "empty": "The bare Search document with nothing remembered. Before and after are the same page: an empty history is quiet and adds no heading, control, or space.",
+    "populated": "Back on /search/ after searching rats and then CB3. After adds one compact list under the unchanged search action, newest first, each entry a link to its canonical Search URL with its own remove control.",
+    "storage-unavailable": "A rats results page whose browser refuses local storage. Before and after are the same page: no history renders and the results, coverage receipt and search action are untouched."
+  }
+}

@@ -10,6 +10,25 @@
 .topic-search-form button{min-height:46px;padding:9px 16px;border:1px solid var(--oxblood);border-radius:7px;background:var(--oxblood);color:#fff;font:700 14px/1.2 ui-sans-serif,system-ui,sans-serif;cursor:pointer}
 .topic-search-note{margin:8px 0 0;color:var(--muted);font:12.5px/1.4 ui-sans-serif,system-ui,sans-serif}
 .topic-search-context{display:inline-flex;margin:14px 0 0;padding:6px 10px;border:1px solid var(--rule-strong);border-radius:999px;background:var(--paper-2);color:var(--ink-soft);font:650 12px/1.3 ui-sans-serif,system-ui,sans-serif}
+.topic-search-recent{max-width:760px;margin:14px 0 0;padding:12px 14px;background:var(--paper-2);border:1px solid var(--rule);border-radius:9px}
+.topic-search-recent[hidden]{display:none}
+.topic-search-recent-head{display:flex;flex-wrap:wrap;gap:6px 12px;justify-content:space-between;align-items:baseline}
+.topic-search-recent-head h3{margin:0;color:var(--ink);font:700 13px/1.3 ui-sans-serif,system-ui,sans-serif}
+.topic-search-recent-note{margin:2px 0 0;color:var(--muted);font:11.5px/1.4 ui-sans-serif,system-ui,sans-serif}
+.topic-search-recent-clear{min-height:32px;padding:5px 10px;border:1px solid var(--rule-strong);border-radius:999px;background:var(--card);color:var(--oxblood);font:700 12px/1.2 ui-sans-serif,system-ui,sans-serif;cursor:pointer}
+.topic-search-recent-clear:focus-visible{outline:3px solid var(--color-focus,var(--oxblood));outline-offset:3px}
+.topic-search-recent-list{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 0;padding:0;list-style:none}
+.topic-search-recent-item{display:inline-flex;align-items:stretch;min-width:0;max-width:100%;border:1px solid var(--rule-strong);border-radius:999px;background:var(--card);overflow:hidden}
+.topic-search-recent-run{display:inline-flex;flex-direction:column;justify-content:center;gap:1px;min-width:0;min-height:44px;padding:5px 4px 5px 13px;color:var(--ink);font:650 13px/1.3 ui-sans-serif,system-ui,sans-serif;text-decoration:none}
+.topic-search-recent-run:hover .topic-search-recent-query{text-decoration:underline;text-underline-offset:3px}
+.topic-search-recent-run:focus-visible{outline:3px solid var(--color-focus,var(--oxblood));outline-offset:-3px}
+.topic-search-recent-query{min-width:0;overflow-wrap:anywhere}
+.topic-search-recent-scope{color:var(--muted);font:11px/1.3 ui-sans-serif,system-ui,sans-serif;overflow-wrap:anywhere}
+.topic-search-recent-remove{flex:0 0 auto;min-width:44px;min-height:44px;padding:0 10px;border:0;border-inline-start:1px solid var(--rule);background:transparent;color:var(--muted);font:700 16px/1 ui-sans-serif,system-ui,sans-serif;cursor:pointer}
+.topic-search-recent-remove:hover{color:var(--oxblood)}
+.topic-search-recent-remove:focus-visible{outline:3px solid var(--color-focus,var(--oxblood));outline-offset:-3px}
+.topic-search-recent-status{margin:8px 0 0;color:var(--muted);font:12px/1.4 ui-sans-serif,system-ui,sans-serif}
+.topic-search-recent-status:empty{margin:0}
 .topic-search-coverage{min-width:0;margin:22px 0 12px;padding-bottom:9px;border-bottom:3px solid var(--ink);color:var(--muted);font:12.5px/1.45 ui-sans-serif,system-ui,sans-serif}
 .topic-search-coverage[hidden]{display:none}
 .topic-search-coverage p{margin:0}

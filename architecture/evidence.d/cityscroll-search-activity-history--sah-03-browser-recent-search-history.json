@@ -1,0 +1,33 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-search-activity-history/sah-03-browser-recent-search-history",
+  "status": "implemented",
+  "fingerprint": "sah-03-browser-recent-search-history.v1",
+  "updated_at": "2026-09-02T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "search-recent-history-store",
+      "path": "site/search_recent_history.mjs"
+    },
+    {
+      "id": "search-recent-history-view",
+      "path": "site/search_recent_history_view.mjs"
+    },
+    {
+      "id": "search-document-receipt-seam",
+      "path": "site/search_document.mjs"
+    },
+    {
+      "id": "search-recent-history-tests",
+      "path": "test/search_recent_history.test.mjs"
+    },
+    {
+      "id": "search-recent-history-browser-gate",
+      "path": "test/functional/42_search_recent_history.py"
+    },
+    {
+      "id": "search-recent-history-capture",
+      "path": "tools/capture_search_recent_history.py"
+    }
+  ]
+}
