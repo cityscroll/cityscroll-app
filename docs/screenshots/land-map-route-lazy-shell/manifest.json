@@ -54,21 +54,18 @@
       },
       "head_entry": {
         "route": "/browse/zoning/?boro=Queens&stage=public_review",
-        "requests": 221,
-        "first_paint_requests": 210,
+        "requests": 227,
+        "first_paint_requests": 212,
         "first_paint_ordering": {
-          "first_row_at_ms": 318,
-          "resources_before_first_row": 182,
+          "first_row_at_ms": 363,
+          "resources_before_first_row": 181,
           "map_dependencies_before_first_row": [
-            "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css",
-            "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            "http://127.0.0.1:51613/app/map_runtime.mjs"
           ],
-          "blocking_map_dependencies_before_first_row": [
-            "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css",
-            "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-          ]
+          "blocking_map_dependencies_before_first_row": []
         },
         "map_dependency_requests": [
+          "/app/map_runtime.mjs",
           "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css",
           "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js",
           "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
@@ -118,21 +115,18 @@
       },
       "head_entry": {
         "route": "/browse/zoning/?boro=Queens&stage=public_review",
-        "requests": 221,
-        "first_paint_requests": 210,
+        "requests": 227,
+        "first_paint_requests": 212,
         "first_paint_ordering": {
-          "first_row_at_ms": 318,
-          "resources_before_first_row": 182,
+          "first_row_at_ms": 363,
+          "resources_before_first_row": 181,
           "map_dependencies_before_first_row": [
-            "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css",
-            "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            "http://127.0.0.1:51613/app/map_runtime.mjs"
           ],
-          "blocking_map_dependencies_before_first_row": [
-            "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css",
-            "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-          ]
+          "blocking_map_dependencies_before_first_row": []
         },
         "map_dependency_requests": [
+          "/app/map_runtime.mjs",
           "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css",
           "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js",
           "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
@@ -183,8 +177,8 @@
     },
     {
       "name": "after/land-map-390.png",
-      "bytes": 90247,
-      "sha256": "59bfa192bddf1ae3b8b13cbb9ed0c77bed1b1dcf0718eae02a6b7f941d14fd6d",
+      "bytes": 90297,
+      "sha256": "568ac86076859ef478dc2dc69e60e97516d6753a92a3aa23c82067abc8ddd204",
       "viewport": [
         390,
         844
@@ -253,8 +247,8 @@
     },
     {
       "name": "after/land-map-1440.png",
-      "bytes": 164296,
-      "sha256": "d8d1cf517bd26e8f9d977436d5efab75ae0e475d3e629af062a78c8cbf0ce1c0",
+      "bytes": 164222,
+      "sha256": "1f8ad4360df049f069faf5f438974e034e7c6004b8aa319a44c6c10adb01d4a4",
       "viewport": [
         1440,
         900

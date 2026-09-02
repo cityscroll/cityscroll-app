@@ -38,12 +38,7 @@ import {
   buildMeetingGroupingReportTarget,
   renderReportIssueAffordance,
 } from "../report_issue.mjs";
-import {
-  fetchBrowseScoped,
-  projectBrowseScopedRows,
-} from "../browse_scoped_adapters.mjs";
-
-/* ===================== FEED LENSES (Property / Rules / Meetings) ===================== */
+import { meetingScopedDisclosureHTML, meetingScopedKeywordState, refreshFeedScopedKeyword, startMeetingScopedKeyword } from "./feed_scoped_keyword.mjs";
 const SECTIONS={
   property:{section:"Property Disposition", showAddr:true},
   rules:{section:"Agency Rules"},
@@ -108,61 +103,6 @@ const RULES_SNAPSHOT_URL="/data/rules_domain_observations.json";
 const PROPERTY_SNAPSHOT_URL="/data/property_resident_snapshot.json";
 const MEETINGS_SNAPSHOT_URL="/data/shared_meeting_read_model.json";
 let rulesDomainPromise=null,rulesViewPromise=null,propertyViewPromise=null,meetingViewPromise=null;
-const feedScopedSerial={};
-const feedScopedOutcomes={};
-
-function feedRowReferences(key,row){
-  if(key==="rules") return ["rulemaking","notice",row?.request_id||""].join(":");
-  if(key==="meetings") return row?.meeting_id||"";
-  if(key==="property"){
-    const locations=row?._location||row?.property_location||{};
-    return Array.isArray(locations.bbls)?locations.bbls.map(bbl=>`bbl:${bbl}`):[];
-  }
-  return "";
-}
-
-async function refreshFeedScopedKeyword(key,query,sourceRows,agency,stale){
-  const normalized=String(query||"").trim();
-  const serial=(feedScopedSerial[key]||0)+1;
-  feedScopedSerial[key]=serial;
-  if(!normalized){ delete feedScopedOutcomes[key]; return; }
-  const outcome=await fetchBrowseScoped(key,normalized);
-  if(stale() || feedScopedSerial[key]!==serial) return;
-  feedScopedOutcomes[key]=outcome;
-  const feed=document.querySelector(`#${key}feed`);
-  if(feed) feed.querySelector("[data-browse-scope-disclosure]")?.remove();
-  if(outcome.outcome==="unavailable"){
-    if(feed){
-      feed.dataset.browseScopeState="unavailable";
-      feed.insertAdjacentHTML("afterbegin",`<p class="note" data-browse-scope-disclosure>${escUiHtml(t("browse_scope_unavailable_snapshot",{source:"record"}))}</p>`);
-    }
-    return;
-  }
-  let projected=projectBrowseScopedRows(outcome,sourceRows,row=>feedRowReferences(key,row)).rows;
-  projected=projected.filter(row=>!agency||row.agency_name===agency);
-  if(key==="rules"){
-    const tools=await ruleLocationTools();
-    projected.forEach(row=>{
-      const hearingArea=tools.isRuleHearing(row)?normalizeHearingRow(row).affected_area:null;
-      row._ruleLocation=tools.ruleLocationFromRow(row,{hearingArea});
-    });
-    rulesViewCache={rules:projected};
-    rulesAll=projected;
-    renderRulesExplorer();
-  }else{
-    const tools=await propertyLocationTools();
-    projected.forEach(row=>{ row._location=row.property_location||tools.propertyLocationFromRow(row); });
-    projected=await filterFeedRowsToDistrictBag("property",projected);
-    if(stale() || feedScopedSerial[key]!==serial) return;
-    propAll=projected;
-    renderPropExplorer();
-  }
-  if(feed){
-    feed.dataset.browseScopeState=outcome.outcome;
-    feed.dataset.browseScopeCoverage=outcome.coverage_state||"";
-    if(outcome.outcome==="partial") feed.insertAdjacentHTML("afterbegin",`<p class="note" data-browse-scope-disclosure>${escUiHtml(t("browse_scope_partial_records",{source:"records"}))}</p>`);
-  }
-}
 function loadRulesDomainSnapshot(){
   if(rulesDomainPromise) return rulesDomainPromise;
   rulesDomainPromise=fetch(RULES_SNAPSHOT_URL,{credentials:"omit"})
@@ -218,18 +158,16 @@ async function resolveFeedNeighborhood(key, query){
 }
 
 async function loadSection(key){
-  if(key === "rules") await globalThis.ensureRules?.();
-  const cfg=SECTIONS[key];
-  const keepHash=hashLock;
+  if(key==="rules")await globalThis.ensureRules?.();
+  const keepHash=hashLock
   let kw=($("#"+key+"kw").value||"").trim();
   const resolvedNeighborhood=await resolveFeedNeighborhood(key, kw);
-  if(resolvedNeighborhood) kw="";
+  if(resolvedNeighborhood)kw="";
   else if(key==="property" && kw){ propertyResolvedNeighborhood=null; propertyCommunityDistrict=""; }
-  if(!keepHash || resolvedNeighborhood) updateHash();
+  if(!keepHash||resolvedNeighborhood)updateHash();
   globalThis.syncAlertsEntryHrefs?.();
   renderSearchComponents(key);
   if(key==="meetings") return loadHearings();
-  const whenSel=$("#"+key+"when");
   const ag=key==="rules" ? (globalThis.rulesAgency || "") : ($("#"+key+"agency")?$("#"+key+"agency").value:"");
   busyList("#"+key+"feed", 3);
   const stale = staleGuard("feed:"+key);
@@ -265,15 +203,12 @@ async function loadSection(key){
       rulesAll=rows; renderRulesExplorer();
     }
     else { announce(t("notices_announce",{n:rows.length})); renderFeed(key, rows); }
-    if(kw) refreshFeedScopedKeyword(key,kw,sourceRows,ag,stale);
+    if(kw) refreshFeedScopedKeyword({key,query:kw,sourceRows,agency:ag,stale,filterFeedRowsToDistrictBag,ruleLocationTools,normalizeHearingRow,propertyLocationTools,onRulesRows:next=>{rulesViewCache={rules:next};rulesAll=next;},onPropertyRows:next=>{propAll=next;},renderRulesExplorer,renderPropExplorer,t,escUiHtml});
   }catch(e){ if(!stale()){ unbusy("#"+key+"feed"); $("#"+key+"feed").innerHTML='<div class="empty">' + t("could_not_reach") + '</div>'; } }
 }
 
 let hearingAll=null;
 let hearingBaseAll=null;
-let meetingScopedQuery="";
-let meetingScopedOutcome=null;
-let meetingScopedSerial=0;
 const hearingPastCache=new Map();
 let communityBoardEdgeToolsPromise=null;
 let communityBoardEdgeTools=null;
@@ -1681,23 +1616,9 @@ async function renderHearingExplorer(options){
   const seq=++hearingRenderSeq;
   const filter=hearingViewFilter(), key=hearingFilterKey(filter);
   const scopedKeyword=String(filter.keyword||"").trim();
-  if(scopedKeyword!==meetingScopedQuery){
-    meetingScopedQuery=scopedKeyword;
-    const serial=++meetingScopedSerial;
-    if(!scopedKeyword){
-      meetingScopedOutcome=null;
-      hearingAll=hearingBaseAll||hearingAll;
-    }else{
-      const base=hearingBaseAll||hearingAll||[];
-      fetchBrowseScoped("meetings",scopedKeyword).then(outcome=>{
-        if(serial!==meetingScopedSerial||scopedKeyword!==meetingScopedQuery) return;
-        meetingScopedOutcome=outcome;
-        hearingAll=outcome.outcome==="unavailable"
-          ? base
-          : projectBrowseScopedRows(outcome,base,row=>row?.meeting_id||"").rows;
-        renderHearingExplorer();
-      });
-    }
+  if(scopedKeyword!==meetingScopedKeywordState().query){
+    if(!scopedKeyword) hearingAll=hearingBaseAll||hearingAll;
+    startMeetingScopedKeyword({keyword:scopedKeyword,baseRows:hearingBaseAll||hearingAll||[],render:rows=>{hearingAll=rows;renderHearingExplorer();}});
   }
   const allowWidening=hearingWideningDismissed!==key && filter.when!=="all";
   const boardQuery=typeof hearingCommunityBoardQuery==="function"
@@ -1736,13 +1657,7 @@ async function renderHearingExplorer(options){
     if(seq!==hearingRenderSeq) return;
   }
   const widening=$("#meetingswidening");
-  const scopedDisclosure=meetingScopedOutcome&&meetingScopedOutcome.query===scopedKeyword
-    ? meetingScopedOutcome.outcome==="unavailable"
-      ? `<div class="note" data-browse-scope-disclosure role="status">${escUiHtml(t("browse_scope_unavailable_snapshot",{source:"meeting"}))}</div>`
-      : meetingScopedOutcome.outcome==="partial"
-        ? `<div class="note" data-browse-scope-disclosure role="status">${escUiHtml(t("browse_scope_partial_records",{source:"meetings"}))}</div>`
-        : ""
-    : "";
+  const scopedDisclosure=meetingScopedDisclosureHTML({outcome:meetingScopedKeywordState().outcome,keyword:scopedKeyword,t,escUiHtml});
   widening.innerHTML=scopedDisclosure+hearingWideningHTML(selection,filter)+hearingCommunityBoardDisambiguationHTML(filter)+hearingCommunityBoardPivotHTML();
   const remove=widening.querySelector("[data-remove-widening]");
   if(remove) remove.addEventListener("click",()=>{
@@ -1944,8 +1859,6 @@ async function loadHearings(){
     if(stale()) return;
     hearingAll=records;
     hearingBaseAll=records;
-    meetingScopedQuery="";
-    meetingScopedOutcome=null;
     renderMeetingsAgencyScope(hearingAll);
     unbusy("#meetingsfeed");
     await renderHearingExplorer();
