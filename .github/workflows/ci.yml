@@ -423,9 +423,42 @@ jobs:
           if-no-files-found: error
           retention-days: 1
 
+  # The merge queue validates a branch against the tip of main it is combined
+  # with, not the base it was cut from. A branch cut before a required global
+  # gate landed can stay green on its own head yet fail the moment a merge group
+  # builds the combined tree, and under ALLGREEN grouping that ejects every green
+  # PR batched alongside it. This job reconstructs that combined tree ahead of
+  # the queue — it merges live origin/main into the branch and runs the shipped
+  # -site inventory over the result — so a branch that would poison a merge group
+  # turns red on its own checks first. It always reports (success on non-frontend
+  # paths) so it is safe to fold into the required Unit context below.
+  merge-group-preflight:
+    name: Merge-group inventory preflight
+    needs: changes
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Non-frontend or fast-path — report success
+        if: needs.changes.outputs.unit_full != 'true' || needs.changes.outputs.frontend != 'true'
+        run: echo "No site/** changes in scope; merge-group inventory preflight is not required."
+      - uses: actions/checkout@v4
+        if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true'
+        with:
+          persist-credentials: false
+          # Full history so the branch head can be merged with live main.
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true'
+        with:
+          node-version: "22"
+      - name: Simulate the merge-group combined tree
+        if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true'
+        run: node tools/aggregate_inventory_preflight.mjs --fetch
+
   unit:
     name: Unit tests (site + worker)
-    needs: [changes, unit-family]
+    needs: [changes, unit-family, merge-group-preflight]
     if: always()
     runs-on: ubuntu-latest
     timeout-minutes: 20
@@ -484,6 +517,12 @@ jobs:
         if: always() && needs.changes.outputs.unit_full == 'true' && needs.unit-family.result != 'success'
         run: |
           echo "Unit family aggregate is not green: ${{ needs.unit-family.result }}"
+          exit 1
+      - name: Fail when the merge-group preflight is not green
+        if: always() && needs.merge-group-preflight.result != 'success'
+        run: |
+          echo "Merge-group inventory preflight is not green: ${{ needs.merge-group-preflight.result }}"
+          echo "The branch would poison the merge queue's combined tree; see the 'Merge-group inventory preflight' job."
           exit 1
       - name: Report all Unit families green
         if: always() && needs.changes.outputs.unit_full == 'true' && needs.unit-family.result == 'success'

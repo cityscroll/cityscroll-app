@@ -64,6 +64,12 @@ contracts. Do not turn it into a delivery log, roadmap, module inventory, or car
   observation when practical; fix the root cause and keep the change scoped.
 - Generated artifacts are changed through their owning builder. Run its `--check` mode when one
   exists and commit only artifacts that the owning contract marks as tracked.
+- A new shipped `site/` module must be added to the `architecture/site-production-determinism.json`
+  inventory (`node tools/determinism_lint.mjs --write-site-inventory`), or the merge queue's
+  combined tree fails even when the branch is green on its own head. The merge queue validates a
+  branch against current `main`, not its base, so a branch cut before a required gate landed can be
+  green-but-doomed and eject the batch it joins; `node tools/aggregate_inventory_preflight.mjs`
+  simulates that combined tree ahead of the queue.
 - Add or update focused tests and fixtures beside the owning contract. Use
   [`test/`](test/) for site/tool contracts and [`worker/test/`](worker/test/) for Worker contracts.
 - Run focused tests first. Before opening or handing off a pull request, run `make prepush` (the
