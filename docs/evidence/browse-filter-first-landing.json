@@ -1,0 +1,3551 @@
+{
+  "schema": "cityscroll.browse-filter-first-landing-receipt.v1",
+  "topic": "rats",
+  "browser_mode": "headless chromium (playwright), offline: every remote host aborted or fulfilled locally",
+  "before_source": "git worktree at origin/main + node tools/build_primary_documents.mjs",
+  "after_source": "working tree site/ + node tools/build_primary_documents.mjs",
+  "routing_source": "each tree's own site/pages_edge.mjs, replayed by the capture server",
+  "viewports": [
+    [
+      390,
+      844
+    ],
+    [
+      1440,
+      900
+    ]
+  ],
+  "routes": [
+    {
+      "specimen": "browse-landing",
+      "requested": "/browse/",
+      "before": {
+        "status": 200,
+        "location": null
+      },
+      "after": {
+        "status": 200,
+        "location": null
+      }
+    },
+    {
+      "specimen": "legacy-browse-search",
+      "requested": "/browse/?walk_query=rats&walk_source=browse",
+      "before": {
+        "status": 302,
+        "location": "https://cityscroll.org/search/?q=rats"
+      },
+      "after": {
+        "status": 302,
+        "location": "https://cityscroll.org/search/?q=rats"
+      }
+    },
+    {
+      "specimen": "canonical-search",
+      "requested": "/search/?q=rats",
+      "before": {
+        "status": 200,
+        "location": null
+      },
+      "after": {
+        "status": 200,
+        "location": null
+      }
+    },
+    {
+      "specimen": "explicit-walk",
+      "requested": "/browse/?walk_query=rats&walk_source=search",
+      "before": {
+        "status": 200,
+        "location": null
+      },
+      "after": {
+        "status": 200,
+        "location": null
+      }
+    },
+    {
+      "specimen": "contracts-collection",
+      "requested": "/browse/contracts/",
+      "before": {
+        "status": 200,
+        "location": null
+      },
+      "after": {
+        "status": 200,
+        "location": null
+      }
+    },
+    {
+      "specimen": "land-collection",
+      "requested": "/browse/zoning/",
+      "before": {
+        "status": 200,
+        "location": null
+      },
+      "after": {
+        "status": 200,
+        "location": null
+      }
+    },
+    {
+      "specimen": "meetings-collection",
+      "requested": "/browse/meetings/",
+      "before": {
+        "status": 200,
+        "location": null
+      },
+      "after": {
+        "status": 200,
+        "location": null
+      }
+    }
+  ],
+  "advertised_destination_controls": {
+    "/browse/contracts/": [
+      "kw",
+      "agency",
+      "minamt"
+    ],
+    "/browse/zoning/": [
+      "lkw",
+      "lfamily",
+      "lprocedure",
+      "lstage"
+    ],
+    "/browse/meetings/": [
+      "meetingskw",
+      "meetingswhen",
+      "meetingsboro",
+      "meetingsagency"
+    ]
+  },
+  "search_response_fixture": {
+    "declared_as": "capture fixture served to the browser; not a live index read",
+    "records": [
+      {
+        "title": "Mayoral Rat Reduction Initiative",
+        "source": "site/data/procurement_browse_rows.json#rows"
+      },
+      {
+        "title": "New Rules Relating to Rat Inspections",
+        "source": "test/fixtures/calendar-contract/cases.json#keyword_agency_feed.rows[0]"
+      }
+    ],
+    "unchanged_by_this_change": [
+      "worker search index",
+      "ranking policy",
+      "SearchDocument producer",
+      "semantic-expansion rule",
+      "universal-filter vocabulary",
+      "typed collection filters",
+      "Browse route inventory"
+    ]
+  },
+  "files": [
+    {
+      "name": "before/browse-landing-390.png",
+      "bytes": 67304,
+      "sha256": "bd13271d247622f07c27be7ec3e34f777348594a8f02c493efe38978e5485b87",
+      "viewport": [
+        390,
+        844
+      ],
+      "observed": {
+        "url": "/browse/",
+        "canonical_query": null,
+        "walk_source": null,
+        "walk_query": null,
+        "document": "browse-landing",
+        "heading": "Browse NYC\u2019s public record",
+        "intro": "Pick a civic object. Follow the edges between people, places, agencies, contracts, and decisions.",
+        "order": {
+          "family_grid": 10318,
+          "traversal": {
+            "data-browse-explore-connections": -1,
+            "Explore connections": -1,
+            "Start a walk": -1,
+            "Graph entry": 7150,
+            "data-walk-entry": 6828
+          },
+          "families_first": false
+        },
+        "family_cards": [
+          {
+            "id": "source-contracts",
+            "label": "Contracts",
+            "count": "53,245 awards \u00b7 40 open opportunities",
+            "filters": "",
+            "updated": "Updated 2026-08-15",
+            "sources": "Award census \u00b7 open solicitation snapshot",
+            "routes": [
+              "/browse/contracts/"
+            ]
+          },
+          {
+            "id": "source-people-organizations",
+            "label": "People + organizations",
+            "count": "215 people \u00b7 1,142 committee edges \u00b7 86 agencies",
+            "filters": "",
+            "updated": "Update date unavailable",
+            "sources": "Community Board people and roles \u00b7 person hub \u00b7 committee graph \u00b7 agency constellation",
+            "routes": [
+              "/browse/people/",
+              "/browse/staffing/",
+              "/browse/people/#community-boards"
+            ]
+          },
+          {
+            "id": "source-zoning",
+            "label": "Land",
+            "count": "238 land projects \u00b7 133 property records",
+            "filters": "",
+            "updated": "Updated 2026-08-23",
+            "sources": "ZAP \u00b7 property observations \u00b7 parcel joins",
+            "routes": [
+              "/browse/zoning/",
+              "/browse/property/"
+            ]
+          },
+          {
+            "id": "source-rules",
+            "label": "Rules",
+            "count": "6,683 mandates \u00b7 2,736 deadline signals",
+            "filters": "",
+            "updated": "Updated 2026-08-09",
+            "sources": "Agency Rules \u00b7 agency mandate registry",
+            "routes": [
+              "/browse/rules/"
+            ]
+          },
+          {
+            "id": "source-meetings",
+            "label": "Meetings",
+            "count": "522 meeting rows \u00b7 16 outcome snapshots",
+            "filters": "",
+            "updated": "Updated 2026-08-15",
+            "sources": "Meeting snapshot \u00b7 outcome snapshot \u00b7 roll-call view",
+            "routes": [
+              "/browse/meetings/"
+            ]
+          },
+          {
+            "id": "source-exams",
+            "label": "Exams",
+            "count": "228 civil-service exams",
+            "filters": "",
+            "updated": "Update date unavailable",
+            "sources": "DCAS exam schedules \u00b7 published exam records",
+            "routes": [
+              "/browse/exams/"
+            ]
+          }
+        ],
+        "explore_connections": {
+          "present": false,
+          "heading": "",
+          "summary": "",
+          "open": null,
+          "graph_mark": true
+        },
+        "walk_families": [
+          {
+            "id": "money",
+            "href": "/browse/contracts/",
+            "state": "available",
+            "coverage": "40 records in this family"
+          },
+          {
+            "id": "people-organizations",
+            "href": "/browse/people/",
+            "state": "available",
+            "coverage": "215 records in this family"
+          },
+          {
+            "id": "land-property",
+            "href": "/browse/zoning/",
+            "state": "available",
+            "coverage": "40 records in this family"
+          },
+          {
+            "id": "rules-mandates",
+            "href": "/browse/rules/",
+            "state": "available",
+            "coverage": "100 records in this family"
+          },
+          {
+            "id": "meetings-decisions",
+            "href": "/browse/meetings/",
+            "state": "available",
+            "coverage": "522 records in this family"
+          },
+          {
+            "id": "exams",
+            "href": "/browse/exams/",
+            "state": "available",
+            "coverage": "228 records in this family"
+          }
+        ],
+        "control": {
+          "action": "/search/",
+          "field": "q",
+          "submit": "Search records",
+          "posts_walk_fields": false
+        },
+        "destination_controls": {},
+        "records": []
+      }
+    },
+    {
+      "name": "before/browse-landing-landing-390.png",
+      "bytes": 66747,
+      "sha256": "1394a515e22de11619ef13c40e2b317510988d27e7538f45b7e0f2fbd4db8b86",
+      "viewport": [
+        390,
+        844
+      ],
+      "observed": {
+        "url": "/browse/",
+        "canonical_query": null,
+        "walk_source": null,
+        "walk_query": null,
+        "document": "browse-landing",
+        "heading": "Browse NYC\u2019s public record",
+        "intro": "Pick a civic object. Follow the edges between people, places, agencies, contracts, and decisions.",
+        "order": {
+          "family_grid": 10318,
+          "traversal": {
+            "data-browse-explore-connections": -1,
+            "Explore connections": -1,
+            "Start a walk": -1,
+            "Graph entry": 7150,
+            "data-walk-entry": 6828
+          },
+          "families_first": false
+        },
+        "family_cards": [
+          {
+            "id": "source-contracts",
+            "label": "Contracts",
+            "count": "53,245 awards \u00b7 40 open opportunities",
+            "filters": "",
+            "updated": "Updated 2026-08-15",
+            "sources": "Award census \u00b7 open solicitation snapshot",
+            "routes": [
+              "/browse/contracts/"
+            ]
+          },
+          {
+            "id": "source-people-organizations",
+            "label": "People + organizations",
+            "count": "215 people \u00b7 1,142 committee edges \u00b7 86 agencies",
+            "filters": "",
+            "updated": "Update date unavailable",
+            "sources": "Community Board people and roles \u00b7 person hub \u00b7 committee graph \u00b7 agency constellation",
+            "routes": [
+              "/browse/people/",
+              "/browse/staffing/",
+              "/browse/people/#community-boards"
+            ]
+          },
+          {
+            "id": "source-zoning",
+            "label": "Land",
+            "count": "238 land projects \u00b7 133 property records",
+            "filters": "",
+            "updated": "Updated 2026-08-23",
+            "sources": "ZAP \u00b7 property observations \u00b7 parcel joins",
+            "routes": [
+              "/browse/zoning/",
+              "/browse/property/"
+            ]
+          },
+          {
+            "id": "source-rules",
+            "label": "Rules",
+            "count": "6,683 mandates \u00b7 2,736 deadline signals",
+            "filters": "",
+            "updated": "Updated 2026-08-09",
+            "sources": "Agency Rules \u00b7 agency mandate registry",
+            "routes": [
+              "/browse/rules/"
+            ]
+          },
+          {
+            "id": "source-meetings",
+            "label": "Meetings",
+            "count": "522 meeting rows \u00b7 16 outcome snapshots",
+            "filters": "",
+            "updated": "Updated 2026-08-15",
+            "sources": "Meeting snapshot \u00b7 outcome snapshot \u00b7 roll-call view",
+            "routes": [
+              "/browse/meetings/"
+            ]
+          },
+          {
+            "id": "source-exams",
+            "label": "Exams",
+            "count": "228 civil-service exams",
+            "filters": "",
+            "updated": "Update date unavailable",
+            "sources": "DCAS exam schedules \u00b7 published exam records",
+            "routes": [
+              "/browse/exams/"
+            ]
+          }
+        ],
+        "explore_connections": {
+          "present": false,
+          "heading": "",
+          "summary": "",
+          "open": null,
+          "graph_mark": true
+        },
+        "walk_families": [
+          {
+            "id": "money",
+            "href": "/browse/contracts/",
+            "state": "available",
+            "coverage": "40 records in this family"
+          },
+          {
+            "id": "people-organizations",
+            "href": "/browse/people/",
+            "state": "available",
+            "coverage": "215 records in this family"
+          },
+          {
+            "id": "land-property",
+            "href": "/browse/zoning/",
+            "state": "available",
+            "coverage": "40 records in this family"
+          },
+          {
+            "id": "rules-mandates",
+            "href": "/browse/rules/",
+            "state": "available",
+            "coverage": "100 records in this family"
+          },
+          {
+            "id": "meetings-decisions",
+            "href": "/browse/meetings/",
+            "state": "available",
+            "coverage": "522 records in this family"
+          },
+          {
+            "id": "exams",
+            "href": "/browse/exams/",
+            "state": "available",
+            "coverage": "228 records in this family"
+          }
+        ],
+        "control": {
+          "action": "/search/",
+          "field": "q",
+          "submit": "Search records",
+          "posts_walk_fields": false
+        },
+        "destination_controls": {},
+        "records": []
+      }
+    },
+    {
+      "name": "before/legacy-browse-search-390.png",
+      "bytes": 59945,
+      "sha256": "a77a83821892ef44eae04e49209cc5ebd3fc2164151ddd588824cbb2e1b41547",
+      "viewport": [
+        390,
+        844
+      ],
+      "observed": {
+        "url": "/search/?q=rats",
+        "canonical_query": "rats",
+        "walk_source": null,
+        "walk_query": null,
+        "document": "search",
+        "heading": "",
+        "intro": "",
+        "order": {
+          "family_grid": -1,
+          "traversal": {
+            "data-browse-explore-connections": -1,
+            "Explore connections": -1,
+            "Start a walk": -1,
+            "Graph entry": -1,
+            "data-walk-entry": -1
+          },
+          "families_first": false
+        },
+        "family_cards": [],
+        "explore_connections": {
+          "present": false,
+          "heading": "",
+          "summary": "",
+          "open": null,
+          "graph_mark": false
+        },
+        "walk_families": [],
+        "control": {
+          "action": "/search/",
+          "field": "q",
+          "submit": "Search",
+          "posts_walk_fields": false
+        },
+        "destination_controls": {},
+        "records": [
+          "Mayoral Rat Reduction Initiative",
+          "Continue in Contracts",
+          "New Rules Relating to Rat Inspections",
+          "Continue in Meetings"
+        ]
+      }
+    },
+    {
+      "name": "before/canonical-search-390.png",
+      "bytes": 59942,
+      "sha256": "aba902d1c1237f3fff37726a7a7e01efa618fb2ce1f0a2afbe7c07b16d55f63e",
+      "viewport": [
+        390,
+        844
+      ],
+      "observed": {
+        "url": "/search/?q=rats",
+        "canonical_query": "rats",
+        "walk_source": null,
+        "walk_query": null,
+        "document": "search",
+        "heading": "",
+        "intro": "",
+        "order": {
+          "family_grid": -1,
+          "traversal": {
+            "data-browse-explore-connections": -1,
+            "Explore connections": -1,
+            "Start a walk": -1,
+            "Graph entry": -1,
+            "data-walk-entry": -1
+          },
+          "families_first": false
+        },
+        "family_cards": [],
+        "explore_connections": {
+          "present": false,
+          "heading": "",
+          "summary": "",
+          "open": null,
+          "graph_mark": false
+        },
+        "walk_families": [],
+        "control": {
+          "action": "/search/",
+          "field": "q",
+          "submit": "Search",
+          "posts_walk_fields": false
+        },
+        "destination_controls": {},
+        "records": [
+          "Mayoral Rat Reduction Initiative",
+          "Continue in Contracts",
+          "New Rules Relating to Rat Inspections",
+          "Continue in Meetings"
+        ]
+      }
+    },
+    {
+      "name": "before/explicit-walk-390.png",
+      "bytes": 67304,
+      "sha256": "bd13271d247622f07c27be7ec3e34f777348594a8f02c493efe38978e5485b87",
+      "viewport": [
+        390,
+        844
+      ],
+      "observed": {
+        "url": "/browse/?walk_query=rats&walk_source=search",
+        "canonical_query": null,
+        "walk_source": "search",
+        "walk_query": "rats",
+        "document": "browse-landing",
+        "heading": "Browse NYC\u2019s public record",
+        "intro": "Pick a civic object. Follow the edges between people, places, agencies, contracts, and decisions.",
+        "order": {
+          "family_grid": 10919,
+          "traversal": {
+            "data-browse-explore-connections": -1,
+            "Explore connections": -1,
+            "Start a walk": -1,
+            "Graph entry": 7968,
+            "data-walk-entry": 7646
+          },
+          "families_first": false
+        },
+        "family_cards": [
+          {
+            "id": "source-contracts",
+            "label": "Contracts",
+            "count": "53,245 awards \u00b7 40 open opportunities",
+            "filters": "",
+            "updated": "Updated 2026-08-15",
+            "sources": "Award census \u00b7 open solicitation snapshot",
+            "routes": [
+              "/browse/contracts/"
+            ]
+          },
+          {
+            "id": "source-people-organizations",
+            "label": "People + organizations",
+            "count": "215 people \u00b7 1,142 committee edges \u00b7 86 agencies",
+            "filters": "",
+            "updated": "Update date unavailable",
+            "sources": "Community Board people and roles \u00b7 person hub \u00b7 committee graph \u00b7 agency constellation",
+            "routes": [
+              "/browse/people/",
+              "/browse/staffing/",
+              "/browse/people/#community-boards"
+            ]
+          },
+          {
+            "id": "source-zoning",
+            "label": "Land",
+            "count": "238 land projects \u00b7 133 property records",
+            "filters": "",
+            "updated": "Updated 2026-08-23",
+            "sources": "ZAP \u00b7 property observations \u00b7 parcel joins",
+            "routes": [
+              "/browse/zoning/",
+              "/browse/property/"
+            ]
+          },
+          {
+            "id": "source-rules",
+            "label": "Rules",
+            "count": "6,683 mandates \u00b7 2,736 deadline signals",
+            "filters": "",
+            "updated": "Updated 2026-08-09",
+            "sources": "Agency Rules \u00b7 agency mandate registry",
+            "routes": [
+              "/browse/rules/"
+            ]
+          },
+          {
+            "id": "source-meetings",
+            "label": "Meetings",
+            "count": "522 meeting rows \u00b7 16 outcome snapshots",
+            "filters": "",
+            "updated": "Updated 2026-08-15",
+            "sources": "Meeting snapshot \u00b7 outcome snapshot \u00b7 roll-call view",
+            "routes": [
+              "/browse/meetings/"
+            ]
+          },
+          {
+            "id": "source-exams",
+            "label": "Exams",
+            "count": "228 civil-service exams",
+            "filters": "",
+            "updated": "Update date unavailable",
+            "sources": "DCAS exam schedules \u00b7 published exam records",
+            "routes": [
+              "/browse/exams/"
+            ]
+          }
+        ],
+        "explore_connections": {
+          "present": false,
+          "heading": "",
+          "summary": "",
+          "open": null,
+          "graph_mark": true
+        },
+        "walk_families": [
+          {
+            "id": "money",
+            "href": "/browse/contracts/?q=rats&walk_source=search&walk_query=rats",
+            "state": "empty",
+            "coverage": ""
+          },
+          {
+            "id": "people-organizations",
+            "href": "/browse/people/?q=rats&walk_source=search&walk_query=rats",
+            "state": "empty",
+            "coverage": ""
+          },
+          {
+            "id": "land-property",
+            "href": "/browse/zoning/?q=rats&walk_source=search&walk_query=rats",
+            "state": "empty",
+            "coverage": ""
+          },
+          {
+            "id": "rules-mandates",
+            "href": "/browse/rules/?q=rats&walk_source=search&walk_query=rats",
+            "state": "empty",
+            "coverage": ""
+          },
+          {
+            "id": "meetings-decisions",
+            "href": "/browse/meetings/?q=rats&walk_source=search&walk_query=rats",
+            "state": "empty",
+            "coverage": ""
+          },
+          {
+            "id": "exams",
+            "href": "/browse/exams/?q=rats&walk_source=search&walk_query=rats",
+            "state": "empty",
+            "coverage": ""
+          }
+        ],
+        "control": {
+          "action": "/search/",
+          "field": "q",
+          "submit": "Search records",
+          "posts_walk_fields": false
+        },
+        "destination_controls": {},
+        "records": []
+      }
+    },
+    {
+      "name": "before/explicit-walk-landing-390.png",
+      "bytes": 70213,
+      "sha256": "5e2a7635e4c6f58dbb1e42ab9c709d437cf968dc5171fc9d2c842dcfbe0f95eb",
+      "viewport": [
+        390,
+        844
+      ],
+      "observed": {
+        "url": "/browse/?walk_query=rats&walk_source=search",
+        "canonical_query": null,
+        "walk_source": "search",
+        "walk_query": "rats",
+        "document": "browse-landing",
+        "heading": "Browse NYC\u2019s public record",
+        "intro": "Pick a civic object. Follow the edges between people, places, agencies, contracts, and decisions.",
+        "order": {
+          "family_grid": 10919,
+          "traversal": {
+            "data-browse-explore-connections": -1,
+            "Explore connections": -1,
+            "Start a walk": -1,
+            "Graph entry": 7968,
+            "data-walk-entry": 7646
+          },
+          "families_first": false
+        },
+        "family_cards": [
+          {
+            "id": "source-contracts",
+            "label": "Contracts",
+            "count": "53,245 awards \u00b7 40 open opportunities",
+            "filters": "",
+            "updated": "Updated 2026-08-15",
+            "sources": "Award census \u00b7 open solicitation snapshot",
+            "routes": [
+              "/browse/contracts/"
+            ]
+          },
+          {
+            "id": "source-people-organizations",
+            "label": "People + organizations",
+            "count": "215 people \u00b7 1,142 committee edges \u00b7 86 agencies",
+            "filters": "",
+            "updated": "Update date unavailable",
+            "sources": "Community Board people and roles \u00b7 person hub \u00b7 committee graph \u00b7 agency constellation",
+            "routes": [
+              "/browse/people/",
+              "/browse/staffing/",
+              "/browse/people/#community-boards"
+            ]
+          },
+          {
+            "id": "source-zoning",
+            "label": "Land",
+            "count": "238 land projects \u00b7 133 property records",
+            "filters": "",
+            "updated": "Updated 2026-08-23",
+            "sources": "ZAP \u00b7 property observations \u00b7 parcel joins",
+            "routes": [
+              "/browse/zoning/",
+              "/browse/property/"
+            ]
+          },
+          {
+            "id": "source-rules",
+            "label": "Rules",
+            "count": "6,683 mandates \u00b7 2,736 deadline signals",
+            "filters": "",
+            "updated": "Updated 2026-08-09",
+            "sources": "Agency Rules \u00b7 agency mandate registry",
+            "routes": [
+              "/browse/rules/"
+            ]
+          },
+          {
+            "id": "source-meetings",
+            "label": "Meetings",
+            "count": "522 meeting rows \u00b7 16 outcome snapshots",
+            "filters": "",
+            "updated": "Updated 2026-08-15",
+            "sources": "Meeting snapshot \u00b7 outcome snapshot \u00b7 roll-call view",
+            "routes": [
+              "/browse/meetings/"
+            ]
+          },
+          {
+            "id": "source-exams",
+            "label": "Exams",
+            "count": "228 civil-service exams",
+            "filters": "",
+            "updated": "Update date unavailable",
+            "sources": "DCAS exam schedules \u00b7 published exam records",
+            "routes": [
+              "/browse/exams/"
+            ]
+          }
+        ],
+        "explore_connections": {
+          "present": false,
+          "heading": "",
+          "summary": "",
+          "open": null,
+          "graph_mark": true
+        },
+        "walk_families": [
+          {
+            "id": "money",
+            "href": "/browse/contracts/?q=rats&walk_source=search&walk_query=rats",
+            "state": "empty",
+            "coverage": ""
+          },
+          {
+            "id": "people-organizations",
+            "href": "/browse/people/?q=rats&walk_source=search&walk_query=rats",
+            "state": "empty",
+            "coverage": ""
+          },
+          {
+            "id": "land-property",
+            "href": "/browse/zoning/?q=rats&walk_source=search&walk_query=rats",
+            "state": "empty",
+            "coverage": ""
+          },
+          {
+            "id": "rules-mandates",
+            "href": "/browse/rules/?q=rats&walk_source=search&walk_query=rats",
+            "state": "empty",
+            "coverage": ""
+          },
+          {
+            "id": "meetings-decisions",
+            "href": "/browse/meetings/?q=rats&walk_source=search&walk_query=rats",
+            "state": "empty",
+            "coverage": ""
+          },
+          {
+            "id": "exams",
+            "href": "/browse/exams/?q=rats&walk_source=search&walk_query=rats",
+            "state": "empty",
+            "coverage": ""
+          }
+        ],
+        "control": {
+          "action": "/search/",
+          "field": "q",
+          "submit": "Search records",
+          "posts_walk_fields": false
+        },
+        "destination_controls": {},
+        "records": []
+      }
+    },
+    {
+      "name": "before/contracts-collection-390.png",
+      "bytes": 67663,
+      "sha256": "b6b94b26d4a0f778cd12ec52da263450965deb0421f1acb6b203e268d03830f3",
+      "viewport": [
+        390,
+        844
+      ],
+      "observed": {
+        "url": "/browse/contracts/",
+        "canonical_query": null,
+        "walk_source": null,
+        "walk_query": null,
+        "document": "other",
+        "heading": "",
+        "intro": "",
+        "order": {
+          "family_grid": -1,
+          "traversal": {
+            "data-browse-explore-connections": -1,
+            "Explore connections": -1,
+            "Start a walk": -1,
+            "Graph entry": -1,
+            "data-walk-entry": -1
+          },
+          "families_first": false
+        },
+        "family_cards": [],
+        "explore_connections": {
+          "present": false,
+          "heading": "",
+          "summary": "",
+          "open": null,
+          "graph_mark": false
+        },
+        "walk_families": [],
+        "control": null,
+        "destination_controls": {
+          "kw": true,
+          "agency": true,
+          "minamt": true
+        },
+        "records": []
+      }
+    },
+    {
+      "name": "before/land-collection-390.png",
+      "bytes": 67725,
+      "sha256": "1c54cb59496047ebe68310a08e4b39df7f1bffac9587c7f60ec00a4901b0b7ea",
+      "viewport": [
+        390,
+        844
+      ],
+      "observed": {
+        "url": "/browse/zoning/",
+        "canonical_query": null,
+        "walk_source": null,
+        "walk_query": null,
+        "document": "other",
+        "heading": "",
+        "intro": "",
+        "order": {
+          "family_grid": -1,
+          "traversal": {
+            "data-browse-explore-connections": -1,
+            "Explore connections": -1,
+            "Start a walk": -1,
+            "Graph entry": -1,
+            "data-walk-entry": -1
+          },
+          "families_first": false
+        },
+        "family_cards": [],
+        "explore_connections": {
+          "present": false,
+          "heading": "",
+          "summary": "",
+          "open": null,
+          "graph_mark": false
+        },
+        "walk_families": [],
+        "control": null,
+        "destination_controls": {
+          "lkw": true,
+          "lfamily": true,
+          "lprocedure": true,
+          "lstage": true
+        },
+        "records": []
+      }
+    },
+    {
+      "name": "before/meetings-collection-390.png",
+      "bytes": 67313,
+      "sha256": "4b6b4bb51bb8ae6dd78a005bc4b87da02193e6ea7a4bcf36db7a1b3ad1c90013",
+      "viewport": [
+        390,
+        844
+      ],
+      "observed": {
+        "url": "/browse/meetings/",
+        "canonical_query": null,
+        "walk_source": null,
+        "walk_query": null,
+        "document": "other",
+        "heading": "",
+        "intro": "",
+        "order": {
+          "family_grid": -1,
+          "traversal": {
+            "data-browse-explore-connections": -1,
+            "Explore connections": -1,
+            "Start a walk": -1,
+            "Graph entry": -1,
+            "data-walk-entry": -1
+          },
+          "families_first": false
+        },
+        "family_cards": [],
+        "explore_connections": {
+          "present": false,
+          "heading": "",
+          "summary": "",
+          "open": null,
+          "graph_mark": false
+        },
+        "walk_families": [],
+        "control": null,
+        "destination_controls": {
+          "meetingskw": true,
+          "meetingswhen": true,
+          "meetingsboro": true,
+          "meetingsagency": true
+        },
+        "records": []
+      }
+    },
+    {
+      "name": "before/browse-landing-1440.png",
+      "bytes": 104873,
+      "sha256": "2b86a94210b000304b74faaca0a41049cd65fa10099a1b048e663dca98345c6f",
+      "viewport": [
+        1440,
+        900
+      ],
+      "observed": {
+        "url": "/browse/",
+        "canonical_query": null,
+        "walk_source": null,
+        "walk_query": null,
+        "document": "browse-landing",
+        "heading": "Browse NYC\u2019s public record",
+        "intro": "Pick a civic object. Follow the edges between people, places, agencies, contracts, and decisions.",
+        "order": {
+          "family_grid": 10318,
+          "traversal": {
+            "data-browse-explore-connections": -1,
+            "Explore connections": -1,
+            "Start a walk": -1,
+            "Graph entry": 7150,
+            "data-walk-entry": 6828
+          },
+          "families_first": false
+        },
+        "family_cards": [
+          {
+            "id": "source-contracts",
+            "label": "Contracts",
+            "count": "53,245 awards \u00b7 40 open opportunities",
+            "filters": "",
+            "updated": "Updated 2026-08-15",
+            "sources": "Award census \u00b7 open solicitation snapshot",
+            "routes": [
+              "/browse/contracts/"
+            ]
+          },
+          {
+            "id": "source-people-organizations",
+            "label": "People + organizations",
+            "count": "215 people \u00b7 1,142 committee edges \u00b7 86 agencies",
+            "filters": "",
+            "updated": "Update date unavailable",
+            "sources": "Community Board people and roles \u00b7 person hub \u00b7 committee graph \u00b7 agency constellation",
+            "routes": [
+              "/browse/people/",
+              "/browse/staffing/",
+              "/browse/people/#community-boards"
+            ]
+          },
+          {
+            "id": "source-zoning",
+            "label": "Land",
+            "count": "238 land projects \u00b7 133 property records",
+            "filters": "",
+            "updated": "Updated 2026-08-23",
+            "sources": "ZAP \u00b7 property observations \u00b7 parcel joins",
+            "routes": [
+              "/browse/zoning/",
+              "/browse/property/"
+            ]
+          },
+          {
+            "id": "source-rules",
+            "label": "Rules",
+            "count": "6,683 mandates \u00b7 2,736 deadline signals",
+            "filters": "",
+            "updated": "Updated 2026-08-09",
+            "sources": "Agency Rules \u00b7 agency mandate registry",
+            "routes": [
+              "/browse/rules/"
+            ]
+          },
+          {
+            "id": "source-meetings",
+            "label": "Meetings",
+            "count": "522 meeting rows \u00b7 16 outcome snapshots",
+            "filters": "",
+            "updated": "Updated 2026-08-15",
+            "sources": "Meeting snapshot \u00b7 outcome snapshot \u00b7 roll-call view",
+            "routes": [
+              "/browse/meetings/"
+            ]
+          },
+          {
+            "id": "source-exams",
+            "label": "Exams",
+            "count": "228 civil-service exams",
+            "filters": "",
+            "updated": "Update date unavailable",
+            "sources": "DCAS exam schedules \u00b7 published exam records",
+            "routes": [
+              "/browse/exams/"
+            ]
+          }
+        ],
+        "explore_connections": {
+          "present": false,
+          "heading": "",
+          "summary": "",
+          "open": null,
+          "graph_mark": true
+        },
+        "walk_families": [
+          {
+            "id": "money",
+            "href": "/browse/contracts/",
+            "state": "available",
+            "coverage": "40 records in this family"
+          },
+          {
+            "id": "people-organizations",
+            "href": "/browse/people/",
+            "state": "available",
+            "coverage": "215 records in this family"
+          },
+          {
+            "id": "land-property",
+            "href": "/browse/zoning/",
+            "state": "available",
+            "coverage": "40 records in this family"
+          },
+          {
+            "id": "rules-mandates",
+            "href": "/browse/rules/",
+            "state": "available",
+            "coverage": "100 records in this family"
+          },
+          {
+            "id": "meetings-decisions",
+            "href": "/browse/meetings/",
+            "state": "available",
+            "coverage": "522 records in this family"
+          },
+          {
+            "id": "exams",
+            "href": "/browse/exams/",
+            "state": "available",
+            "coverage": "228 records in this family"
+          }
+        ],
+        "control": {
+          "action": "/search/",
+          "field": "q",
+          "submit": "Search records",
+          "posts_walk_fields": false
+        },
+        "destination_controls": {},
+        "records": []
+      }
+    },
+    {
+      "name": "before/browse-landing-landing-1440.png",
+      "bytes": 157119,
+      "sha256": "489574fb5407b0801817dadc2a4514612e278f1b70b1da9df038f8fae2f516da",
+      "viewport": [
+        1440,
+        900
+      ],
+      "observed": {
+        "url": "/browse/",
+        "canonical_query": null,
+        "walk_source": null,
+        "walk_query": null,
+        "document": "browse-landing",
+        "heading": "Browse NYC\u2019s public record",
+        "intro": "Pick a civic object. Follow the edges between people, places, agencies, contracts, and decisions.",
+        "order": {
+          "family_grid": 10318,
+          "traversal": {
+            "data-browse-explore-connections": -1,
+            "Explore connections": -1,
+            "Start a walk": -1,
+            "Graph entry": 7150,
+            "data-walk-entry": 6828
+          },
+          "families_first": false
+        },
+        "family_cards": [
+          {
+            "id": "source-contracts",
+            "label": "Contracts",
+            "count": "53,245 awards \u00b7 40 open opportunities",
+            "filters": "",
+            "updated": "Updated 2026-08-15",
+            "sources": "Award census \u00b7 open solicitation snapshot",
+            "routes": [
+              "/browse/contracts/"
+            ]
+          },
+          {
+            "id": "source-people-organizations",
+            "label": "People + organizations",
+            "count": "215 people \u00b7 1,142 committee edges \u00b7 86 agencies",
+            "filters": "",
+            "updated": "Update date unavailable",
+            "sources": "Community Board people and roles \u00b7 person hub \u00b7 committee graph \u00b7 agency constellation",
+            "routes": [
+              "/browse/people/",
+              "/browse/staffing/",
+              "/browse/people/#community-boards"
+            ]
+          },
+          {
+            "id": "source-zoning",
+            "label": "Land",
+            "count": "238 land projects \u00b7 133 property records",
+            "filters": "",
+            "updated": "Updated 2026-08-23",
+            "sources": "ZAP \u00b7 property observations \u00b7 parcel joins",
+            "routes": [
+              "/browse/zoning/",
+              "/browse/property/"
+            ]
+          },
+          {
+            "id": "source-rules",
+            "label": "Rules",
+            "count": "6,683 mandates \u00b7 2,736 deadline signals",
+            "filters": "",
+            "updated": "Updated 2026-08-09",
+            "sources": "Agency Rules \u00b7 agency mandate registry",
+            "routes": [
+              "/browse/rules/"
+            ]
+          },
+          {
+            "id": "source-meetings",
+            "label": "Meetings",
+            "count": "522 meeting rows \u00b7 16 outcome snapshots",
+            "filters": "",
+            "updated": "Updated 2026-08-15",
+            "sources": "Meeting snapshot \u00b7 outcome snapshot \u00b7 roll-call view",
+            "routes": [
+              "/browse/meetings/"
+            ]
+          },
+          {
+            "id": "source-exams",
+            "label": "Exams",
+            "count": "228 civil-service exams",
+            "filters": "",
+            "updated": "Update date unavailable",
+            "sources": "DCAS exam schedules \u00b7 published exam records",
+            "routes": [
+              "/browse/exams/"
+            ]
+          }
+        ],
+        "explore_connections": {
+          "present": false,
+          "heading": "",
+          "summary": "",
+          "open": null,
+          "graph_mark": true
+        },
+        "walk_families": [
+          {
+            "id": "money",
+            "href": "/browse/contracts/",
+            "state": "available",
+            "coverage": "40 records in this family"
+          },
+          {
+            "id": "people-organizations",
+            "href": "/browse/people/",
+            "state": "available",
+            "coverage": "215 records in this family"
+          },
+          {
+            "id": "land-property",
+            "href": "/browse/zoning/",
+            "state": "available",
+            "coverage": "40 records in this family"
+          },
+          {
+            "id": "rules-mandates",
+            "href": "/browse/rules/",
+            "state": "available",
+            "coverage": "100 records in this family"
+          },
+          {
+            "id": "meetings-decisions",
+            "href": "/browse/meetings/",
+            "state": "available",
+            "coverage": "522 records in this family"
+          },
+          {
+            "id": "exams",
+            "href": "/browse/exams/",
+            "state": "available",
+            "coverage": "228 records in this family"
+          }
+        ],
+        "control": {
+          "action": "/search/",
+          "field": "q",
+          "submit": "Search records",
+          "posts_walk_fields": false
+        },
+        "destination_controls": {},
+        "records": []
+      }
+    },
+    {
+      "name": "before/legacy-browse-search-1440.png",
+      "bytes": 109477,
+      "sha256": "68f10ad6d6de2fefb208cac9a11e0f512b7292faa1c4f88c48f8b4c8c4c692fc",
+      "viewport": [
+        1440,
+        900
+      ],
+      "observed": {
+        "url": "/search/?q=rats",
+        "canonical_query": "rats",
+        "walk_source": null,
+        "walk_query": null,
+        "document": "search",
+        "heading": "",
+        "intro": "",
+        "order": {
+          "family_grid": -1,
+          "traversal": {
+            "data-browse-explore-connections": -1,
+            "Explore connections": -1,
+            "Start a walk": -1,
+            "Graph entry": -1,
+            "data-walk-entry": -1
+          },
+          "families_first": false
+        },
+        "family_cards": [],
+        "explore_connections": {
+          "present": false,
+          "heading": "",
+          "summary": "",
+          "open": null,
+          "graph_mark": false
+        },
+        "walk_families": [],
+        "control": {
+          "action": "/search/",
+          "field": "q",
+          "submit": "Search",
+          "posts_walk_fields": false
+        },
+        "destination_controls": {},
+        "records": [
+          "Mayoral Rat Reduction Initiative",
+          "Continue in Contracts",
+          "New Rules Relating to Rat Inspections",
+          "Continue in Meetings"
+        ]
+      }
+    },
+    {
+      "name": "before/canonical-search-1440.png",
+      "bytes": 109581,
+      "sha256": "88e25e9214437675dfe4def51adbcd4b2dc9f63b665646e602d29f1bce85452f",
+      "viewport": [
+        1440,
+        900
+      ],
+      "observed": {
+        "url": "/search/?q=rats",
+        "canonical_query": "rats",
+        "walk_source": null,
+        "walk_query": null,
+        "document": "search",
+        "heading": "",
+        "intro": "",
+        "order": {
+          "family_grid": -1,
+          "traversal": {
+            "data-browse-explore-connections": -1,
+            "Explore connections": -1,
+            "Start a walk": -1,
+            "Graph entry": -1,
+            "data-walk-entry": -1
+          },
+          "families_first": false
+        },
+        "family_cards": [],
+        "explore_connections": {
+          "present": false,
+          "heading": "",
+          "summary": "",
+          "open": null,
+          "graph_mark": false
+        },
+        "walk_families": [],
+        "control": {
+          "action": "/search/",
+          "field": "q",
+          "submit": "Search",
+          "posts_walk_fields": false
+        },
+        "destination_controls": {},
+        "records": [
+          "Mayoral Rat Reduction Initiative",
+          "Continue in Contracts",
+          "New Rules Relating to Rat Inspections",
+          "Continue in Meetings"
+        ]
+      }
+    },
+    {
+      "name": "before/explicit-walk-1440.png",
+      "bytes": 104902,
+      "sha256": "8ea1e6402abd38099f6c2670a9498a8d1efc0937dd1b18218ad6c677ab6440d2",
+      "viewport": [
+        1440,
+        900
+      ],
+      "observed": {
+        "url": "/browse/?walk_query=rats&walk_source=search",
+        "canonical_query": null,
+        "walk_source": "search",
+        "walk_query": "rats",
+        "document": "browse-landing",
+        "heading": "Browse NYC\u2019s public record",
+        "intro": "Pick a civic object. Follow the edges between people, places, agencies, contracts, and decisions.",
+        "order": {
+          "family_grid": 10919,
+          "traversal": {
+            "data-browse-explore-connections": -1,
+            "Explore connections": -1,
+            "Start a walk": -1,
+            "Graph entry": 7968,
+            "data-walk-entry": 7646
+          },
+          "families_first": false
+        },
+        "family_cards": [
+          {
+            "id": "source-contracts",
+            "label": "Contracts",
+            "count": "53,245 awards \u00b7 40 open opportunities",
+            "filters": "",
+            "updated": "Updated 2026-08-15",
+            "sources": "Award census \u00b7 open solicitation snapshot",
+            "routes": [
+              "/browse/contracts/"
+            ]
+          },
+          {
+            "id": "source-people-organizations",
+            "label": "People + organizations",
+            "count": "215 people \u00b7 1,142 committee edges \u00b7 86 agencies",
+            "filters": "",
+            "updated": "Update date unavailable",
+            "sources": "Community Board people and roles \u00b7 person hub \u00b7 committee graph \u00b7 agency constellation",
+            "routes": [
+              "/browse/people/",
+              "/browse/staffing/",
+              "/browse/people/#community-boards"
+            ]
+          },
+          {
+            "id": "source-zoning",
+            "label": "Land",
+            "count": "238 land projects \u00b7 133 property records",
+            "filters": "",
+            "updated": "Updated 2026-08-23",
+            "sources": "ZAP \u00b7 property observations \u00b7 parcel joins",
+            "routes": [
+              "/browse/zoning/",
+              "/browse/property/"
+            ]
+          },
+          {
+            "id": "source-rules",
+            "label": "Rules",
+            "count": "6,683 mandates \u00b7 2,736 deadline signals",
+            "filters": "",
+            "updated": "Updated 2026-08-09",
+            "sources": "Agency Rules \u00b7 agency mandate registry",
+            "routes": [
+              "/browse/rules/"
+            ]
+          },
+          {
+            "id": "source-meetings",
+            "label": "Meetings",
+            "count": "522 meeting rows \u00b7 16 outcome snapshots",
+            "filters": "",
+            "updated": "Updated 2026-08-15",
+            "sources": "Meeting snapshot \u00b7 outcome snapshot \u00b7 roll-call view",
+            "routes": [
+              "/browse/meetings/"
+            ]
+          },
+          {
+            "id": "source-exams",
+            "label": "Exams",
+            "count": "228 civil-service exams",
+            "filters": "",
+            "updated": "Update date unavailable",
+            "sources": "DCAS exam schedules \u00b7 published exam records",
+            "routes": [
+              "/browse/exams/"
+            ]
+          }
+        ],
+        "explore_connections": {
+          "present": false,
+          "heading": "",
+          "summary": "",
+          "open": null,
+          "graph_mark": true
+        },
+        "walk_families": [
+          {
+            "id": "money",
+            "href": "/browse/contracts/?q=rats&walk_source=search&walk_query=rats",
+            "state": "empty",
+            "coverage": ""
+          },
+          {
+            "id": "people-organizations",
+            "href": "/browse/people/?q=rats&walk_source=search&walk_query=rats",
+            "state": "empty",
+            "coverage": ""
+          },
+          {
+            "id": "land-property",
+            "href": "/browse/zoning/?q=rats&walk_source=search&walk_query=rats",
+            "state": "empty",
+            "coverage": ""
+          },
+          {
+            "id": "rules-mandates",
+            "href": "/browse/rules/?q=rats&walk_source=search&walk_query=rats",
+            "state": "empty",
+            "coverage": ""
+          },
+          {
+            "id": "meetings-decisions",
+            "href": "/browse/meetings/?q=rats&walk_source=search&walk_query=rats",
+            "state": "empty",
+            "coverage": ""
+          },
+          {
+            "id": "exams",
+            "href": "/browse/exams/?q=rats&walk_source=search&walk_query=rats",
+            "state": "empty",
+            "coverage": ""
+          }
+        ],
+        "control": {
+          "action": "/search/",
+          "field": "q",
+          "submit": "Search records",
+          "posts_walk_fields": false
+        },
+        "destination_controls": {},
+        "records": []
+      }
+    },
+    {
+      "name": "before/explicit-walk-landing-1440.png",
+      "bytes": 157546,
+      "sha256": "4733ae3e48462a9c8eda576003d14bf76651206905b69a6be8effe027ae9684d",
+      "viewport": [
+        1440,
+        900
+      ],
+      "observed": {
+        "url": "/browse/?walk_query=rats&walk_source=search",
+        "canonical_query": null,
+        "walk_source": "search",
+        "walk_query": "rats",
+        "document": "browse-landing",
+        "heading": "Browse NYC\u2019s public record",
+        "intro": "Pick a civic object. Follow the edges between people, places, agencies, contracts, and decisions.",
+        "order": {
+          "family_grid": 10919,
+          "traversal": {
+            "data-browse-explore-connections": -1,
+            "Explore connections": -1,
+            "Start a walk": -1,
+            "Graph entry": 7968,
+            "data-walk-entry": 7646
+          },
+          "families_first": false
+        },
+        "family_cards": [
+          {
+            "id": "source-contracts",
+            "label": "Contracts",
+            "count": "53,245 awards \u00b7 40 open opportunities",
+            "filters": "",
+            "updated": "Updated 2026-08-15",
+            "sources": "Award census \u00b7 open solicitation snapshot",
+            "routes": [
+              "/browse/contracts/"
+            ]
+          },
+          {
+            "id": "source-people-organizations",
+            "label": "People + organizations",
+            "count": "215 people \u00b7 1,142 committee edges \u00b7 86 agencies",
+            "filters": "",
+            "updated": "Update date unavailable",
+            "sources": "Community Board people and roles \u00b7 person hub \u00b7 committee graph \u00b7 agency constellation",
+            "routes": [
+              "/browse/people/",
+              "/browse/staffing/",
+              "/browse/people/#community-boards"
+            ]
+          },
+          {
+            "id": "source-zoning",
+            "label": "Land",
+            "count": "238 land projects \u00b7 133 property records",
+            "filters": "",
+            "updated": "Updated 2026-08-23",
+            "sources": "ZAP \u00b7 property observations \u00b7 parcel joins",
+            "routes": [
+              "/browse/zoning/",
+              "/browse/property/"
+            ]
+          },
+          {
+            "id": "source-rules",
+            "label": "Rules",
+            "count": "6,683 mandates \u00b7 2,736 deadline signals",
+            "filters": "",
+            "updated": "Updated 2026-08-09",
+            "sources": "Agency Rules \u00b7 agency mandate registry",
+            "routes": [
+              "/browse/rules/"
+            ]
+          },
+          {
+            "id": "source-meetings",
+            "label": "Meetings",
+            "count": "522 meeting rows \u00b7 16 outcome snapshots",
+            "filters": "",
+            "updated": "Updated 2026-08-15",
+            "sources": "Meeting snapshot \u00b7 outcome snapshot \u00b7 roll-call view",
+            "routes": [
+              "/browse/meetings/"
+            ]
+          },
+          {
+            "id": "source-exams",
+            "label": "Exams",
+            "count": "228 civil-service exams",
+            "filters": "",
+            "updated": "Update date unavailable",
+            "sources": "DCAS exam schedules \u00b7 published exam records",
+            "routes": [
+              "/browse/exams/"
+            ]
+          }
+        ],
+        "explore_connections": {
+          "present": false,
+          "heading": "",
+          "summary": "",
+          "open": null,
+          "graph_mark": true
+        },
+        "walk_families": [
+          {
+            "id": "money",
+            "href": "/browse/contracts/?q=rats&walk_source=search&walk_query=rats",
+            "state": "empty",
+            "coverage": ""
+          },
+          {
+            "id": "people-organizations",
+            "href": "/browse/people/?q=rats&walk_source=search&walk_query=rats",
+            "state": "empty",
+            "coverage": ""
+          },
+          {
+            "id": "land-property",
+            "href": "/browse/zoning/?q=rats&walk_source=search&walk_query=rats",
+            "state": "empty",
+            "coverage": ""
+          },
+          {
+            "id": "rules-mandates",
+            "href": "/browse/rules/?q=rats&walk_source=search&walk_query=rats",
+            "state": "empty",
+            "coverage": ""
+          },
+          {
+            "id": "meetings-decisions",
+            "href": "/browse/meetings/?q=rats&walk_source=search&walk_query=rats",
+            "state": "empty",
+            "coverage": ""
+          },
+          {
+            "id": "exams",
+            "href": "/browse/exams/?q=rats&walk_source=search&walk_query=rats",
+            "state": "empty",
+            "coverage": ""
+          }
+        ],
+        "control": {
+          "action": "/search/",
+          "field": "q",
+          "submit": "Search records",
+          "posts_walk_fields": false
+        },
+        "destination_controls": {},
+        "records": []
+      }
+    },
+    {
+      "name": "before/contracts-collection-1440.png",
+      "bytes": 111978,
+      "sha256": "ee8fe7c1221f0d746e8f833240a367b8537e5a43a801d40366e63c555b9e91b5",
+      "viewport": [
+        1440,
+        900
+      ],
+      "observed": {
+        "url": "/browse/contracts/",
+        "canonical_query": null,
+        "walk_source": null,
+        "walk_query": null,
+        "document": "other",
+        "heading": "",
+        "intro": "",
+        "order": {
+          "family_grid": -1,
+          "traversal": {
+            "data-browse-explore-connections": -1,
+            "Explore connections": -1,
+            "Start a walk": -1,
+            "Graph entry": -1,
+            "data-walk-entry": -1
+          },
+          "families_first": false
+        },
+        "family_cards": [],
+        "explore_connections": {
+          "present": false,
+          "heading": "",
+          "summary": "",
+          "open": null,
+          "graph_mark": false
+        },
+        "walk_families": [],
+        "control": null,
+        "destination_controls": {
+          "kw": true,
+          "agency": true,
+          "minamt": true
+        },
+        "records": []
+      }
+    },
+    {
+      "name": "before/land-collection-1440.png",
+      "bytes": 113592,
+      "sha256": "a562c253a2bf99225d20fe40485c2fd405f4120576299415a56891c680fc623c",
+      "viewport": [
+        1440,
+        900
+      ],
+      "observed": {
+        "url": "/browse/zoning/",
+        "canonical_query": null,
+        "walk_source": null,
+        "walk_query": null,
+        "document": "other",
+        "heading": "",
+        "intro": "",
+        "order": {
+          "family_grid": -1,
+          "traversal": {
+            "data-browse-explore-connections": -1,
+            "Explore connections": -1,
+            "Start a walk": -1,
+            "Graph entry": -1,
+            "data-walk-entry": -1
+          },
+          "families_first": false
+        },
+        "family_cards": [],
+        "explore_connections": {
+          "present": false,
+          "heading": "",
+          "summary": "",
+          "open": null,
+          "graph_mark": false
+        },
+        "walk_families": [],
+        "control": null,
+        "destination_controls": {
+          "lkw": true,
+          "lfamily": true,
+          "lprocedure": true,
+          "lstage": true
+        },
+        "records": []
+      }
+    },
+    {
+      "name": "before/meetings-collection-1440.png",
+      "bytes": 123525,
+      "sha256": "e23b140790813dec929ec6dc412bb004add68ffb9b29a9e5dbc8ec7cb94c4d3e",
+      "viewport": [
+        1440,
+        900
+      ],
+      "observed": {
+        "url": "/browse/meetings/",
+        "canonical_query": null,
+        "walk_source": null,
+        "walk_query": null,
+        "document": "other",
+        "heading": "",
+        "intro": "",
+        "order": {
+          "family_grid": -1,
+          "traversal": {
+            "data-browse-explore-connections": -1,
+            "Explore connections": -1,
+            "Start a walk": -1,
+            "Graph entry": -1,
+            "data-walk-entry": -1
+          },
+          "families_first": false
+        },
+        "family_cards": [],
+        "explore_connections": {
+          "present": false,
+          "heading": "",
+          "summary": "",
+          "open": null,
+          "graph_mark": false
+        },
+        "walk_families": [],
+        "control": null,
+        "destination_controls": {
+          "meetingskw": true,
+          "meetingswhen": true,
+          "meetingsboro": true,
+          "meetingsagency": true
+        },
+        "records": []
+      }
+    },
+    {
+      "name": "after/browse-landing-390.png",
+      "bytes": 67304,
+      "sha256": "bd13271d247622f07c27be7ec3e34f777348594a8f02c493efe38978e5485b87",
+      "viewport": [
+        390,
+        844
+      ],
+      "observed": {
+        "url": "/browse/",
+        "canonical_query": null,
+        "walk_source": null,
+        "walk_query": null,
+        "document": "browse-landing",
+        "heading": "Browse NYC public records",
+        "intro": "Choose a type of record, then search or filter that collection.",
+        "order": {
+          "family_grid": 6972,
+          "traversal": {
+            "data-browse-explore-connections": 13535,
+            "Explore connections": 13674,
+            "Start a walk": 13959,
+            "Graph entry": 14410,
+            "data-walk-entry": 14018
+          },
+          "families_first": true
+        },
+        "family_cards": [
+          {
+            "id": "source-contracts",
+            "label": "Contracts",
+            "count": "53,245 awards \u00b7 40 open opportunities",
+            "filters": "Filter by keyword, agency, and minimum award amount.",
+            "updated": "Updated 2026-08-15",
+            "sources": "Award census \u00b7 open solicitation snapshot",
+            "routes": [
+              "/browse/contracts/"
+            ]
+          },
+          {
+            "id": "source-people-organizations",
+            "label": "People + organizations",
+            "count": "215 people \u00b7 1,142 committee edges \u00b7 86 agencies",
+            "filters": "Filter by record type, institution, and people subtype.",
+            "updated": "Update date unavailable",
+            "sources": "Community Board people and roles \u00b7 person hub \u00b7 committee graph \u00b7 agency constellation",
+            "routes": [
+              "/browse/people/",
+              "/browse/staffing/",
+              "/browse/people/#community-boards"
+            ]
+          },
+          {
+            "id": "source-zoning",
+            "label": "Land",
+            "count": "238 land projects \u00b7 133 property records",
+            "filters": "Filter by keyword, action type, review procedure, and stage.",
+            "updated": "Updated 2026-08-23",
+            "sources": "ZAP \u00b7 property observations \u00b7 parcel joins",
+            "routes": [
+              "/browse/zoning/",
+              "/browse/property/"
+            ]
+          },
+          {
+            "id": "source-rules",
+            "label": "Rules",
+            "count": "6,683 mandates \u00b7 2,736 deadline signals",
+            "filters": "Filter by keyword and agency.",
+            "updated": "Updated 2026-08-09",
+            "sources": "Agency Rules \u00b7 agency mandate registry",
+            "routes": [
+              "/browse/rules/"
+            ]
+          },
+          {
+            "id": "source-meetings",
+            "label": "Meetings",
+            "count": "522 meeting rows \u00b7 16 outcome snapshots",
+            "filters": "Filter by keyword, date window, borough, and agency.",
+            "updated": "Updated 2026-08-15",
+            "sources": "Meeting snapshot \u00b7 outcome snapshot \u00b7 roll-call view",
+            "routes": [
+              "/browse/meetings/"
+            ]
+          },
+          {
+            "id": "source-exams",
+            "label": "Exams",
+            "count": "228 civil-service exams",
+            "filters": "Filter by job or exam number, eligibility, interest area, and exam window.",
+            "updated": "Update date unavailable",
+            "sources": "DCAS exam schedules \u00b7 published exam records",
+            "routes": [
+              "/browse/exams/"
+            ]
+          }
+        ],
+        "explore_connections": {
+          "present": true,
+          "heading": "Explore connections",
+          "summary": "Start a walk",
+          "open": false,
+          "graph_mark": true
+        },
+        "walk_families": [
+          {
+            "id": "money",
+            "href": "/browse/contracts/",
+            "state": "available",
+            "coverage": "40 records in this family"
+          },
+          {
+            "id": "people-organizations",
+            "href": "/browse/people/",
+            "state": "available",
+            "coverage": "215 records in this family"
+          },
+          {
+            "id": "land-property",
+            "href": "/browse/zoning/",
+            "state": "available",
+            "coverage": "40 records in this family"
+          },
+          {
+            "id": "rules-mandates",
+            "href": "/browse/rules/",
+            "state": "available",
+            "coverage": "100 records in this family"
+          },
+          {
+            "id": "meetings-decisions",
+            "href": "/browse/meetings/",
+            "state": "available",
+            "coverage": "522 records in this family"
+          },
+          {
+            "id": "exams",
+            "href": "/browse/exams/",
+            "state": "available",
+            "coverage": "228 records in this family"
+          }
+        ],
+        "control": {
+          "action": "/search/",
+          "field": "q",
+          "submit": "Search records",
+          "posts_walk_fields": false
+        },
+        "destination_controls": {},
+        "records": []
+      }
+    },
+    {
+      "name": "after/browse-landing-landing-390.png",
+      "bytes": 76302,
+      "sha256": "436ff7545303791dc0dff37097418791516afb7384fc0a0055cbff0b4f5c13a0",
+      "viewport": [
+        390,
+        844
+      ],
+      "observed": {
+        "url": "/browse/",
+        "canonical_query": null,
+        "walk_source": null,
+        "walk_query": null,
+        "document": "browse-landing",
+        "heading": "Browse NYC public records",
+        "intro": "Choose a type of record, then search or filter that collection.",
+        "order": {
+          "family_grid": 6972,
+          "traversal": {
+            "data-browse-explore-connections": 13535,
+            "Explore connections": 13674,
+            "Start a walk": 13959,
+            "Graph entry": 14410,
+            "data-walk-entry": 14018
+          },
+          "families_first": true
+        },
+        "family_cards": [
+          {
+            "id": "source-contracts",
+            "label": "Contracts",
+            "count": "53,245 awards \u00b7 40 open opportunities",
+            "filters": "Filter by keyword, agency, and minimum award amount.",
+            "updated": "Updated 2026-08-15",
+            "sources": "Award census \u00b7 open solicitation snapshot",
+            "routes": [
+              "/browse/contracts/"
+            ]
+          },
+          {
+            "id": "source-people-organizations",
+            "label": "People + organizations",
+            "count": "215 people \u00b7 1,142 committee edges \u00b7 86 agencies",
+            "filters": "Filter by record type, institution, and people subtype.",
+            "updated": "Update date unavailable",
+            "sources": "Community Board people and roles \u00b7 person hub \u00b7 committee graph \u00b7 agency constellation",
+            "routes": [
+              "/browse/people/",
+              "/browse/staffing/",
+              "/browse/people/#community-boards"
+            ]
+          },
+          {
+            "id": "source-zoning",
+            "label": "Land",
+            "count": "238 land projects \u00b7 133 property records",
+            "filters": "Filter by keyword, action type, review procedure, and stage.",
+            "updated": "Updated 2026-08-23",
+            "sources": "ZAP \u00b7 property observations \u00b7 parcel joins",
+            "routes": [
+              "/browse/zoning/",
+              "/browse/property/"
+            ]
+          },
+          {
+            "id": "source-rules",
+            "label": "Rules",
+            "count": "6,683 mandates \u00b7 2,736 deadline signals",
+            "filters": "Filter by keyword and agency.",
+            "updated": "Updated 2026-08-09",
+            "sources": "Agency Rules \u00b7 agency mandate registry",
+            "routes": [
+              "/browse/rules/"
+            ]
+          },
+          {
+            "id": "source-meetings",
+            "label": "Meetings",
+            "count": "522 meeting rows \u00b7 16 outcome snapshots",
+            "filters": "Filter by keyword, date window, borough, and agency.",
+            "updated": "Updated 2026-08-15",
+            "sources": "Meeting snapshot \u00b7 outcome snapshot \u00b7 roll-call view",
+            "routes": [
+              "/browse/meetings/"
+            ]
+          },
+          {
+            "id": "source-exams",
+            "label": "Exams",
+            "count": "228 civil-service exams",
+            "filters": "Filter by job or exam number, eligibility, interest area, and exam window.",
+            "updated": "Update date unavailable",
+            "sources": "DCAS exam schedules \u00b7 published exam records",
+            "routes": [
+              "/browse/exams/"
+            ]
+          }
+        ],
+        "explore_connections": {
+          "present": true,
+          "heading": "Explore connections",
+          "summary": "Start a walk",
+          "open": false,
+          "graph_mark": true
+        },
+        "walk_families": [
+          {
+            "id": "money",
+            "href": "/browse/contracts/",
+            "state": "available",
+            "coverage": "40 records in this family"
+          },
+          {
+            "id": "people-organizations",
+            "href": "/browse/people/",
+            "state": "available",
+            "coverage": "215 records in this family"
+          },
+          {
+            "id": "land-property",
+            "href": "/browse/zoning/",
+            "state": "available",
+            "coverage": "40 records in this family"
+          },
+          {
+            "id": "rules-mandates",
+            "href": "/browse/rules/",
+            "state": "available",
+            "coverage": "100 records in this family"
+          },
+          {
+            "id": "meetings-decisions",
+            "href": "/browse/meetings/",
+            "state": "available",
+            "coverage": "522 records in this family"
+          },
+          {
+            "id": "exams",
+            "href": "/browse/exams/",
+            "state": "available",
+            "coverage": "228 records in this family"
+          }
+        ],
+        "control": {
+          "action": "/search/",
+          "field": "q",
+          "submit": "Search records",
+          "posts_walk_fields": false
+        },
+        "destination_controls": {},
+        "records": []
+      }
+    },
+    {
+      "name": "after/legacy-browse-search-390.png",
+      "bytes": 59950,
+      "sha256": "3edbc5ef6d7068179fb57cf83ad9d00b4ae96609c7e142b0fe3292c35a0ddc3e",
+      "viewport": [
+        390,
+        844
+      ],
+      "observed": {
+        "url": "/search/?q=rats",
+        "canonical_query": "rats",
+        "walk_source": null,
+        "walk_query": null,
+        "document": "search",
+        "heading": "",
+        "intro": "",
+        "order": {
+          "family_grid": -1,
+          "traversal": {
+            "data-browse-explore-connections": -1,
+            "Explore connections": -1,
+            "Start a walk": -1,
+            "Graph entry": -1,
+            "data-walk-entry": -1
+          },
+          "families_first": false
+        },
+        "family_cards": [],
+        "explore_connections": {
+          "present": false,
+          "heading": "",
+          "summary": "",
+          "open": null,
+          "graph_mark": false
+        },
+        "walk_families": [],
+        "control": {
+          "action": "/search/",
+          "field": "q",
+          "submit": "Search",
+          "posts_walk_fields": false
+        },
+        "destination_controls": {},
+        "records": [
+          "Mayoral Rat Reduction Initiative",
+          "Continue in Contracts",
+          "New Rules Relating to Rat Inspections",
+          "Continue in Meetings"
+        ]
+      }
+    },
+    {
+      "name": "after/canonical-search-390.png",
+      "bytes": 59913,
+      "sha256": "b084bd85fd71d5ef0bace9500717086641033f6146f4443a018e5130c41a1fe8",
+      "viewport": [
+        390,
+        844
+      ],
+      "observed": {
+        "url": "/search/?q=rats",
+        "canonical_query": "rats",
+        "walk_source": null,
+        "walk_query": null,
+        "document": "search",
+        "heading": "",
+        "intro": "",
+        "order": {
+          "family_grid": -1,
+          "traversal": {
+            "data-browse-explore-connections": -1,
+            "Explore connections": -1,
+            "Start a walk": -1,
+            "Graph entry": -1,
+            "data-walk-entry": -1
+          },
+          "families_first": false
+        },
+        "family_cards": [],
+        "explore_connections": {
+          "present": false,
+          "heading": "",
+          "summary": "",
+          "open": null,
+          "graph_mark": false
+        },
+        "walk_families": [],
+        "control": {
+          "action": "/search/",
+          "field": "q",
+          "submit": "Search",
+          "posts_walk_fields": false
+        },
+        "destination_controls": {},
+        "records": [
+          "Mayoral Rat Reduction Initiative",
+          "Continue in Contracts",
+          "New Rules Relating to Rat Inspections",
+          "Continue in Meetings"
+        ]
+      }
+    },
+    {
+      "name": "after/explicit-walk-390.png",
+      "bytes": 67304,
+      "sha256": "bd13271d247622f07c27be7ec3e34f777348594a8f02c493efe38978e5485b87",
+      "viewport": [
+        390,
+        844
+      ],
+      "observed": {
+        "url": "/browse/?walk_query=rats&walk_source=search",
+        "canonical_query": null,
+        "walk_source": "search",
+        "walk_query": "rats",
+        "document": "browse-landing",
+        "heading": "Browse NYC public records",
+        "intro": "Choose a type of record, then search or filter that collection.",
+        "order": {
+          "family_grid": 7790,
+          "traversal": {
+            "data-browse-explore-connections": 14353,
+            "Explore connections": 14492,
+            "Start a walk": 14785,
+            "Graph entry": 15236,
+            "data-walk-entry": 14844
+          },
+          "families_first": true
+        },
+        "family_cards": [
+          {
+            "id": "source-contracts",
+            "label": "Contracts",
+            "count": "53,245 awards \u00b7 40 open opportunities",
+            "filters": "Filter by keyword, agency, and minimum award amount.",
+            "updated": "Updated 2026-08-15",
+            "sources": "Award census \u00b7 open solicitation snapshot",
+            "routes": [
+              "/browse/contracts/"
+            ]
+          },
+          {
+            "id": "source-people-organizations",
+            "label": "People + organizations",
+            "count": "215 people \u00b7 1,142 committee edges \u00b7 86 agencies",
+            "filters": "Filter by record type, institution, and people subtype.",
+            "updated": "Update date unavailable",
+            "sources": "Community Board people and roles \u00b7 person hub \u00b7 committee graph \u00b7 agency constellation",
+            "routes": [
+              "/browse/people/",
+              "/browse/staffing/",
+              "/browse/people/#community-boards"
+            ]
+          },
+          {
+            "id": "source-zoning",
+            "label": "Land",
+            "count": "238 land projects \u00b7 133 property records",
+            "filters": "Filter by keyword, action type, review procedure, and stage.",
+            "updated": "Updated 2026-08-23",
+            "sources": "ZAP \u00b7 property observations \u00b7 parcel joins",
+            "routes": [
+              "/browse/zoning/",
+              "/browse/property/"
+            ]
+          },
+          {
+            "id": "source-rules",
+            "label": "Rules",
+            "count": "6,683 mandates \u00b7 2,736 deadline signals",
+            "filters": "Filter by keyword and agency.",
+            "updated": "Updated 2026-08-09",
+            "sources": "Agency Rules \u00b7 agency mandate registry",
+            "routes": [
+              "/browse/rules/"
+            ]
+          },
+          {
+            "id": "source-meetings",
+            "label": "Meetings",
+            "count": "522 meeting rows \u00b7 16 outcome snapshots",
+            "filters": "Filter by keyword, date window, borough, and agency.",
+            "updated": "Updated 2026-08-15",
+            "sources": "Meeting snapshot \u00b7 outcome snapshot \u00b7 roll-call view",
+            "routes": [
+              "/browse/meetings/"
+            ]
+          },
+          {
+            "id": "source-exams",
+            "label": "Exams",
+            "count": "228 civil-service exams",
+            "filters": "Filter by job or exam number, eligibility, interest area, and exam window.",
+            "updated": "Update date unavailable",
+            "sources": "DCAS exam schedules \u00b7 published exam records",
+            "routes": [
+              "/browse/exams/"
+            ]
+          }
+        ],
+        "explore_connections": {
+          "present": true,
+          "heading": "Explore connections",
+          "summary": "Start a walk",
+          "open": true,
+          "graph_mark": true
+        },
+        "walk_families": [
+          {
+            "id": "money",
+            "href": "/browse/contracts/?q=rats&walk_source=search&walk_query=rats",
+            "state": "empty",
+            "coverage": ""
+          },
+          {
+            "id": "people-organizations",
+            "href": "/browse/people/?q=rats&walk_source=search&walk_query=rats",
+            "state": "empty",
+            "coverage": ""
+          },
+          {
+            "id": "land-property",
+            "href": "/browse/zoning/?q=rats&walk_source=search&walk_query=rats",
+            "state": "empty",
+            "coverage": ""
+          },
+          {
+            "id": "rules-mandates",
+            "href": "/browse/rules/?q=rats&walk_source=search&walk_query=rats",
+            "state": "empty",
+            "coverage": ""
+          },
+          {
+            "id": "meetings-decisions",
+            "href": "/browse/meetings/?q=rats&walk_source=search&walk_query=rats",
+            "state": "empty",
+            "coverage": ""
+          },
+          {
+            "id": "exams",
+            "href": "/browse/exams/?q=rats&walk_source=search&walk_query=rats",
+            "state": "empty",
+            "coverage": ""
+          }
+        ],
+        "control": {
+          "action": "/search/",
+          "field": "q",
+          "submit": "Search records",
+          "posts_walk_fields": false
+        },
+        "destination_controls": {},
+        "records": []
+      }
+    },
+    {
+      "name": "after/explicit-walk-landing-390.png",
+      "bytes": 76302,
+      "sha256": "436ff7545303791dc0dff37097418791516afb7384fc0a0055cbff0b4f5c13a0",
+      "viewport": [
+        390,
+        844
+      ],
+      "observed": {
+        "url": "/browse/?walk_query=rats&walk_source=search",
+        "canonical_query": null,
+        "walk_source": "search",
+        "walk_query": "rats",
+        "document": "browse-landing",
+        "heading": "Browse NYC public records",
+        "intro": "Choose a type of record, then search or filter that collection.",
+        "order": {
+          "family_grid": 7790,
+          "traversal": {
+            "data-browse-explore-connections": 14353,
+            "Explore connections": 14492,
+            "Start a walk": 14785,
+            "Graph entry": 15236,
+            "data-walk-entry": 14844
+          },
+          "families_first": true
+        },
+        "family_cards": [
+          {
+            "id": "source-contracts",
+            "label": "Contracts",
+            "count": "53,245 awards \u00b7 40 open opportunities",
+            "filters": "Filter by keyword, agency, and minimum award amount.",
+            "updated": "Updated 2026-08-15",
+            "sources": "Award census \u00b7 open solicitation snapshot",
+            "routes": [
+              "/browse/contracts/"
+            ]
+          },
+          {
+            "id": "source-people-organizations",
+            "label": "People + organizations",
+            "count": "215 people \u00b7 1,142 committee edges \u00b7 86 agencies",
+            "filters": "Filter by record type, institution, and people subtype.",
+            "updated": "Update date unavailable",
+            "sources": "Community Board people and roles \u00b7 person hub \u00b7 committee graph \u00b7 agency constellation",
+            "routes": [
+              "/browse/people/",
+              "/browse/staffing/",
+              "/browse/people/#community-boards"
+            ]
+          },
+          {
+            "id": "source-zoning",
+            "label": "Land",
+            "count": "238 land projects \u00b7 133 property records",
+            "filters": "Filter by keyword, action type, review procedure, and stage.",
+            "updated": "Updated 2026-08-23",
+            "sources": "ZAP \u00b7 property observations \u00b7 parcel joins",
+            "routes": [
+              "/browse/zoning/",
+              "/browse/property/"
+            ]
+          },
+          {
+            "id": "source-rules",
+            "label": "Rules",
+            "count": "6,683 mandates \u00b7 2,736 deadline signals",
+            "filters": "Filter by keyword and agency.",
+            "updated": "Updated 2026-08-09",
+            "sources": "Agency Rules \u00b7 agency mandate registry",
+            "routes": [
+              "/browse/rules/"
+            ]
+          },
+          {
+            "id": "source-meetings",
+            "label": "Meetings",
+            "count": "522 meeting rows \u00b7 16 outcome snapshots",
+            "filters": "Filter by keyword, date window, borough, and agency.",
+            "updated": "Updated 2026-08-15",
+            "sources": "Meeting snapshot \u00b7 outcome snapshot \u00b7 roll-call view",
+            "routes": [
+              "/browse/meetings/"
+            ]
+          },
+          {
+            "id": "source-exams",
+            "label": "Exams",
+            "count": "228 civil-service exams",
+            "filters": "Filter by job or exam number, eligibility, interest area, and exam window.",
+            "updated": "Update date unavailable",
+            "sources": "DCAS exam schedules \u00b7 published exam records",
+            "routes": [
+              "/browse/exams/"
+            ]
+          }
+        ],
+        "explore_connections": {
+          "present": true,
+          "heading": "Explore connections",
+          "summary": "Start a walk",
+          "open": true,
+          "graph_mark": true
+        },
+        "walk_families": [
+          {
+            "id": "money",
+            "href": "/browse/contracts/?q=rats&walk_source=search&walk_query=rats",
+            "state": "empty",
+            "coverage": ""
+          },
+          {
+            "id": "people-organizations",
+            "href": "/browse/people/?q=rats&walk_source=search&walk_query=rats",
+            "state": "empty",
+            "coverage": ""
+          },
+          {
+            "id": "land-property",
+            "href": "/browse/zoning/?q=rats&walk_source=search&walk_query=rats",
+            "state": "empty",
+            "coverage": ""
+          },
+          {
+            "id": "rules-mandates",
+            "href": "/browse/rules/?q=rats&walk_source=search&walk_query=rats",
+            "state": "empty",
+            "coverage": ""
+          },
+          {
+            "id": "meetings-decisions",
+            "href": "/browse/meetings/?q=rats&walk_source=search&walk_query=rats",
+            "state": "empty",
+            "coverage": ""
+          },
+          {
+            "id": "exams",
+            "href": "/browse/exams/?q=rats&walk_source=search&walk_query=rats",
+            "state": "empty",
+            "coverage": ""
+          }
+        ],
+        "control": {
+          "action": "/search/",
+          "field": "q",
+          "submit": "Search records",
+          "posts_walk_fields": false
+        },
+        "destination_controls": {},
+        "records": []
+      }
+    },
+    {
+      "name": "after/contracts-collection-390.png",
+      "bytes": 67663,
+      "sha256": "b6b94b26d4a0f778cd12ec52da263450965deb0421f1acb6b203e268d03830f3",
+      "viewport": [
+        390,
+        844
+      ],
+      "observed": {
+        "url": "/browse/contracts/",
+        "canonical_query": null,
+        "walk_source": null,
+        "walk_query": null,
+        "document": "other",
+        "heading": "",
+        "intro": "",
+        "order": {
+          "family_grid": -1,
+          "traversal": {
+            "data-browse-explore-connections": -1,
+            "Explore connections": -1,
+            "Start a walk": -1,
+            "Graph entry": -1,
+            "data-walk-entry": -1
+          },
+          "families_first": false
+        },
+        "family_cards": [],
+        "explore_connections": {
+          "present": false,
+          "heading": "",
+          "summary": "",
+          "open": null,
+          "graph_mark": false
+        },
+        "walk_families": [],
+        "control": null,
+        "destination_controls": {
+          "kw": true,
+          "agency": true,
+          "minamt": true
+        },
+        "records": []
+      }
+    },
+    {
+      "name": "after/land-collection-390.png",
+      "bytes": 67725,
+      "sha256": "1c54cb59496047ebe68310a08e4b39df7f1bffac9587c7f60ec00a4901b0b7ea",
+      "viewport": [
+        390,
+        844
+      ],
+      "observed": {
+        "url": "/browse/zoning/",
+        "canonical_query": null,
+        "walk_source": null,
+        "walk_query": null,
+        "document": "other",
+        "heading": "",
+        "intro": "",
+        "order": {
+          "family_grid": -1,
+          "traversal": {
+            "data-browse-explore-connections": -1,
+            "Explore connections": -1,
+            "Start a walk": -1,
+            "Graph entry": -1,
+            "data-walk-entry": -1
+          },
+          "families_first": false
+        },
+        "family_cards": [],
+        "explore_connections": {
+          "present": false,
+          "heading": "",
+          "summary": "",
+          "open": null,
+          "graph_mark": false
+        },
+        "walk_families": [],
+        "control": null,
+        "destination_controls": {
+          "lkw": true,
+          "lfamily": true,
+          "lprocedure": true,
+          "lstage": true
+        },
+        "records": []
+      }
+    },
+    {
+      "name": "after/meetings-collection-390.png",
+      "bytes": 67313,
+      "sha256": "4b6b4bb51bb8ae6dd78a005bc4b87da02193e6ea7a4bcf36db7a1b3ad1c90013",
+      "viewport": [
+        390,
+        844
+      ],
+      "observed": {
+        "url": "/browse/meetings/",
+        "canonical_query": null,
+        "walk_source": null,
+        "walk_query": null,
+        "document": "other",
+        "heading": "",
+        "intro": "",
+        "order": {
+          "family_grid": -1,
+          "traversal": {
+            "data-browse-explore-connections": -1,
+            "Explore connections": -1,
+            "Start a walk": -1,
+            "Graph entry": -1,
+            "data-walk-entry": -1
+          },
+          "families_first": false
+        },
+        "family_cards": [],
+        "explore_connections": {
+          "present": false,
+          "heading": "",
+          "summary": "",
+          "open": null,
+          "graph_mark": false
+        },
+        "walk_families": [],
+        "control": null,
+        "destination_controls": {
+          "meetingskw": true,
+          "meetingswhen": true,
+          "meetingsboro": true,
+          "meetingsagency": true
+        },
+        "records": []
+      }
+    },
+    {
+      "name": "after/browse-landing-1440.png",
+      "bytes": 103224,
+      "sha256": "df0c21d70b2e1dfb4f540c5441c623bf4d820342330924b346cbdeefb4652b71",
+      "viewport": [
+        1440,
+        900
+      ],
+      "observed": {
+        "url": "/browse/",
+        "canonical_query": null,
+        "walk_source": null,
+        "walk_query": null,
+        "document": "browse-landing",
+        "heading": "Browse NYC public records",
+        "intro": "Choose a type of record, then search or filter that collection.",
+        "order": {
+          "family_grid": 6972,
+          "traversal": {
+            "data-browse-explore-connections": 13535,
+            "Explore connections": 13674,
+            "Start a walk": 13959,
+            "Graph entry": 14410,
+            "data-walk-entry": 14018
+          },
+          "families_first": true
+        },
+        "family_cards": [
+          {
+            "id": "source-contracts",
+            "label": "Contracts",
+            "count": "53,245 awards \u00b7 40 open opportunities",
+            "filters": "Filter by keyword, agency, and minimum award amount.",
+            "updated": "Updated 2026-08-15",
+            "sources": "Award census \u00b7 open solicitation snapshot",
+            "routes": [
+              "/browse/contracts/"
+            ]
+          },
+          {
+            "id": "source-people-organizations",
+            "label": "People + organizations",
+            "count": "215 people \u00b7 1,142 committee edges \u00b7 86 agencies",
+            "filters": "Filter by record type, institution, and people subtype.",
+            "updated": "Update date unavailable",
+            "sources": "Community Board people and roles \u00b7 person hub \u00b7 committee graph \u00b7 agency constellation",
+            "routes": [
+              "/browse/people/",
+              "/browse/staffing/",
+              "/browse/people/#community-boards"
+            ]
+          },
+          {
+            "id": "source-zoning",
+            "label": "Land",
+            "count": "238 land projects \u00b7 133 property records",
+            "filters": "Filter by keyword, action type, review procedure, and stage.",
+            "updated": "Updated 2026-08-23",
+            "sources": "ZAP \u00b7 property observations \u00b7 parcel joins",
+            "routes": [
+              "/browse/zoning/",
+              "/browse/property/"
+            ]
+          },
+          {
+            "id": "source-rules",
+            "label": "Rules",
+            "count": "6,683 mandates \u00b7 2,736 deadline signals",
+            "filters": "Filter by keyword and agency.",
+            "updated": "Updated 2026-08-09",
+            "sources": "Agency Rules \u00b7 agency mandate registry",
+            "routes": [
+              "/browse/rules/"
+            ]
+          },
+          {
+            "id": "source-meetings",
+            "label": "Meetings",
+            "count": "522 meeting rows \u00b7 16 outcome snapshots",
+            "filters": "Filter by keyword, date window, borough, and agency.",
+            "updated": "Updated 2026-08-15",
+            "sources": "Meeting snapshot \u00b7 outcome snapshot \u00b7 roll-call view",
+            "routes": [
+              "/browse/meetings/"
+            ]
+          },
+          {
+            "id": "source-exams",
+            "label": "Exams",
+            "count": "228 civil-service exams",
+            "filters": "Filter by job or exam number, eligibility, interest area, and exam window.",
+            "updated": "Update date unavailable",
+            "sources": "DCAS exam schedules \u00b7 published exam records",
+            "routes": [
+              "/browse/exams/"
+            ]
+          }
+        ],
+        "explore_connections": {
+          "present": true,
+          "heading": "Explore connections",
+          "summary": "Start a walk",
+          "open": false,
+          "graph_mark": true
+        },
+        "walk_families": [
+          {
+            "id": "money",
+            "href": "/browse/contracts/",
+            "state": "available",
+            "coverage": "40 records in this family"
+          },
+          {
+            "id": "people-organizations",
+            "href": "/browse/people/",
+            "state": "available",
+            "coverage": "215 records in this family"
+          },
+          {
+            "id": "land-property",
+            "href": "/browse/zoning/",
+            "state": "available",
+            "coverage": "40 records in this family"
+          },
+          {
+            "id": "rules-mandates",
+            "href": "/browse/rules/",
+            "state": "available",
+            "coverage": "100 records in this family"
+          },
+          {
+            "id": "meetings-decisions",
+            "href": "/browse/meetings/",
+            "state": "available",
+            "coverage": "522 records in this family"
+          },
+          {
+            "id": "exams",
+            "href": "/browse/exams/",
+            "state": "available",
+            "coverage": "228 records in this family"
+          }
+        ],
+        "control": {
+          "action": "/search/",
+          "field": "q",
+          "submit": "Search records",
+          "posts_walk_fields": false
+        },
+        "destination_controls": {},
+        "records": []
+      }
+    },
+    {
+      "name": "after/browse-landing-landing-1440.png",
+      "bytes": 178984,
+      "sha256": "1869aa28640bf2733208d96627e576efaa69300bbda61a95847787f95ebd8394",
+      "viewport": [
+        1440,
+        900
+      ],
+      "observed": {
+        "url": "/browse/",
+        "canonical_query": null,
+        "walk_source": null,
+        "walk_query": null,
+        "document": "browse-landing",
+        "heading": "Browse NYC public records",
+        "intro": "Choose a type of record, then search or filter that collection.",
+        "order": {
+          "family_grid": 6972,
+          "traversal": {
+            "data-browse-explore-connections": 13535,
+            "Explore connections": 13674,
+            "Start a walk": 13959,
+            "Graph entry": 14410,
+            "data-walk-entry": 14018
+          },
+          "families_first": true
+        },
+        "family_cards": [
+          {
+            "id": "source-contracts",
+            "label": "Contracts",
+            "count": "53,245 awards \u00b7 40 open opportunities",
+            "filters": "Filter by keyword, agency, and minimum award amount.",
+            "updated": "Updated 2026-08-15",
+            "sources": "Award census \u00b7 open solicitation snapshot",
+            "routes": [
+              "/browse/contracts/"
+            ]
+          },
+          {
+            "id": "source-people-organizations",
+            "label": "People + organizations",
+            "count": "215 people \u00b7 1,142 committee edges \u00b7 86 agencies",
+            "filters": "Filter by record type, institution, and people subtype.",
+            "updated": "Update date unavailable",
+            "sources": "Community Board people and roles \u00b7 person hub \u00b7 committee graph \u00b7 agency constellation",
+            "routes": [
+              "/browse/people/",
+              "/browse/staffing/",
+              "/browse/people/#community-boards"
+            ]
+          },
+          {
+            "id": "source-zoning",
+            "label": "Land",
+            "count": "238 land projects \u00b7 133 property records",
+            "filters": "Filter by keyword, action type, review procedure, and stage.",
+            "updated": "Updated 2026-08-23",
+            "sources": "ZAP \u00b7 property observations \u00b7 parcel joins",
+            "routes": [
+              "/browse/zoning/",
+              "/browse/property/"
+            ]
+          },
+          {
+            "id": "source-rules",
+            "label": "Rules",
+            "count": "6,683 mandates \u00b7 2,736 deadline signals",
+            "filters": "Filter by keyword and agency.",
+            "updated": "Updated 2026-08-09",
+            "sources": "Agency Rules \u00b7 agency mandate registry",
+            "routes": [
+              "/browse/rules/"
+            ]
+          },
+          {
+            "id": "source-meetings",
+            "label": "Meetings",
+            "count": "522 meeting rows \u00b7 16 outcome snapshots",
+            "filters": "Filter by keyword, date window, borough, and agency.",
+            "updated": "Updated 2026-08-15",
+            "sources": "Meeting snapshot \u00b7 outcome snapshot \u00b7 roll-call view",
+            "routes": [
+              "/browse/meetings/"
+            ]
+          },
+          {
+            "id": "source-exams",
+            "label": "Exams",
+            "count": "228 civil-service exams",
+            "filters": "Filter by job or exam number, eligibility, interest area, and exam window.",
+            "updated": "Update date unavailable",
+            "sources": "DCAS exam schedules \u00b7 published exam records",
+            "routes": [
+              "/browse/exams/"
+            ]
+          }
+        ],
+        "explore_connections": {
+          "present": true,
+          "heading": "Explore connections",
+          "summary": "Start a walk",
+          "open": false,
+          "graph_mark": true
+        },
+        "walk_families": [
+          {
+            "id": "money",
+            "href": "/browse/contracts/",
+            "state": "available",
+            "coverage": "40 records in this family"
+          },
+          {
+            "id": "people-organizations",
+            "href": "/browse/people/",
+            "state": "available",
+            "coverage": "215 records in this family"
+          },
+          {
+            "id": "land-property",
+            "href": "/browse/zoning/",
+            "state": "available",
+            "coverage": "40 records in this family"
+          },
+          {
+            "id": "rules-mandates",
+            "href": "/browse/rules/",
+            "state": "available",
+            "coverage": "100 records in this family"
+          },
+          {
+            "id": "meetings-decisions",
+            "href": "/browse/meetings/",
+            "state": "available",
+            "coverage": "522 records in this family"
+          },
+          {
+            "id": "exams",
+            "href": "/browse/exams/",
+            "state": "available",
+            "coverage": "228 records in this family"
+          }
+        ],
+        "control": {
+          "action": "/search/",
+          "field": "q",
+          "submit": "Search records",
+          "posts_walk_fields": false
+        },
+        "destination_controls": {},
+        "records": []
+      }
+    },
+    {
+      "name": "after/legacy-browse-search-1440.png",
+      "bytes": 109470,
+      "sha256": "3a519a944ff2f589365ebcf243424237b4cdb6f00caec89a3dc9bb5015bb1982",
+      "viewport": [
+        1440,
+        900
+      ],
+      "observed": {
+        "url": "/search/?q=rats",
+        "canonical_query": "rats",
+        "walk_source": null,
+        "walk_query": null,
+        "document": "search",
+        "heading": "",
+        "intro": "",
+        "order": {
+          "family_grid": -1,
+          "traversal": {
+            "data-browse-explore-connections": -1,
+            "Explore connections": -1,
+            "Start a walk": -1,
+            "Graph entry": -1,
+            "data-walk-entry": -1
+          },
+          "families_first": false
+        },
+        "family_cards": [],
+        "explore_connections": {
+          "present": false,
+          "heading": "",
+          "summary": "",
+          "open": null,
+          "graph_mark": false
+        },
+        "walk_families": [],
+        "control": {
+          "action": "/search/",
+          "field": "q",
+          "submit": "Search",
+          "posts_walk_fields": false
+        },
+        "destination_controls": {},
+        "records": [
+          "Mayoral Rat Reduction Initiative",
+          "Continue in Contracts",
+          "New Rules Relating to Rat Inspections",
+          "Continue in Meetings"
+        ]
+      }
+    },
+    {
+      "name": "after/canonical-search-1440.png",
+      "bytes": 109470,
+      "sha256": "3a519a944ff2f589365ebcf243424237b4cdb6f00caec89a3dc9bb5015bb1982",
+      "viewport": [
+        1440,
+        900
+      ],
+      "observed": {
+        "url": "/search/?q=rats",
+        "canonical_query": "rats",
+        "walk_source": null,
+        "walk_query": null,
+        "document": "search",
+        "heading": "",
+        "intro": "",
+        "order": {
+          "family_grid": -1,
+          "traversal": {
+            "data-browse-explore-connections": -1,
+            "Explore connections": -1,
+            "Start a walk": -1,
+            "Graph entry": -1,
+            "data-walk-entry": -1
+          },
+          "families_first": false
+        },
+        "family_cards": [],
+        "explore_connections": {
+          "present": false,
+          "heading": "",
+          "summary": "",
+          "open": null,
+          "graph_mark": false
+        },
+        "walk_families": [],
+        "control": {
+          "action": "/search/",
+          "field": "q",
+          "submit": "Search",
+          "posts_walk_fields": false
+        },
+        "destination_controls": {},
+        "records": [
+          "Mayoral Rat Reduction Initiative",
+          "Continue in Contracts",
+          "New Rules Relating to Rat Inspections",
+          "Continue in Meetings"
+        ]
+      }
+    },
+    {
+      "name": "after/explicit-walk-1440.png",
+      "bytes": 103287,
+      "sha256": "b6b9c749e7acf70a59760d940e32244c7b24bbfa9b5a3cae2467e0e20e5cc2c7",
+      "viewport": [
+        1440,
+        900
+      ],
+      "observed": {
+        "url": "/browse/?walk_query=rats&walk_source=search",
+        "canonical_query": null,
+        "walk_source": "search",
+        "walk_query": "rats",
+        "document": "browse-landing",
+        "heading": "Browse NYC public records",
+        "intro": "Choose a type of record, then search or filter that collection.",
+        "order": {
+          "family_grid": 7790,
+          "traversal": {
+            "data-browse-explore-connections": 14353,
+            "Explore connections": 14492,
+            "Start a walk": 14785,
+            "Graph entry": 15236,
+            "data-walk-entry": 14844
+          },
+          "families_first": true
+        },
+        "family_cards": [
+          {
+            "id": "source-contracts",
+            "label": "Contracts",
+            "count": "53,245 awards \u00b7 40 open opportunities",
+            "filters": "Filter by keyword, agency, and minimum award amount.",
+            "updated": "Updated 2026-08-15",
+            "sources": "Award census \u00b7 open solicitation snapshot",
+            "routes": [
+              "/browse/contracts/"
+            ]
+          },
+          {
+            "id": "source-people-organizations",
+            "label": "People + organizations",
+            "count": "215 people \u00b7 1,142 committee edges \u00b7 86 agencies",
+            "filters": "Filter by record type, institution, and people subtype.",
+            "updated": "Update date unavailable",
+            "sources": "Community Board people and roles \u00b7 person hub \u00b7 committee graph \u00b7 agency constellation",
+            "routes": [
+              "/browse/people/",
+              "/browse/staffing/",
+              "/browse/people/#community-boards"
+            ]
+          },
+          {
+            "id": "source-zoning",
+            "label": "Land",
+            "count": "238 land projects \u00b7 133 property records",
+            "filters": "Filter by keyword, action type, review procedure, and stage.",
+            "updated": "Updated 2026-08-23",
+            "sources": "ZAP \u00b7 property observations \u00b7 parcel joins",
+            "routes": [
+              "/browse/zoning/",
+              "/browse/property/"
+            ]
+          },
+          {
+            "id": "source-rules",
+            "label": "Rules",
+            "count": "6,683 mandates \u00b7 2,736 deadline signals",
+            "filters": "Filter by keyword and agency.",
+            "updated": "Updated 2026-08-09",
+            "sources": "Agency Rules \u00b7 agency mandate registry",
+            "routes": [
+              "/browse/rules/"
+            ]
+          },
+          {
+            "id": "source-meetings",
+            "label": "Meetings",
+            "count": "522 meeting rows \u00b7 16 outcome snapshots",
+            "filters": "Filter by keyword, date window, borough, and agency.",
+            "updated": "Updated 2026-08-15",
+            "sources": "Meeting snapshot \u00b7 outcome snapshot \u00b7 roll-call view",
+            "routes": [
+              "/browse/meetings/"
+            ]
+          },
+          {
+            "id": "source-exams",
+            "label": "Exams",
+            "count": "228 civil-service exams",
+            "filters": "Filter by job or exam number, eligibility, interest area, and exam window.",
+            "updated": "Update date unavailable",
+            "sources": "DCAS exam schedules \u00b7 published exam records",
+            "routes": [
+              "/browse/exams/"
+            ]
+          }
+        ],
+        "explore_connections": {
+          "present": true,
+          "heading": "Explore connections",
+          "summary": "Start a walk",
+          "open": true,
+          "graph_mark": true
+        },
+        "walk_families": [
+          {
+            "id": "money",
+            "href": "/browse/contracts/?q=rats&walk_source=search&walk_query=rats",
+            "state": "empty",
+            "coverage": ""
+          },
+          {
+            "id": "people-organizations",
+            "href": "/browse/people/?q=rats&walk_source=search&walk_query=rats",
+            "state": "empty",
+            "coverage": ""
+          },
+          {
+            "id": "land-property",
+            "href": "/browse/zoning/?q=rats&walk_source=search&walk_query=rats",
+            "state": "empty",
+            "coverage": ""
+          },
+          {
+            "id": "rules-mandates",
+            "href": "/browse/rules/?q=rats&walk_source=search&walk_query=rats",
+            "state": "empty",
+            "coverage": ""
+          },
+          {
+            "id": "meetings-decisions",
+            "href": "/browse/meetings/?q=rats&walk_source=search&walk_query=rats",
+            "state": "empty",
+            "coverage": ""
+          },
+          {
+            "id": "exams",
+            "href": "/browse/exams/?q=rats&walk_source=search&walk_query=rats",
+            "state": "empty",
+            "coverage": ""
+          }
+        ],
+        "control": {
+          "action": "/search/",
+          "field": "q",
+          "submit": "Search records",
+          "posts_walk_fields": false
+        },
+        "destination_controls": {},
+        "records": []
+      }
+    },
+    {
+      "name": "after/explicit-walk-landing-1440.png",
+      "bytes": 179101,
+      "sha256": "e7d18570a4e5eadd63ceda162d204999e32141d1a0135fe1805b7377e39a9037",
+      "viewport": [
+        1440,
+        900
+      ],
+      "observed": {
+        "url": "/browse/?walk_query=rats&walk_source=search",
+        "canonical_query": null,
+        "walk_source": "search",
+        "walk_query": "rats",
+        "document": "browse-landing",
+        "heading": "Browse NYC public records",
+        "intro": "Choose a type of record, then search or filter that collection.",
+        "order": {
+          "family_grid": 7790,
+          "traversal": {
+            "data-browse-explore-connections": 14353,
+            "Explore connections": 14492,
+            "Start a walk": 14785,
+            "Graph entry": 15236,
+            "data-walk-entry": 14844
+          },
+          "families_first": true
+        },
+        "family_cards": [
+          {
+            "id": "source-contracts",
+            "label": "Contracts",
+            "count": "53,245 awards \u00b7 40 open opportunities",
+            "filters": "Filter by keyword, agency, and minimum award amount.",
+            "updated": "Updated 2026-08-15",
+            "sources": "Award census \u00b7 open solicitation snapshot",
+            "routes": [
+              "/browse/contracts/"
+            ]
+          },
+          {
+            "id": "source-people-organizations",
+            "label": "People + organizations",
+            "count": "215 people \u00b7 1,142 committee edges \u00b7 86 agencies",
+            "filters": "Filter by record type, institution, and people subtype.",
+            "updated": "Update date unavailable",
+            "sources": "Community Board people and roles \u00b7 person hub \u00b7 committee graph \u00b7 agency constellation",
+            "routes": [
+              "/browse/people/",
+              "/browse/staffing/",
+              "/browse/people/#community-boards"
+            ]
+          },
+          {
+            "id": "source-zoning",
+            "label": "Land",
+            "count": "238 land projects \u00b7 133 property records",
+            "filters": "Filter by keyword, action type, review procedure, and stage.",
+            "updated": "Updated 2026-08-23",
+            "sources": "ZAP \u00b7 property observations \u00b7 parcel joins",
+            "routes": [
+              "/browse/zoning/",
+              "/browse/property/"
+            ]
+          },
+          {
+            "id": "source-rules",
+            "label": "Rules",
+            "count": "6,683 mandates \u00b7 2,736 deadline signals",
+            "filters": "Filter by keyword and agency.",
+            "updated": "Updated 2026-08-09",
+            "sources": "Agency Rules \u00b7 agency mandate registry",
+            "routes": [
+              "/browse/rules/"
+            ]
+          },
+          {
+            "id": "source-meetings",
+            "label": "Meetings",
+            "count": "522 meeting rows \u00b7 16 outcome snapshots",
+            "filters": "Filter by keyword, date window, borough, and agency.",
+            "updated": "Updated 2026-08-15",
+            "sources": "Meeting snapshot \u00b7 outcome snapshot \u00b7 roll-call view",
+            "routes": [
+              "/browse/meetings/"
+            ]
+          },
+          {
+            "id": "source-exams",
+            "label": "Exams",
+            "count": "228 civil-service exams",
+            "filters": "Filter by job or exam number, eligibility, interest area, and exam window.",
+            "updated": "Update date unavailable",
+            "sources": "DCAS exam schedules \u00b7 published exam records",
+            "routes": [
+              "/browse/exams/"
+            ]
+          }
+        ],
+        "explore_connections": {
+          "present": true,
+          "heading": "Explore connections",
+          "summary": "Start a walk",
+          "open": true,
+          "graph_mark": true
+        },
+        "walk_families": [
+          {
+            "id": "money",
+            "href": "/browse/contracts/?q=rats&walk_source=search&walk_query=rats",
+            "state": "empty",
+            "coverage": ""
+          },
+          {
+            "id": "people-organizations",
+            "href": "/browse/people/?q=rats&walk_source=search&walk_query=rats",
+            "state": "empty",
+            "coverage": ""
+          },
+          {
+            "id": "land-property",
+            "href": "/browse/zoning/?q=rats&walk_source=search&walk_query=rats",
+            "state": "empty",
+            "coverage": ""
+          },
+          {
+            "id": "rules-mandates",
+            "href": "/browse/rules/?q=rats&walk_source=search&walk_query=rats",
+            "state": "empty",
+            "coverage": ""
+          },
+          {
+            "id": "meetings-decisions",
+            "href": "/browse/meetings/?q=rats&walk_source=search&walk_query=rats",
+            "state": "empty",
+            "coverage": ""
+          },
+          {
+            "id": "exams",
+            "href": "/browse/exams/?q=rats&walk_source=search&walk_query=rats",
+            "state": "empty",
+            "coverage": ""
+          }
+        ],
+        "control": {
+          "action": "/search/",
+          "field": "q",
+          "submit": "Search records",
+          "posts_walk_fields": false
+        },
+        "destination_controls": {},
+        "records": []
+      }
+    },
+    {
+      "name": "after/contracts-collection-1440.png",
+      "bytes": 111978,
+      "sha256": "ee8fe7c1221f0d746e8f833240a367b8537e5a43a801d40366e63c555b9e91b5",
+      "viewport": [
+        1440,
+        900
+      ],
+      "observed": {
+        "url": "/browse/contracts/",
+        "canonical_query": null,
+        "walk_source": null,
+        "walk_query": null,
+        "document": "other",
+        "heading": "",
+        "intro": "",
+        "order": {
+          "family_grid": -1,
+          "traversal": {
+            "data-browse-explore-connections": -1,
+            "Explore connections": -1,
+            "Start a walk": -1,
+            "Graph entry": -1,
+            "data-walk-entry": -1
+          },
+          "families_first": false
+        },
+        "family_cards": [],
+        "explore_connections": {
+          "present": false,
+          "heading": "",
+          "summary": "",
+          "open": null,
+          "graph_mark": false
+        },
+        "walk_families": [],
+        "control": null,
+        "destination_controls": {
+          "kw": true,
+          "agency": true,
+          "minamt": true
+        },
+        "records": []
+      }
+    },
+    {
+      "name": "after/land-collection-1440.png",
+      "bytes": 113592,
+      "sha256": "a562c253a2bf99225d20fe40485c2fd405f4120576299415a56891c680fc623c",
+      "viewport": [
+        1440,
+        900
+      ],
+      "observed": {
+        "url": "/browse/zoning/",
+        "canonical_query": null,
+        "walk_source": null,
+        "walk_query": null,
+        "document": "other",
+        "heading": "",
+        "intro": "",
+        "order": {
+          "family_grid": -1,
+          "traversal": {
+            "data-browse-explore-connections": -1,
+            "Explore connections": -1,
+            "Start a walk": -1,
+            "Graph entry": -1,
+            "data-walk-entry": -1
+          },
+          "families_first": false
+        },
+        "family_cards": [],
+        "explore_connections": {
+          "present": false,
+          "heading": "",
+          "summary": "",
+          "open": null,
+          "graph_mark": false
+        },
+        "walk_families": [],
+        "control": null,
+        "destination_controls": {
+          "lkw": true,
+          "lfamily": true,
+          "lprocedure": true,
+          "lstage": true
+        },
+        "records": []
+      }
+    },
+    {
+      "name": "after/meetings-collection-1440.png",
+      "bytes": 123525,
+      "sha256": "e23b140790813dec929ec6dc412bb004add68ffb9b29a9e5dbc8ec7cb94c4d3e",
+      "viewport": [
+        1440,
+        900
+      ],
+      "observed": {
+        "url": "/browse/meetings/",
+        "canonical_query": null,
+        "walk_source": null,
+        "walk_query": null,
+        "document": "other",
+        "heading": "",
+        "intro": "",
+        "order": {
+          "family_grid": -1,
+          "traversal": {
+            "data-browse-explore-connections": -1,
+            "Explore connections": -1,
+            "Start a walk": -1,
+            "Graph entry": -1,
+            "data-walk-entry": -1
+          },
+          "families_first": false
+        },
+        "family_cards": [],
+        "explore_connections": {
+          "present": false,
+          "heading": "",
+          "summary": "",
+          "open": null,
+          "graph_mark": false
+        },
+        "walk_families": [],
+        "control": null,
+        "destination_controls": {
+          "meetingskw": true,
+          "meetingswhen": true,
+          "meetingsboro": true,
+          "meetingsagency": true
+        },
+        "records": []
+      }
+    }
+  ]
+}

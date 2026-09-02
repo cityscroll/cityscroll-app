@@ -140,6 +140,8 @@ export const BROWSE_GROUPS = Object.freeze([
     primaryFacet: "contracts",
     description: "Solicitations, awards, payment trails, and the vendors and agencies connected to them.",
     sources: "Award census · open solicitation snapshot",
+    filters: "Filter by keyword, agency, and minimum award amount.",
+    filterControls: ["kw", "agency", "minamt"],
     children: [
       { id: "contracts", facet: "contracts", label: "Contracts", linkLabel: "Browse contracts" },
       { id: "vendors", label: "Vendors" },
@@ -151,6 +153,8 @@ export const BROWSE_GROUPS = Object.freeze([
     primaryFacet: null,
     description: "Community Boards, City Council, agencies, and vendors, each labeled by institution.",
     sources: "Community Board people and roles · person hub · committee graph · agency constellation",
+    filters: "Filter by record type, institution, and people subtype.",
+    filterControls: ["people-organizations-type", "people-organizations-institution", "people-organizations-role"],
     children: [
       { id: "people-directory", route: PEOPLE_ORGANIZATIONS_SURFACE.canonicalRoute, label: "People + organizations", linkLabel: "Browse people and organizations" },
       { id: "staffing", facet: "staffing", label: "Staffing", linkLabel: "Browse appointments" },
@@ -165,6 +169,8 @@ export const BROWSE_GROUPS = Object.freeze([
     primaryFacet: "zoning",
     description: "Land-use projects, parcels, dispositions, sales, and exact BBL connections.",
     sources: "ZAP · property observations · parcel joins",
+    filters: "Filter by keyword, action type, review procedure, and stage.",
+    filterControls: ["lkw", "lfamily", "lprocedure", "lstage"],
     children: [
       { id: "land", facet: "zoning", label: "Land", linkLabel: "Browse land" },
       { id: "property", facet: "property", label: "Property", linkLabel: "Browse property" },
@@ -176,6 +182,8 @@ export const BROWSE_GROUPS = Object.freeze([
     primaryFacet: "rules",
     description: "Rules, mandates, deadlines, and the records that implement them.",
     sources: "Agency Rules · agency mandate registry",
+    filters: "Filter by keyword and agency.",
+    filterControls: ["ruleskw"],
     children: [
       { id: "rules", facet: "rules", label: "Rules", linkLabel: "Browse rules" },
       { id: "mandates", label: "Mandates" },
@@ -187,6 +195,8 @@ export const BROWSE_GROUPS = Object.freeze([
     primaryFacet: "meetings",
     description: "Agendas, hearings, testimony, outcomes, and published roll calls.",
     sources: "Meeting snapshot · outcome snapshot · roll-call view",
+    filters: "Filter by keyword, date window, borough, and agency.",
+    filterControls: ["meetingskw", "meetingswhen", "meetingsboro", "meetingsagency"],
     children: [
       { id: "meetings", facet: "meetings", label: "Meetings", linkLabel: "Browse meetings" },
       { id: "committees", label: "Committees" },
@@ -198,6 +208,8 @@ export const BROWSE_GROUPS = Object.freeze([
     primaryFacet: null,
     description: "Civil-service exam schedules, applications, eligible lists, and outcomes.",
     sources: "DCAS exam schedules · published exam records",
+    filters: "Filter by job or exam number, eligibility, interest area, and exam window.",
+    filterControls: ["career-query", "career-eligibility", "career-interest-facets", "career-window-facets"],
     children: [
       { id: "exams", label: "Exams", route: EXAMS_SURFACE.canonicalRoute, linkLabel: "Browse exams" },
     ],
@@ -1157,6 +1169,7 @@ export function renderBrowseLanding(landing) {
       ${primary ? `<p class="browse-source-count">${esc(primary)}</p>` : ""}
       <h3>${esc(card.label)}</h3>
       <p class="browse-source-description">${esc(card.description)}</p>
+      ${card.filters ? `<p class="browse-source-filters" data-browse-family-filters="${esc(card.id)}">${esc(card.filters)}</p>` : ""}
       <p class="browse-source-asof">${staticFact({ label: card.asOf ? `Updated ${card.asOf}` : "Update date unavailable", className: "browse-card-date", escape: esc })}</p>
       <details class="browse-source-disclosure"><summary>Official data from…</summary><p>${staticFact({ label: card.sources, className: "browse-card-sources", escape: esc })}</p></details>
       <div class="browse-source-actions">${childLinks}</div>
@@ -1176,21 +1189,38 @@ export function renderBrowseLanding(landing) {
       href: primary?.route || null,
     };
   });
+  // Browse answers "I want to choose a kind of record and refine a collection",
+  // so the record families own the first viewport. Graph traversal answers a
+  // different question and follows underneath, with its own explicit context.
+  const familySection = cardGrid
+    ? `<section class="browse-families" data-browse-families aria-labelledby="browse-families-heading">
+      <h2 id="browse-families-heading" class="browse-families-heading">Record types</h2>
+      ${cardGrid}
+    </section>`
+    : "";
   const walkEntry = renderWalkEntry({
     source: "browse",
     families: walkFamilies,
     actionLabel: "Search records",
     recordSearch: true,
-    description: "Search every record type at once, then open the collection you want.",
+    title: "Start from a record, then follow its connections",
+    description: "Search every record type at once to find a starting record, then follow the typed relationships out from it.",
   });
   return `<div class="browse-landing" data-build-rendered="browse-landing">
     <header class="browse-landing-head">
       <p class="now-kicker">Browse</p>
-      <h2>Browse NYC’s public record</h2>
-      <p>Pick a civic object. Follow the edges between people, places, agencies, contracts, and decisions.</p>
+      <h2>Browse NYC public records</h2>
+      <p>Choose a type of record, then search or filter that collection.</p>
     </header>
-    ${walkEntry}
-    ${cardGrid}
+    ${familySection}
+    <section class="browse-explore-connections" data-browse-explore-connections aria-labelledby="browse-explore-connections-heading">
+      <h2 id="browse-explore-connections-heading">Explore connections</h2>
+      <p>Follow the relationships between civic objects: a vendor to its contracts, a parcel to its land-use actions, an agency to the rules it publishes.</p>
+      <details class="browse-explore-disclosure" data-browse-explore-disclosure>
+        <summary>Start a walk</summary>
+        ${walkEntry}
+      </details>
+    </section>
     <script type="module" src="/app/walk-entry.mjs"></script>
   </div>`;
 }
