@@ -2,7 +2,7 @@
   "schema": "cityscroll.card-profile.closure.v1",
   "profile": "card-work",
   "generated_by": "node tools/derive_card_profile.mjs",
-  "config_sha256": "547a19c53ce4b5999f21bbbecd6feb50dab3c65742dd890cd415507243d795e9",
+  "config_sha256": "31e2bc99b2bc13eaddf6e43b25d5a211ed14ddc87a38bdc7002080771491a5c8",
   "sources": {
     "observed": {
       "description": "Repository paths recorded by tools/card_profile_sentinel.cjs while each supported gate class ran on a full checkout.",
@@ -41,9 +41,14 @@
           "id": "card-profile-contract",
           "recorded": true,
           "path_count": 2130
+        },
+        {
+          "id": "functional-site",
+          "recorded": true,
+          "path_count": 138
         }
       ],
-      "path_count": 2401
+      "path_count": 2422
     },
     "static": {
       "description": "Repository paths named by an import specifier or a path-shaped string literal in worker/, site/, tools/ and test/ sources.",
@@ -51,9 +56,9 @@
         "worker"
       ],
       "scan_hops": 1,
-      "scanned_source_count": 2126,
+      "scanned_source_count": 2130,
       "sources_skipped_not_materialised": 0,
-      "path_count": 1877,
+      "path_count": 1883,
       "worker_to_site_reference_count": 187,
       "worker_to_site_data_reference_count": 28,
       "worker_to_site_data_targets": [
@@ -113,7 +118,7 @@
         "warehouse",
         "worker/src/data"
       ],
-      "path_count": 3662
+      "path_count": 3703
     }
   },
   "required_paths": [
@@ -372,6 +377,7 @@
     "ontology/source_health.mjs",
     "ontology/source_state.mjs",
     "ontology/sync.mjs",
+    "ops/launchd/com.cityscroll.external-schedules.plist.template",
     "site/_routes.json",
     "site/_worker.js",
     "site/abo_award_panel.mjs",
@@ -551,6 +557,16 @@
     "site/cross_spine_confidence.mjs",
     "site/data/abo_award_residual_lookup.json",
     "site/data/action_link_health.json",
+    "site/data/agency_constellation_lookup.json",
+    "site/data/agency_obligations_lookup.json",
+    "site/data/committee_graph_lookup.json",
+    "site/data/community_board_geography_lookup.json",
+    "site/data/community_board_meeting_index.json",
+    "site/data/community_board_meeting_index/shard-000.json",
+    "site/data/community_board_meeting_index/shard-001.json",
+    "site/data/community_board_meeting_index/shard-002.json",
+    "site/data/community_board_meeting_index/shard-003.json",
+    "site/data/community_board_people.json",
     "site/data/comparative_story_signals.json",
     "site/data/district_activity.json",
     "site/data/exam_certification_constellation.json",
@@ -561,22 +577,32 @@
     "site/data/land_upcoming_hearings.json",
     "site/data/legal_code/manifest.json",
     "site/data/legal_code/search.json",
+    "site/data/meeting_notice_materialization.json",
+    "site/data/meeting_outcomes_snapshot.json",
+    "site/data/meetings_domain_observations.json",
     "site/data/mih_project_lookup.json",
+    "site/data/money_default_open.json",
     "site/data/money_resident_snapshot.json",
+    "site/data/non_council_outcome_sources/community_board_committees.json",
     "site/data/ocp_awards_warehouse_lookup.json",
     "site/data/ontology_inventory_baseline.json",
+    "site/data/people_examples.json",
     "site/data/people_organizations_read_model.json",
     "site/data/performance-classification-manifest.v1.json",
     "site/data/person_hub_lookup.json",
     "site/data/procurement_digest_snapshot.json",
+    "site/data/property_domain_observations.json",
     "site/data/regulatory_agenda.json",
     "site/data/rule_versions.json",
     "site/data/rules_domain_observations.json",
+    "site/data/rules_semantic_lane.json",
     "site/data/shared_meeting_read_model.json",
     "site/data/source_contracts.json",
     "site/data/source_health_public.json",
+    "site/data/staffing_default_hires.json",
     "site/data/staffing_exams.json",
     "site/data/zap_outcome_sources/verification_receipts/zap_api_outcomes_2026-07-30.json",
+    "site/data/zap_projects_warehouse_lookup.json",
     "site/data_health_navigation.mjs",
     "site/data_health_page.mjs",
     "site/dcas_vehicle_auctions.mjs",
@@ -651,6 +677,7 @@
     "site/land_status_facets.mjs",
     "site/land_use_action_codes.mjs",
     "site/land_use_action_type.mjs",
+    "site/land_view_state.mjs",
     "site/later_housing_activity_view.mjs",
     "site/legacy_hash_forward.mjs",
     "site/legal_change_edges.mjs",
@@ -814,6 +841,7 @@
     "site/same_consolidation.mjs",
     "site/scope_now_adapter.mjs",
     "site/scope_v0.mjs",
+    "site/search/index.html",
     "site/search_capability_projection.mjs",
     "site/search_document.mjs",
     "site/search_document_contract.mjs",
@@ -2226,6 +2254,7 @@
     "worker/src/lib/property_phase_spine.mjs",
     "worker/src/lib/property_saved_watch.mjs",
     "worker/src/lib/regulatory_agenda.mjs",
+    "worker/src/lib/repair_queue.mjs",
     "worker/src/lib/report_adjudication.mjs",
     "worker/src/lib/report_adjudication_store.mjs",
     "worker/src/lib/review_queue.mjs",
@@ -2558,11 +2587,10 @@
       "site/agencies/employees-retirement-system/relationships-data.json",
       "site/agencies/housing-authority/relationships-data.json",
       "site/agencies/index.html",
+      "site/agencies/parks-and-recreation/relationships.json",
       "site/data/abo_award_sources/verification_receipts/abo_residual_2026-08-04.json",
-      "site/data/agency_constellation_lookup.json",
       "site/data/agency_fiscal_context.json",
       "site/data/agency_lifecycle_conformance_lookup.json",
-      "site/data/agency_obligations_lookup.json",
       "site/data/agency_route_identity_report.json",
       "site/data/agency_sources/verification_receipts/agency_successors_2026-08-11.json",
       "site/data/analytics_payments.json",
@@ -2581,14 +2609,11 @@
       "site/data/checkbook_spending_sources/verification_receipts/checkbook_spending_payment_retention_2026-08-11.json",
       "site/data/city_record_pin_chain_warehouse_lookup.json",
       "site/data/committee_graph/verification_receipts/committee_sample_2026-08-12.json",
-      "site/data/committee_graph_lookup.json",
       "site/data/community_board_adopted_budget.json",
       "site/data/community_board_bylaws.json",
       "site/data/community_board_constellation_lookup.json",
       "site/data/community_board_financial_identity_crosswalk.json",
       "site/data/community_board_geography/verification_receipts/overlay_2026-08-12.json",
-      "site/data/community_board_geography_lookup.json",
-      "site/data/community_board_meeting_index.json",
       "site/data/community_board_minutes_scorecard.json",
       "site/data/community_board_money.json",
       "site/data/community_board_money_comparison.json",
@@ -2596,7 +2621,6 @@
       "site/data/community_board_participation_sources.json",
       "site/data/community_board_payment_actuals.json",
       "site/data/community_board_payroll_staff_count.json",
-      "site/data/community_board_people.json",
       "site/data/comparative_award_rank_receipts.json",
       "site/data/contract_action_address_locations.json",
       "site/data/council_committee_proceedings.json",
@@ -2644,12 +2668,8 @@
       "site/data/legistar_sources/verification_receipts/meeting_person_votes_2026-08-11.json",
       "site/data/legistar_sources/verification_receipts/meeting_person_votes_materialization_2026-08-11.json",
       "site/data/mcp_tool_catalog.json",
-      "site/data/meeting_notice_materialization.json",
-      "site/data/meeting_outcomes_snapshot.json",
-      "site/data/meetings_domain_observations.json",
       "site/data/meetings_location_residual_receipt.json",
       "site/data/meetings_location_residual_sources.json",
-      "site/data/money_default_open.json",
       "site/data/money_domain_observations.json",
       "site/data/money_procurement_agencies.json",
       "site/data/mta_procurement_sources.json",
@@ -2658,7 +2678,6 @@
       "site/data/non_council_outcome_lookup.json",
       "site/data/non_council_outcome_sources/board_source_inventory.json",
       "site/data/non_council_outcome_sources/cb_minutes_gap_report.json",
-      "site/data/non_council_outcome_sources/community_board_committees.json",
       "site/data/non_council_outcome_sources/community_board_graph_census.json",
       "site/data/non_council_outcome_sources/source_registry.json",
       "site/data/non_council_outcome_sources/verification_receipts/cb_minutes_publication_probes.json",
@@ -2692,7 +2711,6 @@
       "site/data/property_cross_domain_lookup.json",
       "site/data/property_disposition_cohort.json",
       "site/data/property_disposition_timing_model.json",
-      "site/data/property_domain_observations.json",
       "site/data/property_ll48_lookup.json",
       "site/data/property_resident_snapshot.json",
       "site/data/property_sources/property_disposition_history.json",
@@ -2703,14 +2721,12 @@
       "site/data/reports_domain_observations.json",
       "site/data/rules_adoption_lag_model.json",
       "site/data/rules_adoption_predictions.json",
-      "site/data/rules_semantic_lane.json",
       "site/data/rules_sources/verification_receipts/rulemaking_sibling_stitch_2026-08-02.json",
       "site/data/shared_procurement_read_model.json",
       "site/data/shared_procurement_read_model/shard-000.json",
       "site/data/source_health_observations.json",
       "site/data/source_vintage_alternates.json",
       "site/data/source_vintage_observations.json",
-      "site/data/staffing_default_hires.json",
       "site/data/subsidy_project_lookup.json",
       "site/data/task_first_examples.json",
       "site/data/tax_lien_sale_bbl.json",
@@ -2725,7 +2741,6 @@
       "site/data/zap_bbl_warehouse_lookup.json",
       "site/data/zap_outcome_sources/verification_receipts/zap_hearing_logistics_2026-08-04.json",
       "site/data/zap_project_sources/verification_receipts/zap_projects_source_records_2026-08-16.json",
-      "site/data/zap_projects_warehouse_lookup.json",
       "site/data/zoning_statistics.json",
       "warehouse/derived_json_build_manifest.json",
       "warehouse/evaluation/small_purchase_coverage.json",
@@ -2848,6 +2863,16 @@
     "profile_paths": [
       "site/data/abo_award_residual_lookup.json",
       "site/data/action_link_health.json",
+      "site/data/agency_constellation_lookup.json",
+      "site/data/agency_obligations_lookup.json",
+      "site/data/committee_graph_lookup.json",
+      "site/data/community_board_geography_lookup.json",
+      "site/data/community_board_meeting_index.json",
+      "site/data/community_board_meeting_index/shard-000.json",
+      "site/data/community_board_meeting_index/shard-001.json",
+      "site/data/community_board_meeting_index/shard-002.json",
+      "site/data/community_board_meeting_index/shard-003.json",
+      "site/data/community_board_people.json",
       "site/data/comparative_story_signals.json",
       "site/data/district_activity.json",
       "site/data/exam_certification_constellation.json",
@@ -2858,25 +2883,35 @@
       "site/data/land_upcoming_hearings.json",
       "site/data/legal_code/manifest.json",
       "site/data/legal_code/search.json",
+      "site/data/meeting_notice_materialization.json",
+      "site/data/meeting_outcomes_snapshot.json",
+      "site/data/meetings_domain_observations.json",
       "site/data/mih_project_lookup.json",
+      "site/data/money_default_open.json",
       "site/data/money_resident_snapshot.json",
+      "site/data/non_council_outcome_sources/community_board_committees.json",
       "site/data/ocp_awards_warehouse_lookup.json",
       "site/data/ontology_inventory_baseline.json",
+      "site/data/people_examples.json",
       "site/data/people_organizations_read_model.json",
       "site/data/performance-classification-manifest.v1.json",
       "site/data/person_hub_lookup.json",
       "site/data/procurement_digest_snapshot.json",
+      "site/data/property_domain_observations.json",
       "site/data/regulatory_agenda.json",
       "site/data/rule_versions.json",
       "site/data/rules_domain_observations.json",
+      "site/data/rules_semantic_lane.json",
       "site/data/shared_meeting_read_model.json",
       "site/data/source_contracts.json",
       "site/data/source_health_public.json",
+      "site/data/staffing_default_hires.json",
       "site/data/staffing_exams.json",
-      "site/data/zap_outcome_sources/verification_receipts/zap_api_outcomes_2026-07-30.json"
+      "site/data/zap_outcome_sources/verification_receipts/zap_api_outcomes_2026-07-30.json",
+      "site/data/zap_projects_warehouse_lookup.json"
     ]
   },
-  "patterns_sha256": "904101758720143891104fa180294945cb31995aff0e3528f53458256f271ec2",
+  "patterns_sha256": "14c56c50a0e14897a0f740ad6c4974c103bd8b33e46434f3212297acb28b0598",
   "supported_gate_classes": [
     "worker-unit",
     "architecture-evidence-shards",
@@ -2884,7 +2919,8 @@
     "architecture-canaries",
     "card-reconciliation",
     "agents-router",
-    "card-profile-contract"
+    "card-profile-contract",
+    "functional-site"
   ],
   "full_checkout_only": [
     {
@@ -2939,32 +2975,90 @@
     }
   ],
   "missing_path_behaviour": "A tracked path the profile does not materialise is marked skip-worktree in the index. tools/card_profile_sentinel.cjs turns a missing-file error on such a path into CardProfileMissingPath and records it, so a profile gap fails closed instead of passing by omission. tools/provision_card_profile.sh hydrate is the documented route to materialise one.",
+  "functional_corpus": {
+    "description": "The tracked read-model corpus tools/prepare_functional_site.sh must hold before it can materialise the static-first document routes the functional browser family is served from. It is derived from the functional-site gate class observation, never hand-written: the deriver keeps the subset that falls inside the byte-heavy trees the profile otherwise defers, which is the part a reduced checkout can be missing.",
+    "gate_class": "functional-site",
+    "builder": "tools/build_primary_documents.mjs",
+    "builder_role": "Reads the procurement, land, rules, property, staffing and meeting read models and writes the Browse and Now documents the served site routes resolve to.",
+    "corpus_trees": [
+      "site/data"
+    ],
+    "vintage_anchor": {
+      "path": "site/data/money_default_open.json",
+      "keys": [
+        "open_as_of",
+        "generated_at",
+        "retrieved_at"
+      ],
+      "why": "The day the functional harness pins its browser clock to, read by test/functional/assets/fixture_clock.py from this snapshot's own vintage. The readiness receipt reports the same anchor so a corpus and the clock it implies are one fact rather than two."
+    },
+    "measured_functional_tests": [
+      "test/functional/23_mobile_viewport.py"
+    ],
+    "coverage_note": "The corpus is a precondition of the preparation step, so every functional test served from the prepared _site depends on it. Only the tests named in measured_functional_tests were run end to end in a provisioned reduced checkout, so only those are claimed as measured coverage.",
+    "recorded": true,
+    "remediation": "node tools/verify_functional_corpus.mjs --check names the paths this checkout is missing and the exact tools/provision_card_profile.sh hydrate command that materialises them.",
+    "path_count": 30,
+    "logical_bytes": 77367810,
+    "paths": [
+      "site/data/abo_award_residual_lookup.json",
+      "site/data/agency_constellation_lookup.json",
+      "site/data/agency_obligations_lookup.json",
+      "site/data/committee_graph_lookup.json",
+      "site/data/community_board_geography_lookup.json",
+      "site/data/community_board_meeting_index.json",
+      "site/data/community_board_meeting_index/shard-000.json",
+      "site/data/community_board_meeting_index/shard-001.json",
+      "site/data/community_board_meeting_index/shard-002.json",
+      "site/data/community_board_meeting_index/shard-003.json",
+      "site/data/community_board_people.json",
+      "site/data/land_default_ulurp.json",
+      "site/data/land_upcoming_hearings.json",
+      "site/data/meeting_notice_materialization.json",
+      "site/data/meeting_outcomes_snapshot.json",
+      "site/data/meetings_domain_observations.json",
+      "site/data/money_default_open.json",
+      "site/data/money_resident_snapshot.json",
+      "site/data/non_council_outcome_sources/community_board_committees.json",
+      "site/data/ocp_awards_warehouse_lookup.json",
+      "site/data/people_examples.json",
+      "site/data/people_organizations_read_model.json",
+      "site/data/person_hub_lookup.json",
+      "site/data/property_domain_observations.json",
+      "site/data/rules_domain_observations.json",
+      "site/data/rules_semantic_lane.json",
+      "site/data/shared_meeting_read_model.json",
+      "site/data/staffing_default_hires.json",
+      "site/data/staffing_exams.json",
+      "site/data/zap_projects_warehouse_lookup.json"
+    ]
+  },
   "measured": {
     "note": "A snapshot of what the profile costs at the revision named here. These figures are reporting only; they are not part of the checked contract, because a byte total moves whenever any tracked file does.",
-    "revision": "dbcb477e3ca3794b8e31146d123af27dadb0d65a",
+    "revision": "9ae3afd8e4f1b403beda6dfec9ce005983a08ebd",
     "computed_in_reduced_checkout": false,
     "profile_paths": {
-      "count": 3859,
-      "logical_bytes": 149259138
+      "count": 3920,
+      "logical_bytes": 195056219
     },
     "deferred_paths": {
-      "count": 310,
-      "logical_bytes": 241221095
+      "count": 296,
+      "logical_bytes": 221499332
     },
     "excluded_paths": {
-      "count": 1922,
-      "logical_bytes": 661610069
+      "count": 1990,
+      "logical_bytes": 627187330
     },
     "site_data": {
       "tracked_count": 690,
       "tracked_logical_bytes": 467503706,
-      "profile_count": 28,
-      "profile_logical_bytes": 63802089
+      "profile_count": 48,
+      "profile_logical_bytes": 109040965
     },
     "tracked_total": {
-      "count": 5781,
-      "logical_bytes": 810869207
+      "count": 5910,
+      "logical_bytes": 822243549
     },
-    "pattern_count": 777
+    "pattern_count": 795
   }
 }

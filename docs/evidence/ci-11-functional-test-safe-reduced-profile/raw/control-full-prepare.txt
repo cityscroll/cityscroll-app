@@ -1,0 +1,6 @@
+$ tools/prepare_functional_site.sh   # full-checkout control
+functional corpus ready: 30 declared path(s), 73.78 MiB, fingerprint 0bb40d3e9f60, vintage 2026-08-15 (full-checkout profile)
+Primary documents built
+Built public site from site to _site
+exit status: 0
+wall clock: 17112 ms
