@@ -148,11 +148,12 @@ Browser (cityscroll.org — Cloudflare Pages production site with Worker routes)
         ├──  /priorcycle/<id>   prior-cycle + near-match sets (D1; legacy miss path is ratcheted debt)
         ├──  /translate/<id>    informal notice translation (on-demand, D1+edge cached, invariant-checked)
         ├──  /stats             public corpus and coverage aggregates
-        ├──  /admin/stats /usage authenticated product activity / keyed model-spend report
+        ├──  /admin/stats /usage authenticated product activity (incl. receipt-backed Search activity on ?view=html) / keyed model-spend report
         ├──  /events            bounded aggregate usage events (no visitor identifiers)
         ├──  /search-activity   private bounded search-execution receipts (first-party cs_visitor cookie; 30-day KV retention)
         ├──  /r/<kind>/<id>     count-only digest click-through → 302
         └──  /admin/subs /admin/feedback /admin/search-activity   keyed operator views
+             (/admin/search-activity is the JSON representation of the Product Activity Search activity section; filters are limited to retained receipt fields)
 
 Inbound email (Email Routing: subscribe@crol-list.org → this worker): plain
 English → LLM-parsed immediate watch + welcome reply (metered, loop-guarded).
