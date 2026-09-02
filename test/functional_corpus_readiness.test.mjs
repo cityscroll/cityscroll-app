@@ -19,7 +19,7 @@
 
 import assert from "node:assert/strict";
 import { execFileSync, spawnSync } from "node:child_process";
-import { existsSync, mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, mkdtempSync, mkdirSync, readFileSync, realpathSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -30,11 +30,37 @@ const TOOL = join(ROOT, "tools/verify_functional_corpus.mjs");
 const CLOSURE = JSON.parse(readFileSync(join(ROOT, "tools/card-profile/closure.v1.json"), "utf8"));
 const CONFIG = JSON.parse(readFileSync(join(ROOT, "tools/card-profile/profile.config.v1.json"), "utf8"));
 
+// Git resolves a repository from the environment BEFORE it looks at the working
+// directory, so GIT_DIR and friends silently override any cwd we pass. A git
+// hook exports exactly those variables, which means a suite that scaffolds
+// throwaway repositories will, when run from a hook, operate on the real
+// repository instead — initialising it, staging its files and committing to its
+// branch. That happened: a pre-push run left four "scaffold" commits on this
+// branch and an index holding three files. Strip them, everywhere we shell out.
+const REPO_REDIRECTING_GIT_VARS = [
+  "GIT_DIR",
+  "GIT_WORK_TREE",
+  "GIT_INDEX_FILE",
+  "GIT_COMMON_DIR",
+  "GIT_OBJECT_DIRECTORY",
+  "GIT_ALTERNATE_OBJECT_DIRECTORIES",
+  "GIT_NAMESPACE",
+  "GIT_PREFIX",
+  "GIT_CEILING_DIRECTORIES",
+  "GIT_CONFIG"
+];
+
+function isolatedEnv(extra = {}) {
+  const env = { ...process.env, ...extra };
+  for (const name of REPO_REDIRECTING_GIT_VARS) delete env[name];
+  return env;
+}
+
 function run(args, env = {}) {
   const result = spawnSync(process.execPath, [TOOL, ...args], {
     cwd: ROOT,
     encoding: "utf8",
-    env: { ...process.env, ...env }
+    env: isolatedEnv(env)
   });
   return { status: result.status, stdout: result.stdout ?? "", stderr: result.stderr ?? "" };
 }
@@ -44,8 +70,20 @@ function run(args, env = {}) {
 // absent, or modified away from what the index records.
 function scaffold({ corpusPaths = ["site/data/one.json", "site/data/two.json"], materialise = null, modify = [], closureOverride = null } = {}) {
   const dir = mkdtempSync(join(tmpdir(), "cityscroll-functional-corpus-"));
-  const git = (...args) => execFileSync("git", args, { cwd: dir, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] });
+  const git = (...args) =>
+    execFileSync("git", args, { cwd: dir, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"], env: isolatedEnv() });
   git("init", "-q", "-b", "main");
+  // Fail loudly rather than quietly writing to whatever repository git picked.
+  // Without this the previous failure mode was silent: the scaffold "worked",
+  // and the damage only surfaced later as an unrelated test reading an index
+  // that had been replaced.
+  const resolved = git("rev-parse", "--absolute-git-dir").trim();
+  const expected = realpathSync(dir);
+  if (!realpathSync(resolved).startsWith(expected)) {
+    throw new Error(
+      `scaffold escaped its temporary repository: git resolved ${resolved}, expected a path under ${expected}`
+    );
+  }
   git("config", "user.email", "test@example.invalid");
   git("config", "user.name", "test");
 
