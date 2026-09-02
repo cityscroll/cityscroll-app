@@ -1,6 +1,6 @@
 {
   "contract": "ops-contract.v1",
-  "version": "1.9.2",
+  "version": "1.10.0",
   "generated_at": "2026-08-05T13:55:23.589Z",
   "min_compatible_version": "1.0.0",
   "note": "Machine-readable ops contract for desk panels. No secrets. Not served on public /stats.",
@@ -597,6 +597,14 @@
       "description": "Stored feedback rows (operator inbox). Read-only; writes use /admin/report-adjudication."
     },
     {
+      "path": "/admin/search-activity",
+      "methods": [
+        "GET"
+      ],
+      "auth": "ADMIN_KEY",
+      "description": "Private search-execution receipts, newest first and bounded by limit. Production and developer receipts read from disjoint prefixes; never served publicly or on /stats."
+    },
+    {
       "path": "/admin/report-adjudication",
       "methods": [
         "GET",
@@ -862,6 +870,14 @@
         {
           "prefix": "ops:mail:",
           "semantics": "Inbound worker-consumer and outbound operations-mailbox receipts."
+        },
+        {
+          "prefix": "search:exec:",
+          "semantics": "Production search-execution receipts; time-descending keys, KV-expired at the retention window."
+        },
+        {
+          "prefix": "search:exec-dev:",
+          "semantics": "Developer-classified search-execution receipts; disjoint from production reads."
         }
       ]
     },

@@ -7,7 +7,7 @@
 // Desk panels pin min_version and validate fixtures against this schema so hard-coded
 // key prefixes, digest modes, and daylog actions cannot drift silently.
 
-export const OPS_CONTRACT_VERSION = "1.9.2";
+export const OPS_CONTRACT_VERSION = "1.10.0";
 export const OPS_CONTRACT_ID = "ops-contract.v1";
 
 /** Digest delivery / evaluation modes the worker may stamp on receipts and daylogs. */
@@ -387,6 +387,12 @@ export const ADMIN_ROUTES = Object.freeze([
     description: "Stored feedback rows (operator inbox). Read-only; writes use /admin/report-adjudication.",
   },
   {
+    path: "/admin/search-activity",
+    methods: ["GET"],
+    auth: "ADMIN_KEY",
+    description: "Private search-execution receipts, newest first and bounded by limit. Production and developer receipts read from disjoint prefixes; never served publicly or on /stats.",
+  },
+  {
     path: "/admin/report-adjudication",
     methods: ["GET", "POST"],
     auth: "ADMIN_KEY",
@@ -554,6 +560,8 @@ export const KV_NAMESPACES = Object.freeze([
       { prefix: "ops:scheduler:", semantics: "External scheduler heartbeat." },
       { prefix: "ops:alert:", semantics: "Deduped operations-alert fingerprints." },
       { prefix: "ops:mail:", semantics: "Inbound worker-consumer and outbound operations-mailbox receipts." },
+      { prefix: "search:exec:", semantics: "Production search-execution receipts; time-descending keys, KV-expired at the retention window." },
+      { prefix: "search:exec-dev:", semantics: "Developer-classified search-execution receipts; disjoint from production reads." },
     ],
   },
   {

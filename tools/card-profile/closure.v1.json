@@ -51,9 +51,9 @@
         "worker"
       ],
       "scan_hops": 1,
-      "scanned_source_count": 2122,
+      "scanned_source_count": 2126,
       "sources_skipped_not_materialised": 0,
-      "path_count": 1871,
+      "path_count": 1877,
       "worker_to_site_reference_count": 187,
       "worker_to_site_data_reference_count": 28,
       "worker_to_site_data_targets": [
@@ -113,7 +113,7 @@
         "warehouse",
         "worker/src/data"
       ],
-      "path_count": 3639
+      "path_count": 3662
     }
   },
   "required_paths": [
@@ -226,6 +226,7 @@
     "capabilities/people_organizations.mjs",
     "capabilities/people_organizations_provider.mjs",
     "capabilities/registry.mjs",
+    "capabilities/search_activity.mjs",
     "data/rum-09-desk-contract-fixtures/desk-consumer-contract.v1.json",
     "docs/adr/attachment-tables-storage.md",
     "docs/adr/attachment-text-embeddings.md",
@@ -2235,6 +2236,7 @@
     "worker/src/lib/rules.mjs",
     "worker/src/lib/rules_action_bands.mjs",
     "worker/src/lib/rules_adoption_lag.mjs",
+    "worker/src/lib/search_activity.mjs",
     "worker/src/lib/search_health.mjs",
     "worker/src/lib/search_read_model.mjs",
     "worker/src/lib/secret_compare.mjs",
@@ -2291,6 +2293,7 @@
     "worker/src/reliability_watchdogs.mjs",
     "worker/src/rules.mjs",
     "worker/src/search.mjs",
+    "worker/src/search_activity.mjs",
     "worker/src/semantic_candidates.mjs",
     "worker/src/session.mjs",
     "worker/src/source_health.mjs",
@@ -2873,7 +2876,7 @@
       "site/data/zap_outcome_sources/verification_receipts/zap_api_outcomes_2026-07-30.json"
     ]
   },
-  "patterns_sha256": "b2ffbbb87697eb3214ff1ba6579d2fbbeacf8b680c5ea80af2dad66729dae2e9",
+  "patterns_sha256": "904101758720143891104fa180294945cb31995aff0e3528f53458256f271ec2",
   "supported_gate_classes": [
     "worker-unit",
     "architecture-evidence-shards",
@@ -2938,30 +2941,30 @@
   "missing_path_behaviour": "A tracked path the profile does not materialise is marked skip-worktree in the index. tools/card_profile_sentinel.cjs turns a missing-file error on such a path into CardProfileMissingPath and records it, so a profile gap fails closed instead of passing by omission. tools/provision_card_profile.sh hydrate is the documented route to materialise one.",
   "measured": {
     "note": "A snapshot of what the profile costs at the revision named here. These figures are reporting only; they are not part of the checked contract, because a byte total moves whenever any tracked file does.",
-    "revision": "0763af1a08a4949a7d8ebbf90b194603b08e3a27",
+    "revision": "dbcb477e3ca3794b8e31146d123af27dadb0d65a",
     "computed_in_reduced_checkout": false,
     "profile_paths": {
-      "count": 3836,
-      "logical_bytes": 148741841
+      "count": 3859,
+      "logical_bytes": 149259138
     },
     "deferred_paths": {
       "count": 310,
       "logical_bytes": 241221095
     },
     "excluded_paths": {
-      "count": 1916,
-      "logical_bytes": 660876925
+      "count": 1922,
+      "logical_bytes": 661610069
     },
     "site_data": {
-      "tracked_count": 689,
-      "tracked_logical_bytes": 467174014,
+      "tracked_count": 690,
+      "tracked_logical_bytes": 467503706,
       "profile_count": 28,
       "profile_logical_bytes": 63802089
     },
     "tracked_total": {
-      "count": 5752,
-      "logical_bytes": 809618766
+      "count": 5781,
+      "logical_bytes": 810869207
     },
-    "pattern_count": 772
+    "pattern_count": 777
   }
 }
