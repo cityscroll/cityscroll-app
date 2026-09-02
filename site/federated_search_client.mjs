@@ -36,3 +36,41 @@ export async function fetchFederatedSearch(query, {
   }
   return payload.results;
 }
+
+/** Build the one request Contracts Browse and the search front door both issue. */
+export function scopedFederatedSearchPath(query, lenses = []) {
+  const normalizedQuery = normalizeQuery(query);
+  if (!normalizedQuery) throw new TypeError("federated search requires a query");
+  if (normalizedQuery.length > FEDERATED_SEARCH_LIMITS.queryMaximumLength) {
+    throw new TypeError("federated search query is too long");
+  }
+  const params = new URLSearchParams();
+  params.set("q", normalizedQuery);
+  for (const lens of Array.isArray(lenses) ? lenses : []) {
+    const normalizedLens = String(lens ?? "").trim();
+    if (normalizedLens) params.append("scope", normalizedLens);
+  }
+  return `/search?${params.toString()}`;
+}
+
+/**
+ * Fetch a scoped capability response and return the whole envelope, not just the
+ * result array: a form factor that renders coverage needs the coverage receipt,
+ * and a caller that must tell a provider failure apart from an empty result
+ * needs this to throw rather than resolve empty.
+ */
+export async function fetchScopedFederatedSearch(query, {
+  lenses = [],
+  fetcher = globalThis.workerFetch,
+  timeoutMs = SEARCH_TIMEOUT_MS,
+} = {}) {
+  const path = scopedFederatedSearchPath(query, lenses);
+  if (typeof fetcher !== "function") throw new Error("federated search client unavailable");
+  const response = await fetcher(path, null, timeoutMs);
+  if (!response?.ok) throw new Error(`federated search HTTP ${response?.status || 0}`);
+  const payload = await response.json();
+  if (!payload || !Array.isArray(payload.results)) {
+    throw new Error(`invalid ${FEDERATED_SEARCH_CAPABILITY_REFERENCE} response`);
+  }
+  return payload;
+}

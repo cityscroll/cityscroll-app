@@ -124,7 +124,11 @@ export function filterMoneySnapshot(rows, {
     if (contractObjectRef && row?.procurement_id) {
       if (residentSnapshotClean(row.procurement_id) !== residentSnapshotClean(contractObjectRef)) return false;
     } else if (requiredPin && residentSnapshotClean(row?.pin) !== requiredPin) return false;
-    if (!requiredPin && query && !residentSnapshotRowText(row).includes(query)) return false;
+    // A row projected from a scoped SearchDocument was matched by the capability
+    // for this same query, so the local text predicate does not get to overrule
+    // it. Local matching still decides every row that came from the snapshot.
+    if (!requiredPin && query && !row?.search_document
+      && !residentSnapshotRowText(row).includes(query)) return false;
     const amount = residentSnapshotNumeric(row?.contract_amount);
     if (mode === "award" && minAmount != null && (amount == null || amount < Number(minAmount))) return false;
     if (mode === "award" && maxAmount != null && (amount == null || amount > Number(maxAmount))) return false;

@@ -25,6 +25,20 @@ export const FEDERATED_SEARCH_LENS_IDS = Object.freeze([
   "meetings",
 ]);
 
+// Registered presentation scopes. A form factor asks for a named civic scope and
+// never invents its own lens list, so a source Browse and the search front door
+// cannot drift into asking the capability two different questions. Scopes join
+// this registry as their surface adapters land; the remaining lanes stay inline
+// in the worker until then.
+export const FEDERATED_SEARCH_PRESENTATION_SCOPES = Object.freeze({
+  contracts: Object.freeze({
+    id: "contracts",
+    lenses: Object.freeze(["notices", "vendors"]),
+    domains: Object.freeze(["contracts"]),
+    source: "City Record, PASSPort, Checkbook NYC, and CityScroll vendor profiles",
+  }),
+});
+
 export const FEDERATED_SEARCH_COVERAGE_STATES = Object.freeze([
   "matched",
   "empty",
