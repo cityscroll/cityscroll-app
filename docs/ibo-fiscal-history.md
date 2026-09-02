@@ -43,3 +43,13 @@ warehouse/.venv/bin/python warehouse/scripts/ibo_fiscal_history.py \
 ```
 
 The run writes deterministic `observations.jsonl`, `observations.csv`, and `receipt.json`. It validates workbook hashes, selected sheets, label anchors, and the exact expected year headers before writing. The DuckDB table is `ibo_fiscal_history`; the committed CSV/JSONL remain the inspectable materialization, while the catalog is local warehouse state.
+
+## Source-vintage proving case
+
+The read-only source-vintage audit recomputes coverage from the committed JSONL rather than trusting a declared count:
+
+```sh
+node tools/audit_source_vintage.mjs --source ibo-fiscal-history
+```
+
+Its tracked receipt at `warehouse/sources/ibo-fiscal-history/audit/source_vintage_audit.json` records the measured FY1980–FY2022 frontier, 26,101 observations, the FY2022 publisher vintage, retrieval health, and the verified Comptroller ACFR FY2025 context pointer. Successful retrieval and newer publisher context are separate facts: this audit classifies the IBO artifact as `source-vintage-stale` with `ingestion_stale=false`. It never writes the observation corpus; extending the IBO series is a separate follow-on.

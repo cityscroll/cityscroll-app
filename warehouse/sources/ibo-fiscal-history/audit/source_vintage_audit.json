@@ -1,0 +1,101 @@
+{
+  "schema": "cityscroll.source_vintage_audit.v1",
+  "audit_kind": "source-vintage-proving-case",
+  "source_id": "ibo-fiscal-history",
+  "source_identity": {
+    "publisher": "New York City Independent Budget Office",
+    "source_page_url": "https://ns2.ibo.nyc.ny.us/fiscalhistory.html",
+    "workbook_ids": [
+      "ibo_agency_expenditures",
+      "ibo_full_time_positions"
+    ]
+  },
+  "materialization_health": {
+    "ingestion_stale": false,
+    "retrieval": {
+      "status": "succeeded",
+      "retrieved_at": "2026-08-27T17:59:48.000Z"
+    },
+    "measured_coverage": {
+      "row_count": 26101,
+      "fiscal_year_min": 1980,
+      "fiscal_year_max": 2022,
+      "fiscal_year_count": 43,
+      "fiscal_years_contiguous": true,
+      "row_count_by_workbook": {
+        "ibo_agency_expenditures": 21801,
+        "ibo_full_time_positions": 4300
+      }
+    }
+  },
+  "publisher_vintage": {
+    "label": "FY2022",
+    "fiscal_year": 2022,
+    "basis": "warehouse/sources/ibo-fiscal-history/source_manifest.json publisher_vintage, agreed by the materialized receipt"
+  },
+  "classification": {
+    "source_id": "ibo-fiscal-history",
+    "status": "source-vintage-stale",
+    "vintage_status": "source-vintage-stale",
+    "ingestion_stale": false,
+    "ingestion_status": "Healthy",
+    "ingestion_health": {
+      "status": "Healthy",
+      "stale": false,
+      "reason_codes": []
+    },
+    "semantic_current": false,
+    "observed_frontier": {
+      "kind": "fiscal_year",
+      "value": 2022,
+      "basis": "ibo_fiscal_history_receipt.coverage.fiscal_years"
+    },
+    "newer_alternate_source_ids": [
+      "comptroller-acfr"
+    ],
+    "alternate_source_id": "comptroller-acfr",
+    "replacement_source_ids": [],
+    "alternates": [
+      {
+        "alternate_source_id": "comptroller-acfr",
+        "relation": "newer-official-context",
+        "frontier": {
+          "kind": "fiscal_year",
+          "value": 2025,
+          "basis": "official Comptroller ACFR FY2025 publication"
+        },
+        "replacement_eligible": false
+      }
+    ],
+    "ingestion_reason_codes": [],
+    "reason_codes": [
+      "verified-newer-alternate"
+    ],
+    "retrieval": {
+      "retrieved_at": "2026-08-27T17:59:48.000Z",
+      "expected_lag_tolerance_days": 550
+    }
+  },
+  "newer_context_alternates": [
+    {
+      "alternate_source_id": "comptroller-acfr",
+      "relation": "newer-official-context",
+      "replacement_eligible": false,
+      "publisher": "New York City Comptroller",
+      "index_url": "https://comptroller.nyc.gov/reports/annual-comprehensive-financial-reports/",
+      "artifact_url": "https://comptroller.nyc.gov/wp-content/uploads/documents/ACFR-2025-7-28-2026.pdf",
+      "observed_coverage": {
+        "max_fiscal_year": 2025,
+        "basis": "official Comptroller ACFR FY2025 publication"
+      },
+      "publisher_vintage": "FY2025",
+      "evidence_at": "2026-09-02T18:06:46.000Z",
+      "evidence_basis": "official Comptroller ACFR index and linked FY2025 PDF; artifact_url re-verified 2026-09-02 after the single-file FY2025 PDF moved to the documents path (the 2025/11 upload path now returns 404)",
+      "verification_state": "verified"
+    }
+  ],
+  "boundary": {
+    "observations_beyond_publisher_vintage": 0,
+    "series_extension": "out-of-scope-follow-on"
+  }
+}
