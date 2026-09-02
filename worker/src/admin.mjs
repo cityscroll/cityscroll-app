@@ -31,6 +31,8 @@ import {
   digestWatchdogSnapshot,
   emitMailExceptionAlerts,
   emitOpsAlertOnce,
+  EVIDENCE_REQUIRED_GUARDS,
+  opsAlertEvidenceFindings,
   mailWatchdogHasMailFindings,
   mailWatchdogSnapshot,
   recordSchedulerHeartbeat,
@@ -104,6 +106,10 @@ async function isAllowedDigestTestRecipient(email) {
   return DIGEST_TEST_SEND_ALLOWLIST.has(digest);
 }
 
+// Routes that serve a raw operational receipt, and so may be cited as the
+// dereferenceable evidence link on an alert.
+const ADMIN_RECEIPT_ROUTES = Object.freeze(["/admin/reliability/scheduler"]);
+
 // Shared auth gate for every /admin/* route: key via ?key= or an Authorization: Bearer header.
 // FAIL CLOSED — 404 (not 401) until ADMIN_KEY is configured, so an unconfigured deploy doesn't
 // even reveal the route exists. Returns { ok:true } or { ok:false, res:<Response to return> }.
@@ -141,11 +147,20 @@ export async function handleAdminOpsAlert(req, env) {
   const validReceiptUrl = (value) => {
     try {
       const url = new URL(value);
+      // Either a retained workflow artifact, or the admin route that serves the
+      // raw receipt itself. Both dereference to the evidence behind the finding.
+      if (url.origin === new URL(req.url).origin && ADMIN_RECEIPT_ROUTES.includes(url.pathname)) return true;
       return validRunUrl(`${url.origin}${url.pathname}`) && (!url.hash || url.hash === "#artifacts");
     } catch { return false; }
   };
   if (!body?.guard || !body?.stage || !Array.isArray(body?.findings) || !body.findings.length) {
     return json({ error: "guard-stage-findings-required" }, 400);
+  }
+  // Guards that alarm on release and scheduler state must name the workflow and
+  // source revision behind the finding; the relay refuses an unattributable one.
+  if (EVIDENCE_REQUIRED_GUARDS.includes(body.guard)) {
+    const missing = opsAlertEvidenceFindings(body);
+    if (missing.length) return json({ error: "alert-evidence-required", findings: missing }, 400);
   }
   if (!body.first_seen || !body.last_seen || !Number.isFinite(Date.parse(body.first_seen)) || !Number.isFinite(Date.parse(body.last_seen))) {
     return json({ error: "first-last-seen-required" }, 400);
@@ -190,25 +205,55 @@ export async function handleAdminDigestWatchdog(req, env, { now = new Date() } =
   return json(snapshot, snapshot.ok ? 200 : 503);
 }
 
+// The raw scheduler receipt is readable at this route, so an alert about it can
+// always name somewhere to look. Alerts stay same-origin and admin-authenticated.
+export function schedulerReceiptUrl(req) {
+  return `${new URL(req.url).origin}/admin/reliability/scheduler`;
+}
+
 export async function handleAdminSchedulerHeartbeat(req, env, { now = new Date() } = {}) {
   const auth = checkAdminKey(req, env);
   if (!auth.ok) return auth.res;
   if (req.method === "POST") {
     let body;
     try { body = await req.json(); } catch { return json({ error: "invalid-json" }, 400); }
-    return json({ ok: true, heartbeat: await recordSchedulerHeartbeat(env, body, now) }, 200);
+    // Acceptance is explicit in both directions: an unattributable heartbeat is
+    // rejected and never stored, so the watchdog cannot read a false liveness.
+    const write = await recordSchedulerHeartbeat(env, body, now);
+    if (!write.accepted) {
+      return json({ ok: false, accepted: false, error: "heartbeat-evidence-required", rejected: write.rejected }, 400);
+    }
+    return json({ ok: true, accepted: true, heartbeat: write.heartbeat }, 200);
   }
   if (req.method !== "GET") return json({ error: "method" }, 405);
   const snapshot = await schedulerWatchdogSnapshot(env, { now });
-  if (!snapshot.ok && !mailWatchdogHasMailFindings(snapshot.findings)) {
-    await emitOpsAlertOnce(env, {
+  let alert = null;
+  // rel-09: a dead mail rail alarms through HTTP/GitHub-red, never through
+  // itself. Scheduler findings are now their own leg, so a healthy mail rail
+  // still delivers scheduler alerts and a broken one stays red on the response.
+  if (!snapshot.scheduler_ok && snapshot.mail.ok) {
+    const params = new URL(req.url).searchParams;
+    alert = await emitOpsAlertOnce(env, {
       guard: "scheduler-heartbeat",
-      fingerprint: snapshot.findings.join("|"),
+      stage: "scheduler",
+      fingerprint: snapshot.scheduler_findings.join("|"),
       subject: "External scheduler heartbeat failed",
-      text: snapshot.findings.join("; "),
+      findings: snapshot.scheduler_findings,
+      // The observing watchdog run is the concrete run evidence when the
+      // scheduled cycle itself left nothing behind to cite.
+      workflow: params.get("observer_workflow") || snapshot.heartbeat?.workflow || null,
+      workflow_run_url: params.get("observer_run_url") || null,
+      source_revision: params.get("observer_revision") || snapshot.heartbeat?.source_revision || null,
+      receipt_url: schedulerReceiptUrl(req),
+      first_seen: now.toISOString(),
+      last_seen: now.toISOString(),
+      now,
     });
   }
-  return json(snapshot, snapshot.ok ? 200 : 503);
+  return json({
+    ...snapshot,
+    alert: alert ? { sent: alert.sent, reason: alert.reason, signature: alert.signature } : null,
+  }, snapshot.ok ? 200 : 503);
 }
 
 export async function handleAdminOpsHealth(req, env, { now = new Date() } = {}) {

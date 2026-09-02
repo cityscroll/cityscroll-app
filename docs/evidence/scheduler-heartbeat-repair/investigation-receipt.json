@@ -1,0 +1,63 @@
+{
+  "schema": "cityscroll.scheduler-heartbeat-repair-receipt.v1",
+  "observed_range": {
+    "first_scheduler_alert": "2026-09-01T10:28:00Z",
+    "scheduler_alert_count": 13,
+    "freshness_alert": "2026-09-02T00:34:00Z"
+  },
+  "traced_causes": [
+    {
+      "id": "heartbeat-never-written",
+      "surface": "tools/external_schedule_runner.mjs",
+      "finding": "publishHeartbeat returned status \"unconfigured\" and made zero requests when no admin credential was present, so a cycle that ran every due job still left ops:scheduler:heartbeat absent and exited without publishing anything.",
+      "trigger_condition": "The launchd job definition declared no environment, and a launchd agent inherits no login shell, so the credential never reached the runner.",
+      "evidence": "Reproduced directly: publishHeartbeat with no credential returned {\"status\":\"unconfigured\"} with 0 HTTP calls.",
+      "repair": "An unpublishable heartbeat is a failed cycle with a named reason, persisted to the state directory; the job definition names the state directory, the heartbeat route, and a mode-0600 credential file."
+    },
+    {
+      "id": "heartbeat-unattributable",
+      "surface": "worker/src/reliability_watchdogs.mjs",
+      "finding": "The stored heartbeat carried only observed_at, run_key, pending_outbox and due_jobs, so no receipt could be matched to the run that wrote it and any caller could assert liveness.",
+      "repair": "workflow, run_id, source_revision and result are required; an incomplete or generic heartbeat is rejected with 400 and never stored, and the runner verifies its own run identity round-tripped rather than trusting the endpoint's overall ok."
+    },
+    {
+      "id": "null-alert-evidence",
+      "surface": "worker/src/admin.mjs",
+      "finding": "The scheduler watchdog called the alert relay with no workflow_run_url and no receipt_url, so the human-grade paragraph rendered \"Workflow run: null. Raw receipt: null.\" The same relay already rejected external callers that omitted those links.",
+      "evidence": "Reproduced on the unrepaired path: \"scheduler-heartbeat broke: scheduler heartbeat missing. ... Workflow run: null. Raw receipt: null.\"",
+      "repair": "Scheduler and served-artifact guards must supply workflow, source revision, a validated run link and a validated raw-receipt link. Missing evidence holds the alert and records a delivery finding; the endpoint still fails closed with 503."
+    },
+    {
+      "id": "freshness-compared-against-a-rebuild",
+      "surface": ".github/workflows/served-artifact-freshness.yml",
+      "finding": "The check rebuilt main and compared artifact hashes against the served artifact. The production deploy builds with refreshed decision outcomes drawn from live sources, so a rebuild of the same revision cannot reproduce the deployed bytes and the hash comparison could never pass.",
+      "evidence": "Workflow run 33574860994 reported exactly one finding, \"artifact hash mismatch\", with live_source_commit_sha dd4b708b6fe39bf8b2ea635ef3d4f493c4751ace, which was main's own tip; the rebuild produced 2ddd2888fde7f715b6029942c26caa4edc46db1ee12bdaa4a6a6bc850511153a against the served 21fa43eba688d2095629ec55b70c0d59d11521c751d6d6a33a9e7ece960675e8. Every scheduled run of this workflow in the retained history failed the same way across many different revisions.",
+      "repair": "The comparison basis is the manifest the last successful production deploy published. Deploy lag is a separate finding naming both revisions, so an artifact matching an older deploy is still nonzero and carries its own signature."
+    }
+  ],
+  "hypotheses_tested": [
+    {
+      "hypothesis": "The dead scheduler is responsible for regenerating and deploying the served artifact, so one broken scheduler explains both alarms.",
+      "verdict": "falsified",
+      "basis": "The scheduled jobs are action-links, source-contracts, source-freshness and digest-shadow; none regenerates or deploys the served artifact. The served artifact is published by the production deploy on push to main. The two failures share no cause and keep separate signatures."
+    },
+    {
+      "hypothesis": "The served artifact lagged main after a high-merge day.",
+      "verdict": "not supported by the run's own evidence",
+      "basis": "The run recorded the served artifact at main's own revision and raised no source-commit finding. The mismatch was between two builds of the same revision, not between two revisions."
+    }
+  ],
+  "register_discrepancy": {
+    "record": "cityscroll-reliability/rel-09-ops-alerts-human-grade",
+    "recorded_status": "implemented",
+    "observed_gap": "The scheduler-heartbeat item was folded into that record, but no scheduled cycle ever wrote a heartbeat and the watchdog's own alerts carried null run and receipt evidence. The completed record is left unamended; this receipt is the discrepancy note.",
+    "preserved_from_rel_09": [
+      "one-paragraph human-grade alert copy",
+      "signature dedupe with restart-stable daily rollup",
+      "operations-mailbox routing and alert authentication",
+      "run and raw-receipt linking",
+      "private ops-health projection",
+      "a dead mail rail alarms through HTTP rather than through itself"
+    ]
+  }
+}

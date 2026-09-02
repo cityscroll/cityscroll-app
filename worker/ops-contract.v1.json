@@ -352,7 +352,7 @@
       "path": "digests.lagging_subs",
       "source": "SUBS + lastsent:*",
       "exclude_developer_traffic": true,
-      "description": "Count of watches whose lastsent lags ≥ 2 days (no PII)."
+      "description": "Count of watches whose lastsent lags \u2265 2 days (no PII)."
     },
     {
       "path": "digests.last_run",
@@ -621,7 +621,7 @@
         "POST"
       ],
       "auth": "ADMIN_KEY",
-      "description": "PIN-family Checkbook ↔ PASSPort contract-id review; GET lists genuinely-ambiguous pairs with evidence, POST writes a same-contract or related-instrument verdict."
+      "description": "PIN-family Checkbook \u2194 PASSPort contract-id review; GET lists genuinely-ambiguous pairs with evidence, POST writes a same-contract or related-instrument verdict."
     },
     {
       "path": "/admin/digest-rollup",
@@ -646,7 +646,7 @@
         "POST"
       ],
       "auth": "ADMIN_KEY",
-      "description": "Private relay for operational alarms; sends only to the operations mailbox through Resend and deduplicates by guard fingerprint."
+      "description": "Private relay for operational alarms; sends only to the operations mailbox through Resend and deduplicates by guard fingerprint. Scheduler and served-artifact guards must supply workflow, source revision, a validated run link and a validated raw-receipt link, otherwise the relay refuses with 400."
     },
     {
       "path": "/admin/reliability/digest",
@@ -663,7 +663,7 @@
         "GET"
       ],
       "auth": "ADMIN_KEY",
-      "description": "Records an external scheduler heartbeat or checks heartbeat age, pending outbox, and mail-leg receipts; returns 503 when unhealthy."
+      "description": "POST records one external scheduler heartbeat and accepts it only with concrete workflow, run identity, source revision and cycle result; an unattributable heartbeat is rejected with 400 and never stored. GET reports scheduler liveness as its own leg alongside mail-leg receipts and returns 503 when unhealthy; scheduler alerts carry the observing workflow, run link, source revision and this route as the raw receipt, and are held rather than sent when that evidence is absent."
     },
     {
       "path": "/admin/reliability/mail",
@@ -672,7 +672,7 @@
         "POST"
       ],
       "auth": "ADMIN_KEY",
-      "description": "Mail-leg health snapshot and canary. POST {action:canary} probes Resend → the worker-consumed subscribe address only; healthy rounds do not email team@. GET returns 503 when a canary is unmatched, stale, or a send failed, and exception-alerts team@ once per finding fingerprint per day. A rejected exception stays red through HTTP/GitHub-red rather than retrying the dead mail rail. Additive findings_history, canary_state, envelope, and token_prefix fields are source-labeled. The Gmail forward leg stays dashboard-gated."
+      "description": "Mail-leg health snapshot and canary. POST {action:canary} probes Resend \u2192 the worker-consumed subscribe address only; healthy rounds do not email team@. GET returns 503 when a canary is unmatched, stale, or a send failed, and exception-alerts team@ once per finding fingerprint per day. A rejected exception stays red through HTTP/GitHub-red rather than retrying the dead mail rail. Additive findings_history, canary_state, envelope, and token_prefix fields are source-labeled. The Gmail forward leg stays dashboard-gated."
     },
     {
       "path": "/admin/digest-send-test",
@@ -736,7 +736,7 @@
         "GET"
       ],
       "auth": "none",
-      "description": "Public corpus and coverage aggregates only — no product usage fields."
+      "description": "Public corpus and coverage aggregates only \u2014 no product usage fields."
     }
   ],
   "auth_classes": [
@@ -957,7 +957,7 @@
       "values": [
         "always-on"
       ],
-      "description": "Account rollup is code-path default when an email has >1 active watch — not an env flag."
+      "description": "Account rollup is code-path default when an email has >1 active watch \u2014 not an env flag."
     },
     {
       "name": "ANALYTICS_ENVIRONMENT",
@@ -1000,6 +1000,6 @@
         "description": "Watermark recovery or multi-day lag stamp; desk correctnessCheck exempts."
       }
     ],
-    "developer_key": "ANALYTICS_DEV_KEY — signs X-CROL-Analytics-Dev tokens; also operator probe for digest-send-test. USAGE_KEY is separate (Haiku /usage report only)."
+    "developer_key": "ANALYTICS_DEV_KEY \u2014 signs X-CROL-Analytics-Dev tokens; also operator probe for digest-send-test. USAGE_KEY is separate (Haiku /usage report only)."
   }
 }

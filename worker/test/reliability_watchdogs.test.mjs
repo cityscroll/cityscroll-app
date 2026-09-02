@@ -49,18 +49,29 @@ test("digest watchdog fires when the expected receipt is missing", async () => {
   assert.match(result.findings.join("; "), /terminal delivery receipt missing/);
 });
 
+const CYCLE = Object.freeze({
+  workflow: "com.cityscroll.external-schedules",
+  run_id: "2026-08-25T13-30:runner-7:4821",
+  source_revision: "dd4b708b6fe39bf8b2ea635ef3d4f493c4751ace",
+  result: "succeeded",
+});
+
 test("scheduler watchdog stays quiet for a recent empty-outbox heartbeat", async () => {
   const ALERT_STATE = kv();
   const now = new Date("2026-08-25T14:00:00Z");
-  await recordSchedulerHeartbeat({ ALERT_STATE }, { pending_outbox: 0 }, new Date("2026-08-25T13:30:00Z"));
+  const write = await recordSchedulerHeartbeat({ ALERT_STATE }, { ...CYCLE, pending_outbox: 0 }, new Date("2026-08-25T13:30:00Z"));
+  assert.equal(write.accepted, true);
   const result = await schedulerWatchdogSnapshot({ ALERT_STATE }, { now });
   assert.equal(result.ok, true);
+  assert.equal(result.scheduler_ok, true);
+  assert.equal(result.heartbeat.workflow, CYCLE.workflow);
+  assert.equal(result.heartbeat.run_id, CYCLE.run_id);
 });
 
 test("scheduler watchdog fires on expired heartbeat and pending outbox", async () => {
   const ALERT_STATE = kv();
   const now = new Date("2026-08-25T14:00:00Z");
-  await recordSchedulerHeartbeat({ ALERT_STATE }, { pending_outbox: 3 }, new Date("2026-08-25T11:00:00Z"));
+  await recordSchedulerHeartbeat({ ALERT_STATE }, { ...CYCLE, pending_outbox: 3 }, new Date("2026-08-25T11:00:00Z"));
   const result = await schedulerWatchdogSnapshot({ ALERT_STATE }, { now });
   assert.equal(result.ok, false);
   assert.match(result.findings.join("; "), /heartbeat expired/);
@@ -81,6 +92,8 @@ test("ops failures have lossless stable signatures and restart-stable daily roll
     findings: ["artifact hash mismatch at 2026-08-31T12:00:00Z", "source commit mismatch"],
     first_seen: "2026-08-31T12:00:00Z",
     last_seen: "2026-08-31T12:00:00Z",
+    workflow: "Served artifact freshness",
+    source_revision: "dd4b708b6fe39bf8b2ea635ef3d4f493c4751ace",
     workflow_run_url: "https://github.com/cityscroll/cityscroll-app/actions/runs/123",
     receipt_url: "https://github.com/cityscroll/cityscroll-app/actions/runs/123#artifacts",
   };
