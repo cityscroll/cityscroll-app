@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.remaining-browse-scoped-adapter-capture.v1",
-  "build_revision": "a9952b1d403ba51391e9f27891d124bc0cb57e6e",
-  "source_revision": "a9952b1d403ba51391e9f27891d124bc0cb57e6e",
+  "build_revision": "88f10a36096caef3a4a5d59a5d31fd20c4c69e68",
+  "source_revision": "88f10a36096caef3a4a5d59a5d31fd20c4c69e68",
   "viewports": [
     390,
     1440
@@ -46,7 +46,7 @@
   "records": [
     {
       "source": "people",
-      "route": "http://127.0.0.1:53839/browse/people/?q=parks",
+      "route": "http://127.0.0.1:54517/browse/people/?q=parks",
       "viewport": 390,
       "mode": "static-first then scoped capability",
       "cache_mode": "stubbed search, retained committed snapshots",
@@ -69,28 +69,30 @@
     },
     {
       "source": "property",
-      "route": "http://127.0.0.1:53839/browse/property/?q=parks",
+      "route": "http://127.0.0.1:54517/browse/property/?q=parks",
       "viewport": 390,
       "mode": "static-first then scoped capability",
       "cache_mode": "stubbed search, retained committed snapshots",
       "before_capture": "property-before-390.png",
       "after_capture": "property-after-390.png",
       "before": {
-        "scope_state": null,
-        "visible_text_sha256": "e055ea2573a660c4fb36676a96d132197ffb3ef1e280368caff45e5e785b9f20",
-        "visible_text_excerpt": "The latest CityScroll snapshot is unavailable. Retry."
+        "scope_state": "matched",
+        "visible_text_sha256": "7a25360d3edf7dda7ce9dd0f282663b5edec2ebd42c62172729d9e65d5c1da2d",
+        "visible_text_excerpt": "\u201cparks\u201d\n\nNo open sales or participatory property notices right now. Recent past records are in Closed / archive. Follow this search to get email when something new appears.\n\nNext 0/0 \u00b7 neutral 0\n\nCurrent 0 \u00b7 Closed / archive 0\n\nFollow this "
       },
       "after": {
-        "scope_state": null,
-        "visible_text_sha256": "e055ea2573a660c4fb36676a96d132197ffb3ef1e280368caff45e5e785b9f20",
-        "visible_text_excerpt": "The latest CityScroll snapshot is unavailable. Retry."
+        "scope_state": "matched",
+        "visible_text_sha256": "7a25360d3edf7dda7ce9dd0f282663b5edec2ebd42c62172729d9e65d5c1da2d",
+        "visible_text_excerpt": "\u201cparks\u201d\n\nNo open sales or participatory property notices right now. Recent past records are in Closed / archive. Follow this search to get email when something new appears.\n\nNext 0/0 \u00b7 neutral 0\n\nCurrent 0 \u00b7 Closed / archive 0\n\nFollow this "
       },
-      "search_requests": [],
+      "search_requests": [
+        "q=parks&scope=parcels"
+      ],
       "assertion": "static-first paint remains useful; settled keyword candidates carry the registered scope"
     },
     {
       "source": "land",
-      "route": "http://127.0.0.1:53839/browse/zoning/?q=parks",
+      "route": "http://127.0.0.1:54517/browse/zoning/?q=parks",
       "viewport": 390,
       "mode": "static-first then scoped capability",
       "cache_mode": "stubbed search, retained committed snapshots",
@@ -113,7 +115,7 @@
     },
     {
       "source": "rules",
-      "route": "http://127.0.0.1:53839/browse/rules/?q=parks",
+      "route": "http://127.0.0.1:54517/browse/rules/?q=parks",
       "viewport": 390,
       "mode": "static-first then scoped capability",
       "cache_mode": "stubbed search, retained committed snapshots",
@@ -129,14 +131,12 @@
         "visible_text_sha256": "6aaa31a49f33d9050c6786bc064162a766fe3f685dea77837c1d6ccefddc864e",
         "visible_text_excerpt": "Related-language matches\n\nThis reviewed pilot does not cover that search yet.\n\nOTHER RULE NOTICES4\nNOTICE \u00b7 \n\u25c6\nPARKS AND RECREATION\nUnstaged\n\u25c6\nUpdate to Parks List of Qualifying Documents for Disability Membership Fee\nCopy link\nCitywide\nPUB"
       },
-      "search_requests": [
-        "q=parks&scope=notices"
-      ],
+      "search_requests": [],
       "assertion": "static-first paint remains useful; settled keyword candidates carry the registered scope"
     },
     {
       "source": "meetings",
-      "route": "http://127.0.0.1:53839/browse/meetings/?q=parks",
+      "route": "http://127.0.0.1:54517/browse/meetings/?q=parks",
       "viewport": 390,
       "mode": "static-first then scoped capability",
       "cache_mode": "stubbed search, retained committed snapshots",
@@ -159,7 +159,7 @@
     },
     {
       "source": "exams",
-      "route": "http://127.0.0.1:53839/browse/exams/?q=caseworker",
+      "route": "http://127.0.0.1:54517/browse/exams/?q=caseworker",
       "viewport": 390,
       "mode": "static-first then scoped capability",
       "cache_mode": "stubbed search, retained committed snapshots",
@@ -167,8 +167,8 @@
       "after_capture": "exams-after-390.png",
       "before": {
         "scope_state": null,
-        "visible_text_sha256": "05ad9cde0140bb63980b9e20971e0080d9da2e7a177141d803f8832dd386dc7a",
-        "visible_text_excerpt": "No exams match these filters. Try all interests or all scheduled exams."
+        "visible_text_sha256": "6fadbda27066a7173979d8cbaf7b7e59a2d9d00a14195a6392bf7020454f7d91",
+        "visible_text_excerpt": "\u2039\n\u21ba\n\nExams \u00b7 228 available records \u00b7 updated 2026-08-23\n\nSubscribe to calendar\n\u25c6\nPolice Officer\nCopy link\n\nCivil-service exam \u00b7 2025-07-14\n\nOpen competitive \u00b7 Closed \u00b7 Applications 2025-07-01\u20132025-07-14\n\n\u25c6\nAutomotive Service Worker\nCopy lin"
       },
       "after": {
         "scope_state": "matched",
@@ -182,7 +182,7 @@
     },
     {
       "source": "people",
-      "route": "http://127.0.0.1:53839/browse/people/?q=parks",
+      "route": "http://127.0.0.1:54517/browse/people/?q=parks",
       "viewport": 1440,
       "mode": "static-first then scoped capability",
       "cache_mode": "stubbed search, retained committed snapshots",
@@ -205,36 +205,38 @@
     },
     {
       "source": "property",
-      "route": "http://127.0.0.1:53839/browse/property/?q=parks",
+      "route": "http://127.0.0.1:54517/browse/property/?q=parks",
       "viewport": 1440,
       "mode": "static-first then scoped capability",
       "cache_mode": "stubbed search, retained committed snapshots",
       "before_capture": "property-before-1440.png",
       "after_capture": "property-after-1440.png",
       "before": {
-        "scope_state": null,
-        "visible_text_sha256": "e055ea2573a660c4fb36676a96d132197ffb3ef1e280368caff45e5e785b9f20",
-        "visible_text_excerpt": "The latest CityScroll snapshot is unavailable. Retry."
+        "scope_state": "matched",
+        "visible_text_sha256": "7a25360d3edf7dda7ce9dd0f282663b5edec2ebd42c62172729d9e65d5c1da2d",
+        "visible_text_excerpt": "\u201cparks\u201d\n\nNo open sales or participatory property notices right now. Recent past records are in Closed / archive. Follow this search to get email when something new appears.\n\nNext 0/0 \u00b7 neutral 0\n\nCurrent 0 \u00b7 Closed / archive 0\n\nFollow this "
       },
       "after": {
-        "scope_state": null,
-        "visible_text_sha256": "e055ea2573a660c4fb36676a96d132197ffb3ef1e280368caff45e5e785b9f20",
-        "visible_text_excerpt": "The latest CityScroll snapshot is unavailable. Retry."
+        "scope_state": "matched",
+        "visible_text_sha256": "7a25360d3edf7dda7ce9dd0f282663b5edec2ebd42c62172729d9e65d5c1da2d",
+        "visible_text_excerpt": "\u201cparks\u201d\n\nNo open sales or participatory property notices right now. Recent past records are in Closed / archive. Follow this search to get email when something new appears.\n\nNext 0/0 \u00b7 neutral 0\n\nCurrent 0 \u00b7 Closed / archive 0\n\nFollow this "
       },
-      "search_requests": [],
+      "search_requests": [
+        "q=parks&scope=parcels"
+      ],
       "assertion": "static-first paint remains useful; settled keyword candidates carry the registered scope"
     },
     {
       "source": "land",
-      "route": "http://127.0.0.1:53839/browse/zoning/?q=parks",
+      "route": "http://127.0.0.1:54517/browse/zoning/?q=parks",
       "viewport": 1440,
       "mode": "static-first then scoped capability",
       "cache_mode": "stubbed search, retained committed snapshots",
       "before_capture": "land-before-1440.png",
       "after_capture": "land-after-1440.png",
       "before": {
-        "scope_state": null,
-        "visible_text_sha256": "6360c30a714c1f80d9e60829ffa4bfb1ded5c2187803c6ae82acdada3e009c34",
+        "scope_state": "matched",
+        "visible_text_sha256": "4ae85f95e9164f7c6d58234177cf9882a85bbaa9baa98f926fd262be1d3f7c56",
         "visible_text_excerpt": "No zoning projects match these filters yet\n\nYour place and status choices are still applied. Widen the view to see every zoning project.\n\nClear filters, show all"
       },
       "after": {
@@ -249,7 +251,7 @@
     },
     {
       "source": "rules",
-      "route": "http://127.0.0.1:53839/browse/rules/?q=parks",
+      "route": "http://127.0.0.1:54517/browse/rules/?q=parks",
       "viewport": 1440,
       "mode": "static-first then scoped capability",
       "cache_mode": "stubbed search, retained committed snapshots",
@@ -265,14 +267,12 @@
         "visible_text_sha256": "6aaa31a49f33d9050c6786bc064162a766fe3f685dea77837c1d6ccefddc864e",
         "visible_text_excerpt": "Related-language matches\n\nThis reviewed pilot does not cover that search yet.\n\nOTHER RULE NOTICES4\nNOTICE \u00b7 \n\u25c6\nPARKS AND RECREATION\nUnstaged\n\u25c6\nUpdate to Parks List of Qualifying Documents for Disability Membership Fee\nCopy link\nCitywide\nPUB"
       },
-      "search_requests": [
-        "q=parks&scope=notices"
-      ],
+      "search_requests": [],
       "assertion": "static-first paint remains useful; settled keyword candidates carry the registered scope"
     },
     {
       "source": "meetings",
-      "route": "http://127.0.0.1:53839/browse/meetings/?q=parks",
+      "route": "http://127.0.0.1:54517/browse/meetings/?q=parks",
       "viewport": 1440,
       "mode": "static-first then scoped capability",
       "cache_mode": "stubbed search, retained committed snapshots",
@@ -295,7 +295,7 @@
     },
     {
       "source": "exams",
-      "route": "http://127.0.0.1:53839/browse/exams/?q=caseworker",
+      "route": "http://127.0.0.1:54517/browse/exams/?q=caseworker",
       "viewport": 1440,
       "mode": "static-first then scoped capability",
       "cache_mode": "stubbed search, retained committed snapshots",
