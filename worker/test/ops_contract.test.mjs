@@ -93,7 +93,7 @@ test("committed fixture matches builder (desk CI pin)", () => {
 
 test("performance discovery advertises the cross-repository Desk consumer handoff", () => {
   const doc = buildOpsContract({ generated_at: "2026-08-01T00:00:00.000Z" });
-  assert.equal(doc.version, "1.11.0", "the receipt-backed Search activity desk section is additive on the existing ops-contract");
+  assert.equal(doc.version, "1.12.0", "receipt-derived completed-search statistics are additive on the existing ops-contract");
   assert.equal(doc.signup_lifecycle.contract, "cityscroll.signup_lifecycle.v1");
   assert.equal(doc.signup_lifecycle.endpoint, "/admin/subs");
   assert.deepEqual(doc.signup_lifecycle.states.map((state) => state.id), [
@@ -127,7 +127,8 @@ test("performance discovery advertises the cross-repository Desk consumer handof
   assert.equal(doc.admin_routes.filter(({ path }) => path === "/admin/performance").length, 1);
   assert.equal(doc.admin_routes.find(({ path }) => path === "/admin/stats").description,
     "Private product activity, subscriptions, and delivery operations (JSON or ?view=html). "
-    + "The HTML view adds receipt-backed Search activity; the JSON body is unchanged.");
+    + "The JSON body additively carries receipt-derived completed-search statistics in search_executions; "
+    + "every earlier field keeps its meaning. The HTML view adds receipt-backed Search activity.");
 });
 
 test("daylog actions the worker writes are covered by the contract", () => {

@@ -27,6 +27,8 @@ import {
   redactedAccountLabel,
   resolveVisitor,
   searchActivityKey,
+  searchExecutionDimensions,
+  searchExecutionFingerprint,
 } from "./lib/search_activity.mjs";
 import { emailFromRequest } from "./session.mjs";
 
@@ -120,9 +122,13 @@ export async function handleSearchActivity(req, env) {
   ]);
 
   const receiptId = newReceiptId();
+  // Derived once, from the accepted submission and the resolved browser identity, so
+  // a retried beacon and its original agree on which execution they describe.
+  const executionFingerprint = await searchExecutionFingerprint(normalized.value, visitor.visitorId);
   const receipt = buildSearchExecutionReceipt(normalized.value, {
     receiptId,
     executionId: newExecutionId(),
+    executionFingerprint,
     receivedAt: new Date(nowMs).toISOString(),
     visitorId: visitor.visitorId,
     subscriberId: account.subscriberId,
@@ -143,8 +149,14 @@ export async function handleSearchActivity(req, env) {
     await env.ALERT_STATE.put(
       searchActivityKey({ receivedAtMs: nowMs, receiptId, trafficClass }),
       JSON.stringify(receipt),
-      // Retention is mechanical: the store expires the row, no sweep required.
-      { expirationTtl: SEARCH_ACTIVITY_RETENTION_SECONDS },
+      {
+        // Retention is mechanical: the store expires the row, no sweep required.
+        expirationTtl: SEARCH_ACTIVITY_RETENTION_SECONDS,
+        // Aggregation dimensions ride the key so usage statistics fold a whole
+        // window out of bounded list() pages instead of reading every receipt body.
+        // Same key, same TTL, same authenticated boundary — nothing new is retained.
+        metadata: searchExecutionDimensions(receipt),
+      },
     );
   } catch {
     return receiptResponse({ ok: false, reason: "store-failed" }, 202, cors, visitor.setCookie);

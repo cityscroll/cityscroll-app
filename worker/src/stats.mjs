@@ -13,6 +13,7 @@ import {
   readUsageAnalytics,
   reconcileUsageWithDurableStores,
 } from "./lib/analytics.mjs";
+import { readSearchUsage } from "./lib/search_usage.mjs";
 import { isTestSubscriber } from "./lib/subscriptions.mjs";
 
 // Same key as alerts.mjs DIGEST_RUN_LATEST_KEY — kept local so /stats does not import the
@@ -297,6 +298,7 @@ export async function handlePrivateStats(req, env, options = {}) {
     nl30d, nlByCategory30d, clicks30d, shares30d, alertsConfirmed7d, alertsConfirmed30d,
     digestLastRun,
     catchUpSentToday, catchUpAllTime, catchUpLastRun, laggingSubs,
+    searchExecutions,
   ] = await Promise.all([
       countSubscriptionMetrics(env),
       readInt(env.ALERT_STATE, `sendcount:${today}`),
@@ -333,6 +335,7 @@ export async function handlePrivateStats(req, env, options = {}) {
       readStatAllTime(env.ALERT_STATE, "digest_catchup"),
       readCatchUpReceipt(env),
       countLaggingSubs(env, 2, now),
+      readSearchUsage(env, { now }),
     ]);
 
   // Store continuity: same ALERT_STATE / NL_METER namespaces used before and after the
@@ -404,6 +407,10 @@ export async function handlePrivateStats(req, env, options = {}) {
       watches_active: { by_day: watchesHist, live_from: watchesEra },
     },
     usage: usageForOperations,
+    // Additive. Completed searches come from accepted execution receipts and
+    // are reported beside — never folded into — the input counters above, which answer
+    // a different question. Every field before this one keeps its meaning.
+    search_executions: searchExecutions,
   };
 
   const res = new Response(JSON.stringify(body, null, 2), {

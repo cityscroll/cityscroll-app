@@ -77,7 +77,11 @@ import {
   SEARCH_ACTIVITY_KEY_PREFIX,
   SEARCH_ACTIVITY_MAX_READ_LIMIT,
 } from "./lib/search_activity.mjs";
-import { SEARCH_ACTIVITY_ADMIN_PATH } from "../../capabilities/search_activity.mjs";
+import {
+  SEARCH_ACTIVITY_ADMIN_PATH,
+  SEARCH_ACTIVITY_FAMILIES,
+  SEARCH_ACTIVITY_OUTCOME_STATES,
+} from "../../capabilities/search_activity.mjs";
 import {
   SEARCH_ACTIVITY_FILTERS,
   SEARCH_ACTIVITY_FILTER_KEYS,
@@ -1416,6 +1420,65 @@ export function renderSearchActivityPanel(model, { formAction = "/admin/stats", 
     ${body}</section>`;
 }
 
+/**
+ * Completed searches on Product Activity: what readers actually finished, from the
+ * accepted execution receipts, over the two established private windows.
+ *
+ * It sits beside the input counters rather than replacing them, and beside the Search
+ * activity section that holds the individual executions. Every number here is a count;
+ * a query, a result row, or an identifier only ever appears one panel down, on the
+ * separately authenticated surface that already carries it.
+ */
+export function renderCompletedSearchesPanel(usage = null) {
+  const heading = '<h2 id="completed-searches-heading">Completed searches</h2>';
+  const open = '<section class="panel completed-searches-panel" aria-labelledby="completed-searches-heading">';
+  if (!usage || usage.available === false) {
+    const reason = usage?.unavailable_reason
+      ? `Receipt-derived search statistics are unavailable (${escapeHtml(usage.unavailable_reason)}).`
+      : "Receipt-derived search statistics are unavailable.";
+    return `${open}${heading}<p class="panel-note">${reason}</p></section>`;
+  }
+
+  const windows = usage.windows || {};
+  const week = windows.last7d || null;
+  const month = windows.last30d || null;
+  const cell = (cut, read) => `<td>${cut ? deskNumber(read(cut)) : "—"}</td>`;
+  const row = (label, read, scope = false) =>
+    `<tr>${scope ? `<th scope="row">${escapeHtml(label)}</th>` : `<td class="measure">${escapeHtml(label)}</td>`}${cell(week, read)}${cell(month, read)}</tr>`;
+  // A group heading in the first column, so a family name is never read as a peer of
+  // "Completed searches" and an appearance is never read as a row count.
+  const group = (label) => `<tr class="group"><th scope="rowgroup" colspan="3">${escapeHtml(label)}</th></tr>`;
+
+  const outcomeRows = SEARCH_ACTIVITY_OUTCOME_STATES
+    .map((state) => row(SEARCH_ACTIVITY_OUTCOME_COPY[state] || state, (cut) => cut.outcomes?.[state]))
+    .join("");
+  const familyRows = SEARCH_ACTIVITY_FAMILIES
+    .map((family) => row(family, (cut) => cut.family_appearances?.[family]))
+    .join("");
+
+  const optional = Object.entries(usage.optional_cuts || {}).map(([id, cut]) => cut?.available
+    ? `<li><strong>${escapeHtml(cut.label || id)}</strong>: ${deskNumber(cut.last7d)} · 7 days, ${deskNumber(cut.last30d)} · 30 days.</li>`
+    : `<li><strong>${escapeHtml(cut?.label || id)}</strong>: not measured (${escapeHtml(cut?.unavailable_reason || "unavailable")}). ${escapeHtml(cut?.requires || "Requires a landed signal.")}</li>`).join("");
+
+  const truncated = usage.scan?.scan_complete === false
+    ? ` Read bounded at ${deskNumber(usage.scan?.key_ceiling)} receipts, so these are a floor, not a total.`
+    : "";
+  const unclassified = usage.unclassified_receipts
+    ? ` ${deskNumber(usage.unclassified_receipts)} retained receipt${usage.unclassified_receipts === 1 ? " could" : "s could"} not be classified and ${usage.unclassified_receipts === 1 ? "is" : "are"} counted nowhere.`
+    : "";
+
+  return `${open}<div class="panel-heading"><div>${heading}<p class="panel-note">One count per accepted production execution. A reload counts again; a duplicate intake of the same execution does not; developer, test, and rejected receipts never enter.${truncated}${unclassified}</p></div></div>
+  <table><thead><tr><th>Measure</th><th>7 days</th><th>30 days</th></tr></thead><tbody>
+  ${row("Completed searches", (cut) => cut.completed, true)}
+  ${group("Terminal state")}${outcomeRows}
+  ${group("Recognition")}${row("Recognized", (cut) => cut.recognition?.recognized)}${row("Unrecognized", (cut) => cut.recognition?.unrecognized)}
+  ${group("Distinct identities")}${row("Unique browsers", (cut) => cut.unique_visitors)}${row("Recognized accounts", (cut) => cut.recognized_accounts)}
+  ${group("Result-family appearances")}${familyRows}
+  </tbody></table>
+  <p class="panel-note">Terminal states sum to completed searches; so do recognized and unrecognized. ${escapeHtml(usage.family_appearance_semantics || "")} ${escapeHtml(usage.identity_note || "")}</p>
+  <ul class="optional-cuts">${optional}</ul></section>`;
+}
+
 export function renderAdminStatsPage(stats = {}, owedBacklog = null, owedBacklogHref = "/admin/owed-backlog", nextDigestPreviewHref = "/admin/next-digest-preview", searchActivity = null) {
   const usage = stats.usage || {};
   const daily = Object.entries(usage.growth?.by_day || {})
@@ -1436,10 +1499,14 @@ export function renderAdminStatsPage(stats = {}, owedBacklog = null, owedBacklog
   const searchActivityPanel = searchActivity?.model
     ? renderSearchActivityPanel(searchActivity.model, searchActivity)
     : "";
+  // Completed-search statistics travel inside the same private stats body the rest of
+  // this page renders, so Desk and JSON cannot disagree about a window.
+  const completedSearches = stats.search_executions || {};
+  const completedSearchesPanel = renderCompletedSearchesPanel(stats.search_executions || null);
   const backlogPanel = `<section class="panel backlog-panel" aria-labelledby="owed-backlog-heading"><div class="panel-heading"><div><h2 id="owed-backlog-heading">Owed delivery backlog</h2><p class="panel-note">${backlogUnavailable ? "D1 read model unavailable." : `${deskNumber(backlogTotal)} item${backlogTotal === 1 ? "" : "s"} owed across ${deskNumber(backlogRows.length)} subscriber${backlogRows.length === 1 ? "" : "s"}. Next scheduled digest: ${escapeHtml(deskDate(owedBacklog?.next_scheduled_at))}.`}</p></div><span class="panel-actions"><a href="${escapeHtml(owedBacklogHref)}">Open JSON</a><a href="${escapeHtml(nextDigestPreviewHref)}">Preview next digests</a></span></div>${backlogContent}</section>`;
   return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Product activity · CityScroll desk</title><style>
-  :root{color-scheme:light;--ink:#172031;--muted:#5f6875;--paper:#f2f0e9;--card:#fffdf7;--rule:#cbc6b8;--green:#1f6b4f;--red:#a52d25}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 ui-sans-serif,system-ui,sans-serif}.wrap{max-width:1080px;margin:auto;padding:28px 20px 64px}header{border-bottom:3px solid var(--ink);padding-bottom:18px}.eyebrow{margin:0 0 6px;color:var(--green);font-weight:800;letter-spacing:.13em;text-transform:uppercase;font-size:.75rem}h1{font:700 clamp(2rem,5vw,3.6rem)/1.02 ui-serif,Georgia,serif;margin:0}.lede{max-width:70ch;color:var(--muted)}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:24px 0}.card,.panel{min-width:0;background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:16px}.value{font:750 2rem/1 ui-serif,Georgia,serif}.label{margin-top:8px;color:var(--muted);font-size:.82rem;font-weight:750;text-transform:uppercase;letter-spacing:.05em}.panels{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);gap:14px}.backlog-panel{grid-column:1/-1}.panel-heading{display:flex;justify-content:space-between;gap:16px;align-items:start}.panel-actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:flex-end}.panel-actions a{white-space:nowrap}.panel-note{color:var(--muted);margin:0 0 12px}.overdue-row{background:#fff0ed}.overdue-badge{display:inline-block;color:#fff;background:var(--red);border-radius:4px;padding:1px 5px;font-size:.68rem;letter-spacing:.04em;margin-left:4px}h2{margin:0 0 10px;font:700 1.25rem ui-serif,Georgia,serif}.ops{display:grid;grid-template-columns:1fr auto;gap:8px 14px;margin:0}.ops dt{color:var(--muted)}.ops dd{margin:0;text-align:right;font-variant-numeric:tabular-nums}table{width:100%;border-collapse:collapse;font-size:.9rem}th,td{padding:8px;border-bottom:1px solid var(--rule);text-align:right;font-variant-numeric:tabular-nums}th:first-child{text-align:left}small{color:var(--muted);font-weight:400}.stamp{color:var(--muted);font-size:.82rem;margin-top:18px}.search-activity-panel{grid-column:1/-1}.search-activity-filters{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px 14px;align-items:end;margin:0 0 18px;padding:14px;border:1px solid var(--rule);border-radius:10px;background:#fbf9f2}.filter-field{display:flex;flex-direction:column;gap:4px;min-width:0}.filter-field label{font-size:.74rem;font-weight:750;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}.filter-field input,.filter-field select{min-width:0;width:100%;padding:6px 8px;border:1px solid var(--rule);border-radius:6px;background:var(--card);color:var(--ink);font:inherit;font-size:.9rem}.filter-field small{color:var(--muted);font-size:.72rem;line-height:1.35}.filter-actions{display:flex;align-items:end}.filter-actions button{padding:7px 16px;border:1px solid var(--ink);border-radius:6px;background:var(--ink);color:#fff;font:inherit;font-weight:700;cursor:pointer}.execution{border:1px solid var(--rule);border-radius:10px;padding:14px;margin-bottom:12px;background:#fbf9f2}.execution-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}.execution-head h3{margin:0;font:700 1.05rem ui-serif,Georgia,serif;overflow-wrap:anywhere}.outcome{flex:none;border-radius:4px;padding:2px 8px;font-size:.72rem;font-weight:750;letter-spacing:.04em;text-transform:uppercase;border:1px solid var(--rule);background:var(--card)}.outcome-matched{border-color:var(--green);color:var(--green)}.outcome-partial{border-color:#8a6100;color:#8a6100}.outcome-unavailable{border-color:var(--red);color:var(--red)}.execution-facts{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:4px 14px;margin:10px 0 0}.execution-facts dt{color:var(--muted);font-size:.8rem;font-weight:750;text-transform:uppercase;letter-spacing:.04em}.execution-facts dd{margin:0;min-width:0;text-align:left;font-size:.9rem;overflow-wrap:anywhere}.execution code{font-size:.8rem;overflow-wrap:anywhere}.results{margin-top:12px}.results summary{cursor:pointer;font-weight:700;font-size:.9rem}.results table{margin-top:10px;display:block;overflow-x:auto}.results th,.results td{text-align:left;vertical-align:top}.result-title{min-width:14ch;overflow-wrap:anywhere}.result-link{overflow-wrap:anywhere}.no-results{margin:10px 0 0;color:var(--muted);font-size:.9rem}@media(max-width:760px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.panels{grid-template-columns:1fr}.backlog-panel{grid-column:auto}}@media(max-width:430px){.wrap{padding-inline:14px}.grid{grid-template-columns:1fr}.value{font-size:1.75rem}}
+  :root{color-scheme:light;--ink:#172031;--muted:#5f6875;--paper:#f2f0e9;--card:#fffdf7;--rule:#cbc6b8;--green:#1f6b4f;--red:#a52d25}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 ui-sans-serif,system-ui,sans-serif}.wrap{max-width:1080px;margin:auto;padding:28px 20px 64px}header{border-bottom:3px solid var(--ink);padding-bottom:18px}.eyebrow{margin:0 0 6px;color:var(--green);font-weight:800;letter-spacing:.13em;text-transform:uppercase;font-size:.75rem}h1{font:700 clamp(2rem,5vw,3.6rem)/1.02 ui-serif,Georgia,serif;margin:0}.lede{max-width:70ch;color:var(--muted)}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:24px 0}.card,.panel{min-width:0;background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:16px}.value{font:750 2rem/1 ui-serif,Georgia,serif}.label{margin-top:8px;color:var(--muted);font-size:.82rem;font-weight:750;text-transform:uppercase;letter-spacing:.05em}.panels{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);gap:14px}.backlog-panel{grid-column:1/-1}.panel-heading{display:flex;justify-content:space-between;gap:16px;align-items:start}.panel-actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:flex-end}.panel-actions a{white-space:nowrap}.panel-note{color:var(--muted);margin:0 0 12px}.overdue-row{background:#fff0ed}.overdue-badge{display:inline-block;color:#fff;background:var(--red);border-radius:4px;padding:1px 5px;font-size:.68rem;letter-spacing:.04em;margin-left:4px}h2{margin:0 0 10px;font:700 1.25rem ui-serif,Georgia,serif}.ops{display:grid;grid-template-columns:1fr auto;gap:8px 14px;margin:0}.ops dt{color:var(--muted)}.ops dd{margin:0;text-align:right;font-variant-numeric:tabular-nums}table{width:100%;border-collapse:collapse;font-size:.9rem}th,td{padding:8px;border-bottom:1px solid var(--rule);text-align:right;font-variant-numeric:tabular-nums}th:first-child{text-align:left}small{color:var(--muted);font-weight:400}.stamp{color:var(--muted);font-size:.82rem;margin-top:18px}.completed-searches-panel{grid-column:1/-1}.completed-searches-panel td.measure{text-align:left;padding-left:22px;color:var(--muted)}.completed-searches-panel tr.group th{text-align:left;padding-top:14px;font-size:.74rem;font-weight:750;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);border-bottom:none}.optional-cuts{margin:12px 0 0;padding-left:20px;color:var(--muted);font-size:.85rem}.optional-cuts li{margin-bottom:4px}.search-activity-panel{grid-column:1/-1}.search-activity-filters{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px 14px;align-items:end;margin:0 0 18px;padding:14px;border:1px solid var(--rule);border-radius:10px;background:#fbf9f2}.filter-field{display:flex;flex-direction:column;gap:4px;min-width:0}.filter-field label{font-size:.74rem;font-weight:750;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}.filter-field input,.filter-field select{min-width:0;width:100%;padding:6px 8px;border:1px solid var(--rule);border-radius:6px;background:var(--card);color:var(--ink);font:inherit;font-size:.9rem}.filter-field small{color:var(--muted);font-size:.72rem;line-height:1.35}.filter-actions{display:flex;align-items:end}.filter-actions button{padding:7px 16px;border:1px solid var(--ink);border-radius:6px;background:var(--ink);color:#fff;font:inherit;font-weight:700;cursor:pointer}.execution{border:1px solid var(--rule);border-radius:10px;padding:14px;margin-bottom:12px;background:#fbf9f2}.execution-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}.execution-head h3{margin:0;font:700 1.05rem ui-serif,Georgia,serif;overflow-wrap:anywhere}.outcome{flex:none;border-radius:4px;padding:2px 8px;font-size:.72rem;font-weight:750;letter-spacing:.04em;text-transform:uppercase;border:1px solid var(--rule);background:var(--card)}.outcome-matched{border-color:var(--green);color:var(--green)}.outcome-partial{border-color:#8a6100;color:#8a6100}.outcome-unavailable{border-color:var(--red);color:var(--red)}.execution-facts{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:4px 14px;margin:10px 0 0}.execution-facts dt{color:var(--muted);font-size:.8rem;font-weight:750;text-transform:uppercase;letter-spacing:.04em}.execution-facts dd{margin:0;min-width:0;text-align:left;font-size:.9rem;overflow-wrap:anywhere}.execution code{font-size:.8rem;overflow-wrap:anywhere}.results{margin-top:12px}.results summary{cursor:pointer;font-weight:700;font-size:.9rem}.results table{margin-top:10px;display:block;overflow-x:auto}.results th,.results td{text-align:left;vertical-align:top}.result-title{min-width:14ch;overflow-wrap:anywhere}.result-link{overflow-wrap:anywhere}.no-results{margin:10px 0 0;color:var(--muted);font-size:.9rem}@media(max-width:760px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.panels{grid-template-columns:1fr}.backlog-panel{grid-column:auto}}@media(max-width:430px){.wrap{padding-inline:14px}.grid{grid-template-columns:1fr}.value{font-size:1.75rem}}
   </style></head><body><main class="wrap"><header><p class="eyebrow">Authenticated desk · private operations</p><h1>Product activity</h1><p class="lede">Usage, subscriptions, and delivery volumes live here because they describe product operations and people’s activity—not the public civic corpus.</p></header>
   <section class="grid" aria-label="Product activity summary">
     <article class="card"><div class="value">${deskNumber(stats.subscriptions?.accounts)}</div><div class="label">Accounts with watches</div></article>
@@ -1450,9 +1517,10 @@ export function renderAdminStatsPage(stats = {}, owedBacklog = null, owedBacklog
     <article class="card"><div class="value">${deskNumber(usage.deep_links?.last7d)}</div><div class="label">Deep links · 7 days</div></article>
     <article class="card"><div class="value">${deskNumber(usage.exports?.last7d)}</div><div class="label">Exports · 7 days</div></article>
     <article class="card"><div class="value">${deskNumber(usage.alerts?.confirmed_last7d)}</div><div class="label">Watches confirmed · 7 days</div></article>
+    <article class="card"><div class="value">${completedSearches.windows?.last7d ? deskNumber(completedSearches.windows.last7d.completed) : "—"}</div><div class="label">Completed searches · 7 days</div></article>
   </section><section class="panels"><article class="panel"><h2>Delivery operations</h2><dl class="ops">
     <dt>Digests sent today</dt><dd>${deskNumber(stats.digests?.sent_today)}</dd><dt>Catch-up sends today</dt><dd>${deskNumber(stats.digests?.catch_up_sent_today)}</dd><dt>Lagging subscriptions</dt><dd>${deskNumber(stats.digests?.lagging_subs)}</dd><dt>Last run</dt><dd>${deskDate(lastRun.ran_at || lastRun.ranAt || lastRun.at)}</dd><dt>Last-run status</dt><dd>${escapeHtml(lastRun.skipped_reason || lastRun.status || "Not recorded")}</dd>
-  </dl></article><article class="panel"><h2>Daily activity</h2><table><thead><tr><th>UTC day</th><th>Page views</th><th>Actions</th></tr></thead><tbody>${dailyRows}</tbody></table></article>${backlogPanel}${searchActivityPanel}</section><p class="stamp">Generated ${deskDate(stats.generated)}. Private response: no-store.</p></main></body></html>`;
+  </dl></article><article class="panel"><h2>Daily activity</h2><table><thead><tr><th>UTC day</th><th>Page views</th><th>Actions</th></tr></thead><tbody>${dailyRows}</tbody></table></article>${backlogPanel}${completedSearchesPanel}${searchActivityPanel}</section><p class="stamp">Generated ${deskDate(stats.generated)}. Private response: no-store.</p></main></body></html>`;
 }
 
 /**
