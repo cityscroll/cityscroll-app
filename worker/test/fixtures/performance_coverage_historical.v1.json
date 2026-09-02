@@ -1,0 +1,31 @@
+{
+  "schema": "cityscroll.performance.coverage_historical_fixture.v1",
+  "source": "field-rum-readiness-2026-08-26",
+  "measurement_class": "field",
+  "traffic_class": "production",
+  "window": {
+    "start": "2026-08-19T21:06:25Z",
+    "end": "2026-08-26T15:23:59Z",
+    "rule": "seven-day production interval; retained rows are counted before weighting"
+  },
+  "sample_floor": 30,
+  "retained_rows": 487,
+  "estimated_observations": 489,
+  "readiness_groups": [
+    {"surface_id": "home", "metric_id": "content_ready_ms", "component_id": "none", "sampled_count": 99, "estimated_count": 99, "p50": 1021, "p75": 1560.1, "p95": 4920.4},
+    {"surface_id": "home", "metric_id": "component_ready_ms", "component_id": "home-topic-entry", "sampled_count": 99, "estimated_count": 99, "p50": 1022, "p75": 1560.4, "p95": 4920.9},
+    {"surface_id": "following", "metric_id": "content_ready_ms", "component_id": "none", "sampled_count": 35, "estimated_count": 35, "p50": 3748, "p75": 5724.7, "p95": 10457.1},
+    {"surface_id": "following", "metric_id": "component_ready_ms", "component_id": "following-watch-list", "sampled_count": 5, "estimated_count": 5, "p50": 0, "p75": 0, "p95": 0},
+    {"surface_id": "browse-contracts", "metric_id": "content_ready_ms", "component_id": "none", "sampled_count": 68, "estimated_count": 68, "p50": 1809.5, "p75": 3264.1, "p95": 9622},
+    {"surface_id": "browse-contracts", "metric_id": "component_ready_ms", "component_id": "browse-contracts-results", "sampled_count": 68, "estimated_count": 68, "p50": 1809.6, "p75": 3264.2, "p95": 9622},
+    {"surface_id": "notice", "metric_id": "content_ready_ms", "component_id": "none", "sampled_count": 64, "estimated_count": 66, "p50": 2073.8, "p75": 3798.1, "p95": 8615.2},
+    {"surface_id": "notice", "metric_id": "component_ready_ms", "component_id": "notice-context", "sampled_count": 49, "estimated_count": 49, "p50": 5469.2, "p75": 12601.6, "p95": 21722.2}
+  ],
+  "coverage_facts": {
+    "near-you": {"content_ready_ms": 0, "component_ready_ms": 0},
+    "agency": {"content_ready_ms": 0, "component_ready_ms": 0},
+    "mobile_readiness_groups_below_floor": true,
+    "route_import_rows": 0,
+    "owner_settlement_rows": 0
+  }
+}

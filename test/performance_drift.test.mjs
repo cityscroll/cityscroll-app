@@ -58,6 +58,12 @@ test("full SLO catches a p95-only breach and emits a proposed candidate without 
   assert.equal(overlay.enforcement.ci_gate, false);
   assert.equal(overlay.enforcement.auto_merge, false);
   assert.equal(overlay.enforcement.ownership_changes, false);
+  assert.equal(overlay.coverage.schema, "cityscroll.performance.coverage_contract.v1");
+  assert.equal(overlay.coverage.read_status, "not_read");
+  assert.equal(overlay.coverage.readiness.cells.length, 23);
+  assert.equal(overlay.coverage.devices.cells.length, 48);
+  assert.equal(overlay.coverage.phases.cells.length, 36);
+  assert.equal(overlay.coverage.readiness.cells.find((cell) => cell.surface_id === "near-you" && cell.metric_id === "content_ready_ms").state, "no_data");
 });
 
 test("sample floor and missing rows remain explicit and never become zero", () => {
@@ -75,6 +81,17 @@ test("sample floor and missing rows remain explicit and never become zero", () =
   assert.equal(Object.hasOwn(home.metrics.content_ready_ms, "p95_ms"), false);
   assert.equal(home.metrics.component_ready_ms.data_status, "no_data");
   assert.equal(overlay.surfaces.find((surface) => surface.surface_id === "now").data_status, "uninstrumented");
+});
+
+test("a partial window cannot surface a percentile even when retained rows clear the floor", () => {
+  const snapshot = snapshotFor({ sampled: 40 });
+  snapshot.retention.current.status = "partial";
+  const overlay = buildDriftOverlay(snapshot, { now: new Date("2026-08-25T00:00:00.000Z") });
+  const metric = overlay.surfaces.find((surface) => surface.surface_id === "home").metrics.content_ready_ms;
+  assert.equal(metric.data_status, "insufficient_sample");
+  assert.equal(metric.slo_state, "needs-data");
+  assert.equal(Object.hasOwn(metric, "p75_ms"), false);
+  assert.equal(buildCandidates(overlay).length, 0);
 });
 
 test("stored baseline produces a stable regression candidate", () => {

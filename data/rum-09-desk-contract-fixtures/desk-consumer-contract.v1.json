@@ -60,7 +60,8 @@
         "catalog.surfaces.architecture_container_ref",
         "catalog.components.architecture_container_ref",
         "coverage.registered",
-        "coverage.unclassified_observations"
+        "coverage.unclassified_observations",
+        "coverage.lattice"
       ]
     },
     "telemetry_health": {
@@ -80,6 +81,15 @@
     "unclassified": "unclassified",
     "unavailable": "unavailable",
     "missing_never_zero": "Percentile and phase fields are absent when not measured; zero is a measured numeric value, never an absence sentinel."
+  },
+  "coverage_lattice": {
+    "response_field": "coverage.lattice",
+    "schema": "cityscroll.performance.coverage_contract.v1",
+    "contract_path": "worker/src/data/performance-coverage-contract.v1.json",
+    "read_status": ["available", "not_read", "unavailable"],
+    "cell_states": ["measured", "insufficient_sample", "no_data"],
+    "insufficient_reasons": ["window_partial", "below_floor", "percentiles_missing"],
+    "rule": "Every registered surface, readiness metric, device class, and attribution phase cell is present with its own state. A read_status of not_read or unavailable means no lattice aggregate was queried, so an all-no_data lattice is not evidence of absence."
   },
   "trust_boundary": {
     "consumer_owner": "cityscroll-internal",
