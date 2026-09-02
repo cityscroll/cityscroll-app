@@ -1400,6 +1400,7 @@ function taxLienDate(value){
   const day=String(value||"").slice(0,10);
   if(!/^\d{4}-\d{2}-\d{2}$/.test(day)) return fdt(value);
   const meta=(window.LANG_META||{})[window.LANG||"en"];
+  // determinism-lint: allow timezone the value is pinned to local noon on the line above precisely so no US zone renders the previous calendar day.
   return new Date(`${day}T12:00:00`).toLocaleDateString(meta?meta.intlDate:"en-US",{year:"numeric",month:"long",day:"numeric"});
 }
 function taxLienStageLabel(stage){

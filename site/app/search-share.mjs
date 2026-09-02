@@ -1106,6 +1106,7 @@ function pickSuggestionsGuaranteed(indices, lineageIndices, displayCount, seed, 
   const restPicked = pickSuggestions(rest, displayCount - lineagePicked.length, seed);
   return [...lineagePicked, ...restPicked].slice(0, displayCount);
 }
+// determinism-lint: allow clock the suggestion rotation is seeded by the day so a reader sees a stable set for a day; a fixed seed would freeze it forever.
 function daySeed(){ return Math.floor(Date.now()/86400000); }
 
 // Hints stay outside the button so applyStrings() can replace its translated text.
@@ -1359,6 +1360,7 @@ async function exportLensCsv(lens){
   const spec=exportSpec(lens);
   if(!spec||!spec.rows.length) return;
   CrolExports.downloadFile(
+    // determinism-lint: allow clock the download filename records the day the reader exported the file, which is a fact about their action.
     `crol-${lens}-${new Date().toISOString().slice(0,10)}.csv`,
     CrolExports.excelSafeCsv(spec.columns,spec.rows),
     "text/csv;charset=utf-8"
@@ -1383,6 +1385,7 @@ async function exportPropertyAuctionCsv(){
     ["Permalink",r=>r.permalink], ["City Record URL",r=>r.source_link],
   ];
   CrolExports.downloadFile(
+    // determinism-lint: allow clock the download filename records the day the reader exported the file, which is a fact about their action.
     `cityscroll-property-auction-parcels-${new Date().toISOString().slice(0,10)}.csv`,
     CrolExports.excelSafeCsv(columns,rows),
     "text/csv;charset=utf-8"
@@ -1404,6 +1407,7 @@ async function exportLensXlsx(lens){
     }
   );
   CrolExports.downloadFile(
+    // determinism-lint: allow clock the download filename records the day the reader exported the file, which is a fact about their action.
     `crol-${lens}-${new Date().toISOString().slice(0,10)}.xlsx`,
     new Blob([bytes],{type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"})
   );
@@ -1421,6 +1425,8 @@ async function exportNoticeXlsx(notice, chain){
 function preparePrintView(kind, permalink){
   const meta=t("print_header",{
     link:permalink||location.href,
+    // determinism-lint: allow timezone the printed-on date is rendered in the reader's own locale, matching every other date on the page they are printing.
+    // determinism-lint: allow clock the print header records the day the reader printed the page, which is a fact about their action.
     date:new Date().toLocaleDateString((window.LANG_META[window.LANG||"en"]||{}).intlDate||"en-US",{year:"numeric",month:"long",day:"numeric"})
   });
   document.body.setAttribute("data-print-meta",meta);

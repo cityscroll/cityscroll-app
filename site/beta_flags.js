@@ -84,6 +84,7 @@
     } catch {
       // Storage is optional.
     }
+    // determinism-lint: allow clock a flag window is opened and closed by calendar day, so resolving one is a question about today; resolveFlag() itself takes the day as an argument.
     const today = new Date().toISOString().slice(0, 10);
     const resolution = resolveFlag({
       search: location.search,

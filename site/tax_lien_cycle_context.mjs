@@ -56,8 +56,10 @@ export function daysUntil(day, today = null) {
   } else if (typeof today === "string" && isoDay(today)) {
     start = Date.parse(`${isoDay(today)}T12:00:00`);
   } else {
+    // determinism-lint: allow clock the caller-supplied today wins in both branches above; this is the arm taken when nothing was supplied.
     const now = new Date();
     start = Date.parse(
+      // determinism-lint: allow timezone the countdown is anchored at local noon so no US zone shifts it across a calendar day.
       `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}T12:00:00`,
     );
   }

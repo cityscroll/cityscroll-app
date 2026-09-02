@@ -12,6 +12,7 @@ import {
   canonicalEvidence,
   discoverGateRoots,
   lintRepository,
+  lintSiteProduction,
   resolveFixtureRoot,
   stableStringify,
 } from "../tools/determinism_lint.mjs";
@@ -153,6 +154,7 @@ test("reachability starts at required --check workflows and excludes schedule-on
 test("committed fixtures cover positive, negative, allowlisted, and non-gate cases", () => {
   const { root } = resolveFixtureRoot(FIXTURE);
   const report = lintRepository({ root });
+  report.site = lintSiteProduction({ root });
   const receipt = JSON.parse(readFileSync(RECEIPT, "utf8"));
   assert.deepEqual(canonicalEvidence(report, { root }), receipt);
   assert.equal(report.monitors.length, 1);
@@ -187,7 +189,9 @@ test("A3 replays --check across a 48-hour clock advance and UTC/New York timezon
   assert.match(utc.stdout, /scheduled monitor roots excluded/);
   assert.equal(digest(RECEIPT), before);
   const { root } = resolveFixtureRoot(FIXTURE);
-  const evidence = stableStringify(canonicalEvidence(lintRepository({ root }), { root }));
+  const report = lintRepository({ root });
+  report.site = lintSiteProduction({ root });
+  const evidence = stableStringify(canonicalEvidence(report, { root }));
   assert.equal(evidence, readFileSync(RECEIPT, "utf8"));
 });
 

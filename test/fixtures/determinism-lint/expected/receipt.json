@@ -70,6 +70,45 @@
       "path": "tools/monitor_live.mjs"
     }
   ],
+  "site": {
+    "modules": 6,
+    "third_party": [
+      "site/vendor_metric.mjs"
+    ],
+    "issues": [
+      "site/unlisted_module.mjs ships from site/ but is not in architecture/site-production-determinism.json; add it with --write-site-inventory"
+    ],
+    "findings": [
+      {
+        "category": "clock",
+        "path": "site/ambient_clock.mjs",
+        "line": 4,
+        "source": "return String(notice?.due_date || \"\") > new Date().toISOString().slice(0, 10);",
+        "remediation": "take the instant from the caller (an explicit now/today/asOf argument the caller supplies), or declare the deliberate production clock at its own line with `determinism-lint: allow clock <reason>`"
+      },
+      {
+        "category": "clock",
+        "path": "site/ambient_clock.mjs",
+        "line": 8,
+        "source": "return Date.now() - Number(startedAt);",
+        "remediation": "take the instant from the caller (an explicit now/today/asOf argument the caller supplies), or declare the deliberate production clock at its own line with `determinism-lint: allow clock <reason>`"
+      },
+      {
+        "category": "timezone",
+        "path": "site/app/local_time.mjs",
+        "line": 5,
+        "source": "return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, \"0\")}`;",
+        "remediation": "read the UTC accessor (getUTCFullYear and siblings) or pass an explicit timeZone, or declare the reader-local rendering at its own line with `determinism-lint: allow timezone <reason>`"
+      },
+      {
+        "category": "clock",
+        "path": "site/claimed_injection.mjs",
+        "line": 5,
+        "source": "return new Date().toISOString().slice(0, 10);",
+        "remediation": "`determinism-lint: inject` requires the instant to arrive from the caller on this line; supply it at the boundary or record a reasoned `determinism-lint: allow` instead"
+      }
+    ]
+  },
   "findings": [
     {
       "category": "network",

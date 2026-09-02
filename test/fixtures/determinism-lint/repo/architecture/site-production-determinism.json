@@ -1,0 +1,17 @@
+{
+  "schema": "cityscroll.site-production-determinism.inventory.v1",
+  "modules": [
+    "site/ambient_clock.mjs",
+    "site/app/local_time.mjs",
+    "site/claimed_injection.mjs",
+    "site/declared_clock.mjs",
+    "site/fixed_dates.mjs",
+    "site/injected_clock.mjs"
+  ],
+  "third_party": [
+    {
+      "path": "site/vendor_metric.mjs",
+      "reason": "Vendored upstream build kept byte-identical; its timing is not CityScroll source to change."
+    }
+  ]
+}

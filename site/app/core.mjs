@@ -100,6 +100,7 @@ const pinnedTodayISO = () => {
   const pinned = globalThis.CROL_PINNED_TODAY;
   return typeof pinned === "string" && CROL_PINNED_DAY.test(pinned) ? pinned : null;
 };
+// determinism-lint: allow clock this is the civic day itself. Residents must be shown the real day; the pin above is a harness seam the shipped product never sets.
 const todayISO = () => (pinnedTodayISO() || new Date().toISOString().slice(0,10)) + "T00:00:00";
 let exportWorkflowLoad;
 globalThis.ensureCrolExports = () => {
@@ -118,7 +119,10 @@ globalThis.ensureCrolExports = () => {
 const addMonthsISO = (iso, months) => { const d=new Date(iso.slice(0,10)+"T00:00:00Z"); d.setUTCMonth(d.getUTCMonth()+months); return d.toISOString().slice(0,10); };
 // If a full-history query runs past SLOW_MS, automatically retry within this recent window.
 const RECENT_DAYS = 730, SLOW_MS = 7000;
+// determinism-lint: allow clock the recent-history retry window is relative to now by definition; it bounds a slow query, not a rendered claim.
 const recentCut = () => new Date(Date.now()-RECENT_DAYS*86400000).toISOString().slice(0,10) + "T00:00:00";
+// determinism-lint: allow timezone the recent-window label is a reader-facing date rendered in the reader's own locale and zone, matching every other date on the page.
+// determinism-lint: allow clock the recent-window label describes a window relative to now; it is derived from the same cut as recentCut().
 const recentCutLabel = () => { const _lm=(window.LANG_META||{})[window.LANG||"en"]; return new Date(Date.now()-RECENT_DAYS*86400000).toLocaleDateString(_lm?_lm.intlDate:"en-US",{month:"long",day:"numeric",year:"numeric"}); };
 
 /* Read-side cache + in-flight coalescing for the open-data GETs. Repeating a query the session
@@ -131,6 +135,7 @@ async function api(base, params, timeoutMs){
   const hit = API_CACHE.get(key);
   if(hit){
     if(hit.p) return hit.p;                       // same request already in flight — share it
+    // determinism-lint: allow clock cache age inside one page view, not a civic date; it decides whether to reuse a response and never reaches a resident-facing claim.
     if(Date.now() - hit.at < API_TTL) return hit.rows;
     API_CACHE.delete(key);
   }
@@ -146,6 +151,7 @@ async function api(base, params, timeoutMs){
   API_CACHE.set(key, {p});
   try{
     const rows = await p;
+    // determinism-lint: allow clock the moment this response entered the session cache, read back only by the age comparison above.
     API_CACHE.set(key, {rows, at: Date.now()});
     return rows;
   }catch(e){ API_CACHE.delete(key); throw e; }    // failures (incl. timeouts) are never cached
@@ -258,10 +264,13 @@ function fdt(s, opts){
   // Full ISO with a non-midnight clock → include local time (ULURP hearing logistics).
   const hasClock=/T\d{2}:\d{2}/.test(raw) && !/T00:00:00/.test(raw);
   if(hasClock){
+    // determinism-lint: allow timezone a hearing time is deliberately shown in the reader's own zone; the ULURP logistics it supports are attended in person.
     return d.toLocaleString(_loc,{year:"numeric",month:"long",day:"numeric",hour:"numeric",minute:"2-digit"});
   }
+  // determinism-lint: allow timezone a date without a clock is rendered in the reader's locale; the UTC-pinned branch above covers the date-only case.
   return d.toLocaleDateString(_loc,{year:"numeric",month:"long",day:"numeric"});
 }
+// determinism-lint: allow clock a countdown to a deadline is a statement about now; the deadline itself arrives from the record.
 function daysLeft(s){ if(!s) return null; return Math.ceil((new Date(s) - new Date())/86400000); }
 // Honest deadline label: due dates in year >= 2090 are rolling placeholders (pre-qualified-list
 // entries), not real deadlines — mirrors worker/src/ingest.mjs's ROLLING_YEAR /

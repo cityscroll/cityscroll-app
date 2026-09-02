@@ -66,6 +66,7 @@ export function daysUntil(iso, now = null) {
     const n = isoDate(now) || String(now).slice(0, 10);
     start = Date.parse(`${n}T12:00:00Z`);
   } else {
+    // determinism-lint: allow clock the caller-supplied now wins in both branches above; this is the arm taken when nothing was supplied.
     const n = new Date();
     start = Date.UTC(n.getUTCFullYear(), n.getUTCMonth(), n.getUTCDate()) + 12 * 3600 * 1000;
   }

@@ -202,6 +202,7 @@ function seedLandOutcomeSnapshot(snapshot){
     if(!record || record.snapshot_state==="unavailable") continue;
     ZAP_OUTCOMES_MEM.set(id,{
       data:{ok:true,cached:true,static_snapshot:true,generated_at:generatedAt,record},
+      // determinism-lint: allow clock the moment this snapshot entered the session cache, read back only by the age comparison in zapOutcomesMemGet().
       at:Date.now(),
       generatedAt,
       staticSnapshot:true
@@ -1464,6 +1465,7 @@ function zapOutcomesMemGet(projectId){
   const hit = ZAP_OUTCOMES_MEM.get(projectId);
   if(!hit) return null;
   if(hit.p) return hit;
+  // determinism-lint: allow clock cache age inside one page view, not a civic date; it decides whether to reuse a payload.
   if(Date.now() - hit.at < ZAP_OUTCOMES_MEM_TTL) return hit;
   ZAP_OUTCOMES_MEM.delete(projectId);
   return null;
@@ -1491,6 +1493,7 @@ function fetchZapOutcomesPayload(projectId,{allowStatic=true}={}){
   ZAP_OUTCOMES_MEM.set(id, {p});
   return p.then(data=>{
     if(data && data.ok !== false && data.record){
+      // determinism-lint: allow clock the moment this payload entered the session cache, read back only by the age comparison above.
       ZAP_OUTCOMES_MEM.set(id, {data, at: Date.now()});
     }else{
       ZAP_OUTCOMES_MEM.delete(id);
@@ -1537,6 +1540,7 @@ async function loadZapOutcomes(r, el, selection){
     );
     const staleStatic=warm.staticSnapshot && (
       !Number.isFinite(generated)
+      // determinism-lint: allow clock how old the static snapshot is right now, which is what decides whether to refetch; the snapshot's own stamp is the other operand.
       || Date.now()-generated>6*60*60*1000
       || connectionState!=="available"
     );
