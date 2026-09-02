@@ -32,8 +32,6 @@ Procurement
 Property Disposition
 Public Hearings and Meetings
 Public Hearings
-# Stable Zoning status URL/data value (`status=public:In+Public+Review`); the visible label uses i18n.
-In Public Review
 Submit to
 Taxi and Limousine Commission
 Type

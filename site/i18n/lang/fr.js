@@ -882,6 +882,7 @@
     land_map_loading: "Chargement de la carte de ces résultats…",
     land_map_summary: "{mapped} projets sur {total} sont sur la carte.",
     land_map_unmapped_note: "{n} n’ont pas de lieu publié et restent seulement dans la liste.",
+    land_map_empty: "Aucun projet ne correspond à ces filtres, la carte n'a donc rien à afficher.",
     land_map_failed_heading: "Vous pouvez réessayer la carte ou continuer à lire la liste.",
     land_map_retry: "Réessayer la carte",
     land_map_show_list: "Garder la liste",

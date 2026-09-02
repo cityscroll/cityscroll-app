@@ -451,6 +451,11 @@ async function landSearchHearings(stale){
     setLandResultCount(lRows.length);
     setExportBandVisibility(lRows.length, "land-export-band", "land-export-overflow");
     announce(t("land_hearings_heading")+`: ${lRows.length}`);
+    // Same reason paintLandRows repaints the map: updateHash() ran before this search returned,
+    // so the Map mounted against the previous population. Without this, a hearings scope leaves
+    // Map rendering the rows the last filter produced while List shows the hearings ones -- the
+    // two renderers answering different questions, which is exactly what parity forbids.
+    globalThis.applyLandPresentation?.();
     if(!lRows.length){
       $("#llist").innerHTML=landEmptyStateHTML("hearings");
       wireLandEmptyState();
