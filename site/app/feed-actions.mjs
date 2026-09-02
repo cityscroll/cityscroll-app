@@ -38,8 +38,7 @@ import {
   buildMeetingGroupingReportTarget,
   renderReportIssueAffordance,
 } from "../report_issue.mjs";
-
-/* ===================== FEED LENSES (Property / Rules / Meetings) ===================== */
+import { meetingScopedDisclosureHTML, meetingScopedKeywordState, refreshFeedScopedKeyword, startMeetingScopedKeyword } from "../feed_scoped_keyword.mjs";
 const SECTIONS={
   property:{section:"Property Disposition", showAddr:true},
   rules:{section:"Agency Rules"},
@@ -159,32 +158,30 @@ async function resolveFeedNeighborhood(key, query){
 }
 
 async function loadSection(key){
-  if(key === "rules") await globalThis.ensureRules?.();
-  const cfg=SECTIONS[key];
-  const keepHash=hashLock;
-  let kw=($("#"+key+"kw").value||"").trim();
+  if(key==="rules")await globalThis.ensureRules?.();
+  const keepHash=hashLock
+  let kw=($("#"+key+"kw").value||"").trim()
   const resolvedNeighborhood=await resolveFeedNeighborhood(key, kw);
-  if(resolvedNeighborhood) kw="";
+  if(resolvedNeighborhood)kw="";
   else if(key==="property" && kw){ propertyResolvedNeighborhood=null; propertyCommunityDistrict=""; }
-  if(!keepHash || resolvedNeighborhood) updateHash();
+  if(!keepHash||resolvedNeighborhood)updateHash();
   globalThis.syncAlertsEntryHrefs?.();
   renderSearchComponents(key);
   if(key==="meetings") return loadHearings();
-  const whenSel=$("#"+key+"when");
   const ag=key==="rules" ? (globalThis.rulesAgency || "") : ($("#"+key+"agency")?$("#"+key+"agency").value:"");
   busyList("#"+key+"feed", 3);
   const stale = staleGuard("feed:"+key);
   try{
     const payload=key==="property"?await loadPropertyView():await loadRulesDomainSnapshot();
-    let rows=key==="property"?domainRows(payload,"properties"):domainRows(payload,"rules");
-    rows=rows.filter(row=>(!ag||row.agency_name===ag)
+    const sourceRows=key==="property"?domainRows(payload,"properties"):domainRows(payload,"rules");
+    let rows=sourceRows.filter(row=>(!ag||row.agency_name===ag)
       && (!kw||[row.short_title,row.title,row.agency_name,matchText(row)]
         .filter(Boolean).join(" ").toLowerCase().includes(kw.toLowerCase())));
     if(stale()) return;
     unbusy("#"+key+"feed");
     if(key==="rules"){
       const tools=await ruleLocationTools();
-      rows.forEach(row=>{
+      sourceRows.forEach(row=>{
         const hearingArea=tools.isRuleHearing(row)
           ? normalizeHearingRow(row).affected_area : null;
         row._ruleLocation=tools.ruleLocationFromRow(row,{hearingArea});
@@ -196,6 +193,7 @@ async function loadSection(key){
     feedRows[key]={}; rows.forEach(r=>feedRows[key][r.request_id]=r);
     if(key==="property"){
       const tools=await propertyLocationTools();
+      sourceRows.forEach(r=>{ r._location=r.property_location||tools.propertyLocationFromRow(r); });
       rows.forEach(r=>{ r._location=r.property_location||tools.propertyLocationFromRow(r); });
       rows=await filterFeedRowsToDistrictBag("property",rows);
       rows.forEach(r=>{ r._location=r.property_location||tools.propertyLocationFromRow(r); });
@@ -205,10 +203,12 @@ async function loadSection(key){
       rulesAll=rows; renderRulesExplorer();
     }
     else { announce(t("notices_announce",{n:rows.length})); renderFeed(key, rows); }
+    if(kw) refreshFeedScopedKeyword({key,query:kw,sourceRows,agency:ag,stale,filterFeedRowsToDistrictBag,ruleLocationTools,normalizeHearingRow,propertyLocationTools,onRulesRows:next=>{rulesViewCache={rules:next};rulesAll=next;},onPropertyRows:next=>{propAll=next;},renderRulesExplorer,renderPropExplorer,t,escUiHtml});
   }catch(e){ if(!stale()){ unbusy("#"+key+"feed"); $("#"+key+"feed").innerHTML='<div class="empty">' + t("could_not_reach") + '</div>'; } }
 }
 
 let hearingAll=null;
+let hearingBaseAll=null;
 const hearingPastCache=new Map();
 let communityBoardEdgeToolsPromise=null;
 let communityBoardEdgeTools=null;
@@ -1615,6 +1615,11 @@ async function renderHearingExplorer(options){
   const hydrateEdges=options?.hydrateEdges!==false;
   const seq=++hearingRenderSeq;
   const filter=hearingViewFilter(), key=hearingFilterKey(filter);
+  const scopedKeyword=String(filter.keyword||"").trim();
+  if(scopedKeyword!==meetingScopedKeywordState().query){
+    if(!scopedKeyword) hearingAll=hearingBaseAll||hearingAll;
+    startMeetingScopedKeyword({keyword:scopedKeyword,baseRows:hearingBaseAll||hearingAll||[],render:rows=>{hearingAll=rows;renderHearingExplorer();}});
+  }
   const allowWidening=hearingWideningDismissed!==key && filter.when!=="all";
   const boardQuery=typeof hearingCommunityBoardQuery==="function"
     ? hearingCommunityBoardQuery(filter.keyword)
@@ -1652,7 +1657,8 @@ async function renderHearingExplorer(options){
     if(seq!==hearingRenderSeq) return;
   }
   const widening=$("#meetingswidening");
-  widening.innerHTML=hearingWideningHTML(selection,filter)+hearingCommunityBoardDisambiguationHTML(filter)+hearingCommunityBoardPivotHTML();
+  const scopedDisclosure=meetingScopedDisclosureHTML({outcome:meetingScopedKeywordState().outcome,keyword:scopedKeyword,t,escUiHtml});
+  widening.innerHTML=scopedDisclosure+hearingWideningHTML(selection,filter)+hearingCommunityBoardDisambiguationHTML(filter)+hearingCommunityBoardPivotHTML();
   const remove=widening.querySelector("[data-remove-widening]");
   if(remove) remove.addEventListener("click",()=>{
     hearingWideningDismissed=key;
@@ -1852,6 +1858,7 @@ async function loadHearings(){
     const records=canonicalMeetingsForRender(normalizedRecords,payload);
     if(stale()) return;
     hearingAll=records;
+    hearingBaseAll=records;
     renderMeetingsAgencyScope(hearingAll);
     unbusy("#meetingsfeed");
     await renderHearingExplorer();

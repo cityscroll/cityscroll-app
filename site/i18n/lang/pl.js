@@ -1106,6 +1106,8 @@
     could_not_reach: "Najnowsza migawka danych CityScroll jest niedostępna. Spróbuj ponownie.",
     address_snapshot_not_covered: "Tego adresu nie ma w bieżącej migawce CityScroll. Nie użyto przybliżonej lokalizacji.",
     shared_meeting_read_model_unavailable: "Migawka spotkań jest niedostępna. Spróbuj ponownie.",
+    browse_scope_unavailable_snapshot: "Usługa wyszukiwania jest niedostępna; wyświetlamy opublikowaną migawkę: {source}.",
+    browse_scope_partial_records: "Zakres wyszukiwania jest częściowy; wyświetlamy dostępne opublikowane rekordy: {source}.",
     open_notice_btn: "Otwórz ogłoszenie",
     city_record_link: "Rejestr Miejski",
     copy_link_btn: "Kopiuj link",

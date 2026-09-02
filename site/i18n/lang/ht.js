@@ -1097,6 +1097,8 @@
     could_not_reach: "Dènye kopi done CityScroll la pa disponib. Eseye ankò.",
     address_snapshot_not_covered: "Adrès la pa nan kopi done CityScroll aktyèl la. Nou pa t sèvi ak yon kote apwoksimatif.",
     shared_meeting_read_model_unavailable: "Snapshot reyinyon yo pa disponib. Eseye ankò.",
+    browse_scope_unavailable_snapshot: "Sèvis rechèch la pa disponib; n ap montre kopi pibliye {source} la.",
+    browse_scope_partial_records: "Kouvèti rechèch la pasyèl; n ap montre dosye pibliye {source} ki disponib yo.",
     open_notice_btn: "Louvri avis",
     city_record_link: "Rejis Minisipal",
     copy_link_btn: "Kopye lyen",

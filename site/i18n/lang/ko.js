@@ -1098,6 +1098,8 @@
     could_not_reach: "최신 CityScroll 데이터 스냅샷을 사용할 수 없습니다. 다시 시도해 주세요.",
     address_snapshot_not_covered: "현재 CityScroll 스냅샷에서 이 주소를 찾을 수 없습니다. 위치를 추정하지 않았습니다.",
     shared_meeting_read_model_unavailable: "회의 스냅샷을 사용할 수 없습니다. 다시 시도해 주세요.",
+    browse_scope_unavailable_snapshot: "검색 서비스를 사용할 수 없습니다. 게시된 {source} 스냅샷을 표시합니다.",
+    browse_scope_partial_records: "검색 범위가 부분적입니다. 이용 가능한 게시된 {source}를 표시합니다.",
     open_notice_btn: "공고 열기",
     city_record_link: "시정 기록부 / The City Record",
     copy_link_btn: "링크 복사",

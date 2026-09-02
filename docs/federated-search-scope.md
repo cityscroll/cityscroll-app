@@ -23,9 +23,12 @@ Registered federation lenses (the only legal `scope.lenses` values):
 `notices`, `people`, `agencies`, `vendors`, `committees`, `community_boards`,
 `exams`, `parcels`, `land`, `meetings`
 
-These are not presentation lanes. `contracts` and `people-organizations` stay
-HTTP projection groups over the federated envelope and are rejected as scope.
-Auxiliary `legal_code` recall remains unscoped-only; it is not in the allowlist.
+These are not arbitrary presentation lanes. Named Browse adapters use the
+registered source scopes in `FEDERATED_SEARCH_PRESENTATION_SCOPES`; the scope
+metadata names the lens set and domain projection without changing the closed
+lens allowlist. `people-organizations` remains a local presentation group over
+the People scope, and `contracts` is the existing Contracts scope. Auxiliary
+`legal_code` recall remains unscoped-only; it is not in the allowlist.
 
 HTTP `GET /search?q=` omits scope and keeps the existing all-lens route.
 Optional `scope=` repeats or comma-separates registered lens ids. MCP

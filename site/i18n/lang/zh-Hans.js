@@ -1098,6 +1098,8 @@
     could_not_reach: "最新的 CityScroll 数据快照不可用。请重试。",
     address_snapshot_not_covered: "当前 CityScroll 快照中未找到该地址。未使用估算位置。",
     shared_meeting_read_model_unavailable: "会议快照暂时不可用。请重试。",
+    browse_scope_unavailable_snapshot: "搜索服务不可用；正在显示已发布的 {source} 快照。",
+    browse_scope_partial_records: "搜索覆盖不完整；正在显示可用的已发布 {source}。",
     open_notice_btn: "打开通告",
     city_record_link: "市政公报 / The City Record",
     copy_link_btn: "复制链接",

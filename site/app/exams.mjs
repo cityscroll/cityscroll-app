@@ -26,6 +26,9 @@ import {
   examTestMethodCopy,
   examWindowBandLabel,
 } from "../exam_reader_copy.mjs";
+import {
+  fetchBrowseScoped,
+} from "../browse_scoped_adapters.mjs";
 
 /* ===================== EXAMS ===================== */
 let careerData = null, careerLoadPromise = null, careerSelected = null;
@@ -55,6 +58,9 @@ const EXAM_CERTIFICATION_URL = "data/exam_certification_constellation.json";
 let examsAgencyScope = "";
 let examsAgencyExamNumbers = null;
 let examsAgencyScopePromise = null;
+let examsScopedQuery="";
+let examsScopedOutcome=null;
+let examsScopedSerial=0;
 
 function prepareCareerHow(){
   if(careerHowPrepared) return;
@@ -1000,6 +1006,30 @@ function renderCareerGuide(){
   if(!careerData) return;
   const today=careerToday();
   const scopedPool=careerExamsForActiveScope(careerData.exams);
+  const currentFilters=careerFilters();
+  const scopedKeyword=String(currentFilters.query||"").trim();
+  if(scopedKeyword!==examsScopedQuery){
+    examsScopedQuery=scopedKeyword;
+    const serial=++examsScopedSerial;
+    if(!scopedKeyword){
+      examsScopedOutcome=null;
+    }else{
+      fetchBrowseScoped("exams",scopedKeyword).then(outcome=>{
+        if(serial!==examsScopedSerial||scopedKeyword!==examsScopedQuery) return;
+        examsScopedOutcome=outcome;
+        renderCareerGuide();
+      });
+    }
+  }
+  let candidatePool=scopedPool;
+  let localFilters=currentFilters;
+  if(scopedKeyword&&examsScopedOutcome?.query===scopedKeyword&&examsScopedOutcome.outcome!=="unavailable"){
+    const refs=new Set(examsScopedOutcome.documents.map(document=>String(document.object_ref||"")));
+    candidatePool=scopedPool.filter(exam=>refs.has(["exam",exam.exam_number].join(":")));
+    // Keyword candidate identity came from the shared capability. The local
+    // projection still owns every typed exam facet below.
+    localFilters={...currentFilters,query:""};
+  }
   const open=scopedPool.filter(exam=>exam.eligibility==="open_competitive"&&CrolStaffing.statusFor(exam,today)==="open").length;
   const upcoming=scopedPool.filter(exam=>exam.eligibility==="open_competitive"&&CrolStaffing.statusFor(exam,today)==="upcoming").length;
   $("#career-open-count").textContent=fmtNumber(open);
@@ -1025,7 +1055,7 @@ function renderCareerGuide(){
   }else{
     // Agency scope: only exams the publisher certified to that agency — never
     // the full citywide guide under a claimed agency facet.
-    exams=CrolStaffing.filterExams(scopedPool,careerFilters(),today);
+    exams=CrolStaffing.filterExams(candidatePool,localFilters,today);
   }
   syncExamsModeUI();
   updateStaffingMoreFiltersState();
@@ -1033,6 +1063,17 @@ function renderCareerGuide(){
   if(countEl) countEl.textContent=exams.length?t("results_count",{n:fmtNumber(exams.length)}):"";
   careerRenderItems=exams;
   ensureCareerIncrementalList().render({items:exams});
+  const resultsEl=$("#career-results");
+  resultsEl?.querySelector("[data-browse-scope-disclosure]")?.remove();
+  if(scopedKeyword&&examsScopedOutcome?.query===scopedKeyword){
+    const message=examsScopedOutcome.outcome==="unavailable"
+      ? t("browse_scope_unavailable_snapshot",{source:"exam"})
+      : examsScopedOutcome.outcome==="partial"
+        ? t("browse_scope_partial_records",{source:"exams"})
+        : "";
+    if(message) resultsEl?.insertAdjacentHTML("afterbegin",`<div class="note" data-browse-scope-disclosure role="status">${escUiHtml(message)}</div>`);
+    if(resultsEl) resultsEl.dataset.browseScopeState=examsScopedOutcome.outcome;
+  }
 }
 function applyCareerRouteFilters(){
   if(!careerRouteFilters) return;
