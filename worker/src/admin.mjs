@@ -37,9 +37,12 @@ import {
   mailWatchdogSnapshot,
   recordSchedulerHeartbeat,
   schedulerWatchdogSnapshot,
+  dispatchRepairQueue,
+  reportRepairResults,
   OPS_ALERT_HISTORY_KEY,
   sendInboundWorkerCanary,
 } from "./reliability_watchdogs.mjs";
+import { readRepairQueue } from "./lib/repair_queue.mjs";
 import {
   INVESTIGATION_WORKSPACE_VERSION,
   buildInvestigationWorkspace,
@@ -223,7 +226,21 @@ export async function handleAdminSchedulerHeartbeat(req, env, { now = new Date()
     if (!write.accepted) {
       return json({ ok: false, accepted: false, error: "heartbeat-evidence-required", rejected: write.rejected }, 400);
     }
-    return json({ ok: true, accepted: true, heartbeat: write.heartbeat }, 200);
+    // rel-12: the cycle that proves liveness is also the cycle that repairs.
+    // It reports what its last bounded repair task did, then leases the next
+    // items on this same heartbeat — no second endpoint and no second schedule.
+    const reported = await reportRepairResults(env, body.repair_results, { now });
+    const dispatch = await dispatchRepairQueue(env, { now, runId: write.heartbeat.run_id });
+    return json({
+      ok: true,
+      accepted: true,
+      heartbeat: write.heartbeat,
+      repair_queue: {
+        reported: reported.applied,
+        recovered: dispatch.recovered,
+        items: dispatch.items,
+      },
+    }, 200);
   }
   if (req.method !== "GET") return json({ error: "method" }, 405);
   const snapshot = await schedulerWatchdogSnapshot(env, { now });
@@ -263,11 +280,12 @@ export async function handleAdminOpsHealth(req, env, { now = new Date() } = {}) 
   const read = async (key) => {
     try { return JSON.parse(await env?.ALERT_STATE?.get?.(key) || "null"); } catch { return null; }
   };
-  const [mail, scheduler, alerts, freshness] = await Promise.all([
+  const [mail, scheduler, alerts, freshness, repairQueue] = await Promise.all([
     mailWatchdogSnapshot(env, { now }),
     schedulerWatchdogSnapshot(env, { now }),
     read(OPS_ALERT_HISTORY_KEY),
     read("ops:freshness:history:v1"),
+    readRepairQueue(env, { now }),
   ]);
   return privateJson({
     schema: "cityscroll.ops-health-sanitized.v1",
@@ -284,6 +302,10 @@ export async function handleAdminOpsHealth(req, env, { now = new Date() } = {}) 
     },
     freshness: freshness || { status: "unavailable", receipts: [] },
     alerts: alerts || { schema: "cityscroll.ops-alert-history.v1", items: [] },
+    // Queue lifecycle and retries are operator-visible here and nowhere else.
+    // This route is admin-authenticated and private, no-store; no public health
+    // surface carries a repair item.
+    repair_queue: repairQueue,
   }, 200);
 }
 

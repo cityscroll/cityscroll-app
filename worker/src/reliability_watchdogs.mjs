@@ -1,4 +1,12 @@
 import { digestDayLogKey, sentWatchKeysFromDayLog } from "./lib/digest_ops.mjs";
+import {
+  REPAIR_QUEUE_EXCLUDED_GUARDS,
+  completeRepairItem,
+  leaseRepairItems,
+  reconcileRepairQueue,
+  repairQueueSentence,
+  upsertRepairItem,
+} from "./lib/repair_queue.mjs";
 
 export const DIGEST_SHADOW_LEDGER_PREFIX = "ops:digest:shadow:";
 export const DIGEST_DELIVERY_LEDGER_PREFIX = "ops:digest:delivery:";
@@ -140,6 +148,10 @@ export async function recordSchedulerHeartbeat(env, heartbeat = {}, now = new Da
     pending_outbox: Number(heartbeat.pending_outbox) || 0,
     due_jobs: Array.isArray(heartbeat.due_jobs) ? heartbeat.due_jobs.slice(0, 30) : [],
     run_key: heartbeat.run_key || null,
+    // rel-12: whether this cycle can actually run a bounded repair task. A
+    // cycle with no dispatcher still proves liveness, but the queue must not
+    // promise a pickup time it cannot keep.
+    repair_dispatch: heartbeat.repair_dispatch === true,
   };
   const stored = await putJson(env?.ALERT_STATE, SCHEDULER_HEARTBEAT_KEY, result);
   if (!stored) return { accepted: false, rejected: ["scheduler heartbeat store is unavailable"], heartbeat: null };
@@ -527,19 +539,71 @@ export async function canonicalOpsFailureSignature({ guard, stage = "unknown", f
   return [...new Uint8Array(digest)].map((byte) => byte.toString(16).padStart(2, "0")).join("");
 }
 
-function alertParagraph(record, { rollup = false } = {}) {
+function alertParagraph(record, { rollup = false, queue = null } = {}) {
   const what = record.findings[0] || `${record.guard} failed`;
   const prefix = rollup ? `${record.guard} repeated ${record.count} times` : `${record.guard} broke`;
   const workflow = record.workflow ? ` Workflow: ${record.workflow}.` : "";
   const revision = record.source_revision ? ` Source revision: ${record.source_revision}.` : "";
   return `${prefix}: ${what}. First seen ${record.first_seen}; last seen ${record.last_seen}.${workflow}${revision}`
-    + ` Workflow run: ${record.latest_run_url}. Raw receipt: ${record.latest_receipt_url}.`;
+    + ` Workflow run: ${record.latest_run_url}. Raw receipt: ${record.latest_receipt_url}.`
+    + repairQueueSentence(queue);
+}
+
+/**
+ * The decision the owner has to make when automatic repair could not finish.
+ * It names what failed, since when, the run and receipt to look at, and what is
+ * being asked — no queue mechanics and no raw payload.
+ */
+export function repairJudgmentParagraph(judgment) {
+  const attempts = `${judgment.attempts} automatic repair attempt(s)`;
+  const run = judgment.run_url ? ` Workflow run: ${judgment.run_url}.` : "";
+  const receipt = judgment.receipt_url ? ` Raw receipt: ${judgment.receipt_url}.` : "";
+  const detail = judgment.result_summary ? ` The attempt reported: ${judgment.result_summary}.` : "";
+  return `Automatic repair needs your decision for ${judgment.guard}: ${judgment.finding}.`
+    + ` Failing since ${judgment.first_seen}; last seen ${judgment.last_seen}.`
+    + ` ${attempts} did not fix it: ${judgment.reason}.${detail}${run}${receipt}`
+    + ` Decide whether to repair it by hand or change what the guard expects.`
+    + ` The queue has parked it and will not keep retrying it today.`;
+}
+
+/**
+ * One readable alert per repair that reached the judgment boundary. It is a
+ * distinct signature from the finding it came from, and its own guard is
+ * excluded from the queue, so a failed fix can never queue a repair for its own
+ * failure notice.
+ */
+export async function emitRepairJudgmentAlerts(env, judgments = [], { now = new Date() } = {}) {
+  const emitted = [];
+  for (const judgment of judgments) {
+    if (!judgment) continue;
+    const alert = await emitOpsAlertOnce(env, {
+      guard: REPAIR_JUDGMENT_GUARD,
+      stage: judgment.stage,
+      fingerprint: `repair-judgment:${judgment.signature}`,
+      subject: `CityScroll automatic repair needs a decision: ${judgment.guard}`,
+      findings: [`automatic repair could not fix ${judgment.guard}: ${judgment.finding}`],
+      paragraph: repairJudgmentParagraph(judgment),
+      workflow: judgment.workflow,
+      source_revision: judgment.source_revision,
+      workflow_run_url: judgment.run_url,
+      receipt_url: judgment.receipt_url,
+      first_seen: judgment.first_seen,
+      last_seen: now.toISOString(),
+      now,
+    });
+    emitted.push({ signature: judgment.signature, sent: alert.sent, reason: alert.reason });
+  }
+  return emitted;
 }
 
 // Guards whose findings are only actionable with run and receipt evidence in
 // hand. A caller cannot opt out: an alert with nothing to dereference is held
 // back and reported as a delivery failure rather than emailed as "null".
 export const EVIDENCE_REQUIRED_GUARDS = Object.freeze(["scheduler-heartbeat", "served-artifact-freshness"]);
+
+// The one guard that reports on the repair loop itself. rel-12 keeps it out of
+// the queue so a failed fix cannot enqueue a repair for its own failure notice.
+export const REPAIR_JUDGMENT_GUARD = REPAIR_QUEUE_EXCLUDED_GUARDS[0];
 
 export function opsAlertEvidenceFindings(input = {}) {
   const findings = [];
@@ -603,13 +667,40 @@ export async function emitOpsAlertOnce(env, input = {}) {
       return { sent: false, reason: "evidence-required", evidence_findings: missing, signature, record };
     }
   }
+  // rel-12: the repair item is written before the mail is composed, because the
+  // alert has to name the pickup time the queue actually holds. A repeat lands
+  // here too, so the counter advances even when the mail stays suppressed.
+  const heartbeat = await readJson(env?.ALERT_STATE, SCHEDULER_HEARTBEAT_KEY);
+  const queue = await upsertRepairItem(env, {
+    signature,
+    guard,
+    stage: record.stage,
+    findings,
+    first_seen: firstSeen,
+    last_seen: lastSeen,
+    workflow: record.workflow,
+    source_revision: record.source_revision,
+    workflow_run_url: record.latest_run_url,
+    receipt_url: record.latest_receipt_url,
+  }, { now, heartbeat });
+  // A queue write that did not land is a durable operational finding carried on
+  // the alert record and the private projection. It never alerts through the
+  // same store that just refused the write.
+  record.queue = queue.skipped ? null : {
+    queued: queue.ok,
+    state: queue.item?.state || null,
+    repeat_count: queue.item?.repeat_count || null,
+    next_pickup_at: queue.item?.next_pickup_at || null,
+    finding: queue.ok ? null : { observed_at: lastSeen, reason: queue.reason, detail: queue.detail || null },
+  };
+
   const today = day(now);
   const rollup = !!prior && prior.rollup_day !== today && day(prior.last_seen) !== today;
   const shouldSend = !prior || rollup;
   if (!shouldSend) {
     await putJson(env?.ALERT_STATE, alertKey, record);
     await updateAlertHistory(env?.ALERT_STATE, record);
-    return { sent: false, reason: "already-alerted", signature, record };
+    return { sent: false, reason: "already-alerted", signature, record, queue };
   }
   const { sendOpsAlert } = await import("./alerts.mjs");
   let result;
@@ -617,7 +708,12 @@ export async function emitOpsAlertOnce(env, input = {}) {
     result = await sendOpsAlert(env, {
       guard,
       subject: input.subject || `CityScroll reliability alert: ${guard}`,
-      text: alertParagraph(record, { rollup }),
+      // Only the repair-judgment guard composes its own paragraph, because its
+      // "since when" dates would be normalized out of a finding — rel-09's
+      // normalization exists to make signatures stable, not to be read. Every
+      // other guard, including anything arriving over the admin relay, gets the
+      // standard evidence-bearing paragraph.
+      text: (guard === REPAIR_JUDGMENT_GUARD && input.paragraph) || alertParagraph(record, { rollup, queue }),
       observedAt: record.last_seen,
     });
   } catch (error) {
@@ -631,7 +727,49 @@ export async function emitOpsAlertOnce(env, input = {}) {
   }
   await putJson(env?.ALERT_STATE, alertKey, record);
   await updateAlertHistory(env?.ALERT_STATE, record);
-  return { sent: !!result.accepted, result, reason: result.accepted ? null : (result.reason || "rejected"), signature, record };
+  return { sent: !!result.accepted, result, reason: result.accepted ? null : (result.reason || "rejected"), signature, record, queue };
+}
+
+/**
+ * Pickup on the cycle's existing heartbeat: reconcile anything the queue lost to
+ * a failed write, hand out bounded leases, and turn any item that reached the
+ * judgment boundary into the one owner alert it is allowed to send. Pickup
+ * itself is silent.
+ */
+export async function dispatchRepairQueue(env, { now = new Date(), runId = null, limit } = {}) {
+  const heartbeat = await readJson(env?.ALERT_STATE, SCHEDULER_HEARTBEAT_KEY);
+  const history = await readJson(env?.ALERT_STATE, OPS_ALERT_HISTORY_KEY);
+  const recovered = await reconcileRepairQueue(env, { now, heartbeat, history });
+  // A cycle that cannot dispatch does not take leases. Spending attempts on
+  // work nothing will run is how a queue quietly exhausts itself into mail.
+  if (heartbeat?.repair_dispatch !== true) {
+    return { recovered: recovered.restored, items: [], judgment_alerts: [], dispatch: false };
+  }
+  const lease = await leaseRepairItems(env, { runId, now, heartbeat, ...(limit ? { limit } : {}) });
+  const alerts = await emitRepairJudgmentAlerts(env, lease.judgment, { now });
+  return { recovered: recovered.restored, items: lease.items, judgment_alerts: alerts, dispatch: true };
+}
+
+/**
+ * The cycle reporting what its bounded repair task did. A repaired item retires
+ * silently; a retryable failure returns to the queue silently; only a terminal
+ * failure or an explicit request for a decision mails the owner.
+ */
+export async function reportRepairResults(env, reports = [], { now = new Date() } = {}) {
+  const applied = [];
+  const judgments = [];
+  for (const report of Array.isArray(reports) ? reports.slice(0, 20) : []) {
+    const outcome = await completeRepairItem(env, report, { now });
+    applied.push({
+      signature: report?.signature || null,
+      accepted: outcome.ok,
+      reason: outcome.reason,
+      state: outcome.item?.state || null,
+    });
+    if (outcome.judgment) judgments.push(outcome.judgment);
+  }
+  const alerts = await emitRepairJudgmentAlerts(env, judgments, { now });
+  return { applied, judgment_alerts: alerts };
 }
 
 async function appendMailFindingsHistory(env, records, now = new Date()) {
