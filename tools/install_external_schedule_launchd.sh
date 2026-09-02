@@ -9,11 +9,15 @@ label=com.cityscroll.external-schedules
 target="$launch_agents_dir/$label.plist"
 
 key_file=${CITYSCROLL_ADMIN_KEY_FILE:-"$state_dir/admin-key"}
+# Optional. Without it the cycle still proves liveness and still reconciles the
+# repair queue; it simply declines the leases it could not service.
+repair_command=${CITYSCROLL_REPAIR_DISPATCH_COMMAND:-}
 
 mkdir -p "$log_dir" "$launch_agents_dir"
 sed -e "s|__CITYSCROLL_ROOT__|$root|g" -e "s|__CROL_EXTERNAL_SCHEDULE_LOG_DIR__|$log_dir|g" \
   -e "s|__CROL_EXTERNAL_SCHEDULE_STATE_DIR__|$state_dir|g" \
   -e "s|__CITYSCROLL_ADMIN_KEY_FILE__|$key_file|g" \
+  -e "s|__CITYSCROLL_REPAIR_DISPATCH_COMMAND__|$repair_command|g" \
   "$root/ops/launchd/$label.plist.template" > "$target"
 
 # The agent cannot publish a heartbeat without this credential, and a scheduler
@@ -21,6 +25,10 @@ sed -e "s|__CITYSCROLL_ROOT__|$root|g" -e "s|__CROL_EXTERNAL_SCHEDULE_LOG_DIR__|
 if [ ! -f "$key_file" ]; then
   echo "warning: $key_file is absent; the cycle will report admin-credential-missing" >&2
   echo "  install it with: umask 177 && printf %s \"\$ADMIN_KEY\" > $key_file" >&2
+fi
+
+if [ -z "$repair_command" ]; then
+  echo "note: CITYSCROLL_REPAIR_DISPATCH_COMMAND is unset; the cycle will not lease repair work" >&2
 fi
 
 launchctl unload "$target" 2>/dev/null || true
