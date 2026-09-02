@@ -122,14 +122,19 @@ test("A1 the evidence contract travels on every marker", () => {
   assert.ok(htmlFor(modelFor()).includes(`data-land-map-source-vintage="${points.schema}"`));
 });
 
-test("A1 the painted map carries one linked marker per mapped row and links nowhere else", () => {
+test("A1 the painted map carries one routed marker per mapped row and routes nowhere else", () => {
   const model = modelFor();
   const html = htmlFor(model);
 
   assert.equal([...html.matchAll(/class="land-map-marker"/g)].length, model.counts.mapped);
-  assert.equal([...html.matchAll(/class="land-map-marker-link"/g)].length, model.counts.mapped);
+  // LM-07 made the marker a selection control rather than a link, because activating one
+  // selects a project instead of leaving the map. The canonical route it carries did not
+  // move: it rides on the control as `data-land-map-href`, and the selected summary renders
+  // it as the real link a resident follows. This still asserts one route per mapped row and
+  // no route outside the filtered rows.
+  assert.equal([...html.matchAll(/class="land-map-marker-control"/g)].length, model.counts.mapped);
 
-  const hrefs = attr(html, "href");
+  const hrefs = attr(html, "data-land-map-href");
   assert.equal(hrefs.length, model.counts.mapped);
   const listIds = new Set(rowsFor().map((row) => row.project_id));
   for (const href of hrefs) {
@@ -292,7 +297,8 @@ test("A4 an id the canonical route rejects gets a point but never a link", () =>
   assert.equal(landMarkerDetailHref("not a project id"), null);
   assert.equal(marker.href, null, "a route that does not exist is not offered");
   const html = htmlFor(model);
-  assert.equal(html.includes("land-map-marker-link"), false);
+  assert.equal(html.includes("land-map-marker-control"), false);
+  assert.equal(html.includes("data-land-map-href"), false);
   assert.match(html, /class="land-map-marker"/, "the point it really has is still drawn");
 });
 

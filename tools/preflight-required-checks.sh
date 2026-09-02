@@ -425,6 +425,7 @@ if [[ "$RUN_FULL" == "1" ]]; then
   run_and_fail python3 test/functional/34_near_you_surface_switch.py
   run_and_fail python3 test/functional/40_land_map_activation.py
   run_and_fail python3 test/functional/41_land_map_marker_join.py
+  run_and_fail python3 test/functional/42_land_map_marker_selection.py
 else
   echo
   echo "Skipping full browser gates by default."

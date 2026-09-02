@@ -1,0 +1,562 @@
+{
+  "schema": "cityscroll.land-map-marker-selection-receipt.v1",
+  "card": "cityscroll-land-map-view/lm-07-marker-selection",
+  "browser_mode": "headless chromium (playwright), remote hosts blocked",
+  "revision": {
+    "before_commit": "9ae3afd8e4f1b403beda6dfec9ce005983a08ebd",
+    "after_tree": "working tree at the commit above plus this card's changes",
+    "after_changed_paths": [
+      "architecture/evidence.d/cityscroll-land-map-view--lm-07-marker-selection.json",
+      "docs/evidence/land-map-marker-selection.json",
+      "docs/module-map.md",
+      "docs/screenshots/land-map-marker-selection/",
+      "site/app/land.mjs",
+      "site/app/map_runtime.mjs",
+      "site/i18n.js",
+      "site/i18n/lang/ar.js",
+      "site/i18n/lang/bn.js",
+      "site/i18n/lang/es.js",
+      "site/i18n/lang/fr.js",
+      "site/i18n/lang/ht.js",
+      "site/i18n/lang/ko.js",
+      "site/i18n/lang/pl.js",
+      "site/i18n/lang/ru.js",
+      "site/i18n/lang/ur.js",
+      "site/i18n/lang/zh-Hans.js",
+      "site/index.html",
+      "site/land_map_selection.mjs",
+      "site/search/index.html",
+      "test/functional/41_land_map_marker_join.py",
+      "test/functional/42_land_map_marker_selection.py",
+      "test/land_map_marker_join.test.mjs",
+      "test/land_map_marker_selection.test.mjs",
+      "tools/capture_land_map_marker_join.py",
+      "tools/capture_land_map_marker_selection.py",
+      "tools/preflight-required-checks.sh"
+    ]
+  },
+  "routes": {
+    "default_map": "/browse/zoning/?view=map",
+    "filtered_map": "/browse/zoning/?boro=Queens&view=map"
+  },
+  "viewports": [
+    [
+      390,
+      844
+    ],
+    [
+      1440,
+      900
+    ]
+  ],
+  "specimens": {
+    "anchor": "2025K0305"
+  },
+  "demonstrates": {
+    "default-selection": "Default Map with one project selected: exactly one active marker and a compact summary naming the project, its status, and how it was placed.",
+    "filtered-selection": "Borough-filtered Map with a selection drawn from the narrowed population, not from the whole point projection.",
+    "selected-focus": "Keyboard selection: the marker is reached and activated from the keyboard, and visible focus stays on the active marker. At 390px this is also the narrow-width proof that every selection control remains reachable without a pointer.",
+    "detail-return": "After following the canonical detail route and pressing Back: the same filtered population, the same Map view, the same selection, and focus on the marker it left from.",
+    "filtered-out-selection": "A selection the new filter no longer holds is cleared rather than carried: no active marker, no summary, and the filtered population is untouched."
+  },
+  "before": {
+    "default-selection@390": {
+      "url": "/browse/zoning/?view=map",
+      "map_state": "ready",
+      "counts_published": {
+        "total": 40,
+        "mapped": 29,
+        "unmapped": 11
+      },
+      "markers": 29,
+      "selection_supported": false,
+      "selected_project": null,
+      "active_markers": [],
+      "summary_present": false,
+      "summary_text": "",
+      "placement_method": null,
+      "placement_precision": null,
+      "source_vintage": null,
+      "detail_href": null,
+      "selection_in_url": false,
+      "focus_on": "H2",
+      "focus_in_panel": false,
+      "list_rows": 40,
+      "screenshot": "docs/screenshots/land-map-marker-selection/before-default-selection-390.png"
+    },
+    "default-selection@1440": {
+      "url": "/browse/zoning/?view=map",
+      "map_state": "ready",
+      "counts_published": {
+        "total": 40,
+        "mapped": 29,
+        "unmapped": 11
+      },
+      "markers": 29,
+      "selection_supported": false,
+      "selected_project": null,
+      "active_markers": [],
+      "summary_present": false,
+      "summary_text": "",
+      "placement_method": null,
+      "placement_precision": null,
+      "source_vintage": null,
+      "detail_href": null,
+      "selection_in_url": false,
+      "focus_on": "H2",
+      "focus_in_panel": false,
+      "list_rows": 40,
+      "screenshot": "docs/screenshots/land-map-marker-selection/before-default-selection-1440.png"
+    },
+    "filtered-selection@390": {
+      "url": "/browse/zoning/?boro=Queens&view=map",
+      "map_state": "ready",
+      "counts_published": {
+        "total": 34,
+        "mapped": 8,
+        "unmapped": 26
+      },
+      "markers": 8,
+      "selection_supported": false,
+      "selected_project": null,
+      "active_markers": [],
+      "summary_present": false,
+      "summary_text": "",
+      "placement_method": null,
+      "placement_precision": null,
+      "source_vintage": null,
+      "detail_href": null,
+      "selection_in_url": false,
+      "focus_on": "H2",
+      "focus_in_panel": false,
+      "list_rows": 34,
+      "screenshot": "docs/screenshots/land-map-marker-selection/before-filtered-selection-390.png"
+    },
+    "filtered-selection@1440": {
+      "url": "/browse/zoning/?boro=Queens&view=map",
+      "map_state": "ready",
+      "counts_published": {
+        "total": 34,
+        "mapped": 8,
+        "unmapped": 26
+      },
+      "markers": 8,
+      "selection_supported": false,
+      "selected_project": null,
+      "active_markers": [],
+      "summary_present": false,
+      "summary_text": "",
+      "placement_method": null,
+      "placement_precision": null,
+      "source_vintage": null,
+      "detail_href": null,
+      "selection_in_url": false,
+      "focus_on": "H2",
+      "focus_in_panel": false,
+      "list_rows": 34,
+      "screenshot": "docs/screenshots/land-map-marker-selection/before-filtered-selection-1440.png"
+    },
+    "selected-focus@390": {
+      "url": "/browse/zoning/?view=map",
+      "map_state": "ready",
+      "counts_published": {
+        "total": 40,
+        "mapped": 29,
+        "unmapped": 11
+      },
+      "markers": 29,
+      "selection_supported": false,
+      "selected_project": null,
+      "active_markers": [],
+      "summary_present": false,
+      "summary_text": "",
+      "placement_method": null,
+      "placement_precision": null,
+      "source_vintage": null,
+      "detail_href": null,
+      "selection_in_url": false,
+      "focus_on": "H2",
+      "focus_in_panel": false,
+      "list_rows": 40,
+      "screenshot": "docs/screenshots/land-map-marker-selection/before-selected-focus-390.png"
+    },
+    "selected-focus@1440": {
+      "url": "/browse/zoning/?view=map",
+      "map_state": "ready",
+      "counts_published": {
+        "total": 40,
+        "mapped": 29,
+        "unmapped": 11
+      },
+      "markers": 29,
+      "selection_supported": false,
+      "selected_project": null,
+      "active_markers": [],
+      "summary_present": false,
+      "summary_text": "",
+      "placement_method": null,
+      "placement_precision": null,
+      "source_vintage": null,
+      "detail_href": null,
+      "selection_in_url": false,
+      "focus_on": "H2",
+      "focus_in_panel": false,
+      "list_rows": 40,
+      "screenshot": "docs/screenshots/land-map-marker-selection/before-selected-focus-1440.png"
+    },
+    "detail-return@390": {
+      "url": "/browse/zoning/?view=map",
+      "map_state": "ready",
+      "counts_published": {
+        "total": 40,
+        "mapped": 29,
+        "unmapped": 11
+      },
+      "markers": 29,
+      "selection_supported": false,
+      "selected_project": null,
+      "active_markers": [],
+      "summary_present": false,
+      "summary_text": "",
+      "placement_method": null,
+      "placement_precision": null,
+      "source_vintage": null,
+      "detail_href": null,
+      "selection_in_url": false,
+      "focus_on": "H2",
+      "focus_in_panel": false,
+      "list_rows": 40,
+      "screenshot": "docs/screenshots/land-map-marker-selection/before-detail-return-390.png"
+    },
+    "detail-return@1440": {
+      "url": "/browse/zoning/?view=map",
+      "map_state": "ready",
+      "counts_published": {
+        "total": 40,
+        "mapped": 29,
+        "unmapped": 11
+      },
+      "markers": 29,
+      "selection_supported": false,
+      "selected_project": null,
+      "active_markers": [],
+      "summary_present": false,
+      "summary_text": "",
+      "placement_method": null,
+      "placement_precision": null,
+      "source_vintage": null,
+      "detail_href": null,
+      "selection_in_url": false,
+      "focus_on": "H2",
+      "focus_in_panel": false,
+      "list_rows": 40,
+      "screenshot": "docs/screenshots/land-map-marker-selection/before-detail-return-1440.png"
+    },
+    "filtered-out-selection@390": {
+      "url": "/browse/zoning/?boro=Queens&view=map",
+      "map_state": "ready",
+      "counts_published": {
+        "total": 34,
+        "mapped": 8,
+        "unmapped": 26
+      },
+      "markers": 8,
+      "selection_supported": false,
+      "selected_project": null,
+      "active_markers": [],
+      "summary_present": false,
+      "summary_text": "",
+      "placement_method": null,
+      "placement_precision": null,
+      "source_vintage": null,
+      "detail_href": null,
+      "selection_in_url": false,
+      "focus_on": "H2",
+      "focus_in_panel": false,
+      "list_rows": 34,
+      "screenshot": "docs/screenshots/land-map-marker-selection/before-filtered-out-selection-390.png"
+    },
+    "filtered-out-selection@1440": {
+      "url": "/browse/zoning/?boro=Queens&view=map",
+      "map_state": "ready",
+      "counts_published": {
+        "total": 34,
+        "mapped": 8,
+        "unmapped": 26
+      },
+      "markers": 8,
+      "selection_supported": false,
+      "selected_project": null,
+      "active_markers": [],
+      "summary_present": false,
+      "summary_text": "",
+      "placement_method": null,
+      "placement_precision": null,
+      "source_vintage": null,
+      "detail_href": null,
+      "selection_in_url": false,
+      "focus_on": "H2",
+      "focus_in_panel": false,
+      "list_rows": 34,
+      "screenshot": "docs/screenshots/land-map-marker-selection/before-filtered-out-selection-1440.png"
+    }
+  },
+  "after": {
+    "default-selection@390": {
+      "url": "/browse/zoning/?view=map",
+      "map_state": "ready",
+      "counts_published": {
+        "total": 40,
+        "mapped": 29,
+        "unmapped": 11
+      },
+      "markers": 29,
+      "selection_supported": true,
+      "selected_project": "2025K0305",
+      "active_markers": [
+        "2025K0305"
+      ],
+      "summary_present": true,
+      "summary_text": "Westshore LSGD Mapping ActionsFiledAnchor point for 25 lots \u2014 anchor for a multi-lot project, not an exact address.Placement comes from the published project point set, not from the project record.Open the project recordShow in the listClear the selection",
+      "placement_method": "multi_bbl_anchor",
+      "placement_precision": "anchor",
+      "source_vintage": "cityscroll.land_project_map_points.v1",
+      "detail_href": "/browse/zoning/#land/2025K0305",
+      "selection_in_url": false,
+      "focus_on": "selected-summary:2025K0305",
+      "focus_in_panel": true,
+      "list_rows": 40,
+      "screenshot": "docs/screenshots/land-map-marker-selection/after-default-selection-390.png"
+    },
+    "default-selection@1440": {
+      "url": "/browse/zoning/?view=map",
+      "map_state": "ready",
+      "counts_published": {
+        "total": 40,
+        "mapped": 29,
+        "unmapped": 11
+      },
+      "markers": 29,
+      "selection_supported": true,
+      "selected_project": "2025K0305",
+      "active_markers": [
+        "2025K0305"
+      ],
+      "summary_present": true,
+      "summary_text": "Westshore LSGD Mapping ActionsFiledAnchor point for 25 lots \u2014 anchor for a multi-lot project, not an exact address.Placement comes from the published project point set, not from the project record.Open the project recordShow in the listClear the selection",
+      "placement_method": "multi_bbl_anchor",
+      "placement_precision": "anchor",
+      "source_vintage": "cityscroll.land_project_map_points.v1",
+      "detail_href": "/browse/zoning/#land/2025K0305",
+      "selection_in_url": false,
+      "focus_on": "selected-summary:2025K0305",
+      "focus_in_panel": true,
+      "list_rows": 40,
+      "screenshot": "docs/screenshots/land-map-marker-selection/after-default-selection-1440.png"
+    },
+    "filtered-selection@390": {
+      "url": "/browse/zoning/?boro=Queens&view=map",
+      "map_state": "ready",
+      "counts_published": {
+        "total": 34,
+        "mapped": 8,
+        "unmapped": 26
+      },
+      "markers": 8,
+      "selection_supported": true,
+      "selected_project": "2024Q0325",
+      "active_markers": [
+        "2024Q0325"
+      ],
+      "summary_present": true,
+      "summary_text": "2-28 Beach 87th Street RezoningNoticedAnchor point for 12 lots \u2014 anchor for a multi-lot project, not an exact address.Placement comes from the published project point set, not from the project record.Open the project recordShow in the listClear the selection",
+      "placement_method": "multi_bbl_anchor",
+      "placement_precision": "anchor",
+      "source_vintage": "cityscroll.land_project_map_points.v1",
+      "detail_href": "/browse/zoning/#land/2024Q0325",
+      "selection_in_url": false,
+      "focus_on": "selected-summary:2024Q0325",
+      "focus_in_panel": true,
+      "list_rows": 34,
+      "screenshot": "docs/screenshots/land-map-marker-selection/after-filtered-selection-390.png"
+    },
+    "filtered-selection@1440": {
+      "url": "/browse/zoning/?boro=Queens&view=map",
+      "map_state": "ready",
+      "counts_published": {
+        "total": 34,
+        "mapped": 8,
+        "unmapped": 26
+      },
+      "markers": 8,
+      "selection_supported": true,
+      "selected_project": "2024Q0325",
+      "active_markers": [
+        "2024Q0325"
+      ],
+      "summary_present": true,
+      "summary_text": "2-28 Beach 87th Street RezoningNoticedAnchor point for 12 lots \u2014 anchor for a multi-lot project, not an exact address.Placement comes from the published project point set, not from the project record.Open the project recordShow in the listClear the selection",
+      "placement_method": "multi_bbl_anchor",
+      "placement_precision": "anchor",
+      "source_vintage": "cityscroll.land_project_map_points.v1",
+      "detail_href": "/browse/zoning/#land/2024Q0325",
+      "selection_in_url": false,
+      "focus_on": "selected-summary:2024Q0325",
+      "focus_in_panel": true,
+      "list_rows": 34,
+      "screenshot": "docs/screenshots/land-map-marker-selection/after-filtered-selection-1440.png"
+    },
+    "selected-focus@390": {
+      "url": "/browse/zoning/?view=map",
+      "map_state": "ready",
+      "counts_published": {
+        "total": 40,
+        "mapped": 29,
+        "unmapped": 11
+      },
+      "markers": 29,
+      "selection_supported": true,
+      "selected_project": "2025K0305",
+      "active_markers": [
+        "2025K0305"
+      ],
+      "summary_present": true,
+      "summary_text": "Westshore LSGD Mapping ActionsFiledAnchor point for 25 lots \u2014 anchor for a multi-lot project, not an exact address.Placement comes from the published project point set, not from the project record.Open the project recordShow in the listClear the selection",
+      "placement_method": "multi_bbl_anchor",
+      "placement_precision": "anchor",
+      "source_vintage": "cityscroll.land_project_map_points.v1",
+      "detail_href": "/browse/zoning/#land/2025K0305",
+      "selection_in_url": false,
+      "focus_on": "marker:2025K0305",
+      "focus_in_panel": true,
+      "list_rows": 40,
+      "screenshot": "docs/screenshots/land-map-marker-selection/after-selected-focus-390.png"
+    },
+    "selected-focus@1440": {
+      "url": "/browse/zoning/?view=map",
+      "map_state": "ready",
+      "counts_published": {
+        "total": 40,
+        "mapped": 29,
+        "unmapped": 11
+      },
+      "markers": 29,
+      "selection_supported": true,
+      "selected_project": "2025K0305",
+      "active_markers": [
+        "2025K0305"
+      ],
+      "summary_present": true,
+      "summary_text": "Westshore LSGD Mapping ActionsFiledAnchor point for 25 lots \u2014 anchor for a multi-lot project, not an exact address.Placement comes from the published project point set, not from the project record.Open the project recordShow in the listClear the selection",
+      "placement_method": "multi_bbl_anchor",
+      "placement_precision": "anchor",
+      "source_vintage": "cityscroll.land_project_map_points.v1",
+      "detail_href": "/browse/zoning/#land/2025K0305",
+      "selection_in_url": false,
+      "focus_on": "marker:2025K0305",
+      "focus_in_panel": true,
+      "list_rows": 40,
+      "screenshot": "docs/screenshots/land-map-marker-selection/after-selected-focus-1440.png"
+    },
+    "detail-return@390": {
+      "url": "/browse/zoning/?view=map",
+      "map_state": "ready",
+      "counts_published": {
+        "total": 40,
+        "mapped": 29,
+        "unmapped": 11
+      },
+      "markers": 29,
+      "selection_supported": true,
+      "selected_project": "2025K0305",
+      "active_markers": [
+        "2025K0305"
+      ],
+      "summary_present": true,
+      "summary_text": "Westshore LSGD Mapping ActionsFiledAnchor point for 25 lots \u2014 anchor for a multi-lot project, not an exact address.Placement comes from the published project point set, not from the project record.Open the project recordShow in the listClear the selection",
+      "placement_method": "multi_bbl_anchor",
+      "placement_precision": "anchor",
+      "source_vintage": "cityscroll.land_project_map_points.v1",
+      "detail_href": "/browse/zoning/#land/2025K0305",
+      "selection_in_url": false,
+      "focus_on": "marker:2025K0305",
+      "focus_in_panel": true,
+      "list_rows": 40,
+      "screenshot": "docs/screenshots/land-map-marker-selection/after-detail-return-390.png"
+    },
+    "detail-return@1440": {
+      "url": "/browse/zoning/?view=map",
+      "map_state": "ready",
+      "counts_published": {
+        "total": 40,
+        "mapped": 29,
+        "unmapped": 11
+      },
+      "markers": 29,
+      "selection_supported": true,
+      "selected_project": "2025K0305",
+      "active_markers": [
+        "2025K0305"
+      ],
+      "summary_present": true,
+      "summary_text": "Westshore LSGD Mapping ActionsFiledAnchor point for 25 lots \u2014 anchor for a multi-lot project, not an exact address.Placement comes from the published project point set, not from the project record.Open the project recordShow in the listClear the selection",
+      "placement_method": "multi_bbl_anchor",
+      "placement_precision": "anchor",
+      "source_vintage": "cityscroll.land_project_map_points.v1",
+      "detail_href": "/browse/zoning/#land/2025K0305",
+      "selection_in_url": false,
+      "focus_on": "marker:2025K0305",
+      "focus_in_panel": true,
+      "list_rows": 40,
+      "screenshot": "docs/screenshots/land-map-marker-selection/after-detail-return-1440.png"
+    },
+    "filtered-out-selection@390": {
+      "url": "/browse/zoning/?boro=Queens&view=map",
+      "map_state": "ready",
+      "counts_published": {
+        "total": 34,
+        "mapped": 8,
+        "unmapped": 26
+      },
+      "markers": 8,
+      "selection_supported": true,
+      "selected_project": null,
+      "active_markers": [],
+      "summary_present": false,
+      "summary_text": "",
+      "placement_method": null,
+      "placement_precision": null,
+      "source_vintage": null,
+      "detail_href": null,
+      "selection_in_url": false,
+      "focus_on": "H2",
+      "focus_in_panel": false,
+      "list_rows": 34,
+      "screenshot": "docs/screenshots/land-map-marker-selection/after-filtered-out-selection-390.png"
+    },
+    "filtered-out-selection@1440": {
+      "url": "/browse/zoning/?boro=Queens&view=map",
+      "map_state": "ready",
+      "counts_published": {
+        "total": 34,
+        "mapped": 8,
+        "unmapped": 26
+      },
+      "markers": 8,
+      "selection_supported": true,
+      "selected_project": null,
+      "active_markers": [],
+      "summary_present": false,
+      "summary_text": "",
+      "placement_method": null,
+      "placement_precision": null,
+      "source_vintage": null,
+      "detail_href": null,
+      "selection_in_url": false,
+      "focus_on": "H2",
+      "focus_in_panel": false,
+      "list_rows": 34,
+      "screenshot": "docs/screenshots/land-map-marker-selection/after-filtered-out-selection-1440.png"
+    }
+  }
+}
