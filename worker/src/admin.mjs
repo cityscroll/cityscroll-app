@@ -77,6 +77,15 @@ import {
   SEARCH_ACTIVITY_KEY_PREFIX,
   SEARCH_ACTIVITY_MAX_READ_LIMIT,
 } from "./lib/search_activity.mjs";
+import { SEARCH_ACTIVITY_ADMIN_PATH } from "../../capabilities/search_activity.mjs";
+import {
+  SEARCH_ACTIVITY_FILTERS,
+  SEARCH_ACTIVITY_FILTER_KEYS,
+  SEARCH_ACTIVITY_MAX_FILTER_SCAN,
+  buildSearchActivityDeskModel,
+  matchesSearchActivityFilters,
+  parseSearchActivityFilters,
+} from "./lib/search_activity_view.mjs";
 import {
   loadReportAdjudication,
   listReportAdjudications,
@@ -1309,7 +1318,102 @@ function deskDate(value) {
     : date.toLocaleString("en-US", { timeZone: "UTC" }) + " UTC";
 }
 
-export function renderAdminStatsPage(stats = {}, owedBacklog = null, owedBacklogHref = "/admin/owed-backlog", nextDigestPreviewHref = "/admin/next-digest-preview") {
+const SEARCH_ACTIVITY_OUTCOME_COPY = Object.freeze({
+  matched: "Matched",
+  partial: "Partial coverage",
+  empty: "No results",
+  unavailable: "Unavailable",
+});
+
+/**
+ * Coverage sentence for one execution. "Partial" and "no results" are different
+ * facts about a reader's search and must never be rendered as the same state:
+ * an honest zero says the corpus had nothing, a partial says a family was
+ * missing from the page the reader actually saw.
+ */
+function searchActivityCoverage(execution) {
+  if (execution.incomplete_families.length) {
+    return `Incomplete: ${execution.incomplete_families.join(", ")}`;
+  }
+  return execution.outcome === "empty" ? "Complete coverage, zero results" : "All families complete";
+}
+
+function searchActivityFilterField(filter, filters) {
+  const value = filters[filter.key] == null ? "" : String(filters[filter.key]);
+  const id = `sa-filter-${filter.key}`;
+  const control = filter.input === "enum"
+    ? `<select id="${id}" name="${escapeHtml(filter.key)}"><option value="">Any</option>${filter.options
+      .map((option) => `<option value="${escapeHtml(option)}"${option === value ? " selected" : ""}>${escapeHtml(option)}</option>`)
+      .join("")}</select>`
+    : `<input id="${id}" type="${filter.input === "date" ? "date" : "search"}" name="${escapeHtml(filter.key)}" value="${escapeHtml(value)}"${filter.input === "date" ? "" : ' autocomplete="off" spellcheck="false"'}>`;
+  return `<div class="filter-field"><label for="${id}">${escapeHtml(filter.label)}</label>${control}<small>${escapeHtml(filter.description)}</small></div>`;
+}
+
+function searchActivityResultRows(execution) {
+  return execution.results.map((row) => {
+    const link = row.canonical_url
+      ? `<a href="${escapeHtml(row.canonical_url)}" rel="noreferrer">${escapeHtml(row.canonical_href)}</a>`
+      : "No canonical link stored";
+    return `<tr><th scope="row">${escapeHtml(row.rank)}</th><td>${escapeHtml(row.family)}</td><td class="result-title">${escapeHtml(row.title)}</td><td><code>${escapeHtml(row.reference)}</code><br><small>${escapeHtml(row.entity_type)} · ${escapeHtml(row.kind)}</small></td><td class="result-link">${link}</td></tr>`;
+  }).join("");
+}
+
+function searchActivityExecutionCard(execution, visitorHref) {
+  const identity = execution.recognition === "recognized"
+    ? `Recognized · ${escapeHtml(execution.account_label || "account label unavailable")}<br><small>Subscriber ${escapeHtml(execution.subscriber_id || "not recorded")}</small>`
+    : "Anonymous browser<br><small>No subscriber identity recorded</small>";
+  const results = execution.results.length
+    ? `<details class="results"><summary>${deskNumber(execution.results.length)} stored result${execution.results.length === 1 ? "" : "s"} as rendered</summary><table><thead><tr><th>Rank</th><th>Family</th><th>Title</th><th>Reference</th><th>Canonical link</th></tr></thead><tbody>${searchActivityResultRows(execution)}</tbody></table></details>`
+    : `<p class="no-results">No result rows were stored for this execution.</p>`;
+  return `<article class="execution"><div class="execution-head"><h3>${escapeHtml(execution.query_raw || "Query not recorded")}</h3><span class="outcome outcome-${escapeHtml(execution.outcome || "unknown")}">${escapeHtml(SEARCH_ACTIVITY_OUTCOME_COPY[execution.outcome] || execution.outcome || "Not recorded")}</span></div>
+    <dl class="execution-facts">
+      <dt>Searched</dt><dd>${escapeHtml(deskDate(execution.occurred_at))}<br><small>Recorded ${escapeHtml(deskDate(execution.received_at))}</small></dd>
+      <dt>Reader</dt><dd>${identity}</dd>
+      <dt>Visitor</dt><dd><code>${escapeHtml(execution.visitor_id || "not recorded")}</code><br><small><a href="${escapeHtml(visitorHref)}">All retained searches from this browser</a></small></dd>
+      <dt>Browser</dt><dd>${escapeHtml(execution.browser_summary || "Not observed")}</dd>
+      <dt>Rendered</dt><dd>${deskNumber(execution.rendered_count)} row${execution.rendered_count === 1 ? "" : "s"}<br><small>${escapeHtml(searchActivityCoverage(execution))}</small></dd>
+      <dt>Execution</dt><dd><code>${escapeHtml(execution.execution_id || "not recorded")}</code></dd>
+    </dl>${results}</article>`;
+}
+
+/**
+ * Search activity inside Product Activity — a section of the existing operator
+ * journey, not a second dashboard. Every row is painted from the receipt stored
+ * when the reader's Search finished; this renderer never issues a query, so what
+ * an operator reads here is what that reader saw, not what the query returns now.
+ */
+export function renderSearchActivityPanel(model, { formAction = "/admin/stats", hidden = {}, jsonHref = "/admin/search-activity", visitorHref = () => "#" } = {}) {
+  const heading = `<h2 id="search-activity-heading">Search activity</h2>`;
+  if (!model || model.available === false) {
+    const reason = model?.unavailable_reason === "unsupported-filter"
+      ? `Unsupported filter: ${[...(model.unsupported_filters || []), ...(model.invalid_filters || [])].map((name) => escapeHtml(name)).join(", ")}. Only stored receipt fields can be filtered.`
+      : "Search activity is unavailable until the receipt store is configured.";
+    return `<section class="panel search-activity-panel" aria-labelledby="search-activity-heading"><div class="panel-heading"><div>${heading}<p class="panel-note">${reason}</p></div></div></section>`;
+  }
+
+  const hiddenFields = Object.entries(hidden)
+    .map(([name, value]) => `<input type="hidden" name="${escapeHtml(name)}" value="${escapeHtml(value)}">`)
+    .join("");
+  const filterFields = SEARCH_ACTIVITY_FILTERS
+    .map((filter) => searchActivityFilterField(filter, model.filters))
+    .join("");
+  const scanNote = model.scan_complete
+    ? ""
+    : ` Reading stopped at the ${deskNumber(model.scanned)}-receipt scan bound, so older matches may exist.`;
+  const note = model.count === 0
+    ? `No retained execution matches these filters.${scanNote}`
+    : `${deskNumber(model.count)} retained execution${model.count === 1 ? "" : "s"}, newest first. Every row is the receipt stored at execution time; no query is re-run.${scanNote}`;
+  const body = model.executions.length
+    ? model.executions.map((execution) => searchActivityExecutionCard(execution, visitorHref(execution))).join("")
+    : "";
+
+  return `<section class="panel search-activity-panel" aria-labelledby="search-activity-heading">
+    <div class="panel-heading"><div>${heading}<p class="panel-note">${note}</p></div><span class="panel-actions"><a href="${escapeHtml(jsonHref)}">Open JSON</a></span></div>
+    <form class="search-activity-filters" method="get" action="${escapeHtml(formAction)}">${hiddenFields}${filterFields}<div class="filter-actions"><button type="submit">Apply filters</button></div></form>
+    ${body}</section>`;
+}
+
+export function renderAdminStatsPage(stats = {}, owedBacklog = null, owedBacklogHref = "/admin/owed-backlog", nextDigestPreviewHref = "/admin/next-digest-preview", searchActivity = null) {
   const usage = stats.usage || {};
   const daily = Object.entries(usage.growth?.by_day || {})
     .sort(([a], [b]) => b.localeCompare(a))
@@ -1326,10 +1430,13 @@ export function renderAdminStatsPage(stats = {}, owedBacklog = null, owedBacklog
     : backlogRows.length === 0
       ? "<p>No owed delivery items.</p>"
       : `<table><thead><tr><th>Subscriber</th><th>Owed</th><th>Oldest</th><th>Last delivery</th><th>Drill-in</th></tr></thead><tbody>${backlogRows.map((row) => `<tr${row.overdue ? ' class="overdue-row"' : ""}><th scope="row">${escapeHtml(row.subscriber_label)}<br><small>${escapeHtml(row.subscriber_id)} · ${row.active_watch_count == null ? "watch count unavailable" : `${deskNumber(row.active_watch_count)} active watch${row.active_watch_count === 1 ? "" : "es"}`}</small></th><td>${deskNumber(row.owed_count)} ${row.overdue ? '<strong class="overdue-badge">OVERDUE</strong>' : ""}</td><td>${escapeHtml(row.oldest_age)}<br><small>${escapeHtml(deskDate(row.oldest_owed_at))}</small></td><td>${escapeHtml(row.last_delivery_status || "Not recorded")}<br><small>${escapeHtml(deskDate(row.last_sent_at))}</small></td><td>${escapeHtml(row.oldest_lens || "Not recorded")} / ${escapeHtml(row.oldest_item_id || "Not recorded")}</td></tr>`).join("")}</tbody></table>`;
+  const searchActivityPanel = searchActivity?.model
+    ? renderSearchActivityPanel(searchActivity.model, searchActivity)
+    : "";
   const backlogPanel = `<section class="panel backlog-panel" aria-labelledby="owed-backlog-heading"><div class="panel-heading"><div><h2 id="owed-backlog-heading">Owed delivery backlog</h2><p class="panel-note">${backlogUnavailable ? "D1 read model unavailable." : `${deskNumber(backlogTotal)} item${backlogTotal === 1 ? "" : "s"} owed across ${deskNumber(backlogRows.length)} subscriber${backlogRows.length === 1 ? "" : "s"}. Next scheduled digest: ${escapeHtml(deskDate(owedBacklog?.next_scheduled_at))}.`}</p></div><span class="panel-actions"><a href="${escapeHtml(owedBacklogHref)}">Open JSON</a><a href="${escapeHtml(nextDigestPreviewHref)}">Preview next digests</a></span></div>${backlogContent}</section>`;
   return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Product activity · CityScroll desk</title><style>
-  :root{color-scheme:light;--ink:#172031;--muted:#5f6875;--paper:#f2f0e9;--card:#fffdf7;--rule:#cbc6b8;--green:#1f6b4f;--red:#a52d25}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 ui-sans-serif,system-ui,sans-serif}.wrap{max-width:1080px;margin:auto;padding:28px 20px 64px}header{border-bottom:3px solid var(--ink);padding-bottom:18px}.eyebrow{margin:0 0 6px;color:var(--green);font-weight:800;letter-spacing:.13em;text-transform:uppercase;font-size:.75rem}h1{font:700 clamp(2rem,5vw,3.6rem)/1.02 ui-serif,Georgia,serif;margin:0}.lede{max-width:70ch;color:var(--muted)}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:24px 0}.card,.panel{min-width:0;background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:16px}.value{font:750 2rem/1 ui-serif,Georgia,serif}.label{margin-top:8px;color:var(--muted);font-size:.82rem;font-weight:750;text-transform:uppercase;letter-spacing:.05em}.panels{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);gap:14px}.backlog-panel{grid-column:1/-1}.panel-heading{display:flex;justify-content:space-between;gap:16px;align-items:start}.panel-actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:flex-end}.panel-actions a{white-space:nowrap}.panel-note{color:var(--muted);margin:0 0 12px}.overdue-row{background:#fff0ed}.overdue-badge{display:inline-block;color:#fff;background:var(--red);border-radius:4px;padding:1px 5px;font-size:.68rem;letter-spacing:.04em;margin-left:4px}h2{margin:0 0 10px;font:700 1.25rem ui-serif,Georgia,serif}.ops{display:grid;grid-template-columns:1fr auto;gap:8px 14px;margin:0}.ops dt{color:var(--muted)}.ops dd{margin:0;text-align:right;font-variant-numeric:tabular-nums}table{width:100%;border-collapse:collapse;font-size:.9rem}th,td{padding:8px;border-bottom:1px solid var(--rule);text-align:right;font-variant-numeric:tabular-nums}th:first-child{text-align:left}small{color:var(--muted);font-weight:400}.stamp{color:var(--muted);font-size:.82rem;margin-top:18px}@media(max-width:760px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.panels{grid-template-columns:1fr}.backlog-panel{grid-column:auto}}@media(max-width:430px){.wrap{padding-inline:14px}.grid{grid-template-columns:1fr}.value{font-size:1.75rem}}
+  :root{color-scheme:light;--ink:#172031;--muted:#5f6875;--paper:#f2f0e9;--card:#fffdf7;--rule:#cbc6b8;--green:#1f6b4f;--red:#a52d25}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 ui-sans-serif,system-ui,sans-serif}.wrap{max-width:1080px;margin:auto;padding:28px 20px 64px}header{border-bottom:3px solid var(--ink);padding-bottom:18px}.eyebrow{margin:0 0 6px;color:var(--green);font-weight:800;letter-spacing:.13em;text-transform:uppercase;font-size:.75rem}h1{font:700 clamp(2rem,5vw,3.6rem)/1.02 ui-serif,Georgia,serif;margin:0}.lede{max-width:70ch;color:var(--muted)}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:24px 0}.card,.panel{min-width:0;background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:16px}.value{font:750 2rem/1 ui-serif,Georgia,serif}.label{margin-top:8px;color:var(--muted);font-size:.82rem;font-weight:750;text-transform:uppercase;letter-spacing:.05em}.panels{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);gap:14px}.backlog-panel{grid-column:1/-1}.panel-heading{display:flex;justify-content:space-between;gap:16px;align-items:start}.panel-actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:flex-end}.panel-actions a{white-space:nowrap}.panel-note{color:var(--muted);margin:0 0 12px}.overdue-row{background:#fff0ed}.overdue-badge{display:inline-block;color:#fff;background:var(--red);border-radius:4px;padding:1px 5px;font-size:.68rem;letter-spacing:.04em;margin-left:4px}h2{margin:0 0 10px;font:700 1.25rem ui-serif,Georgia,serif}.ops{display:grid;grid-template-columns:1fr auto;gap:8px 14px;margin:0}.ops dt{color:var(--muted)}.ops dd{margin:0;text-align:right;font-variant-numeric:tabular-nums}table{width:100%;border-collapse:collapse;font-size:.9rem}th,td{padding:8px;border-bottom:1px solid var(--rule);text-align:right;font-variant-numeric:tabular-nums}th:first-child{text-align:left}small{color:var(--muted);font-weight:400}.stamp{color:var(--muted);font-size:.82rem;margin-top:18px}.search-activity-panel{grid-column:1/-1}.search-activity-filters{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px 14px;align-items:end;margin:0 0 18px;padding:14px;border:1px solid var(--rule);border-radius:10px;background:#fbf9f2}.filter-field{display:flex;flex-direction:column;gap:4px;min-width:0}.filter-field label{font-size:.74rem;font-weight:750;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}.filter-field input,.filter-field select{min-width:0;width:100%;padding:6px 8px;border:1px solid var(--rule);border-radius:6px;background:var(--card);color:var(--ink);font:inherit;font-size:.9rem}.filter-field small{color:var(--muted);font-size:.72rem;line-height:1.35}.filter-actions{display:flex;align-items:end}.filter-actions button{padding:7px 16px;border:1px solid var(--ink);border-radius:6px;background:var(--ink);color:#fff;font:inherit;font-weight:700;cursor:pointer}.execution{border:1px solid var(--rule);border-radius:10px;padding:14px;margin-bottom:12px;background:#fbf9f2}.execution-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}.execution-head h3{margin:0;font:700 1.05rem ui-serif,Georgia,serif;overflow-wrap:anywhere}.outcome{flex:none;border-radius:4px;padding:2px 8px;font-size:.72rem;font-weight:750;letter-spacing:.04em;text-transform:uppercase;border:1px solid var(--rule);background:var(--card)}.outcome-matched{border-color:var(--green);color:var(--green)}.outcome-partial{border-color:#8a6100;color:#8a6100}.outcome-unavailable{border-color:var(--red);color:var(--red)}.execution-facts{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:4px 14px;margin:10px 0 0}.execution-facts dt{color:var(--muted);font-size:.8rem;font-weight:750;text-transform:uppercase;letter-spacing:.04em}.execution-facts dd{margin:0;min-width:0;text-align:left;font-size:.9rem;overflow-wrap:anywhere}.execution code{font-size:.8rem;overflow-wrap:anywhere}.results{margin-top:12px}.results summary{cursor:pointer;font-weight:700;font-size:.9rem}.results table{margin-top:10px;display:block;overflow-x:auto}.results th,.results td{text-align:left;vertical-align:top}.result-title{min-width:14ch;overflow-wrap:anywhere}.result-link{overflow-wrap:anywhere}.no-results{margin:10px 0 0;color:var(--muted);font-size:.9rem}@media(max-width:760px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.panels{grid-template-columns:1fr}.backlog-panel{grid-column:auto}}@media(max-width:430px){.wrap{padding-inline:14px}.grid{grid-template-columns:1fr}.value{font-size:1.75rem}}
   </style></head><body><main class="wrap"><header><p class="eyebrow">Authenticated desk · private operations</p><h1>Product activity</h1><p class="lede">Usage, subscriptions, and delivery volumes live here because they describe product operations and people’s activity—not the public civic corpus.</p></header>
   <section class="grid" aria-label="Product activity summary">
     <article class="card"><div class="value">${deskNumber(stats.subscriptions?.accounts)}</div><div class="label">Accounts with watches</div></article>
@@ -1342,7 +1449,41 @@ export function renderAdminStatsPage(stats = {}, owedBacklog = null, owedBacklog
     <article class="card"><div class="value">${deskNumber(usage.alerts?.confirmed_last7d)}</div><div class="label">Watches confirmed · 7 days</div></article>
   </section><section class="panels"><article class="panel"><h2>Delivery operations</h2><dl class="ops">
     <dt>Digests sent today</dt><dd>${deskNumber(stats.digests?.sent_today)}</dd><dt>Catch-up sends today</dt><dd>${deskNumber(stats.digests?.catch_up_sent_today)}</dd><dt>Lagging subscriptions</dt><dd>${deskNumber(stats.digests?.lagging_subs)}</dd><dt>Last run</dt><dd>${deskDate(lastRun.ran_at || lastRun.ranAt || lastRun.at)}</dd><dt>Last-run status</dt><dd>${escapeHtml(lastRun.skipped_reason || lastRun.status || "Not recorded")}</dd>
-  </dl></article><article class="panel"><h2>Daily activity</h2><table><thead><tr><th>UTC day</th><th>Page views</th><th>Actions</th></tr></thead><tbody>${dailyRows}</tbody></table></article>${backlogPanel}</section><p class="stamp">Generated ${deskDate(stats.generated)}. Private response: no-store.</p></main></body></html>`;
+  </dl></article><article class="panel"><h2>Daily activity</h2><table><thead><tr><th>UTC day</th><th>Page views</th><th>Actions</th></tr></thead><tbody>${dailyRows}</tbody></table></article>${backlogPanel}${searchActivityPanel}</section><p class="stamp">Generated ${deskDate(stats.generated)}. Private response: no-store.</p></main></body></html>`;
+}
+
+/**
+ * Assemble the Product Activity Search-activity context: the model plus the links
+ * and form targets that keep an operator inside the ordinary journey.
+ *
+ * The filter form posts back to Product Activity itself and the JSON link carries
+ * the identical filters, so a Desk view and its JSON representation are always the
+ * same query against the same retained receipts.
+ */
+async function buildSearchActivityDeskContext(req, env) {
+  const url = new URL(req.url);
+  const readUrl = new URL(req.url);
+  readUrl.pathname = SEARCH_ACTIVITY_ADMIN_PATH;
+  readUrl.searchParams.delete("view");
+  const model = await readSearchActivityPage(env, readUrl);
+
+  const jsonUrl = new URL(readUrl);
+  const hidden = { key: url.searchParams.get("key") || "", view: "html" };
+  return {
+    model,
+    formAction: url.pathname,
+    hidden,
+    jsonHref: `${jsonUrl.pathname}${jsonUrl.search}`,
+    // "Every retained search from this browser" is one filtered read away, which is
+    // how a single execution becomes a continuity story without any join.
+    visitorHref: (execution) => {
+      const visitorUrl = new URL(req.url);
+      for (const key of SEARCH_ACTIVITY_FILTER_KEYS) visitorUrl.searchParams.delete(key);
+      visitorUrl.searchParams.set("view", "html");
+      if (execution.visitor_id) visitorUrl.searchParams.set("visitor", execution.visitor_id);
+      return `${visitorUrl.pathname}${visitorUrl.search}`;
+    },
+  };
 }
 
 /** GET /admin/stats?key=… — private usage and delivery data formerly served on public /stats. */
@@ -1360,11 +1501,16 @@ export async function handleAdminStats(req, env, options = {}) {
     const nextDigestPreviewUrl = new URL(req.url);
     nextDigestPreviewUrl.pathname = "/admin/next-digest-preview";
     nextDigestPreviewUrl.searchParams.delete("view");
+    // The Desk section and the authenticated JSON route read through the same
+    // function with the same parameters, so "what Desk shows" and "what the JSON
+    // returns" are the same page of receipts by construction, not by convention.
+    const searchActivity = await buildSearchActivityDeskContext(req, env);
     return new Response(renderAdminStatsPage(
       stats,
       owedBacklog,
       `${owedBacklogUrl.pathname}${owedBacklogUrl.search}`,
       `${nextDigestPreviewUrl.pathname}${nextDigestPreviewUrl.search}`,
+      searchActivity,
     ), {
       status: 200,
       headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "private, no-store" },
@@ -1509,19 +1655,10 @@ function privateJson(obj, status) {
   });
 }
 
-// GET /admin/search-activity?key=… — private read model over recent search-execution
-// receipts. FAIL CLOSED: 404 until ADMIN_KEY is set. Read-only, newest first, and
-// bounded: receipt keys sort descending by time, so `limit` reads exactly one page
-// instead of scanning the namespace. Production and developer receipts live under
-// disjoint prefixes, so developer activity is inspectable without ever being mixed
-// into a production cut. Nothing here is served publicly or on /stats.
-export async function handleAdminSearchActivity(req, env) {
-  const auth = checkAdminKey(req, env);
-  if (!auth.ok) return auth.res;
-  if (req.method !== "GET") return json({ error: "method not allowed" }, 405);
-  if (!env.ALERT_STATE) return json({ error: "no-store" }, 503);
-
-  const url = new URL(req.url);
+// A filtered read must reach every retained execution that matches, so it scans
+// past non-matching receipts up to a hard bound and reports where it stopped.
+// An unfiltered read still costs exactly one page.
+async function readSearchActivityPage(env, url) {
   const requestedLimit = Number(url.searchParams.get("limit") || SEARCH_ACTIVITY_DEFAULT_READ_LIMIT);
   const limit = Number.isSafeInteger(requestedLimit) && requestedLimit > 0
     ? Math.min(requestedLimit, SEARCH_ACTIVITY_MAX_READ_LIMIT)
@@ -1533,24 +1670,85 @@ export async function handleAdminSearchActivity(req, env) {
     ? SEARCH_ACTIVITY_DEVELOPER_KEY_PREFIX
     : SEARCH_ACTIVITY_KEY_PREFIX;
 
+  const { filters, active, unsupported, invalid } = parseSearchActivityFilters(url.searchParams);
+  const base = { filters, unsupported, invalid, limit, trafficClass };
+
+  if (!env.ALERT_STATE) {
+    return buildSearchActivityDeskModel({ ...base, available: false, unavailableReason: "no-store" });
+  }
+  if (unsupported.length || invalid.length) {
+    return buildSearchActivityDeskModel({ ...base, available: false, unavailableReason: "unsupported-filter" });
+  }
+
+  const scanCeiling = active ? SEARCH_ACTIVITY_MAX_FILTER_SCAN : limit;
   const items = [];
+  let scanned = 0;
+  let scanComplete = true;
   try {
-    const listed = await env.ALERT_STATE.list({ prefix, limit });
-    for (const key of listed.keys || []) {
+    const listed = await env.ALERT_STATE.list({ prefix, limit: scanCeiling });
+    const keys = listed.keys || [];
+    for (const key of keys) {
+      if (items.length >= limit) break;
+      if (scanned >= scanCeiling) break;
+      scanned += 1;
       let value = null;
       try { value = JSON.parse(await env.ALERT_STATE.get(key.name)); } catch { /* skip */ }
-      if (value) items.push(value);
-      if (items.length >= limit) break;
+      if (!value) continue;
+      if (!matchesSearchActivityFilters(value, filters)) continue;
+      items.push(value);
     }
+    // Complete means the read ran out of receipts rather than out of budget: the
+    // store reported no more keys, the page never filled, and the scan ceiling was
+    // never reached. Anything else is reported as possibly-truncated, because an
+    // operator filtering by visitor must not read a short list as the whole story.
+    scanComplete = listed.list_complete !== false
+      && items.length < limit
+      && scanned < scanCeiling;
   } catch {
-    return json({ error: "read-failed" }, 503);
+    return buildSearchActivityDeskModel({ ...base, available: false, unavailableReason: "read-failed" });
+  }
+
+  return buildSearchActivityDeskModel({ ...base, items, scanned, scanComplete });
+}
+
+// GET /admin/search-activity?key=… — private read model over recent search-execution
+// receipts. FAIL CLOSED: 404 until ADMIN_KEY is set. Read-only, newest first, and
+// bounded: receipt keys sort descending by time, so an unfiltered read touches exactly
+// one page instead of scanning the namespace. Production and developer receipts live
+// under disjoint prefixes, so developer activity is inspectable without ever being
+// mixed into a production cut. Nothing here is served publicly or on /stats.
+//
+// Filters are the closed, receipt-backed vocabulary Product Activity offers; a query
+// parameter outside it is rejected rather than ignored, so a mistyped filter can never
+// be mistaken for an honest empty result. This is the same read the Desk section uses,
+// which is why Desk and JSON cannot disagree about an execution.
+export async function handleAdminSearchActivity(req, env) {
+  const auth = checkAdminKey(req, env);
+  if (!auth.ok) return auth.res;
+  if (req.method !== "GET") return json({ error: "method not allowed" }, 405);
+
+  const model = await readSearchActivityPage(env, new URL(req.url));
+  if (!model.available) {
+    if (model.unavailable_reason === "unsupported-filter") {
+      return json({
+        error: "unsupported-filter",
+        unsupported_filters: model.unsupported_filters,
+        invalid_filters: model.invalid_filters,
+        offered_filters: SEARCH_ACTIVITY_FILTER_KEYS,
+      }, 400);
+    }
+    return json({ error: model.unavailable_reason }, 503);
   }
 
   return privateJson({
-    traffic_class: trafficClass,
-    limit,
-    count: items.length,
-    items,
+    traffic_class: model.traffic_class,
+    limit: model.limit,
+    filters: model.filters,
+    offered_filters: SEARCH_ACTIVITY_FILTER_KEYS,
+    scanned: model.scanned,
+    scan_complete: model.scan_complete,
+    count: model.count,
+    items: model.receipts,
   }, 200);
 }
 

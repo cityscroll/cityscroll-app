@@ -59,7 +59,9 @@ test("Desk manifest pins repository-owned response fixtures and the acceptance t
 test("ops-contract discovery pins the same fixture bundle without changing the response schema", () => {
   const generated = buildOpsContract({ generated_at: committedOpsContract.generated_at });
   assert.deepEqual(generated, committedOpsContract);
-  assert.equal(OPS_CONTRACT_VERSION, "1.10.0");
+  // The document version moves as additive sections land; what this test pins is
+  // that the performance response schema and its Desk fixture bundle do not.
+  assert.equal(OPS_CONTRACT_VERSION, "1.11.0");
   assert.equal(generated.performance.version, "1.0.0");
   assert.equal(generated.performance.consumer_handoff.manifest, MANIFEST_PATH);
   assert.equal(generated.performance.consumer_handoff.reference_response, manifest.reference_response.path);
