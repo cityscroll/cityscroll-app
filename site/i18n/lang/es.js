@@ -436,6 +436,7 @@
     browse_cta_prompt: "¿Quiere alertas por correo?",
     home_cta_active_now: "Ya recibe esto — seguiremos enviándole correos cada lunes.",
     home_cta_open_watches: "Abrir sus alertas",
+    following_default_choose_another_watch: "Choose another watch",
     home_onboarding_next: "Elija qué quiere seguir.",
     following_suggestion_preview: "Previsualizar y editar",
     following_suggestion_nothing_saved: "Elegir una sugerencia no activa ninguna suscripción. Revise la frase editable y envíela solo cuando tenga el aspecto correcto.",

@@ -436,6 +436,7 @@
     browse_cta_prompt: "이메일 업데이트를 원하세요?",
     home_cta_active_now: "이미 구독 중입니다 — 매주 월요일 계속 이메일을 보내드릴게요.",
     home_cta_open_watches: "관심 항목 열기",
+    following_default_choose_another_watch: "Choose another watch",
     home_cta_submit: "주간 업데이트 받기",
     home_cta_topics: "팔로우할 내용 고르기",
     alert_context_scope: "다음 알림 이메일을 받습니다: {scope}",

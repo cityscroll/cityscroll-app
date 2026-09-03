@@ -1,0 +1,33 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-frictionless-subscribe/fs-16-default-watch-following-handoff",
+  "status": "implemented",
+  "fingerprint": "fs-16-default-watch-following-handoff.v1",
+  "updated_at": "2026-09-03T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "following-home-default-handoff-receipt",
+      "path": "site/following_default_watch_receipt.mjs"
+    },
+    {
+      "id": "following-home-default-subscribe",
+      "path": "site/home_default_watch.mjs"
+    },
+    {
+      "id": "following-default-receipt-consumption",
+      "path": "site/app/following.mjs"
+    },
+    {
+      "id": "following-personal-watch-fingerprint",
+      "path": "worker/src/following.mjs"
+    },
+    {
+      "id": "home-default-receipt-tests",
+      "path": "test/home_default_watch_submit.test.mjs"
+    },
+    {
+      "id": "following-default-watch-receipt-validation-tests",
+      "path": "test/following_default_watch_receipt.test.mjs"
+    }
+  ]
+}

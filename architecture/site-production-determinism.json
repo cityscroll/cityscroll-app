@@ -207,6 +207,7 @@
     "site/external_awards.js",
     "site/federated_search_client.mjs",
     "site/feed_scoped_keyword.mjs",
+    "site/following_default_watch_receipt.mjs",
     "site/following_personal_state.mjs",
     "site/following_preview_handoff.mjs",
     "site/following_suggestions.mjs",

@@ -436,6 +436,7 @@
     browse_cta_prompt: "Хотите новости на почту?",
     home_cta_active_now: "Вы уже подписаны — мы продолжим присылать письма каждый понедельник.",
     home_cta_open_watches: "Открыть ваши подписки",
+    following_default_choose_another_watch: "Choose another watch",
     home_cta_submit: "Получать еженедельные обновления",
     home_cta_topics: "Выберите, что отслеживать",
     alert_context_scope: "Вы получите письмо о: {scope}",
