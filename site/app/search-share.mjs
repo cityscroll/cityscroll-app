@@ -1,11 +1,6 @@
 import { renderAskCitedQuotesHtml } from "../ask_cited_synthesis.mjs";
 import { renderInterpretPreview } from "../interpret_preview.mjs";
 import { renderUniversalSearchResultHtml } from "../universal_search_relevance_ux.mjs";
-import {
-  PREVIEW_FORM_FACTOR_SCOPES,
-  fetchPreviewFormFactor,
-  previewFullResultsHref,
-} from "../preview_federated_form_factor.mjs";
 import { walkEntryHref } from "../walk_entry.mjs";
 import {
   parseSearchLensHandoff,
@@ -178,6 +173,19 @@ function bindNLQResolvedActions(label, hash){
 // query under the registered Contracts scope without re-interpreting it.
 let previewFormFactorState=null; // {scopeId, text, extrasHTML, recoveryHTML, deepLink}
 
+// The federated-capability adapter and its schema import are fetched only once a
+// resident actually resolves a topic, not on every hash-route boot: search-share.mjs
+// itself is already in the eager application graph, and this keeps that shared graph
+// from carrying an interactive-only dependency for routes that never touch Preview.
+let previewFormFactorModule=null;
+let previewFormFactorModulePromise=null;
+function ensurePreviewFormFactorModule(){
+  return previewFormFactorModulePromise ||= import("../preview_federated_form_factor.mjs").then((mod)=>{
+    previewFormFactorModule=mod;
+    return mod;
+  });
+}
+
 function previewCoverageLineHTML(scope, outcome){
   if(!outcome || !outcome.coverage) return "";
   const coverage=outcome.coverage;
@@ -192,6 +200,7 @@ function previewCoverageLineHTML(scope, outcome){
 }
 
 function previewScopeHeaderHTML(scopeId, text, outcome, {loading=false, staticOnly=false}={}){
+  const {PREVIEW_FORM_FACTOR_SCOPES, previewFullResultsHref}=previewFormFactorModule;
   const scope=PREVIEW_FORM_FACTOR_SCOPES[scopeId] || PREVIEW_FORM_FACTOR_SCOPES.all;
   const narrow=PREVIEW_FORM_FACTOR_SCOPES[scope.narrow_target];
   const coverageLine=loading ? "" : previewCoverageLineHTML(scope, outcome);
@@ -212,6 +221,7 @@ async function renderPreviewFormFactor(scopeId, {focusToggle=false}={}){
   const output=$("#nltrans");
   const state=previewFormFactorState;
   if(!output || !state || !state.text) return;
+  const {fetchPreviewFormFactor}=await ensurePreviewFormFactorModule();
   output.innerHTML=previewWorkingHTML(scopeId);
   const {outcome}=await fetchPreviewFormFactor(scopeId, state.text);
   const header=previewScopeHeaderHTML(scopeId, state.text, outcome);
@@ -248,7 +258,7 @@ function bindPreviewScopeToggle(root){
   toggle.addEventListener("click",()=>{
     const target=toggle.dataset.previewScopeToggle;
     const state=previewFormFactorState;
-    if(!state || !PREVIEW_FORM_FACTOR_SCOPES[target] || target===state.scopeId) return;
+    if(!state || !previewFormFactorModule?.PREVIEW_FORM_FACTOR_SCOPES[target] || target===state.scopeId) return;
     state.scopeId=target;
     renderPreviewFormFactor(target,{focusToggle:true});
   });
@@ -296,10 +306,17 @@ async function nlTranslate(){
     await renderPreviewFormFactor("all");
   }catch(_error){
     previewFormFactorState=null;
+    // The active scope stays visible even on an interpretation failure (A5), but this
+    // catch can run before renderPreviewFormFactor ever loaded the form-factor module.
+    let header="";
+    try{
+      await ensurePreviewFormFactorModule();
+      header=previewScopeHeaderHTML("all", text, null, {staticOnly:true});
+    }catch{ /* form-factor module unavailable; render the failure without the scope header */ }
     if(output) output.innerHTML=renderInterpretPreview({
       query:text,
       state:"error",
-      header:previewScopeHeaderHTML("all", text, null, {staticOnly:true}),
+      header,
       error:t("preview_interpretation_unavailable"),
       escape:nlqEscape,
     })+fullSpanSuggestionRecoveryHTML(text);
