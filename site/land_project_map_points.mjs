@@ -13,6 +13,7 @@ import {
   REJECTED_KNOWN_LAND_POINT_METHODS,
   resolveKnownLandProjectPoint,
 } from "./land_project_geography.mjs";
+import { landParcelPolygonFindings } from "./land_project_geometry.mjs";
 
 export const LAND_PROJECT_MAP_POINTS_SCHEMA = "cityscroll.land_project_map_points.v1";
 export const LAND_PROJECT_MAP_POINTS_RECEIPT_SCHEMA = "cityscroll.land_project_map_points_receipt.v1";
@@ -141,14 +142,23 @@ function classifyOutcome({ uniqueExactCount, matchedCount, resolved }) {
   };
 }
 
-function mappedEntry(resolved) {
+function mappedEntry(resolved, shape) {
   return {
     lat: resolved.lat,
     lon: resolved.lon,
     method: resolved.method,
     precision: resolved.precision,
     bbl_count: resolved.bblCount,
+    // Additive only (LM-17): a bounded, optional richer shape for the same exact point.
+    // Never required, never touches lat/lon/method/precision/bbl_count above.
+    shape: shape || null,
   };
+}
+
+function geometryByProjectMap(value) {
+  if (value instanceof Map) return value;
+  const record = value && typeof value === "object" && !Array.isArray(value) ? value : {};
+  return new Map(Object.entries(record));
 }
 
 function receiptRow({ projectId, outcome, resolved, uniqueExactCount }) {
@@ -206,6 +216,7 @@ export function materializeLandProjectMapPoints(inputs = {}) {
   const hashes = asObject(inputs.artifactHashes);
   const universe = projectUniverse(landDefault);
   const bblsByProject = indexBblsByProject(zapBbl);
+  const geometryByProject = geometryByProjectMap(inputs.geometryByProject);
 
   const points = {};
   const outcomes = [];
@@ -250,7 +261,7 @@ export function materializeLandProjectMapPoints(inputs = {}) {
       noRetainedBbl.push(projectId);
     }
     if (outcome.status === LAND_PROJECT_MAP_POINT_OUTCOMES.MAPPED) {
-      points[projectId] = mappedEntry(resolved);
+      points[projectId] = mappedEntry(resolved, geometryByProject.get(projectId) || null);
     }
     outcomes.push(receiptRow({
       projectId,
@@ -350,6 +361,13 @@ export function landProjectMapPointsFindings(payload, receipt, opts = {}) {
       findings.push(`${id} payload carries receipt fields`);
     }
     if (!mappedIds.has(id)) findings.push(`${id} is in the payload but not the receipt mapped set`);
+    if (point?.shape) {
+      const shapeInvalid = landParcelPolygonFindings(point.shape);
+      if (shapeInvalid) findings.push(`${id} shape invalid: ${shapeInvalid}`);
+      if (!point.shape.method || !point.shape.precision || !point.shape.relation || !point.shape.vintage) {
+        findings.push(`${id} shape missing method, precision, relation, or vintage`);
+      }
+    }
   }
   const represented = new Set([
     ...(receipt?.mapped_project_ids || []),

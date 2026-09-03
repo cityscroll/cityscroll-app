@@ -1,0 +1,144 @@
+{
+  "schema": "cityscroll.land-project-geometry-receipt.v1",
+  "card": "cityscroll-land-map-view/lm-17-richer-precomputed-geometry",
+  "browser_mode": "headless chromium (playwright), remote hosts blocked",
+  "revision": {
+    "before_commit": "aa440b36a3984d72b72b21bc4ed4339390cc6fe6",
+    "after_tree": "working tree at the commit above plus this card's changes",
+    "after_changed_paths": [
+      "architecture/evidence.d/cityscroll-land-map-view--lm-17-richer-precomputed-geometry.json",
+      "architecture/site-production-determinism.json",
+      "docs/data-sources.md",
+      "docs/evidence/comparative-signal-evaluation.json",
+      "docs/evidence/land-map-route-lazy-shell.json",
+      "docs/screenshots/land-project-geometry/",
+      "site/app/map_runtime.mjs",
+      "site/data/land_project_geometry.json",
+      "site/data/land_project_geometry_receipt.json",
+      "site/data/land_project_geometry_source_lookup.json",
+      "site/data/land_project_map_points.json",
+      "site/data/land_project_map_points_receipt.json",
+      "site/data/source_contracts.json",
+      "site/land_map_model.mjs",
+      "site/land_project_geometry.mjs",
+      "site/land_project_map_points.mjs",
+      "test/fixtures/land_project_geometry/",
+      "test/land_map_marker_join.test.mjs",
+      "test/land_map_model.test.mjs",
+      "test/land_project_geometry.test.mjs",
+      "test/land_project_geometry_source.test.mjs",
+      "tools/build_land_project_geometry.mjs",
+      "tools/build_land_project_geometry_source.mjs",
+      "tools/build_land_project_map_points.mjs",
+      "tools/capture_land_project_geometry.py"
+    ]
+  },
+  "routes": {
+    "default_map": "/browse/zoning/?view=map"
+  },
+  "viewports": [
+    [
+      390,
+      844
+    ],
+    [
+      1440,
+      900
+    ]
+  ],
+  "specimens": {
+    "positive": "2026R0127",
+    "fallback": "2025K0305"
+  },
+  "finding": "The positive specimen's parcel outline is present, exact-key sourced, and correctly gated at the DOM level in every after-capture, and it never appears for the multi-BBL fallback specimen or in the before tree. At the Land Map's fixed city-wide zoom the outline's on-screen size is a small fraction of one CSS pixel -- far smaller than the marker it sits beside -- so the before/after screenshots are visually identical by design. This is not a rendering failure; no fill, choropleth, or false precision is added. Making the shape legible would require a per-marker zoom or a detail-page inset this card does not add.",
+  "before": {
+    "default-map@390": {
+      "counts_published": {
+        "total": 40,
+        "mapped": 29,
+        "unmapped": 11
+      },
+      "parcel_outline_count": 0,
+      "positive_specimen_has_outline": false,
+      "positive_outline_method": null,
+      "positive_outline_precision": null,
+      "positive_outline_relation": null,
+      "positive_outline_vintage": null,
+      "positive_outline_screen_px": null,
+      "marker_screen_px": {
+        "width": 7.0693206787109375,
+        "height": 7.0693359375
+      },
+      "fallback_specimen_has_outline": false,
+      "screenshot": "docs/screenshots/land-project-geometry/before-default-map-390.png"
+    },
+    "default-map@1440": {
+      "counts_published": {
+        "total": 40,
+        "mapped": 29,
+        "unmapped": 11
+      },
+      "parcel_outline_count": 0,
+      "positive_specimen_has_outline": false,
+      "positive_outline_method": null,
+      "positive_outline_precision": null,
+      "positive_outline_relation": null,
+      "positive_outline_vintage": null,
+      "positive_outline_screen_px": null,
+      "marker_screen_px": {
+        "width": 8.718017578125,
+        "height": 8.718017578125
+      },
+      "fallback_specimen_has_outline": false,
+      "screenshot": "docs/screenshots/land-project-geometry/before-default-map-1440.png"
+    }
+  },
+  "after": {
+    "default-map@390": {
+      "counts_published": {
+        "total": 40,
+        "mapped": 29,
+        "unmapped": 11
+      },
+      "parcel_outline_count": 9,
+      "positive_specimen_has_outline": true,
+      "positive_outline_method": "single_bbl_parcel_polygon",
+      "positive_outline_precision": "tax_lot_boundary",
+      "positive_outline_relation": "exact_single_retained_bbl_full_project_site",
+      "positive_outline_vintage": "2026-09-03T01:34:56.321Z",
+      "positive_outline_screen_px": {
+        "width": 0.6405029296875,
+        "height": 0.743408203125
+      },
+      "marker_screen_px": {
+        "width": 7.0693206787109375,
+        "height": 7.0693359375
+      },
+      "fallback_specimen_has_outline": false,
+      "screenshot": "docs/screenshots/land-project-geometry/after-default-map-390.png"
+    },
+    "default-map@1440": {
+      "counts_published": {
+        "total": 40,
+        "mapped": 29,
+        "unmapped": 11
+      },
+      "parcel_outline_count": 9,
+      "positive_specimen_has_outline": true,
+      "positive_outline_method": "single_bbl_parcel_polygon",
+      "positive_outline_precision": "tax_lot_boundary",
+      "positive_outline_relation": "exact_single_retained_bbl_full_project_site",
+      "positive_outline_vintage": "2026-09-03T01:34:56.321Z",
+      "positive_outline_screen_px": {
+        "width": 0.78985595703125,
+        "height": 0.9166259765625
+      },
+      "marker_screen_px": {
+        "width": 8.718017578125,
+        "height": 8.718017578125
+      },
+      "fallback_specimen_has_outline": false,
+      "screenshot": "docs/screenshots/land-project-geometry/after-default-map-1440.png"
+    }
+  }
+}

@@ -31,6 +31,7 @@ import {
 } from "../land_map_boundary_context.mjs";
 import { landMapAuthorityHandoff } from "../land_map_authority_handoff.mjs";
 import { landProjectPath } from "../land_project_route.mjs";
+import { landMapParcelSvg } from "../land_project_geometry.mjs";
 import {
   landMapSelectionFocusIntent,
   landSelectionFromHistoryState,
@@ -554,6 +555,9 @@ export function landMapMarkerLayer(model, {t: copy = mapCopy, sourceVintage = nu
       label: copy("land_map_marker_label",{title, method, precision}),
       selected: marker.selected,
       sourceVintage,
+      // LM-17: an optional, already-gated parcel shape for the same project id. Never
+      // computed here -- carried through from the model, which already validated it.
+      geometry: marker.geometry ?? null,
     });
   }));
 }
@@ -569,7 +573,11 @@ export function landMapCanvasSvg(model, {
   const width = Number(String(viewBox).split(/\s+/)[2]) || 1000;
   const radius = Math.max(1.2, width/90).toFixed(2);
   const boundaries = landMapBoundarySvg(boundaryContext, {escape, currentHash});
-  const markers = landMapMarkerLayer(model,{t:copy, sourceVintage}).map(marker=>{
+  const markerLayer = landMapMarkerLayer(model,{t:copy, sourceVintage});
+  // Parcel outlines paint between boundary context and markers: under the markers that are
+  // still the only quantitative layer, above the district geometry they orient against.
+  const parcels = landMapParcelSvg(markerLayer, {escape});
+  const markers = markerLayer.map(marker=>{
     const [x,y] = projectLonLat(marker.lon, marker.lat);
     const label = escape(marker.label);
     const circle = `<circle class="land-map-marker" data-land-map-precision="${escape(marker.precision)}"`
@@ -597,6 +605,7 @@ export function landMapCanvasSvg(model, {
     + (sourceVintage ? ` data-land-map-source-vintage="${escape(sourceVintage)}"` : "")
     + ` aria-label="${escape(copy("land_map_canvas_alt",{n:model.counts.mapped}))}">`
     + `<g class="land-map-outlines">${boundaries}</g>`
+    + parcels
     + `<g class="land-map-markers">${markers}</g></svg>`;
 }
 

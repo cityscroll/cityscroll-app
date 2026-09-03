@@ -1,0 +1,747 @@
+{
+  "schema": "cityscroll.land_project_geometry.v1",
+  "shapes": {
+    "2023K0183": {
+      "project_id": "2023K0183",
+      "bbl": "3070550013",
+      "geometry_type": "Polygon",
+      "rings": [
+        [
+          [
+            -73.992018,
+            40.575446
+          ],
+          [
+            -73.991942,
+            40.575455
+          ],
+          [
+            -73.991784,
+            40.575473
+          ],
+          [
+            -73.9917,
+            40.575482
+          ],
+          [
+            -73.991612,
+            40.575492
+          ],
+          [
+            -73.991533,
+            40.575501
+          ],
+          [
+            -73.991443,
+            40.575511
+          ],
+          [
+            -73.991358,
+            40.575521
+          ],
+          [
+            -73.991269,
+            40.575531
+          ],
+          [
+            -73.991172,
+            40.575542
+          ],
+          [
+            -73.990849,
+            40.573841
+          ],
+          [
+            -73.99105,
+            40.573776
+          ],
+          [
+            -73.991668,
+            40.573605
+          ],
+          [
+            -73.992018,
+            40.575446
+          ]
+        ]
+      ],
+      "method": "single_bbl_parcel_polygon",
+      "relation": "exact_single_retained_bbl_full_project_site",
+      "precision": "tax_lot_boundary",
+      "coverage_state": "exact",
+      "source": {
+        "publisher": "NYC Department of City Planning MapPLUTO/PLUTO"
+      },
+      "vintage": "2026-09-03T01:34:56.321Z",
+      "materialization_version": "exact_single_bbl_wh06_mappluto_parcel_polygon_v1"
+    },
+    "2023M0116": {
+      "project_id": "2023M0116",
+      "bbl": "1002670019",
+      "geometry_type": "Polygon",
+      "rings": [
+        [
+          [
+            -73.983328,
+            40.713888
+          ],
+          [
+            -73.983331,
+            40.713908
+          ],
+          [
+            -73.982987,
+            40.713944
+          ],
+          [
+            -73.982939,
+            40.71357
+          ],
+          [
+            -73.982919,
+            40.713417
+          ],
+          [
+            -73.983263,
+            40.713379
+          ],
+          [
+            -73.983328,
+            40.713888
+          ]
+        ]
+      ],
+      "method": "single_bbl_parcel_polygon",
+      "relation": "exact_single_retained_bbl_full_project_site",
+      "precision": "tax_lot_boundary",
+      "coverage_state": "exact",
+      "source": {
+        "publisher": "NYC Department of City Planning MapPLUTO/PLUTO"
+      },
+      "vintage": "2026-09-03T01:34:56.321Z",
+      "materialization_version": "exact_single_bbl_wh06_mappluto_parcel_polygon_v1"
+    },
+    "2024K0286": {
+      "project_id": "2024K0286",
+      "bbl": "3023560001",
+      "geometry_type": "Polygon",
+      "rings": [
+        [
+          [
+            -73.964607,
+            40.718301
+          ],
+          [
+            -73.964262,
+            40.718085
+          ],
+          [
+            -73.96475,
+            40.717632
+          ],
+          [
+            -73.965085,
+            40.717821
+          ],
+          [
+            -73.964607,
+            40.718301
+          ]
+        ]
+      ],
+      "method": "single_bbl_parcel_polygon",
+      "relation": "exact_single_retained_bbl_full_project_site",
+      "precision": "tax_lot_boundary",
+      "coverage_state": "exact",
+      "source": {
+        "publisher": "NYC Department of City Planning MapPLUTO/PLUTO"
+      },
+      "vintage": "2026-09-03T01:34:56.321Z",
+      "materialization_version": "exact_single_bbl_wh06_mappluto_parcel_polygon_v1"
+    },
+    "2025K0284": {
+      "project_id": "2025K0284",
+      "bbl": "3061090001",
+      "geometry_type": "Polygon",
+      "rings": [
+        [
+          [
+            -74.029372,
+            40.617054
+          ],
+          [
+            -74.029324,
+            40.617029
+          ],
+          [
+            -74.02943,
+            40.616905
+          ],
+          [
+            -74.02954,
+            40.616777
+          ],
+          [
+            -74.029648,
+            40.616651
+          ],
+          [
+            -74.029757,
+            40.616524
+          ],
+          [
+            -74.029813,
+            40.616459
+          ],
+          [
+            -74.029865,
+            40.616485
+          ],
+          [
+            -74.029968,
+            40.616364
+          ],
+          [
+            -74.030321,
+            40.61654
+          ],
+          [
+            -74.029728,
+            40.617231
+          ],
+          [
+            -74.029372,
+            40.617054
+          ]
+        ]
+      ],
+      "method": "single_bbl_parcel_polygon",
+      "relation": "exact_single_retained_bbl_full_project_site",
+      "precision": "tax_lot_boundary",
+      "coverage_state": "exact",
+      "source": {
+        "publisher": "NYC Department of City Planning MapPLUTO/PLUTO"
+      },
+      "vintage": "2026-09-03T01:34:56.321Z",
+      "materialization_version": "exact_single_bbl_wh06_mappluto_parcel_polygon_v1"
+    },
+    "2025K0287": {
+      "project_id": "2025K0287",
+      "bbl": "3025900025",
+      "geometry_type": "Polygon",
+      "rings": [
+        [
+          [
+            -73.959854,
+            40.725551
+          ],
+          [
+            -73.959496,
+            40.725586
+          ],
+          [
+            -73.959457,
+            40.725352
+          ],
+          [
+            -73.95948,
+            40.725349
+          ],
+          [
+            -73.959505,
+            40.725347
+          ],
+          [
+            -73.959699,
+            40.725334
+          ],
+          [
+            -73.959706,
+            40.725334
+          ],
+          [
+            -73.959756,
+            40.725346
+          ],
+          [
+            -73.959917,
+            40.72532
+          ],
+          [
+            -73.960063,
+            40.72531
+          ],
+          [
+            -73.960074,
+            40.725309
+          ],
+          [
+            -73.960086,
+            40.725309
+          ],
+          [
+            -73.960099,
+            40.725309
+          ],
+          [
+            -73.960111,
+            40.725312
+          ],
+          [
+            -73.960124,
+            40.725318
+          ],
+          [
+            -73.960132,
+            40.725326
+          ],
+          [
+            -73.960137,
+            40.725333
+          ],
+          [
+            -73.96014,
+            40.725341
+          ],
+          [
+            -73.960148,
+            40.725378
+          ],
+          [
+            -73.960162,
+            40.725431
+          ],
+          [
+            -73.960177,
+            40.725488
+          ],
+          [
+            -73.960181,
+            40.725517
+          ],
+          [
+            -73.960184,
+            40.725544
+          ],
+          [
+            -73.960182,
+            40.72562
+          ],
+          [
+            -73.960182,
+            40.725647
+          ],
+          [
+            -73.960176,
+            40.725665
+          ],
+          [
+            -73.960182,
+            40.725712
+          ],
+          [
+            -73.960185,
+            40.725778
+          ],
+          [
+            -73.96019,
+            40.72585
+          ],
+          [
+            -73.960199,
+            40.725925
+          ],
+          [
+            -73.960201,
+            40.725939
+          ],
+          [
+            -73.960205,
+            40.725948
+          ],
+          [
+            -73.96021,
+            40.72596
+          ],
+          [
+            -73.960219,
+            40.725974
+          ],
+          [
+            -73.96032,
+            40.725958
+          ],
+          [
+            -73.960317,
+            40.72592
+          ],
+          [
+            -73.960778,
+            40.725886
+          ],
+          [
+            -73.960784,
+            40.725919
+          ],
+          [
+            -73.960946,
+            40.725905
+          ],
+          [
+            -73.960944,
+            40.725874
+          ],
+          [
+            -73.961551,
+            40.725829
+          ],
+          [
+            -73.961559,
+            40.725875
+          ],
+          [
+            -73.961565,
+            40.725912
+          ],
+          [
+            -73.959933,
+            40.726063
+          ],
+          [
+            -73.959921,
+            40.725985
+          ],
+          [
+            -73.959854,
+            40.725551
+          ]
+        ]
+      ],
+      "method": "single_bbl_parcel_polygon",
+      "relation": "exact_single_retained_bbl_full_project_site",
+      "precision": "tax_lot_boundary",
+      "coverage_state": "exact",
+      "source": {
+        "publisher": "NYC Department of City Planning MapPLUTO/PLUTO"
+      },
+      "vintage": "2026-09-03T01:34:56.321Z",
+      "materialization_version": "exact_single_bbl_wh06_mappluto_parcel_polygon_v1"
+    },
+    "2025M0395": {
+      "project_id": "2025M0395",
+      "bbl": "1008097502",
+      "geometry_type": "Polygon",
+      "rings": [
+        [
+          [
+            -73.988359,
+            40.749909
+          ],
+          [
+            -73.988088,
+            40.749795
+          ],
+          [
+            -73.988131,
+            40.74956
+          ],
+          [
+            -73.988341,
+            40.749262
+          ],
+          [
+            -73.988859,
+            40.749479
+          ],
+          [
+            -73.988677,
+            40.749713
+          ],
+          [
+            -73.988551,
+            40.749661
+          ],
+          [
+            -73.988359,
+            40.749909
+          ]
+        ]
+      ],
+      "method": "single_bbl_parcel_polygon",
+      "relation": "exact_single_retained_bbl_full_project_site",
+      "precision": "tax_lot_boundary",
+      "coverage_state": "exact",
+      "source": {
+        "publisher": "NYC Department of City Planning MapPLUTO/PLUTO"
+      },
+      "vintage": "2026-09-03T01:34:56.321Z",
+      "materialization_version": "exact_single_bbl_wh06_mappluto_parcel_polygon_v1"
+    },
+    "2025Q0142": {
+      "project_id": "2025Q0142",
+      "bbl": "4020030001",
+      "geometry_type": "Polygon",
+      "rings": [
+        [
+          [
+            -73.855998,
+            40.746411
+          ],
+          [
+            -73.855864,
+            40.746154
+          ],
+          [
+            -73.856089,
+            40.746088
+          ],
+          [
+            -73.856143,
+            40.745933
+          ],
+          [
+            -73.856206,
+            40.746053
+          ],
+          [
+            -73.85621,
+            40.746062
+          ],
+          [
+            -73.856472,
+            40.746566
+          ],
+          [
+            -73.856131,
+            40.746667
+          ],
+          [
+            -73.855998,
+            40.746411
+          ]
+        ]
+      ],
+      "method": "single_bbl_parcel_polygon",
+      "relation": "exact_single_retained_bbl_full_project_site",
+      "precision": "tax_lot_boundary",
+      "coverage_state": "exact",
+      "source": {
+        "publisher": "NYC Department of City Planning MapPLUTO/PLUTO"
+      },
+      "vintage": "2026-09-03T01:34:56.321Z",
+      "materialization_version": "exact_single_bbl_wh06_mappluto_parcel_polygon_v1"
+    },
+    "2026R0127": {
+      "project_id": "2026R0127",
+      "bbl": "5007087501",
+      "geometry_type": "Polygon",
+      "rings": [
+        [
+          [
+            -74.119547,
+            40.612969
+          ],
+          [
+            -74.119368,
+            40.612985
+          ],
+          [
+            -74.119234,
+            40.612997
+          ],
+          [
+            -74.119215,
+            40.612884
+          ],
+          [
+            -74.119804,
+            40.612833
+          ],
+          [
+            -74.119867,
+            40.612689
+          ],
+          [
+            -74.119932,
+            40.612542
+          ],
+          [
+            -74.119978,
+            40.612438
+          ],
+          [
+            -74.119979,
+            40.612436
+          ],
+          [
+            -74.120081,
+            40.612426
+          ],
+          [
+            -74.120088,
+            40.612566
+          ],
+          [
+            -74.120096,
+            40.612699
+          ],
+          [
+            -74.120101,
+            40.612803
+          ],
+          [
+            -74.120107,
+            40.612915
+          ],
+          [
+            -74.12012,
+            40.613159
+          ],
+          [
+            -74.120122,
+            40.613192
+          ],
+          [
+            -74.119737,
+            40.613234
+          ],
+          [
+            -74.11973,
+            40.61319
+          ],
+          [
+            -74.11969,
+            40.612957
+          ],
+          [
+            -74.119547,
+            40.612969
+          ]
+        ]
+      ],
+      "method": "single_bbl_parcel_polygon",
+      "relation": "exact_single_retained_bbl_full_project_site",
+      "precision": "tax_lot_boundary",
+      "coverage_state": "exact",
+      "source": {
+        "publisher": "NYC Department of City Planning MapPLUTO/PLUTO"
+      },
+      "vintage": "2026-09-03T01:34:56.321Z",
+      "materialization_version": "exact_single_bbl_wh06_mappluto_parcel_polygon_v1"
+    },
+    "2026R0186": {
+      "project_id": "2026R0186",
+      "bbl": "5028100080",
+      "geometry_type": "Polygon",
+      "rings": [
+        [
+          [
+            -74.195081,
+            40.600616
+          ],
+          [
+            -74.19573,
+            40.600203
+          ],
+          [
+            -74.195822,
+            40.600287
+          ],
+          [
+            -74.196003,
+            40.600172
+          ],
+          [
+            -74.195911,
+            40.600088
+          ],
+          [
+            -74.196352,
+            40.599807
+          ],
+          [
+            -74.196387,
+            40.5998
+          ],
+          [
+            -74.196554,
+            40.600239
+          ],
+          [
+            -74.196428,
+            40.600377
+          ],
+          [
+            -74.196399,
+            40.600414
+          ],
+          [
+            -74.196374,
+            40.600453
+          ],
+          [
+            -74.196355,
+            40.600493
+          ],
+          [
+            -74.196342,
+            40.600535
+          ],
+          [
+            -74.19634,
+            40.60064
+          ],
+          [
+            -74.196341,
+            40.600676
+          ],
+          [
+            -74.196346,
+            40.600712
+          ],
+          [
+            -74.196356,
+            40.600747
+          ],
+          [
+            -74.19637,
+            40.600782
+          ],
+          [
+            -74.196214,
+            40.600787
+          ],
+          [
+            -74.195599,
+            40.601161
+          ],
+          [
+            -74.195536,
+            40.601099
+          ],
+          [
+            -74.195418,
+            40.600983
+          ],
+          [
+            -74.195149,
+            40.60071
+          ],
+          [
+            -74.195081,
+            40.600616
+          ]
+        ]
+      ],
+      "method": "single_bbl_parcel_polygon",
+      "relation": "exact_single_retained_bbl_full_project_site",
+      "precision": "tax_lot_boundary",
+      "coverage_state": "exact",
+      "source": {
+        "publisher": "NYC Department of City Planning MapPLUTO/PLUTO"
+      },
+      "vintage": "2026-09-03T01:34:56.321Z",
+      "materialization_version": "exact_single_bbl_wh06_mappluto_parcel_polygon_v1"
+    }
+  }
+}
