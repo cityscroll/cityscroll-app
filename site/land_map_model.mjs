@@ -13,6 +13,7 @@ import {
   REJECTED_KNOWN_LAND_POINT_METHODS,
   toFiniteKnownLandPoint,
 } from "./land_project_geography.mjs";
+import { landParcelPolygonFindings } from "./land_project_geometry.mjs";
 
 export const LAND_MAP_MODEL_SCHEMA = "cityscroll.land_map_model.v1";
 export const LAND_MAP_MODEL_JOIN = "exact_project_id";
@@ -99,6 +100,18 @@ export function indexLandMapPoints(pointLookup) {
   return indexed;
 }
 
+/**
+ * A joined point's own optional `shape`, when present and valid. Geometry
+ * rides on the same already-fetched point projection (LM-17 adds it as a
+ * field, not a second artifact), so this never mints a second request. A
+ * malformed polygon degrades to "no shape" rather than a broken render.
+ */
+function shapeFromPoint(record) {
+  const shape = asObject(record)?.shape;
+  if (!shape || landParcelPolygonFindings(shape)) return null;
+  return shape;
+}
+
 function rejectedReason(method) {
   return method === "address_geocode"
     ? LAND_MAP_UNMAPPED_REASONS.ADDRESS_GEOCODE_REJECTED
@@ -163,7 +176,7 @@ function freezeFilters(filters) {
   return record ? Object.freeze({ ...record }) : null;
 }
 
-function markerFrom({ projectId, row, point, selected }) {
+function markerFrom({ projectId, row, point, selected, geometry }) {
   return Object.freeze({
     projectId,
     lat: point.lat,
@@ -173,6 +186,9 @@ function markerFrom({ projectId, row, point, selected }) {
     bblCount: point.bblCount,
     title: row?.project_name ?? null,
     selected,
+    // Additive only: a project's marker placement never depends on this. See
+    // land_project_geometry.mjs for the exact-key relation that earns a shape.
+    geometry: geometry || null,
   });
 }
 
@@ -219,7 +235,8 @@ export function buildLandMapModel({
     const projectId = trimId(asObject(row)?.project_id ?? row?.project_id);
     if (!projectId || seen.has(projectId)) continue;
     seen.add(projectId);
-    const join = resolveJoin(points.get(projectId));
+    const pointRecord = points.get(projectId);
+    const join = resolveJoin(pointRecord);
     if (join.status === "mapped") {
       mapped.push(Object.freeze({
         projectId,
@@ -231,6 +248,7 @@ export function buildLandMapModel({
           precision: join.precision,
           bblCount: join.bblCount,
         }),
+        shape: shapeFromPoint(pointRecord),
       }));
     } else {
       unmapped.push(Object.freeze({
@@ -249,6 +267,7 @@ export function buildLandMapModel({
       row: item.row,
       point: item.point,
       selected: item.projectId === selectedId,
+      geometry: item.shape,
     }));
   }
 

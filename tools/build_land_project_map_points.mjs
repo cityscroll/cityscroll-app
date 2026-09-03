@@ -8,7 +8,7 @@
  */
 
 import { createHash } from "node:crypto";
-import { readFileSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -16,6 +16,7 @@ import {
   assertLandProjectMapPoints,
   materializeLandProjectMapPoints,
 } from "../site/land_project_map_points.mjs";
+import { materializeLandProjectGeometry } from "../site/land_project_geometry.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 export const PAYLOAD_JSON = "site/data/land_project_map_points.json";
@@ -24,6 +25,11 @@ export const RECEIPT_JSON = "site/data/land_project_map_points_receipt.json";
 const LAND_DEFAULT = "site/data/land_default_ulurp.json";
 const ZAP_BBL = "site/data/zap_bbl_warehouse_lookup.json";
 const MAPPLUTO = "site/data/bbl_mappluto_centroids_lookup.json";
+const GEOMETRY_SOURCE = "site/data/land_project_geometry_source_lookup.json";
+
+function readJsonIfPresent(filePath) {
+  return existsSync(filePath) ? JSON.parse(readFileSync(filePath, "utf8")) : {};
+}
 
 function parseArgs(argv) {
   const out = { check: false };
@@ -47,15 +53,37 @@ function stableStringify(value) {
 }
 
 export function buildLandProjectMapPointsFromRepo(root = ROOT) {
+  const landDefault = JSON.parse(readFileSync(path.join(root, LAND_DEFAULT), "utf8"));
+  const zapBbl = JSON.parse(readFileSync(path.join(root, ZAP_BBL), "utf8"));
+  const mapplutoCentroids = JSON.parse(readFileSync(path.join(root, MAPPLUTO), "utf8"));
+  const artifactHashes = {
+    land_default: sha256File(root, LAND_DEFAULT),
+    zap_bbl: sha256File(root, ZAP_BBL),
+    mappluto_centroids: sha256File(root, MAPPLUTO),
+  };
+
+  // Pass 1: which projects get an accepted point at all. Geometry (LM-17) never influences
+  // that decision -- it can only ride on a point pass 1 already accepted.
+  const pass1 = materializeLandProjectMapPoints({ landDefault, zapBbl, mapplutoCentroids, artifactHashes });
+  const mappedProjectIds = Object.keys(pass1.payload.points);
+
+  const geometrySource = readJsonIfPresent(path.join(root, GEOMETRY_SOURCE));
+  const { payload: geometryPayload } = materializeLandProjectGeometry({
+    landDefault,
+    zapBbl,
+    geometrySource,
+    mappedProjectIds,
+  });
+  const geometryByProject = new Map(Object.entries(geometryPayload.shapes));
+
+  // Pass 2: the same points, now with an optional shape attached where the exact-key
+  // geometry gate passed. Lat/lon/method/precision/bbl_count are byte-identical to pass 1.
   const { payload, receipt } = materializeLandProjectMapPoints({
-    landDefault: JSON.parse(readFileSync(path.join(root, LAND_DEFAULT), "utf8")),
-    zapBbl: JSON.parse(readFileSync(path.join(root, ZAP_BBL), "utf8")),
-    mapplutoCentroids: JSON.parse(readFileSync(path.join(root, MAPPLUTO), "utf8")),
-    artifactHashes: {
-      land_default: sha256File(root, LAND_DEFAULT),
-      zap_bbl: sha256File(root, ZAP_BBL),
-      mappluto_centroids: sha256File(root, MAPPLUTO),
-    },
+    landDefault,
+    zapBbl,
+    mapplutoCentroids,
+    artifactHashes,
+    geometryByProject,
   });
   const payloadText = stableStringify(payload);
   const stamped = {

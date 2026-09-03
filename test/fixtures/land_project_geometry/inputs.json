@@ -1,0 +1,54 @@
+{
+  "landDefault": {
+    "count": 6,
+    "projects": [
+      { "project_id": "2026R0127", "project_name": "Single lot, exact geometry" },
+      { "project_id": "2025K0305", "project_name": "Multi lot, ambiguous relation" },
+      { "project_id": "2026K0123", "project_name": "No retained BBL, unmapped" },
+      { "project_id": "2020M0385", "project_name": "Exact BBL missing centroid, unmapped" },
+      { "project_id": "INVALIDGEOM", "project_name": "Single lot, invalid ring" },
+      { "project_id": "MISSINGROW", "project_name": "Single lot, no geometry row" }
+    ]
+  },
+  "zapBbl": {
+    "phase": "WH-06",
+    "dataset_id": "2iga-a6mk",
+    "mode": "bulk_warehouse",
+    "materialized_at": "2026-08-05T10:41:38.120Z",
+    "rows": [
+      { "project_id": "2026R0127", "bbls": ["5007087501"] },
+      { "project_id": "2025K0305", "bbls": ["3069440002", "3069440004", "3069440007"] },
+      { "project_id": "2020M0385", "bbls": ["1010060013"] },
+      { "project_id": "INVALIDGEOM", "bbls": ["9999999998"] },
+      { "project_id": "MISSINGROW", "bbls": ["9999999999"] }
+    ]
+  },
+  "geometrySource": {
+    "schema_version": 1,
+    "source": { "publisher": "NYC Department of City Planning MapPLUTO/PLUTO" },
+    "mode": "mappluto_arcgis_batch",
+    "materialized_at": "2026-08-30T00:00:00.000Z",
+    "max_age_days": 120,
+    "by_bbl": {
+      "5007087501": {
+        "rings": [[
+          [-74.1198, 40.6128],
+          [-74.1195, 40.6128],
+          [-74.1195, 40.6131],
+          [-74.1198, 40.6131],
+          [-74.1198, 40.6128]
+        ]],
+        "source_area": 4700.6
+      },
+      "9999999998": {
+        "rings": [[
+          [-73.95, 40.7],
+          [-73.9497, 40.7],
+          [-73.9497, 40.7003]
+        ]],
+        "source_area": null
+      }
+    }
+  },
+  "mappedProjectIds": ["2026R0127", "2025K0305", "INVALIDGEOM", "MISSINGROW"]
+}
