@@ -224,7 +224,8 @@ def main() -> int:
         "captures": captures,
     }
     (out / "capture-receipt.json").write_text(json.dumps(receipt, indent=2) + "\n", encoding="utf-8")
-    print(f"Captured FS-15 home-default-watch evidence under {out.relative_to(ROOT)}")
+    shown = out.relative_to(ROOT) if out.is_relative_to(ROOT) else out
+    print(f"Captured FS-15 home-default-watch evidence under {shown}")
     return 0
 
 
