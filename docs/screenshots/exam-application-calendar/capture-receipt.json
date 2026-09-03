@@ -1,0 +1,378 @@
+{
+  "schema": "cityscroll.exam_calendar_evidence_receipt.v1",
+  "captured_at": "2026-09-03T18:46:17Z",
+  "revision": "42d872d66ae625a601731a733a756f4c1aadd27b",
+  "timezone": "America/New_York",
+  "today": "2026-02-15",
+  "all_axe_pass": true,
+  "captures": [
+    {
+      "case": "qualifying-three-date",
+      "route": "/__capture__/exam-calendar/qualifying-three-date/",
+      "canonical_path": "/exams/9001/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "timezone": "America/New_York",
+      "today": "2026-02-15",
+      "date_state": {
+        "application_start": "2026-03-02",
+        "application_end": "2026-03-23",
+        "exam_date": "2026-04-06",
+        "predicted_list_window": null
+      },
+      "source_state": {
+        "schedule_status": "scheduled",
+        "filing_mode": null,
+        "notice_url": "https://www.nyc.gov/assets/dcas/downloads/exams/example-noe.pdf"
+      },
+      "expected": {
+        "render": true,
+        "reason": "eligible"
+      },
+      "observed": {
+        "gridPresent": true,
+        "gridVisible": false,
+        "agendaVisible": true,
+        "noHorizontalOverflow": true,
+        "calendarSectionPresent": true,
+        "compactRangeKept": true,
+        "applyBeforeCalendar": true,
+        "noticeBeforeCalendar": true,
+        "calendarBeforeProcess": true,
+        "fullProcessLink": true
+      },
+      "screenshot": "docs/screenshots/exam-application-calendar/qualifying-three-date-390x844.png",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      },
+      "assertion": "case=qualifying-three-date at 390x844 rendered=True expected_render=True reason=eligible checks={'render_matches_contract': True, 'compact_range_kept': True, 'no_horizontal_overflow': True, 'reader_hierarchy': True, 'viewport_reading_form': True} axe_passes=True"
+    },
+    {
+      "case": "qualifying-three-date",
+      "route": "/__capture__/exam-calendar/qualifying-three-date/",
+      "canonical_path": "/exams/9001/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "timezone": "America/New_York",
+      "today": "2026-02-15",
+      "date_state": {
+        "application_start": "2026-03-02",
+        "application_end": "2026-03-23",
+        "exam_date": "2026-04-06",
+        "predicted_list_window": null
+      },
+      "source_state": {
+        "schedule_status": "scheduled",
+        "filing_mode": null,
+        "notice_url": "https://www.nyc.gov/assets/dcas/downloads/exams/example-noe.pdf"
+      },
+      "expected": {
+        "render": true,
+        "reason": "eligible"
+      },
+      "observed": {
+        "gridPresent": true,
+        "gridVisible": true,
+        "agendaVisible": false,
+        "noHorizontalOverflow": true,
+        "calendarSectionPresent": true,
+        "compactRangeKept": true,
+        "applyBeforeCalendar": true,
+        "noticeBeforeCalendar": true,
+        "calendarBeforeProcess": true,
+        "fullProcessLink": true
+      },
+      "screenshot": "docs/screenshots/exam-application-calendar/qualifying-three-date-1440x900.png",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      },
+      "assertion": "case=qualifying-three-date at 1440x900 rendered=True expected_render=True reason=eligible checks={'render_matches_contract': True, 'compact_range_kept': True, 'no_horizontal_overflow': True, 'reader_hierarchy': True, 'viewport_reading_form': True} axe_passes=True"
+    },
+    {
+      "case": "ordinary-two-date",
+      "route": "/__capture__/exam-calendar/ordinary-two-date/",
+      "canonical_path": "/exams/9002/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "timezone": "America/New_York",
+      "today": "2026-02-15",
+      "date_state": {
+        "application_start": "2026-03-02",
+        "application_end": "2026-03-23",
+        "exam_date": null,
+        "predicted_list_window": null
+      },
+      "source_state": {
+        "schedule_status": "scheduled",
+        "filing_mode": null,
+        "notice_url": "https://www.nyc.gov/assets/dcas/downloads/exams/example-noe.pdf"
+      },
+      "expected": {
+        "render": false,
+        "reason": "no-published-exam-date"
+      },
+      "observed": {
+        "gridPresent": false,
+        "gridVisible": false,
+        "agendaVisible": false,
+        "noHorizontalOverflow": true,
+        "calendarSectionPresent": false,
+        "compactRangeKept": true,
+        "applyBeforeCalendar": false,
+        "noticeBeforeCalendar": false,
+        "calendarBeforeProcess": false,
+        "fullProcessLink": false
+      },
+      "screenshot": "docs/screenshots/exam-application-calendar/ordinary-two-date-390x844.png",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      },
+      "assertion": "case=ordinary-two-date at 390x844 rendered=False expected_render=False reason=no-published-exam-date checks={'render_matches_contract': True, 'compact_range_kept': True, 'no_horizontal_overflow': True} axe_passes=True"
+    },
+    {
+      "case": "ordinary-two-date",
+      "route": "/__capture__/exam-calendar/ordinary-two-date/",
+      "canonical_path": "/exams/9002/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "timezone": "America/New_York",
+      "today": "2026-02-15",
+      "date_state": {
+        "application_start": "2026-03-02",
+        "application_end": "2026-03-23",
+        "exam_date": null,
+        "predicted_list_window": null
+      },
+      "source_state": {
+        "schedule_status": "scheduled",
+        "filing_mode": null,
+        "notice_url": "https://www.nyc.gov/assets/dcas/downloads/exams/example-noe.pdf"
+      },
+      "expected": {
+        "render": false,
+        "reason": "no-published-exam-date"
+      },
+      "observed": {
+        "gridPresent": false,
+        "gridVisible": false,
+        "agendaVisible": false,
+        "noHorizontalOverflow": true,
+        "calendarSectionPresent": false,
+        "compactRangeKept": true,
+        "applyBeforeCalendar": false,
+        "noticeBeforeCalendar": false,
+        "calendarBeforeProcess": false,
+        "fullProcessLink": false
+      },
+      "screenshot": "docs/screenshots/exam-application-calendar/ordinary-two-date-1440x900.png",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      },
+      "assertion": "case=ordinary-two-date at 1440x900 rendered=False expected_render=False reason=no-published-exam-date checks={'render_matches_contract': True, 'compact_range_kept': True, 'no_horizontal_overflow': True} axe_passes=True"
+    },
+    {
+      "case": "rolling-continuous",
+      "route": "/__capture__/exam-calendar/rolling-continuous/",
+      "canonical_path": "/exams/9003/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "timezone": "America/New_York",
+      "today": "2026-02-15",
+      "date_state": {
+        "application_start": "2026-03-02",
+        "application_end": "2026-03-23",
+        "exam_date": "2026-04-06",
+        "predicted_list_window": null
+      },
+      "source_state": {
+        "schedule_status": "scheduled",
+        "filing_mode": "Continuous filing",
+        "notice_url": "https://www.nyc.gov/assets/dcas/downloads/exams/example-noe.pdf"
+      },
+      "expected": {
+        "render": false,
+        "reason": "continuous-rolling-filing"
+      },
+      "observed": {
+        "gridPresent": false,
+        "gridVisible": false,
+        "agendaVisible": false,
+        "noHorizontalOverflow": true,
+        "calendarSectionPresent": false,
+        "compactRangeKept": true,
+        "applyBeforeCalendar": false,
+        "noticeBeforeCalendar": false,
+        "calendarBeforeProcess": false,
+        "fullProcessLink": false
+      },
+      "screenshot": "docs/screenshots/exam-application-calendar/rolling-continuous-390x844.png",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      },
+      "assertion": "case=rolling-continuous at 390x844 rendered=False expected_render=False reason=continuous-rolling-filing checks={'render_matches_contract': True, 'compact_range_kept': True, 'no_horizontal_overflow': True} axe_passes=True"
+    },
+    {
+      "case": "rolling-continuous",
+      "route": "/__capture__/exam-calendar/rolling-continuous/",
+      "canonical_path": "/exams/9003/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "timezone": "America/New_York",
+      "today": "2026-02-15",
+      "date_state": {
+        "application_start": "2026-03-02",
+        "application_end": "2026-03-23",
+        "exam_date": "2026-04-06",
+        "predicted_list_window": null
+      },
+      "source_state": {
+        "schedule_status": "scheduled",
+        "filing_mode": "Continuous filing",
+        "notice_url": "https://www.nyc.gov/assets/dcas/downloads/exams/example-noe.pdf"
+      },
+      "expected": {
+        "render": false,
+        "reason": "continuous-rolling-filing"
+      },
+      "observed": {
+        "gridPresent": false,
+        "gridVisible": false,
+        "agendaVisible": false,
+        "noHorizontalOverflow": true,
+        "calendarSectionPresent": false,
+        "compactRangeKept": true,
+        "applyBeforeCalendar": false,
+        "noticeBeforeCalendar": false,
+        "calendarBeforeProcess": false,
+        "fullProcessLink": false
+      },
+      "screenshot": "docs/screenshots/exam-application-calendar/rolling-continuous-1440x900.png",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      },
+      "assertion": "case=rolling-continuous at 1440x900 rendered=False expected_render=False reason=continuous-rolling-filing checks={'render_matches_contract': True, 'compact_range_kept': True, 'no_horizontal_overflow': True} axe_passes=True"
+    },
+    {
+      "case": "predicted-exclusion",
+      "route": "/__capture__/exam-calendar/predicted-exclusion/",
+      "canonical_path": "/exams/9004/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "timezone": "America/New_York",
+      "today": "2026-02-15",
+      "date_state": {
+        "application_start": "2026-03-02",
+        "application_end": "2026-03-23",
+        "exam_date": null,
+        "predicted_list_window": {
+          "p10": "2026-03-20",
+          "p50": "2026-04-06",
+          "p90": "2026-05-01"
+        }
+      },
+      "source_state": {
+        "schedule_status": "scheduled",
+        "filing_mode": null,
+        "notice_url": "https://www.nyc.gov/assets/dcas/downloads/exams/example-noe.pdf"
+      },
+      "expected": {
+        "render": false,
+        "reason": "no-published-exam-date"
+      },
+      "observed": {
+        "gridPresent": false,
+        "gridVisible": false,
+        "agendaVisible": false,
+        "noHorizontalOverflow": true,
+        "calendarSectionPresent": false,
+        "compactRangeKept": true,
+        "applyBeforeCalendar": false,
+        "noticeBeforeCalendar": false,
+        "calendarBeforeProcess": false,
+        "fullProcessLink": false
+      },
+      "screenshot": "docs/screenshots/exam-application-calendar/predicted-exclusion-390x844.png",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      },
+      "assertion": "case=predicted-exclusion at 390x844 rendered=False expected_render=False reason=no-published-exam-date checks={'render_matches_contract': True, 'compact_range_kept': True, 'no_horizontal_overflow': True} axe_passes=True"
+    },
+    {
+      "case": "predicted-exclusion",
+      "route": "/__capture__/exam-calendar/predicted-exclusion/",
+      "canonical_path": "/exams/9004/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "timezone": "America/New_York",
+      "today": "2026-02-15",
+      "date_state": {
+        "application_start": "2026-03-02",
+        "application_end": "2026-03-23",
+        "exam_date": null,
+        "predicted_list_window": {
+          "p10": "2026-03-20",
+          "p50": "2026-04-06",
+          "p90": "2026-05-01"
+        }
+      },
+      "source_state": {
+        "schedule_status": "scheduled",
+        "filing_mode": null,
+        "notice_url": "https://www.nyc.gov/assets/dcas/downloads/exams/example-noe.pdf"
+      },
+      "expected": {
+        "render": false,
+        "reason": "no-published-exam-date"
+      },
+      "observed": {
+        "gridPresent": false,
+        "gridVisible": false,
+        "agendaVisible": false,
+        "noHorizontalOverflow": true,
+        "calendarSectionPresent": false,
+        "compactRangeKept": true,
+        "applyBeforeCalendar": false,
+        "noticeBeforeCalendar": false,
+        "calendarBeforeProcess": false,
+        "fullProcessLink": false
+      },
+      "screenshot": "docs/screenshots/exam-application-calendar/predicted-exclusion-1440x900.png",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      },
+      "assertion": "case=predicted-exclusion at 1440x900 rendered=False expected_render=False reason=no-published-exam-date checks={'render_matches_contract': True, 'compact_range_kept': True, 'no_horizontal_overflow': True} axe_passes=True"
+    }
+  ]
+}
