@@ -71,34 +71,34 @@ export function initHomeDefaultSubscription() {
       emailInput.focus();
       return;
     }
-  emailInput.removeAttribute("aria-invalid");
-  button.disabled = true;
-  message.textContent = window.t?.("subscribing_now") || "Subscribing…";
-  const lang = window.LANG || "en";
-  if (langField) langField.value = lang;
-  try {
-    const result = await subscribeHomeDefault(email, lang);
-    if (result?.ok) {
-      const receipt = buildFollowingDefaultWatchReceipt({ watch: result.watch, created: result.created, now: Date.now() });
-      if (receipt?.ok) {
-        setFollowingDefaultWatchReceipt(receipt);
-        const destination = result.watch?.followingUrl || "/following/";
-        const normalizedDestination = destination.endsWith("/") ? destination : `${destination}/`;
-        location.assign(`${normalizedDestination}#your-following`);
+    emailInput.removeAttribute("aria-invalid");
+    button.disabled = true;
+    message.textContent = window.t?.("subscribing_now") || "Subscribing…";
+    const lang = window.LANG || "en";
+    if (langField) langField.value = lang;
+    try {
+      const result = await subscribeHomeDefault(email, lang);
+      if (result?.ok) {
+        const receipt = buildFollowingDefaultWatchReceipt({ watch: result.watch, created: result.created });
+        if (receipt?.ok) {
+          setFollowingDefaultWatchReceipt(receipt);
+          const destination = result.watch?.followingUrl || "/following/";
+          const normalizedDestination = destination.endsWith("/") ? destination : `${destination}/`;
+          location.assign(`${normalizedDestination}#your-following`);
+        }
+        message.textContent = result.created === false
+          ? (window.t?.("home_cta_active_now") || "You're already getting these.")
+          : `${window.t?.("subscribed_now") || "You're subscribed — we'll email you."} ${window.t?.("welcome_sent_to", { email }) || ""}`.trim();
+        emailInput.value = "";
+      } else if (result?.subscribed === true) {
+        message.textContent = `${window.t?.("subscribed_now") || "You're subscribed — we'll email you."} ${homeCtaErrorMessage(result?.reason)}`.trim();
+      } else {
+        message.textContent = homeCtaErrorMessage(result?.reason);
       }
-      message.textContent = result.created === false
-        ? (window.t?.("home_cta_active_now") || "You're already getting these.")
-        : `${window.t?.("subscribed_now") || "You're subscribed — we'll email you."} ${window.t?.("welcome_sent_to", { email }) || ""}`.trim();
-      emailInput.value = "";
-    } else if (result?.subscribed === true) {
-      message.textContent = `${window.t?.("subscribed_now") || "You're subscribed — we'll email you."} ${homeCtaErrorMessage(result?.reason)}`.trim();
-    } else {
-      message.textContent = homeCtaErrorMessage(result?.reason);
+    } catch {
+      message.textContent = window.t?.("cant_reach_server") || "Couldn't reach the server — try again.";
+    } finally {
+      button.disabled = false;
     }
-  } catch {
-    message.textContent = window.t?.("cant_reach_server") || "Couldn't reach the server — try again.";
-  } finally {
-    button.disabled = false;
-  }
   });
 }

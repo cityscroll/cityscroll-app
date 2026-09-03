@@ -108,7 +108,7 @@ function renderDefaultWatchReceiptCard(watch, createHref) {
 }
 
 function consumeDefaultWatchReceiptIntoPersonal() {
-  const consumed = consumeFollowingDefaultWatchReceipt(globalThis.sessionStorage, Date.now());
+  const consumed = consumeFollowingDefaultWatchReceipt();
   if (!consumed?.ok) return;
   const watch = consumed.receipt?.watch;
   if (!watch || typeof watch !== "object") return;
