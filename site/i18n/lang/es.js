@@ -883,6 +883,7 @@
     land_map_selected_detail: "Abrir el expediente",
     land_map_selected_list: "Ver en la lista",
     land_map_selected_clear: "Quitar la selección",
+    land_map_back_to_list: "Volver a la lista",
     land_future_any: "Cualquier acción pública futura",
     land_future_hearing: "Próxima audiencia",
     land_future_other: "Otra acción próxima",

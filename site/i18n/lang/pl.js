@@ -861,6 +861,7 @@
     land_map_selected_detail: "Otwórz akta projektu",
     land_map_selected_list: "Pokaż na liście",
     land_map_selected_clear: "Wyczyść wybór",
+    land_map_back_to_list: "Powrót do listy",
     land_future_any: "Dowolne przyszłe działanie publiczne",
     land_future_hearing: "Nadchodzące wysłuchanie",
     land_future_other: "Inne nadchodzące działanie",

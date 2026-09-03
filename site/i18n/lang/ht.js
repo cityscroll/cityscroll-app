@@ -882,6 +882,7 @@
     land_map_selected_detail: "Louvri dosye a",
     land_map_selected_list: "Wè nan lis la",
     land_map_selected_clear: "Efase chwa a",
+    land_map_back_to_list: "Tounen nan lis la",
     land_future_any: "Nenpòt aksyon piblik alavni",
     land_future_hearing: "Odyans k ap vini",
     land_future_other: "Lòt aksyon k ap vini",

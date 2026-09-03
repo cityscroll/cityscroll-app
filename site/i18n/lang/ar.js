@@ -887,6 +887,7 @@
     land_map_selected_detail: "فتح ملف المشروع",
     land_map_selected_list: "عرض في القائمة",
     land_map_selected_clear: "إلغاء التحديد",
+    land_map_back_to_list: "العودة إلى القائمة",
     land_future_any: "أي إجراء عام قادم",
     land_future_hearing: "جلسة استماع قادمة",
     land_future_other: "إجراء قادم آخر",
