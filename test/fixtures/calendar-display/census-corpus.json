@@ -1,0 +1,430 @@
+{
+  "schema": "cityscroll.calendar_display_census_corpus.v1",
+  "revision": "calendar-display-census-corpus.v1",
+  "note": "Representative fixtures per commissioned surface. Not a production sample. Each surface exercises eligible occurrences plus the normative exclusions so the census reasons are measured, never manufactured.",
+  "surfaces": [
+    {
+      "surface": "rules",
+      "fixture": "test/fixtures/calendar-display/census-corpus.json#rules",
+      "revision": "calendar-display-census-corpus.v1",
+      "options": {},
+      "records": [
+        {
+          "object_ref": "notice:rule-doe-a",
+          "scope_ref": "scope:rules:doe",
+          "title": "Public hearing — school bus safety rule",
+          "event_date": "2026-03-03T18:00:00-05:00",
+          "timezone": "America/New_York",
+          "canonical_url": "https://cityscroll.org/notices/notice%3Arule-doe-a",
+          "source_system": "city_record",
+          "source_record_id": "rule-doe-a",
+          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/rule-doe-a",
+          "provenance": { "basis": "publisher_record", "field": "event_date" }
+        },
+        {
+          "object_ref": "notice:rule-doe-b",
+          "scope_ref": "scope:rules:doe",
+          "title": "Second public hearing — school bus safety rule",
+          "event_date": "2026-03-12T18:00:00-05:00",
+          "timezone": "America/New_York",
+          "canonical_url": "https://cityscroll.org/notices/notice%3Arule-doe-b",
+          "source_system": "city_record",
+          "source_record_id": "rule-doe-b",
+          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/rule-doe-b",
+          "provenance": { "basis": "publisher_record", "field": "event_date" }
+        },
+        {
+          "object_ref": "notice:rule-doe-c",
+          "scope_ref": "scope:rules:doe",
+          "title": "Written comment deadline — school bus safety rule",
+          "deadline_date": "2026-03-20",
+          "canonical_url": "https://cityscroll.org/notices/notice%3Arule-doe-c",
+          "source_system": "city_record",
+          "source_record_id": "rule-doe-c",
+          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/rule-doe-c",
+          "provenance": { "basis": "publisher_record", "field": "deadline_date" }
+        },
+        {
+          "object_ref": "notice:rule-doe-d",
+          "scope_ref": "scope:rules:doe",
+          "title": "Adoption meeting — school bus safety rule",
+          "event_date": "2026-03-25T10:00:00-04:00",
+          "timezone": "America/New_York",
+          "canonical_url": "https://cityscroll.org/notices/notice%3Arule-doe-d",
+          "source_system": "city_record",
+          "source_record_id": "rule-doe-d",
+          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/rule-doe-d",
+          "provenance": { "basis": "publisher_record", "field": "event_date" }
+        },
+        {
+          "object_ref": "notice:rule-doe-pub",
+          "scope_ref": "scope:rules:doe",
+          "title": "Rule proposal notice published",
+          "published_at": "2026-02-24T09:00:00-05:00",
+          "canonical_url": "https://cityscroll.org/notices/notice%3Arule-doe-pub",
+          "source_system": "city_record",
+          "source_record_id": "rule-doe-pub",
+          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/rule-doe-pub"
+        },
+        {
+          "object_ref": "notice:rule-doe-forecast",
+          "scope_ref": "scope:rules:doe",
+          "title": "Anticipated re-proposal hearing",
+          "event_date": "2026-04-15T18:00:00-04:00",
+          "timezone": "America/New_York",
+          "canonical_url": "https://cityscroll.org/notices/notice%3Arule-doe-forecast",
+          "source_system": "city_record",
+          "source_record_id": "rule-doe-forecast",
+          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/rule-doe-forecast",
+          "forecast": true,
+          "provenance": { "basis": "forecast", "field": "event_date" }
+        }
+      ]
+    },
+    {
+      "surface": "community_boards",
+      "fixture": "test/fixtures/calendar-display/census-corpus.json#community_boards",
+      "revision": "calendar-display-census-corpus.v1",
+      "options": { "kind": "meetings" },
+      "records": [
+        {
+          "object_ref": "meeting:cb-2026-05-04",
+          "scope_ref": "scope:meetings:district-04",
+          "title": "Land Use Committee",
+          "event_date": "2026-05-04T18:30:00-04:00",
+          "timezone": "America/New_York",
+          "canonical_url": "https://cityscroll.org/meetings/meeting%3Acb-2026-05-04/",
+          "source_system": "community_board",
+          "source_record_id": "cb-2026-05-04",
+          "source_url": "https://www.nyc.gov/site/cb4/calendar.page",
+          "provenance": { "basis": "publisher_record", "field": "event_date" }
+        },
+        {
+          "object_ref": "meeting:cb-2026-05-11",
+          "scope_ref": "scope:meetings:district-04",
+          "title": "Transportation Committee",
+          "event_date": "2026-05-11T19:00:00-04:00",
+          "timezone": "America/New_York",
+          "canonical_url": "https://cityscroll.org/meetings/meeting%3Acb-2026-05-11/",
+          "source_system": "community_board",
+          "source_record_id": "cb-2026-05-11",
+          "source_url": "https://www.nyc.gov/site/cb4/calendar.page",
+          "provenance": { "basis": "publisher_record", "field": "event_date" }
+        },
+        {
+          "object_ref": "meeting:cb-2026-05-18",
+          "scope_ref": "scope:meetings:district-04",
+          "title": "Full Board meeting",
+          "event_date": "2026-05-18T18:30:00-04:00",
+          "timezone": "America/New_York",
+          "canonical_url": "https://cityscroll.org/meetings/meeting%3Acb-2026-05-18/",
+          "source_system": "community_board",
+          "source_record_id": "cb-2026-05-18",
+          "source_url": "https://www.nyc.gov/site/cb4/calendar.page",
+          "provenance": { "basis": "publisher_record", "field": "event_date" }
+        },
+        {
+          "object_ref": "meeting:cb-2026-05-04",
+          "scope_ref": "scope:meetings:district-04",
+          "title": "Land Use Committee (re-indexed duplicate)",
+          "event_date": "2026-05-04T18:30:00-04:00",
+          "timezone": "America/New_York",
+          "canonical_url": "https://cityscroll.org/meetings/meeting%3Acb-2026-05-04/",
+          "source_system": "community_board",
+          "source_record_id": "cb-2026-05-04-dup",
+          "source_url": "https://www.nyc.gov/site/cb4/calendar.page",
+          "provenance": { "basis": "publisher_record", "field": "event_date" }
+        },
+        {
+          "object_ref": "meeting:cb-unjoined",
+          "scope_ref": "scope:meetings:district-04",
+          "title": "Unmatched publisher meeting row",
+          "event_date": "2026-05-20T18:30:00-04:00",
+          "timezone": "America/New_York",
+          "canonical_url": "https://cityscroll.org/meetings/meeting%3Acb-unjoined/",
+          "source_system": "community_board",
+          "source_record_id": "cb-unjoined",
+          "source_url": "https://www.nyc.gov/site/cb4/calendar.page",
+          "join_status": "rejected",
+          "provenance": { "basis": "publisher_record", "field": "event_date" }
+        }
+      ]
+    },
+    {
+      "surface": "now",
+      "fixture": "test/fixtures/calendar-display/census-corpus.json#now",
+      "revision": "calendar-display-census-corpus.v1",
+      "options": {},
+      "records": [
+        {
+          "object_ref": "meeting:now-2026-06-02",
+          "scope_ref": "scope:now:citywide",
+          "title": "Borough board hearing",
+          "event_date": "2026-06-02T18:00:00-04:00",
+          "timezone": "America/New_York",
+          "canonical_url": "https://cityscroll.org/meetings/meeting%3Anow-2026-06-02/",
+          "source_system": "city_record",
+          "source_record_id": "now-2026-06-02",
+          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/now-2026-06-02",
+          "provenance": { "basis": "publisher_record", "field": "event_date" }
+        },
+        {
+          "object_ref": "notice:now-2026-06-09",
+          "scope_ref": "scope:now:citywide",
+          "title": "Comment deadline — capital plan",
+          "deadline_date": "2026-06-09",
+          "canonical_url": "https://cityscroll.org/notices/notice%3Anow-2026-06-09",
+          "source_system": "city_record",
+          "source_record_id": "now-2026-06-09",
+          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/now-2026-06-09",
+          "provenance": { "basis": "publisher_record", "field": "deadline_date" }
+        },
+        {
+          "object_ref": "meeting:now-2026-06-15",
+          "scope_ref": "scope:now:citywide",
+          "title": "Council stated meeting",
+          "event_date": "2026-06-15T13:30:00-04:00",
+          "timezone": "America/New_York",
+          "canonical_url": "https://cityscroll.org/meetings/meeting%3Anow-2026-06-15/",
+          "source_system": "city_record",
+          "source_record_id": "now-2026-06-15",
+          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/now-2026-06-15",
+          "provenance": { "basis": "publisher_record", "field": "event_date" }
+        },
+        {
+          "object_ref": "meeting:now-predicted",
+          "scope_ref": "scope:now:citywide",
+          "title": "Projected next stated meeting",
+          "event_date": "2026-06-20T13:30:00-04:00",
+          "timezone": "America/New_York",
+          "canonical_url": "https://cityscroll.org/meetings/meeting%3Anow-predicted/",
+          "source_system": "city_record",
+          "source_record_id": "now-predicted",
+          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/now-predicted",
+          "predicted": true,
+          "provenance": { "basis": "prediction", "field": "event_date" }
+        }
+      ]
+    },
+    {
+      "surface": "land",
+      "fixture": "test/fixtures/calendar-display/census-corpus.json#land",
+      "revision": "calendar-display-census-corpus.v1",
+      "options": {},
+      "records": [
+        {
+          "object_ref": "project:land-ulurp-1",
+          "scope_ref": "scope:land:project",
+          "title": "ULURP public hearing — 123 Example Ave rezoning",
+          "event_date": "2026-07-07T18:00:00-04:00",
+          "timezone": "America/New_York",
+          "canonical_url": "https://cityscroll.org/projects/project%3Aland-ulurp-1",
+          "source_system": "city_planning",
+          "source_record_id": "land-ulurp-1",
+          "source_url": "https://zap.planning.nyc.gov/projects/land-ulurp-1",
+          "provenance": { "basis": "publisher_record", "field": "event_date" }
+        },
+        {
+          "object_ref": "project:land-ulurp-1-comment",
+          "scope_ref": "scope:land:project",
+          "title": "Written testimony deadline — 123 Example Ave rezoning",
+          "deadline_date": "2026-07-14",
+          "canonical_url": "https://cityscroll.org/projects/project%3Aland-ulurp-1-comment",
+          "source_system": "city_planning",
+          "source_record_id": "land-ulurp-1-comment",
+          "source_url": "https://zap.planning.nyc.gov/projects/land-ulurp-1",
+          "provenance": { "basis": "publisher_record", "field": "deadline_date" }
+        },
+        {
+          "object_ref": "project:land-ulurp-1-vote",
+          "scope_ref": "scope:land:project",
+          "title": "CPC vote — 123 Example Ave rezoning",
+          "event_date": "2026-07-21T10:00:00-04:00",
+          "timezone": "America/New_York",
+          "canonical_url": "https://cityscroll.org/projects/project%3Aland-ulurp-1-vote",
+          "source_system": "city_planning",
+          "source_record_id": "land-ulurp-1-vote",
+          "source_url": "https://zap.planning.nyc.gov/projects/land-ulurp-1",
+          "provenance": { "basis": "publisher_record", "field": "event_date" }
+        },
+        {
+          "object_ref": "project:land-derived-deadline",
+          "scope_ref": "scope:land:project",
+          "title": "Estimated council review deadline",
+          "deadline_date": "2026-07-30",
+          "canonical_url": "https://cityscroll.org/projects/project%3Aland-derived-deadline",
+          "source_system": "city_planning",
+          "source_record_id": "land-derived-deadline",
+          "source_url": "https://zap.planning.nyc.gov/projects/land-derived-deadline",
+          "derived": true,
+          "confidence": 0.3,
+          "provenance": { "basis": "derived", "field": "deadline_date" }
+        }
+      ]
+    },
+    {
+      "surface": "procurement",
+      "fixture": "test/fixtures/calendar-display/census-corpus.json#procurement",
+      "revision": "calendar-display-census-corpus.v1",
+      "options": { "kind": "rfp" },
+      "records": [
+        {
+          "object_ref": "notice:solicitation-parks-1",
+          "scope_ref": "scope:procurement:parks",
+          "title": "Playground reconstruction solicitation",
+          "pre_bid_conference_date": "2026-07-22T10:00:00-04:00",
+          "questions_due_date": "2026-07-29",
+          "bid_deadline": "2026-08-05",
+          "timezone": "America/New_York",
+          "source_system": "city_record",
+          "source_record_id": "solicitation-parks-1",
+          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/solicitation-parks-1",
+          "provenance": { "basis": "publisher_record" }
+        },
+        {
+          "object_ref": "opportunity:no-destination",
+          "scope_ref": "scope:procurement:parks",
+          "title": "Solicitation with no canonical destination",
+          "bid_deadline": "2026-08-12",
+          "source_system": "city_record",
+          "source_record_id": "opportunity-no-destination",
+          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/opportunity-no-destination",
+          "provenance": { "basis": "publisher_record" }
+        }
+      ]
+    },
+    {
+      "surface": "property",
+      "fixture": "test/fixtures/calendar-display/census-corpus.json#property",
+      "revision": "calendar-display-census-corpus.v1",
+      "options": {},
+      "records": [
+        {
+          "object_ref": "notice:property-auction-1",
+          "scope_ref": "scope:property:citywide",
+          "title": "In-rem foreclosure auction",
+          "event_date": "2026-09-03T10:00:00-04:00",
+          "timezone": "America/New_York",
+          "canonical_url": "https://cityscroll.org/notices/notice%3Aproperty-auction-1",
+          "source_system": "city_record",
+          "source_record_id": "property-auction-1",
+          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/property-auction-1",
+          "provenance": { "basis": "publisher_record", "field": "event_date" }
+        },
+        {
+          "object_ref": "notice:property-lien-1",
+          "scope_ref": "scope:property:citywide",
+          "title": "Lien sale redemption deadline",
+          "deadline_date": "2026-09-05",
+          "canonical_url": "https://cityscroll.org/notices/notice%3Aproperty-lien-1",
+          "source_system": "city_record",
+          "source_record_id": "property-lien-1",
+          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/property-lien-1",
+          "provenance": { "basis": "publisher_record", "field": "deadline_date" }
+        },
+        {
+          "object_ref": "notice:property-no-source",
+          "scope_ref": "scope:property:citywide",
+          "title": "Timed property event with no retained source",
+          "event_date": "2026-09-10T10:00:00-04:00",
+          "timezone": "America/New_York",
+          "canonical_url": "https://cityscroll.org/notices/notice%3Aproperty-no-source"
+        },
+        {
+          "object_ref": "notice:property-ambiguous",
+          "scope_ref": "scope:property:citywide",
+          "title": "Property event with a malformed date",
+          "event_date": "2026-13-40",
+          "canonical_url": "https://cityscroll.org/notices/notice%3Aproperty-ambiguous",
+          "source_system": "city_record",
+          "source_record_id": "property-ambiguous",
+          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/property-ambiguous",
+          "provenance": { "basis": "publisher_record", "field": "event_date" }
+        }
+      ]
+    },
+    {
+      "surface": "exams",
+      "fixture": "test/fixtures/calendar-display/census-corpus.json#exams",
+      "revision": "calendar-display-census-corpus.v1",
+      "options": { "kind": "exam" },
+      "records": [
+        {
+          "object_ref": "exam:9001",
+          "scope_ref": "scope:exams:dcas",
+          "exam_number": "9001",
+          "title": "Associate Inspector exam — announced only",
+          "published_at": "2026-09-30T09:00:00-04:00",
+          "source_system": "dcas",
+          "source_record_id": "9001",
+          "source_url": "https://www.nyc.gov/site/dcas/employment/exams.page"
+        },
+        {
+          "object_ref": "exam:9002",
+          "scope_ref": "scope:exams:dcas",
+          "exam_number": "9002",
+          "title": "Associate Analyst exam — no dates published",
+          "source_system": "dcas",
+          "source_record_id": "9002",
+          "source_url": "https://www.nyc.gov/site/dcas/employment/exams.page"
+        }
+      ]
+    },
+    {
+      "surface": "legislative",
+      "fixture": "test/fixtures/calendar-display/census-corpus.json#legislative",
+      "revision": "calendar-display-census-corpus.v1",
+      "options": {},
+      "records": [
+        {
+          "object_ref": "notice:matter-inferred",
+          "scope_ref": "scope:legislative:matter",
+          "title": "Committee hearing with an inferred date",
+          "event_date": "2026-11-10T10:00:00-05:00",
+          "timezone": "America/New_York",
+          "canonical_url": "https://cityscroll.org/notices/notice%3Amatter-inferred",
+          "source_system": "legistar",
+          "source_record_id": "matter-inferred",
+          "source_url": "https://legistar.council.nyc.gov/matter-inferred",
+          "inferred": true,
+          "provenance": { "basis": "inferred", "field": "event_date" }
+        },
+        {
+          "object_ref": "notice:matter-statutory",
+          "scope_ref": "scope:legislative:matter",
+          "title": "Statutory expected charter revision date",
+          "event_date": "2026-11-20T10:00:00-05:00",
+          "timezone": "America/New_York",
+          "canonical_url": "https://cityscroll.org/notices/notice%3Amatter-statutory",
+          "source_system": "legistar",
+          "source_record_id": "matter-statutory",
+          "source_url": "https://legistar.council.nyc.gov/matter-statutory",
+          "statutory_expected": true,
+          "provenance": { "basis": "statutory_expected", "field": "event_date" }
+        },
+        {
+          "object_ref": "notice:matter-profile",
+          "scope_ref": "scope:legislative:matter",
+          "title": "Profile-derived expected vote",
+          "event_date": "2026-11-25T13:30:00-05:00",
+          "timezone": "America/New_York",
+          "canonical_url": "https://cityscroll.org/notices/notice%3Amatter-profile",
+          "source_system": "legistar",
+          "source_record_id": "matter-profile",
+          "source_url": "https://legistar.council.nyc.gov/matter-profile",
+          "profile_derived": true,
+          "provenance": { "basis": "profile_derived", "field": "event_date" }
+        },
+        {
+          "object_ref": "notice:matter-undated",
+          "scope_ref": "scope:legislative:matter",
+          "title": "Matter with no scheduled date",
+          "canonical_url": "https://cityscroll.org/notices/notice%3Amatter-undated",
+          "source_system": "legistar",
+          "source_record_id": "matter-undated",
+          "source_url": "https://legistar.council.nyc.gov/matter-undated"
+        }
+      ]
+    }
+  ]
+}

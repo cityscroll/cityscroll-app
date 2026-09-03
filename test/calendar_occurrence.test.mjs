@@ -7,9 +7,25 @@ import {
   CALENDAR_OCCURRENCE_STATUSES,
   CALENDAR_OCCURRENCE_LIFECYCLES,
   calendarizationCoverage,
+  calendarOccurrencesForRecord,
   createCalendarOccurrence,
+  displayCandidateOccurrencesForRecord,
   projectCalendarOccurrences,
 } from "../site/calendar_occurrence.mjs";
+import { boundedDisplayOccurrences, occurrenceDay } from "../site/calendar_display.mjs";
+import { buildCalendarDisplayOccurrenceCensus, readCorpus } from "../tools/build_calendar_display_occurrence_census.mjs";
+import {
+  CALENDAR_DISPLAY_STATE_KEYS,
+  omitCalendarDisplayState,
+  stripCalendarDisplayState,
+} from "../site/calendar_display_state.mjs";
+import {
+  routeHashFromScope,
+  scopeFromRouteHash,
+  scopeFromWatch,
+  subscriptionWatchFromScope,
+  watchFromScope,
+} from "../site/scope_v0.mjs";
 import { icsFeed } from "../worker/src/lib/feed.mjs";
 
 const fixture = JSON.parse(readFileSync(new URL("./fixtures/calendar-occurrences/cases.json", import.meta.url), "utf8"));
@@ -212,4 +228,102 @@ test("coverage accepts a matching-scope denominator independent of ingestion cou
   const coverage = calendarizationCoverage(fixture.records.slice(0, 2), occurrences.slice(0, 1), { matching_scope: 12, as_of: fixture.as_of });
   assert.equal(coverage.records_matching_scope, 12);
   assert.equal(coverage.occurrences_emitted, 1);
+});
+
+/* ===== CBICS-01: bounded display query, eligibility, density census, scope boundary ===== */
+
+const displayRow = {
+  object_ref: "meeting:history-1",
+  scope_ref: "scope:meetings:district-33",
+  title: "Prior public hearing",
+  event_date: "2026-01-05T18:00:00-05:00",
+  timezone: "America/New_York",
+  canonical_url: "https://cityscroll.org/meetings/meeting%3Ahistory-1/",
+  source_system: "city_record",
+  source_record_id: "history-1",
+  source_url: "https://a856-cityrecord.nyc.gov/RequestDetail/history-1",
+  provenance: { basis: "publisher_record", field: "event_date" },
+};
+
+test("A1 the bounded display query includes a past occurrence while the feed stays future-only", () => {
+  // The new path, given explicit bounds, looks backwards.
+  const displayed = boundedDisplayOccurrences([displayRow], { from: "2026-01-01", to: "2026-01-31" });
+  assert.equal(displayed.length, 1);
+  assert.equal(occurrenceDay(displayed[0]), "2026-01-05");
+
+  // The standing feed adapter, with the same record and an as-of after that day, emits nothing.
+  const feed = calendarOccurrencesForRecord(displayRow, { kind: "meetings", as_of: "2026-06-01" });
+  assert.deepEqual(feed, []);
+  const projected = projectCalendarOccurrences([displayRow], { kind: "meetings", as_of: "2026-06-01" }).occurrences;
+  assert.deepEqual(projected, []);
+
+  // Bounds are a required parameter of the new path; there is no backward-looking default.
+  assert.throws(() => boundedDisplayOccurrences([displayRow]), /bounds/);
+});
+
+test("A5 the additive production seam is future-agnostic and does not change the feed", () => {
+  // The feed retains its future-only default (past record => no occurrence).
+  assert.deepEqual(calendarOccurrencesForRecord(displayRow, { kind: "meetings", as_of: "2026-06-01" }), []);
+  // The additive seam produces the same occurrence regardless of as-of, without a temporal filter.
+  const candidates = displayCandidateOccurrencesForRecord(displayRow, { kind: "meetings", as_of: "2026-06-01" });
+  assert.equal(candidates.length, 1);
+  assert.equal(candidates[0].uid, "meeting:history-1:event");
+  // A future record still flows through the feed unchanged.
+  const future = { ...displayRow, object_ref: "meeting:future-1", event_date: "2026-12-05T18:00:00-05:00", canonical_url: "https://cityscroll.org/meetings/meeting%3Afuture-1/" };
+  assert.equal(calendarOccurrencesForRecord(future, { kind: "meetings", as_of: "2026-06-01" }).length, 1);
+});
+
+test("A2 publication-only, derived, predicted, low-confidence, unjoined and undated records emit nothing", () => {
+  const wide = { from: "2000-01-01", to: "2099-12-31" };
+  const ineligible = [
+    { ...displayRow, object_ref: "notice:pub", event_date: undefined, published_at: "2026-01-05T09:00:00-05:00" },
+    { ...displayRow, object_ref: "notice:derived", deadline_date: "2026-01-05", event_date: undefined, derived: true, confidence: 0.2, provenance: { basis: "derived" } },
+    { ...displayRow, object_ref: "meeting:predicted", predicted: true, provenance: { basis: "prediction" } },
+    { ...displayRow, object_ref: "meeting:unjoined", join_status: "rejected" },
+    { ...displayRow, object_ref: "notice:undated", event_date: undefined },
+  ];
+  for (const record of ineligible) {
+    assert.deepEqual(boundedDisplayOccurrences([record], wide), [], record.object_ref);
+  }
+  // A single eligible record alongside them still comes through.
+  assert.equal(boundedDisplayOccurrences([...ineligible, displayRow], wide).length, 1);
+});
+
+test("A3 a deterministic census records eligible, sparse, excluded and unavailable surfaces", () => {
+  const census = buildCalendarDisplayOccurrenceCensus(readCorpus());
+  assert.deepEqual(buildCalendarDisplayOccurrenceCensus(readCorpus()), census, "census is reproducible");
+  const qualifications = new Set(census.surfaces.map((surface) => surface.qualification));
+  for (const value of ["eligible", "sparse", "excluded", "unavailable"]) {
+    assert.ok(qualifications.has(value), `census records a ${value} surface`);
+  }
+  assert.equal(census.summary.status_counts.eligible, 5);
+  const rules = census.surfaces.find((surface) => surface.surface === "rules");
+  assert.equal(rules.qualifies, true);
+  assert.equal(rules.selected_month, "2026-03");
+});
+
+test("A4 presentation bounds and the calendar/list selector never enter serialized scope", () => {
+  // The keys carry no civic meaning and the helpers strip them from any bag.
+  assert.deepEqual(omitCalendarDisplayState({ stage: "public_review", calview: "calendar", calfrom: "2026-01-01", calto: "2026-02-11" }), { stage: "public_review" });
+  assert.equal(stripCalendarDisplayState("#land?boro=Queens&calview=calendar&calfrom=2026-01-01"), "#land?boro=Queens");
+
+  // A hostile facet blob that smuggles calendar display state into a route cannot reach scope.
+  const blob = encodeURIComponent(JSON.stringify({ calview: "calendar", calfrom: "2026-01-01", calto: "2026-02-11", stage: "public_review" }));
+  const scope = scopeFromRouteHash(`#land?boro=Queens&facet=${blob}`);
+  for (const key of CALENDAR_DISPLAY_STATE_KEYS) assert.equal(key in scope.facets.values, false, key);
+  assert.doesNotMatch(routeHashFromScope(scope, { surface: "land" }), /calview|calfrom|calto/);
+
+  // A watch filter that already carries the keys cannot serialize them into Following, watch, or subscription scope.
+  const hostileWatch = { lens: "meetings", filter: { process: "all", calview: "calendar", calfrom: "2026-01-01", calto: "2026-02-11" } };
+  const fromWatch = scopeFromWatch(hostileWatch);
+  for (const key of CALENDAR_DISPLAY_STATE_KEYS) assert.equal(key in fromWatch.facets.values, false, key);
+  for (const view of [watchFromScope(fromWatch, { lens: "meetings" }).filter, subscriptionWatchFromScope(hostileWatch).filter]) {
+    for (const key of CALENDAR_DISPLAY_STATE_KEYS) assert.equal(key in view, false, key);
+  }
+
+  // The bounds are a query argument, not part of occurrence identity: a different window yields the same occurrence bytes.
+  const first = boundedDisplayOccurrences([displayRow], { from: "2026-01-01", to: "2026-01-31" })[0];
+  const second = boundedDisplayOccurrences([displayRow], { from: "2025-06-01", to: "2026-12-31" })[0];
+  assert.deepEqual(first, second);
+  assert.equal("calview" in first, false);
 });
