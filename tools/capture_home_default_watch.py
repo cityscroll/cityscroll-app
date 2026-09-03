@@ -12,6 +12,7 @@ from __future__ import annotations
 import argparse
 import importlib.util
 import json
+import subprocess
 from pathlib import Path
 
 from playwright.sync_api import Page, Route, sync_playwright
@@ -19,6 +20,17 @@ from playwright.sync_api import Page, Route, sync_playwright
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_OUT = ROOT / "docs" / "screenshots" / "home-default-watch"
 VIEWPORTS = ((1440, 1000), (390, 844))
+
+
+def captured_revision() -> str:
+    """The revision the captured tree is at. Stamping a literal goes stale silently."""
+    result = subprocess.run(
+        ["git", "-C", str(ROOT), "rev-parse", "--short", "HEAD"],
+        capture_output=True,
+        text=True,
+        check=True,
+    )
+    return result.stdout.strip()
 
 
 def load_performance_helpers():
@@ -45,7 +57,11 @@ def mock_subscribe_rate_limited(route: Route) -> None:
     fulfill_json(route, 429, {"ok": False, "reason": "rate-limited"})
 
 
-NO_JS_CONFIRMATION_HTML = (
+# A stand-in for the worker's own reply() output, so this capture stays hermetic and needs
+# no Worker runtime. It is NOT evidence that the worker replies this way: the real
+# form-encoded reply is asserted in worker/test/home_cta_subscribe.test.mjs, and every
+# receipt entry below says so rather than presenting the screenshot as a live confirmation.
+NO_JS_CONFIRMATION_STANDIN_HTML = (
     "<!doctype html><html><head><meta charset=utf-8>"
     "<title>You're subscribed</title></head><body>"
     "<h1>You're subscribed</h1>"
@@ -58,7 +74,7 @@ NO_JS_CONFIRMATION_HTML = (
 
 
 def mock_subscribe_no_js(route: Route) -> None:
-    route.fulfill(status=200, content_type="text/html; charset=utf-8", body=NO_JS_CONFIRMATION_HTML)
+    route.fulfill(status=200, content_type="text/html; charset=utf-8", body=NO_JS_CONFIRMATION_STANDIN_HTML)
 
 
 def mock_unrecognized_session(route: Route) -> None:
@@ -99,6 +115,7 @@ def main() -> int:
     out.mkdir(parents=True, exist_ok=True)
 
     verify = load_performance_helpers()
+    revision = captured_revision()
     captures: list[dict] = []
 
     with sync_playwright() as playwright:
@@ -116,7 +133,7 @@ def main() -> int:
                 name = f"anonymous-form-{suffix}.png"
                 capture_home_cta(page, out / name)
                 captures.append({
-                    "name": name, "route": "/", "viewport": width, "revision": "b1661b4b9",
+                    "name": name, "route": "/", "viewport": width, "revision": revision,
                     "session": "unrecognized", "mode": "js-enabled",
                     "assertion": "discloses the exact weekly Contracts/RFP promise before the email field, "
                                  "with a primary Get weekly updates action and secondary Choose what to follow link",
@@ -137,7 +154,7 @@ def main() -> int:
                 name = f"validation-failure-{suffix}.png"
                 capture_home_cta(page, out / name)
                 captures.append({
-                    "name": name, "route": "/", "viewport": width, "revision": "b1661b4b9",
+                    "name": name, "route": "/", "viewport": width, "revision": revision,
                     "session": "unrecognized", "mode": "js-enabled",
                     "assertion": "a rejected /subscribe request (rate-limited) is reported inline, "
                                  "never claimed as a successful enrollment",
@@ -169,7 +186,7 @@ def main() -> int:
                 name = f"recognized-open-watches-{suffix}.png"
                 capture_home_cta(page, out / name)
                 captures.append({
-                    "name": name, "route": "/", "viewport": width, "revision": "b1661b4b9",
+                    "name": name, "route": "/", "viewport": width, "revision": revision,
                     "session": "recognized (simulated via sessionShowBanner's documented DOM contract; "
                                "the full lazy app bundle is outside this sparse evidence checkout)",
                     "mode": "js-enabled",
@@ -189,8 +206,13 @@ def main() -> int:
                 page.screenshot(path=out / name, animations="disabled", full_page=False)
                 captures.append({
                     "name": name, "route": "/subscribe (no-JS form POST)", "viewport": width,
-                    "revision": "b1661b4b9", "session": "unrecognized", "mode": "js-disabled",
-                    "assertion": "the no-JS path confirms the exact weekly Contracts subscription and links to Following",
+                    "revision": revision, "session": "unrecognized",
+                    "mode": "js-disabled (the /subscribe reply is a stand-in for the worker's own reply() "
+                            "output; the real form-encoded reply is asserted in "
+                            "worker/test/home_cta_subscribe.test.mjs)",
+                    "assertion": "with JavaScript off the form really posts to /subscribe and renders the "
+                                 "returned confirmation, which discloses the weekly Contracts subscription "
+                                 "and links to Following",
                 })
                 context.close()
 

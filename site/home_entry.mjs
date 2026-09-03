@@ -92,6 +92,8 @@ function initHomeDefaultSubscription() {
           ? (window.t?.("home_cta_active_now") || "You're already getting these.")
           : `${window.t?.("subscribed_now") || "You're subscribed — we'll email you."} ${window.t?.("welcome_sent_to", { email }) || ""}`.trim();
         emailInput.value = "";
+      } else if (result?.subscribed === true) {
+        message.textContent = `${window.t?.("subscribed_now") || "You're subscribed — we'll email you."} ${homeCtaErrorMessage(result?.reason)}`.trim();
       } else {
         message.textContent = homeCtaErrorMessage(result?.reason);
       }

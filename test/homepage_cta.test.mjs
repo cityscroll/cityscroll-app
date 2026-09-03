@@ -62,22 +62,14 @@ test("homepage CTA discloses the exact weekly default before asking for an email
   // Secondary link stays a plain Following handoff — the default form never overwrites it.
   assert.match(index, /href="\/following\/\?onboarding=1"[^>]*id="homeCtaTopics"/);
   assert.match(index, /data-i18n="home_cta_topics"/);
-  const entry = readFileSync(join(ROOT, "site/home_entry.mjs"), "utf8");
-  assert.match(entry, /homeCtaForm/);
-  assert.match(entry, /no_topic:\s*true/);
-  assert.match(entry, /source:\s*["']top-of-site["']/);
-  // The static-first homepage runs before core.mjs (and globalThis.workerFetch) loads, so
-  // the default-watch submit posts with its own fetch, not the lazily-loaded helper.
-  assert.match(entry, /fetch\(`\$\{origin\.replace/);
-  assert.doesNotMatch(entry, /workerFetch\(/);
+  // What the enhanced submit posts and reports is covered behaviourally in
+  // test/home_default_watch_submit.test.mjs, which runs site/home_entry.mjs itself.
   const boot = readFileSync(join(ROOT, "site/app/boot.mjs"), "utf8");
   assert.match(boot, /homeFollowingEntryHref/);
   assert.match(boot, /\/following\/\?onboarding=1/);
   assert.doesNotMatch(boot, /homeCtaEmail|homeCtaForm|homeCtaSubmit/);
-  assert.match(index, /id="homeCtaManage"/);
-  assert.match(index, /data-i18n="home_cta_open_watches"/);
+  assert.match(index, /id="homeCtaManage"[^>]*data-i18n="home_cta_open_watches"[^>]*hidden/);
   assert.match(index, /sessionShowBanner[\s\S]*homeCtaManage/);
-  assert.match(boot, /homeCtaManage[\s\S]*home_cta_open_watches/);
 });
 
 test("signup surfaces have no Turnstile widget or client token gate", () => {

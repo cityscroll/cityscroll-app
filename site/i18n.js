@@ -636,6 +636,8 @@ const STRINGS = {
     subscribe_btn:      "Subscribe",
     // Homepage primary conversion (under masthead tagline) — short words for the reading-level ratchet
     home_cta_prompt:    "New NYC contracts and RFPs by email every Monday.",
+    // Browse carries the same card without an email field, so it keeps the open-ended ask.
+    browse_cta_prompt:  "Want email updates on this?",
     home_cta_active_now: "You're already getting these — we'll keep emailing you every Monday.",
     home_cta_open_watches: "Open your watches",
     home_onboarding_next: "Choose what to follow next.",

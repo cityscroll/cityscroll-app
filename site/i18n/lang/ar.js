@@ -435,6 +435,7 @@
     preview_digest_btn: "معاينة ملخص اليوم",
     subscribe_btn: "اشترك ←",
     home_cta_prompt: "عقود وطلبات عروض نيويورك الجديدة عبر البريد كل يوم اثنين.",
+    browse_cta_prompt: "هل تريد تحديثات بالبريد؟",
     home_cta_active_now: "أنت مشترك بالفعل — سنواصل إرسال البريد كل يوم اثنين.",
     home_cta_open_watches: "افتح متابعاتك",
     home_cta_submit: "احصل على التحديثات الأسبوعية",

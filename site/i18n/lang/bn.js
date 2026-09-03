@@ -433,6 +433,7 @@
     preview_digest_btn: "আজকের সারসংক্ষেপ দেখুন",
     subscribe_btn: "সাবস্ক্রাইব করুন →",
     home_cta_prompt: "প্রতি সোমবার ইমেইলে নতুন NYC চুক্তি ও RFP পান।",
+    browse_cta_prompt: "ইমেইলে আপডেট চান?",
     home_cta_active_now: "আপনি ইতিমধ্যে এটি পাচ্ছেন — আমরা প্রতি সোমবার ইমেইল পাঠাতে থাকব।",
     home_cta_open_watches: "আপনার ওয়াচ খুলুন",
     home_cta_submit: "সাপ্তাহিক আপডেট পান",
