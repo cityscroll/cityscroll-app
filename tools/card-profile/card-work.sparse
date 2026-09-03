@@ -86,6 +86,7 @@
 /docs/public-capture-guard.md
 /docs/readme/
 /docs/release/
+/docs/remaining-browse-scoped-adapters.md
 /docs/repository-control-plane/
 /docs/repository-scrim-review.md
 /docs/research/
@@ -203,6 +204,7 @@
 /site/browse.css
 /site/browse_concept_view.mjs
 /site/browse_list_contract.mjs
+/site/browse_scoped_adapters.mjs
 /site/browse_surface_contracts.mjs
 /site/browse_view.mjs
 /site/calendar_occurrence.mjs
@@ -363,6 +365,7 @@
 /site/export_workflows.js
 /site/external_awards.js
 /site/federated_search_client.mjs
+/site/feed_scoped_keyword.mjs
 /site/following/
 /site/following_personal_state.mjs
 /site/following_preview_handoff.mjs
@@ -467,6 +470,7 @@
 /site/notice_mandate_backlinks.mjs
 /site/notice_object_links.mjs
 /site/notice_permalink.mjs
+/site/notice_primary_readiness.mjs
 /site/now-reading-level-ratchet.json
 /site/now_surface.mjs
 /site/now_view.mjs
