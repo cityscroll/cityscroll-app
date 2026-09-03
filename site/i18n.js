@@ -635,7 +635,9 @@ const STRINGS = {
     preview_digest_btn: "Preview today's digest",
     subscribe_btn:      "Subscribe",
     // Homepage primary conversion (under masthead tagline) — short words for the reading-level ratchet
-    home_cta_prompt:    "Want email updates on this?",
+    home_cta_prompt:    "New NYC contracts and RFPs by email every Monday.",
+    home_cta_active_now: "You're already getting these — we'll keep emailing you every Monday.",
+    home_cta_open_watches: "Open your watches",
     home_onboarding_next: "Choose what to follow next.",
     following_suggestion_preview: "Preview and edit",
     following_suggestion_nothing_saved: "No suggestion makes a watch. Check the sentence and submit only when it looks right.",
@@ -650,7 +652,7 @@ const STRINGS = {
     alert_context_from_notice: "From this notice: “{title}”",
     alert_context_next_step: "Next expected step: {step}",
     alert_context_confirm: "Enter your email below — your watch starts immediately. A welcome email includes manage and unsubscribe links.",
-    home_cta_submit:    "Sign up",
+    home_cta_submit:    "Get weekly updates",
     home_cta_topics:     "Choose what to follow",
     empty_preview:      "Pick a topic (or open with a watch link) to preview today's digest.",
 

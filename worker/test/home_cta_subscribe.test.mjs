@@ -52,24 +52,54 @@ async function submit(environment, body, sent) {
   }
 }
 
-test("homepage CTA links into Following without subscribing", () => {
+test("homepage CTA discloses the default and posts the exact allowlisted intent", () => {
   const homepage = readFileSync(new URL("../../site/index.html", import.meta.url), "utf8");
   assert.match(homepage, /id="homeCtaTopics"[^>]*href="\/following\/\?onboarding=1"|href="\/following\/\?onboarding=1"[^>]*id="homeCtaTopics"/);
-  assert.doesNotMatch(homepage, /id="homeCtaEmail"|id="homeCtaForm"|id="homeCtaSubmit"/);
+  assert.match(homepage, /id="homeCtaEmail"/);
+  assert.match(homepage, /id="homeCtaForm"/);
+  assert.match(homepage, /id="homeCtaSubmit"/);
+  assert.match(homepage, /name="no_topic" value="true"/);
+  assert.match(homepage, /name="source" value="top-of-site"/);
   const helper = readFileSync(new URL("../../site/home_following_entry.mjs", import.meta.url), "utf8");
   assert.match(helper, /HOME_FOLLOWING_ONBOARDING_HREF = "\/following\/\?onboarding=1"/);
-  assert.doesNotMatch(helper, /workerFetch\(["']\/subscribe["']/);
-  for (const path of ["../../site/home_entry.mjs", "../../site/app/boot.mjs", "../../site/app/alerts.mjs"]) {
-    const source = readFileSync(new URL(path, import.meta.url), "utf8");
-    assert.doesNotMatch(source, /homeCtaEmail|homeCtaForm|homeCtaSubmit/, path);
-    if (!path.endsWith("alerts.mjs")) {
-      assert.doesNotMatch(source, /no_topic\s*:/, path);
-      assert.doesNotMatch(source, /workerFetch\(["']\/subscribe["']/, path);
-    }
-  }
+  assert.doesNotMatch(helper, /workerFetch\(["']\/subscribe["']/, "the contextual Following handoff never posts a watch itself");
+  const entry = readFileSync(new URL("../../site/home_entry.mjs", import.meta.url), "utf8");
+  assert.match(entry, /no_topic:\s*true/);
+  assert.match(entry, /source:\s*["']top-of-site["']/);
+  // home_entry.mjs runs before core.mjs (globalThis.workerFetch) loads on the static-first
+  // homepage, so the default-watch submit uses its own two-origin fetch fallback instead.
+  assert.doesNotMatch(entry, /workerFetch\(/);
+  assert.match(entry, /\/subscribe`/);
+  const boot = readFileSync(new URL("../../site/app/boot.mjs", import.meta.url), "utf8");
+  assert.doesNotMatch(boot, /homeCtaEmail|homeCtaForm|homeCtaSubmit/, "boot.mjs only toggles the recognized-session state, never submits the form");
 });
 
-test("topicless submit is rejected without creating a default watch", async () => {
+test("topicless submit without the disclosed homepage source is rejected without creating a watch", async () => {
+  const environment = configured();
+  const sent = [];
+  const response = await submit(environment, {
+    email: "Reader@Example.com",
+    no_topic: true,
+    source: "some-other-caller",
+    lang: "en",
+  }, sent);
+  assert.equal(response.status, 400);
+  assert.deepEqual(await response.json(), { ok: false, reason: "bad-intent" });
+  assert.equal([...environment.SUBS.store.keys()].filter((key) => key.startsWith("sub:")).length, 0);
+  assert.equal(sent.length, 0);
+});
+
+test("topicless submit with no source at all is rejected without creating a watch", async () => {
+  const environment = configured();
+  const sent = [];
+  const response = await submit(environment, { email: "reader@example.com", no_topic: true }, sent);
+  assert.equal(response.status, 400);
+  assert.deepEqual(await response.json(), { ok: false, reason: "bad-intent" });
+  assert.equal([...environment.SUBS.store.keys()].filter((key) => key.startsWith("sub:")).length, 0);
+  assert.equal(sent.length, 0);
+});
+
+test("the exact disclosed homepage-default intent creates one weekly Contracts watch", async () => {
   const environment = configured();
   const sent = [];
   const response = await submit(environment, {
@@ -78,10 +108,43 @@ test("topicless submit is rejected without creating a default watch", async () =
     source: "top-of-site",
     lang: "en",
   }, sent);
-  assert.equal(response.status, 400);
-  assert.deepEqual(await response.json(), { ok: false, reason: "topic-required" });
-  assert.equal([...environment.SUBS.store.keys()].filter((key) => key.startsWith("sub:")).length, 0);
-  assert.equal(sent.length, 0);
+  assert.equal(response.status, 200);
+  const body = await response.json();
+  assert.equal(body.ok, true);
+  assert.equal(body.created, true);
+  assert.equal(body.no_topic, true);
+  assert.deepEqual(body.watch, {
+    watch_id: body.watch.watch_id,
+    lens: "money",
+    filter: {},
+    freq: "weekly",
+    label: body.watch.label,
+    followingUrl: "/following/",
+  });
+  assert.match(body.watch.watch_id, /^watch:/);
+  // The safe projection never exposes the address, KV key, or preference/unsubscribe credentials.
+  assert.doesNotMatch(JSON.stringify(body), /reader@example\.com/i);
+  assert.doesNotMatch(JSON.stringify(body), /token/i);
+
+  const subKeys = [...environment.SUBS.store.keys()].filter((key) => key.startsWith("sub:"));
+  assert.equal(subKeys.length, 1);
+  assert.equal(sent.length, 1);
+});
+
+test("repeated homepage-default submission for the same address reuses the stable key with no duplicate", async () => {
+  const environment = configured();
+  const first = await submit(environment, { email: "reader@example.com", no_topic: true, source: "top-of-site" }, []);
+  const firstBody = await first.json();
+  assert.equal(firstBody.created, true);
+
+  const second = await submit(environment, { email: "Reader@Example.com", no_topic: true, source: "top-of-site" }, []);
+  const secondBody = await second.json();
+  assert.equal(second.status, 200);
+  assert.equal(secondBody.created, false);
+  assert.equal(secondBody.watch.watch_id, firstBody.watch.watch_id);
+
+  const subKeys = [...environment.SUBS.store.keys()].filter((key) => key.startsWith("sub:"));
+  assert.equal(subKeys.length, 1, "the normalized address maps to exactly one stored default watch");
 });
 
 test("explicit watch submit is also enrolled immediately with its exact scope", async () => {

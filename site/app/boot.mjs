@@ -747,7 +747,7 @@ function sessionShowBanner(session){
     homeCtaManage.hidden = !open;
     if(open){
       homeCtaManage.href = session.manageUrl || session.prefsUrl || "https://cityscroll.org/following/#your-following";
-      if(window.t) homeCtaManage.textContent = t("session_manage_watches");
+      if(window.t) homeCtaManage.textContent = t("home_cta_open_watches");
     }
   }
   if(open){

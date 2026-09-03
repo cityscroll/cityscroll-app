@@ -48,20 +48,36 @@ test("language control is a top-right labelled select with all shipping locales"
   assert.match(index, /inset-inline-end/);
 });
 
-test("homepage CTA routes readers into Following before any watch exists", () => {
+test("homepage CTA discloses the exact weekly default before asking for an email", () => {
   assert.match(index, /id="homeCta"/);
   assert.match(index, /data-i18n="home_cta_prompt"/);
-  assert.doesNotMatch(index, /id="homeCtaEmail"|id="homeCtaForm"|id="homeCtaSubmit"/);
+  const prompt = index.indexOf('data-i18n="home_cta_prompt"');
+  const form = index.indexOf('id="homeCtaForm"');
+  assert.ok(prompt > 0 && form > prompt, "the disclosed promise precedes the email field");
+  assert.match(index, /id="homeCtaForm"[^>]*method="post"[^>]*action="https:\/\/api\.cityscroll\.org\/subscribe"/);
+  assert.match(index, /name="no_topic" value="true"/);
+  assert.match(index, /name="source" value="top-of-site"/);
+  assert.match(index, /id="homeCtaEmail"[^>]*name="email"[^>]*required/);
+  assert.match(index, /id="homeCtaSubmit"[^>]*data-i18n="home_cta_submit"/);
+  // Secondary link stays a plain Following handoff — the default form never overwrites it.
   assert.match(index, /href="\/following\/\?onboarding=1"[^>]*id="homeCtaTopics"/);
   assert.match(index, /data-i18n="home_cta_topics"/);
   const entry = readFileSync(join(ROOT, "site/home_entry.mjs"), "utf8");
-  assert.doesNotMatch(entry, /homeCtaEmail|homeCtaForm|workerFetch\(["']\/subscribe/);
+  assert.match(entry, /homeCtaForm/);
+  assert.match(entry, /no_topic:\s*true/);
+  assert.match(entry, /source:\s*["']top-of-site["']/);
+  // The static-first homepage runs before core.mjs (and globalThis.workerFetch) loads, so
+  // the default-watch submit posts with its own fetch, not the lazily-loaded helper.
+  assert.match(entry, /fetch\(`\$\{origin\.replace/);
+  assert.doesNotMatch(entry, /workerFetch\(/);
   const boot = readFileSync(join(ROOT, "site/app/boot.mjs"), "utf8");
   assert.match(boot, /homeFollowingEntryHref/);
   assert.match(boot, /\/following\/\?onboarding=1/);
   assert.doesNotMatch(boot, /homeCtaEmail|homeCtaForm|homeCtaSubmit/);
   assert.match(index, /id="homeCtaManage"/);
+  assert.match(index, /data-i18n="home_cta_open_watches"/);
   assert.match(index, /sessionShowBanner[\s\S]*homeCtaManage/);
+  assert.match(boot, /homeCtaManage[\s\S]*home_cta_open_watches/);
 });
 
 test("signup surfaces have no Turnstile widget or client token gate", () => {
@@ -97,12 +113,16 @@ test("signup copy describes immediate enrollment without confirmation language",
 });
 
 test("i18n carries homepage CTA keys in English", () => {
-  for (const key of ["home_cta_prompt", "home_cta_submit", "home_cta_topics", "lang_switcher_label"]) {
+  for (const key of [
+    "home_cta_prompt", "home_cta_submit", "home_cta_topics", "home_cta_open_watches",
+    "home_cta_active_now", "lang_switcher_label",
+  ]) {
     assert.match(i18n, new RegExp(`${key}\\s*:`));
   }
-  assert.match(i18n, /home_cta_prompt:\s*"Want email updates on this\?"/);
-  assert.match(i18n, /home_cta_submit:\s*"Sign up"/);
+  assert.match(i18n, /home_cta_prompt:\s*"New NYC contracts and RFPs by email every Monday\."/);
+  assert.match(i18n, /home_cta_submit:\s*"Get weekly updates"/);
   assert.match(i18n, /home_cta_topics:\s*"Choose what to follow"/);
+  assert.match(i18n, /home_cta_open_watches:\s*"Open your watches"/);
 });
 
 test("homepage Following entry is generic onboarding without an email", () => {
