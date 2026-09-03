@@ -189,8 +189,14 @@ test("connected-calendar month view renders across a dense, mixed past/future ac
 test("land project connected-calendar panel routes the accepted population through the bounded display gate, not the raw feed", () => {
   assert.match(LAND_CALENDAR_SOURCE, /projectCalendarRecordsForRecord/);
   assert.match(LAND_CALENDAR_SOURCE, /boundedDisplayOccurrences/);
-  assert.match(LAND_SOURCE, /import\s*\{[^}]*landProjectConnectedCalendarHTML[^}]*\}\s*from\s*"\.\.\/land_project_connected_calendar\.mjs"/,
-    "land detail mounts the dedicated connected-calendar module");
+  // Dynamic, not static: land.mjs itself loads eagerly for every route, so the
+  // connected-calendar module's dependency chain (compact_calendar.mjs,
+  // calendar_display.mjs) must stay behind a lazy import, not add weight to
+  // every page's boot the way a static top-level import would.
+  assert.match(LAND_SOURCE, /import\("\.\.\/land_project_connected_calendar\.mjs"\)/,
+    "land detail lazily loads the dedicated connected-calendar module");
+  assert.doesNotMatch(LAND_SOURCE, /^import[^;]*land_project_connected_calendar\.mjs/m,
+    "the connected-calendar module is not a static import that would ship on every page");
   assert.match(LAND_SOURCE, /todayISO\(\)\.slice\(0,\s*10\)/, "today is normalized to a bare date before the panel builds its view");
 });
 

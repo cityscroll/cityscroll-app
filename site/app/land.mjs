@@ -56,11 +56,6 @@ import {
 } from "../report_issue.mjs";
 import { zoningHearingRowsForScope } from "../zoning_hearing_calendar.mjs";
 import { projectCalendarActionsHTML as projectCalendarActions } from "../project_calendar.mjs";
-import {
-  bindCompactMonthPrintDisclosure,
-  ensureCompactCalendarStylesheet,
-  landProjectConnectedCalendarHTML,
-} from "../land_project_connected_calendar.mjs";
 import { attachAuth, authHTML, loadAuth } from "../land_authority_summary_view.mjs";
 import { attachLandLotSourceDigests, landLotSourceDigestsHTML, loadLandLotSourceDigests } from "../land_lot_source_digests.mjs";
 import {
@@ -1454,6 +1449,18 @@ function ensureProjectConnectionsTools(){
   }
   return projectConnectionsToolsPromise;
 }
+// The connected-calendar panel's dependency chain (compact_calendar.mjs,
+// calendar_display.mjs) is otherwise unused by every non-Land page. land.mjs
+// itself loads eagerly for every route, so a static import here would add
+// that weight to every page's boot, not just Land's. Gate it the same way
+// map_runtime.mjs is gated behind Land Map activation.
+let landProjectConnectedCalendarToolsPromise=null;
+function ensureLandProjectConnectedCalendarTools(){
+  if(!landProjectConnectedCalendarToolsPromise){
+    landProjectConnectedCalendarToolsPromise=import("../land_project_connected_calendar.mjs").catch(()=>null);
+  }
+  return landProjectConnectedCalendarToolsPromise;
+}
 function projectConnectionsCoverageHTML(coverage){
   // Coverage receipts remain available in the evidence payload, not in the
   // reader-facing constellation. Counts such as “231 of 231” describe the
@@ -1515,15 +1522,19 @@ function projectConnectionsHTML(evidence, tools){
     <p class="ei-lead">${t("project_connections_lead")}</p><div class="pc-groups">${groups}</div>
   </div>`;
 }
-function paintProjectConnectedCalendar(record,selection){
+async function paintProjectConnectedCalendar(record,selection){
   const host=$("#project-connected-calendar");
   if(!host) return;
   if(selection!==undefined&&selection!==landSelectionSeq) return;
   if(!host.isConnected||host!==$("#project-connected-calendar")) return;
-  host.innerHTML=landProjectConnectedCalendarHTML(record,{today:todayISO().slice(0,10),escape:escUiHtml});
+  const tools=await ensureLandProjectConnectedCalendarTools();
+  if(!tools) return;
+  if(selection!==undefined&&selection!==landSelectionSeq) return;
+  if(!host.isConnected||host!==$("#project-connected-calendar")) return;
+  host.innerHTML=tools.landProjectConnectedCalendarHTML(record,{today:todayISO().slice(0,10),escape:escUiHtml});
   if(!host.firstElementChild) return;
-  ensureCompactCalendarStylesheet();
-  bindCompactMonthPrintDisclosure(host);
+  tools.ensureCompactCalendarStylesheet();
+  tools.bindCompactMonthPrintDisclosure(host);
 }
 async function paintProjectConnections(record,selection){
   const host=$("#project-connections");
