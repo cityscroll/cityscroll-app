@@ -78,7 +78,7 @@ export const CALENDAR_DISPLAY_EXCLUSION_REASONS = Object.freeze([
 ]);
 
 const LOW_CONFIDENCE_THRESHOLD = 0.5;
-const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
+const CALENDAR_DISPLAY_ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
 
 // Provenance bases whose dates are not source-observed events. A basis that is
 // not listed here (e.g. `publisher_record`) is treated as source-observed.
@@ -109,24 +109,24 @@ const PUBLICATION_TIMESTAMP_FIELDS = Object.freeze([
 
 /* ---------- date and day identity ---------- */
 
-function isDateOnly(value) {
-  return typeof value === "string" && ISO_DATE.test(value);
+function calendarDisplayIsDateOnly(value) {
+  return typeof value === "string" && CALENDAR_DISPLAY_ISO_DATE.test(value);
 }
 
-function isoToEpochDay(iso) {
+function calendarDisplayIsoToEpochDay(iso) {
   return Math.round(Date.parse(`${iso}T00:00:00Z`) / 86400000);
 }
 
-function epochDayToIso(day) {
+function calendarDisplayEpochDayToIso(day) {
   return new Date(day * 86400000).toISOString().slice(0, 10);
 }
 
-function addDays(iso, count) {
-  return epochDayToIso(isoToEpochDay(iso) + count);
+function calendarDisplayAddDays(iso, count) {
+  return calendarDisplayEpochDayToIso(calendarDisplayIsoToEpochDay(iso) + count);
 }
 
 function spanDaysInclusive(fromIso, toIso) {
-  return isoToEpochDay(toIso) - isoToEpochDay(fromIso) + 1;
+  return calendarDisplayIsoToEpochDay(toIso) - calendarDisplayIsoToEpochDay(fromIso) + 1;
 }
 
 function monthOf(iso) {
@@ -138,10 +138,10 @@ function monthOf(iso) {
 // timezone, so an evening hearing that crosses midnight in UTC still lands on
 // the civic day the resident experienced.
 export function occurrenceDay(occurrence = {}) {
-  if (occurrence.date) return isDateOnly(occurrence.date) ? occurrence.date : null;
+  if (occurrence.date) return calendarDisplayIsDateOnly(occurrence.date) ? occurrence.date : null;
   const stamp = occurrence.starts_at;
   if (!stamp) return null;
-  if (isDateOnly(stamp)) return stamp;
+  if (calendarDisplayIsDateOnly(stamp)) return stamp;
   const instant = Date.parse(stamp);
   if (Number.isNaN(instant)) return null;
   const timezone = occurrence.timezone;
@@ -170,7 +170,7 @@ export function normalizeDisplayBounds(bounds) {
     throw new TypeError("bounded display query requires explicit { from, to } bounds");
   }
   const { from, to } = bounds;
-  if (!isDateOnly(from) || !isDateOnly(to)) {
+  if (!calendarDisplayIsDateOnly(from) || !calendarDisplayIsDateOnly(to)) {
     throw new TypeError("display bounds must be YYYY-MM-DD `from` and `to` dates");
   }
   if (from > to) throw new TypeError("display bounds `from` must not be after `to`");
@@ -372,7 +372,7 @@ export function evaluateDisplayCluster(occurrences = [], options = {}) {
 
   let best = null;
   for (const anchor of distinctDates) {
-    const end = addDays(anchor, windowDays - 1);
+    const end = calendarDisplayAddDays(anchor, windowDays - 1);
     const inWindow = days.filter((day) => day >= anchor && day <= end);
     const candidate = {
       anchor,

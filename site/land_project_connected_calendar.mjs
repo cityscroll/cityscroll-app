@@ -26,12 +26,6 @@ export const PROJECT_CONNECTED_CALENDAR_HEADING = "Connected dates";
 // by this range. Month is temporal proximity, not procedural prediction.
 const DISPLAY_BOUNDS = Object.freeze({ from: "2000-01-01", to: "2099-12-31" });
 
-const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
-
-function defaultEscape(value) {
-  return String(value ?? "").replace(/[&<>"]/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[char]));
-}
-
 /**
  * Pure: builds the panel markup from a normalized Land outcome record, or ""
  * when the accepted population does not meet the shared density rule (a
@@ -39,8 +33,11 @@ function defaultEscape(value) {
  * rather than an empty grid). `today` is required and must be an explicit
  * `YYYY-MM-DD` day — this module never reads a hidden clock.
  */
-export function landProjectConnectedCalendarHTML(record, { today, escape = defaultEscape } = {}) {
-  if (!ISO_DATE.test(String(today))) return "";
+export function landProjectConnectedCalendarHTML(record, {
+  today,
+  escape = (value) => String(value ?? "").replace(/[&<>"]/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[char])),
+} = {}) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(String(today))) return "";
   const records = projectCalendarRecordsForRecord(record);
   const occurrences = boundedDisplayOccurrences(records, DISPLAY_BOUNDS);
   const view = buildCompactMonthView(occurrences, { today });
