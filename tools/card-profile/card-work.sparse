@@ -377,6 +377,7 @@
 /site/hearing_attend_pack.mjs
 /site/hearing_location.js
 /site/hearing_logistics.mjs
+/site/home_default_watch.mjs
 /site/home_entry.mjs
 /site/home_following_entry.mjs
 /site/i18n.js
