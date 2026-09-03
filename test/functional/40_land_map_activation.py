@@ -5,7 +5,8 @@ Four things a source assertion cannot prove:
 
   1. List first paint happens with no map asset requested before it.
   2. The List route still paints in full with every map dependency blocked outright.
-  3. Map activation requests exactly the committed point projection, and nothing else, and
+  3. Map activation requests exactly the committed point projection and contextual boundary
+     artifacts, and nothing else, and
      mounts beside the List rather than in place of it.
   4. A blocked projection leaves the same filtered rows, count, filters, and controls, plus a
      retry and a direct return to List.
@@ -21,6 +22,11 @@ from playwright.sync_api import sync_playwright
 BASE = os.environ.get("CROL_BASE", "http://127.0.0.1:8000/").rstrip("/")
 LIST_ROUTE = "/browse/zoning/?boro=Queens&stage=public_review"
 PROJECTION = "data/land_project_map_points.json"
+BOUNDARY_PROJECTIONS = (
+    "data/geography/layers/borough/2026-05-26.json",
+    "data/geography/layers/community_district/2026-05-26.json",
+    "data/geography/layers/council_district/2026-05-26.json",
+)
 # Everything List must never wait on. `map_runtime.mjs` is not here: it is a same-origin
 # module with no assets of its own, and the List auto-selects its first row, so the selected
 # project's unchanged detail map may start fetching it in the same frame the rows paint.
@@ -129,7 +135,7 @@ def check_list_paints_with_maps_blocked(browser) -> dict:
     return state
 
 
-def check_activation_requests_only_the_projection(browser) -> dict:
+def check_activation_requests_only_approved_map_artifacts(browser) -> dict:
     page, requests = new_page(browser)
     page.goto(f"{BASE}{LIST_ROUTE}", wait_until="domcontentloaded", timeout=45_000)
     wait_for_land(page)
@@ -143,7 +149,8 @@ def check_activation_requests_only_the_projection(browser) -> dict:
     after = observe(page)
 
     activation = [url for url in requests[mark:] if url.startswith(BASE)]
-    assert activation == [f"{BASE}/{PROJECTION}"], f"activation requested {activation}"
+    expected = [f"{BASE}/{PROJECTION}"] + [f"{BASE}/{path}" for path in BOUNDARY_PROJECTIONS]
+    assert activation == expected, f"activation requested {activation}"
     assert after["markers"] > 0, "activation painted no markers"
     assert after["map_state"] == "ready"
     # Map is a way of looking at the same scope, never a new search.
@@ -192,7 +199,7 @@ def main() -> None:
         browser = playwright.chromium.launch(headless=True)
         check_first_paint_is_map_free(browser)
         check_list_paints_with_maps_blocked(browser)
-        activated = check_activation_requests_only_the_projection(browser)
+        activated = check_activation_requests_only_approved_map_artifacts(browser)
         check_blocked_projection_keeps_the_list(browser, activated)
         browser.close()
     print("land map activation boundary OK")
