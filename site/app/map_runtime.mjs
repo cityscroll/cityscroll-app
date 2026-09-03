@@ -37,6 +37,7 @@ import {
   landSelectionHistoryPatch,
   nextLandMapSelection,
 } from "../land_map_selection.mjs";
+import { LAND_VIEW_LIST, landViewHref } from "../land_view_switch.mjs";
 import {
   NYC_BOUNDS,
   bboxToViewBox,
@@ -670,15 +671,16 @@ export function landMapSelectionHTML(model, {t: copy = mapCopy, escape = escapeM
 }
 
 /**
- * The complete Map panel for one model. Pure: the mapped count, the explicit unmapped
- * count, and the marker geometry are all decided here so a contract test can read them
- * without a browser.
+ * The population orientation strip: what the map can show, what it cannot, and the way
+ * back to the complete List. It reads first, before the canvas, on every viewport — a
+ * resident who has not yet found a marker still needs the scope of the results and an
+ * unconditional way out, and a narrow screen is exactly where scrolling past a tall
+ * canvas to find either would cost the most. Pure, so a contract test can read the
+ * counts and the List link without a browser.
  */
-export function landMapPanelHTML(model, {
+export function landMapOrientationHTML(model, {
   t: copy = mapCopy,
   escape = escapeMapHtml,
-  sourceVintage = null,
-  boundaryContext = null,
   currentHash = "#land",
 } = {}){
   // "0 of 0 projects are on the map." beside a blank canvas reads as a map that failed. An
@@ -691,18 +693,41 @@ export function landMapPanelHTML(model, {
   const unmapped = model.counts.unmapped
     ? `<p class="land-map-unmapped">${escape(copy("land_map_unmapped_note",{n:model.counts.unmapped}))}</p>`
     : "";
+  // A real shareable List route, not a JS-only affordance: a resident who never gets a
+  // repaint (no-JS, or a Map that never finishes loading) still has a plain link out.
+  // Delegated click handling on the panel (installLandMapSelection) upgrades it in place.
+  const listLink = `<a class="land-map-list-link act mini" href="${escape(landViewHref(LAND_VIEW_LIST, currentHash))}"`
+    + ` data-land-map-list-handoff="">${escape(copy("land_map_back_to_list"))}</a>`;
   // All three counts, always, and on the same element: the mapped count is what the map can
   // show, the total is what the List holds, and the difference is the part of the answer the
   // map cannot draw. Publishing only the first would let the marker count read as the total.
-  // Order is the reader journey. The population comes first — how many results there are and
-  // how many the map can draw — and the selected project comes last, because it is one
-  // resident's exploration of that population and not the orientation itself.
-  return landMapCanvasSvg(model,{t:copy,escape,sourceVintage,boundaryContext,currentHash})
+  return `<div class="land-map-orientation">`
     + `<p class="land-map-summary" id="land-map-summary" role="status"`
     + ` data-land-map-total="${model.counts.total}"`
     + ` data-land-map-mapped="${model.counts.mapped}"`
     + ` data-land-map-unmapped="${model.counts.unmapped}">${escape(summary)}</p>`
     + unmapped
+    + listLink
+    + `</div>`;
+}
+
+/**
+ * The complete Map panel for one model. Pure: the orientation strip, the marker geometry,
+ * and the selected-project summary are all decided here so a contract test can read them
+ * without a browser.
+ */
+export function landMapPanelHTML(model, {
+  t: copy = mapCopy,
+  escape = escapeMapHtml,
+  sourceVintage = null,
+  boundaryContext = null,
+  currentHash = "#land",
+} = {}){
+  // Order is the reader journey. Orientation comes first — the counts and the way out — then
+  // the canvas itself, then boundary context, then the selected project last, because it is
+  // one resident's exploration of the population and not the orientation itself.
+  return landMapOrientationHTML(model,{t:copy,escape,currentHash})
+    + landMapCanvasSvg(model,{t:copy,escape,sourceVintage,boundaryContext,currentHash})
     + landMapBoundaryEvidenceHTML(boundaryContext, {t:copy, escape})
     + landMapSelectionHTML(model,{t:copy,escape,sourceVintage});
 }

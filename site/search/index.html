@@ -1383,8 +1383,13 @@
   .land-map-selected-title{margin:0;font:600 15px/1.3 var(--font-interface)}
   .land-map-selected-status,.land-map-selected-placement,.land-map-selected-source{margin:var(--space-1) 0 0;font:13px/1.4 var(--font-interface);color:var(--color-text-soft)}
   .land-map-selected-actions{display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-2);margin-top:var(--space-2)}
+  .land-map-selected-actions .act{min-height:44px}
   .land-map-summary,.land-map-unmapped,.land-map-status{margin:var(--space-2) 0 0;font:13px/1.4 var(--font-interface);color:var(--color-text-soft)}
+  /* Orientation reads first: counts, unmappedness, and the List exit, before the canvas. */
+  .land-map-orientation>:first-child{margin-top:0}
+  .land-map-list-link{display:inline-flex;margin-top:var(--space-2);min-height:44px}
   .land-map-recovery{display:flex;flex-wrap:wrap;gap:var(--space-2);margin-top:var(--space-2)}
+  .land-map-recovery .act{min-height:44px}
   .landbanner{font:13px/1.5 var(--font-interface);background:var(--color-canvas-subtle);border-inline-start:3px solid var(--color-action);padding:var(--space-2) var(--space-3);color:var(--color-text-soft);margin-bottom:0}
   #landmap{display:none;height:300px;border:1px solid var(--color-border);border-radius:var(--radius-md);margin-top:var(--space-3);overflow:hidden;background:var(--color-canvas-subtle)}
   .map-pan-controls{display:flex;align-items:center;justify-content:center;gap:var(--space-1);margin-top:var(--space-2)}

@@ -1208,6 +1208,7 @@ const STRINGS = {
     land_map_authority_partial: "partial",
     land_map_authority_unavailable: "unavailable",
     land_map_authority_detail: "Open the full authority summary",
+    land_map_back_to_list: "Back to the list",
     land_future_any: "Any future public action",
     land_future_hearing: "Upcoming hearing",
     land_future_other: "Other upcoming action",

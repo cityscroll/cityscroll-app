@@ -1,0 +1,1081 @@
+{
+  "schema": "cityscroll.land-map-mobile-layout-receipt.v1",
+  "card": "cityscroll-land-map-view/lm-10-mobile-map-list",
+  "browser_mode": "headless chromium (playwright) with touch emulation, remote hosts blocked",
+  "revision": {
+    "before_commit": "79ddac103e137a9947f7b6d733b27dac6bf0bce2",
+    "after_tree": "working tree at the commit above plus this card's changes",
+    "after_changed_paths": [
+      "architecture/evidence.d/cityscroll-land-map-view--lm-10-mobile-map-list.json",
+      "docs/evidence/land-map-mobile-layout.json",
+      "docs/evidence/land-map-route-lazy-shell.json",
+      "docs/screenshots/land-map-mobile-layout/after-list-handoff-1440.png",
+      "docs/screenshots/land-map-mobile-layout/after-list-handoff-320.png",
+      "docs/screenshots/land-map-mobile-layout/after-list-handoff-375.png",
+      "docs/screenshots/land-map-mobile-layout/after-list-handoff-390.png",
+      "docs/screenshots/land-map-mobile-layout/after-list-handoff-768.png",
+      "docs/screenshots/land-map-mobile-layout/after-orientation-1440.png",
+      "docs/screenshots/land-map-mobile-layout/after-orientation-320.png",
+      "docs/screenshots/land-map-mobile-layout/after-orientation-375.png",
+      "docs/screenshots/land-map-mobile-layout/after-orientation-390.png",
+      "docs/screenshots/land-map-mobile-layout/after-orientation-768.png",
+      "docs/screenshots/land-map-mobile-layout/after-touch-selected-1440.png",
+      "docs/screenshots/land-map-mobile-layout/after-touch-selected-320.png",
+      "docs/screenshots/land-map-mobile-layout/after-touch-selected-375.png",
+      "docs/screenshots/land-map-mobile-layout/after-touch-selected-390.png",
+      "docs/screenshots/land-map-mobile-layout/after-touch-selected-768.png",
+      "docs/screenshots/land-map-mobile-layout/before-list-handoff-1440.png",
+      "docs/screenshots/land-map-mobile-layout/before-list-handoff-320.png",
+      "docs/screenshots/land-map-mobile-layout/before-list-handoff-375.png",
+      "docs/screenshots/land-map-mobile-layout/before-list-handoff-390.png",
+      "docs/screenshots/land-map-mobile-layout/before-list-handoff-768.png",
+      "docs/screenshots/land-map-mobile-layout/before-orientation-1440.png",
+      "docs/screenshots/land-map-mobile-layout/before-orientation-320.png",
+      "docs/screenshots/land-map-mobile-layout/before-orientation-375.png",
+      "docs/screenshots/land-map-mobile-layout/before-orientation-390.png",
+      "docs/screenshots/land-map-mobile-layout/before-orientation-768.png",
+      "docs/screenshots/land-map-mobile-layout/before-touch-selected-1440.png",
+      "docs/screenshots/land-map-mobile-layout/before-touch-selected-320.png",
+      "docs/screenshots/land-map-mobile-layout/before-touch-selected-375.png",
+      "docs/screenshots/land-map-mobile-layout/before-touch-selected-390.png",
+      "docs/screenshots/land-map-mobile-layout/before-touch-selected-768.png",
+      "site/app/map_runtime.mjs",
+      "site/i18n.js",
+      "site/i18n/lang/ar.js",
+      "site/i18n/lang/bn.js",
+      "site/i18n/lang/es.js",
+      "site/i18n/lang/fr.js",
+      "site/i18n/lang/ht.js",
+      "site/i18n/lang/ko.js",
+      "site/i18n/lang/pl.js",
+      "site/i18n/lang/ru.js",
+      "site/i18n/lang/ur.js",
+      "site/i18n/lang/zh-Hans.js",
+      "site/index.html",
+      "site/search/index.html",
+      "test/functional/42_land_map_marker_selection.py",
+      "test/functional/46_land_map_mobile_layout.py",
+      "test/land_map_mobile_layout.test.mjs",
+      "tools/capture_land_map_mobile_layout.py",
+      "tools/preflight-required-checks.sh"
+    ]
+  },
+  "routes": {
+    "default_map": "/browse/zoning/?view=map"
+  },
+  "viewports": [
+    [
+      320,
+      568
+    ],
+    [
+      375,
+      667
+    ],
+    [
+      390,
+      844
+    ],
+    [
+      768,
+      1024
+    ],
+    [
+      1440,
+      900
+    ]
+  ],
+  "specimens": {
+    "anchor": "2025K0305",
+    "unmapped": "2026K0123"
+  },
+  "demonstrates": {
+    "orientation": "Default Map, nothing selected yet: the switch, the total/mapped/unmapped counts, and a List exit all read before the canvas, at every width, without horizontal overflow.",
+    "touch-selected": "A touch tap -- never a hover -- selects the anchor specimen and reveals its identity, placement method, precision, and canonical detail link, still without overflow.",
+    "list-handoff": "The List exit switches presentation without losing a row: the unmapped specimen, which never had a marker, is still in the List's own denominator afterward."
+  },
+  "before": {
+    "orientation@320": {
+      "url": "/browse/zoning/?view=map",
+      "overflow": 0,
+      "view": "map",
+      "switch_state": [
+        {
+          "view": "list",
+          "pressed": "false"
+        },
+        {
+          "view": "map",
+          "pressed": "true"
+        }
+      ],
+      "counts_published": {
+        "total": 40,
+        "mapped": 29,
+        "unmapped": 11
+      },
+      "counts_reachable": true,
+      "list_link_present": false,
+      "list_link_reachable": false,
+      "list_link_href": null,
+      "map_mounted": true,
+      "selected_project": null,
+      "selected_method": null,
+      "selected_precision": null,
+      "selected_reachable": false,
+      "detail_href": null,
+      "focus_on": "H2",
+      "list_rows": 40,
+      "unmapped_specimen_in_list": true,
+      "screenshot": "docs/screenshots/land-map-mobile-layout/before-orientation-320.png"
+    },
+    "orientation@375": {
+      "url": "/browse/zoning/?view=map",
+      "overflow": 0,
+      "view": "map",
+      "switch_state": [
+        {
+          "view": "list",
+          "pressed": "false"
+        },
+        {
+          "view": "map",
+          "pressed": "true"
+        }
+      ],
+      "counts_published": {
+        "total": 40,
+        "mapped": 29,
+        "unmapped": 11
+      },
+      "counts_reachable": true,
+      "list_link_present": false,
+      "list_link_reachable": false,
+      "list_link_href": null,
+      "map_mounted": true,
+      "selected_project": null,
+      "selected_method": null,
+      "selected_precision": null,
+      "selected_reachable": false,
+      "detail_href": null,
+      "focus_on": "H2",
+      "list_rows": 40,
+      "unmapped_specimen_in_list": true,
+      "screenshot": "docs/screenshots/land-map-mobile-layout/before-orientation-375.png"
+    },
+    "orientation@390": {
+      "url": "/browse/zoning/?view=map",
+      "overflow": 0,
+      "view": "map",
+      "switch_state": [
+        {
+          "view": "list",
+          "pressed": "false"
+        },
+        {
+          "view": "map",
+          "pressed": "true"
+        }
+      ],
+      "counts_published": {
+        "total": 40,
+        "mapped": 29,
+        "unmapped": 11
+      },
+      "counts_reachable": true,
+      "list_link_present": false,
+      "list_link_reachable": false,
+      "list_link_href": null,
+      "map_mounted": true,
+      "selected_project": null,
+      "selected_method": null,
+      "selected_precision": null,
+      "selected_reachable": false,
+      "detail_href": null,
+      "focus_on": "H2",
+      "list_rows": 40,
+      "unmapped_specimen_in_list": true,
+      "screenshot": "docs/screenshots/land-map-mobile-layout/before-orientation-390.png"
+    },
+    "orientation@768": {
+      "url": "/browse/zoning/?view=map",
+      "overflow": 0,
+      "view": "map",
+      "switch_state": [
+        {
+          "view": "list",
+          "pressed": "false"
+        },
+        {
+          "view": "map",
+          "pressed": "true"
+        }
+      ],
+      "counts_published": {
+        "total": 40,
+        "mapped": 29,
+        "unmapped": 11
+      },
+      "counts_reachable": true,
+      "list_link_present": false,
+      "list_link_reachable": false,
+      "list_link_href": null,
+      "map_mounted": true,
+      "selected_project": null,
+      "selected_method": null,
+      "selected_precision": null,
+      "selected_reachable": false,
+      "detail_href": null,
+      "focus_on": "H2",
+      "list_rows": 40,
+      "unmapped_specimen_in_list": true,
+      "screenshot": "docs/screenshots/land-map-mobile-layout/before-orientation-768.png"
+    },
+    "orientation@1440": {
+      "url": "/browse/zoning/?view=map",
+      "overflow": 0,
+      "view": "map",
+      "switch_state": [
+        {
+          "view": "list",
+          "pressed": "false"
+        },
+        {
+          "view": "map",
+          "pressed": "true"
+        }
+      ],
+      "counts_published": {
+        "total": 40,
+        "mapped": 29,
+        "unmapped": 11
+      },
+      "counts_reachable": true,
+      "list_link_present": false,
+      "list_link_reachable": false,
+      "list_link_href": null,
+      "map_mounted": true,
+      "selected_project": null,
+      "selected_method": null,
+      "selected_precision": null,
+      "selected_reachable": false,
+      "detail_href": null,
+      "focus_on": "H2",
+      "list_rows": 40,
+      "unmapped_specimen_in_list": true,
+      "screenshot": "docs/screenshots/land-map-mobile-layout/before-orientation-1440.png"
+    },
+    "touch-selected@320": {
+      "url": "/browse/zoning/?view=map",
+      "overflow": 0,
+      "view": "map",
+      "switch_state": [
+        {
+          "view": "list",
+          "pressed": "false"
+        },
+        {
+          "view": "map",
+          "pressed": "true"
+        }
+      ],
+      "counts_published": {
+        "total": 40,
+        "mapped": 29,
+        "unmapped": 11
+      },
+      "counts_reachable": true,
+      "list_link_present": false,
+      "list_link_reachable": false,
+      "list_link_href": null,
+      "map_mounted": true,
+      "selected_project": "2025K0305",
+      "selected_method": "multi_bbl_anchor",
+      "selected_precision": "anchor",
+      "selected_reachable": true,
+      "detail_href": "/browse/zoning/#land/2025K0305",
+      "focus_on": "selected-summary",
+      "list_rows": 40,
+      "unmapped_specimen_in_list": true,
+      "screenshot": "docs/screenshots/land-map-mobile-layout/before-touch-selected-320.png"
+    },
+    "touch-selected@375": {
+      "url": "/browse/zoning/?view=map",
+      "overflow": 0,
+      "view": "map",
+      "switch_state": [
+        {
+          "view": "list",
+          "pressed": "false"
+        },
+        {
+          "view": "map",
+          "pressed": "true"
+        }
+      ],
+      "counts_published": {
+        "total": 40,
+        "mapped": 29,
+        "unmapped": 11
+      },
+      "counts_reachable": true,
+      "list_link_present": false,
+      "list_link_reachable": false,
+      "list_link_href": null,
+      "map_mounted": true,
+      "selected_project": "2025K0305",
+      "selected_method": "multi_bbl_anchor",
+      "selected_precision": "anchor",
+      "selected_reachable": true,
+      "detail_href": "/browse/zoning/#land/2025K0305",
+      "focus_on": "selected-summary",
+      "list_rows": 40,
+      "unmapped_specimen_in_list": true,
+      "screenshot": "docs/screenshots/land-map-mobile-layout/before-touch-selected-375.png"
+    },
+    "touch-selected@390": {
+      "url": "/browse/zoning/?view=map",
+      "overflow": 0,
+      "view": "map",
+      "switch_state": [
+        {
+          "view": "list",
+          "pressed": "false"
+        },
+        {
+          "view": "map",
+          "pressed": "true"
+        }
+      ],
+      "counts_published": {
+        "total": 40,
+        "mapped": 29,
+        "unmapped": 11
+      },
+      "counts_reachable": true,
+      "list_link_present": false,
+      "list_link_reachable": false,
+      "list_link_href": null,
+      "map_mounted": true,
+      "selected_project": "2025K0305",
+      "selected_method": "multi_bbl_anchor",
+      "selected_precision": "anchor",
+      "selected_reachable": true,
+      "detail_href": "/browse/zoning/#land/2025K0305",
+      "focus_on": "selected-summary",
+      "list_rows": 40,
+      "unmapped_specimen_in_list": true,
+      "screenshot": "docs/screenshots/land-map-mobile-layout/before-touch-selected-390.png"
+    },
+    "touch-selected@768": {
+      "url": "/browse/zoning/?view=map",
+      "overflow": 0,
+      "view": "map",
+      "switch_state": [
+        {
+          "view": "list",
+          "pressed": "false"
+        },
+        {
+          "view": "map",
+          "pressed": "true"
+        }
+      ],
+      "counts_published": {
+        "total": 40,
+        "mapped": 29,
+        "unmapped": 11
+      },
+      "counts_reachable": true,
+      "list_link_present": false,
+      "list_link_reachable": false,
+      "list_link_href": null,
+      "map_mounted": true,
+      "selected_project": "2025K0305",
+      "selected_method": "multi_bbl_anchor",
+      "selected_precision": "anchor",
+      "selected_reachable": true,
+      "detail_href": "/browse/zoning/#land/2025K0305",
+      "focus_on": "selected-summary",
+      "list_rows": 40,
+      "unmapped_specimen_in_list": true,
+      "screenshot": "docs/screenshots/land-map-mobile-layout/before-touch-selected-768.png"
+    },
+    "touch-selected@1440": {
+      "url": "/browse/zoning/?view=map",
+      "overflow": 0,
+      "view": "map",
+      "switch_state": [
+        {
+          "view": "list",
+          "pressed": "false"
+        },
+        {
+          "view": "map",
+          "pressed": "true"
+        }
+      ],
+      "counts_published": {
+        "total": 40,
+        "mapped": 29,
+        "unmapped": 11
+      },
+      "counts_reachable": true,
+      "list_link_present": false,
+      "list_link_reachable": false,
+      "list_link_href": null,
+      "map_mounted": true,
+      "selected_project": "2025K0305",
+      "selected_method": "multi_bbl_anchor",
+      "selected_precision": "anchor",
+      "selected_reachable": true,
+      "detail_href": "/browse/zoning/#land/2025K0305",
+      "focus_on": "selected-summary",
+      "list_rows": 40,
+      "unmapped_specimen_in_list": true,
+      "screenshot": "docs/screenshots/land-map-mobile-layout/before-touch-selected-1440.png"
+    },
+    "list-handoff@320": {
+      "url": "/browse/zoning/",
+      "overflow": 0,
+      "view": "list",
+      "switch_state": [
+        {
+          "view": "list",
+          "pressed": "true"
+        },
+        {
+          "view": "map",
+          "pressed": "false"
+        }
+      ],
+      "counts_published": null,
+      "counts_reachable": false,
+      "list_link_present": false,
+      "list_link_reachable": false,
+      "list_link_href": null,
+      "map_mounted": false,
+      "selected_project": null,
+      "selected_method": null,
+      "selected_precision": null,
+      "selected_reachable": false,
+      "detail_href": null,
+      "focus_on": "BODY",
+      "list_rows": 40,
+      "unmapped_specimen_in_list": true,
+      "screenshot": "docs/screenshots/land-map-mobile-layout/before-list-handoff-320.png"
+    },
+    "list-handoff@375": {
+      "url": "/browse/zoning/",
+      "overflow": 0,
+      "view": "list",
+      "switch_state": [
+        {
+          "view": "list",
+          "pressed": "true"
+        },
+        {
+          "view": "map",
+          "pressed": "false"
+        }
+      ],
+      "counts_published": null,
+      "counts_reachable": false,
+      "list_link_present": false,
+      "list_link_reachable": false,
+      "list_link_href": null,
+      "map_mounted": false,
+      "selected_project": null,
+      "selected_method": null,
+      "selected_precision": null,
+      "selected_reachable": false,
+      "detail_href": null,
+      "focus_on": "BODY",
+      "list_rows": 40,
+      "unmapped_specimen_in_list": true,
+      "screenshot": "docs/screenshots/land-map-mobile-layout/before-list-handoff-375.png"
+    },
+    "list-handoff@390": {
+      "url": "/browse/zoning/",
+      "overflow": 0,
+      "view": "list",
+      "switch_state": [
+        {
+          "view": "list",
+          "pressed": "true"
+        },
+        {
+          "view": "map",
+          "pressed": "false"
+        }
+      ],
+      "counts_published": null,
+      "counts_reachable": false,
+      "list_link_present": false,
+      "list_link_reachable": false,
+      "list_link_href": null,
+      "map_mounted": false,
+      "selected_project": null,
+      "selected_method": null,
+      "selected_precision": null,
+      "selected_reachable": false,
+      "detail_href": null,
+      "focus_on": "BODY",
+      "list_rows": 40,
+      "unmapped_specimen_in_list": true,
+      "screenshot": "docs/screenshots/land-map-mobile-layout/before-list-handoff-390.png"
+    },
+    "list-handoff@768": {
+      "url": "/browse/zoning/",
+      "overflow": 0,
+      "view": "list",
+      "switch_state": [
+        {
+          "view": "list",
+          "pressed": "true"
+        },
+        {
+          "view": "map",
+          "pressed": "false"
+        }
+      ],
+      "counts_published": null,
+      "counts_reachable": false,
+      "list_link_present": false,
+      "list_link_reachable": false,
+      "list_link_href": null,
+      "map_mounted": false,
+      "selected_project": null,
+      "selected_method": null,
+      "selected_precision": null,
+      "selected_reachable": false,
+      "detail_href": null,
+      "focus_on": "BODY",
+      "list_rows": 40,
+      "unmapped_specimen_in_list": true,
+      "screenshot": "docs/screenshots/land-map-mobile-layout/before-list-handoff-768.png"
+    },
+    "list-handoff@1440": {
+      "url": "/browse/zoning/",
+      "overflow": 0,
+      "view": "list",
+      "switch_state": [
+        {
+          "view": "list",
+          "pressed": "true"
+        },
+        {
+          "view": "map",
+          "pressed": "false"
+        }
+      ],
+      "counts_published": null,
+      "counts_reachable": false,
+      "list_link_present": false,
+      "list_link_reachable": false,
+      "list_link_href": null,
+      "map_mounted": false,
+      "selected_project": null,
+      "selected_method": null,
+      "selected_precision": null,
+      "selected_reachable": false,
+      "detail_href": null,
+      "focus_on": "BODY",
+      "list_rows": 40,
+      "unmapped_specimen_in_list": true,
+      "screenshot": "docs/screenshots/land-map-mobile-layout/before-list-handoff-1440.png"
+    }
+  },
+  "after": {
+    "orientation@320": {
+      "url": "/browse/zoning/?view=map",
+      "overflow": 0,
+      "view": "map",
+      "switch_state": [
+        {
+          "view": "list",
+          "pressed": "false"
+        },
+        {
+          "view": "map",
+          "pressed": "true"
+        }
+      ],
+      "counts_published": {
+        "total": 40,
+        "mapped": 29,
+        "unmapped": 11
+      },
+      "counts_reachable": true,
+      "list_link_present": true,
+      "list_link_reachable": true,
+      "list_link_href": "#land",
+      "map_mounted": true,
+      "selected_project": null,
+      "selected_method": null,
+      "selected_precision": null,
+      "selected_reachable": false,
+      "detail_href": null,
+      "focus_on": "H2",
+      "list_rows": 40,
+      "unmapped_specimen_in_list": true,
+      "screenshot": "docs/screenshots/land-map-mobile-layout/after-orientation-320.png"
+    },
+    "orientation@375": {
+      "url": "/browse/zoning/?view=map",
+      "overflow": 0,
+      "view": "map",
+      "switch_state": [
+        {
+          "view": "list",
+          "pressed": "false"
+        },
+        {
+          "view": "map",
+          "pressed": "true"
+        }
+      ],
+      "counts_published": {
+        "total": 40,
+        "mapped": 29,
+        "unmapped": 11
+      },
+      "counts_reachable": true,
+      "list_link_present": true,
+      "list_link_reachable": true,
+      "list_link_href": "#land",
+      "map_mounted": true,
+      "selected_project": null,
+      "selected_method": null,
+      "selected_precision": null,
+      "selected_reachable": false,
+      "detail_href": null,
+      "focus_on": "H2",
+      "list_rows": 40,
+      "unmapped_specimen_in_list": true,
+      "screenshot": "docs/screenshots/land-map-mobile-layout/after-orientation-375.png"
+    },
+    "orientation@390": {
+      "url": "/browse/zoning/?view=map",
+      "overflow": 0,
+      "view": "map",
+      "switch_state": [
+        {
+          "view": "list",
+          "pressed": "false"
+        },
+        {
+          "view": "map",
+          "pressed": "true"
+        }
+      ],
+      "counts_published": {
+        "total": 40,
+        "mapped": 29,
+        "unmapped": 11
+      },
+      "counts_reachable": true,
+      "list_link_present": true,
+      "list_link_reachable": true,
+      "list_link_href": "#land",
+      "map_mounted": true,
+      "selected_project": null,
+      "selected_method": null,
+      "selected_precision": null,
+      "selected_reachable": false,
+      "detail_href": null,
+      "focus_on": "H2",
+      "list_rows": 40,
+      "unmapped_specimen_in_list": true,
+      "screenshot": "docs/screenshots/land-map-mobile-layout/after-orientation-390.png"
+    },
+    "orientation@768": {
+      "url": "/browse/zoning/?view=map",
+      "overflow": 0,
+      "view": "map",
+      "switch_state": [
+        {
+          "view": "list",
+          "pressed": "false"
+        },
+        {
+          "view": "map",
+          "pressed": "true"
+        }
+      ],
+      "counts_published": {
+        "total": 40,
+        "mapped": 29,
+        "unmapped": 11
+      },
+      "counts_reachable": true,
+      "list_link_present": true,
+      "list_link_reachable": true,
+      "list_link_href": "#land",
+      "map_mounted": true,
+      "selected_project": null,
+      "selected_method": null,
+      "selected_precision": null,
+      "selected_reachable": false,
+      "detail_href": null,
+      "focus_on": "H2",
+      "list_rows": 40,
+      "unmapped_specimen_in_list": true,
+      "screenshot": "docs/screenshots/land-map-mobile-layout/after-orientation-768.png"
+    },
+    "orientation@1440": {
+      "url": "/browse/zoning/?view=map",
+      "overflow": 0,
+      "view": "map",
+      "switch_state": [
+        {
+          "view": "list",
+          "pressed": "false"
+        },
+        {
+          "view": "map",
+          "pressed": "true"
+        }
+      ],
+      "counts_published": {
+        "total": 40,
+        "mapped": 29,
+        "unmapped": 11
+      },
+      "counts_reachable": true,
+      "list_link_present": true,
+      "list_link_reachable": true,
+      "list_link_href": "#land",
+      "map_mounted": true,
+      "selected_project": null,
+      "selected_method": null,
+      "selected_precision": null,
+      "selected_reachable": false,
+      "detail_href": null,
+      "focus_on": "H2",
+      "list_rows": 40,
+      "unmapped_specimen_in_list": true,
+      "screenshot": "docs/screenshots/land-map-mobile-layout/after-orientation-1440.png"
+    },
+    "touch-selected@320": {
+      "url": "/browse/zoning/?view=map",
+      "overflow": 0,
+      "view": "map",
+      "switch_state": [
+        {
+          "view": "list",
+          "pressed": "false"
+        },
+        {
+          "view": "map",
+          "pressed": "true"
+        }
+      ],
+      "counts_published": {
+        "total": 40,
+        "mapped": 29,
+        "unmapped": 11
+      },
+      "counts_reachable": true,
+      "list_link_present": true,
+      "list_link_reachable": true,
+      "list_link_href": "#land",
+      "map_mounted": true,
+      "selected_project": "2025K0305",
+      "selected_method": "multi_bbl_anchor",
+      "selected_precision": "anchor",
+      "selected_reachable": true,
+      "detail_href": "/browse/zoning/#land/2025K0305",
+      "focus_on": "selected-summary",
+      "list_rows": 40,
+      "unmapped_specimen_in_list": true,
+      "screenshot": "docs/screenshots/land-map-mobile-layout/after-touch-selected-320.png"
+    },
+    "touch-selected@375": {
+      "url": "/browse/zoning/?view=map",
+      "overflow": 0,
+      "view": "map",
+      "switch_state": [
+        {
+          "view": "list",
+          "pressed": "false"
+        },
+        {
+          "view": "map",
+          "pressed": "true"
+        }
+      ],
+      "counts_published": {
+        "total": 40,
+        "mapped": 29,
+        "unmapped": 11
+      },
+      "counts_reachable": true,
+      "list_link_present": true,
+      "list_link_reachable": true,
+      "list_link_href": "#land",
+      "map_mounted": true,
+      "selected_project": "2025K0305",
+      "selected_method": "multi_bbl_anchor",
+      "selected_precision": "anchor",
+      "selected_reachable": true,
+      "detail_href": "/browse/zoning/#land/2025K0305",
+      "focus_on": "selected-summary",
+      "list_rows": 40,
+      "unmapped_specimen_in_list": true,
+      "screenshot": "docs/screenshots/land-map-mobile-layout/after-touch-selected-375.png"
+    },
+    "touch-selected@390": {
+      "url": "/browse/zoning/?view=map",
+      "overflow": 0,
+      "view": "map",
+      "switch_state": [
+        {
+          "view": "list",
+          "pressed": "false"
+        },
+        {
+          "view": "map",
+          "pressed": "true"
+        }
+      ],
+      "counts_published": {
+        "total": 40,
+        "mapped": 29,
+        "unmapped": 11
+      },
+      "counts_reachable": true,
+      "list_link_present": true,
+      "list_link_reachable": true,
+      "list_link_href": "#land",
+      "map_mounted": true,
+      "selected_project": "2025K0305",
+      "selected_method": "multi_bbl_anchor",
+      "selected_precision": "anchor",
+      "selected_reachable": true,
+      "detail_href": "/browse/zoning/#land/2025K0305",
+      "focus_on": "selected-summary",
+      "list_rows": 40,
+      "unmapped_specimen_in_list": true,
+      "screenshot": "docs/screenshots/land-map-mobile-layout/after-touch-selected-390.png"
+    },
+    "touch-selected@768": {
+      "url": "/browse/zoning/?view=map",
+      "overflow": 0,
+      "view": "map",
+      "switch_state": [
+        {
+          "view": "list",
+          "pressed": "false"
+        },
+        {
+          "view": "map",
+          "pressed": "true"
+        }
+      ],
+      "counts_published": {
+        "total": 40,
+        "mapped": 29,
+        "unmapped": 11
+      },
+      "counts_reachable": true,
+      "list_link_present": true,
+      "list_link_reachable": true,
+      "list_link_href": "#land",
+      "map_mounted": true,
+      "selected_project": "2025K0305",
+      "selected_method": "multi_bbl_anchor",
+      "selected_precision": "anchor",
+      "selected_reachable": true,
+      "detail_href": "/browse/zoning/#land/2025K0305",
+      "focus_on": "selected-summary",
+      "list_rows": 40,
+      "unmapped_specimen_in_list": true,
+      "screenshot": "docs/screenshots/land-map-mobile-layout/after-touch-selected-768.png"
+    },
+    "touch-selected@1440": {
+      "url": "/browse/zoning/?view=map",
+      "overflow": 0,
+      "view": "map",
+      "switch_state": [
+        {
+          "view": "list",
+          "pressed": "false"
+        },
+        {
+          "view": "map",
+          "pressed": "true"
+        }
+      ],
+      "counts_published": {
+        "total": 40,
+        "mapped": 29,
+        "unmapped": 11
+      },
+      "counts_reachable": true,
+      "list_link_present": true,
+      "list_link_reachable": true,
+      "list_link_href": "#land",
+      "map_mounted": true,
+      "selected_project": "2025K0305",
+      "selected_method": "multi_bbl_anchor",
+      "selected_precision": "anchor",
+      "selected_reachable": true,
+      "detail_href": "/browse/zoning/#land/2025K0305",
+      "focus_on": "selected-summary",
+      "list_rows": 40,
+      "unmapped_specimen_in_list": true,
+      "screenshot": "docs/screenshots/land-map-mobile-layout/after-touch-selected-1440.png"
+    },
+    "list-handoff@320": {
+      "url": "/browse/zoning/",
+      "overflow": 0,
+      "view": "list",
+      "switch_state": [
+        {
+          "view": "list",
+          "pressed": "true"
+        },
+        {
+          "view": "map",
+          "pressed": "false"
+        }
+      ],
+      "counts_published": null,
+      "counts_reachable": false,
+      "list_link_present": false,
+      "list_link_reachable": false,
+      "list_link_href": null,
+      "map_mounted": false,
+      "selected_project": null,
+      "selected_method": null,
+      "selected_precision": null,
+      "selected_reachable": false,
+      "detail_href": null,
+      "focus_on": "BODY",
+      "list_rows": 40,
+      "unmapped_specimen_in_list": true,
+      "screenshot": "docs/screenshots/land-map-mobile-layout/after-list-handoff-320.png"
+    },
+    "list-handoff@375": {
+      "url": "/browse/zoning/",
+      "overflow": 0,
+      "view": "list",
+      "switch_state": [
+        {
+          "view": "list",
+          "pressed": "true"
+        },
+        {
+          "view": "map",
+          "pressed": "false"
+        }
+      ],
+      "counts_published": null,
+      "counts_reachable": false,
+      "list_link_present": false,
+      "list_link_reachable": false,
+      "list_link_href": null,
+      "map_mounted": false,
+      "selected_project": null,
+      "selected_method": null,
+      "selected_precision": null,
+      "selected_reachable": false,
+      "detail_href": null,
+      "focus_on": "BODY",
+      "list_rows": 40,
+      "unmapped_specimen_in_list": true,
+      "screenshot": "docs/screenshots/land-map-mobile-layout/after-list-handoff-375.png"
+    },
+    "list-handoff@390": {
+      "url": "/browse/zoning/",
+      "overflow": 0,
+      "view": "list",
+      "switch_state": [
+        {
+          "view": "list",
+          "pressed": "true"
+        },
+        {
+          "view": "map",
+          "pressed": "false"
+        }
+      ],
+      "counts_published": null,
+      "counts_reachable": false,
+      "list_link_present": false,
+      "list_link_reachable": false,
+      "list_link_href": null,
+      "map_mounted": false,
+      "selected_project": null,
+      "selected_method": null,
+      "selected_precision": null,
+      "selected_reachable": false,
+      "detail_href": null,
+      "focus_on": "BODY",
+      "list_rows": 40,
+      "unmapped_specimen_in_list": true,
+      "screenshot": "docs/screenshots/land-map-mobile-layout/after-list-handoff-390.png"
+    },
+    "list-handoff@768": {
+      "url": "/browse/zoning/",
+      "overflow": 0,
+      "view": "list",
+      "switch_state": [
+        {
+          "view": "list",
+          "pressed": "true"
+        },
+        {
+          "view": "map",
+          "pressed": "false"
+        }
+      ],
+      "counts_published": null,
+      "counts_reachable": false,
+      "list_link_present": false,
+      "list_link_reachable": false,
+      "list_link_href": null,
+      "map_mounted": false,
+      "selected_project": null,
+      "selected_method": null,
+      "selected_precision": null,
+      "selected_reachable": false,
+      "detail_href": null,
+      "focus_on": "BODY",
+      "list_rows": 40,
+      "unmapped_specimen_in_list": true,
+      "screenshot": "docs/screenshots/land-map-mobile-layout/after-list-handoff-768.png"
+    },
+    "list-handoff@1440": {
+      "url": "/browse/zoning/",
+      "overflow": 0,
+      "view": "list",
+      "switch_state": [
+        {
+          "view": "list",
+          "pressed": "true"
+        },
+        {
+          "view": "map",
+          "pressed": "false"
+        }
+      ],
+      "counts_published": null,
+      "counts_reachable": false,
+      "list_link_present": false,
+      "list_link_reachable": false,
+      "list_link_href": null,
+      "map_mounted": false,
+      "selected_project": null,
+      "selected_method": null,
+      "selected_precision": null,
+      "selected_reachable": false,
+      "detail_href": null,
+      "focus_on": "BODY",
+      "list_rows": 40,
+      "unmapped_specimen_in_list": true,
+      "screenshot": "docs/screenshots/land-map-mobile-layout/after-list-handoff-1440.png"
+    }
+  }
+}

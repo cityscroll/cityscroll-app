@@ -883,6 +883,7 @@
     land_map_selected_detail: "打开项目档案",
     land_map_selected_list: "在列表中查看",
     land_map_selected_clear: "清除选择",
+    land_map_back_to_list: "返回列表",
     land_future_any: "任何未来公众行动",
     land_future_hearing: "即将举行的听证会",
     land_future_other: "其他即将开展的行动",

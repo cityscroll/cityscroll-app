@@ -884,6 +884,7 @@
     land_map_selected_detail: "প্রকল্পের নথি খুলুন",
     land_map_selected_list: "তালিকায় দেখুন",
     land_map_selected_clear: "নির্বাচন মুছুন",
+    land_map_back_to_list: "তালিকায় ফিরে যান",
     land_future_any: "ভবিষ্যতের যেকোনো জনসাধারণের পদক্ষেপ",
     land_future_hearing: "আসন্ন শুনানি",
     land_future_other: "অন্যান্য আসন্ন পদক্ষেপ",

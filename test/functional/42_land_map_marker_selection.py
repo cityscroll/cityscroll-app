@@ -276,7 +276,10 @@ def check_detail_and_back_preserve_scope_and_focus(page) -> None:
 
 
 def check_list_handoff_finds_the_same_project(page) -> None:
-    page.locator("[data-land-map-list-handoff]").click()
+    # Scoped to the selected project's own handoff: LM-10 adds a second, unconditional
+    # List exit outside #land-map-selected, and this proof is specifically about the one
+    # that names the currently selected project.
+    page.locator("#land-map-selected [data-land-map-list-handoff]").click()
     page.wait_for_timeout(1_200)
     handoff = page.evaluate(
         """(id) => {

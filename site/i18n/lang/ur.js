@@ -887,6 +887,7 @@
     land_map_selected_detail: "منصوبے کی فائل کھولیں",
     land_map_selected_list: "فہرست میں دیکھیں",
     land_map_selected_clear: "انتخاب ہٹائیں",
+    land_map_back_to_list: "فہرست پر واپس جائیں",
     land_future_any: "آئندہ کوئی بھی عوامی کارروائی",
     land_future_hearing: "آنے والی سماعت",
     land_future_other: "آنے والی دوسری کارروائی",
