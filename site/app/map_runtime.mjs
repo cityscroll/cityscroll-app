@@ -24,6 +24,11 @@
 
 import { lookupBblCentroid } from "../bbl_mappluto_centroids.mjs";
 import { buildLandMapModel } from "../land_map_model.mjs";
+import {
+  landMapBoundaryEvidenceHTML,
+  landMapBoundarySvg,
+  loadLandMapBoundaryContext,
+} from "../land_map_boundary_context.mjs";
 import { landProjectPath } from "../land_project_route.mjs";
 import {
   landMapSelectionFocusIntent,
@@ -32,11 +37,9 @@ import {
   nextLandMapSelection,
 } from "../land_map_selection.mjs";
 import {
-  BOROUGH_HULLS,
   NYC_BOUNDS,
   bboxToViewBox,
   defaultViewBox,
-  polygonsToSvgPath,
   projectLonLat,
 } from "../map_exploration.mjs";
 
@@ -277,6 +280,14 @@ function loadLandMapPoints(){
       .catch(error=>{ landMapPointsPromise=null; throw error; });
   }
   return landMapPointsPromise;
+}
+
+let landMapBoundaryPromise = null;
+function loadLandMapBoundaries(){
+  if(!landMapBoundaryPromise){
+    landMapBoundaryPromise = loadLandMapBoundaryContext().catch(()=>null);
+  }
+  return landMapBoundaryPromise;
 }
 
 /** Copy seam. The app publishes `t`; a node contract test injects its own. */
@@ -545,15 +556,17 @@ export function landMapMarkerLayer(model, {t: copy = mapCopy, sourceVintage = nu
   }));
 }
 
-export function landMapCanvasSvg(model, {t: copy = mapCopy, escape = escapeMapHtml, sourceVintage = null} = {}){
+export function landMapCanvasSvg(model, {
+  t: copy = mapCopy,
+  escape = escapeMapHtml,
+  sourceVintage = null,
+  boundaryContext = null,
+  currentHash = "#land",
+} = {}){
   const viewBox = landMapViewBox(model.bounds);
   const width = Number(String(viewBox).split(/\s+/)[2]) || 1000;
   const radius = Math.max(1.2, width/90).toFixed(2);
-  const outlines = Object.values(BOROUGH_HULLS)
-    .map(hull=>polygonsToSvgPath([{rings:hull.rings}]))
-    .filter(Boolean)
-    .map(d=>`<path class="land-map-outline" d="${d}"/>`)
-    .join("");
+  const boundaries = landMapBoundarySvg(boundaryContext, {escape, currentHash});
   const markers = landMapMarkerLayer(model,{t:copy, sourceVintage}).map(marker=>{
     const [x,y] = projectLonLat(marker.lon, marker.lat);
     const label = escape(marker.label);
@@ -581,7 +594,7 @@ export function landMapCanvasSvg(model, {t: copy = mapCopy, escape = escapeMapHt
   return `<svg class="land-map-canvas" viewBox="${viewBox}" role="group" preserveAspectRatio="xMidYMid meet"`
     + (sourceVintage ? ` data-land-map-source-vintage="${escape(sourceVintage)}"` : "")
     + ` aria-label="${escape(copy("land_map_canvas_alt",{n:model.counts.mapped}))}">`
-    + `<g class="land-map-outlines" aria-hidden="true">${outlines}</g>`
+    + `<g class="land-map-outlines">${boundaries}</g>`
     + `<g class="land-map-markers">${markers}</g></svg>`;
 }
 
@@ -641,7 +654,13 @@ export function landMapSelectionHTML(model, {t: copy = mapCopy, escape = escapeM
  * count, and the marker geometry are all decided here so a contract test can read them
  * without a browser.
  */
-export function landMapPanelHTML(model, {t: copy = mapCopy, escape = escapeMapHtml, sourceVintage = null} = {}){
+export function landMapPanelHTML(model, {
+  t: copy = mapCopy,
+  escape = escapeMapHtml,
+  sourceVintage = null,
+  boundaryContext = null,
+  currentHash = "#land",
+} = {}){
   // "0 of 0 projects are on the map." beside a blank canvas reads as a map that failed. An
   // empty result is a fact about the filter, not about the map, and the List's own empty state
   // sits directly below with the way to widen it -- so this says which of the two happened and
@@ -658,12 +677,13 @@ export function landMapPanelHTML(model, {t: copy = mapCopy, escape = escapeMapHt
   // Order is the reader journey. The population comes first — how many results there are and
   // how many the map can draw — and the selected project comes last, because it is one
   // resident's exploration of that population and not the orientation itself.
-  return landMapCanvasSvg(model,{t:copy,escape,sourceVintage})
+  return landMapCanvasSvg(model,{t:copy,escape,sourceVintage,boundaryContext,currentHash})
     + `<p class="land-map-summary" id="land-map-summary" role="status"`
     + ` data-land-map-total="${model.counts.total}"`
     + ` data-land-map-mapped="${model.counts.mapped}"`
     + ` data-land-map-unmapped="${model.counts.unmapped}">${escape(summary)}</p>`
     + unmapped
+    + landMapBoundaryEvidenceHTML(boundaryContext, {t:copy, escape})
     + landMapSelectionHTML(model,{t:copy,escape,sourceVintage});
 }
 
@@ -720,7 +740,7 @@ function restoreLandMapFocus(panel, intent){
   return target;
 }
 
-function renderLandMapModel(panel, model, sourceVintage){
+function renderLandMapModel(panel, model, sourceVintage, boundaryContext, currentHash){
   const carried = landMapFocusKey(panel);
   panel.dataset.landMapState = "ready";
   // What actually painted, which is not always what was asked for: the model refuses a
@@ -732,7 +752,12 @@ function renderLandMapModel(panel, model, sourceVintage){
   // -- the cold `view=map` load, before the search has returned -- is not evidence that a
   // remembered project has left the filter; it is evidence of nothing yet.
   panel.dataset.landMapPopulation = String(model.counts.total);
-  panel.innerHTML = landMapPanelHTML(model,{sourceVintage});
+  panel.dataset.landMapBoundaryState = boundaryContext?.state || "unavailable";
+  panel.innerHTML = landMapPanelHTML(model, {
+    sourceVintage,
+    boundaryContext,
+    currentHash,
+  });
   if(carried) restoreLandMapFocus(panel, carried);
 }
 
@@ -765,8 +790,9 @@ export async function mountLandBrowseMap(host, {rows, selectedProjectId, filters
   if(!panel) throw new Error("land-map-host-absent");
   renderLandMapLoading(panel);
   let payload;
+  let boundaryContext;
   try{
-    payload = await loadLandMapPoints();
+    [payload, boundaryContext] = await Promise.all([loadLandMapPoints(), loadLandMapBoundaries()]);
   }catch(error){
     renderLandMapFailure(panel);
     throw error;
@@ -787,7 +813,9 @@ export async function mountLandBrowseMap(host, {rows, selectedProjectId, filters
       pointLookup: payload,
       selectedProjectId: selectedProjectId ?? currentLandSelection(),
       filters,
-    }), payload.schema ?? null);
+    }), payload.schema ?? null, boundaryContext,
+      globalThis.serializeState?.() || globalThis.location?.hash
+        || (globalThis.location?.search ? `#land${globalThis.location.search}` : "#land"));
   }catch(error){
     renderLandMapFailure(panel);
     throw error;

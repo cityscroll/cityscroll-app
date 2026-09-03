@@ -1,0 +1,329 @@
+{
+  "schema": "cityscroll.land-map-boundary-context-receipt.v1",
+  "card": "cityscroll-land-map-view/lm-09-boundary-context",
+  "browser_mode": "headless chromium (playwright), remote hosts blocked",
+  "revision": "417bc4e40cc6537921440ec52351a0de3d3273d3",
+  "artifact_vintage": "2026-05-26",
+  "routes": {
+    "brooklyn": "/browse/zoning/?boro=Brooklyn&view=map",
+    "scope": "/browse/zoning/?boro=Brooklyn&view=map",
+    "missing": "/browse/zoning/?boro=Brooklyn&view=map"
+  },
+  "viewports": [
+    [
+      390,
+      844
+    ],
+    [
+      1440,
+      900
+    ]
+  ],
+  "assertions": [
+    "Boundary outlines and labels are contextual; project markers remain the only quantitative layer.",
+    "Boundary source and vintage are disclosed through the evidence affordance.",
+    "Unavailable community-district context leaves project counts and markers unchanged."
+  ],
+  "before": {
+    "brooklyn@390": {
+      "url": "/browse/zoning/?boro=Brooklyn&view=map",
+      "map_state": "ready",
+      "boundary_state": null,
+      "counts": {
+        "total": 40,
+        "mapped": 12,
+        "unmapped": 28
+      },
+      "marker_ids": [
+        "2025K0305",
+        "2019K0383",
+        "2024K0358",
+        "2025K0287",
+        "2022K0416",
+        "2024K0286",
+        "2025K0284",
+        "2022K0430",
+        "2024K0196",
+        "2023K0183",
+        "2024K0421",
+        "2025K0154"
+      ],
+      "boundary_levels": [],
+      "labels": 0,
+      "source_vintage": null,
+      "evidence": false,
+      "screenshot": "docs/screenshots/land-map-boundary-context/before-brooklyn-390.png"
+    },
+    "brooklyn@1440": {
+      "url": "/browse/zoning/?boro=Brooklyn&view=map",
+      "map_state": "ready",
+      "boundary_state": null,
+      "counts": {
+        "total": 40,
+        "mapped": 12,
+        "unmapped": 28
+      },
+      "marker_ids": [
+        "2025K0305",
+        "2019K0383",
+        "2024K0358",
+        "2025K0287",
+        "2022K0416",
+        "2024K0286",
+        "2025K0284",
+        "2022K0430",
+        "2024K0196",
+        "2023K0183",
+        "2024K0421",
+        "2025K0154"
+      ],
+      "boundary_levels": [],
+      "labels": 0,
+      "source_vintage": null,
+      "evidence": false,
+      "screenshot": "docs/screenshots/land-map-boundary-context/before-brooklyn-1440.png"
+    }
+  },
+  "before_scope": {
+    "scope@390": {
+      "url": "/browse/zoning/?boro=Brooklyn&view=map",
+      "map_state": "ready",
+      "boundary_state": null,
+      "counts": {
+        "total": 40,
+        "mapped": 12,
+        "unmapped": 28
+      },
+      "marker_ids": [
+        "2025K0305",
+        "2019K0383",
+        "2024K0358",
+        "2025K0287",
+        "2022K0416",
+        "2024K0286",
+        "2025K0284",
+        "2022K0430",
+        "2024K0196",
+        "2023K0183",
+        "2024K0421",
+        "2025K0154"
+      ],
+      "boundary_levels": [],
+      "labels": 0,
+      "source_vintage": null,
+      "evidence": false,
+      "screenshot": "docs/screenshots/land-map-boundary-context/before-scope-390.png"
+    },
+    "scope@1440": {
+      "url": "/browse/zoning/?boro=Brooklyn&view=map",
+      "map_state": "ready",
+      "boundary_state": null,
+      "counts": {
+        "total": 40,
+        "mapped": 12,
+        "unmapped": 28
+      },
+      "marker_ids": [
+        "2025K0305",
+        "2019K0383",
+        "2024K0358",
+        "2025K0287",
+        "2022K0416",
+        "2024K0286",
+        "2025K0284",
+        "2022K0430",
+        "2024K0196",
+        "2023K0183",
+        "2024K0421",
+        "2025K0154"
+      ],
+      "boundary_levels": [],
+      "labels": 0,
+      "source_vintage": null,
+      "evidence": false,
+      "screenshot": "docs/screenshots/land-map-boundary-context/before-scope-1440.png"
+    }
+  },
+  "after": {
+    "brooklyn@390": {
+      "url": "/browse/zoning/?boro=Brooklyn&view=map",
+      "map_state": "ready",
+      "boundary_state": "ready",
+      "counts": {
+        "total": 40,
+        "mapped": 12,
+        "unmapped": 28
+      },
+      "marker_ids": [
+        "2025K0305",
+        "2019K0383",
+        "2024K0358",
+        "2025K0287",
+        "2022K0416",
+        "2024K0286",
+        "2025K0284",
+        "2022K0430",
+        "2024K0196",
+        "2023K0183",
+        "2024K0421",
+        "2025K0154"
+      ],
+      "boundary_levels": [
+        "borough",
+        "community_district",
+        "council_district"
+      ],
+      "labels": 127,
+      "source_vintage": "2026-05-26",
+      "evidence": true,
+      "screenshot": "docs/screenshots/land-map-boundary-context/after-brooklyn-390.png"
+    },
+    "brooklyn@1440": {
+      "url": "/browse/zoning/?boro=Brooklyn&view=map",
+      "map_state": "ready",
+      "boundary_state": "ready",
+      "counts": {
+        "total": 40,
+        "mapped": 12,
+        "unmapped": 28
+      },
+      "marker_ids": [
+        "2025K0305",
+        "2019K0383",
+        "2024K0358",
+        "2025K0287",
+        "2022K0416",
+        "2024K0286",
+        "2025K0284",
+        "2022K0430",
+        "2024K0196",
+        "2023K0183",
+        "2024K0421",
+        "2025K0154"
+      ],
+      "boundary_levels": [
+        "borough",
+        "community_district",
+        "council_district"
+      ],
+      "labels": 127,
+      "source_vintage": "2026-05-26",
+      "evidence": true,
+      "screenshot": "docs/screenshots/land-map-boundary-context/after-brooklyn-1440.png"
+    }
+  },
+  "scope_handoff": {
+    "scope@390": {
+      "url": "/browse/zoning/?boro=Brooklyn&cd=K03&view=map",
+      "map_state": "ready",
+      "boundary_state": "ready",
+      "counts": {
+        "total": 5,
+        "mapped": 2,
+        "unmapped": 3
+      },
+      "marker_ids": [
+        "2022K0430",
+        "2025K0154"
+      ],
+      "boundary_levels": [
+        "borough",
+        "community_district",
+        "council_district"
+      ],
+      "labels": 127,
+      "source_vintage": "2026-05-26",
+      "evidence": true,
+      "screenshot": "docs/screenshots/land-map-boundary-context/after-scope-390.png"
+    },
+    "scope@1440": {
+      "url": "/browse/zoning/?boro=Brooklyn&cd=K03&view=map",
+      "map_state": "ready",
+      "boundary_state": "ready",
+      "counts": {
+        "total": 5,
+        "mapped": 2,
+        "unmapped": 3
+      },
+      "marker_ids": [
+        "2022K0430",
+        "2025K0154"
+      ],
+      "boundary_levels": [
+        "borough",
+        "community_district",
+        "council_district"
+      ],
+      "labels": 127,
+      "source_vintage": "2026-05-26",
+      "evidence": true,
+      "screenshot": "docs/screenshots/land-map-boundary-context/after-scope-1440.png"
+    }
+  },
+  "missing_context": {
+    "missing@390": {
+      "url": "/browse/zoning/?boro=Brooklyn&view=map",
+      "map_state": "ready",
+      "boundary_state": "partial",
+      "counts": {
+        "total": 40,
+        "mapped": 12,
+        "unmapped": 28
+      },
+      "marker_ids": [
+        "2025K0305",
+        "2019K0383",
+        "2024K0358",
+        "2025K0287",
+        "2022K0416",
+        "2024K0286",
+        "2025K0284",
+        "2022K0430",
+        "2024K0196",
+        "2023K0183",
+        "2024K0421",
+        "2025K0154"
+      ],
+      "boundary_levels": [
+        "borough",
+        "council_district"
+      ],
+      "labels": 56,
+      "source_vintage": "2026-05-26",
+      "evidence": true,
+      "screenshot": "docs/screenshots/land-map-boundary-context/after-missing-390.png"
+    },
+    "missing@1440": {
+      "url": "/browse/zoning/?boro=Brooklyn&view=map",
+      "map_state": "ready",
+      "boundary_state": "partial",
+      "counts": {
+        "total": 40,
+        "mapped": 12,
+        "unmapped": 28
+      },
+      "marker_ids": [
+        "2025K0305",
+        "2019K0383",
+        "2024K0358",
+        "2025K0287",
+        "2022K0416",
+        "2024K0286",
+        "2025K0284",
+        "2022K0430",
+        "2024K0196",
+        "2023K0183",
+        "2024K0421",
+        "2025K0154"
+      ],
+      "boundary_levels": [
+        "borough",
+        "council_district"
+      ],
+      "labels": 56,
+      "source_vintage": "2026-05-26",
+      "evidence": true,
+      "screenshot": "docs/screenshots/land-map-boundary-context/after-missing-1440.png"
+    }
+  }
+}

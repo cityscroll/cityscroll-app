@@ -1362,7 +1362,17 @@
      own column and stays on screen while the map loads, paints, or fails. */
   .land-map-panel{grid-column:1/-1;min-width:0;background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-md);box-shadow:var(--shadow);padding:var(--space-3)}
   .land-map-canvas{display:block;width:100%;max-height:360px;background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-md)}
-  .land-map-outline{fill:var(--color-canvas-subtle);stroke:var(--color-border-strong);stroke-width:1.5;vector-effect:non-scaling-stroke}
+  .land-map-outline{fill:none;stroke:var(--color-border-strong);stroke-width:1;stroke-opacity:.42;vector-effect:non-scaling-stroke;pointer-events:none}
+  .land-map-boundary-outline{stroke-width:.75;stroke-opacity:.3}
+  .land-map-boundaries-borough .land-map-boundary-outline{stroke-width:1.5;stroke-opacity:.62}
+  .land-map-boundaries-council_district .land-map-boundary-outline{stroke-dasharray:3 3;stroke-opacity:.24}
+  .land-map-boundary-label{fill:var(--color-text-soft);font:10px/1 var(--font-interface);opacity:.72;text-decoration:none}
+  .land-map-boundary-label text{pointer-events:auto}
+  .land-map-boundary-label:hover,.land-map-boundary-label:focus-visible{fill:var(--color-action);opacity:1;text-decoration:underline}
+  .land-map-boundary-evidence{margin-top:var(--space-2);font:13px/1.4 var(--font-interface);color:var(--color-text-soft)}
+  .land-map-boundary-evidence summary{cursor:pointer;color:var(--color-text)}
+  .land-map-boundary-note{margin:var(--space-2) 0 0}
+  .land-map-boundary-evidence-list{margin:var(--space-1) 0 0;padding-inline-start:1.2em}
   .land-map-marker{fill:var(--color-action);fill-opacity:.75;stroke:var(--color-surface);stroke-width:1;vector-effect:non-scaling-stroke}
   .land-map-marker-control{cursor:pointer}
   .land-map-marker-control:hover .land-map-marker,.land-map-marker-control:focus-visible .land-map-marker{fill-opacity:1;stroke:var(--color-action)}
