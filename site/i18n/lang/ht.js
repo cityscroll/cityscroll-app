@@ -435,6 +435,7 @@
     browse_cta_prompt: "Ou vle nouvèl pa imèl?",
     home_cta_active_now: "Ou deja resevwa sa a — n ap kontinye voye imèl chak lendi.",
     home_cta_open_watches: "Ouvri sa w ap swiv yo",
+    following_default_choose_another_watch: "Choose another watch",
     home_cta_submit: "Resevwa mizajou chak semenn",
     home_cta_topics: "Chwazi sa pou swiv",
     alert_context_scope: "Ou pral resevwa yon imèl pou: {scope}",

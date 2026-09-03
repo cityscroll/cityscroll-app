@@ -12,6 +12,7 @@
 
 import test from "node:test";
 import assert from "node:assert/strict";
+import { DEFAULT_WATCH_HANDOFF_STORAGE_KEY } from "../site/following_default_watch_receipt.mjs";
 
 const API_ORIGIN = "https://api.test";
 const FALLBACK_ORIGIN = "https://fallback.test";
@@ -52,6 +53,14 @@ const langField = elements.get("homeCtaLang");
 
 const calls = [];
 let respond = () => { throw new Error("no response configured"); };
+const sessionStorage = {
+  values: new Map(),
+  getItem(key) { return this.values.has(key) ? this.values.get(key) : null; },
+  setItem(key, value) { this.values.set(key, String(value)); },
+  removeItem(key) { this.values.delete(key); },
+  clear() { this.values.clear(); },
+};
+let assigned = "";
 
 globalThis.document = {
   body: { dataset: {} },
@@ -67,7 +76,12 @@ globalThis.window = {
   t: (key, values = {}) => Object.entries(values)
     .reduce((copy, [name, value]) => copy.replaceAll(`{${name}}`, String(value)), key),
 };
-globalThis.location = { hash: "" };
+globalThis.location = {
+  hash: "",
+  pathname: "/",
+  assign(url) { assigned = url; },
+};
+globalThis.sessionStorage = sessionStorage;
 globalThis.fetch = async (url, options) => {
   calls.push({ url: String(url), options });
   return respond(String(url));
@@ -88,12 +102,26 @@ async function submit(value = "reader@example.com") {
   message.textContent = "";
   email.value = value;
   email.removeAttribute("aria-invalid");
+  assigned = "";
+  sessionStorage.clear();
   const handler = form.listeners.get("submit");
   assert.equal(typeof handler, "function", "the module never registered a submit handler");
   let defaultPrevented = false;
   await handler({ preventDefault() { defaultPrevented = true; } });
   assert.equal(defaultPrevented, true, "the enhanced submit must not also navigate away");
   return calls;
+}
+
+function defaultWatchReceipt(watch = {}) {
+  return {
+    watch_id: watch.watch_id || "watch:contracts-weekly-citywide",
+    lens: "money",
+    filter: {},
+    freq: "weekly",
+    label: "Citywide contracts and RFPs",
+    followingUrl: "/following/",
+    ...watch,
+  };
 }
 
 test("a valid address posts exactly the disclosed homepage-default intent", async () => {
@@ -113,15 +141,33 @@ test("a valid address posts exactly the disclosed homepage-default intent", asyn
 });
 
 test("a newly stored watch reports enrollment and clears the field", async () => {
-  respond = () => jsonResponse({ ok: true, no_topic: true, created: true });
+  respond = () => jsonResponse({ ok: true, no_topic: true, created: true, watch: defaultWatchReceipt() });
   await submit();
   assert.equal(message.textContent, "subscribed_now welcome_sent_to");
   assert.equal(email.value, "", "a stored watch clears the field so a second submit is deliberate");
   assert.equal(button.disabled, false);
+  assert.equal(sessionStorage.values.size, 1, "a validated watch receipt is stored in same-tab state");
+  assert.equal(assigned, "/following/#your-following");
+});
+
+test("a valid success stores a strict default watch receipt and does not leak the email", async () => {
+  respond = () => jsonResponse({ ok: true, no_topic: true, created: true, watch: defaultWatchReceipt() });
+  await submit("Reader@Example.com");
+  const stored = sessionStorage.getItem(DEFAULT_WATCH_HANDOFF_STORAGE_KEY);
+  const receipt = JSON.parse(stored);
+  assert.equal(receipt.schema, "cityscroll.following_default_watch_handoff.v1");
+  assert.equal(receipt.version, 1);
+  assert.equal(receipt.watch.watch_id, "watch:contracts-weekly-citywide");
+  assert.equal(receipt.workstream_card, "FS-16");
+  assert.equal(receipt.watch.followingUrl, "/following/");
+  assert.equal(receipt.watch.lens, "money");
+  assert.equal(receipt.watch.freq, "weekly");
+  assert.equal(receipt.created, true);
+  assert.doesNotMatch(stored, /reader@example\.com/i);
 });
 
 test("an address that already has the default watch is told so, not told it just subscribed", async () => {
-  respond = () => jsonResponse({ ok: true, no_topic: true, created: false });
+  respond = () => jsonResponse({ ok: true, no_topic: true, created: false, watch: defaultWatchReceipt() });
   await submit();
   assert.equal(message.textContent, "home_cta_active_now");
 });

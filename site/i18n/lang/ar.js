@@ -438,6 +438,7 @@
     browse_cta_prompt: "هل تريد تحديثات بالبريد؟",
     home_cta_active_now: "أنت مشترك بالفعل — سنواصل إرسال البريد كل يوم اثنين.",
     home_cta_open_watches: "افتح متابعاتك",
+    following_default_choose_another_watch: "Choose another watch",
     home_cta_submit: "احصل على التحديثات الأسبوعية",
     home_cta_topics: "اختر ما تريد متابعته",
     alert_context_scope: "ستصلك رسالة بريد عن: {scope}",

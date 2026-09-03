@@ -1,9 +1,14 @@
 import { installFilterChipNavigation } from "../affordance_grammar.mjs";
 import {
+  buildFollowingGraphContext,
   composeWatchRuleSentence,
+  followingWatchIdentityHtml,
   followingCadenceLabel,
   requestedFollowingTab,
 } from "../following_view.mjs";
+import {
+  consumeFollowingDefaultWatchReceipt,
+} from "../following_default_watch_receipt.mjs";
 import {
   followingManagementUrl,
   followingPersonalIslandHtml,
@@ -23,6 +28,12 @@ const followingRum = createFollowingRumInstrumentation({
   rum: runtimeRumSemanticMilestones(),
 });
 
+function esc(value) {
+  return String(value ?? "").replace(/[<>&"']/g, (char) => ({
+    "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;", "'": "&#39;",
+  }[char]));
+}
+
 function canonical(value) {
   if (Array.isArray(value)) {
     const rows = value.map(canonical).filter((item) => item !== undefined);
@@ -37,6 +48,80 @@ function canonical(value) {
   }
   if (value === null || value === undefined || value === false || value === "") return undefined;
   return value;
+}
+
+function receiptWatchKey(watch = {}) {
+  const lens = String(watch.lens || "money").trim();
+  let filter;
+  try {
+    filter = JSON.parse(JSON.stringify(watch.filter || {}));
+  } catch {
+    filter = {};
+  }
+  return JSON.stringify({
+    lens,
+    filter: canonical(filter || {}),
+    freq: watch.freq === "weekly" ? "weekly" : "daily",
+  });
+}
+
+function hasExactWatch(host, watch) {
+  const key = receiptWatchKey(watch);
+  if (!host) return false;
+  const cards = host.getElementsByTagName("article");
+  for (const row of cards) {
+    if (!row?.dataset) continue;
+    if (!row.dataset.watchKey) continue;
+    const candidate = {
+      lens: row.dataset.watchLens,
+      filter: parseWatchFilter(row.dataset.watchFilter || "{}"),
+      freq: row.dataset.watchFreq,
+    };
+    if (receiptWatchKey(candidate) === key) return true;
+  }
+  return false;
+}
+
+function parseWatchFilter(raw) {
+  try {
+    return typeof raw === "string" ? JSON.parse(raw) : raw;
+  } catch {
+    return {};
+  }
+}
+
+function renderDefaultWatchReceiptCard(watch, createHref) {
+  const context = buildFollowingGraphContext({
+    lens: watch.lens,
+    filter: watch.filter,
+    freq: watch.freq,
+    frequency: watch.freq,
+  }, { backToEntity: true });
+  if (!context) return "";
+  const identity = followingWatchIdentityHtml(context, { headingTag: "h3" });
+  const note = window.t?.("quiz_no_account") || "";
+  return `<article class="following-watch" data-watch-key="${esc(watch.watch_id)}" data-watch-lens="${esc(watch.lens)}" data-watch-filter='${esc(JSON.stringify(watch.filter || {}))}' data-watch-freq="${esc(watch.freq)}" data-following-default-watch-receipt>
+    <p class="following-watch-note">${esc(note)}</p>
+    ${identity}
+    <p class="following-personal-recovery"><a href="${esc(createHref)}" data-following-create-recovery>${esc(window.t?.("following_default_choose_another_watch") || "")}</a></p>
+  </article>`;
+}
+
+function consumeDefaultWatchReceiptIntoPersonal() {
+  const consumed = consumeFollowingDefaultWatchReceipt(globalThis.sessionStorage, Date.now());
+  if (!consumed?.ok) return;
+  const watch = consumed.receipt?.watch;
+  if (!watch || typeof watch !== "object") return;
+  const host = personalHost();
+  if (!host) return;
+  const createHref = followingUrlForTab(location, "create");
+  const sameWatch = hasExactWatch(host, watch);
+  if (sameWatch) return;
+  const sessionRecognized = host.querySelector("[data-session-recognized]")?.getAttribute("data-session-recognized") === "true";
+  if (!sessionRecognized && watch?.watch_id && watch?.lens && watch?.freq) {
+    host.innerHTML = renderDefaultWatchReceiptCard(watch, createHref);
+    stampPersonalHost("unrecognized");
+  }
 }
 
 function watchKey(lens, filter) {
@@ -168,7 +253,9 @@ function wireRefineLive() {
 function watchCountFromPersonal() {
   const host = root?.querySelector("[data-personal-watch-list]");
   if (!host) return 0;
-  if (host.querySelector("[data-session-recognized='false']")) return 0;
+  if (host.querySelector("[data-session-recognized='false']") && !host.querySelector("[data-following-default-watch-receipt]")) {
+    return 0;
+  }
   return host.querySelectorAll("[data-watch-key]").length;
 }
 
@@ -365,6 +452,7 @@ async function loadPersonal({ keepExisting = false, focusWatchKey = "" } = {}) {
       return;
     }
     host.innerHTML = await response.text();
+    consumeDefaultWatchReceiptIntoPersonal();
     const nextState = followingPersonalUiState({
       sessionRecognized: host.querySelector("[data-session-recognized]")?.getAttribute("data-session-recognized") === "true",
       watchCount: host.querySelectorAll("[data-watch-key]").length,

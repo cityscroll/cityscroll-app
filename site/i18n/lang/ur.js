@@ -438,6 +438,7 @@
     browse_cta_prompt: "ای میل اپ ڈیٹس چاہتے ہیں؟",
     home_cta_active_now: "آپ پہلے سے یہ حاصل کر رہے ہیں — ہم ہر پیر ای میل بھیجتے رہیں گے۔",
     home_cta_open_watches: "اپنی واچز کھولیں",
+    following_default_choose_another_watch: "Choose another watch",
     home_cta_submit: "ہفتہ وار اپڈیٹس حاصل کریں",
     home_cta_topics: "فالو کرنے کے لیے منتخب کریں",
     alert_context_scope: "آپ کو اس بارے میں ای میل ملے گی: {scope}",

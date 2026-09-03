@@ -86,7 +86,7 @@ function personalWatchHtml(watch, credential) {
   const summary = context.ruleSentence || watch.query || "Custom watch";
   const status = watch.paused ? "Paused" : "Active";
   const cadenceLabel = followingCadenceLabel(watch.freq || watch.frequency);
-  return `<article class="following-watch" data-watch-key="${esc(watch.key)}" data-watch-lens="${esc(watch.lens)}" data-watch-filter="${esc(JSON.stringify(watch.filter || {}))}">
+  return `<article class="following-watch" data-watch-key="${esc(watch.key)}" data-watch-lens="${esc(watch.lens)}" data-watch-filter="${esc(JSON.stringify(watch.filter || {}))}" data-watch-freq="${esc(watch.freq || watch.frequency || "daily")}">
     <div class="following-watch-heading">
       <h3>${esc(summary)}</h3>
       <p class="watch-meta">${status} · ${esc(cadenceLabel)}</p>

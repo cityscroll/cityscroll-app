@@ -1,3 +1,8 @@
+import {
+  buildFollowingDefaultWatchReceipt,
+  setFollowingDefaultWatchReceipt,
+} from "./following_default_watch_receipt.mjs";
+
 // The disclosed weekly-Contracts default under the masthead. The card ships on every
 // index.html route, so this enhancement has to attach whether the reader landed on the
 // static-first home (site/home_entry.mjs) or on a hash route that boots the full app
@@ -66,27 +71,34 @@ export function initHomeDefaultSubscription() {
       emailInput.focus();
       return;
     }
-    emailInput.removeAttribute("aria-invalid");
-    button.disabled = true;
-    message.textContent = window.t?.("subscribing_now") || "Subscribing…";
-    const lang = window.LANG || "en";
-    if (langField) langField.value = lang;
-    try {
-      const result = await subscribeHomeDefault(email, lang);
-      if (result?.ok) {
-        message.textContent = result.created === false
-          ? (window.t?.("home_cta_active_now") || "You're already getting these.")
-          : `${window.t?.("subscribed_now") || "You're subscribed — we'll email you."} ${window.t?.("welcome_sent_to", { email }) || ""}`.trim();
-        emailInput.value = "";
-      } else if (result?.subscribed === true) {
-        message.textContent = `${window.t?.("subscribed_now") || "You're subscribed — we'll email you."} ${homeCtaErrorMessage(result?.reason)}`.trim();
-      } else {
-        message.textContent = homeCtaErrorMessage(result?.reason);
+  emailInput.removeAttribute("aria-invalid");
+  button.disabled = true;
+  message.textContent = window.t?.("subscribing_now") || "Subscribing…";
+  const lang = window.LANG || "en";
+  if (langField) langField.value = lang;
+  try {
+    const result = await subscribeHomeDefault(email, lang);
+    if (result?.ok) {
+      const receipt = buildFollowingDefaultWatchReceipt({ watch: result.watch, created: result.created, now: Date.now() });
+      if (receipt?.ok) {
+        setFollowingDefaultWatchReceipt(receipt);
+        const destination = result.watch?.followingUrl || "/following/";
+        const normalizedDestination = destination.endsWith("/") ? destination : `${destination}/`;
+        location.assign(`${normalizedDestination}#your-following`);
       }
-    } catch {
-      message.textContent = window.t?.("cant_reach_server") || "Couldn't reach the server — try again.";
-    } finally {
-      button.disabled = false;
+      message.textContent = result.created === false
+        ? (window.t?.("home_cta_active_now") || "You're already getting these.")
+        : `${window.t?.("subscribed_now") || "You're subscribed — we'll email you."} ${window.t?.("welcome_sent_to", { email }) || ""}`.trim();
+      emailInput.value = "";
+    } else if (result?.subscribed === true) {
+      message.textContent = `${window.t?.("subscribed_now") || "You're subscribed — we'll email you."} ${homeCtaErrorMessage(result?.reason)}`.trim();
+    } else {
+      message.textContent = homeCtaErrorMessage(result?.reason);
     }
+  } catch {
+    message.textContent = window.t?.("cant_reach_server") || "Couldn't reach the server — try again.";
+  } finally {
+    button.disabled = false;
+  }
   });
 }
