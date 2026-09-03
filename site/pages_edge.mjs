@@ -395,7 +395,10 @@ async function handleMatter(request, env, matterId) {
     view = null;
   }
   if (!view) return matterUnavailableResponse(matterId);
-  const html = renderLegislativeMatterDocument(view, { currentHref: request.url });
+  const html = renderLegislativeMatterDocument(view, {
+    currentHref: request.url,
+    today: new Date().toISOString().slice(0, 10),
+  });
   if (!html) return matterUnavailableResponse(matterId);
   const headers = {
     "Content-Type": "text/html; charset=utf-8",
