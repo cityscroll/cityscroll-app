@@ -50,7 +50,7 @@
     now_calview_switch_label: "ابھی دکھائیں بطور",
     now_calview_cards: "کارڈز",
     now_calview_calendar: "کیلنڈر",
-    now_calview_sparse_note: "کیلنڈر ویو کے لیے ابھی تک کافی شیڈول آئٹمز نہیں ہیں — اس کے بجائے کارڈز دکھائے جا رہے ہیں۔",
+    now_calview_sparse_note: "کیلنڈر کے لیے ابھی تک کافی تاریخیں نہیں ہیں۔ اس کے بجائے کارڈز دکھائے جا رہے ہیں۔",
     now_basis_derived: "شائع شدہ نسبتی تاریخ کے اصول سے اخذ کردہ",
     now_basis_no_date: "کوئی مقررہ تاریخ شائع نہیں ہوئی",
     now_date_responses_due: "جوابات کی آخری تاریخ",

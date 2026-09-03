@@ -50,7 +50,7 @@
     now_calview_switch_label: "عرض الآن كـ",
     now_calview_cards: "بطاقات",
     now_calview_calendar: "التقويم",
-    now_calview_sparse_note: "لا توجد عناصر مجدولة كافية بعد لعرض التقويم — يتم عرض البطاقات بدلاً من ذلك.",
+    now_calview_sparse_note: "لا توجد تواريخ كافية بعد للتقويم. يتم عرض البطاقات بدلاً من ذلك.",
     now_basis_derived: "مشتق من قاعدة تاريخ نسبي منشورة",
     now_basis_no_date: "لا يوجد تاريخ ثابت منشور",
     now_date_responses_due: "آخر موعد للردود",

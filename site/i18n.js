@@ -195,7 +195,7 @@ const STRINGS = {
     now_calview_switch_label: "Show Now as",
     now_calview_cards: "Cards",
     now_calview_calendar: "Calendar",
-    now_calview_sparse_note: "Not enough scheduled items yet for a calendar view — showing cards instead.",
+    now_calview_sparse_note: "Not enough dates yet for a calendar. Showing cards instead.",
     now_basis_derived: "Derived from a published relative-date rule",
     now_basis_no_date: "No fixed date published",
     now_date_responses_due: "Responses due",

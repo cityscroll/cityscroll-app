@@ -48,7 +48,7 @@
     now_calview_switch_label: "Показать как",
     now_calview_cards: "Карточки",
     now_calview_calendar: "Календарь",
-    now_calview_sparse_note: "Пока недостаточно запланированных пунктов для просмотра календаря — вместо этого показаны карточки.",
+    now_calview_sparse_note: "Пока недостаточно дат для календаря. Показаны карточки.",
     now_basis_derived: "Рассчитано по опубликованному правилу относительной даты",
     now_basis_no_date: "Фиксированная дата не опубликована",
     now_date_responses_due: "Ответы до",

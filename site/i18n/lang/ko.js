@@ -48,7 +48,7 @@
     now_calview_switch_label: "표시 방식",
     now_calview_cards: "카드",
     now_calview_calendar: "달력",
-    now_calview_sparse_note: "달력 보기를 표시할 만큼 예정된 항목이 아직 충분하지 않아 카드로 표시합니다.",
+    now_calview_sparse_note: "달력을 표시할 만큼 날짜가 아직 충분하지 않습니다. 카드로 표시합니다.",
     now_basis_derived: "공개된 상대 날짜 규칙에서 계산",
     now_basis_no_date: "공개된 고정 날짜 없음",
     now_date_responses_due: "응답 마감",

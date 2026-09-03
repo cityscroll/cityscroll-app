@@ -52,7 +52,7 @@
     now_calview_switch_label: "Afficher Maintenant en",
     now_calview_cards: "Cartes",
     now_calview_calendar: "Calendrier",
-    now_calview_sparse_note: "Pas encore assez d'éléments programmés pour un affichage calendrier — affichage des cartes à la place.",
+    now_calview_sparse_note: "Pas encore assez de dates pour un calendrier. Affichage des cartes à la place.",
     now_basis_derived: "Calculée à partir d’une règle de date relative publiée",
     now_basis_no_date: "Aucune date fixe publiée",
     now_date_responses_due: "Réponses attendues avant",

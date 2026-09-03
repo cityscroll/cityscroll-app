@@ -56,7 +56,7 @@
     now_calview_switch_label: "Pokaż jako",
     now_calview_cards: "Karty",
     now_calview_calendar: "Kalendarz",
-    now_calview_sparse_note: "Za mało zaplanowanych pozycji na widok kalendarza — zamiast tego pokazano karty.",
+    now_calview_sparse_note: "Za mało dat na kalendarz. Zamiast tego pokazano karty.",
     now_basis_derived: "Wyliczona z opublikowanej reguły daty względnej",
     now_basis_no_date: "Brak opublikowanej stałej daty",
     now_date_responses_due: "Odpowiedzi do",

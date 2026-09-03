@@ -48,7 +48,7 @@
     now_calview_switch_label: "এখন যেভাবে দেখাবে",
     now_calview_cards: "কার্ড",
     now_calview_calendar: "ক্যালেন্ডার",
-    now_calview_sparse_note: "ক্যালেন্ডার ভিউয়ের জন্য এখনও পর্যাপ্ত নির্ধারিত আইটেম নেই — পরিবর্তে কার্ড দেখানো হচ্ছে।",
+    now_calview_sparse_note: "ক্যালেন্ডারের জন্য এখনও পর্যাপ্ত তারিখ নেই। পরিবর্তে কার্ড দেখানো হচ্ছে।",
     now_basis_derived: "প্রকাশিত আপেক্ষিক-তারিখের নিয়ম থেকে নির্ণীত",
     now_basis_no_date: "নির্দিষ্ট তারিখ প্রকাশিত নয়",
     now_date_responses_due: "প্রতিক্রিয়ার সময়সীমা",

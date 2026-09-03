@@ -48,7 +48,7 @@
     now_calview_switch_label: "显示方式",
     now_calview_cards: "卡片",
     now_calview_calendar: "日历",
-    now_calview_sparse_note: "已安排的项目还不够多，无法显示日历视图——改为显示卡片。",
+    now_calview_sparse_note: "日期还不够多，无法显示日历。改为显示卡片。",
     now_basis_derived: "根据已公布的相对日期规则推导",
     now_basis_no_date: "未公布固定日期",
     now_date_responses_due: "回复截止",

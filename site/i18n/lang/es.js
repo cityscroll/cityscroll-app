@@ -48,7 +48,7 @@
     now_calview_switch_label: "Mostrar Ahora como",
     now_calview_cards: "Tarjetas",
     now_calview_calendar: "Calendario",
-    now_calview_sparse_note: "Aún no hay suficientes elementos programados para una vista de calendario; se muestran tarjetas en su lugar.",
+    now_calview_sparse_note: "Aún no hay suficientes fechas para un calendario. Se muestran tarjetas en su lugar.",
     now_basis_derived: "Derivada de una regla publicada de fecha relativa",
     now_basis_no_date: "Sin fecha fija publicada",
     now_date_responses_due: "Respuestas hasta",

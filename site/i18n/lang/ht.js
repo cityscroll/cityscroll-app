@@ -47,7 +47,7 @@
     now_calview_switch_label: "Montre Kounye a kòm",
     now_calview_cards: "Kat",
     now_calview_calendar: "Kalandriye",
-    now_calview_sparse_note: "Poko gen ase eleman ki pwograme pou yon vi kalandriye — kat yo parèt olye de sa.",
+    now_calview_sparse_note: "Poko gen ase dat pou yon kalandriye. Kat yo parèt olye de sa.",
     now_basis_derived: "Kalkile apati yon règ dat relatif ki pibliye",
     now_basis_no_date: "Pa gen dat fiks pibliye",
     now_date_responses_due: "Repons yo dwe fèt anvan",
