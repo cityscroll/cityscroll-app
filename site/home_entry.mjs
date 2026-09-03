@@ -35,7 +35,7 @@ function previewFailureHTML() {
   return renderInterpretPreview({
     state: "error",
     error: window.t?.("topic_search_coverage_provider_unavailable", {
-      source: window.t?.("tab_money") || "Contracts",
+      source: window.t?.("search_label") || "Search",
     }) || "This topic could not be previewed right now. Try again.",
   });
 }

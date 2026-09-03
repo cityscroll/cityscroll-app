@@ -1,0 +1,247 @@
+{
+  "schema": "cityscroll.preview-federated-form-factor-capture.v1",
+  "build_revision": "8d08d45ea2e167c94100f71c9c8c1e1f7398da87",
+  "source_revision": "8d08d45ea2e167c94100f71c9c8c1e1f7398da87",
+  "viewports": [
+    390,
+    1440
+  ],
+  "records": [
+    {
+      "scenario": "all-sources-initial",
+      "route": "http://127.0.0.1:59068/",
+      "viewport": 390,
+      "revision": "8d08d45ea2e167c94100f71c9c8c1e1f7398da87",
+      "query": "parks",
+      "scope": "all",
+      "mode": "all-sources federation, no scope parameter",
+      "provider_state": "matched, complete coverage",
+      "cache_mode": "stubbed federated capability, no publisher contacted",
+      "capture": "all-sources-initial-390.png",
+      "observed": {
+        "preview_state": "results",
+        "visible_scope": "Scope: All sources",
+        "coverage_state": "complete",
+        "result_card_count": 3,
+        "full_results_href": "/search/?q=parks"
+      },
+      "assertion": "initial Preview requests the all-sources federation and shows 'All sources' as the active scope with three mixed-domain cards"
+    },
+    {
+      "scenario": "contracts-narrowed",
+      "route": "http://127.0.0.1:59068/",
+      "viewport": 390,
+      "revision": "8d08d45ea2e167c94100f71c9c8c1e1f7398da87",
+      "query": "parks",
+      "scope": "contracts",
+      "mode": "registered Contracts allowlist (notices, vendors)",
+      "provider_state": "matched, complete coverage",
+      "cache_mode": "stubbed federated capability, no publisher contacted",
+      "capture": "contracts-narrowed-390.png",
+      "observed": {
+        "preview_state": "results",
+        "visible_scope": "Scope: Contracts",
+        "coverage_state": "complete",
+        "result_card_count": 2,
+        "full_results_href": "/browse/contracts/?q=parks"
+      },
+      "assertion": "one keyboard action narrows the same query to the registered Contracts scope; the active label reads Contracts"
+    },
+    {
+      "scenario": "mixed-domain-results",
+      "route": "http://127.0.0.1:59068/",
+      "viewport": 390,
+      "revision": "8d08d45ea2e167c94100f71c9c8c1e1f7398da87",
+      "query": "zoning hearing",
+      "scope": "all",
+      "mode": "all-sources federation, no scope parameter",
+      "provider_state": "matched, complete coverage",
+      "cache_mode": "stubbed federated capability, no publisher contacted",
+      "capture": "mixed-domain-results-390.png",
+      "observed": {
+        "preview_state": "results",
+        "visible_scope": "Scope: All sources",
+        "coverage_state": "complete",
+        "result_card_count": 3,
+        "full_results_href": "/search/?q=zoning%20hearing"
+      },
+      "assertion": "an ordinary cross-domain query answers with canonical references from more than one domain, in the capability's own order"
+    },
+    {
+      "scenario": "partial-coverage",
+      "route": "http://127.0.0.1:59068/",
+      "viewport": 390,
+      "revision": "8d08d45ea2e167c94100f71c9c8c1e1f7398da87",
+      "query": "parks",
+      "scope": "all",
+      "mode": "all-sources federation, one lens degraded",
+      "provider_state": "partial coverage (meetings unavailable)",
+      "cache_mode": "stubbed federated capability, no publisher contacted",
+      "capture": "partial-coverage-390.png",
+      "observed": {
+        "preview_state": "results",
+        "visible_scope": "Scope: All sources",
+        "coverage_state": "partial",
+        "result_card_count": 3,
+        "full_results_href": "/search/?q=parks"
+      },
+      "assertion": "results still render while the coverage line honestly discloses that some sources could not be searched"
+    },
+    {
+      "scenario": "provider-unavailable",
+      "route": "http://127.0.0.1:59068/",
+      "viewport": 390,
+      "revision": "8d08d45ea2e167c94100f71c9c8c1e1f7398da87",
+      "query": "parks",
+      "scope": "all",
+      "mode": "all-sources federation, transport failure",
+      "provider_state": "unavailable (HTTP 503)",
+      "cache_mode": "stubbed federated capability, no publisher contacted",
+      "capture": "provider-unavailable-390.png",
+      "observed": {
+        "preview_state": "error",
+        "visible_scope": "Scope: All sources",
+        "coverage_state": null,
+        "result_card_count": 0,
+        "full_results_href": "/search/?q=parks"
+      },
+      "assertion": "a total provider failure renders an explicit error state, distinct from a genuine empty result, with the active scope still visible"
+    },
+    {
+      "scenario": "full-results-handoff",
+      "route": "http://127.0.0.1:59068/",
+      "viewport": 390,
+      "revision": "8d08d45ea2e167c94100f71c9c8c1e1f7398da87",
+      "query": "parks",
+      "scope": "all",
+      "mode": "full-result destination for the visible scope",
+      "provider_state": "n/a (destination document)",
+      "cache_mode": "stubbed federated capability, no publisher contacted",
+      "capture": "full-results-handoff-390.png",
+      "observed": {
+        "handoff_href": "/search/?q=parks",
+        "destination_url": "http://127.0.0.1:59068/search/?q=parks",
+        "destination_query": "parks"
+      },
+      "assertion": "the full-results link preserves the exact query and lands on the surface matching the visible scope"
+    },
+    {
+      "scenario": "all-sources-initial",
+      "route": "http://127.0.0.1:59068/",
+      "viewport": 1440,
+      "revision": "8d08d45ea2e167c94100f71c9c8c1e1f7398da87",
+      "query": "parks",
+      "scope": "all",
+      "mode": "all-sources federation, no scope parameter",
+      "provider_state": "matched, complete coverage",
+      "cache_mode": "stubbed federated capability, no publisher contacted",
+      "capture": "all-sources-initial-1440.png",
+      "observed": {
+        "preview_state": "results",
+        "visible_scope": "Scope: All sources",
+        "coverage_state": "complete",
+        "result_card_count": 3,
+        "full_results_href": "/search/?q=parks"
+      },
+      "assertion": "initial Preview requests the all-sources federation and shows 'All sources' as the active scope with three mixed-domain cards"
+    },
+    {
+      "scenario": "contracts-narrowed",
+      "route": "http://127.0.0.1:59068/",
+      "viewport": 1440,
+      "revision": "8d08d45ea2e167c94100f71c9c8c1e1f7398da87",
+      "query": "parks",
+      "scope": "contracts",
+      "mode": "registered Contracts allowlist (notices, vendors)",
+      "provider_state": "matched, complete coverage",
+      "cache_mode": "stubbed federated capability, no publisher contacted",
+      "capture": "contracts-narrowed-1440.png",
+      "observed": {
+        "preview_state": "results",
+        "visible_scope": "Scope: Contracts",
+        "coverage_state": "complete",
+        "result_card_count": 2,
+        "full_results_href": "/browse/contracts/?q=parks"
+      },
+      "assertion": "one keyboard action narrows the same query to the registered Contracts scope; the active label reads Contracts"
+    },
+    {
+      "scenario": "mixed-domain-results",
+      "route": "http://127.0.0.1:59068/",
+      "viewport": 1440,
+      "revision": "8d08d45ea2e167c94100f71c9c8c1e1f7398da87",
+      "query": "zoning hearing",
+      "scope": "all",
+      "mode": "all-sources federation, no scope parameter",
+      "provider_state": "matched, complete coverage",
+      "cache_mode": "stubbed federated capability, no publisher contacted",
+      "capture": "mixed-domain-results-1440.png",
+      "observed": {
+        "preview_state": "results",
+        "visible_scope": "Scope: All sources",
+        "coverage_state": "complete",
+        "result_card_count": 3,
+        "full_results_href": "/search/?q=zoning%20hearing"
+      },
+      "assertion": "an ordinary cross-domain query answers with canonical references from more than one domain, in the capability's own order"
+    },
+    {
+      "scenario": "partial-coverage",
+      "route": "http://127.0.0.1:59068/",
+      "viewport": 1440,
+      "revision": "8d08d45ea2e167c94100f71c9c8c1e1f7398da87",
+      "query": "parks",
+      "scope": "all",
+      "mode": "all-sources federation, one lens degraded",
+      "provider_state": "partial coverage (meetings unavailable)",
+      "cache_mode": "stubbed federated capability, no publisher contacted",
+      "capture": "partial-coverage-1440.png",
+      "observed": {
+        "preview_state": "results",
+        "visible_scope": "Scope: All sources",
+        "coverage_state": "partial",
+        "result_card_count": 3,
+        "full_results_href": "/search/?q=parks"
+      },
+      "assertion": "results still render while the coverage line honestly discloses that some sources could not be searched"
+    },
+    {
+      "scenario": "provider-unavailable",
+      "route": "http://127.0.0.1:59068/",
+      "viewport": 1440,
+      "revision": "8d08d45ea2e167c94100f71c9c8c1e1f7398da87",
+      "query": "parks",
+      "scope": "all",
+      "mode": "all-sources federation, transport failure",
+      "provider_state": "unavailable (HTTP 503)",
+      "cache_mode": "stubbed federated capability, no publisher contacted",
+      "capture": "provider-unavailable-1440.png",
+      "observed": {
+        "preview_state": "error",
+        "visible_scope": "Scope: All sources",
+        "coverage_state": null,
+        "result_card_count": 0,
+        "full_results_href": "/search/?q=parks"
+      },
+      "assertion": "a total provider failure renders an explicit error state, distinct from a genuine empty result, with the active scope still visible"
+    },
+    {
+      "scenario": "full-results-handoff",
+      "route": "http://127.0.0.1:59068/",
+      "viewport": 1440,
+      "revision": "8d08d45ea2e167c94100f71c9c8c1e1f7398da87",
+      "query": "parks",
+      "scope": "all",
+      "mode": "full-result destination for the visible scope",
+      "provider_state": "n/a (destination document)",
+      "cache_mode": "stubbed federated capability, no publisher contacted",
+      "capture": "full-results-handoff-1440.png",
+      "observed": {
+        "handoff_href": "/search/?q=parks",
+        "destination_url": "http://127.0.0.1:59068/search/?q=parks",
+        "destination_query": "parks"
+      },
+      "assertion": "the full-results link preserves the exact query and lands on the surface matching the visible scope"
+    }
+  ]
+}

@@ -1572,6 +1572,18 @@ const STRINGS = {
     pick_notice_panel_heading: "Contract trail",
     preview_panel_heading: "Preview",
 
+    // Homepage Preview form factor (federated scope disclosure)
+    preview_scope_label: "Scope",
+    preview_scope_all_sources: "All sources",
+    preview_scope_narrow_contracts: "Contracts only",
+    preview_coverage_complete: "All searched sources responded.",
+    preview_coverage_partial: "Search coverage is partial. Showing the available results.",
+    preview_coverage_unreported: "Coverage details are unavailable for this search.",
+    preview_full_results_all: "See all results",
+    preview_full_results_contracts: "See Contracts results",
+    preview_empty_input: "Enter a topic to preview matching records.",
+    preview_interpretation_unavailable: "This topic could not be interpreted right now. Try again.",
+
     // Quiz panel
     quiz_narrow_placeholder: "type what you're looking for, or pick a topic above…",
     quiz_param_agency:   "agency (optional) — for example, Buildings",

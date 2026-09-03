@@ -22,28 +22,34 @@ export function renderInterpretPreview({
   rows = [],
   renderRow,
   heading = "Preview",
+  header = "",
   empty = "No matches for this interpreted topic.",
   error = "This topic could not be previewed right now. Try again.",
   state = "ready",
   escape = defaultEscape,
 } = {}) {
+  // The header slot carries the form-factor chrome (active scope, coverage,
+  // full-result handoff) as pre-rendered HTML so this projection stays a
+  // bounded row renderer and cannot grow a second card vocabulary.
+  const headerHtml = String(header || "");
   if (state === "error") {
-    return `<div class="interpret-preview interpret-preview-empty" data-preview-state="error" role="status">${escape(error)}</div>`;
+    return `<div class="interpret-preview interpret-preview-empty" data-preview-state="error" role="status">${headerHtml}${escape(error)}</div>`;
   }
   const bounded = boundedPreviewRows(rows);
   if (!bounded.length) {
-    return `<div class="interpret-preview interpret-preview-empty" data-preview-state="empty" role="status">${escape(empty)}</div>`;
+    return `<div class="interpret-preview interpret-preview-empty" data-preview-state="empty" role="status">${headerHtml}${escape(empty)}</div>`;
   }
   const renderedRows = bounded
     .map((row, index) => typeof renderRow === "function" ? renderRow(row, index) : "")
     .filter(Boolean)
     .join("");
   if (!renderedRows) {
-    return `<div class="interpret-preview interpret-preview-empty" data-preview-state="empty" role="status">${escape(empty)}</div>`;
+    return `<div class="interpret-preview interpret-preview-empty" data-preview-state="empty" role="status">${headerHtml}${escape(empty)}</div>`;
   }
   const label = query ? `${heading} for “${query}”` : heading;
   return `<section class="interpret-preview" data-preview-state="results" aria-labelledby="interpret-preview-heading">
     <h3 id="interpret-preview-heading">${escape(label)}</h3>
+    ${headerHtml}
     <p class="interpret-preview-note">Showing the first ${bounded.length} matching record${bounded.length === 1 ? "" : "s"}.</p>
     <div class="interpret-preview-results">${renderedRows}</div>
   </section>`;

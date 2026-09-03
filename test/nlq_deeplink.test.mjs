@@ -61,7 +61,7 @@ test("saved presets are validated, deduplicated by hash, and removable", () => {
 test("the Money UI wires resolved links, complete replay filters, and local presets", () => {
   assert.match(indexSource, /<script src="nl_deeplink\.js"><\/script>/);
   assert.match(indexSource, /const deepLink=buildMoneyDeepLink\(p\)/);
-  assert.match(indexSource, /bindNLQResolvedActions\(text, deepLink\)/);
+  assert.match(indexSource, /bindNLQResolvedActions\(state\.text, state\.deepLink\)/);
   assert.match(indexSource, /filterMoneySnapshot\(snapshotRows/);
   assert.match(indexSource, /maxAmount,category,months/);
   assert.match(indexSource, /excludeSpecial,entityRefs,contractObjectRef:contractIdentity\?\.object_ref\|\|"",sort,today:todayISO\(\)/);
