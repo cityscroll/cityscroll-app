@@ -394,7 +394,7 @@ test("Now is promoted as a document route while civic objects remain Browse grou
   assert.match(html, /href="\/browse\/"/);
   assert.match(routing, /raw === "now" \|\| raw\.startsWith\("now\?"\)/);
   assert.match(routing, /scopeFromRouteHash\("#"\+raw/);
-  assert.match(routing, /showNow\(\{scope:CrolScope\.scopeHasConstraints\(scope\)\?scope:null\}\)/);
+  assert.match(routing, /showNow\(\{\s*scope:CrolScope\.scopeHasConstraints\(scope\)\?scope:null,/);
   assert.match(main, /import\("\.\/now\.mjs"\)/);
   assert.match(nowApp, /import\("\.\.\/now_view\.mjs"\)/);
   assert.doesNotMatch(nowApp, /now_surface/);

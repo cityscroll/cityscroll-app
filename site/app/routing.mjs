@@ -20,6 +20,10 @@ import {
   routeHashWithLandView,
 } from "../land_view_state.mjs";
 import {
+  calendarViewFromRouteHash,
+  routeHashWithCalendarView,
+} from "../calendar_display_state.mjs";
+import {
   installLandViewSwitch,
   landMapRenderer,
   paintLandViewPresentation,
@@ -1102,7 +1106,9 @@ function applyHash(){
     // Canonicalizing a Land route must not drop its presentation state. An unknown or
     // default view normalizes away here, which is how `view=globe` and `view=list` both
     // settle on the legacy List address without touching a semantic key.
-    const adapted=scopeSurface==="land"?routeHashWithLandView(rebuilt,landViewFromRouteHash("#"+raw)):rebuilt;
+    const adapted=scopeSurface==="land"?routeHashWithLandView(rebuilt,landViewFromRouteHash("#"+raw))
+      :scopeSurface==="now"?routeHashWithCalendarView(rebuilt,calendarViewFromRouteHash("#"+raw))
+      :rebuilt;
     const canonical = preserveAnalyticalProjectionQuery("#"+raw, carryWalk(adapted, "#"+raw));
     if(canonical!=="#"+raw){
       history.replaceState(routeHistoryState({entry:{hash:canonical,x:normalizeHistoryPoint(scrollX),y:normalizeHistoryPoint(scrollY)}}),"",routeUrlForHash(canonical));
@@ -1157,7 +1163,11 @@ function applyHash(){
     return true;
   }
   if(raw === "now" || raw.startsWith("now?")){
-    showNow({scope:CrolScope.scopeHasConstraints(scope)?scope:null});
+    showNow({
+      scope:CrolScope.scopeHasConstraints(scope)?scope:null,
+      view:calendarViewFromRouteHash("#"+raw),
+      currentHash:"#"+raw,
+    });
     return true;
   }
   focusedItemRouteHash="";

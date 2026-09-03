@@ -539,6 +539,7 @@ export {
   calendarOccurrencesForRows,
   deduplicateCalendarOccurrences,
   recordHasAmbiguousDate,
+  recordIsCancelled,
   calendarizationCoverage,
   projectCalendarOccurrences,
 };
