@@ -4,6 +4,9 @@ import {
 } from "./rum_static_record_instrumentation.mjs";
 import { renderInterpretPreview } from "./interpret_preview.mjs";
 
+// The static-first homepage defers the full app graph (and with it boot.mjs's language
+// switcher wiring) behind a hash route, so the compact <select id="langSelect"> needs its
+// own change handler here or a language pick on the root URL does nothing.
 function initLanguageSwitcher() {
   const select = document.getElementById("langSelect");
   if (!select) return;

@@ -58,8 +58,8 @@
       "scan_hops": 1,
       "scanned_source_count": 2141,
       "sources_skipped_not_materialised": 0,
-      "path_count": 1902,
-      "worker_to_site_reference_count": 187,
+      "path_count": 1903,
+      "worker_to_site_reference_count": 183,
       "worker_to_site_data_reference_count": 28,
       "worker_to_site_data_targets": [
         "site/data/action_link_health.json",
@@ -118,7 +118,7 @@
         "warehouse",
         "worker/src/data"
       ],
-      "path_count": 3805
+      "path_count": 3810
     }
   },
   "required_paths": [
@@ -2919,7 +2919,7 @@
       "site/data/zap_projects_warehouse_lookup.json"
     ]
   },
-  "patterns_sha256": "1af6aee22375d6f917ff9e75731bc59e005c24aa265bc6ff81b3f9ac2b340a8e",
+  "patterns_sha256": "d32741df2d77e0b5014b60bfb42b1bb259f02b5e120124b2a363adec85d7713e",
   "supported_gate_classes": [
     "worker-unit",
     "architecture-evidence-shards",
@@ -3043,19 +3043,19 @@
   },
   "measured": {
     "note": "A snapshot of what the profile costs at the revision named here. These figures are reporting only; they are not part of the checked contract, because a byte total moves whenever any tracked file does.",
-    "revision": "8987079a23a890e2505877df0bc8ad42218f3f09",
+    "revision": "c55fbe98e5b58ace023c00879dad934653231b5e",
     "computed_in_reduced_checkout": false,
     "profile_paths": {
-      "count": 4023,
-      "logical_bytes": 196265824
+      "count": 4028,
+      "logical_bytes": 196312616
     },
     "deferred_paths": {
       "count": 296,
       "logical_bytes": 221499484
     },
     "excluded_paths": {
-      "count": 2129,
-      "logical_bytes": 653239384
+      "count": 2138,
+      "logical_bytes": 653381245
     },
     "site_data": {
       "tracked_count": 690,
@@ -3064,9 +3064,9 @@
       "profile_logical_bytes": 109040977
     },
     "tracked_total": {
-      "count": 6152,
-      "logical_bytes": 849505208
+      "count": 6166,
+      "logical_bytes": 849693861
     },
-    "pattern_count": 810
+    "pattern_count": 811
   }
 }

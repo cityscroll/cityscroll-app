@@ -121,6 +121,11 @@ document.body?.setAttribute("data-app-ready", "true");
 appImportTimingMark("end");
 }
 
+// The disclosed default-watch form is in the shell on every route, so its enhancement
+// attaches before the branch: a hash landing must not fall back to the raw form POST.
+const { initHomeDefaultSubscription } = await import("../home_default_watch.mjs");
+initHomeDefaultSubscription();
+
 if (isNeutralHome) {
   await import("../home_entry.mjs");
   globalThis.CROLLoadApplication = loadApplication;

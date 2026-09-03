@@ -244,7 +244,9 @@ test("primary Following and home journey stay preview-first form-first without s
   }
   const home = readFileSync(join(ROOT, "site/index.html"), "utf8");
   assert.match(home, /href="\/following\/\?onboarding=1"[^>]*id="homeCtaTopics"/);
-  assert.doesNotMatch(home, /id="homeCtaEmail"|id="homeCtaForm"/);
+  // The disclosed homepage default watch (id="homeCtaForm"/"homeCtaEmail") posts to the
+  // ordinary /subscribe transaction, never a mailto: link — already covered by the
+  // zero-mailto-addresses assertion above for this same file.
 });
 
 test("committed receipt records the measured stop and leaks no extra addresses or credentials", () => {

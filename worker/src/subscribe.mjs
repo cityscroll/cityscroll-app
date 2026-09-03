@@ -1,15 +1,19 @@
 // POST /subscribe — the public single-opt-in signup endpoint. The browser submits an
 // already-compiled lens filter (re-sanitized here, never trusted), and the worker stores the
 // subscription before sending a transactional welcome with manage + one-click unsubscribe.
-// Signup requests without a chosen watch scope are rejected until the reader previews one.
+// A topicless request carrying the disclosed homepage-default intent (no_topic + source
+// "top-of-site") gets the same weekly NYC-contracts default; any other missing-topic request
+// is rejected until the reader previews a scope on Following.
 //
 // FAIL CLOSED: returns 503 until TOKEN_SECRET + RESEND_API_KEY + SUBS are configured.
 // Rate limits are the primary bot friction on this no-CAPTCHA path and run before any write/send.
 
 import { resolveLens, sanitize } from "./lib/filter.mjs";
 import {
+  TOPICLESS_SOURCE,
   isValidEmail,
   buildSubscription,
+  buildTopiclessIntent,
   deriveSubscriberId,
   deriveWatchId,
   isDeveloperTestEmail,
@@ -60,7 +64,9 @@ export async function handleSubscribe(req, env) {
   const requestedLens = String(body.lens || "");
   const lens = SUBSCRIBABLE.has(requestedLens) ? resolveLens(requestedLens) : null;
   if (!isValidEmail(email)) return reply(req, { ok: false, reason: "bad-email" }, 400, cors);
-  if (topicless) return reply(req, { ok: false, reason: "topic-required" }, 400, cors);
+  // Only the exact disclosed homepage-default intent may skip a chosen lens. Any other
+  // missing-topic request (a different or absent source) stays rejected.
+  if (topicless && body.source !== TOPICLESS_SOURCE) return reply(req, { ok: false, reason: "bad-intent" }, 400, cors);
   if (!topicless && !lens) return reply(req, { ok: false, reason: "bad-lens" }, 400, cors);
   if ((body.channel || "email") !== "email") return reply(req, { ok: false, reason: "channel-unsupported" }, 400, cors);
 
@@ -68,21 +74,37 @@ export async function handleSubscribe(req, env) {
   if (await overLimit(env, ip, email)) return reply(req, { ok: false, reason: "rate-limited" }, 429, cors);
 
   const lang = typeof body.lang === "string" ? body.lang : "en";
-  const filter = sanitize(lens, body.filter);
-  if (lens === "legal_code" && !filter.provision_id) {
-    return reply(req, { ok: false, reason: "unsupported-scope" }, 400, cors);
+  if (!topicless) {
+    const filter = sanitize(lens, body.filter);
+    if (lens === "legal_code" && !filter.provision_id) {
+      return reply(req, { ok: false, reason: "unsupported-scope" }, 400, cors);
+    }
+    const sub = buildSubscription({ email, lens, filter, channel: "email", freq: body.freq, lang });
+    try {
+      const enrolled = await enrollAndWelcome(env, sub, { source: "following" });
+      return reply(req, { ok: true, key: enrolled.key }, 200, cors);
+    } catch (error) {
+      const reason = error?.code === "save-failed" ? "save-failed" : "send-failed";
+      return reply(req, { ok: false, reason, subscribed: error?.subscribed === true }, reason === "save-failed" ? 503 : 502, cors);
+    }
   }
-  const sub = buildSubscription({
-    email,
-    lens,
-    filter,
-    channel: "email",
-    freq: body.freq,
-    lang,
-  });
+
+  const sub = buildTopiclessIntent({ email, source: TOPICLESS_SOURCE, lang });
   try {
-    const enrolled = await enrollAndWelcome(env, sub, { source: "following" });
-    return reply(req, { ok: true, key: enrolled.key }, 200, cors);
+    const enrolled = await enrollAndWelcome(env, sub, { source: TOPICLESS_SOURCE });
+    return reply(req, {
+      ok: true,
+      no_topic: true,
+      created: enrolled.created,
+      watch: {
+        watch_id: enrolled.record.watch_id,
+        lens: enrolled.record.lens,
+        filter: enrolled.record.filter,
+        freq: enrolled.record.freq,
+        label: watchLabel(enrolled.record),
+        followingUrl: "/following/",
+      },
+    }, 200, cors);
   } catch (error) {
     const reason = error?.code === "save-failed" ? "save-failed" : "send-failed";
     return reply(req, { ok: false, reason, subscribed: error?.subscribed === true }, reason === "save-failed" ? 503 : 502, cors);
@@ -149,7 +171,7 @@ export async function enrollAndWelcome(env, candidate, { source = "following" } 
     error.subscribed = true;
     throw error;
   }
-  return { key, record };
+  return { key, record, created: !existing };
 }
 
 export async function sendWelcome(env, to, template) {

@@ -1,0 +1,81 @@
+{
+  "schema": "cityscroll.fs15-home-default-watch-evidence.v1",
+  "viewports": [
+    1440,
+    390
+  ],
+  "captures": [
+    {
+      "name": "anonymous-form-desktop.png",
+      "route": "/",
+      "viewport": 1440,
+      "revision": "d6b982c5",
+      "session": "unrecognized",
+      "mode": "js-enabled",
+      "assertion": "discloses the exact weekly Contracts/RFP promise before the email field, with a primary Get weekly updates action and secondary Choose what to follow link"
+    },
+    {
+      "name": "validation-failure-desktop.png",
+      "route": "/",
+      "viewport": 1440,
+      "revision": "d6b982c5",
+      "session": "unrecognized",
+      "mode": "js-enabled",
+      "assertion": "a rejected /subscribe request (rate-limited) is reported inline, never claimed as a successful enrollment"
+    },
+    {
+      "name": "recognized-open-watches-desktop.png",
+      "route": "/",
+      "viewport": 1440,
+      "revision": "d6b982c5",
+      "session": "recognized (simulated via sessionShowBanner's documented DOM contract; the full lazy app bundle is outside this sparse evidence checkout)",
+      "mode": "js-enabled",
+      "assertion": "recognized homepage sessions see Open your watches instead of another generic form"
+    },
+    {
+      "name": "no-js-confirmation-desktop.png",
+      "route": "/subscribe (no-JS form POST)",
+      "viewport": 1440,
+      "revision": "d6b982c5",
+      "session": "unrecognized",
+      "mode": "js-disabled (the /subscribe reply is a stand-in for the worker's own reply() output; the real form-encoded reply is asserted in worker/test/home_cta_subscribe.test.mjs)",
+      "assertion": "with JavaScript off the form really posts to /subscribe and renders the returned confirmation, which discloses the weekly Contracts subscription and links to Following"
+    },
+    {
+      "name": "anonymous-form-mobile.png",
+      "route": "/",
+      "viewport": 390,
+      "revision": "d6b982c5",
+      "session": "unrecognized",
+      "mode": "js-enabled",
+      "assertion": "discloses the exact weekly Contracts/RFP promise before the email field, with a primary Get weekly updates action and secondary Choose what to follow link"
+    },
+    {
+      "name": "validation-failure-mobile.png",
+      "route": "/",
+      "viewport": 390,
+      "revision": "d6b982c5",
+      "session": "unrecognized",
+      "mode": "js-enabled",
+      "assertion": "a rejected /subscribe request (rate-limited) is reported inline, never claimed as a successful enrollment"
+    },
+    {
+      "name": "recognized-open-watches-mobile.png",
+      "route": "/",
+      "viewport": 390,
+      "revision": "d6b982c5",
+      "session": "recognized (simulated via sessionShowBanner's documented DOM contract; the full lazy app bundle is outside this sparse evidence checkout)",
+      "mode": "js-enabled",
+      "assertion": "recognized homepage sessions see Open your watches instead of another generic form"
+    },
+    {
+      "name": "no-js-confirmation-mobile.png",
+      "route": "/subscribe (no-JS form POST)",
+      "viewport": 390,
+      "revision": "d6b982c5",
+      "session": "unrecognized",
+      "mode": "js-disabled (the /subscribe reply is a stand-in for the worker's own reply() output; the real form-encoded reply is asserted in worker/test/home_cta_subscribe.test.mjs)",
+      "assertion": "with JavaScript off the form really posts to /subscribe and renders the returned confirmation, which discloses the weekly Contracts subscription and links to Following"
+    }
+  ]
+}
