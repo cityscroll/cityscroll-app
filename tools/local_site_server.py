@@ -22,8 +22,27 @@ READINESS_RETRY_SECONDS = 0.1
 
 
 class QuietHandler(SimpleHTTPRequestHandler):
+    # HTTP/1.1 lets a browser reuse one connection for a page's whole burst of
+    # asset requests instead of opening a new TCP connection per request. Under
+    # HTTP/1.0 (the http.server default) a state transition that fetches several
+    # scripts/JSON fixtures at once can briefly exceed the listen backlog and
+    # have a connection dropped (client sees a reset, page render stalls).
+    protocol_version = "HTTP/1.1"
+
     def log_message(self, _format, *_args):
         return
+
+    def handle_one_request(self):
+        try:
+            super().handle_one_request()
+        except (ConnectionResetError, BrokenPipeError):
+            # A client (browser tab torn down mid-transition, or Playwright
+            # closing a context) dropping its end of a keep-alive connection
+            # is routine under concurrent load, not a server defect. The
+            # default handle_error would otherwise dump a traceback per
+            # occurrence, which is what showed up as a cascade of
+            # ConnectionResetError lines ahead of the real test failure.
+            self.close_connection = True
 
     def _static_document(self, route: str, query: str) -> bool:
         """Serve a generated clean-route document when the artifact provides one."""
@@ -129,6 +148,18 @@ class QuietHandler(SimpleHTTPRequestHandler):
         super().do_HEAD()
 
 
+class _RobustThreadingHTTPServer(ThreadingHTTPServer):
+    # socketserver's default backlog (5) is sized for a single client at a time.
+    # A browser opening several concurrent connections for one page transition's
+    # scripts/JSON fixtures can exceed that queue during a scheduling hiccup on a
+    # loaded CI runner, so the OS drops or resets the overflow connection instead
+    # of queuing it (the flaky dropped-navigation failures this was tuned for).
+    # Widen it well past any realistic concurrent-connection count. Set as a
+    # class attribute so server_bind()/server_activate() apply it at listen()
+    # time, rather than after the socket is already listening.
+    request_queue_size = 128
+
+
 def port_number(value: str) -> int:
     port = int(value)
     if not 0 <= port <= 65535:
@@ -218,7 +249,7 @@ def main() -> int:
     args = parser.parse_args()
 
     handler = functools.partial(QuietHandler, directory=args.directory)
-    server = ThreadingHTTPServer((args.host, args.port), handler)
+    server = _RobustThreadingHTTPServer((args.host, args.port), handler)
     server.daemon_threads = True
     base = f"http://{args.host}:{server.server_port}/"
     server_thread = threading.Thread(target=server.serve_forever, daemon=True)
