@@ -144,7 +144,11 @@ static reference scan seeded from the Worker package, and declared structural
 trees — and emits `tools/card-profile/card-work.sparse` and
 `tools/card-profile/closure.v1.json`. Edit
 `tools/card-profile/profile.config.v1.json` and re-run the deriver; never
-hand-edit the generated outputs.
+hand-edit the generated outputs. A tracked file added inside the declared
+coverage — a root document, an always-include path, or anything under an include
+tree no exclude tree defers — must be followed by that re-run: the site unit
+suite fails on a pattern list that does not materialise it, so the omission is
+caught at review time rather than in the next reduced checkout that needs it.
 
 ## Which gates run in it
 

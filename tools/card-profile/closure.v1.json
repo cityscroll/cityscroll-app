@@ -56,9 +56,9 @@
         "worker"
       ],
       "scan_hops": 1,
-      "scanned_source_count": 2140,
-      "sources_skipped_not_materialised": 1,
-      "path_count": 1900,
+      "scanned_source_count": 2141,
+      "sources_skipped_not_materialised": 0,
+      "path_count": 1902,
       "worker_to_site_reference_count": 187,
       "worker_to_site_data_reference_count": 28,
       "worker_to_site_data_targets": [
@@ -118,7 +118,7 @@
         "warehouse",
         "worker/src/data"
       ],
-      "path_count": 3796
+      "path_count": 3805
     }
   },
   "required_paths": [
@@ -2919,7 +2919,7 @@
       "site/data/zap_projects_warehouse_lookup.json"
     ]
   },
-  "patterns_sha256": "c23e75e8d50e8b290972b0ce75d2844660a853ffb3c696070466596efcdcc818",
+  "patterns_sha256": "1af6aee22375d6f917ff9e75731bc59e005c24aa265bc6ff81b3f9ac2b340a8e",
   "supported_gate_classes": [
     "worker-unit",
     "architecture-evidence-shards",
@@ -3043,19 +3043,19 @@
   },
   "measured": {
     "note": "A snapshot of what the profile costs at the revision named here. These figures are reporting only; they are not part of the checked contract, because a byte total moves whenever any tracked file does.",
-    "revision": "ac666f460a9275cf0ca1d178c3d007812bf80565",
-    "computed_in_reduced_checkout": true,
+    "revision": "8987079a23a890e2505877df0bc8ad42218f3f09",
+    "computed_in_reduced_checkout": false,
     "profile_paths": {
-      "count": 4014,
-      "logical_bytes": 196192104
+      "count": 4023,
+      "logical_bytes": 196265824
     },
     "deferred_paths": {
       "count": 296,
       "logical_bytes": 221499484
     },
     "excluded_paths": {
-      "count": 2119,
-      "logical_bytes": 644107216
+      "count": 2129,
+      "logical_bytes": 653239384
     },
     "site_data": {
       "tracked_count": 690,
@@ -3064,9 +3064,9 @@
       "profile_logical_bytes": 109040977
     },
     "tracked_total": {
-      "count": 6133,
-      "logical_bytes": 840299320
+      "count": 6152,
+      "logical_bytes": 849505208
     },
-    "pattern_count": 808
+    "pattern_count": 810
   }
 }

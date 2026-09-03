@@ -45,6 +45,31 @@ test("the committed patterns cover the closure and materialise nothing deferred"
   assert.equal(result.status, 0, `${result.stdout}${result.stderr}`);
 });
 
+test("every tracked path inside the declared coverage is materialised by the committed patterns", () => {
+  // The declared coverage is the half of the profile that is a pure function of
+  // the tracked tree: root documents, always-include paths, and every tracked
+  // path under an include tree that no exclude tree defers. A file added there
+  // without regenerating the profile is absent from every reduced checkout, so
+  // this fails until `node tools/derive_card_profile.mjs` reruns. It mirrors the
+  // declaredClosure predicate in the deriver rather than byte-comparing a
+  // regeneration, so the byte-heavy trees the profile defers stay untaxed.
+  const underAny = (path, trees) => trees.some((tree) => path === tree || path.startsWith(`${tree}/`));
+  const matches = (path) =>
+    patterns.some((pattern) => (pattern.endsWith("/") ? path.startsWith(pattern.slice(1)) : path === pattern.slice(1)));
+  const declared = [...tracked].filter((file) => {
+    if (config.always_include_paths.includes(file)) return true;
+    if (!file.includes("/")) return true;
+    if (!underAny(file, config.include_trees)) return false;
+    return !underAny(file, config.exclude_trees);
+  });
+  const missing = declared.filter((path) => !matches(path));
+  assert.ok(
+    missing.length === 0,
+    `${missing.length} tracked path(s) inside the declared coverage are not covered by the committed patterns, ` +
+      `regenerate with: node tools/derive_card_profile.mjs — starting with ${missing.slice(0, 3).join(", ")}`
+  );
+});
+
 test("every path the profile declares is a tracked path", () => {
   for (const path of closure.site_data.profile_paths) {
     assert.ok(tracked.has(path), `declared site/data closure path is not tracked: ${path}`);
