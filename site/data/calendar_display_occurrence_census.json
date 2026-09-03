@@ -1,0 +1,265 @@
+{
+  "schema": "cityscroll.calendar_display_occurrence_census.v1",
+  "version": 1,
+  "density_rule": {
+    "min_occurrences": 3,
+    "min_distinct_dates": 2,
+    "window_days": 42
+  },
+  "policy": {
+    "eligibility": "An eligible display occurrence has a valid exact date or timestamp, canonical identity, a source-observed reason, an accepted join where a relationship supplies one, a canonical CityScroll destination, and retained lifecycle and source state.",
+    "exclusion_reasons": [
+      "missing-canonical-identity",
+      "unjoined-source-record",
+      "inferred-date-no-publisher-basis",
+      "forecast-date",
+      "predicted-date",
+      "statutory-expected-date",
+      "profile-derived-date",
+      "low-confidence-derived-deadline",
+      "missing-source-basis",
+      "missing-canonical-destination",
+      "duplicate-stable-occurrence",
+      "publication-only-timestamp",
+      "ambiguous-date",
+      "undated-record"
+    ],
+    "qualification_definitions": {
+      "eligible": "At least three eligible occurrences on at least two distinct dates fit inside a rolling 42-day window.",
+      "sparse": "Eligible occurrences exist but do not meet the density rule; the existing date presentation is retained with no empty calendar.",
+      "excluded": "Date-like candidates existed but none were eligible display occurrences.",
+      "unavailable": "No date-like candidate occurrence was available on the surface."
+    },
+    "feed_relationship": "The bounded display query can look backwards; the standing feed remains future-only. Query bounds and the calendar/list selector are presentation state and never enter Follow, Browse, project, watch, or subscription scope."
+  },
+  "provenance": {
+    "corpus": "Measured over the committed fixture corpus for this workstream, not a live production sample.",
+    "cluster": "Densest-window and selected-month values are derived from the corpus above.",
+    "coverage": "Production-wide prevalence is unknown and is deliberately not claimed from fixtures."
+  },
+  "summary": {
+    "surface_count": 8,
+    "status_counts": {
+      "eligible": 5,
+      "sparse": 1,
+      "excluded": 1,
+      "unavailable": 1
+    },
+    "headline": "Of 8 commissioned surfaces measured against the fixture corpus: 5 qualify for a month view, 1 sparse, 1 with only ineligible candidates, 1 with no date-like candidate."
+  },
+  "surfaces": [
+    {
+      "surface": "rules",
+      "fixture": "test/fixtures/calendar-display/census-corpus.json#rules",
+      "input_revision": "calendar-display-census-corpus.v1",
+      "record_count": 6,
+      "candidate_occurrences": 5,
+      "eligible_occurrences": 4,
+      "excluded_occurrences": 2,
+      "distinct_eligible_dates": 4,
+      "exclusion_reasons": {
+        "forecast-date": 1,
+        "publication-only-timestamp": 1
+      },
+      "densest_window": {
+        "window_from": "2026-03-03",
+        "window_to": "2026-04-13",
+        "from": "2026-03-03",
+        "to": "2026-03-25",
+        "span_days": 23,
+        "occurrence_count": 4,
+        "distinct_dates": 4
+      },
+      "selected_month": "2026-03",
+      "crosses_month_boundary": false,
+      "qualifies": true,
+      "qualification": "eligible",
+      "qualification_reason": "eligible"
+    },
+    {
+      "surface": "community_boards",
+      "fixture": "test/fixtures/calendar-display/census-corpus.json#community_boards",
+      "input_revision": "calendar-display-census-corpus.v1",
+      "record_count": 5,
+      "candidate_occurrences": 5,
+      "eligible_occurrences": 3,
+      "excluded_occurrences": 2,
+      "distinct_eligible_dates": 3,
+      "exclusion_reasons": {
+        "duplicate-stable-occurrence": 1,
+        "unjoined-source-record": 1
+      },
+      "densest_window": {
+        "window_from": "2026-05-04",
+        "window_to": "2026-06-14",
+        "from": "2026-05-04",
+        "to": "2026-05-18",
+        "span_days": 15,
+        "occurrence_count": 3,
+        "distinct_dates": 3
+      },
+      "selected_month": "2026-05",
+      "crosses_month_boundary": false,
+      "qualifies": true,
+      "qualification": "eligible",
+      "qualification_reason": "eligible"
+    },
+    {
+      "surface": "now",
+      "fixture": "test/fixtures/calendar-display/census-corpus.json#now",
+      "input_revision": "calendar-display-census-corpus.v1",
+      "record_count": 4,
+      "candidate_occurrences": 4,
+      "eligible_occurrences": 3,
+      "excluded_occurrences": 1,
+      "distinct_eligible_dates": 3,
+      "exclusion_reasons": {
+        "predicted-date": 1
+      },
+      "densest_window": {
+        "window_from": "2026-06-02",
+        "window_to": "2026-07-13",
+        "from": "2026-06-02",
+        "to": "2026-06-15",
+        "span_days": 14,
+        "occurrence_count": 3,
+        "distinct_dates": 3
+      },
+      "selected_month": "2026-06",
+      "crosses_month_boundary": false,
+      "qualifies": true,
+      "qualification": "eligible",
+      "qualification_reason": "eligible"
+    },
+    {
+      "surface": "land",
+      "fixture": "test/fixtures/calendar-display/census-corpus.json#land",
+      "input_revision": "calendar-display-census-corpus.v1",
+      "record_count": 4,
+      "candidate_occurrences": 4,
+      "eligible_occurrences": 3,
+      "excluded_occurrences": 1,
+      "distinct_eligible_dates": 3,
+      "exclusion_reasons": {
+        "low-confidence-derived-deadline": 1
+      },
+      "densest_window": {
+        "window_from": "2026-07-07",
+        "window_to": "2026-08-17",
+        "from": "2026-07-07",
+        "to": "2026-07-21",
+        "span_days": 15,
+        "occurrence_count": 3,
+        "distinct_dates": 3
+      },
+      "selected_month": "2026-07",
+      "crosses_month_boundary": false,
+      "qualifies": true,
+      "qualification": "eligible",
+      "qualification_reason": "eligible"
+    },
+    {
+      "surface": "procurement",
+      "fixture": "test/fixtures/calendar-display/census-corpus.json#procurement",
+      "input_revision": "calendar-display-census-corpus.v1",
+      "record_count": 2,
+      "candidate_occurrences": 4,
+      "eligible_occurrences": 3,
+      "excluded_occurrences": 1,
+      "distinct_eligible_dates": 3,
+      "exclusion_reasons": {
+        "missing-canonical-destination": 1
+      },
+      "densest_window": {
+        "window_from": "2026-07-22",
+        "window_to": "2026-09-01",
+        "from": "2026-07-22",
+        "to": "2026-08-05",
+        "span_days": 15,
+        "occurrence_count": 3,
+        "distinct_dates": 3
+      },
+      "selected_month": "2026-07",
+      "crosses_month_boundary": true,
+      "qualifies": true,
+      "qualification": "eligible",
+      "qualification_reason": "eligible"
+    },
+    {
+      "surface": "property",
+      "fixture": "test/fixtures/calendar-display/census-corpus.json#property",
+      "input_revision": "calendar-display-census-corpus.v1",
+      "record_count": 4,
+      "candidate_occurrences": 3,
+      "eligible_occurrences": 2,
+      "excluded_occurrences": 2,
+      "distinct_eligible_dates": 2,
+      "exclusion_reasons": {
+        "ambiguous-date": 1,
+        "missing-source-basis": 1
+      },
+      "densest_window": {
+        "window_from": "2026-09-03",
+        "window_to": "2026-10-14",
+        "from": "2026-09-03",
+        "to": "2026-09-05",
+        "span_days": 3,
+        "occurrence_count": 2,
+        "distinct_dates": 2
+      },
+      "selected_month": null,
+      "crosses_month_boundary": false,
+      "qualifies": false,
+      "qualification": "sparse",
+      "qualification_reason": "sparse-too-few-occurrences"
+    },
+    {
+      "surface": "exams",
+      "fixture": "test/fixtures/calendar-display/census-corpus.json#exams",
+      "input_revision": "calendar-display-census-corpus.v1",
+      "record_count": 2,
+      "candidate_occurrences": 0,
+      "eligible_occurrences": 0,
+      "excluded_occurrences": 2,
+      "distinct_eligible_dates": 0,
+      "exclusion_reasons": {
+        "publication-only-timestamp": 1,
+        "undated-record": 1
+      },
+      "densest_window": null,
+      "selected_month": null,
+      "crosses_month_boundary": false,
+      "qualifies": false,
+      "qualification": "unavailable",
+      "qualification_reason": "unavailable-no-occurrences"
+    },
+    {
+      "surface": "legislative",
+      "fixture": "test/fixtures/calendar-display/census-corpus.json#legislative",
+      "input_revision": "calendar-display-census-corpus.v1",
+      "record_count": 4,
+      "candidate_occurrences": 3,
+      "eligible_occurrences": 0,
+      "excluded_occurrences": 4,
+      "distinct_eligible_dates": 0,
+      "exclusion_reasons": {
+        "inferred-date-no-publisher-basis": 1,
+        "profile-derived-date": 1,
+        "statutory-expected-date": 1,
+        "undated-record": 1
+      },
+      "densest_window": null,
+      "selected_month": null,
+      "crosses_month_boundary": false,
+      "qualifies": false,
+      "qualification": "excluded",
+      "qualification_reason": "unavailable-no-occurrences"
+    }
+  ],
+  "corpus": {
+    "schema": "cityscroll.calendar_display_census_corpus.v1",
+    "revision": "calendar-display-census-corpus.v1",
+    "path": "test/fixtures/calendar-display/census-corpus.json",
+    "surface_count": 8
+  }
+}
