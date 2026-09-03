@@ -26,8 +26,24 @@ class QuietHandler(SimpleHTTPRequestHandler):
     # asset requests instead of opening a new TCP connection per request. Under
     # HTTP/1.0 (the http.server default) a state transition that fetches several
     # scripts/JSON fixtures at once can briefly exceed the listen backlog and
-    # have a connection dropped (client sees a reset, page render stalls).
+    # have a connection dropped (client sees a reset, page render stalls) --
+    # the #investigation hash-route stall in 11_accessibility.py. The widened
+    # listen backlog below is necessary for that but not sufficient on its own.
     protocol_version = "HTTP/1.1"
+
+    # Keep-alive without TCP_NODELAY is what made those shards slow. This
+    # handler writes the header block and the body as separate sends, so with
+    # Nagle enabled the body can sit unsent until the peer's delayed ACK for
+    # the headers arrives -- a fixed stall per response that a connection close
+    # used to flush. Serving thousands of small assets per shard, that dominated:
+    # the routes-focus demo-links suite (50 tests, same commit tree either way)
+    # ran 28-34s before keep-alive and 67-70s after, and the ~2.3x whole-shard
+    # slowdown pushed the vendor-footprint paint check from inside its 2.0s
+    # budget to ~2.8s, blocking every PR built on that base.
+    # source: CI runs 33787211357 / 33784464123 / 33772761702 (before) vs
+    # 33791081373 / 33797740660 / 33798241422 (after).
+    # Nothing here benefits from coalescing writes across a request boundary.
+    disable_nagle_algorithm = True
 
     def log_message(self, _format, *_args):
         return

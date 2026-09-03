@@ -55,6 +55,20 @@ jobs:
           filters: |
             frontend:
               - 'site/**'
+              # The browser shards are only as trustworthy as the harness that
+              # runs them: the static server they fetch every asset from, the
+              # scripts that build the artifact and drive each shard, and the
+              # functional specs themselves. Leaving these out let a change to
+              # the local site server reach main without ever running a single
+              # browser shard, and it cost the vendor-footprint paint budget.
+              - 'tools/local_site_server.py'
+              - 'tools/a11y_server_readiness.sh'
+              # Globbed, not spelled out: test/local_site_server.test.mjs asserts
+              # the build step precedes the first literal mention of the shard
+              # runner in this file, and a path-filter entry is not that step.
+              - 'tools/run_a11y_*.sh'
+              - 'tools/prepare_functional_site.sh'
+              - 'test/functional/**'
               - '.github/workflows/ci.yml'
               - '.github/actions/build-site/**'
               - '.github/actions/setup-playwright/**'
