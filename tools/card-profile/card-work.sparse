@@ -277,6 +277,8 @@
 /site/community_board_source_adapters.mjs
 /site/community_board_source_join.mjs
 /site/community_board_watch.mjs
+/site/compact_calendar.css
+/site/compact_calendar.mjs
 /site/comparative_award_rank.mjs
 /site/comparative_receipt.mjs
 /site/comparative_signal_admission.mjs
