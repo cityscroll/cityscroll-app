@@ -853,6 +853,7 @@
     land_map_selected_detail: "Открыть карточку проекта",
     land_map_selected_list: "Показать в списке",
     land_map_selected_clear: "Снять выбор",
+    land_map_back_to_list: "Вернуться к списку",
     land_future_any: "Любое предстоящее публичное действие",
     land_future_hearing: "Предстоящее слушание",
     land_future_other: "Другое предстоящее действие",

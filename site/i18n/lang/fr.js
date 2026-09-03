@@ -912,6 +912,7 @@
     land_map_selected_detail: "Ouvrir le dossier",
     land_map_selected_list: "Voir dans la liste",
     land_map_selected_clear: "Effacer la sélection",
+    land_map_back_to_list: "Retour à la liste",
     land_future_any: "Toute action publique à venir",
     land_future_hearing: "Audience à venir",
     land_future_other: "Autre action à venir",

@@ -883,6 +883,7 @@
     land_map_selected_detail: "사업 기록 열기",
     land_map_selected_list: "목록에서 보기",
     land_map_selected_clear: "선택 해제",
+    land_map_back_to_list: "목록으로 돌아가기",
     land_future_any: "향후 모든 공개 절차",
     land_future_hearing: "예정된 공청회",
     land_future_other: "기타 예정된 절차",
