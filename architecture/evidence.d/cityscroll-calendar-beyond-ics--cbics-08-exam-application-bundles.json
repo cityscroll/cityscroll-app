@@ -1,0 +1,17 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-calendar-beyond-ics/cbics-08-exam-application-bundles",
+  "status": "implemented",
+  "fingerprint": "cbics-08-exam-application-bundles.v1",
+  "updated_at": "2026-09-03T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "exam-application-calendar",
+      "path": "site/exam_calendar.mjs"
+    },
+    {
+      "id": "exam-document-calendar-mount",
+      "path": "site/exam_document.mjs"
+    }
+  ]
+}

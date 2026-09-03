@@ -358,6 +358,7 @@
 /site/e_designation_digest_view.mjs
 /site/edge_summary.mjs
 /site/entity_pivot.mjs
+/site/exam_calendar.mjs
 /site/exam_detail_facets.mjs
 /site/exam_document.mjs
 /site/exam_interest_taxonomy.mjs
