@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cityscroll.org/schemas/seqra_source_registry_entry.v1.schema.json",
+  "title": "SEQRA/CEQR source registry entry",
+  "description": "One row of the SEQRA-01 source registry (warehouse/lib/seqra_source_registry.mjs), matching the commission's required SOURCE RECEIPTS registration fields.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "source_id", "source_name", "publisher", "jurisdiction_level", "environmental_regime",
+    "tier", "access_type", "base_url", "dataset_identifier", "coverage_start", "coverage_end",
+    "update_frequency", "observed_latency", "parser_version", "last_success_at", "last_row_count",
+    "last_content_hash", "known_gaps"
+  ],
+  "properties": {
+    "source_id": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+    "source_name": { "type": "string", "minLength": 1 },
+    "publisher": { "type": "string", "minLength": 1 },
+    "jurisdiction_level": { "type": "string", "enum": ["NYS", "NYC"] },
+    "environmental_regime": { "type": "string", "enum": ["SEQRA", "CEQR"] },
+    "tier": { "type": "integer", "enum": [1, 2, 3, 4] },
+    "access_type": {
+      "type": "string",
+      "enum": ["soda_api", "discovery_probe", "discovery_only"]
+    },
+    "base_url": { "type": "string", "minLength": 1 },
+    "dataset_identifier": { "type": "string", "minLength": 1 },
+    "coverage_start": { "type": "string", "minLength": 1 },
+    "coverage_end": { "type": "string", "minLength": 1 },
+    "update_frequency": { "type": "string", "minLength": 1 },
+    "observed_latency": { "type": ["number", "null"] },
+    "parser_version": { "type": "string", "minLength": 1 },
+    "last_success_at": { "type": ["string", "null"], "format": "date-time" },
+    "last_row_count": { "type": ["integer", "null"] },
+    "last_content_hash": { "type": ["string", "null"], "pattern": "^sha256:[a-f0-9]{64}$" },
+    "known_gaps": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "minItems": 1
+    }
+  }
+}

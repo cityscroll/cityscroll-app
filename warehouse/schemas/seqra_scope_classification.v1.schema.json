@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cityscroll.org/schemas/seqra_scope_classification.v1.schema.json",
+  "title": "SEQRA/CEQR record scope classification",
+  "description": "The required New York SEQRA/CEQR jurisdiction and regime scope envelope. A record with jurisdiction_level/environmental_regime absent was rejected; admitted is false and reject_reason is set.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "jurisdiction_level", "environmental_regime", "review_label_as_published", "judicial_review_regime", "admitted", "reject_reason"],
+  "properties": {
+    "schema": { "const": "cityscroll.seqra_scope_classification.v1" },
+    "jurisdiction_level": {
+      "type": ["string", "null"],
+      "enum": ["NYS", "NYC", null]
+    },
+    "environmental_regime": {
+      "type": ["string", "null"],
+      "enum": ["SEQRA", "CEQR", "CEQA", null]
+    },
+    "review_label_as_published": {
+      "type": ["string", "null"],
+      "description": "Original published terminology, preserved verbatim (e.g. SEQR, SEQRA, CEQR, CEQA)."
+    },
+    "judicial_review_regime": {
+      "type": "string",
+      "enum": ["NY_ARTICLE_78", "NY_HYBRID", "NONE", "UNKNOWN"]
+    },
+    "admitted": { "type": "boolean" },
+    "reject_reason": {
+      "type": ["string", "null"],
+      "enum": [
+        "out_of_scope_jurisdiction",
+        "unresolved_or_ambiguous_jurisdiction",
+        "unresolved_or_ambiguous_environmental_regime",
+        null
+      ]
+    }
+  }
+}

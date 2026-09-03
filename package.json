@@ -1,0 +1,8 @@
+{
+  "name": "cityscroll-app-warehouse-command-surface",
+  "private": true,
+  "description": "Thin npm script wrapper over this repo's existing direct-node warehouse tooling. Added narrowly for the SEQRA/CEQR workstream's required `npm run warehouse:seqra:inventory` command surface; every script below just shells out to the same node tools/*.mjs entry points used throughout warehouse/README.md and CI.",
+  "scripts": {
+    "warehouse:seqra:inventory": "node tools/build_seqra_source_inventory.mjs"
+  }
+}

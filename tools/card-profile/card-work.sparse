@@ -91,6 +91,7 @@
 /docs/repository-scrim-review.md
 /docs/research/
 /docs/screenshots/community-board-money/
+/docs/seqra-ceqr-source-inventory-v1.md
 /docs/shared-dependency-store.md
 /docs/source-health-participation.md
 /docs/url-migration-map.csv
@@ -146,6 +147,7 @@
 /integrations/
 /ontology/
 /ops/
+/package.json
 /performance-budgets.json
 /site/CNAME
 /site/_config.yml
