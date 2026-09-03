@@ -22,21 +22,27 @@ READINESS_RETRY_SECONDS = 0.1
 
 
 class QuietHandler(SimpleHTTPRequestHandler):
-    # Keep http.server's default HTTP/1.0 (connection-per-response). Serving the
-    # browser shards over HTTP/1.1 keep-alive instead cost this server roughly
-    # half its throughput on a hosted runner: the routes-focus demo-links suite
-    # (50 tests, same commit tree either way) ran 28-34s on HTTP/1.0 and 67-70s
-    # on HTTP/1.1, which pushed the vendor-footprint paint budget from under its
-    # 2.0s limit to ~2.8s and blocked every PR built on that base.
-    # source: CI runs 33787211357 / 33784464123 / 33772761702 (HTTP/1.0) vs
-    # 33791081373 / 33797740660 / 33798241422 (HTTP/1.1).
-    # The dropped-connection flake HTTP/1.1 was reached for is addressed by the
-    # widened listen backlog on _RobustThreadingHTTPServer below, which is the
-    # part of that fix that targets the accept queue directly.
+    # HTTP/1.1 lets a browser reuse one connection for a page's whole burst of
+    # asset requests instead of opening a new TCP connection per request. Under
+    # HTTP/1.0 (the http.server default) a state transition that fetches several
+    # scripts/JSON fixtures at once can briefly exceed the listen backlog and
+    # have a connection dropped (client sees a reset, page render stalls) --
+    # the #investigation hash-route stall in 11_accessibility.py. The widened
+    # listen backlog below is necessary for that but not sufficient on its own.
+    protocol_version = "HTTP/1.1"
 
-    # Header block and body are separate writes on this handler, so a response
-    # can leave a small segment waiting on the peer's delayed ACK. Nothing here
-    # benefits from coalescing writes across a request boundary.
+    # Keep-alive without TCP_NODELAY is what made those shards slow. This
+    # handler writes the header block and the body as separate sends, so with
+    # Nagle enabled the body can sit unsent until the peer's delayed ACK for
+    # the headers arrives -- a fixed stall per response that a connection close
+    # used to flush. Serving thousands of small assets per shard, that dominated:
+    # the routes-focus demo-links suite (50 tests, same commit tree either way)
+    # ran 28-34s before keep-alive and 67-70s after, and the ~2.3x whole-shard
+    # slowdown pushed the vendor-footprint paint check from inside its 2.0s
+    # budget to ~2.8s, blocking every PR built on that base.
+    # source: CI runs 33787211357 / 33784464123 / 33772761702 (before) vs
+    # 33791081373 / 33797740660 / 33798241422 (after).
+    # Nothing here benefits from coalescing writes across a request boundary.
     disable_nagle_algorithm = True
 
     def log_message(self, _format, *_args):
@@ -47,7 +53,7 @@ class QuietHandler(SimpleHTTPRequestHandler):
             super().handle_one_request()
         except (ConnectionResetError, BrokenPipeError):
             # A client (browser tab torn down mid-transition, or Playwright
-            # closing a context) dropping its end of a live connection
+            # closing a context) dropping its end of a keep-alive connection
             # is routine under concurrent load, not a server defect. The
             # default handle_error would otherwise dump a traceback per
             # occurrence, which is what showed up as a cascade of
