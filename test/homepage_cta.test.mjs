@@ -63,7 +63,7 @@ test("homepage CTA discloses the exact weekly default before asking for an email
   assert.match(index, /href="\/following\/\?onboarding=1"[^>]*id="homeCtaTopics"/);
   assert.match(index, /data-i18n="home_cta_topics"/);
   // What the enhanced submit posts and reports is covered behaviourally in
-  // test/home_default_watch_submit.test.mjs, which runs site/home_entry.mjs itself.
+  // test/home_default_watch_submit.test.mjs, which runs site/home_default_watch.mjs itself.
   const boot = readFileSync(join(ROOT, "site/app/boot.mjs"), "utf8");
   assert.match(boot, /homeFollowingEntryHref/);
   assert.match(boot, /\/following\/\?onboarding=1/);

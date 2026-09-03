@@ -1,7 +1,8 @@
-// Behavioural cover for the disclosed homepage default watch (site/home_entry.mjs).
+// Behavioural cover for the disclosed homepage default watch (site/home_default_watch.mjs).
 //
 // The homepage box works without JavaScript as a plain form POST; this module is the
-// progressive enhancement over it. What matters to a reader is what the enhanced submit
+// progressive enhancement over it, attached by site/app/main.mjs on every index.html
+// route (static home and hash landings alike). What matters to a reader is what the enhanced submit
 // actually sends and what it then says, so these tests load the real module against a
 // minimal DOM, run its submit handler, and assert the posted request and the resulting
 // status message rather than reading the module's source.
@@ -75,7 +76,8 @@ globalThis.fetch = async (url, options) => {
 // submit reached for it, this would throw instead of silently working in a warm-cache test.
 globalThis.workerFetch = () => { throw new Error("workerFetch is not loaded on the static homepage"); };
 
-await import("../site/home_entry.mjs");
+const { initHomeDefaultSubscription } = await import("../site/home_default_watch.mjs");
+initHomeDefaultSubscription();
 
 function jsonResponse(body, status = 200) {
   return { status, json: async () => body };
@@ -138,6 +140,25 @@ test("a stored watch whose welcome email failed still reports the storage succes
   // read as a contradiction, so both halves have to survive.
   assert.equal(message.textContent, "subscribed_now send_failed");
   assert.equal(email.value, "reader@example.com");
+});
+
+test("a failed save reports a retryable error, not an unconfigured service", async () => {
+  respond = () => jsonResponse({ ok: false, reason: "save-failed", subscribed: false }, 503);
+  await submit();
+  assert.equal(message.textContent, "generic_error");
+  assert.equal(email.value, "reader@example.com");
+});
+
+test("attaching the enhancement twice registers one submit handler", async () => {
+  let registrations = 0;
+  const original = form.addEventListener;
+  form.addEventListener = function (type, handler) { registrations += 1; original.call(this, type, handler); };
+  try {
+    initHomeDefaultSubscription();
+  } finally {
+    form.addEventListener = original;
+  }
+  assert.equal(registrations, 0);
 });
 
 test("a welcome failure with nothing stored reports only the failure", async () => {

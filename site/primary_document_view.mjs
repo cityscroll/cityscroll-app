@@ -46,6 +46,11 @@ export function replaceElementContent(html, id, content) {
   return `${html.slice(0, range.contentStart)}${content}${html.slice(range.contentEnd)}`;
 }
 
+function removeElement(html, id) {
+  const range = findElementRange(html, id);
+  return `${html.slice(0, range.openingStart).replace(/[ \t]*$/, "")}${html.slice(range.closingEnd).replace(/^[ \t]*\r?\n/, "")}`;
+}
+
 function activateTabButton(html, tab) {
   let out = html.replaceAll('class="tabbtn active"', 'class="tabbtn"');
   const groupPattern = new RegExp(`class="tabbtn"([^>]*\\bdata-route-facets="[^\"]*\\b${tab}\\b[^\"]*")`);
@@ -314,6 +319,12 @@ export function buildSearchDocument(shell) {
   html = addRouteStyles(html, ["search.css"]);
   html = replaceElementContent(html, "browse-child-nav", "");
   html = replaceElementContent(html, "browseview", renderSearchDocument());
+  // The Search page keeps the Following handoff card but not the weekly-default email form,
+  // so its prompt stays the open-ended browse ask rather than the homepage promise.
+  html = removeElement(html, "homeCtaForm");
+  html = removeElement(html, "homeCtaMsg");
+  html = replaceElementContent(html, "homeCtaPrompt", "Want email updates on this?")
+    .replace('id="homeCtaPrompt" data-i18n="home_cta_prompt"', 'id="homeCtaPrompt" data-i18n="browse_cta_prompt"');
   return html
     .replace(' data-i18n-title="index_title"', "")
     .replace('<script type="module" src="app/main.mjs"></script>', '<script type="module" src="search_entry.mjs"></script>');
