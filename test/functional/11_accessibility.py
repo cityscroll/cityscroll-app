@@ -45,7 +45,7 @@ import json
 import os
 import pathlib
 import sys
-from playwright.sync_api import sync_playwright
+from playwright.sync_api import sync_playwright, TimeoutError as PlaywrightTimeoutError
 
 ROOT = pathlib.Path(__file__).parents[2]
 sys.path.insert(0, str(ROOT / "test" / "functional" / "assets"))
@@ -279,6 +279,26 @@ def run_focus_exposure(page, state_name, failures, *, retry=True):
         step("OK", f"{state_name}: focus not obscured", "all rendered focus targets exposed")
 
 
+def _set_hash_and_wait(page, hash_value, wait_fn, *, label):
+    """Set a client-side route hash and observe the resulting state.
+
+    A hash-only transition has no navigation to retry: a dropped request for
+    an asset the new view needs (rare, but possible under concurrent local-
+    server load) can leave the view unrendered with nothing client-side left
+    to retrigger it, since re-writing the same hash value is a no-op. Retry
+    once by reloading fully from BASE and re-applying the hash, mirroring the
+    run_axe/run_focus_exposure recovery pattern above.
+    """
+    page.evaluate("(hash) => { location.hash = hash; }", hash_value)
+    try:
+        wait_fn()
+    except PlaywrightTimeoutError as err:
+        step("warn", f"{label}: stalled — reload from BASE and retry once",
+             str(err).split("\n")[0][:160])
+        _restore_ready_page(page, BASE, hash_value)
+        wait_fn()
+
+
 def run_index_states(pw, lang, viewport, failures):
     browser = pw.chromium.launch()
     width, height = viewport
@@ -411,18 +431,21 @@ def run_index_states(pw, lang, viewport, failures):
     # the constellation markers; fall back to the interactive SPA entity shell
     # only when no static document is served (older local servers / missing page).
     agency_hash = "#agency/Housing Preservation and Development"
-    page.evaluate("location.hash = '#agency/Housing Preservation and Development'")
-    try:
-        page.wait_for_selector(
-            "[data-civic-object-kind='agency-constellation'] main, "
-            "main[data-civic-object-kind='agency-constellation'], "
-            "#entityview .agencybar",
-            state="visible",
-            timeout=15000,
-        )
-    except Exception:
-        page.wait_for_selector("#entityview .agencybar", state="visible", timeout=5000)
-    page.wait_for_selector("main", state="visible", timeout=15000)
+
+    def _wait_agency_profile():
+        try:
+            page.wait_for_selector(
+                "[data-civic-object-kind='agency-constellation'] main, "
+                "main[data-civic-object-kind='agency-constellation'], "
+                "#entityview .agencybar",
+                state="visible",
+                timeout=15000,
+            )
+        except PlaywrightTimeoutError:
+            page.wait_for_selector("#entityview .agencybar", state="visible", timeout=5000)
+        page.wait_for_selector("main", state="visible", timeout=15000)
+
+    _set_hash_and_wait(page, agency_hash, _wait_agency_profile, label="agency profile")
     run_axe(
         page, f"index.html [{lang}] [{viewport_name}] [entity:agency]", failures,
         # Do not restore the #agency hash: it re-forwards into /agencies/<id>/ and
@@ -434,9 +457,11 @@ def run_index_states(pw, lang, viewport, failures):
     _wait_for_home(page)
 
     # investigation workspace (seeded above) + its share-error path (worker is stubbed dead)
-    page.evaluate("location.hash = '#investigation'")
-    page.wait_for_selector("#invname", state="visible", timeout=15000)
-    page.wait_for_selector("main", state="visible", timeout=15000)
+    def _wait_investigation():
+        page.wait_for_selector("#invname", state="visible", timeout=15000)
+        page.wait_for_selector("main", state="visible", timeout=15000)
+
+    _set_hash_and_wait(page, "#investigation", _wait_investigation, label="investigation workspace")
     run_axe(
         page, f"index.html [{lang}] [{viewport_name}] [investigation]", failures,
         restore_url=BASE, restore_hash="#investigation",
@@ -458,12 +483,16 @@ def run_index_states(pw, lang, viewport, failures):
         ("#task/can-i-bid", "task:can-i-bid"),
         ("#task/what-will-change", "task:what-will-change"),
     ):
-        page.evaluate("(hash) => { location.hash = hash; }", task_hash)
-        wait_for_function(
+        _set_hash_and_wait(
             page,
-            "hash => location.hash === hash && Boolean(document.querySelector('.task-first .task-card'))",
-            arg=task_hash,
-            timeout=15000,
+            task_hash,
+            lambda hash_value=task_hash: wait_for_function(
+                page,
+                "hash => location.hash === hash && Boolean(document.querySelector('.task-first .task-card'))",
+                arg=hash_value,
+                timeout=15000,
+                label=f"{task_state} route",
+            ),
             label=f"{task_state} route",
         )
         run_axe(
@@ -474,8 +503,11 @@ def run_index_states(pw, lang, viewport, failures):
 
     # Additive time-and-action entry surface. Worker fixtures intentionally leave some
     # sources unavailable so this also covers its honest partial-coverage state.
-    page.evaluate("location.hash = '#now'")
-    wait_for_locator(page.locator(".now-surface"), timeout=15000, label="now route")
+    _set_hash_and_wait(
+        page, "#now",
+        lambda: wait_for_locator(page.locator(".now-surface"), timeout=15000, label="now route"),
+        label="now route",
+    )
     run_axe(
         page, f"index.html [{lang}] [{viewport_name}] [now]", failures,
         restore_url=BASE, restore_hash="#now",
