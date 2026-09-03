@@ -56,6 +56,11 @@ import {
 } from "../report_issue.mjs";
 import { zoningHearingRowsForScope } from "../zoning_hearing_calendar.mjs";
 import { projectCalendarActionsHTML as projectCalendarActions } from "../project_calendar.mjs";
+import {
+  bindCompactMonthPrintDisclosure,
+  ensureCompactCalendarStylesheet,
+  landProjectConnectedCalendarHTML,
+} from "../land_project_connected_calendar.mjs";
 import { attachAuth, authHTML, loadAuth } from "../land_authority_summary_view.mjs";
 import { attachLandLotSourceDigests, landLotSourceDigestsHTML, loadLandLotSourceDigests } from "../land_lot_source_digests.mjs";
 import {
@@ -782,6 +787,7 @@ async function landSelect(i, el){
     <span id="land-city-record-source"></span>
   </div>
   <div id="project-connections"></div>
+  <div id="project-connected-calendar"></div>
   <div id="land-outcomes" class="land-outcomes">${landOutcomeFirstPaintHTML(r)}</div>
   <div id="land-ulurp-rec"></div>
   <div id="landmap" style="display:none"></div>
@@ -1509,6 +1515,16 @@ function projectConnectionsHTML(evidence, tools){
     <p class="ei-lead">${t("project_connections_lead")}</p><div class="pc-groups">${groups}</div>
   </div>`;
 }
+function paintProjectConnectedCalendar(record,selection){
+  const host=$("#project-connected-calendar");
+  if(!host) return;
+  if(selection!==undefined&&selection!==landSelectionSeq) return;
+  if(!host.isConnected||host!==$("#project-connected-calendar")) return;
+  host.innerHTML=landProjectConnectedCalendarHTML(record,{today:todayISO().slice(0,10),escape:escUiHtml});
+  if(!host.firstElementChild) return;
+  ensureCompactCalendarStylesheet();
+  bindCompactMonthPrintDisclosure(host);
+}
 async function paintProjectConnections(record,selection){
   const host=$("#project-connections");
   if(!host) return;
@@ -1585,6 +1601,7 @@ async function loadZapOutcomes(r, el, selection){
     if(selection !== undefined && selection !== landSelectionSeq) return;
     if(!document.contains(el)) return;
     const record = normalizeLandRecord(warm.data.record);
+    paintProjectConnectedCalendar(record,selection);
     el.innerHTML = warm.staticSnapshot
       ? landOutcomeSnapshotHTML(record,phaseTools,r)
       : landOutcomesHTML(record,phaseTools,r);
@@ -1626,6 +1643,7 @@ async function loadZapOutcomes(r, el, selection){
   await paintProjectConnections(record,selection);
   if(selection !== undefined && selection !== landSelectionSeq) return;
   if(!document.contains(el)) return;
+  paintProjectConnectedCalendar(record,selection);
   if(record.snapshot_state==="absent" || record.snapshot_state==="unavailable"){
     reportLandOutcomesReady(record);
     return;

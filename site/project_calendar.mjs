@@ -132,36 +132,62 @@ function withConnectionProvenance(occurrence, candidate) {
   return createCalendarOccurrence({ ...occurrence, provenance });
 }
 
-/** Aggregate future source-backed actions from accepted project connections. */
-export function projectCalendarOccurrences(input = {}, { as_of = null } = {}) {
+/**
+ * Resolve the accepted-connection semantic records a project's calendar is
+ * built from, paired with the candidate that carried each one. This is the
+ * single join `projectCalendarOccurrences` (future-only, for the standing
+ * subscription) and `projectCalendarRecords` (unfiltered, for the bounded
+ * display query) both draw from, so no caller can see a broader population
+ * than the accepted connections already admit.
+ */
+function resolvedConnectedRecords(input = {}) {
   const scopeRef = projectRef(input.project_ref || input.scope_ref || input.subject_ref);
   if (!scopeRef) return [];
-  const seen = new Set();
-  const occurrences = [];
+  const resolved = [];
   for (const rawCandidate of connectedCandidates(input)) {
     for (const candidate of milestoneCandidates(rawCandidate, scopeRef)) {
       const record = semanticRecord(candidate, scopeRef);
       if (!record) continue;
-      const produced = calendarOccurrencesForRecord(record, {
-        as_of: as_of || undefined,
-        kind: candidate.kind || record.kind,
-        object_ref: record.object_ref,
-      });
-      for (const occurrence of produced) {
-        const key = occurrenceKey(occurrence);
-        if (seen.has(key)) continue;
-        seen.add(key);
-        occurrences.push(withConnectionProvenance(occurrence, candidate));
-      }
+      resolved.push({ candidate, record });
+    }
+  }
+  return resolved;
+}
+
+/** Aggregate future source-backed actions from accepted project connections. */
+export function projectCalendarOccurrences(input = {}, { as_of = null } = {}) {
+  const seen = new Set();
+  const occurrences = [];
+  for (const { candidate, record } of resolvedConnectedRecords(input)) {
+    const produced = calendarOccurrencesForRecord(record, {
+      as_of: as_of || undefined,
+      kind: candidate.kind || record.kind,
+      object_ref: record.object_ref,
+    });
+    for (const occurrence of produced) {
+      const key = occurrenceKey(occurrence);
+      if (seen.has(key)) continue;
+      seen.add(key);
+      occurrences.push(withConnectionProvenance(occurrence, candidate));
     }
   }
   return occurrences.sort((left, right) => String(left.starts_at || left.date).localeCompare(String(right.starts_at || right.date)));
 }
 
-/** Use the project outcome plus its current constellation edges as feed input. */
-export function projectCalendarOccurrencesForRecord(record, options = {}) {
+/**
+ * The same accepted population as `projectCalendarOccurrences`, exposed as
+ * source records rather than pre-built future-only occurrences. A bounded
+ * display surface (CBICS-01) needs the records themselves so it can apply its
+ * own eligibility and window rules, including past occurrences the standing
+ * subscription never emits.
+ */
+export function projectCalendarRecords(input = {}) {
+  return resolvedConnectedRecords(input).map(({ record }) => record);
+}
+
+function projectCalendarInputForRecord(record) {
   const connections = record?.project_connections;
-  if (!connections || connections.status !== "bounded") return [];
+  if (!connections || connections.status !== "bounded") return null;
   const rootSources = Array.isArray(record?.project_calendar_sources)
     ? record.project_calendar_sources.map((source) => ({
       relation: source.relation || "project_process",
@@ -169,11 +195,23 @@ export function projectCalendarOccurrencesForRecord(record, options = {}) {
       calendar_record: source,
     }))
     : [];
-  return projectCalendarOccurrences({
+  return {
     project_ref: connections.project_ref || `project:${record.project_id}`,
     connections,
     connected_records: rootSources,
-  }, options);
+  };
+}
+
+/** Use the project outcome plus its current constellation edges as feed input. */
+export function projectCalendarOccurrencesForRecord(record, options = {}) {
+  const input = projectCalendarInputForRecord(record);
+  return input ? projectCalendarOccurrences(input, options) : [];
+}
+
+/** Record-level counterpart of `projectCalendarOccurrencesForRecord`. */
+export function projectCalendarRecordsForRecord(record) {
+  const input = projectCalendarInputForRecord(record);
+  return input ? projectCalendarRecords(input) : [];
 }
 
 export function projectCalendarScope(projectId) {
