@@ -10,6 +10,7 @@ import {
 } from "./civic_document_chrome.mjs";
 import { entityHref, entityRouteRef } from "./entity_pivot.mjs";
 import { examFacetHref, examFacetValue } from "./exam_detail_facets.mjs";
+import { buildExamCalendarView, renderExamApplicationCalendar } from "./exam_calendar.mjs";
 import { constellationLink, filterChip, installFilterChipNavigation, officialSourceLink, staticFact } from "./affordance_grammar.mjs";
 import { titleCodeFamilyView } from "./title_code_family.mjs";
 
@@ -222,6 +223,22 @@ export function renderExamDocument(exam, options = {}) {
   const outcome = options.outcome || {};
   const familyMembers = options.titleCodeFamilyMembers || [];
   const canonical = options.canonical || `https://cityscroll.org${examDocumentPath(id)}`;
+  // CBICS-08: only a genuinely qualifying observed bundle (open + close +
+  // actual published exam date, density rule met, never rolling filing) earns
+  // a month view; everything else keeps the compact application range with no
+  // calendar chrome at all. The stylesheet ships only with the component, so
+  // non-qualifying documents stay byte-identical to their current form.
+  const examCalendarView = buildExamCalendarView(exam, { today });
+  const processBody = processHTML(options.phaseView);
+  // The retained process spine is the calendar's full-list destination; link
+  // to it only when it actually renders on this document.
+  const examCalendarHTML = renderExamApplicationCalendar(examCalendarView, {
+    esc,
+    fullListHref: processBody ? "#exam-process-heading" : null,
+  });
+  const examCalendarAssets = examCalendarView.render
+    ? '<link rel="stylesheet" href="/compact_calendar.css">'
+    : "";
   const applicationURL = exam.official_application_url || OASYS_URL;
   const noticeURL = exam.notice_url || DCAS_SCHEDULE_URL;
   const watchURL = examWatchUrl(id);
@@ -254,7 +271,7 @@ export function renderExamDocument(exam, options = {}) {
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>${esc(title)} · Exam ${esc(id)} · CityScroll</title>
 <meta name="description" content="Exam ${esc(id)}: ${esc(title)}. Application dates, official sources, process context, and public outcomes.">
-<link rel="canonical" href="${esc(canonical)}"><meta property="og:type" content="article"><meta property="og:site_name" content="CityScroll"><meta property="og:title" content="${esc(title)} · Exam ${esc(id)} · CityScroll"><meta property="og:url" content="${esc(canonical)}">${renderCivicDocumentAssets("/")}</head>
+<link rel="canonical" href="${esc(canonical)}"><meta property="og:type" content="article"><meta property="og:site_name" content="CityScroll"><meta property="og:title" content="${esc(title)} · Exam ${esc(id)} · CityScroll"><meta property="og:url" content="${esc(canonical)}">${renderCivicDocumentAssets("/")}${examCalendarAssets}</head>
 <body><a class="skip" href="#main">Skip to content</a>${renderCivicDocumentMast({ current: "browse", surfaceClass: "exam-mast" })}
 <main id="main" class="node-document exam-document" data-exam-document="1" data-exam-number="${esc(id)}" data-subject-ref="${esc(examSubjectRef(id))}" data-document-rendered="true" data-node-document="1">
   ${renderNodeBack({ href: "/browse/exams/", label: "Back to Exams", extraClass: "exam-back" })}
@@ -287,11 +304,17 @@ export function renderExamDocument(exam, options = {}) {
     body: predictionHTML(exam),
   })}
   ${renderNodeSection({
+    heading: "Application and exam dates",
+    headingId: "exam-calendar-heading",
+    extraClass: "exam-section exam-calendar",
+    attrs: { "data-exam-application-calendar": "qualifying-bundle" },
+    body: examCalendarHTML,
+  })}${renderNodeSection({
     heading: "Application to appointment",
     headingId: "exam-process-heading",
     exportClass: "exam_process",
     extraClass: "exam-section",
-    body: processHTML(options.phaseView),
+    body: processBody,
   })}
   ${renderNodeSection({
     heading: "Public outcomes",
