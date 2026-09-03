@@ -1,0 +1,190 @@
+{
+  "schema": "cityscroll.compact_calendar_evidence_receipt.v1",
+  "captured_at": "2026-09-03T14:11:20Z",
+  "revision": "7b5344baab7f029d7944133b3c761ff029c1c600",
+  "timezone": "America/New_York",
+  "today": "2026-03-15",
+  "all_axe_pass": true,
+  "captures": [
+    {
+      "fixture": "dense",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "timezone": "America/New_York",
+      "today": "2026-03-15",
+      "harness_state": "rendered",
+      "harness_reason": "eligible",
+      "screenshot": "docs/screenshots/compact-calendar-component/dense-390x844.png",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": [],
+        "passes": true
+      },
+      "assertion": "fixture=dense at 390x844 rendered=True reason=eligible axe_passes=True"
+    },
+    {
+      "fixture": "dense",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "timezone": "America/New_York",
+      "today": "2026-03-15",
+      "harness_state": "rendered",
+      "harness_reason": "eligible",
+      "screenshot": "docs/screenshots/compact-calendar-component/dense-1440x900.png",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": [],
+        "passes": true
+      },
+      "assertion": "fixture=dense at 1440x900 rendered=True reason=eligible axe_passes=True"
+    },
+    {
+      "fixture": "crowded",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "timezone": "America/New_York",
+      "today": "2026-03-15",
+      "harness_state": "rendered",
+      "harness_reason": "eligible",
+      "screenshot": "docs/screenshots/compact-calendar-component/crowded-390x844.png",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": [],
+        "passes": true
+      },
+      "assertion": "fixture=crowded at 390x844 rendered=True reason=eligible axe_passes=True"
+    },
+    {
+      "fixture": "crowded",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "timezone": "America/New_York",
+      "today": "2026-03-15",
+      "harness_state": "rendered",
+      "harness_reason": "eligible",
+      "screenshot": "docs/screenshots/compact-calendar-component/crowded-1440x900.png",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": [],
+        "passes": true
+      },
+      "assertion": "fixture=crowded at 1440x900 rendered=True reason=eligible axe_passes=True"
+    },
+    {
+      "fixture": "lifecycle",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "timezone": "America/New_York",
+      "today": "2026-03-15",
+      "harness_state": "rendered",
+      "harness_reason": "eligible",
+      "screenshot": "docs/screenshots/compact-calendar-component/lifecycle-390x844.png",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": [],
+        "passes": true
+      },
+      "assertion": "fixture=lifecycle at 390x844 rendered=True reason=eligible axe_passes=True"
+    },
+    {
+      "fixture": "lifecycle",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "timezone": "America/New_York",
+      "today": "2026-03-15",
+      "harness_state": "rendered",
+      "harness_reason": "eligible",
+      "screenshot": "docs/screenshots/compact-calendar-component/lifecycle-1440x900.png",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": [],
+        "passes": true
+      },
+      "assertion": "fixture=lifecycle at 1440x900 rendered=True reason=eligible axe_passes=True"
+    },
+    {
+      "fixture": "sparse",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "timezone": "America/New_York",
+      "today": "2026-03-15",
+      "harness_state": "non-render",
+      "harness_reason": "sparse-too-few-occurrences",
+      "screenshot": "docs/screenshots/compact-calendar-component/sparse-390x844.png",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": [],
+        "passes": true
+      },
+      "assertion": "fixture=sparse at 390x844 rendered=False reason=sparse-too-few-occurrences axe_passes=True"
+    },
+    {
+      "fixture": "sparse",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "timezone": "America/New_York",
+      "today": "2026-03-15",
+      "harness_state": "non-render",
+      "harness_reason": "sparse-too-few-occurrences",
+      "screenshot": "docs/screenshots/compact-calendar-component/sparse-1440x900.png",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": [],
+        "passes": true
+      },
+      "assertion": "fixture=sparse at 1440x900 rendered=False reason=sparse-too-few-occurrences axe_passes=True"
+    },
+    {
+      "fixture": "dense",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "media": "print",
+      "timezone": "America/New_York",
+      "today": "2026-03-15",
+      "screenshot": "docs/screenshots/compact-calendar-component/dense-print-1440x900.png",
+      "grid_visible_in_print": true,
+      "agenda_visible_in_print": false,
+      "overflow_forced_open_in_print": {
+        "hasOverflow": false,
+        "restVisible": null
+      },
+      "assertion": "print media (dense): grid_visible=True agenda_visible=False overflow_open={'hasOverflow': False, 'restVisible': None}"
+    },
+    {
+      "fixture": "crowded",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "media": "print",
+      "timezone": "America/New_York",
+      "today": "2026-03-15",
+      "screenshot": "docs/screenshots/compact-calendar-component/crowded-print-1440x900.png",
+      "grid_visible_in_print": true,
+      "agenda_visible_in_print": false,
+      "overflow_forced_open_in_print": {
+        "hasOverflow": true,
+        "restVisible": true
+      },
+      "assertion": "print media (crowded): grid_visible=True agenda_visible=False overflow_open={'hasOverflow': True, 'restVisible': True}"
+    }
+  ]
+}
