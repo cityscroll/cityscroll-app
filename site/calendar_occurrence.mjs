@@ -372,20 +372,12 @@ function explicitOccurrences(record, options) {
 }
 
 /**
- * Generic row adapter used by the existing feed while domain-specific
+ * Generic candidate values used by the existing feed while domain-specific
  * producers migrate. Notice publication fields (`start_date`, `published_at`)
- * are intentionally absent from every candidate below.
+ * are intentionally absent from every candidate below. Values are returned
+ * unfiltered; temporal filtering is applied by each consumer.
  */
-function calendarOccurrencesForRecord(record = {}, options = {}) {
-  const explicit = explicitOccurrences(record, options);
-  if (explicit) return explicit.filter((occurrence) => occurrence.status === "cancelled"
-    || isFuture(occurrence.starts_at || occurrence.date, asOfDate(options.as_of)));
-  const domain = domainOccurrences(record, options);
-  if (domain) {
-    return domain
-      .filter((value) => isFuture(value.when, asOfDate(options.as_of)))
-      .map((value) => createCalendarOccurrence(occurrenceInput(record, value, options)));
-  }
+function genericOccurrenceValues(record = {}, options = {}) {
   const kind = options.kind || "event";
   const values = [];
   if (kind === "meetings" || kind === "meeting") {
@@ -401,8 +393,44 @@ function calendarOccurrencesForRecord(record = {}, options = {}) {
   const close = sourceDate(record, ["application_close_date", "application_end_date", "window_close_date"]);
   if (open) values.push({ kind: "window_open", when: open });
   if (close) values.push({ kind: isExamRecord(record, options) ? "deadline" : "window_close", when: close });
-  return values
+  return values;
+}
+
+/**
+ * Generic row adapter used by the existing feed while domain-specific
+ * producers migrate. Future-only by construction: the standing feed only ever
+ * surfaces upcoming occurrences, plus explicit cancellations that retain their
+ * identity. Historical display is served by the separate bounded display path.
+ */
+function calendarOccurrencesForRecord(record = {}, options = {}) {
+  const explicit = explicitOccurrences(record, options);
+  if (explicit) return explicit.filter((occurrence) => occurrence.status === "cancelled"
+    || isFuture(occurrence.starts_at || occurrence.date, asOfDate(options.as_of)));
+  const domain = domainOccurrences(record, options);
+  if (domain) {
+    return domain
+      .filter((value) => isFuture(value.when, asOfDate(options.as_of)))
+      .map((value) => createCalendarOccurrence(occurrenceInput(record, value, options)));
+  }
+  return genericOccurrenceValues(record, options)
     .filter((value) => isFuture(value.when, asOfDate(options.as_of)))
+    .map((value) => createCalendarOccurrence(occurrenceInput(record, value, options)));
+}
+
+/**
+ * Presentation-neutral production of every occurrence a record supports, with
+ * no temporal filter. This is the seam the bounded display query builds on: it
+ * separates *what a record means* (an occurrence with a real date, identity,
+ * source, and destination) from *which window is being queried*. The standing
+ * feed never calls this — it keeps its future-only default above — so exposing
+ * past occurrences here cannot widen a subscription.
+ */
+function displayCandidateOccurrencesForRecord(record = {}, options = {}) {
+  const explicit = explicitOccurrences(record, options);
+  if (explicit) return explicit;
+  const domain = domainOccurrences(record, options);
+  if (domain) return domain.map((value) => createCalendarOccurrence(occurrenceInput(record, value, options)));
+  return genericOccurrenceValues(record, options)
     .map((value) => createCalendarOccurrence(occurrenceInput(record, value, options)));
 }
 
@@ -506,9 +534,11 @@ export {
   CalendarOccurrence,
   createCalendarOccurrence,
   calendarOccurrencesForRecord,
+  displayCandidateOccurrencesForRecord,
   calendarOccurrenceFromLegacyFeedItem,
   calendarOccurrencesForRows,
   deduplicateCalendarOccurrences,
+  recordHasAmbiguousDate,
   calendarizationCoverage,
   projectCalendarOccurrences,
 };
