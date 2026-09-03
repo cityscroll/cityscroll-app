@@ -32,8 +32,10 @@ import { KNOWN_LAND_POINT_PRECISIONS } from "../site/land_project_geography.mjs"
 import { landProjectPath } from "../site/land_project_route.mjs";
 import { filterLandSnapshot } from "../site/resident_snapshot_queries.mjs";
 import {
+  landMapCanvasSvg,
   landMapMarkerLayer,
   landMapPanelHTML,
+  landMapParcelSvg,
   landMarkerDetailHref,
 } from "../site/app/map_runtime.mjs";
 
@@ -278,8 +280,11 @@ test("A4 the marker layer adds no choropleth, no search, and no fetch of its own
   // A choropleth would need a per-area value scale and a filled area per project.
   assert.doesNotMatch(region, /choropleth|colorScale|colourScale|quantile|fillOpacity/i);
   const html = htmlFor(modelFor());
-  assert.equal([...html.matchAll(/<path /g)].length, [...html.matchAll(/class="land-map-outline"/g)].length,
-    "the only filled shapes are the schematic borough outlines");
+  // Both known non-interactive outline kinds — the schematic boundary outlines (LM-09) and
+  // the optional exact-key parcel outlines (LM-17) — share the base `land-map-outline`
+  // class; every <path> must carry it and nothing else may add a filled shape.
+  assert.equal([...html.matchAll(/<path /g)].length, [...html.matchAll(/class="land-map-outline(?: land-map-\S+)?"/g)].length,
+    "the only filled shapes are the schematic borough and parcel outlines");
   assert.doesNotMatch(html, /data-land-map-value|land-map-choropleth/);
 
   // The whole projection is only ever reached through the shell's one committed URL.
@@ -348,4 +353,40 @@ test("A4 the marker-join receipt reports the before/after states it captured", (
     );
     assert.equal(filtered.markers, filtered.counts_published.mapped);
   }
+});
+
+test("LM-17 landMapParcelSvg draws only markers that carry a shape, and never interactively", () => {
+  const shape = points.points["2026R0127"].shape;
+  const markerLayer = [
+    { projectId: "2026R0127", geometry: shape, label: "One lot" },
+    { projectId: "2025K0305", geometry: null, label: "Many lots" },
+  ];
+  const svg = landMapParcelSvg(markerLayer, { escape: (v) => String(v ?? "") });
+  assert.match(svg, /<g class="land-map-parcels" aria-hidden="true">/);
+  assert.match(svg, /data-land-map-project="2026R0127"/);
+  assert.doesNotMatch(svg, /data-land-map-project="2025K0305"/);
+  assert.match(svg, /pointer-events="none"/);
+  assert.match(svg, /<title>One lot<\/title>/);
+  assert.doesNotMatch(svg, /<a /, "a parcel outline must never be its own control");
+});
+
+test("LM-17 landMapParcelSvg renders nothing for an empty marker layer", () => {
+  assert.equal(landMapParcelSvg([]), '<g class="land-map-parcels" aria-hidden="true"></g>');
+  assert.equal(landMapParcelSvg(undefined), '<g class="land-map-parcels" aria-hidden="true"></g>');
+});
+
+test("LM-17 a marker's committed shape survives the full model-to-SVG pipeline", () => {
+  const SINGLE_BBL_SPECIMEN = "2026R0127";
+  const model = modelFor();
+  const layer = layerFor(model);
+  const marker = layer.find((item) => item.projectId === SINGLE_BBL_SPECIMEN);
+  assert.ok(marker, "the single-BBL specimen must still be a marker");
+  // Regression: landMapMarkerLayer once dropped model.markers[].geometry entirely, so the
+  // committed shape never reached the SVG despite being present and valid in the model.
+  assert.ok(marker.geometry, "landMapMarkerLayer must carry the model's geometry through");
+  const svg = landMapCanvasSvg(model, { t, sourceVintage: points.schema });
+  assert.match(svg, new RegExp(`land-map-parcel-outline"[^>]*data-land-map-project="${SINGLE_BBL_SPECIMEN}"`));
+  const multiBblMarker = layer.find((item) => item.projectId === MAPPED_SPECIMEN);
+  assert.equal(multiBblMarker.geometry, null, "a multi-BBL anchor must never carry a shape");
+  assert.doesNotMatch(svg, new RegExp(`land-map-parcel-outline"[^>]*data-land-map-project="${MAPPED_SPECIMEN}"`));
 });

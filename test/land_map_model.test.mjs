@@ -378,6 +378,48 @@ test("A3 every existing Land filter dimension preserves List/Map id equality", (
   }
 });
 
+test("LM-17 a single-BBL exact marker carries its committed parcel shape", () => {
+  const rows = filterLandSnapshot(landDefault.projects, { limit: 40, status: "all", stage: "any" });
+  const model = buildLandMapModel({ rows, pointLookup: pointArtifact });
+  const marker = model.markers.find((item) => item.projectId === LAND_PROJECT_MAP_POINT_SPECIMENS.single_bbl);
+  assert.ok(marker, "single-BBL specimen must still be a marker");
+  assert.ok(marker.geometry, "single-BBL specimen should carry the committed shape");
+  assert.equal(marker.geometry.method, "single_bbl_parcel_polygon");
+  assert.equal(marker.geometry.precision, "tax_lot_boundary");
+  assert.ok(Array.isArray(marker.geometry.rings?.[0]));
+});
+
+test("LM-17 a multi-BBL anchor marker never carries a shape", () => {
+  const rows = filterLandSnapshot(landDefault.projects, { limit: 40, status: "all", stage: "any" });
+  const model = buildLandMapModel({ rows, pointLookup: pointArtifact });
+  const marker = model.markers.find((item) => item.projectId === LAND_PROJECT_MAP_POINT_SPECIMENS.multi_bbl);
+  assert.ok(marker, "multi-BBL specimen must still be a marker");
+  assert.equal(marker.geometry, null);
+});
+
+test("LM-17 a malformed shape on a point degrades to no shape, never a broken render", () => {
+  const rows = filterLandSnapshot(landDefault.projects, {
+    limit: 40,
+    projectIds: [LAND_PROJECT_MAP_POINT_SPECIMENS.single_bbl],
+    status: "all",
+    stage: "any",
+  });
+  const tampered = {
+    ...pointArtifact,
+    points: {
+      ...pointArtifact.points,
+      [LAND_PROJECT_MAP_POINT_SPECIMENS.single_bbl]: {
+        ...pointArtifact.points[LAND_PROJECT_MAP_POINT_SPECIMENS.single_bbl],
+        shape: { rings: [[[0, 0], [1, 0]]] }, // open, too-short ring
+      },
+    },
+  };
+  const model = buildLandMapModel({ rows, pointLookup: tampered });
+  const marker = model.markers.find((item) => item.projectId === LAND_PROJECT_MAP_POINT_SPECIMENS.single_bbl);
+  assert.ok(marker, "the point itself must still resolve");
+  assert.equal(marker.geometry, null, "an invalid shape must not reach the marker");
+});
+
 test("A2/A4 model source has no filter engine, fetch, viewport search, or map-only limit", () => {
   assert.equal(/applyLandMapFilters/.test(modelSrc), false);
   assert.equal(/applyLandFilters/.test(modelSrc), false);

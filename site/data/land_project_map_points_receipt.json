@@ -527,7 +527,7 @@
     "resolver_version": "cityscroll.land_project_geography.v1",
     "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1",
     "payload_path": "site/data/land_project_map_points.json",
-    "payload_bytes": 4822,
-    "payload_sha256": "0e8f2629818d3e0d7284c426074cac817cb3074fbcc1aabe168fd1f77b770c5c"
+    "payload_bytes": 22110,
+    "payload_sha256": "b99c018aeaddfee8c62a32b3ca24f3c335acd0729fdac0bee889d0937b2ccd08"
   }
 }

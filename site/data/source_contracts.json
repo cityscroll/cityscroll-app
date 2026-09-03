@@ -1654,7 +1654,7 @@
       "name": "MapPLUTO",
       "owner": "NYC Department of City Planning",
       "status": "build-time",
-      "scope": "source-attribution + bounded BBL centroid materialization for sell-facing Land pins",
+      "scope": "source-attribution + bounded BBL centroid materialization for sell-facing Land pins, plus a bounded exact single-BBL parcel-polygon lookup for the Land project-geometry projection",
       "kind": "arcgis",
       "endpoint": "https://services5.arcgis.com/GfwWNkhOj9bNBqoJ/arcgis/rest/services/MAPPLUTO/FeatureServer/0",
       "landing_page": "https://www.nyc.gov/content/planning/pages/resources/datasets/mappluto-pluto-change",
@@ -1665,8 +1665,8 @@
       ],
       "max_stale_days": 120,
       "publisher_cadence": "Periodic PLUTO releases",
-      "product_freshness": "Checked by tools/build_bbl_mappluto_centroids.mjs --check (age ≤120d, ≥95% sell-facing BBL coverage, canary 3012660036). Resident Land maps read the committed centroid lookup only — no live ArcGIS on the hot path.",
-      "used_for": "Official attribution for tax-lot map context and retained BBL→centroid pins for Land.",
+      "product_freshness": "Checked by tools/build_bbl_mappluto_centroids.mjs --check (age ≤120d, ≥95% sell-facing BBL coverage, canary 3012660036) and, for the bounded parcel-geometry lookup, tools/build_land_project_geometry_source.mjs --check (age ≤120d, every exact single-BBL candidate present and a valid polygon). Resident Land maps read the committed lookups only — no live ArcGIS on the hot path.",
+      "used_for": "Official attribution for tax-lot map context, retained BBL→centroid pins for Land, and — bounded to the exact single-BBL project subset — a retained BBL→parcel-polygon lookup for the optional Land project-geometry field.",
       "code_references": [
         {
           "path": "site/app/map_runtime.mjs",
@@ -1678,6 +1678,14 @@
         },
         {
           "path": "tools/build_bbl_mappluto_centroids.mjs",
+          "contains": "MAPPLUTO"
+        },
+        {
+          "path": "site/land_project_geometry.mjs",
+          "contains": "MapPLUTO"
+        },
+        {
+          "path": "tools/build_land_project_geometry_source.mjs",
           "contains": "MAPPLUTO"
         }
       ],
