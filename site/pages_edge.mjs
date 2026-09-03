@@ -397,6 +397,7 @@ async function handleMatter(request, env, matterId) {
   if (!view) return matterUnavailableResponse(matterId);
   const html = renderLegislativeMatterDocument(view, {
     currentHref: request.url,
+    // determinism-lint: allow clock the edge worker is the boundary that reads the day and passes it in; renderLegislativeMatterDocument() itself stays a pure function of its arguments.
     today: new Date().toISOString().slice(0, 10),
   });
   if (!html) return matterUnavailableResponse(matterId);
