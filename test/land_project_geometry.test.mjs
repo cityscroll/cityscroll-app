@@ -13,7 +13,6 @@ import {
   LAND_PROJECT_GEOMETRY_RELATION,
   LAND_PROJECT_GEOMETRY_SCHEMA,
   assertLandProjectGeometry,
-  landMapParcelSvg,
   landParcelPolygonFindings,
   landProjectGeometryFindings,
   materializeLandProjectGeometry,
@@ -125,26 +124,6 @@ test("contract findings pass for a real fixture run and fail closed on tampering
   assert.ok(landProjectGeometryFindings(payload, tampered).some((f) => f.includes("new_publisher_work")));
   const overBudget = landProjectGeometryFindings(payload, receipt, { payloadBytes: 1024 * 1024 });
   assert.ok(overBudget.some((f) => f.includes("exceeds")));
-});
-
-test("landMapParcelSvg draws only markers that carry a shape, and never interactively", () => {
-  const shape = run().payload.shapes["2026R0127"];
-  const markerLayer = [
-    { projectId: "2026R0127", geometry: shape, label: "One lot" },
-    { projectId: "2025K0305", geometry: null, label: "Many lots" },
-  ];
-  const svg = landMapParcelSvg(markerLayer);
-  assert.match(svg, /<g class="land-map-parcels" aria-hidden="true">/);
-  assert.match(svg, /data-land-map-project="2026R0127"/);
-  assert.doesNotMatch(svg, /data-land-map-project="2025K0305"/);
-  assert.match(svg, /pointer-events="none"/);
-  assert.match(svg, /<title>One lot<\/title>/);
-  assert.doesNotMatch(svg, /<a /, "a parcel outline must never be its own control");
-});
-
-test("landMapParcelSvg renders nothing for an empty marker layer", () => {
-  assert.equal(landMapParcelSvg([]), '<g class="land-map-parcels" aria-hidden="true"></g>');
-  assert.equal(landMapParcelSvg(undefined), '<g class="land-map-parcels" aria-hidden="true"></g>');
 });
 
 test("payload never carries receipt-only operational fields", () => {

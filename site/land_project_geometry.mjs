@@ -15,7 +15,6 @@
  */
 
 import { normalizeBbl } from "./bbl_mappluto_centroids.mjs";
-import { polygonsToSvgPath } from "./map_exploration.mjs";
 
 export const LAND_PROJECT_GEOMETRY_SCHEMA = "cityscroll.land_project_geometry.v1";
 export const LAND_PROJECT_GEOMETRY_RECEIPT_SCHEMA = "cityscroll.land_project_geometry_receipt.v1";
@@ -37,26 +36,26 @@ export const LAND_PROJECT_GEOMETRY_COVERAGE_STATES = Object.freeze({
   NOT_APPLICABLE_UNMAPPED: "not_applicable_unmapped",
 });
 
-const NYC_BOUNDS = { minLat: 40.4, maxLat: 41.0, minLon: -74.4, maxLon: -73.6 };
+const LAND_PARCEL_NYC_BOUNDS = { minLat: 40.4, maxLat: 41.0, minLon: -74.4, maxLon: -73.6 };
 
-function trimId(value) {
+function trimGeometryId(value) {
   return String(value ?? "").trim();
 }
 
-function asObject(value) {
+function asGeometryObject(value) {
   return value && typeof value === "object" && !Array.isArray(value) ? value : {};
 }
 
-function sortedKeys(record) {
+function sortedGeometryKeys(record) {
   return Object.keys(record).sort();
 }
 
-function projectUniverse(landDefault) {
+function geometryProjectUniverse(landDefault) {
   const projects = Array.isArray(landDefault?.projects) ? landDefault.projects : [];
   const seen = new Set();
   const out = [];
   for (const project of projects) {
-    const projectId = trimId(project?.project_id);
+    const projectId = trimGeometryId(project?.project_id);
     if (!projectId || seen.has(projectId)) continue;
     seen.add(projectId);
     out.push(projectId);
@@ -68,7 +67,7 @@ function exactBblsByProject(zapBbl) {
   const byProject = new Map();
   const rows = Array.isArray(zapBbl?.rows) ? zapBbl.rows : [];
   for (const row of rows) {
-    const projectId = trimId(row?.project_id);
+    const projectId = trimGeometryId(row?.project_id);
     if (!projectId) continue;
     const seen = byProject.get(projectId) || new Set();
     for (const value of Array.isArray(row?.bbls) ? row.bbls : []) {
@@ -85,7 +84,7 @@ function exactBblsByProject(zapBbl) {
  * project is either ambiguous (2+ retained BBLs) or has none.
  */
 export function singleBblGeometryCandidates({ landDefault, zapBbl }) {
-  const universe = projectUniverse(landDefault);
+  const universe = geometryProjectUniverse(landDefault);
   const byProject = exactBblsByProject(zapBbl);
   const out = new Map();
   for (const projectId of universe) {
@@ -130,10 +129,10 @@ export function landParcelPolygonFindings(entry) {
     const lat = Number(point?.[1]);
     if (!Number.isFinite(lat) || !Number.isFinite(lon)) return "ring has a non-finite point";
     if (
-      lat < NYC_BOUNDS.minLat ||
-      lat > NYC_BOUNDS.maxLat ||
-      lon < NYC_BOUNDS.minLon ||
-      lon > NYC_BOUNDS.maxLon
+      lat < LAND_PARCEL_NYC_BOUNDS.minLat ||
+      lat > LAND_PARCEL_NYC_BOUNDS.maxLat ||
+      lon < LAND_PARCEL_NYC_BOUNDS.minLon ||
+      lon > LAND_PARCEL_NYC_BOUNDS.maxLon
     ) {
       return "ring point falls outside the NYC bounding box";
     }
@@ -165,7 +164,7 @@ function shapeEntry({ projectId, bbl, geometryRow, source, materializedAt }) {
   };
 }
 
-function receiptRow({ projectId, bbl, uniqueExactCount, coverageState, reason }) {
+function geometryReceiptRow({ projectId, bbl, uniqueExactCount, coverageState, reason }) {
   return {
     project_id: projectId,
     bbl: bbl || null,
@@ -189,12 +188,12 @@ function receiptRow({ projectId, bbl, uniqueExactCount, coverageState, reason })
  * @param {{ now?: string }} [opts]
  */
 export function materializeLandProjectGeometry(inputs = {}, opts = {}) {
-  const landDefault = asObject(inputs.landDefault);
-  const zapBbl = asObject(inputs.zapBbl);
-  const geometrySource = asObject(inputs.geometrySource);
-  const byBbl = asObject(geometrySource.by_bbl);
+  const landDefault = asGeometryObject(inputs.landDefault);
+  const zapBbl = asGeometryObject(inputs.zapBbl);
+  const geometrySource = asGeometryObject(inputs.geometrySource);
+  const byBbl = asGeometryObject(geometrySource.by_bbl);
   const mappedIds = new Set(Array.isArray(inputs.mappedProjectIds) ? inputs.mappedProjectIds : []);
-  const universe = projectUniverse(landDefault);
+  const universe = geometryProjectUniverse(landDefault);
   const byProject = exactBblsByProject(zapBbl);
   const now = opts.now || new Date().toISOString();
   const source = geometrySource.source || null;
@@ -215,7 +214,7 @@ export function materializeLandProjectGeometry(inputs = {}, opts = {}) {
     const uniqueExactCount = bbls.size;
 
     if (!mappedIds.has(projectId)) {
-      rows.push(receiptRow({
+      rows.push(geometryReceiptRow({
         projectId,
         bbl: null,
         uniqueExactCount,
@@ -228,7 +227,7 @@ export function materializeLandProjectGeometry(inputs = {}, opts = {}) {
     }
 
     if (uniqueExactCount !== 1) {
-      rows.push(receiptRow({
+      rows.push(geometryReceiptRow({
         projectId,
         bbl: null,
         uniqueExactCount,
@@ -243,7 +242,7 @@ export function materializeLandProjectGeometry(inputs = {}, opts = {}) {
     const bbl = [...bbls][0];
     const geometryRow = byBbl[bbl];
     if (!geometryRow) {
-      rows.push(receiptRow({
+      rows.push(geometryReceiptRow({
         projectId,
         bbl,
         uniqueExactCount,
@@ -257,7 +256,7 @@ export function materializeLandProjectGeometry(inputs = {}, opts = {}) {
 
     const invalidReason = landParcelPolygonFindings(geometryRow);
     if (invalidReason) {
-      rows.push(receiptRow({
+      rows.push(geometryReceiptRow({
         projectId,
         bbl,
         uniqueExactCount,
@@ -271,7 +270,7 @@ export function materializeLandProjectGeometry(inputs = {}, opts = {}) {
 
     const ageDays = geometryAge(materializedAt, now);
     if (ageDays != null && ageDays > maxAge) {
-      rows.push(receiptRow({
+      rows.push(geometryReceiptRow({
         projectId,
         bbl,
         uniqueExactCount,
@@ -284,7 +283,7 @@ export function materializeLandProjectGeometry(inputs = {}, opts = {}) {
     }
 
     shapes[projectId] = shapeEntry({ projectId, bbl, geometryRow, source, materializedAt });
-    rows.push(receiptRow({
+    rows.push(geometryReceiptRow({
       projectId,
       bbl,
       uniqueExactCount,
@@ -297,7 +296,7 @@ export function materializeLandProjectGeometry(inputs = {}, opts = {}) {
 
   const payload = {
     schema: LAND_PROJECT_GEOMETRY_SCHEMA,
-    shapes: Object.fromEntries(sortedKeys(shapes).map((id) => [id, shapes[id]])),
+    shapes: Object.fromEntries(sortedGeometryKeys(shapes).map((id) => [id, shapes[id]])),
   };
 
   const receipt = {
@@ -442,40 +441,4 @@ export function assertLandParcelGeometrySource(doc, opts = {}) {
   const findings = landParcelGeometrySourceFindings(doc, opts);
   if (findings.length) throw new Error(findings.join("; "));
   return true;
-}
-
-function escapeLandParcelValue(value) {
-  return String(value ?? "")
-    .replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;").replaceAll("'", "&#39;");
-}
-
-/**
- * Render the exact-key parcel outlines beside their markers. Geometry is
- * never interactive and never carries its own label: it reuses the same
- * accessible marker label already computed by `landMapMarkerLayer`, so
- * shipping this layer adds no new translated copy surface. A marker with
- * no shape (the ambiguous, missing, invalid, and stale cases — the large
- * majority of the corpus) renders nothing here and is unaffected.
- *
- * @param {ReadonlyArray<{projectId:string, geometry:object|null, label:string}>} markerLayer
- * @param {{ escape?: (value:unknown)=>string }} [opts]
- */
-export function landMapParcelSvg(markerLayer, { escape = escapeLandParcelValue } = {}) {
-  const paths = (markerLayer || [])
-    .filter((marker) => marker?.geometry?.rings)
-    .map((marker) => {
-      const shape = marker.geometry;
-      const d = polygonsToSvgPath([{ rings: shape.rings }]);
-      if (!d) return "";
-      return `<path class="land-map-outline land-map-parcel-outline" d="${d}" fill="none"`
-        + ` pointer-events="none" data-land-map-project="${escape(marker.projectId)}"`
-        + ` data-land-map-parcel-method="${escape(shape.method)}"`
-        + ` data-land-map-parcel-precision="${escape(shape.precision)}"`
-        + ` data-land-map-parcel-relation="${escape(shape.relation)}"`
-        + ` data-land-map-parcel-vintage="${escape(shape.vintage)}"`
-        + `><title>${escape(marker.label)}</title></path>`;
-    })
-    .join("");
-  return `<g class="land-map-parcels" aria-hidden="true">${paths}</g>`;
 }

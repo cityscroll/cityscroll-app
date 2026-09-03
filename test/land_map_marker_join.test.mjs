@@ -35,6 +35,7 @@ import {
   landMapCanvasSvg,
   landMapMarkerLayer,
   landMapPanelHTML,
+  landMapParcelSvg,
   landMarkerDetailHref,
 } from "../site/app/map_runtime.mjs";
 
@@ -352,6 +353,26 @@ test("A4 the marker-join receipt reports the before/after states it captured", (
     );
     assert.equal(filtered.markers, filtered.counts_published.mapped);
   }
+});
+
+test("LM-17 landMapParcelSvg draws only markers that carry a shape, and never interactively", () => {
+  const shape = points.points["2026R0127"].shape;
+  const markerLayer = [
+    { projectId: "2026R0127", geometry: shape, label: "One lot" },
+    { projectId: "2025K0305", geometry: null, label: "Many lots" },
+  ];
+  const svg = landMapParcelSvg(markerLayer, { escape: (v) => String(v ?? "") });
+  assert.match(svg, /<g class="land-map-parcels" aria-hidden="true">/);
+  assert.match(svg, /data-land-map-project="2026R0127"/);
+  assert.doesNotMatch(svg, /data-land-map-project="2025K0305"/);
+  assert.match(svg, /pointer-events="none"/);
+  assert.match(svg, /<title>One lot<\/title>/);
+  assert.doesNotMatch(svg, /<a /, "a parcel outline must never be its own control");
+});
+
+test("LM-17 landMapParcelSvg renders nothing for an empty marker layer", () => {
+  assert.equal(landMapParcelSvg([]), '<g class="land-map-parcels" aria-hidden="true"></g>');
+  assert.equal(landMapParcelSvg(undefined), '<g class="land-map-parcels" aria-hidden="true"></g>');
 });
 
 test("LM-17 a marker's committed shape survives the full model-to-SVG pipeline", () => {

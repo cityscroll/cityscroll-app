@@ -31,7 +31,6 @@ import {
 } from "../land_map_boundary_context.mjs";
 import { landMapAuthorityHandoff } from "../land_map_authority_handoff.mjs";
 import { landProjectPath } from "../land_project_route.mjs";
-import { landMapParcelSvg } from "../land_project_geometry.mjs";
 import {
   landMapSelectionFocusIntent,
   landSelectionFromHistoryState,
@@ -43,6 +42,7 @@ import {
   NYC_BOUNDS,
   bboxToViewBox,
   defaultViewBox,
+  polygonsToSvgPath,
   projectLonLat,
 } from "../map_exploration.mjs";
 
@@ -560,6 +560,36 @@ export function landMapMarkerLayer(model, {t: copy = mapCopy, sourceVintage = nu
       geometry: marker.geometry ?? null,
     });
   }));
+}
+
+/**
+ * Render the exact-key parcel outlines beside their markers. Geometry is
+ * never interactive and never carries its own label: it reuses the same
+ * accessible marker label already computed by `landMapMarkerLayer`, so
+ * shipping this layer adds no new translated copy surface. A marker with
+ * no shape (the ambiguous, missing, invalid, and stale cases — the large
+ * majority of the corpus) renders nothing here and is unaffected.
+ *
+ * @param {ReadonlyArray<{projectId:string, geometry:object|null, label:string}>} markerLayer
+ * @param {{ escape?: (value:unknown)=>string }} [opts]
+ */
+export function landMapParcelSvg(markerLayer, { escape = escapeMapHtml } = {}){
+  const paths = (markerLayer || [])
+    .filter((marker) => marker?.geometry?.rings)
+    .map((marker) => {
+      const shape = marker.geometry;
+      const d = polygonsToSvgPath([{ rings: shape.rings }]);
+      if(!d) return "";
+      return `<path class="land-map-outline land-map-parcel-outline" d="${d}" fill="none"`
+        + ` pointer-events="none" data-land-map-project="${escape(marker.projectId)}"`
+        + ` data-land-map-parcel-method="${escape(shape.method)}"`
+        + ` data-land-map-parcel-precision="${escape(shape.precision)}"`
+        + ` data-land-map-parcel-relation="${escape(shape.relation)}"`
+        + ` data-land-map-parcel-vintage="${escape(shape.vintage)}"`
+        + `><title>${escape(marker.label)}</title></path>`;
+    })
+    .join("");
+  return `<g class="land-map-parcels" aria-hidden="true">${paths}</g>`;
 }
 
 export function landMapCanvasSvg(model, {
