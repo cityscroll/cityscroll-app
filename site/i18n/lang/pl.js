@@ -444,6 +444,7 @@
     browse_cta_prompt: "Chcesz nowości e-mailem?",
     home_cta_active_now: "Już to otrzymujesz — będziemy nadal wysyłać e-maile w każdy poniedziałek.",
     home_cta_open_watches: "Otwórz swoje obserwowane",
+    following_default_choose_another_watch: "Choose another watch",
     home_cta_submit: "Otrzymuj cotygodniowe aktualizacje",
     home_cta_topics: "Wybierz, co obserwować",
     alert_context_scope: "Otrzymasz e-mail dotyczący: {scope}",

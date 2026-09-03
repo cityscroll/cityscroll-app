@@ -436,6 +436,7 @@
     browse_cta_prompt: "ইমেইলে আপডেট চান?",
     home_cta_active_now: "আপনি ইতিমধ্যে এটি পাচ্ছেন — আমরা প্রতি সোমবার ইমেইল পাঠাতে থাকব।",
     home_cta_open_watches: "আপনার ওয়াচ খুলুন",
+    following_default_choose_another_watch: "Choose another watch",
     home_cta_submit: "সাপ্তাহিক আপডেট পান",
     home_cta_topics: "যা অনুসরণ করবেন তা বেছে নিন",
     alert_context_scope: "আপনি ইমেইল পাবেন: {scope}",

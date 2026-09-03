@@ -436,6 +436,7 @@
     browse_cta_prompt: "想用邮件收更新吗？",
     home_cta_active_now: "您已经在接收此内容——我们将继续每周一发送邮件。",
     home_cta_open_watches: "打开您的关注列表",
+    following_default_choose_another_watch: "Choose another watch",
     home_cta_submit: "获取每周更新",
     home_cta_topics: "选择要关注的内容",
     alert_context_scope: "您将收到关于以下内容的邮件：{scope}",
