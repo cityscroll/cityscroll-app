@@ -56,9 +56,9 @@
         "worker"
       ],
       "scan_hops": 1,
-      "scanned_source_count": 2142,
-      "sources_skipped_not_materialised": 0,
-      "path_count": 1905,
+      "scanned_source_count": 2144,
+      "sources_skipped_not_materialised": 1,
+      "path_count": 1910,
       "worker_to_site_reference_count": 183,
       "worker_to_site_data_reference_count": 28,
       "worker_to_site_data_targets": [
@@ -118,7 +118,7 @@
         "warehouse",
         "worker/src/data"
       ],
-      "path_count": 3825
+      "path_count": 3833
     }
   },
   "required_paths": [
@@ -2613,6 +2613,7 @@
       "site/data/award_sources/verification_receipts/award_registration_dwell_latest.json",
       "site/data/bbl_mappluto_centroids_lookup.json",
       "site/data/bid_tabulation_sources/verification_receipts/bid_tabulations_historical_2026-07-30.json",
+      "site/data/calendar_display_occurrence_census.json",
       "site/data/capital_project_sources/verification_receipts/capital_projects_2026-07-30.json",
       "site/data/checkbook_spending_sources/verification_receipts/checkbook_spending_payment_retention_2026-08-11.json",
       "site/data/city_record_pin_chain_warehouse_lookup.json",
@@ -2920,7 +2921,7 @@
       "site/data/zap_projects_warehouse_lookup.json"
     ]
   },
-  "patterns_sha256": "1b2811ff4a95f50e5f431d00c6be70afc169fa4c552a82fa8f42579ccbf4526c",
+  "patterns_sha256": "c5589960848557c1ae500938ab0cdb93a4d4a796ab25d536416c49c92e20fe6b",
   "supported_gate_classes": [
     "worker-unit",
     "architecture-evidence-shards",
@@ -3044,30 +3045,30 @@
   },
   "measured": {
     "note": "A snapshot of what the profile costs at the revision named here. These figures are reporting only; they are not part of the checked contract, because a byte total moves whenever any tracked file does.",
-    "revision": "32b294ddd6451d1bff75098bbfa46697073539a2",
-    "computed_in_reduced_checkout": false,
+    "revision": "1bff6c6d72acb18b8b7f9dd89d769eee81439849",
+    "computed_in_reduced_checkout": true,
     "profile_paths": {
-      "count": 4043,
-      "logical_bytes": 196449877
+      "count": 4049,
+      "logical_bytes": 196521394
     },
     "deferred_paths": {
-      "count": 297,
-      "logical_bytes": 221529334
+      "count": 298,
+      "logical_bytes": 221538531
     },
     "excluded_paths": {
-      "count": 2175,
-      "logical_bytes": 657057649
+      "count": 2176,
+      "logical_bytes": 657066846
     },
     "site_data": {
-      "tracked_count": 693,
-      "tracked_logical_bytes": 467560506,
+      "tracked_count": 694,
+      "tracked_logical_bytes": 467569703,
       "profile_count": 48,
       "profile_logical_bytes": 109041606
     },
     "tracked_total": {
-      "count": 6218,
-      "logical_bytes": 853507526
+      "count": 6227,
+      "logical_bytes": 853879242
     },
-    "pattern_count": 812
+    "pattern_count": 814
   }
 }
