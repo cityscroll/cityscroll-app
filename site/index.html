@@ -72,14 +72,20 @@
   /* Homepage Following entry — quiet card under the tagline */
   .home-cta{max-width:520px;margin:2px auto 12px;padding:14px 16px 12px;background:var(--card);border:1px solid var(--rule);border-radius:10px;text-align:center}
   .home-cta-prompt{font:700 17px/1.3 var(--font-body);margin:0 0 10px;color:var(--ink)}
+  .home-cta-form{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:stretch;margin:0 0 10px}
+  .home-cta-form input[type=email]{flex:1 1 220px;max-width:280px;min-height:44px;padding:8px 12px;border:1px solid var(--rule-strong);border-radius:7px;background:#fff;color:var(--ink);font:16px/1.3 var(--font-body)}
+  .home-cta-form button{min-height:44px;flex:0 0 auto;padding:8px 16px;border:1px solid var(--oxblood);border-radius:7px;background:var(--oxblood);color:#fff;font:700 15px/1.3 var(--font-body);cursor:pointer}
+  .home-cta-msg{margin:0 0 10px;font:13px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--muted)}
   .home-cta-action{margin:0}
-  .home-cta-action a{display:inline-flex;min-height:44px;align-items:center;padding:8px 16px;border:1px solid var(--oxblood);border-radius:7px;background:var(--oxblood);color:#fff;font:700 15px/1.3 var(--font-body);text-decoration:none}
+  .home-cta-action a{display:inline-flex;min-height:44px;align-items:center;padding:8px 16px;border:1px solid var(--oxblood);border-radius:7px;color:var(--oxblood);font:700 15px/1.3 var(--font-body);text-decoration:none}
   .home-cta-session{display:none;margin:0}
   .home-cta-session a{display:inline-flex;min-height:44px;align-items:center;padding:8px 14px;border:1px solid var(--oxblood);border-radius:7px;color:var(--oxblood);font:700 15px/1.3 var(--font-body);text-decoration:none}
   .home-cta.compact{max-width:none;margin:2px 0 12px;padding:10px 12px 8px;text-align:left}
   .home-cta.compact .home-cta-prompt,
   .home-cta.compact .home-cta-action{display:block}
   .home-cta[data-session-open="true"] .home-cta-prompt,
+  .home-cta[data-session-open="true"] .home-cta-form,
+  .home-cta[data-session-open="true"] .home-cta-msg,
   .home-cta[data-session-open="true"] .home-cta-action{display:none}
   .home-cta[data-session-open="true"] .home-cta-session{display:block}
   .home-topic-entry{max-width:680px;margin:4px auto 14px;padding:18px 20px 16px;background:var(--card);border:2px solid var(--ink);border-radius:12px;text-align:left;box-shadow:var(--shadow)}
@@ -1807,9 +1813,18 @@
       </form>
     </section>
     <div class="home-cta" id="homeCta">
-      <p class="home-cta-prompt" id="homeCtaPrompt" data-i18n="home_cta_prompt">Want email updates on this?</p>
+      <p class="home-cta-prompt" id="homeCtaPrompt" data-i18n="home_cta_prompt">New NYC contracts and RFPs by email every Monday.</p>
+      <form class="home-cta-form" id="homeCtaForm" method="post" action="https://api.cityscroll.org/subscribe">
+        <input type="hidden" name="no_topic" value="true">
+        <input type="hidden" name="source" value="top-of-site">
+        <input type="hidden" name="lang" value="en" id="homeCtaLang">
+        <label for="homeCtaEmail" class="sr-only" data-i18n="email_label">Email address</label>
+        <input type="email" id="homeCtaEmail" name="email" required autocomplete="email" inputmode="email" data-clarity-mask="true" placeholder="example@example.com" data-i18n-placeholder="email_placeholder" aria-describedby="homeCtaMsg">
+        <button type="submit" id="homeCtaSubmit" data-i18n="home_cta_submit">Get weekly updates</button>
+      </form>
+      <p class="home-cta-msg" id="homeCtaMsg" role="status" aria-live="polite"></p>
       <p class="home-cta-action"><a href="/following/?onboarding=1" id="homeCtaTopics" data-i18n="home_cta_topics">Choose what to follow</a></p>
-      <p class="home-cta-session"><a id="homeCtaManage" href="/following/#your-following" data-i18n="session_manage_watches" hidden>Manage watches</a></p>
+      <p class="home-cta-session"><a id="homeCtaManage" href="/following/#your-following" data-i18n="home_cta_open_watches" hidden>Open your watches</a></p>
     </div>
     <div class="cr-rule cr-rule--mid"></div>
     <nav class="now-entry-row" aria-label="Primary">

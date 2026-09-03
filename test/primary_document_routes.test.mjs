@@ -381,6 +381,11 @@ test("Browse landing and every bounded child are exact build outputs with useful
   assert.match(search, /name="q"[^>]+maxlength="240"/);
   assert.doesNotMatch(search, /app\/main\.mjs/);
   assert.match(search, /search_(?:entry|document)\.mjs/);
+  // The Search page keeps the Following handoff but carries no weekly-default email form,
+  // so its prompt is the open-ended browse ask rather than the homepage promise.
+  assert.match(search, /id="homeCtaPrompt" data-i18n="browse_cta_prompt">Want email updates on this\?</);
+  assert.doesNotMatch(search, /home_cta_prompt|id="homeCtaForm"|id="homeCtaEmail"|id="homeCtaMsg"/);
+  assert.match(search, /href="\/following\/\?onboarding=1"[^>]*id="homeCtaTopics"/);
   const now = output("/site/now/index.html");
   assert.match(now, /data-build-rendered="now"/);
   assert.match(now, /data-now-item=/);
