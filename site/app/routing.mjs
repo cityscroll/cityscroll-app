@@ -1594,9 +1594,9 @@ async function showNotice(id, watch){
       ${digEvidenceHTML(ev)}
       ${watchChips.length ? `<div class="nlunderstood" role="status">${t("deeplink_watch_context_label")} ${watchChips.join(" ")}</div>` : ""}
       <div id="nactions" data-export-class="actions">${initialActionRail}</div>
-      ${r.type_of_notice_description==="Solicitation"?`<div data-export-class="actions">${buildApply(r,false)}</div>`:""}
+      ${r.type_of_notice_description==="Solicitation"?'<div id="napply" data-export-class="actions"></div>':""}
       <div id="nplain" data-export-class="plain_summary"></div><div id="ncontext" data-export-class="notice_context"></div>
-      <div data-export-class="notice_context">${glanceFor(r, actionRailGuideCoverage(initialActionsForGlance))}</div>
+      <div id="nglance" data-export-class="notice_context"></div>
       ${renderNoticeBitemporalHistory({ notice: r, events: r.civic_time?.events || [], state: r.civic_time?.state || "ok" })}
       <div id="naddr" data-export-class="address_geography"></div><div id="nmwbe" data-export-class="mwbe_context"></div><div id="nrules" data-export-class="rule_lifecycle"></div><div id="nlifecycle" data-export-class="procurement_lifecycle"></div><div id="nregdwell" data-export-class="award_registration_dwell"></div><div id="nsuboutreach" data-export-class="sub_outreach"></div><div id="ndollars" data-export-class="dollars"></div><div id="nsubsidy" data-export-class="subsidy"></div><div id="naboaward" data-export-class="authority_award"></div><div id="ncommercial" data-export-class="commercial"></div><div id="ndisposition" data-export-class="property_disposition"></div><div id="npropertyxd" data-export-class="property_cross_domain"></div><div id="ntaxlien" data-export-class="tax_lien"></div><div id="nfranchise" data-export-class="franchise"></div><div id="nland" data-export-class="land_project"></div><div id="nmeet" data-export-class="meeting_outcomes">${meetingFirstPaint}</div><div id="nexternal" data-export-class="external_award"></div>
       <div class="actions" style="margin-top:14px">
@@ -1641,11 +1641,25 @@ async function showNotice(id, watch){
     : undefined);
   fillContext(r, contextElement, [attachmentHydration]);
   // Property action identity remains progressively hydrated, but no longer gates the
-  // notice body or Notice-context readiness on a cold route-module import.
+  // notice body or Notice-context readiness on a cold route-module import. The
+  // Solicitation response-apply block (buildApply) and the context glance line
+  // (glanceFor/actionRailGuideCoverage) are the same kind of cold-import
+  // dependency on money-history.mjs: on a fresh landing directly on a notice URL,
+  // ensureMoneyHistory() has not necessarily resolved by the time the body above
+  // is painted, so their mount points (#napply, #nglance) are filled in here once
+  // ready rather than called eagerly inline.
   optionalRouteModules
     .then(()=>{
       noticeContextTimingMark("route-modules-end");
       noticePrimaryTimingMark("deferred-owners-end");
+      if(typeof buildApply==="function"){
+        const applyMount=$("#napply");
+        if(applyMount) applyMount.innerHTML = buildApply(r,false);
+      }
+      if(typeof glanceFor==="function" && typeof actionRailGuideCoverage==="function"){
+        const glanceMount=$("#nglance");
+        if(glanceMount) glanceMount.innerHTML = glanceFor(r, actionRailGuideCoverage(initialActionsForGlance));
+      }
       return typeof hydratePropertyActionMatter==="function" ? hydratePropertyActionMatter(r) : r;
     })
     .then(()=>{

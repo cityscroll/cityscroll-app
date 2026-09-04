@@ -7,17 +7,19 @@
 // Mirrors site action rails and deadline chips (open / closing-soon / closed from
 // EVENT time). Pure: no I/O; does not touch seen: keys / delivery identity.
 
-import registry from "./action_registry.js";
+import * as actionRegistryModule from "./action_registry.js";
 
-const {
-  compileActionRail,
-  solicitationHandoff,
-  awardHandoff,
-  hearingHandoff,
-  ruleHandoff,
-  zoningHandoff,
-  franchiseHandoff,
-} = registry;
+// action_registry.js is intentionally a classic browser script because the public
+// shell uses its global CrolActions API (same reasoning as ./action_path_v0.mjs).
+// Resolve that same API lazily instead of importing it as an ES module, which has
+// no exports and would fail a real ESM import before any page can render.
+function actionRegistry() {
+  const registry = globalThis.CrolActions || actionRegistryModule.default || actionRegistryModule;
+  if (!registry || typeof registry.compileActionRail !== "function") {
+    throw new TypeError("Action Registry is unavailable");
+  }
+  return registry;
+}
 
 const ROLLING_YEAR = 2090;
 /** Match site deadlineTag "soon" band (≤14 days). */
@@ -309,7 +311,8 @@ function phaseLabelFor(matter, digestKind, row) {
  * Falls back to handoff-only guide when rail is pointer-only.
  */
 export function primaryNextAction(matter, { today } = {}) {
-  const actions = compileActionRail(matter, { today });
+  const registry = actionRegistry();
+  const actions = registry.compileActionRail(matter, { today });
   const primary = (actions || []).find((a) =>
     a
     && a.type !== "watch"
@@ -323,12 +326,12 @@ export function primaryNextAction(matter, { today } = {}) {
 
   // Ensure guide from handoff when primary is official without nested guide.
   let handoff = null;
-  if (matter.kind === "solicitation") handoff = solicitationHandoff(matter);
-  else if (matter.kind === "award") handoff = awardHandoff(matter);
-  else if (matter.kind === "hearing") handoff = hearingHandoff(matter);
-  else if (matter.kind === "rule") handoff = ruleHandoff(matter, { today });
-  else if (matter.kind === "zoning") handoff = zoningHandoff(matter, { today });
-  else if (matter.kind === "franchise") handoff = franchiseHandoff(matter);
+  if (matter.kind === "solicitation") handoff = registry.solicitationHandoff(matter);
+  else if (matter.kind === "award") handoff = registry.awardHandoff(matter);
+  else if (matter.kind === "hearing") handoff = registry.hearingHandoff(matter);
+  else if (matter.kind === "rule") handoff = registry.ruleHandoff(matter, { today });
+  else if (matter.kind === "zoning") handoff = registry.zoningHandoff(matter, { today });
+  else if (matter.kind === "franchise") handoff = registry.franchiseHandoff(matter);
 
   if (primary && handoff) return { ...primary, guide: primary.guide || handoff };
   return primary;
