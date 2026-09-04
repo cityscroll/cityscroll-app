@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cityscroll.org/schemas/seqra_ontology_project.v1.schema.json",
+  "title": "SEQRA/CEQR ontology: project",
+  "description": "A CityScroll land-use/environmental-review project: the durable subject that requires one or more government actions.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "project_key",
+    "title",
+    "source_system",
+    "source_project_id",
+    "bbl_list",
+    "borough",
+    "observed_at",
+    "source_id",
+    "source_record_id"
+  ],
+  "properties": {
+    "project_key": {
+      "type": "string",
+      "pattern": "^project:[a-z0-9_-]+:[a-z0-9_-]+$"
+    },
+    "title": {
+      "type": "string"
+    },
+    "source_system": {
+      "type": "string"
+    },
+    "source_project_id": {
+      "type": "string"
+    },
+    "bbl_list": {
+      "type": "array",
+      "description": "Every BBL this project touches; a rezoning or large project may carry many.",
+      "items": {
+        "type": "string"
+      }
+    },
+    "borough": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "observed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "source_id": {
+      "type": "string"
+    },
+    "source_record_id": {
+      "type": "string"
+    }
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cityscroll.org/schemas/seqra_ontology_organization.v1.schema.json",
+  "title": "SEQRA/CEQR ontology: organization",
+  "description": "One organization or institutional actor capable of taking a public position (organization -> takes_position -> public_position).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "organization_key",
+    "name",
+    "organization_type",
+    "observed_at",
+    "source_id",
+    "source_record_id"
+  ],
+  "properties": {
+    "organization_key": {
+      "type": "string",
+      "pattern": "^organization:[a-z0-9_]+:[a-z0-9_]+$"
+    },
+    "name": {
+      "type": "string"
+    },
+    "organization_type": {
+      "type": "string",
+      "enum": [
+        "community_board",
+        "elected_official_office",
+        "advocacy_group",
+        "developer",
+        "government_agency",
+        "labor_organization",
+        "other",
+        "unknown"
+      ]
+    },
+    "observed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "source_id": {
+      "type": "string"
+    },
+    "source_record_id": {
+      "type": "string"
+    }
+  }
+}

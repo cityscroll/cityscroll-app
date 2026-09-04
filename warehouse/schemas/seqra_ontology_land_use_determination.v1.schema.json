@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cityscroll.org/schemas/seqra_ontology_land_use_determination.v1.schema.json",
+  "title": "SEQRA/CEQR ontology: land_use_determination",
+  "description": "One final land-use determination that relies on a review (land_use_determination -> relies_on_review -> environmental_review). Supersession is explicit; a later determination never overwrites an earlier one in place.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "determination_key",
+    "action_key",
+    "review_key",
+    "agency",
+    "date",
+    "outcome",
+    "supersedes_determination_key",
+    "observed_at",
+    "source_id",
+    "source_record_id"
+  ],
+  "properties": {
+    "determination_key": {
+      "type": "string",
+      "pattern": "^determination:[a-z0-9_]+:[a-z0-9_]+:\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "action_key": {
+      "type": "string",
+      "pattern": "^action:[a-z0-9_]+:[a-z0-9_]+:[a-z0-9_]+$"
+    },
+    "review_key": {
+      "type": "string",
+      "pattern": "^environmental_review:(ceqr|seqra):.+$"
+    },
+    "agency": {
+      "type": "string"
+    },
+    "date": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "outcome": {
+      "type": "string",
+      "enum": [
+        "approved",
+        "approved_with_conditions",
+        "denied",
+        "withdrawn",
+        "no_action",
+        "unknown"
+      ]
+    },
+    "supersedes_determination_key": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^determination:[a-z0-9_]+:[a-z0-9_]+:\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "observed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "source_id": {
+      "type": "string"
+    },
+    "source_record_id": {
+      "type": "string"
+    }
+  }
+}

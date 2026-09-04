@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cityscroll.org/schemas/seqra_ontology_review_document.v1.schema.json",
+  "title": "SEQRA/CEQR ontology: review_document",
+  "description": "One versioned document of an environmental review (environmental_review -> has_document -> review_document); draft and final versions coexist and are linked by supersedes_document_key, never overwritten.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "document_key",
+    "review_key",
+    "document_type",
+    "document_stage",
+    "issued_date",
+    "content_hash",
+    "supersedes_document_key",
+    "available_to_public_at",
+    "observed_at",
+    "source_id",
+    "source_record_id"
+  ],
+  "properties": {
+    "document_key": {
+      "type": "string",
+      "pattern": "^review_document:environmental_review:(ceqr|seqra):.+$"
+    },
+    "review_key": {
+      "type": "string",
+      "pattern": "^environmental_review:(ceqr|seqra):.+$"
+    },
+    "document_type": {
+      "type": "string",
+      "enum": [
+        "eas",
+        "eaf",
+        "draft_scope",
+        "final_scope",
+        "deis",
+        "feis",
+        "findings",
+        "negative_declaration",
+        "conditioned_negative_declaration",
+        "positive_declaration",
+        "technical_memorandum",
+        "supplemental_eis",
+        "comment_letter",
+        "agency_response",
+        "final_determination"
+      ]
+    },
+    "document_stage": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "final"
+      ]
+    },
+    "issued_date": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "content_hash": {
+      "type": "string",
+      "pattern": "^(sha256:)?[a-f0-9]{12,64}$"
+    },
+    "supersedes_document_key": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^review_document:environmental_review:(ceqr|seqra):.+$"
+    },
+    "available_to_public_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "observed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "source_id": {
+      "type": "string"
+    },
+    "source_record_id": {
+      "type": "string"
+    }
+  }
+}

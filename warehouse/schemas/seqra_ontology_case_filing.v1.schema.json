@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cityscroll.org/schemas/seqra_ontology_case_filing.v1.schema.json",
+  "title": "SEQRA/CEQR ontology: case_filing",
+  "description": "One filing within a judicial case (procedural, not merits or remedy).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "filing_key",
+    "case_key",
+    "filing_type",
+    "filed_date",
+    "document_key",
+    "observed_at",
+    "source_id",
+    "source_record_id"
+  ],
+  "properties": {
+    "filing_key": {
+      "type": "string",
+      "pattern": "^case_filing:.+$"
+    },
+    "case_key": {
+      "type": "string",
+      "pattern": "^judicial_case:.+$"
+    },
+    "filing_type": {
+      "type": "string",
+      "enum": [
+        "petition",
+        "answer",
+        "motion",
+        "decision",
+        "order",
+        "stipulation",
+        "other"
+      ]
+    },
+    "filed_date": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "document_key": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "observed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "source_id": {
+      "type": "string"
+    },
+    "source_record_id": {
+      "type": "string"
+    }
+  }
+}
