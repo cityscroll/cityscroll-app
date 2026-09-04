@@ -1,0 +1,161 @@
+{
+  "schema": "cityscroll.land-procedure-aware-timeline.capture.v1",
+  "card": "cityscroll-land-decision-path/ldp-31-procedure-aware-timeline",
+  "assertion": "Phase selection, grouping, labels, and terminal stages are driven by the resolved procedure profile plus observed-event topology (A1-A5, A9), never a fixed ordinary-ULURP rail, for the real ELURP regression corpus (E1-E4) and one ordinary-ULURP control that proves the compatibility fallback is untouched. 390x844 mobile viewport is captured first per canary (A10).",
+  "revision": "583289c3957bdce3b3033ed0f68b518e12226c37",
+  "vintage": "2026-09-04T08:25:29Z",
+  "canaries": [
+    {
+      "stem": "2024Q0356",
+      "label": "E1 \u2014 active, ordinary \u00a7197-e-shaped project"
+    },
+    {
+      "stem": "2024Q0419",
+      "label": "E2 \u2014 completed ordinary \u00a7197-e route, C-prefixed identifier"
+    },
+    {
+      "stem": "2025R0257",
+      "label": "E3 \u2014 completed ordinary \u00a7197-e route, different action family"
+    },
+    {
+      "stem": "2026X0362",
+      "label": "E4 \u2014 completed special Council-route ELURP (HPD)"
+    },
+    {
+      "stem": "ulurp_control_2023X0100",
+      "label": "Ordinary ULURP control"
+    }
+  ],
+  "files": [
+    {
+      "name": "2024Q0356-390.png",
+      "stem": "2024Q0356",
+      "label": "E1 \u2014 active, ordinary \u00a7197-e-shaped project",
+      "project_id": "2024Q0356",
+      "route": "#land/2024Q0356",
+      "bytes": 295164,
+      "sha256": "2916891483a7075d011eb0f3359b45898eb42dd9de696d78077d97321aeaf4ae",
+      "viewport": [
+        390,
+        844
+      ]
+    },
+    {
+      "name": "2024Q0356-1440.png",
+      "stem": "2024Q0356",
+      "label": "E1 \u2014 active, ordinary \u00a7197-e-shaped project",
+      "project_id": "2024Q0356",
+      "route": "#land/2024Q0356",
+      "bytes": 395999,
+      "sha256": "7d45852369669fc70facc0ae78e1d53a77ae36dfb9dd008b7aae72a529f87bc5",
+      "viewport": [
+        1440,
+        900
+      ]
+    },
+    {
+      "name": "2024Q0419-390.png",
+      "stem": "2024Q0419",
+      "label": "E2 \u2014 completed ordinary \u00a7197-e route, C-prefixed identifier",
+      "project_id": "2024Q0419",
+      "route": "#land/2024Q0419",
+      "bytes": 208906,
+      "sha256": "4a50569926c55dd24e3bc1be0e4743233ec81649f22b6b74a49564ebb741017c",
+      "viewport": [
+        390,
+        844
+      ]
+    },
+    {
+      "name": "2024Q0419-1440.png",
+      "stem": "2024Q0419",
+      "label": "E2 \u2014 completed ordinary \u00a7197-e route, C-prefixed identifier",
+      "project_id": "2024Q0419",
+      "route": "#land/2024Q0419",
+      "bytes": 320658,
+      "sha256": "79134d515f18ecb2abe09d2d5acc8067931b1fbace17f231b2c25cf26bf9d363",
+      "viewport": [
+        1440,
+        900
+      ]
+    },
+    {
+      "name": "2025R0257-390.png",
+      "stem": "2025R0257",
+      "label": "E3 \u2014 completed ordinary \u00a7197-e route, different action family",
+      "project_id": "2025R0257",
+      "route": "#land/2025R0257",
+      "bytes": 166498,
+      "sha256": "bc04c100a6fa19d0323c5d1259fb4abc9e33da8fae0d28932a7a66aaf15cadc9",
+      "viewport": [
+        390,
+        844
+      ]
+    },
+    {
+      "name": "2025R0257-1440.png",
+      "stem": "2025R0257",
+      "label": "E3 \u2014 completed ordinary \u00a7197-e route, different action family",
+      "project_id": "2025R0257",
+      "route": "#land/2025R0257",
+      "bytes": 210750,
+      "sha256": "02333b825ba32bff7c3fa7a5b54423ac416eed09da68435784a9a315a623541e",
+      "viewport": [
+        1440,
+        900
+      ]
+    },
+    {
+      "name": "2026X0362-390.png",
+      "stem": "2026X0362",
+      "label": "E4 \u2014 completed special Council-route ELURP (HPD)",
+      "project_id": "2026X0362",
+      "route": "#land/2026X0362",
+      "bytes": 212571,
+      "sha256": "049d9c79d4c6a573581c198726eb6988a8e3de3954c7c315d5ca300c6ff4873a",
+      "viewport": [
+        390,
+        844
+      ]
+    },
+    {
+      "name": "2026X0362-1440.png",
+      "stem": "2026X0362",
+      "label": "E4 \u2014 completed special Council-route ELURP (HPD)",
+      "project_id": "2026X0362",
+      "route": "#land/2026X0362",
+      "bytes": 316646,
+      "sha256": "62353927d8d10b75b658b7a01db8d2bf4baf724b8107505fa173d4fbc2286439",
+      "viewport": [
+        1440,
+        900
+      ]
+    },
+    {
+      "name": "ulurp_control_2023X0100-390.png",
+      "stem": "ulurp_control_2023X0100",
+      "label": "Ordinary ULURP control",
+      "project_id": "2023X0100",
+      "route": "#land/2023X0100",
+      "bytes": 193894,
+      "sha256": "dd227ea38c1e3817e8f909e2a9f58bdf7ee87c4b5aaa5ff157a69a0e9a62bbee",
+      "viewport": [
+        390,
+        844
+      ]
+    },
+    {
+      "name": "ulurp_control_2023X0100-1440.png",
+      "stem": "ulurp_control_2023X0100",
+      "label": "Ordinary ULURP control",
+      "project_id": "2023X0100",
+      "route": "#land/2023X0100",
+      "bytes": 183813,
+      "sha256": "a4f8b8d6c41a6c516c5a338b9e8c87027bd775cb46c1c6c8c465e2fe04a3ff90",
+      "viewport": [
+        1440,
+        900
+      ]
+    }
+  ]
+}

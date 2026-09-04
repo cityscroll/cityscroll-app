@@ -1,0 +1,47 @@
+{
+  "project_id": "2024Q0356",
+  "project_name": "45-11 Oceania Street Commercial Overlay",
+  "portal_url": "https://zap.planning.nyc.gov/projects/2024Q0356",
+  "public_status": "Noticed",
+  "open_data": {
+    "project_id": "2024Q0356",
+    "actions": "ZM",
+    "ulurp_numbers": null,
+    "ulurp_non": "ELURP",
+    "public_status": "Noticed",
+    "project_status": "Active",
+    "current_milestone": "Environmental Assessment Statement Filed",
+    "current_milestone_date": "2026-03-10"
+  },
+  "actions": [
+    { "id": "zap-2024Q0356-1", "action": "ZM", "ulurp_number": "260272ZMQ", "status": "Active" }
+  ],
+  "spine": {
+    "schema_version": 1,
+    "project_id": "2024Q0356",
+    "events": [
+      {
+        "id": "zap-milestone:2024Q0356-filed",
+        "kind": "zap_milestone",
+        "title": "Land Use Application Filed",
+        "detail": "Completed",
+        "status": "Completed",
+        "outcome": null,
+        "time": { "value": "2025-11-10", "precision": "day", "basis": "actual_end", "certainty": "actual" },
+        "source": { "id": "zap-project-api", "label": "Zoning Application Portal", "url": "https://zap.planning.nyc.gov/projects/2024Q0356" }
+      },
+      {
+        "id": "zap-milestone:2024Q0356-eas",
+        "kind": "zap_milestone",
+        "title": "Environmental Assessment Statement Filed",
+        "detail": "Completed",
+        "status": "Completed",
+        "outcome": null,
+        "time": { "value": "2026-03-10", "precision": "day", "basis": "actual_end", "certainty": "actual" },
+        "source": { "id": "zap-project-api", "label": "Zoning Application Portal", "url": "https://zap.planning.nyc.gov/projects/2024Q0356" }
+      }
+    ],
+    "gaps": [],
+    "lag": { "open_data_vs_portal": { "status": "unknown", "days": null } }
+  }
+}

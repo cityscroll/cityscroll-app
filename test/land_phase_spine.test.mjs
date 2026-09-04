@@ -19,6 +19,9 @@ import {
   mapMilestoneToPhase,
 } from "../site/land_phase_spine.mjs";
 
+import { buildUlurpStatutoryClockView } from "../site/ulurp_statutory_clock.mjs";
+import { resolveLandProcedureVariant } from "../site/land_procedure_profiles.mjs";
+
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const fixture2019 = JSON.parse(
   readFileSync(join(ROOT, "test/fixtures/land_phase_spine/2019K0147.json"), "utf8"),
@@ -29,6 +32,26 @@ const fixture2022 = JSON.parse(
 const fixture2019K0190 = JSON.parse(
   readFileSync(join(ROOT, "test/fixtures/land_phase_spine/2019K0190.json"), "utf8"),
 );
+
+/** LDP-31 real ELURP regression corpus (E1-E4) plus one ordinary-ULURP control. */
+function loadLdp31Fixture(name) {
+  return JSON.parse(readFileSync(join(ROOT, `test/fixtures/land_phase_spine/${name}.json`), "utf8"));
+}
+const fixtureE1 = loadLdp31Fixture("2024Q0356");
+const fixtureE2 = loadLdp31Fixture("2024Q0419");
+const fixtureE3 = loadLdp31Fixture("2025R0257");
+const fixtureE4 = loadLdp31Fixture("2026X0362");
+const fixtureUlurpControl = loadLdp31Fixture("ulurp_control_2023X0100");
+
+function viewFromLdp31Fixture(fixture) {
+  return buildLandPhaseView(fixture.spine, {
+    open_data: fixture.open_data,
+    actions: fixture.actions,
+    portal_url: fixture.portal_url,
+    public_status: fixture.public_status,
+    project_id: fixture.project_id,
+  });
+}
 
 test("LAND_ULURP_PHASES follows pre-review then statutory public review", () => {
   assert.deepEqual([...LAND_ULURP_PHASES], [
@@ -204,4 +227,148 @@ test("public Land detail template uses phase spine surface", () => {
   assert.match(index, /land-phase-stepper|land-spine-lead/);
   assert.match(index, /land_spine_portal_link|land_outcomes_portal_link/);
   assert.match(index, /land_spine_show_dates|land_spine_show_all/);
+});
+
+/**
+ * LDP-31: phase selection, grouping, and terminal-stage behavior are driven by
+ * the resolved procedure plus observed-event topology — never a fixed
+ * ordinary-ULURP rail — for the real ELURP regression corpus (E1-E4).
+ */
+test("A1, A2, A9 E1 2024Q0356: pre-certification ELURP shows Filing/CEQR/Notice/Certification/CB/BP/CPC only", () => {
+  const view = viewFromLdp31Fixture(fixtureE1);
+
+  assert.equal(view.current.phase_id, "environmental");
+  assert.equal(view.current.milestone_label, "Environmental Assessment Statement Filed");
+  assert.equal(view.current.since, "2026-03-10");
+  assert.equal(view.current.noticed, true);
+  assert.equal(view.current.public_status, "Noticed");
+  assert.equal(view.next?.phase_id, "certification");
+
+  assert.equal(view.procedure_profile.status, "resolved");
+  assert.equal(view.procedure_profile.profile_id, "elurp_197e");
+  assert.equal(view.land_actions[0].application_id, "260272ZMQ");
+  assert.equal(view.land_actions[0].procedure_id, "elurp_197e");
+
+  // A2: the rail contains Filing, CEQR, Notice, Certification, parallel CB/BP,
+  // and CPC only — no more, no fewer.
+  assert.deepEqual(
+    view.phases.map((p) => p.id),
+    ["pre_application", "environmental", "pre_certification", "certification", "community_board", "borough_president", "cpc"],
+  );
+  // A3: Council and Mayor are absent from both the compact (applicable) and
+  // expanded (all_phases still lists every template slot, but none carry a
+  // false statutory event) future panels.
+  assert.ok(!view.phases.some((p) => p.id === "city_council" || p.id === "mayoral_appeals"));
+  const councilAll = view.all_phases.find((p) => p.id === "city_council");
+  const mayorAll = view.all_phases.find((p) => p.id === "mayoral_appeals");
+  assert.equal(councilAll.event_count, 0);
+  assert.equal(mayorAll.event_count, 0);
+
+  // No certification date — the certification phase has no observed events.
+  const certification = view.phases.find((p) => p.id === "certification");
+  assert.equal(certification.first, null);
+  assert.equal(certification.event_count, 0);
+
+  // A2/concurrent copy: Community Board and Borough President review at the
+  // same time, not one after the other.
+  const cb = view.phases.find((p) => p.id === "community_board");
+  const bp = view.phases.find((p) => p.id === "borough_president");
+  assert.deepEqual(cb.concurrent_with, ["borough_president"]);
+  assert.deepEqual(bp.concurrent_with, ["community_board"]);
+});
+
+test("A4 E2 2024Q0419 and E3 2025R0257: completed elurp_197e shows concurrent CB/BP then a terminal CPC", () => {
+  for (const fixture of [fixtureE2, fixtureE3]) {
+    const view = viewFromLdp31Fixture(fixture);
+    assert.equal(view.current.phase_id, "cpc", fixture.project_id);
+    assert.equal(view.next, null, fixture.project_id);
+    assert.deepEqual(
+      view.phases.map((p) => p.id),
+      ["pre_application", "certification", "community_board", "borough_president", "cpc"],
+      fixture.project_id,
+    );
+    assert.ok(
+      !view.phases.some((p) => p.id === "city_council" || p.id === "mayoral_appeals"),
+      fixture.project_id,
+    );
+    const cb = view.phases.find((p) => p.id === "community_board");
+    const bp = view.phases.find((p) => p.id === "borough_president");
+    assert.equal(cb.state, "passed", fixture.project_id);
+    assert.equal(bp.state, "passed", fixture.project_id);
+    assert.deepEqual(cb.concurrent_with, ["borough_president"], fixture.project_id);
+    const cpc = view.phases.find((p) => p.id === "cpc");
+    assert.equal(cpc.state, "current", fixture.project_id);
+    assert.equal(cpc.aggregates[0].title, "City Planning Commission Vote", fixture.project_id);
+  }
+
+  // A4: the exact ZAP API identifier is canonical; the narrower Open Data
+  // number is retained only as a provenanced alias, never the canonical id.
+  const e2 = viewFromLdp31Fixture(fixtureE2);
+  assert.equal(e2.land_actions[0].application_id, "C250331ZMQ");
+  assert.equal(e2.land_actions[0].aliases[0].application_id, "250331ZMQ");
+  const e3 = viewFromLdp31Fixture(fixtureE3);
+  assert.equal(e3.land_actions[0].application_id, "C260217PCR");
+  assert.equal(e3.land_actions[0].aliases[0].application_id, "260217PCR");
+
+  // A8: E3's CEQR "Type II" classification is source metadata, not an
+  // observed event — no environmental phase is manufactured for it, and E3
+  // does not require an EAS/CEQR phase merely because E2 render differently.
+  const e3Environmental = e3.phases.find((p) => p.id === "environmental");
+  assert.equal(e3Environmental, undefined);
+});
+
+test("A5 E4 2026X0362: HPD ELURP shows the observed Council path with no synthetic certification or CPC", () => {
+  const view = viewFromLdp31Fixture(fixtureE4);
+
+  assert.equal(view.current.phase_id, "city_council");
+  assert.equal(view.next, null);
+  assert.deepEqual(
+    view.phases.map((p) => p.id),
+    ["pre_application", "community_board", "borough_president", "city_council"],
+  );
+  assert.ok(!view.phases.some((p) => p.id === "certification" || p.id === "cpc" || p.id === "mayoral_appeals"));
+  assert.equal(view.land_actions[0].application_id, "HPD260001PPX");
+
+  // A5/A6: the broad ELURP procedure resolves; the § 197-e(k) variant stays
+  // unresolved without exact retained referral/application evidence — an
+  // observed Council outcome alone never supplies that eligibility evidence.
+  assert.equal(view.procedure_profile.profile_id, "elurp_197e");
+  assert.equal(view.procedure_profile.broad_profile_id, null);
+  const variant = resolveLandProcedureVariant({
+    broad_profile_id: view.procedure_profile.profile_id,
+    evidence: { kind: "observed_council_outcome", retained: true, outcome: "Adopted" },
+  });
+  assert.equal(variant.status, "unresolved");
+  assert.equal(variant.variant_id, null);
+});
+
+test("A6, A7 every explicit ELURP specimen is ineligible for the § 197-c statutory clock, with no prediction", () => {
+  // A6/A7 hold for every explicit ELURP record regardless of certification
+  // status: the clock rejects on procedure before it ever looks at
+  // certification, so E1 (pre-certification) and E4 (no DCP certification
+  // step at all) read wrong_procedure exactly like the certified E2/E3 route
+  // — never not_certified, which would wrongly imply certification could
+  // still unlock a §197-c clock for these records.
+  for (const fixture of [fixtureE1, fixtureE2, fixtureE3, fixtureE4]) {
+    const clock = buildUlurpStatutoryClockView({
+      ...fixture.open_data,
+      spine: fixture.spine,
+    });
+    assert.equal(clock.status, "ineligible", fixture.project_id);
+    assert.equal(clock.reason, "wrong_procedure", fixture.project_id);
+    assert.deepEqual(clock.phases, [], fixture.project_id);
+    assert.equal(clock.total_days, undefined, fixture.project_id);
+  }
+});
+
+test("A9 ordinary ULURP control retains the full fixed rail (CB -> BP -> CPC -> conditional Council/Mayor)", () => {
+  const view = viewFromLdp31Fixture(fixtureUlurpControl);
+  assert.equal(view.current.phase_id, "community_board");
+  assert.equal(view.procedure_profile.profile_id, "ulurp_197c");
+  // The compatibility fallback is untouched: every statutory public-review
+  // stage after current still previews, including Council and Mayor.
+  assert.deepEqual(
+    view.phases.map((p) => p.id),
+    ["pre_application", "certification", "community_board", "borough_president", "cpc", "city_council", "mayoral_appeals"],
+  );
 });
