@@ -1,0 +1,236 @@
+{
+  "schema": "cityscroll.procurement_pursuit_decision_fixture_ledger.v1",
+  "baseline_revision": "c2132a37f5bfedd0d65b6c3fd401e01413d6c0b7",
+  "baseline_revision_note": "main was at this exact tree when this ledger was built; no delta to record.",
+  "purpose": "Shared input fixtures for the procurement-pursuit-decision workstream. Every fixture below is reused from an existing test/warehouse source — none were invented for this ledger. Later cards must cite this file instead of adding new examples.",
+  "fixtures": [
+    {
+      "id": "A",
+      "name": "dense_exact_join_solicitation",
+      "description": "Dense procurement with an exact PASSPort RFx release-to-due window plus a City Record notice observation for the same canonical procurement.",
+      "source_refs": [
+        {
+          "file": "test/opportunity_calendar.test.mjs",
+          "lines": "29-82",
+          "note": "procurementObject()/rfxObservation()/cityRecordObservation() fixture builders"
+        },
+        {
+          "file": "tools/render_opportunity_calendar_capture_fixtures.mjs",
+          "lines": "20-64",
+          "note": "same fixture, reused for the CBICS-07 headless capture pattern this ledger's capture script follows"
+        }
+      ],
+      "identity": {
+        "procurement_id": "procurement:epin-2026-07",
+        "title": "Playground reconstruction",
+        "agency_name": "Department of Parks and Recreation",
+        "epin": "EPIN-2026-07"
+      },
+      "expected_facts": {
+        "passport_release_date": "2026-07-01",
+        "pre_bid_conference": "2026-07-22",
+        "questions_deadline": "2026-07-29",
+        "proposal_deadline": "2026-08-05",
+        "expected_response_window_days": 35,
+        "expected_response_window_kind": "response_window (exact PASSPort release_date -> due_date; Card 2 will formalize this label)",
+        "passport_source_ref": "passport_public_rfx:rfx:EPIN-2026-07:1001",
+        "city_record_source_ref": "city_record:20260701001"
+      },
+      "expected_unknowns": [
+        "amount is not asserted by this fixture (no contract_amount observed)",
+        "method/M-WBE facts are not asserted by this fixture"
+      ],
+      "ui_surfaces_exercised": [
+        "site/opportunity_calendar.mjs (procurementOpportunityOccurrences, compact month view)",
+        "site/procurement_document.mjs (renderProcurementDocument)",
+        "site/procurement_process_events.mjs (procurementProcessEvents)"
+      ]
+    },
+    {
+      "id": "B",
+      "name": "actionable_city_record_solicitation",
+      "description": "CAMA Finance solicitation that currently passes solicitationResponseContextReady() because it has a named solicitation identity plus a due date.",
+      "source_refs": [
+        {
+          "file": "test/solicitation_response_context.test.mjs",
+          "lines": "10-15",
+          "note": "completeSolicitation fixture object"
+        }
+      ],
+      "identity": {
+        "short_title": "Computer-Assisted Mass Appraisal (CAMA) Modern Solution",
+        "type_of_notice_description": "Solicitation",
+        "agency_name": "Finance"
+      },
+      "expected_facts": {
+        "due_date": "2026-08-17T14:00:00.000",
+        "solicitation_response_context_ready": true
+      },
+      "expected_unknowns": [
+        "amount is not part of this fixture and is not asserted",
+        "M/WBE marker is not part of this fixture and is not asserted",
+        "procurement method is not part of this fixture and is not asserted"
+      ],
+      "ui_surfaces_exercised": [
+        "site/solicitation_response_context.mjs (solicitationResponseContextReady gate)",
+        "site/app/money-history.mjs (renderDetail -> solicitationContextHeadingHTML/buildApply gated by responseContextReady, and mountNoticeActionRail gated by actionRailContextReady)",
+        "site/app/money-list.mjs (list-level Respond link gated by the same solicitationResponseContextReady check)"
+      ]
+    },
+    {
+      "id": "C",
+      "name": "alert_with_explicit_package_pointer",
+      "description": "FIX-PREV-SOL-1 — a Department of Transportation solicitation whose notice body carries an explicit solicitation-document URL, currently rendered as closing-soon with a non-pointer-only next action.",
+      "source_refs": [
+        {
+          "file": "test/digest_preview_awareness.test.mjs",
+          "lines": "28-43"
+        }
+      ],
+      "identity": {
+        "request_id": "FIX-PREV-SOL-1",
+        "short_title": "Fixture street materials",
+        "agency_name": "Department of Transportation",
+        "type_of_notice_description": "Solicitation"
+      },
+      "expected_facts": {
+        "due_date": "2026-08-10",
+        "reference_today": "2026-08-02",
+        "deadline_state": "closing-soon",
+        "pointer_only": false,
+        "next_action_evidence": "package URL https://example.com/rfps is present in additional_description_1 and surfaces in itemAwarenessHtml output"
+      },
+      "expected_unknowns": [],
+      "ui_surfaces_exercised": [
+        "site/digest_item_awareness.mjs (digestItemAwareness, itemAwarenessHtml)",
+        "worker/src/lib/digest_item_awareness.mjs (re-export consumed by worker/src/alerts.mjs)",
+        "site/index.html (digItemHTML / aPreview island wiring)"
+      ]
+    },
+    {
+      "id": "D",
+      "name": "sparse_real_solicitation",
+      "description": "S48020 — a real, currently-ingested MTA Construction & Development solicitation whose only normalized due-date/amount-shaped source fields are non-canonical (an opening_date and a free-text estimated_value string), so the normalized model surfaces it without a due date or a numeric contract amount.",
+      "source_refs": [
+        {
+          "file": "warehouse/fixtures/authority-native-procurement/mta-opportunities.v1.json",
+          "lines": "31-59",
+          "note": "raw source_row: solicitation_number S48020, event_number 0000541781, opening_date 10/16/2026, estimated_value \"$100M+\" (free text, not a normalized contract_amount)"
+        },
+        {
+          "file": "test/mta_opportunities.test.mjs",
+          "lines": "27-47",
+          "note": "asserts primary_stage solicitation, event_id 0000541781, end_date 10/16/2026, agency_id mta-construction-and-development"
+        },
+        {
+          "file": "test/authority_native_procurement_surfaces.test.mjs",
+          "lines": "57-63",
+          "note": "asserts canonical id procurement:solicitation:S48020, agency mta-construction-and-development, parent metropolitan-transportation-authority, stage solicitation"
+        }
+      ],
+      "identity": {
+        "procurement_id": "procurement:solicitation:S48020",
+        "title": "CBTC for 6th Ave Line, 63rd St Line and DeKalb Interlocking",
+        "agency_name": "MTA Construction & Development",
+        "stage": "solicitation"
+      },
+      "expected_facts": {
+        "event_id": "0000541781",
+        "rendered_amount_field": "renderProcurementDocument currently shows Amount: \"$100M+\" verbatim — the raw estimated_value free-text string, not a parsed numeric figure",
+        "rendered_end_date_field": "renderProcurementDocument currently shows End date: 10/16/2026, mapped from the raw opening_date field (a bid-opening date), labeled End date rather than a submission deadline"
+      },
+      "expected_unknowns": [
+        "amount (pursuit-decision sense): unavailable as a canonical numeric contract_amount — no normalized amount observation exists; the page's literal \"$100M+\" is unparsed free text, not usable for amount comparisons or benchmarks",
+        "deadline (pursuit-decision sense): unavailable as a submission/response due date — no due_date observation exists; the page's literal end date is a bid-opening date, not something a vendor must act by"
+      ],
+      "ui_surfaces_exercised": [
+        "site/procurement_document.mjs (renderProcurementDocument on a sparse object)",
+        "site/procurement_search_producer.mjs (buildProcurementSearchDocuments)",
+        "site/shared_procurement_read_model.mjs (buildSharedProcurementReadModel)",
+        "site/contract_search_bridge.mjs (contractSearchDocumentToMoneyRow)"
+      ]
+    },
+    {
+      "id": "E",
+      "name": "non_solicitation_control",
+      "description": "FIX-PREV-AWD-1 — an award record that must never render solicitation-response affordances.",
+      "source_refs": [
+        {
+          "file": "test/digest_preview_awareness.test.mjs",
+          "lines": "45-58"
+        }
+      ],
+      "identity": {
+        "request_id": "FIX-PREV-AWD-1",
+        "short_title": "Fixture award",
+        "type_of_notice_description": "Award",
+        "vendor_name": "Acme Snow & Ice LLC",
+        "pin": "PIN-PREV-1"
+      },
+      "expected_facts": {
+        "contract_amount": 250000,
+        "action_label": "Open Checkbook",
+        "action_guide_label_matches": "/Awarded to/i"
+      },
+      "expected_unknowns": [],
+      "control_assertion": "action.label must never match /\\bbid\\b/i; solicitationResponseContextReady() must return false for type_of_notice_description \"Award\" even against otherwise-complete fixture fields (see Fixture B's source test, line 63-71).",
+      "ui_surfaces_exercised": [
+        "site/digest_item_awareness.mjs (digestItemAwareness — award branch)",
+        "site/solicitation_response_context.mjs (non-solicitation gate)"
+      ]
+    },
+    {
+      "id": "F",
+      "name": "award_benchmark_cohorts",
+      "description": "pilotRows() award cohorts exercising the existing source-bounded small-N policy in comparative_award_rank.mjs.",
+      "source_refs": [
+        {
+          "file": "test/comparative_award_rank.test.mjs",
+          "lines": "54-113",
+          "note": "pilotRows() builder and the small-N assertions"
+        },
+        {
+          "file": "site/comparative_award_rank.mjs",
+          "lines": "24-30",
+          "note": "AWARD_RANK_SMALL_N_POLICY: minimum_rank_count=10 (below withholds the fact entirely), minimum_percentile_count=40 (below withholds only the percentile, keeping rank)"
+        }
+      ],
+      "cohorts": {
+        "police_department": {
+          "eligible_rows": 40,
+          "expected": "percentile available (>= minimum_percentile_count 40); police-01 rank 1; police-02/police-03 tied rank 2, tie_count 2, percentile 97.5, percentile_status \"available\""
+        },
+        "housing_preservation_and_development": {
+          "eligible_rows": 12,
+          "expected": "rank available (>= minimum_rank_count 10) but percentile withheld (< minimum_percentile_count 40); hpd-01 rank 1, percentile null, percentile_status \"withheld_small_n\""
+        },
+        "parks_and_recreation": {
+          "eligible_rows": 9,
+          "expected": "comparison omitted entirely (< minimum_rank_count 10); no fact with subject.id starting \"parks-\" appears in model.facts"
+        }
+      },
+      "also_exercises_exclusions": {
+        "invalid_amount": "bad-amount row (contract_amount 10_000_000_000) -> exclusions_by_reason.invalid_amount",
+        "unresolved_agency_identity": "unresolved-agency row (agency \"Mystery Procurement Bureau\") -> exclusions_by_reason.unresolved_agency_identity",
+        "duplicate_subject_identity": "two duplicate-subject rows -> exclusions_by_reason.duplicate_subject_identity = 2",
+        "missing_subject_identity": "missing-subject row (empty request_id) -> exclusions_by_reason.missing_subject_identity"
+      },
+      "expected_unknowns": [],
+      "ui_surfaces_exercised": [
+        "site/comparative_award_rank.mjs (buildAwardRankComparativeReadModel)"
+      ]
+    }
+  ],
+  "notes": [
+    "This ledger records current (pre-Card-1..7) behavior only; it introduces no new identity, date, or method ontology.",
+    "Fixture D's procurement-detail page (renderProcurementDocument) currently renders the raw estimated_value (\"$100M+\") and opening_date (10/16/2026) as literal Amount/End date text; those are not unavailable on screen, but they are unavailable as canonical numeric contract_amount / submission due_date observations, which is the sense the workstream's pursuit-decision facts must use — see docs/evidence/procurement-pursuit-decision/baseline/procurement-detail-fixture-d-*.png.",
+    "Later cards (1-6) must cite fixtures by id (A-F) from this file rather than defining new example data."
+  ],
+  "reconnaissance": {
+    "worker/src/alerts.mjs": "Three current subject-line shapes coexist: the legacy per-watch loop builds `CityScroll: ${fresh.length} new for \"${w.label}\"` (alerts.mjs:533); the single-active-watch account path (processOneSub) builds `CityScroll: ${parts} — ${label}` or a catch-up/quiet variant (alerts.mjs:1027-1041) and renders the body with the exported subDigestHtml() (alerts.mjs:2670); the multi-watch account rollup path (processAccountRollup, alerts.mjs:1133+) computes its subject via the exported rollupSubject() and its body via the exported rollupDigestHtml() (alerts.mjs:2922+), rendering one section per watch with quiet sections collapsed to one line. A row's rendered item kind (\"Solicitation\"/\"Award\"/etc, and which next-step CTA it gets) comes from its enclosing section's kind/lens, not from the row's own type_of_notice_description — confirmed by capture: an Award row placed in an \"rfp\"-kind section renders a solicitation-style CTA. Real award-arrival watches never produce this because worker/src/lib/compile.mjs:442-456 compiles them into their own kind:\"award\" query, and rollupDigestHtml has a dedicated isAwardWatchSection/awardCandidates branch (alerts.mjs:2985-2995) that a normal award watch always takes.",
+    "worker/src/lib/rollup.mjs": "Pure helpers only: isWatchActive, groupSubsByEmail, shouldRollup (rollup triggers once an email has >1 active watch), buildDigestJobs (fans SUBS rows into type:\"sub\" or type:\"rollup\" queue jobs), rollupSendDecision, rollupSubject (the exact `CityScroll: 1 new — 4 watches` multi-watch shape), rollupBodySections, rollupTocEntries, isQuietRollupSection, quietRollupSectionLine. No procurement-specific logic exists here yet; Card 1's procurement_alert_atom.mjs would be new.",
+    "site/app/money-history.mjs": "renderDetail() (money-history.mjs:1046) computes responseContextReady=solicitationResponseContextReady(r) and actionRailContextReady=(type!==\"Solicitation\")||responseContextReady, then sequences solicitationContextHeadingHTML(r) (line 1061) ahead of the #dactions rail (line 1062), gating buildApply(r,false) on responseContextReady (line 1065) and mountNoticeActionRail on actionRailContextReady (line 1100) — exactly as asserted by test/solicitation_response_context.test.mjs's structural test.",
+    "site/app/money-list.mjs": "The Respond-link affordance at money-list.mjs:1399 is gated by `matter.kind===\"solicitation\" && !solicitationResponseContextReady(r)` returning null.",
+    "site/procurement_browse_query.mjs, site/procurement_search_producer.mjs, site/following_view.mjs": "Browse query rows use a stricter numeric-only contract_amount than the raw per-object snapshot amount (see Fixture D's notes above) — procurement_browse_query.mjs is the bounded/filterable projection behind Contracts Browse; procurement_search_producer.mjs builds SearchDocument projections over the shared read model (and is what makes S48020 findable by \"S48020\"/\"0000541781\"); following_view.mjs is the watch/scope routing layer plus a slim followingPreviewItemHtml() digest-item preview distinct from the full email digItemHTML/subDigestHtml renderer (test/digest_preview_awareness.test.mjs asserts following_view.mjs does NOT define digItemHTML)."
+  }
+}
