@@ -89,6 +89,26 @@ test("data health page materializes the committed public artifact without reques
   assert.equal(detectNodePageCruft(html).length, 0);
 });
 
+test("first-class freshness remains distinct from an empty population on Data health", () => {
+  const committed = JSON.parse(readFileSync(new URL("../site/data/source_health_public.json", import.meta.url)));
+  const html = renderDataHealthPage(committed, { firstClassReport: {
+    schema: "cityscroll.first_class_freshness_report.v1",
+    generated_at: "2026-09-04T12:00:00.000Z",
+    surfaces: [{
+      id: "rules-domain",
+      primary_routes: ["/browse/rules/"],
+      freshness_state: "stale",
+      source_vintage: "2026-08-01T00:00:00.000Z",
+      disclosure: "Rules are out of date and are not described as current.",
+    }],
+  } });
+  assert.match(html, /Resident surface freshness/);
+  assert.match(html, /Rules domain/);
+  assert.match(html, /Out of date/);
+  assert.match(html, /Rules are out of date and are not described as current/);
+  assert.doesNotMatch(html, /no rules exist|nothing exists/i);
+});
+
 test("every committed public source is grouped by a closed product area", () => {
   const committed = JSON.parse(readFileSync(new URL("../site/data/source_health_public.json", import.meta.url)));
   const map = mappedProductAreaIds();
