@@ -126,7 +126,13 @@ def _restore_ready_page(page, url=None, hash_value=None):
     if url:
         page.goto(url, wait_until="domcontentloaded", timeout=30000)
         _wait_for_document(page)
-        if url.split("#", 1)[0].rstrip("/") == BASE.split("#", 1)[0].rstrip("/"):
+        # Only wait for the boot contract here when no hash follows. The root
+        # URL is a static-first home: app/main.mjs defers loadApplication()
+        # until a hash arrives, so data-app-ready is legitimately absent on a
+        # bare BASE and waiting for it here can never succeed. The hash branch
+        # below applies the route first and then waits, which is the order that
+        # actually boots the application.
+        if hash_value is None and url.split("#", 1)[0].rstrip("/") == BASE.split("#", 1)[0].rstrip("/"):
             wait_for_app_ready(page)
     elif hash_value is None:
         page.reload(timeout=30000, wait_until="domcontentloaded")
@@ -134,6 +140,20 @@ def _restore_ready_page(page, url=None, hash_value=None):
         if page.url.split("#", 1)[0].rstrip("/") == BASE.split("#", 1)[0].rstrip("/"):
             wait_for_app_ready(page)
     if hash_value is not None:
+        if page.url.split("#", 1)[0].rstrip("/") == BASE.split("#", 1)[0].rstrip("/"):
+            # The static-first home boots the application from a hashchange
+            # listener that home_entry.mjs attaches during an async import, so
+            # document-ready does not imply the listener exists yet. A hash
+            # written before then is a lost event and nothing ever boots -- a
+            # race that usually wins locally and loses on a loaded CI runner.
+            # app/main.mjs publishes CROLLoadApplication only after that import
+            # resolves, so it is an exact happens-before marker for the listener.
+            wait_for_function(
+                page,
+                "() => document.body?.dataset.appReady === 'true'"
+                " || typeof globalThis.CROLLoadApplication === 'function'",
+                label="home application loader armed",
+            )
         page.evaluate("(hash) => { location.hash = hash; }", hash_value)
         wait_for_function(
             page,
