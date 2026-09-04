@@ -1,0 +1,250 @@
+{
+  "schema": "cityscroll.opportunity_calendar_evidence_receipt.v1",
+  "captured_at": "2026-09-03T21:19:07Z",
+  "revision": "42d872d66ae625a601731a733a756f4c1aadd27b",
+  "today": "2026-07-10",
+  "all_axe_pass": true,
+  "all_month_render_expected": true,
+  "captures": [
+    {
+      "case": "procurement-dense",
+      "surface": "procurement",
+      "route": "/_capture/procurement-dense",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "today": "2026-07-10",
+      "source_confidence_state": "conference + questions + proposal dates form the bundle",
+      "renders_month": true,
+      "any_cancelled_flag": false,
+      "screenshot": "docs/screenshots/opportunity-calendar/procurement-dense-390x844.png",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      },
+      "assertion": "case=procurement-dense surface=procurement at 390x844 renders_month=True observed_events_present=True axe_passes=True"
+    },
+    {
+      "case": "procurement-dense",
+      "surface": "procurement",
+      "route": "/_capture/procurement-dense",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "today": "2026-07-10",
+      "source_confidence_state": "conference + questions + proposal dates form the bundle",
+      "renders_month": true,
+      "any_cancelled_flag": false,
+      "screenshot": "docs/screenshots/opportunity-calendar/procurement-dense-1440x900.png",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      },
+      "assertion": "case=procurement-dense surface=procurement at 1440x900 renders_month=True observed_events_present=True axe_passes=True"
+    },
+    {
+      "case": "procurement-sparse",
+      "surface": "procurement",
+      "route": "/_capture/procurement-sparse",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "today": "2026-07-10",
+      "source_confidence_state": "one publisher date only \u2014 no calendar chrome, observed events kept",
+      "renders_month": false,
+      "any_cancelled_flag": false,
+      "screenshot": "docs/screenshots/opportunity-calendar/procurement-sparse-390x844.png",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      },
+      "assertion": "case=procurement-sparse surface=procurement at 390x844 renders_month=False observed_events_present=True axe_passes=True"
+    },
+    {
+      "case": "procurement-sparse",
+      "surface": "procurement",
+      "route": "/_capture/procurement-sparse",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "today": "2026-07-10",
+      "source_confidence_state": "one publisher date only \u2014 no calendar chrome, observed events kept",
+      "renders_month": false,
+      "any_cancelled_flag": false,
+      "screenshot": "docs/screenshots/opportunity-calendar/procurement-sparse-1440x900.png",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      },
+      "assertion": "case=procurement-sparse surface=procurement at 1440x900 renders_month=False observed_events_present=True axe_passes=True"
+    },
+    {
+      "case": "procurement-exclusion",
+      "surface": "procurement",
+      "route": "/_capture/procurement-exclusion",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "today": "2026-07-10",
+      "source_confidence_state": "a low-confidence derived deadline is excluded \u2014 sparse, no chrome",
+      "renders_month": false,
+      "any_cancelled_flag": false,
+      "screenshot": "docs/screenshots/opportunity-calendar/procurement-exclusion-390x844.png",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      },
+      "assertion": "case=procurement-exclusion surface=procurement at 390x844 renders_month=False observed_events_present=True axe_passes=True"
+    },
+    {
+      "case": "procurement-exclusion",
+      "surface": "procurement",
+      "route": "/_capture/procurement-exclusion",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "today": "2026-07-10",
+      "source_confidence_state": "a low-confidence derived deadline is excluded \u2014 sparse, no chrome",
+      "renders_month": false,
+      "any_cancelled_flag": false,
+      "screenshot": "docs/screenshots/opportunity-calendar/procurement-exclusion-1440x900.png",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      },
+      "assertion": "case=procurement-exclusion surface=procurement at 1440x900 renders_month=False observed_events_present=True axe_passes=True"
+    },
+    {
+      "case": "property-dense",
+      "surface": "property",
+      "route": "/_capture/property-dense",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "today": "2026-07-10",
+      "source_confidence_state": "hearing + two showings + bid deadline form the bundle",
+      "renders_month": true,
+      "any_cancelled_flag": false,
+      "screenshot": "docs/screenshots/opportunity-calendar/property-dense-390x844.png",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      },
+      "assertion": "case=property-dense surface=property at 390x844 renders_month=True observed_events_present=True axe_passes=True"
+    },
+    {
+      "case": "property-dense",
+      "surface": "property",
+      "route": "/_capture/property-dense",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "today": "2026-07-10",
+      "source_confidence_state": "hearing + two showings + bid deadline form the bundle",
+      "renders_month": true,
+      "any_cancelled_flag": false,
+      "screenshot": "docs/screenshots/opportunity-calendar/property-dense-1440x900.png",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      },
+      "assertion": "case=property-dense surface=property at 1440x900 renders_month=True observed_events_present=True axe_passes=True"
+    },
+    {
+      "case": "property-sparse",
+      "surface": "property",
+      "route": "/_capture/property-sparse",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "today": "2026-07-10",
+      "source_confidence_state": "one dated event only \u2014 no calendar chrome",
+      "renders_month": false,
+      "any_cancelled_flag": false,
+      "screenshot": "docs/screenshots/opportunity-calendar/property-sparse-390x844.png",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      },
+      "assertion": "case=property-sparse surface=property at 390x844 renders_month=False observed_events_present=True axe_passes=True"
+    },
+    {
+      "case": "property-sparse",
+      "surface": "property",
+      "route": "/_capture/property-sparse",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "today": "2026-07-10",
+      "source_confidence_state": "one dated event only \u2014 no calendar chrome",
+      "renders_month": false,
+      "any_cancelled_flag": false,
+      "screenshot": "docs/screenshots/opportunity-calendar/property-sparse-1440x900.png",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      },
+      "assertion": "case=property-sparse surface=property at 1440x900 renders_month=False observed_events_present=True axe_passes=True"
+    },
+    {
+      "case": "property-exclusion",
+      "surface": "property",
+      "route": "/_capture/property-exclusion",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "today": "2026-07-10",
+      "source_confidence_state": "a low-confidence date is excluded; the confirmed bundle still renders",
+      "renders_month": true,
+      "any_cancelled_flag": false,
+      "screenshot": "docs/screenshots/opportunity-calendar/property-exclusion-390x844.png",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      },
+      "assertion": "case=property-exclusion surface=property at 390x844 renders_month=True observed_events_present=True axe_passes=True"
+    },
+    {
+      "case": "property-exclusion",
+      "surface": "property",
+      "route": "/_capture/property-exclusion",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "today": "2026-07-10",
+      "source_confidence_state": "a low-confidence date is excluded; the confirmed bundle still renders",
+      "renders_month": true,
+      "any_cancelled_flag": false,
+      "screenshot": "docs/screenshots/opportunity-calendar/property-exclusion-1440x900.png",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      },
+      "assertion": "case=property-exclusion surface=property at 1440x900 renders_month=True observed_events_present=True axe_passes=True"
+    }
+  ]
+}

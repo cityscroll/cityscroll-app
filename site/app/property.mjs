@@ -4,6 +4,12 @@ import {
 } from "../franchise_notice.mjs";
 import { noticeDisplayTitle } from "../display_title.mjs";
 import { renderPropertyCommercialDetail } from "../property_commercial_ui.mjs";
+import {
+  buildPropertyOpportunityRecord,
+  opportunityMonthHTML,
+  opportunityOccurrences,
+} from "../opportunity_calendar.mjs";
+import { bindCompactMonthPrintDisclosure } from "../compact_calendar.mjs";
 import { bblReaderLabel } from "../bbl_reader.mjs";
 import { renderPropertyAgencySelect, propertyAgencySelectionChanges } from "../property_agency_ui.mjs";
 import {
@@ -279,16 +285,52 @@ function propertyDispositionSpineHTML(spine, notice, phaseView){
   return `<div class="chain-h">${t("disposition_spine_heading")}</div>
     ${chain?`<div class="chain">${chain}</div>`:""}`;
 }
-function propertyCommercialDetailHTML(commercial){
+function propertyCommercialDetailHTML(commercial, r){
   return renderPropertyCommercialDetail(commercial,{
     t,
     escape:escUiHtml,
     priceBadge:priceKindBadge,
     timedEventsHTML:propertyTimedEventChipsHTML,
+    opportunityMonthHTML:(c)=>propertyOpportunityMonthHTML(c, r),
     fallbackSaleSignals:commercialSaleSignalsFallback,
     extAttrs:EXT_ATTRS,
     extSr:extSR,
   });
+}
+// One compact opportunity month before the dated-event chips. The bundle comes
+// from the same typed timed events (exact spans retained there); sparse or
+// excluded-only bundles render no calendar chrome.
+function propertyOpportunityMonthHTML(commercial, r){
+  const record=buildPropertyOpportunityRecord(commercial?.timed_events||[],{
+    requestId:r?.request_id||commercial?.request_id||null,
+    shortTitle:r?.short_title||null,
+    noticeBody:r?.additional_description_1||null,
+    sourceUrl:(typeof globalThis.REQ_URL==="function"&&r?.request_id)?globalThis.REQ_URL(r.request_id):null,
+    canonicalUrl:r?.request_id?`https://cityscroll.org/notices/${encodeURIComponent(r.request_id)}`:null,
+  });
+  if(!record) return "";
+  ensureCompactCalendarStylesheet();
+  return opportunityMonthHTML(opportunityOccurrences([record]).occurrences,{today:todayISO()});
+}
+let compactCalendarStylesheetEnsured=false;
+const COMPACT_CALENDAR_STYLESHEET_PATH="compact_calendar.css";
+function ensureCompactCalendarStylesheet(){
+  if(compactCalendarStylesheetEnsured) return;
+  compactCalendarStylesheetEnsured=true;
+  if(typeof document==="undefined") return;
+  const path=COMPACT_CALENDAR_STYLESHEET_PATH;
+  if(document.querySelector(`link[data-route-style="${path}"]`)) return;
+  const link=document.createElement("link");
+  link.rel="stylesheet";
+  link.href=path;
+  link.dataset.routeStyle=path;
+  document.head.appendChild(link);
+}
+let compactMonthPrintBound=false;
+function ensureCompactMonthPrintBinder(){
+  if(compactMonthPrintBound) return;
+  compactMonthPrintBound=true;
+  bindCompactMonthPrintDisclosure(document);
 }
 /** Sync fallback when pure-module hasCommercialSaleSignals is not loaded yet. */
 function commercialSaleSignalsFallback(commercial){
@@ -371,9 +413,13 @@ async function loadPropertyCommercialDetail(r, el){
       }
     }
     if(!document.contains(el)) return;
-    el.innerHTML=commercial ? propertyCommercialDetailHTML(commercial) : "";
+    el.innerHTML=commercial ? propertyCommercialDetailHTML(commercial, r) : "";
+    ensureCompactMonthPrintBinder();
   }catch(_e){
-    if(document.contains(el) && r.commercial) el.innerHTML=propertyCommercialDetailHTML(r.commercial);
+    if(document.contains(el) && r.commercial){
+      el.innerHTML=propertyCommercialDetailHTML(r.commercial, r);
+      ensureCompactMonthPrintBinder();
+    }
   }
 }
 async function loadPropertyDispositionSpine(r, el){

@@ -55,31 +55,31 @@ const KIND_LABELS = Object.freeze({
   milestone: "Milestone",
 });
 
-const COMPACT_MONTH_ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
+const COMPACT_CALENDAR_ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
 const ISO_MONTH = /^\d{4}-\d{2}$/;
 
 /* ---------- pure date math ---------- */
 
-function compactMonthIsDateOnly(value) {
-  return typeof value === "string" && COMPACT_MONTH_ISO_DATE.test(value);
+function compactIsDateOnly(value) {
+  return typeof value === "string" && COMPACT_CALENDAR_ISO_DATE.test(value);
 }
 
-function compactMonthIsoToEpochDay(iso) {
+function compactIsoToEpochDay(iso) {
   return Math.round(Date.parse(`${iso}T00:00:00Z`) / 86400000);
 }
 
-function compactMonthEpochDayToIso(day) {
+function compactEpochDayToIso(day) {
   return new Date(day * 86400000).toISOString().slice(0, 10);
 }
 
-function compactMonthAddDays(iso, count) {
-  return compactMonthEpochDayToIso(compactMonthIsoToEpochDay(iso) + count);
+function compactAddDays(iso, count) {
+  return compactEpochDayToIso(compactIsoToEpochDay(iso) + count);
 }
 
 // 1970-01-01 (epoch day 0) was a Thursday, so `+4` aligns epoch day to a
 // Sunday-first (0-6) weekday index without reading any local clock.
 function weekdayIndex(iso) {
-  return ((compactMonthIsoToEpochDay(iso) + 4) % 7 + 7) % 7;
+  return ((compactIsoToEpochDay(iso) + 4) % 7 + 7) % 7;
 }
 
 function normalizeMonth(month) {
@@ -90,8 +90,8 @@ function normalizeMonth(month) {
 
 function monthGrid(month) {
   const first = `${month}-01`;
-  const gridFrom = compactMonthAddDays(first, -weekdayIndex(first));
-  const gridTo = compactMonthAddDays(gridFrom, GRID_LENGTH - 1);
+  const gridFrom = compactAddDays(first, -weekdayIndex(first));
+  const gridTo = compactAddDays(gridFrom, GRID_LENGTH - 1);
   return { gridFrom, gridTo };
 }
 
@@ -122,7 +122,7 @@ function admitOccurrences(occurrences) {
 }
 
 function timeKey(occurrence) {
-  return occurrence.starts_at && !compactMonthIsDateOnly(occurrence.starts_at) ? occurrence.starts_at : "";
+  return occurrence.starts_at && !compactIsDateOnly(occurrence.starts_at) ? occurrence.starts_at : "";
 }
 
 // Stable per-day ordering: date-only ("all day") occurrences sort first, then
@@ -173,7 +173,7 @@ function toEntry(occurrence, today) {
  * result never depends on a hidden clock.
  */
 export function buildCompactMonthView(occurrences, options = {}) {
-  if (!compactMonthIsDateOnly(options.today)) {
+  if (!compactIsDateOnly(options.today)) {
     throw new TypeError("buildCompactMonthView requires an explicit YYYY-MM-DD `today`");
   }
   if (options.month != null && !normalizeMonth(options.month)) {
@@ -208,7 +208,7 @@ export function buildCompactMonthView(occurrences, options = {}) {
   for (let week = 0; week < GRID_WEEKS; week += 1) {
     const row = [];
     for (let weekday = 0; weekday < WEEK_LENGTH; weekday += 1) {
-      const date = compactMonthAddDays(gridFrom, week * WEEK_LENGTH + weekday);
+      const date = compactAddDays(gridFrom, week * WEEK_LENGTH + weekday);
       const dayOccurrences = sortDayOccurrences(byDay.get(date) || []);
       const visible = dayOccurrences.slice(0, MAX_VISIBLE_OCCURRENCES_PER_DAY);
       const overflow = dayOccurrences.slice(MAX_VISIBLE_OCCURRENCES_PER_DAY);
@@ -258,7 +258,7 @@ function defaultEscape(value) {
 // exact-date deadline with no time-of-day) show none, which is itself the
 // non-colour signal that distinguishes the two (A3).
 function timeLabelFor(occurrence) {
-  if (!occurrence.starts_at || compactMonthIsDateOnly(occurrence.starts_at)) return null;
+  if (!occurrence.starts_at || compactIsDateOnly(occurrence.starts_at)) return null;
   const instant = new Date(occurrence.starts_at);
   if (Number.isNaN(instant.getTime())) return null;
   try {

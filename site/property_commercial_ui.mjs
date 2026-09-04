@@ -18,6 +18,10 @@ export function renderPropertyCommercialDetail(commercial, helpers = {}) {
   const esc = helpers.escape || ((value) => String(value || ""));
   const priceBadge = helpers.priceBadge || ((_kind, amount) => amount);
   const timedEventsHTML = helpers.timedEventsHTML || (() => "");
+  // One compact opportunity month (showings, hearing, bid deadline) rendered
+  // immediately before the dated-event chips. Sparse bundles return "".
+  const opportunityMonthHTML = helpers.opportunityMonthHTML || (() => "");
+  const opportunityMonth = opportunityMonthHTML(commercial);
   const fallbackSaleSignals = helpers.fallbackSaleSignals || (() => false);
   const extAttrs = helpers.extAttrs || "";
   const extSr = helpers.extSr || (() => "");
@@ -95,5 +99,5 @@ export function renderPropertyCommercialDetail(commercial, helpers = {}) {
   const price = prices ? `<div class="property-commercial-row property-commercial-price" data-commercial-field="price"><dt class="property-commercial-label">${t("property_commercial_price_lbl")}</dt><dd class="property-commercial-value"><ul class="ei-list">${prices}</ul></dd></div>` : "";
   const dealRow = deal ? `<div class="property-commercial-row property-commercial-deal" data-commercial-field="deal"><dt class="property-commercial-label">${t("property_commercial_deal_lbl")}</dt><dd class="property-commercial-value">${deal}</dd></div>` : "";
   const participation = hasParticipation ? `<div class="property-commercial-row property-commercial-bid" data-commercial-field="participation"><dt class="property-commercial-label">${hasBidSignals ? t("property_commercial_bid_lbl") : t("apply_contact_lbl")}</dt><dd class="property-commercial-value">${method}${packageUrl}${steps ? `<ul class="ei-list">${steps}</ul>` : ""}${contacts.length ? `<div class="property-commercial-contacts">${contacts.join("")}</div>` : ""}</dd></div>` : "";
-  return `<section class="property-commercial-detail" data-commercial-detail="1" data-sale-eligible="1" aria-label="${esc(t("property_commercial_heading"))}"><h3 class="chain-h">${t("property_commercial_heading")}</h3>${timedEvents ? `<div class="property-commercial-timed-events" aria-label="Dated events">${timedEvents}</div>` : ""}<dl class="property-commercial-facts">${what}${price}${dealRow}${participation}</dl></section>`;
+  return `<section class="property-commercial-detail" data-commercial-detail="1" data-sale-eligible="1" aria-label="${esc(t("property_commercial_heading"))}"><h3 class="chain-h">${t("property_commercial_heading")}</h3>${opportunityMonth ? `<div class="property-commercial-opportunity-month">${opportunityMonth}</div>` : ""}${timedEvents ? `<div class="property-commercial-timed-events" aria-label="Dated events">${timedEvents}</div>` : ""}<dl class="property-commercial-facts">${what}${price}${dealRow}${participation}</dl></section>`;
 }
