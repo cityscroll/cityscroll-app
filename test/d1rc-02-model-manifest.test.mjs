@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { spawnSync } from "node:child_process";
 import { existsSync, readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import test from "node:test";
@@ -27,6 +28,11 @@ const MIGRATIONS = [
 ];
 const MODEL_IDS = ["keyword_search", "ocp_awards", "entity_intelligence"];
 
+let DatabaseSync;
+try {
+  ({ DatabaseSync } = await import("node:sqlite"));
+} catch {}
+
 const clone = (value) => structuredClone(value);
 
 /** Rebuild an object graph with every key order reversed. */
@@ -38,15 +44,71 @@ function reverseKeys(value) {
   return value;
 }
 
-/** Table name -> CREATE statement body, across the read-model migrations. */
-function createStatements() {
-  const tables = new Map();
-  for (const relative of MIGRATIONS) {
-    const sql = readFileSync(join(ROOT, relative), "utf8");
-    const pattern = /CREATE\s+(?:VIRTUAL\s+)?TABLE\s+IF\s+NOT\s+EXISTS\s+(\w+)[^(]*\(([\s\S]*?)\n\);/g;
-    for (const [, name, body] of sql.matchAll(pattern)) tables.set(name, body);
+function migrationSql() {
+  return MIGRATIONS.map((relative) => readFileSync(join(ROOT, relative), "utf8")).join("\n");
+}
+
+function quoteIdentifier(value) {
+  return `"${value.replaceAll('"', '""')}"`;
+}
+
+function inspectWithNodeSqlite(manifest) {
+  if (!DatabaseSync) return null;
+  const database = new DatabaseSync(":memory:");
+  try {
+    database.exec(migrationSql());
+    const objects = new Set(
+      database
+        .prepare("SELECT name FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%'")
+        .all()
+        .map((row) => row.name),
+    );
+    const schema = new Map();
+    for (const model of manifest.models) {
+      for (const table of model.tables) {
+        if (!objects.has(table.name)) continue;
+        const columns = database
+          .prepare(`PRAGMA table_info(${quoteIdentifier(table.name)})`)
+          .all()
+          .map((row) => row.name);
+        schema.set(table.name, new Set(columns));
+      }
+    }
+    return schema;
+  } finally {
+    database.close();
   }
-  return tables;
+}
+
+function inspectWithSqliteCli(manifest) {
+  const probe = spawnSync("sqlite3", ["--version"], { encoding: "utf8" });
+  if (probe.error || probe.status !== 0) return null;
+  const queries = [
+    ".mode tabs",
+    "SELECT 'table', name, type FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%' ORDER BY name;",
+    ...manifest.models.flatMap((model) => model.tables.map((table) =>
+      `SELECT 'column', '${table.name}', name FROM pragma_table_info('${table.name.replaceAll("'", "''")}') ORDER BY cid;`,
+    )),
+  ];
+  const result = spawnSync("sqlite3", ["-batch", ":memory:"], {
+    input: `${migrationSql()}\n${queries.join("\n")}\n`,
+    encoding: "utf8",
+  });
+  if (result.error || result.status !== 0) {
+    throw new Error(`sqlite3 migration inspection failed: ${result.stderr || result.error?.message}`);
+  }
+  const schema = new Map();
+  for (const line of result.stdout.trim().split("\n")) {
+    if (!line) continue;
+    const [kind, table, column] = line.split("\t");
+    if (kind === "table") schema.set(table, new Set());
+    if (kind === "column") schema.get(table)?.add(column);
+  }
+  return schema;
+}
+
+function inspectMigratedSchema(manifest) {
+  return inspectWithNodeSqlite(manifest) ?? inspectWithSqliteCli(manifest);
 }
 
 /**
@@ -90,23 +152,24 @@ test("the checked-in manifest loads, validates, and is stored in canonical form"
   assert.equal(readFileSync(DEFAULT_MANIFEST_PATH, "utf8"), serializeManifest(manifest));
 });
 
-test("every declared table and key column exists in the read-model migrations", () => {
-  const tables = createStatements();
+test("every declared table and key column exists in the read-model migrations", (t) => {
   const manifest = loadManifest();
-  const declared = manifest.models.flatMap((model) => model.tables.map((table) => table.name));
-  assert.equal(new Set(declared).size, declared.length, "a table is claimed by two models");
+  const tables = inspectMigratedSchema(manifest);
+  if (!tables) {
+    t.skip("migration schema check requires node:sqlite or sqlite3 CLI");
+    return;
+  }
 
   for (const model of manifest.models) {
     for (const table of model.tables) {
-      const body = tables.get(table.name);
-      assert.ok(body, `${model.model_id} declares an unmigrated table: ${table.name}`);
+      const columns = tables.get(table.name);
+      assert.ok(columns, `${model.model_id} declares an unmigrated table: ${table.name}`);
       for (const column of table.key_columns) {
-        assert.match(body, new RegExp(`\\b${column}\\b`), `${table.name} has no column ${column}`);
+        assert.ok(columns.has(column), `${table.name} has no column ${column}`);
       }
     }
     if (model.partition.kind !== "none") {
-      const body = tables.get(model.tables[0].name);
-      assert.match(body, new RegExp(`\\b${model.partition.column}\\b`));
+      assert.ok(tables.get(model.tables[0].name)?.has(model.partition.column));
     }
   }
 });
@@ -206,6 +269,42 @@ test("validation fails closed on a missing, unknown, duplicated, or invalid fiel
   const emptyKeyColumns = clone(loadManifest());
   emptyKeyColumns.models[0].tables[0].key_columns = [];
   assert.throws(() => validateManifest(emptyKeyColumns), /key_columns/);
+
+  const unknownBuilderKey = clone(loadManifest());
+  unknownBuilderKey.models[0].builder.runtime = "node";
+  assert.throws(() => validateManifest(unknownBuilderKey), /runtime/);
+
+  const unknownSourceKey = clone(loadManifest());
+  unknownSourceKey.models[0].source.format = "json";
+  assert.throws(() => validateManifest(unknownSourceKey), /format/);
+
+  const unknownTableKey = clone(loadManifest());
+  unknownTableKey.models[0].tables[0].nullable = false;
+  assert.throws(() => validateManifest(unknownTableKey), /nullable/);
+
+  const unknownPartitionKey = clone(loadManifest());
+  unknownPartitionKey.models[0].partition.shard = "family_id";
+  assert.throws(() => validateManifest(unknownPartitionKey), /shard/);
+
+  const unknownWatermarkKey = clone(loadManifest());
+  unknownWatermarkKey.models[0].watermark.format = "iso8601";
+  assert.throws(() => validateManifest(unknownWatermarkKey), /format/);
+
+  const missingWatermarkField = clone(loadManifest());
+  delete missingWatermarkField.models[0].watermark.field;
+  assert.throws(() => validateManifest(missingWatermarkField), /watermark.field/);
+
+  const badWatermarkScope = clone(loadManifest());
+  badWatermarkScope.models[0].watermark.scope = "database";
+  assert.throws(() => validateManifest(badWatermarkScope), /watermark.scope/);
+
+  const badWatermarkKind = clone(loadManifest());
+  badWatermarkKind.models[0].watermark.kind = "model_version";
+  assert.throws(() => validateManifest(badWatermarkKind), /source_snapshot_field/);
+
+  const duplicateTableOwner = clone(loadManifest());
+  duplicateTableOwner.models[1].tables.push(clone(duplicateTableOwner.models[0].tables[0]));
+  assert.throws(() => validateManifest(duplicateTableOwner), /both keyword_search and ocp_awards/);
 });
 
 test("the manifest fingerprint is stable and moves only on contract changes", () => {
@@ -239,6 +338,10 @@ test("the manifest fingerprint is stable and moves only on contract changes", ()
   const changedMode = clone(manifest);
   changedMode.models[1].publication_mode = "delta_upsert";
   assert.notEqual(manifestFingerprint(changedMode), baseline);
+
+  const changedSnapshotField = clone(manifest);
+  changedSnapshotField.models[1].source.snapshot_version_field = "row_key";
+  assert.notEqual(manifestFingerprint(changedSnapshotField), baseline);
 
   const changedDatabase = clone(manifest);
   changedDatabase.database = "some-other-database";

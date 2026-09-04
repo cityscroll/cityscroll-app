@@ -33,6 +33,7 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 export const DEFAULT_MANIFEST_PATH = join(ROOT, "worker/d1-read-models.manifest.json");
 
 export const PUBLICATION_MODES = Object.freeze(["replace_all", "delta_upsert"]);
+const PARTITION_KINDS = Object.freeze(["none", "family"]);
 
 const TOP_LEVEL_KEYS = Object.freeze(["schema", "manifest_version", "database", "models"]);
 
@@ -116,10 +117,12 @@ function validateModel(model, index) {
   requirePositiveInteger(model.model_version, `${field}.model_version`);
 
   requirePlainObject(model.builder, `${field}.builder`);
+  requireKnownKeys(model.builder, ["path", "version"], `${field}.builder`);
   requireNonEmptyString(model.builder.path, `${field}.builder.path`);
   requirePositiveInteger(model.builder.version, `${field}.builder.version`);
 
   requirePlainObject(model.source, `${field}.source`);
+  requireKnownKeys(model.source, ["kind", "path", "snapshot_version_field"], `${field}.source`);
   requireNonEmptyString(model.source.kind, `${field}.source.kind`);
   requireNonEmptyString(model.source.path, `${field}.source.path`);
   requireNonEmptyString(model.source.snapshot_version_field, `${field}.source.snapshot_version_field`);
@@ -135,13 +138,26 @@ function validateModel(model, index) {
   });
 
   requirePlainObject(model.partition, `${field}.partition`);
+  requireKnownKeys(model.partition, ["kind", "column"], `${field}.partition`);
   requireNonEmptyString(model.partition.kind, `${field}.partition.kind`);
-  if (model.partition.kind !== "none") {
+  if (!PARTITION_KINDS.includes(model.partition.kind)) {
+    fail(`${field}.partition.kind`, `must be one of ${PARTITION_KINDS.join(", ")}`);
+  }
+  if (model.partition.kind === "none") {
+    if ("column" in model.partition) fail(`${field}.partition.column`, "is not valid for kind none");
+  } else {
     requireNonEmptyString(model.partition.column, `${field}.partition.column`);
   }
 
   requirePlainObject(model.watermark, `${field}.watermark`);
-  requireNonEmptyString(model.watermark.kind, `${field}.watermark.kind`);
+  requireKnownKeys(model.watermark, ["kind", "field", "scope"], `${field}.watermark`);
+  if (model.watermark.kind !== "source_snapshot_field") {
+    fail(`${field}.watermark.kind`, "must be source_snapshot_field");
+  }
+  requireNonEmptyString(model.watermark.field, `${field}.watermark.field`);
+  if (!["model", "partition"].includes(model.watermark.scope)) {
+    fail(`${field}.watermark.scope`, "must be model or partition");
+  }
 
   requireNonEmptyString(model.publication_mode, `${field}.publication_mode`);
   if (!PUBLICATION_MODES.includes(model.publication_mode)) {
@@ -165,10 +181,21 @@ export function validateManifest(manifest) {
   }
 
   const modelIds = new Set();
+  const tableOwners = new Map();
   manifest.models.forEach((model, index) => {
     validateModel(model, index);
     if (modelIds.has(model.model_id)) fail(`models[${index}].model_id`, "is declared twice");
     modelIds.add(model.model_id);
+    model.tables.forEach((table, tableIndex) => {
+      const owner = tableOwners.get(table.name);
+      if (owner) {
+        fail(
+          `models[${index}].tables[${tableIndex}].name`,
+          `is declared by both ${owner} and ${model.model_id}`,
+        );
+      }
+      tableOwners.set(table.name, model.model_id);
+    });
   });
   return manifest;
 }
@@ -225,7 +252,8 @@ export function sourceSnapshotVersion(entry, sourceDocument) {
 /**
  * The manifest facts that must invalidate a publication fingerprint.
  *
- * Included: everything that changes what is published or how it is keyed.
+ * Included: everything that changes what is published or how it is keyed,
+ * including the source snapshot field selector.
  * Excluded on purpose: `builder.path`, `source.path`, `partition`, `watermark`,
  * and every source snapshot value. Paths are repository layout rather than
  * contract — moving a file does not change the published rows — and snapshot
@@ -245,6 +273,7 @@ export function fingerprintInputs(manifest) {
         model_version: model.model_version,
         builder_version: model.builder.version,
         source_kind: model.source.kind,
+        source_snapshot_version_field: model.source.snapshot_version_field,
         tables: [...model.tables]
           .sort((left, right) => left.name.localeCompare(right.name, "en"))
           .map((table) => ({ name: table.name, key_columns: [...table.key_columns] })),
@@ -261,15 +290,4 @@ export function manifestFingerprint(manifest) {
 /** Canonical text for the checked-in manifest: sorted keys, 2-space indent, trailing newline. */
 export function serializeManifest(manifest) {
   return `${JSON.stringify(canonical(validateManifest(manifest)), null, 2)}\n`;
-}
-
-if (process.argv[1] && process.argv[1] === fileURLToPath(import.meta.url)) {
-  const manifest = loadManifest();
-  console.log(JSON.stringify({
-    schema: manifest.schema,
-    manifest_version: manifest.manifest_version,
-    database: manifest.database,
-    models: manifest.models.map((model) => model.model_id),
-    fingerprint: manifestFingerprint(manifest),
-  }));
 }
