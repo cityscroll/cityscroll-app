@@ -6,6 +6,8 @@
  * one exact place match; it never traverses or scores raw records in-browser.
  */
 
+import { PLACE_ROLES } from "./scope_v0.mjs";
+
 export const NEAR_YOU_EXPLANATION_PATH_SCHEMA = "cityscroll.near_you_explanation_path.v1";
 export const NEAR_YOU_GEOGRAPHY_EVIDENCE_SCHEMA = "cityscroll.near_you_geography_evidence.v1";
 
@@ -44,10 +46,11 @@ function strongestBacklink(rows = []) {
       || clean(left.duty_text).localeCompare(clean(right.duty_text)))[0] || null;
 }
 
+/** Bucket the district-activity basis string into the one canonical place-role predicate. */
 function locationPlaceRole(record = {}) {
   if (record.basis === "Venue / logistics") return "venue";
   if (record.basis === "Matter place") return "matter";
-  return "affected_area";
+  return "affected_area"; // Safe default — never fabricate venue/matter from a weak basis.
 }
 
 function subjectForRecord(lens, id) {
@@ -166,12 +169,17 @@ export function selectNearYouExplanationPath(candidates = [], scope = {}) {
   if (place.neighborhood && !place.boroughs?.length
     && !place.community_districts?.length && !place.council_districts?.length) return null;
   const subject = exactPlaceSubject(scope);
+  const requestedRole = scope.facets?.values?.place_role;
+  const wantsRole = PLACE_ROLES.includes(requestedRole) ? requestedRole : null;
   const eligible = candidates.filter((candidate) =>
     candidate?.schema === NEAR_YOU_EXPLANATION_PATH_SCHEMA
       && candidate.location?.relation === "located_in"
       && DISTRICT_KINDS.has(candidate.location?.kind)
       && PUBLIC_TIERS.has(candidate.mandate?.publication_tier)
-      && (!subject || candidate.location.subject_ref === subject));
+      && (!subject || candidate.location.subject_ref === subject)
+      // An absent role preserves today's broader behavior; a requested role never
+      // widens past the exact evidenced relationship (no fabricating a match).
+      && (!wantsRole || candidate.location.place_role === wantsRole));
   return eligible.slice().sort((left, right) =>
     candidateStrength(right) - candidateStrength(left)
       || left.location.subject_ref.localeCompare(right.location.subject_ref))[0] || null;

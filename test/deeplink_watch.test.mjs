@@ -79,6 +79,7 @@ const {
   extractDecl("DEEPLINK_CATEGORIES") +
   extractDecl("DEEPLINK_BOROS") +
   extractDecl("DEEPLINK_PROCESS_STATES") +
+  extractDecl("DEEPLINK_PLACE_ROLES") +
   extractFn("deeplinkClampField") +
   extractFn("sanitizeDeepLinkFilter") +
   extractFn("parseWatchParam") +

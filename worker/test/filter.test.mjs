@@ -174,6 +174,19 @@ test("alerts: the general case (no watchType) keeps ANY combination of the gener
   assert.equal(out.noticeType, "award");
 });
 
+test("place_role survives the Following/subscribe sanitizer for every domain that carries it, and clamps junk", () => {
+  for (const lens of ["money", "land", "property", "rules", "meetings"]) {
+    for (const role of ["venue", "matter", "affected_area"]) {
+      assert.equal(sanitize(lens, { place_role: role }).place_role, role, `${lens}/${role}`);
+    }
+    // Never fabricate a subjective-geography role through the watch sanitizer either.
+    assert.equal("place_role" in sanitize(lens, { place_role: "outer_borough" }), false, lens);
+    assert.equal("place_role" in sanitize(lens, {}), false, lens);
+  }
+  // A lens with no place-role evidence never claims to carry the constraint.
+  assert.equal("place_role" in sanitize("people", { place_role: "venue" }), false);
+});
+
 test("limits + lens registry are sane", () => {
   assert.ok(MAX_INPUT > 0 && MAX_INPUT <= 2000);
   assert.ok(MAX_CALLS_PER_DAY > 0 && MAX_CALLS_PER_DAY <= 1000);
