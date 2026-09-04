@@ -1,0 +1,367 @@
+{
+  "schema": "cityscroll.procurement_pursuit_decision_baseline_manifest.v1",
+  "captured_at": "2026-09-04T17:45:31Z",
+  "revision": "b18a065625935ccee582585a09548f31912ba2fe",
+  "note": "Pre-Card-1..7 baseline capture. No production code was changed to produce these renders. Screenshot binaries are not committed to this repository; they are written to an external directory (default a docs-evidence/ sibling of the repository root, override with CAPTURE_EXTERNAL_OUT) named by 'external_filename' below, and this manifest is the reproducible, reviewable record of what each capture shows and why.",
+  "external_output_directory_note": "Not committed; see external_filename per capture. Re-run this script to regenerate byte-identical captures (same sha256) at this revision.",
+  "captures": [
+    {
+      "case": "procurement-detail-fixture-a",
+      "surface": "procurement-detail",
+      "route": "/_capture/procurement-detail-fixture-a",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "b18a065625935ccee582585a09548f31912ba2fe",
+      "fixture_ids": [
+        "A"
+      ],
+      "data_vintage": "passport_public_rfx observation ingested_at 2026-07-01T10:00:00Z; city_record observation ingested_at 2026-07-02T10:00:00Z; rendered as of 2026-07-10",
+      "assertion": "renderProcurementDocument() surfaces the exact PASSPort release/City Record observations and process events for a dense, exact-join procurement, ahead of any Card-2 opportunity-window derivation.",
+      "external_filename": "procurement-detail-fixture-a-390x844.png",
+      "sha256": "61442165b6aeaa6ebdab785f202a0085a52aeff54295a3995bdd696f391ceb88",
+      "bytes": 169132,
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "case": "procurement-detail-fixture-a",
+      "surface": "procurement-detail",
+      "route": "/_capture/procurement-detail-fixture-a",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "b18a065625935ccee582585a09548f31912ba2fe",
+      "fixture_ids": [
+        "A"
+      ],
+      "data_vintage": "passport_public_rfx observation ingested_at 2026-07-01T10:00:00Z; city_record observation ingested_at 2026-07-02T10:00:00Z; rendered as of 2026-07-10",
+      "assertion": "renderProcurementDocument() surfaces the exact PASSPort release/City Record observations and process events for a dense, exact-join procurement, ahead of any Card-2 opportunity-window derivation.",
+      "external_filename": "procurement-detail-fixture-a-1440x900.png",
+      "sha256": "9b1e220203d9de9381568583b734a5ab6ee4087bfd656d86c4108300e836d43f",
+      "bytes": 228427,
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "case": "procurement-detail-fixture-d",
+      "surface": "procurement-detail",
+      "route": "/_capture/procurement-detail-fixture-d",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "b18a065625935ccee582585a09548f31912ba2fe",
+      "fixture_ids": [
+        "D"
+      ],
+      "data_vintage": "warehouse/fixtures/authority-native-procurement/mta-opportunities.v1.json retrieved_at 2026-08-28T14:00:00.000Z",
+      "assertion": "renderProcurementDocument() on a sparse real object currently prints the raw estimated_value (\"$100M+\") and opening_date as literal Amount/End date text, rather than explicit not-published placeholders.",
+      "external_filename": "procurement-detail-fixture-d-390x844.png",
+      "sha256": "1767f00f8eb4fcfddcc222b6f65c68a403a57883f4408479464ef375b3c923d8",
+      "bytes": 130245,
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "case": "procurement-detail-fixture-d",
+      "surface": "procurement-detail",
+      "route": "/_capture/procurement-detail-fixture-d",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "b18a065625935ccee582585a09548f31912ba2fe",
+      "fixture_ids": [
+        "D"
+      ],
+      "data_vintage": "warehouse/fixtures/authority-native-procurement/mta-opportunities.v1.json retrieved_at 2026-08-28T14:00:00.000Z",
+      "assertion": "renderProcurementDocument() on a sparse real object currently prints the raw estimated_value (\"$100M+\") and opening_date as literal Amount/End date text, rather than explicit not-published placeholders.",
+      "external_filename": "procurement-detail-fixture-d-1440x900.png",
+      "sha256": "464466648cb305dd5d8e43e2cda16432d41c85d43048f7a3938cbd46b93d1049",
+      "bytes": 174061,
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "case": "email-single-watch",
+      "surface": "email-preview",
+      "route": "/_capture/email-single-watch",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "b18a065625935ccee582585a09548f31912ba2fe",
+      "fixture_ids": [
+        "C",
+        "E"
+      ],
+      "data_vintage": "test/digest_preview_awareness.test.mjs FIX-PREV-SOL-1/FIX-PREV-AWD-1 fixture rows; rendered as of 2026-08-02",
+      "assertion": "subDigestHtml() renders today's single-watch subject/body hierarchy with no procurement-specific normalized atom, ahead of Card 1.",
+      "external_filename": "email-single-watch-390x844.png",
+      "sha256": "ad980b4d531adb64fbd8187556bde16696641a6817fe3ad47fbf4ccc72f8ae10",
+      "bytes": 42455,
+      "axe": {
+        "violations_total": 4,
+        "failing_violations": [
+          {
+            "id": "color-contrast",
+            "impact": "serious"
+          },
+          {
+            "id": "landmark-one-main",
+            "impact": "moderate"
+          },
+          {
+            "id": "region",
+            "impact": "moderate"
+          }
+        ],
+        "passes": false
+      }
+    },
+    {
+      "case": "email-single-watch",
+      "surface": "email-preview",
+      "route": "/_capture/email-single-watch",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "b18a065625935ccee582585a09548f31912ba2fe",
+      "fixture_ids": [
+        "C",
+        "E"
+      ],
+      "data_vintage": "test/digest_preview_awareness.test.mjs FIX-PREV-SOL-1/FIX-PREV-AWD-1 fixture rows; rendered as of 2026-08-02",
+      "assertion": "subDigestHtml() renders today's single-watch subject/body hierarchy with no procurement-specific normalized atom, ahead of Card 1.",
+      "external_filename": "email-single-watch-1440x900.png",
+      "sha256": "f82a5a73568682790d638af14bf0f42ab08ab8702922ec59b38c2733152c7463",
+      "bytes": 49046,
+      "axe": {
+        "violations_total": 4,
+        "failing_violations": [
+          {
+            "id": "color-contrast",
+            "impact": "serious"
+          },
+          {
+            "id": "landmark-one-main",
+            "impact": "moderate"
+          },
+          {
+            "id": "region",
+            "impact": "moderate"
+          }
+        ],
+        "passes": false
+      }
+    },
+    {
+      "case": "email-multi-watch-rollup",
+      "surface": "email-preview",
+      "route": "/_capture/email-multi-watch-rollup",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "b18a065625935ccee582585a09548f31912ba2fe",
+      "fixture_ids": [
+        "C",
+        "D",
+        "E"
+      ],
+      "data_vintage": "same fixture rows as email-single-watch plus Fixture D's digest row; rendered as of 2026-08-02",
+      "assertion": "rollupDigestHtml() renders every watch's section (the every-watch honesty mechanism) with no lead-opportunity selection, ahead of Card 1.",
+      "external_filename": "email-multi-watch-rollup-390x844.png",
+      "sha256": "cd9f90e732639c74284a12d655e67d981c61854984303b3f9807384878a83775",
+      "bytes": 85529,
+      "axe": {
+        "violations_total": 4,
+        "failing_violations": [
+          {
+            "id": "color-contrast",
+            "impact": "serious"
+          },
+          {
+            "id": "landmark-one-main",
+            "impact": "moderate"
+          },
+          {
+            "id": "region",
+            "impact": "moderate"
+          }
+        ],
+        "passes": false
+      }
+    },
+    {
+      "case": "email-multi-watch-rollup",
+      "surface": "email-preview",
+      "route": "/_capture/email-multi-watch-rollup",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "b18a065625935ccee582585a09548f31912ba2fe",
+      "fixture_ids": [
+        "C",
+        "D",
+        "E"
+      ],
+      "data_vintage": "same fixture rows as email-single-watch plus Fixture D's digest row; rendered as of 2026-08-02",
+      "assertion": "rollupDigestHtml() renders every watch's section (the every-watch honesty mechanism) with no lead-opportunity selection, ahead of Card 1.",
+      "external_filename": "email-multi-watch-rollup-1440x900.png",
+      "sha256": "0438dcb1dd57078cfab8b406949abd03a474c32ef54a7b70f16c5b89bb720840",
+      "bytes": 97539,
+      "axe": {
+        "violations_total": 4,
+        "failing_violations": [
+          {
+            "id": "color-contrast",
+            "impact": "serious"
+          },
+          {
+            "id": "landmark-one-main",
+            "impact": "moderate"
+          },
+          {
+            "id": "region",
+            "impact": "moderate"
+          }
+        ],
+        "passes": false
+      }
+    },
+    {
+      "case": "fixture-ledger-summary",
+      "surface": "fixture-ledger",
+      "route": "/_capture/fixture-ledger-summary",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "b18a065625935ccee582585a09548f31912ba2fe",
+      "fixture_ids": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F"
+      ],
+      "data_vintage": "test/fixtures/procurement_pursuit_decision/fixture-ledger.json baseline_revision c2132a37f5bfedd0d65b6c3fd401e01413d6c0b7",
+      "assertion": "Renders the committed fixture ledger as a table so the six shared fixtures and their expected unknowns/UI surfaces are visible at a glance.",
+      "external_filename": "fixture-ledger-summary-390x844.png",
+      "sha256": "9472ece5ec7f1fd1017b7ca03b6aa6145529da93a2119b8ed9a8decc6d473f68",
+      "bytes": 238408,
+      "axe": {
+        "violations_total": 2,
+        "failing_violations": [
+          {
+            "id": "landmark-one-main",
+            "impact": "moderate"
+          },
+          {
+            "id": "region",
+            "impact": "moderate"
+          }
+        ],
+        "passes": false
+      }
+    },
+    {
+      "case": "fixture-ledger-summary",
+      "surface": "fixture-ledger",
+      "route": "/_capture/fixture-ledger-summary",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "b18a065625935ccee582585a09548f31912ba2fe",
+      "fixture_ids": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F"
+      ],
+      "data_vintage": "test/fixtures/procurement_pursuit_decision/fixture-ledger.json baseline_revision c2132a37f5bfedd0d65b6c3fd401e01413d6c0b7",
+      "assertion": "Renders the committed fixture ledger as a table so the six shared fixtures and their expected unknowns/UI surfaces are visible at a glance.",
+      "external_filename": "fixture-ledger-summary-1440x900.png",
+      "sha256": "4d8a63528ec6ec374eef9c600d226072378e8a3f9a676f4bad57be25bb1c0fbf",
+      "bytes": 223947,
+      "axe": {
+        "violations_total": 2,
+        "failing_violations": [
+          {
+            "id": "landmark-one-main",
+            "impact": "moderate"
+          },
+          {
+            "id": "region",
+            "impact": "moderate"
+          }
+        ],
+        "passes": false
+      }
+    },
+    {
+      "case": "contracts-browse",
+      "surface": "contracts-browse",
+      "route": "/browse/contracts/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "b18a065625935ccee582585a09548f31912ba2fe",
+      "fixture_ids": [],
+      "data_vintage": "site/data/procurement_browse_query_rows.json as tracked at this revision",
+      "assertion": "The real Contracts Browse route rendered with no stubbed data, before any pursuit-decision surfacing changes.",
+      "external_filename": "contracts-browse-390x844.png",
+      "sha256": "02379cfc937f599bea5f6ca4e478970b4b62e692c9cd3bfe2eab2f62510fffb9",
+      "bytes": 244251,
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "case": "contracts-browse",
+      "surface": "contracts-browse",
+      "route": "/browse/contracts/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "b18a065625935ccee582585a09548f31912ba2fe",
+      "fixture_ids": [],
+      "data_vintage": "site/data/procurement_browse_query_rows.json as tracked at this revision",
+      "assertion": "The real Contracts Browse route rendered with no stubbed data, before any pursuit-decision surfacing changes.",
+      "external_filename": "contracts-browse-1440x900.png",
+      "sha256": "9fbab99d8a156fb4ece1b982298b8d3bf8acad5d4916eb332e4f44727f9b5b27",
+      "bytes": 257713,
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    }
+  ]
+}
