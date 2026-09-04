@@ -70,3 +70,27 @@ test("interpret preview has an honest unavailable state", () => {
   assert.match(html, /data-preview-state="error"/);
   assert.match(html, /Source unavailable\./);
 });
+
+test("the form-factor header slot rides along without changing the three-card bound", () => {
+  const rows = [1, 2, 3, 4].map((id) => ({ id, title: `Record ${id}` }));
+  const header = '<div class="interpret-preview-scopebar" data-preview-scope="all"><p class="interpret-preview-scope"><strong>All sources</strong></p></div>';
+  const html = renderInterpretPreview({
+    query: "parks",
+    rows,
+    header,
+    renderRow: (row) => `<article>${row.title}</article>`,
+  });
+  assert.match(html, /data-preview-state="results"/);
+  assert.match(html, /data-preview-scope="all"/);
+  assert.match(html, /All sources/);
+  assert.doesNotMatch(html, /Record 4/);
+
+  const empty = renderInterpretPreview({ rows: [], header, empty: "No matching records." });
+  assert.match(empty, /data-preview-state="empty"/);
+  assert.match(empty, /data-preview-scope="all"/);
+
+  const error = renderInterpretPreview({ state: "error", header, error: "Source unavailable." });
+  assert.match(error, /data-preview-state="error"/);
+  assert.match(error, /data-preview-scope="all"/);
+  assert.match(error, /Source unavailable\./);
+});

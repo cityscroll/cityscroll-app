@@ -1,7 +1,6 @@
 import { renderAskCitedQuotesHtml } from "../ask_cited_synthesis.mjs";
 import { renderInterpretPreview } from "../interpret_preview.mjs";
 import { renderUniversalSearchResultHtml } from "../universal_search_relevance_ux.mjs";
-import { fetchFederatedSearch } from "../federated_search_client.mjs";
 import { walkEntryHref } from "../walk_entry.mjs";
 import {
   parseSearchLensHandoff,
@@ -168,11 +167,109 @@ function nlqResolvedActionsHTML(hash){
 function bindNLQResolvedActions(label, hash){
   bindSearchActions($("#nltrans"), label, hash);
 }
+
+// Homepage Preview form-factor state. The scope is explicit and all-sources by
+// default (the resolved site-owner decision); narrowing reissues the same
+// query under the registered Contracts scope without re-interpreting it.
+let previewFormFactorState=null; // {scopeId, text, extrasHTML, recoveryHTML, deepLink}
+
+// The federated-capability adapter and its schema import are fetched only once a
+// resident actually resolves a topic, not on every hash-route boot: search-share.mjs
+// itself is already in the eager application graph, and this keeps that shared graph
+// from carrying an interactive-only dependency for routes that never touch Preview.
+let previewFormFactorModule=null;
+let previewFormFactorModulePromise=null;
+function ensurePreviewFormFactorModule(){
+  return previewFormFactorModulePromise ||= import("../preview_federated_form_factor.mjs").then((mod)=>{
+    previewFormFactorModule=mod;
+    return mod;
+  });
+}
+
+function previewCoverageLineHTML(scope, outcome){
+  if(!outcome || !outcome.coverage) return "";
+  const coverage=outcome.coverage;
+  // An unavailable federation is disclosed by the preview's error copy itself;
+  // a coverage sentence here would understate it.
+  if(coverage.state==="unavailable") return "";
+  const key=coverage.state==="complete" ? "preview_coverage_complete"
+    : coverage.state==="partial" ? "preview_coverage_partial"
+    : "preview_coverage_unreported";
+  const asOf=coverage.as_of ? `<span class="interpret-preview-asof" data-preview-as-of="${nlqEscape(coverage.as_of)}">${nlqEscape(t("stats_public_asof",{date:coverage.as_of}))}</span>` : "";
+  return `<p class="interpret-preview-coverage" data-preview-coverage="${nlqEscape(coverage.state)}"><span>${nlqEscape(t(key))}</span>${asOf}</p>`;
+}
+
+function previewScopeHeaderHTML(scopeId, text, outcome, {loading=false, staticOnly=false}={}){
+  const {PREVIEW_FORM_FACTOR_SCOPES, previewFullResultsHref}=previewFormFactorModule;
+  const scope=PREVIEW_FORM_FACTOR_SCOPES[scopeId] || PREVIEW_FORM_FACTOR_SCOPES.all;
+  const narrow=PREVIEW_FORM_FACTOR_SCOPES[scope.narrow_target];
+  const coverageLine=loading ? "" : previewCoverageLineHTML(scope, outcome);
+  const fullResults=loading || !text ? "" : `<a class="interpret-preview-fullresults" data-preview-fullresults href="${nlqEscape(previewFullResultsHref(scopeId,text))}">${nlqEscape(t(scope.full_results_label_key))}</a>`;
+  const toggle=staticOnly ? "" : `<button type="button" class="mini" data-preview-scope-toggle="${nlqEscape(narrow.id)}"${loading?' disabled=""':""}>${nlqEscape(t(scope.narrow_label_key))}</button>`;
+  return `<div class="interpret-preview-scopebar" data-preview-scope="${nlqEscape(scope.id)}">
+    <p class="interpret-preview-scope"><span class="interpret-preview-scope-active">${nlqEscape(t("preview_scope_label"))}: <strong data-preview-scope-label>${nlqEscape(t(scope.label_key))}</strong></span>${toggle}</p>
+    ${coverageLine}
+    ${fullResults}
+  </div>`;
+}
+
+function previewWorkingHTML(scopeId){
+  return `${previewScopeHeaderHTML(scopeId,"",null,{loading:true})}<div class="nlworking"><span class="loading"></span><span>${t("translating")}</span></div>`;
+}
+
+async function renderPreviewFormFactor(scopeId, {focusToggle=false}={}){
+  const output=$("#nltrans");
+  const state=previewFormFactorState;
+  if(!output || !state || !state.text) return;
+  const {fetchPreviewFormFactor}=await ensurePreviewFormFactorModule();
+  output.innerHTML=previewWorkingHTML(scopeId);
+  const {outcome}=await fetchPreviewFormFactor(scopeId, state.text);
+  const header=previewScopeHeaderHTML(scopeId, state.text, outcome);
+  const preview=outcome.outcome==="unavailable"
+    ? renderInterpretPreview({
+        query:state.text,
+        state:"error",
+        header,
+        error:t("topic_search_coverage_provider_unavailable",{source:t("search_label")}),
+        escape:nlqEscape,
+      })
+    : renderInterpretPreview({
+        query:state.text,
+        rows:outcome.documents,
+        renderRow:(row)=>renderUniversalSearchResultHtml(row),
+        header,
+        heading:t("preview_panel_heading"),
+        empty:t("nl_no_matches_note"),
+        state:"ready",
+        escape:nlqEscape,
+      });
+  output.innerHTML=preview+state.extrasHTML+state.recoveryHTML;
+  bindPreviewScopeToggle(output);
+  if(state.deepLink) bindNLQResolvedActions(state.text, state.deepLink);
+  if(focusToggle){
+    const toggle=output.querySelector("[data-preview-scope-toggle]");
+    if(toggle) toggle.focus();
+  }
+}
+
+function bindPreviewScopeToggle(root){
+  const toggle=root?.querySelector("[data-preview-scope-toggle]");
+  if(!toggle) return;
+  toggle.addEventListener("click",()=>{
+    const target=toggle.dataset.previewScopeToggle;
+    const state=previewFormFactorState;
+    if(!state || !previewFormFactorModule?.PREVIEW_FORM_FACTOR_SCOPES[target] || target===state.scopeId) return;
+    state.scopeId=target;
+    renderPreviewFormFactor(target,{focusToggle:true});
+  });
+}
+
 async function nlTranslate(){
   const output=$("#nltrans");
   const text=$("#nlq")?.value.trim() || "";
   if(!text){
-    if(output) output.innerHTML=renderInterpretPreview({state:"empty",empty:t("topic_search_bounded_empty"),escape:nlqEscape});
+    previewFormFactorState=null;
+    if(output) output.innerHTML=renderInterpretPreview({state:"empty",empty:t("preview_empty_input"),escape:nlqEscape});
     return;
   }
   askPanel("money")?.setAttribute("open","");
@@ -201,26 +298,26 @@ async function nlTranslate(){
     closingWeek=!!p.closingWeek && !wantsAward;
     $("#closingweek").classList.toggle("on", closingWeek);
     $("#closingweek").setAttribute("aria-pressed", String(closingWeek));
-    // The preview is a compact projection of the same federated capability used by /search.
-    // Keep the interpreted money deep link above, but do not narrow the preview to Contracts.
-    const federatedRows = await fetchFederatedSearch(text);
-    const preview=renderInterpretPreview({
-      query:text,
-      rows:federatedRows,
-      renderRow:(row)=>renderUniversalSearchResultHtml(row),
-      heading:t("preview_panel_heading"),
-      empty:t("nl_no_matches_note"),
-      error:t("topic_search_coverage_provider_unavailable",{source:t("search_label")}),
-      state:"ready",
-      escape:nlqEscape,
-    });
-    if(output) output.innerHTML=preview+askCitedQuotesHTML(p.cited_quotes)+nlqResolvedActionsHTML(deepLink)+recovery;
-    bindNLQResolvedActions(text, deepLink);
+    // Interpretation builds the Contracts deep link and the money pane state, but
+    // it never narrows the preview: retrieval goes through the shared federated
+    // capability under the explicit all-sources default. Narrowing to Contracts is
+    // one action on the same query and reissues the registered Contracts scope.
+    previewFormFactorState={scopeId:"all", text, extrasHTML:askCitedQuotesHTML(p.cited_quotes)+nlqResolvedActionsHTML(deepLink), recoveryHTML:recovery, deepLink};
+    await renderPreviewFormFactor("all");
   }catch(_error){
+    previewFormFactorState=null;
+    // The active scope stays visible even on an interpretation failure (A5), but this
+    // catch can run before renderPreviewFormFactor ever loaded the form-factor module.
+    let header="";
+    try{
+      await ensurePreviewFormFactorModule();
+      header=previewScopeHeaderHTML("all", text, null, {staticOnly:true});
+    }catch{ /* form-factor module unavailable; render the failure without the scope header */ }
     if(output) output.innerHTML=renderInterpretPreview({
       query:text,
       state:"error",
-      error:t("topic_search_coverage_provider_unavailable",{source:t("search_label")}),
+      header,
+      error:t("preview_interpretation_unavailable"),
       escape:nlqEscape,
     })+fullSpanSuggestionRecoveryHTML(text);
   }finally{

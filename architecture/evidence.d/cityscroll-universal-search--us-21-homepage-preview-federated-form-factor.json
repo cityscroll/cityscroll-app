@@ -1,0 +1,41 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-universal-search/us-21-homepage-preview-federated-form-factor",
+  "status": "implemented",
+  "fingerprint": "us-21-homepage-preview-federated-form-factor.v1",
+  "updated_at": "2026-09-03T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "preview-form-factor-adapter",
+      "path": "site/preview_federated_form_factor.mjs"
+    },
+    {
+      "id": "preview-bounded-projection",
+      "path": "site/interpret_preview.mjs"
+    },
+    {
+      "id": "preview-scope-ui-seam",
+      "path": "site/app/search-share.mjs"
+    },
+    {
+      "id": "preview-all-sources-path",
+      "path": "site/federated_search_client.mjs"
+    },
+    {
+      "id": "preview-form-factor-tests",
+      "path": "test/preview_federated_form_factor.test.mjs"
+    },
+    {
+      "id": "preview-projection-tests",
+      "path": "test/interpret_preview.test.mjs"
+    },
+    {
+      "id": "preview-functional-proof",
+      "path": "test/functional/37_plain_english_preview.py"
+    },
+    {
+      "id": "preview-capture-harness",
+      "path": "tools/capture_preview_federated_form_factor.py"
+    }
+  ]
+}
