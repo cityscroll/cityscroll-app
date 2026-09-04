@@ -1,0 +1,127 @@
+{
+  "schema": "cityscroll.land-authority-evidence-state-affordances.capture.v1",
+  "card": "cityscroll-land-decision-path/ldp-32-authority-evidence-state-affordances",
+  "assertion": "The authority panel materializes DCP/CPC/Council actors and roles only after the exact action/procedure join, distinguishes checked-and-empty from unknown and stale published-opportunity evidence, and gates the calendar and watch affordances on real dated events and materialized next-stage transitions (A1-A10) across the real ELURP regression corpus (E1-E4). Rendered via the production buildLandAuthoritySummary/landAuthoritySummaryHTML functions in a minimal static harness (not the full app shell). 390x844 mobile viewport is captured first per canary.",
+  "revision": "4fd426b2e331a9e09b1294e82350cedb85e05629",
+  "vintage": "2026-09-04T10:06:00Z",
+  "canaries": [
+    {
+      "stem": "2024Q0356",
+      "evidence_state": "none",
+      "label": "E1 \u2014 active \u00a7197-e project: DCP certification stage, parallel CB/BP next, checked-and-empty published opportunity"
+    },
+    {
+      "stem": "2024Q0419",
+      "evidence_state": "published",
+      "label": "E2 \u2014 completed \u00a7197-e route (C-prefixed id): CPC terminal, published next opportunity with a usable date, calendar affordance"
+    },
+    {
+      "stem": "2025R0257",
+      "evidence_state": "stale",
+      "label": "E3 \u2014 completed \u00a7197-e route (different action family): CPC terminal, stale published-opportunity vintage"
+    },
+    {
+      "stem": "2026X0362",
+      "evidence_state": "unresolved variant",
+      "label": "E4 \u2014 completed HPD \u00a7197-e(k) filing: observed Council path exposed without inferring the variant"
+    }
+  ],
+  "files": [
+    {
+      "name": "2024Q0356-390.png",
+      "stem": "2024Q0356",
+      "evidence_state": "none",
+      "label": "E1 \u2014 active \u00a7197-e project: DCP certification stage, parallel CB/BP next, checked-and-empty published opportunity",
+      "bytes": 88171,
+      "sha256": "88844adb5ce5f198173dcdf055c3640ba0aadfc6cc749ee5123014a7b5b3a770",
+      "viewport": [
+        390,
+        844
+      ]
+    },
+    {
+      "name": "2024Q0356-1440.png",
+      "stem": "2024Q0356",
+      "evidence_state": "none",
+      "label": "E1 \u2014 active \u00a7197-e project: DCP certification stage, parallel CB/BP next, checked-and-empty published opportunity",
+      "bytes": 96167,
+      "sha256": "c049d62043f4a49a7e824d669a0c9dfec1cdb2bf445d4f154c426e7f56910df0",
+      "viewport": [
+        1440,
+        900
+      ]
+    },
+    {
+      "name": "2024Q0419-390.png",
+      "stem": "2024Q0419",
+      "evidence_state": "published",
+      "label": "E2 \u2014 completed \u00a7197-e route (C-prefixed id): CPC terminal, published next opportunity with a usable date, calendar affordance",
+      "bytes": 85861,
+      "sha256": "7805cc177bf087e9f5b4c316b295c76b8918af39e8ea93a7df6672ef7b8d1b5a",
+      "viewport": [
+        390,
+        844
+      ]
+    },
+    {
+      "name": "2024Q0419-1440.png",
+      "stem": "2024Q0419",
+      "evidence_state": "published",
+      "label": "E2 \u2014 completed \u00a7197-e route (C-prefixed id): CPC terminal, published next opportunity with a usable date, calendar affordance",
+      "bytes": 92184,
+      "sha256": "7e434c634fc83c7359fcb8f406cc0d8a20db93419a06abb09642edeb89a39676",
+      "viewport": [
+        1440,
+        900
+      ]
+    },
+    {
+      "name": "2025R0257-390.png",
+      "stem": "2025R0257",
+      "evidence_state": "stale",
+      "label": "E3 \u2014 completed \u00a7197-e route (different action family): CPC terminal, stale published-opportunity vintage",
+      "bytes": 84118,
+      "sha256": "aea7124e41599dc815359764fbc63459203ce7ae8c4ca80b8f16173da7a5a6c7",
+      "viewport": [
+        390,
+        844
+      ]
+    },
+    {
+      "name": "2025R0257-1440.png",
+      "stem": "2025R0257",
+      "evidence_state": "stale",
+      "label": "E3 \u2014 completed \u00a7197-e route (different action family): CPC terminal, stale published-opportunity vintage",
+      "bytes": 90978,
+      "sha256": "f9c08b71c6d37531361419cbef8e24c53540909cc7fe94ede38724ac2dbdc13a",
+      "viewport": [
+        1440,
+        900
+      ]
+    },
+    {
+      "name": "2026X0362-390.png",
+      "stem": "2026X0362",
+      "evidence_state": "unresolved variant",
+      "label": "E4 \u2014 completed HPD \u00a7197-e(k) filing: observed Council path exposed without inferring the variant",
+      "bytes": 56923,
+      "sha256": "3593aa7c58ced879e82e2a0285eb3bbbc85e609bbc1bd74f21e60b3d6162fbc2",
+      "viewport": [
+        390,
+        844
+      ]
+    },
+    {
+      "name": "2026X0362-1440.png",
+      "stem": "2026X0362",
+      "evidence_state": "unresolved variant",
+      "label": "E4 \u2014 completed HPD \u00a7197-e(k) filing: observed Council path exposed without inferring the variant",
+      "bytes": 69245,
+      "sha256": "63aa4a1257808c29973c0094c70a472f2d2036bd9559bf9ed2d36d28102d3012",
+      "viewport": [
+        1440,
+        900
+      ]
+    }
+  ]
+}
