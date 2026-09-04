@@ -1,0 +1,221 @@
+{
+  "bulk_api_documented": false,
+  "bulk_enumeration_probe": {
+    "attempted": true,
+    "conclusion": "A wide or blank-criteria search was not observed to return an enumerable bulk listing of reviews. This pipeline treats that as further evidence against an undocumented bulk API, not as proof one cannot exist -- a later, narrower discovery pass may observe otherwise.",
+    "outcomes": [
+      {
+        "criteria_shape": "borough_only_manhattan",
+        "note": "A single borough-wide (bulk-shaped) search request did not complete: request timed out after 15000ms. Per this pipeline's politeness rule it was abandoned rather than retried; a request this expansive not completing within 15000ms is itself evidence against treating wide enumeration as a supported, stable access pattern.",
+        "outcome": "timeout_or_error_abandoned_no_retry",
+        "result_row_count": null
+      }
+    ]
+  },
+  "document_link_pattern": {
+    "reason": "This discovery pass reached the search interface but did not capture a real search result or project detail page carrying document links; the document-link URL shape is unknown, not assumed.",
+    "status": "not_yet_observed"
+  },
+  "generated_at": "2026-09-04T05:52:14.617Z",
+  "known_gaps": [
+    "Search page and linked documents only; no documented bulk API. Do not assume an undocumented bulk API (commission constraint). Document manifest and hash-preserving fetch are SEQRA-04 scope."
+  ],
+  "negative_rule": "No documented bulk API was found for CEQR Access in this discovery pass. The site is a stateful ASP.NET WebForms application: the search page requires __VIEWSTATE/__EVENTVALIDATION tokens minted per-request and posts back to its own URL, not a stable query-string or JSON endpoint. This pipeline does not assume an undocumented bulk API exists, and every fetch it performs replays only the search and document-link behavior actually observed in a discovery probe, never a guessed interface.",
+  "probe_count": 5,
+  "probes": [
+    {
+      "fetch": {
+        "byte_count": 8841,
+        "content_hash": "sha256:1807d84dae640aecea89609d56d449bc30e3dc97bbc8c1686afae3db571d8d30",
+        "content_type": "text/html; charset=utf-8",
+        "fetch_id": "seqra04-discovery-fetch-0001",
+        "http_status": 200,
+        "latency_ms": 1302,
+        "pagination_complete": true,
+        "parser_version": "seqra04_ceqr_access_discovery.v1",
+        "purpose": "robots_txt_check",
+        "raw_object_path": "warehouse/raw/seqra-ceqr-access/discovery/01_robots_txt.html",
+        "request_url_or_query": "https://a002-ceqraccess.nyc.gov/robots.txt",
+        "requested_at": "2026-09-04T05:51:54.064Z",
+        "retrieved_at": "2026-09-04T05:51:55.366Z",
+        "row_or_document_count": 0,
+        "schema": "cityscroll.seqra_fetch_receipt.v1",
+        "source_id": "ceqr_access",
+        "source_vintage": "2026-09-04T05:51:55.366Z",
+        "warnings": []
+      },
+      "observation": {
+        "note": "No robots.txt is published; the site's ASP.NET pipeline answers an unmapped path with HTTP 200 and a soft-404 HTML body rather than a real 404 status, so HTTP status alone cannot distinguish a real page from a missing one on this host.",
+        "path_checked": "/robots.txt",
+        "type": "unmapped_path_behavior"
+      },
+      "purpose": "robots_txt_check"
+    },
+    {
+      "fetch": {
+        "byte_count": 7952,
+        "content_hash": "sha256:0c10e0aacb3867dbcec5088d48dde14547c200a57cc3625a4c8e16db3ca14691",
+        "content_type": "text/html; charset=utf-8",
+        "fetch_id": "seqra04-discovery-fetch-0002",
+        "http_status": 200,
+        "latency_ms": 31,
+        "pagination_complete": true,
+        "parser_version": "seqra04_ceqr_access_discovery.v1",
+        "purpose": "home_page",
+        "raw_object_path": "warehouse/raw/seqra-ceqr-access/discovery/02_home.html",
+        "request_url_or_query": "https://a002-ceqraccess.nyc.gov/",
+        "requested_at": "2026-09-04T05:51:56.370Z",
+        "retrieved_at": "2026-09-04T05:51:56.401Z",
+        "row_or_document_count": 0,
+        "schema": "cityscroll.seqra_fetch_receipt.v1",
+        "source_id": "ceqr_access",
+        "source_vintage": "2026-09-04T05:51:56.401Z",
+        "warnings": []
+      },
+      "observation": {
+        "note": "Home page's only in-app navigation link is a relative href to \"CEQR\"; every other anchor points off-domain (nyc.gov shell chrome).",
+        "path_checked": "/",
+        "type": "unmapped_path_behavior"
+      },
+      "purpose": "home_page"
+    },
+    {
+      "fetch": {
+        "byte_count": 32714,
+        "content_hash": "sha256:2da7b181d160b68efb59182f95661e8b884c3590e66a0b141312d057e95f5b88",
+        "content_type": "text/html; charset=utf-8",
+        "fetch_id": "seqra04-discovery-fetch-0003",
+        "http_status": 200,
+        "latency_ms": 109,
+        "pagination_complete": true,
+        "parser_version": "seqra04_ceqr_access_discovery.v1",
+        "purpose": "search_page",
+        "raw_object_path": "warehouse/raw/seqra-ceqr-access/discovery/03_search_page.html",
+        "request_url_or_query": "https://a002-ceqraccess.nyc.gov/CEQR",
+        "requested_at": "2026-09-04T05:51:57.403Z",
+        "retrieved_at": "2026-09-04T05:51:57.512Z",
+        "row_or_document_count": 0,
+        "schema": "cityscroll.seqra_fetch_receipt.v1",
+        "source_id": "ceqr_access",
+        "source_vintage": "2026-09-04T05:51:57.512Z",
+        "warnings": []
+      },
+      "observation": {
+        "action": "./",
+        "input_fields": [
+          "txtKeyword",
+          "txtCeqrNumber",
+          "txtProjectName",
+          "txtBlock",
+          "txtLot"
+        ],
+        "method": "post",
+        "postback_token_fields": [
+          "__VIEWSTATE",
+          "__VIEWSTATEGENERATOR",
+          "__VIEWSTATEENCRYPTED",
+          "__EVENTVALIDATION"
+        ],
+        "requires_postback_tokens": true,
+        "select_fields": [
+          "ddlLeadAgency",
+          "ddlCommunityDistrict",
+          "ddlBorough"
+        ],
+        "submit_field": "btnSearch",
+        "type": "search_form"
+      },
+      "purpose": "search_page"
+    },
+    {
+      "fetch": {
+        "byte_count": 32770,
+        "content_hash": "sha256:2eee47836e8e73b49ea181724a3830efcb4af3a2d14b16c60691e777dad7a1ca",
+        "content_type": "text/html; charset=utf-8",
+        "fetch_id": "seqra04-discovery-fetch-0004",
+        "http_status": 200,
+        "latency_ms": 96,
+        "pagination_complete": true,
+        "parser_version": "seqra04_ceqr_access_discovery.v1",
+        "purpose": "blank_search_submission",
+        "raw_object_path": "warehouse/raw/seqra-ceqr-access/discovery/04_blank_search.html",
+        "request_url_or_query": "https://a002-ceqraccess.nyc.gov/CEQR/",
+        "requested_at": "2026-09-04T05:51:58.515Z",
+        "retrieved_at": "2026-09-04T05:51:58.611Z",
+        "row_or_document_count": 0,
+        "schema": "cityscroll.seqra_fetch_receipt.v1",
+        "source_id": "ceqr_access",
+        "source_vintage": "2026-09-04T05:51:58.611Z",
+        "warnings": []
+      },
+      "observation": {
+        "criteria_shape": "all_fields_blank",
+        "note": "A blank-criteria submission returned the same search-page shell (fresh postback tokens, no added results table), not a bulk listing.",
+        "outcome": "same_page_rerendered",
+        "result_row_count": 4,
+        "type": "search_submission"
+      },
+      "purpose": "blank_search_submission"
+    },
+    {
+      "fetch": {
+        "byte_count": null,
+        "content_hash": null,
+        "content_type": null,
+        "fetch_id": "seqra04-discovery-fetch-0005",
+        "http_status": null,
+        "latency_ms": 15004,
+        "pagination_complete": true,
+        "parser_version": "seqra04_ceqr_access_discovery.v1",
+        "purpose": "borough_wide_search_submission",
+        "raw_object_path": null,
+        "request_url_or_query": "https://a002-ceqraccess.nyc.gov/CEQR/",
+        "requested_at": "2026-09-04T05:51:59.613Z",
+        "retrieved_at": "2026-09-04T05:52:14.617Z",
+        "row_or_document_count": 0,
+        "schema": "cityscroll.seqra_fetch_receipt.v1",
+        "source_id": "ceqr_access",
+        "source_vintage": "2026-09-04T05:52:14.617Z",
+        "warnings": [
+          "request timed out after 15000ms"
+        ]
+      },
+      "observation": {
+        "criteria_shape": "borough_only_manhattan",
+        "note": "A single borough-wide (bulk-shaped) search request did not complete: request timed out after 15000ms. Per this pipeline's politeness rule it was abandoned rather than retried; a request this expansive not completing within 15000ms is itself evidence against treating wide enumeration as a supported, stable access pattern.",
+        "outcome": "timeout_or_error_abandoned_no_retry",
+        "result_row_count": null,
+        "type": "bulk_query_probe"
+      },
+      "purpose": "borough_wide_search_submission"
+    }
+  ],
+  "schema": "cityscroll.seqra_ceqr_access_discovery_receipt.v1",
+  "search_interface": {
+    "action": "./",
+    "input_fields": [
+      "txtKeyword",
+      "txtCeqrNumber",
+      "txtProjectName",
+      "txtBlock",
+      "txtLot"
+    ],
+    "method": "post",
+    "note": "A stateful postback form (VIEWSTATE/EVENTVALIDATION minted per GET, replayed on POST) is not a stable, cacheable query-string API; a fetcher built on this shape must mint its own tokens per search rather than constructing a reusable URL.",
+    "postback_token_fields": [
+      "__VIEWSTATE",
+      "__VIEWSTATEGENERATOR",
+      "__VIEWSTATEENCRYPTED",
+      "__EVENTVALIDATION"
+    ],
+    "requires_postback_tokens": true,
+    "select_fields": [
+      "ddlLeadAgency",
+      "ddlCommunityDistrict",
+      "ddlBorough"
+    ],
+    "status": "observed",
+    "submit_field": "btnSearch"
+  },
+  "source_id": "ceqr_access"
+}
