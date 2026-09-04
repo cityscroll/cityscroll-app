@@ -30,9 +30,10 @@ cards only when metrics show a real gap.
 | `fixtures/cross_spine/` | Pass/fail subject bundles |
 | `fixtures/dimensions/` | Feature / view / disagreement inventories |
 | `queue/` | Emitted-queue schema + idempotency ledger |
+| `land_use_filing.mjs` | LDP-23: land-use filing obligation, filing document, and Racial Equity Report envelope contracts, the five filing relations, and an as-of projector |
 | `index.mjs` | Package exports |
 
-Docs: [`docs/civic-graph.md`](../docs/civic-graph.md) · [`docs/multi-flywheel.md`](../docs/multi-flywheel.md) · ADR: [`docs/adr/ontology-registry-v0.md`](../docs/adr/ontology-registry-v0.md).
+Docs: [`docs/civic-graph.md`](../docs/civic-graph.md) · [`docs/multi-flywheel.md`](../docs/multi-flywheel.md) · ADR: [`docs/adr/ontology-registry-v0.md`](../docs/adr/ontology-registry-v0.md) · [`docs/adr/land-use-filing-ontology.md`](../docs/adr/land-use-filing-ontology.md).
 
 ## Verify
 
