@@ -413,6 +413,7 @@
 /site/land_phase_spine.mjs
 /site/land_procedure_facet.mjs
 /site/land_procedure_profiles.mjs
+/site/land_project_connected_calendar.mjs
 /site/land_project_decision_relations.mjs
 /site/land_project_geography.mjs
 /site/land_project_geometry.mjs
