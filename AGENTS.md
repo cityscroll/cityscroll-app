@@ -72,6 +72,10 @@ contracts. Do not turn it into a delivery log, roadmap, module inventory, or car
   simulates that combined tree ahead of the queue.
 - Add or update focused tests and fixtures beside the owning contract. Use
   [`test/`](test/) for site/tool contracts and [`worker/test/`](worker/test/) for Worker contracts.
+  A test that deliberately crosses the network to a deployed endpoint (e.g. an external live-endpoint
+  canary) must be excluded from the `test/*.test.mjs` sweep and run from its own deploy workflow step
+  instead — see [`test/live_mcp_canary.test.mjs`](test/live_mcp_canary.test.mjs)'s exclusion in
+  `ci.yml`, `preflight-required-checks.sh`, and `measure_card_profile_routing_evidence.sh`.
 - Run focused tests first. Before opening or handing off a pull request, run `make prepush` (the
   equivalent entry point is `./tools/preflight-required-checks.sh`). Use `make a11y` after
   `make setup-a11y` when the change requires the full browser/accessibility gate.

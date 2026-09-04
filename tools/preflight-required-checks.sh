@@ -272,7 +272,11 @@ run_and_fail node tools/depot_rederive.mjs --check
 run_and_fail node tools/validate_beta_flags.mjs
 run_and_fail node tools/audit-test-clocks.mjs
 run_and_fail node tools/determinism_lint.mjs --check
-run_and_fail node --test test/*.test.mjs
+# test/live_mcp_canary.test.mjs (CS-10) deliberately crosses public DNS to the
+# deployed production MCP endpoint; CS10_SKIP_LIVE_CANARY tells it to no-op
+# here so this fast local gate stays network-independent (see its own guard
+# and .github/workflows/ci.yml's matching env var).
+CS10_SKIP_LIVE_CANARY=true run_and_fail node --test test/*.test.mjs
 run_and_fail node --test test/contract/*.test.mjs
 
 run_banner "Unit tests (site + worker)" "Worker dependencies + worker unit tests" \
