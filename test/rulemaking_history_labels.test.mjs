@@ -50,6 +50,9 @@ test("approved source fields map to fixed reader labels; anything else has none"
     "publication date", "event date", "hearing date", "comment deadline", "notice publication date",
   ]);
   assert.equal(sourceFieldLabel(UNKNOWN_FIELD), null);
+  for (const field of ["constructor", "__proto__", "toString"]) {
+    assert.equal(sourceFieldLabel(field), null);
+  }
   assert.equal(sourceFieldLabel("Hearing_Date_1"), null, "no case folding or humanizing of unknown spellings");
   assert.equal(sourceFieldLabel(""), null);
   assert.equal(sourceFieldLabel(undefined), null);
@@ -86,10 +89,13 @@ test("events with an unknown or absent source field render the source label alon
   plain[0].events = [
     { event_type: "public_hearing", valid_at: "2026-04-24", source_url: RULES_URL, status: "occurred" },
     { event_type: "effective", valid_at: "2026-08-13", source_url: RULES_URL, status: "occurred", source_field: UNKNOWN_FIELD },
+    { event_type: "published", valid_at: "2026-08-14", source_url: RULES_URL, status: "occurred", source_field: "constructor" },
   ];
   const [object] = buildRulemakingObjects(plain, { now: "2026-08-27" });
   const html = renderRulemakingDocument(object);
   const metas = html.match(/<p class="rule-history-event-meta">[^]*?<\/p>/g) || [];
+  assert.match(html, /data-source-field="constructor"/);
+  assert.doesNotMatch(visibleText(html), /constructor|function|\[native code\]/);
   assert.ok(metas.length >= 2, "history event meta rendered");
   for (const meta of metas) {
     const text = visibleText(meta).replace(/\s+/g, " ").trim();

@@ -53,7 +53,7 @@ export const READER_SOURCE_FIELD_LABELS = Object.freeze({
 export function sourceFieldLabel(field) {
   const raw = clean(field);
   if (!raw) return null;
-  return READER_SOURCE_FIELD_LABELS[raw] || null;
+  return Object.hasOwn(READER_SOURCE_FIELD_LABELS, raw) ? READER_SOURCE_FIELD_LABELS[raw] : null;
 }
 
 const DEBUG_VALUE = /^(?:unavailable|not available)$/i;
