@@ -305,8 +305,8 @@
       },
       "fetches": [
         {
-          "byte_count": 55009,
-          "content_hash": "sha256:5436cc9cad836a72f5e4ed744938d41f78a0d48a9592c2f536619eb60c99c460",
+          "byte_count": 38477,
+          "content_hash": "sha256:649fd9b905a7c8e4a6d01bba932fed2ec8ddc042c7bf260ef46213d05b44d687",
           "content_type": "text/html",
           "fetch_id": "seqra07-fetch-community_board_positions-2026-09-04-sample-page-0000",
           "http_status": 200,
@@ -331,7 +331,7 @@
       },
       "row_count": 0,
       "sample_scope": true,
-      "sample_scope_note": "A single bounded, polite HTTP request against one representative Community Board's own vote-record/minutes page (no single documented interface exists across NYC's ~59 boards). The page carries dated linked vote-sheet and minutes documents (e.g. 'votereso2026-06.pdf', 'minutes2026-05.pdf'), confirmed present as structural markers; this fixture records reachability and marker presence, not a parsed resolution population.",
+      "sample_scope_note": "A single bounded, polite HTTP request against one representative Community Board's own vote-record/minutes page (no single documented interface exists across NYC's ~59 boards). The page carries dated linked vote-sheet and minutes documents (e.g. 'votereso2026-06.pdf', 'minutes2026-05.pdf'), confirmed present as structural markers; this fixture records reachability and marker presence, not a parsed resolution population. The committed raw file drops the page's <head>, top-navigation chrome, and footer script includes (a leading HTML comment in the file explains why); everything else is untouched, byte-real content from the captured page.",
       "schema": "cityscroll.seqra_institutional_signal_discovery_receipt.v1",
       "source_id": "community_board_positions",
       "source_name": "Community Board resolutions and vote records",
@@ -342,8 +342,8 @@
       "dataset_id": "dg92-zbpx",
       "fetches": [
         {
-          "byte_count": 574899,
-          "content_hash": "sha256:8de02a30c4e7553d6c7cfc7173342591d671d358ee92c2373d9a18400f476f50",
+          "byte_count": 574819,
+          "content_hash": "sha256:5d101a7b0932567bea4b2300980830e05ae2a2f3b1a0f766e3bcf6df3411b165",
           "content_type": "application/json; charset=utf-8",
           "fetch_id": "seqra07-fetch-nyc_city_record_notices-2026-09-04-sample-dataset_metadata",
           "http_status": 200,

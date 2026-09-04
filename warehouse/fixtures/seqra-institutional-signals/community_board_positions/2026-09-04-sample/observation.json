@@ -12,5 +12,5 @@
     "content_type": "text/html"
   },
   "sample_scope": true,
-  "sample_scope_note": "A single bounded, polite HTTP request against one representative Community Board's own vote-record/minutes page (no single documented interface exists across NYC's ~59 boards). The page carries dated linked vote-sheet and minutes documents (e.g. 'votereso2026-06.pdf', 'minutes2026-05.pdf'), confirmed present as structural markers; this fixture records reachability and marker presence, not a parsed resolution population."
+  "sample_scope_note": "A single bounded, polite HTTP request against one representative Community Board's own vote-record/minutes page (no single documented interface exists across NYC's ~59 boards). The page carries dated linked vote-sheet and minutes documents (e.g. 'votereso2026-06.pdf', 'minutes2026-05.pdf'), confirmed present as structural markers; this fixture records reachability and marker presence, not a parsed resolution population. The committed raw file drops the page's <head>, top-navigation chrome, and footer script includes (a leading HTML comment in the file explains why); everything else is untouched, byte-real content from the captured page."
 }
