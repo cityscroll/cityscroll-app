@@ -19,11 +19,14 @@ const pagesWorkflow = read(".github/workflows/deploy-cloudflare-pages.yml");
 const workerWorkflow = read(".github/workflows/deploy-worker.yml");
 const sharedBuild = read(".github/actions/build-site/action.yml");
 const legacyPagesWorkflow = join(root, ".github/workflows/deploy-pages.yml");
-const deployOnMainPush = (workflow, name) => {
+const deployOnMainPush = (workflow, name, { allowSchedule = false } = {}) => {
   const trigger = workflow.match(/^on:\n([\s\S]*?)\n(?=(?:permissions|concurrency|jobs):)/m)?.[1] || "";
   requireCheck(/workflow_dispatch:/.test(trigger), `${name} must retain a manual recovery trigger`);
   requireCheck(/^\s+push:\n\s+branches:\s*\[main\]/m.test(trigger), `${name} must deploy every main push`);
-  requireCheck(!/^\s+(?:pull_request|schedule):/m.test(trigger), `${name} must not deploy from pull requests or schedules`);
+  requireCheck(!/^\s+pull_request:/m.test(trigger), `${name} must not deploy from pull requests`);
+  if (!allowSchedule) {
+    requireCheck(!/^\s+schedule:/m.test(trigger), `${name} must not deploy from a schedule`);
+  }
 };
 const deployOnMainPushWithPaths = (workflow, name, paths) => {
   deployOnMainPush(workflow, name);
@@ -71,7 +74,9 @@ requireCheck(
 );
 requireCheck(!sharedBuild.includes("actions/jekyll-build-pages@"), "shared build must not depend on the Jekyll GitHub Action");
 requireCheck(sharedBuild.includes("build_cloudflare_pages.mjs"), "shared build must call the provider-neutral build script");
-deployOnMainPush(pagesWorkflow, "Cloudflare Pages workflow");
+// Pages alone also refreshes daily so the Contracts (Money) resident snapshot
+// advances without a code commit; the Worker workflow below keeps no schedule.
+deployOnMainPush(pagesWorkflow, "Cloudflare Pages workflow", { allowSchedule: true });
 deployOnMainPushWithPaths(workerWorkflow, "Worker workflow", [
   "worker/**",
   "site/following_view.mjs",

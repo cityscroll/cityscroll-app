@@ -133,11 +133,42 @@ test("production Pages deploys automatically for every main push", () => {
   const workflow = read(".github/workflows/deploy-cloudflare-pages.yml");
   assert.match(workflow, /workflow_dispatch:/);
   assert.match(workflow, /^\s+push:\n\s+branches:\s*\[main\]/m);
-  assert.doesNotMatch(workflow, /^\s+(?:pull_request|schedule):/m);
+  assert.doesNotMatch(workflow, /^\s+pull_request:/m);
   assert.match(workflow, /branch="main"/);
   assert.match(workflow, /GitHub Actions is the canonical production path/);
   assert.match(
     workflow,
     /refresh-decision-outcomes:\s*\$\{\{\s*github\.event_name\s*==\s*'push'\s*\|\|\s*inputs\.refresh_decision_outcomes\s*\}\}/,
   );
+});
+
+test("production Pages deploys on a daily schedule that refreshes Contracts before the NYC workday", () => {
+  const workflow = read(".github/workflows/deploy-cloudflare-pages.yml");
+  assert.match(workflow, /^\s+schedule:/m);
+  assert.match(workflow, /- cron:\s*"15 10 \* \* \*"/);
+  assert.match(
+    workflow,
+    /refresh-resident-snapshots:\s*\$\{\{\s*github\.event_name\s*==\s*'push'\s*\|\|\s*github\.event_name\s*==\s*'schedule'\s*\|\|\s*inputs\.refresh_resident_snapshots\s*\}\}/,
+  );
+  const action = read(".github/actions/build-site/action.yml");
+  assert.match(action, /refresh-resident-snapshots:/);
+  assert.match(action, /REFRESH_RESIDENT_SNAPSHOTS/);
+});
+
+test("Contracts resident-snapshot refresh is a separate control from the existing decision-outcomes refresh", () => {
+  const workflow = read(".github/workflows/deploy-cloudflare-pages.yml");
+  assert.match(workflow, /refresh_decision_outcomes:/);
+  assert.match(workflow, /refresh_resident_snapshots:/);
+  // The pre-existing decision-outcomes trigger keeps its exact original meaning.
+  assert.match(
+    workflow,
+    /refresh-decision-outcomes:\s*\$\{\{\s*github\.event_name\s*==\s*'push'\s*\|\|\s*inputs\.refresh_decision_outcomes\s*\}\}/,
+  );
+});
+
+test("post-deploy smoke checks the deployed Contracts snapshot freshness", () => {
+  const workflow = read(".github/workflows/deploy-cloudflare-pages.yml");
+  const smoke = workflow.slice(workflow.indexOf("smoke:"));
+  assert.match(smoke, /CROL_CONTRACTS_FRESHNESS_STRICT: "1"/);
+  assert.match(smoke, /python3 test\/functional\/48_contracts_freshness_live\.py/);
 });
