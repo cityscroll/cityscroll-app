@@ -12,6 +12,10 @@ import {
   extractSolicitationProcurementMethod,
 } from "../worker/src/lib/solicitation_procurement_method.mjs";
 import { extractNoticeFacts } from "../worker/src/lib/notice_facts.mjs";
+import {
+  deriveProcurementOpportunityWindow,
+  opportunityWindowDisplayLine,
+} from "../site/procurement_opportunity_window.mjs";
 
 const fixture = JSON.parse(
   readFileSync(
@@ -190,6 +194,66 @@ test("extractNoticeFacts nests procurement_method on structured facts", () => {
   assert.ok(Array.isArray(facts.identifiers));
   assert.equal(facts.procurement_method.section_6_129.goal_percent, 25);
   assert.equal(facts.procurement_method.response_floor.days, 27);
+});
+
+/* ===== Card 2: procurement_opportunity_window.mjs pairs with, and never
+ * alters, this module's rule-derived response floors. ===== */
+
+test("Card 2: the three preserved response-floor fixtures (default 20 / 6-129 27 / accelerated 3-business-day) pair into display copy with no compliance verdict", () => {
+  const window = deriveProcurementOpportunityWindow({
+    passport_release_date: "2026-07-01",
+    passport_due_date: "2026-08-05",
+  });
+
+  const defaultFloor = deriveResponseFloor({ is_solicitation: true });
+  assert.equal(defaultFloor.days, 20);
+  assert.equal(
+    opportunityWindowDisplayLine(window, defaultFloor),
+    "Published response window: 35 calendar days · applicable rule floor: 20 calendar days"
+  );
+
+  const section6129Floor = deriveResponseFloor({
+    section_6_129: { present: true, evidence: "Section 6-129" },
+    is_solicitation: true,
+  });
+  assert.equal(section6129Floor.days, 27);
+  assert.equal(
+    opportunityWindowDisplayLine(window, section6129Floor),
+    "Published response window: 35 calendar days · applicable rule floor: 27 calendar days"
+  );
+
+  const acceleratedFloor = deriveResponseFloor({
+    accelerated: { present: true, evidence: "Accelerated Procurement" },
+    is_solicitation: true,
+  });
+  assert.equal(acceleratedFloor.days, 3);
+  assert.equal(acceleratedFloor.day_unit, "business_days");
+  assert.equal(
+    opportunityWindowDisplayLine(window, acceleratedFloor),
+    "Published response window: 35 calendar days · applicable rule floor: 3 business days"
+  );
+});
+
+test("Card 2: an unavailable window never renders a floor comparison, even against every real-corpus response floor", () => {
+  const unavailable = deriveProcurementOpportunityWindow({});
+  for (const entry of fixture.cases) {
+    const pm = extractSolicitationProcurementMethod(entry.row);
+    const line = opportunityWindowDisplayLine(unavailable, pm.response_floor);
+    assert.equal(line, "Window unavailable");
+  }
+});
+
+test("Card 2: pairing a window with every real-corpus response floor never emits compliance-verdict language", () => {
+  const window = deriveProcurementOpportunityWindow({
+    passport_release_date: "2026-07-01",
+    passport_due_date: "2026-08-05",
+  });
+  const banned = /\b(compliant|noncompliant|suspicious|wired|preselected|fake)\b/i;
+  for (const entry of fixture.cases) {
+    const pm = extractSolicitationProcurementMethod(entry.row);
+    const line = opportunityWindowDisplayLine(window, pm.response_floor);
+    assert.doesNotMatch(line, banned);
+  }
 });
 
 test("fixture hand-check corpus covers all three response floors plus NCSP", () => {
