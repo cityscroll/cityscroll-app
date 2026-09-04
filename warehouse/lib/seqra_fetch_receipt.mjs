@@ -11,8 +11,12 @@
  *
  * Pure and IO-free: every field is supplied by the caller, who owns the
  * actual network request. `buildFetchReceipt` only validates and normalizes.
+ *
+ * `sha256Hex`/`contentHashOf` are the publisher-neutral hasher (LDP-33,
+ * warehouse/lib/document_processing.mjs) and are re-exported here so existing
+ * importers of this file are unaffected by that move.
  */
-import { createHash } from "node:crypto";
+export { sha256Hex, contentHashOf } from "./document_processing.mjs";
 
 export const SEQRA_FETCH_RECEIPT_SCHEMA = "cityscroll.seqra_fetch_receipt.v1";
 
@@ -24,15 +28,6 @@ const REQUIRED_STRING_FIELDS = [
   "retrievedAt",
   "parserVersion",
 ];
-
-export function sha256Hex(bytesOrText) {
-  const buf = typeof bytesOrText === "string" ? Buffer.from(bytesOrText, "utf8") : Buffer.from(bytesOrText);
-  return createHash("sha256").update(buf).digest("hex");
-}
-
-export function contentHashOf(bytesOrText) {
-  return `sha256:${sha256Hex(bytesOrText)}`;
-}
 
 /**
  * Build one fetch receipt. `httpStatus` may be `null` when a request never

@@ -1,6 +1,12 @@
 /**
- * SEQRA-04: document-type and supersession classification (card acceptance
- * A5 -- draft and final documents must order correctly and coexist).
+ * SEQRA-04: CEQR Access's own binding of the publisher-neutral document-type
+ * and supersession classifier (warehouse/lib/document_processing.mjs,
+ * LDP-33) to this pipeline's vocabulary (card acceptance A5 -- draft and
+ * final documents must order correctly and coexist). This module supplies
+ * the CEQR/SEQRA document-type patterns and draft/final pairing; the
+ * classification engine itself -- pattern matching, supersession-basis
+ * precedence, the never-guess default -- lives once, in the shared
+ * interface.
  *
  * Reuses `SEQRA_REVIEW_DOCUMENT_TYPES` and `SEQRA_DOCUMENT_STAGES` from the
  * SEQRA-02 ontology spec rather than declaring a second vocabulary; a
@@ -12,16 +18,20 @@
  * `ontology/land_use_filing.mjs` already states for its own supersession
  * relation: never inferred from filename or date proximity alone. A
  * candidate final document is linked to a draft only when either (a) its own
- * text explicitly names the draft it supersedes, or (b) it is the same
- * document_type as an existing, not-yet-superseded draft in the same review
- * -- the ontology's own conservative default -- and even then the basis is
- * carried on the result so a caller can distinguish the two confidence
- * levels.
+ * text explicitly names the draft it supersedes, or (b) it is the paired
+ * type of an existing, not-yet-superseded draft in the same review -- the
+ * ontology's own conservative default -- and even then the basis is carried
+ * on the result so a caller can distinguish the two confidence levels.
  */
+import {
+  classifyDocumentType as classifyDocumentTypeGeneric,
+  classifySupersession as classifySupersessionGeneric,
+  DOCUMENT_TYPE_CONFIDENCE_LEVELS,
+  SUPERSESSION_BASES,
+} from "./document_processing.mjs";
 import { SEQRA_DOCUMENT_STAGES, SEQRA_REVIEW_DOCUMENT_TYPES } from "./seqra_ontology_spec.mjs";
 
-export const DOCUMENT_TYPE_CONFIDENCE_LEVELS = Object.freeze(["high", "medium", "low", "unknown"]);
-export const SUPERSESSION_BASES = Object.freeze(["explicit_text_reference", "stage_type_pairing", "none"]);
+export { DOCUMENT_TYPE_CONFIDENCE_LEVELS, SUPERSESSION_BASES };
 
 // Ordered so a more specific pattern (e.g. "conditioned negative declaration")
 // is tested before a more general one it would otherwise be swallowed by
@@ -44,38 +54,15 @@ const DOCUMENT_TYPE_PATTERNS = Object.freeze([
   { documentType: "final_determination", stage: "final", pattern: /final\s+determination/i },
 ]);
 
-function normalizedSample(title, textSample) {
-  return `${title ?? ""} ${textSample ?? ""}`.slice(0, 4000);
-}
-
 /**
  * Classify a candidate document's type and stage from its title and (when
- * available) a text sample. Never guesses: an unmatched document returns
- * `document_type: null`, `confidence: "unknown"`, and the sample that was
- * searched, so nothing downstream can mistake silence for a positive claim.
+ * available) a text sample, against this pipeline's own CEQR/SEQRA pattern
+ * vocabulary. Never guesses: an unmatched document returns
+ * `document_type: null`, `confidence: "unknown"`, and no matched terms, so
+ * nothing downstream can mistake silence for a positive claim.
  */
 export function classifyDocumentType({ title = null, textSample = null } = {}) {
-  const haystack = normalizedSample(title, textSample);
-  for (const { documentType, stage, pattern } of DOCUMENT_TYPE_PATTERNS) {
-    const match = pattern.exec(haystack);
-    if (match) {
-      return {
-        document_type: documentType,
-        document_stage: stage,
-        confidence: title && pattern.test(title) ? "high" : "medium",
-        matched_terms: [match[0]],
-      };
-    }
-  }
-  return { document_type: null, document_stage: null, confidence: "unknown", matched_terms: [] };
-}
-
-function extractExplicitSupersessionReference(textSample) {
-  // e.g. "This Final Environmental Impact Statement supersedes the Draft
-  // Environmental Impact Statement issued on March 3, 2024."
-  const match = /supersed(?:es|ing)\s+the\s+(draft[^.]{0,120}?)(?:\s+(?:issued|dated|published)\s+on\s+([A-Za-z]+\s+\d{1,2},?\s+\d{4}))?[.,]/i.exec(String(textSample ?? ""));
-  if (!match) return null;
-  return { referenced_draft_description: match[1].trim(), referenced_draft_date_text: match[2] ?? null };
+  return classifyDocumentTypeGeneric({ title, textSample, patterns: DOCUMENT_TYPE_PATTERNS });
 }
 
 /**
@@ -101,39 +88,12 @@ const FINAL_TO_DRAFT_TYPE_PAIRING = Object.freeze({
 });
 
 export function classifySupersession({ candidate, textSample = null, existingDocumentsForReview = [] } = {}) {
-  if (candidate.document_stage !== "final") {
-    return { supersedes_document_key: null, basis: "none", confidence: "unknown", reason: "only a final-stage document can supersede a draft" };
-  }
-  const pairedDraftType = FINAL_TO_DRAFT_TYPE_PAIRING[candidate.document_type] ?? candidate.document_type;
-
-  const explicitRef = extractExplicitSupersessionReference(textSample);
-  if (explicitRef) {
-    const matchByType = existingDocumentsForReview.find(
-      (doc) => doc.document_stage === "draft" && doc.document_type === pairedDraftType && !doc.superseded_by_document_key,
-    );
-    if (matchByType) {
-      return {
-        supersedes_document_key: matchByType.document_key,
-        basis: "explicit_text_reference",
-        confidence: "high",
-        reason: `document text explicitly names the draft it supersedes ("${explicitRef.referenced_draft_description}")`,
-      };
-    }
-  }
-
-  const pairedDraft = existingDocumentsForReview
-    .filter((doc) => doc.document_stage === "draft" && doc.document_type === pairedDraftType && !doc.superseded_by_document_key)
-    .sort((a, b) => (a.issued_date < b.issued_date ? 1 : -1))[0]; // most recent unsuperseded draft of the paired type
-  if (pairedDraft) {
-    return {
-      supersedes_document_key: pairedDraft.document_key,
-      basis: "stage_type_pairing",
-      confidence: "medium",
-      reason: `most recent unsuperseded draft-stage ${pairedDraftType} in the same review`,
-    };
-  }
-
-  return { supersedes_document_key: null, basis: "none", confidence: "unknown", reason: `no unsuperseded ${pairedDraftType} draft exists in this review` };
+  return classifySupersessionGeneric({
+    candidate,
+    textSample,
+    existingDocumentsForReview,
+    pairedDraftTypeOf: (documentType) => FINAL_TO_DRAFT_TYPE_PAIRING[documentType] ?? documentType,
+  });
 }
 
 export { SEQRA_DOCUMENT_STAGES, SEQRA_REVIEW_DOCUMENT_TYPES };
