@@ -1,0 +1,206 @@
+{
+  "schema": "cityscroll.land_review_regimes.v1",
+  "registry_version": "2026-09-03.v1",
+  "registry_status": "reviewed_static",
+  "effective_from": "2025-12-02",
+  "legal_basis": [
+    {
+      "citation": "NYC Charter § 197-f",
+      "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-873"
+    },
+    {
+      "citation": "NYC Charter § 666-a",
+      "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-666a"
+    },
+    {
+      "citation": "NYC Charter § 197-g",
+      "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-6746"
+    }
+  ],
+  "regimes": [
+    {
+      "regime_id": "affordable_housing_fast_track_197f",
+      "kind": "eligibility_regime",
+      "label": "Affordable Housing Fast Track (§ 197-f)",
+      "effective_from": "2025-12-02",
+      "effective_to": null,
+      "source_status": "enacted",
+      "legal_basis": [
+        {
+          "citation": "NYC Charter § 197-f",
+          "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-873"
+        },
+        {
+          "citation": "NYC Charter § 197-e",
+          "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-873"
+        }
+      ],
+      "eligibility_fact_keys": [
+        "affordable_housing.section_197f.commission_cycle_listed",
+        "affordable_housing.section_197f.qualifying_action_code"
+      ],
+      "selects_procedure_id": "elurp_197e",
+      "entry_stage": {
+        "attaches_to": "procedure_selection",
+        "procedure_id": "elurp_197e",
+        "stage_id": "elurp_197e.application_certification"
+      },
+      "terminal_actor": {
+        "kind": "city_planning_commission",
+        "entity_ref": "agency:id:city-planning-commission",
+        "basis": "inherited_from_selected_procedure"
+      },
+      "conditional_successors": [],
+      "note": "Decorates an eligible application with a §197-f eligibility label; it selects the existing elurp_197e procedure rather than defining a parallel one."
+    },
+    {
+      "regime_id": "targeted_affordable_housing_project_666a",
+      "kind": "authority_regime",
+      "label": "Targeted Affordable Housing Project (§ 666-a)",
+      "effective_from": "2025-12-02",
+      "effective_to": null,
+      "source_status": "enacted",
+      "legal_basis": [
+        {
+          "citation": "NYC Charter § 666-a",
+          "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-666a"
+        }
+      ],
+      "eligibility_fact_keys": [
+        "affordable_housing.section_666a.hpd_sponsorship_certified",
+        "affordable_housing.section_666a.affordability_covenant_recorded"
+      ],
+      "selects_procedure_id": null,
+      "entry_stage": {
+        "attaches_to": "standalone_authority_path",
+        "stage_id": "targeted_affordable_housing_project_666a.application_filing"
+      },
+      "terminal_actor": {
+        "kind": "board_of_standards_and_appeals",
+        "entity_ref": "agency:id:board-of-standards-and-appeals",
+        "basis": "own_stage_decision_maker"
+      },
+      "conditional_successors": [],
+      "stages": [
+        {
+          "stage_id": "targeted_affordable_housing_project_666a.application_filing",
+          "actor_selector": {
+            "kind": "board_of_standards_and_appeals",
+            "source_field": "publisher.board_of_standards_and_appeals",
+            "selection": "source_explicit"
+          },
+          "role": "administrative_certifier",
+          "effect": "Receives and dockets the targeted affordable housing project application for Board review; this is a Board of Standards and Appeals authority path, not a Commission or Council stage.",
+          "permitted_actions": ["receive_application", "docket_application"],
+          "time_window": { "kind": "not_specified", "basis": "NYC Charter § 666-a" },
+          "legal_basis": [
+            {
+              "citation": "NYC Charter § 666-a(a)",
+              "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-666a"
+            }
+          ],
+          "conditional_successors": [
+            { "to_stage_id": "targeted_affordable_housing_project_666a.public_hearing", "when": null }
+          ]
+        },
+        {
+          "stage_id": "targeted_affordable_housing_project_666a.public_hearing",
+          "actor_selector": {
+            "kind": "board_of_standards_and_appeals",
+            "source_field": "publisher.board_of_standards_and_appeals",
+            "selection": "source_explicit"
+          },
+          "role": "decision_maker",
+          "effect": "Holds a public hearing and may approve, approve with conditions, or deny the targeted affordable housing project application; this decision does not pass through the City Planning Commission or City Council.",
+          "permitted_actions": ["hold_public_hearing", "approve", "approve_with_conditions", "deny"],
+          "time_window": { "kind": "not_specified", "basis": "NYC Charter § 666-a" },
+          "legal_basis": [
+            {
+              "citation": "NYC Charter § 666-a(b)",
+              "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-666a"
+            }
+          ],
+          "conditional_successors": []
+        }
+      ]
+    },
+    {
+      "regime_id": "affordable_housing_appeals_197g",
+      "kind": "appeals_regime",
+      "label": "Affordable Housing Appeals Board review (§ 197-g)",
+      "effective_from": "2025-12-02",
+      "effective_to": null,
+      "source_status": "enacted",
+      "legal_basis": [
+        {
+          "citation": "NYC Charter § 197-g",
+          "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-6746"
+        },
+        {
+          "citation": "NYC Charter § 197-d(c)",
+          "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-6746"
+        }
+      ],
+      "eligibility_fact_keys": [
+        "affordable_housing.section_197g.eligible_application_class"
+      ],
+      "selects_procedure_id": null,
+      "entry_stage": {
+        "attaches_to": "conditional_council_successor",
+        "stage_id": "affordable_housing_appeals_197g.board_review"
+      },
+      "terminal_actor": {
+        "kind": "board_of_standards_and_appeals",
+        "entity_ref": "agency:id:board-of-standards-and-appeals",
+        "basis": "own_stage_decision_maker"
+      },
+      "conditional_successors": [
+        {
+          "procedure_id": "ulurp_197c",
+          "from_stage_id": "ulurp_197c.city_council_review",
+          "to_stage_id": "affordable_housing_appeals_197g.board_review",
+          "triggering_fact": "council_disposition",
+          "qualifying_disposition_values": ["disapprove", "approve_with_modifications"],
+          "eligibility_fact": "affordable_housing.section_197g.eligible_application_class"
+        },
+        {
+          "procedure_id": "ulurp_197d_conditional_council",
+          "from_stage_id": "ulurp_197d.city_council_review",
+          "to_stage_id": "affordable_housing_appeals_197g.board_review",
+          "triggering_fact": "council_disposition",
+          "qualifying_disposition_values": ["disapprove", "approve_with_modifications"],
+          "eligibility_fact": "affordable_housing.section_197g.eligible_application_class"
+        },
+        {
+          "procedure_id": "plan_197a",
+          "from_stage_id": "plan_197a.city_council_review",
+          "to_stage_id": "affordable_housing_appeals_197g.board_review",
+          "triggering_fact": "council_disposition",
+          "qualifying_disposition_values": ["disapprove", "approve_with_modifications"],
+          "eligibility_fact": "affordable_housing.section_197g.eligible_application_class"
+        }
+      ],
+      "stages": [
+        {
+          "stage_id": "affordable_housing_appeals_197g.board_review",
+          "actor_selector": {
+            "kind": "board_of_standards_and_appeals",
+            "source_field": "publisher.board_of_standards_and_appeals",
+            "selection": "source_explicit"
+          },
+          "role": "conditional_decision_maker",
+          "effect": "Reviews a qualifying City Council disapproval or modification of an eligible affordable housing application under § 197-d(c) and may affirm, reverse, or modify that Council disposition; this stage does not replace the underlying ULURP or 197-a procedure it follows.",
+          "permitted_actions": ["hold_public_hearing", "affirm_council_disposition", "reverse_council_disposition", "modify_council_disposition"],
+          "time_window": { "kind": "not_specified", "basis": "NYC Charter § 197-g" },
+          "legal_basis": [
+            {
+              "citation": "NYC Charter § 197-g(a)",
+              "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-6746"
+            }
+          ],
+          "conditional_successors": []
+        }
+      ]
+    }
+  ]
+}
