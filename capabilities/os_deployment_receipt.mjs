@@ -150,7 +150,11 @@ export function findUnsanitizedValues(receipt) {
   const found = [];
   const visit = (node, path) => {
     if (isPlainObject(node)) {
-      for (const key of Object.keys(node)) {
+      for (const [key, child] of Object.entries(node)) {
+        // Only a string can be a credential. A numeric field is a measurement,
+        // which matters because the retention policy *requires* recording a
+        // token count — a field the name heuristic would otherwise forbid.
+        if (typeof child !== "string" || !child) continue;
         if (SECRET_KEY_SHAPE.test(key) && !NON_CREDENTIAL_FIELD_NAMES.includes(key)) {
           found.push({ path: `${path}.${key}`, reason: `credential-shaped field name: ${key}` });
         }

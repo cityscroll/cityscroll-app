@@ -367,6 +367,22 @@ test("A9: administrator identifiers and credentials are refused anywhere in the 
   assertRejects(withHeader, /bearer credential present/);
 });
 
+test("A9: a numeric measurement is not a credential, however it is named", () => {
+  // The retention policy requires a token count, so a scan that forbids every
+  // field named "token" would forbid the receipt the policy asks for. Only a
+  // string can carry a credential.
+  const counted = baseReceipt();
+  counted.agent_turn.tokens_in = 6117;
+  counted.agent_turn.tokens_out = 48;
+  assert.deepEqual(findUnsanitizedValues(counted), []);
+  assert.doesNotThrow(() => assertOsDeploymentReceipt(counted));
+
+  // A string under the same name is still refused.
+  const stringly = baseReceipt();
+  stringly.agent_turn.access_token = "aabbccddeeffgg112233445566778899";
+  assertRejects(stringly, /credential-shaped field name: access_token/);
+});
+
 test("A9: local machine paths never reach a sanitized receipt", () => {
   const withPath = baseReceipt();
   // Assembled rather than written literally: the repository rejects absolute
