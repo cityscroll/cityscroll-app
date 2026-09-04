@@ -1,0 +1,537 @@
+{
+  "checks": [
+    {
+      "name": "every registered source builds a vintage receipt from its committed fixture",
+      "result": "pass"
+    },
+    {
+      "name": "re-running a named vintage produces an identical content hash for every adapter (A1)",
+      "result": "pass"
+    },
+    {
+      "name": "every fetch carries the full required receipt shape (A2)",
+      "result": "pass"
+    },
+    {
+      "name": "a missing required SODA field fails the adapter visibly instead of silently parsing (A3)",
+      "result": "pass"
+    },
+    {
+      "name": "a truncated live paginated walk fails rather than reporting a smaller population (A3/G2)",
+      "result": "pass"
+    },
+    {
+      "name": "a complete live paginated walk reports pagination_complete on the natural short final page",
+      "result": "pass"
+    },
+    {
+      "name": "re-fetching an already-captured vintage under different bytes is refused, never silently overwritten",
+      "result": "pass"
+    },
+    {
+      "name": "a renamed ENB structural marker fails the adapter visibly instead of parsing zero notices (A3)",
+      "result": "pass"
+    },
+    {
+      "name": "resident ingestion remains disabled and every receipt records it as not committed (A5)",
+      "result": "pass"
+    },
+    {
+      "name": "existing ZAP/CEQR reconciliation output does not regress (A4)",
+      "result": "pass"
+    }
+  ],
+  "gate": {
+    "failed_check_count": 0,
+    "resident_ingestion_committed": false,
+    "result": "pass"
+  },
+  "schema": "cityscroll.seqra_structured_adapters_receipt.v1",
+  "source_count": 6,
+  "sources": {
+    "ceqr_project_milestones": {
+      "captured_at": "2026-09-04T01:49:20.000Z",
+      "dataset_id": "8fj8-3sgg",
+      "fetches": [
+        {
+          "byte_count": 11930,
+          "content_hash": "sha256:8a529daed95bddcb88980220a17348044171f1878133d7fd402c113aa1ad0096",
+          "content_type": "application/json; charset=utf-8",
+          "fetch_id": "seqra03-fetch-ceqr_project_milestones-2026-09-04-sample-dataset_metadata",
+          "http_status": 200,
+          "pagination_complete": true,
+          "parser_version": "seqra_structured_adapter.v1",
+          "raw_object_path": "warehouse/fixtures/seqra-adapters/ceqr_project_milestones/2026-09-04-sample/raw/dataset_metadata.json",
+          "request_url_or_query": "https://data.cityofnewyork.us/api/views/8fj8-3sgg",
+          "requested_at": "2026-09-04T01:49:20.000Z",
+          "retrieved_at": "2026-09-04T01:49:20.000Z",
+          "row_or_document_count": 1,
+          "schema": "cityscroll.seqra_adapter_fetch_receipt.v1",
+          "source_id": "ceqr_project_milestones",
+          "source_vintage": "2026-09-04-sample",
+          "warnings": []
+        },
+        {
+          "byte_count": 705,
+          "content_hash": "sha256:96fc0632b6699cefa207b6dbdb7fd9d83856416e426d63dd0cbdcbe5403471ac",
+          "content_type": "application/json; charset=utf-8",
+          "fetch_id": "seqra03-fetch-ceqr_project_milestones-2026-09-04-sample-page-0000",
+          "http_status": 200,
+          "pagination_complete": false,
+          "parser_version": "seqra_structured_adapter.v1",
+          "raw_object_path": "warehouse/fixtures/seqra-adapters/ceqr_project_milestones/2026-09-04-sample/raw/page-0000.json",
+          "request_url_or_query": "https://data.cityofnewyork.us/resource/8fj8-3sgg.json?$limit=5&$order=:id",
+          "requested_at": "2026-09-04T01:49:20.000Z",
+          "retrieved_at": "2026-09-04T01:49:20.000Z",
+          "row_or_document_count": 5,
+          "schema": "cityscroll.seqra_adapter_fetch_receipt.v1",
+          "source_id": "ceqr_project_milestones",
+          "source_vintage": "2026-09-04-sample",
+          "warnings": []
+        }
+      ],
+      "kind": "soda",
+      "pagination_complete": false,
+      "resident_ingestion": {
+        "committed": false,
+        "note": "Research/backtest raw retention only in this card; resident-facing ingestion is not wired and stays disabled until a later owner decision."
+      },
+      "row_count": 5,
+      "sample_scope": true,
+      "sample_scope_note": "Bounded reference sample captured by one polite, single-page live request per fetch (see request_url_or_query below), not a full-population pull. pagination_complete is derived from the actual row count against page_size and is honestly false here.",
+      "schema": "cityscroll.seqra_adapter_vintage_receipt.v1",
+      "schema_check": {
+        "drift": false,
+        "observed_fields": [
+          "ceqr",
+          "milestone_date",
+          "milestone_name",
+          "project_name"
+        ],
+        "required_fields": [
+          "ceqr",
+          "project_name",
+          "milestone_name",
+          "milestone_date"
+        ]
+      },
+      "source_id": "ceqr_project_milestones",
+      "source_name": "CEQR Project Milestones",
+      "vintage": "2026-09-04-sample"
+    },
+    "ceqr_projects": {
+      "captured_at": "2026-09-04T01:49:12.000Z",
+      "dataset_id": "gezn-7mgk",
+      "fetches": [
+        {
+          "byte_count": 19455,
+          "content_hash": "sha256:86da848078c5b32442bacea9598d4dccef7bc0b625d6efd47996da8100d3889d",
+          "content_type": "application/json; charset=utf-8",
+          "fetch_id": "seqra03-fetch-ceqr_projects-2026-09-04-sample-dataset_metadata",
+          "http_status": 200,
+          "pagination_complete": true,
+          "parser_version": "seqra_structured_adapter.v1",
+          "raw_object_path": "warehouse/fixtures/seqra-adapters/ceqr_projects/2026-09-04-sample/raw/dataset_metadata.json",
+          "request_url_or_query": "https://data.cityofnewyork.us/api/views/gezn-7mgk",
+          "requested_at": "2026-09-04T01:49:12.000Z",
+          "retrieved_at": "2026-09-04T01:49:12.000Z",
+          "row_or_document_count": 1,
+          "schema": "cityscroll.seqra_adapter_fetch_receipt.v1",
+          "source_id": "ceqr_projects",
+          "source_vintage": "2026-09-04-sample",
+          "warnings": []
+        },
+        {
+          "byte_count": 1804,
+          "content_hash": "sha256:4f9cc621f53517b4a18b299b7b72aa71534e090cda8cbe655e1187e8f363cd42",
+          "content_type": "application/json; charset=utf-8",
+          "fetch_id": "seqra03-fetch-ceqr_projects-2026-09-04-sample-page-0000",
+          "http_status": 200,
+          "pagination_complete": false,
+          "parser_version": "seqra_structured_adapter.v1",
+          "raw_object_path": "warehouse/fixtures/seqra-adapters/ceqr_projects/2026-09-04-sample/raw/page-0000.json",
+          "request_url_or_query": "https://data.cityofnewyork.us/resource/gezn-7mgk.json?$limit=5&$order=:id",
+          "requested_at": "2026-09-04T01:49:12.000Z",
+          "retrieved_at": "2026-09-04T01:49:12.000Z",
+          "row_or_document_count": 5,
+          "schema": "cityscroll.seqra_adapter_fetch_receipt.v1",
+          "source_id": "ceqr_projects",
+          "source_vintage": "2026-09-04-sample",
+          "warnings": []
+        }
+      ],
+      "kind": "soda",
+      "pagination_complete": false,
+      "resident_ingestion": {
+        "committed": false,
+        "note": "Research/backtest raw retention only in this card; resident-facing ingestion is not wired and stays disabled until a later owner decision."
+      },
+      "row_count": 5,
+      "sample_scope": true,
+      "sample_scope_note": "Bounded reference sample captured by one polite, single-page live request per fetch (see request_url_or_query below), not a full-population pull. pagination_complete is derived from the actual row count against page_size and is honestly false here.",
+      "schema": "cityscroll.seqra_adapter_vintage_receipt.v1",
+      "schema_check": {
+        "drift": false,
+        "observed_fields": [
+          "borough",
+          "ceqr",
+          "lead_agency",
+          "project_description",
+          "project_name",
+          "url"
+        ],
+        "required_fields": [
+          "ceqr",
+          "project_name",
+          "project_description",
+          "borough",
+          "lead_agency",
+          "url"
+        ]
+      },
+      "source_id": "ceqr_projects",
+      "source_name": "CEQR Projects",
+      "vintage": "2026-09-04-sample"
+    },
+    "nys_dec_dart": {
+      "captured_at": "2026-09-04T01:50:00.000Z",
+      "dataset_id": "mbk7-f2r2",
+      "fetches": [
+        {
+          "byte_count": 69143,
+          "content_hash": "sha256:2a9fdd704b2c833ebe7d741c757d8574bd3f3537647c362675dd5067d4dd424d",
+          "content_type": "application/json; charset=utf-8",
+          "fetch_id": "seqra03-fetch-nys_dec_dart-2026-09-04-sample-dataset_metadata",
+          "http_status": 200,
+          "pagination_complete": true,
+          "parser_version": "seqra_structured_adapter.v1",
+          "raw_object_path": "warehouse/fixtures/seqra-adapters/nys_dec_dart/2026-09-04-sample/raw/dataset_metadata.json",
+          "request_url_or_query": "https://data.ny.gov/api/views/mbk7-f2r2",
+          "requested_at": "2026-09-04T01:50:00.000Z",
+          "retrieved_at": "2026-09-04T01:50:00.000Z",
+          "row_or_document_count": 1,
+          "schema": "cityscroll.seqra_adapter_fetch_receipt.v1",
+          "source_id": "nys_dec_dart",
+          "source_vintage": "2026-09-04-sample",
+          "warnings": []
+        },
+        {
+          "byte_count": 3978,
+          "content_hash": "sha256:db76aabfa62f41ed1fb01de3e4c37ebebd707148b757e05de541265339741f6b",
+          "content_type": "application/json; charset=utf-8",
+          "fetch_id": "seqra03-fetch-nys_dec_dart-2026-09-04-sample-page-0000",
+          "http_status": 200,
+          "pagination_complete": false,
+          "parser_version": "seqra_structured_adapter.v1",
+          "raw_object_path": "warehouse/fixtures/seqra-adapters/nys_dec_dart/2026-09-04-sample/raw/page-0000.json",
+          "request_url_or_query": "https://data.ny.gov/resource/mbk7-f2r2.json?$limit=5&$order=:id",
+          "requested_at": "2026-09-04T01:50:00.000Z",
+          "retrieved_at": "2026-09-04T01:50:00.000Z",
+          "row_or_document_count": 5,
+          "schema": "cityscroll.seqra_adapter_fetch_receipt.v1",
+          "source_id": "nys_dec_dart",
+          "source_vintage": "2026-09-04-sample",
+          "warnings": []
+        }
+      ],
+      "kind": "soda",
+      "pagination_complete": false,
+      "resident_ingestion": {
+        "committed": false,
+        "note": "Research/backtest raw retention only in this card; resident-facing ingestion is not wired and stays disabled until a later owner decision."
+      },
+      "row_count": 5,
+      "sample_scope": true,
+      "sample_scope_note": "Bounded reference sample captured by one polite, single-page live request per fetch (see request_url_or_query below), not a full-population pull. pagination_complete is derived from the actual row count against page_size and is honestly false here.",
+      "schema": "cityscroll.seqra_adapter_vintage_receipt.v1",
+      "schema_check": {
+        "drift": false,
+        "observed_fields": [
+          "applicant",
+          "application_id",
+          "application_type",
+          "coastal_zone_status",
+          "complete_status",
+          "date_received",
+          "dec_contact",
+          "enb_publication_date",
+          "enivronmental_justice",
+          "facility",
+          "final_disposition",
+          "lead_agency",
+          "location",
+          "other_known_ids",
+          "permit_effective_date",
+          "permit_expration_date",
+          "permit_type",
+          "seqr_class",
+          "seqr_determination",
+          "short_description",
+          "shpa_status",
+          "status",
+          "stimulus_project",
+          "town_or_city",
+          "upa_class",
+          "written_comments_due"
+        ],
+        "required_fields": [
+          "application_id",
+          "date_received",
+          "lead_agency",
+          "permit_type",
+          "seqr_determination",
+          "seqr_class"
+        ]
+      },
+      "source_id": "nys_dec_dart",
+      "source_name": "NYS DEC DART (Department Application Review and Tracking)",
+      "vintage": "2026-09-04-sample"
+    },
+    "nys_dec_enb_notice_metadata": {
+      "base_url": "https://dec.ny.gov/news/environmental-notice-bulletin",
+      "captured_at": "2026-09-04T01:50:31.100Z",
+      "discovery": {
+        "malformed_row_count": 0,
+        "not_a_stable_api": true,
+        "note": "Public search page, not a documented API. Per the commission's negative rule this adapter never treats it as one: every page's notice count is checked against its own declared results range, and a mismatch fails visibly (SeqraSchemaDriftError) instead of silently parsing fewer notices.",
+        "range_end": 3,
+        "range_start": 1,
+        "row_block_count": 3,
+        "total_results": 15539
+      },
+      "fetches": [
+        {
+          "byte_count": 5931,
+          "content_hash": "sha256:92ee8255919840830c6cd6b16ff0a315cb18659ab1a91f0b37a2ab2adae31412",
+          "content_type": "text/html; charset=UTF-8",
+          "fetch_id": "seqra03-fetch-nys_dec_enb_notice_metadata-2026-09-04-sample-page-0000",
+          "http_status": 200,
+          "pagination_complete": false,
+          "parser_version": "seqra_structured_adapter.v1",
+          "raw_object_path": "warehouse/fixtures/seqra-adapters/nys_dec_enb_notice_metadata/2026-09-04-sample/raw/page-0000.html",
+          "request_url_or_query": "https://dec.ny.gov/news/environmental-notice-bulletin",
+          "requested_at": "2026-09-04T01:50:30.000Z",
+          "retrieved_at": "2026-09-04T01:50:31.100Z",
+          "row_or_document_count": 3,
+          "schema": "cityscroll.seqra_adapter_fetch_receipt.v1",
+          "source_id": "nys_dec_enb_notice_metadata",
+          "source_vintage": "2026-09-04-sample",
+          "warnings": []
+        }
+      ],
+      "kind": "html_discovery",
+      "pagination_complete": false,
+      "resident_ingestion": {
+        "committed": false,
+        "note": "Research/backtest raw retention only in this card; resident-facing ingestion is not wired and stays disabled until a later owner decision."
+      },
+      "row_count": 3,
+      "sample_scope": true,
+      "sample_scope_note": "Bounded, one-time discovery capture of the ENB listing page's default (unfiltered) view, trimmed in raw/page-0000.html to its results-summary header plus the first three real notice rows for fixture size; every retained byte is unedited publisher markup (see the leading HTML comment in that file). This is a discovery/metadata receipt, not a claim that the full 15,539-notice archive was walked -- see the adapter's kind: \"html_discovery\" negative-rule handling.",
+      "schema": "cityscroll.seqra_adapter_vintage_receipt.v1",
+      "schema_check": {
+        "drift": false,
+        "observed_fields": [
+          "title",
+          "url",
+          "publish_date",
+          "region_or_county",
+          "notice_type"
+        ],
+        "required_fields": [
+          "title",
+          "url",
+          "publish_date",
+          "region_or_county",
+          "notice_type"
+        ]
+      },
+      "source_id": "nys_dec_enb_notice_metadata",
+      "source_name": "NYS DEC Environmental Notice Bulletin (notice metadata)",
+      "vintage": "2026-09-04-sample"
+    },
+    "zap_bbl": {
+      "captured_at": "2026-09-04T01:49:30.000Z",
+      "dataset_id": "2iga-a6mk",
+      "fetches": [
+        {
+          "byte_count": 21852,
+          "content_hash": "sha256:23af7daaab1569614a569ef8119755a279ef1957b93fa38bc38bb4cb5ec0ab16",
+          "content_type": "application/json; charset=utf-8",
+          "fetch_id": "seqra03-fetch-zap_bbl-2026-09-04-sample-dataset_metadata",
+          "http_status": 200,
+          "pagination_complete": true,
+          "parser_version": "seqra_structured_adapter.v1",
+          "raw_object_path": "warehouse/fixtures/seqra-adapters/zap_bbl/2026-09-04-sample/raw/dataset_metadata.json",
+          "request_url_or_query": "https://data.cityofnewyork.us/api/views/2iga-a6mk",
+          "requested_at": "2026-09-04T01:49:30.000Z",
+          "retrieved_at": "2026-09-04T01:49:30.000Z",
+          "row_or_document_count": 1,
+          "schema": "cityscroll.seqra_adapter_fetch_receipt.v1",
+          "source_id": "zap_bbl",
+          "source_vintage": "2026-09-04-sample",
+          "warnings": []
+        },
+        {
+          "byte_count": 1317,
+          "content_hash": "sha256:9bec7f30bec3d191891ba9923e79d0d639809cb70c98dd9a0f087b05ee82d033",
+          "content_type": "application/json; charset=utf-8",
+          "fetch_id": "seqra03-fetch-zap_bbl-2026-09-04-sample-page-0000",
+          "http_status": 200,
+          "pagination_complete": false,
+          "parser_version": "seqra_structured_adapter.v1",
+          "raw_object_path": "warehouse/fixtures/seqra-adapters/zap_bbl/2026-09-04-sample/raw/page-0000.json",
+          "request_url_or_query": "https://data.cityofnewyork.us/resource/2iga-a6mk.json?$limit=5&$order=:id",
+          "requested_at": "2026-09-04T01:49:30.000Z",
+          "retrieved_at": "2026-09-04T01:49:30.000Z",
+          "row_or_document_count": 5,
+          "schema": "cityscroll.seqra_adapter_fetch_receipt.v1",
+          "source_id": "zap_bbl",
+          "source_vintage": "2026-09-04-sample",
+          "warnings": []
+        }
+      ],
+      "kind": "soda",
+      "pagination_complete": false,
+      "resident_ingestion": {
+        "committed": false,
+        "note": "Research/backtest raw retention only in this card; resident-facing ingestion is not wired and stays disabled until a later owner decision."
+      },
+      "row_count": 5,
+      "sample_scope": true,
+      "sample_scope_note": "Bounded reference sample captured by one polite, single-page live request per fetch (see request_url_or_query below), not a full-population pull. pagination_complete is derived from the actual row count against page_size and is honestly false here.",
+      "schema": "cityscroll.seqra_adapter_vintage_receipt.v1",
+      "schema_check": {
+        "drift": false,
+        "observed_fields": [
+          "bbl",
+          "project_id",
+          "unverified_block",
+          "unverified_borough",
+          "unverified_lot",
+          "validated",
+          "validated_block",
+          "validated_borough",
+          "validated_date",
+          "validated_lot"
+        ],
+        "required_fields": [
+          "project_id",
+          "bbl",
+          "validated_borough",
+          "validated_block",
+          "validated_lot",
+          "validated",
+          "validated_date"
+        ]
+      },
+      "source_id": "zap_bbl",
+      "source_name": "ZAP BBL",
+      "vintage": "2026-09-04-sample"
+    },
+    "zap_projects": {
+      "captured_at": "2026-09-04T01:49:40.000Z",
+      "dataset_id": "hgx4-8ukb",
+      "fetches": [
+        {
+          "byte_count": 56450,
+          "content_hash": "sha256:abd4a6f9e74f06e9f44393046542a83925cb7e6ade826495ca4603eb8897a4de",
+          "content_type": "application/json; charset=utf-8",
+          "fetch_id": "seqra03-fetch-zap_projects-2026-09-04-sample-dataset_metadata",
+          "http_status": 200,
+          "pagination_complete": true,
+          "parser_version": "seqra_structured_adapter.v1",
+          "raw_object_path": "warehouse/fixtures/seqra-adapters/zap_projects/2026-09-04-sample/raw/dataset_metadata.json",
+          "request_url_or_query": "https://data.cityofnewyork.us/api/views/hgx4-8ukb",
+          "requested_at": "2026-09-04T01:49:40.000Z",
+          "retrieved_at": "2026-09-04T01:49:40.000Z",
+          "row_or_document_count": 1,
+          "schema": "cityscroll.seqra_adapter_fetch_receipt.v1",
+          "source_id": "zap_projects",
+          "source_vintage": "2026-09-04-sample",
+          "warnings": []
+        },
+        {
+          "byte_count": 2341,
+          "content_hash": "sha256:1ea419f55f83df323b76d92a46e4598b6c25af4945c510c42ae1d484f2b72796",
+          "content_type": "application/json; charset=utf-8",
+          "fetch_id": "seqra03-fetch-zap_projects-2026-09-04-sample-page-0000",
+          "http_status": 200,
+          "pagination_complete": false,
+          "parser_version": "seqra_structured_adapter.v1",
+          "raw_object_path": "warehouse/fixtures/seqra-adapters/zap_projects/2026-09-04-sample/raw/page-0000.json",
+          "request_url_or_query": "https://data.cityofnewyork.us/resource/hgx4-8ukb.json?$limit=3&$order=:id&$where=ceqr_number IS NOT NULL",
+          "requested_at": "2026-09-04T01:49:40.000Z",
+          "retrieved_at": "2026-09-04T01:49:40.000Z",
+          "row_or_document_count": 3,
+          "schema": "cityscroll.seqra_adapter_fetch_receipt.v1",
+          "source_id": "zap_projects",
+          "source_vintage": "2026-09-04-sample",
+          "warnings": []
+        }
+      ],
+      "kind": "soda",
+      "pagination_complete": false,
+      "resident_ingestion": {
+        "committed": false,
+        "note": "Research/backtest raw retention only in this card; resident-facing ingestion is not wired and stays disabled until a later owner decision."
+      },
+      "row_count": 3,
+      "sample_scope": true,
+      "sample_scope_note": "Bounded reference sample captured by one polite, single-page live request per fetch (see request_url_or_query below), not a full-population pull. pagination_complete is derived from the actual row count against page_size and is honestly false here.",
+      "schema": "cityscroll.seqra_adapter_vintage_receipt.v1",
+      "schema_check": {
+        "drift": false,
+        "observed_fields": [
+          "actions",
+          "app_filed_date",
+          "applicant_type",
+          "approval_date",
+          "borough",
+          "cc_district",
+          "ceqr_leadagency",
+          "ceqr_number",
+          "ceqr_type",
+          "certified_referred",
+          "community_district",
+          "completed_date",
+          "current_envmilestone",
+          "current_envmilestone_date",
+          "current_milestone",
+          "current_milestone_date",
+          "dcp_visibility",
+          "eas_eis",
+          "flood_zone_a",
+          "flood_zone_shadedx",
+          "mih_deepaffordability",
+          "mih_flag",
+          "mih_mapped_no_res",
+          "mih_option1",
+          "mih_option2",
+          "mih_workforce",
+          "noticed_date",
+          "primary_applicant",
+          "project_brief",
+          "project_id",
+          "project_name",
+          "project_status",
+          "public_status",
+          "ulurp_non",
+          "ulurp_numbers"
+        ],
+        "required_fields": [
+          "project_id",
+          "ceqr_number",
+          "ceqr_type",
+          "ceqr_leadagency",
+          "eas_eis",
+          "current_envmilestone",
+          "current_envmilestone_date"
+        ]
+      },
+      "source_id": "zap_projects",
+      "source_name": "ZAP Projects",
+      "vintage": "2026-09-04-sample"
+    }
+  }
+}

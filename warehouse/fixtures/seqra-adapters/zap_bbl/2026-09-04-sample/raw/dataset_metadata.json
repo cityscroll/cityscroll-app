@@ -1,0 +1,773 @@
+{
+  "id" : "2iga-a6mk",
+  "name" : "Zoning Application Portal (ZAP) - BBL",
+  "assetType" : "dataset",
+  "attribution" : "Department of City Planning (DCP)",
+  "attributionLink" : "https://www.nyc.gov/content/planning/pages/resources/datasets/zoning-application-portal",
+  "averageRating" : 0,
+  "category" : "City Government",
+  "createdAt" : 1660745244,
+  "description" : "The Department of City Planning (DCP) processes land use applications submitted by City or other public agencies and other (private) applicants. This data set provides information on land use applications, specifically the project tracking and description data related to approximately 30,000 projects since the late 1970s.\n\nZAP project data appears on NYC Planning - Zoning Application Portal Search. It includes data migrated from the prior applications tracking system (LUCATS) and covers all projects that have been \"Noticed\" (that they will appear before the City Planning Commission in 30 or more days for Certification as complete for the ULURP process to begin) or Filed (a CEQR or Land Use application has been formally submitted to the Department for review) through completion (approval, disapproval, withdrawal, or termination). For more information on the land use and environmental review application process see: <a href=\"https://www1.nyc.gov/site/planning/applicants/applicant-portal/application-process.page\">Application Process Overview</a>\n\nYou can explore this data in the <a href=\"https://zap.planning.nyc.gov/projects\">Zoning Application Portal</a>\n\nTo report data errors or for questions, email <a href=\"mailto:zap_feedback_dl@planning.nyc.gov\">zap_feedback_dl@planning.nyc.gov</a>.\n\nAll previously released versions of this data are available on the <a href=\"https://www.nyc.gov/content/planning/pages/resources/datasets/zoning-application-portal\">DCP Website: BYTES of the BIG APPLE</a>. Current version: 20260706",
+  "diciBackend" : false,
+  "displayType" : "table",
+  "downloadCount" : 2403,
+  "hideFromCatalog" : false,
+  "hideFromDataJson" : false,
+  "locked" : false,
+  "newBackend" : true,
+  "numberOfComments" : 0,
+  "oid" : 38805833,
+  "provenance" : "official",
+  "publicationAppendEnabled" : false,
+  "publicationDate" : 1661186211,
+  "publicationGroup" : 18819780,
+  "publicationStage" : "published",
+  "rowsUpdatedAt" : 1786545921,
+  "rowsUpdatedBy" : "iqqb-gm94",
+  "tableId" : 18844322,
+  "totalTimesRated" : 0,
+  "viewCount" : 6535,
+  "viewLastModified" : 1786545907,
+  "viewType" : "tabular",
+  "approvals" : [ {
+    "reviewedAt" : 1667233009,
+    "reviewedAutomatically" : false,
+    "state" : "approved",
+    "submissionId" : 5065786,
+    "submissionObject" : "public_audience_request",
+    "submissionOutcome" : "change_audience",
+    "submittedAt" : 1667232990,
+    "targetAudience" : "public",
+    "workflowId" : 2285,
+    "reviewer" : {
+      "id" : "d5dp-fses",
+      "displayName" : "afinkel"
+    },
+    "submissionDetails" : {
+      "permissionType" : "read"
+    },
+    "submissionOutcomeApplication" : {
+      "endedAt" : 1667233009,
+      "failureCount" : 0,
+      "startedAt" : 1667233009,
+      "status" : "success"
+    },
+    "submitter" : {
+      "id" : "d5dp-fses",
+      "displayName" : "afinkel"
+    }
+  } ],
+  "clientContext" : {
+    "clientContextVariables" : [ ],
+    "inheritedVariables" : { }
+  },
+  "columns" : [ {
+    "id" : 564901632,
+    "name" : "project_id",
+    "dataTypeName" : "text",
+    "description" : "Unique internal application identifier",
+    "fieldName" : "project_id",
+    "position" : 1,
+    "renderTypeName" : "text",
+    "tableColumnId" : 143341873,
+    "cachedContents" : {
+      "non_null" : "132090",
+      "largest" : "P2018X0337",
+      "null" : "0",
+      "top" : [ {
+        "item" : "2020R0189",
+        "count" : "39682"
+      }, {
+        "item" : "2019K0199",
+        "count" : "10923"
+      }, {
+        "item" : "2023Q0381",
+        "count" : "2993"
+      }, {
+        "item" : "2024Q0254",
+        "count" : "2432"
+      }, {
+        "item" : "2020M0408",
+        "count" : "2171"
+      }, {
+        "item" : "2018K0367",
+        "count" : "2070"
+      }, {
+        "item" : "2021M0260",
+        "count" : "1966"
+      }, {
+        "item" : "2022M0219",
+        "count" : "1764"
+      }, {
+        "item" : "2018Q0377",
+        "count" : "1086"
+      }, {
+        "item" : "2018K0382",
+        "count" : "858"
+      }, {
+        "item" : "P2017M0088",
+        "count" : "854"
+      }, {
+        "item" : "2018M0375",
+        "count" : "844"
+      }, {
+        "item" : "2024M0142",
+        "count" : "636"
+      }, {
+        "item" : "P2016M0065",
+        "count" : "563"
+      }, {
+        "item" : "P2015K0524",
+        "count" : "488"
+      }, {
+        "item" : "P2015K0246",
+        "count" : "479"
+      }, {
+        "item" : "P2016Q0268",
+        "count" : "475"
+      }, {
+        "item" : "P2016K0439",
+        "count" : "427"
+      }, {
+        "item" : "P2016M0316",
+        "count" : "415"
+      }, {
+        "item" : "P2012Q0513",
+        "count" : "412"
+      } ],
+      "smallest" : "2018K03531",
+      "count" : "132090",
+      "cardinality" : "132090"
+    },
+    "format" : { }
+  }, {
+    "id" : 564901633,
+    "name" : "bbl",
+    "dataTypeName" : "number",
+    "description" : "Borough, block and lot number of a tax lot associated to the application. This field consists of the borough code, followed by the tax block, followed by the tax lot. The borough code is one numeric digit. The tax block is one to five numeric digits, preceded with leading zeros when the block is less than five digits. The tax lot is one to four digits and is preceded with leading zeros when the lot is less than four digits. This was validated by Geosupport.",
+    "fieldName" : "bbl",
+    "position" : 2,
+    "renderTypeName" : "number",
+    "tableColumnId" : 143341872,
+    "cachedContents" : {
+      "non_null" : "130941",
+      "largest" : "5800030071",
+      "null" : "1149",
+      "top" : [ {
+        "item" : "4000827501",
+        "count" : "240"
+      }, {
+        "item" : "4000727501",
+        "count" : "185"
+      }, {
+        "item" : "4002687501",
+        "count" : "172"
+      }, {
+        "item" : "4004387501",
+        "count" : "153"
+      }, {
+        "item" : "4000787502",
+        "count" : "109"
+      }, {
+        "item" : "4002677503",
+        "count" : "107"
+      }, {
+        "item" : "4002677501",
+        "count" : "92"
+      }, {
+        "item" : "4000817501",
+        "count" : "87"
+      }, {
+        "item" : "4000577501",
+        "count" : "85"
+      }, {
+        "item" : "5000000000",
+        "count" : "84"
+      }, {
+        "item" : "4000567502",
+        "count" : "80"
+      }, {
+        "item" : "4000527503",
+        "count" : "77"
+      }, {
+        "item" : "4000407501",
+        "count" : "67"
+      }, {
+        "item" : "4000427501",
+        "count" : "44"
+      }, {
+        "item" : "4004297502",
+        "count" : "41"
+      }, {
+        "item" : "1014320021",
+        "count" : "39"
+      }, {
+        "item" : "4000417501",
+        "count" : "34"
+      }, {
+        "item" : "1011170001",
+        "count" : "31"
+      }, {
+        "item" : "1011490031",
+        "count" : "28"
+      }, {
+        "item" : "4000787501",
+        "count" : "25"
+      } ],
+      "smallest" : "1000000000",
+      "count" : "132090",
+      "cardinality" : "132090"
+    },
+    "format" : {
+      "noCommas" : "true"
+    }
+  }, {
+    "id" : 564901634,
+    "name" : "validated_borough",
+    "dataTypeName" : "text",
+    "description" : "Borough of a tax lot associated to the application. This was validated by Geosupport. See validated field description for more details.",
+    "fieldName" : "validated_borough",
+    "position" : 3,
+    "renderTypeName" : "text",
+    "tableColumnId" : 143341871,
+    "cachedContents" : {
+      "non_null" : "131804",
+      "largest" : "Staten Island",
+      "null" : "286",
+      "top" : [ {
+        "item" : "Staten Island",
+        "count" : "56216"
+      }, {
+        "item" : "Brooklyn",
+        "count" : "27908"
+      }, {
+        "item" : "Manhattan",
+        "count" : "27011"
+      }, {
+        "item" : "Queens",
+        "count" : "14797"
+      }, {
+        "item" : "Bronx",
+        "count" : "5872"
+      } ],
+      "smallest" : "Bronx",
+      "count" : "132090",
+      "cardinality" : "132090"
+    },
+    "format" : { }
+  }, {
+    "id" : 564901635,
+    "name" : "validated_block",
+    "dataTypeName" : "number",
+    "description" : "Block number of a tax lot associated to the application. This was validated by Geosupport. See validated field description for more details.",
+    "fieldName" : "validated_block",
+    "position" : 4,
+    "renderTypeName" : "number",
+    "tableColumnId" : 143341870,
+    "cachedContents" : {
+      "non_null" : "131804",
+      "largest" : "80003",
+      "null" : "286",
+      "top" : [ {
+        "item" : "859",
+        "count" : "455"
+      }, {
+        "item" : "610",
+        "count" : "388"
+      }, {
+        "item" : "612",
+        "count" : "362"
+      }, {
+        "item" : "6662",
+        "count" : "313"
+      }, {
+        "item" : "4478",
+        "count" : "311"
+      }, {
+        "item" : "7356",
+        "count" : "302"
+      }, {
+        "item" : "6022",
+        "count" : "295"
+      }, {
+        "item" : "1287",
+        "count" : "288"
+      }, {
+        "item" : "7267",
+        "count" : "284"
+      }, {
+        "item" : "4500",
+        "count" : "283"
+      }, {
+        "item" : "800",
+        "count" : "264"
+      }, {
+        "item" : "5743",
+        "count" : "263"
+      }, {
+        "item" : "1303",
+        "count" : "249"
+      }, {
+        "item" : "82",
+        "count" : "241"
+      }, {
+        "item" : "590",
+        "count" : "234"
+      }, {
+        "item" : "72",
+        "count" : "232"
+      }, {
+        "item" : "6023",
+        "count" : "232"
+      }, {
+        "item" : "5741",
+        "count" : "231"
+      }, {
+        "item" : "6018",
+        "count" : "230"
+      }, {
+        "item" : "849",
+        "count" : "223"
+      } ],
+      "smallest" : "0",
+      "count" : "132090",
+      "cardinality" : "132090"
+    },
+    "format" : {
+      "noCommas" : "true"
+    }
+  }, {
+    "id" : 564901636,
+    "name" : "validated_lot",
+    "dataTypeName" : "number",
+    "description" : "Tax lot number of a tax lot associated to the application. This was validated by Geosupport. See validated field description for more details.",
+    "fieldName" : "validated_lot",
+    "position" : 5,
+    "renderTypeName" : "number",
+    "tableColumnId" : 143341869,
+    "cachedContents" : {
+      "non_null" : "131804",
+      "largest" : "9999",
+      "null" : "286",
+      "top" : [ {
+        "item" : "1",
+        "count" : "6796"
+      }, {
+        "item" : "7501",
+        "count" : "2807"
+      }, {
+        "item" : "0",
+        "count" : "2661"
+      }, {
+        "item" : "7",
+        "count" : "1639"
+      }, {
+        "item" : "30",
+        "count" : "1631"
+      }, {
+        "item" : "25",
+        "count" : "1626"
+      }, {
+        "item" : "23",
+        "count" : "1615"
+      }, {
+        "item" : "5",
+        "count" : "1608"
+      }, {
+        "item" : "20",
+        "count" : "1607"
+      }, {
+        "item" : "21",
+        "count" : "1591"
+      }, {
+        "item" : "29",
+        "count" : "1585"
+      }, {
+        "item" : "6",
+        "count" : "1571"
+      }, {
+        "item" : "16",
+        "count" : "1570"
+      }, {
+        "item" : "10",
+        "count" : "1561"
+      }, {
+        "item" : "15",
+        "count" : "1541"
+      }, {
+        "item" : "28",
+        "count" : "1523"
+      }, {
+        "item" : "3",
+        "count" : "1492"
+      }, {
+        "item" : "11",
+        "count" : "1489"
+      }, {
+        "item" : "12",
+        "count" : "1485"
+      }, {
+        "item" : "35",
+        "count" : "1466"
+      } ],
+      "smallest" : "0",
+      "count" : "132090",
+      "cardinality" : "132090"
+    },
+    "format" : {
+      "noCommas" : "true"
+    }
+  }, {
+    "id" : 564901642,
+    "name" : "validated",
+    "dataTypeName" : "text",
+    "description" : "Flag that indicates whether the BBL or address data was validated against Geosupport. Geosupport is a geocoding tool that allows for the standardization, validation and processing of geographic locations throughout New York City.",
+    "fieldName" : "validated",
+    "position" : 6,
+    "renderTypeName" : "text",
+    "tableColumnId" : 143394345,
+    "cachedContents" : {
+      "non_null" : "83022",
+      "largest" : "true",
+      "null" : "49068",
+      "top" : [ {
+        "item" : "true",
+        "count" : "81029"
+      }, {
+        "item" : "false",
+        "count" : "1993"
+      } ],
+      "smallest" : "false",
+      "count" : "132090",
+      "cardinality" : "132090"
+    },
+    "format" : { }
+  }, {
+    "id" : 564901638,
+    "name" : "validated_date",
+    "dataTypeName" : "calendar_date",
+    "description" : "Date the Geosupport validation was run.",
+    "fieldName" : "validated_date",
+    "position" : 7,
+    "renderTypeName" : "calendar_date",
+    "tableColumnId" : 143341867,
+    "cachedContents" : {
+      "non_null" : "131227",
+      "largest" : "2026-06-24T21:15:35.000",
+      "null" : "863",
+      "top" : [ {
+        "item" : "2018-04-10T04:00:00.000",
+        "count" : "50198"
+      }, {
+        "item" : "2023-04-09T04:00:00.000",
+        "count" : "39249"
+      }, {
+        "item" : "2025-07-28T18:04:21.000",
+        "count" : "12"
+      }, {
+        "item" : "2021-03-04T02:44:28.000",
+        "count" : "8"
+      }, {
+        "item" : "2026-01-29T18:34:47.000",
+        "count" : "7"
+      }, {
+        "item" : "2025-07-28T18:04:23.000",
+        "count" : "7"
+      }, {
+        "item" : "2021-07-01T23:26:27.000",
+        "count" : "7"
+      }, {
+        "item" : "2021-04-01T15:02:46.000",
+        "count" : "6"
+      }, {
+        "item" : "2021-03-16T16:12:36.000",
+        "count" : "6"
+      }, {
+        "item" : "2021-04-22T15:18:45.000",
+        "count" : "6"
+      }, {
+        "item" : "2021-03-04T02:44:26.000",
+        "count" : "5"
+      }, {
+        "item" : "2023-06-16T19:47:16.000",
+        "count" : "5"
+      }, {
+        "item" : "2020-09-03T15:42:32.000",
+        "count" : "5"
+      }, {
+        "item" : "2021-07-01T23:26:28.000",
+        "count" : "5"
+      }, {
+        "item" : "2022-07-12T03:06:17.000",
+        "count" : "5"
+      }, {
+        "item" : "2021-02-01T22:56:13.000",
+        "count" : "5"
+      }, {
+        "item" : "2021-03-16T16:12:34.000",
+        "count" : "5"
+      }, {
+        "item" : "2021-05-10T19:33:20.000",
+        "count" : "5"
+      }, {
+        "item" : "2021-03-16T16:12:35.000",
+        "count" : "5"
+      }, {
+        "item" : "2025-05-01T15:07:23.000",
+        "count" : "5"
+      } ],
+      "smallest" : "2018-04-10T04:00:00.000",
+      "count" : "132090",
+      "cardinality" : "132090"
+    },
+    "format" : {
+      "view" : "date"
+    }
+  }, {
+    "id" : 564901639,
+    "name" : "unverified_borough",
+    "dataTypeName" : "text",
+    "description" : "Borough of a tax lot associated to the application. This data was manually entered by a user. If validated_borough field is blank then there was not a matching record in Geosupport. See validated field description for more details.",
+    "fieldName" : "unverified_borough",
+    "position" : 8,
+    "renderTypeName" : "text",
+    "tableColumnId" : 143341866,
+    "cachedContents" : {
+      "non_null" : "131948",
+      "largest" : "Staten Island",
+      "null" : "142",
+      "top" : [ {
+        "item" : "Staten Island",
+        "count" : "56174"
+      }, {
+        "item" : "Brooklyn",
+        "count" : "28004"
+      }, {
+        "item" : "Manhattan",
+        "count" : "27067"
+      }, {
+        "item" : "Queens",
+        "count" : "14846"
+      }, {
+        "item" : "Bronx",
+        "count" : "5857"
+      } ],
+      "smallest" : "Bronx",
+      "count" : "132090",
+      "cardinality" : "132090"
+    },
+    "format" : { }
+  }, {
+    "id" : 564901640,
+    "name" : "unverified_block",
+    "dataTypeName" : "number",
+    "description" : "Block number of a tax lot associated to the application. This data was manually entered by a user. If validated_block field is blank then there was not a matching record in Geosupport. See validated field description for more details.",
+    "fieldName" : "unverified_block",
+    "position" : 9,
+    "renderTypeName" : "number",
+    "tableColumnId" : 143341865,
+    "cachedContents" : {
+      "non_null" : "129962",
+      "largest" : "89560",
+      "null" : "2128",
+      "top" : [ {
+        "item" : "859",
+        "count" : "455"
+      }, {
+        "item" : "610",
+        "count" : "391"
+      }, {
+        "item" : "612",
+        "count" : "361"
+      }, {
+        "item" : "6662",
+        "count" : "315"
+      }, {
+        "item" : "4478",
+        "count" : "311"
+      }, {
+        "item" : "7356",
+        "count" : "301"
+      }, {
+        "item" : "6022",
+        "count" : "295"
+      }, {
+        "item" : "1287",
+        "count" : "286"
+      }, {
+        "item" : "7267",
+        "count" : "284"
+      }, {
+        "item" : "4500",
+        "count" : "281"
+      }, {
+        "item" : "800",
+        "count" : "264"
+      }, {
+        "item" : "5743",
+        "count" : "263"
+      }, {
+        "item" : "1303",
+        "count" : "246"
+      }, {
+        "item" : "82",
+        "count" : "241"
+      }, {
+        "item" : "6023",
+        "count" : "232"
+      }, {
+        "item" : "72",
+        "count" : "232"
+      }, {
+        "item" : "590",
+        "count" : "231"
+      }, {
+        "item" : "5741",
+        "count" : "231"
+      }, {
+        "item" : "6018",
+        "count" : "230"
+      }, {
+        "item" : "849",
+        "count" : "219"
+      } ],
+      "smallest" : "0",
+      "count" : "132090",
+      "cardinality" : "132090"
+    },
+    "format" : {
+      "noCommas" : "true",
+      "align" : "left"
+    }
+  }, {
+    "id" : 564901641,
+    "name" : "unverified_lot",
+    "dataTypeName" : "number",
+    "description" : "Tax lot number of a tax lot associated to the application. This data was manually entered by a user. If validated_lot field is blank then there was not a matching record in Geosupport. See validated field description for more details.",
+    "fieldName" : "unverified_lot",
+    "position" : 10,
+    "renderTypeName" : "number",
+    "tableColumnId" : 143341864,
+    "cachedContents" : {
+      "non_null" : "127361",
+      "largest" : "9999",
+      "null" : "4729",
+      "top" : [ {
+        "item" : "1",
+        "count" : "6774"
+      }, {
+        "item" : "7",
+        "count" : "1637"
+      }, {
+        "item" : "30",
+        "count" : "1631"
+      }, {
+        "item" : "5",
+        "count" : "1628"
+      }, {
+        "item" : "25",
+        "count" : "1628"
+      }, {
+        "item" : "23",
+        "count" : "1624"
+      }, {
+        "item" : "20",
+        "count" : "1587"
+      }, {
+        "item" : "29",
+        "count" : "1584"
+      }, {
+        "item" : "21",
+        "count" : "1566"
+      }, {
+        "item" : "16",
+        "count" : "1564"
+      }, {
+        "item" : "10",
+        "count" : "1557"
+      }, {
+        "item" : "6",
+        "count" : "1556"
+      }, {
+        "item" : "15",
+        "count" : "1545"
+      }, {
+        "item" : "28",
+        "count" : "1505"
+      }, {
+        "item" : "11",
+        "count" : "1486"
+      }, {
+        "item" : "12",
+        "count" : "1484"
+      }, {
+        "item" : "3",
+        "count" : "1478"
+      }, {
+        "item" : "35",
+        "count" : "1473"
+      }, {
+        "item" : "33",
+        "count" : "1468"
+      }, {
+        "item" : "14",
+        "count" : "1452"
+      } ],
+      "smallest" : "1",
+      "count" : "132090",
+      "cardinality" : "132090"
+    },
+    "format" : {
+      "noCommas" : "true"
+    }
+  } ],
+  "grants" : [ {
+    "inherited" : false,
+    "type" : "viewer",
+    "flags" : [ "public" ]
+  } ],
+  "metadata" : {
+    "attachments" : [ {
+      "filename" : "zapprojects_datadictionary.xlsx",
+      "assetId" : "e4f08266-f20e-4e25-ac52-f15512cd5000",
+      "name" : "zapprojects_datadictionary.xlsx"
+    } ],
+    "custom_fields" : {
+      "Update" : {
+        "Automation" : "Yes",
+        "Date Made Public" : "9/13/2021",
+        "Update Frequency" : "Monthly",
+        "Data Change Frequency" : "Monthly"
+      },
+      "Dataset Information" : {
+        "Agency" : "Department of City Planning (DCP)"
+      }
+    },
+    "rowLabel" : "tax lot associated to a project in the Zoning Application Portal (ZAP)",
+    "availableDisplayTypes" : [ "table", "fatrow", "page" ]
+  },
+  "owner" : {
+    "id" : "5fuc-pqz2",
+    "displayName" : "NYC OpenData",
+    "profileImageUrlLarge" : "/api/users/5fuc-pqz2/profile_images/LARGE",
+    "profileImageUrlMedium" : "/api/users/5fuc-pqz2/profile_images/THUMB",
+    "profileImageUrlSmall" : "/api/users/5fuc-pqz2/profile_images/TINY",
+    "screenName" : "NYC OpenData",
+    "type" : "interactive",
+    "flags" : [ "acceptedEula", "mayBeStoriesCoOwner" ]
+  },
+  "query" : { },
+  "rights" : [ "read" ],
+  "tableAuthor" : {
+    "id" : "5fuc-pqz2",
+    "displayName" : "NYC OpenData",
+    "profileImageUrlLarge" : "/api/users/5fuc-pqz2/profile_images/LARGE",
+    "profileImageUrlMedium" : "/api/users/5fuc-pqz2/profile_images/THUMB",
+    "profileImageUrlSmall" : "/api/users/5fuc-pqz2/profile_images/TINY",
+    "screenName" : "NYC OpenData",
+    "type" : "interactive",
+    "flags" : [ "acceptedEula", "mayBeStoriesCoOwner" ]
+  },
+  "tags" : [ "zap", "zoning application portal", "land use", "applications", "ulurp", "public review", "project data", "ceqr", "mih", "affordable housing", "borough", "block", "lot", "bbl", "department of city planning", "dcp" ],
+  "flags" : [ "default", "ownerMayBeContacted", "restorable", "restorePossibleForType" ]
+}

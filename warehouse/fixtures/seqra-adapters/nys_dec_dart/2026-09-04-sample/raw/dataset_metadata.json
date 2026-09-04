@@ -1,0 +1,1837 @@
+{
+  "id" : "mbk7-f2r2",
+  "name" : "DART (Department Application Review and Tracking) on the Web: Beginning 1988",
+  "assetType" : "dataset",
+  "attribution" : "Department of Environmental Conservation",
+  "attributionLink" : "https://appfactory.dec.ny.gov/dartsearch/",
+  "averageRating" : 0,
+  "category" : "Energy & Environment",
+  "createdAt" : 1420754120,
+  "description" : "Tabular Data for Permits administered by the Agency in which the general public can use a web interface to look up specific facilities and applications.",
+  "diciBackend" : false,
+  "displayType" : "table",
+  "downloadCount" : 6552,
+  "hideFromCatalog" : false,
+  "hideFromDataJson" : false,
+  "locked" : false,
+  "newBackend" : true,
+  "numberOfComments" : 0,
+  "oid" : 35870267,
+  "provenance" : "official",
+  "publicationAppendEnabled" : false,
+  "publicationDate" : 1606553307,
+  "publicationGroup" : 2081080,
+  "publicationStage" : "published",
+  "rowsUpdatedAt" : 1788255121,
+  "rowsUpdatedBy" : "xzik-pf59",
+  "tableId" : 17820514,
+  "totalTimesRated" : 0,
+  "viewCount" : 7622,
+  "viewLastModified" : 1788254983,
+  "viewType" : "tabular",
+  "approvals" : [ {
+    "reviewedAt" : 1561069409,
+    "reviewedAutomatically" : true,
+    "state" : "approved",
+    "submissionId" : 2964426,
+    "submissionObject" : "public_audience_request",
+    "submissionOutcome" : "change_audience",
+    "submittedAt" : 1561069409,
+    "targetAudience" : "public",
+    "workflowId" : 2254,
+    "submissionDetails" : {
+      "permissionType" : "READ"
+    },
+    "submissionOutcomeApplication" : {
+      "failureCount" : 0,
+      "status" : "success"
+    },
+    "submitter" : {
+      "id" : "xzik-pf59",
+      "displayName" : "NY Open Data"
+    }
+  } ],
+  "clientContext" : {
+    "clientContextVariables" : [ ],
+    "inheritedVariables" : { }
+  },
+  "columns" : [ {
+    "id" : 511459670,
+    "name" : "Application ID",
+    "dataTypeName" : "text",
+    "description" : "The application ID is a 15-digit number that is parsed between the 1st and 2nd digits, the 5th and 6th digits, and the 10th and 11th digits. The first digit indicates the DEC region in which the regulated activity is located. A zero indicates it is in 2 or more regions. The first 10 digits represent the DEC ID.",
+    "fieldName" : "application_id",
+    "position" : 1,
+    "renderTypeName" : "text",
+    "tableColumnId" : 123525960,
+    "width" : 195,
+    "cachedContents" : {
+      "non_null" : "495140",
+      "largest" : "9-9909-00150/00002",
+      "null" : "0",
+      "top" : [ {
+        "item" : "9-2934-00022/00097",
+        "count" : "235"
+      }, {
+        "item" : "8-2614-00205/01785",
+        "count" : "69"
+      }, {
+        "item" : "3-3300-00006/00001",
+        "count" : "59"
+      }, {
+        "item" : "8-2614-00205/01767",
+        "count" : "57"
+      }, {
+        "item" : "0-9999-00031/00002",
+        "count" : "54"
+      }, {
+        "item" : "4-3838-00066/00001",
+        "count" : "53"
+      }, {
+        "item" : "3-9903-00102/00002",
+        "count" : "41"
+      }, {
+        "item" : "3-4800-00014/00001",
+        "count" : "40"
+      }, {
+        "item" : "4-0103-00016/00016",
+        "count" : "40"
+      }, {
+        "item" : "9-2934-00022/00036",
+        "count" : "37"
+      }, {
+        "item" : "4-0126-00167/00001",
+        "count" : "37"
+      }, {
+        "item" : "8-4624-00019/00001",
+        "count" : "36"
+      }, {
+        "item" : "8-5434-00010/00003",
+        "count" : "35"
+      }, {
+        "item" : "5-4154-00002/00357",
+        "count" : "35"
+      }, {
+        "item" : "1-4799-00080/00001",
+        "count" : "35"
+      }, {
+        "item" : "5-4148-00035/00002",
+        "count" : "33"
+      }, {
+        "item" : "3-3920-00691/00001",
+        "count" : "33"
+      }, {
+        "item" : "8-2420-00020/00001",
+        "count" : "33"
+      }, {
+        "item" : "7-5007-00012/00001",
+        "count" : "30"
+      }, {
+        "item" : "1-4799-00080/00004",
+        "count" : "30"
+      } ],
+      "smallest" : "0-0000-01040/00001",
+      "count" : "495140",
+      "cardinality" : "495140"
+    },
+    "format" : {
+      "precisionStyle" : "standard",
+      "noCommas" : "true",
+      "align" : "center"
+    }
+  }, {
+    "id" : 511459671,
+    "name" : "Facility",
+    "dataTypeName" : "text",
+    "description" : "A facility is a property or location under the control of a single legally responsible party.\nFacilities may be composed of multiple contiguous parcels.",
+    "fieldName" : "facility",
+    "position" : 2,
+    "renderTypeName" : "text",
+    "tableColumnId" : 23868282,
+    "width" : 350,
+    "cachedContents" : {
+      "non_null" : "495140",
+      "largest" : "ZYSKOWSKI PROPERTY",
+      "null" : "0",
+      "top" : [ {
+        "item" : "STREAM CROSSING GENERAL PERMIT",
+        "count" : "3557"
+      }, {
+        "item" : "MOMENTIVE PERFORMANCE MATERIALS",
+        "count" : "2204"
+      }, {
+        "item" : "EASTMAN BUSINESS PARK",
+        "count" : "1707"
+      }, {
+        "item" : "XEROX CORPORATION - WILSON CENTER",
+        "count" : "1180"
+      }, {
+        "item" : "SABIC Selkirk",
+        "count" : "850"
+      }, {
+        "item" : "OnSemi East Fishkill Facility",
+        "count" : "725"
+      }, {
+        "item" : "ALL STREAMS IN TOWN",
+        "count" : "708"
+      }, {
+        "item" : "DEC/MUNICIPALITIES/MOU",
+        "count" : "707"
+      }, {
+        "item" : "ALL COUNTY ROADS AND BRIDGES",
+        "count" : "558"
+      }, {
+        "item" : "LOCKHEED MARTIN MISSION SYSTEMS AND TRAINING",
+        "count" : "554"
+      }, {
+        "item" : "PEARL RIVER CAMPUS LLC",
+        "count" : "541"
+      }, {
+        "item" : "SMITH PROPERTY",
+        "count" : "539"
+      }, {
+        "item" : "CWM CHEMICAL SERVICES - MODEL CITY SITE",
+        "count" : "537"
+      }, {
+        "item" : "ALL STREAMS (GENERAL PERMIT)",
+        "count" : "502"
+      }, {
+        "item" : "GM COMPONENTS HOLDINGS LLC - LOCKPORT",
+        "count" : "497"
+      }, {
+        "item" : "Arconic US LLC",
+        "count" : "467"
+      }, {
+        "item" : "TITANX ENGINE COOLING INC",
+        "count" : "437"
+      }, {
+        "item" : "SI GROUP INC - ROTTERDAM JUNCTION FACILITY",
+        "count" : "399"
+      }, {
+        "item" : "KODAK ELMGROVE PLANT-APPARATUS DIVISION",
+        "count" : "379"
+      }, {
+        "item" : "CHEMOURS NIAGARA",
+        "count" : "375"
+      } ],
+      "smallest" : "06-030 MOBIL OIL CORP.",
+      "count" : "495140",
+      "cardinality" : "495140"
+    },
+    "format" : {
+      "align" : "left"
+    }
+  }, {
+    "id" : 511459672,
+    "name" : "Location",
+    "dataTypeName" : "text",
+    "description" : "Physical address of the facility or a description of its location.",
+    "fieldName" : "location",
+    "position" : 3,
+    "renderTypeName" : "text",
+    "tableColumnId" : 23868283,
+    "width" : 367,
+    "cachedContents" : {
+      "non_null" : "495140",
+      "largest" : "ZURICH ROAD SODUS 14551",
+      "null" : "0",
+      "top" : [ {
+        "item" : "MULTIPLE RIVERS AND BROOKS REGION-WIDE 12817",
+        "count" : "3648"
+      }, {
+        "item" : "260 HUDSON RIVER RD Waterford 12188",
+        "count" : "2204"
+      }, {
+        "item" : "1999 LAKE AVE|  Rochester 14652",
+        "count" : "1707"
+      }, {
+        "item" : "800 PHILLIPS RD WEBSTER 14580",
+        "count" : "1180"
+      }, {
+        "item" : "1 NORYL AVE Bethlehem 12158",
+        "count" : "850"
+      }, {
+        "item" : "2070 ST RTE 52|HUDSON VALLEY RESEARCH PARK HOPEWELL JUNCTION 12533",
+        "count" : "727"
+      }, {
+        "item" : "MULTIPLE RIVERS STREAMS BROOKS ETC REGION-WIDE 12817",
+        "count" : "707"
+      }, {
+        "item" : "ALL COUNTY ROADS AND BRIDGES COUNTY-WIDE",
+        "count" : "558"
+      }, {
+        "item" : "1801 St Rte 17c, 1801 St Rte 17C Owego 13827",
+        "count" : "554"
+      }, {
+        "item" : "401 N MIDDLETOWN RD PEARL RIVER 10965",
+        "count" : "541"
+      }, {
+        "item" : "1550 BALMER RD MODEL CITY 14107",
+        "count" : "537"
+      }, {
+        "item" : "200 UPPER MOUNTAIN RD Lockport(c) 14094",
+        "count" : "497"
+      }, {
+        "item" : "45 Co Rte 42 Massena 13662",
+        "count" : "467"
+      }, {
+        "item" : "2258 ALLEN ST JAMESTOWN 14701",
+        "count" : "437"
+      }, {
+        "item" : "1000 MAIN ST (ST RTE 5S) ROTTERDAM JUNCTION 12150",
+        "count" : "399"
+      }, {
+        "item" : "901 ELMGROVE RD ROCHESTER 14624",
+        "count" : "379"
+      }, {
+        "item" : "BUFFALO AVE & 26TH ST NIAGARA FALLS 14302",
+        "count" : "375"
+      }, {
+        "item" : "381 UPPER BROADWAY FORT EDWARD 12828",
+        "count" : "358"
+      }, {
+        "item" : "FORT DRUM Antwerp;champion;diana;fowler;le Ray;philadelphia;wilna 13602",
+        "count" : "355"
+      }, {
+        "item" : "REGION-WIDE REGION-WIDE 12817",
+        "count" : "348"
+      } ],
+      "smallest" : "______________________ ______________",
+      "count" : "495140",
+      "cardinality" : "495140"
+    },
+    "format" : {
+      "align" : "left"
+    }
+  }, {
+    "id" : 511459673,
+    "name" : "Town or City",
+    "dataTypeName" : "text",
+    "description" : "This is the municipality that the facility is located in.",
+    "fieldName" : "town_or_city",
+    "position" : 4,
+    "renderTypeName" : "text",
+    "tableColumnId" : 23868284,
+    "width" : 180,
+    "cachedContents" : {
+      "non_null" : "482942",
+      "largest" : "YORKTOWN",
+      "null" : "12198",
+      "top" : [ {
+        "item" : "SOUTHAMPTON",
+        "count" : "22375"
+      }, {
+        "item" : "HEMPSTEAD",
+        "count" : "16459"
+      }, {
+        "item" : "BROOKHAVEN",
+        "count" : "13999"
+      }, {
+        "item" : "ISLIP",
+        "count" : "13252"
+      }, {
+        "item" : "SOUTHOLD",
+        "count" : "11773"
+      }, {
+        "item" : "BABYLON",
+        "count" : "10006"
+      }, {
+        "item" : "QUEENS",
+        "count" : "7811"
+      }, {
+        "item" : "OYSTER BAY",
+        "count" : "7173"
+      }, {
+        "item" : "BROOKLYN",
+        "count" : "6166"
+      }, {
+        "item" : "EAST HAMPTON",
+        "count" : "6082"
+      }, {
+        "item" : "ROCHESTER",
+        "count" : "5377"
+      }, {
+        "item" : "HUNTINGTON",
+        "count" : "4716"
+      }, {
+        "item" : "STATEN ISLAND",
+        "count" : "4599"
+      }, {
+        "item" : "SMITHTOWN",
+        "count" : "3687"
+      }, {
+        "item" : "RIVERHEAD",
+        "count" : "3529"
+      }, {
+        "item" : "BUFFALO",
+        "count" : "2891"
+      }, {
+        "item" : "BRONX",
+        "count" : "2782"
+      }, {
+        "item" : "MANHATTAN",
+        "count" : "2749"
+      }, {
+        "item" : "NORTH HEMPSTEAD",
+        "count" : "2703"
+      }, {
+        "item" : "SHELTER ISLAND",
+        "count" : "2700"
+      } ],
+      "smallest" : "ADAMS",
+      "count" : "495140",
+      "cardinality" : "495140"
+    },
+    "format" : {
+      "align" : "center"
+    }
+  }, {
+    "id" : 511459674,
+    "name" : "Applicant",
+    "dataTypeName" : "text",
+    "description" : "This is the entity that is legally responsible for making applications and if a permit is issued, for the ensuring that the conditions of permit are followed.",
+    "fieldName" : "applicant",
+    "position" : 5,
+    "renderTypeName" : "text",
+    "tableColumnId" : 23868285,
+    "width" : 274,
+    "cachedContents" : {
+      "non_null" : "495140",
+      "largest" : "ZWEIGLES INC",
+      "null" : "0",
+      "top" : [ {
+        "item" : "NYS Dept of Environmental Conservation",
+        "count" : "7914"
+      }, {
+        "item" : "NYS Dept of Transportation",
+        "count" : "4222"
+      }, {
+        "item" : "GENERAL ELECTRIC COMPANY",
+        "count" : "3850"
+      }, {
+        "item" : "NYC DEPT OF ENVIRONMENTAL PROTECTION",
+        "count" : "2548"
+      }, {
+        "item" : "SUFFOLK COUNTY",
+        "count" : "2314"
+      }, {
+        "item" : "EASTMAN KODAK COMPANY",
+        "count" : "2185"
+      }, {
+        "item" : "NYS OFFICE OF PARKS RECREATION & HISTORIC PRESERVATION",
+        "count" : "2142"
+      }, {
+        "item" : "INTERNATIONAL BUSINESS MACHINES CORPORATION",
+        "count" : "1539"
+      }, {
+        "item" : "NYC DEPT OF PARKS & RECREATION",
+        "count" : "1537"
+      }, {
+        "item" : "US DEPT OF THE ARMY",
+        "count" : "1389"
+      }, {
+        "item" : "LOCKHEED MARTIN CORPORATION",
+        "count" : "1298"
+      }, {
+        "item" : "XEROX CORPORATION",
+        "count" : "1284"
+      }, {
+        "item" : "SUFFOLK COUNTY WATER AUTHORITY",
+        "count" : "1282"
+      }, {
+        "item" : "MOTORS LIQUIDATION COMPANY",
+        "count" : "1235"
+      }, {
+        "item" : "NATIONAL GRID USA SERVICE COMPANY, INC.",
+        "count" : "1218"
+      }, {
+        "item" : "NYC ECONOMIC DEVELOPMENT CORP",
+        "count" : "1187"
+      }, {
+        "item" : "TOWN OF BROOKHAVEN",
+        "count" : "1099"
+      }, {
+        "item" : "ERIE COUNTY",
+        "count" : "1029"
+      }, {
+        "item" : "DELAWARE COUNTY",
+        "count" : "954"
+      }, {
+        "item" : "CATTARAUGUS COUNTY",
+        "count" : "877"
+      } ],
+      "smallest" : "10001 GRAND CORP",
+      "count" : "495140",
+      "cardinality" : "495140"
+    },
+    "format" : {
+      "align" : "left"
+    }
+  }, {
+    "id" : 511459675,
+    "name" : "Permit Type",
+    "dataTypeName" : "text",
+    "description" : "The permit type represents Regulatory Jurisdiction triggered by the type of activity being undertaken. A given action may have one or more permit types associated with it. Over time some permit types have become inactive as statutes or regulations have changed. Current Permit types are listed at http://www.dec.ny.gov/permits/6081.html\nAquatic Pesticide Permits are non –UPA permits and are only tracked in DART\nwhen associated with a Tidal or Freshwater Wetland Permit type or when occurring in the Adirondack Park.",
+    "fieldName" : "permit_type",
+    "position" : 6,
+    "renderTypeName" : "text",
+    "tableColumnId" : 23868286,
+    "width" : 232,
+    "cachedContents" : {
+      "non_null" : "495140",
+      "largest" : "Wild, Scenic & Recreational Rivers",
+      "null" : "0",
+      "top" : [ {
+        "item" : "Water Quality Certification",
+        "count" : "92757"
+      }, {
+        "item" : "Excavation & Fill in Navigable Waters",
+        "count" : "70854"
+      }, {
+        "item" : "Tidal Wetlands",
+        "count" : "55913"
+      }, {
+        "item" : "Stream Disturbance",
+        "count" : "49210"
+      }, {
+        "item" : "Process, Exhaust, Ventilation (Operate)",
+        "count" : "48361"
+      }, {
+        "item" : "Freshwater Wetlands",
+        "count" : "41048"
+      }, {
+        "item" : "Mined Land Reclamation",
+        "count" : "19896"
+      }, {
+        "item" : "P/C/I SPDES- Groundwater Discharge",
+        "count" : "16818"
+      }, {
+        "item" : "Process, Exhaust, Ventilation (Construct)",
+        "count" : "14942"
+      }, {
+        "item" : "Industrial SPDES - Surface Discharge",
+        "count" : "12416"
+      }, {
+        "item" : "P/C/I SPDES - Surface Discharge",
+        "count" : "10153"
+      }, {
+        "item" : "Solid Waste Transporter",
+        "count" : "8070"
+      }, {
+        "item" : "Municipal SPDES - Surface Discharge",
+        "count" : "5774"
+      }, {
+        "item" : "Solid Waste Management",
+        "count" : "4971"
+      }, {
+        "item" : "Coastal Erosion Management",
+        "count" : "4707"
+      }, {
+        "item" : "Air State Facility",
+        "count" : "4385"
+      }, {
+        "item" : "Water Withdrawal Public",
+        "count" : "4050"
+      }, {
+        "item" : "Air Title V Facility",
+        "count" : "3175"
+      }, {
+        "item" : "Long Island Well",
+        "count" : "3166"
+      }, {
+        "item" : "Stationary Combustion (Operate)",
+        "count" : "2680"
+      } ],
+      "smallest" : "Air State Facility",
+      "count" : "495140",
+      "cardinality" : "495140"
+    },
+    "format" : {
+      "align" : "left"
+    }
+  }, {
+    "id" : 511459676,
+    "name" : "Application Type",
+    "dataTypeName" : "text",
+    "description" : "When the department sees a proposed activity for the first time it is NEW application. Once the permit is issued, following applications may be Renewals or Modifications. Application Type defines how the department is processing an application. In cases involving substantial modifications to a project, DEC may decide that a renewal, modification or Department Initiated Modification (DIM) will be treated as a new application.",
+    "fieldName" : "application_type",
+    "position" : 7,
+    "renderTypeName" : "text",
+    "tableColumnId" : 23868287,
+    "width" : 292,
+    "cachedContents" : {
+      "non_null" : "495140",
+      "largest" : "Renewal Treat as New",
+      "null" : "0",
+      "top" : [ {
+        "item" : "New",
+        "count" : "330136"
+      }, {
+        "item" : "Renewal",
+        "count" : "76076"
+      }, {
+        "item" : "Modification",
+        "count" : "62040"
+      }, {
+        "item" : "Renewal Treat as New",
+        "count" : "14525"
+      }, {
+        "item" : "Re-issuance",
+        "count" : "5557"
+      }, {
+        "item" : "Modification Treat as New",
+        "count" : "4307"
+      }, {
+        "item" : "DIM Treat as New",
+        "count" : "886"
+      }, {
+        "item" : "Minor Modification",
+        "count" : "811"
+      }, {
+        "item" : "Department Initiated Modification",
+        "count" : "700"
+      }, {
+        "item" : "Administrative Amendment",
+        "count" : "93"
+      }, {
+        "item" : "Conceptual Review",
+        "count" : "7"
+      }, {
+        "item" : "Department Initiated Revocation",
+        "count" : "2"
+      } ],
+      "smallest" : "Administrative Amendment",
+      "count" : "495140",
+      "cardinality" : "495140"
+    },
+    "format" : {
+      "align" : "center"
+    }
+  }, {
+    "id" : 511459677,
+    "name" : "Date Received",
+    "dataTypeName" : "calendar_date",
+    "description" : "Usually this is the date the permit application is received. There are two exceptions. For pre- applications this is the date the first material is received from the project sponsor. In the case of department-initiated actions, it is the date that the department mails the notice informing the permittee of an action.",
+    "fieldName" : "date_received",
+    "position" : 8,
+    "renderTypeName" : "calendar_date",
+    "tableColumnId" : 23868288,
+    "width" : 183,
+    "cachedContents" : {
+      "non_null" : "495128",
+      "largest" : "2026-08-27T00:00:00.000",
+      "null" : "12",
+      "top" : [ {
+        "item" : "2015-05-11T00:00:00.000",
+        "count" : "2102"
+      }, {
+        "item" : "1995-05-31T00:00:00.000",
+        "count" : "492"
+      }, {
+        "item" : "1994-09-12T00:00:00.000",
+        "count" : "345"
+      }, {
+        "item" : "1992-11-18T00:00:00.000",
+        "count" : "266"
+      }, {
+        "item" : "1993-11-15T00:00:00.000",
+        "count" : "258"
+      }, {
+        "item" : "1990-03-09T00:00:00.000",
+        "count" : "249"
+      }, {
+        "item" : "1994-08-29T00:00:00.000",
+        "count" : "245"
+      }, {
+        "item" : "1994-08-30T00:00:00.000",
+        "count" : "245"
+      }, {
+        "item" : "1996-05-14T00:00:00.000",
+        "count" : "239"
+      }, {
+        "item" : "1993-05-05T00:00:00.000",
+        "count" : "238"
+      }, {
+        "item" : "1995-12-07T00:00:00.000",
+        "count" : "230"
+      }, {
+        "item" : "1990-03-16T00:00:00.000",
+        "count" : "219"
+      }, {
+        "item" : "1992-12-21T00:00:00.000",
+        "count" : "214"
+      }, {
+        "item" : "1993-07-15T00:00:00.000",
+        "count" : "213"
+      }, {
+        "item" : "1992-12-23T00:00:00.000",
+        "count" : "211"
+      }, {
+        "item" : "1994-05-27T00:00:00.000",
+        "count" : "208"
+      }, {
+        "item" : "1996-05-02T00:00:00.000",
+        "count" : "206"
+      }, {
+        "item" : "1994-05-03T00:00:00.000",
+        "count" : "201"
+      }, {
+        "item" : "1993-03-24T00:00:00.000",
+        "count" : "199"
+      }, {
+        "item" : "1993-05-20T00:00:00.000",
+        "count" : "198"
+      } ],
+      "smallest" : "0011-09-28T00:00:00.000",
+      "count" : "495140",
+      "cardinality" : "495140"
+    },
+    "format" : {
+      "view" : "date",
+      "align" : "center"
+    }
+  }, {
+    "id" : 511459678,
+    "name" : "Status",
+    "dataTypeName" : "text",
+    "description" : "This is the current status of the application. Possible Application Status include: Completeness Determination Due, Incomplete, Complete, Written Comments Due, Suspended, Hearing Decision Due, Final Decision Due, Issued, Denied and Expired. Renewal applications for operational type permits that are timely and sufficient may also be SAPA extended, which allows the facility to continue to operate under the previous permit until a final decision is made on the renewal.",
+    "fieldName" : "status",
+    "position" : 9,
+    "renderTypeName" : "text",
+    "tableColumnId" : 23868289,
+    "width" : 139,
+    "cachedContents" : {
+      "non_null" : "495140",
+      "largest" : "Written Comments Deadline",
+      "null" : "0",
+      "top" : [ {
+        "item" : "Expired",
+        "count" : "420015"
+      }, {
+        "item" : "Issued",
+        "count" : "46930"
+      }, {
+        "item" : "No Jurisdiction",
+        "count" : "9414"
+      }, {
+        "item" : "Withdrawn by Applicant",
+        "count" : "5391"
+      }, {
+        "item" : "SAPA Extended",
+        "count" : "2517"
+      }, {
+        "item" : "Denied",
+        "count" : "1961"
+      }, {
+        "item" : "New Application Needed",
+        "count" : "1666"
+      }, {
+        "item" : "Discontinued",
+        "count" : "1448"
+      }, {
+        "item" : "Insufficient Information",
+        "count" : "993"
+      }, {
+        "item" : "Withdrawn for Incompleteness",
+        "count" : "866"
+      }, {
+        "item" : "Final Decision Due",
+        "count" : "815"
+      }, {
+        "item" : "Blanket Approval",
+        "count" : "758"
+      }, {
+        "item" : "Completeness Determination Due",
+        "count" : "306"
+      }, {
+        "item" : "Incomplete",
+        "count" : "295"
+      }, {
+        "item" : "Review Refused",
+        "count" : "280"
+      }, {
+        "item" : "Incomplete for 1 Year",
+        "count" : "268"
+      }, {
+        "item" : "Suspended Indefinitely",
+        "count" : "260"
+      }, {
+        "item" : "Unknown",
+        "count" : "236"
+      }, {
+        "item" : "Modify Permit",
+        "count" : "229"
+      }, {
+        "item" : "Extended Indefinitely",
+        "count" : "118"
+      } ],
+      "smallest" : "Blanket Approval",
+      "count" : "495140",
+      "cardinality" : "495140"
+    },
+    "format" : {
+      "align" : "center"
+    }
+  }, {
+    "id" : 511459679,
+    "name" : "Complete Status",
+    "dataTypeName" : "text",
+    "description" : "This field can be blank, Incomplete, or Complete. If blank, completeness has not been determined or is not necessary. If Incomplete, the application is missing information needed to process it. If Complete, the permit application provides enough information for technical review to commence. In the case of federally- delegated permits (State Pollutant Discharge Elimination System permits, Air Title V, and Resource Conservation and Recovery Act permits), it means that a draft permit has been prepared. ",
+    "fieldName" : "complete_status",
+    "position" : 10,
+    "renderTypeName" : "text",
+    "tableColumnId" : 23868290,
+    "width" : 182,
+    "cachedContents" : {
+      "non_null" : "387857",
+      "largest" : "Incomplete",
+      "null" : "107283",
+      "top" : [ {
+        "item" : "Complete",
+        "count" : "367375"
+      }, {
+        "item" : "Incomplete",
+        "count" : "20482"
+      } ],
+      "smallest" : "Complete",
+      "count" : "495140",
+      "cardinality" : "495140"
+    },
+    "format" : {
+      "align" : "center"
+    }
+  }, {
+    "id" : 511459680,
+    "name" : "UPA Class",
+    "dataTypeName" : "text",
+    "description" : "UPA stands for Uniform Procedures Act.   This statute and implementing regulations set procedures that the department is to follow in the processing of permit applications. There are two classes: Major and Minor. These are specifically defined in the implementing regulations, but generally minor projects are those which by their nature are not likely to have a significant effect on the environment. ",
+    "fieldName" : "upa_class",
+    "position" : 11,
+    "renderTypeName" : "text",
+    "tableColumnId" : 23868291,
+    "width" : 147,
+    "cachedContents" : {
+      "non_null" : "447555",
+      "largest" : "MINOR",
+      "null" : "47585",
+      "top" : [ {
+        "item" : "MINOR",
+        "count" : "378823"
+      }, {
+        "item" : "MAJOR",
+        "count" : "68732"
+      } ],
+      "smallest" : "MAJOR",
+      "count" : "495140",
+      "cardinality" : "495140"
+    },
+    "format" : {
+      "align" : "center"
+    }
+  }, {
+    "id" : 511459681,
+    "name" : "Short Description",
+    "dataTypeName" : "text",
+    "description" : "This is a preliminary description entered when the application is first received.",
+    "fieldName" : "short_description",
+    "position" : 12,
+    "renderTypeName" : "text",
+    "tableColumnId" : 23868292,
+    "width" : 360,
+    "cachedContents" : {
+      "non_null" : "490682",
+      "largest" : "ZYLINSKY CLAY MINE MLR #9043-06-0511",
+      "null" : "4458",
+      "top" : [ {
+        "item" : "2015 P/C/I GP renewal in accordance with 750-1.21(d)(2)",
+        "count" : "2060"
+      }, {
+        "item" : "Renewal",
+        "count" : "1406"
+      }, {
+        "item" : "permit transfer",
+        "count" : "1192"
+      }, {
+        "item" : "RENEW PERMIT",
+        "count" : "1149"
+      }, {
+        "item" : "AIR RECERTS",
+        "count" : "1098"
+      }, {
+        "item" : "RENEW RECERTS",
+        "count" : "1080"
+      }, {
+        "item" : "AIR RECERT",
+        "count" : "890"
+      }, {
+        "item" : "RENEWAL",
+        "count" : "870"
+      }, {
+        "item" : "renewal",
+        "count" : "775"
+      }, {
+        "item" : "Stabilize shoreline due to high water and wave action",
+        "count" : "745"
+      }, {
+        "item" : "permit renewal",
+        "count" : "722"
+      }, {
+        "item" : "permit extension",
+        "count" : "707"
+      }, {
+        "item" : "EXTEND PERMIT",
+        "count" : "651"
+      }, {
+        "item" : "Renewal of Permit",
+        "count" : "550"
+      }, {
+        "item" : "extension request",
+        "count" : "514"
+      }, {
+        "item" : "renew permit",
+        "count" : "514"
+      }, {
+        "item" : "EP 00001",
+        "count" : "456"
+      }, {
+        "item" : "PERMIT TRANSFER",
+        "count" : "414"
+      }, {
+        "item" : "1 CERT TO OPERATE FOR 5 YEARS",
+        "count" : "403"
+      }, {
+        "item" : "PERMIT EXTENSION REQUEST",
+        "count" : "388"
+      } ],
+      "smallest" : ",,,",
+      "count" : "495140",
+      "cardinality" : "495140"
+    },
+    "format" : {
+      "align" : "left"
+    }
+  }, {
+    "id" : 511459682,
+    "name" : "ENB Publication Date",
+    "dataTypeName" : "calendar_date",
+    "description" : "ENB stands for Environmental Notice Bulletin.\nThis is where Notices of Complete Application are published. If a particular application has been published in an ENB after 11/09/1999, then a link will be provided to the electronic Notice of Complete Application.",
+    "fieldName" : "enb_publication_date",
+    "position" : 13,
+    "renderTypeName" : "calendar_date",
+    "tableColumnId" : 23868293,
+    "width" : 207,
+    "cachedContents" : {
+      "non_null" : "77109",
+      "largest" : "2026-09-09T00:00:00.000",
+      "null" : "418031",
+      "top" : [ {
+        "item" : "1995-09-27T00:00:00.000",
+        "count" : "96"
+      }, {
+        "item" : "1996-06-05T00:00:00.000",
+        "count" : "95"
+      }, {
+        "item" : "2000-06-21T00:00:00.000",
+        "count" : "92"
+      }, {
+        "item" : "2000-10-25T00:00:00.000",
+        "count" : "91"
+      }, {
+        "item" : "1991-10-09T00:00:00.000",
+        "count" : "88"
+      }, {
+        "item" : "2000-08-16T00:00:00.000",
+        "count" : "88"
+      }, {
+        "item" : "1996-10-09T00:00:00.000",
+        "count" : "86"
+      }, {
+        "item" : "2008-05-14T00:00:00.000",
+        "count" : "85"
+      }, {
+        "item" : "2000-07-19T00:00:00.000",
+        "count" : "83"
+      }, {
+        "item" : "2005-05-18T00:00:00.000",
+        "count" : "81"
+      }, {
+        "item" : "1995-10-25T00:00:00.000",
+        "count" : "80"
+      }, {
+        "item" : "1997-05-07T00:00:00.000",
+        "count" : "79"
+      }, {
+        "item" : "1995-11-22T00:00:00.000",
+        "count" : "79"
+      }, {
+        "item" : "2001-02-14T00:00:00.000",
+        "count" : "79"
+      }, {
+        "item" : "1992-06-17T00:00:00.000",
+        "count" : "77"
+      }, {
+        "item" : "2015-06-03T00:00:00.000",
+        "count" : "77"
+      }, {
+        "item" : "1998-11-18T00:00:00.000",
+        "count" : "76"
+      }, {
+        "item" : "1999-06-30T00:00:00.000",
+        "count" : "76"
+      }, {
+        "item" : "1995-05-10T00:00:00.000",
+        "count" : "75"
+      }, {
+        "item" : "1999-07-21T00:00:00.000",
+        "count" : "75"
+      } ],
+      "smallest" : "1901-01-01T00:00:00.000",
+      "count" : "495140",
+      "cardinality" : "495140"
+    },
+    "format" : {
+      "view" : "date",
+      "align" : "center"
+    }
+  }, {
+    "id" : 511459683,
+    "name" : "Written Comments Due",
+    "dataTypeName" : "calendar_date",
+    "description" : "This is the date by which written comments on an application must be received.",
+    "fieldName" : "written_comments_due",
+    "position" : 14,
+    "renderTypeName" : "calendar_date",
+    "tableColumnId" : 23868294,
+    "width" : 207,
+    "cachedContents" : {
+      "non_null" : "75838",
+      "largest" : "2026-10-09T00:00:00.000",
+      "null" : "419302",
+      "top" : [ {
+        "item" : "2000-11-10T00:00:00.000",
+        "count" : "110"
+      }, {
+        "item" : "1996-07-05T00:00:00.000",
+        "count" : "78"
+      }, {
+        "item" : "2000-08-04T00:00:00.000",
+        "count" : "75"
+      }, {
+        "item" : "2000-09-15T00:00:00.000",
+        "count" : "73"
+      }, {
+        "item" : "1991-11-08T00:00:00.000",
+        "count" : "69"
+      }, {
+        "item" : "2001-03-02T00:00:00.000",
+        "count" : "68"
+      }, {
+        "item" : "1995-10-27T00:00:00.000",
+        "count" : "68"
+      }, {
+        "item" : "2000-05-05T00:00:00.000",
+        "count" : "66"
+      }, {
+        "item" : "1998-07-31T00:00:00.000",
+        "count" : "65"
+      }, {
+        "item" : "2000-07-21T00:00:00.000",
+        "count" : "64"
+      }, {
+        "item" : "2002-10-11T00:00:00.000",
+        "count" : "63"
+      }, {
+        "item" : "2000-05-19T00:00:00.000",
+        "count" : "62"
+      }, {
+        "item" : "2000-10-27T00:00:00.000",
+        "count" : "62"
+      }, {
+        "item" : "1998-12-18T00:00:00.000",
+        "count" : "61"
+      }, {
+        "item" : "1996-10-25T00:00:00.000",
+        "count" : "61"
+      }, {
+        "item" : "2001-09-14T00:00:00.000",
+        "count" : "60"
+      }, {
+        "item" : "2004-05-21T00:00:00.000",
+        "count" : "60"
+      }, {
+        "item" : "1999-07-16T00:00:00.000",
+        "count" : "60"
+      }, {
+        "item" : "2001-09-21T00:00:00.000",
+        "count" : "60"
+      }, {
+        "item" : "1999-07-30T00:00:00.000",
+        "count" : "59"
+      } ],
+      "smallest" : "1911-11-26T00:00:00.000",
+      "count" : "495140",
+      "cardinality" : "495140"
+    },
+    "format" : {
+      "view" : "date",
+      "align" : "center"
+    }
+  }, {
+    "id" : 511459684,
+    "name" : "SEQR Class",
+    "dataTypeName" : "text",
+    "description" : "SEQR stands for State Environmental Quality\nReview Act. There are three classes: Type I, Type II, and Unlisted. Type II Actions are not subject to the procedural requirements of SEQR. There were two other classes of actions and these may show on older records: Exempt and Excluded. Like Type II Actions, these are also not subject to the procedural requirements of SEQR.",
+    "fieldName" : "seqr_class",
+    "position" : 15,
+    "renderTypeName" : "text",
+    "tableColumnId" : 23868295,
+    "width" : 154,
+    "cachedContents" : {
+      "non_null" : "495140",
+      "largest" : "Unlisted Action",
+      "null" : "0",
+      "top" : [ {
+        "item" : "Type II Action",
+        "count" : "350772"
+      }, {
+        "item" : "Unlisted Action",
+        "count" : "122095"
+      }, {
+        "item" : "Type I Action",
+        "count" : "12781"
+      }, {
+        "item" : "Exempt Action",
+        "count" : "6197"
+      }, {
+        "item" : "Excluded Action",
+        "count" : "3167"
+      }, {
+        "item" : "SEQR is preempted by federal law",
+        "count" : "128"
+      } ],
+      "smallest" : "Excluded Action",
+      "count" : "495140",
+      "cardinality" : "495140"
+    },
+    "format" : {
+      "align" : "center"
+    }
+  }, {
+    "id" : 511459685,
+    "name" : "SEQR Determination",
+    "dataTypeName" : "text",
+    "description" : "SEQR stands for State Environmental Quality Review Act. There are four (4) possible determinations: Not Applicable, Negative Declaration, Conditioned Negative Declaration, and Positive Declaration. A Negative Declaration is one where the Lead Agency has determined that the project will not have a significant adverse impact on the environment. A Conditioned Negative Declaration is one where one or more significant adverse impacts may occur however mitigation measures have been identified and required by the Lead Agency to modify the proposed action. A Positive Declaration is one where the Lead Agency has determined that the project may have a significant adverse impact on the environment. In such as case an Environmental Impact Statement is required.",
+    "fieldName" : "seqr_determination",
+    "position" : 16,
+    "renderTypeName" : "text",
+    "tableColumnId" : 23868296,
+    "width" : 201,
+    "cachedContents" : {
+      "non_null" : "495140",
+      "largest" : "Positive Declaration",
+      "null" : "0",
+      "top" : [ {
+        "item" : "Not Applicable",
+        "count" : "359911"
+      }, {
+        "item" : "Negative Declaration",
+        "count" : "131684"
+      }, {
+        "item" : "Positive Declaration",
+        "count" : "3460"
+      }, {
+        "item" : "Conditioned Negative Declaration",
+        "count" : "85"
+      } ],
+      "smallest" : "Conditioned Negative Declaration",
+      "count" : "495140",
+      "cardinality" : "495140"
+    },
+    "format" : {
+      "align" : "center"
+    }
+  }, {
+    "id" : 511459686,
+    "name" : "Lead Agency",
+    "dataTypeName" : "text",
+    "description" : "The lead agency is chosen from the involved agencies. These are agencies that are either undertaking an action, funding an action, or have approval authority for an action. The lead agency makes the SEQR determination and prepares the Negative or Positive Declaration. Where a Positive Declaration is prepared, it is also the job of the lead agency to manage the Environmental Impact\nStatement process.",
+    "fieldName" : "lead_agency",
+    "position" : 17,
+    "renderTypeName" : "text",
+    "tableColumnId" : 23868297,
+    "width" : 321,
+    "cachedContents" : {
+      "non_null" : "495140",
+      "largest" : "Yorktown Town Planning Board",
+      "null" : "0",
+      "top" : [ {
+        "item" : "None Designated",
+        "count" : "449391"
+      }, {
+        "item" : "DEC",
+        "count" : "32531"
+      }, {
+        "item" : "NYC Dept of Environmental Protection",
+        "count" : "651"
+      }, {
+        "item" : "NYC Dept of Parks & Recreation",
+        "count" : "391"
+      }, {
+        "item" : "NYS Office of Parks Recreation & Historic Preservation",
+        "count" : "256"
+      }, {
+        "item" : "NYS Dept of Transportation",
+        "count" : "222"
+      }, {
+        "item" : "NYC Dept of City Planning",
+        "count" : "190"
+      }, {
+        "item" : "NYC Office of the Mayor",
+        "count" : "185"
+      }, {
+        "item" : "Cayuga County Soil and Water Cons District",
+        "count" : "117"
+      }, {
+        "item" : "NYC Dept of Transportation",
+        "count" : "85"
+      }, {
+        "item" : "Monroe County",
+        "count" : "84"
+      }, {
+        "item" : "Brookhaven Town Board",
+        "count" : "81"
+      }, {
+        "item" : "Wallkill Town Planning Board",
+        "count" : "79"
+      }, {
+        "item" : "Amherst Town Board",
+        "count" : "65"
+      }, {
+        "item" : "Erie County Dept of Environment & Planning",
+        "count" : "64"
+      }, {
+        "item" : "Onondaga County IDA",
+        "count" : "63"
+      }, {
+        "item" : "Long Island Power Authority",
+        "count" : "63"
+      }, {
+        "item" : "Governor Office of Storm Recovery (GOSR)",
+        "count" : "63"
+      }, {
+        "item" : "Hyde Park Town Planning Board",
+        "count" : "60"
+      }, {
+        "item" : "Smithtown Town Board",
+        "count" : "59"
+      } ],
+      "smallest" : "Adams Town Board",
+      "count" : "495140",
+      "cardinality" : "495140"
+    },
+    "format" : {
+      "align" : "center"
+    }
+  }, {
+    "id" : 511459687,
+    "name" : "Enivronmental Justice",
+    "dataTypeName" : "text",
+    "description" : "Environmental Justice and Permitting is a Commissioner issued policy of the Department that provides guidance for incorporating environmental justice concerns into the Department's permit review process. Its intent is to insure that all people regardless of race, color, or income have fair treatment and the opportunity for meaningful involvement with respect to the development, implementation, and enforcement of environmental laws, regulations, and policies. The policy became effective April 18, 2003.",
+    "fieldName" : "enivronmental_justice",
+    "position" : 18,
+    "renderTypeName" : "text",
+    "tableColumnId" : 23868298,
+    "width" : 212,
+    "cachedContents" : {
+      "non_null" : "55829",
+      "largest" : "The application is subject to the Department Environmental Justice policy (CP-29). Either the permits needed for the project are not subject to the policy or it has been determined that the project would not affect a Potential Environmental Justice Area.",
+      "null" : "439311",
+      "top" : [ {
+        "item" : "The application is subject to the Department Environmental Justice policy (CP-29). Either the permits needed for the project are not subject to the policy or it has been determined that the project would not affect a Potential Environmental Justice Area.",
+        "count" : "54948"
+      }, {
+        "item" : "The application is subject to the Department Environmental Justice policy (CP-29) as the proposed action is in or near a PotentialEnvironmental Justice Area. The applicant must develop and conduct an approved Enhanced Public Participation Plan.",
+        "count" : "881"
+      } ],
+      "smallest" : "The application is subject to the Department Environmental Justice policy (CP-29) as the proposed action is in or near a PotentialEnvironmental Justice Area. The applicant must develop and conduct an approved Enhanced Public Participation Plan.",
+      "count" : "495140",
+      "cardinality" : "495140"
+    },
+    "format" : {
+      "align" : "left"
+    }
+  }, {
+    "id" : 511459688,
+    "name" : "SHPA Status",
+    "dataTypeName" : "text",
+    "description" : "SHPA stands for the New York State Historic Preservation Act of 1980. The Act declares historic preservation to be a public policy and in the public interest of the state and is found in Section 14.09, Subchapter A (Statutory Authority: Parks, Recreation and Historic Preservation Law, Section 3.09(8), Article 14). Among other requirements, this regulation requires state agencies to consult with the Office of Parks, Recreation and Historic Preservation if it appears that any projects being planned may or will cause any change, beneficial or adverse, in the quality of any historic, architectural, archeological or cultural property that is listed on the State or National Registers of Historic Places or that have been determined to be eligible for listing on the State Register.",
+    "fieldName" : "shpa_status",
+    "position" : 19,
+    "renderTypeName" : "text",
+    "tableColumnId" : 23868299,
+    "width" : 280,
+    "cachedContents" : {
+      "non_null" : "99207",
+      "largest" : "The proposed activity is not subject to review in accordance with SHPA. The permit type is exempt or the activity is being reviewed in accordance with federal historic preservation regulations.",
+      "null" : "395933",
+      "top" : [ {
+        "item" : "The proposed activity is not subject to review in accordance with SHPA. The permit type is exempt or the activity is being reviewed in accordance with federal historic preservation regulations.",
+        "count" : "74771"
+      }, {
+        "item" : "Cultural resource lists and map have been checked.  No registered, eligible, or inventoried archaeological sites or historic structures were identified at the project location.  No further review in accordance with SHPA is required.",
+        "count" : "14592"
+      }, {
+        "item" : "A cultural resources survey has been completed.  The report of the survey is on file.  No archaeological sites or historic structures were identified at the project location. No further review in accordance with SHPA is required.",
+        "count" : "5955"
+      }, {
+        "item" : "A Structural-Archaeological Assessment Form has been completed.  The proposed activity will not impact on registered, eligible or inventoried archaeological sites or historic structures.",
+        "count" : "2471"
+      }, {
+        "item" : "A cultural resources survey has been completed.  Based on information provided in the survey report, the New York State Office of Parks,Recreation and Historic Preservation  (OPRHP) has determined that the proposed activity will have an impact on registered or eligible archaeological sites or historic structures. The department must consult further with OPRHP before making a final decision regarding the issuance of the permit.",
+        "count" : "518"
+      }, {
+        "item" : "A cultural resources survey has been completed.  Based on information provided  in the survey report, the New York State Office of Parks, Recreation and Historic Preservation (OPRHP) has determined that the proposed activity will have no impact on registered or eligible archaeological sites or historic structures.  No further review in accordance with SHPA is required.",
+        "count" : "506"
+      }, {
+        "item" : "Based on the information provided in cultural resources survey reports for this project, the New York State Office of Parks, Recreation and Historic Preservation has determined that the proposed activity will have an impact on registered or eligible archaeological sites or historic structures. Measures have been undertaken in consultation with OPRHP to avoid or mitigate impacts to registered or eligible resources.  These agreed upon measures conclude the SHPA review.",
+        "count" : "394"
+      } ],
+      "smallest" : "A cultural resources survey has been completed.  Based on information provided in the survey report, the New York State Office of Parks,Recreation and Historic Preservation  (OPRHP) has determined that the proposed activity will have an impact on registered or eligible archaeological sites or historic structures. The department must consult further with OPRHP before making a final decision regarding the issuance of the permit.",
+      "count" : "495140",
+      "cardinality" : "495140"
+    },
+    "format" : {
+      "align" : "left"
+    }
+  }, {
+    "id" : 511459689,
+    "name" : "Coastal Zone Status",
+    "dataTypeName" : "text",
+    "description" : "This field indicates whether a project is located in a Coastal Management area and is subject to the Waterfront Revitalization and Coastal Resources Act.",
+    "fieldName" : "coastal_zone_status",
+    "position" : 20,
+    "renderTypeName" : "text",
+    "tableColumnId" : 23868300,
+    "width" : 401,
+    "cachedContents" : {
+      "non_null" : "495140",
+      "largest" : "This project is not located in a Coastal Management area.",
+      "null" : "0",
+      "top" : [ {
+        "item" : "This project is not located in a Coastal Management area.",
+        "count" : "412889"
+      }, {
+        "item" : "This project is located in a Coastal Management area and is subject to the Waterfront Revitalization and Coastal Resources Act.",
+        "count" : "82251"
+      } ],
+      "smallest" : "This project is located in a Coastal Management area and is subject to the Waterfront Revitalization and Coastal Resources Act.",
+      "count" : "495140",
+      "cardinality" : "495140"
+    },
+    "format" : {
+      "align" : "left"
+    }
+  }, {
+    "id" : 511459690,
+    "name" : "Final Disposition",
+    "dataTypeName" : "text",
+    "description" : "The possible final dispositions are: Authorized by Consent Order, Denied, Discontinued Issued, and Insufficient Information. New Application needed, No Jurisdiction, Review Refused - work done prior to application, Withdrawn Waived (for Water Quality Certifications only) In the case of department- initiated modifications, suspensions, or revocations, the possible final dispositions are: Continue Existing Permit as Issued, Modify Permit, Revoke Permit, and Suspend Permit.",
+    "fieldName" : "final_disposition",
+    "position" : 21,
+    "renderTypeName" : "text",
+    "tableColumnId" : 23868301,
+    "width" : 182,
+    "cachedContents" : {
+      "non_null" : "492941",
+      "largest" : "Withdrawn for Incompleteness",
+      "null" : "2199",
+      "top" : [ {
+        "item" : "Issued",
+        "count" : "466433"
+      }, {
+        "item" : "No Jurisdiction",
+        "count" : "9485"
+      }, {
+        "item" : "Withdrawn by Applicant",
+        "count" : "5448"
+      }, {
+        "item" : "Denied",
+        "count" : "1972"
+      }, {
+        "item" : "New Application Needed",
+        "count" : "1685"
+      }, {
+        "item" : "Modify Permit",
+        "count" : "1525"
+      }, {
+        "item" : "Discontinued",
+        "count" : "1521"
+      }, {
+        "item" : "Blanket Approval",
+        "count" : "1147"
+      }, {
+        "item" : "Letter of Permission",
+        "count" : "1144"
+      }, {
+        "item" : "Insufficient Information",
+        "count" : "1004"
+      }, {
+        "item" : "Withdrawn for Incompleteness",
+        "count" : "869"
+      }, {
+        "item" : "Review Refused - Work done pre-application",
+        "count" : "285"
+      }, {
+        "item" : "Extended Indefinitely",
+        "count" : "129"
+      }, {
+        "item" : "Pre-App No Application Pursued",
+        "count" : "119"
+      }, {
+        "item" : "Authorized by consent Order",
+        "count" : "83"
+      }, {
+        "item" : "Continue Existing Permit as Issued",
+        "count" : "49"
+      }, {
+        "item" : "Non-UPA - Referred to Program",
+        "count" : "26"
+      }, {
+        "item" : "Waived - Water Quality",
+        "count" : "15"
+      }, {
+        "item" : "Revoke Permit",
+        "count" : "2"
+      } ],
+      "smallest" : "Authorized by consent Order",
+      "count" : "495140",
+      "cardinality" : "495140"
+    },
+    "format" : {
+      "align" : "center"
+    }
+  }, {
+    "id" : 511459691,
+    "name" : "Permit Effective Date",
+    "dataTypeName" : "calendar_date",
+    "description" : "This is the date on which the permit is effective. Maximum permit terms are set in UPA.",
+    "fieldName" : "permit_effective_date",
+    "position" : 22,
+    "renderTypeName" : "calendar_date",
+    "tableColumnId" : 23868302,
+    "width" : 199,
+    "cachedContents" : {
+      "non_null" : "474750",
+      "largest" : "2203-12-30T00:00:00.000",
+      "null" : "20390",
+      "top" : [ {
+        "item" : "2015-05-11T00:00:00.000",
+        "count" : "2109"
+      }, {
+        "item" : "1993-10-22T00:00:00.000",
+        "count" : "329"
+      }, {
+        "item" : "1994-09-07T00:00:00.000",
+        "count" : "307"
+      }, {
+        "item" : "1995-06-15T00:00:00.000",
+        "count" : "292"
+      }, {
+        "item" : "1994-08-30T00:00:00.000",
+        "count" : "290"
+      }, {
+        "item" : "1994-06-02T00:00:00.000",
+        "count" : "287"
+      }, {
+        "item" : "1996-05-02T00:00:00.000",
+        "count" : "284"
+      }, {
+        "item" : "1994-08-29T00:00:00.000",
+        "count" : "251"
+      }, {
+        "item" : "1996-05-15T00:00:00.000",
+        "count" : "220"
+      }, {
+        "item" : "1989-06-20T00:00:00.000",
+        "count" : "215"
+      }, {
+        "item" : "1993-07-30T00:00:00.000",
+        "count" : "215"
+      }, {
+        "item" : "1993-05-28T00:00:00.000",
+        "count" : "205"
+      }, {
+        "item" : "2018-10-01T00:00:00.000",
+        "count" : "205"
+      }, {
+        "item" : "1992-12-22T00:00:00.000",
+        "count" : "203"
+      }, {
+        "item" : "1988-12-14T00:00:00.000",
+        "count" : "203"
+      }, {
+        "item" : "1996-05-09T00:00:00.000",
+        "count" : "202"
+      }, {
+        "item" : "1996-03-01T00:00:00.000",
+        "count" : "199"
+      }, {
+        "item" : "1994-05-20T00:00:00.000",
+        "count" : "198"
+      }, {
+        "item" : "2005-04-01T00:00:00.000",
+        "count" : "198"
+      }, {
+        "item" : "1994-06-10T00:00:00.000",
+        "count" : "194"
+      } ],
+      "smallest" : "0222-04-22T00:00:00.000",
+      "count" : "495140",
+      "cardinality" : "495140"
+    },
+    "format" : {
+      "view" : "date",
+      "align" : "center"
+    }
+  }, {
+    "id" : 511459692,
+    "name" : "Permit Expiration Date",
+    "dataTypeName" : "calendar_date",
+    "description" : "This is the date the permit expires. Maximum permit terms are set in UPA. Not all permit types require an expiration date",
+    "fieldName" : "permit_expration_date",
+    "position" : 23,
+    "renderTypeName" : "calendar_date",
+    "tableColumnId" : 23868303,
+    "width" : 204,
+    "cachedContents" : {
+      "non_null" : "454212",
+      "largest" : "3008-09-30T00:00:00.000",
+      "null" : "40928",
+      "top" : [ {
+        "item" : "2025-05-10T00:00:00.000",
+        "count" : "3019"
+      }, {
+        "item" : "1999-12-31T00:00:00.000",
+        "count" : "2983"
+      }, {
+        "item" : "2001-12-31T00:00:00.000",
+        "count" : "2830"
+      }, {
+        "item" : "2007-12-31T00:00:00.000",
+        "count" : "2825"
+      }, {
+        "item" : "2000-12-31T00:00:00.000",
+        "count" : "2765"
+      }, {
+        "item" : "1997-12-31T00:00:00.000",
+        "count" : "2764"
+      }, {
+        "item" : "1996-12-31T00:00:00.000",
+        "count" : "2726"
+      }, {
+        "item" : "1998-12-31T00:00:00.000",
+        "count" : "2686"
+      }, {
+        "item" : "2010-12-31T00:00:00.000",
+        "count" : "2624"
+      }, {
+        "item" : "2006-12-31T00:00:00.000",
+        "count" : "2615"
+      }, {
+        "item" : "1995-12-31T00:00:00.000",
+        "count" : "2582"
+      }, {
+        "item" : "2008-12-31T00:00:00.000",
+        "count" : "2530"
+      }, {
+        "item" : "2011-12-31T00:00:00.000",
+        "count" : "2511"
+      }, {
+        "item" : "1993-12-31T00:00:00.000",
+        "count" : "2466"
+      }, {
+        "item" : "2009-12-31T00:00:00.000",
+        "count" : "2367"
+      }, {
+        "item" : "2002-12-31T00:00:00.000",
+        "count" : "2266"
+      }, {
+        "item" : "2012-12-31T00:00:00.000",
+        "count" : "2223"
+      }, {
+        "item" : "2020-09-30T00:00:00.000",
+        "count" : "2179"
+      }, {
+        "item" : "2013-12-31T00:00:00.000",
+        "count" : "2176"
+      }, {
+        "item" : "2009-10-01T00:00:00.000",
+        "count" : "2094"
+      } ],
+      "smallest" : "1014-03-13T00:00:00.000",
+      "count" : "495140",
+      "cardinality" : "495140"
+    },
+    "format" : {
+      "view" : "date",
+      "align" : "center"
+    }
+  }, {
+    "id" : 511459693,
+    "name" : "Stimulus Project",
+    "dataTypeName" : "text",
+    "description" : "A Project that is for Federal Economic Funding under the American Recovery and Reinvestment Act of 2009.",
+    "fieldName" : "stimulus_project",
+    "position" : 24,
+    "renderTypeName" : "text",
+    "tableColumnId" : 23868304,
+    "width" : 175,
+    "cachedContents" : {
+      "non_null" : "495140",
+      "largest" : "N",
+      "null" : "0",
+      "top" : [ {
+        "item" : "N",
+        "count" : "495140"
+      } ],
+      "smallest" : "N",
+      "count" : "495140",
+      "cardinality" : "495140"
+    },
+    "format" : {
+      "align" : "center"
+    }
+  }, {
+    "id" : 511459694,
+    "name" : "Other Known IDs",
+    "dataTypeName" : "text",
+    "description" : "Others DEC ID Numbers associated with a specific project and site location.",
+    "fieldName" : "other_known_ids",
+    "position" : 25,
+    "renderTypeName" : "text",
+    "tableColumnId" : 23868305,
+    "width" : 356,
+    "cachedContents" : {
+      "non_null" : "204577",
+      "largest" : "YL-4 - Freshwater Wetland ID (NYSDEC)",
+      "null" : "290563",
+      "top" : [ {
+        "item" : "4154000124 - Division of Air Resources ID (NYSDEC);NY0008605 - State Pollutant Discharge Elimination System ID (NYSDEC);NYD002080034 - Resource Conservation Recovery Act ID (USEPA);0124 - National Emissions Data System ID (USEPA);00008 - Compliance Data System ID (USEPA)",
+        "count" : "2204"
+      }, {
+        "item" : "2614000258 - Division of Air Resources ID (NYSDEC);NY0272001 - State Pollutant Discharge Elimination System ID (NYSDEC);NYR10N636 - State Pollutant Discharge Elimination System ID (NYSDEC);NYR10N057 - State Pollutant Discharge Elimination System ID (NYSDEC);NYR10L510 - State Pollutant Discharge Elimination System ID (NYSDEC);NYR10L117 - State Pollutant Discharge Elimination System ID (NYSDEC);NYR10L116 - State Pollutant Discharge Elimination System ID (NYSDEC);NYR10L115 - State Pollutant Discharge Elimination System ID (NYSDEC);NYD980592497 - Resource Conservation Recovery Act ID (USEPA);0258 - National Emissions Data System ID (USEPA);00203 - Compliance Data System ID (USEPA)",
+        "count" : "1707"
+      }, {
+        "item" : "2654000995 - Division of Air Resources ID (NYSDEC);NYR10J662 - State Pollutant Discharge Elimination System ID (NYSDEC);NY0002402 - State Pollutant Discharge Elimination System ID (NYSDEC);NYD002211324 - Resource Conservation Recovery Act ID (USEPA);0995 - National Emissions Data System ID (USEPA);00061 - Compliance Data System ID (USEPA)",
+        "count" : "1180"
+      }, {
+        "item" : "RE-1 - Freshwater Wetland ID (NYSDEC)",
+        "count" : "857"
+      }, {
+        "item" : "0122000129 - Division of Air Resources ID (NYSDEC);NYR00B671 - State Pollutant Discharge Elimination System ID (NYSDEC);NY0007072 - State Pollutant Discharge Elimination System ID (NYSDEC);NYD066832023 - Resource Conservation Recovery Act ID (USEPA);0129 - National Emissions Data System ID (USEPA);00014 - Compliance Data System ID (USEPA)",
+        "count" : "850"
+      }, {
+        "item" : "1328000095 - Division of Air Resources ID (NYSDEC);HJ-66 - Freshwater Wetland ID (NYSDEC);NYR10D767 - State Pollutant Discharge Elimination System ID (NYSDEC);NY0005096 - State Pollutant Discharge Elimination System ID (NYSDEC);0095 - National Emissions Data System ID (USEPA);HJ-71 - Freshwater Wetland ID (NYSDEC);HJ-52 - Freshwater Wetland ID (NYSDEC);00011 - Compliance Data System ID (USEPA)",
+        "count" : "725"
+      }, {
+        "item" : "4930890017 - Division of Air Resources ID (NYSDEC);NYR10K511 - State Pollutant Discharge Elimination System ID (NYSDEC);NYR10I636 - State Pollutant Discharge Elimination System ID (NYSDEC);NY0004057 - State Pollutant Discharge Elimination System ID (NYSDEC);NYT370010225 - Resource Conservation Recovery Act ID (USEPA);NYD075796037 - Resource Conservation Recovery Act ID (USEPA);0017 - National Emissions Data System ID (USEPA);00002 - Compliance Data System ID (USEPA)",
+        "count" : "554"
+      }, {
+        "item" : "3924000095 - Division of Air Resources ID (NYSDEC);NYR10N779 - State Pollutant Discharge Elimination System ID (NYSDEC);SW#44-C-01 - Solid Waste (NYSDEC);NYR10E331 - State Pollutant Discharge Elimination System ID (NYSDEC);NYR10E299 - State Pollutant Discharge Elimination System ID (NYSDEC);NYR10E136 - State Pollutant Discharge Elimination System ID (NYSDEC);NYR10E065 - State Pollutant Discharge Elimination System ID (NYSDEC);NYR00C564 - State Pollutant Discharge Elimination System ID (NYSDEC);NY0004600 - State Pollutant Discharge Elimination System ID (NYSDEC);NYD054065909 - Resource Conservation Recovery Act ID (USEPA);110067044932 - National Emissions Data System ID (USEPA);00019 - Compliance Data System ID (USEPA)",
+        "count" : "541"
+      }, {
+        "item" : "2934000338 - Division of Air Resources ID (NYSDEC);RV-1 - Freshwater Wetland ID (NYSDEC);NYR10C430 - State Pollutant Discharge Elimination System ID (NYSDEC);NY0072061 - State Pollutant Discharge Elimination System ID (NYSDEC);NYD049836679 - Resource Conservation Recovery Act ID (USEPA);0338 - National Emissions Data System ID (USEPA);00136 - Compliance Data System ID (USEPA)",
+        "count" : "537"
+      }, {
+        "item" : "2909000335 - Division of Air Resources ID (NYSDEC);NY0000558 - State Pollutant Discharge Elimination System ID (NYSDEC);NYD002126852 - Resource Conservation Recovery Act ID (USEPA);0335 - National Emissions Data System ID (USEPA);00138 - Compliance Data System ID (USEPA)",
+        "count" : "497"
+      }, {
+        "item" : "4058890004 - Division of Air Resources ID (NYSDEC);NYR10D924 - State Pollutant Discharge Elimination System ID (NYSDEC);NY0001732 - State Pollutant Discharge Elimination System ID (NYSDEC);NYN600000002 - Resource Conservation Recovery Act ID (USEPA);NYD002232304 - Resource Conservation Recovery Act ID (USEPA);0004 - National Emissions Data System ID (USEPA);00001 - Compliance Data System ID (USEPA)",
+        "count" : "467"
+      }, {
+        "item" : "0608000023 - Division of Air Resources ID (NYSDEC);NYR00D407 - State Pollutant Discharge Elimination System ID (NYSDEC);NY0003395 - State Pollutant Discharge Elimination System ID (NYSDEC);NYD001929611 - Resource Conservation Recovery Act ID (USEPA);0023 - National Emissions Data System ID (USEPA);00030 - Compliance Data System ID (USEPA)",
+        "count" : "437"
+      }, {
+        "item" : "4228000090 - Division of Air Resources ID (NYSDEC);NY0005801 - State Pollutant Discharge Elimination System ID (NYSDEC);NYD002070118 - Resource Conservation Recovery Act ID (USEPA);0090 - National Emissions Data System ID (USEPA);00013 - Compliance Data System ID (USEPA)",
+        "count" : "399"
+      }, {
+        "item" : "2626001003 - Division of Air Resources ID (NYSDEC);NYD000809327 - Resource Conservation Recovery Act ID (USEPA);1003 - National Emissions Data System ID (USEPA);00029 - Compliance Data System ID (USEPA)",
+        "count" : "379"
+      }, {
+        "item" : "00020 - Compliance Data System ID (USEPA);NY0003328 - State Pollutant Discharge Elimination System ID (NYSDEC);NYT370010357 - Resource Conservation Recovery Act ID (USEPA);NYD002123503 - Resource Conservation Recovery Act ID (USEPA);0339 - National Emissions Data System ID (USEPA)",
+        "count" : "375"
+      }, {
+        "item" : "5330000101 - Division of Air Resources ID (NYSDEC);NY0007048 - State Pollutant Discharge Elimination System ID (NYSDEC);NYW000007048 - Resource Conservation Recovery Act ID (USEPA);NYD093256065 - Resource Conservation Recovery Act ID (USEPA);NYD093256063 - Resource Conservation Recovery Act ID (USEPA);0101 - National Emissions Data System ID (USEPA);00040 - Compliance Data System ID (USEPA)",
+        "count" : "358"
+      }, {
+        "item" : "2240000169 - Division of Air Resources ID (NYSDEC);NY0270288 - State Pollutant Discharge Elimination System ID (NYSDEC);NY0270261 - State Pollutant Discharge Elimination System ID (NYSDEC);NY0257931 - State Pollutant Discharge Elimination System ID (NYSDEC);NYR00E835 - State Pollutant Discharge Elimination System ID (NYSDEC);NYR10Q547 - State Pollutant Discharge Elimination System ID (NYSDEC);NYR10P358 - State Pollutant Discharge Elimination System ID (NYSDEC);NYR10P357 - State Pollutant Discharge Elimination System ID (NYSDEC);NYR00D874 - State Pollutant Discharge Elimination System ID (NYSDEC);NYR10N792 - State Pollutant Discharge Elimination System ID (NYSDEC);NYR10N716 - State Pollutant Discharge Elimination System ID (NYSDEC);NYR10F469 - State Pollutant Discharge Elimination System ID (NYSDEC);NYR10F386 - State Pollutant Discharge Elimination System ID (NYSDEC);NYR10F385 - State Pollutant Discharge Elimination System ID (NYSDEC);NYR10F384 - State Pollutant Discharge Elimination System ID (NYSDEC);NYR10E474 - State Pollutant Discharge Elimination System ID (NYSDEC);NYR10E069 - State Pollutant Discharge Elimination System ID (NYSDEC);NYR10D691 - State Pollutant Discharge Elimination System ID (NYSDEC);NYR10D472 - State Pollutant Discharge Elimination System ID (NYSDEC);NYR10D202 - State Pollutant Discharge Elimination System ID (NYSDEC);NYR10D022 - State Pollutant Discharge Elimination System ID (NYSDEC);NYR10B150 - State Pollutant Discharge Elimination System ID (NYSDEC);NYR10B149 - State Pollutant Discharge Elimination System ID (NYSDEC);NYR10A907 - State Pollutant Discharge Elimination System ID (NYSDEC);NY0026905 - State Pollutant Discharge Elimination System ID (NYSDEC);NY0214020281 - Resource Conservation Recovery Act ID (USEPA);0169 - National Emissions Data System ID (USEPA);60406 - Mined Land ID (NYSDEC);00015 - Compliance Data System ID (USEPA)",
+        "count" : "355"
+      }, {
+        "item" : "0928030008 - Division of Air Resources ID (NYSDEC);NYR10Y288 - State Pollutant Discharge Elimination System ID (NYSDEC);NY0033421 - State Pollutant Discharge Elimination System ID (NYSDEC);NYD002081396 - Resource Conservation Recovery Act ID (USEPA);0008 - National Emissions Data System ID (USEPA);00004 - Compliance Data System ID (USEPA)",
+        "count" : "343"
+      }, {
+        "item" : "1346000096 - Division of Air Resources ID (NYSDEC);NYR10F407 - State Pollutant Discharge Elimination System ID (NYSDEC);NYR10F249 - State Pollutant Discharge Elimination System ID (NYSDEC);NYR10F234 - State Pollutant Discharge Elimination System ID (NYSDEC);NYR00A776 - State Pollutant Discharge Elimination System ID (NYSDEC);NY0005541 - State Pollutant Discharge Elimination System ID (NYSDEC);NYD080480734 - Resource Conservation Recovery Act ID (USEPA);0096 - National Emissions Data System ID (USEPA);00010 - Compliance Data System ID (USEPA)",
+        "count" : "343"
+      }, {
+        "item" : "NY0195413 - State Pollutant Discharge Elimination System ID (NYSDEC);NY0267210 - State Pollutant Discharge Elimination System ID (NYSDEC);NY0267309 - State Pollutant Discharge Elimination System ID (NYSDEC);NY0267155 - State Pollutant Discharge Elimination System ID (NYSDEC);NY0266914 - State Pollutant Discharge Elimination System ID (NYSDEC);NY0266850 - State Pollutant Discharge Elimination System ID (NYSDEC);NY0266787 - State Pollutant Discharge Elimination System ID (NYSDEC);NY0266761 - State Pollutant Discharge Elimination System ID (NYSDEC);NY0266736 - State Pollutant Discharge Elimination System ID (NYSDEC);NY0266493 - State Pollutant Discharge Elimination System ID (NYSDEC);NY0227374 - State Pollutant Discharge Elimination System ID (NYSDEC);NY0226947 - State Pollutant Discharge Elimination System ID (NYSDEC);NY0226921 - State Pollutant Discharge Elimination System ID (NYSDEC);NY0226891 - State Pollutant Discharge Elimination System ID (NYSDEC)",
+        "count" : "342"
+      } ],
+      "smallest" : "00000 - Compliance Data System ID (USEPA)",
+      "count" : "495140",
+      "cardinality" : "495140"
+    },
+    "format" : {
+      "align" : "left"
+    }
+  }, {
+    "id" : 511459695,
+    "name" : "DEC Contact",
+    "dataTypeName" : "text",
+    "description" : "Contact information for the DEC Permit Project Manager handling public comment.",
+    "fieldName" : "dec_contact",
+    "position" : 26,
+    "renderTypeName" : "text",
+    "tableColumnId" : 23868306,
+    "width" : 232,
+    "cachedContents" : {
+      "non_null" : "495140",
+      "largest" : "ZACHARY L GOODALE",
+      "null" : "0",
+      "top" : [ {
+        "item" : "HAROLD J DICKEY",
+        "count" : "8766"
+      }, {
+        "item" : "JOHN H MERRIMAN, JR",
+        "count" : "8304"
+      }, {
+        "item" : "MATTHEW R PENSKI",
+        "count" : "8069"
+      }, {
+        "item" : "MARK CARRARA",
+        "count" : "7558"
+      }, {
+        "item" : "SUSAN L CLICKNER",
+        "count" : "7427"
+      }, {
+        "item" : "LINDY SUE SCHAUFELBERG",
+        "count" : "6782"
+      }, {
+        "item" : "LAWRENCE D GUNN",
+        "count" : "6673"
+      }, {
+        "item" : "JOANNE L MARCH",
+        "count" : "6558"
+      }, {
+        "item" : "SHERRI I AICHER",
+        "count" : "6349"
+      }, {
+        "item" : "CLAIRE K WERNER",
+        "count" : "6337"
+      }, {
+        "item" : "LAURA J SCOVAZZO",
+        "count" : "6139"
+      }, {
+        "item" : "DARLEEN M GERBINO",
+        "count" : "5932"
+      }, {
+        "item" : "MARY E HOHMANN",
+        "count" : "5804"
+      }, {
+        "item" : "JOSEPH M DLUGOLENSKI",
+        "count" : "5408"
+      }, {
+        "item" : "MARTHA A BELLINGER",
+        "count" : "5249"
+      }, {
+        "item" : "MARILYN E PETERSON",
+        "count" : "5209"
+      }, {
+        "item" : "CAROL A FARKAS",
+        "count" : "5138"
+      }, {
+        "item" : "KEVIN A KISPERT",
+        "count" : "5016"
+      }, {
+        "item" : "JOHN A WIELAND",
+        "count" : "5003"
+      }, {
+        "item" : "THOMAS W HALL",
+        "count" : "4691"
+      } ],
+      "smallest" : "ADAM L PETERSON",
+      "count" : "495140",
+      "cardinality" : "495140"
+    },
+    "format" : {
+      "align" : "center"
+    }
+  } ],
+  "grants" : [ {
+    "inherited" : false,
+    "type" : "viewer",
+    "flags" : [ "public" ]
+  } ],
+  "metadata" : {
+    "rdfSubject" : "0",
+    "attachments" : [ {
+      "filename" : "NYSDEC_DARTOnTheWeb_Overview.pdf",
+      "assetId" : "bb66ec76-3395-46e6-9e6f-cf83ab430be6",
+      "name" : "NYSDEC_DARTOnTheWeb_Overview.pdf"
+    }, {
+      "filename" : "NYSDEC_DARTOnTheWeb_DataDictionary.pdf",
+      "assetId" : "52a13b8e-9f87-4380-ad07-722d7ac8f32d",
+      "name" : "NYSDEC_DARTOnTheWeb_DataDictionary.pdf"
+    }, {
+      "filename" : "NYSDEC_Permit_Applications_Help.pdf",
+      "assetId" : "937b81f3-5d20-4408-9b91-9d3052bc9c8e",
+      "name" : "NYSDEC_Permit_Applications_Help.pdf"
+    } ],
+    "custom_fields" : {
+      "Dataset Summary" : {
+        "Posting Frequency" : "Monthly",
+        "Organization" : "Division of Environmental Permits",
+        "Contact Information" : "deppermitting@dec.ny.gov",
+        "Time Period" : "Beginning 1988",
+        "Coverage" : "Statewide",
+        "Granularity" : "Streets",
+        "Dataset Owner" : "Department of Environmental Conservation"
+      },
+      "Disclaimers" : {
+        "Limitations" : "As DART on the Web is an interface with a database, it does not contain actual permitting documents such as permits, applications. These project documents may be obtained from the listed DEC Contact. UPA and SEQRA notices may be also be obtained from the Department’s Environmental News Bulletin (ENB) at: http://www.dec.ny.gov/enb/enb.html"
+      },
+      "Dataset Information" : {
+        "Agency" : "Environmental Conservation, Department of"
+      }
+    },
+    "availableDisplayTypes" : [ "table", "fatrow", "page" ],
+    "renderTypeConfig" : {
+      "visible" : {
+        "table" : true
+      }
+    }
+  },
+  "owner" : {
+    "id" : "xzik-pf59",
+    "displayName" : "NY Open Data",
+    "profileImageUrlLarge" : "/api/users/xzik-pf59/profile_images/LARGE",
+    "profileImageUrlMedium" : "/api/users/xzik-pf59/profile_images/THUMB",
+    "profileImageUrlSmall" : "/api/users/xzik-pf59/profile_images/TINY",
+    "screenName" : "NY Open Data",
+    "type" : "interactive",
+    "flags" : [ "acceptedEula", "mayBeStoriesCoOwner" ]
+  },
+  "query" : { },
+  "rights" : [ "read" ],
+  "tableAuthor" : {
+    "id" : "xzik-pf59",
+    "displayName" : "NY Open Data",
+    "profileImageUrlLarge" : "/api/users/xzik-pf59/profile_images/LARGE",
+    "profileImageUrlMedium" : "/api/users/xzik-pf59/profile_images/THUMB",
+    "profileImageUrlSmall" : "/api/users/xzik-pf59/profile_images/TINY",
+    "screenName" : "NY Open Data",
+    "type" : "interactive",
+    "flags" : [ "acceptedEula", "mayBeStoriesCoOwner" ]
+  },
+  "tags" : [ "permit application tracking system", "dart", "web interface application", "permits" ],
+  "flags" : [ "default", "ownerMayBeContacted", "restorable", "restorePossibleForType" ]
+}

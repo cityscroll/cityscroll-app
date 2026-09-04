@@ -1,0 +1,27 @@
+{
+  "dataset_metadata_fetch": {
+    "content_type": "application/json; charset=utf-8",
+    "http_status": 200,
+    "raw_slug": "dataset_metadata",
+    "request_url_or_query": "https://data.ny.gov/api/views/mbk7-f2r2",
+    "requested_at": "2026-09-04T01:50:00.000Z",
+    "retrieved_at": "2026-09-04T01:50:00.000Z"
+  },
+  "page_fetches": [
+    {
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "raw_slug": "page-0000",
+      "request_url_or_query": "https://data.ny.gov/resource/mbk7-f2r2.json?$limit=5&$order=:id",
+      "requested_at": "2026-09-04T01:50:00.000Z",
+      "retrieved_at": "2026-09-04T01:50:00.000Z",
+      "row_count": 5
+    }
+  ],
+  "page_size": 5,
+  "sample_scope": true,
+  "sample_scope_note": "Bounded reference sample captured by one polite, single-page live request per fetch (see request_url_or_query below), not a full-population pull. pagination_complete is derived from the actual row count against page_size and is honestly false here.",
+  "schema": "cityscroll.seqra_adapter_observation.v1",
+  "source_id": "nys_dec_dart",
+  "vintage": "2026-09-04-sample"
+}

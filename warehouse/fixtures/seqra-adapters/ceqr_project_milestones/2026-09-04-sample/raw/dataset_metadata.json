@@ -1,0 +1,433 @@
+{
+  "id" : "8fj8-3sgg",
+  "name" : "CEQR Project Milestones",
+  "assetType" : "dataset",
+  "attribution" : "Mayor’s Office of Environmental Coordination (MOEC)",
+  "averageRating" : 0,
+  "category" : "City Government",
+  "createdAt" : 1448484948,
+  "description" : "CEQR Open Data contains information on projects that are undergoing or have completed review through the City Environmental Quality Review (CEQR) process. Project information available at the Open Data Portal includes the CEQR Number, Project Name, the Project Description, the Lead Agency, project milestones, and geographical locations. CEQR Open Data contains information on CEQR projects, which were filed with the Mayor’s Office from January 1, 2005 to the present.  For associated documents, please follow the links to the CEQR Access Database.",
+  "diciBackend" : false,
+  "displayType" : "table",
+  "downloadCount" : 7618,
+  "hideFromCatalog" : false,
+  "hideFromDataJson" : false,
+  "indexUpdatedAt" : 1549898191,
+  "locked" : false,
+  "newBackend" : true,
+  "numberOfComments" : 0,
+  "oid" : 30786383,
+  "provenance" : "official",
+  "publicationAppendEnabled" : false,
+  "publicationDate" : 1549640366,
+  "publicationGroup" : 5749530,
+  "publicationStage" : "published",
+  "rowClass" : "",
+  "rowsUpdatedAt" : 1788444675,
+  "rowsUpdatedBy" : "5fuc-pqz2",
+  "tableId" : 15938728,
+  "totalTimesRated" : 0,
+  "viewCount" : 2485,
+  "viewLastModified" : 1706722055,
+  "viewType" : "tabular",
+  "approvals" : [ {
+    "reviewedAt" : 1549640366,
+    "reviewedAutomatically" : true,
+    "state" : "approved",
+    "submissionId" : 1078188,
+    "submissionObject" : "public_audience_request",
+    "submissionOutcome" : "change_audience",
+    "submittedAt" : 1549640366,
+    "targetAudience" : "public",
+    "workflowId" : 2285,
+    "submissionDetails" : {
+      "permissionType" : "READ"
+    },
+    "submissionOutcomeApplication" : {
+      "failureCount" : 0,
+      "status" : "success"
+    },
+    "submitter" : {
+      "id" : "5fuc-pqz2",
+      "displayName" : "NYC OpenData"
+    }
+  } ],
+  "clientContext" : {
+    "clientContextVariables" : [ ],
+    "inheritedVariables" : { }
+  },
+  "columns" : [ {
+    "id" : 394908006,
+    "name" : "CEQR",
+    "dataTypeName" : "text",
+    "fieldName" : "ceqr",
+    "position" : 1,
+    "renderTypeName" : "text",
+    "tableColumnId" : 32872772,
+    "width" : 148,
+    "cachedContents" : {
+      "largest" : "99HRA001K",
+      "non_null" : "34810",
+      "null" : "0",
+      "top" : [ {
+        "item" : "11DME007M",
+        "count" : "41"
+      }, {
+        "item" : "07DME014Q",
+        "count" : "41"
+      }, {
+        "item" : "15DME009Y",
+        "count" : "41"
+      }, {
+        "item" : "17DME007M",
+        "count" : "32"
+      }, {
+        "item" : "24DME011X",
+        "count" : "28"
+      }, {
+        "item" : "03DME016K",
+        "count" : "26"
+      }, {
+        "item" : "23DME006Q",
+        "count" : "25"
+      }, {
+        "item" : "10DCP003M",
+        "count" : "24"
+      }, {
+        "item" : "21DCP167M",
+        "count" : "23"
+      }, {
+        "item" : "17DCP048M",
+        "count" : "23"
+      }, {
+        "item" : "08DME007K",
+        "count" : "23"
+      }, {
+        "item" : "10DEP042U",
+        "count" : "22"
+      }, {
+        "item" : "18DOC001Y",
+        "count" : "22"
+      }, {
+        "item" : "16DME010Q",
+        "count" : "21"
+      }, {
+        "item" : "16DME005K",
+        "count" : "21"
+      }, {
+        "item" : "03DOS004Y",
+        "count" : "21"
+      }, {
+        "item" : "13SBS001R",
+        "count" : "21"
+      }, {
+        "item" : "12DPR005Q",
+        "count" : "20"
+      }, {
+        "item" : "16DME012X",
+        "count" : "20"
+      }, {
+        "item" : "12DCP045M",
+        "count" : "20"
+      } ],
+      "smallest" : "00BOE001M",
+      "not_null" : "29092",
+      "count" : "34810",
+      "cardinality" : "34810"
+    },
+    "format" : { }
+  }, {
+    "id" : 394908007,
+    "name" : "Project Name",
+    "dataTypeName" : "text",
+    "fieldName" : "project_name",
+    "position" : 2,
+    "renderTypeName" : "text",
+    "tableColumnId" : 32872773,
+    "width" : 244,
+    "cachedContents" : {
+      "largest" : "Z VIP Sedan Services, Inc. D/b/a Z Limo",
+      "non_null" : "34810",
+      "null" : "0",
+      "top" : [ {
+        "item" : "CREATED IN ERROR",
+        "count" : "71"
+      }, {
+        "item" : "83-113 Lorimer Street & 112-144 Middleton Street",
+        "count" : "68"
+      }, {
+        "item" : "The Phased Redevelopment of Governors Island",
+        "count" : "41"
+      }, {
+        "item" : "Citywide Ferry Service",
+        "count" : "41"
+      }, {
+        "item" : "Willets Point Development Plan",
+        "count" : "41"
+      }, {
+        "item" : "Inwood Rezoning Proposal",
+        "count" : "32"
+      }, {
+        "item" : "Ballys Bronx",
+        "count" : "28"
+      }, {
+        "item" : "Hudson Square Rezoning",
+        "count" : "28"
+      }, {
+        "item" : "New York Sports Club",
+        "count" : "26"
+      }, {
+        "item" : "Downtown Brooklyn Development",
+        "count" : "26"
+      }, {
+        "item" : "Queens Future",
+        "count" : "25"
+      }, {
+        "item" : "Saint Vincents Campus Redevelopment",
+        "count" : "24"
+      }, {
+        "item" : "East Harlem Rezoning",
+        "count" : "23"
+      }, {
+        "item" : "One 45 Museum of Civil Rights",
+        "count" : "23"
+      }, {
+        "item" : "Coney Island Rezoning",
+        "count" : "23"
+      }, {
+        "item" : "Borough Based Jail System",
+        "count" : "22"
+      }, {
+        "item" : "3CDA Bypass - Delaware Aqueduct Bypass",
+        "count" : "22"
+      }, {
+        "item" : "Throop Avenue and Middleton Street",
+        "count" : "21"
+      }, {
+        "item" : "St. George Waterfront Redevelopment Project",
+        "count" : "21"
+      }, {
+        "item" : "Downtown Far Rockaway Redevelopment Project",
+        "count" : "21"
+      } ],
+      "smallest" : "100-02 Rockaway Boulevard",
+      "not_null" : "29092",
+      "count" : "34810",
+      "cardinality" : "34810"
+    },
+    "format" : { }
+  }, {
+    "id" : 394908010,
+    "name" : "Milestone Name",
+    "dataTypeName" : "text",
+    "fieldName" : "milestone_name",
+    "position" : 3,
+    "renderTypeName" : "text",
+    "tableColumnId" : 32872774,
+    "width" : 268,
+    "cachedContents" : {
+      "largest" : "Withdrawn",
+      "non_null" : "34810",
+      "null" : "0",
+      "top" : [ {
+        "item" : "Lead Agency Letter",
+        "count" : "8209"
+      }, {
+        "item" : "EAS",
+        "count" : "7510"
+      }, {
+        "item" : "Negative Declaration",
+        "count" : "6780"
+      }, {
+        "item" : "Type II Memo",
+        "count" : "4665"
+      }, {
+        "item" : "Create CEQR Number",
+        "count" : "2243"
+      }, {
+        "item" : "Begin Additional Review",
+        "count" : "760"
+      }, {
+        "item" : "Technical Memorandum",
+        "count" : "542"
+      }, {
+        "item" : "Withdrawn",
+        "count" : "405"
+      }, {
+        "item" : "Positive Declaration",
+        "count" : "329"
+      }, {
+        "item" : "Draft Scope of Work",
+        "count" : "320"
+      }, {
+        "item" : "Terminated",
+        "count" : "307"
+      }, {
+        "item" : "Final Scope of Work",
+        "count" : "261"
+      }, {
+        "item" : "CND",
+        "count" : "241"
+      }, {
+        "item" : "FEIS & Notice of Completion",
+        "count" : "239"
+      }, {
+        "item" : "DEIS & Notice of Completion",
+        "count" : "225"
+      }, {
+        "item" : "Scoping Meeting",
+        "count" : "197"
+      }, {
+        "item" : "Notice of Scoping Meeting",
+        "count" : "171"
+      }, {
+        "item" : "Scope Comment Period End",
+        "count" : "147"
+      }, {
+        "item" : "Notice of Public Hearing",
+        "count" : "133"
+      }, {
+        "item" : "Statement of Findings",
+        "count" : "133"
+      } ],
+      "smallest" : "Begin Additional Review",
+      "not_null" : "29092",
+      "count" : "34810",
+      "cardinality" : "34810"
+    },
+    "format" : { }
+  }, {
+    "id" : 394908013,
+    "name" : "Milestone Date",
+    "dataTypeName" : "calendar_date",
+    "fieldName" : "milestone_date",
+    "position" : 4,
+    "renderTypeName" : "calendar_date",
+    "tableColumnId" : 32872775,
+    "width" : 268,
+    "cachedContents" : {
+      "largest" : "2026-12-08T00:00:00.000",
+      "non_null" : "34689",
+      "null" : "121",
+      "top" : [ {
+        "item" : "2003-04-25T00:00:00.000",
+        "count" : "1159"
+      }, {
+        "item" : "2016-06-22T00:00:00.000",
+        "count" : "51"
+      }, {
+        "item" : "1997-02-03T00:00:00.000",
+        "count" : "50"
+      }, {
+        "item" : "1999-02-01T00:00:00.000",
+        "count" : "49"
+      }, {
+        "item" : "2015-11-17T00:00:00.000",
+        "count" : "47"
+      }, {
+        "item" : "2002-04-10T00:00:00.000",
+        "count" : "44"
+      }, {
+        "item" : "2014-03-13T00:00:00.000",
+        "count" : "41"
+      }, {
+        "item" : "2017-02-14T00:00:00.000",
+        "count" : "41"
+      }, {
+        "item" : "2004-01-27T00:00:00.000",
+        "count" : "39"
+      }, {
+        "item" : "2007-06-13T00:00:00.000",
+        "count" : "37"
+      }, {
+        "item" : "1992-01-01T00:00:00.000",
+        "count" : "35"
+      }, {
+        "item" : "2012-03-27T00:00:00.000",
+        "count" : "34"
+      }, {
+        "item" : "2004-05-05T00:00:00.000",
+        "count" : "31"
+      }, {
+        "item" : "2004-08-10T00:00:00.000",
+        "count" : "30"
+      }, {
+        "item" : "2006-10-10T00:00:00.000",
+        "count" : "30"
+      }, {
+        "item" : "2016-12-14T00:00:00.000",
+        "count" : "29"
+      }, {
+        "item" : "2014-06-10T00:00:00.000",
+        "count" : "28"
+      }, {
+        "item" : "2004-03-09T00:00:00.000",
+        "count" : "26"
+      }, {
+        "item" : "2017-04-21T00:00:00.000",
+        "count" : "26"
+      }, {
+        "item" : "2017-01-25T00:00:00.000",
+        "count" : "25"
+      } ],
+      "smallest" : "1979-01-01T00:00:00.000",
+      "not_null" : "28398",
+      "count" : "34810",
+      "cardinality" : "34810"
+    },
+    "format" : {
+      "view" : "date",
+      "align" : "left"
+    }
+  } ],
+  "grants" : [ {
+    "inherited" : false,
+    "type" : "viewer",
+    "flags" : [ "public" ]
+  } ],
+  "metadata" : {
+    "rdfSubject" : "0",
+    "rdfClass" : "",
+    "custom_fields" : {
+      "Update" : {
+        "Automation" : "Yes",
+        "Date Made Public" : "6/15/2016",
+        "Update Frequency" : "Weekly"
+      },
+      "Dataset Information" : {
+        "Agency" : "Mayor's Office of Environmental Coordination (MOEC)"
+      }
+    },
+    "availableDisplayTypes" : [ "table", "fatrow", "page" ],
+    "rowLabel" : "Row",
+    "renderTypeConfig" : {
+      "visible" : {
+        "table" : true
+      }
+    }
+  },
+  "owner" : {
+    "id" : "5fuc-pqz2",
+    "displayName" : "NYC OpenData",
+    "profileImageUrlLarge" : "/api/users/5fuc-pqz2/profile_images/LARGE",
+    "profileImageUrlMedium" : "/api/users/5fuc-pqz2/profile_images/THUMB",
+    "profileImageUrlSmall" : "/api/users/5fuc-pqz2/profile_images/TINY",
+    "screenName" : "NYC OpenData",
+    "type" : "interactive",
+    "flags" : [ "acceptedEula", "mayBeStoriesCoOwner" ]
+  },
+  "query" : { },
+  "rights" : [ "read" ],
+  "tableAuthor" : {
+    "id" : "5fuc-pqz2",
+    "displayName" : "NYC OpenData",
+    "profileImageUrlLarge" : "/api/users/5fuc-pqz2/profile_images/LARGE",
+    "profileImageUrlMedium" : "/api/users/5fuc-pqz2/profile_images/THUMB",
+    "profileImageUrlSmall" : "/api/users/5fuc-pqz2/profile_images/TINY",
+    "screenName" : "NYC OpenData",
+    "type" : "interactive",
+    "flags" : [ "acceptedEula", "mayBeStoriesCoOwner" ]
+  },
+  "tags" : [ "sustainability", "moec", "ceqr", "environment", "project" ],
+  "flags" : [ "default", "ownerMayBeContacted", "restorable", "restorePossibleForType" ]
+}

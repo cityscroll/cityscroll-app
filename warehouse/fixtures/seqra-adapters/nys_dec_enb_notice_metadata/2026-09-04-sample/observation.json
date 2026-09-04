@@ -1,0 +1,19 @@
+{
+  "page_fetches": [
+    {
+      "content_type": "text/html; charset=UTF-8",
+      "http_status": 200,
+      "raw_extension": "html",
+      "raw_slug": "page-0000",
+      "request_url_or_query": "https://dec.ny.gov/news/environmental-notice-bulletin",
+      "requested_at": "2026-09-04T01:50:30.000Z",
+      "retrieved_at": "2026-09-04T01:50:31.100Z"
+    }
+  ],
+  "page_size": 50,
+  "sample_scope": true,
+  "sample_scope_note": "Bounded, one-time discovery capture of the ENB listing page's default (unfiltered) view, trimmed in raw/page-0000.html to its results-summary header plus the first three real notice rows for fixture size; every retained byte is unedited publisher markup (see the leading HTML comment in that file). This is a discovery/metadata receipt, not a claim that the full 15,539-notice archive was walked -- see the adapter's kind: \"html_discovery\" negative-rule handling.",
+  "schema": "cityscroll.seqra_adapter_observation.v1",
+  "source_id": "nys_dec_enb_notice_metadata",
+  "vintage": "2026-09-04-sample"
+}
