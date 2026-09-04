@@ -3045,29 +3045,29 @@
   },
   "measured": {
     "note": "A snapshot of what the profile costs at the revision named here. These figures are reporting only; they are not part of the checked contract, because a byte total moves whenever any tracked file does.",
-    "revision": "3c874e7cac558dca9bccd1e192e9142e5a3b2810",
+    "revision": "311ab95457bb95e2029e2b47d281deb6a1a32c59",
     "computed_in_reduced_checkout": false,
     "profile_paths": {
       "count": 4175,
-      "logical_bytes": 197671333
+      "logical_bytes": 197676196
     },
     "deferred_paths": {
       "count": 298,
-      "logical_bytes": 221538531
+      "logical_bytes": 221544393
     },
     "excluded_paths": {
       "count": 2371,
-      "logical_bytes": 697483146
+      "logical_bytes": 697489431
     },
     "site_data": {
       "tracked_count": 695,
-      "tracked_logical_bytes": 467584077,
+      "tracked_logical_bytes": 467589939,
       "profile_count": 48,
       "profile_logical_bytes": 109046950
     },
     "tracked_total": {
       "count": 6546,
-      "logical_bytes": 895154479
+      "logical_bytes": 895165627
     },
     "pattern_count": 833
   }

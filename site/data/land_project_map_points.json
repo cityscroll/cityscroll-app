@@ -732,6 +732,14 @@
       "bbl_count": 3,
       "shape": null
     },
+    "2026K0123": {
+      "lat": 40.6696224,
+      "lon": -73.9557834,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1,
+      "shape": null
+    },
     "2026Q0210": {
       "lat": 40.6986302,
       "lon": -73.8041122,
