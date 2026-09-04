@@ -1,6 +1,8 @@
 import { existsSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 
+import { validateFirstClassRefreshContracts } from "./first_class_refresh.mjs";
+
 export const ROOT = fileURLToPath(new URL("../", import.meta.url));
 export const REGISTRY_PATH = fileURLToPath(new URL("../site/data/source_contracts.json", import.meta.url));
 export const DOC_PATH = fileURLToPath(new URL("../docs/data-sources.md", import.meta.url));
@@ -188,6 +190,9 @@ export function validateSourceContracts(registry) {
       errors.push(`${label}: auth_token_env must be a string env var name`);
     }
   }
+  if (Object.hasOwn(registry, "first_class_artifacts")) {
+    errors.push(...validateFirstClassRefreshContracts(registry));
+  }
   return errors;
 }
 
@@ -365,6 +370,7 @@ export function renderSourceDocument(registry, coverage) {
     "```sh",
     "node tools/verify_source_contracts.mjs",
     "node tools/generate_source_docs.mjs --check",
+    // determinism-lint: allow external-data this is documentation for the opt-in scheduled monitor, not a check-mode invocation
     "node tools/verify_source_contracts.mjs --live",
     "```",
     "",

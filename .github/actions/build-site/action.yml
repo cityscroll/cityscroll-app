@@ -24,7 +24,7 @@ inputs:
     required: false
     default: "false"
   refresh-resident-snapshots:
-    description: Refresh the Contracts (Money) resident snapshot and its declared downstream artifacts.
+    description: Refresh every due first-class resident dataset and its declared downstream artifacts.
     required: false
     default: "false"
 

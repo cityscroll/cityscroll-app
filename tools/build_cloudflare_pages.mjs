@@ -77,6 +77,7 @@ const refresh = Boolean(args["refresh-decision-outcomes"]);
 const refreshResidentSnapshots = Boolean(args["refresh-resident-snapshots"]);
 const commitSha = args["commit-sha"] || "";
 let residentSnapshotRefreshEvidence = null;
+let firstClassFreshnessReport = null;
 timingReceiptPath = args["timing-receipt"]
   ? resolve(sourceDir, args["timing-receipt"])
   : (process.env.CITYSCROLL_BUILD_TIMING_RECEIPT ? resolve(sourceDir, process.env.CITYSCROLL_BUILD_TIMING_RECEIPT) : null);
@@ -91,16 +92,17 @@ runNode(sourceDir, "build_bbl_mappluto_centroids.mjs", ["--check"]);
 runNode(sourceDir, "build_land_project_map_points.mjs", ["--check"]);
 runNode(sourceDir, "build_land_authority_summary.mjs", ["--check"]);
 
-// Rebuild the shared freshness seam before the desk graph. The external
-// scheduler state directory is optional in local/Pages builds; when absent the
-// generated watchdog records the missing heartbeat instead of silently serving
-// yesterday's committed health clock.
-runNode(sourceDir, "build_source_health_observations.mjs");
-runNode(sourceDir, "build_source_health_observations.mjs", ["--check"]);
-// The public projection is a separate generated receipt consumed by the
-// data-health page. Check it here so an old projection cannot be copied into
-// the release artifact after current observations succeeded.
-runNode(sourceDir, "build_source_health_public_projection.mjs", ["--check"]);
+// The source-contract registry is also the canonical inventory for first-class
+// resident artifacts. Emit the cadence/dependency plan from it on every build
+// so workflows never acquire a separate handwritten refresh list.
+const firstClassPlanPath = join(sourceDir, ".artifacts", "first-class-refresh-plan.json");
+const firstClassRefreshReceiptPath = join(sourceDir, ".artifacts", "first-class-refresh-receipt.json");
+const firstClassReportPath = join(sourceDir, "site", "data", "first_class_freshness_report.json");
+runNode(sourceDir, "first_class_refresh.mjs", [
+  "--check-registry",
+  "--write-plan",
+  "--plan-out", firstClassPlanPath,
+]);
 runNode(sourceDir, "build_product_updates.mjs", ["--check"]);
 
 if (refresh) {
@@ -129,7 +131,21 @@ if (refreshResidentSnapshots) {
     "--evidence-out", freshnessEvidencePath,
   ]);
   residentSnapshotRefreshEvidence = JSON.parse(readFileSync(freshnessEvidencePath, "utf8"));
+  // Run every other due acquisition and owning builder in registry order. A
+  // failed publisher is recorded and isolated here; the hard-age guard below
+  // decides whether its last-known-good artifact is still safe to deploy.
+  runNode(sourceDir, "first_class_refresh.mjs", [
+    "--run-due",
+    "--receipt-out", firstClassRefreshReceiptPath,
+  ]);
 }
+
+// Rebuild the shared freshness seam after acquisition so source-health and
+// first-class artifact reports describe the same release attempt.
+runNode(sourceDir, "build_source_health_observations.mjs");
+runNode(sourceDir, "build_source_health_observations.mjs", ["--check"]);
+runNode(sourceDir, "build_source_health_public_projection.mjs");
+runNode(sourceDir, "build_source_health_public_projection.mjs", ["--check"]);
 
 const graphTool = join(sourceDir, "tools", "data_source_graph.mjs");
 if (existsSync(graphTool)) {
@@ -142,6 +158,20 @@ if (existsSync(graphTool)) {
 const derivedArgs = ["--source-dir", sourceDir];
 if (timingReceiptPath) derivedArgs.push("--timing-receipt", `${timingReceiptPath}.derived.json`);
 runNode(sourceDir, "derived_json_build_boundary.mjs", derivedArgs);
+const freshnessReportArgs = [
+  "--write-report",
+  "--report-out", firstClassReportPath,
+  "--deployment-identity", commitSha || process.env.GITHUB_SHA || "local-build",
+];
+if (existsSync(firstClassRefreshReceiptPath)) {
+  freshnessReportArgs.push("--receipt", firstClassRefreshReceiptPath);
+}
+if (refreshResidentSnapshots) freshnessReportArgs.push("--check-production");
+runNode(sourceDir, "first_class_refresh.mjs", freshnessReportArgs);
+firstClassFreshnessReport = JSON.parse(readFileSync(firstClassReportPath, "utf8"));
+// The derived boundary builds the page from the previous report; rebuild it
+// once more from this release's report before copying the public tree.
+runNode(sourceDir, "build_data_health_page.mjs");
 if (existsSync(join(sourceDir, "tools", "build_url_migration_map.mjs"))) {
   runNode(sourceDir, "build_url_migration_map.mjs", ["--check"]);
 }
@@ -161,14 +191,18 @@ for (const [kind, path, toolArgs] of standards) {
 }
 
 runNode(sourceDir, "build_public_site.mjs", ["--source-dir", sourceDir, "--site-dir", siteDir]);
-if (residentSnapshotRefreshEvidence) {
+if (residentSnapshotRefreshEvidence || firstClassFreshnessReport) {
   // Record the resident-snapshot refresh in the existing generation-output
   // receipt (already a required release-surface stage) rather than a parallel
   // receipt: build_public_site.mjs just (re)wrote it for this same build.
   const generationReceiptPath = join(sourceDir, ".artifacts", "generation-output-receipt.json");
   if (existsSync(generationReceiptPath)) {
     const generationReceipt = JSON.parse(readFileSync(generationReceiptPath, "utf8"));
-    const merged = mergeResidentSnapshotRefreshEvidence(generationReceipt, { contracts: residentSnapshotRefreshEvidence });
+    const evidence = {
+      ...(residentSnapshotRefreshEvidence ? { contracts: residentSnapshotRefreshEvidence } : {}),
+      ...(firstClassFreshnessReport ? { first_class: firstClassFreshnessReport } : {}),
+    };
+    const merged = mergeResidentSnapshotRefreshEvidence(generationReceipt, evidence);
     writeFileSync(generationReceiptPath, `${JSON.stringify(merged, null, 2)}\n`);
   }
 }

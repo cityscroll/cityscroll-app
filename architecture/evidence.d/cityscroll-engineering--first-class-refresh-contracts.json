@@ -1,0 +1,37 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/first-class-refresh-contracts",
+  "status": "implemented",
+  "fingerprint": "first-class-refresh-contracts.v1",
+  "updated_at": "2026-09-04T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "source-contract-refresh-inventory",
+      "path": "site/data/source_contracts.json"
+    },
+    {
+      "id": "registry-derived-refresh-planner",
+      "path": "tools/first_class_refresh.mjs"
+    },
+    {
+      "id": "production-refresh-boundary",
+      "path": "tools/build_cloudflare_pages.mjs"
+    },
+    {
+      "id": "scheduled-production-refresh",
+      "path": ".github/workflows/deploy-cloudflare-pages.yml"
+    },
+    {
+      "id": "resident-freshness-visibility",
+      "path": "site/data_health_page.mjs"
+    },
+    {
+      "id": "post-deploy-primary-route-smoke",
+      "path": "tools/first_class_live_smoke.mjs"
+    },
+    {
+      "id": "refresh-contract-regressions",
+      "path": "test/first_class_refresh.test.mjs"
+    }
+  ]
+}
