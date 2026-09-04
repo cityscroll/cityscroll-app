@@ -969,6 +969,8 @@ async function handleProcurement(request, env, encodedId) {
     html = renderProcurementDocument(result.object, result.observations, {
       currentHref: request.url,
       sourceStatus: result.sources,
+      // determinism-lint: allow clock the request day for the served procurement document's opportunity-month past/current/future states; this handler renders per request, never at build time.
+      today: new Date().toISOString().slice(0, 10),
     });
   }
   if (!html) {

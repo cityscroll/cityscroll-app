@@ -25,6 +25,10 @@ import {
 } from "./cross_source_coverage_ledger.mjs";
 import { renderProcurementProcessEvents } from "./procurement_process_events.mjs";
 import { resolveNycEdcDevelopmentRoles } from "./civic_institution_development_roles.mjs";
+import {
+  opportunityMonthHTML,
+  procurementOpportunityOccurrences,
+} from "./opportunity_calendar.mjs";
 
 const CHECKBOOK_SMART_SEARCH = "https://www.checkbooknyc.com/smart_search/citywide";
 const CHECKBOOK_CONTRACT_SEARCH = "https://www.checkbooknyc.com/contract_search";
@@ -280,10 +284,18 @@ export function renderProcurementDocument(object = {}, observations = [], {
   aboResidual,
   crosswalk = null,
   registeredContractCoverage = null,
+  today = null,
 } = {}) {
   const id = clean(object?.procurement_id, 320);
   if (!id.startsWith("procurement:")) return null;
   const facts = factsFor(object, observations);
+  // One compact opportunity month (conference / questions / proposal dates)
+  // ahead of the observed-event detail. Sparse bundles and an unsupplied day
+  // render nothing; the long lifecycle stays in the sections below.
+  const opportunityMonth = opportunityMonthHTML(
+    procurementOpportunityOccurrences(object, observations).occurrences,
+    { today: clean(today, 10) || null },
+  );
   const factRows = [
     ["Agency", facts.agency], ["Vendor", facts.vendor], ["Amount", facts.amount], ["Award date", facts.awardDate],
     ["Contract number", facts.contractNumber], ["Method", facts.method],
@@ -297,7 +309,7 @@ export function renderProcurementDocument(object = {}, observations = [], {
   const canonical = procurementCanonicalHref(object);
   const html = `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>${esc(facts.title)} · CityScroll</title><link rel="canonical" href="https://cityscroll.org${esc(canonical)}">${renderCivicDocumentAssets("/")}<script type="module" src="/report_issue.mjs"></script></head>
+<title>${esc(facts.title)} · CityScroll</title><link rel="canonical" href="https://cityscroll.org${esc(canonical)}">${renderCivicDocumentAssets("/")}${opportunityMonth ? '<link rel="stylesheet" href="/compact_calendar.css" data-route-style="compact_calendar.css">' : ""}<script type="module" src="/report_issue.mjs"></script></head>
 <body>${renderCivicDocumentMast({ current: "browse" })}<main class="node-document" data-civic-object-kind="procurement" data-procurement-id="${esc(id)}">
 ${renderNodeBack({ href: "/browse/contracts/?mode=award", label: "Back to contracts", currentHref })}
 <header class="node-hero"><p class="ftype">Procurement</p><h1>${esc(facts.title)}</h1></header>
@@ -317,6 +329,13 @@ ${renderCrossSourceCoverageLedger(object?.cross_source_coverage_ledger || buildC
   kind: "procurement",
 }))}
 ${renderProcurementObjectCoverageHtml(object, observations)}
+${renderNodeSection({
+  heading: "Opportunity dates",
+  headingId: "procurement-opportunity-month",
+  extraClass: "procurement-opportunity-calendar",
+  attrs: { id: "procurement-opportunity-month" },
+  body: opportunityMonth,
+})}
 ${renderNodeSection({
   heading: "Observed events",
   headingId: "procurement-process",
