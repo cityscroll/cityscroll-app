@@ -23,6 +23,15 @@ import {
   watchDimension,
 } from "../site/alerts_rollup_prefs.mjs";
 
+// Fixture C — test/digest_preview_awareness.test.mjs / fixture-ledger.json id "C".
+const FIXTURE_C_ROW = {
+  request_id: "FIX-PREV-SOL-1",
+  short_title: "Fixture street materials",
+  agency_name: "Department of Transportation",
+  type_of_notice_description: "Solicitation",
+  due_date: "2026-08-10",
+};
+
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const html = SITE_SOURCE;
 const i18n = readFileSync(join(ROOT, "site/i18n.js"), "utf8");
@@ -85,6 +94,68 @@ test("paused watches are excluded from rollup groups and preview", () => {
   assert.ok(!groups.some((g) => g.watches.some((w) => w.key === "sub:paused")));
   const model = buildRollupPreviewModel(watches);
   assert.equal(model.watchCount, 3);
+});
+
+// Card 1 of the procurement-pursuit-decision workstream: when every active
+// watch in the rollup is money-lens (procurement), the subject leads with the
+// opportunity itself — Fixture C as lead, "(+2)" for the two other matches —
+// while every watch still gets its own body section (every-watch honesty).
+test("all-procurement rollup leads the subject with the opportunity, keeps every watch's section", () => {
+  const watches = [
+    {
+      key: "sub:proc-lead",
+      lens: "money",
+      filter: { keywords: ["street materials"] },
+      query: "Contracts and RFPs — about \"street materials\"",
+      freq: "daily",
+      paused: false,
+      sampleRows: [FIXTURE_C_ROW],
+    },
+    {
+      key: "sub:proc-second",
+      lens: "money",
+      filter: { keywords: ["boiler"] },
+      query: "Contracts and RFPs — about \"boiler\"",
+      freq: "daily",
+      paused: false,
+      sampleRows: [{
+        request_id: "FIX-ROLLUP-2",
+        short_title: "Boiler replacement",
+        agency_name: "Citywide Administrative Services",
+        type_of_notice_description: "Award",
+        contract_amount: 90000,
+      }],
+    },
+    {
+      key: "sub:proc-third",
+      lens: "money",
+      filter: { keywords: ["elevator"] },
+      query: "Contracts and RFPs — about \"elevator\"",
+      freq: "daily",
+      paused: false,
+      sampleRows: [{
+        request_id: "FIX-ROLLUP-3",
+        short_title: "Elevator modernization",
+        agency_name: "Housing Authority",
+        type_of_notice_description: "Award",
+        contract_amount: 120000,
+      }],
+    },
+  ];
+  const model = buildRollupPreviewModel(watches, { groupBy: "topic" });
+  assert.equal(model.subject, "DOT · Fixture street materials · closes Aug 10 (+2)");
+  // Every watch keeps its own section/TOC entry beneath the lead subject.
+  assert.equal(model.sections.length, 3);
+  assert.equal(model.toc.length, 3);
+  assert.ok(model.sections.some((s) => s.key === "sub:proc-second"));
+  assert.ok(model.sections.some((s) => s.key === "sub:proc-third"));
+});
+
+test("mixed-lens rollup (not all watches money) keeps the existing multi-watch subject", () => {
+  // demoRollupWatches() mixes money/land/entity — the opportunity-first
+  // subject only applies when every active watch is money-lens.
+  const model = demoRollupPreviewModel();
+  assert.match(model.subject, /3 watches/);
 });
 
 test("#alerts mounts rollup prefs panel and group-by chips", () => {
