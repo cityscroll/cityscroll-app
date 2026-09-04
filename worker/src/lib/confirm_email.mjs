@@ -3,6 +3,7 @@
 // templates are unit-tested on their own.
 
 import { communityBoardLabel, normalizeCommunityBoardRef } from "../../../site/community_board_watch.mjs";
+import { PLACE_ROLES, PLACE_ROLE_VERB, placeRoleSupportedForDomain } from "../../../site/scope_v0.mjs";
 
 const LENS_LABEL = {
   money: "Contracts and RFPs",
@@ -20,6 +21,40 @@ const LENS_LABEL = {
 const usd = (n) => "$" + Number(n).toLocaleString("en-US");
 const esc = (s) => String(s == null ? "" : s).replace(/[<>&"]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;" }[c]));
 const BOROUGH_BY_ID = { 1: "Manhattan", 2: "Bronx", 3: "Brooklyn", 4: "Queens", 5: "Staten Island" };
+
+/** Same place-name vocabulary composeWatchRuleSentence() uses (site/following_view.mjs). */
+function placeRoleName(f) {
+  if (f.communityDistrict) return `Community District ${f.communityDistrict}`;
+  if (f.councilDistrict) return `City Council District ${f.councilDistrict}`;
+  if (f.borough || f.boro) return f.borough || f.boro;
+  if (f.neighborhood) return f.neighborhood;
+  if (Array.isArray(f.geographies) && f.geographies.length) {
+    const labels = f.geographies.map(geographyLabel).filter(Boolean);
+    if (labels.length) return labels.join(" / ");
+  }
+  return null;
+}
+
+/**
+ * PS-03: render the place-role predicate ("affecting City Council District 33", "happening
+ * in Community District 1") into the email/digest label instead of the plain "in <place>"
+ * phrasing, so a reader can tell why a record is in this digest at all -- not just where it
+ * is. Shares PLACE_ROLE_VERB with composeWatchRuleSentence() (site/following_view.mjs) so
+ * the wording matches whatever the Following page already showed the subscriber. Gated on
+ * placeRoleSupportedForDomain() so a lens whose evaluation doesn't enforce the predicate
+ * (see worker/src/lib/compile.mjs -- meetings-only today) never claims a match reason the
+ * digest query didn't actually apply.
+ */
+function placeRolePart(lens, f) {
+  const role = placeRoleSupportedForDomain(lens) && PLACE_ROLES.includes(f.place_role)
+    ? f.place_role
+    : null;
+  if (!role) return null;
+  const name = placeRoleName(f);
+  if (!name) return null;
+  const verb = PLACE_ROLE_VERB[role];
+  return verb === "about" ? `about ${name}` : verb === "happening" ? `happening in ${name}` : `${verb} ${name}`;
+}
 
 function geographyLabel(key) {
   const match = String(key || "").match(/^geography:([^:]+):(.+)$/);
@@ -92,12 +127,20 @@ export function describeFilter(lens, filter) {
   if (f.category) parts.push(`category “${f.category}”`);
   if (f.agency) parts.push(`agency “${f.agency}”`);
   if (f.family && f.family !== "any") parts.push(`action type “${String(f.family).replace(/_/g, " ")}”`);
-  if (f.boro) parts.push(`in ${f.boro}`);
-  if (f.borough) parts.push(`in ${f.borough}`);
-  if (f.neighborhood) parts.push(`near ${f.neighborhood}`);
-  if (Array.isArray(f.geographies) && f.geographies.length) {
-    const labels = f.geographies.map(geographyLabel).filter(Boolean);
-    if (labels.length) parts.push(`in ${labels.join(" / ")}`);
+  const placeRole = placeRolePart(lens, f);
+  if (placeRole) {
+    // A saved place role changes the ask ("happening" vs "affecting") -- show that instead
+    // of the undifferentiated "in <place>" phrasing so the digest label matches what the
+    // subscriber actually asked for (PS-03).
+    parts.push(placeRole);
+  } else {
+    if (f.boro) parts.push(`in ${f.boro}`);
+    if (f.borough) parts.push(`in ${f.borough}`);
+    if (f.neighborhood) parts.push(`near ${f.neighborhood}`);
+    if (Array.isArray(f.geographies) && f.geographies.length) {
+      const labels = f.geographies.map(geographyLabel).filter(Boolean);
+      if (labels.length) parts.push(`in ${labels.join(" / ")}`);
+    }
   }
   if (f.process) parts.push(`stage “${({ hearing: "hearing", auction_or_rfp: "auction / RFP", award_or_conveyance: "award / conveyance", unstaged: "unclassified" })[f.process] || String(f.process).replace(/_/g, " ")}”`);
   if (f.stage) parts.push(`when “${f.stage}”`);

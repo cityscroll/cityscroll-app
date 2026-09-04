@@ -32,6 +32,18 @@ export function placeRoleSupportedForDomain(domain) {
   return PLACE_ROLE_SUPPORTED_DOMAINS.includes(domain);
 }
 
+/**
+ * Canonical plain-language verb for each place-role predicate (PS-03). The Following watch
+ * sentence and the email/digest label both read from this one map rather than each inventing
+ * its own wording, so "venue" always reads as "happening", "matter" as "about", and
+ * "affected_area" as "affecting" everywhere the predicate is rendered for a person.
+ */
+export const PLACE_ROLE_VERB = Object.freeze({
+  venue: "happening",
+  matter: "about",
+  affected_area: "affecting",
+});
+
 /** Drop an unrecognized place_role rather than let an invalid value ride the wire. */
 function normalizePlaceRoleFacet(values) {
   if (values.place_role == null || PLACE_ROLES.includes(values.place_role)) return values;

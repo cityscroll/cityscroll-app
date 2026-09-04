@@ -47,7 +47,7 @@ export const LENSES = {
   land:     ["keywords", "boro", "status", "communityDistrict", "councilDistrict", "nearMe", "procedure", "family", "regulatoryEffect", "futureAction", "attendance", "geographies", "place_role"],
   property: ["keywords", "agency", "process", "stage", "asset", "saleMethod", "priceBand", "sort", "borough", "neighborhood", "communityDistrict", "nearMe", "geographies", "place_role"],
   rules:    ["keywords", "agency", "process", "geographies", "place_role", "request_ids"],
-  meetings: ["keywords", "agency", "when", "borough", "neighborhood", "locationScope", "dateWindow", "process", "nearMe", "geographies", "place_role", "communityBoard"],
+  meetings: ["keywords", "agency", "when", "borough", "neighborhood", "communityDistrict", "councilDistrict", "locationScope", "dateWindow", "process", "nearMe", "geographies", "place_role", "communityBoard"],
   district: ["councilDistrict"],
   entity:   ["name", "kind", "tab", "entity_refs_all"],
   // World-state agency mandates (statutory duties / approaching deadlines). Not a City
