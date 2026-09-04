@@ -1,0 +1,42 @@
+{
+  "schema": "cityscroll.capability_spine_state.v1",
+  "card": "cs-09-os-evidence-truth-reset",
+  "generated_at": "2026-09-04T00:00:00.000Z",
+  "states": {
+    "capability_ready": {
+      "satisfied": true,
+      "state": "proven",
+      "registered_public_capabilities": 12,
+      "reason": null
+    },
+    "live_mcp_verified": {
+      "satisfied": false,
+      "state": "not_yet_proven",
+      "reason": "no receipt at artifacts/capability-spine/cs-10-live-remote-mcp-canary.json",
+      "receipt": "artifacts/capability-spine/cs-10-live-remote-mcp-canary.json"
+    },
+    "os_deployed": {
+      "satisfied": false,
+      "state": "not_yet_proven",
+      "reason": "no receipt at artifacts/capability-spine/cs-12-cloudflare-os-deployment.json",
+      "receipt": "artifacts/capability-spine/cs-12-cloudflare-os-deployment.json"
+    },
+    "gatekeeper_connected": {
+      "satisfied": false,
+      "state": "not_yet_proven",
+      "reason": "no receipt at artifacts/capability-spine/cs-13-gatekeeper-session.json",
+      "receipt": "artifacts/capability-spine/cs-13-gatekeeper-session.json"
+    },
+    "agent_proven": {
+      "satisfied": false,
+      "state": "not_yet_proven",
+      "reason": "no receipt at artifacts/capability-spine/cs-14-agent-evaluation.json",
+      "receipt": "artifacts/capability-spine/cs-14-agent-evaluation.json"
+    }
+  },
+  "preserved_local_rehearsal_evidence": [
+    "artifacts/capability-spine/cs-06-remote-mcp.json",
+    "artifacts/capability-spine/cs-07-cloudflare-os-proof.json",
+    "artifacts/capability-spine/cs-08-code-mode.json"
+  ]
+}

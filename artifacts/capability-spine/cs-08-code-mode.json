@@ -1027,6 +1027,9 @@
       "retrieve_cited_passages"
     ]
   },
+  "evidence_class": "local_protocol_interop",
+  "evidence_notes": "A synthetic Code Mode experiment harness: both arms dispatch the current MCP client's transport to handleMcp() in-process against frozen fixtures, and the model is disabled (model_live: false). Wall-clock and token figures are accounted replay measurements, not a live Cloudflare OS Code Mode performance result.",
+  "execution_environment": "node-intercepted-transport-fixture",
   "fixture": {
     "id": "cs-07-acme-entity-research-v1",
     "path": "test/fixtures/cloudflare_os_entity_research.json",
@@ -1108,8 +1111,10 @@
     },
     "matched_arms": false,
     "measurement_method": "frozen-fixture capability replay; accounted wall-clock; live composition memoized per arm",
+    "negotiated_version": "2025-06-18",
     "repetitions": 30,
     "require_parity": true,
+    "transport": "Streamable HTTP",
     "treatment_protocol": "typed-code-mode",
     "warmups": 5
   },
