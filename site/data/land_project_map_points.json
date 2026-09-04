@@ -199,6 +199,14 @@
       "bbl_count": 5,
       "shape": null
     },
+    "2024K0214": {
+      "lat": 40.6844389,
+      "lon": -73.890357,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1,
+      "shape": null
+    },
     "2024K0286": {
       "lat": 40.7179526,
       "lon": -73.9646761,
@@ -732,12 +740,28 @@
       "bbl_count": 3,
       "shape": null
     },
+    "2025R0222": {
+      "lat": 40.5255405,
+      "lon": -74.1771867,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 2,
+      "shape": null
+    },
     "2026K0123": {
       "lat": 40.6696224,
       "lon": -73.9557834,
       "method": "single_bbl_centroid",
       "precision": "exact",
       "bbl_count": 1,
+      "shape": null
+    },
+    "2026K0233": {
+      "lat": 40.6980489,
+      "lon": -73.9819394,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 2,
       "shape": null
     },
     "2026Q0210": {

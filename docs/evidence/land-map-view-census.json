@@ -19,18 +19,18 @@
       "phase": "WH-06",
       "dataset_id": "2iga-a6mk",
       "mode": "bulk_warehouse",
-      "materialized_at": "2026-08-05T10:41:38.120Z",
-      "project_count": 24542,
-      "bbl_row_count": 50514,
-      "sha256": "310a681d014bd31a5e18b5c567664615e204502c0f15dea1582dfd6f38955edf"
+      "materialized_at": "2026-09-04T11:12:46.107Z",
+      "project_count": 24575,
+      "bbl_row_count": 50630,
+      "sha256": "15a4312ad4b65a27f0611182fa5d33e617b7f6ca294e41ad278aa4bac66d3eb5"
     },
     "mappluto_centroids": {
       "path": "site/data/bbl_mappluto_centroids_lookup.json",
       "source": "mappluto",
       "mode": "mappluto_pluto_csv",
-      "materialized_at": "2026-08-18T03:13:42.683Z",
-      "bbl_count": 1092,
-      "sha256": "236d627b8f34767d433f80ba3c60a381bc4189c04b77d64aa75a92becce3c426"
+      "materialized_at": "2026-09-04T11:44:37.763Z",
+      "bbl_count": 1203,
+      "sha256": "52af674f4abe6cbd3c8c8aa3cfba289daa75d9428f215162c62681636a6d1e11"
     },
     "property_observations": {
       "path": "site/data/property_domain_observations.json",
@@ -41,17 +41,17 @@
   },
   "aggregations": {
     "denominator": 40,
-    "mapped": 29,
-    "unmapped": 11,
-    "coverage_percent": 72.5,
-    "exact_bbl_projects": 35,
-    "bbl_occurrences": 278,
-    "unique_bbl_keys": 271,
-    "matched_centroid_occurrences": 227,
-    "unique_centroid_keys": 220,
+    "mapped": 33,
+    "unmapped": 7,
+    "coverage_percent": 82.5,
+    "exact_bbl_projects": 39,
+    "bbl_occurrences": 284,
+    "unique_bbl_keys": 277,
+    "matched_centroid_occurrences": 233,
+    "unique_centroid_keys": 226,
     "methods": {
-      "single_bbl_centroid": 9,
-      "multi_bbl_anchor": 20,
+      "single_bbl_centroid": 11,
+      "multi_bbl_anchor": 22,
       "publisher_point": 0,
       "property_coordinate": 0,
       "geometry_representative_point": 0
@@ -68,11 +68,7 @@
     "P2012X0048",
     "2020Q0317",
     "2023M0452",
-    "2026K0123",
-    "2024K0214",
-    "2025M0252",
-    "2025R0222",
-    "2026K0233"
+    "2025M0252"
   ],
   "unmapped_exact_bbl_missing_centroid": [
     "2020M0385",
@@ -83,11 +79,7 @@
     "2023M0452"
   ],
   "unmapped_no_retained_bbl": [
-    "2026K0123",
-    "2024K0214",
-    "2025M0252",
-    "2025R0222",
-    "2026K0233"
+    "2025M0252"
   ],
   "projects": [
     {
@@ -444,17 +436,29 @@
     {
       "project_id": "2026K0123",
       "project_name": "1550 Bedford Avenue Rezoning",
-      "mapped": false,
-      "method": "unmapped",
-      "unmapped_reason": "no_retained_bbl",
-      "exact_bbl_count": 0,
-      "unique_exact_bbl_count": 0,
-      "exact_bbl_keys": [],
-      "matched_centroid_count": 0,
-      "unique_matched_centroid_count": 0,
-      "matched_centroids": [],
-      "point": null,
-      "point_role": null,
+      "mapped": true,
+      "method": "single_bbl_centroid",
+      "unmapped_reason": null,
+      "exact_bbl_count": 1,
+      "unique_exact_bbl_count": 1,
+      "exact_bbl_keys": [
+        "3012660036"
+      ],
+      "matched_centroid_count": 1,
+      "unique_matched_centroid_count": 1,
+      "matched_centroids": [
+        {
+          "bbl": "3012660036",
+          "lat": 40.6696224,
+          "lon": -73.9557834
+        }
+      ],
+      "point": {
+        "bbl": "3012660036",
+        "lat": 40.6696224,
+        "lon": -73.9557834
+      },
+      "point_role": "single_bbl_centroid",
       "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1"
     },
     {
@@ -554,17 +558,29 @@
     {
       "project_id": "2024K0214",
       "project_name": "341-361 Highland Boulevard Rezoning",
-      "mapped": false,
-      "method": "unmapped",
-      "unmapped_reason": "no_retained_bbl",
-      "exact_bbl_count": 0,
-      "unique_exact_bbl_count": 0,
-      "exact_bbl_keys": [],
-      "matched_centroid_count": 0,
-      "unique_matched_centroid_count": 0,
-      "matched_centroids": [],
-      "point": null,
-      "point_role": null,
+      "mapped": true,
+      "method": "single_bbl_centroid",
+      "unmapped_reason": null,
+      "exact_bbl_count": 1,
+      "unique_exact_bbl_count": 1,
+      "exact_bbl_keys": [
+        "3038910435"
+      ],
+      "matched_centroid_count": 1,
+      "unique_matched_centroid_count": 1,
+      "matched_centroids": [
+        {
+          "bbl": "3038910435",
+          "lat": 40.6844389,
+          "lon": -73.890357
+        }
+      ],
+      "point": {
+        "bbl": "3038910435",
+        "lat": 40.6844389,
+        "lon": -73.890357
+      },
+      "point_role": "single_bbl_centroid",
       "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1"
     },
     {
@@ -1318,17 +1334,35 @@
     {
       "project_id": "2025R0222",
       "project_name": "St. Joseph by the Sea Special Permit",
-      "mapped": false,
-      "method": "unmapped",
-      "unmapped_reason": "no_retained_bbl",
-      "exact_bbl_count": 0,
-      "unique_exact_bbl_count": 0,
-      "exact_bbl_keys": [],
-      "matched_centroid_count": 0,
-      "unique_matched_centroid_count": 0,
-      "matched_centroids": [],
-      "point": null,
-      "point_role": null,
+      "mapped": true,
+      "method": "multi_bbl_anchor",
+      "unmapped_reason": null,
+      "exact_bbl_count": 2,
+      "unique_exact_bbl_count": 2,
+      "exact_bbl_keys": [
+        "5064750001",
+        "5064750040"
+      ],
+      "matched_centroid_count": 2,
+      "unique_matched_centroid_count": 2,
+      "matched_centroids": [
+        {
+          "bbl": "5064750001",
+          "lat": 40.5255405,
+          "lon": -74.1771867
+        },
+        {
+          "bbl": "5064750040",
+          "lat": 40.5238953,
+          "lon": -74.176096
+        }
+      ],
+      "point": {
+        "bbl": "5064750001",
+        "lat": 40.5255405,
+        "lon": -74.1771867
+      },
+      "point_role": "existence_proof",
       "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1"
     },
     {
@@ -1908,17 +1942,35 @@
     {
       "project_id": "2026K0233",
       "project_name": "240 Nassau Street",
-      "mapped": false,
-      "method": "unmapped",
-      "unmapped_reason": "no_retained_bbl",
-      "exact_bbl_count": 0,
-      "unique_exact_bbl_count": 0,
-      "exact_bbl_keys": [],
-      "matched_centroid_count": 0,
-      "unique_matched_centroid_count": 0,
-      "matched_centroids": [],
-      "point": null,
-      "point_role": null,
+      "mapped": true,
+      "method": "multi_bbl_anchor",
+      "unmapped_reason": null,
+      "exact_bbl_count": 2,
+      "unique_exact_bbl_count": 2,
+      "exact_bbl_keys": [
+        "3001100025",
+        "3001110001"
+      ],
+      "matched_centroid_count": 2,
+      "unique_matched_centroid_count": 2,
+      "matched_centroids": [
+        {
+          "bbl": "3001100025",
+          "lat": 40.6980489,
+          "lon": -73.9819394
+        },
+        {
+          "bbl": "3001110001",
+          "lat": 40.6978511,
+          "lon": -73.9811208
+        }
+      ],
+      "point": {
+        "bbl": "3001100025",
+        "lat": 40.6980489,
+        "lon": -73.9819394
+      },
+      "point_role": "existence_proof",
       "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1"
     },
     {

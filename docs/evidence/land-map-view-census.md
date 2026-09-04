@@ -4,26 +4,26 @@ This receipt measures how much of the current 40-row Land default snapshot can b
 
 ## Bottom line
 
-**29 of 40 projects (72.5 percent)** have at least one exact WH-06 BBL with a finite retained MapPLUTO centroid. **11 projects remain unmapped** and stay in the List denominator. No runtime geocoder, live GIS request, borough or district guess, neighboring parcel, or outcome-only point is counted as deterministic placement.
+**33 of 40 projects (82.5 percent)** have at least one exact WH-06 BBL with a finite retained MapPLUTO centroid. **7 projects remain unmapped** and stay in the List denominator. No runtime geocoder, live GIS request, borough or district guess, neighboring parcel, or outcome-only point is counted as deterministic placement.
 
-`29 / 40 = 72.5%`
+`33 / 40 = 82.5%`
 
-Unmapped project ids: 2020M0385, 2020K0444, 2024Q0135, P2012X0048, 2020Q0317, 2023M0452, 2026K0123, 2024K0214, 2025M0252, 2025R0222, 2026K0233.
+Unmapped project ids: 2020M0385, 2020K0444, 2024Q0135, P2012X0048, 2020Q0317, 2023M0452, 2025M0252.
 
 ## Aggregation
 
 | Quantity | Value |
 | --- | ---: |
 | Default Land projects (denominator) | 40 |
-| Deterministically mapped | 29 |
-| Unmapped | 11 |
-| Exact-BBL projects | 35 |
-| BBL occurrences | 278 |
-| Unique BBL keys | 271 |
-| Matched centroid occurrences | 227 |
-| Unique centroid keys | 220 |
-| single_bbl_centroid | 9 |
-| multi_bbl_anchor | 20 |
+| Deterministically mapped | 33 |
+| Unmapped | 7 |
+| Exact-BBL projects | 39 |
+| BBL occurrences | 284 |
+| Unique BBL keys | 277 |
+| Matched centroid occurrences | 233 |
+| Unique centroid keys | 226 |
+| single_bbl_centroid | 11 |
+| multi_bbl_anchor | 22 |
 | publisher_point | 0 |
 | property_coordinate | 0 |
 | geometry_representative_point | 0 |
@@ -31,7 +31,7 @@ Unmapped project ids: 2020M0385, 2020K0444, 2024Q0135, P2012X0048, 2020Q0317, 20
 | New publisher work | false |
 
 Exact-BBL projects without a retained centroid: 2020M0385, 2020K0444, 2024Q0135, P2012X0048, 2020Q0317, 2023M0452.
-Projects with no retained WH-06 BBL: 2026K0123, 2024K0214, 2025M0252, 2025R0222, 2026K0233.
+Projects with no retained WH-06 BBL: 2025M0252.
 
 ## Specimens
 
@@ -43,8 +43,8 @@ Projects with no retained WH-06 BBL: 2026K0123, 2024K0214, 2025M0252, 2025R0222,
 | Artifact | Vintage / identity | SHA-256 |
 | --- | --- | --- |
 | `site/data/land_default_ulurp.json` | 2026-08-23T07:59:14.162Z | `3f60a1ac51f8e80ebec80d0895be41541174da5cadc80c1021bf8d7bcbdb9443` |
-| `site/data/zap_bbl_warehouse_lookup.json` | 2026-08-05T10:41:38.120Z (WH-06, 2iga-a6mk) | `310a681d014bd31a5e18b5c567664615e204502c0f15dea1582dfd6f38955edf` |
-| `site/data/bbl_mappluto_centroids_lookup.json` | 2026-08-18T03:13:42.683Z (mappluto_pluto_csv) | `236d627b8f34767d433f80ba3c60a381bc4189c04b77d64aa75a92becce3c426` |
+| `site/data/zap_bbl_warehouse_lookup.json` | 2026-09-04T11:12:46.107Z (WH-06, 2iga-a6mk) | `15a4312ad4b65a27f0611182fa5d33e617b7f6ca294e41ad278aa4bac66d3eb5` |
+| `site/data/bbl_mappluto_centroids_lookup.json` | 2026-09-04T11:44:37.763Z (mappluto_pluto_csv) | `52af674f4abe6cbd3c8c8aa3cfba289daa75d9428f215162c62681636a6d1e11` |
 
 Join version: `exact_project_id_wh06_bbl_mappluto_centroid_v1`. Rebuild with `node tools/build_land_mapability_census.mjs` or check the committed bytes with `node tools/build_land_mapability_census.mjs --check`.
 
@@ -60,9 +60,9 @@ Join version: `exact_project_id_wh06_bbl_mappluto_centroid_v1`. Rebuild with `no
 | `2023M0452` | no | unmapped | 1 | 0 | exact_bbl_missing_centroid |
 | `2026R0127` | yes | single_bbl_centroid | 1 | 1 | — |
 | `2025K0305` | yes | multi_bbl_anchor | 25 | 25 | — |
-| `2026K0123` | no | unmapped | 0 | 0 | no_retained_bbl |
+| `2026K0123` | yes | single_bbl_centroid | 1 | 1 | — |
 | `2024Q0325` | yes | multi_bbl_anchor | 12 | 12 | — |
-| `2024K0214` | no | unmapped | 0 | 0 | no_retained_bbl |
+| `2024K0214` | yes | single_bbl_centroid | 1 | 1 | — |
 | `2024M0244` | yes | multi_bbl_anchor | 8 | 8 | — |
 | `2025M0338` | yes | multi_bbl_anchor | 6 | 6 | — |
 | `2024K0358` | yes | multi_bbl_anchor | 2 | 2 | — |
@@ -79,13 +79,13 @@ Join version: `exact_project_id_wh06_bbl_mappluto_centroid_v1`. Rebuild with `no
 | `2022K0416` | yes | multi_bbl_anchor | 6 | 6 | — |
 | `2025Q0142` | yes | single_bbl_centroid | 1 | 1 | — |
 | `2025Q0247` | yes | multi_bbl_anchor | 2 | 2 | — |
-| `2025R0222` | no | unmapped | 0 | 0 | no_retained_bbl |
+| `2025R0222` | yes | multi_bbl_anchor | 2 | 2 | — |
 | `2025R0137` | yes | multi_bbl_anchor | 3 | 3 | — |
 | `2025Q0316` | yes | multi_bbl_anchor | 25 | 25 | — |
 | `2026Q0210` | yes | multi_bbl_anchor | 25 | 25 | — |
 | `2025M0395` | yes | single_bbl_centroid | 1 | 1 | — |
 | `2022K0430` | yes | multi_bbl_anchor | 25 | 23 | — |
-| `2026K0233` | no | unmapped | 0 | 0 | no_retained_bbl |
+| `2026K0233` | yes | multi_bbl_anchor | 2 | 2 | — |
 | `2024K0196` | yes | multi_bbl_anchor | 5 | 5 | — |
 | `2023Q0303` | yes | multi_bbl_anchor | 11 | 11 | — |
 | `2025K0154` | yes | multi_bbl_anchor | 3 | 3 | — |

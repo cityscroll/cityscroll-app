@@ -33,13 +33,13 @@
     },
     "mappluto_centroids": {
       "path": "site/data/bbl_mappluto_centroids_lookup.json",
-      "count": 1092,
+      "count": 1203,
       "vintage": {
         "source": "mappluto",
         "mode": "mappluto_pluto_csv",
-        "materialized_at": "2026-08-18T03:13:42.683Z"
+        "materialized_at": "2026-09-04T11:44:37.763Z"
       },
-      "sha256": "236d627b8f34767d433f80ba3c60a381bc4189c04b77d64aa75a92becce3c426"
+      "sha256": "52af674f4abe6cbd3c8c8aa3cfba289daa75d9428f215162c62681636a6d1e11"
     },
     "join_keys": [
       "project_id",
@@ -48,22 +48,23 @@
   },
   "counts": {
     "universe": 40,
-    "mapped": 30,
+    "mapped": 33,
     "unmapped": 0,
     "rejected": 0,
-    "source_missing": 10
+    "source_missing": 7
   },
   "output": {
-    "mapped": 30,
+    "mapped": 33,
     "unmapped": 0,
     "rejected": 0,
-    "source_missing": 10
+    "source_missing": 7
   },
   "mapped_project_ids": [
     "2026R0127",
     "2025K0305",
     "2026K0123",
     "2024Q0325",
+    "2024K0214",
     "2024M0244",
     "2025M0338",
     "2024K0358",
@@ -79,11 +80,13 @@
     "2022K0416",
     "2025Q0142",
     "2025Q0247",
+    "2025R0222",
     "2025R0137",
     "2025Q0316",
     "2026Q0210",
     "2025M0395",
     "2022K0430",
+    "2026K0233",
     "2024K0196",
     "2023Q0303",
     "2025K0154",
@@ -100,10 +103,7 @@
     "P2012X0048",
     "2020Q0317",
     "2023M0452",
-    "2024K0214",
-    "2025M0252",
-    "2025R0222",
-    "2026K0233"
+    "2025M0252"
   ],
   "unmapped_exact_bbl_missing_centroid": [
     "2020M0385",
@@ -111,10 +111,7 @@
     "2024Q0135",
     "P2012X0048",
     "2020Q0317",
-    "2023M0452",
-    "2024K0214",
-    "2025R0222",
-    "2026K0233"
+    "2023M0452"
   ],
   "unmapped_no_retained_bbl": [
     "2025M0252"
@@ -222,13 +219,13 @@
     },
     {
       "project_id": "2024K0214",
-      "status": "source_missing",
-      "reason": "exact_bbl_missing_centroid",
-      "method": "unmapped",
-      "precision": null,
-      "bbl_count": 0,
+      "status": "mapped",
+      "reason": null,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1,
       "exact_bbl_count": 1,
-      "selected_bbl": null
+      "selected_bbl": "3038910435"
     },
     {
       "project_id": "2024M0244",
@@ -392,13 +389,13 @@
     },
     {
       "project_id": "2025R0222",
-      "status": "source_missing",
-      "reason": "exact_bbl_missing_centroid",
-      "method": "unmapped",
-      "precision": null,
-      "bbl_count": 0,
+      "status": "mapped",
+      "reason": null,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 2,
       "exact_bbl_count": 2,
-      "selected_bbl": null
+      "selected_bbl": "5064750001"
     },
     {
       "project_id": "2025R0137",
@@ -452,13 +449,13 @@
     },
     {
       "project_id": "2026K0233",
-      "status": "source_missing",
-      "reason": "exact_bbl_missing_centroid",
-      "method": "unmapped",
-      "precision": null,
-      "bbl_count": 0,
+      "status": "mapped",
+      "reason": null,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 2,
       "exact_bbl_count": 2,
-      "selected_bbl": null
+      "selected_bbl": "3001100025"
     },
     {
       "project_id": "2024K0196",
@@ -526,7 +523,7 @@
     "resolver_version": "cityscroll.land_project_geography.v1",
     "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1",
     "payload_path": "site/data/land_project_map_points.json",
-    "payload_bytes": 22296,
-    "payload_sha256": "802ca1198a771bb15fe9e4a5fa606f4a658eeb74addf7b7a2cae35c18d5082ce"
+    "payload_bytes": 22849,
+    "payload_sha256": "4d7c410430350ede27e7c44fc4bd550ab2fa0e6a1e094d0997293f036d8c0837"
   }
 }
