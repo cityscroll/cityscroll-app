@@ -390,7 +390,10 @@ test("queue path: multi-watch account enqueues one rollup job and consumeDigestJ
     const result = await consumeDigestJob(env, queueJobs[0], { now: FIXTURE_NOW });
     assert.equal(result.kind, "rollup");
     assert.equal(sentEmails.length, 1);
-    assert.match(sentEmails[0].subject, /watches/);
+    // Both money-lens watches matched, so the account rollup leads with the
+    // opportunity itself (procurement-pursuit-decision, Card 1) rather than a
+    // bare "N watches" count — the every-watch rollup body is unaffected.
+    assert.match(sentEmails[0].subject, /DOE.*School construction services.*\(\+1\)/);
     assert.match(sentEmails[0].html, /your daily digest/i);
     assert.match(sentEmails[0].html, /Manage watches|manage/i);
     assert.equal(await ALERT_STATE.get("lastsent:sub:q-a"), today);

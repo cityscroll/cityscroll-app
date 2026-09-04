@@ -362,6 +362,7 @@
     "site/preview_federated_form_factor.mjs",
     "site/primary_document_view.mjs",
     "site/process_conformance.mjs",
+    "site/procurement_alert_atom.mjs",
     "site/procurement_browse_query.mjs",
     "site/procurement_coverage_labels.mjs",
     "site/procurement_digest_compile.mjs",

@@ -1,0 +1,72 @@
+{
+  "schema": "cityscroll.procurement_pursuit_decision_alerts_manifest.v1",
+  "captured_at": "2026-09-04T19:43:03Z",
+  "revision": "bdb8a4d05061f0300b28ef062c3d88ee142a13d8",
+  "note": "Card 1 (opportunity-first procurement alert atom) evidence. Rendered by calling the production subDigestHtml()/rollupDigestHtml() (worker/src/alerts.mjs) and buildProcurementAlertAtom()/procurementAlertSubject() (site/procurement_alert_atom.mjs) directly. Per this repository's binding evidence rule for this card, full HTML previews are committed in-repo (no screenshot binaries); each entry's sha256 is over the committed HTML file's content.",
+  "captures": [
+    {
+      "case": "alert-fixture-c-single-watch",
+      "surface": "email-preview",
+      "route": "/_capture/alerts/alert-fixture-c-single-watch",
+      "viewport_intent": "responsive email HTML; reviewable at narrow mobile and desktop widths",
+      "revision": "bdb8a4d05061f0300b28ef062c3d88ee142a13d8",
+      "fixture_ids": [
+        "C"
+      ],
+      "data_vintage": "test/digest_preview_awareness.test.mjs FIX-PREV-SOL-1 fixture row; rendered as of 2026-08-02",
+      "assertion": "Opportunity-first subject 'DOT · Fixture street materials · closes Aug 10' (agency + recognizable title + closing date; amount omitted, never observed). Body still carries match evidence, deadline awareness, and the explicit package URL ahead of actions.",
+      "subject": "DOT · Fixture street materials · closes Aug 10",
+      "html_filename": "alert-fixture-c-single-watch.html",
+      "sha256": "073b91c38f0e02fb826995e86a2ef5a694a1382c5a6cc7e25ff57aafca25f191",
+      "bytes": 2146
+    },
+    {
+      "case": "alert-fixture-d-single-watch",
+      "surface": "email-preview",
+      "route": "/_capture/alerts/alert-fixture-d-single-watch",
+      "viewport_intent": "responsive email HTML; reviewable at narrow mobile and desktop widths",
+      "revision": "bdb8a4d05061f0300b28ef062c3d88ee142a13d8",
+      "fixture_ids": [
+        "D"
+      ],
+      "data_vintage": "test/fixtures/procurement_pursuit_decision/fixture-ledger.json id D identity; rendered as of 2026-08-02",
+      "assertion": "Sparse real solicitation subject 'MTA C&D · CBTC for 6th Ave / 63rd St · deadline not published' — no $0, no fabricated due date, no generic 'Respond now' CTA; unknown amount is omitted and unknown deadline is explicitly labeled per acceptance criterion 2.",
+      "subject": "MTA C&D · CBTC for 6th Ave / 63rd St · deadline not published",
+      "html_filename": "alert-fixture-d-single-watch.html",
+      "sha256": "75b681b7ab3e36e65528e98e5208b85091911af2084d191d1e4deec833a19106",
+      "bytes": 1758
+    },
+    {
+      "case": "alert-fixture-e-single-watch",
+      "surface": "email-preview",
+      "route": "/_capture/alerts/alert-fixture-e-single-watch",
+      "viewport_intent": "responsive email HTML; reviewable at narrow mobile and desktop widths",
+      "revision": "bdb8a4d05061f0300b28ef062c3d88ee142a13d8",
+      "fixture_ids": [
+        "E"
+      ],
+      "data_vintage": "test/digest_preview_awareness.test.mjs FIX-PREV-AWD-1 fixture row; rendered as of 2026-08-02",
+      "assertion": "Award control keeps award-specific language: the subject never renders a closing date or bid CTA, and the body's action rail stays 'Awarded to' / 'Open Checkbook', never rewritten as a solicitation.",
+      "subject": "Fixture award · $250,000",
+      "html_filename": "alert-fixture-e-single-watch.html",
+      "sha256": "8a1009ecb2148afa3ccfbb15dbfa7fbd512b49ab1c096faa9ac6dd5bd66e803a",
+      "bytes": 2078
+    },
+    {
+      "case": "alert-multi-watch-rollup",
+      "surface": "email-preview",
+      "route": "/_capture/alerts/alert-multi-watch-rollup",
+      "viewport_intent": "responsive email HTML; reviewable at narrow mobile and desktop widths",
+      "revision": "bdb8a4d05061f0300b28ef062c3d88ee142a13d8",
+      "fixture_ids": [
+        "C"
+      ],
+      "data_vintage": "Fixture C plus two additional procurement-shaped rollup matches; rendered as of 2026-08-02",
+      "assertion": "Multi-match subject 'DOT · Fixture street materials · closes Aug 10 (+2)' — Fixture C selected as lead (actionable solicitation before award/history), exact remaining count named. Body still renders every watch's own section beneath the lead (every-watch rollup honesty preserved).",
+      "subject": "DOT · Fixture street materials · closes Aug 10 (+2)",
+      "html_filename": "alert-multi-watch-rollup.html",
+      "sha256": "e65a8b9657df0d245f876ba2376cb98004fc27a6027233f97b9cd949b934cb89",
+      "bytes": 6112
+    }
+  ]
+}
