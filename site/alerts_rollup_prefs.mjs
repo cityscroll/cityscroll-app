@@ -12,6 +12,8 @@
  * "no filter set on that watch", not "city withheld data".
  */
 
+import { buildProcurementAlertAtom, procurementAlertSubject } from "./procurement_alert_atom.mjs";
+
 export const ALERTS_ROLLUP_PREFS_SCHEMA_VERSION = 1;
 
 /** How related watches cluster for review (not separate email products). */
@@ -214,13 +216,25 @@ export function buildRollupPreviewModel(watches = [], { groupBy = "topic", dest 
   const watchCount = sections.length;
   const wantingCount = sections.filter((s) => (Number(s.new) || 0) > 0).length;
   const multi = watchCount > 1;
-  const subject = multi
-    ? totalNew > 0
-      ? `CityScroll: ${totalNew} new — ${watchCount} watches`
-      : `CityScroll: still watching — ${watchCount} watches`
-    : totalNew > 0
-      ? `CityScroll: ${totalNew} new — ${sections[0]?.label || "watch"}`
-      : `CityScroll: still watching — ${sections[0]?.label || "watch"}`;
+  // Opportunity-first subject (procurement-pursuit-decision, Card 1): when every
+  // active watch in this rollup is a money-lens (procurement) watch, lead the
+  // subject with the opportunity itself instead of a bare count or label. A
+  // mixed-lens account (money + land + entity, etc.) keeps the existing generic
+  // multi-watch subject — this only ever replaces `subject`, never the
+  // section-per-watch body below, so every-watch honesty is unaffected.
+  const allMoneyLens = sections.length > 0 && sections.every((s) => s.lens === "money");
+  const procurementAtoms = allMoneyLens
+    ? sections.flatMap((s) => (Array.isArray(s.rows) ? s.rows : []).map((row) => buildProcurementAlertAtom(row)))
+    : [];
+  const subject = procurementAtoms.length && totalNew > 0
+    ? procurementAlertSubject({ atoms: procurementAtoms })
+    : multi
+      ? totalNew > 0
+        ? `CityScroll: ${totalNew} new — ${watchCount} watches`
+        : `CityScroll: still watching — ${watchCount} watches`
+      : totalNew > 0
+        ? `CityScroll: ${totalNew} new — ${sections[0]?.label || "watch"}`
+        : `CityScroll: still watching — ${sections[0]?.label || "watch"}`;
   const toc = sections.map((s, i) => ({
     id: `watch-${i}`,
     label: s.label,

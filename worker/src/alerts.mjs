@@ -26,6 +26,7 @@ import { describeFilter } from "./lib/confirm_email.mjs";
 import { emailT } from "./lib/i18n.mjs";
 import { digestDecision, digestCoversBacklogWindow, dedupeFreshByContent, shortDate, matchEvidence } from "./lib/digest.mjs";
 import { itemAwarenessHtml } from "./lib/digest_item_awareness.mjs";
+import { buildProcurementAlertAtom, procurementAlertSubject } from "./lib/procurement_alert_atom.mjs";
 import {
   groupDigestRowsByActionBand,
   rulesActionBandLabel,
@@ -1024,9 +1025,18 @@ export async function processOneSub(env, s, ctx) {
         const forecastLabel = forecasts.length > 0 ? `${forecasts.length} forecast(s)` : "";
         const parts = [freshLabel, forecastLabel].filter(Boolean).join(" & ");
         const catchUp = digestCoversBacklogWindow({ lastSentDate: since, today: ctx.today, freq: s.freq });
-        subject = catchUp
-          ? emailT(lang, "catch_up_subject", { n: fresh.length, date: shortDate(since), label })
-          : `CityScroll: ${parts} — ${label}`;
+        // Opportunity-first subject (procurement-pursuit-decision, Card 1): a
+        // money-lens watch with fresh procurement/City Record matches leads the
+        // subject with the opportunity itself instead of a bare count/label.
+        // Catch-up and every other lens keep their existing subject shape.
+        const procurementAtoms = (!catchUp && s.lens === "money")
+          ? fresh.map((row) => buildProcurementAlertAtom(row))
+          : [];
+        subject = procurementAtoms.length
+          ? procurementAlertSubject({ atoms: procurementAtoms })
+          : catchUp
+            ? emailT(lang, "catch_up_subject", { n: fresh.length, date: shortDate(since), label })
+            : `CityScroll: ${parts} — ${label}`;
         const keywords = Array.isArray(s.filter && s.filter.keywords) ? s.filter.keywords : [];
         // w12-12: carry this watch's own {lens, filter} into every notice link so the site can
         // re-render the same Matched-evidence + interpretation-echo the subscriber would see
@@ -1231,19 +1241,30 @@ export async function processAccountRollup(env, subs, ctx) {
       const catchUpLabel = (Number.isFinite(Number(watchCount)) && Number(watchCount) > 1)
         ? `${watchCount} watches`
         : (decision.labels[0] || "your watches");
-      const subject = catchUp
-        ? emailT(lang, "catch_up_subject", {
-          n: decision.totalNew,
-          date: shortDate(sinceDates[0]),
-          label: catchUpLabel,
-        })
-        : rollupSubject({
-          totalNew: decision.totalNew,
-          totalForecasts: decision.totalForecasts,
-          labels: decision.labels,
-          quiet: decision.totalNew === 0 && decision.totalForecasts === 0,
-          watchCount,
-        });
+      // Opportunity-first subject (procurement-pursuit-decision, Card 1): when
+      // every active watch on this account is money-lens (procurement), lead the
+      // subject with the opportunity itself. A mixed-lens account keeps the
+      // existing rollup subject; this only ever replaces `subject`, so the
+      // section-per-watch body (every-watch honesty) below is unaffected.
+      const allMoneyLens = sections.length > 0 && sections.every((s) => s.lens === "money");
+      const procurementAtoms = (!catchUp && allMoneyLens)
+        ? sections.flatMap((s) => (Array.isArray(s.freshRows) ? s.freshRows : []).map((row) => buildProcurementAlertAtom(row)))
+        : [];
+      const subject = procurementAtoms.length
+        ? procurementAlertSubject({ atoms: procurementAtoms })
+        : catchUp
+          ? emailT(lang, "catch_up_subject", {
+            n: decision.totalNew,
+            date: shortDate(sinceDates[0]),
+            label: catchUpLabel,
+          })
+          : rollupSubject({
+            totalNew: decision.totalNew,
+            totalForecasts: decision.totalForecasts,
+            labels: decision.labels,
+            quiet: decision.totalNew === 0 && decision.totalForecasts === 0,
+            watchCount,
+          });
       const html = rollupDigestHtml({
         sections: bodySections.length ? bodySections : wanting,
         wantingCount: wanting.length,
