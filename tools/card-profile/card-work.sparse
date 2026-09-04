@@ -578,6 +578,7 @@
 /site/rulemaking_document.mjs
 /site/rules_action_bands.mjs
 /site/rules_adoption_lag_view.mjs
+/site/rules_calendar.mjs
 /site/rules_card_interaction.mjs
 /site/rules_exception_modes.mjs
 /site/rules_explorer.mjs

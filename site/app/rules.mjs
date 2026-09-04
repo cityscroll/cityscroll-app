@@ -410,6 +410,17 @@ function ensureRulesPhaseSpineTools(){
   return rulesPhaseSpineToolsPromise;
 }
 
+/* CBICS-03: rulemaking participation month. Pure model + shared-component
+   consumer: site/rules_calendar.mjs. Mounted between related notices and the
+   full process history in ruleEventSpineHTMLPhase below. */
+let rulesCalendarToolsPromise=null;
+function ensureRulesCalendarTools(){
+  if(!rulesCalendarToolsPromise){
+    rulesCalendarToolsPromise=import("../rules_calendar.mjs").catch(()=>null);
+  }
+  return rulesCalendarToolsPromise;
+}
+
 function rulePhaseLabel(phase){
   if(!phase) return "—";
   if(phase.label_key) return t(phase.label_key);
@@ -647,10 +658,17 @@ function ruleAdoptionEstimateHTML(estimate){
   </div>`;
 }
 
-function ruleEventSpineHTMLPhase(view, rec){
+function ruleParticipationMonthHTML(view, calendarTools){
+  if(!view || !calendarTools || typeof calendarTools.renderRuleParticipationMonth!=="function") return "";
+  try{ return calendarTools.renderRuleParticipationMonth(view, { today: todayISO().slice(0,10) }); }
+  catch(_e){ return ""; }
+}
+
+function ruleEventSpineHTMLPhase(view, rec, calendarTools){
   if(!view) return "";
   const lead=rulePhaseLeadHTML(view, rec);
   const siblings=ruleSiblingsHTML(view);
+  const calendar=ruleParticipationMonthHTML(view, calendarTools);
   const history=ruleHistoryTimelineHTML(view);
   const stepper=rulePhaseStepperHTML(view);
   const estimate=ruleAdoptionEstimateHTML(view.adoption_lag_estimate||null);
@@ -668,6 +686,7 @@ function ruleEventSpineHTMLPhase(view, rec){
   return `<div class="chain-h">${t("rule_lifecycle_heading")}</div>
     ${lead}
     ${siblings}
+    ${calendar}
     ${history}
     ${stepper}
     ${currentPanel}
@@ -695,7 +714,7 @@ function loadRulesAdoptionLagModel(){
   return rulesAdoptionLagModelPromise;
 }
 
-function ruleEventSpineHTML(rec, phaseTools, recordsById, adoptionModel){
+function ruleEventSpineHTML(rec, phaseTools, recordsById, adoptionModel, calendarTools){
   if(phaseTools && typeof phaseTools.buildRulesPhaseView==="function"){
     let view=phaseTools.buildRulesPhaseView(rec||{},{recordsById:recordsById||null});
     // Prefer stitched record for nyc_rules / stage when multi-notice merge ran.
@@ -707,7 +726,7 @@ function ruleEventSpineHTML(rec, phaseTools, recordsById, adoptionModel){
     }else if(adoptionModel && window.__rulesAdoptionLagAttach){
       view=window.__rulesAdoptionLagAttach(view, paintRec||rec, adoptionModel);
     }
-    return ruleEventSpineHTMLPhase(view, paintRec||rec);
+    return ruleEventSpineHTMLPhase(view, paintRec||rec, calendarTools);
   }
   return ruleEventSpineHTMLFlat(rec);
 }
@@ -891,6 +910,7 @@ async function loadRuleLifecycle(r,el){
 
   const partTools=await rulesParticipationTools();
   const blurbTools=await rulesMemberBlurbTools();
+  const calendarTools=await ensureRulesCalendarTools();
   if(!document.contains(el)) return;
 
   let participationPath=null;
@@ -907,7 +927,7 @@ async function loadRuleLifecycle(r,el){
     });
   }
 
-  const spine=ruleEventSpineHTML(rec, phaseTools, stageMap, adoptionModel);
+  const spine=ruleEventSpineHTML(rec, phaseTools, stageMap, adoptionModel, calendarTools);
   const partHtml=ruleParticipationHTML(participationPath);
   const blurbHtml=ruleMemberBlurbHTML(memberBlurb);
   // Participation + member blurb lead the lifecycle so act-now is first; spine remains below.
@@ -1089,6 +1109,8 @@ globalThis.rulePhaseLeadHTML = rulePhaseLeadHTML;
 globalThis.rulePhasePanelHTML = rulePhasePanelHTML;
 globalThis.rulePhaseStepperHTML = rulePhaseStepperHTML;
 globalThis.rulePlaceChips = rulePlaceChips;
+globalThis.ensureRulesCalendarTools = ensureRulesCalendarTools;
+globalThis.ruleParticipationMonthHTML = ruleParticipationMonthHTML;
 globalThis.ruleSiblingRoleLabel = ruleSiblingRoleLabel;
 globalThis.ruleSiblingsHTML = ruleSiblingsHTML;
 globalThis.ruleStageChip = ruleStageChip;
@@ -1103,5 +1125,6 @@ Object.defineProperty(globalThis, "rulesAgencyChoices", { configurable: true, ge
 Object.defineProperty(globalThis, "rulesBorough", { configurable: true, get: () => rulesBorough, set: value => { rulesBorough = normalizeBoroughScope(value); } });
 Object.defineProperty(globalThis, "rulesExplorerToolsPromise", { configurable: true, get: () => rulesExplorerToolsPromise, set: value => { rulesExplorerToolsPromise = value; } });
 Object.defineProperty(globalThis, "rulesPhaseSpineToolsPromise", { configurable: true, get: () => rulesPhaseSpineToolsPromise, set: value => { rulesPhaseSpineToolsPromise = value; } });
+Object.defineProperty(globalThis, "rulesCalendarToolsPromise", { configurable: true, get: () => rulesCalendarToolsPromise, set: value => { rulesCalendarToolsPromise = value; } });
 Object.defineProperty(globalThis, "rulesProcessSel", { configurable: true, get: () => rulesProcessSel, set: value => { rulesProcessSel = value; } });
 Object.defineProperty(globalThis, "rulesViewCache", { configurable: true, get: () => rulesViewCache, set: value => { rulesViewCache = value; } });

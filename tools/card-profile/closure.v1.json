@@ -58,7 +58,7 @@
       "scan_hops": 1,
       "scanned_source_count": 2145,
       "sources_skipped_not_materialised": 0,
-      "path_count": 1913,
+      "path_count": 1914,
       "worker_to_site_reference_count": 183,
       "worker_to_site_data_reference_count": 28,
       "worker_to_site_data_targets": [
@@ -118,7 +118,7 @@
         "warehouse",
         "worker/src/data"
       ],
-      "path_count": 3855
+      "path_count": 3859
     }
   },
   "required_paths": [
@@ -2922,7 +2922,7 @@
       "site/data/zap_projects_warehouse_lookup.json"
     ]
   },
-  "patterns_sha256": "a1f9f531bc00cacb7d5aefa3997076dfae02affe2c1d507046c9105a6dc04f49",
+  "patterns_sha256": "1c7ac48d328bae310f09f13beb5b7b56dd9b8f29f8edf7ffd231df1ffa9c647d",
   "supported_gate_classes": [
     "worker-unit",
     "architecture-evidence-shards",
@@ -3046,19 +3046,19 @@
   },
   "measured": {
     "note": "A snapshot of what the profile costs at the revision named here. These figures are reporting only; they are not part of the checked contract, because a byte total moves whenever any tracked file does.",
-    "revision": "95b04b4486828be463936182a33c82c16e69eddf",
+    "revision": "c4c621b215799c59a130b65fca3cb8cb9f9ef64d",
     "computed_in_reduced_checkout": false,
     "profile_paths": {
-      "count": 4073,
-      "logical_bytes": 196685691
+      "count": 4077,
+      "logical_bytes": 196713042
     },
     "deferred_paths": {
       "count": 298,
       "logical_bytes": 221538531
     },
     "excluded_paths": {
-      "count": 2205,
-      "logical_bytes": 659200313
+      "count": 2212,
+      "logical_bytes": 659732179
     },
     "site_data": {
       "tracked_count": 694,
@@ -3067,9 +3067,9 @@
       "profile_logical_bytes": 109041606
     },
     "tracked_total": {
-      "count": 6278,
-      "logical_bytes": 855886004
+      "count": 6289,
+      "logical_bytes": 856445221
     },
-    "pattern_count": 820
+    "pattern_count": 821
   }
 }
