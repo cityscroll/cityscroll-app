@@ -56,10 +56,10 @@
         "worker"
       ],
       "scan_hops": 1,
-      "scanned_source_count": 2145,
-      "sources_skipped_not_materialised": 1,
-      "path_count": 1927,
-      "worker_to_site_reference_count": 186,
+      "scanned_source_count": 2147,
+      "sources_skipped_not_materialised": 0,
+      "path_count": 1928,
+      "worker_to_site_reference_count": 187,
       "worker_to_site_data_reference_count": 28,
       "worker_to_site_data_targets": [
         "site/data/action_link_health.json",
@@ -118,7 +118,7 @@
         "warehouse",
         "worker/src/data"
       ],
-      "path_count": 3976
+      "path_count": 3980
     }
   },
   "required_paths": [
@@ -761,6 +761,7 @@
     "site/preset_validation.mjs",
     "site/primary_document_view.mjs",
     "site/process_conformance.mjs",
+    "site/procurement_alert_atom.mjs",
     "site/procurement_browse_query.mjs",
     "site/procurement_coverage_labels.mjs",
     "site/procurement_digest_compile.mjs",
@@ -2248,6 +2249,7 @@
     "worker/src/lib/prior_cycle.mjs",
     "worker/src/lib/process_spine.mjs",
     "worker/src/lib/procurement_alarms.mjs",
+    "worker/src/lib/procurement_alert_atom.mjs",
     "worker/src/lib/procurement_event_log.mjs",
     "worker/src/lib/procurement_phase_spine.mjs",
     "worker/src/lib/property_commercial.mjs",
@@ -2921,7 +2923,7 @@
       "site/data/zap_projects_warehouse_lookup.json"
     ]
   },
-  "patterns_sha256": "857c4e0d5dd278f6fbb8839ce1cdda5133d5bece5a45342bd6304e9bef147543",
+  "patterns_sha256": "5e35f820b69aaf76c99778821cbd54c7185216e89d742231eca7d92129ca64b5",
   "supported_gate_classes": [
     "worker-unit",
     "architecture-evidence-shards",
@@ -3045,11 +3047,11 @@
   },
   "measured": {
     "note": "A snapshot of what the profile costs at the revision named here. These figures are reporting only; they are not part of the checked contract, because a byte total moves whenever any tracked file does.",
-    "revision": "bc9b54c6ce7e4a6947ac73192b47a94382de78d5",
-    "computed_in_reduced_checkout": true,
+    "revision": "574f80631cb9866a557f2f6fbab0216b151ad55a",
+    "computed_in_reduced_checkout": false,
     "profile_paths": {
-      "count": 4194,
-      "logical_bytes": 198866732
+      "count": 4198,
+      "logical_bytes": 198866450
     },
     "deferred_paths": {
       "count": 298,
@@ -3066,8 +3068,8 @@
       "profile_logical_bytes": 109965217
     },
     "tracked_total": {
-      "count": 6575,
-      "logical_bytes": 935259684
+      "count": 6579,
+      "logical_bytes": 935259402
     },
     "pattern_count": 836
   }
