@@ -1,10 +1,12 @@
 #!/usr/bin/env node
 
 import { spawnSync } from "node:child_process";
-import { existsSync, appendFileSync, mkdirSync, writeFileSync } from "node:fs";
+import { existsSync, appendFileSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { performance } from "node:perf_hooks";
 import { fileURLToPath } from "node:url";
+
+import { mergeResidentSnapshotRefreshEvidence } from "./lib/resident_snapshot_refresh_receipt.mjs";
 
 const scriptRoot = dirname(fileURLToPath(import.meta.url));
 const repositoryRoot = dirname(scriptRoot);
@@ -18,7 +20,7 @@ function parseArgs(argv) {
     const arg = argv[index];
     if (!arg.startsWith("--")) throw new Error(`Unexpected argument: ${arg}`);
     const key = arg.slice(2);
-    if (key === "refresh-decision-outcomes") {
+    if (key === "refresh-decision-outcomes" || key === "refresh-resident-snapshots") {
       result[key] = true;
       continue;
     }
@@ -72,7 +74,9 @@ const args = parseArgs(process.argv.slice(2));
 const sourceDir = resolve(repositoryRoot, args["source-dir"] || ".");
 const siteDir = resolve(repositoryRoot, args["site-dir"] || "_site");
 const refresh = Boolean(args["refresh-decision-outcomes"]);
+const refreshResidentSnapshots = Boolean(args["refresh-resident-snapshots"]);
 const commitSha = args["commit-sha"] || "";
+let residentSnapshotRefreshEvidence = null;
 timingReceiptPath = args["timing-receipt"]
   ? resolve(sourceDir, args["timing-receipt"])
   : (process.env.CITYSCROLL_BUILD_TIMING_RECEIPT ? resolve(sourceDir, process.env.CITYSCROLL_BUILD_TIMING_RECEIPT) : null);
@@ -110,6 +114,23 @@ if (refresh) {
   ], sourceDir, "refresh-decision-outcome-tests");
 }
 
+// Refresh the Contracts (Money) resident snapshot from its live acquisition
+// before the derived-JSON boundary rebuilds every declared downstream
+// artifact from it. A failed acquisition exits the process here (see run()),
+// well before any deployment step, and the freshness guard rejects a snapshot
+// whose vintage did not actually advance so a broken acquisition can never
+// pass as a refresh.
+if (refreshResidentSnapshots) {
+  runNode(sourceDir, "build_batch_precompute_snapshots.mjs", ["--money-only"]);
+  const moneySnapshotPath = join(sourceDir, "site", "data", "money_default_open.json");
+  const freshnessEvidencePath = join(sourceDir, ".artifacts", "contracts-snapshot-freshness.json");
+  runNode(sourceDir, "check_money_snapshot_freshness.mjs", [
+    "--snapshot", moneySnapshotPath,
+    "--evidence-out", freshnessEvidencePath,
+  ]);
+  residentSnapshotRefreshEvidence = JSON.parse(readFileSync(freshnessEvidencePath, "utf8"));
+}
+
 const graphTool = join(sourceDir, "tools", "data_source_graph.mjs");
 if (existsSync(graphTool)) {
   const docsDir = join(sourceDir, "docs");
@@ -140,6 +161,17 @@ for (const [kind, path, toolArgs] of standards) {
 }
 
 runNode(sourceDir, "build_public_site.mjs", ["--source-dir", sourceDir, "--site-dir", siteDir]);
+if (residentSnapshotRefreshEvidence) {
+  // Record the resident-snapshot refresh in the existing generation-output
+  // receipt (already a required release-surface stage) rather than a parallel
+  // receipt: build_public_site.mjs just (re)wrote it for this same build.
+  const generationReceiptPath = join(sourceDir, ".artifacts", "generation-output-receipt.json");
+  if (existsSync(generationReceiptPath)) {
+    const generationReceipt = JSON.parse(readFileSync(generationReceiptPath, "utf8"));
+    const merged = mergeResidentSnapshotRefreshEvidence(generationReceipt, { contracts: residentSnapshotRefreshEvidence });
+    writeFileSync(generationReceiptPath, `${JSON.stringify(merged, null, 2)}\n`);
+  }
+}
 runNode(sourceDir, "check_client_module_assets.mjs", ["--site-dir", siteDir]);
 runNode(sourceDir, "check_pages_bundle_sizes.mjs", ["--site-dir", siteDir]);
 const releaseId = /^[a-f0-9]{40}$/.test(commitSha)

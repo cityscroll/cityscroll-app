@@ -8,10 +8,20 @@ name: Deploy Cloudflare Pages
 on:
   push:
     branches: [main]
+  schedule:
+    # 10:15 UTC lands before the NYC workday starts year-round (05:15 EST / 06:15 EDT),
+    # so the daily Contracts (Money) resident-snapshot refresh below is in place before
+    # residents load the page.
+    - cron: "15 10 * * *"
   workflow_dispatch:
     inputs:
       refresh_decision_outcomes:
         description: Refresh bounded Land and meeting outcomes before the production deploy
+        required: false
+        default: true
+        type: boolean
+      refresh_resident_snapshots:
+        description: Refresh the Contracts (Money) resident snapshot and its dependent public artifacts before the production deploy
         required: false
         default: true
         type: boolean
@@ -75,6 +85,7 @@ jobs:
         uses: ./.github/actions/build-site
         with:
           refresh-decision-outcomes: ${{ github.event_name == 'push' || inputs.refresh_decision_outcomes }}
+          refresh-resident-snapshots: ${{ github.event_name == 'push' || github.event_name == 'schedule' || inputs.refresh_resident_snapshots }}
       - name: Verify hosting budgets
         run: node tools/check_pages_bundle_sizes.mjs --site-dir _site
       - name: Deploy to Cloudflare Pages
@@ -232,6 +243,11 @@ jobs:
           CROL_BASE: ${{ steps.origin.outputs.base_url }}
           CROL_DEMO_LINK_IDS: exam-guide
         run: python3 test/functional/20_demo_links.py
+      - name: Post-deploy Contracts snapshot freshness smoke
+        env:
+          CROL_BASE: ${{ steps.origin.outputs.base_url }}
+          CROL_CONTRACTS_FRESHNESS_STRICT: "1"
+        run: python3 test/functional/48_contracts_freshness_live.py
       - name: Capture served artifact identity
         if: always()
         run: |
