@@ -3045,7 +3045,7 @@
   },
   "measured": {
     "note": "A snapshot of what the profile costs at the revision named here. These figures are reporting only; they are not part of the checked contract, because a byte total moves whenever any tracked file does.",
-    "revision": "a3147dd88addc25e58e1f110596138dc4596928a",
+    "revision": "3c874e7cac558dca9bccd1e192e9142e5a3b2810",
     "computed_in_reduced_checkout": false,
     "profile_paths": {
       "count": 4175,
