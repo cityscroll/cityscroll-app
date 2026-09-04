@@ -7,14 +7,18 @@
 // Mirrors site action rails and deadline chips (open / closing-soon / closed from
 // EVENT time). Pure: no I/O; does not touch seen: keys / delivery identity.
 
-import * as actionRegistryModule from "./action_registry.js";
+import * as digestActionRegistryModule from "./action_registry.js";
 
 // action_registry.js is intentionally a classic browser script because the public
 // shell uses its global CrolActions API (same reasoning as ./action_path_v0.mjs).
 // Resolve that same API lazily instead of importing it as an ES module, which has
-// no exports and would fail a real ESM import before any page can render.
+// no exports and would fail a real ESM import before any page can render. Named
+// distinctly from action_path_v0.mjs's own namespace binding of the same file:
+// a legacy-route reconstruction fixture (test/functional/21_module_dom_equivalence.py)
+// can flatten both files into one classic-script scope, where module-private
+// naming no longer isolates the two.
 function actionRegistry() {
-  const registry = globalThis.CrolActions || actionRegistryModule.default || actionRegistryModule;
+  const registry = globalThis.CrolActions || digestActionRegistryModule.default || digestActionRegistryModule;
   if (!registry || typeof registry.compileActionRail !== "function") {
     throw new TypeError("Action Registry is unavailable");
   }

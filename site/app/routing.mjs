@@ -1642,12 +1642,13 @@ async function showNotice(id, watch){
   fillContext(r, contextElement, [attachmentHydration]);
   // Property action identity remains progressively hydrated, but no longer gates the
   // notice body or Notice-context readiness on a cold route-module import. The
-  // Solicitation response-apply block (buildApply) and the context glance line
-  // (glanceFor/actionRailGuideCoverage) are the same kind of cold-import
-  // dependency on money-history.mjs: on a fresh landing directly on a notice URL,
-  // ensureMoneyHistory() has not necessarily resolved by the time the body above
-  // is painted, so their mount points (#napply, #nglance) are filled in here once
-  // ready rather than called eagerly inline.
+  // Solicitation response-apply block (buildApply), the context glance line
+  // (glanceFor/actionRailGuideCoverage), the prior-cycle award chain
+  // (priorCycleAwards), and the agency forecast teaser (agencyForecastTeaser)
+  // are the same kind of cold-import dependency on money-history.mjs: on a
+  // fresh landing directly on a notice URL, ensureMoneyHistory() has not
+  // necessarily resolved by the time the body above is painted, so these are
+  // hydrated here once ready rather than called eagerly inline.
   optionalRouteModules
     .then(()=>{
       noticeContextTimingMark("route-modules-end");
@@ -1660,6 +1661,8 @@ async function showNotice(id, watch){
         const glanceMount=$("#nglance");
         if(glanceMount) glanceMount.innerHTML = glanceFor(r, actionRailGuideCoverage(initialActionsForGlance));
       }
+      if(typeof priorCycleAwards==="function") priorCycleAwards(r, $("#nprior"));
+      if(typeof agencyForecastTeaser==="function") agencyForecastTeaser(r, $("#nforecast"));
       return typeof hydratePropertyActionMatter==="function" ? hydratePropertyActionMatter(r) : r;
     })
     .then(()=>{
@@ -1695,8 +1698,6 @@ async function showNotice(id, watch){
   loadFranchiseConcessionSpine(r, $("#nfranchise"));
   loadNoticeLandSpine(r, $("#nland"));
   loadMeetingOutcomes(r, $("#nmeet"));
-  priorCycleAwards(r, $("#nprior"));
-  agencyForecastTeaser(r, $("#nforecast"));
   mountUnofficialTranslation($("#nxlate"), r);
   if(usablePin(r.pin)){ loadChain(r).then(chain=>{ if(chain.length>1) paintPaperTrail($("#nchain"), r, chain); }).catch(()=>{}); }
   focusItemRouteTarget(box.querySelector(".route-item"));
