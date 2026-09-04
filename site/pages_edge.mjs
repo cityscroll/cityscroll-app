@@ -1115,6 +1115,8 @@ async function handleBrowse(request, env, facet) {
     }
     const view = buildBrowseView(facet, payload, url.searchParams, {
       semanticArtifact: facet === "rules" ? rulesSemanticLaneArtifact : null,
+      // determinism-lint: allow clock the edge worker is the boundary that reads the day and passes it in; buildBrowseView() itself stays a pure function of its arguments.
+      clock: new Date(),
     });
     const response = rewrittenResponse(asset, 200, "public, max-age=120, s-maxage=300, stale-while-revalidate=3600");
     return new HTMLRewriter()

@@ -93,8 +93,8 @@ function categoryState(coverage, id) {
 }
 
 // A1 [outcome] [G1]
-test("A1 DSNY and NYCEDC expose a concise capability summary on the ordinary agency profile", () => {
-  for (const specimen of [FIXTURES.dsny, FIXTURES.nycedc]) {
+test("A1 DSNY and MTA expose a concise capability summary on the ordinary agency profile", () => {
+  for (const specimen of [FIXTURES.dsny, FIXTURES.mta]) {
     const { coverage } = coverageFor(specimen.canonical_id, specimen.canonical_name);
     assert.equal(coverage.schema, AGENCY_IDENTITY_COVERAGE_SCHEMA);
     assert.equal(coverage.anchor, AGENCY_IDENTITY_COVERAGE_ANCHOR);
@@ -120,13 +120,13 @@ test("A1 DSNY and NYCEDC expose a concise capability summary on the ordinary age
   }
 });
 
-test("A1 DSNY keeps its six-category stable route and NYCEDC keeps a present route", () => {
+test("A1 DSNY keeps its six-category stable route and MTA keeps a present route", () => {
   const dsny = coverageFor(FIXTURES.dsny.canonical_id, FIXTURES.dsny.canonical_name).coverage;
   assert.equal(dsny.category_states.filter((row) => row.state === "matched").length, 6);
   assert.equal(dsny.identity.route, `/agencies/${FIXTURES.dsny.canonical_id}/`);
 
-  const edc = coverageFor(FIXTURES.nycedc.canonical_id, FIXTURES.nycedc.canonical_name).coverage;
-  assert.equal(edc.identity.route, `/agencies/${FIXTURES.nycedc.canonical_id}/`);
+  const mta = coverageFor(FIXTURES.mta.canonical_id, FIXTURES.mta.canonical_name).coverage;
+  assert.equal(mta.identity.route, `/agencies/${FIXTURES.mta.canonical_id}/`);
 });
 
 test("A1 the profile renders one inspectable identity-and-coverage disclosure", () => {
@@ -152,8 +152,8 @@ test("A1 the profile renders one inspectable identity-and-coverage disclosure", 
   assert.match(html, /id="institution-profile-navigation"/);
 });
 
-test("A1 the disclosure ships in what the ordinary DSNY and NYCEDC routes serve", () => {
-  for (const specimen of [FIXTURES.dsny, FIXTURES.nycedc]) {
+test("A1 the disclosure ships in what the ordinary DSNY and MTA routes serve", () => {
+  for (const specimen of [FIXTURES.dsny, FIXTURES.mta]) {
     const view = buildAgencyConstellationView(specimen.canonical_id, SOURCES);
     // The agency route serves this fragment into the profile document.
     const fragment = renderAgencyConstellationDeferredFragment(view);
@@ -229,7 +229,7 @@ test("A3 collision and unresolved routes name evidence state, basis, and vintage
 });
 
 test("A3 empty categories report a snapshot gap with basis and vintage, not zero activity", () => {
-  const { coverage } = coverageFor(FIXTURES.nycedc.canonical_id, FIXTURES.nycedc.canonical_name);
+  const { coverage } = coverageFor(FIXTURES.mta.canonical_id, FIXTURES.mta.canonical_name);
   const empties = coverage.category_states.filter((row) => row.state === "empty");
   assert.ok(empties.length >= 1);
   for (const row of empties) {

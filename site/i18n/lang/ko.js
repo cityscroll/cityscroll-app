@@ -458,6 +458,7 @@
     loading_data: "불러오는 중…",
     retry_open_data: "최신 CityScroll 데이터 스냅샷을 사용할 수 없습니다. 잠시 후 다시 시도해 주세요.",
     nothing_found: "결과가 없습니다. 더 넓은 키워드나 \"All RFPs\"를 시도해 보세요.",
+    contracts_source_stale: "열려 있는 RFP 데이터가 최신이 아닙니다. CityScroll은 현재 응답을 받고 있는 전체 목록을 확인할 수 없습니다. 최근 업데이트: {date}.",
     subscribed_now: "구독되었습니다. 이메일을 보내드리겠습니다.",
     welcome_sent_to: "환영 이메일을 {email}(으)로 보냈습니다.",
     turnstile_fail: "사람 확인을 통과하지 못했습니다 — 다시 시도해 주세요.",

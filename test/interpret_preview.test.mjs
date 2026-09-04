@@ -50,13 +50,13 @@ test("a known topic interprets into the real first three static result records",
 
   assert.equal(interpretation.agency, "Education");
   assert.deepEqual(rows.slice(0, 3).map((row) => row.request_id), [
-    "20260325037",
-    "20260713030",
-    "20260203008",
+    "20260225006",
+    "20260130016",
+    "20260206017",
   ]);
-  assert.match(html, /Bid Extension: Requirements Contract for Asbestos Bulk/);
-  assert.match(html, /Consultant Services, Life Sciences Education RFP/);
-  assert.match(html, /Repair and Replacement of Playground Safety Mats/);
+  assert.match(html, /Bid Extension: Requirement Contract for Water Treatment of Cooling Towers/);
+  assert.match(html, /Bid Extension: Requirements Contract for Central Station Monitoring of Fire Alarm Systems/);
+  assert.match(html, /REQUIREMENTS CONTRACT FOR REMOVAL AND TRANSFER OF CAFETERIA AND KITCHEN EQUIPMENT/);
 });
 
 test("interpret preview has an honest empty state", () => {

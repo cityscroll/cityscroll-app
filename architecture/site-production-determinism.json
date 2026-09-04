@@ -311,6 +311,7 @@
     "site/money_action_location_ui.mjs",
     "site/money_scope_consistency.mjs",
     "site/money_scope_links.mjs",
+    "site/money-freshness.mjs",
     "site/mwbe_goal_surface.mjs",
     "site/near_you_explanation_path.mjs",
     "site/near_you_scope_runtime.mjs",

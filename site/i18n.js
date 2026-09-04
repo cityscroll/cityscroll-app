@@ -671,6 +671,7 @@ const STRINGS = {
     loading_data:           "Loading…",
     retry_open_data:        "The latest CityScroll snapshot is unavailable. Retry in a moment.",
     nothing_found:          "Nothing found. Try a broader keyword or \"All RFPs\".",
+    contracts_source_stale: "Open-RFP data is out of date. CityScroll cannot confirm the complete set currently accepting responses. Last updated {date}.",
     subscribed_now:         "You're subscribed — we'll email you.",
     welcome_sent_to:        "Welcome sent to {email}.",
     turnstile_fail:         "The human check didn't pass — try it again.",
