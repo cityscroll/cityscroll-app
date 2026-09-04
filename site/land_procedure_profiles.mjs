@@ -106,6 +106,20 @@ export function validateLandProcedureProfileRegistry(value = frozenRegistry) {
         if (!stageIds.has(successor?.to_stage_id)) errors.push(`${stage?.stage_id || "stage"}.successor`);
       }
     }
+    for (const transition of profile?.transitions || []) {
+      const label = `${profile?.procedure_id || "profile"}.transition`;
+      if (transition?.kind !== "parallel_group") errors.push(`${label}.kind`);
+      if (!clean(transition?.group_id)) errors.push(`${label}.group_id`);
+      if (!stageIds.has(transition?.origin_stage_id)) errors.push(`${label}.origin_stage_id`);
+      if (!Array.isArray(transition?.stage_ids) || transition.stage_ids.length < 2) errors.push(`${label}.stage_ids`);
+      for (const id of transition?.stage_ids || []) {
+        if (!stageIds.has(id)) errors.push(`${label}.stage_ids`);
+      }
+      if (transition?.join_to_stage_id && !stageIds.has(transition.join_to_stage_id)) errors.push(`${label}.join_to_stage_id`);
+    }
+    if (Object.hasOwn(profile || {}, "broad_procedure_id") && !clean(profile.broad_procedure_id)) {
+      errors.push(`${profile?.procedure_id || "profile"}.broad_procedure_id`);
+    }
   }
   return { ok: errors.length === 0, errors };
 }
@@ -187,12 +201,48 @@ function decorateStage(profile, stage) {
   };
 }
 
-function expectedSuccessor(profile, stage, facts) {
+function decorateTransition(profile, transition) {
+  const stageIds = Array.isArray(transition?.stage_ids) ? [...transition.stage_ids] : [];
+  const stages = stageIds
+    .map((id) => profile.stages.find((candidate) => candidate.stage_id === id))
+    .filter(Boolean)
+    .map((stage) => decorateStage(profile, stage));
+  return {
+    kind: transition.kind,
+    group_id: transition.group_id,
+    stage_ids: stageIds,
+    stages,
+    join_to_stage_id: transition.join_to_stage_id || null,
+    legal_basis: clone(transition.legal_basis || []),
+  };
+}
+
+/**
+ * A stage's normative successor is either one shared-origin parallel group
+ * (two or more statutory windows that open together, such as Community
+ * Board and Borough President review) or a single sequential stage. A
+ * parallel group is never collapsed into a single "next stage" — that would
+ * invent an order the statute does not impose.
+ */
+function expectedTransition(profile, stage, facts) {
+  const transitions = Array.isArray(profile.transitions) ? profile.transitions : [];
+  const group = transitions.find((candidate) =>
+    candidate.origin_stage_id === stage.stage_id && matchesLandProcedureCondition(candidate.when, facts));
+  if (group) return decorateTransition(profile, group);
+
   const successors = Array.isArray(stage?.conditional_successors) ? stage.conditional_successors : [];
   const selected = successors.find((successor) => matchesLandProcedureCondition(successor.when, facts));
   if (!selected) return null;
   const next = profile.stages.find((candidate) => candidate.stage_id === selected.to_stage_id);
-  return next ? decorateStage(profile, next) : null;
+  if (!next) return null;
+  return {
+    kind: "sequential",
+    group_id: null,
+    stage_ids: [next.stage_id],
+    stages: [decorateStage(profile, next)],
+    join_to_stage_id: null,
+    legal_basis: [],
+  };
 }
 
 /**
@@ -227,7 +277,10 @@ export function buildLandProcedureProfileView({
   const current = currentCandidates.find((stage) =>
     !stage.when || matchesLandProcedureCondition(stage.when, sourceSnapshot),
   ) || null;
-  const next = current ? expectedSuccessor(selected, current, sourceSnapshot) : null;
+  const nextTransition = current ? expectedTransition(selected, current, sourceSnapshot) : null;
+  const next = nextTransition && nextTransition.kind === "sequential" ? nextTransition.stages[0] : null;
+  const decoratedTransitions = (Array.isArray(selected.transitions) ? selected.transitions : [])
+    .map((transition) => decorateTransition(selected, transition));
 
   return {
     schema: LAND_PROCEDURE_PROFILE_VIEW_SCHEMA,
@@ -236,13 +289,16 @@ export function buildLandProcedureProfileView({
     registry_schema: LAND_PROCEDURE_PROFILE_SCHEMA,
     registry_version: LAND_PROCEDURE_PROFILE_REGISTRY_VERSION,
     profile_id: selected.procedure_id,
+    broad_profile_id: selected.broad_procedure_id || null,
     label: selected.label,
     effective_from: selected.effective_from,
     effective_to: selected.effective_to || null,
     legal_basis: clone(selected.legal_basis),
     stages: decoratedStages,
+    transitions: decoratedTransitions,
     current_stage: current,
     expected_next_stage: next,
+    expected_next_transition: nextTransition,
     provenance: {
       source_type: "reviewed_static_registry",
       registry_schema: LAND_PROCEDURE_PROFILE_SCHEMA,
@@ -251,5 +307,56 @@ export function buildLandProcedureProfileView({
       source_fields: resolution.source_fields || [],
       legal_basis: clone(selected.legal_basis),
     },
+  };
+}
+
+const VARIANT_EVIDENCE_KINDS = new Set(["retained_referral", "retained_application"]);
+
+/**
+ * Resolve a source-selectable procedure variant (e.g. the § 197-e(k) agency
+ * disposition/acquisition route) separately from the broad publisher
+ * procedure and from any observed event. A variant is never inferred from an
+ * agency name, action type, title, or housing purpose — those facts are not
+ * even inspected here. Only an exact retained referral or application fact
+ * naming its own source field, source record id, and vintage can select it.
+ * An observed Council milestone belongs to the separate observed-event
+ * layer and is not evidence this function accepts.
+ */
+export function resolveLandProcedureVariant(input = {}) {
+  const broadProfileId = clean(input.broad_profile_id || input.procedure_id);
+  const variantProfile = broadProfileId
+    ? profiles.find((profile) => profile.broad_procedure_id === broadProfileId)
+    : null;
+
+  if (!broadProfileId || !variantProfile) {
+    return { status: "not_applicable", variant_id: null, broad_profile_id: broadProfileId, reason: "no_variant_for_profile" };
+  }
+
+  const evidence = input.evidence && typeof input.evidence === "object" ? input.evidence : null;
+  const exact = Boolean(
+    evidence
+      && evidence.retained === true
+      && VARIANT_EVIDENCE_KINDS.has(clean(evidence.kind))
+      && clean(evidence.source_field)
+      && clean(evidence.source_record_id),
+  );
+
+  if (!exact) {
+    return {
+      status: "unresolved",
+      variant_id: null,
+      broad_profile_id: broadProfileId,
+      reason: "insufficient_variant_evidence",
+      evidence: evidence ? clone(evidence) : null,
+    };
+  }
+
+  return {
+    status: "resolved",
+    variant_id: variantProfile.procedure_id,
+    profile: variantProfile,
+    broad_profile_id: broadProfileId,
+    method: "exact_retained_evidence",
+    evidence: clone(evidence),
   };
 }

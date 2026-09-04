@@ -340,22 +340,24 @@
           "permitted_actions": ["receive_application", "publish_precertification_notice", "certify_complete"],
           "time_window": { "kind": "statutory_days", "days": 30, "start": "pre_certification_notice", "basis": "NYC Charter § 197-e(d)" },
           "legal_basis": [{ "citation": "NYC Charter § 197-e(c)-(d)", "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-873" }],
-          "conditional_successors": [{ "to_stage_id": "elurp_197e.community_board_review", "when": null }]
+          "conditional_successors": []
         },
         {
           "stage_id": "elurp_197e.community_board_review",
           "spine_phase_id": "community_board",
+          "parallel_group_id": "elurp_197e.local_review",
           "actor_selector": { "kind": "affected_community_board", "source_field": "affected_review_bodies.community_boards", "selection": "source_explicit" },
           "role": "advisory_reviewer",
           "effect": "Notifies the public, may hold a hearing, and submits a written recommendation or waiver; it does not decide the application.",
           "permitted_actions": ["notify_public", "hold_public_hearing", "submit_recommendation", "waive_review"],
           "time_window": { "kind": "statutory_days", "days": 60, "start": "certified_application_received", "basis": "NYC Charter § 197-e(e)" },
           "legal_basis": [{ "citation": "NYC Charter § 197-e(e)", "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-873" }],
-          "conditional_successors": [{ "to_stage_id": "elurp_197e.borough_president_review", "when": null }]
+          "conditional_successors": [{ "to_stage_id": "elurp_197e.city_planning_commission_review", "when": null }]
         },
         {
           "stage_id": "elurp_197e.borough_president_review",
           "spine_phase_id": "borough_president",
+          "parallel_group_id": "elurp_197e.local_review",
           "actor_selector": { "kind": "affected_borough_president", "source_field": "affected_review_bodies.borough_president", "selection": "source_explicit" },
           "role": "advisory_reviewer",
           "effect": "Submits a written recommendation or waiver to the City Planning Commission.",
@@ -374,6 +376,85 @@
           "time_window": { "kind": "statutory_days_after_review", "days": 30, "alternate_days_with_eis": 45, "start": "community_board_and_borough_president_window_ends", "basis": "NYC Charter § 197-e(g)" },
           "legal_basis": [{ "citation": "NYC Charter § 197-e(g)", "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-873" }],
           "conditional_successors": []
+        }
+      ],
+      "transitions": [
+        {
+          "kind": "parallel_group",
+          "group_id": "elurp_197e.local_review",
+          "origin_stage_id": "elurp_197e.application_certification",
+          "stage_ids": ["elurp_197e.community_board_review", "elurp_197e.borough_president_review"],
+          "join_to_stage_id": "elurp_197e.city_planning_commission_review",
+          "legal_basis": [{ "citation": "NYC Charter § 197-e(e)-(f)", "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-873" }]
+        }
+      ]
+    },
+    {
+      "procedure_id": "elurp_197e_k",
+      "broad_procedure_id": "elurp_197e",
+      "label": "Expedited Land Use Review Procedure — agency disposition/acquisition variant (§ 197-e(k))",
+      "effective_from": "2025-12-02",
+      "effective_to": null,
+      "terminal_stage_id": "elurp_197e_k.city_council_review",
+      "legal_basis": [
+        { "citation": "NYC Charter § 197-e(k)", "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-873" }
+      ],
+      "stages": [
+        {
+          "stage_id": "elurp_197e_k.filing_and_referral",
+          "spine_phase_id": "pre_application",
+          "actor_selector": { "kind": "disposing_or_acquiring_agency", "source_field": "publisher.disposing_agency", "selection": "source_explicit" },
+          "role": "filing_referral_agency",
+          "effect": "Files the disposition or acquisition application and refers it for community and borough-level review under the agency housing variant.",
+          "permitted_actions": ["file_application", "refer_for_review"],
+          "time_window": { "kind": "not_specified", "basis": "NYC Charter § 197-e(k)" },
+          "legal_basis": [{ "citation": "NYC Charter § 197-e(k)", "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-873" }],
+          "conditional_successors": []
+        },
+        {
+          "stage_id": "elurp_197e_k.community_board_review",
+          "spine_phase_id": "community_board",
+          "parallel_group_id": "elurp_197e_k.local_review",
+          "actor_selector": { "kind": "affected_community_board", "source_field": "affected_review_bodies.community_boards", "selection": "source_explicit" },
+          "role": "advisory_reviewer",
+          "effect": "May hold a public hearing and submit a written recommendation or waiver on the referred disposition or acquisition; it does not decide the application.",
+          "permitted_actions": ["notify_public", "hold_public_hearing", "submit_recommendation", "waive_review"],
+          "time_window": { "kind": "not_specified", "basis": "NYC Charter § 197-e(k)" },
+          "legal_basis": [{ "citation": "NYC Charter § 197-e(k)", "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-873" }],
+          "conditional_successors": [{ "to_stage_id": "elurp_197e_k.city_council_review", "when": null }]
+        },
+        {
+          "stage_id": "elurp_197e_k.borough_president_review",
+          "spine_phase_id": "borough_president",
+          "parallel_group_id": "elurp_197e_k.local_review",
+          "actor_selector": { "kind": "affected_borough_president", "source_field": "affected_review_bodies.borough_president", "selection": "source_explicit" },
+          "role": "advisory_reviewer",
+          "effect": "Submits a written recommendation or waiver on the referred disposition or acquisition.",
+          "permitted_actions": ["submit_recommendation", "waive_review"],
+          "time_window": { "kind": "not_specified", "basis": "NYC Charter § 197-e(k)" },
+          "legal_basis": [{ "citation": "NYC Charter § 197-e(k)", "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-873" }],
+          "conditional_successors": [{ "to_stage_id": "elurp_197e_k.city_council_review", "when": null }]
+        },
+        {
+          "stage_id": "elurp_197e_k.city_council_review",
+          "spine_phase_id": "city_council",
+          "actor_selector": { "kind": "city_council", "source_field": "publisher.city_council_review", "selection": "source_explicit" },
+          "role": "decision_maker",
+          "effect": "Reviews and acts on the referred disposition or acquisition; may approve, approve with modifications, or disapprove.",
+          "permitted_actions": ["hold_public_hearing", "approve", "approve_with_modifications", "disapprove"],
+          "time_window": { "kind": "not_specified", "basis": "NYC Charter § 197-e(k)" },
+          "legal_basis": [{ "citation": "NYC Charter § 197-e(k)", "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-873" }],
+          "conditional_successors": []
+        }
+      ],
+      "transitions": [
+        {
+          "kind": "parallel_group",
+          "group_id": "elurp_197e_k.local_review",
+          "origin_stage_id": "elurp_197e_k.filing_and_referral",
+          "stage_ids": ["elurp_197e_k.community_board_review", "elurp_197e_k.borough_president_review"],
+          "join_to_stage_id": "elurp_197e_k.city_council_review",
+          "legal_basis": [{ "citation": "NYC Charter § 197-e(k)", "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-873" }]
         }
       ]
     },
