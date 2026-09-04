@@ -1,0 +1,266 @@
+{
+  "schema": "cityscroll.consequence_projection.proof.v0",
+  "generated_by": "test/consequence_projection.test.mjs gold fixtures, rendered for PHC-00 review",
+  "cases": [
+    {
+      "id": "full-council-hearing-land-use-matched-join",
+      "kind": "full",
+      "domain": "council_hearing",
+      "source_note": "site/data/shared_meeting_read_model.json meeting_id meeting:city_record:20260707022, joined against site/data/meeting_outcomes_snapshot.json by_notice[\"20260707022\"]",
+      "projection": {
+        "schema": "cityscroll.consequence_projection.v1",
+        "proceeding_kind": "hearing",
+        "pending_question": {
+          "text": "Landmarks, Queens CD 2 Walk to Park Site Selection/Acquisition, Queens (C 260089 PCQ)."
+        },
+        "body_role": "conditional_decision_maker",
+        "participation_modes": [],
+        "record_destination": "minutes",
+        "next_official_action": {
+          "label": "Committee action: Laid Over by Subcommittee",
+          "date": "2026-07-22",
+          "status": "Laid Over by Subcommittee",
+          "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79200"
+        },
+        "evidence": [
+          {
+            "field": "pending_question",
+            "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260707022",
+            "basis": "official_notice_decides_field"
+          },
+          {
+            "field": "body_role",
+            "source_url": "https://council.nyc.gov/legislation/",
+            "basis": "explicit_council_hearing_kind:land_use"
+          },
+          {
+            "field": "record_destination",
+            "source_url": "https://nyc.legistar1.com/nyc/meetings/2026/7/22509_M_Subcommittee_on_Landmarks%2C_Public_Sitings%2C_Resiliency_and_Dispositions_26-07-22_Meeting_Minutes.pdf",
+            "basis": "strict Council meeting/outcome join"
+          },
+          {
+            "field": "next_official_action",
+            "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79200",
+            "basis": "strict Council meeting/outcome join"
+          }
+        ]
+      }
+    },
+    {
+      "id": "full-rule-hearing-recognized-zoomgov-join",
+      "kind": "full",
+      "domain": "rule",
+      "source_note": "site/data/shared_meeting_read_model.json meeting_id meeting:city_record:20260806002 (title/decides/additional_description_1/source_links copied verbatim)",
+      "projection": {
+        "schema": "cityscroll.consequence_projection.v1",
+        "proceeding_kind": "hearing",
+        "pending_question": {
+          "text": "Rules Regarding Restricted Substances in Personal Care Products"
+        },
+        "body_role": "decision_maker",
+        "participation_modes": [
+          "join_remote"
+        ],
+        "record_destination": "comment_record",
+        "next_official_action": {
+          "label": "Public hearing",
+          "date": "2026-09-16T10:00:00.000",
+          "status": "scheduled",
+          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260806002"
+        },
+        "evidence": [
+          {
+            "field": "pending_question",
+            "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260806002",
+            "basis": "official_notice_decides_field"
+          },
+          {
+            "field": "participation_modes:join_remote",
+            "source_url": "https://health-nyc.zoomgov.com/j/1652112788?pwd=ljlbJej2NHa9luN7b1rW1rCaob6nby.1",
+            "basis": "recognized_video_conference_join_url"
+          },
+          {
+            "field": "body_role",
+            "source_url": "https://rules.cityofnewyork.us/capa/",
+            "basis": "capa_rulemaking_decision_authority"
+          },
+          {
+            "field": "record_destination",
+            "source_url": "https://rules.cityofnewyork.us/capa/",
+            "basis": "capa_public_comment_record_requirement"
+          },
+          {
+            "field": "next_official_action",
+            "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260806002",
+            "basis": "published_hearing_date"
+          }
+        ]
+      }
+    },
+    {
+      "id": "partial-land-hearing-role-known-outcome-unknown",
+      "kind": "partial",
+      "domain": "land_hearing",
+      "source_note": "site/land_authority_summary.mjs LAND_AUTHORITY_SUMMARY_SPECIMENS.council project id 2026Q0210; summary payload shape-accurate per landAuthorityPanelProjection() but not the full materialized document (unavailable in this checkout) — profile_legal_basis citation text is illustrative of the NYC Charter section the ULURP City Council review stage actually cites, not copied from a live document.",
+      "projection": {
+        "schema": "cityscroll.consequence_projection.v1",
+        "proceeding_kind": "hearing",
+        "pending_question": {
+          "text": "Site Selection/Acquisition, Queens (C 260089 PCQ)."
+        },
+        "body_role": "conditional_decision_maker",
+        "participation_modes": [
+          "attend_in_person"
+        ],
+        "record_destination": null,
+        "next_official_action": null,
+        "evidence": [
+          {
+            "field": "pending_question",
+            "source_url": "https://zap.planning.nyc.gov/projects/2026Q0210",
+            "basis": "official_notice_decides_field"
+          },
+          {
+            "field": "body_role",
+            "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-824",
+            "basis": "land_authority_profile:NYC Charter § 197-d"
+          },
+          {
+            "field": "participation_modes:attend_in_person",
+            "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260608099",
+            "basis": "published_venue_address"
+          }
+        ]
+      }
+    },
+    {
+      "id": "guard-a3-a4-venue-plus-generic-link-never-becomes-join-remote",
+      "kind": "guard",
+      "domain": "land_hearing",
+      "source_note": "synthetic — id SYN-GUARD-0001 does not correspond to a real City Record notice; exercises PHC-00-A3/A4 (a venue plus a non-recognized link never becomes join_remote or watch).",
+      "projection": {
+        "schema": "cityscroll.consequence_projection.v1",
+        "proceeding_kind": "hearing",
+        "pending_question": null,
+        "body_role": "decision_maker",
+        "participation_modes": [
+          "attend_in_person"
+        ],
+        "record_destination": null,
+        "next_official_action": null,
+        "evidence": [
+          {
+            "field": "body_role",
+            "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-824",
+            "basis": "land_authority_profile:NYC Charter § 197-c"
+          },
+          {
+            "field": "participation_modes:attend_in_person",
+            "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/SYN-GUARD-0001",
+            "basis": "published_venue_address"
+          }
+        ]
+      }
+    },
+    {
+      "id": "partial-community-board-meeting-hybrid-venue-no-minutes-yet",
+      "kind": "partial",
+      "domain": "meeting",
+      "source_note": "site/data/shared_meeting_read_model.json meeting_id meeting:community_board:https://cb14brooklyn.com/meeting/housing-and-land-use-committee-meeting-september-2026/ (title/venue/event_date/source_url copied verbatim)",
+      "projection": {
+        "schema": "cityscroll.consequence_projection.v1",
+        "proceeding_kind": "public_meeting",
+        "pending_question": null,
+        "body_role": "unknown",
+        "participation_modes": [],
+        "record_destination": null,
+        "next_official_action": {
+          "label": "Scheduled meeting",
+          "date": "2026-09-23T18:30:00-04:00",
+          "status": "scheduled",
+          "source_url": "https://cb14brooklyn.com/meeting/housing-and-land-use-committee-meeting-september-2026/"
+        },
+        "evidence": [
+          {
+            "field": "proceeding_kind",
+            "source_url": "https://cb14brooklyn.com/meeting/housing-and-land-use-committee-meeting-september-2026/",
+            "basis": "meeting_family:community_board_meeting_v0"
+          },
+          {
+            "field": "next_official_action",
+            "source_url": "https://cb14brooklyn.com/meeting/housing-and-land-use-committee-meeting-september-2026/",
+            "basis": "observed_event_state:published_event_date"
+          }
+        ]
+      }
+    },
+    {
+      "id": "unknown-mixed-hearings-and-meetings-section-no-invented-copy",
+      "kind": "unknown",
+      "domain": "meeting",
+      "source_note": "synthetic shell record — id 20260827009 does not correspond to a real City Record notice; represents a City Record \"Public Hearings and Meetings\" section row this repository has not classified into a specific proceeding family, per meeting_process_profile.mjs resolveMeetingFamily()'s default of descriptive_meeting_v0.",
+      "projection": {
+        "schema": "cityscroll.consequence_projection.v1",
+        "proceeding_kind": "unknown",
+        "pending_question": null,
+        "body_role": "unknown",
+        "participation_modes": [],
+        "record_destination": null,
+        "next_official_action": null,
+        "evidence": [],
+        "unknown_reason": "unresolved_meeting_family"
+      }
+    },
+    {
+      "id": "full-contract-public-comment-not-a-hearing",
+      "kind": "full",
+      "domain": "contract_comment",
+      "source_note": "synthetic — id SYN-CONTRACT-0001 does not correspond to a real City Record notice; the commission's PHC-08 positive fixtures (real CROL request ids) are reserved for that later card's own live verification and are not copied here.",
+      "projection": {
+        "schema": "cityscroll.consequence_projection.v1",
+        "proceeding_kind": "comment_period",
+        "pending_question": {
+          "text": "Proposed contract award for custodial services, various agency sites."
+        },
+        "body_role": "decision_maker",
+        "participation_modes": [
+          "submit_written"
+        ],
+        "record_destination": "comment_record",
+        "next_official_action": {
+          "label": "Comment period closes",
+          "date": "2026-10-01",
+          "status": "comment_open",
+          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/SYN-CONTRACT-0001"
+        },
+        "evidence": [
+          {
+            "field": "pending_question",
+            "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/SYN-CONTRACT-0001",
+            "basis": "official_notice_decides_field"
+          },
+          {
+            "field": "body_role",
+            "source_url": "https://www.nyc.gov/site/mocs/about/public-hearing.page",
+            "basis": "mocs_final_award_decision_authority"
+          },
+          {
+            "field": "record_destination",
+            "source_url": "https://www.nyc.gov/site/mocs/about/public-hearing.page",
+            "basis": "mocs_comments_considered_before_award"
+          },
+          {
+            "field": "participation_modes:submit_written",
+            "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/SYN-CONTRACT-0001",
+            "basis": "published_comment_channel"
+          },
+          {
+            "field": "next_official_action",
+            "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/SYN-CONTRACT-0001",
+            "basis": "published_comment_deadline"
+          }
+        ]
+      }
+    }
+  ]
+}
