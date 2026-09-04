@@ -543,17 +543,21 @@ function ineligibleClockView(reason, opts = {}) {
 }
 
 export function buildUlurpStatutoryClockView(record = {}, opts = {}) {
-  const certifiedDate = resolveCertificationDate(record);
-  if (!certifiedDate) {
-    return ineligibleClockView("not_certified", { generatedAt: opts.generatedAt || null });
-  }
+  // Procedure is checked before certification: an explicit ELURP / Non-ULURP
+  // record is ineligible for the right reason (wrong_procedure) whether or
+  // not it has been certified — never "not_certified", which would imply
+  // this record might still receive a §197-c clock once certified.
   if (!isUlurpStatutoryProcedure(record)) {
     // ELURP / Non-ULURP / any other publisher procedure: do not invent a
     // non-§197-c day table. Those clocks are a later, statute-sourced card.
     return ineligibleClockView("wrong_procedure", {
-      certifiedDate,
+      certifiedDate: resolveCertificationDate(record),
       generatedAt: opts.generatedAt || null,
     });
+  }
+  const certifiedDate = resolveCertificationDate(record);
+  if (!certifiedDate) {
+    return ineligibleClockView("not_certified", { generatedAt: opts.generatedAt || null });
   }
 
   const withdrawn = projectIsWithdrawn(record);
