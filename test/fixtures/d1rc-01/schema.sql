@@ -1,0 +1,1 @@
+CREATE TABLE read_model (id TEXT PRIMARY KEY, payload TEXT NOT NULL);
