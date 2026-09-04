@@ -1,0 +1,88 @@
+{
+  "data": {
+    "type": "projects",
+    "id": "2025Q0247",
+    "attributes": {
+      "dcp-name": "2025Q0247",
+      "dcp-applicability": "Yes",
+      "dcp-publicstatus": "In Public Review"
+    }
+  },
+  "included": [
+    {
+      "type": "artifacts",
+      "id": "artifact-rer-1",
+      "attributes": {
+        "dcp-artifactsid": "artifact-rer-1",
+        "dcp-name": "2025Q0247_Racial Equity Report_",
+        "dcp-packagetype": null,
+        "documents": [
+          { "name": "RER_108th Street_1.22.26.pdf", "timeCreated": "2026-03-13T14:32:15Z", "serverRelativeUrl": "/RER_SOURCE_A" }
+        ]
+      }
+    },
+    {
+      "type": "artifacts",
+      "id": "artifact-noc-1",
+      "attributes": {
+        "dcp-artifactsid": "artifact-noc-1",
+        "dcp-name": "2025Q0247_Notice of Certification_1",
+        "dcp-packagetype": null,
+        "documents": [
+          { "name": "69-67 108th Street_Notice of Certification.pdf", "timeCreated": "2026-05-01T18:15:52Z", "serverRelativeUrl": "/NOC_SOURCE_A" },
+          { "name": "RER_108th Street_1.22.26.pdf", "timeCreated": "2026-05-01T18:21:58Z", "serverRelativeUrl": "/RER_SOURCE_B" }
+        ]
+      }
+    },
+    {
+      "type": "artifacts",
+      "id": "artifact-nor-1",
+      "attributes": {
+        "dcp-artifactsid": "artifact-nor-1",
+        "dcp-name": "2025Q0247_Notice of Receipt_1",
+        "dcp-packagetype": null,
+        "documents": [
+          { "name": "NOR - 69-67 108th Street Rezoning-3.pdf", "timeCreated": "2025-12-01T18:43:58Z", "serverRelativeUrl": "/NOR_SOURCE_A" }
+        ]
+      }
+    },
+    {
+      "type": "packages",
+      "id": "package-1",
+      "attributes": {
+        "dcp-packageid": "package-1",
+        "dcp-name": "2025Q0247_Filed LU Package_1",
+        "dcp-packageversion": 1,
+        "dcp-packagesubmissiondate": "2025-11-18T21:20:28.000Z",
+        "dcp-packagetype": 717170011,
+        "documents": [
+          { "name": "1.-69-67-108-ST.--LLC-Authorization-Letter.pdf", "timeCreated": "2025-11-18T21:00:00Z", "serverRelativeUrl": "/PKG1_DOC_A" }
+        ]
+      }
+    },
+    {
+      "type": "packages",
+      "id": "package-2",
+      "attributes": {
+        "dcp-packageid": "package-2",
+        "dcp-name": "2025Q0247_Filed LU Package_2",
+        "dcp-packageversion": 2,
+        "dcp-packagesubmissiondate": "2026-02-18T19:08:55.000Z",
+        "dcp-packagetype": 717170011,
+        "documents": [
+          { "name": "1.-69-67-108-ST.--LLC-Authorization-Letter.pdf", "timeCreated": "2026-02-18T19:00:00Z", "serverRelativeUrl": "/PKG2_DOC_A" }
+        ]
+      }
+    },
+    {
+      "type": "actions",
+      "id": "action-1",
+      "attributes": { "dcp-action-value": "ZM" }
+    },
+    {
+      "type": "actions",
+      "id": "action-2",
+      "attributes": { "dcp-action-value": "ZR" }
+    }
+  ]
+}

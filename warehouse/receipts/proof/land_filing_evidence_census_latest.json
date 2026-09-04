@@ -1,0 +1,3624 @@
+{
+  "applicability": {
+    "conflicting": {
+      "reason": "No conflicting publisher assertions are possible when no publisher assertion field exists.",
+      "status": "measured",
+      "value": 0
+    },
+    "not_required": {
+      "reason": "No publisher applicability field exists to derive this state from; see publisher_field_search.",
+      "status": "not_applicable",
+      "value": null
+    },
+    "publisher_field_search": {
+      "fields_checked": [
+        "data.attributes.dcp-applicability",
+        "included[].attributes (actions, milestones, dispositions, packages, artifacts) -- all keys"
+      ],
+      "finding": "No field in the ZAP API JSON:API response is RER-specific. `dcp-applicability` was observed literally 'Yes' on both a project carrying an RER artifact group (2025Q0247) and one that has published no RER artifact at all (2026K0123), so it does not encode RER applicability. No milestone, action, disposition, or package field names Racial Equity or RER.",
+      "only_observed_signal": "A title-token match on an artifact group's `dcp-name` (e.g. containing 'Racial Equity Report') -- a document-observation signal, not a publisher applicability assertion.",
+      "portal_ui_verification": "Not completed: the public ZAP portal (zap.planning.nyc.gov) is a client-rendered SPA; its initial HTML carries no data, and browser automation in this environment failed to load it. Whether the rendered page's 'Racial Equity Report Required' label is backed by a field this census could not find, or is itself derived only from RER-document presence, is unresolved and named here as an explicit unknown."
+    },
+    "required": {
+      "reason": "No publisher applicability field exists to derive this state from; see publisher_field_search.",
+      "status": "not_applicable",
+      "value": null
+    },
+    "rer_document_observation_buckets": {
+      "note": "Bucketed by observed RER-titled artifact group count, independent of any applicability state (none derivable).",
+      "status": "measured",
+      "value": {
+        "multiple_rer_groups": 0,
+        "one_rer_group": 18,
+        "sample_size": 151,
+        "zero_rer_groups": 133
+      }
+    },
+    "unknown": {
+      "reason": "Every sampled project's applicability state is unknown under the five-state contract, because no publisher assertion field was found.",
+      "status": "measured",
+      "value": 151
+    }
+  },
+  "card": "cityscroll-land-decision-path/ldp-22-filing-evidence-census",
+  "ceqr_document_overlap": {
+    "reason": "CEQR document identity is SEQRA-04 scope and does not exist yet; no CEQR document set exists to overlap against. LDP-13's exact CEQR *project/milestone* joins are consumed unchanged and are not document-level.",
+    "status": "unknown",
+    "value": null
+  },
+  "document_counts": {
+    "denominator": 151,
+    "max_observed": 245,
+    "method": "untruncated artifact+package document count per sampled project (not the production parser's 40-document cutoff)",
+    "status": "measured",
+    "value": {
+      "50": 32,
+      "75": 59,
+      "90": 80,
+      "95": 101,
+      "99": 205,
+      "100": 245
+    }
+  },
+  "fetch_success_rate": {
+    "document_bytes": {
+      "denominator": 40,
+      "numerator": 40,
+      "status": "measured",
+      "value": 1
+    },
+    "zap_api_project_detail": {
+      "denominator": 151,
+      "numerator": 151,
+      "status": "measured",
+      "value": 1
+    }
+  },
+  "filed_lu_package_version_counts": {
+    "denominator": 151,
+    "max_observed": 12,
+    "method": "max observed dcp-packageversion per sampled project (0 = no Filed LU Package group observed)",
+    "status": "measured",
+    "value": {
+      "50": 2,
+      "90": 4,
+      "100": 12
+    }
+  },
+  "fulfillment": {
+    "publisher_missing_or_tardy_assertions": {
+      "denominator": 151,
+      "hits": [],
+      "method": "regex scan for tardy/missing/not-timely-filed tokens across dcp-applicability, public_status, and every artifact/package group title in the sample",
+      "note": "No publisher field or title token corresponding to a missing/tardy RER assertion was found anywhere in the sample.",
+      "status": "measured",
+      "value": 0
+    },
+    "required_projects_with_multiple_observed_rer": {
+      "reason": "Depends on an applicability='required' state this census could not derive; see applicability section.",
+      "status": "not_applicable",
+      "value": null
+    },
+    "required_projects_with_no_observed_rer": {
+      "reason": "Depends on an applicability='required' state this census could not derive; see applicability section.",
+      "status": "not_applicable",
+      "value": null
+    },
+    "required_projects_with_one_observed_rer": {
+      "reason": "Depends on an applicability='required' state this census could not derive; see applicability section.",
+      "status": "not_applicable",
+      "value": null
+    }
+  },
+  "generated_at": "2026-09-04T03:05:18.243Z",
+  "go_stop_decisions": {
+    "ceqr_document_overlap": {
+      "rationale": "SEQRA-04 (CEQR Access document acquisition) does not exist yet, so there is no CEQR document identity to overlap against. Revisit once SEQRA-04 lands; do not build a second CEQR document fetcher here.",
+      "result": "STOP"
+    },
+    "filed_lu_package_history": {
+      "rationale": "Filed LU Package groups are an explicit publisher relationship type (`packages`) with an explicit version number (`dcp-packageversion`), submission date, and a stable per-version document list. This is markedly better-typed than RER and is safe to model as ontology-first evidence in LDP-23/LDP-24.",
+      "result": "GO"
+    },
+    "notice_of_receipt_and_certification": {
+      "rationale": "Observable only via the same title-token method as RER (tier 2, not tier 1). Proceed, but do not treat the resulting document_type as a stronger evidentiary tier than RER's.",
+      "result": "NARROW"
+    },
+    "rer_applicability_state_derivation": {
+      "rationale": "No ZAP API field encodes RER applicability -- `dcp-applicability` is 'Yes' on both a project carrying an observed RER and one with none, and no other included field or milestone names Racial Equity or RER. A public applicability state (required/not_required) cannot be derived from ZAP alone; it would require reconstructing DCP's criteria-chart inputs (zoning square footage deltas, contiguous-block counts) that ZAP's project-level data does not carry. LDP-23 must not encode a public 'required' boolean from this source; applicability stays `unknown` except where a reviewed reconstructed_candidate is explicitly labeled as such.",
+      "result": "STOP"
+    },
+    "rer_document_observation": {
+      "rationale": "RER-titled artifact groups are reliably discoverable via title-token matching on ZAP artifact `dcp-name`, and the resulting document bytes are fetchable and hashable without authentication. A LDP-24-style manifest/versioning pass over this signal is viable.",
+      "result": "GO"
+    },
+    "wrp_and_other_report_candidates": {
+      "rationale": "Out of scope for this card by the commission's own negative rule (\"WRP-specific ontology before the census establishes coverage and usefulness\"). No WRP-titled artifact group was observed in this sample regardless.",
+      "result": "STOP"
+    }
+  },
+  "media_types": {
+    "deep_dive_subset": {
+      "denominator": 40,
+      "status": "measured",
+      "value": {
+        "application/pdf": 40
+      }
+    },
+    "structural_sample": {
+      "reason": "Bytes were not fetched for the structural sample; only the deep-dive subset was byte-fetched.",
+      "status": "not_applicable",
+      "value": null
+    }
+  },
+  "notice_of_certification_coverage": {
+    "denominator": 151,
+    "method": "title-token match on artifact group dcp-name",
+    "numerator": 41,
+    "status": "measured",
+    "value": 0.271523178807947
+  },
+  "notice_of_receipt_coverage": {
+    "denominator": 151,
+    "method": "title-token match on artifact group dcp-name",
+    "numerator": 46,
+    "status": "measured",
+    "value": 0.304635761589404
+  },
+  "population": {
+    "operative_period_projects": {
+      "denominator": 32964,
+      "exact_statutory_boundary": "unknown",
+      "exact_statutory_boundary_reason": "NYC Administrative Code section 25-118 primary text is behind a Cloudflare bot challenge (HTTP 403) from this host; DCP's RER criteria PDF names the governing law (Local Law 78 of 2021) but does not itself state an effective date. This proxy is a documented superset, not the exact operative-period denominator.",
+      "method": "proxy_superset: count(*) WHERE app_filed_date >= '2021-01-01' (year Local Law 78 of 2021 was enacted)",
+      "status": "measured",
+      "value": 944
+    },
+    "source_failure_rate": {
+      "note": "See source_receipt.governing_source_access for the specific failed statute fetches (amlegal.com Cloudflare challenge).",
+      "status": "measured",
+      "value": {
+        "soda_queries_attempted": 10,
+        "soda_queries_failed": 0,
+        "statute_fetches_attempted": 2,
+        "statute_fetches_failed": 1
+      }
+    },
+    "source_freshness": {
+      "measured_at": "2026-09-04T03:05:18.243Z",
+      "status": "measured",
+      "value": {
+        "metadata_updated_at": null,
+        "rows_updated_at": "2026-08-12T14:49:05.000Z"
+      }
+    },
+    "strata": {
+      "by_action_raw_value": {
+        "complete": true,
+        "field": "actions",
+        "method": "raw delimited field-value grouping -- NOT decomposed into individual per-code counts (SoQL has no array-split aggregate over this text field)",
+        "status": "measured",
+        "value": [
+          {
+            "actions": null,
+            "n": 31455
+          },
+          {
+            "actions": "ZM; ZR",
+            "n": 168
+          },
+          {
+            "actions": "ZC",
+            "n": 145
+          },
+          {
+            "actions": "RC",
+            "n": 132
+          },
+          {
+            "actions": "PX",
+            "n": 98
+          },
+          {
+            "actions": "ZC; LD",
+            "n": 83
+          },
+          {
+            "actions": "HK",
+            "n": 70
+          },
+          {
+            "actions": "MM",
+            "n": 64
+          },
+          {
+            "actions": "ZA",
+            "n": 58
+          },
+          {
+            "actions": "ZM",
+            "n": 52
+          },
+          {
+            "actions": "HI",
+            "n": 41
+          },
+          {
+            "actions": "ZS",
+            "n": 31
+          },
+          {
+            "actions": "RC; RC",
+            "n": 30
+          },
+          {
+            "actions": "CM",
+            "n": 28
+          },
+          {
+            "actions": "ZA; ZA",
+            "n": 27
+          },
+          {
+            "actions": "LD",
+            "n": 27
+          },
+          {
+            "actions": "ZR",
+            "n": 24
+          },
+          {
+            "actions": "PC",
+            "n": 23
+          },
+          {
+            "actions": "HA",
+            "n": 20
+          },
+          {
+            "actions": "ZA; ZA; LD",
+            "n": 17
+          },
+          {
+            "actions": "PQ",
+            "n": 13
+          },
+          {
+            "actions": "ZM; ZR; ZS",
+            "n": 12
+          },
+          {
+            "actions": "ZS; LD",
+            "n": 11
+          },
+          {
+            "actions": "CM; CM",
+            "n": 10
+          },
+          {
+            "actions": "ZA; ZA; ZA",
+            "n": 10
+          },
+          {
+            "actions": "ZC; ZC; LD",
+            "n": 9
+          },
+          {
+            "actions": "BD",
+            "n": 9
+          },
+          {
+            "actions": "ZC; ZC",
+            "n": 9
+          },
+          {
+            "actions": "PP",
+            "n": 9
+          },
+          {
+            "actions": "ZA; LD",
+            "n": 8
+          },
+          {
+            "actions": "ZR; ZM",
+            "n": 7
+          },
+          {
+            "actions": "ZC; ZC; LD; LD",
+            "n": 6
+          },
+          {
+            "actions": "ZS; ZR",
+            "n": 6
+          },
+          {
+            "actions": "ZC; ZA; LD",
+            "n": 6
+          },
+          {
+            "actions": "HA; ZM; ZR",
+            "n": 5
+          },
+          {
+            "actions": "ZA; ZA; ZC; LD",
+            "n": 4
+          },
+          {
+            "actions": "ZM; ZR; ZC",
+            "n": 4
+          },
+          {
+            "actions": "ZM; ZR; ZS; LD",
+            "n": 4
+          },
+          {
+            "actions": "HA; PQ",
+            "n": 3
+          },
+          {
+            "actions": "LD; LD",
+            "n": 3
+          },
+          {
+            "actions": "ZC; ZC; ZC; LD; LD; LD",
+            "n": 3
+          },
+          {
+            "actions": "ZM; ZR; ZS; ZS",
+            "n": 3
+          },
+          {
+            "actions": "ZA; ZC",
+            "n": 3
+          },
+          {
+            "actions": "ZM; ZR; ZC; LD",
+            "n": 3
+          },
+          {
+            "actions": "LD; ZS",
+            "n": 3
+          },
+          {
+            "actions": "ZM; ZR; ZS; LD; ZS",
+            "n": 2
+          },
+          {
+            "actions": "ZM; ZR; HA",
+            "n": 2
+          },
+          {
+            "actions": "ZM; ZR; ZS; ZS; LD",
+            "n": 2
+          },
+          {
+            "actions": "ZS; ZR; LD",
+            "n": 2
+          },
+          {
+            "actions": "MC",
+            "n": 2
+          },
+          {
+            "actions": "ZC; CS",
+            "n": 2
+          },
+          {
+            "actions": "RA",
+            "n": 2
+          },
+          {
+            "actions": "ZM; ZR;",
+            "n": 2
+          },
+          {
+            "actions": "ZS; HA",
+            "n": 2
+          },
+          {
+            "actions": "ZC; LD; LD",
+            "n": 2
+          },
+          {
+            "actions": "ZA; ZC; LD",
+            "n": 2
+          },
+          {
+            "actions": "ZM; ZR; ZS; ZC; LD",
+            "n": 2
+          },
+          {
+            "actions": "RA; RA; RA",
+            "n": 2
+          },
+          {
+            "actions": "ZA; ZA; ZA; ZC; LD",
+            "n": 2
+          },
+          {
+            "actions": "ZC; LD; ZC",
+            "n": 2
+          },
+          {
+            "actions": "ZM; ZS; ZR",
+            "n": 2
+          },
+          {
+            "actions": "ZA; ZA; ZA; LD",
+            "n": 2
+          },
+          {
+            "actions": "ZS; ZS",
+            "n": 2
+          },
+          {
+            "actions": "ZS; ZS; LD",
+            "n": 2
+          },
+          {
+            "actions": "MD",
+            "n": 2
+          },
+          {
+            "actions": "ZC,ZC,ZC,ZC",
+            "n": 2
+          },
+          {
+            "actions": "ZM; ZR; LD",
+            "n": 2
+          },
+          {
+            "actions": "ZR; ZS; LD",
+            "n": 2
+          },
+          {
+            "actions": "ZR; ZA",
+            "n": 2
+          },
+          {
+            "actions": "MM; PQ",
+            "n": 2
+          },
+          {
+            "actions": "ZS; GF; ZM; ZR; ZA; LD; ZS; ZC",
+            "n": 1
+          },
+          {
+            "actions": "ZS; ZR; ZS; ZS; ZC",
+            "n": 1
+          },
+          {
+            "actions": "ZA; ZC; ZC; LD",
+            "n": 1
+          },
+          {
+            "actions": "ZA; ZA; ZS; ZC; LD",
+            "n": 1
+          },
+          {
+            "actions": "ZC; ZA; ZA; ZA; ZA; ZA",
+            "n": 1
+          },
+          {
+            "actions": "RA; RA; RC",
+            "n": 1
+          },
+          {
+            "actions": "RC; RC; RC; LD",
+            "n": 1
+          },
+          {
+            "actions": "ZA; LD; ZA; ZA; ZA",
+            "n": 1
+          },
+          {
+            "actions": "ZA; ZC; ZC; LD; LD",
+            "n": 1
+          },
+          {
+            "actions": "ZS; ZR; ZS; ZS; ZS; PP; ZC; ZC; LD",
+            "n": 1
+          },
+          {
+            "actions": "ZC; ZC; LD; LD; LD",
+            "n": 1
+          },
+          {
+            "actions": "RA; RC",
+            "n": 1
+          },
+          {
+            "actions": "ZM; ZS; ZR; ZA",
+            "n": 1
+          },
+          {
+            "actions": "ZM; ZR; MM; MM; PP; HA",
+            "n": 1
+          },
+          {
+            "actions": "RC; RC; RC; RC",
+            "n": 1
+          },
+          {
+            "actions": "ZR; ZM; ZS; PC; ZS; LD",
+            "n": 1
+          },
+          {
+            "actions": "ZM; ZR; ZA; ZC; HA; LD",
+            "n": 1
+          },
+          {
+            "actions": "ZA; ZA; ZC; ZA",
+            "n": 1
+          },
+          {
+            "actions": "PP; PQ",
+            "n": 1
+          },
+          {
+            "actions": "LD; LD; LD",
+            "n": 1
+          },
+          {
+            "actions": "HN",
+            "n": 1
+          },
+          {
+            "actions": "ZA; ZS",
+            "n": 1
+          },
+          {
+            "actions": "ZM; ZS; ZS; ZR; LD",
+            "n": 1
+          },
+          {
+            "actions": "HA; ZM; ZR; ZS",
+            "n": 1
+          },
+          {
+            "actions": "CS; CS; ZC; ZC; LD",
+            "n": 1
+          },
+          {
+            "actions": "RA; LD",
+            "n": 1
+          },
+          {
+            "actions": "ME",
+            "n": 1
+          },
+          {
+            "actions": "PC; MM; PS",
+            "n": 1
+          },
+          {
+            "actions": "ZC; SG; LD",
+            "n": 1
+          },
+          {
+            "actions": "PQ; PP; PC",
+            "n": 1
+          },
+          {
+            "actions": "MM; ZM; PP",
+            "n": 1
+          },
+          {
+            "actions": "ZR; ZM; PP; PQ; ZS",
+            "n": 1
+          },
+          {
+            "actions": "RS; RA; ZR; ML; RA",
+            "n": 1
+          },
+          {
+            "actions": "UK; ZM; ZR; EAS",
+            "n": 1
+          },
+          {
+            "actions": "CM; CM; CM; CM; CM; CM",
+            "n": 1
+          },
+          {
+            "actions": "ZA; ZA; ZC; ZS; LD",
+            "n": 1
+          },
+          {
+            "actions": "PS; HA",
+            "n": 1
+          },
+          {
+            "actions": "ZS; PP; ZM; ZS; ZR",
+            "n": 1
+          },
+          {
+            "actions": "RA; RA; LD",
+            "n": 1
+          },
+          {
+            "actions": "ZM; ZR; HA; HU",
+            "n": 1
+          },
+          {
+            "actions": "ZM; MM",
+            "n": 1
+          },
+          {
+            "actions": "MM; ZM",
+            "n": 1
+          },
+          {
+            "actions": "ZR; ZA; LD; LD; ZS; ZA; ZC; ZS",
+            "n": 1
+          },
+          {
+            "actions": "LD; LD; LD; LD",
+            "n": 1
+          },
+          {
+            "actions": "ZC; LD; CS",
+            "n": 1
+          },
+          {
+            "actions": "ZM; ZS; ZS; ZR; ZS; ZS; ZS; ZS; ZS; LD",
+            "n": 1
+          },
+          {
+            "actions": "ZR; ZC; LD; ZC",
+            "n": 1
+          },
+          {
+            "actions": "MM; RA; RA; LD; RC; RC",
+            "n": 1
+          },
+          {
+            "actions": "ZS; ZM; ZR; LD; LD",
+            "n": 1
+          },
+          {
+            "actions": "CS; ZC; LD",
+            "n": 1
+          },
+          {
+            "actions": "RC, RC",
+            "n": 1
+          },
+          {
+            "actions": "RA; RA; ZC; LD",
+            "n": 1
+          },
+          {
+            "actions": "LD; ZC; ZC; ZC; LD",
+            "n": 1
+          },
+          {
+            "actions": "MM; ZR",
+            "n": 1
+          },
+          {
+            "actions": "CM; ZA",
+            "n": 1
+          },
+          {
+            "actions": "ZM; ZR; PP; HA; PC; PP",
+            "n": 1
+          },
+          {
+            "actions": "ZA; LD; ZA",
+            "n": 1
+          },
+          {
+            "actions": "ZM; ZR; ZS; ZS; LD; ZC; ZA; ZA; ZA; LD",
+            "n": 1
+          },
+          {
+            "actions": "ZS; ZC; LD; HA; ZA; ZA; ZA",
+            "n": 1
+          },
+          {
+            "actions": "ZM; ZS; ZC; ZS; LD",
+            "n": 1
+          },
+          {
+            "actions": "ZM, ZR",
+            "n": 1
+          },
+          {
+            "actions": "ZM; ZS; ZR; LD; LD",
+            "n": 1
+          },
+          {
+            "actions": "HA; HU",
+            "n": 1
+          },
+          {
+            "actions": "RC, RC, RC",
+            "n": 1
+          },
+          {
+            "actions": "CM; CM; CM",
+            "n": 1
+          },
+          {
+            "actions": "CM; CM; CM; CM",
+            "n": 1
+          },
+          {
+            "actions": "PC; PS; PS; PP",
+            "n": 1
+          },
+          {
+            "actions": "ML; ZM; ZR; ZS; ZA; ZC; LD; ZA; ZA; ZS",
+            "n": 1
+          },
+          {
+            "actions": "CS",
+            "n": 1
+          },
+          {
+            "actions": "ZC; LD; ZA",
+            "n": 1
+          },
+          {
+            "actions": "ZR; ZM; ZS; LD",
+            "n": 1
+          },
+          {
+            "actions": "ZA; ZA; ZC",
+            "n": 1
+          },
+          {
+            "actions": "ZA; ZA; ZA; ZA",
+            "n": 1
+          },
+          {
+            "actions": "ZS; ZC; LD",
+            "n": 1
+          },
+          {
+            "actions": "ZM; ZR; ZS; ZC; ZA; ZA; LD; ZA",
+            "n": 1
+          },
+          {
+            "actions": "ZA; ZA; LD; ZA",
+            "n": 1
+          },
+          {
+            "actions": "LD; ZA; ZA; ZA; ZA",
+            "n": 1
+          },
+          {
+            "actions": "RC; RC; LD",
+            "n": 1
+          },
+          {
+            "actions": "RC; LD",
+            "n": 1
+          },
+          {
+            "actions": "ZC; ZA; ZA; ZC; LD",
+            "n": 1
+          },
+          {
+            "actions": "RA; RC; ZA",
+            "n": 1
+          },
+          {
+            "actions": "RC; RC; RC",
+            "n": 1
+          },
+          {
+            "actions": "ZC; ZC; ZC; ZC; ZC; ZC; LD",
+            "n": 1
+          },
+          {
+            "actions": "ZC; HC",
+            "n": 1
+          },
+          {
+            "actions": "ZC; ZA; ZA; LD",
+            "n": 1
+          },
+          {
+            "actions": "HO; ZS",
+            "n": 1
+          },
+          {
+            "actions": "PC; PS",
+            "n": 1
+          },
+          {
+            "actions": "LD; ZS; ZS",
+            "n": 1
+          },
+          {
+            "actions": "ZS; PP; ZR; PQ; PP",
+            "n": 1
+          },
+          {
+            "actions": "ZM; ZR; ZS; ZS; ZA; ZA; ZS; ZS; ZS; ZS; ZA; ZA; LD",
+            "n": 1
+          },
+          {
+            "actions": "ZA; ZC; ZA; ZA; ZA; ZA; ZA; LD",
+            "n": 1
+          },
+          {
+            "actions": "PQ; HA",
+            "n": 1
+          },
+          {
+            "actions": "PS; ZS",
+            "n": 1
+          },
+          {
+            "actions": "RA; ZS",
+            "n": 1
+          },
+          {
+            "actions": "ZC; ZS; LD; LD",
+            "n": 1
+          },
+          {
+            "actions": "ZC; CS; LD",
+            "n": 1
+          },
+          {
+            "actions": "ZA; ZC; ZA; LD",
+            "n": 1
+          },
+          {
+            "actions": "ZS; ZM; ZR; ZS; LD",
+            "n": 1
+          },
+          {
+            "actions": "ZC; ZS; LD",
+            "n": 1
+          },
+          {
+            "actions": "ZR; ZS; LD; ZS; ZS",
+            "n": 1
+          },
+          {
+            "actions": "ZS; LD; ZA",
+            "n": 1
+          },
+          {
+            "actions": "ZA; PC",
+            "n": 1
+          },
+          {
+            "actions": "ZS; ZA; ZA; ZA; ZA; ZA; ZC; LD",
+            "n": 1
+          },
+          {
+            "actions": "ZM; ZR; PP; HA; HU",
+            "n": 1
+          },
+          {
+            "actions": "ZC; ZA; ZS",
+            "n": 1
+          },
+          {
+            "actions": "UK; ZM; ZR; HU; EAS; ZA",
+            "n": 1
+          },
+          {
+            "actions": "HN; ZM; ZR",
+            "n": 1
+          },
+          {
+            "actions": "ZM; LD",
+            "n": 1
+          },
+          {
+            "actions": "LD; LD; LD; CS",
+            "n": 1
+          },
+          {
+            "actions": "ZC; ZA; LD; LD",
+            "n": 1
+          },
+          {
+            "actions": "ZM; ZR; ZS; ZA; ZC; LD",
+            "n": 1
+          },
+          {
+            "actions": "ZM; ZS; ZR; PP; PC; ZS; PQ",
+            "n": 1
+          },
+          {
+            "actions": "ZM; ZS; ZR; HA; PP",
+            "n": 1
+          },
+          {
+            "actions": "PS; PS",
+            "n": 1
+          },
+          {
+            "actions": "LD; ME",
+            "n": 1
+          },
+          {
+            "actions": "PP; PQ; PC",
+            "n": 1
+          },
+          {
+            "actions": "ZR; ZM; PP; PQ",
+            "n": 1
+          },
+          {
+            "actions": "ZM; ZS; LD",
+            "n": 1
+          },
+          {
+            "actions": "ZC; ZC; ZA",
+            "n": 1
+          },
+          {
+            "actions": "ZM; ZS; ZA; ZR; CM",
+            "n": 1
+          },
+          {
+            "actions": "LD; ZC",
+            "n": 1
+          },
+          {
+            "actions": "ZM; ZR; PQ; PP; PP; PP; HA; PQ; HA; PQ",
+            "n": 1
+          },
+          {
+            "actions": "ZC; CS; CS",
+            "n": 1
+          },
+          {
+            "actions": "LD; ZC; ZA",
+            "n": 1
+          },
+          {
+            "actions": "ZC; ZC; ZC; LD",
+            "n": 1
+          },
+          {
+            "actions": "RA; RC; LD",
+            "n": 1
+          },
+          {
+            "actions": "HA; PC; ZR; ZS; ZM; ZS",
+            "n": 1
+          },
+          {
+            "actions": "ZM; HA; ZR",
+            "n": 1
+          },
+          {
+            "actions": "ZM; ZR; ZA; ZA; LD",
+            "n": 1
+          },
+          {
+            "actions": "ZC, ZC, ZC, ZC",
+            "n": 1
+          },
+          {
+            "actions": "ZS; PP",
+            "n": 1
+          },
+          {
+            "actions": "ZM; ZR; ZC; ZA; ZS; ZC; LD",
+            "n": 1
+          },
+          {
+            "actions": "ZS; ZS; HA",
+            "n": 1
+          },
+          {
+            "actions": "ZA, ZA",
+            "n": 1
+          },
+          {
+            "actions": "LD; MM; RA",
+            "n": 1
+          },
+          {
+            "actions": "ZM; ZR; PP; HU; PC",
+            "n": 1
+          },
+          {
+            "actions": "UK; ZR",
+            "n": 1
+          },
+          {
+            "actions": "ZS; ZS; ZC; ZC; LD; ZC; ZC; LD; LD",
+            "n": 1
+          },
+          {
+            "actions": "ZR; PQ; HA; ZM",
+            "n": 1
+          },
+          {
+            "actions": "PQ; PP",
+            "n": 1
+          },
+          {
+            "actions": "RA; ZC; ZC; LD; RA; RA",
+            "n": 1
+          },
+          {
+            "actions": "HU",
+            "n": 1
+          },
+          {
+            "actions": "ZA; ZC; ZA; ZC",
+            "n": 1
+          },
+          {
+            "actions": "HA; HU; ZM; ZR",
+            "n": 1
+          },
+          {
+            "actions": "ZA; ZC; ZC; LD; ZA; LD; LD",
+            "n": 1
+          },
+          {
+            "actions": "ZC; LD; ZC; LD; LD; ZS",
+            "n": 1
+          },
+          {
+            "actions": "ZC; LD; LD; ZC",
+            "n": 1
+          },
+          {
+            "actions": "ZA; ZA; ZA; ZA; LD",
+            "n": 1
+          },
+          {
+            "actions": "ZA; ZA; ZA; LD; ZC",
+            "n": 1
+          },
+          {
+            "actions": "ZS; RA; RA; ZA; ZC; MM",
+            "n": 1
+          },
+          {
+            "actions": "ZC; ZC; ZC; LD; ZC",
+            "n": 1
+          },
+          {
+            "actions": "ZR; ZM; ZS",
+            "n": 1
+          },
+          {
+            "actions": "ZS, RA, RA, RA, ZC, ZC",
+            "n": 1
+          },
+          {
+            "actions": "RS; RC; RA; LD",
+            "n": 1
+          },
+          {
+            "actions": "PS",
+            "n": 1
+          },
+          {
+            "actions": "ZM; ZC; ZA; LD",
+            "n": 1
+          },
+          {
+            "actions": "HD; HU",
+            "n": 1
+          },
+          {
+            "actions": "ZS; ZS; ZC; LD",
+            "n": 1
+          }
+        ]
+      },
+      "by_borough": {
+        "complete": true,
+        "field": "borough",
+        "status": "measured",
+        "value": [
+          {
+            "borough": "Manhattan",
+            "n": 11614
+          },
+          {
+            "borough": "Staten Island",
+            "n": 8395
+          },
+          {
+            "borough": "Brooklyn",
+            "n": 5053
+          },
+          {
+            "borough": "Queens",
+            "n": 3686
+          },
+          {
+            "borough": "Bronx",
+            "n": 3219
+          },
+          {
+            "borough": "Citywide",
+            "n": 997
+          }
+        ]
+      },
+      "by_project_status": {
+        "complete": true,
+        "field": "project_status",
+        "status": "measured",
+        "value": [
+          {
+            "n": 28361,
+            "project_status": "Complete"
+          },
+          {
+            "n": 2518,
+            "project_status": "Withdrawn-Other"
+          },
+          {
+            "n": 1678,
+            "project_status": "Terminated"
+          },
+          {
+            "n": 267,
+            "project_status": "Active"
+          },
+          {
+            "n": 76,
+            "project_status": "On-Hold"
+          },
+          {
+            "n": 60,
+            "project_status": "Terminated-Applicant Unresponsive"
+          },
+          {
+            "n": 4,
+            "project_status": "Record Closed"
+          }
+        ]
+      },
+      "by_public_status": {
+        "complete": true,
+        "field": "public_status",
+        "status": "measured",
+        "value": [
+          {
+            "n": 32728,
+            "public_status": "Completed"
+          },
+          {
+            "n": 128,
+            "public_status": "Filed"
+          },
+          {
+            "n": 65,
+            "public_status": "In Public Review"
+          },
+          {
+            "n": 42,
+            "public_status": "Noticed"
+          },
+          {
+            "n": 1,
+            "public_status": null
+          }
+        ]
+      },
+      "by_year": {
+        "complete": true,
+        "field": "app_filed_date",
+        "status": "measured",
+        "value": [
+          {
+            "n": 1,
+            "year": "2017"
+          },
+          {
+            "n": 128,
+            "year": "2018"
+          },
+          {
+            "n": 195,
+            "year": "2019"
+          },
+          {
+            "n": 171,
+            "year": "2020"
+          },
+          {
+            "n": 198,
+            "year": "2021"
+          },
+          {
+            "n": 132,
+            "year": "2022"
+          },
+          {
+            "n": 191,
+            "year": "2023"
+          },
+          {
+            "n": 152,
+            "year": "2024"
+          },
+          {
+            "n": 185,
+            "year": "2025"
+          },
+          {
+            "n": 86,
+            "year": "2026"
+          },
+          {
+            "n": 31525,
+            "year": null
+          }
+        ]
+      }
+    },
+    "total_discoverable_projects": {
+      "method": "SoQL count(*) over hgx4-8ukb",
+      "source_vintage": "2026-08-12T14:49:05.000Z",
+      "status": "measured",
+      "value": 32964
+    }
+  },
+  "projects_exceeding_40_documents": {
+    "denominator": 151,
+    "projects": [
+      {
+        "n_documents": 61,
+        "project_id": "2025Q0247"
+      },
+      {
+        "n_documents": 56,
+        "project_id": "2026Q0291"
+      },
+      {
+        "n_documents": 77,
+        "project_id": "2025K0284"
+      },
+      {
+        "n_documents": 103,
+        "project_id": "2025M0449"
+      },
+      {
+        "n_documents": 47,
+        "project_id": "2025Q0155"
+      },
+      {
+        "n_documents": 53,
+        "project_id": "2024R0300"
+      },
+      {
+        "n_documents": 54,
+        "project_id": "2025X0108"
+      },
+      {
+        "n_documents": 73,
+        "project_id": "2024X0210"
+      },
+      {
+        "n_documents": 69,
+        "project_id": "2025M0261"
+      },
+      {
+        "n_documents": 90,
+        "project_id": "2025K0295"
+      },
+      {
+        "n_documents": 74,
+        "project_id": "2024Q0219"
+      },
+      {
+        "n_documents": 49,
+        "project_id": "2025K0236"
+      },
+      {
+        "n_documents": 44,
+        "project_id": "2023R0353"
+      },
+      {
+        "n_documents": 60,
+        "project_id": "2025K0117"
+      },
+      {
+        "n_documents": 47,
+        "project_id": "2023Q0328"
+      },
+      {
+        "n_documents": 70,
+        "project_id": "2024Q0177"
+      },
+      {
+        "n_documents": 101,
+        "project_id": "2024K0234"
+      },
+      {
+        "n_documents": 68,
+        "project_id": "2025X0153"
+      },
+      {
+        "n_documents": 160,
+        "project_id": "2024K0230"
+      },
+      {
+        "n_documents": 68,
+        "project_id": "2024K0263"
+      },
+      {
+        "n_documents": 80,
+        "project_id": "2024R0343"
+      },
+      {
+        "n_documents": 77,
+        "project_id": "2022R0315"
+      },
+      {
+        "n_documents": 62,
+        "project_id": "2023Q0397"
+      },
+      {
+        "n_documents": 78,
+        "project_id": "2023K0411"
+      },
+      {
+        "n_documents": 56,
+        "project_id": "2023M0442"
+      },
+      {
+        "n_documents": 93,
+        "project_id": "2024K0127"
+      },
+      {
+        "n_documents": 51,
+        "project_id": "2023Q0403"
+      },
+      {
+        "n_documents": 60,
+        "project_id": "2023Q0366"
+      },
+      {
+        "n_documents": 60,
+        "project_id": "2024M0261"
+      },
+      {
+        "n_documents": 205,
+        "project_id": "2022M0359"
+      },
+      {
+        "n_documents": 59,
+        "project_id": "2022M0187"
+      },
+      {
+        "n_documents": 145,
+        "project_id": "2022Q0154"
+      },
+      {
+        "n_documents": 57,
+        "project_id": "2023M0432"
+      },
+      {
+        "n_documents": 64,
+        "project_id": "2023K0218"
+      },
+      {
+        "n_documents": 45,
+        "project_id": "2022K0311"
+      },
+      {
+        "n_documents": 85,
+        "project_id": "2024Q0135"
+      },
+      {
+        "n_documents": 42,
+        "project_id": "2024M0112"
+      },
+      {
+        "n_documents": 47,
+        "project_id": "2022X0335"
+      },
+      {
+        "n_documents": 52,
+        "project_id": "2022K0441"
+      },
+      {
+        "n_documents": 72,
+        "project_id": "2023K0165"
+      },
+      {
+        "n_documents": 61,
+        "project_id": "2022R0191"
+      },
+      {
+        "n_documents": 45,
+        "project_id": "2022K0343"
+      },
+      {
+        "n_documents": 59,
+        "project_id": "2020Q0363"
+      },
+      {
+        "n_documents": 245,
+        "project_id": "2023X0227"
+      },
+      {
+        "n_documents": 73,
+        "project_id": "2022M0440"
+      },
+      {
+        "n_documents": 67,
+        "project_id": "2023R0115"
+      },
+      {
+        "n_documents": 54,
+        "project_id": "2022M0406"
+      },
+      {
+        "n_documents": 72,
+        "project_id": "2022Q0276"
+      },
+      {
+        "n_documents": 89,
+        "project_id": "2022R0201"
+      },
+      {
+        "n_documents": 170,
+        "project_id": "2018Q0491"
+      },
+      {
+        "n_documents": 41,
+        "project_id": "2021M0320"
+      },
+      {
+        "n_documents": 89,
+        "project_id": "2021R0204"
+      },
+      {
+        "n_documents": 80,
+        "project_id": "P2017K0249"
+      },
+      {
+        "n_documents": 100,
+        "project_id": "2019K0383"
+      },
+      {
+        "n_documents": 49,
+        "project_id": "2021R0416"
+      },
+      {
+        "n_documents": 49,
+        "project_id": "2020Q0495"
+      },
+      {
+        "n_documents": 67,
+        "project_id": "2020K0405"
+      },
+      {
+        "n_documents": 54,
+        "project_id": "2021M0107"
+      },
+      {
+        "n_documents": 45,
+        "project_id": "P2017X0312"
+      },
+      {
+        "n_documents": 161,
+        "project_id": "2019K0122"
+      }
+    ],
+    "status": "measured",
+    "value": 60
+  },
+  "rer_classification_paths": {
+    "note": "Every observed RER classification in this sample used method 'title_token_strong' (tier 2 of the ontology's classification order). No tier-1 (explicit publisher type) RER signal exists.",
+    "status": "measured",
+    "value": {
+      "title_token_strong": 18
+    }
+  },
+  "same_name_different_hash_rate": {
+    "denominator": 6,
+    "examples": [],
+    "identical_hash_duplicate_groups": 6,
+    "method": "byte-level: sha256 over the bounded deep-dive document subset only, not the full structural sample",
+    "numerator": 0,
+    "sample_note": "deep-dive subset size = 40 documents (bounded; see source_receipt.document_bytes)",
+    "status": "measured",
+    "value": 0
+  },
+  "same_name_different_id_rate": {
+    "denominator": 3282,
+    "examples": [
+      {
+        "distinct_source_ids": [
+          "01QY2C5KJN766ONDGJ3RCLUSZVLPOZ4KLT",
+          "01QY2C5KLOLNQZA5OSNNEL7YY7VLX3EUZP",
+          "01QY2C5KM26OTPANUZJZB32DFK7YUZBBXL",
+          "01QY2C5KJSVZDD6FIIEZALHFJXAAZCWVE5",
+          "01QY2C5KJO6HVZ7E7HXVDLLCVVWVJ65WGH"
+        ],
+        "name": "1.-69-67-108-st.--llc-authorization-letter.pdf"
+      },
+      {
+        "distinct_source_ids": [
+          "01QY2C5KPCYXAJGT4BE5EYXCFBS7IRIYTG",
+          "01QY2C5KNT4MK4VIQ2VFB3LVLCWXWO2IGK"
+        ],
+        "name": "2.-lr3-project-description.pdf"
+      },
+      {
+        "distinct_source_ids": [
+          "01QY2C5KIRN5B3SOZAQJEJ5NK3VM65Q5VR",
+          "01QY2C5KNXM4SYI7IAOFGYWE2KU55VM7ZA",
+          "01QY2C5KOS2365BSXPQNHYGD6LN4WHXKFF"
+        ],
+        "name": "3.-69-67-108th-street---zoning-map--7-21-25-.pdf"
+      },
+      {
+        "distinct_source_ids": [
+          "01QY2C5KNUVVNOL6DFE5DYMQO3BZKLQ3UA",
+          "01QY2C5KI3PSPW4BL7GBDK4DU53Y2NF4KV"
+        ],
+        "name": "4.-69-67-108th-street---tax-map--7-21-25-.pdf"
+      },
+      {
+        "distinct_source_ids": [
+          "01QY2C5KNTY3VQ3AQI7NHZGE2YBC6GAWAO",
+          "01QY2C5KMVOATJT4IOIZELJIW4S46WO5TV",
+          "01QY2C5KNLAMK75JWTGZC2HOF46QIXQYXZ",
+          "01QY2C5KMSOMDCPAB7RZEIH7ZZLE2E5TU7",
+          "01QY2C5KMB2IJMJ2IQ6RGISLNRCSM7DLVC"
+        ],
+        "name": "5.-69-67-108th-street---area-map--10-8-24-.pdf"
+      },
+      {
+        "distinct_source_ids": [
+          "01QY2C5KJ4LSQANTIJCJAJMQYSANELOORA",
+          "01QY2C5KJWAAXV4UQFKRBKAD6NA6MON7VP"
+        ],
+        "name": "6.-69-67-108th-street---photographs.pdf"
+      },
+      {
+        "distinct_source_ids": [
+          "01QY2C5KPIRX3VBFWJWVCLMR4BOIC3BK6W",
+          "01QY2C5KJ6V4WQMD7J7FCLDWEIZRLWDQIZ",
+          "01QY2C5KLBYR2TESTK6RH2R3KWSYU7BP4E",
+          "01QY2C5KLFO5JS5J5AJNGZ4VHMX4WIRGTU",
+          "01QY2C5KNYLQGPBZL4S5BJ5FTLKYAPJOGU"
+        ],
+        "name": "7.-69-67-108th-street---zoning-change-map--10-8-24-.pdf"
+      },
+      {
+        "distinct_source_ids": [
+          "01QY2C5KIH7L2HZ6LIXBE2YWIPL6CIPBC3",
+          "01QY2C5KJIS4F7MBBB4JHKCUOWTFOJCYHZ",
+          "01QY2C5KJZLJGCZADZ4NE2S6GHSIQZYRJR",
+          "01QY2C5KLPWI7T3MAZHVAKHE5345FOV7LO",
+          "01QY2C5KN2JWIEDWAB3BBIWQ4KULDQFZXF"
+        ],
+        "name": "8.-69-67-108th-street---zoning-comparison-table--7-21-25-.pdf"
+      },
+      {
+        "distinct_source_ids": [
+          "01QY2C5KPQKANBU2GGKZGZJR5V3SOVBRHH",
+          "01QY2C5KPBCUVS7IOKF5BL47YI5W6OXCMU"
+        ],
+        "name": "9.-69-67-108th-street---mih-map.pdf"
+      },
+      {
+        "distinct_source_ids": [
+          "01QY2C5KMYNH23O5RZH5E2ZMCB3FXFZ3MA",
+          "01QY2C5KP5WOLSJJIG6NFIRMOBQM2DO4Y6",
+          "01QY2C5KLPVQ2TC4H7AVDLGMC52RXUHXWI",
+          "01QY2C5KLS6CSSFGKGGZGKOA7FH6UDIAXD",
+          "01QY2C5KNCQWDAUJTOCRC2MMV6VHSUHBOK",
+          "01QY2C5KJFUJYYFWL6SNHJB74U67JCBG3H"
+        ],
+        "name": "dcp-signature-form signed.pdf"
+      }
+    ],
+    "method": "structural: grouped sample documents by normalized name, counted names spanning >1 distinct source id (serverRelativeUrl)",
+    "numerator": 1179,
+    "status": "measured",
+    "value": 0.3592321755027422
+  },
+  "sample": {
+    "fetch_success_rate": {
+      "denominator": 151,
+      "numerator": 151,
+      "status": "measured",
+      "value": 1
+    },
+    "frame_definition": "hgx4-8ukb rows WHERE app_filed_date >= '2021-01-01', ORDER BY app_filed_date DESC, LIMIT 2000",
+    "frame_pagination_complete": true,
+    "frame_size": 944,
+    "pinned_specimens": [
+      "2025Q0247",
+      "2026K0123"
+    ],
+    "sample_size": 151,
+    "sampling_method": "deterministic systematic sample (stride = frame_size / 150) over the operative-period proxy frame, plus pinned specimens [\"2025Q0247\",\"2026K0123\"] always included"
+  },
+  "scanned_pdf_rate": {
+    "denominator": 40,
+    "method": "text-native heuristic: pdftotext extracted-bytes-per-page < 40 treated as scanned/no-text-layer; measured only over the deep-dive byte-and-text-extracted subset",
+    "numerator": 2,
+    "sample_note": "Not extrapolated to the full population or even the full structural sample.",
+    "status": "measured",
+    "value": 0.05
+  },
+  "schema": "cityscroll.land_filing_evidence_census.v1",
+  "source_receipt": {
+    "document_bytes": {
+      "raw_response_hashes": [
+        {
+          "byte_length": 1431975,
+          "content_hash": "sha256:50b99a356d26ed3530bdec33f496fd05cd9999ed6695178ba7c68e2585eec30a",
+          "content_type": "application/pdf",
+          "http_status": 200,
+          "project_id": "2025Q0247",
+          "source_id": "01QY2C5KPOCCBDHBS5I5GK7IRMNUIZZ7Z2"
+        },
+        {
+          "byte_length": 1658597,
+          "content_hash": "sha256:339ef1547c89821ad7d8cda17abd31ed5735ca5d9ce988e63f114305d1280c6b",
+          "content_type": "application/pdf",
+          "http_status": 200,
+          "project_id": "2025K0284",
+          "source_id": "01QY2C5KJ5DDCLD76TLBFYC7NHPJZ2FCKE"
+        },
+        {
+          "byte_length": 1670577,
+          "content_hash": "sha256:8c2039f1fc4e75d90d7e0caa28f98b189d28722d56208aec597cb9f228aa2086",
+          "content_type": "application/pdf",
+          "http_status": 200,
+          "project_id": "2026K0289",
+          "source_id": "01QY2C5KIMVG3LCU6IRNAKZR4RQFVS43DO"
+        },
+        {
+          "byte_length": 2488645,
+          "content_hash": "sha256:21981e61206882511a805a3419ca6911d8725c95bb98cbab7ca5d086b25c143b",
+          "content_type": "application/pdf",
+          "http_status": 200,
+          "project_id": "2025Q0155",
+          "source_id": "01QY2C5KKM32YGTZRLHRAK5FCTTBCMWWNN"
+        },
+        {
+          "byte_length": 1541695,
+          "content_hash": "sha256:d498204705b9b5c761f4d46ba56d27d6851dc7168c607ffb5fe2b82d357b2700",
+          "content_type": "application/pdf",
+          "http_status": 200,
+          "project_id": "2024R0300",
+          "source_id": "01QY2C5KPPPNPVSWTBOZC3RYKVVLJSORDI"
+        },
+        {
+          "byte_length": 1712232,
+          "content_hash": "sha256:2435a2ef3c3f8601f0302755c400b9745b9554039265f9c7d8544e233ce700b3",
+          "content_type": "application/pdf",
+          "http_status": 200,
+          "project_id": "2022Q0449",
+          "source_id": "01QY2C5KO6L62BSDLWMBDZJIJQJQO7IQFO"
+        },
+        {
+          "byte_length": 2733557,
+          "content_hash": "sha256:a8342f17de48bd75da766d169f7c7e489440d9348f3e399a197d22f4463f14dc",
+          "content_type": "application/pdf",
+          "http_status": 200,
+          "project_id": "2025K0295",
+          "source_id": "01QY2C5KP2FMWL6DMIFVFZV2H7CLNCJNO7"
+        },
+        {
+          "byte_length": 1171142,
+          "content_hash": "sha256:a4ad817efc14af158090f8c8064d4a55d383d60c947c68740ae909f6a02c5b65",
+          "content_type": "application/pdf",
+          "http_status": 200,
+          "project_id": "2024Q0219",
+          "source_id": "01QY2C5KISUO5GV6GCINEJSH2E5HHQW54J"
+        },
+        {
+          "byte_length": 1755170,
+          "content_hash": "sha256:a9f5ab1d8c35d6e5295fd2fef3200262ae47058a5b63ced68edd627b8e3c730d",
+          "content_type": "application/pdf",
+          "http_status": 200,
+          "project_id": "2024Q0177",
+          "source_id": "01QY2C5KJCY4LXCHYB2FE3RWUDU3ZXKXOE"
+        },
+        {
+          "byte_length": 1278973,
+          "content_hash": "sha256:9d8c83516025ff4f4da8a874fbe6fa9c7f348acdd50f62208fbd1aee1a651d92",
+          "content_type": "application/pdf",
+          "http_status": 200,
+          "project_id": "2024K0230",
+          "source_id": "01QY2C5KIVWSTR6AWWXBA2CRBYDFYMA4N5"
+        },
+        {
+          "byte_length": 1925006,
+          "content_hash": "sha256:b24533373aa34ee5caf28ccb52458b0ea35ed13e758009a81f33d5f9554740f0",
+          "content_type": "application/pdf",
+          "http_status": 200,
+          "project_id": "2023Q0397",
+          "source_id": "01QY2C5KJYFOJYBBDVINH235M2F5BHCHTY"
+        },
+        {
+          "byte_length": 1593203,
+          "content_hash": "sha256:24886dc5ace4026947e92981dcc122ffe0d7f0671e6245c3f8acb5768a076e88",
+          "content_type": "application/pdf",
+          "http_status": 200,
+          "project_id": "2023Q0366",
+          "source_id": "01QY2C5KJAG67C54AJORH3YGAH3J3APX62"
+        },
+        {
+          "byte_length": 1427813,
+          "content_hash": "sha256:6cee8e191fa2d1e1ced91a1c024354cb003ebcbec9353c8aff4e44041efbfedf",
+          "content_type": "application/pdf",
+          "http_status": 200,
+          "project_id": "2022M0359",
+          "source_id": "01QY2C5KP6R6MGYNDY5FGKI5BL5A26KRZR"
+        },
+        {
+          "byte_length": 1745984,
+          "content_hash": "sha256:6fc0c9e9c1b9aa63dd3374c3d74900794667fb08d9e89827b619ec1c9d8769d4",
+          "content_type": "application/pdf",
+          "http_status": 200,
+          "project_id": "2022Q0154",
+          "source_id": "01QY2C5KON5EDWOFR2WVGII4MRGBPKFZFX"
+        },
+        {
+          "byte_length": 900619,
+          "content_hash": "sha256:2bd97923ed73af8fad13ce0be6bcf277fc57186524aa91597abfd06908d1a81e",
+          "content_type": "application/pdf",
+          "http_status": 200,
+          "project_id": "2024Y0161",
+          "source_id": "01QY2C5KNVX6ALTYJNXFD2CQFTSQFLK5YL"
+        },
+        {
+          "byte_length": 21747075,
+          "content_hash": "sha256:632c0cfc0b1ed3f4f0ccfe371e0ca5956bd40987954d41d732d2435004f5f455",
+          "content_type": "application/pdf",
+          "http_status": 200,
+          "project_id": "2022K0343",
+          "source_id": "01QY2C5KIJ3DCSAZ4SQVFZFJ6ESFI6D24C"
+        },
+        {
+          "byte_length": 1707498,
+          "content_hash": "sha256:fcf416786fd309eaff636e9b214594a70ad165c12934176acafd58e0ab9cf548",
+          "content_type": "application/pdf",
+          "http_status": 200,
+          "project_id": "2019K0383",
+          "source_id": "01QY2C5KL446ZBXNOJTVALC4IBMCDLFUF3"
+        },
+        {
+          "byte_length": 1854951,
+          "content_hash": "sha256:f686ea270374431104e03dc46cd3be2348c87dbf86deff8ddef4f14959e26b29",
+          "content_type": "application/pdf",
+          "http_status": 200,
+          "project_id": "2019K0406",
+          "source_id": "01QY2C5KLLUDX4ZIHN5VGLXWQDNZQTDEIR"
+        },
+        {
+          "byte_length": 2448946,
+          "content_hash": "sha256:25765bce7293f360dee9e245d3a7b555e3a66bcdb0cffc8dade7d831dae70959",
+          "content_type": "application/pdf",
+          "http_status": 200,
+          "project_id": "2019K0406",
+          "source_id": "01QY2C5KIBNFASM5F7LJDKEFXI6CMFBTEX"
+        },
+        {
+          "byte_length": 261283,
+          "content_hash": "sha256:34ea524574d2c7949003526889d92735e6e4b32d567d8d83fc7c7196cb388d11",
+          "content_type": "application/pdf",
+          "http_status": 200,
+          "project_id": "2025Q0247",
+          "source_id": "01QY2C5KJN766ONDGJ3RCLUSZVLPOZ4KLT"
+        },
+        {
+          "byte_length": 151701,
+          "content_hash": "sha256:bf61a355ea0dc76457d21e932b241542ce4051dd318937536677cb005e7f348f",
+          "content_type": "application/pdf",
+          "http_status": 200,
+          "project_id": "2025Q0247",
+          "source_id": "01QY2C5KPCYXAJGT4BE5EYXCFBS7IRIYTG"
+        },
+        {
+          "byte_length": 1651729,
+          "content_hash": "sha256:97ef71fb750b295faad0626b7971c727b3bd6232223984207a4585e7322df59d",
+          "content_type": "application/pdf",
+          "http_status": 200,
+          "project_id": "2025Q0247",
+          "source_id": "01QY2C5KIRN5B3SOZAQJEJ5NK3VM65Q5VR"
+        },
+        {
+          "byte_length": 2352799,
+          "content_hash": "sha256:c4287a82e4a106e283901634c66bb48cb607acce858b15b783a0b5373dbe1dd9",
+          "content_type": "application/pdf",
+          "http_status": 200,
+          "project_id": "2025Q0247",
+          "source_id": "01QY2C5KNUVVNOL6DFE5DYMQO3BZKLQ3UA"
+        },
+        {
+          "byte_length": 6735915,
+          "content_hash": "sha256:a209bc3d6668ef5af2abdc638c59cc74ded438266a36c655cfecb4a3a34c9231",
+          "content_type": "application/pdf",
+          "http_status": 200,
+          "project_id": "2025Q0247",
+          "source_id": "01QY2C5KNTY3VQ3AQI7NHZGE2YBC6GAWAO"
+        },
+        {
+          "byte_length": 6887621,
+          "content_hash": "sha256:e99df22868a62df0b78b5f8b528c56a082b90a01ff9b508d5f046fc89c3d76e2",
+          "content_type": "application/pdf",
+          "http_status": 200,
+          "project_id": "2025Q0247",
+          "source_id": "01QY2C5KJ4LSQANTIJCJAJMQYSANELOORA"
+        },
+        {
+          "byte_length": 1266880,
+          "content_hash": "sha256:b0232a32d64d6df7b718c2d12a13237f515ff2347e2006f9692a7e03ee07e87c",
+          "content_type": "application/pdf",
+          "http_status": 200,
+          "project_id": "2025Q0247",
+          "source_id": "01QY2C5KPIRX3VBFWJWVCLMR4BOIC3BK6W"
+        },
+        {
+          "byte_length": 56115,
+          "content_hash": "sha256:fcfdeace87260eac7d56409e4c556ae5e8f72deb2c9aad9e32c92a00cd6c3dfb",
+          "content_type": "application/pdf",
+          "http_status": 200,
+          "project_id": "2025Q0247",
+          "source_id": "01QY2C5KIH7L2HZ6LIXBE2YWIPL6CIPBC3"
+        },
+        {
+          "byte_length": 230383,
+          "content_hash": "sha256:f15ef94ce2adcd5d59f2d5637f16e6674171d7c691fb7e3a8fe2eda87196e820",
+          "content_type": "application/pdf",
+          "http_status": 200,
+          "project_id": "2025Q0247",
+          "source_id": "01QY2C5KPQKANBU2GGKZGZJR5V3SOVBRHH"
+        },
+        {
+          "byte_length": 259410,
+          "content_hash": "sha256:e3a7ffacf971739e026668c73bd86349e4e0ec82fce55ea09afef3e479483368",
+          "content_type": "application/pdf",
+          "http_status": 200,
+          "project_id": "2025Q0247",
+          "source_id": "01QY2C5KMYNH23O5RZH5E2ZMCB3FXFZ3MA"
+        },
+        {
+          "byte_length": 169273,
+          "content_hash": "sha256:ecfc2dfcf8e26f8f4adf1f46c458ed3cb14481d33398ef96327b3de831d6d294",
+          "content_type": "application/pdf",
+          "http_status": 200,
+          "project_id": "2025Q0247",
+          "source_id": "01QY2C5KLX25ZEJPX4UJGI2TEUSX3CGA74"
+        },
+        {
+          "byte_length": 261283,
+          "content_hash": "sha256:34ea524574d2c7949003526889d92735e6e4b32d567d8d83fc7c7196cb388d11",
+          "content_type": "application/pdf",
+          "http_status": 200,
+          "project_id": "2025Q0247",
+          "source_id": "01QY2C5KLOLNQZA5OSNNEL7YY7VLX3EUZP"
+        },
+        {
+          "byte_length": 167580,
+          "content_hash": "sha256:b0909d9dcafbe874f433df90ab9365897ea473b2be23fe9d9caf2aa54ac5a9b6",
+          "content_type": "application/pdf",
+          "http_status": 200,
+          "project_id": "2025Q0247",
+          "source_id": "01QY2C5KMPE6CM3JIOH5A3RJ7IHUKY4XUN"
+        },
+        {
+          "byte_length": 1651729,
+          "content_hash": "sha256:97ef71fb750b295faad0626b7971c727b3bd6232223984207a4585e7322df59d",
+          "content_type": "application/pdf",
+          "http_status": 200,
+          "project_id": "2025Q0247",
+          "source_id": "01QY2C5KNXM4SYI7IAOFGYWE2KU55VM7ZA"
+        },
+        {
+          "byte_length": 1700260,
+          "content_hash": "sha256:18945269a89bc6344fdc19075a1e864d81cb8d1899ae0b2ec3be066ce2e7cb93",
+          "content_type": "application/pdf",
+          "http_status": 200,
+          "project_id": "2025Q0247",
+          "source_id": "01QY2C5KICU5ZZOEQZNFGLATX2ZEHSFR37"
+        },
+        {
+          "byte_length": 6735915,
+          "content_hash": "sha256:a209bc3d6668ef5af2abdc638c59cc74ded438266a36c655cfecb4a3a34c9231",
+          "content_type": "application/pdf",
+          "http_status": 200,
+          "project_id": "2025Q0247",
+          "source_id": "01QY2C5KMVOATJT4IOIZELJIW4S46WO5TV"
+        },
+        {
+          "byte_length": 33705665,
+          "content_hash": "sha256:17714aa196e72172f87ff6bc29e718d73d22021a5e925cc1876b1449b20083a2",
+          "content_type": "application/pdf",
+          "http_status": 200,
+          "project_id": "2025Q0247",
+          "source_id": "01QY2C5KPGC7QS7SEMHZF2GGP63JL7V7S5"
+        },
+        {
+          "byte_length": 1266880,
+          "content_hash": "sha256:b0232a32d64d6df7b718c2d12a13237f515ff2347e2006f9692a7e03ee07e87c",
+          "content_type": "application/pdf",
+          "http_status": 200,
+          "project_id": "2025Q0247",
+          "source_id": "01QY2C5KJ6V4WQMD7J7FCLDWEIZRLWDQIZ"
+        },
+        {
+          "byte_length": 56115,
+          "content_hash": "sha256:fcfdeace87260eac7d56409e4c556ae5e8f72deb2c9aad9e32c92a00cd6c3dfb",
+          "content_type": "application/pdf",
+          "http_status": 200,
+          "project_id": "2025Q0247",
+          "source_id": "01QY2C5KJIS4F7MBBB4JHKCUOWTFOJCYHZ"
+        },
+        {
+          "byte_length": 227541,
+          "content_hash": "sha256:38c4fd5f80e045d7377a67ed799f5e4353d68c5830e80a3559e13944f0d76dfa",
+          "content_type": "application/pdf",
+          "http_status": 200,
+          "project_id": "2025Q0247",
+          "source_id": "01QY2C5KKAE6VEBH553BG3TC4FI6GTUHKO"
+        },
+        {
+          "byte_length": 259410,
+          "content_hash": "sha256:e3a7ffacf971739e026668c73bd86349e4e0ec82fce55ea09afef3e479483368",
+          "content_type": "application/pdf",
+          "http_status": 200,
+          "project_id": "2025Q0247",
+          "source_id": "01QY2C5KP5WOLSJJIG6NFIRMOBQM2DO4Y6"
+        }
+      ],
+      "request_shape": "GET /document/{artifact|package}/{source_id} for a bounded deep-dive subset of 40 documents (never the full sample)"
+    },
+    "governing_source_access": {
+      "admin_code_25_118": {
+        "fetch": {
+          "byte_count": 5915,
+          "content_hash": "sha256:03c31b999bfb3192e539328313fb9124f596719f8b8a3dfa6cdad788eb7de3f3",
+          "content_type": "text/html; charset=UTF-8",
+          "fetch_id": "ldp22-fetch-admin-code-0011",
+          "http_status": 403,
+          "latency_ms": 116,
+          "pagination_complete": true,
+          "parser_version": "land_filing_evidence_census.v1",
+          "purpose": "governing_statute_text",
+          "raw_object_path": "warehouse/raw/land-filing-census/statute/admin_code_25_118.html",
+          "request_url_or_query": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-133761",
+          "requested_at": "2026-09-04T03:00:48.174Z",
+          "retrieved_at": "2026-09-04T03:00:48.299Z",
+          "warnings": [
+            "non-2xx http_status 403"
+          ]
+        },
+        "note": "Blocked by publisher bot-challenge (Cloudflare 'Just a moment...' interstitial); primary statutory text and exact effective/operative date could not be read from this host.",
+        "resolved": false,
+        "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-133761"
+      },
+      "dcp_rer_criteria_pdf": {
+        "extracted_action_codes": [
+          "ZM",
+          "ZR",
+          "ZS",
+          "RS",
+          "HA",
+          "PC",
+          "PQ",
+          "HU",
+          "HD",
+          "MM",
+          "ML",
+          "PP",
+          "HK"
+        ],
+        "extracted_text_excerpt": "Criteria Applicability Chart for Racial Equity Report on Housing and Opportunity submission\nThis chart identifies what criteria Land Use actions must meet to require that a Racial Equity Report be submitted\n                                                                                                              Actions that might be subject to Legislation if criteria are met\n\n                                                                                           HA (ULURP UDAAP with Disposition\n                                                                                           PC",
+        "fetch": {
+          "byte_count": 209819,
+          "content_hash": "sha256:4317addef32c41f571bde8e04307399f821ef08968cb3a48cb32ba96b5400d50",
+          "content_type": "application/pdf",
+          "fetch_id": "ldp22-fetch-dcp-criteria-0012",
+          "http_status": 200,
+          "latency_ms": 203,
+          "pagination_complete": true,
+          "parser_version": "land_filing_evidence_census.v1",
+          "purpose": "rer_criteria_chart",
+          "raw_object_path": "warehouse/raw/land-filing-census/statute/rer-criteria.pdf",
+          "request_url_or_query": "https://www.nyc.gov/assets/planning/downloads/pdf/applicants/preparing-application/rer-criteria.pdf",
+          "requested_at": "2026-09-04T03:00:48.602Z",
+          "retrieved_at": "2026-09-04T03:00:48.847Z",
+          "warnings": []
+        },
+        "names_governing_law": "Local Law 78 of 2021",
+        "resolved": true,
+        "url": "https://www.nyc.gov/assets/planning/downloads/pdf/applicants/preparing-application/rer-criteria.pdf"
+      }
+    },
+    "parser_version": "land_filing_evidence_census.v1",
+    "soda": {
+      "collection_interval": {
+        "ended_at": "2026-09-04T03:05:18.243Z",
+        "started_at": "2026-09-04T03:00:41.479Z"
+      },
+      "dataset_id": "hgx4-8ukb",
+      "dataset_metadata": {
+        "columns": [
+          {
+            "data_type": "text",
+            "field_name": "project_id",
+            "name": "project_id"
+          },
+          {
+            "data_type": "text",
+            "field_name": "project_name",
+            "name": "project_name"
+          },
+          {
+            "data_type": "text",
+            "field_name": "project_brief",
+            "name": "project_brief"
+          },
+          {
+            "data_type": "text",
+            "field_name": "project_status",
+            "name": "project_status"
+          },
+          {
+            "data_type": "text",
+            "field_name": "public_status",
+            "name": "public_status"
+          },
+          {
+            "data_type": "text",
+            "field_name": "ulurp_non",
+            "name": "ulurp_non"
+          },
+          {
+            "data_type": "text",
+            "field_name": "actions",
+            "name": "actions"
+          },
+          {
+            "data_type": "text",
+            "field_name": "ulurp_numbers",
+            "name": "ulurp_numbers"
+          },
+          {
+            "data_type": "text",
+            "field_name": "ceqr_type",
+            "name": "ceqr_type"
+          },
+          {
+            "data_type": "text",
+            "field_name": "ceqr_number",
+            "name": "ceqr_number"
+          },
+          {
+            "data_type": "text",
+            "field_name": "eas_eis",
+            "name": "eas_eis"
+          },
+          {
+            "data_type": "text",
+            "field_name": "ceqr_leadagency",
+            "name": "ceqr_leadagency"
+          },
+          {
+            "data_type": "text",
+            "field_name": "primary_applicant",
+            "name": "primary_applicant"
+          },
+          {
+            "data_type": "text",
+            "field_name": "applicant_type",
+            "name": "applicant_type"
+          },
+          {
+            "data_type": "text",
+            "field_name": "borough",
+            "name": "borough"
+          },
+          {
+            "data_type": "text",
+            "field_name": "community_district",
+            "name": "community_district"
+          },
+          {
+            "data_type": "number",
+            "field_name": "cc_district",
+            "name": "cc_district"
+          },
+          {
+            "data_type": "text",
+            "field_name": "flood_zone_a",
+            "name": "flood_zone_a"
+          },
+          {
+            "data_type": "text",
+            "field_name": "flood_zone_shadedx",
+            "name": "flood_zone_shadedx"
+          },
+          {
+            "data_type": "text",
+            "field_name": "current_milestone",
+            "name": "current_milestone"
+          },
+          {
+            "data_type": "calendar_date",
+            "field_name": "current_milestone_date",
+            "name": "current_milestone_date"
+          },
+          {
+            "data_type": "text",
+            "field_name": "current_envmilestone",
+            "name": "current_envmilestone"
+          },
+          {
+            "data_type": "calendar_date",
+            "field_name": "current_envmilestone_date",
+            "name": "current_envmilestone_date"
+          },
+          {
+            "data_type": "calendar_date",
+            "field_name": "app_filed_date",
+            "name": "app_filed_date"
+          },
+          {
+            "data_type": "calendar_date",
+            "field_name": "noticed_date",
+            "name": "noticed_date"
+          },
+          {
+            "data_type": "calendar_date",
+            "field_name": "certified_referred",
+            "name": "certified_referred"
+          },
+          {
+            "data_type": "calendar_date",
+            "field_name": "approval_date",
+            "name": "approval_date"
+          },
+          {
+            "data_type": "calendar_date",
+            "field_name": "completed_date",
+            "name": "completed_date"
+          },
+          {
+            "data_type": "text",
+            "field_name": "mih_flag",
+            "name": "mih_flag"
+          },
+          {
+            "data_type": "text",
+            "field_name": "mih_option1",
+            "name": "mih_option1"
+          },
+          {
+            "data_type": "text",
+            "field_name": "mih_option2",
+            "name": "mih_option2"
+          },
+          {
+            "data_type": "text",
+            "field_name": "mih_workforce",
+            "name": "mih_workforce"
+          },
+          {
+            "data_type": "text",
+            "field_name": "mih_deepaffordability",
+            "name": "mih_deepaffordability"
+          },
+          {
+            "data_type": "text",
+            "field_name": "mih_mapped_no_res",
+            "name": "mih_mapped_no_res"
+          },
+          {
+            "data_type": "text",
+            "field_name": "dcp_visibility",
+            "name": "dcp_visibility"
+          }
+        ],
+        "metadata_updated_at": null,
+        "name": "Zoning Application Portal (ZAP) - Project Data",
+        "rows_updated_at": "2026-08-12T14:49:05.000Z"
+      },
+      "domain": "data.cityofnewyork.us",
+      "pagination": {
+        "complete": true,
+        "method": "$limit/$group, no $offset paging used",
+        "note": "Aggregate group-by queries are complete when returned rows < $limit; the sample-frame row projection is bounded and explicitly not a population census by itself."
+      },
+      "rate_behavior": {
+        "max_latency_ms": 1709,
+        "median_latency_ms": 198,
+        "min_latency_ms": 91,
+        "n": 10,
+        "throttling_or_429_observed": false
+      },
+      "raw_response_hashes": [
+        {
+          "byte_count": 56450,
+          "content_hash": "sha256:256185d8a97ac58b685e32963f6222cba8dfcf9817dfa88ca765fcbb9cdea3c2",
+          "fetch_id": "ldp22-fetch-soda-meta-0001",
+          "http_status": 200,
+          "retrieved_at": "2026-09-04T03:00:41.913Z",
+          "url": "https://data.cityofnewyork.us/api/views/hgx4-8ukb.json"
+        },
+        {
+          "byte_count": 16,
+          "content_hash": "sha256:a33cd8721770023407e106a2e12d8559a3149b5001c379080bf105e63d9d497a",
+          "fetch_id": "ldp22-fetch-soda-total-0002",
+          "http_status": 200,
+          "retrieved_at": "2026-09-04T03:00:43.935Z",
+          "url": "https://data.cityofnewyork.us/resource/hgx4-8ukb.json?%24select=count%28*%29+as+n"
+        },
+        {
+          "byte_count": 283,
+          "content_hash": "sha256:cfa2b7cc33d6d3eab1754e0f54268bef039c6e9fdfcbb6e48fbdfd3254cdc685",
+          "fetch_id": "ldp22-fetch-soda-year-0003",
+          "http_status": 200,
+          "retrieved_at": "2026-09-04T03:00:44.532Z",
+          "url": "https://data.cityofnewyork.us/resource/hgx4-8ukb.json?%24select=date_extract_y%28app_filed_date%29+as+year%2C+count%28*%29+as+n&%24group=year&%24order=year&%24limit=1000"
+        },
+        {
+          "byte_count": 212,
+          "content_hash": "sha256:cbfdfb34bc4a98e8426bf17e77e241d0c1dc15544de285f9a33b60d3d39f184e",
+          "fetch_id": "ldp22-fetch-soda-borough-0004",
+          "http_status": 200,
+          "retrieved_at": "2026-09-04T03:00:44.931Z",
+          "url": "https://data.cityofnewyork.us/resource/hgx4-8ukb.json?%24select=borough%2C+count%28*%29+as+n&%24group=borough&%24order=n+DESC&%24limit=1000"
+        },
+        {
+          "byte_count": 324,
+          "content_hash": "sha256:43590ed01da450b2472b9043bee8851261b2afbb0044f2ca83bec37cdcac45f5",
+          "fetch_id": "ldp22-fetch-soda-pstatus-0005",
+          "http_status": 200,
+          "retrieved_at": "2026-09-04T03:00:45.468Z",
+          "url": "https://data.cityofnewyork.us/resource/hgx4-8ukb.json?%24select=project_status%2C+count%28*%29+as+n&%24group=project_status&%24order=n+DESC&%24limit=1000"
+        },
+        {
+          "byte_count": 177,
+          "content_hash": "sha256:0b3870837cc4d87bf977b445bf58079d7bb19b61ce45cea93bca8d4dcce21c62",
+          "fetch_id": "ldp22-fetch-soda-pubstatus-0006",
+          "http_status": 200,
+          "retrieved_at": "2026-09-04T03:00:45.996Z",
+          "url": "https://data.cityofnewyork.us/resource/hgx4-8ukb.json?%24select=public_status%2C+count%28*%29+as+n&%24group=public_status&%24order=n+DESC&%24limit=1000"
+        },
+        {
+          "byte_count": 120,
+          "content_hash": "sha256:1ab2df15b38e3210a92ce06443fad6c8dd56e1e666a97292605849269638e388",
+          "fetch_id": "ldp22-fetch-soda-ulurpnon-0007",
+          "http_status": 200,
+          "retrieved_at": "2026-09-04T03:00:46.474Z",
+          "url": "https://data.cityofnewyork.us/resource/hgx4-8ukb.json?%24select=ulurp_non%2C+count%28*%29+as+n&%24group=ulurp_non&%24order=n+DESC&%24limit=1000"
+        },
+        {
+          "byte_count": 8333,
+          "content_hash": "sha256:96d9186cddb03e6ec1c860bbfca01b78820388b6ed2354a53badb84b5907ff36",
+          "fetch_id": "ldp22-fetch-soda-actions-0008",
+          "http_status": 200,
+          "retrieved_at": "2026-09-04T03:00:46.903Z",
+          "url": "https://data.cityofnewyork.us/resource/hgx4-8ukb.json?%24select=actions%2C+count%28*%29+as+n&%24group=actions&%24order=n+DESC&%24limit=1000"
+        },
+        {
+          "byte_count": 78,
+          "content_hash": "sha256:d86976d195ed477b5deadd6c7498f8cfc2880e4dd4edbd47878a04dd4033c43f",
+          "fetch_id": "ldp22-fetch-soda-daterange-0009",
+          "http_status": 200,
+          "retrieved_at": "2026-09-04T03:00:47.385Z",
+          "url": "https://data.cityofnewyork.us/resource/hgx4-8ukb.json?%24select=min%28app_filed_date%29+as+min_date%2C+max%28app_filed_date%29+as+max_date"
+        },
+        {
+          "byte_count": 14,
+          "content_hash": "sha256:2d86eb1a120a7d0ac0a6042da1f3389eeb22daaf3539b18148bc323f3b4c3abb",
+          "fetch_id": "ldp22-fetch-soda-opproxy-0010",
+          "http_status": 200,
+          "retrieved_at": "2026-09-04T03:00:47.867Z",
+          "url": "https://data.cityofnewyork.us/resource/hgx4-8ukb.json?%24select=count%28*%29+as+n&%24where=app_filed_date+%3E%3D+%272021-01-01%27"
+        },
+        {
+          "byte_count": 178726,
+          "content_hash": "sha256:0e4f38083587fbac2f8a0151dd9920a0345cf5f83e4bdece7570499791970480",
+          "fetch_id": "ldp22-fetch-soda-frame-0013",
+          "http_status": 200,
+          "retrieved_at": "2026-09-04T03:00:50.207Z",
+          "url": "https://data.cityofnewyork.us/resource/hgx4-8ukb.json?%24select=project_id%2C+borough%2C+app_filed_date%2C+actions%2C+project_status%2C+public_status%2C+ulurp_non&%24where=app_filed_date+%3E%3D+%272021-01-01%27&%24order=app_filed_date+DESC&%24limit=2000"
+        }
+      ],
+      "request_shape": "bounded SoQL aggregate queries (count/group/min-max) plus one bounded 2000-row sample-frame projection; never a full-table row export",
+      "response_schema": "Socrata SODA2 JSON (array of row objects for aggregates; JSON:API-unrelated)"
+    },
+    "zap_api": {
+      "base": "https://zap-api-production.herokuapp.com",
+      "collection_interval": {
+        "ended_at": "2026-09-04T03:04:20.423Z",
+        "started_at": "2026-09-04T03:00:50.512Z"
+      },
+      "included_types_observed": [
+        "actions",
+        "artifacts",
+        "dispositions",
+        "milestones",
+        "packages"
+      ],
+      "pagination": {
+        "complete": true,
+        "method": "none (single-resource fetch per project)",
+        "note": "Not a listing endpoint; completeness is per-project, not per-page."
+      },
+      "rate_behavior": {
+        "max_latency_ms": 3899,
+        "median_latency_ms": 1113,
+        "min_latency_ms": 564,
+        "n": 151,
+        "throttling_or_429_observed": false
+      },
+      "raw_response_hashes": [
+        {
+          "byte_count": 39273,
+          "content_hash": "sha256:ba0451d3dac7c02f955cd132f5a3a64cfc1a8c8df2033fdffba19b9798970c1a",
+          "http_status": 200,
+          "latency_ms": 3213,
+          "project_id": "2025Q0247",
+          "retrieved_at": "2026-09-04T03:00:53.727Z"
+        },
+        {
+          "byte_count": 31991,
+          "content_hash": "sha256:cd030af1c6382f00ab0cb377dcef3fcf85bb3501c8ecf0d3843e96d1d8cd4152",
+          "http_status": 200,
+          "latency_ms": 985,
+          "project_id": "2026K0123",
+          "retrieved_at": "2026-09-04T03:00:54.921Z"
+        },
+        {
+          "byte_count": 20550,
+          "content_hash": "sha256:230f9b7e3df2b26f953667e51df6de733982d5908d7752b824384c5370ec05a3",
+          "http_status": 200,
+          "latency_ms": 1073,
+          "project_id": "2026M0136",
+          "retrieved_at": "2026-09-04T03:00:56.201Z"
+        },
+        {
+          "byte_count": 11595,
+          "content_hash": "sha256:5d0741790dbf7017250f93515673a25a1f1b28ef0cff5661f865692b34f66707",
+          "http_status": 200,
+          "latency_ms": 931,
+          "project_id": "2026M0432",
+          "retrieved_at": "2026-09-04T03:00:57.336Z"
+        },
+        {
+          "byte_count": 15669,
+          "content_hash": "sha256:c3de6d3c8124e20a8a492ebcdac5e7bba9867394ed5ce622bcb7276c724ea5c3",
+          "http_status": 200,
+          "latency_ms": 1037,
+          "project_id": "2026M0164",
+          "retrieved_at": "2026-09-04T03:00:58.579Z"
+        },
+        {
+          "byte_count": 9050,
+          "content_hash": "sha256:e7fdc4f1eff46a0d9a7790277c8e1944e511b9aee3e8e4a05843a444c07ad847",
+          "http_status": 200,
+          "latency_ms": 856,
+          "project_id": "2026M0444",
+          "retrieved_at": "2026-09-04T03:00:59.640Z"
+        },
+        {
+          "byte_count": 9145,
+          "content_hash": "sha256:a24c760fb402bd625f7a65158c8bc078469fc1ec97bdfab69039d5838286a7ea",
+          "http_status": 200,
+          "latency_ms": 1205,
+          "project_id": "2026K0443",
+          "retrieved_at": "2026-09-04T03:01:01.055Z"
+        },
+        {
+          "byte_count": 16229,
+          "content_hash": "sha256:a8b5550339a3cc3a6ec3118ef7945fb83429a1e34e3006038424e5f8c017660a",
+          "http_status": 200,
+          "latency_ms": 1261,
+          "project_id": "2026R0137",
+          "retrieved_at": "2026-09-04T03:01:02.526Z"
+        },
+        {
+          "byte_count": 31109,
+          "content_hash": "sha256:a8a726bdbd739913be65271eb594eea9eda68efbb87ba3a1cd06fe9436fcf470",
+          "http_status": 200,
+          "latency_ms": 1217,
+          "project_id": "2025K0232",
+          "retrieved_at": "2026-09-04T03:01:03.952Z"
+        },
+        {
+          "byte_count": 12508,
+          "content_hash": "sha256:8344f1ad5d646c927de1ae970d58e658fb495509afbc14d2d5685bc5a6f86088",
+          "http_status": 200,
+          "latency_ms": 1121,
+          "project_id": "2026M0120",
+          "retrieved_at": "2026-09-04T03:01:05.281Z"
+        },
+        {
+          "byte_count": 30341,
+          "content_hash": "sha256:b045f553ebae989c9c51d63bb72f88104a7ea71bf775d62b335d6d3233f3be2b",
+          "http_status": 200,
+          "latency_ms": 951,
+          "project_id": "2024Q0325",
+          "retrieved_at": "2026-09-04T03:01:06.440Z"
+        },
+        {
+          "byte_count": 41608,
+          "content_hash": "sha256:94e438e504ef799143e0deaea8284cbd8bd39454a907c47517d4f33c3203dc52",
+          "http_status": 200,
+          "latency_ms": 1026,
+          "project_id": "2024R0425",
+          "retrieved_at": "2026-09-04T03:01:07.669Z"
+        },
+        {
+          "byte_count": 23446,
+          "content_hash": "sha256:8c75b3a41fae5d9362d5ac01a9fa488d19a20fee6385d75eacb166349878a9f2",
+          "http_status": 200,
+          "latency_ms": 1080,
+          "project_id": "2026Q0291",
+          "retrieved_at": "2026-09-04T03:01:08.955Z"
+        },
+        {
+          "byte_count": 44717,
+          "content_hash": "sha256:3ed92dd3f6cd6d51f793e0f0e0dccaf886ba017c133b88c0dcd5b5cba38ce0ea",
+          "http_status": 200,
+          "latency_ms": 1312,
+          "project_id": "2025K0284",
+          "retrieved_at": "2026-09-04T03:01:10.470Z"
+        },
+        {
+          "byte_count": 8621,
+          "content_hash": "sha256:2b938d86c83d62c31d9eaea97208787d8f32810906430192e4841e07fe81e923",
+          "http_status": 200,
+          "latency_ms": 896,
+          "project_id": "2025Q0445",
+          "retrieved_at": "2026-09-04T03:01:11.571Z"
+        },
+        {
+          "byte_count": 53890,
+          "content_hash": "sha256:e25ab51f9b6c2d0ca2276629d42b21f1b016630fb7f2bbc71a911afb292afa97",
+          "http_status": 200,
+          "latency_ms": 1792,
+          "project_id": "2025M0449",
+          "retrieved_at": "2026-09-04T03:01:13.576Z"
+        },
+        {
+          "byte_count": 66719,
+          "content_hash": "sha256:d3e07e148f507346513bc85ffb3af5c59f51399a22ee894aa89996eafc30d687",
+          "http_status": 200,
+          "latency_ms": 1355,
+          "project_id": "2026K0289",
+          "retrieved_at": "2026-09-04T03:01:15.150Z"
+        },
+        {
+          "byte_count": 37830,
+          "content_hash": "sha256:8e3ba38e597fa2d9a53ce6b10019cd8b8f80836d11977ef07f6def91c055134b",
+          "http_status": 200,
+          "latency_ms": 1200,
+          "project_id": "2025Q0155",
+          "retrieved_at": "2026-09-04T03:01:16.561Z"
+        },
+        {
+          "byte_count": 39339,
+          "content_hash": "sha256:6a05d72557392446ffecf595ece14627589fa973a7c30ecf8d3f7ed72df986ea",
+          "http_status": 200,
+          "latency_ms": 1181,
+          "project_id": "2024R0300",
+          "retrieved_at": "2026-09-04T03:01:17.948Z"
+        },
+        {
+          "byte_count": 26598,
+          "content_hash": "sha256:6d23f450576bc6b43def9e5a59234f88ba577be27d465bc22a43a5cc4887f111",
+          "http_status": 200,
+          "latency_ms": 1027,
+          "project_id": "2025X0108",
+          "retrieved_at": "2026-09-04T03:01:19.182Z"
+        },
+        {
+          "byte_count": 33746,
+          "content_hash": "sha256:e9b34217dcf924efd7f85db987da14644af3f398a26c2fe352c13df195dc0777",
+          "http_status": 200,
+          "latency_ms": 1113,
+          "project_id": "2022Q0449",
+          "retrieved_at": "2026-09-04T03:01:20.500Z"
+        },
+        {
+          "byte_count": 18715,
+          "content_hash": "sha256:aec5ef15e2fa89616274bfd2020b1286627a8e1581777ca614dd36ec960231ba",
+          "http_status": 200,
+          "latency_ms": 1107,
+          "project_id": "2025R0228",
+          "retrieved_at": "2026-09-04T03:01:21.813Z"
+        },
+        {
+          "byte_count": 32121,
+          "content_hash": "sha256:39a43f92da40576c174be52ad73e2a42faa833f2481512e4765d58dc86bc2313",
+          "http_status": 200,
+          "latency_ms": 1099,
+          "project_id": "2021M0264",
+          "retrieved_at": "2026-09-04T03:01:23.122Z"
+        },
+        {
+          "byte_count": 30166,
+          "content_hash": "sha256:c7f3475377885428006e85f5696a2fb244720c5f9aff661db45ca8a5ac8754a0",
+          "http_status": 200,
+          "latency_ms": 981,
+          "project_id": "2025M0265",
+          "retrieved_at": "2026-09-04T03:01:24.306Z"
+        },
+        {
+          "byte_count": 30750,
+          "content_hash": "sha256:2d61557d695839656d990d87a0beb9861e0509cc609f8bd0112b2727ff72fa9b",
+          "http_status": 200,
+          "latency_ms": 1184,
+          "project_id": "2025K0154",
+          "retrieved_at": "2026-09-04T03:01:25.701Z"
+        },
+        {
+          "byte_count": 49835,
+          "content_hash": "sha256:80996b81508cc1d7e2f2c432cb321edb83fc56f6cc4eb6275eab40954582a7ea",
+          "http_status": 200,
+          "latency_ms": 1037,
+          "project_id": "2024X0210",
+          "retrieved_at": "2026-09-04T03:01:26.958Z"
+        },
+        {
+          "byte_count": 47088,
+          "content_hash": "sha256:ab6ab6baa36cd28c646cee3684de40c0fcf124ee2575d18b2d73e9b754475bc5",
+          "http_status": 200,
+          "latency_ms": 1231,
+          "project_id": "2025M0261",
+          "retrieved_at": "2026-09-04T03:01:28.400Z"
+        },
+        {
+          "byte_count": 14803,
+          "content_hash": "sha256:20eabde81433ec35c2e044d41d9256aea237f41df9f6154ab09177006a5dfded",
+          "http_status": 200,
+          "latency_ms": 968,
+          "project_id": "2025R0255",
+          "retrieved_at": "2026-09-04T03:01:29.582Z"
+        },
+        {
+          "byte_count": 21504,
+          "content_hash": "sha256:8615a98da25c818263d492f5d77959348e8b530eed2a8520eb5ab5c06d98a491",
+          "http_status": 200,
+          "latency_ms": 1119,
+          "project_id": "2025X0430",
+          "retrieved_at": "2026-09-04T03:01:30.907Z"
+        },
+        {
+          "byte_count": 60698,
+          "content_hash": "sha256:20acb16e9fab96d1e2375bcfb42933e11f545e76a368aba0083fe237ab54f1ed",
+          "http_status": 200,
+          "latency_ms": 1423,
+          "project_id": "2025K0295",
+          "retrieved_at": "2026-09-04T03:01:32.541Z"
+        },
+        {
+          "byte_count": 18505,
+          "content_hash": "sha256:d203f5acb8b7f170d4155db45743102cceca383d15ddaeadb7e40e3ace8964da",
+          "http_status": 200,
+          "latency_ms": 941,
+          "project_id": "2025M0413",
+          "retrieved_at": "2026-09-04T03:01:33.690Z"
+        },
+        {
+          "byte_count": 61960,
+          "content_hash": "sha256:52a6f2b682a5c4de34aad71a8d866e504fdab426d253b6797469a3f9b08d40c2",
+          "http_status": 200,
+          "latency_ms": 1800,
+          "project_id": "2024Q0219",
+          "retrieved_at": "2026-09-04T03:01:35.699Z"
+        },
+        {
+          "byte_count": 9921,
+          "content_hash": "sha256:221c11653e728285c137dad4e2413d0464601797d05d49867e50b1b47c63743e",
+          "http_status": 200,
+          "latency_ms": 972,
+          "project_id": "2025X0341",
+          "retrieved_at": "2026-09-04T03:01:36.880Z"
+        },
+        {
+          "byte_count": 29479,
+          "content_hash": "sha256:fb95e6e567cf3a4c74a185b29deafe0dfed0a40d90921e6c4041f3766311ad5b",
+          "http_status": 200,
+          "latency_ms": 1087,
+          "project_id": "2025K0236",
+          "retrieved_at": "2026-09-04T03:01:38.179Z"
+        },
+        {
+          "byte_count": 18725,
+          "content_hash": "sha256:bb78eaf2d839e71b7b819c21b42ac2a00d5a369e94ab896cc0daa928f711c8de",
+          "http_status": 200,
+          "latency_ms": 1195,
+          "project_id": "2025M0393",
+          "retrieved_at": "2026-09-04T03:01:39.590Z"
+        },
+        {
+          "byte_count": 26940,
+          "content_hash": "sha256:25f3d7f3005a16bd564e84c95cd3a10c2aee6a3d93944de48f5e70a9686c5fd7",
+          "http_status": 200,
+          "latency_ms": 1184,
+          "project_id": "2022K0121",
+          "retrieved_at": "2026-09-04T03:01:40.982Z"
+        },
+        {
+          "byte_count": 23447,
+          "content_hash": "sha256:dc4beb044a9e3ee39b4617fd53eae2516f8e4eff27fb43661342a62d4bcc9780",
+          "http_status": 200,
+          "latency_ms": 1123,
+          "project_id": "2023R0353",
+          "retrieved_at": "2026-09-04T03:01:42.308Z"
+        },
+        {
+          "byte_count": 36969,
+          "content_hash": "sha256:82906efb40fc002addf99efe3c2ebdb3d7e2c8e7972fc76a81956228e8719293",
+          "http_status": 200,
+          "latency_ms": 1227,
+          "project_id": "2025K0117",
+          "retrieved_at": "2026-09-04T03:01:43.739Z"
+        },
+        {
+          "byte_count": 44771,
+          "content_hash": "sha256:49d29c4b5d6ac5c61fa790239ff44ac77d0f57e591ff61e16e212f411f0aa6f2",
+          "http_status": 200,
+          "latency_ms": 2010,
+          "project_id": "2023Q0328",
+          "retrieved_at": "2026-09-04T03:01:45.954Z"
+        },
+        {
+          "byte_count": 26785,
+          "content_hash": "sha256:c9d87da9637948d10f330f015bb93e5cd57dd7dc26158f80a5c086a299f45744",
+          "http_status": 200,
+          "latency_ms": 1219,
+          "project_id": "2024Q0192",
+          "retrieved_at": "2026-09-04T03:01:47.385Z"
+        },
+        {
+          "byte_count": 11488,
+          "content_hash": "sha256:c530b961f0a8562d4f32923d4a682c1041ddb542a15956b235eea34fe83e45c6",
+          "http_status": 200,
+          "latency_ms": 1071,
+          "project_id": "2024Q0368",
+          "retrieved_at": "2026-09-04T03:01:48.659Z"
+        },
+        {
+          "byte_count": 19579,
+          "content_hash": "sha256:fd6e1a53ec44d6ef54d2dacad173b677e1f191c28d8411fa4881277d1d4d3ead",
+          "http_status": 200,
+          "latency_ms": 844,
+          "project_id": "2025Q0319",
+          "retrieved_at": "2026-09-04T03:01:49.706Z"
+        },
+        {
+          "byte_count": 43355,
+          "content_hash": "sha256:2292024c207262e4e74b078afc36ef8bb9667562b9db8e9861a5bbf3d27bd97d",
+          "http_status": 200,
+          "latency_ms": 1256,
+          "project_id": "2024Q0177",
+          "retrieved_at": "2026-09-04T03:01:51.167Z"
+        },
+        {
+          "byte_count": 42135,
+          "content_hash": "sha256:a43accb1fef44dc4fddab0c07b77af9a4265aeac97973bf233ee7c53df73de7c",
+          "http_status": 200,
+          "latency_ms": 1790,
+          "project_id": "2024K0234",
+          "retrieved_at": "2026-09-04T03:01:53.171Z"
+        },
+        {
+          "byte_count": 18802,
+          "content_hash": "sha256:18a858f46b1bdec5d3677876331171614d82022295459aa8e0ee41914fe2213f",
+          "http_status": 200,
+          "latency_ms": 1025,
+          "project_id": "2023K0435",
+          "retrieved_at": "2026-09-04T03:01:54.407Z"
+        },
+        {
+          "byte_count": 28606,
+          "content_hash": "sha256:2ce4370be5aeb00b459408982faf269dd1fc5f312ab30168ebb1eaf7c9af196d",
+          "http_status": 200,
+          "latency_ms": 1297,
+          "project_id": "2025X0153",
+          "retrieved_at": "2026-09-04T03:01:55.924Z"
+        },
+        {
+          "byte_count": 68558,
+          "content_hash": "sha256:e7cf55d140762fa3dd38e5d435f4a67bcfd0b4f09fc50e8d86e211cece403024",
+          "http_status": 200,
+          "latency_ms": 2528,
+          "project_id": "2024K0230",
+          "retrieved_at": "2026-09-04T03:01:58.676Z"
+        },
+        {
+          "byte_count": 8973,
+          "content_hash": "sha256:82e71e95389fbd85223a74e3625b34001fbd1ab8e4c8ce22ad178728f9d25758",
+          "http_status": 200,
+          "latency_ms": 869,
+          "project_id": "2025M0249",
+          "retrieved_at": "2026-09-04T03:01:59.753Z"
+        },
+        {
+          "byte_count": 50723,
+          "content_hash": "sha256:5345f73f1636701e93ea851c34030f9ff1cada53534a8a2f2d351e7c9049f36d",
+          "http_status": 200,
+          "latency_ms": 1158,
+          "project_id": "2024K0263",
+          "retrieved_at": "2026-09-04T03:02:01.115Z"
+        },
+        {
+          "byte_count": 31957,
+          "content_hash": "sha256:509b75a75b2af0a3dd0029b003dd89c8b42ddd3f5ec143e84a6eb1e36376e936",
+          "http_status": 200,
+          "latency_ms": 1032,
+          "project_id": "2024R0343",
+          "retrieved_at": "2026-09-04T03:02:02.359Z"
+        },
+        {
+          "byte_count": 46683,
+          "content_hash": "sha256:c813c2dd770bfc862cfaf6ba4d85aa14b766c18043d578b58fb715b4717acad2",
+          "http_status": 200,
+          "latency_ms": 1132,
+          "project_id": "2022R0315",
+          "retrieved_at": "2026-09-04T03:02:03.703Z"
+        },
+        {
+          "byte_count": 20430,
+          "content_hash": "sha256:10caa0d64fd6845ece8966cda070f2d220634d67993416c73261c168ef7d268c",
+          "http_status": 200,
+          "latency_ms": 1254,
+          "project_id": "2025M0110",
+          "retrieved_at": "2026-09-04T03:02:05.160Z"
+        },
+        {
+          "byte_count": 56973,
+          "content_hash": "sha256:9e54849e641ea6fbeb45046760c53517f282200b51a6e361cf4eeb71e4614660",
+          "http_status": 200,
+          "latency_ms": 1416,
+          "project_id": "2023Q0397",
+          "retrieved_at": "2026-09-04T03:02:06.782Z"
+        },
+        {
+          "byte_count": 46675,
+          "content_hash": "sha256:807522e6d4f4749c735c51157a18c9502ea77b4be792ab20558dbaa27199bfa9",
+          "http_status": 200,
+          "latency_ms": 1164,
+          "project_id": "2023K0411",
+          "retrieved_at": "2026-09-04T03:02:08.151Z"
+        },
+        {
+          "byte_count": 20206,
+          "content_hash": "sha256:81fb435b6e1041f17fcc10908e723adac8163dde52f60f98b3874ea9932c9b8f",
+          "http_status": 200,
+          "latency_ms": 1084,
+          "project_id": "2020R0467",
+          "retrieved_at": "2026-09-04T03:02:09.439Z"
+        },
+        {
+          "byte_count": 8763,
+          "content_hash": "sha256:6588c4f10d3a412f8da335364b566b3f521ec331007445fe28054795285bd1ae",
+          "http_status": 200,
+          "latency_ms": 771,
+          "project_id": "2024R0441",
+          "retrieved_at": "2026-09-04T03:02:10.414Z"
+        },
+        {
+          "byte_count": 25882,
+          "content_hash": "sha256:7359d228c3b03f325676987fb0b37cc8356180db128eb82473a1792e2f1a64dc",
+          "http_status": 200,
+          "latency_ms": 1322,
+          "project_id": "2023M0442",
+          "retrieved_at": "2026-09-04T03:02:11.940Z"
+        },
+        {
+          "byte_count": 37464,
+          "content_hash": "sha256:c1f44b66d8dbbb674c1f65f46c965bb0aec617b80407c98db73bcc3a22ee5e87",
+          "http_status": 200,
+          "latency_ms": 1331,
+          "project_id": "2024K0127",
+          "retrieved_at": "2026-09-04T03:02:13.478Z"
+        },
+        {
+          "byte_count": 9208,
+          "content_hash": "sha256:7d98c765dd1b39ab2c20ff985a4f9ebe09a57d049d2c850be199a4bc7a83c131",
+          "http_status": 200,
+          "latency_ms": 826,
+          "project_id": "2024M0374",
+          "retrieved_at": "2026-09-04T03:02:14.508Z"
+        },
+        {
+          "byte_count": 28536,
+          "content_hash": "sha256:2822d1b28979541aadecde9265e26c8c9144905474caad6b919451814ed38a86",
+          "http_status": 200,
+          "latency_ms": 1080,
+          "project_id": "2022X0150",
+          "retrieved_at": "2026-09-04T03:02:15.792Z"
+        },
+        {
+          "byte_count": 19026,
+          "content_hash": "sha256:c2ec834207c3ce59628b10f168264d6dbb08d9d2f6daef841a088ff32c771741",
+          "http_status": 200,
+          "latency_ms": 1046,
+          "project_id": "2023Q0403",
+          "retrieved_at": "2026-09-04T03:02:17.041Z"
+        },
+        {
+          "byte_count": 18561,
+          "content_hash": "sha256:03fdcb2c413083793cb079ba12f964c73f650052813f5a8da4b3b6b11f9f83ef",
+          "http_status": 200,
+          "latency_ms": 1193,
+          "project_id": "2023M0260",
+          "retrieved_at": "2026-09-04T03:02:18.438Z"
+        },
+        {
+          "byte_count": 47328,
+          "content_hash": "sha256:4b08a8d8e9b3611e8c9c6c3574dde735d2ee09b56f37b4edde662e48a9dba020",
+          "http_status": 200,
+          "latency_ms": 1453,
+          "project_id": "2023Q0366",
+          "retrieved_at": "2026-09-04T03:02:20.095Z"
+        },
+        {
+          "byte_count": 9141,
+          "content_hash": "sha256:7a3c23468afd490283e2f2d930aab83188aa887d1620d439dff1ee31934e9690",
+          "http_status": 200,
+          "latency_ms": 896,
+          "project_id": "2024X0311",
+          "retrieved_at": "2026-09-04T03:02:21.196Z"
+        },
+        {
+          "byte_count": 26616,
+          "content_hash": "sha256:c6bb31cdb00fb247fdced804e9e8cf8eba11b5a24033b82e2900b6d4dcf8cc8c",
+          "http_status": 200,
+          "latency_ms": 1529,
+          "project_id": "2024M0261",
+          "retrieved_at": "2026-09-04T03:02:22.926Z"
+        },
+        {
+          "byte_count": 21580,
+          "content_hash": "sha256:f735b010944d146e6318511abd5dbd26cae5fa04c8f665909bc0d315d744c6aa",
+          "http_status": 200,
+          "latency_ms": 886,
+          "project_id": "2024R0222",
+          "retrieved_at": "2026-09-04T03:02:24.017Z"
+        },
+        {
+          "byte_count": 114885,
+          "content_hash": "sha256:c32d0ee7515c7d39cb4fb2804b11f3983aa5f20dfbff883114e8d0e20d52ef8e",
+          "http_status": 200,
+          "latency_ms": 3899,
+          "project_id": "2024Q0254",
+          "retrieved_at": "2026-09-04T03:02:28.133Z"
+        },
+        {
+          "byte_count": 96147,
+          "content_hash": "sha256:42023b0926a612d8ed532bd07d0d7db4a8f993b0358c3f6d9bf724dc7aedfaac",
+          "http_status": 200,
+          "latency_ms": 1832,
+          "project_id": "2022M0359",
+          "retrieved_at": "2026-09-04T03:02:30.170Z"
+        },
+        {
+          "byte_count": 21340,
+          "content_hash": "sha256:2c02166b36f1f8e7189fbf20f19b13603236c138aa3787b9fcf61b40d45d54d9",
+          "http_status": 200,
+          "latency_ms": 1144,
+          "project_id": "2024K0202",
+          "retrieved_at": "2026-09-04T03:02:31.517Z"
+        },
+        {
+          "byte_count": 8992,
+          "content_hash": "sha256:cfb34cf30410aacf86d5042f5d94afdd9b50efef1cf8d54a6fe78d3bf9f97f03",
+          "http_status": 200,
+          "latency_ms": 847,
+          "project_id": "2024X0251",
+          "retrieved_at": "2026-09-04T03:02:32.566Z"
+        },
+        {
+          "byte_count": 24541,
+          "content_hash": "sha256:494d2bdc81c844aa7b551516059583746d9189887aae79292d83d8d1e844a4ed",
+          "http_status": 200,
+          "latency_ms": 1087,
+          "project_id": "2022M0187",
+          "retrieved_at": "2026-09-04T03:02:33.855Z"
+        },
+        {
+          "byte_count": 24690,
+          "content_hash": "sha256:d7666dbadc64cff0be61b0eda390666aec16e3414077c7fc7e959e7d7a177da6",
+          "http_status": 200,
+          "latency_ms": 1051,
+          "project_id": "2023Q0226",
+          "retrieved_at": "2026-09-04T03:02:35.110Z"
+        },
+        {
+          "byte_count": 28788,
+          "content_hash": "sha256:e92efc4001b1921f0f4cf8e83e5520449dca13b47296118026f9351a7e05a11e",
+          "http_status": 200,
+          "latency_ms": 1031,
+          "project_id": "2024X0205",
+          "retrieved_at": "2026-09-04T03:02:36.345Z"
+        },
+        {
+          "byte_count": 77598,
+          "content_hash": "sha256:24797b87cc0c7d683b608f0f8f6075cd90634a1bf73068af00b259ae2c3c15fe",
+          "http_status": 200,
+          "latency_ms": 1489,
+          "project_id": "2022Q0154",
+          "retrieved_at": "2026-09-04T03:02:38.051Z"
+        },
+        {
+          "byte_count": 122931,
+          "content_hash": "sha256:62fc08e9e0045c07713693cb9253e6a9a1bda06f721635110bca94a82fe3dd89",
+          "http_status": 200,
+          "latency_ms": 1397,
+          "project_id": "2024Y0161",
+          "retrieved_at": "2026-09-04T03:02:39.669Z"
+        },
+        {
+          "byte_count": 27556,
+          "content_hash": "sha256:f69a5c5b915c6f7e81339dbd8bb00700b58923cb88a926556fa4646ddae0e362",
+          "http_status": 200,
+          "latency_ms": 1138,
+          "project_id": "2023M0432",
+          "retrieved_at": "2026-09-04T03:02:41.012Z"
+        },
+        {
+          "byte_count": 35834,
+          "content_hash": "sha256:8c2ca753f69f58ec322ba96f50a56baeacda3ae130fb4475d5ea4903aa1939c5",
+          "http_status": 200,
+          "latency_ms": 1391,
+          "project_id": "2023K0218",
+          "retrieved_at": "2026-09-04T03:02:42.605Z"
+        },
+        {
+          "byte_count": 31445,
+          "content_hash": "sha256:2086f7bb5b9928048b0263d0c6c45e5f21f167096c014944db5afa7df781e6a6",
+          "http_status": 200,
+          "latency_ms": 1677,
+          "project_id": "2022K0311",
+          "retrieved_at": "2026-09-04T03:02:44.487Z"
+        },
+        {
+          "byte_count": 25049,
+          "content_hash": "sha256:6db91f4a974ab241602ab2936329f6e0e6c2df7bd82b72f64e8f4ecd36ab9209",
+          "http_status": 200,
+          "latency_ms": 1577,
+          "project_id": "2023R0174",
+          "retrieved_at": "2026-09-04T03:02:46.268Z"
+        },
+        {
+          "byte_count": 45412,
+          "content_hash": "sha256:0ca0d7eee5134626354ad46dc91da5d5b860c8cd5bd4ab610c7c2cdd08e34aa3",
+          "http_status": 200,
+          "latency_ms": 1187,
+          "project_id": "2024Q0135",
+          "retrieved_at": "2026-09-04T03:02:47.658Z"
+        },
+        {
+          "byte_count": 9228,
+          "content_hash": "sha256:920247ec36696c15548e827cb87ec99d09bafcb20ee50c38ab684a88e5b4e7bb",
+          "http_status": 200,
+          "latency_ms": 858,
+          "project_id": "2024R0125",
+          "retrieved_at": "2026-09-04T03:02:48.719Z"
+        },
+        {
+          "byte_count": 18267,
+          "content_hash": "sha256:8d7e45079e122bc4efa09d665f0ca76c9161b33e4592b3d5747dce2c030c5c8f",
+          "http_status": 200,
+          "latency_ms": 1153,
+          "project_id": "2024M0112",
+          "retrieved_at": "2026-09-04T03:02:50.076Z"
+        },
+        {
+          "byte_count": 23192,
+          "content_hash": "sha256:9df525705a605fd3048686a4daa59a2e24836f074587eeed2fafd09f368ebbc3",
+          "http_status": 200,
+          "latency_ms": 1137,
+          "project_id": "2022X0335",
+          "retrieved_at": "2026-09-04T03:02:51.417Z"
+        },
+        {
+          "byte_count": 20499,
+          "content_hash": "sha256:a7a8f628053b1c1b4fdc2480c98d4185365687e19fb7c8571e979230915b7eb4",
+          "http_status": 200,
+          "latency_ms": 1307,
+          "project_id": "2022K0441",
+          "retrieved_at": "2026-09-04T03:02:52.926Z"
+        },
+        {
+          "byte_count": 57314,
+          "content_hash": "sha256:226dad735352ef97f36302e430f360e64ed2abf9c54fd56a10b3c2e0a0061714",
+          "http_status": 200,
+          "latency_ms": 1540,
+          "project_id": "2023K0165",
+          "retrieved_at": "2026-09-04T03:02:54.669Z"
+        },
+        {
+          "byte_count": 21443,
+          "content_hash": "sha256:02a857b405ae70f35f4b3821ee3494e24ee674d68c1c79437f56eeb49473acc3",
+          "http_status": 200,
+          "latency_ms": 1073,
+          "project_id": "2023M0229",
+          "retrieved_at": "2026-09-04T03:02:55.946Z"
+        },
+        {
+          "byte_count": 10291,
+          "content_hash": "sha256:3e4259af310634e649e6514a2a35bdd27c5623a0ad4d6bf34966e0c8cdfe6167",
+          "http_status": 200,
+          "latency_ms": 946,
+          "project_id": "2023R0417",
+          "retrieved_at": "2026-09-04T03:02:57.094Z"
+        },
+        {
+          "byte_count": 26074,
+          "content_hash": "sha256:8e8cd10654a1aca733a45d767e178bead00ceb2f0680a7007d48a56233463734",
+          "http_status": 200,
+          "latency_ms": 1140,
+          "project_id": "2022R0191",
+          "retrieved_at": "2026-09-04T03:02:58.434Z"
+        },
+        {
+          "byte_count": 4624,
+          "content_hash": "sha256:231b3c7ad8d318f889fbcc195b9e8ee5adcf17ea9edcd887f333d20b463b9f83",
+          "http_status": 200,
+          "latency_ms": 564,
+          "project_id": "2023R0201",
+          "retrieved_at": "2026-09-04T03:02:59.200Z"
+        },
+        {
+          "byte_count": 52452,
+          "content_hash": "sha256:a40280fff7e498bd27c776be3febada88ee726f7ea2561b4ac56cf0846552bfe",
+          "http_status": 200,
+          "latency_ms": 1322,
+          "project_id": "2022K0343",
+          "retrieved_at": "2026-09-04T03:03:00.725Z"
+        },
+        {
+          "byte_count": 27224,
+          "content_hash": "sha256:5978513686f9e1187cab0a4181b1b95e77739bacc7ede0062ff6a232dfb94a59",
+          "http_status": 200,
+          "latency_ms": 1016,
+          "project_id": "2020Q0363",
+          "retrieved_at": "2026-09-04T03:03:01.946Z"
+        },
+        {
+          "byte_count": 96241,
+          "content_hash": "sha256:98382314cd0b9130cc1c5df2d6943b26d2f7d25a1039a67e324a4686cf1464da",
+          "http_status": 200,
+          "latency_ms": 1448,
+          "project_id": "2023X0227",
+          "retrieved_at": "2026-09-04T03:03:03.597Z"
+        },
+        {
+          "byte_count": 20855,
+          "content_hash": "sha256:cf7b774473c1fcd340ff125a10f47d8450221c2df54ddfbcb8c4b0b4aee944c2",
+          "http_status": 200,
+          "latency_ms": 838,
+          "project_id": "2022R0339",
+          "retrieved_at": "2026-09-04T03:03:04.639Z"
+        },
+        {
+          "byte_count": 13801,
+          "content_hash": "sha256:8a18ec7668b84efd5a4fdcbf389745a89d87ba910b391069650e0e63e32893dc",
+          "http_status": 200,
+          "latency_ms": 849,
+          "project_id": "2023R0301",
+          "retrieved_at": "2026-09-04T03:03:05.690Z"
+        },
+        {
+          "byte_count": 11640,
+          "content_hash": "sha256:b729b202f2c8d4eefe46cd08d8b816f89a02ca31c597f7bfe37caf845ffc0f09",
+          "http_status": 200,
+          "latency_ms": 946,
+          "project_id": "2022R0435",
+          "retrieved_at": "2026-09-04T03:03:06.838Z"
+        },
+        {
+          "byte_count": 43385,
+          "content_hash": "sha256:6bd644e3ed75363dfdfaada074384ea1940b6b7558c7e4b9f38cb8afee6feabb",
+          "http_status": 200,
+          "latency_ms": 1508,
+          "project_id": "2022M0440",
+          "retrieved_at": "2026-09-04T03:03:08.548Z"
+        },
+        {
+          "byte_count": 9173,
+          "content_hash": "sha256:2da64dc33dde33d538341a0307b589c5c34bca86d95ab3667dcb04e5444ab86d",
+          "http_status": 200,
+          "latency_ms": 1126,
+          "project_id": "2023R0283",
+          "retrieved_at": "2026-09-04T03:03:09.876Z"
+        },
+        {
+          "byte_count": 16709,
+          "content_hash": "sha256:e7bae7aaeba14d02ad1741ad712ef088b27246d751143dbfc2dd51f878415f7c",
+          "http_status": 200,
+          "latency_ms": 938,
+          "project_id": "2022R0341",
+          "retrieved_at": "2026-09-04T03:03:11.017Z"
+        },
+        {
+          "byte_count": 15856,
+          "content_hash": "sha256:34ff3c734e6f9d89ddcfdb1a6204b5669e6526c00e6c4e3068d3079bc3548cf8",
+          "http_status": 200,
+          "latency_ms": 953,
+          "project_id": "2023R0258",
+          "retrieved_at": "2026-09-04T03:03:12.172Z"
+        },
+        {
+          "byte_count": 36904,
+          "content_hash": "sha256:684490d73fbbc1e6b65a9badb61f8468fb8c6b7d262f8832f106fc51562b76ec",
+          "http_status": 200,
+          "latency_ms": 1228,
+          "project_id": "2023R0115",
+          "retrieved_at": "2026-09-04T03:03:13.603Z"
+        },
+        {
+          "byte_count": 19233,
+          "content_hash": "sha256:570ab644400e82dc1a08fcb74d2b6d51c0331662d1b25a3a411598b62c7c3db8",
+          "http_status": 200,
+          "latency_ms": 1026,
+          "project_id": "2022R0358",
+          "retrieved_at": "2026-09-04T03:03:14.830Z"
+        },
+        {
+          "byte_count": 7272,
+          "content_hash": "sha256:3e81922c57dd3b27338527437786bcc671664c838920d1fce8a3d1942dec5ebf",
+          "http_status": 200,
+          "latency_ms": 934,
+          "project_id": "2022Q0309",
+          "retrieved_at": "2026-09-04T03:03:15.966Z"
+        },
+        {
+          "byte_count": 19437,
+          "content_hash": "sha256:ff84396b7a7b893625839f5056e896a96075302f2903bd7327bf7693d6461f04",
+          "http_status": 200,
+          "latency_ms": 1062,
+          "project_id": "2022M0406",
+          "retrieved_at": "2026-09-04T03:03:17.229Z"
+        },
+        {
+          "byte_count": 11995,
+          "content_hash": "sha256:b15eacc3208bb5ab1f3626419df9a1121ddb47e462a560e578546c5a0f5fede7",
+          "http_status": 200,
+          "latency_ms": 982,
+          "project_id": "2023R0175",
+          "retrieved_at": "2026-09-04T03:03:18.415Z"
+        },
+        {
+          "byte_count": 12583,
+          "content_hash": "sha256:2a680df0b049e527fdab12fd5b32c30badc14d5e82d9104643aa621c60e5f9ae",
+          "http_status": 200,
+          "latency_ms": 850,
+          "project_id": "2023R0162",
+          "retrieved_at": "2026-09-04T03:03:19.468Z"
+        },
+        {
+          "byte_count": 9324,
+          "content_hash": "sha256:1fd7a7cf35495d52ee096e170927597ddad6c24b0f87027a74ab94b00442e6ee",
+          "http_status": 200,
+          "latency_ms": 897,
+          "project_id": "2022R0381",
+          "retrieved_at": "2026-09-04T03:03:20.567Z"
+        },
+        {
+          "byte_count": 25556,
+          "content_hash": "sha256:ec03dbd27c59ad26e48bb10770b66e058d3b874f7cbd8cc9e084eddefcbf8557",
+          "http_status": 200,
+          "latency_ms": 985,
+          "project_id": "2023R0129",
+          "retrieved_at": "2026-09-04T03:03:21.754Z"
+        },
+        {
+          "byte_count": 13912,
+          "content_hash": "sha256:d1350416826cdf44e300859c5790816a07dd83c9db094d1d47bc3e9529397293",
+          "http_status": 200,
+          "latency_ms": 863,
+          "project_id": "2023Q0106",
+          "retrieved_at": "2026-09-04T03:03:22.820Z"
+        },
+        {
+          "byte_count": 13810,
+          "content_hash": "sha256:40b86a0a50f0e08361862fb39e4e22fc75f30cd044305590f02e17bf4996f14e",
+          "http_status": 200,
+          "latency_ms": 843,
+          "project_id": "2022R0451",
+          "retrieved_at": "2026-09-04T03:03:23.865Z"
+        },
+        {
+          "byte_count": 23379,
+          "content_hash": "sha256:b56aaf610aeb0ef7c67b7a04a40d1b67a7455b167692b2af1eadcef3d06a5d7d",
+          "http_status": 200,
+          "latency_ms": 1087,
+          "project_id": "2022Q0421",
+          "retrieved_at": "2026-09-04T03:03:25.155Z"
+        },
+        {
+          "byte_count": 33003,
+          "content_hash": "sha256:15b7bd4732ec35ba5082b0b0ec293e549af0869b815c7051379355b4571a0f51",
+          "http_status": 200,
+          "latency_ms": 1196,
+          "project_id": "2022Q0276",
+          "retrieved_at": "2026-09-04T03:03:26.554Z"
+        },
+        {
+          "byte_count": 18002,
+          "content_hash": "sha256:b93403ca63a601bcd96f9e5a335889334a8e426367e0c0c96087d69212fccd92",
+          "http_status": 200,
+          "latency_ms": 1323,
+          "project_id": "2022R0403",
+          "retrieved_at": "2026-09-04T03:03:28.080Z"
+        },
+        {
+          "byte_count": 10435,
+          "content_hash": "sha256:7889869d59d9867c0284f64fd14bfa773126fb836f0bae7080f9080a579d1db3",
+          "http_status": 200,
+          "latency_ms": 906,
+          "project_id": "2022M0312",
+          "retrieved_at": "2026-09-04T03:03:29.189Z"
+        },
+        {
+          "byte_count": 8841,
+          "content_hash": "sha256:8beb9560c954d69a0eabdef66ecf1c88991e93a41438b474434a6c78705bdbc8",
+          "http_status": 200,
+          "latency_ms": 958,
+          "project_id": "2022R0384",
+          "retrieved_at": "2026-09-04T03:03:30.351Z"
+        },
+        {
+          "byte_count": 15901,
+          "content_hash": "sha256:b87d784cb6f646aaa857332537fc0d587397f05f1db3bd022730c951cfbe0e2b",
+          "http_status": 200,
+          "latency_ms": 998,
+          "project_id": "2022K0351",
+          "retrieved_at": "2026-09-04T03:03:31.552Z"
+        },
+        {
+          "byte_count": 9781,
+          "content_hash": "sha256:17377cc0b5dcfd8a40e9b31acdfc43bf15857c871f1834dbf415e538aa4c85f5",
+          "http_status": 200,
+          "latency_ms": 1090,
+          "project_id": "2022K0350",
+          "retrieved_at": "2026-09-04T03:03:32.844Z"
+        },
+        {
+          "byte_count": 13444,
+          "content_hash": "sha256:cda4da66f89700ecd0e0a1f0dda6491df0e2eb1b118005fc677149f1456298af",
+          "http_status": 200,
+          "latency_ms": 1148,
+          "project_id": "2022K0299",
+          "retrieved_at": "2026-09-04T03:03:34.195Z"
+        },
+        {
+          "byte_count": 10897,
+          "content_hash": "sha256:883ca67bd1c0a15dae8634c089b941e0126bb9b71cea3e73d7fd19fca732d92d",
+          "http_status": 200,
+          "latency_ms": 1039,
+          "project_id": "2022K0268",
+          "retrieved_at": "2026-09-04T03:03:35.437Z"
+        },
+        {
+          "byte_count": 14924,
+          "content_hash": "sha256:dd85a821dd7aa21cae7360cdba3d9b522df0254c890d37791c4681a418af3228",
+          "http_status": 200,
+          "latency_ms": 924,
+          "project_id": "2022R0278",
+          "retrieved_at": "2026-09-04T03:03:36.564Z"
+        },
+        {
+          "byte_count": 26330,
+          "content_hash": "sha256:b512e06254d35d1a55a96f19bdb7b278bc6cbbfc83e0794273bc4f6f02b6b524",
+          "http_status": 200,
+          "latency_ms": 2006,
+          "project_id": "2022R0201",
+          "retrieved_at": "2026-09-04T03:03:38.774Z"
+        },
+        {
+          "byte_count": 100475,
+          "content_hash": "sha256:c1be2a4ca9297f3d8eb39e87474bb3b063b3d5ac7f58e982cb4eb34fe3ddf155",
+          "http_status": 200,
+          "latency_ms": 1515,
+          "project_id": "2018Q0491",
+          "retrieved_at": "2026-09-04T03:03:40.492Z"
+        },
+        {
+          "byte_count": 11869,
+          "content_hash": "sha256:d40ad74dd044ff1e81910b3aeb51cd4857b6d85256512a9aec5bf766c62624e1",
+          "http_status": 200,
+          "latency_ms": 941,
+          "project_id": "2022R0225",
+          "retrieved_at": "2026-09-04T03:03:41.634Z"
+        },
+        {
+          "byte_count": 52577,
+          "content_hash": "sha256:86cb2fa3a018d289d202c8a66373c6ac1a0d5cb490049d4256d967a319d905ce",
+          "http_status": 200,
+          "latency_ms": 1709,
+          "project_id": "2022M0219",
+          "retrieved_at": "2026-09-04T03:03:43.565Z"
+        },
+        {
+          "byte_count": 8850,
+          "content_hash": "sha256:4fe5cce1e1d291dc84c1cad43ffeca3b4bde5fa91d94b476f300997280f62aa9",
+          "http_status": 200,
+          "latency_ms": 816,
+          "project_id": "2022R0195",
+          "retrieved_at": "2026-09-04T03:03:44.584Z"
+        },
+        {
+          "byte_count": 26234,
+          "content_hash": "sha256:a6e7094cfe8998e1febe23c28dc63f4ab1d49e0829e5f2bfdb6d5651f1410473",
+          "http_status": 200,
+          "latency_ms": 1159,
+          "project_id": "2021M0320",
+          "retrieved_at": "2026-09-04T03:03:45.945Z"
+        },
+        {
+          "byte_count": 23778,
+          "content_hash": "sha256:f2d05a8d130be46818891eb94b392498e3e9d673df7966e796c6f2894e4a2390",
+          "http_status": 200,
+          "latency_ms": 1064,
+          "project_id": "2021K0389",
+          "retrieved_at": "2026-09-04T03:03:47.210Z"
+        },
+        {
+          "byte_count": 63847,
+          "content_hash": "sha256:78d89e91d1b887205068b23e2939df4d696ecde0fd6655a0fbae1eb3ec0983ab",
+          "http_status": 200,
+          "latency_ms": 1365,
+          "project_id": "2021R0204",
+          "retrieved_at": "2026-09-04T03:03:48.777Z"
+        },
+        {
+          "byte_count": 65455,
+          "content_hash": "sha256:a0f4fa9fe1ef7365321bb38f95ff57fd27f02f8c8c75d6f82fa2b59c94c18869",
+          "http_status": 200,
+          "latency_ms": 1677,
+          "project_id": "P2017K0249",
+          "retrieved_at": "2026-09-04T03:03:50.657Z"
+        },
+        {
+          "byte_count": 8812,
+          "content_hash": "sha256:bdaa93138ca7ed459dc1b4dbd47930e9e2e7b83303173518b438e77b00014a25",
+          "http_status": 200,
+          "latency_ms": 810,
+          "project_id": "2022R0141",
+          "retrieved_at": "2026-09-04T03:03:51.669Z"
+        },
+        {
+          "byte_count": 9281,
+          "content_hash": "sha256:f4b7a66e7720197e70faabbd04f303cf3e6a25e3e4fa2563e4db69cdc1027250",
+          "http_status": 200,
+          "latency_ms": 872,
+          "project_id": "2022R0125",
+          "retrieved_at": "2026-09-04T03:03:52.743Z"
+        },
+        {
+          "byte_count": 24947,
+          "content_hash": "sha256:0ab807df8267625145bfc0e4d64ae5dc8d6118162b240714502a69f9166d14c7",
+          "http_status": 200,
+          "latency_ms": 1231,
+          "project_id": "2021M0422",
+          "retrieved_at": "2026-09-04T03:03:54.178Z"
+        },
+        {
+          "byte_count": 9499,
+          "content_hash": "sha256:b19b659df847214b20aa53d1b703a28b17bafdd1fc67905cf2912c83239e1b81",
+          "http_status": 200,
+          "latency_ms": 836,
+          "project_id": "2021R0434",
+          "retrieved_at": "2026-09-04T03:03:55.215Z"
+        },
+        {
+          "byte_count": 14103,
+          "content_hash": "sha256:3d6b25d32a827ebe69439039c17d2365daf056728b7d7e39cee5458213e2ed87",
+          "http_status": 200,
+          "latency_ms": 1253,
+          "project_id": "2021X0453",
+          "retrieved_at": "2026-09-04T03:03:56.670Z"
+        },
+        {
+          "byte_count": 20149,
+          "content_hash": "sha256:317088d6dac500e8f6f9c02cd862ebb5c9aca470e6e0fa8133f15463c7bd00fe",
+          "http_status": 200,
+          "latency_ms": 850,
+          "project_id": "2021X0437",
+          "retrieved_at": "2026-09-04T03:03:57.722Z"
+        },
+        {
+          "byte_count": 11492,
+          "content_hash": "sha256:3253d6c20ea54f0c14ff5f9cd84a593eea0d79105ac16c64052c6876dce55340",
+          "http_status": 200,
+          "latency_ms": 967,
+          "project_id": "2020M0227",
+          "retrieved_at": "2026-09-04T03:03:58.891Z"
+        },
+        {
+          "byte_count": 11386,
+          "content_hash": "sha256:7a65c23dea952ac2be9ce782b32763f72b0cce5722d620b18339982b52cf6713",
+          "http_status": 200,
+          "latency_ms": 1037,
+          "project_id": "2018M0419",
+          "retrieved_at": "2026-09-04T03:04:00.130Z"
+        },
+        {
+          "byte_count": 63219,
+          "content_hash": "sha256:db75103301908042d67a2d8fe9d8371ab2744181a2d3572a57364613a2be5136",
+          "http_status": 200,
+          "latency_ms": 1189,
+          "project_id": "2019K0383",
+          "retrieved_at": "2026-09-04T03:04:01.522Z"
+        },
+        {
+          "byte_count": 19407,
+          "content_hash": "sha256:328086ccebc945a5a04784883616a13a6c2b6293429ec74b0a0d3de5e4010d6f",
+          "http_status": 200,
+          "latency_ms": 1041,
+          "project_id": "2021R0416",
+          "retrieved_at": "2026-09-04T03:04:02.767Z"
+        },
+        {
+          "byte_count": 10102,
+          "content_hash": "sha256:367defb2deb89ae994fbdbb94a94ee3d832ec37deda7f0d696bdcf7da32aef40",
+          "http_status": 200,
+          "latency_ms": 1168,
+          "project_id": "2021R0415",
+          "retrieved_at": "2026-09-04T03:04:04.137Z"
+        },
+        {
+          "byte_count": 20143,
+          "content_hash": "sha256:fa993a26cb09fa2ede86055d7a55245482b93afd8c2f12ca215205721a662886",
+          "http_status": 200,
+          "latency_ms": 1122,
+          "project_id": "2019M0237",
+          "retrieved_at": "2026-09-04T03:04:05.461Z"
+        },
+        {
+          "byte_count": 43265,
+          "content_hash": "sha256:0ddcf2dc8fc3a730f8205df4e47a1bbbe72477f73570ee9ae7cd1d5a1c42cd9a",
+          "http_status": 200,
+          "latency_ms": 1253,
+          "project_id": "2020Q0495",
+          "retrieved_at": "2026-09-04T03:04:06.914Z"
+        },
+        {
+          "byte_count": 15494,
+          "content_hash": "sha256:a1d9d96236742e10bd00c1ecdae37efc50abb3caf0f6b799c7f23941e0ad3b61",
+          "http_status": 200,
+          "latency_ms": 1013,
+          "project_id": "2021X0303",
+          "retrieved_at": "2026-09-04T03:04:08.128Z"
+        },
+        {
+          "byte_count": 52898,
+          "content_hash": "sha256:9917b40ef62b7cce7bf253573aafab76ca35da90fa0131b6a7d3ac86925ce40a",
+          "http_status": 200,
+          "latency_ms": 1416,
+          "project_id": "2020K0405",
+          "retrieved_at": "2026-09-04T03:04:09.746Z"
+        },
+        {
+          "byte_count": 42795,
+          "content_hash": "sha256:9ca8104b67e58cbe6f03fcfba07c5c86b184804e3a974e905f7bfde3607054f7",
+          "http_status": 200,
+          "latency_ms": 1212,
+          "project_id": "2019K0406",
+          "retrieved_at": "2026-09-04T03:04:11.161Z"
+        },
+        {
+          "byte_count": 36048,
+          "content_hash": "sha256:9edbf8760f963b326639537d3359e58dff555f1ea5e1118506bef85ec16efc15",
+          "http_status": 200,
+          "latency_ms": 1202,
+          "project_id": "2021M0107",
+          "retrieved_at": "2026-09-04T03:04:12.565Z"
+        },
+        {
+          "byte_count": 39909,
+          "content_hash": "sha256:68dcb7f5d904669a3ae254477ac99a695e23560b7ab94e522ef5d63163173808",
+          "http_status": 200,
+          "latency_ms": 1437,
+          "project_id": "P2017X0312",
+          "retrieved_at": "2026-09-04T03:04:14.205Z"
+        },
+        {
+          "byte_count": 13659,
+          "content_hash": "sha256:f78eb5ba36818127eb1a9dac60dafaaee9c3f6ae0936971ad567e761e157272c",
+          "http_status": 200,
+          "latency_ms": 1038,
+          "project_id": "2019K0023",
+          "retrieved_at": "2026-09-04T03:04:15.446Z"
+        },
+        {
+          "byte_count": 10567,
+          "content_hash": "sha256:0d7272df4edeb5f7ee8152df01782d347d1bcb696e72e0501df34a9978ca791e",
+          "http_status": 200,
+          "latency_ms": 836,
+          "project_id": "2021R0343",
+          "retrieved_at": "2026-09-04T03:04:16.484Z"
+        },
+        {
+          "byte_count": 71640,
+          "content_hash": "sha256:1466f62850eed3c7a6b93e54bbbf88daed70a8f3a4640005e129fe4d63cc577b",
+          "http_status": 200,
+          "latency_ms": 1450,
+          "project_id": "2019K0122",
+          "retrieved_at": "2026-09-04T03:04:18.153Z"
+        },
+        {
+          "byte_count": 7959,
+          "content_hash": "sha256:57eaa79493ac1017b5144068b8b32295c036f8d895ec44c1b5f46364946ab3d4",
+          "http_status": 200,
+          "latency_ms": 758,
+          "project_id": "2020M0393",
+          "retrieved_at": "2026-09-04T03:04:19.119Z"
+        },
+        {
+          "byte_count": 10915,
+          "content_hash": "sha256:46660bc6bde99095e5246e1cc7bcbc4e50a04272a6f278d8c8d995024f7f3f3c",
+          "http_status": 200,
+          "latency_ms": 898,
+          "project_id": "2020R0136",
+          "retrieved_at": "2026-09-04T03:04:20.222Z"
+        }
+      ],
+      "request_shape": "GET /projects/{project_id} per sampled project id -- no documented bulk-listing endpoint exists (probed and confirmed to error on both /projects and /projects?filter[...])",
+      "response_schema": "JSON:API document; data.type === 'projects', included[] carries actions|milestones|dispositions|packages|artifacts",
+      "retrieval_status": {
+        "attempted": 151,
+        "http_200": 151,
+        "non_200_or_error": 0
+      }
+    }
+  },
+  "specimens": {
+    "active_noticed": {
+      "evidence": "Active/noticed project with no RER artifact group observed yet; required assertion (if any) must not be read as fulfillment.",
+      "pinned": true,
+      "project_id": "2026K0123"
+    },
+    "missing_or_tardy": {
+      "search_coverage": "Regex-scanned dcp-applicability, public_status, and all artifact/package group titles across 151 sampled projects; the publisher exposes no missing/tardy-filing field or token.",
+      "status": "not_found"
+    },
+    "not_required": {
+      "classification": "reconstructed_candidate",
+      "evidence": "Observed action codes [\"ZC\",\"LD\"] fall entirely outside DCP's RER criteria chart action-type list. This is a reconstructed candidate, not a publisher not-required assertion -- ZAP exposes no such assertion (see applicability.publisher_field_search).",
+      "pinned": false,
+      "project_id": "2026M0432"
+    },
+    "over_40_documents": {
+      "n_documents": 61,
+      "pinned": false,
+      "project_id": "2025Q0247"
+    },
+    "positive_gold": {
+      "evidence": "ZAP artifact group 'Racial Equity Report' with RER PDF; see gold fixture.",
+      "pinned": true,
+      "project_id": "2025Q0247"
+    },
+    "same_name_version": {
+      "document_name": "1.-69-67-108-st.--llc-authorization-letter.pdf",
+      "package_group_ids": [
+        "ce68245b-c85d-f011-bec2-001dd806295a",
+        "44048f0a-a8ec-f011-8407-001dd8072df6",
+        "5c4f30b5-1038-f111-88b4-001dd80d6397"
+      ],
+      "pinned": true,
+      "project_id": "2025Q0247"
+    },
+    "scanned_ocr": {
+      "evidence": "1 extracted text bytes over 1 pages",
+      "pinned": false,
+      "project_id": "2025Q0247",
+      "source_id": "01QY2C5KJN766ONDGJ3RCLUSZVLPOZ4KLT"
+    }
+  }
+}
