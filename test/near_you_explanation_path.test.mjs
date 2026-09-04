@@ -30,6 +30,7 @@ test("generic geography evidence requires the exact selected public match and co
     relation: "located_in",
     location_role: "property_affected",
     basis: "Affected area",
+    tier: "strong",
     confidence: "strong",
     method: "point_in_polygon",
     source_id: "dcp-police-precinct-boundaries",

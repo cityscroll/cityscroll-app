@@ -20,6 +20,7 @@ import {
   unique,
 } from "./location_extract.mjs";
 import { resolveNeighborhood } from "./neighborhood_search.mjs";
+import { classifyLocationEvidence } from "./location_evidence_tier.mjs";
 
 /** Confidence tiers — higher wins when merging into a single place stamp. */
 export const LOCATION_CONFIDENCE = Object.freeze({
@@ -815,8 +816,10 @@ export function placeFromDerivations(row = {}, opts = {}) {
     },
     unlocated_reason: null,
     virtual_only,
-    // Map may render agency/vendor-derived pins distinctly from matter/venue.
-    confidence_tier: confidence >= 0.8 ? "strong" : confidence >= 0.55 ? "derived" : "weak",
+    // Map may render agency/vendor-derived pins distinctly from matter/venue. The tier is
+    // derived by the one canonical PS-04 classifier (site/location_evidence_tier.mjs) rather
+    // than a threshold local to this module.
+    confidence_tier: classifyLocationEvidence({ confidence }),
   };
 }
 
