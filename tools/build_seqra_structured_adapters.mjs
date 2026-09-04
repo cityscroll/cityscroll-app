@@ -3,6 +3,13 @@
  * SEQRA-03: build/check the six structured-source adapter receipts this
  * card's `verify` field names (`npm run warehouse:seqra:ingest`).
  *
+ * `npm run warehouse:seqra:ingest` is also SEQRA-06's `verify` command
+ * (spatial and implementation joins) and, per the commission, SEQRA-07's --
+ * this file's own six-adapter checks stay SEQRA-03-scoped, and each later
+ * card that shares the command delegates to its own build tool's `--check`
+ * mode via execFileSync below, the same way this file already delegates its
+ * own A4 regression check to tools/build_ceqr_project_milestone_reconciliation.mjs.
+ *
  * Default mode rebuilds every adapter's vintage receipt purely from the
  * committed fixtures under warehouse/fixtures/seqra-adapters/ -- no network
  * access, so two consecutive runs (and `--check` against a committed copy)
@@ -312,6 +319,10 @@ await check("resident ingestion remains disabled and every receipt records it as
   for (const [sourceId, receipt] of Object.entries(sourceReceipts)) {
     assertEqual(receipt.resident_ingestion.committed, false, `${sourceId}: resident_ingestion.committed`);
   }
+});
+
+await check("SEQRA-06 spatial and implementation joins gate (this command's other card sharing `npm run warehouse:seqra:ingest`)", () => {
+  execFileSync(process.execPath, ["tools/build_seqra_spatial_implementation_joins.mjs", "--check"], { cwd: ROOT, stdio: "pipe" });
 });
 
 await check("existing ZAP/CEQR reconciliation output does not regress (A4)", () => {
