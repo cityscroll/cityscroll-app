@@ -114,6 +114,9 @@ export async function buildRemoteMcpEvidenceReceipt() {
     const receipt = {
       schema: "cityscroll.remote_mcp_public_adapter_receipt.v1",
       card: "cs-06-remote-mcp-public-adapter",
+      evidence_class: "local_protocol_interop",
+      execution_environment: "node-intercepted-transport-fixture",
+      evidence_notes: "Exercises the current MCP SDK client against handleMcp() with the client transport's fetch overridden to dispatch in-process. It proves protocol and semantic parity, not that a deployed https://api.cityscroll.org/mcp endpoint is reachable.",
       observed_at: OBSERVED_AT,
       fixture_sha256: sha256(readFileSync(FIXTURE_PATH)),
       protocol: {

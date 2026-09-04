@@ -1,0 +1,20 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Capability-spine evidence state</title>
+<style>
+  body{font:16px system-ui;max-width:900px;margin:2rem auto;padding:0 1rem}
+  table{border-collapse:collapse;width:100%;margin-top:1rem}
+  th,td{border:1px solid #ccc;padding:.55rem;text-align:left;vertical-align:top}
+  .pass{color:#075e2f;font-weight:600}
+  .pending{color:#8a4b00;font-weight:600}
+  code{font:13px ui-monospace,Menlo,monospace}
+</style>
+<h1>Capability-spine evidence state</h1>
+<p>Generated 2026-09-04T00:00:00.000Z from <code>capabilities/evidence_classification.mjs</code> and the receipts it names. Each state below is derived independently; none is inferred from another.</p>
+<table>
+<thead><tr><th>State</th><th>Status</th><th>Max provable evidence class</th><th>Reason</th></tr></thead>
+<tbody><tr><th scope="row">capability_ready</th><td class="pass">PROVEN</td><td>—</td><td>—</td></tr><tr><th scope="row">live_mcp_verified</th><td class="pending">NOT YET PROVEN</td><td>—</td><td>no receipt at artifacts/capability-spine/cs-10-live-remote-mcp-canary.json</td></tr><tr><th scope="row">os_deployed</th><td class="pending">NOT YET PROVEN</td><td>—</td><td>no receipt at artifacts/capability-spine/cs-12-cloudflare-os-deployment.json</td></tr><tr><th scope="row">gatekeeper_connected</th><td class="pending">NOT YET PROVEN</td><td>—</td><td>no receipt at artifacts/capability-spine/cs-13-gatekeeper-session.json</td></tr><tr><th scope="row">agent_proven</th><td class="pending">NOT YET PROVEN</td><td>—</td><td>no receipt at artifacts/capability-spine/cs-14-agent-evaluation.json</td></tr></tbody>
+</table>
+<h2>Preserved local rehearsal evidence</h2>
+<p>Useful, honestly classified local contract and protocol-interop rehearsals. None of these count toward a live, deployed, or agent-exercised state above.</p>
+<ul><li><code>artifacts/capability-spine/cs-06-remote-mcp.json</code></li><li><code>artifacts/capability-spine/cs-07-cloudflare-os-proof.json</code></li><li><code>artifacts/capability-spine/cs-08-code-mode.json</code></li></ul>

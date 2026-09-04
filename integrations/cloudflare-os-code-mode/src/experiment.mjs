@@ -588,6 +588,9 @@ export async function runCodeModeMeasurement({
   return {
     schema: RECEIPT_SCHEMA,
     card: CARD,
+    evidence_class: "local_protocol_interop",
+    execution_environment: "node-intercepted-transport-fixture",
+    evidence_notes: "A synthetic Code Mode experiment harness: both arms dispatch the current MCP client's transport to handleMcp() in-process against frozen fixtures, and the model is disabled (model_live: false). Wall-clock and token figures are accounted replay measurements, not a live Cloudflare OS Code Mode performance result.",
     observed_at: OBSERVED_AT,
     status: verdict === "blocked" ? "blocked" : "measured",
     verdict,
@@ -647,6 +650,8 @@ export async function runCodeModeMeasurement({
       active_after: false,
     },
     protocol: {
+      transport: "Streamable HTTP",
+      negotiated_version: "2025-06-18",
       warmups,
       repetitions,
       require_parity: requireParity,

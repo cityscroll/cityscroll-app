@@ -29,6 +29,9 @@
     "resident_path_dependency": false,
     "url": "https://cs07-entity-research-gadget.workers.dev"
   },
+  "evidence_class": "local_protocol_interop",
+  "evidence_notes": "A deterministic local Gatekeeper/Gadget rehearsal: the Gadget calls a Gatekeeper-shaped MCP client whose transport dispatches to handleMcp() in-process. It proves the grant, boundary, and composition contract, not a deployed Cloudflare OS Gadget or Gatekeeper.",
+  "execution_environment": "node-intercepted-transport-fixture",
   "fixture": {
     "id": "cs-07-acme-entity-research-v1",
     "path": "test/fixtures/cloudflare_os_entity_research.json",
