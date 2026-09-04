@@ -72,7 +72,12 @@ function routeModuleForHash(hash){
 function ensureRouteModule(name){
   const loader=routeModuleLoaders[name];
   if(!loader) return Promise.resolve();
-  if(name === "property") ensureRouteStylesheet("property.css");
+  if(name === "property"){
+    ensureRouteStylesheet("property.css");
+    // CBICS-03: notice detail (incl. rule case files) loads via "property"; the
+    // shared compact month component's CSS rides along the same gate.
+    ensureRouteStylesheet("compact_calendar.css");
+  }
   if(!routeModulePromises.has(name)){
     routeModulePromises.set(name,(name === "property" ? ensureRouteModule("rules") : Promise.resolve()).then(()=>loader()).then(module=>{
       loadedRouteModules.add(name);

@@ -1,0 +1,92 @@
+{
+  "schema": "cityscroll.rules_calendar_evidence_receipt.v1",
+  "captured_at": "2026-09-03T19:12:58Z",
+  "revision": "42d872d66ae625a601731a733a756f4c1aadd27b",
+  "timezone": "America/New_York",
+  "captures": [
+    {
+      "fixture": "dense",
+      "vintage": "synthetic-fixture",
+      "route": "#notice/CR-RULE-CALENDAR-001",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "timezone": "America/New_York",
+      "revision": "42d872d66ae625a601731a733a756f4c1aadd27b",
+      "screenshot": "docs/screenshots/rules-participation-month/dense-390x844.png",
+      "rendered": true,
+      "assertion": "fixture=dense: .compact-month renders proposal/hearing/comment-close"
+    },
+    {
+      "fixture": "dense",
+      "vintage": "synthetic-fixture",
+      "route": "#notice/CR-RULE-CALENDAR-001",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "timezone": "America/New_York",
+      "revision": "42d872d66ae625a601731a733a756f4c1aadd27b",
+      "screenshot": "docs/screenshots/rules-participation-month/dense-1440x900.png",
+      "rendered": true,
+      "assertion": "fixture=dense: .compact-month renders proposal/hearing/comment-close"
+    },
+    {
+      "fixture": "sparse",
+      "vintage": "synthetic-fixture",
+      "route": "#notice/CR-RULE-CALENDAR-001",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "timezone": "America/New_York",
+      "revision": "42d872d66ae625a601731a733a756f4c1aadd27b",
+      "screenshot": "docs/screenshots/rules-participation-month/sparse-390x844.png",
+      "rendered": false,
+      "assertion": "fixture=sparse: no .compact-month mounted; existing lifecycle heading renders"
+    },
+    {
+      "fixture": "sparse",
+      "vintage": "synthetic-fixture",
+      "route": "#notice/CR-RULE-CALENDAR-001",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "timezone": "America/New_York",
+      "revision": "42d872d66ae625a601731a733a756f4c1aadd27b",
+      "screenshot": "docs/screenshots/rules-participation-month/sparse-1440x900.png",
+      "rendered": false,
+      "assertion": "fixture=sparse: no .compact-month mounted; existing lifecycle heading renders"
+    },
+    {
+      "fixture": "partial",
+      "vintage": "synthetic-fixture",
+      "route": "#notice/CR-RULE-CALENDAR-001",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "timezone": "America/New_York",
+      "revision": "42d872d66ae625a601731a733a756f4c1aadd27b",
+      "screenshot": "docs/screenshots/rules-participation-month/partial-390x844.png",
+      "rendered": true,
+      "assertion": "fixture=partial: .compact-month renders alongside an unresolved 'Date unknown' adoption row in the full history below it"
+    },
+    {
+      "fixture": "partial",
+      "vintage": "synthetic-fixture",
+      "route": "#notice/CR-RULE-CALENDAR-001",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "timezone": "America/New_York",
+      "revision": "42d872d66ae625a601731a733a756f4c1aadd27b",
+      "screenshot": "docs/screenshots/rules-participation-month/partial-1440x900.png",
+      "rendered": true,
+      "assertion": "fixture=partial: .compact-month renders alongside an unresolved 'Date unknown' adoption row in the full history below it"
+    }
+  ]
+}

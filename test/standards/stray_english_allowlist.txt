@@ -143,6 +143,7 @@ view=tax-lien
 # Route-scoped stylesheet selectors and asset names; these are DOM plumbing, not chrome.
 link[data-route-style="
 property.css
+compact_calendar.css
 
 # Versioned machine contract checked before a suggestion receipt is admitted; never rendered.
 cityscroll.land_map_shell.v1
