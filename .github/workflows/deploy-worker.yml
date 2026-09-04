@@ -232,10 +232,26 @@ jobs:
       - uses: actions/checkout@v4
         with:
           persist-credentials: false
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.15.1
       - uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: pnpm
+          cache-dependency-path: worker/pnpm-lock.yaml
       - uses: ./.github/actions/setup-playwright
+      - name: Install worker dependencies
+        # Needed only for the CS-10 canary below, which uses the pinned
+        # @modelcontextprotocol/sdk client from worker/node_modules.
+        run: tools/install_worker_dependencies.sh
+      - name: CS-10 · Live MCP endpoint canary
+        # Crosses public DNS to the just-deployed production MCP endpoint:
+        # initialize, tools/list against the generated deployed inventory,
+        # ping, one bounded static read, one bounded D1-backed read, and one
+        # deliberately invalid call. A failure here — including tool-inventory
+        # drift — fails this workflow run; see test/live_mcp_canary.test.mjs.
+        run: node --test test/live_mcp_canary.test.mjs
       - name: Post-deploy live URL smoke
         run: node tools/live_url_smoke.mjs --timeout-ms 720000 --interval-ms 20000
       - name: Post-deploy project-connections API smoke
