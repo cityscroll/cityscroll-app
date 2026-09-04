@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "feature": "now-calendar-view",
+  "card": "cityscroll-calendar-beyond-ics/cbics-10-cross-surface-parity-launch-quality",
+  "route": "component-harness:now-calendar-view",
+  "revision": "c88731d19645332f9cf84b49ed9a8f990c460967",
+  "today": "2026-06-01",
+  "files": [
+    {
+      "name": "dense-calendar-390.png",
+      "bytes": 15357,
+      "sha256": "7c36654eb034e35077beea8814b4ae34f954c99bbc54b9a79e83c49cc7a0f740",
+      "route": "component-harness:now-calendar-view",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "c88731d19645332f9cf84b49ed9a8f990c460967",
+      "specimen": "dense-calendar",
+      "occurrence_vintage_state": "2026-06-01",
+      "renders": true,
+      "occurrence_count": 3,
+      "assertion": "A1: a scoped dated act-by deadline and happening-soon event calendarize with the Calendar view pressed",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": []
+      }
+    },
+    {
+      "name": "dense-calendar-1440.png",
+      "bytes": 28706,
+      "sha256": "9ca307b4fe1a635af96127cfcd3ea001bb12b972f151a038b1b2c7818ce7622c",
+      "route": "component-harness:now-calendar-view",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "c88731d19645332f9cf84b49ed9a8f990c460967",
+      "specimen": "dense-calendar",
+      "occurrence_vintage_state": "2026-06-01",
+      "renders": true,
+      "occurrence_count": 3,
+      "assertion": "A1: a scoped dated act-by deadline and happening-soon event calendarize with the Calendar view pressed",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": []
+      }
+    },
+    {
+      "name": "sparse-cards-390.png",
+      "bytes": 9349,
+      "sha256": "09d60cafc37bc3d52a7469a5671f207ea46b13bbc61cc022aaf07a6c3e5c3509",
+      "route": "component-harness:now-calendar-view",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "c88731d19645332f9cf84b49ed9a8f990c460967",
+      "specimen": "sparse-cards",
+      "occurrence_vintage_state": "2026-06-01",
+      "renders": false,
+      "occurrence_count": 1,
+      "assertion": "A4: a below-density bundle falls back to Cards with a plain-language note, no empty calendar chrome",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": []
+      }
+    },
+    {
+      "name": "sparse-cards-1440.png",
+      "bytes": 9543,
+      "sha256": "f031901f3830b4cff8fd43d22cad8445ee98f1238807960e260c48d3f01b9eb2",
+      "route": "component-harness:now-calendar-view",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "c88731d19645332f9cf84b49ed9a8f990c460967",
+      "specimen": "sparse-cards",
+      "occurrence_vintage_state": "2026-06-01",
+      "renders": false,
+      "occurrence_count": 1,
+      "assertion": "A4: a below-density bundle falls back to Cards with a plain-language note, no empty calendar chrome",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": []
+      }
+    }
+  ]
+}
