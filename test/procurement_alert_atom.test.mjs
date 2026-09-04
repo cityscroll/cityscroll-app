@@ -20,6 +20,7 @@ import {
   recognizableTitle,
   selectLeadProcurementAtom,
 } from "../site/procurement_alert_atom.mjs";
+import { OPPORTUNITY_WINDOW_KIND } from "../site/procurement_opportunity_window.mjs";
 
 // Fixture C — test/digest_preview_awareness.test.mjs, ledger id "C".
 const FIXTURE_C_ROW = {
@@ -244,4 +245,58 @@ test("procurement-object rows and City Record notice rows normalize to the same 
   const a = buildProcurementAlertAtom(cityRecordRow);
   const b = buildProcurementAlertAtom(procurementObjectRow, FIXTURE_D_OPTS);
   assert.deepEqual(Object.keys(a).sort(), Object.keys(b).sort());
+});
+
+// Card 2 (procurement_opportunity_window.mjs) landed after this atom shipped;
+// the atom's opportunity_window field wires the real derivation rather than a
+// passthrough stub. Fixture A's own City Record start_date/due_date pair
+// (test/fixtures/procurement_pursuit_decision/fixture-ledger.json id "A")
+// reused verbatim.
+test("opportunity_window derives the real notice-to-due window from a row's own start_date/due_date", () => {
+  const row = {
+    request_id: "20260701001",
+    short_title: "Playground reconstruction",
+    agency_name: "Department of Parks and Recreation",
+    type_of_notice_description: "Solicitation",
+    start_date: "2026-07-02",
+    due_date: "2026-08-05",
+  };
+  const atom = buildProcurementAlertAtom(row);
+  assert.equal(atom.opportunity_window.available, true);
+  assert.equal(atom.opportunity_window.kind, OPPORTUNITY_WINDOW_KIND.NOTICE_TO_DUE_WINDOW);
+  assert.equal(atom.opportunity_window.days, 34);
+  assert.equal(atom.opportunity_window.source_observation_ref, "city_record:20260701001");
+  assert.match(atom.opportunity_window.label, /Notice-to-due window: 34 calendar days/);
+});
+
+test("opportunity_window prefers an exact PASSPort release_date over City Record publication", () => {
+  const row = {
+    request_id: "20260701001",
+    short_title: "Playground reconstruction",
+    agency_name: "Department of Parks and Recreation",
+    type_of_notice_description: "Solicitation",
+    start_date: "2026-07-02",
+    release_date: "2026-07-01",
+    due_date: "2026-08-05",
+  };
+  const atom = buildProcurementAlertAtom(row);
+  assert.equal(atom.opportunity_window.kind, OPPORTUNITY_WINDOW_KIND.RESPONSE_WINDOW);
+  assert.equal(atom.opportunity_window.days, 35);
+  assert.equal(atom.opportunity_window.source_system, "passport_public_rfx");
+});
+
+test("opportunity_window fails closed (never a fabricated 0-day span) when boundary dates are missing", () => {
+  const atom = buildProcurementAlertAtom({ request_id: "sparse-1", short_title: "Sparse", agency_name: "MTA" });
+  assert.equal(atom.opportunity_window.available, false);
+  assert.equal(atom.opportunity_window.days, null);
+  assert.equal(atom.opportunity_window.label, "Window unavailable");
+});
+
+test("an explicit opportunity_window (already computed from the full object/observations record) is never re-derived", () => {
+  const precomputed = { schema: "cityscroll.procurement_opportunity_window.v1", available: true, days: 999 };
+  const atom = buildProcurementAlertAtom(
+    { request_id: "x", short_title: "X", agency_name: "Finance", start_date: "2026-07-02", due_date: "2026-08-05" },
+    { opportunity_window: precomputed },
+  );
+  assert.equal(atom.opportunity_window, precomputed);
 });

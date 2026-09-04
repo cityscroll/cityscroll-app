@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.procurement_pursuit_decision_alerts_manifest.v1",
-  "captured_at": "2026-09-04T18:40:12Z",
-  "revision": "ead787265c2ed61415099fe2c4f9a3665acf9274",
+  "captured_at": "2026-09-04T19:43:03Z",
+  "revision": "bdb8a4d05061f0300b28ef062c3d88ee142a13d8",
   "note": "Card 1 (opportunity-first procurement alert atom) evidence. Rendered by calling the production subDigestHtml()/rollupDigestHtml() (worker/src/alerts.mjs) and buildProcurementAlertAtom()/procurementAlertSubject() (site/procurement_alert_atom.mjs) directly. Per this repository's binding evidence rule for this card, full HTML previews are committed in-repo (no screenshot binaries); each entry's sha256 is over the committed HTML file's content.",
   "captures": [
     {
@@ -9,7 +9,7 @@
       "surface": "email-preview",
       "route": "/_capture/alerts/alert-fixture-c-single-watch",
       "viewport_intent": "responsive email HTML; reviewable at narrow mobile and desktop widths",
-      "revision": "ead787265c2ed61415099fe2c4f9a3665acf9274",
+      "revision": "bdb8a4d05061f0300b28ef062c3d88ee142a13d8",
       "fixture_ids": [
         "C"
       ],
@@ -25,7 +25,7 @@
       "surface": "email-preview",
       "route": "/_capture/alerts/alert-fixture-d-single-watch",
       "viewport_intent": "responsive email HTML; reviewable at narrow mobile and desktop widths",
-      "revision": "ead787265c2ed61415099fe2c4f9a3665acf9274",
+      "revision": "bdb8a4d05061f0300b28ef062c3d88ee142a13d8",
       "fixture_ids": [
         "D"
       ],
@@ -41,7 +41,7 @@
       "surface": "email-preview",
       "route": "/_capture/alerts/alert-fixture-e-single-watch",
       "viewport_intent": "responsive email HTML; reviewable at narrow mobile and desktop widths",
-      "revision": "ead787265c2ed61415099fe2c4f9a3665acf9274",
+      "revision": "bdb8a4d05061f0300b28ef062c3d88ee142a13d8",
       "fixture_ids": [
         "E"
       ],
@@ -57,7 +57,7 @@
       "surface": "email-preview",
       "route": "/_capture/alerts/alert-multi-watch-rollup",
       "viewport_intent": "responsive email HTML; reviewable at narrow mobile and desktop widths",
-      "revision": "ead787265c2ed61415099fe2c4f9a3665acf9274",
+      "revision": "bdb8a4d05061f0300b28ef062c3d88ee142a13d8",
       "fixture_ids": [
         "C"
       ],

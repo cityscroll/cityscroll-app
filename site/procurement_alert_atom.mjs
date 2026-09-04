@@ -6,8 +6,11 @@
 // saved-filter label or a bare match count.
 //
 // Card 2 of the same workstream owns cityscroll.procurement_opportunity_window.v1
-// (the derived response-window object). This module only carries whatever shape
-// a row already has under `opportunity_window` — it does not derive one.
+// (the derived response-window object, site/procurement_opportunity_window.mjs).
+// This module derives it from whatever boundary dates a row already carries
+// (an explicit `opportunity_window` object always wins when a caller already
+// computed one from the full object/observations record, e.g. the procurement
+// detail page) rather than reimplementing the derivation.
 //
 // Reused, not reinvented:
 //   - digestMatterKind / shortDate (./digest_item_awareness.mjs) for matter
@@ -15,9 +18,13 @@
 //   - AGENCY_GROUPS / resolveAgencyIdentity (./agency_identity.mjs) for the
 //     agency abbreviation used in subjects (e.g. "DOT", "MTA C&D") — no second
 //     agency identity table.
+//   - deriveProcurementOpportunityWindow (./procurement_opportunity_window.mjs)
+//     for the response-window / notice-to-due-window derivation — no second
+//     date-boundary rule set.
 
 import { digestMatterKind, shortDate, isRollingDeadline } from "./digest_item_awareness.mjs";
 import { AGENCY_GROUPS, resolveAgencyIdentity } from "./agency_identity.mjs";
+import { deriveProcurementOpportunityWindow } from "./procurement_opportunity_window.mjs";
 
 /** Recognizable-title segment budget (chars) before the "X Line, Y Line" collapse or ellipsis kicks in. */
 export const PROCUREMENT_ALERT_TITLE_BUDGET = 42;
@@ -126,6 +133,32 @@ function resolveDeadline(row, opts) {
   return { value: null, label: null, status };
 }
 
+/**
+ * Response window (exact PASSPort release -> due) or notice-to-due window
+ * (City Record publication -> due), derived from whatever boundary dates the
+ * row itself carries. An explicit `opportunity_window` (row field or opts
+ * override — e.g. already computed from the full object/observations record
+ * by procurement_document.mjs) always wins over re-deriving from a flatter
+ * row shape. City Record digest rows only ever carry a `start_date`
+ * (publication), never an RFx `release_date`, so most alert atoms land on the
+ * weaker notice-to-due window — exactly rule 4's "do not substitute City
+ * Record publication for RFx release."
+ */
+function resolveOpportunityWindow(row, opts) {
+  if (opts?.opportunity_window && typeof opts.opportunity_window === "object") return opts.opportunity_window;
+  if (row?.opportunity_window && typeof row.opportunity_window === "object") return row.opportunity_window;
+  const cityRecordRef = row?.city_record_source_observation_ref
+    || (row?.request_id ? `city_record:${row.request_id}` : null);
+  return deriveProcurementOpportunityWindow({
+    passport_release_date: row?.release_date ?? null,
+    passport_due_date: row?.due_date ?? null,
+    passport_source_observation_ref: row?.passport_source_observation_ref ?? null,
+    city_record_start_date: row?.start_date ?? null,
+    city_record_due_date: row?.due_date ?? null,
+    city_record_source_observation_ref: cityRecordRef,
+  });
+}
+
 function defaultCityscrollUrl(row) {
   if (row?.procurement_id) return `https://cityscroll.org/procurements/${encodeURIComponent(row.procurement_id)}`;
   if (row?.request_id) return `https://cityscroll.org/notices/${encodeURIComponent(row.request_id)}`;
@@ -160,7 +193,7 @@ export function buildProcurementAlertAtom(row, opts = {}) {
     match_reasons: Array.isArray(opts.match_reasons) ? opts.match_reasons.filter(Boolean) : [],
     method: r.selection_method_description || r.selection_method || null,
     mwbe: r.mwbe ?? null,
-    opportunity_window: r.opportunity_window ?? null,
+    opportunity_window: resolveOpportunityWindow(r, opts),
     important_dates: Array.isArray(r.important_dates) ? r.important_dates.slice() : [],
     cityscroll_url: opts.cityscroll_url || defaultCityscrollUrl(r),
     official_url: opts.official_url || defaultOfficialUrl(r),
