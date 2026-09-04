@@ -55,6 +55,15 @@ contracts. Do not turn it into a delivery log, roadmap, module inventory, or car
 - Never commit secrets, raw/private source payloads, gitignored warehouse products, generated
   Pages documents, or generated architecture-evidence aggregates. Follow the owning builder,
   schema, source contract, and `.gitignore` boundary.
+- Integration evidence is classified mechanically, never by self-declaration.
+  [`capabilities/evidence_classification.mjs`](capabilities/evidence_classification.mjs) owns the
+  five evidence classes and re-derives the highest class a receipt's own facts can prove;
+  [`capabilities/os_deployment_receipt.mjs`](capabilities/os_deployment_receipt.mjs) adds the
+  deployment contract on top of that floor. A local rehearsal never becomes deployment or live
+  evidence, and `tools/build_capability_spine_state.mjs` reports readiness as separate states
+  rather than one collapsed flag. The Cloudflare OS deployment itself lives in a separate private
+  repository; this repository holds the public schemas, contract tests, and the upstream reference
+  in [`integrations/cloudflare-os-starter/`](integrations/cloudflare-os-starter/).
 - Preserve graceful degradation: the static/browser surface remains useful when Worker-backed,
   metered, delivery, or optional enrichment features are unavailable.
 - Keep resident copy plain-language and source-honest. Implementation field names, debug states,

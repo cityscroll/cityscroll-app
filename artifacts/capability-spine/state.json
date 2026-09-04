@@ -16,10 +16,12 @@
       "receipt": "artifacts/capability-spine/cs-10-live-remote-mcp-canary.json"
     },
     "os_deployed": {
-      "satisfied": false,
-      "state": "not_yet_proven",
-      "reason": "no receipt at artifacts/capability-spine/cs-12-cloudflare-os-deployment.json",
-      "receipt": "artifacts/capability-spine/cs-12-cloudflare-os-deployment.json"
+      "satisfied": true,
+      "state": "proven",
+      "max_provable_class": "cloudflare_os_deployed",
+      "required_class": "cloudflare_os_deployed",
+      "receipt": "artifacts/capability-spine/cs-12-cloudflare-os-deployment.json",
+      "reason": null
     },
     "gatekeeper_connected": {
       "satisfied": false,
