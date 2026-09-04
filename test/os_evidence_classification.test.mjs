@@ -310,9 +310,15 @@ test("A8: capability-spine state reports capability-ready, live-MCP-verified, OS
     "agent_proven",
   ]);
   assert.equal(state.states.capability_ready.satisfied, true);
-  // None of CS-10/CS-12/CS-13/CS-14 exist yet, so none of these can be
-  // false-green: unproven stays unproven, and none is inferred from another.
-  for (const key of ["live_mcp_verified", "os_deployed", "gatekeeper_connected", "agent_proven"]) {
+
+  // CS-12's receipt now exists, so os_deployed is proven from its own facts.
+  assert.equal(state.states.os_deployed.satisfied, true);
+  assert.equal(state.states.os_deployed.max_provable_class, "cloudflare_os_deployed");
+
+  // The point of five separate states: a proven deployment must not turn any
+  // neighbour green. Gatekeeper-connected and agent-proven each need their own
+  // receipt, and a deployment is not evidence of an integration.
+  for (const key of ["live_mcp_verified", "gatekeeper_connected", "agent_proven"]) {
     assert.equal(state.states[key].satisfied, false, `${key} must not be false-green before its receipt exists`);
     assert.equal(state.states[key].state, "not_yet_proven");
   }

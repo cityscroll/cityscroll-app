@@ -1,0 +1,51 @@
+{
+  "schema": "cityscroll.cloudflare_os_upstream_starter_reference.v1",
+  "card": "cityscroll-capability-spine/cs-12-os-deployment-foundation",
+  "purpose": "Records the upstream Cloudflare OS starter as it actually exists, so the deployment repository pins a real revision and this repository's earlier rehearsal manifests are not mistaken for its shape.",
+  "provides_deployment_evidence": false,
+  "observed_at": "2026-09-04",
+  "observed_by": "public repository metadata and a shallow clone of the default branch",
+  "starter": {
+    "repository": "https://github.com/cloudflare/cloudflare-os-starter",
+    "default_branch": "main",
+    "commit": "3d211477ad009e13a98d863d843e5c12a29ad02b",
+    "check_command": "pnpm check",
+    "check_command_resolves_to": "node scripts/deploy.ts --check",
+    "packages": [
+      "packages/custom-gatekeeper",
+      "packages/error-reporter"
+    ],
+    "worker_roles": [
+      "router",
+      "workshop",
+      "context",
+      "scheduler",
+      "customGatekeeper",
+      "errorReporter"
+    ],
+    "publicly_routed_role": "router",
+    "deployment_config_file": "deployment.jsonc",
+    "account_prerequisites": [
+      "Workers",
+      "KV",
+      "R2",
+      "Browser Rendering",
+      "Dynamic Worker Loaders",
+      "Workers AI",
+      "AI Gateway"
+    ]
+  },
+  "cloudflare_os": {
+    "repository": "https://github.com/cloudflare/cloudflare-os",
+    "submodule_path": "cloudflare-os",
+    "submodule_commit": "6478a1448a11524e2f7c2575ad66fab0bc47c433"
+  },
+  "corrects": {
+    "note": "The rehearsal manifests in integrations/cloudflare-os-code-mode and integrations/cloudflare-os-entity-research name a Gatekeeper package that the upstream starter does not contain.",
+    "invented_package_reference": "packages/gatekeeper-mcp",
+    "actual_packages": [
+      "packages/custom-gatekeeper",
+      "packages/error-reporter"
+    ]
+  }
+}
