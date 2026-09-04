@@ -118,7 +118,7 @@
         "warehouse",
         "worker/src/data"
       ],
-      "path_count": 3911
+      "path_count": 3916
     }
   },
   "required_paths": [
@@ -3046,29 +3046,29 @@
   },
   "measured": {
     "note": "A snapshot of what the profile costs at the revision named here. These figures are reporting only; they are not part of the checked contract, because a byte total moves whenever any tracked file does.",
-    "revision": "188d36a26ebb967da99799a535fe19c7069a6f50",
-    "computed_in_reduced_checkout": true,
+    "revision": "4cf9b4a552cd13d7e991e234abb670d8acc26108",
+    "computed_in_reduced_checkout": false,
     "profile_paths": {
-      "count": 4129,
-      "logical_bytes": 197251779
+      "count": 4134,
+      "logical_bytes": 197320615
     },
     "deferred_paths": {
       "count": 298,
       "logical_bytes": 221538531
     },
     "excluded_paths": {
-      "count": 2290,
-      "logical_bytes": 692022850
+      "count": 2311,
+      "logical_bytes": 692264329
     },
     "site_data": {
       "tracked_count": 695,
-      "tracked_logical_bytes": 467578733,
+      "tracked_logical_bytes": 467584077,
       "profile_count": 48,
-      "profile_logical_bytes": 109041606
+      "profile_logical_bytes": 109046950
     },
     "tracked_total": {
-      "count": 6419,
-      "logical_bytes": 889274629
+      "count": 6445,
+      "logical_bytes": 889584944
     },
     "pattern_count": 829
   }

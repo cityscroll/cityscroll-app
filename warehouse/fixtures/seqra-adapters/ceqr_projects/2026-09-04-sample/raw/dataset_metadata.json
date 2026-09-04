@@ -1,0 +1,551 @@
+{
+  "id" : "gezn-7mgk",
+  "name" : "CEQR Projects",
+  "assetType" : "dataset",
+  "attribution" : "Mayor’s Office of Environmental Coordination (MOEC)",
+  "averageRating" : 0,
+  "category" : "City Government",
+  "createdAt" : 1448484798,
+  "description" : "CEQR Open Data contains information on projects that are undergoing or have completed review through the City Environmental Quality Review (CEQR) process. Project information available at the Open Data Portal includes the CEQR Number, Project Name, the Project Description, the Lead Agency, project milestones, and geographical locations. CEQR Open Data contains information on CEQR projects, which were filed with the Mayor’s Office from January 1, 2005 to the present.  For associated documents, please follow the links to the CEQR Access Database.",
+  "diciBackend" : false,
+  "displayType" : "table",
+  "downloadCount" : 30668,
+  "hideFromCatalog" : false,
+  "hideFromDataJson" : false,
+  "indexUpdatedAt" : 1549898127,
+  "locked" : false,
+  "newBackend" : true,
+  "numberOfComments" : 0,
+  "oid" : 30786382,
+  "provenance" : "official",
+  "publicationAppendEnabled" : false,
+  "publicationDate" : 1549640359,
+  "publicationGroup" : 5749510,
+  "publicationStage" : "published",
+  "rowClass" : "",
+  "rowsUpdatedAt" : 1788444662,
+  "rowsUpdatedBy" : "5fuc-pqz2",
+  "tableId" : 15938729,
+  "totalTimesRated" : 0,
+  "viewCount" : 5194,
+  "viewLastModified" : 1706722033,
+  "viewType" : "tabular",
+  "approvals" : [ {
+    "reviewedAt" : 1549640359,
+    "reviewedAutomatically" : true,
+    "state" : "approved",
+    "submissionId" : 1078187,
+    "submissionObject" : "public_audience_request",
+    "submissionOutcome" : "change_audience",
+    "submittedAt" : 1549640359,
+    "targetAudience" : "public",
+    "workflowId" : 2285,
+    "submissionDetails" : {
+      "permissionType" : "READ"
+    },
+    "submissionOutcomeApplication" : {
+      "failureCount" : 0,
+      "status" : "success"
+    },
+    "submitter" : {
+      "id" : "5fuc-pqz2",
+      "displayName" : "NYC OpenData"
+    }
+  } ],
+  "clientContext" : {
+    "clientContextVariables" : [ ],
+    "inheritedVariables" : { }
+  },
+  "columns" : [ {
+    "id" : 394908005,
+    "name" : "CEQR",
+    "dataTypeName" : "text",
+    "fieldName" : "ceqr",
+    "position" : 1,
+    "renderTypeName" : "text",
+    "tableColumnId" : 32872754,
+    "width" : 148,
+    "cachedContents" : {
+      "largest" : "99HRA001K",
+      "non_null" : "15388",
+      "null" : "0",
+      "top" : [ {
+        "item" : "09BSA074K",
+        "count" : "2"
+      }, {
+        "item" : "10BSA017M",
+        "count" : "2"
+      }, {
+        "item" : "10BSA016K",
+        "count" : "2"
+      }, {
+        "item" : "97FDO001Q",
+        "count" : "2"
+      }, {
+        "item" : "09BSA066K",
+        "count" : "2"
+      }, {
+        "item" : "99BSA001M",
+        "count" : "2"
+      }, {
+        "item" : "09DCP013Q",
+        "count" : "2"
+      }, {
+        "item" : "10BSA014M",
+        "count" : "2"
+      }, {
+        "item" : "09DEP040Q",
+        "count" : "2"
+      }, {
+        "item" : "03BSA087R",
+        "count" : "2"
+      }, {
+        "item" : "08CCO002Y",
+        "count" : "2"
+      }, {
+        "item" : "00DPR001M",
+        "count" : "2"
+      }, {
+        "item" : "09DCP024X",
+        "count" : "2"
+      }, {
+        "item" : "09BSA007M",
+        "count" : "2"
+      }, {
+        "item" : "05DOS004Y",
+        "count" : "1"
+      }, {
+        "item" : "08BSA030R",
+        "count" : "1"
+      }, {
+        "item" : "97DEP042U",
+        "count" : "1"
+      }, {
+        "item" : "16DEP031Q",
+        "count" : "1"
+      }, {
+        "item" : "01DBS004Q",
+        "count" : "1"
+      }, {
+        "item" : "15OOM001K",
+        "count" : "1"
+      } ],
+      "smallest" : "00BOE001M",
+      "not_null" : "12286",
+      "count" : "15388",
+      "cardinality" : "15388"
+    },
+    "format" : { }
+  }, {
+    "id" : 394908008,
+    "name" : "Project Name",
+    "dataTypeName" : "text",
+    "fieldName" : "project_name",
+    "position" : 2,
+    "renderTypeName" : "text",
+    "tableColumnId" : 32872755,
+    "width" : 244,
+    "cachedContents" : {
+      "largest" : "Z VIP Sedan Services, Inc. D/b/a Z Limo",
+      "non_null" : "15388",
+      "null" : "0",
+      "top" : [ {
+        "item" : "CREATED IN ERROR",
+        "count" : "162"
+      }, {
+        "item" : "83-113 Lorimer Street & 112-144 Middleton Street",
+        "count" : "23"
+      }, {
+        "item" : "Regulator Improve-Tide",
+        "count" : "13"
+      }, {
+        "item" : "New York Sports Club",
+        "count" : "9"
+      }, {
+        "item" : "Throop Avenue and Middleton Street",
+        "count" : "7"
+      }, {
+        "item" : "Edgegrove Avenue",
+        "count" : "6"
+      }, {
+        "item" : "CEQR Type II Determination for transfer of ownership",
+        "count" : "6"
+      }, {
+        "item" : "23-29/26A Steinway Street",
+        "count" : "5"
+      }, {
+        "item" : "760-768 Kent Avenue",
+        "count" : "5"
+      }, {
+        "item" : "Page Avenue",
+        "count" : "5"
+      }, {
+        "item" : "6650 Hylan Boulevard",
+        "count" : "4"
+      }, {
+        "item" : "SEWER-Emergency Sew...",
+        "count" : "4"
+      }, {
+        "item" : "Maimonides Medical Center",
+        "count" : "4"
+      }, {
+        "item" : "Gold's Gym",
+        "count" : "4"
+      }, {
+        "item" : "Build It Back",
+        "count" : "4"
+      }, {
+        "item" : "341 Canal Street",
+        "count" : "4"
+      }, {
+        "item" : "Lucille Roberts",
+        "count" : "4"
+      }, {
+        "item" : "Tottenville Rezoning",
+        "count" : "3"
+      }, {
+        "item" : "250 Water Street",
+        "count" : "3"
+      }, {
+        "item" : "819 Rossville Avenue",
+        "count" : "3"
+      } ],
+      "smallest" : "100-02 Rockaway Boulevard",
+      "not_null" : "12286",
+      "count" : "15388",
+      "cardinality" : "15388"
+    },
+    "format" : { }
+  }, {
+    "id" : 394908009,
+    "name" : "Project Description",
+    "dataTypeName" : "text",
+    "fieldName" : "project_description",
+    "position" : 3,
+    "renderTypeName" : "text",
+    "tableColumnId" : 32872756,
+    "width" : 328,
+    "cachedContents" : {
+      "largest" : "Z R Section 72 21 to penrut m an R4 zoning district legahzallon of an existing two  story structures housing, a commumty facility,  medIcal office . Use Group 4  contrary to Z R Section 22-14,  24-35 and 24 -36.",
+      "non_null" : "14461",
+      "null" : "927",
+      "top" : [ {
+        "item" : "Special Permit (§64-92) to waive bulk regulations for the replacement of homes damaged/destroyed by Hurricane Sandy, on properties which are registered in the NYC Build it Back Program.",
+        "count" : "22"
+      }, {
+        "item" : "Use variance to permit in M1-2 zone, construction of 24 4-story residential buildings, demolish factory complex and parking area",
+        "count" : "22"
+      }, {
+        "item" : "The relocation of a base station and off street parking For-Hire Vehicles under Chapter 5 of Title 19 of the Administrative Code.",
+        "count" : "18"
+      }, {
+        "item" : "School seat certification for two dwelling units.",
+        "count" : "16"
+      }, {
+        "item" : "HPD is only providing an Article XI tax exemption. no physical rehab will take place.",
+        "count" : "16"
+      }, {
+        "item" : "CREATED IN ERROR",
+        "count" : "16"
+      }, {
+        "item" : "Special Permit to operate a PCE.",
+        "count" : "14"
+      }, {
+        "item" : "A new base station and off-street parking to operate and conduct business for a For-Hire Vehicles under Chapter 5 of Title 19 of the Administrative Code",
+        "count" : "12"
+      }, {
+        "item" : "NO DOCUMENTS OR FILE",
+        "count" : "12"
+      }, {
+        "item" : "The proposed action includes the request for a proposed residential dwellings (Use Group 2) located in an M1-1 zoning district which is contrary to Z.R.§42-00.",
+        "count" : "11"
+      }, {
+        "item" : "A new base station and off the street parking for a new For-Hire Vehicles under Chapter 5 of Title 19 of the Administrative Code.",
+        "count" : "9"
+      }, {
+        "item" : "Project Terminated",
+        "count" : "9"
+      }, {
+        "item" : "Special Permit (§64-92) to waive bulk regulations for the replacement of homes damaged/destroyed by Hurricane Sandy, on properties which are registered in the NYC Build it Back Program. R3-1 zoning district.",
+        "count" : "9"
+      }, {
+        "item" : "The NYCDOT Safe Routes to School Program which wil implement improvement measures to enhance safety and mobility of school children within the school study area. Measures include bulb extentions, crosswalks, traffic signs, pedestrian safety islands, etc.",
+        "count" : "8"
+      }, {
+        "item" : "Development of a Business Improvement District",
+        "count" : "7"
+      }, {
+        "item" : "Special Permit (§64-92) to waive bulk regulations for the replacement of homes damaged/destroyed by Hurricane Sandy, on properties which are registered in the NYC Build it Back Program.R4 zoning district.",
+        "count" : "7"
+      }, {
+        "item" : "To relocate the base and off street parking.",
+        "count" : "7"
+      }, {
+        "item" : "The proposed action includes the request for a proposed residential dwellings (Use Group 2), located in an M1-1 zoning district, which is contrary to Z.R.§42-00.",
+        "count" : "6"
+      }, {
+        "item" : "Special Permit (§64-92) to waive bulk regulations for the replacement of homes damaged/destroyed by Hurricane Sandy, on properties which are registered in the NYC Build it Back Program. R4 zoning district.",
+        "count" : "6"
+      }, {
+        "item" : "Each of the six Limited Secure Placement (LSP) Facilities, as part of the Close to Home Legislation, will be a licensed facility operated and staffed by an authorized agency for the care and maintenance of youth placed with the Administration for Children\u001As Services by the Family Court on juvenile delinquency cases. The goal of Close to Home and, thus of Limited Secure Placement, is to improve outcomes for youth in the juvenile justice system, and increase community safety. LSP sites are designed to be largely self-contained, with services provided on site, including but not limited to: education; mental health services; health services; substance abuse services; enrichment/recreational services; financial literacy; employment/training",
+        "count" : "6"
+      } ],
+      "smallest" : "1010 -1014 Hoe Avenue are (2) five story - residential properties that are located in the Hunts Point / Longwood section of the Bronx. Currently, each building is comprised of 15 apartments and 16 apartments respectively with a total of (10)- one bedroom units, (20)-2 bedroom units and (1) 2- bedroom superintendent\u001As unit located in the basement of 1010 Hoe Ave. The borrower has been approved for seeking a Article XI tax exemption for 35 years.",
+      "not_null" : "11328",
+      "count" : "15388",
+      "cardinality" : "15388"
+    },
+    "format" : { }
+  }, {
+    "id" : 394908011,
+    "name" : "Borough",
+    "dataTypeName" : "text",
+    "fieldName" : "borough",
+    "position" : 4,
+    "renderTypeName" : "text",
+    "tableColumnId" : 32872757,
+    "width" : 184,
+    "cachedContents" : {
+      "largest" : "Upstate",
+      "non_null" : "15332",
+      "null" : "56",
+      "top" : [ {
+        "item" : "Brooklyn",
+        "count" : "3974"
+      }, {
+        "item" : "Manhattan",
+        "count" : "3540"
+      }, {
+        "item" : "Queens",
+        "count" : "2543"
+      }, {
+        "item" : "Staten Island",
+        "count" : "2241"
+      }, {
+        "item" : "Bronx",
+        "count" : "2052"
+      }, {
+        "item" : "Upstate",
+        "count" : "523"
+      }, {
+        "item" : "Citywide",
+        "count" : "459"
+      } ],
+      "smallest" : "Bronx",
+      "not_null" : "12237",
+      "count" : "15388",
+      "cardinality" : "15388"
+    },
+    "format" : { }
+  }, {
+    "id" : 394908014,
+    "name" : "Lead Agency",
+    "dataTypeName" : "text",
+    "fieldName" : "lead_agency",
+    "position" : 5,
+    "renderTypeName" : "text",
+    "tableColumnId" : 32872758,
+    "width" : 232,
+    "cachedContents" : {
+      "largest" : "Taxi and Limousine Commission",
+      "non_null" : "15388",
+      "null" : "0",
+      "top" : [ {
+        "item" : "Department of City Planning",
+        "count" : "4381"
+      }, {
+        "item" : "Board of Standards and Appeals",
+        "count" : "3864"
+      }, {
+        "item" : "Department of Housing Preservation & Development",
+        "count" : "1869"
+      }, {
+        "item" : "Department of Environmental Protection",
+        "count" : "1639"
+      }, {
+        "item" : "Taxi and Limousine Commission",
+        "count" : "731"
+      }, {
+        "item" : "Department of Transportation",
+        "count" : "644"
+      }, {
+        "item" : "Deputy Mayor for Housing and Economic Development",
+        "count" : "452"
+      }, {
+        "item" : "Department of Homeless Services",
+        "count" : "362"
+      }, {
+        "item" : "Department of Parks and Recreation",
+        "count" : "270"
+      }, {
+        "item" : "Department of Sanitation",
+        "count" : "269"
+      }, {
+        "item" : "NYC Departments of Environmental Protection and City Planning (co-lead)",
+        "count" : "207"
+      }, {
+        "item" : "Department of Small Business Services",
+        "count" : "206"
+      }, {
+        "item" : "Office of the Mayor",
+        "count" : "75"
+      }, {
+        "item" : "NYC Fire Department",
+        "count" : "73"
+      }, {
+        "item" : "NYC Police Department",
+        "count" : "71"
+      }, {
+        "item" : "Department of Citywide Administrative Services",
+        "count" : "38"
+      }, {
+        "item" : "NYC Council",
+        "count" : "33"
+      }, {
+        "item" : "Department of Cultural Affairs",
+        "count" : "33"
+      }, {
+        "item" : "Human Resources Administration",
+        "count" : "21"
+      }, {
+        "item" : "Department of Health and Mental Hygiene",
+        "count" : "16"
+      } ],
+      "smallest" : "Administration for Children's Services",
+      "not_null" : "12286",
+      "count" : "15388",
+      "cardinality" : "15388"
+    },
+    "format" : { }
+  }, {
+    "id" : 394908016,
+    "name" : "URL",
+    "dataTypeName" : "text",
+    "fieldName" : "url",
+    "position" : 6,
+    "renderTypeName" : "text",
+    "tableColumnId" : 32872759,
+    "width" : 136,
+    "cachedContents" : {
+      "largest" : "https://a002-ceqraccess.nyc.gov/ceqr/ProjectInformation/ProjectDetail/999-95DCP028M",
+      "non_null" : "15388",
+      "null" : "0",
+      "top" : [ {
+        "item" : "https://a002-ceqraccess.nyc.gov/ceqr/ProjectInformation/ProjectDetail/14620-20BSA001M",
+        "count" : "1"
+      }, {
+        "item" : "https://a002-ceqraccess.nyc.gov/ceqr/ProjectInformation/ProjectDetail/4712-05DEP030K",
+        "count" : "1"
+      }, {
+        "item" : "https://a002-ceqraccess.nyc.gov/ceqr/ProjectInformation/ProjectDetail/14749-20DEP026U",
+        "count" : "1"
+      }, {
+        "item" : "https://a002-ceqraccess.nyc.gov/ceqr/ProjectInformation/ProjectDetail/10343-14DCP152R",
+        "count" : "1"
+      }, {
+        "item" : "https://a002-ceqraccess.nyc.gov/ceqr/ProjectInformation/ProjectDetail/5823-07DME013K",
+        "count" : "1"
+      }, {
+        "item" : "https://a002-ceqraccess.nyc.gov/ceqr/ProjectInformation/ProjectDetail/10417-14BSA141Q",
+        "count" : "1"
+      }, {
+        "item" : "https://a002-ceqraccess.nyc.gov/ceqr/ProjectInformation/ProjectDetail/58-91-092R",
+        "count" : "1"
+      }, {
+        "item" : "https://a002-ceqraccess.nyc.gov/ceqr/ProjectInformation/ProjectDetail/3161-03BSA075M",
+        "count" : "1"
+      }, {
+        "item" : "https://a002-ceqraccess.nyc.gov/ceqr/ProjectInformation/ProjectDetail/7538-11DCP047R",
+        "count" : "1"
+      }, {
+        "item" : "https://a002-ceqraccess.nyc.gov/ceqr/ProjectInformation/ProjectDetail/1844-97DCP036X",
+        "count" : "1"
+      }, {
+        "item" : "https://a002-ceqraccess.nyc.gov/ceqr/ProjectInformation/ProjectDetail/187-92DCP004R",
+        "count" : "1"
+      }, {
+        "item" : "https://a002-ceqraccess.nyc.gov/ceqr/ProjectInformation/ProjectDetail/17476-25HPD051M",
+        "count" : "1"
+      }, {
+        "item" : "https://a002-ceqraccess.nyc.gov/ceqr/ProjectInformation/ProjectDetail/9115-13BSA027M",
+        "count" : "1"
+      }, {
+        "item" : "https://a002-ceqraccess.nyc.gov/ceqr/ProjectInformation/ProjectDetail/10627-15BSA012K",
+        "count" : "1"
+      }, {
+        "item" : "https://a002-ceqraccess.nyc.gov/ceqr/ProjectInformation/ProjectDetail/17025-24DCP089R",
+        "count" : "1"
+      }, {
+        "item" : "https://a002-ceqraccess.nyc.gov/ceqr/ProjectInformation/ProjectDetail/16112-22DCP157X",
+        "count" : "1"
+      }, {
+        "item" : "https://a002-ceqraccess.nyc.gov/ceqr/ProjectInformation/ProjectDetail/15152-20BSA093M",
+        "count" : "1"
+      }, {
+        "item" : "https://a002-ceqraccess.nyc.gov/ceqr/ProjectInformation/ProjectDetail/3818-04DPR001Q",
+        "count" : "1"
+      }, {
+        "item" : "https://a002-ceqraccess.nyc.gov/ceqr/ProjectInformation/ProjectDetail/1415-96BSA093M",
+        "count" : "1"
+      }, {
+        "item" : "https://a002-ceqraccess.nyc.gov/ceqr/ProjectInformation/ProjectDetail/4697-06DCP029K",
+        "count" : "1"
+      } ],
+      "smallest" : "https://a002-ceqraccess.nyc.gov/ceqr/ProjectInformation/ProjectDetail/10001-14HPD034M",
+      "not_null" : "12286",
+      "count" : "15388",
+      "cardinality" : "15388"
+    },
+    "format" : { }
+  } ],
+  "grants" : [ {
+    "inherited" : false,
+    "type" : "viewer",
+    "flags" : [ "public" ]
+  } ],
+  "metadata" : {
+    "rdfSubject" : "0",
+    "rdfClass" : "",
+    "custom_fields" : {
+      "Update" : {
+        "Automation" : "Yes",
+        "Date Made Public" : "6/15/2016",
+        "Update Frequency" : "As needed"
+      },
+      "Dataset Information" : {
+        "Agency" : "Mayor's Office of Environmental Coordination (MOEC)"
+      }
+    },
+    "rowLabel" : "Row",
+    "availableDisplayTypes" : [ "table", "fatrow", "page" ],
+    "renderTypeConfig" : {
+      "visible" : {
+        "table" : true
+      }
+    }
+  },
+  "owner" : {
+    "id" : "5fuc-pqz2",
+    "displayName" : "NYC OpenData",
+    "profileImageUrlLarge" : "/api/users/5fuc-pqz2/profile_images/LARGE",
+    "profileImageUrlMedium" : "/api/users/5fuc-pqz2/profile_images/THUMB",
+    "profileImageUrlSmall" : "/api/users/5fuc-pqz2/profile_images/TINY",
+    "screenName" : "NYC OpenData",
+    "type" : "interactive",
+    "flags" : [ "acceptedEula", "mayBeStoriesCoOwner" ]
+  },
+  "query" : { },
+  "rights" : [ "read" ],
+  "tableAuthor" : {
+    "id" : "5fuc-pqz2",
+    "displayName" : "NYC OpenData",
+    "profileImageUrlLarge" : "/api/users/5fuc-pqz2/profile_images/LARGE",
+    "profileImageUrlMedium" : "/api/users/5fuc-pqz2/profile_images/THUMB",
+    "profileImageUrlSmall" : "/api/users/5fuc-pqz2/profile_images/TINY",
+    "screenName" : "NYC OpenData",
+    "type" : "interactive",
+    "flags" : [ "acceptedEula", "mayBeStoriesCoOwner" ]
+  },
+  "tags" : [ "sustainability", "moec", "ceqr", "environment", "project" ],
+  "flags" : [ "default", "ownerMayBeContacted", "restorable", "restorePossibleForType" ]
+}
