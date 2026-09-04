@@ -7,6 +7,8 @@
  */
 
 import { officialSourceLink } from "./affordance_grammar.mjs";
+import { createCalendarOccurrence } from "./calendar_occurrence.mjs";
+import { buildCompactMonthView, renderCompactMonth } from "./compact_calendar.mjs";
 import {
   EDGE_SUMMARY_STATE_MEANINGS,
   edgeSummaryStateCopy,
@@ -191,6 +193,65 @@ function acceptedMeetingIds(institutionEdges = []) {
     .filter((edge) => edge?.relation === "hosts_meeting" || edge?.edge_type === "hosts_meeting")
     .filter(communityBoardMeetingEdgeAccepted)
     .flatMap((edge) => [edge.to, edge.target_id, edge.source_record_id].map((value) => clean(value, 500)).filter(Boolean)));
+}
+
+function absoluteCityScrollUrl(href) {
+  const value = clean(href, 2000);
+  if (!value) return null;
+  if (/^https?:\/\//i.test(value)) return value;
+  return value.startsWith("/") ? `https://cityscroll.org${value}` : null;
+}
+
+function communityBoardMeetingEdgeDate(edge = {}) {
+  const value = clean(edge.relation_date || edge.meeting_date || edge.join?.event_date || edge.date, 10);
+  return /^\d{4}-\d{2}-\d{2}$/.test(value) ? value : null;
+}
+
+// Adapts one accepted `hosts_meeting` edge into the shared CBICS-01/02
+// calendar_display_occurrence contract. Admission stays where it already
+// lives (the source join in community_board_source_join.mjs); this only
+// projects an already-accepted meeting into the shape the shared compact
+// month component understands. A row that fails the contract (no exact date,
+// no canonical destination, no stable identity) is dropped, never invented.
+function communityBoardProceedingOccurrence(edge = {}) {
+  const day = communityBoardMeetingEdgeDate(edge);
+  if (!day) return null;
+  const canonicalUrl = absoluteCityScrollUrl(edge.canonical_href || edge.href);
+  if (!canonicalUrl) return null;
+  const uid = clean(edge.target_id || edge.to, 500);
+  if (!uid) return null;
+  const host = meetingHostLabel(edge);
+  const form = proceedingFormLabel(edge);
+  const sourceUrl = clean(edge.source_url || edge.provenance?.source_url, 2000) || null;
+  try {
+    return createCalendarOccurrence({
+      uid,
+      object_ref: uid,
+      kind: "event",
+      // The shared renderer's only free-text slot; host and proceeding form
+      // (A3) travel here since compact_calendar has no dedicated fields for
+      // them.
+      title: form ? `${host} · ${form}` : host,
+      date: day,
+      canonical_url: canonicalUrl,
+      source: { kind: "community-board", url: sourceUrl },
+      provenance: edge.provenance || null,
+    });
+  } catch {
+    return null;
+  }
+}
+
+// Two projections of one accepted meeting population (G1): the density
+// evaluator decides, per board, whether that population qualifies for a
+// month view at all. Sparse and unavailable boards get an explicit
+// `render: false` result, never empty calendar chrome (A6).
+function communityBoardProceedingsCalendar(meetingEdges = [], today) {
+  const occurrences = (Array.isArray(meetingEdges) ? meetingEdges : [])
+    .filter(communityBoardMeetingEdgeAccepted)
+    .map(communityBoardProceedingOccurrence)
+    .filter(Boolean);
+  return buildCompactMonthView(occurrences, { today });
 }
 
 function genericCommunityBoardPersonRef(value) {
@@ -443,6 +504,13 @@ export function buildCommunityBoardConstellationView(idOrName, sources = {}) {
     || sources.boardInstitutionEdges?.[requested]
     || sources.meetingEdges?.[requested];
   const institutionEdges = Array.isArray(suppliedInstitutionEdges) ? suppliedInstitutionEdges : null;
+  const today = /^\d{4}-\d{2}-\d{2}$/.test(clean(sources.today, 10))
+    ? clean(sources.today, 10)
+    : String(sources.generated_at || sources.scorecard?.as_of || new Date().toISOString()).slice(0, 10);
+  const proceedingsCalendar = communityBoardProceedingsCalendar(
+    (institutionEdges || []).filter((edge) => edge?.relation === "hosts_meeting"),
+    today,
+  );
   const boardSourceRecords = sourceRecordRows(
     [
       ...(sources.sourceRecords?.[requested]
@@ -519,6 +587,7 @@ export function buildCommunityBoardConstellationView(idOrName, sources = {}) {
     categories,
     edge_summary: edgeSummary,
     local_constellation: localConstellation,
+    proceedings_calendar: proceedingsCalendar,
     minutes_freshness: minutesFreshness(
       boardSourceRecords.filter((row) => row.meeting_document || row.source_role === "minutes"),
       boardSources.find((row) => row.role === "minutes") || {},
@@ -629,12 +698,37 @@ function committeeRecordMarkup(row) {
   return `<li class="node-record" data-semantic-object="community-board-committee" data-committee-id="${esc(row.target_id || row.to)}"><div class="node-record-main"><strong>${label}</strong></div><span class="muted node-muted">Community Board committee${details.length ? ` · ${details.join(" · ")}` : ""}</span></li>`;
 }
 
+// A board's monthly rhythm alongside its existing list (G1). Sparse and
+// coverage-unavailable boards get exactly the prior list-only markup — the
+// wrapper, switch, and month panel are never emitted unless the density
+// evaluator's `render: true` result says a month view qualifies (A6).
+function renderProceedingsSection(category, view) {
+  const list = `<ul class="node-record-list">${category.items.map(meetingRecordMarkup).join("")}</ul>`;
+  const monthHtml = renderCompactMonth(view.proceedings_calendar);
+  if (!monthHtml) return list;
+  const boardId = esc(view.body_id);
+  const monthId = `board-proceedings-view-month-${boardId}`;
+  const listId = `board-proceedings-view-list-${boardId}`;
+  const radioGroup = `board-proceedings-view-${boardId}`;
+  return `<div class="board-proceedings-view" data-board-proceedings-view="1">` +
+    `<fieldset class="board-proceedings-view-switch">` +
+    `<legend class="board-proceedings-view-switch-legend">Show proceedings as</legend>` +
+    `<input type="radio" id="${monthId}" name="${radioGroup}" class="board-proceedings-view-radio board-proceedings-view-radio-month">` +
+    `<label class="board-proceedings-view-tab" for="${monthId}">Month</label>` +
+    `<input type="radio" id="${listId}" name="${radioGroup}" class="board-proceedings-view-radio board-proceedings-view-radio-list" checked>` +
+    `<label class="board-proceedings-view-tab" for="${listId}">List</label>` +
+    `</fieldset>` +
+    `<div class="board-proceedings-panel board-proceedings-panel-month" data-board-proceedings-panel="month">${monthHtml}</div>` +
+    `<div class="board-proceedings-panel board-proceedings-panel-list" data-board-proceedings-panel="list">${list}</div>` +
+    `</div>`;
+}
+
 function renderCategory(category, view) {
   const availability = EDGE_SUMMARY_STATE_MEANINGS[category.status] || EDGE_SUMMARY_STATE_MEANINGS.unknown;
   const body = category.id === "sources"
     ? `<ul class="node-record-list">${category.items.map(sourceMarkup).join("")}</ul>${renderMinutesFreshnessMarkup(view)}`
     : category.id === "meetings" && category.items?.length
-      ? `<ul class="node-record-list">${category.items.map(meetingRecordMarkup).join("")}</ul>`
+      ? renderProceedingsSection(category, view)
       : category.id === "committees" && category.items?.length
         ? `<ul class="node-record-list">${category.items.map(committeeRecordMarkup).join("")}</ul>`
       : ["members", "recommendations"].includes(category.id) && category.items?.length
@@ -785,7 +879,8 @@ export function renderCommunityBoardConstellationDocument(view, options = {}) {
 <title>${esc(title)} · Community board constellation · CityScroll</title>
 <meta name="description" content="${esc(`Public source and place connections for ${title}.`)}">
 <link rel="canonical" href="https://cityscroll.org${esc(view.path)}">${renderCivicDocumentAssets(assetPrefix)}
-<link rel="stylesheet" href="${esc(`${prefix}local_constellation.css`)}"></head><body>
+<link rel="stylesheet" href="${esc(`${prefix}local_constellation.css`)}">
+<link rel="stylesheet" href="${esc(`${prefix}compact_calendar.css`)}"></head><body>
 <a class="skip" href="#main">Skip to content</a>${renderCivicDocumentMast({ current: "browse", surfaceClass: "civic-object-mast" })}
 <main id="main" class="node-document civic-object-document" data-civic-object-kind="community-board-constellation" data-subject-ref="${esc(view.subject_ref)}" data-node-document="1">
 ${renderNodeBack({ href: "/community-boards/", label: "Back to community board sources", extraClass: "civic-object-back" })}
