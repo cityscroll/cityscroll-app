@@ -1,0 +1,162 @@
+{
+  "schema": "cityscroll.legislative_matter_calendar_evidence_receipt.v1",
+  "captured_at": "2026-09-03T18:14:47Z",
+  "revision": "42d872d66ae625a601731a733a756f4c1aadd27b",
+  "all_axe_pass": true,
+  "all_render_correct": true,
+  "all_no_decision_leak": true,
+  "captures": [
+    {
+      "scenario": "concentrated",
+      "route": "/matters/78601/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "42d872d66ae625a601731a733a756f4c1aadd27b",
+      "evidence_state": "3 appearances in a 15-day span; one carries a proven 8-0-1 committee vote",
+      "calendar_rendered": true,
+      "calendar_carries_no_decision_language": true,
+      "screenshot": "docs/screenshots/legislative-matter-calendar/concentrated-390x844.png",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": [],
+        "passes": true
+      },
+      "assertion": "concentrated (/matters/78601/) at 390x844: calendar renders above the appearances list; calendar_rendered=True no_decision_leak=True axe_passes=True"
+    },
+    {
+      "scenario": "concentrated",
+      "route": "/matters/78601/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "42d872d66ae625a601731a733a756f4c1aadd27b",
+      "evidence_state": "3 appearances in a 15-day span; one carries a proven 8-0-1 committee vote",
+      "calendar_rendered": true,
+      "calendar_carries_no_decision_language": true,
+      "screenshot": "docs/screenshots/legislative-matter-calendar/concentrated-1440x900.png",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": [],
+        "passes": true
+      },
+      "assertion": "concentrated (/matters/78601/) at 1440x900: calendar renders above the appearances list; calendar_rendered=True no_decision_leak=True axe_passes=True"
+    },
+    {
+      "scenario": "dispersed",
+      "route": "/matters/78602/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "42d872d66ae625a601731a733a756f4c1aadd27b",
+      "evidence_state": "3 appearances spanning Jan-Sep, no 42-day dense window",
+      "calendar_rendered": false,
+      "calendar_carries_no_decision_language": true,
+      "screenshot": "docs/screenshots/legislative-matter-calendar/dispersed-390x844.png",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      },
+      "assertion": "dispersed (/matters/78602/) at 390x844: list-only, no calendar furniture; calendar_rendered=False no_decision_leak=True axe_passes=True"
+    },
+    {
+      "scenario": "dispersed",
+      "route": "/matters/78602/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "42d872d66ae625a601731a733a756f4c1aadd27b",
+      "evidence_state": "3 appearances spanning Jan-Sep, no 42-day dense window",
+      "calendar_rendered": false,
+      "calendar_carries_no_decision_language": true,
+      "screenshot": "docs/screenshots/legislative-matter-calendar/dispersed-1440x900.png",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      },
+      "assertion": "dispersed (/matters/78602/) at 1440x900: list-only, no calendar furniture; calendar_rendered=False no_decision_leak=True axe_passes=True"
+    },
+    {
+      "scenario": "sparse",
+      "route": "/matters/78603/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "42d872d66ae625a601731a733a756f4c1aadd27b",
+      "evidence_state": "2 appearances (the real committed LU 0056-2026 shape)",
+      "calendar_rendered": false,
+      "calendar_carries_no_decision_language": true,
+      "screenshot": "docs/screenshots/legislative-matter-calendar/sparse-390x844.png",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      },
+      "assertion": "sparse (/matters/78603/) at 390x844: list-only, below the 3-occurrence threshold; calendar_rendered=False no_decision_leak=True axe_passes=True"
+    },
+    {
+      "scenario": "sparse",
+      "route": "/matters/78603/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "42d872d66ae625a601731a733a756f4c1aadd27b",
+      "evidence_state": "2 appearances (the real committed LU 0056-2026 shape)",
+      "calendar_rendered": false,
+      "calendar_carries_no_decision_language": true,
+      "screenshot": "docs/screenshots/legislative-matter-calendar/sparse-1440x900.png",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      },
+      "assertion": "sparse (/matters/78603/) at 1440x900: list-only, below the 3-occurrence threshold; calendar_rendered=False no_decision_leak=True axe_passes=True"
+    },
+    {
+      "scenario": "no-decision",
+      "route": "/matters/78604/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "42d872d66ae625a601731a733a756f4c1aadd27b",
+      "evidence_state": "3 concentrated appearances, no committee/Council action or vote retained on any",
+      "calendar_rendered": true,
+      "calendar_carries_no_decision_language": true,
+      "screenshot": "docs/screenshots/legislative-matter-calendar/no-decision-390x844.png",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      },
+      "assertion": "no-decision (/matters/78604/) at 390x844: calendar renders, no vote/action text on any cell; calendar_rendered=True no_decision_leak=True axe_passes=True"
+    },
+    {
+      "scenario": "no-decision",
+      "route": "/matters/78604/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "42d872d66ae625a601731a733a756f4c1aadd27b",
+      "evidence_state": "3 concentrated appearances, no committee/Council action or vote retained on any",
+      "calendar_rendered": true,
+      "calendar_carries_no_decision_language": true,
+      "screenshot": "docs/screenshots/legislative-matter-calendar/no-decision-1440x900.png",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      },
+      "assertion": "no-decision (/matters/78604/) at 1440x900: calendar renders, no vote/action text on any cell; calendar_rendered=True no_decision_leak=True axe_passes=True"
+    }
+  ]
+}
