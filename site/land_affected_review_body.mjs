@@ -10,7 +10,10 @@ import { communityBoardPageHref } from "./community_board_links.mjs";
 import {
   LAND_PROCEDURE_PROFILE_REGISTRY_VERSION,
 } from "./land_procedure_profiles.mjs";
-import { resolveLandActionProcedures } from "./land_action_procedure_resolution.mjs";
+import {
+  mergeLandActionEvidence,
+  resolveLandActionProcedures,
+} from "./land_action_procedure_resolution.mjs";
 import { boroughBoardIdentity } from "./borough_board_identity.mjs";
 
 export const AFFECTED_REVIEW_BODY_SCHEMA = "cityscroll.affected_review_body_for.v1";
@@ -57,13 +60,7 @@ function clone(value) {
   return JSON.parse(JSON.stringify(value));
 }
 
-function sourceBag(input = {}) {
-  const source = input.source && typeof input.source === "object" ? input.source : input;
-  return {
-    ...source,
-    ...(input.open_data && typeof input.open_data === "object" ? input.open_data : {}),
-  };
-}
+const sourceBag = mergeLandActionEvidence;
 
 function exactCommunityDistrictTokens(value) {
   if (Array.isArray(value)) {

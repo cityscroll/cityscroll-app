@@ -8,7 +8,10 @@
  * Presentation (HTML) lives in site/index.html landSpineHTML.
  */
 
-import { resolveLandActionProcedures } from "./land_action_procedure_resolution.mjs";
+import {
+  mergeLandActionEvidence,
+  resolveLandActionProcedures,
+} from "./land_action_procedure_resolution.mjs";
 import { projectAffectedReviewBodies } from "./land_affected_review_body.mjs";
 import { buildLandProcedureProfileView } from "./land_procedure_profiles.mjs";
 
@@ -662,8 +665,15 @@ export function buildLandPhaseView(spine, opts = {}) {
   // Normative procedure interpretation is an additive sibling of the observed
   // spine. The profile consumer receives source facts and the derived phase;
   // it never receives, mutates, or manufactures an event.
+  // The exact ZAP API per-action array (when the caller has it, e.g. from a
+  // live zap-outcomes record) must reach the resolver alongside Open Data —
+  // never flattened into a plain `{...openData}` spread that would lose it.
+  // `opts.procedure_facts` stays the highest-priority override, as before.
   const procedureFacts = {
-    ...(openData && typeof openData === "object" ? openData : {}),
+    ...mergeLandActionEvidence({
+      open_data: openData && typeof openData === "object" ? openData : null,
+      actions: opts.actions || spine?.actions || null,
+    }),
     ...(opts.procedure_facts && typeof opts.procedure_facts === "object" ? opts.procedure_facts : {}),
   };
   const affectedReviewBodies = procedureFacts.affected_review_body_for?.schema

@@ -25,6 +25,7 @@ import zoningStatistics from "./data/zoning_statistics.json" with { type: "json"
 import { attachZoningStatistics } from "./lib/zoning_statistics.mjs";
 import { attachProjectConnectionsSection } from "./project_connections.mjs";
 import { dualWriteZapProjectObservations } from "./lib/zap_project_source_records.mjs";
+import { stampLandActionProcedureResolution } from "../../site/land_action_procedure_resolution.mjs";
 // Do not static-import admin.mjs here: it pulls alerts.mjs → @jimdc/sendcap, and
 // test/land_event_spine.test.mjs imports buildZapOutcomeRecord from this module
 // during site unit tests (before the worker dependency install). Auth is loaded only on the admin path.
@@ -526,7 +527,12 @@ export async function buildZapOutcomeRecord(projectId, { fetchBbl = true, lookup
     };
   }
 
-  const record = joinOpenDataToZapOutcome(openData, apiPayload);
+  // Stamp the per-action procedure resolution on the joined record itself so
+  // the exact ZAP API action/identifier survives into every downstream
+  // consumer of this outcome record (the browser response, the batch
+  // authority materializer, the phase view) without re-deriving it from the
+  // narrower Open Data snapshot alone.
+  const record = stampLandActionProcedureResolution(joinOpenDataToZapOutcome(openData, apiPayload));
 
   let dob = {
     matched: false,

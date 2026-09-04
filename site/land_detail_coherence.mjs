@@ -325,6 +325,7 @@ export function buildLandProjectState(opts = {}) {
   if (!phaseView && typeof opts.buildLandPhaseView === "function" && outcomeRecord?.spine) {
     phaseView = opts.buildLandPhaseView(outcomeRecord.spine, {
       open_data: outcomeRecord.open_data || listRow || null,
+      actions: outcomeRecord.actions || null,
       portal_url: outcomeRecord.portal_url || null,
       public_status: publicStatus,
       project_id: outcomeRecord.project_id || listRow?.project_id || null,
