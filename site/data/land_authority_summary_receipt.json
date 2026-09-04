@@ -4,8 +4,8 @@
   "generated_at": "2026-08-23T07:59:14.162Z",
   "counts": {
     "universe": 40,
-    "resolved": 15,
-    "unknown": 25
+    "resolved": 17,
+    "unknown": 23
   },
   "resolved_project_ids": [
     "2024Q0135",
@@ -18,9 +18,11 @@
     "2026R0186",
     "2025K0284",
     "2025Q0247",
+    "2025R0222",
     "2025R0137",
     "2025Q0316",
     "2026Q0210",
+    "2025M0395",
     "2024K0196",
     "2025K0154"
   ],
@@ -42,8 +44,6 @@
     "2023X0149",
     "2022K0416",
     "2025Q0142",
-    "2025R0222",
-    "2025M0395",
     "2022K0430",
     "2026K0233",
     "2023Q0303",
@@ -297,10 +297,10 @@
     },
     {
       "project_id": "2025R0222",
-      "status": "unknown",
-      "reason": "unresolved_current_stage",
+      "status": "resolved",
+      "reason": null,
       "procedure_resolution": "uniform",
-      "current_stage_id": null,
+      "current_stage_id": "ulurp_197c.application_certification",
       "observed_status": "draft_only",
       "published_next_status": "published"
     },
@@ -333,10 +333,10 @@
     },
     {
       "project_id": "2025M0395",
-      "status": "unknown",
-      "reason": "unresolved_current_stage",
+      "status": "resolved",
+      "reason": null,
       "procedure_resolution": "uniform",
-      "current_stage_id": null,
+      "current_stage_id": "ulurp_197c.application_certification",
       "observed_status": "draft_only",
       "published_next_status": "published"
     },
@@ -444,7 +444,7 @@
   "generation": {
     "derivation": "node tools/build_land_authority_summary.mjs",
     "payload_path": "site/data/land_authority_summary.json",
-    "payload_bytes": 114468,
-    "payload_sha256": "1a60be2e3e9ed60d8f95b070db48c78e96e9051dc9a1ea7df29e5b2eb380288b"
+    "payload_bytes": 127685,
+    "payload_sha256": "3f805e057bc72a3c67d438f44664d83e165653a145d1590400b556ebc04aeee9"
   }
 }
