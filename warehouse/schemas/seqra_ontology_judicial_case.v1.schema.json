@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cityscroll.org/schemas/seqra_ontology_judicial_case.v1.schema.json",
+  "title": "SEQRA/CEQR ontology: judicial_case",
+  "description": "One New York Article 78 or hybrid case challenging a determination (judicial_case -> challenges_determination -> land_use_determination). Out of the hard jurisdiction boundary, no other case type is represented.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "case_key",
+    "determination_key",
+    "court",
+    "index_number",
+    "filed_date",
+    "judicial_review_regime",
+    "observed_at",
+    "source_id",
+    "source_record_id"
+  ],
+  "properties": {
+    "case_key": {
+      "type": "string",
+      "pattern": "^judicial_case:.+$"
+    },
+    "determination_key": {
+      "type": "string",
+      "pattern": "^determination:[a-z0-9_]+:[a-z0-9_]+:\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "court": {
+      "type": "string"
+    },
+    "index_number": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "filed_date": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "judicial_review_regime": {
+      "type": "string",
+      "enum": [
+        "NY_ARTICLE_78",
+        "NY_HYBRID"
+      ]
+    },
+    "observed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "source_id": {
+      "type": "string"
+    },
+    "source_record_id": {
+      "type": "string"
+    }
+  }
+}

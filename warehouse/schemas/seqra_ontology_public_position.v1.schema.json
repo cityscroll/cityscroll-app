@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cityscroll.org/schemas/seqra_ontology_public_position.v1.schema.json",
+  "title": "SEQRA/CEQR ontology: public_position",
+  "description": "One dated, sourced position an organization took on a review (organization -> takes_position -> public_position; public_position -> concerns_review -> environmental_review). Named issue evidence is kept distinct from generic opposition; lobbying or union participation is never a misconduct label here.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "position_key",
+    "organization_key",
+    "review_key",
+    "position",
+    "named_issue",
+    "observed_at",
+    "available_to_public_at",
+    "source_id",
+    "source_record_id",
+    "source_vintage",
+    "evidence",
+    "confidence",
+    "rival_explanation",
+    "suppression_rule"
+  ],
+  "properties": {
+    "position_key": {
+      "type": "string",
+      "pattern": "^public_position:.+$"
+    },
+    "organization_key": {
+      "type": "string",
+      "pattern": "^organization:[a-z0-9_]+:[a-z0-9_]+$"
+    },
+    "review_key": {
+      "type": "string",
+      "pattern": "^environmental_review:(ceqr|seqra):.+$"
+    },
+    "position": {
+      "type": "string",
+      "enum": [
+        "support",
+        "oppose",
+        "conditional",
+        "neutral",
+        "no_position_recorded"
+      ]
+    },
+    "named_issue": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "observed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "available_to_public_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "source_id": {
+      "type": "string"
+    },
+    "source_record_id": {
+      "type": "string"
+    },
+    "source_vintage": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "evidence": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "rival_explanation": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "suppression_rule": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}

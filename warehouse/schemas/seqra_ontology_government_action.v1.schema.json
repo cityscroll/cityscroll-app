@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cityscroll.org/schemas/seqra_ontology_government_action.v1.schema.json",
+  "title": "SEQRA/CEQR ontology: government_action",
+  "description": "One discretionary or ministerial government action a project requires (project -> requires_action -> government_action).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "action_key",
+    "project_key",
+    "agency",
+    "source_system",
+    "source_action_id",
+    "action_type",
+    "observed_at",
+    "source_id",
+    "source_record_id"
+  ],
+  "properties": {
+    "action_key": {
+      "type": "string",
+      "pattern": "^action:[a-z0-9_]+:[a-z0-9_]+:[a-z0-9_]+$"
+    },
+    "project_key": {
+      "type": "string",
+      "pattern": "^project:[a-z0-9_-]+:[a-z0-9_-]+$"
+    },
+    "agency": {
+      "type": "string"
+    },
+    "source_system": {
+      "type": "string"
+    },
+    "source_action_id": {
+      "type": "string"
+    },
+    "action_type": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "observed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "source_id": {
+      "type": "string"
+    },
+    "source_record_id": {
+      "type": "string"
+    }
+  }
+}

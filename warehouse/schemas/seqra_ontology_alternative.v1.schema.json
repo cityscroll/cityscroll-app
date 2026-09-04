@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cityscroll.org/schemas/seqra_ontology_alternative.v1.schema.json",
+  "title": "SEQRA/CEQR ontology: alternative",
+  "description": "One alternative considered in a review (environmental_review -> considers_alternative -> alternative).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "alternative_key",
+    "review_key",
+    "name",
+    "status",
+    "observed_at",
+    "source_id",
+    "source_record_id"
+  ],
+  "properties": {
+    "alternative_key": {
+      "type": "string",
+      "pattern": "^alternative:.+$"
+    },
+    "review_key": {
+      "type": "string",
+      "pattern": "^environmental_review:(ceqr|seqra):.+$"
+    },
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "considered",
+        "selected",
+        "rejected",
+        "withdrawn",
+        "unknown"
+      ]
+    },
+    "observed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "source_id": {
+      "type": "string"
+    },
+    "source_record_id": {
+      "type": "string"
+    }
+  }
+}

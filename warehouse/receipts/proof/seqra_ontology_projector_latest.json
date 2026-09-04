@@ -1,0 +1,57 @@
+{
+  "california_or_ceqa_admitted_count": 0,
+  "checks": [
+    {
+      "name": "ontology schema files are not stale",
+      "result": "pass"
+    },
+    {
+      "name": "fifteen commissioned core entities are declared",
+      "result": "pass"
+    },
+    {
+      "name": "thirteen commissioned relations are declared",
+      "result": "pass"
+    },
+    {
+      "name": "multi-action, multi-review, multi-BBL project graph validates with zero findings (A4)",
+      "result": "pass"
+    },
+    {
+      "name": "clean review event log projects correctly at three historical cutoffs (A1)",
+      "result": "pass"
+    },
+    {
+      "name": "draft and final documents coexist with explicit supersession, never row overwrite (A5)",
+      "result": "pass"
+    },
+    {
+      "name": "replay order does not change the projection (A3)",
+      "result": "pass"
+    },
+    {
+      "name": "a final document before its draft fails visibly (A6)",
+      "result": "pass"
+    },
+    {
+      "name": "two conflicting determinations for one action fail visibly (A6)",
+      "result": "pass"
+    },
+    {
+      "name": "SEQRA-01 California/CEQA rejection remains at zero admitted rows (A7 non-regression)",
+      "result": "pass"
+    },
+    {
+      "name": "the retained SEQRA-01 source inventory receipt is present and parseable (reuse, no new fetch)",
+      "result": "pass"
+    }
+  ],
+  "entity_type_count": 15,
+  "gate": {
+    "failed_check_count": 0,
+    "result": "pass"
+  },
+  "relation_count": 13,
+  "schema": "cityscroll.seqra_ontology_projector_receipt.v1",
+  "seqra01_inventory_receipt_present": true
+}
