@@ -98,6 +98,10 @@ contracts. Do not turn it into a delivery log, roadmap, module inventory, or car
   `index.html` documents) are generated. Do not assume a path under `site/` is regenerable.
 - `worker/` is not package-isolated from `site/`: Worker sources import modules and data files
   across that boundary, so the Worker unit family needs more than `worker/` present to run.
+- `warehouse/lib/document_processing.mjs` is the publisher-neutral document-processing interface
+  (hashing, extraction-quality measurement, extraction receipts, document-type/supersession
+  classification). A document pipeline for a new source consumes it rather than reimplementing any
+  of its primitives; `warehouse/lib/seqra_*` shows the binding pattern one publisher uses.
 - Measured working-copy sizes, provisioning phase timings, and the cost of the Pages build are in
   [`docs/evidence/ci-08-working-copy-footprint/`](docs/evidence/ci-08-working-copy-footprint/);
   regenerate its tables with `python3 tools/summarize_working_copy_evidence.py`.

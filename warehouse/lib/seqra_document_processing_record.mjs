@@ -17,6 +17,14 @@
  * `layout_quality` fields typed against it and names SEQRA-04 as the owner
  * of `ceqr_document_link` processing.
  *
+ * Every page's binding back to this document's own fetch receipt (A2: a
+ * parsed page must resolve to immutable stored source bytes) is validated by
+ * the publisher-neutral extraction receipt
+ * (warehouse/lib/document_processing.mjs#buildExtractionReceipt, LDP-33)
+ * rather than a private copy of that check; this module supplies its own
+ * `documentKey` as the receipt's document identity and layers its
+ * SEQRA-specific fields (review_key, document_type, supersession) on top.
+ *
  * Structural guarantee for the commission's negative rule ("do not let a
  * document model emit a lawsuit score directly from raw pages"): this
  * module's record shape carries an extraction-*quality* score (A3 requires
@@ -28,6 +36,7 @@
  * quality score while still smuggling in a litigation-outcome field under a
  * different name from that vocabulary.
  */
+import { buildExtractionReceipt } from "./document_processing.mjs";
 import { FILING_QUALITY_STATES } from "../../ontology/land_use_filing.mjs";
 
 export const SEQRA_DOCUMENT_PROCESSING_RECORD_SCHEMA = "cityscroll.seqra_document_processing_record.v1";
@@ -83,14 +92,7 @@ export function buildDocumentProcessingRecord({
   requireNonEmptyString(processedAt, "processedAt");
   requireEnum(extractionQualitySummary.overall_quality_state, FILING_QUALITY_STATES, "extractionQualitySummary.overall_quality_state");
 
-  for (const page of pages) {
-    if (!page.page_number || !page.fetch_id || !page.content_hash) {
-      throw new Error(`buildDocumentProcessingRecord: every page must carry page_number, fetch_id, and content_hash tracing back to ${fetchId} (A2)`);
-    }
-    if (page.fetch_id !== fetchId || page.content_hash !== contentHash) {
-      throw new Error(`buildDocumentProcessingRecord: page ${page.page_number} does not resolve to this document's own fetch receipt/content_hash`);
-    }
-  }
+  const extractionReceipt = buildExtractionReceipt({ documentId: documentKey, fetchId, contentHash, pages });
 
   const record = Object.freeze({
     schema: SEQRA_DOCUMENT_PROCESSING_RECORD_SCHEMA,
@@ -106,7 +108,7 @@ export function buildDocumentProcessingRecord({
     supersedes_document_key: supersedesDocumentKey,
     supersession_basis: supersessionBasis,
     supersession_confidence: supersessionConfidence,
-    pages: Object.freeze(pages.map((p) => Object.freeze({ ...p }))),
+    pages: extractionReceipt.pages,
     extraction_quality: Object.freeze({ ...extractionQualitySummary }),
     processed_at: processedAt,
   });
