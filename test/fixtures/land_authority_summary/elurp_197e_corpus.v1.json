@@ -1,0 +1,75 @@
+{
+  "schema": "cityscroll.land_authority_summary.elurp_197e_corpus_fixtures.v1",
+  "as_of": "2026-08-23T00:00:00.000Z",
+  "specimens": {
+    "E1-2024Q0356": {
+      "project_id": "2024Q0356",
+      "project_fixture": "test/fixtures/land_phase_spine/2024Q0356.json",
+      "expect": {
+        "status": "resolved",
+        "procedure_id": "elurp_197e",
+        "procedure_resolution": "uniform",
+        "canonical_application_id": "260272ZMQ",
+        "action_type": "ZM",
+        "current_stage_id": "elurp_197e.application_certification",
+        "current_phase_id": "pre_application",
+        "milestone_phase_id": "environmental",
+        "current_role": "administrative_certifier",
+        "current_actor_refs": ["agency:id:city-planning"],
+        "expected_next_group_id": "elurp_197e.local_review",
+        "expected_next_stage_ids": [
+          "elurp_197e.community_board_review",
+          "elurp_197e.borough_president_review"
+        ]
+      }
+    },
+    "E2-2024Q0419": {
+      "project_id": "2024Q0419",
+      "project_fixture": "test/fixtures/land_phase_spine/2024Q0419.json",
+      "expect": {
+        "status": "resolved",
+        "procedure_id": "elurp_197e",
+        "procedure_resolution": "uniform",
+        "canonical_application_id": "C250331ZMQ",
+        "open_data_alias": "250331ZMQ",
+        "action_type": "ZM",
+        "current_stage_id": "elurp_197e.city_planning_commission_review",
+        "current_phase_id": "cpc",
+        "current_role": "decision_maker",
+        "current_actor_refs": ["agency:id:city-planning-commission"],
+        "expected_next_stage_id": null
+      }
+    },
+    "E3-2025R0257": {
+      "project_id": "2025R0257",
+      "project_fixture": "test/fixtures/land_phase_spine/2025R0257.json",
+      "expect": {
+        "status": "resolved",
+        "procedure_id": "elurp_197e",
+        "procedure_resolution": "uniform",
+        "canonical_application_id": "C260217PCR",
+        "open_data_alias": "260217PCR",
+        "action_type": "PC",
+        "current_stage_id": "elurp_197e.city_planning_commission_review",
+        "current_phase_id": "cpc",
+        "current_role": "decision_maker",
+        "current_actor_refs": ["agency:id:city-planning-commission"],
+        "expected_next_stage_id": null
+      }
+    },
+    "E4-2026X0362": {
+      "project_id": "2026X0362",
+      "project_fixture": "test/fixtures/land_phase_spine/2026X0362.json",
+      "expect": {
+        "status": "unknown",
+        "reason": "unresolved_current_stage",
+        "procedure_id": "elurp_197e",
+        "procedure_resolution": "uniform",
+        "canonical_application_id": "HPD260001PPX",
+        "action_type": "PP",
+        "current_stage_id": null,
+        "observed_current_phase_id": "city_council"
+      }
+    }
+  }
+}

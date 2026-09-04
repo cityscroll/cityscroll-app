@@ -10,6 +10,8 @@ import { test } from "node:test";
 
 import { LAND_PROCEDURE_PROFILE_REGISTRY_VERSION } from "../site/land_procedure_profiles.mjs";
 import { buildLandPhaseView } from "../site/land_phase_spine.mjs";
+import { resolveLandActionProcedures } from "../site/land_action_procedure_resolution.mjs";
+import { buildUlurpStatutoryClockView } from "../site/ulurp_statutory_clock.mjs";
 import {
   LAND_AUTHORITY_SUMMARY_JOIN_VERSION,
   LAND_AUTHORITY_SUMMARY_MAX_BYTES,
@@ -21,7 +23,7 @@ import {
   materializeLandAuthoritySummaries,
   stampLandAuthoritySummary,
 } from "../site/land_authority_summary.mjs";
-import { landAuthoritySummaryHTML } from "../site/land_authority_summary_view.mjs";
+import { landAuthoritySummaryHTML, landAuthorityPanelProjection } from "../site/land_authority_summary_view.mjs";
 import { rowToSodaShape } from "../warehouse/lib/zap_lookup.mjs";
 import { shapeZapLookupRow } from "../worker/src/lib/zap_projects_lookup_kv.mjs";
 import {
@@ -34,6 +36,7 @@ import { SITE_SOURCE } from "./helpers/site_source.mjs";
 
 const requireJson = createRequire(import.meta.url);
 const gold = requireJson("./fixtures/land_authority_summary/gold.v1.json");
+const elurpCorpus = requireJson("./fixtures/land_authority_summary/elurp_197e_corpus.v1.json");
 const geography = requireJson("../site/data/community_board_geography_lookup.json");
 const warehouse = requireJson("../site/data/zap_projects_warehouse_lookup.json");
 const landDefault = requireJson("../site/data/land_default_ulurp.json");
@@ -276,4 +279,250 @@ test("fixture materializer does not copy expected next into next_procedural_body
   assert.equal(summary.expected_next_stage.stage_id, "ulurp_197c.community_board_review");
   assert.equal(summary.next_procedural_body.body_ref, "agency:id:city-planning-commission");
   assert.ok(statSync(new URL("../site/land_authority_summary.mjs", import.meta.url)).size > 0);
+});
+
+// ---------------------------------------------------------------------------
+// LDP-32: authority evidence-state and affordance gating over the real ELURP
+// regression corpus (E1-E4). Project fixtures are LDP-31's own phase-spine
+// specimens (they already carry the exact ZAP API vs. Open Data evidence
+// this resolver needs) — reused here rather than duplicated.
+// ---------------------------------------------------------------------------
+
+function elurpProjectFixture(shortId) {
+  return requireJson(`./fixtures/land_phase_spine/${shortId}.json`);
+}
+
+function summarizeElurp(specimenKey, overrides = {}) {
+  const specimen = elurpCorpus.specimens[specimenKey];
+  const project = elurpProjectFixture(specimen.project_id);
+  return buildLandAuthoritySummary({
+    ...project,
+    geography,
+    asOf: elurpCorpus.as_of,
+    generatedAt: elurpCorpus.as_of,
+    ...overrides,
+  });
+}
+
+test("LDP-32 A1/A2 2024Q0356 (E1) renders DCP certification stage with a parallel CB/BP expected transition", () => {
+  const expected = elurpCorpus.specimens["E1-2024Q0356"].expect;
+  const summary = summarizeElurp("E1-2024Q0356");
+  assert.equal(summary.status, expected.status);
+  assert.equal(summary.procedure_id, expected.procedure_id);
+  assert.equal(summary.procedure_resolution, expected.procedure_resolution);
+  assert.equal(summary.current_stage.stage_id, expected.current_stage_id);
+  assert.equal(summary.current_stage.spine_phase_id, expected.current_phase_id);
+  assert.equal(summary.current_role, expected.current_role);
+  assert.deepEqual(summary.current_actor_refs, expected.current_actor_refs);
+  assert.match(summary.effect, /certifies.*complete/i);
+  // The two distinct observed phases the corpus calls for: the CEQR-track
+  // milestone mapping (environmental) and the review-track authority phase
+  // (pre_application) that DCP still holds because no certification/local
+  // review has started.
+  assert.equal(summary.source_basis.phase.milestone_phase_id, expected.milestone_phase_id);
+  assert.equal(summary.source_basis.phase.phase_id, expected.current_phase_id);
+  assert.equal(summary.expected_next_stage.group_id, expected.expected_next_group_id);
+  assert.deepEqual(summary.expected_next_stage.stage_ids, expected.expected_next_stage_ids);
+  assert.equal(summary.next_procedural_body, null);
+
+  const resolution = resolveLandActionProcedures(elurpProjectFixture("2024Q0356"));
+  assert.equal(resolution.land_actions[0].application_id, expected.canonical_application_id);
+  assert.equal(resolution.land_actions[0].action_type, expected.action_type);
+
+  const html = landAuthoritySummaryHTML(summary, { t: (key) => key, escape: (value) => String(value ?? "") });
+  assert.doesNotMatch(html, /formal ULURP/i);
+  assert.doesNotMatch(html, /not found in checked materializations/i);
+});
+
+for (const [key, id] of [["E2-2024Q0419", "2024Q0419"], ["E3-2025R0257", "2025R0257"]]) {
+  test(`LDP-32 A1 ${id} keeps the C-prefixed exact identifier, retains the Open Data alias, and terminates at CPC`, () => {
+    const expected = elurpCorpus.specimens[key].expect;
+    const summary = summarizeElurp(key);
+    assert.equal(summary.status, expected.status);
+    assert.equal(summary.procedure_id, expected.procedure_id);
+    assert.equal(summary.procedure_resolution, expected.procedure_resolution);
+    assert.equal(summary.current_stage.stage_id, expected.current_stage_id);
+    assert.equal(summary.current_stage.spine_phase_id, expected.current_phase_id);
+    assert.equal(summary.current_role, expected.current_role);
+    assert.deepEqual(summary.current_actor_refs, expected.current_actor_refs);
+    assert.equal(summary.expected_next_stage, expected.expected_next_stage_id);
+
+    const resolution = resolveLandActionProcedures(elurpProjectFixture(id));
+    const action = resolution.land_actions[0];
+    assert.equal(action.action_type, expected.action_type);
+    assert.equal(action.application_id, expected.canonical_application_id, "the C-prefix never converts this to ordinary ULURP");
+    assert.equal(action.procedure_id, "elurp_197e");
+    assert.equal(action.aliases[0].application_id, expected.open_data_alias, "the narrower Open Data id is retained as a provenance-tagged alias, not discarded");
+
+    const clock = buildUlurpStatutoryClockView({ ...elurpProjectFixture(id).open_data, ulurp_non: "ELURP" });
+    assert.equal(clock.status, "ineligible");
+    assert.equal(clock.reason, "wrong_procedure");
+  });
+}
+
+test("LDP-32 A8 2026X0362 (E4) exposes the observed Council path without inferring the §197-e(k) variant", () => {
+  const expected = elurpCorpus.specimens["E4-2026X0362"].expect;
+  const project = elurpProjectFixture("2026X0362");
+  const summary = summarizeElurp("E4-2026X0362");
+  // The broad procedure and canonical application id are source-observed and
+  // uniform; nothing here selects the agency housing variant.
+  assert.equal(summary.procedure_id, expected.procedure_id);
+  assert.equal(summary.procedure_resolution, expected.procedure_resolution);
+  assert.notEqual(summary.procedure_id, "elurp_197e_k");
+  // The broad § 197-e profile has no city_council stage — a Council-terminal
+  // observed outcome under an unresolved variant honestly stays unknown
+  // rather than manufacturing a certification or CPC stage for it.
+  assert.equal(summary.status, expected.status);
+  assert.equal(summary.reason, expected.reason);
+  assert.equal(summary.current_stage.stage_id, expected.current_stage_id);
+  assert.equal(summary.current_stage.spine_phase_id, expected.observed_current_phase_id);
+  assert.equal(summary.current_role, null);
+  assert.equal(summary.effect, null);
+
+  const resolution = resolveLandActionProcedures(project);
+  assert.equal(resolution.land_actions[0].application_id, expected.canonical_application_id);
+  assert.equal(resolution.land_actions[0].action_type, expected.action_type);
+
+  const html = landAuthoritySummaryHTML(summary, { t: (key) => key, escape: (value) => String(value ?? "") });
+  assert.doesNotMatch(html, /city planning commission/i, "no synthetic CPC stage for an observed Council-only route");
+});
+
+test("A3/A4 published_next_opportunity: published/none/unknown/stale evidence states", () => {
+  const project = { ...elurpProjectFixture("2024Q0419") };
+
+  // unknown: no hearings source supplied at all.
+  const unknownSummary = buildLandAuthoritySummary({ ...project, geography, asOf: "2026-08-23" });
+  assert.equal(unknownSummary.published_next_opportunity.status, "unknown");
+  assert.equal(unknownSummary.published_next_opportunity.checked, false);
+
+  // none: a checked, empty hearings source with a vintage.
+  const noneSummary = buildLandAuthoritySummary({
+    ...project,
+    geography,
+    asOf: "2026-08-23",
+    publishedOpportunities: { hearings: [], generated_at: "2026-08-20T00:00:00.000Z" },
+  });
+  assert.equal(noneSummary.published_next_opportunity.status, "none");
+  assert.equal(noneSummary.published_next_opportunity.checked, true);
+  assert.equal(noneSummary.published_next_opportunity.checked_vintage, "2026-08-20");
+
+  // published: a checked hearings source with a future dated row for this project.
+  const publishedSummary = buildLandAuthoritySummary({
+    ...project,
+    geography,
+    asOf: "2026-08-23",
+    publishedOpportunities: {
+      hearings: [{ project_id: "2024Q0419", hearing_date: "2026-09-15", representing: "City Planning Commission", milestone_title: "CPC Public Hearing" }],
+      generated_at: "2026-08-20T00:00:00.000Z",
+    },
+  });
+  assert.equal(publishedSummary.published_next_opportunity.status, "published");
+  assert.equal(publishedSummary.published_next_opportunity.checked, true);
+  assert.equal(publishedSummary.published_next_opportunity.date, "2026-09-15");
+
+  // stale: a checked hearings source whose vintage is outside the freshness contract.
+  const staleSummary = buildLandAuthoritySummary({
+    ...project,
+    geography,
+    asOf: "2026-08-23",
+    publishedOpportunities: { hearings: [], generated_at: "2026-01-01T00:00:00.000Z" },
+  });
+  assert.equal(staleSummary.published_next_opportunity.status, "stale");
+  assert.equal(staleSummary.published_next_opportunity.checked, true);
+
+  for (const [summary, key] of [
+    [unknownSummary, "land_authority_opportunity_unknown"],
+    [noneSummary, "land_authority_opportunity_none"],
+    [publishedSummary, null],
+    [staleSummary, "land_authority_opportunity_stale"],
+  ]) {
+    const html = landAuthoritySummaryHTML(summary, { t: (k, vars) => (vars ? `${k}:${JSON.stringify(vars)}` : k), escape: (v) => String(v ?? "") });
+    assert.doesNotMatch(html, /not found in checked materializations/i);
+    if (key) assert.match(html, new RegExp(key));
+  }
+});
+
+test("A5/A6 calendar and watch affordances gate on real inputs, not project id alone", () => {
+  const project = elurpProjectFixture("2025R0257");
+  const esc = (value) => String(value ?? "");
+  const t = (key, vars) => (vars ? `${key}:${JSON.stringify(vars)}` : key);
+
+  // No published date -> no calendar button, ever.
+  const noDate = buildLandAuthoritySummary({ ...project, geography, asOf: "2026-08-23" });
+  assert.equal(noDate.published_next_opportunity.date, null);
+  const noDateHtml = landAuthoritySummaryHTML(noDate, { t, escape: esc });
+  assert.doesNotMatch(noDateHtml, /data-land-authority-calendar="1"/);
+
+  // A published, dated opportunity earns the calendar button.
+  const dated = buildLandAuthoritySummary({
+    ...project,
+    geography,
+    asOf: "2026-08-23",
+    publishedOpportunities: {
+      hearings: [{ project_id: "2025R0257", hearing_date: "2026-09-01", representing: "City Planning Commission" }],
+      generated_at: "2026-08-20T00:00:00.000Z",
+    },
+  });
+  const datedHtml = landAuthoritySummaryHTML(dated, { t, escape: esc });
+  assert.match(datedHtml, /data-land-authority-calendar="1"/);
+
+  // 2025R0257 (E3) is CPC-terminal: no materialized next decision -> "Follow this project", not "Follow next decision".
+  const terminal = summarizeElurp("E3-2025R0257");
+  assert.equal(terminal.expected_next_stage, null);
+  const terminalHtml = landAuthoritySummaryHTML(terminal, { t, escape: esc });
+  assert.match(terminalHtml, /data-project-follow="project"/);
+  assert.doesNotMatch(terminalHtml, /data-project-follow="next_decision"/);
+
+  // 2024Q0356 (E1) has a materialized parallel CB/BP transition -> "Follow next decision".
+  const nextDecision = summarizeElurp("E1-2024Q0356");
+  const nextDecisionHtml = landAuthoritySummaryHTML(nextDecision, { t, escape: esc });
+  assert.match(nextDecisionHtml, /data-project-follow="next_decision"/);
+
+  const projection = landAuthorityPanelProjection(terminal);
+  assert.equal(projection.watch_target, "project");
+  assert.equal(projection.calendar_eligible, false);
+  const nextDecisionProjection = landAuthorityPanelProjection(nextDecision);
+  assert.equal(nextDecisionProjection.watch_target, "next_decision");
+});
+
+test("LDP-32 negative corpus: no forbidden state ever coexists with its counterpart", () => {
+  const specimenIds = ["2024Q0356", "2024Q0419", "2025R0257", "2026X0362"];
+  for (const id of specimenIds) {
+    const project = elurpProjectFixture(id);
+    const summary = buildLandAuthoritySummary({ ...project, geography, asOf: "2026-08-23" });
+    const html = landAuthoritySummaryHTML(summary, { t: (key) => key, escape: (value) => String(value ?? "") });
+    const isExplicitElurp = summary.procedure_id === "elurp_197e" || summary.procedure_id === "elurp_197e_k";
+
+    // 1. explicit ELURP and visible "formal ULURP" never coexist.
+    if (isExplicitElurp) assert.doesNotMatch(html, /formal ULURP/i, `${id}: ELURP must not read as formal ULURP`);
+
+    // 2. a resolved procedure profile and an unknown procedure_resolution never coexist.
+    if (summary.source_basis.profile) {
+      assert.notEqual(summary.procedure_resolution, "unknown", `${id}: a resolved profile implies a resolved action set`);
+    }
+
+    // 3. explicit ELURP and a live §197-c statutory clock never coexist.
+    if (isExplicitElurp) {
+      const clock = buildUlurpStatutoryClockView({ ...project.open_data, ulurp_non: "ELURP" });
+      assert.equal(clock.status, "ineligible", `${id}: ELURP never gets a §197-c clock`);
+      assert.equal(clock.reason, "wrong_procedure");
+    }
+
+    // 4. the ordinary (broad, non-variant) ELURP profile and a Council/Mayor stage never coexist.
+    if (summary.procedure_id === "elurp_197e") {
+      assert.notEqual(summary.current_stage?.stage_id, "city_council", `${id}: broad elurp_197e has no Council stage`);
+      assert.doesNotMatch(String(summary.expected_next_stage?.stage_id || ""), /city_council|mayoral/i);
+    }
+
+    // 5. an unchecked source and a "not found" copy never coexist.
+    if (summary.published_next_opportunity.checked !== true) {
+      assert.equal(summary.published_next_opportunity.status, "unknown", `${id}: unchecked always reads as unknown, never a checked-and-empty result`);
+      assert.doesNotMatch(html, /No published next opportunity found/i);
+    }
+
+    // 6. no published date and an active calendar action never coexist.
+    if (!summary.published_next_opportunity.date) {
+      assert.doesNotMatch(html, /data-land-authority-calendar="1"/, `${id}: no dated event means no calendar button`);
+    }
+  }
 });

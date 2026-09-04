@@ -71,8 +71,13 @@ const COPY = {
   land_authority_why_community_board: "Published community districts for this project are covered by that board",
   land_authority_why_borough_board: "Two or more community districts in the same borough are affected",
   land_authority_not_found: "Not found in checked materializations",
+  land_authority_why_unknown: "Unknown — the current stage does not resolve from available evidence",
+  land_authority_opportunity_none: "No published next opportunity found as of {date}",
+  land_authority_opportunity_unknown: "Upcoming-opportunity source not checked",
+  land_authority_opportunity_stale: "Opportunity information is stale as of {date}",
   land_authority_advisory: "Advisory",
   land_authority_follow_next: "Follow next decision",
+  next_action_watch_project: "Follow this project",
   land_authority_add_calendar: "Add to calendar",
   land_authority_draft_only: "Draft only — not an observed recommendation",
   land_authority_reason_unresolved_procedure: "The procedure is not resolved from retained project facts",
@@ -113,12 +118,17 @@ test("A1 2025M0252 first-paint panel answers CPC stage, role, why, and missing p
   assert.match(html, /data-land-authority-role="decision_maker"/);
   assert.match(html, /data-land-authority-why="1"/);
   assert.match(html, /data-land-authority-published-next="none"/);
-  assert.match(html, /Not found in checked materializations/);
+  assert.match(html, /No published next opportunity found as of 2026-08-23/);
+  assert.doesNotMatch(html, /Not found in checked materializations/);
   assert.match(html, /community-board:manhattan-cb-05/);
   assert.equal(html.includes("agency:id:city-planning-commission") && html.includes("data-land-authority-actor"), true);
   assert.doesNotMatch(html, /data-land-authority-observed="1"[^>]*data-body-ref="agency:id:city-planning-commission"/);
+  // CPC is terminal (no expected next stage) -> a real project watch, not a
+  // placeholder "next decision" target.
   assert.match(html, /data-land-authority-follow="1"/);
-  assert.match(html, /Follow next decision/);
+  assert.match(html, /data-project-follow="project"/);
+  assert.match(html, /Follow this project/);
+  assert.doesNotMatch(html, /Follow next decision/);
 });
 
 test("A1 2026Q0210 panel keeps Council role/effect separate from expected mayoral successor", () => {
@@ -224,7 +234,11 @@ test("A4 unknown copy, no publisher fetch, and legacy Land detail seams stay int
   assert.match(unknown, /Where this stands is unknown/);
   assert.match(unknown, /The procedure is not resolved from retained project facts/);
   assert.match(unknown, /data-status="unknown"/);
-  assert.match(unknown, /Not found in checked materializations/);
+  assert.match(unknown, /The procedure is not resolved from retained project facts/);
+  // 2026K0123 has a real published next opportunity even though its
+  // procedure is unresolved — "unchecked" and "not found" never coexist.
+  assert.match(unknown, /data-land-authority-published-next="published"/);
+  assert.doesNotMatch(unknown, /land_authority_provenance_publisher: Not found in checked materializations/);
 
   assert.equal(/zap-api-production|hgx4-8ukb|socrata/i.test(viewSrc), false);
   assert.doesNotMatch(viewSrc, /openai|anthropic|generateContent|chat\.completions/i);

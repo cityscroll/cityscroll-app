@@ -42,6 +42,27 @@ export const LAND_AUTHORITY_SUMMARY_STATUSES = Object.freeze({
   UNKNOWN: "unknown",
 });
 
+export const LAND_AUTHORITY_PUBLISHED_OPPORTUNITY_STATUSES = Object.freeze([
+  "published",
+  "none",
+  "unknown",
+  "stale",
+]);
+
+// A checked hearings artifact older than this relative to `asOf` cannot vouch
+// for either a specific date or an authoritative absence — it reports
+// `stale`, not `published`/`none`, so a vintage never silently mixes with a
+// current-looking read.
+export const LAND_AUTHORITY_PUBLISHED_OPPORTUNITY_MAX_AGE_DAYS = 30;
+
+// Phases that sit between `pre_application` and the first review-body stage
+// in the fixed LAND_ULURP_PHASES order but describe internal DCP prep work
+// (environmental review, pre-certification notice, certification) rather
+// than a review-body stage a reviewed profile ever models. A milestone that
+// maps to one of these never advances "who has the ball" past the resolved
+// profile's own certification stage.
+const PRE_REVIEW_MILESTONE_PHASE_IDS = new Set(["environmental", "pre_certification", "certification"]);
+
 const INSTITUTIONAL_ACTORS = Object.freeze({
   department_of_city_planning: "agency:id:city-planning",
   city_planning_commission: "agency:id:city-planning-commission",
@@ -93,6 +114,43 @@ function isoDate(value) {
   return match ? match[1] : null;
 }
 
+function daysBetweenIso(left, right) {
+  const a = Date.parse(left);
+  const b = Date.parse(right);
+  if (!Number.isFinite(a) || !Number.isFinite(b)) return null;
+  return Math.abs(b - a) / 86400000;
+}
+
+/**
+ * A checked source is stale only when both a checked vintage and an as-of
+ * date are known and the gap exceeds the freshness contract. Missing either
+ * date never fabricates staleness — that gap is `unknown`, a separate state.
+ */
+function opportunityIsStale(vintage, asOf) {
+  const gap = daysBetweenIso(isoDate(vintage), isoDate(asOf));
+  return gap != null && gap > LAND_AUTHORITY_PUBLISHED_OPPORTUNITY_MAX_AGE_DAYS;
+}
+
+/**
+ * Clamp a raw milestone-mapped phase id to the resolved profile's own stage
+ * vocabulary. A profile never models CEQR/pre-certification/certification as
+ * review-body stages, so a milestone landing on one of those never advances
+ * "who has the ball" past the profile's own certification stage. A phase
+ * outside both the profile's vocabulary and this pre-review cluster (e.g. an
+ * observed stage beyond what an unresolved-variant broad profile models) is
+ * returned unchanged so the caller can report it honestly as unresolved
+ * rather than guessing a plausible-looking but unearned stage.
+ */
+function clampMilestonePhaseToProfile(phaseId, profile) {
+  if (!profile || !phaseId) return phaseId;
+  const profilePhaseIds = new Set((profile.stages || []).map((stage) => stage.spine_phase_id));
+  if (profilePhaseIds.has(phaseId)) return phaseId;
+  if (PRE_REVIEW_MILESTONE_PHASE_IDS.has(phaseId) && profilePhaseIds.has("pre_application")) {
+    return "pre_application";
+  }
+  return phaseId;
+}
+
 function compactStage(stage) {
   if (!stage?.stage_id) return null;
   return {
@@ -116,12 +174,44 @@ function currentProfileStage(profile, phaseId, facts) {
   return matches.find((stage) => !stage.when) || null;
 }
 
+/**
+ * A stage's normative successor is either a shared-origin parallel group
+ * (e.g. Community Board / Borough President reviewed at the same time under
+ * § 197-e) or a single sequential stage. The parallel group lives in the
+ * profile's own `transitions[]`, not a stage's `conditional_successors` — a
+ * parallel group is never collapsed into a single "next stage" pick, which
+ * would invent an order the statute does not impose.
+ */
 function expectedSuccessor(profile, stage, facts) {
+  const transitions = Array.isArray(profile.transitions) ? profile.transitions : [];
+  const group = transitions.find((transition) =>
+    transition.origin_stage_id === stage?.stage_id && matchesLandProcedureCondition(transition.when, facts));
+  if (group) {
+    const stageIds = [...(group.stage_ids || [])];
+    const spinePhaseIds = stageIds.map((stageId) =>
+      (profile.stages || []).find((candidate) => candidate.stage_id === stageId)?.spine_phase_id || null);
+    return { kind: "parallel_group", group_id: group.group_id, stage_ids: stageIds, spine_phase_ids: spinePhaseIds };
+  }
   const successors = Array.isArray(stage?.conditional_successors) ? stage.conditional_successors : [];
   const selected = successors.find((successor) => matchesLandProcedureCondition(successor.when, facts));
   if (!selected) return null;
   const next = (profile.stages || []).find((candidate) => candidate.stage_id === selected.to_stage_id);
-  return next || null;
+  return next ? { kind: "sequential", stage_id: next.stage_id, spine_phase_id: next.spine_phase_id } : null;
+}
+
+function compactExpectedNext(next) {
+  if (!next) return null;
+  if (next.kind === "parallel_group") {
+    return {
+      stage_id: null,
+      spine_phase_id: null,
+      group_id: next.group_id,
+      stage_ids: next.stage_ids,
+      spine_phase_ids: next.spine_phase_ids,
+      status: "known",
+    };
+  }
+  return compactStage(next);
 }
 
 function institutionalActorRef(kind) {
@@ -210,9 +300,12 @@ function hearingsList(publishedOpportunities) {
 
 function publishedOpportunity(projectId, publishedOpportunities, asOf) {
   const hearings = hearingsList(publishedOpportunities);
+  const vintage = isoDate(publishedOpportunities?.generated_at);
   if (!hearings) {
     return {
       status: "unknown",
+      checked: false,
+      checked_vintage: null,
       source_id: null,
       source: null,
       label: null,
@@ -222,6 +315,8 @@ function publishedOpportunity(projectId, publishedOpportunities, asOf) {
       body_ref: null,
     };
   }
+  const checkedVintage = vintage || isoDate(asOf);
+  const stale = opportunityIsStale(vintage, asOf);
   const cutoff = isoDate(asOf) || null;
   const future = hearings
     .filter((row) => clean(row?.project_id) === projectId && isoDate(row?.hearing_date))
@@ -229,12 +324,25 @@ function publishedOpportunity(projectId, publishedOpportunities, asOf) {
     .sort((left, right) => String(isoDate(left.hearing_date)).localeCompare(String(isoDate(right.hearing_date))));
   const first = future[0];
   if (!first) {
-    return { status: "none" };
+    return {
+      status: stale ? "stale" : "none",
+      checked: true,
+      checked_vintage: checkedVintage,
+      source_id: null,
+      source: "land_upcoming_hearings",
+      label: null,
+      date: null,
+      representing: null,
+      phase_id: null,
+      body_ref: null,
+    };
   }
   const sourceId = clean(first.milestone_id) || clean(first.source_id) || clean(first.id);
   const representing = clean(first.representing);
   return {
-    status: "published",
+    status: stale ? "stale" : "published",
+    checked: true,
+    checked_vintage: checkedVintage,
     source_id: sourceId,
     source: clean(first.source) || clean(first.provenance?.source) || null,
     label: clean(first.milestone_title) || clean(first.milestone_source_title) || null,
@@ -334,7 +442,8 @@ export function buildLandAuthoritySummary(input = {}) {
     affected_review_bodies: affected?.facts || project.affected_review_bodies || {},
   };
   const milestone = clean(project.current_milestone);
-  const phaseId = milestone ? mapMilestoneToPhase(milestone) : null;
+  const milestonePhaseId = milestone ? mapMilestoneToPhase(milestone) : null;
+  const phaseId = milestonePhaseId ? clampMilestonePhaseToProfile(milestonePhaseId, profile) : null;
   const observed = observedFromDispositions(dispositions, affected);
   const published = publishedOpportunity(projectId, publishedOpportunities, asOf);
   const sourceBasis = {
@@ -352,6 +461,7 @@ export function buildLandAuthoritySummary(input = {}) {
           source_field: "current_milestone",
           current_milestone: milestone,
           phase_id: phaseId,
+          milestone_phase_id: milestonePhaseId,
         }
       : null,
     geography: affected
@@ -363,23 +473,13 @@ export function buildLandAuthoritySummary(input = {}) {
           profile_version: affected.profile_version || null,
         }
       : null,
-    publisher: published.status === "published"
-      ? {
-          source_type: "published_hearing",
-          source: published.source,
-          source_id: published.source_id,
-        }
-      : published.status === "none"
-        ? {
-            source_type: "published_hearing",
-            source: "land_upcoming_hearings",
-            source_id: null,
-            checked: true,
-          }
-        : {
-            source_type: "published_hearing",
-            checked: false,
-          },
+    publisher: {
+      source_type: "published_hearing",
+      source: published.source,
+      source_id: published.source_id,
+      checked: published.checked === true,
+      checked_vintage: published.checked_vintage || null,
+    },
   };
   const freshness = freshnessEnvelope({
     project,
@@ -476,7 +576,7 @@ export function buildLandAuthoritySummary(input = {}) {
           || null,
       },
     },
-    expected_next_stage: compactStage(next),
+    expected_next_stage: compactExpectedNext(next),
     published_next_opportunity: published,
     next_procedural_body: nextProceduralBody(published),
     affected_actor_refs: compactAffectedRefs,
