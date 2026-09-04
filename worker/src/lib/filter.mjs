@@ -3,7 +3,7 @@
 
 import { canonicalMandateId } from "../../../site/mandate_subject_ref.mjs";
 import { canonicalCodeProvisionId } from "../../../site/code_provision_watch_scope.mjs";
-import { normalizeGeographyKey } from "../../../site/scope_v0.mjs";
+import { normalizeGeographyKey, PLACE_ROLES } from "../../../site/scope_v0.mjs";
 import { normalizeCommunityBoardRef } from "../../../site/community_board_watch.mjs";
 import { KNOWN_PROCUREMENT_PROCESS_STATES } from "../../../site/procurement_process_state_vocabulary.mjs";
 
@@ -42,12 +42,12 @@ export const LENSES = {
   // Discovery parity (2026-08): district/process/deadline/entity fields are first-class so
   // NL can route to the same deep links the UI already supports (council/cd, process rails,
   // closing-this-week, agency forecast tab) — not only keyword lists.
-  money:    ["keywords", "agency", "minAmount", "maxAmount", "category", "months", "noticeType", "excludeSpecial", "closingWeek", "route", "name", "tab", "entity_refs_all", "connection_relation", "geographies", "procurement_id", "processState"],
+  money:    ["keywords", "agency", "minAmount", "maxAmount", "category", "months", "noticeType", "excludeSpecial", "closingWeek", "route", "name", "tab", "entity_refs_all", "connection_relation", "geographies", "place_role", "procurement_id", "processState"],
   people:   ["keywords", "lookupType", "view", "interest", "interestArea", "interestLabel", "examNumber", "subject_refs_all"],
-  land:     ["keywords", "boro", "status", "communityDistrict", "councilDistrict", "nearMe", "procedure", "family", "regulatoryEffect", "futureAction", "attendance", "geographies"],
-  property: ["keywords", "agency", "process", "stage", "asset", "saleMethod", "priceBand", "sort", "borough", "neighborhood", "communityDistrict", "nearMe", "geographies"],
-  rules:    ["keywords", "agency", "process", "geographies", "request_ids"],
-  meetings: ["keywords", "agency", "when", "borough", "neighborhood", "locationScope", "dateWindow", "process", "nearMe", "geographies", "communityBoard"],
+  land:     ["keywords", "boro", "status", "communityDistrict", "councilDistrict", "nearMe", "procedure", "family", "regulatoryEffect", "futureAction", "attendance", "geographies", "place_role"],
+  property: ["keywords", "agency", "process", "stage", "asset", "saleMethod", "priceBand", "sort", "borough", "neighborhood", "communityDistrict", "nearMe", "geographies", "place_role"],
+  rules:    ["keywords", "agency", "process", "geographies", "place_role", "request_ids"],
+  meetings: ["keywords", "agency", "when", "borough", "neighborhood", "locationScope", "dateWindow", "process", "nearMe", "geographies", "place_role", "communityBoard"],
   district: ["councilDistrict"],
   entity:   ["name", "kind", "tab", "entity_refs_all"],
   // World-state agency mandates (statutory duties / approaching deadlines). Not a City
@@ -203,6 +203,8 @@ function clampField(name, v) {
         .filter((item) => /^(?:agency:[^:\s]+:[^:\s]+|vendor:stem:[^:\s]+|entity:official:[^:\s]+|project:[A-Za-z0-9][A-Za-z0-9_-]{2,24}|notice:[A-Za-z0-9][A-Za-z0-9_-]{3,39}|pin:[A-Za-z0-9][A-Za-z0-9_-]{3,39}|exam:\d{4}|bbl:\d{10})$/.test(item)))].slice(0, 20);
     case "connection_relation":
       return typeof v === "string" && CONNECTION_RELATIONS.has(v) ? v : null;
+    case "place_role":
+      return PLACE_ROLES.includes(v) ? v : null;
     case "name":
       return typeof v === "string" && v.trim() ? v.replace(/\s+/g, " ").trim().slice(0, 120) : null;
     case "kind":
@@ -298,6 +300,7 @@ export function sanitize(lens, input) {
   // The geography dimension is additive. Omit an empty value so legacy filters,
   // subscription identities, and /nl response envelopes remain byte-compatible.
   if (!out.geographies?.length) delete out.geographies;
+  if (!out.place_role) delete out.place_role;
   if (!out.request_ids?.length) delete out.request_ids;
   if (!out.procurement_id) delete out.procurement_id;
   if (!out.processState) delete out.processState;

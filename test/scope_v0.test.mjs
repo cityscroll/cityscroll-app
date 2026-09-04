@@ -5,11 +5,17 @@ import test from "node:test";
 import {
   SCOPE_SCHEMA,
   SCOPE_VERSION,
+  PLACE_ROLES,
+  PLACE_ROLE_SUPPORTED_DOMAINS,
+  calendarFeedUrlForScope,
   emptyScope,
+  intersectScopes,
   lensStateFromScope,
   mapStateFromScope,
   normalizeScope,
   nearYouUrlFromScope,
+  placeRoleFromScope,
+  placeRoleSupportedForDomain,
   routeHashFromScope,
   scopeFromGeographyWatch,
   scopeFromLensState,
@@ -27,6 +33,10 @@ import {
   nearYouUrlFromMapHash,
   scopeFromNearYouUrl,
 } from "../site/near_you_scope_runtime.mjs";
+import {
+  buildNearYouExplanationCandidates,
+  selectNearYouExplanationPath,
+} from "../site/near_you_explanation_path.mjs";
 
 test("scope v0 has one inspectable contract and no mutable store", () => {
   const scope = emptyScope("es");
@@ -374,6 +384,184 @@ test("lens state aliases normalize to the same scope instead of duplicating stat
   assert.deepEqual(scope.place.council_districts, ["26"]);
   assert.equal(scope.facets.values.status, "all");
   assert.equal(routeHashFromScope(normalizeScope(scope), { surface: "land" }), "#land?boro=Queens&cd=Q02&council=26&q=LIC&status=all");
+});
+
+test("place role normalizes to the canonical vocabulary and stays absent by default", () => {
+  assert.deepEqual(PLACE_ROLES, ["venue", "matter", "affected_area"]);
+  const empty = emptyScope();
+  assert.equal(placeRoleFromScope(empty), null);
+  assert.equal(scopeHasConstraints(empty), false);
+  assert.equal("place_role" in empty.facets.values, false);
+
+  for (const role of PLACE_ROLES) {
+    const scope = normalizeScope({ facets: { values: { place_role: role } } });
+    assert.equal(scope.facets.values.place_role, role);
+    assert.equal(placeRoleFromScope(scope), role);
+    assert.equal(scopeHasConstraints(scope), true);
+  }
+
+  // Never fabricate a subjective-geography role: an unrecognized value is dropped, not
+  // silently coerced, so an absent-role caller keeps today's broader behavior (A6).
+  for (const bogus of ["outer_borough", "urban_core", "walkable", ""]) {
+    const scope = normalizeScope({ facets: { values: { place_role: bogus } } });
+    assert.equal("place_role" in scope.facets.values, false, bogus);
+    assert.equal(placeRoleFromScope(scope), null, bogus);
+  }
+});
+
+test("place role rides the existing generic facet transport through every browse surface", () => {
+  for (const role of PLACE_ROLES) {
+    const facet = encodeURIComponent(JSON.stringify({ place_role: role }));
+    for (const [hash, surface] of [
+      [`#meetings?q=hearing&boro=Brooklyn&facet=${facet}`, "meetings"],
+      [`#land?boro=Queens&cd=Q04&facet=${facet}`, "land"],
+      [`#money?agency=Buildings&facet=${facet}`, "money"],
+      [`#property?boro=Bronx&asset=vehicle&facet=${facet}`, "property"],
+      [`#rules?agency=Buildings&facet=${facet}`, "rules"],
+    ]) {
+      const scope = scopeFromRouteHash(hash);
+      assert.equal(scope.facets.values.place_role, role, surface);
+      assert.equal(routeHashFromScope(scope, { surface }), hash, surface);
+    }
+  }
+});
+
+test("place role combines with a supported neighbourhood, keyword, and agency on meetings", () => {
+  const facet = encodeURIComponent(JSON.stringify({ place_role: "affected_area" }));
+  const hash = `#meetings?agency=Transportation&q=dining&boro=Brooklyn&neighborhood=Red+Hook&facet=${facet}`;
+  const scope = scopeFromRouteHash(hash);
+  assert.equal(scope.facets.values.place_role, "affected_area");
+  assert.equal(scope.place.neighborhood, "Red Hook");
+  assert.deepEqual(scope.place.boroughs, ["Brooklyn"]);
+  assert.equal(scope.facets.agencies[0], "Transportation");
+  assert.equal(scope.topic.query, "dining");
+  assert.equal(routeHashFromScope(scope, { surface: "meetings" }), hash);
+});
+
+test("place role combines with district, agency, keyword, domain, and time, and survives Browse, Near-you, Map, and Watch", () => {
+  const scope = scopeFromLensState("meetings", {
+    q: "resiliency",
+    agency: "Parks",
+    boro: "Queens",
+    communityDistrict: "Q04",
+    councilDistrict: "26",
+    neighborhood: "Astoria",
+    when: "month",
+    place_role: "matter",
+  });
+  assert.equal(scope.facets.domains[0], "meetings");
+  assert.equal(scope.facets.values.place_role, "matter");
+
+  const browse = routeHashFromScope(scope, { surface: "meetings" });
+  const now = routeHashFromScope(scope, { surface: "now" });
+  const map = routeHashFromScope(scope, { surface: "map" });
+  for (const [hash, surface] of [[browse, "meetings"], [now, "now"], [map, "map"]]) {
+    const replay = scopeFromRouteHash(hash);
+    assert.equal(replay.facets.values.place_role, "matter", surface);
+    assert.equal(replay.facets.agencies[0], "Parks", surface);
+  }
+  // The map viewport represents one place level at a time (existing behavior, unrelated
+  // to place role); district/council precision only round-trips on the non-map surfaces.
+  for (const [hash, surface] of [[browse, "meetings"], [now, "now"]]) {
+    const replay = scopeFromRouteHash(hash);
+    assert.equal(replay.place.community_districts[0], "Q04", surface);
+    assert.equal(replay.place.council_districts[0], "26", surface);
+    assert.equal(replay.time_window.preset, "month", surface);
+  }
+
+  const watch = watchFromScope(scope, { lens: "meetings" });
+  assert.equal(watch.filter.place_role, "matter");
+  const reopened = scopeFromWatch(watch, { lens: "meetings" });
+  assert.equal(reopened.facets.values.place_role, "matter");
+  assert.deepEqual(watchFromScope(reopened, { lens: "meetings" }), watch);
+});
+
+test("place role travels through the generic geography-watch wire unchanged", () => {
+  const scope = scopeWithGeographies(
+    scopeFromLensState("meetings", { boro: "Brooklyn", place_role: "venue" }),
+    ["geography:nta2020:BK0201"],
+  );
+  const watch = watchFromGeographyScope(scope, { lens: "meetings" });
+  assert.equal(watch.filter.place_role, "venue");
+  assert.deepEqual(watch.filter.geographies, ["geography:nta2020:BK0201"]);
+  const restored = scopeFromGeographyWatch(watch);
+  assert.equal(restored.facets.values.place_role, "venue");
+  assert.deepEqual(restored.place.geographies, ["geography:nta2020:BK0201"]);
+});
+
+test("place role composition: agreeing scopes keep it, contradicting scopes fall to match_none", () => {
+  const venue = normalizeScope({ facets: { values: { place_role: "venue" } } });
+  const alsoVenue = normalizeScope({ place: { boroughs: ["Brooklyn"] }, facets: { values: { place_role: "venue" } } });
+  const agree = intersectScopes(venue, alsoVenue);
+  assert.equal(agree.facets.values.place_role, "venue");
+  assert.deepEqual(agree.place.boroughs, ["Brooklyn"]);
+
+  const matter = normalizeScope({ facets: { values: { place_role: "matter" } } });
+  const conflict = intersectScopes(venue, matter);
+  assert.equal(conflict.facets.values.match_none, true);
+
+  // An absent role on one side never narrows — it takes the other side's role (A6).
+  const unset = emptyScope();
+  const inherited = intersectScopes(unset, venue);
+  assert.equal(inherited.facets.values.place_role, "venue");
+});
+
+test("an unsupported domain never claims the place-role constraint was applied", () => {
+  assert.equal(placeRoleSupportedForDomain("meetings"), true);
+  assert.ok(PLACE_ROLE_SUPPORTED_DOMAINS.includes("meetings"));
+  for (const domain of ["money", "land", "property", "people", "rules"]) {
+    assert.equal(placeRoleSupportedForDomain(domain), false, domain);
+  }
+
+  // The standing calendar feed replays a watch verbatim or not at all (fail-closed): a
+  // place-role filter it cannot honor must omit the affordance rather than silently
+  // publish a feed that quietly drops the constraint.
+  const scope = scopeFromLensState("meetings", { boro: "Brooklyn", place_role: "venue" });
+  assert.equal(calendarFeedUrlForScope(scope), null);
+  assert.notEqual(calendarFeedUrlForScope(scopeFromLensState("meetings", { boro: "Brooklyn" })), null);
+});
+
+test("no duplicate place-role vocabulary: Near-you explanation paths only ever emit the canonical predicate", () => {
+  const nodes = [{ subject_ref: "borough:queens", kind: "borough", label: "Queens" }];
+  const locatedEdges = [{
+    type: "located_in", from: "notice:n-9", to: "borough:queens", decision: "public",
+    method: "district_activity_placement_v1", method_version: "1.0.0",
+    evidence: { lens: "meetings", placement_method: "matter_title_place", boundary_vintage: "2026-05-26" },
+  }];
+  const backlinks = [{
+    duty_text: "Publish the annual district safety plan.", citation: "Local Law § 1",
+    relation: "requires_public_hearing", agency_id: "transportation", agency_name: "Transportation",
+    agency_href: "/agencies/transportation/", publication_tier: "deterministic",
+  }];
+  for (const basis of ["Venue / logistics", "Matter place", "Affected area", "Community board district"]) {
+    const candidates = buildNearYouExplanationCandidates({
+      record: { id: "n-9", basis }, lens: "meetings", locatedEdges, geographyNodes: nodes, mandateBacklinks: backlinks,
+    });
+    for (const candidate of candidates) assert.ok(PLACE_ROLES.includes(candidate.location.place_role), basis);
+  }
+
+  // A requested role that has no evidence on the candidate set finds nothing rather than
+  // fabricating a match (A3/A5): the constraint is preserved, never silently broadened.
+  const matterCandidates = buildNearYouExplanationCandidates({
+    record: { id: "n-9", basis: "Matter place" }, lens: "meetings", locatedEdges, geographyNodes: nodes, mandateBacklinks: backlinks,
+  });
+  const wantsVenue = { place: { boroughs: ["Queens"] }, facets: { values: { place_role: "venue" } } };
+  assert.equal(selectNearYouExplanationPath(matterCandidates, wantsVenue), null);
+  const wantsMatter = { place: { boroughs: ["Queens"] }, facets: { values: { place_role: "matter" } } };
+  assert.equal(selectNearYouExplanationPath(matterCandidates, wantsMatter).location.place_role, "matter");
+  const noRole = { place: { boroughs: ["Queens"] } };
+  assert.equal(selectNearYouExplanationPath(matterCandidates, noRole).location.place_role, "matter");
+});
+
+test("legacy scopes and URLs without a place role keep today's exact broader behavior", () => {
+  const legacy = "#land?boro=Queens&cd=Q04&council=25&q=rezoning&stage=public_review&future=hearing&procedure=ulurp&family=acquisition&attendance=in_person";
+  const scope = scopeFromRouteHash(legacy);
+  assert.equal(placeRoleFromScope(scope), null);
+  assert.equal("facet" in Object.fromEntries(new URLSearchParams(legacy.split("?", 2)[1])), false);
+  assert.equal(routeHashFromScope(scope, { surface: "land" }), legacy);
+
+  const watch = watchFromScope(scope, { lens: "land" });
+  assert.equal("place_role" in watch.filter, false);
 });
 
 test("runtime boundaries all invoke the scope adapter", () => {

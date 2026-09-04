@@ -1,0 +1,29 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-universal-search/ps-01-place-role-scope-predicate",
+  "status": "implemented",
+  "fingerprint": "ps-01-place-role-scope-predicate.v1",
+  "updated_at": "2026-09-03T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "place-role-scope-predicate",
+      "path": "site/scope_v0.mjs"
+    },
+    {
+      "id": "place-role-near-you-explanation-path",
+      "path": "site/near_you_explanation_path.mjs"
+    },
+    {
+      "id": "place-role-watch-identity-sanitizer",
+      "path": "worker/src/lib/filter.mjs"
+    },
+    {
+      "id": "place-role-scope-tests",
+      "path": "test/scope_v0.test.mjs"
+    },
+    {
+      "id": "place-role-watch-sanitizer-tests",
+      "path": "worker/test/filter.test.mjs"
+    }
+  ]
+}
