@@ -1,0 +1,27 @@
+{
+  "schema": "cityscroll.seqra_adapter_observation.v1",
+  "source_id": "nyc_city_record_notices",
+  "vintage": "2026-09-04-sample",
+  "dataset_metadata_fetch": {
+    "raw_slug": "dataset_metadata",
+    "request_url_or_query": "https://data.cityofnewyork.us/api/views/dg92-zbpx.json",
+    "requested_at": "2026-09-04T07:44:01.000Z",
+    "retrieved_at": "2026-09-04T07:44:01.000Z",
+    "http_status": 200,
+    "content_type": "application/json; charset=utf-8"
+  },
+  "page_fetches": [
+    {
+      "raw_slug": "page-0000",
+      "request_url_or_query": "https://data.cityofnewyork.us/resource/dg92-zbpx.json?$limit=5&$order=:id",
+      "requested_at": "2026-09-04T07:44:01.000Z",
+      "retrieved_at": "2026-09-04T07:44:01.000Z",
+      "http_status": 200,
+      "content_type": "application/json; charset=utf-8",
+      "row_count": 5
+    }
+  ],
+  "page_size": 5,
+  "sample_scope": true,
+  "sample_scope_note": "Bounded reference sample captured by one polite, single-page live request per fetch, not a full-population pull, against the whole City Record Online corpus (not source-filtered to environmental-review notice types by this fixture). pagination_complete is derived from the actual row count against page_size and is honestly false here."
+}
