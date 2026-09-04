@@ -8,6 +8,7 @@ import {
   renderNodeSection,
 } from "./civic_document_chrome.mjs";
 import { rulesCardInteractionProjection } from "./rules_card_interaction.mjs";
+import { sourceFieldLabel } from "./reader_surface_labels.mjs";
 import { buildRulesPhaseView } from "./rules_phase_spine.mjs";
 import { renderPetitionHandoff } from "./rules_petition.mjs";
 import { renderRulesExceptionModes } from "./rules_exception_modes.mjs";
@@ -51,8 +52,11 @@ function historyEventMarkup(event) {
   const recordLink = event.record_href && event.record_href !== event.trace_href
     ? ` · <a href="${esc(event.record_href)}">${esc(event.record_label)}</a>`
     : "";
-  const sourceDetail = [event.source_label, event.source_field].filter(Boolean).join(" · ");
-  return `<li class="rule-history-event" data-event-kind="observed" data-date-state="${esc(event.date_state)}" data-event-type="${esc(event.event_type)}">
+  // The stable field identifier stays machine-readable on the element; only an approved
+  // reader label crosses into visible copy.
+  const sourceDetail = [event.source_label, sourceFieldLabel(event.source_field)].filter(Boolean).join(" · ");
+  const sourceFieldAttr = event.source_field ? ` data-source-field="${esc(event.source_field)}"` : "";
+  return `<li class="rule-history-event" data-event-kind="observed" data-date-state="${esc(event.date_state)}" data-event-type="${esc(event.event_type)}"${sourceFieldAttr}>
     <div class="rule-history-event-heading">
       <span class="tag rule-history-marker">${esc(event.marker)}</span>
       <strong><a href="${esc(event.trace_href)}"${hrefAttrs(event.trace_href)}>${esc(event.label)}</a></strong>
