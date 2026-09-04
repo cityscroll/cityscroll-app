@@ -129,7 +129,10 @@ test("Cloudflare Pages production deploy is push-triggered and not a PR gate", (
   const workflow = read(".github/workflows/deploy-cloudflare-pages.yml");
   assert.match(workflow, /workflow_dispatch:/);
   assert.match(workflow, /^\s+push:\n\s+branches:\s*\[main\]/m);
-  assert.doesNotMatch(workflow, /^\s+(?:pull_request|schedule):/m);
+  assert.doesNotMatch(workflow, /^\s+pull_request:/m);
+  // A daily schedule refreshes the Contracts (Money) resident snapshot; it is
+  // still not a PR gate, so pull_request/merge_group stay excluded above.
+  assert.match(workflow, /^\s+schedule:/m);
   // Both automatic and manual releases deploy the production branch.
   assert.match(workflow, /branch="main"/);
   assert.match(workflow, /--branch=\$\{\{\s*steps\.branch\.outputs\.branch\s*\}\}/);

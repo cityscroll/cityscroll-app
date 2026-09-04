@@ -23,6 +23,10 @@ inputs:
     description: Refresh bounded Land and meeting decision-outcome records.
     required: false
     default: "false"
+  refresh-resident-snapshots:
+    description: Refresh the Contracts (Money) resident snapshot and its declared downstream artifacts.
+    required: false
+    default: "false"
 
 runs:
   using: composite
@@ -39,11 +43,15 @@ runs:
         SITE_DIR: ${{ inputs.site-dir }}
         COMMIT_SHA: ${{ inputs.commit-sha }}
         REFRESH_DECISION_OUTCOMES: ${{ inputs.refresh-decision-outcomes }}
+        REFRESH_RESIDENT_SNAPSHOTS: ${{ inputs.refresh-resident-snapshots }}
       run: |
         set -euo pipefail
         args=(--source-dir "$SOURCE_DIR" --site-dir "$SITE_DIR")
         if [ "$REFRESH_DECISION_OUTCOMES" = "true" ]; then
           args+=(--refresh-decision-outcomes)
+        fi
+        if [ "$REFRESH_RESIDENT_SNAPSHOTS" = "true" ]; then
+          args+=(--refresh-resident-snapshots)
         fi
         node "$SOURCE_DIR/tools/build_cloudflare_pages.mjs" "${args[@]}"
         node "$SOURCE_DIR/tools/check_pages_bundle_sizes.mjs" --site-dir "$SITE_DIR"
