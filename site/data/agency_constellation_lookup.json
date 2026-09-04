@@ -6,9 +6,10 @@
   "iteration": "v1",
   "demo_ids": [
     "parks-and-recreation",
-    "housing-preservation-and-development"
+    "housing-preservation-and-development",
+    "economic-development-corporation"
   ],
-  "agency_count": 85,
+  "agency_count": 86,
   "multi_category_count": 62,
   "verified_demo": "agency:id:parks-and-recreation",
   "aliases": {
@@ -21783,6 +21784,547 @@
               "age_days": null,
               "max_age_days": null,
               "status": "known"
+            }
+          },
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        }
+      ],
+      "top_vendors": []
+    },
+    "economic-development-corporation": {
+      "subject_ref": "agency:id:economic-development-corporation",
+      "display_name": "Economic Development Corporation",
+      "path": "/agencies/economic-development-corporation/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:economic-development-corporation",
+        "status": "matched",
+        "source_observation_count": 2
+      },
+      "matched_categories": 0,
+      "categories": {
+        "contracts": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_browse_snapshot_v1"
+        },
+        "vendors": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        "meetings": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_browse_snapshot_v1"
+        },
+        "rules": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_canonical_v1"
+        },
+        "obligations": {
+          "status": "empty",
+          "count": 0,
+          "method": "mandate_expected_vs_observed_v1"
+        },
+        "staffing": {
+          "status": "empty",
+          "count": 0,
+          "method": "publisher_certification_record_v1"
+        }
+      },
+      "fiscal_context_status": "unknown",
+      "fiscal_context_method": null,
+      "edge_summary": [
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "agency",
+          "source_id": "economic-development-corporation",
+          "edge_type": "published_by_agency",
+          "relation_label": "published by this agency",
+          "label": "Contracts: published by this agency",
+          "target_kind": "contract",
+          "target_id": null,
+          "target_name": "Contracts",
+          "count": 0,
+          "state": "empty",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "facet": null,
+            "universe": "open",
+            "mode": "open",
+            "entity_ref": "agency:id:economic-development-corporation"
+          },
+          "as_of": "2026-09-04",
+          "source": {
+            "kind": "agency",
+            "id": "economic-development-corporation",
+            "name": "Economic Development Corporation",
+            "canonical_href": "/agencies/economic-development-corporation/"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": null,
+            "join_method": null,
+            "observed_at": "2026-09-04",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "derived_feature_rollup": {
+            "schema": "cityscroll.derived_feature_rollup.v1",
+            "method": "derived_feature_rollup_incremental_v1",
+            "version": "1",
+            "counts": {
+              "total": "0",
+              "materialized": "0",
+              "dated": "0",
+              "undated": "0",
+              "by_state": {},
+              "by_relation": {}
+            },
+            "spans": {
+              "valid": {
+                "start": null,
+                "end": null
+              },
+              "observed": {
+                "start": null,
+                "end": null
+              },
+              "valid_days": null,
+              "observed_days": null
+            },
+            "lifecycle": {
+              "by_bucket": {
+                "current": "0",
+                "historical": "0",
+                "unknown": "0"
+              },
+              "by_stage": {},
+              "complete": "true"
+            },
+            "freshness": {
+              "reference_day": "2026-09-04",
+              "snapshot_day": "2026-09-04",
+              "latest_day": null,
+              "latest_source": null,
+              "age_days": null,
+              "max_age_days": null,
+              "status": "unknown"
+            }
+          },
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "agency",
+          "source_id": "economic-development-corporation",
+          "edge_type": "top_vendor_by_award_12mo",
+          "relation_label": "top vendors by award value",
+          "label": "Top vendors by award $ (last 12 mo): top vendors by award value",
+          "target_kind": "vendor",
+          "target_id": null,
+          "target_name": "Top vendors by award $ (last 12 mo)",
+          "count": 0,
+          "state": "empty",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "facet": null,
+            "universe": null,
+            "mode": null,
+            "entity_ref": "agency:id:economic-development-corporation"
+          },
+          "as_of": "2026-08-29",
+          "source": {
+            "kind": "agency",
+            "id": "economic-development-corporation",
+            "name": "Economic Development Corporation",
+            "canonical_href": "/agencies/economic-development-corporation/"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": null,
+            "join_method": null,
+            "observed_at": "2026-08-29",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "derived_feature_rollup": {
+            "schema": "cityscroll.derived_feature_rollup.v1",
+            "method": "derived_feature_rollup_incremental_v1",
+            "version": "1",
+            "counts": {
+              "total": "0",
+              "materialized": "0",
+              "dated": "0",
+              "undated": "0",
+              "by_state": {},
+              "by_relation": {}
+            },
+            "spans": {
+              "valid": {
+                "start": null,
+                "end": null
+              },
+              "observed": {
+                "start": null,
+                "end": null
+              },
+              "valid_days": null,
+              "observed_days": null
+            },
+            "lifecycle": {
+              "by_bucket": {
+                "current": "0",
+                "historical": "0",
+                "unknown": "0"
+              },
+              "by_stage": {},
+              "complete": "true"
+            },
+            "freshness": {
+              "reference_day": "2026-08-29",
+              "snapshot_day": "2026-08-29",
+              "latest_day": null,
+              "latest_source": null,
+              "age_days": null,
+              "max_age_days": null,
+              "status": "unknown"
+            }
+          },
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "agency",
+          "source_id": "economic-development-corporation",
+          "edge_type": "hosts_meeting",
+          "relation_label": "related meetings and hearings",
+          "label": "Meetings and hearings: related meetings and hearings",
+          "target_kind": "meeting",
+          "target_id": null,
+          "target_name": "Meetings and hearings",
+          "count": 0,
+          "state": "empty",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "facet": null,
+            "universe": "linked",
+            "mode": null,
+            "entity_ref": "agency:id:economic-development-corporation"
+          },
+          "as_of": "2026-08-05",
+          "source": {
+            "kind": "agency",
+            "id": "economic-development-corporation",
+            "name": "Economic Development Corporation",
+            "canonical_href": "/agencies/economic-development-corporation/"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": null,
+            "join_method": null,
+            "observed_at": "2026-08-05",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "derived_feature_rollup": {
+            "schema": "cityscroll.derived_feature_rollup.v1",
+            "method": "derived_feature_rollup_incremental_v1",
+            "version": "1",
+            "counts": {
+              "total": "0",
+              "materialized": "0",
+              "dated": "0",
+              "undated": "0",
+              "by_state": {},
+              "by_relation": {}
+            },
+            "spans": {
+              "valid": {
+                "start": null,
+                "end": null
+              },
+              "observed": {
+                "start": null,
+                "end": null
+              },
+              "valid_days": null,
+              "observed_days": null
+            },
+            "lifecycle": {
+              "by_bucket": {
+                "current": "0",
+                "historical": "0",
+                "unknown": "0"
+              },
+              "by_stage": {},
+              "complete": "true"
+            },
+            "freshness": {
+              "reference_day": "2026-08-05",
+              "snapshot_day": "2026-08-05",
+              "latest_day": null,
+              "latest_source": null,
+              "age_days": null,
+              "max_age_days": null,
+              "status": "unknown"
+            }
+          },
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "agency",
+          "source_id": "economic-development-corporation",
+          "edge_type": "issued_rule",
+          "relation_label": "issued rule",
+          "label": "Rules: issued rule",
+          "target_kind": "rule",
+          "target_id": null,
+          "target_name": "Rules",
+          "count": 0,
+          "state": "empty",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "facet": null,
+            "universe": null,
+            "mode": null,
+            "entity_ref": "agency:id:economic-development-corporation"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "agency",
+            "id": "economic-development-corporation",
+            "name": "Economic Development Corporation",
+            "canonical_href": "/agencies/economic-development-corporation/"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": null,
+            "join_method": null,
+            "observed_at": null,
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "derived_feature_rollup": {
+            "schema": "cityscroll.derived_feature_rollup.v1",
+            "method": "derived_feature_rollup_incremental_v1",
+            "version": "1",
+            "counts": {
+              "total": "0",
+              "materialized": "0",
+              "dated": "0",
+              "undated": "0",
+              "by_state": {},
+              "by_relation": {}
+            },
+            "spans": {
+              "valid": {
+                "start": null,
+                "end": null
+              },
+              "observed": {
+                "start": null,
+                "end": null
+              },
+              "valid_days": null,
+              "observed_days": null
+            },
+            "lifecycle": {
+              "by_bucket": {
+                "current": "0",
+                "historical": "0",
+                "unknown": "0"
+              },
+              "by_stage": {},
+              "complete": "true"
+            },
+            "freshness": {
+              "reference_day": null,
+              "snapshot_day": null,
+              "latest_day": null,
+              "latest_source": null,
+              "age_days": null,
+              "max_age_days": null,
+              "status": "unknown"
+            }
+          },
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "agency",
+          "source_id": "economic-development-corporation",
+          "edge_type": "statute_duty",
+          "relation_label": "statutory mandates",
+          "label": "Mandates: statutory mandates",
+          "target_kind": "mandate",
+          "target_id": null,
+          "target_name": "Mandates",
+          "count": 0,
+          "state": "empty",
+          "href": "/agencies/economic-development-corporation/#mandates-conformance",
+          "canonical_href": "/agencies/economic-development-corporation/#mandates-conformance",
+          "scope": {
+            "facet": null,
+            "universe": null,
+            "mode": null,
+            "entity_ref": "agency:id:economic-development-corporation"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "agency",
+            "id": "economic-development-corporation",
+            "name": "Economic Development Corporation",
+            "canonical_href": "/agencies/economic-development-corporation/"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": null,
+            "join_method": null,
+            "observed_at": null,
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "derived_feature_rollup": {
+            "schema": "cityscroll.derived_feature_rollup.v1",
+            "method": "derived_feature_rollup_incremental_v1",
+            "version": "1",
+            "counts": {
+              "total": "0",
+              "materialized": "0",
+              "dated": "0",
+              "undated": "0",
+              "by_state": {},
+              "by_relation": {}
+            },
+            "spans": {
+              "valid": {
+                "start": null,
+                "end": null
+              },
+              "observed": {
+                "start": null,
+                "end": null
+              },
+              "valid_days": null,
+              "observed_days": null
+            },
+            "lifecycle": {
+              "by_bucket": {
+                "current": "0",
+                "historical": "0",
+                "unknown": "0"
+              },
+              "by_stage": {},
+              "complete": "true"
+            },
+            "freshness": {
+              "reference_day": null,
+              "snapshot_day": null,
+              "latest_day": null,
+              "latest_source": null,
+              "age_days": null,
+              "max_age_days": null,
+              "status": "unknown"
+            }
+          },
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "agency",
+          "source_id": "economic-development-corporation",
+          "edge_type": "certified_to_agency",
+          "relation_label": "certified to the agency",
+          "label": "Staffing exams: certified to the agency",
+          "target_kind": "exam",
+          "target_id": null,
+          "target_name": "Staffing exams",
+          "count": 0,
+          "state": "empty",
+          "href": "/browse/exams/?agency=economic-development-corporation&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aeconomic-development-corporation%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?agency=economic-development-corporation&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aeconomic-development-corporation%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "scope": {
+            "facet": null,
+            "universe": null,
+            "mode": null,
+            "entity_ref": "agency:id:economic-development-corporation"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "agency",
+            "id": "economic-development-corporation",
+            "name": "Economic Development Corporation",
+            "canonical_href": "/agencies/economic-development-corporation/"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": null,
+            "join_method": null,
+            "observed_at": null,
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "derived_feature_rollup": {
+            "schema": "cityscroll.derived_feature_rollup.v1",
+            "method": "derived_feature_rollup_incremental_v1",
+            "version": "1",
+            "counts": {
+              "total": "0",
+              "materialized": "0",
+              "dated": "0",
+              "undated": "0",
+              "by_state": {},
+              "by_relation": {}
+            },
+            "spans": {
+              "valid": {
+                "start": null,
+                "end": null
+              },
+              "observed": {
+                "start": null,
+                "end": null
+              },
+              "valid_days": null,
+              "observed_days": null
+            },
+            "lifecycle": {
+              "by_bucket": {
+                "current": "0",
+                "historical": "0",
+                "unknown": "0"
+              },
+              "by_stage": {},
+              "complete": "true"
+            },
+            "freshness": {
+              "reference_day": null,
+              "snapshot_day": null,
+              "latest_day": null,
+              "latest_source": null,
+              "age_days": null,
+              "max_age_days": null,
+              "status": "unknown"
             }
           },
           "cross_spine_confidence": "unmatched",

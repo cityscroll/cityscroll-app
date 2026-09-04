@@ -183,7 +183,7 @@ test("NYCEDC project navigation is a typed link with parcel trail and empty cate
     true,
   );
   const empty = projection.category_states.filter((row) => row.state === "empty").map((row) => row.id);
-  assert.deepEqual(empty.sort(), ["meetings", "obligations", "rules", "staffing", "vendors"].sort());
+  assert.deepEqual(empty.sort(), ["contracts", "meetings", "obligations", "rules", "staffing", "vendors"].sort());
   assert.equal(empty.every((id) => projection.category_states.find((row) => row.id === id).count === 0), true);
   const html = renderInstitutionProfileNavigation(projection);
   assert.match(html, /href="\/browse\/zoning\/#land\/2024Q0135"/);

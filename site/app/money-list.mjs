@@ -16,12 +16,11 @@ import {
   moneyLineageRows,
   moneyMethodFacet,
   moneySnapshotRows,
-  nyNaiveTimestampToInstantMs,
-  OPEN_CONTRACTS_FRESHNESS_STATES,
   openContractSnapshotProjection,
   procurementStagesForRow,
   vendorStemsFromEntityRefs,
 } from "../resident_snapshot_queries.mjs";
+import { moneyEvaluationClockMs, moneyStaleSourceNoticeHTML } from "../money-freshness.mjs";
 import {
   CONTRACTS_BROWSE_SCOPE,
   CONTRACT_SCOPED_RETRIEVAL_IDLE,
@@ -246,15 +245,6 @@ function isDefaultMoneySearchState({mode, agency, kw, methodSel, closingWeek, mi
     && !hasNl
     && (!sort || sort==="deadline");
 }
-// The resident's real civic day, not the fixture vintage: a harness-pinned day
-// (CROL_PINNED_TODAY) is honored so fixture-pinned browser checks stay
-// deterministic, but nothing shipped ever assigns the pin itself.
-function moneyEvaluationClockMs(){
-  const pinned=globalThis.CROL_PINNED_TODAY;
-  if(typeof pinned==="string" && /^\d{4}-\d{2}-\d{2}$/.test(pinned)) return nyNaiveTimestampToInstantMs(`${pinned}T00:00:00`);
-  // determinism-lint: allow clock the live evaluation instant for the open-contract projection; openContractSnapshotProjection stays a pure function of the clock this passes in.
-  return Date.now();
-}
 function paintMoneyAgencyOptions(names){
   const cur=$("#agency")?$("#agency").value:"";
   const list=(names||[]).filter(Boolean);
@@ -423,21 +413,6 @@ function scopedHistoryNoteHTML(count, observed = 0, narrowed = false){
     n: Number(count).toLocaleString(), shown: Number(observed).toLocaleString(),
     older: Number(count - observed).toLocaleString(), date: recentCutLabel(),
   })}</div>`;
-}
-// Source-honest copy for the two freshness states that must never resolve to
-// the ordinary empty state: a stale committed snapshot (still shows any
-// future-dated rows it retained, qualified by this note) and an unavailable
-// one (no snapshot to show at all).
-function moneyStaleSourceNoticeHTML(freshness){
-  if(!freshness) return "";
-  if(freshness.freshnessState===OPEN_CONTRACTS_FRESHNESS_STATES.UNAVAILABLE){
-    return `<div class="note warn contracts-freshness-note" role="status" data-contracts-freshness="unavailable">${t("retry_open_data")}</div>`;
-  }
-  if(freshness.freshnessState===OPEN_CONTRACTS_FRESHNESS_STATES.STALE){
-    const date=String(freshness.sourceVintage||"").slice(0,10);
-    return `<div class="note warn contracts-freshness-note" role="status" data-contracts-freshness="stale">${t("contracts_source_stale",{date})}</div>`;
-  }
-  return "";
 }
 function bindFullHistorySearch(){
   document.querySelectorAll("[data-money-full-history]").forEach((button) => {

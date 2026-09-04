@@ -21,7 +21,7 @@
     },
     "subject_refs": {
       "pattern": "agency:id:{canonical_id}",
-      "count": 85,
+      "count": 86,
       "refs": [
         "agency:id:administration-for-childrens-services",
         "agency:id:administrative-trials-and-hearings",
@@ -60,6 +60,7 @@
         "agency:id:district-attorney-new-york-county",
         "agency:id:district-attorney-queens-county",
         "agency:id:district-attorney-richmond-county",
+        "agency:id:economic-development-corporation",
         "agency:id:education",
         "agency:id:emergency-management",
         "agency:id:employees-retirement-system",
@@ -3158,6 +3159,7 @@
     "agency:id:district-attorney-new-york-county": "#rules?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Adistrict-attorney-new-york-county%22%5D%7D",
     "agency:id:district-attorney-queens-county": "#rules?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Adistrict-attorney-queens-county%22%5D%7D",
     "agency:id:district-attorney-richmond-county": "#rules?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Adistrict-attorney-richmond-county%22%5D%7D",
+    "agency:id:economic-development-corporation": "#rules",
     "agency:id:education": "#rules?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aeducation%22%5D%7D",
     "agency:id:emergency-management": "#rules?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aemergency-management%22%5D%7D",
     "agency:id:employees-retirement-system": "#rules?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aemployees-retirement-system%22%5D%7D",
@@ -3245,6 +3247,7 @@
     "agency:id:district-attorney-new-york-county": "https://cityscroll.org/following?lens=money&filter=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Adistrict-attorney-new-york-county%22%5D%2C%22agency%22%3A%22District+Attorney+-+New+York+County%22%7D&freq=weekly",
     "agency:id:district-attorney-queens-county": "https://cityscroll.org/following?lens=money&filter=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Adistrict-attorney-queens-county%22%5D%2C%22agency%22%3A%22District+Attorney+-+Queens+County%22%7D&freq=weekly",
     "agency:id:district-attorney-richmond-county": "https://cityscroll.org/following?lens=money&filter=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Adistrict-attorney-richmond-county%22%5D%2C%22agency%22%3A%22District+Attorney+-+Richmond+County%22%7D&freq=weekly",
+    "agency:id:economic-development-corporation": "https://cityscroll.org/following?lens=money&filter=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aeconomic-development-corporation%22%5D%2C%22agency%22%3A%22economic-development-corporation%22%7D&freq=weekly",
     "agency:id:education": "https://cityscroll.org/following?lens=money&filter=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aeducation%22%5D%2C%22agency%22%3A%22Education%22%7D&freq=weekly",
     "agency:id:emergency-management": "https://cityscroll.org/following?lens=money&filter=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aemergency-management%22%5D%2C%22agency%22%3A%22Emergency+Management%22%7D&freq=weekly",
     "agency:id:employees-retirement-system": "https://cityscroll.org/following?lens=money&filter=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aemployees-retirement-system%22%5D%2C%22agency%22%3A%22Employees%27+Retirement+System%22%7D&freq=weekly",
