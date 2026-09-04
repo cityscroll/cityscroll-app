@@ -9,6 +9,11 @@ import {
   renderNodeSection,
 } from "./civic_document_chrome.mjs";
 import { renderLegalChangeSummary } from "./legal_change_edges.mjs";
+import {
+  buildMatterAppearanceCalendarView,
+  MATTER_APPEARANCES_ANCHOR,
+  renderMatterAppearanceCalendar,
+} from "./legislative_matter_calendar.mjs";
 
 export const LEGISLATIVE_MATTER_SCHEMA = "cityscroll.legislative_matter_document.v1";
 
@@ -215,15 +220,20 @@ function appearanceMarkup(appearance) {
   </article>`;
 }
 
-export function renderLegislativeMatterDocument(view, { currentHref = "", legalChangeGraph = null } = {}) {
+export function renderLegislativeMatterDocument(view, { currentHref = "", legalChangeGraph = null, today = null } = {}) {
   if (!view?.id || !view?.title || view.schema !== LEGISLATIVE_MATTER_SCHEMA) return "";
   const matterSource = view.matter_href
     ? officialSourceLink({ href: view.matter_href, label: "Legistar matter record", className: "node-source-link", escape: esc })
     : "";
   const identity = `<p class="node-meta"><span>${esc(view.matter_file || `Matter ${view.id}`)}</span> · <span>Matter ${esc(view.id)}</span>${view.matter_type ? ` · <span>${esc(view.matter_type)}</span>` : ""}${view.matter_status ? ` · <span>${esc(view.matter_status)}</span>` : ""}</p>`;
+  // The compact month is a hypothesis about temporal concentration, never a
+  // claimed decision: it only renders when the appearances cluster densely
+  // enough (CBICS-01 density rule), and it links back to the same evidence
+  // as the detailed appearances below rather than restating identity.
+  const appearanceCalendar = renderMatterAppearanceCalendar(buildMatterAppearanceCalendarView(view, { today }));
   const appearanceSection = renderNodeSection({
     heading: "Observed appearances",
-    headingId: "matter-appearances",
+    headingId: MATTER_APPEARANCES_ANCHOR,
     body: view.appearances.map(appearanceMarkup).join(""),
     exportClass: "matter_appearances",
   });
@@ -239,5 +249,5 @@ export function renderLegislativeMatterDocument(view, { currentHref = "", legalC
   });
   const back = renderNodeBack({ href: "/browse/meetings/", label: "Browse meetings", currentHref });
   const legalChanges = renderLegalChangeSummary(legalChangeGraph);
-  return gateNodePageRender(`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(view.matter_file || view.title)} · CityScroll</title><meta name="description" content="A source-backed City Council matter history with observed meetings, actions, votes, and official records."><link rel="canonical" href="https://cityscroll.org${esc(view.canonical_href)}"><meta property="og:url" content="https://cityscroll.org${esc(view.canonical_href)}">${renderCivicDocumentAssets("/")}</head><body><a class="skip" href="#main">Skip to content</a>${renderCivicDocumentMast({ current: "browse", surfaceClass: "matter-document-mast" })}<main id="main" class="node-document civic-object-document legislative-matter-document" data-node-document="1" data-civic-object-kind="legislative-matter" data-matter-id="${esc(view.id)}" data-subject-ref="${esc(view.ref)}"><div class="civic-object-hero">${back}<p class="node-kicker civic-object-kicker">New York City Council legislative matter</p><h1>${esc(view.title)}</h1>${identity}<p class="civic-object-pivot">${matterSource}</p></div>${legalChanges}${appearanceSection}${provenance}</main>${renderNodeFooter()}</body></html>`);
+  return gateNodePageRender(`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(view.matter_file || view.title)} · CityScroll</title><meta name="description" content="A source-backed City Council matter history with observed meetings, actions, votes, and official records."><link rel="canonical" href="https://cityscroll.org${esc(view.canonical_href)}"><meta property="og:url" content="https://cityscroll.org${esc(view.canonical_href)}">${renderCivicDocumentAssets("/")}<link rel="stylesheet" href="/compact_calendar.css"></head><body><a class="skip" href="#main">Skip to content</a>${renderCivicDocumentMast({ current: "browse", surfaceClass: "matter-document-mast" })}<main id="main" class="node-document civic-object-document legislative-matter-document" data-node-document="1" data-civic-object-kind="legislative-matter" data-matter-id="${esc(view.id)}" data-subject-ref="${esc(view.ref)}"><div class="civic-object-hero">${back}<p class="node-kicker civic-object-kicker">New York City Council legislative matter</p><h1>${esc(view.title)}</h1>${identity}<p class="civic-object-pivot">${matterSource}</p></div>${legalChanges}${appearanceCalendar}${appearanceSection}${provenance}</main>${renderNodeFooter()}</body></html>`);
 }
