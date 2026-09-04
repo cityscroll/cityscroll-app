@@ -25,6 +25,7 @@ import {
   normalizeMeetingOrigin,
 } from "../../../site/meeting_origin.mjs";
 import { normalizeCityRecordMeeting } from "../../../site/meeting_object_contract.mjs";
+import { PLACE_ROLES } from "../../../site/scope_v0.mjs";
 
 export { plainText };
 
@@ -444,9 +445,30 @@ export function applyGeocode(record, geocodes) {
   return out;
 }
 
+/**
+ * PS-03: a place-role-scoped watch matches the record's own venue when the role is
+ * "venue", never the matter/affected area it never claimed -- and vice versa. Venue
+ * evidence today only carries borough + neighborhood (see venueFromRow/applyGeocode), so
+ * a community/council-district clause against a venue-role watch fails closed rather than
+ * fabricating a match from data the venue placement never had.
+ */
+function areaForPlaceRole(record, placeRole) {
+  if (placeRole !== "venue") return record.affected_area;
+  const venue = record.venue || {};
+  return {
+    scope: venue.borough ? "local" : "unlocated",
+    boroughs: venue.borough ? [venue.borough] : [],
+    neighborhoods: venue.neighborhood ? [venue.neighborhood] : [],
+    community_districts: [],
+    council_districts: [],
+    addresses: venue.address ? [{ label: venue.address }] : [],
+  };
+}
+
 export function hearingMatchesLocation(rowOrRecord, filter = {}) {
   const record = rowOrRecord?.affected_area ? rowOrRecord : normalizeHearing(rowOrRecord || {});
-  const area = record.affected_area;
+  const placeRole = PLACE_ROLES.includes(filter.place_role) ? filter.place_role : null;
+  const area = areaForPlaceRole(record, placeRole);
   const borough = String(filter.borough || "").toLowerCase();
   const neighborhood = String(filter.neighborhood || "").trim().toLowerCase();
   const communityDistrict = String(filter.communityDistrict || "").trim().toUpperCase();
@@ -462,10 +484,14 @@ export function hearingMatchesLocation(rowOrRecord, filter = {}) {
   if (councilDistrict && area.scope !== "citywide"
       && !(area.council_districts || []).some((value) => String(value) === councilDistrict)) return false;
   if (neighborhood && area.scope !== "citywide") {
+    // The free-text description is affected-area/matter evidence (subjectText() pulls from
+    // the notice's "premises affected"/"subject property" body) -- it is never venue
+    // evidence, so a venue-role watch must not fall back to it (that would let an
+    // affected-area-only fixture satisfy a venue-only neighborhood clause).
     const haystack = [
       ...area.neighborhoods,
       ...area.addresses.map((address) => address.label),
-      record.description,
+      ...(placeRole === "venue" ? [] : [record.description]),
     ].join(" ").toLowerCase();
     if (!haystack.includes(neighborhood)) return false;
   }
