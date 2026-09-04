@@ -10,6 +10,8 @@ import {
   nearYouUrlFromScope,
   geographyKeysFromScope,
   normalizeScope,
+  PLACE_ROLES,
+  placeRoleSupportedForDomain,
   routeHashFromScope,
   scopeWithGeographies,
   watchFromScope,
@@ -19,6 +21,7 @@ import { scopeWithPlace } from "./near_you_scope_runtime.mjs";
 import { followingUrlFromWatch } from "./following_view.mjs";
 import { migrateLegacyUrl } from "./route_migration.mjs";
 import {
+  placeRoleForBasis,
   selectNearYouExplanationPath,
   selectNearYouGeographyEvidence,
 } from "./near_you_explanation_path.mjs";
@@ -119,6 +122,14 @@ function effectiveTimeWindow(scope, builtAt) {
 }
 
 function recordMatches(record, scope, builtAt) {
+  const lens = first(scope.facets.domains) || "meetings";
+  const requestedPlaceRole = scope.facets.values?.place_role;
+  // A refinement, never a new predicate: only a domain with typed venue/matter/affected-area
+  // evidence (site/near_you_explanation_path.mjs) can honor the request. A record with no
+  // district-specific evidence (citywide, virtual, unlocated, weak fallback) never satisfies
+  // a specific role — see PS-02 acceptance A4-A6.
+  if (requestedPlaceRole && PLACE_ROLES.includes(requestedPlaceRole) && placeRoleSupportedForDomain(lens)
+    && placeRoleForBasis(record.basis) !== requestedPlaceRole) return false;
   const agency = first(scope.facets.agencies);
   if (agency && String(record.agency || "").toLowerCase() !== agency.toLowerCase()) return false;
   const type = scope.facets.values?.type || scope.facets.values?.noticeType;
@@ -239,6 +250,9 @@ function scopeSummary(scope, lens, geographyDefinitions = {}) {
     ["community district", first(scope.place.community_districts)],
     ["council district", first(scope.place.council_districts)],
     ["place basis", scope.place.location_scope && BAG_LABELS[scope.place.location_scope]],
+    ["local activity", placeRoleSupportedForDomain(lens) && PLACE_ROLES.includes(scope.facets.values?.place_role)
+      ? placeRoleUserLabel(scope.facets.values.place_role)
+      : null],
     ["agency", first(scope.facets.agencies)],
     ["type", scope.facets.values?.type || scope.facets.values?.noticeType],
     ["keyword", scope.topic.query || first(scope.topic.keywords)],
@@ -327,6 +341,9 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
   const hasPlace = !!(scope.place.boroughs.length || scope.place.community_districts.length
     || scope.place.council_districts.length || (scope.place.geographies || []).length || scope.place.neighborhood
     || scope.place.location_scope);
+  const requestedPlaceRole = placeRoleSupportedForDomain(lens) && PLACE_ROLES.includes(scope.facets.values?.place_role)
+    ? scope.facets.values.place_role
+    : null;
   const linkedRecord = (record, { explain = true } = {}) => {
     const whyHere = explain
       ? selectNearYouExplanationPath(record.why_here_candidates, scope)
@@ -338,6 +355,9 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
         ? { ...whyHere, notice_href: siteHref(whyHere.notice_href) }
         : null,
       geography_evidence: selectNearYouGeographyEvidence(record, scope),
+      // Every record reaching the results list already passed the recordMatches role gate
+      // above, so this is the predicate that caused the match, not a separately-derived guess.
+      matched_place_role: requestedPlaceRole,
     };
   };
   const resultRecords = resultIds.map((id) => records[id]).filter(Boolean).sort(recordSort).map(linkedRecord);
@@ -402,6 +422,16 @@ function dateLabel(value) {
   return new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric" }).format(date);
 }
 
+// Plain-language names for the shared place-role predicate (site/scope_v0.mjs PLACE_ROLES).
+// Not ontology jargon: this is the only vocabulary the role selector and result-card badge
+// use, so the same word always means the same predicate everywhere it appears.
+function placeRoleUserLabel(role) {
+  if (role === "venue") return "Happening here";
+  if (role === "matter") return "About this place";
+  if (role === "affected_area") return "Affecting this place";
+  return "All local activity";
+}
+
 function placeRoleLabel(role) {
   if (role === "venue") return "Meeting venue";
   if (role === "matter") return "Matter place";
@@ -446,6 +476,11 @@ function geographyEvidence(evidence) {
   </div>`;
 }
 
+function placeRoleBadge(role) {
+  if (!PLACE_ROLES.includes(role)) return "";
+  return `<span class="near-record-role" data-place-role="${esc(role)}">${esc(placeRoleUserLabel(role))}</span>`;
+}
+
 function recordCard(record) {
   const meetingSource = record.meeting_origin
     ? `<div class="near-record-source" data-meeting-origin="${esc(record.meeting_origin)}">${record.source_url
@@ -464,6 +499,7 @@ function recordCard(record) {
       data-pivot-relation-label="nearby record" data-pivot-target-kind="notice"
       data-pivot-target-id="${esc(record.id)}" data-pivot-source-kind="place"
       data-pivot-source-id="near-you">${esc(record.title)}</a>
+    ${placeRoleBadge(record.matched_place_role)}
     <div class="near-record-meta">
       ${record.agency ? `<span>${esc(record.agency)}</span>` : ""}
       ${record.type ? `<span>${esc(record.type)}</span>` : ""}
@@ -497,6 +533,12 @@ function boroughOptions(current) {
   return `<option value="">All mapped areas</option>${BOROUGHS
     .map((borough) => `<option${borough === current ? " selected" : ""}>${esc(borough)}</option>`)
     .join("")}`;
+}
+
+function placeRoleOptions(current) {
+  return ["", ...PLACE_ROLES]
+    .map((role) => `<option value="${esc(role)}"${role === (current || "") ? " selected" : ""}>${esc(placeRoleUserLabel(role))}</option>`)
+    .join("");
 }
 
 function basisOptions(current) {
@@ -659,8 +701,13 @@ export function renderNearYouBody(view, { includeListPanelMarker = false } = {})
       <p class="near-map-status" data-map-status aria-live="polite"></p>
     </section>
     <form class="near-form" id="near-place-fields" method="get" action="${esc(view.canonicalBase)}">
-      ${hiddenScopeFields(view.scope, new Set(["lens", "agency", "type", "boro", "cd", "council", "geo", "neighborhood", "scope", "id", "parent", "basis"]))}
+      ${hiddenScopeFields(view.scope, new Set(["lens", "agency", "type", "boro", "cd", "council", "geo", "neighborhood", "scope", "id", "parent", "basis", "placeRole"]))}
       <label>Lens<select name="lens">${lensOptions(view.lens)}</select></label>
+      ${placeRoleSupportedForDomain(view.lens)
+        ? `<label>What kind of local activity<select name="placeRole">${placeRoleOptions(view.scope.facets.values?.place_role)}</select></label>`
+        : view.scope.facets.values?.place_role
+          ? `<input type="hidden" name="placeRole" value="${esc(view.scope.facets.values.place_role)}">`
+          : ""}
       <label>Agency<input name="agency" value="${esc(first(view.scope.facets.agencies) || "")}" placeholder="Any agency"></label>
       <label>Type<input name="type" value="${esc(view.scope.facets.values?.type || "")}" placeholder="Any record type"></label>
       <label>Borough<select name="boro">${boroughOptions(currentBorough)}</select></label>

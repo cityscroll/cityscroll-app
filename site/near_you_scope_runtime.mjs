@@ -3,6 +3,7 @@ import {
   nearYouUrlFromScope,
   NEAR_YOU_COMMON_BOROUGHS,
   NEAR_YOU_COMMON_LENSES,
+  PLACE_ROLES,
   scopeWithGeographies,
   scopeFromRouteHash,
 } from "./scope_v0.mjs";
@@ -65,6 +66,8 @@ export function scopeFromNearYouUrl(input, { language = "en" } = {}) {
   const params = new URLSearchParams(url.search);
   const scope = scopeFromRouteHash(`#map?${params.toString()}`, { language });
   if (params.get("type")) scope.facets.values.type = String(params.get("type")).trim().slice(0, 120);
+  const placeRole = params.get("placeRole");
+  if (PLACE_ROLES.includes(placeRole)) scope.facets.values.place_role = placeRole;
   if (params.get("basis") === "contract_action_address" && scope.facets.domains[0] === "money") {
     scope.facets.values.basis = "contract_action_address";
     const actionBasis = scope.facets.values.actionBasis;
