@@ -343,26 +343,19 @@ test("A5 E4 2026X0362: HPD ELURP shows the observed Council path with no synthet
 });
 
 test("A6, A7 every explicit ELURP specimen is ineligible for the § 197-c statutory clock, with no prediction", () => {
-  // A6/A7 hold regardless of the specific ineligibility reason: no §197-c
-  // clock, phases, or prediction ever attaches to an explicit ELURP record.
-  // E1 is still pre-certification (an honest "not_certified" gate — the
-  // clock has never inspected procedure at all yet); E2/E3 carry an observed
-  // certification event, so the procedure mismatch itself is the reason; E4's
-  // § 197-e(k) filing/referral route has no DCP certification step, so it
-  // reads the same as E1.
-  const expectedReason = {
-    [fixtureE1.project_id]: "not_certified",
-    [fixtureE2.project_id]: "wrong_procedure",
-    [fixtureE3.project_id]: "wrong_procedure",
-    [fixtureE4.project_id]: "not_certified",
-  };
+  // A6/A7 hold for every explicit ELURP record regardless of certification
+  // status: the clock rejects on procedure before it ever looks at
+  // certification, so E1 (pre-certification) and E4 (no DCP certification
+  // step at all) read wrong_procedure exactly like the certified E2/E3 route
+  // — never not_certified, which would wrongly imply certification could
+  // still unlock a §197-c clock for these records.
   for (const fixture of [fixtureE1, fixtureE2, fixtureE3, fixtureE4]) {
     const clock = buildUlurpStatutoryClockView({
       ...fixture.open_data,
       spine: fixture.spine,
     });
     assert.equal(clock.status, "ineligible", fixture.project_id);
-    assert.equal(clock.reason, expectedReason[fixture.project_id], fixture.project_id);
+    assert.equal(clock.reason, "wrong_procedure", fixture.project_id);
     assert.deepEqual(clock.phases, [], fixture.project_id);
     assert.equal(clock.total_days, undefined, fixture.project_id);
   }
