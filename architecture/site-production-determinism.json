@@ -281,6 +281,7 @@
     "site/local_constellation.mjs",
     "site/location_awareness.js",
     "site/location_derivation.mjs",
+    "site/location_evidence_tier.mjs",
     "site/location_extract.mjs",
     "site/mailto_subscribe_later.mjs",
     "site/mandate_category_conformance.mjs",

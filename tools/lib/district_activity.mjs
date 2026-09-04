@@ -63,6 +63,11 @@ import {
 } from "../../site/community_board_geography.mjs";
 import { resolveCivicGeographies } from "../../site/civic_geography.mjs";
 import {
+  classifyLocationEvidence,
+  locationEvidenceTierForExactPlace,
+  summarizeLocationEvidenceTiers,
+} from "../../site/location_evidence_tier.mjs";
+import {
   CIVIC_GEOGRAPHY_LAYERS,
   civicGeographyKey,
   civicGeographyLayer,
@@ -186,12 +191,9 @@ function compactRecordBasis(lens, slots) {
   }
   const first = slots[0] || {};
   const method = first.method || null;
-  const numericConfidence = Number(first.confidence);
-  const confidence = first.confidence_tier || (Number.isFinite(numericConfidence)
-    ? (numericConfidence >= 0.8 ? "strong" : numericConfidence >= 0.55 ? "derived" : "weak")
-    : (["coordinates_pip", "publisher_council", "cd_intersects_council", "publisher_district"].includes(method)
-      ? "strong"
-      : "derived"));
+  // Single canonical classification (PS-04): the same threshold/method rules every other
+  // location-evidence caller uses, not a copy local to this map-assembly step.
+  const confidence = classifyLocationEvidence({ method, confidence: first.confidence, confidence_tier: first.confidence_tier });
   if (slots.some((slot) => isVirtualPlacement(slot))) {
     return { basis: "Virtual", confidence, method: method || "virtual_only" };
   }
@@ -201,7 +203,9 @@ function compactRecordBasis(lens, slots) {
   if (method === "community_board_ontology") {
     return { basis: "Community board district", confidence, method };
   }
-  if (["agency_hq", "vendor_address", "vendor_place"].includes(method) || confidence === "weak") {
+  // A method too low-specificity to back an exact place claim (agency HQ pin, vendor mailing
+  // address, district centroid) is always "Weak fallback" regardless of its raw tier.
+  if (locationEvidenceTierForExactPlace({ method, confidence_tier: confidence }) === "weak") {
     return { basis: "Weak fallback", confidence: "weak", method };
   }
   if (["venue_line", "venue_column", "civic_address_pip"].includes(method) && lens === "meetings") {
@@ -844,9 +848,7 @@ export function meetingPlacementsFromRow(row, boundaries, opts = {}) {
     method: s.method || meta.method,
     confidence: s.confidence ?? meta.confidence,
     confidence_tier: s.confidence_tier || meta.confidence_tier || (
-      meta.confidence == null ? null
-        : meta.confidence >= 0.8 ? "strong"
-          : meta.confidence >= 0.55 ? "derived" : "weak"
+      meta.confidence == null ? null : classifyLocationEvidence({ confidence: meta.confidence })
     ),
     ...(s.borough === "Citywide" || s.method === "citywide" ? { bucket: "citywide" } : {}),
   }));
@@ -944,9 +946,7 @@ export function rulePlacementsFromRow(row, boundaries, opts = {}) {
     ...s,
     method: s.method || method,
     confidence: s.confidence ?? confidence,
-    confidence_tier: (s.confidence ?? confidence) >= 0.8
-      ? "strong"
-      : (s.confidence ?? confidence) >= 0.55 ? "derived" : "weak",
+    confidence_tier: classifyLocationEvidence({ confidence: s.confidence ?? confidence }),
     ...(s.borough === "Citywide" || s.method === "citywide" || area?.scope === "citywide"
       ? { bucket: "citywide" }
       : {}),
@@ -968,9 +968,7 @@ export function moneyPlacementsFromRow(row, boundaries, opts = {}) {
     ...s,
     method: s.method || method,
     confidence: s.confidence ?? confidence,
-    confidence_tier: s.confidence_tier || (
-      confidence >= 0.8 ? "strong" : confidence >= 0.55 ? "derived" : "weak"
-    ),
+    confidence_tier: s.confidence_tier || classifyLocationEvidence({ confidence }),
     ...(s.borough === "Citywide" || s.method === "citywide" || method === "citywide"
       ? { bucket: "citywide" }
       : {}),
@@ -1785,10 +1783,24 @@ export function buildDistrictActivity(opts = {}) {
       evidence_only_edges: evidenceOnlyEdges,
       reconciled: polygonMemberships === lensEdges.length,
       by_method: byMethod,
+      // PS-04 AC8: coverage by the one canonical evidence tier, this lens only.
+      by_tier: summarizeLocationEvidenceTiers(lensEdges.map((edge) => ({
+        method: edge.evidence.placement_method,
+        confidence_tier: edge.confidence,
+      }))).by_tier,
     }];
   }));
   const polygonMemberships = Object.values(geographyAuditByLens)
     .reduce((sum, row) => sum + row.polygon_memberships, 0);
+  // PS-04 AC8: local_matches_by_evidence_tier, citywide and by domain (lens).
+  const evidenceTierTotals = summarizeLocationEvidenceTiers(
+    geographyEdges.map((edge) => ({
+      method: edge.evidence.placement_method,
+      confidence_tier: edge.confidence,
+      domain: edge.evidence.lens,
+    })),
+    { domainOf: (item) => item.domain },
+  );
   const geographySubjects = {
     schema: GEOGRAPHY_SUBJECT_GRAPH_SCHEMA,
     boundary_vintage: String(boundaries.boundary_vintage),
@@ -1856,6 +1868,10 @@ export function buildDistrictActivity(opts = {}) {
     district_items: districtItems,
     geography_items: geographyItems,
     geography_subjects: geographySubjects,
+    // PS-04 AC8: local_matches_by_evidence_tier, one canonical read (site/location_evidence_tier.mjs)
+    // for the whole geography graph, and by domain (lens) — see geography_subjects.audit.by_lens[*].by_tier
+    // for the same breakdown scoped to one lens.
+    evidence_tier_totals: evidenceTierTotals,
     explanation_paths: {
       schema: "cityscroll.near_you_explanation_paths.v1",
       reverse_index_schema: mandateBacklinksLookup.schema || null,

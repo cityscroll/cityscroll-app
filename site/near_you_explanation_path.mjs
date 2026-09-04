@@ -7,6 +7,10 @@
  */
 
 import { PLACE_ROLES } from "./scope_v0.mjs";
+import {
+  classifyLocationEvidence,
+  locationEvidenceAllowsExactPredicate,
+} from "./location_evidence_tier.mjs";
 
 export const NEAR_YOU_EXPLANATION_PATH_SCHEMA = "cityscroll.near_you_explanation_path.v1";
 export const NEAR_YOU_GEOGRAPHY_EVIDENCE_SCHEMA = "cityscroll.near_you_geography_evidence.v1";
@@ -96,6 +100,7 @@ export function buildNearYouExplanationCandidates({
     .map((edge) => {
       const node = nodeByRef.get(edge.to);
       if (!node || !DISTRICT_KINDS.has(node.kind) || !clean(node.label, 160)) return null;
+      const placementMethod = clean(edge.evidence?.placement_method, 100);
       return {
         schema: NEAR_YOU_EXPLANATION_PATH_SCHEMA,
         hop_count: 3,
@@ -106,10 +111,13 @@ export function buildNearYouExplanationCandidates({
           kind: node.kind,
           label: clean(node.label, 160),
           place_role: locationPlaceRole(record),
+          // PS-04: the one canonical evidence tier (site/location_evidence_tier.mjs), derived
+          // once here rather than re-guessed by whichever surface renders this candidate.
+          tier: classifyLocationEvidence({ confidence_tier: edge.confidence, method: placementMethod }),
           confidence: clean(edge.confidence, 40) || null,
           method: clean(edge.method, 100),
           method_version: clean(edge.method_version, 40),
-          placement_method: clean(edge.evidence?.placement_method, 100),
+          placement_method: placementMethod,
           boundary_vintage: clean(edge.evidence?.boundary_vintage, 40),
         },
         agency: {
@@ -153,28 +161,22 @@ function exactPlaceSubject(scope = {}) {
   return borough ? boroughSubject(borough) : null;
 }
 
-const DIRECT_LOCATION_METHODS = new Set([
-  "coordinates_pip",
-  "publisher_council",
-  "publisher_district",
-  "matter_address",
-  "matter_body_borough",
-  "matter_title_place",
-  "structured_bag",
-]);
-
 function candidateStrength(candidate = {}) {
   const location = candidate.location || {};
   const tier = candidate.mandate?.publication_tier === "deterministic" ? 1000 : 500;
-  const confidence = location.confidence === "strong" ? 100 : location.confidence === "derived" ? 50 : 0;
-  const method = DIRECT_LOCATION_METHODS.has(location.placement_method) ? 20
-    : location.placement_method === "cd_centroid_council" ? -20 : 0;
+  const evidenceTier = location.tier === "strong" ? 100 : location.tier === "derived" ? 50 : 0;
   const specificity = location.kind === "community-district" ? 3
     : location.kind === "council-district" ? 2 : 1;
-  return tier + confidence + method + specificity;
+  return tier + evidenceTier + specificity;
 }
 
-/** Select at most one strongest path, constrained to the exact displayed place. */
+/**
+ * Select at most one strongest path, constrained to the exact displayed place. Selecting an
+ * exact-subject path is itself a predicate that requires exact local applicability (PS-04
+ * AC3): weak evidence tiers (an agency HQ pin, a vendor address, a district centroid) are
+ * excluded here rather than merely deprioritized, so a weak match can never silently win by
+ * being the only candidate for its subject.
+ */
 export function selectNearYouExplanationPath(candidates = [], scope = {}) {
   const place = scope.place || {};
   if (["citywide", "virtual", "unlocated"].includes(place.location_scope)) return null;
@@ -189,6 +191,10 @@ export function selectNearYouExplanationPath(candidates = [], scope = {}) {
       && candidate.location?.relation === "located_in"
       && DISTRICT_KINDS.has(candidate.location?.kind)
       && PUBLIC_TIERS.has(candidate.mandate?.publication_tier)
+      && locationEvidenceAllowsExactPredicate({
+        method: candidate.location?.placement_method,
+        confidence_tier: candidate.location?.tier,
+      })
       && (!subject || candidate.location.subject_ref === subject)
       // An absent role preserves today's broader behavior; a requested role never
       // widens past the exact evidenced relationship (no fabricating a match).
@@ -214,6 +220,8 @@ export function selectNearYouGeographyEvidence(record = {}, scope = {}) {
     relation: "located_in",
     location_role: clean(match.location_role, 80),
     basis: clean(match.basis, 160),
+    // PS-04: the one canonical evidence tier, alongside the raw confidence/method beneath it.
+    tier: classifyLocationEvidence({ confidence_tier: match.confidence, method: match.method }),
     confidence: clean(match.confidence, 40) || null,
     method: clean(match.method, 100),
     source_id: clean(match.source_id, 160),
