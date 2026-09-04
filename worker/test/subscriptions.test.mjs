@@ -128,7 +128,7 @@ test("isDeveloperTestEmail recognizes plus-tagged e2e and scope-watch addresses 
   assert.equal(isDeveloperTestEmail("qa+e2e@example.com"), true);
   assert.equal(isDeveloperTestEmail("ops+scope-watch@example.com"), true);
   assert.equal(isDeveloperTestEmail("reader+newsletter@example.com"), false);
-  assert.equal(isDeveloperTestEmail("devinbalkind@gmail.com"), false);
+  assert.equal(isDeveloperTestEmail("recovered-subscriber-3@example.com"), false);
   assert.equal(isTestSubscriber({ email: "jamesca2ro+scope-watch-e2e-20260806@gmail.com" }), true);
   assert.equal(isTestSubscriber({ email: "reader@example.com", developer_test: true }), true);
   assert.equal(isTestSubscriber({ email: "reader@example.com" }), false);
@@ -166,7 +166,7 @@ test("self-origin addresses are machine accounts, kept in their own lifecycle bu
 
 test("signupLifecycleFromRecord projects recovered pending-enrollment before first digest", () => {
   const recovered = {
-    email: "ninodepaola@gmail.com",
+    email: "recovered-subscriber-2@example.com",
     source: DEPRECATED_OPT_IN_RECOVERY_SOURCE,
     delivery_not_before: "2026-08-18T23:00:00.000Z",
   };

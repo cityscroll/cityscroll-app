@@ -21,13 +21,13 @@ class KV {
 }
 
 test("admin roster keeps two sub keys that share a 2-hex prefix distinct and shows full addresses", async () => {
-  const shelly = "sub:36abcdef01234567";
+  const reader = "sub:36abcdef01234567";
   const owner = "sub:36fedcba76543210";
   const env = {
     ADMIN_KEY: "secret",
     SUBS: new KV({
-      [shelly]: JSON.stringify({
-        email: "shelly.ronen@gmail.com",
+      [reader]: JSON.stringify({
+        email: "reader-account@example.com",
         lens: "money",
         filter: {},
         freq: "weekly",
@@ -44,20 +44,20 @@ test("admin roster keeps two sub keys that share a 2-hex prefix distinct and sho
   assert.equal(res.status, 200);
   const body = await res.json();
   const keys = body.subs.map((row) => row.key).sort();
-  assert.deepEqual(keys, [shelly, owner].sort());
-  assert.deepEqual(body.sampleKeys.sort(), [shelly, owner].sort());
+  assert.deepEqual(keys, [reader, owner].sort());
+  assert.deepEqual(body.sampleKeys.sort(), [reader, owner].sort());
   assert.equal(new Set(keys).size, 2);
   assert.ok(!body.sampleKeys.some((key) => key.includes("***")));
   assert.deepEqual(body.subs.map((row) => row.email).sort(), [
     "owner@example.com",
-    "shelly.ronen@gmail.com",
+    "reader-account@example.com",
   ]);
 
   const html = await (await handleAdminSubs(
     new Request("https://w/admin/subs?key=secret&view=html"),
     env,
   )).text();
-  assert.match(html, /shelly\.ronen@gmail\.com/);
+  assert.match(html, /reader-account@example\.com/);
   assert.match(html, /owner@example\.com/);
   assert.match(html, /sub:36abcdef01234567/);
   assert.match(html, /sub:36fedcba76543210/);
@@ -67,7 +67,7 @@ test("admin roster keeps two sub keys that share a 2-hex prefix distinct and sho
 test("daylog identity uses the full sub key and address, not the 2-hex mask", () => {
   const a = toDayLogEntry({
     sub: "sub:36abcdef01234567",
-    email: "shelly.ronen@gmail.com",
+    email: "reader-account@example.com",
     lens: "money",
     new: 1,
     noticeIds: ["20250110001"],
@@ -86,8 +86,8 @@ test("daylog identity uses the full sub key and address, not the 2-hex mask", ()
   assert.equal(a.id, "sub:36abcdef01234567");
   assert.equal(b.id, "sub:36fedcba76543210");
   assert.notEqual(a.id, b.id);
-  assert.equal(a.email, "shelly.ronen@gmail.com");
+  assert.equal(a.email, "reader-account@example.com");
   assert.equal(b.email, "owner@example.com");
-  assert.equal(accountLogId("shelly.ronen@gmail.com"), "account:shelly.ronen@gmail.com");
-  assert.notEqual(accountLogId("shelly.ronen@gmail.com"), accountLogId("sharon@example.com"));
+  assert.equal(accountLogId("reader-account@example.com"), "account:reader-account@example.com");
+  assert.notEqual(accountLogId("reader-account@example.com"), accountLogId("sharon@example.com"));
 });

@@ -272,7 +272,7 @@ def assert_structured_property_sections(page: Page) -> dict[str, object]:
         )
     rendered = commercial.inner_text()
     assert "not an auction price" in rendered
-    assert "Call the public-hearings office at (212) 788-7490" in rendered
+    assert "Call the public-hearings office at (212) 555-0157" in rendered
     assert commercial.locator(".property-commercial-timed-events time").count() >= 2
 
     rail = page.locator("#nactions .next-action-rail")

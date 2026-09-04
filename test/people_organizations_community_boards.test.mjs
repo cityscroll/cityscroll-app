@@ -91,7 +91,7 @@ test("Council rows retain the official route while surfacing an additive generic
   const model = buildPeopleOrganizationsReadModel({
     people: {
       retrieved_at: "2026-08-25T12:00:00Z",
-      by_person_id: { "7801": { person_id: "7801", person_name: "Jane Doe", terms: [] } },
+      by_person_id: { "7801": { person_id: "7801", person_name: "Ada Lovelace", terms: [] } },
     },
   });
   const official = model.rows.find((row) => row.kind === "official");

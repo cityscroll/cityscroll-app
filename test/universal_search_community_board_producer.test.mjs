@@ -90,16 +90,16 @@ test("CB people remain distinct from same-name Council identities and expose rol
     schema: "cityscroll.community_board_people.v1",
     observed_on: "2026-08-25",
     boards: {
-      "manhattan-cb-06": { relationships: [person("manhattan-cb-06", "jane-doe", "Jane Doe")] },
-      "brooklyn-cb-01": { relationships: [person("brooklyn-cb-01", "jane-doe", "Jane Doe")] },
+      "manhattan-cb-06": { relationships: [person("manhattan-cb-06", "testy-mctestface", "Testy McTestface")] },
+      "brooklyn-cb-01": { relationships: [person("brooklyn-cb-01", "testy-mctestface", "Testy McTestface")] },
     },
   };
   const corpus = buildCommunityBoardPersonSearchDocuments(people, { boardLookup: boards });
   assert.deepEqual(corpus.documents.map((document) => document.object_ref), [
-    "community-board-person:brooklyn-cb-01:jane-doe",
-    "community-board-person:manhattan-cb-06:jane-doe",
+    "community-board-person:brooklyn-cb-01:testy-mctestface",
+    "community-board-person:manhattan-cb-06:testy-mctestface",
   ]);
-  const result = corpus.documents.find((document) => document.object_ref.endsWith("manhattan-cb-06:jane-doe"));
+  const result = corpus.documents.find((document) => document.object_ref.endsWith("manhattan-cb-06:testy-mctestface"));
   assert.match(result.summary, /Board member · Manhattan Community Board 6/);
   assert.doesNotMatch(result.canonical_href, /officials/);
   const html = renderUniversalSearchResultHtml({
@@ -109,7 +109,7 @@ test("CB people remain distinct from same-name Council identities and expose rol
     lens: "people",
     match_fields: [{
       field: "title",
-      matched_term: "jane doe",
+      matched_term: "testy mctestface",
       source_observation_ref: result.source_observation_refs[0],
     }],
   });

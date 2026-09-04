@@ -69,7 +69,6 @@
   "always_include_paths": [
     ".gitattributes",
     ".gitignore",
-    ".scrimignore",
     "Makefile",
     "package.json",
     "pnpm-lock.yaml"

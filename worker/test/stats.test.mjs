@@ -455,7 +455,7 @@ test("topicless weekly-contracts defaults count as active watches and digest acc
 
 test("developer and e2e plus-tag addresses are excluded from real subscriber counts", async () => {
   const subs = fakeKV({
-    "sub:real": JSON.stringify({ email: "devinbalkind@gmail.com", lens: "money" }),
+    "sub:real": JSON.stringify({ email: "reader-real@example.com", lens: "money" }),
     "sub:e2e": JSON.stringify({ email: "jamesca2ro+scope-watch-e2e-20260806@gmail.com", lens: "money" }),
     "sub:flagged": JSON.stringify({ email: "reader@example.com", developer_test: true, lens: "money" }),
   });

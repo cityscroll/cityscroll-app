@@ -45,8 +45,8 @@ test("normalizeDoingBusinessDate maps truncated 00YY years to 20YY", () => {
 });
 
 test("normalizePhone formats 10-digit numbers", () => {
-  assert.equal(normalizePhone("7182872600"), "718-287-2600");
-  assert.equal(normalizePhone("17182872600"), "718-287-2600");
+  assert.equal(normalizePhone("7185550142"), "718-555-0142");
+  assert.equal(normalizePhone("17185550142"), "718-555-0142");
   assert.equal(normalizePhone(""), null);
 });
 
@@ -95,7 +95,7 @@ test("profile payload omits internal stem and carries catalog link", () => {
   assert.equal(payload.organization_name, "CAMBA  INC");
   assert.equal(payload.ownership_structure_code, "COR");
   assert.equal(payload.ownership_structure, "Corporation");
-  assert.equal(payload.organization_phone, "718-287-2600");
+  assert.equal(payload.organization_phone, "718-555-0142");
   assert.equal(payload.doing_business_start_date, "2009-05-16");
   assert.equal(payload.catalog, "https://data.cityofnewyork.us/d/72mk-a8z7");
   assert.equal("stem" in payload, false);

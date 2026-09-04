@@ -17,12 +17,11 @@ import {
 } from "./lib/subscriptions.mjs";
 import { appendWatchLog, watchLabel } from "./lib/watchlog.mjs";
 import {
-  VETTED_DEPRECATED_OPT_IN_RECOVERY_MANIFEST,
-  VETTED_RECOVERED_SIGNUP_EMAILS,
+  RECOVERY_MANIFEST_SIZE,
+  loadDeprecatedOptInRecoveryManifest,
 } from "./lib/deprecated_opt_in_recovery_manifest.mjs";
 
-export { RECOVERY_EXPLANATION, VETTED_DEPRECATED_OPT_IN_RECOVERY_MANIFEST, VETTED_RECOVERED_SIGNUP_EMAILS };
-const RECOVERY_MANIFEST_SIZE = VETTED_DEPRECATED_OPT_IN_RECOVERY_MANIFEST.length;
+export { RECOVERY_EXPLANATION };
 
 function validOriginalSignupAt(value) {
   if (typeof value !== "string" || !value.trim()) return false;
@@ -236,7 +235,7 @@ async function recoverOne(env, row, recoveredAt) {
 export async function recoverDeprecatedDoubleOptIn(env, rowsOrOptions, maybeOptions = {}) {
   if (!env?.SUBS || !env?.ALERT_STATE) throw new TypeError("SUBS and ALERT_STATE are required");
   const options = Array.isArray(rowsOrOptions) ? maybeOptions : (rowsOrOptions || {});
-  const rows = VETTED_DEPRECATED_OPT_IN_RECOVERY_MANIFEST;
+  const rows = loadDeprecatedOptInRecoveryManifest(env);
   if (rows.length !== RECOVERY_MANIFEST_SIZE) {
     throw new TypeError(`recovery manifest must contain exactly ${RECOVERY_MANIFEST_SIZE} rows`);
   }
@@ -257,6 +256,6 @@ export async function recoverDeprecatedDoubleOptIn(env, rowsOrOptions, maybeOpti
     already_enrolled: results.filter((row) => row.status === "already-enrolled").length,
     developer_test: results.filter((row) =>
       row.status === "marked-developer-test" || row.status === "already-marked-developer-test").length,
-    emails: [...VETTED_RECOVERED_SIGNUP_EMAILS],
+    emails: rows.filter((row) => !isDeveloperTestEmail(row.email)).map((row) => normalizeEmail(row.email)),
   };
 }
