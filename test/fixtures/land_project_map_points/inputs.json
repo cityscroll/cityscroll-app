@@ -7,7 +7,7 @@
     "projects": [
       { "project_id": "2026R0127", "project_name": "Single lot specimen" },
       { "project_id": "2025K0305", "project_name": "Multi lot specimen" },
-      { "project_id": "2026K0123", "project_name": "No retained BBL" },
+      { "project_id": "2025M0252", "project_name": "No retained BBL" },
       { "project_id": "2020M0385", "project_name": "Exact BBL missing centroid" },
       { "project_id": "REJECTED1", "project_name": "Rejected geocode only" }
     ]

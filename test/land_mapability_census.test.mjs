@@ -111,27 +111,34 @@ test("2025K0305 is a 25-centroid multi-BBL specimen", () => {
   assert.equal(row.join_version, LAND_MAPABILITY_JOIN_VERSION);
 });
 
-test("negative specimens 2026K0123 and 2025R0222 stay unmapped", () => {
-  for (const id of ["2026K0123", "2025R0222"]) {
-    const row = committed.projects.find((item) => item.project_id === id);
-    assert.equal(row.mapped, false);
-    assert.equal(row.exact_bbl_count, 0);
-    assert.equal(row.unmapped_reason, "no_retained_bbl");
-    assert.equal(row.point, null);
-  }
+test("negative specimen 2025M0252 stays unmapped", () => {
+  const row = committed.projects.find((item) => item.project_id === "2025M0252");
+  assert.equal(row.mapped, false);
+  assert.equal(row.exact_bbl_count, 0);
+  assert.equal(row.unmapped_reason, "no_retained_bbl");
+  assert.equal(row.point, null);
+});
+
+test("the 2026K0123 MapPLUTO centroid canary stays present and now matches this project's own retained BBL", () => {
+  // The fuller WH-06 pull retains 2026K0123's own BBL again, so the canary
+  // (kept for when /zap-outcomes KV drops the project and the census would
+  // otherwise show unmapped) and the project's ordinary exact-BBL match now
+  // coincide. The canary's job is that its BBL always has a centroid, not
+  // that this project must avoid matching it.
   const canaryBbl = Object.keys(BBL_MAPPLUTO_CENTROID_CANARIES).find(
     (bbl) => BBL_MAPPLUTO_CENTROID_CANARIES[bbl] === "2026K0123",
   );
   assert.ok(canaryBbl);
   assert.ok(mapplutoCentroids.by_bbl[normalizeBbl(canaryBbl)]);
   const row = committed.projects.find((item) => item.project_id === "2026K0123");
-  assert.equal(row.matched_centroids.some((hit) => hit.bbl === normalizeBbl(canaryBbl)), false);
+  assert.equal(row.mapped, true);
+  assert.equal(row.matched_centroids.some((hit) => hit.bbl === normalizeBbl(canaryBbl)), true);
 });
 
 test("geocoded points, district guesses, neighboring parcels, and outcome points do not map", () => {
   const baseline = census();
   const mutatedProjects = landDefault.projects.map((project) => {
-    if (project.project_id !== "2026K0123") return project;
+    if (project.project_id !== "2025M0252") return project;
     return { ...project, latitude: 40.694, longitude: -73.986, lat: 40.694, lon: -73.986 };
   });
   const neighborBbl = Object.keys(mapplutoCentroids.by_bbl)[0];
@@ -139,11 +146,11 @@ test("geocoded points, district guesses, neighboring parcels, and outcome points
     ...zapBbl,
     rows: [
       ...zapBbl.rows,
-      { project_id: "2026K0123-neighbor-ignored", bbls: [neighborBbl] },
+      { project_id: "2025M0252-neighbor-ignored", bbls: [neighborBbl] },
     ],
   };
   const polluted = census({
-    landDefault: { ...landDefault, projects: mutatedProjects, outcomes: { "2026K0123": { lat: 40.69, lon: -73.98 } } },
+    landDefault: { ...landDefault, projects: mutatedProjects, outcomes: { "2025M0252": { lat: 40.69, lon: -73.98 } } },
     zapBbl: mutatedBbl,
     geocode: () => ({ status: "matched", lat: 40.71, lon: -74.01, method: "address_geocode" }),
     districtCentroids: { Brooklyn: { lat: 40.65, lon: -73.95 } },
@@ -152,7 +159,7 @@ test("geocoded points, district guesses, neighboring parcels, and outcome points
   assert.deepEqual(polluted.unmapped_project_ids, baseline.unmapped_project_ids);
   assert.equal(polluted.aggregations.mapped, 33);
   assert.equal(polluted.aggregations.unmapped, 7);
-  const k0123 = polluted.projects.find((row) => row.project_id === "2026K0123");
+  const k0123 = polluted.projects.find((row) => row.project_id === "2025M0252");
   assert.equal(k0123.mapped, false);
   assert.equal(k0123.point, null);
   const m0452 = polluted.projects.find((row) => row.project_id === "2023M0452");

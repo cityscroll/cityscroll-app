@@ -24,7 +24,7 @@ export const LAND_PROJECT_MAP_POINTS_MAX_BYTES = 64 * 1024;
 export const LAND_PROJECT_MAP_POINT_SPECIMENS = Object.freeze({
   single_bbl: "2026R0127",
   multi_bbl: "2025K0305",
-  no_retained_bbl: "2026K0123",
+  no_retained_bbl: "2025M0252",
 });
 
 export const LAND_PROJECT_MAP_POINT_OUTCOMES = Object.freeze({

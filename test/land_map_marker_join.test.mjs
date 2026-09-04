@@ -61,7 +61,7 @@ function t(key, values = {}) {
 
 const DEFAULT_FILTER = Object.freeze({ status: "active", stage: "any", limit: 40 });
 const MAPPED_SPECIMEN = "2025K0305";
-const UNMAPPED_SPECIMEN = "2026K0123";
+const UNMAPPED_SPECIMEN = "2025M0252";
 // A point the projection knows and the filtered rows do not. It is the whole "the map is not
 // a search" question in one id: it has a perfectly good coordinate and still may not appear.
 const POINT_ONLY_ID = "2099Z9999";

@@ -54,7 +54,7 @@ const TODAY = "2026-08-31";
  */
 const FIXTURES = [
   ["default-list", "#land?status=all&stage=any", null,
-    "The whole filtered population in List: the 40/29/11 arithmetic."],
+    "The whole filtered population in List: the 40/33/7 arithmetic."],
   ["default-map", "#land?status=all&stage=any&view=map", null,
     "The same population in Map. Only `view` differs, so nothing else may."],
   ["combined-list", "#land?status=all&stage=city_council&boro=Queens&family=rezoning", null,
@@ -65,7 +65,7 @@ const FIXTURES = [
     "The dimension with no route key of its own, carried in the typed facet blob."],
   ["mapped-only", "#land?status=all&stage=any&q=Westshore&view=map", null,
     "A scope whose only result is on the map."],
-  ["unmapped-only", "#land?status=all&stage=any&cd=K09&view=map", null,
+  ["unmapped-only", "#land?status=all&stage=any&cd=Q07&view=map", null,
     "A scope whose only result has no published location. It stays a result."],
   ["all-unmapped", "#land?status=all&stage=completed&view=map", null,
     "Every result lacks a point. The map has no markers and the search is not empty."],
@@ -145,7 +145,7 @@ export function buildParityEvidence() {
       ],
       note: "No clock, network, or randomness. The same tree writes the same bytes.",
     },
-    baseline: { total: 40, mapped: 29, unmapped: 11 },
+    baseline: { total: 40, mapped: 33, unmapped: 7 },
     inventory: {
       query_dimensions: LAND_FILTER_DIMENSIONS.map((dimension) => ({
         id: dimension.id,
