@@ -1,0 +1,2074 @@
+{
+  "id" : "hgx4-8ukb",
+  "name" : "Zoning Application Portal (ZAP) - Project Data",
+  "assetType" : "dataset",
+  "attribution" : "Department of City Planning (DCP)",
+  "attributionLink" : "https://www.nyc.gov/content/planning/pages/resources/datasets/zoning-application-portal",
+  "averageRating" : 0,
+  "category" : "City Government",
+  "createdAt" : 1660746445,
+  "description" : "The Department of City Planning (DCP) processes land use applications submitted by City or other public agencies and other (private) applicants. This data set provides information on land use applications, specifically the project tracking and description data related to approximately 30,000 projects since the late 1970s.\n\nZAP project data appears on NYC Planning - Zoning Application Portal Search. It includes data migrated from the prior applications tracking system (LUCATS) and covers all projects that have been \"Noticed\" (that they will appear before the City Planning Commission in 30 or more days for Certification as complete for the ULURP process to begin) or Filed (a CEQR or Land Use application has been formally submitted to the Department for review) through completion (approval, disapproval, withdrawal, or termination). For more information on the land use and environmental review application process see: <a href=\"https://www1.nyc.gov/site/planning/applicants/applicant-portal/application-process.page\">Application Process Overview</a>\n\nYou can explore this data in the <a href=\"https://zap.planning.nyc.gov/projects\">Zoning Application Portal</a>\n\nTo report data errors or for questions, email <a href=\"mailto:zap_feedback_dl@planning.nyc.gov\">zap_feedback_dl@planning.nyc.gov</a>.\n\nAll previously released versions of this data are available on the <a href=\"https://www.nyc.gov/content/planning/pages/resources/datasets/zoning-application-portal\">DCP Website: BYTES of the BIG APPLE</a>. Current version: 20260706",
+  "diciBackend" : false,
+  "displayType" : "table",
+  "downloadCount" : 6510,
+  "hideFromCatalog" : false,
+  "hideFromDataJson" : false,
+  "locked" : false,
+  "newBackend" : true,
+  "numberOfComments" : 0,
+  "oid" : 40458980,
+  "provenance" : "official",
+  "publicationAppendEnabled" : false,
+  "publicationDate" : 1709670073,
+  "publicationGroup" : 18819785,
+  "publicationStage" : "published",
+  "rowsUpdatedAt" : 1786546145,
+  "rowsUpdatedBy" : "iqqb-gm94",
+  "tableId" : 19471873,
+  "totalTimesRated" : 0,
+  "viewCount" : 10722,
+  "viewLastModified" : 1786546139,
+  "viewType" : "tabular",
+  "approvals" : [ {
+    "reviewedAt" : 1667233011,
+    "reviewedAutomatically" : false,
+    "state" : "approved",
+    "submissionId" : 6203853,
+    "submissionObject" : "public_audience_request",
+    "submissionOutcome" : "change_audience",
+    "submittedAt" : 1667232994,
+    "targetAudience" : "public",
+    "workflowId" : 2285,
+    "reviewer" : {
+      "id" : "d5dp-fses",
+      "displayName" : "afinkel"
+    },
+    "submissionDetails" : {
+      "permissionType" : "read"
+    },
+    "submissionOutcomeApplication" : {
+      "endedAt" : 1667233011,
+      "failureCount" : 0,
+      "startedAt" : 1667233011,
+      "status" : "success"
+    },
+    "submitter" : {
+      "id" : "d5dp-fses",
+      "displayName" : "afinkel"
+    }
+  } ],
+  "clientContext" : {
+    "clientContextVariables" : [ ],
+    "inheritedVariables" : { }
+  },
+  "columns" : [ {
+    "id" : 590358167,
+    "name" : "project_id",
+    "dataTypeName" : "text",
+    "description" : "Unique internal application identifier.",
+    "fieldName" : "project_id",
+    "position" : 1,
+    "renderTypeName" : "text",
+    "tableColumnId" : 143341982,
+    "cachedContents" : {
+      "non_null" : "32964",
+      "largest" : "P2018X0337",
+      "null" : "0",
+      "top" : [ {
+        "item" : "P1981M0059",
+        "count" : "1"
+      }, {
+        "item" : "P1983K1019",
+        "count" : "1"
+      }, {
+        "item" : "P1985M0922",
+        "count" : "1"
+      }, {
+        "item" : "2020K0479",
+        "count" : "1"
+      }, {
+        "item" : "P2015K0346",
+        "count" : "1"
+      }, {
+        "item" : "P2002R0030",
+        "count" : "1"
+      }, {
+        "item" : "P1992Q0499",
+        "count" : "1"
+      }, {
+        "item" : "P2015M0262",
+        "count" : "1"
+      }, {
+        "item" : "P1988K1003",
+        "count" : "1"
+      }, {
+        "item" : "P1991M0633",
+        "count" : "1"
+      }, {
+        "item" : "P1986X0426",
+        "count" : "1"
+      }, {
+        "item" : "P1987X0786",
+        "count" : "1"
+      }, {
+        "item" : "P1982Q0528",
+        "count" : "1"
+      }, {
+        "item" : "P1988R0086",
+        "count" : "1"
+      }, {
+        "item" : "P1985X0629",
+        "count" : "1"
+      }, {
+        "item" : "P1983M1500",
+        "count" : "1"
+      }, {
+        "item" : "2019M0198",
+        "count" : "1"
+      }, {
+        "item" : "P1977M0202",
+        "count" : "1"
+      }, {
+        "item" : "P1980R0722",
+        "count" : "1"
+      }, {
+        "item" : "P2013M0099",
+        "count" : "1"
+      } ],
+      "smallest" : "2018K0350",
+      "count" : "32964",
+      "cardinality" : "32964"
+    },
+    "format" : { }
+  }, {
+    "id" : 590358168,
+    "name" : "project_name",
+    "dataTypeName" : "text",
+    "description" : "Name of application/project provided by the applicant.",
+    "fieldName" : "project_name",
+    "position" : 2,
+    "renderTypeName" : "text",
+    "tableColumnId" : 143341973,
+    "cachedContents" : {
+      "non_null" : "30530",
+      "largest" : "ZUM SCHNEIDER",
+      "null" : "2434",
+      "top" : [ {
+        "item" : "C-O-P",
+        "count" : "1130"
+      }, {
+        "item" : "DISPOSITION OF CITY-OWNED PROPERTY",
+        "count" : "370"
+      }, {
+        "item" : "SALE OF CITY-OWNED PROPERTY",
+        "count" : "197"
+      }, {
+        "item" : "LDA",
+        "count" : "33"
+      }, {
+        "item" : "HRA BOARDING HOME",
+        "count" : "33"
+      }, {
+        "item" : "MCDONALD'S",
+        "count" : "19"
+      }, {
+        "item" : "C-O-P (1 PARCEL)",
+        "count" : "16"
+      }, {
+        "item" : "MUMBLES",
+        "count" : "14"
+      }, {
+        "item" : "SWEAT EQUITY PROJECT",
+        "count" : "14"
+      }, {
+        "item" : "STARBUCKS COFFEE",
+        "count" : "14"
+      }, {
+        "item" : "SMITH & WOLLENSKY",
+        "count" : "13"
+      }, {
+        "item" : "873 BROADWAY",
+        "count" : "13"
+      }, {
+        "item" : "EMERSONIA ESTATES",
+        "count" : "13"
+      }, {
+        "item" : "THE SALOON",
+        "count" : "13"
+      }, {
+        "item" : "THE BOULEVARD",
+        "count" : "13"
+      }, {
+        "item" : "PRINCE'S POINT",
+        "count" : "11"
+      }, {
+        "item" : "BENNY'S BURRITOS",
+        "count" : "10"
+      }, {
+        "item" : "LOUIE'S WESTSIDE CAFE",
+        "count" : "10"
+      }, {
+        "item" : "CAFFE DANTE",
+        "count" : "10"
+      }, {
+        "item" : "Sewerage",
+        "count" : "10"
+      } ],
+      "smallest" : "0/B/0 HPD",
+      "count" : "32964",
+      "cardinality" : "32964"
+    },
+    "format" : { }
+  }, {
+    "id" : 590358169,
+    "name" : "project_brief",
+    "dataTypeName" : "text",
+    "description" : "Description of the application and the development it will facilitate.",
+    "fieldName" : "project_brief",
+    "position" : 3,
+    "renderTypeName" : "text",
+    "tableColumnId" : 143341987,
+    "cachedContents" : {
+      "non_null" : "32250",
+      "largest" : "ZR TEXT CHNG TO SPEC 5AVE DIST TO MODIF CONDITNS FOR*COVERED PEDESTRN SPACE <50FT FRM 5 AVE & PROVIDE FLR AREA*BONUS FOR COMPLYING PUBLIC PASSAGEWY (ZR12-10) (POPS)",
+      "null" : "714",
+      "top" : [ {
+        "item" : "DISPOSITION OF CITY-OWNED PROPERTY, 1 PARCEL",
+        "count" : "326"
+      }, {
+        "item" : "LDA",
+        "count" : "203"
+      }, {
+        "item" : "UNRESTRICTED DISPOSITION OF CITY-OWNED PROPERTY, 1 PARCEL",
+        "count" : "173"
+      }, {
+        "item" : "RENEWAL-ENCLOSED SIDEWALK CAFE",
+        "count" : "165"
+      }, {
+        "item" : "DISPOSITION OF CITY-OWNED PROPERTY, 2 PARCELS",
+        "count" : "143"
+      }, {
+        "item" : "CONSENT-UNENCLOSED SIDEWALK CAFE",
+        "count" : "138"
+      }, {
+        "item" : "UDAAP",
+        "count" : "113"
+      }, {
+        "item" : "This is a private application to facilitate a subdivision and school seat certification pursuant to ZR 107-08 and 107-121, SI03, Staten Island",
+        "count" : "106"
+      }, {
+        "item" : "RENEWAL-UNENCLOSED SIDEWALK CAFE",
+        "count" : "104"
+      }, {
+        "item" : "SALE OF CITY-OWNED PROPERTY, 1 PARCEL",
+        "count" : "99"
+      }, {
+        "item" : "NEW-UNENCLOSED SIDEWALK CAFE",
+        "count" : "94"
+      }, {
+        "item" : "SCHL CERT TO BUILD A 2-FAMILY HOME IN SRSD",
+        "count" : "89"
+      }, {
+        "item" : "CONSENT-ENCLOSED SIDEWALK CAFE",
+        "count" : "86"
+      }, {
+        "item" : "DISPOSITION OF 1 PARCEL OF CITY-OWNED PROPERTY",
+        "count" : "82"
+      }, {
+        "item" : "DISPOSITION OF CITY-OWNED PROPERTY, 3 PARCELS",
+        "count" : "82"
+      }, {
+        "item" : "SCHL CERT TO BUILD A 1-FAMILY HOME IN SRSD",
+        "count" : "68"
+      }, {
+        "item" : "UNRESTRICTED DISPOSITION OF CITY-OWNED PROPERTY, 2 PARCELS",
+        "count" : "62"
+      }, {
+        "item" : "DISPO OF CITY-OWNED PROPERTY,1 PARCEL",
+        "count" : "62"
+      }, {
+        "item" : "DISPOSITION OF CITY-OWNED PROPERTY, 4 PARCELS",
+        "count" : "59"
+      }, {
+        "item" : "RENEWAL FOR AN ENCLOSED SIDEWALK CAFE",
+        "count" : "57"
+      } ],
+      "smallest" : "00BOE001M: TO OBTAIN A LONG-TERM LEASE AT 514 W. 49TH STREET IN C.B.#4 FOR USE AS A FACILITY FOR THE BOARD OF ELECTIONS",
+      "count" : "32964",
+      "cardinality" : "32964"
+    },
+    "format" : { }
+  }, {
+    "id" : 590358170,
+    "name" : "project_status",
+    "dataTypeName" : "text",
+    "description" : "This indicates whether the application is actively being worked on or not.",
+    "fieldName" : "project_status",
+    "position" : 4,
+    "renderTypeName" : "text",
+    "tableColumnId" : 143341985,
+    "cachedContents" : {
+      "non_null" : "32964",
+      "largest" : "Withdrawn-Other",
+      "null" : "0",
+      "top" : [ {
+        "item" : "Complete",
+        "count" : "28361"
+      }, {
+        "item" : "Withdrawn-Other",
+        "count" : "2518"
+      }, {
+        "item" : "Terminated",
+        "count" : "1678"
+      }, {
+        "item" : "Active",
+        "count" : "267"
+      }, {
+        "item" : "On-Hold",
+        "count" : "76"
+      }, {
+        "item" : "Terminated-Applicant Unresponsive",
+        "count" : "60"
+      }, {
+        "item" : "Record Closed",
+        "count" : "4"
+      } ],
+      "smallest" : "Active",
+      "count" : "32964",
+      "cardinality" : "32964"
+    },
+    "format" : { }
+  }, {
+    "id" : 590358171,
+    "name" : "public_status",
+    "dataTypeName" : "text",
+    "description" : "The public status of the application.",
+    "fieldName" : "public_status",
+    "position" : 5,
+    "renderTypeName" : "text",
+    "tableColumnId" : 143341979,
+    "cachedContents" : {
+      "non_null" : "32963",
+      "largest" : "Noticed",
+      "null" : "1",
+      "top" : [ {
+        "item" : "Completed",
+        "count" : "32728"
+      }, {
+        "item" : "Filed",
+        "count" : "128"
+      }, {
+        "item" : "In Public Review",
+        "count" : "65"
+      }, {
+        "item" : "Noticed",
+        "count" : "42"
+      } ],
+      "smallest" : "Completed",
+      "count" : "32964",
+      "cardinality" : "32964"
+    },
+    "format" : { }
+  }, {
+    "id" : 590358172,
+    "name" : "ulurp_non",
+    "dataTypeName" : "text",
+    "description" : "Flag that indicates if a project is subject to ULURP or not. Applications can either follow the Uniform Land Use Review Procedure (ULURP) or are designated as Non-ULURP, and are therefore not restricted to ULURP rules and timing.",
+    "fieldName" : "ulurp_non",
+    "position" : 6,
+    "renderTypeName" : "text",
+    "tableColumnId" : 143341965,
+    "cachedContents" : {
+      "non_null" : "30591",
+      "largest" : "ULURP",
+      "null" : "2373",
+      "top" : [ {
+        "item" : "Non-ULURP",
+        "count" : "18314"
+      }, {
+        "item" : "ULURP",
+        "count" : "12273"
+      }, {
+        "item" : "ELURP",
+        "count" : "4"
+      } ],
+      "smallest" : "ELURP",
+      "count" : "32964",
+      "cardinality" : "32964"
+    },
+    "format" : { }
+  }, {
+    "id" : 590358173,
+    "name" : "actions",
+    "dataTypeName" : "text",
+    "description" : "The type of action(s) included in the application. There may be multiple land use actions attached to an application to facilitate a single development. Many action types on historical applications are retired.",
+    "fieldName" : "actions",
+    "position" : 7,
+    "renderTypeName" : "text",
+    "tableColumnId" : 143341972,
+    "cachedContents" : {
+      "non_null" : "1509",
+      "largest" : "ZS; ZS; ZC; ZC; LD; ZC; ZC; LD; LD",
+      "null" : "31455",
+      "top" : [ {
+        "item" : "ZM; ZR",
+        "count" : "168"
+      }, {
+        "item" : "ZC",
+        "count" : "145"
+      }, {
+        "item" : "RC",
+        "count" : "132"
+      }, {
+        "item" : "PX",
+        "count" : "98"
+      }, {
+        "item" : "ZC; LD",
+        "count" : "83"
+      }, {
+        "item" : "HK",
+        "count" : "70"
+      }, {
+        "item" : "MM",
+        "count" : "64"
+      }, {
+        "item" : "ZA",
+        "count" : "58"
+      }, {
+        "item" : "ZM",
+        "count" : "52"
+      }, {
+        "item" : "HI",
+        "count" : "41"
+      }, {
+        "item" : "ZS",
+        "count" : "31"
+      }, {
+        "item" : "RC; RC",
+        "count" : "30"
+      }, {
+        "item" : "CM",
+        "count" : "28"
+      }, {
+        "item" : "LD",
+        "count" : "27"
+      }, {
+        "item" : "ZA; ZA",
+        "count" : "27"
+      }, {
+        "item" : "ZR",
+        "count" : "24"
+      }, {
+        "item" : "PC",
+        "count" : "23"
+      }, {
+        "item" : "HA",
+        "count" : "20"
+      }, {
+        "item" : "ZA; ZA; LD",
+        "count" : "17"
+      }, {
+        "item" : "PQ",
+        "count" : "13"
+      } ],
+      "smallest" : "BD",
+      "count" : "32964",
+      "cardinality" : "32964"
+    },
+    "format" : { }
+  }, {
+    "id" : 590358174,
+    "name" : "ulurp_numbers",
+    "dataTypeName" : "text",
+    "description" : "The ULURP number is a unique identifier for each application's action. The first 2-characters (number) are the fiscal year the application was filed, followed by 4-character unique number, if an application was modified it will be followed by a 1-character (letter), followed by 2-character (letter) action code, followed by a 1-character (letter) borough code.",
+    "fieldName" : "ulurp_numbers",
+    "position" : 8,
+    "renderTypeName" : "text",
+    "tableColumnId" : 143341969,
+    "cachedContents" : {
+      "non_null" : "27998",
+      "largest" : "S790646ZSM",
+      "null" : "4966",
+      "top" : [ {
+        "item" : "C870526HAK",
+        "count" : "2"
+      }, {
+        "item" : "N860877TCM",
+        "count" : "1"
+      }, {
+        "item" : "N040031ZCM",
+        "count" : "1"
+      }, {
+        "item" : "C800284PPK",
+        "count" : "1"
+      }, {
+        "item" : "N000284UCM",
+        "count" : "1"
+      }, {
+        "item" : "C920445PCX",
+        "count" : "1"
+      }, {
+        "item" : "N860584RCR",
+        "count" : "1"
+      }, {
+        "item" : "C850739PSR",
+        "count" : "1"
+      }, {
+        "item" : "C010302PPK",
+        "count" : "1"
+      }, {
+        "item" : "C890023PPK",
+        "count" : "1"
+      }, {
+        "item" : "N150421ZRR; C150422ZMR; N150423ZAR; N150424ZAR; N150425ZAR; N150426ZAR; N150427ZCR; C150428PPR",
+        "count" : "1"
+      }, {
+        "item" : "M820726AZCM",
+        "count" : "1"
+      }, {
+        "item" : "N980360ZAR",
+        "count" : "1"
+      }, {
+        "item" : "N830541ZRK",
+        "count" : "1"
+      }, {
+        "item" : "I030148MMQ",
+        "count" : "1"
+      }, {
+        "item" : "N830878ZCM",
+        "count" : "1"
+      }, {
+        "item" : "C810457HDM",
+        "count" : "1"
+      }, {
+        "item" : "N980120UCM",
+        "count" : "1"
+      }, {
+        "item" : "N890845RCR",
+        "count" : "1"
+      }, {
+        "item" : "C780076TLK",
+        "count" : "1"
+      } ],
+      "smallest" : "140316ZSR; N140317RAR; N140318RAR; N140319ZAR; N140321ZCR; 190188MMR",
+      "count" : "32964",
+      "cardinality" : "32964"
+    },
+    "format" : { }
+  }, {
+    "id" : 590358175,
+    "name" : "ceqr_type",
+    "dataTypeName" : "text",
+    "description" : "Indicates the type of environmental review",
+    "fieldName" : "ceqr_type",
+    "position" : 9,
+    "renderTypeName" : "text",
+    "tableColumnId" : 143341962,
+    "cachedContents" : {
+      "non_null" : "3447",
+      "largest" : "Unlisted",
+      "null" : "29517",
+      "top" : [ {
+        "item" : "Type II",
+        "count" : "2112"
+      }, {
+        "item" : "Unlisted",
+        "count" : "799"
+      }, {
+        "item" : "Type I",
+        "count" : "453"
+      }, {
+        "item" : "Not Applicable",
+        "count" : "83"
+      } ],
+      "smallest" : "Not Applicable",
+      "count" : "32964",
+      "cardinality" : "32964"
+    },
+    "format" : { }
+  }, {
+    "id" : 590358176,
+    "name" : "ceqr_number",
+    "dataTypeName" : "text",
+    "description" : "Unique environmental review identifier",
+    "fieldName" : "ceqr_number",
+    "position" : 10,
+    "renderTypeName" : "text",
+    "tableColumnId" : 143341975,
+    "cachedContents" : {
+      "non_null" : "10039",
+      "largest" : "UNSURE",
+      "null" : "22925",
+      "top" : [ {
+        "item" : "81-040R",
+        "count" : "29"
+      }, {
+        "item" : "82-248K",
+        "count" : "13"
+      }, {
+        "item" : "03DCP031M",
+        "count" : "11"
+      }, {
+        "item" : "97DOT007Y",
+        "count" : "11"
+      }, {
+        "item" : "85-253M",
+        "count" : "10"
+      }, {
+        "item" : "88-087X",
+        "count" : "9"
+      }, {
+        "item" : "82-245M",
+        "count" : "8"
+      }, {
+        "item" : "84-091M",
+        "count" : "8"
+      }, {
+        "item" : "88-042X",
+        "count" : "8"
+      }, {
+        "item" : "97DEP026R",
+        "count" : "8"
+      }, {
+        "item" : "85-277M",
+        "count" : "7"
+      }, {
+        "item" : "85-279Q",
+        "count" : "7"
+      }, {
+        "item" : "89-303Q",
+        "count" : "7"
+      }, {
+        "item" : "86-111M",
+        "count" : "7"
+      }, {
+        "item" : "80-071M",
+        "count" : "7"
+      }, {
+        "item" : "82-364M",
+        "count" : "7"
+      }, {
+        "item" : "04DCP009R",
+        "count" : "7"
+      }, {
+        "item" : "06HPD008X",
+        "count" : "6"
+      }, {
+        "item" : "82-070M",
+        "count" : "6"
+      }, {
+        "item" : "83-244M",
+        "count" : "6"
+      } ],
+      "smallest" : "00BEL001M",
+      "count" : "32964",
+      "cardinality" : "32964"
+    },
+    "format" : { }
+  }, {
+    "id" : 590358177,
+    "name" : "eas_eis",
+    "dataTypeName" : "text",
+    "description" : "Flag that indicates the environmental review document issued.   Environmental Assessment Statement (EAS), Environmental Impact Statement (EIS), Technical Memorandum (Tech Memo)",
+    "fieldName" : "eas_eis",
+    "position" : 11,
+    "renderTypeName" : "text",
+    "tableColumnId" : 143341989,
+    "cachedContents" : {
+      "non_null" : "1015",
+      "largest" : "Tech Memo",
+      "null" : "31949",
+      "top" : [ {
+        "item" : "EAS",
+        "count" : "832"
+      }, {
+        "item" : "EIS",
+        "count" : "159"
+      }, {
+        "item" : "Tech Memo",
+        "count" : "24"
+      } ],
+      "smallest" : "EAS",
+      "count" : "32964",
+      "cardinality" : "32964"
+    },
+    "format" : { }
+  }, {
+    "id" : 590358178,
+    "name" : "ceqr_leadagency",
+    "dataTypeName" : "text",
+    "description" : "The agency responsible for determining if an environmental review is required.",
+    "fieldName" : "ceqr_leadagency",
+    "position" : 12,
+    "renderTypeName" : "text",
+    "tableColumnId" : 143341986,
+    "cachedContents" : {
+      "non_null" : "4828",
+      "largest" : "U.S. Army Corps of Engineers",
+      "null" : "28136",
+      "top" : [ {
+        "item" : "DCP",
+        "count" : "4271"
+      }, {
+        "item" : "HPD",
+        "count" : "142"
+      }, {
+        "item" : "LPC",
+        "count" : "54"
+      }, {
+        "item" : "DME",
+        "count" : "54"
+      }, {
+        "item" : "DCAS - Department of Citywide Administrative Services (NYC)",
+        "count" : "41"
+      }, {
+        "item" : "ACS",
+        "count" : "37"
+      }, {
+        "item" : "DPR",
+        "count" : "33"
+      }, {
+        "item" : "DOT",
+        "count" : "29"
+      }, {
+        "item" : "DSBS",
+        "count" : "28"
+      }, {
+        "item" : "DEP",
+        "count" : "20"
+      }, {
+        "item" : "NYPD",
+        "count" : "14"
+      }, {
+        "item" : "DCP - Department of City Planning",
+        "count" : "11"
+      }, {
+        "item" : "FDNY",
+        "count" : "11"
+      }, {
+        "item" : "BSA",
+        "count" : "9"
+      }, {
+        "item" : "DSNY",
+        "count" : "7"
+      }, {
+        "item" : "MOEC",
+        "count" : "6"
+      }, {
+        "item" : "DEP - Department of Environmental Protection (NYC)",
+        "count" : "6"
+      }, {
+        "item" : "DOHMH - DEPARTMENT OF HEALTH AND MENTAL HYGIENE",
+        "count" : "6"
+      }, {
+        "item" : "DFTA",
+        "count" : "5"
+      }, {
+        "item" : "Federal Highway Administration",
+        "count" : "4"
+      } ],
+      "smallest" : "ACS",
+      "count" : "32964",
+      "cardinality" : "32964"
+    },
+    "format" : { }
+  }, {
+    "id" : 590358179,
+    "name" : "primary_applicant",
+    "dataTypeName" : "text",
+    "description" : "Name of the project's primary applicant.",
+    "fieldName" : "primary_applicant",
+    "position" : 13,
+    "renderTypeName" : "text",
+    "tableColumnId" : 143341963,
+    "cachedContents" : {
+      "non_null" : "32964",
+      "largest" : "ZYGELMAN, DAVE/ODDO, PETER",
+      "null" : "0",
+      "top" : [ {
+        "item" : "DRP",
+        "count" : "2824"
+      }, {
+        "item" : "HPD",
+        "count" : "2096"
+      }, {
+        "item" : "LPC",
+        "count" : "905"
+      }, {
+        "item" : "Unknown",
+        "count" : "698"
+      }, {
+        "item" : "DCP",
+        "count" : "592"
+      }, {
+        "item" : "DEP",
+        "count" : "470"
+      }, {
+        "item" : "DCAS - Department of Citywide Administrative Services (NYC)",
+        "count" : "448"
+      }, {
+        "item" : "Department of General Services (now part of DCAS)",
+        "count" : "391"
+      }, {
+        "item" : "HRA",
+        "count" : "247"
+      }, {
+        "item" : "DOT",
+        "count" : "210"
+      }, {
+        "item" : "CALVANICO ASSOC.",
+        "count" : "170"
+      }, {
+        "item" : "BENEDA, RUDOLF",
+        "count" : "158"
+      }, {
+        "item" : "Calvanico Associates",
+        "count" : "156"
+      }, {
+        "item" : "DPR",
+        "count" : "155"
+      }, {
+        "item" : "DSNY",
+        "count" : "133"
+      }, {
+        "item" : "PDC",
+        "count" : "129"
+      }, {
+        "item" : "HRA/DGS",
+        "count" : "126"
+      }, {
+        "item" : "DEPT OF REAL ESTATE",
+        "count" : "121"
+      }, {
+        "item" : "NYC LPC",
+        "count" : "118"
+      }, {
+        "item" : "NYCHA",
+        "count" : "99"
+      } ],
+      "smallest" : "001 & YIP CORP",
+      "count" : "32964",
+      "cardinality" : "32964"
+    },
+    "format" : { }
+  }, {
+    "id" : 590358180,
+    "name" : "applicant_type",
+    "dataTypeName" : "text",
+    "description" : "Indicates if the applicant is a private or public entity.",
+    "fieldName" : "applicant_type",
+    "position" : 14,
+    "renderTypeName" : "text",
+    "tableColumnId" : 143341959,
+    "cachedContents" : {
+      "non_null" : "30846",
+      "largest" : "Private",
+      "null" : "2118",
+      "top" : [ {
+        "item" : "Private",
+        "count" : "19115"
+      }, {
+        "item" : "Other Public Agency",
+        "count" : "10878"
+      }, {
+        "item" : "DCP",
+        "count" : "853"
+      } ],
+      "smallest" : "DCP",
+      "count" : "32964",
+      "cardinality" : "32964"
+    },
+    "format" : { }
+  }, {
+    "id" : 590358181,
+    "name" : "borough",
+    "dataTypeName" : "text",
+    "description" : "Borough that is affected by the land use application.",
+    "fieldName" : "borough",
+    "position" : 15,
+    "renderTypeName" : "text",
+    "tableColumnId" : 143341983,
+    "cachedContents" : {
+      "non_null" : "32964",
+      "largest" : "Staten Island",
+      "null" : "0",
+      "top" : [ {
+        "item" : "Manhattan",
+        "count" : "11614"
+      }, {
+        "item" : "Staten Island",
+        "count" : "8395"
+      }, {
+        "item" : "Brooklyn",
+        "count" : "5053"
+      }, {
+        "item" : "Queens",
+        "count" : "3686"
+      }, {
+        "item" : "Bronx",
+        "count" : "3219"
+      }, {
+        "item" : "Citywide",
+        "count" : "997"
+      } ],
+      "smallest" : "Bronx",
+      "count" : "32964",
+      "cardinality" : "32964"
+    },
+    "format" : { }
+  }, {
+    "id" : 590358182,
+    "name" : "community_district",
+    "dataTypeName" : "text",
+    "description" : "Community District(s) associated to the project",
+    "fieldName" : "community_district",
+    "position" : 16,
+    "renderTypeName" : "text",
+    "tableColumnId" : 143341977,
+    "cachedContents" : {
+      "non_null" : "30832",
+      "largest" : "X12",
+      "null" : "2132",
+      "top" : [ {
+        "item" : "R03",
+        "count" : "6099"
+      }, {
+        "item" : "M02",
+        "count" : "1905"
+      }, {
+        "item" : "M08",
+        "count" : "1512"
+      }, {
+        "item" : "M05",
+        "count" : "1417"
+      }, {
+        "item" : "M07",
+        "count" : "1372"
+      }, {
+        "item" : "R02",
+        "count" : "1306"
+      }, {
+        "item" : "M01",
+        "count" : "1150"
+      }, {
+        "item" : "M04",
+        "count" : "992"
+      }, {
+        "item" : "R01",
+        "count" : "755"
+      }, {
+        "item" : "M03",
+        "count" : "723"
+      }, {
+        "item" : "M06",
+        "count" : "710"
+      }, {
+        "item" : "K02",
+        "count" : "597"
+      }, {
+        "item" : "K01",
+        "count" : "537"
+      }, {
+        "item" : "Q07",
+        "count" : "447"
+      }, {
+        "item" : "Q01",
+        "count" : "422"
+      }, {
+        "item" : "X08",
+        "count" : "410"
+      }, {
+        "item" : "K05",
+        "count" : "383"
+      }, {
+        "item" : "K03",
+        "count" : "363"
+      }, {
+        "item" : "Q12",
+        "count" : "354"
+      }, {
+        "item" : "M10",
+        "count" : "351"
+      } ],
+      "smallest" : "BK3",
+      "count" : "32964",
+      "cardinality" : "32964"
+    },
+    "format" : { }
+  }, {
+    "id" : 590358183,
+    "name" : "cc_district",
+    "dataTypeName" : "number",
+    "description" : "City Council District(s) associated to the project",
+    "fieldName" : "cc_district",
+    "position" : 17,
+    "renderTypeName" : "number",
+    "tableColumnId" : 143341974,
+    "cachedContents" : {
+      "non_null" : "1699",
+      "largest" : "26303433",
+      "null" : "31265",
+      "top" : [ {
+        "item" : "51",
+        "count" : "321"
+      }, {
+        "item" : "3",
+        "count" : "118"
+      }, {
+        "item" : "50",
+        "count" : "109"
+      }, {
+        "item" : "4",
+        "count" : "93"
+      }, {
+        "item" : "33",
+        "count" : "87"
+      }, {
+        "item" : "1",
+        "count" : "70"
+      }, {
+        "item" : "49",
+        "count" : "68"
+      }, {
+        "item" : "11",
+        "count" : "45"
+      }, {
+        "item" : "26",
+        "count" : "43"
+      }, {
+        "item" : "39",
+        "count" : "36"
+      }, {
+        "item" : "8",
+        "count" : "34"
+      }, {
+        "item" : "35",
+        "count" : "34"
+      }, {
+        "item" : "34",
+        "count" : "32"
+      }, {
+        "item" : "22",
+        "count" : "30"
+      }, {
+        "item" : "9",
+        "count" : "27"
+      }, {
+        "item" : "31",
+        "count" : "25"
+      }, {
+        "item" : "36",
+        "count" : "24"
+      }, {
+        "item" : "13",
+        "count" : "23"
+      }, {
+        "item" : "38",
+        "count" : "23"
+      }, {
+        "item" : "15",
+        "count" : "22"
+      } ],
+      "smallest" : "1",
+      "count" : "32964",
+      "cardinality" : "32964"
+    },
+    "format" : { }
+  }, {
+    "id" : 590358184,
+    "name" : "flood_zone_a",
+    "dataTypeName" : "text",
+    "description" : "Flag that indicates if project is in the 1% annual chance floodplain. Areas subject to the 1% annual chance flood (100 year flood) and are considered high-risk.",
+    "fieldName" : "flood_zone_a",
+    "position" : 18,
+    "renderTypeName" : "text",
+    "tableColumnId" : 143394386,
+    "cachedContents" : {
+      "non_null" : "4300",
+      "largest" : "true",
+      "null" : "28664",
+      "top" : [ {
+        "item" : "false",
+        "count" : "4059"
+      }, {
+        "item" : "true",
+        "count" : "241"
+      } ],
+      "smallest" : "false",
+      "count" : "32964",
+      "cardinality" : "32964"
+    },
+    "format" : { }
+  }, {
+    "id" : 590358185,
+    "name" : "flood_zone_shadedx",
+    "dataTypeName" : "text",
+    "description" : "Flag that indicates if project is in the 0.2% annual chance floodplain. Areas subject to the 0.2% annual chance flood (500 year flood) and are considered moderate-risk.",
+    "fieldName" : "flood_zone_shadedx",
+    "position" : 19,
+    "renderTypeName" : "text",
+    "tableColumnId" : 143394385,
+    "cachedContents" : {
+      "non_null" : "4299",
+      "largest" : "true",
+      "null" : "28665",
+      "top" : [ {
+        "item" : "false",
+        "count" : "4225"
+      }, {
+        "item" : "true",
+        "count" : "74"
+      } ],
+      "smallest" : "false",
+      "count" : "32964",
+      "cardinality" : "32964"
+    },
+    "format" : { }
+  }, {
+    "id" : 590358186,
+    "name" : "current_milestone",
+    "dataTypeName" : "text",
+    "description" : "The current milestone related to the review of a land use application",
+    "fieldName" : "current_milestone",
+    "position" : 20,
+    "renderTypeName" : "text",
+    "tableColumnId" : 143341980,
+    "cachedContents" : {
+      "non_null" : "2110",
+      "largest" : "ZS - Review Filed Land Use Application",
+      "null" : "30854",
+      "top" : [ {
+        "item" : "EAS - Project Completed",
+        "count" : "349"
+      }, {
+        "item" : "RC - Project Completed",
+        "count" : "328"
+      }, {
+        "item" : "ZC - Project Completed",
+        "count" : "272"
+      }, {
+        "item" : "ZA - Project Completed",
+        "count" : "152"
+      }, {
+        "item" : "HI - Project Completed",
+        "count" : "72"
+      }, {
+        "item" : "HA - Project Completed",
+        "count" : "58"
+      }, {
+        "item" : "EC - Project Completed",
+        "count" : "55"
+      }, {
+        "item" : "ZS - Project Completed",
+        "count" : "41"
+      }, {
+        "item" : "ZC - Final Letter Sent",
+        "count" : "40"
+      }, {
+        "item" : "EC - Review Filed Land Use Application",
+        "count" : "37"
+      }, {
+        "item" : "ZM - Project Completed",
+        "count" : "35"
+      }, {
+        "item" : "PX - Project Completed",
+        "count" : "34"
+      }, {
+        "item" : "CM - Project Completed",
+        "count" : "32"
+      }, {
+        "item" : "ZM - Review Filed Land Use Application",
+        "count" : "31"
+      }, {
+        "item" : "EIS - Project Completed",
+        "count" : "31"
+      }, {
+        "item" : "PC - Project Completed",
+        "count" : "29"
+      }, {
+        "item" : "MM - Final Letter Sent",
+        "count" : "28"
+      }, {
+        "item" : "PQ - Project Completed",
+        "count" : "27"
+      }, {
+        "item" : "HK - Project Completed",
+        "count" : "25"
+      }, {
+        "item" : "EAS - Final Letter Sent",
+        "count" : "25"
+      } ],
+      "smallest" : "Ad-hoc - Community Board Referral",
+      "count" : "32964",
+      "cardinality" : "32964"
+    },
+    "format" : { }
+  }, {
+    "id" : 590358187,
+    "name" : "current_milestone_date",
+    "dataTypeName" : "calendar_date",
+    "description" : "The start date of the current milestone related to the review of a land use application",
+    "fieldName" : "current_milestone_date",
+    "position" : 21,
+    "renderTypeName" : "calendar_date",
+    "tableColumnId" : 143341970,
+    "cachedContents" : {
+      "non_null" : "2101",
+      "largest" : "2026-07-03T00:00:00.000",
+      "null" : "30863",
+      "top" : [ {
+        "item" : "2022-10-11T00:00:00.000",
+        "count" : "44"
+      }, {
+        "item" : "2019-06-05T00:00:00.000",
+        "count" : "22"
+      }, {
+        "item" : "2019-09-30T00:00:00.000",
+        "count" : "17"
+      }, {
+        "item" : "2025-11-28T00:00:00.000",
+        "count" : "16"
+      }, {
+        "item" : "2021-12-21T00:00:00.000",
+        "count" : "15"
+      }, {
+        "item" : "2021-07-01T00:00:00.000",
+        "count" : "14"
+      }, {
+        "item" : "2026-06-30T00:00:00.000",
+        "count" : "14"
+      }, {
+        "item" : "2024-08-26T00:00:00.000",
+        "count" : "12"
+      }, {
+        "item" : "2025-09-29T00:00:00.000",
+        "count" : "11"
+      }, {
+        "item" : "2018-05-04T00:00:00.000",
+        "count" : "11"
+      }, {
+        "item" : "2019-10-29T00:00:00.000",
+        "count" : "11"
+      }, {
+        "item" : "2026-05-20T00:00:00.000",
+        "count" : "11"
+      }, {
+        "item" : "2021-06-02T00:00:00.000",
+        "count" : "11"
+      }, {
+        "item" : "2021-12-01T00:00:00.000",
+        "count" : "10"
+      }, {
+        "item" : "2026-06-18T00:00:00.000",
+        "count" : "10"
+      }, {
+        "item" : "2022-10-20T00:00:00.000",
+        "count" : "9"
+      }, {
+        "item" : "2021-10-19T00:00:00.000",
+        "count" : "9"
+      }, {
+        "item" : "2020-10-20T00:00:00.000",
+        "count" : "8"
+      }, {
+        "item" : "2024-10-03T00:00:00.000",
+        "count" : "8"
+      }, {
+        "item" : "2026-03-10T00:00:00.000",
+        "count" : "8"
+      } ],
+      "smallest" : "2014-04-23T00:00:00.000",
+      "count" : "32964",
+      "cardinality" : "32964"
+    },
+    "format" : {
+      "view" : "date"
+    }
+  }, {
+    "id" : 590358188,
+    "name" : "current_envmilestone",
+    "dataTypeName" : "text",
+    "description" : "The current milestone related to the CEQR/environmental review of an application.",
+    "fieldName" : "current_envmilestone",
+    "position" : 22,
+    "renderTypeName" : "text",
+    "tableColumnId" : 143341964,
+    "cachedContents" : {
+      "non_null" : "488",
+      "largest" : "ZR - Review Filed EAS",
+      "null" : "32476",
+      "top" : [ {
+        "item" : "EAS - Review Filed EAS",
+        "count" : "281"
+      }, {
+        "item" : "EAS - Prepare Filed EAS",
+        "count" : "43"
+      }, {
+        "item" : "EIS - Prepare and Review FEIS",
+        "count" : "39"
+      }, {
+        "item" : "EAS - Review Draft EAS",
+        "count" : "19"
+      }, {
+        "item" : "Ad-hoc - Review Filed EAS",
+        "count" : "16"
+      }, {
+        "item" : "EAS - Filed EAS Review",
+        "count" : "16"
+      }, {
+        "item" : "EIS - Prepare and Review DEIS",
+        "count" : "15"
+      }, {
+        "item" : "EAS - Prepare Draft EAS",
+        "count" : "13"
+      }, {
+        "item" : "Ad-hoc - Prepare Filed EAS",
+        "count" : "6"
+      }, {
+        "item" : "EAS - CEQR Fee Payment",
+        "count" : "5"
+      }, {
+        "item" : "EAS - Prepare CEQR Fee Payment",
+        "count" : "5"
+      }, {
+        "item" : "EIS - DEIS Public Hearing Held",
+        "count" : "5"
+      }, {
+        "item" : "Ad-hoc - Filed EAS Review",
+        "count" : "4"
+      }, {
+        "item" : "- Review Filed EAS",
+        "count" : "3"
+      }, {
+        "item" : "EIS - DEIS Notice of Completion Issued",
+        "count" : "2"
+      }, {
+        "item" : "Ad-hoc - Prepare Draft EAS",
+        "count" : "2"
+      }, {
+        "item" : "ZM - Prepare Filed EAS",
+        "count" : "2"
+      }, {
+        "item" : "EAS - Review CEQR Fee Invoice",
+        "count" : "2"
+      }, {
+        "item" : "MM - Review Filed EAS",
+        "count" : "1"
+      }, {
+        "item" : "PP - Prepare and Review FEIS",
+        "count" : "1"
+      } ],
+      "smallest" : "Ad-hoc - Filed EAS Review",
+      "count" : "32964",
+      "cardinality" : "32964"
+    },
+    "format" : { }
+  }, {
+    "id" : 590358189,
+    "name" : "current_envmilestone_date",
+    "dataTypeName" : "calendar_date",
+    "description" : "The start date of the current milestone related to the CEQR/environmental review of an application.",
+    "fieldName" : "current_envmilestone_date",
+    "position" : 23,
+    "renderTypeName" : "calendar_date",
+    "tableColumnId" : 143341984,
+    "cachedContents" : {
+      "non_null" : "488",
+      "largest" : "2026-07-02T00:00:00.000",
+      "null" : "32476",
+      "top" : [ {
+        "item" : "2026-04-30T00:00:00.000",
+        "count" : "6"
+      }, {
+        "item" : "2026-05-28T00:00:00.000",
+        "count" : "5"
+      }, {
+        "item" : "2023-10-27T00:00:00.000",
+        "count" : "4"
+      }, {
+        "item" : "2024-06-20T00:00:00.000",
+        "count" : "4"
+      }, {
+        "item" : "2021-08-16T00:00:00.000",
+        "count" : "4"
+      }, {
+        "item" : "2021-10-01T00:00:00.000",
+        "count" : "3"
+      }, {
+        "item" : "2018-05-16T00:00:00.000",
+        "count" : "3"
+      }, {
+        "item" : "2026-06-25T00:00:00.000",
+        "count" : "3"
+      }, {
+        "item" : "2026-03-19T00:00:00.000",
+        "count" : "3"
+      }, {
+        "item" : "2026-02-26T00:00:00.000",
+        "count" : "3"
+      }, {
+        "item" : "2026-04-08T00:00:00.000",
+        "count" : "3"
+      }, {
+        "item" : "2021-09-16T00:00:00.000",
+        "count" : "3"
+      }, {
+        "item" : "2024-03-15T00:00:00.000",
+        "count" : "3"
+      }, {
+        "item" : "2022-06-01T00:00:00.000",
+        "count" : "3"
+      }, {
+        "item" : "2024-03-01T00:00:00.000",
+        "count" : "3"
+      }, {
+        "item" : "2024-09-06T00:00:00.000",
+        "count" : "3"
+      }, {
+        "item" : "2026-04-16T00:00:00.000",
+        "count" : "3"
+      }, {
+        "item" : "2024-06-07T00:00:00.000",
+        "count" : "3"
+      }, {
+        "item" : "2025-04-17T00:00:00.000",
+        "count" : "3"
+      }, {
+        "item" : "2021-10-07T00:00:00.000",
+        "count" : "2"
+      } ],
+      "smallest" : "2017-04-08T00:00:00.000",
+      "count" : "32964",
+      "cardinality" : "32964"
+    },
+    "format" : {
+      "view" : "date"
+    }
+  }, {
+    "id" : 590358190,
+    "name" : "app_filed_date",
+    "dataTypeName" : "calendar_date",
+    "description" : "The date an application(s) was filed with the Department of City Planning (DCP)",
+    "fieldName" : "app_filed_date",
+    "position" : 24,
+    "renderTypeName" : "calendar_date",
+    "tableColumnId" : 143341960,
+    "cachedContents" : {
+      "non_null" : "1439",
+      "largest" : "2026-07-02T00:00:00.000",
+      "null" : "31525",
+      "top" : [ {
+        "item" : "2018-05-04T00:00:00.000",
+        "count" : "8"
+      }, {
+        "item" : "2018-05-15T00:00:00.000",
+        "count" : "7"
+      }, {
+        "item" : "2018-06-04T00:00:00.000",
+        "count" : "7"
+      }, {
+        "item" : "2025-06-04T00:00:00.000",
+        "count" : "6"
+      }, {
+        "item" : "2025-08-22T00:00:00.000",
+        "count" : "6"
+      }, {
+        "item" : "2018-04-24T00:00:00.000",
+        "count" : "6"
+      }, {
+        "item" : "2018-06-18T00:00:00.000",
+        "count" : "5"
+      }, {
+        "item" : "2024-02-06T00:00:00.000",
+        "count" : "5"
+      }, {
+        "item" : "2020-11-23T00:00:00.000",
+        "count" : "5"
+      }, {
+        "item" : "2020-12-10T00:00:00.000",
+        "count" : "5"
+      }, {
+        "item" : "2021-07-15T00:00:00.000",
+        "count" : "5"
+      }, {
+        "item" : "2020-02-20T00:00:00.000",
+        "count" : "4"
+      }, {
+        "item" : "2018-05-14T00:00:00.000",
+        "count" : "4"
+      }, {
+        "item" : "2018-05-24T00:00:00.000",
+        "count" : "4"
+      }, {
+        "item" : "2019-04-23T00:00:00.000",
+        "count" : "4"
+      }, {
+        "item" : "2020-03-02T00:00:00.000",
+        "count" : "4"
+      }, {
+        "item" : "2018-07-12T00:00:00.000",
+        "count" : "4"
+      }, {
+        "item" : "2019-02-08T00:00:00.000",
+        "count" : "4"
+      }, {
+        "item" : "2019-11-06T00:00:00.000",
+        "count" : "4"
+      }, {
+        "item" : "2019-02-28T00:00:00.000",
+        "count" : "4"
+      } ],
+      "smallest" : "2017-08-01T00:00:00.000",
+      "count" : "32964",
+      "cardinality" : "32964"
+    },
+    "format" : {
+      "view" : "date"
+    }
+  }, {
+    "id" : 590358191,
+    "name" : "noticed_date",
+    "dataTypeName" : "calendar_date",
+    "description" : "The date notice was given that an application will certify no sooner than 30 days per the City Charter requirement. This only applies to ULURP projects.",
+    "fieldName" : "noticed_date",
+    "position" : 25,
+    "renderTypeName" : "calendar_date",
+    "tableColumnId" : 143341967,
+    "cachedContents" : {
+      "non_null" : "474",
+      "largest" : "2026-06-26T00:00:00.000",
+      "null" : "32490",
+      "top" : [ {
+        "item" : "2020-08-14T00:00:00.000",
+        "count" : "14"
+      }, {
+        "item" : "2020-10-02T00:00:00.000",
+        "count" : "14"
+      }, {
+        "item" : "2026-06-26T00:00:00.000",
+        "count" : "9"
+      }, {
+        "item" : "2020-09-04T00:00:00.000",
+        "count" : "9"
+      }, {
+        "item" : "2021-03-19T00:00:00.000",
+        "count" : "8"
+      }, {
+        "item" : "2021-12-02T00:00:00.000",
+        "count" : "8"
+      }, {
+        "item" : "2024-09-13T00:00:00.000",
+        "count" : "8"
+      }, {
+        "item" : "2023-11-09T00:00:00.000",
+        "count" : "8"
+      }, {
+        "item" : "2025-12-05T00:00:00.000",
+        "count" : "8"
+      }, {
+        "item" : "2024-11-01T00:00:00.000",
+        "count" : "7"
+      }, {
+        "item" : "2024-07-05T00:00:00.000",
+        "count" : "7"
+      }, {
+        "item" : "2023-10-27T00:00:00.000",
+        "count" : "7"
+      }, {
+        "item" : "2021-04-02T00:00:00.000",
+        "count" : "7"
+      }, {
+        "item" : "2021-03-05T00:00:00.000",
+        "count" : "6"
+      }, {
+        "item" : "2022-03-25T00:00:00.000",
+        "count" : "6"
+      }, {
+        "item" : "2023-09-01T00:00:00.000",
+        "count" : "6"
+      }, {
+        "item" : "2025-04-18T00:00:00.000",
+        "count" : "6"
+      }, {
+        "item" : "2022-10-28T00:00:00.000",
+        "count" : "6"
+      }, {
+        "item" : "2021-05-21T00:00:00.000",
+        "count" : "6"
+      }, {
+        "item" : "2021-07-30T00:00:00.000",
+        "count" : "6"
+      } ],
+      "smallest" : "2020-08-14T00:00:00.000",
+      "count" : "32964",
+      "cardinality" : "32964"
+    },
+    "format" : {
+      "view" : "date"
+    }
+  }, {
+    "id" : 590358192,
+    "name" : "certified_referred",
+    "dataTypeName" : "calendar_date",
+    "description" : "The date an application was certified or referred. This is also the official start of the ULURP process.",
+    "fieldName" : "certified_referred",
+    "position" : 26,
+    "renderTypeName" : "calendar_date",
+    "tableColumnId" : 143341990,
+    "cachedContents" : {
+      "non_null" : "32051",
+      "largest" : "2026-07-13T00:00:00.000",
+      "null" : "913",
+      "top" : [ {
+        "item" : "2011-01-31T00:00:00.000",
+        "count" : "2150"
+      }, {
+        "item" : "1982-05-18T00:00:00.000",
+        "count" : "122"
+      }, {
+        "item" : "1991-11-13T00:00:00.000",
+        "count" : "101"
+      }, {
+        "item" : "1977-08-22T00:00:00.000",
+        "count" : "76"
+      }, {
+        "item" : "1984-11-07T00:00:00.000",
+        "count" : "67"
+      }, {
+        "item" : "2000-04-26T00:00:00.000",
+        "count" : "65"
+      }, {
+        "item" : "1979-12-17T00:00:00.000",
+        "count" : "65"
+      }, {
+        "item" : "1980-08-11T00:00:00.000",
+        "count" : "62"
+      }, {
+        "item" : "1980-09-08T00:00:00.000",
+        "count" : "61"
+      }, {
+        "item" : "1980-05-27T00:00:00.000",
+        "count" : "61"
+      }, {
+        "item" : "1979-01-29T00:00:00.000",
+        "count" : "56"
+      }, {
+        "item" : "1981-02-17T00:00:00.000",
+        "count" : "56"
+      }, {
+        "item" : "1979-07-09T00:00:00.000",
+        "count" : "55"
+      }, {
+        "item" : "1984-04-26T00:00:00.000",
+        "count" : "53"
+      }, {
+        "item" : "1978-09-11T00:00:00.000",
+        "count" : "53"
+      }, {
+        "item" : "1984-06-12T00:00:00.000",
+        "count" : "51"
+      }, {
+        "item" : "1978-04-03T00:00:00.000",
+        "count" : "47"
+      }, {
+        "item" : "1996-07-29T00:00:00.000",
+        "count" : "47"
+      }, {
+        "item" : "1984-05-24T00:00:00.000",
+        "count" : "44"
+      }, {
+        "item" : "1980-04-28T00:00:00.000",
+        "count" : "44"
+      } ],
+      "smallest" : "1970-04-21T00:00:00.000",
+      "count" : "32964",
+      "cardinality" : "32964"
+    },
+    "format" : {
+      "view" : "date"
+    }
+  }, {
+    "id" : 590358193,
+    "name" : "approval_date",
+    "dataTypeName" : "calendar_date",
+    "description" : "The date an application was approved.",
+    "fieldName" : "approval_date",
+    "position" : 27,
+    "renderTypeName" : "calendar_date",
+    "tableColumnId" : 143341976,
+    "cachedContents" : {
+      "non_null" : "953",
+      "largest" : "2026-07-02T00:00:00.000",
+      "null" : "32011",
+      "top" : [ {
+        "item" : "2024-08-15T00:00:00.000",
+        "count" : "14"
+      }, {
+        "item" : "2026-02-24T00:00:00.000",
+        "count" : "13"
+      }, {
+        "item" : "2021-12-15T00:00:00.000",
+        "count" : "12"
+      }, {
+        "item" : "2021-11-23T00:00:00.000",
+        "count" : "12"
+      }, {
+        "item" : "2025-11-25T00:00:00.000",
+        "count" : "11"
+      }, {
+        "item" : "2021-12-03T00:00:00.000",
+        "count" : "10"
+      }, {
+        "item" : "2023-09-14T00:00:00.000",
+        "count" : "9"
+      }, {
+        "item" : "2022-02-24T00:00:00.000",
+        "count" : "9"
+      }, {
+        "item" : "2021-10-21T00:00:00.000",
+        "count" : "9"
+      }, {
+        "item" : "2023-03-02T00:00:00.000",
+        "count" : "8"
+      }, {
+        "item" : "2025-09-25T00:00:00.000",
+        "count" : "8"
+      }, {
+        "item" : "2023-08-03T00:00:00.000",
+        "count" : "8"
+      }, {
+        "item" : "2025-02-13T00:00:00.000",
+        "count" : "8"
+      }, {
+        "item" : "2021-12-09T00:00:00.000",
+        "count" : "8"
+      }, {
+        "item" : "2021-10-07T00:00:00.000",
+        "count" : "7"
+      }, {
+        "item" : "2024-09-26T00:00:00.000",
+        "count" : "7"
+      }, {
+        "item" : "2024-04-11T00:00:00.000",
+        "count" : "7"
+      }, {
+        "item" : "2025-08-14T00:00:00.000",
+        "count" : "7"
+      }, {
+        "item" : "2025-11-12T00:00:00.000",
+        "count" : "7"
+      }, {
+        "item" : "2022-06-02T00:00:00.000",
+        "count" : "6"
+      } ],
+      "smallest" : "2018-02-23T00:00:00.000",
+      "count" : "32964",
+      "cardinality" : "32964"
+    },
+    "format" : {
+      "view" : "date"
+    }
+  }, {
+    "id" : 590358194,
+    "name" : "completed_date",
+    "dataTypeName" : "calendar_date",
+    "description" : "The date the application processing was completed.",
+    "fieldName" : "completed_date",
+    "position" : 28,
+    "renderTypeName" : "calendar_date",
+    "tableColumnId" : 143341968,
+    "cachedContents" : {
+      "non_null" : "29893",
+      "largest" : "2026-07-02T00:00:00.000",
+      "null" : "3071",
+      "top" : [ {
+        "item" : "1982-05-18T00:00:00.000",
+        "count" : "134"
+      }, {
+        "item" : "1991-11-13T00:00:00.000",
+        "count" : "97"
+      }, {
+        "item" : "1983-04-28T00:00:00.000",
+        "count" : "75"
+      }, {
+        "item" : "1982-05-27T00:00:00.000",
+        "count" : "73"
+      }, {
+        "item" : "1984-09-13T00:00:00.000",
+        "count" : "70"
+      }, {
+        "item" : "1981-01-29T00:00:00.000",
+        "count" : "70"
+      }, {
+        "item" : "1984-06-14T00:00:00.000",
+        "count" : "67"
+      }, {
+        "item" : "1983-08-18T00:00:00.000",
+        "count" : "67"
+      }, {
+        "item" : "1985-08-15T00:00:00.000",
+        "count" : "67"
+      }, {
+        "item" : "1983-02-10T00:00:00.000",
+        "count" : "67"
+      }, {
+        "item" : "1982-10-28T00:00:00.000",
+        "count" : "66"
+      }, {
+        "item" : "1981-09-24T00:00:00.000",
+        "count" : "64"
+      }, {
+        "item" : "1981-06-25T00:00:00.000",
+        "count" : "61"
+      }, {
+        "item" : "1985-05-23T00:00:00.000",
+        "count" : "60"
+      }, {
+        "item" : "1980-06-17T00:00:00.000",
+        "count" : "60"
+      }, {
+        "item" : "2000-04-28T00:00:00.000",
+        "count" : "60"
+      }, {
+        "item" : "1985-02-28T00:00:00.000",
+        "count" : "59"
+      }, {
+        "item" : "1984-06-01T00:00:00.000",
+        "count" : "59"
+      }, {
+        "item" : "1985-10-10T00:00:00.000",
+        "count" : "59"
+      }, {
+        "item" : "1981-09-10T00:00:00.000",
+        "count" : "57"
+      } ],
+      "smallest" : "1976-07-19T00:00:00.000",
+      "count" : "32964",
+      "cardinality" : "32964"
+    },
+    "format" : {
+      "view" : "date"
+    }
+  }, {
+    "id" : 590358195,
+    "name" : "mih_flag",
+    "dataTypeName" : "text",
+    "description" : "Flag that indicates if Mandatory Inclusionary Housing (MIH) is proposed to be mapped through an amendment to the Zoning Resolution.",
+    "fieldName" : "mih_flag",
+    "position" : 29,
+    "renderTypeName" : "text",
+    "tableColumnId" : 143394384,
+    "cachedContents" : {
+      "non_null" : "1588",
+      "largest" : "true",
+      "null" : "31376",
+      "top" : [ {
+        "item" : "false",
+        "count" : "1275"
+      }, {
+        "item" : "true",
+        "count" : "313"
+      } ],
+      "smallest" : "false",
+      "count" : "32964",
+      "cardinality" : "32964"
+    },
+    "format" : { }
+  }, {
+    "id" : 590358196,
+    "name" : "mih_option1",
+    "dataTypeName" : "text",
+    "description" : "Flag that indicates MIH Option 1 is proposed to be mapped (25% Units/60% AMI)",
+    "fieldName" : "mih_option1",
+    "position" : 30,
+    "renderTypeName" : "text",
+    "tableColumnId" : 143394383,
+    "cachedContents" : {
+      "non_null" : "1559",
+      "largest" : "true",
+      "null" : "31405",
+      "top" : [ {
+        "item" : "false",
+        "count" : "1303"
+      }, {
+        "item" : "true",
+        "count" : "256"
+      } ],
+      "smallest" : "false",
+      "count" : "32964",
+      "cardinality" : "32964"
+    },
+    "format" : { }
+  }, {
+    "id" : 590358197,
+    "name" : "mih_option2",
+    "dataTypeName" : "text",
+    "description" : "Flag that indicates MIH Option 2 is proposed to be mapped (30% Units/80% AMI)",
+    "fieldName" : "mih_option2",
+    "position" : 31,
+    "renderTypeName" : "text",
+    "tableColumnId" : 143394424,
+    "cachedContents" : {
+      "non_null" : "1553",
+      "largest" : "True",
+      "null" : "31411",
+      "top" : [ {
+        "item" : "False",
+        "count" : "1391"
+      }, {
+        "item" : "True",
+        "count" : "162"
+      } ],
+      "smallest" : "False",
+      "count" : "32964",
+      "cardinality" : "32964"
+    },
+    "format" : { }
+  }, {
+    "id" : 590358198,
+    "name" : "mih_workforce",
+    "dataTypeName" : "text",
+    "description" : "Flag that indicates the MIH Workforce option is proposed to be mapped (30% Units/115% AMI)",
+    "fieldName" : "mih_workforce",
+    "position" : 32,
+    "renderTypeName" : "text",
+    "tableColumnId" : 143394382,
+    "cachedContents" : {
+      "non_null" : "1497",
+      "largest" : "true",
+      "null" : "31467",
+      "top" : [ {
+        "item" : "false",
+        "count" : "1486"
+      }, {
+        "item" : "true",
+        "count" : "11"
+      } ],
+      "smallest" : "false",
+      "count" : "32964",
+      "cardinality" : "32964"
+    },
+    "format" : { }
+  }, {
+    "id" : 590358199,
+    "name" : "mih_deepaffordability",
+    "dataTypeName" : "text",
+    "description" : "Flag that indicates the MIH Deep Affordability option is proposed to be mapped (20% Units/40% AMI)",
+    "fieldName" : "mih_deepaffordability",
+    "position" : 33,
+    "renderTypeName" : "text",
+    "tableColumnId" : 143394381,
+    "cachedContents" : {
+      "non_null" : "1585",
+      "largest" : "true",
+      "null" : "31379",
+      "top" : [ {
+        "item" : "false",
+        "count" : "1482"
+      }, {
+        "item" : "true",
+        "count" : "103"
+      } ],
+      "smallest" : "false",
+      "count" : "32964",
+      "cardinality" : "32964"
+    },
+    "format" : { }
+  }, {
+    "id" : 590358200,
+    "name" : "mih_mapped_no_res",
+    "dataTypeName" : "text",
+    "description" : "Flag that indicates Mandatory Inclusionary Housing (MIH) is proposed to be mapped, but no residential units are proposed",
+    "fieldName" : "mih_mapped_no_res",
+    "position" : 34,
+    "renderTypeName" : "text",
+    "tableColumnId" : 143394380,
+    "cachedContents" : {
+      "non_null" : "92",
+      "largest" : "true",
+      "null" : "32872",
+      "top" : [ {
+        "item" : "false",
+        "count" : "64"
+      }, {
+        "item" : "true",
+        "count" : "28"
+      } ],
+      "smallest" : "false",
+      "count" : "32964",
+      "cardinality" : "32964"
+    },
+    "format" : { }
+  }, {
+    "id" : 590358201,
+    "name" : "dcp_visibility",
+    "dataTypeName" : "text",
+    "description" : "",
+    "fieldName" : "dcp_visibility",
+    "position" : 35,
+    "renderTypeName" : "text",
+    "tableColumnId" : 151701071,
+    "cachedContents" : {
+      "non_null" : "32964",
+      "largest" : "General Public",
+      "null" : "0",
+      "top" : [ {
+        "item" : "General Public",
+        "count" : "32964"
+      } ],
+      "smallest" : "General Public",
+      "count" : "32964",
+      "cardinality" : "32964"
+    },
+    "format" : { }
+  } ],
+  "grants" : [ {
+    "inherited" : false,
+    "type" : "viewer",
+    "flags" : [ "public" ]
+  } ],
+  "metadata" : {
+    "attachments" : [ {
+      "filename" : "zapprojects_datadictionary.xlsx",
+      "assetId" : "b118172c-e5f1-4a46-a53f-f403086b1043",
+      "name" : "zapprojects_datadictionary.xlsx"
+    } ],
+    "custom_fields" : {
+      "Update" : {
+        "Automation" : "Yes",
+        "Date Made Public" : "9/13/2021",
+        "Update Frequency" : "Monthly",
+        "Data Change Frequency" : "Monthly"
+      },
+      "Dataset Information" : {
+        "Agency" : "Department of City Planning (DCP)"
+      }
+    },
+    "rowLabel" : "project in the Zoning Application Portal (ZAP)",
+    "availableDisplayTypes" : [ "table", "fatrow", "page" ]
+  },
+  "owner" : {
+    "id" : "5fuc-pqz2",
+    "displayName" : "NYC OpenData",
+    "profileImageUrlLarge" : "/api/users/5fuc-pqz2/profile_images/LARGE",
+    "profileImageUrlMedium" : "/api/users/5fuc-pqz2/profile_images/THUMB",
+    "profileImageUrlSmall" : "/api/users/5fuc-pqz2/profile_images/TINY",
+    "screenName" : "NYC OpenData",
+    "type" : "interactive",
+    "flags" : [ "acceptedEula", "mayBeStoriesCoOwner" ]
+  },
+  "query" : { },
+  "rights" : [ "read" ],
+  "tableAuthor" : {
+    "id" : "5fuc-pqz2",
+    "displayName" : "NYC OpenData",
+    "profileImageUrlLarge" : "/api/users/5fuc-pqz2/profile_images/LARGE",
+    "profileImageUrlMedium" : "/api/users/5fuc-pqz2/profile_images/THUMB",
+    "profileImageUrlSmall" : "/api/users/5fuc-pqz2/profile_images/TINY",
+    "screenName" : "NYC OpenData",
+    "type" : "interactive",
+    "flags" : [ "acceptedEula", "mayBeStoriesCoOwner" ]
+  },
+  "tags" : [ "zap", "zoning application portal", "land use", "applications", "ulurp", "public review", "project data", "ceqr", "mih", "affordable housing", "department of city planning", "dcp" ],
+  "flags" : [ "default", "ownerMayBeContacted", "restorable", "restorePossibleForType" ]
+}

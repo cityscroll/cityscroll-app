@@ -1,0 +1,27 @@
+{
+  "dataset_metadata_fetch": {
+    "content_type": "application/json; charset=utf-8",
+    "http_status": 200,
+    "raw_slug": "dataset_metadata",
+    "request_url_or_query": "https://data.cityofnewyork.us/api/views/2iga-a6mk",
+    "requested_at": "2026-09-04T01:49:30.000Z",
+    "retrieved_at": "2026-09-04T01:49:30.000Z"
+  },
+  "page_fetches": [
+    {
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "raw_slug": "page-0000",
+      "request_url_or_query": "https://data.cityofnewyork.us/resource/2iga-a6mk.json?$limit=5&$order=:id",
+      "requested_at": "2026-09-04T01:49:30.000Z",
+      "retrieved_at": "2026-09-04T01:49:30.000Z",
+      "row_count": 5
+    }
+  ],
+  "page_size": 5,
+  "sample_scope": true,
+  "sample_scope_note": "Bounded reference sample captured by one polite, single-page live request per fetch (see request_url_or_query below), not a full-population pull. pagination_complete is derived from the actual row count against page_size and is honestly false here.",
+  "schema": "cityscroll.seqra_adapter_observation.v1",
+  "source_id": "zap_bbl",
+  "vintage": "2026-09-04-sample"
+}
