@@ -1,6 +1,5 @@
 import { vendorStem } from "./vendor_stem.mjs";
 import { isKnownProcurementProcessState } from "./procurement_process_state_vocabulary.mjs";
-import { MONEY_SOURCE_MAX_AGE_MS } from "./community_board_money.mjs";
 import {
   DEFAULT_LAND_FAMILY,
   landActionEvidenceByProject,
@@ -108,7 +107,11 @@ export const OPEN_CONTRACTS_FRESHNESS_STATES = Object.freeze({
   FRESH_EMPTY: "fresh_empty",
 });
 
-export const OPEN_CONTRACTS_MAX_SNAPSHOT_AGE_MS = MONEY_SOURCE_MAX_AGE_MS;
+// Matches community_board_money.mjs's MONEY_SOURCE_MAX_AGE_MS — the same
+// resident-facing staleness threshold for a money snapshot, defined locally
+// rather than imported so this module does not pull an unrelated read model
+// into every page that reads open-contract rows.
+export const OPEN_CONTRACTS_MAX_SNAPSHOT_AGE_MS = 36 * 60 * 60 * 1000;
 
 /**
  * The single open-contracts read model behind both the build-rendered

@@ -1,4 +1,4 @@
-import { nyNaiveTimestampToInstantMs, OPEN_CONTRACTS_FRESHNESS_STATES } from "../resident_snapshot_queries.mjs";
+import { nyNaiveTimestampToInstantMs, OPEN_CONTRACTS_FRESHNESS_STATES } from "./resident_snapshot_queries.mjs";
 
 // The resident's real civic day, not the fixture vintage: a harness-pinned day
 // (CROL_PINNED_TODAY) is honored so fixture-pinned browser checks stay
