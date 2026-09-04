@@ -1,0 +1,119 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cityscroll.org/schemas/seqra_ontology_review_event.v1.schema.json",
+  "title": "SEQRA/CEQR ontology: review_event",
+  "description": "One append-only event in an environmental review's history (environmental_review -> has_event -> review_event). The event log is the only place review state is recorded; there is no mutable current-state row.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "event_key",
+    "review_key",
+    "event_type",
+    "effective_at",
+    "supersedes_event_key",
+    "payload",
+    "observed_at",
+    "available_to_public_at",
+    "source_id",
+    "source_record_id",
+    "source_vintage",
+    "evidence",
+    "confidence",
+    "rival_explanation",
+    "suppression_rule"
+  ],
+  "properties": {
+    "event_key": {
+      "type": "string",
+      "pattern": "^review_event:.+$"
+    },
+    "review_key": {
+      "type": "string",
+      "pattern": "^environmental_review:(ceqr|seqra):.+$"
+    },
+    "event_type": {
+      "type": "string",
+      "enum": [
+        "eas_or_eaf_accepted",
+        "lead_agency_established",
+        "type_ii_classified",
+        "negative_declaration_issued",
+        "conditioned_negative_declaration_issued",
+        "positive_declaration_issued",
+        "draft_scope_issued",
+        "scoping_hearing_held",
+        "final_scope_issued",
+        "draft_document_published",
+        "public_hearing_held",
+        "final_document_published",
+        "findings_adopted",
+        "final_determination_issued",
+        "technical_memorandum_issued",
+        "supplemental_eis_initiated",
+        "document_superseded",
+        "determination_superseded",
+        "topic_assessed",
+        "mitigation_committed",
+        "alternative_considered",
+        "position_taken"
+      ]
+    },
+    "effective_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "supersedes_event_key": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^review_event:.+$"
+    },
+    "payload": {
+      "type": "object"
+    },
+    "observed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "available_to_public_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "source_id": {
+      "type": "string"
+    },
+    "source_record_id": {
+      "type": "string"
+    },
+    "source_vintage": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "evidence": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "rival_explanation": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "suppression_rule": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}

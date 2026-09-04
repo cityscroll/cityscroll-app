@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cityscroll.org/schemas/seqra_ontology_claim_theory.v1.schema.json",
+  "title": "SEQRA/CEQR ontology: claim_theory",
+  "description": "One legal theory raised within a case, kept separate from procedural survival, merits, and remedy outcomes.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "claim_key",
+    "case_key",
+    "theory_category",
+    "description",
+    "observed_at",
+    "source_id",
+    "source_record_id"
+  ],
+  "properties": {
+    "claim_key": {
+      "type": "string",
+      "pattern": "^claim_theory:.+$"
+    },
+    "case_key": {
+      "type": "string",
+      "pattern": "^judicial_case:.+$"
+    },
+    "theory_category": {
+      "type": "string",
+      "enum": [
+        "procedural",
+        "substantive_seqra_ceqr",
+        "constitutional",
+        "other"
+      ]
+    },
+    "description": {
+      "type": "string"
+    },
+    "observed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "source_id": {
+      "type": "string"
+    },
+    "source_record_id": {
+      "type": "string"
+    }
+  }
+}

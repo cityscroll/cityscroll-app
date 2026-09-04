@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cityscroll.org/schemas/seqra_ontology_environmental_review.v1.schema.json",
+  "title": "SEQRA/CEQR ontology: environmental_review",
+  "description": "One SEQRA or CEQR environmental review of a government action (environmental_review -> reviews_action -> government_action).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "review_key",
+    "action_key",
+    "jurisdiction_level",
+    "environmental_regime",
+    "review_label_as_published",
+    "judicial_review_regime",
+    "lead_agency",
+    "ceqr_number",
+    "source_review_id",
+    "observed_at",
+    "source_id",
+    "source_record_id"
+  ],
+  "properties": {
+    "review_key": {
+      "type": "string",
+      "pattern": "^environmental_review:(ceqr|seqra):.+$"
+    },
+    "action_key": {
+      "type": "string",
+      "pattern": "^action:[a-z0-9_]+:[a-z0-9_]+:[a-z0-9_]+$"
+    },
+    "jurisdiction_level": {
+      "type": "string",
+      "enum": [
+        "NYS",
+        "NYC"
+      ]
+    },
+    "environmental_regime": {
+      "type": "string",
+      "enum": [
+        "SEQRA",
+        "CEQR"
+      ]
+    },
+    "review_label_as_published": {
+      "type": "string"
+    },
+    "judicial_review_regime": {
+      "type": "string",
+      "enum": [
+        "NY_ARTICLE_78",
+        "NY_HYBRID",
+        "NONE",
+        "UNKNOWN"
+      ]
+    },
+    "lead_agency": {
+      "type": "string"
+    },
+    "ceqr_number": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "source_review_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "observed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "source_id": {
+      "type": "string"
+    },
+    "source_record_id": {
+      "type": "string"
+    }
+  }
+}
