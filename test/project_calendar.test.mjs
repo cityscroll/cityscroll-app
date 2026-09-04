@@ -6,7 +6,9 @@ import {
   projectCalendarFeedUrl,
   projectCalendarActionsHTML,
   projectCalendarOccurrences,
+  projectCalendarRecords,
 } from "../site/project_calendar.mjs";
+import { calendarOccurrencesForRecord } from "../site/calendar_occurrence.mjs";
 
 const PROJECT_REF = "project:2026M0001";
 
@@ -120,6 +122,15 @@ test("a newly connected milestone changes feed contents without changing its URL
   assert.equal(before.length, 1);
   assert.equal(after.length, 2);
   assert.ok(after.some((item) => item.source.system === "zap-api-outcomes"));
+});
+
+test("projectCalendarRecords exposes the same accepted population projectCalendarOccurrences produces occurrences from", () => {
+  const input = { project_ref: PROJECT_REF, connections: connections([hearing, procurement]) };
+  const records = projectCalendarRecords(input);
+  const fromRecords = records.flatMap((record) => calendarOccurrencesForRecord(record, { as_of: "2026-08-27" }));
+  const occurrences = projectCalendarOccurrences(input, { as_of: "2026-08-27" });
+  assert.deepEqual(fromRecords.map((item) => item.uid).sort(), occurrences.map((item) => item.uid).sort());
+  assert.equal(records.length, 2);
 });
 
 test("held constellation edges never leak an occurrence", () => {

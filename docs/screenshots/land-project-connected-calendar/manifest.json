@@ -1,0 +1,166 @@
+{
+  "schema_version": 1,
+  "feature": "land-project-connected-calendar",
+  "card": "cityscroll-calendar-beyond-ics/cbics-06-land-project-connected-dates",
+  "route": "component-harness:land-project-connected-calendar",
+  "revision": "42d872d66ae625a601731a733a756f4c1aadd27b",
+  "today": "2026-03-15",
+  "files": [
+    {
+      "name": "dense-qualifying-390.png",
+      "bytes": 23261,
+      "sha256": "ef332508d4847310ff455fba343cc843f75c3734634f71b55d43171b25a1e2f4",
+      "route": "component-harness:land-project-connected-calendar",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "42d872d66ae625a601731a733a756f4c1aadd27b",
+      "specimen": "dense-qualifying",
+      "occurrence_vintage_state": "2026-03-15",
+      "renders": true,
+      "host_child_count": 1,
+      "occurrence_day_cells": 4,
+      "assertion": "A1/A2: an accepted, mixed past/future bundle dense enough to render",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": []
+      }
+    },
+    {
+      "name": "dense-qualifying-1440.png",
+      "bytes": 35897,
+      "sha256": "870d870748d90176063c70fca01b375b9d755b6ccb9feb977b9ea187fb0f48bc",
+      "route": "component-harness:land-project-connected-calendar",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "42d872d66ae625a601731a733a756f4c1aadd27b",
+      "specimen": "dense-qualifying",
+      "occurrence_vintage_state": "2026-03-15",
+      "renders": true,
+      "host_child_count": 1,
+      "occurrence_day_cells": 4,
+      "assertion": "A1/A2: an accepted, mixed past/future bundle dense enough to render",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": []
+      }
+    },
+    {
+      "name": "sparse-390.png",
+      "bytes": 175,
+      "sha256": "f473b25716b56abaa76b164be9c7b44d9d6a95ab3c654537123f54cf0dc11487",
+      "route": "component-harness:land-project-connected-calendar",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "42d872d66ae625a601731a733a756f4c1aadd27b",
+      "specimen": "sparse",
+      "occurrence_vintage_state": "2026-03-15",
+      "renders": false,
+      "host_child_count": 0,
+      "occurrence_day_cells": 0,
+      "assertion": "the density rule holds a thin accepted bundle to no month view",
+      "axe": null
+    },
+    {
+      "name": "sparse-1440.png",
+      "bytes": 255,
+      "sha256": "4fecc69aa7b90eef2cb507b5dc95bd66a87b33a12e472a57c0315e6cb79ee5c6",
+      "route": "component-harness:land-project-connected-calendar",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "42d872d66ae625a601731a733a756f4c1aadd27b",
+      "specimen": "sparse",
+      "occurrence_vintage_state": "2026-03-15",
+      "renders": false,
+      "host_child_count": 0,
+      "occurrence_day_cells": 0,
+      "assertion": "the density rule holds a thin accepted bundle to no month view",
+      "axe": null
+    },
+    {
+      "name": "rejected-relation-390.png",
+      "bytes": 23261,
+      "sha256": "ef332508d4847310ff455fba343cc843f75c3734634f71b55d43171b25a1e2f4",
+      "route": "component-harness:land-project-connected-calendar",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "42d872d66ae625a601731a733a756f4c1aadd27b",
+      "specimen": "rejected-relation",
+      "occurrence_vintage_state": "2026-03-15",
+      "renders": true,
+      "host_child_count": 1,
+      "occurrence_day_cells": 4,
+      "assertion": "A5: a held/rejected relation stays out even inside a qualifying month",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": []
+      }
+    },
+    {
+      "name": "rejected-relation-1440.png",
+      "bytes": 35897,
+      "sha256": "870d870748d90176063c70fca01b375b9d755b6ccb9feb977b9ea187fb0f48bc",
+      "route": "component-harness:land-project-connected-calendar",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "42d872d66ae625a601731a733a756f4c1aadd27b",
+      "specimen": "rejected-relation",
+      "occurrence_vintage_state": "2026-03-15",
+      "renders": true,
+      "host_child_count": 1,
+      "occurrence_day_cells": 4,
+      "assertion": "A5: a held/rejected relation stays out even inside a qualifying month",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": []
+      }
+    },
+    {
+      "name": "partial-unavailable-390.png",
+      "bytes": 175,
+      "sha256": "f473b25716b56abaa76b164be9c7b44d9d6a95ab3c654537123f54cf0dc11487",
+      "route": "component-harness:land-project-connected-calendar",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "42d872d66ae625a601731a733a756f4c1aadd27b",
+      "specimen": "partial-unavailable",
+      "occurrence_vintage_state": "2026-03-15",
+      "renders": false,
+      "host_child_count": 0,
+      "occurrence_day_cells": 0,
+      "assertion": "A6: unavailable project connections mount no connected-calendar feed",
+      "axe": null
+    },
+    {
+      "name": "partial-unavailable-1440.png",
+      "bytes": 255,
+      "sha256": "4fecc69aa7b90eef2cb507b5dc95bd66a87b33a12e472a57c0315e6cb79ee5c6",
+      "route": "component-harness:land-project-connected-calendar",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "42d872d66ae625a601731a733a756f4c1aadd27b",
+      "specimen": "partial-unavailable",
+      "occurrence_vintage_state": "2026-03-15",
+      "renders": false,
+      "host_child_count": 0,
+      "occurrence_day_cells": 0,
+      "assertion": "A6: unavailable project connections mount no connected-calendar feed",
+      "axe": null
+    }
+  ]
+}

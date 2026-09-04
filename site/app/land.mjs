@@ -782,6 +782,7 @@ async function landSelect(i, el){
     <span id="land-city-record-source"></span>
   </div>
   <div id="project-connections"></div>
+  <div id="project-connected-calendar"></div>
   <div id="land-outcomes" class="land-outcomes">${landOutcomeFirstPaintHTML(r)}</div>
   <div id="land-ulurp-rec"></div>
   <div id="landmap" style="display:none"></div>
@@ -1448,6 +1449,13 @@ function ensureProjectConnectionsTools(){
   }
   return projectConnectionsToolsPromise;
 }
+let lcalP=null;
+function ensureLcal(){
+  if(!lcalP){
+    lcalP=import("../land_project_connected_calendar.mjs").catch(()=>null);
+  }
+  return lcalP;
+}
 function projectConnectionsCoverageHTML(coverage){
   // Coverage receipts remain available in the evidence payload, not in the
   // reader-facing constellation. Counts such as “231 of 231” describe the
@@ -1508,6 +1516,16 @@ function projectConnectionsHTML(evidence, tools){
       <a class="act ei-apply" href="${escUiHtml(view.apply_scope_href)}">${t("project_connections_apply_scope")}</a></div>
     <p class="ei-lead">${t("project_connections_lead")}</p><div class="pc-groups">${groups}</div>
   </div>`;
+}
+async function paintConnectedCalendar(record,selection){
+  const host=$("#project-connected-calendar");
+  if(!host) return;
+  const tools=await ensureLcal();
+  if(!tools||(selection!==undefined&&selection!==landSelectionSeq)||!host.isConnected||host!==$("#project-connected-calendar")) return;
+  host.innerHTML=tools.landProjectConnectedCalendarHTML(record,{today:todayISO().slice(0,10),escape:escUiHtml});
+  if(!host.firstElementChild) return;
+  tools.ensureCompactCalendarStylesheet();
+  tools.bindCompactMonthPrintDisclosure(host);
 }
 async function paintProjectConnections(record,selection){
   const host=$("#project-connections");
@@ -1585,6 +1603,7 @@ async function loadZapOutcomes(r, el, selection){
     if(selection !== undefined && selection !== landSelectionSeq) return;
     if(!document.contains(el)) return;
     const record = normalizeLandRecord(warm.data.record);
+    paintConnectedCalendar(record,selection);
     el.innerHTML = warm.staticSnapshot
       ? landOutcomeSnapshotHTML(record,phaseTools,r)
       : landOutcomesHTML(record,phaseTools,r);
@@ -1626,6 +1645,7 @@ async function loadZapOutcomes(r, el, selection){
   await paintProjectConnections(record,selection);
   if(selection !== undefined && selection !== landSelectionSeq) return;
   if(!document.contains(el)) return;
+  paintConnectedCalendar(record,selection);
   if(record.snapshot_state==="absent" || record.snapshot_state==="unavailable"){
     reportLandOutcomesReady(record);
     return;
