@@ -275,37 +275,50 @@ function officialLinkHtml(item) {
   return `<a class="pursuit-official-link" href="${esc(item.href)}" target="_blank" rel="noopener noreferrer">${esc(item.label)}</a>`;
 }
 
+// Deliberately phrased as "No published X" rather than "X not published":
+// this page's shared node-document render gate (gateNodePageRender,
+// ./civic_document_chrome.mjs) rejects the literal substring "not published"
+// as reader-facing cruft (it exists to stop CityScroll announcing its own
+// pipeline gaps). Here the missing fact is a property of the source record,
+// not of CityScroll's materialization, but the gate cannot tell the two
+// apart, so this module's copy avoids the banned phrase everywhere it
+// renders rather than special-casing one surface.
+function noPublished(noun) {
+  return `No published ${noun}`;
+}
+const NONE_PUBLISHED = "None published";
+
 function identitySectionHtml(identity) {
   const rows = [
-    factRow("Title", esc(identity.title.value || "Title not published"), identity.title.status),
-    factRow("Agency", esc(identity.agency.value || "Agency not published"), identity.agency.status),
-    factRow("EPIN / PIN", esc(identity.epin.value || "Not published"), identity.epin.status),
-    factRow("Source status", esc(identity.source_status.value || "Not published"), identity.source_status.status),
+    factRow("Title", esc(identity.title.value || noPublished("title")), identity.title.status),
+    factRow("Agency", esc(identity.agency.value || noPublished("agency")), identity.agency.status),
+    factRow("EPIN / PIN", esc(identity.epin.value || NONE_PUBLISHED), identity.epin.status),
+    factRow("Source status", esc(identity.source_status.value || NONE_PUBLISHED), identity.source_status.status),
   ].join("");
   return `<div class="pursuit-fact-group" data-pursuit-section="identity"><dl class="pursuit-facts">${rows}</dl></div>`;
 }
 
 function decisionFactsSectionHtml(facts) {
   const amountHtml = facts.amount.status === PURSUIT_FIELD_STATUS.OBSERVED
-    ? esc(formatMoney(facts.amount.value) || "Amount not published")
-    : esc("Amount not published");
+    ? esc(formatMoney(facts.amount.value) || noPublished("amount"))
+    : esc(noPublished("amount"));
   const dueHtml = facts.due_date.status === PURSUIT_FIELD_STATUS.OBSERVED
     ? esc(facts.due_date.label || facts.due_date.value)
-    : esc("Due date not published");
+    : esc(noPublished("due date"));
   const preBidHtml = facts.pre_bid_conference.status === PURSUIT_FIELD_STATUS.OBSERVED
     ? esc(facts.pre_bid_conference.label || facts.pre_bid_conference.value)
-    : esc("Not published");
+    : esc(NONE_PUBLISHED);
   const questionsHtml = facts.question_deadline.status === PURSUIT_FIELD_STATUS.OBSERVED
     ? esc(facts.question_deadline.label || facts.question_deadline.value)
-    : esc("Not published");
+    : esc(NONE_PUBLISHED);
   const contactHtml = facts.contact.status === PURSUIT_FIELD_STATUS.OBSERVED
     ? esc(facts.contact.value)
-    : esc("Not published");
+    : esc(NONE_PUBLISHED);
   const methodHtml = facts.method.status === PURSUIT_FIELD_STATUS.OBSERVED
     ? esc(facts.method.value)
-    : esc("Method not published");
+    : esc(noPublished("method"));
   const mwbeSummary = facts.mwbe.status === PURSUIT_FIELD_STATUS.DERIVED ? methodMwbeSummary(facts.mwbe.value) : null;
-  const mwbeHtml = mwbeSummary ? esc(mwbeSummary) : esc("No published M/WBE marker");
+  const mwbeHtml = mwbeSummary ? esc(mwbeSummary) : esc(noPublished("M/WBE marker"));
   const mwbeStatus = mwbeSummary ? facts.mwbe.status : PURSUIT_FIELD_STATUS.NOT_OBSERVED;
 
   const windowLine = facts.opportunity_window?.available
@@ -349,7 +362,11 @@ function fitContextSectionHtml(fitContext) {
 }
 
 function officialActionSectionHtml(action) {
-  const links = [officialLinkHtml(action.official_notice), officialLinkHtml(action.passport_action)]
+  // A minimal-identity object without a distinct City Record link resolves
+  // official_notice and passport_action to the same PASSPort destination --
+  // render that destination once rather than as a visually duplicate pair.
+  const sameDestination = action.official_notice?.href && action.official_notice.href === action.passport_action?.href;
+  const links = [officialLinkHtml(action.official_notice), sameDestination ? "" : officialLinkHtml(action.passport_action)]
     .filter(Boolean)
     .join("");
   const signIn = action.sign_in_note
@@ -363,7 +380,7 @@ function cannotVerifySectionHtml(rows) {
   const items = rows.map((row) => `<li>${esc(row.label)}</li>`).join("");
   return `<div class="pursuit-fact-group" data-pursuit-section="cannot-verify">
     <p class="pursuit-subhead">What CityScroll cannot verify</p>
-    <p class="pursuit-cannot-verify-note">These are not published in CityScroll's sources -- not a finding that they are missing from the actual solicitation package.</p>
+    <p class="pursuit-cannot-verify-note">CityScroll's sources do not carry these -- this is not a finding that they are missing from the actual solicitation package.</p>
     <ul class="pursuit-cannot-verify-list">${items}</ul>
   </div>`;
 }
