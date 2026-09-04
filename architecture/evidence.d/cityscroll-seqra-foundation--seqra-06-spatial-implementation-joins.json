@@ -1,0 +1,37 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-seqra-foundation/seqra-06-spatial-implementation-joins",
+  "status": "implemented",
+  "fingerprint": "seqra-06-spatial-implementation-joins.v1",
+  "updated_at": "2026-09-04T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "seqra-spatial-stable-keys",
+      "path": "warehouse/lib/seqra_spatial_stable_keys.mjs"
+    },
+    {
+      "id": "seqra-layer-vintage",
+      "path": "warehouse/lib/seqra_layer_vintage.mjs"
+    },
+    {
+      "id": "seqra-bbl-lot-history",
+      "path": "warehouse/lib/seqra_bbl_lot_history.mjs"
+    },
+    {
+      "id": "seqra-spatial-layer-joins",
+      "path": "warehouse/lib/seqra_spatial_layer_joins.mjs"
+    },
+    {
+      "id": "seqra-implementation-remedy-projection",
+      "path": "warehouse/lib/seqra_implementation_remedy_projection.mjs"
+    },
+    {
+      "id": "seqra-spatial-implementation-joins-builder",
+      "path": "tools/build_seqra_spatial_implementation_joins.mjs"
+    },
+    {
+      "id": "seqra-spatial-implementation-joins-receipt",
+      "path": "warehouse/receipts/proof/seqra_spatial_implementation_joins_latest.json"
+    }
+  ]
+}

@@ -37,6 +37,10 @@
       "result": "pass"
     },
     {
+      "name": "SEQRA-06 spatial and implementation joins gate (this command's other card sharing `npm run warehouse:seqra:ingest`)",
+      "result": "pass"
+    },
+    {
       "name": "existing ZAP/CEQR reconciliation output does not regress (A4)",
       "result": "pass"
     }

@@ -1,0 +1,89 @@
+{
+  "checks": [
+    {
+      "detail": {
+        "cutoff": "2021-06-01",
+        "feature_count": 10,
+        "gap_count": 2
+      },
+      "name": "A1: every joined spatial feature carries its layer vintage",
+      "result": "pass"
+    },
+    {
+      "detail": {
+        "cutoff": "2019-03-01",
+        "matched": true
+      },
+      "name": "A2: a historical cutoff resolves identically whether computed with only the vintages published by then, or with the full present-day series",
+      "result": "pass"
+    },
+    {
+      "detail": {
+        "after": [
+          "3099990020",
+          "3099990030"
+        ],
+        "before": [
+          "3099990010"
+        ],
+        "subdivision_date": "2020-06-01"
+      },
+      "name": "A3: the pre-subdivision and post-subdivision footprints are both reachable, and the retired BBL is preserved",
+      "result": "pass"
+    },
+    {
+      "detail": {
+        "attributed_count": 4,
+        "remedy_state_2022_06_01": "substantially_complete",
+        "unattributed_count": 1
+      },
+      "name": "A4: implementation events join to the authorizing determination and drive a remedy-exposure projection",
+      "result": "pass"
+    },
+    {
+      "detail": {
+        "cutoff": "2018-06-01",
+        "gap": {
+          "bbl": "3099990010",
+          "candidate_vintage_count": 3,
+          "cutoff": "2018-06-01",
+          "gap_detected": true,
+          "layer_type": "pluto",
+          "reason": "no_vintage_covers_cutoff",
+          "schema": "cityscroll.seqra_spatial_coverage_gap.v1",
+          "statement": "No pluto layer vintage covers 2018-06-01 for BBL 3099990010. This is reported as a coverage gap; the join is refused rather than completed with the current or nearest available vintage."
+        }
+      },
+      "name": "A5: an unknown-vintage layer join is refused and reported as a coverage gap, never completed with current data",
+      "result": "pass"
+    },
+    {
+      "detail": {
+        "checked": true
+      },
+      "name": "negative rule: PLUTO's current (post-2021) vintage is never substituted for a pre-2019 cutoff",
+      "result": "pass"
+    },
+    {
+      "detail": {
+        "suites_run": 4
+      },
+      "name": "existing warehouse test suites for the modules this card introduces stay green",
+      "result": "pass"
+    }
+  ],
+  "fixture_project_key": "project:zap:sample-spatial-001",
+  "gate": {
+    "failed_check_count": 0,
+    "result": "pass"
+  },
+  "layer_types": [
+    "pluto",
+    "zoning",
+    "receptor",
+    "environmental_site",
+    "disadvantaged_community",
+    "flood"
+  ],
+  "schema": "cityscroll.seqra_spatial_implementation_joins_receipt.v1"
+}
