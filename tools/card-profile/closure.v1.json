@@ -2,7 +2,7 @@
   "schema": "cityscroll.card-profile.closure.v1",
   "profile": "card-work",
   "generated_by": "node tools/derive_card_profile.mjs",
-  "config_sha256": "31e2bc99b2bc13eaddf6e43b25d5a211ed14ddc87a38bdc7002080771491a5c8",
+  "config_sha256": "13cbb32b08eb54073fae1b892ac70c31caf2d970adc79b7bf53e2cf888d00655",
   "sources": {
     "observed": {
       "description": "Repository paths recorded by tools/card_profile_sentinel.cjs while each supported gate class ran on a full checkout.",
@@ -118,7 +118,7 @@
         "warehouse",
         "worker/src/data"
       ],
-      "path_count": 3921
+      "path_count": 3922
     }
   },
   "required_paths": [
@@ -126,7 +126,6 @@
     ".github/workflows/deploy-worker.yml",
     ".github/workflows/digest-shadow-monitor.yml",
     ".gitignore",
-    ".scrimignore",
     "AGENTS.md",
     "ARCHITECTURE.md",
     "Makefile",
@@ -2922,7 +2921,7 @@
       "site/data/zap_projects_warehouse_lookup.json"
     ]
   },
-  "patterns_sha256": "24fc9dfc98fa20d7fc9ecbdf6e822ae533fbb03009298170a418ea6a36fba557",
+  "patterns_sha256": "88bceb2e3c893d5d915b1efea1555cbe19fd26027bab23f6659fc93742e751bc",
   "supported_gate_classes": [
     "worker-unit",
     "architecture-evidence-shards",
@@ -3046,11 +3045,11 @@
   },
   "measured": {
     "note": "A snapshot of what the profile costs at the revision named here. These figures are reporting only; they are not part of the checked contract, because a byte total moves whenever any tracked file does.",
-    "revision": "97c5375b782058a4705633592c5dd9ead9b108ea",
+    "revision": "7952f3816768001a2242a57910efcaea9db02f09",
     "computed_in_reduced_checkout": false,
     "profile_paths": {
-      "count": 4139,
-      "logical_bytes": 197358800
+      "count": 4138,
+      "logical_bytes": 197354198
     },
     "deferred_paths": {
       "count": 298,
@@ -3067,9 +3066,9 @@
       "profile_logical_bytes": 109046950
     },
     "tracked_total": {
-      "count": 6451,
-      "logical_bytes": 889624705
+      "count": 6452,
+      "logical_bytes": 889911227
     },
-    "pattern_count": 830
+    "pattern_count": 829
   }
 }

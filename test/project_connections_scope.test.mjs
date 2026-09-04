@@ -220,7 +220,7 @@ test("name-only agency-shaped applicants retain an unresolved organization descr
     projectRows: [{
       project_id: "2024Q0136",
       project_name: "Unknown applicant project",
-      primary_applicant: "Jane Doe",
+      primary_applicant: "Ada Lovelace",
     }],
   });
   assert.equal(unknown.groups.find((group) => group.id === "applicant").items[0].ref, null);
