@@ -98,9 +98,16 @@ const OPAQUE_VALUE_ALLOWLIST = Object.freeze([
   "resource_id",
   "rule_id",
   "governed_by_rule_id",
+  // Provider-issued identifiers and enum-like labels carried by access and
+  // observation evidence. Long, opaque-looking, and structurally never secret.
+  "app_uid",
+  "ray_id",
+  "evidence_source",
+  "identity_digest_sha256_prefix",
   // Container fields whose members are identifiers rather than free text.
   "provider_issued_identifier",
   "cloudflare_os_deployment",
+  "approved_evaluator_request",
 ]);
 
 /**

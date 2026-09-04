@@ -365,6 +365,34 @@ test("A9: an ordinary receipt has nothing to sanitize", () => {
   assert.deepEqual(findUnsanitizedValues(baseReceipt()), []);
 });
 
+test("A9: provider identifiers on admission evidence are not mistaken for secrets", () => {
+  // Access evidence carries a ray id, an application uid and an identity
+  // digest. All three are long and opaque by nature; flagging them would push
+  // authors to drop exactly the identifiers that make an admission auditable.
+  const receipt = baseReceipt();
+  receipt.access.approved_evaluator_request = {
+    admitted: true,
+    evidence_source: "cloudflare_access_authentication_log",
+    event_at: "2026-09-04T20:56:02Z",
+    ray_id: "a35fe6074f39437f",
+    app_uid: "27ff5e35-cbc7-4474-b8a4-a17eccae33f7",
+    identity_digest_sha256_prefix: "a17c00b69ea8339d",
+    identity_matches_policy_allowlist: true,
+  };
+  assert.deepEqual(findUnsanitizedValues(receipt), []);
+  assert.doesNotThrow(() => assertOsDeploymentReceipt(receipt));
+
+  // The digest stands in for the identity precisely so the address never
+  // appears; an address alongside it is still refused.
+  const withAddress = baseReceipt();
+  withAddress.access.approved_evaluator_request = {
+    admitted: true,
+    ray_id: "a35fe6074f39437f",
+    identity: "evaluator@example.org",
+  };
+  assertRejects(withAddress, /email address present/);
+});
+
 test("A11: the receipt is classified as a deployment and nothing higher", () => {
   const understated = baseReceipt();
   understated.evidence_class = "external_live_endpoint";
