@@ -1,0 +1,16 @@
+{
+  "schema": "cityscroll.seqra_institutional_signal_discovery_observation.v1",
+  "source_id": "community_board_positions",
+  "vintage": "2026-09-04-sample",
+  "probe_fetch": {
+    "raw_slug": "page-0000",
+    "raw_extension": "html",
+    "request_url_or_query": "https://www.nyc.gov/site/manhattancb3/minutes/meeting-vote-records.page",
+    "requested_at": "2026-09-04T07:46:02.000Z",
+    "retrieved_at": "2026-09-04T07:46:02.000Z",
+    "http_status": 200,
+    "content_type": "text/html"
+  },
+  "sample_scope": true,
+  "sample_scope_note": "A single bounded, polite HTTP request against one representative Community Board's own vote-record/minutes page (no single documented interface exists across NYC's ~59 boards). The page carries dated linked vote-sheet and minutes documents (e.g. 'votereso2026-06.pdf', 'minutes2026-05.pdf'), confirmed present as structural markers; this fixture records reachability and marker presence, not a parsed resolution population."
+}

@@ -133,6 +133,49 @@ export function buildEnvironmentalReviewKey({
   );
 }
 
+/**
+ * `organization:{organization_type}:{normalized_name}` for a SEQRA-07
+ * institutional actor (organization -> takes_position -> public_position).
+ * `organizationType` must already be one of SEQRA_ONTOLOGY's
+ * organization_type enum values (this function does not itself classify a
+ * raw string into a type; see warehouse/lib/seqra_actor_resolution.mjs).
+ * The name token is the caller's already-resolved actor identity (typically
+ * entity_resolution/officials/org_resolve.mjs#orgKeyPreferringVendorStem),
+ * not the raw source string, so two spellings of one organization normalize
+ * to the same key before this builder ever sees them.
+ */
+export function buildOrganizationKey({ organizationType, resolvedName } = {}) {
+  const typeToken = normalizeKeyToken(organizationType, "organizationType");
+  const nameToken = normalizeKeyToken(resolvedName, "resolvedName");
+  return `organization:${typeToken}:${nameToken}`;
+}
+
+/**
+ * `public_position:{review_key}:{organization_key}:{observed_date}:{source_hash_prefix}`.
+ * The source-hash suffix (derived from sourceRecordId, not fetch-time content)
+ * keeps two distinct source records for the same org/review/day from
+ * colliding into one position, while remaining a deterministic function of
+ * stable identity inputs rather than a fetch-time counter.
+ */
+export function buildPublicPositionKey({ reviewKey, organizationKey, observedAt, sourceRecordId } = {}) {
+  const review = requireNonEmptyString(reviewKey, "reviewKey");
+  if (!review.startsWith("environmental_review:")) {
+    throw new SeqraStableKeyError(`reviewKey must be an environmental_review stable key, got ${JSON.stringify(reviewKey)}`);
+  }
+  const org = requireNonEmptyString(organizationKey, "organizationKey");
+  if (!org.startsWith("organization:")) {
+    throw new SeqraStableKeyError(`organizationKey must be an organization stable key, got ${JSON.stringify(organizationKey)}`);
+  }
+  const observed = requireNonEmptyString(observedAt, "observedAt");
+  const dateToken = observed.slice(0, 10);
+  if (!DATE_ONLY.test(dateToken)) {
+    throw new SeqraStableKeyError(`observedAt must begin with an ISO date (YYYY-MM-DD), got ${JSON.stringify(observedAt)}`);
+  }
+  const recordId = requireNonEmptyString(sourceRecordId, "sourceRecordId");
+  const hashPrefix = sha256Hex(recordId).slice(0, 12);
+  return `public_position:${review}:${org}:${dateToken}:${hashPrefix}`;
+}
+
 /** `action:{agency}:{source_system}:{source_action_id}` */
 export function buildActionKey({ agency, sourceSystem, sourceActionId } = {}) {
   const agencyToken = normalizeKeyToken(agency, "agency");

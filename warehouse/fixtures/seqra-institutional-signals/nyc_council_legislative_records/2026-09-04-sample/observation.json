@@ -1,0 +1,16 @@
+{
+  "schema": "cityscroll.seqra_institutional_signal_discovery_observation.v1",
+  "source_id": "nyc_council_legislative_records",
+  "vintage": "2026-09-04-sample",
+  "probe_fetch": {
+    "raw_slug": "response-headers",
+    "raw_extension": "txt",
+    "request_url_or_query": "https://webapi.legistar.com/v1/nyc/matters?$top=2",
+    "requested_at": "2026-09-04T07:46:02.000Z",
+    "retrieved_at": "2026-09-04T07:46:02.000Z",
+    "http_status": 403,
+    "content_type": "text/plain"
+  },
+  "sample_scope": true,
+  "sample_scope_note": "A single bounded, polite HTTP request against the documented Legistar matters endpoint. The publisher requires an application token this workstream has not been issued -- the response body is empty (Content-Length: 0) with a 'Token is required' status line, captured verbatim as the response headers below. Reachability is confirmed; no matter rows were returned or fabricated."
+}

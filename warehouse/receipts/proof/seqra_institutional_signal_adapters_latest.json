@@ -1,0 +1,631 @@
+{
+  "checks": [
+    {
+      "name": "every registered SEQRA-07 source builds a receipt from its committed fixture",
+      "result": "pass"
+    },
+    {
+      "name": "re-running a named vintage produces an identical content hash for every source",
+      "result": "pass"
+    },
+    {
+      "name": "a missing required SODA field fails the adapter visibly instead of silently parsing",
+      "result": "pass"
+    },
+    {
+      "name": "every discovery-probe source records not_a_stable_api and never asserts a row count",
+      "result": "pass"
+    },
+    {
+      "name": "actor resolution attributes every demo position to a resolved organization with a source record (A1)",
+      "result": "pass"
+    },
+    {
+      "name": "the same raw actor name resolves to the same organization_key across repeated resolution (A1)",
+      "result": "pass"
+    },
+    {
+      "name": "resolving an actor with no usable identity throws rather than minting an unstable key",
+      "result": "pass"
+    },
+    {
+      "name": "before a second organization's position is public, the issue is named but not yet a coalition or preserved (A2 baseline)",
+      "result": "pass"
+    },
+    {
+      "name": "named-issue evidence becomes a measurable coalition once a second organization's position is public (A2)",
+      "result": "pass"
+    },
+    {
+      "name": "a later cutoff never surfaces a reaffirmation before it was itself public (A4: no position enters a cutoff before it was public)",
+      "result": "pass"
+    },
+    {
+      "name": "a position missing available_to_public_at is refused at construction, never accepted as cutoff-valid (A4 / negative rule)",
+      "result": "pass"
+    },
+    {
+      "name": "a position cannot be public before it was observed (A4)",
+      "result": "pass"
+    },
+    {
+      "name": "every position from a suppression-required organization type carries a non-empty suppression rule (A3)",
+      "result": "pass"
+    },
+    {
+      "name": "no built receipt, position, or derived signal asserts misconduct/motive (A3 / negative rule)",
+      "result": "pass"
+    },
+    {
+      "name": "every derived issue-preservation and coalition-continuity signal retains a rival explanation (A5)",
+      "result": "pass"
+    },
+    {
+      "name": "resident ingestion remains disabled and every source receipt records it as not committed",
+      "result": "pass"
+    },
+    {
+      "name": "the existing SEQRA ontology unit tests for organization/public_position stay green",
+      "result": "pass"
+    }
+  ],
+  "demo_coalition_continuity": {
+    "as_of_cutoff": "2026-08-01T00:00:00.000Z",
+    "coalitions": [
+      {
+        "coalition": true,
+        "continuity": true,
+        "distinct_organization_count": 2,
+        "distinct_source_count": 2,
+        "first_public_at": "2026-04-12T00:00:00.000Z",
+        "last_public_at": "2026-07-03T00:00:00.000Z",
+        "named_issue": "shadow impacts on the p s 123 schoolyard",
+        "organization_keys": [
+          "organization:community_board:manhattan_community_board_3",
+          "organization:elected_official_office:council_member_christopher_marte_s_office"
+        ],
+        "rival_explanation": "Multiple organizations naming the same issue may share a common information source (a shared advocacy toolkit, a widely circulated notice, or overlapping membership) rather than reflecting independent, uncoordinated agreement; apparent coalition size is not evidence of the issue's technical merit, and it is not a judgment about why any participating organization joined.",
+        "span_days": 82,
+        "suppression_rule": "This is a process signal about what was formally raised, when, and by how many distinct organizations. It must never be read, displayed, or modeled as a misconduct or motive label for any participating organization, including labor, developer, or community participants."
+      }
+    ],
+    "excluded_not_yet_public_position_count": 0,
+    "excluded_undated_position_count": 0,
+    "schema": "cityscroll.seqra_issue_coalition_signal.v1"
+  },
+  "demo_issue_preservation": {
+    "as_of_cutoff": "2026-08-01T00:00:00.000Z",
+    "excluded_not_yet_public_position_count": 0,
+    "excluded_undated_position_count": 0,
+    "generic_opposition_count": 2,
+    "issues": [
+      {
+        "distinct_observation_date_count": 3,
+        "distinct_organization_count": 2,
+        "first_observed_at": "2026-04-10T00:00:00.000Z",
+        "last_observed_at": "2026-07-01T00:00:00.000Z",
+        "mention_count": 3,
+        "named_issue": "shadow impacts on the p s 123 schoolyard",
+        "preserved": true,
+        "rival_explanation": "The same normalized issue text recurring across positions may reflect independent commenters submitting similar boilerplate language rather than a coordinated or persistent campaign around one preserved concern; this signal does not distinguish the two.",
+        "suppression_rule": "This is a process signal about what was formally raised, when, and by how many distinct organizations. It must never be read, displayed, or modeled as a misconduct or motive label for any participating organization, including labor, developer, or community participants."
+      }
+    ],
+    "schema": "cityscroll.seqra_issue_coalition_signal.v1"
+  },
+  "demo_organizations": [
+    {
+      "name": "Manhattan Community Board 3",
+      "observed_at": "2026-04-10T00:00:00.000Z",
+      "organization_key": "organization:community_board:manhattan_community_board_3",
+      "organization_type": "community_board",
+      "source_id": "community_board_positions",
+      "source_record_id": "cb3-resolution-2026-04"
+    },
+    {
+      "name": "Council Member Christopher Marte's Office",
+      "observed_at": "2026-05-20T00:00:00.000Z",
+      "organization_key": "organization:elected_official_office:council_member_christopher_marte_s_office",
+      "organization_type": "elected_official_office",
+      "source_id": "nyc_council_legislative_records",
+      "source_record_id": "council-testimony-2026-05-20"
+    },
+    {
+      "name": "Building and Construction Trades Council of Greater New York",
+      "observed_at": "2026-03-01T00:00:00.000Z",
+      "organization_key": "organization:labor_organization:building_and_construction_trades_council_of_greater_new_york",
+      "organization_type": "labor_organization",
+      "source_id": "nyc_elobbyist",
+      "source_record_id": "elobbyist-fmf3-knd8-demo-row"
+    },
+    {
+      "name": "BOARD OF ELECTION POLL WORKERS",
+      "observed_at": "2026-04-15T00:00:00.000Z",
+      "organization_key": "organization:government_agency:board_of_election_poll_workers",
+      "organization_type": "government_agency",
+      "source_id": "nyc_city_record_notices",
+      "source_record_id": "cityrecord-demo-row"
+    }
+  ],
+  "demo_positions": [
+    {
+      "available_to_public_at": "2026-04-12T00:00:00.000Z",
+      "confidence": 0.9,
+      "evidence": "Community Board 3 full-board resolution, April 2026 meeting minutes.",
+      "named_issue": "Shadow impacts on the P.S. 123 schoolyard",
+      "observed_at": "2026-04-10T00:00:00.000Z",
+      "organization_key": "organization:community_board:manhattan_community_board_3",
+      "position": "oppose",
+      "position_key": "public_position:environmental_review:ceqr:04DCP052Q:organization:community_board:manhattan_community_board_3:2026-04-10:3b55b41a94b5",
+      "review_key": "environmental_review:ceqr:04DCP052Q",
+      "rival_explanation": "A single board's resolution language may echo standard boilerplate schoolyard-shadow language used across many unrelated reviews rather than reflecting this review's site-specific conditions.",
+      "source_id": "community_board_positions",
+      "source_record_id": "cb3-resolution-2026-04",
+      "source_vintage": null,
+      "suppression_rule": "Participation is recorded as dated process evidence only. Lobbying, labor-organization, developer, or community participation captured here must never be read, displayed, or modeled as a misconduct or motive signal about the participating organization."
+    },
+    {
+      "available_to_public_at": "2026-05-21T00:00:00.000Z",
+      "confidence": 0.7,
+      "evidence": "Council district office public hearing testimony, May 2026.",
+      "named_issue": "Shadow impacts on the P.S. 123 schoolyard",
+      "observed_at": "2026-05-20T00:00:00.000Z",
+      "organization_key": "organization:elected_official_office:council_member_christopher_marte_s_office",
+      "position": "conditional",
+      "position_key": "public_position:environmental_review:ceqr:04DCP052Q:organization:elected_official_office:council_member_christopher_marte_s_office:2026-05-20:779db9328904",
+      "review_key": "environmental_review:ceqr:04DCP052Q",
+      "rival_explanation": "A district office restating a constituent-raised concern is dated process evidence of what was raised, not evidence the office independently verified or endorsed the underlying technical claim.",
+      "source_id": "nyc_council_legislative_records",
+      "source_record_id": "council-testimony-2026-05-20",
+      "source_vintage": null,
+      "suppression_rule": "Participation is recorded as dated process evidence only. Lobbying, labor-organization, developer, or community participation captured here must never be read, displayed, or modeled as a misconduct or motive signal about the participating organization."
+    },
+    {
+      "available_to_public_at": "2026-05-01T00:00:00.000Z",
+      "confidence": 0.5,
+      "evidence": "NYC eLobbyist filing recording dated lobbying activity; no support/oppose stance is stated in the filing.",
+      "named_issue": null,
+      "observed_at": "2026-03-01T00:00:00.000Z",
+      "organization_key": "organization:labor_organization:building_and_construction_trades_council_of_greater_new_york",
+      "position": "no_position_recorded",
+      "position_key": "public_position:environmental_review:ceqr:04DCP052Q:organization:labor_organization:building_and_construction_trades_council_of_greater_new_york:2026-03-01:b13817638e6a",
+      "review_key": "environmental_review:ceqr:04DCP052Q",
+      "rival_explanation": "Registered lobbying activity on a related legislative matter does not establish that this organization took any position on this specific environmental review.",
+      "source_id": "nyc_elobbyist",
+      "source_record_id": "elobbyist-fmf3-knd8-demo-row",
+      "source_vintage": null,
+      "suppression_rule": "Participation is recorded as dated process evidence only. Lobbying, labor-organization, developer, or community participation captured here must never be read, displayed, or modeled as a misconduct or motive signal about the participating organization."
+    },
+    {
+      "available_to_public_at": "2026-04-16T00:00:00.000Z",
+      "confidence": 0.4,
+      "evidence": "City Record notice recording a comment opposing the action without naming a specific technical issue.",
+      "named_issue": null,
+      "observed_at": "2026-04-15T00:00:00.000Z",
+      "organization_key": "organization:government_agency:board_of_election_poll_workers",
+      "position": "oppose",
+      "position_key": "public_position:environmental_review:ceqr:04DCP052Q:organization:government_agency:board_of_election_poll_workers:2026-04-15:19b9cfcaee15",
+      "review_key": "environmental_review:ceqr:04DCP052Q",
+      "rival_explanation": "Recorded opposition with no named issue may reflect an incomplete transcription of a more specific comment rather than genuinely undifferentiated opposition.",
+      "source_id": "nyc_city_record_notices",
+      "source_record_id": "cityrecord-demo-row",
+      "source_vintage": null,
+      "suppression_rule": "Participation is recorded as dated process evidence only. Lobbying, labor-organization, developer, or community participation captured here must never be read, displayed, or modeled as a misconduct or motive signal about the participating organization."
+    },
+    {
+      "available_to_public_at": "2026-07-03T00:00:00.000Z",
+      "confidence": 0.9,
+      "evidence": "Community Board 3 follow-up resolution, July 2026 meeting minutes.",
+      "named_issue": "Shadow impacts on the P.S. 123 schoolyard",
+      "observed_at": "2026-07-01T00:00:00.000Z",
+      "organization_key": "organization:community_board:manhattan_community_board_3",
+      "position": "oppose",
+      "position_key": "public_position:environmental_review:ceqr:04DCP052Q:organization:community_board:manhattan_community_board_3:2026-07-01:675d85e57310",
+      "review_key": "environmental_review:ceqr:04DCP052Q",
+      "rival_explanation": "A follow-up resolution restating an earlier concern may reflect routine procedural re-adoption rather than a new, independent reaffirmation.",
+      "source_id": "community_board_positions",
+      "source_record_id": "cb3-followup-2026-07",
+      "source_vintage": null,
+      "suppression_rule": "Participation is recorded as dated process evidence only. Lobbying, labor-organization, developer, or community participation captured here must never be read, displayed, or modeled as a misconduct or motive signal about the participating organization."
+    }
+  ],
+  "gate": {
+    "failed_check_count": 0,
+    "resident_ingestion_committed": false,
+    "result": "pass"
+  },
+  "schema": "cityscroll.seqra_institutional_signal_adapters_receipt.v1",
+  "source_count": 6,
+  "sources": {
+    "agency_position_records": {
+      "base_url": "https://www.nyc.gov/site/planning/about/commission-meetings.page",
+      "captured_at": "2026-09-04T07:46:03.000Z",
+      "discovery": {
+        "http_status": 200,
+        "markers_found": [
+          "commission"
+        ],
+        "markers_missing": [],
+        "markers_required": [
+          "commission"
+        ],
+        "not_a_stable_api": true,
+        "note": "Heterogeneous set of resolutions, recommendations, appeals, and conditions across multiple discretionary-review bodies (commission constraint: no single documented interface). This entry probes the City Planning Commission meetings page as the representative sample."
+      },
+      "fetches": [
+        {
+          "byte_count": 7558,
+          "content_hash": "sha256:47b804dc63fb33cca9eb864b07cbad71dad38cbd072bb79379bee7e6a845736e",
+          "content_type": "text/html",
+          "fetch_id": "seqra07-fetch-agency_position_records-2026-09-04-sample-page-0000",
+          "http_status": 200,
+          "pagination_complete": false,
+          "parser_version": "seqra_structured_adapter.v1",
+          "raw_object_path": "warehouse/fixtures/seqra-institutional-signals/agency_position_records/2026-09-04-sample/raw/page-0000.html",
+          "request_url_or_query": "https://www.nyc.gov/site/planning/about/commission-meetings.page",
+          "requested_at": "2026-09-04T07:46:03.000Z",
+          "retrieved_at": "2026-09-04T07:46:03.000Z",
+          "row_or_document_count": 0,
+          "schema": "cityscroll.seqra_adapter_fetch_receipt.v1",
+          "source_id": "agency_position_records",
+          "source_vintage": "2026-09-04-sample",
+          "warnings": []
+        }
+      ],
+      "kind": "bounded_discovery_probe",
+      "pagination_complete": false,
+      "resident_ingestion": {
+        "committed": false,
+        "note": "Research raw retention only in this card; resident-facing ingestion is not wired and stays disabled until a later owner decision."
+      },
+      "row_count": 0,
+      "sample_scope": true,
+      "sample_scope_note": "A single bounded, polite HTTP request against the City Planning Commission's own meetings page, used as the representative sample for the heterogeneous CPC/BSA/LPC/HPD/EDC/Borough-President record set (no single documented interface across these bodies). This fixture records reachability and marker presence, not a parsed determination/resolution population.",
+      "schema": "cityscroll.seqra_institutional_signal_discovery_receipt.v1",
+      "source_id": "agency_position_records",
+      "source_name": "Agency (CPC, BSA, LPC, HPD, EDC, Borough President) position records",
+      "vintage": "2026-09-04-sample"
+    },
+    "community_board_positions": {
+      "base_url": "https://www.nyc.gov/site/manhattancb3/minutes/meeting-vote-records.page",
+      "captured_at": "2026-09-04T07:46:02.000Z",
+      "discovery": {
+        "http_status": 200,
+        "markers_found": [
+          "votereso",
+          "minutes"
+        ],
+        "markers_missing": [],
+        "markers_required": [
+          "votereso",
+          "minutes"
+        ],
+        "not_a_stable_api": true,
+        "note": "No single documented interface across NYC's ~59 community boards (commission constraint); each board publishes its own vote-record/minutes page. This entry probes one representative board page for reachability and the presence of dated vote/minutes document links; per-board discovery beyond this sample is out of this card's scope. See also the existing, broader site/community_board_source_adapters.mjs, which this adapter's organization_type mapping stays consistent with rather than duplicating."
+      },
+      "fetches": [
+        {
+          "byte_count": 55009,
+          "content_hash": "sha256:5436cc9cad836a72f5e4ed744938d41f78a0d48a9592c2f536619eb60c99c460",
+          "content_type": "text/html",
+          "fetch_id": "seqra07-fetch-community_board_positions-2026-09-04-sample-page-0000",
+          "http_status": 200,
+          "pagination_complete": false,
+          "parser_version": "seqra_structured_adapter.v1",
+          "raw_object_path": "warehouse/fixtures/seqra-institutional-signals/community_board_positions/2026-09-04-sample/raw/page-0000.html",
+          "request_url_or_query": "https://www.nyc.gov/site/manhattancb3/minutes/meeting-vote-records.page",
+          "requested_at": "2026-09-04T07:46:02.000Z",
+          "retrieved_at": "2026-09-04T07:46:02.000Z",
+          "row_or_document_count": 0,
+          "schema": "cityscroll.seqra_adapter_fetch_receipt.v1",
+          "source_id": "community_board_positions",
+          "source_vintage": "2026-09-04-sample",
+          "warnings": []
+        }
+      ],
+      "kind": "bounded_discovery_probe",
+      "pagination_complete": false,
+      "resident_ingestion": {
+        "committed": false,
+        "note": "Research raw retention only in this card; resident-facing ingestion is not wired and stays disabled until a later owner decision."
+      },
+      "row_count": 0,
+      "sample_scope": true,
+      "sample_scope_note": "A single bounded, polite HTTP request against one representative Community Board's own vote-record/minutes page (no single documented interface exists across NYC's ~59 boards). The page carries dated linked vote-sheet and minutes documents (e.g. 'votereso2026-06.pdf', 'minutes2026-05.pdf'), confirmed present as structural markers; this fixture records reachability and marker presence, not a parsed resolution population.",
+      "schema": "cityscroll.seqra_institutional_signal_discovery_receipt.v1",
+      "source_id": "community_board_positions",
+      "source_name": "Community Board resolutions and vote records",
+      "vintage": "2026-09-04-sample"
+    },
+    "nyc_city_record_notices": {
+      "captured_at": "2026-09-04T07:44:01.000Z",
+      "dataset_id": "dg92-zbpx",
+      "fetches": [
+        {
+          "byte_count": 574899,
+          "content_hash": "sha256:8de02a30c4e7553d6c7cfc7173342591d671d358ee92c2373d9a18400f476f50",
+          "content_type": "application/json; charset=utf-8",
+          "fetch_id": "seqra07-fetch-nyc_city_record_notices-2026-09-04-sample-dataset_metadata",
+          "http_status": 200,
+          "pagination_complete": true,
+          "parser_version": "seqra_structured_adapter.v1",
+          "raw_object_path": "warehouse/fixtures/seqra-institutional-signals/nyc_city_record_notices/2026-09-04-sample/raw/dataset_metadata.json",
+          "request_url_or_query": "https://data.cityofnewyork.us/api/views/dg92-zbpx.json",
+          "requested_at": "2026-09-04T07:44:01.000Z",
+          "retrieved_at": "2026-09-04T07:44:01.000Z",
+          "row_or_document_count": 1,
+          "schema": "cityscroll.seqra_adapter_fetch_receipt.v1",
+          "source_id": "nyc_city_record_notices",
+          "source_vintage": "2026-09-04-sample",
+          "warnings": []
+        },
+        {
+          "byte_count": 1961,
+          "content_hash": "sha256:7394e04fee6a326e12d09a2b00fccb2c2bbb8cbbf6723c44d1e0850488a47e89",
+          "content_type": "application/json; charset=utf-8",
+          "fetch_id": "seqra07-fetch-nyc_city_record_notices-2026-09-04-sample-page-0000",
+          "http_status": 200,
+          "pagination_complete": false,
+          "parser_version": "seqra_structured_adapter.v1",
+          "raw_object_path": "warehouse/fixtures/seqra-institutional-signals/nyc_city_record_notices/2026-09-04-sample/raw/page-0000.json",
+          "request_url_or_query": "https://data.cityofnewyork.us/resource/dg92-zbpx.json?$limit=5&$order=:id",
+          "requested_at": "2026-09-04T07:44:01.000Z",
+          "retrieved_at": "2026-09-04T07:44:01.000Z",
+          "row_or_document_count": 5,
+          "schema": "cityscroll.seqra_adapter_fetch_receipt.v1",
+          "source_id": "nyc_city_record_notices",
+          "source_vintage": "2026-09-04-sample",
+          "warnings": []
+        }
+      ],
+      "kind": "soda",
+      "pagination_complete": false,
+      "resident_ingestion": {
+        "committed": false,
+        "note": "Research raw retention only in this card; resident-facing ingestion is not wired and stays disabled until a later owner decision."
+      },
+      "row_count": 5,
+      "sample_scope": true,
+      "sample_scope_note": "Bounded reference sample captured by one polite, single-page live request per fetch, not a full-population pull, against the whole City Record Online corpus (not source-filtered to environmental-review notice types by this fixture). pagination_complete is derived from the actual row count against page_size and is honestly false here.",
+      "schema": "cityscroll.seqra_adapter_vintage_receipt.v1",
+      "schema_check": {
+        "drift": false,
+        "observed_fields": [
+          "additional_description_1",
+          "additional_description_2",
+          "additional_description_3",
+          "address_to_request",
+          "agency_name",
+          "building_name",
+          "category_description",
+          "city",
+          "contact_fax",
+          "contact_name",
+          "contact_phone",
+          "contract_amount",
+          "document_links",
+          "due_date",
+          "email",
+          "end_date",
+          "event_date",
+          "other_info_1",
+          "other_info_2",
+          "other_info_3",
+          "pin",
+          "printout_1",
+          "printout_2",
+          "printout_3",
+          "request_id",
+          "section_name",
+          "selection_method_description",
+          "short_title",
+          "special_case_reason_description",
+          "start_date",
+          "state",
+          "street_address_1",
+          "street_address_2",
+          "type_of_notice_description",
+          "vendor_address",
+          "vendor_name",
+          "zip_code"
+        ],
+        "required_fields": [
+          "request_id",
+          "start_date",
+          "agency_name",
+          "type_of_notice_description",
+          "short_title"
+        ]
+      },
+      "source_id": "nyc_city_record_notices",
+      "source_name": "NYC City Record Online (SEQRA/CEQR-relevant notice types)",
+      "vintage": "2026-09-04-sample"
+    },
+    "nyc_council_legislative_records": {
+      "base_url": "https://webapi.legistar.com/v1/nyc/matters",
+      "captured_at": "2026-09-04T07:46:02.000Z",
+      "discovery": {
+        "http_status": 403,
+        "markers_found": [],
+        "markers_missing": [],
+        "markers_required": [],
+        "not_a_stable_api": true,
+        "note": "Legistar exposes a documented API, but every request requires an application token this workstream has not been issued (observed: HTTP 403 'Token is required'); a land-use/environmental-review-scoped matter query remains undesigned. The discovery receipt records reachability and the token requirement, never a matter count."
+      },
+      "fetches": [
+        {
+          "byte_count": 257,
+          "content_hash": "sha256:4a9b06af24fd9facbf93795df52769df3d1b8930e90028bc3b06661af67a717e",
+          "content_type": "text/plain",
+          "fetch_id": "seqra07-fetch-nyc_council_legislative_records-2026-09-04-sample-response-headers",
+          "http_status": 403,
+          "pagination_complete": false,
+          "parser_version": "seqra_structured_adapter.v1",
+          "raw_object_path": "warehouse/fixtures/seqra-institutional-signals/nyc_council_legislative_records/2026-09-04-sample/raw/response-headers.txt",
+          "request_url_or_query": "https://webapi.legistar.com/v1/nyc/matters?$top=2",
+          "requested_at": "2026-09-04T07:46:02.000Z",
+          "retrieved_at": "2026-09-04T07:46:02.000Z",
+          "row_or_document_count": 0,
+          "schema": "cityscroll.seqra_adapter_fetch_receipt.v1",
+          "source_id": "nyc_council_legislative_records",
+          "source_vintage": "2026-09-04-sample",
+          "warnings": []
+        }
+      ],
+      "kind": "bounded_discovery_probe",
+      "pagination_complete": false,
+      "resident_ingestion": {
+        "committed": false,
+        "note": "Research raw retention only in this card; resident-facing ingestion is not wired and stays disabled until a later owner decision."
+      },
+      "row_count": 0,
+      "sample_scope": true,
+      "sample_scope_note": "A single bounded, polite HTTP request against the documented Legistar matters endpoint. The publisher requires an application token this workstream has not been issued -- the response body is empty (Content-Length: 0) with a 'Token is required' status line, captured verbatim as the response headers below. Reachability is confirmed; no matter rows were returned or fabricated.",
+      "schema": "cityscroll.seqra_institutional_signal_discovery_receipt.v1",
+      "source_id": "nyc_council_legislative_records",
+      "source_name": "NYC Council legislative records",
+      "vintage": "2026-09-04-sample"
+    },
+    "nyc_elobbyist": {
+      "captured_at": "2026-09-04T07:44:00.000Z",
+      "dataset_id": "fmf3-knd8",
+      "fetches": [
+        {
+          "byte_count": 106859,
+          "content_hash": "sha256:627c2068d33b9675c1eabc03fa829028bdfe39d83fd28b02456463a3ddf13747",
+          "content_type": "application/json; charset=utf-8",
+          "fetch_id": "seqra07-fetch-nyc_elobbyist-2026-09-04-sample-dataset_metadata",
+          "http_status": 200,
+          "pagination_complete": true,
+          "parser_version": "seqra_structured_adapter.v1",
+          "raw_object_path": "warehouse/fixtures/seqra-institutional-signals/nyc_elobbyist/2026-09-04-sample/raw/dataset_metadata.json",
+          "request_url_or_query": "https://data.cityofnewyork.us/api/views/fmf3-knd8.json",
+          "requested_at": "2026-09-04T07:43:59.000Z",
+          "retrieved_at": "2026-09-04T07:43:59.000Z",
+          "row_or_document_count": 1,
+          "schema": "cityscroll.seqra_adapter_fetch_receipt.v1",
+          "source_id": "nyc_elobbyist",
+          "source_vintage": "2026-09-04-sample",
+          "warnings": []
+        },
+        {
+          "byte_count": 20229,
+          "content_hash": "sha256:ebea545f1fcf324b7cb80b2248c484ed22f5a6625d4b3519676f91891e39a9c1",
+          "content_type": "application/json; charset=utf-8",
+          "fetch_id": "seqra07-fetch-nyc_elobbyist-2026-09-04-sample-page-0000",
+          "http_status": 200,
+          "pagination_complete": false,
+          "parser_version": "seqra_structured_adapter.v1",
+          "raw_object_path": "warehouse/fixtures/seqra-institutional-signals/nyc_elobbyist/2026-09-04-sample/raw/page-0000.json",
+          "request_url_or_query": "https://data.cityofnewyork.us/resource/fmf3-knd8.json?$limit=5&$order=:id",
+          "requested_at": "2026-09-04T07:44:00.000Z",
+          "retrieved_at": "2026-09-04T07:44:00.000Z",
+          "row_or_document_count": 5,
+          "schema": "cityscroll.seqra_adapter_fetch_receipt.v1",
+          "source_id": "nyc_elobbyist",
+          "source_vintage": "2026-09-04-sample",
+          "warnings": []
+        }
+      ],
+      "kind": "soda",
+      "pagination_complete": false,
+      "resident_ingestion": {
+        "committed": false,
+        "note": "Research raw retention only in this card; resident-facing ingestion is not wired and stays disabled until a later owner decision."
+      },
+      "row_count": 5,
+      "sample_scope": true,
+      "sample_scope_note": "Bounded reference sample captured by one polite, single-page live request per fetch, not a full-population pull. pagination_complete is derived from the actual row count against page_size and is honestly false here.",
+      "schema": "cityscroll.seqra_adapter_vintage_receipt.v1",
+      "schema_check": {
+        "drift": false,
+        "observed_fields": [
+          "client_id",
+          "client_industry",
+          "client_name",
+          "client_po",
+          "compensation_total",
+          "end_date",
+          "itemized_expense_total",
+          "lobbying_expenses_total",
+          "lobbyist_activities",
+          "lobbyist_employees",
+          "lobbyist_has_finacial_interest",
+          "lobbyist_id",
+          "lobbyist_is_colobbyist",
+          "lobbyist_name",
+          "lobbyist_po",
+          "lobbyist_targets",
+          "num_periods",
+          "period",
+          "periodic_activities",
+          "periodic_id",
+          "periodic_targets",
+          "periodic_year",
+          "registration_id",
+          "reimbursed_expenses_total",
+          "report_year",
+          "salary_expense_total",
+          "small_expense_total",
+          "start_date"
+        ],
+        "required_fields": [
+          "client_id",
+          "client_name",
+          "lobbyist_name",
+          "lobbyist_activities",
+          "report_year",
+          "start_date"
+        ]
+      },
+      "source_id": "nyc_elobbyist",
+      "source_name": "NYC eLobbyist",
+      "vintage": "2026-09-04-sample"
+    },
+    "nys_coelig_lobbying": {
+      "base_url": "https://ethics.ny.gov/lobbying-data-0",
+      "captured_at": "2026-09-04T07:46:03.000Z",
+      "discovery": {
+        "http_status": 200,
+        "markers_found": [],
+        "markers_missing": [],
+        "markers_required": [],
+        "not_a_stable_api": true,
+        "note": "No documented bulk-download or API interface (commission constraint). The public search page itself sits behind an automated-request interstitial (observed: HTTP 200 body is a bot-check challenge page, not lobbying data) -- recorded honestly as 'reachable, content not fetchable ' 'by a bounded HTTP request' rather than parsed as if it were lobbying rows."
+      },
+      "fetches": [
+        {
+          "byte_count": 5662,
+          "content_hash": "sha256:6ca7ba99a531e6f3105a64908ffc893aa76f9726a5f3ca7af64369efcb7731a5",
+          "content_type": "text/html",
+          "fetch_id": "seqra07-fetch-nys_coelig_lobbying-2026-09-04-sample-page-0000",
+          "http_status": 200,
+          "pagination_complete": false,
+          "parser_version": "seqra_structured_adapter.v1",
+          "raw_object_path": "warehouse/fixtures/seqra-institutional-signals/nys_coelig_lobbying/2026-09-04-sample/raw/page-0000.html",
+          "request_url_or_query": "https://ethics.ny.gov/lobbying-data-0",
+          "requested_at": "2026-09-04T07:46:03.000Z",
+          "retrieved_at": "2026-09-04T07:46:03.000Z",
+          "row_or_document_count": 0,
+          "schema": "cityscroll.seqra_adapter_fetch_receipt.v1",
+          "source_id": "nys_coelig_lobbying",
+          "source_vintage": "2026-09-04-sample",
+          "warnings": []
+        }
+      ],
+      "kind": "bounded_discovery_probe",
+      "pagination_complete": false,
+      "resident_ingestion": {
+        "committed": false,
+        "note": "Research raw retention only in this card; resident-facing ingestion is not wired and stays disabled until a later owner decision."
+      },
+      "row_count": 0,
+      "sample_scope": true,
+      "sample_scope_note": "A single bounded, polite HTTP request against the public COELIG lobbying-data search page. The HTTP request itself succeeds (200), but the response body is an automated-request interstitial challenge page ('Just a moment...'), not lobbying data -- confirmed by the absence of any lobbying-record structural marker. Recorded honestly as reachable-but-not-fetchable-by-a-bounded-request rather than parsed as if it were lobbying rows.",
+      "schema": "cityscroll.seqra_institutional_signal_discovery_receipt.v1",
+      "source_id": "nys_coelig_lobbying",
+      "source_name": "NYS COELIG lobbying records",
+      "vintage": "2026-09-04-sample"
+    }
+  }
+}
