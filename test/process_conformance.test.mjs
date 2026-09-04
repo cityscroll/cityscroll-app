@@ -47,6 +47,7 @@ import {
   renderAgencyLifecycleConformance,
 } from "../site/agency_lifecycle_conformance.mjs";
 import { buildAgencyLifecycleConformanceLookup } from "../tools/build_agency_lifecycle_conformance.mjs";
+import { buildProcessConformanceArtifacts } from "../tools/build_process_conformance.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const PARKS = "parks-and-recreation";
@@ -922,6 +923,24 @@ test("committed conformance lookup carries meetings, contracts, and zoning edges
     assert.match(row.edge.claim_inspect_href, new RegExp(`^/agencies/${agency}/\\?claim=`));
     assert.match(row.observed_record.href, /^(?:\/|https:\/\/)/);
   }
+});
+
+test("committed process_conformance lookup is reproducible from committed sources (PC-04)", () => {
+  // A deterministic rebuild from the currently committed sources must
+  // reproduce the committed lookup exactly, so a divergence like PC-04's
+  // (committed artifact carried LPC's 9 zoning edges; a fresh rebuild from
+  // the same unmodified sources produced 0) fails this test instead of
+  // waiting for an unrelated change to expose it via a manual rebuild.
+  const committed = JSON.parse(readFileSync(LOOKUP, "utf8"));
+  const { lookup: rebuilt } = buildProcessConformanceArtifacts();
+  // Compare the same way the artifact is written: a round trip through JSON
+  // normalizes incidental in-memory shape (null-prototype accumulators,
+  // undefined-valued keys) that never survives to the committed file.
+  assert.deepEqual(JSON.parse(JSON.stringify(rebuilt)), committed);
+  const lpcZoning = committed.by_agency["landmarks-preservation-commission"].edge_observations
+    .filter((item) => item.category === "zoning");
+  assert.equal(lpcZoning.length, 9);
+  assert.ok(lpcZoning.every((item) => item.observation_state === OBSERVATION_STATE.APPEARED));
 });
 
 test("production snapshot exposes only provenance-complete standable mandate contract/rule/meeting edges", () => {

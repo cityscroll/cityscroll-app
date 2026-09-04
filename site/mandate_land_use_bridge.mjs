@@ -35,7 +35,7 @@ import {
 
 export const MANDATE_LAND_USE_SCHEMA = "cityscroll.mandate_land_use.v1";
 export const MANDATE_LAND_USE_METHOD = "mandate_land_use_identity_phase_v2";
-export const MANDATE_LAND_USE_MATCHER_VERSION = "v2";
+export const MANDATE_LAND_USE_MATCHER_VERSION = "v3";
 export const MANDATE_LAND_USE_EDGE_TYPE = "requires_land_use_action";
 export const MANDATE_LAND_USE_MIN_PRECISION = 0.9;
 export const MANDATE_GOVERNS_PROCEDURE = "mandate_governs_procedure";
@@ -165,6 +165,56 @@ export function projectPlaceIdentity(mandate = {}, action = {}) {
     matches: shared,
     mandate_fields: [...new Set(left.map((entry) => entry.field))],
     action_fields: [...new Set(right.map((entry) => entry.field))],
+  };
+}
+
+/**
+ * Land-use action kinds whose governing statute addresses the whole class of
+ * action rather than one named place. The landmarks-designation process
+ * (Administrative Code § 25-303(l)) requires the commission to calendar,
+ * hear, and designate "any item" under consideration — the duty text never
+ * names a site because the law itself is written to govern every landmark
+ * item, not one of them.
+ */
+export const CLASS_GOVERNED_LAND_USE_KINDS = Object.freeze(["landmark"]);
+export const MANDATE_LAND_USE_CLASS_IDENTITY_BASIS = "closed_action_family_vocabulary_v1";
+
+/**
+ * Identity basis for a mandate that legitimately governs a closed class of
+ * land-use action rather than a single place. Distinct from a missing place
+ * field on a mandate that is actually about one site: this basis only
+ * applies when the mandate carries no place-identity field at all for a
+ * kind whose governing law is written to cover the whole class, so it never
+ * substitutes for a genuine place match that simply failed to align.
+ */
+export function mandateActionClassIdentity(mandate = {}, subjectScope = []) {
+  if (!subjectScope.length || !subjectScope.every((kind) => CLASS_GOVERNED_LAND_USE_KINDS.includes(kind))) {
+    return { matched: false, basis: null, subject_scope: subjectScope };
+  }
+  if (identityEntries(mandate).length) {
+    return { matched: false, basis: null, subject_scope: subjectScope };
+  }
+  return { matched: true, basis: MANDATE_LAND_USE_CLASS_IDENTITY_BASIS, subject_scope: subjectScope };
+}
+
+/**
+ * Identity established between a mandate and a candidate land action, on
+ * whichever basis legitimately applies. Place identity is tried first;
+ * the class basis only fires when place identity is unavailable, so an
+ * agency whose mandates genuinely reference a place is never let through
+ * on class membership alone.
+ */
+export function mandateLandUseIdentity(mandate = {}, action = {}, subjectScope = []) {
+  const place = projectPlaceIdentity(mandate, action);
+  if (place.matched) {
+    return { matched: true, basis: "project_place_identity", place, class: null };
+  }
+  const classIdentity = mandateActionClassIdentity(mandate, subjectScope);
+  return {
+    matched: classIdentity.matched,
+    basis: classIdentity.matched ? classIdentity.basis : null,
+    place,
+    class: classIdentity,
   };
 }
 
@@ -532,7 +582,7 @@ export function buildMandateLandUseView(agencyIdOrName, sources = {}) {
     method: MANDATE_LAND_USE_METHOD,
     matcher_version: MANDATE_LAND_USE_MATCHER_VERSION,
     entity_type: "mandate_land_use",
-    scope_note: "agency+land_action_kind+project_place_identity+mandate_phase",
+    scope_note: "agency+land_action_kind+identity_basis(place_or_closed_action_family)+mandate_phase",
     publication_gate: gate,
     status: "complete",
   });
@@ -550,15 +600,17 @@ export function buildMandateLandUseView(agencyIdOrName, sources = {}) {
     for (const action of candidates) {
       const subjectScope = actionKinds.filter((kind) => action.action_kinds.includes(kind));
       if (!subjectScope.length) continue;
-      const identityEvidence = projectPlaceIdentity(mandate, action.identity_record || action);
+      const identity_ = mandateLandUseIdentity(mandate, action.identity_record || action, subjectScope);
       const phaseEvidence = mandateLandUsePhaseEvidence(mandate, action);
       const evidence = {
         keys: ["agency", "land_action_kind", "project_identity", "mandate_phase_compatible"],
         agency_id: identity.canonical_id,
         land_action_kind: action.action_kinds,
         subject_scope: subjectScope,
-        project_identity: identityEvidence.matched,
-        project_identity_detail: identityEvidence,
+        project_identity: identity_.matched,
+        project_identity_detail: identity_.place,
+        identity_basis: identity_.basis,
+        class_identity_detail: identity_.class,
         mandate_phase_compatible: phaseEvidence.compatible,
         mandate_phase_detail: phaseEvidence,
       };
@@ -567,7 +619,7 @@ export function buildMandateLandUseView(agencyIdOrName, sources = {}) {
         features: {
           agency_exact: true,
           land_action_kind_match: subjectScope.length > 0,
-          project_identity: identityEvidence.matched,
+          project_identity: identity_.matched,
           mandate_phase_compatible: phaseEvidence.compatible,
         },
         evidence,
@@ -578,7 +630,7 @@ export function buildMandateLandUseView(agencyIdOrName, sources = {}) {
       }, { policy: edgePolicy });
       const publicCandidate = route.tier === "public_inferred";
       const missing = [];
-      if (!identityEvidence.matched) missing.push("project_identity");
+      if (!identity_.matched) missing.push("project_identity");
       if (!phaseEvidence.compatible) missing.push("mandate_phase_compatible");
       if (!gate.passed) missing.push("held_out_precision_gate");
       const linkId = `entity-link:mandate-land-use:${stablePart(mandate.obligation_id)}:${stablePart(action.project_id)}`;
@@ -621,7 +673,7 @@ export function buildMandateLandUseView(agencyIdOrName, sources = {}) {
           source_fields: action.source_fields,
           input_value: `${identity.canonical_name} · ${action.action_codes}`,
           observed_at: action.date,
-          basis: "agency+land_action_kind+project_place_identity+mandate_phase",
+          basis: `agency+land_action_kind+${identity_.basis || "unestablished_identity"}+mandate_phase`,
           source_excerpt: action.label,
         },
       };
@@ -949,9 +1001,13 @@ export function renderMandateLandUseSection(view) {
     </li>`;
   }).join("");
   const list = procedureList || directList;
+  const classGoverned = !procedureList
+    && (view.edges || []).some((edge) => edge.match?.identity_basis === MANDATE_LAND_USE_CLASS_IDENTITY_BASIS);
   const procedureIntro = procedureList
     ? `<p class="muted node-muted">The law and each project connect independently to the named procedure. This does not say the law names a particular project.</p>`
-    : "";
+    : classGoverned
+      ? `<p class="muted node-muted">This mandate governs every action of this kind rather than naming one project. This does not say the law names this particular project.</p>`
+      : "";
   const actions = [
     `<a class="node-action civic-object-action" href="${esc(view.land_browse_href)}">Open land-use and zoning actions</a>`,
     `<a class="node-action civic-object-action" href="${esc(view.mandates_follow_href)}">Watch mandates</a>`,
