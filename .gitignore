@@ -15,6 +15,7 @@ site/now/
 site/data/procurement_browse_query.json
 site/data/procurement_browse_query_rows.json
 site/data/procurement_browse_rows/
+site/data/first_class_freshness_report.json
 
 # Architecture evidence is generated at verification time and uploaded from CI.
 architecture/generated/facts.json

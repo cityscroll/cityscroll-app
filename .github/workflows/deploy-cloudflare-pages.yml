@@ -10,8 +10,8 @@ on:
     branches: [main]
   schedule:
     # 10:15 UTC lands before the NYC workday starts year-round (05:15 EST / 06:15 EDT),
-    # so the daily Contracts (Money) resident-snapshot refresh below is in place before
-    # residents load the page.
+    # so the registry-derived first-class resident refresh is in place before residents
+    # load the primary routes.
     - cron: "15 10 * * *"
   workflow_dispatch:
     inputs:
@@ -21,7 +21,7 @@ on:
         default: true
         type: boolean
       refresh_resident_snapshots:
-        description: Refresh the Contracts (Money) resident snapshot and its dependent public artifacts before the production deploy
+        description: Refresh all due first-class resident datasets and dependent public artifacts before the production deploy
         required: false
         default: true
         type: boolean
@@ -179,9 +179,12 @@ jobs:
           name: cloudflare-pages-release-evidence-${{ github.run_id }}
           path: |
             .artifacts/generation-output-receipt.json
+            .artifacts/first-class-refresh-plan.json
+            .artifacts/first-class-refresh-receipt.json
             .artifacts/release-surface-receipt.json
             .artifacts/deployment-health/cloudflare-pages.json
             _site/artifact-manifest.json
+            _site/data/first_class_freshness_report.json
           if-no-files-found: warn
 
   smoke:
@@ -248,6 +251,12 @@ jobs:
           CROL_BASE: ${{ steps.origin.outputs.base_url }}
           CROL_CONTRACTS_FRESHNESS_STRICT: "1"
         run: python3 test/functional/48_contracts_freshness_live.py
+      - name: Post-deploy first-class resident freshness smoke
+        run: >-
+          node tools/first_class_live_smoke.mjs
+          --base-url ${{ steps.origin.outputs.base_host }}
+          --deployment-identity ${{ github.sha }}
+          --out .artifacts/first-class-live-smoke.json
       - name: Capture served artifact identity
         if: always()
         run: |
@@ -287,6 +296,7 @@ jobs:
           path: |
             .artifacts/release-surface-receipt.json
             .artifacts/live-probe.json
+            .artifacts/first-class-live-smoke.json
           if-no-files-found: warn
       - name: Post-deploy project-connections API smoke
         run: node tools/project_connections_smoke.mjs --timeout-ms 720000 --interval-ms 20000

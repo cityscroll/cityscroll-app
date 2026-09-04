@@ -10,7 +10,11 @@ const OUTPUT = join(ROOT, "site/data-health/index.html");
 
 export function dataHealthPageHtml(root = ROOT) {
   const projection = JSON.parse(readFileSync(join(root, "site/data/source_health_public.json"), "utf8"));
-  return renderDataHealthPage(projection);
+  const firstClassPath = join(root, "site/data/first_class_freshness_report.json");
+  const firstClassReport = existsSync(firstClassPath)
+    ? JSON.parse(readFileSync(firstClassPath, "utf8"))
+    : null;
+  return renderDataHealthPage(projection, { firstClassReport });
 }
 
 if (import.meta.url === pathToFileURL(process.argv[1]).href) {

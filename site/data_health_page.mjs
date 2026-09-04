@@ -20,6 +20,15 @@ import {
 export const DATA_HEALTH_PATH = "/data-health/";
 export const DATA_HEALTH_TITLE = "Data health";
 
+const FIRST_CLASS_REPORT_SCHEMA = "cityscroll.first_class_freshness_report.v1";
+const FIRST_CLASS_STATUS_LABELS = Object.freeze({
+  fresh: "Current",
+  fresh_empty: "Current · no records published",
+  degraded: "Using a recent verified copy",
+  stale: "Out of date",
+  unavailable: "Unavailable",
+});
+
 const CLOCKS = Object.freeze([
   {
     id: "publisher_updated",
@@ -364,6 +373,30 @@ function sourceCard(row) {
   };
 }
 
+function firstClassView(report) {
+  if (report?.schema !== FIRST_CLASS_REPORT_SCHEMA || !Array.isArray(report?.surfaces)) {
+    return { available: false, surfaces: [], generated_at: null };
+  }
+  return {
+    available: true,
+    generated_at: formatPublicDate(report.generated_at),
+    surfaces: report.surfaces.map((surface) => ({
+      id: clean(surface.id),
+      label: clean(surface.id)
+        .split("-")
+        .filter(Boolean)
+        .map((word, index) => index === 0 ? `${word.charAt(0).toUpperCase()}${word.slice(1)}` : word)
+        .join(" "),
+      route: clean(surface.primary_routes?.[0]) || null,
+      state: Object.hasOwn(FIRST_CLASS_STATUS_LABELS, surface.freshness_state)
+        ? surface.freshness_state : "unavailable",
+      status_label: FIRST_CLASS_STATUS_LABELS[surface.freshness_state] || FIRST_CLASS_STATUS_LABELS.unavailable,
+      vintage_label: formatPublicDate(surface.source_vintage) || "UNKNOWN",
+      disclosure: clean(surface.disclosure),
+    })),
+  };
+}
+
 export function buildDataHealthView(projection, options = {}) {
   const unavailable = !projection
     || projection.available !== true
@@ -376,6 +409,7 @@ export function buildDataHealthView(projection, options = {}) {
       generated_at: formatPublicDate(projection?.generated_at),
       groups: [],
       source_count: null,
+      first_class: firstClassView(options.firstClassReport),
     };
   }
   const cards = projection.sources
@@ -393,6 +427,7 @@ export function buildDataHealthView(projection, options = {}) {
     groups: PRODUCT_AREAS
       .map((area) => ({ ...area, sources: grouped.get(area.id) || [] }))
       .filter((area) => area.sources.length),
+    first_class: firstClassView(options.firstClassReport),
   };
 }
 
@@ -488,6 +523,31 @@ function renderGroup(group) {
   </section>`;
 }
 
+function renderFirstClassSurface(surface) {
+  const route = surface.route
+    ? `<a href="${esc(surface.route)}">${esc(surface.route)}</a> · `
+    : "";
+  const note = surface.disclosure ? `<p class="data-health-note">${esc(surface.disclosure)}</p>` : "";
+  return `<article class="data-health-card" data-first-class-status="${esc(surface.state)}">
+    <header class="data-health-card-head"><h3>${esc(surface.label || "Resident dataset")}</h3></header>
+    <div class="data-health-condition">
+      <p class="data-health-status">${esc(surface.status_label)}</p>
+      <p class="data-health-meta">${route}Source copy dated ${esc(surface.vintage_label)}</p>
+      ${note}
+    </div>
+  </article>`;
+}
+
+function renderFirstClassSection(firstClass) {
+  if (!firstClass?.available) return "";
+  const asOf = firstClass.generated_at ? ` · checked ${esc(firstClass.generated_at)}` : "";
+  return `<section class="data-health-group" aria-labelledby="data-health-resident-surfaces">
+    <h2 id="data-health-resident-surfaces">Resident surface freshness</h2>
+    <p class="data-health-note">The deployed vintage and current availability of every dataset used directly by a primary route${asOf}.</p>
+    <div class="data-health-cards">${firstClass.surfaces.map(renderFirstClassSurface).join("")}</div>
+  </section>`;
+}
+
 export function renderDataHealthBody(view) {
   if (!view?.available) {
     return `<main id="main" class="data-health-page" data-data-health="unavailable" tabindex="-1">
@@ -508,7 +568,7 @@ export function renderDataHealthBody(view) {
       <p class="data-health-crosslink">For how many records CityScroll holds, see <a href="/stats.html">Stats</a>.</p>
       ${asOf}
     </header>
-    ${view.groups.map(renderGroup).join("")}
+    ${renderFirstClassSection(view.first_class)}${view.groups.map(renderGroup).join("")}
   </main>`;
 }
 
