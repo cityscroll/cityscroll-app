@@ -503,10 +503,11 @@ heartbeat "running full-checkout controls"
 : > "$OUT/full-checkout-controls.jsonl"
 CONTROL_RECONCILE_OUT="$(mktemp -d "${TMPDIR:-/tmp}/cityscroll-architecture-evidence.XXXXXX")"
 control_gate worker-unit bash -c 'cd worker && node --test'
-# Excludes test/live_mcp_canary.test.mjs (CS-10): it deliberately crosses
-# public DNS to the deployed production MCP endpoint and is not part of this
-# fast, network-independent control (see .github/workflows/ci.yml).
-control_gate site-unit bash -c 'node --test $(for f in test/*.test.mjs; do [ "$f" = "test/live_mcp_canary.test.mjs" ] || echo "$f"; done)'
+# test/live_mcp_canary.test.mjs (CS-10) deliberately crosses public DNS to the
+# deployed production MCP endpoint; CS10_SKIP_LIVE_CANARY tells it to no-op
+# here so this control stays network-independent (see its own guard and
+# .github/workflows/ci.yml's matching env var).
+control_gate site-unit bash -c 'CS10_SKIP_LIVE_CANARY=true node --test test/*.test.mjs'
 control_gate contract-unit bash -c 'node --test test/contract/*.test.mjs'
 control_gate architecture-evidence-shards node tools/architecture_evidence_shards.mjs --check
 CONTROL_DISPLAY_CMD="node tools/reconcile_architecture.mjs --check --output-dir <fresh-temp-dir>" \

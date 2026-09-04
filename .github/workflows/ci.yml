@@ -375,16 +375,16 @@ jobs:
 
       - name: Site unit tests
         if: matrix.family == 'site-node'
+        env:
+          # test/live_mcp_canary.test.mjs (CS-10) deliberately crosses public DNS
+          # to the deployed production MCP endpoint; it runs for real from
+          # deploy-worker.yml's post-deploy smoke job instead. This tells it to
+          # no-op when swept up here, so this required, always-on gate stays
+          # fast and network-independent.
+          CS10_SKIP_LIVE_CANARY: "true"
         # Scoped to test/ — a bare `node --test` also recurses into worker/test/,
-        # which needs worker/node_modules (installed in the next step). Excludes
-        # test/live_mcp_canary.test.mjs (CS-10): it deliberately crosses public
-        # DNS to the deployed production MCP endpoint and runs from
-        # deploy-worker.yml's post-deploy smoke job instead, so this required,
-        # always-on gate stays fast and network-independent.
-        run: |
-          set -euo pipefail
-          files=$(ls test/*.test.mjs | grep -v '^test/live_mcp_canary\.test\.mjs$')
-          node --test $files
+        # which needs worker/node_modules (installed in the next step).
+        run: node --test test/*.test.mjs
       - name: Community Board ontology regression gates
         if: matrix.family == 'site-node'
         # Keep this family named and independently visible in CI as the contract
