@@ -1,0 +1,183 @@
+{
+  "schema": "cityscroll.community_board_calendar_evidence_receipt.v1",
+  "captured_at": "2026-09-03T18:16:56Z",
+  "revision": "42d872d66ae625a601731a733a756f4c1aadd27b",
+  "source_vintage": "site/data/community_board_meeting_index.json and related committed Community Board sources, as built by tools/build_community_board_constellation_documents.mjs",
+  "cbics04_markup_axe_pass": true,
+  "full_page_axe_pass": false,
+  "note": "full_page_axe_pass may be false from pre-existing, unrelated issues in sections this card does not own (see per-capture axe_full_page.failing_violations); this script gates only on cbics04_markup_axe_pass.",
+  "captures": [
+    {
+      "board": "manhattan-cb-06",
+      "route": "/community-boards/manhattan-cb-06/",
+      "admission_state": "dense",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "has_month_list_switch": true,
+      "has_month_grid": true,
+      "list_visible_by_default": true,
+      "screenshot": "docs/screenshots/community-board-calendar/manhattan-cb-06-dense-390x844.png",
+      "axe_full_page": {
+        "violations_total": 1,
+        "failing_violations": [
+          {
+            "id": "definition-list",
+            "impact": "serious"
+          }
+        ],
+        "passes": false
+      },
+      "axe_board_proceedings_view": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      },
+      "assertion": "board=manhattan-cb-06 state=dense at 390x844: switch_present=True month_grid_present=True list_visible_by_default=True (accepted proceedings meet the density rule: Month and List both render) cbics04_markup_axe_passes=True full_page_axe_passes=False"
+    },
+    {
+      "board": "manhattan-cb-06",
+      "route": "/community-boards/manhattan-cb-06/",
+      "admission_state": "dense",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "has_month_list_switch": true,
+      "has_month_grid": true,
+      "list_visible_by_default": true,
+      "screenshot": "docs/screenshots/community-board-calendar/manhattan-cb-06-dense-1440x900.png",
+      "axe_full_page": {
+        "violations_total": 1,
+        "failing_violations": [
+          {
+            "id": "definition-list",
+            "impact": "serious"
+          }
+        ],
+        "passes": false
+      },
+      "axe_board_proceedings_view": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      },
+      "assertion": "board=manhattan-cb-06 state=dense at 1440x900: switch_present=True month_grid_present=True list_visible_by_default=True (accepted proceedings meet the density rule: Month and List both render) cbics04_markup_axe_passes=True full_page_axe_passes=False"
+    },
+    {
+      "board": "bronx-cb-11",
+      "route": "/community-boards/bronx-cb-11/",
+      "admission_state": "sparse",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "has_month_list_switch": false,
+      "has_month_grid": false,
+      "list_visible_by_default": true,
+      "screenshot": "docs/screenshots/community-board-calendar/bronx-cb-11-sparse-390x844.png",
+      "axe_full_page": {
+        "violations_total": 1,
+        "failing_violations": [
+          {
+            "id": "definition-list",
+            "impact": "serious"
+          }
+        ],
+        "passes": false
+      },
+      "axe_board_proceedings_view": null,
+      "assertion": "board=bronx-cb-11 state=sparse at 390x844: switch_present=False month_grid_present=False list_visible_by_default=True (accepted proceedings exist but stay below the density rule: list-only, no calendar chrome) cbics04_markup_axe_passes=n/a-no-switch full_page_axe_passes=False"
+    },
+    {
+      "board": "bronx-cb-11",
+      "route": "/community-boards/bronx-cb-11/",
+      "admission_state": "sparse",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "has_month_list_switch": false,
+      "has_month_grid": false,
+      "list_visible_by_default": true,
+      "screenshot": "docs/screenshots/community-board-calendar/bronx-cb-11-sparse-1440x900.png",
+      "axe_full_page": {
+        "violations_total": 1,
+        "failing_violations": [
+          {
+            "id": "definition-list",
+            "impact": "serious"
+          }
+        ],
+        "passes": false
+      },
+      "axe_board_proceedings_view": null,
+      "assertion": "board=bronx-cb-11 state=sparse at 1440x900: switch_present=False month_grid_present=False list_visible_by_default=True (accepted proceedings exist but stay below the density rule: list-only, no calendar chrome) cbics04_markup_axe_passes=n/a-no-switch full_page_axe_passes=False"
+    },
+    {
+      "board": "bronx-cb-01",
+      "route": "/community-boards/bronx-cb-01/",
+      "admission_state": "coverage_unavailable_or_no_scheduled_meetings",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "has_month_list_switch": false,
+      "has_month_grid": false,
+      "list_visible_by_default": true,
+      "screenshot": "docs/screenshots/community-board-calendar/bronx-cb-01-coverage_unavailable_or_no_scheduled_meetings-390x844.png",
+      "axe_full_page": {
+        "violations_total": 1,
+        "failing_violations": [
+          {
+            "id": "definition-list",
+            "impact": "serious"
+          }
+        ],
+        "passes": false
+      },
+      "axe_board_proceedings_view": null,
+      "assertion": "board=bronx-cb-01 state=coverage_unavailable_or_no_scheduled_meetings at 390x844: switch_present=False month_grid_present=False list_visible_by_default=True (no accepted proceedings observed: list-only, distinct 'not yet established' coverage note, no calendar chrome) cbics04_markup_axe_passes=n/a-no-switch full_page_axe_passes=False"
+    },
+    {
+      "board": "bronx-cb-01",
+      "route": "/community-boards/bronx-cb-01/",
+      "admission_state": "coverage_unavailable_or_no_scheduled_meetings",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "has_month_list_switch": false,
+      "has_month_grid": false,
+      "list_visible_by_default": true,
+      "screenshot": "docs/screenshots/community-board-calendar/bronx-cb-01-coverage_unavailable_or_no_scheduled_meetings-1440x900.png",
+      "axe_full_page": {
+        "violations_total": 1,
+        "failing_violations": [
+          {
+            "id": "definition-list",
+            "impact": "serious"
+          }
+        ],
+        "passes": false
+      },
+      "axe_board_proceedings_view": null,
+      "assertion": "board=bronx-cb-01 state=coverage_unavailable_or_no_scheduled_meetings at 1440x900: switch_present=False month_grid_present=False list_visible_by_default=True (no accepted proceedings observed: list-only, distinct 'not yet established' coverage note, no calendar chrome) cbics04_markup_axe_passes=n/a-no-switch full_page_axe_passes=False"
+    },
+    {
+      "board": "manhattan-cb-06",
+      "route": "/community-boards/manhattan-cb-06/",
+      "admission_state": "dense_no_js",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "javascript_enabled": false,
+      "list_visible_by_default": true,
+      "month_control_present": true,
+      "screenshot": "docs/screenshots/community-board-calendar/manhattan-cb-06-no-js-1440x900.png",
+      "assertion": "no-JS: list_visible_by_default=True month_control_present=True"
+    }
+  ]
+}

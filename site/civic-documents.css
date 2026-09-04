@@ -667,6 +667,85 @@ select {
   border-inline-start: 3px solid var(--color-border);
 }
 
+/* Month/List proceedings switch (CBICS-04). Native radios + `:has()` keep
+   the switch fully usable with no JavaScript: both panels are real markup,
+   and the unselected one is only ever hidden by CSS. */
+.board-proceedings-view-switch {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0 0 var(--space-3);
+  padding: 0;
+  border: 0;
+}
+
+.board-proceedings-view-switch-legend {
+  margin: 0 var(--space-2) 0 0;
+  color: var(--color-text-soft);
+  font: 600 .8125rem/1.4 var(--font-label);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.board-proceedings-view-radio {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.board-proceedings-view-tab {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-1) var(--space-3);
+  border: 1px solid var(--color-border-strong);
+  border-radius: 999px;
+  background: var(--color-surface);
+  color: var(--color-text-soft);
+  font: 600 .8125rem/1.4 var(--font-label);
+  cursor: pointer;
+}
+
+.board-proceedings-view-radio:checked + .board-proceedings-view-tab {
+  border-color: var(--color-action);
+  background: var(--cs-action-tint);
+  color: var(--color-text);
+}
+
+.board-proceedings-view-radio:focus-visible + .board-proceedings-view-tab {
+  outline: 2px solid var(--color-action);
+  outline-offset: 2px;
+}
+
+.board-proceedings-panel-month {
+  display: none;
+}
+
+.board-proceedings-view:has(.board-proceedings-view-radio-month:checked) .board-proceedings-panel-month {
+  display: block;
+}
+
+.board-proceedings-view:has(.board-proceedings-view-radio-month:checked) .board-proceedings-panel-list {
+  display: none;
+}
+
+@media print {
+  .board-proceedings-view-switch {
+    display: none;
+  }
+
+  .board-proceedings-panel-month,
+  .board-proceedings-panel-list {
+    display: block !important;
+  }
+}
+
 .rulemaking-document .rulemaking-phases {
   display: grid;
   gap: var(--space-3);
