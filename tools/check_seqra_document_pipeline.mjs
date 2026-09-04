@@ -56,6 +56,10 @@ const NO_NETWORK_SOURCE_FILES = [
   "warehouse/lib/seqra_document_coverage_gaps.mjs",
   "warehouse/lib/seqra_document_manifest.mjs",
   "warehouse/lib/seqra_document_processing_record.mjs",
+  // LDP-33: the publisher-neutral interface this pipeline now consumes
+  // rather than owning; it must hold to the same no-network, no-forbidden
+  // -field structural guarantees.
+  "warehouse/lib/document_processing.mjs",
 ];
 const FORBIDDEN_FIELD_LITERALS = ["lawsuit_score", "legal_risk_score", "litigation_probability", "lawsuit_probability"];
 
