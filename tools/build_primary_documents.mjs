@@ -4,6 +4,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 import { BROWSE_FACETS } from "../site/browse_view.mjs";
+import { nyNaiveTimestampToInstantMs } from "../site/resident_snapshot_queries.mjs";
 import { BROWSE_CONCEPTS } from "../site/browse_concept_view.mjs";
 import {
   buildBrowseDocument,
@@ -70,7 +71,7 @@ function assertMeetingCoverage(readModel, cityRows) {
   }
 }
 
-export function primaryDocumentOutputs() {
+export function primaryDocumentOutputs(options = {}) {
   const shell = readFileSync(join(SITE, "index.html"), "utf8");
   const payloads = Object.fromEntries(Object.entries(BROWSE_FACETS).map(([facet, config]) => [facet, json(config.dataPath)]));
   payloads.zoning = {
@@ -186,6 +187,7 @@ export function primaryDocumentOutputs() {
     outputs.push(output(`browse/${facet}`, buildBrowseDocument(shell, facet, payload, new URLSearchParams(), {
       route: `/browse/${facet}/`,
       semanticArtifact: facet === "rules" ? rulesSemanticLane : null,
+      clock: options.clock ?? null,
     })));
   }
   return outputs;
@@ -237,10 +239,27 @@ export function sharedMeetingOutputs() {
   ]];
 }
 
+function buildDayClock(argv) {
+  const flagIndex = argv.indexOf("--build-day");
+  const value = flagIndex >= 0 ? argv[flagIndex + 1] : null;
+  if (!value) {
+    // This CLI entry point is the owning build command for the generated primary
+    // documents; buildBrowseDocument/buildBrowseView stay pure functions of the
+    // clock this passes in, and --build-day overrides it for deterministic runs.
+    return new Date();
+  }
+  const instantMs = /^\d{4}-\d{2}-\d{2}$/.test(value)
+    ? nyNaiveTimestampToInstantMs(`${value}T00:00:00`)
+    : Date.parse(value);
+  if (!Number.isFinite(instantMs)) throw new Error(`Invalid --build-day value: ${value}`);
+  return new Date(instantMs);
+}
+
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   const check = process.argv.includes("--check");
+  const clock = buildDayClock(process.argv.slice(2));
   let stale = 0;
-  for (const [path, content] of [...primaryDocumentOutputs(), ...sharedMeetingOutputs(), ...peopleOrganizationsOutputs()]) {
+  for (const [path, content] of [...primaryDocumentOutputs({ clock }), ...sharedMeetingOutputs(), ...peopleOrganizationsOutputs()]) {
     if (!existsSync(path)) {
       if (!check) {
         mkdirSync(dirname(path), { recursive: true });

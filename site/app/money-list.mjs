@@ -16,6 +16,9 @@ import {
   moneyLineageRows,
   moneyMethodFacet,
   moneySnapshotRows,
+  nyNaiveTimestampToInstantMs,
+  OPEN_CONTRACTS_FRESHNESS_STATES,
+  openContractSnapshotProjection,
   procurementStagesForRow,
   vendorStemsFromEntityRefs,
 } from "../resident_snapshot_queries.mjs";
@@ -243,12 +246,14 @@ function isDefaultMoneySearchState({mode, agency, kw, methodSel, closingWeek, mi
     && !hasNl
     && (!sort || sort==="deadline");
 }
-function filterStillOpenMoneyNotices(rows, today){
-  const floor=String(today||(typeof todayISO==="function"?todayISO():new Date().toISOString().slice(0,10))).slice(0,10);
-  return (rows||[]).filter(r=>{
-    const due=String(r&&r.due_date||"").slice(0,10);
-    return due && due>floor;
-  });
+// The resident's real civic day, not the fixture vintage: a harness-pinned day
+// (CROL_PINNED_TODAY) is honored so fixture-pinned browser checks stay
+// deterministic, but nothing shipped ever assigns the pin itself.
+function moneyEvaluationClockMs(){
+  const pinned=globalThis.CROL_PINNED_TODAY;
+  if(typeof pinned==="string" && /^\d{4}-\d{2}-\d{2}$/.test(pinned)) return nyNaiveTimestampToInstantMs(`${pinned}T00:00:00`);
+  // determinism-lint: allow clock the live evaluation instant for the open-contract projection; openContractSnapshotProjection stays a pure function of the clock this passes in.
+  return Date.now();
 }
 function paintMoneyAgencyOptions(names){
   const cur=$("#agency")?$("#agency").value:"";
@@ -270,6 +275,9 @@ let currentRows = [], currentMoneyLineageRows = [], mode = "open", selectedRFP =
 let currentMoneyNarrowed = false;
 let forceFullHistorySearch = false;
 let moneyNlResolved = {};
+// Set only for the default open-contracts search; every other mode/filter
+// leaves this null so its "nothing found" reading is unaffected.
+let currentMoneyFreshness = null;
 // determinism-lint: allow clock the closing-this-week bound is relative to now by definition; it filters the list rather than being shown.
 const weekOutISO = () => new Date(Date.now()+7*86400000).toISOString().slice(0,10) + "T23:59:59";
 function moneyActiveFilterChip(item){
@@ -415,6 +423,21 @@ function scopedHistoryNoteHTML(count, observed = 0, narrowed = false){
     n: Number(count).toLocaleString(), shown: Number(observed).toLocaleString(),
     older: Number(count - observed).toLocaleString(), date: recentCutLabel(),
   })}</div>`;
+}
+// Source-honest copy for the two freshness states that must never resolve to
+// the ordinary empty state: a stale committed snapshot (still shows any
+// future-dated rows it retained, qualified by this note) and an unavailable
+// one (no snapshot to show at all).
+function moneyStaleSourceNoticeHTML(freshness){
+  if(!freshness) return "";
+  if(freshness.freshnessState===OPEN_CONTRACTS_FRESHNESS_STATES.UNAVAILABLE){
+    return `<div class="note warn contracts-freshness-note" role="status" data-contracts-freshness="unavailable">${t("retry_open_data")}</div>`;
+  }
+  if(freshness.freshnessState===OPEN_CONTRACTS_FRESHNESS_STATES.STALE){
+    const date=String(freshness.sourceVintage||"").slice(0,10);
+    return `<div class="note warn contracts-freshness-note" role="status" data-contracts-freshness="stale">${t("contracts_source_stale",{date})}</div>`;
+  }
+  return "";
 }
 function bindFullHistorySearch(){
   document.querySelectorAll("[data-money-full-history]").forEach((button) => {
@@ -1135,6 +1158,7 @@ async function search(){
   $("#rescount").textContent = "";
   busyList("#list");
   const stale = staleGuard("money");
+  currentMoneyFreshness=null;
   try{
     const defaultSearch=isDefaultMoneySearchState({
       mode,agency,kw,methodSel,closingWeek,minAmount:minamt,sort,nlResolved:moneyNlResolved,
@@ -1202,8 +1226,16 @@ async function search(){
       return true;
     }
     const snapshot=await snapshotPromise;
-    const retainedRows=defaultSearch
-      ? filterStillOpenMoneyNotices(snapshot?.notices,todayISO())
+    // The default open-solicitation list is the one place a stale committed
+    // snapshot could be mistaken for a genuinely empty population, so it is the
+    // one place that reads the shared projection's freshness state as well as
+    // its rows; every other search state keeps its prior unfiltered read.
+    const defaultProjection=defaultSearch
+      ? openContractSnapshotProjection(snapshot,{clock:moneyEvaluationClockMs()})
+      : null;
+    currentMoneyFreshness=defaultProjection;
+    const retainedRows=defaultProjection
+      ? defaultProjection.rows
       : moneySnapshotRows(snapshot);
     const scopedRetrievalPromise=needsSearch
       ? loadContractScopedRetrieval(retrievalQuery,contractIdentity)
@@ -1331,6 +1363,12 @@ function paintMoneyRows(rows, {autoSelect=true, narrowed=false, lineageRows=null
   }else if(narrowed){
     $("#list").insertAdjacentHTML("afterbegin",
       `<div class="note warn" style="margin:10px 12px 0">${t("narrowed_note",{date:recentCutLabel()})}</div>`);
+  }
+  if(currentRows.length && currentMoneyFreshness && !currentMoneyFreshness.emptyStateEligible){
+    // The rows above are real, still-open, future-dated notices from a stale
+    // snapshot — kept visible, but qualified rather than presented as the
+    // complete currently-open set. The empty case is handled in renderList().
+    $("#list").insertAdjacentHTML("afterbegin", moneyStaleSourceNoticeHTML(currentMoneyFreshness));
   }
   const scopeReceipt=contractScopeReceiptHTML(scopedRetrieval);
   if(scopeReceipt){
@@ -1637,9 +1675,14 @@ async function enhanceMoneyAwardList(rows, terms){
 }
 function renderList(autoSelect,lineageRows=null){
   if(!currentRows.length){
+    // A stale or unavailable snapshot never resolves to "nothing found": that
+    // claim belongs only to a successfully refreshed, sufficiently current
+    // source that genuinely has no matching records.
     $("#list").innerHTML = scopedHistoryGap(currentRows)
       ? scopedHistoryNoteHTML(countWithScopeReceipt(0), 0, currentMoneyNarrowed)
-      : '<div class="empty">' + t("nothing_found") + '</div>';
+      : currentMoneyFreshness && !currentMoneyFreshness.emptyStateEligible
+        ? moneyStaleSourceNoticeHTML(currentMoneyFreshness)
+        : '<div class="empty">' + t("nothing_found") + '</div>';
     $("#detail").innerHTML = "";
     selectedRFP=null;
     if(scopedHistoryGap(currentRows)) bindFullHistorySearch();
@@ -1831,7 +1874,6 @@ globalThis.loadMoneyResidentSnapshot = loadMoneyResidentSnapshot;
 globalThis.residentMoneyRows = residentMoneyRows;
 globalThis.initializeMoneyLocationFilters = initializeMoneyLocationFilters;
 globalThis.isDefaultMoneySearchState = isDefaultMoneySearchState;
-globalThis.filterStillOpenMoneyNotices = filterStillOpenMoneyNotices;
 globalThis.moneyActiveFilterChip = moneyActiveFilterChip;
 globalThis.moneyListPrimaryAction = moneyListPrimaryAction;
 globalThis.moneyListPrimaryActionHTML = moneyListPrimaryActionHTML;

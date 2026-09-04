@@ -49,6 +49,7 @@ import {
 import { buildContractReportTarget, renderReportIssueAffordance } from "./report_issue.mjs";
 import { renderCalendarSubscriptionAffordance } from "./calendar_subscription.mjs";
 import { zoningHearingRowsForScope } from "./zoning_hearing_calendar.mjs";
+import { OPEN_CONTRACTS_FRESHNESS_STATES, openContractSnapshotProjection } from "./resident_snapshot_queries.mjs";
 
 export const BROWSE_FACETS = Object.freeze({
   contracts: {
@@ -952,9 +953,19 @@ export function buildBrowseView(facet, payload = {}, params = new URLSearchParam
   const requestedAsOf = isoDay(search.get("as_of"));
   const meetingWhen = facet === "meetings" ? String(search.get("when") || "") : "";
   const meetingProcess = facet === "meetings" ? String(search.get("process") || "") : "";
-  const baseRows = Array.isArray(options.rows)
-    ? options.rows
-    : Array.isArray(payload[config.rowsKey]) ? payload[config.rowsKey] : [];
+  // The open-contract projection is the single source of "is this notice
+  // still open" for the build-rendered document; browse_view never
+  // re-derives that predicate. Its clock is caller-supplied (never omit),
+  // so a call that does not pass one (existing tests, other facets) keeps
+  // the prior unfiltered-by-due-date rows rather than guessing a day.
+  const contractsProjection = facet === "contracts" && !Array.isArray(options.rows) && options.clock != null
+    ? openContractSnapshotProjection(payload, { clock: options.clock })
+    : null;
+  const baseRows = contractsProjection
+    ? contractsProjection.rows
+    : Array.isArray(options.rows)
+      ? options.rows
+      : Array.isArray(payload[config.rowsKey]) ? payload[config.rowsKey] : [];
   const futureAction = facet === "zoning" ? String(search.get("future") || "") : "";
   const hearingMode = futureAction === "hearing";
   const hearingRows = hearingMode
@@ -1100,6 +1111,11 @@ export function buildBrowseView(facet, payload = {}, params = new URLSearchParam
     edgePairs: edgeInventory.edgePairs,
     semanticLane,
     procurementCoverage: facet === "contracts" ? payload.procurement_coverage || null : null,
+    contractsFreshness: contractsProjection ? {
+      sourceVintage: contractsProjection.sourceVintage,
+      freshnessState: contractsProjection.freshnessState,
+      emptyStateEligible: contractsProjection.emptyStateEligible,
+    } : null,
   };
 }
 
@@ -1258,6 +1274,19 @@ export function contractsDiscoveryHtml(view) {
     return `<p class="browse-contracts-discovery">Recent Awards lists registered contracts, including small purchases and PASSPort-only registrations. Open RFPs is the solicitation list.</p>`;
   }
   return `<p class="browse-contracts-discovery">This list is open solicitations. <a href="/browse/contracts/?mode=award">Recent Awards</a> lists registered contracts, including small purchases and PASSPort-only registrations.</p>`;
+}
+
+// A stale or unavailable snapshot never resolves to the ordinary "nothing
+// found" reading: the resident is told the source is out of date instead,
+// and any future-dated rows still rendered above this notice are qualified
+// by it rather than presented as a confirmed complete set.
+export function contractsFreshnessNoticeHtml(view) {
+  const freshness = view?.contractsFreshness;
+  if (view?.facet !== "contracts" || !freshness) return "";
+  if (freshness.freshnessState !== OPEN_CONTRACTS_FRESHNESS_STATES.STALE
+    && freshness.freshnessState !== OPEN_CONTRACTS_FRESHNESS_STATES.UNAVAILABLE) return "";
+  const dateLabel = isoDay(freshness.sourceVintage);
+  return `<p class="note warn browse-contracts-freshness" role="status" data-contracts-freshness="${esc(freshness.freshnessState)}">Open-RFP data is out of date. CityScroll cannot confirm the complete set currently accepting responses.${dateLabel ? ` Last updated ${esc(dateLabel)}.` : ""}</p>`;
 }
 
 export function renderBrowseView(view) {
@@ -1464,7 +1493,7 @@ export function renderBrowseView(view) {
       })[key] || key,
     })
     : "";
-  return `<div class="browse-build-view" data-build-rendered="browse" data-browse-facet="${esc(view.facet)}">${traversal}${summary}${contractsDiscoveryHtml(view)}${procurementCoverage}${asOfMismatch}${scopeChip}${calendarSubscription}${boardInstitutionPivot}${boardDisambiguation}${edgeRail}${contextualSuggestions}${disclosure}${semanticLane}${cards}</div>`;
+  return `<div class="browse-build-view" data-build-rendered="browse" data-browse-facet="${esc(view.facet)}">${traversal}${summary}${contractsDiscoveryHtml(view)}${contractsFreshnessNoticeHtml(view)}${procurementCoverage}${asOfMismatch}${scopeChip}${calendarSubscription}${boardInstitutionPivot}${boardDisambiguation}${edgeRail}${contextualSuggestions}${disclosure}${semanticLane}${cards}</div>`;
 }
 
 export function browseAssetPath(facet) {

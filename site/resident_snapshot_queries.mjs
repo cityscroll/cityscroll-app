@@ -1,5 +1,6 @@
 import { vendorStem } from "./vendor_stem.mjs";
 import { isKnownProcurementProcessState } from "./procurement_process_state_vocabulary.mjs";
+import { MONEY_SOURCE_MAX_AGE_MS } from "./community_board_money.mjs";
 import {
   DEFAULT_LAND_FAMILY,
   landActionEvidenceByProject,
@@ -55,6 +56,101 @@ export function contractIdentityFromFacetValues(values = {}) {
 
 export function moneySnapshotRows(payload) {
   return Array.isArray(payload?.rows) ? payload.rows : [];
+}
+
+/**
+ * The publisher's notice timestamps carry no offset (e.g. "2026-09-02T16:00:00.000")
+ * and are observed City Record local time, i.e. America/New_York. Convert one to the
+ * real instant it names, using the wall-clock-at-the-guessed-instant technique: format
+ * a UTC-labeled reading of the naive fields in the target zone, then correct by the
+ * implied offset. This is exact except inside the zone's own DST transition hour,
+ * which no procurement deadline in this product depends on.
+ */
+export function nyNaiveTimestampToInstantMs(naiveTimestamp) {
+  const match = String(naiveTimestamp ?? "").trim()
+    .match(/^(\d{4})-(\d{2})-(\d{2})(?:[T ](\d{2}):(\d{2})(?::(\d{2}))?)?/);
+  if (!match) return null;
+  const [, year, month, day, hour = "0", minute = "0", second = "0"] = match;
+  const utcGuess = Date.UTC(Number(year), Number(month) - 1, Number(day), Number(hour), Number(minute), Number(second));
+  if (!Number.isFinite(utcGuess)) return null;
+  const formatter = new Intl.DateTimeFormat("en-US", {
+    timeZone: "America/New_York", hourCycle: "h23",
+    year: "numeric", month: "2-digit", day: "2-digit",
+    hour: "2-digit", minute: "2-digit", second: "2-digit",
+  });
+  const parts = Object.fromEntries(formatter.formatToParts(new Date(utcGuess)).map((part) => [part.type, part.value]));
+  const nyWallAsUtc = Date.UTC(
+    Number(parts.year), Number(parts.month) - 1, Number(parts.day),
+    Number(parts.hour), Number(parts.minute), Number(parts.second),
+  );
+  return (2 * utcGuess) - nyWallAsUtc;
+}
+
+function resolveEvaluationClockMs(clock) {
+  if (clock instanceof Date) return Number.isFinite(clock.getTime()) ? clock.getTime() : null;
+  if (typeof clock === "number") return Number.isFinite(clock) ? clock : null;
+  if (typeof clock === "string") {
+    const parsed = Date.parse(clock);
+    return Number.isFinite(parsed) ? parsed : null;
+  }
+  return null;
+}
+
+function residentSnapshotInstant(value) {
+  const parsed = Date.parse(String(value ?? ""));
+  return Number.isFinite(parsed) ? parsed : null;
+}
+
+export const OPEN_CONTRACTS_FRESHNESS_STATES = Object.freeze({
+  FRESH: "fresh",
+  STALE: "stale",
+  UNAVAILABLE: "unavailable",
+  FRESH_EMPTY: "fresh_empty",
+});
+
+export const OPEN_CONTRACTS_MAX_SNAPSHOT_AGE_MS = MONEY_SOURCE_MAX_AGE_MS;
+
+/**
+ * The single open-contracts read model behind both the build-rendered
+ * `/browse/contracts/` document and its client hydration (money-list.mjs).
+ *
+ * Pure: it takes the evaluation instant from the caller rather than reading a
+ * clock, so a stale committed snapshot cannot be mistaken for a genuinely
+ * empty population — the caller always learns which one it got.
+ */
+export function openContractSnapshotProjection(payload, {
+  clock,
+  limit = Infinity,
+  maxAgeMs = OPEN_CONTRACTS_MAX_SNAPSHOT_AGE_MS,
+} = {}) {
+  const nowMs = resolveEvaluationClockMs(clock);
+  const sourceVintage = payload?.open_as_of || payload?.generated_at || null;
+  const vintageMs = residentSnapshotInstant(payload?.generated_at) ?? residentSnapshotInstant(payload?.open_as_of);
+  const allRows = Array.isArray(payload?.notices) ? payload.notices : null;
+  if (nowMs == null || allRows == null || vintageMs == null) {
+    return {
+      rows: [],
+      sourceVintage,
+      freshnessState: OPEN_CONTRACTS_FRESHNESS_STATES.UNAVAILABLE,
+      emptyStateEligible: false,
+    };
+  }
+  const rows = allRows.filter((row) => {
+    const dueMs = nyNaiveTimestampToInstantMs(row?.due_date);
+    return dueMs != null && dueMs > nowMs;
+  }).slice(0, Number.isFinite(limit) ? Math.max(0, limit) : allRows.length);
+  const stale = (nowMs - vintageMs) > maxAgeMs;
+  const freshnessState = stale
+    ? OPEN_CONTRACTS_FRESHNESS_STATES.STALE
+    : rows.length
+      ? OPEN_CONTRACTS_FRESHNESS_STATES.FRESH
+      : OPEN_CONTRACTS_FRESHNESS_STATES.FRESH_EMPTY;
+  return {
+    rows,
+    sourceVintage,
+    freshnessState,
+    emptyStateEligible: !stale,
+  };
 }
 
 export function vendorStemsFromEntityRefs(entityRefs = []) {
