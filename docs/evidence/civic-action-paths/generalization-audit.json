@@ -362,7 +362,7 @@
           {
             "kind": "source",
             "ref": "worker/src/lib/filter.mjs",
-            "locator": "LENSES.land=[\"keywords\",\"boro\",\"status\",\"communityDistrict\",\"councilDistrict\",\"nearMe\",\"procedure\",\"family\",\"regulatoryEffect\",\"futureAction\",\"attendance\",\"geographies\"]"
+            "locator": "LENSES.land=[\"keywords\",\"boro\",\"status\",\"communityDistrict\",\"councilDistrict\",\"nearMe\",\"procedure\",\"family\",\"regulatoryEffect\",\"futureAction\",\"attendance\",\"geographies\",\"place_role\"]"
           },
           {
             "kind": "source",
@@ -762,7 +762,7 @@
           {
             "kind": "source",
             "ref": "worker/src/lib/filter.mjs",
-            "locator": "LENSES.property=[\"keywords\",\"agency\",\"process\",\"stage\",\"asset\",\"saleMethod\",\"priceBand\",\"sort\",\"borough\",\"neighborhood\",\"communityDistrict\",\"nearMe\",\"geographies\"]"
+            "locator": "LENSES.property=[\"keywords\",\"agency\",\"process\",\"stage\",\"asset\",\"saleMethod\",\"priceBand\",\"sort\",\"borough\",\"neighborhood\",\"communityDistrict\",\"nearMe\",\"geographies\",\"place_role\"]"
           },
           {
             "kind": "source",
