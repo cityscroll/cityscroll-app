@@ -44,6 +44,10 @@ contracts. Do not turn it into a delivery log, roadmap, module inventory, or car
 - Identity joins are links, not destructive merges. Publish a cross-source relation only through
   its named exact-key, evidence, confidence, and review policy; unresolved candidates remain
   separate and non-linking.
+- Location-match evidence quality is one canonical tier (`strong` / `derived` / `weak`), classified
+  once in [`site/location_evidence_tier.mjs`](site/location_evidence_tier.mjs). A caller needing a
+  strong/derived/weak read from a placement method and confidence imports that classifier instead
+  of re-deriving a threshold or method allowlist locally.
 - Keep public serializers and evidence artifacts free of private review fields, credentials,
   authenticated evidence, internal research bookkeeping, and local-only references. Public
   Markdown must use stable repository or public URLs; private evidence belongs in the private
