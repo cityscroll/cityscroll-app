@@ -38,7 +38,8 @@ export async function fetchFederatedSearch(query, {
   return payload.results;
 }
 
-/** Build the one request Contracts Browse and the search front door both issue. */
+/**
+ * Build the one request Contracts Browse and the search front door both issue. */
 export function scopedFederatedSearchPath(query, lenses = []) {
   const normalizedQuery = normalizeQuery(query);
   if (!normalizedQuery) throw new TypeError("federated search requires a query");
@@ -50,6 +51,21 @@ export function scopedFederatedSearchPath(query, lenses = []) {
   params.set("q", normalizedQuery);
   for (const lens of scope.lenses) params.append("scope", lens);
   return `/search?${params.toString()}`;
+}
+
+/**
+ * The all-sources federation path: the capability's omitted scope, which
+ * federates every registered lens plus auxiliary legal-code recall. Scope
+ * parameters are deliberately absent — an explicit lens allowlist here would
+ * be a different, narrower candidate population.
+ */
+export function allSourcesFederatedSearchPath(query) {
+  const normalizedQuery = normalizeQuery(query);
+  if (!normalizedQuery) throw new TypeError("federated search requires a query");
+  if (normalizedQuery.length > FEDERATED_SEARCH_LIMITS.queryMaximumLength) {
+    throw new TypeError("federated search query is too long");
+  }
+  return `/search?q=${encodeURIComponent(normalizedQuery)}`;
 }
 
 /**

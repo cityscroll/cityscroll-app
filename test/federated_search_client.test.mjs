@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { fetchFederatedSearch } from "../site/federated_search_client.mjs";
+import { fetchFederatedSearch, allSourcesFederatedSearchPath, scopedFederatedSearchPath } from "../site/federated_search_client.mjs";
 
 test("federated search client uses the shared /search HTTP adapter", async () => {
   const calls = [];
@@ -31,4 +31,15 @@ test("federated search client fails closed for unavailable or malformed response
     }),
     /invalid search\.federated@1 response/,
   );
+});
+
+test("the all-sources path serializes no scope and the scoped path stays allowlisted", () => {
+  assert.equal(allSourcesFederatedSearchPath("  parks  "), "/search?q=parks");
+  assert.ok(!allSourcesFederatedSearchPath("parks").includes("scope="));
+  assert.equal(
+    scopedFederatedSearchPath("parks", ["notices", "vendors"]),
+    "/search?q=parks&scope=notices&scope=vendors",
+  );
+  assert.throws(() => allSourcesFederatedSearchPath("   "), /requires a query/);
+  assert.throws(() => allSourcesFederatedSearchPath("x".repeat(241)), /too long/);
 });

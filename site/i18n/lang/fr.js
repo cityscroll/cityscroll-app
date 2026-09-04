@@ -1089,6 +1089,17 @@
     pick_notice_panel_heading: "Suivi du contrat",
     preview_panel_heading: "Aperçu",
 
+    preview_scope_label: "Périmètre",
+    preview_scope_all_sources: "Toutes les sources",
+    preview_scope_narrow_contracts: "Contrats uniquement",
+    preview_coverage_complete: "Toutes les sources interrogées ont répondu.",
+    preview_coverage_partial: "La couverture de recherche est partielle. Les résultats disponibles sont affichés.",
+    preview_coverage_unreported: "Les détails de couverture ne sont pas disponibles pour cette recherche.",
+    preview_full_results_all: "Voir tous les résultats",
+    preview_full_results_contracts: "Voir les résultats de contrats",
+    preview_empty_input: "Saisissez un sujet pour prévisualiser les enregistrements correspondants.",
+    preview_interpretation_unavailable: "Ce sujet n'a pas pu être interprété pour le moment. Réessayez.",
+
     // Quiz panel
     quiz_narrow_placeholder: "saisissez ce que vous recherchez, ou choisissez un sujet ci-dessus…",
     quiz_param_agency:   "agence (facultatif) -- p. ex. Buildings",
