@@ -515,12 +515,12 @@ function pushHash(){ // tab changes create a history entry (back returns to the 
 // rather than break rendering.
 const DEEPLINK_LENSES = {
   // Keep field-for-field parity with worker/src/lib/filter.mjs LENSES (deeplink_watch.test).
-  money:    ["keywords", "agency", "minAmount", "maxAmount", "category", "months", "noticeType", "excludeSpecial", "closingWeek", "route", "name", "tab", "entity_refs_all", "connection_relation", "geographies", "procurement_id", "processState"],
+  money:    ["keywords", "agency", "minAmount", "maxAmount", "category", "months", "noticeType", "excludeSpecial", "closingWeek", "route", "name", "tab", "entity_refs_all", "connection_relation", "geographies", "place_role", "procurement_id", "processState"],
   people:   ["keywords", "lookupType", "view", "interest", "interestArea", "interestLabel", "examNumber", "subject_refs_all"],
-  land:     ["keywords", "boro", "status", "communityDistrict", "councilDistrict", "nearMe", "procedure", "family", "regulatoryEffect", "futureAction", "attendance", "geographies"],
-  property: ["keywords", "agency", "process", "stage", "asset", "saleMethod", "priceBand", "sort", "borough", "neighborhood", "communityDistrict", "nearMe", "geographies"],
-  rules:    ["keywords", "agency", "process", "geographies", "request_ids"],
-  meetings: ["keywords", "agency", "when", "borough", "neighborhood", "locationScope", "dateWindow", "process", "nearMe", "geographies", "communityBoard"],
+  land:     ["keywords", "boro", "status", "communityDistrict", "councilDistrict", "nearMe", "procedure", "family", "regulatoryEffect", "futureAction", "attendance", "geographies", "place_role"],
+  property: ["keywords", "agency", "process", "stage", "asset", "saleMethod", "priceBand", "sort", "borough", "neighborhood", "communityDistrict", "nearMe", "geographies", "place_role"],
+  rules:    ["keywords", "agency", "process", "geographies", "place_role", "request_ids"],
+  meetings: ["keywords", "agency", "when", "borough", "neighborhood", "locationScope", "dateWindow", "process", "nearMe", "geographies", "place_role", "communityBoard"],
   district: ["councilDistrict"],
   entity:   ["name", "kind", "tab", "entity_refs_all"],
   mandates: ["agency_id", "agency", "mandate_id", "deliverable_type", "windowDays"],
@@ -535,6 +535,9 @@ const DEEPLINK_BOROS = ["Manhattan", "Brooklyn", "Queens", "Bronx", "Staten Isla
 const DEEPLINK_PROCESS_STATES = ["planned", "open", "responses_closed", "evaluation", "selection_made",
   "intent_to_negotiate", "intent_to_award", "award", "contract_in_progress", "pending_registration",
   "registered", "payment", "closed", "vendor_list"];
+// Hand-synced with site/scope_v0.mjs's PLACE_ROLES (venue/matter/affected_area) — the one
+// canonical place-role predicate; see that module for what each value means.
+const DEEPLINK_PLACE_ROLES = ["venue", "matter", "affected_area"];
 function deeplinkClampField(name, v){
   switch(name){
     case "keywords": return Array.isArray(v) ? v.map(k=>String(k).toLowerCase().trim()).filter(Boolean).slice(0,4) : [];
@@ -614,6 +617,7 @@ function deeplinkClampField(name, v){
     case "procurement_id": { const s=typeof v==="string"?v.trim():""; return /^procurement:[a-z0-9-]+:[A-Za-z0-9._:-]{3,120}$/.test(s)?s:null; }
     case "entity_refs_all": return Array.isArray(v) ? [...new Set(v.map(item=>String(item||"").trim()).filter(item=>/^(?:agency:[^:\s]+:[^:\s]+|vendor:stem:[^:\s]+|entity:official:[^:\s]+|project:[A-Za-z0-9][A-Za-z0-9_-]{2,24}|notice:[A-Za-z0-9][A-Za-z0-9_-]{3,39}|pin:[A-Za-z0-9][A-Za-z0-9_-]{3,39}|exam:\d{4}|bbl:\d{10})$/.test(item)))].slice(0,20) : [];
     case "connection_relation": return typeof v==="string" && ["published_by_agency","hosts_meeting","named_vendor","sited_on_parcel","votes_on","references_contract","registered_as","shares_authority_key","about_notice","parcel_links_project","named_owner","same_rulemaking"].includes(v) ? v : null;
+    case "place_role": return DEEPLINK_PLACE_ROLES.includes(v) ? v : null;
     case "processState": {
       // Hand-synced with worker/src/lib/filter.mjs + KNOWN_PROCUREMENT_PROCESS_STATES.
       const s=typeof v==="string"?v.trim().toLowerCase():"";
@@ -652,6 +656,7 @@ function sanitizeDeepLinkFilter(lens, input){
   const out = {};
   for(const name of fields) out[name] = deeplinkClampField(name, f[name]);
   if(!out.geographies?.length) delete out.geographies;
+  if(!out.place_role) delete out.place_role;
   if(!out.procurement_id) delete out.procurement_id;
   if(!out.processState) delete out.processState;
   if(!out.provision_id) delete out.provision_id;
