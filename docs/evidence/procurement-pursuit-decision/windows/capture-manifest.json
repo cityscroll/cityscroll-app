@@ -1,0 +1,239 @@
+{
+  "schema": "cityscroll.procurement_pursuit_decision_windows_manifest.v1",
+  "captured_at": "2026-09-04T18:25:36Z",
+  "revision": "8eac76bc5f4204e43dd65d31a26bad1057ab15a3",
+  "note": "Card 2 (procurement-pursuit-decision): the provenance-safe opportunity window. Screenshot binaries are not committed to this repository; they are written to an external directory (default a docs-evidence/ sibling of the repository root, override with CAPTURE_EXTERNAL_OUT) named by 'external_filename' below, and this manifest is the reproducible, reviewable record of what each capture shows and why.",
+  "external_output_directory_note": "Not committed; see external_filename per capture. Re-run this script to regenerate byte-identical captures (same sha256) at this revision.",
+  "captures": [
+    {
+      "case": "procurement-detail-response-window",
+      "surface": "procurement-detail",
+      "route": "/_capture/procurement-detail-response-window",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "8eac76bc5f4204e43dd65d31a26bad1057ab15a3",
+      "fixture_ids": [
+        "A"
+      ],
+      "data_vintage": "passport_public_rfx observation ingested_at 2026-07-01T10:00:00Z; city_record observation ingested_at 2026-07-02T10:00:00Z; rendered as of 2026-07-10",
+      "assertion": "Fixture A's exact PASSPort release_date (2026-07-01) -> due_date (2026-08-05) renders as a response_window of exactly 35 calendar days, per test/procurement_opportunity_window.test.mjs.",
+      "external_filename": "procurement-detail-response-window-390x844.png",
+      "sha256": "971cd50366e07f6a02f09ab31a9756161c0f47f0e38cf974554f765e232d76a8",
+      "bytes": 178960,
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "case": "procurement-detail-response-window",
+      "surface": "procurement-detail",
+      "route": "/_capture/procurement-detail-response-window",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "8eac76bc5f4204e43dd65d31a26bad1057ab15a3",
+      "fixture_ids": [
+        "A"
+      ],
+      "data_vintage": "passport_public_rfx observation ingested_at 2026-07-01T10:00:00Z; city_record observation ingested_at 2026-07-02T10:00:00Z; rendered as of 2026-07-10",
+      "assertion": "Fixture A's exact PASSPort release_date (2026-07-01) -> due_date (2026-08-05) renders as a response_window of exactly 35 calendar days, per test/procurement_opportunity_window.test.mjs.",
+      "external_filename": "procurement-detail-response-window-1440x900.png",
+      "sha256": "2942ac2a4671f02697ab7461d0518f1648ca74e63193fd28a1dfb04e31233945",
+      "bytes": 242307,
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "case": "procurement-detail-notice-to-due-window",
+      "surface": "procurement-detail",
+      "route": "/_capture/procurement-detail-notice-to-due-window",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "8eac76bc5f4204e43dd65d31a26bad1057ab15a3",
+      "fixture_ids": [
+        "A"
+      ],
+      "data_vintage": "city_record observation start_date 2026-07-02, due_date 2026-08-05; no exact PASSPort release observation; rendered as of 2026-07-10",
+      "assertion": "Fixture A's City Record-only variant renders as a notice_to_due_window of exactly 34 calendar days and is never labeled Response window.",
+      "external_filename": "procurement-detail-notice-to-due-window-390x844.png",
+      "sha256": "c73043659cf5ed7baab0ce6a4596187febe8c6116d2e289bf18af1cb532a88cd",
+      "bytes": 158805,
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "case": "procurement-detail-notice-to-due-window",
+      "surface": "procurement-detail",
+      "route": "/_capture/procurement-detail-notice-to-due-window",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "8eac76bc5f4204e43dd65d31a26bad1057ab15a3",
+      "fixture_ids": [
+        "A"
+      ],
+      "data_vintage": "city_record observation start_date 2026-07-02, due_date 2026-08-05; no exact PASSPort release observation; rendered as of 2026-07-10",
+      "assertion": "Fixture A's City Record-only variant renders as a notice_to_due_window of exactly 34 calendar days and is never labeled Response window.",
+      "external_filename": "procurement-detail-notice-to-due-window-1440x900.png",
+      "sha256": "94043196a2fcd1c0d3f3c513026350c2cfb754cc738eb114e6712129ee549575",
+      "bytes": 216013,
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "case": "procurement-detail-window-unavailable",
+      "surface": "procurement-detail",
+      "route": "/_capture/procurement-detail-window-unavailable",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "8eac76bc5f4204e43dd65d31a26bad1057ab15a3",
+      "fixture_ids": [
+        "A"
+      ],
+      "data_vintage": "passport_public_rfx observation with release_date but no due_date; rendered as of 2026-07-10",
+      "assertion": "A solicitation with an incomplete PASSPort boundary renders an explicit Window unavailable line rather than a 0-day window or silently vanishing.",
+      "external_filename": "procurement-detail-window-unavailable-390x844.png",
+      "sha256": "c7c7c6819ade7c3a312bd5c3512d3243ebc246520e81df8dedc41cc81c550ab7",
+      "bytes": 142424,
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "case": "procurement-detail-window-unavailable",
+      "surface": "procurement-detail",
+      "route": "/_capture/procurement-detail-window-unavailable",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "8eac76bc5f4204e43dd65d31a26bad1057ab15a3",
+      "fixture_ids": [
+        "A"
+      ],
+      "data_vintage": "passport_public_rfx observation with release_date but no due_date; rendered as of 2026-07-10",
+      "assertion": "A solicitation with an incomplete PASSPort boundary renders an explicit Window unavailable line rather than a 0-day window or silently vanishing.",
+      "external_filename": "procurement-detail-window-unavailable-1440x900.png",
+      "sha256": "8bd5487ebfa149936bbf55a3ed9b5b07bdf28e4334c345b2a07799cbd086ba59",
+      "bytes": 177834,
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "case": "procurement-detail-window-6129-floor",
+      "surface": "procurement-detail",
+      "route": "/_capture/procurement-detail-window-6129-floor",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "8eac76bc5f4204e43dd65d31a26bad1057ab15a3",
+      "fixture_ids": [
+        "A"
+      ],
+      "data_vintage": "passport_public_rfx observation ingested_at 2026-07-01T10:00:00Z; city_record observation ingested_at 2026-07-02T10:00:00Z; rendered as of 2026-07-10; city_record notice body cites Admin. Code Section 6-129",
+      "assertion": "The published 35-calendar-day response window is paired with the derived 27-calendar-day \u00a76-129 rule floor as a side-by-side fact, with no compliance verdict language.",
+      "external_filename": "procurement-detail-window-6129-floor-390x844.png",
+      "sha256": "bbe8425a596ee293f1245fcdb7b8ba56a70c9affa871a2512bd1cc9f05ec8cf2",
+      "bytes": 193759,
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "case": "procurement-detail-window-6129-floor",
+      "surface": "procurement-detail",
+      "route": "/_capture/procurement-detail-window-6129-floor",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "8eac76bc5f4204e43dd65d31a26bad1057ab15a3",
+      "fixture_ids": [
+        "A"
+      ],
+      "data_vintage": "passport_public_rfx observation ingested_at 2026-07-01T10:00:00Z; city_record observation ingested_at 2026-07-02T10:00:00Z; rendered as of 2026-07-10; city_record notice body cites Admin. Code Section 6-129",
+      "assertion": "The published 35-calendar-day response window is paired with the derived 27-calendar-day \u00a76-129 rule floor as a side-by-side fact, with no compliance verdict language.",
+      "external_filename": "procurement-detail-window-6129-floor-1440x900.png",
+      "sha256": "caccd3d1509b26cfb3d6ec7a23a78d5877ff302c58797fa538fce6715ec4d364",
+      "bytes": 260016,
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "case": "procurement-detail-window-accelerated-floor",
+      "surface": "procurement-detail",
+      "route": "/_capture/procurement-detail-window-accelerated-floor",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "8eac76bc5f4204e43dd65d31a26bad1057ab15a3",
+      "fixture_ids": [
+        "A"
+      ],
+      "data_vintage": "passport_public_rfx release_date 2026-07-01, due_date 2026-07-06; city_record notice body cites the Accelerated Procurement Method, PPB Rules Section 3-07; rendered as of 2026-07-10",
+      "assertion": "A short published response window is paired with the derived 3-business-day accelerated procurement rule floor, with no compliance verdict language.",
+      "external_filename": "procurement-detail-window-accelerated-floor-390x844.png",
+      "sha256": "ed177259336ee841cc2061c7eadeac0d6507358fca264889ceba05ce0e705f0d",
+      "bytes": 167121,
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "case": "procurement-detail-window-accelerated-floor",
+      "surface": "procurement-detail",
+      "route": "/_capture/procurement-detail-window-accelerated-floor",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "8eac76bc5f4204e43dd65d31a26bad1057ab15a3",
+      "fixture_ids": [
+        "A"
+      ],
+      "data_vintage": "passport_public_rfx release_date 2026-07-01, due_date 2026-07-06; city_record notice body cites the Accelerated Procurement Method, PPB Rules Section 3-07; rendered as of 2026-07-10",
+      "assertion": "A short published response window is paired with the derived 3-business-day accelerated procurement rule floor, with no compliance verdict language.",
+      "external_filename": "procurement-detail-window-accelerated-floor-1440x900.png",
+      "sha256": "52fbd3b3f9ebc3db4184e2393c7cd5165ad9f89e320b47e7a84ace1ff2d3c8a5",
+      "bytes": 210414,
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    }
+  ]
+}

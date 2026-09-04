@@ -25,6 +25,7 @@ import { extractPropertyTimedEvents } from "../site/property_timed_events.mjs";
 import { renderPropertyCommercialDetail } from "../site/property_commercial_ui.mjs";
 import { procurementProcessEvents } from "../site/procurement_process_events.mjs";
 import { renderProcurementDocument } from "../site/procurement_document.mjs";
+import { procurementOpportunityWindow } from "../site/procurement_opportunity_window.mjs";
 
 const PROCUREMENT_ID = "procurement:epin-2026-07";
 const PROCUREMENT_URL = `https://cityscroll.org/procurements/${encodeURIComponent(PROCUREMENT_ID)}`;
@@ -556,4 +557,73 @@ test("publication-only notice timestamps never become opportunity occurrences", 
   const observations = [cityRecordObservation({ additional_description_1: "Notice published in the City Record." })];
   const { occurrences } = procurementOpportunityOccurrences(object, observations);
   assert.equal(occurrences.length, 0);
+});
+
+/* ===== Card 2: procurement_opportunity_window.mjs shares this fixture and never
+ * duplicates this module's date handling or crowds out its occurrences. ===== */
+
+test("Card 2: the opportunity window and the opportunity-calendar bundle agree on Fixture A from the same object/observations", () => {
+  const object = procurementObject();
+  const observations = denseProcurementObservations();
+  const window = procurementOpportunityWindow(object, observations);
+  assert.equal(window.available, true);
+  assert.equal(window.kind, "response_window");
+  assert.equal(window.start_date, "2026-07-01");
+  assert.equal(window.due_date, "2026-08-05");
+  assert.equal(window.days, 35);
+
+  // The same object/observations still produce the exact July 22 conference,
+  // July 29 questions, and August 5 proposal-deadline calendar cells.
+  const { occurrences } = procurementOpportunityOccurrences(object, observations);
+  const view = buildCompactMonthView(occurrences, { today: TODAY });
+  const byDay = daysOf(view);
+  assert.ok(byDay.has("2026-07-22"));
+  assert.ok(byDay.has("2026-07-29"));
+  assert.ok(byDay.has("2026-08-05"));
+});
+
+test("Card 2: a City-Record-only object still keeps its calendar occurrences while the window becomes notice_to_due_window", () => {
+  const object = procurementObject([SOLICITATION_REF]);
+  const observations = [cityRecordObservation({ start_date: "2026-07-02", due_date: "2026-08-05" })];
+  const window = procurementOpportunityWindow(object, observations);
+  assert.equal(window.kind, "notice_to_due_window");
+  assert.equal(window.days, 34);
+
+  const { occurrences } = procurementOpportunityOccurrences(object, observations);
+  const view = buildCompactMonthView(occurrences, { today: TODAY });
+  const byDay = daysOf(view);
+  assert.ok(byDay.has("2026-07-22"));
+  assert.ok(byDay.has("2026-07-29"));
+});
+
+test("Card 2: the procurement document renders the Opportunity window section ahead of Opportunity dates", () => {
+  const object = procurementObject();
+  object.identity_keys = { epins: ["EPIN-2026-07"] };
+  const observations = denseProcurementObservations();
+  object.process_events = procurementProcessEvents(object, observations);
+  const html = renderProcurementDocument(object, observations, { today: TODAY });
+  assert.match(html, /id="procurement-opportunity-window"/);
+  assert.match(html, /Published response window: 35 calendar days/);
+  const windowAt = html.indexOf('id="procurement-opportunity-window"');
+  const monthAt = html.indexOf('id="procurement-opportunity-month"');
+  assert.ok(windowAt >= 0 && monthAt >= 0 && windowAt < monthAt);
+});
+
+test("Card 2: a solicitation with an incomplete boundary shows Window unavailable explicitly rather than vanishing", () => {
+  const object = procurementObject([RFX_REF]);
+  const observations = [rfxObservation({ due_date: null })];
+  const html = renderProcurementDocument(object, observations, { today: TODAY });
+  assert.match(html, /id="procurement-opportunity-window"/);
+  assert.match(html, /Window unavailable/);
+});
+
+test("Card 2: an object with no PASSPort RFx or City Record observation at all renders no Opportunity window section", () => {
+  const object = { procurement_id: "procurement:award-example", source_observation_refs: ["checkbook_contracts:c1"] };
+  const observations = [{
+    source_observation_ref: "checkbook_contracts:c1",
+    source_system: "checkbook_contracts",
+    snapshot: { contract_amount: 250000, vendor_name: "Acme Snow & Ice LLC", short_title: "Fixture award" },
+  }];
+  const html = renderProcurementDocument(object, observations, { today: TODAY });
+  assert.doesNotMatch(html, /id="procurement-opportunity-window"/);
 });
