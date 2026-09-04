@@ -323,6 +323,8 @@
     "site/notice_permalink.mjs",
     "site/notice_primary_readiness.mjs",
     "site/notice-read.mjs",
+    "site/now_calendar_switch.mjs",
+    "site/now_calendar.mjs",
     "site/now_surface.mjs",
     "site/now_view.mjs",
     "site/official_connections.mjs",
