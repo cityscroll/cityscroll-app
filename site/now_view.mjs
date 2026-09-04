@@ -1,5 +1,15 @@
 import { buildNowSurface } from "./now_surface.mjs";
 import { nowItemMatchesScope } from "./scope_now_adapter.mjs";
+import { buildNowCalendarView } from "./now_calendar.mjs";
+import { renderCompactMonth } from "./compact_calendar.mjs";
+import {
+  CALENDAR_VIEW_CALENDAR,
+  installNowCalendarSwitch,
+  nowCalendarFallbackNote,
+  nowCalendarSwitchHTML,
+  nowCalendarViewHref,
+  resolveNowCalendarPresentation,
+} from "./now_calendar_switch.mjs";
 
 let nowSourcesPromise = null;
 export const NOW_SOURCE_TIMEOUT_MS = 12_000;
@@ -156,9 +166,35 @@ function nowLaneHTML(id, titleKey, deckKey, items, emptyKey, extra = "") {
   </section>`;
 }
 
-export function renderNowSurface(surface) {
+// The Cards body: the two existing lanes, untouched. This is also what
+// paints when a Calendar request falls back for lack of density (A6): the
+// default, no-JS-safe reading of Now never depends on the switch below.
+function nowCardsBodyHTML(surface, undatedHTML) {
+  return `<div class="now-lanes">
+      ${nowLaneHTML("act-by", "now_act_by_title", "now_act_by_deck", surface.act_by.dated, "now_empty_act", undatedHTML)}
+      ${nowLaneHTML("happening-soon", "now_happening_title", "now_happening_deck", surface.happening_soon.items, "now_empty_events")}
+    </div>`;
+}
+
+// The Calendar body: the same eligible dated identities as the two Cards
+// lanes above (A1), projected onto the shared compact month component.
+// Undated open opportunities never reach this projection (A3).
+function nowCalendarBodyHTML(calendarView) {
+  return `<div class="now-calendar">${renderCompactMonth(calendarView)}</div>`;
+}
+
+/**
+ * `options.view` is the requested presentation (defaults to Cards); the
+ * switch always shows what actually painted, never what was merely
+ * requested (A6). `options.currentHash` carries the shareable Now route so
+ * the switch's two destinations stay ordinary, bookmarkable links.
+ */
+export function renderNowSurface(surface, options = {}) {
   const box = $("#nowview");
   if (!box) return;
+  const currentHash = options.currentHash || "#now";
+  const calendarView = buildNowCalendarView(surface, { today: surface.generated_for });
+  const presentation = resolveNowCalendarPresentation({ requested: options.view, sparse: calendarView.render !== true });
   const unavailable = surface.coverage.unavailable_sources;
   const coverage = unavailable.length
     ? `<div class="note warn" role="status">${t("now_source_unavailable", { sources: unavailable.map((domain) => t(DOMAIN_KEYS[domain])).join(", ") })}</div>` : "";
@@ -169,15 +205,24 @@ export function renderNowSurface(surface) {
         <p>${t("now_open_without_date_note")}</p>
         <div class="now-list" data-now-list="open-without-date" data-now-count="${undated.length}">${undated.map(nowCardHTML).join("")}</div>
       </section>` : "";
+  const switchHTML = nowCalendarSwitchHTML({ view: presentation.view, currentHash, t, escape: nowEsc });
+  const fallbackNote = nowCalendarFallbackNote({ ...presentation, t });
+  const body = presentation.view === CALENDAR_VIEW_CALENDAR
+    ? nowCalendarBodyHTML(calendarView)
+    : nowCardsBodyHTML(surface, undatedHTML);
   box.innerHTML = `<div class="now-surface">
     <p class="now-back"><a href="/browse/">${t("back_browse")}</a></p>
     <header class="now-head"><p class="now-kicker">${t("now_kicker")}</p><h2>${t("now_title")}</h2><p>${t("now_deck")}</p><p class="now-bounded-note">${t("now_bounded_note")}</p></header>
     ${coverage}
-    <div class="now-lanes">
-      ${nowLaneHTML("act-by", "now_act_by_title", "now_act_by_deck", surface.act_by.dated, "now_empty_act", undatedHTML)}
-      ${nowLaneHTML("happening-soon", "now_happening_title", "now_happening_deck", surface.happening_soon.items, "now_empty_events")}
+    <div class="now-calview-row">
+      <div class="now-calview-switch" id="now-calview-switch" role="group" aria-label="${nowEsc(t("now_calview_switch_label"))}">${switchHTML}</div>
+      ${fallbackNote ? `<p class="now-calview-note" role="status">${nowEsc(fallbackNote)}</p>` : ""}
     </div>
+    ${body}
   </div>`;
+  installNowCalendarSwitch(globalThis.document, (view) => {
+    location.hash = nowCalendarViewHref(view, currentHash);
+  });
   announce(t("results_count", { n: surface.counts.total }));
 }
 
@@ -193,7 +238,7 @@ export async function showNow(options = {}) {
     today: todayISO(), scope: options.scope || null,
     matchesScope: options.matchesScope || nowItemMatchesScope,
     compileActionRail: window.CrolActions?.compileActionRail,
-  }));
+  }), { view: options.view, currentHash: options.currentHash });
 }
 
 globalThis.loadNowSources = loadNowSources;

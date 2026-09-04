@@ -2,6 +2,7 @@ import { propertyReaderActionsFromTimedEvents } from "./property_reader_actions.
 import { classifyPropertyActionCharacter } from "./property_action_character.mjs";
 import { projectPropertyRecord } from "./property_action_projection.mjs";
 import { landProjectDisplayTitle, noticeDisplayTitle } from "./display_title.mjs";
+import { recordIsCancelled } from "./calendar_occurrence.mjs";
 
 export const NOW_SURFACE_SCHEMA_VERSION = 1;
 export const NOW_ACTION_HORIZON_DAYS = 30;
@@ -75,6 +76,14 @@ function placeFrom(value) {
   };
 }
 
+// Retained-lifecycle signal for the calendar projection (CBICS-05, A7): a
+// per-event status wins when a source carries one, otherwise this falls back
+// to the record-level cancellation detection Cards never needed. Cards ignore
+// this field today, so it changes no default Cards rendering.
+function itemCancelled(record, event) {
+  return event?.status === "cancelled" || recordIsCancelled(record || {});
+}
+
 function actionDestination(action, route) {
   return action?.delivery === "official_handoff" && action.destination
     ? action.destination
@@ -130,6 +139,7 @@ function moneyActions(payload, options) {
         sourceField: rolling ? "rolling_deadline" : "due_date",
       }),
       place: placeFrom(row.affected_area),
+      cancelled: itemCancelled(row),
     });
   }
   return out;
@@ -166,6 +176,7 @@ function staffingActions(payload, options) {
       action: { ...action, destination: actionDestination(action, route) },
       time: time(deadline, { basis: "published_application_window", sourceField: "application_end" }),
       place: placeFrom(null),
+      cancelled: itemCancelled(exam),
     });
   }
   return out;
@@ -210,6 +221,7 @@ function rulesActions(payload, options) {
         sourceField: event?.source_field || "comment_by_date",
       }),
       place: placeFrom(record.affected_area),
+      cancelled: itemCancelled(record, event),
     });
   }
   return out;
@@ -264,6 +276,7 @@ function propertyActions(payload, options) {
           evidence: event.source_span?.text || null,
         }),
         place: placeFrom(row.property_location),
+        cancelled: itemCancelled(row, event),
         ...(character ? { action_character: character } : {}),
       };
       out.push(character ? projectPropertyRecord(item) : item);
@@ -296,6 +309,7 @@ function rulesEvents(payload, options) {
           sourceField: event.source_field || null,
         }),
         place: placeFrom(record.affected_area),
+        cancelled: itemCancelled(record, event),
       });
     }
   }
@@ -340,6 +354,7 @@ function propertyEvents(payload, options) {
           evidence: event.source_span?.text || null,
         }),
         place: placeFrom(row.property_location),
+        cancelled: itemCancelled(row, event),
         ...(character ? { action_character: character } : {}),
       };
       out.push(character ? projectPropertyRecord(item) : item);
@@ -368,6 +383,7 @@ function meetingEvents(payload, options) {
       route,
       time: time(row.event_date, { basis: "published_event_date", precision: String(row.event_date).includes("T") ? "instant" : "day", sourceField: "event_date" }),
       place: placeFrom(row.affected_area || row.venue),
+      cancelled: itemCancelled(row),
     });
   }
   return out;
@@ -393,6 +409,7 @@ function landEvents(payload, options) {
         sourceField: row.provenance?.field || "hearing_date",
       }),
       place: placeFrom({ scope: row.borough ? "local" : "unlocated", boroughs: row.borough ? [row.borough] : [] }),
+      cancelled: itemCancelled(row),
     });
   }
   return out;

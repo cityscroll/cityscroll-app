@@ -1,0 +1,17 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-calendar-beyond-ics/cbics-05-now-calendar-cards",
+  "status": "implemented",
+  "fingerprint": "cbics-05-now-calendar-cards.v1",
+  "updated_at": "2026-09-03T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "now-calendar-projection",
+      "path": "site/now_calendar.mjs"
+    },
+    {
+      "id": "now-calendar-switch",
+      "path": "site/now_calendar_switch.mjs"
+    }
+  ]
+}
