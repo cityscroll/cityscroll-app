@@ -153,7 +153,12 @@ test("A2 an eligible section 197-f fixture resolves to procedure elurp plus the 
   assert.equal(decoration.procedure_id, "elurp_197e");
 
   // No second, pseudo-ELURP procedure exists anywhere in the base registry.
-  assert.equal(LAND_PROCEDURE_PROFILE_REGISTRY.profiles.filter((p) => /elurp/i.test(p.procedure_id)).length, 1);
+  // elurp_197e_k is a reviewed variant of elurp_197e (linked via
+  // broad_procedure_id), not a second, independent ELURP procedure.
+  assert.equal(
+    LAND_PROCEDURE_PROFILE_REGISTRY.profiles.filter((p) => /elurp/i.test(p.procedure_id) && !p.broad_procedure_id).length,
+    1,
+  );
   assert.equal(landReviewRegimeById("affordable_housing_fast_track_197f").selects_procedure_id, "elurp_197e");
 });
 
@@ -310,7 +315,7 @@ test("197-g attaches to the conditional §197-d and plan §197-a Council stages 
 test("A7 base procedure profiles and vocabulary are unchanged by this card", () => {
   assert.deepEqual(
     LAND_PROCEDURE_PROFILE_REGISTRY.profiles.map((profile) => profile.procedure_id).sort(),
-    ["elurp_197e", "plan_197a", "ulurp_197c", "ulurp_197d_conditional_council"],
+    ["elurp_197e", "elurp_197e_k", "plan_197a", "ulurp_197c", "ulurp_197d_conditional_council"],
   );
   const mixedRow = { ulurp_non: "ULURP", actions: "ZS;ZM" };
   assert.equal(resolveLandProcedureProfile({ source: mixedRow }).status, "unresolved");
