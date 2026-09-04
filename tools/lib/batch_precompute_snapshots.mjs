@@ -364,6 +364,10 @@ const ZAP_OUTCOME_SNAPSHOT_FIELDS = Object.freeze([
   "portal_url",
   "join",
   "filled",
+  // Every ZAP API action object (not just approved ones) — the batch
+  // authority materializer needs the exact per-action identifier even for
+  // an active, not-yet-decided project.
+  "actions",
   "approved_actions",
   "dispositions",
   "documents",
