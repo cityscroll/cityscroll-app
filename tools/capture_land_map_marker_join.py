@@ -39,7 +39,7 @@ DEFAULT_MAP_ROUTE = "/browse/zoning/?view=map"
 FILTERED_MAP_ROUTE = "/browse/zoning/?boro=Queens&view=map"
 VIEWPORTS = ((390, 844), (1440, 900))
 MAPPED_SPECIMEN = "2025K0305"
-UNMAPPED_SPECIMEN = "2026K0123"
+UNMAPPED_SPECIMEN = "2025M0252"
 
 STATES = (
     ("default-map", DEFAULT_MAP_ROUTE,

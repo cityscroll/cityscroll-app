@@ -51,7 +51,13 @@ function loadSources() {
   };
 }
 
-export function writeProcessConformanceArtifacts({ check = false } = {}) {
+/**
+ * Pure rebuild from committed sources: no file compare, no write, no exit.
+ * The single source both the CLI writer and the reproducibility test use, so
+ * "does a fresh build reproduce the committed lookup" never depends on a
+ * manual rebuild step (PC-04).
+ */
+export function buildProcessConformanceArtifacts() {
   const sources = loadSources();
   // Stable across rebuilds when inputs are unchanged (deploy --check gate).
   const generatedAt = [
@@ -118,6 +124,11 @@ export function writeProcessConformanceArtifacts({ check = false } = {}) {
   if (lookup.schema !== PROCESS_CONFORMANCE_SCHEMA) {
     throw new Error(`unexpected schema ${lookup.schema}`);
   }
+  return { lookup };
+}
+
+export function writeProcessConformanceArtifacts({ check = false } = {}) {
+  const { lookup } = buildProcessConformanceArtifacts();
   const json = `${JSON.stringify(lookup, null, 2)}\n`;
   let stale = 0;
   if (!existsSync(OUT) || readFileSync(OUT, "utf8") !== json) {

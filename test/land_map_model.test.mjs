@@ -127,8 +127,8 @@ test("A1 default filtered Land rows keep the forty-project population", () => {
   });
   assert.equal(model.schema, LAND_MAP_MODEL_SCHEMA);
   assert.equal(model.counts.total, 40);
-  assert.equal(model.counts.mapped, 29);
-  assert.equal(model.counts.unmapped, 11);
+  assert.equal(model.counts.mapped, 33);
+  assert.equal(model.counts.unmapped, 7);
   assertParity(frozen, model);
   const marker = model.markers.find((item) => item.projectId === "2025K0305");
   assert.ok(marker);
@@ -137,10 +137,10 @@ test("A1 default filtered Land rows keep the forty-project population", () => {
   assert.equal(Number.isFinite(marker.lat), true);
   assert.equal(Number.isFinite(marker.lon), true);
   assert.equal(marker.selected, true);
-  const unmapped = model.unmapped.find((item) => item.projectId === "2026K0123");
+  const unmapped = model.unmapped.find((item) => item.projectId === "2025M0252");
   assert.ok(unmapped);
   assert.equal(unmapped.reason, LAND_MAP_UNMAPPED_REASONS.POINT_ABSENT);
-  assert.equal(model.markers.some((item) => item.projectId === "2026K0123"), false);
+  assert.equal(model.markers.some((item) => item.projectId === "2025M0252"), false);
   assert.equal(model.markers.some((item) => item.projectId === EXTRA_POINT_ID), false);
   assert.equal(model.unmapped.some((item) => item.projectId === EXTRA_POINT_ID), false);
   assert.equal(model.selectedProjectId, "2025K0305");
@@ -157,7 +157,7 @@ test("A3 borough and keyword-plus-stage fixtures keep List/Map set equality", ()
   const boroughRows = defaultRows({ borough: "Brooklyn" });
   assert.equal(boroughRows.length < 40, true);
   assert.equal(boroughRows.some((row) => row.project_id === "2025K0305"), true);
-  assert.equal(boroughRows.some((row) => row.project_id === "2026K0123"), true);
+  assert.equal(boroughRows.some((row) => row.project_id === "2020K0444"), true);
   const boroughModel = buildLandMapModel({
     rows: boroughRows,
     pointLookup: pointLookupWithExtra(),
@@ -168,7 +168,7 @@ test("A3 borough and keyword-plus-stage fixtures keep List/Map set equality", ()
     true,
   );
   assert.equal(
-    boroughModel.unmapped.some((item) => item.projectId === "2026K0123"),
+    boroughModel.unmapped.some((item) => item.projectId === "2020K0444"),
     true,
   );
 
@@ -329,11 +329,11 @@ test("selected row is nullable and never follows a point-only id", () => {
   const unmapped = buildLandMapModel({
     rows,
     pointLookup: pointArtifact,
-    selectedProjectId: "2026K0123",
+    selectedProjectId: "2025M0252",
   });
   assert.equal(unmapped.selectedProjectId, null);
   assert.equal(unmapped.selectedMarker, null);
-  assert.equal(unmapped.selectedRow.project_id, "2026K0123");
+  assert.equal(unmapped.selectedRow.project_id, "2025M0252");
   assert.equal(unmapped.markers.every((item) => item.selected === false), true);
 });
 
@@ -360,7 +360,7 @@ test("A3 every existing Land filter dimension preserves List/Map id equality", (
     })),
     { label: "keyword", opts: { keyword: "Rezoning", status: "all", stage: "any" } },
     { label: "council", opts: { councilDistrict: "33", status: "all", stage: "any" } },
-    { label: "projectIds", opts: { projectIds: ["2025K0305", "2026K0123", EXTRA_POINT_ID], status: "all", stage: "any" } },
+    { label: "projectIds", opts: { projectIds: ["2025K0305", "2025M0252", EXTRA_POINT_ID], status: "all", stage: "any" } },
     { label: "status:active", opts: { status: "active" } },
     { label: "status:all", opts: { status: "all" } },
     { label: "status:hearings", opts: { status: "hearings", actionRows: ACTION_ROWS, today: "2026-08-31" } },

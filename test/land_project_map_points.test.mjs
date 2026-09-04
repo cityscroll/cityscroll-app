@@ -94,11 +94,11 @@ test("fixture multi-BBL anchor is a real nearest-mean centroid, not the mean", (
   assert.equal(isRetained, true);
 });
 
-test("2026K0123 is receipt-only unmapped with no retained BBL", () => {
+test("2025M0252 is receipt-only unmapped with no retained BBL", () => {
   const { payload, receipt } = fixtureRun();
-  assert.equal("2026K0123" in payload.points, false);
-  assert.equal(receipt.source_missing_project_ids.includes("2026K0123"), true);
-  const row = receipt.outcomes.find((item) => item.project_id === "2026K0123");
+  assert.equal("2025M0252" in payload.points, false);
+  assert.equal(receipt.source_missing_project_ids.includes("2025M0252"), true);
+  const row = receipt.outcomes.find((item) => item.project_id === "2025M0252");
   assert.equal(row.status, "source_missing");
   assert.equal(row.reason, "no_retained_bbl");
   assert.equal(row.bbl_count, 0);
@@ -126,16 +126,16 @@ test("geocoded, district, borough, and invalid extras never publish", () => {
   const { payload, receipt } = fixtureRun({
     publisherPoints: {
       REJECTED1: { method: "address_geocode", lat: 40.71, lon: -73.96 },
-      "2026K0123": { method: "district_guess", lat: 40.69, lon: -73.98 },
+      "2025M0252": { method: "district_guess", lat: 40.69, lon: -73.98 },
       "2020M0385": { method: "borough_centroid", lat: 40.78, lon: -73.96 },
       "2026R0127": { lat: Number.NaN, lon: -74.1 },
     },
     propertyPoints: {
-      "2026K0123": { method: "outcome_point", lat: 40.7, lon: -74.0 },
+      "2025M0252": { method: "outcome_point", lat: 40.7, lon: -74.0 },
     },
   });
   assert.equal("REJECTED1" in payload.points, false);
-  assert.equal("2026K0123" in payload.points, false);
+  assert.equal("2025M0252" in payload.points, false);
   assert.equal("2020M0385" in payload.points, false);
   assert.equal(payload.points["2026R0127"].method, KNOWN_LAND_POINT_METHODS.SINGLE_BBL_CENTROID);
   const rejected = receipt.outcomes.find((item) => item.project_id === "REJECTED1");
@@ -174,7 +174,7 @@ test("every default project is a payload point or a receipt row", () => {
   assert.deepEqual([...represented].sort(), [
     "2020M0385",
     "2025K0305",
-    "2026K0123",
+    "2025M0252",
     "2026R0127",
     "REJECTED1",
   ]);
@@ -238,12 +238,12 @@ test("committed projection maps 2026R0127 and anchors 2025K0305 on a retained ce
   assert.notEqual(multi.lon, expected.mean.lon);
 });
 
-test("committed receipt keeps 2026K0123 and the six exact-BBL misses out of the payload", () => {
+test("committed receipt keeps 2025M0252 and the six exact-BBL misses out of the payload", () => {
   const payload = JSON.parse(readFileSync(new URL(`../${PAYLOAD_JSON}`, import.meta.url), "utf8"));
   const receipt = JSON.parse(readFileSync(new URL(`../${RECEIPT_JSON}`, import.meta.url), "utf8"));
   assert.equal(LAND_PROJECT_MAP_POINT_SPECIMENS.no_retained_bbl in payload.points, false);
-  assert.equal(receipt.source_missing_project_ids.includes("2026K0123"), true);
-  const missingBbl = receipt.outcomes.find((row) => row.project_id === "2026K0123");
+  assert.equal(receipt.source_missing_project_ids.includes("2025M0252"), true);
+  const missingBbl = receipt.outcomes.find((row) => row.project_id === "2025M0252");
   assert.equal(missingBbl.status, "source_missing");
   assert.equal(missingBbl.reason, "no_retained_bbl");
   assert.deepEqual(receipt.unmapped_exact_bbl_missing_centroid, SIX_EXACT_BBL_MISSES);

@@ -59,7 +59,7 @@
       "scanned_source_count": 2145,
       "sources_skipped_not_materialised": 0,
       "path_count": 1923,
-      "worker_to_site_reference_count": 184,
+      "worker_to_site_reference_count": 186,
       "worker_to_site_data_reference_count": 28,
       "worker_to_site_data_targets": [
         "site/data/action_link_health.json",
@@ -118,7 +118,7 @@
         "warehouse",
         "worker/src/data"
       ],
-      "path_count": 3951
+      "path_count": 3957
     }
   },
   "required_paths": [
@@ -2921,7 +2921,7 @@
       "site/data/zap_projects_warehouse_lookup.json"
     ]
   },
-  "patterns_sha256": "19f46948fde54c7851f22436083acdcbc714311178d5b95488a795440cef9040",
+  "patterns_sha256": "1ed1274e825734a7023592b93e3d616f24dba5dd01cb17953a476ef5b32cde1a",
   "supported_gate_classes": [
     "worker-unit",
     "architecture-evidence-shards",
@@ -3045,30 +3045,30 @@
   },
   "measured": {
     "note": "A snapshot of what the profile costs at the revision named here. These figures are reporting only; they are not part of the checked contract, because a byte total moves whenever any tracked file does.",
-    "revision": "69d41705aee7ca4e48c404af306170e034598450",
+    "revision": "6f82bb306e528eeb2d29e5fcecdeb48697c558fd",
     "computed_in_reduced_checkout": false,
     "profile_paths": {
-      "count": 4169,
-      "logical_bytes": 197606502
+      "count": 4175,
+      "logical_bytes": 198641337
     },
     "deferred_paths": {
       "count": 298,
-      "logical_bytes": 221538531
+      "logical_bytes": 222585284
     },
     "excluded_paths": {
-      "count": 2371,
-      "logical_bytes": 697483146
+      "count": 2372,
+      "logical_bytes": 735712666
     },
     "site_data": {
-      "tracked_count": 695,
-      "tracked_logical_bytes": 467584077,
+      "tracked_count": 696,
+      "tracked_logical_bytes": 506171996,
       "profile_count": 48,
-      "profile_logical_bytes": 109046950
+      "profile_logical_bytes": 109965507
     },
     "tracked_total": {
-      "count": 6540,
-      "logical_bytes": 895089648
+      "count": 6547,
+      "logical_bytes": 934354003
     },
-    "pattern_count": 832
+    "pattern_count": 833
   }
 }

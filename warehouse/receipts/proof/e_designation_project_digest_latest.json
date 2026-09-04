@@ -14,11 +14,11 @@
   ],
   "denominator": {
     "eligible_projects": 238,
-    "eligible_project_lots": 50514
+    "eligible_project_lots": 50630
   },
   "counts": {
     "projects_with_conditions": 39,
-    "conditions": 210,
+    "conditions": 211,
     "rejected": 6
   },
   "specimens": {

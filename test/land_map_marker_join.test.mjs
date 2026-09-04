@@ -8,7 +8,7 @@
  * is pinned here:
  *
  *   - membership: a marker exists because a filtered Land row exists. The point projection
- *     holds 29 places, but a narrower filter must never paint the ones it excluded, and a
+ *     holds 33 places, but a narrower filter must never paint the ones it excluded, and a
  *     point key with no row behind it must never mint a project.
  *   - identity: a marker leads to the same canonical project route a List card leads to.
  *     Two ways in, one project.
@@ -61,7 +61,7 @@ function t(key, values = {}) {
 
 const DEFAULT_FILTER = Object.freeze({ status: "active", stage: "any", limit: 40 });
 const MAPPED_SPECIMEN = "2025K0305";
-const UNMAPPED_SPECIMEN = "2026K0123";
+const UNMAPPED_SPECIMEN = "2025M0252";
 // A point the projection knows and the filtered rows do not. It is the whole "the map is not
 // a search" question in one id: it has a perfectly good coordinate and still may not appear.
 const POINT_ONLY_ID = "2099Z9999";
@@ -149,21 +149,21 @@ test("A1 the painted map carries one routed marker per mapped row and routes now
 
 /* ===== A2: the map's count and the List's count are both told ===== */
 
-test("A2 default Map reports 40 total, 29 mapped and 11 unmapped, consistently", () => {
+test("A2 default Map reports 40 total, 33 mapped and 7 unmapped, consistently", () => {
   const model = modelFor();
-  assert.deepEqual({ ...model.counts }, { total: 40, mapped: 29, unmapped: 11 });
+  assert.deepEqual({ ...model.counts }, { total: 40, mapped: 33, unmapped: 7 });
   assert.equal(model.counts.mapped + model.counts.unmapped, model.counts.total);
 
   const html = htmlFor(model);
   assert.equal(attr(html, "data-land-map-total")[0], "40");
-  assert.equal(attr(html, "data-land-map-mapped")[0], "29");
-  assert.equal(attr(html, "data-land-map-unmapped")[0], "11");
+  assert.equal(attr(html, "data-land-map-mapped")[0], "33");
+  assert.equal(attr(html, "data-land-map-unmapped")[0], "7");
 
   // The failure this card exists to prevent: the marker count standing in for the total.
   const markers = [...html.matchAll(/class="land-map-marker"/g)].length;
-  assert.equal(markers, 29);
+  assert.equal(markers, 33);
   assert.notEqual(markers, model.counts.total);
-  assert.ok(html.includes(t("land_map_unmapped_note", { n: 11 })), "the 11 unmapped rows are stated, not implied");
+  assert.ok(html.includes(t("land_map_unmapped_note", { n: 7 })), "the 7 unmapped rows are stated, not implied");
 });
 
 test("A2 the unmapped specimen keeps its identity in the count and never reaches the canvas", () => {
@@ -245,7 +245,7 @@ test("A4 a Queens filter paints a subset of the filtered rows, not of the projec
 
   const queensIds = new Set(queensRows.map((row) => row.project_id));
   for (const marker of layer) assert.ok(queensIds.has(marker.projectId), `${marker.projectId} is outside the filter`);
-  assert.ok(layer.length < 29, "a narrower filter paints fewer markers than the whole projection");
+  assert.ok(layer.length < 33, "a narrower filter paints fewer markers than the whole projection");
   assert.equal(model.counts.total, queensRows.length, "the total follows the List, not the projection");
   assert.equal(model.counts.mapped + model.counts.unmapped, model.counts.total);
 
@@ -322,13 +322,13 @@ test("A4 the marker-join receipt reports the before/after states it captured", (
   for (const [width] of receipt.viewports) {
     const after = receipt.after[`default-map@${width}`];
     assert.ok(after, `no default-map capture at ${width}px`);
-    assert.deepEqual(after.counts_published, { total: 40, mapped: 29, unmapped: 11 });
-    assert.equal(after.markers, 29);
+    assert.deepEqual(after.counts_published, { total: 40, mapped: 33, unmapped: 7 });
+    assert.equal(after.markers, 33);
     // Every marker painted is a marker a resident can follow.
     assert.equal(after.marker_links, after.markers);
     assert.equal(after.methods_published, after.markers);
     assert.equal(after.unmapped_drawn, false);
-    assert.ok(after.unmapped_note.includes("11"), "the capture shows the unmapped count on screen");
+    assert.ok(after.unmapped_note.includes("7"), "the capture shows the unmapped count on screen");
     assert.ok(after.specimen_href.includes(`#land/${MAPPED_SPECIMEN}`));
     assert.match(after.specimen_label, /not an exact address/);
     assert.ok(after.screenshot.startsWith("docs/screenshots/land-map-marker-join/"));
@@ -346,7 +346,7 @@ test("A4 the marker-join receipt reports the before/after states it captured", (
   for (const [width] of receipt.viewports) {
     const filtered = receipt.after[`filtered-map@${width}`];
     assert.ok(filtered.counts_published.total < 40);
-    assert.ok(filtered.counts_published.mapped < 29, "a filtered map painted the whole projection");
+    assert.ok(filtered.counts_published.mapped < 33, "a filtered map painted the whole projection");
     assert.equal(
       filtered.counts_published.mapped + filtered.counts_published.unmapped,
       filtered.counts_published.total,

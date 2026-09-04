@@ -216,6 +216,7 @@
     "site/following_view.mjs",
     "site/franchise_notice.mjs",
     "site/franchise_phase_spine.mjs",
+    "site/geography_relations.mjs",
     "site/graph_edge_provenance.mjs",
     "site/hearing_attend_pack.mjs",
     "site/hearing_location.js",

@@ -2145,6 +2145,81 @@
       "grounding": "partial"
     },
     {
+      "id": "represented_by",
+      "status": "registered",
+      "from": "notice|project",
+      "to": "council-district",
+      "relation": "represented_by",
+      "inverse": "represents",
+      "reason": "The council-district geography is the NYC City Charter's seat for exactly one elected City Council member per numbered district, so the same containment target the located_in edge already names doubles as the represented-by target. The edge names the district/office, never a specific officeholder or term, and is projected only from the district's validated canonical id -- never from a polygon's free-text label.",
+      "edge_schema": "cityscroll.geography_relation.v1",
+      "required_evidence": [
+        "source_geography_type",
+        "source_geography_id",
+        "boundary_vintage",
+        "institutional_basis",
+        "validity_assumptions",
+        "temporal_limitations"
+      ],
+      "negative_rule": "Never infer this edge from a polygon's name or label text alone, and never assert a specific officeholder or term from it. Never publish it for a geography class without an established office/entity mapping, such as a community district or a business improvement district.",
+      "backing": [
+        "site/geography_relations.mjs",
+        "site/civic_geography_registry.mjs"
+      ],
+      "label": "Represented by",
+      "grounding": "partial"
+    },
+    {
+      "id": "served_by",
+      "status": "registered",
+      "from": "notice|project",
+      "to": "police-precinct|sanitation-district",
+      "relation": "served_by",
+      "inverse": "serves",
+      "reason": "A police precinct and a sanitation district are each department's own geographic service-jurisdiction unit -- patrol command, or collection routing -- rather than a generic administrative overlay, so containment in one is itself the verified service fact.",
+      "edge_schema": "cityscroll.geography_relation.v1",
+      "required_evidence": [
+        "source_geography_type",
+        "source_geography_id",
+        "boundary_vintage",
+        "institutional_basis",
+        "validity_assumptions",
+        "temporal_limitations"
+      ],
+      "negative_rule": "Never publish this edge for a geography class whose service meaning has not been independently verified as uniform across the polygon, such as a business improvement district, which may deliver different services to different contained points.",
+      "backing": [
+        "site/geography_relations.mjs",
+        "site/civic_geography_registry.mjs"
+      ],
+      "label": "Served by",
+      "grounding": "partial"
+    },
+    {
+      "id": "statistically_classified_as",
+      "status": "registered",
+      "from": "notice|project",
+      "to": "nta2020",
+      "relation": "statistically_classified_as",
+      "inverse": "classifies",
+      "reason": "A neighbourhood tabulation area (NTA2020) is a DCP statistical tabulation geography built from Census-tract geography. It classifies rather than represents or serves, so the classification is exactly the containment fact already established by located_in.",
+      "edge_schema": "cityscroll.geography_relation.v1",
+      "required_evidence": [
+        "source_geography_type",
+        "source_geography_id",
+        "boundary_vintage",
+        "institutional_basis",
+        "validity_assumptions",
+        "temporal_limitations"
+      ],
+      "negative_rule": "Never present this classification as electoral representation or service delivery.",
+      "backing": [
+        "site/geography_relations.mjs",
+        "site/civic_geography_registry.mjs"
+      ],
+      "label": "Statistically classified as",
+      "grounding": "partial"
+    },
+    {
       "id": "about_project",
       "status": "registered",
       "from": "notice|meeting",

@@ -45,7 +45,7 @@
   ],
   "specimens": {
     "mapped": "2025K0305",
-    "unmapped": "2026K0123"
+    "unmapped": "2025M0252"
   },
   "demonstrates": {
     "default-map": "Default Map: every mapped project is a link, and the panel reports mapped, unmapped, and total together.",
@@ -125,15 +125,15 @@
       "map_state": "ready",
       "counts_published": {
         "total": 40,
-        "mapped": 29,
-        "unmapped": 11
+        "mapped": 33,
+        "unmapped": 7
       },
-      "summary_text": "29 of 40 projects are on the map.",
-      "unmapped_note": "11 have no published location, so they stay in the list only.",
-      "markers": 29,
-      "marker_links": 29,
-      "methods_published": 29,
-      "specimen_href": "http://127.0.0.1:62276/browse/zoning/#land/2025K0305",
+      "summary_text": "33 of 40 projects are on the map.",
+      "unmapped_note": "7 have no published location, so they stay in the list only.",
+      "markers": 33,
+      "marker_links": 33,
+      "methods_published": 33,
+      "specimen_href": "http://127.0.0.1:51680/browse/zoning/#land/2025K0305",
       "specimen_label": "Westshore LSGD Mapping Actions. Anchor point for 25 lots. anchor for a multi-lot project, not an exact address.",
       "unmapped_drawn": false,
       "screenshot": "docs/screenshots/land-map-marker-join/after-default-map-390.png"
@@ -145,15 +145,15 @@
       "map_state": "ready",
       "counts_published": {
         "total": 40,
-        "mapped": 29,
-        "unmapped": 11
+        "mapped": 33,
+        "unmapped": 7
       },
-      "summary_text": "29 of 40 projects are on the map.",
-      "unmapped_note": "11 have no published location, so they stay in the list only.",
-      "markers": 29,
-      "marker_links": 29,
-      "methods_published": 29,
-      "specimen_href": "http://127.0.0.1:62276/browse/zoning/#land/2025K0305",
+      "summary_text": "33 of 40 projects are on the map.",
+      "unmapped_note": "7 have no published location, so they stay in the list only.",
+      "markers": 33,
+      "marker_links": 33,
+      "methods_published": 33,
+      "specimen_href": "http://127.0.0.1:51680/browse/zoning/#land/2025K0305",
       "specimen_label": "Westshore LSGD Mapping Actions. Anchor point for 25 lots. anchor for a multi-lot project, not an exact address.",
       "unmapped_drawn": false,
       "screenshot": "docs/screenshots/land-map-marker-join/after-default-map-1440.png"

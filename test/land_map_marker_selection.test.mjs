@@ -63,7 +63,7 @@ const DEFAULT_FILTER = Object.freeze({ status: "active", stage: "any", limit: 40
 /** A 25-lot rezoning: on the map, and emphatically not at an address. */
 const ANCHOR_SPECIMEN = "2025K0305";
 /** A project with no published point at all. Reachable through the List, never through a marker. */
-const UNMAPPED_SPECIMEN = "2026K0123";
+const UNMAPPED_SPECIMEN = "2025M0252";
 /** A point the projection knows and no filtered row claims. */
 const POINT_ONLY_ID = "2099Z9999";
 
