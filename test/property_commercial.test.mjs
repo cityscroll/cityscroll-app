@@ -284,7 +284,7 @@ test("nominal disposition evidence is a complete cited clause, not a clipped tem
   assert.match(nominal.evidence, /nominal price of one dollar/i);
   assert.match(nominal.context, /not an auction price/i);
 
-  const phone = commercial.participation.phones.find((entry) => entry.value === "(212) 788-7490");
+  const phone = commercial.participation.phones.find((entry) => entry.value === "(212) 555-0157");
   assert.ok(phone, "the public-hearings contact remains available");
   assert.equal(phone.purpose, "accommodation");
   assert.match(phone.context, /requesting sign language interpreters/i);

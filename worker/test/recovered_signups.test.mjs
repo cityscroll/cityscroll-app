@@ -20,8 +20,6 @@ import {
 import {
   isEquivalentBroadMoneyWatch,
   recoverDeprecatedDoubleOptIn,
-  VETTED_DEPRECATED_OPT_IN_RECOVERY_MANIFEST,
-  VETTED_RECOVERED_SIGNUP_EMAILS,
 } from "../src/recovered_signups.mjs";
 import { isWatchActive } from "../src/lib/rollup.mjs";
 import { toRosterRow } from "../src/lib/digest_ops.mjs";
@@ -38,8 +36,20 @@ class KV {
   }
 }
 
+const RECOVERED_SUBSCRIBER_ROWS = Object.freeze([
+  { email: "recovered-subscriber-1@example.com", lens: "money", filter: {}, freq: "weekly", original_signup_at: "2026-08-16T23:22:22.092Z" },
+  { email: "recovered-subscriber-2@example.com", lens: "money", filter: {}, freq: "weekly", original_signup_at: "2026-08-18T15:58:35.654Z" },
+  { email: "recovered-subscriber-3@example.com", lens: "money", filter: {}, freq: "weekly", original_signup_at: "2026-08-18T21:45:33.701Z" },
+]);
+const VETTED_RECOVERED_SIGNUP_EMAILS = RECOVERED_SUBSCRIBER_ROWS.map((row) => row.email);
+
 function environment() {
-  return { ADMIN_KEY: "secret", SUBS: new KV(), ALERT_STATE: new KV() };
+  return {
+    ADMIN_KEY: "secret",
+    SUBS: new KV(),
+    ALERT_STATE: new KV(),
+    DEPRECATED_OPT_IN_RECOVERY_MANIFEST_JSON: JSON.stringify(RECOVERED_SUBSCRIBER_ROWS),
+  };
 }
 
 const TEST_EMAIL = "jamesca2ro+scope-watch-e2e-20260806@gmail.com";
@@ -198,7 +208,7 @@ test("ops HTML renders recovered / pending-enrollment as the intermediate catego
 test("recovery keeps an already-enrolled equivalent watch and does not mint a pending duplicate", async () => {
   const env = environment();
   const manual = buildSubscription({
-    email: "devinbalkind@gmail.com",
+    email: "recovered-subscriber-3@example.com",
     lens: "money",
     filter: {},
     freq: "weekly",
@@ -214,15 +224,15 @@ test("recovery keeps an already-enrolled equivalent watch and does not mint a pe
   assert.equal(stored.source, "manual-ops-insert");
   const ops = await (await handleAdminSubs(new Request("https://worker/admin/subs?key=secret"), env)).json();
   const lifecycleRows = [...ops.subs, ...ops.developerTestAccounts]
-    .filter((row) => row.email === "devinbalkind@gmail.com");
+    .filter((row) => row.email === "recovered-subscriber-3@example.com");
   assert.equal(lifecycleRows.length, 1, "one address must not produce two lifecycle rows");
   assert.equal(lifecycleRows[0].status, SIGNUP_LIFECYCLE.ENROLLED);
-  assert.equal(ops.recoveredPending.filter((row) => row.email === "devinbalkind@gmail.com").length, 0);
+  assert.equal(ops.recoveredPending.filter((row) => row.email === "recovered-subscriber-3@example.com").length, 0);
 });
 
 test("signup lifecycle distinguishes recovered, pending-enrollment, enrolled, and test", () => {
   const recovered = {
-    email: "devinbalkind@gmail.com",
+    email: "recovered-subscriber-3@example.com",
     source: DEPRECATED_OPT_IN_RECOVERY_SOURCE,
     delivery_not_before: "2026-08-18T23:00:00.000Z",
     recovered_at: "2026-08-18T23:00:00.000Z",
@@ -273,7 +283,7 @@ test("the authenticated admin endpoint applies the vetted manifest even with no 
 
   const partial = environment();
   const ignoredCallerRows = await recoverThroughAdmin(partial, {
-    rows: VETTED_DEPRECATED_OPT_IN_RECOVERY_MANIFEST.filter((row) => row.email === "devinbalkind@gmail.com"),
+    rows: RECOVERED_SUBSCRIBER_ROWS.filter((row) => row.email === "recovered-subscriber-3@example.com"),
   });
   assert.equal(ignoredCallerRows.status, 200);
   const ops = await (await handleAdminSubs(new Request("https://worker/admin/subs?key=secret"), partial)).json();
@@ -316,7 +326,7 @@ test("the recovery entitlement watermark excludes backlog and admits only later 
 });
 
 test("empty and sanitize() money filters are equivalent broad contracts watches", () => {
-  const email = "devinbalkind@gmail.com";
+  const email = "recovered-subscriber-3@example.com";
   assert.equal(isEquivalentBroadMoneyWatch({ email, lens: "money", filter: {} }, email), true);
   assert.equal(isEquivalentBroadMoneyWatch({ email, lens: "money", filter: sanitize("money", {}) }, email), true);
   assert.equal(isEquivalentBroadMoneyWatch({
@@ -346,11 +356,11 @@ test("recovery drops a recovered pending duplicate when a sanitized legacy-confi
   const env = environment();
   await recover(env);
   const recoveredKey = [...env.SUBS.data.keys()].find((name) => name.startsWith("sub:")
-    && JSON.parse(env.SUBS.data.get(name)).email === "devinbalkind@gmail.com");
+    && JSON.parse(env.SUBS.data.get(name)).email === "recovered-subscriber-3@example.com");
   assert.ok(recoveredKey);
 
   const confirm = buildSubscription({
-    email: "devinbalkind@gmail.com",
+    email: "recovered-subscriber-3@example.com",
     lens: "money",
     filter: sanitize("money", {}),
     freq: "weekly",
@@ -366,10 +376,10 @@ test("recovery drops a recovered pending duplicate when a sanitized legacy-confi
   assert.equal(JSON.parse(await env.SUBS.get(confirmKey)).source, "legacy-confirm");
 
   const ops = await (await handleAdminSubs(new Request("https://worker/admin/subs?key=secret"), env)).json();
-  const lifecycleRows = ops.subs.filter((row) => row.email === "devinbalkind@gmail.com");
+  const lifecycleRows = ops.subs.filter((row) => row.email === "recovered-subscriber-3@example.com");
   assert.equal(lifecycleRows.length, 1);
   assert.equal(lifecycleRows[0].status, SIGNUP_LIFECYCLE.ENROLLED);
-  assert.equal(ops.recoveredPending.filter((row) => row.email === "devinbalkind@gmail.com").length, 0);
+  assert.equal(ops.recoveredPending.filter((row) => row.email === "recovered-subscriber-3@example.com").length, 0);
 });
 
 test("a recovered pending watch becomes enrolled when a later digest send processes it", async () => {
@@ -378,7 +388,7 @@ test("a recovered pending watch becomes enrolled when a later digest send proces
   env.TOKEN_SECRET = "s".repeat(32);
   await recover(env);
   const key = [...env.SUBS.data.keys()].find((name) => name.startsWith("sub:")
-    && JSON.parse(env.SUBS.data.get(name)).email === "ninodepaola@gmail.com");
+    && JSON.parse(env.SUBS.data.get(name)).email === "recovered-subscriber-2@example.com");
   const record = JSON.parse(await env.SUBS.get(key));
   assert.equal(record.status, SIGNUP_LIFECYCLE.PENDING_ENROLLMENT);
   assert.equal(await env.ALERT_STATE.get(`lastsent:${key}`), "2026-08-18");
@@ -421,8 +431,8 @@ test("a recovered pending watch becomes enrolled when a later digest send proces
   assert.ok(again.already_recovered + again.recovered + again.already_enrolled >= 1);
   assert.equal(await env.ALERT_STATE.get(`lastsent:${key}`), "2026-08-24");
   const ops = await (await handleAdminSubs(new Request("https://worker/admin/subs?key=secret"), env)).json();
-  const row = ops.subs.find((item) => item.email === "ninodepaola@gmail.com");
+  const row = ops.subs.find((item) => item.email === "recovered-subscriber-2@example.com");
   assert.equal(row.status, SIGNUP_LIFECYCLE.ENROLLED);
   assert.equal(row.signup_lifecycle, SIGNUP_LIFECYCLE.ENROLLED);
-  assert.equal(ops.recoveredPending.filter((item) => item.email === "ninodepaola@gmail.com").length, 0);
+  assert.equal(ops.recoveredPending.filter((item) => item.email === "recovered-subscriber-2@example.com").length, 0);
 });

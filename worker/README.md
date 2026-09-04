@@ -68,7 +68,7 @@ Reader-facing HTML uses canonical `cityscroll.org` paths. Existing API-host link
 | `/api` | GET | 302 → cityscroll.org/api.html (the API docs) | none |
 | `/admin/subs` `/admin/feedback` | GET | Operator reads. Subscriptions include status, source, creation time, and recovery provenance when present. Feedback projects stored report target, evidence, provenance, canonical URL, and target identity with explicit missing/malformed context; reporter email, IP, user-agent, and adjudication notes are omitted. Feedback is GET-only. | `ADMIN_KEY` → 404 if unset |
 | `/admin/report-adjudication` | GET/POST | Private report adjudication. POST records a bounded verdict with actor, time, evidence, and scope; a named source change plus explicit reprojection is required before any civic result changes. GET returns private records only. | `ADMIN_KEY` → 404 if unset; `FEEDBACK` |
-| `/admin/recover-deprecated-opt-in` | POST | Idempotently enrolls the private, vetted four-row recovery manifest (three weekly broad-contract watches plus one excluded developer account), stamps the next-send boundary, and emits ops receipts without sending email | `ADMIN_KEY` + `SUBS` + `ALERT_STATE` |
+| `/admin/recover-deprecated-opt-in` | POST | Idempotently enrolls the private, vetted four-row recovery manifest (three weekly broad-contract watches plus one excluded developer account), stamps the next-send boundary, and emits ops receipts without sending email | `ADMIN_KEY` + `SUBS` + `ALERT_STATE` + `DEPRECATED_OPT_IN_RECOVERY_MANIFEST_JSON` |
 | `/admin/ops-contract` | GET | **Versioned ops contract** (`ops-contract.v1`) — digest modes, daylog actions/fields, stats metrics (incl. developer-traffic exclusion), admin routes + auth classes, KV key prefixes, feature flags. No secrets. Desk panels pin `min_compatible_version` against this document (or the committed fixture `worker/ops-contract.v1.json`). Never served on public `/stats` | `ADMIN_KEY` → 404 if unset |
 | `/admin/stats` | GET | **Private product activity and delivery operations** formerly returned by public `/stats`: subscriptions, sends, searches, visits, interaction breakdowns, and daily history. JSON by default; `?view=html` renders the responsive desk panel, which also carries the receipt-backed **Search activity** section (recent executions, their stored result lists, and the backed filters below). The JSON body is unchanged by that section. | `ADMIN_KEY` → 404 if unset |
 | `/admin/search-activity` | GET | Private search-execution receipts, newest first and bounded by `limit`. Filterable only by retained receipt fields — `since`, `until`, `query`, `visitor`, `subscriber`, `outcome`, `family` — and any other query parameter is refused with `400 unsupported-filter` rather than ignored. This is the same read the Product Activity Search activity section renders, so Desk and JSON describe the same executions. Production and developer receipts read from disjoint prefixes; never served publicly or on `/stats`. | `ADMIN_KEY` → 404 if unset; `ALERT_STATE` |
@@ -274,9 +274,16 @@ CROL_WORKER_URL=https://api.cityscroll.org npm run test:live   # live e2e over e
 
 Secrets (set outside the repository via Wrangler): `ANTHROPIC_API_KEY`, `RESEND_API_KEY`,
 `TOKEN_SECRET`, `TURNSTILE_SECRET`, `USAGE_KEY`, `ADMIN_KEY`, `SHADOW_STATUS_KEY`,
-`ANALYTICS_READ_TOKEN`, and `ANALYTICS_DEV_KEY`. `SHADOW_STATUS_KEY`
+`ANALYTICS_READ_TOKEN`, `ANALYTICS_DEV_KEY`, and `DEPRECATED_OPT_IN_RECOVERY_MANIFEST_JSON`.
+`SHADOW_STATUS_KEY`
 is an optional read-only secret accepted **only** on `GET /admin/digest-shadow`; when absent, that
-route falls back to `ADMIN_KEY` as before. Vars (in `wrangler.toml`):
+route falls back to `ADMIN_KEY` as before.
+`DEPRECATED_OPT_IN_RECOVERY_MANIFEST_JSON` is the private input for
+`POST /admin/recover-deprecated-opt-in` — a JSON array of exactly the three real recovered rows
+(`{ email, lens, filter, freq, original_signup_at }`); the fourth, developer/test row stays
+committed in `src/lib/deprecated_opt_in_recovery_manifest.mjs` since it carries no subscriber PII.
+Set it once with `wrangler secret put DEPRECATED_OPT_IN_RECOVERY_MANIFEST_JSON` (paste the JSON
+array as the prompted value); the route 500s until it's set. Vars (in `wrangler.toml`):
 `ANALYTICS_ENVIRONMENT` (`production` on the live Worker; beta overrides to `preview`),
 `ALERTS_LIVE` (master switch — anything but `"true"` = dry-run: still **renders** each
 digest and logs the full HTML + headers, but never calls Resend and never bumps send

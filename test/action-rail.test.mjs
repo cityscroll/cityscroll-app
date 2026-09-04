@@ -268,7 +268,7 @@ test("EDC-style notice extracts package URL, contact, and due date into a concre
     deadline: "2026-08-03T16:00:00.000",
     email: "rfprequest@edc.nyc",
     contact_name: "Hugo Job",
-    contact_phone: "(212) 618-5462",
+    contact_phone: "(212) 555-0179",
     address_to_request: "1 Liberty Plaza, 12th Floor, New York, NY 10006",
     selection_method: "Request for Proposals",
     notice_text: "Detailed submission guidelines are outlined in the RFP. To download a copy of the solicitation documents, please visit https://edc.nyc/rfps. RESPONSES ARE DUE NO LATER THAN 4PM ON Monday, August 3, 2026. Please click the link in the Deadlines section of this project's web page (which can be found on https://edc.nyc/rfps) to electronically upload a proposal.",

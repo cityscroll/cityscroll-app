@@ -286,7 +286,7 @@ test("board people constellation items expose generic refs without changing boar
         relationships: [{
           board_id: "manhattan-cb-06",
           publisher_person_id: "jane-001",
-          person_name: "Jane Doe",
+          person_name: "Ada Lovelace",
           relation: "member_of",
           role: "appointed_member",
           relation_date: "2026-08-25",

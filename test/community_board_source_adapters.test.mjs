@@ -140,7 +140,7 @@ test("HTML adapter accepts explicit Schema.org Event records without guessing da
 test("event-detail materialization keeps publisher description, participation, and exact child documents", () => {
   const meetingKey = "https://board.example/event/1";
   const records = parseHtmlPdfSource(`
-    <script type="application/ld+json">[{"@type":"Event","name":"LANDMARKS 2 – Chair","url":"${meetingKey}","startDate":"2026-09-10T18:00:00-04:00","endDate":"2026-09-10T21:00:00-04:00","description":"Agenda: 63-65 Charles Street. Register to join online.","location":{"@type":"Place","name":"CB 2 Conference Room","address":{"streetAddress":"3 Washington Square Village #1A","addressLocality":"New York","addressRegion":"NY","postalCode":"10012"},"telephone":"212-979-2272"}}]</script>
+    <script type="application/ld+json">[{"@type":"Event","name":"LANDMARKS 2 – Chair","url":"${meetingKey}","startDate":"2026-09-10T18:00:00-04:00","endDate":"2026-09-10T21:00:00-04:00","description":"Agenda: 63-65 Charles Street. Register to join online.","location":{"@type":"Place","name":"CB 2 Conference Room","address":{"streetAddress":"3 Washington Square Village #1A","addressLocality":"New York","addressRegion":"NY","postalCode":"10012"},"telephone":"212-555-0184"}}]</script>
     <a href="/documents/agenda-2026-09-10.pdf">Agenda PDF</a>
     <a href="/images/logo.png">Board logo</a>
   `, {

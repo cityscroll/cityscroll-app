@@ -50,27 +50,27 @@ test("registry registers the generic person projection and same_person link", ()
 });
 test("same display name does not create cross-source identity", () => {
   const rows = [
-    projectCouncilOfficialAlias({ personId: "7801", displayName: "Jane Doe" }),
-    projectCommunityBoardPersonAlias({ boardId: "manhattan-cb-06", personKey: "jane-001", displayName: "Jane Doe" }),
-    projectCommunityBoardPersonAlias({ boardId: "queens-cb-07", personKey: "jane-001", displayName: "Jane Doe" }),
+    projectCouncilOfficialAlias({ personId: "7801", displayName: "Ada Lovelace" }),
+    projectCommunityBoardPersonAlias({ boardId: "manhattan-cb-06", personKey: "jane-001", displayName: "Ada Lovelace" }),
+    projectCommunityBoardPersonAlias({ boardId: "queens-cb-07", personKey: "jane-001", displayName: "Ada Lovelace" }),
     projectPerson({
       identity: buildPersonIdentity({ sourceNamespace: "agency", sourceScope: "housing", nativeKey: "jane-001", issuer: "agency-publisher" }),
       sourceIdentity: "agency-person:housing:jane-001",
       sourceKind: "agency-person",
-      displayName: "Jane Doe",
+      displayName: "Ada Lovelace",
       profileFamily: "agency-person",
     }),
     projectPerson({
       identity: buildPersonIdentity({ sourceNamespace: "vendor", sourceScope: "acme", nativeKey: "jane-001", issuer: "vendor-publisher" }),
       sourceIdentity: "vendor-contact:acme:jane-001",
       sourceKind: "vendor-contact",
-      displayName: "Jane Doe",
+      displayName: "Ada Lovelace",
       profileFamily: "vendor-contact",
     }),
   ];
 
   assert.equal(new Set(rows.map(({ person_ref: id }) => id)).size, rows.length);
-  assert.deepEqual(rows.map(({ display_name: name }) => name), rows.map(() => "Jane Doe"));
+  assert.deepEqual(rows.map(({ display_name: name }) => name), rows.map(() => "Ada Lovelace"));
   assert.equal(rows[0].source_alias.identity, "official:7801");
   assert.equal(rows[0].person_ref, "person:legistar:7801");
   assert.equal(rows[1].source_alias.identity, "community-board-person:manhattan-cb-06:jane-001");
@@ -79,8 +79,8 @@ test("same display name does not create cross-source identity", () => {
 });
 
 test("Council and Community Board aliases preserve immutable source identities", () => {
-  const council = projectCouncilOfficialAlias({ personId: "7801", displayName: "Jane Doe" });
-  const board = projectCommunityBoardPersonAlias({ boardId: "manhattan-cb-06", personKey: "7801", displayName: "Jane Doe" });
+  const council = projectCouncilOfficialAlias({ personId: "7801", displayName: "Ada Lovelace" });
+  const board = projectCommunityBoardPersonAlias({ boardId: "manhattan-cb-06", personKey: "7801", displayName: "Ada Lovelace" });
 
   assert.equal(council.schema, PERSON_PROJECTION_SCHEMA);
   assert.equal(council.object_type, "person");
@@ -129,17 +129,17 @@ test("same_person requires inspectable provenance and only accepted links expose
 
 test("profile-family allowlist isolates generic, board, agency, and vendor people from Council", () => {
   const subjects = [
-    projectCouncilOfficialAlias({ personId: "7801", displayName: "Jane Doe" }),
-    projectCommunityBoardPersonAlias({ boardId: "manhattan-cb-06", personKey: "jane-001", displayName: "Jane Doe" }),
+    projectCouncilOfficialAlias({ personId: "7801", displayName: "Ada Lovelace" }),
+    projectCommunityBoardPersonAlias({ boardId: "manhattan-cb-06", personKey: "jane-001", displayName: "Ada Lovelace" }),
     projectPerson({
       identity: buildPersonIdentity({ sourceNamespace: "agency", sourceScope: "housing", nativeKey: "jane-001", issuer: "agency-publisher" }),
       profileFamily: "agency-person",
-      displayName: "Jane Doe",
+      displayName: "Ada Lovelace",
     }),
     projectPerson({
       identity: buildPersonIdentity({ sourceNamespace: "vendor", sourceScope: "acme", nativeKey: "jane-001", issuer: "vendor-publisher" }),
       profileFamily: "vendor-contact",
-      displayName: "Jane Doe",
+      displayName: "Ada Lovelace",
     }),
   ];
 
@@ -162,7 +162,7 @@ test("person constellation surfaces verified source and cross-category edges wit
   const boardPerson = projectCommunityBoardPersonAlias({
     boardId: "manhattan-cb-06",
     personKey: "jane-001",
-    displayName: "Jane Doe",
+    displayName: "Ada Lovelace",
     observedAt: "2026-08-25",
     sourceObservationRefs: ["cb6-roster-2026-08-25"],
   });
@@ -190,7 +190,7 @@ test("person constellation surfaces verified source and cross-category edges wit
         relation: "same_person",
         target_kind: "person",
         target_ref: "person:legistar:7801",
-        target_name: "Jane Doe",
+        target_name: "Ada Lovelace",
         status: "held",
       },
     ],
