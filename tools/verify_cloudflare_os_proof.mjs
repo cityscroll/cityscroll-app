@@ -289,6 +289,9 @@ function buildExpectedReceipt({ sourcePath, deployment, sourceScan, gatekeeper, 
   return {
     schema: "cityscroll.cloudflare_os_composition_proof_receipt.v1",
     card: "cs-07-cloudflare-os-composition-proof",
+    evidence_class: "local_protocol_interop",
+    execution_environment: "node-intercepted-transport-fixture",
+    evidence_notes: "A deterministic local Gatekeeper/Gadget rehearsal: the Gadget calls a Gatekeeper-shaped MCP client whose transport dispatches to handleMcp() in-process. It proves the grant, boundary, and composition contract, not a deployed Cloudflare OS Gadget or Gatekeeper.",
     observed_at: OBSERVED_AT,
     fixture: {
       path: "test/fixtures/cloudflare_os_entity_research.json",

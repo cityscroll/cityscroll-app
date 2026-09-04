@@ -5,6 +5,9 @@
     "transport": "StreamableHTTPClientTransport",
     "version": "1.30.0"
   },
+  "evidence_class": "local_protocol_interop",
+  "evidence_notes": "Exercises the current MCP SDK client against handleMcp() with the client transport's fetch overridden to dispatch in-process. It proves protocol and semantic parity, not that a deployed https://api.cityscroll.org/mcp endpoint is reachable.",
+  "execution_environment": "node-intercepted-transport-fixture",
   "fixture_sha256": "70bf37432c331e90ef37a3a92a9f4b9c722d30d41de909186ad8bf91c6996d3b",
   "layers": {
     "adapter_policy": "worker/src/mcp.mjs plus capabilities/mcp_tool_declarations.mjs",
