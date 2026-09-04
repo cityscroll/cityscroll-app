@@ -2295,6 +2295,17 @@ select {
   font-weight: 600;
 }
 
+.near-record-role {
+  display: inline-block;
+  margin-inline-start: var(--space-2);
+  padding: 0 var(--space-2);
+  border-radius: 999px;
+  background: var(--cs-action-tint);
+  color: var(--color-action);
+  font: 600 .75rem/1.6 var(--font-interface);
+  white-space: nowrap;
+}
+
 .near-record-meta {
   display: flex;
   flex-wrap: wrap;

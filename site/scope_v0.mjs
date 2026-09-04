@@ -116,6 +116,9 @@ export function nearYouUrlFromScope(input, { base = "/near-you/" } = {}) {
   set("action", first(scope.facets.actions));
   const values = { ...(scope.facets.values || {}) };
   delete values.basis;
+  const placeRole = values.place_role;
+  delete values.place_role;
+  if (PLACE_ROLES.includes(placeRole)) params.set("placeRole", placeRole);
   if (values.type && Object.keys(values).length === 1) set("type", values.type);
   else if (Object.keys(values).length) params.set("facet", JSON.stringify(values));
   if (scope.language && scope.language !== "en") params.set("lang", scope.language);

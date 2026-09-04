@@ -46,11 +46,24 @@ function strongestBacklink(rows = []) {
       || clean(left.duty_text).localeCompare(clean(right.duty_text)))[0] || null;
 }
 
+/**
+ * Bucket a compact district-activity basis string into the one canonical place-role
+ * predicate, or null when the basis carries no district-specific evidence at all (citywide,
+ * virtual, unlocated, or a weak agency/vendor fallback). Shared by the explanation-path
+ * builder below and the Near-you result filter (site/near_you_view.mjs) so the predicate
+ * that decides whether a record matches a requested role is the same one that labels why it
+ * matched — see PS-02 acceptance A9.
+ */
+export function placeRoleForBasis(basis) {
+  if (NON_DISTRICT_BASES.has(basis)) return null;
+  if (basis === "Venue / logistics") return "venue";
+  if (basis === "Matter place") return "matter";
+  return "affected_area"; // Never fabricate venue/matter from weaker district evidence.
+}
+
 /** Bucket the district-activity basis string into the one canonical place-role predicate. */
 function locationPlaceRole(record = {}) {
-  if (record.basis === "Venue / logistics") return "venue";
-  if (record.basis === "Matter place") return "matter";
-  return "affected_area"; // Safe default — never fabricate venue/matter from a weak basis.
+  return placeRoleForBasis(record.basis) ?? "affected_area";
 }
 
 function subjectForRecord(lens, id) {
