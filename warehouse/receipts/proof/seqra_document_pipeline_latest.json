@@ -21,6 +21,18 @@
       "result": "pass"
     },
     {
+      "name": "fetching the SEQRA-05 topic-extraction DEIS fixture resolves to immutable stored bytes via its own fetch receipt (A1)",
+      "result": "pass"
+    },
+    {
+      "name": "fetching the SEQRA-05 comment letter fixture resolves to immutable stored bytes via its own fetch receipt (A1)",
+      "result": "pass"
+    },
+    {
+      "name": "fetching the SEQRA-05 agency response fixture resolves to immutable stored bytes via its own fetch receipt (A1)",
+      "result": "pass"
+    },
+    {
       "name": "draft document classifies as deis/draft and final classifies as feis/final (A5)",
       "result": "pass"
     },
@@ -59,6 +71,34 @@
     {
       "name": "no pipeline source file literally names a lawsuit/legal-risk scoring field (negative rule, static check)",
       "result": "pass"
+    },
+    {
+      "name": "the topic-extraction fixture review resolves to a single explicit manual vintage (A3)",
+      "result": "pass"
+    },
+    {
+      "name": "technical-topic findings are extracted with page/section/table evidence resolving to the fetched bytes (A1)",
+      "result": "pass"
+    },
+    {
+      "name": "a numeric threshold finding is compared against its own review's manual vintage, never a different one (A3, negative rule)",
+      "result": "pass"
+    },
+    {
+      "name": "low-confidence findings are quarantined out of the training corpus, evidenced by a count (A5)",
+      "result": "pass"
+    },
+    {
+      "name": "hazardous_materials (never mentioned) projects to not_located, never screened_out, using only accepted evidence (A2)",
+      "result": "pass"
+    },
+    {
+      "name": "precision and recall are reported per topic and per document type against the human-reviewed benchmark set (A4)",
+      "result": "pass"
+    },
+    {
+      "name": "no SEQRA-05 module falls back to a 'current'/'latest' manual vintage instead of the review's own resolved one (negative rule, static check)",
+      "result": "pass"
     }
   ],
   "discovery_receipt_summary": {
@@ -71,5 +111,24 @@
     "result": "pass"
   },
   "sample_review_key": "environmental_review:ceqr:24DCP999Q",
-  "schema": "cityscroll.seqra_document_pipeline_receipt.v1"
+  "schema": "cityscroll.seqra_document_pipeline_receipt.v1",
+  "seqra05_topic_extraction_summary": {
+    "accepted_count": 7,
+    "assessment_count": 21,
+    "benchmark_overall": {
+      "f1": 0.875,
+      "false_negative": 1,
+      "false_positive": 1,
+      "insufficient_data": false,
+      "precision": 0.875,
+      "recall": 0.875,
+      "true_positive": 7
+    },
+    "finding_count": 8,
+    "not_located_count": 17,
+    "quarantined_count": 1,
+    "resolved_manual_vintage_id": "nyc_ceqr_technical_manual_2020",
+    "review_key": "environmental_review:ceqr:26DCP555Q",
+    "screened_out_count": 1
+  }
 }
