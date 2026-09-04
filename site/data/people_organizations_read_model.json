@@ -50933,15 +50933,15 @@
       "href": "/agencies/city-university/",
       "entity_ref": "agency:id:city-university",
       "relation_state": "published",
-      "detail": "1 linked record categories",
+      "detail": "2 linked record categories",
       "institution": "agency",
       "institution_label": "Agency",
       "institution_context": "City agency organization",
       "search_text": "City University of New York agency organization",
       "categories": {
         "contracts": {
-          "status": "empty",
-          "count": 0,
+          "status": "matched",
+          "count": 3,
           "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
@@ -52098,51 +52098,6 @@
     },
     {
       "kind": "agency",
-      "id": "agency:id:economic-development-corporation",
-      "label": "Economic Development Corporation",
-      "href": "/agencies/economic-development-corporation/",
-      "entity_ref": "agency:id:economic-development-corporation",
-      "relation_state": "published",
-      "detail": "1 linked record categories",
-      "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Economic Development Corporation agency organization",
-      "categories": {
-        "contracts": {
-          "status": "matched",
-          "count": 3,
-          "method": "agency_browse_snapshot_v1"
-        },
-        "vendors": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_vendor_awards_12mo_v1"
-        },
-        "meetings": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_browse_snapshot_v1"
-        },
-        "rules": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_canonical_v1"
-        },
-        "obligations": {
-          "status": "empty",
-          "count": 0,
-          "method": "mandate_expected_vs_observed_v1"
-        },
-        "staffing": {
-          "status": "empty",
-          "count": 0,
-          "method": "publisher_certification_record_v1"
-        }
-      }
-    },
-    {
-      "kind": "agency",
       "id": "agency:id:employees-retirement-system",
       "label": "Employees' Retirement System",
       "href": "/agencies/employees-retirement-system/",
@@ -52508,15 +52463,15 @@
       "href": "/agencies/district-attorney-new-york-county/",
       "entity_ref": "agency:id:district-attorney-new-york-county",
       "relation_state": "published",
-      "detail": "2 linked record categories",
+      "detail": "3 linked record categories",
       "institution": "agency",
       "institution_label": "Agency",
       "institution_context": "City agency organization",
       "search_text": "Manhattan District Attorney's Office agency organization",
       "categories": {
         "contracts": {
-          "status": "empty",
-          "count": 0,
+          "status": "matched",
+          "count": 1,
           "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
@@ -52823,15 +52778,15 @@
       "href": "/agencies/city-council/",
       "entity_ref": "agency:id:city-council",
       "relation_state": "published",
-      "detail": "3 linked record categories",
+      "detail": "2 linked record categories",
       "institution": "agency",
       "institution_label": "Agency",
       "institution_context": "City agency organization",
       "search_text": "New York City Council agency organization",
       "categories": {
         "contracts": {
-          "status": "matched",
-          "count": 1,
+          "status": "empty",
+          "count": 0,
           "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
@@ -53011,7 +52966,7 @@
       "categories": {
         "contracts": {
           "status": "matched",
-          "count": 9,
+          "count": 11,
           "method": "checkbook_nycha_contracts_adapter_v1"
         },
         "vendors": {
@@ -53093,15 +53048,15 @@
       "href": "/agencies/police-department/",
       "entity_ref": "agency:id:police-department",
       "relation_state": "published",
-      "detail": "5 linked record categories",
+      "detail": "4 linked record categories",
       "institution": "agency",
       "institution_label": "Agency",
       "institution_context": "City agency organization",
       "search_text": "New York City Police Department agency organization",
       "categories": {
         "contracts": {
-          "status": "matched",
-          "count": 2,
+          "status": "empty",
+          "count": 0,
           "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
@@ -54173,15 +54128,15 @@
       "href": "/agencies/teachers-retirement-system/",
       "entity_ref": "agency:id:teachers-retirement-system",
       "relation_state": "published",
-      "detail": "2 linked record categories",
+      "detail": "3 linked record categories",
       "institution": "agency",
       "institution_label": "Agency",
       "institution_context": "City agency organization",
       "search_text": "Teachers' Retirement System of City of New York agency organization",
       "categories": {
         "contracts": {
-          "status": "empty",
-          "count": 0,
+          "status": "matched",
+          "count": 2,
           "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
@@ -61512,12 +61467,6 @@
       "kind": "vendor"
     },
     {
-      "entity_id": "agency:id:economic-development-corporation",
-      "label": "Economic Development Corporation",
-      "href": "/agencies/economic-development-corporation/",
-      "kind": "agency"
-    },
-    {
       "entity_id": "vendor:stem:EDUCATIONAL%20DATA%20SYSTEMS",
       "label": "Educational Data Systems Inc.",
       "href": "/vendors/EDUCATIONAL%20DATA%20SYSTEMS/",
@@ -63949,7 +63898,7 @@
     "official": 215,
     "exact-person-appointment": 558,
     "committee": 96,
-    "agency": 86,
+    "agency": 85,
     "vendor": 267,
     "notice-only-hire": 80
   },
