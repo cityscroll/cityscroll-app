@@ -1,5 +1,8 @@
 import {
   normalizeScope,
+  PLACE_ROLES,
+  PLACE_ROLE_VERB,
+  placeRoleSupportedForDomain,
   routeHashFromScope,
   scopeFromWatch,
   scopeWithEntity,
@@ -417,12 +420,33 @@ function quoteTerm(value) {
   return `'${text.replace(/'/g, "’")}'`;
 }
 
-function placeClause(filter = {}) {
+function placeName(filter = {}) {
   const f = filter && typeof filter === "object" ? filter : {};
-  if (f.communityDistrict) return `in Community District ${f.communityDistrict}`;
-  if (f.councilDistrict) return `in City Council District ${f.councilDistrict}`;
-  const place = f.borough || f.boro || f.neighborhood || "citywide";
-  return place || "citywide";
+  if (f.communityDistrict) return `Community District ${f.communityDistrict}`;
+  if (f.councilDistrict) return `City Council District ${f.councilDistrict}`;
+  return f.borough || f.boro || f.neighborhood || "citywide";
+}
+
+function placeClause(filter = {}) {
+  const name = placeName(filter);
+  return name === "citywide" ? "citywide" : `in ${name}`;
+}
+
+/**
+ * Plain-language place-role clause (PS-03): "hearings HAPPENING IN Council District 33",
+ * "zoning ABOUT Community District 1", "rules AFFECTING City Council District 33". Shares
+ * PLACE_ROLE_VERB with the email/digest label (worker/src/lib/confirm_email.mjs) so a saved
+ * watch reads the same way everywhere it's rendered.
+ */
+function placeRoleClause(role, filter) {
+  const verb = PLACE_ROLE_VERB[role];
+  if (!verb) return null;
+  const name = placeName(filter);
+  if (verb === "about") return name === "citywide" ? "about the whole city" : `about ${name}`;
+  // Only "happening" takes a preposition ("happening in X"); "affecting" takes its object
+  // directly ("affecting X", never "affecting in X").
+  if (verb === "happening") return name === "citywide" ? "happening citywide" : `happening in ${name}`;
+  return name === "citywide" ? `${verb} citywide` : `${verb} ${name}`;
 }
 
 function refinementClauses(f) {
@@ -604,6 +628,21 @@ export function composeWatchRuleSentence(lens, filter = {}, options = {}) {
     return "Notify me when this contract has a new public record.";
   }
   const subject = LENS_SUMMARY_SUBJECT[wanted] || `new ${topic.toLowerCase()}`;
+  // Only render role-specific wording for a domain whose evaluation actually enforces the
+  // predicate (PLACE_ROLE_SUPPORTED_DOMAINS) -- otherwise the sentence would claim a match
+  // reason compileSub() never applied (see worker/src/lib/compile.mjs, meetings-only today).
+  const placeRole = placeRoleSupportedForDomain(wanted) && PLACE_ROLES.includes(f.place_role)
+    ? f.place_role
+    : null;
+  if (placeRole) {
+    // A saved place role is the user's actual request ("hearings happening here" is not
+    // the same ask as "rules affecting here") -- render it in plain language rather than
+    // falling back to the undifferentiated "published in <place>" phrasing below.
+    const bareSubject = subject.replace(/^new /, "");
+    const roleClause = placeRoleClause(placeRole, f);
+    const refine = clauses.length ? ` ${clauses.join(" ")}` : "";
+    return `Notify me when ${bareSubject} ${roleClause}${refine} are published.`;
+  }
   if (!clauses.length) {
     return `Notify me when ${subject} are published ${locationClause}.`;
   }
