@@ -29,6 +29,11 @@ import {
   opportunityMonthHTML,
   procurementOpportunityOccurrences,
 } from "./opportunity_calendar.mjs";
+import {
+  opportunityWindowDisplayLine,
+  procurementOpportunityWindow,
+} from "./procurement_opportunity_window.mjs";
+import { extractSolicitationProcurementMethod } from "./solicitation_procurement_method.mjs";
 
 const CHECKBOOK_SMART_SEARCH = "https://www.checkbooknyc.com/smart_search/citywide";
 const CHECKBOOK_CONTRACT_SEARCH = "https://www.checkbooknyc.com/contract_search";
@@ -276,6 +281,30 @@ export function renderProcurementInstitutionRoles(object = {}, observations = []
   });
 }
 
+// Card 2: the same derivation browse and alerts consume, paired for display
+// with the existing rule-derived response floor. A procurement that never
+// carried a PASSPort RFx or City Record observation at all (an award, a
+// contract-history-only object) gets no section — not even an "unavailable"
+// line — matching the existing rule that non-solicitation objects never pick
+// up solicitation-shaped affordances. A solicitation that did carry one of
+// those observations but couldn't form a complete boundary still surfaces
+// explicitly as "Window unavailable" rather than silently vanishing, per the
+// workstream's not-observed-must-never-read-as-no principle; per rule 3, that
+// state never gets a floor comparison.
+function opportunityWindowSectionBody(object, observations) {
+  const window = procurementOpportunityWindow(object, observations);
+  if (!window.available && window.reason === "no_qualifying_observation") return "";
+  if (!window.available) return `<p class="opportunity-window-line">${esc(window.label)}</p>`;
+  const cityRecordRow = observationRows(object, observations)
+    .find((entry) => entry.source_system === "city_record")?.snapshot || null;
+  const method = cityRecordRow ? extractSolicitationProcurementMethod(cityRecordRow) : null;
+  const line = opportunityWindowDisplayLine(window, method?.response_floor || null);
+  const cite = method?.response_floor?.rule_cite
+    ? `<p class="opportunity-window-rule-cite">Rule floor source: ${esc(method.response_floor.rule_cite)}</p>`
+    : "";
+  return `<p class="opportunity-window-line">${esc(line)}</p>${cite}`;
+}
+
 export function renderProcurementDocument(object = {}, observations = [], {
   currentHref = "",
   sourceStatus = {},
@@ -329,6 +358,13 @@ ${renderCrossSourceCoverageLedger(object?.cross_source_coverage_ledger || buildC
   kind: "procurement",
 }))}
 ${renderProcurementObjectCoverageHtml(object, observations)}
+${renderNodeSection({
+  heading: "Opportunity window",
+  headingId: "procurement-opportunity-window",
+  extraClass: "procurement-opportunity-window",
+  attrs: { id: "procurement-opportunity-window" },
+  body: opportunityWindowSectionBody(object, observations),
+})}
 ${renderNodeSection({
   heading: "Opportunity dates",
   headingId: "procurement-opportunity-month",

@@ -14,6 +14,7 @@ import {
 import { snapshotsForPublicAmount } from "./checkbook_passport_corroboration.mjs";
 import { procurementProcessStates } from "./procurement_process_state_vocabulary.mjs";
 import { agencyRouteAliasTarget, resolveAgencyIdentity } from "./agency_identity.mjs";
+import { procurementOpportunityWindow } from "./procurement_opportunity_window.mjs";
 
 const MTA_PARENT_AGENCY_ID = "metropolitan-transportation-authority";
 const MTA_FAMILY_AGENCY_IDS = new Set([
@@ -198,6 +199,14 @@ function browseRecord(object, observations, stages, evidence, facts, processStat
     source_systems: Object.freeze([...new Set(observations.map((entry) => entry.source_system))]),
     ...(entityRefs.size ? { entity_refs_all: Object.freeze([...entityRefs].sort()) } : {}),
     ...coverageFields(object, observations),
+    // Card 2: the same derived object renderProcurementDocument() renders on
+    // detail, attached here so the browse row carries identical provenance
+    // rather than a second, drifting calculation. Omitted (not a null field)
+    // when unavailable, matching this record's existing optional-field style.
+    ...(() => {
+      const window = procurementOpportunityWindow(object, observations);
+      return window.available ? { opportunity_window: window } : {};
+    })(),
   });
 }
 
