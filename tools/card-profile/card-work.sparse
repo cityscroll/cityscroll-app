@@ -289,6 +289,7 @@
 /site/comparative_receipt.mjs
 /site/comparative_signal_admission.mjs
 /site/composed_object_documents.mjs
+/site/consequence_projection.mjs
 /site/contextual_suggestions.mjs
 /site/contract_action_location.mjs
 /site/contract_award_search_producer.mjs
