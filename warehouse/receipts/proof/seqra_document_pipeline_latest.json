@@ -1,0 +1,75 @@
+{
+  "checks": [
+    {
+      "name": "SEQRA-04 discovery receipt is not stale (A1)",
+      "result": "pass"
+    },
+    {
+      "name": "committed discovery receipt asserts bulk_api_documented: false and an observed (not assumed) search interface (A1)",
+      "result": "pass"
+    },
+    {
+      "name": "no module in this pipeline references a fixed/bulk CEQR Access query endpoint (A1 structural check)",
+      "result": "pass"
+    },
+    {
+      "name": "fetching the fixture draft DEIS resolves to immutable stored bytes via its own fetch receipt (A2)",
+      "result": "pass"
+    },
+    {
+      "name": "fetching the fixture final FEIS resolves to immutable stored bytes via its own fetch receipt (A2)",
+      "result": "pass"
+    },
+    {
+      "name": "draft document classifies as deis/draft and final classifies as feis/final (A5)",
+      "result": "pass"
+    },
+    {
+      "name": "the final document supersedes the draft via an explicit text reference, at high confidence (A5)",
+      "result": "pass"
+    },
+    {
+      "name": "draft and final documents both remain present (coexist, never overwritten) after supersession (A5)",
+      "result": "pass"
+    },
+    {
+      "name": "a deliberately garbled page is identified as low quality and distinguished from the clean page on the same document (A3)",
+      "result": "pass"
+    },
+    {
+      "name": "HTML extraction is available for the notice/search-shell documents CEQR Access itself serves (A3 plumbing)",
+      "result": "pass"
+    },
+    {
+      "name": "a zero-document period states a coverage limitation, never an absence-of-review-activity claim (A4)",
+      "result": "pass"
+    },
+    {
+      "name": "missing older material is stated explicitly when the earliest found document postdates the earliest known milestone (A4)",
+      "result": "pass"
+    },
+    {
+      "name": "the review's manifest lists both fixture documents (Deliver: document manifest per review)",
+      "result": "pass"
+    },
+    {
+      "name": "no document processing record ever carries a scoring/prediction field (negative rule)",
+      "result": "pass"
+    },
+    {
+      "name": "no pipeline source file literally names a lawsuit/legal-risk scoring field (negative rule, static check)",
+      "result": "pass"
+    }
+  ],
+  "discovery_receipt_summary": {
+    "bulk_api_documented": false,
+    "probe_count": 5,
+    "search_interface_status": "observed"
+  },
+  "gate": {
+    "failed_check_count": 0,
+    "result": "pass"
+  },
+  "sample_review_key": "environmental_review:ceqr:24DCP999Q",
+  "schema": "cityscroll.seqra_document_pipeline_receipt.v1"
+}
