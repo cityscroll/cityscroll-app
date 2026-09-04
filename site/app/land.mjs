@@ -1293,7 +1293,6 @@ function landSpineHTML(spine, record, phaseTools, listRow){
       || null;
     const view=phaseTools.buildLandPhaseView(spine, {
       open_data: record?.open_data || null,
-      actions: record?.actions || null,
       portal_url: record?.portal_url || null,
       public_status: publicStatus,
       project_id: record?.project_id || spine.project_id || null
