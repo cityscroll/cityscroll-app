@@ -36,12 +36,69 @@ function clone(value) {
   return JSON.parse(JSON.stringify(value));
 }
 
-function sourceBag(input = {}) {
-  const source = input.source && typeof input.source === "object" ? input.source : input;
-  return {
-    ...source,
-    ...(input.open_data && typeof input.open_data === "object" ? input.open_data : {}),
-  };
+function isRichActionArray(value) {
+  return Array.isArray(value) && value.length > 0
+    && value.every((item) => item && typeof item === "object" && !Array.isArray(item));
+}
+
+function firstRichActions(...candidates) {
+  for (const candidate of candidates) {
+    if (isRichActionArray(candidate)) return candidate;
+  }
+  return null;
+}
+
+function firstDefined(...candidates) {
+  for (const candidate of candidates) {
+    if (candidate != null && candidate !== "") return candidate;
+  }
+  return null;
+}
+
+/**
+ * Merge project/action evidence from every shape callers pass in: a plain
+ * warehouse/worker-shaped row, a live zap-outcomes record (top-level ZAP API
+ * fields plus `.open_data`), or an authority/affected-body input bag
+ * (`.project` / `.source` / `.outcomes`). Open Data's scalar `actions` stays
+ * the canonical action-type list; a richer array-of-objects `actions` (the
+ * ZAP API's exact per-action identifiers) is preserved separately as
+ * `zap_actions` instead of being silently overwritten by that scalar. See
+ * the ldp-29 evidence precedence: exact ZAP API action object, then exact
+ * Open Data action/application pair, then publisher `ulurp_non`, then
+ * identifier prefix as secondary/conflict evidence only.
+ */
+export function mergeLandActionEvidence(input = {}) {
+  if (!input || typeof input !== "object") return {};
+  const openData = input.open_data && typeof input.open_data === "object" ? input.open_data : null;
+  const source = input.source && typeof input.source === "object" ? input.source : null;
+  const project = input.project && typeof input.project === "object" ? input.project : null;
+  const outcomes = input.outcomes && typeof input.outcomes === "object" ? input.outcomes : null;
+  const base = openData || source || project || input;
+
+  const zapActions = firstRichActions(
+    input.zap_actions,
+    input.actions,
+    outcomes?.actions,
+    project?.actions,
+    openData?.zap_actions,
+    source?.actions,
+  );
+
+  const merged = { ...input, ...base };
+  merged.actions = firstDefined(
+    !isRichActionArray(base.actions) ? base.actions : null,
+    !isRichActionArray(input.actions) ? input.actions : null,
+    !isRichActionArray(project?.actions) ? project?.actions : null,
+  );
+  if (zapActions) {
+    merged.zap_actions = zapActions;
+    if (merged.actions == null) {
+      merged.actions = zapActions
+        .map((item) => clean(item?.action || item?.action_code || item?.code))
+        .filter(Boolean);
+    }
+  }
+  return merged;
 }
 
 function splitList(value) {
@@ -150,6 +207,38 @@ function pairByActionCode(tokens, identifiers) {
   });
 }
 
+function normalizeIdentifierForCompare(raw) {
+  return String(raw || "").toUpperCase().replace(/\s+/g, "");
+}
+
+/** ZAP API's own per-action objects already label `action` explicitly — no suffix guessing needed. */
+function normalizeZapActionEntries(rawActions) {
+  if (!Array.isArray(rawActions)) return [];
+  return rawActions.map((item) => {
+    if (!item || typeof item !== "object") return null;
+    const actionType = clean(item.action || item.action_code || item.code)?.toUpperCase();
+    if (!actionType) return null;
+    const identifierRaw = clean(item.ulurp_number || item.application_id);
+    return { action_type: actionType, identifier_raw: identifierRaw, status_raw: clean(item.status) };
+  }).filter(Boolean);
+}
+
+/** Pair each canonical action-type token with the next unconsumed ZAP entry of that type. */
+function pairZapEntriesByActionType(tokens, entries) {
+  const byType = new Map();
+  for (const entry of entries) {
+    if (!byType.has(entry.action_type)) byType.set(entry.action_type, []);
+    byType.get(entry.action_type).push(entry);
+  }
+  const offsets = new Map();
+  return tokens.map((token) => {
+    const pool = byType.get(token) || [];
+    const offset = offsets.get(token) || 0;
+    offsets.set(token, offset + 1);
+    return { token, entry: pool[offset] || null };
+  });
+}
+
 function sourceVintage(row, opts = {}) {
   return clean(
     opts.sourceVintage
@@ -182,6 +271,7 @@ function unresolvedAction({
     source_vintage: vintage,
     profile_version: null,
     unresolved_reason: reason,
+    aliases: [],
     evidence,
     href: null,
   };
@@ -195,6 +285,7 @@ function resolvedAction({
   vintage,
   evidence,
   method,
+  aliases = [],
 }) {
   const profile = profileFor(procedureId);
   return {
@@ -206,6 +297,7 @@ function resolvedAction({
     source_vintage: vintage,
     profile_version: profile ? LAND_PROCEDURE_PROFILE_REGISTRY_VERSION : null,
     unresolved_reason: null,
+    aliases,
     evidence: {
       ...evidence,
       selection_method: method,
@@ -237,42 +329,81 @@ function projectResolution(actions) {
  * a procedure.
  */
 export function resolveLandActionProcedures(input = {}, opts = {}) {
-  const row = sourceBag(input);
+  const row = mergeLandActionEvidence(input);
   const vintage = sourceVintage(row, opts);
   const projectId = clean(row.project_id);
-  const actionTypes = splitList(row.actions);
+  const actionTypes = splitList(row.actions).map((token) => token.toUpperCase());
   const ulurpIdentifiers = splitList(row.ulurp_numbers).map(parseUlurpIdentifier).filter(Boolean);
   const ceqr = parseCeqrIdentifier(row.ceqr_number);
   const easIdentifiers = ceqr ? [ceqr] : [];
-  const projectProcedure = projectProcedureAdmissible(ulurpIdentifiers, row.ulurp_non);
-  const sourceRecordId = projectId ? `zap-projects:${projectId}` : null;
+  const zapEntries = normalizeZapActionEntries(row.zap_actions);
+  const publisherId = publisherProcedureId(row.ulurp_non);
+  // An explicit publisher ELURP declaration is never vetoed by a C/N identifier
+  // prefix conflict — that admissibility check exists for ULURP/Non-ULURP only.
+  const explicitElurp = publisherId === "elurp_197e";
+  const projectProcedure = explicitElurp ? null : projectProcedureAdmissible(ulurpIdentifiers, row.ulurp_non);
+  const openDataRecordId = projectId ? `zap-projects-open-data:${projectId}` : null;
+  const zapRecordId = projectId ? `zap-api-outcomes:${projectId}` : null;
+  const zapVintage = clean(opts.zapVintage || row.generated_at || vintage);
 
-  const landPairs = pairByActionCode(
-    actionTypes.map((token) => token.toUpperCase()),
-    ulurpIdentifiers,
-  );
-  const easPairs = pairByActionCode(
-    actionTypes.map((token) => token.toUpperCase()),
-    easIdentifiers,
-  );
+  const openDataPairs = pairByActionCode(actionTypes, ulurpIdentifiers);
+  const easPairs = pairByActionCode(actionTypes, easIdentifiers);
+  const zapPairs = pairZapEntriesByActionType(actionTypes, zapEntries);
 
   const land_actions = actionTypes.map((actionType, index) => {
-    const normalized = actionType.toUpperCase();
-    const pair = landPairs[index];
+    const normalized = actionType;
+    const openPair = openDataPairs[index];
     const easPair = easPairs[index];
-    const identifier = pair?.identifier || (normalized === "EAS" ? easPair?.identifier : null);
-    const applicationId = identifier?.raw || null;
+    const openIdentifier = openPair?.identifier || null;
+    const easIdentifier = normalized === "EAS" ? easPair?.identifier : null;
+    const zapIdentifierRaw = zapPairs[index]?.entry?.identifier_raw || null;
+
+    // Evidence precedence #1/#2: the exact ZAP API action object wins for
+    // action type and application identifier; the exact Open Data pair is
+    // the fallback when ZAP API has no entry for this action.
+    const applicationId = zapIdentifierRaw || openIdentifier?.raw || easIdentifier?.raw || null;
+    const identifierParsed = zapIdentifierRaw
+      ? parseUlurpIdentifier(zapIdentifierRaw)
+      : (openIdentifier || easIdentifier || null);
+    const identifierSourceField = zapIdentifierRaw
+      ? "zap_api.actions[].ulurp_number"
+      : (openIdentifier?.source_field || easIdentifier?.source_field || null);
+    const identifierSourceSystem = zapIdentifierRaw
+      ? "zap-api-outcomes"
+      : (applicationId ? "zap-projects-open-data" : null);
+    const identifierSourceRecordId = identifierSourceSystem === "zap-api-outcomes" ? zapRecordId : openDataRecordId;
+    const identifierVintage = identifierSourceSystem === "zap-api-outcomes" ? zapVintage : vintage;
+
+    const aliases = [];
+    if (
+      zapIdentifierRaw
+      && openIdentifier?.raw
+      && normalizeIdentifierForCompare(openIdentifier.raw) !== normalizeIdentifierForCompare(zapIdentifierRaw)
+    ) {
+      aliases.push({
+        application_id: openIdentifier.raw,
+        source_system: "zap-projects-open-data",
+        source_field: "ulurp_numbers",
+        source_record_id: openDataRecordId,
+        source_vintage: vintage,
+        reason: "narrower_open_data_identifier_retained_as_alias",
+      });
+    }
+
     const sourceFields = ["actions"];
-    if (identifier?.source_field) sourceFields.push(identifier.source_field);
+    if (identifierSourceField === "zap_api.actions[].ulurp_number") sourceFields.push("zap_actions");
+    else if (identifierSourceField) sourceFields.push(identifierSourceField);
+
     const evidence = {
-      source_system: "zap-projects",
-      source_record_id: sourceRecordId,
+      source_system: identifierSourceSystem || "zap-projects-open-data",
+      source_record_id: identifierSourceRecordId,
+      source_vintage: identifierVintage,
       action_source_field: "actions",
       action_token: actionType,
-      identifier_source_field: identifier?.source_field || null,
+      identifier_source_field: identifierSourceField,
       identifier_raw: applicationId,
-      identifier_type: identifier?.type || null,
-      identifier_kind: identifier?.kind || null,
+      identifier_type: identifierParsed?.type || null,
+      identifier_kind: identifierParsed?.kind || null,
     };
 
     if (!ACTION_CODE_SET.has(normalized)) {
@@ -287,18 +418,21 @@ export function resolveLandActionProcedures(input = {}, opts = {}) {
       });
     }
 
-    if (!identifier) {
+    if (!applicationId) {
       return unresolvedAction({
         actionType,
         applicationId: null,
-        reason: pair?.unmatched_reason || "missing_application_id",
+        reason: openPair?.unmatched_reason || "missing_application_id",
         sourceFields,
         vintage,
         evidence,
       });
     }
 
-    if (identifier.action_code && identifier.action_code !== normalized) {
+    // ZAP API already labels its own action explicitly; the cross-check
+    // against a derived-from-suffix action code only applies to identifiers
+    // sourced from Open Data's separate action/application lists.
+    if (!zapIdentifierRaw && identifierParsed?.action_code && identifierParsed.action_code !== normalized) {
       return unresolvedAction({
         actionType,
         applicationId: null,
@@ -309,19 +443,23 @@ export function resolveLandActionProcedures(input = {}, opts = {}) {
       });
     }
 
-    const fromType = procedureFromTypeLetter(identifier.type);
-    if (fromType) {
-      return resolvedAction({
-        actionType,
-        applicationId,
-        procedureId: fromType,
-        sourceFields,
-        vintage,
-        evidence,
-        method: "ulurp_type_letter_exact",
-      });
-    }
-    if (identifier.type) {
+    const typeLetter = identifierParsed?.type || null;
+    // Negative rule: identifier prefix is secondary/conflict evidence only —
+    // it must never override an explicit publisher ELURP declaration.
+    if (!explicitElurp && typeLetter) {
+      const fromType = procedureFromTypeLetter(typeLetter);
+      if (fromType) {
+        return resolvedAction({
+          actionType,
+          applicationId,
+          procedureId: fromType,
+          sourceFields,
+          vintage,
+          evidence,
+          method: "ulurp_type_letter_exact",
+          aliases,
+        });
+      }
       return unresolvedAction({
         actionType,
         applicationId,
@@ -331,7 +469,8 @@ export function resolveLandActionProcedures(input = {}, opts = {}) {
         evidence,
       });
     }
-    if (!projectProcedure) {
+
+    if (!publisherId) {
       return unresolvedAction({
         actionType,
         applicationId,
@@ -341,15 +480,40 @@ export function resolveLandActionProcedures(input = {}, opts = {}) {
         evidence,
       });
     }
+
+    const procedureId = explicitElurp ? publisherId : projectProcedure;
+    if (!procedureId) {
+      return unresolvedAction({
+        actionType,
+        applicationId,
+        reason: "missing_procedure_evidence",
+        sourceFields,
+        vintage,
+        evidence,
+      });
+    }
+
     sourceFields.push("ulurp_non");
+    const rejected = explicitElurp && typeLetter
+      ? [{
+          fact: "procedure_id",
+          value: procedureFromTypeLetter(typeLetter),
+          source_system: "identifier_prefix",
+          source_field: identifierSourceField,
+          source_record_id: identifierSourceRecordId,
+          source_vintage: identifierVintage,
+          reason: "identifier_prefix_cannot_override_explicit_elurp",
+        }]
+      : [];
     return resolvedAction({
       actionType,
       applicationId,
-      procedureId: projectProcedure,
+      procedureId,
       sourceFields,
       vintage,
-      evidence,
-      method: "publisher_ulurp_non_with_matching_identifier",
+      evidence: { ...evidence, rejected },
+      method: explicitElurp ? "publisher_ulurp_non_explicit_elurp" : "publisher_ulurp_non_with_matching_identifier",
+      aliases,
     });
   });
 

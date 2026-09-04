@@ -14,7 +14,10 @@ import {
   LAND_PROCEDURE_PROFILE_REGISTRY_VERSION,
   matchesLandProcedureCondition,
 } from "./land_procedure_profiles.mjs";
-import { resolveLandActionProcedures } from "./land_action_procedure_resolution.mjs";
+import {
+  mergeLandActionEvidence,
+  resolveLandActionProcedures,
+} from "./land_action_procedure_resolution.mjs";
 import {
   observedRecommendationFromDisposition,
   projectAffectedReviewBodies,
@@ -81,14 +84,7 @@ function asObject(value) {
   return value && typeof value === "object" && !Array.isArray(value) ? value : {};
 }
 
-function sourceBag(input = {}) {
-  const source = input.source && typeof input.source === "object" ? input.source : input;
-  return {
-    ...source,
-    ...(input.open_data && typeof input.open_data === "object" ? input.open_data : {}),
-    ...(input.project && typeof input.project === "object" ? input.project : {}),
-  };
-}
+const sourceBag = mergeLandActionEvidence;
 
 function isoDate(value) {
   const text = clean(value);
@@ -564,6 +560,7 @@ export function materializeLandAuthoritySummaries(inputs = {}) {
       project,
       geography,
       outcomes: {
+        actions: outcomeRecord.actions,
         dispositions: outcomeRecord.dispositions,
         generated_at: outcomeRecord.generated_at || landDefault.generated_at,
       },

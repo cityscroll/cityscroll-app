@@ -24,6 +24,8 @@ import { filterLandSnapshot, mergeLandProjects } from "../site/resident_snapshot
 import { landRowMatchesFamily } from "../site/land_status_facets.mjs";
 import { rowToSodaShape } from "../warehouse/lib/zap_lookup.mjs";
 import { shapeZapLookupRow } from "../worker/src/lib/zap_projects_lookup_kv.mjs";
+import { buildLandAuthoritySummary } from "../site/land_authority_summary.mjs";
+import { buildZapOutcomeRecord } from "../worker/src/zap_outcomes.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const gold = JSON.parse(
@@ -231,4 +233,230 @@ test("detail panel lists exact rows and withholds profile summary on unknown tra
   assert.match(html, /data-profile-version="/);
   assert.match(html, /data-status="unresolved"/);
   assert.doesNotMatch(html, /\/actions\//);
+});
+
+/**
+ * LDP-29 real ELURP regression corpus (E1-E4). Each specimen carries the
+ * exact ZAP API action object (rich, per-action identifier) separately from
+ * the narrower Open Data snapshot, exactly as the live zap-outcomes join
+ * produces them (`{ actions: [...], open_data: {...} }`).
+ */
+const ELURP_CORPUS = [
+  {
+    id: "E1-2024Q0356",
+    projectId: "2024Q0356",
+    openData: {
+      project_id: "2024Q0356",
+      actions: "ZM",
+      ulurp_numbers: null,
+      ulurp_non: "ELURP",
+      public_status: "Noticed",
+      project_status: "Active",
+    },
+    zapActions: [{ id: "zap-2024Q0356-1", action: "ZM", ulurp_number: "260272ZMQ", status: "Active" }],
+    expect: {
+      action_type: "ZM",
+      application_id: "260272ZMQ",
+      procedure_id: "elurp_197e",
+      procedure_resolution: "uniform",
+      status: "resolved",
+      unresolved_reason: null,
+      identifier_type: null,
+    },
+    aliasApplicationId: null,
+    // Open Data alone has no application id for this canary — it cannot
+    // fabricate one, so it must stay honestly unresolved.
+    openDataOnly: { status: "unresolved", unresolved_reason: "missing_application_id", procedure_id: null },
+  },
+  {
+    id: "E2-2024Q0419",
+    projectId: "2024Q0419",
+    openData: {
+      project_id: "2024Q0419",
+      actions: "ZM",
+      ulurp_numbers: "250331ZMQ",
+      ulurp_non: "ELURP",
+    },
+    zapActions: [{ id: "zap-2024Q0419-1", action: "ZM", ulurp_number: "C250331ZMQ", status: "Certified" }],
+    expect: {
+      action_type: "ZM",
+      application_id: "C250331ZMQ",
+      procedure_id: "elurp_197e",
+      procedure_resolution: "uniform",
+      status: "resolved",
+      unresolved_reason: null,
+      identifier_type: "C",
+    },
+    aliasApplicationId: "250331ZMQ",
+    // Open Data's own (unprefixed) identifier is enough to resolve on its own.
+    openDataOnly: { status: "resolved", procedure_id: "elurp_197e", application_id: "250331ZMQ" },
+  },
+  {
+    id: "E3-2025R0257",
+    projectId: "2025R0257",
+    openData: {
+      project_id: "2025R0257",
+      actions: "PC",
+      ulurp_numbers: "260217PCR",
+      ulurp_non: "ELURP",
+    },
+    zapActions: [{ id: "zap-2025R0257-1", action: "PC", ulurp_number: "C260217PCR", status: "Certified" }],
+    expect: {
+      action_type: "PC",
+      application_id: "C260217PCR",
+      procedure_id: "elurp_197e",
+      procedure_resolution: "uniform",
+      status: "resolved",
+      unresolved_reason: null,
+      identifier_type: "C",
+    },
+    aliasApplicationId: "260217PCR",
+    openDataOnly: { status: "resolved", procedure_id: "elurp_197e", application_id: "260217PCR" },
+  },
+  {
+    id: "E4-2026X0362",
+    projectId: "2026X0362",
+    openData: {
+      project_id: "2026X0362",
+      actions: "PP",
+      ulurp_numbers: null,
+      ulurp_non: "ELURP",
+    },
+    zapActions: [{ id: "zap-2026X0362-1", action: "PP", ulurp_number: "HPD260001PPX", status: "Adopted" }],
+    expect: {
+      action_type: "PP",
+      application_id: "HPD260001PPX",
+      procedure_id: "elurp_197e",
+      procedure_resolution: "uniform",
+      status: "resolved",
+      unresolved_reason: null,
+      identifier_type: null,
+    },
+    aliasApplicationId: null,
+    openDataOnly: { status: "unresolved", unresolved_reason: "missing_application_id", procedure_id: null },
+  },
+];
+
+function elurpRecord(specimen) {
+  return { project_id: specimen.projectId, actions: specimen.zapActions, open_data: specimen.openData };
+}
+
+test("A1-A4 resolveLandActionProcedures: exact ZAP API action survives the Open Data overlay", () => {
+  for (const specimen of ELURP_CORPUS) {
+    const resolved = resolveLandActionProcedures(elurpRecord(specimen));
+    assert.equal(resolved.procedure_resolution, specimen.expect.procedure_resolution, specimen.id);
+    assert.equal(resolved.land_actions.length, 1, specimen.id);
+    const action = resolved.land_actions[0];
+    assert.equal(action.action_type, specimen.expect.action_type, specimen.id);
+    assert.equal(action.application_id, specimen.expect.application_id, specimen.id);
+    assert.equal(action.procedure_id, specimen.expect.procedure_id, specimen.id);
+    assert.equal(action.status, specimen.expect.status, specimen.id);
+    assert.equal(action.unresolved_reason, specimen.expect.unresolved_reason, specimen.id);
+
+    // A7: every selected fact carries source field, source record id, source
+    // vintage, and a selection reason.
+    assert.equal(action.evidence.identifier_source_field, "zap_api.actions[].ulurp_number", specimen.id);
+    assert.equal(action.evidence.source_system, "zap-api-outcomes", specimen.id);
+    assert.ok(action.evidence.source_record_id?.includes(specimen.projectId), specimen.id);
+    assert.equal(action.evidence.selection_method, "publisher_ulurp_non_explicit_elurp", specimen.id);
+    assert.equal(action.evidence.identifier_type, specimen.expect.identifier_type, specimen.id);
+
+    if (specimen.aliasApplicationId) {
+      assert.equal(action.aliases.length, 1, specimen.id);
+      assert.equal(action.aliases[0].application_id, specimen.aliasApplicationId, specimen.id);
+      assert.equal(action.aliases[0].source_system, "zap-projects-open-data", specimen.id);
+      assert.ok(action.aliases[0].source_record_id, specimen.id);
+      assert.ok(action.aliases[0].reason, specimen.id);
+    } else {
+      assert.equal(action.aliases.length, 0, specimen.id);
+    }
+  }
+});
+
+test("A4 a C-prefixed identifier never overrides an explicit publisher ELURP procedure", () => {
+  for (const specimen of ELURP_CORPUS) {
+    const resolved = resolveLandActionProcedures(elurpRecord(specimen));
+    const action = resolved.land_actions[0];
+    assert.notEqual(action.procedure_id, "ulurp_197c", specimen.id);
+    if (specimen.expect.identifier_type === "C") {
+      // A7: the rejected identifier-prefix guess still carries a reason.
+      const rejected = action.evidence.rejected;
+      assert.ok(Array.isArray(rejected) && rejected.length === 1, specimen.id);
+      assert.equal(rejected[0].fact, "procedure_id", specimen.id);
+      assert.equal(rejected[0].value, "ulurp_197c", specimen.id);
+      assert.equal(rejected[0].reason, "identifier_prefix_cannot_override_explicit_elurp", specimen.id);
+    }
+  }
+});
+
+test("A6 existing mixed/unknown multi-action canaries stay mixed/unknown with no ZAP action evidence", () => {
+  const mixed = resolveLandActionProcedures(warehouseRow("2024M0244"));
+  assert.equal(mixed.procedure_resolution, "mixed");
+  const unknown = resolveLandActionProcedures(warehouseRow("2026K0123"));
+  assert.equal(unknown.procedure_resolution, "unknown");
+});
+
+test("A5 warehouse row shaping and worker lookup shaping stay Open-Data-honest (no ZAP evidence to draw on)", () => {
+  for (const specimen of ELURP_CORPUS) {
+    for (const shape of [rowToSodaShape, shapeZapLookupRow]) {
+      const shaped = shape({ ...specimen.openData });
+      const action = shaped.land_actions[0];
+      assert.equal(action.status, specimen.openDataOnly.status, `${specimen.id} ${shape.name}`);
+      assert.equal(action.procedure_id, specimen.openDataOnly.procedure_id ?? null, `${specimen.id} ${shape.name}`);
+      if (specimen.openDataOnly.application_id) {
+        assert.equal(action.application_id, specimen.openDataOnly.application_id, `${specimen.id} ${shape.name}`);
+      }
+    }
+  }
+});
+
+test("A5 authority materialization resolves the same procedure when fed the joined action evidence", () => {
+  for (const specimen of ELURP_CORPUS) {
+    const summary = buildLandAuthoritySummary({
+      project: specimen.openData,
+      outcomes: { actions: specimen.zapActions },
+    });
+    assert.equal(summary.procedure_id, specimen.expect.procedure_id, specimen.id);
+    assert.equal(summary.procedure_resolution, specimen.expect.procedure_resolution, specimen.id);
+  }
+});
+
+test("A5 buildZapOutcomeRecord stamps the same resolution the API response and browser both read", async () => {
+  const originalFetch = globalThis.fetch;
+  const specimen = ELURP_CORPUS[0]; // 2024Q0356 — the primary canary.
+  globalThis.fetch = async (input) => {
+    const url = String(input);
+    if (url.includes("zap-api-production.herokuapp.com/projects/2024Q0356")) {
+      return Response.json({
+        data: {
+          type: "projects",
+          id: specimen.projectId,
+          attributes: { "dcp-name": specimen.projectId, "dcp-publicstatus": "Noticed" },
+        },
+        included: specimen.zapActions.map((a) => ({
+          type: "actions",
+          id: a.id,
+          attributes: {
+            "dcp-action-value": a.action,
+            "dcp-ulurpnumber": a.ulurp_number,
+            statuscode: a.status,
+          },
+        })),
+      });
+    }
+    if (url.includes("/dg92-zbpx.json")) return Response.json([]);
+    throw new Error(`unexpected fetch ${url}`);
+  };
+  try {
+    const record = await buildZapOutcomeRecord(specimen.projectId, { fetchBbl: false });
+    assert.equal(record.open_data?.lookup_path, "warehouse");
+    assert.equal(record.procedure_resolution, specimen.expect.procedure_resolution);
+    const action = record.land_actions[0];
+    assert.equal(action.action_type, specimen.expect.action_type);
+    assert.equal(action.application_id, specimen.expect.application_id);
+    assert.equal(action.procedure_id, specimen.expect.procedure_id);
+    assert.equal(action.status, specimen.expect.status);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
 });
