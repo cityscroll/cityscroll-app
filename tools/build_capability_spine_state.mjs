@@ -21,6 +21,7 @@ import {
   deriveMaximumProvableClass,
   evidenceClassRank,
 } from "../capabilities/evidence_classification.mjs";
+import { assertOsDeploymentReceipt } from "../capabilities/os_deployment_receipt.mjs";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const DEFAULT_OUT = resolve(ROOT, "artifacts/capability-spine/state.json");
@@ -38,21 +39,40 @@ function readSource(relativePath) {
   return readFileSync(path, "utf8");
 }
 
-function proves(receiptPath, sourcePath, requiredClass) {
+/**
+ * `contract` is an optional card-specific assertion applied on top of the
+ * evidence-class floor. Clearing the floor says a receipt reaches a class;
+ * a contract says the receipt carries the particular facts that card
+ * requires, so a state stays unproven when either one fails.
+ */
+function proves(receiptPath, sourcePath, requiredClass, { contract } = {}) {
   const receipt = readReceipt(receiptPath);
   if (!receipt) {
     return { satisfied: false, state: "not_yet_proven", reason: `no receipt at ${receiptPath}`, receipt: receiptPath };
   }
   const sourceText = readSource(sourcePath);
   const { maxClass, errors } = deriveMaximumProvableClass(receipt, { sourceText });
-  const satisfied = maxClass !== "unknown" && evidenceClassRank(maxClass) >= evidenceClassRank(requiredClass);
+  const clearsFloor = maxClass !== "unknown" && evidenceClassRank(maxClass) >= evidenceClassRank(requiredClass);
+
+  let contractFailure = null;
+  if (clearsFloor && contract) {
+    try {
+      contract(receipt, { sourceText });
+    } catch (error) {
+      contractFailure = error.message;
+    }
+  }
+
+  const satisfied = clearsFloor && !contractFailure;
   return {
     satisfied,
     state: satisfied ? "proven" : "not_yet_proven",
     max_provable_class: maxClass,
     required_class: requiredClass,
     receipt: receiptPath,
-    reason: satisfied ? null : (errors[0] || `receipt only proves ${maxClass}, not ${requiredClass}`),
+    reason: satisfied
+      ? null
+      : (contractFailure || errors[0] || `receipt only proves ${maxClass}, not ${requiredClass}`),
   };
 }
 
@@ -75,10 +95,15 @@ export function buildCapabilitySpineState() {
     "external_live_endpoint",
   );
 
+  // CS-12 adds a deployment contract on top of the class floor: the six Worker
+  // roles with provider-issued versions, one publicly routed Worker, observed
+  // access control, a fail-closed spend ceiling, a rehearsed rollback, and a
+  // receipt carrying neither administrator identifiers nor a connection claim.
   const osDeployed = proves(
     "artifacts/capability-spine/cs-12-cloudflare-os-deployment.json",
     "tools/verify_cloudflare_os_deployment.mjs",
     "cloudflare_os_deployed",
+    { contract: assertOsDeploymentReceipt },
   );
 
   const gatekeeperConnected = proves(
