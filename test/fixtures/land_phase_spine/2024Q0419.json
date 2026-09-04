@@ -1,0 +1,77 @@
+{
+  "project_id": "2024Q0419",
+  "project_name": "189-10 Northern Boulevard Rezoning",
+  "portal_url": "https://zap.planning.nyc.gov/projects/2024Q0419",
+  "public_status": "Completed",
+  "open_data": {
+    "project_id": "2024Q0419",
+    "actions": "ZM",
+    "ulurp_numbers": "250331ZMQ",
+    "ulurp_non": "ELURP",
+    "public_status": "Completed",
+    "project_status": "Complete",
+    "current_milestone": "City Planning Commission Vote",
+    "current_milestone_date": "2026-06-17"
+  },
+  "actions": [
+    { "id": "zap-2024Q0419-1", "action": "ZM", "ulurp_number": "C250331ZMQ", "status": "Certified" }
+  ],
+  "spine": {
+    "schema_version": 1,
+    "project_id": "2024Q0419",
+    "events": [
+      {
+        "id": "zap-milestone:2024Q0419-filed",
+        "kind": "zap_milestone",
+        "title": "Land Use Application Filed",
+        "detail": "Completed",
+        "status": "Completed",
+        "outcome": null,
+        "time": { "value": "2025-12-15", "precision": "day", "basis": "actual_end", "certainty": "actual" },
+        "source": { "id": "zap-project-api", "label": "Zoning Application Portal", "url": "https://zap.planning.nyc.gov/projects/2024Q0419" }
+      },
+      {
+        "id": "zap-milestone:2024Q0419-cert",
+        "kind": "zap_milestone",
+        "title": "Application Reviewed at City Planning Commission Review Session",
+        "detail": "Certified",
+        "status": "Completed",
+        "outcome": "Certified",
+        "time": { "value": "2026-03-16", "precision": "day", "basis": "review_meeting", "certainty": "actual" },
+        "source": { "id": "zap-project-api", "label": "Zoning Application Portal", "url": "https://zap.planning.nyc.gov/projects/2024Q0419" }
+      },
+      {
+        "id": "zap-milestone:2024Q0419-cb",
+        "kind": "zap_milestone",
+        "title": "Community Board Review",
+        "detail": "Completed",
+        "status": "Completed",
+        "outcome": null,
+        "time": { "value": "2026-03-25", "precision": "day", "basis": "actual_end", "certainty": "actual" },
+        "source": { "id": "zap-project-api", "label": "Zoning Application Portal", "url": "https://zap.planning.nyc.gov/projects/2024Q0419" }
+      },
+      {
+        "id": "zap-milestone:2024Q0419-bp",
+        "kind": "zap_milestone",
+        "title": "Borough President Review",
+        "detail": "Completed",
+        "status": "Completed",
+        "outcome": null,
+        "time": { "value": "2026-03-25", "precision": "day", "basis": "actual_end", "certainty": "actual" },
+        "source": { "id": "zap-project-api", "label": "Zoning Application Portal", "url": "https://zap.planning.nyc.gov/projects/2024Q0419" }
+      },
+      {
+        "id": "zap-milestone:2024Q0419-cpc",
+        "kind": "zap_milestone",
+        "title": "City Planning Commission Vote",
+        "detail": "Approval",
+        "status": "Completed",
+        "outcome": "Approval",
+        "time": { "value": "2026-06-17", "precision": "day", "basis": "actual_end", "certainty": "actual" },
+        "source": { "id": "zap-project-api", "label": "Zoning Application Portal", "url": "https://zap.planning.nyc.gov/projects/2024Q0419" }
+      }
+    ],
+    "gaps": [],
+    "lag": { "open_data_vs_portal": { "status": "unknown", "days": null } }
+  }
+}

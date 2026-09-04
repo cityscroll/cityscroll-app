@@ -13,7 +13,10 @@ import {
   resolveLandActionProcedures,
 } from "./land_action_procedure_resolution.mjs";
 import { projectAffectedReviewBodies } from "./land_affected_review_body.mjs";
-import { buildLandProcedureProfileView } from "./land_procedure_profiles.mjs";
+import {
+  LAND_PROCEDURE_PROFILE_REGISTRY,
+  buildLandProcedureProfileView,
+} from "./land_procedure_profiles.mjs";
 
 export const LAND_PHASE_SPINE_SCHEMA_VERSION = 1;
 
@@ -439,6 +442,72 @@ export function isProjectPortalUrl(url, portalUrl) {
   return a === b;
 }
 
+/** The always-eligible-as-future statutory public-review phase ids. */
+const STATUTORY_FUTURE_PHASE_IDS = new Set([
+  "community_board",
+  "borough_president",
+  "cpc",
+  "city_council",
+  "mayoral_appeals",
+]);
+
+/**
+ * Registry lookup for a resolved procedure profile's own stage vocabulary
+ * (the raw registry entry, not the current-stage-anchored view). Returns
+ * null when there is no registry entry for the resolved profile id.
+ */
+function landProcedureRegistryProfile(profileId) {
+  if (!profileId) return null;
+  return LAND_PROCEDURE_PROFILE_REGISTRY.profiles.find((p) => p.procedure_id === profileId) || null;
+}
+
+/**
+ * Which future (not-yet-reached, no observed events) statutory phase ids are
+ * legitimate for the resolved procedure. Returns null when the procedure did
+ * not resolve to the ELURP family — callers must treat null as "no
+ * restriction", i.e. the fixed ordinary-ULURP rail keeps applying as the
+ * compatibility fallback for verified ordinary ULURP and honest unresolved
+ * legacy records. A phase with actual observed events is never gated by
+ * this — observed-event topology always wins over the normative vocabulary.
+ */
+function landElurpAllowedFutureIds(procedureProfile) {
+  const profileId = procedureProfile?.profile_id;
+  const broadId = procedureProfile?.broad_profile_id || profileId;
+  if (broadId !== "elurp_197e") return null;
+  const registryProfile = landProcedureRegistryProfile(profileId);
+  if (!registryProfile) return new Set(["community_board", "borough_president", "cpc"]);
+  return new Set(
+    registryProfile.stages.map((stage) => stage.spine_phase_id).filter((id) => STATUTORY_FUTURE_PHASE_IDS.has(id)),
+  );
+}
+
+/**
+ * Map phase id -> sibling phase ids that the resolved procedure reviews
+ * concurrently (a shared parallel_group transition), for renderer copy that
+ * must say "at the same time as", never imply a first-then-second order.
+ * Returns null when the resolved profile has no parallel review group.
+ */
+function landProcedureConcurrentPhaseMap(procedureProfile) {
+  const registryProfile = landProcedureRegistryProfile(procedureProfile?.profile_id);
+  const transitions = registryProfile?.transitions;
+  if (!Array.isArray(transitions) || !transitions.length) return null;
+  const map = {};
+  for (const transition of transitions) {
+    if (transition.kind !== "parallel_group") continue;
+    const memberPhaseIds = [
+      ...new Set(
+        (transition.stage_ids || [])
+          .map((stageId) => registryProfile.stages.find((s) => s.stage_id === stageId)?.spine_phase_id)
+          .filter(Boolean),
+      ),
+    ];
+    for (const phaseId of memberPhaseIds) {
+      map[phaseId] = memberPhaseIds.filter((id) => id !== phaseId);
+    }
+  }
+  return Object.keys(map).length ? map : null;
+}
+
 /**
  * Build phase-grouped land timeline view model.
  *
@@ -573,6 +642,40 @@ export function buildLandPhaseView(spine, opts = {}) {
     return "future";
   }
 
+  // Normative procedure interpretation is an additive sibling of the observed
+  // spine. The profile consumer receives source facts and the derived phase;
+  // it never receives, mutates, or manufactures an event.
+  // The exact ZAP API per-action array (when the caller has it, e.g. from a
+  // live zap-outcomes record) must reach the resolver alongside Open Data —
+  // never flattened into a plain `{...openData}` spread that would lose it.
+  // `opts.procedure_facts` stays the highest-priority override, as before.
+  // Resolved ahead of the phase rail below: phase selection is driven by the
+  // resolved procedure plus observed-event topology, not a fixed template.
+  const procedureFacts = {
+    ...mergeLandActionEvidence({
+      open_data: openData && typeof openData === "object" ? openData : null,
+      actions: opts.actions || spine?.actions || null,
+    }),
+    ...(opts.procedure_facts && typeof opts.procedure_facts === "object" ? opts.procedure_facts : {}),
+  };
+  const affectedReviewBodies = procedureFacts.affected_review_body_for?.schema
+    ? procedureFacts.affected_review_body_for
+    : projectAffectedReviewBodies(procedureFacts, { geography: opts.geography });
+  if (!Object.hasOwn(procedureFacts, "affected_review_bodies") && affectedReviewBodies?.facts) {
+    procedureFacts.affected_review_bodies = affectedReviewBodies.facts;
+  }
+  const procedureProfile = buildLandProcedureProfileView({
+    source: procedureFacts,
+    current_phase_id: currentPhaseId,
+    current_stage_id: opts.current_stage_id || null,
+  });
+  const actionProcedure = resolveLandActionProcedures(procedureFacts);
+  // Compatibility fallback: null for anything other than a resolved ELURP
+  // family profile — verified ordinary ULURP and honest unresolved legacy
+  // records keep the full fixed rail below, unchanged.
+  const elurpAllowedFutureIds = landElurpAllowedFutureIds(procedureProfile);
+  const concurrentPhaseMap = landProcedureConcurrentPhaseMap(procedureProfile);
+
   const phases = LAND_ULURP_PHASES.map((id) => {
     const state = phaseState(id);
     const all = byPhase[id] || [];
@@ -615,6 +718,10 @@ export function buildLandPhaseView(spine, opts = {}) {
       // terminal completion row (stranded In Progress / missing disposition).
       outcome_status: missingOutcomes.has(id) ? "no_recorded_outcome" : null,
       overlap: overlapExplained,
+      // Sibling phase ids the resolved procedure reviews at the same time
+      // (e.g. Community Board / Borough President under § 197-e) — never a
+      // first-then-second order. Null when the resolved profile has none.
+      concurrent_with: concurrentPhaseMap?.[id] || null,
       event_count: display.length,
       total_count: all.length,
       first: dates[0] || null,
@@ -647,47 +754,23 @@ export function buildLandPhaseView(spine, opts = {}) {
     if (p.state === "current" || p.state === "passed" || p.state === "overlap") return true;
     if ((p.total_count || p.event_count || 0) > 0) return true;
     const idx = LAND_ULURP_PHASES.indexOf(p.id);
-    // Future statutory public-review stages after current remain visible.
-    if (
-      idx > curIdx
-      && (p.id === "community_board"
-        || p.id === "borough_president"
-        || p.id === "cpc"
-        || p.id === "city_council"
-        || p.id === "mayoral_appeals")
-    ) {
-      return true;
-    }
+    // Future statutory public-review stages after current remain visible —
+    // but only when they belong to the resolved procedure's own rail. A
+    // resolved ELURP-family record never speculates an ordinary-ULURP-only
+    // stage (Council, Mayor) it has no observed events for; every other
+    // procedure keeps the full fixed rail (unchanged) as the compatibility
+    // fallback for verified ordinary ULURP and honest unresolved legacy
+    // records. Pre-certification / certification are documentary steps every
+    // certified-application procedure shares (the registry models them as
+    // one coarse stage) — they preview alongside the resolved rail, never
+    // instead of it.
+    const futureCandidateIds = elurpAllowedFutureIds
+      ? new Set([...elurpAllowedFutureIds, "pre_certification", "certification"])
+      : STATUTORY_FUTURE_PHASE_IDS;
+    if (idx > curIdx && futureCandidateIds.has(p.id)) return true;
     // Empty future pre-review stages behind or with no justification → omit.
     return false;
   });
-
-  // Normative procedure interpretation is an additive sibling of the observed
-  // spine. The profile consumer receives source facts and the derived phase;
-  // it never receives, mutates, or manufactures an event.
-  // The exact ZAP API per-action array (when the caller has it, e.g. from a
-  // live zap-outcomes record) must reach the resolver alongside Open Data —
-  // never flattened into a plain `{...openData}` spread that would lose it.
-  // `opts.procedure_facts` stays the highest-priority override, as before.
-  const procedureFacts = {
-    ...mergeLandActionEvidence({
-      open_data: openData && typeof openData === "object" ? openData : null,
-      actions: opts.actions || spine?.actions || null,
-    }),
-    ...(opts.procedure_facts && typeof opts.procedure_facts === "object" ? opts.procedure_facts : {}),
-  };
-  const affectedReviewBodies = procedureFacts.affected_review_body_for?.schema
-    ? procedureFacts.affected_review_body_for
-    : projectAffectedReviewBodies(procedureFacts, { geography: opts.geography });
-  if (!Object.hasOwn(procedureFacts, "affected_review_bodies") && affectedReviewBodies?.facts) {
-    procedureFacts.affected_review_bodies = affectedReviewBodies.facts;
-  }
-  const procedureProfile = buildLandProcedureProfileView({
-    source: procedureFacts,
-    current_phase_id: currentPhaseId,
-    current_stage_id: opts.current_stage_id || null,
-  });
-  const actionProcedure = resolveLandActionProcedures(procedureFacts);
 
   return {
     schema_version: LAND_PHASE_SPINE_SCHEMA_VERSION,
@@ -707,6 +790,9 @@ export function buildLandPhaseView(spine, opts = {}) {
         : false,
       // Machine-readable derivation reason (stranded-stage advance, in_progress, …).
       derivation: derived.reason || null,
+      // Renderer i18n key for the "Noticed" status line — the resolved ELURP
+      // family gets its own copy instead of the ordinary-ULURP phrase.
+      noticed_status_key: elurpAllowedFutureIds ? "land_spine_status_noticed_elurp_html" : "land_spine_status_noticed_html",
     },
     next: nextPhase
       ? {

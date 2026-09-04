@@ -1,0 +1,67 @@
+{
+  "project_id": "2026X0362",
+  "project_name": "351 Powers Avenue (HPD ELURP)",
+  "portal_url": "https://zap.planning.nyc.gov/projects/2026X0362",
+  "public_status": "Completed",
+  "open_data": {
+    "project_id": "2026X0362",
+    "actions": "PP",
+    "ulurp_numbers": null,
+    "ulurp_non": "ELURP",
+    "public_status": "Completed",
+    "project_status": "Complete",
+    "current_milestone": "City Council Review",
+    "current_milestone_date": "2026-05-20"
+  },
+  "actions": [
+    { "id": "zap-2026X0362-1", "action": "PP", "ulurp_number": "HPD260001PPX", "status": "Adopted" }
+  ],
+  "spine": {
+    "schema_version": 1,
+    "project_id": "2026X0362",
+    "events": [
+      {
+        "id": "zap-milestone:2026X0362-filed",
+        "kind": "zap_milestone",
+        "title": "Land Use Application Filed",
+        "detail": "Completed",
+        "status": "Completed",
+        "outcome": null,
+        "time": { "value": "2025-11-01", "precision": "day", "basis": "actual_end", "certainty": "actual" },
+        "source": { "id": "zap-project-api", "label": "Zoning Application Portal", "url": "https://zap.planning.nyc.gov/projects/2026X0362" }
+      },
+      {
+        "id": "zap-milestone:2026X0362-cb",
+        "kind": "zap_milestone",
+        "title": "Community Board Review",
+        "detail": "Completed",
+        "status": "Completed",
+        "outcome": null,
+        "time": { "value": "2026-02-21", "precision": "day", "basis": "actual_end", "certainty": "actual" },
+        "source": { "id": "zap-project-api", "label": "Zoning Application Portal", "url": "https://zap.planning.nyc.gov/projects/2026X0362" }
+      },
+      {
+        "id": "zap-milestone:2026X0362-bp",
+        "kind": "zap_milestone",
+        "title": "Borough President Review",
+        "detail": "Completed",
+        "status": "Completed",
+        "outcome": null,
+        "time": { "value": "2026-02-21", "precision": "day", "basis": "actual_end", "certainty": "actual" },
+        "source": { "id": "zap-project-api", "label": "Zoning Application Portal", "url": "https://zap.planning.nyc.gov/projects/2026X0362" }
+      },
+      {
+        "id": "zap-milestone:2026X0362-council",
+        "kind": "zap_milestone",
+        "title": "City Council Review",
+        "detail": "Adopted",
+        "status": "Completed",
+        "outcome": "Adopted",
+        "time": { "value": "2026-05-20", "precision": "day", "basis": "actual_end", "certainty": "actual" },
+        "source": { "id": "zap-project-api", "label": "Zoning Application Portal", "url": "https://zap.planning.nyc.gov/projects/2026X0362" }
+      }
+    ],
+    "gaps": [],
+    "lag": { "open_data_vs_portal": { "status": "unknown", "days": null } }
+  }
+}

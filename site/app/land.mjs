@@ -1150,9 +1150,8 @@ function landPipelinePositionHTML(view, record){
   const stageName=landPhaseLabel({label_key:pos.step_label_key, id:pos.step_phase_id});
   const windowDays=pos.window_days!=null?String(pos.window_days):"—";
   let clockBit="";
-  // Days-left only when the pipeline due_date is the same statutory deadline shown
-  // on the phase panel. Insufficient timing → "in progress" / window-only, never an
-  // impossible "50-day clock, 101 days left" from a cumulative outer bound.
+  // Days-left only when due_date matches the panel's own deadline — never a
+  // cumulative outer-bound guess.
   if(pos.due_date && pos.days_left!=null&&Number.isFinite(pos.days_left)){
     if(pos.days_left>0){
       clockBit=t("land_pipeline_clock_days_left",{n:String(pos.window_days||""),left:String(pos.days_left)});
@@ -1184,12 +1183,11 @@ function landPhaseSpineHTML(view, tools, record){
   const phaseName=landPhaseLabel({label_key:cur.label_key});
   const pipelineHTML=landPipelinePositionHTML(view, record);
   let statusExtra="";
-  // When the pipeline sentence already joins overall public review + current step,
-  // skip the competing "Public status: In Public Review" line.
+  // Skip "Public status: In Public Review" when the pipeline sentence already covers it.
   if(pipelineHTML){
     statusExtra="";
   }else if(cur.noticed && !cur.in_public_review){
-    statusExtra=t("land_spine_status_noticed_html");
+    statusExtra=t(cur.noticed_status_key);
   }else if(cur.public_status){
     statusExtra=t("land_spine_status_public_html",{status:escUiHtml(cur.public_status)});
   }
@@ -1229,6 +1227,8 @@ function landPhaseSpineHTML(view, tools, record){
           : t("land_spine_planned_window_one",{date:fdate(p.first)});
       }else if(statutoryRow?.due_date && statutoryRow.deadline_certainty==="statutory"){
         summary=t("land_spine_statutory_due_summary",{date:fdate(statutoryRow.due_date)});
+      }else if(p.concurrent_with?.length){
+        summary=t("land_spine_phase_concurrent_with_html",{phase:escUiHtml(landPhaseLabel(p.concurrent_with[0]))});
       }else summary=t("land_spine_phase_empty");
     }else{
       const notes=(p.aggregates||[]).filter(a=>a.count>=2).map(a=>`${a.title} ×${a.count}`).join(" · ");
