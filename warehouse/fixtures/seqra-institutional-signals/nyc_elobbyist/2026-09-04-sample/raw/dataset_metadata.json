@@ -1,0 +1,2045 @@
+{
+  "id" : "fmf3-knd8",
+  "name" : "City Clerk eLobbyist Data",
+  "assetType" : "dataset",
+  "attribution" : "Office of the City Clerk (OCC)",
+  "averageRating" : 0,
+  "category" : "City Government",
+  "createdAt" : 1556221491,
+  "description" : "Data set includes the filings for Client Registrations and Periodic Reports filed by Lobbyist.",
+  "diciBackend" : false,
+  "displayType" : "table",
+  "downloadCount" : 9078,
+  "hideFromCatalog" : false,
+  "hideFromDataJson" : false,
+  "locked" : false,
+  "newBackend" : true,
+  "numberOfComments" : 0,
+  "oid" : 37362287,
+  "provenance" : "official",
+  "publicationAppendEnabled" : true,
+  "publicationDate" : 1624568065,
+  "publicationGroup" : 16151717,
+  "publicationStage" : "published",
+  "rowClass" : "",
+  "rowsUpdatedAt" : 1788354132,
+  "rowsUpdatedBy" : "d5dp-fses",
+  "tableId" : 18366997,
+  "totalTimesRated" : 0,
+  "viewCount" : 6979,
+  "viewLastModified" : 1788353829,
+  "viewType" : "tabular",
+  "approvals" : [ {
+    "reviewedAt" : 1556313335,
+    "reviewedAutomatically" : true,
+    "state" : "approved",
+    "submissionId" : 3759886,
+    "submissionObject" : "public_audience_request",
+    "submissionOutcome" : "change_audience",
+    "submittedAt" : 1556313335,
+    "targetAudience" : "public",
+    "workflowId" : 2285,
+    "submissionDetails" : {
+      "permissionType" : "READ"
+    },
+    "submissionOutcomeApplication" : {
+      "failureCount" : 0,
+      "status" : "success"
+    },
+    "submitter" : {
+      "id" : "5fuc-pqz2",
+      "displayName" : "NYC OpenData"
+    }
+  } ],
+  "clientContext" : {
+    "clientContextVariables" : [ ],
+    "inheritedVariables" : { }
+  },
+  "columns" : [ {
+    "id" : 543346548,
+    "name" : "CLIENT_ID",
+    "dataTypeName" : "text",
+    "description" : "Unique ID assigned by eLobbyist application",
+    "fieldName" : "client_id",
+    "position" : 1,
+    "renderTypeName" : "text",
+    "tableColumnId" : 138614738,
+    "cachedContents" : {
+      "non_null" : "79726",
+      "largest" : "99987",
+      "null" : "0",
+      "top" : [ {
+        "item" : "58562",
+        "count" : "241"
+      }, {
+        "item" : "28253",
+        "count" : "208"
+      }, {
+        "item" : "96384",
+        "count" : "188"
+      }, {
+        "item" : "5007",
+        "count" : "175"
+      }, {
+        "item" : "73843",
+        "count" : "174"
+      }, {
+        "item" : "95345",
+        "count" : "165"
+      }, {
+        "item" : "63741",
+        "count" : "164"
+      }, {
+        "item" : "88089",
+        "count" : "147"
+      }, {
+        "item" : "823",
+        "count" : "147"
+      }, {
+        "item" : "94264",
+        "count" : "143"
+      }, {
+        "item" : "59980",
+        "count" : "137"
+      }, {
+        "item" : "5965",
+        "count" : "129"
+      }, {
+        "item" : "13565",
+        "count" : "124"
+      }, {
+        "item" : "94270",
+        "count" : "124"
+      }, {
+        "item" : "29031",
+        "count" : "123"
+      }, {
+        "item" : "7045",
+        "count" : "121"
+      }, {
+        "item" : "28653",
+        "count" : "118"
+      }, {
+        "item" : "5787",
+        "count" : "116"
+      }, {
+        "item" : "52080",
+        "count" : "116"
+      }, {
+        "item" : "2944",
+        "count" : "114"
+      } ],
+      "smallest" : "100007",
+      "count" : "79726",
+      "cardinality" : "79726"
+    },
+    "format" : {
+      "noCommas" : "true"
+    }
+  }, {
+    "id" : 543346547,
+    "name" : "LOBBYIST_ID",
+    "dataTypeName" : "text",
+    "description" : "Unique ID assigned by eLobbyist application",
+    "fieldName" : "lobbyist_id",
+    "position" : 2,
+    "renderTypeName" : "text",
+    "tableColumnId" : 138614737,
+    "cachedContents" : {
+      "non_null" : "79726",
+      "largest" : "99869",
+      "null" : "0",
+      "top" : [ {
+        "item" : "1282",
+        "count" : "6412"
+      }, {
+        "item" : "9785",
+        "count" : "4638"
+      }, {
+        "item" : "947",
+        "count" : "3407"
+      }, {
+        "item" : "347",
+        "count" : "3209"
+      }, {
+        "item" : "101",
+        "count" : "2684"
+      }, {
+        "item" : "969",
+        "count" : "2611"
+      }, {
+        "item" : "89257",
+        "count" : "2225"
+      }, {
+        "item" : "31921",
+        "count" : "1966"
+      }, {
+        "item" : "621",
+        "count" : "1938"
+      }, {
+        "item" : "141",
+        "count" : "1801"
+      }, {
+        "item" : "1342",
+        "count" : "1433"
+      }, {
+        "item" : "29071",
+        "count" : "1337"
+      }, {
+        "item" : "91128",
+        "count" : "1221"
+      }, {
+        "item" : "57262",
+        "count" : "1089"
+      }, {
+        "item" : "341",
+        "count" : "1088"
+      }, {
+        "item" : "281",
+        "count" : "1039"
+      }, {
+        "item" : "96947",
+        "count" : "851"
+      }, {
+        "item" : "2664",
+        "count" : "813"
+      }, {
+        "item" : "372",
+        "count" : "780"
+      }, {
+        "item" : "28134",
+        "count" : "715"
+      } ],
+      "smallest" : "100027",
+      "count" : "79726",
+      "cardinality" : "79726"
+    },
+    "format" : {
+      "noCommas" : "true"
+    }
+  }, {
+    "id" : 543346520,
+    "name" : "LOBBYIST_NAME",
+    "dataTypeName" : "text",
+    "description" : "Name of Lobbying Entity",
+    "fieldName" : "lobbyist_name",
+    "position" : 3,
+    "renderTypeName" : "text",
+    "tableColumnId" : 79975377,
+    "cachedContents" : {
+      "non_null" : "79726",
+      "largest" : "Zeta Charter Schools, Inc.",
+      "null" : "0",
+      "top" : [ {
+        "item" : "Kasirer LLC",
+        "count" : "6412"
+      }, {
+        "item" : "Bolton-St. Johns, LLC",
+        "count" : "4638"
+      }, {
+        "item" : "Pitta Bishop & Del Giorno LLC",
+        "count" : "3407"
+      }, {
+        "item" : "Constantinople & Vallone Consulting LLC",
+        "count" : "3209"
+      }, {
+        "item" : "James F. Capalino & Associates, Inc.",
+        "count" : "2684"
+      }, {
+        "item" : "Greenberg Traurig, LLP",
+        "count" : "2611"
+      }, {
+        "item" : "CMW Strategies LLC",
+        "count" : "2225"
+      }, {
+        "item" : "Cozen O'Connor Public Strategies, LLC",
+        "count" : "1966"
+      }, {
+        "item" : "The Parkside Group, LLC",
+        "count" : "1938"
+      }, {
+        "item" : "Davidoff Hutcher & Citron LLP",
+        "count" : "1801"
+      }, {
+        "item" : "Mirram Group LLC",
+        "count" : "1433"
+      }, {
+        "item" : "The Wright Group NY, Inc",
+        "count" : "1337"
+      }, {
+        "item" : "Hollis Public Affairs, Inc.",
+        "count" : "1221"
+      }, {
+        "item" : "Akerman LLP",
+        "count" : "1089"
+      }, {
+        "item" : "Fried, Frank, Harris, Shriver & Jacobson LLP",
+        "count" : "1088"
+      }, {
+        "item" : "Geto & de Milly Inc.",
+        "count" : "1039"
+      }, {
+        "item" : "Brown & Weinraub Advisors, LLC",
+        "count" : "851"
+      }, {
+        "item" : "Eric Palatnik, P.C.",
+        "count" : "813"
+      }, {
+        "item" : "Sheldon Lobel, P.C.",
+        "count" : "780"
+      }, {
+        "item" : "Brown & Weinraub, PLLC",
+        "count" : "715"
+      } ],
+      "smallest" : "1stBlackCasting LLC",
+      "count" : "79726",
+      "cardinality" : "79726"
+    },
+    "format" : { }
+  }, {
+    "id" : 543346521,
+    "name" : "LOBBYIST_PO",
+    "dataTypeName" : "text",
+    "description" : "Lobbyist Principal Officer First and Last Name",
+    "fieldName" : "lobbyist_po",
+    "position" : 4,
+    "renderTypeName" : "text",
+    "tableColumnId" : 79975378,
+    "cachedContents" : {
+      "non_null" : "79726",
+      "largest" : "Zachary Zangl",
+      "null" : "0",
+      "top" : [ {
+        "item" : "Jennifer Blum",
+        "count" : "5280"
+      }, {
+        "item" : "Robert Bishop",
+        "count" : "3407"
+      }, {
+        "item" : "Perry Vallone",
+        "count" : "3209"
+      }, {
+        "item" : "John Mascialino",
+        "count" : "2611"
+      }, {
+        "item" : "Thomas P.  Connolly, Jr.",
+        "count" : "2442"
+      }, {
+        "item" : "Stuart Shorenstein",
+        "count" : "2350"
+      }, {
+        "item" : "Michael Woloz",
+        "count" : "2225"
+      }, {
+        "item" : "Arthur Goldstein",
+        "count" : "1801"
+      }, {
+        "item" : "Lucy Christensen",
+        "count" : "1745"
+      }, {
+        "item" : "Catherine Torres",
+        "count" : "1433"
+      }, {
+        "item" : "David Weinraub",
+        "count" : "1392"
+      }, {
+        "item" : "Emily Giske",
+        "count" : "1276"
+      }, {
+        "item" : "Brian Simon",
+        "count" : "1228"
+      }, {
+        "item" : "Kelly Riggle",
+        "count" : "1088"
+      }, {
+        "item" : "Michele de Milly",
+        "count" : "1039"
+      }, {
+        "item" : "Carla Matero",
+        "count" : "1018"
+      }, {
+        "item" : "Lauren Bush",
+        "count" : "1013"
+      }, {
+        "item" : "Bill McCarthy",
+        "count" : "1013"
+      }, {
+        "item" : "Adina Mincher",
+        "count" : "976"
+      }, {
+        "item" : "John Wright",
+        "count" : "941"
+      } ],
+      "smallest" : "Aaron Cyperstein",
+      "count" : "79726",
+      "cardinality" : "79726"
+    },
+    "format" : { }
+  }, {
+    "id" : 543346522,
+    "name" : "REPORT_YEAR",
+    "dataTypeName" : "number",
+    "description" : "Reporting Year",
+    "fieldName" : "report_year",
+    "position" : 5,
+    "renderTypeName" : "number",
+    "tableColumnId" : 79975403,
+    "cachedContents" : {
+      "non_null" : "79726",
+      "largest" : "2026",
+      "null" : "0",
+      "top" : [ {
+        "item" : "2024",
+        "count" : "14926"
+      }, {
+        "item" : "2025",
+        "count" : "14868"
+      }, {
+        "item" : "2023",
+        "count" : "14724"
+      }, {
+        "item" : "2022",
+        "count" : "14601"
+      }, {
+        "item" : "2021",
+        "count" : "13191"
+      }, {
+        "item" : "2026",
+        "count" : "7416"
+      } ],
+      "smallest" : "2021",
+      "count" : "79726",
+      "cardinality" : "79726"
+    },
+    "format" : {
+      "noCommas" : "true"
+    }
+  }, {
+    "id" : 543346523,
+    "name" : "CLIENT_NAME",
+    "dataTypeName" : "text",
+    "description" : "Name of Client Entity",
+    "fieldName" : "client_name",
+    "position" : 6,
+    "renderTypeName" : "text",
+    "tableColumnId" : 79975379,
+    "cachedContents" : {
+      "non_null" : "79726",
+      "largest" : "Zyscovich Architects, PLLC",
+      "null" : "0",
+      "top" : [ {
+        "item" : "Northwell Health, Inc.",
+        "count" : "241"
+      }, {
+        "item" : "RAI Services Company",
+        "count" : "208"
+      }, {
+        "item" : "Queens Future, LLC",
+        "count" : "188"
+      }, {
+        "item" : "Vornado Realty L.P.",
+        "count" : "175"
+      }, {
+        "item" : "Charter Communications Operating, LLC",
+        "count" : "174"
+      }, {
+        "item" : "Bally's Corporation",
+        "count" : "165"
+      }, {
+        "item" : "MADDD Equities LLC",
+        "count" : "164"
+      }, {
+        "item" : "DoorDash, Inc.",
+        "count" : "147"
+      }, {
+        "item" : "Fund for the City of New York, Inc.",
+        "count" : "147"
+      }, {
+        "item" : "Hotel and Gaming Trades Council, AFL-CIO",
+        "count" : "143"
+      }, {
+        "item" : "Uber Technologies, Inc.",
+        "count" : "137"
+      }, {
+        "item" : "Arker Diversified Companies",
+        "count" : "129"
+      }, {
+        "item" : "Hotel, Gaming, Restaurant & Club Employees and Bartenders Union Local 6, AFL-CIO",
+        "count" : "124"
+      }, {
+        "item" : "Verizon Corporate Resources Group LLC",
+        "count" : "124"
+      }, {
+        "item" : "AIRBNB, Inc.",
+        "count" : "123"
+      }, {
+        "item" : "SL Green Realty Corp. with SL Green Management LLC as an affiliate payor",
+        "count" : "121"
+      }, {
+        "item" : "The Children's Aid Society",
+        "count" : "118"
+      }, {
+        "item" : "Tishman Speyer Properties, L.P.",
+        "count" : "116"
+      }, {
+        "item" : "Lyft, Inc.",
+        "count" : "116"
+      }, {
+        "item" : "The Mount Sinai Hospital",
+        "count" : "114"
+      } ],
+      "smallest" : "100 Flatbush Developer, LLC",
+      "count" : "79726",
+      "cardinality" : "79726"
+    },
+    "format" : { }
+  }, {
+    "id" : 543346524,
+    "name" : "CLIENT_PO",
+    "dataTypeName" : "text",
+    "description" : "Client Principal Officer First and Last Name",
+    "fieldName" : "client_po",
+    "position" : 7,
+    "renderTypeName" : "text",
+    "tableColumnId" : 79975380,
+    "cachedContents" : {
+      "non_null" : "79726",
+      "largest" : "Zyan Espinal",
+      "null" : "0",
+      "top" : [ {
+        "item" : "Marcia Azeez",
+        "count" : "316"
+      }, {
+        "item" : "David Picket",
+        "count" : "219"
+      }, {
+        "item" : "Francis Sheehan",
+        "count" : "209"
+      }, {
+        "item" : "Steve Kottak",
+        "count" : "208"
+      }, {
+        "item" : "Michael Sullivan",
+        "count" : "203"
+      }, {
+        "item" : "Colin Rankowitz",
+        "count" : "197"
+      }, {
+        "item" : "Ann Menard",
+        "count" : "194"
+      }, {
+        "item" : "Thomas Sanelli",
+        "count" : "186"
+      }, {
+        "item" : "Paula Kirby",
+        "count" : "176"
+      }, {
+        "item" : "Camille Joseph",
+        "count" : "174"
+      }, {
+        "item" : "David Goldban",
+        "count" : "168"
+      }, {
+        "item" : "Michelle Adams",
+        "count" : "165"
+      }, {
+        "item" : "Elizabeth Suever",
+        "count" : "165"
+      }, {
+        "item" : "Jorge Madruga",
+        "count" : "164"
+      }, {
+        "item" : "Andrew Levine",
+        "count" : "156"
+      }, {
+        "item" : "Aris Babayan",
+        "count" : "156"
+      }, {
+        "item" : "John Flanagan",
+        "count" : "153"
+      }, {
+        "item" : "Orathai Phommala",
+        "count" : "150"
+      }, {
+        "item" : "Alfred Gordon",
+        "count" : "149"
+      }, {
+        "item" : "Michael Napolitano",
+        "count" : "147"
+      } ],
+      "smallest" : "AArnold Gumowitz",
+      "count" : "79726",
+      "cardinality" : "79726"
+    },
+    "format" : { }
+  }, {
+    "id" : 543346525,
+    "name" : "LOBBYIST_EMPLOYEES",
+    "dataTypeName" : "text",
+    "description" : "Employees of Lobbying Entity working on behalf of Client",
+    "fieldName" : "lobbyist_employees",
+    "position" : 8,
+    "renderTypeName" : "text",
+    "tableColumnId" : 79975381,
+    "cachedContents" : {
+      "non_null" : "79726",
+      "largest" : "ZYAN ESPINAL; DAVID SCHWARTZ; Denny Salas; Audrey Barr",
+      "null" : "0",
+      "top" : [ {
+        "item" : "Charles Aidinoff; Omar Alvarellos; Dev Awasthi; Brian Daaleman; Jennie Frishtick; Julie Greenberg; Marian Guerra; Kara Hughes; Suri Kasirer; Peter Krokondelas; Alexander Malescio; Lester  Marks ; Carla Matero; Madison Mounty; Jovia Radix ; Jennifer Rivera; Melissa Rosenberg; Varun Sanyal; Douglas Spring; Alexander Spyropoulos; Steven Thomson; Omar Toro-Vaca; Matthew Viggiano; Frank Clarke; Grace Gribbon; Nicholas Pepe; Medellin Evangelina; Briana Peppers; Michael Stinson; Eldad Gothelf",
+        "count" : "696"
+      }, {
+        "item" : "Corey Johnson",
+        "count" : "681"
+      }, {
+        "item" : "Emily Contillo; Tina Dalton; Patricia Pulvirenti; J. Antonio Quesada; Vincent Rossetti; Kristin Ruggles; Nay Stevens; Larisa Wick; John Wright",
+        "count" : "635"
+      }, {
+        "item" : "Bianca Almedina; Omar Alvarellos; Dev Awasthi; Natalie Bashner; Jennifer Blum; Michael Braun; Frank Clarke; Brian Daaleman; Jelanie DeShong; Olivia Foster; Eliza Fuller; Felix Garcia; Eldad Gothelf; Julie Greenberg; Marian Guerra; Suri Kasirer; Lester  Marks ; Tristan Massalay-Ellis; Katherine McGrath; Evangelina  Medellin; Madison Mounty; Nicholas Pepe; Briana Peppers; Jovia Radix ; Jennifer Rivera; Melissa Rosenberg; Charlie Samboy ; Douglas Spring; Michael Stinson; Matthew Viggiano; Matthew Windrum; Anastasios Zias; Jacob Castermans; Julia Corrado; Danielle Chan",
+        "count" : "630"
+      }, {
+        "item" : "Jason Goldman",
+        "count" : "579"
+      }, {
+        "item" : "Justin Jarobe; Eric Palatnik",
+        "count" : "518"
+      }, {
+        "item" : "Scott Crowley; George Fontas",
+        "count" : "486"
+      }, {
+        "item" : "James Quent",
+        "count" : "473"
+      }, {
+        "item" : "Charles Aidinoff; Omar Alvarellos; Dev Awasthi; Michael Braun; Frank Clarke; Brian Daaleman; Eldad Gothelf; Julie Greenberg; Grace Gribbon; Marian Guerra; Kara Hughes; Suri Kasirer; Alexander Malescio; Lester  Marks ; Carla Matero; Evangelina  Medellin; Madison Mounty; Nicholas Pepe; Briana Peppers; Jovia Radix ; Jennifer Rivera; Melissa Rosenberg; Varun Sanyal; Douglas Spring; Michael Stinson; Steven Thomson; Omar Toro-Vaca; Matthew Viggiano; Eliza Fuller; Felix Garcia; Tristan Massalay-Ellis; Charlie Samboy ; Katherine McGrath; Olivia Foster; Jennifer Blum; Anastasios Zias; Jelanie DeShong; Natalie Bashner; Bianca Almedina; Matthew Windrum",
+        "count" : "457"
+      }, {
+        "item" : "Jovia  Radix-Seaborough; Bianca Almedina; Omar Alvarellos; Natalie Bashner; Jennifer Blum; Michael Braun; Frank Clarke; Jelanie DeShong; Sophia Fernandez; Olivia Foster; Eliza Fuller; Eldad Gothelf; Julie Greenberg; Marian Guerra; Oluwatobi Jaiyesimi; Francisco  Javier-Blanco; Suri Kasirer; Palak Kaushal; Christian  Loubeau; Meghan  Mangini; Lindsay Brooke Marinovich; Katherine McGrath; Evangelina  Medellin; Madison Mounty; Nicholas Pepe; Jennifer Rivera; Adam Roberts; Alexander Shapanka; Douglas Spring; Michael Stinson; Briana Uwa; Lorenzo Manzano; Alexa Miller; Joshua  Cortes; Michael  Kroll",
+        "count" : "450"
+      }, {
+        "item" : "JAMES MCMAHON; THOMAS MCMAHON; SHARADA POLAVARAPU; IAN RILEY-CLENDENEN; Pablo Zangerle",
+        "count" : "437"
+      }, {
+        "item" : "Mackenzie Bouise; Maricela Cano; Tony  Constantinople; Anthony Constantinople  III; Lauren George; Joseph Newman; Jordan Press; Andrea Reres; Jonathan Reyes; Carol Swift; Yanni Trittas; Perry Vallone; Peter  Vallone SR; Steven Williams; Antoinette Wilson; Amiyah Young; Bernadette Devito",
+        "count" : "424"
+      }, {
+        "item" : "Kathleen Cudahy; Caroline Engel; anu otgonbayar; Anthony Piscitelli; Evelyn Pope; Regina Poreda Ryan; John Sanchez; Jasmine Short; Danna Sosa; Michael Woloz",
+        "count" : "422"
+      }, {
+        "item" : "Mackenzie Bouise; Tony  Constantinople; Anthony Constantinople  III; Bernadette Devito; Christopher Ellis; Lauren George; Jordan Press; Andrea Reres; Jonathan Reyes; Carol Swift; Yanni Trittas; Perry Vallone; Peter  Vallone SR; Steven Williams; Antoinette Wilson; Amiyah Young; Janet Mejia-Peguero; McKenzie Moore",
+        "count" : "422"
+      }, {
+        "item" : "JAMES L. ANSORGE; Maura Avington; ROSE CHRIST; Katrell Lewis; ZAKARIAH MALIK; KATHERINE SCHWAB; Stuart Shorenstein; Nathaniel Toth",
+        "count" : "411"
+      }, {
+        "item" : "George Arzt; Maya Gelfand; Bob Liff",
+        "count" : "393"
+      }, {
+        "item" : "Robert J. Bishop; Salvatore Cassano; Mickey M. Cekovic; Theresa M. Cosgrove; Jon R. Del Giorno; William Farrell; Bradford J. Gonzalez-Sussman; Steven Ileka; James P. Molinaro; Andre Mozeak; Vincent F. Pitta; Vito R. Pitta; J. Antonio Quesada; Tanjila Rahman; Ardian Tagani",
+        "count" : "384"
+      }, {
+        "item" : "John Prakash Albert; Alex Anderson ; Keyla Antigua; Anne Marie Anzalone; Sarah Bangs; Jason Barefoot; Justin Berhaupt; Robin Brown ; Sage Cihak; Tom Connolly; Samara Daly; Giorgio DeRosa; Debra Feinberg; Benjamin Garrett; Emily Giske; Hannah Gonzales; Teresa Gonzalez; Julie Jursik; Liam Kahn; Mike Keogh; John McCarthy; William McCarthy, Jr.; Brette McSweeney; Violet Moss; Caitlin Neuhaus Kilgore  ; Brendan Orr; Patricia Reilly; Jose Rodriguez; Prisca Salazar-Rodriguez; Bryce Sawyer; Juanita Scarlett; David Siracuse; Dylan Tragni; Jack White; Nia Williams",
+        "count" : "379"
+      }, {
+        "item" : "Robert J. Bishop; Salvatore Cassano; Mickey M. Cekovic; Theresa M. Cosgrove; Jon R. Del Giorno; Andre Mozeak; Vincent F. Pitta; Vito R. Pitta; J. Antonio Quesada; Tanjila Rahman; Ardian Tagani",
+        "count" : "379"
+      }, {
+        "item" : "Bruce Bender; Scott Cantone",
+        "count" : "372"
+      } ],
+      "smallest" : "Aaliyah Guillory-Nickens; Chloe LeStage; Katherine Rubin; Dale Ventura",
+      "count" : "79726",
+      "cardinality" : "79726"
+    },
+    "format" : { }
+  }, {
+    "id" : 543346526,
+    "name" : "LOBBYIST_ACTIVITIES",
+    "dataTypeName" : "text",
+    "description" : "Lobbying activities reported on Statement of Registration",
+    "fieldName" : "lobbyist_activities",
+    "position" : 9,
+    "renderTypeName" : "text",
+    "tableColumnId" : 79975382,
+    "cachedContents" : {
+      "non_null" : "79726",
+      "largest" : "State Issue - Working with college's collaborate on Master's of Social Work programs",
+      "null" : "0",
+      "top" : [ {
+        "item" : "Budget - Funding",
+        "count" : "1187"
+      }, {
+        "item" : "Budget - securing funding",
+        "count" : "1042"
+      }, {
+        "item" : "Budget - NYC Budget",
+        "count" : "606"
+      }, {
+        "item" : "Budget - securing funding for programs",
+        "count" : "539"
+      }, {
+        "item" : "Local Legislation (including introduction) - Introductions",
+        "count" : "538"
+      }, {
+        "item" : "Resolution - Miscellaneous Business",
+        "count" : "490"
+      }, {
+        "item" : "Budget - Real Estate",
+        "count" : "476"
+      }, {
+        "item" : "Budget - funding",
+        "count" : "470"
+      }, {
+        "item" : "Budget - New York City Budget Funding",
+        "count" : "461"
+      }, {
+        "item" : "Determination of Board or Commission - Real Estate Issues",
+        "count" : "444"
+      }, {
+        "item" : "Determination of Board or Commission - Real Estate Issues/Permits & Approvals",
+        "count" : "418"
+      }, {
+        "item" : "Determination of Board or Commission - determination",
+        "count" : "338"
+      }, {
+        "item" : "Determination of Board or Commission - Relationship Building",
+        "count" : "331"
+      }, {
+        "item" : "Local Legislation (including introduction) - Introduction",
+        "count" : "285"
+      }, {
+        "item" : "Determination of Board or Commission - Real estate approvals",
+        "count" : "284"
+      }, {
+        "item" : "Determination regarding real property - land use and zoning",
+        "count" : "276"
+      }, {
+        "item" : "Resolution - Miscellaneous Issues in NYC",
+        "count" : "252"
+      }, {
+        "item" : "Determination of Board or Commission - Advocacy; Relationship Building",
+        "count" : "244"
+      }, {
+        "item" : "Procurement - INFORMATION TECHNOLOGY",
+        "count" : "228"
+      }, {
+        "item" : "Budget - Capital discretionary grants for nonprofit organizations",
+        "count" : "213"
+      } ],
+      "smallest" : "Budget - 15% PEG to City Agencies in remainder of Fiscal Year 2024  ; Local Legislation (including introduction) - Local Law 100 of 2023  ; Local Legislation (including introduction) - Local Law 101 of 2023; Local Legislation (including introduction) - Local Law 102; Budget - Include a 3.2% cost-of-living adjustment for all City-contracted human services workers in the Fiscal Year 2025 budget.; Budget - Make public commitment of funding for the next three years for a 3% cost-of-living adjustment for all City-contracted human services workers each year.; Local Legislation (including introduction) - Introduction 510-2022",
+      "count" : "79726",
+      "cardinality" : "79726"
+    },
+    "format" : { }
+  }, {
+    "id" : 543346527,
+    "name" : "LOBBYIST_TARGETS",
+    "dataTypeName" : "text",
+    "description" : "Target of lobbying activities reported on Statement of Registration",
+    "fieldName" : "lobbyist_targets",
+    "position" : 10,
+    "renderTypeName" : "text",
+    "tableColumnId" : 79975383,
+    "cachedContents" : {
+      "non_null" : "73799",
+      "largest" : "Youth & Community Development, Department of (DYCD)  Unknown Unknown",
+      "null" : "5927",
+      "top" : [ {
+        "item" : "NYC Council Members Gale Brewer - District No. 6; NYC Council Members James Gennaro - District No. 24; NYC Council Members Darlene Mealy - District No. 41; NYC Council Members Shaun Abreu - District No. 7; NYC Council Members Adrienne Adams - District No. 28; NYC Council Members Joann Ariola - District No. 32; NYC Council Members Alexa Aviles - District No. 38; NYC Council Members Diana Ayala - District No. 8; NYC Council Members Chris Banks - District No. 42; NYC Council Members Joe Borelli - District No. 51; NYC Council Members Erik Bottcher - District No. 3; NYC Council Members Justin Brannan - District No. 47; NYC Council Members Selvena Brooks-Powers - District No. 31; NYC Council Members Tiffany Caban - District No. 22; NYC Council Members David Carr - District No. 50; NYC Council Members Carmen De La Rosa - District No. 10; NYC Council Members Eric Dinowitz - District No. 11; NYC Council Members Amanda Farias - District No. 18; NYC Council Members Oswald Feliz - District No. 15; NYC Council Members Jennifer Gutierrez - District No. 34; NYC Council Members Shahana K. Hanif - District No. 39; NYC Council Members Kamillah Hanks - District No. 49; NYC Council Members Robert Holden - District No. 30; NYC Council Members Crystal Hudson - District No. 35; NYC Council Members Rita C. Joseph - District No. 40; NYC Council Members Shekar Krishnan - District No. 25; NYC Council Members Linda Lee - District No. 23; NYC Council Members Farah Louis - District No. 45; NYC Council Members Kristy Marmorato - District No. 13; NYC Council Members Christopher Marte - District No. 1; NYC Council Members Julie Menin - District No. 5; NYC Council Members Francisco P. Moya - District No. 21; NYC Council Members Mercedes Narcisse - District No. 46; NYC Council Members Sandy Nurse - District No. 37; NYC Council Members Chi Osse - District No. 36; NYC Council Members Vickie Paladino - District No. 19; NYC Council Members Keith Powers - District No. 4; NYC Council Members Lincoln Restler - District No. 33; NYC Council Members Kevin Riley - District No. 12; NYC Council Members Carlina Rivera - District No. 2; NYC Council Members Yusef Salaam - District No. 9; NYC Council Members Rafael Salamanca Jr. - District No. 17; NYC Council Members Pierina Ana Sanchez - District No. 14; NYC Council Members Lynn C. Schulman - District No. 29; NYC Council Members Althea Stevens - District No. 16; NYC Council Members Sandra Ung - District No. 20; NYC Council Members Inna Vernikov - District No. 48; NYC Council Members Nantasha M. Williams - District No. 27; NYC Council Members Julie Won - District No. 26; NYC Council Members Kalman Yeger - District No. 44; NYC Council Members Susan Zhuang - District No. 43",
+        "count" : "9086"
+      }, {
+        "item" : "NYC Council Members Charles Barron - District No. 42; NYC Council Members Gale Brewer - District No. 6; NYC Council Members James Gennaro - District No. 24; NYC Council Members Darlene Mealy - District No. 41; NYC Council Members Shaun Abreu - District No. 7; NYC Council Members Adrienne Adams - District No. 28; NYC Council Members Joann Ariola - District No. 32; NYC Council Members Alexa Aviles - District No. 38; NYC Council Members Diana Ayala - District No. 8; NYC Council Members Joe Borelli - District No. 51; NYC Council Members Erik Bottcher - District No. 3; NYC Council Members Justin Brannan - District No. 43; NYC Council Members Selvena Brooks-Powers - District No. 31; NYC Council Members Tiffany Caban - District No. 22; NYC Council Members David Carr - District No. 50; NYC Council Members Carmen De La Rosa - District No. 10; NYC Council Members Eric Dinowitz - District No. 11; NYC Council Members Amanda Farias - District No. 18; NYC Council Members Oswald Feliz - District No. 15; NYC Council Members Jennifer Gutierrez - District No. 34; NYC Council Members Shahana K. Hanif - District No. 39; NYC Council Members Kamillah Hanks - District No. 49; NYC Council Members Robert Holden - District No. 30; NYC Council Members Crystal Hudson - District No. 35; NYC Council Members Rita C. Joseph - District No. 40; NYC Council Members Ari Kagan - District No. 47; NYC Council Members Shekar Krishnan - District No. 25; NYC Council Members Linda Lee - District No. 23; NYC Council Members Farah Louis - District No. 45; NYC Council Members Christopher Marte - District No. 1; NYC Council Members Julie Menin - District No. 5; NYC Council Members Francisco P. Moya - District No. 21; NYC Council Members Mercedes Narcisse - District No. 46; NYC Council Members Sandy Nurse - District No. 37; NYC Council Members Chi Osse - District No. 36; NYC Council Members Vickie Paladino - District No. 19; NYC Council Members Keith Powers - District No. 4; NYC Council Members Lincoln Restler - District No. 33; NYC Council Members Kristin Richardson Jordan - District No. 9; NYC Council Members Kevin Riley - District No. 12; NYC Council Members Carlina Rivera - District No. 2; NYC Council Members Rafael Salamanca Jr. - District No. 17; NYC Council Members Pierina Ana Sanchez - District No. 14; NYC Council Members Lynn C. Schulman - District No. 29; NYC Council Members Althea Stevens - District No. 16; NYC Council Members Sandra Ung - District No. 20; NYC Council Members Marjorie Velazquez - District No. 13; NYC Council Members Inna Vernikov - District No. 48; NYC Council Members Nantasha M. Williams - District No. 27; NYC Council Members Julie Won - District No. 26; NYC Council Members Kalman Yeger - District No. 44",
+        "count" : "5583"
+      }, {
+        "item" : "NYC Council Members Charles Barron - District No. 42; NYC Council Members Gale Brewer - District No. 6; NYC Council Members Margaret Chin - District No. 1; NYC Council Members James Gennaro - District No. 24; NYC Council Members Alan Gerson - District No. 1; NYC Council Members Darlene Mealy - District No. 41; NYC Council Members Shaun Abreu - District No. 7; NYC Council Members Adrienne Adams - District No. 28; NYC Council Members Joann Ariola - District No. 32; NYC Council Members Alexa Aviles - District No. 38; NYC Council Members Diana Ayala - District No. 8; NYC Council Members Joe Borelli - District No. 51; NYC Council Members Erik Bottcher - District No. 3; NYC Council Members Justin Brannan - District No. 43; NYC Council Members Selvena Brooks-Powers - District No. 31; NYC Council Members Tiffany Caban - District No. 22; NYC Council Members David Carr - District No. 50; NYC Council Members Carmen De La Rosa - District No. 10; NYC Council Members Eric Dinowitz - District No. 11; NYC Council Members Amanda Farias - District No. 18; NYC Council Members Oswald Feliz - District No. 15; NYC Council Members Jennifer Gutierrez - District No. 34; NYC Council Members Shahana K. Hanif - District No. 39; NYC Council Members Kamillah Hanks - District No. 49; NYC Council Members Robert Holden - District No. 30; NYC Council Members Crystal Hudson - District No. 35; NYC Council Members Rita C. Joseph - District No. 40; NYC Council Members Ari Kagan - District No. 47; NYC Council Members Shekar Krishnan - District No. 25; NYC Council Members Linda Lee - District No. 23; NYC Council Members Farah Louis - District No. 45; NYC Council Members Christopher Marte - District No. 1; NYC Council Members Julie Menin - District No. 5; NYC Council Members Francisco P. Moya - District No. 21; NYC Council Members Mercedes Narcisse - District No. 46; NYC Council Members Sandy Nurse - District No. 37; NYC Council Members Chi Osse - District No. 36; NYC Council Members Vickie Paladino - District No. 19; NYC Council Members Keith Powers - District No. 4; NYC Council Members Lincoln Restler - District No. 33; NYC Council Members Kristin Richardson Jordan - District No. 9; NYC Council Members Kevin Riley - District No. 12; NYC Council Members Carlina Rivera - District No. 2; NYC Council Members Rafael Salamanca Jr. - District No. 17; NYC Council Members Pierina Ana Sanchez - District No. 14; NYC Council Members Lynn C. Schulman - District No. 29; NYC Council Members Althea Stevens - District No. 16; NYC Council Members Sandra Ung - District No. 20; NYC Council Members Marjorie Velazquez - District No. 13; NYC Council Members Inna Vernikov - District No. 48; NYC Council Members Nantasha M. Williams - District No. 27; NYC Council Members Julie Won - District No. 26; NYC Council Members Kalman Yeger - District No. 44",
+        "count" : "5094"
+      }, {
+        "item" : "NYC Council Members Gale Brewer - District No. 6; NYC Council Members Simcha Felder - District No. 44; NYC Council Members James Gennaro - District No. 24; NYC Council Members Darlene Mealy - District No. 41; NYC Council Members Shaun Abreu - District No. 7; NYC Council Members Shirley Aldebol - District No. 13; NYC Council Members Joann Ariola - District No. 32; NYC Council Members Alexa Aviles - District No. 38; NYC Council Members Chris Banks - District No. 42; NYC Council Members Erik Bottcher - District No. 3; NYC Council Members Selvena Brooks-Powers - District No. 31; NYC Council Members Tiffany Caban - District No. 22; NYC Council Members David Carr - District No. 50; NYC Council Members Carmen De La Rosa - District No. 10; NYC Council Members Eric Dinowitz - District No. 11; NYC Council Members Elsie Encarnacion - District No. 8; NYC Council Members Harvey D. Epstein - District No. 2; NYC Council Members Amanda Farias - District No. 18; NYC Council Members Oswald Feliz - District No. 15; NYC Council Members Jennifer Gutierrez - District No. 34; NYC Council Members Shahana K. Hanif - District No. 39; NYC Council Members Ty Hankerson - District No. 28; NYC Council Members Kamillah Hanks - District No. 49; NYC Council Members Crystal Hudson - District No. 35; NYC Council Members Rita C. Joseph - District No. 40; NYC Council Members Shekar Krishnan - District No. 25; NYC Council Members Linda Lee - District No. 23; NYC Council Members Farah Louis - District No. 45; NYC Council Members Virginia Maloney - District No. 4; NYC Council Members Christopher Marte - District No. 1; NYC Council Members Julie Menin - District No. 5; NYC Council Members Frank Morano - District No. 51; NYC Council Members Mercedes Narcisse - District No. 46; NYC Council Members Sandy Nurse - District No. 37; NYC Council Members Chi Osse - District No. 36; NYC Council Members Vickie Paladino - District No. 19; NYC Council Members Lincoln Restler - District No. 33; NYC Council Members Kevin Riley - District No. 12; NYC Council Members Yusef Salaam - District No. 9; NYC Council Members Justin E. Sanchez - District No. 17; NYC Council Members Pierina Ana Sanchez - District No. 14; NYC Council Members Kayla Santosuosso - District No. 47; NYC Council Members Lynn C. Schulman - District No. 29; NYC Council Members Althea Stevens - District No. 16; NYC Council Members Shanel Thomas-Henry - District No. 21; NYC Council Members Sandra Ung - District No. 20; NYC Council Members Inna Vernikov - District No. 48; NYC Council Members Nantasha M. Williams - District No. 27; NYC Council Members Julie Won - District No. 26; NYC Council Members Phil Wong - District No. 30; NYC Council Members Susan Zhuang - District No. 43",
+        "count" : "3297"
+      }, {
+        "item" : "NYC Council Members James Van Bramer - District No. 26; NYC Council Members Fernando Cabrera - District No. 14; NYC Council Members Margaret Chin - District No. 1 - District No. 1 - District No. 1; NYC Council Members Daniel Dromm - District No. 25; NYC Council Members Mathieu Eugene - District No. 40; NYC Council Members Alan Gerson - District No. 1; NYC Council Members Peter Koo - District No. 20; NYC Council Members Karen Koslowitz - District No. 29; NYC Council Members Bradford Lander - District No. 39; NYC Council Members Stephen Levin - District No. 33; NYC Council Members Ydanis Rodriguez - District No. 10; NYC Council Members Deborah Rose - District No. 49; NYC Council Members Eric Ulrich - District No. 32; NYC Council Members Adrienne Adams - District No. 28; NYC Council Members Alicka Ampry-Samuel - District No. 41; NYC Council Members Diana Ayala - District No. 8; NYC Council Members Inez Barron - District No. 42; NYC Council Members Joe Borelli - District No. 51; NYC Council Members Justin Brannan - District No. 43; NYC Council Members Andrew Cohen - District No. 11; NYC Council Members Costa Constantinides - District No. 22; NYC Council Members Robert Cornegy - District No. 36 - District No. 36; NYC Council Members Laurie Cumbo - District No. 35; NYC Council Members Chaim Deutsch - District No. 48; NYC Council Members Ruben Diaz, Sr - District No. 18; NYC Council Members Rafael Espinal - District No. 37; NYC Council Members Vanessa Gibson - District No. 16; NYC Council Members Mark Gjonaj - District No. 13; NYC Council Members Barry Grodenchik - District No. 23; NYC Council Members Robert Holden - District No. 30; NYC Council Members Corey Johnson - District No. 3; NYC Council Members Ben Kallos - District No. 5; NYC Council Members Rory Lancman - District No. 24; NYC Council Members Mark Levine - District No. 7; NYC Council Members Farah Louis - District No. 45; NYC Council Members Alan Maisel - District No. 46; NYC Council Members Steven Matteo - District No. 50; NYC Council Members Carlos Menchaca - District No. 38; NYC Council Members Daneek Miller - District No. 27; NYC Council Members Francisco P. Moya - District No. 21; NYC Council Members Bill Perkins - District No. 9; NYC Council Members Keith Powers - District No. 4; NYC Council Members Antonio Reynoso - District No. 34; NYC Council Members Donovan Richards Jr. - District No. 31; NYC Council Members Carlina Rivera - District No. 2; NYC Council Members Helen Rosenthal - District No. 6; NYC Council Members Rafael Salamanca Jr. - District No. 17; NYC Council Members Ritchie Torres - District No. 15; NYC Council Members Mark Treyger - District No. 47; NYC Council Members Paul Vallone - District No. 19; NYC Council Members Kalman Yeger - District No. 44; NYC Council Members Kalman Yeger - District No. 44",
+        "count" : "3239"
+      }, {
+        "item" : "NYC Council Members Adrienne Adams - District No. 28",
+        "count" : "2597"
+      }, {
+        "item" : "NYC Council Members James Gennaro - District No. 24; NYC Council Members Darlene Mealy - District No. 41; NYC Council Members Shaun Abreu - District No. 7; NYC Council Members Adrienne Adams - District No. 28; NYC Council Members Joann Ariola - District No. 32; NYC Council Members Alexa Aviles - District No. 38; NYC Council Members Chris Banks - District No. 42; NYC Council Members Joe Borelli - District No. 51; NYC Council Members Erik Bottcher - District No. 3; NYC Council Members Justin Brannan - District No. 47; NYC Council Members Selvena Brooks-Powers - District No. 31; NYC Council Members Tiffany Caban - District No. 22; NYC Council Members David Carr - District No. 50; NYC Council Members Carmen De La Rosa - District No. 10; NYC Council Members Eric Dinowitz - District No. 11; NYC Council Members Amanda Farias - District No. 18; NYC Council Members Oswald Feliz - District No. 15; NYC Council Members Jennifer Gutierrez - District No. 34; NYC Council Members Shahana K. Hanif - District No. 39; NYC Council Members Kamillah Hanks - District No. 49; NYC Council Members Robert Holden - District No. 30; NYC Council Members Crystal Hudson - District No. 35; NYC Council Members Rita C. Joseph - District No. 40; NYC Council Members Shekar Krishnan - District No. 25; NYC Council Members Linda Lee - District No. 23; NYC Council Members Farah Louis - District No. 45; NYC Council Members Kristy Marmorato - District No. 13; NYC Council Members Christopher Marte - District No. 1; NYC Council Members Julie Menin - District No. 6; NYC Council Members Francisco P. Moya - District No. 21; NYC Council Members Mercedes Narcisse - District No. 46; NYC Council Members Sandy Nurse - District No. 37; NYC Council Members Chi Osse - District No. 36; NYC Council Members Vickie Paladino - District No. 19; NYC Council Members Keith Powers - District No. 4; NYC Council Members Lincoln Restler - District No. 33; NYC Council Members Kevin Riley - District No. 12; NYC Council Members Yusef Salaam - District No. 9; NYC Council Members Rafael Salamanca Jr. - District No. 17; NYC Council Members Pierina Ana Sanchez - District No. 14; NYC Council Members Lynn C. Schulman - District No. 29; NYC Council Members Althea Stevens - District No. 16; NYC Council Members Sandra Ung - District No. 20; NYC Council Members Inna Vernikov - District No. 48; NYC Council Members Nantasha M. Williams - District No. 27; NYC Council Members Julie Won - District No. 26; NYC Council Members Kalman Yeger - District No. 44; NYC Council Members Susan Zhuang - District No. 43",
+        "count" : "2117"
+      }, {
+        "item" : "Buildings, Department of (DOB)  Jimmy Oddo",
+        "count" : "1031"
+      }, {
+        "item" : "City Planning, Department of (DCP)  Unknown Unknown",
+        "count" : "978"
+      }, {
+        "item" : ";",
+        "count" : "972"
+      }, {
+        "item" : "City Planning, Department of (DCP)  unknown unknown",
+        "count" : "684"
+      }, {
+        "item" : "NYC Council Members Julie Menin - District No. 5",
+        "count" : "561"
+      }, {
+        "item" : "NYC Council Members Corey Johnson - District No. 3",
+        "count" : "533"
+      }, {
+        "item" : "Buildings, Department of (DOB)  James Oddo",
+        "count" : "513"
+      }, {
+        "item" : "Buildings, Department of (DOB)  Kazimir Vilenchik",
+        "count" : "490"
+      }, {
+        "item" : "NYC Council Members James Van Bramer - District No. 26; NYC Council Members Fernando Cabrera - District No. 14; NYC Council Members Margaret Chin - District No. 1 - District No. 1 - District No. 1; NYC Council Members Daniel Dromm - District No. 25; NYC Council Members Mathieu Eugene - District No. 40; NYC Council Members Alan Gerson - District No. 1; NYC Council Members Peter Koo - District No. 20; NYC Council Members Karen Koslowitz - District No. 29; NYC Council Members Bradford Lander - District No. 39; NYC Council Members Stephen Levin - District No. 33; NYC Council Members Ydanis Rodriguez - District No. 10; NYC Council Members Deborah Rose - District No. 49; NYC Council Members Eric Ulrich - District No. 32; NYC Council Members Adrienne Adams - District No. 28; NYC Council Members Alicka Ampry-Samuel - District No. 41; NYC Council Members Diana Ayala - District No. 8; NYC Council Members Inez Barron - District No. 42; NYC Council Members Joe Borelli - District No. 51; NYC Council Members Justin Brannan - District No. 43; NYC Council Members Andrew Cohen - District No. 11; NYC Council Members Costa Constantinides - District No. 22; NYC Council Members Robert Cornegy - District No. 36 - District No. 36; NYC Council Members Laurie Cumbo - District No. 35; NYC Council Members Chaim Deutsch - District No. 48; NYC Council Members Ruben Diaz, Sr - District No. 18; NYC Council Members Rafael Espinal - District No. 37; NYC Council Members Vanessa Gibson - District No. 16; NYC Council Members Mark Gjonaj - District No. 13; NYC Council Members Barry Grodenchik - District No. 23; NYC Council Members Robert Holden - District No. 30; NYC Council Members Corey Johnson - District No. 3; NYC Council Members Ben Kallos - District No. 5; NYC Council Members Rory Lancman - District No. 24; NYC Council Members Mark Levine - District No. 7; NYC Council Members Farah Louis - District No. 45; NYC Council Members Alan Maisel - District No. 46; NYC Council Members Steven Matteo - District No. 50; NYC Council Members Carlos Menchaca - District No. 38; NYC Council Members Daneek Miller - District No. 27; NYC Council Members Francisco P. Moya - District No. 21; NYC Council Members Bill Perkins - District No. 9; NYC Council Members Keith Powers - District No. 4; NYC Council Members Antonio Reynoso - District No. 34; NYC Council Members Donovan Richards Jr. - District No. 31; NYC Council Members Carlina Rivera - District No. 2; NYC Council Members Helen Rosenthal - District No. 6; NYC Council Members Rafael Salamanca Jr. - District No. 17; NYC Council Members Ritchie Torres - District No. 15; NYC Council Members Mark Treyger - District No. 47; NYC Council Members Kalman Yeger - District No. 44; NYC Council Members Kalman Yeger - District No. 44",
+        "count" : "483"
+      }, {
+        "item" : "NYC Council Members James Gennaro - District No. 24; NYC Council Members Darlene Mealy - District No. 41; NYC Council Members Shaun Abreu - District No. 7; NYC Council Members Adrienne Adams - District No. 28; NYC Council Members Joann Ariola - District No. 32; NYC Council Members Alexa Aviles - District No. 38; NYC Council Members Chris Banks - District No. 42; NYC Council Members Joe Borelli - District No. 51; NYC Council Members Erik Bottcher - District No. 3; NYC Council Members Justin Brannan - District No. 47; NYC Council Members Selvena Brooks-Powers - District No. 31; NYC Council Members Tiffany Caban - District No. 22; NYC Council Members David Carr - District No. 50; NYC Council Members Carmen De La Rosa - District No. 10; NYC Council Members Eric Dinowitz - District No. 11; NYC Council Members Amanda Farias - District No. 18; NYC Council Members Oswald Feliz - District No. 15; NYC Council Members Jennifer Gutierrez - District No. 34; NYC Council Members Shahana K. Hanif - District No. 39; NYC Council Members Kamillah Hanks - District No. 49; NYC Council Members Crystal Hudson - District No. 35; NYC Council Members Rita C. Joseph - District No. 40; NYC Council Members Shekar Krishnan - District No. 25; NYC Council Members Linda Lee - District No. 23; NYC Council Members Farah Louis - District No. 45; NYC Council Members Kristy Marmorato - District No. 13; NYC Council Members Christopher Marte - District No. 1; NYC Council Members Julie Menin - District No. 6; NYC Council Members Francisco P. Moya - District No. 21; NYC Council Members Mercedes Narcisse - District No. 46; NYC Council Members Sandy Nurse - District No. 37; NYC Council Members Chi Osse - District No. 36; NYC Council Members Vickie Paladino - District No. 19; NYC Council Members Keith Powers - District No. 4; NYC Council Members Lincoln Restler - District No. 33; NYC Council Members Kevin Riley - District No. 12; NYC Council Members Yusef Salaam - District No. 9; NYC Council Members Rafael Salamanca Jr. - District No. 17; NYC Council Members Pierina Ana Sanchez - District No. 14; NYC Council Members Lynn C. Schulman - District No. 29; NYC Council Members Althea Stevens - District No. 16; NYC Council Members Sandra Ung - District No. 20; NYC Council Members Inna Vernikov - District No. 48; NYC Council Members Nantasha M. Williams - District No. 27; NYC Council Members Julie Won - District No. 26; NYC Council Members Kalman . Yeger - District No. 44; NYC Council Members Susan Zhuang - District No. 43",
+        "count" : "406"
+      }, {
+        "item" : "Mayor, Office of the (OTM) Mayor",
+        "count" : "402"
+      }, {
+        "item" : "; ;",
+        "count" : "383"
+      }, {
+        "item" : "City Planning, Department of (DCP)  Dan Garodnick",
+        "count" : "377"
+      } ],
+      "smallest" : ";",
+      "count" : "79726",
+      "cardinality" : "79726"
+    },
+    "format" : { }
+  }, {
+    "id" : 543346528,
+    "name" : "LOBBYIST_IS_COLOBBYIST",
+    "dataTypeName" : "number",
+    "description" : "Lobbyist is a Co-Lobbyist",
+    "fieldName" : "lobbyist_is_colobbyist",
+    "position" : 11,
+    "renderTypeName" : "number",
+    "tableColumnId" : 79975384,
+    "cachedContents" : {
+      "non_null" : "79726",
+      "largest" : "1",
+      "null" : "0",
+      "top" : [ {
+        "item" : "0",
+        "count" : "78947"
+      }, {
+        "item" : "1",
+        "count" : "779"
+      } ],
+      "smallest" : "0",
+      "count" : "79726",
+      "cardinality" : "79726"
+    },
+    "format" : { }
+  }, {
+    "id" : 543346529,
+    "name" : "CLIENT_INDUSTRY",
+    "dataTypeName" : "text",
+    "description" : "Industry reported for Client",
+    "fieldName" : "client_industry",
+    "position" : 12,
+    "renderTypeName" : "text",
+    "tableColumnId" : 79975385,
+    "cachedContents" : {
+      "non_null" : "79726",
+      "largest" : "Travel & Tourism",
+      "null" : "0",
+      "top" : [ {
+        "item" : "Real Estate, Construction, Engineering & Developer",
+        "count" : "24808"
+      }, {
+        "item" : "Public, Community Interest & Not-for-profit Organization",
+        "count" : "15922"
+      }, {
+        "item" : "Technology, Telecommunications & Other Media",
+        "count" : "5697"
+      }, {
+        "item" : "Health & Mental Hygiene",
+        "count" : "4612"
+      }, {
+        "item" : "Banking & Financial Services",
+        "count" : "4168"
+      }, {
+        "item" : "Education",
+        "count" : "4069"
+      }, {
+        "item" : "Transportation",
+        "count" : "3285"
+      }, {
+        "item" : "Labor",
+        "count" : "3095"
+      }, {
+        "item" : "Environment & Natural Resources",
+        "count" : "2538"
+      }, {
+        "item" : "Entertainment & Sports",
+        "count" : "2292"
+      }, {
+        "item" : "Trade Associations",
+        "count" : "1978"
+      }, {
+        "item" : "Arts & Culture",
+        "count" : "1726"
+      }, {
+        "item" : "Fashion & Retail",
+        "count" : "1077"
+      }, {
+        "item" : "Manufacturing",
+        "count" : "1071"
+      }, {
+        "item" : "Advertising, Marketing & Sales",
+        "count" : "1050"
+      }, {
+        "item" : "Travel & Tourism",
+        "count" : "972"
+      }, {
+        "item" : "Law",
+        "count" : "748"
+      }, {
+        "item" : "Communications & Consulting",
+        "count" : "583"
+      }, {
+        "item" : "Lobbying & Political Consulting Firm",
+        "count" : "35"
+      } ],
+      "smallest" : "Advertising, Marketing & Sales",
+      "count" : "79726",
+      "cardinality" : "79726"
+    },
+    "format" : { }
+  }, {
+    "id" : 543346530,
+    "name" : "LOBBYIST_HAS_FINACIAL_INTEREST",
+    "dataTypeName" : "number",
+    "description" : "Lobbyist has Direct or Indirect financial interest in the Client",
+    "fieldName" : "lobbyist_has_finacial_interest",
+    "position" : 13,
+    "renderTypeName" : "number",
+    "tableColumnId" : 79975386,
+    "cachedContents" : {
+      "non_null" : "79726",
+      "largest" : "1",
+      "null" : "0",
+      "top" : [ {
+        "item" : "0",
+        "count" : "79502"
+      }, {
+        "item" : "1",
+        "count" : "224"
+      } ],
+      "smallest" : "0",
+      "count" : "79726",
+      "cardinality" : "79726"
+    },
+    "format" : { }
+  }, {
+    "id" : 543346531,
+    "name" : "NUM_PERIODS",
+    "dataTypeName" : "number",
+    "description" : "Number of reporting periods in the year",
+    "fieldName" : "num_periods",
+    "position" : 14,
+    "renderTypeName" : "number",
+    "tableColumnId" : 79975387,
+    "cachedContents" : {
+      "non_null" : "79726",
+      "largest" : "6",
+      "null" : "0",
+      "top" : [ {
+        "item" : "6",
+        "count" : "79726"
+      } ],
+      "smallest" : "6",
+      "count" : "79726",
+      "cardinality" : "79726"
+    },
+    "format" : { }
+  }, {
+    "id" : 543346532,
+    "name" : "START_DATE",
+    "dataTypeName" : "calendar_date",
+    "description" : "Start Date of Statement of Registration",
+    "fieldName" : "start_date",
+    "position" : 15,
+    "renderTypeName" : "calendar_date",
+    "tableColumnId" : 79975401,
+    "cachedContents" : {
+      "non_null" : "79726",
+      "largest" : "2026-08-16T00:00:00.000",
+      "null" : "0",
+      "top" : [ {
+        "item" : "2025-01-01T00:00:00.000",
+        "count" : "11710"
+      }, {
+        "item" : "2024-01-01T00:00:00.000",
+        "count" : "11625"
+      }, {
+        "item" : "2023-01-01T00:00:00.000",
+        "count" : "11204"
+      }, {
+        "item" : "2022-01-01T00:00:00.000",
+        "count" : "10339"
+      }, {
+        "item" : "2021-01-01T00:00:00.000",
+        "count" : "10088"
+      }, {
+        "item" : "2026-01-01T00:00:00.000",
+        "count" : "6094"
+      }, {
+        "item" : "2022-02-01T00:00:00.000",
+        "count" : "329"
+      }, {
+        "item" : "2024-02-01T00:00:00.000",
+        "count" : "247"
+      }, {
+        "item" : "2021-02-01T00:00:00.000",
+        "count" : "218"
+      }, {
+        "item" : "2022-04-01T00:00:00.000",
+        "count" : "200"
+      }, {
+        "item" : "2025-02-01T00:00:00.000",
+        "count" : "199"
+      }, {
+        "item" : "2023-03-01T00:00:00.000",
+        "count" : "198"
+      }, {
+        "item" : "2023-04-01T00:00:00.000",
+        "count" : "192"
+      }, {
+        "item" : "2023-02-01T00:00:00.000",
+        "count" : "191"
+      }, {
+        "item" : "2021-03-01T00:00:00.000",
+        "count" : "175"
+      }, {
+        "item" : "2022-03-01T00:00:00.000",
+        "count" : "165"
+      }, {
+        "item" : "2022-01-03T00:00:00.000",
+        "count" : "163"
+      }, {
+        "item" : "2024-04-01T00:00:00.000",
+        "count" : "162"
+      }, {
+        "item" : "2024-01-15T00:00:00.000",
+        "count" : "151"
+      }, {
+        "item" : "2024-03-01T00:00:00.000",
+        "count" : "150"
+      } ],
+      "smallest" : "2021-01-01T00:00:00.000",
+      "count" : "79726",
+      "cardinality" : "79726"
+    },
+    "format" : {
+      "view" : "date"
+    }
+  }, {
+    "id" : 543346533,
+    "name" : "END_DATE",
+    "dataTypeName" : "calendar_date",
+    "description" : "End Date of Statement of Registration ",
+    "fieldName" : "end_date",
+    "position" : 16,
+    "renderTypeName" : "calendar_date",
+    "tableColumnId" : 79975399,
+    "cachedContents" : {
+      "non_null" : "79726",
+      "largest" : "2026-12-31T00:00:00.000",
+      "null" : "0",
+      "top" : [ {
+        "item" : "2024-12-31T00:00:00.000",
+        "count" : "13071"
+      }, {
+        "item" : "2025-12-31T00:00:00.000",
+        "count" : "13019"
+      }, {
+        "item" : "2023-12-31T00:00:00.000",
+        "count" : "12863"
+      }, {
+        "item" : "2022-12-31T00:00:00.000",
+        "count" : "12846"
+      }, {
+        "item" : "2021-12-31T00:00:00.000",
+        "count" : "11789"
+      }, {
+        "item" : "2026-12-31T00:00:00.000",
+        "count" : "6039"
+      }, {
+        "item" : "2021-06-30T00:00:00.000",
+        "count" : "222"
+      }, {
+        "item" : "2023-06-30T00:00:00.000",
+        "count" : "222"
+      }, {
+        "item" : "2025-08-31T00:00:00.000",
+        "count" : "201"
+      }, {
+        "item" : "2022-06-30T00:00:00.000",
+        "count" : "200"
+      }, {
+        "item" : "2026-06-30T00:00:00.000",
+        "count" : "196"
+      }, {
+        "item" : "2024-06-30T00:00:00.000",
+        "count" : "194"
+      }, {
+        "item" : "2025-06-30T00:00:00.000",
+        "count" : "188"
+      }, {
+        "item" : "2022-09-30T00:00:00.000",
+        "count" : "179"
+      }, {
+        "item" : "2024-09-30T00:00:00.000",
+        "count" : "172"
+      }, {
+        "item" : "2022-10-31T00:00:00.000",
+        "count" : "171"
+      }, {
+        "item" : "2023-09-30T00:00:00.000",
+        "count" : "144"
+      }, {
+        "item" : "2026-08-31T00:00:00.000",
+        "count" : "136"
+      }, {
+        "item" : "2024-08-31T00:00:00.000",
+        "count" : "134"
+      }, {
+        "item" : "2024-07-31T00:00:00.000",
+        "count" : "133"
+      } ],
+      "smallest" : "2021-01-14T00:00:00.000",
+      "count" : "79726",
+      "cardinality" : "79726"
+    },
+    "format" : {
+      "view" : "date"
+    }
+  }, {
+    "id" : 543346534,
+    "name" : "PERIODIC_ID",
+    "dataTypeName" : "number",
+    "description" : "Unique ID assigned by eLobbyist application for Periodic Report",
+    "fieldName" : "periodic_id",
+    "position" : 17,
+    "renderTypeName" : "number",
+    "tableColumnId" : 79975376,
+    "cachedContents" : {
+      "non_null" : "79653",
+      "largest" : "653749",
+      "null" : "73",
+      "top" : [ {
+        "item" : "649163",
+        "count" : "1"
+      }, {
+        "item" : "475040",
+        "count" : "1"
+      }, {
+        "item" : "484348",
+        "count" : "1"
+      }, {
+        "item" : "555431",
+        "count" : "1"
+      }, {
+        "item" : "561877",
+        "count" : "1"
+      }, {
+        "item" : "503847",
+        "count" : "1"
+      }, {
+        "item" : "547833",
+        "count" : "1"
+      }, {
+        "item" : "620957",
+        "count" : "1"
+      }, {
+        "item" : "491270",
+        "count" : "1"
+      }, {
+        "item" : "548247",
+        "count" : "1"
+      }, {
+        "item" : "547017",
+        "count" : "1"
+      }, {
+        "item" : "510153",
+        "count" : "1"
+      }, {
+        "item" : "616433",
+        "count" : "1"
+      }, {
+        "item" : "524991",
+        "count" : "1"
+      }, {
+        "item" : "526537",
+        "count" : "1"
+      }, {
+        "item" : "475865",
+        "count" : "1"
+      }, {
+        "item" : "528846",
+        "count" : "1"
+      }, {
+        "item" : "549202",
+        "count" : "1"
+      }, {
+        "item" : "499358",
+        "count" : "1"
+      }, {
+        "item" : "486446",
+        "count" : "1"
+      } ],
+      "smallest" : "452203",
+      "count" : "79726",
+      "cardinality" : "79726"
+    },
+    "format" : {
+      "noCommas" : "true"
+    }
+  }, {
+    "id" : 543346550,
+    "name" : "REGISTRATION_ID",
+    "dataTypeName" : "text",
+    "description" : "Unique ID assigned by eLobbyist application for Registration",
+    "fieldName" : "registration_id",
+    "position" : 18,
+    "renderTypeName" : "text",
+    "tableColumnId" : 138614740,
+    "cachedContents" : {
+      "non_null" : "79726",
+      "largest" : "653978",
+      "null" : "0",
+      "top" : [ {
+        "item" : "480523",
+        "count" : "6"
+      }, {
+        "item" : "507029",
+        "count" : "6"
+      }, {
+        "item" : "622256",
+        "count" : "6"
+      }, {
+        "item" : "443048",
+        "count" : "6"
+      }, {
+        "item" : "597910",
+        "count" : "6"
+      }, {
+        "item" : "506771",
+        "count" : "6"
+      }, {
+        "item" : "475979",
+        "count" : "6"
+      }, {
+        "item" : "520305",
+        "count" : "6"
+      }, {
+        "item" : "480948",
+        "count" : "6"
+      }, {
+        "item" : "559980",
+        "count" : "6"
+      }, {
+        "item" : "624891",
+        "count" : "6"
+      }, {
+        "item" : "543279",
+        "count" : "6"
+      }, {
+        "item" : "538440",
+        "count" : "6"
+      }, {
+        "item" : "462704",
+        "count" : "6"
+      }, {
+        "item" : "574239",
+        "count" : "6"
+      }, {
+        "item" : "553059",
+        "count" : "6"
+      }, {
+        "item" : "541943",
+        "count" : "6"
+      }, {
+        "item" : "443001",
+        "count" : "6"
+      }, {
+        "item" : "517606",
+        "count" : "6"
+      }, {
+        "item" : "459346",
+        "count" : "6"
+      } ],
+      "smallest" : "440763",
+      "count" : "79726",
+      "cardinality" : "79726"
+    },
+    "format" : {
+      "noCommas" : "true"
+    }
+  }, {
+    "id" : 543346549,
+    "name" : "PERIOD",
+    "dataTypeName" : "text",
+    "description" : "Period 1-6",
+    "fieldName" : "period",
+    "position" : 19,
+    "renderTypeName" : "text",
+    "tableColumnId" : 138614739,
+    "cachedContents" : {
+      "non_null" : "79653",
+      "largest" : "6",
+      "null" : "73",
+      "top" : [ {
+        "item" : "3",
+        "count" : "14312"
+      }, {
+        "item" : "6",
+        "count" : "14132"
+      }, {
+        "item" : "2",
+        "count" : "13977"
+      }, {
+        "item" : "1",
+        "count" : "13250"
+      }, {
+        "item" : "5",
+        "count" : "12104"
+      }, {
+        "item" : "4",
+        "count" : "11878"
+      } ],
+      "smallest" : "1",
+      "count" : "79726",
+      "cardinality" : "79726"
+    },
+    "format" : { }
+  }, {
+    "id" : 543346546,
+    "name" : "PERIODIC_YEAR",
+    "dataTypeName" : "text",
+    "description" : "Reporting Year",
+    "fieldName" : "periodic_year",
+    "position" : 20,
+    "renderTypeName" : "text",
+    "tableColumnId" : 138614736,
+    "cachedContents" : {
+      "non_null" : "79653",
+      "largest" : "2026",
+      "null" : "73",
+      "top" : [ {
+        "item" : "2024",
+        "count" : "14926"
+      }, {
+        "item" : "2025",
+        "count" : "14864"
+      }, {
+        "item" : "2023",
+        "count" : "14723"
+      }, {
+        "item" : "2022",
+        "count" : "14599"
+      }, {
+        "item" : "2021",
+        "count" : "13191"
+      }, {
+        "item" : "2026",
+        "count" : "7350"
+      } ],
+      "smallest" : "2021",
+      "count" : "79726",
+      "cardinality" : "79726"
+    },
+    "format" : { }
+  }, {
+    "id" : 543346538,
+    "name" : "COMPENSATION_TOTAL",
+    "dataTypeName" : "number",
+    "description" : "Compensation paid by Client to Lobbyist",
+    "fieldName" : "compensation_total",
+    "position" : 21,
+    "renderTypeName" : "number",
+    "tableColumnId" : 79975391,
+    "cachedContents" : {
+      "non_null" : "79653",
+      "largest" : "971000",
+      "null" : "73",
+      "top" : [ {
+        "item" : "0",
+        "count" : "17280"
+      }, {
+        "item" : "10000",
+        "count" : "8032"
+      }, {
+        "item" : "15000",
+        "count" : "4569"
+      }, {
+        "item" : "20000",
+        "count" : "4490"
+      }, {
+        "item" : "12000",
+        "count" : "3158"
+      }, {
+        "item" : "6000",
+        "count" : "2710"
+      }, {
+        "item" : "5000",
+        "count" : "2499"
+      }, {
+        "item" : "8000",
+        "count" : "2466"
+      }, {
+        "item" : "14000",
+        "count" : "1340"
+      }, {
+        "item" : "13000",
+        "count" : "1274"
+      }, {
+        "item" : "30000",
+        "count" : "1245"
+      }, {
+        "item" : "25000",
+        "count" : "1174"
+      }, {
+        "item" : "16000",
+        "count" : "1168"
+      }, {
+        "item" : "7000",
+        "count" : "1157"
+      }, {
+        "item" : "4000",
+        "count" : "1110"
+      }, {
+        "item" : "2000",
+        "count" : "1042"
+      }, {
+        "item" : "9000",
+        "count" : "954"
+      }, {
+        "item" : "11000",
+        "count" : "773"
+      }, {
+        "item" : "3000",
+        "count" : "767"
+      }, {
+        "item" : "17000",
+        "count" : "760"
+      } ],
+      "smallest" : "0",
+      "count" : "79726",
+      "cardinality" : "79726"
+    },
+    "format" : { }
+  }, {
+    "id" : 543346539,
+    "name" : "LOBBYING_EXPENSES_TOTAL",
+    "dataTypeName" : "number",
+    "description" : "Total expenses incurred for the period",
+    "fieldName" : "lobbying_expenses_total",
+    "position" : 22,
+    "renderTypeName" : "number",
+    "tableColumnId" : 79975392,
+    "cachedContents" : {
+      "non_null" : "79653",
+      "largest" : "2760000",
+      "null" : "73",
+      "top" : [ {
+        "item" : "0",
+        "count" : "62713"
+      }, {
+        "item" : "331",
+        "count" : "897"
+      }, {
+        "item" : "384",
+        "count" : "650"
+      }, {
+        "item" : "435.37",
+        "count" : "646"
+      }, {
+        "item" : "85",
+        "count" : "545"
+      }, {
+        "item" : "418.35",
+        "count" : "441"
+      }, {
+        "item" : "141",
+        "count" : "313"
+      }, {
+        "item" : "246",
+        "count" : "296"
+      }, {
+        "item" : "442.41",
+        "count" : "295"
+      }, {
+        "item" : "233.44",
+        "count" : "283"
+      }, {
+        "item" : "196.67",
+        "count" : "281"
+      }, {
+        "item" : "240.06",
+        "count" : "276"
+      }, {
+        "item" : "156",
+        "count" : "228"
+      }, {
+        "item" : "50",
+        "count" : "159"
+      }, {
+        "item" : "130",
+        "count" : "154"
+      }, {
+        "item" : "132",
+        "count" : "148"
+      }, {
+        "item" : "127",
+        "count" : "147"
+      }, {
+        "item" : "331.32",
+        "count" : "141"
+      }, {
+        "item" : "263",
+        "count" : "141"
+      }, {
+        "item" : "133",
+        "count" : "138"
+      } ],
+      "smallest" : "0",
+      "count" : "79726",
+      "cardinality" : "79726"
+    },
+    "format" : { }
+  }, {
+    "id" : 543346540,
+    "name" : "SMALL_EXPENSE_TOTAL",
+    "dataTypeName" : "number",
+    "description" : "Total expenses 75.00 or less",
+    "fieldName" : "small_expense_total",
+    "position" : 23,
+    "renderTypeName" : "number",
+    "tableColumnId" : 79975393,
+    "cachedContents" : {
+      "non_null" : "79653",
+      "largest" : "8000",
+      "null" : "73",
+      "top" : [ {
+        "item" : "0",
+        "count" : "67391"
+      }, {
+        "item" : "102",
+        "count" : "1548"
+      }, {
+        "item" : "114.98",
+        "count" : "942"
+      }, {
+        "item" : "106.84",
+        "count" : "546"
+      }, {
+        "item" : "14",
+        "count" : "397"
+      }, {
+        "item" : "128",
+        "count" : "300"
+      }, {
+        "item" : "88.56",
+        "count" : "289"
+      }, {
+        "item" : "109.3",
+        "count" : "283"
+      }, {
+        "item" : "138",
+        "count" : "278"
+      }, {
+        "item" : "12",
+        "count" : "276"
+      }, {
+        "item" : "112.4",
+        "count" : "276"
+      }, {
+        "item" : "20",
+        "count" : "232"
+      }, {
+        "item" : "26",
+        "count" : "230"
+      }, {
+        "item" : "50",
+        "count" : "185"
+      }, {
+        "item" : "102.32",
+        "count" : "142"
+      }, {
+        "item" : "140",
+        "count" : "140"
+      }, {
+        "item" : "97.1",
+        "count" : "139"
+      }, {
+        "item" : "109.69",
+        "count" : "138"
+      }, {
+        "item" : "27",
+        "count" : "136"
+      }, {
+        "item" : "137",
+        "count" : "135"
+      } ],
+      "smallest" : "0",
+      "count" : "79726",
+      "cardinality" : "79726"
+    },
+    "format" : { }
+  }, {
+    "id" : 543346541,
+    "name" : "ITEMIZED_EXPENSE_TOTAL",
+    "dataTypeName" : "number",
+    "description" : "List of individual expenses exceeding $75.00",
+    "fieldName" : "itemized_expense_total",
+    "position" : 24,
+    "renderTypeName" : "number",
+    "tableColumnId" : 79975394,
+    "cachedContents" : {
+      "non_null" : "79653",
+      "largest" : "2760000",
+      "null" : "73",
+      "top" : [ {
+        "item" : "0",
+        "count" : "77772"
+      }, {
+        "item" : "10000",
+        "count" : "108"
+      }, {
+        "item" : "1000",
+        "count" : "95"
+      }, {
+        "item" : "3333.32",
+        "count" : "81"
+      }, {
+        "item" : "7500",
+        "count" : "59"
+      }, {
+        "item" : "15000",
+        "count" : "58"
+      }, {
+        "item" : "5000",
+        "count" : "57"
+      }, {
+        "item" : "9000",
+        "count" : "53"
+      }, {
+        "item" : "12500",
+        "count" : "47"
+      }, {
+        "item" : "200",
+        "count" : "41"
+      }, {
+        "item" : "2500",
+        "count" : "41"
+      }, {
+        "item" : "6000",
+        "count" : "36"
+      }, {
+        "item" : "100",
+        "count" : "31"
+      }, {
+        "item" : "11000",
+        "count" : "30"
+      }, {
+        "item" : "8000",
+        "count" : "28"
+      }, {
+        "item" : "1452",
+        "count" : "26"
+      }, {
+        "item" : "241.67",
+        "count" : "21"
+      }, {
+        "item" : "150",
+        "count" : "21"
+      }, {
+        "item" : "375",
+        "count" : "20"
+      }, {
+        "item" : "20000",
+        "count" : "17"
+      } ],
+      "smallest" : "0",
+      "count" : "79726",
+      "cardinality" : "79726"
+    },
+    "format" : { }
+  }, {
+    "id" : 543346542,
+    "name" : "SALARY_EXPENSE_TOTAL",
+    "dataTypeName" : "number",
+    "description" : "Total salary for lobbyist",
+    "fieldName" : "salary_expense_total",
+    "position" : 25,
+    "renderTypeName" : "number",
+    "tableColumnId" : 79975395,
+    "cachedContents" : {
+      "non_null" : "79653",
+      "largest" : "66774.02",
+      "null" : "73",
+      "top" : [ {
+        "item" : "0",
+        "count" : "65238"
+      }, {
+        "item" : "229",
+        "count" : "1080"
+      }, {
+        "item" : "282",
+        "count" : "651"
+      }, {
+        "item" : "320.39",
+        "count" : "649"
+      }, {
+        "item" : "311.51",
+        "count" : "542"
+      }, {
+        "item" : "85",
+        "count" : "541"
+      }, {
+        "item" : "118",
+        "count" : "462"
+      }, {
+        "item" : "125",
+        "count" : "432"
+      }, {
+        "item" : "112",
+        "count" : "337"
+      }, {
+        "item" : "327.43",
+        "count" : "295"
+      }, {
+        "item" : "108.11",
+        "count" : "289"
+      }, {
+        "item" : "124.14",
+        "count" : "283"
+      }, {
+        "item" : "127.66",
+        "count" : "276"
+      }, {
+        "item" : "141",
+        "count" : "269"
+      }, {
+        "item" : "128",
+        "count" : "268"
+      }, {
+        "item" : "150.33",
+        "count" : "257"
+      }, {
+        "item" : "156",
+        "count" : "229"
+      }, {
+        "item" : "110",
+        "count" : "141"
+      }, {
+        "item" : "118.52",
+        "count" : "139"
+      }, {
+        "item" : "133",
+        "count" : "137"
+      } ],
+      "smallest" : "0",
+      "count" : "79726",
+      "cardinality" : "79726"
+    },
+    "format" : { }
+  }, {
+    "id" : 543346543,
+    "name" : "REIMBURSED_EXPENSES_TOTAL",
+    "dataTypeName" : "number",
+    "description" : "Total lobbying incurred expenses for which the lobbyist is reimbursed by the client",
+    "fieldName" : "reimbursed_expenses_total",
+    "position" : 26,
+    "renderTypeName" : "number",
+    "tableColumnId" : 79975396,
+    "cachedContents" : {
+      "non_null" : "79653",
+      "largest" : "370000",
+      "null" : "73",
+      "top" : [ {
+        "item" : "0",
+        "count" : "78855"
+      }, {
+        "item" : "50",
+        "count" : "106"
+      }, {
+        "item" : "1000",
+        "count" : "54"
+      }, {
+        "item" : "75",
+        "count" : "26"
+      }, {
+        "item" : "52.94",
+        "count" : "23"
+      }, {
+        "item" : "100",
+        "count" : "22"
+      }, {
+        "item" : "150",
+        "count" : "22"
+      }, {
+        "item" : "66",
+        "count" : "19"
+      }, {
+        "item" : "241.67",
+        "count" : "16"
+      }, {
+        "item" : "250",
+        "count" : "15"
+      }, {
+        "item" : "241.68",
+        "count" : "11"
+      }, {
+        "item" : "122",
+        "count" : "11"
+      }, {
+        "item" : "600",
+        "count" : "7"
+      }, {
+        "item" : "200",
+        "count" : "6"
+      }, {
+        "item" : "800",
+        "count" : "5"
+      }, {
+        "item" : "114",
+        "count" : "5"
+      }, {
+        "item" : "25",
+        "count" : "4"
+      }, {
+        "item" : "89",
+        "count" : "4"
+      }, {
+        "item" : "22",
+        "count" : "4"
+      }, {
+        "item" : "402",
+        "count" : "3"
+      } ],
+      "smallest" : "0",
+      "count" : "79726",
+      "cardinality" : "79726"
+    },
+    "format" : { }
+  }, {
+    "id" : 543346544,
+    "name" : "PERIODIC_ACTIVITIES",
+    "dataTypeName" : "text",
+    "description" : "Lobbying activities reported for period",
+    "fieldName" : "periodic_activities",
+    "position" : 27,
+    "renderTypeName" : "text",
+    "tableColumnId" : 79975397,
+    "cachedContents" : {
+      "non_null" : "79653",
+      "largest" : "State Issue - Yondr pouch/cell phone-free zones",
+      "null" : "73",
+      "top" : [ {
+        "item" : "N/A",
+        "count" : "40537"
+      }, {
+        "item" : "Budget - Funding",
+        "count" : "431"
+      }, {
+        "item" : "Budget - Real Estate/General",
+        "count" : "358"
+      }, {
+        "item" : "Determination of Board or Commission - Relationship Building",
+        "count" : "357"
+      }, {
+        "item" : "Budget - FY 2024 Budget",
+        "count" : "291"
+      }, {
+        "item" : "Budget - Real Estate",
+        "count" : "281"
+      }, {
+        "item" : "Budget - Securing funding for programs;",
+        "count" : "272"
+      }, {
+        "item" : "Budget - FY 2022 Budget",
+        "count" : "173"
+      }, {
+        "item" : "Budget - FY 2023 Budget",
+        "count" : "172"
+      }, {
+        "item" : "Budget - NYC Budget",
+        "count" : "148"
+      }, {
+        "item" : "Budget - NYC Funding Request;",
+        "count" : "125"
+      }, {
+        "item" : "Budget - Capital discretionary grants for nonprofit organizations",
+        "count" : "119"
+      }, {
+        "item" : "Budget - Securing funding for programs",
+        "count" : "114"
+      }, {
+        "item" : "Budget - New York City Council Budget Funding",
+        "count" : "105"
+      }, {
+        "item" : "Budget - Budget Funding Support",
+        "count" : "102"
+      }, {
+        "item" : "Budget - Education",
+        "count" : "96"
+      }, {
+        "item" : "Determination regarding real property - Real Estate Issues / Permits & Approvals",
+        "count" : "89"
+      }, {
+        "item" : "Budget - Real Estate - General",
+        "count" : "89"
+      }, {
+        "item" : "Determination regarding real property - IN CONNECTION WITH A DEVELOPMENT LOCATED IN THE GOWANUS REZONING.",
+        "count" : "89"
+      }, {
+        "item" : "Budget - Seeking funding",
+        "count" : "88"
+      } ],
+      "smallest" : "Budget - $100,000 Speaker Ask â Culture Strengthening Community and Beyond  $50,000 Coalition Theaters of Color   $21,111 Manhattan Delegation budget ask for Free Bilingual Educational Gallery Tours for Manhattan Title 1 schools to provide certain number of free bilingual gallery tours  $20,000 Cultural After School Adventures  - Ayala, Dromm, Kallos, Moya, Perkins, Powers, Rivera, Rodriguez â allow bilingual teaching artists to create an original curriculum that fosters the creation of extraordinary art works by youth participants and exposes the students to the richness of Latinx art and culture  $15,000 Su-CASA: Senior Educational Engagement  - CM Ayala  $20,000 Member Item â El Museo del Barrio Local Community Engagement and Educational Initiatives  - CM Ayala  $6,500 Making Connections/Haciendo Conexiones â CM Powers, Kallos -Connections program is bilingual artist-in-residency program that utilizes art inquiry and object-based activities to develop unique curricula according to needs of in-district organizations",
+      "count" : "79726",
+      "cardinality" : "79726"
+    },
+    "format" : { }
+  }, {
+    "id" : 543346545,
+    "name" : "PERIODIC_TARGETS",
+    "dataTypeName" : "text",
+    "description" : "Target of lobbying activities reported for period",
+    "fieldName" : "periodic_targets",
+    "position" : 28,
+    "renderTypeName" : "text",
+    "tableColumnId" : 79975398,
+    "cachedContents" : {
+      "non_null" : "79636",
+      "largest" : "Youth & Community Development, Department of (DYCD)  Zenaida Marie White; NYC Council Members Carmen De La Rosa - District No. 10; NYC Council Members - Staff Oswald Feliz - District No. 15, Santiago Baena; NYC Council Members - Staff Amanda Farias - District No. 18, Randi Malman; NYC Council Members - Staff Althea Stevens - District No. 16, Kate Connolly; NYC Council Members - Staff Keith Powers - District No. 4, Ben Jacobs; NYC Council Members - Staff Eric Dinowitz - District No. 11, Adam Staropoli; NYC Council Members Rafael Salamanca Jr. - District No. 17; NYC Council Members Shaun Abreu - District No. 7; NYC Council Members Pierina Ana Sanchez - District No. 14; NYC Council Members Amanda Farias - District No. 18; NYC Council Members Eric Dinowitz - District No. 11; NYC Council Members Oswald Feliz - District No. 15; NYC Council Members Carmen De La Rosa - District No. 10; NYC Council Members Kristin Richardson Jordan - District No. 9; NYC Council Members Marjorie Velazquez - District No. 13; NYC Council Members Althea Stevens - District No. 16",
+      "null" : "90",
+      "top" : [ {
+        "item" : "N/A",
+        "count" : "40537"
+      }, {
+        "item" : "NYC Council Members Charles Barron - District No. 42; NYC Council Members Gale Brewer - District No. 6; NYC Council Members James Gennaro - District No. 24; NYC Council Members Darlene Mealy - District No. 41; NYC Council Members Shaun Abreu - District No. 7; NYC Council Members Adrienne Adams - District No. 28; NYC Council Members Joann Ariola - District No. 32; NYC Council Members Alexa Aviles - District No. 38; NYC Council Members Diana Ayala - District No. 8; NYC Council Members Joe Borelli - District No. 51; NYC Council Members Erik Bottcher - District No. 3; NYC Council Members Justin Brannan - District No. 43; NYC Council Members Selvena Brooks-Powers - District No. 31; NYC Council Members Tiffany Caban - District No. 22; NYC Council Members David Carr - District No. 50; NYC Council Members Carmen De La Rosa - District No. 10; NYC Council Members Eric Dinowitz - District No. 11; NYC Council Members Amanda Farias - District No. 18; NYC Council Members Oswald Feliz - District No. 15; NYC Council Members Jennifer Gutierrez - District No. 34; NYC Council Members Shahana K. Hanif - District No. 39; NYC Council Members Kamillah Hanks - District No. 49; NYC Council Members Robert Holden - District No. 30; NYC Council Members Crystal Hudson - District No. 35; NYC Council Members Rita C. Joseph - District No. 40; NYC Council Members Ari Kagan - District No. 47; NYC Council Members Shekar Krishnan - District No. 25; NYC Council Members Linda Lee - District No. 23; NYC Council Members Farah Louis - District No. 45; NYC Council Members Christopher Marte - District No. 1; NYC Council Members Julie Menin - District No. 5; NYC Council Members Francisco P. Moya - District No. 21; NYC Council Members Mercedes Narcisse - District No. 46; NYC Council Members Sandy Nurse - District No. 37; NYC Council Members Chi Osse - District No. 36; NYC Council Members Vickie Paladino - District No. 19; NYC Council Members Keith Powers - District No. 4; NYC Council Members Lincoln Restler - District No. 33; NYC Council Members Kristin Richardson Jordan - District No. 9; NYC Council Members Kevin Riley - District No. 12; NYC Council Members Carlina Rivera - District No. 2; NYC Council Members Rafael Salamanca Jr. - District No. 17; NYC Council Members Pierina Ana Sanchez - District No. 14; NYC Council Members Lynn C. Schulman - District No. 29; NYC Council Members Althea Stevens - District No. 16; NYC Council Members Sandra Ung - District No. 20; NYC Council Members Marjorie Velazquez - District No. 13; NYC Council Members Inna Vernikov - District No. 48; NYC Council Members Nantasha M. Williams - District No. 27; NYC Council Members Julie Won - District No. 26; NYC Council Members Kalman Yeger - District No. 44",
+        "count" : "522"
+      }, {
+        "item" : "NYC Council Members Gale Brewer - District No. 6; NYC Council Members James Gennaro - District No. 24; NYC Council Members Darlene Mealy - District No. 41; NYC Council Members Shaun Abreu - District No. 7; NYC Council Members Adrienne Adams - District No. 28; NYC Council Members Joann Ariola - District No. 32; NYC Council Members Alexa Aviles - District No. 38; NYC Council Members Diana Ayala - District No. 8; NYC Council Members Chris Banks - District No. 42; NYC Council Members Joe Borelli - District No. 51; NYC Council Members Erik Bottcher - District No. 3; NYC Council Members Justin Brannan - District No. 47; NYC Council Members Selvena Brooks-Powers - District No. 31; NYC Council Members Tiffany Caban - District No. 22; NYC Council Members David Carr - District No. 50; NYC Council Members Carmen De La Rosa - District No. 10; NYC Council Members Eric Dinowitz - District No. 11; NYC Council Members Amanda Farias - District No. 18; NYC Council Members Oswald Feliz - District No. 15; NYC Council Members Jennifer Gutierrez - District No. 34; NYC Council Members Shahana K. Hanif - District No. 39; NYC Council Members Kamillah Hanks - District No. 49; NYC Council Members Robert Holden - District No. 30; NYC Council Members Crystal Hudson - District No. 35; NYC Council Members Rita C. Joseph - District No. 40; NYC Council Members Shekar Krishnan - District No. 25; NYC Council Members Linda Lee - District No. 23; NYC Council Members Farah Louis - District No. 45; NYC Council Members Kristy Marmorato - District No. 13; NYC Council Members Christopher Marte - District No. 1; NYC Council Members Julie Menin - District No. 5; NYC Council Members Francisco P. Moya - District No. 21; NYC Council Members Mercedes Narcisse - District No. 46; NYC Council Members Sandy Nurse - District No. 37; NYC Council Members Chi Osse - District No. 36; NYC Council Members Vickie Paladino - District No. 19; NYC Council Members Keith Powers - District No. 4; NYC Council Members Lincoln Restler - District No. 33; NYC Council Members Kevin Riley - District No. 12; NYC Council Members Carlina Rivera - District No. 2; NYC Council Members Yusef Salaam - District No. 9; NYC Council Members Rafael Salamanca Jr. - District No. 17; NYC Council Members Pierina Ana Sanchez - District No. 14; NYC Council Members Lynn C. Schulman - District No. 29; NYC Council Members Althea Stevens - District No. 16; NYC Council Members Sandra Ung - District No. 20; NYC Council Members Inna Vernikov - District No. 48; NYC Council Members Nantasha M. Williams - District No. 27; NYC Council Members Julie Won - District No. 26; NYC Council Members Kalman Yeger - District No. 44; NYC Council Members Susan Zhuang - District No. 43",
+        "count" : "199"
+      }, {
+        "item" : "NYC Council Members James Van Bramer - District No. 26; NYC Council Members Fernando Cabrera - District No. 14; NYC Council Members Margaret Chin - District No. 1; NYC Council Members Daniel Dromm - District No. 25; NYC Council Members Mathieu Eugene - District No. 40; NYC Council Members James Gennaro - District No. 24; NYC Council Members Peter Koo - District No. 20; NYC Council Members Karen Koslowitz - District No. 29; NYC Council Members Bradford Lander - District No. 39; NYC Council Members Stephen Levin - District No. 33; NYC Council Members Ydanis Rodriguez - District No. 10; NYC Council Members Deborah Rose - District No. 49; NYC Council Members Eric Ulrich - District No. 32; NYC Council Members Adrienne Adams - District No. 28; NYC Council Members Alicka Ampry-Samuel - District No. 41; NYC Council Members Diana Ayala - District No. 8; NYC Council Members Inez Barron - District No. 42; NYC Council Members Joe Borelli - District No. 51; NYC Council Members Justin Brannan - District No. 43; NYC Council Members Selvena Brooks-Powers - District No. 31; NYC Council Members Costa Constantinides - District No. 22; NYC Council Members Robert Cornegy - District No. 36; NYC Council Members Laurie Cumbo - District No. 35; NYC Council Members Chaim Deutsch - District No. 48; NYC Council Members Darma V. Diaz - District No. 37; NYC Council Members Ruben Diaz, Sr - District No. 18; NYC Council Members Eric Dinowitz - District No. 11; NYC Council Members Oswald Feliz - District No. 15; NYC Council Members Vanessa Gibson - District No. 16; NYC Council Members Mark Gjonaj - District No. 13; NYC Council Members Barry Grodenchik - District No. 23; NYC Council Members Robert Holden - District No. 30; NYC Council Members Corey Johnson - District No. 3; NYC Council Members Ben Kallos - District No. 5; NYC Council Members Mark Levine - District No. 7; NYC Council Members Farah Louis - District No. 45; NYC Council Members Alan Maisel - District No. 46; NYC Council Members Steven Matteo - District No. 50; NYC Council Members Carlos Menchaca - District No. 38; NYC Council Members Daneek Miller - District No. 27; NYC Council Members Francisco P. Moya - District No. 21; NYC Council Members Bill Perkins - District No. 9; NYC Council Members Keith Powers - District No. 4; NYC Council Members Antonio Reynoso - District No. 34; NYC Council Members Kevin Riley - District No. 12; NYC Council Members Carlina Rivera - District No. 2; NYC Council Members Helen Rosenthal - District No. 6; NYC Council Members Rafael Salamanca Jr. - District No. 17; NYC Council Members Mark Treyger - District No. 47; NYC Council Members Paul Vallone - District No. 19; NYC Council Members Kalman Yeger - District No. 44; NYC Council Members Kalman Yeger - District No. 44",
+        "count" : "175"
+      }, {
+        "item" : "NYC Council Members Charles Barron - District No. 42; NYC Council Members Gale Brewer - District No. 6; NYC Council Members Margaret Chin - District No. 1; NYC Council Members James Gennaro - District No. 24; NYC Council Members Alan Gerson - District No. 1; NYC Council Members Darlene Mealy - District No. 41; NYC Council Members Shaun Abreu - District No. 7; NYC Council Members Adrienne Adams - District No. 28; NYC Council Members Joann Ariola - District No. 32; NYC Council Members Alexa Aviles - District No. 38; NYC Council Members Diana Ayala - District No. 8; NYC Council Members Joe Borelli - District No. 51; NYC Council Members Erik Bottcher - District No. 3; NYC Council Members Justin Brannan - District No. 43; NYC Council Members Selvena Brooks-Powers - District No. 31; NYC Council Members Tiffany Caban - District No. 22; NYC Council Members David Carr - District No. 50; NYC Council Members Carmen De La Rosa - District No. 10; NYC Council Members Eric Dinowitz - District No. 11; NYC Council Members Amanda Farias - District No. 18; NYC Council Members Oswald Feliz - District No. 15; NYC Council Members Jennifer Gutierrez - District No. 34; NYC Council Members Shahana K. Hanif - District No. 39; NYC Council Members Kamillah Hanks - District No. 49; NYC Council Members Robert Holden - District No. 30; NYC Council Members Crystal Hudson - District No. 35; NYC Council Members Rita C. Joseph - District No. 40; NYC Council Members Ari Kagan - District No. 47; NYC Council Members Shekar Krishnan - District No. 25; NYC Council Members Linda Lee - District No. 23; NYC Council Members Farah Louis - District No. 45; NYC Council Members Christopher Marte - District No. 1; NYC Council Members Julie Menin - District No. 5; NYC Council Members Francisco P. Moya - District No. 21; NYC Council Members Mercedes Narcisse - District No. 46; NYC Council Members Sandy Nurse - District No. 37; NYC Council Members Chi Osse - District No. 36; NYC Council Members Vickie Paladino - District No. 19; NYC Council Members Keith Powers - District No. 4; NYC Council Members Lincoln Restler - District No. 33; NYC Council Members Kristin Richardson Jordan - District No. 9; NYC Council Members Kevin Riley - District No. 12; NYC Council Members Carlina Rivera - District No. 2; NYC Council Members Rafael Salamanca Jr. - District No. 17; NYC Council Members Pierina Ana Sanchez - District No. 14; NYC Council Members Lynn C. Schulman - District No. 29; NYC Council Members Althea Stevens - District No. 16; NYC Council Members Sandra Ung - District No. 20; NYC Council Members Marjorie Velazquez - District No. 13; NYC Council Members Inna Vernikov - District No. 48; NYC Council Members Nantasha M. Williams - District No. 27; NYC Council Members Julie Won - District No. 26; NYC Council Members Kalman Yeger - District No. 44",
+        "count" : "153"
+      }, {
+        "item" : "Design & Construction, Department of (DDC)  David Varoli",
+        "count" : "109"
+      }, {
+        "item" : "NYC Council Members Erik Bottcher - District No. 3",
+        "count" : "95"
+      }, {
+        "item" : "NYC Council Members Keith Powers - District No. 4",
+        "count" : "69"
+      }, {
+        "item" : "NYC Council Members Gale Brewer - District No. 6; NYC Council Members Simcha Felder - District No. 44; NYC Council Members James Gennaro - District No. 24; NYC Council Members Darlene Mealy - District No. 41; NYC Council Members Shaun Abreu - District No. 7; NYC Council Members Adrienne Adams - District No. 28; NYC Council Members Joann Ariola - District No. 32; NYC Council Members Alexa Aviles - District No. 38; NYC Council Members Diana Ayala - District No. 8; NYC Council Members Chris Banks - District No. 42; NYC Council Members Erik Bottcher - District No. 3; NYC Council Members Justin Brannan - District No. 47; NYC Council Members Selvena Brooks-Powers - District No. 31; NYC Council Members Tiffany Caban - District No. 22; NYC Council Members David Carr - District No. 50; NYC Council Members Carmen De La Rosa - District No. 10; NYC Council Members Eric Dinowitz - District No. 11; NYC Council Members Amanda Farias - District No. 18; NYC Council Members Oswald Feliz - District No. 15; NYC Council Members Jennifer Gutierrez - District No. 34; NYC Council Members Shahana K. Hanif - District No. 39; NYC Council Members Kamillah Hanks - District No. 49; NYC Council Members Robert Holden - District No. 30; NYC Council Members Crystal Hudson - District No. 35; NYC Council Members Rita C. Joseph - District No. 40; NYC Council Members Shekar Krishnan - District No. 25; NYC Council Members Linda Lee - District No. 23; NYC Council Members Farah Louis - District No. 45; NYC Council Members Kristy Marmorato - District No. 13; NYC Council Members Christopher Marte - District No. 1; NYC Council Members Julie Menin - District No. 5; NYC Council Members Frank Morano - District No. 51; NYC Council Members Francisco P. Moya - District No. 21; NYC Council Members Mercedes Narcisse - District No. 46; NYC Council Members Sandy Nurse - District No. 37; NYC Council Members Chi Osse - District No. 36; NYC Council Members Vickie Paladino - District No. 19; NYC Council Members Keith Powers - District No. 4; NYC Council Members Lincoln Restler - District No. 33; NYC Council Members Kevin Riley - District No. 12; NYC Council Members Carlina Rivera - District No. 2; NYC Council Members Yusef Salaam - District No. 9; NYC Council Members Rafael Salamanca Jr. - District No. 17; NYC Council Members Pierina Ana Sanchez - District No. 14; NYC Council Members Lynn C. Schulman - District No. 29; NYC Council Members Althea Stevens - District No. 16; NYC Council Members Sandra Ung - District No. 20; NYC Council Members Inna Vernikov - District No. 48; NYC Council Members Nantasha M. Williams - District No. 27; NYC Council Members Julie Won - District No. 26; NYC Council Members Susan Zhuang - District No. 43; NYC Council Members - Staff Gale Brewer - District No. 6, Staff Staff; NYC Council Members - Staff Simcha Felder - District No. 44, Staff Staff; NYC Council Members - Staff James Gennaro - District No. 24, Staff Staff; NYC Council Members - Staff Darlene Mealy - District No. 41, Staff Staff; NYC Council Members - Staff Shaun Abreu - District No. 7, Staff Staff; NYC Council Members - Staff Adrienne Adams - District No. 28, Staff Staff; NYC Council Members - Staff Joann Ariola - District No. 32, Staff Staff; NYC Council Members - Staff Alexa Aviles - District No. 38, Staff Staff; NYC Council Members - Staff Diana Ayala - District No. 8, Staff Staff; NYC Council Members - Staff Chris Banks - District No. 42, Staff Staff; NYC Council Members - Staff Erik Bottcher - District No. 3, Staff Staff; NYC Council Members - Staff Justin Brannan - District No. 47, Staff Staff; NYC Council Members - Staff Selvena Brooks-Powers - District No. 31, Staff Staff; NYC Council Members - Staff Tiffany Caban - District No. 22, Staff Staff; NYC Council Members - Staff David Carr - District No. 50, Staff Staff; NYC Council Members - Staff Carmen De La Rosa - District No. 10, Staff Staff; NYC Council Members - Staff Eric Dinowitz - District No. 11, Staff Staff; NYC Council Members - Staff Amanda Farias - District No. 18, Staff Staff; NYC Council Members - Staff Oswald Feliz - District No. 15, Staff Staff; NYC Council Members - Staff Jennifer Gutierrez - District No. 34, Staff Staff; NYC Council Members - Staff Shahana K. Hanif - District No. 39, Staff Staff; NYC Council Members - Staff Kamillah Hanks - District No. 49, Staff Staff; NYC Council Members - Staff Robert Holden - District No. 30, Staff Staff; NYC Council Members - Staff Crystal Hudson - District No. 35, Staff Staff; NYC Council Members - Staff Rita C. Joseph - District No. 40, Staff Staff; NYC Council Members - Staff Shekar Krishnan - District No. 25, Staff Staff; NYC Council Members - Staff Linda Lee - District No. 23, Staff Staff; NYC Council Members - Staff Farah Louis - District No. 45, Staff Staff; NYC Council Members - Staff Kristy Marmorato - District No. 13, Staff Staff; NYC Council Members - Staff Christopher Marte - District No. 1, Staff Staff; NYC Council Members - Staff Julie Menin - District No. 5, Staff Staff; NYC Council Members - Staff Frank Morano - District No. 51, Staff Staff; NYC Council Members - Staff Francisco P. Moya - District No. 21, Staff Staff; NYC Council Members - Staff Mercedes Narcisse - District No. 46, Staff Staff; NYC Council Members - Staff Sandy Nurse - District No. 37, Staff Staff; NYC Council Members - Staff Chi Osse - District No. 36, Staff Staff; NYC Council Members - Staff Vickie Paladino - District No. 19, Staff Staff; NYC Council Members - Staff Keith Powers - District No. 4, Staff Staff; NYC Council Members - Staff Lincoln Restler - District No. 33, Staff Staff; NYC Council Members - Staff Kevin Riley - District No. 12, Staff Staff; NYC Council Members - Staff Carlina Rivera - District No. 2, Staff Staff; NYC Council Members - Staff Yusef Salaam - District No. 9, Staff Staff; NYC Council Members - Staff Rafael Salamanca Jr. - District No. 17, Staff Staff; NYC Council Members - Staff Pierina Ana Sanchez - District No. 14, Staff Staff; NYC Council Members - Staff Lynn C. Schulman - District No. 29, Staff Staff; NYC Council Members - Staff Althea Stevens - District No. 16, Staff Staff; NYC Council Members - Staff Sandra Ung - District No. 20, Staff Staff; NYC Council Members - Staff Inna Vernikov - District No. 48, Staff Staff; NYC Council Members - Staff Nantasha M. Williams - District No. 27, Staff Staff; NYC Council Members - Staff Julie Won - District No. 26, Staff Staff; NYC Council Members - Staff Susan Zhuang - District No. 43, Staff Staff",
+        "count" : "66"
+      }, {
+        "item" : "NYC Council Members Gale Brewer - District No. 6; NYC Council Members James Gennaro - District No. 24; NYC Council Members Darlene Mealy - District No. 41; NYC Council Members Shaun Abreu - District No. 7; NYC Council Members Adrienne Adams - District No. 28; NYC Council Members Joann Ariola - District No. 32; NYC Council Members Alexa Aviles - District No. 38; NYC Council Members Diana Ayala - District No. 8; NYC Council Members Chris Banks - District No. 42; NYC Council Members Joe Borelli - District No. 51; NYC Council Members Erik Bottcher - District No. 3; NYC Council Members Justin Brannan - District No. 47; NYC Council Members Selvena Brooks-Powers - District No. 31; NYC Council Members Tiffany Caban - District No. 22; NYC Council Members David Carr - District No. 50; NYC Council Members Carmen De La Rosa - District No. 10; NYC Council Members Eric Dinowitz - District No. 11; NYC Council Members Amanda Farias - District No. 18; NYC Council Members Oswald Feliz - District No. 15; NYC Council Members Jennifer Gutierrez - District No. 34; NYC Council Members Shahana K. Hanif - District No. 39; NYC Council Members Kamillah Hanks - District No. 49; NYC Council Members Robert Holden - District No. 30; NYC Council Members Crystal Hudson - District No. 35; NYC Council Members Rita C. Joseph - District No. 40; NYC Council Members Shekar Krishnan - District No. 25; NYC Council Members Linda Lee - District No. 23; NYC Council Members Farah Louis - District No. 45; NYC Council Members Kristy Marmorato - District No. 13; NYC Council Members Christopher Marte - District No. 1; NYC Council Members Julie Menin - District No. 5; NYC Council Members Francisco P. Moya - District No. 21; NYC Council Members Mercedes Narcisse - District No. 46; NYC Council Members Sandy Nurse - District No. 37; NYC Council Members Chi Osse - District No. 36; NYC Council Members Vickie Paladino - District No. 19; NYC Council Members Keith Powers - District No. 4; NYC Council Members Lincoln Restler - District No. 33; NYC Council Members Kevin Riley - District No. 12; NYC Council Members Carlina Rivera - District No. 2; NYC Council Members Yusef Salaam - District No. 9; NYC Council Members Rafael Salamanca Jr. - District No. 17; NYC Council Members Pierina Ana Sanchez - District No. 14; NYC Council Members Lynn C. Schulman - District No. 29; NYC Council Members Althea Stevens - District No. 16; NYC Council Members Sandra Ung - District No. 20; NYC Council Members Inna Vernikov - District No. 48; NYC Council Members Nantasha M. Williams - District No. 27; NYC Council Members Julie Won - District No. 26; NYC Council Members Kalman Yeger - District No. 44; NYC Council Members Susan Zhuang - District No. 43; NYC Council Members - Staff Gale Brewer - District No. 6, Staff Staff; NYC Council Members - Staff James Gennaro - District No. 24, Staff Staff; NYC Council Members - Staff Darlene Mealy - District No. 41, Staff Staff; NYC Council Members - Staff Shaun Abreu - District No. 7, Staff Staff; NYC Council Members - Staff Adrienne Adams - District No. 28, Staff Staff; NYC Council Members - Staff Joann Ariola - District No. 32, Staff Staff; NYC Council Members - Staff Alexa Aviles - District No. 38, Staff Staff; NYC Council Members - Staff Diana Ayala - District No. 8, Staff Staff; NYC Council Members - Staff Chris Banks - District No. 42, Staff Staff; NYC Council Members - Staff Joe Borelli - District No. 51, Staff Staff; NYC Council Members - Staff Erik Bottcher - District No. 3, Staff Staff; NYC Council Members - Staff Justin Brannan - District No. 47, Staff Staff; NYC Council Members - Staff Selvena Brooks-Powers - District No. 31, Staff Staff; NYC Council Members - Staff Tiffany Caban - District No. 22, Staff Staff; NYC Council Members - Staff David Carr - District No. 50, Staff Staff; NYC Council Members - Staff Carmen De La Rosa - District No. 10, Staff Staff; NYC Council Members - Staff Eric Dinowitz - District No. 11, Staff Staff; NYC Council Members - Staff Amanda Farias - District No. 18, Staff Staff; NYC Council Members - Staff Oswald Feliz - District No. 15, Staff Staff; NYC Council Members - Staff Jennifer Gutierrez - District No. 34, Staff Staff; NYC Council Members - Staff Shahana K. Hanif - District No. 39, Staff Staff; NYC Council Members - Staff Kamillah Hanks - District No. 49, Staff Staff; NYC Council Members - Staff Robert Holden - District No. 30, Staff Staff; NYC Council Members - Staff Crystal Hudson - District No. 35, Staff Staff; NYC Council Members - Staff Rita C. Joseph - District No. 40, Staff Staff; NYC Council Members - Staff Shekar Krishnan - District No. 25, Staff Staff; NYC Council Members - Staff Linda Lee - District No. 23, Staff Staff; NYC Council Members - Staff Farah Louis - District No. 45, Staff Staff; NYC Council Members - Staff Kristy Marmorato - District No. 13, Staff Staff; NYC Council Members - Staff Christopher Marte - District No. 1, Staff Staff; NYC Council Members - Staff Julie Menin - District No. 5, Staff Staff; NYC Council Members - Staff Francisco P. Moya - District No. 21, Staff Staff; NYC Council Members - Staff Mercedes Narcisse - District No. 46, Staff Staff; NYC Council Members - Staff Sandy Nurse - District No. 37, Staff Staff; NYC Council Members - Staff Chi Osse - District No. 36, Staff Staff; NYC Council Members - Staff Vickie Paladino - District No. 19, Staff Staff; NYC Council Members - Staff Keith Powers - District No. 4, Staff Staff; NYC Council Members - Staff Lincoln Restler - District No. 33, Staff Staff; NYC Council Members - Staff Kevin Riley - District No. 12, Staff Staff; NYC Council Members - Staff Carlina Rivera - District No. 2, Staff Staff; NYC Council Members - Staff Yusef Salaam - District No. 9, Staff Staff; NYC Council Members - Staff Rafael Salamanca Jr. - District No. 17, Staff Staff; NYC Council Members - Staff Pierina Ana Sanchez - District No. 14, Staff Staff; NYC Council Members - Staff Lynn C. Schulman - District No. 29, Staff Staff; NYC Council Members - Staff Althea Stevens - District No. 16, Staff Staff; NYC Council Members - Staff Sandra Ung - District No. 20, Staff Staff; NYC Council Members - Staff Inna Vernikov - District No. 48, Staff Staff; NYC Council Members - Staff Nantasha M. Williams - District No. 27, Staff Staff; NYC Council Members - Staff Julie Won - District No. 26, Staff Staff; NYC Council Members - Staff Kalman Yeger - District No. 44, Staff Staff; NYC Council Members - Staff Susan Zhuang - District No. 43, Staff Staff",
+        "count" : "64"
+      }, {
+        "item" : "City Planning Commission (CPC)  Daniel Garodnick",
+        "count" : "64"
+      }, {
+        "item" : "Mayor, Office of the (OTM) Mayor Eric Adams",
+        "count" : "58"
+      }, {
+        "item" : "NYC Council Members Shahana K. Hanif - District No. 39",
+        "count" : "58"
+      }, {
+        "item" : "NYC Council Members Adrienne Adams - District No. 28",
+        "count" : "54"
+      }, {
+        "item" : "NYC Council Members Rafael Salamanca Jr. - District No. 17",
+        "count" : "54"
+      }, {
+        "item" : "NYC Council Members Lincoln Restler - District No. 33",
+        "count" : "53"
+      }, {
+        "item" : "Transportation, Department of (DOT)  Ydanis Rodriguez",
+        "count" : "51"
+      }, {
+        "item" : "NYC Council Members Gale Brewer - District No. 6; NYC Council Members Simcha Felder - District No. 44; NYC Council Members James Gennaro - District No. 24; NYC Council Members Darlene Mealy - District No. 41; NYC Council Members Shaun Abreu - District No. 7; NYC Council Members Adrienne Adams - District No. 28; NYC Council Members Joann Ariola - District No. 32; NYC Council Members Alexa Aviles - District No. 38; NYC Council Members Diana Ayala - District No. 8; NYC Council Members Chris Banks - District No. 42; NYC Council Members Erik Bottcher - District No. 3; NYC Council Members Justin Brannan - District No. 47; NYC Council Members Selvena Brooks-Powers - District No. 31; NYC Council Members Tiffany Caban - District No. 22; NYC Council Members David Carr - District No. 50; NYC Council Members Carmen De La Rosa - District No. 10; NYC Council Members Eric Dinowitz - District No. 11; NYC Council Members Amanda Farias - District No. 18; NYC Council Members Oswald Feliz - District No. 15; NYC Council Members Jennifer Gutierrez - District No. 34; NYC Council Members Shahana K. Hanif - District No. 39; NYC Council Members Kamillah Hanks - District No. 49; NYC Council Members Robert Holden - District No. 30; NYC Council Members Crystal Hudson - District No. 35; NYC Council Members Rita C. Joseph - District No. 40; NYC Council Members Shekar Krishnan - District No. 25; NYC Council Members Linda Lee - District No. 23; NYC Council Members Farah Louis - District No. 45; NYC Council Members Kristy Marmorato - District No. 13; NYC Council Members Christopher Marte - District No. 1; NYC Council Members Julie Menin - District No. 5; NYC Council Members Frank Morano - District No. 51; NYC Council Members Francisco P. Moya - District No. 21; NYC Council Members Mercedes Narcisse - District No. 46; NYC Council Members Sandy Nurse - District No. 37; NYC Council Members Chi Osse - District No. 36; NYC Council Members Vickie Paladino - District No. 19; NYC Council Members Keith Powers - District No. 4; NYC Council Members Lincoln Restler - District No. 33; NYC Council Members Kevin Riley - District No. 12; NYC Council Members Carlina Rivera - District No. 2; NYC Council Members Yusef Salaam - District No. 9; NYC Council Members Rafael Salamanca Jr. - District No. 17; NYC Council Members Pierina Ana Sanchez - District No. 14; NYC Council Members Lynn C. Schulman - District No. 29; NYC Council Members Althea Stevens - District No. 16; NYC Council Members Sandra Ung - District No. 20; NYC Council Members Inna Vernikov - District No. 48; NYC Council Members Nantasha M. Williams - District No. 27; NYC Council Members Julie Won - District No. 26; NYC Council Members Susan Zhuang - District No. 43",
+        "count" : "51"
+      }, {
+        "item" : "NYC Council Members Crystal Hudson - District No. 35",
+        "count" : "48"
+      }, {
+        "item" : "Elections, New York City Board of (BOENY)  Tom Satie",
+        "count" : "47"
+      } ],
+      "smallest" : "Actuary, Office of  Gregory Zelikovsky",
+      "count" : "79726",
+      "cardinality" : "79726"
+    },
+    "format" : { }
+  } ],
+  "grants" : [ {
+    "inherited" : false,
+    "type" : "viewer",
+    "flags" : [ "public" ]
+  } ],
+  "metadata" : {
+    "rdfSubject" : "0",
+    "rdfClass" : "",
+    "attachments" : [ {
+      "filename" : "elobbyist_data_dictionary.xlsx",
+      "assetId" : "91c534d8-8eb2-42b1-9f09-e279283319e0",
+      "name" : "elobbyist_data_dictionary.xlsx"
+    }, {
+      "filename" : "City_Clerk_eLobbyist_Data_as_of_03012022.csv",
+      "assetId" : "9f7b1e4d-3fa4-4af6-a25a-4d235ab49cf7",
+      "name" : "City_Clerk_eLobbyist_Data_as_of_03012022.csv"
+    } ],
+    "custom_fields" : {
+      "Update" : {
+        "Automation" : "No",
+        "Date Made Public" : "4/26/2019",
+        "Update Frequency" : "Monthly"
+      },
+      "Dataset Information" : {
+        "Agency" : "Office of the City Clerk (OCC)"
+      }
+    },
+    "rowLabel" : "",
+    "availableDisplayTypes" : [ "table", "fatrow", "page" ]
+  },
+  "owner" : {
+    "id" : "5fuc-pqz2",
+    "displayName" : "NYC OpenData",
+    "profileImageUrlLarge" : "/api/users/5fuc-pqz2/profile_images/LARGE",
+    "profileImageUrlMedium" : "/api/users/5fuc-pqz2/profile_images/THUMB",
+    "profileImageUrlSmall" : "/api/users/5fuc-pqz2/profile_images/TINY",
+    "screenName" : "NYC OpenData",
+    "type" : "interactive",
+    "flags" : [ "acceptedEula", "mayBeStoriesCoOwner" ]
+  },
+  "query" : { },
+  "rights" : [ "read" ],
+  "tableAuthor" : {
+    "id" : "5fuc-pqz2",
+    "displayName" : "NYC OpenData",
+    "profileImageUrlLarge" : "/api/users/5fuc-pqz2/profile_images/LARGE",
+    "profileImageUrlMedium" : "/api/users/5fuc-pqz2/profile_images/THUMB",
+    "profileImageUrlSmall" : "/api/users/5fuc-pqz2/profile_images/TINY",
+    "screenName" : "NYC OpenData",
+    "type" : "interactive",
+    "flags" : [ "acceptedEula", "mayBeStoriesCoOwner" ]
+  },
+  "tags" : [ "lobbying", "lobbyists", "elobbyist" ],
+  "flags" : [ "default", "ownerMayBeContacted", "restorable", "restorePossibleForType" ]
+}

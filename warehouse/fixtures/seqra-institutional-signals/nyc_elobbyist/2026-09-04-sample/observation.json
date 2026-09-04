@@ -1,0 +1,27 @@
+{
+  "schema": "cityscroll.seqra_adapter_observation.v1",
+  "source_id": "nyc_elobbyist",
+  "vintage": "2026-09-04-sample",
+  "dataset_metadata_fetch": {
+    "raw_slug": "dataset_metadata",
+    "request_url_or_query": "https://data.cityofnewyork.us/api/views/fmf3-knd8.json",
+    "requested_at": "2026-09-04T07:43:59.000Z",
+    "retrieved_at": "2026-09-04T07:43:59.000Z",
+    "http_status": 200,
+    "content_type": "application/json; charset=utf-8"
+  },
+  "page_fetches": [
+    {
+      "raw_slug": "page-0000",
+      "request_url_or_query": "https://data.cityofnewyork.us/resource/fmf3-knd8.json?$limit=5&$order=:id",
+      "requested_at": "2026-09-04T07:44:00.000Z",
+      "retrieved_at": "2026-09-04T07:44:00.000Z",
+      "http_status": 200,
+      "content_type": "application/json; charset=utf-8",
+      "row_count": 5
+    }
+  ],
+  "page_size": 5,
+  "sample_scope": true,
+  "sample_scope_note": "Bounded reference sample captured by one polite, single-page live request per fetch, not a full-population pull. pagination_complete is derived from the actual row count against page_size and is honestly false here."
+}
