@@ -1648,48 +1648,6 @@
         }
       ]
     },
-    "2023K0231": {
-      "schema": "cityscroll.e_designation_project_digest.v1",
-      "project_id": "2023K0231",
-      "coverage": "partial",
-      "eligible_lot_count": 8,
-      "matched_lot_count": 1,
-      "matched_lots": [
-        "3031540026"
-      ],
-      "unmatched_lots": [
-        "3031540029",
-        "3031540030",
-        "3031540031",
-        "3031540032",
-        "3031540033",
-        "3031540035",
-        "3031540036"
-      ],
-      "conditions": [
-        {
-          "project_id": "2023K0231",
-          "bbl": "3031540026",
-          "designation_number": "E-101",
-          "condition_category": "hazardous_materials",
-          "condition_value": "Hazardous materials requirements",
-          "condition_description": "Hazardous Materials* Phase I and Phase II Testing Protocol",
-          "source_dataset": "hxm3-23vy",
-          "source_row_id": "row-ds6d-5zs7~vm67",
-          "source_date": "2001-04-17T00:00:00.000",
-          "source_vintage": "2026-08-12",
-          "source_url": "https://data.cityofnewyork.us/resource/hxm3-23vy.json?$where=:id='row-ds6d-5zs7~vm67'",
-          "join_method": "exact_bbl_intersection",
-          "join_method_version": "ldp15_exact_keys_v1",
-          "join_key": "3031540026",
-          "join_basis": {
-            "exact_ulurp": false,
-            "exact_ceqr": false,
-            "exact_bbl_intersection": true
-          }
-        }
-      ]
-    },
     "2023K0248": {
       "schema": "cityscroll.e_designation_project_digest.v1",
       "project_id": "2023K0248",
@@ -2552,7 +2510,7 @@
       "unmatched_lots": [
         "1019290029",
         "1019290150",
-        "1019290158"
+        "1019297505"
       ],
       "conditions": [
         {
@@ -3570,6 +3528,63 @@
           "join_method": "exact_bbl_intersection",
           "join_method_version": "ldp15_exact_keys_v1",
           "join_key": "4004280001",
+          "join_basis": {
+            "exact_ulurp": false,
+            "exact_ceqr": false,
+            "exact_bbl_intersection": true
+          }
+        }
+      ]
+    },
+    "2025Q0335": {
+      "schema": "cityscroll.e_designation_project_digest.v1",
+      "project_id": "2025Q0335",
+      "coverage": "partial",
+      "eligible_lot_count": 2,
+      "matched_lot_count": 1,
+      "matched_lots": [
+        "4019060001"
+      ],
+      "unmatched_lots": [
+        "4019060011"
+      ],
+      "conditions": [
+        {
+          "project_id": "2025Q0335",
+          "bbl": "4019060001",
+          "designation_number": "E-680",
+          "condition_category": "air_quality",
+          "condition_value": "Air quality requirements",
+          "condition_description": "Air Quality - HVAC fuel limited to natural gas;Air Quality - HVAC natural gas with low Nox only;Exhaust stack location limitations;Window Wall Attenuation & Alternate Ventilation",
+          "source_dataset": "hxm3-23vy",
+          "source_row_id": "row-bwzb_tgtx-dgv3",
+          "source_date": "2023-01-19T00:00:00.000",
+          "source_vintage": "2026-08-12",
+          "source_url": "https://data.cityofnewyork.us/resource/hxm3-23vy.json?$where=:id='row-bwzb_tgtx-dgv3'",
+          "join_method": "exact_bbl_intersection",
+          "join_method_version": "ldp15_exact_keys_v1",
+          "join_key": "4019060001",
+          "join_basis": {
+            "exact_ulurp": false,
+            "exact_ceqr": false,
+            "exact_bbl_intersection": true
+          }
+        },
+        {
+          "project_id": "2025Q0335",
+          "bbl": "4019060001",
+          "designation_number": "E-680",
+          "condition_category": "noise",
+          "condition_value": "Noise requirements",
+          "condition_description": "Air Quality - HVAC fuel limited to natural gas;Air Quality - HVAC natural gas with low Nox only;Exhaust stack location limitations;Window Wall Attenuation & Alternate Ventilation",
+          "source_dataset": "hxm3-23vy",
+          "source_row_id": "row-bwzb_tgtx-dgv3",
+          "source_date": "2023-01-19T00:00:00.000",
+          "source_vintage": "2026-08-12",
+          "source_url": "https://data.cityofnewyork.us/resource/hxm3-23vy.json?$where=:id='row-bwzb_tgtx-dgv3'",
+          "join_method": "exact_bbl_intersection",
+          "join_method_version": "ldp15_exact_keys_v1",
+          "join_key": "4019060001",
           "join_basis": {
             "exact_ulurp": false,
             "exact_ceqr": false,

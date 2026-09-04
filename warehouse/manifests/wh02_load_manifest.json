@@ -2,7 +2,7 @@
   "schema_version": 1,
   "phase": "WH-02",
   "title": "First bulk pack into the warehouse (CPU-capped, incremental)",
-  "updated_at": "2026-08-18T02:25:10Z",
+  "updated_at": "2026-09-04T11:13:06Z",
   "strategy": "smallest_or_most_valuable_first_sequential",
   "first_pick": "ocp-recent-contract-awards",
   "first_pick_rationale": "Named on the WH-02 card, already WH-01 fixture-proven, ~53k rows \u2014 real bulk volume without City Record's ~1.1M row surface. Money-spine value high.",
@@ -24,7 +24,7 @@
     "commit_small_samples": false,
     "note": "Bulk lives under warehouse/raw|parquet|duckdb (gitignored) or CITYSCROLL_WAREHOUSE_ROOT; bulk_sample.csv is local-only"
   },
-  "headroom_evidence_line": "OCP and City Record ran unthrottled on a dedicated compute host; ZAP-BBL ran under taskpolicy on the interactive host.",
+  "headroom_evidence_line": "headroom CONSTRAINED \u00b7 load 3.0/4c \u00b7 cpu 35% \u00b7 runq 2 \u00b7 mem 45% \u00b7 swap 89%/score 100 \u00b7 mem_fit 5 \u00b7 agents 7 \u00b7 disk 22.3GB \u00b7 local=1 api=5",
   "loaded": [
     {
       "dataset_id": "ocp-recent-contract-awards",
@@ -146,34 +146,34 @@
       "dataset_id": "zap-bbl",
       "socrata_dataset_id": "2iga-a6mk",
       "table_name": "zap_bbl",
-      "snapshot_date": "2026-08-05",
-      "observed_at": "2026-08-05T10:36:34Z",
+      "snapshot_date": "2026-09-04",
+      "observed_at": "2026-09-04T11:12:42Z",
       "mode": "soda_bulk",
-      "row_count": 131960,
-      "raw_bytes": 9698912,
-      "raw_sha256": "4414b0d8c51966561b871e619031d448ee4ee854917966a2cdfcbc26751c22d5",
-      "parquet_bytes": 1047648,
-      "parquet_row_count": 131960,
+      "row_count": 132090,
+      "raw_bytes": 9708312,
+      "raw_sha256": "332262f20a45ebe42fc4e7b35c8fb2e0628a86aba33af53f8b7807212b52375f",
+      "parquet_bytes": 1049034,
+      "parquet_row_count": 132090,
       "headroom": {
-        "constrained": false,
+        "constrained": true,
         "ok": true,
         "post_ingest": {
-          "constrained": false,
+          "constrained": true,
           "ok": true,
           "problems": [],
-          "returncode": 0,
-          "status": "ok"
+          "returncode": 1,
+          "status": "constrained"
         },
         "pre_convert": {
-          "constrained": false,
+          "constrained": true,
           "ok": true,
           "problems": [],
-          "returncode": 0,
-          "status": "ok"
+          "returncode": 1,
+          "status": "constrained"
         },
         "problems": [],
-        "returncode": 0,
-        "status": "ok"
+        "returncode": 1,
+        "status": "constrained"
       },
       "proof_receipt": "warehouse/receipts/proof/zap-bbl_bulk_latest.json",
       "verify_sql": "warehouse/sql/examples/zap_bbl_bulk_verify.sql"

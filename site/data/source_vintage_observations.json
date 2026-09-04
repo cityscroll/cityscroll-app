@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.source_vintage_observations.v1",
-  "generated_at": "2026-08-31T15:25:45.297Z",
+  "generated_at": "2026-09-04T11:12:46.107Z",
   "contract_count": 63,
   "observations": [
     {
@@ -1920,7 +1920,7 @@
       "publisher_last_update_basis": null,
       "cityscroll_retrieval": {
         "status": "succeeded",
-        "retrieved_at": "2026-08-05T10:36:34.000Z",
+        "retrieved_at": "2026-09-04T11:12:42.000Z",
         "receipt_ref": null,
         "receipt_schema": "cityscroll.source_acquisition_receipt.v1",
         "run_id": "warehouse/receipts/proof/zap-bbl_bulk_latest.json"

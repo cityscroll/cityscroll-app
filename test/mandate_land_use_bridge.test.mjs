@@ -7,6 +7,7 @@ import test from "node:test";
 import { AGENCY_CONSTELLATION_SECTIONS } from "../site/agency_constellation_section_registry.mjs";
 import {
   buildAgencyConstellationView,
+  renderAgencyConstellationDeferredFragment,
   renderAgencyConstellationDocument,
 } from "../site/agency_constellation.mjs";
 import {
@@ -14,7 +15,9 @@ import {
   normalizeLandUseActionType,
 } from "../site/land_use_action_type.mjs";
 import {
+  CLASS_GOVERNED_LAND_USE_KINDS,
   MANDATE_GOVERNS_PROCEDURE,
+  MANDATE_LAND_USE_CLASS_IDENTITY_BASIS,
   MANDATE_LAND_USE_EDGE_TYPE,
   MANDATE_LAND_USE_METHOD,
   PROJECT_PARTICIPATES_IN_PROCEDURE,
@@ -23,8 +26,11 @@ import {
   composePublicProcedurePaths,
   landActionKinds,
   landProcedureKinds,
+  mandateActionClassIdentity,
+  mandateLandUseIdentity,
   mandateLandUseKinds,
   mandateLandUseProcedures,
+  projectPlaceIdentity,
   renderMandateLandUseSection,
 } from "../site/mandate_land_use_bridge.mjs";
 import {
@@ -220,35 +226,114 @@ test("unresolved land-use mandates render nothing", () => {
   assert.equal(renderMandateLandUseSection(view), "");
 });
 
-test("live Landmarks materialization keeps agency-only land actions in shadow", () => {
+test("live Landmarks materialization restores the class-governed zoning edges (PC-04 regression)", () => {
+  // Pins the LPC case from PC-04: the commission's three "landmark"
+  // obligations under Administrative Code § 25-303(l) never name a place —
+  // the law is written to govern every landmark item under consideration,
+  // not one of them — so a legitimate identity basis other than place must
+  // be established, or these obligations wrongly render as though nothing
+  // were expected of the agency at all. A deterministic rebuild from the
+  // currently committed sources must reproduce exactly the 3 obligations x
+  // 3 in-flight LPC landmark designations = 9 edges the committed
+  // conformance lookup has historically carried for this agency.
   const view = buildAgencyConstellationView("landmarks-preservation-commission", {
     obligations,
     intelligence,
     land_projects: landProjects,
   });
-  assert.equal(view.mandates_land_use.edges.length, 0);
-  assert.ok(view.mandates_land_use.shadow_edges.length >= 1);
-  assert.ok(view.mandates_land_use.shadow_edges.every((edge) => edge.decision === "evidence_only"));
-  // Agency-only actions never promote: withholding reason is missing project
-  // identity on the mandate. Phase may be compatible on current sell-facing
-  // rows after a WH-05 refresh; that alone must not publish the edge.
-  assert.ok(view.mandates_land_use.shadow_edges.every((edge) => {
-    const reasons = Array.isArray(edge.reason) ? edge.reason : [edge.reason];
-    return reasons.includes("project_identity");
-  }));
-  assert.ok(view.mandates_land_use.shadow_edges.every((edge) => edge.match?.project_identity === false));
-  assert.ok(view.mandates_land_use.shadow_edges.every((edge) => (
+  const landUse = view.mandates_land_use;
+  assert.equal(landUse.edges.length, 9);
+  assert.equal(landUse.shadow_edges.length, 0);
+  assert.deepEqual(
+    new Set(landUse.edges.map((edge) => edge.mandate.mandate_id)),
+    new Set(["54431-001", "54431-002", "54431-003"]),
+  );
+  assert.ok(landUse.edges.every((edge) => edge.entity_link.decision === "auto_link"));
+  assert.ok(landUse.edges.every((edge) => edge.entity_link.tier === "public_inferred"));
+  // Never a fabricated place match: the mandate itself carries no place
+  // field, so the recorded basis is the closed action-family vocabulary,
+  // honestly distinct from a genuine project_place_identity match.
+  assert.ok(landUse.edges.every((edge) => edge.match.project_identity === true));
+  assert.ok(landUse.edges.every((edge) => edge.match.identity_basis === MANDATE_LAND_USE_CLASS_IDENTITY_BASIS));
+  assert.ok(landUse.edges.every((edge) => edge.match.project_identity_detail.matched === false));
+  assert.ok(landUse.edges.every((edge) => (
     edge.land_action.action_kinds.includes("landmark")
   )));
-  // Landmark designation is a family. Procedure paths require a shared
+  assert.ok(landUse.edges.every((edge) => (
+    edge.entity_link.evidence.class_identity_detail.matched === true
+  )));
+  // Landmark designation is a family, not a review procedure: it never
+  // composes into a procedure path, and procedure paths require a shared
   // ulurp|elurp|non_ulurp kind named by both the law and the publisher row.
-  assert.ok(view.mandates_land_use.project_procedure_edges.every((edge) => (
+  assert.ok(landUse.project_procedure_edges.every((edge) => (
     edge.to === "procedure:non_ulurp" || edge.to === "procedure:ulurp" || edge.to === "procedure:elurp"
   )));
-  assert.equal(view.mandates_land_use.procedure_paths.length, 0);
-  const html = renderAgencyConstellationDocument(view);
+  assert.equal(landUse.procedure_paths.length, 0);
+  const html = renderAgencyConstellationDeferredFragment(view);
   assert.doesNotMatch(html, /Landmark designation procedure/);
-  assert.doesNotMatch(html, /requires project|mandate requires this project/i);
+  assert.match(html, /requires land-use action/);
+  // The class basis is surfaced, not silently presented as a place match.
+  assert.match(html, /governs every action of this kind rather than naming one project/);
+});
+
+test("a mandate carrying its own place field never falls back to the class basis", () => {
+  // Protects against over-relaxation: a landmark mandate that legitimately
+  // names a place, but fails to match any candidate on it, is a genuine
+  // data gap — not license to treat every landmark action as class-governed.
+  const view = buildMandateLandUseView("landmarks-preservation-commission", {
+    obligationsLookup: {
+      by_agency: {
+        "landmarks-preservation-commission": { obligations: [{
+          ...mandate,
+          project_id: "some-other-site",
+        }] },
+      },
+    },
+    entityIntelligence: {
+      by_ref: { "agency:id:landmarks-preservation-commission": { domains: { land: { objects: [{
+        project_id: "right",
+        subject_ref: "project:right",
+        link_type: "applicant_agency",
+        provenance: { input_value: "Landmarks Preservation Commission" },
+      }] } } } },
+    },
+    landProjects: { rows: [{
+      project_id: "right",
+      project_name: "Public School Annex (LP-1000)",
+      actions: "HI",
+      primary_applicant: "Landmarks Preservation Commission",
+      current_milestone: "Designation approved",
+    }] },
+  });
+  assert.equal(view.edges.length, 0);
+  assert.equal(view.shadow_edges.length, 1);
+  assert.equal(view.shadow_edges[0].match.identity_basis, null);
+  assert.ok(view.shadow_edges[0].reason.includes("project_identity"));
+});
+
+test("mandateActionClassIdentity only fires for a closed, place-free action family", () => {
+  assert.deepEqual(CLASS_GOVERNED_LAND_USE_KINDS, ["landmark"]);
+  assert.equal(mandateActionClassIdentity({}, ["landmark"]).matched, true);
+  assert.equal(mandateActionClassIdentity({}, ["landmark"]).basis, MANDATE_LAND_USE_CLASS_IDENTITY_BASIS);
+  // Not a member of the closed vocabulary: no class basis.
+  assert.equal(mandateActionClassIdentity({}, ["rezoning"]).matched, false);
+  // A mandate carrying a place field is never let through on class alone.
+  assert.equal(mandateActionClassIdentity({ project_id: "right" }, ["landmark"]).matched, false);
+  // Empty subject scope never fires.
+  assert.equal(mandateActionClassIdentity({}, []).matched, false);
+
+  const placeMatch = mandateLandUseIdentity({ project_id: "right" }, { project_id: "right" }, ["landmark"]);
+  assert.equal(placeMatch.matched, true);
+  assert.equal(placeMatch.basis, "project_place_identity");
+  assert.deepEqual(placeMatch.place, projectPlaceIdentity({ project_id: "right" }, { project_id: "right" }));
+
+  const classMatch = mandateLandUseIdentity({}, { project_id: "right" }, ["landmark"]);
+  assert.equal(classMatch.matched, true);
+  assert.equal(classMatch.basis, MANDATE_LAND_USE_CLASS_IDENTITY_BASIS);
+
+  const noMatch = mandateLandUseIdentity({}, { project_id: "right" }, ["rezoning"]);
+  assert.equal(noMatch.matched, false);
+  assert.equal(noMatch.basis, null);
 });
 
 test("PQ is acquisition and ELURP is a first-class procedure edge", () => {

@@ -48,7 +48,7 @@ const DEFAULT_FILTER = Object.freeze({ status: "active", stage: "any", limit: 40
 /** A 25-lot rezoning: on the map, and emphatically not at an address. */
 const ANCHOR_SPECIMEN = "2025K0305";
 /** A project with no published point at all -- reachable only through the List. */
-const UNMAPPED_SPECIMEN = "2026K0123";
+const UNMAPPED_SPECIMEN = "2025M0252";
 
 const rowsFor = (overrides = {}) =>
   filterLandSnapshot(landDefault.projects, { ...DEFAULT_FILTER, ...overrides });
@@ -66,8 +66,8 @@ const panelFor = (selectedProjectId, currentHash = "#land") =>
 test("the default 40-row corpus keeps its documented mapped/unmapped split", () => {
   const model = modelFor(null);
   assert.equal(model.counts.total, 40);
-  assert.equal(model.counts.mapped, 29);
-  assert.equal(model.counts.unmapped, 11);
+  assert.equal(model.counts.mapped, 33);
+  assert.equal(model.counts.unmapped, 7);
   const rows = rowsFor();
   assert.ok(rows.some((row) => row.project_id === ANCHOR_SPECIMEN), "anchor specimen left the corpus");
   assert.ok(rows.some((row) => row.project_id === UNMAPPED_SPECIMEN), "unmapped specimen left the corpus");

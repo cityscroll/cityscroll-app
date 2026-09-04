@@ -2,11 +2,11 @@
   "schema": "cityscroll.architecture.watermark-shard.v1",
   "id": "canary:ontology-registry",
   "owner": "canary:ontology-registry",
-  "updated_at": "2026-09-04T00:42:28-04:00",
-  "commit": "290214a747afabdc30aab7904891bc43c492391c",
+  "updated_at": "2026-09-04T06:04:02Z",
+  "commit": "7116f50451f0316815491b856a45eeecc345d45d",
   "value": {
     "path": "ontology/registry.v0.json",
-    "count": 165,
-    "fingerprint": "c1a41e47a45fbf2fea201cd11a1e1f417057c75ee2f773d9e0645213b369ef2d"
+    "count": 168,
+    "fingerprint": "ce8d8b302570fe62de14fba153652051d5b96088ce603ce20fe7e26d3382aa8f"
   }
 }

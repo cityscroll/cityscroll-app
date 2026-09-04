@@ -66,11 +66,11 @@ const ACTION_ROWS = Array.isArray(hearings.hearings) ? hearings.hearings : [];
 const TODAY = "2026-08-31";
 
 /** The committed baseline this card may not move without proving the source data moved. */
-const BASELINE = Object.freeze({ total: 40, mapped: 29, unmapped: 11 });
+const BASELINE = Object.freeze({ total: 40, mapped: 33, unmapped: 7 });
 /** A 25-lot rezoning that is on the map. */
 const MAPPED_SPECIMEN = "2025K0305";
 /** A filtered project with no published point. It stays in the List and in the total. */
-const UNMAPPED_SPECIMEN = "2026K0123";
+const UNMAPPED_SPECIMEN = "2025M0252";
 /** A point key the filtered rows never produce. It may never mint a marker. */
 const POINT_ONLY_ID = "2099Z9999";
 
@@ -559,7 +559,7 @@ test("A3 a filter change clears an out-of-scope selection without changing the n
 
 /* ---------------------------------------- A4: the populations that hide in count-only tests --- */
 
-test("A4 the default scope keeps the 40/29/11 arithmetic", () => {
+test("A4 the default scope keeps the 40/33/7 arithmetic", () => {
   const { receipt } = runRoute(landRoute({ status: "all", stage: "any" }));
   assertParity("default", receipt);
   assert.equal(receipt.counts.total, BASELINE.total);
@@ -579,11 +579,11 @@ test("A4 a scope whose only result is mapped", () => {
 });
 
 test("A4 a scope whose only result has no published location", () => {
-  const { receipt } = runRoute(landRoute({ status: "all", stage: "any", cd: "K09" }));
+  const { receipt } = runRoute(landRoute({ status: "all", stage: "any", cd: "Q07" }));
   assertParity("unmapped only", receipt);
-  assert.deepEqual(receipt.canonical_ids, [UNMAPPED_SPECIMEN]);
+  assert.deepEqual(receipt.canonical_ids, ["2024Q0135"]);
   assert.deepEqual(receipt.marker_ids, []);
-  assert.deepEqual(receipt.unmapped_ids, [UNMAPPED_SPECIMEN]);
+  assert.deepEqual(receipt.unmapped_ids, ["2024Q0135"]);
   assert.deepEqual(receipt.counts, { total: 1, mapped: 0, unmapped: 1 });
   // The project is still a result. A map with no markers has not emptied the search.
   assert.equal(receipt.list_ids.length, 1);

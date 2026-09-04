@@ -547,8 +547,8 @@
     },
     "mandate_land_use": {
       "totals": {
-        "public_inferred": 0,
-        "evidence_only": 13
+        "public_inferred": 9,
+        "evidence_only": 4
       },
       "denominators": {
         "eligible_left_rows": 13,
@@ -556,11 +556,12 @@
         "pre_route_pairs": 3094
       },
       "by_tier": {
-        "evidence_only": 13
+        "evidence_only": 4,
+        "public_inferred": 9
       },
       "by_reason": {
         "mandate_phase_compatible": 4,
-        "project_identity": 13
+        "project_identity": 4
       },
       "by_agency": {
         "administration-for-childrens-services": {
@@ -882,11 +883,9 @@
             "source_rows": 238,
             "pre_route_pairs": 714
           },
-          "public_inferred": 0,
-          "evidence_only": 9,
-          "reason_counts": {
-            "project_identity": 9
-          }
+          "public_inferred": 9,
+          "evidence_only": 0,
+          "reason_counts": {}
         },
         "law-department": {
           "denominators": {
@@ -1060,7 +1059,7 @@
         }
       },
       "by_source_system": {
-        "warehouse": 9,
+        "soda": 9,
         "zap-projects": 4
       }
     },
@@ -1071,7 +1070,7 @@
       },
       "denominators": {
         "eligible_left_rows": 11,
-        "source_rows": 204,
+        "source_rows": 207,
         "pre_route_pairs": 51
       },
       "by_tier": {
@@ -1164,7 +1163,7 @@
         "city-council": {
           "denominators": {
             "eligible_left_rows": 0,
-            "source_rows": 1,
+            "source_rows": 0,
             "pre_route_pairs": 0
           },
           "public_inferred": 0,
@@ -1224,7 +1223,7 @@
         "comptroller": {
           "denominators": {
             "eligible_left_rows": 0,
-            "source_rows": 1,
+            "source_rows": 0,
             "pre_route_pairs": 0
           },
           "public_inferred": 0,
@@ -1254,7 +1253,7 @@
         "criminal-justice-coordinator": {
           "denominators": {
             "eligible_left_rows": 0,
-            "source_rows": 0,
+            "source_rows": 6,
             "pre_route_pairs": 0
           },
           "public_inferred": 0,
@@ -1396,7 +1395,7 @@
         "landmarks-preservation-commission": {
           "denominators": {
             "eligible_left_rows": 0,
-            "source_rows": 3,
+            "source_rows": 2,
             "pre_route_pairs": 0
           },
           "public_inferred": 0,
