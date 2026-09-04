@@ -14,7 +14,7 @@
     "agency_count": 49,
     "mandate_count": 2931,
     "detectable_mandate_count": 735,
-    "observed_count": 9,
+    "observed_count": 18,
     "detectable_deliverables": [
       "rulemaking",
       "report"
@@ -41117,14 +41117,14 @@
       "as_of": "2026-08-30",
       "counts": {
         "total": 6,
-        "observed": 0,
-        "expected_not_yet_observed": 5,
+        "observed": 9,
+        "expected_not_yet_observed": 2,
         "on_track": 0,
         "enrichment_pending": 2,
         "evidence_only": 0,
         "detectable": 4,
-        "appeared": 0,
-        "not_yet_observed": 5,
+        "appeared": 9,
+        "not_yet_observed": 2,
         "data_incomplete": 2
       },
       "categories": [
@@ -41132,36 +41132,114 @@
         "zoning"
       ],
       "category_counts": {
+        "zoning": {
+          "total": 9,
+          "appeared": 9,
+          "not_yet_observed": 0,
+          "data_incomplete": 0
+        },
         "meetings": {
           "total": 2,
           "appeared": 0,
           "not_yet_observed": 2,
-          "data_incomplete": 0
-        },
-        "zoning": {
-          "total": 3,
-          "appeared": 0,
-          "not_yet_observed": 3,
           "data_incomplete": 0
         }
       },
       "share_path": "/agencies/landmarks-preservation-commission/#mandates-conformance",
       "candidate_corpus_size": 14,
       "observations": {
-        "54431-002": {
-          "status": "expected_not_yet_observed",
-          "observation_state": "not_yet_observed",
-          "category": "meetings",
+        "54431-001": {
+          "status": "observed",
+          "observation_state": "appeared",
+          "category": "zoning",
           "data_as_of": "2026-08-30",
-          "label": "Expected; no matching evidence in current sources",
+          "label": "Appeared",
           "expected_event": {
-            "kind": "public_hearing",
-            "label": "Public meeting or hearing",
+            "kind": "land_use_action",
+            "label": "Land-use or zoning action",
             "deliverable_type": "other",
             "deadline_date": null
           },
-          "observed_record": null,
-          "match": null,
+          "observed_record": {
+            "request_id": null,
+            "label": "Lithuanian Alliance Building (LP-2695)",
+            "when": "2026-06-06",
+            "href": "/#land?project=2026M0445",
+            "signal_kind": "land_use_action",
+            "lifecycle_status": null,
+            "lifecycle_label": null,
+            "effective_date": null,
+            "adoption_date": null
+          },
+          "match": {
+            "shared_tokens": [],
+            "publication": null,
+            "evidence": null
+          },
+          "is_compliance_verdict": false,
+          "adjudication": "not_adjudicated",
+          "method": "mandate_expected_vs_observed_v1"
+        },
+        "54431-002": {
+          "status": "observed",
+          "observation_state": "appeared",
+          "category": "zoning",
+          "data_as_of": "2026-08-30",
+          "label": "Appeared",
+          "expected_event": {
+            "kind": "land_use_action",
+            "label": "Land-use or zoning action",
+            "deliverable_type": "other",
+            "deadline_date": null
+          },
+          "observed_record": {
+            "request_id": null,
+            "label": "Lithuanian Alliance Building (LP-2695)",
+            "when": "2026-06-06",
+            "href": "/#land?project=2026M0445",
+            "signal_kind": "land_use_action",
+            "lifecycle_status": null,
+            "lifecycle_label": null,
+            "effective_date": null,
+            "adoption_date": null
+          },
+          "match": {
+            "shared_tokens": [],
+            "publication": null,
+            "evidence": null
+          },
+          "is_compliance_verdict": false,
+          "adjudication": "not_adjudicated",
+          "method": "mandate_expected_vs_observed_v1"
+        },
+        "54431-003": {
+          "status": "observed",
+          "observation_state": "appeared",
+          "category": "zoning",
+          "data_as_of": "2026-08-30",
+          "label": "Appeared",
+          "expected_event": {
+            "kind": "land_use_action",
+            "label": "Land-use or zoning action",
+            "deliverable_type": "other",
+            "deadline_date": null
+          },
+          "observed_record": {
+            "request_id": null,
+            "label": "Lithuanian Alliance Building (LP-2695)",
+            "when": "2026-06-06",
+            "href": "/#land?project=2026M0445",
+            "signal_kind": "land_use_action",
+            "lifecycle_status": null,
+            "lifecycle_label": null,
+            "effective_date": null,
+            "adoption_date": null
+          },
+          "match": {
+            "shared_tokens": [],
+            "publication": null,
+            "evidence": null
+          },
           "is_compliance_verdict": false,
           "adjudication": "not_adjudicated",
           "method": "mandate_expected_vs_observed_v1"
@@ -41175,42 +41253,6 @@
           "expected_event": {
             "kind": "public_hearing",
             "label": "Public meeting or hearing",
-            "deliverable_type": "other",
-            "deadline_date": null
-          },
-          "observed_record": null,
-          "match": null,
-          "is_compliance_verdict": false,
-          "adjudication": "not_adjudicated",
-          "method": "mandate_expected_vs_observed_v1"
-        },
-        "54431-001": {
-          "status": "expected_not_yet_observed",
-          "observation_state": "not_yet_observed",
-          "category": "zoning",
-          "data_as_of": "2026-08-30",
-          "label": "Expected; no matching evidence in current sources",
-          "expected_event": {
-            "kind": "land_use_action",
-            "label": "Land-use or zoning action",
-            "deliverable_type": "other",
-            "deadline_date": null
-          },
-          "observed_record": null,
-          "match": null,
-          "is_compliance_verdict": false,
-          "adjudication": "not_adjudicated",
-          "method": "mandate_expected_vs_observed_v1"
-        },
-        "54431-003": {
-          "status": "expected_not_yet_observed",
-          "observation_state": "not_yet_observed",
-          "category": "zoning",
-          "data_as_of": "2026-08-30",
-          "label": "Expected; no matching evidence in current sources",
-          "expected_event": {
-            "kind": "land_use_action",
-            "label": "Land-use or zoning action",
             "deliverable_type": "other",
             "deadline_date": null
           },
@@ -41258,6 +41300,1167 @@
         }
       },
       "edge_observations": [
+        {
+          "conformance_id": "54431-001:zoning:project:2026K0443",
+          "mandate_id": "54431-001",
+          "edge_type": "requires_land_use_action",
+          "edge": {
+            "type": "requires_land_use_action",
+            "from": "mandate:54431-001",
+            "to": "project:2026K0443",
+            "claim_id": "entity-link:mandate-land-use:54431-001:2026k0443",
+            "claim_inspect_href": "/agencies/landmarks-preservation-commission/?claim=entity-link%3Amandate-land-use%3A54431-001%3A2026k0443",
+            "warrant_class": "not_yet_classified",
+            "method": "mandate_land_use_identity_phase_v2",
+            "confidence": "strong",
+            "publication_tier": null,
+            "provenance": {
+              "schema": "cityscroll.graph_edge_provenance.v1",
+              "method": "graph_edge_provenance_v1",
+              "claim_id": "entity-link:mandate-land-use:54431-001:2026k0443",
+              "kind": "graph_edge_claim",
+              "subject_ref": "project:2026K0443",
+              "root_ref": "mandate:54431-001",
+              "category_id": "mandate-land-use",
+              "relation": "requires land use action",
+              "label": "Public School 15 Annex (LP-2696)",
+              "object_href": "/#land?project=2026K0443",
+              "where": {
+                "source_system": {
+                  "available": true,
+                  "value": "soda"
+                },
+                "source_record_id": {
+                  "available": true,
+                  "value": "soda:2026K0443"
+                },
+                "source_href": {
+                  "available": false
+                },
+                "source_fields": {
+                  "available": true,
+                  "value": [
+                    "primary_applicant",
+                    "actions",
+                    "project_id"
+                  ]
+                },
+                "input_value": {
+                  "available": true,
+                  "value": "Landmarks Preservation Commission · HI"
+                },
+                "observed_at": {
+                  "available": true,
+                  "value": "2026-06-06"
+                },
+                "basis": {
+                  "available": true,
+                  "value": "agency+land_action_kind+closed_action_family_vocabulary_v1+mandate_phase"
+                },
+                "source_excerpt": {
+                  "available": true,
+                  "value": "Public School 15 Annex (LP-2696)"
+                }
+              },
+              "how": {
+                "method": {
+                  "available": true,
+                  "value": "mandate_land_use_identity_phase_v2"
+                },
+                "warrant_class": "not_yet_classified",
+                "warrant_label": "Not yet classified",
+                "decision": "auto_link"
+              },
+              "cross_spine": {
+                "confidence": "unmatched",
+                "explicit": false
+              },
+              "confidence": {
+                "band": "strong",
+                "identity_stance": "strong_link",
+                "identity_label": "Strong connection",
+                "standable": false,
+                "counts_as_verified_total": false
+              },
+              "enrichment": {
+                "entity_link_id": {
+                  "available": true,
+                  "value": "entity-link:mandate-land-use:54431-001:2026k0443"
+                },
+                "resolution_run_id": {
+                  "available": true,
+                  "value": "resolution-run:mandate-land-use:landmarks-preservation-commission:2026-08-07t23:52:53.226z-2026-08-11t21:12:40.677z-2026"
+                },
+                "next": null,
+                "missing_fields": []
+              },
+              "inspect_href": "/agencies/landmarks-preservation-commission/?claim=entity-link%3Amandate-land-use%3A54431-001%3A2026k0443",
+              "share_href": "/agencies/landmarks-preservation-commission/?claim=entity-link%3Amandate-land-use%3A54431-001%3A2026k0443"
+            }
+          },
+          "status": "observed",
+          "observation_state": "appeared",
+          "category": "zoning",
+          "data_as_of": "2026-08-30",
+          "label": "Appeared",
+          "expected_event": {
+            "kind": "land_use_action",
+            "label": "Land-use or zoning action",
+            "deliverable_type": "other",
+            "deadline_date": null
+          },
+          "observed_record": {
+            "request_id": null,
+            "label": "Public School 15 Annex (LP-2696)",
+            "when": "2026-06-06",
+            "href": "/#land?project=2026K0443",
+            "signal_kind": "land_use_action",
+            "lifecycle_status": null,
+            "lifecycle_label": null,
+            "effective_date": null,
+            "adoption_date": null
+          },
+          "match": {
+            "shared_tokens": [],
+            "publication": null,
+            "evidence": null
+          },
+          "is_compliance_verdict": false,
+          "adjudication": "not_adjudicated",
+          "method": "mandate_expected_vs_observed_v1"
+        },
+        {
+          "conformance_id": "54431-001:zoning:project:2026M0444",
+          "mandate_id": "54431-001",
+          "edge_type": "requires_land_use_action",
+          "edge": {
+            "type": "requires_land_use_action",
+            "from": "mandate:54431-001",
+            "to": "project:2026M0444",
+            "claim_id": "entity-link:mandate-land-use:54431-001:2026m0444",
+            "claim_inspect_href": "/agencies/landmarks-preservation-commission/?claim=entity-link%3Amandate-land-use%3A54431-001%3A2026m0444",
+            "warrant_class": "not_yet_classified",
+            "method": "mandate_land_use_identity_phase_v2",
+            "confidence": "strong",
+            "publication_tier": null,
+            "provenance": {
+              "schema": "cityscroll.graph_edge_provenance.v1",
+              "method": "graph_edge_provenance_v1",
+              "claim_id": "entity-link:mandate-land-use:54431-001:2026m0444",
+              "kind": "graph_edge_claim",
+              "subject_ref": "project:2026M0444",
+              "root_ref": "mandate:54431-001",
+              "category_id": "mandate-land-use",
+              "relation": "requires land use action",
+              "label": "Church of Saint Mary (LP-2694)",
+              "object_href": "/#land?project=2026M0444",
+              "where": {
+                "source_system": {
+                  "available": true,
+                  "value": "soda"
+                },
+                "source_record_id": {
+                  "available": true,
+                  "value": "soda:2026M0444"
+                },
+                "source_href": {
+                  "available": false
+                },
+                "source_fields": {
+                  "available": true,
+                  "value": [
+                    "primary_applicant",
+                    "actions",
+                    "project_id"
+                  ]
+                },
+                "input_value": {
+                  "available": true,
+                  "value": "Landmarks Preservation Commission · HI"
+                },
+                "observed_at": {
+                  "available": true,
+                  "value": "2026-06-06"
+                },
+                "basis": {
+                  "available": true,
+                  "value": "agency+land_action_kind+closed_action_family_vocabulary_v1+mandate_phase"
+                },
+                "source_excerpt": {
+                  "available": true,
+                  "value": "Church of Saint Mary (LP-2694)"
+                }
+              },
+              "how": {
+                "method": {
+                  "available": true,
+                  "value": "mandate_land_use_identity_phase_v2"
+                },
+                "warrant_class": "not_yet_classified",
+                "warrant_label": "Not yet classified",
+                "decision": "auto_link"
+              },
+              "cross_spine": {
+                "confidence": "unmatched",
+                "explicit": false
+              },
+              "confidence": {
+                "band": "strong",
+                "identity_stance": "strong_link",
+                "identity_label": "Strong connection",
+                "standable": false,
+                "counts_as_verified_total": false
+              },
+              "enrichment": {
+                "entity_link_id": {
+                  "available": true,
+                  "value": "entity-link:mandate-land-use:54431-001:2026m0444"
+                },
+                "resolution_run_id": {
+                  "available": true,
+                  "value": "resolution-run:mandate-land-use:landmarks-preservation-commission:2026-08-07t23:52:53.226z-2026-08-11t21:12:40.677z-2026"
+                },
+                "next": null,
+                "missing_fields": []
+              },
+              "inspect_href": "/agencies/landmarks-preservation-commission/?claim=entity-link%3Amandate-land-use%3A54431-001%3A2026m0444",
+              "share_href": "/agencies/landmarks-preservation-commission/?claim=entity-link%3Amandate-land-use%3A54431-001%3A2026m0444"
+            }
+          },
+          "status": "observed",
+          "observation_state": "appeared",
+          "category": "zoning",
+          "data_as_of": "2026-08-30",
+          "label": "Appeared",
+          "expected_event": {
+            "kind": "land_use_action",
+            "label": "Land-use or zoning action",
+            "deliverable_type": "other",
+            "deadline_date": null
+          },
+          "observed_record": {
+            "request_id": null,
+            "label": "Church of Saint Mary (LP-2694)",
+            "when": "2026-06-06",
+            "href": "/#land?project=2026M0444",
+            "signal_kind": "land_use_action",
+            "lifecycle_status": null,
+            "lifecycle_label": null,
+            "effective_date": null,
+            "adoption_date": null
+          },
+          "match": {
+            "shared_tokens": [],
+            "publication": null,
+            "evidence": null
+          },
+          "is_compliance_verdict": false,
+          "adjudication": "not_adjudicated",
+          "method": "mandate_expected_vs_observed_v1"
+        },
+        {
+          "conformance_id": "54431-001:zoning:project:2026M0445",
+          "mandate_id": "54431-001",
+          "edge_type": "requires_land_use_action",
+          "edge": {
+            "type": "requires_land_use_action",
+            "from": "mandate:54431-001",
+            "to": "project:2026M0445",
+            "claim_id": "entity-link:mandate-land-use:54431-001:2026m0445",
+            "claim_inspect_href": "/agencies/landmarks-preservation-commission/?claim=entity-link%3Amandate-land-use%3A54431-001%3A2026m0445",
+            "warrant_class": "not_yet_classified",
+            "method": "mandate_land_use_identity_phase_v2",
+            "confidence": "strong",
+            "publication_tier": null,
+            "provenance": {
+              "schema": "cityscroll.graph_edge_provenance.v1",
+              "method": "graph_edge_provenance_v1",
+              "claim_id": "entity-link:mandate-land-use:54431-001:2026m0445",
+              "kind": "graph_edge_claim",
+              "subject_ref": "project:2026M0445",
+              "root_ref": "mandate:54431-001",
+              "category_id": "mandate-land-use",
+              "relation": "requires land use action",
+              "label": "Lithuanian Alliance Building (LP-2695)",
+              "object_href": "/#land?project=2026M0445",
+              "where": {
+                "source_system": {
+                  "available": true,
+                  "value": "soda"
+                },
+                "source_record_id": {
+                  "available": true,
+                  "value": "soda:2026M0445"
+                },
+                "source_href": {
+                  "available": false
+                },
+                "source_fields": {
+                  "available": true,
+                  "value": [
+                    "primary_applicant",
+                    "actions",
+                    "project_id"
+                  ]
+                },
+                "input_value": {
+                  "available": true,
+                  "value": "Landmarks Preservation Commission · HI"
+                },
+                "observed_at": {
+                  "available": true,
+                  "value": "2026-06-06"
+                },
+                "basis": {
+                  "available": true,
+                  "value": "agency+land_action_kind+closed_action_family_vocabulary_v1+mandate_phase"
+                },
+                "source_excerpt": {
+                  "available": true,
+                  "value": "Lithuanian Alliance Building (LP-2695)"
+                }
+              },
+              "how": {
+                "method": {
+                  "available": true,
+                  "value": "mandate_land_use_identity_phase_v2"
+                },
+                "warrant_class": "not_yet_classified",
+                "warrant_label": "Not yet classified",
+                "decision": "auto_link"
+              },
+              "cross_spine": {
+                "confidence": "unmatched",
+                "explicit": false
+              },
+              "confidence": {
+                "band": "strong",
+                "identity_stance": "strong_link",
+                "identity_label": "Strong connection",
+                "standable": false,
+                "counts_as_verified_total": false
+              },
+              "enrichment": {
+                "entity_link_id": {
+                  "available": true,
+                  "value": "entity-link:mandate-land-use:54431-001:2026m0445"
+                },
+                "resolution_run_id": {
+                  "available": true,
+                  "value": "resolution-run:mandate-land-use:landmarks-preservation-commission:2026-08-07t23:52:53.226z-2026-08-11t21:12:40.677z-2026"
+                },
+                "next": null,
+                "missing_fields": []
+              },
+              "inspect_href": "/agencies/landmarks-preservation-commission/?claim=entity-link%3Amandate-land-use%3A54431-001%3A2026m0445",
+              "share_href": "/agencies/landmarks-preservation-commission/?claim=entity-link%3Amandate-land-use%3A54431-001%3A2026m0445"
+            }
+          },
+          "status": "observed",
+          "observation_state": "appeared",
+          "category": "zoning",
+          "data_as_of": "2026-08-30",
+          "label": "Appeared",
+          "expected_event": {
+            "kind": "land_use_action",
+            "label": "Land-use or zoning action",
+            "deliverable_type": "other",
+            "deadline_date": null
+          },
+          "observed_record": {
+            "request_id": null,
+            "label": "Lithuanian Alliance Building (LP-2695)",
+            "when": "2026-06-06",
+            "href": "/#land?project=2026M0445",
+            "signal_kind": "land_use_action",
+            "lifecycle_status": null,
+            "lifecycle_label": null,
+            "effective_date": null,
+            "adoption_date": null
+          },
+          "match": {
+            "shared_tokens": [],
+            "publication": null,
+            "evidence": null
+          },
+          "is_compliance_verdict": false,
+          "adjudication": "not_adjudicated",
+          "method": "mandate_expected_vs_observed_v1"
+        },
+        {
+          "conformance_id": "54431-002:zoning:project:2026K0443",
+          "mandate_id": "54431-002",
+          "edge_type": "requires_land_use_action",
+          "edge": {
+            "type": "requires_land_use_action",
+            "from": "mandate:54431-002",
+            "to": "project:2026K0443",
+            "claim_id": "entity-link:mandate-land-use:54431-002:2026k0443",
+            "claim_inspect_href": "/agencies/landmarks-preservation-commission/?claim=entity-link%3Amandate-land-use%3A54431-002%3A2026k0443",
+            "warrant_class": "not_yet_classified",
+            "method": "mandate_land_use_identity_phase_v2",
+            "confidence": "strong",
+            "publication_tier": null,
+            "provenance": {
+              "schema": "cityscroll.graph_edge_provenance.v1",
+              "method": "graph_edge_provenance_v1",
+              "claim_id": "entity-link:mandate-land-use:54431-002:2026k0443",
+              "kind": "graph_edge_claim",
+              "subject_ref": "project:2026K0443",
+              "root_ref": "mandate:54431-002",
+              "category_id": "mandate-land-use",
+              "relation": "requires land use action",
+              "label": "Public School 15 Annex (LP-2696)",
+              "object_href": "/#land?project=2026K0443",
+              "where": {
+                "source_system": {
+                  "available": true,
+                  "value": "soda"
+                },
+                "source_record_id": {
+                  "available": true,
+                  "value": "soda:2026K0443"
+                },
+                "source_href": {
+                  "available": false
+                },
+                "source_fields": {
+                  "available": true,
+                  "value": [
+                    "primary_applicant",
+                    "actions",
+                    "project_id"
+                  ]
+                },
+                "input_value": {
+                  "available": true,
+                  "value": "Landmarks Preservation Commission · HI"
+                },
+                "observed_at": {
+                  "available": true,
+                  "value": "2026-06-06"
+                },
+                "basis": {
+                  "available": true,
+                  "value": "agency+land_action_kind+closed_action_family_vocabulary_v1+mandate_phase"
+                },
+                "source_excerpt": {
+                  "available": true,
+                  "value": "Public School 15 Annex (LP-2696)"
+                }
+              },
+              "how": {
+                "method": {
+                  "available": true,
+                  "value": "mandate_land_use_identity_phase_v2"
+                },
+                "warrant_class": "not_yet_classified",
+                "warrant_label": "Not yet classified",
+                "decision": "auto_link"
+              },
+              "cross_spine": {
+                "confidence": "unmatched",
+                "explicit": false
+              },
+              "confidence": {
+                "band": "strong",
+                "identity_stance": "strong_link",
+                "identity_label": "Strong connection",
+                "standable": false,
+                "counts_as_verified_total": false
+              },
+              "enrichment": {
+                "entity_link_id": {
+                  "available": true,
+                  "value": "entity-link:mandate-land-use:54431-002:2026k0443"
+                },
+                "resolution_run_id": {
+                  "available": true,
+                  "value": "resolution-run:mandate-land-use:landmarks-preservation-commission:2026-08-07t23:52:53.226z-2026-08-11t21:12:40.677z-2026"
+                },
+                "next": null,
+                "missing_fields": []
+              },
+              "inspect_href": "/agencies/landmarks-preservation-commission/?claim=entity-link%3Amandate-land-use%3A54431-002%3A2026k0443",
+              "share_href": "/agencies/landmarks-preservation-commission/?claim=entity-link%3Amandate-land-use%3A54431-002%3A2026k0443"
+            }
+          },
+          "status": "observed",
+          "observation_state": "appeared",
+          "category": "zoning",
+          "data_as_of": "2026-08-30",
+          "label": "Appeared",
+          "expected_event": {
+            "kind": "land_use_action",
+            "label": "Land-use or zoning action",
+            "deliverable_type": "other",
+            "deadline_date": null
+          },
+          "observed_record": {
+            "request_id": null,
+            "label": "Public School 15 Annex (LP-2696)",
+            "when": "2026-06-06",
+            "href": "/#land?project=2026K0443",
+            "signal_kind": "land_use_action",
+            "lifecycle_status": null,
+            "lifecycle_label": null,
+            "effective_date": null,
+            "adoption_date": null
+          },
+          "match": {
+            "shared_tokens": [],
+            "publication": null,
+            "evidence": null
+          },
+          "is_compliance_verdict": false,
+          "adjudication": "not_adjudicated",
+          "method": "mandate_expected_vs_observed_v1"
+        },
+        {
+          "conformance_id": "54431-002:zoning:project:2026M0444",
+          "mandate_id": "54431-002",
+          "edge_type": "requires_land_use_action",
+          "edge": {
+            "type": "requires_land_use_action",
+            "from": "mandate:54431-002",
+            "to": "project:2026M0444",
+            "claim_id": "entity-link:mandate-land-use:54431-002:2026m0444",
+            "claim_inspect_href": "/agencies/landmarks-preservation-commission/?claim=entity-link%3Amandate-land-use%3A54431-002%3A2026m0444",
+            "warrant_class": "not_yet_classified",
+            "method": "mandate_land_use_identity_phase_v2",
+            "confidence": "strong",
+            "publication_tier": null,
+            "provenance": {
+              "schema": "cityscroll.graph_edge_provenance.v1",
+              "method": "graph_edge_provenance_v1",
+              "claim_id": "entity-link:mandate-land-use:54431-002:2026m0444",
+              "kind": "graph_edge_claim",
+              "subject_ref": "project:2026M0444",
+              "root_ref": "mandate:54431-002",
+              "category_id": "mandate-land-use",
+              "relation": "requires land use action",
+              "label": "Church of Saint Mary (LP-2694)",
+              "object_href": "/#land?project=2026M0444",
+              "where": {
+                "source_system": {
+                  "available": true,
+                  "value": "soda"
+                },
+                "source_record_id": {
+                  "available": true,
+                  "value": "soda:2026M0444"
+                },
+                "source_href": {
+                  "available": false
+                },
+                "source_fields": {
+                  "available": true,
+                  "value": [
+                    "primary_applicant",
+                    "actions",
+                    "project_id"
+                  ]
+                },
+                "input_value": {
+                  "available": true,
+                  "value": "Landmarks Preservation Commission · HI"
+                },
+                "observed_at": {
+                  "available": true,
+                  "value": "2026-06-06"
+                },
+                "basis": {
+                  "available": true,
+                  "value": "agency+land_action_kind+closed_action_family_vocabulary_v1+mandate_phase"
+                },
+                "source_excerpt": {
+                  "available": true,
+                  "value": "Church of Saint Mary (LP-2694)"
+                }
+              },
+              "how": {
+                "method": {
+                  "available": true,
+                  "value": "mandate_land_use_identity_phase_v2"
+                },
+                "warrant_class": "not_yet_classified",
+                "warrant_label": "Not yet classified",
+                "decision": "auto_link"
+              },
+              "cross_spine": {
+                "confidence": "unmatched",
+                "explicit": false
+              },
+              "confidence": {
+                "band": "strong",
+                "identity_stance": "strong_link",
+                "identity_label": "Strong connection",
+                "standable": false,
+                "counts_as_verified_total": false
+              },
+              "enrichment": {
+                "entity_link_id": {
+                  "available": true,
+                  "value": "entity-link:mandate-land-use:54431-002:2026m0444"
+                },
+                "resolution_run_id": {
+                  "available": true,
+                  "value": "resolution-run:mandate-land-use:landmarks-preservation-commission:2026-08-07t23:52:53.226z-2026-08-11t21:12:40.677z-2026"
+                },
+                "next": null,
+                "missing_fields": []
+              },
+              "inspect_href": "/agencies/landmarks-preservation-commission/?claim=entity-link%3Amandate-land-use%3A54431-002%3A2026m0444",
+              "share_href": "/agencies/landmarks-preservation-commission/?claim=entity-link%3Amandate-land-use%3A54431-002%3A2026m0444"
+            }
+          },
+          "status": "observed",
+          "observation_state": "appeared",
+          "category": "zoning",
+          "data_as_of": "2026-08-30",
+          "label": "Appeared",
+          "expected_event": {
+            "kind": "land_use_action",
+            "label": "Land-use or zoning action",
+            "deliverable_type": "other",
+            "deadline_date": null
+          },
+          "observed_record": {
+            "request_id": null,
+            "label": "Church of Saint Mary (LP-2694)",
+            "when": "2026-06-06",
+            "href": "/#land?project=2026M0444",
+            "signal_kind": "land_use_action",
+            "lifecycle_status": null,
+            "lifecycle_label": null,
+            "effective_date": null,
+            "adoption_date": null
+          },
+          "match": {
+            "shared_tokens": [],
+            "publication": null,
+            "evidence": null
+          },
+          "is_compliance_verdict": false,
+          "adjudication": "not_adjudicated",
+          "method": "mandate_expected_vs_observed_v1"
+        },
+        {
+          "conformance_id": "54431-002:zoning:project:2026M0445",
+          "mandate_id": "54431-002",
+          "edge_type": "requires_land_use_action",
+          "edge": {
+            "type": "requires_land_use_action",
+            "from": "mandate:54431-002",
+            "to": "project:2026M0445",
+            "claim_id": "entity-link:mandate-land-use:54431-002:2026m0445",
+            "claim_inspect_href": "/agencies/landmarks-preservation-commission/?claim=entity-link%3Amandate-land-use%3A54431-002%3A2026m0445",
+            "warrant_class": "not_yet_classified",
+            "method": "mandate_land_use_identity_phase_v2",
+            "confidence": "strong",
+            "publication_tier": null,
+            "provenance": {
+              "schema": "cityscroll.graph_edge_provenance.v1",
+              "method": "graph_edge_provenance_v1",
+              "claim_id": "entity-link:mandate-land-use:54431-002:2026m0445",
+              "kind": "graph_edge_claim",
+              "subject_ref": "project:2026M0445",
+              "root_ref": "mandate:54431-002",
+              "category_id": "mandate-land-use",
+              "relation": "requires land use action",
+              "label": "Lithuanian Alliance Building (LP-2695)",
+              "object_href": "/#land?project=2026M0445",
+              "where": {
+                "source_system": {
+                  "available": true,
+                  "value": "soda"
+                },
+                "source_record_id": {
+                  "available": true,
+                  "value": "soda:2026M0445"
+                },
+                "source_href": {
+                  "available": false
+                },
+                "source_fields": {
+                  "available": true,
+                  "value": [
+                    "primary_applicant",
+                    "actions",
+                    "project_id"
+                  ]
+                },
+                "input_value": {
+                  "available": true,
+                  "value": "Landmarks Preservation Commission · HI"
+                },
+                "observed_at": {
+                  "available": true,
+                  "value": "2026-06-06"
+                },
+                "basis": {
+                  "available": true,
+                  "value": "agency+land_action_kind+closed_action_family_vocabulary_v1+mandate_phase"
+                },
+                "source_excerpt": {
+                  "available": true,
+                  "value": "Lithuanian Alliance Building (LP-2695)"
+                }
+              },
+              "how": {
+                "method": {
+                  "available": true,
+                  "value": "mandate_land_use_identity_phase_v2"
+                },
+                "warrant_class": "not_yet_classified",
+                "warrant_label": "Not yet classified",
+                "decision": "auto_link"
+              },
+              "cross_spine": {
+                "confidence": "unmatched",
+                "explicit": false
+              },
+              "confidence": {
+                "band": "strong",
+                "identity_stance": "strong_link",
+                "identity_label": "Strong connection",
+                "standable": false,
+                "counts_as_verified_total": false
+              },
+              "enrichment": {
+                "entity_link_id": {
+                  "available": true,
+                  "value": "entity-link:mandate-land-use:54431-002:2026m0445"
+                },
+                "resolution_run_id": {
+                  "available": true,
+                  "value": "resolution-run:mandate-land-use:landmarks-preservation-commission:2026-08-07t23:52:53.226z-2026-08-11t21:12:40.677z-2026"
+                },
+                "next": null,
+                "missing_fields": []
+              },
+              "inspect_href": "/agencies/landmarks-preservation-commission/?claim=entity-link%3Amandate-land-use%3A54431-002%3A2026m0445",
+              "share_href": "/agencies/landmarks-preservation-commission/?claim=entity-link%3Amandate-land-use%3A54431-002%3A2026m0445"
+            }
+          },
+          "status": "observed",
+          "observation_state": "appeared",
+          "category": "zoning",
+          "data_as_of": "2026-08-30",
+          "label": "Appeared",
+          "expected_event": {
+            "kind": "land_use_action",
+            "label": "Land-use or zoning action",
+            "deliverable_type": "other",
+            "deadline_date": null
+          },
+          "observed_record": {
+            "request_id": null,
+            "label": "Lithuanian Alliance Building (LP-2695)",
+            "when": "2026-06-06",
+            "href": "/#land?project=2026M0445",
+            "signal_kind": "land_use_action",
+            "lifecycle_status": null,
+            "lifecycle_label": null,
+            "effective_date": null,
+            "adoption_date": null
+          },
+          "match": {
+            "shared_tokens": [],
+            "publication": null,
+            "evidence": null
+          },
+          "is_compliance_verdict": false,
+          "adjudication": "not_adjudicated",
+          "method": "mandate_expected_vs_observed_v1"
+        },
+        {
+          "conformance_id": "54431-003:zoning:project:2026K0443",
+          "mandate_id": "54431-003",
+          "edge_type": "requires_land_use_action",
+          "edge": {
+            "type": "requires_land_use_action",
+            "from": "mandate:54431-003",
+            "to": "project:2026K0443",
+            "claim_id": "entity-link:mandate-land-use:54431-003:2026k0443",
+            "claim_inspect_href": "/agencies/landmarks-preservation-commission/?claim=entity-link%3Amandate-land-use%3A54431-003%3A2026k0443",
+            "warrant_class": "not_yet_classified",
+            "method": "mandate_land_use_identity_phase_v2",
+            "confidence": "strong",
+            "publication_tier": null,
+            "provenance": {
+              "schema": "cityscroll.graph_edge_provenance.v1",
+              "method": "graph_edge_provenance_v1",
+              "claim_id": "entity-link:mandate-land-use:54431-003:2026k0443",
+              "kind": "graph_edge_claim",
+              "subject_ref": "project:2026K0443",
+              "root_ref": "mandate:54431-003",
+              "category_id": "mandate-land-use",
+              "relation": "requires land use action",
+              "label": "Public School 15 Annex (LP-2696)",
+              "object_href": "/#land?project=2026K0443",
+              "where": {
+                "source_system": {
+                  "available": true,
+                  "value": "soda"
+                },
+                "source_record_id": {
+                  "available": true,
+                  "value": "soda:2026K0443"
+                },
+                "source_href": {
+                  "available": false
+                },
+                "source_fields": {
+                  "available": true,
+                  "value": [
+                    "primary_applicant",
+                    "actions",
+                    "project_id"
+                  ]
+                },
+                "input_value": {
+                  "available": true,
+                  "value": "Landmarks Preservation Commission · HI"
+                },
+                "observed_at": {
+                  "available": true,
+                  "value": "2026-06-06"
+                },
+                "basis": {
+                  "available": true,
+                  "value": "agency+land_action_kind+closed_action_family_vocabulary_v1+mandate_phase"
+                },
+                "source_excerpt": {
+                  "available": true,
+                  "value": "Public School 15 Annex (LP-2696)"
+                }
+              },
+              "how": {
+                "method": {
+                  "available": true,
+                  "value": "mandate_land_use_identity_phase_v2"
+                },
+                "warrant_class": "not_yet_classified",
+                "warrant_label": "Not yet classified",
+                "decision": "auto_link"
+              },
+              "cross_spine": {
+                "confidence": "unmatched",
+                "explicit": false
+              },
+              "confidence": {
+                "band": "strong",
+                "identity_stance": "strong_link",
+                "identity_label": "Strong connection",
+                "standable": false,
+                "counts_as_verified_total": false
+              },
+              "enrichment": {
+                "entity_link_id": {
+                  "available": true,
+                  "value": "entity-link:mandate-land-use:54431-003:2026k0443"
+                },
+                "resolution_run_id": {
+                  "available": true,
+                  "value": "resolution-run:mandate-land-use:landmarks-preservation-commission:2026-08-07t23:52:53.226z-2026-08-11t21:12:40.677z-2026"
+                },
+                "next": null,
+                "missing_fields": []
+              },
+              "inspect_href": "/agencies/landmarks-preservation-commission/?claim=entity-link%3Amandate-land-use%3A54431-003%3A2026k0443",
+              "share_href": "/agencies/landmarks-preservation-commission/?claim=entity-link%3Amandate-land-use%3A54431-003%3A2026k0443"
+            }
+          },
+          "status": "observed",
+          "observation_state": "appeared",
+          "category": "zoning",
+          "data_as_of": "2026-08-30",
+          "label": "Appeared",
+          "expected_event": {
+            "kind": "land_use_action",
+            "label": "Land-use or zoning action",
+            "deliverable_type": "other",
+            "deadline_date": null
+          },
+          "observed_record": {
+            "request_id": null,
+            "label": "Public School 15 Annex (LP-2696)",
+            "when": "2026-06-06",
+            "href": "/#land?project=2026K0443",
+            "signal_kind": "land_use_action",
+            "lifecycle_status": null,
+            "lifecycle_label": null,
+            "effective_date": null,
+            "adoption_date": null
+          },
+          "match": {
+            "shared_tokens": [],
+            "publication": null,
+            "evidence": null
+          },
+          "is_compliance_verdict": false,
+          "adjudication": "not_adjudicated",
+          "method": "mandate_expected_vs_observed_v1"
+        },
+        {
+          "conformance_id": "54431-003:zoning:project:2026M0444",
+          "mandate_id": "54431-003",
+          "edge_type": "requires_land_use_action",
+          "edge": {
+            "type": "requires_land_use_action",
+            "from": "mandate:54431-003",
+            "to": "project:2026M0444",
+            "claim_id": "entity-link:mandate-land-use:54431-003:2026m0444",
+            "claim_inspect_href": "/agencies/landmarks-preservation-commission/?claim=entity-link%3Amandate-land-use%3A54431-003%3A2026m0444",
+            "warrant_class": "not_yet_classified",
+            "method": "mandate_land_use_identity_phase_v2",
+            "confidence": "strong",
+            "publication_tier": null,
+            "provenance": {
+              "schema": "cityscroll.graph_edge_provenance.v1",
+              "method": "graph_edge_provenance_v1",
+              "claim_id": "entity-link:mandate-land-use:54431-003:2026m0444",
+              "kind": "graph_edge_claim",
+              "subject_ref": "project:2026M0444",
+              "root_ref": "mandate:54431-003",
+              "category_id": "mandate-land-use",
+              "relation": "requires land use action",
+              "label": "Church of Saint Mary (LP-2694)",
+              "object_href": "/#land?project=2026M0444",
+              "where": {
+                "source_system": {
+                  "available": true,
+                  "value": "soda"
+                },
+                "source_record_id": {
+                  "available": true,
+                  "value": "soda:2026M0444"
+                },
+                "source_href": {
+                  "available": false
+                },
+                "source_fields": {
+                  "available": true,
+                  "value": [
+                    "primary_applicant",
+                    "actions",
+                    "project_id"
+                  ]
+                },
+                "input_value": {
+                  "available": true,
+                  "value": "Landmarks Preservation Commission · HI"
+                },
+                "observed_at": {
+                  "available": true,
+                  "value": "2026-06-06"
+                },
+                "basis": {
+                  "available": true,
+                  "value": "agency+land_action_kind+closed_action_family_vocabulary_v1+mandate_phase"
+                },
+                "source_excerpt": {
+                  "available": true,
+                  "value": "Church of Saint Mary (LP-2694)"
+                }
+              },
+              "how": {
+                "method": {
+                  "available": true,
+                  "value": "mandate_land_use_identity_phase_v2"
+                },
+                "warrant_class": "not_yet_classified",
+                "warrant_label": "Not yet classified",
+                "decision": "auto_link"
+              },
+              "cross_spine": {
+                "confidence": "unmatched",
+                "explicit": false
+              },
+              "confidence": {
+                "band": "strong",
+                "identity_stance": "strong_link",
+                "identity_label": "Strong connection",
+                "standable": false,
+                "counts_as_verified_total": false
+              },
+              "enrichment": {
+                "entity_link_id": {
+                  "available": true,
+                  "value": "entity-link:mandate-land-use:54431-003:2026m0444"
+                },
+                "resolution_run_id": {
+                  "available": true,
+                  "value": "resolution-run:mandate-land-use:landmarks-preservation-commission:2026-08-07t23:52:53.226z-2026-08-11t21:12:40.677z-2026"
+                },
+                "next": null,
+                "missing_fields": []
+              },
+              "inspect_href": "/agencies/landmarks-preservation-commission/?claim=entity-link%3Amandate-land-use%3A54431-003%3A2026m0444",
+              "share_href": "/agencies/landmarks-preservation-commission/?claim=entity-link%3Amandate-land-use%3A54431-003%3A2026m0444"
+            }
+          },
+          "status": "observed",
+          "observation_state": "appeared",
+          "category": "zoning",
+          "data_as_of": "2026-08-30",
+          "label": "Appeared",
+          "expected_event": {
+            "kind": "land_use_action",
+            "label": "Land-use or zoning action",
+            "deliverable_type": "other",
+            "deadline_date": null
+          },
+          "observed_record": {
+            "request_id": null,
+            "label": "Church of Saint Mary (LP-2694)",
+            "when": "2026-06-06",
+            "href": "/#land?project=2026M0444",
+            "signal_kind": "land_use_action",
+            "lifecycle_status": null,
+            "lifecycle_label": null,
+            "effective_date": null,
+            "adoption_date": null
+          },
+          "match": {
+            "shared_tokens": [],
+            "publication": null,
+            "evidence": null
+          },
+          "is_compliance_verdict": false,
+          "adjudication": "not_adjudicated",
+          "method": "mandate_expected_vs_observed_v1"
+        },
+        {
+          "conformance_id": "54431-003:zoning:project:2026M0445",
+          "mandate_id": "54431-003",
+          "edge_type": "requires_land_use_action",
+          "edge": {
+            "type": "requires_land_use_action",
+            "from": "mandate:54431-003",
+            "to": "project:2026M0445",
+            "claim_id": "entity-link:mandate-land-use:54431-003:2026m0445",
+            "claim_inspect_href": "/agencies/landmarks-preservation-commission/?claim=entity-link%3Amandate-land-use%3A54431-003%3A2026m0445",
+            "warrant_class": "not_yet_classified",
+            "method": "mandate_land_use_identity_phase_v2",
+            "confidence": "strong",
+            "publication_tier": null,
+            "provenance": {
+              "schema": "cityscroll.graph_edge_provenance.v1",
+              "method": "graph_edge_provenance_v1",
+              "claim_id": "entity-link:mandate-land-use:54431-003:2026m0445",
+              "kind": "graph_edge_claim",
+              "subject_ref": "project:2026M0445",
+              "root_ref": "mandate:54431-003",
+              "category_id": "mandate-land-use",
+              "relation": "requires land use action",
+              "label": "Lithuanian Alliance Building (LP-2695)",
+              "object_href": "/#land?project=2026M0445",
+              "where": {
+                "source_system": {
+                  "available": true,
+                  "value": "soda"
+                },
+                "source_record_id": {
+                  "available": true,
+                  "value": "soda:2026M0445"
+                },
+                "source_href": {
+                  "available": false
+                },
+                "source_fields": {
+                  "available": true,
+                  "value": [
+                    "primary_applicant",
+                    "actions",
+                    "project_id"
+                  ]
+                },
+                "input_value": {
+                  "available": true,
+                  "value": "Landmarks Preservation Commission · HI"
+                },
+                "observed_at": {
+                  "available": true,
+                  "value": "2026-06-06"
+                },
+                "basis": {
+                  "available": true,
+                  "value": "agency+land_action_kind+closed_action_family_vocabulary_v1+mandate_phase"
+                },
+                "source_excerpt": {
+                  "available": true,
+                  "value": "Lithuanian Alliance Building (LP-2695)"
+                }
+              },
+              "how": {
+                "method": {
+                  "available": true,
+                  "value": "mandate_land_use_identity_phase_v2"
+                },
+                "warrant_class": "not_yet_classified",
+                "warrant_label": "Not yet classified",
+                "decision": "auto_link"
+              },
+              "cross_spine": {
+                "confidence": "unmatched",
+                "explicit": false
+              },
+              "confidence": {
+                "band": "strong",
+                "identity_stance": "strong_link",
+                "identity_label": "Strong connection",
+                "standable": false,
+                "counts_as_verified_total": false
+              },
+              "enrichment": {
+                "entity_link_id": {
+                  "available": true,
+                  "value": "entity-link:mandate-land-use:54431-003:2026m0445"
+                },
+                "resolution_run_id": {
+                  "available": true,
+                  "value": "resolution-run:mandate-land-use:landmarks-preservation-commission:2026-08-07t23:52:53.226z-2026-08-11t21:12:40.677z-2026"
+                },
+                "next": null,
+                "missing_fields": []
+              },
+              "inspect_href": "/agencies/landmarks-preservation-commission/?claim=entity-link%3Amandate-land-use%3A54431-003%3A2026m0445",
+              "share_href": "/agencies/landmarks-preservation-commission/?claim=entity-link%3Amandate-land-use%3A54431-003%3A2026m0445"
+            }
+          },
+          "status": "observed",
+          "observation_state": "appeared",
+          "category": "zoning",
+          "data_as_of": "2026-08-30",
+          "label": "Appeared",
+          "expected_event": {
+            "kind": "land_use_action",
+            "label": "Land-use or zoning action",
+            "deliverable_type": "other",
+            "deadline_date": null
+          },
+          "observed_record": {
+            "request_id": null,
+            "label": "Lithuanian Alliance Building (LP-2695)",
+            "when": "2026-06-06",
+            "href": "/#land?project=2026M0445",
+            "signal_kind": "land_use_action",
+            "lifecycle_status": null,
+            "lifecycle_label": null,
+            "effective_date": null,
+            "adoption_date": null
+          },
+          "match": {
+            "shared_tokens": [],
+            "publication": null,
+            "evidence": null
+          },
+          "is_compliance_verdict": false,
+          "adjudication": "not_adjudicated",
+          "method": "mandate_expected_vs_observed_v1"
+        },
         {
           "conformance_id": "54431-002:meetings:expected",
           "mandate_id": "54431-002",
@@ -41307,93 +42510,6 @@
           "expected_event": {
             "kind": "public_hearing",
             "label": "Public meeting or hearing",
-            "deliverable_type": "other",
-            "deadline_date": null
-          },
-          "observed_record": null,
-          "match": null,
-          "is_compliance_verdict": false,
-          "adjudication": "not_adjudicated",
-          "method": "mandate_expected_vs_observed_v1"
-        },
-        {
-          "conformance_id": "54431-001:zoning:expected",
-          "mandate_id": "54431-001",
-          "edge_type": "requires_land_use_action",
-          "edge": {
-            "type": "requires_land_use_action",
-            "from": "mandate:54431-001",
-            "to": null,
-            "claim_id": null,
-            "claim_inspect_href": null,
-            "warrant_class": null
-          },
-          "status": "expected_not_yet_observed",
-          "observation_state": "not_yet_observed",
-          "category": "zoning",
-          "data_as_of": "2026-08-30",
-          "label": "Expected; no matching evidence in current sources",
-          "expected_event": {
-            "kind": "land_use_action",
-            "label": "Land-use or zoning action",
-            "deliverable_type": "other",
-            "deadline_date": null
-          },
-          "observed_record": null,
-          "match": null,
-          "is_compliance_verdict": false,
-          "adjudication": "not_adjudicated",
-          "method": "mandate_expected_vs_observed_v1"
-        },
-        {
-          "conformance_id": "54431-002:zoning:expected",
-          "mandate_id": "54431-002",
-          "edge_type": "requires_land_use_action",
-          "edge": {
-            "type": "requires_land_use_action",
-            "from": "mandate:54431-002",
-            "to": null,
-            "claim_id": null,
-            "claim_inspect_href": null,
-            "warrant_class": null
-          },
-          "status": "expected_not_yet_observed",
-          "observation_state": "not_yet_observed",
-          "category": "zoning",
-          "data_as_of": "2026-08-30",
-          "label": "Expected; no matching evidence in current sources",
-          "expected_event": {
-            "kind": "land_use_action",
-            "label": "Land-use or zoning action",
-            "deliverable_type": "other",
-            "deadline_date": null
-          },
-          "observed_record": null,
-          "match": null,
-          "is_compliance_verdict": false,
-          "adjudication": "not_adjudicated",
-          "method": "mandate_expected_vs_observed_v1"
-        },
-        {
-          "conformance_id": "54431-003:zoning:expected",
-          "mandate_id": "54431-003",
-          "edge_type": "requires_land_use_action",
-          "edge": {
-            "type": "requires_land_use_action",
-            "from": "mandate:54431-003",
-            "to": null,
-            "claim_id": null,
-            "claim_inspect_href": null,
-            "warrant_class": null
-          },
-          "status": "expected_not_yet_observed",
-          "observation_state": "not_yet_observed",
-          "category": "zoning",
-          "data_as_of": "2026-08-30",
-          "label": "Expected; no matching evidence in current sources",
-          "expected_event": {
-            "kind": "land_use_action",
-            "label": "Land-use or zoning action",
             "deliverable_type": "other",
             "deadline_date": null
           },

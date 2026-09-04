@@ -18,7 +18,11 @@ test("production shadow census reproduces the committed bridge baseline", () => 
   const receipt = buildCrossSpineShadowCensus(sources);
   assert.deepEqual(Object.fromEntries(Object.entries(receipt.relations).map(([key, value]) => [key, value.totals])), {
     mandate_meeting: { public_inferred: 3, evidence_only: 48 },
-    mandate_land_use: { public_inferred: 0, evidence_only: 13 },
+    // PC-04: LPC's 9 landmark-designation obligation/action pairs resolve on
+    // the closed action-family identity basis; Housing Preservation and
+    // Development's 4 non-land-use "disposition" false positives correctly
+    // remain evidence-only for lacking both project identity and phase.
+    mandate_land_use: { public_inferred: 9, evidence_only: 4 },
     mandate_contract: { public_inferred: 1, evidence_only: 0 },
     // Sanitation CWZ mandate_rule public edge after rule-attachment densify.
     mandate_rule: { public_inferred: 1, evidence_only: 0 },
@@ -35,5 +39,6 @@ test("census output is redacted to ids, counts, source names, and enum reasons",
   assert.equal(receipt.relations.mandate_meeting.by_reason.matter_body_subject, 48);
   assert.equal(receipt.relations.mandate_meeting.by_reason.temporal, 44);
   assert.equal(receipt.relations.mandate_meeting.totals.public_inferred, 3);
-  assert.equal(receipt.relations.mandate_land_use.by_reason.project_identity, 13);
+  assert.equal(receipt.relations.mandate_land_use.by_reason.project_identity, 4);
+  assert.equal(receipt.relations.mandate_land_use.by_reason.mandate_phase_compatible, 4);
 });
