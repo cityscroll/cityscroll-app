@@ -463,6 +463,7 @@
     loading_data: "Cargando…",
     retry_open_data: "La instantánea más reciente de CityScroll no está disponible. Intente de nuevo en un momento.",
     nothing_found: "No se encontró nada. Pruebe con una palabra clave más amplia o \"Todas las RFP\".",
+    contracts_source_stale: "Los datos de RFP abiertas están desactualizados. CityScroll no puede confirmar el conjunto completo que acepta respuestas actualmente. Última actualización: {date}.",
     subscribed_now: "Ya está suscrito — le enviaremos un correo.",
     welcome_sent_to: "Correo de bienvenida enviado a {email}.",
     turnstile_fail: "La verificación de humano no pasó — inténtelo de nuevo.",

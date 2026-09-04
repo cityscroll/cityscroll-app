@@ -458,6 +458,7 @@
     loading_data: "加载中…",
     retry_open_data: "最新的 CityScroll 数据快照不可用。请稍后重试。",
     nothing_found: "未找到任何结果。请尝试使用更宽泛的关键词或选择「All RFPs」。",
+    contracts_source_stale: "未结标 RFP 的数据已过期。CityScroll 无法确认当前接受回复的完整列表。最近更新时间：{date}。",
     subscribed_now: "您已订阅 — 我们会向您发送电子邮件。",
     welcome_sent_to: "欢迎邮件已发送至 {email}。",
     turnstile_fail: "人机验证未通过 — 请再试一次。",
