@@ -6,10 +6,10 @@
     "subject_ref": "agency:id:sanitation",
     "expected_matched_categories": ["contracts", "vendors", "meetings", "rules", "obligations", "staffing"]
   },
-  "nycedc": {
-    "canonical_id": "economic-development-corporation",
-    "canonical_name": "Economic Development Corporation",
-    "subject_ref": "agency:id:economic-development-corporation",
+  "mta": {
+    "canonical_id": "metropolitan-transportation-authority",
+    "canonical_name": "Metropolitan Transportation Authority",
+    "subject_ref": "agency:id:metropolitan-transportation-authority",
     "expected_matched_categories": ["contracts"],
     "expected_empty_categories": ["vendors", "meetings", "rules", "obligations", "staffing"]
   },

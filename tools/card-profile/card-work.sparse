@@ -470,6 +470,7 @@
 /site/meeting_source_completeness.mjs
 /site/meetings_card_interaction.mjs
 /site/meetings_explorer.mjs
+/site/money-freshness.mjs
 /site/money_action_location_ui.mjs
 /site/money_scope_consistency.mjs
 /site/money_scope_links.mjs

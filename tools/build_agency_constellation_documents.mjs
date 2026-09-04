@@ -49,7 +49,14 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SITE = join(ROOT, "site");
 const LOOKUP = join(SITE, "data/agency_constellation_lookup.json");
 const IDENTITY_REPORT = join(SITE, "data/agency_route_identity_report.json");
-const DEMO_IDS = Object.freeze(["parks-and-recreation", "housing-preservation-and-development"]);
+// economic-development-corporation: Willets Point development-role field case
+// (site/civic_institution_development_roles.mjs) — its category match is
+// contracts-only, so a day with no open EDC solicitation must not drop the page.
+const DEMO_IDS = Object.freeze([
+  "parks-and-recreation",
+  "housing-preservation-and-development",
+  "economic-development-corporation",
+]);
 
 function readJson(path) {
   return JSON.parse(readFileSync(path, "utf8"));

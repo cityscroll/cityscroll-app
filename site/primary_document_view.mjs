@@ -208,6 +208,7 @@ export function buildBrowseDocument(shell, facet, payload, params = new URLSearc
   const route = options.route || (facet === "contracts" ? "/browse/" : `/browse/${facet}/`);
   const view = buildBrowseView(facet, payload, params, {
     semanticArtifact: options.semanticArtifact || null,
+    clock: options.clock ?? null,
   });
   let html = pageMetadata(shell, {
     title: `${config.label} · Browse · CityScroll`,

@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "delivery_tier": "inline-at-build",
-  "generated_at": "2026-08-15T19:35:39.293Z",
+  "generated_at": "2026-09-04T15:00:57.739Z",
   "source": {
     "name": "City Record Online",
     "dataset": "dg92-zbpx",

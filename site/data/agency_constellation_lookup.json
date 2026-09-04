@@ -2,14 +2,15 @@
   "schema": "cityscroll.agency_constellation.v1",
   "method": "agency_constellation_v1",
   "er_match_basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1",
-  "generated_at": "12783|2026-08-05T20:50:48.662Z|2026-08-06T00:00:00Z|2026-08-07T23:52:53.226Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-23T07:59:09.786Z|2026-08-29T11:43:49.474Z|2026-08-30T16:27:58.717Z|2026-08-15|2026-08-15T19:35:39.293Z|2026-08-18|2026-08-18T04:05:51.552Z|2026-08-18T04:05:51.552Z|2026-08-18T04:05:51.552Z|2026-08-26T00:00:00.000Z|2026-08-27T17:59:48Z|2026-08-29T11:43:49.474Z|2026-08-30T16:27:58.717Z",
+  "generated_at": "12783|2026-08-05T20:50:48.662Z|2026-08-06T00:00:00Z|2026-08-07T23:52:53.226Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-23T07:59:09.786Z|2026-08-29T11:43:49.474Z|2026-08-30T16:27:58.717Z|2026-08-18|2026-08-18T04:05:51.552Z|2026-08-18T04:05:51.552Z|2026-08-18T04:05:51.552Z|2026-08-26T00:00:00.000Z|2026-08-27T17:59:48Z|2026-08-29T11:43:49.474Z|2026-08-30T16:27:58.717Z|2026-09-04|2026-09-04T15:00:57.739Z",
   "iteration": "v1",
   "demo_ids": [
     "parks-and-recreation",
-    "housing-preservation-and-development"
+    "housing-preservation-and-development",
+    "economic-development-corporation"
   ],
   "agency_count": 86,
-  "multi_category_count": 61,
+  "multi_category_count": 62,
   "verified_demo": "agency:id:parks-and-recreation",
   "aliases": {
     "board-meetings": "board-meetings",
@@ -750,7 +751,7 @@
             "mode": "open",
             "entity_ref": "agency:id:administrative-trials-and-hearings"
           },
-          "as_of": "2026-08-15",
+          "as_of": "2026-09-04",
           "source": {
             "kind": "agency",
             "id": "administrative-trials-and-hearings",
@@ -762,7 +763,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-15",
+            "observed_at": "2026-09-04",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -800,8 +801,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-15",
-              "snapshot_day": "2026-08-15",
+              "reference_day": "2026-09-04",
+              "snapshot_day": "2026-09-04",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -2058,7 +2059,7 @@
             "mode": "open",
             "entity_ref": "agency:id:board-meetings"
           },
-          "as_of": "2026-08-15",
+          "as_of": "2026-09-04",
           "source": {
             "kind": "agency",
             "id": "board-meetings",
@@ -2070,7 +2071,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-15",
+            "observed_at": "2026-09-04",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -2108,8 +2109,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-15",
-              "snapshot_day": "2026-08-15",
+              "reference_day": "2026-09-04",
+              "snapshot_day": "2026-09-04",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -2605,7 +2606,7 @@
             "mode": "open",
             "entity_ref": "agency:id:board-of-correction"
           },
-          "as_of": "2026-08-15",
+          "as_of": "2026-09-04",
           "source": {
             "kind": "agency",
             "id": "board-of-correction",
@@ -2617,7 +2618,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-15",
+            "observed_at": "2026-09-04",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -2655,8 +2656,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-15",
-              "snapshot_day": "2026-08-15",
+              "reference_day": "2026-09-04",
+              "snapshot_day": "2026-09-04",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -3170,7 +3171,7 @@
             "mode": "open",
             "entity_ref": "agency:id:board-of-elections"
           },
-          "as_of": "2026-08-15",
+          "as_of": "2026-09-04",
           "source": {
             "kind": "agency",
             "id": "board-of-elections",
@@ -3182,7 +3183,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-15",
+            "observed_at": "2026-09-04",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -3220,8 +3221,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-15",
-              "snapshot_day": "2026-08-15",
+              "reference_day": "2026-09-04",
+              "snapshot_day": "2026-09-04",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -3717,7 +3718,7 @@
             "mode": "open",
             "entity_ref": "agency:id:board-of-standards-and-appeals"
           },
-          "as_of": "2026-08-15",
+          "as_of": "2026-09-04",
           "source": {
             "kind": "agency",
             "id": "board-of-standards-and-appeals",
@@ -3729,7 +3730,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-15",
+            "observed_at": "2026-09-04",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -3767,8 +3768,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-15",
-              "snapshot_day": "2026-08-15",
+              "reference_day": "2026-09-04",
+              "snapshot_day": "2026-09-04",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -4270,7 +4271,7 @@
             "mode": "open",
             "entity_ref": "agency:id:borough-president-bronx"
           },
-          "as_of": "2026-08-15",
+          "as_of": "2026-09-04",
           "source": {
             "kind": "agency",
             "id": "borough-president-bronx",
@@ -4282,7 +4283,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-15",
+            "observed_at": "2026-09-04",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -4320,8 +4321,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-15",
-              "snapshot_day": "2026-08-15",
+              "reference_day": "2026-09-04",
+              "snapshot_day": "2026-09-04",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -4823,7 +4824,7 @@
             "mode": "open",
             "entity_ref": "agency:id:borough-president-brooklyn"
           },
-          "as_of": "2026-08-15",
+          "as_of": "2026-09-04",
           "source": {
             "kind": "agency",
             "id": "borough-president-brooklyn",
@@ -4835,7 +4836,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-15",
+            "observed_at": "2026-09-04",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -4873,8 +4874,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-15",
-              "snapshot_day": "2026-08-15",
+              "reference_day": "2026-09-04",
+              "snapshot_day": "2026-09-04",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -5370,7 +5371,7 @@
             "mode": "open",
             "entity_ref": "agency:id:borough-president-queens"
           },
-          "as_of": "2026-08-15",
+          "as_of": "2026-09-04",
           "source": {
             "kind": "agency",
             "id": "borough-president-queens",
@@ -5382,7 +5383,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-15",
+            "observed_at": "2026-09-04",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -5420,8 +5421,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-15",
-              "snapshot_day": "2026-08-15",
+              "reference_day": "2026-09-04",
+              "snapshot_day": "2026-09-04",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -7172,7 +7173,7 @@
             "mode": "open",
             "entity_ref": "agency:id:campaign-finance-board"
           },
-          "as_of": "2026-08-15",
+          "as_of": "2026-09-04",
           "source": {
             "kind": "agency",
             "id": "campaign-finance-board",
@@ -7184,7 +7185,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-15",
+            "observed_at": "2026-09-04",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -7222,8 +7223,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-15",
-              "snapshot_day": "2026-08-15",
+              "reference_day": "2026-09-04",
+              "snapshot_day": "2026-09-04",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -7725,7 +7726,7 @@
             "mode": "open",
             "entity_ref": "agency:id:charter-revision-commission"
           },
-          "as_of": "2026-08-15",
+          "as_of": "2026-09-04",
           "source": {
             "kind": "agency",
             "id": "charter-revision-commission",
@@ -7737,7 +7738,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-15",
+            "observed_at": "2026-09-04",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -7775,8 +7776,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-15",
-              "snapshot_day": "2026-08-15",
+              "reference_day": "2026-09-04",
+              "snapshot_day": "2026-09-04",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -8272,7 +8273,7 @@
             "mode": "open",
             "entity_ref": "agency:id:chief-medical-examiner"
           },
-          "as_of": "2026-08-15",
+          "as_of": "2026-09-04",
           "source": {
             "kind": "agency",
             "id": "chief-medical-examiner",
@@ -8284,7 +8285,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-15",
+            "observed_at": "2026-09-04",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -8322,8 +8323,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-15",
-              "snapshot_day": "2026-08-15",
+              "reference_day": "2026-09-04",
+              "snapshot_day": "2026-09-04",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -8908,7 +8909,7 @@
             "mode": "open",
             "entity_ref": "agency:id:city-clerk"
           },
-          "as_of": "2026-08-15",
+          "as_of": "2026-09-04",
           "source": {
             "kind": "agency",
             "id": "city-clerk",
@@ -8920,7 +8921,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-15",
+            "observed_at": "2026-09-04",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -8958,8 +8959,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-15",
-              "snapshot_day": "2026-08-15",
+              "reference_day": "2026-09-04",
+              "snapshot_day": "2026-09-04",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -9403,13 +9404,13 @@
         "schema": "cityscroll.civic_institution_identity_evidence.v1",
         "institution_ref": "civic-institution:city-council",
         "status": "matched",
-        "source_observation_count": 18
+        "source_observation_count": 17
       },
-      "matched_categories": 3,
+      "matched_categories": 2,
       "categories": {
         "contracts": {
-          "status": "matched",
-          "count": 1,
+          "status": "empty",
+          "count": 0,
           "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
@@ -9451,17 +9452,17 @@
           "target_kind": "contract",
           "target_id": null,
           "target_name": "Contracts",
-          "count": 1,
-          "state": "matched",
-          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acity-council%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-08-15",
-          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acity-council%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-08-15",
+          "count": 0,
+          "state": "empty",
+          "href": null,
+          "canonical_href": null,
           "scope": {
             "facet": null,
             "universe": "open",
             "mode": "open",
             "entity_ref": "agency:id:city-council"
           },
-          "as_of": "2026-08-15",
+          "as_of": "2026-09-04",
           "source": {
             "kind": "agency",
             "id": "city-council",
@@ -9473,7 +9474,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-15",
+            "observed_at": "2026-09-04",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -9482,48 +9483,42 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "1",
-              "materialized": "1",
-              "dated": "1",
+              "total": "0",
+              "materialized": "0",
+              "dated": "0",
               "undated": "0",
-              "by_state": {
-                "matched": "1"
-              },
-              "by_relation": {
-                "published_by_agency": "1"
-              }
+              "by_state": {},
+              "by_relation": {}
             },
             "spans": {
               "valid": {
-                "start": "2026-07-23",
-                "end": "2026-07-23"
+                "start": null,
+                "end": null
               },
               "observed": {
                 "start": null,
                 "end": null
               },
-              "valid_days": "0",
+              "valid_days": null,
               "observed_days": null
             },
             "lifecycle": {
               "by_bucket": {
                 "current": "0",
                 "historical": "0",
-                "unknown": "1"
+                "unknown": "0"
               },
-              "by_stage": {
-                "unknown": "1"
-              },
+              "by_stage": {},
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-15",
-              "snapshot_day": "2026-08-15",
-              "latest_day": "2026-07-23",
-              "latest_source": "published_record",
-              "age_days": "23",
+              "reference_day": "2026-09-04",
+              "snapshot_day": "2026-09-04",
+              "latest_day": null,
+              "latest_source": null,
+              "age_days": null,
               "max_age_days": null,
-              "status": "known"
+              "status": "unknown"
             }
           },
           "cross_spine_confidence": "unmatched",
@@ -10653,7 +10648,7 @@
             "mode": "open",
             "entity_ref": "agency:id:city-planning-commission"
           },
-          "as_of": "2026-08-15",
+          "as_of": "2026-09-04",
           "source": {
             "kind": "agency",
             "id": "city-planning-commission",
@@ -10665,7 +10660,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-15",
+            "observed_at": "2026-09-04",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -10703,8 +10698,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-15",
-              "snapshot_day": "2026-08-15",
+              "reference_day": "2026-09-04",
+              "snapshot_day": "2026-09-04",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -11148,13 +11143,13 @@
         "schema": "cityscroll.civic_institution_identity_evidence.v1",
         "institution_ref": "civic-institution:city-university",
         "status": "matched",
-        "source_observation_count": 14
+        "source_observation_count": 17
       },
-      "matched_categories": 1,
+      "matched_categories": 2,
       "categories": {
         "contracts": {
-          "status": "empty",
-          "count": 0,
+          "status": "matched",
+          "count": 3,
           "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
@@ -11196,17 +11191,17 @@
           "target_kind": "contract",
           "target_id": null,
           "target_name": "Contracts",
-          "count": 0,
-          "state": "empty",
-          "href": null,
-          "canonical_href": null,
+          "count": 3,
+          "state": "matched",
+          "href": "/browse/contracts/?agency=city-university&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acity-university%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-04",
+          "canonical_href": "/browse/contracts/?agency=city-university&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acity-university%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-04",
           "scope": {
             "facet": null,
             "universe": "open",
             "mode": "open",
             "entity_ref": "agency:id:city-university"
           },
-          "as_of": "2026-08-15",
+          "as_of": "2026-09-04",
           "source": {
             "kind": "agency",
             "id": "city-university",
@@ -11218,7 +11213,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-15",
+            "observed_at": "2026-09-04",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -11227,42 +11222,48 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "0",
-              "materialized": "0",
-              "dated": "0",
+              "total": "3",
+              "materialized": "3",
+              "dated": "3",
               "undated": "0",
-              "by_state": {},
-              "by_relation": {}
+              "by_state": {
+                "matched": "3"
+              },
+              "by_relation": {
+                "published_by_agency": "3"
+              }
             },
             "spans": {
               "valid": {
-                "start": null,
-                "end": null
+                "start": "2026-07-29",
+                "end": "2026-08-17"
               },
               "observed": {
                 "start": null,
                 "end": null
               },
-              "valid_days": null,
+              "valid_days": "19",
               "observed_days": null
             },
             "lifecycle": {
               "by_bucket": {
                 "current": "0",
                 "historical": "0",
-                "unknown": "0"
+                "unknown": "3"
               },
-              "by_stage": {},
+              "by_stage": {
+                "unknown": "3"
+              },
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-15",
-              "snapshot_day": "2026-08-15",
-              "latest_day": null,
-              "latest_source": null,
-              "age_days": null,
+              "reference_day": "2026-09-04",
+              "snapshot_day": "2026-09-04",
+              "latest_day": "2026-08-17",
+              "latest_source": "published_record",
+              "age_days": "18",
               "max_age_days": null,
-              "status": "unknown"
+              "status": "known"
             }
           },
           "cross_spine_confidence": "unmatched",
@@ -13579,7 +13580,7 @@
             "mode": "open",
             "entity_ref": "agency:id:commission-on-racial-equity"
           },
-          "as_of": "2026-08-15",
+          "as_of": "2026-09-04",
           "source": {
             "kind": "agency",
             "id": "commission-on-racial-equity",
@@ -13591,7 +13592,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-15",
+            "observed_at": "2026-09-04",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -13629,8 +13630,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-15",
-              "snapshot_day": "2026-08-15",
+              "reference_day": "2026-09-04",
+              "snapshot_day": "2026-09-04",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -14126,7 +14127,7 @@
             "mode": "open",
             "entity_ref": "agency:id:community-boards"
           },
-          "as_of": "2026-08-15",
+          "as_of": "2026-09-04",
           "source": {
             "kind": "agency",
             "id": "community-boards",
@@ -14138,7 +14139,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-15",
+            "observed_at": "2026-09-04",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -14176,8 +14177,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-15",
-              "snapshot_day": "2026-08-15",
+              "reference_day": "2026-09-04",
+              "snapshot_day": "2026-09-04",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -14673,7 +14674,7 @@
             "mode": "open",
             "entity_ref": "agency:id:comptroller"
           },
-          "as_of": "2026-08-15",
+          "as_of": "2026-09-04",
           "source": {
             "kind": "agency",
             "id": "comptroller",
@@ -14685,7 +14686,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-15",
+            "observed_at": "2026-09-04",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -14723,8 +14724,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-15",
-              "snapshot_day": "2026-08-15",
+              "reference_day": "2026-09-04",
+              "snapshot_day": "2026-09-04",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -16642,7 +16643,7 @@
             "mode": "open",
             "entity_ref": "agency:id:criminal-justice-coordinator"
           },
-          "as_of": "2026-08-15",
+          "as_of": "2026-09-04",
           "source": {
             "kind": "agency",
             "id": "criminal-justice-coordinator",
@@ -16654,7 +16655,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-15",
+            "observed_at": "2026-09-04",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -16692,8 +16693,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-15",
-              "snapshot_day": "2026-08-15",
+              "reference_day": "2026-09-04",
+              "snapshot_day": "2026-09-04",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -19021,7 +19022,7 @@
             "mode": "open",
             "entity_ref": "agency:id:district-attorney-bronx-county"
           },
-          "as_of": "2026-08-15",
+          "as_of": "2026-09-04",
           "source": {
             "kind": "agency",
             "id": "district-attorney-bronx-county",
@@ -19033,7 +19034,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-15",
+            "observed_at": "2026-09-04",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -19071,8 +19072,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-15",
-              "snapshot_day": "2026-08-15",
+              "reference_day": "2026-09-04",
+              "snapshot_day": "2026-09-04",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -19568,7 +19569,7 @@
             "mode": "open",
             "entity_ref": "agency:id:district-attorney-kings-county"
           },
-          "as_of": "2026-08-15",
+          "as_of": "2026-09-04",
           "source": {
             "kind": "agency",
             "id": "district-attorney-kings-county",
@@ -19580,7 +19581,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-15",
+            "observed_at": "2026-09-04",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -19618,8 +19619,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-15",
-              "snapshot_day": "2026-08-15",
+              "reference_day": "2026-09-04",
+              "snapshot_day": "2026-09-04",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -20057,13 +20058,13 @@
         "schema": "cityscroll.civic_institution_identity_evidence.v1",
         "institution_ref": "civic-institution:district-attorney-new-york-county",
         "status": "matched",
-        "source_observation_count": 4
+        "source_observation_count": 5
       },
-      "matched_categories": 2,
+      "matched_categories": 3,
       "categories": {
         "contracts": {
-          "status": "empty",
-          "count": 0,
+          "status": "matched",
+          "count": 1,
           "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
@@ -20105,17 +20106,17 @@
           "target_kind": "contract",
           "target_id": null,
           "target_name": "Contracts",
-          "count": 0,
-          "state": "empty",
-          "href": null,
-          "canonical_href": null,
+          "count": 1,
+          "state": "matched",
+          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Adistrict-attorney-new-york-county%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-04",
+          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Adistrict-attorney-new-york-county%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-04",
           "scope": {
             "facet": null,
             "universe": "open",
             "mode": "open",
             "entity_ref": "agency:id:district-attorney-new-york-county"
           },
-          "as_of": "2026-08-15",
+          "as_of": "2026-09-04",
           "source": {
             "kind": "agency",
             "id": "district-attorney-new-york-county",
@@ -20127,7 +20128,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-15",
+            "observed_at": "2026-09-04",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -20136,42 +20137,48 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "0",
-              "materialized": "0",
-              "dated": "0",
+              "total": "1",
+              "materialized": "1",
+              "dated": "1",
               "undated": "0",
-              "by_state": {},
-              "by_relation": {}
+              "by_state": {
+                "matched": "1"
+              },
+              "by_relation": {
+                "published_by_agency": "1"
+              }
             },
             "spans": {
               "valid": {
-                "start": null,
-                "end": null
+                "start": "2026-08-05",
+                "end": "2026-08-05"
               },
               "observed": {
                 "start": null,
                 "end": null
               },
-              "valid_days": null,
+              "valid_days": "0",
               "observed_days": null
             },
             "lifecycle": {
               "by_bucket": {
                 "current": "0",
                 "historical": "0",
-                "unknown": "0"
+                "unknown": "1"
               },
-              "by_stage": {},
+              "by_stage": {
+                "unknown": "1"
+              },
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-15",
-              "snapshot_day": "2026-08-15",
-              "latest_day": null,
-              "latest_source": null,
-              "age_days": null,
+              "reference_day": "2026-09-04",
+              "snapshot_day": "2026-09-04",
+              "latest_day": "2026-08-05",
+              "latest_source": "published_record",
+              "age_days": "30",
               "max_age_days": null,
-              "status": "unknown"
+              "status": "known"
             }
           },
           "cross_spine_confidence": "unmatched",
@@ -20757,7 +20764,7 @@
             "mode": "open",
             "entity_ref": "agency:id:district-attorney-queens-county"
           },
-          "as_of": "2026-08-15",
+          "as_of": "2026-09-04",
           "source": {
             "kind": "agency",
             "id": "district-attorney-queens-county",
@@ -20769,7 +20776,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-15",
+            "observed_at": "2026-09-04",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -20807,8 +20814,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-15",
-              "snapshot_day": "2026-08-15",
+              "reference_day": "2026-09-04",
+              "snapshot_day": "2026-09-04",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -21304,7 +21311,7 @@
             "mode": "open",
             "entity_ref": "agency:id:district-attorney-richmond-county"
           },
-          "as_of": "2026-08-15",
+          "as_of": "2026-09-04",
           "source": {
             "kind": "agency",
             "id": "district-attorney-richmond-county",
@@ -21316,7 +21323,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-15",
+            "observed_at": "2026-09-04",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -21354,8 +21361,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-15",
-              "snapshot_day": "2026-08-15",
+              "reference_day": "2026-09-04",
+              "snapshot_day": "2026-09-04",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -21793,13 +21800,13 @@
         "schema": "cityscroll.civic_institution_identity_evidence.v1",
         "institution_ref": "civic-institution:economic-development-corporation",
         "status": "matched",
-        "source_observation_count": 5
+        "source_observation_count": 2
       },
-      "matched_categories": 1,
+      "matched_categories": 0,
       "categories": {
         "contracts": {
-          "status": "matched",
-          "count": 3,
+          "status": "empty",
+          "count": 0,
           "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
@@ -21841,17 +21848,17 @@
           "target_kind": "contract",
           "target_id": null,
           "target_name": "Contracts",
-          "count": 3,
-          "state": "matched",
-          "href": "/browse/contracts/?agency=economic-development-corporation&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aeconomic-development-corporation%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-08-15",
-          "canonical_href": "/browse/contracts/?agency=economic-development-corporation&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aeconomic-development-corporation%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-08-15",
+          "count": 0,
+          "state": "empty",
+          "href": null,
+          "canonical_href": null,
           "scope": {
             "facet": null,
             "universe": "open",
             "mode": "open",
             "entity_ref": "agency:id:economic-development-corporation"
           },
-          "as_of": "2026-08-15",
+          "as_of": "2026-09-04",
           "source": {
             "kind": "agency",
             "id": "economic-development-corporation",
@@ -21863,7 +21870,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-15",
+            "observed_at": "2026-09-04",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -21872,48 +21879,42 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "3",
-              "materialized": "3",
-              "dated": "3",
+              "total": "0",
+              "materialized": "0",
+              "dated": "0",
               "undated": "0",
-              "by_state": {
-                "matched": "3"
-              },
-              "by_relation": {
-                "published_by_agency": "3"
-              }
+              "by_state": {},
+              "by_relation": {}
             },
             "spans": {
               "valid": {
-                "start": "2026-07-21",
-                "end": "2026-08-05"
+                "start": null,
+                "end": null
               },
               "observed": {
                 "start": null,
                 "end": null
               },
-              "valid_days": "15",
+              "valid_days": null,
               "observed_days": null
             },
             "lifecycle": {
               "by_bucket": {
                 "current": "0",
                 "historical": "0",
-                "unknown": "3"
+                "unknown": "0"
               },
-              "by_stage": {
-                "unknown": "3"
-              },
+              "by_stage": {},
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-15",
-              "snapshot_day": "2026-08-15",
-              "latest_day": "2026-08-05",
-              "latest_source": "published_record",
-              "age_days": "10",
+              "reference_day": "2026-09-04",
+              "snapshot_day": "2026-09-04",
+              "latest_day": null,
+              "latest_source": null,
+              "age_days": null,
               "max_age_days": null,
-              "status": "known"
+              "status": "unknown"
             }
           },
           "cross_spine_confidence": "unmatched",
@@ -23700,7 +23701,7 @@
             "mode": "open",
             "entity_ref": "agency:id:employees-retirement-system"
           },
-          "as_of": "2026-08-15",
+          "as_of": "2026-09-04",
           "source": {
             "kind": "agency",
             "id": "employees-retirement-system",
@@ -23712,7 +23713,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-15",
+            "observed_at": "2026-09-04",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -23750,8 +23751,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-15",
-              "snapshot_day": "2026-08-15",
+              "reference_day": "2026-09-04",
+              "snapshot_day": "2026-09-04",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -25002,7 +25003,7 @@
             "mode": "open",
             "entity_ref": "agency:id:equal-employment-practices-commission"
           },
-          "as_of": "2026-08-15",
+          "as_of": "2026-09-04",
           "source": {
             "kind": "agency",
             "id": "equal-employment-practices-commission",
@@ -25014,7 +25015,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-15",
+            "observed_at": "2026-09-04",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -25052,8 +25053,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-15",
-              "snapshot_day": "2026-08-15",
+              "reference_day": "2026-09-04",
+              "snapshot_day": "2026-09-04",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -26221,7 +26222,7 @@
             "mode": "open",
             "entity_ref": "agency:id:financial-information-services-agency"
           },
-          "as_of": "2026-08-15",
+          "as_of": "2026-09-04",
           "source": {
             "kind": "agency",
             "id": "financial-information-services-agency",
@@ -26233,7 +26234,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-15",
+            "observed_at": "2026-09-04",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -26271,8 +26272,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-15",
-              "snapshot_day": "2026-08-15",
+              "reference_day": "2026-09-04",
+              "snapshot_day": "2026-09-04",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -28769,7 +28770,7 @@
       "categories": {
         "contracts": {
           "status": "matched",
-          "count": 9,
+          "count": 11,
           "method": "checkbook_nycha_contracts_adapter_v1"
         },
         "vendors": {
@@ -28811,7 +28812,7 @@
           "target_kind": "contract",
           "target_id": null,
           "target_name": "Contracts",
-          "count": 9,
+          "count": 11,
           "state": "matched",
           "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahousing-authority%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open",
           "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahousing-authority%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open",
@@ -28842,7 +28843,7 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "9",
+              "total": "11",
               "materialized": "8",
               "dated": "8",
               "undated": "0",
@@ -28856,13 +28857,13 @@
             "spans": {
               "valid": {
                 "start": "2025-01-14",
-                "end": "2026-08-11"
+                "end": "2026-08-26"
               },
               "observed": {
                 "start": null,
                 "end": null
               },
-              "valid_days": "574",
+              "valid_days": "589",
               "observed_days": null
             },
             "lifecycle": {
@@ -28879,9 +28880,9 @@
             "freshness": {
               "reference_day": "2026-08-18",
               "snapshot_day": "2026-08-18",
-              "latest_day": "2026-08-11",
+              "latest_day": "2026-08-26",
               "latest_source": "published_record",
-              "age_days": "7",
+              "age_days": "-8",
               "max_age_days": null,
               "status": "known"
             }
@@ -30718,7 +30719,7 @@
             "mode": "open",
             "entity_ref": "agency:id:independent-budget-office"
           },
-          "as_of": "2026-08-15",
+          "as_of": "2026-09-04",
           "source": {
             "kind": "agency",
             "id": "independent-budget-office",
@@ -30730,7 +30731,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-15",
+            "observed_at": "2026-09-04",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -30768,8 +30769,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-15",
-              "snapshot_day": "2026-08-15",
+              "reference_day": "2026-09-04",
+              "snapshot_day": "2026-09-04",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -34869,7 +34870,7 @@
             "mode": "open",
             "entity_ref": "agency:id:mayors-office-of-contract-services"
           },
-          "as_of": "2026-08-15",
+          "as_of": "2026-09-04",
           "source": {
             "kind": "agency",
             "id": "mayors-office-of-contract-services",
@@ -34881,7 +34882,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-15",
+            "observed_at": "2026-09-04",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -34919,8 +34920,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-15",
-              "snapshot_day": "2026-08-15",
+              "reference_day": "2026-09-04",
+              "snapshot_day": "2026-09-04",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -35463,7 +35464,7 @@
             "mode": "open",
             "entity_ref": "agency:id:mayors-office-of-criminal-justice"
           },
-          "as_of": "2026-08-15",
+          "as_of": "2026-09-04",
           "source": {
             "kind": "agency",
             "id": "mayors-office-of-criminal-justice",
@@ -35475,7 +35476,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-15",
+            "observed_at": "2026-09-04",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -35513,8 +35514,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-15",
-              "snapshot_day": "2026-08-15",
+              "reference_day": "2026-09-04",
+              "snapshot_day": "2026-09-04",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -37746,7 +37747,7 @@
             "mode": "open",
             "entity_ref": "agency:id:new-york-city-police-pension-fund"
           },
-          "as_of": "2026-08-15",
+          "as_of": "2026-09-04",
           "source": {
             "kind": "agency",
             "id": "new-york-city-police-pension-fund",
@@ -37758,7 +37759,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-15",
+            "observed_at": "2026-09-04",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -37796,8 +37797,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-15",
-              "snapshot_day": "2026-08-15",
+              "reference_day": "2026-09-04",
+              "snapshot_day": "2026-09-04",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -38873,15 +38874,15 @@
           "target_name": "Contracts",
           "count": 2,
           "state": "matched",
-          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Anyc-health-hospitals%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-08-15",
-          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Anyc-health-hospitals%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-08-15",
+          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Anyc-health-hospitals%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-04",
+          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Anyc-health-hospitals%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-04",
           "scope": {
             "facet": null,
             "universe": "open",
             "mode": "open",
             "entity_ref": "agency:id:nyc-health-hospitals"
           },
-          "as_of": "2026-08-15",
+          "as_of": "2026-09-04",
           "source": {
             "kind": "agency",
             "id": "nyc-health-hospitals",
@@ -38893,7 +38894,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-15",
+            "observed_at": "2026-09-04",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -38915,14 +38916,14 @@
             },
             "spans": {
               "valid": {
-                "start": "2026-06-26",
-                "end": "2026-08-07"
+                "start": "2026-06-22",
+                "end": "2026-08-14"
               },
               "observed": {
                 "start": null,
                 "end": null
               },
-              "valid_days": "42",
+              "valid_days": "53",
               "observed_days": null
             },
             "lifecycle": {
@@ -38937,11 +38938,11 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-15",
-              "snapshot_day": "2026-08-15",
-              "latest_day": "2026-08-07",
+              "reference_day": "2026-09-04",
+              "snapshot_day": "2026-09-04",
+              "latest_day": "2026-08-14",
               "latest_source": "published_record",
-              "age_days": "8",
+              "age_days": "21",
               "max_age_days": null,
               "status": "known"
             }
@@ -39434,7 +39435,7 @@
             "mode": "open",
             "entity_ref": "agency:id:office-of-collective-bargaining"
           },
-          "as_of": "2026-08-15",
+          "as_of": "2026-09-04",
           "source": {
             "kind": "agency",
             "id": "office-of-collective-bargaining",
@@ -39446,7 +39447,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-15",
+            "observed_at": "2026-09-04",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -39484,8 +39485,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-15",
-              "snapshot_day": "2026-08-15",
+              "reference_day": "2026-09-04",
+              "snapshot_day": "2026-09-04",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -40569,7 +40570,7 @@
             "mode": "open",
             "entity_ref": "agency:id:office-of-special-narcotics-prosecutor"
           },
-          "as_of": "2026-08-15",
+          "as_of": "2026-09-04",
           "source": {
             "kind": "agency",
             "id": "office-of-special-narcotics-prosecutor",
@@ -40581,7 +40582,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-15",
+            "observed_at": "2026-09-04",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -40619,8 +40620,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-15",
-              "snapshot_day": "2026-08-15",
+              "reference_day": "2026-09-04",
+              "snapshot_day": "2026-09-04",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -41134,7 +41135,7 @@
             "mode": "open",
             "entity_ref": "agency:id:office-of-the-mayor"
           },
-          "as_of": "2026-08-15",
+          "as_of": "2026-09-04",
           "source": {
             "kind": "agency",
             "id": "office-of-the-mayor",
@@ -41146,7 +41147,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-15",
+            "observed_at": "2026-09-04",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -41184,8 +41185,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-15",
-              "snapshot_day": "2026-08-15",
+              "reference_day": "2026-09-04",
+              "snapshot_day": "2026-09-04",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -42448,7 +42449,7 @@
             "mode": "open",
             "entity_ref": "agency:id:payroll-administration"
           },
-          "as_of": "2026-08-15",
+          "as_of": "2026-09-04",
           "source": {
             "kind": "agency",
             "id": "payroll-administration",
@@ -42460,7 +42461,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-15",
+            "observed_at": "2026-09-04",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -42498,8 +42499,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-15",
-              "snapshot_day": "2026-08-15",
+              "reference_day": "2026-09-04",
+              "snapshot_day": "2026-09-04",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -42937,13 +42938,13 @@
         "schema": "cityscroll.civic_institution_identity_evidence.v1",
         "institution_ref": "civic-institution:police-department",
         "status": "matched",
-        "source_observation_count": 14
+        "source_observation_count": 12
       },
-      "matched_categories": 5,
+      "matched_categories": 4,
       "categories": {
         "contracts": {
-          "status": "matched",
-          "count": 2,
+          "status": "empty",
+          "count": 0,
           "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
@@ -42985,17 +42986,17 @@
           "target_kind": "contract",
           "target_id": null,
           "target_name": "Contracts",
-          "count": 2,
-          "state": "matched",
-          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Apolice-department%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-08-15",
-          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Apolice-department%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-08-15",
+          "count": 0,
+          "state": "empty",
+          "href": null,
+          "canonical_href": null,
           "scope": {
             "facet": null,
             "universe": "open",
             "mode": "open",
             "entity_ref": "agency:id:police-department"
           },
-          "as_of": "2026-08-15",
+          "as_of": "2026-09-04",
           "source": {
             "kind": "agency",
             "id": "police-department",
@@ -43007,7 +43008,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-15",
+            "observed_at": "2026-09-04",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -43016,48 +43017,42 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "2",
-              "materialized": "2",
-              "dated": "2",
+              "total": "0",
+              "materialized": "0",
+              "dated": "0",
               "undated": "0",
-              "by_state": {
-                "matched": "2"
-              },
-              "by_relation": {
-                "published_by_agency": "2"
-              }
+              "by_state": {},
+              "by_relation": {}
             },
             "spans": {
               "valid": {
-                "start": "2026-07-08",
-                "end": "2026-08-14"
+                "start": null,
+                "end": null
               },
               "observed": {
                 "start": null,
                 "end": null
               },
-              "valid_days": "37",
+              "valid_days": null,
               "observed_days": null
             },
             "lifecycle": {
               "by_bucket": {
                 "current": "0",
                 "historical": "0",
-                "unknown": "2"
+                "unknown": "0"
               },
-              "by_stage": {
-                "unknown": "2"
-              },
+              "by_stage": {},
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-15",
-              "snapshot_day": "2026-08-15",
-              "latest_day": "2026-08-14",
-              "latest_source": "published_record",
-              "age_days": "1",
+              "reference_day": "2026-09-04",
+              "snapshot_day": "2026-09-04",
+              "latest_day": null,
+              "latest_source": null,
+              "age_days": null,
               "max_age_days": null,
-              "status": "known"
+              "status": "unknown"
             }
           },
           "cross_spine_confidence": "unmatched",
@@ -44309,7 +44304,7 @@
             "mode": "open",
             "entity_ref": "agency:id:public-advocate"
           },
-          "as_of": "2026-08-15",
+          "as_of": "2026-09-04",
           "source": {
             "kind": "agency",
             "id": "public-advocate",
@@ -44321,7 +44316,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-15",
+            "observed_at": "2026-09-04",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -44359,8 +44354,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-15",
-              "snapshot_day": "2026-08-15",
+              "reference_day": "2026-09-04",
+              "snapshot_day": "2026-09-04",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -44856,7 +44851,7 @@
             "mode": "open",
             "entity_ref": "agency:id:public-design-commission"
           },
-          "as_of": "2026-08-15",
+          "as_of": "2026-09-04",
           "source": {
             "kind": "agency",
             "id": "public-design-commission",
@@ -44868,7 +44863,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-15",
+            "observed_at": "2026-09-04",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -44906,8 +44901,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-15",
-              "snapshot_day": "2026-08-15",
+              "reference_day": "2026-09-04",
+              "snapshot_day": "2026-09-04",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -45980,7 +45975,7 @@
             "mode": "open",
             "entity_ref": "agency:id:rent-guidelines-board"
           },
-          "as_of": "2026-08-15",
+          "as_of": "2026-09-04",
           "source": {
             "kind": "agency",
             "id": "rent-guidelines-board",
@@ -45992,7 +45987,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-15",
+            "observed_at": "2026-09-04",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -46030,8 +46025,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-15",
-              "snapshot_day": "2026-08-15",
+              "reference_day": "2026-09-04",
+              "snapshot_day": "2026-09-04",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -47859,7 +47854,7 @@
             "mode": "open",
             "entity_ref": "agency:id:tax-commission"
           },
-          "as_of": "2026-08-15",
+          "as_of": "2026-09-04",
           "source": {
             "kind": "agency",
             "id": "tax-commission",
@@ -47871,7 +47866,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-15",
+            "observed_at": "2026-09-04",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -47909,8 +47904,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-15",
-              "snapshot_day": "2026-08-15",
+              "reference_day": "2026-09-04",
+              "snapshot_day": "2026-09-04",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -48412,7 +48407,7 @@
             "mode": "open",
             "entity_ref": "agency:id:taxi-and-limousine-commission"
           },
-          "as_of": "2026-08-15",
+          "as_of": "2026-09-04",
           "source": {
             "kind": "agency",
             "id": "taxi-and-limousine-commission",
@@ -48424,7 +48419,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-15",
+            "observed_at": "2026-09-04",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -48462,8 +48457,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-15",
-              "snapshot_day": "2026-08-15",
+              "reference_day": "2026-09-04",
+              "snapshot_day": "2026-09-04",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -49014,13 +49009,13 @@
         "schema": "cityscroll.civic_institution_identity_evidence.v1",
         "institution_ref": "civic-institution:teachers-retirement-system",
         "status": "matched",
-        "source_observation_count": 4
+        "source_observation_count": 6
       },
-      "matched_categories": 2,
+      "matched_categories": 3,
       "categories": {
         "contracts": {
-          "status": "empty",
-          "count": 0,
+          "status": "matched",
+          "count": 2,
           "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
@@ -49062,17 +49057,17 @@
           "target_kind": "contract",
           "target_id": null,
           "target_name": "Contracts",
-          "count": 0,
-          "state": "empty",
-          "href": null,
-          "canonical_href": null,
+          "count": 2,
+          "state": "matched",
+          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ateachers-retirement-system%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-04",
+          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ateachers-retirement-system%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-09-04",
           "scope": {
             "facet": null,
             "universe": "open",
             "mode": "open",
             "entity_ref": "agency:id:teachers-retirement-system"
           },
-          "as_of": "2026-08-15",
+          "as_of": "2026-09-04",
           "source": {
             "kind": "agency",
             "id": "teachers-retirement-system",
@@ -49084,7 +49079,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-15",
+            "observed_at": "2026-09-04",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -49093,42 +49088,48 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "0",
-              "materialized": "0",
-              "dated": "0",
+              "total": "2",
+              "materialized": "2",
+              "dated": "2",
               "undated": "0",
-              "by_state": {},
-              "by_relation": {}
+              "by_state": {
+                "matched": "2"
+              },
+              "by_relation": {
+                "published_by_agency": "2"
+              }
             },
             "spans": {
               "valid": {
-                "start": null,
-                "end": null
+                "start": "2026-08-19",
+                "end": "2026-08-19"
               },
               "observed": {
                 "start": null,
                 "end": null
               },
-              "valid_days": null,
+              "valid_days": "0",
               "observed_days": null
             },
             "lifecycle": {
               "by_bucket": {
                 "current": "0",
                 "historical": "0",
-                "unknown": "0"
+                "unknown": "2"
               },
-              "by_stage": {},
+              "by_stage": {
+                "unknown": "2"
+              },
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-15",
-              "snapshot_day": "2026-08-15",
-              "latest_day": null,
-              "latest_source": null,
-              "age_days": null,
+              "reference_day": "2026-09-04",
+              "snapshot_day": "2026-09-04",
+              "latest_day": "2026-08-19",
+              "latest_source": "published_record",
+              "age_days": "16",
               "max_age_days": null,
-              "status": "unknown"
+              "status": "known"
             }
           },
           "cross_spine_confidence": "unmatched",
@@ -50291,7 +50292,7 @@
             "mode": "open",
             "entity_ref": "agency:id:triborough-bridge-and-tunnel-authority"
           },
-          "as_of": "2026-08-15",
+          "as_of": "2026-09-04",
           "source": {
             "kind": "agency",
             "id": "triborough-bridge-and-tunnel-authority",
@@ -50303,7 +50304,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-15",
+            "observed_at": "2026-09-04",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -50341,8 +50342,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-15",
-              "snapshot_day": "2026-08-15",
+              "reference_day": "2026-09-04",
+              "snapshot_day": "2026-09-04",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
