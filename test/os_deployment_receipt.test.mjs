@@ -113,6 +113,10 @@ function baseReceipt() {
       enforcement: "fail_closed",
       on_exceeded_status: 429,
       governed_by_rule_id: "b7e40a92-1c58-4d63-8f07-25a9c3e61b48",
+      enforced_controls: [
+        { mechanism: "ai_gateway_spend_limit", limit_usd: 5, scope: "sliding_day", enforcement: "fail_closed", deployed: true },
+        { mechanism: "ai_gateway_spend_limit", limit_usd: 25, scope: "evaluation_total", enforcement: "fail_closed", deployed: true },
+      ],
     },
     bindings: [
       { binding: "BLUEPRINTS_KV", type: "kv_namespace", resource_id: "kv-os-eval-blueprints", isolated_from_production: true },
@@ -295,6 +299,24 @@ test("A7: the live model call must be governed by a fail-closed ceiling", () => 
   const untraceable = baseReceipt();
   delete untraceable.spend_governance.governed_by_rule_id;
   assertRejects(untraceable, /the live call must name the rule that governed it/);
+});
+
+test("A7: a ceiling that is not deployed in the request path enforces nothing", () => {
+  // The exact gap this contract exists to catch: a cumulative ceiling written
+  // into the receipt while the thing that would enforce it sits outside the
+  // request path.
+  const notDeployed = baseReceipt();
+  notDeployed.spend_governance.enforced_controls[1].deployed = false;
+  assertRejects(notDeployed, /deployed must be true: a control outside the request path enforces nothing/);
+
+  const declaredButAbsent = baseReceipt();
+  declaredButAbsent.spend_governance.enforced_controls =
+    [{ mechanism: "ai_gateway_spend_limit", limit_usd: 5, scope: "sliding_day", enforcement: "fail_closed", deployed: true }];
+  assertRejects(declaredButAbsent, /is not among the deployed enforced controls/);
+
+  const none = baseReceipt();
+  delete none.spend_governance.enforced_controls;
+  assertRejects(none, /must list the controls actually enforcing in the request path/);
 });
 
 test("A7: the evaluation adds no external provider credentials", () => {

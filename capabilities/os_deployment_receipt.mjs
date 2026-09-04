@@ -372,6 +372,36 @@ function requireSpendGovernance(receipt, errors) {
   if (!Number.isFinite(spend.ceiling_usd) || spend.ceiling_usd <= 0) {
     errors.push("spend_governance.ceiling_usd must be a positive dollar ceiling");
   }
+
+  // A ceiling that is configured somewhere but not in the request path governs
+  // nothing. Each control must say what enforces it and that it is deployed,
+  // and the declared ceiling must be one of the controls actually enforcing —
+  // otherwise the receipt is describing an intention, not a boundary.
+  const controls = spend.enforced_controls;
+  if (!Array.isArray(controls) || controls.length === 0) {
+    errors.push("spend_governance.enforced_controls must list the controls actually enforcing in the request path");
+  } else {
+    controls.forEach((control, index) => {
+      const at = `spend_governance.enforced_controls[${index}]`;
+      if (!isPlainObject(control)) {
+        errors.push(`${at} is not an object`);
+        return;
+      }
+      if (typeof control.mechanism !== "string" || !control.mechanism) errors.push(`${at}.mechanism is missing`);
+      if (!Number.isFinite(control.limit_usd) || control.limit_usd <= 0) errors.push(`${at}.limit_usd must be a positive dollar ceiling`);
+      if (control.deployed !== true) errors.push(`${at}.deployed must be true: a control outside the request path enforces nothing`);
+      if (control.enforcement !== "fail_closed") errors.push(`${at}.enforcement must be fail_closed`);
+    });
+    const enforcedLimits = controls
+      .filter((control) => isPlainObject(control) && control.deployed === true)
+      .map((control) => control.limit_usd);
+    if (Number.isFinite(spend.ceiling_usd) && !enforcedLimits.includes(spend.ceiling_usd)) {
+      errors.push(
+        `spend_governance.ceiling_usd (${spend.ceiling_usd}) is not among the deployed enforced controls `
+        + `(${enforcedLimits.join(", ") || "none"}): the declared ceiling must be one that actually enforces`,
+      );
+    }
+  }
   // A ceiling that degrades to a cheaper model instead of stopping is not a
   // ceiling for an evaluation with a fixed budget (A7).
   if (spend.enforcement !== "fail_closed") errors.push("spend_governance.enforcement must be fail_closed");
