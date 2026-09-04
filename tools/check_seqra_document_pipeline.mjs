@@ -1,11 +1,13 @@
 #!/usr/bin/env node
 /**
- * SEQRA-04: the narrow `npm run warehouse:seqra:documents` command surface
- * the card's `verify` field names, matching `tools/check_seqra_ontology.mjs`'s
- * convention for SEQRA-02. This does not perform a live fetch of any kind --
- * it validates, against retained fixtures and the previously committed
- * discovery receipt, that the pipeline's own contracts hold:
+ * SEQRA-04 and SEQRA-05: the narrow `npm run warehouse:seqra:documents`
+ * command surface both cards' `verify` field names, matching
+ * `tools/check_seqra_ontology.mjs`'s convention for SEQRA-02. This does not
+ * perform a live fetch of any kind -- it validates, against retained
+ * fixtures and the previously committed discovery receipt, that the
+ * pipeline's own contracts hold:
  *
+ *   SEQRA-04
  *   A1 the committed discovery receipt records observed behavior and never
  *      asserts a documented bulk API;
  *   A2 a document fetched end to end resolves every one of its parsed pages
@@ -16,6 +18,19 @@
  *      an absence-of-review-activity claim;
  *   A5 a draft and its final document classify correctly, coexist, and the
  *      final is linked to the draft it supersedes.
+ *
+ *   SEQRA-05
+ *   A1 no accepted technical-topic finding lacks page and span evidence
+ *      resolving to the stored document bytes;
+ *   A2 a topic never mentioned anywhere in the review's documents is
+ *      recorded as not_located, never screened_out;
+ *   A3 a numeric threshold fact is compared against the manual vintage
+ *      governing the review, never a different vintage's definition, with
+ *      the crosswalk between recorded vintages documented;
+ *   A4 precision and recall are reported per topic and per document type
+ *      against a human-reviewed benchmark set;
+ *   A5 low-confidence findings are quarantined out of the training corpus,
+ *      evidenced by a reported count.
  *
  * No network access; every input is a retained fixture or a previously
  * committed receipt. Default mode runs the checks and writes the receipt;
@@ -44,6 +59,21 @@ import {
   FINAL_FEIS_FIXTURE,
   SAMPLE_REVIEW_KEY,
 } from "../warehouse/fixtures/seqra-ceqr-access/sample_review_documents.mjs";
+import { extractCommentFindingsFromPage, extractResponseFindingsFromPage } from "../warehouse/lib/seqra_comment_response_extraction.mjs";
+import { resolveManualVintageForReview } from "../warehouse/lib/seqra_manual_vintage.mjs";
+import { projectTopicAssessments } from "../warehouse/lib/seqra_topic_assessment_projection.mjs";
+import { computeExtractionBenchmarkReport } from "../warehouse/lib/seqra_topic_extraction_benchmark.mjs";
+import { evaluateThresholdFinding, extractTopicFindingsFromDocument } from "../warehouse/lib/seqra_topic_finding_extraction.mjs";
+import { findingHasResolvableEvidence } from "../warehouse/lib/seqra_topic_finding.mjs";
+import { buildTrainingCorpusRows, quarantineFindings } from "../warehouse/lib/seqra_topic_finding_quarantine.mjs";
+import {
+  TOPIC_AGENCY_RESPONSE_FIXTURE,
+  TOPIC_COMMENT_LETTER_FIXTURE,
+  TOPIC_DEIS_FIXTURE,
+  TOPIC_EXTRACTION_BENCHMARK_ENTRIES,
+  TOPIC_EXTRACTION_REVIEW_KEY,
+  TOPIC_NEVER_MENTIONED,
+} from "../warehouse/fixtures/seqra-ceqr-access/sample_topic_extraction_fixtures.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const DISCOVERY_RECEIPT = path.join(ROOT, "warehouse/receipts/proof/seqra_ceqr_access_discovery_latest.json");
@@ -61,7 +91,22 @@ const NO_NETWORK_SOURCE_FILES = [
   // -field structural guarantees.
   "warehouse/lib/document_processing.mjs",
 ];
+const SEQRA05_SOURCE_FILES = [
+  "warehouse/lib/seqra_manual_vintage.mjs",
+  "warehouse/lib/seqra_topic_finding.mjs",
+  "warehouse/lib/seqra_topic_finding_extraction.mjs",
+  "warehouse/lib/seqra_comment_response_extraction.mjs",
+  "warehouse/lib/seqra_topic_assessment_projection.mjs",
+  "warehouse/lib/seqra_topic_finding_quarantine.mjs",
+  "warehouse/lib/seqra_topic_extraction_benchmark.mjs",
+];
 const FORBIDDEN_FIELD_LITERALS = ["lawsuit_score", "legal_risk_score", "litigation_probability", "lawsuit_probability"];
+// Negative rule (SEQRA-05): no module in this pipeline may pick "the latest"
+// or "the current" manual vintage as a fallback -- every threshold
+// comparison must name its vintage explicitly (checked functionally below
+// too, by calling compareThresholdFact with no vintage and expecting a
+// throw).
+const FORBIDDEN_VINTAGE_FALLBACK_PATTERNS = [/MANUAL_VINTAGES\s*\[\s*MANUAL_VINTAGES\.length\s*-\s*1\s*\]/, /\.sort\([^)]*\)\s*\[\s*0\s*\]\s*;?\s*\/\/\s*current/i, /currentManualVintage/i, /latestManualVintage/i];
 
 function stable(value) {
   if (Array.isArray(value)) return value.map(stable);
@@ -86,6 +131,14 @@ function assertTrue(value, message) {
 }
 function assertEqual(actual, expected, message) {
   if (actual !== expected) throw new Error(`${message}: expected ${JSON.stringify(expected)}, got ${JSON.stringify(actual)}`);
+}
+function assertThrows(fn, message) {
+  try {
+    fn();
+  } catch {
+    return;
+  }
+  throw new Error(message);
 }
 
 async function fetchFixtureDocument({ fixture, fetchId, tmpRoot }) {
@@ -173,6 +226,30 @@ check("no module in this pipeline references a fixed/bulk CEQR Access query endp
 
 let draft = null;
 let final = null;
+let topicDeis = null;
+let topicComment = null;
+let topicResponse = null;
+
+/**
+ * A lighter document-identity builder for the SEQRA-05 checks below: it
+ * only needs a real document_key/fetch_id/content_hash/raw_object_path
+ * tuple (the A1 evidence resolution this card's findings must carry), not
+ * SEQRA-04's full quality-summary/supersession record.
+ */
+function buildTopicSourceDocument({ fixture, fetchResult, reviewKey }) {
+  const classification = classifyDocumentType({ title: fixture.title });
+  const manifestEntry = markManifestEntryFetched(
+    buildDiscoveredManifestEntry({ reviewKey, candidateUrl: fixture.candidateUrl, title: fixture.title, discoveredAt: "2026-09-04T00:00:00.000Z", discoveryFetchId: "seqra05-discovery-fetch-0001" }),
+    { documentType: classification.document_type, issuedDate: fixture.issuedDate, contentHash: fetchResult.contentHash, fetchId: fetchResult.fetchReceipt.fetch_id },
+  );
+  return {
+    documentKey: manifestEntry.document_key,
+    documentType: classification.document_type,
+    fetchId: fetchResult.fetchReceipt.fetch_id,
+    contentHash: fetchResult.contentHash,
+    rawObjectPath: fetchResult.rawObjectPath,
+  };
+}
 
 // The generic `check(name, fn)` helper above is synchronous by design (every
 // other SEQRA gate check is a pure, synchronous fixture comparison); these
@@ -198,6 +275,22 @@ async function runAsyncChecks() {
       checks.push({ name: "fetching the fixture final FEIS resolves to immutable stored bytes via its own fetch receipt (A2)", result: "pass" });
     } catch (error) {
       checks.push({ name: "fetching the fixture final FEIS resolves to immutable stored bytes via its own fetch receipt (A2)", result: "fail", message: error.message });
+    }
+
+    for (const [label, fixture, target, setter] of [
+      ["topic-extraction DEIS", TOPIC_DEIS_FIXTURE, "topicDeis", (v) => { topicDeis = v; }],
+      ["comment letter", TOPIC_COMMENT_LETTER_FIXTURE, "topicComment", (v) => { topicComment = v; }],
+      ["agency response", TOPIC_AGENCY_RESPONSE_FIXTURE, "topicResponse", (v) => { topicResponse = v; }],
+    ]) {
+      try {
+        const fetchResult = await fetchFixtureDocument({ fixture, fetchId: `seqra05-gate-fetch-${target}`, tmpRoot });
+        assertTrue(fetchResult.ok, `${label} fixture fetch must succeed against the fixture httpGet`);
+        assertTrue(existsSync(path.join(tmpRoot, fetchResult.rawObjectPath)), "raw object path must exist on disk");
+        setter(buildTopicSourceDocument({ fixture, fetchResult, reviewKey: TOPIC_EXTRACTION_REVIEW_KEY }));
+        checks.push({ name: `fetching the SEQRA-05 ${label} fixture resolves to immutable stored bytes via its own fetch receipt (A1)`, result: "pass" });
+      } catch (error) {
+        checks.push({ name: `fetching the SEQRA-05 ${label} fixture resolves to immutable stored bytes via its own fetch receipt (A1)`, result: "fail", message: error.message });
+      }
     }
   } finally {
     rmSync(tmpRoot, { recursive: true, force: true });
@@ -287,6 +380,110 @@ check("no pipeline source file literally names a lawsuit/legal-risk scoring fiel
   }
 });
 
+// ---- SEQRA-05: technical-topic extraction ---------------------------------
+
+let manualVintageResolution = null;
+let allTopicFindings = [];
+let quarantineResult = null;
+let assessmentProjection = null;
+let benchmarkReport = null;
+
+check("the topic-extraction fixture review resolves to a single explicit manual vintage (A3)", () => {
+  assertTrue(Boolean(topicDeis), "the topic-extraction DEIS fixture must have processed successfully");
+  manualVintageResolution = resolveManualVintageForReview({ environmentalRegime: "CEQR", referenceDate: TOPIC_DEIS_FIXTURE.issuedDate });
+  assertEqual(manualVintageResolution.status, "resolved", "manualVintageResolution.status");
+  assertEqual(manualVintageResolution.vintage.manual_vintage_id, "nyc_ceqr_technical_manual_2020", "resolved manual_vintage_id");
+});
+
+check("technical-topic findings are extracted with page/section/table evidence resolving to the fetched bytes (A1)", () => {
+  const manualVintageId = manualVintageResolution.vintage.manual_vintage_id;
+  const deisFindings = extractTopicFindingsFromDocument({
+    pages: TOPIC_DEIS_FIXTURE.pages.map((p) => ({ page_number: p.pageNumber, text: p.text, quality_state: p.qualityState })),
+    context: { ...topicDeis, reviewKey: TOPIC_EXTRACTION_REVIEW_KEY, manualVintageId, observedAt: "2026-09-04T00:00:03.000Z" },
+  });
+  const commentFindings = extractCommentFindingsFromPage({
+    pageNumber: TOPIC_COMMENT_LETTER_FIXTURE.pages[0].pageNumber,
+    text: TOPIC_COMMENT_LETTER_FIXTURE.pages[0].text,
+    context: { ...topicComment, reviewKey: TOPIC_EXTRACTION_REVIEW_KEY, observedAt: "2026-09-04T00:00:04.000Z" },
+  });
+  const responseFindings = extractResponseFindingsFromPage({
+    pageNumber: TOPIC_AGENCY_RESPONSE_FIXTURE.pages[0].pageNumber,
+    text: TOPIC_AGENCY_RESPONSE_FIXTURE.pages[0].text,
+    context: { ...topicResponse, reviewKey: TOPIC_EXTRACTION_REVIEW_KEY, observedAt: "2026-09-04T00:00:05.000Z" },
+  });
+  allTopicFindings = [...deisFindings, ...commentFindings, ...responseFindings];
+  assertTrue(allTopicFindings.length > 0, "expected at least one finding across the fixture documents");
+  for (const finding of allTopicFindings) {
+    assertTrue(findingHasResolvableEvidence(finding), `finding ${finding.finding_key} must carry resolvable page/span evidence`);
+  }
+});
+
+check("a numeric threshold finding is compared against its own review's manual vintage, never a different one (A3, negative rule)", () => {
+  const shadowsThreshold = allTopicFindings.find((f) => f.technical_topic === "shadows" && f.finding_type === "threshold_comparison");
+  assertTrue(Boolean(shadowsThreshold), "expected a shadows threshold_comparison finding");
+  const under2020 = evaluateThresholdFinding(shadowsThreshold);
+  const under2014 = evaluateThresholdFinding({ ...shadowsThreshold, manual_vintage_id: "nyc_ceqr_technical_manual_2014" });
+  assertEqual(under2020.exceeds_threshold, true, "under the review's own resolved 2020 vintage, the fact exceeds the threshold");
+  assertEqual(under2014.exceeds_threshold, false, "the identical fact does not exceed the 2014 vintage's threshold -- applying it would be a different, undocumented answer");
+  assertTrue(under2020.threshold_definition.value !== under2014.threshold_definition.value, "the two vintages must carry documented, distinct threshold values (crosswalk)");
+});
+
+check("low-confidence findings are quarantined out of the training corpus, evidenced by a count (A5)", () => {
+  quarantineResult = quarantineFindings(allTopicFindings);
+  assertTrue(quarantineResult.quarantined_count >= 1, "expected at least one quarantined low-confidence finding (the low-quality air_quality page)");
+  const quarantinedAirQuality = quarantineResult.quarantined.find((f) => f.technical_topic === "air_quality");
+  assertTrue(Boolean(quarantinedAirQuality), "the low-quality-page air_quality finding must be the quarantined one");
+  assertTrue(!quarantineResult.accepted.some((f) => f.review_status === "quarantined_low_confidence"), "no accepted finding may carry the quarantined_low_confidence status");
+  assertThrows(() => buildTrainingCorpusRows(quarantineResult.quarantined), "buildTrainingCorpusRows must refuse quarantined findings");
+  const rows = buildTrainingCorpusRows(quarantineResult.accepted);
+  assertEqual(rows.length, quarantineResult.accepted.length, "training corpus rows must equal the accepted (non-quarantined) finding count");
+});
+
+check("hazardous_materials (never mentioned) projects to not_located, never screened_out, using only accepted evidence (A2)", () => {
+  assessmentProjection = projectTopicAssessments({
+    reviewKey: TOPIC_EXTRACTION_REVIEW_KEY,
+    documentKey: topicDeis.documentKey,
+    findings: quarantineResult.accepted,
+    manualVintageId: manualVintageResolution.vintage.manual_vintage_id,
+    observedAt: "2026-09-04T00:00:06.000Z",
+    availableToPublicAt: "2026-09-04T00:00:06.000Z",
+    sourceRecordId: "seqra05-gate-projection-0001",
+  });
+  const stateFor = (topic) => assessmentProjection.assessments.find((a) => a.technical_topic === topic)?.state;
+  assertEqual(stateFor(TOPIC_NEVER_MENTIONED), "not_located", `${TOPIC_NEVER_MENTIONED} must be not_located`);
+  assertEqual(stateFor("historic_cultural_resources"), "screened_out", "historic_cultural_resources must be screened_out");
+  const notLocatedTopics = assessmentProjection.assessments.filter((a) => a.state === "not_located").map((a) => a.technical_topic);
+  const screenedOutTopics = assessmentProjection.assessments.filter((a) => a.state === "screened_out").map((a) => a.technical_topic);
+  assertTrue(!notLocatedTopics.includes("historic_cultural_resources"), "screened_out topic must never also appear as not_located");
+  assertTrue(!screenedOutTopics.includes(TOPIC_NEVER_MENTIONED), "an unmentioned topic must never appear as screened_out");
+  assertEqual(assessmentProjection.assessment_count, 21, "one assessment per topic in the full vocabulary");
+});
+
+check("precision and recall are reported per topic and per document type against the human-reviewed benchmark set (A4)", () => {
+  const documentKeys = { deis: topicDeis.documentKey, comment_letter: topicComment.documentKey, agency_response: topicResponse.documentKey };
+  const benchmarkSet = TOPIC_EXTRACTION_BENCHMARK_ENTRIES.map((entry) => ({
+    document_key: documentKeys[entry.documentRole],
+    document_type: entry.documentRole,
+    page_number: entry.pageNumber,
+    reviewed: true,
+    expected_findings: entry.expectedFindings,
+  }));
+  benchmarkReport = computeExtractionBenchmarkReport({ benchmarkSet, findings: allTopicFindings });
+  assertTrue(Object.keys(benchmarkReport.by_topic).length > 0, "expected at least one topic in the by-topic benchmark report");
+  assertTrue(Object.keys(benchmarkReport.by_document_type).length === 3, "expected all three fixture document types in the by-document-type report");
+  assertTrue(benchmarkReport.overall.precision != null && benchmarkReport.overall.recall != null, "overall precision/recall must be computed, not left null");
+  assertTrue(benchmarkReport.overall.precision < 1 || benchmarkReport.overall.recall < 1, "the benchmark set is deliberately not a trivial 100% match");
+});
+
+check("no SEQRA-05 module falls back to a 'current'/'latest' manual vintage instead of the review's own resolved one (negative rule, static check)", () => {
+  for (const relPath of SEQRA05_SOURCE_FILES) {
+    const source = readFileSync(path.join(ROOT, relPath), "utf8");
+    for (const pattern of FORBIDDEN_VINTAGE_FALLBACK_PATTERNS) {
+      assertTrue(!pattern.test(source), `${relPath} must not fall back to an implied current/latest manual vintage (matched ${pattern})`);
+    }
+  }
+});
+
 const failed = checks.filter((c) => c.result === "fail");
 const gateResult = failed.length === 0 ? "pass" : "fail";
 
@@ -297,6 +494,17 @@ const receipt = {
     ? { bulk_api_documented: discoveryReceipt.bulk_api_documented, search_interface_status: discoveryReceipt.search_interface.status, probe_count: discoveryReceipt.probe_count }
     : null,
   sample_review_key: SAMPLE_REVIEW_KEY,
+  seqra05_topic_extraction_summary: {
+    review_key: TOPIC_EXTRACTION_REVIEW_KEY,
+    resolved_manual_vintage_id: manualVintageResolution?.vintage?.manual_vintage_id ?? null,
+    finding_count: allTopicFindings.length,
+    accepted_count: quarantineResult?.accepted_count ?? null,
+    quarantined_count: quarantineResult?.quarantined_count ?? null,
+    assessment_count: assessmentProjection?.assessment_count ?? null,
+    not_located_count: assessmentProjection?.not_located_count ?? null,
+    screened_out_count: assessmentProjection?.screened_out_count ?? null,
+    benchmark_overall: benchmarkReport?.overall ?? null,
+  },
   gate: { result: gateResult, failed_check_count: failed.length },
 };
 
