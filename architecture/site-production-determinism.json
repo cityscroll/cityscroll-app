@@ -264,6 +264,7 @@
     "site/land_project_route.mjs",
     "site/land_record_links.mjs",
     "site/land_regulatory_effect.mjs",
+    "site/land_review_regimes.mjs",
     "site/land_search_producer.mjs",
     "site/land_status_facets.mjs",
     "site/land_use_action_codes.mjs",
