@@ -481,9 +481,11 @@
 /site/meeting_outcomes_static.mjs
 /site/meeting_phase_spine.mjs
 /site/meeting_process_profile.mjs
+/site/meeting_purpose_authority.mjs
 /site/meeting_search_producer.mjs
 /site/meeting_source_completeness.mjs
 /site/meetings_attendance.mjs
+/site/meetings_card_facts.mjs
 /site/meetings_card_interaction.mjs
 /site/meetings_explorer.mjs
 /site/money-freshness.mjs
