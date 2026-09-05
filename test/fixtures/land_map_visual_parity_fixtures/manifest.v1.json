@@ -1,0 +1,149 @@
+{
+  "schema": "cityscroll.land-map-visual-parity-fixtures-manifest.v1",
+  "card": "cityscroll-land-map-view/lm-13-visual-parity-fixtures",
+  "join": "exact_project_id",
+  "anchor_specimen": {
+    "project_id": "2025K0305",
+    "why": "a multi-BBL rezoning: on the map, and never labeled an exact address"
+  },
+  "exact_precision_specimen": {
+    "project_id": "2026R0127",
+    "why": "an exact single-BBL centroid, contrasted against the anchor's lower precision"
+  },
+  "viewports": {
+    "mobile": [320, 568],
+    "narrow": [390, 844],
+    "wide": [1440, 900]
+  },
+  "negative_rule": [
+    "no viewport is ever passed to the Land filter as a bounds query",
+    "parity is never asserted from a marker count alone; List and Map id sets are compared as sets",
+    "an unmapped row is never hidden from a receipt or a count",
+    "no fixture screenshot path or evidence field carries a local filesystem reference",
+    "no fixture treats a visual read as a substitute for a canonical id, count, or precision label"
+  ],
+  "fixtures": [
+    {
+      "id": "default",
+      "title": "Default population: mapped and unmapped together",
+      "list_route": "/browse/zoning/",
+      "map_route": "/browse/zoning/?view=map",
+      "viewports": ["narrow", "wide"],
+      "dependency_scenario": "healthy",
+      "expects": {
+        "total": 40,
+        "has_mapped": true,
+        "has_unmapped": true,
+        "list_map_partition": true,
+        "contains_ids": ["2025K0305", "2026R0127"],
+        "marker_methods_labeled": true,
+        "contains_precisions": ["exact", "anchor"],
+        "axe": true
+      }
+    },
+    {
+      "id": "unmapped-honesty",
+      "title": "An all-unmapped scope keeps every row counted and listed, with no invented marker",
+      "list_route": "/browse/zoning/?status=all&stage=completed",
+      "map_route": "/browse/zoning/?status=all&stage=completed&view=map",
+      "viewports": ["narrow", "wide"],
+      "dependency_scenario": "healthy",
+      "expects": {
+        "mapped": 0,
+        "total_at_least": 1,
+        "list_map_partition": true,
+        "unmapped_note_present": true,
+        "axe": true
+      }
+    },
+    {
+      "id": "selected",
+      "title": "Selecting the multi-BBL anchor reveals identity, method, and precision without leaving the map",
+      "list_route": "/browse/zoning/",
+      "map_route": "/browse/zoning/?view=map",
+      "viewports": ["narrow", "wide"],
+      "dependency_scenario": "healthy",
+      "select_project_id": "2025K0305",
+      "expects": {
+        "selected_id": "2025K0305",
+        "selected_method": "multi_bbl_anchor",
+        "selected_precision": "anchor",
+        "list_map_partition": true,
+        "axe": true
+      }
+    },
+    {
+      "id": "boundary-context",
+      "title": "Brooklyn boundary context orients markers without becoming a result layer",
+      "list_route": "/browse/zoning/?boro=Brooklyn",
+      "map_route": "/browse/zoning/?boro=Brooklyn&view=map",
+      "viewports": ["narrow", "wide"],
+      "dependency_scenario": "healthy",
+      "expects": {
+        "list_map_partition": true,
+        "boundary_state": "ready",
+        "boundary_evidence_present": true,
+        "axe": true
+      }
+    },
+    {
+      "id": "filtered-single-result",
+      "title": "A single-result filter shows the same one project in List and Map",
+      "list_route": "/browse/zoning/?status=all&stage=any&cd=K09",
+      "map_route": "/browse/zoning/?status=all&stage=any&cd=K09&view=map",
+      "viewports": ["narrow", "wide"],
+      "dependency_scenario": "healthy",
+      "expects": {
+        "total": 1,
+        "list_map_partition": true,
+        "axe": true
+      }
+    },
+    {
+      "id": "zero-result",
+      "title": "A zero-result filter explains itself instead of reading as a failed map",
+      "list_route": "/browse/zoning/?status=all&stage=any&q=zzzznotathing",
+      "map_route": "/browse/zoning/?status=all&stage=any&q=zzzznotathing&view=map",
+      "viewports": ["narrow", "wide"],
+      "dependency_scenario": "healthy",
+      "expects": {
+        "total": 0,
+        "mapped": 0,
+        "unmapped": 0,
+        "map_state": "ready",
+        "list_empty": true,
+        "axe": true
+      }
+    },
+    {
+      "id": "mobile",
+      "title": "Every control and count reads at a 320px phone width without overflow",
+      "list_route": "/browse/zoning/",
+      "map_route": "/browse/zoning/?view=map",
+      "viewports": ["mobile", "narrow", "wide"],
+      "dependency_scenario": "healthy",
+      "select_project_id": "2025K0305",
+      "expects": {
+        "list_map_partition": true,
+        "panel_no_overflow": true,
+        "selected_id": "2025K0305",
+        "axe": true
+      }
+    },
+    {
+      "id": "dependency-failure",
+      "title": "A blocked point projection keeps the complete List and offers retry and dismiss",
+      "list_route": "/browse/zoning/",
+      "map_route": "/browse/zoning/?view=map",
+      "viewports": ["narrow", "wide"],
+      "dependency_scenario": "projection-blocked",
+      "expects": {
+        "map_state": "failed",
+        "list_total_matches_default": true,
+        "retry_present": true,
+        "dismiss_present": true,
+        "axe": true
+      }
+    }
+  ]
+}
