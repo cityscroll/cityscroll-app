@@ -181,13 +181,22 @@
       "determination_key": "determination:city_planning_commission:action_soho_noho_0001:2021-12-20",
       "cases": [],
       "named_test": false,
-      "expectation_keys": ["soho_noho_adequate_search_zero_is_a_real_zero"],
+      "expectation_keys": [
+        "soho_noho_adequate_search_zero_is_a_real_zero",
+        "soho_noho_full_ladder_search_grades_a"
+      ],
       "expectations": [
         {
           "key": "soho_noho_adequate_search_zero_is_a_real_zero",
           "kind": "challenge_watch",
           "determination_key": "determination:city_planning_commission:action_soho_noho_0001:2021-12-20",
           "expect": { "value": 0, "reason": "counted_under_recorded_search" }
+        },
+        {
+          "key": "soho_noho_full_ladder_search_grades_a",
+          "kind": "coverage_grade",
+          "determination_key": "determination:city_planning_commission:action_soho_noho_0001:2021-12-20",
+          "expect": { "grade": "A" }
         }
       ]
     },
@@ -197,13 +206,22 @@
       "determination_key": "determination:city_planning_commission:action_250_water_0001:2022-12-15",
       "cases": [],
       "named_test": false,
-      "expectation_keys": ["250_water_narrow_window_search_is_null_not_zero"],
+      "expectation_keys": [
+        "250_water_narrow_window_search_is_null_not_zero",
+        "250_water_two_docket_systems_no_opinion_search_grades_b"
+      ],
       "expectations": [
         {
           "key": "250_water_narrow_window_search_is_null_not_zero",
           "kind": "challenge_watch",
           "determination_key": "determination:city_planning_commission:action_250_water_0001:2022-12-15",
           "expect": { "value": null, "reason": "recorded_search_does_not_cover_this_determination" }
+        },
+        {
+          "key": "250_water_two_docket_systems_no_opinion_search_grades_b",
+          "kind": "coverage_grade",
+          "determination_key": "determination:city_planning_commission:action_250_water_0001:2022-12-15",
+          "expect": { "grade": "B" }
         }
       ]
     },
@@ -215,7 +233,8 @@
       "named_test": true,
       "expectation_keys": [
         "mott_haven_missing_monitoring_elevates_durable_relief_diagnostic",
-        "mott_haven_diagnostic_metric_marked_diagnostic_only"
+        "mott_haven_diagnostic_metric_marked_diagnostic_only",
+        "mott_haven_only_unusable_search_grades_u"
       ],
       "expectations": [
         {
@@ -229,6 +248,12 @@
           "kind": "diagnostic",
           "metric_name": "mott_haven_durable_relief_risk",
           "metric_value": "elevated"
+        },
+        {
+          "key": "mott_haven_only_unusable_search_grades_u",
+          "kind": "coverage_grade",
+          "determination_key": "determination:school_construction_authority:action_mott_haven_0001:2016-06-29",
+          "expect": { "grade": "U" }
         }
       ]
     },
@@ -265,13 +290,22 @@
       "determination_key": "determination:board_of_standards_and_appeals:action_halletts_north_0001:2018-03-13",
       "cases": [],
       "named_test": false,
-      "expectation_keys": ["halletts_north_inadequate_coverage_is_null_not_zero"],
+      "expectation_keys": [
+        "halletts_north_inadequate_coverage_is_null_not_zero",
+        "halletts_north_single_system_name_only_grades_c"
+      ],
       "expectations": [
         {
           "key": "halletts_north_inadequate_coverage_is_null_not_zero",
           "kind": "challenge_watch",
           "determination_key": "determination:board_of_standards_and_appeals:action_halletts_north_0001:2018-03-13",
           "expect": { "value": null, "reason": "recorded_search_does_not_cover_this_determination" }
+        },
+        {
+          "key": "halletts_north_single_system_name_only_grades_c",
+          "kind": "coverage_grade",
+          "determination_key": "determination:board_of_standards_and_appeals:action_halletts_north_0001:2018-03-13",
+          "expect": { "grade": "C" }
         }
       ]
     },

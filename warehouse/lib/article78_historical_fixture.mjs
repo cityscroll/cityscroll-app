@@ -19,6 +19,11 @@
  *  - `diagnosticMetric` is the only way a number computed over this fixture
  *    may leave this module, and it always says so.
  *
+ * The fixture also carries a bounded-search receipt per project, so that
+ * A78-03's coverage grading (`warehouse/lib/article78_search_coverage.mjs`)
+ * is exercised by the same expectations: a `coverage_grade` expectation runs
+ * the grader over one project's receipts and pins the grade it produces.
+ *
  * This module adds no record shape. Every event here is exactly one of
  * A78-01's five entities or its `determination_context`, validated with
  * A78-01's own validators after the two loader-owned decorations
@@ -38,6 +43,7 @@ import {
   validateArticle78RecordSet,
   validateDeterminationContext,
 } from "./article78_litigation.mjs";
+import { gradeCoverage } from "./article78_search_coverage.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 export const HISTORICAL_FIXTURE_DIR = join(ROOT, "fixtures/article78/historical");
@@ -347,6 +353,18 @@ function evaluateOneExpectation(fixture, effectiveByCase, expectation) {
         const metric = diagnosticMetric(expectation.metric_name, expectation.metric_value);
         const ok = metric.diagnostic_only === true && metric.scope === "fixture" && metric.value === expectation.metric_value;
         return { key: expectation.key, kind: expectation.kind, ok, actual: metric, expect: { metric_name: expectation.metric_name, metric_value: expectation.metric_value } };
+      }
+      case "coverage_grade": {
+        const determination = fixture.clean.determinations.find((row) => row.determination_key === expectation.determination_key);
+        const graded = gradeCoverage({ determination, receipts: fixture.clean.coverage });
+        const actual = {
+          grade: graded.grade,
+          receipts_considered: graded.receipts_considered,
+          systems_searched: graded.systems_searched.map((entry) => entry.system),
+          identifiers_used: graded.identifiers_used.map((entry) => entry.kind),
+        };
+        const ok = actual.grade === expectation.expect.grade;
+        return { key: expectation.key, kind: expectation.kind, ok, actual, expect: expectation.expect };
       }
       case "coverage_note_contains": {
         const coverage = fixture.clean.coverage.find((row) => row.coverage_key === expectation.coverage_key);

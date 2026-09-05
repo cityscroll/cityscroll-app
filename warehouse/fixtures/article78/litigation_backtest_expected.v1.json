@@ -118,5 +118,204 @@
     "judicial_case": 1,
     "search_coverage": 4
   },
-  "fixture_sha256": "1a5c08775be3c8aea331a644ba6796555777aed22da2a206bd5fbfe33d942826"
+  "coverage": {
+    "policy_id": "cityscroll.article78_search_coverage.grade_policy.v1",
+    "documented_margin_days": 28,
+    "grades": [
+      {
+        "determination_key": "determination:city_planning_commission:action_cpc_synth_ldc_0001:2024-03-14",
+        "grade": "B",
+        "receipts_considered": 1,
+        "systems_searched": [
+          "nyscef",
+          "webcivil_supreme"
+        ],
+        "identifiers_used": [
+          "determination_identifier",
+          "index_number",
+          "party_name"
+        ],
+        "spans_limitations_window": true,
+        "margin_days_after_close": 1,
+        "docket_details_unavailable": [
+          "motion_history"
+        ],
+        "reasons": [
+          "A: not met -- no opinion source was searched",
+          "A: not met -- the searched horizon runs only 1 day(s) past the close of the limitations window, below the required 28-day margin",
+          "B: met -- 1 usable recorded search names this determination",
+          "B: met -- 2 distinct systems were searched",
+          "B: met -- docket detail was visible: 6 of 7 docket fields were exposed",
+          "B: met -- identifiers were adequate to match a proceeding: determination_identifier, index_number, party_name",
+          "B: met -- the searched horizon spans the whole limitations window (1 day(s) past its close)"
+        ]
+      },
+      {
+        "determination_key": "determination:city_planning_commission:action_cpc_synth_ldc_0002:2024-04-11",
+        "grade": "B",
+        "receipts_considered": 1,
+        "systems_searched": [
+          "nyscef",
+          "webcivil_supreme"
+        ],
+        "identifiers_used": [
+          "determination_identifier",
+          "party_name",
+          "party_name_alternate_spelling"
+        ],
+        "spans_limitations_window": true,
+        "margin_days_after_close": 1,
+        "docket_details_unavailable": [
+          "motion_history"
+        ],
+        "reasons": [
+          "A: not met -- no opinion source was searched",
+          "A: not met -- the searched horizon runs only 1 day(s) past the close of the limitations window, below the required 28-day margin",
+          "B: met -- 1 usable recorded search names this determination",
+          "B: met -- 2 distinct systems were searched",
+          "B: met -- docket detail was visible: 6 of 7 docket fields were exposed",
+          "B: met -- identifiers were adequate to match a proceeding: determination_identifier, party_name, party_name_alternate_spelling",
+          "B: met -- the searched horizon spans the whole limitations window (1 day(s) past its close)"
+        ]
+      },
+      {
+        "determination_key": "determination:city_planning_commission:action_cpc_synth_ldc_0003:2025-11-06",
+        "grade": "U",
+        "receipts_considered": 0,
+        "systems_searched": [],
+        "identifiers_used": [],
+        "spans_limitations_window": false,
+        "margin_days_after_close": null,
+        "docket_details_unavailable": [],
+        "reasons": [
+          "A: not met -- no recorded search names this determination",
+          "A: not met -- no docket system was searched, so a proceeding that produced no published opinion could not have been seen",
+          "A: not met -- no opinion source was searched",
+          "A: not met -- no identifier was recorded for the search",
+          "A: not met -- the determination is not recorded as final and binding, so there is no limitations window for a searched horizon to span",
+          "B: not met -- no recorded search names this determination",
+          "B: not met -- 0 system(s) searched, below the 2 that \"multiple systems\" means",
+          "B: not met -- no docket system was searched, so no docket detail was available",
+          "B: not met -- no identifier was recorded for the search",
+          "B: not met -- the determination is not recorded as final and binding, so there is no limitations window for a searched horizon to span",
+          "C: not met -- no recorded search names this determination",
+          "U: no usable search of this determination is on file"
+        ]
+      },
+      {
+        "determination_key": "determination:board_of_standards_and_appeals:action_bsa_synth_ldc_0004:2024-05-09",
+        "grade": "C",
+        "receipts_considered": 1,
+        "systems_searched": [
+          "webcivil_supreme"
+        ],
+        "identifiers_used": [
+          "determination_identifier",
+          "party_name_abbreviation"
+        ],
+        "spans_limitations_window": false,
+        "margin_days_after_close": null,
+        "docket_details_unavailable": [
+          "document_list",
+          "motion_history",
+          "appeal_linkage"
+        ],
+        "reasons": [
+          "A: not met -- no opinion source was searched",
+          "A: not met -- identifiers determination_identifier, party_name_abbreviation are name-only; matching needs an index number, or a determination identifier together with an exact party name",
+          "A: not met -- the searched horizon does not contiguously span the limitations window, so a petition filed inside the window could have gone unseen",
+          "B: not met -- 1 system(s) searched, below the 2 that \"multiple systems\" means",
+          "B: not met -- identifiers determination_identifier, party_name_abbreviation are name-only; matching needs an index number, or a determination identifier together with an exact party name",
+          "B: not met -- the searched horizon does not contiguously span the limitations window, so a petition filed inside the window could have gone unseen",
+          "C: met -- 1 usable recorded search names this determination"
+        ]
+      },
+      {
+        "determination_key": "determination:city_planning_commission:action_cpc_synth_ldc_0005:2026-08-20",
+        "grade": "B",
+        "receipts_considered": 1,
+        "systems_searched": [
+          "nyscef",
+          "webcivil_supreme"
+        ],
+        "identifiers_used": [
+          "determination_identifier",
+          "party_name"
+        ],
+        "spans_limitations_window": true,
+        "margin_days_after_close": 0,
+        "docket_details_unavailable": [
+          "motion_history"
+        ],
+        "reasons": [
+          "A: not met -- no opinion source was searched",
+          "A: not met -- the searched horizon runs only 0 day(s) past the close of the limitations window, below the required 28-day margin",
+          "B: met -- 1 usable recorded search names this determination",
+          "B: met -- 2 distinct systems were searched",
+          "B: met -- docket detail was visible: 6 of 7 docket fields were exposed",
+          "B: met -- identifiers were adequate to match a proceeding: determination_identifier, party_name",
+          "B: met -- the searched horizon spans the whole limitations window (0 day(s) past its close)"
+        ]
+      }
+    ],
+    "admitted_determination_keys": [
+      "determination:city_planning_commission:action_cpc_synth_ldc_0001:2024-03-14",
+      "determination:city_planning_commission:action_cpc_synth_ldc_0002:2024-04-11",
+      "determination:city_planning_commission:action_cpc_synth_ldc_0005:2026-08-20"
+    ],
+    "excluded_determination_keys": {
+      "C": [
+        "determination:board_of_standards_and_appeals:action_bsa_synth_ldc_0004:2024-05-09"
+      ],
+      "U": [
+        "determination:city_planning_commission:action_cpc_synth_ldc_0003:2025-11-06"
+      ]
+    },
+    "metrics": [
+      {
+        "name": "article78_coverage_examined_determinations",
+        "value": 5,
+        "scope": "fixture",
+        "diagnostic_only": true
+      },
+      {
+        "name": "article78_coverage_eligible_determinations",
+        "value": 3,
+        "scope": "fixture",
+        "diagnostic_only": true
+      },
+      {
+        "name": "article78_coverage_excluded_remainder",
+        "value": 2,
+        "scope": "fixture",
+        "diagnostic_only": true
+      },
+      {
+        "name": "article78_coverage_grade_A_determinations",
+        "value": 0,
+        "scope": "fixture",
+        "diagnostic_only": true
+      },
+      {
+        "name": "article78_coverage_grade_B_determinations",
+        "value": 3,
+        "scope": "fixture",
+        "diagnostic_only": true
+      },
+      {
+        "name": "article78_coverage_grade_C_determinations",
+        "value": 1,
+        "scope": "fixture",
+        "diagnostic_only": true
+      },
+      {
+        "name": "article78_coverage_grade_U_determinations",
+        "value": 1,
+        "scope": "fixture",
+        "diagnostic_only": true
+      }
+    ],
+    "note": "published opinions are not a filing denominator: an opinion exists only where a court wrote one, so their absence is evidence about publication and never about filing"
+  },
+  "fixture_sha256": "f8f24dc75080560948eb6ee5d1f83e929629eaf1c6727e71a55205e5bc19a405"
 }

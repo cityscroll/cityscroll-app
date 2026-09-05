@@ -99,11 +99,32 @@
       "located_case_keys": [
         "judicial_case:ny_supreme_court_new_york_county:150001_2024"
       ],
-      "coverage_grade": "A",
+      "coverage_grade": "B",
       "coverage_note": "Docket index searched by respondent agency across both courts for the whole limitations window.",
       "observed_at": "2024-08-01T00:00:00Z",
       "source_id": "synthetic_court_record_fixture",
-      "source_record_id": "coverage/synthetic/0001"
+      "source_record_id": "coverage/synthetic/0001",
+      "systems_searched": [
+        {
+          "system": "nyscef"
+        },
+        {
+          "system": "webcivil_supreme"
+        }
+      ],
+      "variants_tried": [
+        {
+          "kind": "index_number",
+          "value": "150001/2024"
+        },
+        {
+          "kind": "party_name",
+          "value": "City Planning Commission"
+        }
+      ],
+      "docket_details_unavailable": [
+        "motion_history"
+      ]
     },
     {
       "record_schema": "cityscroll.article78_litigation.search_coverage.v1",
@@ -131,11 +152,32 @@
       },
       "result_count": 2,
       "located_case_keys": [],
-      "coverage_grade": "A",
+      "coverage_grade": "B",
       "coverage_note": "Same query shape as the challenged determination; two unrelated proceedings returned, neither naming this determination.",
       "observed_at": "2024-09-02T00:00:00Z",
       "source_id": "synthetic_court_record_fixture",
-      "source_record_id": "coverage/synthetic/0002"
+      "source_record_id": "coverage/synthetic/0002",
+      "systems_searched": [
+        {
+          "system": "nyscef"
+        },
+        {
+          "system": "webcivil_supreme"
+        }
+      ],
+      "variants_tried": [
+        {
+          "kind": "party_name",
+          "value": "City Planning Commission"
+        },
+        {
+          "kind": "party_name_alternate_spelling",
+          "value": "Dept. of City Planning"
+        }
+      ],
+      "docket_details_unavailable": [
+        "motion_history"
+      ]
     },
     {
       "record_schema": "cityscroll.article78_litigation.search_coverage.v1",
@@ -163,7 +205,23 @@
       "coverage_note": "Single county, and the searched window stops five weeks before the limitations window closes; recorded so the inadequacy is a fact rather than a missing row.",
       "observed_at": "2024-10-01T00:00:00Z",
       "source_id": "synthetic_court_record_fixture",
-      "source_record_id": "coverage/synthetic/0003"
+      "source_record_id": "coverage/synthetic/0003",
+      "systems_searched": [
+        {
+          "system": "webcivil_supreme"
+        }
+      ],
+      "variants_tried": [
+        {
+          "kind": "party_name_abbreviation",
+          "value": "BSA"
+        }
+      ],
+      "docket_details_unavailable": [
+        "appeal_linkage",
+        "document_list",
+        "motion_history"
+      ]
     },
     {
       "record_schema": "cityscroll.article78_litigation.search_coverage.v1",
@@ -190,11 +248,28 @@
       },
       "result_count": 0,
       "located_case_keys": [],
-      "coverage_grade": "A",
+      "coverage_grade": "B",
       "coverage_note": "Full-scope search run three and a half months before the limitations window closes; adequate in scope, premature in time.",
       "observed_at": "2026-09-01T00:00:00Z",
       "source_id": "synthetic_court_record_fixture",
-      "source_record_id": "coverage/synthetic/0004"
+      "source_record_id": "coverage/synthetic/0004",
+      "systems_searched": [
+        {
+          "system": "nyscef"
+        },
+        {
+          "system": "webcivil_supreme"
+        }
+      ],
+      "variants_tried": [
+        {
+          "kind": "party_name",
+          "value": "City Planning Commission"
+        }
+      ],
+      "docket_details_unavailable": [
+        "motion_history"
+      ]
     }
   ],
   "cases": [

@@ -203,6 +203,67 @@ export const ARTICLE78_COVERAGE_GRADES = Object.freeze(["A", "B", "C", "U"]);
 export const ARTICLE78_COUNTABLE_COVERAGE_GRADES = Object.freeze(["A", "B"]);
 
 /**
+ * The court-record systems a bounded search may name (A78-03). It is a closed
+ * vocabulary with an `other` escape carrying a free-text `label`, so that a
+ * receipt can name a system this repository has no contract for without the
+ * vocabulary silently growing a synonym for one it already has.
+ *
+ * Naming a system here is a record of what a person searched. It is not a
+ * capability: nothing in this repository knows how to query any of these, and
+ * `site/data/source_contracts.json` documents terms of use for none of them.
+ * A receipt is written down after the fact; it is never produced by fetching.
+ */
+export const ARTICLE78_SEARCHABLE_SYSTEMS = Object.freeze([
+  // Freely accessible published opinions. Incomplete as a filing denominator
+  // by construction: an opinion exists only where a court wrote one, so a
+  // proceeding that settled, was withdrawn or was decided from the bench
+  // leaves no trace in it at all.
+  "official_reports",
+  // E-filing docket index.
+  "nyscef",
+  // Supreme Court civil case index.
+  "webcivil_supreme",
+  // Anything else, which must carry a label.
+  "other",
+]);
+
+/** How each system is used, for grading. `other` is unclassified on purpose. */
+export const ARTICLE78_SYSTEM_CLASSES = Object.freeze({
+  official_reports: "opinion",
+  nyscef: "docket",
+  webcivil_supreme: "docket",
+  other: "unclassified",
+});
+
+/**
+ * The identifier and name variants a search may have been run under. A
+ * variant is what was typed into the search, not what came back.
+ */
+export const ARTICLE78_IDENTIFIER_VARIANT_KINDS = Object.freeze([
+  "index_number",
+  "determination_identifier",
+  "party_name",
+  "party_name_abbreviation",
+  "party_name_alternate_spelling",
+  "caption_fragment",
+]);
+
+/**
+ * The docket fields a source may or may not expose. A receipt lists the ones
+ * its source did NOT expose, so that "the search found nothing" and "the
+ * search could not see filing dates at all" stop looking the same.
+ */
+export const ARTICLE78_DOCKET_DETAIL_FIELDS = Object.freeze([
+  "index_number",
+  "filed_date",
+  "party_names",
+  "document_list",
+  "motion_history",
+  "disposition_date",
+  "appeal_linkage",
+]);
+
+/**
  * CPLR 217(1): four months after the determination becomes final and binding
  * upon the petitioner. This is the general rule and not the only one -- some
  * land-use and municipal provisions carry their own shorter periods -- so a
@@ -625,6 +686,18 @@ export const ARTICLE78_RECORD_SPECS = Object.freeze({
       located_case_keys: arrOfStr(),
       coverage_grade: enumStr(ARTICLE78_COVERAGE_GRADES),
       coverage_note: str(),
+      // A78-03's bounded-search detail, added additively: these three fields
+      // are optional, so every receipt written against the original contract
+      // still validates unchanged, and a receipt that omits them simply
+      // cannot support a grade above C. What each one records:
+      //   systems_searched          which court systems were actually looked in
+      //   variants_tried            which identifiers and name spellings were used
+      //   docket_details_unavailable which docket fields the source did not expose
+      // Together they are what separates "searched and found nothing" from
+      // "looked somewhere that could not have shown this anyway".
+      systems_searched: { type: ["array", "null"], items: { type: "object" } },
+      variants_tried: { type: ["array", "null"], items: { type: "object" } },
+      docket_details_unavailable: { type: ["array", "null"], items: { type: "string" } },
       ...provenanceFields(),
     },
   }),
@@ -766,6 +839,60 @@ export function validateArticle78Record(recordType, obj, label = recordType) {
   return findings;
 }
 
+/**
+ * Shape rules for A78-03's three additive bounded-search fields. Each is
+ * checked only when present, which is what keeps the extension additive: a
+ * receipt that omits all three validates exactly as it did before.
+ */
+function validateBoundedSearchDetail(obj, label) {
+  const findings = [];
+  if (Array.isArray(obj.systems_searched)) {
+    obj.systems_searched.forEach((entry, index) => {
+      const at = `${label}: systems_searched[${index}]`;
+      if (!entry || typeof entry !== "object" || Array.isArray(entry)) {
+        findings.push(`${at} must be an object carrying a system and an optional label`);
+        return;
+      }
+      const unsupported = Object.keys(entry).filter((key) => !["system", "label"].includes(key));
+      if (unsupported.length > 0) findings.push(`${at} carries unsupported field(s) ${unsupported.sort().join(", ")}`);
+      if (!ARTICLE78_SEARCHABLE_SYSTEMS.includes(entry.system)) {
+        findings.push(`${at} system ${JSON.stringify(entry.system)} is not one of ${JSON.stringify(ARTICLE78_SEARCHABLE_SYSTEMS)}`);
+      }
+      if (entry.system === "other" && (typeof entry.label !== "string" || entry.label.trim() === "")) {
+        findings.push(`${at} names system "other" without a label; an unlabelled other is a system nobody can identify later`);
+      }
+      if (entry.system !== "other" && entry.label != null) {
+        findings.push(`${at} carries a label on the named system ${JSON.stringify(entry.system)}; only "other" takes one`);
+      }
+    });
+  }
+  if (Array.isArray(obj.variants_tried)) {
+    obj.variants_tried.forEach((entry, index) => {
+      const at = `${label}: variants_tried[${index}]`;
+      if (!entry || typeof entry !== "object" || Array.isArray(entry)) {
+        findings.push(`${at} must be an object carrying a kind and a value`);
+        return;
+      }
+      const unsupported = Object.keys(entry).filter((key) => !["kind", "value"].includes(key));
+      if (unsupported.length > 0) findings.push(`${at} carries unsupported field(s) ${unsupported.sort().join(", ")}`);
+      if (!ARTICLE78_IDENTIFIER_VARIANT_KINDS.includes(entry.kind)) {
+        findings.push(`${at} kind ${JSON.stringify(entry.kind)} is not one of ${JSON.stringify(ARTICLE78_IDENTIFIER_VARIANT_KINDS)}`);
+      }
+      if (typeof entry.value !== "string" || entry.value.trim() === "") {
+        findings.push(`${at} must record the value that was actually searched under`);
+      }
+    });
+  }
+  if (Array.isArray(obj.docket_details_unavailable)) {
+    obj.docket_details_unavailable.forEach((field, index) => {
+      if (!ARTICLE78_DOCKET_DETAIL_FIELDS.includes(field)) {
+        findings.push(`${label}: docket_details_unavailable[${index}] ${JSON.stringify(field)} is not one of ${JSON.stringify(ARTICLE78_DOCKET_DETAIL_FIELDS)}`);
+      }
+    });
+  }
+  return findings;
+}
+
 /** The cross-field rules a per-field spec cannot express. */
 function validateRecordInvariants(recordType, obj, label) {
   const findings = [];
@@ -804,6 +931,7 @@ function validateRecordInvariants(recordType, obj, label) {
         findings.push(`${label}: located_case_keys[${index}] is not a judicial_case stable key`);
       }
     }
+    findings.push(...validateBoundedSearchDetail(obj, label));
   }
   if (recordType === "decision_supersession") {
     if (obj.superseding_decision_key === obj.superseded_decision_key) {
@@ -936,6 +1064,22 @@ export function normalizeSearchScope(scope) {
   };
 }
 
+/** Deterministic order for a receipt's searched systems: system, then label. */
+export function sortSystemsSearched(entries = []) {
+  return [...entries].sort((a, b) => (
+    a.system === b.system
+      ? String(a.label ?? "").localeCompare(String(b.label ?? ""))
+      : a.system.localeCompare(b.system)
+  ));
+}
+
+/** Deterministic order for a receipt's tried variants: kind, then value. */
+export function sortVariantsTried(entries = []) {
+  return [...entries].sort((a, b) => (
+    a.kind === b.kind ? String(a.value).localeCompare(String(b.value)) : a.kind.localeCompare(b.kind)
+  ));
+}
+
 /** Build a search_coverage record, with the key derived from the scope. */
 export function buildSearchCoverageRecord({
   determinationKey = null,
@@ -946,6 +1090,9 @@ export function buildSearchCoverageRecord({
   locatedCaseKeys = [],
   coverageGrade,
   coverageNote,
+  systemsSearched = [],
+  variantsTried = [],
+  docketDetailsUnavailable = [],
   observedAt,
   sourceId,
   sourceRecordId,
@@ -964,6 +1111,11 @@ export function buildSearchCoverageRecord({
     located_case_keys: [...locatedCaseKeys].sort(),
     coverage_grade: coverageGrade,
     coverage_note: coverageNote,
+    // Sorted so that two receipts describing the same bounded search
+    // serialize identically regardless of the order a caller listed them in.
+    systems_searched: sortSystemsSearched(systemsSearched),
+    variants_tried: sortVariantsTried(variantsTried),
+    docket_details_unavailable: [...new Set(docketDetailsUnavailable)].sort(),
     observed_at: observedAt,
     source_id: sourceId,
     source_record_id: sourceRecordId,
@@ -1136,7 +1288,23 @@ export function renderChallengeWatchValue(result) {
  * and taking it from a clock instead would make the same inputs produce
  * different answers on different days.
  */
-export function challengeWatchValue({ determination, cases = [], coverage = [], asOf = null } = {}) {
+/**
+ * Roll a set of per-receipt coverage grades up to one grade for the
+ * determination they cover: the best grade any receipt carries, and "U" when
+ * there is nothing usable to roll up. "Usable" is the point -- a determination
+ * whose only receipt is itself graded unusable is in the same position as one
+ * nobody ever searched, and both must read as "U" rather than as a searched
+ * negative. A78-03 derives the same grade from the receipts' own evidence;
+ * this function is the stored-grade form of the identical rollup.
+ */
+export function rollUpCoverageGrade(grades = []) {
+  for (const grade of ARTICLE78_COVERAGE_GRADES) {
+    if (grade !== "U" && grades.includes(grade)) return grade;
+  }
+  return "U";
+}
+
+export function challengeWatchValue({ determination, cases = [], coverage = [], asOf = null, coverageGrade = null } = {}) {
   const contextFindings = validateDeterminationContext(determination);
   if (contextFindings.length > 0) {
     throw new Article78LitigationError(`challengeWatchValue: ${contextFindings.join("; ")}`);
@@ -1155,10 +1323,18 @@ export function challengeWatchValue({ determination, cases = [], coverage = [], 
   const effectiveAsOf = asOf ?? (searchedAt.length > 0 ? searchedAt[searchedAt.length - 1] : null);
 
   const window = limitationsWindow(determination);
+  // The grade this value rests on, named on every result including the nulls.
+  // A caller that renders "not established" can then say which grade produced
+  // it -- C and U are the two that can never produce a number.
+  const resolvedGrade = coverageGrade ?? rollUpCoverageGrade(relevantCoverage.map((row) => row.coverage_grade));
+  if (!ARTICLE78_COVERAGE_GRADES.includes(resolvedGrade)) {
+    throw new Article78LitigationError(`challengeWatchValue: coverageGrade ${JSON.stringify(resolvedGrade)} is not one of ${JSON.stringify(ARTICLE78_COVERAGE_GRADES)}`);
+  }
   const emit = (value, reason, extra = {}) => {
     const basis = {
       reason,
       as_of: effectiveAsOf,
+      coverage_grade: resolvedGrade,
       coverage_keys: [],
       searched_at: [],
       limitations_window: window,
@@ -1181,6 +1357,15 @@ export function challengeWatchValue({ determination, cases = [], coverage = [], 
   }
 
   const adequacy = relevantCoverage.map((row) => assessSearchCoverageAdequacy({ determination, coverage: row, window }));
+  // A determination graded C or U cannot produce a number, whatever any one
+  // receipt claims for itself. This is the determination-level form of the
+  // same refusal `assessSearchCoverageAdequacy` applies per receipt, and it
+  // is what makes an injected A78-03 grade binding rather than advisory.
+  if (!ARTICLE78_COUNTABLE_COVERAGE_GRADES.includes(resolvedGrade)) {
+    return emit(null, "recorded_search_does_not_cover_this_determination", {
+      coverage_assessments: adequacy,
+    });
+  }
   const adequate = relevantCoverage.filter((_, index) => adequacy[index].adequate);
   if (adequate.length === 0) {
     return emit(null, "recorded_search_does_not_cover_this_determination", {
@@ -1236,6 +1421,15 @@ export function assertChallengeWatchResult(result, context = "challenge watch va
   }
   if (value !== null && basis.reason !== "counted_under_recorded_search") {
     throw new Article78LitigationError(`${context}: a counted value must carry reason "counted_under_recorded_search", got ${JSON.stringify(basis.reason)}`);
+  }
+  if (basis.coverage_grade !== undefined && !ARTICLE78_COVERAGE_GRADES.includes(basis.coverage_grade)) {
+    throw new Article78LitigationError(`${context}: basis.coverage_grade ${JSON.stringify(basis.coverage_grade)} is not one of ${JSON.stringify(ARTICLE78_COVERAGE_GRADES)}`);
+  }
+  if (value !== null && basis.coverage_grade !== undefined
+    && !ARTICLE78_COUNTABLE_COVERAGE_GRADES.includes(basis.coverage_grade)) {
+    throw new Article78LitigationError(
+      `${context}: a counted value must rest on a countable coverage grade (${ARTICLE78_COUNTABLE_COVERAGE_GRADES.join("/")}), got ${JSON.stringify(basis.coverage_grade)}`,
+    );
   }
   return result;
 }
@@ -1428,7 +1622,12 @@ export function projectToOntologyEntities({ cases = [], filings = [], claims = [
     search_coverage: coverage.map((row) => ({
       coverage_key: row.coverage_key,
       determination_key: row.determination_key,
-      systems_searched: [row.source, ...row.scope.courts].sort(),
+      // Prefer the systems the receipt itself records (A78-03). Receipts
+      // written before that field existed fall back to the source and the
+      // courts named in the scope, which is what this projection always used.
+      systems_searched: Array.isArray(row.systems_searched) && row.systems_searched.length > 0
+        ? sortSystemsSearched(row.systems_searched).map((entry) => (entry.system === "other" ? `other:${entry.label}` : entry.system))
+        : [row.source, ...row.scope.courts].sort(),
       coverage_grade: row.coverage_grade,
       search_date: row.searched_at.slice(0, 10),
       observed_at: row.observed_at,

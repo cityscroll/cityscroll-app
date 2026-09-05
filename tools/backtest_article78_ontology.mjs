@@ -56,7 +56,18 @@ import {
   validateArticle78RecordSet,
   validateDeterminationContext,
 } from "../warehouse/lib/article78_litigation.mjs";
-import { evaluateHistoricalFixtureExpectations } from "../warehouse/lib/article78_historical_fixture.mjs";
+import {
+  diagnosticMetric,
+  evaluateHistoricalFixtureExpectations,
+} from "../warehouse/lib/article78_historical_fixture.mjs";
+import {
+  admitNegatives,
+  assertDerivedDenominator,
+  assertBoundedSearchReceipts,
+  COVERAGE_GRADE_POLICY,
+  eligibleDenominator,
+  gradeCoverage,
+} from "../warehouse/lib/article78_search_coverage.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -116,6 +127,12 @@ export function runArticle78Backtest(fixture) {
 
   const projected = projectToOntologyEntities(fixture);
 
+  // A78-03. Every receipt must record what it searched, under which variants,
+  // and which docket fields its source could not show -- otherwise the grade
+  // below is being read off a receipt that never said what it did.
+  assertBoundedSearchReceipts(fixture.coverage, "backtest search coverage");
+  const coverage = runCoverageSection(fixture);
+
   return {
     schema: BACKTEST_SCHEMA,
     module_schema: ARTICLE78_LITIGATION_SCHEMA,
@@ -135,6 +152,53 @@ export function runArticle78Backtest(fixture) {
     projected_entity_counts: Object.fromEntries(
       Object.entries(projected).map(([entityType, rows]) => [entityType, rows.length]).sort(),
     ),
+    coverage,
+  };
+}
+
+/**
+ * A78-03's coverage section: a grade per determination, the admission split,
+ * and the eligible denominator with its excluded remainder.
+ *
+ * Every count here is wrapped by A78-02's `diagnosticMetric`. That is not
+ * decoration: these numbers are computed over a small synthetic fixture, and
+ * an eligible-determination count that escaped this receipt unmarked would
+ * read as a statement about how often land-use approvals are searched, which
+ * it is not and can never be.
+ */
+function runCoverageSection(fixture) {
+  const entries = fixture.determinations.map((determination) => ({ determination, receipts: fixture.coverage }));
+  const grades = entries.map((entry) => gradeCoverage(entry));
+  const admission = admitNegatives(entries);
+  const denominator = eligibleDenominator(entries);
+  assertDerivedDenominator(denominator, "backtest eligible denominator");
+
+  return {
+    policy_id: COVERAGE_GRADE_POLICY.policy_id,
+    documented_margin_days: COVERAGE_GRADE_POLICY.horizon.documented_margin_days,
+    grades: grades.map((row) => ({
+      determination_key: row.determination_key,
+      grade: row.grade,
+      receipts_considered: row.receipts_considered,
+      systems_searched: row.systems_searched.map((entry) => (entry.system === "other" ? `other:${entry.label}` : entry.system)),
+      identifiers_used: row.identifiers_used.map((entry) => entry.kind),
+      spans_limitations_window: row.horizon.spans_limitations_window,
+      margin_days_after_close: row.horizon.margin_days_after_close,
+      docket_details_unavailable: row.docket_details_unavailable,
+      reasons: row.reasons,
+    })),
+    admitted_determination_keys: admission.admitted.map((row) => row.determination_key),
+    excluded_determination_keys: {
+      C: admission.excluded.C.map((row) => row.determination_key),
+      U: admission.excluded.U.map((row) => row.determination_key),
+    },
+    metrics: [
+      diagnosticMetric("article78_coverage_examined_determinations", denominator.examined_determination_count),
+      diagnosticMetric("article78_coverage_eligible_determinations", denominator.eligible_determination_count),
+      diagnosticMetric("article78_coverage_excluded_remainder", denominator.excluded_remainder.count),
+      ...Object.entries(denominator.by_grade).sort().map(([grade, count]) => diagnosticMetric(`article78_coverage_grade_${grade}_determinations`, count)),
+    ],
+    note: denominator.note,
   };
 }
 
@@ -160,6 +224,19 @@ function firstDifference(actual, expected, path = "$") {
     }
   }
   return `${path}: ${JSON.stringify(actual)} != expected ${JSON.stringify(expected)}`;
+}
+
+/** Render A78-03's coverage grades, admission split and eligible denominator. */
+function renderCoverageSection(coverage) {
+  const eligible = coverage.metrics.find((metric) => metric.name === "article78_coverage_eligible_determinations");
+  const examined = coverage.metrics.find((metric) => metric.name === "article78_coverage_examined_determinations");
+  const remainder = coverage.metrics.find((metric) => metric.name === "article78_coverage_excluded_remainder");
+  return [
+    `  search coverage (A78-03, policy ${coverage.policy_id}, documented margin ${coverage.documented_margin_days}d):`,
+    ...coverage.grades.map((row) => `    ${row.grade}  ${row.determination_key}\n       systems ${row.systems_searched.join(", ") || "none"}; identifiers ${row.identifiers_used.join(", ") || "none"}; margin ${row.margin_days_after_close ?? "n/a"}`),
+    `    eligible denominator ${eligible.value} of ${examined.value} examined, excluded remainder ${remainder.value} (C ${coverage.excluded_determination_keys.C.length}, U ${coverage.excluded_determination_keys.U.length}) -- diagnostic_only, derived from recorded coverage and never from an asserted total`,
+    `    ${coverage.note}`,
+  ].join("\n");
 }
 
 /** Render the diagnostic_only historical-fixture section of the receipt (A78-02). */
@@ -197,6 +274,7 @@ function main(argv) {
     ...rows,
     "  effective decisions:",
     ...receipt.effective_decisions.map((entry) => `  ${entry.case_key}\n    effective ${entry.effective_decision_key ?? "none"} (${entry.effective_decision_court_level ?? "n/a"})\n    procedural_survival=${entry.case_outcome.procedural_survival} durable_petitioner_relief=${entry.case_outcome.durable_petitioner_relief} remedy_exposure=${entry.case_outcome.remedy_exposure}\n    superseded ${entry.superseded_decision_keys.length}, unresolved ${entry.unresolved ?? "none"}`),
+    renderCoverageSection(receipt.coverage),
     renderHistoricalFixtureSection(historicalReport),
     "",
   ].join("\n"));
