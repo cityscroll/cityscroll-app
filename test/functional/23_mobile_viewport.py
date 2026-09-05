@@ -23,6 +23,13 @@ ROOT = Path(__file__).parents[2]
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "test" / "functional" / "assets"))
 from ci_waits import wait_for_app_ready, wait_for_function, wait_for_locator  # noqa: E402
+from detail_panel_fixture import (  # noqa: E402
+    DETAIL_SELECTOR,
+    DetailPanelPrecondition,
+    require_attachment_fixture,
+    require_measured_fixture,
+    wait_for_detail_panel_settled,
+)
 from i18n_fixtures import install_routes  # noqa: E402
 from tools.local_site_server import QuietHandler  # noqa: E402
 from fixture_clock import pin_fixture_clock  # noqa: E402
@@ -124,11 +131,23 @@ def install_and_measure_table(page: Page) -> dict:
     measurement then dereferences a missing element. Everything after the
     module import runs on one synchronous turn, so a repaint cannot land
     between rendering the fixture and reading its geometry.
+
+    The settle wait ahead of it closes the remaining window: the route's own
+    render can still land during the module import, and the surface assertions
+    that follow the measurement read the panel again on later turns. Waiting
+    for the route to finish repainting means both are looking at the fixture.
+    A shell that never arrives, or markup that does not render, is reported as
+    a named precondition carrying the URL rather than as an opaque page error.
     """
-    return page.evaluate(
-        """async () => {
+    wait_for_detail_panel_settled(page)
+    outcome = page.evaluate(
+        """async ({selector}) => {
+          const detail = document.querySelector(selector);
+          if (!detail) {
+            return {measured: false, reason: 'panel-absent', url: location.href,
+                    title: document.title};
+          }
           const mod = await import('./attachment_tables_ui.mjs');
-          const detail = document.querySelector('#detail');
           detail.innerHTML = mod.attachmentTablesHTML({
             tables_status: 'ok',
             tables_preview: 'Species and timber volume',
@@ -141,17 +160,57 @@ def install_and_measure_table(page: Page) -> dict:
               ],
             }],
           }, {t: key => key});
-          detail.querySelector('.attachment-tables').open = true;
+          const root = detail.querySelector('.attachment-tables');
+          if (!root) {
+            return {measured: false, reason: 'fixture-markup-missing', url: location.href,
+                    title: document.title};
+          }
+          root.open = true;
           const body = detail.querySelector('.attachment-tables-body');
           const head = detail.querySelector('.attachment-table th[tabindex]');
-          if (!body || !head) throw new Error('attachment table fixture did not render');
+          if (!body || !head) {
+            return {measured: false, reason: 'fixture-body-missing', url: location.href,
+                    title: document.title};
+          }
           return {
+            measured: true,
+            url: location.href,
             contained: body.scrollWidth > body.clientWidth,
             headHeight: head.getBoundingClientRect().height,
             documentOverflow: document.documentElement.scrollWidth - innerWidth,
           };
-        }"""
+        }""",
+        {"selector": DETAIL_SELECTOR},
     )
+    return require_measured_fixture(outcome)
+
+
+def measure_contained_attachment_table(page: Page) -> dict:
+    """Measure containment, and assert the mobile surface the table is part of.
+
+    The surface assertions run on later turns than the atomic measurement, so
+    they need the fixture to still be there to mean anything. Establishing it
+    and asserting against it is therefore one unit: a panel the route repainted
+    is a precondition to re-establish, not a layout result. Layout assertions
+    (AssertionError) propagate on the first attempt; only a named
+    DetailPanelPrecondition is re-established, once, with a printed receipt.
+    """
+    attempts = 2
+    for attempt in range(1, attempts + 1):
+        try:
+            metrics = install_and_measure_table(page)
+            require_attachment_fixture(page, "before the attachment-table surface assertions")
+            assert_mobile_surface(page, "attachment table")
+            return metrics
+        except DetailPanelPrecondition as precondition:
+            if attempt >= attempts:
+                raise
+            print(
+                f"DETAIL_FIXTURE_REPLACED the contract detail panel was repainted after "
+                f"the fixture settled; re-establishing once ({precondition})",
+                flush=True,
+            )
+    raise AssertionError("unreachable fixture measurement loop")
 
 
 def run(base: str) -> None:
@@ -243,11 +302,10 @@ def run(base: str) -> None:
         page.goto(f"{base}#money", wait_until="domcontentloaded", timeout=30_000)
         wait_for_app_ready(page)
         wait_for_locator(page.locator("#list .row").first, label="attachment fixture source row")
-        table_metrics = install_and_measure_table(page)
+        table_metrics = measure_contained_attachment_table(page)
         assert table_metrics["contained"], table_metrics
         assert table_metrics["headHeight"] >= 43.5, table_metrics
         assert table_metrics["documentOverflow"] <= 1, table_metrics
-        assert_mobile_surface(page, "attachment table")
 
         page.goto(f"{base}#property", wait_until="domcontentloaded", timeout=30_000)
         wait_for_locator(page.locator("#property-domain-intro"), label="property domain intro")
