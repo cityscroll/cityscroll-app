@@ -639,8 +639,12 @@ async function loadMeetingOutcomes(r, el){
   if(!el || !r.request_id) return;
   const eligible = isMeetingOutcomesEligible(r);
   const nonCouncil = r.section_name === "Public Hearings and Meetings" && !isCityCouncilNotice(r);
+  // Always resolves to one of three visibly distinct states — a matched
+  // decision, a recorded no-action negative, or an outcome we could not
+  // locate. Rendering nothing when the lookup misses would read as the body
+  // having done nothing, which is the one thing absence cannot prove.
   const panelHTMLPromise = nonCouncil
-    ? import("../non_council_outcome_panel.mjs").then((tools) => tools.loadNonCouncilOutcomePanel(r.request_id, {
+    ? import("../outcome_not_located_state.mjs").then((tools) => tools.loadOutcomeState(r.request_id, r, {
         lang: window.LANG, esc: escUiHtml, date: fdate, externalSuffixHTML: extSR,
       })).catch(() => "")
     : Promise.resolve("");

@@ -38,7 +38,13 @@ const CITY_RECORD_SOURCE = "City Record Online";
 const CITY_RECORD_URL = "https://a856-cityrecord.nyc.gov/RequestDetail/";
 const CB_URL = "https://www.nyc.gov/site/cau/community-boards/community-boards.page";
 
-const BP_LINKS = Object.freeze([
+/**
+ * Borough-level hearing bodies and the official site each one publishes on.
+ * Exported so a caller that needs to name one exact borough body (rather than
+ * the "where might minutes be" link set `nonCouncilBodyLinks` returns, which
+ * carries a deliberate directory fallback) reads the same identities from here.
+ */
+export const BP_LINKS = Object.freeze([
   { re: /\bmanhattan\b/i, url: "https://www.manhattanbp.nyc.gov/", label: "Manhattan Borough President" },
   { re: /\bbrooklyn\b/i, url: "https://www.brooklynbp.nyc.gov/", label: "Brooklyn Borough President" },
   { re: /\bbronx\b/i, url: "https://bronxboropres.nyc.gov/", label: "Bronx Borough President" },
