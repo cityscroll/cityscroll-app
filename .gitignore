@@ -149,3 +149,6 @@ civic-content-gates/*.egg-info/
 
 # PHC-07 capture scratch (rendered fragments only, never images)
 site/.phc07-capture-tmp/
+
+# PHC-09 capture scratch (rendered fragments only, never images)
+site/.phc09-capture-tmp/
