@@ -3,28 +3,39 @@
  *
  * Git exports GIT_DIR — and sometimes GIT_WORK_TREE, GIT_INDEX_FILE, and
  * GIT_COMMON_DIR — into every hook it runs, and `tools/git-hooks/pre-push` runs
- * the whole preflight, so the unit suites execute with those variables set. A
- * `git -C <scratch>` call that inherits them does NOT open the scratch
- * repository: it binds to the exported object store while treating the scratch
- * directory as the work tree. A fixture's `add -A` plus `commit` then lands on
- * the real branch as a commit that deletes every path the fixture does not
- * contain, and `--show-toplevel` guards do not help because that resolves to the
- * scratch tree too. Read-only calls are quieter and no better: they answer about
- * the wrong repository, so a fixture assertion can pass for the wrong reason.
+ * the whole preflight, so the unit suites execute with those variables set. This
+ * repository is normally worked on from a linked worktree, and a worktree's
+ * exported GIT_DIR does not behave like a plain repository's: it points at the
+ * per-worktree gitdir under `<hub>/.git/worktrees/<name>`, which carries a
+ * `gitdir` backlink to the real linked work tree, so Git resolves the ambient
+ * work tree from GIT_DIR alone — no GIT_WORK_TREE needed, and a `-C <fixture>`
+ * or `cwd` pointed at the fixture does not override it. A fixture's `add -A`
+ * plus `commit` then lands on the real branch as a commit that deletes every
+ * path the fixture does not contain, and `--show-toplevel` guards do not help
+ * because that resolves to the ambient tree too. Read-only calls are quieter
+ * and no better: they answer about the wrong repository, so a fixture assertion
+ * can pass for the wrong reason.
  *
- * This is not hypothetical. It happened, and recovering took a hand-run reset.
+ * This is not hypothetical. It happened twice, and recovering took a hand-run
+ * reset both times — the second time from inside a linked worktree exactly
+ * like the one described above, which is what exposed that the first fix's
+ * hostile-environment simulation below used a plain repository's GIT_DIR
+ * shape and so never actually exercised the worktree backlink.
  *
- * Each suite below is therefore executed under exactly that hostile environment,
- * pointed at a throwaway stand-in for the ambient repository. A suite passes
- * only if it still passes AND leaves that stand-in byte-identical. The negative
- * control at the end proves the detector can actually fail.
+ * Each suite below is therefore executed under exactly that hostile
+ * environment, pointed at a throwaway worktree stand-in for the ambient
+ * repository. A suite passes only if it still passes AND leaves that stand-in
+ * byte-identical. The negative control at the end proves the detector can
+ * actually fail.
  *
  * Scope, from the audit that produced this file. Every git invocation under
  * `tools/` and `test/` was inspected and split by what a leak would cost:
  *
  *   WRITES  — `init`, `add`, `commit` and their kin against a scratch tree. A
- *             leak here rewrites the ambient repository. Exactly one existed,
- *             in the determinism suite, and it is the incident above. None
+ *             leak here rewrites the ambient repository. Two have existed:
+ *             the determinism suite (fixed first) and
+ *             `test/list_pr_changed_paths.test.mjs`'s fixture-repo builder
+ *             (fixed alongside the worktree-shaped simulation below). None
  *             remain; that is what these tests hold.
  *   READS   — `ls-files`, `rev-parse`, `merge-base`, `diff`. A leak answers
  *             about the wrong repository instead of damaging one. Several of
@@ -64,6 +75,7 @@ const SCRATCH_REPO_SUITES = Object.freeze([
   "test/ci_exact_commit_artifact.test.mjs",
   "test/functional_corpus_readiness.test.mjs",
   "test/i18n_cache_build.test.mjs",
+  "test/list_pr_changed_paths.test.mjs",
   "test/prepare_changelog_base.test.mjs",
   "test/private_identifier_scan.test.mjs",
   "test/rcp03_evidence_placement.test.mjs",
@@ -75,21 +87,39 @@ function git(cwd, args, env = isolatedGitEnv()) {
 }
 
 /**
- * A throwaway repository that stands in for the one a hook would expose. Its
- * whole job is to be damaged if anything leaks, so it carries a committed file
- * and a recorded state to compare against.
+ * A throwaway repository that stands in for the one a hook would expose,
+ * shaped like a real linked worktree rather than a plain repository: `hub` is
+ * a normal repo, and `root` is a detached worktree of it, so `root`'s GIT_DIR
+ * is `<hub>/.git/worktrees/<name>` carrying the `gitdir` backlink a real
+ * worktree checkout exports. Its whole job is to be damaged if anything
+ * leaks, so it carries a committed file and a recorded state to compare
+ * against.
  */
 function ambientStandIn() {
-  const root = mkdtempSync(path.join(tmpdir(), "cityscroll-ambient-"));
+  const hub = mkdtempSync(path.join(tmpdir(), "cityscroll-ambient-hub-"));
+  assert.equal(git(hub, ["init", "-q", "-b", "main"]).status, 0);
+  git(hub, ["config", "user.email", "baseline@example.invalid"]);
+  git(hub, ["config", "user.name", "Baseline"]);
+  writeFileSync(path.join(hub, "hub-only.txt"), "the hub's own checkout\n");
+  git(hub, ["add", "-A"]);
+  assert.equal(git(hub, ["commit", "-qm", "hub baseline"]).status, 0);
+
+  const root = path.join(mkdtempSync(path.join(tmpdir(), "cityscroll-ambient-parent-")), "worktree");
+  assert.equal(git(hub, ["worktree", "add", "--quiet", "--detach", root, "main"]).status, 0);
   writeFileSync(path.join(root, "kept.txt"), "this file must survive every suite\n");
   mkdirSync(path.join(root, "nested"), { recursive: true });
   writeFileSync(path.join(root, "nested", "also-kept.txt"), "and so must this one\n");
-  assert.equal(git(root, ["init", "-q", "-b", "main"]).status, 0);
-  git(root, ["config", "user.email", "baseline@example.invalid"]);
-  git(root, ["config", "user.name", "Baseline"]);
   git(root, ["add", "-A"]);
   assert.equal(git(root, ["commit", "-qm", "ambient baseline"]).status, 0);
-  return root;
+
+  const gitDir = git(root, ["rev-parse", "--absolute-git-dir"]).stdout.trim();
+  return { root, hub, gitDir };
+}
+
+function removeStandIn(standIn) {
+  git(standIn.hub, ["worktree", "remove", "--force", standIn.root]);
+  rmSync(path.dirname(standIn.root), { recursive: true, force: true });
+  rmSync(standIn.hub, { recursive: true, force: true });
 }
 
 /** Everything about the stand-in that a leaked write would move. */
@@ -106,22 +136,24 @@ function repositoryState(root) {
 /**
  * The environment a Git hook hands to everything the preflight runs.
  *
- * GIT_DIR alone, deliberately: that is what Git exports, and it is what makes
- * the leak destructive. With no GIT_WORK_TREE, the work tree falls back to the
- * process's directory, so `git -C <fixture> add -A` stages the FIXTURE against
- * the exported object store and commits away everything else. Exporting a work
- * tree as well would point every command back at the stand-in and quietly
- * defuse the very failure this file exists to reproduce.
+ * GIT_DIR alone, deliberately: that is what Git exports for a worktree
+ * checkout, and it is what makes the leak destructive. `standIn.gitDir` is
+ * itself a worktree gitdir (see `ambientStandIn`), so it carries the `gitdir`
+ * backlink that resolves the ambient work tree directly — no GIT_WORK_TREE
+ * needed, and a `-C <fixture>` or `cwd` pointed at the fixture does not
+ * override it. Exporting a work tree as well would point every command back
+ * at the stand-in and quietly defuse the very failure this file exists to
+ * reproduce.
  */
 function hookEnvironment(standIn) {
-  return { ...process.env, GIT_DIR: path.join(standIn, ".git") };
+  return { ...process.env, GIT_DIR: standIn.gitDir };
 }
 
 for (const suite of SCRATCH_REPO_SUITES) {
   test(`${suite} is safe to run from a Git hook`, () => {
     const standIn = ambientStandIn();
     try {
-      const before = repositoryState(standIn);
+      const before = repositoryState(standIn.root);
       // The child is a real `node --test` run, so it must not inherit this
       // file's own test-runner context; Node detects it and skips the run.
       const childEnvironment = hookEnvironment(standIn);
@@ -136,7 +168,7 @@ for (const suite of SCRATCH_REPO_SUITES) {
       // Damage first: a suite that corrupts the ambient repository has already
       // done the harm even if it goes on to report success.
       assert.deepEqual(
-        repositoryState(standIn),
+        repositoryState(standIn.root),
         before,
         `${suite} changed the ambient repository exported to it by the hook`,
       );
@@ -153,7 +185,7 @@ for (const suite of SCRATCH_REPO_SUITES) {
         `${suite} did not actually run under the hook environment:\n${run.stdout}\n${run.stderr}`,
       );
     } finally {
-      rmSync(standIn, { recursive: true, force: true });
+      removeStandIn(standIn);
     }
   });
 }
@@ -162,7 +194,7 @@ test("the detector fails when a subprocess really does leak", () => {
   const standIn = ambientStandIn();
   const fixture = mkdtempSync(path.join(tmpdir(), "cityscroll-leaky-"));
   try {
-    const before = repositoryState(standIn);
+    const before = repositoryState(standIn.root);
     writeFileSync(path.join(fixture, "only-file.txt"), "the fixture's whole tree\n");
 
     // Exactly the unguarded shape that caused the incident: `git -C <fixture>`
@@ -176,7 +208,7 @@ test("the detector fails when a subprocess really does leak", () => {
     });
     assert.equal(committed.status, 0, committed.stderr);
 
-    const after = repositoryState(standIn);
+    const after = repositoryState(standIn.root);
     assert.notEqual(after.head, before.head, "a leaked commit must move the ambient HEAD");
     assert.equal(Number(after.commits), Number(before.commits) + 1);
     assert.ok(
@@ -188,7 +220,7 @@ test("the detector fails when a subprocess really does leak", () => {
     const clean = mkdtempSync(path.join(tmpdir(), "cityscroll-clean-"));
     const guarded = ambientStandIn();
     try {
-      const guardedBefore = repositoryState(guarded);
+      const guardedBefore = repositoryState(guarded.root);
       writeFileSync(path.join(clean, "only-file.txt"), "the fixture's whole tree\n");
       const safe = isolatedGitEnv({ ...hookEnvironment(guarded) });
       spawnSync("git", ["-C", clean, "init", "-q"], { env: safe });
@@ -196,14 +228,14 @@ test("the detector fails when a subprocess really does leak", () => {
       spawnSync("git", ["-C", clean, "config", "user.name", "test"], { env: safe });
       spawnSync("git", ["-C", clean, "add", "-A"], { env: safe });
       spawnSync("git", ["-C", clean, "commit", "-qm", "fixture"], { env: safe });
-      assert.deepEqual(repositoryState(guarded), guardedBefore, "stripping the bindings is the fix");
+      assert.deepEqual(repositoryState(guarded.root), guardedBefore, "stripping the bindings is the fix");
     } finally {
       rmSync(clean, { recursive: true, force: true });
-      rmSync(guarded, { recursive: true, force: true });
+      removeStandIn(guarded);
     }
   } finally {
     rmSync(fixture, { recursive: true, force: true });
-    rmSync(standIn, { recursive: true, force: true });
+    removeStandIn(standIn);
   }
 });
 
@@ -211,7 +243,7 @@ test("the detector observes a leaked repository-config write", () => {
   const standIn = ambientStandIn();
   const fixture = mkdtempSync(path.join(tmpdir(), "cityscroll-config-leak-"));
   try {
-    const before = repositoryState(standIn);
+    const before = repositoryState(standIn.root);
     const leaked = hookEnvironment(standIn);
     const written = spawnSync("git", ["-C", fixture, "config", "user.name", "test"], {
       env: leaked,
@@ -219,12 +251,12 @@ test("the detector observes a leaked repository-config write", () => {
     });
     assert.equal(written.status, 0, written.stderr);
     assert.notEqual(
-      repositoryState(standIn).config,
+      repositoryState(standIn.root).config,
       before.config,
       "a leaked git config write must be visible to the ambient-repository guard",
     );
   } finally {
     rmSync(fixture, { recursive: true, force: true });
-    rmSync(standIn, { recursive: true, force: true });
+    removeStandIn(standIn);
   }
 });

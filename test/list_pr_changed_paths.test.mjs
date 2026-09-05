@@ -10,6 +10,7 @@ import fs from "node:fs";
 import { execFileSync, spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { withTempDir } from "../tools/lib/with_temp_dir.mjs";
+import { isolatedGitEnv } from "../tools/architecture_evidence_shards.mjs";
 
 const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const SCRIPT = path.join(ROOT, "tools", "list_pr_changed_paths.sh");
@@ -22,8 +23,14 @@ function sh(cmd, args, opts = {}) {
 // head commit that modifies fileA.txt and adds fileC.txt — the small PR the
 // task asks us to prove the fallback against. `dir` is a caller-owned temp
 // directory (see withTempDir at each call site).
+//
+// A pre-push hook exports GIT_DIR (a worktree checkout's points at the linked
+// gitdir, which resolves the real work tree on its own — no GIT_WORK_TREE
+// needed, and `cwd: dir` does not override it), so these writes must run with
+// that binding stripped or they land on the real repository's branch instead
+// of this fixture. See test/hook_safe_git_subprocesses.test.mjs.
 function setupFixtureRepo(dir) {
-  const env = { ...process.env, GIT_AUTHOR_NAME: "test", GIT_AUTHOR_EMAIL: "test@localhost", GIT_COMMITTER_NAME: "test", GIT_COMMITTER_EMAIL: "test@localhost" };
+  const env = { ...isolatedGitEnv(), GIT_AUTHOR_NAME: "test", GIT_AUTHOR_EMAIL: "test@localhost", GIT_COMMITTER_NAME: "test", GIT_COMMITTER_EMAIL: "test@localhost" };
   sh("git", ["init", "-q"], { cwd: dir, env });
   fs.writeFileSync(path.join(dir, "fileA.txt"), "a\n");
   fs.writeFileSync(path.join(dir, "fileB.txt"), "b\n");
@@ -75,7 +82,7 @@ fi
 
 function run(status, { fakeGhMode, fakeGhDir, cwd, extraEnv = {} }) {
   const env = {
-    ...process.env,
+    ...isolatedGitEnv(),
     PATH: fakeGhDir ? `${fakeGhDir}:${process.env.PATH}` : process.env.PATH,
     FAKE_GH_MODE: fakeGhMode,
     ...extraEnv,

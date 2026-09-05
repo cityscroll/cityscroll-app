@@ -36,6 +36,7 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { closurePath, loadClosure } from "./card_profile_closure.mjs";
+import { isolatedGitEnv } from "./architecture_evidence_shards.mjs";
 
 // A test seam, and only that. The blocked, stale and malformed-manifest paths
 // have to be exercised against a checkout that really is missing its corpus,
@@ -49,10 +50,14 @@ const ROOT = ROOT_OVERRIDE ? resolve(ROOT_OVERRIDE) : resolve(dirname(fileURLToP
 const CLOSURE_PATH = closurePath(ROOT);
 
 function git(args, options = {}) {
+  // A pre-push hook exports GIT_DIR; from a worktree checkout that alone
+  // resolves the ambient repository regardless of `cwd`, so ROOT_OVERRIDE
+  // (the test seam above) would otherwise be silently ignored. Strip it.
   return execFileSync("git", args, {
     cwd: ROOT,
     encoding: "utf8",
     maxBuffer: 256 * 1024 * 1024,
+    env: isolatedGitEnv(),
     ...options
   });
 }
