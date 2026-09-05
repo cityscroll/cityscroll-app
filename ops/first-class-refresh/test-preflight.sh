@@ -19,7 +19,7 @@ git init --quiet --bare "$WORK/origin.git"
 git clone --quiet "$WORK/origin.git" "$WORK/clone"
 (
   cd "$WORK/clone"
-  git config user.email test@example.com
+  git config user.email test-preflight@invalid
   git config user.name test
   echo one > file.txt
   git add file.txt
