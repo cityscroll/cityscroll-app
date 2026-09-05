@@ -29,6 +29,10 @@ import {
   landMapBoundarySvg,
   loadLandMapBoundaryContext,
 } from "../land_map_boundary_context.mjs";
+import {
+  fetchLandMapArtifact,
+  landMapFailureKindOf,
+} from "../land_map_performance_budget.mjs";
 import { landMapAuthorityHandoff } from "../land_map_authority_handoff.mjs";
 import { landProjectPath } from "../land_project_route.mjs";
 import {
@@ -269,17 +273,15 @@ export const LAND_MAP_SELECTION_ID = "land-map-selected";
 let landMapPointsPromise = null;
 function loadLandMapPoints(){
   if(!landMapPointsPromise){
-    landMapPointsPromise = fetch(LAND_MAP_POINTS_URL,{cache:"force-cache",credentials:"omit"})
-      .then(response=>{
-        if(!response.ok) throw new Error(`land-map-points-http-${response.status}`);
-        return response.json();
-      })
-      .then(payload=>{
-        // Fail closed. A missing or malformed projection is an honest map failure; it is
-        // never an empty map, which would read as "no project here" to a resident.
-        if(!payload || typeof payload!=="object" || !payload.points) throw new Error("land-map-points-malformed");
-        return payload;
-      })
+    // Fail closed. A missing or malformed projection is an honest, typed map failure (LM-12);
+    // it is never an empty map, which would read as "no project here" to a resident. Only a
+    // request that never produced a response -- a network failure or an exceeded time budget --
+    // gets `fetchLandMapArtifact`'s bounded retry; a real HTTP status or a schema violation is
+    // permanent and reaches the caller on the first attempt.
+    landMapPointsPromise = fetchLandMapArtifact(LAND_MAP_POINTS_URL, {
+      validate: (payload) => Boolean(payload && typeof payload==="object" && payload.points),
+    })
+      .then(({payload})=>payload)
       .catch(error=>{ landMapPointsPromise=null; throw error; });
   }
   return landMapPointsPromise;
@@ -291,6 +293,17 @@ function loadLandMapBoundaries(){
     landMapBoundaryPromise = loadLandMapBoundaryContext().catch(()=>null);
   }
   return landMapBoundaryPromise;
+}
+
+/** Test-only. The browse Map memoizes both its own-origin fetches for the resident's page
+ * session -- the projection and the boundary layers do not change without a reload -- so a
+ * failed projection attempt already clears its own cache (loadLandMapPoints, above) but a
+ * successful one, and any boundary-context attempt at all, otherwise stay cached for the rest
+ * of the process. A test exercising many mountLandBrowseMap() calls with different fetch
+ * outcomes needs a fresh attempt each time; production code never calls this. */
+export function __resetLandMapRuntimeCachesForTests(){
+  landMapPointsPromise = null;
+  landMapBoundaryPromise = null;
 }
 
 /** Copy seam. The app publishes `t`; a node contract test injects its own. */
@@ -886,8 +899,14 @@ function renderLandMapLoading(panel){
     + `${escapeMapHtml(mapCopy("land_map_loading"))}</p>`;
 }
 
-function renderLandMapFailure(panel, hadPanelFocus = false){
+function renderLandMapFailure(panel, hadPanelFocus = false, error = null){
   panel.dataset.landMapState = "failed";
+  // The typed kind (LM-12) travels on the panel so a test, an evidence capture, or a future
+  // resident-facing refinement can read what actually happened without re-deriving it from an
+  // error message. The visible copy stays one plain-language message either way (AGENTS.md:
+  // "Keep resident copy plain-language... debug states... belong behind explicit evidence/
+  // details affordances, not in default resident content"); the taxonomy is the evidence layer.
+  panel.dataset.landMapFailureKind = landMapFailureKindOf(error);
   panel.innerHTML = landMapFailureHTML();
   panel.querySelector("[data-land-map-retry]")?.addEventListener("click",()=>{
     globalThis.retryLandMapPresentation?.();
@@ -924,7 +943,7 @@ export async function mountLandBrowseMap(host, {rows, selectedProjectId, filters
   try{
     [payload, boundaryContext] = await Promise.all([loadLandMapPoints(), loadLandMapBoundaries()]);
   }catch(error){
-    renderLandMapFailure(panel, hadPanelFocus);
+    renderLandMapFailure(panel, hadPanelFocus, error);
     throw error;
   }
   const population = Array.isArray(rows) ? rows : [];
@@ -947,7 +966,7 @@ export async function mountLandBrowseMap(host, {rows, selectedProjectId, filters
       globalThis.serializeState?.() || globalThis.location?.hash
         || (globalThis.location?.search ? `#land${globalThis.location.search}` : "#land"));
   }catch(error){
-    renderLandMapFailure(panel, hadPanelFocus);
+    renderLandMapFailure(panel, hadPanelFocus, error);
     throw error;
   }
   if(intent) restoreLandMapFocus(panel, intent);

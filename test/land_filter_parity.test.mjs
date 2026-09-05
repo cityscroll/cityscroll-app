@@ -299,8 +299,10 @@ test("A2 the Map renderer consumes only the filtered rows it is handed", () => {
     assert.equal(forbidden.test(browse), false, `browse map must not contain ${forbidden}`);
   }
 
-  // The only network the browse map does is the point artifact it joins against.
-  const fetches = [...runtimeSrc.matchAll(/fetch\(([A-Za-z_$][\w$]*)/g)].map((match) => match[1]);
+  // The only network the browse map does is the point artifact it joins against, routed
+  // through fetchLandMapArtifact (LM-12's budgeted, typed-failure, bounded-retry wrapper).
+  assert.doesNotMatch(runtimeSrc, /\bfetch\(/, "the shell should route requests through fetchLandMapArtifact, not fetch()");
+  const fetches = [...runtimeSrc.matchAll(/fetchLandMapArtifact\(([A-Za-z_$][\w$]*)/g)].map((match) => match[1]);
   assert.deepEqual([...new Set(fetches)], ["LAND_MAP_POINTS_URL"]);
 
   // `bounds` is derived from markers that already exist; it never selects them. The only reader
