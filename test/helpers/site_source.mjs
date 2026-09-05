@@ -11,6 +11,7 @@ export const SITE_MODULES = [
   "staffing.mjs",
   "land.mjs",
   "map_runtime.mjs",
+  "land_filing_report_runtime.mjs",
   "feed-actions.mjs",
   "result-match.mjs",
   "notice-context.mjs",

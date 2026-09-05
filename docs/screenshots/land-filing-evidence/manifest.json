@@ -1,0 +1,235 @@
+{
+  "schema_version": 1,
+  "feature": "land-filing-evidence",
+  "card": "cityscroll-land-decision-path/ldp-27-filing-evidence-surfaces",
+  "route": "component-harness:land-filing-evidence",
+  "revision": "2ea0193a62ad2e49c0f995ad45312262c27fd205",
+  "files": [
+    {
+      "name": "positive-390.png",
+      "bytes": 35197,
+      "sha256": "2054919fd461b3fff94042be62d5513a9e13be64bd27af48b0a49edb7baf7636",
+      "route": "component-harness:land-filing-evidence",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "2ea0193a62ad2e49c0f995ad45312262c27fd205",
+      "specimen": "positive",
+      "assertion": "A1: project -> obligation -> typed report -> a cited field and page -> the original source",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": []
+      }
+    },
+    {
+      "name": "positive-1440.png",
+      "bytes": 35317,
+      "sha256": "388dcf5af996afb5fc887b762b198dabaf384c4f8a9ddc37bdd1a55116206367",
+      "route": "component-harness:land-filing-evidence",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "2ea0193a62ad2e49c0f995ad45312262c27fd205",
+      "specimen": "positive",
+      "assertion": "A1: project -> obligation -> typed report -> a cited field and page -> the original source",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": []
+      }
+    },
+    {
+      "name": "active-required-unobserved-390.png",
+      "bytes": 18106,
+      "sha256": "bb258da14a033c26a2c34c6ffa11eea226ac5b8f813a214b2b0ff6f0ca0d872d",
+      "route": "component-harness:land-filing-evidence",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "2ea0193a62ad2e49c0f995ad45312262c27fd205",
+      "specimen": "active-required-unobserved",
+      "assertion": "A2/G1: an active required project with no observed document states the observed condition exactly",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": []
+      }
+    },
+    {
+      "name": "active-required-unobserved-1440.png",
+      "bytes": 18422,
+      "sha256": "fd493d56cefcbcbda50518ef5a6d22e8a8896b518cc993a9ef4089643181467a",
+      "route": "component-harness:land-filing-evidence",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "2ea0193a62ad2e49c0f995ad45312262c27fd205",
+      "specimen": "active-required-unobserved",
+      "assertion": "A2/G1: an active required project with no observed document states the observed condition exactly",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": []
+      }
+    },
+    {
+      "name": "not-required-390.png",
+      "bytes": 13382,
+      "sha256": "ae8b348341415d5da2ad8065d1c6241c750f57779b400278ceb85905c89d2494",
+      "route": "component-harness:land-filing-evidence",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "2ea0193a62ad2e49c0f995ad45312262c27fd205",
+      "specimen": "not-required",
+      "assertion": "A3: a not-required project renders a distinct explanation",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": []
+      }
+    },
+    {
+      "name": "not-required-1440.png",
+      "bytes": 11799,
+      "sha256": "e5e8cda174f68fdd723d4044270d2a147f40a0341487e1e2e70ffd311233d8c0",
+      "route": "component-harness:land-filing-evidence",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "2ea0193a62ad2e49c0f995ad45312262c27fd205",
+      "specimen": "not-required",
+      "assertion": "A3: a not-required project renders a distinct explanation",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": []
+      }
+    },
+    {
+      "name": "pre-effective-390.png",
+      "bytes": 12972,
+      "sha256": "21f874e5bf26c0ce30eaff71c855a29294aa64052d0f1e669c9d51dfcb89bf40",
+      "route": "component-harness:land-filing-evidence",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "2ea0193a62ad2e49c0f995ad45312262c27fd205",
+      "specimen": "pre-effective",
+      "assertion": "A3: a not-yet-effective project renders a distinct explanation from not-required",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": []
+      }
+    },
+    {
+      "name": "pre-effective-1440.png",
+      "bytes": 11954,
+      "sha256": "605c6e5f3c593f150f12fe619fc0967a655d3be6ee5720f86d9996d99a0f44ef",
+      "route": "component-harness:land-filing-evidence",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "2ea0193a62ad2e49c0f995ad45312262c27fd205",
+      "specimen": "pre-effective",
+      "assertion": "A3: a not-yet-effective project renders a distinct explanation from not-required",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": []
+      }
+    },
+    {
+      "name": "keyboard-390.png",
+      "bytes": 39109,
+      "sha256": "c0de051c05ecf7e23d769df4d19d8e8e2d7b9269e4ff8265412a5790e1ff715d",
+      "route": "component-harness:land-filing-evidence",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "2ea0193a62ad2e49c0f995ad45312262c27fd205",
+      "specimen": "keyboard",
+      "assertion": "A5: the report trigger is reachable and activatable by keyboard alone",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": []
+      }
+    },
+    {
+      "name": "keyboard-1440.png",
+      "bytes": 38775,
+      "sha256": "e46a5fa2b32bd1f6502e915f57c4507e72f54b564c0558f353ae4c0124efda44",
+      "route": "component-harness:land-filing-evidence",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "2ea0193a62ad2e49c0f995ad45312262c27fd205",
+      "specimen": "keyboard",
+      "assertion": "A5: the report trigger is reachable and activatable by keyboard alone",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": []
+      }
+    },
+    {
+      "name": "print-390.png",
+      "bytes": 35197,
+      "sha256": "2054919fd461b3fff94042be62d5513a9e13be64bd27af48b0a49edb7baf7636",
+      "route": "component-harness:land-filing-evidence",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "2ea0193a62ad2e49c0f995ad45312262c27fd205",
+      "specimen": "print",
+      "assertion": "A5: the essential filing state and source link survive print",
+      "axe": null
+    },
+    {
+      "name": "print-1440.png",
+      "bytes": 35317,
+      "sha256": "388dcf5af996afb5fc887b762b198dabaf384c4f8a9ddc37bdd1a55116206367",
+      "route": "component-harness:land-filing-evidence",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "2ea0193a62ad2e49c0f995ad45312262c27fd205",
+      "specimen": "print",
+      "assertion": "A5: the essential filing state and source link survive print",
+      "axe": null
+    },
+    {
+      "name": "noscript-390.png",
+      "bytes": 35197,
+      "sha256": "2054919fd461b3fff94042be62d5513a9e13be64bd27af48b0a49edb7baf7636",
+      "route": "component-harness:land-filing-evidence",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "2ea0193a62ad2e49c0f995ad45312262c27fd205",
+      "specimen": "noscript",
+      "assertion": "A5: applicability, fulfilment, and the source link render with no script",
+      "axe": null
+    },
+    {
+      "name": "noscript-1440.png",
+      "bytes": 35317,
+      "sha256": "388dcf5af996afb5fc887b762b198dabaf384c4f8a9ddc37bdd1a55116206367",
+      "route": "component-harness:land-filing-evidence",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "2ea0193a62ad2e49c0f995ad45312262c27fd205",
+      "specimen": "noscript",
+      "assertion": "A5: applicability, fulfilment, and the source link render with no script",
+      "axe": null
+    }
+  ]
+}

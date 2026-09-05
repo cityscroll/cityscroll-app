@@ -1062,6 +1062,21 @@
   .land-authority-actions{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 0}
   .land-authority-advisory{font:700 11px/1.3 ui-sans-serif,system-ui,sans-serif;color:var(--muted);margin-inline-start:6px}
   .land-outcomes-table-wrap{overflow-x:auto;margin-top:14px}
+  .land-filing-evidence,.land-filing-history{border:1px solid var(--rule);border-radius:10px;padding:12px 14px;margin:12px 0;background:#fff}
+  .land-filing-evidence .act[hidden]{display:none}
+  .land-filing-kicker{font:700 10px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--oxblood);margin:0 0 8px}
+  .land-filing-facts{display:grid;gap:8px 16px;margin:0;grid-template-columns:repeat(auto-fit,minmax(180px,1fr))}
+  .land-filing-facts dt{font:700 11px/1.3 ui-sans-serif,system-ui,sans-serif;color:var(--muted)}
+  .land-filing-facts dd{margin:2px 0 0;font:13px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--ink)}
+  .land-filing-history ul{margin:0;padding-inline-start:18px;font:13px/1.45 ui-sans-serif,system-ui,sans-serif}
+  .land-filing-conflict{font:700 11px/1.3 ui-sans-serif,system-ui,sans-serif;color:var(--oxblood)}
+  .land-filing-history-truncated,.land-filing-dri-note,.land-filing-extraction-disclosure{color:var(--muted);font:12px/1.45 ui-sans-serif,system-ui,sans-serif;margin:8px 0 0}
+  .land-filing-report-section{margin-top:14px}
+  .land-filing-report-section h4{font:700 13px/1.3 ui-sans-serif,system-ui,sans-serif;margin:0 0 6px;color:var(--ink)}
+  .land-filing-field dt{font:700 11px/1.3 ui-sans-serif,system-ui,sans-serif;color:var(--muted)}
+  .land-filing-field dd{margin:2px 0 8px;font:13px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--ink)}
+  .land-filing-citation{color:var(--muted)}
+  .land-filing-narrative-text{white-space:pre-wrap}
   .land-spine-now-label{font:700 10px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--oxblood);margin:0 0 4px}
   .land-spine-now-phase{font:700 16px/1.3 ui-sans-serif,system-ui,sans-serif;margin:0 0 4px;color:var(--ink)}
   .land-pipeline-position{font:700 16px/1.35 ui-sans-serif,system-ui,sans-serif;margin:0 0 6px;color:var(--ink)}
@@ -2313,6 +2328,15 @@
           <option value="downzone" data-i18n="land_regulatory_effect_downzone">Downzoning</option>
           <option value="mixed" data-i18n="land_regulatory_effect_mixed">Mixed density change</option>
           <option value="no_density_change" data-i18n="land_regulatory_effect_no_density_change">No density change</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="lfiling" data-i18n="land_filing_applicability">Racial Equity Report required?</label>
+        <select id="lfiling">
+          <option value="any" selected data-i18n="status_all">All</option>
+          <option value="required" data-i18n="land_filing_facet_required">Racial Equity Report required</option>
+          <option value="document_observed" data-i18n="land_filing_facet_document_observed">Racial Equity Report observed</option>
+          <option value="publisher_identifies_not_timely_filed" data-i18n="land_filing_facet_not_timely_filed">Publisher identifies as not timely filed</option>
         </select>
       </div>
       <div class="field">
