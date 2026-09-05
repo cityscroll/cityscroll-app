@@ -1,0 +1,63 @@
+{
+  "coverage": {
+    "eligible_borough_president_rows": 7,
+    "eligible_community_board_rows": 395,
+    "eligible_rows": 402,
+    "matched": 1,
+    "recommendation_candidates": 0,
+    "rejected": 0,
+    "rejected_reasons": {},
+    "unresolved": 401,
+    "unresolved_reasons": {
+      "no_exact_land_key": 401
+    }
+  },
+  "gate": {
+    "prior_broad_bridge_reactivated": false,
+    "rationale": "1 of 402 eligible rows (0.25%) carry a retained exact land identifier; below the 30% usefulness bar. The prior broad body+date+matter bridge (warehouse/scripts/non_council_outcomes.mjs) remains disabled independently of this result.",
+    "resident_ingestion_committed": false,
+    "result": "STOP",
+    "thresholds": {
+      "minimum_matches": 1,
+      "minimum_rate": 0.3
+    }
+  },
+  "generated_at": "2026-09-05T00:00:00.000Z",
+  "honest_absent": true,
+  "join_measurement": {
+    "rates": {
+      "exact_land_identifier": {
+        "joined": 1,
+        "rate": 0.002488,
+        "total": 402
+      }
+    },
+    "strategy": "exact_ulurp_token | exact_zap_project_id | exact_ceqr_key | exact_disposition_id",
+    "usefulness_threshold": 0.3,
+    "verdict": "Below usefulness threshold (0.25%). The board/BP land-document bridge stays disabled; the retired broad bridge stays disabled."
+  },
+  "materialized_edges": [],
+  "precision_sample": [
+    {
+      "join_key": "240161ZMX",
+      "join_method": "exact_ulurp_token",
+      "meeting_id": "meeting:city_record:20260518025",
+      "project_id": "2021X0247",
+      "source_system": "city_record",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260518025"
+    }
+  ],
+  "schema": "cityscroll.board_bp_land_bridge_measurement.v1",
+  "source_vintage": {
+    "land_default_ulurp_generated_at": "2026-08-23T07:59:14.162Z",
+    "shared_meeting_read_model_counts": {
+      "attached_meeting_documents": 102,
+      "city_record": 127,
+      "community_board": 395,
+      "meeting_documents": 4443,
+      "total": 522
+    },
+    "shared_meeting_read_model_generated_at": "2026-08-15T02:48:42.018Z",
+    "zap_projects_warehouse_lookup_materialized_at": "2026-08-23T07:59:09.786Z"
+  }
+}
