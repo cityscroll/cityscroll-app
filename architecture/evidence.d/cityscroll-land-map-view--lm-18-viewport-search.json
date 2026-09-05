@@ -1,0 +1,25 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-land-map-view/lm-18-viewport-search",
+  "status": "implemented",
+  "fingerprint": "lm-18-viewport-search.v1",
+  "updated_at": "2026-09-05T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "land-viewport-feasibility-gate",
+      "path": "site/land_viewport_feasibility_gate.mjs"
+    },
+    {
+      "id": "land-viewport-feasibility-receipt-builder",
+      "path": "tools/build_land_viewport_feasibility_receipt.mjs"
+    },
+    {
+      "id": "land-viewport-feasibility-receipt",
+      "path": "docs/evidence/land-map-viewport-feasibility.json"
+    },
+    {
+      "id": "land-viewport-feasibility-gate-contract",
+      "path": "test/land_viewport_feasibility_gate.test.mjs"
+    }
+  ]
+}
