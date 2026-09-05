@@ -9,7 +9,7 @@
   },
   "identity": {
     "algorithm": "sha256",
-    "note": "Two digests, because they answer different questions. manifest_digest covers the routing manifest and the inputs the profile was derived from, so it is stable across unrelated commits and is what staleness is judged on. provision_identity additionally binds the revision, so a receipt names the exact provisioned instance. Each input is resolved from the working tree when the path is materialised and from the index otherwise, hashed as a Git blob either way, so a reduced checkout that defers a path still computes the same digest as the full control.",
+    "note": "Two digests, because they answer different questions. manifest_digest covers the routing manifest and the derived profile the request would be provisioned with, and is what staleness is judged on; it moves when the profile moves, not when an unrelated commit lands. provision_identity additionally binds the revision, so a receipt names the exact provisioned instance. Each input is resolved from the working tree when the path is materialised and from the index otherwise, hashed as a Git blob either way, so a reduced checkout that defers a path still computes the same digest as the full control.",
     "manifest_digest_inputs": [
       {
         "id": "routing-manifest",
@@ -29,7 +29,32 @@
       {
         "id": "closure-manifest",
         "path": "tools/card-profile/closure.v1.json",
-        "why": "The generated closure: required paths, deferred hydration set, supported and full-only gate classes."
+        "why": "The closure contract: declared trees, supported and full-only gate classes, the functional-corpus declaration. The path inventories it derives are separate inputs."
+      },
+      {
+        "id": "closure-required-paths",
+        "path": "tools/card-profile/closure.d/required-paths.txt",
+        "why": "Every path the committed pattern list has to materialise."
+      },
+      {
+        "id": "closure-deferred-paths",
+        "path": "tools/card-profile/closure.d/deferred-paths.txt",
+        "why": "Every path the profile defers to explicit hydration."
+      },
+      {
+        "id": "closure-site-data-paths",
+        "path": "tools/card-profile/closure.d/site-data-paths.txt",
+        "why": "The site/data paths a reduced checkout holds rather than defers."
+      },
+      {
+        "id": "closure-functional-corpus-paths",
+        "path": "tools/card-profile/closure.d/functional-corpus-paths.txt",
+        "why": "The read-model corpus the functional preparation step needs before it runs."
+      },
+      {
+        "id": "closure-worker-to-site-data-targets",
+        "path": "tools/card-profile/closure.d/worker-to-site-data-targets.txt",
+        "why": "The cross-boundary site/data targets Worker sources reach for, which the profile has to hold."
       },
       {
         "id": "dependency-lock",

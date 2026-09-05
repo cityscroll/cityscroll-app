@@ -35,6 +35,8 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
+import { closurePath, loadClosure } from "./card_profile_closure.mjs";
+
 // A test seam, and only that. The blocked, stale and malformed-manifest paths
 // have to be exercised against a checkout that really is missing its corpus,
 // and mutating the developer's own working tree to produce one is how a test
@@ -44,7 +46,7 @@ import { fileURLToPath } from "node:url";
 // or the gate front door sets it, and any receipt produced under it says so.
 const ROOT_OVERRIDE = process.env.CITYSCROLL_FUNCTIONAL_CORPUS_ROOT ?? null;
 const ROOT = ROOT_OVERRIDE ? resolve(ROOT_OVERRIDE) : resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const CLOSURE_PATH = resolve(ROOT, "tools/card-profile/closure.v1.json");
+const CLOSURE_PATH = closurePath(ROOT);
 
 function git(args, options = {}) {
   return execFileSync("git", args, {
@@ -152,7 +154,7 @@ function evaluate() {
   }
   let closure;
   try {
-    closure = JSON.parse(readFileSync(CLOSURE_PATH, "utf8"));
+    closure = loadClosure(ROOT);
   } catch (error) {
     return { fatal: `the closure manifest could not be read: ${error.message}` };
   }

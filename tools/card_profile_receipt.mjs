@@ -46,11 +46,11 @@ import { hostname, userInfo } from "node:os";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
+import { loadClosure, sparsePath } from "./card_profile_closure.mjs";
 import { computeIdentity, loadManifest, verifyClosure } from "./card_profile_router.mjs";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const CLOSURE_PATH = resolve(ROOT, "tools/card-profile/closure.v1.json");
-const SPARSE_PATH = resolve(ROOT, "tools/card-profile/card-work.sparse");
+const SPARSE_PATH = sparsePath(ROOT);
 
 const git = (args, options = {}) =>
   execFileSync("git", args, { cwd: ROOT, encoding: "utf8", maxBuffer: 64 * 1024 * 1024, ...options });
@@ -198,7 +198,7 @@ function assertHostNeutral(serialised) {
 
 export function buildReceipt({ decision = null, footprint = null, timing = null, fallbackReason = null } = {}) {
   const manifest = loadManifest();
-  const closure = readJson(CLOSURE_PATH);
+  const closure = loadClosure(ROOT);
   const identity = computeIdentity(manifest);
   const mode = objectMode();
   const profileName = mode.sparse_checkout ? "focused-reduced" : "full";

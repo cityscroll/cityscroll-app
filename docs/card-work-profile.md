@@ -90,9 +90,9 @@ distinction against each surface.
 ## Profile identity, and when a profile goes stale
 
 The reduced profile is bound to what it was derived from. `manifest_digest`
-covers the routing manifest, the profile config, the generated pattern list and
-closure, the dependency lock and the toolchain pin; `provision_identity`
-additionally binds the revision.
+covers the routing manifest, the profile config, the generated pattern list, the
+closure contract and each of its path inventories, the dependency lock and the
+toolchain pin; `provision_identity` additionally binds the revision.
 
 ```bash
 node tools/card_profile_router.mjs --identity --json
@@ -141,14 +141,47 @@ disposable checkout the promisor, and a local clone shares objects anyway.
 The closure is not hand-written. `tools/derive_card_profile.mjs` unions three
 sources — the paths each supported gate class was observed to read, a transitive
 static reference scan seeded from the Worker package, and declared structural
-trees — and emits `tools/card-profile/card-work.sparse` and
-`tools/card-profile/closure.v1.json`. Edit
+trees — and emits the generated outputs below. Edit
 `tools/card-profile/profile.config.v1.json` and re-run the deriver; never
 hand-edit the generated outputs. A tracked file added inside the declared
 coverage — a root document, an always-include path, or anything under an include
 tree no exclude tree defers — must be followed by that re-run: the site unit
 suite fails on a pattern list that does not materialise it, so the omission is
 caught at review time rather than in the next reduced checkout that needs it.
+
+### How the generated profile is stored, and why it is stored that way
+
+Nearly every change to this repository adds a tracked file, so nearly every
+change re-runs the deriver. That makes the shape of the generated outputs a
+merge-queue property, not a formatting preference: an aggregate that all of them
+rewrite is a file all of them conflict on, and with several changes open at once
+each landing forces every other one to rebase and regenerate. The outputs are
+therefore split by how their contents move.
+
+| Output | Holds | Merge behaviour |
+| --- | --- | --- |
+| `tools/card-profile/closure.v1.json` | The contract: declared trees, gate-class classification, the config digest, the functional-corpus declaration. Nothing here moves because an unrelated file was added. | Ordinary. A disagreement here is a real disagreement about policy and should be resolved by hand. |
+| `tools/card-profile/closure.d/*.txt` | The derived path inventories, one sorted repository path per line. | `merge=union`. Two changes that each add a path add different lines. |
+| `tools/card-profile/card-work.sparse` | The generated sparse-checkout pattern list. | `merge=union`, same reason. |
+
+Two rules keep that safe. **Nothing reads an inventory or the pattern list
+positionally**: `tools/card_profile_closure.mjs` sorts and deduplicates on read,
+the contract is checked as a set rather than byte-compared, and the next
+`node tools/derive_card_profile.mjs` restores the canonical order — so a union
+merge is always a valid input. And **no measurement is committed**. Path counts,
+byte totals, the revision the profile was derived at and the digest of the
+pattern list all move whenever any tracked file does; they are reporting figures,
+so they are derived on demand instead:
+
+```bash
+node tools/derive_card_profile.mjs --measure
+```
+
+A union merge can carry forward a path that a later change removed from the
+profile. That fails closed rather than open: `--check` verifies the committed
+inventories against the committed pattern list as well as against a fresh
+derivation, so a stale entry is reported as something to regenerate, never as a
+reduced checkout that quietly lacks a file.
 
 ## Which gates run in it
 
@@ -189,7 +222,8 @@ node tools/verify_functional_corpus.mjs --check --receipt-out <path>  # and a re
 
 `tools/prepare_functional_site.sh` runs that check as its first statement, so a
 missing input is reported as a missing input. The corpus itself lives in the
-`functional_corpus` block of `tools/card-profile/closure.v1.json` and is derived,
+`functional_corpus` block of `tools/card-profile/closure.v1.json`, whose paths
+are the `closure.d/functional-corpus-paths.txt` inventory, and is derived,
 never hand-written: the deriver unions the `functional-site` gate-class
 observation with a scan of the declared functional harness sources — the Python
 files that read a tracked read model directly, which no Node sentinel can see —
