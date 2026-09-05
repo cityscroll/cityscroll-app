@@ -199,7 +199,7 @@ test("A1: the meetings result card renders purpose/role after date-and-status an
   const body = source.slice(start, end);
 
   const dateStatusIndex = body.indexOf('<div class="ftype">');
-  const purposeIndex = body.indexOf("${meetingPurposeAuthorityCardHTML(record");
+  const purposeIndex = body.indexOf("meetingPurposeAuthorityCardHTML?.(record");
   const provenanceIndex = body.indexOf('class="ui-object-card-handoffs"');
   assert.notEqual(dateStatusIndex, -1);
   assert.notEqual(purposeIndex, -1);

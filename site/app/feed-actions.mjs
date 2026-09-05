@@ -39,7 +39,6 @@ import {
   renderReportIssueAffordance,
 } from "../report_issue.mjs";
 import { meetingScopedDisclosureHTML, meetingScopedKeywordState, refreshFeedScopedKeyword, startMeetingScopedKeyword } from "../feed_scoped_keyword.mjs";
-import { meetingPurposeAuthorityCardHTML } from "../meeting_purpose_authority.mjs";
 import { hearingAreaHTML, hearingAreaText, hearingVenueText } from "../meetings_card_facts.mjs";
 const SECTIONS={
   property:{section:"Property Disposition", showAddr:true},
@@ -239,9 +238,12 @@ let meetingsCommunityDistrict="", meetingsCouncilDistrict="";
 // Place grouping is opt-in (default flat). Affected-area / near-me filters own place navigation.
 let meetingsPlaceGroupSel="flat";
 let meetingsExplorerToolsPromise=null;
+let meetingsExplorerToolsResolved=null;
 function meetingsExplorerTools(){
   if(!meetingsExplorerToolsPromise){
-    meetingsExplorerToolsPromise=import("../meetings_explorer.mjs").catch(()=>null);
+    meetingsExplorerToolsPromise=import("../meetings_explorer.mjs")
+      .then(tools=>{meetingsExplorerToolsResolved=tools;return tools;})
+      .catch(()=>null);
   }
   return meetingsExplorerToolsPromise;
 }
@@ -1524,7 +1526,7 @@ function meetingsExplorerCardHTML(entry, terms=[]){
   const factsHTML=`${areaFact}${venueFact}${affectsFact}`;
   return `<article class="fcard hcard meetings-fcard" data-scope="${scope}" data-meeting-kind="${escUiHtml(entry.kind||"notice")}" data-process-stage="${escUiHtml(processStage||"unstaged")}" data-capability-reference="meeting.get@1"${boardId?` data-community-board-id="${escUiHtml(boardId)}"`:""}>
       <div class="ftype"><span class="tag asset">${t(sectionKey)}</span>${past?` <span class="tag closed">${t("past_tag")}</span>`:""}${record.event_date?` · <b style="color:var(--color-text)">${fdt(record.event_date)}</b>${eventTag(record.event_date)}`:""}</div>
-      ${meetingPurposeAuthorityCardHTML(record, { t, escape: escUiHtml, excerpt: excerptHtml })}
+      ${meetingsExplorerToolsResolved?.meetingPurposeAuthorityCardHTML?.(record, { t, escape: escUiHtml, excerpt: excerptHtml }) || ""}
       ${processLine}
       <div class="ui-object-card-primary"><div class="ftitle">${interactionTitle}</div>${interactionCopy}</div>
       ${siblingsHtml}

@@ -19,6 +19,11 @@ import {
   observedMeetingStage,
 } from "./meeting_process_profile.mjs";
 import { attendanceModeForRecord } from "./meetings_attendance.mjs";
+// Re-exported (rather than statically imported by site/app/feed-actions.mjs
+// directly) so its PHC-00 consequence-projection dependency stays inside this
+// module's own dynamic-import boundary — the same isolation
+// site/meetings_attendance.mjs's identical dependency already relies on.
+export { meetingPurposeAuthorityCardHTML } from "./meeting_purpose_authority.mjs";
 
 export const MEETINGS_EXPLORER_SCHEMA_VERSION = 2;
 
