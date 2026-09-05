@@ -265,6 +265,7 @@ ${groupSelect ? `${groupSelect},\n` : ""}  count() AS sampled_count,
   quantileExactWeighted(0.50)(double1, _sample_interval) AS p50,
   quantileExactWeighted(0.75)(double1, _sample_interval) AS p75,
   quantileExactWeighted(0.95)(double1, _sample_interval) AS p95,
+  max(double2) AS latest_timestamp,
   formatDateTime(min(timestamp), '%Y-%m-%dT%H:%i:%SZ', 'Etc/UTC') AS first_observation_at,
   formatDateTime(max(timestamp), '%Y-%m-%dT%H:%i:%SZ', 'Etc/UTC') AS latest_observation_at
 FROM ${dataset}
@@ -287,6 +288,7 @@ ${groupSelect ? `${groupSelect},\n` : ""}  count() AS sampled_count,
   quantileExactWeighted(0.50)(double1, _sample_interval) AS p50,
   quantileExactWeighted(0.75)(double1, _sample_interval) AS p75,
   quantileExactWeighted(0.95)(double1, _sample_interval) AS p95,
+  max(double2) AS latest_timestamp,
   formatDateTime(max(timestamp), '%Y-%m-%dT%H:%i:%SZ', 'Etc/UTC') AS latest_observation_at
 FROM ${dataset}
 WHERE ${whereSql(query, coverage.query_start_ms, coverage.query_end_ms)}
@@ -469,11 +471,13 @@ function summaryMap(rows, plan, coverage) {
     ]));
     const key = groupKey(groups.length ? dimensions : null);
     if (out.has(key)) throw new PerformanceSqlError("invalid-query-result");
+    const latestTimestamp = validOwnerTimestamp(row.latest_timestamp);
     out.set(key, {
       dimensions,
       distribution: distributionFromRow(row, coverage, plan.sample_floor),
       first_observation_at: validTimestamp(row.first_observation_at),
       latest_observation_at: validTimestamp(row.latest_observation_at),
+      ...(latestTimestamp == null ? {} : { latest_timestamp: latestTimestamp }),
     });
   }
   if (!plan.query.group_by && !out.size) {
@@ -492,6 +496,13 @@ function validTimestamp(value) {
   const parsed = new Date(value);
   if (!Number.isFinite(parsed.getTime())) throw new PerformanceSqlError("invalid-query-result");
   return parsed.toISOString();
+}
+
+function validOwnerTimestamp(value) {
+  if (value == null || value === "") return null;
+  const parsed = finiteNonnegative(value);
+  if (parsed == null || parsed > 86_400_000) throw new PerformanceSqlError("invalid-query-result");
+  return parsed;
 }
 
 function optionalHealthTimestamp(value) {
@@ -617,6 +628,9 @@ export function buildPerformanceSnapshot(results, plan, options = {}) {
       }),
       first_observation_at: currentEntry.first_observation_at,
       latest_observation_at: currentEntry.latest_observation_at,
+      ...(Object.hasOwn(currentEntry, "latest_timestamp")
+        ? { latest_timestamp: currentEntry.latest_timestamp }
+        : {}),
     });
   }
 

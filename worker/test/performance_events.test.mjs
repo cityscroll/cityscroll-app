@@ -13,6 +13,7 @@ import {
   RUM_VALUE_MAXIMUM,
   handlePerformanceEvents,
   normalizeRumBatch,
+  rumDataPoint,
 } from "../src/performance_events.mjs";
 
 const NOW_MS = Date.parse("2026-08-19T14:30:00Z");
@@ -144,6 +145,40 @@ test("enabled production intake writes one normalized point per numeric observat
   assert.equal(points[1].blobs[3], "browse-results");
   assert.equal(healthCount(health, "accepted"), 2);
   assert.equal(health.store.get("rum:health:latest-accepted"), new Date(NOW_MS).toISOString());
+});
+
+test("semantic owner timestamps are additive and occupy the second Analytics Engine double", () => {
+  const semantic = observation({
+    metric_id: "content_ready_ms",
+    value: 456,
+    owner_timestamp_ms: 137.5,
+  });
+  const normalized = normalizeRumBatch(batch([semantic]));
+  assert.equal(normalized.ok, true);
+  assert.equal(normalized.observations[0].ownerTimestampMs, 137.5);
+  assert.deepEqual(rumDataPoint(normalized.observations[0]), {
+    blobs: [
+      RUM_OBSERVATION_SCHEMA,
+      "content_ready_ms",
+      "home",
+      "none",
+      "ms",
+      "mobile",
+      "navigate",
+      "static",
+      "content",
+      "production",
+      "rum-browser-v1",
+      "rum-surfaces-v1",
+      "a".repeat(40),
+    ],
+    doubles: [456, 137.5],
+    indexes: ["content_ready_ms|home|none"],
+  });
+  assert.deepEqual(normalizeRumBatch(batch([observation({
+    metric_id: "content_ready_ms",
+    owner_timestamp_ms: -1,
+  })])), { ok: false, reason: "invalid_value" });
 });
 
 test("controlled lab intake is retained and tagged separately from field traffic", async () => {
