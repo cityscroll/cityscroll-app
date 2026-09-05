@@ -9,13 +9,25 @@
  * generation can never replace a state written by a competing publisher.
  *
  * The Wrangler adapter is intentionally thin. KV has no native compare-and-set,
- * so it uses a read, conditional put, and read-back identity check. The pure
- * store contract remains strict, which is what the fixture and any transactional
- * deployment store use to make the race deterministic.
+ * so it uses a read, conditional put, and a read-back check. KV is also
+ * eventually consistent: a read moments after a put can still return the value
+ * the put replaced. Two rules keep the protocol correct on such a store.
+ *
+ *  1. compareAndSet is read-your-writes. It polls after the put until the value
+ *     it wrote is actually readable, so the next command in the deploy cannot
+ *     read-modify-write a pre-put state.
+ *  2. A holder's own view of its generation is monotonic. Each command records
+ *     the state it confirmed in a per-run ledger, and a later command that reads
+ *     an older status for the same generation, holder, and fingerprint writes
+ *     forward from the ledger instead of regressing the fence.
+ *
+ * Neither rule loosens the fence: a state belonging to a different generation or
+ * holder always wins, and `abandoned` is terminal.
  */
 
 import { execFile } from "node:child_process";
-import { existsSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { dirname } from "node:path";
 import { promisify } from "node:util";
 
 import { SNAPSHOT_SCHEMA, watermarksFromSnapshot } from "./d1_delta_plan.mjs";
@@ -30,6 +42,11 @@ export const D1_GENERATION_FENCE_AUDIT_SCHEMA = "cityscroll.d1-publication-gener
 export const DEFAULT_LEASE_MS = 10 * 60 * 1000;
 
 const STATUSES = new Set(["claimed", "accepted", "published", "abandoned"]);
+
+// A holder only ever moves its own generation forward: claimed -> accepted ->
+// published. `abandoned` is terminal and ranks above every live status, so a
+// local ledger can never talk a remote abandonment back into a live claim.
+const STATUS_RANK = { claimed: 1, accepted: 2, published: 3, abandoned: 4 };
 
 function clone(value) {
   return value == null ? value : structuredClone(value);
@@ -120,6 +137,70 @@ function identityMatches(state, { generation, holder, fingerprint }) {
     && (fingerprint == null || state?.fingerprint === fingerprint);
 }
 
+/** A per-run record of the last state this holder confirmed it wrote. */
+export function createMemoryLedger(initial = null) {
+  let confirmed = clone(initial);
+  return {
+    read() { return clone(confirmed); },
+    write(state) { confirmed = clone(state); },
+  };
+}
+
+export function createFileLedger(path) {
+  return {
+    read() {
+      if (!existsSync(path)) return null;
+      try {
+        return JSON.parse(readFileSync(path, "utf8"));
+      } catch {
+        // A ledger is an optimisation over the remote state, never an authority
+        // of its own. An unreadable one degrades to "no local view", not a failure.
+        return null;
+      }
+    },
+    write(state) {
+      mkdirSync(dirname(path), { recursive: true });
+      writeFileSync(path, `${JSON.stringify(state, null, 2)}\n`);
+    },
+  };
+}
+
+async function readLedger(ledger) {
+  if (!ledger || typeof ledger.read !== "function") return null;
+  const state = await Promise.resolve(ledger.read());
+  if (state == null) return null;
+  try {
+    return clone(validateFenceState(state));
+  } catch {
+    return null;
+  }
+}
+
+async function writeLedger(ledger, state) {
+  if (!ledger || typeof ledger.write !== "function") return;
+  await Promise.resolve(ledger.write(clone(state)));
+}
+
+function leaseMsOf(state) {
+  return state.lease_until === null ? Number.POSITIVE_INFINITY : timestampMs(state.lease_until, "state.lease_until");
+}
+
+/**
+ * The prior state to write forward from. A remote read that lags this holder's
+ * own confirmed write would otherwise regress the fence — that is exactly how an
+ * accepted generation came back as claimed and blocked its own completion. Only
+ * a remote state with the same generation, holder, and fingerprint is eligible
+ * for that repair, so a competing generation still fences this holder outright.
+ */
+function monotonicPrior(remote, confirmed, identity) {
+  if (!remote || !confirmed) return remote;
+  if (!identityMatches(remote, identity) || !identityMatches(confirmed, identity)) return remote;
+  const remoteRank = STATUS_RANK[remote.status] ?? 0;
+  const confirmedRank = STATUS_RANK[confirmed.status] ?? 0;
+  if (confirmedRank !== remoteRank) return confirmedRank > remoteRank ? confirmed : remote;
+  return leaseMsOf(confirmed) > leaseMsOf(remote) ? confirmed : remote;
+}
+
 function claimState({ generation, holder, fingerprint, watermarks, now, leaseMs }) {
   return {
     schema: D1_GENERATION_FENCE_SCHEMA,
@@ -133,7 +214,7 @@ function claimState({ generation, holder, fingerprint, watermarks, now, leaseMs 
   };
 }
 
-async function conditionalClaim({ store, prior, holder, fingerprint, watermarks, now, leaseMs, reclaim }) {
+async function conditionalClaim({ store, ledger, prior, holder, fingerprint, watermarks, now, leaseMs, reclaim }) {
   const generation = (prior?.generation ?? 0) + 1;
   const next = claimState({ generation, holder, fingerprint, watermarks, now, leaseMs });
   const won = await store.compareAndSet(expectedGeneration(prior), next);
@@ -166,11 +247,12 @@ async function conditionalClaim({ store, prior, holder, fingerprint, watermarks,
     };
     await store.appendAudit(audit);
   }
+  await writeLedger(ledger, next);
   return { result: reclaim ? "reclaimed" : "claimed", claimed: true, retry: false, generation, state: next, audit };
 }
 
 /** Claim the next generation, or return a safe busy/lost-race result. */
-export async function claimGeneration({ store, holder, fingerprint, watermarks, now = Date.now(), leaseMs = DEFAULT_LEASE_MS }) {
+export async function claimGeneration({ store, ledger = null, holder, fingerprint, watermarks, now = Date.now(), leaseMs = DEFAULT_LEASE_MS }) {
   requireStore(store);
   requireString(holder, "holder");
   if (!/^[a-f0-9]{64}$/.test(fingerprint || "")) fail("fingerprint must be a sha256 fingerprint");
@@ -181,11 +263,11 @@ export async function claimGeneration({ store, holder, fingerprint, watermarks, 
   if (active(prior, atMs)) {
     return { result: "busy", claimed: false, retry: true, generation: prior.generation, state: prior };
   }
-  return conditionalClaim({ store, prior, holder, fingerprint, watermarks, now: atMs, leaseMs, reclaim: prior?.status === "claimed" || prior?.status === "accepted" });
+  return conditionalClaim({ store, ledger, prior, holder, fingerprint, watermarks, now: atMs, leaseMs, reclaim: prior?.status === "claimed" || prior?.status === "accepted" });
 }
 
 /** Reclaim only an expired claim; never removes or resets the fence state. */
-export async function reclaimGeneration({ store, holder, fingerprint, watermarks, now = Date.now(), leaseMs = DEFAULT_LEASE_MS }) {
+export async function reclaimGeneration({ store, ledger = null, holder, fingerprint, watermarks, now = Date.now(), leaseMs = DEFAULT_LEASE_MS }) {
   requireStore(store);
   requireString(holder, "holder");
   if (!/^[a-f0-9]{64}$/.test(fingerprint || "")) fail("fingerprint must be a sha256 fingerprint");
@@ -196,28 +278,32 @@ export async function reclaimGeneration({ store, holder, fingerprint, watermarks
   if (!prior || !(prior.status === "claimed" || prior.status === "accepted") || active(prior, atMs)) {
     return { result: "not-reclaimable", claimed: false, retry: Boolean(active(prior, atMs)), generation: prior?.generation ?? null, state: prior };
   }
-  return conditionalClaim({ store, prior, holder, fingerprint, watermarks, now: atMs, leaseMs, reclaim: true });
+  return conditionalClaim({ store, ledger, prior, holder, fingerprint, watermarks, now: atMs, leaseMs, reclaim: true });
 }
 
 /** Renew a live lease without changing its generation identity. */
-export async function renewGeneration({ store, generation, holder, fingerprint, now = Date.now(), leaseMs = DEFAULT_LEASE_MS }) {
+export async function renewGeneration({ store, ledger = null, generation, holder, fingerprint, now = Date.now(), leaseMs = DEFAULT_LEASE_MS }) {
   requireStore(store);
   requireString(holder, "holder");
   const atMs = nowMs(now);
-  const prior = await readState(store);
-  if (!identityMatches(prior, { generation, holder, fingerprint })) {
-    return { result: "fenced", renewed: false, fenced: true, state: prior };
+  const identity = { generation, holder, fingerprint };
+  const remote = await readState(store);
+  if (!identityMatches(remote, identity)) {
+    return { result: "fenced", renewed: false, fenced: true, state: remote };
   }
+  // A renewal extends a lease. It must never be the write that walks this
+  // holder's own status back down the ladder.
+  const prior = monotonicPrior(remote, await readLedger(ledger), identity);
   if (!active(prior, atMs)) return { result: "expired", renewed: false, fenced: true, state: prior };
   const next = { ...prior, lease_until: isoTimestamp(atMs + leaseMs) };
   const renewed = await store.compareAndSet(prior.generation, next);
-  return renewed
-    ? { result: "renewed", renewed: true, fenced: false, state: next }
-    : { result: "lost-race", renewed: false, fenced: true, state: await readState(store) };
+  if (!renewed) return { result: "lost-race", renewed: false, fenced: true, state: await readState(store) };
+  await writeLedger(ledger, next);
+  return { result: "renewed", renewed: true, fenced: false, state: next };
 }
 
 /** Mark a failed holder abandoned, leaving the state and an audit receipt intact. */
-export async function abandonGeneration({ store, generation, holder, fingerprint, now = Date.now() }) {
+export async function abandonGeneration({ store, ledger = null, generation, holder, fingerprint, now = Date.now() }) {
   requireStore(store);
   const atMs = nowMs(now);
   const prior = await readState(store);
@@ -237,6 +323,7 @@ export async function abandonGeneration({ store, generation, holder, fingerprint
     },
   };
   await store.appendAudit(audit);
+  await writeLedger(ledger, next);
   return { result: "abandoned", abandoned: true, fenced: false, state: next, audit };
 }
 
@@ -245,35 +332,48 @@ export async function abandonGeneration({ store, generation, holder, fingerprint
  * The CAS changes claimed -> accepted, so a newer accepted generation fences
  * every older holder at this exact boundary.
  */
-export async function checkGenerationCommit({ store, generation, holder, fingerprint, now = Date.now() }) {
+export async function checkGenerationCommit({ store, ledger = null, generation, holder, fingerprint, now = Date.now() }) {
   requireStore(store);
   const atMs = nowMs(now);
-  const prior = await readState(store);
-  if (!identityMatches(prior, { generation, holder, fingerprint })) {
-    return { result: "fenced", committable: false, fenced: true, state: prior };
+  const identity = { generation, holder, fingerprint };
+  const remote = await readState(store);
+  if (!identityMatches(remote, identity)) {
+    return { result: "fenced", committable: false, fenced: true, state: remote };
   }
+  const prior = monotonicPrior(remote, await readLedger(ledger), identity);
   if (!(prior.status === "claimed" || prior.status === "accepted") || !active(prior, atMs)) {
     return { result: "expired", committable: false, fenced: true, state: prior };
   }
-  if (prior.status === "accepted") return { result: "accepted", committable: true, fenced: false, state: prior };
+  if (prior.status === "accepted") {
+    await writeLedger(ledger, prior);
+    return { result: "accepted", committable: true, fenced: false, state: prior };
+  }
   const next = { ...prior, status: "accepted", accepted_at: isoTimestamp(atMs) };
   const accepted = await store.compareAndSet(prior.generation, next);
   if (!accepted) return { result: "fenced", committable: false, fenced: true, state: await readState(store) };
+  await writeLedger(ledger, next);
   return { result: "accepted", committable: true, fenced: false, state: next };
 }
 
 /** Record successful SQL publication while preserving the accepted generation. */
-export async function completeGeneration({ store, generation, holder, fingerprint, now = Date.now() }) {
+export async function completeGeneration({ store, ledger = null, generation, holder, fingerprint, now = Date.now() }) {
   requireStore(store);
-  const prior = await readState(store);
-  if (!identityMatches(prior, { generation, holder, fingerprint }) || prior.status !== "accepted") {
+  const identity = { generation, holder, fingerprint };
+  const remote = await readState(store);
+  if (!identityMatches(remote, identity)) {
+    return { result: "fenced", completed: false, fenced: true, state: remote };
+  }
+  // The acceptance this run confirmed for itself counts even if the remote read
+  // has not caught up to it yet; a state owned by anyone else never does.
+  const prior = monotonicPrior(remote, await readLedger(ledger), identity);
+  if (prior.status !== "accepted") {
     return { result: "fenced", completed: false, fenced: true, state: prior };
   }
   const next = { ...prior, status: "published", lease_until: null, accepted_at: prior.accepted_at || isoTimestamp(now) };
   const completed = await store.compareAndSet(prior.generation, next);
-  return completed
-    ? { result: "published", completed: true, fenced: false, state: next }
-    : { result: "fenced", completed: false, fenced: true, state: await readState(store) };
+  if (!completed) return { result: "fenced", completed: false, fenced: true, state: await readState(store) };
+  await writeLedger(ledger, next);
+  return { result: "published", completed: true, fenced: false, state: next };
 }
 
 /** Small deterministic fixture store used by tests and local rehearsals. */
@@ -304,6 +404,9 @@ export function createWranglerKvStore({
   remote = true,
   wranglerVersion = "4.126.0",
   run = null,
+  readAfterWriteMs = 90_000,
+  readAfterWritePollMs = 3_000,
+  sleep = (ms) => new Promise((resolve) => { setTimeout(resolve, ms); }),
 } = {}) {
   const invoke = run || (async (args) => execFileAsync("npx", [`wrangler@${wranglerVersion}`, ...args], { encoding: "utf8" }));
   const common = ["kv", "key", "--binding", binding, ...(remote ? ["--remote"] : []), "--config", config];
@@ -325,16 +428,30 @@ export function createWranglerKvStore({
   const putKey = async (targetKey, value) => {
     await invoke([...common.slice(0, 2), "put", targetKey, JSON.stringify(value), ...common.slice(2)]);
   };
+  // The write is only committed once it is readable. Matching generation, holder,
+  // and fingerprint is not enough: those are identical across a claim, its
+  // acceptance, and its renewals, so a stale read of an earlier step in the same
+  // generation used to pass as confirmation of a later one.
+  const observedAsWritten = (observed, next) => observed?.generation === next.generation
+    && observed?.holder === next.holder
+    && observed?.fingerprint === next.fingerprint
+    && observed?.status === next.status
+    && (observed?.lease_until ?? null) === (next.lease_until ?? null);
+
   return {
     read,
     async compareAndSet(expected, next) {
       const current = await read();
       if ((current?.generation ?? null) !== expected) return false;
       await putKey(key, next);
-      const observed = await read();
-      return observed?.generation === next.generation
-        && observed?.holder === next.holder
-        && observed?.fingerprint === next.fingerprint;
+      // KV is eventually consistent, so poll until this process can read its own
+      // write back. Returning before then lets the next fence command in the
+      // deploy read-modify-write a state that predates this put.
+      for (let waited = 0; ; waited += readAfterWritePollMs) {
+        if (observedAsWritten(await read(), next)) return true;
+        if (waited >= readAfterWriteMs) return false;
+        await sleep(readAfterWritePollMs);
+      }
     },
     async appendAudit(receipt) {
       const generation = receipt?.reclaimed_by?.generation ?? receipt?.abandoned_claim?.generation ?? "unknown";
@@ -382,6 +499,10 @@ function required(args, name) {
   return args[name];
 }
 
+function ledgerFromArgs(args) {
+  return args.ledger ? createFileLedger(args.ledger) : null;
+}
+
 function storeFromArgs(args) {
   if (args["state-file"]) return fileStore(args["state-file"]);
   return createWranglerKvStore({
@@ -406,24 +527,25 @@ function writeGithubOutput(path, values) {
 async function main(argv) {
   const args = parseArgs(argv);
   const store = storeFromArgs(args);
+  const ledger = ledgerFromArgs(args);
   let result;
   if (args.command === "claim") {
     const snapshot = JSON.parse(readFileSync(required(args, "snapshot"), "utf8"));
     if (snapshot.schema !== SNAPSHOT_SCHEMA) fail("snapshot has the wrong schema");
     result = await claimGeneration({
-      store, holder: required(args, "holder"), fingerprint: required(args, "fingerprint"),
+      store, ledger, holder: required(args, "holder"), fingerprint: required(args, "fingerprint"),
       watermarks: watermarksFromSnapshot(snapshot), leaseMs: Number(args["lease-ms"] || DEFAULT_LEASE_MS),
     });
     writeGithubOutput(args["github-output"], { claimed: String(result.claimed), generation: result.generation ?? "" });
   } else if (args.command === "renew") {
-    result = await renewGeneration({ store, generation: Number(required(args, "generation")), holder: required(args, "holder"), fingerprint: args.fingerprint, leaseMs: Number(args["lease-ms"] || DEFAULT_LEASE_MS) });
+    result = await renewGeneration({ store, ledger, generation: Number(required(args, "generation")), holder: required(args, "holder"), fingerprint: args.fingerprint, leaseMs: Number(args["lease-ms"] || DEFAULT_LEASE_MS) });
   } else if (args.command === "abandon") {
-    result = await abandonGeneration({ store, generation: Number(required(args, "generation")), holder: required(args, "holder"), fingerprint: args.fingerprint });
+    result = await abandonGeneration({ store, ledger, generation: Number(required(args, "generation")), holder: required(args, "holder"), fingerprint: args.fingerprint });
   } else if (args.command === "commit-check") {
-    result = await checkGenerationCommit({ store, generation: Number(required(args, "generation")), holder: required(args, "holder"), fingerprint: args.fingerprint });
+    result = await checkGenerationCommit({ store, ledger, generation: Number(required(args, "generation")), holder: required(args, "holder"), fingerprint: args.fingerprint });
     writeGithubOutput(args["github-output"], { committable: String(result.committable), fenced: String(result.fenced) });
   } else if (args.command === "complete") {
-    result = await completeGeneration({ store, generation: Number(required(args, "generation")), holder: required(args, "holder"), fingerprint: args.fingerprint });
+    result = await completeGeneration({ store, ledger, generation: Number(required(args, "generation")), holder: required(args, "holder"), fingerprint: args.fingerprint });
   } else {
     fail("usage: claim, renew, abandon, commit-check, or complete");
   }
