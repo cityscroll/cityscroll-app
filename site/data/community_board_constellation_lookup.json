@@ -54,6 +54,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -98,6 +99,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -142,6 +144,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -186,6 +189,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -230,6 +234,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -274,6 +279,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -329,6 +335,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -373,6 +380,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -417,6 +425,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -461,6 +470,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -505,6 +515,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -549,6 +560,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -604,6 +616,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -648,6 +661,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -692,6 +706,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -736,6 +751,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -780,6 +796,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -824,6 +841,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -879,6 +897,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -923,6 +942,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -967,6 +987,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -1011,6 +1032,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -1055,6 +1077,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -1099,6 +1122,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -1154,6 +1178,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -1198,6 +1223,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -1242,6 +1268,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -1286,6 +1313,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -1330,6 +1358,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -1374,6 +1403,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -1429,6 +1459,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -1473,6 +1504,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -1517,6 +1549,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -1555,6 +1588,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -1599,6 +1633,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -1643,6 +1678,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -1698,6 +1734,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -1742,6 +1779,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -1786,6 +1824,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -1830,6 +1869,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -1874,6 +1914,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -1918,6 +1959,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -1973,6 +2015,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -2017,6 +2060,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -2061,6 +2105,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -2099,6 +2144,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -2143,6 +2189,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -2187,6 +2234,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -2242,6 +2290,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -2286,6 +2335,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -2330,6 +2380,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -2374,6 +2425,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -2418,6 +2470,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -2462,6 +2515,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -2517,6 +2571,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -2561,6 +2616,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -2605,6 +2661,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -2643,6 +2700,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -2687,6 +2745,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -2731,6 +2790,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -2786,6 +2846,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -2830,6 +2891,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -2874,6 +2936,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -2912,6 +2975,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -2956,6 +3020,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -3000,6 +3065,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -3055,6 +3121,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -3099,6 +3166,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -3143,6 +3211,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -3187,6 +3256,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -3231,6 +3301,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -3275,6 +3346,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -3330,6 +3402,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -3374,6 +3447,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -3418,6 +3492,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -3462,6 +3537,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -3506,6 +3582,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -3550,6 +3627,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -3605,6 +3683,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -3649,6 +3728,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "valid_zero",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -3693,6 +3773,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -3737,6 +3818,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -3781,6 +3863,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -3825,6 +3908,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -3880,6 +3964,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -3924,6 +4009,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -3968,6 +4054,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -4012,6 +4099,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -4056,6 +4144,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -4100,6 +4189,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -4155,6 +4245,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -4199,6 +4290,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -4243,6 +4335,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -4287,6 +4380,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -4331,6 +4425,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -4375,6 +4470,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -4430,6 +4526,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -4474,6 +4571,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -4518,6 +4616,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -4556,6 +4655,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -4600,6 +4700,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -4644,6 +4745,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -4699,6 +4801,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -4743,6 +4846,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "valid_zero",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -4787,6 +4891,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -4831,6 +4936,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -4875,6 +4981,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -4919,6 +5026,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -4974,6 +5082,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -5018,6 +5127,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -5062,6 +5172,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -5100,6 +5211,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -5144,6 +5256,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -5188,6 +5301,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -5243,6 +5357,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -5287,6 +5402,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -5331,6 +5447,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -5375,6 +5492,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -5419,6 +5537,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -5463,6 +5582,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -5518,6 +5638,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -5562,6 +5683,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -5606,6 +5728,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -5650,6 +5773,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -5694,6 +5818,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -5738,6 +5863,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -5793,6 +5919,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -5837,6 +5964,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -5881,6 +6009,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -5919,6 +6048,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -5963,6 +6093,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -6007,6 +6138,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -6062,6 +6194,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -6106,6 +6239,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -6150,6 +6284,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -6188,6 +6323,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -6232,6 +6368,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -6276,6 +6413,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -6331,6 +6469,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -6375,6 +6514,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -6419,6 +6559,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -6463,6 +6604,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -6507,6 +6649,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -6551,6 +6694,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -6606,6 +6750,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -6650,6 +6795,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -6694,6 +6840,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -6738,6 +6885,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -6782,6 +6930,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -6826,6 +6975,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -6881,6 +7031,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -6925,6 +7076,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -6969,6 +7121,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -7007,6 +7160,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -7051,6 +7205,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -7095,6 +7250,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -7150,6 +7306,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -7194,6 +7351,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -7238,6 +7396,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -7282,6 +7441,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -7326,6 +7486,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -7370,6 +7531,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -7425,6 +7587,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -7469,6 +7632,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "valid_zero",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -7513,6 +7677,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -7557,6 +7722,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -7601,6 +7767,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -7645,6 +7812,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -7700,6 +7868,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -7744,6 +7913,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -7788,6 +7958,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -7826,6 +7997,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -7870,6 +8042,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -7914,6 +8087,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -7969,6 +8143,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -8013,6 +8188,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -8057,6 +8233,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -8094,6 +8271,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -8138,6 +8316,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -8182,6 +8361,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -8237,6 +8417,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -8281,6 +8462,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -8325,6 +8507,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -8363,6 +8546,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -8407,6 +8591,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -8451,6 +8636,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -8506,6 +8692,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -8550,6 +8737,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -8594,6 +8782,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -8632,6 +8821,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -8676,6 +8866,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -8720,6 +8911,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -8758,6 +8950,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -8813,6 +9006,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -8857,6 +9051,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -8901,6 +9096,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -8938,6 +9134,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -8982,6 +9179,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -9026,6 +9224,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -9081,6 +9280,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -9125,6 +9325,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -9169,6 +9370,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -9207,6 +9409,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -9251,6 +9454,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -9295,6 +9499,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -9350,6 +9555,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -9394,6 +9600,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -9438,6 +9645,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -9482,6 +9690,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -9526,6 +9735,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -9570,6 +9780,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -9625,6 +9836,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -9669,6 +9881,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -9707,6 +9920,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -9745,6 +9959,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -9791,6 +10006,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -9835,6 +10051,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -9873,6 +10090,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -9911,6 +10129,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -9966,6 +10185,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -10010,6 +10230,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -10054,6 +10275,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -10092,6 +10314,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -10136,6 +10359,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -10180,6 +10404,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -10235,6 +10460,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -10279,6 +10505,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -10323,6 +10550,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -10367,6 +10595,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -10411,6 +10640,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -10455,6 +10685,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -10510,6 +10741,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -10554,6 +10786,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -10598,6 +10831,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -10642,6 +10876,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -10686,6 +10921,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -10730,6 +10966,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -10785,6 +11022,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -10829,6 +11067,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -10873,6 +11112,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -10911,6 +11151,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -10955,6 +11196,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -10999,6 +11241,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -11054,6 +11297,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -11098,6 +11342,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -11142,6 +11387,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -11180,6 +11426,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -11224,6 +11471,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -11268,6 +11516,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -11323,6 +11572,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -11367,6 +11617,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -11411,6 +11662,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -11449,6 +11701,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -11493,6 +11746,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -11537,6 +11791,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -11592,6 +11847,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -11636,6 +11892,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -11680,6 +11937,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -11717,6 +11975,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -11761,6 +12020,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -11805,6 +12065,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -11860,6 +12121,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -11904,6 +12166,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -11948,6 +12211,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -11986,6 +12250,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -12030,6 +12295,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -12074,6 +12340,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -12129,6 +12396,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -12173,6 +12441,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -12217,6 +12486,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -12261,6 +12531,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -12305,6 +12576,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -12349,6 +12621,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -12404,6 +12677,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -12448,6 +12722,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -12492,6 +12767,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -12536,6 +12812,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -12580,6 +12857,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -12624,6 +12902,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -12679,6 +12958,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -12723,6 +13003,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -12767,6 +13048,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -12811,6 +13093,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -12855,6 +13138,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -12899,6 +13183,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -12954,6 +13239,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -12998,6 +13284,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -13042,6 +13329,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -13080,6 +13368,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -13124,6 +13413,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -13168,6 +13458,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -13206,6 +13497,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -13261,6 +13553,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -13305,6 +13598,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -13349,6 +13643,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -13386,6 +13681,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -13430,6 +13726,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -13474,6 +13771,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -13529,6 +13827,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -13573,6 +13872,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -13617,6 +13917,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -13661,6 +13962,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -13705,6 +14007,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -13749,6 +14052,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -13804,6 +14108,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -13848,6 +14153,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -13892,6 +14198,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -13936,6 +14243,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -13980,6 +14288,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -14024,6 +14333,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -14079,6 +14389,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -14123,6 +14434,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -14167,6 +14479,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -14211,6 +14524,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -14255,6 +14569,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -14299,6 +14614,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -14354,6 +14670,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -14398,6 +14715,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -14442,6 +14760,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -14486,6 +14805,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -14530,6 +14850,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -14574,6 +14895,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -14629,6 +14951,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -14673,6 +14996,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -14717,6 +15041,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -14761,6 +15086,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -14805,6 +15131,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -14849,6 +15176,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -14904,6 +15232,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -14948,6 +15277,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -14992,6 +15322,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -15036,6 +15367,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -15080,6 +15412,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -15124,6 +15457,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -15179,6 +15513,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -15223,6 +15558,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -15267,6 +15603,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -15311,6 +15648,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -15355,6 +15693,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -15399,6 +15738,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -15454,6 +15794,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -15498,6 +15839,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -15542,6 +15884,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -15586,6 +15929,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -15630,6 +15974,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -15674,6 +16019,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -15729,6 +16075,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -15773,6 +16120,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -15817,6 +16165,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -15861,6 +16210,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -15905,6 +16255,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -15949,6 +16300,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -16004,6 +16356,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -16048,6 +16401,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -16092,6 +16446,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -16136,6 +16491,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -16180,6 +16536,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -16224,6 +16581,7 @@
             "cross_spine_explicit": false
           },
           "derived_feature_rollup": null,
+          "absence_reason": "unsearched",
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
