@@ -10,10 +10,12 @@ through CI and Pages auto-deployed a site whose entire JS was one SyntaxError.
 import re
 import subprocess
 import sys
-import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / "tools"))
+from lib.temp_workspace import cityscroll_temp_dir  # noqa: E402
+
 SITE_ROOT = ROOT / "site"
 HTML_PAGES = ["index.html", "about.html", "data.html", "stats.html", "changelog.html", "api.html", "standards.html"]
 # Source: standalone first-party scripts and the main site's ES-module graph.
@@ -23,19 +25,19 @@ JS_FILES = [
 ] + [str(path.relative_to(SITE_ROOT)) for path in sorted((SITE_ROOT / "app").glob("*.mjs"))]
 
 failures = 0
-for page in HTML_PAGES:
-    text = (SITE_ROOT / page).read_text()
-    for i, block in enumerate(re.findall(r"<script>(.*?)</script>", text, re.S)):
-        with tempfile.NamedTemporaryFile("w", suffix=".js", delete=False) as f:
-            f.write(block)
-            path = f.name
-        r = subprocess.run(["node", "--check", path], capture_output=True, text=True)
-        if r.returncode:
-            failures += 1
-            print(f"FAIL {page} script block {i}:")
-            print("  " + r.stderr.strip().splitlines()[-1][:200])
-        else:
-            print(f"OK   {page} script block {i}")
+with cityscroll_temp_dir("js-syntax") as scratch:
+    for page in HTML_PAGES:
+        text = (SITE_ROOT / page).read_text()
+        for i, block in enumerate(re.findall(r"<script>(.*?)</script>", text, re.S)):
+            path = scratch / f"{page}.{i}.js"
+            path.write_text(block)
+            r = subprocess.run(["node", "--check", str(path)], capture_output=True, text=True)
+            if r.returncode:
+                failures += 1
+                print(f"FAIL {page} script block {i}:")
+                print("  " + r.stderr.strip().splitlines()[-1][:200])
+            else:
+                print(f"OK   {page} script block {i}")
 
 for js in JS_FILES:
     r = subprocess.run(["node", "--check", str(SITE_ROOT / js)], capture_output=True, text=True)
