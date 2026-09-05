@@ -1,0 +1,37 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-universal-search/us-23-cross-surface-search-consistency-gates",
+  "status": "implemented",
+  "fingerprint": "us-23-cross-surface-search-consistency-gates.v1",
+  "updated_at": "2026-09-05T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "cross-surface-consistency-gate",
+      "path": "test/cross_surface_search_consistency.test.mjs"
+    },
+    {
+      "id": "search-front-door-adapter",
+      "path": "site/search_front_door_scope.mjs"
+    },
+    {
+      "id": "search-render-plan",
+      "path": "site/search_render_plan.mjs"
+    },
+    {
+      "id": "preview-form-factor-adapter",
+      "path": "site/preview_federated_form_factor.mjs"
+    },
+    {
+      "id": "contracts-browse-scoped-adapter",
+      "path": "site/contract_search_bridge.mjs"
+    },
+    {
+      "id": "remaining-browse-adapter-envelope",
+      "path": "site/browse_scoped_adapters.mjs"
+    },
+    {
+      "id": "federated-worker-route",
+      "path": "worker/src/search.mjs"
+    }
+  ]
+}

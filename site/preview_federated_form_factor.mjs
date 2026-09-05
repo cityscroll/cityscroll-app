@@ -65,6 +65,7 @@ export const PREVIEW_FORM_FACTOR_SCOPES = Object.freeze({
     capability_reference: FEDERATED_SEARCH_CAPABILITY_REFERENCE,
     scope_mode: "allowlisted",
     lenses: Object.freeze([...FEDERATED_SEARCH_PRESENTATION_SCOPES.contracts.lenses]),
+    domains: Object.freeze([...FEDERATED_SEARCH_PRESENTATION_SCOPES.contracts.domains]),
     presentation_scope_id: FEDERATED_SEARCH_PRESENTATION_SCOPES.contracts.id,
     source: FEDERATED_SEARCH_PRESENTATION_SCOPES.contracts.source,
     label_key: "tab_money",
@@ -173,9 +174,14 @@ export function previewFormFactorOutcome(scopeId, payload, request = null) {
       validEnvelope = null;
     }
   }
+  // A requested lens can carry candidates from more than one domain (the
+  // `notices` lens backs both Contracts and Rules); the registered scope's
+  // domain allowlist — not just its lens allowlist — is what keeps a
+  // narrowed Preview from leaking an out-of-scope domain's candidate.
   const documents = Object.freeze(
     (validEnvelope?.results ?? (Array.isArray(payload?.results) ? payload.results : []))
-      .filter((document) => document && typeof document === "object"),
+      .filter((document) => document && typeof document === "object"
+        && (!scope.domains || scope.domains.includes(document.domain))),
   );
   const coverage = coverageProjection(scope, validEnvelope);
   const outcome = outcomeFrom(documents, coverage);
