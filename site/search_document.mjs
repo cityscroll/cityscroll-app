@@ -9,6 +9,7 @@ import {
   topicCandidateTitle,
 } from "./semantic_topic_search.mjs";
 import { renderUniversalSearchCoverageHtml } from "./universal_search_coverage_receipt.mjs";
+import { renderFamilyNav } from "./search_family_nav.mjs";
 import {
   buildSearchLensHandoffHref,
   searchDestinationForResult,
@@ -543,6 +544,7 @@ function paintResults(root, plan) {
   else if (plan.mode === "semantic") renderSemanticResults(root, plan);
   else if (plan.mode === "legacy") renderLegacyResults(root, plan);
   else renderUnavailableState(root);
+  renderFamilyNav(root);
 }
 
 function renderInitialState(root, query) {
@@ -564,6 +566,7 @@ function renderInitialState(root, query) {
   for (const lane of LANES) {
     setLaneState(root, "" + lane, "Waiting", instruction);
   }
+  renderFamilyNav(root);
 }
 
 async function fetchSearchResults(query) {
