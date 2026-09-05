@@ -1,0 +1,1012 @@
+{
+  "schema": "cityscroll.procurement_access_classification.v1",
+  "card": "PPD-07",
+  "lane": "access_feasibility",
+  "preregistration": "docs/research/procurement-access-classification/preregistration.md",
+  "generated_by": "node tools/build_procurement_access_classification.mjs --write",
+  "method_note": "Committed data only. No live retrieval, no scraping, and no credential automation of any kind is part of this lane. A field the committed corpus cannot answer for is classed unstable with the shortfall stated, rather than resolved by reaching for a network.",
+  "observation_vintage": {
+    "browse_projection_generated_at": "2026-08-18T04:05:51.552Z",
+    "read_model_generated_at": "2026-08-18T04:05:51.552Z",
+    "source_contracts_document": "docs/data-sources.md",
+    "attachment_metadata_built_at": "2026-08-09T01:41:39.752Z"
+  },
+  "corpus": {
+    "records": 13791,
+    "agencies": 101,
+    "source_observations": 27670,
+    "inputs": [
+      "site/data/procurement_browse_rows.json",
+      "site/data/shared_procurement_read_model.json",
+      "site/data/source_contracts.json",
+      "site/data/attachment_metadata_lookup.json"
+    ]
+  },
+  "classes": [
+    "accessible",
+    "authenticated",
+    "unavailable",
+    "unstable"
+  ],
+  "thresholds": {
+    "min_records": 200,
+    "min_agencies": 10,
+    "min_presence_rate": 0.3
+  },
+  "fields": [
+    {
+      "id": "solicitation_title",
+      "label": "Solicitation title",
+      "class": "accessible",
+      "basis": "Observed on 13791 committed records across 101 agencies, a presence rate of 1.000 within the 13791 records examined.",
+      "sample": {
+        "universe": "site/data/procurement_browse_rows.json (committed procurement browse projection)",
+        "records_examined": 13791,
+        "records_observed": 13791,
+        "agencies_observed": 101,
+        "presence_rate": 1
+      },
+      "per_agency": {
+        "ADMINISTRATION FOR CHILDREN'S SERVICES": 5,
+        "Administration for Children's Services": 917,
+        "Administrative Trials and Hearings": 40,
+        "Aging": 592,
+        "Borough President - Brooklyn": 1,
+        "Buildings": 69,
+        "Business Integrity Commission": 2,
+        "Chief Medical Examiner": 115,
+        "City Council": 13,
+        "City Planning": 23,
+        "City University Construction Fund": 9,
+        "City University of New York": 5,
+        "Citywide Administrative Services": 1171,
+        "Civilian Complaint Review Board": 2,
+        "Commission on Human Rights": 6,
+        "Conflicts of Interest Board": 1,
+        "Consumer and Worker Protection": 64,
+        "Correction": 259,
+        "Cultural Affairs": 22,
+        "DCASDIVISION OF MUNICIPAL SUPPLY SERVICE": 14,
+        "DEPARTMENT OF CORRECTION": 3,
+        "DEPARTMENT OF DESIGN AND CONSTRUCTION": 2,
+        "DEPARTMENT OF EDUCATION": 2,
+        "DEPARTMENT OF ENVIRONMENTAL PROTECTION": 1,
+        "DEPARTMENT OF FINANCE": 1,
+        "DEPARTMENT OF HEALTH AND MENTAL HYGIENE": 2,
+        "DEPARTMENT OF HOMELESS SERVICES": 2,
+        "DEPARTMENT OF INFORMATION TECHNOLOGY AND TELECOMMUNICATIONS": 3,
+        "DEPARTMENT OF PARKS AND RECREATION": 7,
+        "DEPARTMENT OF SANITATION": 1,
+        "DEPARTMENT OF SMALL BUSINESS SERVICES": 1,
+        "DEPARTMENT OF SOCIAL SERVICES": 11,
+        "DEPARTMENT OF TRANSPORTATION": 1,
+        "DEPARTMENT OF YOUTH AND COMMUNITY DEVELOPMENT": 2,
+        "Department for the Aging": 18,
+        "Department of Citywide Administrative Services": 31,
+        "Department of Consumer & Worker Protection": 2,
+        "Department of Correction": 5,
+        "Department of Design and Construction": 32,
+        "Department of Education": 180,
+        "Department of Emergency Management": 8,
+        "Department of Environmental Protection": 15,
+        "Department of Finance": 3,
+        "Department of Health and Mental Hygiene": 86,
+        "Department of Homeless Services": 32,
+        "Department of Information Technology and Telecommunications": 21,
+        "Department of Parks and Recreation": 100,
+        "Department of Probation": 2,
+        "Department of Records and Information Services": 1,
+        "Department of Sanitation": 9,
+        "Department of Small Business Services": 29,
+        "Department of Social Services": 11,
+        "Department of Transportation": 10,
+        "Department of Youth and Community Development": 85,
+        "Dept. of Social Svcs/Human Resources Administration": 1210,
+        "Design and Construction": 599,
+        "Education": 436,
+        "Emergency Management": 148,
+        "Environmental Protection": 773,
+        "Finance": 140,
+        "Financial Information Services Agency": 3,
+        "Fire Department": 307,
+        "Health and Hospitals Corporation": 24,
+        "Health and Mental Hygiene": 866,
+        "Homeless Services": 591,
+        "Housing Preservation and Development": 530,
+        "Human Resources Administration": 6,
+        "Information Technology and Telecommunications": 514,
+        "Investigation": 24,
+        "LAW DEPARTMENT": 1,
+        "Landmarks Preservation Commission": 3,
+        "Law Department": 112,
+        "Long Island Rail Road": 1,
+        "MTA - NYC Transit (NYCT)": 1,
+        "MTA Construction & Development": 2,
+        "Management and Budget": 28,
+        "Mayor's Office of Contract Services": 24,
+        "Mayor's Office of Criminal Justice": 127,
+        "Mayoralty": 4,
+        "NEW YORK CITY POLICE DEPARTMENT": 2,
+        "NYC TAXI AND LIMOUSINE COMMISSION": 1,
+        "NYCHA": 1,
+        "New York Research Libraries": 1,
+        "OFFICE OF ADMINISTRATIVE TRIALS AND HEARINGS": 1,
+        "OFFICE OF CRIMINAL JUSTICE": 2,
+        "OFFICE OF EMERGENCY MANAGEMENT": 2,
+        "OFFICE OF THE CHIEF MEDICAL EXAMINER": 1,
+        "Office of Labor Relations": 11,
+        "Office of the Actuary": 1,
+        "Office of the Comptroller": 8,
+        "Office of the Mayor": 99,
+        "Parks and Recreation": 539,
+        "Police Department": 244,
+        "Probation": 149,
+        "Records and Information Services": 7,
+        "Sanitation": 250,
+        "Small Business Services": 133,
+        "Taxi and Limousine Commission": 34,
+        "Transportation": 551,
+        "Veterans' Services": 8,
+        "Youth and Community Development": 1222
+      },
+      "declared_by": {
+        "source_contracts": [
+          {
+            "contract_id": "city-record",
+            "field": "short_title",
+            "status": "live",
+            "in_required_fields": false
+          },
+          {
+            "contract_id": "passport-public-rfx",
+            "field": "procurement_name",
+            "status": "live",
+            "in_required_fields": true
+          },
+          {
+            "contract_id": "mta-current-opportunities",
+            "field": "title",
+            "status": "live",
+            "in_required_fields": true
+          }
+        ],
+        "product_surfaces": [
+          "site/procurement_alert_atom.mjs"
+        ]
+      },
+      "sign_in_evidence": []
+    },
+    {
+      "id": "publishing_agency",
+      "label": "Publishing agency",
+      "class": "accessible",
+      "basis": "Observed on 13790 committed records across 101 agencies, a presence rate of 1.000 within the 13791 records examined.",
+      "sample": {
+        "universe": "site/data/procurement_browse_rows.json (committed procurement browse projection)",
+        "records_examined": 13791,
+        "records_observed": 13790,
+        "agencies_observed": 101,
+        "presence_rate": 0.9999274889420636
+      },
+      "per_agency": {
+        "ADMINISTRATION FOR CHILDREN'S SERVICES": 5,
+        "Administration for Children's Services": 917,
+        "Administrative Trials and Hearings": 40,
+        "Aging": 592,
+        "Borough President - Brooklyn": 1,
+        "Buildings": 69,
+        "Business Integrity Commission": 2,
+        "Chief Medical Examiner": 115,
+        "City Council": 13,
+        "City Planning": 23,
+        "City University Construction Fund": 9,
+        "City University of New York": 5,
+        "Citywide Administrative Services": 1171,
+        "Civilian Complaint Review Board": 2,
+        "Commission on Human Rights": 6,
+        "Conflicts of Interest Board": 1,
+        "Consumer and Worker Protection": 64,
+        "Correction": 259,
+        "Cultural Affairs": 22,
+        "DCASDIVISION OF MUNICIPAL SUPPLY SERVICE": 14,
+        "DEPARTMENT OF CORRECTION": 3,
+        "DEPARTMENT OF DESIGN AND CONSTRUCTION": 2,
+        "DEPARTMENT OF EDUCATION": 2,
+        "DEPARTMENT OF ENVIRONMENTAL PROTECTION": 1,
+        "DEPARTMENT OF FINANCE": 1,
+        "DEPARTMENT OF HEALTH AND MENTAL HYGIENE": 2,
+        "DEPARTMENT OF HOMELESS SERVICES": 2,
+        "DEPARTMENT OF INFORMATION TECHNOLOGY AND TELECOMMUNICATIONS": 3,
+        "DEPARTMENT OF PARKS AND RECREATION": 7,
+        "DEPARTMENT OF SANITATION": 1,
+        "DEPARTMENT OF SMALL BUSINESS SERVICES": 1,
+        "DEPARTMENT OF SOCIAL SERVICES": 11,
+        "DEPARTMENT OF TRANSPORTATION": 1,
+        "DEPARTMENT OF YOUTH AND COMMUNITY DEVELOPMENT": 2,
+        "Department for the Aging": 18,
+        "Department of Citywide Administrative Services": 31,
+        "Department of Consumer & Worker Protection": 2,
+        "Department of Correction": 5,
+        "Department of Design and Construction": 32,
+        "Department of Education": 180,
+        "Department of Emergency Management": 8,
+        "Department of Environmental Protection": 15,
+        "Department of Finance": 3,
+        "Department of Health and Mental Hygiene": 86,
+        "Department of Homeless Services": 32,
+        "Department of Information Technology and Telecommunications": 21,
+        "Department of Parks and Recreation": 100,
+        "Department of Probation": 2,
+        "Department of Records and Information Services": 1,
+        "Department of Sanitation": 9,
+        "Department of Small Business Services": 29,
+        "Department of Social Services": 11,
+        "Department of Transportation": 10,
+        "Department of Youth and Community Development": 85,
+        "Dept. of Social Svcs/Human Resources Administration": 1210,
+        "Design and Construction": 599,
+        "Education": 436,
+        "Emergency Management": 148,
+        "Environmental Protection": 773,
+        "Finance": 140,
+        "Financial Information Services Agency": 3,
+        "Fire Department": 307,
+        "Health and Hospitals Corporation": 24,
+        "Health and Mental Hygiene": 866,
+        "Homeless Services": 591,
+        "Housing Preservation and Development": 530,
+        "Human Resources Administration": 6,
+        "Information Technology and Telecommunications": 514,
+        "Investigation": 24,
+        "LAW DEPARTMENT": 1,
+        "Landmarks Preservation Commission": 3,
+        "Law Department": 112,
+        "Long Island Rail Road": 1,
+        "MTA - NYC Transit (NYCT)": 1,
+        "MTA Construction & Development": 2,
+        "Management and Budget": 28,
+        "Mayor's Office of Contract Services": 24,
+        "Mayor's Office of Criminal Justice": 127,
+        "Mayoralty": 4,
+        "NEW YORK CITY POLICE DEPARTMENT": 2,
+        "NYC TAXI AND LIMOUSINE COMMISSION": 1,
+        "NYCHA": 1,
+        "New York Research Libraries": 1,
+        "OFFICE OF ADMINISTRATIVE TRIALS AND HEARINGS": 1,
+        "OFFICE OF CRIMINAL JUSTICE": 2,
+        "OFFICE OF EMERGENCY MANAGEMENT": 2,
+        "OFFICE OF THE CHIEF MEDICAL EXAMINER": 1,
+        "Office of Labor Relations": 11,
+        "Office of the Actuary": 1,
+        "Office of the Comptroller": 8,
+        "Office of the Mayor": 99,
+        "Parks and Recreation": 539,
+        "Police Department": 244,
+        "Probation": 149,
+        "Records and Information Services": 7,
+        "Sanitation": 250,
+        "Small Business Services": 133,
+        "Taxi and Limousine Commission": 34,
+        "Transportation": 551,
+        "Veterans' Services": 8,
+        "Youth and Community Development": 1222
+      },
+      "declared_by": {
+        "source_contracts": [
+          {
+            "contract_id": "city-record",
+            "field": "agency_name",
+            "status": "live",
+            "in_required_fields": true
+          },
+          {
+            "contract_id": "passport-public-rfx",
+            "field": "agency",
+            "status": "live",
+            "in_required_fields": true
+          },
+          {
+            "contract_id": "mta-current-opportunities",
+            "field": "agency",
+            "status": "live",
+            "in_required_fields": true
+          }
+        ],
+        "product_surfaces": [
+          "site/procurement_alert_atom.mjs"
+        ]
+      },
+      "sign_in_evidence": []
+    },
+    {
+      "id": "solicitation_identifier",
+      "label": "Solicitation identifier (PIN or EPIN)",
+      "class": "accessible",
+      "basis": "Observed on 13786 committed records across 98 agencies, a presence rate of 1.000 within the 13791 records examined.",
+      "sample": {
+        "universe": "site/data/procurement_browse_rows.json (committed procurement browse projection)",
+        "records_examined": 13791,
+        "records_observed": 13786,
+        "agencies_observed": 98,
+        "presence_rate": 0.9996374447103183
+      },
+      "per_agency": {
+        "ADMINISTRATION FOR CHILDREN'S SERVICES": 5,
+        "Administration for Children's Services": 917,
+        "Administrative Trials and Hearings": 40,
+        "Aging": 592,
+        "Borough President - Brooklyn": 1,
+        "Buildings": 69,
+        "Business Integrity Commission": 2,
+        "Chief Medical Examiner": 115,
+        "City Council": 13,
+        "City Planning": 23,
+        "City University Construction Fund": 9,
+        "City University of New York": 5,
+        "Citywide Administrative Services": 1171,
+        "Civilian Complaint Review Board": 2,
+        "Commission on Human Rights": 6,
+        "Conflicts of Interest Board": 1,
+        "Consumer and Worker Protection": 64,
+        "Correction": 259,
+        "Cultural Affairs": 22,
+        "DCASDIVISION OF MUNICIPAL SUPPLY SERVICE": 14,
+        "DEPARTMENT OF CORRECTION": 3,
+        "DEPARTMENT OF DESIGN AND CONSTRUCTION": 2,
+        "DEPARTMENT OF EDUCATION": 2,
+        "DEPARTMENT OF ENVIRONMENTAL PROTECTION": 1,
+        "DEPARTMENT OF FINANCE": 1,
+        "DEPARTMENT OF HEALTH AND MENTAL HYGIENE": 2,
+        "DEPARTMENT OF HOMELESS SERVICES": 2,
+        "DEPARTMENT OF INFORMATION TECHNOLOGY AND TELECOMMUNICATIONS": 3,
+        "DEPARTMENT OF PARKS AND RECREATION": 7,
+        "DEPARTMENT OF SANITATION": 1,
+        "DEPARTMENT OF SMALL BUSINESS SERVICES": 1,
+        "DEPARTMENT OF SOCIAL SERVICES": 11,
+        "DEPARTMENT OF TRANSPORTATION": 1,
+        "DEPARTMENT OF YOUTH AND COMMUNITY DEVELOPMENT": 2,
+        "Department for the Aging": 18,
+        "Department of Citywide Administrative Services": 31,
+        "Department of Consumer & Worker Protection": 2,
+        "Department of Correction": 5,
+        "Department of Design and Construction": 32,
+        "Department of Education": 180,
+        "Department of Emergency Management": 8,
+        "Department of Environmental Protection": 15,
+        "Department of Finance": 3,
+        "Department of Health and Mental Hygiene": 86,
+        "Department of Homeless Services": 32,
+        "Department of Information Technology and Telecommunications": 21,
+        "Department of Parks and Recreation": 100,
+        "Department of Probation": 2,
+        "Department of Records and Information Services": 1,
+        "Department of Sanitation": 9,
+        "Department of Small Business Services": 29,
+        "Department of Social Services": 11,
+        "Department of Transportation": 10,
+        "Department of Youth and Community Development": 85,
+        "Dept. of Social Svcs/Human Resources Administration": 1210,
+        "Design and Construction": 599,
+        "Education": 436,
+        "Emergency Management": 148,
+        "Environmental Protection": 773,
+        "Finance": 140,
+        "Financial Information Services Agency": 3,
+        "Fire Department": 307,
+        "Health and Hospitals Corporation": 24,
+        "Health and Mental Hygiene": 866,
+        "Homeless Services": 591,
+        "Housing Preservation and Development": 530,
+        "Human Resources Administration": 6,
+        "Information Technology and Telecommunications": 514,
+        "Investigation": 24,
+        "LAW DEPARTMENT": 1,
+        "Landmarks Preservation Commission": 3,
+        "Law Department": 112,
+        "Management and Budget": 28,
+        "Mayor's Office of Contract Services": 24,
+        "Mayor's Office of Criminal Justice": 127,
+        "Mayoralty": 4,
+        "NEW YORK CITY POLICE DEPARTMENT": 2,
+        "NYC TAXI AND LIMOUSINE COMMISSION": 1,
+        "NYCHA": 1,
+        "New York Research Libraries": 1,
+        "OFFICE OF ADMINISTRATIVE TRIALS AND HEARINGS": 1,
+        "OFFICE OF CRIMINAL JUSTICE": 2,
+        "OFFICE OF EMERGENCY MANAGEMENT": 2,
+        "OFFICE OF THE CHIEF MEDICAL EXAMINER": 1,
+        "Office of Labor Relations": 11,
+        "Office of the Actuary": 1,
+        "Office of the Comptroller": 8,
+        "Office of the Mayor": 99,
+        "Parks and Recreation": 539,
+        "Police Department": 244,
+        "Probation": 149,
+        "Records and Information Services": 7,
+        "Sanitation": 250,
+        "Small Business Services": 133,
+        "Taxi and Limousine Commission": 34,
+        "Transportation": 551,
+        "Veterans' Services": 8,
+        "Youth and Community Development": 1222
+      },
+      "declared_by": {
+        "source_contracts": [
+          {
+            "contract_id": "passport-public-rfx",
+            "field": "epin",
+            "status": "live",
+            "in_required_fields": true
+          },
+          {
+            "contract_id": "passport-public-contracts",
+            "field": "epin",
+            "status": "live",
+            "in_required_fields": true
+          }
+        ],
+        "product_surfaces": [
+          "site/procurement_pursuit_snapshot.mjs"
+        ]
+      },
+      "sign_in_evidence": []
+    },
+    {
+      "id": "procurement_method",
+      "label": "Procurement method",
+      "class": "accessible",
+      "basis": "Observed on 12770 committed records across 65 agencies, a presence rate of 0.926 within the 13791 records examined.",
+      "sample": {
+        "universe": "site/data/procurement_browse_rows.json (committed procurement browse projection)",
+        "records_examined": 13791,
+        "records_observed": 12770,
+        "agencies_observed": 65,
+        "presence_rate": 0.9259662098470016
+      },
+      "per_agency": {
+        "ADMINISTRATION FOR CHILDREN'S SERVICES": 5,
+        "Administration for Children's Services": 904,
+        "Administrative Trials and Hearings": 40,
+        "Aging": 592,
+        "Buildings": 69,
+        "Business Integrity Commission": 2,
+        "Chief Medical Examiner": 115,
+        "City Planning": 23,
+        "Citywide Administrative Services": 1155,
+        "Civilian Complaint Review Board": 1,
+        "Commission on Human Rights": 5,
+        "Consumer and Worker Protection": 62,
+        "Correction": 255,
+        "Cultural Affairs": 22,
+        "DCASDIVISION OF MUNICIPAL SUPPLY SERVICE": 13,
+        "DEPARTMENT OF CORRECTION": 3,
+        "DEPARTMENT OF DESIGN AND CONSTRUCTION": 2,
+        "DEPARTMENT OF EDUCATION": 2,
+        "DEPARTMENT OF ENVIRONMENTAL PROTECTION": 1,
+        "DEPARTMENT OF FINANCE": 1,
+        "DEPARTMENT OF HEALTH AND MENTAL HYGIENE": 2,
+        "DEPARTMENT OF HOMELESS SERVICES": 2,
+        "DEPARTMENT OF INFORMATION TECHNOLOGY AND TELECOMMUNICATIONS": 3,
+        "DEPARTMENT OF PARKS AND RECREATION": 7,
+        "DEPARTMENT OF SANITATION": 1,
+        "DEPARTMENT OF SMALL BUSINESS SERVICES": 1,
+        "DEPARTMENT OF SOCIAL SERVICES": 11,
+        "DEPARTMENT OF TRANSPORTATION": 1,
+        "DEPARTMENT OF YOUTH AND COMMUNITY DEVELOPMENT": 2,
+        "Dept. of Social Svcs/Human Resources Administration": 1185,
+        "Design and Construction": 597,
+        "Education": 436,
+        "Emergency Management": 148,
+        "Environmental Protection": 769,
+        "Finance": 139,
+        "Fire Department": 295,
+        "Health and Mental Hygiene": 853,
+        "Homeless Services": 571,
+        "Housing Preservation and Development": 499,
+        "Human Resources Administration": 6,
+        "Information Technology and Telecommunications": 514,
+        "Investigation": 24,
+        "LAW DEPARTMENT": 1,
+        "Landmarks Preservation Commission": 2,
+        "Law Department": 95,
+        "Management and Budget": 28,
+        "Mayor's Office of Contract Services": 24,
+        "Mayor's Office of Criminal Justice": 127,
+        "NEW YORK CITY POLICE DEPARTMENT": 2,
+        "NYC TAXI AND LIMOUSINE COMMISSION": 1,
+        "OFFICE OF ADMINISTRATIVE TRIALS AND HEARINGS": 1,
+        "OFFICE OF EMERGENCY MANAGEMENT": 2,
+        "OFFICE OF THE CHIEF MEDICAL EXAMINER": 1,
+        "Office of Labor Relations": 11,
+        "Office of the Mayor": 99,
+        "Parks and Recreation": 532,
+        "Police Department": 227,
+        "Probation": 147,
+        "Records and Information Services": 7,
+        "Sanitation": 249,
+        "Small Business Services": 133,
+        "Taxi and Limousine Commission": 34,
+        "Transportation": 543,
+        "Veterans' Services": 8,
+        "Youth and Community Development": 1158
+      },
+      "declared_by": {
+        "source_contracts": [
+          {
+            "contract_id": "passport-public-rfx",
+            "field": "procurement_method",
+            "status": "live",
+            "in_required_fields": true
+          }
+        ],
+        "product_surfaces": [
+          "site/mwbe_goal_surface.mjs"
+        ]
+      },
+      "sign_in_evidence": []
+    },
+    {
+      "id": "published_amount",
+      "label": "Published amount",
+      "class": "accessible",
+      "basis": "Observed on 13788 committed records across 100 agencies, a presence rate of 1.000 within the 13791 records examined.",
+      "sample": {
+        "universe": "site/data/procurement_browse_rows.json (committed procurement browse projection)",
+        "records_examined": 13791,
+        "records_observed": 13788,
+        "agencies_observed": 100,
+        "presence_rate": 0.999782466826191
+      },
+      "per_agency": {
+        "ADMINISTRATION FOR CHILDREN'S SERVICES": 5,
+        "Administration for Children's Services": 917,
+        "Administrative Trials and Hearings": 40,
+        "Aging": 592,
+        "Borough President - Brooklyn": 1,
+        "Buildings": 69,
+        "Business Integrity Commission": 2,
+        "Chief Medical Examiner": 115,
+        "City Council": 13,
+        "City Planning": 23,
+        "City University Construction Fund": 9,
+        "City University of New York": 5,
+        "Citywide Administrative Services": 1171,
+        "Civilian Complaint Review Board": 2,
+        "Commission on Human Rights": 6,
+        "Conflicts of Interest Board": 1,
+        "Consumer and Worker Protection": 64,
+        "Correction": 259,
+        "Cultural Affairs": 22,
+        "DCASDIVISION OF MUNICIPAL SUPPLY SERVICE": 14,
+        "DEPARTMENT OF CORRECTION": 3,
+        "DEPARTMENT OF DESIGN AND CONSTRUCTION": 2,
+        "DEPARTMENT OF EDUCATION": 2,
+        "DEPARTMENT OF ENVIRONMENTAL PROTECTION": 1,
+        "DEPARTMENT OF FINANCE": 1,
+        "DEPARTMENT OF HEALTH AND MENTAL HYGIENE": 2,
+        "DEPARTMENT OF HOMELESS SERVICES": 2,
+        "DEPARTMENT OF INFORMATION TECHNOLOGY AND TELECOMMUNICATIONS": 3,
+        "DEPARTMENT OF PARKS AND RECREATION": 7,
+        "DEPARTMENT OF SANITATION": 1,
+        "DEPARTMENT OF SMALL BUSINESS SERVICES": 1,
+        "DEPARTMENT OF SOCIAL SERVICES": 10,
+        "DEPARTMENT OF TRANSPORTATION": 1,
+        "DEPARTMENT OF YOUTH AND COMMUNITY DEVELOPMENT": 2,
+        "Department for the Aging": 18,
+        "Department of Citywide Administrative Services": 31,
+        "Department of Consumer & Worker Protection": 2,
+        "Department of Correction": 5,
+        "Department of Design and Construction": 32,
+        "Department of Education": 180,
+        "Department of Emergency Management": 8,
+        "Department of Environmental Protection": 15,
+        "Department of Finance": 3,
+        "Department of Health and Mental Hygiene": 86,
+        "Department of Homeless Services": 32,
+        "Department of Information Technology and Telecommunications": 21,
+        "Department of Parks and Recreation": 100,
+        "Department of Probation": 2,
+        "Department of Records and Information Services": 1,
+        "Department of Sanitation": 9,
+        "Department of Small Business Services": 29,
+        "Department of Social Services": 11,
+        "Department of Transportation": 10,
+        "Department of Youth and Community Development": 85,
+        "Dept. of Social Svcs/Human Resources Administration": 1210,
+        "Design and Construction": 599,
+        "Education": 436,
+        "Emergency Management": 148,
+        "Environmental Protection": 773,
+        "Finance": 140,
+        "Financial Information Services Agency": 3,
+        "Fire Department": 307,
+        "Health and Hospitals Corporation": 24,
+        "Health and Mental Hygiene": 866,
+        "Homeless Services": 591,
+        "Housing Preservation and Development": 530,
+        "Human Resources Administration": 6,
+        "Information Technology and Telecommunications": 514,
+        "Investigation": 24,
+        "LAW DEPARTMENT": 1,
+        "Landmarks Preservation Commission": 3,
+        "Law Department": 112,
+        "Long Island Rail Road": 1,
+        "MTA Construction & Development": 1,
+        "Management and Budget": 28,
+        "Mayor's Office of Contract Services": 24,
+        "Mayor's Office of Criminal Justice": 127,
+        "Mayoralty": 4,
+        "NEW YORK CITY POLICE DEPARTMENT": 2,
+        "NYC TAXI AND LIMOUSINE COMMISSION": 1,
+        "NYCHA": 1,
+        "New York Research Libraries": 1,
+        "OFFICE OF ADMINISTRATIVE TRIALS AND HEARINGS": 1,
+        "OFFICE OF CRIMINAL JUSTICE": 2,
+        "OFFICE OF EMERGENCY MANAGEMENT": 2,
+        "OFFICE OF THE CHIEF MEDICAL EXAMINER": 1,
+        "Office of Labor Relations": 11,
+        "Office of the Actuary": 1,
+        "Office of the Comptroller": 8,
+        "Office of the Mayor": 99,
+        "Parks and Recreation": 539,
+        "Police Department": 244,
+        "Probation": 149,
+        "Records and Information Services": 7,
+        "Sanitation": 250,
+        "Small Business Services": 133,
+        "Taxi and Limousine Commission": 34,
+        "Transportation": 551,
+        "Veterans' Services": 8,
+        "Youth and Community Development": 1222
+      },
+      "declared_by": {
+        "source_contracts": [
+          {
+            "contract_id": "passport-public-contracts",
+            "field": "current_amount",
+            "status": "live",
+            "in_required_fields": true
+          },
+          {
+            "contract_id": "checkbook-contracts",
+            "field": "prime_contract_current_amount",
+            "status": "live",
+            "in_required_fields": true
+          }
+        ],
+        "product_surfaces": [
+          "site/procurement_alert_atom.mjs"
+        ]
+      },
+      "sign_in_evidence": [],
+      "scope_note": "In this corpus the observed amount is an award or registration value, not a solicitation estimate. The class describes reachability of a published amount, not its stage."
+    },
+    {
+      "id": "official_notice_pointer",
+      "label": "Official notice pointer",
+      "class": "accessible",
+      "basis": "Observed on 12899 committed records across 44 agencies, a presence rate of 0.935 within the 13791 records examined.",
+      "sample": {
+        "universe": "site/data/procurement_browse_rows.json (committed procurement browse projection)",
+        "records_examined": 13791,
+        "records_observed": 12899,
+        "agencies_observed": 44,
+        "presence_rate": 0.9353201363207889
+      },
+      "per_agency": {
+        "Administration for Children's Services": 909,
+        "Administrative Trials and Hearings": 40,
+        "Aging": 592,
+        "Buildings": 69,
+        "Business Integrity Commission": 2,
+        "Chief Medical Examiner": 115,
+        "City Planning": 23,
+        "Citywide Administrative Services": 1171,
+        "Civilian Complaint Review Board": 1,
+        "Commission on Human Rights": 5,
+        "Consumer and Worker Protection": 64,
+        "Correction": 259,
+        "Cultural Affairs": 22,
+        "Dept. of Social Svcs/Human Resources Administration": 1210,
+        "Design and Construction": 599,
+        "Education": 436,
+        "Emergency Management": 148,
+        "Environmental Protection": 773,
+        "Finance": 140,
+        "Financial Information Services Agency": 1,
+        "Fire Department": 302,
+        "Health and Mental Hygiene": 866,
+        "Homeless Services": 591,
+        "Housing Preservation and Development": 507,
+        "Human Resources Administration": 6,
+        "Information Technology and Telecommunications": 514,
+        "Investigation": 24,
+        "Landmarks Preservation Commission": 2,
+        "Law Department": 96,
+        "Management and Budget": 28,
+        "Mayor's Office of Contract Services": 24,
+        "Mayor's Office of Criminal Justice": 127,
+        "Office of Labor Relations": 11,
+        "Office of the Mayor": 99,
+        "Parks and Recreation": 539,
+        "Police Department": 230,
+        "Probation": 149,
+        "Records and Information Services": 7,
+        "Sanitation": 250,
+        "Small Business Services": 133,
+        "Taxi and Limousine Commission": 34,
+        "Transportation": 551,
+        "Veterans' Services": 8,
+        "Youth and Community Development": 1222
+      },
+      "declared_by": {
+        "source_contracts": [
+          {
+            "contract_id": "city-record",
+            "field": "request_id",
+            "status": "live",
+            "in_required_fields": true
+          }
+        ],
+        "product_surfaces": [
+          "site/procurement_document.mjs",
+          "site/procurement_facet_links.mjs"
+        ]
+      },
+      "sign_in_evidence": []
+    },
+    {
+      "id": "response_due_date",
+      "label": "Response due date",
+      "class": "unstable",
+      "basis": "The committed record cannot tell: 3 observed records is below the 200-record threshold; 2 agencies is below the 10-agency threshold; a presence rate of 0.000 is below 0.3. This says the sample is too thin to classify, not that the field is absent from the publisher.",
+      "sample": {
+        "universe": "site/data/shared_procurement_read_model.json shards (all committed source observations)",
+        "records_examined": 27670,
+        "records_observed": 3,
+        "agencies_observed": 2,
+        "presence_rate": 0.00010842067220816769
+      },
+      "per_agency": {
+        "MTA - NYC Transit (NYCT)": 1,
+        "MTA Construction & Development": 1
+      },
+      "declared_by": {
+        "source_contracts": [
+          {
+            "contract_id": "passport-public-rfx",
+            "field": "due_date",
+            "status": "live",
+            "in_required_fields": true
+          }
+        ],
+        "product_surfaces": [
+          "site/procurement_opportunity_window.mjs",
+          "site/procurement_process_events.mjs"
+        ]
+      },
+      "sign_in_evidence": []
+    },
+    {
+      "id": "solicitation_release_date",
+      "label": "Solicitation release date",
+      "class": "unstable",
+      "basis": "The committed record cannot tell: 2 observed records is below the 200-record threshold; 2 agencies is below the 10-agency threshold; a presence rate of 0.000 is below 0.3. This says the sample is too thin to classify, not that the field is absent from the publisher.",
+      "sample": {
+        "universe": "site/data/shared_procurement_read_model.json shards (all committed source observations)",
+        "records_examined": 27670,
+        "records_observed": 2,
+        "agencies_observed": 2,
+        "presence_rate": 0.00007228044813877847
+      },
+      "per_agency": {
+        "MTA - NYC Transit (NYCT)": 1,
+        "MTA Construction & Development": 1
+      },
+      "declared_by": {
+        "source_contracts": [
+          {
+            "contract_id": "passport-public-rfx",
+            "field": "release_date",
+            "status": "live",
+            "in_required_fields": true
+          },
+          {
+            "contract_id": "mta-current-opportunities",
+            "field": "opening_date",
+            "status": "live",
+            "in_required_fields": true
+          }
+        ],
+        "product_surfaces": [
+          "site/procurement_opportunity_window.mjs"
+        ]
+      },
+      "sign_in_evidence": []
+    },
+    {
+      "id": "published_contact",
+      "label": "Published contact",
+      "class": "unstable",
+      "basis": "The committed record cannot tell: 0 observed records is below the 200-record threshold; 0 agencies is below the 10-agency threshold; a presence rate of 0.000 is below 0.3. This says the sample is too thin to classify, not that the field is absent from the publisher.",
+      "sample": {
+        "universe": "site/data/shared_procurement_read_model.json shards (all committed source observations)",
+        "records_examined": 27670,
+        "records_observed": 0,
+        "agencies_observed": 0,
+        "presence_rate": 0
+      },
+      "per_agency": {},
+      "declared_by": {
+        "source_contracts": [],
+        "product_surfaces": [
+          "site/procurement_pursuit_snapshot.mjs"
+        ]
+      },
+      "sign_in_evidence": []
+    },
+    {
+      "id": "pre_bid_conference",
+      "label": "Pre-bid or pre-proposal conference",
+      "class": "unstable",
+      "basis": "The committed record cannot tell: 0 observed records is below the 200-record threshold; 0 agencies is below the 10-agency threshold; a presence rate of 0.000 is below 0.3. This says the sample is too thin to classify, not that the field is absent from the publisher.",
+      "sample": {
+        "universe": "site/data/shared_procurement_read_model.json shards (all committed source observations)",
+        "records_examined": 27670,
+        "records_observed": 0,
+        "agencies_observed": 0,
+        "presence_rate": 0
+      },
+      "per_agency": {},
+      "declared_by": {
+        "source_contracts": [],
+        "product_surfaces": [
+          "site/procurement_pursuit_snapshot.mjs",
+          "site/procurement_process_events.mjs"
+        ]
+      },
+      "sign_in_evidence": []
+    },
+    {
+      "id": "certification_goal_marker",
+      "label": "Certification goal marker",
+      "class": "unstable",
+      "basis": "The committed record cannot tell: 0 observed records is below the 200-record threshold; 0 agencies is below the 10-agency threshold; a presence rate of 0.000 is below 0.3. This says the sample is too thin to classify, not that the field is absent from the publisher.",
+      "sample": {
+        "universe": "site/data/shared_procurement_read_model.json shards (all committed source observations)",
+        "records_examined": 27670,
+        "records_observed": 0,
+        "agencies_observed": 0,
+        "presence_rate": 0
+      },
+      "per_agency": {},
+      "declared_by": {
+        "source_contracts": [],
+        "product_surfaces": [
+          "site/mwbe_goal_surface.mjs"
+        ]
+      },
+      "sign_in_evidence": []
+    },
+    {
+      "id": "solicitation_package_documents",
+      "label": "Solicitation package documents",
+      "class": "authenticated",
+      "basis": "A committed measurement or the shipped product's own disclosure records that this field's content is reachable only after signing in to the publisher's system.",
+      "sample": {
+        "universe": "site/data/attachment_metadata_lookup.json (committed attachment metadata), against the site/data/procurement_browse_rows.json record universe",
+        "records_examined": 13791,
+        "records_observed": 8,
+        "agencies_observed": 0,
+        "presence_rate": 0.0005800884634906823
+      },
+      "per_agency": {},
+      "declared_by": {
+        "source_contracts": [
+          {
+            "contract_id": "city-record",
+            "field": "document_links",
+            "status": "live",
+            "in_required_fields": true
+          }
+        ],
+        "product_surfaces": [
+          "site/procurement_document.mjs"
+        ]
+      },
+      "sign_in_evidence": [
+        "site/data/source_contracts.json passport-public-rfx join_measurement: the public RFx dump carries no document-URL column (0 of 1470 modern solicitations; 0 of a 50-record kill sample).",
+        "site/data/source_contracts.json city-record attachment_metadata.export_cliff: the publisher's document_links export is effectively empty from 2025 onward, and portal sampling of modern Procurement notices found no files.",
+        "site/procurement_pursuit_snapshot.mjs already tells a vendor that the package requires signing in to the vendor portal."
+      ],
+      "sign_in_system": "PASSPort",
+      "per_agency_note": "The committed attachment metadata is keyed by notice request identifier and carries no agency label, so this field has no per-agency count. Its class does not rest on that count."
+    },
+    {
+      "id": "qa_content",
+      "label": "Question and answer content",
+      "class": "authenticated",
+      "basis": "A committed measurement or the shipped product's own disclosure records that this field's content is reachable only after signing in to the publisher's system.",
+      "sample": {
+        "universe": "site/data/shared_procurement_read_model.json shards (all committed source observations)",
+        "records_examined": 27670,
+        "records_observed": 0,
+        "agencies_observed": 0,
+        "presence_rate": 0
+      },
+      "per_agency": {},
+      "declared_by": {
+        "source_contracts": [],
+        "product_surfaces": [
+          "site/procurement_pursuit_snapshot.mjs"
+        ]
+      },
+      "sign_in_evidence": [
+        "site/procurement_pursuit_snapshot.mjs already tells a vendor that question and answer content requires signing in to the vendor portal, and lists it in the constant disclosure of what cannot be verified from public records."
+      ],
+      "sign_in_system": "PASSPort"
+    },
+    {
+      "id": "amendment_documents",
+      "label": "Amendment documents",
+      "class": "unavailable",
+      "basis": "No committed source contract declares this field and no committed observation carries it. This states what the public sources this repository observes carry; it is not a claim that a publisher withholds the field.",
+      "sample": {
+        "universe": "site/data/shared_procurement_read_model.json shards (all committed source observations)",
+        "records_examined": 27670,
+        "records_observed": 0,
+        "agencies_observed": 0,
+        "presence_rate": 0
+      },
+      "per_agency": {},
+      "declared_by": {
+        "source_contracts": [],
+        "product_surfaces": []
+      },
+      "sign_in_evidence": [],
+      "register_note": "The shipped pursuit snapshot names amendment documents in its constant disclosure of what cannot be verified. Naming a known unknown is not the same as resolving a field: no committed source contract declares one and no committed observation carries one."
+    },
+    {
+      "id": "published_bid_results",
+      "label": "Published bid results",
+      "class": "unstable",
+      "basis": "The committed record cannot tell: 1 observed record is below the 200-record threshold; 0 agencies is below the 10-agency threshold. This says the sample is too thin to classify, not that the field is absent from the publisher.",
+      "sample": {
+        "universe": "site/data/shared_procurement_read_model.json shards, source systems mta_bid_results",
+        "records_examined": 1,
+        "records_observed": 1,
+        "agencies_observed": 0,
+        "presence_rate": 1
+      },
+      "per_agency": {},
+      "declared_by": {
+        "source_contracts": [
+          {
+            "contract_id": "bid-tabulations-historical",
+            "field": "bid_opening_date",
+            "status": "disabled",
+            "in_required_fields": true
+          },
+          {
+            "contract_id": "mta-bid-results",
+            "field": "opening_date",
+            "status": "live",
+            "in_required_fields": true
+          }
+        ],
+        "product_surfaces": []
+      },
+      "sign_in_evidence": [],
+      "coverage_note": "site/data/source_contracts.json bid-tabulations-historical is disabled for product reads: strict joins reach 9.07% of the historical overlap window and 0% of records since 2025, both below this repository's 30% usefulness threshold."
+    }
+  ],
+  "summary": {
+    "fields_total": 15,
+    "by_class": {
+      "accessible": 6,
+      "authenticated": 2,
+      "unavailable": 1,
+      "unstable": 6
+    }
+  }
+}

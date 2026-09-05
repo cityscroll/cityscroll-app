@@ -1,0 +1,73 @@
+{
+  "schema": "cityscroll.procurement_pursuit_decision_gated_research_lanes_manifest.v1",
+  "captured_at": "2026-09-05T16:39:51Z",
+  "revision": "faece883d60825d329b0e8b47ec41f909230a9ac",
+  "note": "Card \"PPD-07\" (procurement-pursuit-decision): the two research lanes beside this workstream are held behind the shipped product cards and behind explicit pre-registration. This card ships gates and honest copy, not research results. The gate, the registry, the pre-registrations, and the access classification have no rendered page of their own; the one product-visible change is a disclosure spliced beneath the existing official-record handoff on procurement detail, and it renders only when a caller supplies the classification, like every other optional section on that page. This manifest therefore records textual evidence rather than a screenshot. No image binaries are produced or committed for this card.",
+  "external_output_directory_note": "Not applicable -- no screenshot is produced for this card. Each capture\u2019s evidence is the exact JSON text tools/render_procurement_research_lane_capture_fixtures.mjs prints for that case, reproduced verbatim in rendered-lines.md alongside this manifest and hashed as content_sha256 below. Re-run that script to regenerate byte-identical output (same content_sha256) at this revision.",
+  "captures": [
+    {
+      "case": "research-lane-gate-green",
+      "surface": "procurement-research-lane-gate (registry + tool; no rendered page)",
+      "route": null,
+      "revision": "faece883d60825d329b0e8b47ec41f909230a9ac",
+      "fixture_ids": [],
+      "data_vintage": "The committed research-lane registry site/procurement_research_lanes.json and the committed evidence of cards PPD-01 through PPD-06, at this revision.",
+      "assertion": "evaluateResearchLaneGates() over the committed registry returns ok with no failures: every prerequisite card names an evidence shard or a capture manifest that is present on disk, and both runnable lanes carry a pre-registration whose content hash matches the file. Neither research lane can begin before that holds.",
+      "content_source": "tools/render_procurement_research_lane_capture_fixtures.mjs",
+      "content_sha256": "5a0b62aef2e41f0a0bc6ded3470ef648fc89f9f6548f3ee1838d30f14c9feba5",
+      "bytes": 3536
+    },
+    {
+      "case": "research-lane-gate-withdrawn-evidence",
+      "surface": "procurement-research-lane-gate (registry + tool; no rendered page)",
+      "route": null,
+      "revision": "faece883d60825d329b0e8b47ec41f909230a9ac",
+      "fixture_ids": [],
+      "data_vintage": "The same committed registry, copied in memory with one prerequisite card pointing at an evidence shard that is not present. Nothing on disk is modified.",
+      "assertion": "The gate fails, and the failure names the card whose evidence is missing. Removing any prerequisite card\u2019s independent proof stops both research lanes; the ordering claim is checked, not asserted.",
+      "content_source": "tools/render_procurement_research_lane_capture_fixtures.mjs",
+      "content_sha256": "be63cb409fe2396e769f9b23e1acbd2e603fe303ba99f0761e6d15787ae1f9b3",
+      "bytes": 558
+    },
+    {
+      "case": "access-classification-summary",
+      "surface": "procurement-access-classification (committed research output; no rendered page)",
+      "route": null,
+      "revision": "faece883d60825d329b0e8b47ec41f909230a9ac",
+      "fixture_ids": [],
+      "data_vintage": "Committed procurement records only: the browse projection and shared read model stamped 2026-08-18T04:05:51.552Z, the committed source-contract register, and the committed attachment metadata stamped 2026-08-09T01:41:39.752Z. No live retrieval, no scraping, and no credential automation of any kind.",
+      "assertion": "Each of the 15 examined solicitation fields carries exactly one class (accessible, authenticated, unavailable, or unstable) and its own sample size, over a corpus of 13,791 procurement records spanning 101 agencies; the per-class counts sum to the field total.",
+      "content_source": "tools/render_procurement_research_lane_capture_fixtures.mjs",
+      "content_sha256": "1a917e7e27ce2c5e7fa948ab9ba5f1bf8cc6669e851412b932fb4ca40b60ff43",
+      "bytes": 3273
+    },
+    {
+      "case": "handoff-copy-fixture-a",
+      "surface": "procurement-detail handoff (site/procurement_handoff_copy.mjs, spliced beneath the official records on procurement detail)",
+      "route": null,
+      "revision": "faece883d60825d329b0e8b47ec41f909230a9ac",
+      "fixture_ids": [
+        "A"
+      ],
+      "data_vintage": "Fixture A (Parks, Playground reconstruction, procurement:epin-2026-07) as the workstream\u2019s committed fixture ledger already shapes it, with the record\u2019s own latest observation stamp of 2026-07-02T10:00:00Z.",
+      "assertion": "Every field the classification marks authenticated or unavailable produces one handoff line: what requires signing in, or that no public source this product observes carries the field, followed by the date the matter was last observed. That date is read from the record, never from the clock.",
+      "content_source": "tools/render_procurement_research_lane_capture_fixtures.mjs",
+      "content_sha256": "fd558dbbfb0c0c103e52002e911ad330ae10cd3f583bc47fad6a9ddc5b0d879d",
+      "bytes": 1580
+    },
+    {
+      "case": "handoff-copy-no-observation-date",
+      "surface": "procurement-detail handoff (site/procurement_handoff_copy.mjs, spliced beneath the official records on procurement detail)",
+      "route": null,
+      "revision": "faece883d60825d329b0e8b47ec41f909230a9ac",
+      "fixture_ids": [
+        "A"
+      ],
+      "data_vintage": "The same committed classification against a record carrying no observation stamp at all.",
+      "assertion": "Each line keeps its access statement and carries no date sentence: last_observed_at and last_observed_label are both null, and no current date appears anywhere in the output.",
+      "content_source": "tools/render_procurement_research_lane_capture_fixtures.mjs",
+      "content_sha256": "a84ae02295c71138c509274c6833dabf04b2123b34fc17c20831a10c0345d94d",
+      "bytes": 1322
+    }
+  ]
+}
