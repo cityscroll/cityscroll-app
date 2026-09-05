@@ -270,6 +270,7 @@ site/action_path_v0.mjs
 site/action_registry.js
 site/admin_code.mjs
 site/admin_code_search.mjs
+site/affordable_eligibility_facts.mjs
 site/affordance_grammar.mjs
 site/agency_browse_contract.mjs
 site/agency_connections.mjs
@@ -555,6 +556,7 @@ site/land_project_map_points.mjs
 site/land_project_route.mjs
 site/land_record_links.mjs
 site/land_regulatory_effect.mjs
+site/land_review_regimes.mjs
 site/land_search_producer.mjs
 site/land_status_facets.mjs
 site/land_use_action_codes.mjs
