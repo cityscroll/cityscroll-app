@@ -173,6 +173,43 @@ jobs:
       - name: Check added images
         run: python3 tools/check_public_image_captures.py --paths-file "$RUNNER_TEMP/added-images.txt"
 
+  capture-manifest-guard:
+    name: Capture-manifest image guard
+    if: github.event_name == 'pull_request' || github.event_name == 'merge_group'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Collect added and changed paths from the diff
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            gh api "repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files" \
+              --paginate -q '.[] | select(.status == "added") | .filename' > "$RUNNER_TEMP/capture-added-paths.txt"
+            gh api "repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files" \
+              --paginate -q '.[].filename' > "$RUNNER_TEMP/capture-changed-paths.txt"
+          else
+            # -M so a rename (even with content drift) is classified as R, not a delete+add pair —
+            # renaming an existing screenshot must not read as a new one.
+            git diff --diff-filter=A -M --name-only "${{ github.event.merge_group.base_sha }}...${{ github.event.merge_group.head_sha }}" > "$RUNNER_TEMP/capture-added-paths.txt"
+            git diff --name-only "${{ github.event.merge_group.base_sha }}...${{ github.event.merge_group.head_sha }}" > "$RUNNER_TEMP/capture-changed-paths.txt"
+          fi
+          echo "Added paths:"; sed 's/^/  /' "$RUNNER_TEMP/capture-added-paths.txt" || true
+      - name: No committed image binaries under docs/
+        run: node tools/check_capture_manifest_images.mjs --paths-file "$RUNNER_TEMP/capture-added-paths.txt"
+      - name: Capture-manifest schema advisory (sha256 presence)
+        run: node tools/lint_capture_manifest_schema.mjs --paths-file "$RUNNER_TEMP/capture-changed-paths.txt"
+
   # The matrix owns the hosted test commands; the aggregate below keeps the existing
   # required status context and validates that every expected family produced a receipt.
   unit-family:
