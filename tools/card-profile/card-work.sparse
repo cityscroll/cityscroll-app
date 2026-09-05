@@ -87,6 +87,7 @@
 /docs/performance/content-parity/notice-context-critical-path/reports/index.html
 /docs/precompute-first-inventory-2026-07-29.md
 /docs/procurement-intent-radar-phase1.md
+/docs/product-updates-delivery-boundary.md
 /docs/property-a11y-census-2026-08.md
 /docs/public-capture-allowlist.json
 /docs/public-capture-guard.md
@@ -576,6 +577,7 @@
 /site/procurement_related_context.mjs
 /site/procurement_search_producer.mjs
 /site/product-updates.json
+/site/product_updates_delivery.mjs
 /site/product_updates_honesty.mjs
 /site/product_updates_source.mjs
 /site/project_calendar.mjs
