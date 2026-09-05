@@ -74,7 +74,7 @@ export function readSourceDocument(entry, root = ROOT) {
   return JSON.parse(readFileSync(path, "utf8"));
 }
 
-function insertStatement(entry, row) {
+export function insertStatement(entry, row) {
   const columns = TABLE_COLUMNS[row.table];
   const values = columns.map((column) => sqlLiteral(row.columns[column]));
   if (VIRTUAL_TABLES.has(row.table)) {
@@ -96,14 +96,14 @@ function companionRowid(entry, table, keyValues) {
   return `(SELECT rowid FROM ${target} WHERE ${keyPredicate(entry, target, keyValues)})`;
 }
 
-function deleteStatement(entry, table, keyValues) {
+export function deleteStatement(entry, table, keyValues) {
   const predicate = VIRTUAL_TABLES.has(table)
     ? `rowid = ${companionRowid(entry, table, keyValues)}`
     : keyPredicate(entry, table, keyValues);
   return `DELETE FROM ${table} WHERE ${predicate};`;
 }
 
-function upsertStatements(entry, row) {
+export function upsertStatements(entry, row) {
   const columns = TABLE_COLUMNS[row.table];
   if (VIRTUAL_TABLES.has(row.table)) {
     return [deleteStatement(entry, row.table, row.key_values), insertStatement(entry, row)];
@@ -119,7 +119,7 @@ function upsertStatements(entry, row) {
 }
 
 /** Tables of a model in delete order: the reverse of the manifest's insertion order, so referencing rows go first. */
-function deleteOrder(entry) {
+export function deleteOrder(entry) {
   return entry.tables.map((table) => table.name).reverse();
 }
 
