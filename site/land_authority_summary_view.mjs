@@ -15,6 +15,7 @@ import {
   measureNextDecisionReliability,
   nextDecisionEligibility,
 } from "./land_next_decision_watch.mjs";
+import { landAuthorityPlainRoleHTML } from "./land_hearing_authority_copy.mjs";
 
 export const LAND_AUTHORITY_SUMMARY_URL = "data/land_authority_summary.json";
 export const LAND_AUTHORITY_PANEL_HEADING = "Where this stands";
@@ -411,6 +412,7 @@ export function landAuthoritySummaryHTML(summary, { t, escape } = {}) {
   return `<section class="land-authority-summary" id="land-authority-summary" data-land-authority-summary="1" data-land-authority-summary-first-paint="1" data-project-id="${esc(summary.project_id || "")}" data-status="${esc(summary.status)}" data-procedure-id="${esc(summary.procedure_id || "")}" data-procedure-resolution="${esc(summary.procedure_resolution || "")}" data-reason="${esc(summary.reason || "")}">
     <h3 class="land-authority-kicker">${esc(translate("land_authority_heading"))}</h3>
     <p class="land-authority-stand" data-land-authority-stand="1">${esc(stand)}</p>
+    ${landAuthorityPlainRoleHTML(summary, { t: translate, escape: esc })}
     <dl class="land-authority-facts">
       <div data-land-authority-provenance="phase"><dt>${esc(translate("land_authority_stage"))}</dt><dd data-land-authority-stage="${esc(summary.current_stage?.stage_id || "")}">${esc(stage)}</dd></div>
       <div><dt>${esc(translate("land_authority_actor"))}</dt><dd data-land-authority-actor="1">${actorHTML}</dd></div>

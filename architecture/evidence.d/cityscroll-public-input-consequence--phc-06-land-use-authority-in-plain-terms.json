@@ -1,0 +1,17 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-public-input-consequence/phc-06-land-use-authority-in-plain-terms",
+  "status": "implemented",
+  "fingerprint": "phc-06-land-use-authority-in-plain-terms.v1",
+  "updated_at": "2026-09-05T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "land-hearing-authority-copy-projection",
+      "path": "site/land_hearing_authority_copy.mjs"
+    },
+    {
+      "id": "land-hearing-authority-copy-gate",
+      "path": "test/land_hearing_authority_copy.test.mjs"
+    }
+  ]
+}
