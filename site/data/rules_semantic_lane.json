@@ -1,7 +1,8 @@
 {
   "schema": "cityscroll.rules_semantic_lane.v1",
   "artifact_version": 1,
-  "generated_at": "2026-08-04",
+  "rules_snapshot_observed_at": "2026-08-09T14:40:29.151Z",
+  "corpus_observed_on": "2026-08-04",
   "authorization": {
     "runtime_semantic_retrieval": false,
     "publication_scope": "precomputed_rules_related_language_pilot"
