@@ -1,0 +1,81 @@
+{
+  "checks": [
+    {
+      "name": "native-text report: fields extract with page evidence (A1, A2)",
+      "result": "pass"
+    },
+    {
+      "name": "scanned/image-only report (no text layer): every text field abstains, no crash (A1, negative: image-only charts)",
+      "result": "pass"
+    },
+    {
+      "name": "table-heavy report: an income-band table and a job/wage table both extract with distinct evidence (A1, A5)",
+      "result": "pass"
+    },
+    {
+      "name": "historic-district / community-profile report: geography and vintage carry through as-filed (A1, A6)",
+      "result": "pass"
+    },
+    {
+      "name": "mixed report: recognition does not confuse the income-band table with the job/wage table (A1, negative: recognition confusion)",
+      "result": "pass"
+    },
+    {
+      "name": "every normalized non-abstained value carries page/span/region evidence, raw_value, method, and confidence (A2, A3)",
+      "result": "pass"
+    },
+    {
+      "name": "application scope and proposed development scope remain distinct (A4)",
+      "result": "pass"
+    },
+    {
+      "name": "a table-derived income-band field preserves its band and assumptions (A5)",
+      "result": "pass"
+    },
+    {
+      "name": "displacement risk index is a contextual as-filed value, never a project prediction (A6)",
+      "result": "pass"
+    },
+    {
+      "name": "applicant narrative and a generated summary are labelled and evidence-linked distinctly (A7)",
+      "result": "pass"
+    },
+    {
+      "name": "two competing income-band tables abstain field by field rather than pick one (A8, negative: competing tables)",
+      "result": "pass"
+    },
+    {
+      "name": "a current community value passed alongside extraction never overwrites the as-filed section (A8, negative: current-vs-filed)",
+      "result": "pass"
+    },
+    {
+      "name": "a duplicate or superseded report gets its own independent envelope, never a mutation of the earlier one (A8, negative: duplicate/superseded)",
+      "result": "pass"
+    },
+    {
+      "name": "a speculative job narrative without a job table never promotes a numeric job estimate (negative: speculative job narrative)",
+      "result": "pass"
+    },
+    {
+      "name": "nonstandard headings abstain field by field instead of misfiring (negative: nonstandard headings)",
+      "result": "pass"
+    },
+    {
+      "name": "a missing section (no community-profile header) abstains the whole section rather than guessing geography/vintage (negative: missing section)",
+      "result": "pass"
+    },
+    {
+      "name": "a blank official template abstains cleanly across every field, never a crash (negative: blank template)",
+      "result": "pass"
+    },
+    {
+      "name": "no known tenant: a residential section with no known-tenant table carries no fabricated known_tenant_profile field (negative: no known tenant)",
+      "result": "pass"
+    }
+  ],
+  "gate": {
+    "failed_check_count": 0,
+    "result": "pass"
+  },
+  "schema": "cityscroll.land_filing_report_extractor_receipt.v1"
+}
