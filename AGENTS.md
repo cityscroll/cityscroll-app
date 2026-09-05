@@ -73,15 +73,6 @@ contracts. Do not turn it into a delivery log, roadmap, module inventory, or car
 - Keep resident copy plain-language and source-honest. Implementation field names, debug states,
   and reconciliation prose belong behind explicit evidence/details affordances, not in default
   resident content.
-- A test or tool that needs scratch disk space uses the shared temp-directory helper for its
-  language — `tools/lib/with_temp_dir.mjs`'s `withTempDir(prefix, fn)` in JavaScript,
-  `tools/lib/temp_workspace.py`'s `cityscroll_temp_dir(label)` / `head_site_workspace(root, label)`
-  in Python — never a bare `mkdtemp`/`TemporaryDirectory()`. Both name the directory
-  `cityscroll-<prefix>-` and remove it on success, on a thrown error, and on SIGTERM/SIGINT (a
-  pre-push gate timeout), which a manual `try/finally` does not. `tools/check_temp_leaks.mjs`
-  snapshots `$TMPDIR` before a suite and fails closed if anything new remains after; it is wired
-  into `tools/preflight-required-checks.sh` and the CI unit-family job, so a suite that leaks
-  scratch fails the same gate its assertions do.
 
 ## Editing and verification
 
