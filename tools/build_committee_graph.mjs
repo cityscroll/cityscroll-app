@@ -115,8 +115,8 @@ async function main() {
     console.log(`committee graph ok sample_complete=${existingReceipt.sample_acquisition?.complete === true} publication=${existingGraph.publication}`);
     return;
   }
-  const token = process.env.LEGISTAR_API_TOKEN;
-  if (!token && existsSync(OUTPUTS[0])) {
+  const credential = process.env.LEGISTAR_API_TOKEN || "";
+  if (!credential && existsSync(OUTPUTS[0])) {
     // Without a credential the sample cannot be re-verified, and the gate would
     // publish an empty graph. An empty graph reads as "these committees have no
     // members", which is the one thing the committee surface must never say, so
@@ -126,7 +126,7 @@ async function main() {
       + "instead of republishing it as held",
     );
   }
-  const acquisition = await acquire(sample.personIds, token);
+  const acquisition = await acquire(sample.personIds, credential);
   const gate = buildCommitteeGateReceipt({
     observedAt: OBSERVED_AT,
     samplePersonIds: sample.personIds,
