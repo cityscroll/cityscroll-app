@@ -132,6 +132,20 @@ manifest = json.load(open(os.path.join(root, "tools/card-profile/profiles.v1.jso
 closure = json.load(open(os.path.join(root, "tools/card-profile/closure.v1.json"), encoding="utf-8"))
 
 
+def inventory(field):
+    """One derived path inventory, sorted and deduplicated.
+
+    The closure contract names its inventories rather than carrying their paths,
+    so that two changes which each add a path extend different lines instead of
+    rewriting one shared aggregate.
+    """
+    name = closure["inventories"]["files"][field]
+    path = os.path.join(root, closure["inventories"]["directory"], name)
+    with open(path, encoding="utf-8") as handle:
+        lines = (line.strip() for line in handle)
+        return sorted({line for line in lines if line and not line.startswith("#")})
+
+
 def decide(args, label):
     process = subprocess.run(
         ["node", "tools/card_profile_router.mjs", "--decide", *args, "--json"],
@@ -165,11 +179,11 @@ records += [
 records += [
     decide(["--surface", "focused-card-work", "--require-complete-history"], "declared-complete-history"),
     decide(
-        ["--surface", "focused-card-work", "--path", closure["deferred_hydration_set"]["paths"][0]],
+        ["--surface", "focused-card-work", "--path", inventory("deferred_paths")[0]],
         "deferred-path-requested",
     ),
     decide(
-        ["--surface", "focused-card-work", "--path", closure["site_data"]["profile_paths"][0]],
+        ["--surface", "focused-card-work", "--path", inventory("site_data_paths")[0]],
         "in-closure-path-requested",
     ),
     decide(["--surface", "focused-card-work", "--recorded-digest", "0" * 64], "stale-recorded-digest"),
@@ -278,7 +292,7 @@ PYEOF
 }
 
 heartbeat "running fail-closed probes in the provisioned reduced checkout"
-DEFERRED="$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["deferred_hydration_set"]["paths"][0])' "$ROOT/tools/card-profile/closure.v1.json")"
+DEFERRED="$(python3 -c 'import sys; print(sorted(l.strip() for l in open(sys.argv[1]) if l.strip() and not l.startswith("#"))[0])' "$ROOT/tools/card-profile/closure.d/deferred-paths.txt")"
 
 probe routed-status "$FOCUSED_DEST" zero \
   "The provisioned checkout reports itself as the reduced profile and its recorded identity matches this revision's inputs." \

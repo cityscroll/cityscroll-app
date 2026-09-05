@@ -12,12 +12,13 @@ import { dirname, resolve } from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 
+import { loadClosure } from "../tools/card_profile_closure.mjs";
 import { buildReceipt } from "../tools/card_profile_receipt.mjs";
 import { computeIdentity, decide, loadManifest } from "../tools/card_profile_router.mjs";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const manifest = loadManifest();
-const closure = JSON.parse(readFileSync(resolve(ROOT, "tools/card-profile/closure.v1.json"), "utf8"));
+const closure = loadClosure(ROOT);
 
 const run = (args, env = {}) =>
   spawnSync(process.execPath, args, { cwd: ROOT, encoding: "utf8", env: { ...process.env, ...env } });
@@ -137,11 +138,30 @@ test("a profile that has drifted from its revision's inputs is stale, and stale 
 });
 
 test("an unverified closure takes the control rather than being trusted", () => {
-  const drifted = { ...closure, patterns_sha256: "0".repeat(64) };
+  // Drift is judged against what the closure says the pattern list has to mean,
+  // not against a stored digest of the pattern list's bytes. A closure that
+  // requires a path the committed patterns do not materialise is exactly the
+  // condition a reduced checkout must not be handed out under.
+  const drifted = { ...closure, required_paths: [...closure.required_paths, "site/data/not-in-the-profile.json"] };
   const decision = decide({ surface: "focused-card-work", closure: drifted });
   assert.equal(decision.profile, "full");
   assert.equal(decision.rule, "closure-unverified");
   assert.ok(decision.closure_problems.length > 0);
+
+  // The other half of the binding: a closure that defers a path the committed
+  // patterns do materialise is equally unverified.
+  const leaking = {
+    ...closure,
+    deferred_hydration_set: {
+      ...closure.deferred_hydration_set,
+      paths: [...closure.deferred_hydration_set.paths, closure.site_data.profile_paths[0]]
+    }
+  };
+  assert.equal(decide({ surface: "focused-card-work", closure: leaking }).rule, "closure-unverified");
+
+  // And a closure generated from a different profile config.
+  const reconfigured = { ...closure, config_sha256: "0".repeat(64) };
+  assert.equal(decide({ surface: "focused-card-work", closure: reconfigured }).rule, "closure-unverified");
 });
 
 test("the rule list is ordered and terminates in the control, so a routing gap cannot reduce", () => {
@@ -160,6 +180,8 @@ test("profile identity binds the revision, the closure, the lockfile and the too
     "tools/card-profile/profile.config.v1.json",
     "tools/card-profile/card-work.sparse",
     "tools/card-profile/closure.v1.json",
+    "tools/card-profile/closure.d/required-paths.txt",
+    "tools/card-profile/closure.d/deferred-paths.txt",
     "worker/pnpm-lock.yaml",
     "worker/package.json"
   ]) {
