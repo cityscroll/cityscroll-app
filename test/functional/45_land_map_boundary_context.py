@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import os
 from pathlib import Path
 
@@ -11,6 +12,25 @@ ROOT = Path(__file__).resolve().parents[2]
 BASE = os.environ.get("CROL_BASE", "http://127.0.0.1:8000/").rstrip("/")
 ROUTE = "/browse/zoning/?boro=Brooklyn&view=map"
 FILTERED_ROUTE = "/browse/zoning/?boro=Brooklyn&family=rezoning&q=school&view=map"
+
+
+def _brooklyn_counts() -> list[str]:
+    """Derived from the committed sources rather than pinned, so a resolver refresh that
+    legitimately changes how many Land projects resolve to a map point updates this
+    expectation from its own source instead of drifting silently against a stale number.
+
+    The missing-boundary-context state reports the full population's total against the
+    Brooklyn-scoped mapped count (an existing, unchanged product behavior this card does not
+    otherwise exercise), so unmapped here is the full total minus the Brooklyn mapped count,
+    not the Brooklyn population's own unmapped count.
+    """
+    projects = json.loads((ROOT / "site" / "data" / "land_default_ulurp.json").read_text())
+    rows = projects["projects"] if isinstance(projects, dict) and "projects" in projects else projects
+    receipt = json.loads((ROOT / "site" / "data" / "land_project_map_points_receipt.json").read_text())
+    mapped_ids = set(receipt["mapped_project_ids"])
+    total = receipt["counts"]["universe"]
+    brooklyn_mapped = sum(1 for row in rows if row["borough"] == "Brooklyn" and row["project_id"] in mapped_ids)
+    return [str(total), str(brooklyn_mapped), str(total - brooklyn_mapped)]
 
 
 def install_routes(page, *, missing=False):
@@ -109,8 +129,9 @@ def test_missing_boundary_context_preserves_project_markers():
         settle(page)
         state = read_state(page)
         assert state["boundary_state"] == "partial"
-        assert state["counts"] == ["40", "12", "28"]
-        assert len(state["markers"]) == 12
+        expected = _brooklyn_counts()
+        assert state["counts"] == expected, f"counts were {state['counts']}, expected {expected}"
+        assert len(state["markers"]) == int(expected[1])
         assert page.locator("[data-land-boundary-missing='community_district']").count() == 1
         browser.close()
 

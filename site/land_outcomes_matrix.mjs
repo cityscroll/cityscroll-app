@@ -133,7 +133,10 @@ export function landOutcomesMatrixHTML(rows, { t, escape } = {}) {
       <td data-land-outcomes-matrix-effect="1">${esc(effect)}</td>
     </tr>`;
   }).join("");
-  return `<table class="land-outcomes-matrix" data-land-outcomes-matrix="1">
+  // Six columns of institutional detail routinely run wider than a phone viewport; wrap in
+  // the same scrollable-table pattern already used for the community-board money table
+  // (.scorecard-table-wrap) rather than letting the table push the page itself sideways.
+  return `<div class="land-outcomes-table-wrap"><table class="land-outcomes-matrix" data-land-outcomes-matrix="1">
     <caption>${esc(translate("land_outcomes_matrix_heading"))}</caption>
     <thead><tr>
       <th>${esc(translate("land_outcomes_matrix_col_body"))}</th>
@@ -144,7 +147,7 @@ export function landOutcomesMatrixHTML(rows, { t, escape } = {}) {
       <th>${esc(translate("land_outcomes_matrix_col_effect"))}</th>
     </tr></thead>
     <tbody>${body}</tbody>
-  </table>`;
+  </table></div>`;
 }
 
 /** One-call glue for a ZAP outcome record + its list row (route callers only). */

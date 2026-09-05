@@ -26,11 +26,16 @@ FILTERED_MAP_ROUTE = "/browse/zoning/?boro=Queens&view=map"
 
 # A 25-lot rezoning: on the map, and emphatically not at an address (LM-07's anchor).
 ANCHOR_SPECIMEN = "2025K0305"
-# A project with no published point at all -- reachable only through the List.
-UNMAPPED_SPECIMEN = "2026K0123"
-EXPECTED_TOTAL = 40
-EXPECTED_MAPPED = 29
-EXPECTED_UNMAPPED = 11
+# The one project genuinely lacking a retained BBL (site/data/land_project_map_points_receipt.json)
+# -- reachable only through the List.
+UNMAPPED_SPECIMEN = "2025M0252"
+# Derived from the committed join receipt rather than pinned, so a future resolver refresh
+# that legitimately changes how many of the 40 Land projects resolve to a map point updates
+# this expectation from its own source instead of drifting silently against a stale number.
+_RECEIPT = json.loads((ROOT / "site" / "data" / "land_project_map_points_receipt.json").read_text())
+EXPECTED_TOTAL = _RECEIPT["counts"]["universe"]
+EXPECTED_MAPPED = _RECEIPT["counts"]["mapped"]
+EXPECTED_UNMAPPED = EXPECTED_TOTAL - EXPECTED_MAPPED
 
 # The registered fixtures, plus the desktop regression width.
 FIXTURES = ((320, 568), (375, 667), (768, 1024), (1440, 900))
