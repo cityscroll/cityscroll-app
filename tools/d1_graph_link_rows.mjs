@@ -10,7 +10,7 @@ export function displayNameFor(dossier, entityRef) {
 
 export function graphLinkRows(doc) {
   const objectBySubject = new Map();
-  const graphLinkByKey = new Map();
+  const graphLinks = [];
   for (const dossier of Object.values(doc?.by_ref || {})) {
     for (const block of Object.values(dossier?.domains || {})) {
       for (const object of block?.objects || []) {
@@ -21,10 +21,10 @@ export function graphLinkRows(doc) {
     }
     for (const link of dossier?.links || []) {
       if (link?.type !== "decides_land_project" || !String(link?.to || "").startsWith("project:")) continue;
-      graphLinkByKey.set([link.type, link.from, link.to].join("|"), link);
+      graphLinks.push(link);
     }
   }
-  return [...graphLinkByKey.values()].map((link) => {
+  return graphLinks.map((link) => {
     const object = objectBySubject.get(link.from) || {};
     const rootRef = object.root_ref;
     const agencyName = rootRef ? displayNameFor(doc.by_ref?.[rootRef], rootRef) : null;
