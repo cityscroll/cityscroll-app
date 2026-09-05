@@ -40,6 +40,15 @@
  * it is a pass/fail check on live derivations, not a golden-file diff. Any
  * expectation failure there is also a non-zero exit.
  *
+ * A78-05's litigation backtest (`warehouse/lib/article78_backtest.mjs`) runs
+ * over that same historical fixture and is printed under its own
+ * `litigation_backtest` section, on the same footing and for the same reason:
+ * its oracle is the seed diagnostic the module carries as data, so a second
+ * committed golden file would only be somewhere for the same numbers to drift
+ * apart. Filing and durable relief are scored as two independent heads and are
+ * never blended; the section exits non-zero when the seed diagnostic is not
+ * reproduced exactly.
+ *
  * Usage:
  *   node tools/backtest_article78_ontology.mjs           # check (the gate)
  *   node tools/backtest_article78_ontology.mjs --write   # regenerate expected
@@ -64,6 +73,7 @@ import {
   validateDeterminationContext,
 } from "../warehouse/lib/article78_litigation.mjs";
 import {
+  assertAllMetricsDiagnostic,
   deriveFixtureChallengeWatches,
   diagnosticMetric,
   evaluateHistoricalFixtureExpectations,
@@ -82,6 +92,14 @@ import {
   eligibleDenominator,
   gradeCoverage,
 } from "../warehouse/lib/article78_search_coverage.mjs";
+import {
+  ARTICLE78_BACKTEST_HEADS,
+  ARTICLE78_BACKTEST_OUTCOME_CLASSES,
+  ARTICLE78_BACKTEST_POLICY,
+  ARTICLE78_BACKTEST_SEED_DIAGNOSTIC,
+  assertSeedDiagnostic,
+  backtestLitigation,
+} from "../warehouse/lib/article78_backtest.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -216,6 +234,87 @@ function runCoverageSection(fixture) {
   };
 }
 
+/**
+ * A78-05's `litigation_backtest` section: both heads' confusion counts, the
+ * censored rows, and one row per scored unit.
+ *
+ * The two heads never meet in this section. There is no combined figure, no
+ * ordering of one head by the other, and every count leaves here wrapped by
+ * A78-02's `diagnosticMetric` -- asserted rather than assumed, because a
+ * confusion count that escaped unmarked would read as "the challenge watch is
+ * right ninety-one percent of the time", which is a claim about thirteen
+ * hand-picked projects and about nothing else.
+ */
+const LITIGATION_BACKTEST_EXPECTED_LABELS = Object.freeze({
+  filing: Object.freeze({ positive: "challenge_to_this_determination", negative: "no_challenge_to_this_determination" }),
+  durable_relief: Object.freeze({ positive: "durable_relief_obtained", negative: "no_durable_relief_obtained" }),
+});
+
+export function buildLitigationBacktestSection(report) {
+  const heads = ARTICLE78_BACKTEST_HEADS.map((head) => {
+    const section = report.heads[head];
+    const labels = LITIGATION_BACKTEST_EXPECTED_LABELS[head];
+    return {
+      head,
+      question: section.question,
+      unit: section.unit,
+      predicted_positive_levels: section.predicted_positive_levels,
+      counts: section.counts,
+      metrics: section.metrics,
+      censored: section.censored,
+      rows: section.rows.map((row) => ({
+        case: row.case_key ?? row.determination_key,
+        head,
+        // What the fixture's own record says happened, or that it does not yet
+        // say -- never a blank that a reader could take for a negative.
+        expected: row.observed_positive === null
+          ? "not_determinable_at_cutoff"
+          : (row.observed_positive ? labels.positive : labels.negative),
+        // What the challenge watch supported at this unit's cutoff.
+        observed: row.predicted_positive ? "watch_at_or_above_threshold" : "watch_below_threshold",
+        outcome_class: row.outcome_class,
+        challenge_watch_level: row.challenge_watch_level,
+        as_of: row.as_of,
+        reason: row.reason,
+      })),
+    };
+  });
+  const metrics = heads.flatMap((head) => head.metrics);
+  assertAllMetricsDiagnostic(metrics, "article78 litigation backtest metrics");
+  return {
+    policy_id: report.policy_id,
+    as_of_policy: report.as_of_policy,
+    eligible_determination_count: report.eligible_determination_count,
+    excluded_determinations: report.excluded_determinations,
+    heads,
+    seed_diagnostic: ARTICLE78_BACKTEST_SEED_DIAGNOSTIC,
+    statement: report.statement,
+  };
+}
+
+/** Render A78-05's two heads, side by side and never added together. */
+function renderLitigationBacktestSection(section) {
+  const lines = [
+    `  litigation backtest (A78-05, policy ${section.policy_id}, cutoffs ${section.as_of_policy}, diagnostic_only -- fixture diagnostics, never population performance):`,
+    `    ${section.eligible_determination_count} eligible determination(s); ${section.excluded_determinations.length} excluded because their court-record search is not admissible`,
+  ];
+  for (const head of section.heads) {
+    lines.push(`    head ${head.head} -- ${head.question}`);
+    lines.push(`      unit: ${head.unit}; predicted positive at watch level ${head.predicted_positive_levels.join("/")}`);
+    lines.push(`      ${ARTICLE78_BACKTEST_OUTCOME_CLASSES.map((cell) => `${cell}=${head.counts[cell]}`).join(" ")} -- diagnostic_only`);
+    for (const row of head.rows) {
+      lines.push(`      ${row.outcome_class.padEnd(15)} ${row.case}`);
+      lines.push(`         expected ${row.expected}; watch ${row.challenge_watch_level} (${row.observed}) as of ${row.as_of}`);
+      lines.push(`         ${row.reason}`);
+    }
+    if (head.censored.length > 0) {
+      lines.push(`      censored: ${head.censored.map((row) => `${row.case_key ?? row.determination_key} (${row.censoring_reason})`).join(", ")}`);
+    }
+  }
+  lines.push(`    ${section.statement}`);
+  return lines.join("\n");
+}
+
 function serialize(value) {
   return `${JSON.stringify(value, null, 2)}\n`;
 }
@@ -314,6 +413,7 @@ function main(argv) {
   const receipt = { ...runArticle78Backtest(fixture), fixture_sha256: sha256Hex(fixtureText) };
   const historicalReport = evaluateHistoricalFixtureExpectations();
   const challengeWatchReport = deriveFixtureChallengeWatches();
+  const litigationBacktest = buildLitigationBacktestSection(backtestLitigation({}));
 
   if (write) {
     writeFileSync(EXPECTED_PATH, serialize(receipt), "utf8");
@@ -336,6 +436,7 @@ function main(argv) {
     renderCoverageSection(receipt.coverage),
     renderHistoricalFixtureSection(historicalReport),
     renderChallengeWatchSection(challengeWatchReport),
+    renderLitigationBacktestSection(litigationBacktest),
     "",
   ].join("\n"));
 
@@ -352,7 +453,23 @@ function main(argv) {
     process.stderr.write(`article78 backtest FAILED: the historical QA fixture's documented expectations did not hold:\n  ${JSON.stringify(failures, null, 2)}\n`);
     return 1;
   }
-  process.stdout.write("article78 backtest OK: derived output matches the committed expectation, and every historical-fixture expectation holds.\n");
+  // A78-05's A2: the seed diagnostic is the oracle, and it is checked last so
+  // the section above has already printed the numbers a reader needs to see
+  // the discrepancy rather than only being told there is one.
+  try {
+    assertSeedDiagnostic(backtestLitigation({}));
+  } catch (error) {
+    process.stderr.write(
+      `article78 backtest FAILED: the litigation backtest did not reproduce the documented seed diagnostic.\n  ${error.message}\n`
+      + `The seed is documented in docs/article78-litigation-backtest-v1.md and carried as ARTICLE78_BACKTEST_SEED_DIAGNOSTIC.\n`
+      + "Neither the fixture nor the scorer may be adjusted to close this gap without deciding which of the two is wrong.\n",
+    );
+    return 1;
+  }
+  process.stdout.write(
+    "article78 backtest OK: derived output matches the committed expectation, every historical-fixture expectation holds, "
+    + `and the litigation backtest reproduces its seed diagnostic (filing and ${ARTICLE78_BACKTEST_POLICY.heads.durable_relief.head} scored separately).\n`,
+  );
   return 0;
 }
 
