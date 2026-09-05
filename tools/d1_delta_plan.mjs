@@ -15,15 +15,17 @@
  *     snapshot's refuses the plan naming the model and partition;
  *   - a rebuild is a separate operation ("rebuild") with its reason recorded in the plan.
  *
- * Record keys follow the manifest's key columns exactly as the builder writes them
- * today, including the ordinal-derived keyword_search document ids and OCP row keys;
- * d1-04 (stable upsert keys) replaces those keys and this module inherits the change
- * through the manifest.
+ * Record derivations here must stay aligned with the SQL builder and the manifest's
+ * key columns, including ordinal-derived keyword_search document ids and OCP row keys.
+ * A manifest change requires an explicit rebuild; it does not update these derivations.
+ * This tool emits plans only; it does not execute SQL or change publication behavior.
  *
  * Usage:
  *   node tools/d1_delta_plan.mjs snapshot [--out <path>]
  *   node tools/d1_delta_plan.mjs plan --prior <snapshot> [--current <snapshot>]
  *                                     [--rebuild <reason>] [--out <path>]
+ *   node tools/d1_delta_plan.mjs plan --rebuild <reason> [--current <snapshot>]
+ *                                     [--out <path>]
  */
 import { createHash } from "node:crypto";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
