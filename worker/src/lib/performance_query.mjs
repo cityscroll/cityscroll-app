@@ -265,6 +265,7 @@ ${groupSelect ? `${groupSelect},\n` : ""}  count() AS sampled_count,
   quantileExactWeighted(0.50)(double1, _sample_interval) AS p50,
   quantileExactWeighted(0.75)(double1, _sample_interval) AS p75,
   quantileExactWeighted(0.95)(double1, _sample_interval) AS p95,
+  max(double2) AS latest_timestamp,
   formatDateTime(min(timestamp), '%Y-%m-%dT%H:%i:%SZ', 'Etc/UTC') AS first_observation_at,
   formatDateTime(max(timestamp), '%Y-%m-%dT%H:%i:%SZ', 'Etc/UTC') AS latest_observation_at
 FROM ${dataset}
@@ -287,6 +288,7 @@ ${groupSelect ? `${groupSelect},\n` : ""}  count() AS sampled_count,
   quantileExactWeighted(0.50)(double1, _sample_interval) AS p50,
   quantileExactWeighted(0.75)(double1, _sample_interval) AS p75,
   quantileExactWeighted(0.95)(double1, _sample_interval) AS p95,
+  max(double2) AS latest_timestamp,
   formatDateTime(max(timestamp), '%Y-%m-%dT%H:%i:%SZ', 'Etc/UTC') AS latest_observation_at
 FROM ${dataset}
 WHERE ${whereSql(query, coverage.query_start_ms, coverage.query_end_ms)}
@@ -334,6 +336,7 @@ const COVERAGE_METRIC_IDS = Object.freeze([
     ...PERFORMANCE_ATTRIBUTION_PHASES.flatMap(({ metric_ids }) => metric_ids),
   ]),
 ]);
+const READINESS_METRIC_IDS = Object.freeze(PERFORMANCE_COVERAGE_METRICS.map(({ metric_id }) => metric_id));
 const COVERAGE_SURFACE_IDS = Object.freeze(PERFORMANCE_COVERAGE_SURFACES.map(({ surface_id }) => surface_id));
 
 function inSql(column, values) {
@@ -369,10 +372,14 @@ export function performanceCoverageQueryPlan(options = {}) {
     inSql(FILTER_COLUMNS.metric_id, COVERAGE_METRIC_IDS),
     inSql(FILTER_COLUMNS.surface_id, COVERAGE_SURFACE_IDS),
   ];
+  const readinessScope = [
+    inSql(FILTER_COLUMNS.metric_id, READINESS_METRIC_IDS),
+    inSql(FILTER_COLUMNS.surface_id, COVERAGE_SURFACE_IDS),
+  ];
   const requests = current.queryable ? [
     {
       id: "readiness",
-      sql: summarySql(dataset, query, current, scope),
+      sql: summarySql(dataset, query, current, readinessScope),
       group_by: ["metric_id", "surface_id", "component_id"],
     },
     {
@@ -474,6 +481,7 @@ function summaryMap(rows, plan, coverage) {
       distribution: distributionFromRow(row, coverage, plan.sample_floor),
       first_observation_at: validTimestamp(row.first_observation_at),
       latest_observation_at: validTimestamp(row.latest_observation_at),
+      latest_timestamp: validOwnerTimestamp(row.latest_timestamp),
     });
   }
   if (!plan.query.group_by && !out.size) {
@@ -482,6 +490,7 @@ function summaryMap(rows, plan, coverage) {
       distribution: distributionFromRow(null, coverage, plan.sample_floor),
       first_observation_at: null,
       latest_observation_at: null,
+      latest_timestamp: null,
     });
   }
   return out;
@@ -492,6 +501,13 @@ function validTimestamp(value) {
   const parsed = new Date(value);
   if (!Number.isFinite(parsed.getTime())) throw new PerformanceSqlError("invalid-query-result");
   return parsed.toISOString();
+}
+
+function validOwnerTimestamp(value) {
+  if (value == null || value === "") return null;
+  const parsed = finiteNonnegative(value);
+  if (parsed == null || parsed > 86_400_000) throw new PerformanceSqlError("invalid-query-result");
+  return parsed;
 }
 
 function optionalHealthTimestamp(value) {
@@ -600,6 +616,7 @@ export function buildPerformanceSnapshot(results, plan, options = {}) {
       distribution: distributionFromRow(null, plan.current, plan.sample_floor),
       first_observation_at: null,
       latest_observation_at: null,
+      latest_timestamp: null,
     };
     const previousEntry = previous.get(key) || {
       dimensions: currentEntry.dimensions,
@@ -617,6 +634,7 @@ export function buildPerformanceSnapshot(results, plan, options = {}) {
       }),
       first_observation_at: currentEntry.first_observation_at,
       latest_observation_at: currentEntry.latest_observation_at,
+      latest_timestamp: currentEntry.latest_timestamp,
     });
   }
 

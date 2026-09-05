@@ -1,0 +1,15 @@
+{
+  "schema": "cityscroll.rum_refresh_03_grouping_fixture.v1",
+  "now": "2026-09-05T14:30:00.000Z",
+  "configured_since": "2026-05-01T00:00:00.000Z",
+  "sample_floor": 2,
+  "rows": [
+    { "metric_id": "content_ready_ms", "surface_id": "home", "component_id": "none", "sampled_count": 4, "estimated_count": 10, "p50": 240, "p75": 360, "p95": 480, "latest_timestamp": 410 },
+    { "metric_id": "content_ready_ms", "surface_id": "notice", "component_id": "none", "sampled_count": 4, "estimated_count": 10, "p50": 340, "p75": 460, "p95": 780, "latest_timestamp": 520 },
+    { "metric_id": "content_ready_ms", "surface_id": "browse-contracts", "component_id": "none", "sampled_count": 4, "estimated_count": 10, "p50": 180, "p75": 300, "p95": 620, "latest_timestamp": 390 },
+    { "metric_id": "content_ready_ms", "surface_id": "agency", "component_id": "none", "sampled_count": 4, "estimated_count": 10, "p50": 210, "p75": 330, "p95": 640, "latest_timestamp": 470 },
+    { "metric_id": "content_ready_ms", "surface_id": "near-you", "component_id": "none", "sampled_count": 4, "estimated_count": 10, "p50": 260, "p75": 380, "p95": 700, "latest_timestamp": 610 },
+    { "metric_id": "content_ready_ms", "surface_id": "following", "component_id": "none", "sampled_count": 4, "estimated_count": 10, "p50": 290, "p75": 410, "p95": 760, "latest_timestamp": 580 },
+    { "metric_id": "component_ready_ms", "surface_id": "notice", "component_id": "notice-context", "sampled_count": 4, "estimated_count": 10, "p50": 1200, "p75": 2400, "p95": 5200, "latest_timestamp": 890 }
+  ]
+}

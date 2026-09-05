@@ -56,6 +56,7 @@ test("bounded SQL uses per-row adaptive weights for counts and distributions", (
     assert.match(sql, /quantileExactWeighted\(0\.50\)\(double1, _sample_interval\) AS p50/);
     assert.match(sql, /quantileExactWeighted\(0\.75\)\(double1, _sample_interval\) AS p75/);
     assert.match(sql, /quantileExactWeighted\(0\.95\)\(double1, _sample_interval\) AS p95/);
+    assert.match(sql, /max\(double2\) AS latest_timestamp/);
     assert.doesNotMatch(sql, /sum\(_sample_interval \* double1\)/, "usage-count aggregation is invalid for latency distributions");
   }
 
