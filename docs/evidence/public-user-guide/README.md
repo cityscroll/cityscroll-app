@@ -1,0 +1,47 @@
+# Public guide planning evidence
+
+The planning artifacts behind a public `/guide/` — a set of articles covering
+guided practice, doing your own task, understanding a concept, and looking
+something up. This directory bounds the first release: which articles exist,
+which example each is taught with and how that example was verified, where guide
+review joins the review cadence that already exists, and what About and the
+entry points looked like before any of it shipped.
+
+No product surface changes here. Everything in this directory is a reviewed
+assertion or a reproducible receipt.
+
+| File | What it settles |
+| --- | --- |
+| [`article-map.md`](article-map.md) | The eighteen articles: id, proposed URL, single primary type, the one reader question, product entry point, the existing content owner, and example ids. Ends with a short later list. |
+| [`example-selection-records.md`](example-selection-records.md) | Per-example canonical route, evidence class, observable result, and selection note, plus the check-harness limitation found on the topic-search example. |
+| [`review-cadence-handoff.md`](review-cadence-handoff.md) | What runs in this repository and how often, why the weekly review is not reachable from here, and the exact interface a guide-review lane needs on each side. |
+| [`capture-manifest.json`](capture-manifest.json) | Baseline of About and five entry points at 390px and 1440px, as hashes and assertions. No image is committed. |
+
+## Reproducing the evidence
+
+```sh
+python3 test/standards/demo_links.py
+python3 tools/capture_guide_baseline.py
+```
+
+The live example checks and the isolation of the harness limitation are recorded
+with their exact commands in
+[`example-selection-records.md`](example-selection-records.md#reproduction).
+
+## The capture manifest
+
+`tools/capture_guide_baseline.py` loads each route against the public deploy at
+both review widths, asserts one observable per route, and writes the manifest.
+Rendered images stay under the ignored `.artifacts/` path; only their `sha256`
+is retained here, per `docs/capture-manifest-guard.md`.
+
+Two hashes are recorded per capture because they answer different questions.
+`render_structure_sha256` hashes the element skeleton of the main landmark and
+is stable across an ordinary civic-data refresh, so a later difference means the
+page shell changed. `content_sha256` hashes its rendered markup and is a
+point-in-time observation of live records, not a regression baseline.
+
+Two facts in the current capture are load-bearing for the articles that follow:
+the homepage carries no guide link yet, and the calendar subscription control on
+the deadlines surface is present but hidden until a scope offers a supported
+dated occurrence.
