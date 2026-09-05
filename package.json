@@ -11,6 +11,7 @@
     "warehouse:seqra:documents": "node tools/check_seqra_document_pipeline.mjs",
     "warehouse:land:documents": "node tools/check_land_filing_document_collector.mjs",
     "warehouse:land:rer": "node tools/check_land_filing_report_extractor.mjs",
-    "warehouse:seqra:ingest": "node tools/build_seqra_structured_adapters.mjs && node tools/build_seqra_institutional_signal_adapters.mjs"
+    "warehouse:seqra:ingest": "node tools/build_seqra_structured_adapters.mjs && node tools/build_seqra_institutional_signal_adapters.mjs",
+    "backtest:land:filing-evidence": "node tools/build_land_filing_evidence_backtest.mjs --check"
   }
 }
