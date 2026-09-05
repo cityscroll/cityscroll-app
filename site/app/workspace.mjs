@@ -201,11 +201,20 @@ function invItemsHtml(items, readonly){
   </div>`).join("");
 }
 
+function invEmptyGuideHtml(){
+  return `<div id="inv-empty-guide">
+    <p class="rmeta2" style="margin:0 0 14px">${t("inv_empty_guide_html")}</p>
+    <div class="actions" style="margin:0 0 14px"><a class="act primary" href="/search/" id="invfind">${t("inv_find_record_link")}</a></div>
+    <p class="rmeta" style="margin:0">${t("inv_empty_later_outputs")}</p>
+  </div>`;
+}
+
 async function showInvestigation(){
   showTab("entity");
   const s = invStore(), inv = s.invs[s.current];
   const box = $("#entityview");
   delete box.dataset.vendorStem;
+  const hasItems = inv.items.length > 0;
   box.innerHTML = `<div style="max-width:880px;margin:0 auto">
     <p style="margin:4px 0 12px">${routeBackHTML("#money")}</p>
     <div class="panel" style="padding:22px 24px">
@@ -213,16 +222,16 @@ async function showInvestigation(){
       <h2 style="margin:0"><input type="text" id="invname" aria-label="${t("inv_name_aria")}" data-i18n-aria="inv_name_aria" value="${inv.name.replace(/"/g,"&quot;")}" style="font:800 22px/1.2 var(--font-display);border:none;background:transparent;padding:0;width:100%"></h2>
       <div class="rmeta2">${t("inv_pinned_meta",{n:inv.items.length, s:inv.items.length===1?"":"s", date:inv.created})}</div>
       <div class="timeline" style="margin-top:14px" id="invitems">
-        ${inv.items.length ? invItemsHtml(inv.items,false) : `<div class="empty">${t("inv_empty")}</div>`}
+        ${hasItems ? invItemsHtml(inv.items,false) : invEmptyGuideHtml()}
       </div>
-      <div class="actions" style="margin-top:16px">
+      ${hasItems ? `<div class="actions" style="margin-top:16px">
         <button class="act primary" type="button" id="invshare">${t("inv_share_btn")}</button>
         <button class="act" type="button" id="invpackage">${t("inv_package_btn")}</button>
         <button class="act" type="button" id="invcsv">${t("inv_export_csv")}</button>
         <button class="act" type="button" id="invjson">${t("inv_export_json")}</button>
         <button class="act" type="button" id="invprint">${t("inv_print_btn")}</button>
         <button class="act" type="button" id="invclear" style="color:var(--rose)">${t("inv_clear_btn")}</button>
-      </div>
+      </div>` : ""}
       <div id="invmsg" class="muted" role="status" style="margin-top:10px;font:13px/1.5 ui-sans-serif,system-ui,sans-serif"></div>
       <div class="note">${t("inv_footer_note_html")}</div>
     </div></div>`;
@@ -233,44 +242,46 @@ async function showInvestigation(){
   box.querySelectorAll(".invdel").forEach(b=>b.addEventListener("click", ()=>{
     const s2=invStore(); s2.invs[s2.current].items.splice(+b.dataset.idx,1); invSave(s2); showInvestigation();
   }));
-  $("#invcsv").addEventListener("click", async ()=>{
-    await ensureCrolExports();
-    invDownload("investigation.csv", invCsv(invStore().invs[s.current]), "text/csv;charset=utf-8");
-  });
-  $("#invjson").addEventListener("click", ()=>invDownload("investigation.json", JSON.stringify(invStore().invs[s.current],null,2), "application/json"));
-  $("#invprint").addEventListener("click", ()=>window.print());
-  $("#invclear").addEventListener("click", ()=>{ const s2=invStore(); s2.invs[s2.current].items=[]; invSave(s2); showInvestigation(); });
-  $("#invshare").addEventListener("click", async ()=>{
-    const msg=$("#invmsg"), cur=invStore().invs[s.current];
-    if(!cur.items.length){ msg.textContent=t("inv_pin_first"); return; }
-    if(!API){ msg.textContent=t("inv_share_needs_backend"); return; }
-    msg.innerHTML=`<span class="loading"></span> ${t("inv_uploading")}`;
-    try{
-      const r=await workerFetch("/inv",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({name:cur.name, items:cur.items})});
-      const j=await r.json();
-      if(j.ok){
-        const url=location.origin+location.pathname+"#investigation/shared/"+j.id;
-        msg.innerHTML=`${t("inv_readonly_link",{n:j.ttlDays})} <a href="${url}">${url}</a> <button class="act" type="button" style="padding:5px 9px" onclick="copyText('${url}', this)">${t("inv_copy_btn")}</button>`;
-      } else msg.textContent = j.reason==="rate-limited" ? t("inv_too_many_shares") : t("inv_share_failed");
-    }catch(e){ msg.textContent=t("cant_reach_server"); }
-  });
-  $("#invpackage").addEventListener("click", async ()=>{
-    const msg=$("#invmsg"), cur=invStore().invs[s.current];
-    if(!API){ msg.textContent=t("inv_share_needs_backend"); return; }
-    const question=window.prompt(t("inv_package_question_prompt"),cur.name);
-    if(question===null) return;
-    const request=researchPackageRequestFromInvestigation(cur,{question});
-    if(!request){ msg.textContent=t("inv_package_requires_signal"); return; }
-    msg.innerHTML=`<span class="loading"></span> ${t("inv_uploading")}`;
-    try{
-      const r=await workerFetch("/inv",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(request)});
-      const j=await r.json();
-      if(j.ok&&j.kind==="research_package"){
-        const url=location.origin+location.pathname+"#investigation/shared/"+j.id;
-        msg.innerHTML=`${t("inv_package_link",{n:j.ttlDays})} <a href="${invEsc(url)}">${invEsc(url)}</a>`;
-      } else msg.textContent=j.reason==="rate-limited"?t("inv_too_many_shares"):t("inv_package_failed");
-    }catch(e){ msg.textContent=t("cant_reach_server"); }
-  });
+  if(hasItems){
+    $("#invcsv").addEventListener("click", async ()=>{
+      await ensureCrolExports();
+      invDownload("investigation.csv", invCsv(invStore().invs[s.current]), "text/csv;charset=utf-8");
+    });
+    $("#invjson").addEventListener("click", ()=>invDownload("investigation.json", JSON.stringify(invStore().invs[s.current],null,2), "application/json"));
+    $("#invprint").addEventListener("click", ()=>window.print());
+    $("#invclear").addEventListener("click", ()=>{ const s2=invStore(); s2.invs[s2.current].items=[]; invSave(s2); showInvestigation(); });
+    $("#invshare").addEventListener("click", async ()=>{
+      const msg=$("#invmsg"), cur=invStore().invs[s.current];
+      if(!cur.items.length){ msg.textContent=t("inv_pin_first"); return; }
+      if(!API){ msg.textContent=t("inv_share_needs_backend"); return; }
+      msg.innerHTML=`<span class="loading"></span> ${t("inv_uploading")}`;
+      try{
+        const r=await workerFetch("/inv",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({name:cur.name, items:cur.items})});
+        const j=await r.json();
+        if(j.ok){
+          const url=location.origin+location.pathname+"#investigation/shared/"+j.id;
+          msg.innerHTML=`${t("inv_readonly_link",{n:j.ttlDays})} <a href="${url}">${url}</a> <button class="act" type="button" style="padding:5px 9px" onclick="copyText('${url}', this)">${t("inv_copy_btn")}</button>`;
+        } else msg.textContent = j.reason==="rate-limited" ? t("inv_too_many_shares") : t("inv_share_failed");
+      }catch(e){ msg.textContent=t("cant_reach_server"); }
+    });
+    $("#invpackage").addEventListener("click", async ()=>{
+      const msg=$("#invmsg"), cur=invStore().invs[s.current];
+      if(!API){ msg.textContent=t("inv_share_needs_backend"); return; }
+      const question=window.prompt(t("inv_package_question_prompt"),cur.name);
+      if(question===null) return;
+      const request=researchPackageRequestFromInvestigation(cur,{question});
+      if(!request){ msg.textContent=t("inv_package_requires_signal"); return; }
+      msg.innerHTML=`<span class="loading"></span> ${t("inv_uploading")}`;
+      try{
+        const r=await workerFetch("/inv",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(request)});
+        const j=await r.json();
+        if(j.ok&&j.kind==="research_package"){
+          const url=location.origin+location.pathname+"#investigation/shared/"+j.id;
+          msg.innerHTML=`${t("inv_package_link",{n:j.ttlDays})} <a href="${invEsc(url)}">${invEsc(url)}</a>`;
+        } else msg.textContent=j.reason==="rate-limited"?t("inv_too_many_shares"):t("inv_package_failed");
+      }catch(e){ msg.textContent=t("cant_reach_server"); }
+    });
+  }
   announce(t("inv_ws_heading"));
 }
 
@@ -791,6 +802,7 @@ globalThis.ensureMatterPhaseSpineTools = ensureMatterPhaseSpineTools;
 globalThis.invCsv = invCsv;
 globalThis.invDefaultStore = invDefaultStore;
 globalThis.invDownload = invDownload;
+globalThis.invEmptyGuideHtml = invEmptyGuideHtml;
 globalThis.invItemHref = invItemHref;
 globalThis.invItemKey = invItemKey;
 globalThis.invItemsHtml = invItemsHtml;
