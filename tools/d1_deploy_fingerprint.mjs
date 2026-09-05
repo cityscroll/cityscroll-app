@@ -38,12 +38,16 @@ export async function resolveFingerprintInputs({
   const manifestModulePath = resolve(root, "tools/d1_manifest.mjs");
   if (!existsSync(manifestModulePath)) return [...baseInputs];
   const manifestModule = await import(pathToFileURL(manifestModulePath).href);
-  if (typeof manifestModule.fingerprintInputs !== "function") {
-    throw new Error("tools/d1_manifest.mjs must export fingerprintInputs()");
+  // Probe a name owned solely by this contract. `fingerprintInputs` in that
+  // module means something else entirely — it takes a manifest object and
+  // returns manifest facts — so probing it here calls it with no argument and
+  // fails the deploy.
+  if (typeof manifestModule.deployFingerprintInputs !== "function") {
+    throw new Error("tools/d1_manifest.mjs must export deployFingerprintInputs()");
   }
-  const declared = manifestModule.fingerprintInputs();
+  const declared = manifestModule.deployFingerprintInputs();
   if (!Array.isArray(declared) || declared.some((path) => typeof path !== "string" || !path)) {
-    throw new Error("fingerprintInputs() must return an array of repository-relative paths");
+    throw new Error("deployFingerprintInputs() must return an array of repository-relative paths");
   }
   return [...new Set([...baseInputs, "tools/d1_manifest.mjs", ...declared])];
 }
