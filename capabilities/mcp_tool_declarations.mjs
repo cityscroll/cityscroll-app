@@ -82,6 +82,11 @@ import {
   LAND_REGULATORY_EFFECT_FILTER_VALUES,
   LAND_STAGE_FILTER_VALUES,
 } from "./land_projects.mjs";
+import {
+  LAND_DECISION_PATH_GET_CAPABILITY_REFERENCE,
+  LAND_DECISION_PATH_GET_LIMITS,
+  LAND_DECISION_PATH_GET_PROVIDER_ID,
+} from "./land_decision_path.mjs";
 import { CITED_RETRIEVAL_OUTPUT_SCHEMA } from "../worker/src/cited_retrieval.mjs";
 import { SEMANTIC_SOURCE_FAMILIES } from "../worker/src/semantic_candidates.mjs";
 
@@ -191,6 +196,7 @@ export const MCP_ORGANIZATIONS_BROWSE_ADAPTER = Object.freeze({ id: "mcp.browse_
 export const MCP_MEETING_GET_ADAPTER = Object.freeze({ id: "mcp.get_meeting@1", capabilityReference: MEETING_GET_CAPABILITY_REFERENCE, providerId: MEETING_GET_PROVIDER_ID, route: "POST /mcp", tool: "get_meeting", surface: "MCP", representations: MEETING_GET_REPRESENTATIONS });
 export const MCP_LAND_PROJECT_GET_ADAPTER = Object.freeze({ id: "mcp.get_land_project@1", capabilityReference: LAND_PROJECT_GET_CAPABILITY_REFERENCE, providerId: LAND_PROJECT_GET_PROVIDER_ID, route: "POST /mcp", tool: "get_land_project", surface: "MCP" });
 export const MCP_LAND_PROJECTS_BROWSE_ADAPTER = Object.freeze({ id: "mcp.browse_land_projects@1", capabilityReference: LAND_PROJECTS_BROWSE_CAPABILITY_REFERENCE, providerId: LAND_PROJECTS_BROWSE_PROVIDER_ID, route: "POST /mcp", tool: "browse_land_projects", surface: "MCP" });
+export const MCP_LAND_DECISION_PATH_GET_ADAPTER = Object.freeze({ id: "mcp.get_land_decision_path@1", capabilityReference: LAND_DECISION_PATH_GET_CAPABILITY_REFERENCE, providerId: LAND_DECISION_PATH_GET_PROVIDER_ID, route: "POST /mcp", tool: "get_land_decision_path", surface: "MCP" });
 
 const NOTICE_SEARCH_OUTPUT_SCHEMA = Object.freeze({
   type: "object",
@@ -334,6 +340,17 @@ const LAND_PROJECTS_BROWSE_OUTPUT_SCHEMA = Object.freeze({
     pagination: { type: ["object", "null"] },
     coverage: { type: ["object", "null"] },
     freshness: { type: ["object", "null"] },
+    error: { type: ["string", "null"] },
+  },
+});
+const LAND_DECISION_PATH_GET_OUTPUT_SCHEMA = Object.freeze({
+  type: "object", additionalProperties: false,
+  required: ["capability_reference", "availability", "project_id", "decision_path", "error"],
+  properties: {
+    capability_reference: { type: "string", const: LAND_DECISION_PATH_GET_CAPABILITY_REFERENCE },
+    availability: { type: "string", enum: ["available", "not_yet_public", "unavailable"] },
+    project_id: { type: ["string", "null"] },
+    decision_path: { type: ["object", "null"] },
     error: { type: ["string", "null"] },
   },
 });
@@ -613,6 +630,19 @@ export const MCP_TOOLS = [
     annotations: MCP_PUBLIC_READ_ANNOTATIONS,
   },
   {
+    name: "get_land_decision_path",
+    description: "Get the typed Land decision path for one exact project. Observed milestones and events remain separate from the reviewed normative procedure stages, actors, effects, and parallel review groups; absent and unknown stages stay explicit.",
+    inputSchema: {
+      type: "object", additionalProperties: false,
+      properties: {
+        project_id: { type: "string", minLength: 1, maxLength: LAND_DECISION_PATH_GET_LIMITS.projectIdMaximumLength, description: "Exact publisher ZAP project id, e.g. 2024Q0356." },
+      },
+      required: ["project_id"],
+    },
+    outputSchema: LAND_DECISION_PATH_GET_OUTPUT_SCHEMA,
+    annotations: MCP_PUBLIC_READ_ANNOTATIONS,
+  },
+  {
     name: "preview_watch",
     description: "Preview what a plain-English standing watch would deliver, without subscribing. Lens: money (procurement), land (rezonings), property, rules, meetings, people.",
     inputSchema: {
@@ -747,6 +777,7 @@ export const MCP_TOOL_BINDINGS = Object.freeze([
   Object.freeze({ name: "get_meeting", operationClass: "read", schemaReference: MEETING_GET_CAPABILITY_REFERENCE, capabilityReference: MEETING_GET_CAPABILITY_REFERENCE, adapterId: MCP_MEETING_GET_ADAPTER.id, authorityClass: "public_read", storeAccess: "provider-only", bounds: MEETING_GET_LIMITS, annotations: MCP_PUBLIC_READ_ANNOTATIONS }),
   Object.freeze({ name: "get_land_project", operationClass: "read", schemaReference: LAND_PROJECT_GET_CAPABILITY_REFERENCE, capabilityReference: LAND_PROJECT_GET_CAPABILITY_REFERENCE, adapterId: MCP_LAND_PROJECT_GET_ADAPTER.id, authorityClass: "public_read", storeAccess: "provider-only", bounds: LAND_PROJECT_GET_LIMITS, annotations: MCP_PUBLIC_READ_ANNOTATIONS }),
   Object.freeze({ name: "browse_land_projects", operationClass: "read", schemaReference: LAND_PROJECTS_BROWSE_CAPABILITY_REFERENCE, capabilityReference: LAND_PROJECTS_BROWSE_CAPABILITY_REFERENCE, adapterId: MCP_LAND_PROJECTS_BROWSE_ADAPTER.id, authorityClass: "public_read", storeAccess: "provider-only", bounds: LAND_PROJECTS_BROWSE_LIMITS, annotations: MCP_PUBLIC_READ_ANNOTATIONS }),
+  Object.freeze({ name: "get_land_decision_path", operationClass: "read", schemaReference: LAND_DECISION_PATH_GET_CAPABILITY_REFERENCE, capabilityReference: LAND_DECISION_PATH_GET_CAPABILITY_REFERENCE, adapterId: MCP_LAND_DECISION_PATH_GET_ADAPTER.id, authorityClass: "public_read", storeAccess: "provider-only", bounds: LAND_DECISION_PATH_GET_LIMITS, annotations: MCP_PUBLIC_READ_ANNOTATIONS }),
   Object.freeze({
     name: "preview_watch",
     operationClass: "read",

@@ -23,6 +23,7 @@
         "get_entity_dossier",
         "get_entity_relationships",
         "get_notice",
+        "get_land_decision_path",
         "max_amount",
         "min_amount",
         "preview_watch",

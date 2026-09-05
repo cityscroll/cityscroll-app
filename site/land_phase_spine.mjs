@@ -16,6 +16,7 @@ import { projectAffectedReviewBodies } from "./land_affected_review_body.mjs";
 import {
   LAND_PROCEDURE_PROFILE_REGISTRY,
   buildLandProcedureProfileView,
+  resolveLandProcedureVariant,
 } from "./land_procedure_profiles.mjs";
 import { buildActorObservedOutcomes, spinePhaseIdForActorKind } from "./land_actor_outcome.mjs";
 // Re-exported so the lazy phase-spine bundle also carries the LDP-21 role-strip
@@ -668,11 +669,23 @@ export function buildLandPhaseView(spine, opts = {}) {
   if (!Object.hasOwn(procedureFacts, "affected_review_bodies") && affectedReviewBodies?.facts) {
     procedureFacts.affected_review_bodies = affectedReviewBodies.facts;
   }
-  const procedureProfile = buildLandProcedureProfileView({
+  const broadProcedureProfile = buildLandProcedureProfileView({
     source: procedureFacts,
     current_phase_id: currentPhaseId,
     current_stage_id: opts.current_stage_id || null,
   });
+  const variant = resolveLandProcedureVariant({
+    broad_profile_id: broadProcedureProfile.profile_id,
+    evidence: opts.variant_evidence || null,
+  });
+  const procedureProfile = variant.status === "resolved"
+    ? buildLandProcedureProfileView({
+        source: procedureFacts,
+        profile: { procedure_id: variant.variant_id },
+        current_phase_id: currentPhaseId,
+        current_stage_id: opts.current_stage_id || null,
+      })
+    : broadProcedureProfile;
   const actionProcedure = resolveLandActionProcedures(procedureFacts);
   // Compatibility fallback: null for anything other than a resolved ELURP
   // family profile — verified ordinary ULURP and honest unresolved legacy

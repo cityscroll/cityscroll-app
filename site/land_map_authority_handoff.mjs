@@ -67,9 +67,10 @@ function nextActionFrom(published, { stale, missing }) {
 }
 
 /** Join exactly one row to its already materialized LDP projection. */
-export function landMapAuthorityHandoff({ projectId, row = null, panelHref = null } = {}) {
+export function landMapAuthorityHandoff({ projectId, row = null, panelHref = null, decisionPath = null } = {}) {
   const id = clean(projectId);
   const summary = row?.authority_summary;
+  const suppliedDecisionPath = decisionPath || row?.decision_path || null;
   const base = {
     schema: LAND_MAP_AUTHORITY_HANDOFF_SCHEMA,
     project_id: id,
@@ -77,6 +78,7 @@ export function landMapAuthorityHandoff({ projectId, row = null, panelHref = nul
     projection_version: LAND_MAP_AUTHORITY_PROJECTION_VERSION,
     panel_href: panelHref || null,
     location_state: "mapped",
+    decision_path: suppliedDecisionPath,
   };
   if (!id || !summary || clean(summary.project_id) !== id
     || summary.schema !== LAND_MAP_AUTHORITY_PROJECTION_SCHEMA) {
@@ -120,5 +122,6 @@ export function landMapAuthorityHandoff({ projectId, row = null, panelHref = nul
     next_action: nextActionFrom(summary.published_next_opportunity ?? null, { stale, missing: false }),
     authority_evidence: summary.source_basis?.profile || null,
     observed_evidence: summary.source_basis?.phase || null,
+    decision_path: suppliedDecisionPath,
   });
 }

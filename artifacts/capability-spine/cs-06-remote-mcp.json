@@ -18,7 +18,7 @@
   "policy_boundary": {
     "mutation_capabilities": 0,
     "raw_store_bindings_exposed": 0,
-    "registered_public_tools": 14,
+    "registered_public_tools": 15,
     "unregistered_public_tools": 0
   },
   "protocol": {
@@ -348,7 +348,7 @@
     },
     {
       "adapter_id": "mcp.get_land_project@1",
-      "adapter_semantic_sha256": "8e9255a74e639fef3cc0d5e7960a774fd766ccf43f1e76f04ea771e5a4341daf",
+      "adapter_semantic_sha256": "bc5b8ea36d4c4c902ebfb79a98a0f2f324054af9f351da2a2a9f4e7f5320b86d",
       "annotations": {
         "destructiveHint": false,
         "idempotentHint": true,
@@ -362,7 +362,7 @@
       },
       "calls": 1,
       "capability_reference": "land.project.get@1",
-      "direct_semantic_sha256": "8e9255a74e639fef3cc0d5e7960a774fd766ccf43f1e76f04ea771e5a4341daf",
+      "direct_semantic_sha256": "bc5b8ea36d4c4c902ebfb79a98a0f2f324054af9f351da2a2a9f4e7f5320b86d",
       "name": "get_land_project",
       "operation_class": "read",
       "parity": "pass",
@@ -373,7 +373,7 @@
     },
     {
       "adapter_id": "mcp.browse_land_projects@1",
-      "adapter_semantic_sha256": "b850a977824ac6f8e0339b47299b27970691ea5639ea6ea83f8158c76e493a3c",
+      "adapter_semantic_sha256": "4612ea8a82ae79a7cb5f81c5969942073899e4dde87ee6836a45a86d97caf8bd",
       "annotations": {
         "destructiveHint": false,
         "idempotentHint": true,
@@ -390,7 +390,7 @@
       },
       "calls": 1,
       "capability_reference": "land.projects.browse@1",
-      "direct_semantic_sha256": "b850a977824ac6f8e0339b47299b27970691ea5639ea6ea83f8158c76e493a3c",
+      "direct_semantic_sha256": "4612ea8a82ae79a7cb5f81c5969942073899e4dde87ee6836a45a86d97caf8bd",
       "name": "browse_land_projects",
       "operation_class": "read",
       "parity": "pass",
@@ -398,14 +398,39 @@
       "store_access": "provider-only",
       "store_read_operations": 0,
       "store_rows_read": 0
+    },
+    {
+      "adapter_id": "mcp.get_land_decision_path@1",
+      "adapter_semantic_sha256": "2064e69b76055321db81213c7d1d4acd5d36a91acbf9db040969909688526dac",
+      "annotations": {
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "authority_class": "public_read",
+      "bounds": {
+        "maximum": 1,
+        "projectIdMaximumLength": 32
+      },
+      "calls": 1,
+      "capability_reference": "land.decision_path.get@1",
+      "direct_semantic_sha256": "2064e69b76055321db81213c7d1d4acd5d36a91acbf9db040969909688526dac",
+      "name": "get_land_decision_path",
+      "operation_class": "read",
+      "parity": "pass",
+      "provider_id": "worker-static.land-decision-path.get",
+      "store_access": "provider-only",
+      "store_read_operations": 0,
+      "store_rows_read": 0
     }
   ],
   "request_counts": {
-    "capability_calls": 14,
+    "capability_calls": 15,
     "initialize": 1,
     "list_tools": 1,
     "optional_get_probe": 1,
-    "post_requests": 17
+    "post_requests": 18
   },
   "schema": "cityscroll.remote_mcp_public_adapter_receipt.v1",
   "source_scan": {
