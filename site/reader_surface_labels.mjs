@@ -35,6 +35,27 @@ export const READER_LABELS = Object.freeze({
   enacted_local_law: "Enacted local law",
 });
 
+/**
+ * Rule-history provenance fields that may appear beside a source label. Only these
+ * exact identifiers have resident-facing copy; any other field name stays in the
+ * event model (and machine-readable attributes) and is omitted from visible text
+ * rather than mechanically humanized, so future schema names cannot leak as copy.
+ */
+export const READER_SOURCE_FIELD_LABELS = Object.freeze({
+  pubDate: "publication date",
+  "city_record.event_date": "event date",
+  hearing_date_1: "hearing date",
+  comment_by_date: "comment deadline",
+  "city_record.notice_date": "notice publication date",
+});
+
+/** Readable label for a rule-history source field, or null when none is approved. */
+export function sourceFieldLabel(field) {
+  const raw = clean(field);
+  if (!raw) return null;
+  return Object.hasOwn(READER_SOURCE_FIELD_LABELS, raw) ? READER_SOURCE_FIELD_LABELS[raw] : null;
+}
+
 const DEBUG_VALUE = /^(?:unavailable|not available)$/i;
 
 function clean(value) {
