@@ -343,7 +343,7 @@ export function createWranglerKvStore({
   };
 }
 
-function fileStore(path) {
+export function fileStore(path) {
   let state = existsSync(path) ? JSON.parse(readFileSync(path, "utf8")) : null;
   return {
     async read() { return clone(state); },
