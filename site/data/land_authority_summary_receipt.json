@@ -1,11 +1,11 @@
 {
   "schema": "cityscroll.land_authority_summary_receipt.v1",
   "join_version": "ldp05_authority_summary_v1",
-  "generated_at": "2026-08-23T07:59:14.162Z",
+  "generated_at": "2026-09-05T19:50:20.462Z",
   "counts": {
     "universe": 40,
-    "resolved": 17,
-    "unknown": 23
+    "resolved": 10,
+    "unknown": 30
   },
   "resolved_project_ids": [
     "2024Q0135",
@@ -13,18 +13,11 @@
     "2025K0305",
     "2025K0287",
     "2025M0252",
-    "2024K0286",
     "2023M0116",
     "2026R0186",
-    "2025K0284",
-    "2025Q0247",
-    "2025R0222",
     "2025R0137",
     "2025Q0316",
-    "2026Q0210",
-    "2025M0395",
-    "2024K0196",
-    "2025K0154"
+    "2026Q0210"
   ],
   "unknown_project_ids": [
     "2020M0385",
@@ -40,13 +33,20 @@
     "2024K0358",
     "2023M0213",
     "2019K0383",
+    "2024K0286",
     "2024Q0219",
+    "2025K0284",
     "2023X0149",
     "2022K0416",
     "2025Q0142",
+    "2025Q0247",
+    "2025R0222",
+    "2025M0395",
     "2022K0430",
     "2026K0233",
+    "2024K0196",
     "2023Q0303",
+    "2025K0154",
     "2024K0421",
     "2022Q0449",
     "2023K0183"
@@ -127,8 +127,8 @@
     {
       "project_id": "2026K0123",
       "status": "unknown",
-      "reason": "unresolved_procedure",
-      "procedure_resolution": "unknown",
+      "reason": "mixed_procedure",
+      "procedure_resolution": "mixed",
       "current_stage_id": null,
       "observed_status": "draft_only",
       "published_next_status": "published"
@@ -136,8 +136,8 @@
     {
       "project_id": "2024Q0325",
       "status": "unknown",
-      "reason": "unresolved_procedure",
-      "procedure_resolution": "unknown",
+      "reason": "mixed_procedure",
+      "procedure_resolution": "mixed",
       "current_stage_id": null,
       "observed_status": "draft_only",
       "published_next_status": "published"
@@ -145,8 +145,8 @@
     {
       "project_id": "2024K0214",
       "status": "unknown",
-      "reason": "unresolved_procedure",
-      "procedure_resolution": "unknown",
+      "reason": "mixed_procedure",
+      "procedure_resolution": "mixed",
       "current_stage_id": null,
       "observed_status": "draft_only",
       "published_next_status": "published"
@@ -163,8 +163,8 @@
     {
       "project_id": "2025M0338",
       "status": "unknown",
-      "reason": "unresolved_procedure",
-      "procedure_resolution": "unknown",
+      "reason": "mixed_procedure",
+      "procedure_resolution": "mixed",
       "current_stage_id": null,
       "observed_status": "draft_only",
       "published_next_status": "published"
@@ -216,10 +216,10 @@
     },
     {
       "project_id": "2024K0286",
-      "status": "resolved",
-      "reason": null,
-      "procedure_resolution": "uniform",
-      "current_stage_id": "ulurp_197c.city_planning_commission_review",
+      "status": "unknown",
+      "reason": "mixed_procedure",
+      "procedure_resolution": "mixed",
+      "current_stage_id": null,
       "observed_status": "observed",
       "published_next_status": "none"
     },
@@ -252,10 +252,10 @@
     },
     {
       "project_id": "2025K0284",
-      "status": "resolved",
-      "reason": null,
-      "procedure_resolution": "uniform",
-      "current_stage_id": "ulurp_197c.city_planning_commission_review",
+      "status": "unknown",
+      "reason": "mixed_procedure",
+      "procedure_resolution": "mixed",
+      "current_stage_id": null,
       "observed_status": "observed",
       "published_next_status": "none"
     },
@@ -288,21 +288,21 @@
     },
     {
       "project_id": "2025Q0247",
-      "status": "resolved",
-      "reason": null,
-      "procedure_resolution": "uniform",
-      "current_stage_id": "ulurp_197c.city_planning_commission_review",
+      "status": "unknown",
+      "reason": "mixed_procedure",
+      "procedure_resolution": "mixed",
+      "current_stage_id": null,
       "observed_status": "observed",
       "published_next_status": "none"
     },
     {
       "project_id": "2025R0222",
-      "status": "resolved",
-      "reason": null,
-      "procedure_resolution": "uniform",
-      "current_stage_id": "ulurp_197c.application_certification",
-      "observed_status": "draft_only",
-      "published_next_status": "published"
+      "status": "unknown",
+      "reason": "mixed_procedure",
+      "procedure_resolution": "mixed",
+      "current_stage_id": null,
+      "observed_status": "no_observation",
+      "published_next_status": "none"
     },
     {
       "project_id": "2025R0137",
@@ -333,10 +333,10 @@
     },
     {
       "project_id": "2025M0395",
-      "status": "resolved",
-      "reason": null,
-      "procedure_resolution": "uniform",
-      "current_stage_id": "ulurp_197c.application_certification",
+      "status": "unknown",
+      "reason": "mixed_procedure",
+      "procedure_resolution": "mixed",
+      "current_stage_id": null,
       "observed_status": "draft_only",
       "published_next_status": "published"
     },
@@ -352,44 +352,44 @@
     {
       "project_id": "2026K0233",
       "status": "unknown",
-      "reason": "unresolved_procedure",
-      "procedure_resolution": "unknown",
+      "reason": "mixed_procedure",
+      "procedure_resolution": "mixed",
       "current_stage_id": null,
       "observed_status": "no_observation",
       "published_next_status": "published"
     },
     {
       "project_id": "2024K0196",
-      "status": "resolved",
-      "reason": null,
-      "procedure_resolution": "uniform",
-      "current_stage_id": "ulurp_197c.city_planning_commission_review",
+      "status": "unknown",
+      "reason": "mixed_procedure",
+      "procedure_resolution": "mixed",
+      "current_stage_id": null,
       "observed_status": "observed",
       "published_next_status": "none"
     },
     {
       "project_id": "2023Q0303",
       "status": "unknown",
-      "reason": "unresolved_procedure",
-      "procedure_resolution": "unknown",
+      "reason": "mixed_procedure",
+      "procedure_resolution": "mixed",
       "current_stage_id": null,
       "observed_status": "draft_only",
       "published_next_status": "published"
     },
     {
       "project_id": "2025K0154",
-      "status": "resolved",
-      "reason": null,
-      "procedure_resolution": "uniform",
-      "current_stage_id": "ulurp_197c.city_council_review",
+      "status": "unknown",
+      "reason": "mixed_procedure",
+      "procedure_resolution": "mixed",
+      "current_stage_id": null,
       "observed_status": "observed",
       "published_next_status": "none"
     },
     {
       "project_id": "2024K0421",
       "status": "unknown",
-      "reason": "unresolved_procedure",
-      "procedure_resolution": "unknown",
+      "reason": "mixed_procedure",
+      "procedure_resolution": "mixed",
       "current_stage_id": null,
       "observed_status": "draft_only",
       "published_next_status": "published"
@@ -418,9 +418,9 @@
       "path": "site/data/land_default_ulurp.json",
       "count": 40,
       "vintage": {
-        "generated_at": "2026-08-23T07:59:14.162Z"
+        "generated_at": "2026-09-05T19:50:20.462Z"
       },
-      "sha256": "3f60a1ac51f8e80ebec80d0895be41541174da5cadc80c1021bf8d7bcbdb9443"
+      "sha256": "8933957f7580f0ef1633d13cf9f904aae1a3d9948d4d3e53e19b246adf1ccfd3"
     },
     "geography": {
       "path": "site/data/community_board_geography_lookup.json",
@@ -431,11 +431,11 @@
     },
     "upcoming_hearings": {
       "path": "site/data/land_upcoming_hearings.json",
-      "count": 182,
+      "count": 169,
       "vintage": {
-        "generated_at": "2026-08-23T08:51:36.144Z"
+        "generated_at": "2026-09-05T19:55:27.133Z"
       },
-      "sha256": "ba91ffa8e5b5a4dd82ec2ece19829f7a6807970a28ffbd4fb58e4af35bd89edf"
+      "sha256": "4e0c5796a5284f43de2d0b372a3f8750aa44d2f169fc17346255ff2a68395c7a"
     },
     "join_keys": [
       "project_id"
@@ -444,7 +444,7 @@
   "generation": {
     "derivation": "node tools/build_land_authority_summary.mjs",
     "payload_path": "site/data/land_authority_summary.json",
-    "payload_bytes": 127685,
-    "payload_sha256": "3f805e057bc72a3c67d438f44664d83e165653a145d1590400b556ebc04aeee9"
+    "payload_bytes": 120084,
+    "payload_sha256": "388924e718f0cf6f1a56b20465154018bb1f88b4588591214e24da5a28a2834f"
   }
 }
