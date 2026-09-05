@@ -361,10 +361,15 @@ test("classifyFailure separates transient from permanent errors", () => {
   assert.equal(classifyFailure(new Error("syntax error near INSERT")), "permanent");
 });
 
-test("bounded batches are refused for a rebuild plan", () => {
+test("bounded batches stage a rebuild plan with table resets before inserts", () => {
   const current = snapshotFor(manifest, baseSources());
   const rebuildPlan = planDelta({ prior: null, current, rebuild: "first publication" });
-  assert.throws(() => planBatches({ plan: rebuildPlan, manifest, sourceDocuments: baseSources(), generation: 1 }), /delta plans only/);
+  const batchPlan = planBatches({ plan: rebuildPlan, manifest, sourceDocuments: baseSources(), generation: 1 });
+  assert.ok(batchPlan.batches.length > 0);
+  const keyword = batchPlan.batches.find((batch) => batch.model_id === "keyword_search");
+  assert.ok(keyword);
+  assert.equal(keyword.ops[0].kind, "truncate");
+  assert.match(renderBatch(modelEntry(manifest, "keyword_search"), keyword.ops), /DELETE FROM keyword_search_fts;/);
 });
 
 test(`the default bound is sized for a bounded batch (${DEFAULT_MAX_OPS_PER_BATCH} ops)`, () => {

@@ -23,7 +23,7 @@
  * Usage:
  *   node tools/d1_delta_plan.mjs snapshot [--out <path>]
  *   node tools/d1_delta_plan.mjs plan --prior <snapshot> [--current <snapshot>]
- *                                     [--rebuild <reason>] [--out <path>]
+ *                                     [--rebuild <reason>] [--allow-rebuild <capability>] [--out <path>]
  *   node tools/d1_delta_plan.mjs plan --rebuild <reason> [--current <snapshot>]
  *                                     [--out <path>]
  */
@@ -42,6 +42,7 @@ import {
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 export const SNAPSHOT_SCHEMA = "cityscroll.d1-partition-snapshot.v2";
 export const PLAN_SCHEMA = "cityscroll.d1-delta-plan.v2";
+export const EXPLICIT_REBUILD_TOKEN = "d1-explicit-rebuild-v1";
 export const WHOLE_MODEL_PARTITION = MODEL_PARTITION;
 export const DEFAULT_SNAPSHOT_PATH = join(ROOT, "worker", ".d1-read-models", "partition-snapshot.json");
 
@@ -321,7 +322,7 @@ export function liveSnapshot(root = ROOT, manifest = loadManifest()) {
 }
 
 function parseArgs(argv) {
-  const out = { command: argv[2], prior: null, current: null, outPath: null, rebuild: null };
+  const out = { command: argv[2], prior: null, current: null, outPath: null, rebuild: null, allowRebuild: null };
   for (let i = 3; i < argv.length; i += 1) {
     const arg = argv[i];
     const next = () => { i += 1; if (i >= argv.length) throw new Error(`${arg} needs a value`); return argv[i]; };
@@ -329,7 +330,11 @@ function parseArgs(argv) {
     else if (arg === "--current") out.current = next();
     else if (arg === "--out") out.outPath = next();
     else if (arg === "--rebuild") out.rebuild = next();
+    else if (arg === "--allow-rebuild") out.allowRebuild = next();
     else throw new Error(`unknown argument ${arg}`);
+  }
+  if (out.rebuild !== null && out.allowRebuild !== EXPLICIT_REBUILD_TOKEN) {
+    throw new Error("--rebuild is reserved for tools/d1_explicit_rebuild.mjs");
   }
   return out;
 }
@@ -369,7 +374,7 @@ function main() {
       if (args.outPath) console.error(summary.join("\n"));
       return 0;
     }
-    console.error("d1_delta_plan: usage: snapshot [--out p] | plan --prior p [--current p] [--rebuild reason] [--out p]");
+    console.error("d1_delta_plan: usage: snapshot [--out p] | plan --prior p [--current p] [--rebuild reason --allow-rebuild capability] [--out p]");
     return 2;
   } catch (error) {
     if (error instanceof DeltaPlanError) {

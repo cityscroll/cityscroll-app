@@ -203,6 +203,7 @@ const TOTALS_KEYS = Object.freeze(["estimated_writes", "observed_writes", "total
 const RETRIES_KEYS = Object.freeze(["attempts", "transient_failures"]);
 const VERIFICATION_KEYS = Object.freeze(["status", "detail"]);
 const ROLLBACK_KEYS = Object.freeze(["compensates_receipt", "rebuild_command", "reason"]);
+const REBUILD_KEYS = Object.freeze(["source_snapshot_sha256", "estimated_writes"]);
 const CANARY_STATUSES = Object.freeze(["passed", "failed"]);
 const CANARY_KEYS = Object.freeze([
   "status",
@@ -225,6 +226,7 @@ const TOP_LEVEL_KEYS = Object.freeze([
   "schema",
   "receipt_id",
   "recorded_at",
+  "actor",
   "run",
   "generation",
   "deploy_fingerprint",
@@ -237,6 +239,7 @@ const TOP_LEVEL_KEYS = Object.freeze([
   "duration_ms",
   "verification",
   "rollback",
+  "rebuild",
   "canary",
   "reconcile",
 ]);
@@ -317,6 +320,14 @@ function validateRollback(rollback, outcome) {
   assertText(rollback.reason, "receipt.rollback.reason");
 }
 
+function validateRebuildSection(rebuild) {
+  if (rebuild === null) return;
+  requirePlainObject(rebuild, "receipt.rebuild");
+  requireKnownKeys(rebuild, REBUILD_KEYS, "receipt.rebuild");
+  assertSha256(rebuild.source_snapshot_sha256, "receipt.rebuild.source_snapshot_sha256");
+  requirePositiveInteger(rebuild.estimated_writes, "receipt.rebuild.estimated_writes");
+}
+
 /**
  * The canary and reconcile sections (release-control card d1-08) are bounded
  * summaries of the evidence tools/d1_canary.mjs and tools/d1_reconcile.mjs
@@ -370,6 +381,7 @@ export function validatePublicationReceipt(receipt) {
   if (receipt.schema !== D1_PUBLICATION_RECEIPT_SCHEMA) fail("receipt.schema", `must be ${D1_PUBLICATION_RECEIPT_SCHEMA}`);
   assertIdentifier(receipt.receipt_id, "receipt.receipt_id");
   assertIsoTimestamp(receipt.recorded_at, "receipt.recorded_at");
+  assertNullableText(receipt.actor ?? null, "receipt.actor", { maxLength: MAX_IDENTIFIER_LENGTH });
   validateRun(receipt.run);
   assertNullablePositiveInteger(receipt.generation, "receipt.generation");
   assertSha256(receipt.deploy_fingerprint, "receipt.deploy_fingerprint");
@@ -386,6 +398,7 @@ export function validatePublicationReceipt(receipt) {
   assertNullableNonNegativeInteger(receipt.duration_ms, "receipt.duration_ms");
   validateVerification(receipt.verification);
   validateRollback(receipt.rollback, receipt.outcome);
+  validateRebuildSection(receipt.rebuild ?? null);
   validateCanarySection(receipt.canary);
   validateReconcileSection(receipt.reconcile);
   return receipt;
@@ -578,6 +591,7 @@ export function retriesFromPublishReceipt(publishReceipt) {
  */
 export function buildPublicationReceipt({
   run,
+  actor = null,
   outcome,
   reason,
   deployFingerprint,
@@ -591,6 +605,7 @@ export function buildPublicationReceipt({
   durationMs = null,
   verification = null,
   rollback = null,
+  rebuild = null,
   canaryEvidence = null,
   reconcileReport = null,
   recordedAt = new Date().toISOString(),
@@ -601,6 +616,7 @@ export function buildPublicationReceipt({
     schema: D1_PUBLICATION_RECEIPT_SCHEMA,
     receipt_id: receiptId || `${run.run_id}:${run.attempt}:${generation ?? "none"}`,
     recorded_at: recordedAt,
+    actor,
     run: { workflow: run.workflow, run_id: String(run.run_id), attempt: run.attempt },
     generation,
     deploy_fingerprint: deployFingerprint,
@@ -617,6 +633,12 @@ export function buildPublicationReceipt({
           compensates_receipt: rollback.compensatesReceipt,
           rebuild_command: rollback.rebuildCommand,
           reason: rollback.reason,
+        }
+      : null,
+    rebuild: rebuild
+      ? {
+          source_snapshot_sha256: rebuild.sourceSnapshotSha256,
+          estimated_writes: rebuild.estimatedWrites,
         }
       : null,
     canary: summarizeCanaryEvidence(canaryEvidence),
