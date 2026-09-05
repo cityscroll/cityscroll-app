@@ -24,6 +24,13 @@
  * without regenerating the expected outputs fails here rather than quietly
  * changing what the gate asserts.
  *
+ * A78-04's cutoff-aware challenge-watch signals run alongside it in the same
+ * diagnostic_only register, over the fixture projects that carry documented
+ * challenge-watch inputs. Every level printed there is a challenge watch
+ * over evidence public by a stated cutoff, never a forecast about a court, and
+ * the section asserts its own renderings against the forbidden prediction
+ * register before printing them.
+ *
  * A78-02's thirteen-project historical QA fixture runs alongside this same
  * gate: `evaluateHistoricalFixtureExpectations` (`warehouse/lib/
  * article78_historical_fixture.mjs`) checks every documented expectation
@@ -57,9 +64,16 @@ import {
   validateDeterminationContext,
 } from "../warehouse/lib/article78_litigation.mjs";
 import {
+  deriveFixtureChallengeWatches,
   diagnosticMetric,
   evaluateHistoricalFixtureExpectations,
 } from "../warehouse/lib/article78_historical_fixture.mjs";
+import {
+  assertNoChallengeWatchPredictionWording,
+  CHALLENGE_WATCH_LABEL,
+  CHALLENGE_WATCH_LEVELS,
+  CHALLENGE_WATCH_POLICY,
+} from "../warehouse/lib/article78_challenge_watch.mjs";
 import {
   admitNegatives,
   assertDerivedDenominator,
@@ -249,12 +263,57 @@ function renderHistoricalFixtureSection(report) {
   ].join("\n");
 }
 
+/**
+ * A78-04's challenge-watch section: the level derived for every fixture
+ * project that carries documented watch inputs, with the features that
+ * produced it and the evidence its cutoff excluded.
+ *
+ * Diagnostic_only, on the same footing as the historical-fixture section above
+ * and for the same reason: these levels are computed over a hand-picked sample
+ * of newsworthy projects, and a distribution of watch levels read off them
+ * would report the selection rather than anything about land-use approvals.
+ *
+ * The section also enforces the card's two hard boundaries over its own
+ * output rather than trusting the module that produced it: no watch whose
+ * only present features are conspicuousness reaches above baseline, and
+ * nothing rendered here reads as a prediction.
+ */
+function renderChallengeWatchSection(report) {
+  const conspicuousOnly = report.watches.filter((row) => (
+    row.present_features.length > 0
+    && row.present_features.every((key) => CHALLENGE_WATCH_POLICY.conspicuousness_only_features.includes(key))
+    && row.level !== "baseline"
+  ));
+  if (conspicuousOnly.length > 0) {
+    throw new Error(`article78 backtest: ${CHALLENGE_WATCH_POLICY.document_class_ceiling.statement} Offending watches ${JSON.stringify(conspicuousOnly)}`);
+  }
+  assertNoChallengeWatchPredictionWording(report.watches.map((row) => row.statement), "backtest challenge watch section");
+
+  const byLevel = CHALLENGE_WATCH_LEVELS
+    .map((level) => `${level}=${report.watches.filter((row) => row.level === level).length}`)
+    .join(" ");
+  const metrics = CHALLENGE_WATCH_LEVELS.map((level) => (
+    diagnosticMetric(`article78_challenge_watch_level_${level}`, report.watches.filter((row) => row.level === level).length)
+  ));
+  return [
+    `  ${CHALLENGE_WATCH_LABEL} signals (A78-04, policy ${CHALLENGE_WATCH_POLICY.policy_id}, diagnostic_only -- a watch over recorded evidence as of a cutoff, never a forecast):`,
+    `    ${report.watch_count} watch(es) over the fixture's documented inputs; ${byLevel}`,
+    ...report.watches.map((row) => [
+      `    ${row.level.padEnd(8)} ${row.project_id} as of ${row.as_of} (coverage ${row.coverage_grade}, ${row.coverage_grade_source})`,
+      `       ${row.level === "null" ? row.null_reason : `features ${row.present_features.join(", ") || "none"}`}`,
+      `       ${row.excluded_evidence.length > 0 ? `excluded by the cutoff: ${row.excluded_evidence.join(", ")}` : "nothing excluded by the cutoff"}`,
+    ].join("\n")),
+    `    ${metrics.map((metric) => `${metric.name}=${metric.value}`).join(" ")} -- diagnostic_only`,
+  ].join("\n");
+}
+
 function main(argv) {
   const write = argv.includes("--write");
   const fixtureText = readFileSync(FIXTURE_PATH, "utf8");
   const fixture = JSON.parse(fixtureText);
   const receipt = { ...runArticle78Backtest(fixture), fixture_sha256: sha256Hex(fixtureText) };
   const historicalReport = evaluateHistoricalFixtureExpectations();
+  const challengeWatchReport = deriveFixtureChallengeWatches();
 
   if (write) {
     writeFileSync(EXPECTED_PATH, serialize(receipt), "utf8");
@@ -276,6 +335,7 @@ function main(argv) {
     ...receipt.effective_decisions.map((entry) => `  ${entry.case_key}\n    effective ${entry.effective_decision_key ?? "none"} (${entry.effective_decision_court_level ?? "n/a"})\n    procedural_survival=${entry.case_outcome.procedural_survival} durable_petitioner_relief=${entry.case_outcome.durable_petitioner_relief} remedy_exposure=${entry.case_outcome.remedy_exposure}\n    superseded ${entry.superseded_decision_keys.length}, unresolved ${entry.unresolved ?? "none"}`),
     renderCoverageSection(receipt.coverage),
     renderHistoricalFixtureSection(historicalReport),
+    renderChallengeWatchSection(challengeWatchReport),
     "",
   ].join("\n"));
 
