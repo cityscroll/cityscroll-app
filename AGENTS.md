@@ -138,7 +138,11 @@ contracts. Do not turn it into a delivery log, roadmap, module inventory, or car
   `tools/provision_card_profile.sh provision --dest <dir> [--surface <work-surface>]`, and ask
   without provisioning with `tools/provision_card_profile.sh decide --surface <id>`. Run a gate in a
   reduced checkout through `node tools/verify_card_profile.mjs --gate <class> -- <command>`, never
-  bare.
+  bare. A **new** file added inside a reduced checkout is invisible to
+  `node tools/derive_card_profile.mjs`'s static reference scan until it is tracked, and `git add`
+  refuses a path outside the current sparse-checkout patterns — stage it with `git add --sparse
+  <path>` first, then rerun `node tools/derive_card_profile.mjs` (write mode, not `--check`) to fold
+  it into the committed pattern list.
 
 There are currently no tracked directory-local `AGENTS.md` or `CLAUDE.md` files. Add local guidance
 only when a documented material subtree rule changes how files there must be edited or verified;
