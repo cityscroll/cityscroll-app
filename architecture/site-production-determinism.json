@@ -10,6 +10,7 @@
     "site/action_registry.js",
     "site/admin_code_search.mjs",
     "site/admin_code.mjs",
+    "site/affordable_eligibility_facts.mjs",
     "site/affordance_grammar.mjs",
     "site/agency_browse_contract.mjs",
     "site/agency_connections.mjs",
