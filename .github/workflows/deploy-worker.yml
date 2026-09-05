@@ -137,6 +137,7 @@ jobs:
             --holder "$D1_FENCE_HOLDER" \
             --key d1-publication:state:v1 \
             --binding ALERT_STATE --remote --config worker/wrangler.toml \
+            --ledger .artifacts/d1-generation-ledger.json \
             --receipt .artifacts/d1-generation-claim.json \
             --github-output "$GITHUB_OUTPUT"
           if grep -q '"claimed": false' .artifacts/d1-generation-claim.json; then
@@ -177,6 +178,7 @@ jobs:
               --fingerprint "${{ steps.d1-deploy-fingerprint.outputs.fingerprint }}" \
               --key d1-publication:state:v1 \
               --binding ALERT_STATE --remote --config wrangler.toml \
+              --ledger ../.artifacts/d1-generation-ledger.json \
               --receipt ../.artifacts/d1-generation-abandon.json || true
           }
           trap abandon_fence ERR
@@ -186,6 +188,7 @@ jobs:
             --fingerprint "${{ steps.d1-deploy-fingerprint.outputs.fingerprint }}" \
             --key d1-publication:state:v1 \
             --binding ALERT_STATE --remote --config wrangler.toml \
+            --ledger ../.artifacts/d1-generation-ledger.json \
             --receipt ../.artifacts/d1-generation-commit.json \
             --github-output "$GITHUB_OUTPUT"
           if grep -q '"fenced": true' ../.artifacts/d1-generation-commit.json; then
@@ -199,12 +202,14 @@ jobs:
           node ../tools/d1_generation_fence.mjs renew \
             --generation "$D1_FENCE_GENERATION" --holder "$D1_FENCE_HOLDER" \
             --fingerprint "${{ steps.d1-deploy-fingerprint.outputs.fingerprint }}" \
-            --key d1-publication:state:v1 --binding ALERT_STATE --remote --config wrangler.toml
+            --key d1-publication:state:v1 --binding ALERT_STATE --remote --config wrangler.toml \
+            --ledger ../.artifacts/d1-generation-ledger.json
           npx wrangler@4.126.0 d1 execute crol-notices --remote --yes --file .d1-read-models/ocp_awards_read_model.sql
           node ../tools/d1_generation_fence.mjs renew \
             --generation "$D1_FENCE_GENERATION" --holder "$D1_FENCE_HOLDER" \
             --fingerprint "${{ steps.d1-deploy-fingerprint.outputs.fingerprint }}" \
-            --key d1-publication:state:v1 --binding ALERT_STATE --remote --config wrangler.toml
+            --key d1-publication:state:v1 --binding ALERT_STATE --remote --config wrangler.toml \
+            --ledger ../.artifacts/d1-generation-ledger.json
           npx wrangler@4.126.0 d1 execute crol-notices --remote --yes --file .d1-read-models/entity_intelligence_read_model.sql
           trap - ERR
       - name: Record published D1 fingerprint
@@ -230,6 +235,7 @@ jobs:
             --fingerprint "${{ steps.d1-deploy-fingerprint.outputs.fingerprint }}" \
             --key d1-publication:state:v1 \
             --binding ALERT_STATE --remote --config worker/wrangler.toml \
+            --ledger .artifacts/d1-generation-ledger.json \
             --receipt .artifacts/d1-generation-complete.json
           if grep -q '"completed": false' .artifacts/d1-generation-complete.json; then
             echo "D1 generation was fenced before publication completion."
