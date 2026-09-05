@@ -932,7 +932,8 @@ function ensureLandPhaseSpineTools(){
     landPhaseSpineToolsPromise=Promise.all([
       import("../land_phase_spine.mjs").catch(()=>null),
       import("../ulurp_statutory_clock.mjs").catch(()=>null),
-    ]).then(([phase, clock])=>{
+      import("../land_phase_role_strip.mjs").catch(()=>null),
+    ]).then(([phase, clock, roleStrip])=>{
       if(clock&&typeof clock.buildUlurpPipelinePosition==="function"){
         globalThis.buildUlurpPipelinePosition=clock.buildUlurpPipelinePosition;
       }
@@ -941,6 +942,12 @@ function ensureLandPhaseSpineTools(){
       }
       if(clock&&typeof clock.buildUlurpStatutoryClockView==="function"){
         globalThis.buildUlurpStatutoryClockView=clock.buildUlurpStatutoryClockView;
+      }
+      if(roleStrip&&typeof roleStrip.buildLandPhaseRoleStrip==="function"){
+        globalThis.buildLandPhaseRoleStrip=roleStrip.buildLandPhaseRoleStrip;
+      }
+      if(roleStrip&&typeof roleStrip.landPhaseRoleStripHTML==="function"){
+        globalThis.landPhaseRoleStripHTML=roleStrip.landPhaseRoleStripHTML;
       }
       return phase;
     });
@@ -1244,6 +1251,11 @@ function landPhaseSpineHTML(view, tools, record){
       summary=parts.join(" · ") || t("land_spine_phase_empty");
     }
     const statutory=landStatutoryDeadlineHTML(p.id, clock, p.state);
+    const roleStripBuild=typeof buildLandPhaseRoleStrip==="function"?buildLandPhaseRoleStrip:(globalThis.buildLandPhaseRoleStrip||null);
+    const roleStripRender=typeof landPhaseRoleStripHTML==="function"?landPhaseRoleStripHTML:(globalThis.landPhaseRoleStripHTML||null);
+    const roleStripHTML=(roleStripBuild&&roleStripRender)
+      ? roleStripRender(roleStripBuild(view,p.id),{t,escape:escUiHtml})
+      : "";
     const body=(p.aggregates||[]).map((a,idx)=>landPhaseAggregateHTML(a,p.id,idx)).join("")
       || `<div class="land-phase-row"><div class="land-phase-row-meta">${t("land_spine_phase_empty")}</div></div>`;
     return `<details class="land-phase${p.state==="current"?" current-phase":""}${p.state==="overlap"?" overlap-phase":""}"${open} id="land-phase-${escUiHtml(p.id)}" data-land-phase-panel="${escUiHtml(p.id)}" data-land-phase-state="${escUiHtml(p.state||"")}">
@@ -1252,7 +1264,7 @@ function landPhaseSpineHTML(view, tools, record){
         <span class="land-phase-state">${escUiHtml(stateWord)}</span>
         <span class="land-phase-summary" lang="en" dir="ltr">${escUiHtml(summary)}</span>
       </summary>
-      <div class="land-phase-body">${statutory}${body}</div>
+      <div class="land-phase-body">${roleStripHTML}${statutory}${body}</div>
     </details>`;
   };
   // Compact template: current (and explained overlap) open; earlier stages under history;
