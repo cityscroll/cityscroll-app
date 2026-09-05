@@ -1,0 +1,45 @@
+{
+  "schema": "cityscroll.procurement_pursuit_decision_pursuit_state_manifest.v1",
+  "captured_at": "2026-09-05T15:15:47Z",
+  "revision": "f7f307e26019bd5be31c7735e4950263b0855473",
+  "note": "Card \"PPD-06\" (procurement-pursuit-decision): a vendor records the pursuit decision they already made for one matter, and that decision resurfaces in a later alert or listing as the vendor's own private note. site/procurement_pursuit_state.mjs is a pure model with no rendered page of its own yet -- there is no natural slot on an existing surface to splice a resurfacing note into, so this card ships the module, its render helper, and its tests, and this manifest records textual evidence instead of a screenshot. No image binaries are produced or committed for this card.",
+  "external_output_directory_note": "Not applicable -- no screenshot is produced for this card. Each capture's evidence is the exact JSON text tools/render_procurement_pursuit_state_capture_fixtures.mjs prints for that case, reproduced verbatim in rendered-lines.md alongside this manifest and hashed as content_sha256 below. Re-run that script to regenerate byte-identical output (same content_sha256) at this revision.",
+  "captures": [
+    {
+      "case": "pursuit-state-recorded",
+      "surface": "procurement-pursuit-state (pure module fixture; no rendered page)",
+      "route": null,
+      "revision": "f7f307e26019bd5be31c7735e4950263b0855473",
+      "fixture_ids": ["A", "D"],
+      "data_vintage": "Fixture A (Parks, Playground reconstruction, procurement:epin-2026-07) and Fixture D (MTA CBTC, S48020) rows shaped as procurement_alert_atom.mjs / procurement_process_watch.mjs already produce them; a decision recorded at 2026-07-10T09:00:00.000Z.",
+      "assertion": "recordPursuitDecision() stores a vendor's \"pursuing\" decision with a structured reason and a note for Fixture A's matter; resurfacePursuitState() over a later listing containing both fixtures annotates only Fixture A's row with a pursuit_state carrying the personal-state register and user-supplied provenance, and leaves Fixture D's row with no pursuit_state key at all.",
+      "content_source": "tools/render_procurement_pursuit_state_capture_fixtures.mjs",
+      "content_sha256": "131c2fee849c18cbe8c8cafc944cd895e738b6d09a634b928fd334ef27a706e6",
+      "bytes": 1458
+    },
+    {
+      "case": "pursuit-state-none",
+      "surface": "procurement-pursuit-state (pure module fixture; no rendered page)",
+      "route": null,
+      "revision": "f7f307e26019bd5be31c7735e4950263b0855473",
+      "fixture_ids": ["A", "D"],
+      "data_vintage": "The same Fixture A and Fixture D rows, with no decision ever recorded in the vendor's store.",
+      "assertion": "resurfacePursuitState() over a listing where the vendor has recorded nothing returns every row unchanged -- no pursuit_state key is added to either row, and no decision is inferred or defaulted.",
+      "content_source": "tools/render_procurement_pursuit_state_capture_fixtures.mjs",
+      "content_sha256": "491a7e9bfff9c9ea99bb7a4801b7ce9b36d46fb7f3415cd2c5364b0327b212f0",
+      "bytes": 433
+    },
+    {
+      "case": "pursuit-state-privacy-boundary",
+      "surface": "procurement-pursuit-state (pure module fixture; no rendered page)",
+      "route": null,
+      "revision": "f7f307e26019bd5be31c7735e4950263b0855473",
+      "fixture_ids": ["A"],
+      "data_vintage": "Fixture A's matter, with a \"passed\" decision recorded at 2026-07-10T09:00:00.000Z in one vendor's store only.",
+      "assertion": "Two separate per-vendor stores over the same fixture row: the recording vendor's resurfaced view carries the pursuit_state, and a second vendor's resurfaced view and direct pursuitStateFor() lookup both come back with no state at all -- one vendor's recorded decision is never visible in another vendor's view.",
+      "content_source": "tools/render_procurement_pursuit_state_capture_fixtures.mjs",
+      "content_sha256": "65dc6a5abb76f33b5ca90d00b72ccb7c4657705f33c8f191c596cbe5b4212b9b",
+      "bytes": 885
+    }
+  ]
+}
