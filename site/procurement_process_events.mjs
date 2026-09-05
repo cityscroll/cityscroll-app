@@ -333,11 +333,39 @@ function compareProcessEvents(left, right) {
     || String(left.source_observation_ref || "").localeCompare(String(right.source_observation_ref || ""));
 }
 
+/**
+ * Index retained observations by ref so a caller projecting many objects does
+ * not rescan the whole observation list once per object. Position is retained
+ * so each object's observations keep their read-model order.
+ */
+export function procurementObservationIndex(observations = []) {
+  const byRef = new Map();
+  (Array.isArray(observations) ? observations : []).forEach((observation, position) => {
+    const ref = observation?.source_observation_ref;
+    const bucket = byRef.get(ref);
+    if (bucket) bucket.push({ position, observation });
+    else byRef.set(ref, [{ position, observation }]);
+  });
+  return byRef;
+}
+
+function objectObservationsFrom(object, index) {
+  const refs = Array.isArray(object.source_observation_refs) ? object.source_observation_refs : [];
+  const found = [];
+  const seen = new Set();
+  for (const ref of refs) {
+    if (seen.has(ref)) continue;
+    seen.add(ref);
+    for (const entry of index.get(ref) || []) found.push(entry);
+  }
+  return found.sort((left, right) => left.position - right.position).map((entry) => entry.observation);
+}
+
 /** Project retained observations attached to one object into ordered process events. */
-export function procurementProcessEvents(object = {}, observations = []) {
-  const refs = new Set(Array.isArray(object.source_observation_refs) ? object.source_observation_refs : []);
-  const objectObservations = (Array.isArray(observations) ? observations : [])
-    .filter((observation) => refs.has(observation?.source_observation_ref));
+export function procurementProcessEvents(object = {}, observations = [], index = null) {
+  const objectObservations = index
+    ? objectObservationsFrom(object, index)
+    : objectObservationsFrom(object, procurementObservationIndex(observations));
   const byId = new Map();
   for (const observation of objectObservations) {
     const event = processEventFromObservation({

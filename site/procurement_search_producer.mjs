@@ -84,16 +84,18 @@ function observationIndex(readModel) {
     .map((observation) => [observation?.source_observation_ref, observation]));
 }
 
+const OBSERVATION_PRIORITY = new Map([
+  ["city_record", 0], ["passport_public_contracts", 1], ["passport_public_rfx", 2],
+  ["checkbook_nycha_contracts", 3], ["checkbook_contracts", 4], ["checkbook_spending", 5],
+  ["nys_contract_reporter", 6], ["mta_current_opportunities", 7], ["mta_bid_results", 8],
+  ["mta_annual_contracts", 9], ["mta_cd_awards", 10],
+]);
+
 function orderedObservations(object, index) {
   const observations = (object?.source_observation_refs || [])
     .map((ref) => index.get(ref))
     .filter(Boolean);
-  const priority = new Map([
-    ["city_record", 0], ["passport_public_contracts", 1], ["passport_public_rfx", 2],
-    ["checkbook_nycha_contracts", 3], ["checkbook_contracts", 4], ["checkbook_spending", 5],
-    ["nys_contract_reporter", 6], ["mta_current_opportunities", 7], ["mta_bid_results", 8],
-    ["mta_annual_contracts", 9], ["mta_cd_awards", 10],
-  ]);
+  const priority = OBSERVATION_PRIORITY;
   return observations.sort((left, right) => (
     (priority.get(left.source_system) ?? 9) - (priority.get(right.source_system) ?? 9)
     || left.source_observation_ref.localeCompare(right.source_observation_ref)
@@ -210,10 +212,10 @@ function browseRecord(object, observations, stages, evidence, facts, processStat
   });
 }
 
-export function materializeProcurementSearchDocument(object = {}, readModel = {}) {
+export function materializeProcurementSearchDocument(object = {}, readModel = {}, index = null) {
   if (object?.object_type !== "procurement" || !clean(object?.procurement_id, 320)) return null;
   if (!Array.isArray(object.source_observation_refs) || !object.source_observation_refs.length) return null;
-  const observations = orderedObservations(object, observationIndex(readModel));
+  const observations = orderedObservations(object, index || observationIndex(readModel));
   if (!observations.length || observations.length !== object.source_observation_refs.length) return null;
   const rows = observations.map((entry) => entry.snapshot || {});
   const vendorRows = observations
@@ -293,13 +295,16 @@ export function buildProcurementSearchDocuments(readModel = {}) {
   const seen = new Set();
   let notIndexed = 0;
   let duplicates = 0;
+  // One shared observation index for the whole corpus: rebuilding it per object
+  // made this producer quadratic in the size of the read model.
+  const index = observationIndex(readModel);
   for (const object of rows) {
     if (seen.has(object?.procurement_id)) {
       duplicates += 1;
       continue;
     }
     if (object?.procurement_id) seen.add(object.procurement_id);
-    const document = materializeProcurementSearchDocument(object, readModel);
+    const document = materializeProcurementSearchDocument(object, readModel, index);
     if (document) documents.push(document);
     else notIndexed += 1;
   }

@@ -12,7 +12,7 @@ import {
   isPublicSameContractCrosswalkRow,
   moneyNumber,
 } from "../entity_resolution/cross_domain/pin_family_mismatch.mjs";
-import { contractIdKey, pinKey, pinsShareFamily } from "./pin_sibling_grouping.mjs";
+import { contractIdKey, pinKey, pinKeysShareFamily } from "./pin_sibling_grouping.mjs";
 
 export const CHECKBOOK_PASSPORT_CORROBORATION_SCHEMA =
   "cityscroll.checkbook_passport_corroboration.v1";
@@ -90,24 +90,58 @@ function preferPrime(rows) {
 }
 
 /**
+ * Normalize the Checkbook lookup corpus once and index it by contract id and
+ * PIN. The normalization and the prime-vendor preference depend only on the
+ * corpus, so classifying many PASSPort identities against the same rows should
+ * pay for them once rather than once per identity.
+ */
+export function prepareCheckbookLookupIndex(checkbookRows = []) {
+  const rows = preferPrime((Array.isArray(checkbookRows) ? checkbookRows : [])
+    .map(normalizeCheckbookLookupRow)
+    .filter((row) => row.contract_id || row.pin));
+  const contractKeys = rows.map((row) => contractIdKey(row.contract_id));
+  const pinKeys = rows.map((row) => pinKey(row.pin));
+  const byContract = new Map();
+  const byPin = new Map();
+  rows.forEach((row, position) => {
+    const contractKey = contractKeys[position];
+    if (contractKey) {
+      const bucket = byContract.get(contractKey);
+      if (bucket) bucket.push(row);
+      else byContract.set(contractKey, [row]);
+    }
+    const key = pinKeys[position];
+    if (key) {
+      const bucket = byPin.get(key);
+      if (bucket) bucket.push(row);
+      else byPin.set(key, [row]);
+    }
+  });
+  return { rows, pinKeys, byContract, byPin };
+}
+
+/**
  * In-memory Checkbook query against already-fetched contract rows.
  * Live XML uses Contracts-by-PIN and Spending-by-contract_id; this selector
  * is the same join over whatever rows those lookups returned.
  */
-export function queryCheckbookRowsForPassport(passport = {}, checkbookRows = []) {
-  const rows = preferPrime((Array.isArray(checkbookRows) ? checkbookRows : [])
-    .map(normalizeCheckbookLookupRow)
-    .filter((row) => row.contract_id || row.pin));
+export function queryCheckbookRowsForPassport(passport = {}, checkbookRows = [], index = null) {
+  const prepared = index || prepareCheckbookLookupIndex(checkbookRows);
+  const { rows, pinKeys } = prepared;
   const contract = contractIdKey(passport.contract_id);
   const pin = pinKey(passport.epin || passport.pin);
+  const family = [];
+  if (pin) {
+    for (let position = 0; position < rows.length; position += 1) {
+      const candidate = pinKeys[position];
+      if (candidate && pinKeysShareFamily(candidate, pin)) family.push(rows[position]);
+    }
+  }
   return {
     rows,
-    exact_contract: uniqueByContract(rows.filter((row) =>
-      contract && contractIdKey(row.contract_id) === contract)),
-    exact_pin: uniqueByContract(rows.filter((row) =>
-      pin && pinKey(row.pin) === pin)),
-    pin_family: uniqueByContract(rows.filter((row) =>
-      pin && row.pin && pinsShareFamily(row.pin, pin))),
+    exact_contract: uniqueByContract(contract ? prepared.byContract.get(contract) || [] : []),
+    exact_pin: uniqueByContract(pin ? prepared.byPin.get(pin) || [] : []),
+    pin_family: uniqueByContract(family),
   };
 }
 
@@ -194,7 +228,7 @@ function pinFamilyReceipt(passport, checkbook, joinMethod) {
  * PIN-family or a non-exact disagreement: related-instrument or needs-review.
  * No Checkbook row: honest unknown. Never a constructor or route.
  */
-export function classifyCheckbookPassportCorroboration({ passport = {}, checkbookRows = [] } = {}) {
+export function classifyCheckbookPassportCorroboration({ passport = {}, checkbookRows = [], checkbookIndex = null } = {}) {
   const identity = {
     contract_id: text(passport.contract_id),
     epin: text(passport.epin || passport.pin),
@@ -209,7 +243,7 @@ export function classifyCheckbookPassportCorroboration({ passport = {}, checkboo
     end_date: text(passport.end_date || passport.end),
     status: text(passport.status),
   };
-  const queried = queryCheckbookRowsForPassport(identity, checkbookRows);
+  const queried = queryCheckbookRowsForPassport(identity, checkbookRows, checkbookIndex);
 
   if (!queried.rows.length) return receipt("unknown", identity, null);
 
@@ -260,12 +294,37 @@ export function classifyCheckbookPassportCorroboration({ passport = {}, checkboo
   return receipt("unknown", identity, null);
 }
 
-export function passportIdentityFromObject(object = {}, sourceRecords = []) {
-  const refs = new Set(object.source_observation_refs || []);
-  const passportRecord = (Array.isArray(sourceRecords) ? sourceRecords : []).find((record) => {
+/**
+ * Index the PASSPort contract records by observation ref, keeping their
+ * position, so resolving one object's PASSPort identity is a lookup over that
+ * object's own refs instead of a scan of every source record.
+ */
+export function preparePassportRecordIndex(sourceRecords = []) {
+  const byRef = new Map();
+  (Array.isArray(sourceRecords) ? sourceRecords : []).forEach((record, position) => {
+    if (text(record?.source_system)?.toLowerCase() !== PASSPORT_CONTRACT_SOURCE) return;
     const ref = observationRef(record);
-    return ref && refs.has(ref) && text(record.source_system)?.toLowerCase() === PASSPORT_CONTRACT_SOURCE;
+    // First record wins on a repeated ref, matching the linear find it replaces.
+    if (!ref || byRef.has(ref)) return;
+    byRef.set(ref, { position, record });
   });
+  return byRef;
+}
+
+function passportRecordFor(object, index) {
+  let found = null;
+  for (const ref of object.source_observation_refs || []) {
+    const entry = index.get(ref);
+    if (entry && (!found || entry.position < found.position)) found = entry;
+  }
+  return found?.record;
+}
+
+export function passportIdentityFromObject(object = {}, sourceRecords = [], passportIndex = null) {
+  const passportRecord = passportRecordFor(
+    object,
+    passportIndex || preparePassportRecordIndex(sourceRecords),
+  );
   const snapshot = snapshotOf(passportRecord);
   return {
     contract_id: object.identity_keys?.contract_ids?.[0] || snapshot.contract_id,
@@ -290,12 +349,15 @@ export function attachCheckbookPassportCorroboration(objects = [], {
   includeUnknown = false,
 } = {}) {
   if (!Array.isArray(checkbookLookupRows) || !Array.isArray(objects)) return objects;
+  const checkbookIndex = prepareCheckbookLookupIndex(checkbookLookupRows);
+  const passportIndex = preparePassportRecordIndex(sourceRecords);
   for (const object of objects) {
     if (!isPassportOnlyProcurement(object)) continue;
-    const passport = passportIdentityFromObject(object, sourceRecords);
+    const passport = passportIdentityFromObject(object, sourceRecords, passportIndex);
     const classified = classifyCheckbookPassportCorroboration({
       passport,
       checkbookRows: checkbookLookupRows,
+      checkbookIndex,
     });
     if (classified.status === "unknown" && !includeUnknown) continue;
     object.checkbook_corroboration = classified;

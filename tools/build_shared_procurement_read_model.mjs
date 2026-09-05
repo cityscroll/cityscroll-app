@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
-import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
-import { resolve } from "node:path";
+import { mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { contractSearchDocumentToMoneyRow } from "../site/contract_search_bridge.mjs";
@@ -21,8 +21,15 @@ import {
 } from "../worker/src/lib/mta_procurement_source_records.mjs";
 import {
   attachCoherenceReceipt,
+  sha256Bytes,
   sourceModelFingerprint,
 } from "./lib/procurement_index_coherence.mjs";
+import { moduleSourceFingerprint } from "./lib/module_source_fingerprint.mjs";
+import {
+  buildCheckReceipt,
+  shardNamesOnDisk as shardNamesUnder,
+  verifyFromCheckReceipt,
+} from "./lib/generated_artifact_check_receipt.mjs";
 
 const SPINE = new URL("../site/data/procurement_spine_sources.json", import.meta.url);
 const MTA_FIXTURES = new URL("../warehouse/fixtures/authority-native-procurement/mta-opportunities.v1.json", import.meta.url);
@@ -35,6 +42,12 @@ const BROWSE_QUERY_ROWS_OUT = new URL("../site/data/procurement_browse_query_row
 const BROWSE_QUERY_SHARD_DIR = new URL("../site/data/procurement_browse_rows/", import.meta.url);
 const DIGEST_OUT = new URL("../site/data/procurement_digest_snapshot.json", import.meta.url);
 const MTA_SOURCES = new URL("../site/data/mta_procurement_sources.json", import.meta.url);
+const ROOT = new URL("../", import.meta.url);
+// Ephemeral, never committed: written beside the artifacts by a build so the
+// immediately following --check can verify them without a second full build.
+const CHECK_RECEIPT = new URL("../.artifacts/procurement-read-model-check.json", import.meta.url);
+const GENERATOR = "tools/build_shared_procurement_read_model.mjs";
+const INPUTS = [SPINE, AWARDS, MTA_FIXTURES, MTA_SOURCES];
 
 function norm(value) {
   return String(value ?? "").toUpperCase().replace(/[^A-Z0-9]/g, "");
@@ -263,93 +276,156 @@ function shardPath(descriptor) {
   return new URL(`../site/data/${descriptor.path}`, import.meta.url);
 }
 
-function checkOrWriteShardedModel(model) {
+function shardNamesOnDisk(dir) {
+  return shardNamesUnder(fileURLToPath(dir));
+}
+
+/**
+ * One family of emitted files: its serialized contents plus, for a sharded
+ * family, the shard directory whose surplus files are pruned on a write and
+ * reported as stale on a check.
+ */
+function shardedModelGroup(model) {
   const artifacts = buildSharedProcurementReadModelShardArtifacts(model);
-  const outputs = [
-    [MODEL_OUT, serialized(artifacts.manifest)],
-    ...artifacts.manifest.shards.map((descriptor, index) => [
-      shardPath(descriptor),
-      serialized(artifacts.shards[index]),
-    ]),
-  ];
-  const expectedNames = new Set(artifacts.manifest.shards.map((descriptor) => descriptor.path.split("/").at(-1)));
-  const actualNames = new Set(existsSync(MODEL_SHARD_DIR)
-    ? readdirSync(MODEL_SHARD_DIR, { withFileTypes: true })
-      .filter((entry) => entry.isFile() && /^shard-\d+\.json$/.test(entry.name))
-      .map((entry) => entry.name)
-    : []);
-  if (process.argv.includes("--check")) {
-    let current = true;
-    for (const [path, content] of outputs) {
-      if (readFileSync(path, "utf8") !== content) {
-        console.error(`stale procurement artifact: ${fileURLToPath(path)}`);
-        current = false;
-      }
-    }
-    for (const name of actualNames) {
-      if (!expectedNames.has(name)) {
-        console.error(`stale procurement shard: ${fileURLToPath(new URL(name, MODEL_SHARD_DIR))}`);
-        current = false;
-      }
-    }
-    return current;
-  }
-  mkdirSync(MODEL_SHARD_DIR, { recursive: true });
-  for (const name of actualNames) {
-    if (!expectedNames.has(name)) rmSync(new URL(name, MODEL_SHARD_DIR));
-  }
-  for (const [path, content] of outputs) writeFileSync(path, content);
-  return true;
+  return {
+    artifactLabel: "stale procurement artifact",
+    shardLabel: "stale procurement shard",
+    shardDir: MODEL_SHARD_DIR,
+    expectedNames: new Set(artifacts.manifest.shards.map((descriptor) => descriptor.path.split("/").at(-1))),
+    outputs: [
+      [MODEL_OUT, serialized(artifacts.manifest)],
+      ...artifacts.manifest.shards.map((descriptor, index) => [
+        shardPath(descriptor),
+        serialized(artifacts.shards[index]),
+      ]),
+    ],
+  };
 }
 
 function browseQueryShardPath(descriptor) {
   return new URL(`../site/data/${descriptor.path}`, import.meta.url);
 }
 
-function checkOrWriteBrowseQueryArtifacts(browse, sourceModelFingerprint) {
+function browseQueryGroup(browse, sourceModelFingerprint) {
   const artifacts = buildProcurementBrowseQueryArtifacts({
     ...browse,
     source_model_fingerprint: sourceModelFingerprint,
   });
-  const outputs = [
-    [BROWSE_QUERY_OUT, `${JSON.stringify(artifacts.manifest)}\n`],
-    [BROWSE_QUERY_ROWS_OUT, serialized(artifacts.queryRowsArtifact)],
-    ...artifacts.manifest.shards.map((descriptor, index) => [
-      browseQueryShardPath(descriptor),
-      serialized(artifacts.shards[index]),
-    ]),
-  ];
-  const expectedNames = new Set(artifacts.manifest.shards.map((descriptor) => descriptor.path.split("/").at(-1)));
-  const actualNames = existsSync(BROWSE_QUERY_SHARD_DIR)
-    ? readdirSync(BROWSE_QUERY_SHARD_DIR, { withFileTypes: true })
-      .filter((entry) => entry.isFile() && /^shard-\d+\.json$/.test(entry.name))
-      .map((entry) => entry.name)
-    : [];
-  if (process.argv.includes("--check")) {
-    let current = true;
-    for (const [path, content] of outputs) {
-      if (readFileSync(path, "utf8") !== content) {
-        console.error(`stale procurement browse query artifact: ${fileURLToPath(path)}`);
-        current = false;
-      }
-    }
-    for (const name of actualNames) {
-      if (!expectedNames.has(name)) {
-        console.error(`stale procurement browse query shard: ${fileURLToPath(new URL(name, BROWSE_QUERY_SHARD_DIR))}`);
-        current = false;
-      }
-    }
-    return current;
-  }
-  mkdirSync(BROWSE_QUERY_SHARD_DIR, { recursive: true });
-  for (const name of actualNames) {
-    if (!expectedNames.has(name)) rmSync(new URL(name, BROWSE_QUERY_SHARD_DIR));
-  }
-  for (const [path, content] of outputs) writeFileSync(path, content);
-  return true;
+  return {
+    artifactLabel: "stale procurement browse query artifact",
+    shardLabel: "stale procurement browse query shard",
+    shardDir: BROWSE_QUERY_SHARD_DIR,
+    expectedNames: new Set(artifacts.manifest.shards.map((descriptor) => descriptor.path.split("/").at(-1))),
+    outputs: [
+      [BROWSE_QUERY_OUT, `${JSON.stringify(artifacts.manifest)}\n`],
+      [BROWSE_QUERY_ROWS_OUT, serialized(artifacts.queryRowsArtifact)],
+      ...artifacts.manifest.shards.map((descriptor, index) => [
+        browseQueryShardPath(descriptor),
+        serialized(artifacts.shards[index]),
+      ]),
+    ],
+  };
 }
 
-function main() {
+function writeGroups(groups) {
+  for (const group of groups) {
+    if (group.shardDir) {
+      mkdirSync(group.shardDir, { recursive: true });
+      for (const name of shardNamesOnDisk(group.shardDir)) {
+        if (!group.expectedNames.has(name)) rmSync(new URL(name, group.shardDir));
+      }
+    }
+    for (const [path, content] of group.outputs) writeFileSync(path, content);
+  }
+}
+
+function checkGroups(groups) {
+  let current = true;
+  for (const group of groups) {
+    for (const [path, content] of group.outputs) {
+      if (readFileSync(path, "utf8") !== content) {
+        console.error(`${group.artifactLabel}: ${fileURLToPath(path)}`);
+        current = false;
+      }
+    }
+    if (!group.shardDir) continue;
+    for (const name of shardNamesOnDisk(group.shardDir)) {
+      if (!group.expectedNames.has(name)) {
+        console.error(`${group.shardLabel}: ${fileURLToPath(new URL(name, group.shardDir))}`);
+        current = false;
+      }
+    }
+  }
+  return current;
+}
+
+function repoRelative(url) {
+  return relative(fileURLToPath(ROOT), fileURLToPath(url)).replaceAll("\\", "/");
+}
+
+function generatorFingerprint() {
+  return moduleSourceFingerprint(fileURLToPath(import.meta.url), fileURLToPath(ROOT)).fingerprint;
+}
+
+function inputDigests() {
+  return Object.fromEntries(INPUTS.map((url) => [repoRelative(url), sha256Bytes(readFileSync(url))]));
+}
+
+
+function receiptGroups(groups) {
+  return groups.map((group) => ({
+    artifactLabel: group.artifactLabel,
+    shardLabel: group.shardLabel,
+    shardDir: group.shardDir ? repoRelative(group.shardDir) : null,
+    expectedNames: group.expectedNames,
+    outputs: group.outputs.map(([path, content]) => [repoRelative(path), content]),
+  }));
+}
+
+/**
+ * Record what this build wrote, and the exact inputs and generator source it
+ * wrote them from, so the --check that immediately follows can make the same
+ * assertion a second full build would make.
+ */
+function writeCheckReceipt(model, groups) {
+  const receipt = buildCheckReceipt({
+    generator: GENERATOR,
+    generatedAt: model.generated_at || null,
+    rowCount: model.rows.length,
+    generatorFingerprint: generatorFingerprint(),
+    inputs: inputDigests(),
+    groups: receiptGroups(groups),
+  });
+  mkdirSync(new URL("./", CHECK_RECEIPT), { recursive: true });
+  writeFileSync(CHECK_RECEIPT, `${JSON.stringify(receipt, null, 2)}\n`);
+}
+
+/**
+ * Verify the emitted artifacts from the recorded digests. Returns null when the
+ * receipt cannot stand in for a rebuild — absent, from another generator
+ * revision, or from different inputs — so the caller falls back to the full
+ * build-and-compare path and the failure semantics stay identical.
+ */
+function checkFromReceipt() {
+  let receipt;
+  try {
+    receipt = JSON.parse(readFileSync(CHECK_RECEIPT, "utf8"));
+  } catch {
+    return null;
+  }
+  const verified = verifyFromCheckReceipt({
+    receipt,
+    root: fileURLToPath(ROOT),
+    generator: GENERATOR,
+    generatorFingerprint: generatorFingerprint(),
+    inputs: inputDigests(),
+  });
+  if (!verified) return null;
+  for (const message of verified.stale) console.error(message);
+  return verified;
+}
+
+function buildAndEmit() {
   const spineBytes = readFileSync(SPINE);
   const awardsBytes = readFileSync(AWARDS);
   const nativeFixturesBytes = readFileSync(MTA_FIXTURES);
@@ -365,27 +441,40 @@ function main() {
       mtaSources: JSON.parse(mtaBytes.toString("utf8")),
     },
   );
-  const outputs = [
-    [BROWSE_OUT, serialized(browse)],
-    [DIGEST_OUT, serialized(digest)],
+  const groups = [
+    shardedModelGroup(model),
+    browseQueryGroup(browse, model.coherence_receipt.source_model_fingerprint),
+    {
+      artifactLabel: "stale procurement artifact",
+      shardLabel: null,
+      shardDir: null,
+      expectedNames: null,
+      outputs: [
+        [BROWSE_OUT, serialized(browse)],
+        [DIGEST_OUT, serialized(digest)],
+      ],
+    },
   ];
   if (process.argv.includes("--check")) {
-    const modelCurrent = checkOrWriteShardedModel(model);
-    const browseQueryCurrent = checkOrWriteBrowseQueryArtifacts(browse, model.coherence_receipt.source_model_fingerprint);
-    for (const [path, content] of outputs) {
-      if (readFileSync(path, "utf8") !== content) {
-        console.error(`stale procurement artifact: ${fileURLToPath(path)}`);
-        process.exitCode = 1;
-      }
-    }
-    if (!modelCurrent || !browseQueryCurrent) process.exitCode = 1;
+    if (!checkGroups(groups)) process.exitCode = 1;
     if (!process.exitCode) console.log(`procurement artifacts current (${model.rows.length} objects)`);
     return;
   }
-  checkOrWriteShardedModel(model);
-  checkOrWriteBrowseQueryArtifacts(browse, model.coherence_receipt.source_model_fingerprint);
-  for (const [path, content] of outputs) writeFileSync(path, content);
+  writeGroups(groups);
+  writeCheckReceipt(model, groups);
   console.log(`wrote procurement artifacts (${model.rows.length} objects, ${browse.rows.length} Browse rows, ${digest.row_count} CROL-negative digest rows)`);
+}
+
+function main() {
+  if (process.argv.includes("--check")) {
+    const verified = checkFromReceipt();
+    if (verified) {
+      if (!verified.current) process.exitCode = 1;
+      else console.log(`procurement artifacts current (${verified.rowCount} objects)`);
+      return;
+    }
+  }
+  buildAndEmit();
 }
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {

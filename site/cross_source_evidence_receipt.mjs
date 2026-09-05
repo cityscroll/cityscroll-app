@@ -161,7 +161,12 @@ const FACT_DEFINITIONS = Object.freeze([
 ]);
 
 function looseText(value) {
-  const result = String(value ?? "").replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+  const raw = String(value ?? "");
+  // Markup stripping is only meaningful when a tag is present. Skipping the
+  // scan for the common tag-free case keeps this hot helper cheap without
+  // changing its result.
+  const stripped = raw.includes("<") ? raw.replace(/<[^>]*>/g, " ") : raw;
+  const result = stripped.replace(/\s+/g, " ").trim();
   return result || null;
 }
 
@@ -293,27 +298,120 @@ function exactCorroborationJoin(object) {
   return { receipt, basis };
 }
 
+function lookupContractKey(value) {
+  return String(value ?? "").replace(/[^A-Za-z0-9]/g, "").toUpperCase();
+}
+
+function prepareJoin(join, provenanceGraph, curationReceipts) {
+  if (!acceptedJoin(join)) return null;
+  if (curationBlocksSameRecord(join, curationReceipts)) return null;
+  if (provenanceBlocksSameRecord(join, provenanceGraph)) return null;
+  return {
+    ...join,
+    basis: looseText(join.basis || join.join_method || join.join_key)?.toLowerCase(),
+    relation: CROSS_SOURCE_RELATION.exact,
+    provenance: provenanceForJoin(join, provenanceGraph),
+    refs: joinRefs(join),
+  };
+}
+
+/**
+ * Precompute every model-wide projection buildCrossSourceEvidenceReceipt would
+ * otherwise recompute for each object: the observation index, the source-system
+ * census, the Checkbook lookup index, and the accepted-join preparation. The
+ * per-object work then scales with that object's own observations and joins
+ * instead of with the whole read model.
+ *
+ * An index must be built from the same observations, joins, lookup rows,
+ * provenance graph, and curation receipts the receipts are then built with.
+ */
+export function buildCrossSourceEvidenceIndex({
+  observations = [],
+  acceptedJoins = [],
+  checkbookLookupRows = null,
+  provenanceGraph = null,
+  curationReceipts = [],
+} = {}) {
+  const rows = Array.isArray(observations) ? observations : [];
+  const byRef = new Map();
+  const systems = new Set();
+  let passport = null;
+  for (const observation of rows) {
+    const ref = observationRef(observation);
+    // Later observations win on a repeated ref, matching the single-pass Map
+    // construction this index replaces.
+    if (ref) byRef.set(ref, observation);
+    const system = sourceSystem(observation);
+    if (system) systems.add(system);
+    if (!passport && system === "passport_public_contracts") passport = observation;
+  }
+
+  const lookupByContractKey = new Map();
+  for (const row of Array.isArray(checkbookLookupRows) ? checkbookLookupRows : []) {
+    const id = looseText(row?.contract_id || row?.id || row?.prime_contract_id);
+    if (!id) continue;
+    const key = lookupContractKey(id);
+    // First match wins, matching the linear find this index replaces.
+    if (!lookupByContractKey.has(key)) lookupByContractKey.set(key, row);
+  }
+
+  const prepared = [];
+  const byProcurementId = new Map();
+  const unscoped = [];
+  for (const join of Array.isArray(acceptedJoins) ? acceptedJoins : []) {
+    const ready = prepareJoin(join, provenanceGraph, curationReceipts);
+    if (!ready) continue;
+    const entry = { position: prepared.length, join: ready };
+    prepared.push(entry);
+    if (!join?.procurement_id) unscoped.push(entry);
+    else {
+      const bucket = byProcurementId.get(join.procurement_id);
+      if (bucket) bucket.push(entry);
+      else byProcurementId.set(join.procurement_id, [entry]);
+    }
+  }
+
+  return {
+    byRef,
+    systems,
+    passport,
+    passportRef: observationRef(passport),
+    lookupByContractKey,
+    prepared,
+    /** Accepted joins visible to one object, in the original join order. */
+    joinsFor(objectId) {
+      if (!objectId) return prepared.map((entry) => entry.join);
+      const scoped = byProcurementId.get(objectId) || [];
+      if (!unscoped.length) return scoped.map((entry) => entry.join);
+      if (!scoped.length) return unscoped.map((entry) => entry.join);
+      const merged = [];
+      let left = 0;
+      let right = 0;
+      while (left < unscoped.length || right < scoped.length) {
+        const takeLeft = right >= scoped.length
+          || (left < unscoped.length && unscoped[left].position < scoped[right].position);
+        merged.push(takeLeft ? unscoped[left++].join : scoped[right++].join);
+      }
+      return merged;
+    },
+  };
+}
+
 /**
  * Project already-classified exact Checkbook corroboration into the receipt
  * without constructing a procurement object or minting a route.
  */
-function attachExactCorroboration(object, observations, acceptedJoins, lookupRows = null, generatedAt = null) {
+function exactCorroborationAttachment(object, index, generatedAt = null) {
   const classified = exactCorroborationJoin(object);
-  if (!classified) return { observations, acceptedJoins };
-  const systems = new Set((Array.isArray(observations) ? observations : []).map(sourceSystem).filter(Boolean));
-  if (systems.has("checkbook_contracts")) return { observations, acceptedJoins };
-  const passport = (Array.isArray(observations) ? observations : [])
-    .find((row) => sourceSystem(row) === "passport_public_contracts");
-  const passportRef = observationRef(passport);
-  if (!passportRef) return { observations, acceptedJoins };
+  if (!classified) return null;
+  if (index.systems.has("checkbook_contracts")) return null;
+  const passport = index.passport;
+  const passportRef = index.passportRef;
+  if (!passportRef) return null;
   const { receipt, basis } = classified;
   const nativeId = looseText(receipt.checkbook_contract_id) || "checkbook-corroboration";
   const checkbookRef = `checkbook_contracts:${nativeId}`;
-  const lookup = (Array.isArray(lookupRows) ? lookupRows : []).find((row) => {
-    const id = looseText(row?.contract_id || row?.id || row?.prime_contract_id);
-    return nativeId && id && id.replace(/[^A-Za-z0-9]/g, "").toUpperCase()
-      === nativeId.replace(/[^A-Za-z0-9]/g, "").toUpperCase();
-  });
+  const lookup = index.lookupByContractKey.get(lookupContractKey(nativeId));
   const checkbook = {
     source_system: "checkbook_contracts",
     source_system_id: nativeId,
@@ -333,8 +431,9 @@ function attachExactCorroboration(object, observations, acceptedJoins, lookupRow
     },
   };
   return {
-    observations: [...observations, checkbook],
-    acceptedJoins: [...acceptedJoins, {
+    ref: checkbookRef,
+    observation: checkbook,
+    join: {
       status: "accepted",
       basis,
       matched_value: looseText(receipt.passport_contract_id || receipt.passport_pin),
@@ -345,7 +444,7 @@ function attachExactCorroboration(object, observations, acceptedJoins, lookupRow
       overwrites_canonical: false,
       assertion_id: receipt.assertion_id,
       pair_id: receipt.pair_id || receipt.curation_target_id,
-    }],
+    },
   };
 }
 
@@ -504,34 +603,36 @@ export function buildCrossSourceEvidenceReceipt({
   checkbookLookupRows = null,
   provenanceGraph = null,
   curationReceipts = [],
+  index = null,
 } = {}) {
+  const evidenceIndex = index || buildCrossSourceEvidenceIndex({
+    observations,
+    acceptedJoins,
+    checkbookLookupRows,
+    provenanceGraph,
+    curationReceipts,
+  });
   const objectId = looseText(object?.procurement_id || object?.object_ref || object?.subject_ref);
   const objectWithCorroboration = object?.checkbook_corroboration || corroboration
     ? { ...object, checkbook_corroboration: object?.checkbook_corroboration || corroboration }
     : object;
-  const attached = attachExactCorroboration(
-    objectWithCorroboration,
-    Array.isArray(observations) ? observations : [],
-    Array.isArray(acceptedJoins) ? acceptedJoins : [],
-    checkbookLookupRows,
-    generatedAt,
-  );
-  const byRef = new Map(attached.observations
-    .map((observation) => [observationRef(observation), observation])
-    .filter(([ref]) => ref));
-  const joins = attached.acceptedJoins
-    .filter((join) => acceptedJoin(join))
-    .filter((join) => !curationBlocksSameRecord(join, curationReceipts))
-    .filter((join) => !provenanceBlocksSameRecord(join, provenanceGraph))
-    .filter((join) => !objectId || !join?.procurement_id || join.procurement_id === objectId)
-    .map((join) => ({
-      ...join,
-      basis: looseText(join.basis || join.join_method || join.join_key)?.toLowerCase(),
-      relation: CROSS_SOURCE_RELATION.exact,
-      provenance: provenanceForJoin(join, provenanceGraph),
-      refs: joinRefs(join),
-    }))
-    .filter((join) => join.refs.length >= 2 && join.refs.every((ref) => byRef.has(ref)));
+  const attachment = exactCorroborationAttachment(objectWithCorroboration, evidenceIndex, generatedAt);
+  // The corroboration observation is appended after the shared ones, so it wins
+  // its own ref exactly as the per-object Map construction used to.
+  const observationFor = (ref) => (attachment && ref === attachment.ref
+    ? attachment.observation
+    : evidenceIndex.byRef.get(ref));
+  const hasRef = (ref) => (attachment && ref === attachment.ref) || evidenceIndex.byRef.has(ref);
+  const scopedJoins = evidenceIndex.joinsFor(objectId);
+  const attachedJoin = attachment
+    ? prepareJoin(attachment.join, provenanceGraph, curationReceipts)
+    : null;
+  const candidateJoins = attachedJoin
+    && (!objectId || !attachment.join.procurement_id || attachment.join.procurement_id === objectId)
+    ? [...scopedJoins, attachedJoin]
+    : scopedJoins;
+  const joins = candidateJoins
+    .filter((join) => join.refs.length >= 2 && join.refs.every(hasRef));
   if (!joins.length) return null;
 
   const joinedRefs = new Set(joins.flatMap((join) => join.refs));
@@ -543,7 +644,7 @@ export function buildCrossSourceEvidenceReceipt({
     }
   }
   const sourceRows = [...joinedRefs]
-    .map((ref) => sourceProjection(byRef.get(ref), sourceStatus, generatedAt, methodsByRef.get(ref)))
+    .map((ref) => sourceProjection(observationFor(ref), sourceStatus, generatedAt, methodsByRef.get(ref)))
     .filter((source) => source.source_system);
   if (new Set(sourceRows.map((source) => source.source_system)).size < 2) return null;
 
