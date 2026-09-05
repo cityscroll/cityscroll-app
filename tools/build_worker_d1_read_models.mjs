@@ -6,13 +6,39 @@
  * The committed JSON artifacts remain the build inputs. The generated SQL is
  * deliberately ephemeral: CI applies it to the existing D1 binding and does
  * not put the corpora back into the Worker bundle.
+ *
+ * Rows come from tools/d1_stable_keys.mjs, keyed by the identities the manifest
+ * declares, so a rerun over the same inputs names the same logical rows in the
+ * same order. Two publication shapes are generated from those rows:
+ *
+ *   --mode rebuild   (default) the explicit full rebuild: table-wide deletes, then
+ *                    one insert per row. This is the rollback path and the first
+ *                    publication path.
+ *   --mode upsert    keyed convergence: one INSERT ... ON CONFLICT DO UPDATE per row
+ *                    (delete-then-insert for the FTS5 companion, using its parent's
+ *                    indexed key lookup to retain the same rowid). Applying the same
+ *                    file twice leaves rows unchanged. Removed
+ *                    rows are deleted only when --deletes names a delta plan from
+ *                    tools/d1_delta_plan.mjs; the plan's delete operations become
+ *                    keyed DELETE statements ahead of the upserts.
+ *
+ * Rebuild once before switching an existing ordinal-keyed publication to upserts;
+ * upserts alone do not remove legacy keys or realign an existing FTS companion.
+ * A rebuild plan also requires --mode rebuild: --deletes consumes only delete
+ * operations, not the plan's truncate or insert instructions. Upsert mode writes
+ * every current row, including rows the planner marks unchanged.
+ *
+ * Usage:
+ *   node tools/build_worker_d1_read_models.mjs [--output-dir <dir>] [--mode rebuild|upsert]
+ *                                              [--deletes <plan.json>] [--check]
  */
 
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { gzipSync } from "node:zlib";
-import { displayNameFor, entityIntelligenceSummary, graphLinkRows } from "./d1_graph_link_rows.mjs";
+
+import { loadManifest, modelEntry } from "./d1_manifest.mjs";
+import { TABLE_COLUMNS, VIRTUAL_TABLES, keyColumns, tableRows } from "./d1_stable_keys.mjs";
 import {
   readKeywordSearchIndexShard,
   readKeywordSearchIndexShardManifest,
@@ -20,124 +46,158 @@ import {
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const DEFAULT_OUT = resolve(ROOT, "worker", ".d1-read-models");
-const SEARCH_SHARD_DIR = resolve(ROOT, "worker", "src", "data", "keyword_search_index_shards");
-// OCP has one committed public read model. The Worker deployment SQL consumes
-// it directly instead of maintaining a second 18.5 MB bundle input.
-const OCP_INPUT = resolve(ROOT, "site", "data", "ocp_awards_warehouse_lookup.json");
-const ENTITY_INPUT = resolve(ROOT, "worker", "src", "data", "entity_intelligence_lookup.json");
+export const BUILD_MODES = Object.freeze(["rebuild", "upsert"]);
+const OUTPUT_FILES = Object.freeze({
+  keyword_search: "keyword_search_read_model.sql",
+  ocp_awards: "ocp_awards_read_model.sql",
+  entity_intelligence: "entity_intelligence_read_model.sql",
+});
 
-function sqlString(value) {
-  return `'${String(value ?? "").replaceAll("'", "''")}'`;
+export function sqlLiteral(value) {
+  if (value === null || value === undefined) return "NULL";
+  if (typeof value === "number") return Number.isFinite(value) ? String(value) : "NULL";
+  if (typeof value === "boolean") return value ? "1" : "0";
+  return `'${String(value).replace(/'/g, "''")}'`;
 }
 
-function nullable(value) {
-  return value == null || value === "" ? "NULL" : sqlString(value);
-}
-
-function json(value) {
-  return JSON.stringify(value ?? null);
-}
-
-function statementsForSearch({ manifest, dir }) {
-  const lines = [
-    "DELETE FROM keyword_search_fts;",
-    "DELETE FROM keyword_search_documents;",
-    "DELETE FROM keyword_search_families;",
-  ];
-  for (const descriptor of manifest?.shards || []) {
-    const familyId = descriptor.family;
-    const family = readKeywordSearchIndexShard(dir, descriptor);
-    lines.push(`INSERT INTO keyword_search_families (family_id, source, as_of, source_row_count, indexed_count, coverage_json) VALUES (${sqlString(familyId)}, ${nullable(family.source)}, ${nullable(family.as_of)}, ${Number(family.source_row_count) || 0}, ${Number(family.indexed_count) || 0}, ${sqlString(json(family.coverage || []))});`);
-    for (const [ordinal, document] of (family.documents || []).entries()) {
-      const documentId = `${familyId}:${ordinal}`;
-      const sourceRefs = Array.isArray(document.source_observation_refs)
-        ? document.source_observation_refs : [];
-      const searchText = [document.title, document.summary, document.search_text]
-        .filter(Boolean).join(" ");
-      lines.push(`INSERT INTO keyword_search_documents (document_id, family_id, ordinal, object_ref, source_observation_refs_json, document_json, search_text) VALUES (${sqlString(documentId)}, ${sqlString(familyId)}, ${ordinal}, ${nullable(document.object_ref)}, ${sqlString(json(sourceRefs))}, ${sqlString(json(document))}, ${sqlString(searchText)});`);
-      lines.push(`INSERT INTO keyword_search_fts (document_id, family_id, search_text) VALUES (${sqlString(documentId)}, ${sqlString(familyId)}, ${sqlString(searchText)});`);
+/** Read the manifest source document for one model from the repository inputs. */
+export function readSourceDocument(entry, root = ROOT) {
+  const path = resolve(root, entry.source.path);
+  if (entry.source.kind === "keyword_search_index_shards") {
+    const { dir, manifest } = readKeywordSearchIndexShardManifest(path);
+    const families = {};
+    for (const descriptor of manifest?.shards || []) {
+      families[descriptor.family] = readKeywordSearchIndexShard(dir, descriptor);
     }
+    return { families, manifest };
   }
-  lines.push("");
-  return lines.join("\n");
+  return JSON.parse(readFileSync(path, "utf8"));
 }
 
-function rowKey(row, ordinal) {
-  return [row?.request_id, row?.pin, row?.start_date, ordinal]
-    .map((value) => String(value ?? "").trim()).join("|");
-}
-
-function statementsForOcp(doc) {
-  const lines = ["DELETE FROM ocp_awards_warehouse;"];
-  for (const [ordinal, row] of (doc?.rows || []).entries()) {
-    lines.push(`INSERT INTO ocp_awards_warehouse (row_key, request_id, start_date, agency_name, type_of_notice_description, short_title, pin, contract_amount, vendor_name) VALUES (${sqlString(rowKey(row, ordinal))}, ${nullable(row.request_id)}, ${nullable(row.start_date)}, ${nullable(row.agency_name)}, ${nullable(row.type_of_notice_description)}, ${nullable(row.short_title)}, ${nullable(row.pin == null ? null : String(row.pin).trim())}, ${nullable(row.contract_amount)}, ${nullable(row.vendor_name)});`);
+function insertStatement(entry, row) {
+  const columns = TABLE_COLUMNS[row.table];
+  const values = columns.map((column) => sqlLiteral(row.columns[column]));
+  if (VIRTUAL_TABLES.has(row.table)) {
+    return `INSERT INTO ${row.table} (rowid, ${columns.join(", ")}) VALUES (${companionRowid(entry, row.table, row.key_values)}, ${values.join(", ")});`;
   }
-  lines.push("");
-  return lines.join("\n");
+  return `INSERT INTO ${row.table} (${columns.join(", ")}) VALUES (${values.join(", ")});`;
 }
 
-function gzipBase64(value) {
-  return gzipSync(Buffer.from(JSON.stringify(value), "utf8")).toString("base64");
-}
-
-function statementsForEntityIntelligence(doc) {
-  const lines = [
-    "DELETE FROM entity_intelligence_graph_links;",
-    "DELETE FROM entity_intelligence_subject_refs;",
-    "DELETE FROM entity_intelligence_entities;",
-    "DELETE FROM entity_intelligence_meta;",
-  ];
-  const summary = entityIntelligenceSummary(doc);
-  lines.push(`INSERT INTO entity_intelligence_meta (id, generated_at, observation_count, entity_count, multi_domain_count, summary_json) VALUES ('current', ${nullable(doc.generated_at)}, ${Number(doc.observation_count) || 0}, ${Number(doc.entity_count) || 0}, ${Number(doc.multi_domain_count) || 0}, ${sqlString(json(summary))});`);
-  for (const [entityRef, dossier] of Object.entries(doc?.by_ref || {})) {
-    lines.push(`INSERT INTO entity_intelligence_entities (entity_ref, kind, display_name, payload, payload_encoding) VALUES (${sqlString(entityRef)}, ${nullable(dossier?.root?.kind)}, ${nullable(displayNameFor(dossier, entityRef))}, ${sqlString(gzipBase64(dossier))}, 'gzip-base64');`);
+function keyPredicate(entry, table, keyValues) {
+  const columns = keyColumns(entry, table);
+  if (columns.length !== keyValues.length) {
+    throw new Error(`d1 read models: ${table} key has ${keyValues.length} values for ${columns.length} key columns`);
   }
-  for (const [subjectRef, links] of Object.entries(doc?.by_subject_ref || {})) {
-    for (const link of links || []) {
-      const entityRef = String(link?.entity_ref || "").trim();
-      const relation = String(link?.relation || "").trim();
-      const confidence = String(link?.confidence || "").trim();
-      if (!entityRef || !relation) continue;
-      lines.push(`INSERT INTO entity_intelligence_subject_refs (subject_ref, entity_ref, relation, confidence, link_json) VALUES (${sqlString(subjectRef)}, ${sqlString(entityRef)}, ${sqlString(relation)}, ${sqlString(confidence)}, ${sqlString(json(link))});`);
+  return columns.map((column, index) => `${column} = ${sqlLiteral(keyValues[index])}`).join(" AND ");
+}
+
+function companionRowid(entry, table, keyValues) {
+  const target = entry.tables.find((candidate) => candidate.name === table).identity.of;
+  return `(SELECT rowid FROM ${target} WHERE ${keyPredicate(entry, target, keyValues)})`;
+}
+
+function deleteStatement(entry, table, keyValues) {
+  const predicate = VIRTUAL_TABLES.has(table)
+    ? `rowid = ${companionRowid(entry, table, keyValues)}`
+    : keyPredicate(entry, table, keyValues);
+  return `DELETE FROM ${table} WHERE ${predicate};`;
+}
+
+function upsertStatements(entry, row) {
+  const columns = TABLE_COLUMNS[row.table];
+  if (VIRTUAL_TABLES.has(row.table)) {
+    return [deleteStatement(entry, row.table, row.key_values), insertStatement(entry, row)];
+  }
+  const keys = keyColumns(entry, row.table);
+  const updates = columns.filter((column) => !keys.includes(column))
+    .map((column) => `${column} = excluded.${column}`);
+  const values = columns.map((column) => sqlLiteral(row.columns[column]));
+  const conflict = updates.length > 0
+    ? `ON CONFLICT(${keys.join(", ")}) DO UPDATE SET ${updates.join(", ")}`
+    : `ON CONFLICT(${keys.join(", ")}) DO NOTHING`;
+  return [`INSERT INTO ${row.table} (${columns.join(", ")}) VALUES (${values.join(", ")}) ${conflict};`];
+}
+
+/** Tables of a model in delete order: the reverse of the manifest's insertion order, so referencing rows go first. */
+function deleteOrder(entry) {
+  return entry.tables.map((table) => table.name).reverse();
+}
+
+/**
+ * SQL text for one model. `mode` is rebuild or upsert; `deletes` is the model's
+ * partition list from a delta plan (each partition's ops.delete carries key_values).
+ */
+export function statementsForModel(entry, sourceDocument, { mode = "rebuild", deletes = null } = {}) {
+  if (!BUILD_MODES.includes(mode)) throw new Error(`d1 read models: unknown mode ${mode}`);
+  const { rows } = tableRows(entry, sourceDocument);
+  const lines = [];
+  if (mode === "rebuild") {
+    for (const table of deleteOrder(entry)) lines.push(`DELETE FROM ${table};`);
+    for (const row of rows) lines.push(insertStatement(entry, row));
+  } else {
+    const order = deleteOrder(entry);
+    for (const partition of deletes || []) {
+      const operations = [...(partition.ops?.delete || [])].sort((left, right) => (
+        order.indexOf(left.table) - order.indexOf(right.table)));
+      for (const op of operations) {
+        if (!Array.isArray(op.key_values)) {
+          throw new Error(`d1 read models: delete for ${op.table} ${op.key} carries no key_values`);
+        }
+        lines.push(deleteStatement(entry, op.table, op.key_values));
+      }
     }
-  }
-  for (const row of graphLinkRows(doc)) {
-    lines.push(`INSERT INTO entity_intelligence_graph_links (to_ref, from_ref, link_type, link_json) VALUES (${sqlString(row.to_ref)}, ${sqlString(row.from_ref)}, ${sqlString(row.link_type)}, ${sqlString(json(row.payload))});`);
+    for (const row of rows) lines.push(...upsertStatements(entry, row));
   }
   lines.push("");
-  return lines.join("\n");
+  return { sql: lines.join("\n"), rowCount: rows.length };
 }
 
 function parseArgs(argv) {
-  const out = { outputDir: DEFAULT_OUT, check: false };
+  const out = { outputDir: DEFAULT_OUT, check: false, mode: "rebuild", deletesPath: null };
   for (let i = 2; i < argv.length; i += 1) {
     if (argv[i] === "--output-dir") out.outputDir = resolve(ROOT, argv[++i]);
     else if (argv[i] === "--check") out.check = true;
+    else if (argv[i] === "--mode") out.mode = argv[++i];
+    else if (argv[i] === "--deletes") out.deletesPath = resolve(ROOT, argv[++i]);
     else throw new Error(`Unknown argument: ${argv[i]}`);
   }
+  if (!BUILD_MODES.includes(out.mode)) throw new Error(`--mode must be one of ${BUILD_MODES.join(", ")}`);
+  if (out.deletesPath && out.mode !== "upsert") throw new Error("--deletes applies to --mode upsert only");
   return out;
 }
 
-const { outputDir, check } = parseArgs(process.argv);
-const keyword = readKeywordSearchIndexShardManifest(SEARCH_SHARD_DIR);
-const ocp = JSON.parse(readFileSync(OCP_INPUT, "utf8"));
-const entity = JSON.parse(readFileSync(ENTITY_INPUT, "utf8"));
-mkdirSync(outputDir, { recursive: true });
-const keywordPath = resolve(outputDir, "keyword_search_read_model.sql");
-const ocpPath = resolve(outputDir, "ocp_awards_read_model.sql");
-const entityPath = resolve(outputDir, "entity_intelligence_read_model.sql");
-writeFileSync(keywordPath, statementsForSearch(keyword));
-writeFileSync(ocpPath, statementsForOcp(ocp));
-writeFileSync(entityPath, statementsForEntityIntelligence(entity));
-console.log(JSON.stringify({
-  check,
-  keyword_sql: keywordPath,
-  keyword_bytes: readFileSync(keywordPath).byteLength,
-  keyword_documents: Number(keyword.manifest?.logical_index?.document_count) || 0,
-  ocp_sql: ocpPath,
-  ocp_bytes: readFileSync(ocpPath).byteLength,
-  ocp_rows: Array.isArray(ocp.rows) ? ocp.rows.length : 0,
-  entity_sql: entityPath,
-  entity_bytes: readFileSync(entityPath).byteLength,
-  entity_count: Object.keys(entity.by_ref || {}).length,
-}));
+function main() {
+  const { outputDir, check, mode, deletesPath } = parseArgs(process.argv);
+  const manifest = loadManifest();
+  const plan = deletesPath ? JSON.parse(readFileSync(deletesPath, "utf8")) : null;
+  mkdirSync(outputDir, { recursive: true });
+  const report = { check, mode, deletes: deletesPath ? "plan" : "none" };
+  const written = {};
+  for (const modelId of Object.keys(OUTPUT_FILES)) {
+    const entry = modelEntry(manifest, modelId);
+    const source = readSourceDocument(entry);
+    const deletes = plan?.models?.find((model) => model.model_id === modelId)?.partitions || null;
+    const { sql, rowCount } = statementsForModel(entry, source, { mode, deletes });
+    const path = resolve(outputDir, OUTPUT_FILES[modelId]);
+    writeFileSync(path, sql);
+    written[modelId] = { path, bytes: Buffer.byteLength(sql), rows: rowCount, source };
+  }
+  Object.assign(report, {
+    keyword_sql: written.keyword_search.path,
+    keyword_bytes: written.keyword_search.bytes,
+    keyword_documents: Number(written.keyword_search.source.manifest?.logical_index?.document_count) || 0,
+    keyword_rows: written.keyword_search.rows,
+    ocp_sql: written.ocp_awards.path,
+    ocp_bytes: written.ocp_awards.bytes,
+    ocp_rows: written.ocp_awards.rows,
+    entity_sql: written.entity_intelligence.path,
+    entity_bytes: written.entity_intelligence.bytes,
+    entity_count: Object.keys(written.entity_intelligence.source.by_ref || {}).length,
+    entity_rows: written.entity_intelligence.rows,
+  });
+  console.log(JSON.stringify(report));
+}
+
+if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  main();
+}
