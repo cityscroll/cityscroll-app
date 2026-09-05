@@ -53,6 +53,22 @@ test("the trigger names every input the cycle cannot inherit from a login shell"
   assert.match(template, /<key>CITYSCROLL_ADMIN_KEY_FILE<\/key>\s*<string>__[A-Z_]+__<\/string>/);
 });
 
+test("the trigger names its interpreter absolutely instead of searching a PATH", () => {
+  // launchd starts an agent with the system default PATH, which does not carry
+  // a user- or package-manager-installed Node. Looking the interpreter up by
+  // name exits 127 before any code runs, and the only symptom anywhere is the
+  // heartbeat the watchdog reports missing.
+  const program = /<key>ProgramArguments<\/key>\s*<array>([\s\S]*?)<\/array>/.exec(template);
+  assert.ok(program, "the trigger declares no ProgramArguments");
+  const [interpreter] = [...program[1].matchAll(/<string>([^<]*)<\/string>/g)].map((match) => match[1]);
+  assert.ok(interpreter, "the trigger declares no interpreter");
+  assert.equal(/^\/usr\/bin\/env$/.test(interpreter), false, "the trigger resolves its interpreter through PATH");
+  assert.match(interpreter, /^(?:\/|__[A-Z0-9_]+__)/, "the interpreter is neither absolute nor a substituted placeholder");
+  // The installer refuses rather than shipping a trigger that cannot start.
+  assert.match(installer, /command -v node/);
+  assert.match(installer, /exit 1/);
+});
+
 test("the installer fills every placeholder the trigger declares", () => {
   // A placeholder added to the template but not to the installer ships a plist
   // with a literal __PLACEHOLDER__ in it. launchd rejects or misroutes that
