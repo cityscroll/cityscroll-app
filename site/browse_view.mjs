@@ -239,7 +239,7 @@ const BROWSE_SCOPE_POLICY = Object.freeze({
     entityRefFields: ["entity_refs_all", "disposition_subject_ref", "disposition_join_keys"],
   },
   rules: { agencyField: "agency_name", entityRefFields: ["request_id"] },
-  meetings: { agencyField: "agency_name", entityRefFields: ["entity_refs_all", "meeting_id", "request_id", "zap_project_ids"] },
+  meetings: { agencyField: "agency_name", entityRefFields: ["entity_refs_all", "meeting_id", "request_id", "zap_project_ids", "ulurp_keys"] },
 });
 
 const KNOWN_SCOPE_FILTER_KEYS = new Set(["facet"]);
@@ -420,6 +420,16 @@ function readRowEntityRefs(row, facet) {
     if (field === "zap_project_ids") {
       for (const projectId of Array.isArray(row?.[field]) ? row[field] : [row?.[field]]) {
         const ref = exactBrowseRef("project", projectId);
+        if (ref) refs.push(ref);
+      }
+      continue;
+    }
+    if (field === "ulurp_keys") {
+      // A ULURP application number (e.g. 260132ZMK) is itself a land-use project
+      // identifier the meeting notice named — treated as a project ref alongside
+      // (never in place of) an explicit ZAP project id.
+      for (const ulurpKey of Array.isArray(row?.[field]) ? row[field] : [row?.[field]]) {
+        const ref = exactBrowseRef("project", ulurpKey);
         if (ref) refs.push(ref);
       }
       continue;

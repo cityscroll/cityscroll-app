@@ -140,6 +140,21 @@ test("default Browse inventories exact secondary refs without adding notice or P
   assert.equal(propertyRefs.some((ref) => ref.startsWith("notice:") || ref.startsWith("pin:")), false);
 });
 
+test("a meeting notice's ULURP application number derives a project ref, independent of any ZAP project id", () => {
+  const rows = [
+    {
+      request_id: "20260618037",
+      agency_name: "City Planning Commission",
+      ulurp_keys: ["260184ZMQ", "N260185ZRQ"],
+    },
+  ];
+  const inventory = browseEdgeInventory("meetings", rows, []);
+  const refs = inventory.edgeInventory.map((edge) => edge.ref);
+  assert.ok(refs.includes("project:260184ZMQ"), "the bare ULURP application number surfaces as a project ref");
+  assert.ok(refs.includes("project:N260185ZRQ"), "a lettered ULURP application number surfaces as a project ref");
+  assert.equal(inventory.edgeInventory.find((edge) => edge.ref === "project:260184ZMQ")?.kind, "project");
+});
+
 test("production Property evidence publishes one strict project-agency-vendor intersection", () => {
   const intelligence = JSON.parse(fs.readFileSync(
     "site/data/entity_intelligence_lookup.json",
