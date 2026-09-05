@@ -37,6 +37,11 @@ on:
         required: false
         default: false
         type: boolean
+      disable_incremental_publication:
+        description: Pause ordinary D1 delta publication while retaining receipts for recovery review
+        required: false
+        default: false
+        type: boolean
 
 concurrency:
   group: worker-deploy
@@ -89,6 +94,8 @@ jobs:
             --startup-report "$bundle_dir/startup.txt" \
             --read-model-dir "$RUNNER_TEMP/cityscroll-worker-route-read-models" \
             --kv-dir "$RUNNER_TEMP/cityscroll-worker-route-read-models"
+      - name: Validate D1 release policy
+        run: node tools/d1_release_policy.mjs --check
       - name: Compute D1 deploy fingerprint
         id: d1-deploy-fingerprint
         run: node tools/d1_deploy_fingerprint.mjs fingerprint --github-output "$GITHUB_OUTPUT"
@@ -109,23 +116,30 @@ jobs:
         id: d1-publication-gate
         env:
           FORCE_D1_PUBLICATION: ${{ github.event_name == 'workflow_dispatch' && inputs.force_d1_publication || false }}
+          DISABLE_INCREMENTAL_PUBLICATION: ${{ github.event_name == 'workflow_dispatch' && inputs.disable_incremental_publication || false }}
         run: |
+          set -euo pipefail
           node tools/d1_deploy_fingerprint.mjs decide \
             --fingerprint "${{ steps.d1-deploy-fingerprint.outputs.fingerprint }}" \
             --state .d1-publication-state/published.json \
             --force "$FORCE_D1_PUBLICATION" \
             --receipt .artifacts/d1-publication-receipt.json \
             --github-output "$GITHUB_OUTPUT"
+          if [ "$DISABLE_INCREMENTAL_PUBLICATION" = "true" ]; then
+            echo "incremental-enabled=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "incremental-enabled=true" >> "$GITHUB_OUTPUT"
+          fi
           if grep -q '"reason": "fingerprint_unchanged"' .artifacts/d1-publication-receipt.json; then
             echo "D1 publication skipped: fingerprint_unchanged"
           fi
       - name: Snapshot D1 publication watermarks
         id: d1-partition-snapshot
-        if: steps.d1-publication-gate.outputs.should-publish == 'true'
+        if: steps.d1-publication-gate.outputs.should-publish == 'true' && steps.d1-publication-gate.outputs.incremental-enabled == 'true'
         run: node tools/d1_delta_plan.mjs snapshot --out .d1-publication-state/partition-snapshot.json
       - name: Claim D1 publication generation
         id: d1-generation-claim
-        if: steps.d1-publication-gate.outputs.should-publish == 'true'
+        if: steps.d1-publication-gate.outputs.should-publish == 'true' && steps.d1-publication-gate.outputs.incremental-enabled == 'true'
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           D1_FENCE_HOLDER: ${{ github.workflow }}:${{ github.run_id }}:${{ github.run_attempt }}
@@ -147,7 +161,7 @@ jobs:
       # are idempotent; skipping this left passport_* tables missing in production and turned
       # every PASSPort lifecycle lookup into lookup_status=error.
       - name: Apply D1 migrations
-        if: steps.d1-publication-gate.outputs.should-publish == 'true' && steps.d1-generation-claim.outputs.claimed == 'true'
+        if: steps.d1-publication-gate.outputs.should-publish == 'true' && steps.d1-publication-gate.outputs.incremental-enabled == 'true' && steps.d1-generation-claim.outputs.claimed == 'true'
         uses: cloudflare/wrangler-action@v3.14.1
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -159,11 +173,11 @@ jobs:
       - name: Verify keyword index source projection and shards
         run: node tools/build_keyword_search_index.mjs --check
       - name: Build D1 search, OCP, and entity-intelligence read models
-        if: steps.d1-publication-gate.outputs.should-publish == 'true' && steps.d1-generation-claim.outputs.claimed == 'true'
+        if: steps.d1-publication-gate.outputs.should-publish == 'true' && steps.d1-publication-gate.outputs.incremental-enabled == 'true' && steps.d1-generation-claim.outputs.claimed == 'true'
         run: node tools/build_worker_d1_read_models.mjs --mode upsert --output-dir worker/.d1-read-models
       - name: Publish D1 search, OCP, and entity-intelligence read models
         id: d1-publication-sql
-        if: steps.d1-publication-gate.outputs.should-publish == 'true' && steps.d1-generation-claim.outputs.claimed == 'true'
+        if: steps.d1-publication-gate.outputs.should-publish == 'true' && steps.d1-publication-gate.outputs.incremental-enabled == 'true' && steps.d1-generation-claim.outputs.claimed == 'true'
         working-directory: worker
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -214,7 +228,7 @@ jobs:
           trap - ERR
       - name: Record published D1 fingerprint
         id: d1-record-published
-        if: steps.d1-publication-gate.outputs.should-publish == 'true' && steps.d1-generation-claim.outputs.claimed == 'true' && steps.d1-publication-sql.outputs.sql-started == 'true'
+        if: steps.d1-publication-gate.outputs.should-publish == 'true' && steps.d1-publication-gate.outputs.incremental-enabled == 'true' && steps.d1-generation-claim.outputs.claimed == 'true' && steps.d1-publication-sql.outputs.sql-started == 'true'
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           FORCE_D1_PUBLICATION: ${{ github.event_name == 'workflow_dispatch' && inputs.force_d1_publication || false }}
@@ -248,6 +262,8 @@ jobs:
       # The local JSONL append is the durable CI record (retained as a workflow
       # artifact below); the KV mirror under the receipt key prefix is best-effort and
       # never fails this step. See tools/d1_publication_receipt.mjs.
+      # Older retained receipts may use skipped_fingerprint_unchanged; the new
+      # ordinary receipt uses the shorter skipped outcome below.
       - name: Record D1 publication receipt
         if: always()
         env:
@@ -258,15 +274,22 @@ jobs:
           D1_FINGERPRINT: ${{ steps.d1-deploy-fingerprint.outputs.fingerprint }}
           D1_GENERATION: ${{ steps.d1-generation-claim.outputs.generation }}
           SHOULD_PUBLISH: ${{ steps.d1-publication-gate.outputs.should-publish }}
+          INCREMENTAL_ENABLED: ${{ steps.d1-publication-gate.outputs.incremental-enabled }}
           CLAIMED: ${{ steps.d1-generation-claim.outputs.claimed }}
           SQL_OUTCOME: ${{ steps.d1-publication-sql.outcome }}
           SQL_STARTED: ${{ steps.d1-publication-sql.outputs.sql-started }}
           RECORD_OUTCOME: ${{ steps.d1-record-published.outcome }}
         run: |
           set -euo pipefail
+          # Retained d1-07 receipts may use outcome=skipped_fingerprint_unchanged.
           if [ "$SHOULD_PUBLISH" != "true" ]; then
-            outcome=skipped_fingerprint_unchanged
-            reason="deploy fingerprint unchanged since the last publication"
+            # D1-10: the final receipt uses the short skipped outcome and exact
+            # reason so zero writes are visible rather than inferred.
+            outcome=skipped
+            reason="fingerprint-unchanged"
+          elif [ "$INCREMENTAL_ENABLED" != "true" ]; then
+            outcome=skipped
+            reason="incremental-publication-disabled"
           elif [ "$CLAIMED" != "true" ]; then
             outcome=skipped_fence_busy
             reason="another publication run holds a live generation fence"
