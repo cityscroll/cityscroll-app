@@ -610,3 +610,20 @@ test("the execution fingerprint is stable across a retry and new across a reload
     "two browsers that searched alike are still two executions",
   );
 });
+
+test("the front-door scope actually requested is part of what makes an execution that execution", async () => {
+  const allSources = submission();
+  const contractsOnly = submission({ front_door_scope: "contracts" });
+  const browser = newVisitorId();
+
+  assert.notEqual(
+    await searchExecutionFingerprint(allSources, browser),
+    await searchExecutionFingerprint(contractsOnly, browser),
+    "an all-sources search and a Contracts-only search are different executions even if everything else matches",
+  );
+  assert.equal(
+    await searchExecutionFingerprint(submission({ front_door_scope: "all" }), browser),
+    await searchExecutionFingerprint(submission({ front_door_scope: undefined }), browser),
+    "an explicit 'all' and an absent (historical) scope are the same request",
+  );
+});

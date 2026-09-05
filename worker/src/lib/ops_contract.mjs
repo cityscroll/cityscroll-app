@@ -10,6 +10,7 @@
 import {
   SEARCH_ACTIVITY_ADMIN_PATH,
   SEARCH_ACTIVITY_FAMILIES,
+  SEARCH_ACTIVITY_FRONT_DOOR_SCOPES,
   SEARCH_ACTIVITY_OUTCOME_STATES,
   SEARCH_ACTIVITY_RETENTION_DAYS,
 } from "../../../capabilities/search_activity.mjs";
@@ -32,7 +33,7 @@ import {
   SEARCH_USAGE_WINDOW_DAYS,
 } from "./search_usage.mjs";
 
-export const OPS_CONTRACT_VERSION = "1.13.0";
+export const OPS_CONTRACT_VERSION = "1.14.0";
 export const OPS_CONTRACT_ID = "ops-contract.v1";
 
 /** Digest delivery / evaluation modes the worker may stamp on receipts and daylogs. */
@@ -787,7 +788,7 @@ export const SIGNUP_LIFECYCLE_CONTRACT = Object.freeze({
  */
 export const SEARCH_ACTIVITY_CONTRACT = Object.freeze({
   contract: "cityscroll.search_execution.v1",
-  version: "1.0.0",
+  version: "1.1.0",
   endpoint: SEARCH_ACTIVITY_ADMIN_PATH,
   desk_surface: "/admin/stats?view=html#search-activity-heading",
   desk_renderer: "worker/src/admin.mjs#renderSearchActivityPanel",
@@ -796,6 +797,9 @@ export const SEARCH_ACTIVITY_CONTRACT = Object.freeze({
   reruns_historical_queries: false,
   outcome_states: SEARCH_ACTIVITY_OUTCOME_STATES,
   result_families: SEARCH_ACTIVITY_FAMILIES,
+  // Added in 1.1.0: the front-door narrowing the execution actually requested.
+  // A receipt stored before this scope existed carries none and means "all".
+  front_door_scopes: SEARCH_ACTIVITY_FRONT_DOOR_SCOPES,
   retention_days: SEARCH_ACTIVITY_RETENTION_DAYS,
   default_read_limit: SEARCH_ACTIVITY_DEFAULT_READ_LIMIT,
   max_read_limit: SEARCH_ACTIVITY_MAX_READ_LIMIT,

@@ -50,6 +50,16 @@ export const SEARCH_ACTIVITY_FAMILIES = Object.freeze([
 /** Which producer a rendered row came from. */
 export const SEARCH_ACTIVITY_ROW_KINDS = Object.freeze(["keyword", "semantic"]);
 
+/**
+ * The front-door scope `/search/` actually served this execution under. Kept in
+ * lockstep with `site/search_front_door_scope.mjs`'s registered scope ids — the
+ * receipt tests fail on drift so a newly registered narrowing cannot silently
+ * fall back to an unrecognized value here. `"all"` is the historical default:
+ * every receipt stored before this scope existed searched every family, so an
+ * absent value normalizes to `"all"` rather than an unknown state.
+ */
+export const SEARCH_ACTIVITY_FRONT_DOOR_SCOPES = Object.freeze(["all", "contracts"]);
+
 /** Place-context keys the canonical Search route already carries. */
 export const SEARCH_ACTIVITY_SCOPE_KEYS = Object.freeze([
   "boro",
@@ -88,6 +98,7 @@ const SUBMISSION_KEYS = Object.freeze([
   "query",
   "search_path",
   "scope",
+  "front_door_scope",
   "outcome",
   "rendered_count",
   "family_counts",
@@ -116,6 +127,7 @@ const PRODUCER_KEYS = Object.freeze([
 const FAMILY_SET = new Set(SEARCH_ACTIVITY_FAMILIES);
 const OUTCOME_SET = new Set(SEARCH_ACTIVITY_OUTCOME_STATES);
 const ROW_KIND_SET = new Set(SEARCH_ACTIVITY_ROW_KINDS);
+const FRONT_DOOR_SCOPE_SET = new Set(SEARCH_ACTIVITY_FRONT_DOOR_SCOPES);
 const CONTROL_CHARACTERS = /[\u0000-\u001f\u007f]/g;
 
 function plainObject(value) {
@@ -173,6 +185,17 @@ function normalizedQueryPair(candidate) {
   const normalized = cleanReceiptText(candidate.normalized, SEARCH_ACTIVITY_MAX_QUERY_LENGTH);
   if (!raw || !normalized) return { reason: "query" };
   return { value: { raw, normalized } };
+}
+
+/**
+ * `null`/absent means "all" — the only front door there was before this scope
+ * existed, and the honest reading of a receipt that never named a narrowing.
+ */
+function normalizedFrontDoorScope(candidate) {
+  if (candidate == null) return { value: "all" };
+  const scope = cleanReceiptText(candidate, 40);
+  if (!FRONT_DOOR_SCOPE_SET.has(scope)) return { reason: "front_door_scope" };
+  return { value: scope };
 }
 
 function normalizedScope(candidate) {
@@ -294,6 +317,9 @@ export function normalizeSearchExecutionSubmission(input) {
   const scope = normalizedScope(input.scope);
   if (scope.reason) return { ok: false, reason: scope.reason };
 
+  const frontDoorScope = normalizedFrontDoorScope(input.front_door_scope);
+  if (frontDoorScope.reason) return { ok: false, reason: frontDoorScope.reason };
+
   const outcome = cleanReceiptText(input.outcome, 40);
   if (!OUTCOME_SET.has(outcome)) return { ok: false, reason: "outcome" };
 
@@ -339,6 +365,7 @@ export function normalizeSearchExecutionSubmission(input) {
       query: query.value,
       search_path: SEARCH_ACTIVITY_CANONICAL_SEARCH_PATH,
       scope: scope.value,
+      front_door_scope: frontDoorScope.value,
       outcome,
       rendered_count: results.length,
       family_counts: familyCounts.value,

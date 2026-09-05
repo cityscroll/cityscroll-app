@@ -206,8 +206,12 @@ export function networkObservation(req) {
  * visitor id per request, so its retry is indistinguishable from a second browser
  * and counts twice. That is the honest reading of the evidence, not a defect to
  * hide behind a looser identity that would merge two real readers.
+ *
+ * v2 adds the requested front-door scope (`/search/`'s Contracts-only narrowing
+ * and any registered narrowing after it) to "what was asked": two requests that
+ * differ only in scope are different executions, not a retry of one another.
  */
-export const SEARCH_EXECUTION_FINGERPRINT_VERSION = "cityscroll.search_execution.fingerprint.v1";
+export const SEARCH_EXECUTION_FINGERPRINT_VERSION = "cityscroll.search_execution.fingerprint.v2";
 export const SEARCH_ACTIVITY_DIMENSIONS_VERSION = 1;
 
 /** Key-order-independent JSON so an object literal cannot change the fingerprint. */
@@ -230,6 +234,7 @@ export function searchExecutionFingerprintPayload(submission = {}, visitorId = "
     submission.search_path ?? null,
     submission.query?.normalized ?? null,
     submission.scope ?? {},
+    submission.front_door_scope ?? "all",
     submission.outcome ?? null,
     submission.rendered_count ?? null,
     submission.family_counts ?? {},
