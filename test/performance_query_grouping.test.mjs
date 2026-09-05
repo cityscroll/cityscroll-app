@@ -22,7 +22,7 @@ test("the production readiness query groups both semantic metrics by surface and
   });
   const readiness = plan.requests.find(({ id }) => id === "readiness");
   assert.deepEqual(readiness.group_by, GROUPS);
-  assert.match(readiness.sql, /blob2 IN \('content_ready_ms', 'component_ready_ms'\)/);
+  assert.match(readiness.sql, /blob2 IN \('content_ready_ms', 'component_ready_ms',/);
   assert.match(readiness.sql, /blob3 IN \('home', 'near-you', 'following', 'browse-contracts', 'notice', 'agency'\)/);
   assert.match(readiness.sql, /count\(\) AS sampled_count/);
   assert.match(readiness.sql, /quantileExactWeighted\(0\.50\)\(double1, _sample_interval\) AS p50/);

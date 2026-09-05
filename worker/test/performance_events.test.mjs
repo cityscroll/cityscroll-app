@@ -13,6 +13,7 @@ import {
   RUM_VALUE_MAXIMUM,
   handlePerformanceEvents,
   normalizeRumBatch,
+  rumDataPoint,
 } from "../src/performance_events.mjs";
 
 const NOW_MS = Date.parse("2026-08-19T14:30:00Z");

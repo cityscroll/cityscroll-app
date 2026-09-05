@@ -336,7 +336,6 @@ const COVERAGE_METRIC_IDS = Object.freeze([
     ...PERFORMANCE_ATTRIBUTION_PHASES.flatMap(({ metric_ids }) => metric_ids),
   ]),
 ]);
-const READINESS_METRIC_IDS = Object.freeze(PERFORMANCE_COVERAGE_METRICS.map(({ metric_id }) => metric_id));
 const COVERAGE_SURFACE_IDS = Object.freeze(PERFORMANCE_COVERAGE_SURFACES.map(({ surface_id }) => surface_id));
 
 function inSql(column, values) {
@@ -372,14 +371,10 @@ export function performanceCoverageQueryPlan(options = {}) {
     inSql(FILTER_COLUMNS.metric_id, COVERAGE_METRIC_IDS),
     inSql(FILTER_COLUMNS.surface_id, COVERAGE_SURFACE_IDS),
   ];
-  const readinessScope = [
-    inSql(FILTER_COLUMNS.metric_id, READINESS_METRIC_IDS),
-    inSql(FILTER_COLUMNS.surface_id, COVERAGE_SURFACE_IDS),
-  ];
   const requests = current.queryable ? [
     {
       id: "readiness",
-      sql: summarySql(dataset, query, current, readinessScope),
+      sql: summarySql(dataset, query, current, scope),
       group_by: ["metric_id", "surface_id", "component_id"],
     },
     {
@@ -476,12 +471,13 @@ function summaryMap(rows, plan, coverage) {
     ]));
     const key = groupKey(groups.length ? dimensions : null);
     if (out.has(key)) throw new PerformanceSqlError("invalid-query-result");
+    const latestTimestamp = validOwnerTimestamp(row.latest_timestamp);
     out.set(key, {
       dimensions,
       distribution: distributionFromRow(row, coverage, plan.sample_floor),
       first_observation_at: validTimestamp(row.first_observation_at),
       latest_observation_at: validTimestamp(row.latest_observation_at),
-      latest_timestamp: validOwnerTimestamp(row.latest_timestamp),
+      ...(latestTimestamp == null ? {} : { latest_timestamp: latestTimestamp }),
     });
   }
   if (!plan.query.group_by && !out.size) {
@@ -490,7 +486,6 @@ function summaryMap(rows, plan, coverage) {
       distribution: distributionFromRow(null, coverage, plan.sample_floor),
       first_observation_at: null,
       latest_observation_at: null,
-      latest_timestamp: null,
     });
   }
   return out;
@@ -616,7 +611,6 @@ export function buildPerformanceSnapshot(results, plan, options = {}) {
       distribution: distributionFromRow(null, plan.current, plan.sample_floor),
       first_observation_at: null,
       latest_observation_at: null,
-      latest_timestamp: null,
     };
     const previousEntry = previous.get(key) || {
       dimensions: currentEntry.dimensions,
@@ -634,7 +628,9 @@ export function buildPerformanceSnapshot(results, plan, options = {}) {
       }),
       first_observation_at: currentEntry.first_observation_at,
       latest_observation_at: currentEntry.latest_observation_at,
-      latest_timestamp: currentEntry.latest_timestamp,
+      ...(Object.hasOwn(currentEntry, "latest_timestamp")
+        ? { latest_timestamp: currentEntry.latest_timestamp }
+        : {}),
     });
   }
 

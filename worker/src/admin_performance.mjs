@@ -116,7 +116,9 @@ function coarseLatencySummary(snapshot) {
       latest_observation_at: series.latest_observation_at || null,
       status: operationalStatus(snapshot, [series]),
     };
-    if (Object.hasOwn(series, "latest_timestamp")) row.latest_timestamp = series.latest_timestamp;
+    if (Object.hasOwn(series, "latest_timestamp") && series.latest_timestamp != null) {
+      row.latest_timestamp = series.latest_timestamp;
+    }
     if (current.percentiles) {
       row.p50 = current.percentiles.p50;
       row.p75 = current.percentiles.p75;
