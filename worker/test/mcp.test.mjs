@@ -286,3 +286,106 @@ test("notifications (no id) get 202, unknown methods get -32601", async () => {
   const unknown = await (await handleMcp(post({ jsonrpc: "2.0", id: 10, method: "nope" }), env)).json();
   assert.equal(unknown.error.code, -32601);
 });
+
+// CS-11 · Scoped machine-client profiles, exercised through the endpoint itself.
+// The profile contract lives in test/machine_client_profile.test.mjs; these cover the
+// wiring: filtered discovery, enforced calls, and the profile-keyed quota bucket.
+
+const PROFILE_BINDING = "MCP_CLIENT_PUBLIC_RESEARCH_TOKEN";
+const PROFILE_SECRET = "EXAMPLE-ONLY-not-a-real-credential";
+
+test("an authenticated profile discovers only its granted tools", async () => {
+  const env = { SUBS: new MockKV(), NL_METER: new MockKV(), [PROFILE_BINDING]: PROFILE_SECRET };
+  const listed = await (await handleMcp(post(
+    { jsonrpc: "2.0", id: 20, method: "tools/list" },
+    { authorization: `Bearer ${PROFILE_SECRET}` },
+  ), env)).json();
+  const names = listed.result.tools.map((t) => t.name);
+  assert.ok(names.includes("search_notices"), "granted reads stay discoverable");
+  assert.ok(!names.includes("preview_watch"), "watch preview is not discoverable");
+  assert.ok(!names.includes("create_watch"), "watch creation is not discoverable");
+});
+
+test("an anonymous caller still sees the full inventory", async () => {
+  const env = { SUBS: new MockKV(), NL_METER: new MockKV(), [PROFILE_BINDING]: PROFILE_SECRET };
+  const listed = await (await handleMcp(post({ jsonrpc: "2.0", id: 21, method: "tools/list" }), env)).json();
+  const names = listed.result.tools.map((t) => t.name);
+  assert.ok(names.includes("create_watch"), "anonymous compatibility is unchanged");
+});
+
+test("an ungranted call is refused by identity, not by its arguments", async () => {
+  const env = { SUBS: new MockKV(), NL_METER: new MockKV(), [PROFILE_BINDING]: PROFILE_SECRET };
+  const call = (headers) => post({
+    jsonrpc: "2.0", id: 22, method: "tools/call",
+    params: { name: "create_watch", arguments: { lens: "money", request: "big awards" } },
+  }, headers);
+
+  // The SAME payload, two identities. Anonymous reaches the tool and gets the tool's
+  // own error; the profile never reaches it. That is what proves the refusal comes from
+  // the grant rather than from argument validation.
+  const anonymous = await (await handleMcp(call({}), env)).json();
+  assert.equal(anonymous.result.isError, true);
+  assert.match(anonymous.result.content[0].text, /isn't configured/);
+
+  const named = await (await handleMcp(call({ authorization: `Bearer ${PROFILE_SECRET}` }), env)).json();
+  assert.equal(named.result.isError, true);
+  // Refusal is indistinguishable from an unknown tool: no discovery oracle for the
+  // withheld inventory.
+  assert.match(named.result.content[0].text, /Unknown tool/);
+  assert.doesNotMatch(named.result.content[0].text, /isn't configured/);
+});
+
+test("a revoked profile credential fails closed rather than falling back to anonymous", async () => {
+  const env = { SUBS: new MockKV(), NL_METER: new MockKV(), [PROFILE_BINDING]: PROFILE_SECRET };
+  const res = await handleMcp(post(
+    { jsonrpc: "2.0", id: 23, method: "ping" },
+    { authorization: "Bearer rotated-away" },
+  ), env);
+  assert.equal(res.status, 401);
+});
+
+test("profile quota is keyed by profile, not by the connecting address", async () => {
+  const env = {
+    SUBS: new MockKV(), NL_METER: new MockKV(),
+    MCP_MAX_PER_IP_DAY: "1", [PROFILE_BINDING]: PROFILE_SECRET,
+  };
+  const named = (ip) => post(
+    { jsonrpc: "2.0", id: 24, method: "ping" },
+    { authorization: `Bearer ${PROFILE_SECRET}`, "CF-Connecting-IP": ip },
+  );
+  // Two different addresses on one profile: the tiny per-address cap must not apply,
+  // because the profile meters on its own id with its own much larger limit.
+  assert.equal((await handleMcp(named("203.0.113.9"), env)).status, 200);
+  assert.equal((await handleMcp(named("198.51.100.4"), env)).status, 200);
+  assert.equal((await handleMcp(named("203.0.113.9"), env)).status, 200);
+
+  // An anonymous caller on that same address still hits the per-address ceiling, so the
+  // two buckets are provably separate.
+  await handleMcp(post({ jsonrpc: "2.0", id: 25, method: "ping" }), env);
+  const anonymous = await handleMcp(post({ jsonrpc: "2.0", id: 26, method: "ping" }), env);
+  assert.equal(anonymous.status, 429);
+});
+
+test("profile telemetry is emitted content-free", async () => {
+  const records = [];
+  const env = {
+    SUBS: new MockKV(), NL_METER: new MockKV(), [PROFILE_BINDING]: PROFILE_SECRET,
+    MACHINE_CLIENT_TELEMETRY: { write: (record) => records.push(record) },
+  };
+  // A distinctive marker in the request: if any of it reaches the sink, the record is
+  // carrying caller content it must never hold.
+  const marker = "MARKER-request-content-must-not-be-recorded";
+  await handleMcp(post({
+    jsonrpc: "2.0", id: 27, method: "tools/call",
+    params: { name: "create_watch", arguments: { lens: "money", request: marker } },
+  }, { authorization: `Bearer ${PROFILE_SECRET}` }), env);
+
+  assert.equal(records.length, 1);
+  const [record] = records;
+  assert.equal(record.profile_id, "public-research-read");
+  assert.equal(record.error_class, "not_granted");
+  const serialized = JSON.stringify(record);
+  assert.ok(!serialized.includes(PROFILE_SECRET), "no credential in telemetry");
+  assert.ok(!serialized.includes(marker), "no request content in telemetry");
+  assert.ok(!serialized.includes("money"), "no argument values in telemetry");
+});

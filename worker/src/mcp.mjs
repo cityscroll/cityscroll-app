@@ -15,6 +15,12 @@
 // Spend defenses (every paid path fails closed): optional MCP_BEARER_TOKEN; per-IP daily
 // request limit; shared daily LLM ceiling (NL_METER `m:mcp:<day>`, MCP_MAX_CALLS_PER_DAY);
 // per-sender signup-email limit (same 5/day as /subscribe).
+//
+// Machine-client profiles (capabilities/machine_client_profile.mjs) add a NAMED identity
+// on top of that: a profile credential resolves to a stable profile id whose exact
+// allowlist filters BOTH tools/list and tools/call, and whose quota meters by profile id
+// instead of connecting address. Anonymous callers and the endpoint-wide MCP_BEARER_TOKEN
+// are unchanged — they keep the full inventory and the per-address meter.
 
 import { noticeSearchTerms, workerD1NoticeSearch } from "./lib/notices.mjs";
 import {
@@ -71,6 +77,7 @@ import {
 import {
   MCP_NOTICE_SEARCH_DEFAULT_LIMIT,
   MCP_TOOLS,
+  MCP_TOOL_BINDINGS,
 } from "../../capabilities/mcp_tool_declarations.mjs";
 export {
   MCP_CITED_PASSAGES_ADAPTER,
@@ -95,6 +102,13 @@ import { describeFilter } from "./lib/confirm_email.mjs";
 import { isValidEmail, buildSubscription } from "./lib/subscriptions.mjs";
 import { enrollAndWelcome } from "./subscribe.mjs";
 import { overSurfaceCap, overActorLimit } from "./lib/meter.mjs";
+import {
+  filterToolsForProfile,
+  machineClientMeterIdentity,
+  machineClientTelemetry,
+  profileAllowsTool,
+  resolveMachineClientProfile,
+} from "../../capabilities/machine_client_profile.mjs";
 import { workerCitedPassages } from "./cited_retrieval.mjs";
 import { workerD1EntityDossier } from "./entity_dossier.mjs";
 import { workerD1EntityRelationships } from "./public_relationship_graph.mjs";
@@ -458,21 +472,61 @@ async function callTool(env, req, name, args, { federatedProvider = null } = {})
   }
 }
 
+const TOOL_CAPABILITY_REFERENCES = new Map(
+  MCP_TOOL_BINDINGS.map((binding) => [binding.name, binding.capabilityReference || null]),
+);
+
+/**
+ * Derives the content-free telemetry facts of one tool call from its result envelope.
+ * Reads only structural fields — availability and result counts — and never the text,
+ * arguments, or structured payload itself.
+ */
+function toolCallTelemetryFacts(result) {
+  if (result?.isError) return { availability: null, count: 0, errorClass: "invalid_input" };
+  const structured = result?.structuredContent;
+  const availability = typeof structured?.availability === "string" ? structured.availability : null;
+  let count = 0;
+  for (const key of ["records", "results", "passages", "relationships", "projects", "contracts", "organizations"]) {
+    if (Array.isArray(structured?.[key])) { count = structured[key].length; break; }
+  }
+  return { availability, count, errorClass: "none" };
+}
+
+/**
+ * Emits one profile telemetry record when the deployment provides a sink. The record's
+ * key set is closed by machineClientTelemetry(); this function adds nothing to it, so a
+ * credential, prompt or response body cannot reach the sink through this path.
+ */
+function emitMachineClientTelemetry(env, record) {
+  const sink = env?.MACHINE_CLIENT_TELEMETRY;
+  if (typeof sink?.write !== "function") return false;
+  try {
+    sink.write(record);
+    return true;
+  } catch {
+    // Measurement must never break the call being measured.
+    return false;
+  }
+}
+
 function rpc(id, result, error) {
   return error ? { jsonrpc: "2.0", id, error } : { jsonrpc: "2.0", id, result };
 }
 
 export async function handleMcp(req, env, { federatedProvider = null } = {}) {
-  if (env.MCP_BEARER_TOKEN) {
-    const auth = req.headers.get("authorization") || "";
-    if (auth !== `Bearer ${env.MCP_BEARER_TOKEN}`) return new Response("Unauthorized", { status: 401 });
-  }
+  // Resolve the machine-client identity before any work. The 401 body stays a bare
+  // string with no detail about which credential failed or which profiles exist.
+  const { resolution, profile } = await resolveMachineClientProfile(env, req.headers.get("authorization"));
+  if (resolution === "unauthorized") return new Response("Unauthorized", { status: 401 });
   if (req.method !== "POST") return new Response("Method Not Allowed", { status: 405 });
 
-  // Cheap per-IP daily ceiling before any work (public endpoint, no Turnstile here).
+  // Cheap daily ceiling before any work (public endpoint, no Turnstile here). An
+  // authenticated profile meters on its own stable id, so one gateway's users are no
+  // longer each other's noisy neighbours; anonymous callers keep the per-address meter.
   const ip = req.headers.get("CF-Connecting-IP") || "";
-  const ipCap = Number(env.MCP_MAX_PER_IP_DAY) || 300;
-  if (await overActorLimit(env.SUBS, "mcpip", ip, ipCap)) {
+  const { meter, actor, limit } = machineClientMeterIdentity(profile, ip);
+  const cap = limit ?? (Number(env.MCP_MAX_PER_IP_DAY) || 300);
+  if (await overActorLimit(env.SUBS, meter, actor, cap)) {
     return Response.json(rpc(null, undefined, { code: -32000, message: "Daily request limit reached." }), { status: 429 });
   }
 
@@ -498,11 +552,35 @@ export async function handleMcp(req, env, { federatedProvider = null } = {}) {
       case "ping":
         return Response.json(rpc(id, {}));
       case "tools/list":
-        return Response.json(rpc(id, { tools: MCP_TOOLS }));
+        // Discovery is authority: a profile must not SEE a tool it may not call.
+        return Response.json(rpc(id, { tools: filterToolsForProfile(MCP_TOOLS, profile) }));
       case "tools/call": {
         const name = String(params?.name || "");
         const args = (params?.arguments) || {};
+        const capabilityReference = TOOL_CAPABILITY_REFERENCES.get(name) || null;
+        // Enforced independently of the listing — knowing a tool's name is not a grant.
+        // The refusal is deliberately indistinguishable from an unknown tool: a distinct
+        // "not granted" message would be a discovery oracle for the withheld inventory,
+        // which is exactly the authority leak the filtered listing exists to close.
+        if (!profileAllowsTool(profile, name)) {
+          emitMachineClientTelemetry(env, machineClientTelemetry({
+            profileId: profile?.id ?? null,
+            capabilityReference,
+            errorClass: "not_granted",
+          }));
+          return Response.json(rpc(id, toolError(`Unknown tool: ${name}`)));
+        }
+        const startedAt = Date.now();
         const result = await callTool(env, req, name, args, { federatedProvider });
+        const facts = toolCallTelemetryFacts(result);
+        emitMachineClientTelemetry(env, machineClientTelemetry({
+          profileId: profile?.id ?? null,
+          capabilityReference,
+          availability: facts.availability,
+          durationMs: Date.now() - startedAt,
+          count: facts.count,
+          errorClass: facts.errorClass,
+        }));
         return Response.json(rpc(id, result));
       }
       default:
