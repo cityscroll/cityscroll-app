@@ -1,0 +1,13 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-land-decision-path/ldp-16-procedure-aware-watches",
+  "status": "implemented",
+  "fingerprint": "ldp-16-procedure-aware-watches.v1",
+  "updated_at": "2026-09-05T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "land-next-decision-watch",
+      "path": "site/land_next_decision_watch.mjs"
+    }
+  ]
+}
