@@ -20,6 +20,30 @@ export const EDGE_SUMMARY_STATE_MEANINGS = Object.freeze({
 });
 export const ENTITY_PIVOT_SCHEMA = EDGE_SUMMARY_SCHEMA;
 
+/**
+ * Task-aware absence model (RU-02).
+ *
+ * A producer may optionally tag *why* a relation is absent. These five
+ * reasons stay distinct in the model even when several collapse to the same
+ * `matched`/`empty`/`unknown` bucket above, because a reader's next step
+ * differs by reason: a retrieval failure invites a retry, an unsearched
+ * field invites patience, a recorded negative is a citable fact, and a valid
+ * zero is not evidence of anything wrong. Tagging is opt-in and additive —
+ * an untagged record keeps its exact prior state and copy.
+ */
+export const ABSENCE_REASONS = Object.freeze({
+  CHECKED_NO_RECORD: "checked_no_record",
+  RETRIEVAL_FAILURE: "retrieval_failure",
+  UNSEARCHED: "unsearched",
+  RECORDED_NEGATIVE: "recorded_negative",
+  VALID_ZERO: "valid_zero",
+});
+
+function normalizedAbsenceReason(value) {
+  const reason = text(value, 40);
+  return reason && Object.values(ABSENCE_REASONS).includes(reason) ? reason : null;
+}
+
 const MAX_TEXT = 500;
 
 function text(value, max = MAX_TEXT) {
@@ -347,6 +371,9 @@ export function normalizeEdgeSummaryRecord(input = {}, defaults = {}) {
     derived_feature_rollup: raw.derived_feature_rollup && typeof raw.derived_feature_rollup === "object"
       ? cloneScope(raw.derived_feature_rollup)
       : null,
+    // Opt-in absence classification (RU-02): null unless a producer supplies
+    // it, so every existing caller's exact prior output is unaffected.
+    absence_reason: normalizedAbsenceReason(raw.absence_reason),
     ...crossSpinePivotFields(raw),
   });
 }
@@ -429,6 +456,16 @@ export function edgeRelationLabel(recordOrType) {
   })[relation] || relation, "related records");
 }
 
+/**
+ * Scoped copy for the `unknown` bucket, keyed by an explicit absence reason.
+ * Absent a reason, the caller gets the same "Records not shown" fallback it
+ * always has — this only sharpens the message when a producer knows more.
+ */
+const UNKNOWN_REASON_COPY = Object.freeze({
+  [ABSENCE_REASONS.RETRIEVAL_FAILURE]: "Could not be checked from the current source",
+  [ABSENCE_REASONS.UNSEARCHED]: "Not yet checked",
+});
+
 export function edgeSummaryStateCopy(record) {
   if (record.state === "matched") {
     return record.count == null
@@ -436,6 +473,9 @@ export function edgeSummaryStateCopy(record) {
       : `Available: ${record.count.toLocaleString("en-US")} ${record.count === 1 ? "record" : "records"}`;
   }
   if (record.state === "empty") {
+    if (record.absence_reason === ABSENCE_REASONS.RECORDED_NEGATIVE) {
+      return "Checked; the source records none";
+    }
     return ({
       contract: "No contract or award records linked yet",
       vendor: "No vendors linked yet",
@@ -450,7 +490,7 @@ export function edgeSummaryStateCopy(record) {
       "certificate-of-occupancy": "No occupancy records linked yet",
     }[record.target_kind] || "No related records linked yet");
   }
-  return "Records not shown";
+  return UNKNOWN_REASON_COPY[record.absence_reason] || "Records not shown";
 }
 
 function targetCopy(record) {
@@ -517,8 +557,15 @@ export function renderEdgeSummaryRail(records, {
   id = "edge-summary-heading",
   className = "",
   empty = "",
+  // A caller whose page already states, once, why an unevaluated relation is
+  // absent (a bounded coverage note, a per-section notice) sets this so the
+  // rail does not repeat that same "Records not shown" line as a second,
+  // redundant caveat (RU-02 A1). Matched and genuinely informative empty
+  // records are never affected; only the uninformative `unknown` bucket is.
+  omitOptionalUnknown = false,
 } = {}) {
-  const normalized = rankEdgeSummaryRecords(records);
+  const ranked = rankEdgeSummaryRecords(records);
+  const normalized = omitOptionalUnknown ? ranked.filter((record) => record.state !== "unknown") : ranked;
   if (!normalized.length) return empty;
   const items = normalized.map((record) => {
     const destination = targetCopy(record);
