@@ -1,5 +1,5 @@
 /**
- * Stable logical keys and keyed rows for the D1 read models (Kraken d1-04).
+ * Stable logical keys and keyed rows for the D1 read models (release-control card d1-04).
  *
  * One derivation, two consumers: the SQL builder (tools/build_worker_d1_read_models.mjs)
  * turns these rows into statements and the delta planner (tools/d1_delta_plan.mjs)
