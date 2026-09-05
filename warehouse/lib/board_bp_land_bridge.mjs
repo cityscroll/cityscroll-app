@@ -1,5 +1,7 @@
 /**
- * Community Board / Borough President land-document bridge (LDP-12).
+ * Community Board / Borough President land-document bridge (LDP-12), extended
+ * with a five-canonical-Borough-Board source registry and exact
+ * recommendation edges (LDP-14).
  *
  * Measures exact land-identifier prevalence in the existing Community
  * Board and Borough President rows of `shared_meeting_read_model.json`,
@@ -16,13 +18,31 @@
  * tier or unresolved. See `site/land_project_decision_relations.mjs` for
  * the shared relation vocabulary this module reuses rather than
  * redefining.
+ *
+ * A Borough Board row is a city_record row that already satisfies
+ * `isBoardOrBpRow` (it carries a Borough President agency) and additionally
+ * names the Borough Board in its title. This is a body_kind sub-
+ * classification of the same eligible corpus, not a second scraper or a
+ * new source_system: the five canonical boards, their exact-identifier
+ * extraction, and the recommendation/considers gate above are all reused
+ * unchanged. See `measureBoroughBoardSources` and
+ * `materializeBoroughBoardRecommendationEdge`.
  */
 
+import { createHash } from "node:crypto";
+
 import { extractUlurpKeys } from "../../site/ulurp_tokens.mjs";
+import { boroughBoardIdentity, REVIEWED_BOROUGH_BOARDS } from "../../site/borough_board_identity.mjs";
+import {
+  classifyLandRecommendationRelation,
+  LAND_PROJECT_RELATION_VOCABULARY,
+} from "../../site/land_project_decision_relations.mjs";
 import { normalizeCeqrKey } from "./ceqr_project_milestone_reconciliation.mjs";
 
 export const BOARD_BP_LAND_BRIDGE_SCHEMA = "cityscroll.board_bp_land_bridge_measurement.v1";
 export const CONSIDERS_EDGE_SCHEMA = "cityscroll.board_bp_considers_project_edge.v1";
+export const BOROUGH_BOARD_SOURCE_REGISTRY_SCHEMA = "cityscroll.borough_board_source_registry.v1";
+export const BOROUGH_BOARD_RECOMMENDATION_EDGE_SCHEMA = "cityscroll.borough_board_recommendation_edge.v1";
 export const USEFULNESS_THRESHOLD = 0.3;
 
 export const JOIN_METHODS = Object.freeze({
@@ -229,6 +249,177 @@ export function materializeConsidersEdge(row = {}, classification) {
   });
 }
 
+// ---------------------------------------------------------------------------
+// LDP-14: five canonical Borough Board source registry and exact
+// recommendation edges. This extends the classification and evidence gates
+// already defined above; it adds no new fetch path and no second scraper.
+// ---------------------------------------------------------------------------
+
+export const BOROUGH_BOARD_TITLE_RE = /\bBorough Board\b/i;
+
+export const BOROUGH_BOARD_SOURCE_STATUS = Object.freeze({
+  SUPPORTED: "supported",
+  INVENTORY_ONLY: "inventory_only",
+  UNAVAILABLE: "unavailable",
+});
+
+/**
+ * The observed, non-guessed publication channel for Borough Board notices:
+ * a City Record filing under the borough's Borough President agency whose
+ * title explicitly names the Borough Board. No per-board website is
+ * invented; a board with no observed row stays inventory_only rather than
+ * carry a guessed URL.
+ */
+export const BOROUGH_BOARD_OFFICIAL_PATTERN = Object.freeze({
+  channel: "city_record",
+  publisher: "City Record",
+  agency_pattern: BP_AGENCY_RE.source,
+  title_pattern: BOROUGH_BOARD_TITLE_RE.source,
+  source_domain: "a856-cityrecord.nyc.gov",
+  basis: "observed_publication_pattern",
+});
+
+/**
+ * Sub-classify an already-eligible board/BP row's body kind. This is source
+ * identity, not action inference: it never decides whether a row carries a
+ * recommendation, only which body's official channel produced it.
+ */
+export function boardBpBodyKind(row = {}) {
+  if (row.source_system === "community_board") return "community_board";
+  if (row.source_system === "city_record") {
+    const agencyMatch = clean(row.agency_name || row.agency).match(BP_AGENCY_RE);
+    if (!agencyMatch) return null;
+    return BOROUGH_BOARD_TITLE_RE.test(rowHaystack(row)) ? "borough_board" : "borough_president";
+  }
+  return null;
+}
+
+/** Canonical `borough-board:<slug>` ref for a row classified borough_board, else null. */
+export function boroughBoardRefForRow(row = {}) {
+  if (boardBpBodyKind(row) !== "borough_board") return null;
+  const agencyMatch = clean(row.agency_name || row.agency).match(BP_AGENCY_RE);
+  const identity = agencyMatch ? boroughBoardIdentity(agencyMatch[1]) : null;
+  return identity ? identity.id : null;
+}
+
+/**
+ * Tri-state source status. `hasOfficialPattern` is a parameter (rather than
+ * always true) so the unavailable branch stays reachable and testable
+ * without fabricating a board that does not exist.
+ */
+export function boroughBoardSourceStatus(observedCount, hasOfficialPattern = true) {
+  if (!hasOfficialPattern) return BOROUGH_BOARD_SOURCE_STATUS.UNAVAILABLE;
+  return observedCount > 0 ? BOROUGH_BOARD_SOURCE_STATUS.SUPPORTED : BOROUGH_BOARD_SOURCE_STATUS.INVENTORY_ONLY;
+}
+
+function boroughBoardRowReceipt(ref, row) {
+  const sourceRecordId = clean(row.request_id || row.publisher_identifier || row.meeting_id) || null;
+  const sourceUrl = clean(row.source_url) || null;
+  const vintage = clean(row.event_date) || null;
+  return Object.freeze({
+    source_record_id: sourceRecordId,
+    source_url: sourceUrl,
+    checked_at: clean(row.source_receipt?.observed_at) || null,
+    vintage,
+    content_hash: createHash("sha256")
+      .update(`${ref}\n${sourceRecordId || ""}\n${sourceUrl || ""}\n${vintage || ""}\n${clean(row.title)}`)
+      .digest("hex"),
+  });
+}
+
+/**
+ * Measure explicit supported/inventory-only/unavailable source status for
+ * each of the five canonical Borough Boards from the already-eligible
+ * board/BP rows. Never fetches; never guesses a per-board URL. A board with
+ * zero observed rows stays inventory_only, not absent.
+ */
+export function measureBoroughBoardSources({ rows = [], generatedAt } = {}) {
+  if (!generatedAt || !Number.isFinite(Date.parse(generatedAt))) {
+    throw new Error("generatedAt must be an ISO timestamp");
+  }
+  const byRef = new Map();
+  for (const row of rows) {
+    const ref = boroughBoardRefForRow(row);
+    if (!ref) continue;
+    if (!byRef.has(ref)) byRef.set(ref, []);
+    byRef.get(ref).push(row);
+  }
+  const sources = REVIEWED_BOROUGH_BOARDS.map((board) => {
+    const observedRows = byRef.get(board.id) || [];
+    const receipts = observedRows.map((row) => boroughBoardRowReceipt(board.id, row));
+    return Object.freeze({
+      body_ref: board.id,
+      borough: board.borough,
+      official_url: receipts[0]?.source_url || null,
+      official_pattern: BOROUGH_BOARD_OFFICIAL_PATTERN,
+      status: boroughBoardSourceStatus(observedRows.length, true),
+      checked_at: generatedAt,
+      observed_count: observedRows.length,
+      receipts: Object.freeze(receipts),
+    });
+  });
+  return {
+    schema: BOROUGH_BOARD_SOURCE_REGISTRY_SCHEMA,
+    generated_at: generatedAt,
+    coverage: {
+      canonical_boards: sources.length,
+      supported: sources.filter((source) => source.status === BOROUGH_BOARD_SOURCE_STATUS.SUPPORTED).length,
+      inventory_only: sources.filter((source) => source.status === BOROUGH_BOARD_SOURCE_STATUS.INVENTORY_ONLY).length,
+      unavailable: sources.filter((source) => source.status === BOROUGH_BOARD_SOURCE_STATUS.UNAVAILABLE).length,
+    },
+    sources,
+  };
+}
+
+/**
+ * Materialize a Borough Board `issues_recommendation` edge for one matched
+ * row. Requires everything `recommendationEvidence` already requires (exact
+ * identifier, explicit action wording, retained document, non-draft
+ * disposition) plus the shared relation vocabulary's own evidence-
+ * completeness gate. Returns null for any row that is not
+ * body_kind=borough_board, or that fails either gate -- an affected role, a
+ * draft disposition, or a title alone never produces this edge.
+ */
+export function materializeBoroughBoardRecommendationEdge(row = {}, classification) {
+  const boroughBoardRef = boroughBoardRefForRow(row);
+  if (!boroughBoardRef) return null;
+  const evidence = recommendationEvidence(row, classification);
+  if (!evidence.eligible) return null;
+  const primary = classification.candidates[0];
+  const classified = classifyLandRecommendationRelation({
+    source_record: clean(row.request_id || row.publisher_identifier || row.meeting_id),
+    join_key: primary.method,
+    join_value: primary.key,
+    source_fields: ["title", "search_text"],
+    method: primary.method,
+    method_version: "1",
+    observed_time: clean(row.event_date) || null,
+    document_url: evidence.document_url,
+  });
+  if (!classified.accepted) return null;
+  return Object.freeze({
+    schema: BOROUGH_BOARD_RECOMMENDATION_EDGE_SCHEMA,
+    relation: LAND_PROJECT_RELATION_VOCABULARY.issues_recommendation.id,
+    family: classified.family,
+    is_decision: classified.is_decision,
+    from: boroughBoardRef,
+    to: `project:${classification.project_id}`,
+    project_id: classification.project_id,
+    provenance: Object.freeze({
+      source_system: row.source_system,
+      source_record_id: classified.evidence.source_record,
+      source_url: clean(row.source_url) || null,
+      document_url: classified.evidence.document_url,
+      join_key: classified.evidence.join_key,
+      join_value: classified.evidence.join_value,
+      method: classified.evidence.method,
+      method_version: classified.evidence.method_version,
+      observed_time: classified.evidence.observed_time,
+    }),
+    negative_rule: LAND_PROJECT_RELATION_VOCABULARY.issues_recommendation.negative_rule,
+  });
+}
+
 function tally(rows, key) {
   const counts = {};
   for (const row of rows) {
@@ -280,8 +471,15 @@ export function measureBoardBpLandBridge({
   }));
 
   const materializedEdges = gate === "GO"
-    ? matched.map((entry) => materializeConsidersEdge(entry.row, entry.classification)).filter(Boolean)
+    ? matched.flatMap((entry) => {
+      const recommendationEdge = materializeBoroughBoardRecommendationEdge(entry.row, entry.classification);
+      if (recommendationEdge) return [recommendationEdge];
+      const considersEdge = materializeConsidersEdge(entry.row, entry.classification);
+      return considersEdge ? [considersEdge] : [];
+    })
     : [];
+
+  const boroughBoardSources = measureBoroughBoardSources({ rows: eligible, generatedAt });
 
   return {
     schema: BOARD_BP_LAND_BRIDGE_SCHEMA,
@@ -305,6 +503,7 @@ export function measureBoardBpLandBridge({
       eligible_rows: eligible.length,
       eligible_community_board_rows: eligible.filter((row) => row.source_system === "community_board").length,
       eligible_borough_president_rows: eligible.filter((row) => row.source_system === "city_record").length,
+      eligible_borough_board_rows: eligible.filter((row) => boardBpBodyKind(row) === "borough_board").length,
       matched: matched.length,
       unresolved: unresolved.length,
       rejected: rejected.length,
@@ -323,6 +522,7 @@ export function measureBoardBpLandBridge({
       prior_broad_bridge_reactivated: false,
     },
     materialized_edges: materializedEdges,
+    borough_board_sources: boroughBoardSources,
     honest_absent: gate === "STOP",
   };
 }
