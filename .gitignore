@@ -80,6 +80,8 @@ docs/screenshots/legislative-matter-calendar/fixtures/
 # the rendered image binaries themselves stay local/owner-side.
 docs/screenshots/land-filing-evidence/*.png
 docs/screenshots/land-next-decision-watch/*.png
+docs/screenshots/resident-copy-boundary/*.png
+docs/screenshots/resident-copy-boundary/fixtures/
 test/fixtures/merge-throughput/
 test/known_flake_rerun.test.mjs
 test/merge_gate_audit.test.mjs

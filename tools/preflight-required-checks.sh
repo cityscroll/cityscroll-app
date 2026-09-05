@@ -230,6 +230,11 @@ run_banner "Accessibility + language gate (plain-language copy)" "No-disclaimer-
   "python3 test/standards/no_disclaimer_slop.py --mode ${NO_DISCLAIMER_SLOP_MODE:-warn}"
 run_and_fail python3 test/standards/no_disclaimer_slop.py \
   --mode "${NO_DISCLAIMER_SLOP_MODE:-warn}"
+# The phrase scan above reads source text. This reads what the renderers
+# actually produce, so a diagnostic section or a raw dynamic label that carries
+# no banned phrase still fails. It is always blocking: it asserts structure
+# against bounded fixtures, so it has no calibration period to wait out.
+run_and_fail node tools/resident_copy_boundary.mjs --check
 run_and_fail python3 test/standards/public_surface_vocab.py --gate
 run_and_fail python3 test/standards/claim_first_prediction.py
 run_and_fail node tools/check_public_payload_integrity.mjs
