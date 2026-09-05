@@ -75,7 +75,7 @@ const ACTOR_KIND_TO_SELECTOR = Object.freeze({
   [ACTOR_KIND_CITY_COUNCIL]: "city_council",
 });
 
-const PREFIX_BOROUGH = Object.freeze({
+const ACTOR_OUTCOME_BOROUGH_PREFIX = Object.freeze({
   X: Object.freeze({ name: "Bronx", slug: "bronx" }),
   K: Object.freeze({ name: "Brooklyn", slug: "brooklyn" }),
   M: Object.freeze({ name: "Manhattan", slug: "manhattan" }),
@@ -118,13 +118,13 @@ export function actorKindFromRepresenting(representing) {
 
 function boroughFromProjectId(projectId) {
   const letter = clean(projectId, 12).toUpperCase().charAt(4);
-  return PREFIX_BOROUGH[letter] || null;
+  return ACTOR_OUTCOME_BOROUGH_PREFIX[letter] || null;
 }
 
 function boroughFromBoardId(boardId) {
   const match = clean(boardId, 40).match(/^([a-z]+(?:-[a-z]+)*)-cb-\d{2}$/);
   if (!match) return null;
-  return Object.values(PREFIX_BOROUGH).find((row) => row.slug === match[1]) || null;
+  return Object.values(ACTOR_OUTCOME_BOROUGH_PREFIX).find((row) => row.slug === match[1]) || null;
 }
 
 function boroughSlugFromRef(ref, prefix) {
@@ -145,13 +145,13 @@ function boroughFromAffected(kind, affected) {
     const refs = affected.facts?.borough_presidents || [];
     if (refs.length !== 1) return null;
     const slug = boroughSlugFromRef(refs[0], "borough-president");
-    return slug ? Object.values(PREFIX_BOROUGH).find((row) => row.slug === slug) || null : null;
+    return slug ? Object.values(ACTOR_OUTCOME_BOROUGH_PREFIX).find((row) => row.slug === slug) || null : null;
   }
   if (kind === ACTOR_KIND_BOROUGH_BOARD) {
     const refs = affected.facts?.borough_boards || [];
     if (refs.length !== 1) return null;
     const slug = boroughSlugFromRef(refs[0], "borough-board");
-    return slug ? Object.values(PREFIX_BOROUGH).find((row) => row.slug === slug) || null : null;
+    return slug ? Object.values(ACTOR_OUTCOME_BOROUGH_PREFIX).find((row) => row.slug === slug) || null : null;
   }
   return null;
 }
@@ -211,7 +211,7 @@ function observedActionFor(actorKind, rawOutcome) {
   return OBSERVED_ACTION.DISPOSITION;
 }
 
-const PROFILE_BY_ID = new Map(
+const ACTOR_OUTCOME_PROFILE_BY_ID = new Map(
   (LAND_PROCEDURE_PROFILE_REGISTRY.profiles || []).map((profile) => [profile.procedure_id, profile]),
 );
 
@@ -225,7 +225,7 @@ function resolvedProfileFor(project) {
       .map((action) => action.procedure_id)
       .filter(Boolean),
   )];
-  return ids.length === 1 ? PROFILE_BY_ID.get(ids[0]) || null : null;
+  return ids.length === 1 ? ACTOR_OUTCOME_PROFILE_BY_ID.get(ids[0]) || null : null;
 }
 
 function stageForActorKind(profile, actorKind) {
