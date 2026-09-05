@@ -130,7 +130,7 @@ function scopeBarHtml(scope) {
   const href = searchFrontDoorHref(target.id, new URLSearchParams(location.search));
   return `<div class="topic-search-scopebar" data-search-scope data-search-scope-id="${scope.id}">
     <p class="topic-search-scope-active"><span>${tr("preview_scope_label", null, "Scope")}: </span><strong data-search-scope-label>${tr(scope.label_key, null, scope.id)}</strong></p>
-    <a class="mini topic-search-scope-toggle" data-search-scope-toggle="${target.id}" href="${href}">${tr(target.narrow_label_key, null, target.id)}</a>
+    <a class="mini topic-search-scope-toggle" data-search-scope-toggle="${target.id}" href="${href}">${tr(scope.narrow_label_key, null, target.id)}</a>
   </div>`;
 }
 
