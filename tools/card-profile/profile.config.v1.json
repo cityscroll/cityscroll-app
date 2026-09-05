@@ -71,7 +71,8 @@
     ".gitignore",
     "Makefile",
     "package.json",
-    "pnpm-lock.yaml"
+    "pnpm-lock.yaml",
+    "warehouse/lib/shared_payment_input.mjs"
   ],
   "gate_classes": [
     {
