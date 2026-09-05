@@ -1,15 +1,24 @@
 #!/usr/bin/env node
 /**
- * SEQRA-02: the narrow `npm run warehouse:seqra:labels` command surface the
- * card's `verify` field names. This is not the label-builder or backtest
- * corpus later cards (SEQRA-08) own -- it validates the process ontology and
- * as-of projector this card actually delivers: schema shape, relation
- * integrity over a multi-action/multi-review/multi-BBL fixture, cutoff
- * reproduction and replay-order independence, draft/final coexistence, the
- * two required contradiction fixtures (final-before-draft, conflicting
- * determinations), and that the SEQRA-01 California/CEQA rejection path
- * still admits zero rows. No network access; every input is a retained
- * fixture or a previously committed SEQRA-01 receipt.
+ * SEQRA-02 and SEQRA-08: the narrow `npm run warehouse:seqra:labels` command
+ * surface both cards' `verify` field names, matching
+ * `tools/check_seqra_document_pipeline.mjs`'s convention for SEQRA-04/05.
+ *
+ *   SEQRA-02 validates the process ontology and as-of projector this card
+ *   delivers: schema shape, relation integrity over a multi-action/multi-
+ *   review/multi-BBL fixture, cutoff reproduction and replay-order
+ *   independence, draft/final coexistence, the two required contradiction
+ *   fixtures (final-before-draft, conflicting determinations), and that the
+ *   SEQRA-01 California/CEQA rejection path still admits zero rows.
+ *
+ *   SEQRA-08 delegates its own A1-A5 and negative-rule checks to
+ *   `tools/build_seqra_label_backtest_corpus.mjs --check`, the same
+ *   delegation pattern this file already uses for SEQRA-02's ontology-schema
+ *   sub-check: one receipt owns the full label-builder/backtest-corpus
+ *   contract, this file only asserts that receipt's gate passed.
+ *
+ * No network access; every input is a retained fixture or a previously
+ * committed SEQRA-01 receipt.
  *
  * Default mode runs the checks and writes the receipt. `--check` reruns and
  * diffs against the committed receipt, matching every other warehouse
@@ -44,6 +53,7 @@ import { SEQRA_JURISDICTION_FIXTURE_BATCH } from "../warehouse/fixtures/seqra-in
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const RECEIPT = path.join(ROOT, "warehouse/receipts/proof/seqra_ontology_projector_latest.json");
 const SEQRA01_INVENTORY_RECEIPT = path.join(ROOT, "warehouse/receipts/proof/seqra_source_inventory_latest.json");
+const SEQRA08_LABEL_CORPUS_RECEIPT = path.join(ROOT, "warehouse/receipts/proof/seqra_label_backtest_corpus_latest.json");
 
 function stable(value) {
   if (Array.isArray(value)) return value.map(stable);
@@ -144,6 +154,14 @@ check("the retained SEQRA-01 source inventory receipt is present and parseable (
   JSON.parse(readFileSync(SEQRA01_INVENTORY_RECEIPT, "utf8"));
 });
 
+let seqra08LabelCorpusGateResult = null;
+check("SEQRA-08: the label-builder/backtest-corpus receipt is current and its own gate passes (A1-A5, negative rule)", () => {
+  execFileSync(process.execPath, ["tools/build_seqra_label_backtest_corpus.mjs", "--check"], { cwd: ROOT, stdio: "pipe" });
+  const receipt = JSON.parse(readFileSync(SEQRA08_LABEL_CORPUS_RECEIPT, "utf8"));
+  assertEqual(receipt.gate.result, "pass", "SEQRA-08 label-backtest-corpus receipt gate");
+  seqra08LabelCorpusGateResult = receipt.gate.result;
+});
+
 const failed = checks.filter((c) => c.result === "fail");
 const gateResult = failed.length === 0 ? "pass" : "fail";
 
@@ -158,6 +176,7 @@ const receipt = {
   checks,
   california_or_ceqa_admitted_count: scopeSummary?.california_or_ceqa_admitted_count ?? null,
   seqra01_inventory_receipt_present: seqra01ReceiptPresent,
+  seqra08_label_backtest_corpus_gate_result: seqra08LabelCorpusGateResult,
   gate: { result: gateResult, failed_check_count: failed.length },
 };
 

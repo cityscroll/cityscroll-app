@@ -1,0 +1,586 @@
+{
+  "checks": [
+    {
+      "detail": {
+        "records_audited": 20,
+        "reviews_checked": 6,
+        "total_leakage_violations": 0
+      },
+      "name": "A1: every review's as-of snapshot is contradiction-free and reports zero temporal-leakage violations",
+      "result": "pass"
+    },
+    {
+      "detail": {
+        "refused": true
+      },
+      "name": "A1: a contradictory review's log is refused at the cutoff, never given a guessed feature snapshot",
+      "result": "pass"
+    },
+    {
+      "detail": {
+        "censored_count": 13,
+        "scored_count": 11
+      },
+      "name": "A2 / negative rule: no review still open as of its own horizon is ever scored as a supplemental-review negative",
+      "result": "pass"
+    },
+    {
+      "detail": {
+        "family_count": 5,
+        "fold_count": 2
+      },
+      "name": "A3: project families group correctly and no fold assigns one family to both train and test",
+      "result": "pass"
+    },
+    {
+      "detail": {
+        "population_receipts": 20
+      },
+      "name": "A4: every target/fold/split population reports population, exclusion reasons, and prevalence",
+      "result": "pass"
+    },
+    {
+      "detail": {
+        "reproduced": true
+      },
+      "name": "A5: re-deriving folds from the recorded rows/folds recipe reproduces identical membership",
+      "result": "pass"
+    },
+    {
+      "detail": {
+        "positions_included": 1,
+        "spatial_feature_count": 12
+      },
+      "name": "prerequisite adapters: the full-integration review's snapshot carries real SEQRA-06 spatial features and a filtered SEQRA-07 public position",
+      "result": "pass"
+    },
+    {
+      "detail": {
+        "suites_run": 1
+      },
+      "name": "existing warehouse test suite for this card's own module stays green",
+      "result": "pass"
+    }
+  ],
+  "fold_assignments": [
+    {
+      "cutoff": "2024-06-01T00:00:00.000Z",
+      "excluded_reason": null,
+      "family_id": "project_family:caa3cfb2aca0800a",
+      "fold_id": "fold-2024h2",
+      "review_key": "environmental_review:ceqr:24DCP006X",
+      "split": "train"
+    },
+    {
+      "cutoff": "2024-02-01T00:00:00.000Z",
+      "excluded_reason": null,
+      "family_id": "project_family:ffea76da7d08c50b",
+      "fold_id": "fold-2024h2",
+      "review_key": "environmental_review:ceqr:24DCP008X",
+      "split": "train"
+    },
+    {
+      "cutoff": "2025-03-01T00:00:00.000Z",
+      "excluded_reason": "family_train_test_conflict",
+      "family_id": "project_family:a9ce80225371c7b7",
+      "fold_id": "fold-2024h2",
+      "review_key": "environmental_review:ceqr:25DCP005X",
+      "split": "excluded"
+    },
+    {
+      "cutoff": "2024-03-01T00:00:00.000Z",
+      "excluded_reason": "family_train_test_conflict",
+      "family_id": "project_family:a9ce80225371c7b7",
+      "fold_id": "fold-2024h2",
+      "review_key": "environmental_review:seqra:nys_dec:labels_alpha_v1",
+      "split": "excluded"
+    },
+    {
+      "cutoff": "2024-06-01T00:00:00.000Z",
+      "excluded_reason": null,
+      "family_id": "project_family:caa3cfb2aca0800a",
+      "fold_id": "fold-2025h2",
+      "review_key": "environmental_review:ceqr:24DCP006X",
+      "split": "train"
+    },
+    {
+      "cutoff": "2024-02-01T00:00:00.000Z",
+      "excluded_reason": null,
+      "family_id": "project_family:ffea76da7d08c50b",
+      "fold_id": "fold-2025h2",
+      "review_key": "environmental_review:ceqr:24DCP008X",
+      "split": "train"
+    },
+    {
+      "cutoff": "2025-03-01T00:00:00.000Z",
+      "excluded_reason": null,
+      "family_id": "project_family:a9ce80225371c7b7",
+      "fold_id": "fold-2025h2",
+      "review_key": "environmental_review:ceqr:25DCP005X",
+      "split": "train"
+    },
+    {
+      "cutoff": "2025-08-01T00:00:00.000Z",
+      "excluded_reason": null,
+      "family_id": "project_family:13c0e106f5d72e79",
+      "fold_id": "fold-2025h2",
+      "review_key": "environmental_review:ceqr:25DCP007X",
+      "split": "test"
+    },
+    {
+      "cutoff": "2024-03-01T00:00:00.000Z",
+      "excluded_reason": null,
+      "family_id": "project_family:a9ce80225371c7b7",
+      "fold_id": "fold-2025h2",
+      "review_key": "environmental_review:seqra:nys_dec:labels_alpha_v1",
+      "split": "train"
+    },
+    {
+      "cutoff": "2025-11-01T00:00:00.000Z",
+      "excluded_reason": null,
+      "family_id": "project_family:d6450f7bbeccc73c",
+      "fold_id": "fold-2025h2",
+      "review_key": "environmental_review:seqra:nys_dec:labels_gamma",
+      "split": "test"
+    }
+  ],
+  "fold_definitions": [
+    {
+      "foldId": "fold-2024h2",
+      "testEnd": "2025-06-30T23:59:59.999Z",
+      "testStart": "2024-12-31T23:59:59.999Z",
+      "trainEnd": "2024-12-31T23:59:59.999Z"
+    },
+    {
+      "foldId": "fold-2025h2",
+      "testEnd": "2025-12-31T23:59:59.999Z",
+      "testStart": "2025-06-30T23:59:59.999Z",
+      "trainEnd": "2025-06-30T23:59:59.999Z"
+    }
+  ],
+  "fold_row_recipe": [
+    {
+      "cutoff": "2024-03-01T00:00:00.000Z",
+      "familyId": "project_family:a9ce80225371c7b7",
+      "reviewKey": "environmental_review:seqra:nys_dec:labels_alpha_v1"
+    },
+    {
+      "cutoff": "2025-03-01T00:00:00.000Z",
+      "familyId": "project_family:a9ce80225371c7b7",
+      "reviewKey": "environmental_review:ceqr:25DCP005X"
+    },
+    {
+      "cutoff": "2024-06-01T00:00:00.000Z",
+      "familyId": "project_family:caa3cfb2aca0800a",
+      "reviewKey": "environmental_review:ceqr:24DCP006X"
+    },
+    {
+      "cutoff": "2025-11-01T00:00:00.000Z",
+      "familyId": "project_family:d6450f7bbeccc73c",
+      "reviewKey": "environmental_review:seqra:nys_dec:labels_gamma"
+    },
+    {
+      "cutoff": "2025-08-01T00:00:00.000Z",
+      "familyId": "project_family:13c0e106f5d72e79",
+      "reviewKey": "environmental_review:ceqr:25DCP007X"
+    },
+    {
+      "cutoff": "2024-02-01T00:00:00.000Z",
+      "familyId": "project_family:ffea76da7d08c50b",
+      "reviewKey": "environmental_review:ceqr:24DCP008X"
+    }
+  ],
+  "gate": {
+    "failed_check_count": 0,
+    "result": "pass"
+  },
+  "process_path_labels": [
+    "type_ii",
+    "negative_declaration",
+    "conditioned_negative_declaration",
+    "positive_declaration_eis",
+    "unknown_or_incomplete"
+  ],
+  "project_families": [
+    {
+      "family_id": "project_family:13c0e106f5d72e79",
+      "member_project_keys": [
+        "project:zap:sample-labels-delta"
+      ]
+    },
+    {
+      "family_id": "project_family:a9ce80225371c7b7",
+      "member_project_keys": [
+        "project:zap:sample-labels-alpha-v1",
+        "project:zap:sample-labels-alpha-v2"
+      ]
+    },
+    {
+      "family_id": "project_family:caa3cfb2aca0800a",
+      "member_project_keys": [
+        "project:zap:sample-labels-beta"
+      ]
+    },
+    {
+      "family_id": "project_family:d6450f7bbeccc73c",
+      "member_project_keys": [
+        "project:zap:sample-labels-gamma"
+      ]
+    },
+    {
+      "family_id": "project_family:ffea76da7d08c50b",
+      "member_project_keys": [
+        "project:zap:sample-spatial-001"
+      ]
+    }
+  ],
+  "schema": "cityscroll.seqra_label_backtest_corpus_receipt.v1",
+  "supplemental_review_horizons": [
+    "within_90_days",
+    "within_180_days",
+    "before_final_determination",
+    "before_implementation_completion"
+  ],
+  "target_fold_populations": [
+    {
+      "censored_count": 0,
+      "eligible_population": 2,
+      "excluded_by_reason": {
+        "family_train_test_conflict": 2
+      },
+      "fold_id": "fold-2024h2",
+      "label_counts": {
+        "negative_declaration": 1,
+        "positive_declaration_eis": 1
+      },
+      "labeled_population": 2,
+      "population": 4,
+      "prevalence": {
+        "negative_declaration": 0.5,
+        "positive_declaration_eis": 0.5
+      },
+      "schema": "cityscroll.seqra_label_fold_population.v1",
+      "split": "train",
+      "target_name": "process_path"
+    },
+    {
+      "censored_count": 0,
+      "eligible_population": 2,
+      "excluded_by_reason": {
+        "family_train_test_conflict": 2
+      },
+      "fold_id": "fold-2024h2",
+      "label_counts": {
+        "0": 2
+      },
+      "labeled_population": 2,
+      "population": 4,
+      "prevalence": {
+        "0": 1
+      },
+      "schema": "cityscroll.seqra_label_fold_population.v1",
+      "split": "train",
+      "target_name": "supplemental_review:within_90_days"
+    },
+    {
+      "censored_count": 0,
+      "eligible_population": 2,
+      "excluded_by_reason": {
+        "family_train_test_conflict": 2
+      },
+      "fold_id": "fold-2024h2",
+      "label_counts": {
+        "0": 1,
+        "1": 1
+      },
+      "labeled_population": 2,
+      "population": 4,
+      "prevalence": {
+        "0": 0.5,
+        "1": 0.5
+      },
+      "schema": "cityscroll.seqra_label_fold_population.v1",
+      "split": "train",
+      "target_name": "supplemental_review:within_180_days"
+    },
+    {
+      "censored_count": 1,
+      "eligible_population": 2,
+      "excluded_by_reason": {
+        "family_train_test_conflict": 2
+      },
+      "fold_id": "fold-2024h2",
+      "label_counts": {
+        "1": 1
+      },
+      "labeled_population": 1,
+      "population": 4,
+      "prevalence": {
+        "1": 1
+      },
+      "schema": "cityscroll.seqra_label_fold_population.v1",
+      "split": "train",
+      "target_name": "supplemental_review:before_final_determination"
+    },
+    {
+      "censored_count": 1,
+      "eligible_population": 2,
+      "excluded_by_reason": {
+        "family_train_test_conflict": 2
+      },
+      "fold_id": "fold-2024h2",
+      "label_counts": {
+        "1": 1
+      },
+      "labeled_population": 1,
+      "population": 4,
+      "prevalence": {
+        "1": 1
+      },
+      "schema": "cityscroll.seqra_label_fold_population.v1",
+      "split": "train",
+      "target_name": "supplemental_review:before_implementation_completion"
+    },
+    {
+      "censored_count": 0,
+      "eligible_population": 0,
+      "excluded_by_reason": {
+        "family_train_test_conflict": 2
+      },
+      "fold_id": "fold-2024h2",
+      "label_counts": {},
+      "labeled_population": 0,
+      "population": 2,
+      "prevalence": {},
+      "schema": "cityscroll.seqra_label_fold_population.v1",
+      "split": "test",
+      "target_name": "process_path"
+    },
+    {
+      "censored_count": 0,
+      "eligible_population": 0,
+      "excluded_by_reason": {
+        "family_train_test_conflict": 2
+      },
+      "fold_id": "fold-2024h2",
+      "label_counts": {},
+      "labeled_population": 0,
+      "population": 2,
+      "prevalence": {},
+      "schema": "cityscroll.seqra_label_fold_population.v1",
+      "split": "test",
+      "target_name": "supplemental_review:within_90_days"
+    },
+    {
+      "censored_count": 0,
+      "eligible_population": 0,
+      "excluded_by_reason": {
+        "family_train_test_conflict": 2
+      },
+      "fold_id": "fold-2024h2",
+      "label_counts": {},
+      "labeled_population": 0,
+      "population": 2,
+      "prevalence": {},
+      "schema": "cityscroll.seqra_label_fold_population.v1",
+      "split": "test",
+      "target_name": "supplemental_review:within_180_days"
+    },
+    {
+      "censored_count": 0,
+      "eligible_population": 0,
+      "excluded_by_reason": {
+        "family_train_test_conflict": 2
+      },
+      "fold_id": "fold-2024h2",
+      "label_counts": {},
+      "labeled_population": 0,
+      "population": 2,
+      "prevalence": {},
+      "schema": "cityscroll.seqra_label_fold_population.v1",
+      "split": "test",
+      "target_name": "supplemental_review:before_final_determination"
+    },
+    {
+      "censored_count": 0,
+      "eligible_population": 0,
+      "excluded_by_reason": {
+        "family_train_test_conflict": 2
+      },
+      "fold_id": "fold-2024h2",
+      "label_counts": {},
+      "labeled_population": 0,
+      "population": 2,
+      "prevalence": {},
+      "schema": "cityscroll.seqra_label_fold_population.v1",
+      "split": "test",
+      "target_name": "supplemental_review:before_implementation_completion"
+    },
+    {
+      "censored_count": 0,
+      "eligible_population": 4,
+      "excluded_by_reason": {},
+      "fold_id": "fold-2025h2",
+      "label_counts": {
+        "negative_declaration": 1,
+        "positive_declaration_eis": 2,
+        "type_ii": 1
+      },
+      "labeled_population": 4,
+      "population": 4,
+      "prevalence": {
+        "negative_declaration": 0.25,
+        "positive_declaration_eis": 0.5,
+        "type_ii": 0.25
+      },
+      "schema": "cityscroll.seqra_label_fold_population.v1",
+      "split": "train",
+      "target_name": "process_path"
+    },
+    {
+      "censored_count": 0,
+      "eligible_population": 4,
+      "excluded_by_reason": {},
+      "fold_id": "fold-2025h2",
+      "label_counts": {
+        "0": 4
+      },
+      "labeled_population": 4,
+      "population": 4,
+      "prevalence": {
+        "0": 1
+      },
+      "schema": "cityscroll.seqra_label_fold_population.v1",
+      "split": "train",
+      "target_name": "supplemental_review:within_90_days"
+    },
+    {
+      "censored_count": 0,
+      "eligible_population": 4,
+      "excluded_by_reason": {},
+      "fold_id": "fold-2025h2",
+      "label_counts": {
+        "0": 3,
+        "1": 1
+      },
+      "labeled_population": 4,
+      "population": 4,
+      "prevalence": {
+        "0": 0.75,
+        "1": 0.25
+      },
+      "schema": "cityscroll.seqra_label_fold_population.v1",
+      "split": "train",
+      "target_name": "supplemental_review:within_180_days"
+    },
+    {
+      "censored_count": 3,
+      "eligible_population": 4,
+      "excluded_by_reason": {},
+      "fold_id": "fold-2025h2",
+      "label_counts": {
+        "1": 1
+      },
+      "labeled_population": 1,
+      "population": 4,
+      "prevalence": {
+        "1": 1
+      },
+      "schema": "cityscroll.seqra_label_fold_population.v1",
+      "split": "train",
+      "target_name": "supplemental_review:before_final_determination"
+    },
+    {
+      "censored_count": 3,
+      "eligible_population": 4,
+      "excluded_by_reason": {},
+      "fold_id": "fold-2025h2",
+      "label_counts": {
+        "1": 1
+      },
+      "labeled_population": 1,
+      "population": 4,
+      "prevalence": {
+        "1": 1
+      },
+      "schema": "cityscroll.seqra_label_fold_population.v1",
+      "split": "train",
+      "target_name": "supplemental_review:before_implementation_completion"
+    },
+    {
+      "censored_count": 0,
+      "eligible_population": 2,
+      "excluded_by_reason": {},
+      "fold_id": "fold-2025h2",
+      "label_counts": {
+        "conditioned_negative_declaration": 1,
+        "unknown_or_incomplete": 1
+      },
+      "labeled_population": 2,
+      "population": 2,
+      "prevalence": {
+        "conditioned_negative_declaration": 0.5,
+        "unknown_or_incomplete": 0.5
+      },
+      "schema": "cityscroll.seqra_label_fold_population.v1",
+      "split": "test",
+      "target_name": "process_path"
+    },
+    {
+      "censored_count": 1,
+      "eligible_population": 2,
+      "excluded_by_reason": {},
+      "fold_id": "fold-2025h2",
+      "label_counts": {
+        "0": 1
+      },
+      "labeled_population": 1,
+      "population": 2,
+      "prevalence": {
+        "0": 1
+      },
+      "schema": "cityscroll.seqra_label_fold_population.v1",
+      "split": "test",
+      "target_name": "supplemental_review:within_90_days"
+    },
+    {
+      "censored_count": 2,
+      "eligible_population": 2,
+      "excluded_by_reason": {},
+      "fold_id": "fold-2025h2",
+      "label_counts": {},
+      "labeled_population": 0,
+      "population": 2,
+      "prevalence": {},
+      "schema": "cityscroll.seqra_label_fold_population.v1",
+      "split": "test",
+      "target_name": "supplemental_review:within_180_days"
+    },
+    {
+      "censored_count": 2,
+      "eligible_population": 2,
+      "excluded_by_reason": {},
+      "fold_id": "fold-2025h2",
+      "label_counts": {},
+      "labeled_population": 0,
+      "population": 2,
+      "prevalence": {},
+      "schema": "cityscroll.seqra_label_fold_population.v1",
+      "split": "test",
+      "target_name": "supplemental_review:before_final_determination"
+    },
+    {
+      "censored_count": 2,
+      "eligible_population": 2,
+      "excluded_by_reason": {},
+      "fold_id": "fold-2025h2",
+      "label_counts": {},
+      "labeled_population": 0,
+      "population": 2,
+      "prevalence": {},
+      "schema": "cityscroll.seqra_label_fold_population.v1",
+      "split": "test",
+      "target_name": "supplemental_review:before_implementation_completion"
+    }
+  ]
+}
