@@ -321,9 +321,12 @@ test("focus intent names a control, and never nothing", () => {
 
 test("activating a marker cannot reach the network", () => {
   // The runtime fetches exactly one thing, and it is the committed projection LM-06 named.
-  const fetches = [...runtimeSrc.matchAll(/fetch\(/g)];
+  // LM-12 routes it through fetchLandMapArtifact (budgeted, typed-failure, bounded-retry)
+  // instead of a bare fetch() call, so the shell itself holds no fetch() call site at all.
+  assert.doesNotMatch(runtimeSrc, /\bfetch\(/, "the shell should route requests through fetchLandMapArtifact, not fetch()");
+  const fetches = [...runtimeSrc.matchAll(/fetchLandMapArtifact\(/g)];
   assert.equal(fetches.length, 1, "the map runtime grew a second fetch");
-  assert.match(runtimeSrc, /fetch\(LAND_MAP_POINTS_URL/);
+  assert.match(runtimeSrc, /fetchLandMapArtifact\(LAND_MAP_POINTS_URL/);
   // Selection reports intent to the route and paints. It never searches.
   for (const forbidden of ["landSearch", "loadLandProjectsSnapshot", "showLandEntry"]) {
     assert.ok(!runtimeSrc.includes(forbidden), `marker selection reached ${forbidden}`);

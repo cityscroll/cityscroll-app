@@ -11,6 +11,7 @@ import {
   polygonLabelPoint,
   polygonsToSvgPath,
 } from "./map_exploration.mjs";
+import { LAND_MAP_BUDGETS, fetchWithBudget } from "./land_map_performance_budget.mjs";
 
 export const LAND_MAP_BOUNDARY_CONTEXT_SCHEMA = "cityscroll.land_map_boundary_context.v1";
 
@@ -148,13 +149,25 @@ export function emptyLandMapBoundaryContext() {
   });
 }
 
-/** Load only the committed same-origin artifacts. A missing layer never rejects the map. */
-export async function loadLandMapBoundaryContext(fetchImpl = globalThis.fetch) {
+/**
+ * Load only the committed same-origin artifacts. A missing layer never rejects the map.
+ *
+ * `timeoutMs` defaults to the production budget (LAND_MAP_BUDGETS.map_request_timeout_ms) and
+ * exists as a parameter only so a test can prove the hang-protection itself without waiting out
+ * the real budget; no production call site overrides it.
+ */
+export async function loadLandMapBoundaryContext(fetchImpl = globalThis.fetch, { timeoutMs = LAND_MAP_BUDGETS.map_request_timeout_ms } = {}) {
   if (typeof fetchImpl !== "function") return emptyLandMapBoundaryContext();
   const layers = await Promise.all(BOUNDARY_DEFINITIONS.map(async (definition) => {
     let payload;
     try {
-      const response = await fetchImpl(definition.artifactUrl, { cache: "force-cache", credentials: "omit" });
+      // Bounded (LM-12): a layer that never settles used to hold this Promise.all -- and so
+      // the whole Map, markers included -- open forever. A layer that times out degrades to
+      // "unavailable" exactly like a 404 or a network error, within a fixed budget.
+      const response = await fetchWithBudget(fetchImpl, definition.artifactUrl, {
+        timeoutMs,
+        init: { cache: "force-cache", credentials: "omit" },
+      });
       if (!response?.ok) return { level: definition.level, state: "unavailable", records: [] };
       payload = await response.json();
     } catch (_error) {
