@@ -206,6 +206,9 @@ test("every fence command in the deploy workflow parses under the CLI parser", (
     assert.match(args.config, /wrangler\.toml$/, `--config must survive parsing in: ${command}`);
     assert.equal(args.key, "d1-publication:state:v1");
     assert.equal(args.binding, "ALERT_STATE");
+    // Every command shares one run ledger, so each holds the confirmed view the
+    // next one needs when the remote read has not caught up yet.
+    assert.match(args.ledger ?? "", /\.artifacts\/d1-generation-ledger\.json$/, `--ledger must be passed in: ${command}`);
     parsedCommands.add(args.command);
   }
   assert.deepEqual([...parsedCommands].sort(), ["abandon", "claim", "commit-check", "complete", "renew"]);
