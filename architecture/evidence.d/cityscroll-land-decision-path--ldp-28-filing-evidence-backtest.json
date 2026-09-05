@@ -1,0 +1,37 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-land-decision-path/ldp-28-filing-evidence-backtest",
+  "status": "implemented",
+  "fingerprint": "ldp-28-filing-evidence-backtest.v1",
+  "updated_at": "2026-09-05T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "land-filing-evidence-backtest",
+      "path": "warehouse/lib/land_filing_evidence_backtest.mjs"
+    },
+    {
+      "id": "land-filing-evidence-backtest-fixtures",
+      "path": "warehouse/fixtures/land-filing-evidence-backtest/backtest_corpus_fixtures.mjs"
+    },
+    {
+      "id": "land-filing-evidence-backtest-gate",
+      "path": "tools/build_land_filing_evidence_backtest.mjs"
+    },
+    {
+      "id": "land-filing-evidence-backtest-tests",
+      "path": "test/land_filing_evidence_backtest.test.mjs"
+    },
+    {
+      "id": "land-filing-evidence-backtest-receipt",
+      "path": "warehouse/receipts/proof/land_filing_evidence_backtest_latest.json"
+    },
+    {
+      "id": "land-filing-evidence-backtest-adr",
+      "path": "docs/adr/land-filing-evidence-backtest.md"
+    },
+    {
+      "id": "land-filing-evidence-backtest-evidence",
+      "path": "docs/evidence/land-filing-evidence-backtest.md"
+    }
+  ]
+}
