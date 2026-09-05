@@ -1,3 +1,14 @@
 # iCalendar is defined with CRLF line endings; do not flag the terminator as whitespace.
 test/fixtures/calendar-contract/*.ics whitespace=cr-at-eol
 docs/evidence/calendar-contract/**/*.ics whitespace=cr-at-eol
+
+# The generated card-work provisioning profile is stored as sorted, line-oriented
+# derived lists, because any change that adds a tracked file can extend them. Union-merge
+# them so two such changes both land instead of every change after the first having
+# to rebase and regenerate. Order and duplicates carry no meaning here: every
+# reader sorts and deduplicates (tools/card_profile_closure.mjs), the contract is
+# checked as a set, and the next `node tools/derive_card_profile.mjs` restores the
+# canonical form. The closure contract itself is deliberately not union-merged: a
+# disagreement there is a real disagreement about policy.
+tools/card-profile/card-work.sparse merge=union
+tools/card-profile/closure.d/*.txt merge=union

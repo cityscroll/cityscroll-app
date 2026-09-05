@@ -36,11 +36,15 @@ import { existsSync, readFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
+import {
+  committedPatterns as readCommittedPatterns,
+  loadClosure,
+  materialisedByPatterns
+} from "./card_profile_closure.mjs";
+
 export const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const MANIFEST_PATH = resolve(ROOT, "tools/card-profile/profiles.v1.json");
 const CONFIG_PATH = resolve(ROOT, "tools/card-profile/profile.config.v1.json");
-const CLOSURE_PATH = resolve(ROOT, "tools/card-profile/closure.v1.json");
-const SPARSE_PATH = resolve(ROOT, "tools/card-profile/card-work.sparse");
 const OBSERVATION_DIR = resolve(ROOT, "docs/evidence/ci-09-working-copy-reduction/raw/closure");
 
 const EXIT_OK = 0;
@@ -108,31 +112,43 @@ export function computeIdentity(manifest = loadManifest(), revision = git(["rev-
 // --- closure verification ----------------------------------------------------
 
 function committedPatterns() {
-  return readFileSync(SPARSE_PATH, "utf8")
-    .split("\n")
-    .filter((line) => line && !line.startsWith("#"));
-}
-
-// The pattern list is --no-cone, so a directory pattern is a prefix match and
-// everything else is exact. This is the same rule Git applies when it
-// materialises the checkout.
-function materialisedByPatterns(patterns, path) {
-  return patterns.some((pattern) =>
-    pattern.endsWith("/") ? path.startsWith(pattern.slice(1)) : path === pattern.slice(1)
-  );
+  return readCommittedPatterns(ROOT);
 }
 
 // Drift, not re-derivation. The deriver records the digest of the config it ran
-// against and of the pattern list it produced; recomputing both here catches a
-// closure that no longer describes its inputs without paying for a full rebuild
-// on every routing decision.
-export function verifyClosure(closure = readJson(CLOSURE_PATH)) {
+// against, and the closure names exactly which paths the pattern list has to
+// materialise and which it must not; checking both here catches a closure that
+// no longer describes its inputs without paying for a full rebuild on every
+// routing decision.
+//
+// The pattern-list half used to be a stored digest. That could not survive the
+// storage split: a digest of a file that grows with the repository is rewritten
+// by every change, which is the conflict this family exists to stop generating.
+// What the router actually needs from the pattern list is not that its bytes are
+// the ones some earlier run produced, but that it still means what the closure
+// says it means, so that is what is checked — and unlike a digest, this also
+// fails a hand-edit that leaves the byte count intact.
+export function verifyClosure(closure = loadClosure(ROOT)) {
   const problems = [];
   if (closure.config_sha256 !== sha256(readFileSync(CONFIG_PATH))) {
     problems.push("the closure manifest was generated from a different profile config");
   }
-  if (closure.patterns_sha256 !== sha256(`${committedPatterns().join("\n")}\n`)) {
-    problems.push("the committed pattern list is not the one the closure manifest recorded");
+  const patterns = committedPatterns();
+  const uncovered = (closure.required_paths ?? []).filter((path) => !materialisedByPatterns(patterns, path));
+  if (uncovered.length > 0) {
+    problems.push(
+      `the committed pattern list does not materialise ${uncovered.length} path(s) the closure requires, ` +
+        `starting with ${uncovered.slice(0, 3).join(", ")}`
+    );
+  }
+  const leaked = (closure.deferred_hydration_set?.paths ?? []).filter((path) =>
+    materialisedByPatterns(patterns, path)
+  );
+  if (leaked.length > 0) {
+    problems.push(
+      `the committed pattern list materialises ${leaked.length} path(s) the closure defers, ` +
+        `starting with ${leaked.slice(0, 3).join(", ")}`
+    );
   }
   return { ok: problems.length === 0, problems };
 }
@@ -163,7 +179,7 @@ function fired(manifest, ruleId, extra = {}) {
 export function decide(request) {
   const manifest = request.manifest ?? loadManifest();
   const config = request.config ?? readJson(CONFIG_PATH);
-  const closure = request.closure ?? readJson(CLOSURE_PATH);
+  const closure = request.closure ?? loadClosure(ROOT);
   const gates = request.gates ?? [];
   const paths = request.paths ?? [];
 
@@ -293,7 +309,7 @@ function check() {
   const problems = [];
   const manifest = loadManifest();
   const config = readJson(CONFIG_PATH);
-  const closure = readJson(CLOSURE_PATH);
+  const closure = loadClosure(ROOT);
 
   for (const [name, profile] of Object.entries(manifest.profiles)) {
     for (const surfaceId of profile.eligible_surfaces) {

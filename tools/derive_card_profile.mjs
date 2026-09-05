@@ -36,19 +36,41 @@
 // turn a development convenience into a tax on every other change.
 //
 // Outputs (generated, committed, never hand-edited):
-//   tools/card-profile/card-work.sparse
-//   tools/card-profile/closure.v1.json
+//   tools/card-profile/card-work.sparse        sparse-checkout patterns
+//   tools/card-profile/closure.v1.json         the closure contract
+//   tools/card-profile/closure.d/*.txt         the derived path inventories
+//
+// The split exists so a change that merely adds a tracked file cannot conflict
+// with another change that does the same. Everything whose value moves with the
+// repository rather than with the profile policy — path counts, byte totals, the
+// revision, the digest of the pattern list — is not committed at all; it is
+// reported on demand by `--measure`. What is committed is either policy (the
+// contract manifest, which should conflict when two changes really disagree) or
+// a sorted one-path-per-line inventory, which two changes extend on different
+// lines. `.gitattributes` marks the inventories and the pattern list
+// `merge=union`, and every reader sorts and deduplicates, so a union merge is
+// always a valid input and the next regeneration restores the canonical form.
 
 import { createHash } from "node:crypto";
 import { execFileSync } from "node:child_process";
-import { existsSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
+import {
+  INVENTORIES,
+  closurePath,
+  committedPatterns,
+  inventoryPath,
+  loadClosure,
+  materialisedByPatterns,
+  sparsePath
+} from "./card_profile_closure.mjs";
+
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const CONFIG_PATH = resolve(ROOT, "tools/card-profile/profile.config.v1.json");
-const SPARSE_PATH = resolve(ROOT, "tools/card-profile/card-work.sparse");
-const CLOSURE_PATH = resolve(ROOT, "tools/card-profile/closure.v1.json");
+const SPARSE_PATH = sparsePath(ROOT);
+const CLOSURE_PATH = closurePath(ROOT);
 const OBSERVATION_DIR = resolve(ROOT, "docs/evidence/ci-09-working-copy-reduction/raw/closure");
 
 const STATIC_SCAN_EXTENSIONS = new Set([".mjs", ".js", ".cjs", ".ts"]);
@@ -449,15 +471,90 @@ function build() {
   const siteData = tracked.filter((file) => file.startsWith("site/data/"));
   const siteDataIncluded = siteData.filter((file) => profileSet.has(file));
 
+  // The committed contract. It carries policy and declarations only: nothing
+  // here moves because an unrelated tracked file was added, resized or renamed,
+  // so two changes that both regenerate the profile do not rewrite the same
+  // lines. The derived path inventories are written beside it as sorted
+  // one-path-per-line files, and every measurement is left uncommitted.
   const closure = {
     schema: "cityscroll.card-profile.closure.v1",
     profile: config.profile,
     generated_by: "node tools/derive_card_profile.mjs",
     config_sha256: sha256(readFileSync(CONFIG_PATH)),
+    inventories: {
+      description:
+        "Derived path inventories, one sorted repository path per line, stored beside this contract so concurrent changes extend different lines instead of rewriting a shared aggregate. Read them through tools/card_profile_closure.mjs, which sorts and deduplicates, never positionally.",
+      directory: "tools/card-profile/closure.d",
+      files: Object.fromEntries(Object.entries(INVENTORIES).map(([field, file]) => [field, file]))
+    },
+    measurement: {
+      description:
+        "Path counts, byte totals and the revision the profile was derived at are reporting figures that move whenever any tracked file does. They are derived on demand rather than committed, because committing them makes every change rewrite the same lines.",
+      command: "node tools/derive_card_profile.mjs --measure"
+    },
     sources: {
       observed: {
         description:
           "Repository paths recorded by tools/card_profile_sentinel.cjs while each supported gate class ran on a full checkout.",
+        gate_classes: config.gate_classes.map((gate) => ({
+          id: gate.id,
+          recorded: observed.get(gate.id)?.recorded ?? false
+        }))
+      },
+      static: {
+        description:
+          "Repository paths named by an import specifier or a path-shaped string literal in worker/, site/, tools/ and test/ sources.",
+        seed_trees: config.static_seed_trees,
+        scan_hops: config.static_scan_hops,
+        worker_to_site_data_targets_note:
+          "The site/data paths a Worker source reaches across the package boundary for. This is the CI-08 risk the profile has to hold; the list itself is the worker_to_site_data_targets inventory."
+      },
+      declared: {
+        description: "Structural trees a card-work checkout holds regardless of gate reads, minus the byte-heavy excluded trees.",
+        include_trees: config.include_trees,
+        exclude_trees: config.exclude_trees
+      }
+    },
+    deferred_hydration_set: {
+      description:
+        "Tracked paths a scanned source references but no supported gate class was observed to read. They stay out of the working tree; a supported gate that reaches for one fails closed through tools/card_profile_sentinel.cjs, and tools/provision_card_profile.sh hydrate materialises it."
+    },
+    supported_gate_classes: config.gate_classes.filter((gate) => gate.profile_supported).map((gate) => gate.id),
+    full_checkout_only: config.full_checkout_only,
+    missing_path_behaviour:
+      "A tracked path the profile does not materialise is marked skip-worktree in the index. tools/card_profile_sentinel.cjs turns a missing-file error on such a path into CardProfileMissingPath and records it, so a profile gap fails closed instead of passing by omission.",
+    functional_corpus: {
+      description: corpus.description,
+      gate_class: corpus.gate_class,
+      builder: corpus.builder,
+      builder_role: corpus.builder_role,
+      corpus_trees: corpus.corpus_trees,
+      vintage_anchor: corpus.vintage_anchor,
+      measured_functional_tests: corpus.measured_functional_tests,
+      coverage_note: corpus.coverage_note,
+      recorded: corpus.recorded,
+      remediation: corpus.remediation
+    }
+  };
+
+  const inventories = {
+    required_paths: [...requiredPaths].sort(),
+    deferred_paths: [...hydrationSet].sort(),
+    site_data_paths: siteDataIncluded,
+    functional_corpus_paths: corpus.paths,
+    worker_to_site_data_targets: [
+      ...new Set(staticScan.crossBoundary.filter((edge) => edge.to.startsWith("site/data/")).map((edge) => edge.to))
+    ].sort()
+  };
+
+  // Reporting only, and deliberately not committed: every figure here moves
+  // whenever any tracked file does.
+  const measured = {
+    note: "A snapshot of what the profile costs at the revision named here. Derived on demand, never committed.",
+    revision: headRevision(),
+    computed_in_reduced_checkout: notMaterialised.size > 0,
+    sources: {
+      observed: {
         gate_classes: config.gate_classes.map((gate) => ({
           id: gate.id,
           recorded: observed.get(gate.id)?.recorded ?? false,
@@ -466,60 +563,16 @@ function build() {
         path_count: observedAll.size
       },
       static: {
-        description:
-          "Repository paths named by an import specifier or a path-shaped string literal in worker/, site/, tools/ and test/ sources.",
-        seed_trees: config.static_seed_trees,
-        scan_hops: config.static_scan_hops,
         scanned_source_count: staticScan.scanned_count,
         sources_skipped_not_materialised: staticScan.skipped_not_materialised,
         path_count: staticScan.paths.length,
         worker_to_site_reference_count: staticScan.crossBoundary.length,
         worker_to_site_data_reference_count: staticScan.crossBoundary.filter((edge) =>
           edge.to.startsWith("site/data/")
-        ).length,
-        worker_to_site_data_targets: [
-          ...new Set(
-            staticScan.crossBoundary.filter((edge) => edge.to.startsWith("site/data/")).map((edge) => edge.to)
-          )
-        ].sort()
+        ).length
       },
-      declared: {
-        description: "Structural trees a card-work checkout holds regardless of gate reads, minus the byte-heavy excluded trees.",
-        include_trees: config.include_trees,
-        exclude_trees: config.exclude_trees,
-        path_count: declared.length
-      }
+      declared: { path_count: declared.length }
     },
-    required_paths: [...requiredPaths].sort(),
-    deferred_hydration_set: {
-      description:
-        "Tracked paths a scanned source references but no supported gate class was observed to read. They stay out of the working tree; a supported gate that reaches for one fails closed through tools/card_profile_sentinel.cjs, and tools/provision_card_profile.sh hydrate materialises it.",
-      paths: [...hydrationSet].sort()
-    },
-    site_data: {
-      profile_paths: siteDataIncluded
-    },
-    patterns_sha256: sha256(`${patterns.join("\n")}\n`),
-    supported_gate_classes: config.gate_classes.filter((gate) => gate.profile_supported).map((gate) => gate.id),
-    full_checkout_only: config.full_checkout_only,
-    missing_path_behaviour:
-      "A tracked path the profile does not materialise is marked skip-worktree in the index. tools/card_profile_sentinel.cjs turns a missing-file error on such a path into CardProfileMissingPath and records it, so a profile gap fails closed instead of passing by omission. tools/provision_card_profile.sh hydrate is the documented route to materialise one."
-  };
-
-  // The functional read-model corpus, derived rather than declared. It is the
-  // part of the functional-site observation and the functional harness scan that
-  // falls inside a tree the profile otherwise defers, which is exactly the part
-  // a reduced checkout can be missing. Everything else those read is structural
-  // and always held.
-  closure.functional_corpus = corpus;
-
-  // Volatile figures live in their own block and are excluded from the
-  // coverage check, because they move whenever any tracked file changes size.
-  closure.measured = {
-    note:
-      "A snapshot of what the profile costs at the revision named here. These figures are reporting only; they are not part of the checked contract, because a byte total moves whenever any tracked file does.",
-    revision: headRevision(),
-    computed_in_reduced_checkout: notMaterialised.size > 0,
     profile_paths: { count: profileSet.size, logical_bytes: bytesOf(profileSet, sizes) },
     deferred_paths: { count: hydrationSet.size, logical_bytes: bytesOf(hydrationSet, sizes) },
     excluded_paths: { count: excludedTracked.length, logical_bytes: bytesOf(excludedTracked, sizes) },
@@ -529,51 +582,76 @@ function build() {
       profile_count: siteDataIncluded.length,
       profile_logical_bytes: bytesOf(siteDataIncluded, sizes)
     },
+    functional_corpus: { path_count: corpus.paths.length, logical_bytes: bytesOf(corpus.paths, sizes) },
     tracked_total: { count: tracked.length, logical_bytes: bytesOf(tracked, sizes) },
-    pattern_count: patterns.length
+    pattern_count: patterns.length,
+    patterns_sha256: sha256(`${patterns.join("\n")}\n`)
   };
 
   const sparse = [
     "# Generated by node tools/derive_card_profile.mjs. Do not hand-edit.",
     "# Git sparse-checkout patterns for the reduced card-work profile.",
+    "# One pattern per line, sorted. Merged with the union driver, so a",
+    "# concurrent addition is kept rather than resolved by hand.",
     ...patterns,
     ""
   ].join("\n");
 
-  return { sparse, closure: `${renderInventory(closure)}\n`, patterns, profileSet, requiredPaths };
+  return { sparse, closure: `${renderInventory(closure)}\n`, inventories, measured, patterns, profileSet, requiredPaths };
 }
 
-function main() {
-  const check = process.argv.includes("--check");
-  const built = build();
-  if (!check) {
-    writeFileSync(SPARSE_PATH, built.sparse);
-    writeFileSync(CLOSURE_PATH, built.closure);
-    console.log(`wrote ${built.patterns.length} sparse patterns covering ${built.profileSet.size} tracked paths`);
-    return 0;
-  }
+function writeInventory(field, paths) {
+  const file = INVENTORIES[field];
+  const path = inventoryPath(field, ROOT);
+  mkdirSync(dirname(path), { recursive: true });
+  const body = [
+    `# ${file} — generated by node tools/derive_card_profile.mjs. Do not hand-edit.`,
+    "# One repository path per line, sorted. Merged with the union driver, so a",
+    "# concurrent addition is kept rather than resolved by hand; readers sort and",
+    "# deduplicate, and the next regeneration restores this canonical order.",
+    ...paths,
+    ""
+  ].join("\n");
+  writeFileSync(path, body);
+}
+
+function write(built) {
+  writeFileSync(SPARSE_PATH, built.sparse);
+  writeFileSync(CLOSURE_PATH, built.closure);
+  for (const field of Object.keys(INVENTORIES)) writeInventory(field, built.inventories[field]);
+  console.log(
+    `wrote ${built.patterns.length} sparse patterns covering ${built.profileSet.size} tracked paths ` +
+      `and ${Object.keys(INVENTORIES).length} path inventories`
+  );
+  return 0;
+}
+
+// Coverage, not byte-identity, and set-based rather than order-based. The
+// committed pattern list has to materialise everything the closure requires and
+// nothing it defers; how the lines happen to be ordered after a union merge is
+// not part of that contract.
+function check(built) {
   const problems = [];
   if (!existsSync(SPARSE_PATH) || !existsSync(CLOSURE_PATH)) {
     console.error("card profile outputs are missing; run: node tools/derive_card_profile.mjs");
     return 1;
   }
-  const committedPatterns = readFileSync(SPARSE_PATH, "utf8")
-    .split("\n")
-    .filter((line) => line && !line.startsWith("#"));
-  const committed = JSON.parse(readFileSync(CLOSURE_PATH, "utf8"));
+  const missingInventories = Object.keys(INVENTORIES).filter((field) => !existsSync(inventoryPath(field, ROOT)));
+  if (missingInventories.length > 0) {
+    console.error(`card profile inventories are missing: ${missingInventories.join(", ")}`);
+    console.error("regenerate with: node tools/derive_card_profile.mjs");
+    return 1;
+  }
+
+  const patterns = committedPatterns(ROOT);
+  const committed = loadClosure(ROOT);
 
   if (committed.config_sha256 !== sha256(readFileSync(CONFIG_PATH))) {
     problems.push("the committed manifest was generated from a different profile config");
   }
 
-  const matches = (path) =>
-    committedPatterns.some((pattern) =>
-      pattern.endsWith("/") ? path.startsWith(pattern.slice(1)) : path === pattern.slice(1)
-    );
+  const matches = (path) => materialisedByPatterns(patterns, path);
 
-  // A source the active profile does not materialise cannot be scanned, so its
-  // references are not part of what this run can require. The count is printed
-  // so a reduced-profile run is never mistaken for a full-checkout one.
   const uncovered = [...built.requiredPaths].filter((path) => !matches(path));
   if (uncovered.length > 0) {
     problems.push(
@@ -582,7 +660,19 @@ function main() {
     );
   }
 
-  const leaked = (committed.deferred_hydration_set?.paths ?? []).filter((path) => matches(path));
+  // The committed inventory is checked as well as the freshly derived set. A
+  // union merge can carry forward a path a later change removed from the
+  // profile, and this is where that shows up as something to regenerate rather
+  // than as a reduced checkout that quietly lacks a file.
+  const staleRequired = committed.required_paths.filter((path) => !matches(path));
+  if (staleRequired.length > 0) {
+    problems.push(
+      `${staleRequired.length} committed required path(s) are not covered by the committed patterns, ` +
+        `starting with ${staleRequired.slice(0, 3).join(", ")}`
+    );
+  }
+
+  const leaked = committed.deferred_hydration_set.paths.filter((path) => matches(path));
   if (leaked.length > 0) {
     problems.push(
       `${leaked.length} deferred path(s) are materialised by the committed patterns, ` +
@@ -595,12 +685,25 @@ function main() {
     for (const problem of problems) console.error(`  - ${problem}`);
     return 1;
   }
-  const skipped = JSON.parse(built.closure).sources.static.sources_skipped_not_materialised;
+  // A source the active profile does not materialise cannot be scanned, so its
+  // references are not part of what this run can require. The count is printed
+  // so a reduced-profile run is never mistaken for a full-checkout one.
+  const skipped = built.measured.sources.static.sources_skipped_not_materialised;
   const scope = skipped > 0 ? ` (${skipped} source(s) not materialised here were not scanned)` : "";
   console.log(
     `card profile patterns cover all ${built.requiredPaths.size} required paths and no deferred path${scope}`
   );
   return 0;
+}
+
+function main() {
+  const argv = process.argv.slice(2);
+  if (argv.includes("--measure")) {
+    console.log(renderInventory(build().measured));
+    return 0;
+  }
+  const built = build();
+  return argv.includes("--check") ? check(built) : write(built);
 }
 
 process.exit(main());

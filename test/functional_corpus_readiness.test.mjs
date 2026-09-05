@@ -25,9 +25,11 @@ import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import test from "node:test";
 
+import { committedPatterns, loadClosure, materialisedByPatterns } from "../tools/card_profile_closure.mjs";
+
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const TOOL = join(ROOT, "tools/verify_functional_corpus.mjs");
-const CLOSURE = JSON.parse(readFileSync(join(ROOT, "tools/card-profile/closure.v1.json"), "utf8"));
+const CLOSURE = loadClosure(ROOT);
 const CONFIG = JSON.parse(readFileSync(join(ROOT, "tools/card-profile/profile.config.v1.json"), "utf8"));
 
 // Git resolves a repository from the environment BEFORE it looks at the working
@@ -95,7 +97,6 @@ function scaffold({ corpusPaths = ["site/data/one.json", "site/data/two.json"], 
   const closure = closureOverride ?? {
     schema: "cityscroll.card-profile.closure.v1",
     config_sha256: "0".repeat(64),
-    patterns_sha256: "1".repeat(64),
     functional_corpus: {
       gate_class: "functional-site",
       builder: "tools/build_primary_documents.mjs",
@@ -107,7 +108,23 @@ function scaffold({ corpusPaths = ["site/data/one.json", "site/data/two.json"], 
       paths: corpusPaths
     }
   };
-  writeFileSync(join(dir, "tools/card-profile/closure.v1.json"), `${JSON.stringify(closure, null, 2)}\n`);
+  // The closure is a contract manifest plus line-oriented path inventories, so
+  // the scaffold writes it the same way the deriver does: the declaration in the
+  // manifest, the corpus paths in tools/card-profile/closure.d/. A repository
+  // that declares a corpus and holds no inventory is the "empty declaration"
+  // case, which this gate has to refuse rather than read as satisfied.
+  const contract = { ...closure };
+  if (contract.functional_corpus) {
+    const corpusPathList = contract.functional_corpus.paths ?? [];
+    contract.functional_corpus = { ...contract.functional_corpus };
+    delete contract.functional_corpus.paths;
+    mkdirSync(join(dir, "tools/card-profile/closure.d"), { recursive: true });
+    writeFileSync(
+      join(dir, "tools/card-profile/closure.d/functional-corpus-paths.txt"),
+      corpusPathList.length > 0 ? `${[...corpusPathList].sort().join("\n")}\n` : ""
+    );
+  }
+  writeFileSync(join(dir, "tools/card-profile/closure.v1.json"), `${JSON.stringify(contract, null, 2)}\n`);
   git("add", "-A");
   git("commit", "-qm", "scaffold");
 
@@ -156,13 +173,8 @@ test("the closure declares a non-empty functional corpus derived from the profil
 });
 
 test("every declared corpus path is materialised by the committed pattern list", () => {
-  const patterns = readFileSync(join(ROOT, "tools/card-profile/card-work.sparse"), "utf8")
-    .split("\n")
-    .filter((line) => line && !line.startsWith("#"));
-  const covered = (path) =>
-    patterns.some((pattern) =>
-      pattern.endsWith("/") ? path.startsWith(pattern.slice(1)) : path === pattern.slice(1)
-    );
+  const patterns = committedPatterns(ROOT);
+  const covered = (path) => materialisedByPatterns(patterns, path);
   const uncovered = CLOSURE.functional_corpus.paths.filter((path) => !covered(path));
   assert.deepEqual(uncovered, [], "a declared corpus path the reduced profile would not materialise");
 });

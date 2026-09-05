@@ -27,11 +27,11 @@ import { dirname, resolve } from "node:path";
 import { tmpdir } from "node:os";
 import { fileURLToPath } from "node:url";
 
+import { loadClosure } from "./card_profile_closure.mjs";
 import { decide } from "./card_profile_router.mjs";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const CONFIG_PATH = resolve(ROOT, "tools/card-profile/profile.config.v1.json");
-const CLOSURE_PATH = resolve(ROOT, "tools/card-profile/closure.v1.json");
 const SENTINEL = resolve(ROOT, "tools/card_profile_sentinel.cjs");
 const OBSERVATION_DIR = resolve(ROOT, "docs/evidence/ci-09-working-copy-reduction/raw/closure");
 
@@ -107,7 +107,7 @@ function derivationCurrent() {
 function check() {
   const problems = [];
   const config = readJson(CONFIG_PATH);
-  const closure = readJson(CLOSURE_PATH);
+  const closure = loadClosure(ROOT);
   const state = status();
 
   const derived = derivationCurrent();

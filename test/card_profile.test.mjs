@@ -6,16 +6,19 @@ import { dirname, resolve } from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 
+import { committedPatterns, loadClosure } from "../tools/card_profile_closure.mjs";
+
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const require = createRequire(import.meta.url);
 const { classifyMissingPath, CardProfileMissingPath } = require("../tools/card_profile_sentinel.cjs");
 
 const readJson = (path) => JSON.parse(readFileSync(resolve(ROOT, path), "utf8"));
 const config = readJson("tools/card-profile/profile.config.v1.json");
-const closure = readJson("tools/card-profile/closure.v1.json");
-const patterns = readFileSync(resolve(ROOT, "tools/card-profile/card-work.sparse"), "utf8")
-  .split("\n")
-  .filter((line) => line && !line.startsWith("#"));
+// The closure is a contract manifest plus line-oriented path inventories; the
+// loader is what puts them back together, sorted and deduplicated, so a union
+// merge of two concurrent additions is a valid input rather than a conflict.
+const closure = loadClosure(ROOT);
+const patterns = committedPatterns(ROOT);
 
 const tracked = new Set(
   execFileSync("git", ["ls-files"], { cwd: ROOT, encoding: "utf8", maxBuffer: 64 * 1024 * 1024 })
@@ -89,10 +92,23 @@ test("no directory pattern reaches into an excluded byte-heavy tree", () => {
   }
 });
 
+// The measurements are derived on demand rather than committed, because every
+// figure in them moves whenever any tracked file does — which is what made the
+// committed manifest rewrite the same lines on every change. One run serves the
+// assertions that need them.
+const measured = (() => {
+  const result = spawnSync(process.execPath, ["tools/derive_card_profile.mjs", "--measure"], {
+    cwd: ROOT,
+    encoding: "utf8",
+    maxBuffer: 64 * 1024 * 1024
+  });
+  assert.equal(result.status, 0, `${result.stdout}${result.stderr}`);
+  return JSON.parse(result.stdout);
+})();
+
 test("the profile leaves most of the measured site/data dominant out of the working tree", () => {
-  const measured = closure.measured.site_data;
-  assert.ok(measured.tracked_count > measured.profile_count);
-  const share = measured.profile_logical_bytes / measured.tracked_logical_bytes;
+  assert.ok(measured.site_data.tracked_count > measured.site_data.profile_count);
+  const share = measured.site_data.profile_logical_bytes / measured.site_data.tracked_logical_bytes;
   assert.ok(share < 0.5, `profile holds ${(share * 100).toFixed(1)}% of tracked site/data bytes`);
 });
 
@@ -109,8 +125,9 @@ test("every deferred path is a tracked path that the patterns do not materialise
 test("the cross-boundary risk CI-08 measured is represented in the closure", () => {
   // Worker sources reach into site/, including into site/data. The profile is
   // only safe if those targets are part of what it materialises.
-  assert.ok(closure.sources.static.worker_to_site_reference_count > 0);
-  assert.ok(closure.sources.static.worker_to_site_data_reference_count > 0);
+  assert.ok(measured.sources.static.worker_to_site_reference_count > 0);
+  assert.ok(measured.sources.static.worker_to_site_data_reference_count > 0);
+  assert.ok(closure.sources.static.worker_to_site_data_targets.length > 0);
   for (const path of closure.sources.static.worker_to_site_data_targets) {
     assert.ok(
       closure.site_data.profile_paths.includes(path),
