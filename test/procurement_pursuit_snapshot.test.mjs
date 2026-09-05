@@ -19,6 +19,7 @@ import {
 } from "../site/procurement_pursuit_snapshot.mjs";
 import { renderProcurementDocument } from "../site/procurement_document.mjs";
 import { procurementProcessEvents } from "../site/procurement_process_events.mjs";
+import { explainMatch } from "../site/procurement_preference_set.mjs";
 
 const moneyHistorySource = readFileSync(new URL("../site/app/money-history.mjs", import.meta.url), "utf8");
 
@@ -286,6 +287,76 @@ test("money-history.mjs mounts the pursuit snapshot ahead of the response/action
   assert.ok(headingAt < snapshotAt, "snapshot must mount after the notice heading");
   assert.ok(snapshotAt < railAt, "snapshot must mount ahead of the action rail mount point");
   assert.ok(snapshotAt < responseAt, "snapshot must mount ahead of the response affordance");
+});
+
+/* ---------- Card "PPD-05": optional "matches your stated preferences" hook ---------- */
+
+const preferenceSolicitationRow = {
+  short_title: "Playground reconstruction solicitation",
+  agency_name: "Department of Parks and Recreation",
+  type_of_notice_description: "Solicitation",
+  due_date: "2026-08-05",
+  contract_amount: 500000,
+};
+
+test("PPD-05: satisfied preference reasons render in a section distinct from published match reasons", () => {
+  const preferenceMatch = explainMatch({
+    record: preferenceSolicitationRow,
+    preferences: { agencies: ["Department of Parks and Recreation"] },
+  });
+  const snapshot = buildPursuitSnapshot(preferenceSolicitationRow, {
+    opportunity_window: { available: false, label: "Window unavailable" },
+    match_reasons: ["Matches your saved watch for Parks"],
+    preference_match: preferenceMatch,
+  });
+  assert.equal(snapshot.fit_context.preference_reasons.length, 1);
+  const html = renderPursuitSnapshotHtml(snapshot);
+  assert.match(html, /data-pursuit-preference-reasons="1"/);
+  assert.match(html, /Matches your stated preferences/);
+  assert.match(html, /pursuit-preference-badge/);
+  assert.match(html, /data-provenance="user-supplied"/);
+  // The two lists are visibly and structurally distinct sections.
+  const matchReasonsIndex = html.indexOf("pursuit-match-reasons");
+  const preferenceIndex = html.indexOf("data-pursuit-preference-reasons");
+  assert.ok(matchReasonsIndex >= 0 && preferenceIndex >= 0 && matchReasonsIndex !== preferenceIndex);
+});
+
+test("PPD-05: an unsatisfied preference reason never renders in the matched-preferences list", () => {
+  const preferenceMatch = explainMatch({
+    record: preferenceSolicitationRow,
+    preferences: { agencies: ["Department of Transportation"] },
+  });
+  const snapshot = buildPursuitSnapshot(preferenceSolicitationRow, {
+    opportunity_window: { available: false, label: "Window unavailable" },
+    preference_match: preferenceMatch,
+  });
+  assert.equal(snapshot.fit_context.preference_reasons.length, 0);
+  const html = renderPursuitSnapshotHtml(snapshot);
+  assert.doesNotMatch(html, /data-pursuit-preference-reasons/);
+});
+
+test("PPD-05: absent preference_match renders no preference section at all", () => {
+  const snapshot = buildPursuitSnapshot(preferenceSolicitationRow, {
+    opportunity_window: { available: false, label: "Window unavailable" },
+  });
+  assert.deepEqual(snapshot.fit_context.preference_reasons, []);
+  const html = renderPursuitSnapshotHtml(snapshot);
+  assert.doesNotMatch(html, /data-pursuit-preference-reasons/);
+});
+
+test("PPD-05: a mislabeled reason (wrong provenance token) is dropped, never rendered", () => {
+  const snapshot = buildPursuitSnapshot(preferenceSolicitationRow, {
+    opportunity_window: { available: false, label: "Window unavailable" },
+    preference_match: {
+      eligible: true,
+      reasons: [
+        { field: "agencies", satisfied: true, wording: "Should never render", provenance: "user_provided" },
+      ],
+    },
+  });
+  assert.deepEqual(snapshot.fit_context.preference_reasons, []);
+  const html = renderPursuitSnapshotHtml(snapshot);
+  assert.doesNotMatch(html, /Should never render/);
 });
 
 test("pursuitSnapshotHTML is gated the same way the response affordances already are", () => {

@@ -344,8 +344,12 @@ function pursuitStageSignal(rows) {
  * bundle, the M/WBE and official-source surfaces) rather than a second
  * extraction pass. Returns null when pursuit is not meaningful here (an
  * award, a contract-history-only object, a bid-opening result).
+ *
+ * `preferenceMatch` (card "PPD-05") is a caller-supplied explainMatch()
+ * result -- this page never computes a vendor's preference match itself, the
+ * same override contract relatedContextCandidates already uses below.
  */
-function pursuitSnapshotFor(object, observations, facts, window, occurrences) {
+function pursuitSnapshotFor(object, observations, facts, window, occurrences, preferenceMatch) {
   const rows = observationRows(object, observations);
   const stage = pursuitStageSignal(rows);
   if (!stage.solicitation && !stage.nativeSparse) return null;
@@ -393,6 +397,7 @@ function pursuitSnapshotFor(object, observations, facts, window, occurrences) {
     official_source_items: procurementOfficialSourceItems(object, observations),
     source_status_label: sourceStatusLabel,
     cityscroll_url: `https://cityscroll.org${procurementCanonicalHref(object)}`,
+    preference_match: preferenceMatch || null,
   });
 }
 
@@ -435,6 +440,7 @@ export function renderProcurementDocument(object = {}, observations = [], {
   today = null,
   relatedContextCandidates = null,
   relatedContextPopulationAmounts = null,
+  preferenceMatch = null,
 } = {}) {
   const id = clean(object?.procurement_id, 320);
   if (!id.startsWith("procurement:")) return null;
@@ -450,7 +456,7 @@ export function renderProcurementDocument(object = {}, observations = [], {
   // source surfaces this page already renders below. Null (never a section)
   // for anything that is not at solicitation stage, per the same rule the
   // existing calendar and window sections already follow.
-  const pursuitSnapshot = pursuitSnapshotFor(object, observations, facts, opportunityWindow, occurrences);
+  const pursuitSnapshot = pursuitSnapshotFor(object, observations, facts, opportunityWindow, occurrences, preferenceMatch);
   const pursuitSnapshotHtml = renderPursuitSnapshotHtml(pursuitSnapshot);
   const relatedContext = relatedProcurementContextFor(object, facts, pursuitSnapshot, {
     relatedContextCandidates,
