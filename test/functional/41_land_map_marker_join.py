@@ -30,8 +30,17 @@ QUEENS_MAP_ROUTE = "/browse/zoning/?boro=Queens&view=map"
 PROJECTION = "data/land_project_map_points.json"
 
 MAPPED_SPECIMEN = "2025K0305"
-UNMAPPED_SPECIMEN = "2026K0123"
-EXPECTED = {"total": 40, "mapped": 29, "unmapped": 11}
+# The one project genuinely lacking a retained BBL (site/data/land_project_map_points_receipt.json).
+UNMAPPED_SPECIMEN = "2025M0252"
+# Derived from the committed join receipt rather than pinned, so a future resolver refresh
+# that legitimately changes how many of the 40 Land projects resolve to a map point updates
+# this expectation from its own source instead of drifting silently against a stale number.
+_RECEIPT = json.loads((ROOT / "site" / "data" / "land_project_map_points_receipt.json").read_text())
+EXPECTED = {
+    "total": _RECEIPT["counts"]["universe"],
+    "mapped": _RECEIPT["counts"]["mapped"],
+    "unmapped": _RECEIPT["counts"]["universe"] - _RECEIPT["counts"]["mapped"],
+}
 
 
 def install_routes(page) -> None:
@@ -113,8 +122,8 @@ def check_three_counts_agree(page) -> dict:
     assert state["marker_count"] == EXPECTED["mapped"], (
         f"{state['marker_count']} markers for {EXPECTED['mapped']} mapped rows")
     assert state["marker_count"] != state["counts"]["total"], "the marker count stood in for the total"
-    assert state["unmapped_note"].strip(), "the 11 unmapped projects were never mentioned"
-    assert "11" in state["unmapped_note"], state["unmapped_note"]
+    assert state["unmapped_note"].strip(), f"the {EXPECTED['unmapped']} unmapped projects were never mentioned"
+    assert str(EXPECTED["unmapped"]) in state["unmapped_note"], state["unmapped_note"]
     assert state["list_rows"] == EXPECTED["total"], "the List no longer holds all 40 rows"
     print("three-counts:", json.dumps(
         {"counts": state["counts"], "markers": state["marker_count"], "list_rows": state["list_rows"]},

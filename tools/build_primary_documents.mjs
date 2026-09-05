@@ -25,6 +25,23 @@ import { buildPeopleOrganizationsReadModel } from "../site/people_organizations_
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SITE = join(ROOT, "site");
 
+// A caller that wants one instant shared across several invocations of this
+// build within the same run (the pre-push preflight checks these outputs,
+// runs a multi-minute test suite, then a local site build regenerates them
+// again) sets CROL_BUILD_DAY once for that run instead of letting each call
+// default to its own new Date(). Unset (the ordinary production build and
+// every existing caller that never passed one) resolves to null exactly as
+// before, so this changes nothing outside a caller that opts in.
+export function resolvePinnedBuildClock(env = process.env) {
+  const pinned = env.CROL_BUILD_DAY;
+  if (!pinned) return null;
+  const instantMs = /^\d{4}-\d{2}-\d{2}$/.test(pinned)
+    ? nyNaiveTimestampToInstantMs(`${pinned}T00:00:00`)
+    : Date.parse(pinned);
+  if (!Number.isFinite(instantMs)) throw new Error(`Invalid CROL_BUILD_DAY value: ${pinned}`);
+  return new Date(instantMs);
+}
+
 function json(path) {
   if (path === "/data/community_board_meeting_index.json") {
     return readCommunityBoardMeetingIndex(new URL("../site/data/community_board_meeting_index.json", import.meta.url));
@@ -227,7 +244,7 @@ export function primaryDocumentOutputs(options = {}) {
     outputs.push(output(`browse/${facet}`, buildBrowseDocument(shell, facet, payload, new URLSearchParams(), {
       route: `/browse/${facet}/`,
       semanticArtifact: facet === "rules" ? rulesSemanticLane : null,
-      clock: options.clock ?? null,
+      clock: options.clock ?? resolvePinnedBuildClock(),
     })));
   }
   return outputs;
@@ -286,7 +303,10 @@ function buildDayClock(argv) {
     // This CLI entry point is the owning build command for the generated primary
     // documents; buildBrowseDocument/buildBrowseView stay pure functions of the
     // clock this passes in, and --build-day overrides it for deterministic runs.
-    return new Date();
+    // A caller that pinned CROL_BUILD_DAY for the whole run (the pre-push
+    // preflight) gets that same instant here instead of a fresh new Date();
+    // otherwise this keeps its unpinned, real-clock default unchanged.
+    return resolvePinnedBuildClock() ?? new Date();
   }
   const instantMs = /^\d{4}-\d{2}-\d{2}$/.test(value)
     ? nyNaiveTimestampToInstantMs(`${value}T00:00:00`)

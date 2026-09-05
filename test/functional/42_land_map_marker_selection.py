@@ -31,8 +31,9 @@ QUEENS_MAP_ROUTE = "/browse/zoning/?boro=Queens&view=map"
 
 # A 25-lot rezoning: on the map, and emphatically not at an address.
 ANCHOR_SPECIMEN = "2025K0305"
-# A project with no published point. It has no marker to select and stays in the List.
-UNMAPPED_SPECIMEN = "2026K0123"
+# The one project genuinely lacking a retained BBL (site/data/land_project_map_points_receipt.json).
+# It has no marker to select and stays in the List.
+UNMAPPED_SPECIMEN = "2025M0252"
 EXPECTED_TOTAL = 40
 
 

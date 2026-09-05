@@ -4,6 +4,15 @@ set -euo pipefail
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$PROJECT_ROOT"
 
+# tools/build_primary_documents.mjs defaults its build clock to new Date().
+# This run checks those outputs (below), then runs a multi-minute test suite
+# that re-derives some of them, then (in --full) a local site build writes
+# them again -- three separate moments that must agree with each other, not
+# with a fresh wall clock each time. Pin one instant here and every one of
+# those calls (the CLI's --build-day fallback, and primaryDocumentOutputs()'s
+# own default) resolves to it instead of racing real time across the run.
+export CROL_BUILD_DAY="${CROL_BUILD_DAY:-$(date -u +%Y-%m-%dT%H:%M:%S.000Z)}"
+
 RUN_READING_LEVEL=0
 RUN_FULL=0
 RECEIPT_PATH="${PREFLIGHT_RECEIPT:-$PROJECT_ROOT/.artifacts/preflight-required-checks.json}"
