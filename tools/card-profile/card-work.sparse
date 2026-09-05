@@ -779,6 +779,7 @@
 /worker/src/data/doing_business_warehouse_lookup.json
 /worker/src/data/entity_intelligence_lookup.json
 /worker/src/data/keyword_search_index_shards/
+/worker/src/data/land_expedited_corpus.json
 /worker/src/data/passport_ei_graph.json
 /worker/src/data/payroll_title_warehouse_lookup.json
 /worker/src/data/performance-coverage-contract.v1.json
@@ -806,6 +807,7 @@
 /worker/src/inbound.mjs
 /worker/src/ingest.mjs
 /worker/src/inv.mjs
+/worker/src/land_projects.mjs
 /worker/src/land_upcoming_hearings.mjs
 /worker/src/lib/
 /worker/src/mcp.mjs

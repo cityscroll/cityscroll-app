@@ -2102,6 +2102,329 @@ rate-limited and cached, and none touches a paid service. Base URL: <code>https:
           ]
         }
       ]
+    },
+    {
+      "reference": "land.project.get@1",
+      "id": "land.project.get",
+      "version": "1.0.0",
+      "title": "Land Project Get",
+      "description": "Get one exact Land (ZAP) project by its ZAP project id. Includes its deep link, status, geography, applicant, review procedure, exact actions and ids, environmental facts, milestones, outcomes, sources, and any conflicts, when known.",
+      "owner": "land",
+      "operation": "read",
+      "authority": {
+        "class": "public-read",
+        "sideEffect": "none",
+        "approval": "none"
+      },
+      "cost": {
+        "class": "bounded-static-read-model",
+        "machineFanOut": "low"
+      },
+      "input_schema": "cityscroll.capability.land_project_get.input.v1",
+      "input_contract": {
+        "schema": "cityscroll.capability.land_project_get.input.v1",
+        "identity": "exact publisher ZAP project_id",
+        "limits": {
+          "projectIdMaximumLength": 32,
+          "maximum": 1
+        }
+      },
+      "output_schema": "cityscroll.capability.land_project_get.output.v1",
+      "output_contract": {
+        "schema": "cityscroll.capability.land_project_get.output.v1",
+        "fields": [
+          "capability_reference",
+          "availability",
+          "project",
+          "error"
+        ],
+        "availability": [
+          "available",
+          "not_yet_public",
+          "unavailable"
+        ],
+        "representations": [
+          {
+            "id": "json",
+            "mediaType": "application/json",
+            "projection": "public Land project object or bounded browse envelope"
+          },
+          {
+            "id": "text-summary",
+            "mediaType": "text/plain",
+            "projection": "bounded public Land project summary"
+          }
+        ],
+        "privateFieldsForbidden": [
+          "raw_snapshot",
+          "content_hash",
+          "resolution_run_id",
+          "review_status"
+        ]
+      },
+      "bounds": {
+        "input": {
+          "projectIdMaximumLength": 32,
+          "maximum": 1
+        },
+        "output": {
+          "oneProject": true
+        }
+      },
+      "examples": [
+        {
+          "input": {
+            "projectId": "2024Q0356"
+          },
+          "output": {
+            "availability": "available",
+            "exactIdentity": true,
+            "procedureResolution": "preserved when resolvable"
+          }
+        },
+        {
+          "input": {
+            "projectId": "not-a-real-project"
+          },
+          "output": {
+            "availability": "not_yet_public",
+            "error": "not-found"
+          }
+        }
+      ],
+      "provenance": {
+        "identity": "project.project_id (exact publisher ZAP project identity)",
+        "sourceIdentity": "project.source_observations[].source_system",
+        "observationClock": "project.freshness.as_of plus source_observations[].generated_at",
+        "identityAuthority": "site/land_action_procedure_resolution.mjs resolveLandActionProcedures"
+      },
+      "freshness": {
+        "owner": "shared Land ZAP read model",
+        "projection": "committed warehouse materialized_at plus per-source generated_at"
+      },
+      "provider": {
+        "id": "worker-static.land-project.get",
+        "module": "worker/src/land_projects.mjs",
+        "export": "workerLandProjects",
+        "store": "precomputed shared Land ZAP read model",
+        "readModel": "warehouse-materialized ZAP projects, overlaid with exact materialized ZAP outcome evidence"
+      },
+      "transports": [
+        {
+          "id": "worker-http.land-project-get@1",
+          "module": "worker/src/land_projects.mjs",
+          "kind": "http-route",
+          "route": "GET /land-project",
+          "surface": "Land project detail",
+          "representations": [
+            {
+              "id": "json",
+              "mediaType": "application/json",
+              "projection": "public Land project object or bounded browse envelope"
+            },
+            {
+              "id": "text-summary",
+              "mediaType": "text/plain",
+              "projection": "bounded public Land project summary"
+            }
+          ]
+        },
+        {
+          "id": "mcp.get_land_project@1",
+          "module": "worker/src/mcp.mjs",
+          "kind": "mcp-tool",
+          "tool": "get_land_project",
+          "route": "POST /mcp",
+          "surface": "MCP",
+          "representations": [
+            {
+              "id": "json",
+              "mediaType": "application/json",
+              "projection": "public Land project object or bounded browse envelope"
+            },
+            {
+              "id": "text-summary",
+              "mediaType": "text/plain",
+              "projection": "bounded public Land project summary"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "reference": "land.projects.browse@1",
+      "id": "land.projects.browse",
+      "version": "1.0.0",
+      "title": "Land Projects Browse",
+      "description": "List public Land (ZAP) projects using the same filters as the Land page: review procedure, action type, stage, effect, and geography. Reads the full warehouse, not just active projects, so completed and past projects stay reachable too.",
+      "owner": "land",
+      "operation": "read",
+      "authority": {
+        "class": "public-read",
+        "sideEffect": "none",
+        "approval": "none"
+      },
+      "cost": {
+        "class": "bounded-static-read-model",
+        "machineFanOut": "low"
+      },
+      "input_schema": "cityscroll.capability.land_projects_browse.input.v1",
+      "input_contract": {
+        "schema": "cityscroll.capability.land_projects_browse.input.v1",
+        "identity": "one result per exact canonical project_id",
+        "filters": {
+          "status": "resident Land status vocabulary (site/land_filter_parity.mjs LAND_FILTER_DIMENSIONS); defaults to every status, never active-only",
+          "stage": "resident Land review-stage facet (any, active, public_review, pre_certification, community_board, borough_president, cpc, city_council, completed)",
+          "procedure": "ULURP/ELURP/Non-ULURP review-procedure facet (review, ulurp, elurp, non_ulurp)",
+          "family": "closed action-family facet (any, acquisition, disposition, certification, renewal, major_concession, legal_document, rezoning, special_permit, authorization, site_selection, mapping, demapping, urban_renewal, landmark, follow_up, office_space, bid, franchise_consent, housing_plan, pops, landfill)",
+          "regulatoryEffect": "closed regulatory-effect facet (any, upzone, downzone, mixed, no_density_change)",
+          "borough": "exact borough name",
+          "communityDistrict": "borough-lettered community district",
+          "councilDistrict": "council district 1-51",
+          "query": "case-insensitive free text over the row",
+          "corpus": "'live' reads the current committed complete warehouse; 'historical' reads the frozen expedited-procedure regression corpus"
+        },
+        "ordering": "same ordering as the resident Land query (site/resident_snapshot_queries.mjs filterLandSnapshot)",
+        "pagination": "opaque cursor after the last canonical project_id",
+        "limits": {
+          "filterMaximumLength": 240,
+          "cursorMaximumLength": 320,
+          "minimum": 1,
+          "maximum": 100,
+          "default": 25
+        }
+      },
+      "output_schema": "cityscroll.capability.land_projects_browse.output.v1",
+      "output_contract": {
+        "schema": "cityscroll.capability.land_projects_browse.output.v1",
+        "fields": [
+          "capability_reference",
+          "availability",
+          "results",
+          "total_matches",
+          "pagination",
+          "coverage",
+          "freshness",
+          "error"
+        ],
+        "availability": [
+          "complete",
+          "empty",
+          "unavailable"
+        ],
+        "representations": [
+          {
+            "id": "json",
+            "mediaType": "application/json",
+            "projection": "public Land project object or bounded browse envelope"
+          },
+          {
+            "id": "text-summary",
+            "mediaType": "text/plain",
+            "projection": "bounded public Land project summary"
+          }
+        ],
+        "privateFieldsForbidden": [
+          "raw_snapshot",
+          "content_hash",
+          "resolution_run_id",
+          "review_status"
+        ]
+      },
+      "bounds": {
+        "input": {
+          "filterMaximumLength": 240,
+          "cursorMaximumLength": 320,
+          "minimum": 1,
+          "maximum": 100,
+          "default": 25
+        },
+        "output": {
+          "maximumResults": 100
+        }
+      },
+      "examples": [
+        {
+          "input": {
+            "procedure": "elurp",
+            "corpus": "historical"
+          },
+          "output": {
+            "availability": "complete",
+            "oneRowPer": "exact project_id",
+            "fixedPopulation": "the frozen four-project expedited corpus"
+          }
+        },
+        {
+          "input": {
+            "procedure": "elurp",
+            "limit": 25
+          },
+          "output": {
+            "availability": "complete",
+            "pagination": "cursor when more rows remain",
+            "fixedPopulation": "none — reflects the current committed warehouse"
+          }
+        }
+      ],
+      "provenance": {
+        "identity": "project.project_id (exact publisher ZAP project identity)",
+        "sourceIdentity": "project.source_observations[].source_system",
+        "observationClock": "project.freshness.as_of plus source_observations[].generated_at",
+        "identityAuthority": "site/land_action_procedure_resolution.mjs resolveLandActionProcedures"
+      },
+      "freshness": {
+        "owner": "shared Land ZAP read model",
+        "projection": "committed warehouse materialized_at plus per-source generated_at"
+      },
+      "provider": {
+        "id": "worker-static.land-projects.browse",
+        "module": "worker/src/land_projects.mjs",
+        "export": "workerLandProjects",
+        "store": "precomputed shared Land ZAP read model",
+        "readModel": "complete warehouse-materialized ZAP projects (every publisher status, not an active-only slice)"
+      },
+      "transports": [
+        {
+          "id": "worker-http.land-projects-browse@1",
+          "module": "worker/src/land_projects.mjs",
+          "kind": "http-route",
+          "route": "GET /land-projects",
+          "surface": "Land projects browse",
+          "representations": [
+            {
+              "id": "json",
+              "mediaType": "application/json",
+              "projection": "public Land project object or bounded browse envelope"
+            },
+            {
+              "id": "text-summary",
+              "mediaType": "text/plain",
+              "projection": "bounded public Land project summary"
+            }
+          ]
+        },
+        {
+          "id": "mcp.browse_land_projects@1",
+          "module": "worker/src/mcp.mjs",
+          "kind": "mcp-tool",
+          "tool": "browse_land_projects",
+          "route": "POST /mcp",
+          "surface": "MCP",
+          "representations": [
+            {
+              "id": "json",
+              "mediaType": "application/json",
+              "projection": "public Land project object or bounded browse envelope"
+            },
+            {
+              "id": "text-summary",
+              "mediaType": "text/plain",
+              "projection": "bounded public Land project summary"
+            }
+          ]
+        }
+      ]
     }
   ]
 }</script>
@@ -2206,6 +2529,8 @@ Per-IP and daily model-call ceilings apply. Machine-readable catalog: <code>JSON
   <li><code>get_person_or_organization</code> <span aria-hidden="true">·</span> read — Get one exact typed person or organization row from the published People and organizations read model. Display names never create identity. Relation states and source fields are preserved.</li>
   <li><code>browse_organizations</code> <span aria-hidden="true">·</span> read — Browse the bounded typed People and organizations snapshot with exact row-kind and token filters. Results retain published, empty, or unknown relation states and read-model freshness.</li>
   <li><code>get_meeting</code> <span aria-hidden="true">·</span> read — Get one exact source-qualified meeting from the shared CityScroll meeting read model. Preserves source receipt, coverage, freshness, and attached meeting documents.</li>
+  <li><code>get_land_project</code> <span aria-hidden="true">·</span> read — Get one exact Land (ZAP) project by its ZAP project id. Includes its deep link, status, geography, applicant, review procedure, exact actions and ids, environmental facts, milestones, outcomes, sources, and any conflicts, when known.</li>
+  <li><code>browse_land_projects</code> <span aria-hidden="true">·</span> read — List public Land (ZAP) projects using the same filters as the Land page: review procedure, action type, stage, effect, and geography. Reads the full warehouse, not just active projects, so completed and past projects stay reachable too.</li>
   <li><code>preview_watch</code> <span aria-hidden="true">·</span> read — Preview what a plain-English standing watch would deliver, without subscribing. Lens: money (procurement), land (rezonings), property, rules, meetings, people.</li>
   <li><code>create_watch</code> <span aria-hidden="true">·</span> mutation — Create a standing email watch from plain English. The watch starts immediately. The welcome email states its scope and includes manage and unsubscribe links.</li>
 </ul>

@@ -53,6 +53,12 @@ import {
 import { CONTRACTS_ANALYSIS_LIMITS, executeContractsAnalysis } from "../../capabilities/contracts_analysis.mjs";
 import { executeMeetingGet, MEETING_GET_LIMITS } from "../../capabilities/meetings.mjs";
 import {
+  executeLandProjectGet,
+  executeLandProjectsBrowse,
+  LAND_PROJECT_GET_LIMITS,
+  LAND_PROJECTS_BROWSE_LIMITS,
+} from "../../capabilities/land_projects.mjs";
+import {
   executePeopleGet,
   executeOrganizationsBrowse,
   PEOPLE_GET_LIMITS,
@@ -91,6 +97,7 @@ import { workerD1EntityRelationships } from "./public_relationship_graph.mjs";
 import { workerNoticeGet } from "./notice.mjs";
 import { workerFederatedSearch } from "./search.mjs";
 import { formatContractsAnalysisText, formatContractsBrowseText, formatContractText, mcpContractGetInput, mcpContractsAnalysisInput, mcpContractsBrowseInput, workerProcurementContracts } from "./contracts.mjs";
+import { formatLandProjectText, formatLandProjectsBrowseText, mcpLandProjectGetInput, mcpLandProjectsBrowseInput, workerLandProjectGet, workerLandProjectsBrowse } from "./land_projects.mjs";
 import { formatPeopleGetText, formatOrganizationsBrowseText, mcpPeopleGetInput, mcpOrganizationsBrowseInput, workerPeopleOrganizations } from "./people_organizations.mjs";
 import { workerMeetingGet } from "./hearings.mjs";
 
@@ -353,6 +360,23 @@ async function callTool(env, req, name, args, { federatedProvider = null } = {})
       if (input.meetingId.length > MEETING_GET_LIMITS.meetingIdMaximumLength) return toolError(`meeting_id must be ${MEETING_GET_LIMITS.meetingIdMaximumLength} characters or fewer.`);
       const result = await executeMeetingGet(workerMeetingGet(env), input);
       return structuredResult(result, formatMeetingText(result));
+    }
+    case "get_land_project": {
+      const input = mcpLandProjectGetInput(args);
+      if (!input.projectId) return toolError("project_id is required.");
+      if (input.projectId.length > LAND_PROJECT_GET_LIMITS.projectIdMaximumLength) {
+        return toolError(`project_id must be ${LAND_PROJECT_GET_LIMITS.projectIdMaximumLength} characters or fewer.`);
+      }
+      const result = await executeLandProjectGet(workerLandProjectGet(env), input);
+      return structuredResult(result, formatLandProjectText(result));
+    }
+    case "browse_land_projects": {
+      const input = mcpLandProjectsBrowseInput(args);
+      if (input.limit != null && (input.limit < LAND_PROJECTS_BROWSE_LIMITS.minimum || input.limit > LAND_PROJECTS_BROWSE_LIMITS.maximum)) {
+        return toolError(`limit must be a whole number from ${LAND_PROJECTS_BROWSE_LIMITS.minimum} through ${LAND_PROJECTS_BROWSE_LIMITS.maximum}.`);
+      }
+      const result = await executeLandProjectsBrowse(workerLandProjectsBrowse(env), input);
+      return structuredResult(result, formatLandProjectsBrowseText(result));
     }
     case "retrieve_cited_passages": {
       if (env.SEMANTIC_CANDIDATES_ENABLED === "false") {
