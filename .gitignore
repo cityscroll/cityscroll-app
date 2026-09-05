@@ -146,3 +146,6 @@ tools/law_mandates/output/
 tools/law_mandates/private/
 .venv-playwright/
 civic-content-gates/*.egg-info/
+
+# PHC-07 capture scratch (rendered fragments only, never images)
+site/.phc07-capture-tmp/

@@ -16,6 +16,7 @@ const NOTICE_DETAIL_RENDERERS = [
   "site/sub_outreach.mjs",
   "site/subsidy_project_panel.mjs",
   "site/non_council_outcome_panel.mjs",
+  "site/outcome_not_located_state.mjs",
 ];
 
 const METHODOLOGY_KEYS = [

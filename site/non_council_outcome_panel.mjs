@@ -34,7 +34,28 @@ export async function loadNonCouncilOutcomePanel(requestId, opts = {}) {
   return nonCouncilOutcomePanelHTML(await loadNonCouncilOutcomeLookup(), requestId, opts);
 }
 
-export function buildNonCouncilOutcomePanelView(payload, requestId) {
+/**
+ * Dispositions that mint a community-board decision. A disposition outside this
+ * list is still an explicitly recorded fact, but it is not a decision, so it is
+ * rendered by the not-located/no-action states in site/outcome_not_located_state.mjs
+ * rather than by this panel.
+ */
+export const NON_COUNCIL_DECISION_ACTIONS = Object.freeze(["approved", "rejected", "held"]);
+
+/**
+ * The receipt-backed source join every matched non-Council outcome must pass
+ * before any disposition can be attributed to it: the exact board/date/publisher
+ * join, a readable meeting date, ok document text, and a reachable minutes URL.
+ *
+ * The join and the disposition are deliberately separate results. This returns
+ * null when the *join* does not hold, and returns the joined row with
+ * `action: null` when the join holds but the source records no explicit
+ * disposition — the case where minutes are readable but mint no decision. One
+ * gate therefore serves both the decision panel below and the outcome-state
+ * projection in site/outcome_not_located_state.mjs, instead of two copies that
+ * can drift apart.
+ */
+export function gateNonCouncilOutcomeRow(payload, requestId) {
   const id = clean(requestId);
   const row = id ? payload?.notices?.[id] : null;
   if (
@@ -43,7 +64,7 @@ export function buildNonCouncilOutcomePanelView(payload, requestId) {
     || payload?.coverage?.honest_absent !== true
     || !row
     || clean(row.request_id) !== id
-  ) return emptyView();
+  ) return null;
 
   const rowJoin = row.join || {};
   const sourceJoin = row.source_join
@@ -66,22 +87,38 @@ export function buildNonCouncilOutcomePanelView(payload, requestId) {
     || !meetingDate
     || row.provenance?.text_status !== "ok"
     || !sourceJoinView
-    || outcome.explicit !== true
-    || !["approved", "rejected", "held"].includes(clean(outcome.action))
     || !minutesUrl
-  ) return emptyView();
+  ) return null;
 
   return {
-    schema: NON_COUNCIL_OUTCOME_PANEL_SCHEMA,
-    show: true,
     request_id: id,
     board_id: clean(row.body_id) || null,
     body_name: bodyName(row),
     meeting_label: sourceJoinView.label,
     meeting_date: meetingDate,
-    action: clean(outcome.action),
+    // An action is a disposition only when the source marked it explicit; a
+    // stray action string on a non-explicit outcome never becomes one.
+    action: outcome.explicit === true ? clean(outcome.action) : null,
     tally: validTally(outcome.tally),
     minutes_url: minutesUrl,
+  };
+}
+
+export function buildNonCouncilOutcomePanelView(payload, requestId) {
+  const gated = gateNonCouncilOutcomeRow(payload, requestId);
+  if (!gated || !NON_COUNCIL_DECISION_ACTIONS.includes(gated.action)) return emptyView();
+
+  return {
+    schema: NON_COUNCIL_OUTCOME_PANEL_SCHEMA,
+    show: true,
+    request_id: gated.request_id,
+    board_id: gated.board_id,
+    body_name: gated.body_name,
+    meeting_label: gated.meeting_label,
+    meeting_date: gated.meeting_date,
+    action: gated.action,
+    tally: gated.tally,
+    minutes_url: gated.minutes_url,
   };
 }
 
