@@ -149,3 +149,7 @@ compact_calendar.css
 cityscroll.land_map_shell.v1
 cityscroll.money_suggestion_destination.v1
 cityscroll.near_you_deferred.v1
+cityscroll.land_filing_evidence_report_detail.v1
+
+# Route-lazy fetch path for the per-document filing-report JSON; never rendered chrome.
+data/land_filing_reports

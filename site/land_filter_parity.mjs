@@ -28,6 +28,7 @@ import {
 } from "./land_status_facets.mjs";
 import { DEFAULT_LAND_PROCEDURE, LAND_PROCEDURE_OPTIONS } from "./land_procedure_facet.mjs";
 import { LAND_REGULATORY_EFFECT_OPTIONS } from "./land_regulatory_effect.mjs";
+import { LAND_FILING_EVIDENCE_OPTIONS } from "./land_filing_evidence_facet.mjs";
 import { LAND_PRESENTATION_STATE_KEYS, normalizeLandView } from "./land_view_state.mjs";
 
 export const LAND_FILTER_PARITY_SCHEMA = "cityscroll.land_filter_parity.v1";
@@ -95,6 +96,12 @@ export const LAND_FILTER_DIMENSIONS = Object.freeze([
     note: "No dedicated route key: carried in the typed `facet` blob, and in watch scope by name.",
   }),
   Object.freeze({
+    id: "filingEvidence", queryKey: "filingEvidence", routeKey: null,
+    facetKey: "filingEvidence", defaultValue: "any",
+    values: optionIds(LAND_FILING_EVIDENCE_OPTIONS), reachesWatchScope: true,
+    note: "LDP-27's three factual filing-evidence states. No dedicated route key: carried in the typed `facet` blob, like `regulatoryEffect`.",
+  }),
+  Object.freeze({
     id: "borough", queryKey: "borough", routeKey: "boro", defaultValue: "",
     values: LAND_FILTER_BOROUGHS, reachesWatchScope: true,
     note: "Exact borough name.",
@@ -157,6 +164,7 @@ const FUTURE_IDS = new Set(optionIds(LAND_FUTURE_ACTION_OPTIONS));
 const PROCEDURE_IDS = new Set(optionIds(LAND_PROCEDURE_OPTIONS));
 const FAMILY_IDS = new Set(optionIds(LAND_FAMILY_OPTIONS));
 const EFFECT_IDS = new Set(optionIds(LAND_REGULATORY_EFFECT_OPTIONS));
+const PARITY_FILING_EVIDENCE_IDS = new Set(optionIds(LAND_FILING_EVIDENCE_OPTIONS));
 const ATTENDANCE_IDS = new Set(["in_person", "livestream", "hybrid"]);
 
 function text(value) {
@@ -215,6 +223,7 @@ export function landFilterStateFromRouteParams(input, { facetValues } = {}) {
   const rawProcedure = params.get("procedure");
   const rawFamily = params.get("family");
   const rawEffect = facet.regulatoryEffect;
+  const rawFilingEvidence = facet.filingEvidence;
 
   const validStage = STAGE_IDS.has(rawStage || "");
   const validFuture = FUTURE_IDS.has(rawFuture || "");
@@ -249,6 +258,7 @@ export function landFilterStateFromRouteParams(input, { facetValues } = {}) {
     procedure: PROCEDURE_IDS.has(rawProcedure || "") ? rawProcedure : DEFAULT_LAND_PROCEDURE,
     family: FAMILY_IDS.has(rawFamily || "") ? rawFamily : DEFAULT_LAND_FAMILY,
     regulatoryEffect: EFFECT_IDS.has(String(rawEffect ?? "")) ? String(rawEffect) : "any",
+    filingEvidence: PARITY_FILING_EVIDENCE_IDS.has(String(rawFilingEvidence ?? "")) ? String(rawFilingEvidence) : "any",
     borough,
     communityDistrict,
     councilDistrict,
@@ -283,6 +293,7 @@ export function landSnapshotQueryFromState(state, {
     procedure: state.procedure,
     family: state.family,
     regulatoryEffect: state.regulatoryEffect,
+    filingEvidence: state.filingEvidence,
     borough: state.borough,
     communityDistrict: state.communityDistrict,
     councilDistrict: state.councilDistrict,

@@ -57,6 +57,12 @@ import {
 import { zoningHearingRowsForScope } from "../zoning_hearing_calendar.mjs";
 import { projectCalendarActionsHTML as projectCalendarActions } from "../project_calendar.mjs";
 import { attachAuth, authHTML, loadAuth } from "../land_authority_summary_view.mjs";
+import {
+  landFilingEvidenceSectionsHTML,
+  loadLandFilingEvidenceLookup,
+  wireLandFilingReportTrigger,
+} from "../land_filing_evidence_view.mjs";
+import { landFilingEvidenceFilterFromControls } from "../land_filing_evidence_facet.mjs";
 import { mtxHTML } from "../land_outcomes_matrix.mjs";
 import { attachLandLotSourceDigests, landLotSourceDigestsHTML, loadLandLotSourceDigests } from "../land_lot_source_digests.mjs";
 import {
@@ -145,6 +151,10 @@ let landUpcomingHearingsPromise=null;
 let landProjectsSnapshotPromise=null,landBblSnapshotPromise=null,landBblCentroidSnapshotPromise=null,landMeetingsSnapshotPromise=null,landPropertySnapshotPromise=null;
 function loadLandDefaultSnapshot(){
   if(!landDefaultSnapshotPromise){
+    // Filing evidence is read at detail-render time via landFilingEvidenceFor()'s own
+    // lookup-by-project-id fallback, so it never needs to gate the List's first paint --
+    // kicked off in parallel, never joined into this Promise.all.
+    loadLandFilingEvidenceLookup();
     landDefaultSnapshotPromise=Promise.all([
       fetch(LAND_DEFAULT_SNAPSHOT_URL).then(r=>r.ok?r.json():null),
       loadAuth(),
@@ -341,6 +351,7 @@ function landHasAppliedFilters(){
     || normalizeLandProcedure($("#lprocedure")?.value)!==DEFAULT_LAND_PROCEDURE
     || normalizeLandFamily($("#lfamily")?.value)!==DEFAULT_LAND_FAMILY
     || normalizeLandRegulatoryEffect($("#leffect")?.value)!=="any"
+    || landFilingEvidenceFilterFromControls()!=="any"
     || landAttendance || landClosingWeek);
 }
 function resetLandFilters(){
@@ -357,6 +368,7 @@ function resetLandFilters(){
   if($("#lprocedure")) $("#lprocedure").value=DEFAULT_LAND_PROCEDURE;
   if($("#lfamily")) $("#lfamily").value=DEFAULT_LAND_FAMILY;
   if($("#leffect")) $("#leffect").value="any";
+  if($("#lfiling")) $("#lfiling").value="any";
   $("#nltrans-land").innerHTML="";
   landSearch();
 }
@@ -515,6 +527,7 @@ async function landSearch(){
   let boro=landBorough, kw=$("#lkw").value.trim();
   const status=$("#lstatus").value;
   const {stage,futureAction,procedure,family,regulatoryEffect}=landFilterState(status);
+  const filingEvidence=landFilingEvidenceFilterFromControls();
   if(kw){
     try{
       const neighborhoodTools=await import("../neighborhood_search.mjs");
@@ -576,11 +589,11 @@ async function landSearch(){
       }else banner=t("banner_none_lot",{label:geo.label,area:geo.neighbourhood||geo.borough});
     }
     let rows=addressStatus?[]:filterLandSnapshot(projects,{
-      status,stage,futureAction,procedure,family,regulatoryEffect,actionRows,today:todayISO(),borough:boro,keyword:kw,
+      status,stage,futureAction,procedure,family,regulatoryEffect,filingEvidence,actionRows,today:todayISO(),borough:boro,keyword:kw,
       communityDistrict:landCommunityDistrict,councilDistrict:landCouncilDistrict,projectIds,limit:40,
     });
     if(block&&!rows.length){
-      rows=await landNearby(geo,status,projects,{stage,futureAction,procedure,family,regulatoryEffect,actionRows});
+      rows=await landNearby(geo,status,projects,{stage,futureAction,procedure,family,regulatoryEffect,filingEvidence,actionRows});
       if(projectIds?.length) banner=t(status==="active"?"banner_none_active_nearest":"banner_none_nearest",{area:geo.neighbourhood||geo.borough});
     }
     paintLandRows(rows,banner,kw,!!block,boro,stale,true,addressStatus);
@@ -756,6 +769,7 @@ async function landSelect(i, el){
   if(r.project_brief) html+=`<div class="scope" id="land-brief"><span class="lbl">${t("in_plain_english")}</span>${excerptHtml(r.project_brief,900)}</div>`;
   else html+=`<div class="scope" id="land-brief" hidden></div>`;
   html+=authHTML(r.authority_summary,{t,escape:escUiHtml});
+  html+=landFilingEvidenceSectionsHTML(r,{t,escape:escUiHtml});
   html+=landLotSourceDigestsHTML(r,{escape:escUiHtml});
   if(actList.length) html+=`<div class="rmeta2" style="margin-top:10px"><b>${t("actions_lbl")}</b> ${actList.join(" · ")}</div>`;
   const area=(r.project_name||r.borough||"").replace(/(rezoning|demapping|rezone|special permit|special district|text amendment|mapping actions?|modification|disposition|non-?ulurp).*/i,"").trim().split(/\s+/).slice(0,3).join(" ")||r.borough||"";
@@ -782,6 +796,7 @@ async function landSelect(i, el){
   <div class="note" id="landmapnote"><span class="loading"></span> ${t("locating")}</div>`;
   $("#ldetail").innerHTML=html;
   hydrateLandRecordLinks(r, selection);
+  wireLandFilingReportTrigger($("#ldetail"),{t,escape:escUiHtml});
   // Immediate rail from list row (ZAP status + portal); hydrates again when outcomes load.
   paintLandActionRail($("#land-actions"), r, null, null);
   loadZapOutcomes(r, $("#land-outcomes"), selection);

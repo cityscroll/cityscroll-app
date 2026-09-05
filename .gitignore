@@ -75,6 +75,10 @@ docs/rum-observatory.md
 docs/rum-production-pilot.md
 ontology/queue/ledger/
 docs/screenshots/legislative-matter-calendar/fixtures/
+# Going-forward capture-evidence convention: the manifest (with a sha256 per
+# capture, route, viewport, revision, and assertion) is the committed proof;
+# the rendered image binaries themselves stay local/owner-side.
+docs/screenshots/land-filing-evidence/*.png
 test/fixtures/merge-throughput/
 test/known_flake_rerun.test.mjs
 test/merge_gate_audit.test.mjs
