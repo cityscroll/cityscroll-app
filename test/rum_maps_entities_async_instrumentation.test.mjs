@@ -308,6 +308,7 @@ test("instrumentation emits only the RUM-05 bounded milestone envelope", () => {
     "surface_id",
     "unit",
     "value",
+    "owner_timestamp_ms",
   ];
   assert.ok(sink.records.every((row) => (
     Object.keys(row).sort().join(",") === allowedKeys.sort().join(",")

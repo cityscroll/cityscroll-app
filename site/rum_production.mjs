@@ -107,6 +107,9 @@ export function projectProductionObservation(record, {
     collector_version: manifest.collector.collector_version,
     manifest_version: manifest.manifest_version,
     release_id: releaseId,
+    ...(Number.isFinite(record.owner_timestamp_ms) && record.owner_timestamp_ms >= 0
+      ? { owner_timestamp_ms: record.owner_timestamp_ms }
+      : {}),
   };
 }
 

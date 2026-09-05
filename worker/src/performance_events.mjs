@@ -64,6 +64,7 @@ const OBSERVATION_KEYS = Object.freeze([
   "unit",
   "value",
 ]);
+const OPTIONAL_OBSERVATION_KEYS = Object.freeze(["owner_timestamp_ms"]);
 const BATCH_KEYS = Object.freeze(["observations", "schema"]);
 const FORBIDDEN_KEYS = new Set([
   "account",
@@ -177,10 +178,11 @@ function isRecord(value) {
   return Boolean(value) && typeof value === "object" && !Array.isArray(value);
 }
 
-function exactKeys(value, expected) {
+function exactKeys(value, expected, optional = []) {
   if (!isRecord(value)) return false;
   const actual = Object.keys(value).sort();
-  return actual.length === expected.length && actual.every((key, index) => key === expected[index]);
+  const allowed = new Set([...expected, ...optional]);
+  return expected.every((key) => actual.includes(key)) && actual.every((key) => allowed.has(key));
 }
 
 function hasForbiddenKey(value) {
@@ -211,7 +213,7 @@ function rejected(reason) {
 }
 
 function normalizeObservation(input) {
-  if (!exactKeys(input, OBSERVATION_KEYS)) return rejected("unknown_key");
+  if (!exactKeys(input, OBSERVATION_KEYS, OPTIONAL_OBSERVATION_KEYS)) return rejected("unknown_key");
   if (
     input.schema !== RUM_OBSERVATION_SCHEMA
     || input.state !== "measured"
@@ -228,6 +230,12 @@ function normalizeObservation(input) {
     || input.value < metric.minimum
     || input.value > RUM_VALUE_MAXIMUM[metric.unit]
     || !RELEASE_ID.test(input.release_id || "")
+  ) return rejected("invalid_value");
+  if (
+    Object.hasOwn(input, "owner_timestamp_ms")
+    && (!Number.isFinite(input.owner_timestamp_ms)
+      || input.owner_timestamp_ms < 0
+      || input.owner_timestamp_ms > RUM_VALUE_MAXIMUM.ms)
   ) return rejected("invalid_value");
 
   if (!acceptedSurfaceIds.has(input.surface_id)) return rejected("unknown_surface");
@@ -276,6 +284,9 @@ function normalizeObservation(input) {
       releaseId: input.release_id,
       value: input.value,
       samplingIndex,
+      ...(Object.hasOwn(input, "owner_timestamp_ms")
+        ? { ownerTimestampMs: input.owner_timestamp_ms }
+        : {}),
     },
   };
 }
@@ -316,7 +327,12 @@ export function rumDataPoint(observation, trafficClass = "production") {
       observation.manifestVersion,
       observation.releaseId,
     ],
-    doubles: [observation.value],
+    doubles: [
+      observation.value,
+      ...(Number.isFinite(observation.ownerTimestampMs) && observation.ownerTimestampMs >= 0
+        ? [observation.ownerTimestampMs]
+        : []),
+    ],
     indexes: [observation.samplingIndex],
   };
 }

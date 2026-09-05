@@ -182,6 +182,7 @@ function milestoneRecord({
   componentId = "none",
   resultState = null,
   value = null,
+  ownerTimestampMs = null,
 }) {
   return Object.freeze({
     record_type: "semantic_milestone",
@@ -193,6 +194,9 @@ function milestoneRecord({
     surface_id: surfaceId,
     component_id: componentId,
     result_state: resultState,
+    ...(Number.isFinite(ownerTimestampMs) && ownerTimestampMs >= 0
+      ? { owner_timestamp_ms: ownerTimestampMs }
+      : {}),
   });
 }
 
@@ -239,6 +243,7 @@ export function createRumSemanticMilestones({
       componentId: kind === "component" ? id : "none",
       resultState: bounded,
       value: at - origin,
+      ownerTimestampMs: at,
     }));
     return { state: "recorded" };
   }
@@ -261,6 +266,7 @@ export function createRumSemanticMilestones({
       milestone: "interaction-start",
       surfaceId,
       componentId,
+      ownerTimestampMs: startedAt,
     }));
 
     const interaction = {
@@ -276,6 +282,7 @@ export function createRumSemanticMilestones({
           surfaceId,
           componentId,
           value: feedbackAt - startedAt,
+          ownerTimestampMs: feedbackAt,
         }));
         return { state: "recorded" };
       },
@@ -294,6 +301,7 @@ export function createRumSemanticMilestones({
           componentId,
           resultState: bounded,
           value: settledAt - startedAt,
+          ownerTimestampMs: settledAt,
         }));
         safeRecord(record, milestoneRecord({
           milestone: "feedback-to-settled",
@@ -302,6 +310,7 @@ export function createRumSemanticMilestones({
           componentId,
           resultState: bounded,
           value: settledAt - feedbackAt,
+          ownerTimestampMs: settledAt,
         }));
         return { state: "settled" };
       },
