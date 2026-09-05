@@ -192,8 +192,8 @@ test("board institution pages and the Meetings lens publish the same canonical m
   assert.match(residentHtml, /Source details/);
   assert.match(residentHtml, /Checked; no dated records found/);
   assert.match(residentHtml, /source could not be checked/i);
-  assert.match(residentHtml, /Not ingested/);
-  assert.doesNotMatch(residentHtml, /checked-empty|not-yet-checked|unsupported-format|source_stale/);
+  assert.match(residentHtml, /Not yet checked/);
+  assert.doesNotMatch(residentHtml, /checked-empty|not-yet-checked|unsupported-format|source_stale|Not ingested|format not supported/);
 
   const staleEdge = communityBoardMeetingEdgeFromSourceRow(meetingIndex.rows[0], {
     asOf: meetingIndex.generated_at,

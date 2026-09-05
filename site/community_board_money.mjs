@@ -1,4 +1,5 @@
 import { officialSourceLink } from "./affordance_grammar.mjs";
+import { ABSENCE_REASONS } from "./edge_summary.mjs";
 
 /**
  * Resident-ready financial projection for specific Community Boards.
@@ -453,6 +454,7 @@ export function buildCommunityBoardMoneyCardView(model, boardId) {
   if (!rows.length) return {
     board_id: boardId,
     state: "unavailable",
+    absence_reason: ABSENCE_REASONS.RETRIEVAL_FAILURE,
     fiscal_years: [],
     budget: null,
     spending: null,
@@ -481,9 +483,19 @@ export function buildCommunityBoardMoneyCardView(model, boardId) {
 
   const sourceRefs = [budget?.source_ref, spending?.source_ref].filter(Boolean);
   const fiscalYears = [...new Set([budgetFiscalYear, spendingFiscalYear].filter((year) => year != null))];
+  // "empty_source_result" is a materialized, sourced zero (RU-02 A2/A3); an
+  // unresolved identity is its own distinct concept and is never relabeled
+  // as a zero. States outside this set describe partial coverage, not
+  // absence, and are left untagged.
+  const absenceReason = state === "unavailable"
+    ? ABSENCE_REASONS.RETRIEVAL_FAILURE
+    : state === "empty_source_result"
+      ? ABSENCE_REASONS.VALID_ZERO
+      : null;
   return {
     board_id: boardId,
     state,
+    absence_reason: absenceReason,
     fiscal_year: both?.fiscal_year ?? null,
     fiscal_years: fiscalYears,
     separate_fiscal_years: budgetFiscalYear != null && spendingFiscalYear != null && budgetFiscalYear !== spendingFiscalYear,

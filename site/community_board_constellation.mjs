@@ -10,6 +10,7 @@ import { officialSourceLink } from "./affordance_grammar.mjs";
 import { createCalendarOccurrence } from "./calendar_occurrence.mjs";
 import { buildCompactMonthView, renderCompactMonth } from "./compact_calendar.mjs";
 import {
+  ABSENCE_REASONS,
   EDGE_SUMMARY_STATE_MEANINGS,
   edgeSummaryStateCopy,
   renderEdgeSummaryRail,
@@ -162,15 +163,16 @@ function minutesFreshness(documents = [], source = {}, asOf = null) {
       latest_date: latest,
       label: stale ? `Minutes last published ${residentDate(latest)}` : `Latest minutes ${residentDate(latest)}`,
       age_days: ageDays,
+      absence_reason: null,
     };
   }
   if (["unavailable", "unsupported-format"].includes(source.state)) {
-    return { state: "unavailable", latest_date: null, label: "Minutes archive could not be checked", age_days: null };
+    return { state: "unavailable", latest_date: null, label: "Minutes archive could not be checked", age_days: null, absence_reason: ABSENCE_REASONS.RETRIEVAL_FAILURE };
   }
   if (source.state === "checked-empty") {
-    return { state: "available", latest_date: null, label: "No dated minutes found in the checked source", age_days: null };
+    return { state: "available", latest_date: null, label: "No dated minutes found in the checked source", age_days: null, absence_reason: ABSENCE_REASONS.RECORDED_NEGATIVE };
   }
-  return { state: "unknown", latest_date: null, label: "Minutes freshness is not yet known", age_days: null };
+  return { state: "unknown", latest_date: null, label: "Minutes freshness is not yet known", age_days: null, absence_reason: ABSENCE_REASONS.UNSEARCHED };
 }
 
 function boardNode(geography, id) {
@@ -328,6 +330,9 @@ function buildCategory(spec, board, source, districtEdge, sourceRowsForBoard, re
     return {
       ...spec,
       status: count ? "matched" : "empty",
+      // A materialized count of 0 here is a verified fact, not a gap: every
+      // row in the registry was already checked for a URL (RU-02 A2).
+      absence_reason: count ? null : ABSENCE_REASONS.VALID_ZERO,
       count,
       target_name: "Sources & coverage",
       view_all_href: communityBoardOutputHref(board.body_id),
@@ -398,6 +403,14 @@ function buildCategory(spec, board, source, districtEdge, sourceRowsForBoard, re
       ...spec,
       status: edges.length ? "matched" : "unknown",
       source_state: edges.length ? "observed" : availability.state,
+      // "not_yet_ingested" is a source that has never been checked; an
+      // "unknown" availability with a stated reason means the source was
+      // checked but returned no exact-identity match (RU-02 A2).
+      absence_reason: edges.length
+        ? null
+        : (availability.state === "not_yet_ingested" || !availability.reason
+          ? ABSENCE_REASONS.UNSEARCHED
+          : ABSENCE_REASONS.CHECKED_NO_RECORD),
       count: edges.length || null,
       target_name: spec.label,
       view_all_href: null,
@@ -439,6 +452,7 @@ export function buildCommunityBoardEdgeSummary(viewOrCategories) {
     count: category.count,
     state: category.status,
     href: category.status === "matched" ? category.view_all_href : null,
+    absence_reason: category.absence_reason || null,
     scope: { board: sourceId },
     source: category.source,
     provenance: category.provenance,
@@ -602,6 +616,17 @@ export function buildCommunityBoardConstellationView(idOrName, sources = {}) {
   };
 }
 
+// Resident copy stays in plain task language; the underlying pipeline state
+// (adapter names, ingestion vocabulary) is retained only in the non-visible
+// data attribute below, never in visible or accessible text (RU-02 A5/F2).
+const SOURCE_STATE_ABSENCE_REASON = Object.freeze({
+  "unsupported-format": ABSENCE_REASONS.RETRIEVAL_FAILURE,
+  unavailable: ABSENCE_REASONS.RETRIEVAL_FAILURE,
+  "not-yet-checked": ABSENCE_REASONS.UNSEARCHED,
+  absent_in_pass: ABSENCE_REASONS.UNSEARCHED,
+  "checked-empty": ABSENCE_REASONS.RECORDED_NEGATIVE,
+});
+
 function sourceMarkup(row) {
   const link = row.url
     ? officialSourceLink({ href: row.url, label: row.role === "upcoming_meetings" ? "Open official calendar" : `Open ${row.label.toLowerCase()}`, className: "board-source-link", escape: esc })
@@ -609,14 +634,15 @@ function sourceMarkup(row) {
   const state = {
     indexed: "Records found in the checked source",
     "checked-empty": "Checked; no dated records found",
-    "unsupported-format": "Not ingested — source format not supported",
-    unavailable: "Not ingested — source could not be checked",
+    "unsupported-format": "This source could not be checked automatically",
+    unavailable: "This source could not be checked",
     stale: "Source needs a fresh check",
-    "not-yet-checked": "Not ingested",
+    "not-yet-checked": "Not yet checked",
     not_yet_ingested: "Source available",
     absent_in_pass: "Source not listed",
   }[row.state] || "Source observed";
-  return `<li class="node-record" data-source-type="${esc(row.role)}"><div class="node-record-main"><strong>${esc(row.label)}</strong> ${link}</div><span class="muted node-muted">${esc(state)}${row.origin_label ? ` · ${esc(row.origin_label)}` : ""}</span></li>`;
+  const absenceReason = SOURCE_STATE_ABSENCE_REASON[row.state] || "";
+  return `<li class="node-record" data-source-type="${esc(row.role)}"${absenceReason ? ` data-source-absence-reason="${esc(absenceReason)}"` : ""}><div class="node-record-main"><strong>${esc(row.label)}</strong> ${link}</div><span class="muted node-muted">${esc(state)}${row.origin_label ? ` · ${esc(row.origin_label)}` : ""}</span></li>`;
 }
 
 function categoryStatus(category) {
@@ -872,6 +898,10 @@ export function renderCommunityBoardConstellationDocument(view, options = {}) {
     heading: "Connected civic objects",
     id: "community-board-edge-summary-heading",
     className: "community-board-edge-summary",
+    // The bounded coverage note above already states, once, which relation
+    // categories are not yet established; this rail should not repeat that
+    // as a second "Records not shown" line per category (RU-02 A1).
+    omitOptionalUnknown: true,
   });
   const local = renderLocalConstellationHTML(view.local_constellation, {
     heading: "Nearby board connections",
