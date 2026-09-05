@@ -15,6 +15,7 @@ import { buildCouncilHearingActionPath } from "./council_hearing_action_path.mjs
 import { buildConsequenceProjection } from "./consequence_projection.mjs";
 import { attendanceDomainForRecord } from "./meetings_attendance.mjs";
 import { participationActionVerbs } from "./participation_action_verbs.mjs";
+import { meetingPurposeAuthority } from "./meeting_purpose_authority.mjs";
 import { renderCouncilHearingMatterContinuation } from "./council_hearing_matter_continuation.mjs";
 import {
   buildCrossSourceCoverageLedger,
@@ -556,6 +557,39 @@ function evidencedParticipationActionRows(record) {
       : `<li>${esc(action.verb)}</li>`));
 }
 
+// PHC-02: purpose (the sourced pending question) and authority (the plain-
+// language body role, what a submission becomes, and the nearest exact next
+// official action) — placed before the participation controls so what this
+// proceeding is for and what this body can do about it outranks how to take
+// part. Renders nothing unless the shared projection sourced at least one of
+// the pending question, the body role, or the record destination; a record
+// this repository could not classify (proceeding_kind "unknown") stays
+// silent here rather than guessing. When it does render, the next official
+// action is stated exactly when published, and honestly as not yet
+// published otherwise — never inferred from the event having been held.
+function consequenceSection(record) {
+  const purpose = meetingPurposeAuthority(record);
+  if (!purpose.pending_question && !purpose.body_role_label && !purpose.record_destination_label) {
+    return "";
+  }
+  const rows = [];
+  if (purpose.pending_question) {
+    rows.push(`<p class="meeting-consequence-question"><b>Considering:</b> ${esc(readerText(purpose.pending_question, 2_000))}</p>`);
+  }
+  if (purpose.body_role_label) {
+    rows.push(`<p class="meeting-consequence-role">${esc(purpose.body_role_label)}.</p>`);
+  }
+  if (purpose.record_destination_label) {
+    rows.push(`<p class="meeting-consequence-destination">${esc(purpose.record_destination_label)}.</p>`);
+  }
+  const nextAction = purpose.next_official_action;
+  const nextActionHref = nextAction ? safeHref(nextAction.source_url) : null;
+  rows.push(nextAction
+    ? `<p class="meeting-consequence-next-action">Next official step: ${esc(nextAction.label)}${nextAction.date ? ` <time datetime="${esc(nextAction.date)}">(${esc(nextAction.date)})</time>` : ""}${nextActionHref ? ` — <a href="${esc(nextActionHref)}" rel="noopener noreferrer">official source</a>` : ""}.</p>`
+    : `<p class="meeting-consequence-next-action meeting-consequence-unknown">The next official step has not been published yet.</p>`);
+  return `<section class="node-section civic-object-section meeting-section meeting-consequence" data-meeting-consequence="1"><h2>What this means</h2>${rows.join("")}</section>`;
+}
+
 function relatedLinksDetails(record) {
   const values = [
     ...(Array.isArray(record.related_links) ? record.related_links : []),
@@ -712,6 +746,7 @@ export function renderMeetingDocument(record = {}, readModel = {}) {
   ${noticeDetailsSection}
   ${contactSection}
   ${relatedLinksSection}
+  ${consequenceSection(record)}
   ${participationSection}
   ${matterContinuationSection}
   ${documents}
