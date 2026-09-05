@@ -1,0 +1,132 @@
+{
+  "schema_version": 1,
+  "card": "cityscroll-public-input-consequence/phc-04-legislative-consequence-on-exact-joins",
+  "capture_mode": "local_node_playwright_axe_static_render",
+  "repository_revision": "73cbf7a7150d38782466218b39294397c459794b",
+  "note": "renderMeetingDocument() rendered locally via node (no live Worker/D1 backend) for five synthetic City Record records, one per state named in the card, then served from site/ (real /brand.css, /civic-documents.css, /report_issue.mjs) via tools/local_site_server.py. axe-core (test/functional/assets/axe.min.js) ran against the rendered <main id=\"main\"> for each case at both review widths, using the same failing-violation classification as test/functional/11_accessibility.py (a11y_gate.py). Evidence proves the sourced consequence block's placement, content, and omission states (A1-A6) render as specified and introduce no new axe violation; it does not evidence a live-data-populated page, since no Worker/D1 backend was running.",
+  "data_vintage": "not_applicable_synthetic_fixture_records",
+  "viewports": [
+    {
+      "name": "mobile",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "name": "desktop",
+      "width": 1440,
+      "height": 900
+    }
+  ],
+  "captures": [
+    {
+      "fixture": "single_exact_match_process_and_testimony",
+      "route": "renderMeetingDocument(record) \u2014 meeting:city_record:phc04-cap-single",
+      "viewport": "mobile",
+      "assertion": "A1/A4/A5/G1: a single exact matter join renders a consequence block above the existing continuation, naming the committee's own recorded process position and where testimony is officially recorded, with public testimony and committee questioning described as separate activities.",
+      "content_sha256": "bd7506a5b05fd3e5ff9ded5cbd4769876014f4b89ba1bc5baf03f6d93f41707b",
+      "consequence_block_present": true,
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    },
+    {
+      "fixture": "several_strict_matches_no_blended_consequence",
+      "route": "renderMeetingDocument(record) \u2014 meeting:city_record:phc04-cap-multiple",
+      "viewport": "mobile",
+      "assertion": "A2/G2: a request with several strict matches shows no blended consequence block at all \u2014 the existing continuation still requires the reader to select a matter.",
+      "content_sha256": "d60b7f4a0409fb26dda40427d8ce04176031bc6bd814bce58d7d41f818788bd2",
+      "consequence_block_present": false,
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    },
+    {
+      "fixture": "adversarial_title_only_near_match_mints_nothing",
+      "route": "renderMeetingDocument(record) \u2014 meeting:city_record:phc04-cap-titleonly",
+      "viewport": "mobile",
+      "assertion": "A3/G3: a title-only, non-strict relation renders no consequence block and leaks no matter detail, covered as the adversarial near-match case.",
+      "content_sha256": "52e344519cbf2400df79a4096cc44e1f294407b346016122a937af8216830a8a",
+      "consequence_block_present": false,
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    },
+    {
+      "fixture": "later_published_vote_is_next_official_event",
+      "route": "renderMeetingDocument(record) \u2014 meeting:city_record:20260408025",
+      "viewport": "mobile",
+      "assertion": "A6: a matter whose lookup history carries a later vote surfaces that vote as the next official event, never as any individual comment's effect.",
+      "content_sha256": "be92d483f55ab07123bbeb0e48940a9b62593898e36757ebe1c0956588e06526",
+      "consequence_block_present": true,
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    },
+    {
+      "fixture": "hearing_is_matters_own_latest_appearance_honest_unknown",
+      "route": "renderMeetingDocument(record) \u2014 meeting:city_record:20260428021",
+      "viewport": "mobile",
+      "assertion": "A6/negative rule: a hearing that is itself a matter's most recent observed appearance \u2014 even though its own recorded action was a vote \u2014 states honestly that no amendment or vote has followed yet, rather than mistaking its own action for a future event.",
+      "content_sha256": "f32e56b2df74c26f2c23d605feb9c7f44af74fff9a76e5b7a4cf4955ce8f65ef",
+      "consequence_block_present": true,
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    },
+    {
+      "fixture": "single_exact_match_process_and_testimony",
+      "route": "renderMeetingDocument(record) \u2014 meeting:city_record:phc04-cap-single",
+      "viewport": "desktop",
+      "assertion": "A1/A4/A5/G1: a single exact matter join renders a consequence block above the existing continuation, naming the committee's own recorded process position and where testimony is officially recorded, with public testimony and committee questioning described as separate activities.",
+      "content_sha256": "bd7506a5b05fd3e5ff9ded5cbd4769876014f4b89ba1bc5baf03f6d93f41707b",
+      "consequence_block_present": true,
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    },
+    {
+      "fixture": "several_strict_matches_no_blended_consequence",
+      "route": "renderMeetingDocument(record) \u2014 meeting:city_record:phc04-cap-multiple",
+      "viewport": "desktop",
+      "assertion": "A2/G2: a request with several strict matches shows no blended consequence block at all \u2014 the existing continuation still requires the reader to select a matter.",
+      "content_sha256": "d60b7f4a0409fb26dda40427d8ce04176031bc6bd814bce58d7d41f818788bd2",
+      "consequence_block_present": false,
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    },
+    {
+      "fixture": "adversarial_title_only_near_match_mints_nothing",
+      "route": "renderMeetingDocument(record) \u2014 meeting:city_record:phc04-cap-titleonly",
+      "viewport": "desktop",
+      "assertion": "A3/G3: a title-only, non-strict relation renders no consequence block and leaks no matter detail, covered as the adversarial near-match case.",
+      "content_sha256": "52e344519cbf2400df79a4096cc44e1f294407b346016122a937af8216830a8a",
+      "consequence_block_present": false,
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    },
+    {
+      "fixture": "later_published_vote_is_next_official_event",
+      "route": "renderMeetingDocument(record) \u2014 meeting:city_record:20260408025",
+      "viewport": "desktop",
+      "assertion": "A6: a matter whose lookup history carries a later vote surfaces that vote as the next official event, never as any individual comment's effect.",
+      "content_sha256": "be92d483f55ab07123bbeb0e48940a9b62593898e36757ebe1c0956588e06526",
+      "consequence_block_present": true,
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    },
+    {
+      "fixture": "hearing_is_matters_own_latest_appearance_honest_unknown",
+      "route": "renderMeetingDocument(record) \u2014 meeting:city_record:20260428021",
+      "viewport": "desktop",
+      "assertion": "A6/negative rule: a hearing that is itself a matter's most recent observed appearance \u2014 even though its own recorded action was a vote \u2014 states honestly that no amendment or vote has followed yet, rather than mistaking its own action for a future event.",
+      "content_sha256": "f32e56b2df74c26f2c23d605feb9c7f44af74fff9a76e5b7a4cf4955ce8f65ef",
+      "consequence_block_present": true,
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    }
+  ],
+  "accessibility": {
+    "tool": "axe-core (test/functional/assets/axe.min.js)",
+    "scope": "main#main",
+    "viewports_checked": [
+      "390x844",
+      "1440x900"
+    ],
+    "new_violations_introduced": 0,
+    "pre_existing_violations_observed": []
+  }
+}

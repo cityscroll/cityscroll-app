@@ -1,0 +1,17 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-public-input-consequence/phc-04-legislative-consequence-on-exact-joins",
+  "status": "implemented",
+  "fingerprint": "phc-04-legislative-consequence-on-exact-joins.v1",
+  "updated_at": "2026-09-05T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "legislative-hearing-consequence-projection",
+      "path": "site/legislative_hearing_consequence.mjs"
+    },
+    {
+      "id": "legislative-hearing-consequence-gate",
+      "path": "test/legislative_hearing_consequence.test.mjs"
+    }
+  ]
+}
