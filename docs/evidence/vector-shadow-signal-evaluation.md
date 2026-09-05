@@ -25,13 +25,13 @@ Usefulness gate for public ranking: 0.3. Captain call: withheld.
 
 ## Golden-suite lexical misses
 
-- **gq-mosquito-typo** (typo): keyword miss; recovered at floor false; false recovery true; relevant rank 2 score 0.1113.
+- **gq-mosquito-typo** (typo): keyword miss; recovered at floor false; false recovery true; relevant rank 2 score 0.108.
 
 ## Golden-suite ranking controls
 
 - **gq-school-synonym** (lexical_hit_control): keyword hit; ranking inversion false; relevant rank 1 score 0.0038.
-- **gq-mosquito-title** (lexical_hit_control): keyword hit; ranking inversion false; relevant rank 1 score 0.5431.
-- **gq-mosquito-ranking** (ranking_control): keyword hit; ranking inversion true; relevant rank 2 score 0.199.
+- **gq-mosquito-title** (lexical_hit_control): keyword hit; ranking inversion false; relevant rank 1 score 0.5224.
+- **gq-mosquito-ranking** (ranking_control): keyword hit; ranking inversion true; relevant rank 2 score 0.1907.
 
 ## Hashed n-gram on the frozen-trial BM25 misses
 
