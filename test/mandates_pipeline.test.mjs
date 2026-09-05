@@ -1,9 +1,9 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { mkdtemp, readFile } from "node:fs/promises";
-import { tmpdir } from "node:os";
+import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { test } from "node:test";
+import { withTempDir } from "../tools/lib/with_temp_dir.mjs";
 
 import {
   assertReferencePathOutsideRepo,
@@ -196,20 +196,21 @@ test("Legistar matter enumeration and attachment helpers preserve authenticated 
 });
 
 test("law fetch caches text with provenance and skips matters without text", async () => {
-  const cacheDir = await mkdtemp(join(tmpdir(), "crol-mandates-"));
-  const fetchImpl = async (url) => {
-    const parsed = new URL(url);
-    if (parsed.pathname.endsWith("/Matters") && !parsed.pathname.endsWith("/Attachments")) return jsonResponse([{ MatterId: 1 }, { MatterId: 2 }]);
-    if (parsed.pathname.endsWith("/Attachments")) return jsonResponse([]);
-    if (parsed.pathname.endsWith("/Matters/1")) return jsonResponse({ MatterId: 1, MatterFile: "Int 1", MatterName: "Law one", MatterText1: "The department shall publish." });
-    return jsonResponse({ MatterId: 2, MatterFile: "Int 2", MatterName: "Law two" });
-  };
-  const result = await fetchEnactedLaws({ token: TOKEN, fetchImpl, cacheDir, fetchedAt: "2026-08-06T12:00:00Z" });
-  assert.equal(result.laws.length, 1);
-  assert.equal(result.skipped.length, 1);
-  const cached = JSON.parse(await readFile(join(cacheDir, "laws", "1.json"), "utf8"));
-  assert.equal(cached.provenance.fetched_at, "2026-08-06T12:00:00Z");
-  assert.match(cached.provenance.sha256, /^[a-f0-9]{64}$/);
+  await withTempDir("crol-mandates", async (cacheDir) => {
+    const fetchImpl = async (url) => {
+      const parsed = new URL(url);
+      if (parsed.pathname.endsWith("/Matters") && !parsed.pathname.endsWith("/Attachments")) return jsonResponse([{ MatterId: 1 }, { MatterId: 2 }]);
+      if (parsed.pathname.endsWith("/Attachments")) return jsonResponse([]);
+      if (parsed.pathname.endsWith("/Matters/1")) return jsonResponse({ MatterId: 1, MatterFile: "Int 1", MatterName: "Law one", MatterText1: "The department shall publish." });
+      return jsonResponse({ MatterId: 2, MatterFile: "Int 2", MatterName: "Law two" });
+    };
+    const result = await fetchEnactedLaws({ token: TOKEN, fetchImpl, cacheDir, fetchedAt: "2026-08-06T12:00:00Z" });
+    assert.equal(result.laws.length, 1);
+    assert.equal(result.skipped.length, 1);
+    const cached = JSON.parse(await readFile(join(cacheDir, "laws", "1.json"), "utf8"));
+    assert.equal(cached.provenance.fetched_at, "2026-08-06T12:00:00Z");
+    assert.match(cached.provenance.sha256, /^[a-f0-9]{64}$/);
+  });
 });
 
 test("text fetcher decodes a Legistar HTML report when inline MatterText is absent", async () => {
@@ -478,9 +479,10 @@ test("comparator joins our Legistar ids to oracle obligations by file number", (
 });
 
 test("reference path guard rejects repository paths and accepts private paths", async () => {
-  const outside = await mkdtemp(join(tmpdir(), "crol-private-reference-"));
-  assert.equal(assertReferencePathOutsideRepo(join(outside, "reference.json"), process.cwd()).startsWith("/"), true);
-  assert.throws(() => assertReferencePathOutsideRepo(join(process.cwd(), "reference.json"), process.cwd()), /outside the repository/);
+  await withTempDir("crol-private-reference", async (outside) => {
+    assert.equal(assertReferencePathOutsideRepo(join(outside, "reference.json"), process.cwd()).startsWith("/"), true);
+    assert.throws(() => assertReferencePathOutsideRepo(join(process.cwd(), "reference.json"), process.cwd()), /outside the repository/);
+  });
 });
 
 test("five-law smoke run produces quote receipts end to end", async () => {

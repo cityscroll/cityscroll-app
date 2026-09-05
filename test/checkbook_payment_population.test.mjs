@@ -1,9 +1,10 @@
 import assert from "node:assert/strict";
-import { existsSync, mkdirSync, mkdtempSync, readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { spawnSync } from "node:child_process";
 import { describe, it } from "node:test";
 import { fileURLToPath } from "node:url";
+import { withTempDir } from "../tools/lib/with_temp_dir.mjs";
 
 import {
   groupPaymentsByAgency,
@@ -68,31 +69,30 @@ describe("independent Checkbook payment population", () => {
 });
 
 describe("payment population fixture acquisition", () => {
-  it("writes a named population receipt and normalized CSV", () => {
-    const generated = join(ROOT, ".generated");
-    mkdirSync(generated, { recursive: true });
-    const stage = mkdtempSync(join(generated, "checkbook-payment-population-test-"));
-    const receipt = join(stage, "receipt.json");
-    const output = join(stage, "payments.csv");
-    const run = spawnSync(process.execPath, [
-      "warehouse/scripts/checkbook_payment_population.mjs",
-      "--from-fixture",
-      "--fiscal-years", "2026",
-      "--page-size", "2",
-      "--stage-dir", stage,
-      "--receipt", receipt,
-      "--output", output,
-    ], { cwd: ROOT, encoding: "utf8" });
-    assert.equal(run.status, 0, run.stderr || run.stdout);
-    const body = JSON.parse(readFileSync(receipt, "utf8"));
-    assert.equal(body.status, "complete");
-    assert.equal(body.population_contract.id, "cityscroll.checkbook.payments.fiscal_year.v1");
-    assert.equal(body.collector_boundary.no_graph_publication, true);
-    assert.equal(body.population.publisher_record_count, 4);
-    assert.equal(body.reconciliation.reconciled, true);
-    assert.equal(body.population.reversal_rows, 1);
-    assert.equal(body.reconciliation.source_net_check_amount, 500);
-    assert.ok(existsSync(output));
-    assert.equal(readFileSync(output, "utf8").trim().split("\n").length, 5);
+  it("writes a named population receipt and normalized CSV", async () => {
+    await withTempDir("checkbook-payment-population-test", async (stage) => {
+      const receipt = join(stage, "receipt.json");
+      const output = join(stage, "payments.csv");
+      const run = spawnSync(process.execPath, [
+        "warehouse/scripts/checkbook_payment_population.mjs",
+        "--from-fixture",
+        "--fiscal-years", "2026",
+        "--page-size", "2",
+        "--stage-dir", stage,
+        "--receipt", receipt,
+        "--output", output,
+      ], { cwd: ROOT, encoding: "utf8" });
+      assert.equal(run.status, 0, run.stderr || run.stdout);
+      const body = JSON.parse(readFileSync(receipt, "utf8"));
+      assert.equal(body.status, "complete");
+      assert.equal(body.population_contract.id, "cityscroll.checkbook.payments.fiscal_year.v1");
+      assert.equal(body.collector_boundary.no_graph_publication, true);
+      assert.equal(body.population.publisher_record_count, 4);
+      assert.equal(body.reconciliation.reconciled, true);
+      assert.equal(body.population.reversal_rows, 1);
+      assert.equal(body.reconciliation.source_net_check_amount, 500);
+      assert.ok(existsSync(output));
+      assert.equal(readFileSync(output, "utf8").trim().split("\n").length, 5);
+    });
   });
 });

@@ -22,13 +22,14 @@ import functools
 import hashlib
 import json
 import subprocess
-import tempfile
 import threading
 import time
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
 from playwright.sync_api import Page, Route, sync_playwright
+
+from lib.temp_workspace import head_site_workspace
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "docs" / "screenshots" / "land-map-route-lazy-shell"
@@ -66,21 +67,6 @@ class StaticServer:
         self.server.shutdown()
         self.thread.join(timeout=5)
         self.server.server_close()
-
-
-def head_site(destination: Path) -> Path:
-    """Build the pre-change tree offline, with no checkout switch in this working copy."""
-    tree = destination / "head"
-    subprocess.run(["git", "worktree", "add", "--detach", str(tree), "HEAD"], cwd=ROOT, check=True)
-    subprocess.run(["node", "tools/build_primary_documents.mjs"], cwd=tree, check=True)
-    return tree / "site"
-
-
-def release_head_site(destination: Path) -> None:
-    subprocess.run(
-        ["git", "worktree", "remove", "--force", str(destination / "head")], cwd=ROOT, check=False
-    )
-    subprocess.run(["git", "worktree", "prune"], cwd=ROOT, check=False)
 
 
 def install_routes(page: Page, base_url: str, *, block_projection: bool = False) -> None:
@@ -452,12 +438,8 @@ def snapshot_vintage() -> dict:
 
 def main() -> None:
     OUT.mkdir(parents=True, exist_ok=True)
-    with tempfile.TemporaryDirectory() as staging:
-        staging_path = Path(staging)
-        try:
-            files = capture_before(head_site(staging_path))
-        finally:
-            release_head_site(staging_path)
+    with head_site_workspace(ROOT, "capture-land-map-route-lazy-shell") as site_root:
+        files = capture_before(site_root)
 
     with StaticServer(ROOT / "site") as base_url, sync_playwright() as playwright:
         files += capture_states(base_url, playwright)

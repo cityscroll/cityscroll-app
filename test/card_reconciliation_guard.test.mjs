@@ -1,8 +1,7 @@
 import assert from "node:assert/strict";
-import { mkdtemp, readFile } from "node:fs/promises";
+import { readFile } from "node:fs/promises";
 import { readFileSync } from "node:fs";
 import { spawnSync } from "node:child_process";
-import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { createHash } from "node:crypto";
 import test from "node:test";
@@ -17,6 +16,7 @@ import {
   writeCardReconciliationReceipt,
 } from "../tools/card_reconciliation_guard.mjs";
 import { reconcileCardProjection } from "../tools/release_surface_reconciliation.mjs";
+import { withTempDir } from "../tools/lib/with_temp_dir.mjs";
 
 const NOW = "2026-08-30T00:00:00.000Z";
 const FIXTURE = "test/fixtures/card-reconciliation";
@@ -167,22 +167,23 @@ test("the aggregate wrapper stays unknown when no inventories are supplied", () 
 });
 
 test("CLI missing-card injection writes a receipt and returns nonzero", async () => {
-  const directory = await mkdtemp(join(tmpdir(), "cityscroll-card-reconciliation-"));
-  const output = join(directory, "receipt.json");
-  const result = spawnSync(process.execPath, [
-    "tools/check_card_reconciliation.mjs",
-    "--source-cards", `${FIXTURE}/missing-card/source-cards.json`,
-    "--projections", `${FIXTURE}/missing-card/projections.json`,
-    "--output", output,
-    "--observed-at", NOW,
-  ], { encoding: "utf8" });
-  assert.notEqual(result.status, 0);
-  const receipt = JSON.parse(await readFile(output, "utf8"));
-  assert.equal(receipt.schema, CARD_RECONCILIATION_RECEIPT_SCHEMA);
-  assert.equal(receipt.kind, CARD_RECONCILIATION_KIND);
-  assert.equal(receipt.status, "FAIL");
-  assert.ok(receipt.findings.includes("source card rel-05 is missing from projection waves.html"));
-  assert.equal(receipt.evidence.projections["data/evidence-plane.json"].status, "PASS");
+  await withTempDir("card-reconciliation", async (directory) => {
+    const output = join(directory, "receipt.json");
+    const result = spawnSync(process.execPath, [
+      "tools/check_card_reconciliation.mjs",
+      "--source-cards", `${FIXTURE}/missing-card/source-cards.json`,
+      "--projections", `${FIXTURE}/missing-card/projections.json`,
+      "--output", output,
+      "--observed-at", NOW,
+    ], { encoding: "utf8" });
+    assert.notEqual(result.status, 0);
+    const receipt = JSON.parse(await readFile(output, "utf8"));
+    assert.equal(receipt.schema, CARD_RECONCILIATION_RECEIPT_SCHEMA);
+    assert.equal(receipt.kind, CARD_RECONCILIATION_KIND);
+    assert.equal(receipt.status, "FAIL");
+    assert.ok(receipt.findings.includes("source card rel-05 is missing from projection waves.html"));
+    assert.equal(receipt.evidence.projections["data/evidence-plane.json"].status, "PASS");
+  });
 });
 
 test("complete CLI run writes a passing receipt and leaves fixture bytes unchanged", async () => {
@@ -190,22 +191,23 @@ test("complete CLI run writes a passing receipt and leaves fixture bytes unchang
     source: digest("complete/source-cards.json"),
     projections: digest("complete/projections.json"),
   };
-  const directory = await mkdtemp(join(tmpdir(), "cityscroll-card-reconciliation-pass-"));
-  const output = join(directory, "receipt.json");
-  const result = spawnSync(process.execPath, [
-    "tools/check_card_reconciliation.mjs",
-    "--source-cards", `${FIXTURE}/complete/source-cards.json`,
-    "--projections", `${FIXTURE}/complete/projections.json`,
-    "--output", output,
-    "--observed-at", NOW,
-    "--source-commit", "a".repeat(40),
-  ], { encoding: "utf8" });
-  assert.equal(result.status, 0, result.stderr);
-  const receipt = JSON.parse(await readFile(output, "utf8"));
-  assert.equal(receipt.status, "PASS");
-  assert.equal(receipt.source_commit_sha, "a".repeat(40));
-  assert.equal(digest("complete/source-cards.json"), before.source);
-  assert.equal(digest("complete/projections.json"), before.projections);
+  await withTempDir("card-reconciliation-pass", async (directory) => {
+    const output = join(directory, "receipt.json");
+    const result = spawnSync(process.execPath, [
+      "tools/check_card_reconciliation.mjs",
+      "--source-cards", `${FIXTURE}/complete/source-cards.json`,
+      "--projections", `${FIXTURE}/complete/projections.json`,
+      "--output", output,
+      "--observed-at", NOW,
+      "--source-commit", "a".repeat(40),
+    ], { encoding: "utf8" });
+    assert.equal(result.status, 0, result.stderr);
+    const receipt = JSON.parse(await readFile(output, "utf8"));
+    assert.equal(receipt.status, "PASS");
+    assert.equal(receipt.source_commit_sha, "a".repeat(40));
+    assert.equal(digest("complete/source-cards.json"), before.source);
+    assert.equal(digest("complete/projections.json"), before.projections);
+  });
 });
 
 test("committed fixture --check proves the fail-loud contract without writing a tree receipt", () => {
@@ -241,16 +243,17 @@ test("committed fixture --check proves the fail-loud contract without writing a 
 });
 
 test("durable receipts retain exact mismatch findings", async () => {
-  const directory = await mkdtemp(join(tmpdir(), "cityscroll-card-reconciliation-receipt-"));
-  const path = join(directory, "receipt.json");
-  const result = evaluateCardReconciliation({
-    sourceCards: fixture("missing-card/source-cards.json"),
-    projections: fixture("missing-card/projections.json"),
+  await withTempDir("card-reconciliation-receipt", async (directory) => {
+    const path = join(directory, "receipt.json");
+    const result = evaluateCardReconciliation({
+      sourceCards: fixture("missing-card/source-cards.json"),
+      projections: fixture("missing-card/projections.json"),
+    });
+    const receipt = buildCardReconciliationReceipt({ result, observedAt: NOW });
+    writeCardReconciliationReceipt(receipt, path, { write: true });
+    const persisted = JSON.parse(await readFile(path, "utf8"));
+    assert.equal(persisted.schema, CARD_RECONCILIATION_RECEIPT_SCHEMA);
+    assert.match(persisted.findings[0], /rel-05/);
+    assert.match(persisted.findings[0], /waves\.html/);
   });
-  const receipt = buildCardReconciliationReceipt({ result, observedAt: NOW });
-  writeCardReconciliationReceipt(receipt, path, { write: true });
-  const persisted = JSON.parse(await readFile(path, "utf8"));
-  assert.equal(persisted.schema, CARD_RECONCILIATION_RECEIPT_SCHEMA);
-  assert.match(persisted.findings[0], /rel-05/);
-  assert.match(persisted.findings[0], /waves\.html/);
 });

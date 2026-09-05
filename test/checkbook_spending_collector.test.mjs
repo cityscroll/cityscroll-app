@@ -1,9 +1,10 @@
 import assert from "node:assert/strict";
-import { mkdirSync, mkdtempSync, readFileSync, existsSync } from "node:fs";
+import { readFileSync, existsSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { spawnSync } from "node:child_process";
 import { describe, it } from "node:test";
 import { fileURLToPath } from "node:url";
+import { withTempDir } from "../tools/lib/with_temp_dir.mjs";
 
 import {
   joinPaymentToContract,
@@ -123,44 +124,43 @@ describe("Checkbook Spending normalization + retention", () => {
 });
 
 describe("Checkbook Spending fixture collector", () => {
-  it("retains payments, writes source_records snapshot, and records join gates", () => {
-    const generated = join(ROOT, ".generated");
-    mkdirSync(generated, { recursive: true });
-    const stage = mkdtempSync(join(generated, "checkbook-spending-test-"));
-    const receipt = join(stage, "receipt.json");
-    const snapshot = join(stage, "retained.json");
-    const sourceRecords = join(stage, "source_records.jsonl");
-    const verify = join(stage, "verify.json");
-    const command = [
-      "warehouse/scripts/checkbook_spending.mjs",
-      "--from-fixture",
-      "--kill-sample", "5",
-      "--page-size", "50",
-      "--graph-cap", "10",
-      "--stage-dir", stage,
-      "--receipt", receipt,
-      "--snapshot", snapshot,
-      "--source-records", sourceRecords,
-      "--verification-receipt", verify,
-    ];
-    const run = spawnSync(process.execPath, command, { cwd: ROOT, encoding: "utf8" });
-    assert.equal(run.status, 0, run.stderr || run.stdout);
-    const body = JSON.parse(readFileSync(receipt, "utf8"));
-    assert.equal(body.status, "complete");
-    assert.equal(body.population.retained_payments, 4);
-    assert.equal(body.measurement.usefulness.joined, 3);
-    assert.equal(body.measurement.usefulness.rate, 0.6);
-    assert.equal(body.measurement.precision.rate, 1);
-    assert.equal(body.measurement.gates.materialize, true);
-    assert.equal(body.retention.mode, "individual_payment_rows");
-    assert.ok(existsSync(sourceRecords));
-    const lines = readFileSync(sourceRecords, "utf8").trim().split("\n");
-    assert.equal(lines.length, 4);
-    const first = JSON.parse(lines[0]);
-    assert.equal(first.source_system, "checkbook_spending");
-    assert.ok(first.source_system_id.startsWith("payment:"));
-    assert.ok(first.payload_json.contract_id);
-    const verifyBody = JSON.parse(readFileSync(verify, "utf8"));
-    assert.equal(verifyBody.gates.materialize, true);
+  it("retains payments, writes source_records snapshot, and records join gates", async () => {
+    await withTempDir("checkbook-spending-test", async (stage) => {
+      const receipt = join(stage, "receipt.json");
+      const snapshot = join(stage, "retained.json");
+      const sourceRecords = join(stage, "source_records.jsonl");
+      const verify = join(stage, "verify.json");
+      const command = [
+        "warehouse/scripts/checkbook_spending.mjs",
+        "--from-fixture",
+        "--kill-sample", "5",
+        "--page-size", "50",
+        "--graph-cap", "10",
+        "--stage-dir", stage,
+        "--receipt", receipt,
+        "--snapshot", snapshot,
+        "--source-records", sourceRecords,
+        "--verification-receipt", verify,
+      ];
+      const run = spawnSync(process.execPath, command, { cwd: ROOT, encoding: "utf8" });
+      assert.equal(run.status, 0, run.stderr || run.stdout);
+      const body = JSON.parse(readFileSync(receipt, "utf8"));
+      assert.equal(body.status, "complete");
+      assert.equal(body.population.retained_payments, 4);
+      assert.equal(body.measurement.usefulness.joined, 3);
+      assert.equal(body.measurement.usefulness.rate, 0.6);
+      assert.equal(body.measurement.precision.rate, 1);
+      assert.equal(body.measurement.gates.materialize, true);
+      assert.equal(body.retention.mode, "individual_payment_rows");
+      assert.ok(existsSync(sourceRecords));
+      const lines = readFileSync(sourceRecords, "utf8").trim().split("\n");
+      assert.equal(lines.length, 4);
+      const first = JSON.parse(lines[0]);
+      assert.equal(first.source_system, "checkbook_spending");
+      assert.ok(first.source_system_id.startsWith("payment:"));
+      assert.ok(first.payload_json.contract_id);
+      const verifyBody = JSON.parse(readFileSync(verify, "utf8"));
+      assert.equal(verifyBody.gates.materialize, true);
+    });
   });
 });

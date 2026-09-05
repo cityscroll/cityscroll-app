@@ -4,9 +4,8 @@
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { mkdtempSync, readFileSync, readdirSync, existsSync } from "node:fs";
+import { readFileSync, readdirSync, existsSync } from "node:fs";
 import { join } from "node:path";
-import { tmpdir } from "node:os";
 import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { dirname } from "node:path";
@@ -23,6 +22,7 @@ import {
 } from "../ontology/cross_spine.mjs";
 import { checkOntologyRegistrySync } from "../ontology/sync.mjs";
 import { readFileSync as read } from "node:fs";
+import { withTempDir } from "../tools/lib/with_temp_dir.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -127,28 +127,29 @@ test("cross-spine pass fixture agrees; fail fixtures contradict", () => {
   assert.ok(sepResult.checks.some((c) => c.id === "confirmed_vs_er_separate" && !c.pass));
 });
 
-test("CLI flywheel emits receipt.json and cards under --emit-cards", () => {
-  const dir = mkdtempSync(join(tmpdir(), "cs-flywheel-"));
-  const result = spawnSync(
-    process.execPath,
-    [
-      join(ROOT, "tools/intelligence_flywheel.mjs"),
-      "--fixture",
-      "--emit-cards",
-      dir,
-      "--generated-at",
-      "1970-01-01T00:00:00.000Z",
-    ],
-    { encoding: "utf8", cwd: ROOT },
-  );
-  assert.equal(result.status, 0, result.stderr || result.stdout);
-  assert.ok(existsSync(join(dir, "receipt.json")));
-  assert.ok(existsSync(join(dir, "cards.jsonl")));
-  const receipt = JSON.parse(readFileSync(join(dir, "receipt.json"), "utf8"));
-  assert.equal(receipt.schema, INTELLIGENCE_RECEIPT_SCHEMA);
-  assert.ok(receipt.cards_emitted.length > 0);
-  const md = readdirSync(join(dir, "cards")).filter((n) => n.endsWith(".md"));
-  assert.equal(md.length, receipt.cards_emitted.length);
+test("CLI flywheel emits receipt.json and cards under --emit-cards", async () => {
+  await withTempDir("cs-flywheel", async (dir) => {
+    const result = spawnSync(
+      process.execPath,
+      [
+        join(ROOT, "tools/intelligence_flywheel.mjs"),
+        "--fixture",
+        "--emit-cards",
+        dir,
+        "--generated-at",
+        "1970-01-01T00:00:00.000Z",
+      ],
+      { encoding: "utf8", cwd: ROOT },
+    );
+    assert.equal(result.status, 0, result.stderr || result.stdout);
+    assert.ok(existsSync(join(dir, "receipt.json")));
+    assert.ok(existsSync(join(dir, "cards.jsonl")));
+    const receipt = JSON.parse(readFileSync(join(dir, "receipt.json"), "utf8"));
+    assert.equal(receipt.schema, INTELLIGENCE_RECEIPT_SCHEMA);
+    assert.ok(receipt.cards_emitted.length > 0);
+    const md = readdirSync(join(dir, "cards")).filter((n) => n.endsWith(".md"));
+    assert.equal(md.length, receipt.cards_emitted.length);
+  });
 });
 
 test("cross_spine_validate suite exits 0 on committed fixtures", () => {

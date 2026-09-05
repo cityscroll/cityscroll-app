@@ -363,7 +363,7 @@ test("a blocked corpus stops the run before the builder, so nothing builds from 
     `node ${JSON.stringify(TOOL)} --check`,
     `touch ${JSON.stringify(marker)}`
   ].join("\n");
-  const result = spawnSync("bash", ["-c", script], { encoding: "utf8", env: { ...process.env, ...env } });
+  const result = spawnSync("bash", ["-c", script], { encoding: "utf8", env: isolatedEnv(env) });
   assert.equal(result.status, 6, "the preparation contract must surface the blocked exit code");
   assert.equal(existsSync(marker), false, "the step after the precondition ran anyway");
 });
@@ -377,7 +377,7 @@ test("a failing builder stays a failing builder: readiness passing does not resc
     "exit 17", // stands in for the builder failing on its own terms
     `touch ${JSON.stringify(marker)}`
   ].join("\n");
-  const result = spawnSync("bash", ["-c", script], { encoding: "utf8", env: { ...process.env, ...env } });
+  const result = spawnSync("bash", ["-c", script], { encoding: "utf8", env: isolatedEnv(env) });
   assert.equal(result.status, 17, "a builder failure must not be rewritten as ready, blocked, or zero");
   assert.equal(existsSync(marker), false);
   assert.match(result.stdout, /functional corpus ready/, "readiness reported on inputs and then got out of the way");
@@ -391,7 +391,7 @@ test("an unrelated functional failure is not turned into a dependency result", (
     "echo 'AssertionError: touch targets below 44px' >&2",
     "exit 1"
   ].join("\n");
-  const result = spawnSync("bash", ["-c", script], { encoding: "utf8", env: { ...process.env, ...env } });
+  const result = spawnSync("bash", ["-c", script], { encoding: "utf8", env: isolatedEnv(env) });
   assert.equal(result.status, 1, "the functional failure's own exit status must survive");
   assert.match(result.stderr, /touch targets below 44px/, "the functional failure's own message must survive");
   assert.doesNotMatch(result.stderr, /BLOCKED/, "a product failure must not be relabelled as a dependency block");

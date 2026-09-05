@@ -1,10 +1,11 @@
 import assert from "node:assert/strict";
-import { mkdtemp, readFile, writeFile } from "node:fs/promises";
+import { readFile, writeFile } from "node:fs/promises";
 import { readFileSync } from "node:fs";
 import { spawnSync } from "node:child_process";
-import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
+
+import { withTempDir } from "../tools/lib/with_temp_dir.mjs";
 
 import { buildReleaseSurfaceReceipt } from "../tools/release_surface_reconciliation.mjs";
 import {
@@ -241,74 +242,75 @@ test("committed fixtures keep exact boundary names, SHA matching, and the 1-of-2
 });
 
 test("CLI writes a boundary receipt, reconciles 1-of-2 as incomplete, and checks workflow integration", async () => {
-  const directory = await mkdtemp(join(tmpdir(), "cityscroll-deployment-health-"));
-  const pagesPath = join(directory, "cloudflare-pages.json");
-  const workerPath = join(directory, "cloudflare-worker.json");
-  const reconPath = join(directory, "reconciliation.json");
-  const generationPath = join(directory, "generation.json");
-  await writeFile(generationPath, `${JSON.stringify({
-    schema: "cityscroll.generation-output-receipt.v1",
-    boundary: "public-site-generation",
-    status: "passed",
-    findings: [],
-  })}\n`);
+  await withTempDir("deployment-health", async (directory) => {
+    const pagesPath = join(directory, "cloudflare-pages.json");
+    const workerPath = join(directory, "cloudflare-worker.json");
+    const reconPath = join(directory, "reconciliation.json");
+    const generationPath = join(directory, "generation.json");
+    await writeFile(generationPath, `${JSON.stringify({
+      schema: "cityscroll.generation-output-receipt.v1",
+      boundary: "public-site-generation",
+      status: "passed",
+      findings: [],
+    })}\n`);
 
-  const writePages = spawnSync(process.execPath, [
-    "tools/check_deployment_health.mjs", "--write",
-    "--boundary", "cloudflare-pages",
-    "--pipeline", "deploy-cloudflare-pages",
-    "--merged-source-sha", MERGED_SHA,
-    "--deployed-commit-sha", MERGED_SHA,
-    "--artifact-type", "pages-artifact-hash",
-    "--artifact-value", ARTIFACT_HASH,
-    "--deployment-id", "pages-1",
-    "--deployment-url", "https://pages.example.invalid/1",
-    "--provider-status", "success",
-    "--generation-receipt", generationPath,
-    "--guard", "wrangler_pages_deploy:success",
-    "--output", pagesPath,
-  ], { encoding: "utf8" });
-  assert.equal(writePages.status, 0, writePages.stderr);
+    const writePages = spawnSync(process.execPath, [
+      "tools/check_deployment_health.mjs", "--write",
+      "--boundary", "cloudflare-pages",
+      "--pipeline", "deploy-cloudflare-pages",
+      "--merged-source-sha", MERGED_SHA,
+      "--deployed-commit-sha", MERGED_SHA,
+      "--artifact-type", "pages-artifact-hash",
+      "--artifact-value", ARTIFACT_HASH,
+      "--deployment-id", "pages-1",
+      "--deployment-url", "https://pages.example.invalid/1",
+      "--provider-status", "success",
+      "--generation-receipt", generationPath,
+      "--guard", "wrangler_pages_deploy:success",
+      "--output", pagesPath,
+    ], { encoding: "utf8" });
+    assert.equal(writePages.status, 0, writePages.stderr);
 
-  const incomplete = spawnSync(process.execPath, [
-    "tools/check_deployment_health.mjs", "--reconcile",
-    "--merged-source-sha", MERGED_SHA,
-    "--receipt", pagesPath,
-    "--output", reconPath,
-  ], { encoding: "utf8" });
-  assert.notEqual(incomplete.status, 0);
-  const incompleteView = JSON.parse(await readFile(reconPath, "utf8"));
-  assert.equal(incompleteView.status, DEPLOYMENT_RECONCILIATION_INCOMPLETE);
-  assert.ok(incompleteView.findings.some((finding) => /Cloudflare Worker receipt is missing/.test(finding)));
+    const incomplete = spawnSync(process.execPath, [
+      "tools/check_deployment_health.mjs", "--reconcile",
+      "--merged-source-sha", MERGED_SHA,
+      "--receipt", pagesPath,
+      "--output", reconPath,
+    ], { encoding: "utf8" });
+    assert.notEqual(incomplete.status, 0);
+    const incompleteView = JSON.parse(await readFile(reconPath, "utf8"));
+    assert.equal(incompleteView.status, DEPLOYMENT_RECONCILIATION_INCOMPLETE);
+    assert.ok(incompleteView.findings.some((finding) => /Cloudflare Worker receipt is missing/.test(finding)));
 
-  const writeWorker = spawnSync(process.execPath, [
-    "tools/check_deployment_health.mjs", "--write",
-    "--boundary", "cloudflare-worker",
-    "--pipeline", "deploy-worker",
-    "--merged-source-sha", MERGED_SHA,
-    "--deployed-commit-sha", MERGED_SHA,
-    "--artifact-type", "worker-commit",
-    "--artifact-value", MERGED_SHA,
-    "--deployment-id", `cityscroll-worker@${MERGED_SHA}`,
-    "--deployment-url", "https://github.example.invalid/worker",
-    "--provider-status", "success",
-    "--guard", "worker_trigger_coverage:PASS",
-    "--guard", "wrangler_worker_deploy:success",
-    "--output", workerPath,
-  ], { encoding: "utf8" });
-  assert.equal(writeWorker.status, 0, writeWorker.stderr);
+    const writeWorker = spawnSync(process.execPath, [
+      "tools/check_deployment_health.mjs", "--write",
+      "--boundary", "cloudflare-worker",
+      "--pipeline", "deploy-worker",
+      "--merged-source-sha", MERGED_SHA,
+      "--deployed-commit-sha", MERGED_SHA,
+      "--artifact-type", "worker-commit",
+      "--artifact-value", MERGED_SHA,
+      "--deployment-id", `cityscroll-worker@${MERGED_SHA}`,
+      "--deployment-url", "https://github.example.invalid/worker",
+      "--provider-status", "success",
+      "--guard", "worker_trigger_coverage:PASS",
+      "--guard", "wrangler_worker_deploy:success",
+      "--output", workerPath,
+    ], { encoding: "utf8" });
+    assert.equal(writeWorker.status, 0, writeWorker.stderr);
 
-  const complete = spawnSync(process.execPath, [
-    "tools/check_deployment_health.mjs", "--reconcile",
-    "--merged-source-sha", MERGED_SHA,
-    "--receipt", pagesPath,
-    "--receipt", workerPath,
-  ], { encoding: "utf8" });
-  assert.equal(complete.status, 0, complete.stderr);
-  assert.equal(JSON.parse(complete.stdout).status, DEPLOYMENT_RECONCILIATION_COMPLETE);
+    const complete = spawnSync(process.execPath, [
+      "tools/check_deployment_health.mjs", "--reconcile",
+      "--merged-source-sha", MERGED_SHA,
+      "--receipt", pagesPath,
+      "--receipt", workerPath,
+    ], { encoding: "utf8" });
+    assert.equal(complete.status, 0, complete.stderr);
+    assert.equal(JSON.parse(complete.stdout).status, DEPLOYMENT_RECONCILIATION_COMPLETE);
 
-  const contract = spawnSync(process.execPath, ["tools/check_deployment_health.mjs", "--check"], { encoding: "utf8" });
-  assert.equal(contract.status, 0, contract.stderr || contract.stdout);
+    const contract = spawnSync(process.execPath, ["tools/check_deployment_health.mjs", "--check"], { encoding: "utf8" });
+    assert.equal(contract.status, 0, contract.stderr || contract.stdout);
+  });
 });
 
 test("Pages and Worker workflows emit only their own deployment-health receipt", () => {

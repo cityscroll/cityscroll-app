@@ -1,9 +1,10 @@
 import assert from "node:assert/strict";
-import { mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from "node:fs";
-import { tmpdir } from "node:os";
+import { readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { spawnSync } from "node:child_process";
 import test from "node:test";
+
+import { withTempDir } from "../tools/lib/with_temp_dir.mjs";
 
 const ROOT = new URL("../", import.meta.url).pathname;
 const guard = join(ROOT, "tools/worker_deploy_guard.mjs");
@@ -16,9 +17,8 @@ test("the 64 MiB raw guard trips on an oversize Wrangler metafile and prints lar
   assert.match(result.stderr, /exceeds 64 MiB/);
 });
 
-test("the read-model canary gate trips when a published slice is empty", () => {
-  const out = mkdtempSync(join(tmpdir(), "crol-route-read-model-test-"));
-  try {
+test("the read-model canary gate trips when a published slice is empty", async () => {
+  await withTempDir("route-read-model-test", async (out) => {
     const build = spawnSync(process.execPath, [join(ROOT, "tools/build_worker_route_read_models.mjs"), "--output-dir", out], { encoding: "utf8" });
     assert.equal(build.status, 0, build.stderr);
     const manifest = JSON.parse(readFileSync(join(out, "near-you.manifest.json"), "utf8"));
@@ -35,7 +35,5 @@ test("the read-model canary gate trips when a published slice is empty", () => {
     const result = spawnSync(process.execPath, [guard, "--read-model-dir", out], { encoding: "utf8" });
     assert.notEqual(result.status, 0);
     assert.match(result.stderr, /canary returned empty\/unknown/);
-  } finally {
-    rmSync(out, { recursive: true, force: true });
-  }
+  });
 });

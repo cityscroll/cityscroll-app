@@ -22,12 +22,13 @@ from __future__ import annotations
 import functools
 import json
 import subprocess
-import tempfile
 import threading
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
 from playwright.sync_api import Page, Route, sync_playwright
+
+from lib.temp_workspace import head_site_workspace
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "docs" / "screenshots" / "land-map-marker-join"
@@ -68,19 +69,6 @@ class StaticServer:
         self.server.shutdown()
         self.thread.join(timeout=5)
         self.server.server_close()
-
-
-def head_site(destination: Path) -> Path:
-    """Build the pre-change tree offline, with no checkout switch in this working copy."""
-    tree = destination / "head"
-    subprocess.run(["git", "worktree", "add", "--detach", str(tree), "HEAD"], cwd=ROOT, check=True)
-    subprocess.run(["node", "tools/build_primary_documents.mjs"], cwd=tree, check=True)
-    return tree / "site"
-
-
-def release_head_site(destination: Path) -> None:
-    subprocess.run(["git", "worktree", "remove", "--force", str(destination / "head")], cwd=ROOT, check=False)
-    subprocess.run(["git", "worktree", "prune"], cwd=ROOT, check=False)
 
 
 def install_routes(page: Page, base_url: str) -> None:
@@ -199,14 +187,10 @@ def revision() -> dict:
 
 
 def main() -> None:
-    with tempfile.TemporaryDirectory() as workspace:
-        destination = Path(workspace)
-        try:
-            before = capture_tree(head_site(destination), "before")
-        finally:
-            release_head_site(destination)
-        subprocess.run(["node", "tools/build_primary_documents.mjs"], cwd=ROOT, check=True)
-        after = capture_tree(ROOT / "site", "after")
+    with head_site_workspace(ROOT, "capture-land-map-marker-join") as site_root:
+        before = capture_tree(site_root, "before")
+    subprocess.run(["node", "tools/build_primary_documents.mjs"], cwd=ROOT, check=True)
+    after = capture_tree(ROOT / "site", "after")
 
     receipt = {
         "schema": "cityscroll.land-map-marker-join-receipt.v1",

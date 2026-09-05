@@ -16,6 +16,7 @@ import {
   retrieveLandFilingDocument,
 } from "../warehouse/lib/land_filing_document_collector.mjs";
 import { projectLandUseFilingAsOf } from "../ontology/land_use_filing.mjs";
+import { withTempDir } from "../tools/lib/with_temp_dir.mjs";
 
 const T0 = "2026-09-04T00:00:00.000Z";
 const T1 = "2026-09-05T00:00:00.000Z";
@@ -235,18 +236,20 @@ test("retrieveLandFilingDocument: a successful fetch records an immutable hash, 
 
   const httpGetFor = (text) => async () => ({ status: 200, headers: { get: () => "application/pdf" }, bytes: Buffer.from(text, "utf8") });
 
-  const cleanResult = await retrieveLandFilingDocument(clean, {
-    httpGet: httpGetFor(cleanText), projectRoot: "/tmp/ldp24-test", fetchId: "ldp24-test-fetch-clean", extractText: (bytes) => bytes.toString("utf8"),
-  });
-  const garbledResult = await retrieveLandFilingDocument(garbled, {
-    httpGet: httpGetFor(garbledText), projectRoot: "/tmp/ldp24-test", fetchId: "ldp24-test-fetch-garbled", extractText: (bytes) => bytes.toString("utf8"),
-  });
+  await withTempDir("ldp24-test", async (projectRoot) => {
+    const cleanResult = await retrieveLandFilingDocument(clean, {
+      httpGet: httpGetFor(cleanText), projectRoot, fetchId: "ldp24-test-fetch-clean", extractText: (bytes) => bytes.toString("utf8"),
+    });
+    const garbledResult = await retrieveLandFilingDocument(garbled, {
+      httpGet: httpGetFor(garbledText), projectRoot, fetchId: "ldp24-test-fetch-garbled", extractText: (bytes) => bytes.toString("utf8"),
+    });
 
-  assert.equal(cleanResult.retrieval_status, "fetched");
-  assert.match(cleanResult.bytes_sha256, /^[0-9a-f]{64}$/);
-  assert.ok(cleanResult.immutable_receipt, "a fetched document must carry a retrieval receipt reference");
-  assert.equal(cleanResult.layout_quality, "high");
-  assert.equal(garbledResult.retrieval_status, "fetched");
-  assert.equal(garbledResult.layout_quality, "low");
-  assert.notEqual(cleanResult.bytes_sha256, garbledResult.bytes_sha256);
+    assert.equal(cleanResult.retrieval_status, "fetched");
+    assert.match(cleanResult.bytes_sha256, /^[0-9a-f]{64}$/);
+    assert.ok(cleanResult.immutable_receipt, "a fetched document must carry a retrieval receipt reference");
+    assert.equal(cleanResult.layout_quality, "high");
+    assert.equal(garbledResult.retrieval_status, "fetched");
+    assert.equal(garbledResult.layout_quality, "low");
+    assert.notEqual(cleanResult.bytes_sha256, garbledResult.bytes_sha256);
+  });
 });
