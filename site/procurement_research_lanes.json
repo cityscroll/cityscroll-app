@@ -1,0 +1,141 @@
+{
+  "schema": "cityscroll.procurement_research_lanes.v1",
+  "workstream": "procurement-pursuit-decision",
+  "card": "PPD-07",
+  "purpose": "Hold the two research questions that sit next to the procurement pursuit decision surface behind the shipped product cards and behind explicit pre-registration. Research that is allowed to influence a shipping product before that product carries its own independent proof gets read backwards as justification for what shipped. This registry is the machine-checkable ordering gate: node tools/procurement_research_lane_gates.mjs --check fails while any prerequisite card's evidence is missing, or while a runnable lane's pre-registration file is missing or does not match its registered content hash.",
+  "gate_command": "node tools/procurement_research_lane_gates.mjs --check",
+  "prerequisite_cards": [
+    {
+      "card": "PPD-01",
+      "title": "Opportunity-first alert atom",
+      "evidence_shards": [
+        "cityscroll-procurement-pursuit-decision/card-1-opportunity-first-alert-atom"
+      ],
+      "manifests": [
+        "docs/evidence/procurement-pursuit-decision/alerts/capture-manifest.json"
+      ]
+    },
+    {
+      "card": "PPD-02",
+      "title": "Provenance-safe opportunity window",
+      "evidence_shards": [],
+      "evidence_shards_note": "This card shipped its evidence as a capture manifest only; it predates the per-card architecture evidence shard for this workstream. The manifest below is its independent proof.",
+      "manifests": [
+        "docs/evidence/procurement-pursuit-decision/windows/capture-manifest.json"
+      ]
+    },
+    {
+      "card": "PPD-03",
+      "title": "Pursuit snapshot on solicitation-stage procurement detail",
+      "evidence_shards": [
+        "cityscroll-procurement-pursuit-decision/card-3-pursuit-snapshot"
+      ],
+      "manifests": [
+        "docs/evidence/procurement-pursuit-decision/pursuit-snapshot/capture-manifest.json"
+      ]
+    },
+    {
+      "card": "PPD-04",
+      "title": "Related context and benchmarks",
+      "evidence_shards": [
+        "cityscroll-procurement-pursuit-decision/ppd-04-related-context-and-benchmarks"
+      ],
+      "manifests": [
+        "docs/evidence/procurement-pursuit-decision/related-context/capture-manifest.json"
+      ]
+    },
+    {
+      "card": "PPD-05",
+      "title": "Explainable preference set",
+      "evidence_shards": [
+        "cityscroll-procurement-pursuit-decision/ppd-05-explainable-preference-set"
+      ],
+      "manifests": [
+        "docs/evidence/procurement-pursuit-decision/preference-set/capture-manifest.json"
+      ]
+    },
+    {
+      "card": "PPD-06",
+      "title": "Lightweight pursuit state",
+      "evidence_shards": [
+        "cityscroll-procurement-pursuit-decision/ppd-06-lightweight-pursuit-state"
+      ],
+      "manifests": [
+        "docs/evidence/procurement-pursuit-decision/pursuit-state/capture-manifest.json"
+      ]
+    }
+  ],
+  "lanes": [
+    {
+      "id": "outcome_study",
+      "title": "Observed response-window length alongside procurement method, agency, certification posture, and award completion",
+      "status": "gated",
+      "runnable": true,
+      "question": "Whether observed response-window length varies alongside procurement method, agency, certification posture, and award completion, stated as association only.",
+      "prerequisite_cards": [
+        "PPD-01",
+        "PPD-02",
+        "PPD-03",
+        "PPD-04",
+        "PPD-05",
+        "PPD-06"
+      ],
+      "preregistration": {
+        "path": "docs/research/procurement-response-window-study/preregistration.md",
+        "content_sha256": "27b7e8a588fcd8f827a1bbe4d1b7652f8a5d7b32a1dcc357bdf8e1618e313d77",
+        "registered_at": "2026-09-05T16:29:18.218Z",
+        "register_command": "node tools/procurement_research_lane_gates.mjs --register outcome_study"
+      },
+      "steps": [
+        "Confirm the gate passes: every prerequisite card carries its own evidence, and this lane's pre-registration is registered by content hash.",
+        "Freeze the data vintage named in the pre-registration and take the field extract it specifies.",
+        "Apply the pre-registered exclusion rules before looking at any relationship.",
+        "Report associations with their sample sizes and their unknowns, in the pre-registered wording."
+      ],
+      "not_started_note": "No analysis has been run. This card ships the gate and the pre-registration only."
+    },
+    {
+      "id": "access_feasibility",
+      "title": "Which solicitation fields are reachable without sign-in across agencies",
+      "status": "gated",
+      "runnable": true,
+      "question": "For each examined solicitation field, whether it is accessible, authenticated, unavailable, or unstable across the procurement records already committed to this repository.",
+      "prerequisite_cards": [
+        "PPD-01",
+        "PPD-02",
+        "PPD-03",
+        "PPD-04",
+        "PPD-05",
+        "PPD-06"
+      ],
+      "preregistration": {
+        "path": "docs/research/procurement-access-classification/preregistration.md",
+        "content_sha256": "2a5598ce1f8717baaf7d12b1eb5ed1c3eb7a9d3a5a6224c769f8b43de1c3e118",
+        "registered_at": "2026-09-05T16:29:18.250Z",
+        "register_command": "node tools/procurement_research_lane_gates.mjs --register access_feasibility"
+      },
+      "steps": [
+        "Confirm the gate passes, as above.",
+        "Classify each pre-registered field from committed fixtures and committed data only, with no live retrieval of any kind.",
+        "Write the per-field, per-agency counts and the observation vintage to the classification file.",
+        "Where a field is authenticated or unavailable, say so in the handoff copy, with the last-observed date taken from the record."
+      ],
+      "deliverables": [
+        "docs/research/procurement-access-classification/classification.json",
+        "docs/research/procurement-access-classification/summary.md",
+        "site/procurement_handoff_copy.mjs"
+      ]
+    },
+    {
+      "id": "learned_ranking",
+      "title": "Learned ranking of procurement opportunities",
+      "status": "deferred",
+      "runnable": false,
+      "question": null,
+      "prerequisite_cards": [],
+      "preregistration": null,
+      "steps": [],
+      "deferral_note": "Deferred. No part of this lane begins here: no ranking model, no training data assembly, no scoring surface, and no pre-registration. The explainable preference set already shipped states why a matter qualified from rules the vendor stated themselves; a learned ranking would replace that stated reason with an unstated one, and nothing in this workstream yet carries the independent proof that would justify it. Reopening this lane is a separate decision, not a continuation of this card."
+    }
+  ]
+}

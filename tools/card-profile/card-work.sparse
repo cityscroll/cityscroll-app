@@ -565,6 +565,7 @@
 /site/procurement_document.mjs
 /site/procurement_event_log.mjs
 /site/procurement_facet_links.mjs
+/site/procurement_handoff_copy.mjs
 /site/procurement_object_contract.mjs
 /site/procurement_opportunity_window.mjs
 /site/procurement_phase_spine.mjs
@@ -580,6 +581,7 @@
 /site/procurement_read_model_shards.mjs
 /site/procurement_related_context.css
 /site/procurement_related_context.mjs
+/site/procurement_research_lanes.json
 /site/procurement_search_producer.mjs
 /site/product-updates.json
 /site/product_updates_delivery.mjs
