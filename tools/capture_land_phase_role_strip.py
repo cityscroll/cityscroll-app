@@ -54,7 +54,7 @@ SPECIMENS = (
 RENDER_JS = r"""
 import { readFileSync } from "node:fs";
 import { buildLandPhaseView } from "./site/land_phase_spine.mjs";
-import { buildLandPhaseRoleStrip, landPhaseRoleStripHTML } from "./site/land_phase_role_strip.mjs";
+import { buildLandPhaseRoleStrip, landPhaseRoleStripHTML } from "./site/land_role_strip.mjs";
 
 const i18n = readFileSync("site/i18n.js", "utf8");
 const copy = {};

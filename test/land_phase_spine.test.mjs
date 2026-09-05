@@ -21,7 +21,7 @@ import {
 
 import { buildUlurpStatutoryClockView } from "../site/ulurp_statutory_clock.mjs";
 import { resolveLandProcedureVariant } from "../site/land_procedure_profiles.mjs";
-import { buildLandPhaseRoleStrip, landPhaseRoleStripHTML } from "../site/land_phase_role_strip.mjs";
+import { buildLandPhaseRoleStrip, landPhaseRoleStripHTML } from "../site/land_role_strip.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const fixture2019 = JSON.parse(
@@ -533,10 +533,13 @@ test("A3 the rendered role strip never emits a recommendation, vote, hearing, or
 
 test("public Land detail phase panel wires the role strip above the observed rows, never inside the aggregate/event renderers", () => {
   const landSrc = readFileSync(new URL("../site/app/land.mjs", import.meta.url), "utf8");
-  assert.match(landSrc, /import\("\.\.\/land_phase_role_strip\.mjs"\)/);
-  assert.match(landSrc, /globalThis\.buildLandPhaseRoleStrip=roleStrip\.buildLandPhaseRoleStrip/);
-  assert.match(landSrc, /globalThis\.landPhaseRoleStripHTML=roleStrip\.landPhaseRoleStripHTML/);
-  assert.match(landSrc, /\$\{roleStripHTML\}\$\{statutory\}\$\{body\}/);
+  const spineSrc = readFileSync(new URL("../site/land_phase_spine.mjs", import.meta.url), "utf8");
+  // The role-strip renderer rides the phase-spine's own lazy bundle (a barrel
+  // re-export — land_phase_spine.mjs gains no ledger logic) so land.mjs's own
+  // wiring stays a single optional-chained call.
+  assert.match(spineSrc, /export \{ landRoleStrip \} from "\.\/land_role_strip\.mjs";/);
+  assert.match(landSrc, /tools\?\.landRoleStrip\?\.\(view,p\.id,\{t,escape:escUiHtml\}\)/);
+  assert.match(landSrc, /\$\{rsHTML\}\$\{statutory\}\$\{body\}/);
 
   const aggregateFn = landSrc.slice(
     landSrc.indexOf("function landPhaseAggregateHTML"),
@@ -547,7 +550,7 @@ test("public Land detail phase panel wires the role strip above the observed row
     landSrc.indexOf("function landPhaseAggregateHTML"),
   );
   assert.ok(aggregateFn.length > 0 && eventRowFn.length > 0);
-  for (const marker of ["roleStrip", "role_definition", "land-role-strip", "buildLandPhaseRoleStrip"]) {
+  for (const marker of ["roleStrip", "role_definition", "land-role-strip", "landRoleStrip"]) {
     assert.doesNotMatch(aggregateFn, new RegExp(marker), `landPhaseAggregateHTML references ${marker}`);
     assert.doesNotMatch(eventRowFn, new RegExp(marker), `landSpineEventRowHTML references ${marker}`);
   }

@@ -140,3 +140,8 @@ export function landPhaseRoleStripHTML(strip, { t, escape } = {}) {
     ${citationHTML}
   </div>`;
 }
+
+/** Single-call phase-panel entry point: builds then renders in one step. */
+export function landRoleStrip(view, phaseId, opts) {
+  return landPhaseRoleStripHTML(buildLandPhaseRoleStrip(view, phaseId), opts);
+}
