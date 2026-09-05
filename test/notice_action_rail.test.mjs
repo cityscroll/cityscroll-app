@@ -21,11 +21,14 @@ test("notice detail keeps utility controls separate from the single action rail"
   const showNotice = html.slice(html.indexOf("async function showNotice"), html.indexOf("/* ===================== INIT"));
   assert.doesNotMatch(showNotice, /id="nics"/);
   assert.doesNotMatch(showNotice, /noticeParticipation/);
-  // How-to-respond leads (after the action rail) without a second set of primary CTAs
+  // How-to-respond leads (after the action rail) without a second set of primary CTAs.
+  // buildApply(r,false) hydrates the #napply mount once ensureMoneyHistory() resolves
+  // (a cold-import dependency must not be called, or gate Notice readiness, before it
+  // does), but the mount point itself is positioned inline, ahead of contract lifecycle.
   assert.match(showNotice, /buildApply\(r,false\)/);
-  const applyAt = showNotice.indexOf("buildApply(r,false)");
+  const applyMountAt = showNotice.indexOf('id="napply"');
   const lifecycleAt = showNotice.indexOf('id="nlifecycle"');
-  assert.ok(applyAt > 0 && lifecycleAt > applyAt, "response path appears before contract lifecycle");
+  assert.ok(applyMountAt > 0 && lifecycleAt > applyMountAt, "response path appears before contract lifecycle");
 });
 
 test("the rail exposes official domains and unavailable actions as status text", () => {

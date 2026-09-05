@@ -51,9 +51,15 @@ export const OPPORTUNITY_WINDOW_UNAVAILABLE_REASONS = Object.freeze([
 
 const PASSPORT_SYSTEM = "passport_public_rfx";
 const CITY_RECORD_SYSTEM = "city_record";
-const DAY_MS = 86_400_000;
-const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
-const US_DATE = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/;
+// Named distinctly from other private per-file constants of the same common
+// name (DAY_MS, ISO_DATE, US_DATE all recur across several site/*.mjs files)
+// -- this file's static import graph can now land in the same flattened
+// classic-script scope as those files for a legacy-route reconstruction
+// fixture (test/functional/21_module_dom_equivalence.py), and file-private
+// module scope no longer isolates the two once concatenated.
+const OPPORTUNITY_WINDOW_DAY_MS = 86_400_000;
+const OPPORTUNITY_WINDOW_ISO_DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
+const OPPORTUNITY_WINDOW_US_DATE_PATTERN = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/;
 
 function text(value) {
   const result = String(value ?? "").trim();
@@ -72,11 +78,11 @@ function isoDayOnly(value) {
   const isoPrefix = raw.match(/^(\d{4}-\d{2}-\d{2})/);
   if (isoPrefix) {
     const candidate = isoPrefix[1];
-    if (!ISO_DATE.test(candidate)) return null;
+    if (!OPPORTUNITY_WINDOW_ISO_DATE_PATTERN.test(candidate)) return null;
     const ms = Date.parse(`${candidate}T00:00:00Z`);
     return Number.isFinite(ms) && new Date(ms).toISOString().slice(0, 10) === candidate ? candidate : null;
   }
-  const us = raw.match(US_DATE);
+  const us = raw.match(OPPORTUNITY_WINDOW_US_DATE_PATTERN);
   if (us) {
     const candidate = `${us[3]}-${us[1].padStart(2, "0")}-${us[2].padStart(2, "0")}`;
     const ms = Date.parse(`${candidate}T00:00:00Z`);
@@ -86,7 +92,7 @@ function isoDayOnly(value) {
 }
 
 function epochDay(iso) {
-  return Math.round(Date.parse(`${iso}T00:00:00Z`) / DAY_MS);
+  return Math.round(Date.parse(`${iso}T00:00:00Z`) / OPPORTUNITY_WINDOW_DAY_MS);
 }
 
 // UTC epoch-day subtraction is immune to local-timezone DST transitions (it

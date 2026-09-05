@@ -1,0 +1,297 @@
+{
+  "schema": "cityscroll.procurement_pursuit_decision_pursuit_snapshot_manifest.v1",
+  "captured_at": "2026-09-04T20:47:07Z",
+  "revision": "03c5892bda755b23a9e39dd148cb99db778138b3",
+  "note": "Card 3 (procurement-pursuit-decision): the pursuit snapshot on solicitation-stage procurement detail. Screenshot binaries are not committed to this repository; they are written to an external directory (default a docs-evidence/ sibling of the repository root, override with CAPTURE_EXTERNAL_OUT) named by 'external_filename' below, and this manifest is the reproducible, reviewable record of what each capture shows and why.",
+  "external_output_directory_note": "Not committed; see external_filename per capture. Re-run this script to regenerate byte-identical captures (same sha256) at this revision.",
+  "captures": [
+    {
+      "case": "pursuit-snapshot-complete",
+      "surface": "procurement-detail",
+      "route": "/_capture/pursuit-snapshot-complete",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "03c5892bda755b23a9e39dd148cb99db778138b3",
+      "fixture_ids": [
+        "A"
+      ],
+      "data_vintage": "passport_public_rfx observation ingested_at 2026-07-01T10:00:00Z; city_record observation ingested_at 2026-07-02T10:00:00Z; rendered as of 2026-07-10",
+      "renders_pursuit_snapshot": true,
+      "assertion": "Fixture A (Parks, Playground reconstruction) renders a complete pursuit snapshot: exact PASSPort/City Record identity, a 35-calendar-day response window, the July 22 pre-bid conference, the July 29 questions deadline, the August 5 due date, and PASSPort/official destinations -- above the existing Contract facts section.",
+      "external_filename": "pursuit-snapshot-complete-390x844.png",
+      "sha256": "1eddb5ca3e2bfefe305527e4f1857bea260b08c5912fa9bf720aba5ff29c9f3a",
+      "bytes": 275926,
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "case": "pursuit-snapshot-complete",
+      "surface": "procurement-detail",
+      "route": "/_capture/pursuit-snapshot-complete",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "03c5892bda755b23a9e39dd148cb99db778138b3",
+      "fixture_ids": [
+        "A"
+      ],
+      "data_vintage": "passport_public_rfx observation ingested_at 2026-07-01T10:00:00Z; city_record observation ingested_at 2026-07-02T10:00:00Z; rendered as of 2026-07-10",
+      "renders_pursuit_snapshot": true,
+      "assertion": "Fixture A (Parks, Playground reconstruction) renders a complete pursuit snapshot: exact PASSPort/City Record identity, a 35-calendar-day response window, the July 22 pre-bid conference, the July 29 questions deadline, the August 5 due date, and PASSPort/official destinations -- above the existing Contract facts section.",
+      "external_filename": "pursuit-snapshot-complete-1440x900.png",
+      "sha256": "56571e138e344fe484d1e5808b2c179c1d96f309303b23b0fa529ddfd2fd067d",
+      "bytes": 350485,
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "case": "pursuit-snapshot-partial",
+      "surface": "notice-detail",
+      "route": "/_capture/pursuit-snapshot-partial",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "03c5892bda755b23a9e39dd148cb99db778138b3",
+      "fixture_ids": [
+        "B"
+      ],
+      "data_vintage": "test/solicitation_response_context.test.mjs completeSolicitation fixture (CAMA, Finance); no rendering-day clock involved",
+      "renders_pursuit_snapshot": true,
+      "assertion": "Fixture B (CAMA, Finance) renders because it has a named identity, an agency, and an actionable due date; amount, method, and M/WBE are explicit unknowns (\"No published ...\"), never absent-looking negatives.",
+      "external_filename": "pursuit-snapshot-partial-390x844.png",
+      "sha256": "9f4a23ce898f2aabb17a9f91d7a1ace0667b51f695b7cafcc2781f5e20525329",
+      "bytes": 127425,
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "case": "pursuit-snapshot-partial",
+      "surface": "notice-detail",
+      "route": "/_capture/pursuit-snapshot-partial",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "03c5892bda755b23a9e39dd148cb99db778138b3",
+      "fixture_ids": [
+        "B"
+      ],
+      "data_vintage": "test/solicitation_response_context.test.mjs completeSolicitation fixture (CAMA, Finance); no rendering-day clock involved",
+      "renders_pursuit_snapshot": true,
+      "assertion": "Fixture B (CAMA, Finance) renders because it has a named identity, an agency, and an actionable due date; amount, method, and M/WBE are explicit unknowns (\"No published ...\"), never absent-looking negatives.",
+      "external_filename": "pursuit-snapshot-partial-1440x900.png",
+      "sha256": "25c25c50aaf5349a8f7f511a4f6bf7c33db103a8fa29b5c3efba0db7f9f03a23",
+      "bytes": 164777,
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "case": "pursuit-snapshot-sparse",
+      "surface": "procurement-detail",
+      "route": "/_capture/pursuit-snapshot-sparse",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "03c5892bda755b23a9e39dd148cb99db778138b3",
+      "fixture_ids": [
+        "D"
+      ],
+      "data_vintage": "warehouse/fixtures/authority-native-procurement/mta-opportunities.v1.json S48020/0000541781; no rendering-day clock involved",
+      "renders_pursuit_snapshot": true,
+      "assertion": "Fixture D (sparse MTA CBTC solicitation) still renders identity, agency, and literal source status (\"Current opportunity\") with an explicit unpublished amount and due date -- never a fabricated due date, never hidden merely because it is sparse.",
+      "external_filename": "pursuit-snapshot-sparse-390x844.png",
+      "sha256": "5d0276f9e8897c57f160b31cea7e5fcd7ece6e653dc7668aee453b48578883e3",
+      "bytes": 227788,
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "case": "pursuit-snapshot-sparse",
+      "surface": "procurement-detail",
+      "route": "/_capture/pursuit-snapshot-sparse",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "03c5892bda755b23a9e39dd148cb99db778138b3",
+      "fixture_ids": [
+        "D"
+      ],
+      "data_vintage": "warehouse/fixtures/authority-native-procurement/mta-opportunities.v1.json S48020/0000541781; no rendering-day clock involved",
+      "renders_pursuit_snapshot": true,
+      "assertion": "Fixture D (sparse MTA CBTC solicitation) still renders identity, agency, and literal source status (\"Current opportunity\") with an explicit unpublished amount and due date -- never a fabricated due date, never hidden merely because it is sparse.",
+      "external_filename": "pursuit-snapshot-sparse-1440x900.png",
+      "sha256": "fa0d8ab5aa7704db426493b2d757ac20be802939c8c1e1befe8de19aaa4207cb",
+      "bytes": 282438,
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "case": "pursuit-snapshot-cancelled",
+      "surface": "notice-detail",
+      "route": "/_capture/pursuit-snapshot-cancelled",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "03c5892bda755b23a9e39dd148cb99db778138b3",
+      "fixture_ids": [
+        "B"
+      ],
+      "data_vintage": "Fixture B's identity with type_of_notice_description changed to Cancellation",
+      "renders_pursuit_snapshot": false,
+      "assertion": "A cancellation notice never renders a pursuit snapshot or a response CTA; the page still renders normally with its existing sections.",
+      "external_filename": "pursuit-snapshot-cancelled-390x844.png",
+      "sha256": "88f66e86910cae722b2aa1e43ae498aabca54a17f10529e1b1e4ebe7ac84d63a",
+      "bytes": 39808,
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "case": "pursuit-snapshot-cancelled",
+      "surface": "notice-detail",
+      "route": "/_capture/pursuit-snapshot-cancelled",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "03c5892bda755b23a9e39dd148cb99db778138b3",
+      "fixture_ids": [
+        "B"
+      ],
+      "data_vintage": "Fixture B's identity with type_of_notice_description changed to Cancellation",
+      "renders_pursuit_snapshot": false,
+      "assertion": "A cancellation notice never renders a pursuit snapshot or a response CTA; the page still renders normally with its existing sections.",
+      "external_filename": "pursuit-snapshot-cancelled-1440x900.png",
+      "sha256": "879dbac51c5b94a8852ab17e42bf27e7c535d1832666b72cce97442be266f29a",
+      "bytes": 66952,
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "case": "pursuit-snapshot-superseded",
+      "surface": "procurement-detail",
+      "route": "/_capture/pursuit-snapshot-superseded",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "03c5892bda755b23a9e39dd148cb99db778138b3",
+      "fixture_ids": [
+        "A"
+      ],
+      "data_vintage": "Fixture A's canonical procurement with a later PASSPort round (due_date 2026-09-15) replacing the original due_date 2026-08-05",
+      "renders_pursuit_snapshot": true,
+      "assertion": "A materially changed (superseded) round renders only its own current due date; the earlier round's due date never lingers on the page.",
+      "external_filename": "pursuit-snapshot-superseded-390x844.png",
+      "sha256": "2eae3d64ed94d6c3ad17b9a69931e4396a639b9bbac54800918afb671213e662",
+      "bytes": 251443,
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "case": "pursuit-snapshot-superseded",
+      "surface": "procurement-detail",
+      "route": "/_capture/pursuit-snapshot-superseded",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "03c5892bda755b23a9e39dd148cb99db778138b3",
+      "fixture_ids": [
+        "A"
+      ],
+      "data_vintage": "Fixture A's canonical procurement with a later PASSPort round (due_date 2026-09-15) replacing the original due_date 2026-08-05",
+      "renders_pursuit_snapshot": true,
+      "assertion": "A materially changed (superseded) round renders only its own current due date; the earlier round's due date never lingers on the page.",
+      "external_filename": "pursuit-snapshot-superseded-1440x900.png",
+      "sha256": "763a7d0a50fd764a30e0cc5de8c1bb7916fa2be5673f4f32356aca456ebcc035",
+      "bytes": 304757,
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "case": "pursuit-snapshot-award-control",
+      "surface": "procurement-detail",
+      "route": "/_capture/pursuit-snapshot-award-control",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "03c5892bda755b23a9e39dd148cb99db778138b3",
+      "fixture_ids": [
+        "E"
+      ],
+      "data_vintage": "Fixture E as a canonical contract/award object (Playground reconstruction award, $250,000)",
+      "renders_pursuit_snapshot": false,
+      "assertion": "The award control never renders a pursuit snapshot or any response CTA; it remains an award/contract-history page.",
+      "external_filename": "pursuit-snapshot-award-control-390x844.png",
+      "sha256": "7316a1afb05dea490e87741be199a5c901f4aa3f651efe8bb3764bbcc8898e6b",
+      "bytes": 124643,
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "case": "pursuit-snapshot-award-control",
+      "surface": "procurement-detail",
+      "route": "/_capture/pursuit-snapshot-award-control",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "03c5892bda755b23a9e39dd148cb99db778138b3",
+      "fixture_ids": [
+        "E"
+      ],
+      "data_vintage": "Fixture E as a canonical contract/award object (Playground reconstruction award, $250,000)",
+      "renders_pursuit_snapshot": false,
+      "assertion": "The award control never renders a pursuit snapshot or any response CTA; it remains an award/contract-history page.",
+      "external_filename": "pursuit-snapshot-award-control-1440x900.png",
+      "sha256": "098d16444b0d7d0bdc9ace67f2389238da71e4cc46a2a7c75c3d973e9ff55d4c",
+      "bytes": 153258,
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    }
+  ]
+}

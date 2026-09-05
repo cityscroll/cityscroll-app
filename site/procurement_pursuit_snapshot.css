@@ -1,0 +1,127 @@
+/*
+ * Pursuit snapshot (procurement-pursuit-decision, Card 3).
+ *
+ * Mobile-first: every rule here works unchanged at a narrow viewport with no
+ * media query hiding a source or unknown-state affordance (rule 9). The fact
+ * grid collapses to a single column below 480px; nothing above that width
+ * assumes more than the viewport it is given (minmax(0, 1fr) tracks
+ * throughout so a long amount or status badge cannot force horizontal
+ * scroll on the page).
+ */
+
+.pursuit-snapshot {
+  font: 14px/1.5 var(--font-interface, ui-sans-serif, system-ui, sans-serif);
+  color: var(--ink, #12181f);
+  border: 1px solid var(--rule, #dde1e7);
+  border-radius: 10px;
+  padding: 14px 16px 16px;
+  margin: 0 0 16px;
+  background: var(--paper-2, #f7f8fa);
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.pursuit-snapshot h2 {
+  margin: 0 0 10px;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.pursuit-fact-group {
+  margin: 0 0 12px;
+  min-width: 0;
+}
+
+.pursuit-fact-group:last-child {
+  margin-bottom: 0;
+}
+
+.pursuit-facts {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 4px 12px;
+  margin: 0;
+}
+
+@media (max-width: 480px) {
+  .pursuit-facts {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.pursuit-fact {
+  display: contents;
+}
+
+.pursuit-fact dt {
+  font-size: 12px;
+  color: var(--muted, #5b6470);
+  padding: 4px 0 0;
+}
+
+.pursuit-fact dd {
+  margin: 0;
+  padding: 4px 0 6px;
+  overflow-wrap: anywhere;
+  border-bottom: 1px solid var(--rule, #e4e7ec);
+}
+
+.pursuit-status {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.pursuit-status-observed { background: #e4f3ea; color: #17663c; }
+.pursuit-status-derived { background: #e7edfb; color: #29498f; }
+.pursuit-status-user_provided { background: #f1e9fb; color: #5c3a94; }
+.pursuit-status-not_observed,
+.pursuit-status-unavailable { background: #eceef2; color: #5b6470; }
+
+.pursuit-subhead {
+  margin: 0 0 4px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: var(--muted, #5b6470);
+}
+
+.pursuit-match-reasons ul,
+.pursuit-cannot-verify-list {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.pursuit-benchmark {
+  margin: 4px 0;
+}
+
+.pursuit-context-link,
+.pursuit-official-link {
+  color: var(--link, #1a5fb4);
+}
+
+.pursuit-official-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  margin: 0 0 6px;
+}
+
+.pursuit-sign-in-note {
+  margin: 0;
+  font-size: 13px;
+  color: var(--muted, #5b6470);
+}
+
+.pursuit-cannot-verify-note {
+  margin: 0 0 6px;
+  font-size: 12px;
+  color: var(--muted, #5b6470);
+}

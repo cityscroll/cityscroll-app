@@ -210,6 +210,7 @@ import { solicitationResponseContextReady } from "../solicitation_response_conte
 import { noticeDisplayTitle } from "../display_title.mjs";
 import { renderObjectCardTitle } from "../affordance_grammar.mjs";
 import { buildContractReportTarget, renderReportIssueAffordance } from "../report_issue.mjs";
+import { buildPursuitSnapshot, renderPursuitSnapshotHtml } from "../procurement_pursuit_snapshot.mjs";
 
 // Every note naming an external source carries a working, scoped link to it
 // — a note that only SAYS the answer lives elsewhere, with no way to go look, isn't an
@@ -1043,6 +1044,19 @@ function solicitationContextHeadingHTML(r){
     <h2 class="rolename" lang="en" dir="ltr">${linkedTitle}</h2>
   </header>`;
 }
+// Card 3 (procurement-pursuit-decision): compose the pursuit snapshot
+// directly from the notice row already on screen -- the same amount/
+// deadline/window/method/M-WBE resolution the alert atom and M-WBE surface
+// already do for this row shape, not a second extraction pass. Gated by the
+// same solicitationResponseContextReady() the response affordances below
+// already use; a City Record row always carries its own literal notice
+// type, so the sparse-native-object extension never applies here.
+function pursuitSnapshotHTML(r){
+  return renderPursuitSnapshotHtml(buildPursuitSnapshot(r, {
+    cityscroll_url: noticeLink(r.request_id),
+  }));
+}
+
 function renderDetail(r, chain, stats, loadContext = true){
   const pending = chain === null; // first paint from the in-memory record; chain/stats hydrate in
   const responseContextReady = solicitationResponseContextReady(r);
@@ -1059,6 +1073,7 @@ function renderDetail(r, chain, stats, loadContext = true){
     ${(r.procurement_id || r.canonical_href) ? renderReportIssueAffordance(buildContractReportTarget(r), { escape: escUiHtml }) : ""}
   </div>`;
   html += solicitationContextHeadingHTML(r);
+  html += pursuitSnapshotHTML(r);
   html += `<div id="dcontext" data-export-class="notice_context"></div><div id="dactions" data-export-class="actions"></div>`;
   // Lead with the response path for solicitations (deadline / contact) before lifecycle
   // context; primary CTAs stay on the action rail. Awards keep the glance strip first.
