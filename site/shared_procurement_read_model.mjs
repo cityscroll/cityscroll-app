@@ -12,8 +12,11 @@ import {
   procurementObservationRef,
   procurementObservationSnapshot,
 } from "./procurement_object_contract.mjs";
-import { buildCrossSourceEvidenceReceipt } from "./cross_source_evidence_receipt.mjs";
-import { procurementProcessEvents } from "./procurement_process_events.mjs";
+import {
+  buildCrossSourceEvidenceIndex,
+  buildCrossSourceEvidenceReceipt,
+} from "./cross_source_evidence_receipt.mjs";
+import { procurementObservationIndex, procurementProcessEvents } from "./procurement_process_events.mjs";
 
 export const SHARED_PROCUREMENT_READ_MODEL_SCHEMA = "cityscroll.shared_procurement_read_model.v1";
 export const SHARED_PROCUREMENT_READ_MODEL_VERSION = 1;
@@ -95,8 +98,17 @@ export function buildSharedProcurementReadModel({
   ]));
   const rows = built.objects;
   const observations = retainedObservations(records);
+  // Both projections below are per-object views of model-wide inputs. Index
+  // those inputs once so this loop stays linear in the number of objects
+  // instead of rescanning every observation and join for each one.
+  const observationIndex = procurementObservationIndex(observations);
+  const evidenceIndex = buildCrossSourceEvidenceIndex({
+    observations,
+    acceptedJoins: built.cross_source_identity_joins,
+    checkbookLookupRows,
+  });
   for (const object of rows) {
-    const processEvents = procurementProcessEvents(object, observations);
+    const processEvents = procurementProcessEvents(object, observations, observationIndex);
     if (processEvents.length) object.process_events = processEvents;
     const receipt = buildCrossSourceEvidenceReceipt({
       object,
@@ -105,6 +117,7 @@ export function buildSharedProcurementReadModel({
       generatedAt,
       corroboration: object.checkbook_corroboration || null,
       checkbookLookupRows,
+      index: evidenceIndex,
     });
     if (receipt) object.cross_source_evidence_receipt = receipt;
   }

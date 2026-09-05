@@ -56,17 +56,15 @@ function observationIndex(model) {
     .map((entry) => [entry?.source_observation_ref, entry]));
 }
 
-function snapshotsFor(object, model) {
+function snapshotsFor(object, model, index = observationIndex(model)) {
   if (Array.isArray(object?.snapshots) && object.snapshots.length) return object.snapshots;
-  const index = observationIndex(model);
   return (object?.source_observation_refs || [])
     .map((ref) => index.get(ref)?.snapshot)
     .filter((row) => row && typeof row === "object");
 }
 
-function sourceSystemsFor(object, model) {
+function sourceSystemsFor(object, model, index = observationIndex(model)) {
   if (Array.isArray(object?.source_systems) && object.source_systems.length) return object.source_systems;
-  const index = observationIndex(model);
   return [...new Set((object?.source_observation_refs || [])
     .map((ref) => index.get(ref)?.source_system)
     .filter(Boolean))];
@@ -102,10 +100,11 @@ export function stampDigestIdentity(row) {
   return id ? { ...row, digest_id: id } : row;
 }
 
-export function procurementDigestRow(object = {}, model = {}) {
+export function procurementDigestRow(object = {}, model = {}, index = null) {
   if (!isCrolNegativeProcurement(object)) return null;
+  const observations = index || observationIndex(model);
   const id = text(object.procurement_id, 320);
-  const snapshots = snapshotsFor(object, model);
+  const snapshots = snapshotsFor(object, model, observations);
   const stages = stagesFor(object);
   const contractId = object.identity_keys?.contract_ids?.[0] || first(snapshots, ["contract_id", "id"], 160);
   const pin = object.identity_keys?.epins?.[0] || first(snapshots, ["epin", "pin"], 160);
@@ -132,7 +131,7 @@ export function procurementDigestRow(object = {}, model = {}) {
     contract_id: contractId || null,
     procurement_stages: Object.freeze(stages),
     primary_stage: stages.at(-1) || null,
-    source_systems: Object.freeze(sourceSystemsFor(object, model)),
+    source_systems: Object.freeze(sourceSystemsFor(object, model, observations)),
     ...(processEvents.length
       ? {
         process_states: Object.freeze(procurementProcessStates(processEvents)),
@@ -169,7 +168,8 @@ function compactRowFromDigest(row) {
 
 export function compactCrolNegativeDigestRows(model = {}) {
   const objects = Array.isArray(model?.rows) ? model.rows : [];
-  return objects.map((object) => procurementDigestRow(object, model)).filter(Boolean);
+  const index = observationIndex(model);
+  return objects.map((object) => procurementDigestRow(object, model, index)).filter(Boolean);
 }
 
 export function buildProcurementDigestSnapshot(model = {}) {
