@@ -8,6 +8,7 @@ import {
   buildDefaultOntologyDeltaCandidates,
   reconcileOntologyDeltaCandidates,
 } from "./lib/ontology_delta_alert.mjs";
+import { describeCollapse, mergeFunnels } from "./lib/digest_funnel.mjs";
 
 export const DIGEST_SHADOW_CONTRACT = "digest-shadow.v1";
 export const DIGEST_SHADOW_READY = "READY";
@@ -224,6 +225,12 @@ export function buildDigestShadowSummary({
     }
   }
 
+  // Selection funnel: how many candidates survived each narrowing step this run.
+  // A bare "0 items" cannot distinguish an empty source read from a watermark that
+  // has already absorbed the whole candidate window; these counts can.
+  const selectionFunnel = mergeFunnels(results.map((result) => result?.selection_funnel).filter(Boolean));
+  const collapse = describeCollapse(selectionFunnel);
+
   const historicalTotals = history.slice(0, TRAILING_DAYS)
     .map((log) => Number(log?.totalNotices))
     .filter(Number.isFinite);
@@ -239,15 +246,33 @@ export function buildDigestShadowSummary({
         "Aggregate digest items collapsed against the trailing average.",
         // evaluated_count separates a corpus with nothing new for anyone from a
         // run that selected nobody at all. Both land as zero items, and only
-        // one of them is a broken selection.
+        // one of them is a broken selection. collapse_stage goes further and
+        // names the narrowing step the candidates did not survive.
         {
           current_item_count: totalItems,
           evaluated_count: results.length,
           trailing_average: trailingAverage,
           ratio,
           history_days: historicalTotals.length,
+          collapse_stage: collapse?.stage || null,
         },
       ));
+      // Name the narrowing step that consumed the candidates, so the receipt carries
+      // its own cause instead of only the aggregate ratio. Raised alongside the
+      // aggregate redline, never on an ordinarily quiet day.
+      if (collapse) {
+        redlines.push(redline(
+          "selection_stage_collapse",
+          "run",
+          `Digest selection collapsed at ${collapse.stage}: ${collapse.reason}.`,
+          {
+            stage: collapse.stage,
+            entering_count: collapse.entering_count,
+            surviving_count: collapse.surviving_count,
+            funnel: collapse.funnel,
+          },
+        ));
+      }
     } else if (ratio > EXPLOSION_RATIO) {
       redlines.push(redline(
         "aggregate_count_explosion",
@@ -290,6 +315,8 @@ export function buildDigestShadowSummary({
       yesterday_present: !!yesterday,
     },
     trailing_average: trailingAverage,
+    selection_funnel: selectionFunnel,
+    collapse_stage: collapse?.stage || null,
     redlines,
     affected_digest_ids: affectedDigestIds,
     repair: {

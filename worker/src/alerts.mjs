@@ -26,6 +26,7 @@ import { describeFilter } from "./lib/confirm_email.mjs";
 import { emailT } from "./lib/i18n.mjs";
 import { digestDecision, digestCoversBacklogWindow, dedupeFreshByContent, shortDate, matchEvidence } from "./lib/digest.mjs";
 import { itemAwarenessHtml } from "./lib/digest_item_awareness.mjs";
+import { emptyFunnel, mergeFunnels, normalizeFunnel } from "./lib/digest_funnel.mjs";
 import { buildProcurementAlertAtom, procurementAlertSubject } from "./lib/procurement_alert_atom.mjs";
 import {
   groupDigestRowsByActionBand,
@@ -924,7 +925,11 @@ export async function processOneSub(env, s, ctx) {
       rows = await rowsForCompiledQuery(q, env);
       if (q.postFilter && s.lens !== "property") rows = rows.filter(q.postFilter); // property needs the full parcel stream for stage transitions
     }
+    // Narrowing counts only — nothing below reads the funnel to decide anything.
+    const funnel = emptyFunnel();
+    funnel.source_candidates = rows.length;
     rows = rows.filter((row) => rowAfterDeliveryNotBefore(s, row));
+    funnel.delivery_authorized = rows.length;
     const seen = await getSeen(env, s.key);
     let propertyStageSeenIds = [];
     if (s.lens === "property") {
@@ -946,6 +951,7 @@ export async function processOneSub(env, s, ctx) {
       const hearingView = await hearingViewForAlertRows(env, rows);
       rows = attachMaterializedHearing(rows, hearingView);
     }
+    funnel.lens_evaluated = rows.length;
     const reconciled = reconcileTemporalCandidates({ lens: s.lens, rows, seen, rulesView, idField: q.idField });
     reconciled.markSeenIds.push(...propertyStageSeenIds, ...procurementProcessSeenIds);
     for (const row of rows) {
@@ -953,7 +959,9 @@ export async function processOneSub(env, s, ctx) {
       if (row.procurement_process_watch?.transition
         && !reconciled.fresh.some((freshRow) => freshRow[q.idField] === row[q.idField])) reconciled.fresh.push(row);
     }
+    funnel.watermark_fresh = reconciled.fresh.length;
     let fresh = dedupeFreshByContent(reconciled.fresh);
+    funnel.content_deduped = fresh.length;
 
     const outboxSection = {
       sub: s.key,
@@ -969,6 +977,8 @@ export async function processOneSub(env, s, ctx) {
     outboxSection.outboxEnqueue = await enqueueNormalSection(env, s, outboxSection, s.lens === "rules" ? fresh : rows, ctx, q.kind);
     attachOwedRows([outboxSection], await owedForSubscriber(env, s.subscriber_id));
     fresh = outboxSection.freshRows || fresh;
+    // Forecasts are digest content too, and the rollup path counts them the same way.
+    funnel.owed_drained = fresh.length + forecasts.length;
     const includedOutboxItems = acceptedOutboxItems([outboxSection]);
 
     // Search health: has this watch matched anything new lately? Judged from `fresh` alone (not
@@ -992,6 +1002,8 @@ export async function processOneSub(env, s, ctx) {
       counts: ctx.counts(),
       caps: ctx.caps,
     });
+    // A digest is only built when the run is under cap, so items outside that are zero.
+    funnel.items = underCap ? fresh.length + forecasts.length : 0;
     let send = underCap && ctx.LIVE;
     let reservation = null;
     let occasionReserved = false;
@@ -1126,6 +1138,7 @@ export async function processOneSub(env, s, ctx) {
       manageUrlPresent,
       capped,
       sendUnits: send || (underCap && !ctx.LIVE) ? 1 : 0,
+      selection_funnel: normalizeFunnel(funnel),
       ...(preview ? { preview } : {}),
     };
   } catch (e) {
@@ -1196,6 +1209,15 @@ export async function processAccountRollup(env, subs, ctx) {
       counts: ctx.counts(),
       caps: ctx.caps,
     });
+    // Narrowing counts only. The owed drain can raise a section above its watermark-fresh
+    // count, which is exactly the distinction the receipt needs to be able to show.
+    for (const section of sections) {
+      if (!section?.funnel) continue;
+      section.funnel.owed_drained = (Number(section.new) || 0) + (Number(section.forecasts) || 0);
+      section.funnel.items = underCap && decision.wantSend && sectionWantsSend(section)
+        ? section.funnel.owed_drained
+        : 0;
+    }
     let send = underCap && ctx.LIVE;
     const partialError = sections.some((section) => section.error
       || section.status === SECTION_STATUS.PARTIAL_ERROR
@@ -1362,6 +1384,7 @@ export async function processAccountRollup(env, subs, ctx) {
       manageUrlPresent,
       capped,
       sendUnits: (send || (underCap && decision.wantSend && !ctx.LIVE)) ? 1 : 0,
+      selection_funnel: mergeFunnels(sections.map((sec) => sec.funnel).filter(Boolean)),
       sections: sections.map((sec) => ({
         sub: sec.sub,
         ...(sec.previewId ? { previewId: sec.previewId } : {}),
@@ -1373,6 +1396,7 @@ export async function processAccountRollup(env, subs, ctx) {
         skipped: sec.skipped || null,
         error: sec.error || null,
         forecasts: sec.forecasts || 0,
+        ...(sec.funnel ? { selection_funnel: normalizeFunnel(sec.funnel) } : {}),
       })),
       ...(preview ? { preview } : {}),
     };
@@ -1438,7 +1462,11 @@ async function evaluateSubSection(env, s, ctx) {
       rows = await rowsForCompiledQuery(q, env);
       if (q.postFilter && s.lens !== "property") rows = rows.filter(q.postFilter);
     }
+    // Narrowing counts only — nothing below reads the funnel to decide anything.
+    const funnel = emptyFunnel();
+    funnel.source_candidates = rows.length;
     rows = rows.filter((row) => rowAfterDeliveryNotBefore(s, row));
+    funnel.delivery_authorized = rows.length;
     const seen = await getSeen(env, s.key);
     let propertyStageSeenIds = [];
     if (s.lens === "property") {
@@ -1456,6 +1484,7 @@ async function evaluateSubSection(env, s, ctx) {
       procurementProcessSeenIds = evaluated.markSeenIds;
     }
     const rulesView = s.lens === "rules" ? await readJsonKv(env.ALERT_STATE, RULES_KV_KEY) : null;
+    funnel.lens_evaluated = rows.length;
     const reconciled = reconcileTemporalCandidates({ lens: s.lens, rows, seen, rulesView, idField: q.idField });
     reconciled.markSeenIds.push(...propertyStageSeenIds, ...procurementProcessSeenIds);
     for (const row of rows) {
@@ -1463,7 +1492,9 @@ async function evaluateSubSection(env, s, ctx) {
       if (row.procurement_process_watch?.transition
         && !reconciled.fresh.some((freshRow) => freshRow[q.idField] === row[q.idField])) reconciled.fresh.push(row);
     }
+    funnel.watermark_fresh = reconciled.fresh.length;
     const fresh = dedupeFreshByContent(reconciled.fresh);
+    funnel.content_deduped = fresh.length;
 
     const matched = fresh.length > 0;
     const health = nextSearchHealth(s.health, matched, ctx.today);
@@ -1506,6 +1537,7 @@ async function evaluateSubSection(env, s, ctx) {
       label: base.queryLabel,
       markSeenIds: reconciled.markSeenIds,
       seenId: s.key,
+      funnel,
     };
     // The selected rows come from either the fresh D1 mirror branch or the
     // SODA branch above. Both source paths enter the same identity adapter;
