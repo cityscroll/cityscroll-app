@@ -200,6 +200,33 @@ test("fresh, genuinely empty, degraded LKG, stale, and unavailable remain distin
   }
 });
 
+test("rules-semantic-lane freshness is measured from the daily rules snapshot vintage, not the bounded research corpus date", async () => {
+  const registry = canonical();
+  const rulesSemanticLane = registry.first_class_artifacts.find((row) => row.id === "rules-semantic-lane");
+  assert.deepEqual(rulesSemanticLane.vintage_fields, ["rules_snapshot_observed_at"]);
+
+  const root = await mkdtemp(join(tmpdir(), "cityscroll-rules-semantic-lane-"));
+  try {
+    const write = (value) => {
+      const target = join(root, rulesSemanticLane.public_artifact_path);
+      mkdirSync(dirname(target), { recursive: true });
+      writeFileSync(target, JSON.stringify(value));
+    };
+    const now = "2026-09-04T12:00:00.000Z";
+    const definitions = [rulesSemanticLane];
+
+    write({ rules_snapshot_observed_at: "2026-09-04T06:00:00.000Z", corpus_observed_on: "2026-08-04", candidate_count: 2, candidates: [{}, {}] });
+    const fresh = buildFirstClassFreshnessReport({ first_class_artifacts: definitions }, { root, now });
+    assert.equal(fresh.surfaces[0].freshness_state, "fresh");
+
+    write({ rules_snapshot_observed_at: "2026-08-04T06:00:00.000Z", corpus_observed_on: "2026-08-04", candidate_count: 2, candidates: [{}, {}] });
+    const stale = buildFirstClassFreshnessReport({ first_class_artifacts: definitions }, { root, now });
+    assert.equal(stale.surfaces[0].freshness_state, "stale");
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});
+
 test("production build emits and retains the first-class freshness proof", () => {
   const build = readFileSync(new URL("../tools/build_cloudflare_pages.mjs", import.meta.url), "utf8");
   assert.match(build, /first_class_refresh\.mjs/);

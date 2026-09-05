@@ -123,6 +123,19 @@ test("Rules semantic lane renders a labeled exact passage and canonical rule lin
   assert.match(unavailable, /Related-language matches are unavailable/);
 });
 
+test("Rules semantic lane vintage tracks the daily rules snapshot, not the bounded research corpus", () => {
+  const built = inputs();
+  const artifact = buildRulesSemanticLane(built);
+
+  assert.equal(artifact.rules_snapshot_observed_at, built.rulesSnapshot.retrieved_at);
+  assert.equal(artifact.corpus_observed_on, built.corpusManifest.observed_on);
+
+  const refreshedSnapshot = { ...built.rulesSnapshot, retrieved_at: "2026-09-05T00:00:00.000Z" };
+  const refreshed = buildRulesSemanticLane({ ...built, rulesSnapshot: refreshedSnapshot });
+  assert.equal(refreshed.rules_snapshot_observed_at, "2026-09-05T00:00:00.000Z");
+  assert.equal(refreshed.corpus_observed_on, built.corpusManifest.observed_on, "the research corpus vintage does not move with the daily snapshot");
+});
+
 test("committed Rules semantic lane artifact is current", () => {
   const check = spawnSync(
     process.execPath,
