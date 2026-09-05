@@ -1,0 +1,116 @@
+/*
+ * Related context and benchmarks (procurement-pursuit-decision, Card 4).
+ *
+ * Sits immediately beneath .pursuit-snapshot and reuses its token vocabulary
+ * for visual continuity, but the two groups below (.related-context-group)
+ * are deliberately their own bordered blocks -- exact lineage and mere
+ * resemblance must read as structurally distinct, not two subsections of one
+ * list (rule A1). Mobile-first throughout; nothing here assumes more than a
+ * 320px-wide viewport.
+ */
+
+.related-context {
+  font: 14px/1.5 var(--font-interface, ui-sans-serif, system-ui, sans-serif);
+  color: var(--ink, #12181f);
+  border: 1px solid var(--rule, #dde1e7);
+  border-radius: 10px;
+  padding: 14px 16px 16px;
+  margin: 0 0 16px;
+  background: var(--paper-2, #f7f8fa);
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.related-context h2 {
+  margin: 0 0 10px;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.related-context-benchmark {
+  margin: 0 0 12px;
+  padding: 8px 10px;
+  border-inline-start: 3px solid var(--amber, #b8860b);
+  background: var(--paper, #fff);
+  border-radius: 4px;
+}
+
+.related-context-group {
+  border: 1px solid var(--rule, #e4e7ec);
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin: 0 0 10px;
+  min-width: 0;
+  background: var(--paper, #fff);
+}
+
+.related-context-group:last-child {
+  margin-bottom: 0;
+}
+
+.related-context-group[data-related-context-group="exact"] {
+  border-inline-start: 3px solid var(--ok, #17663c);
+}
+
+.related-context-group[data-related-context-group="related"] {
+  border-inline-start: 3px solid var(--muted, #5b6470);
+}
+
+.related-context-subhead {
+  margin: 0 0 4px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: var(--muted, #5b6470);
+}
+
+.related-context-note {
+  margin: 0 0 8px;
+  font-size: 12px;
+  color: var(--muted, #5b6470);
+}
+
+.related-context-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.related-context-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  align-items: baseline;
+  padding: 4px 0;
+  border-bottom: 1px solid var(--rule, #e4e7ec);
+  min-width: 0;
+}
+
+.related-context-row:last-child {
+  border-bottom: none;
+}
+
+.related-context-link,
+.related-context-title {
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.related-context-link {
+  color: var(--link, #1a5fb4);
+}
+
+.related-context-vendor,
+.related-context-date {
+  font-size: 12px;
+  color: var(--muted, #5b6470);
+}
+
+.related-context-amount {
+  font-size: 12px;
+  font-weight: 600;
+}
