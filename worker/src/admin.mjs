@@ -103,6 +103,11 @@ import { readDigestShadow, runDigestShadow } from "./digest_shadow.mjs";
 import { handlePrivateStats } from "./stats.mjs";
 import { readOwedBacklog, scanSubscriberMetadata, scheduledTimes } from "./owed_backlog.mjs";
 import {
+  cancelOwedItems,
+  countOwedCancelCandidates,
+  normalizeOwedCancelScope,
+} from "./lib/digest_outbox.mjs";
+import {
   BackfillCoverageError,
   BackfillInputError,
   FIRST_PAYLOAD_ID,
@@ -1183,6 +1188,53 @@ export async function handleAdminOwedBacklog(req, env, options = {}) {
   const backlog = await readOwedBacklog(env, options);
   if (!backlog.available) return json({ error: backlog.error || "no-store" }, 503);
   return json(backlog, 200);
+}
+
+/**
+ * POST /admin/owed-cancel?key=… — reverse an over-scoped owed set before it sends.
+ *
+ * The route is a bounded writer, not a queue drain: it refuses a request that
+ * does not name the subscribers and the first_owed_at floor to act on, so it can
+ * never cancel the whole backlog, and it defaults to a dry run so the count is
+ * read before anything moves. Delivered rows are never touched.
+ */
+export async function handleAdminOwedCancel(req, env) {
+  const auth = checkAdminKey(req, env);
+  if (!auth.ok) return auth.res;
+  if (req.method !== "POST") return json({ error: "method not allowed" }, 405);
+  if (!env.DB) return json({ error: "no-store" }, 503);
+
+  let body;
+  try {
+    body = await req.json();
+  } catch {
+    return json({ error: "invalid-json" }, 400);
+  }
+  const requestedDryRun = body?.dryRun;
+  // Absent means dry run. A non-boolean is refused rather than coerced: a string
+  // "false" that silently read as a dry run would look like a completed reversal.
+  if (requestedDryRun != null && typeof requestedDryRun !== "boolean") {
+    return json({ error: "invalid-dry-run" }, 400);
+  }
+  const dryRun = requestedDryRun == null ? true : requestedDryRun;
+
+  let scope;
+  try {
+    scope = normalizeOwedCancelScope(body || {});
+  } catch (error) {
+    return json({ error: error?.code || "invalid-request", detail: String(error?.message || error) }, 400);
+  }
+
+  const result = dryRun
+    ? await countOwedCancelCandidates(env.DB, scope)
+    : await cancelOwedItems(env.DB, scope);
+  return json({
+    mode: "owed_cancel",
+    dryRun,
+    matched: result.matched,
+    cancelled: result.cancelled,
+    perSubscriber: result.perSubscriber,
+  }, 200);
 }
 
 function digestHtmlToText(html) {
