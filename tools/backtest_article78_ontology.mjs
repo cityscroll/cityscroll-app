@@ -49,13 +49,23 @@
  * never blended; the section exits non-zero when the seed diagnostic is not
  * reproduced exactly.
  *
+ * A78-06's internal challenge-watch cards
+ * (`warehouse/lib/article78_challenge_watch_card.mjs`) are rendered by this
+ * same command, one per fixture project, into
+ * `warehouse/reports/challenge-watch-cards/`. They are committed and compared
+ * byte for byte in check mode, on the same terms as the environmental-review
+ * workstream's other generated reports: edit the builder, never the output.
+ * The cards are internal review pages. They carry no route, no link and no
+ * combined figure, and the nine components each stand on their own row with
+ * their own evidence and the court-search coverage grade they rest on.
+ *
  * Usage:
  *   node tools/backtest_article78_ontology.mjs           # check (the gate)
  *   node tools/backtest_article78_ontology.mjs --write   # regenerate expected
  */
 
 import { createHash } from "node:crypto";
-import { readFileSync, writeFileSync } from "node:fs";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -77,12 +87,21 @@ import {
   deriveFixtureChallengeWatches,
   diagnosticMetric,
   evaluateHistoricalFixtureExpectations,
+  loadHistoricalFixture,
 } from "../warehouse/lib/article78_historical_fixture.mjs";
+import {
+  buildChallengeWatchCard,
+  CHALLENGE_WATCH_CARD_ROW_KEYS,
+  CHALLENGE_WATCH_CARD_TITLE,
+  latestRecordedObservation,
+  renderChallengeWatchCard,
+} from "../warehouse/lib/article78_challenge_watch_card.mjs";
 import {
   assertNoChallengeWatchPredictionWording,
   CHALLENGE_WATCH_LABEL,
   CHALLENGE_WATCH_LEVELS,
   CHALLENGE_WATCH_POLICY,
+  deriveChallengeWatch,
 } from "../warehouse/lib/article78_challenge_watch.mjs";
 import {
   admitNegatives,
@@ -106,6 +125,8 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 export const BACKTEST_SCHEMA = "cityscroll.article78_litigation.backtest_receipt.v1";
 export const FIXTURE_PATH = join(ROOT, "warehouse/fixtures/article78/litigation_backtest_fixture.v1.json");
 export const EXPECTED_PATH = join(ROOT, "warehouse/fixtures/article78/litigation_backtest_expected.v1.json");
+export const CHALLENGE_WATCH_CARD_DIR_RELATIVE = "warehouse/reports/challenge-watch-cards";
+export const CHALLENGE_WATCH_CARD_DIR = join(ROOT, CHALLENGE_WATCH_CARD_DIR_RELATIVE);
 
 function readJson(path) {
   return JSON.parse(readFileSync(path, "utf8"));
@@ -406,6 +427,89 @@ function renderChallengeWatchSection(report) {
   ].join("\n");
 }
 
+/**
+ * A78-06's internal challenge-watch cards: one per fixture project.
+ *
+ * Each card is built at the close of that project's recorded observation
+ * window -- the last day anything about it was observed -- so nothing recorded
+ * is hidden behind the cutoff and nothing after it is invented. That is a
+ * display choice and not a scoring one: A78-05 scores at its own documented
+ * cutoff policy, and the two are deliberately separate, which is why each card
+ * prints the cutoff it was built at.
+ *
+ * The cards are internal and diagnostic only, on the same footing as every
+ * other number computed over this hand-picked fixture. A card is a display of
+ * separated components; it is not a measurement of anything.
+ */
+export function buildChallengeWatchCardArtifacts(fixture = loadHistoricalFixture()) {
+  return fixture.projects.map((project) => {
+    const determination = fixture.clean.determinations.find((row) => row.determination_key === project.determination_key);
+    const cases = fixture.clean.cases.filter((row) => row.determination_key === determination.determination_key);
+    const caseKeys = new Set(cases.map((row) => row.case_key));
+    const filings = fixture.clean.filings.filter((row) => caseKeys.has(row.case_key));
+    const claims = fixture.clean.claims.filter((row) => caseKeys.has(row.case_key));
+    const supersessions = fixture.clean.supersessions.filter((row) => caseKeys.has(row.case_key));
+    const receipts = fixture.clean.coverage.filter((row) => row.determination_key === determination.determination_key
+      || (row.scope?.determination_filters ?? []).includes(determination.determination_key));
+    const inputs = project.challenge_watch_inputs ?? null;
+    const asOf = latestRecordedObservation([
+      receipts, cases, filings, claims, supersessions,
+      inputs?.review?.events ?? [], inputs?.review?.actions ?? [], inputs?.positions ?? [], inputs?.signals ?? [],
+    ]);
+    if (asOf === null) {
+      throw new Error(`article78 challenge watch card: ${project.project_id} carries no dated record to take a cutoff from`);
+    }
+    const watch = deriveChallengeWatch({
+      determination,
+      review: inputs?.review ?? null,
+      positions: inputs?.positions ?? [],
+      signals: inputs?.signals ?? [],
+      coverage: fixture.clean.coverage,
+      as_of: asOf,
+    });
+    const card = buildChallengeWatchCard({
+      determination,
+      watch,
+      project_id: project.project_id,
+      project_name: project.name,
+      coverage: fixture.clean.coverage,
+      cases: fixture.clean.cases,
+      filings: fixture.clean.filings,
+      claims: fixture.clean.claims,
+      supersessions: fixture.clean.supersessions,
+      as_of: asOf,
+    });
+    const rendered = renderChallengeWatchCard(card);
+    return {
+      project_id: project.project_id,
+      determination_key: card.determination_key,
+      as_of: card.as_of,
+      coverage_grade: card.coverage_grade,
+      coverage_grade_admissible: card.coverage_grade_admissible,
+      path: `${CHALLENGE_WATCH_CARD_DIR_RELATIVE}/${rendered.file_name}`,
+      html: rendered.html,
+      card,
+    };
+  });
+}
+
+/** Render A78-06's card section: one line per card, and the row states on it. */
+function renderChallengeWatchCardSection(artifacts) {
+  for (const artifact of artifacts) {
+    if (artifact.path.includes("site/") || !artifact.path.startsWith("warehouse/reports/")) {
+      throw new Error(`article78 challenge watch card: ${artifact.path} must be written under warehouse/reports/, never under site/`);
+    }
+  }
+  return [
+    `  ${CHALLENGE_WATCH_CARD_TITLE} cards (A78-06, ${CHALLENGE_WATCH_CARD_ROW_KEYS.length} separated components per card, no combined figure):`,
+    `    written under ${CHALLENGE_WATCH_CARD_DIR_RELATIVE}/ -- no route, no link, no resident surface`,
+    ...artifacts.map((artifact) => [
+      `    ${artifact.project_id.padEnd(38)} as of ${artifact.as_of} (coverage ${artifact.coverage_grade}${artifact.coverage_grade_admissible ? "" : ", not admissible"})`,
+      `       ${artifact.card.rows.map((row) => `${row.key}=${row.state}`).join(" ")}`,
+    ].join("\n")),
+  ].join("\n");
+}
+
 function main(argv) {
   const write = argv.includes("--write");
   const fixtureText = readFileSync(FIXTURE_PATH, "utf8");
@@ -414,10 +518,16 @@ function main(argv) {
   const historicalReport = evaluateHistoricalFixtureExpectations();
   const challengeWatchReport = deriveFixtureChallengeWatches();
   const litigationBacktest = buildLitigationBacktestSection(backtestLitigation({}));
+  const cardArtifacts = buildChallengeWatchCardArtifacts();
 
   if (write) {
     writeFileSync(EXPECTED_PATH, serialize(receipt), "utf8");
-    process.stdout.write(`article78 backtest: wrote expected outputs to warehouse/fixtures/article78/${EXPECTED_PATH.split("/").pop()}\n`);
+    mkdirSync(CHALLENGE_WATCH_CARD_DIR, { recursive: true });
+    for (const artifact of cardArtifacts) writeFileSync(join(ROOT, artifact.path), artifact.html, "utf8");
+    process.stdout.write(
+      `article78 backtest: wrote expected outputs to warehouse/fixtures/article78/${EXPECTED_PATH.split("/").pop()}`
+      + ` and ${cardArtifacts.length} challenge watch card(s) to ${CHALLENGE_WATCH_CARD_DIR_RELATIVE}/\n`,
+    );
     return 0;
   }
 
@@ -437,8 +547,19 @@ function main(argv) {
     renderHistoricalFixtureSection(historicalReport),
     renderChallengeWatchSection(challengeWatchReport),
     renderLitigationBacktestSection(litigationBacktest),
+    renderChallengeWatchCardSection(cardArtifacts),
     "",
   ].join("\n"));
+
+  const staleCards = cardArtifacts.filter((artifact) => {
+    let current = null;
+    try {
+      current = readFileSync(join(ROOT, artifact.path), "utf8");
+    } catch {
+      current = null;
+    }
+    return current !== artifact.html;
+  });
 
   if (receipt.record_set_findings.length > 0) {
     process.stderr.write(`article78 backtest FAILED: the fixture record set does not validate:\n  ${receipt.record_set_findings.join("\n  ")}\n`);
@@ -446,6 +567,14 @@ function main(argv) {
   }
   if (mismatch) {
     process.stderr.write(`article78 backtest FAILED: derived output does not match the committed expectation.\n  ${mismatch}\nRegenerate deliberately with: node tools/backtest_article78_ontology.mjs --write\n`);
+    return 1;
+  }
+  if (staleCards.length > 0) {
+    process.stderr.write(
+      "article78 backtest FAILED: committed challenge watch card(s) do not reproduce:\n  "
+      + `${staleCards.map((artifact) => artifact.path).join("\n  ")}\n`
+      + "Regenerate deliberately with: node tools/backtest_article78_ontology.mjs --write\n",
+    );
     return 1;
   }
   if (historicalReport.failed_count > 0) {
@@ -468,7 +597,8 @@ function main(argv) {
   }
   process.stdout.write(
     "article78 backtest OK: derived output matches the committed expectation, every historical-fixture expectation holds, "
-    + `and the litigation backtest reproduces its seed diagnostic (filing and ${ARTICLE78_BACKTEST_POLICY.heads.durable_relief.head} scored separately).\n`,
+    + `the litigation backtest reproduces its seed diagnostic (filing and ${ARTICLE78_BACKTEST_POLICY.heads.durable_relief.head} scored separately), `
+    + `and ${cardArtifacts.length} committed challenge watch card(s) reproduce byte for byte.\n`,
   );
   return 0;
 }
