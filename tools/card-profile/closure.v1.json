@@ -58,7 +58,7 @@
       "scan_hops": 1,
       "scanned_source_count": 2150,
       "sources_skipped_not_materialised": 0,
-      "path_count": 1938,
+      "path_count": 1940,
       "worker_to_site_reference_count": 187,
       "worker_to_site_data_reference_count": 28,
       "worker_to_site_data_targets": [
@@ -118,7 +118,7 @@
         "warehouse",
         "worker/src/data"
       ],
-      "path_count": 4038
+      "path_count": 4045
     }
   },
   "required_paths": [
@@ -2594,8 +2594,10 @@
       "entity_resolution/review/boards_wall_measurement.json",
       "entity_resolution/review/mayoral_board_registry.json",
       "entity_resolution/review/title_code_registry.json",
+      "site/agencies/aging/relationships.json",
       "site/agencies/employees-retirement-system/relationships-data.json",
       "site/agencies/housing-authority/relationships-data.json",
+      "site/agencies/housing-preservation-and-development/relationships.json",
       "site/agencies/index.html",
       "site/agencies/parks-and-recreation/relationships.json",
       "site/data/abo_award_sources/verification_receipts/abo_residual_2026-08-04.json",
@@ -2923,7 +2925,7 @@
       "site/data/zap_projects_warehouse_lookup.json"
     ]
   },
-  "patterns_sha256": "52dd42cf4988928a9e2eb3b6e870b8ee08718c212385b40514c6d56a31709030",
+  "patterns_sha256": "09a58b3d64c9aa0a0ee068c495a7a4295300aca04d74b169f196f9da40a1c50a",
   "supported_gate_classes": [
     "worker-unit",
     "architecture-evidence-shards",
@@ -3047,19 +3049,19 @@
   },
   "measured": {
     "note": "A snapshot of what the profile costs at the revision named here. These figures are reporting only; they are not part of the checked contract, because a byte total moves whenever any tracked file does.",
-    "revision": "39489773d09b43812941d662973c7fa29b7e8935",
+    "revision": "a073c1829c1002e24d45e8620a6a15920dc19a02",
     "computed_in_reduced_checkout": false,
     "profile_paths": {
-      "count": 4254,
-      "logical_bytes": 199477368
+      "count": 4263,
+      "logical_bytes": 200038192
     },
     "deferred_paths": {
-      "count": 298,
-      "logical_bytes": 222598525
+      "count": 300,
+      "logical_bytes": 222965346
     },
     "excluded_paths": {
-      "count": 2390,
-      "logical_bytes": 736490220
+      "count": 2393,
+      "logical_bytes": 736549300
     },
     "site_data": {
       "tracked_count": 696,
@@ -3068,9 +3070,9 @@
       "profile_logical_bytes": 110004393
     },
     "tracked_total": {
-      "count": 6646,
-      "logical_bytes": 936258888
+      "count": 6656,
+      "logical_bytes": 936587492
     },
-    "pattern_count": 841
+    "pattern_count": 842
   }
 }
