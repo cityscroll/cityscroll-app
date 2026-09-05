@@ -1,0 +1,21 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-resident-ux/ru-01-board-documents-without-debug-dump",
+  "status": "implemented",
+  "fingerprint": "ru-01-board-documents-without-debug-dump.v1",
+  "updated_at": "2026-09-05T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "community-board-proceedings-calendar",
+      "path": "site/community_board_constellation.mjs"
+    },
+    {
+      "id": "resident-board-document-projection-tests",
+      "path": "test/resident_board_document_projection.test.mjs"
+    },
+    {
+      "id": "cx-01-result-group-navigation-principle",
+      "path": "docs/design-principles-contextual-ux.md"
+    }
+  ]
+}
