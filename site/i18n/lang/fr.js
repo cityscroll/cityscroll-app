@@ -1266,6 +1266,7 @@
     bid_guide_notice_submit_step: "Déposez ou demandez les documents à l'adresse suivante : {where}.",
     bid_guide_notice_method_step: "Méthode de sélection : {method}.",
     bid_guide_notice_fallback_step: "Utilisez les coordonnées et l'échéance indiquées sur cette page pour demander le dossier et le déposer avant la date limite.",
+    contract_comment_guide_consequence_step_html: "La loi impose à l'agence d'examiner chaque commentaire reçu avant de finaliser l'attribution de ce contrat. <a href=\"{url}\" target=\"_blank\" rel=\"noopener noreferrer\">En savoir plus sur la procédure de commentaires<span class=\"sr-only\"> (s'ouvre dans un nouvel onglet)</span></a>.",
     how_to_respond_heading: "Comment répondre à cette RFP",
 
     // Alerts / feeds area

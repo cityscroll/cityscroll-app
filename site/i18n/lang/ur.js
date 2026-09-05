@@ -1207,6 +1207,7 @@
     bid_guide_notice_submit_step: "مواد یہاں جمع کروائیں یا طلب کریں: {where}۔",
     bid_guide_notice_method_step: "انتخاب کا طریقہ: {method}۔",
     bid_guide_notice_fallback_step: "دستاویزات کی درخواست اور مقررہ تاریخ سے پہلے جمع کرانے کے لیے اس صفحے پر موجود رابطے اور آخری تاریخ کا استعمال کریں۔",
+    contract_comment_guide_consequence_step_html: "قانون کے مطابق، ادارے کو اس معاہدے کی حتمی منظوری سے پہلے موصولہ ہر تبصرے پر غور کرنا ضروری ہے۔ <a href=\"{url}\" target=\"_blank\" rel=\"noopener noreferrer\">تبصرے کے عمل کے بارے میں مزید جانیں<span class=\"sr-only\"> (نئے ٹیب میں کھلتا ہے)</span></a>۔",
     how_to_respond_heading: "اس RFP کا جواب کیسے دیں",
     prefer_feeds_html: "فیڈز پسند کرتے ہیں؟ یہ نگرانی بھی بطور",
     notices_in_english_note_inline: "سرکاری متن انگریزی میں ہے۔ غیر سرکاری ترجمہ دستیاب ہے۔",

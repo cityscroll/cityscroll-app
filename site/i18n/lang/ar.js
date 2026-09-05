@@ -1207,6 +1207,7 @@
     bid_guide_notice_submit_step: "قدّم المواد أو اطلبها على العنوان: {where}.",
     bid_guide_notice_method_step: "طريقة الاختيار: {method}.",
     bid_guide_notice_fallback_step: "استخدم بيانات الاتصال والموعد النهائي في هذه الصفحة لطلب الحزمة وتقديمها قبل تاريخ الاستحقاق.",
+    contract_comment_guide_consequence_step_html: "بموجب القانون، يجب على الجهة النظر في كل تعليق يُستلم قبل إتمام منح هذا العقد. <a href=\"{url}\" target=\"_blank\" rel=\"noopener noreferrer\">اعرف المزيد عن عملية التعليقات<span class=\"sr-only\"> (يفتح في علامة تبويب جديدة)</span></a>.",
     how_to_respond_heading: "كيفية الرد على طلب تقديم العروض هذا",
     prefer_feeds_html: "تفضّل التلقيمات؟ هذه المتابعة متاحة أيضًا",
     notices_in_english_note_inline: "النص الرسمي بالإنجليزية. تتوفر ترجمة غير رسمية.",

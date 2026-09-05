@@ -1201,6 +1201,7 @@
     bid_guide_notice_submit_step: "다음 주소로 자료를 제출하거나 요청하세요: {where}.",
     bid_guide_notice_method_step: "선정 방식: {method}.",
     bid_guide_notice_fallback_step: "이 페이지의 연락처와 마감일을 이용해 패키지를 요청하고 기한 전에 제출하세요.",
+    contract_comment_guide_consequence_step_html: "법에 따라 기관은 이 계약 수여를 확정하기 전에 접수된 모든 의견을 검토해야 합니다. <a href=\"{url}\" target=\"_blank\" rel=\"noopener noreferrer\">의견 제출 절차에 대해 자세히 알아보기<span class=\"sr-only\"> (새 탭에서 열림)</span></a>.",
     how_to_respond_heading: "이 제안요청서 (RFP)에 응답하는 방법",
     prefer_feeds_html: "피드를 선호하시나요? 이 관심 등록도",
     notices_in_english_note_inline: "공식 텍스트는 영어입니다. 비공식 번역을 이용할 수 있습니다.",

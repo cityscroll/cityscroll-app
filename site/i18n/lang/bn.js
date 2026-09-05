@@ -1202,6 +1202,7 @@
     bid_guide_notice_submit_step: "এখানে নথিপত্র জমা দিন বা অনুরোধ করুন: {where}।",
     bid_guide_notice_method_step: "নির্বাচন পদ্ধতি: {method}।",
     bid_guide_notice_fallback_step: "এই পাতার যোগাযোগের তথ্য ও সময়সীমা ব্যবহার করে নথিপত্র চেয়ে নিন এবং নির্ধারিত তারিখের আগে জমা দিন।",
+    contract_comment_guide_consequence_step_html: "আইন অনুযায়ী, এই চুক্তি প্রদান চূড়ান্ত করার আগে সংস্থাকে প্রাপ্ত প্রতিটি মন্তব্য বিবেচনা করতে হবে। <a href=\"{url}\" target=\"_blank\" rel=\"noopener noreferrer\">মন্তব্য প্রক্রিয়া সম্পর্কে আরও জানুন<span class=\"sr-only\"> (নতুন ট্যাবে খুলবে)</span></a>।",
     how_to_respond_heading: "এই RFP-তে কীভাবে সাড়া দেবেন",
     prefer_feeds_html: "ফিড পছন্দ করেন? এই নজরদারিটি এভাবেও উপলব্ধ",
     notices_in_english_note_inline: "সরকারি পাঠ ইংরেজিতে। অনানুষ্ঠানিক অনুবাদ উপলব্ধ।",

@@ -1209,6 +1209,7 @@
     bid_guide_notice_submit_step: "Złóż dokumenty lub poproś o nie pod adresem: {where}.",
     bid_guide_notice_method_step: "Metoda wyboru: {method}.",
     bid_guide_notice_fallback_step: "Skorzystaj z danych kontaktowych i terminu na tej stronie, aby poprosić o dokumentację i złożyć ofertę przed upływem terminu.",
+    contract_comment_guide_consequence_step_html: "Zgodnie z prawem agencja musi rozpatrzyć każdy otrzymany komentarz przed ostatecznym udzieleniem tego zamówienia. <a href=\"{url}\" target=\"_blank\" rel=\"noopener noreferrer\">Dowiedz się więcej o procesie zgłaszania uwag<span class=\"sr-only\"> (otwiera się w nowej karcie)</span></a>.",
     how_to_respond_heading: "Jak odpowiedzieć na to Zapytanie ofertowe (RFP)",
     prefer_feeds_html: "Wolisz kanały danych? Ta obserwacja jest też dostępna jako",
     notices_in_english_note_inline: "Tekst urzędowy po angielsku. Dostępne nieoficjalne tłumaczenie.",

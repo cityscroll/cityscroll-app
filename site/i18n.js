@@ -1755,6 +1755,8 @@ const STRINGS = {
     bid_guide_notice_submit_step: "Submit or request materials at: {where}.",
     bid_guide_notice_method_step: "Selection method: {method}.",
     bid_guide_notice_fallback_step: "Use the contact and deadline on this page to request the package and submit before the due date.",
+    // PHC-08: contract public-comment guide (A4) — the consider-before-award consequence.
+    contract_comment_guide_consequence_step_html: "By law, the agency must consider every comment received before it finalizes this contract award. <a href=\"{url}\" target=\"_blank\" rel=\"noopener noreferrer\">Learn more about the comment process<span class=\"sr-only\"> (opens in new tab)</span></a>.",
     how_to_respond_heading: "How to respond to this RFP",
 
     // Alerts / feeds area

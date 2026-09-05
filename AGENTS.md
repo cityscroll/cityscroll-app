@@ -124,6 +124,15 @@ contracts. Do not turn it into a delivery log, roadmap, module inventory, or car
   `index.html` documents) are generated. Do not assume a path under `site/` is regenerable.
 - `worker/` is not package-isolated from `site/`: Worker sources import modules and data files
   across that boundary, so the Worker unit family needs more than `worker/` present to run.
+- `site/app/feed-actions.mjs` sits at (or near) a ~100000-byte working-bar ceiling; adding code
+  there requires trimming an equal amount elsewhere (comments first) rather than growing it. Its
+  `noticeActionMatter()` also precomputes `matter.kind` before calling
+  `site/action_registry.js`'s `compileActionRail()`, and `kindFor()` there returns a
+  caller-supplied `matter.kind` immediately — so a new classification added only inside `kindFor()`
+  is unreachable from the live notice page unless it is checked *before* that early return (see
+  `contractPublicCommentEvidence`'s placement for the pattern). Verify any new `kindFor` branch
+  against a real page render (`tools/local_site_server.py` serving a `tools/build_public_site.mjs`
+  output), not only `compileActionRail()` unit tests, which never exercise `noticeActionMatter`.
 - `warehouse/lib/document_processing.mjs` is the publisher-neutral document-processing interface
   (hashing, extraction-quality measurement, extraction receipts, document-type/supersession
   classification). A document pipeline for a new source consumes it rather than reimplementing any

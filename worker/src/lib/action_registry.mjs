@@ -12,6 +12,8 @@ export const {
   ruleHandoff,
   zoningHandoff,
   franchiseHandoff,
+  contractPublicCommentEvidence,
+  contractCommentHandoff,
   zoningStage,
   landHearingBody,
   packageUrlFromAttachments,

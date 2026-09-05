@@ -1201,6 +1201,7 @@
     bid_guide_notice_submit_step: "请在以下地点提交或索取材料：{where}。",
     bid_guide_notice_method_step: "遴选方式：{method}。",
     bid_guide_notice_fallback_step: "请使用本页的联系方式和截止时间索取文件包，并在到期日前提交。",
+    contract_comment_guide_consequence_step_html: "根据法律规定，该机构必须在最终确定本合同授予结果之前，考虑收到的每一条意见。<a href=\"{url}\" target=\"_blank\" rel=\"noopener noreferrer\">了解更多关于意见征集流程的信息<span class=\"sr-only\"> （在新标签页中打开）</span></a>。",
     how_to_respond_heading: "如何回应此征求建议书 (RFP)",
     prefer_feeds_html: "更喜欢订阅源？此关注也提供",
     notices_in_english_note_inline: "正式文本为英文。可提供非正式翻译。",
