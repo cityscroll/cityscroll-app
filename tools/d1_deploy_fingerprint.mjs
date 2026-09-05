@@ -17,6 +17,7 @@ const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 
 export const D1_DEPLOY_FINGERPRINT_SCHEMA = "cityscroll.d1-deploy-fingerprint.v1";
 export const D1_PUBLICATION_STATE_SCHEMA = "cityscroll.d1-publication-state.v1";
+export const D1_GENERATION_FENCE_SCHEMA = "cityscroll.d1-publication-generation-fence.v1";
 export const D1_PUBLICATION_RECEIPT_SCHEMA = "cityscroll.d1-publication-receipt.v1";
 
 export const DEFAULT_FINGERPRINT_INPUTS = Object.freeze([
@@ -92,6 +93,14 @@ export function computeDeployFingerprint({
 export function loadPublishedState(path) {
   if (!existsSync(path)) return null;
   const state = JSON.parse(readFileSync(path, "utf8"));
+  if (state?.schema === D1_GENERATION_FENCE_SCHEMA) {
+    if (!/^[a-f0-9]{64}$/.test(state?.fingerprint || "")) {
+      throw new Error("D1 generation fence state is malformed");
+    }
+    // A claimed/accepted fence is not proof that D1 execution completed. The
+    // next run must be allowed to reclaim it after the lease expires.
+    return state?.status === "published" ? state : null;
+  }
   if (
     state?.schema !== D1_PUBLICATION_STATE_SCHEMA
     || state?.status !== "published"
