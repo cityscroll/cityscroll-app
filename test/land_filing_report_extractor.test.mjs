@@ -106,7 +106,7 @@ test("application scope and proposed development scope stay two separate section
   const evidence = { page_number: 1 };
   const common = { method: "deterministic_text", extractor_version: "v1", confidence: "high", evidence };
   const appScope = buildApplicationScopeSection({
-    project_name: { ...common, field_name: "project_name", raw_value: "123 Main St Rezoning", value: "123 Main St Rezoning" },
+    project_name: { ...common, field_name: "project_name", raw_value: "Example Parcel Rezoning", value: "Example Parcel Rezoning" },
   });
   const devScope = buildProposedDevelopmentScopeSection({
     residential_units_proposed: { ...common, field_name: "residential_units_proposed", raw_value: "300", value: 300, unit: "units" },
@@ -180,11 +180,11 @@ const NATIVE_TEXT_PAGES = [
     page_number: 1,
     text: [
       "Racial Equity Report on Housing and Opportunity",
-      "Project Name: 123 Main Street Rezoning",
+      "Project Name: Example Parcel Rezoning",
       "ULURP Number: N260123ZRK",
-      "Applicant Name: 123 Main St LLC",
+      "Applicant Name: Example Applicant LLC",
       "Block and Lot: 3045/12, 3045/13",
-      "Site Address: 123 Main Street, Bronx, NY",
+      "Site Address: Fixture Site Address (synthetic test data)",
       "Actions Requested: Zoning map amendment and zoning text amendment",
     ].join("\n"),
   },
@@ -211,9 +211,9 @@ const NATIVE_TEXT_PAGES = [
 test("A1/A2/A3: a native-text report extracts fields with page evidence, raw value, method, and confidence", () => {
   const result = extractRacialEquityReportSections({ pages: NATIVE_TEXT_PAGES, tables: [] });
   const scope = result.sections.application_scope;
-  assert.equal(scope.project_name.value, "123 Main Street Rezoning");
+  assert.equal(scope.project_name.value, "Example Parcel Rezoning");
   assert.equal(scope.project_name.evidence.page_number, 1);
-  assert.equal(scope.project_name.raw_value, "123 Main Street Rezoning");
+  assert.equal(scope.project_name.raw_value, "Example Parcel Rezoning");
   assert.equal(scope.project_name.method, "deterministic_text");
   assert.equal(scope.project_name.confidence, "high");
 

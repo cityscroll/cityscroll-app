@@ -79,7 +79,7 @@ function documentFixture(overrides = {}) {
 }
 
 const NATIVE_TEXT_PAGES = [
-  { page_number: 1, text: "Project Name: 123 Main Street Rezoning\nULURP Number: N260123ZRK\nApplicant Name: 123 Main St LLC\nBlock and Lot: 3045/12\nSite Address: 123 Main Street, Bronx, NY\nActions Requested: Zoning map amendment" },
+  { page_number: 1, text: "Project Name: Example Parcel Rezoning\nULURP Number: N260123ZRK\nApplicant Name: Example Applicant LLC\nBlock and Lot: 3045/12\nSite Address: Fixture Site Address (synthetic test data)\nActions Requested: Zoning map amendment" },
   { page_number: 2, text: "Residential Units Proposed: 300\nAffordable Units Proposed: 90\nNon-Residential Square Feet Proposed: 10,000" },
   { page_number: 40, text: "Community Profile - Community District 7, Bronx (ACS 2019-2023 5-Year Estimates)\nPopulation: 98,000" },
 ];
@@ -88,7 +88,7 @@ const NATIVE_TEXT_PAGES = [
 
 check("native-text report: fields extract with page evidence (A1, A2)", () => {
   const result = extractRacialEquityReportSections({ pages: NATIVE_TEXT_PAGES, tables: [] });
-  assertEqual(result.sections.application_scope.project_name.value, "123 Main Street Rezoning", "project_name");
+  assertEqual(result.sections.application_scope.project_name.value, "Example Parcel Rezoning", "project_name");
   assertEqual(result.sections.application_scope.project_name.evidence.page_number, 1, "evidence.page_number");
 });
 
