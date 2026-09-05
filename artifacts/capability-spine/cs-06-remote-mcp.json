@@ -18,7 +18,7 @@
   "policy_boundary": {
     "mutation_capabilities": 0,
     "raw_store_bindings_exposed": 0,
-    "registered_public_tools": 12,
+    "registered_public_tools": 14,
     "unregistered_public_tools": 0
   },
   "protocol": {
@@ -345,14 +345,67 @@
       "store_access": "provider-only",
       "store_read_operations": 0,
       "store_rows_read": 0
+    },
+    {
+      "adapter_id": "mcp.get_land_project@1",
+      "adapter_semantic_sha256": "8e9255a74e639fef3cc0d5e7960a774fd766ccf43f1e76f04ea771e5a4341daf",
+      "annotations": {
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "authority_class": "public_read",
+      "bounds": {
+        "maximum": 1,
+        "projectIdMaximumLength": 32
+      },
+      "calls": 1,
+      "capability_reference": "land.project.get@1",
+      "direct_semantic_sha256": "8e9255a74e639fef3cc0d5e7960a774fd766ccf43f1e76f04ea771e5a4341daf",
+      "name": "get_land_project",
+      "operation_class": "read",
+      "parity": "pass",
+      "provider_id": "worker-static.land-project.get",
+      "store_access": "provider-only",
+      "store_read_operations": 0,
+      "store_rows_read": 0
+    },
+    {
+      "adapter_id": "mcp.browse_land_projects@1",
+      "adapter_semantic_sha256": "b850a977824ac6f8e0339b47299b27970691ea5639ea6ea83f8158c76e493a3c",
+      "annotations": {
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "authority_class": "public_read",
+      "bounds": {
+        "cursorMaximumLength": 320,
+        "default": 25,
+        "filterMaximumLength": 240,
+        "maximum": 100,
+        "minimum": 1
+      },
+      "calls": 1,
+      "capability_reference": "land.projects.browse@1",
+      "direct_semantic_sha256": "b850a977824ac6f8e0339b47299b27970691ea5639ea6ea83f8158c76e493a3c",
+      "name": "browse_land_projects",
+      "operation_class": "read",
+      "parity": "pass",
+      "provider_id": "worker-static.land-projects.browse",
+      "store_access": "provider-only",
+      "store_read_operations": 0,
+      "store_rows_read": 0
     }
   ],
   "request_counts": {
-    "capability_calls": 12,
+    "capability_calls": 14,
     "initialize": 1,
     "list_tools": 1,
     "optional_get_probe": 1,
-    "post_requests": 15
+    "post_requests": 17
   },
   "schema": "cityscroll.remote_mcp_public_adapter_receipt.v1",
   "source_scan": {

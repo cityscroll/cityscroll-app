@@ -67,7 +67,7 @@ test("current Streamable HTTP client initializes, discovers, and calls all publi
       "entity.dossier.get@1",
       "entity.relationships.get@1",
     ]);
-    assert.equal(requests.filter((method) => method === "POST").length, 15);
+    assert.equal(requests.filter((method) => method === "POST").length, 17);
   } finally {
     await client.close();
     directFixture.close();

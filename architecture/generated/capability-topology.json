@@ -1359,6 +1359,234 @@
           ]
         }
       ]
+    },
+    {
+      "reference": "land.project.get@1",
+      "id": "land.project.get",
+      "version": "1.0.0",
+      "owner": "land",
+      "operation": "read",
+      "authority": {
+        "class": "public-read",
+        "sideEffect": "none",
+        "approval": "none"
+      },
+      "cost": {
+        "class": "bounded-static-read-model",
+        "machineFanOut": "low"
+      },
+      "input_schema": "cityscroll.capability.land_project_get.input.v1",
+      "output_schema": "cityscroll.capability.land_project_get.output.v1",
+      "bounds": {
+        "input": {
+          "projectIdMaximumLength": 32,
+          "maximum": 1
+        },
+        "output": {
+          "oneProject": true
+        }
+      },
+      "examples": [
+        {
+          "input": {
+            "projectId": "2024Q0356"
+          },
+          "output": {
+            "availability": "available",
+            "exactIdentity": true,
+            "procedureResolution": "preserved when resolvable"
+          }
+        },
+        {
+          "input": {
+            "projectId": "not-a-real-project"
+          },
+          "output": {
+            "availability": "not_yet_public",
+            "error": "not-found"
+          }
+        }
+      ],
+      "availability": [
+        "available",
+        "not_yet_public",
+        "unavailable"
+      ],
+      "provenance": {
+        "identity": "project.project_id (exact publisher ZAP project identity)",
+        "sourceIdentity": "project.source_observations[].source_system",
+        "observationClock": "project.freshness.as_of plus source_observations[].generated_at",
+        "identityAuthority": "site/land_action_procedure_resolution.mjs resolveLandActionProcedures"
+      },
+      "freshness": {
+        "owner": "shared Land ZAP read model",
+        "projection": "committed warehouse materialized_at plus per-source generated_at"
+      },
+      "provider": {
+        "id": "worker-static.land-project.get",
+        "module": "worker/src/land_projects.mjs",
+        "export": "workerLandProjects",
+        "store": "precomputed shared Land ZAP read model",
+        "readModel": "warehouse-materialized ZAP projects, overlaid with exact materialized ZAP outcome evidence"
+      },
+      "adapters": [
+        {
+          "id": "worker-http.land-project-get@1",
+          "module": "worker/src/land_projects.mjs",
+          "kind": "http-route",
+          "route": "GET /land-project",
+          "surface": "Land project detail",
+          "representations": [
+            {
+              "id": "json",
+              "mediaType": "application/json",
+              "projection": "public Land project object or bounded browse envelope"
+            },
+            {
+              "id": "text-summary",
+              "mediaType": "text/plain",
+              "projection": "bounded public Land project summary"
+            }
+          ]
+        },
+        {
+          "id": "mcp.get_land_project@1",
+          "module": "worker/src/mcp.mjs",
+          "kind": "mcp-tool",
+          "tool": "get_land_project",
+          "route": "POST /mcp",
+          "surface": "MCP",
+          "representations": [
+            {
+              "id": "json",
+              "mediaType": "application/json",
+              "projection": "public Land project object or bounded browse envelope"
+            },
+            {
+              "id": "text-summary",
+              "mediaType": "text/plain",
+              "projection": "bounded public Land project summary"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "reference": "land.projects.browse@1",
+      "id": "land.projects.browse",
+      "version": "1.0.0",
+      "owner": "land",
+      "operation": "read",
+      "authority": {
+        "class": "public-read",
+        "sideEffect": "none",
+        "approval": "none"
+      },
+      "cost": {
+        "class": "bounded-static-read-model",
+        "machineFanOut": "low"
+      },
+      "input_schema": "cityscroll.capability.land_projects_browse.input.v1",
+      "output_schema": "cityscroll.capability.land_projects_browse.output.v1",
+      "bounds": {
+        "input": {
+          "filterMaximumLength": 240,
+          "cursorMaximumLength": 320,
+          "minimum": 1,
+          "maximum": 100,
+          "default": 25
+        },
+        "output": {
+          "maximumResults": 100
+        }
+      },
+      "examples": [
+        {
+          "input": {
+            "procedure": "elurp",
+            "corpus": "historical"
+          },
+          "output": {
+            "availability": "complete",
+            "oneRowPer": "exact project_id",
+            "fixedPopulation": "the frozen four-project expedited corpus"
+          }
+        },
+        {
+          "input": {
+            "procedure": "elurp",
+            "limit": 25
+          },
+          "output": {
+            "availability": "complete",
+            "pagination": "cursor when more rows remain",
+            "fixedPopulation": "none — reflects the current committed warehouse"
+          }
+        }
+      ],
+      "availability": [
+        "complete",
+        "empty",
+        "unavailable"
+      ],
+      "provenance": {
+        "identity": "project.project_id (exact publisher ZAP project identity)",
+        "sourceIdentity": "project.source_observations[].source_system",
+        "observationClock": "project.freshness.as_of plus source_observations[].generated_at",
+        "identityAuthority": "site/land_action_procedure_resolution.mjs resolveLandActionProcedures"
+      },
+      "freshness": {
+        "owner": "shared Land ZAP read model",
+        "projection": "committed warehouse materialized_at plus per-source generated_at"
+      },
+      "provider": {
+        "id": "worker-static.land-projects.browse",
+        "module": "worker/src/land_projects.mjs",
+        "export": "workerLandProjects",
+        "store": "precomputed shared Land ZAP read model",
+        "readModel": "complete warehouse-materialized ZAP projects (every publisher status, not an active-only slice)"
+      },
+      "adapters": [
+        {
+          "id": "worker-http.land-projects-browse@1",
+          "module": "worker/src/land_projects.mjs",
+          "kind": "http-route",
+          "route": "GET /land-projects",
+          "surface": "Land projects browse",
+          "representations": [
+            {
+              "id": "json",
+              "mediaType": "application/json",
+              "projection": "public Land project object or bounded browse envelope"
+            },
+            {
+              "id": "text-summary",
+              "mediaType": "text/plain",
+              "projection": "bounded public Land project summary"
+            }
+          ]
+        },
+        {
+          "id": "mcp.browse_land_projects@1",
+          "module": "worker/src/mcp.mjs",
+          "kind": "mcp-tool",
+          "tool": "browse_land_projects",
+          "route": "POST /mcp",
+          "surface": "MCP",
+          "representations": [
+            {
+              "id": "json",
+              "mediaType": "application/json",
+              "projection": "public Land project object or bounded browse envelope"
+            },
+            {
+              "id": "text-summary",
+              "mediaType": "text/plain",
+              "projection": "bounded public Land project summary"
+            }
+          ]
+        }
+      ]
     }
   ],
   "mcp": {
@@ -2005,6 +2233,106 @@
             "output": {
               "availability": "not_yet_public",
               "error": "not-found"
+            }
+          }
+        ],
+        "annotations": {
+          "readOnlyHint": true,
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "store_access": "provider-only"
+      },
+      {
+        "name": "get_land_project",
+        "operation_class": "read",
+        "authority_class": "public_read",
+        "schema_reference": "land.project.get@1",
+        "capability_reference": "land.project.get@1",
+        "adapter_id": "mcp.get_land_project@1",
+        "contract_reference": null,
+        "pilot_exception": null,
+        "bounds": {
+          "input": {
+            "projectIdMaximumLength": 32,
+            "maximum": 1
+          },
+          "output": {
+            "oneProject": true
+          }
+        },
+        "examples": [
+          {
+            "input": {
+              "projectId": "2024Q0356"
+            },
+            "output": {
+              "availability": "available",
+              "exactIdentity": true,
+              "procedureResolution": "preserved when resolvable"
+            }
+          },
+          {
+            "input": {
+              "projectId": "not-a-real-project"
+            },
+            "output": {
+              "availability": "not_yet_public",
+              "error": "not-found"
+            }
+          }
+        ],
+        "annotations": {
+          "readOnlyHint": true,
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "store_access": "provider-only"
+      },
+      {
+        "name": "browse_land_projects",
+        "operation_class": "read",
+        "authority_class": "public_read",
+        "schema_reference": "land.projects.browse@1",
+        "capability_reference": "land.projects.browse@1",
+        "adapter_id": "mcp.browse_land_projects@1",
+        "contract_reference": null,
+        "pilot_exception": null,
+        "bounds": {
+          "input": {
+            "filterMaximumLength": 240,
+            "cursorMaximumLength": 320,
+            "minimum": 1,
+            "maximum": 100,
+            "default": 25
+          },
+          "output": {
+            "maximumResults": 100
+          }
+        },
+        "examples": [
+          {
+            "input": {
+              "procedure": "elurp",
+              "corpus": "historical"
+            },
+            "output": {
+              "availability": "complete",
+              "oneRowPer": "exact project_id",
+              "fixedPopulation": "the frozen four-project expedited corpus"
+            }
+          },
+          {
+            "input": {
+              "procedure": "elurp",
+              "limit": 25
+            },
+            "output": {
+              "availability": "complete",
+              "pagination": "cursor when more rows remain",
+              "fixedPopulation": "none — reflects the current committed warehouse"
             }
           }
         ],

@@ -1,0 +1,308 @@
+{
+  "schema_version": 1,
+  "corpus": "cityscroll.land_expedited_corpus.v1",
+  "description": "Frozen ELURP (expedited land use review) regression corpus, captured from the live ZAP project API. Same four canaries as the LDP-29 real-corpus regression suite (test/land_action_procedure_resolution.test.mjs ELURP_CORPUS / test/fixtures/land_authority_summary/elurp_197e_corpus.v1.json). Deliberately frozen: land.projects.browse@1's historical-corpus mode must return the same four projects regardless of upstream drift in the live warehouse materialization.",
+  "captured_at": "2026-08-23T00:00:00.000Z",
+  "rows": [
+    {
+      "project_id": "2024Q0356",
+      "project_name": "45-11 Oceania Street Commercial Overlay",
+      "portal_url": "https://zap.planning.nyc.gov/projects/2024Q0356",
+      "open_data": {
+        "project_id": "2024Q0356",
+        "project_name": "45-11 Oceania Street Commercial Overlay",
+        "actions": "ZM",
+        "ulurp_numbers": null,
+        "ulurp_non": "ELURP",
+        "public_status": "Noticed",
+        "project_status": "Active",
+        "current_milestone": "Environmental Assessment Statement Filed",
+        "current_milestone_date": "2026-03-10",
+        "borough": "Queens",
+        "community_district": "Q11",
+        "cc_district": "19",
+        "primary_applicant": "DLC Properties LLC.",
+        "mih_flag": "false",
+        "app_filed_date": "2026-02-23T00:00:00.000",
+        "noticed_date": "2026-04-10T00:00:00.000",
+        "certified_referred": null
+      },
+      "actions": [
+        { "id": "zap-2024Q0356-1", "action": "ZM", "ulurp_number": "260272ZMQ", "status": "Active" }
+      ],
+      "spine": {
+        "schema_version": 1,
+        "project_id": "2024Q0356",
+        "events": [
+          {
+            "id": "zap-milestone:2024Q0356-filed",
+            "kind": "zap_milestone",
+            "title": "Land Use Application Filed",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": { "value": "2025-11-10", "precision": "day", "basis": "actual_end", "certainty": "actual" },
+            "source": { "id": "zap-project-api", "label": "Zoning Application Portal", "url": "https://zap.planning.nyc.gov/projects/2024Q0356" }
+          },
+          {
+            "id": "zap-milestone:2024Q0356-eas",
+            "kind": "zap_milestone",
+            "title": "Environmental Assessment Statement Filed",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": { "value": "2026-03-10", "precision": "day", "basis": "actual_end", "certainty": "actual" },
+            "source": { "id": "zap-project-api", "label": "Zoning Application Portal", "url": "https://zap.planning.nyc.gov/projects/2024Q0356" }
+          }
+        ],
+        "gaps": [],
+        "lag": { "open_data_vs_portal": { "status": "unknown", "days": null } }
+      }
+    },
+    {
+      "project_id": "2024Q0419",
+      "project_name": "189-10 Northern Boulevard Rezoning",
+      "portal_url": "https://zap.planning.nyc.gov/projects/2024Q0419",
+      "open_data": {
+        "project_id": "2024Q0419",
+        "project_name": "189-10 Northern Boulevard Rezoning",
+        "actions": "ZM",
+        "ulurp_numbers": "250331ZMQ",
+        "ulurp_non": "ELURP",
+        "public_status": "Completed",
+        "project_status": "Complete",
+        "current_milestone": "City Planning Commission Vote",
+        "current_milestone_date": "2026-06-17",
+        "borough": null,
+        "community_district": null,
+        "cc_district": null,
+        "primary_applicant": null,
+        "mih_flag": null,
+        "app_filed_date": null,
+        "noticed_date": null,
+        "certified_referred": null
+      },
+      "actions": [
+        { "id": "zap-2024Q0419-1", "action": "ZM", "ulurp_number": "C250331ZMQ", "status": "Certified" }
+      ],
+      "spine": {
+        "schema_version": 1,
+        "project_id": "2024Q0419",
+        "events": [
+          {
+            "id": "zap-milestone:2024Q0419-filed",
+            "kind": "zap_milestone",
+            "title": "Land Use Application Filed",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": { "value": "2025-12-15", "precision": "day", "basis": "actual_end", "certainty": "actual" },
+            "source": { "id": "zap-project-api", "label": "Zoning Application Portal", "url": "https://zap.planning.nyc.gov/projects/2024Q0419" }
+          },
+          {
+            "id": "zap-milestone:2024Q0419-cert",
+            "kind": "zap_milestone",
+            "title": "Application Reviewed at City Planning Commission Review Session",
+            "detail": "Certified",
+            "status": "Completed",
+            "outcome": "Certified",
+            "time": { "value": "2026-03-16", "precision": "day", "basis": "review_meeting", "certainty": "actual" },
+            "source": { "id": "zap-project-api", "label": "Zoning Application Portal", "url": "https://zap.planning.nyc.gov/projects/2024Q0419" }
+          },
+          {
+            "id": "zap-milestone:2024Q0419-cb",
+            "kind": "zap_milestone",
+            "title": "Community Board Review",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": { "value": "2026-03-25", "precision": "day", "basis": "actual_end", "certainty": "actual" },
+            "source": { "id": "zap-project-api", "label": "Zoning Application Portal", "url": "https://zap.planning.nyc.gov/projects/2024Q0419" }
+          },
+          {
+            "id": "zap-milestone:2024Q0419-bp",
+            "kind": "zap_milestone",
+            "title": "Borough President Review",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": { "value": "2026-03-25", "precision": "day", "basis": "actual_end", "certainty": "actual" },
+            "source": { "id": "zap-project-api", "label": "Zoning Application Portal", "url": "https://zap.planning.nyc.gov/projects/2024Q0419" }
+          },
+          {
+            "id": "zap-milestone:2024Q0419-cpc",
+            "kind": "zap_milestone",
+            "title": "City Planning Commission Vote",
+            "detail": "Approval",
+            "status": "Completed",
+            "outcome": "Approval",
+            "time": { "value": "2026-06-17", "precision": "day", "basis": "actual_end", "certainty": "actual" },
+            "source": { "id": "zap-project-api", "label": "Zoning Application Portal", "url": "https://zap.planning.nyc.gov/projects/2024Q0419" }
+          }
+        ],
+        "gaps": [],
+        "lag": { "open_data_vs_portal": { "status": "unknown", "days": null } }
+      }
+    },
+    {
+      "project_id": "2025R0257",
+      "project_name": "Saw Mill Creek Marsh Park Addition",
+      "portal_url": "https://zap.planning.nyc.gov/projects/2025R0257",
+      "open_data": {
+        "project_id": "2025R0257",
+        "project_name": "Saw Mill Creek Marsh Park Addition",
+        "actions": "PC",
+        "ulurp_numbers": "260217PCR",
+        "ulurp_non": "ELURP",
+        "public_status": "Completed",
+        "project_status": "Complete",
+        "current_milestone": "City Planning Commission Vote",
+        "current_milestone_date": "2026-06-03",
+        "borough": null,
+        "community_district": null,
+        "cc_district": null,
+        "primary_applicant": null,
+        "mih_flag": null,
+        "app_filed_date": null,
+        "noticed_date": null,
+        "certified_referred": null
+      },
+      "actions": [
+        { "id": "zap-2025R0257-1", "action": "PC", "ulurp_number": "C260217PCR", "status": "Certified" }
+      ],
+      "spine": {
+        "schema_version": 1,
+        "project_id": "2025R0257",
+        "events": [
+          {
+            "id": "zap-milestone:2025R0257-filed",
+            "kind": "zap_milestone",
+            "title": "Land Use Application Filed",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": { "value": "2025-11-20", "precision": "day", "basis": "actual_end", "certainty": "actual" },
+            "source": { "id": "zap-project-api", "label": "Zoning Application Portal", "url": "https://zap.planning.nyc.gov/projects/2025R0257" }
+          },
+          {
+            "id": "zap-milestone:2025R0257-cert",
+            "kind": "zap_milestone",
+            "title": "Application Reviewed at City Planning Commission Review Session",
+            "detail": "Certified",
+            "status": "Completed",
+            "outcome": "Certified",
+            "time": { "value": "2026-02-25", "precision": "day", "basis": "review_meeting", "certainty": "actual" },
+            "source": { "id": "zap-project-api", "label": "Zoning Application Portal", "url": "https://zap.planning.nyc.gov/projects/2025R0257" }
+          },
+          {
+            "id": "zap-milestone:2025R0257-cb",
+            "kind": "zap_milestone",
+            "title": "Community Board Review",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": { "value": "2026-03-11", "precision": "day", "basis": "actual_end", "certainty": "actual" },
+            "source": { "id": "zap-project-api", "label": "Zoning Application Portal", "url": "https://zap.planning.nyc.gov/projects/2025R0257" }
+          },
+          {
+            "id": "zap-milestone:2025R0257-bp",
+            "kind": "zap_milestone",
+            "title": "Borough President Review",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": { "value": "2026-03-11", "precision": "day", "basis": "actual_end", "certainty": "actual" },
+            "source": { "id": "zap-project-api", "label": "Zoning Application Portal", "url": "https://zap.planning.nyc.gov/projects/2025R0257" }
+          },
+          {
+            "id": "zap-milestone:2025R0257-cpc",
+            "kind": "zap_milestone",
+            "title": "City Planning Commission Vote",
+            "detail": "Approval",
+            "status": "Completed",
+            "outcome": "Approval",
+            "time": { "value": "2026-06-03", "precision": "day", "basis": "actual_end", "certainty": "actual" },
+            "source": { "id": "zap-project-api", "label": "Zoning Application Portal", "url": "https://zap.planning.nyc.gov/projects/2025R0257" }
+          }
+        ],
+        "gaps": [],
+        "lag": { "open_data_vs_portal": { "status": "unknown", "days": null } }
+      }
+    },
+    {
+      "project_id": "2026X0362",
+      "project_name": "351 Powers Avenue (HPD ELURP)",
+      "portal_url": "https://zap.planning.nyc.gov/projects/2026X0362",
+      "open_data": {
+        "project_id": "2026X0362",
+        "project_name": "351 Powers Avenue (HPD ELURP)",
+        "actions": "PP",
+        "ulurp_numbers": null,
+        "ulurp_non": "ELURP",
+        "public_status": "Completed",
+        "project_status": "Complete",
+        "current_milestone": "City Council Review",
+        "current_milestone_date": "2026-05-20",
+        "borough": "Bronx",
+        "community_district": "X01",
+        "cc_district": null,
+        "primary_applicant": "HPD - NYC Dept of Housing Preservation & Development",
+        "mih_flag": "false",
+        "app_filed_date": "2026-02-20T00:00:00.000",
+        "noticed_date": null,
+        "certified_referred": null
+      },
+      "actions": [
+        { "id": "zap-2026X0362-1", "action": "PP", "ulurp_number": "HPD260001PPX", "status": "Adopted" }
+      ],
+      "spine": {
+        "schema_version": 1,
+        "project_id": "2026X0362",
+        "events": [
+          {
+            "id": "zap-milestone:2026X0362-filed",
+            "kind": "zap_milestone",
+            "title": "Land Use Application Filed",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": { "value": "2025-11-01", "precision": "day", "basis": "actual_end", "certainty": "actual" },
+            "source": { "id": "zap-project-api", "label": "Zoning Application Portal", "url": "https://zap.planning.nyc.gov/projects/2026X0362" }
+          },
+          {
+            "id": "zap-milestone:2026X0362-cb",
+            "kind": "zap_milestone",
+            "title": "Community Board Review",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": { "value": "2026-02-21", "precision": "day", "basis": "actual_end", "certainty": "actual" },
+            "source": { "id": "zap-project-api", "label": "Zoning Application Portal", "url": "https://zap.planning.nyc.gov/projects/2026X0362" }
+          },
+          {
+            "id": "zap-milestone:2026X0362-bp",
+            "kind": "zap_milestone",
+            "title": "Borough President Review",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": { "value": "2026-02-21", "precision": "day", "basis": "actual_end", "certainty": "actual" },
+            "source": { "id": "zap-project-api", "label": "Zoning Application Portal", "url": "https://zap.planning.nyc.gov/projects/2026X0362" }
+          },
+          {
+            "id": "zap-milestone:2026X0362-council",
+            "kind": "zap_milestone",
+            "title": "City Council Review",
+            "detail": "Adopted",
+            "status": "Completed",
+            "outcome": "Adopted",
+            "time": { "value": "2026-05-20", "precision": "day", "basis": "actual_end", "certainty": "actual" },
+            "source": { "id": "zap-project-api", "label": "Zoning Application Portal", "url": "https://zap.planning.nyc.gov/projects/2026X0362" }
+          }
+        ],
+        "gaps": [],
+        "lag": { "open_data_vs_portal": { "status": "unknown", "days": null } }
+      }
+    }
+  ]
+}

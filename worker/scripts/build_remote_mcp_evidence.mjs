@@ -180,7 +180,7 @@ export async function buildRemoteMcpEvidenceReceipt() {
           /from\s+["'][^"']*(?:cloudflare-os|gatekeeper-mcp)[^"']*["']/gi,
         ),
       },
-      status: toolEvidence.length === 12
+      status: toolEvidence.length === 14
         && toolEvidence.every(({ parity }) => parity === "pass")
         ? "pass"
         : "fail",

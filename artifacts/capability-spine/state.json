@@ -6,7 +6,7 @@
     "capability_ready": {
       "satisfied": true,
       "state": "proven",
-      "registered_public_capabilities": 12,
+      "registered_public_capabilities": 14,
       "reason": null
     },
     "live_mcp_verified": {
