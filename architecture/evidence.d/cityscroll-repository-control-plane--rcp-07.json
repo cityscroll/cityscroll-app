@@ -32,6 +32,10 @@
     {
       "id": "repository-naming-boundary-receipt",
       "path": "docs/repository-control-plane/naming-boundary.v1.json"
+    },
+    {
+      "id": "internal-vocabulary-test-helper",
+      "path": "test/helpers/internal_vocabulary.mjs"
     }
   ]
 }
