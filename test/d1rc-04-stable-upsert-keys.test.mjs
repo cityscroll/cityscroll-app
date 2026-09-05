@@ -116,6 +116,9 @@ test("the manifest names an identity for every table and the validator enforces 
   const fts = badCompanion.models.find((model) => model.model_id === "keyword_search").tables.find((table) => table.name === "keyword_search_fts");
   fts.identity = { strategy: "companion", of: "keyword_search_families" };
   assert.throws(() => validateManifest(badCompanion), /must match the key columns of keyword_search_families/);
+  const badDuplicates = clone(manifest);
+  badDuplicates.models[0].tables[0].identity.duplicates = "collapse_identical";
+  assert.throws(() => validateManifest(badDuplicates), /identity\.duplicates must be one of reject/);
   const badDeletes = clone(manifest);
   badDeletes.models[0].deletes = "ignore";
   assert.throws(() => validateManifest(badDeletes), /deletes must be one of/);
@@ -225,7 +228,7 @@ test("a removed source record is deleted through the delta plan, companions incl
     const deletes = plan.models.find((model) => model.model_id === entry.model_id).partitions;
     const { sql } = statementsForModel(entry, trimmed[entry.model_id], { mode: "upsert", deletes });
     if (entry.model_id === "keyword_search") {
-      assert.match(sql, /^DELETE FROM keyword_search_fts WHERE document_id = 'alpha:h:[0-9a-f]+';$/m);
+      assert.match(sql, /^DELETE FROM keyword_search_fts WHERE rowid = \(SELECT rowid FROM keyword_search_documents WHERE document_id = 'alpha:h:[0-9a-f]+'\);$/m);
       assert.match(sql, /^DELETE FROM keyword_search_documents WHERE document_id = 'alpha:h:[0-9a-f]+';$/m);
     }
     db.exec(sql);
@@ -243,4 +246,47 @@ test("published rows do not depend on source key order", () => {
   const straight = statementsForModel(modelEntry(manifest, "entity_intelligence"), sources.entity_intelligence, { mode: "upsert" }).sql;
   const reordered = statementsForModel(modelEntry(manifest, "entity_intelligence"), reverseKeys(clone(sources.entity_intelligence)), { mode: "upsert" }).sql;
   assert.equal(reordered, straight);
+});
+
+
+test("graph duplicates collapse only when their published payloads agree", () => {
+  const source = fixtureSources().entity_intelligence;
+  const entry = modelEntry(manifest, "entity_intelligence");
+  source.by_ref["agency:dep"].links = [clone(source.by_ref["vendor:a"].links[0])];
+  assert.equal(tableRows(entry, source).collapsed, 1);
+  for (const field of ["confidence", "provenance"]) {
+    const changed = clone(source);
+    changed.by_ref["agency:dep"].links[0][field] = field === "confidence" ? "derived" : { observed_at: "2026-09-02" };
+    for (const mode of BUILD_MODES) {
+      assert.throws(() => statementsForModel(entry, changed, { mode }), (error) => (
+        error instanceof AmbiguousKeyError && error.table === "entity_intelligence_graph_links"));
+    }
+  }
+});
+
+test("FTS replacement uses indexed document lookups and preserves rowids across churn", { skip: !DatabaseSync && "node:sqlite unavailable" }, () => {
+  const entry = modelEntry(manifest, "keyword_search");
+  const sources = fixtureSources();
+  const db = openDatabase();
+  db.exec(statementsForModel(entry, sources.keyword_search).sql);
+  const changed = clone(sources);
+  changed.keyword_search.families.alpha.documents.shift();
+  changed.keyword_search.families.beta.documents.push({ object_ref: "notice:b2", title: "Replacement" });
+  const plan = planDelta({ prior: snapshotFor(manifest, sources), current: snapshotFor(manifest, changed) });
+  const deletes = plan.models.find((model) => model.model_id === "keyword_search").partitions;
+  const sql = statementsForModel(entry, changed.keyword_search, { mode: "upsert", deletes }).sql;
+  for (const statement of sql.split("\n").filter((line) => line.startsWith("DELETE FROM keyword_search_fts WHERE"))) {
+    const details = db.prepare(`EXPLAIN QUERY PLAN ${statement}`).all().map((row) => row.detail);
+    assert.ok(details.some((detail) => /SEARCH keyword_search_documents USING COVERING INDEX/.test(detail)), details.join("\n"));
+    assert.ok(details.some((detail) => /keyword_search_fts VIRTUAL TABLE INDEX .*:=/.test(detail)), details.join("\n"));
+  }
+  db.exec(sql);
+  const rowids = () => db.prepare("SELECT rowid, document_id FROM keyword_search_fts ORDER BY rowid").all();
+  const once = rowids();
+  assert.deepEqual(once, db.prepare("SELECT rowid, document_id FROM keyword_search_documents ORDER BY rowid").all());
+  db.exec(sql);
+  assert.deepEqual(rowids(), once);
+  assert.deepEqual(ftsHits(db, "first"), []);
+  assert.deepEqual(ftsHits(db, "replacement"), ["beta:notice:b2"]);
+  db.close();
 });

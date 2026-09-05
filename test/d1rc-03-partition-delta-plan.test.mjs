@@ -230,13 +230,13 @@ test("the CLI snapshots the live read models and plans a zero-operation delta ag
   }
 });
 
-test("graph deltas follow published labels, dates, agency names, and last-link-wins payloads", () => {
+test("graph deltas follow published labels, dates, agency names, and link payloads", () => {
   const sources = fixtureSources();
   const doc = sources.entity_intelligence;
   doc.by_ref["vendor:a"].domains.meetings = { objects: [{
     subject_ref: "meeting:m1", root_ref: "agency:dep", label: "Original meeting", when: "2026-09-01",
   }] };
-  doc.by_ref["agency:dep"].links = [{ ...doc.by_ref["vendor:a"].links[0], confidence: "exact" }];
+  doc.by_ref["vendor:a"].links[0].confidence = "exact";
   const prior = snapshotFor(manifest, sources);
   const graphUpdates = (changed) => planDelta({ prior, current: snapshotFor(manifest, changed) })
     .models.find((model) => model.model_id === "entity_intelligence").partitions[0].ops.update
@@ -245,7 +245,7 @@ test("graph deltas follow published labels, dates, agency names, and last-link-w
     (value) => { value.by_ref["vendor:a"].domains.meetings.objects[0].label = "Renamed meeting"; },
     (value) => { value.by_ref["vendor:a"].domains.meetings.objects[0].when = "2026-09-02"; },
     (value) => { value.by_ref["agency:dep"].root.display_name = "Department of Environmental Protection"; },
-    (value) => { value.by_ref["agency:dep"].links[0].confidence = "derived"; },
+    (value) => { value.by_ref["vendor:a"].links[0].confidence = "derived"; },
   ]) {
     const changed = clone(sources);
     mutate(changed.entity_intelligence);
@@ -255,8 +255,10 @@ test("graph deltas follow published labels, dates, agency names, and last-link-w
     }]);
   }
   const changed = clone(sources);
-  changed.entity_intelligence.by_ref["vendor:a"].links[0].confidence = "ignored earlier duplicate";
-  assert.deepEqual(graphUpdates(changed), []);
+  changed.entity_intelligence.by_ref["agency:dep"].links = [{
+    ...changed.entity_intelligence.by_ref["vendor:a"].links[0], confidence: "derived",
+  }];
+  assert.throws(() => graphUpdates(changed), { name: "AmbiguousKeyError" });
 });
 
 test("rebuilds enforce watermarks for first publication and existing partitions", () => {

@@ -51,7 +51,7 @@ const MODEL_KEYS = Object.freeze([
 
 export const IDENTITY_STRATEGIES = Object.freeze(["natural", "companion"]);
 export const IDENTITY_FALLBACKS = Object.freeze(["content_hash"]);
-export const DUPLICATE_POLICIES = Object.freeze(["reject", "collapse_identical"]);
+export const DUPLICATE_POLICIES = Object.freeze(["reject"]);
 export const DELETE_POLICIES = Object.freeze(["delete"]);
 
 const MODEL_ID_PATTERN = /^[a-z][a-z0-9]*(?:_[a-z0-9]+)*$/;
