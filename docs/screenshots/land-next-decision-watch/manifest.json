@@ -1,0 +1,123 @@
+{
+  "schema_version": 1,
+  "feature": "land-next-decision-watch",
+  "card": "cityscroll-land-decision-path/ldp-16-procedure-aware-watches",
+  "route": "component-harness:land-next-decision-watch",
+  "revision": "d550908d1b930e815409eb4ae554803a07d5b5d2",
+  "files": [
+    {
+      "name": "eligible-390.png",
+      "bytes": 85406,
+      "sha256": "69bf24b8f5c6184a4f2cbffa2643587156fd4d264a81f4bb12fb02d15bdef9ca",
+      "route": "component-harness:land-next-decision-watch",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "d550908d1b930e815409eb4ae554803a07d5b5d2",
+      "data_vintage": "2026-08-23T07:59:14.162Z",
+      "specimen": "eligible",
+      "project_id": "2026Q0210",
+      "assertion": "A1: reliability GO + resolved Council stage/actor exposes Follow next decision",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": []
+      }
+    },
+    {
+      "name": "eligible-1440.png",
+      "bytes": 87994,
+      "sha256": "054d5b0fa0bda81dd07437ca402de1dcb26cf7e39822f1713d7572149c32e843",
+      "route": "component-harness:land-next-decision-watch",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "d550908d1b930e815409eb4ae554803a07d5b5d2",
+      "data_vintage": "2026-08-23T07:59:14.162Z",
+      "specimen": "eligible",
+      "project_id": "2026Q0210",
+      "assertion": "A1: reliability GO + resolved Council stage/actor exposes Follow next decision",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": []
+      }
+    },
+    {
+      "name": "ineligible-390.png",
+      "bytes": 84618,
+      "sha256": "66c1287f7dcf8502f1da5548f17ad46ba580e38911884fb449f196bbaa1001e6",
+      "route": "component-harness:land-next-decision-watch",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "d550908d1b930e815409eb4ae554803a07d5b5d2",
+      "data_vintage": "2026-08-23T07:59:14.162Z",
+      "specimen": "ineligible",
+      "project_id": "2025M0252",
+      "assertion": "A1: a resolved but terminal CPC stage falls back to Follow this project with an explicit reason",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": []
+      }
+    },
+    {
+      "name": "ineligible-1440.png",
+      "bytes": 84637,
+      "sha256": "893a44ac653a39268f92edb16721787bb8c9a3f7765abcfef107caeaa256194c",
+      "route": "component-harness:land-next-decision-watch",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "d550908d1b930e815409eb4ae554803a07d5b5d2",
+      "data_vintage": "2026-08-23T07:59:14.162Z",
+      "specimen": "ineligible",
+      "project_id": "2025M0252",
+      "assertion": "A1: a resolved but terminal CPC stage falls back to Follow this project with an explicit reason",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": []
+      }
+    },
+    {
+      "name": "unknown-390.png",
+      "bytes": 51893,
+      "sha256": "f1b6d097b2c582df8278de20fb0ed11b1addff1e6591f1e0403a17b0f2125410",
+      "route": "component-harness:land-next-decision-watch",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "d550908d1b930e815409eb4ae554803a07d5b5d2",
+      "data_vintage": "2026-08-23T07:59:14.162Z",
+      "specimen": "unknown",
+      "project_id": "2020M0385",
+      "assertion": "A1: an unresolved procedure shows an explicit ineligible reason, never a silent absence",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": []
+      }
+    },
+    {
+      "name": "unknown-1440.png",
+      "bytes": 51477,
+      "sha256": "2cfc7358c01020206a2a8c06c3a9ba38ac6d164650049b2593fe4be812ea9de6",
+      "route": "component-harness:land-next-decision-watch",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "d550908d1b930e815409eb4ae554803a07d5b5d2",
+      "data_vintage": "2026-08-23T07:59:14.162Z",
+      "specimen": "unknown",
+      "project_id": "2020M0385",
+      "assertion": "A1: an unresolved procedure shows an explicit ineligible reason, never a silent absence",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": []
+      }
+    }
+  ]
+}

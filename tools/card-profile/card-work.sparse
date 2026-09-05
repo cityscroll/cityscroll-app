@@ -433,6 +433,7 @@
 /site/land_map_model.mjs
 /site/land_map_performance_budget.mjs
 /site/land_map_selection.mjs
+/site/land_next_decision_watch.mjs
 /site/land_outcomes_matrix.mjs
 /site/land_phase_spine.mjs
 /site/land_procedure_facet.mjs

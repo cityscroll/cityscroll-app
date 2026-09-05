@@ -23,7 +23,11 @@ import {
   materializeLandAuthoritySummaries,
   stampLandAuthoritySummary,
 } from "../site/land_authority_summary.mjs";
-import { landAuthoritySummaryHTML, landAuthorityPanelProjection } from "../site/land_authority_summary_view.mjs";
+import {
+  landAuthoritySummaryHTML,
+  landAuthorityPanelProjection,
+  rememberLandAuthoritySummaries,
+} from "../site/land_authority_summary_view.mjs";
 import { rowToSodaShape } from "../warehouse/lib/zap_lookup.mjs";
 import { shapeZapLookupRow } from "../worker/src/lib/zap_projects_lookup_kv.mjs";
 import {
@@ -41,6 +45,12 @@ const geography = requireJson("../site/data/community_board_geography_lookup.jso
 const warehouse = requireJson("../site/data/zap_projects_warehouse_lookup.json");
 const landDefault = requireJson("../site/data/land_default_ulurp.json");
 const hearings = requireJson("../site/data/land_upcoming_hearings.json");
+// LDP-16: "Follow next decision" gates on the corpus-wide reliability
+// measurement, which in turn depends on a loaded authority-summary corpus.
+// Load the real committed corpus once, matching how site/app/land.mjs loads
+// it before rendering any panel, so this file's affordance assertions
+// measure the actual materialized reliability rather than an empty corpus.
+rememberLandAuthoritySummaries(requireJson("../site/data/land_authority_summary.json"));
 const materializerSrc = readFileSync(new URL("../site/land_authority_summary.mjs", import.meta.url), "utf8");
 const builderSrc = readFileSync(new URL("../tools/build_land_authority_summary.mjs", import.meta.url), "utf8");
 const viewSrc = readFileSync(new URL("../site/land_authority_summary_view.mjs", import.meta.url), "utf8");

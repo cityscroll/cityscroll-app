@@ -11,6 +11,10 @@ import {
   projectCalendarFeedUrl,
   projectCalendarFollowHref,
 } from "./project_calendar.mjs";
+import {
+  measureNextDecisionReliability,
+  nextDecisionEligibility,
+} from "./land_next_decision_watch.mjs";
 
 export const LAND_AUTHORITY_SUMMARY_URL = "data/land_authority_summary.json";
 export const LAND_AUTHORITY_PANEL_HEADING = "Where this stands";
@@ -27,10 +31,25 @@ const ADVISORY_BODY_PREFIXES = Object.freeze([
 ]);
 
 let landAuthorityLookup = null;
+let landAuthorityReliability = null;
 
 export function rememberLandAuthoritySummaries(payload) {
   landAuthorityLookup = payload?.summaries && typeof payload.summaries === "object" ? payload.summaries : {};
+  landAuthorityReliability = null;
   return landAuthorityLookup;
+}
+
+/**
+ * The corpus-wide reliability gate "Follow next decision" depends on (LDP-16).
+ * Measured from whatever authority-summary corpus is currently loaded; a
+ * caller that has not loaded one gets `null`, which the eligibility check
+ * below treats as ineligible rather than falling back to an unmeasured
+ * guess.
+ */
+function currentNextDecisionReliability() {
+  if (!landAuthorityLookup) return null;
+  if (!landAuthorityReliability) landAuthorityReliability = measureNextDecisionReliability(landAuthorityLookup);
+  return landAuthorityReliability;
 }
 
 export function attachLandAuthoritySummaries(target, payload) {
@@ -230,16 +249,21 @@ export function profileLegalBasis(summary) {
 }
 
 /**
- * A "Follow next decision" watch is only offered when the resolved procedure
- * profile names a concrete next stage. An unresolved procedure, a terminal
+ * A "Follow next decision" watch is only offered when (a) the corpus-wide
+ * normalized actor/stage reliability clears its measured threshold (LDP-16),
+ * and (b) this project's own resolved procedure profile names a concrete
+ * next stage. An unmeasured corpus, an unresolved procedure, a terminal
  * stage, or an observed event beyond the resolved profile's own vocabulary
  * (e.g. E4's Council completion under an unresolved §197-e(k) variant) all
  * fall back to "Follow this project" — a real project-level watch, never a
  * placeholder next-decision target.
  */
+function nextDecisionAffordance(summary) {
+  return nextDecisionEligibility({ summary, reliability: currentNextDecisionReliability() });
+}
+
 function hasMaterializedNextDecision(summary) {
-  const next = summary?.expected_next_stage;
-  return summary?.status === "resolved" && Boolean(next?.stage_id || next?.group_id);
+  return nextDecisionAffordance(summary).eligible;
 }
 
 function calendarEligible(published) {
@@ -271,6 +295,7 @@ export function landAuthorityPanelProjection(summary) {
     geography_status: summary.source_basis?.geography?.status || null,
     publisher_checked: published.checked === true,
     watch_target: hasMaterializedNextDecision(summary) ? "next_decision" : "project",
+    next_decision_ineligible_reason: nextDecisionAffordance(summary).reason,
     calendar_eligible: calendarEligible(published),
   };
 }
@@ -286,10 +311,11 @@ function panelActionsHTML(summary, esc, translate) {
   const followUrl = projectCalendarFollowHref(projectId);
   const bits = [];
   if (followUrl) {
-    const nextDecision = hasMaterializedNextDecision(summary);
-    const watchKey = nextDecision ? "land_authority_follow_next" : "next_action_watch_project";
-    const watchTarget = nextDecision ? "next_decision" : "project";
-    bits.push(`<a class="act project-follow-btn" data-land-authority-follow="1" data-project-follow="${esc(watchTarget)}" href="${esc(followUrl)}">${esc(translate(watchKey))}</a>`);
+    const affordance = nextDecisionAffordance(summary);
+    const watchKey = affordance.eligible ? "land_authority_follow_next" : "next_action_watch_project";
+    const watchTarget = affordance.eligible ? "next_decision" : "project";
+    const reasonAttr = affordance.eligible ? "" : ` data-land-authority-next-decision-reason="${esc(affordance.reason || "")}"`;
+    bits.push(`<a class="act project-follow-btn" data-land-authority-follow="1" data-project-follow="${esc(watchTarget)}"${reasonAttr} href="${esc(followUrl)}">${esc(translate(watchKey))}</a>`);
   }
   const published = summary.published_next_opportunity || {};
   if (calendarEligible(published)) {
