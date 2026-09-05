@@ -24,6 +24,14 @@
  */
 
 import { occurrenceDay, evaluateDisplayCluster } from "./calendar_display.mjs";
+import {
+  calendarEventPreviewFacts,
+  renderCalendarEventPreviewButton,
+} from "./calendar_event_preview.mjs";
+
+// Every surface that mounts this component reaches the shared in-place event
+// preview (PX-01) through it, so one import gives a host both halves.
+export { bindCalendarEventPreview } from "./calendar_event_preview.mjs";
 
 export const COMPACT_MONTH_VIEW_SCHEMA = "cityscroll.compact_month_view.v1";
 export const COMPACT_MONTH_NON_RENDER_SCHEMA = "cityscroll.compact_month_non_render.v1";
@@ -156,6 +164,10 @@ function toEntry(occurrence, today) {
     ends_at: occurrence.ends_at,
     timezone: occurrence.timezone,
     state: stateFor(day, today),
+    // Carried for the on-demand preview (PX-01): a real published venue is one
+    // of the facts a reader needs before deciding to open the full page. It is
+    // deliberately not painted into the cell itself.
+    location: occurrence.location ?? null,
     canonical_url: occurrence.canonical_url,
     source: occurrence.source,
     provenance: occurrence.provenance,
@@ -290,12 +302,17 @@ function occurrenceItemHTML(occurrence, esc) {
   const sourceLink = sourceUrl && sourceUrl !== occurrence.canonical_url
     ? `<a class="compact-month-occ-source" href="${esc(sourceUrl)}">Source</a>`
     : "";
+  // The preview trigger is a sibling of the anchor, never a child of it: the
+  // link stays a destination that works with scripting off, through the
+  // context menu and under a modified click, and the button stays an action.
+  const previewButton = renderCalendarEventPreviewButton(calendarEventPreviewFacts(occurrence), { esc });
   return `<li class="${classes.join(" ")}">` +
     `<a class="compact-month-occ-link" href="${esc(occurrence.canonical_url)}">` +
     `<span class="compact-month-occ-kind">${esc(kindLabel)}</span>` +
     (timeLabel ? `<span class="compact-month-occ-time">${esc(timeLabel)}</span>` : "") +
     `<span class="compact-month-occ-title">${esc(occurrence.title || "Civic calendar item")}</span>` +
     "</a>" +
+    previewButton +
     flag + sourceLink +
     "</li>";
 }

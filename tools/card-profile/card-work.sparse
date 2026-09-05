@@ -233,6 +233,8 @@
 /site/browse_view.mjs
 /site/calendar_display.mjs
 /site/calendar_display_state.mjs
+/site/calendar_event_preview.mjs
+/site/calendar_event_preview_boot.mjs
 /site/calendar_occurrence.mjs
 /site/calendar_subscription.mjs
 /site/canonical_entity_interpretation.mjs

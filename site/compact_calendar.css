@@ -157,6 +157,142 @@
   color: var(--muted, #5b6470);
 }
 
+/* ---------- on-demand event preview (PX-01) ---------- */
+
+/* The trigger is progressive enhancement: it stays out of the document's
+   visual flow until `bindCalendarEventPreview` marks a container ready, so a
+   reader without scripting is only ever offered the canonical link, which
+   works for them. */
+.compact-month-occ-preview {
+  display: none;
+}
+
+[data-calendar-event-preview-ready] .compact-month-occ-preview {
+  display: inline-block;
+  margin-top: 2px;
+  padding: 1px 6px;
+  font: inherit;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: var(--color-action, #1a44e0);
+  background: transparent;
+  border: 1px solid currentColor;
+  border-radius: 2px;
+  cursor: pointer;
+  /* A comfortable target on touch without stretching a dense month row. */
+  min-height: 24px;
+}
+
+[data-calendar-event-preview-ready] .compact-month-occ-preview:hover {
+  background: var(--paper-2, #eceef2);
+}
+
+.calendar-event-preview-dialog {
+  max-width: 34rem;
+  width: calc(100vw - 32px);
+  padding: 0;
+  border: 1px solid var(--rule-strong, #7a828f);
+  border-radius: 4px;
+  background: var(--paper-0, #fff);
+  color: var(--ink, #12181f);
+}
+
+.calendar-event-preview-dialog::backdrop {
+  background: rgb(18 24 31 / 45%);
+}
+
+.calendar-event-preview-inner {
+  padding: 16px;
+  font: 14px/1.5 var(--font-interface, ui-sans-serif, system-ui, sans-serif);
+}
+
+.calendar-event-preview-close {
+  float: right;
+  margin: -4px -4px 0 8px;
+  padding: 4px 10px;
+  font: inherit;
+  font-size: 13px;
+  color: inherit;
+  background: transparent;
+  border: 1px solid var(--rule-strong, #7a828f);
+  border-radius: 2px;
+  cursor: pointer;
+  min-height: 32px;
+}
+
+.calendar-event-preview-kicker {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: var(--muted, #5b6470);
+}
+
+.calendar-event-preview-title {
+  margin: 4px 0 8px;
+  font-size: 18px;
+  line-height: 1.25;
+  /* A long procurement title wraps rather than pushing the dialog wide. */
+  overflow-wrap: anywhere;
+}
+
+.calendar-event-preview-notice {
+  margin: 0 0 8px;
+  font-weight: 600;
+  color: var(--color-danger, #c01829);
+}
+
+.calendar-event-preview-facts {
+  margin: 0;
+  display: grid;
+  grid-template-columns: minmax(0, max-content) minmax(0, 1fr);
+  gap: 2px 12px;
+}
+
+.calendar-event-preview-row {
+  display: contents;
+}
+
+.calendar-event-preview-facts dt {
+  font-weight: 600;
+  color: var(--muted, #5b6470);
+}
+
+.calendar-event-preview-facts dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.calendar-event-preview-detail,
+.calendar-event-preview-detail-status {
+  margin: 10px 0 0;
+}
+
+.calendar-event-preview-detail-status {
+  color: var(--muted, #5b6470);
+  font-size: 13px;
+}
+
+.calendar-event-preview-actions {
+  margin: 14px 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: baseline;
+}
+
+.calendar-event-preview-open {
+  font-weight: 600;
+}
+
+.calendar-event-preview-source {
+  font-size: 13px;
+  color: var(--muted, #5b6470);
+}
+
 .compact-month-overflow {
   margin-top: 2px;
 }
@@ -199,6 +335,18 @@
   .compact-month-agenda-day .compact-month-date {
     font-size: 13px;
   }
+
+  /* A finger needs a real target. The compact chip is fine for a pointer in a
+     dense desktop grid, but the agenda a narrow viewport actually reads gives
+     the preview trigger a full 44px touch target and room to sit apart from
+     the event link above it. */
+  [data-calendar-event-preview-ready] .compact-month-occ-preview {
+    min-height: 44px;
+    min-width: 44px;
+    padding: 4px 12px;
+    margin-top: 4px;
+    font-size: 11px;
+  }
 }
 
 /* ---------- print: never fracture, always fully disclosed ---------- */
@@ -229,8 +377,25 @@
 
 .compact-month-occ-link:focus-visible,
 .compact-month-occ-source:focus-visible,
+.compact-month-occ-preview:focus-visible,
 .compact-month-full-list a:focus-visible,
-.compact-month-overflow > summary:focus-visible {
+.compact-month-overflow > summary:focus-visible,
+.calendar-event-preview-dialog a:focus-visible,
+.calendar-event-preview-close:focus-visible {
   outline: 2px solid var(--color-action, #1a44e0);
   outline-offset: 2px;
+}
+
+/* A calendar container that survives its invoking event keeps focus visible
+   when the preview hands focus back to it. */
+.compact-month:focus-visible {
+  outline: 2px solid var(--color-action, #1a44e0);
+  outline-offset: 2px;
+}
+
+@media print {
+  .compact-month-occ-preview,
+  .calendar-event-preview-dialog {
+    display: none !important;
+  }
 }

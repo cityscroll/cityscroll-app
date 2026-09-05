@@ -16,6 +16,10 @@ import { classifyDisplayRecord } from "./calendar_display.mjs";
 import { deduplicateCalendarOccurrences } from "./calendar_occurrence.mjs";
 import { buildCompactMonthView, renderCompactMonth } from "./compact_calendar.mjs";
 
+// The rules route reaches the shared in-place event preview (PX-01) through
+// this module, the same way it reaches the shared month renderer.
+export { bindCalendarEventPreview } from "./compact_calendar.mjs";
+
 const SITE_ORIGIN = "https://cityscroll.org";
 
 const RULE_CALENDAR_HEADING = "Participation month";
