@@ -3,14 +3,20 @@ import { readFileSync } from "node:fs";
 import { describe, it } from "node:test";
 
 import {
+  BOROUGH_BOARD_SOURCE_STATUS,
   JOIN_METHODS,
   REJECTION_REASONS,
   USEFULNESS_THRESHOLD,
+  boardBpBodyKind,
+  boroughBoardRefForRow,
+  boroughBoardSourceStatus,
   buildZapKeyRegistry,
   classifyBoardBpRow,
   isBoardOrBpRow,
+  materializeBoroughBoardRecommendationEdge,
   materializeConsidersEdge,
   measureBoardBpLandBridge,
+  measureBoroughBoardSources,
   recommendationEvidence,
 } from "../warehouse/lib/board_bp_land_bridge.mjs";
 
@@ -60,6 +66,24 @@ function cityRecordBpRow(overrides = {}) {
     meeting_documents: [],
     source_url: "https://a856-cityrecord.nyc.gov/RequestDetail/test",
     event_date: "2026-03-25T10:00:00-04:00",
+    ...overrides,
+  };
+}
+
+/** Real specimen shape: notice 20260518003, the current Brooklyn Borough
+ * Board public-hearing/meeting reference (LDP-14). */
+function boroughBoardRow(overrides = {}) {
+  return {
+    object_type: "meeting",
+    meeting_id: "meeting:city_record:20260518003",
+    source_system: "city_record",
+    agency_name: "Borough President - Brooklyn",
+    title: "BROOKLYN BOROUGH BOARD PUBLIC HEARING AND MEETING",
+    search_text: "BROOKLYN BOROUGH BOARD PUBLIC HEARING AND MEETING",
+    meeting_documents: [],
+    source_url: "https://a856-cityrecord.nyc.gov/RequestDetail/20260518003",
+    event_date: "2026-06-02T18:00:00-04:00",
+    request_id: "20260518003",
     ...overrides,
   };
 }
@@ -253,6 +277,146 @@ describe("measurement receipt", () => {
   });
 });
 
+describe("Borough Board body-kind classification (LDP-14)", () => {
+  it("classifies a community_board row as community_board", () => {
+    assert.equal(boardBpBodyKind(meetingRow()), "community_board");
+  });
+
+  it("classifies a Borough President city_record row without a Borough Board title as borough_president", () => {
+    assert.equal(boardBpBodyKind(cityRecordBpRow()), "borough_president");
+  });
+
+  it("classifies a Borough Board-titled city_record row under a Borough President agency as borough_board", () => {
+    assert.equal(boardBpBodyKind(boroughBoardRow()), "borough_board");
+  });
+
+  it("returns null for an unrelated city_record row", () => {
+    assert.equal(boardBpBodyKind({ source_system: "city_record", agency_name: "Health and Mental Hygiene" }), null);
+  });
+
+  it("resolves the canonical borough-board ref only for a borough_board row", () => {
+    assert.equal(boroughBoardRefForRow(boroughBoardRow()), "borough-board:brooklyn");
+    assert.equal(boroughBoardRefForRow(cityRecordBpRow()), null);
+    assert.equal(boroughBoardRefForRow(meetingRow()), null);
+  });
+});
+
+describe("five-board Borough Board source status (LDP-14)", () => {
+  it("exposes explicit supported/inventory-only status for all five canonical Borough Boards", () => {
+    const sources = measureBoroughBoardSources({
+      rows: [boroughBoardRow()],
+      generatedAt: "2026-09-05T00:00:00.000Z",
+    });
+    assert.equal(sources.sources.length, 5);
+    const byRef = Object.fromEntries(sources.sources.map((source) => [source.body_ref, source]));
+    assert.equal(byRef["borough-board:brooklyn"].status, BOROUGH_BOARD_SOURCE_STATUS.SUPPORTED);
+    for (const ref of ["borough-board:bronx", "borough-board:manhattan", "borough-board:queens", "borough-board:staten-island"]) {
+      assert.equal(byRef[ref].status, BOROUGH_BOARD_SOURCE_STATUS.INVENTORY_ONLY, ref);
+    }
+    assert.equal(sources.coverage.supported, 1);
+    assert.equal(sources.coverage.inventory_only, 4);
+  });
+
+  it("carries a receipt with source record id, url, vintage, and content hash for a supported board", () => {
+    const sources = measureBoroughBoardSources({
+      rows: [boroughBoardRow()],
+      generatedAt: "2026-09-05T00:00:00.000Z",
+    });
+    const brooklyn = sources.sources.find((source) => source.body_ref === "borough-board:brooklyn");
+    assert.equal(brooklyn.receipts.length, 1);
+    assert.equal(brooklyn.receipts[0].source_record_id, "20260518003");
+    assert.match(brooklyn.receipts[0].source_url, /^https:\/\//);
+    assert.ok(brooklyn.receipts[0].vintage);
+    assert.match(brooklyn.receipts[0].content_hash, /^[0-9a-f]{64}$/);
+  });
+
+  it("never guesses a URL for an inventory-only board", () => {
+    const sources = measureBoroughBoardSources({ rows: [], generatedAt: "2026-09-05T00:00:00.000Z" });
+    for (const source of sources.sources) {
+      assert.equal(source.status, BOROUGH_BOARD_SOURCE_STATUS.INVENTORY_ONLY);
+      assert.equal(source.official_url, null);
+      assert.equal(source.receipts.length, 0);
+    }
+  });
+
+  it("reaches the unavailable state only when no official pattern is known", () => {
+    assert.equal(boroughBoardSourceStatus(0, true), BOROUGH_BOARD_SOURCE_STATUS.INVENTORY_ONLY);
+    assert.equal(boroughBoardSourceStatus(2, true), BOROUGH_BOARD_SOURCE_STATUS.SUPPORTED);
+    assert.equal(boroughBoardSourceStatus(0, false), BOROUGH_BOARD_SOURCE_STATUS.UNAVAILABLE);
+  });
+
+  it("throws without a valid generatedAt timestamp", () => {
+    assert.throws(() => measureBoroughBoardSources({ rows: [], generatedAt: "not-a-date" }));
+  });
+});
+
+describe("Borough Board recommendation edge (LDP-14)", () => {
+  it("materializes an issues_recommendation edge from borough-board:brooklyn when exact identifier, action wording, a retained document, and a non-draft disposition all hold", () => {
+    const row = boroughBoardRow({
+      search_text: "BROOKLYN BOROUGH BOARD PUBLIC HEARING AND MEETING Committee recommends approval of ULURP 230183ABX",
+      meeting_documents: [{ document_url: "https://a856-cityrecord.nyc.gov/minutes.pdf" }],
+    });
+    const classification = classifyBoardBpRow(row, registry);
+    assert.equal(classification.status, "matched");
+    assert.equal(classification.project_id, "2023K0183");
+    const edge = materializeBoroughBoardRecommendationEdge(row, classification);
+    assert.ok(edge);
+    assert.equal(edge.relation, "issues_recommendation");
+    assert.equal(edge.from, "borough-board:brooklyn");
+    assert.equal(edge.to, "project:2023K0183");
+    assert.equal(edge.is_decision, false);
+    assert.equal(edge.provenance.document_url, "https://a856-cityrecord.nyc.gov/minutes.pdf");
+  });
+
+  it("A2: affectedness-only and draft-only -- never turns 2025K0305's affected role or Draft disposition into an observed recommendation", () => {
+    const row = boroughBoardRow({
+      search_text: "BROOKLYN BOROUGH BOARD PUBLIC HEARING AND MEETING Committee recommends approval of ULURP 250308MMK",
+      meeting_documents: [{ document_url: "https://a856-cityrecord.nyc.gov/minutes.pdf" }],
+    });
+    const classification = classifyBoardBpRow(row, registry);
+    assert.equal(classification.status, "matched");
+    assert.equal(classification.project_id, "2025K0305");
+    assert.equal(classification.draft_disposition_only, true);
+    assert.equal(materializeBoroughBoardRecommendationEdge(row, classification), null);
+    // Still falls back to a considers-only edge, same as any other matched row.
+    const consider = materializeConsidersEdge(row, classification);
+    assert.equal(consider.relation, "considers");
+  });
+
+  it("stays null for a non-borough-board row even with full recommendation evidence", () => {
+    const row = cityRecordBpRow({
+      search_text: "Committee recommends approval of ULURP 230183ABX",
+      meeting_documents: [{ document_url: "https://example.cb.nyc.gov/minutes.pdf" }],
+    });
+    const classification = classifyBoardBpRow(row, registry);
+    assert.equal(materializeBoroughBoardRecommendationEdge(row, classification), null);
+  });
+
+  it("negative: a Borough Board title alone, with no exact identifier, never produces a recommendation edge (title-only)", () => {
+    const row = boroughBoardRow({ search_text: "BROOKLYN BOROUGH BOARD PUBLIC HEARING AND MEETING" });
+    const classification = classifyBoardBpRow(row, registry);
+    assert.equal(classification.status, "unresolved");
+    assert.equal(materializeBoroughBoardRecommendationEdge(row, classification), null);
+  });
+
+  it("negative: an exact match with no retained document (unsupported source) stays without a recommendation edge", () => {
+    const row = boroughBoardRow({
+      search_text: "BROOKLYN BOROUGH BOARD PUBLIC HEARING AND MEETING recommends approval of ULURP 230183ABX",
+      meeting_documents: [],
+    });
+    const classification = classifyBoardBpRow(row, registry);
+    assert.equal(classification.status, "matched");
+    assert.equal(materializeBoroughBoardRecommendationEdge(row, classification), null);
+  });
+
+  it("negative: a bare meeting-only Borough Board row never produces a recommendation edge", () => {
+    const row = boroughBoardRow({ meeting_documents: [] });
+    const classification = classifyBoardBpRow(row, registry);
+    assert.equal(classification.status, "unresolved");
+    assert.equal(materializeBoroughBoardRecommendationEdge(row, classification), null);
+  });
+});
+
 describe("committed board/BP land-bridge receipt", () => {
   const committedReceipt = JSON.parse(
     readFileSync(new URL("../warehouse/receipts/proof/board_bp_land_bridge_latest.json", import.meta.url)),
@@ -262,6 +426,7 @@ describe("committed board/BP land-bridge receipt", () => {
     assert.equal(committedReceipt.coverage.eligible_rows, 402);
     assert.equal(committedReceipt.coverage.eligible_community_board_rows, 395);
     assert.equal(committedReceipt.coverage.eligible_borough_president_rows, 7);
+    assert.equal(committedReceipt.coverage.eligible_borough_board_rows, 1);
     assert.equal(committedReceipt.coverage.matched, 1);
     assert.equal(committedReceipt.coverage.unresolved, 401);
     assert.equal(committedReceipt.coverage.rejected, 0);
@@ -282,5 +447,23 @@ describe("committed board/BP land-bridge receipt", () => {
     assert.ok(committedReceipt.source_vintage.shared_meeting_read_model_generated_at);
     assert.ok(committedReceipt.source_vintage.zap_projects_warehouse_lookup_materialized_at);
     assert.ok(committedReceipt.source_vintage.land_default_ulurp_generated_at);
+  });
+
+  it("publishes explicit source status for all five canonical Borough Boards, with Brooklyn supported by the real notice", () => {
+    const sources = committedReceipt.borough_board_sources;
+    assert.equal(sources.schema, "cityscroll.borough_board_source_registry.v1");
+    assert.equal(sources.sources.length, 5);
+    assert.equal(sources.coverage.supported, 1);
+    assert.equal(sources.coverage.inventory_only, 4);
+    assert.equal(sources.coverage.unavailable, 0);
+    const brooklyn = sources.sources.find((source) => source.body_ref === "borough-board:brooklyn");
+    assert.equal(brooklyn.status, BOROUGH_BOARD_SOURCE_STATUS.SUPPORTED);
+    assert.equal(brooklyn.receipts[0].source_record_id, "20260518003");
+    assert.match(brooklyn.receipts[0].content_hash, /^[0-9a-f]{64}$/);
+    for (const ref of ["borough-board:bronx", "borough-board:manhattan", "borough-board:queens", "borough-board:staten-island"]) {
+      const source = sources.sources.find((row) => row.body_ref === ref);
+      assert.equal(source.status, BOROUGH_BOARD_SOURCE_STATUS.INVENTORY_ONLY, ref);
+      assert.equal(source.official_url, null, ref);
+    }
   });
 });
