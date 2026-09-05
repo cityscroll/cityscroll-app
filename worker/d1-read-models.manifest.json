@@ -1,0 +1,133 @@
+{
+  "database": "crol-notices",
+  "manifest_version": 1,
+  "models": [
+    {
+      "builder": {
+        "path": "tools/build_worker_d1_read_models.mjs",
+        "version": 1
+      },
+      "model_id": "keyword_search",
+      "model_version": 1,
+      "partition": {
+        "column": "family_id",
+        "kind": "family"
+      },
+      "publication_mode": "replace_all",
+      "source": {
+        "kind": "keyword_search_index_shards",
+        "path": "worker/src/data/keyword_search_index_shards",
+        "snapshot_version_field": "as_of"
+      },
+      "tables": [
+        {
+          "key_columns": [
+            "family_id"
+          ],
+          "name": "keyword_search_families"
+        },
+        {
+          "key_columns": [
+            "document_id"
+          ],
+          "name": "keyword_search_documents"
+        },
+        {
+          "key_columns": [
+            "document_id"
+          ],
+          "name": "keyword_search_fts"
+        }
+      ],
+      "watermark": {
+        "field": "as_of",
+        "kind": "source_snapshot_field",
+        "scope": "partition"
+      }
+    },
+    {
+      "builder": {
+        "path": "tools/build_worker_d1_read_models.mjs",
+        "version": 1
+      },
+      "model_id": "ocp_awards",
+      "model_version": 1,
+      "partition": {
+        "kind": "none"
+      },
+      "publication_mode": "replace_all",
+      "source": {
+        "kind": "ocp_awards_warehouse_lookup",
+        "path": "site/data/ocp_awards_warehouse_lookup.json",
+        "snapshot_version_field": "materialized_at"
+      },
+      "tables": [
+        {
+          "key_columns": [
+            "row_key"
+          ],
+          "name": "ocp_awards_warehouse"
+        }
+      ],
+      "watermark": {
+        "field": "materialized_at",
+        "kind": "source_snapshot_field",
+        "scope": "model"
+      }
+    },
+    {
+      "builder": {
+        "path": "tools/build_worker_d1_read_models.mjs",
+        "version": 1
+      },
+      "model_id": "entity_intelligence",
+      "model_version": 1,
+      "partition": {
+        "kind": "none"
+      },
+      "publication_mode": "replace_all",
+      "source": {
+        "kind": "entity_intelligence_lookup",
+        "path": "worker/src/data/entity_intelligence_lookup.json",
+        "snapshot_version_field": "generated_at"
+      },
+      "tables": [
+        {
+          "key_columns": [
+            "id"
+          ],
+          "name": "entity_intelligence_meta"
+        },
+        {
+          "key_columns": [
+            "entity_ref"
+          ],
+          "name": "entity_intelligence_entities"
+        },
+        {
+          "key_columns": [
+            "subject_ref",
+            "entity_ref",
+            "relation",
+            "confidence"
+          ],
+          "name": "entity_intelligence_subject_refs"
+        },
+        {
+          "key_columns": [
+            "to_ref",
+            "from_ref",
+            "link_type"
+          ],
+          "name": "entity_intelligence_graph_links"
+        }
+      ],
+      "watermark": {
+        "field": "generated_at",
+        "kind": "source_snapshot_field",
+        "scope": "model"
+      }
+    }
+  ],
+  "schema": "cityscroll.d1-read-model-manifest.v1"
+}
