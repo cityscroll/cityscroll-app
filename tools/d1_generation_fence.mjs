@@ -357,12 +357,22 @@ export function fileStore(path) {
   };
 }
 
-function parseArgs(argv) {
+// A bare `--flag` is a boolean, not a flag that swallows the next token. Consuming
+// the next token unconditionally made `--remote --config worker/wrangler.toml` read as
+// remote="--config", left config on its silent default, and then rejected the real path
+// as a positional. Only a token that is not itself a flag can be a value.
+export function parseArgs(argv) {
   const args = { command: argv[2] };
   for (let index = 3; index < argv.length; index += 1) {
     const argument = argv[index];
     if (!argument.startsWith("--")) fail(`unknown argument ${argument}`);
-    args[argument.slice(2)] = argv[++index];
+    const next = argv[index + 1];
+    if (next === undefined || next.startsWith("--")) {
+      args[argument.slice(2)] = "true";
+    } else {
+      args[argument.slice(2)] = next;
+      index += 1;
+    }
   }
   return args;
 }
