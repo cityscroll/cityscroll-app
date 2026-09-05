@@ -376,6 +376,39 @@ export function runRefreshCommands(registry, options = {}) {
       });
     }
   }
+  const materializerConsumers = new Map();
+  for (const artifact of selected) {
+    for (const materializer of artifact.dependent_materializers || []) {
+      if (!materializerConsumers.has(materializer)) materializerConsumers.set(materializer, []);
+      materializerConsumers.get(materializer).push(artifact);
+    }
+  }
+  for (const [materializerPath, declaredConsumers] of materializerConsumers) {
+    const command = ["node", materializerPath];
+    const consumers = declaredConsumers.filter((candidate) => !acquisitionFailed.has(candidate.id));
+    if (!consumers.length) {
+      commands.push({
+        kind: "dependent-materializer",
+        command,
+        source_contract_ids: [...new Set(declaredConsumers.map((candidate) => candidate.source_contract_id))].sort(),
+        artifact_paths: declaredConsumers.map((candidate) => candidate.public_artifact_path).sort(),
+        status: "skipped",
+        exit_code: null,
+        reason: "acquisition failed; retained the last-known-good artifact",
+      });
+      continue;
+    }
+    const result = (options.spawn || spawnSync)(process.execPath, [join(root, materializerPath)], { cwd: root, stdio: options.stdio || "inherit" });
+    const status = result?.error || result?.status !== 0 ? "failed" : "succeeded";
+    commands.push({
+      kind: "dependent-materializer",
+      command,
+      source_contract_ids: [...new Set(consumers.map((candidate) => candidate.source_contract_id))].sort(),
+      artifact_paths: consumers.map((candidate) => candidate.public_artifact_path).sort(),
+      status,
+      exit_code: result?.status ?? null,
+    });
+  }
   return {
     schema: FIRST_CLASS_REFRESH_RECEIPT_SCHEMA,
     generated_at: now,

@@ -487,7 +487,7 @@ test("Parcels use the exact-BBL production corpus for worker recall and coverage
   }, {
     participated: true,
     state: "matched",
-    indexed_count: 320,
+    indexed_count: KEYWORD_INDEX.families.parcels.indexed_count,
   });
 
   const address = await worker.fetch(
