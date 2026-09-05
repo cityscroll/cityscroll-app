@@ -44,6 +44,10 @@
     {
       "name": "the retained SEQRA-01 source inventory receipt is present and parseable (reuse, no new fetch)",
       "result": "pass"
+    },
+    {
+      "name": "SEQRA-08: the label-builder/backtest-corpus receipt is current and its own gate passes (A1-A5, negative rule)",
+      "result": "pass"
     }
   ],
   "entity_type_count": 15,
@@ -53,5 +57,6 @@
   },
   "relation_count": 13,
   "schema": "cityscroll.seqra_ontology_projector_receipt.v1",
-  "seqra01_inventory_receipt_present": true
+  "seqra01_inventory_receipt_present": true,
+  "seqra08_label_backtest_corpus_gate_result": "pass"
 }
