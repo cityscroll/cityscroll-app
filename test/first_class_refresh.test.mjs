@@ -289,6 +289,22 @@ const COMMITTED_DERIVED_ARTIFACTS_WITH_FRESHNESS_ASSERTIONS = [
     artifact: "worker/artifacts/capability-spine/cs-06-remote-mcp.json",
     generator: "worker/scripts/build_remote_mcp_evidence.mjs",
   },
+  {
+    artifact: "test/fixtures/agency_source_identity_compatibility/snapshot.v1.json",
+    generator: "tools/build_agency_source_identity_snapshot.mjs",
+  },
+  {
+    artifact: "site/data/entity_intelligence_lookup.json",
+    generator: "tools/build_entity_intelligence.mjs",
+  },
+  {
+    artifact: "site/data/entity_intelligence_lookup.json (project_agency_vendor bundle) and site/data/property_domain_observations.json (entity_refs_all)",
+    generator: "tools/build_project_agency_vendor_evidence.mjs",
+  },
+  {
+    artifact: "warehouse/fixtures/authority-native-procurement/institution_source_census.v1.json",
+    generator: "tools/check_institution_source_census.mjs",
+  },
 ];
 
 test("the declared materializer graph regenerates every committed derived artifact with a freshness assertion", () => {

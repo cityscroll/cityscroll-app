@@ -43,6 +43,13 @@ trap return_to_default_branch EXIT
 DATA_BRANCH="${DATA_BRANCH_PREFIX}$(date -u +%Y%m%d)"
 git checkout --quiet -B "$DATA_BRANCH" "$DEFAULT_BRANCH"
 
+# Some dependent materializers (e.g. worker/scripts/build_remote_mcp_evidence.mjs) run
+# out of worker/ and need its pinned dependencies. This checkout persists across runs
+# (see the invariant above), so a dependency added since the last run would otherwise
+# make that materializer fail silently mid-refresh, leaving its committed receipt stale
+# against data this same run just refreshed.
+tools/install_worker_dependencies.sh
+
 node tools/first_class_refresh.mjs --run-due
 # --run-due stops after each owning builder. The derived-JSON boundary is the
 # repository's ordered rebuild of every dependent artifact, so run it before
