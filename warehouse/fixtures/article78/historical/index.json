@@ -1,0 +1,295 @@
+{
+  "schema": "cityscroll.article78_historical_fixture.index.v1",
+  "note": "Thirteen documented environmental-review cases, kept as a QA-only historical fixture excluded from every training corpus by construction. The court names are real institutions; every index number, caption, party and specific date below is a synthetic placeholder (synthetic: true on every underlying record) because no specific event detail here is drawn from a public court or agency record already cited in this repository's docs. Project selection and the documented behavioral expectations are real; the litigation detail is not. Every value under `expectations[].expect` is diagnostic-only: it is a fixture-level regression pin for the challenge-watch and decision-supersession derivations, never a claim about real filing prevalence and never a model performance number.",
+  "fixture_role": "qa_historical",
+  "projects": [
+    {
+      "project_id": "inwood_rezoning",
+      "name": "Inwood Rezoning",
+      "determination_key": "determination:city_planning_commission:action_inwood_rezoning_0001:2018-08-08",
+      "cases": [
+        "judicial_case:ny_supreme_court_new_york_county:150101_2018"
+      ],
+      "named_test": false,
+      "expectation_keys": ["inwood_pending_petition_counts_toward_watch"],
+      "expectations": [
+        {
+          "key": "inwood_pending_petition_counts_toward_watch",
+          "kind": "challenge_watch",
+          "determination_key": "determination:city_planning_commission:action_inwood_rezoning_0001:2018-08-08",
+          "expect": { "value": 1, "reason": "counted_under_recorded_search" }
+        }
+      ]
+    },
+    {
+      "project_id": "gowanus_neighborhood_rezoning",
+      "name": "Gowanus Neighborhood Rezoning",
+      "determination_key": "determination:city_planning_commission:action_gowanus_rezoning_0001:2021-11-23",
+      "cases": [
+        "judicial_case:ny_supreme_court_kings_county:500201_2022",
+        "judicial_case:ny_supreme_court_kings_county:500202_2022"
+      ],
+      "named_test": true,
+      "expectation_keys": [
+        "gowanus_filing_watch_high_service_failure_separate_from_merits",
+        "gowanus_service_failure_does_not_reach_merits"
+      ],
+      "expectations": [
+        {
+          "key": "gowanus_filing_watch_high_service_failure_separate_from_merits",
+          "kind": "challenge_watch",
+          "determination_key": "determination:city_planning_commission:action_gowanus_rezoning_0001:2021-11-23",
+          "expect": { "value": 2, "reason": "counted_under_recorded_search" }
+        },
+        {
+          "key": "gowanus_service_failure_does_not_reach_merits",
+          "kind": "case_outcome",
+          "case_key": "judicial_case:ny_supreme_court_kings_county:500201_2022",
+          "expect": {
+            "procedural_survival": "dismissed_other_threshold",
+            "durable_petitioner_relief": "none",
+            "remedy_exposure": "no_remedy_ordered"
+          }
+        }
+      ]
+    },
+    {
+      "project_id": "haven_green_elizabeth_street_garden",
+      "name": "Haven Green / Elizabeth Street Garden",
+      "determination_key": "determination:city_planning_commission:action_haven_green_0001:2020-08-11",
+      "cases": [
+        "judicial_case:ny_supreme_court_new_york_county:155001_2020"
+      ],
+      "named_test": true,
+      "expectation_keys": ["trial_win_reversed_on_appeal_is_not_durable"],
+      "expectations": [
+        {
+          "key": "trial_win_reversed_on_appeal_is_not_durable",
+          "kind": "case_outcome",
+          "case_key": "judicial_case:ny_supreme_court_new_york_county:155001_2020",
+          "expect": {
+            "durable_petitioner_relief": "none",
+            "remedy_exposure": "no_remedy_ordered"
+          }
+        }
+      ]
+    },
+    {
+      "project_id": "city_point",
+      "name": "City Point",
+      "determination_key": "determination:city_planning_commission:action_city_point_0001:2014-05-20",
+      "cases": [
+        "judicial_case:ny_supreme_court_kings_county:501301_2014",
+        "judicial_case:ny_supreme_court_kings_county:501302_2014"
+      ],
+      "named_test": true,
+      "expectation_keys": [
+        "city_point_filing_watch_high_wage_only_theory_weak_labor_not_misconduct",
+        "city_point_wage_theory_recorded_and_weak"
+      ],
+      "expectations": [
+        {
+          "key": "city_point_filing_watch_high_wage_only_theory_weak_labor_not_misconduct",
+          "kind": "challenge_watch",
+          "determination_key": "determination:city_planning_commission:action_city_point_0001:2014-05-20",
+          "expect": { "value": 2, "reason": "counted_under_recorded_search" }
+        },
+        {
+          "key": "city_point_wage_theory_recorded_and_weak",
+          "kind": "claim_theory",
+          "case_key": "judicial_case:ny_supreme_court_kings_county:501302_2014",
+          "expect": {
+            "theory_category": "substantive_seqra_ceqr",
+            "case_outcome": { "durable_petitioner_relief": "none" }
+          }
+        }
+      ]
+    },
+    {
+      "project_id": "jewish_home_lifecare_ps_163",
+      "name": "Jewish Home Lifecare / P.S. 163",
+      "determination_key": "determination:city_planning_commission:action_jewish_home_lifecare_0001:2015-06-24",
+      "cases": [
+        "judicial_case:ny_supreme_court_new_york_county:156201_2015"
+      ],
+      "named_test": false,
+      "expectation_keys": ["jewish_home_pending_petition_counts_toward_watch"],
+      "expectations": [
+        {
+          "key": "jewish_home_pending_petition_counts_toward_watch",
+          "kind": "challenge_watch",
+          "determination_key": "determination:city_planning_commission:action_jewish_home_lifecare_0001:2015-06-24",
+          "expect": { "value": 1, "reason": "counted_under_recorded_search" }
+        }
+      ]
+    },
+    {
+      "project_id": "200_amsterdam_avenue",
+      "name": "200 Amsterdam Avenue",
+      "determination_key": "determination:department_of_buildings:action_200_amsterdam_0001:2017-10-05",
+      "cases": [
+        "judicial_case:ny_supreme_court_new_york_county:157301_2018",
+        "judicial_case:ny_supreme_court_new_york_county:157302_2018"
+      ],
+      "named_test": true,
+      "expectation_keys": [
+        "200_amsterdam_prior_administrative_challenge_affects_watch_construction_affects_remedy",
+        "200_amsterdam_construction_restrained_remedy"
+      ],
+      "expectations": [
+        {
+          "key": "200_amsterdam_prior_administrative_challenge_affects_watch_construction_affects_remedy",
+          "kind": "challenge_watch",
+          "determination_key": "determination:department_of_buildings:action_200_amsterdam_0001:2017-10-05",
+          "expect": { "value": 2, "reason": "counted_under_recorded_search" }
+        },
+        {
+          "key": "200_amsterdam_construction_restrained_remedy",
+          "kind": "case_outcome",
+          "case_key": "judicial_case:ny_supreme_court_new_york_county:157302_2018",
+          "expect": {
+            "durable_petitioner_relief": "injunctive_relief",
+            "remedy_exposure": "construction_restrained"
+          }
+        }
+      ]
+    },
+    {
+      "project_id": "east_side_coastal_resiliency",
+      "name": "East Side Coastal Resiliency",
+      "determination_key": "determination:department_of_design_and_construction:action_escr_0001:2019-10-08",
+      "cases": [
+        "judicial_case:ny_supreme_court_new_york_county:158401_2019"
+      ],
+      "named_test": false,
+      "expectation_keys": ["escr_remand_remedy_recorded_separately_from_relief"],
+      "expectations": [
+        {
+          "key": "escr_remand_remedy_recorded_separately_from_relief",
+          "kind": "case_outcome",
+          "case_key": "judicial_case:ny_supreme_court_new_york_county:158401_2019",
+          "expect": {
+            "durable_petitioner_relief": "remand_for_further_agency_action",
+            "remedy_exposure": "record_remand_only"
+          }
+        }
+      ]
+    },
+    {
+      "project_id": "soho_noho_neighborhood_plan",
+      "name": "SoHo/NoHo Neighborhood Plan",
+      "determination_key": "determination:city_planning_commission:action_soho_noho_0001:2021-12-20",
+      "cases": [],
+      "named_test": false,
+      "expectation_keys": ["soho_noho_adequate_search_zero_is_a_real_zero"],
+      "expectations": [
+        {
+          "key": "soho_noho_adequate_search_zero_is_a_real_zero",
+          "kind": "challenge_watch",
+          "determination_key": "determination:city_planning_commission:action_soho_noho_0001:2021-12-20",
+          "expect": { "value": 0, "reason": "counted_under_recorded_search" }
+        }
+      ]
+    },
+    {
+      "project_id": "250_water_street",
+      "name": "250 Water Street",
+      "determination_key": "determination:city_planning_commission:action_250_water_0001:2022-12-15",
+      "cases": [],
+      "named_test": false,
+      "expectation_keys": ["250_water_narrow_window_search_is_null_not_zero"],
+      "expectations": [
+        {
+          "key": "250_water_narrow_window_search_is_null_not_zero",
+          "kind": "challenge_watch",
+          "determination_key": "determination:city_planning_commission:action_250_water_0001:2022-12-15",
+          "expect": { "value": null, "reason": "recorded_search_does_not_cover_this_determination" }
+        }
+      ]
+    },
+    {
+      "project_id": "mott_haven_educational_campus",
+      "name": "Mott Haven Educational Campus",
+      "determination_key": "determination:school_construction_authority:action_mott_haven_0001:2016-06-29",
+      "cases": [],
+      "named_test": true,
+      "expectation_keys": [
+        "mott_haven_missing_monitoring_elevates_durable_relief_diagnostic",
+        "mott_haven_diagnostic_metric_marked_diagnostic_only"
+      ],
+      "expectations": [
+        {
+          "key": "mott_haven_missing_monitoring_elevates_durable_relief_diagnostic",
+          "kind": "challenge_watch",
+          "determination_key": "determination:school_construction_authority:action_mott_haven_0001:2016-06-29",
+          "expect": { "value": null, "reason": "recorded_search_does_not_cover_this_determination" }
+        },
+        {
+          "key": "mott_haven_diagnostic_metric_marked_diagnostic_only",
+          "kind": "diagnostic",
+          "metric_name": "mott_haven_durable_relief_risk",
+          "metric_value": "elevated"
+        }
+      ]
+    },
+    {
+      "project_id": "innovation_qns",
+      "name": "Innovation QNS",
+      "determination_key": "determination:city_planning_commission:action_innovation_qns_0001:2023-06-08",
+      "cases": [
+        "judicial_case:ny_supreme_court_queens_county:705501_2023"
+      ],
+      "named_test": true,
+      "expectation_keys": [
+        "innovation_qns_retains_and_explains_a_deliberate_false_positive",
+        "innovation_qns_coverage_note_documents_false_positive"
+      ],
+      "expectations": [
+        {
+          "key": "innovation_qns_retains_and_explains_a_deliberate_false_positive",
+          "kind": "challenge_watch",
+          "determination_key": "determination:city_planning_commission:action_innovation_qns_0001:2023-06-08",
+          "expect": { "value": 0, "reason": "counted_under_recorded_search" }
+        },
+        {
+          "key": "innovation_qns_coverage_note_documents_false_positive",
+          "kind": "coverage_note_contains",
+          "coverage_key": "search_coverage:unified_court_system_ecourts:55f9536b67b3f3a2:20231120t000000z",
+          "contains": "false positive"
+        }
+      ]
+    },
+    {
+      "project_id": "halletts_north",
+      "name": "Halletts North",
+      "determination_key": "determination:board_of_standards_and_appeals:action_halletts_north_0001:2018-03-13",
+      "cases": [],
+      "named_test": false,
+      "expectation_keys": ["halletts_north_inadequate_coverage_is_null_not_zero"],
+      "expectations": [
+        {
+          "key": "halletts_north_inadequate_coverage_is_null_not_zero",
+          "kind": "challenge_watch",
+          "determination_key": "determination:board_of_standards_and_appeals:action_halletts_north_0001:2018-03-13",
+          "expect": { "value": null, "reason": "recorded_search_does_not_cover_this_determination" }
+        }
+      ]
+    },
+    {
+      "project_id": "bronx_metro_north_station_area_plan",
+      "name": "Bronx Metro-North Station Area Plan",
+      "determination_key": "determination:city_planning_commission:action_bronx_metro_north_0001:2023-12-13",
+      "cases": [],
+      "named_test": true,
+      "expectation_keys": ["bronx_metro_north_eis_multiple_actions_still_insufficient_for_high_watch"],
+      "expectations": [
+        {
+          "key": "bronx_metro_north_eis_multiple_actions_still_insufficient_for_high_watch",
+          "kind": "challenge_watch",
+          "determination_key": "determination:city_planning_commission:action_bronx_metro_north_0001:2023-12-13",
+          "expect": { "value": null, "reason": "recorded_search_does_not_cover_this_determination" }
+        }
+      ]
+    }
+  ]
+}

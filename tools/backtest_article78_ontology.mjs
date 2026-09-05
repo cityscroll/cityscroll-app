@@ -24,6 +24,15 @@
  * without regenerating the expected outputs fails here rather than quietly
  * changing what the gate asserts.
  *
+ * A78-02's thirteen-project historical QA fixture runs alongside this same
+ * gate: `evaluateHistoricalFixtureExpectations` (`warehouse/lib/
+ * article78_historical_fixture.mjs`) checks every documented expectation
+ * against A78-01's own derivations and is printed under a `diagnostic_only`
+ * section. It is not byte-compared against a committed expected file the way
+ * the six scenarios above are -- there is no `--write` step for it -- because
+ * it is a pass/fail check on live derivations, not a golden-file diff. Any
+ * expectation failure there is also a non-zero exit.
+ *
  * Usage:
  *   node tools/backtest_article78_ontology.mjs           # check (the gate)
  *   node tools/backtest_article78_ontology.mjs --write   # regenerate expected
@@ -47,6 +56,7 @@ import {
   validateArticle78RecordSet,
   validateDeterminationContext,
 } from "../warehouse/lib/article78_litigation.mjs";
+import { evaluateHistoricalFixtureExpectations } from "../warehouse/lib/article78_historical_fixture.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -152,11 +162,22 @@ function firstDifference(actual, expected, path = "$") {
   return `${path}: ${JSON.stringify(actual)} != expected ${JSON.stringify(expected)}`;
 }
 
+/** Render the diagnostic_only historical-fixture section of the receipt (A78-02). */
+function renderHistoricalFixtureSection(report) {
+  const rows = report.expectations.map((row) => `  ${row.ok ? "OK  " : "FAIL"} ${row.kind.padEnd(18)} ${row.key}${row.error ? ` (${row.error})` : ""}`);
+  return [
+    "  historical QA fixture (A78-02, diagnostic_only -- never model performance, never real filing prevalence):",
+    `    projects=${report.project_count} events=${report.event_count} expectations=${report.expectation_count} failed=${report.failed_count}`,
+    ...rows,
+  ].join("\n");
+}
+
 function main(argv) {
   const write = argv.includes("--write");
   const fixtureText = readFileSync(FIXTURE_PATH, "utf8");
   const fixture = JSON.parse(fixtureText);
   const receipt = { ...runArticle78Backtest(fixture), fixture_sha256: sha256Hex(fixtureText) };
+  const historicalReport = evaluateHistoricalFixtureExpectations();
 
   if (write) {
     writeFileSync(EXPECTED_PATH, serialize(receipt), "utf8");
@@ -176,6 +197,7 @@ function main(argv) {
     ...rows,
     "  effective decisions:",
     ...receipt.effective_decisions.map((entry) => `  ${entry.case_key}\n    effective ${entry.effective_decision_key ?? "none"} (${entry.effective_decision_court_level ?? "n/a"})\n    procedural_survival=${entry.case_outcome.procedural_survival} durable_petitioner_relief=${entry.case_outcome.durable_petitioner_relief} remedy_exposure=${entry.case_outcome.remedy_exposure}\n    superseded ${entry.superseded_decision_keys.length}, unresolved ${entry.unresolved ?? "none"}`),
+    renderHistoricalFixtureSection(historicalReport),
     "",
   ].join("\n"));
 
@@ -187,7 +209,12 @@ function main(argv) {
     process.stderr.write(`article78 backtest FAILED: derived output does not match the committed expectation.\n  ${mismatch}\nRegenerate deliberately with: node tools/backtest_article78_ontology.mjs --write\n`);
     return 1;
   }
-  process.stdout.write("article78 backtest OK: derived output matches the committed expectation.\n");
+  if (historicalReport.failed_count > 0) {
+    const failures = historicalReport.expectations.filter((row) => !row.ok);
+    process.stderr.write(`article78 backtest FAILED: the historical QA fixture's documented expectations did not hold:\n  ${JSON.stringify(failures, null, 2)}\n`);
+    return 1;
+  }
+  process.stdout.write("article78 backtest OK: derived output matches the committed expectation, and every historical-fixture expectation holds.\n");
   return 0;
 }
 

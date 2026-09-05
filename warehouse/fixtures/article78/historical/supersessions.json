@@ -1,0 +1,18 @@
+[
+  {
+    "fixture_role": "qa_historical",
+    "project_id": "haven_green_elizabeth_street_garden",
+    "synthetic": true,
+    "record_schema": "cityscroll.article78_litigation.decision_supersession.v1",
+    "supersession_key": "decision_supersession:case_filing:judicial_case:ny_supreme_court_new_york_county:155001_2020:decision:2022-06-15:8737fc2457ba:case_filing:judicial_case:ny_supreme_court_new_york_county:155001_2020:decision:2021-03-01:9d508f039a76",
+    "case_key": "judicial_case:ny_supreme_court_new_york_county:155001_2020",
+    "superseding_decision_key": "case_filing:judicial_case:ny_supreme_court_new_york_county:155001_2020:decision:2022-06-15:8737fc2457ba",
+    "superseded_decision_key": "case_filing:judicial_case:ny_supreme_court_new_york_county:155001_2020:decision:2021-03-01:9d508f039a76",
+    "disposition": "reversed",
+    "procedural_posture": "appeal_as_of_right",
+    "effective_date": "2022-06-15",
+    "observed_at": "2022-07-01T00:00:00Z",
+    "source_id": "article78_historical_qa_fixture",
+    "source_record_id": "supersession/historical/haven_green/0001"
+  }
+]

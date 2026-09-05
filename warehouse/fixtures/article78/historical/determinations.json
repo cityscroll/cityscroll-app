@@ -1,0 +1,119 @@
+[
+  {
+    "fixture_role": "qa_historical",
+    "project_id": "inwood_rezoning",
+    "record_schema": "cityscroll.article78_litigation.determination_context.v1",
+    "determination_key": "determination:city_planning_commission:action_inwood_rezoning_0001:2018-08-08",
+    "finality": "final",
+    "final_and_binding_date": "2018-08-08",
+    "limitations_window_closes_on": null
+  },
+  {
+    "fixture_role": "qa_historical",
+    "project_id": "gowanus_neighborhood_rezoning",
+    "record_schema": "cityscroll.article78_litigation.determination_context.v1",
+    "determination_key": "determination:city_planning_commission:action_gowanus_rezoning_0001:2021-11-23",
+    "finality": "final",
+    "final_and_binding_date": "2021-11-23",
+    "limitations_window_closes_on": null
+  },
+  {
+    "fixture_role": "qa_historical",
+    "project_id": "haven_green_elizabeth_street_garden",
+    "record_schema": "cityscroll.article78_litigation.determination_context.v1",
+    "determination_key": "determination:city_planning_commission:action_haven_green_0001:2020-08-11",
+    "finality": "final",
+    "final_and_binding_date": "2020-08-11",
+    "limitations_window_closes_on": null
+  },
+  {
+    "fixture_role": "qa_historical",
+    "project_id": "city_point",
+    "record_schema": "cityscroll.article78_litigation.determination_context.v1",
+    "determination_key": "determination:city_planning_commission:action_city_point_0001:2014-05-20",
+    "finality": "final",
+    "final_and_binding_date": "2014-05-20",
+    "limitations_window_closes_on": null
+  },
+  {
+    "fixture_role": "qa_historical",
+    "project_id": "jewish_home_lifecare_ps_163",
+    "record_schema": "cityscroll.article78_litigation.determination_context.v1",
+    "determination_key": "determination:city_planning_commission:action_jewish_home_lifecare_0001:2015-06-24",
+    "finality": "final",
+    "final_and_binding_date": "2015-06-24",
+    "limitations_window_closes_on": null
+  },
+  {
+    "fixture_role": "qa_historical",
+    "project_id": "200_amsterdam_avenue",
+    "record_schema": "cityscroll.article78_litigation.determination_context.v1",
+    "determination_key": "determination:department_of_buildings:action_200_amsterdam_0001:2017-10-05",
+    "finality": "final",
+    "final_and_binding_date": "2017-10-05",
+    "limitations_window_closes_on": null
+  },
+  {
+    "fixture_role": "qa_historical",
+    "project_id": "east_side_coastal_resiliency",
+    "record_schema": "cityscroll.article78_litigation.determination_context.v1",
+    "determination_key": "determination:department_of_design_and_construction:action_escr_0001:2019-10-08",
+    "finality": "final",
+    "final_and_binding_date": "2019-10-08",
+    "limitations_window_closes_on": null
+  },
+  {
+    "fixture_role": "qa_historical",
+    "project_id": "soho_noho_neighborhood_plan",
+    "record_schema": "cityscroll.article78_litigation.determination_context.v1",
+    "determination_key": "determination:city_planning_commission:action_soho_noho_0001:2021-12-20",
+    "finality": "final",
+    "final_and_binding_date": "2021-12-20",
+    "limitations_window_closes_on": null
+  },
+  {
+    "fixture_role": "qa_historical",
+    "project_id": "250_water_street",
+    "record_schema": "cityscroll.article78_litigation.determination_context.v1",
+    "determination_key": "determination:city_planning_commission:action_250_water_0001:2022-12-15",
+    "finality": "final",
+    "final_and_binding_date": "2022-12-15",
+    "limitations_window_closes_on": null
+  },
+  {
+    "fixture_role": "qa_historical",
+    "project_id": "mott_haven_educational_campus",
+    "record_schema": "cityscroll.article78_litigation.determination_context.v1",
+    "determination_key": "determination:school_construction_authority:action_mott_haven_0001:2016-06-29",
+    "finality": "final",
+    "final_and_binding_date": "2016-06-29",
+    "limitations_window_closes_on": null
+  },
+  {
+    "fixture_role": "qa_historical",
+    "project_id": "innovation_qns",
+    "record_schema": "cityscroll.article78_litigation.determination_context.v1",
+    "determination_key": "determination:city_planning_commission:action_innovation_qns_0001:2023-06-08",
+    "finality": "final",
+    "final_and_binding_date": "2023-06-08",
+    "limitations_window_closes_on": null
+  },
+  {
+    "fixture_role": "qa_historical",
+    "project_id": "halletts_north",
+    "record_schema": "cityscroll.article78_litigation.determination_context.v1",
+    "determination_key": "determination:board_of_standards_and_appeals:action_halletts_north_0001:2018-03-13",
+    "finality": "final",
+    "final_and_binding_date": "2018-03-13",
+    "limitations_window_closes_on": null
+  },
+  {
+    "fixture_role": "qa_historical",
+    "project_id": "bronx_metro_north_station_area_plan",
+    "record_schema": "cityscroll.article78_litigation.determination_context.v1",
+    "determination_key": "determination:city_planning_commission:action_bronx_metro_north_0001:2023-12-13",
+    "finality": "final",
+    "final_and_binding_date": "2023-12-13",
+    "limitations_window_closes_on": null
+  }
+]

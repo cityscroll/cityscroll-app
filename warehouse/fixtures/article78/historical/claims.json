@@ -1,0 +1,30 @@
+[
+  {
+    "fixture_role": "qa_historical",
+    "project_id": "city_point",
+    "synthetic": true,
+    "record_schema": "cityscroll.article78_litigation.claim_theory.v1",
+    "claim_key": "claim_theory:judicial_case:ny_supreme_court_kings_county:501302_2014:substantive_seqra_ceqr:cd6862ff09ef",
+    "case_key": "judicial_case:ny_supreme_court_kings_county:501302_2014",
+    "theory_category": "substantive_seqra_ceqr",
+    "description": "The environmental review's hard look at construction-period conditions should have separately addressed prevailing-wage and labor-standards compliance on the project's construction workforce.",
+    "raised_in_filing_key": "case_filing:judicial_case:ny_supreme_court_kings_county:501302_2014:decision:2015-04-02:1ef4aa6b9c8c",
+    "observed_at": "2014-11-15T00:00:00Z",
+    "source_id": "article78_historical_qa_fixture",
+    "source_record_id": "claim/historical/city_point/0001"
+  },
+  {
+    "fixture_role": "qa_historical",
+    "project_id": "200_amsterdam_avenue",
+    "synthetic": true,
+    "record_schema": "cityscroll.article78_litigation.claim_theory.v1",
+    "claim_key": "claim_theory:judicial_case:ny_supreme_court_new_york_county:157301_2018:procedural:0dbfb797763a",
+    "case_key": "judicial_case:ny_supreme_court_new_york_county:157301_2018",
+    "theory_category": "procedural",
+    "description": "Before this proceeding was filed, the same objection to the building permit was first raised as an administrative appeal to the Board of Standards and Appeals; that prior administrative challenge is recorded here because it bears on the determination's search coverage, not because it restates a claim theory decided on the merits.",
+    "raised_in_filing_key": "case_filing:judicial_case:ny_supreme_court_new_york_county:157301_2018:decision:2018-11-01:57447ca60483",
+    "observed_at": "2018-07-01T00:00:00Z",
+    "source_id": "article78_historical_qa_fixture",
+    "source_record_id": "claim/historical/200_amsterdam/0001"
+  }
+]
