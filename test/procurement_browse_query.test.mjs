@@ -53,7 +53,7 @@ function comparable(row) {
     .map((field) => [field, row[field]]));
 }
 
-test("bounded Contracts queries are exactly equivalent to the legacy full read", () => {
+test("bounded Contracts queries are exactly equivalent to the full row read", () => {
   assert.equal(validateProcurementBrowseQueryManifest(committedManifest), true);
   assert.equal(committedManifest.row_count, fullBrowse.rows.length);
 
@@ -98,7 +98,7 @@ test("query artifacts carry freshness and regenerate changed source rows", () =>
   assert.equal(combineProcurementBrowseQueryShards(artifacts.manifest, artifacts.shards).length, changed.rows.length);
 });
 
-test("a refreshed source artifact is served and stale shards fall back", async () => {
+test("a refreshed source artifact is served and stale shards report unavailable", async () => {
   const changed = {
     ...fullBrowse,
     source_model_fingerprint: "source-fingerprint-after-refresh",
@@ -112,36 +112,39 @@ test("a refreshed source artifact is served and stale shards fall back", async (
     fetchImpl: async (url) => {
       calls.push(url);
       if (url === "manifest") return response(true, artifacts.manifest);
-      if (url === "legacy") return response(true, fullBrowse);
       const index = artifacts.manifest.shards.findIndex((descriptor) => `data/${descriptor.path}` === url);
       return response(index >= 0, index >= 0 ? artifacts.shards[index] : null);
     },
     manifestUrl: "manifest",
-    legacyUrl: "legacy",
     options: { mode: "award" },
   });
   assert.equal(result.source, "bounded-first-page");
   assert.equal((await result.hydrate()).rows[0].contract_amount, changed.rows[0].contract_amount);
   assert.equal((await result.hydrate()).manifest.source_model_fingerprint, changed.source_model_fingerprint);
-  assert.ok(!calls.includes("legacy"));
+  assert.deepEqual(calls.filter((url) => url === LEGACY_MONOLITH_URL), []);
 
   const stale = artifacts.shards.map((shard, index) => index === 0
     ? { ...shard, source_fingerprint: "stale-source" }
     : shard);
-  const fallback = await loadProcurementBrowseQuery({
+  const degraded = await loadProcurementBrowseQuery({
     fetchImpl: async (url) => {
       if (url === "manifest") return response(true, artifacts.manifest);
-      if (url === "legacy") return response(true, fullBrowse);
       const index = artifacts.manifest.shards.findIndex((descriptor) => `data/${descriptor.path}` === url);
       return response(true, stale[index]);
     },
     manifestUrl: "manifest",
-    legacyUrl: "legacy",
     options: { mode: "archive" },
   });
-  assert.equal((await fallback.hydrate()).source, "legacy-full");
-  assert.deepEqual((await fallback.hydrate()).rows, fullBrowse.rows);
+  const hydrated = await degraded.hydrate();
+  assert.equal(hydrated.source, "hydration-unavailable");
+  assert.equal(hydrated.rows, null);
+  assert.equal(degraded.rows.length, 40);
 });
+
+// The path the reader used to fall back to. It is a repository artifact and a
+// builder input, but the Pages payload no longer carries it, so no read path
+// may request it.
+const LEGACY_MONOLITH_URL = "data/procurement_browse_rows.json";
 
 function response(ok, payload) {
   return { ok, async json() { return payload; } };
@@ -165,7 +168,6 @@ test("default Recent Awards first page does not fetch query rows or the full sna
       throw new Error(`unexpected fetch ${url}`);
     },
     manifestUrl: "manifest",
-    legacyUrl: "legacy",
     options: { mode: "award", sort: "newest" },
   });
   assert.equal(result.source, "bounded-first-page");
@@ -191,50 +193,68 @@ test("a filtered Contracts query loads query rows without the full snapshot", as
       throw new Error(`unexpected fetch ${url}`);
     },
     manifestUrl: "manifest",
-    legacyUrl: "legacy",
     options: { mode: "award", agency: "Housing Preservation and Development", sort: "newest" },
   });
   assert.equal(result.source, "bounded-query");
   assert.ok(result.rows.length <= 40);
-  assert.ok(!calls.includes("legacy"));
+  assert.deepEqual(calls.filter((url) => url === LEGACY_MONOLITH_URL), []);
   assert.ok(calls.includes(`data/${PROCUREMENT_BROWSE_QUERY_ROWS_PATH}`));
 });
 
-test("bounded-artifact failure falls back to the complete legacy read", async () => {
+test("a bounded-artifact failure fails closed instead of reading the unpublished monolith", async () => {
   const calls = [];
-  const result = await loadProcurementBrowseQuery({
-    fetchImpl: async (url) => {
-      calls.push(url);
-      if (url === "manifest") return response(false, null);
-      return response(true, fullBrowse);
-    },
-    manifestUrl: "manifest",
-    legacyUrl: "legacy",
-    options: { mode: "award" },
-  });
-  assert.equal(result.source, "legacy-full");
-  assert.deepEqual(result.rows, fullBrowse.rows);
-  assert.deepEqual((await result.hydrate()).rows, fullBrowse.rows);
-  assert.deepEqual(calls, ["manifest", "legacy"]);
+  await assert.rejects(
+    loadProcurementBrowseQuery({
+      fetchImpl: async (url) => {
+        calls.push(url);
+        return response(false, null);
+      },
+      manifestUrl: "manifest",
+      options: { mode: "award" },
+    }),
+    /procurement browse data unavailable/,
+  );
+  assert.deepEqual(calls, ["manifest"]);
 });
 
-test("a hydration shard failure falls back instead of exposing a truncated set", async () => {
+test("a hydration shard failure reports itself instead of exposing a truncated set", async () => {
   const calls = [];
   const result = await loadProcurementBrowseQuery({
     fetchImpl: async (url) => {
       calls.push(url);
       if (url === "manifest") return response(true, committedManifest);
       if (url.includes("shard-000")) return response(false, null);
-      return response(true, fullBrowse);
+      return response(true, shardPayloads[
+        committedManifest.shards.findIndex((descriptor) => `data/${descriptor.path}` === url)
+      ]);
     },
     manifestUrl: "manifest",
-    legacyUrl: "legacy",
     options: { mode: "archive" },
   });
   assert.equal(result.source, "bounded-first-page");
   assert.equal(result.rows.length, 40);
   const hydrated = await result.hydrate();
-  assert.equal(hydrated.source, "legacy-full");
-  assert.deepEqual(hydrated.rows, fullBrowse.rows);
-  assert.ok(calls.includes("legacy"));
+  assert.equal(hydrated.source, "hydration-unavailable");
+  assert.equal(hydrated.rows, null);
+  // A caller merges only an array of rows, so an unavailable hydration leaves
+  // the painted bounded page in place rather than replacing it with a subset.
+  assert.equal(Array.isArray(hydrated.rows), false);
+  assert.deepEqual(calls.filter((url) => url === LEGACY_MONOLITH_URL), []);
+});
+
+test("the default read path never requests the unpublished monolithic projection", async () => {
+  const calls = [];
+  const result = await loadProcurementBrowseQuery({
+    fetchImpl: async (url) => {
+      calls.push(url);
+      if (url === "data/procurement_browse_query.json") return response(true, committedManifest);
+      const index = committedManifest.shards.findIndex((descriptor) => `data/${descriptor.path}` === url);
+      if (index >= 0) return response(true, shardPayloads[index]);
+      if (url === `data/${PROCUREMENT_BROWSE_QUERY_ROWS_PATH}`) return response(true, committedQueryRows);
+      throw new Error(`unexpected fetch ${url}`);
+    },
+    options: { mode: "award", sort: "newest" },
+  });
+  await result.hydrate();
+  assert.deepEqual(calls.filter((url) => url.includes("procurement_browse_rows.json")), []);
 });

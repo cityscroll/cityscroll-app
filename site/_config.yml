@@ -1,6 +1,20 @@
 # Keep the generated public site limited to visitor-facing content and public
 # project documentation. Source, tests, automation, and local guidance remain
 # available in the repository without becoming Pages routes.
+#
+# A tracked data file that no route reads is excluded on the same grounds.
+# data/procurement_browse_rows.json is the monolithic Contracts Browse
+# projection: it remains a repository artifact and a builder input, but the
+# read path is the bounded manifest, its query rows and the full-row shards
+# that tools/build_shared_procurement_read_model.mjs writes beside it, so
+# publishing it would ship a second and much larger copy of the same rows.
+# data/ocp_awards_warehouse_lookup.json is the materialized award census the
+# procurement builders and the Worker read model consume; no browser route or
+# Pages handler fetches it, and a build-time refresh had already grown it to
+# within a refresh of the Pages per-file guard.
+#
+# The list below is parsed as consecutive "  - value" lines. A comment inside
+# either list ends it, so keep prose here.
 include:
   - _routes.json
   - _worker.js
@@ -14,6 +28,8 @@ exclude:
   - CLAUDE.md
   - PAPERCUTS.md
   - backlog
+  - data/ocp_awards_warehouse_lookup.json
+  - data/procurement_browse_rows.json
   - data/source_health_observations.json
   - data/source_vintage_observations.json
   - data/source_vintage_alternates.json
