@@ -789,6 +789,16 @@ function rulesMemberBlurbTools(){
 }
 
 /**
+ * PHC-05: a hearing date is a separate action from the written-comment
+ * deadline even when both are published on the same rulemaking record —
+ * never conflate the two into one line.
+ */
+function ruleHearingSeparateHTML(hearingDate){
+  if(!hearingDate) return "";
+  return `<p class="rule-part-hearing-note">${escUiHtml(t("rule_part_hearing_separate",{date:ruleDateLabel(hearingDate)}))}</p>`;
+}
+
+/**
  * Disclosure: official comment channel + what makes a comment count + neutral scaffold.
  * Only when the comment window is open.
  */
@@ -803,6 +813,11 @@ function ruleParticipationHTML(path){
     ? `<p><a class="act primary" href="${escUiHtml(path.submit_url)}" ${EXT_ATTRS}>${escUiHtml(t("rule_part_channel_cta"))}${extSR()}</a>
         <span class="muted" style="margin-inline-start:8px">${escUiHtml(t(path.channel_label_key||"rule_part_channel_nyc_rules"))}</span></p>`
     : `<p class="muted">${escUiHtml(t("rule_guide_fallback_step"))}</p>`;
+  // PHC-05: the formal public-record consequence sits below the channel and
+  // deadline (the reader has just been told where and by when to comment) and
+  // above the phase spine rendered separately after this guide.
+  const consequence=`<p class="rule-part-consequence">${escUiHtml(t("rule_part_consequence_receipt"))}</p>`;
+  const hearingNote=ruleHearingSeparateHTML(path.hearing_date);
   const counts=(path.counts_keys||[]).map(k=>`<li>${escUiHtml(t(k))}</li>`).join("");
   const fields=(path.scaffold||[]).map(f=>`
     <div class="rule-scaffold-field">
@@ -814,6 +829,8 @@ function ruleParticipationHTML(path){
     <div class="rule-participation-body">
       <p><b>${escUiHtml(t("rule_part_channel_heading"))}</b> — ${escUiHtml(deadline)}</p>
       ${channel}
+      ${consequence}
+      ${hearingNote}
       <p><b>${escUiHtml(t("rule_part_counts_heading"))}</b></p>
       <ol>${counts}</ol>
       <p><b>${escUiHtml(t("rule_part_scaffold_heading"))}</b></p>
@@ -822,6 +839,27 @@ function ruleParticipationHTML(path){
       <p class="muted" style="margin-top:8px">${escUiHtml(t("rule_part_scaffold_draft_label"))}</p>
       <pre class="rule-scaffold-draft" data-scaffold-draft="" tabindex="0"></pre>
       <button type="button" class="act" data-scaffold-copy="1">${escUiHtml(t("rule_part_scaffold_copy"))}</button>
+    </div>
+  </details>`;
+}
+
+/**
+ * PHC-05: once the comment window has closed, the submission control is
+ * removed — but the public-record explanation stays, distinct from the
+ * closed-out participation guide above. Renders only when a real published
+ * deadline is on record (never a guessed or inferred closure). The phase
+ * spine renders separately, below this, and is unaffected by this state.
+ */
+function ruleClosedConsequenceHTML(consequence){
+  if(!consequence || consequence.open || !consequence.comment_by_date) return "";
+  const closedLine=t("rule_part_closed_deadline_line",{date:ruleDateLabel(consequence.comment_by_date)});
+  const hearingNote=ruleHearingSeparateHTML(consequence.hearing_date);
+  return `<details class="rule-participation rule-participation-closed" data-rule-participation="1" data-rule-participation-state="closed">
+    <summary>${escUiHtml(t("rule_part_closed_summary"))}</summary>
+    <div class="rule-participation-body">
+      <p><b>${escUiHtml(t("rule_part_closed_heading"))}</b> — ${escUiHtml(closedLine)}</p>
+      <p class="rule-part-consequence">${escUiHtml(t("rule_part_consequence_receipt"))}</p>
+      ${hearingNote}
     </div>
   </details>`;
 }
@@ -919,6 +957,13 @@ async function loadRuleLifecycle(r,el){
     participationPath=partTools.buildRulesParticipationPath(paintRec, r, { now: todayISO() });
     assembleScaffold=partTools.assembleScaffoldDraft;
   }
+  // PHC-05: once the window has closed, buildRulesParticipationPath returns
+  // null (no submission control), but the formal public-record consequence
+  // still needs stating when a published deadline is on record.
+  let closedConsequence=null;
+  if(!participationPath && partTools?.buildRuleCommentConsequence){
+    closedConsequence=partTools.buildRuleCommentConsequence(paintRec, r, { now: todayISO() });
+  }
   let memberBlurb=null;
   if(blurbTools?.buildMemberBlurb){
     memberBlurb=blurbTools.buildMemberBlurb(r, paintRec, {
@@ -928,7 +973,7 @@ async function loadRuleLifecycle(r,el){
   }
 
   const spine=ruleEventSpineHTML(rec, phaseTools, stageMap, adoptionModel, calendarTools);
-  const partHtml=ruleParticipationHTML(participationPath);
+  const partHtml=participationPath ? ruleParticipationHTML(participationPath) : ruleClosedConsequenceHTML(closedConsequence);
   const blurbHtml=ruleMemberBlurbHTML(memberBlurb);
   // Participation + member blurb lead the lifecycle so act-now is first; spine remains below.
   el.innerHTML=`${partHtml}${blurbHtml}${spine}`;
@@ -1091,6 +1136,8 @@ globalThis.propertyPlaceChips = propertyPlaceChips;
 globalThis.renderFeed = renderFeed;
 globalThis.renderRulesExplorer = renderRulesExplorer;
 globalThis.ruleParticipationHTML = ruleParticipationHTML;
+globalThis.ruleClosedConsequenceHTML = ruleClosedConsequenceHTML;
+globalThis.ruleHearingSeparateHTML = ruleHearingSeparateHTML;
 globalThis.ruleMemberBlurbHTML = ruleMemberBlurbHTML;
 globalThis.bindRuleParticipationUI = bindRuleParticipationUI;
 globalThis.bindRuleMemberBlurbUI = bindRuleMemberBlurbUI;

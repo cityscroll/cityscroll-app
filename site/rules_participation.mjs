@@ -6,6 +6,10 @@
  * scaffold (who you are / how this rule affects your operation / what you ask).
  * Never advocates a position — structures participation only.
  *
+ * PHC-05 (buildRuleCommentConsequence) adds the formal public-record
+ * consequence of a comment — that it becomes part of a record the agency
+ * must consider — independent of whether the window is open or has closed.
+ *
  * Pure: no DOM, no fetch.
  */
 
@@ -75,22 +79,30 @@ export function participationScaffoldFields() {
  * @param {{ now?: string|Date|null }} [opts]
  * @returns {object|null} null when comment window is not open
  */
-export function buildRulesParticipationPath(rec, noticeRow = null, opts = {}) {
-  const merged = {
+function mergedRuleRecord(rec, noticeRow) {
+  return {
     ...(rec || {}),
     agency: rec?.agency || rec?.agency_name || noticeRow?.agency_name,
     agency_name: rec?.agency_name || noticeRow?.agency_name,
     title: rec?.title || rec?.short_title || noticeRow?.short_title,
     short_title: rec?.short_title || noticeRow?.short_title,
   };
+}
+
+function noticeStageRecord(noticeRow) {
+  return {
+    stage: noticeRow?._ruleStage?.stage || noticeRow?.stage,
+    nyc_rules: noticeRow?._ruleStage?.nyc_rules || noticeRow?.nyc_rules,
+    agency_name: noticeRow?.agency_name,
+    short_title: noticeRow?.short_title,
+  };
+}
+
+export function buildRulesParticipationPath(rec, noticeRow = null, opts = {}) {
+  const merged = mergedRuleRecord(rec, noticeRow);
   if (!hasOpenCommentWindow(merged, opts) && !hasOpenCommentWindow(rec, opts)) {
     // Also accept notice-row stage stamps.
-    const fromNotice = {
-      stage: noticeRow?._ruleStage?.stage || noticeRow?.stage,
-      nyc_rules: noticeRow?._ruleStage?.nyc_rules || noticeRow?.nyc_rules,
-      agency_name: noticeRow?.agency_name,
-      short_title: noticeRow?.short_title,
-    };
+    const fromNotice = noticeStageRecord(noticeRow);
     if (!hasOpenCommentWindow(fromNotice, opts)) return null;
     Object.assign(merged, fromNotice);
   }
@@ -136,6 +148,49 @@ export function buildRulesParticipationPath(rec, noticeRow = null, opts = {}) {
       how_affects: "",
       ask: "",
     },
+  };
+}
+
+/**
+ * PHC-05 — the formal public-record consequence of a rulemaking comment
+ * period, independent of whether the window is still open. Reuses
+ * buildRulesParticipationPath() for the open case so the two never diverge;
+ * once that returns null (closed, or no comment-period evidence at all),
+ * this only reports a closed state when a dated deadline is on record. A
+ * rulemaking record with no comment_by_date anywhere (never had a published
+ * deadline) returns null here too — this never fabricates a "closed" state
+ * from a record that simply lacks comment-period evidence.
+ *
+ * @param {object|null} rec
+ * @param {object|null} noticeRow
+ * @param {{ now?: string|Date|null }} [opts]
+ * @returns {object|null}
+ */
+export function buildRuleCommentConsequence(rec, noticeRow = null, opts = {}) {
+  const openPath = buildRulesParticipationPath(rec, noticeRow, opts);
+  if (openPath) return { ...openPath, open: true };
+
+  const merged = mergedRuleRecord(rec, noticeRow);
+  let facts = extractCommentFacts({
+    ...merged,
+    nyc_rules: merged.nyc_rules || rec?.nyc_rules || noticeRow?._ruleStage?.nyc_rules,
+    stage: merged.stage || rec?.stage || noticeRow?._ruleStage?.stage,
+  });
+  if (!facts.comment_by_date) {
+    const fromNotice = extractCommentFacts(noticeStageRecord(noticeRow));
+    if (fromNotice.comment_by_date) facts = fromNotice;
+  }
+  if (!facts.comment_by_date) return null;
+
+  return {
+    schema_version: RULES_PARTICIPATION_SCHEMA_VERSION,
+    open: false,
+    submit_url: null,
+    comment_by_date: facts.comment_by_date,
+    days_left: daysUntil(facts.comment_by_date, opts.now || null),
+    hearing_date: facts.hearing_date,
+    agency: facts.agency || clean(noticeRow?.agency_name),
+    title: facts.title || clean(noticeRow?.short_title),
   };
 }
 
