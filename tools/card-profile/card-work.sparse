@@ -616,6 +616,7 @@
 /site/property_scope_fallback.mjs
 /site/property_timed_events.mjs
 /site/provenance_disclosure.mjs
+/site/public_input_explainer.mjs
 /site/qr_share.js
 /site/reader_surface_labels.mjs
 /site/reading-level-baseline.json
