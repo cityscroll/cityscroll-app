@@ -1,0 +1,89 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "capability_reference",
+    "availability",
+    "group_by",
+    "measure",
+    "groups",
+    "denominator",
+    "population",
+    "coverage",
+    "filters",
+    "freshness",
+    "error"
+  ],
+  "properties": {
+    "capability_reference": {
+      "type": "string",
+      "const": "contracts.analysis@1"
+    },
+    "availability": {
+      "type": "string",
+      "enum": [
+        "complete",
+        "empty",
+        "unavailable"
+      ]
+    },
+    "group_by": {
+      "type": "string",
+      "enum": [
+        "agency",
+        "vendor",
+        "registration_fiscal_year",
+        "amount_band"
+      ]
+    },
+    "measure": {
+      "type": "object"
+    },
+    "groups": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "maxItems": 100,
+      "items": {
+        "type": "object"
+      }
+    },
+    "denominator": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "population": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "coverage": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "filters": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "freshness": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "error": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "capability_reference",
+    "availability",
+    "notice",
+    "source",
+    "generated_at",
+    "stale",
+    "error"
+  ],
+  "properties": {
+    "capability_reference": {
+      "type": "string",
+      "const": "notice.get@1"
+    },
+    "availability": {
+      "type": "string",
+      "enum": [
+        "available",
+        "not_yet_public",
+        "unavailable"
+      ]
+    },
+    "notice": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "source": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "generated_at": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "stale": {
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
+    "error": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}

@@ -1,0 +1,139 @@
+{
+  "schema": "cityscroll.integration_evaluation_corpus.v1",
+  "evidence_class": "local_contract",
+  "generated_from": "capabilities/registry.mjs",
+  "questions": [
+    {
+      "id": "entity-resolution-question",
+      "question": "What published information is available for an exact civic entity?",
+      "answer": {
+        "recipe_id": "entity-resolution.capability-recipe",
+        "methods": [
+          "entityDossierGet"
+        ],
+        "capability_references": [
+          "entity.dossier.get@1"
+        ]
+      }
+    },
+    {
+      "id": "land-question",
+      "question": "Which public land projects and review facts match this question?",
+      "answer": {
+        "recipe_id": "land.capability-recipe",
+        "methods": [
+          "landProjectGet"
+        ],
+        "capability_references": [
+          "land.project.get@1"
+        ]
+      }
+    },
+    {
+      "id": "meetings-question",
+      "question": "What is published about this exact civic meeting?",
+      "answer": {
+        "recipe_id": "meetings.capability-recipe",
+        "methods": [
+          "meetingGet"
+        ],
+        "capability_references": [
+          "meeting.get@1"
+        ]
+      }
+    },
+    {
+      "id": "notices-question",
+      "question": "Which public notices match a bounded resident question?",
+      "answer": {
+        "recipe_id": "notices.capability-recipe",
+        "methods": [
+          "noticeSearch"
+        ],
+        "capability_references": [
+          "notice.search@1"
+        ]
+      }
+    },
+    {
+      "id": "people-organizations-question",
+      "question": "Which published people or organization rows match this question?",
+      "answer": {
+        "recipe_id": "people-organizations.capability-recipe",
+        "methods": [
+          "peopleGet"
+        ],
+        "capability_references": [
+          "people.get@1"
+        ]
+      }
+    },
+    {
+      "id": "procurement-question",
+      "question": "Which public contract records or bounded summaries answer this question?",
+      "answer": {
+        "recipe_id": "procurement.capability-recipe",
+        "methods": [
+          "contractGet"
+        ],
+        "capability_references": [
+          "contract.get@1"
+        ]
+      }
+    },
+    {
+      "id": "semantic-retrieval-question",
+      "question": "Which source passages support a resident's terms?",
+      "answer": {
+        "recipe_id": "semantic-retrieval.capability-recipe",
+        "methods": [
+          "citedPassagesRetrieve"
+        ],
+        "capability_references": [
+          "cited.passages.retrieve@1"
+        ]
+      }
+    },
+    {
+      "id": "universal-search-question",
+      "question": "Which registered public lenses match a resident's search?",
+      "answer": {
+        "recipe_id": "universal-search.capability-recipe",
+        "methods": [
+          "searchFederated"
+        ],
+        "capability_references": [
+          "search.federated@1"
+        ]
+      }
+    },
+    {
+      "id": "expedited-land-project-workflow",
+      "question": "How can a resident browse an expedited land project, inspect it, and follow its decision path?",
+      "answer": {
+        "recipe_id": "land-expedited-project-workflow",
+        "methods": [
+          "landProjectsBrowse",
+          "landProjectGet",
+          "landDecisionPathGet"
+        ],
+        "capability_references": [
+          "land.project.get@1",
+          "land.projects.browse@1",
+          "land.decision_path.get@1"
+        ]
+      }
+    },
+    {
+      "id": "unsupported-outcome-prediction",
+      "question": "What outcome will a public decision definitely produce?",
+      "answer": {
+        "gap": "civic.outcome.prediction",
+        "nearest": [
+          "land.project.get@1",
+          "land.decision_path.get@1"
+        ]
+      }
+    }
+  ]
+}

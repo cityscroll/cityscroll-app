@@ -1,0 +1,335 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "contract_version",
+    "query",
+    "retrieval",
+    "hard_scope",
+    "coverage",
+    "citations"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "cityscroll.semantic_retrieval.cited_passage_response.v1"
+    },
+    "contract_version": {
+      "type": "integer",
+      "const": 1
+    },
+    "query": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 240
+    },
+    "retrieval": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "method",
+        "corpus",
+        "index"
+      ],
+      "properties": {
+        "method": {
+          "type": "string"
+        },
+        "corpus": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "schema",
+            "manifest_version",
+            "manifest_sha256",
+            "content_sha256",
+            "observed_on"
+          ],
+          "properties": {
+            "schema": {
+              "type": "string",
+              "const": "cityscroll.semantic_retrieval.corpus_manifest.v1"
+            },
+            "manifest_version": {
+              "type": "integer",
+              "const": 1
+            },
+            "manifest_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "content_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "observed_on": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        },
+        "index": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "schema",
+            "version",
+            "corpus_sha256",
+            "observed_on"
+          ],
+          "properties": {
+            "schema": {
+              "type": "string",
+              "const": "cityscroll.semantic_retrieval.source_passage_map.v1"
+            },
+            "version": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "corpus_sha256": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "observed_on": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "hard_scope": {
+      "type": "object"
+    },
+    "coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "state",
+        "boundary"
+      ],
+      "properties": {
+        "state": {
+          "type": "string",
+          "enum": [
+            "partial",
+            "complete",
+            "unknown"
+          ]
+        },
+        "boundary": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "citations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "citation_id",
+          "source",
+          "passage",
+          "coverage_state",
+          "freshness",
+          "exact_join_evidence"
+        ],
+        "properties": {
+          "citation_id": {
+            "type": "string"
+          },
+          "source": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "family",
+              "native_id",
+              "url",
+              "canonical_href",
+              "title"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "family": {
+                "type": "string",
+                "enum": [
+                  "attachment_text",
+                  "city_record_notice",
+                  "community_board_minutes"
+                ]
+              },
+              "native_id": {
+                "type": "string"
+              },
+              "url": {
+                "type": "string",
+                "format": "uri"
+              },
+              "canonical_href": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "title": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          },
+          "passage": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "text",
+              "text_state",
+              "boundary"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "text": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "text_state": {
+                "type": "string",
+                "enum": [
+                  "retained",
+                  "unknown"
+                ]
+              },
+              "boundary": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "unit",
+                  "start",
+                  "end"
+                ],
+                "properties": {
+                  "unit": {
+                    "type": "string",
+                    "const": "utf16_code_unit"
+                  },
+                  "start": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  },
+                  "end": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "coverage_state": {
+            "type": "string",
+            "enum": [
+              "partial",
+              "complete",
+              "unknown"
+            ]
+          },
+          "freshness": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "state",
+              "observed_on",
+              "source_published_at"
+            ],
+            "properties": {
+              "state": {
+                "type": "string",
+                "enum": [
+                  "observed",
+                  "stale",
+                  "unknown"
+                ]
+              },
+              "observed_on": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "source_published_at": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          },
+          "exact_join_evidence": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "state",
+              "method",
+              "candidate_id",
+              "source_record_id",
+              "passage_id"
+            ],
+            "properties": {
+              "state": {
+                "type": "string",
+                "enum": [
+                  "matched",
+                  "unknown"
+                ]
+              },
+              "method": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "candidate_id": {
+                "type": "string"
+              },
+              "source_record_id": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "passage_id": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

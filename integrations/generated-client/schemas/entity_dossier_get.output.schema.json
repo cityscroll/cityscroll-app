@@ -1,0 +1,36 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "capability_reference",
+    "availability",
+    "dossier",
+    "error"
+  ],
+  "properties": {
+    "capability_reference": {
+      "type": "string",
+      "const": "entity.dossier.get@1"
+    },
+    "availability": {
+      "type": "string",
+      "enum": [
+        "available",
+        "not_yet_public",
+        "unavailable"
+      ]
+    },
+    "dossier": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "error": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}

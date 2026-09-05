@@ -1,0 +1,15 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "entity_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 300,
+      "description": "Exact canonical CityScroll entity identifier."
+    }
+  },
+  "required": [
+    "entity_id"
+  ]
+}

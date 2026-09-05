@@ -1,0 +1,54 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "query",
+    "ranking_policy",
+    "results",
+    "coverage",
+    "requested_scope"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "cityscroll.universal_search_federator.v1"
+    },
+    "query": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "normalized",
+        "tokens"
+      ],
+      "properties": {
+        "normalized": {
+          "type": "string",
+          "maxLength": 240
+        },
+        "tokens": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ranking_policy": {
+      "type": "object"
+    },
+    "results": {
+      "type": "array",
+      "maxItems": 100,
+      "items": {
+        "type": "object"
+      }
+    },
+    "coverage": {
+      "type": "object"
+    },
+    "requested_scope": {
+      "type": "object"
+    }
+  }
+}

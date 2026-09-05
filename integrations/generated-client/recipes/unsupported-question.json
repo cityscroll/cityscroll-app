@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.integration_recipe_gap.v1",
+  "id": "unsupported-outcome-prediction",
+  "question": "What outcome will a public decision definitely produce?",
+  "gap": "civic.outcome.prediction",
+  "nearest": [
+    "land.project.get@1",
+    "land.decision_path.get@1"
+  ],
+  "evidence_class": "local_contract"
+}

@@ -1,0 +1,76 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "entity_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 300,
+      "description": "Exact canonical CityScroll entity identifier."
+    },
+    "depth": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 2,
+      "default": 2
+    },
+    "fan_out": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 25,
+      "default": 12
+    },
+    "node_types": {
+      "type": "array",
+      "maxItems": 16,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "enum": [
+          "vendor",
+          "agency",
+          "solicitation",
+          "contract",
+          "award",
+          "official",
+          "committee",
+          "community-board",
+          "community-board-committee",
+          "person-leader",
+          "mandate",
+          "project",
+          "procedure",
+          "borough",
+          "community-district",
+          "council-district"
+        ]
+      }
+    },
+    "edge_types": {
+      "type": "array",
+      "maxItems": 13,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "enum": [
+          "named_vendor_on_award",
+          "named_vendor_on_solicitation",
+          "published_by_agency",
+          "references_contract",
+          "votes_on",
+          "member_of",
+          "agency_led_by",
+          "mandate_governs_procedure",
+          "project_participates_in_procedure",
+          "located_in",
+          "covers",
+          "intersects",
+          "has_committee"
+        ]
+      }
+    }
+  },
+  "required": [
+    "entity_id"
+  ]
+}
