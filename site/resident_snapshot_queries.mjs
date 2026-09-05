@@ -25,6 +25,10 @@ import {
   landRowMatchesRegulatoryEffect,
   normalizeLandRegulatoryEffect,
 } from "./land_regulatory_effect.mjs";
+import {
+  landRowMatchesFilingEvidenceFilter,
+  normalizeLandFilingEvidenceFilter,
+} from "./land_filing_evidence_facet.mjs";
 
 const residentSnapshotClean = (value) => String(value ?? "").replace(/\s+/g, " ").trim();
 const residentSnapshotLower = (value) => residentSnapshotClean(value).toLowerCase();
@@ -318,6 +322,7 @@ export function filterLandSnapshot(rows, {
   procedure = DEFAULT_LAND_PROCEDURE,
   family = DEFAULT_LAND_FAMILY,
   regulatoryEffect = "any",
+  filingEvidence = "any",
   actionRows = [],
   today,
   borough = "",
@@ -339,12 +344,14 @@ export function filterLandSnapshot(rows, {
   const selectedProcedure = normalizeLandProcedure(procedure);
   const selectedFamily = normalizeLandFamily(family);
   const selectedRegulatoryEffect = normalizeLandRegulatoryEffect(regulatoryEffect);
+  const selectedFilingEvidence = normalizeLandFilingEvidenceFilter(filingEvidence);
   const actionsByProject = landFutureActionsByProject(actionRows, { today });
   const evidenceByProject = landActionEvidenceByProject(actionRows);
   const selected = (Array.isArray(rows) ? rows : []).filter((row) => {
     if (!landRowMatchesProcedure(row, selectedProcedure)) return false;
     if (!landRowMatchesFamily(row, selectedFamily)) return false;
     if (!landRowMatchesRegulatoryEffect(row, selectedRegulatoryEffect)) return false;
+    if (!landRowMatchesFilingEvidenceFilter(row, selectedFilingEvidence)) return false;
     if (status === "active" && residentSnapshotClean(row?.project_status) !== "Active") return false;
     if (statusMatch) {
       const field = statusMatch[1] === "project" ? "project_status" : "public_status";

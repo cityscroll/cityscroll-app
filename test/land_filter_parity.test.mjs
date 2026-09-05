@@ -510,7 +510,7 @@ test("A3 changing only the view changes neither the population nor the watch sco
 test("A3 the semantic scope carries every filter dimension a watch may keep", () => {
   const route = facetRoute(
     { status: "project:On-Hold", stage: "city_council", future: "any_future", procedure: "ulurp", family: "rezoning", boro: "Brooklyn", cd: "K09", council: "33", q: "bedford", view: "map" },
-    { regulatoryEffect: "upzone" },
+    { regulatoryEffect: "upzone", filingEvidence: "required" },
   );
   const state = landFilterStateFromRouteParams(route);
   const semantic = landSemanticScopeFromState(state);

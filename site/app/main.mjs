@@ -38,6 +38,11 @@ await import("./land.mjs");
 // selecting one project row.
 let landMapRuntimePromise;
 globalThis.ensureLandMapRuntime = () => landMapRuntimePromise ||= import("./map_runtime.mjs");
+// The full structured filing-report detail (every RER section with page
+// citations) stays out of first paint. It is fetched only once a reader
+// presses "View full report" on the compact Application filings row.
+let landFilingReportRuntimePromise;
+globalThis.ensureLandFilingReportRuntime = () => landFilingReportRuntimePromise ||= import("./land_filing_report_runtime.mjs");
 await import("./feed-actions.mjs");
 await import("./result-match.mjs");
 // Entity profiles use this shared section vocabulary without needing the notice-only context island.
