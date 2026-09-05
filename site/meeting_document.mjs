@@ -17,6 +17,7 @@ import { attendanceDomainForRecord } from "./meetings_attendance.mjs";
 import { participationActionVerbs } from "./participation_action_verbs.mjs";
 import { meetingPurposeAuthority } from "./meeting_purpose_authority.mjs";
 import { renderCouncilHearingMatterContinuation } from "./council_hearing_matter_continuation.mjs";
+import { renderLegislativeHearingConsequence } from "./legislative_hearing_consequence.mjs";
 import {
   buildCrossSourceCoverageLedger,
   renderCrossSourceCoverageLedger,
@@ -683,6 +684,14 @@ export function renderMeetingDocument(record = {}, readModel = {}) {
   const matterContinuationSection = councilMatterPath
     ? renderCouncilHearingMatterContinuation(record)
     : "";
+  // PHC-04: the testimony-to-legislative-path bridge sits directly above the
+  // continuation it augments. renderLegislativeHearingConsequence() re-derives
+  // the same strict join council_hearing_matter_continuation.mjs already
+  // proved and renders nothing outside its exact single-matter state, so this
+  // never duplicates or races that gating.
+  const legislativeConsequenceSection = record.source_system === "city_record"
+    ? renderLegislativeHearingConsequence(record)
+    : "";
   const noticeMeta = [
     ["Type", readerEnum(record.type_of_notice_description, {
       upcoming_meetings: "Upcoming meeting",
@@ -748,6 +757,7 @@ export function renderMeetingDocument(record = {}, readModel = {}) {
   ${relatedLinksSection}
   ${consequenceSection(record)}
   ${participationSection}
+  ${legislativeConsequenceSection}
   ${matterContinuationSection}
   ${documents}
   ${minutesSection}
