@@ -96,24 +96,23 @@ function git(cwd, args, env = isolatedGitEnv()) {
  * against.
  */
 function ambientStandIn() {
-  const hub = mkdtempSync(path.join(tmpdir(), "cityscroll-ambient-hub-"));
-  assert.equal(git(hub, ["init", "-q", "-b", "main"]).status, 0);
-  git(hub, ["config", "user.email", "baseline@example.invalid"]);
-  git(hub, ["config", "user.name", "Baseline"]);
-  writeFileSync(path.join(hub, "hub-only.txt"), "the hub's own checkout\n");
-  git(hub, ["add", "-A"]);
-  assert.equal(git(hub, ["commit", "-qm", "hub baseline"]).status, 0);
-
-  const root = path.join(mkdtempSync(path.join(tmpdir(), "cityscroll-ambient-parent-")), "worktree");
-  assert.equal(git(hub, ["worktree", "add", "--quiet", "--detach", root, "main"]).status, 0);
+  const root = mkdtempSync(path.join(tmpdir(), "cityscroll-ambient-"));
   writeFileSync(path.join(root, "kept.txt"), "this file must survive every suite\n");
   mkdirSync(path.join(root, "nested"), { recursive: true });
   writeFileSync(path.join(root, "nested", "also-kept.txt"), "and so must this one\n");
+  assert.equal(git(root, ["init", "-q", "-b", "main"]).status, 0);
+  git(root, ["config", "user.email", "baseline@example.invalid"]);
+  git(root, ["config", "user.name", "Baseline"]);
   git(root, ["add", "-A"]);
   assert.equal(git(root, ["commit", "-qm", "ambient baseline"]).status, 0);
 
-  const gitDir = git(root, ["rev-parse", "--absolute-git-dir"]).stdout.trim();
-  return { root, hub, gitDir };
+  // A linked, detached worktree of `root`. Its GIT_DIR is `root/.git/worktrees/<name>`,
+  // which carries a `gitdir` backlink to this directory — the same shape a real
+  // worktree checkout exports, unlike `root`'s own plain GIT_DIR.
+  const worktree = path.join(mkdtempSync(path.join(tmpdir(), "cityscroll-ambient-worktree-")), "wt");
+  assert.equal(git(root, ["worktree", "add", "--quiet", "--detach", worktree, "main"]).status, 0);
+  const gitDir = git(worktree, ["rev-parse", "--absolute-git-dir"]).stdout.trim();
+  return { root: worktree, hub: root, gitDir };
 }
 
 function removeStandIn(standIn) {
