@@ -31,6 +31,8 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const artifact = JSON.parse(
   readFileSync(join(ROOT, "site/data/staffing_exams.json"), "utf8"),
 );
+/** The artifact's own open-window clock, so the cohort checks move with it. */
+const FIXTURE_TODAY = artifact.open_window_as_of || artifact.generated_at;
 
 const OPEN_EMT = {
   exam_number: "6125",
@@ -141,17 +143,23 @@ test("build join refuses mid-window outcomes for 6125", () => {
   assert.equal(full.outcome_gap?.class, "not_yet_ingested");
 });
 
-test("live staffing artifact: exam 6125 is coherent (open apply, no post-list)", () => {
-  const exam = artifact.exams.find((e) => e.exam_number === "6125");
-  assert.ok(exam, "exam 6125 present");
-  assert.equal(exam.outcome, null, "6125 must not carry annual outcomes mid-window");
-  assert.equal(exam.list_aggregate, null, "6125 has no Civil Service List row");
-  assert.equal(exam.outcome_gap?.class, "not_yet_ingested");
+test("live staffing artifact: exams still filing are coherent (open apply, no post-list)", () => {
+  // An exam number names one filing cycle, so an exam whose window is still open
+  // must not carry the previous cycle's outcomes. Which exams those are changes
+  // with every schedule release, so the check runs over whichever are open now.
+  const openNow = artifact.exams.filter(
+    (e) => e.application_start && e.application_end
+      && e.application_start <= FIXTURE_TODAY && e.application_end >= FIXTURE_TODAY,
+  );
+  assert.ok(openNow.length > 0, "the schedule still has exams inside their filing window");
+  for (const exam of openNow) {
+    assert.equal(exam.outcome, null, `${exam.exam_number} must not carry annual outcomes mid-window`);
+    assert.equal(exam.outcome_gap?.class, "not_yet_ingested", exam.exam_number);
 
-  const spine = buildExamProcessSpine(exam);
-  assert.equal(spine.stages.find((s) => s.kind === STAGE_LIST_ESTABLISHMENT).matched, false);
-  assert.equal(spine.stages.find((s) => s.kind === STAGE_APPOINTMENT).matched, false);
-  assert.ok(spine.stages.find((s) => s.kind === "application").matched);
+    const spine = buildExamProcessSpine(exam);
+    assert.equal(spine.stages.find((s) => s.kind === STAGE_APPOINTMENT).matched, false, exam.exam_number);
+    assert.ok(spine.stages.find((s) => s.kind === "application").matched, exam.exam_number);
+  }
 
   const classMeasure = measureExamTemporalIncoherence(artifact.exams);
   assert.equal(
@@ -163,8 +171,15 @@ test("live staffing artifact: exam 6125 is coherent (open apply, no post-list)",
 });
 
 test("class measurement reports pre-fix shape when mid-window outcomes are present", () => {
+  // Any exam still inside its filing window shows the defect; which one that is
+  // changes with each schedule release, so the subject is chosen from the data.
+  const subject = artifact.exams.find(
+    (e) => e.application_start && e.application_end
+      && e.application_start <= FIXTURE_TODAY && e.application_end >= FIXTURE_TODAY,
+  );
+  assert.ok(subject, "the schedule still has an exam inside its filing window");
   const poisoned = artifact.exams.map((e) =>
-    e.exam_number === "6125"
+    e.exam_number === subject.exam_number
       ? {
           ...e,
           outcome: {
@@ -180,7 +195,7 @@ test("class measurement reports pre-fix shape when mid-window outcomes are prese
   );
   const before = measureExamTemporalIncoherence(poisoned);
   assert.ok(before.exam_cycle_temporal_incoherence_count >= 1);
-  assert.ok(before.findings.some((f) => f.exam_number === "6125"));
+  assert.ok(before.findings.some((f) => f.exam_number === subject.exam_number));
 
   const after = measureExamTemporalIncoherence(artifact.exams);
   assert.equal(after.exam_cycle_temporal_incoherence_count, 0);

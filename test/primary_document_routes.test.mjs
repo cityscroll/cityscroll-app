@@ -398,7 +398,14 @@ test("Browse landing and every bounded child are exact build outputs with useful
   assert.match(landing, /<h2[^>]*>Browse NYC public records<\/h2>/);
   assert.match(landing, /href="\/browse\/contracts\/"/);
   assert.match(landing, /40 open opportunities/);
-  assert.match(landing, /228 civil-service exams/);
+  // The exam population rolls with each fiscal-year schedule release, so the
+  // landing is checked against the committed artifact rather than one release's
+  // count.
+  const examCount = JSON.parse(
+    readFileSync(new URL("../site/data/staffing_exams.json", import.meta.url), "utf8"),
+  ).exams.length;
+  assert.ok(examCount > 0);
+  assert.match(landing, new RegExp(`${examCount} civil-service exams`));
   assert.match(landing, /Choose a type of record, then search or filter that collection\./);
   // Browse is the filter-first record-family entrance: the built document puts
   // the family choices ahead of the secondary graph-traversal journey.

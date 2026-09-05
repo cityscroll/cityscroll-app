@@ -147,10 +147,15 @@ export function mergeOasysPayloads(livePayload, priorRecords) {
   );
 }
 
-async function main() {
-  const check = process.argv.includes("--check");
-  const useFixture = process.argv.includes("--fixture");
-  const retainPrior = process.argv.includes("--retain-mapped");
+/**
+ * Refresh the OASys examId map. Exported so the staffing acquisition command
+ * refreshes every source it later asserts freshness on, instead of leaving a
+ * daily-cadence source to a separate manual invocation.
+ */
+export async function refreshOasysExamMap(options = {}) {
+  const check = options.check ?? process.argv.includes("--check");
+  const useFixture = options.fixture ?? process.argv.includes("--fixture");
+  const retainPrior = options.retainPrior ?? process.argv.includes("--retain-mapped");
   let payload;
   let meta = {};
   if (useFixture) {
@@ -250,7 +255,7 @@ async function main() {
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
-  main().catch((error) => {
+  refreshOasysExamMap().catch((error) => {
     console.error(error?.stack || error);
     process.exitCode = 1;
   });

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { readFile, writeFile } from "node:fs/promises";
-import { mkdirSync } from "node:fs";
+import { existsSync, mkdirSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -115,7 +115,18 @@ async function main() {
     console.log(`committee graph ok sample_complete=${existingReceipt.sample_acquisition?.complete === true} publication=${existingGraph.publication}`);
     return;
   }
-  const acquisition = await acquire(sample.personIds, process.env.LEGISTAR_API_TOKEN);
+  const credential = process.env.LEGISTAR_API_TOKEN || "";
+  if (!credential && existsSync(OUTPUTS[0])) {
+    // Without a credential the sample cannot be re-verified, and the gate would
+    // publish an empty graph. An empty graph reads as "these committees have no
+    // members", which is the one thing the committee surface must never say, so
+    // the last reviewed graph is kept and the refresh is reported as failed.
+    throw new Error(
+      "LEGISTAR_API_TOKEN is not configured; retaining the last reviewed committee graph "
+      + "instead of republishing it as held",
+    );
+  }
+  const acquisition = await acquire(sample.personIds, credential);
   const gate = buildCommitteeGateReceipt({
     observedAt: OBSERVED_AT,
     samplePersonIds: sample.personIds,

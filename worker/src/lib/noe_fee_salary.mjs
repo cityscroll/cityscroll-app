@@ -16,6 +16,35 @@
 const MONEY_CAPTURE =
   "\\$?\\s*(\\d{1,3}(?:\\s*,\\s*\\d{3})+(?:\\s*\\.\\s*\\d+)?|\\d+(?:\\s*\\.\\s*\\d+)?)";
 
+/** Same amount shape, but only when the notice actually prints a dollar sign. */
+const DOLLAR_MONEY_CAPTURE =
+  "\\$\\s*(\\d{1,3}(?:\\s*,\\s*\\d{3})+(?:\\s*\\.\\s*\\d+)?|\\d+(?:\\s*\\.\\s*\\d+)?)";
+
+/**
+ * DCAS states some salaries as a rate rather than a year: "the current minimum
+ * salary is $41.40 per hour for a 40-hour work week". Reading that as an annual
+ * minimum understates the job by roughly a factor of two thousand, so a rate is
+ * left unrecorded rather than relabelled.
+ */
+const RATE_BASIS = /^[\s,]*(?:per\s+hour|an\s+hour|hourly|\/\s*hour|per\s+session|per\s+diem|per\s+day|a\s+day|per\s+week|a\s+week)/i;
+
+/**
+ * Floor for treating a parsed figure as an annual salary. A full-time year at
+ * the New York State minimum wage is already well above this, so anything
+ * lower is a rate, a fee, or a stray number rather than an annual salary.
+ */
+const MIN_PLAUSIBLE_ANNUAL_SALARY = 20000;
+
+/** True when the amount that just matched is annual, not a printed rate. */
+function statedPerYear(text, match) {
+  return !RATE_BASIS.test(text.slice(match.index + match[0].length));
+}
+
+/** Keep only figures that can be an annual salary. */
+function annualSalary(value) {
+  return value != null && value >= MIN_PLAUSIBLE_ANNUAL_SALARY ? value : null;
+}
+
 /**
  * Normalize a captured money token to a finite number, or null.
  * Handles "$68.00", "48,206", "48, 206", "$10, 667, 606".
@@ -125,11 +154,14 @@ export function parseNoeFeeSalaryFromBody(bodyText) {
     "i",
   );
   const minMatch = text.match(minRe);
-  if (minMatch) {
-    salaryMin = toMoneyAmount(minMatch[1]);
-    salaryExcerpt = minMatch[0].trim();
-    salaryNote = "Current minimum annual salary";
-  } else {
+  if (minMatch && statedPerYear(text, minMatch)) {
+    salaryMin = annualSalary(toMoneyAmount(minMatch[1]));
+    if (salaryMin != null) {
+      salaryExcerpt = minMatch[0].trim();
+      salaryNote = "Current minimum annual salary";
+    }
+  }
+  if (salaryMin == null) {
     // "minimum salary: $48,206" / "starting salary is $48,206" / "annual salary of $48,206"
     const altMin = text.match(
       new RegExp(
@@ -137,10 +169,12 @@ export function parseNoeFeeSalaryFromBody(bodyText) {
         "i",
       ),
     );
-    if (altMin) {
-      salaryMin = toMoneyAmount(altMin[1]);
-      salaryExcerpt = altMin[0].trim();
-      salaryNote = "Minimum annual salary";
+    if (altMin && statedPerYear(text, altMin)) {
+      salaryMin = annualSalary(toMoneyAmount(altMin[1]));
+      if (salaryMin != null) {
+        salaryExcerpt = altMin[0].trim();
+        salaryNote = "Minimum annual salary";
+      }
     }
   }
 
@@ -152,20 +186,20 @@ export function parseNoeFeeSalaryFromBody(bodyText) {
     );
     const reachMatch = text.match(reachRe);
     if (reachMatch) {
-      const upper = toMoneyAmount(reachMatch[1]);
-      if (upper != null && upper > salaryMin) {
+      const upper = annualSalary(toMoneyAmount(reachMatch[1]));
+      if (upper != null && upper > salaryMin && statedPerYear(text, reachMatch)) {
         salaryMax = upper;
         if (!salaryExcerpt) salaryExcerpt = reachMatch[0].trim();
       }
     } else {
       const rangeRe = new RegExp(
-        `${MONEY_CAPTURE}\\s*(?:–|-|to)\\s*${MONEY_CAPTURE}(?:\\s+per\\s+annum)?`,
+        `${DOLLAR_MONEY_CAPTURE}\\s*(?:–|-|to)\\s*${DOLLAR_MONEY_CAPTURE}(?:\\s+per\\s+annum)?`,
         "i",
       );
       const rangeMatch = text.match(rangeRe);
-      if (rangeMatch) {
-        const a = toMoneyAmount(rangeMatch[1]);
-        const b = toMoneyAmount(rangeMatch[2]);
+      if (rangeMatch && statedPerYear(text, rangeMatch)) {
+        const a = annualSalary(toMoneyAmount(rangeMatch[1]));
+        const b = annualSalary(toMoneyAmount(rangeMatch[2]));
         if (a != null && b != null && b > a) {
           // Prefer labeled min when already set; only fill max from range.
           if (salaryMin === a || salaryMin === null) {

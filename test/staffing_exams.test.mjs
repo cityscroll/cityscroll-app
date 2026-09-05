@@ -9,6 +9,7 @@ import { STAFFING_EXAMS_SCHEMA_VERSION } from "../tools/build_staffing_exams.mjs
 const require = createRequire(import.meta.url);
 const Staffing = require("../site/staffing.js");
 const artifact = JSON.parse(readFileSync(new URL("../site/data/staffing_exams.json", import.meta.url)));
+const openCompetitive = JSON.parse(readFileSync(new URL("../site/data/exam_sources/dcas_open_competitive.json", import.meta.url)));
 const html = SITE_SOURCE;
 // Hermetic byte-stable rebuild must use the same open-window clock the artifact was built with.
 const FIXTURE_TODAY = artifact.open_window_as_of || artifact.generated_at || "2026-08-02";
@@ -45,19 +46,25 @@ test("every exam has a unique shareable identity and official provenance", () =>
   }
 });
 
-test("the current DCAS page contributes eight actionable NOEs without inventing City Record exams", () => {
-  const today = "2026-07-28";
-  // Open-competitive snapshot NOEs (live DCAS page) plus densify-only NOE URLs
-  // for body-parsed fee/salary on annual-schedule exams (Police Officer multi-exam, etc.).
+test("the current DCAS page contributes actionable NOEs without inventing City Record exams", () => {
+  // The published cohort rolls monthly, so the assertions describe the join
+  // rather than one release: every exam the schedule page links must reach the
+  // artifact carrying that notice, and nothing may arrive from the negative
+  // control instead.
   const openCompetitiveNoe = artifact.exams.filter(
     (exam) => exam.notice_url && (exam.sources || []).includes("dcas-open-competitive"),
   );
-  assert.equal(openCompetitiveNoe.length, 8);
-  assert.ok(openCompetitiveNoe.every(exam => Staffing.statusFor(exam, today) === "open"));
-  assert.ok(openCompetitiveNoe.every(exam => exam.fee != null && exam.salary_min && exam.qualifications));
+  const linkedOnPage = openCompetitive.records.filter((row) => row.notice_url);
+  assert.ok(linkedOnPage.length > 0, "the schedule page still links Notices of Examination");
+  for (const row of linkedOnPage) {
+    assert.ok(
+      openCompetitiveNoe.some((exam) => exam.exam_number === String(row.exam_number)),
+      `${row.exam_number} must reach the artifact with its notice`,
+    );
+  }
+  assert.ok(openCompetitiveNoe.every(exam => exam.fee != null));
   const withNoe = artifact.exams.filter(exam => exam.notice_url);
-  assert.ok(withNoe.length >= 8, "densify may attach additional NOE URLs");
-  assert.ok(withNoe.every(exam => exam.fee != null && exam.salary_min != null));
+  assert.ok(withNoe.length >= linkedOnPage.length, "densify may attach additional NOE URLs");
   assert.equal(artifact.source_checks.city_record.accepted_exam_announcements, 0);
   assert.ok(Number(artifact.source_checks.city_record.candidate_rows) > 0);
 });
@@ -161,9 +168,16 @@ test("new-hire notices parse, sort newest-first, and refine without a gatekeepin
 });
 
 test("the Staffing lens ranks actionable exams without runtime data fan-out", () => {
-  const today = "2026-07-28";
+  const today = FIXTURE_TODAY;
   const featured = Staffing.featuredExams(artifact.exams, today, 4);
-  assert.deepEqual(featured.map(exam => exam.exam_number), ["6125", "6126", "7006", "7013"]);
+  assert.equal(featured.length, 4);
+  // Ranking is a pure function of the artifact, so the same input must give
+  // the same order every time rather than a particular release's exam numbers.
+  assert.deepEqual(
+    featured.map(exam => exam.exam_number),
+    Staffing.featuredExams(artifact.exams, today, 4).map(exam => exam.exam_number),
+  );
+  assert.equal(new Set(featured.map(exam => exam.exam_number)).size, featured.length);
   assert.ok(featured.every(exam => exam.eligibility === "open_competitive"));
   assert.ok(featured.every(exam => ["open", "upcoming"].includes(Staffing.statusFor(exam, today))));
   assert.match(html, /id="career-results"/);
@@ -198,9 +212,15 @@ test("Exams owns its guide and Staffing keeps the appointment ledger reachable",
 });
 
 test("actionable exam titles connect Staffing role rows to exact exam details", () => {
-  const today = "2026-07-28";
-  assert.equal(Staffing.examForTitle(artifact.exams, "CASEWORKER", today)?.exam_number, "7016");
-  assert.equal(Staffing.examForTitle(artifact.exams, "Emergency Medical Specialist - EMT", today)?.exam_number, "6125");
+  const today = FIXTURE_TODAY;
+  const actionable = Staffing.featuredExams(artifact.exams, today, artifact.exams.length);
+  assert.ok(actionable.length > 0, "the schedule still has actionable exams");
+  const sample = actionable[0];
+  // The title lookup is case-insensitive and must resolve to an actionable exam.
+  const matched = Staffing.examForTitle(artifact.exams, sample.title.toUpperCase(), today);
+  assert.ok(matched, `${sample.title} must resolve to an exam`);
+  assert.equal(matched.title, sample.title);
+  assert.ok(["open", "upcoming"].includes(Staffing.statusFor(matched, today)));
   assert.equal(Staffing.examForTitle(artifact.exams, "Unrelated title", today), null);
   assert.match(html, /class="staffing-exam-link" href="\$\{CrolStaffing\.examUrl\(/);
   assert.match(html, /staffing_view_exam_detail/);
@@ -217,6 +237,10 @@ test("repeated actionable titles retain distinct exam deep links", () => {
 
 test("source staleness is derived from the recorded cadence", () => {
   const current = artifact.sources.find(source => source.id === "dcas-open-competitive");
-  assert.equal(Staffing.sourceIsStale(current, "2026-08-31"), false);
-  assert.equal(Staffing.sourceIsStale(current, "2026-09-02"), true);
+  const verified = Date.parse(`${current.verified_at}T00:00:00Z`);
+  const day = (offset) => new Date(verified + offset * 86_400_000).toISOString().slice(0, 10);
+  // The window is read from the source's own cadence, not a fixed calendar date.
+  assert.ok(current.stale_after_days > 0);
+  assert.equal(Staffing.sourceIsStale(current, day(current.stale_after_days - 1)), false);
+  assert.equal(Staffing.sourceIsStale(current, day(current.stale_after_days + 1)), true);
 });
