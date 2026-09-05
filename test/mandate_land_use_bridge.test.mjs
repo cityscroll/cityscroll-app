@@ -311,6 +311,137 @@ test("a mandate carrying its own place field never falls back to the class basis
   assert.ok(view.shadow_edges[0].reason.includes("project_identity"));
 });
 
+// PC-04 A3/G2: an obligation the bridge compared and could not connect must be
+// a readable state of its own, not the same silence as an agency that carries
+// no land-use duty at all.
+const unmatchedSources = {
+  obligationsLookup: {
+    by_agency: {
+      "landmarks-preservation-commission": { obligations: [{
+        ...mandate,
+        project_id: "some-other-site",
+      }] },
+    },
+  },
+  entityIntelligence: {
+    by_ref: { "agency:id:landmarks-preservation-commission": { domains: { land: { objects: [{
+      project_id: "right",
+      subject_ref: "project:right",
+      link_type: "applicant_agency",
+      provenance: { input_value: "Landmarks Preservation Commission" },
+    }] } } } },
+  },
+  landProjects: { rows: [{
+    project_id: "right",
+    project_name: "Public School Annex (LP-1000)",
+    actions: "HI",
+    primary_applicant: "Landmarks Preservation Commission",
+    current_milestone: "Designation approved",
+  }] },
+};
+
+test("an unmatched land-use obligation is a distinct readable state, not the empty page (PC-04 A3)", () => {
+  const unmatched = buildMandateLandUseView("landmarks-preservation-commission", unmatchedSources);
+  // Same agency, same candidate corpus, but carrying no land-use duty at all.
+  const noObligation = buildMandateLandUseView("landmarks-preservation-commission", {
+    ...unmatchedSources,
+    obligationsLookup: { by_agency: { "landmarks-preservation-commission": { obligations: [] } } },
+  });
+
+  assert.equal(unmatched.edges.length, 0);
+  assert.equal(noObligation.edges.length, 0);
+
+  // The view records which case it is, and why no basis could be established.
+  assert.equal(unmatched.gap_class, "identity_unestablished");
+  assert.equal(noObligation.gap_class, "no_land_use_obligation");
+  assert.equal(unmatched.unestablished_obligations.length, 1);
+  assert.equal(noObligation.unestablished_obligations.length, 0);
+  const [unestablished] = unmatched.unestablished_obligations;
+  assert.equal(unestablished.mandate_id, CROSS_BRIDGE_OBLIGATION_ID);
+  assert.equal(unestablished.identity_basis, null);
+  assert.ok(unestablished.considered_actions >= 1);
+  assert.ok(unestablished.reason.includes("project_identity"));
+
+  const unmatchedHtml = renderMandateLandUseSection(unmatched);
+  const noObligationHtml = renderMandateLandUseSection(noObligation);
+
+  // An agency with nothing expected of it still says nothing.
+  assert.equal(noObligationHtml, "");
+  // An agency whose duty went unmatched says so, names the duty, and gives the reason.
+  assert.notEqual(unmatchedHtml, "");
+  assert.notEqual(unmatchedHtml, noObligationHtml);
+  assert.match(unmatchedHtml, /data-status="unestablished"/);
+  assert.match(unmatchedHtml, /designate the landmark/);
+  assert.match(unmatchedHtml, /could not be connected/i);
+  assert.match(unmatchedHtml, /1 land-use action/);
+  assert.match(unmatchedHtml, /\(1 duty without a connected action\)/);
+  // It never presents the gap as a connection.
+  assert.doesNotMatch(unmatchedHtml, /Public School Annex/);
+});
+
+test("the unestablished state pluralizes duties correctly for more than one", () => {
+  const view = buildMandateLandUseView("landmarks-preservation-commission", {
+    ...unmatchedSources,
+    obligationsLookup: {
+      by_agency: {
+        "landmarks-preservation-commission": { obligations: [
+          { ...mandate, obligation_id: `${CROSS_BRIDGE_OBLIGATION_ID}-a`, project_id: "some-other-site" },
+          { ...mandate, obligation_id: `${CROSS_BRIDGE_OBLIGATION_ID}-b`, project_id: "some-other-site" },
+        ] },
+      },
+    },
+  });
+  assert.equal(view.unestablished_obligations.length, 2);
+  const html = renderMandateLandUseSection(view);
+  assert.match(html, /\(2 duties without a connected action\)/);
+  assert.doesNotMatch(html, /duty duties/);
+});
+
+test("the committed agency document carries the unestablished state, not silence (PC-04 A3 end-to-end)", () => {
+  // Pins the reader-facing outcome on committed output, so the distinct state
+  // cannot regress to an empty section and surface only when some unrelated
+  // change happens to rebuild derived data.
+  const document = JSON.parse(readFileSync(
+    join(ROOT, "site/agencies/housing-preservation-and-development/relationships.json"),
+    "utf8",
+  ));
+  const html = JSON.stringify(document);
+  assert.match(html, /data-agency-constellation-card=\\"mandate-land-use\\"/);
+  assert.match(html, /data-status=\\"unestablished\\"/);
+  assert.match(html, /could not be connected to any land-use action/);
+  assert.match(html, /Compared against \d+ land-use action/);
+
+  // An agency with no land-use obligation still renders no section at all.
+  const noObligationDocument = JSON.parse(readFileSync(
+    join(ROOT, "site/agencies/aging/relationships.json"),
+    "utf8",
+  ));
+  assert.doesNotMatch(
+    JSON.stringify(noObligationDocument),
+    /data-agency-constellation-card=\\"mandate-land-use\\"/,
+  );
+});
+
+test("an obligation the bridge never compared makes no land-use claim (PC-04 A3 boundary)", () => {
+  // No candidate land action exists for this agency, so the bridge performed no
+  // comparison. Reporting an unestablished edge here would assert a land-use
+  // duty the evidence does not support, so the section stays silent.
+  const view = buildMandateLandUseView("landmarks-preservation-commission", {
+    obligationsLookup: {
+      by_agency: {
+        "landmarks-preservation-commission": { obligations: [{ ...mandate, project_id: "some-other-site" }] },
+      },
+    },
+    entityIntelligence: { by_ref: {} },
+    landProjects: { rows: [] },
+  });
+  assert.equal(view.edges.length, 0);
+  assert.equal(view.shadow_edges.length, 0);
+  assert.equal(view.unestablished_obligations.length, 0);
+  assert.equal(view.gap_class, "empty_in_corpus");
+  assert.equal(renderMandateLandUseSection(view), "");
+});
+
 test("mandateActionClassIdentity only fires for a closed, place-free action family", () => {
   assert.deepEqual(CLASS_GOVERNED_LAND_USE_KINDS, ["landmark"]);
   assert.equal(mandateActionClassIdentity({}, ["landmark"]).matched, true);

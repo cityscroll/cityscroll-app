@@ -592,6 +592,10 @@ export function buildMandateLandUseView(agencyIdOrName, sources = {}) {
   const projectProcedureEdges = [];
   const procedureShadowEdges = [];
   const perMandateLimit = Math.max(1, Math.min(Number(sources.perMandateLimit) || 3, 8));
+  // Obligations the bridge actually compared against a candidate land action.
+  // A duty the bridge never compared is not an unestablished edge — asserting
+  // one would claim a land-use obligation the evidence does not support.
+  const comparedMandates = new Map();
 
   for (const { row: mandate, actionKinds } of mandates) {
     const mandateRef = mandateSubjectRef(mandate.obligation_id);
@@ -600,6 +604,19 @@ export function buildMandateLandUseView(agencyIdOrName, sources = {}) {
     for (const action of candidates) {
       const subjectScope = actionKinds.filter((kind) => action.action_kinds.includes(kind));
       if (!subjectScope.length) continue;
+      if (!comparedMandates.has(mandate.obligation_id)) {
+        comparedMandates.set(mandate.obligation_id, {
+          mandate_id: mandate.obligation_id,
+          subject_ref: mandateRef,
+          duty_text: clean(mandate.duty_text, 500),
+          citation: clean(mandate.citation, 200) || null,
+          source_href: clean(mandate.source?.legistar_url || mandate.href, 400) || null,
+          considered_actions: 0,
+          reasons: new Set(),
+        });
+      }
+      const compared = comparedMandates.get(mandate.obligation_id);
+      compared.considered_actions += 1;
       const identity_ = mandateLandUseIdentity(mandate, action.identity_record || action, subjectScope);
       const phaseEvidence = mandateLandUsePhaseEvidence(mandate, action);
       const evidence = {
@@ -678,6 +695,9 @@ export function buildMandateLandUseView(agencyIdOrName, sources = {}) {
         },
       };
       if (!publicCandidate) {
+        for (const entry of (missing.length ? missing : [route.reason])) {
+          if (entry) comparedMandates.get(mandate.obligation_id).reasons.add(entry);
+        }
         shadowEdges.push({
           id: item.id,
           mandate: item.root_ref,
@@ -887,10 +907,29 @@ export function buildMandateLandUseView(agencyIdOrName, sources = {}) {
     ...edges.map((edge) => edge.land_action.project_id),
     ...procedurePaths.map((path) => path.land_action.project_id),
   ]);
+  // An obligation the bridge compared against real candidate actions and could
+  // not connect to any of them. Distinct from an agency carrying no land-use
+  // duty at all, and distinct from a duty with nothing to compare against.
+  const unestablishedObligations = [...comparedMandates.values()]
+    .filter((entry) => !matchedMandates.has(entry.mandate_id))
+    .map(({ reasons, ...entry }) => ({
+      ...entry,
+      identity_basis: null,
+      reason: [...reasons].sort(),
+    }));
+
   return {
     schema: MANDATE_LAND_USE_SCHEMA,
     method: MANDATE_LAND_USE_METHOD,
     status: edges.length || procedurePaths.length ? "matched" : "empty",
+    gap_class: edges.length || procedurePaths.length
+      ? null
+      : unestablishedObligations.length
+        ? "identity_unestablished"
+        : mandates.length
+          ? "empty_in_corpus"
+          : "no_land_use_obligation",
+    unestablished_obligations: unestablishedObligations,
     agency_id: identity.canonical_id,
     agency_name: identity.canonical_name,
     subject_ref: `agency:id:${identity.canonical_id}`,
@@ -901,6 +940,7 @@ export function buildMandateLandUseView(agencyIdOrName, sources = {}) {
       land_actions: matchedActions.size,
       edges: edges.length,
       shadow_edges: shadowEdges.length,
+      unestablished_obligations: unestablishedObligations.length,
       procedures: new Set(procedurePaths.map((path) => path.procedure.subject_ref)).size,
       procedure_paths: procedurePaths.length,
     },
@@ -919,9 +959,60 @@ export function buildMandateLandUseView(agencyIdOrName, sources = {}) {
   };
 }
 
+/**
+ * Reader copy for why no identity basis could be established. Each reason is
+ * the evidence key the match actually failed on, never a softened summary.
+ */
+const UNESTABLISHED_REASON_COPY = Object.freeze({
+  project_identity: "no land-use action could be identified as the one this duty refers to",
+  mandate_phase_compatible: "no land-use action had reached the stage this duty governs",
+  held_out_precision_gate: "the connection did not clear the published precision gate",
+});
+
+/**
+ * An agency whose land-use duty was compared against real candidate actions and
+ * matched none of them (PC-04). Rendered as its own state so a reader can tell
+ * an unmatched obligation from an agency with no land-use obligation at all,
+ * which still renders nothing.
+ */
+function renderUnestablishedMandateLandUseSection(view) {
+  const unestablished = view?.unestablished_obligations || [];
+  if (!unestablished.length) return "";
+  const list = unestablished.map((obligation) => {
+    const source = obligation.source_href
+      ? ` · ${officialSourceLink({ href: obligation.source_href, label: "Source law", className: "agency-source-link", escape: esc })}`
+      : "";
+    const reasons = obligation.reason
+      .map((reason) => UNESTABLISHED_REASON_COPY[reason])
+      .filter(Boolean);
+    const considered = `Compared against ${obligation.considered_actions} land-use action${obligation.considered_actions === 1 ? "" : "s"} filed by this agency`;
+    const why = reasons.length ? `${considered}: ${reasons.join("; ")}.` : `${considered}.`;
+    return `<li class="node-record mandate-land-use-mandate mandate-land-use-unestablished" data-mandate-id="${esc(obligation.mandate_id)}" data-identity-basis="none">
+      <div class="node-record-main">${esc(obligation.duty_text)}</div>
+      ${obligation.citation || source ? `<span class="muted node-muted">${esc(obligation.citation || "")}${source}</span>` : ""}
+      <p class="muted node-muted">${esc(why)}</p>
+    </li>`;
+  }).join("");
+  const actions = [
+    `<a class="node-action civic-object-action" href="${esc(view.land_browse_href)}">Open land-use and zoning actions</a>`,
+    `<a class="node-action civic-object-action" href="${esc(view.mandates_follow_href)}">Watch mandates</a>`,
+    `<a class="node-action civic-object-action" href="${esc(view.share_path)}">Share this view</a>`,
+  ].join("");
+  const count = unestablished.length;
+  return `<section id="mandates-land-use" class="node-section node-card civic-object-section mandate-land-use" data-agency-constellation-card="mandate-land-use" data-method="${esc(view.method)}" data-status="unestablished" data-gap-class="${esc(view.gap_class || "")}" data-export-class="object_members">
+    <h2>Mandates · Land-use procedures <span class="muted node-muted">(${count} ${count === 1 ? "duty" : "duties"} without a connected action)</span></h2>
+    <p class="muted node-muted">${count === 1 ? "This duty" : "These duties"} could not be connected to any land-use action on the record. That is a gap in the connection, not a finding that the agency did or did not act.</p>
+    <ul class="node-record-list mandate-land-use-list">${list}</ul>
+    <p class="node-inline-actions civic-object-inline-actions">${actions}</p>
+  </section>`;
+}
+
 export function renderMandateLandUseSection(view) {
-  if (!view || view.status !== "matched"
-      || (!view.procedure_paths?.length && !view.edges?.length)) return "";
+  if (!view) return "";
+  if (view.status !== "matched"
+      || (!view.procedure_paths?.length && !view.edges?.length)) {
+    return renderUnestablishedMandateLandUseSection(view);
+  }
   const procedureGroups = new Map();
   for (const path of view.procedure_paths || []) {
     const id = `${path.mandate.mandate_id}:${path.procedure.subject_ref}`;
