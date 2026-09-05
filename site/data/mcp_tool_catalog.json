@@ -16,7 +16,8 @@
     "organizations.browse@1",
     "meeting.get@1",
     "land.project.get@1",
-    "land.projects.browse@1"
+    "land.projects.browse@1",
+    "land.decision_path.get@1"
   ],
   "tools": [
     {
@@ -2376,6 +2377,109 @@
             "availability": "complete",
             "pagination": "cursor when more rows remain",
             "fixedPopulation": "none — reflects the current committed warehouse"
+          }
+        }
+      ],
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "store_access": "provider-only"
+    },
+    {
+      "name": "get_land_decision_path",
+      "operation_class": "read",
+      "authority_class": "public_read",
+      "description": "Get the typed Land decision path for one exact project. Observed milestones and events remain separate from the reviewed normative procedure stages, actors, effects, and parallel review groups; absent and unknown stages stay explicit.",
+      "schema_reference": "land.decision_path.get@1",
+      "capability_reference": "land.decision_path.get@1",
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "project_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 32,
+            "description": "Exact publisher ZAP project id, e.g. 2024Q0356."
+          }
+        },
+        "required": [
+          "project_id"
+        ]
+      },
+      "output_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "capability_reference",
+          "availability",
+          "project_id",
+          "decision_path",
+          "error"
+        ],
+        "properties": {
+          "capability_reference": {
+            "type": "string",
+            "const": "land.decision_path.get@1"
+          },
+          "availability": {
+            "type": "string",
+            "enum": [
+              "available",
+              "not_yet_public",
+              "unavailable"
+            ]
+          },
+          "project_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "decision_path": {
+            "type": [
+              "object",
+              "null"
+            ]
+          },
+          "error": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      },
+      "bounds": {
+        "input": {
+          "projectIdMaximumLength": 32,
+          "maximum": 1
+        },
+        "output": {
+          "oneProject": true
+        }
+      },
+      "examples": [
+        {
+          "input": {
+            "projectId": "2024Q0356"
+          },
+          "output": {
+            "availability": "available",
+            "procedureResolution": "uniform",
+            "parallelReviewGroups": 1
+          }
+        },
+        {
+          "input": {
+            "projectId": "not-a-real-project"
+          },
+          "output": {
+            "availability": "not_yet_public",
+            "error": "not-found"
           }
         }
       ],

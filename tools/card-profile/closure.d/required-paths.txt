@@ -103,6 +103,7 @@ capabilities/contracts_analysis.mjs
 capabilities/entity_dossier.mjs
 capabilities/entity_relationships.mjs
 capabilities/federated_search.mjs
+capabilities/land_decision_path.mjs
 capabilities/land_projects.mjs
 capabilities/mcp_tool_declarations.mjs
 capabilities/meetings.mjs
@@ -543,6 +544,7 @@ site/land_action_procedure_resolution.mjs
 site/land_affected_review_body.mjs
 site/land_authority_summary.mjs
 site/land_authority_summary_view.mjs
+site/land_decision_path.mjs
 site/land_detail_coherence.mjs
 site/land_hearings_empty.mjs
 site/land_keyword_soda_missfill.mjs
@@ -2061,6 +2063,7 @@ worker/src/lib/declared_interest_routing.mjs
 worker/src/lib/delivery_events.mjs
 worker/src/lib/deprecated_opt_in_recovery_manifest.mjs
 worker/src/lib/digest.mjs
+worker/src/lib/digest_funnel.mjs
 worker/src/lib/digest_item_awareness.mjs
 worker/src/lib/digest_ops.mjs
 worker/src/lib/digest_outbox.mjs

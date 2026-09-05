@@ -1,0 +1,79 @@
+{
+  "schema": "cityscroll.land_decision_path_fixtures.v1",
+  "corpus": "worker/src/data/land_expedited_corpus.json",
+  "captured_at": "2026-08-23T00:00:00.000Z",
+  "fixtures": [
+    {
+      "id": "ordinary",
+      "project_id": "2024Q0356",
+      "expected": {
+        "procedure": {
+          "resolution": "uniform",
+          "profile_id": "elurp_197e",
+          "variant_status": "unresolved"
+        },
+        "observed_current_phase": "environmental",
+        "normative_current_stage": "elurp_197e.application_certification",
+        "expected_next_kind": "parallel_group",
+        "expected_next_stage_ids": [
+          "elurp_197e.community_board_review",
+          "elurp_197e.borough_president_review"
+        ]
+      }
+    },
+    {
+      "id": "completed",
+      "project_id": "2024Q0419",
+      "expected": {
+        "procedure": {
+          "resolution": "uniform",
+          "profile_id": "elurp_197e",
+          "variant_status": "unresolved"
+        },
+        "observed_current_phase": "cpc",
+        "normative_current_stage": "elurp_197e.city_planning_commission_review",
+        "expected_next_kind": null,
+        "expected_next_stage_ids": []
+      }
+    },
+    {
+      "id": "source-conflict",
+      "project_id": "2025R0257",
+      "expected": {
+        "procedure": {
+          "resolution": "uniform",
+          "profile_id": "elurp_197e",
+          "variant_status": "unresolved",
+          "rejected_inference": "ulurp_197c"
+        },
+        "observed_current_phase": "cpc",
+        "normative_current_stage": "elurp_197e.city_planning_commission_review",
+        "expected_next_kind": null,
+        "expected_next_stage_ids": []
+      }
+    },
+    {
+      "id": "exceptional-path",
+      "project_id": "2026X0362",
+      "variant_evidence": {
+        "kind": "retained_referral",
+        "retained": true,
+        "source_field": "fixture.retained_referral.source",
+        "source_record_id": "retained-referral-2026X0362",
+        "source_vintage": "2026-08-23"
+      },
+      "expected": {
+        "procedure": {
+          "resolution": "uniform",
+          "profile_id": "elurp_197e_k",
+          "broad_profile_id": "elurp_197e",
+          "variant_status": "resolved"
+        },
+        "observed_current_phase": "city_council",
+        "normative_current_stage": "elurp_197e_k.city_council_review",
+        "expected_next_kind": null,
+        "expected_next_stage_ids": []
+      }
+    }
+  ]
+}

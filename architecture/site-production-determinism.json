@@ -251,6 +251,7 @@
     "site/land_affected_review_body.mjs",
     "site/land_authority_summary_view.mjs",
     "site/land_authority_summary.mjs",
+    "site/land_decision_path.mjs",
     "site/land_detail_coherence.mjs",
     "site/land_filing_evidence_facet.mjs",
     "site/land_filing_evidence_view.mjs",
