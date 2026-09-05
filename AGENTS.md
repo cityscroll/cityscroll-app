@@ -98,9 +98,6 @@ contracts. Do not turn it into a delivery log, roadmap, module inventory, or car
   canary) must be excluded from the `test/*.test.mjs` sweep and run from its own deploy workflow step
   instead — see [`test/live_mcp_canary.test.mjs`](test/live_mcp_canary.test.mjs)'s exclusion in
   `ci.yml`, `preflight-required-checks.sh`, and `measure_card_profile_routing_evidence.sh`.
-- A new/changed `test/**/*.{js,mjs,cjs}` line reading `Date.now()`/`new Date()` fails
-  `tools/audit-test-clocks.mjs` (`make prepush`) unless shaped as an injectable default —
-  `now`/`clock`/`nowMs = Date.now()` — on that line, elapsed-time asserts included.
 - Run focused tests first. Before opening or handing off a pull request, run `make prepush` (the
   equivalent entry point is `./tools/preflight-required-checks.sh`). Use `make a11y` after
   `make setup-a11y` when the change requires the full browser/accessibility gate.
