@@ -103,12 +103,58 @@ export function checkCensus() {
   };
 }
 
+// Refreshes only the mechanical fingerprints of the three tracked live artifacts
+// (their byte hash and row/object count) after a routine data refresh changes them.
+// Never touches doe_missing_record_census: that section is a human-reviewed finding
+// about whether a distinct DOE corpus is missing from existing sources, not a
+// mechanical snapshot, so a live DOE row-count change refuses the write instead of
+// silently re-blessing the finding — this must reach a person, not the refresh job.
+export function refreshExistingSnapshot() {
+  const browsePath = path.join(repoRoot, 'site/data/procurement_browse_rows.json');
+  const spinePath = path.join(repoRoot, 'site/data/procurement_spine_sources.json');
+  const readModelPath = path.join(repoRoot, 'site/data/shared_procurement_read_model.json');
+
+  const browse = JSON.parse(fs.readFileSync(browsePath, 'utf8'));
+  const spine = JSON.parse(fs.readFileSync(spinePath, 'utf8'));
+  const sharedReadModel = JSON.parse(fs.readFileSync(readModelPath, 'utf8'));
+
+  const doe = rowsForAgency(browse.rows, 'department of education|^education$|education admin|^doe$');
+  if (doe.length !== census.doe_missing_record_census.doe_canonical_rows) {
+    throw new Error(
+      `DOE canonical row count changed (${census.doe_missing_record_census.doe_canonical_rows} -> ${doe.length}); `
+      + 'the DOE missing-corpus finding needs a human re-review before this census can be refreshed, not an automatic rewrite'
+    );
+  }
+
+  census.existing_snapshot.generated_at = new Date().toISOString();
+  census.existing_snapshot.artifacts.browse_rows.sha256 = sha256(browsePath);
+  census.existing_snapshot.artifacts.browse_rows.row_count = browse.rows.length;
+  census.existing_snapshot.artifacts.spine_sources.sha256 = sha256(spinePath);
+  census.existing_snapshot.artifacts.spine_sources.passport_contract_rows = (spine.rows?.passport_contracts || []).length;
+  census.existing_snapshot.artifacts.shared_read_model.sha256 = sha256(readModelPath);
+  census.existing_snapshot.artifacts.shared_read_model.object_count = sharedReadModel.counts?.total ?? null;
+
+  fs.writeFileSync(censusPath, `${JSON.stringify(census, null, 2)}\n`);
+  return census.existing_snapshot;
+}
+
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
-  try {
-    const result = checkCensus();
-    console.log(`institution source census OK: ${result.sources} sources, ${result.fixtures} fixtures, DOE missing rows ${result.doe_missing_rows}`);
-  } catch (error) {
-    console.error(`institution source census FAILED: ${error.message}`);
-    process.exitCode = 1;
+  if (process.argv.includes('--check')) {
+    try {
+      const result = checkCensus();
+      console.log(`institution source census OK: ${result.sources} sources, ${result.fixtures} fixtures, DOE missing rows ${result.doe_missing_rows}`);
+    } catch (error) {
+      console.error(`institution source census FAILED: ${error.message}`);
+      process.exitCode = 1;
+    }
+  } else {
+    try {
+      refreshExistingSnapshot();
+      const result = checkCensus();
+      console.log(`institution source census refreshed: ${result.sources} sources, ${result.fixtures} fixtures, DOE missing rows ${result.doe_missing_rows}`);
+    } catch (error) {
+      console.error(`institution source census refresh FAILED: ${error.message}`);
+      process.exitCode = 1;
+    }
   }
 }
