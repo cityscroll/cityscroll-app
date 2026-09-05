@@ -15,11 +15,18 @@
  *                    one insert per row. This is the rollback path and the first
  *                    publication path.
  *   --mode upsert    keyed convergence: one INSERT ... ON CONFLICT DO UPDATE per row
- *                    (delete-then-insert for the FTS5 companion, which has no primary
- *                    key). Applying the same file twice leaves rows unchanged. Removed
+ *                    (delete-then-insert for the FTS5 companion, using its parent's
+ *                    indexed key lookup to retain the same rowid). Applying the same
+ *                    file twice leaves rows unchanged. Removed
  *                    rows are deleted only when --deletes names a delta plan from
  *                    tools/d1_delta_plan.mjs; the plan's delete operations become
  *                    keyed DELETE statements ahead of the upserts.
+ *
+ * Rebuild once before switching an existing ordinal-keyed publication to upserts;
+ * upserts alone do not remove legacy keys or realign an existing FTS companion.
+ * A rebuild plan also requires --mode rebuild: --deletes consumes only delete
+ * operations, not the plan's truncate or insert instructions. Upsert mode writes
+ * every current row, including rows the planner marks unchanged.
  *
  * Usage:
  *   node tools/build_worker_d1_read_models.mjs [--output-dir <dir>] [--mode rebuild|upsert]

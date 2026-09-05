@@ -2,8 +2,7 @@
 /**
  * Partition-level delta plans for the D1 read models (Kraken d1-03).
  *
- * Today the read-model SQL begins with table-wide deletes and reinserts every row.
- * This module makes the change set explicit instead: it reduces each published model
+ * This module makes the change set explicit: it reduces each published model
  * to keyed records grouped by the manifest's partition, fingerprints every record, and
  * compares a prior snapshot against the current one to produce insert, update, delete,
  * and unchanged sets per partition. Unchanged partitions carry zero operations.
@@ -15,10 +14,11 @@
  *     snapshot's refuses the plan naming the model and partition;
  *   - a rebuild is a separate operation ("rebuild") with its reason recorded in the plan.
  *
- * Record derivations here must stay aligned with the SQL builder and the manifest's
- * key columns, including ordinal-derived keyword_search document ids and OCP row keys.
- * A manifest change requires an explicit rebuild; it does not update these derivations.
- * This tool emits plans only; it does not execute SQL or change publication behavior.
+ * Keyed rows come from tools/d1_stable_keys.mjs, shared with the SQL builder; that
+ * module owns identity derivation and duplicate handling. A manifest fingerprint
+ * change requires an explicit rebuild.
+ * This tool emits plans only; it does not execute SQL. Publication modes and use of
+ * a plan's deletes are documented in tools/build_worker_d1_read_models.mjs.
  *
  * Usage:
  *   node tools/d1_delta_plan.mjs snapshot [--out <path>]
