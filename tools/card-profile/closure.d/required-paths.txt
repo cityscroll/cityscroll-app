@@ -271,6 +271,7 @@ site/action_registry.js
 site/admin_code.mjs
 site/admin_code_search.mjs
 site/affordable_eligibility_facts.mjs
+site/affordable_review_transitions.mjs
 site/affordance_grammar.mjs
 site/agency_browse_contract.mjs
 site/agency_connections.mjs
@@ -2092,6 +2093,7 @@ worker/src/lib/land_prediction_features.mjs
 worker/src/lib/land_prediction_institutional_signal_registry.mjs
 worker/src/lib/land_prediction_member_stance.mjs
 worker/src/lib/land_prediction_predictor.mjs
+worker/src/lib/land_prediction_regime_targets.mjs
 worker/src/lib/land_prediction_shadow.mjs
 worker/src/lib/land_prediction_snapshot.mjs
 worker/src/lib/land_upcoming_hearings_kv.mjs

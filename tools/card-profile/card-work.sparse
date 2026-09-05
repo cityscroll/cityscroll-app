@@ -299,6 +299,7 @@
 /site/composed_object_documents.mjs
 /site/consequence_projection.mjs
 /site/contextual_suggestions.mjs
+/site/contextual_ux_feedback_prompt.mjs
 /site/contract_action_location.mjs
 /site/contract_award_search_producer.mjs
 /site/contract_search_bridge.mjs
