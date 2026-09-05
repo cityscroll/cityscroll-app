@@ -70,14 +70,6 @@ contracts. Do not turn it into a delivery log, roadmap, module inventory, or car
   any record-level expectation as a logged signal.
 - Preserve graceful degradation: the static/browser surface remains useful when Worker-backed,
   metered, delivery, or optional enrichment features are unavailable.
-- A required check that needs a pull request's changed-file list must not depend solely on
-  GitHub's ability to render the diff — GitHub returns a `not_available` error once a diff is too
-  large (e.g. a large generated-data refresh), and a check that only reads `pulls/N/files` fails on
-  an unrelated API error instead of the change it's actually gating. Route pull-request path
-  detection through [`tools/list_pr_changed_paths.sh`](tools/list_pr_changed_paths.sh) (API first,
-  git-diff fallback against the base sha) or, for `dorny/paths-filter`, set `token: ""` to force its
-  built-in git-mode fallback; see `.github/workflows/ci.yml`. Either way the check must still fail
-  closed if neither method can determine the paths.
 - Keep resident copy plain-language and source-honest. Implementation field names, debug states,
   and reconciliation prose belong behind explicit evidence/details affordances, not in default
   resident content.
