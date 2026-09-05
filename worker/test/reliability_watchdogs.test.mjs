@@ -10,6 +10,7 @@ import {
   mailWatchdogSnapshot,
   recordDigestDeliveryReceipt,
   recordDigestShadowReceipt,
+  digestShadowFinding,
   recordInboundEmailReceipt,
   recordOutboundOpsSendReceipt,
   recordSchedulerHeartbeat,
@@ -47,6 +48,76 @@ test("digest watchdog fires when the expected receipt is missing", async () => {
   assert.equal(result.ok, false);
   assert.match(result.findings.join("; "), /shadow READY receipt missing/);
   assert.match(result.findings.join("; "), /terminal delivery receipt missing/);
+});
+
+// The alert the site owner received said only "shadow receipt is DEGRADED".
+// The rehearsal knew the reason, the receipt dropped it, and the reader was
+// left with a count of one redline and nowhere to go.
+test("a DEGRADED shadow receipt carries the reason that degraded it", async () => {
+  const ALERT_STATE = kv();
+  const now = new Date("2026-09-05T10:03:13.657Z");
+  const receipt = await recordDigestShadowReceipt({ ALERT_STATE }, {
+    ok: false,
+    digest_count: 0,
+    evaluated_count: 8,
+    total_items: 0,
+    redlines: [{
+      code: "aggregate_count_collapse",
+      digest_id: "run",
+      reason: "Aggregate digest items collapsed against the trailing average.",
+      evidence: { current_item_count: 0, trailing_average: 46.857142857142854, ratio: 0 },
+    }],
+  }, now);
+
+  assert.equal(receipt.status, "DEGRADED");
+  assert.equal(receipt.redlines, 1);
+  assert.deepEqual(receipt.redline_codes, ["aggregate_count_collapse"]);
+  assert.equal(receipt.reason, "Aggregate digest items collapsed against the trailing average.");
+  // A rehearsal that built nothing reads as a healthy quiet day in a redline
+  // count alone, so the build shape is part of the receipt. evaluated_count
+  // separates "nothing was new for anyone" from "nobody was selected at all".
+  assert.equal(receipt.digest_count, 0);
+  assert.equal(receipt.total_items, 0);
+  assert.equal(receipt.evaluated_count, 8);
+
+  const result = await digestWatchdogSnapshot({ ALERT_STATE }, { now: new Date("2026-09-05T13:27:03.304Z") });
+  assert.equal(result.ok, false);
+  assert.match(result.findings.join("; "), /shadow receipt is DEGRADED \(aggregate_count_collapse: Aggregate digest items collapsed against the trailing average\.\)/);
+});
+
+// The finding text is the alert's dedupe signature. A reason that carried the
+// day's counts would produce a new signature every day and re-alert forever.
+test("the shadow finding names the fault without embedding the day's counts", () => {
+  const monday = digestShadowFinding({
+    status: "DEGRADED",
+    redline_codes: ["aggregate_count_collapse"],
+    reason: "Aggregate digest items collapsed against the trailing average.",
+    digest_count: 0,
+    total_items: 0,
+  });
+  const tuesday = digestShadowFinding({
+    status: "DEGRADED",
+    redline_codes: ["aggregate_count_collapse"],
+    reason: "Aggregate digest items collapsed against the trailing average.",
+    digest_count: 3,
+    total_items: 2,
+  });
+  assert.equal(monday, tuesday);
+  assert.equal(/\d/.test(monday), false);
+  // A receipt written before the reason was recorded still reads cleanly.
+  assert.equal(digestShadowFinding({ status: "DEGRADED", redlines: 1 }), "shadow receipt is DEGRADED");
+});
+
+// Zero accepted sends is shared by a broken delivery leg and a quiet day. The
+// receipt already recorded which; the finding used to drop it.
+test("zero accepted sends names the recorded skip reason", async () => {
+  const ALERT_STATE = kv();
+  const now = new Date("2026-09-05T13:04:59.651Z");
+  await recordDigestShadowReceipt({ ALERT_STATE }, { ok: true }, now);
+  await recordDigestDeliveryReceipt({ ALERT_STATE }, { sent: 0, enqueued: 8, skipped_reason: "skipped" }, now);
+  const result = await digestWatchdogSnapshot({ ALERT_STATE }, { now: new Date("2026-09-05T14:08:00.000Z") });
+  assert.equal(result.ok, false);
+  assert.match(result.findings.join("; "), /enqueued digest has zero accepted sends \(skipped\)/);
 });
 
 const CYCLE = Object.freeze({
