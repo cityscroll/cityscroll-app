@@ -1,0 +1,60 @@
+{
+  "schema": "cityscroll.snappiness_evidence_capture.v1",
+  "change": "cityscroll-snappiness/perf-03-browse-contracts-tail",
+  "capture_kind": "functional network-order trace (no browser, no image capture)",
+  "route": "/browse/contracts/?mode=award&agency=Youth%20and%20Community%20Development",
+  "viewport": {
+    "name": "not-applicable",
+    "note": "network-order trace; no rendered viewport was captured"
+  },
+  "revision": "7c90e232778c921fc4e6b6b687f4b4e2d8ed25b9",
+  "data_vintage": {
+    "fixture": "site/data/procurement_browse_rows.json",
+    "fixture_generated_at": "2026-08-18T04:05:51.552Z",
+    "fixture_row_count": 13791
+  },
+  "assertion": "a cold non-default Contracts trace (Recent Awards filtered by agency) renders its first 40 rows from the bounded query manifest and, when needed, the compact query rows — never the full procurement snapshot or the unpublished monolithic Browse projection — and the resident-snapshot fetch used only for post-paint lineage reconciliation is issued strictly after those rows are painted.",
+  "observations": {
+    "fetch_call_order": [
+      "data/procurement_browse_query.json",
+      "data/procurement_browse_query_rows.json",
+      "data/money_resident_snapshot.json",
+      "data/procurement_browse_rows/shard-000.json",
+      "data/procurement_browse_rows/shard-001.json",
+      "data/procurement_browse_rows/shard-002.json",
+      "data/procurement_browse_rows/shard-003.json",
+      "data/procurement_browse_rows/shard-004.json",
+      "data/procurement_browse_rows/shard-005.json",
+      "data/procurement_browse_rows/shard-006.json",
+      "data/procurement_browse_rows/shard-007.json",
+      "data/procurement_browse_rows/shard-008.json",
+      "data/procurement_browse_rows/shard-009.json",
+      "data/procurement_browse_rows/shard-010.json",
+      "data/procurement_browse_rows/shard-011.json",
+      "data/procurement_browse_rows/shard-012.json",
+      "data/procurement_browse_rows/shard-013.json",
+      "data/procurement_browse_rows/shard-014.json",
+      "data/procurement_browse_rows/shard-015.json",
+      "data/procurement_browse_rows/shard-016.json",
+      "data/procurement_browse_rows/shard-017.json",
+      "data/procurement_browse_rows/shard-018.json",
+      "data/procurement_browse_rows/shard-019.json",
+      "data/procurement_browse_rows/shard-020.json",
+      "data/procurement_browse_rows/shard-021.json",
+      "data/procurement_browse_rows/shard-022.json",
+      "data/procurement_browse_rows/shard-023.json",
+      "data/procurement_browse_rows/shard-024.json",
+      "data/procurement_browse_rows/shard-025.json",
+      "data/procurement_browse_rows/shard-026.json"
+    ],
+    "event_order": [
+      "first-40-rows-painted",
+      "resident-snapshot-fetch-issued"
+    ],
+    "bounded_source": "bounded-query",
+    "row_count": 40,
+    "resident_snapshot_requested_before_first_paint": false,
+    "first_40_rows_identical_to_full_read": true
+  },
+  "content_sha256": "071fca86ec47756c55fff706865890652ef226227eb01315be76f0b4f7876223"
+}
