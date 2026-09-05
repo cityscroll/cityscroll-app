@@ -7,6 +7,7 @@
     "warehouse:land:filing-census": "node tools/build_land_filing_evidence_census.mjs",
     "warehouse:seqra:labels": "node tools/check_seqra_ontology.mjs",
     "warehouse:seqra:documents": "node tools/check_seqra_document_pipeline.mjs",
+    "warehouse:land:documents": "node tools/check_land_filing_document_collector.mjs",
     "warehouse:seqra:ingest": "node tools/build_seqra_structured_adapters.mjs && node tools/build_seqra_institutional_signal_adapters.mjs"
   }
 }
