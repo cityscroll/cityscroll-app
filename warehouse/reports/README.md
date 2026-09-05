@@ -14,7 +14,10 @@ estimate's measured calibration next to the estimate, not in a footnote.
 | Directory | Produced by | Documented in |
 | --- | --- | --- |
 | `seqra-review-cards/` | `node tools/build_seqra_baselines.mjs` | [`docs/seqra-multi-target-baselines-internal-card-v1.md`](../../docs/seqra-multi-target-baselines-internal-card-v1.md) |
+| `challenge-watch-cards/` | `node tools/backtest_article78_ontology.mjs --write` | [`docs/article78-challenge-watch-card-v1.md`](../../docs/article78-challenge-watch-card-v1.md) |
 
-Every file here is generated and committed, and `npm run warehouse:seqra:backtest`
-fails if a committed report does not reproduce byte for byte. Edit the builder,
-never the output.
+Every file here is generated and committed, and the command in the table above
+fails if a committed report does not reproduce byte for byte
+(`npm run warehouse:seqra:backtest` for the review cards,
+`npm run warehouse:article78:backtest` for the challenge-watch cards). Edit the
+builder, never the output.
