@@ -1,11 +1,12 @@
 {
   "name": "cityscroll-app-warehouse-command-surface",
   "private": true,
-  "description": "Thin npm script wrapper over this repo's existing direct-node warehouse tooling. Added narrowly for the SEQRA/CEQR workstream's required command surface; every script below just shells out to the same node tools/*.mjs entry points used throughout warehouse/README.md and CI. `warehouse:seqra:labels` gates both SEQRA-02's ontology/projector and SEQRA-08's label-builder/backtest corpus, since SEQRA-08's card names the same command as its own `verify` field rather than the workstream's fixed six-command surface growing a seventh entry per later card -- matching how `warehouse:seqra:documents` already gates both SEQRA-04's document pipeline and SEQRA-05's technical-topic extraction for the same reason.",
+  "description": "Thin npm script wrapper over this repo's existing direct-node warehouse tooling. Added narrowly for the SEQRA/CEQR workstream's required command surface; every script below just shells out to the same node tools/*.mjs entry points used throughout warehouse/README.md and CI. `warehouse:seqra:labels` gates both SEQRA-02's ontology/projector and SEQRA-08's label-builder/backtest corpus, since SEQRA-08's card names the same command as its own `verify` field rather than the workstream's fixed six-command surface growing a seventh entry per later card -- matching how `warehouse:seqra:documents` already gates both SEQRA-04's document pipeline and SEQRA-05's technical-topic extraction for the same reason. `warehouse:seqra:backtest` is the exception that earns its own entry: SEQRA-09's card names it as its `verify` field, and it runs the baseline fit, the out-of-time calibration and ablation reports and the internal review cards in check mode, which is a different and much longer job than the corpus gate it consumes.",
   "scripts": {
     "warehouse:seqra:inventory": "node tools/build_seqra_source_inventory.mjs",
     "warehouse:land:filing-census": "node tools/build_land_filing_evidence_census.mjs",
     "warehouse:seqra:labels": "node tools/check_seqra_ontology.mjs",
+    "warehouse:seqra:backtest": "node tools/build_seqra_baselines.mjs --check",
     "warehouse:seqra:documents": "node tools/check_seqra_document_pipeline.mjs",
     "warehouse:land:documents": "node tools/check_land_filing_document_collector.mjs",
     "warehouse:land:rer": "node tools/check_land_filing_report_extractor.mjs",
