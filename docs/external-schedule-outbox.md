@@ -10,7 +10,10 @@ Verification:
 
 ```bash
 node --test test/external_schedule_outbox.test.mjs
+node --test test/external_schedule_trigger.test.mjs
 node tools/audit_scheduler_ownership.mjs --check
 ```
+
+The heartbeat has exactly one producer, so a trigger that cannot start, cannot read its credential, or cannot run often enough presents only as a missing heartbeat with nothing else to act on. `test/external_schedule_trigger.test.mjs` holds the trigger to that contract: it must publish at least twice inside the watchdog's heartbeat window, name the state directory, credential file, and heartbeat route it cannot inherit from a login shell, and declare no placeholder the installer does not substitute.
 
 The remaining daily data-freshness jobs (`attachment-metadata`, `surface-load-live`, and `multi-flywheel`) remain listed as follow-ups in the job manifest.
