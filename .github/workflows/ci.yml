@@ -52,6 +52,13 @@ jobs:
           # workflow_dispatch / push have no PR file list; without `base`, dorny
           # treats every filter as true and would skip the changelog_only fast path.
           base: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || (github.event_name == 'merge_group' && github.event.merge_group.base_sha || 'main') }}
+          # Empty token forces dorny's git-diff fallback instead of the GitHub
+          # REST pulls/files API, which returns a not_available error and no
+          # file list once a PR's diff is too large for GitHub to render (seen
+          # on a 200+ file generated-data PR). Git mode diffs the already
+          # fetched history (fetch-depth: 0 above) against `base` directly, so
+          # it never depends on GitHub being able to render the diff.
+          token: ""
           filters: |
             frontend:
               - 'site/**'
@@ -107,7 +114,7 @@ jobs:
           set -euo pipefail
           case "${{ github.event_name }}" in
             pull_request)
-              mapfile -t files < <(gh api "repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files" --paginate -q '.[].filename')
+              mapfile -t files < <(bash tools/list_pr_changed_paths.sh "${{ github.repository }}" "${{ github.event.pull_request.number }}" "${{ github.event.pull_request.base.sha }}" all)
               ;;
             merge_group)
               mapfile -t files < <(git diff --name-only "${{ github.event.merge_group.base_sha }}" "${{ github.event.merge_group.head_sha }}")
@@ -162,8 +169,7 @@ jobs:
         run: |
           set -euo pipefail
           if [ "${{ github.event_name }}" = "pull_request" ]; then
-            gh api "repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files" \
-              --paginate -q '.[] | select(.status == "added") | .filename' > "$RUNNER_TEMP/added-images.txt"
+            bash tools/list_pr_changed_paths.sh "${{ github.repository }}" "${{ github.event.pull_request.number }}" "${{ github.event.pull_request.base.sha }}" added > "$RUNNER_TEMP/added-images.txt"
           else
             git diff --name-only --diff-filter=A "${{ github.event.merge_group.base_sha }}" "${{ github.event.merge_group.head_sha }}" > "$RUNNER_TEMP/added-images.txt"
           fi
@@ -194,10 +200,8 @@ jobs:
         run: |
           set -euo pipefail
           if [ "${{ github.event_name }}" = "pull_request" ]; then
-            gh api "repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files" \
-              --paginate -q '.[] | select(.status == "added") | .filename' > "$RUNNER_TEMP/capture-added-paths.txt"
-            gh api "repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files" \
-              --paginate -q '.[].filename' > "$RUNNER_TEMP/capture-changed-paths.txt"
+            bash tools/list_pr_changed_paths.sh "${{ github.repository }}" "${{ github.event.pull_request.number }}" "${{ github.event.pull_request.base.sha }}" added > "$RUNNER_TEMP/capture-added-paths.txt"
+            bash tools/list_pr_changed_paths.sh "${{ github.repository }}" "${{ github.event.pull_request.number }}" "${{ github.event.pull_request.base.sha }}" all > "$RUNNER_TEMP/capture-changed-paths.txt"
           else
             # -M so a rename (even with content drift) is classified as R, not a delete+add pair —
             # renaming an existing screenshot must not read as a new one.
