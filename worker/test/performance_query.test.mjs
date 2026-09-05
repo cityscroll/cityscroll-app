@@ -195,23 +195,45 @@ test("no-data and retention-partial windows never synthesize zero percentiles", 
     trend: [],
   }, plan({ query: { window: "24h", filters: { metric_id: "lcp_ms" } } })), /invalid-query-result/);
 
-  const partialPlan = plan({ configuredSince: "2026-08-18T20:00:00.000Z" });
+  // A retained group's status must be evaluated against the fraction of the window that
+  // has actually elapsed, not collapsed to insufficient_sample just because the window as
+  // a whole is not yet complete. Five of the seven requested days are covered here.
+  const partialPlan = plan({ configuredSince: "2026-08-14T14:30:00.000Z" });
   const partial = buildPerformanceSnapshot(fixture.sql_results, partialPlan);
   assert.equal(partial.status, "retention_partial");
   assert.equal(partial.retention.current.status, "partial");
-  assert.ok(partial.series.some((series) => series.current.status === "insufficient_sample"));
+  assert.equal(partial.retention.current.window_fraction, 5 / 7);
+
+  const partialHome = findSeries(partial, "home");
+  assert.equal(partialHome.current.status, "retention_partial");
+  assert.equal(partialHome.current.sampled_count, 4);
+  assert.deepEqual(partialHome.current.percentiles, { p50: 240, p75: 360, p95: 480 });
+  assert.equal(partialHome.current.window_fraction, 5 / 7);
+  assert.equal(partialHome.current.retained_count, 4);
+
+  const partialBrowse = findSeries(partial, "browse-contracts");
+  assert.equal(partialBrowse.current.status, "insufficient_sample");
+  assert.equal(partialBrowse.current.reason, "below_floor");
+  assert.equal(Object.hasOwn(partialBrowse.current, "percentiles"), false);
+  assert.equal(partialBrowse.current.window_fraction, 5 / 7);
+  assert.equal(partialBrowse.current.retained_count, 2);
+
   for (const series of partial.series) {
-    if (series.current.sampled_count >= fixture.sample_floor) {
-      assert.equal(series.current.status, "insufficient_sample");
-      assert.equal(series.current.reason, "window_partial");
-      assert.equal(Object.hasOwn(series.current, "percentiles"), false);
-    } else {
-      assert.equal(series.current.status, "insufficient_sample");
-      assert.equal(series.current.reason, "window_partial");
-    }
     assert.ok(["available", "retention_partial", "insufficient_sample"].includes(series.comparison.status));
   }
   assert.doesNotMatch(JSON.stringify(partial), /"p(?:50|75|95)":0/);
+
+  // Without a disclosed elapsed fraction, an incomplete window keeps the conservative
+  // fallback: a retained group cannot be assumed sufficient with no evidence either way.
+  const noFractionPlan = plan({ configuredSince: "2026-08-18T20:00:00.000Z" });
+  const noFraction = buildPerformanceSnapshot(fixture.sql_results, {
+    ...noFractionPlan,
+    current: { ...noFractionPlan.current, window_fraction: null },
+  });
+  const noFractionHome = findSeries(noFraction, "home");
+  assert.equal(noFractionHome.current.status, "insufficient_sample");
+  assert.equal(noFractionHome.current.reason, "window_partial");
+  assert.equal(Object.hasOwn(noFractionHome.current, "percentiles"), false);
 
   const ninetyDay = plan({
     query: { window: "90d", filters: { metric_id: "ttfb_ms" } },

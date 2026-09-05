@@ -86,6 +86,48 @@ test("missing measurements and zero-valued measurements stay distinct", () => {
   );
 });
 
+test("a partial window is evaluated against its elapsed fraction of the floor, not the full floor", () => {
+  // Half the window has elapsed: half the floor (30 -> 15) already clears it.
+  const flowing = classifyPerformanceCoverage(
+    { sampled_count: 15, estimated_count: 15, ...pcts },
+    { windowStatus: "partial", windowFraction: 0.5 },
+  );
+  assert.equal(flowing.state, "measured");
+  assert.deepEqual(flowing.percentiles, pcts);
+  assert.equal(flowing.window_fraction, 0.5);
+  assert.equal(flowing.retained_count, 15);
+
+  // Still short of even the scaled floor.
+  const short = classifyPerformanceCoverage(
+    { sampled_count: 14, estimated_count: 14, ...pcts },
+    { windowStatus: "partial", windowFraction: 0.5 },
+  );
+  assert.equal(short.state, "insufficient_sample");
+  assert.equal(short.reason, "below_floor");
+  assert.equal(short.window_fraction, 0.5);
+  assert.equal(short.retained_count, 14);
+
+  // A full window is never loosened: the same 15 rows are insufficient against the
+  // unscaled floor once the window itself is complete.
+  const complete = classifyPerformanceCoverage(
+    { sampled_count: 15, estimated_count: 15, ...pcts },
+    { windowStatus: "complete", windowFraction: 0.5 },
+  );
+  assert.equal(complete.state, "insufficient_sample");
+  assert.equal(complete.reason, "below_floor");
+  assert.equal(complete.window_fraction, undefined);
+
+  // An out-of-range or missing fraction keeps the conservative fallback.
+  for (const badFraction of [0, 1, -0.2, 1.5, NaN, undefined]) {
+    const result = classifyPerformanceCoverage(
+      { sampled_count: 400, estimated_count: 400, ...pcts },
+      { windowStatus: "partial", windowFraction: badFraction },
+    );
+    assert.equal(result.state, "insufficient_sample", `windowFraction=${badFraction}`);
+    assert.equal(result.reason, "window_partial", `windowFraction=${badFraction}`);
+  }
+});
+
 test("the shared classifier enforces the floor whether provider counts arrive as numbers or strings", () => {
   const quoted = classifyPerformanceCoverage({ sampled_count: "20", estimated_count: "20", p50: "1", p75: "2", p95: "3" });
   assert.equal(quoted.state, "insufficient_sample");

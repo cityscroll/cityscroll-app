@@ -93,9 +93,12 @@ function operationalStatus(snapshot, series) {
   if (snapshot.status === "unavailable") return "unavailable";
   const statuses = series.map((item) => item.current?.status);
   if (statuses.includes("available")) return "flowing";
-  if (statuses.includes("retention_partial")) {
-    const retained = series.some((item) => (item.current?.sampled_count || 0) >= (snapshot.sample_floor || 1));
-    if (retained) return "flowing";
+  // A retained group in a partial window already reports its own percentiles once the
+  // shared classifier (performance_coverage.mjs) has confirmed its retained sample
+  // clears the elapsed-window floor; trust that determination instead of re-deriving
+  // sufficiency here against the full-window floor.
+  if (series.some((item) => item.current?.status === "retention_partial" && item.current?.percentiles)) {
+    return "flowing";
   }
   if (statuses.includes("insufficient_sample")) return "insufficient_sample";
   if (statuses.includes("no_data")) {
@@ -123,6 +126,10 @@ function coarseLatencySummary(snapshot) {
       row.p50 = current.percentiles.p50;
       row.p75 = current.percentiles.p75;
       row.p95 = current.percentiles.p95;
+    }
+    if (current.window_fraction != null) {
+      row.window_fraction = current.window_fraction;
+      row.retained_count = current.retained_count;
     }
     return row;
   });
