@@ -1,0 +1,108 @@
+name: First-class dataset refresh
+
+# Every first-class resident dataset declares a refresh cadence in
+# site/data/source_contracts.json#first_class_artifacts, and production refuses
+# to publish one that is past its hard maximum age. Nothing was running that
+# refresh on a schedule, so the datasets aged out between hand-committed
+# updates and blocked the deploy. This job runs the declared acquisition and
+# owning builder for every dataset that is due and opens a pull request with
+# whatever it refreshed.
+#
+# Datasets whose acquisition reads the retained analytical warehouse cannot run
+# here: a hosted runner has no warehouse catalog. Their refresh runs on the
+# machine that holds it — see ops/first-class-refresh/README.md. Their
+# acquisition is still attempted so the receipt records the gap honestly, and a
+# failed acquisition leaves the last verified artifact in place.
+on:
+  schedule:
+    # Early morning UTC, after the City's overnight open-data publishing window.
+    - cron: "40 6 * * *"
+  workflow_dispatch:
+    inputs:
+      run_all:
+        description: Refresh every dataset, not only the ones that are due.
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: first-class-refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    name: Refresh due first-class datasets
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Run the declared acquisition and builder for every due dataset
+        env:
+          LEGISTAR_API_TOKEN: ${{ secrets.LEGISTAR_API_TOKEN }}
+        run: |
+          set -o pipefail
+          # The committee sample records when it was retrieved, so the run stamps
+          # its own instant rather than inheriting a fixed date.
+          export COMMITTEE_RETRIEVED_AT="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          mode="--run-due"
+          if [ "${{ inputs.run_all }}" = "true" ]; then mode="--run-all"; fi
+          node tools/first_class_refresh.mjs "$mode"
+
+      - name: Write the freshness report
+        run: node tools/first_class_refresh.mjs --write-report
+
+      - name: Summarise what refreshed
+        run: |
+          set -euo pipefail
+          node --input-type=module <<'NODE' >> "$GITHUB_STEP_SUMMARY"
+          import { readFileSync } from "node:fs";
+          const receipt = JSON.parse(readFileSync(".artifacts/first-class-refresh-receipt.json", "utf8"));
+          const report = JSON.parse(readFileSync("site/data/first_class_freshness_report.json", "utf8"));
+          const rows = report.surfaces.map((s) => `| ${s.public_artifact_path} | ${s.freshness_state} | ${s.age_hours ?? "—"} |`);
+          console.log(`## First-class freshness: ${report.status}\n`);
+          console.log(Object.entries(report.counts).map(([k, v]) => `- ${k}: ${v}`).join("\n"));
+          console.log(`\n| artifact | state | age (h) |\n| --- | --- | --- |`);
+          console.log(rows.join("\n"));
+          const failed = receipt.commands.filter((c) => c.status !== "succeeded");
+          if (failed.length) {
+            console.log(`\n### Commands that did not run cleanly\n`);
+            for (const c of failed) console.log(`- \`${c.command.join(" ")}\` — ${c.status}${c.reason ? ` (${c.reason})` : ""}`);
+          }
+          NODE
+
+      - name: Open a pull request with the refreshed datasets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if [ -z "$(git status --porcelain -- site worker)" ]; then
+            echo "No dataset changes to publish."
+            exit 0
+          fi
+          branch="data/first-class-refresh-$(date -u +%Y%m%d)"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$branch"
+          git add -- site worker
+          git commit -m "Refresh first-class resident datasets from their publishers"
+          git push --force-with-lease \
+            "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git" \
+            "HEAD:${branch}"
+          existing="$(gh pr list --head "$branch" --state open --json number --jq '.[0].number // ""')"
+          if [ -n "$existing" ]; then
+            echo "Updated existing pull request #${existing}."
+            exit 0
+          fi
+          gh pr create --head "$branch" --base main \
+            --title "Refresh first-class resident datasets" \
+            --body "Scheduled refresh of every first-class resident dataset that was past its declared cadence. The run summary lists each dataset's freshness state and any acquisition that could not complete."
