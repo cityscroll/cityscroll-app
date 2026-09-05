@@ -9,7 +9,7 @@ import {
   opportunityMonthHTML,
   opportunityOccurrences,
 } from "../opportunity_calendar.mjs";
-import { bindCompactMonthPrintDisclosure } from "../compact_calendar.mjs";
+import { bindCalendarEventPreview, bindCompactMonthPrintDisclosure } from "../compact_calendar.mjs";
 import { bblReaderLabel } from "../bbl_reader.mjs";
 import { renderPropertyAgencySelect, propertyAgencySelectionChanges } from "../property_agency_ui.mjs";
 import {
@@ -331,6 +331,9 @@ function ensureCompactMonthPrintBinder(){
   if(compactMonthPrintBound) return;
   compactMonthPrintBound=true;
   bindCompactMonthPrintDisclosure(document);
+  // PX-01: the shared in-place event preview, bound once at the document so a
+  // repainted property opportunity month inherits it with no rebinding.
+  bindCalendarEventPreview(document);
 }
 /** Sync fallback when pure-module hasCommercialSaleSignals is not loaded yet. */
 function commercialSaleSignalsFallback(commercial){

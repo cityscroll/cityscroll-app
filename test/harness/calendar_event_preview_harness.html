@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Calendar event preview — fixture harness</title>
+<meta name="robots" content="noindex, nofollow">
+<!--
+  Repository-native test harness for the shared in-place calendar event
+  preview (PX-01). Not a shipped page: it exists only to give the headless
+  evidence-capture script a neutral surface that mounts
+  site/calendar_event_preview.mjs, through the shared month renderer, against
+  committed fixtures. It is never linked from the public site and carries no
+  domain content of its own.
+
+  Query parameters:
+    fixture=dense|crowded|lifecycle|sparse   which committed bundle to paint
+    today=YYYY-MM-DD                          the explicit day the view is built for
+    detail=off|ok|fail|slow                   the optional detail hook to supply
+    enhance=off                               skip binding, to read the page as
+                                              a reader without scripting does
+-->
+<link rel="stylesheet" href="../../site/compact_calendar.css">
+<style>
+  body { margin: 0; padding: 16px; background: #f5f6f8; font: 16px/1.5 ui-sans-serif, system-ui, sans-serif; }
+  #mount { max-width: 900px; }
+  #controls { margin: 0 0 12px; display: flex; gap: 12px; flex-wrap: wrap; }
+  #controls button { font: inherit; padding: 4px 10px; }
+  #status { font: 12px monospace; color: #5b6470; margin-top: 12px; }
+  #destination { margin-top: 16px; }
+</style>
+</head>
+<body>
+<main id="page" data-harness-state="pending">
+<h1>Calendar event preview harness</h1>
+<p id="controls">
+  <button type="button" id="repaint">Repaint the month</button>
+  <a id="destination" href="destination.html">Leave for a full page</a>
+</p>
+<div id="mount"></div>
+<p id="status"></p>
+</main>
+<script type="module">
+  import { fixtureOccurrences, FIXTURE_TODAY } from "../fixtures/compact_calendar_fixtures.mjs";
+  import { buildCompactMonthView, renderCompactMonth } from "../../site/compact_calendar.mjs";
+  import { bindCalendarEventPreview } from "../../site/calendar_event_preview.mjs";
+
+  const params = new URLSearchParams(location.search);
+  const fixtureName = params.get("fixture") || "dense";
+  const today = params.get("today") || FIXTURE_TODAY;
+  const detailMode = params.get("detail") || "off";
+  const enhance = params.get("enhance") !== "off";
+  const page = document.getElementById("page");
+  const mount = document.getElementById("mount");
+  const status = document.getElementById("status");
+
+  const occurrences = fixtureOccurrences(fixtureName);
+  const view = buildCompactMonthView(occurrences, { today });
+  const paint = () => {
+    mount.innerHTML = renderCompactMonth(view, { fullListHref: "#full-list-placeholder", fullListLabel: "View the full list" });
+  };
+  paint();
+  document.getElementById("repaint").addEventListener("click", () => {
+    paint();
+    page.setAttribute("data-harness-repainted", "1");
+  });
+
+  // Deliberately slower than a capture step, so a stale response can be
+  // observed arriving after the reader has already moved on.
+  const detailHooks = {
+    ok: (facts) => Promise.resolve(`Published agenda on file for ${facts.title}.`),
+    fail: () => Promise.reject(new Error("optional detail unavailable")),
+    slow: (facts) => new Promise((resolve) => setTimeout(() => resolve(`Late detail for ${facts.title}.`), 1200)),
+  };
+  if (enhance) {
+    bindCalendarEventPreview(mount, detailHooks[detailMode] ? { loadDetail: detailHooks[detailMode] } : {});
+  }
+
+  page.setAttribute("data-harness-state", view.render ? "rendered" : "non-render");
+  page.setAttribute("data-harness-reason", view.render ? "eligible" : view.reason);
+  page.setAttribute("data-harness-enhanced", enhance ? "1" : "0");
+  status.textContent = `fixture=${fixtureName} today=${today} render=${view.render} detail=${detailMode} enhanced=${enhance}`;
+</script>
+</body>
+</html>

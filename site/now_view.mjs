@@ -1,7 +1,7 @@
 import { buildNowSurface } from "./now_surface.mjs";
 import { nowItemMatchesScope } from "./scope_now_adapter.mjs";
 import { buildNowCalendarView } from "./now_calendar.mjs";
-import { renderCompactMonth } from "./compact_calendar.mjs";
+import { bindCalendarEventPreview, renderCompactMonth } from "./compact_calendar.mjs";
 import {
   CALENDAR_VIEW_CALENDAR,
   installNowCalendarSwitch,
@@ -223,6 +223,9 @@ export function renderNowSurface(surface, options = {}) {
   installNowCalendarSwitch(globalThis.document, (view) => {
     location.hash = nowCalendarViewHref(view, currentHash);
   });
+  // PX-01: idempotent and delegated, so switching between Cards and Calendar
+  // repaints `#nowview` as often as the reader likes without a second listener.
+  bindCalendarEventPreview(box);
   announce(t("results_count", { n: surface.counts.total }));
 }
 

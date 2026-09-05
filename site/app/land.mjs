@@ -1534,6 +1534,9 @@ async function paintConnectedCalendar(record,selection){
   if(!host.firstElementChild) return;
   tools.ensureCompactCalendarStylesheet();
   tools.bindCompactMonthPrintDisclosure(host);
+  // PX-01: delegated on the panel host, so a later repaint of the same host
+  // reuses the one binding rather than stacking another.
+  if(typeof tools.bindCalendarEventPreview==="function") tools.bindCalendarEventPreview(host);
 }
 async function paintProjectConnections(record,selection){
   const host=$("#project-connections");

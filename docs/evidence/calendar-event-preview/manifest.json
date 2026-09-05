@@ -1,0 +1,616 @@
+{
+  "schema": "cityscroll.calendar_event_preview_evidence.v1",
+  "card": "cityscroll-resident-ux/px-01-preview-calendar-events",
+  "route": "component-harness:calendar-event-preview",
+  "harness": "test/harness/calendar_event_preview_harness.html",
+  "revision": "b53cb7116c76f2a8b3375b745049002c92b78f48",
+  "data_vintage": "2026-03-15",
+  "timezone": "America/New_York",
+  "captured_at": "2026-09-05T22:47:18Z",
+  "image_directory": ".artifacts/calendar-event-preview",
+  "image_policy": "Capture images are written to the ignored local directory above and are never committed. This manifest is the tracked proof: route, viewport, revision, data vintage, assertion and SHA-256 for each capture.",
+  "files": [
+    {
+      "name": "open-and-close-390x844.png",
+      "specimen": "open-and-close",
+      "route": "component-harness:calendar-event-preview",
+      "harness": "test/harness/calendar_event_preview_harness.html",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "b53cb7116c76f2a8b3375b745049002c92b78f48",
+      "data_vintage": "2026-03-15",
+      "timezone": "America/New_York",
+      "assertion": "at 390px the preview opens in place with focus inside, Close returns focus to the invoking control, and the month, its cells and the address are untouched",
+      "observations": {
+        "opened": true,
+        "focus_moved_into_dialog": true,
+        "closed": true,
+        "focus_returned_to_trigger": true,
+        "month_preserved": true,
+        "cells_preserved": true,
+        "url_unchanged": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 57207,
+      "sha256": "41c7154cfc2fcad16cdf05ee025b7f5cee17f7ac978e783b98c5954f4d1b7a97",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "open-and-close-1440x900.png",
+      "specimen": "open-and-close",
+      "route": "component-harness:calendar-event-preview",
+      "harness": "test/harness/calendar_event_preview_harness.html",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "b53cb7116c76f2a8b3375b745049002c92b78f48",
+      "data_vintage": "2026-03-15",
+      "timezone": "America/New_York",
+      "assertion": "at 1440px the preview opens in place with focus inside, Close returns focus to the invoking control, and the month, its cells and the address are untouched",
+      "observations": {
+        "opened": true,
+        "focus_moved_into_dialog": true,
+        "closed": true,
+        "focus_returned_to_trigger": true,
+        "month_preserved": true,
+        "cells_preserved": true,
+        "url_unchanged": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 67090,
+      "sha256": "304b42778448cc8201d8783b07c41daf0ba789ce6bc260f1068217da86acebbf",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "escape-dismissal-390x844.png",
+      "specimen": "escape-dismissal",
+      "route": "component-harness:calendar-event-preview",
+      "harness": "test/harness/calendar_event_preview_harness.html",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "b53cb7116c76f2a8b3375b745049002c92b78f48",
+      "data_vintage": "2026-03-15",
+      "timezone": "America/New_York",
+      "assertion": "at 390px Escape dismisses the preview and focus returns to the invoking control",
+      "observations": {
+        "closed_by_escape": true,
+        "focus_returned_to_trigger": true
+      },
+      "bytes": 57207,
+      "sha256": "41c7154cfc2fcad16cdf05ee025b7f5cee17f7ac978e783b98c5954f4d1b7a97",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "escape-dismissal-1440x900.png",
+      "specimen": "escape-dismissal",
+      "route": "component-harness:calendar-event-preview",
+      "harness": "test/harness/calendar_event_preview_harness.html",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "b53cb7116c76f2a8b3375b745049002c92b78f48",
+      "data_vintage": "2026-03-15",
+      "timezone": "America/New_York",
+      "assertion": "at 1440px Escape dismisses the preview and focus returns to the invoking control",
+      "observations": {
+        "closed_by_escape": true,
+        "focus_returned_to_trigger": true
+      },
+      "bytes": 67090,
+      "sha256": "304b42778448cc8201d8783b07c41daf0ba789ce6bc260f1068217da86acebbf",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "keyboard-activation-390x844.png",
+      "specimen": "keyboard-activation",
+      "route": "component-harness:calendar-event-preview",
+      "harness": "test/harness/calendar_event_preview_harness.html",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "b53cb7116c76f2a8b3375b745049002c92b78f48",
+      "data_vintage": "2026-03-15",
+      "timezone": "America/New_York",
+      "assertion": "at 390px Enter on the trigger opens the preview and Tab stays inside it",
+      "observations": {
+        "opened_by_keyboard": true,
+        "focus_moved_into_dialog": true,
+        "focus_contained_through_tabs": true
+      },
+      "bytes": 57596,
+      "sha256": "2b79e936b653862cbe5321953700ea4e3af94181e5a1b7f1e3fdc60912c46948",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "keyboard-activation-1440x900.png",
+      "specimen": "keyboard-activation",
+      "route": "component-harness:calendar-event-preview",
+      "harness": "test/harness/calendar_event_preview_harness.html",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "b53cb7116c76f2a8b3375b745049002c92b78f48",
+      "data_vintage": "2026-03-15",
+      "timezone": "America/New_York",
+      "assertion": "at 1440px Enter on the trigger opens the preview and Tab stays inside it",
+      "observations": {
+        "opened_by_keyboard": true,
+        "focus_moved_into_dialog": true,
+        "focus_contained_through_tabs": true
+      },
+      "bytes": 67466,
+      "sha256": "65fd8fe720fca7f7bd2dac4bc32d15943f66390cfd72f5808e7d5b7b825ba680",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "full-page-journey-390x844.png",
+      "specimen": "full-page-journey",
+      "route": "component-harness:calendar-event-preview",
+      "harness": "test/harness/calendar_event_preview_harness.html",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "b53cb7116c76f2a8b3375b745049002c92b78f48",
+      "data_vintage": "2026-03-15",
+      "timezone": "America/New_York",
+      "assertion": "at 390px the preview offers an explicit full-page destination, and after a real navigation and browser Back the calendar is back and its preview still works",
+      "observations": {
+        "preview_destination": "https://cityscroll.org/x/dense-past",
+        "navigated_away": true,
+        "returned_to_calendar": true,
+        "no_dialog_after_back": true,
+        "preview_works_after_back": true
+      },
+      "bytes": 53021,
+      "sha256": "1afccf634f1801db03ee1702520536b41a6c823852e629b3837708251e44efbe",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "full-page-journey-1440x900.png",
+      "specimen": "full-page-journey",
+      "route": "component-harness:calendar-event-preview",
+      "harness": "test/harness/calendar_event_preview_harness.html",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "b53cb7116c76f2a8b3375b745049002c92b78f48",
+      "data_vintage": "2026-03-15",
+      "timezone": "America/New_York",
+      "assertion": "at 1440px the preview offers an explicit full-page destination, and after a real navigation and browser Back the calendar is back and its preview still works",
+      "observations": {
+        "preview_destination": "https://cityscroll.org/x/dense-past",
+        "navigated_away": true,
+        "returned_to_calendar": true,
+        "no_dialog_after_back": true,
+        "preview_works_after_back": true
+      },
+      "bytes": 63143,
+      "sha256": "a1791f9bf7d10804c3e57f5136f9b4e8337fb198a419bc251a692655ab23e81e",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "modified-click-390x844.png",
+      "specimen": "modified-click",
+      "route": "component-harness:calendar-event-preview",
+      "harness": "test/harness/calendar_event_preview_harness.html",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "b53cb7116c76f2a8b3375b745049002c92b78f48",
+      "data_vintage": "2026-03-15",
+      "timezone": "America/New_York",
+      "assertion": "at 390px the canonical link keeps its own behaviour under enhancement: a modified click is handed to the browser and opens no preview, and an ordinary click still navigates to the canonical destination",
+      "observations": {
+        "anchor_href": "https://cityscroll.org/x/dense-past",
+        "modified_click_opened_a_separate_context": true,
+        "modified_click_opened_no_preview": true,
+        "modified_click_left_the_calendar_in_place": true,
+        "plain_click_still_reaches_the_canonical_destination": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 53021,
+      "sha256": "1afccf634f1801db03ee1702520536b41a6c823852e629b3837708251e44efbe",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "modified-click-1440x900.png",
+      "specimen": "modified-click",
+      "route": "component-harness:calendar-event-preview",
+      "harness": "test/harness/calendar_event_preview_harness.html",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "b53cb7116c76f2a8b3375b745049002c92b78f48",
+      "data_vintage": "2026-03-15",
+      "timezone": "America/New_York",
+      "assertion": "at 1440px the canonical link keeps its own behaviour under enhancement: a modified click is handed to the browser and opens no preview, and an ordinary click still navigates to the canonical destination",
+      "observations": {
+        "anchor_href": "https://cityscroll.org/x/dense-past",
+        "modified_click_opened_a_separate_context": true,
+        "modified_click_opened_no_preview": true,
+        "modified_click_left_the_calendar_in_place": true,
+        "plain_click_still_reaches_the_canonical_destination": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 63143,
+      "sha256": "a1791f9bf7d10804c3e57f5136f9b4e8337fb198a419bc251a692655ab23e81e",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "before-state-and-without-scripting-390x844.png",
+      "specimen": "before-state-and-without-scripting",
+      "route": "component-harness:calendar-event-preview",
+      "harness": "test/harness/calendar_event_preview_harness.html",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "b53cb7116c76f2a8b3375b745049002c92b78f48",
+      "data_vintage": "2026-03-15",
+      "timezone": "America/New_York",
+      "assertion": "at 390px an unenhanced calendar shows no preview affordance at all and activating an event navigates straight to its full page \u2014 which is both the behaviour a reader without scripting still gets and, because the anchor is unchanged, the before state this work starts from",
+      "observations": {
+        "no_visible_trigger_without_enhancement": true,
+        "canonical_href": "https://cityscroll.org/x/dense-past",
+        "link_navigates": true
+      },
+      "bytes": 47457,
+      "sha256": "2c85a473b53fc3907e8a9458a479cf64f1629adfe2cf5336c94ac26ec53fa52b",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "before-state-and-without-scripting-1440x900.png",
+      "specimen": "before-state-and-without-scripting",
+      "route": "component-harness:calendar-event-preview",
+      "harness": "test/harness/calendar_event_preview_harness.html",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "b53cb7116c76f2a8b3375b745049002c92b78f48",
+      "data_vintage": "2026-03-15",
+      "timezone": "America/New_York",
+      "assertion": "at 1440px an unenhanced calendar shows no preview affordance at all and activating an event navigates straight to its full page \u2014 which is both the behaviour a reader without scripting still gets and, because the anchor is unchanged, the before state this work starts from",
+      "observations": {
+        "no_visible_trigger_without_enhancement": true,
+        "canonical_href": "https://cityscroll.org/x/dense-past",
+        "link_navigates": true
+      },
+      "bytes": 57530,
+      "sha256": "80b6a74b39ee0db90a8ba4f53c22f48410a66c6febf45a832df87f5a1cf62151",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "failed-optional-detail-390x844.png",
+      "specimen": "failed-optional-detail",
+      "route": "component-harness:calendar-event-preview",
+      "harness": "test/harness/calendar_event_preview_harness.html",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "b53cb7116c76f2a8b3375b745049002c92b78f48",
+      "data_vintage": "2026-03-15",
+      "timezone": "America/New_York",
+      "assertion": "at 390px a failed optional detail load leaves the event's own facts and a working full-page link untouched",
+      "observations": {
+        "title_retained": "Kickoff hearing",
+        "date_retained": true,
+        "status_shown": true,
+        "full_page_link_retained": "https://cityscroll.org/x/dense-past",
+        "link_is_usable": true
+      },
+      "bytes": 59922,
+      "sha256": "58ca9f6d8ea99bb92093a31c33266b8f8dcb2e39b661b21dc5eacdb87edbd180",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "failed-optional-detail-1440x900.png",
+      "specimen": "failed-optional-detail",
+      "route": "component-harness:calendar-event-preview",
+      "harness": "test/harness/calendar_event_preview_harness.html",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "b53cb7116c76f2a8b3375b745049002c92b78f48",
+      "data_vintage": "2026-03-15",
+      "timezone": "America/New_York",
+      "assertion": "at 1440px a failed optional detail load leaves the event's own facts and a working full-page link untouched",
+      "observations": {
+        "title_retained": "Kickoff hearing",
+        "date_retained": true,
+        "status_shown": true,
+        "full_page_link_retained": "https://cityscroll.org/x/dense-past",
+        "link_is_usable": true
+      },
+      "bytes": 70986,
+      "sha256": "61affd4e1a81c994bd587d4d86a45b25c6892ffefb16e5bd0633be3eee69398b",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "stale-detail-response-390x844.png",
+      "specimen": "stale-detail-response",
+      "route": "component-harness:calendar-event-preview",
+      "harness": "test/harness/calendar_event_preview_harness.html",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "b53cb7116c76f2a8b3375b745049002c92b78f48",
+      "data_vintage": "2026-03-15",
+      "timezone": "America/New_York",
+      "assertion": "at 390px a detail response for a selection the reader has left never replaces the newer one on screen",
+      "observations": {
+        "first_selection": "Preview: Kickoff hearing",
+        "showing_after_stale_response": "Comments due today",
+        "newer_selection_retained": true,
+        "stale_detail_absent": true
+      },
+      "bytes": 60081,
+      "sha256": "81abc6f469303450d3d84e90c6455d2175bbc145be0b65dcb53c7dcfcf2ca14b",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "stale-detail-response-1440x900.png",
+      "specimen": "stale-detail-response",
+      "route": "component-harness:calendar-event-preview",
+      "harness": "test/harness/calendar_event_preview_harness.html",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "b53cb7116c76f2a8b3375b745049002c92b78f48",
+      "data_vintage": "2026-03-15",
+      "timezone": "America/New_York",
+      "assertion": "at 1440px a detail response for a selection the reader has left never replaces the newer one on screen",
+      "observations": {
+        "first_selection": "Preview: Kickoff hearing",
+        "showing_after_stale_response": "Comments due today",
+        "newer_selection_retained": true,
+        "stale_detail_absent": true
+      },
+      "bytes": 70876,
+      "sha256": "d6ed9e53bba3b98df04b314b4f2572a476c4795c69eaf37343b0f87e0329faf7",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "cancelled-and-date-only-390x844.png",
+      "specimen": "cancelled-and-date-only",
+      "route": "component-harness:calendar-event-preview",
+      "harness": "test/harness/calendar_event_preview_harness.html",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "b53cb7116c76f2a8b3375b745049002c92b78f48",
+      "data_vintage": "2026-03-15",
+      "timezone": "America/New_York",
+      "assertion": "at 390px a cancelled event says so before offering an action, a past event says its date has passed, and a date-only event acquires no clock time",
+      "observations": {
+        "cancellation_stated": true,
+        "cancellation_before_action": true,
+        "past_state_stated": true,
+        "no_clock_time_on_a_date_only_event": true
+      },
+      "bytes": 49038,
+      "sha256": "08af8241907c73c01deee8b353d34ec22b98f2a00ec389360d43896af5eb8c2d",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "cancelled-and-date-only-1440x900.png",
+      "specimen": "cancelled-and-date-only",
+      "route": "component-harness:calendar-event-preview",
+      "harness": "test/harness/calendar_event_preview_harness.html",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "b53cb7116c76f2a8b3375b745049002c92b78f48",
+      "data_vintage": "2026-03-15",
+      "timezone": "America/New_York",
+      "assertion": "at 1440px a cancelled event says so before offering an action, a past event says its date has passed, and a date-only event acquires no clock time",
+      "observations": {
+        "cancellation_stated": true,
+        "cancellation_before_action": true,
+        "past_state_stated": true,
+        "no_clock_time_on_a_date_only_event": true
+      },
+      "bytes": 67616,
+      "sha256": "a41034a879390a3054704b39edc63858b66add2433fff634a7db01f8bd51933f",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "repeated-identity-and-rerender-390x844.png",
+      "specimen": "repeated-identity-and-rerender",
+      "route": "component-harness:calendar-event-preview",
+      "harness": "test/harness/calendar_event_preview_harness.html",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "b53cb7116c76f2a8b3375b745049002c92b78f48",
+      "data_vintage": "2026-03-15",
+      "timezone": "America/New_York",
+      "assertion": "at 390px an event identity rendered in several places at once -- the grid, the parallel agenda, and a crowded day's disclosure -- opens the one shared preview for that event, and a repaint leaves exactly one dialog still working",
+      "observations": {
+        "identities_rendered_more_than_once": 7,
+        "repeated_identity_opens_one_dialog": true,
+        "repeated_identity_shows_its_own_event": true,
+        "works_after_rerender": true,
+        "single_dialog_after_rerender": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 45845,
+      "sha256": "bbaa45cc52b26b9c7ee7daf637f9eff41057821a58b67ff2211fec9efd927a52",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "repeated-identity-and-rerender-1440x900.png",
+      "specimen": "repeated-identity-and-rerender",
+      "route": "component-harness:calendar-event-preview",
+      "harness": "test/harness/calendar_event_preview_harness.html",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "b53cb7116c76f2a8b3375b745049002c92b78f48",
+      "data_vintage": "2026-03-15",
+      "timezone": "America/New_York",
+      "assertion": "at 1440px an event identity rendered in several places at once -- the grid, the parallel agenda, and a crowded day's disclosure -- opens the one shared preview for that event, and a repaint leaves exactly one dialog still working",
+      "observations": {
+        "identities_rendered_more_than_once": 7,
+        "repeated_identity_opens_one_dialog": true,
+        "repeated_identity_shows_its_own_event": true,
+        "works_after_rerender": true,
+        "single_dialog_after_rerender": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 64415,
+      "sha256": "aed82327d704b31dc677cec50c11cd652033e2f038d49a20ee3cd3cda217ca9e",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "sparse-no-calendar-390x844.png",
+      "specimen": "sparse-no-calendar",
+      "route": "component-harness:calendar-event-preview",
+      "harness": "test/harness/calendar_event_preview_harness.html",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "b53cb7116c76f2a8b3375b745049002c92b78f48",
+      "data_vintage": "2026-03-15",
+      "timezone": "America/New_York",
+      "assertion": "at 390px a bundle below the density rule renders no month and therefore offers no preview affordance either",
+      "observations": {
+        "renders_no_month": true,
+        "offers_no_trigger": true
+      },
+      "bytes": 21858,
+      "sha256": "2d326cd2a27249bc99d1a40d53aa359b01dbf99dada789c343a99273c81004b2",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "sparse-no-calendar-1440x900.png",
+      "specimen": "sparse-no-calendar",
+      "route": "component-harness:calendar-event-preview",
+      "harness": "test/harness/calendar_event_preview_harness.html",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "b53cb7116c76f2a8b3375b745049002c92b78f48",
+      "data_vintage": "2026-03-15",
+      "timezone": "America/New_York",
+      "assertion": "at 1440px a bundle below the density rule renders no month and therefore offers no preview affordance either",
+      "observations": {
+        "renders_no_month": true,
+        "offers_no_trigger": true
+      },
+      "bytes": 25562,
+      "sha256": "fdca8e11cbccadf8b5b7fde84781f7d1758ada62231dd2b099de77cfbe6208f7",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    }
+  ]
+}

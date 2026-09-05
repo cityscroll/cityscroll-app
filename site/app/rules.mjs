@@ -978,6 +978,10 @@ async function loadRuleLifecycle(r,el){
   // Participation + member blurb lead the lifecycle so act-now is first; spine remains below.
   el.innerHTML=`${partHtml}${blurbHtml}${spine}`;
   bindRulesPhaseUI(el);
+  // PX-01: the shared in-place event preview for the participation month.
+  // Delegated and idempotent, so repainting this element never stacks a
+  // second listener on it.
+  if(typeof calendarTools?.bindCalendarEventPreview==="function") calendarTools.bindCalendarEventPreview(el);
   if(participationPath) bindRuleParticipationUI(el, participationPath, assembleScaffold);
   if(memberBlurb) bindRuleMemberBlurbUI(el, memberBlurb);
   // Comment deadline may come from a sibling’s NYC Rules join after stitch.

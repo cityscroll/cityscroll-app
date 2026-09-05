@@ -40,6 +40,16 @@ export function renderCivicDocumentAssets(assetPrefix = "/") {
 <link rel="stylesheet" href="${esc(`${prefix}civic-documents.css`)}">`;
 }
 
+/**
+ * The browser boot for the shared in-place calendar event preview (PX-01).
+ * Rendered documents that mount a compact month include this so the preview
+ * affordance is offered by exactly the documents whose behaviour is listening.
+ */
+export function renderCalendarEventPreviewScript(assetPrefix = "/") {
+  const prefix = prefixFor(assetPrefix);
+  return `<script type="module" src="${esc(`${prefix}calendar_event_preview_boot.mjs`)}"></script>`;
+}
+
 function brandMark() {
   return `<svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true">
     <path d="M14 5h29l8 8v42a4 4 0 0 1-4 4H14a4 4 0 0 1-4-4V9a4 4 0 0 1 4-4Z" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round"/>

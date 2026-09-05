@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Full page — fixture harness destination</title>
+<meta name="robots" content="noindex, nofollow">
+<!--
+  The neutral navigation destination for the calendar event preview harness.
+  It exists so a capture can exercise a real full-page journey and a real
+  browser Back, rather than asserting a link's href and stopping there. Not a
+  shipped page and never linked from the public site.
+-->
+<style>body { margin: 0; padding: 24px; font: 16px/1.5 ui-sans-serif, system-ui, sans-serif; }</style>
+</head>
+<body>
+<main id="page" data-harness-destination="1">
+<h1>Full event page</h1>
+<p>The reader chose the explicit destination. Browser Back returns to the calendar they left.</p>
+</main>
+</body>
+</html>
