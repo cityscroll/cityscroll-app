@@ -1,0 +1,242 @@
+{
+  "schema": "cityscroll.past_task_feedback_capture.v1",
+  "change": "cityscroll-contextual-ux/cx-03-past-task-feedback",
+  "browser_mode": "headless chromium (playwright), remote hosts stubbed or blocked",
+  "route": "/about.html",
+  "viewports": [
+    {
+      "name": "mobile",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "name": "desktop",
+      "width": 1440,
+      "height": 900
+    }
+  ],
+  "revision": "5b82f4a0aec9c247858e29a8b2fe3586591a27ab",
+  "zero_network_before_send": "the /feedback endpoint was never reached in the collapsed, expanded, edited, validation, or pre-send states",
+  "captures": [
+    {
+      "state": "collapsed",
+      "route": "/about.html",
+      "viewport": {
+        "name": "mobile",
+        "width": 390,
+        "height": 844
+      },
+      "revision": "5b82f4a0aec9c247858e29a8b2fe3586591a27ab",
+      "file": null,
+      "sha256": "73fab658c6d6166054e42d068d2eaceb702c9f65d37f12589c17cfd237d6be6b",
+      "assertion": "guidance is closed by default; nothing else has changed",
+      "observations": {
+        "guidance_present": true,
+        "guidance_open": false,
+        "message_field_count": 1,
+        "message_value": "",
+        "validation_text": "",
+        "send_disabled": false,
+        "horizontal_overflow": false
+      }
+    },
+    {
+      "state": "collapsed",
+      "route": "/about.html",
+      "viewport": {
+        "name": "desktop",
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "5b82f4a0aec9c247858e29a8b2fe3586591a27ab",
+      "file": null,
+      "sha256": "404afa0f3ab8d667bc2db8521502011db5e5b50ceba96b5d3744062661eef4db",
+      "assertion": "guidance is closed by default; nothing else has changed",
+      "observations": {
+        "guidance_present": true,
+        "guidance_open": false,
+        "message_field_count": 1,
+        "message_value": "",
+        "validation_text": "",
+        "send_disabled": false,
+        "horizontal_overflow": false
+      }
+    },
+    {
+      "state": "expanded",
+      "route": "/about.html",
+      "viewport": {
+        "name": "mobile",
+        "width": 390,
+        "height": 844
+      },
+      "revision": "5b82f4a0aec9c247858e29a8b2fe3586591a27ab",
+      "file": null,
+      "sha256": "3cc91db1ce3d27f4cb50ba02ab43b912161ec8856442a062da3a070138d6408b",
+      "assertion": "reader opened the optional guidance; no field or network call resulted",
+      "observations": {
+        "guidance_present": true,
+        "guidance_open": true,
+        "message_field_count": 1,
+        "message_value": "",
+        "validation_text": "",
+        "send_disabled": false,
+        "horizontal_overflow": false
+      }
+    },
+    {
+      "state": "expanded",
+      "route": "/about.html",
+      "viewport": {
+        "name": "desktop",
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "5b82f4a0aec9c247858e29a8b2fe3586591a27ab",
+      "file": null,
+      "sha256": "3f6e8c219cce094b0c0d986eec63e609aff7ee6e0728dd9ac08343c273f43249",
+      "assertion": "reader opened the optional guidance; no field or network call resulted",
+      "observations": {
+        "guidance_present": true,
+        "guidance_open": true,
+        "message_field_count": 1,
+        "message_value": "",
+        "validation_text": "",
+        "send_disabled": false,
+        "horizontal_overflow": false
+      }
+    },
+    {
+      "state": "edited",
+      "route": "/about.html",
+      "viewport": {
+        "name": "mobile",
+        "width": 390,
+        "height": 844
+      },
+      "revision": "5b82f4a0aec9c247858e29a8b2fe3586591a27ab",
+      "file": null,
+      "sha256": "1a1285c52be9edffb316f1f71060ecb28cbe37a2a65635bd665d8be25c724301",
+      "assertion": "reader wrote their own account in the one existing message field",
+      "observations": {
+        "guidance_present": true,
+        "guidance_open": true,
+        "message_field_count": 1,
+        "message_value": "I tried to renew a watch on a tax lien and the confirmation email never arrived, so I gave up and checked the site by hand instead.",
+        "validation_text": "",
+        "send_disabled": false,
+        "horizontal_overflow": false
+      }
+    },
+    {
+      "state": "edited",
+      "route": "/about.html",
+      "viewport": {
+        "name": "desktop",
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "5b82f4a0aec9c247858e29a8b2fe3586591a27ab",
+      "file": null,
+      "sha256": "01055c80a7016d38332b075c6b9559bb39a345df8375f47b7cc8b6d2a0ad8e26",
+      "assertion": "reader wrote their own account in the one existing message field",
+      "observations": {
+        "guidance_present": true,
+        "guidance_open": true,
+        "message_field_count": 1,
+        "message_value": "I tried to renew a watch on a tax lien and the confirmation email never arrived, so I gave up and checked the site by hand instead.",
+        "validation_text": "",
+        "send_disabled": false,
+        "horizontal_overflow": false
+      }
+    },
+    {
+      "state": "validation",
+      "route": "/about.html",
+      "viewport": {
+        "name": "mobile",
+        "width": 390,
+        "height": 844
+      },
+      "revision": "5b82f4a0aec9c247858e29a8b2fe3586591a27ab",
+      "file": null,
+      "sha256": "82d8f51ae215d4e0fadf930d9885263f4972ea5fa865cd9ef611d5edb44b57f0",
+      "assertion": "Send was clicked with a too-short message; the existing validation rejected it before any request",
+      "observations": {
+        "guidance_present": true,
+        "guidance_open": false,
+        "message_field_count": 1,
+        "message_value": "too short",
+        "validation_text": "Add a little more detail \u2014 at least a sentence.",
+        "send_disabled": false,
+        "horizontal_overflow": false
+      }
+    },
+    {
+      "state": "validation",
+      "route": "/about.html",
+      "viewport": {
+        "name": "desktop",
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "5b82f4a0aec9c247858e29a8b2fe3586591a27ab",
+      "file": null,
+      "sha256": "b6fe8fd37cd1a78a16c32d88d348de03f2ece902b91f61fa24a30ad2a4c56ceb",
+      "assertion": "Send was clicked with a too-short message; the existing validation rejected it before any request",
+      "observations": {
+        "guidance_present": true,
+        "guidance_open": false,
+        "message_field_count": 1,
+        "message_value": "too short",
+        "validation_text": "Add a little more detail \u2014 at least a sentence.",
+        "send_disabled": false,
+        "horizontal_overflow": false
+      }
+    },
+    {
+      "state": "pre-send",
+      "route": "/about.html",
+      "viewport": {
+        "name": "mobile",
+        "width": 390,
+        "height": 844
+      },
+      "revision": "5b82f4a0aec9c247858e29a8b2fe3586591a27ab",
+      "file": null,
+      "sha256": "0d0558c544294fe8bd72fb3641330d9349ffd9822f903b85b191fbb541b2b2e0",
+      "assertion": "message and optional email are valid and ready; Send has not been clicked and no request has been made",
+      "observations": {
+        "guidance_present": true,
+        "guidance_open": true,
+        "message_field_count": 1,
+        "message_value": "I tried to renew a watch on a tax lien and the confirmation email never arrived, so I gave up and checked the site by hand instead.",
+        "validation_text": "",
+        "send_disabled": false,
+        "horizontal_overflow": false
+      }
+    },
+    {
+      "state": "pre-send",
+      "route": "/about.html",
+      "viewport": {
+        "name": "desktop",
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "5b82f4a0aec9c247858e29a8b2fe3586591a27ab",
+      "file": null,
+      "sha256": "4f17646c44bcfc91e5633a8e1e58f2affdd559108e1ac22e4d24236946a083e0",
+      "assertion": "message and optional email are valid and ready; Send has not been clicked and no request has been made",
+      "observations": {
+        "guidance_present": true,
+        "guidance_open": true,
+        "message_field_count": 1,
+        "message_value": "I tried to renew a watch on a tax lien and the confirmation email never arrived, so I gave up and checked the site by hand instead.",
+        "validation_text": "",
+        "send_disabled": false,
+        "horizontal_overflow": false
+      }
+    }
+  ]
+}
