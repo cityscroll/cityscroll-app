@@ -11,13 +11,18 @@
         "judicial_case:ny_supreme_court_new_york_county:150101_2018"
       ],
       "named_test": false,
-      "expectation_keys": ["inwood_pending_petition_counts_toward_watch"],
+      "expectation_keys": [
+        "inwood_pending_petition_counts_toward_watch"
+      ],
       "expectations": [
         {
           "key": "inwood_pending_petition_counts_toward_watch",
           "kind": "challenge_watch",
           "determination_key": "determination:city_planning_commission:action_inwood_rezoning_0001:2018-08-08",
-          "expect": { "value": 1, "reason": "counted_under_recorded_search" }
+          "expect": {
+            "value": 1,
+            "reason": "counted_under_recorded_search"
+          }
         }
       ]
     },
@@ -39,7 +44,10 @@
           "key": "gowanus_filing_watch_high_service_failure_separate_from_merits",
           "kind": "challenge_watch",
           "determination_key": "determination:city_planning_commission:action_gowanus_rezoning_0001:2021-11-23",
-          "expect": { "value": 2, "reason": "counted_under_recorded_search" }
+          "expect": {
+            "value": 2,
+            "reason": "counted_under_recorded_search"
+          }
         },
         {
           "key": "gowanus_service_failure_does_not_reach_merits",
@@ -61,7 +69,9 @@
         "judicial_case:ny_supreme_court_new_york_county:155001_2020"
       ],
       "named_test": true,
-      "expectation_keys": ["trial_win_reversed_on_appeal_is_not_durable"],
+      "expectation_keys": [
+        "trial_win_reversed_on_appeal_is_not_durable"
+      ],
       "expectations": [
         {
           "key": "trial_win_reversed_on_appeal_is_not_durable",
@@ -85,14 +95,19 @@
       "named_test": true,
       "expectation_keys": [
         "city_point_filing_watch_high_wage_only_theory_weak_labor_not_misconduct",
-        "city_point_wage_theory_recorded_and_weak"
+        "city_point_wage_theory_recorded_and_weak",
+        "city_point_watch_high_rests_on_preserved_issue_and_named_participants",
+        "city_point_watch_falls_when_the_cutoff_predates_the_recorded_participation"
       ],
       "expectations": [
         {
           "key": "city_point_filing_watch_high_wage_only_theory_weak_labor_not_misconduct",
           "kind": "challenge_watch",
           "determination_key": "determination:city_planning_commission:action_city_point_0001:2014-05-20",
-          "expect": { "value": 2, "reason": "counted_under_recorded_search" }
+          "expect": {
+            "value": 2,
+            "reason": "counted_under_recorded_search"
+          }
         },
         {
           "key": "city_point_wage_theory_recorded_and_weak",
@@ -100,10 +115,213 @@
           "case_key": "judicial_case:ny_supreme_court_kings_county:501302_2014",
           "expect": {
             "theory_category": "substantive_seqra_ceqr",
-            "case_outcome": { "durable_petitioner_relief": "none" }
+            "case_outcome": {
+              "durable_petitioner_relief": "none"
+            }
           }
+        },
+        {
+          "key": "city_point_watch_high_rests_on_preserved_issue_and_named_participants",
+          "kind": "challenge_watch_level",
+          "determination_key": "determination:city_planning_commission:action_city_point_0001:2014-05-20",
+          "as_of": "2014-05-20T00:00:00Z",
+          "expect": {
+            "level": "high",
+            "present_features": [
+              "adverse_public_body_signal",
+              "document_class",
+              "labor_organization_participation",
+              "multiple_discretionary_actions",
+              "organized_opposition",
+              "preserved_issue"
+            ],
+            "labor_suppression": "no motive, misconduct, or legal-viability inference",
+            "excluded_evidence": [
+              "positions:published_after_cutoff=1"
+            ]
+          },
+          "note": "Filing-watch evidence is high here because a specific issue was named and reaffirmed and two organizations are named on the record. The labor organization contributes to that evidence exactly as the neighborhood group does, and its participation says nothing about motive, misconduct, or whether a wage-framed environmental-review theory would succeed; the separate claim-theory expectation for this project records that the theory in fact obtained no relief."
+        },
+        {
+          "key": "city_point_watch_falls_when_the_cutoff_predates_the_recorded_participation",
+          "kind": "challenge_watch_level",
+          "determination_key": "determination:city_planning_commission:action_city_point_0001:2014-05-20",
+          "as_of": "2013-11-20T00:00:00Z",
+          "expect": {
+            "level": "null",
+            "null_reason": "determination_not_final_at_cutoff"
+          },
+          "note": "The same project at an earlier cutoff. The determination was not yet final and binding, so no watch may be reported at all -- and the positions and adverse signal that carry the later watch were not yet public either."
         }
-      ]
+      ],
+      "challenge_watch_inputs": {
+        "note": "Documented challenge-watch inputs for A78-04, recorded as dated public-record evidence rather than as A78-01 litigation records: the review's published document class, the discretionary approvals the action required, the public positions two named organizations took, and one adverse public-body signal. The labor organization here is a named participant on exactly the same footing as the neighborhood group; nothing in this fixture is evidence about why either participated. One position here is dated after the determination became final: it is in the fixture precisely so a watch computed as of the determination date has something to exclude, and says so.",
+        "review": {
+          "review_key": "environmental_review:ceqr:qa_fixture_city_point_0001",
+          "events": [
+            {
+              "event_type": "positive_declaration_issued",
+              "available_to_public_at": "2013-06-14T00:00:00Z",
+              "source_id": "article78_historical_qa_fixture",
+              "source_record_id": "review_event/historical/city_point/0001"
+            },
+            {
+              "event_type": "draft_document_published",
+              "available_to_public_at": "2013-11-15T00:00:00Z",
+              "source_id": "article78_historical_qa_fixture",
+              "source_record_id": "review_event/historical/city_point/0002"
+            },
+            {
+              "event_type": "final_document_published",
+              "available_to_public_at": "2014-04-25T00:00:00Z",
+              "source_id": "article78_historical_qa_fixture",
+              "source_record_id": "review_event/historical/city_point/0003"
+            }
+          ],
+          "actions": [
+            {
+              "action_key": "action:city_planning_commission:qa_fixture_city_point:special_permit",
+              "action_type": "special_permit",
+              "discretionary": true,
+              "available_to_public_at": "2013-11-15T00:00:00Z",
+              "source_id": "article78_historical_qa_fixture",
+              "source_record_id": "action/historical/city_point/0001"
+            },
+            {
+              "action_key": "action:city_planning_commission:qa_fixture_city_point:zoning_map_amendment",
+              "action_type": "zoning_map_amendment",
+              "discretionary": true,
+              "available_to_public_at": "2013-11-15T00:00:00Z",
+              "source_id": "article78_historical_qa_fixture",
+              "source_record_id": "action/historical/city_point/0002"
+            },
+            {
+              "action_key": "action:city_planning_commission:qa_fixture_city_point:disposition_of_city_property",
+              "action_type": "disposition",
+              "discretionary": true,
+              "available_to_public_at": "2013-11-15T00:00:00Z",
+              "source_id": "article78_historical_qa_fixture",
+              "source_record_id": "action/historical/city_point/0003"
+            }
+          ]
+        },
+        "positions": [
+          {
+            "position_key": "public_position:environmental_review:ceqr:qa_fixture_city_point_0001:organization:advocacy_group:downtown_brooklyn_neighbors_group:20131205t000000Z",
+            "organization_key": "organization:advocacy_group:downtown_brooklyn_neighbors_group",
+            "review_key": "environmental_review:ceqr:qa_fixture_city_point_0001",
+            "position": "oppose",
+            "named_issue": "construction period traffic and air quality",
+            "observed_at": "2013-12-05T00:00:00Z",
+            "available_to_public_at": "2013-12-05T00:00:00Z",
+            "source_id": "article78_historical_qa_fixture",
+            "source_record_id": "position/historical/city_point/0001",
+            "source_vintage": null,
+            "evidence": null,
+            "confidence": 0.9,
+            "rival_explanation": "An organization on the record in opposition may be commenting as a matter of routine practice on every action in its area rather than contesting this one.",
+            "suppression_rule": "Participation is recorded as dated process evidence only. Lobbying, labor-organization, developer, or community participation captured here must never be read, displayed, or modeled as a misconduct or motive signal about the participating organization.",
+            "organization": {
+              "organization_key": "organization:advocacy_group:downtown_brooklyn_neighbors_group",
+              "name": "Downtown Brooklyn Neighbors Group",
+              "organization_type": "advocacy_group"
+            }
+          },
+          {
+            "position_key": "public_position:environmental_review:ceqr:qa_fixture_city_point_0001:organization:advocacy_group:downtown_brooklyn_neighbors_group:20140220t000000Z",
+            "organization_key": "organization:advocacy_group:downtown_brooklyn_neighbors_group",
+            "review_key": "environmental_review:ceqr:qa_fixture_city_point_0001",
+            "position": "oppose",
+            "named_issue": "Construction-period traffic and air quality",
+            "observed_at": "2014-02-20T00:00:00Z",
+            "available_to_public_at": "2014-02-20T00:00:00Z",
+            "source_id": "article78_historical_qa_fixture",
+            "source_record_id": "position/historical/city_point/0002",
+            "source_vintage": null,
+            "evidence": null,
+            "confidence": 0.9,
+            "rival_explanation": "An organization on the record in opposition may be commenting as a matter of routine practice on every action in its area rather than contesting this one.",
+            "suppression_rule": "Participation is recorded as dated process evidence only. Lobbying, labor-organization, developer, or community participation captured here must never be read, displayed, or modeled as a misconduct or motive signal about the participating organization.",
+            "organization": {
+              "organization_key": "organization:advocacy_group:downtown_brooklyn_neighbors_group",
+              "name": "Downtown Brooklyn Neighbors Group",
+              "organization_type": "advocacy_group"
+            }
+          },
+          {
+            "position_key": "public_position:environmental_review:ceqr:qa_fixture_city_point_0001:organization:labor_organization:building_trades_fair_wage_committee:20140115t000000Z",
+            "organization_key": "organization:labor_organization:building_trades_fair_wage_committee",
+            "review_key": "environmental_review:ceqr:qa_fixture_city_point_0001",
+            "position": "oppose",
+            "named_issue": "construction period labor standards",
+            "observed_at": "2014-01-15T00:00:00Z",
+            "available_to_public_at": "2014-01-15T00:00:00Z",
+            "source_id": "article78_historical_qa_fixture",
+            "source_record_id": "position/historical/city_point/0003",
+            "source_vintage": null,
+            "evidence": null,
+            "confidence": 0.9,
+            "rival_explanation": "A labor organization may participate as a matter of standing practice on projects of this size or in this trade, independently of anything specific to this action.",
+            "suppression_rule": "Participation is recorded as dated process evidence only. Lobbying, labor-organization, developer, or community participation captured here must never be read, displayed, or modeled as a misconduct or motive signal about the participating organization.",
+            "organization": {
+              "organization_key": "organization:labor_organization:building_trades_fair_wage_committee",
+              "name": "Building Trades Fair Wage Committee",
+              "organization_type": "labor_organization"
+            }
+          },
+          {
+            "position_key": "public_position:environmental_review:ceqr:qa_fixture_city_point_0001:organization:labor_organization:building_trades_fair_wage_committee:20140310t000000Z",
+            "organization_key": "organization:labor_organization:building_trades_fair_wage_committee",
+            "review_key": "environmental_review:ceqr:qa_fixture_city_point_0001",
+            "position": "oppose",
+            "named_issue": "construction period labor standards",
+            "observed_at": "2014-03-10T00:00:00Z",
+            "available_to_public_at": "2014-03-10T00:00:00Z",
+            "source_id": "article78_historical_qa_fixture",
+            "source_record_id": "position/historical/city_point/0004",
+            "source_vintage": null,
+            "evidence": null,
+            "confidence": 0.9,
+            "rival_explanation": "A labor organization may participate as a matter of standing practice on projects of this size or in this trade, independently of anything specific to this action.",
+            "suppression_rule": "Participation is recorded as dated process evidence only. Lobbying, labor-organization, developer, or community participation captured here must never be read, displayed, or modeled as a misconduct or motive signal about the participating organization.",
+            "organization": {
+              "organization_key": "organization:labor_organization:building_trades_fair_wage_committee",
+              "name": "Building Trades Fair Wage Committee",
+              "organization_type": "labor_organization"
+            }
+          },
+          {
+            "position_key": "public_position:environmental_review:ceqr:qa_fixture_city_point_0001:organization:advocacy_group:downtown_brooklyn_neighbors_group:20140801t000000z",
+            "organization_key": "organization:advocacy_group:downtown_brooklyn_neighbors_group",
+            "review_key": "environmental_review:ceqr:qa_fixture_city_point_0001",
+            "position": "oppose",
+            "named_issue": "construction period traffic and air quality",
+            "observed_at": "2014-08-01T00:00:00Z",
+            "available_to_public_at": "2014-08-01T00:00:00Z",
+            "source_id": "article78_historical_qa_fixture",
+            "source_record_id": "position/historical/city_point/0005",
+            "source_vintage": null,
+            "evidence": null,
+            "confidence": 0.9,
+            "rival_explanation": "An organization on the record in opposition may be commenting as a matter of routine practice on every action in its area rather than contesting this one.",
+            "suppression_rule": "Participation is recorded as dated process evidence only. Lobbying, labor-organization, developer, or community participation captured here must never be read, displayed, or modeled as a misconduct or motive signal about the participating organization.",
+            "organization": {
+              "organization_key": "organization:advocacy_group:downtown_brooklyn_neighbors_group",
+              "name": "Downtown Brooklyn Neighbors Group",
+              "organization_type": "advocacy_group"
+            }
+          }
+        ],
+        "signals": [
+          {
+            "signal_type": "adverse_public_body_signal",
+            "available_to_public_at": "2013-12-18T00:00:00Z",
+            "source_id": "article78_historical_qa_fixture",
+            "source_record_id": "signal/historical/city_point/0001",
+            "description": "the community board recommended disapproval of the special permit"
+          }
+        ]
+      }
     },
     {
       "project_id": "jewish_home_lifecare_ps_163",
@@ -113,13 +331,18 @@
         "judicial_case:ny_supreme_court_new_york_county:156201_2015"
       ],
       "named_test": false,
-      "expectation_keys": ["jewish_home_pending_petition_counts_toward_watch"],
+      "expectation_keys": [
+        "jewish_home_pending_petition_counts_toward_watch"
+      ],
       "expectations": [
         {
           "key": "jewish_home_pending_petition_counts_toward_watch",
           "kind": "challenge_watch",
           "determination_key": "determination:city_planning_commission:action_jewish_home_lifecare_0001:2015-06-24",
-          "expect": { "value": 1, "reason": "counted_under_recorded_search" }
+          "expect": {
+            "value": 1,
+            "reason": "counted_under_recorded_search"
+          }
         }
       ]
     },
@@ -134,14 +357,18 @@
       "named_test": true,
       "expectation_keys": [
         "200_amsterdam_prior_administrative_challenge_affects_watch_construction_affects_remedy",
-        "200_amsterdam_construction_restrained_remedy"
+        "200_amsterdam_construction_restrained_remedy",
+        "200_amsterdam_prior_administrative_challenge_raises_the_watch_without_a_statement"
       ],
       "expectations": [
         {
           "key": "200_amsterdam_prior_administrative_challenge_affects_watch_construction_affects_remedy",
           "kind": "challenge_watch",
           "determination_key": "determination:department_of_buildings:action_200_amsterdam_0001:2017-10-05",
-          "expect": { "value": 2, "reason": "counted_under_recorded_search" }
+          "expect": {
+            "value": 2,
+            "reason": "counted_under_recorded_search"
+          }
         },
         {
           "key": "200_amsterdam_construction_restrained_remedy",
@@ -151,8 +378,48 @@
             "durable_petitioner_relief": "injunctive_relief",
             "remedy_exposure": "construction_restrained"
           }
+        },
+        {
+          "key": "200_amsterdam_prior_administrative_challenge_raises_the_watch_without_a_statement",
+          "kind": "challenge_watch_level",
+          "determination_key": "determination:department_of_buildings:action_200_amsterdam_0001:2017-10-05",
+          "as_of": "2017-10-05T00:00:00Z",
+          "expect": {
+            "level": "elevated",
+            "present_features": [
+              "prior_administrative_challenge"
+            ]
+          },
+          "note": "The mirror image of the Bronx Metro-North case. There is no statement and no bundle of discretionary approvals here, and the watch still rises above its floor, because an earlier administrative challenge is recorded evidence that somebody contested this action rather than evidence of how large it is. It stops at elevated because nothing names a preserved issue or a participating organization."
         }
-      ]
+      ],
+      "challenge_watch_inputs": {
+        "note": "Documented challenge-watch inputs for A78-04. No environmental impact statement is recorded for this determination and the permit action it rests on is ministerial, so the only feature on the record is the earlier Board of Standards and Appeals administrative challenge the project's search receipt already documents. This is the case that shows a watch can be raised above its floor by something other than conspicuousness.",
+        "review": {
+          "review_key": "environmental_review:ceqr:qa_fixture_200_amsterdam_0001",
+          "events": [],
+          "actions": [
+            {
+              "action_key": "action:department_of_buildings:qa_fixture_200_amsterdam:building_permit",
+              "action_type": "building_permit",
+              "discretionary": false,
+              "available_to_public_at": "2017-10-05T00:00:00Z",
+              "source_id": "article78_historical_qa_fixture",
+              "source_record_id": "action/historical/200_amsterdam/0001"
+            }
+          ]
+        },
+        "positions": [],
+        "signals": [
+          {
+            "signal_type": "prior_administrative_challenge",
+            "available_to_public_at": "2017-08-15T00:00:00Z",
+            "source_id": "article78_historical_qa_fixture",
+            "source_record_id": "signal/historical/200_amsterdam/0001",
+            "description": "an appeal of the zoning-lot determination was filed with the Board of Standards and Appeals before the permit determination"
+          }
+        ]
+      }
     },
     {
       "project_id": "east_side_coastal_resiliency",
@@ -162,7 +429,9 @@
         "judicial_case:ny_supreme_court_new_york_county:158401_2019"
       ],
       "named_test": false,
-      "expectation_keys": ["escr_remand_remedy_recorded_separately_from_relief"],
+      "expectation_keys": [
+        "escr_remand_remedy_recorded_separately_from_relief"
+      ],
       "expectations": [
         {
           "key": "escr_remand_remedy_recorded_separately_from_relief",
@@ -190,13 +459,18 @@
           "key": "soho_noho_adequate_search_zero_is_a_real_zero",
           "kind": "challenge_watch",
           "determination_key": "determination:city_planning_commission:action_soho_noho_0001:2021-12-20",
-          "expect": { "value": 0, "reason": "counted_under_recorded_search" }
+          "expect": {
+            "value": 0,
+            "reason": "counted_under_recorded_search"
+          }
         },
         {
           "key": "soho_noho_full_ladder_search_grades_a",
           "kind": "coverage_grade",
           "determination_key": "determination:city_planning_commission:action_soho_noho_0001:2021-12-20",
-          "expect": { "grade": "A" }
+          "expect": {
+            "grade": "A"
+          }
         }
       ]
     },
@@ -215,13 +489,18 @@
           "key": "250_water_narrow_window_search_is_null_not_zero",
           "kind": "challenge_watch",
           "determination_key": "determination:city_planning_commission:action_250_water_0001:2022-12-15",
-          "expect": { "value": null, "reason": "recorded_search_does_not_cover_this_determination" }
+          "expect": {
+            "value": null,
+            "reason": "recorded_search_does_not_cover_this_determination"
+          }
         },
         {
           "key": "250_water_two_docket_systems_no_opinion_search_grades_b",
           "kind": "coverage_grade",
           "determination_key": "determination:city_planning_commission:action_250_water_0001:2022-12-15",
-          "expect": { "grade": "B" }
+          "expect": {
+            "grade": "B"
+          }
         }
       ]
     },
@@ -241,7 +520,10 @@
           "key": "mott_haven_missing_monitoring_elevates_durable_relief_diagnostic",
           "kind": "challenge_watch",
           "determination_key": "determination:school_construction_authority:action_mott_haven_0001:2016-06-29",
-          "expect": { "value": null, "reason": "recorded_search_does_not_cover_this_determination" }
+          "expect": {
+            "value": null,
+            "reason": "recorded_search_does_not_cover_this_determination"
+          }
         },
         {
           "key": "mott_haven_diagnostic_metric_marked_diagnostic_only",
@@ -253,7 +535,9 @@
           "key": "mott_haven_only_unusable_search_grades_u",
           "kind": "coverage_grade",
           "determination_key": "determination:school_construction_authority:action_mott_haven_0001:2016-06-29",
-          "expect": { "grade": "U" }
+          "expect": {
+            "grade": "U"
+          }
         }
       ]
     },
@@ -274,7 +558,10 @@
           "key": "innovation_qns_retains_and_explains_a_deliberate_false_positive",
           "kind": "challenge_watch",
           "determination_key": "determination:city_planning_commission:action_innovation_qns_0001:2023-06-08",
-          "expect": { "value": 0, "reason": "counted_under_recorded_search" }
+          "expect": {
+            "value": 0,
+            "reason": "counted_under_recorded_search"
+          }
         },
         {
           "key": "innovation_qns_coverage_note_documents_false_positive",
@@ -299,13 +586,18 @@
           "key": "halletts_north_inadequate_coverage_is_null_not_zero",
           "kind": "challenge_watch",
           "determination_key": "determination:board_of_standards_and_appeals:action_halletts_north_0001:2018-03-13",
-          "expect": { "value": null, "reason": "recorded_search_does_not_cover_this_determination" }
+          "expect": {
+            "value": null,
+            "reason": "recorded_search_does_not_cover_this_determination"
+          }
         },
         {
           "key": "halletts_north_single_system_name_only_grades_c",
           "kind": "coverage_grade",
           "determination_key": "determination:board_of_standards_and_appeals:action_halletts_north_0001:2018-03-13",
-          "expect": { "grade": "C" }
+          "expect": {
+            "grade": "C"
+          }
         }
       ]
     },
@@ -315,15 +607,113 @@
       "determination_key": "determination:city_planning_commission:action_bronx_metro_north_0001:2023-12-13",
       "cases": [],
       "named_test": true,
-      "expectation_keys": ["bronx_metro_north_eis_multiple_actions_still_insufficient_for_high_watch"],
+      "expectation_keys": [
+        "bronx_metro_north_eis_multiple_actions_still_insufficient_for_high_watch",
+        "bronx_metro_north_watch_is_null_because_the_recorded_search_is_not_admissible",
+        "bronx_metro_north_statement_and_multiple_actions_cannot_reach_a_high_watch"
+      ],
       "expectations": [
         {
           "key": "bronx_metro_north_eis_multiple_actions_still_insufficient_for_high_watch",
           "kind": "challenge_watch",
           "determination_key": "determination:city_planning_commission:action_bronx_metro_north_0001:2023-12-13",
-          "expect": { "value": null, "reason": "recorded_search_does_not_cover_this_determination" }
+          "expect": {
+            "value": null,
+            "reason": "recorded_search_does_not_cover_this_determination"
+          }
+        },
+        {
+          "key": "bronx_metro_north_watch_is_null_because_the_recorded_search_is_not_admissible",
+          "kind": "challenge_watch_level",
+          "determination_key": "determination:city_planning_commission:action_bronx_metro_north_0001:2023-12-13",
+          "as_of": "2024-03-01T00:00:00Z",
+          "expect": {
+            "level": "null",
+            "null_reason": "coverage_grade_not_countable"
+          },
+          "note": "The recorded search for this determination grades C, so no watch may be reported over it however conspicuous the review was."
+        },
+        {
+          "key": "bronx_metro_north_statement_and_multiple_actions_cannot_reach_a_high_watch",
+          "kind": "challenge_watch_level",
+          "determination_key": "determination:city_planning_commission:action_bronx_metro_north_0001:2023-12-13",
+          "as_of": "2024-03-01T00:00:00Z",
+          "coverage": {
+            "grade": "A",
+            "note": "This project's own search grades C, which would null the watch before any feature rule ran. An admissible grade is supplied here so the feature rules themselves are exercised: the boundary being pinned is that a published environmental impact statement covering four bundled discretionary actions still cannot reach a high watch, not that a thin search nulls it. The supplied grade is a stated premise of this expectation and is never a claim about how this determination was actually searched."
+          },
+          "expect": {
+            "level": "baseline",
+            "present_features": [
+              "document_class",
+              "multiple_discretionary_actions"
+            ]
+          },
+          "note": "The whole point of the card: the most available signal is the least discriminating. A statement and a bundle of approvals describe how large the action is, and neither names a preserved issue nor a participant, so the watch stays at its floor."
         }
-      ]
+      ],
+      "challenge_watch_inputs": {
+        "note": "Documented challenge-watch inputs for A78-04. This project is the boundary case the card exists for: a full environmental impact statement covering several bundled discretionary actions, and nothing on the public record naming a specific preserved issue or a participating organization. Conspicuousness is all this evidence establishes.",
+        "review": {
+          "review_key": "environmental_review:ceqr:qa_fixture_bronx_metro_north_0001",
+          "events": [
+            {
+              "event_type": "positive_declaration_issued",
+              "available_to_public_at": "2022-05-19T00:00:00Z",
+              "source_id": "article78_historical_qa_fixture",
+              "source_record_id": "review_event/historical/bronx_metro_north/0001"
+            },
+            {
+              "event_type": "draft_document_published",
+              "available_to_public_at": "2023-04-28T00:00:00Z",
+              "source_id": "article78_historical_qa_fixture",
+              "source_record_id": "review_event/historical/bronx_metro_north/0002"
+            },
+            {
+              "event_type": "final_document_published",
+              "available_to_public_at": "2023-10-06T00:00:00Z",
+              "source_id": "article78_historical_qa_fixture",
+              "source_record_id": "review_event/historical/bronx_metro_north/0003"
+            }
+          ],
+          "actions": [
+            {
+              "action_key": "action:city_planning_commission:qa_fixture_bronx_metro_north:zoning_map_amendment",
+              "action_type": "zoning_map_amendment",
+              "discretionary": true,
+              "available_to_public_at": "2023-04-28T00:00:00Z",
+              "source_id": "article78_historical_qa_fixture",
+              "source_record_id": "action/historical/bronx_metro_north/0001"
+            },
+            {
+              "action_key": "action:city_planning_commission:qa_fixture_bronx_metro_north:zoning_text_amendment",
+              "action_type": "zoning_text_amendment",
+              "discretionary": true,
+              "available_to_public_at": "2023-04-28T00:00:00Z",
+              "source_id": "article78_historical_qa_fixture",
+              "source_record_id": "action/historical/bronx_metro_north/0002"
+            },
+            {
+              "action_key": "action:city_planning_commission:qa_fixture_bronx_metro_north:city_map_change",
+              "action_type": "city_map_change",
+              "discretionary": true,
+              "available_to_public_at": "2023-04-28T00:00:00Z",
+              "source_id": "article78_historical_qa_fixture",
+              "source_record_id": "action/historical/bronx_metro_north/0003"
+            },
+            {
+              "action_key": "action:city_planning_commission:qa_fixture_bronx_metro_north:acquisition_of_property",
+              "action_type": "acquisition",
+              "discretionary": true,
+              "available_to_public_at": "2023-04-28T00:00:00Z",
+              "source_id": "article78_historical_qa_fixture",
+              "source_record_id": "action/historical/bronx_metro_north/0004"
+            }
+          ]
+        },
+        "positions": [],
+        "signals": []
+      }
     }
   ]
 }

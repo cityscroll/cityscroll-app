@@ -24,6 +24,14 @@
  * is exercised by the same expectations: a `coverage_grade` expectation runs
  * the grader over one project's receipts and pins the grade it produces.
  *
+ * Two projects additionally carry `challenge_watch_inputs`: the dated public
+ * evidence A78-04's cutoff-aware watch reads (a review's published document
+ * class, the discretionary approvals the action required, public positions,
+ * and institutional signals). These are documented QA inputs, not a sixth
+ * A78-01 record type -- the positions among them are validated against
+ * SEQRA-02's own `public_position` spec before use, so a malformed one fails
+ * here rather than silently producing a feature.
+ *
  * This module adds no record shape. Every event here is exactly one of
  * A78-01's five entities or its `determination_context`, validated with
  * A78-01's own validators after the two loader-owned decorations
@@ -44,6 +52,13 @@ import {
   validateDeterminationContext,
 } from "./article78_litigation.mjs";
 import { gradeCoverage } from "./article78_search_coverage.mjs";
+import {
+  CHALLENGE_WATCH_FEATURE_KEYS,
+  CHALLENGE_WATCH_LABEL,
+  deriveChallengeWatch,
+  LABOR_PARTICIPATION_SUPPRESSION,
+} from "./article78_challenge_watch.mjs";
+import { validateSeqraEntity } from "./seqra_ontology_spec.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 export const HISTORICAL_FIXTURE_DIR = join(ROOT, "fixtures/article78/historical");
@@ -208,6 +223,40 @@ export function loadHistoricalFixture() {
   };
 }
 
+/**
+ * The stable-key-shaped fields A78-04's challenge-watch inputs carry. They are
+ * not A78-01 record keys, so `STABLE_KEY_FIELDS` does not name them -- but a
+ * corpus row naming this fixture's synthetic organization or review is exactly
+ * as much of a leak as one naming its case, so the exclusion signature has to
+ * see them.
+ */
+const WATCH_INPUT_KEY_FIELDS = Object.freeze([
+  "review_key",
+  "action_key",
+  "position_key",
+  "organization_key",
+]);
+
+/** Every id and content fingerprint one project's challenge-watch inputs are known by. */
+function collectWatchInputSignature(inputs, ids, fingerprints) {
+  if (!inputs) return;
+  const rows = [
+    ...(inputs.review ? [inputs.review, ...(inputs.review.events ?? []), ...(inputs.review.actions ?? [])] : []),
+    ...(inputs.positions ?? []),
+    ...(inputs.signals ?? []),
+  ];
+  for (const row of rows) {
+    for (const field of WATCH_INPUT_KEY_FIELDS) {
+      if (typeof row?.[field] === "string") ids.add(row[field]);
+    }
+    for (const field of WATCH_INPUT_KEY_FIELDS) {
+      const nested = row?.organization?.[field];
+      if (typeof nested === "string") ids.add(nested);
+    }
+    fingerprints.add(sha256Hex(canonicalJson(row)));
+  }
+}
+
 /** Every stable key and content fingerprint the fixture is known by. */
 function collectFixtureSignature(fixture) {
   const ids = new Set();
@@ -223,6 +272,7 @@ function collectFixtureSignature(fixture) {
       fingerprints.add(sha256Hex(canonicalJson(stripFixtureDecorations(row))));
     }
   }
+  for (const project of fixture.projects) collectWatchInputSignature(project.challenge_watch_inputs, ids, fingerprints);
   return { ids, fingerprints };
 }
 
@@ -324,6 +374,29 @@ export function assertAllMetricsDiagnostic(metrics, context = "fixture metrics")
 // A2: run every documented expectation through A78-01's own derivations.
 // ---------------------------------------------------------------------------
 
+/**
+ * One project's A78-04 challenge-watch inputs, with every public position
+ * validated against SEQRA-02's `public_position` spec once its resolved
+ * `organization` decoration is stripped. The decoration is what names the
+ * participant a named-participant feature rests on; it is not part of the
+ * ontology entity, so it is removed before validation rather than widening
+ * the entity's closed property set.
+ */
+function challengeWatchInputsFor(project) {
+  const inputs = project?.challenge_watch_inputs ?? null;
+  if (!inputs) return { review: null, positions: [], signals: [] };
+  const findings = (inputs.positions ?? []).flatMap((row, index) => {
+    const { organization, ...position } = row;
+    return validateSeqraEntity("public_position", position).map((finding) => `positions[${index}]: ${finding}`);
+  });
+  if (findings.length > 0) {
+    throw new Article78HistoricalFixtureError(
+      `challenge_watch_inputs for ${project.project_id} do not validate as SEQRA-02 public_position rows: ${findings.join("; ")}`,
+    );
+  }
+  return { review: inputs.review ?? null, positions: inputs.positions ?? [], signals: inputs.signals ?? [] };
+}
+
 /** Run one documented expectation, never throwing: the offline backtest needs every result, not just the first failure. */
 function evaluateOneExpectation(fixture, effectiveByCase, expectation) {
   try {
@@ -372,12 +445,102 @@ function evaluateOneExpectation(fixture, effectiveByCase, expectation) {
         const ok = Boolean(note) && note.toLowerCase().includes(expectation.contains.toLowerCase());
         return { key: expectation.key, kind: expectation.kind, ok, actual: { coverage_note: note }, expect: { contains: expectation.contains } };
       }
+      case "challenge_watch_level": {
+        const determination = fixture.clean.determinations.find((row) => row.determination_key === expectation.determination_key);
+        const project = fixture.projects.find((row) => row.determination_key === expectation.determination_key);
+        const inputs = challengeWatchInputsFor(project);
+        const result = deriveChallengeWatch({
+          determination,
+          review: inputs.review,
+          positions: inputs.positions,
+          signals: inputs.signals,
+          // An expectation may state an admissible grade as its own premise
+          // (see the `coverage.note` beside it) so that a feature-rule
+          // boundary is exercised rather than pre-empted by the grade. With no
+          // `coverage` on the expectation, the project's own receipts grade it.
+          coverage: expectation.coverage ?? fixture.clean.coverage,
+          as_of: expectation.as_of,
+        });
+        const presentFeatures = CHALLENGE_WATCH_FEATURE_KEYS.filter((key) => result.features[key]?.present).sort();
+        const actual = {
+          level: result.level,
+          null_reason: result.null_reason ?? null,
+          present_features: presentFeatures,
+          excluded_evidence: result.basis.filter((entry) => entry.kind === "excluded_evidence")
+            .map((entry) => `${entry.channel}:${entry.reason}=${entry.count}`).sort(),
+          labor_suppression: result.features.labor_organization_participation?.suppression ?? null,
+          as_of: result.as_of,
+          coverage_grade: result.coverage_grade,
+        };
+        const checks = [actual.level === expectation.expect.level];
+        if (expectation.expect.null_reason !== undefined) checks.push(actual.null_reason === expectation.expect.null_reason);
+        if (expectation.expect.present_features !== undefined) {
+          checks.push(JSON.stringify(actual.present_features) === JSON.stringify([...expectation.expect.present_features].sort()));
+        }
+        if (expectation.expect.excluded_evidence !== undefined) {
+          checks.push(JSON.stringify(actual.excluded_evidence) === JSON.stringify([...expectation.expect.excluded_evidence].sort()));
+        }
+        if (expectation.expect.labor_suppression !== undefined) {
+          checks.push(actual.labor_suppression === expectation.expect.labor_suppression
+            && expectation.expect.labor_suppression === LABOR_PARTICIPATION_SUPPRESSION);
+        }
+        return { key: expectation.key, kind: expectation.kind, ok: checks.every(Boolean), actual, expect: expectation.expect };
+      }
       default:
         return { key: expectation.key, kind: expectation.kind, ok: false, actual: null, expect: expectation, error: `unknown expectation kind ${JSON.stringify(expectation.kind)}` };
     }
   } catch (error) {
     return { key: expectation.key, kind: expectation.kind, ok: false, actual: null, expect: expectation, error: error.message };
   }
+}
+
+/**
+ * Derive A78-04's cutoff-aware challenge watch for every project that carries
+ * documented `challenge_watch_inputs`, at each cutoff the project's own
+ * expectations name. Diagnostic-only, like everything else computed over this
+ * fixture: it pins the watch derivation's behavior against a hand-picked
+ * sample, and it is never a statement about how often anybody files.
+ */
+export function deriveFixtureChallengeWatches(fixture = loadHistoricalFixture()) {
+  const rows = [];
+  for (const project of fixture.projects) {
+    if (!project.challenge_watch_inputs) continue;
+    const determination = fixture.clean.determinations.find((row) => row.determination_key === project.determination_key);
+    const inputs = challengeWatchInputsFor(project);
+    const expectations = (project.expectations ?? []).filter((row) => row.kind === "challenge_watch_level");
+    for (const expectation of expectations) {
+      const result = deriveChallengeWatch({
+        determination,
+        review: inputs.review,
+        positions: inputs.positions,
+        signals: inputs.signals,
+        coverage: expectation.coverage ?? fixture.clean.coverage,
+        as_of: expectation.as_of,
+      });
+      rows.push({
+        project_id: project.project_id,
+        expectation_key: expectation.key,
+        as_of: result.as_of,
+        coverage_grade: result.coverage_grade,
+        coverage_grade_source: expectation.coverage ? "stated_by_expectation" : "graded_from_receipts",
+        level: result.level,
+        null_reason: result.null_reason ?? null,
+        present_features: CHALLENGE_WATCH_FEATURE_KEYS.filter((key) => result.features[key]?.present).sort(),
+        excluded_evidence: result.basis.filter((entry) => entry.kind === "excluded_evidence")
+          .map((entry) => `${entry.channel}:${entry.reason}=${entry.count}`).sort(),
+        labor_suppression: result.features.labor_organization_participation?.suppression ?? null,
+        statement: result.statement,
+      });
+    }
+  }
+  return {
+    schema: "cityscroll.article78_historical_fixture.challenge_watch_report.v1",
+    scope: "fixture",
+    diagnostic_only: true,
+    label: CHALLENGE_WATCH_LABEL,
+    watch_count: rows.length,
+    watches: rows,
+  };
 }
 
 /**

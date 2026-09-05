@@ -91,3 +91,19 @@ not expose, so the fixture exercises A78-03's coverage ladder as well as the
 two derivations above: nine grade A, one B, two C and one U. Four of those are
 pinned as `coverage_grade` expectations in `index.json`. See
 `docs/article78-search-coverage-v1.md`.
+
+## Challenge-watch inputs
+
+Three projects additionally carry `challenge_watch_inputs` in `index.json`:
+the dated public evidence A78-04's cutoff-aware challenge watch reads — a
+review's published document class, the discretionary approvals the action
+required, public positions from named organizations, and institutional
+signals. These are documented QA inputs, not a sixth record type; the
+positions among them are validated against the environmental-review ontology's
+own `public_position` spec before use, and every id and record they carry
+enters the training-exclusion signature alongside the litigation records. Their
+`challenge_watch_level` expectations pin the watch's boundaries: a published
+statement covering four bundled approvals staying at `baseline`, an earlier
+administrative challenge lifting a watch with no statement at all to
+`elevated`, and a watch falling to `"null"` at a cutoff before the
+determination was final. See `docs/article78-challenge-watch-v1.md`.

@@ -1,0 +1,21 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-seqra-foundation/a78-04-cutoff-aware-challenge-watch-features",
+  "status": "implemented",
+  "fingerprint": "a78-04-cutoff-aware-challenge-watch-features.v1",
+  "updated_at": "2026-09-05T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "article78-challenge-watch-derivation",
+      "path": "warehouse/lib/article78_challenge_watch.mjs"
+    },
+    {
+      "id": "article78-challenge-watch-tests",
+      "path": "test/warehouse_article78_challenge_watch.test.mjs"
+    },
+    {
+      "id": "article78-challenge-watch-contract",
+      "path": "docs/article78-challenge-watch-v1.md"
+    }
+  ]
+}

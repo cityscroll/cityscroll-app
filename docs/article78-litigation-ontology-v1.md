@@ -248,3 +248,14 @@ additive fields for it — `systems_searched`, `variants_tried` and
 `coverageGrade`, names it under `basis.coverage_grade`, and refuses to produce
 a number under a grade outside its countable set. See
 `docs/article78-search-coverage-v1.md`.
+
+## The forward-looking companion
+
+`challengeWatchValue` counts challenges a recorded search located after the
+fact. A78-04 adds the forward-looking half: a **challenge watch** over one
+determination, derived as of an explicit cutoff from evidence public by that
+date, which may reach its top level only on a specific preserved issue or a
+named participant and never on document class alone. The two share the
+coverage grade and nothing else, and carry deliberately separate schemas so a
+consumer cannot mistake one for the other. See
+`docs/article78-challenge-watch-v1.md`.
