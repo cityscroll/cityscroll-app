@@ -1,0 +1,15 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "meeting_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 320,
+      "description": "Exact canonical meeting id, including its meeting: prefix."
+    }
+  },
+  "required": [
+    "meeting_id"
+  ]
+}

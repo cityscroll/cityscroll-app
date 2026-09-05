@@ -1,0 +1,15 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "project_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 32,
+      "description": "Exact publisher ZAP project id, e.g. 2024Q0356."
+    }
+  },
+  "required": [
+    "project_id"
+  ]
+}

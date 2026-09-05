@@ -1,0 +1,438 @@
+{
+  "schema": "cityscroll.integration_client_manifest.v1",
+  "generated_from": "capabilities/registry.mjs + capabilities/mcp_tool_declarations.mjs",
+  "transport": {
+    "protocol": "MCP Streamable HTTP",
+    "endpoint": "/mcp",
+    "method": "POST"
+  },
+  "evidence": {
+    "contract": "local_contract",
+    "protocol_interop": "local_protocol_interop",
+    "external_live_endpoint": false,
+    "deployed_runtime": false
+  },
+  "capabilities": [
+    {
+      "reference": "notice.search@1",
+      "id": "notice.search",
+      "version": "1.0.0",
+      "family": "notices",
+      "method": "noticeSearch",
+      "tool": "search_notices",
+      "input_schema_file": "schemas/notice_search.input.schema.json",
+      "output_schema_file": "schemas/notice_search.output.schema.json",
+      "bounds": {
+        "input": {
+          "maximumTermGroups": 64,
+          "maximumTermsPerGroup": 64,
+          "maximumTermLength": 500,
+          "minimum": 1,
+          "maximum": 100
+        },
+        "output": {
+          "maximumResults": 100
+        }
+      },
+      "availability": [
+        "complete",
+        "empty",
+        "unavailable"
+      ],
+      "canonical_link_fields": [],
+      "canonical_link_policy": "Validated responses are returned without projection; canonical links remain in their public response fields."
+    },
+    {
+      "reference": "notice.get@1",
+      "id": "notice.get",
+      "version": "1.0.0",
+      "family": "notices",
+      "method": "noticeGet",
+      "tool": "get_notice",
+      "input_schema_file": "schemas/notice_get.input.schema.json",
+      "output_schema_file": "schemas/notice_get.output.schema.json",
+      "bounds": {
+        "input": {
+          "requestIdMaximumLength": 80,
+          "maximum": 1
+        },
+        "output": {
+          "oneNotice": true
+        }
+      },
+      "availability": [
+        "available",
+        "not_yet_public",
+        "unavailable"
+      ],
+      "canonical_link_fields": [],
+      "canonical_link_policy": "Validated responses are returned without projection; canonical links remain in their public response fields."
+    },
+    {
+      "reference": "entity.dossier.get@1",
+      "id": "entity.dossier.get",
+      "version": "1.0.0",
+      "family": "entity-resolution",
+      "method": "entityDossierGet",
+      "tool": "get_entity_dossier",
+      "input_schema_file": "schemas/entity_dossier_get.input.schema.json",
+      "output_schema_file": "schemas/entity_dossier_get.output.schema.json",
+      "bounds": {
+        "input": {
+          "entityIdMaximumLength": 300,
+          "recordLimit": 250
+        },
+        "output": {
+          "maximumLinkedRecords": 250
+        }
+      },
+      "availability": [
+        "available",
+        "not_yet_public",
+        "unavailable"
+      ],
+      "canonical_link_fields": [],
+      "canonical_link_policy": "Validated responses are returned without projection; canonical links remain in their public response fields."
+    },
+    {
+      "reference": "entity.relationships.get@1",
+      "id": "entity.relationships.get",
+      "version": "1.0.0",
+      "family": "entity-resolution",
+      "method": "entityRelationshipsGet",
+      "tool": "get_entity_relationships",
+      "input_schema_file": "schemas/entity_relationships_get.input.schema.json",
+      "output_schema_file": "schemas/entity_relationships_get.output.schema.json",
+      "bounds": {
+        "input": {
+          "entityIdMaximumLength": 300,
+          "recordLimit": 250,
+          "defaultDepth": 2,
+          "maximumDepth": 2,
+          "defaultFanOut": 12,
+          "maximumFanOut": 25
+        },
+        "output": {
+          "maximumEdges": 250
+        }
+      },
+      "availability": [
+        "available",
+        "not_yet_public",
+        "unavailable"
+      ],
+      "canonical_link_fields": [],
+      "canonical_link_policy": "Validated responses are returned without projection; canonical links remain in their public response fields."
+    },
+    {
+      "reference": "cited.passages.retrieve@1",
+      "id": "cited.passages.retrieve",
+      "version": "1.0.0",
+      "family": "semantic-retrieval",
+      "method": "citedPassagesRetrieve",
+      "tool": "retrieve_cited_passages",
+      "input_schema_file": "schemas/cited_passages_retrieve.input.schema.json",
+      "output_schema_file": "schemas/cited_passages_retrieve.output.schema.json",
+      "bounds": {
+        "input": {
+          "queryMaximumLength": 240,
+          "bodyIdMaximumLength": 120,
+          "defaultResults": 10,
+          "maximumResults": 20
+        },
+        "output": {
+          "maximumCitations": 20
+        }
+      },
+      "availability": [
+        "partial",
+        "complete",
+        "unknown"
+      ],
+      "canonical_link_fields": [
+        "citations[].source.canonical_href",
+        "citations[].source.url"
+      ],
+      "canonical_link_policy": "Validated responses are returned without projection; canonical links remain in their public response fields."
+    },
+    {
+      "reference": "search.federated@1",
+      "id": "search.federated",
+      "version": "1.1.0",
+      "family": "universal-search",
+      "method": "searchFederated",
+      "tool": "search_federated",
+      "input_schema_file": "schemas/search_federated.input.schema.json",
+      "output_schema_file": "schemas/search_federated.output.schema.json",
+      "bounds": {
+        "input": {
+          "queryMaximumLength": 240,
+          "defaultResults": 40,
+          "maximumResults": 100,
+          "maximumCards": 8
+        },
+        "output": {
+          "maximumResults": 100,
+          "maximumCardsPerLane": 8
+        }
+      },
+      "availability": [
+        "matched",
+        "empty",
+        "partial",
+        "stale",
+        "not_indexed",
+        "provider_unavailable",
+        "out_of_scope"
+      ],
+      "canonical_link_fields": [],
+      "canonical_link_policy": "Validated responses are returned without projection; canonical links remain in their public response fields."
+    },
+    {
+      "reference": "contract.get@1",
+      "id": "contract.get",
+      "version": "1.0.0",
+      "family": "procurement",
+      "method": "contractGet",
+      "tool": "get_contract",
+      "input_schema_file": "schemas/contract_get.input.schema.json",
+      "output_schema_file": "schemas/contract_get.output.schema.json",
+      "bounds": {
+        "input": {
+          "procurementIdMaximumLength": 320,
+          "maximum": 1
+        },
+        "output": {
+          "oneContract": true
+        }
+      },
+      "availability": [
+        "available",
+        "not_yet_public",
+        "unavailable"
+      ],
+      "canonical_link_fields": [],
+      "canonical_link_policy": "Validated responses are returned without projection; canonical links remain in their public response fields."
+    },
+    {
+      "reference": "contracts.browse@1",
+      "id": "contracts.browse",
+      "version": "1.0.0",
+      "family": "procurement",
+      "method": "contractsBrowse",
+      "tool": "browse_contracts",
+      "input_schema_file": "schemas/contracts_browse.input.schema.json",
+      "output_schema_file": "schemas/contracts_browse.output.schema.json",
+      "bounds": {
+        "input": {
+          "filterMaximumLength": 240,
+          "cursorMaximumLength": 320,
+          "minimum": 1,
+          "maximum": 100,
+          "default": 25
+        },
+        "output": {
+          "maximumResults": 100
+        }
+      },
+      "availability": [
+        "complete",
+        "empty",
+        "unavailable"
+      ],
+      "canonical_link_fields": [],
+      "canonical_link_policy": "Validated responses are returned without projection; canonical links remain in their public response fields."
+    },
+    {
+      "reference": "contracts.analysis@1",
+      "id": "contracts.analysis",
+      "version": "1.0.0",
+      "family": "procurement",
+      "method": "contractsAnalysis",
+      "tool": "analyze_contracts",
+      "input_schema_file": "schemas/contracts_analysis.input.schema.json",
+      "output_schema_file": "schemas/contracts_analysis.output.schema.json",
+      "bounds": {
+        "input": {
+          "filterMaximumLength": 240,
+          "minimumGroups": 1,
+          "maximumGroups": 100,
+          "defaultGroups": 10
+        },
+        "output": {
+          "maximumGroups": 100
+        }
+      },
+      "availability": [
+        "complete",
+        "empty",
+        "unavailable"
+      ],
+      "canonical_link_fields": [],
+      "canonical_link_policy": "Validated responses are returned without projection; canonical links remain in their public response fields."
+    },
+    {
+      "reference": "people.get@1",
+      "id": "people.get",
+      "version": "1.0.0",
+      "family": "people-organizations",
+      "method": "peopleGet",
+      "tool": "get_person_or_organization",
+      "input_schema_file": "schemas/people_get.input.schema.json",
+      "output_schema_file": "schemas/people_get.output.schema.json",
+      "bounds": {
+        "input": {
+          "entityIdMaximumLength": 320,
+          "maximum": 1
+        },
+        "output": {
+          "oneRow": true
+        }
+      },
+      "availability": [
+        "available",
+        "not_yet_public",
+        "unavailable"
+      ],
+      "canonical_link_fields": [],
+      "canonical_link_policy": "Validated responses are returned without projection; canonical links remain in their public response fields."
+    },
+    {
+      "reference": "organizations.browse@1",
+      "id": "organizations.browse",
+      "version": "1.0.0",
+      "family": "people-organizations",
+      "method": "organizationsBrowse",
+      "tool": "browse_organizations",
+      "input_schema_file": "schemas/organizations_browse.input.schema.json",
+      "output_schema_file": "schemas/organizations_browse.output.schema.json",
+      "bounds": {
+        "input": {
+          "queryMaximumLength": 240,
+          "kindMaximumLength": 80,
+          "cursorMaximumLength": 320,
+          "minimum": 1,
+          "maximum": 100,
+          "default": 25
+        },
+        "output": {
+          "maximumResults": 100
+        }
+      },
+      "availability": [
+        "complete",
+        "empty",
+        "unavailable"
+      ],
+      "canonical_link_fields": [],
+      "canonical_link_policy": "Validated responses are returned without projection; canonical links remain in their public response fields."
+    },
+    {
+      "reference": "meeting.get@1",
+      "id": "meeting.get",
+      "version": "1.0.0",
+      "family": "meetings",
+      "method": "meetingGet",
+      "tool": "get_meeting",
+      "input_schema_file": "schemas/meeting_get.input.schema.json",
+      "output_schema_file": "schemas/meeting_get.output.schema.json",
+      "bounds": {
+        "input": {
+          "meetingIdMaximumLength": 320,
+          "maximum": 1
+        },
+        "output": {
+          "maximumResults": 1
+        }
+      },
+      "availability": [
+        "available",
+        "not_yet_public",
+        "unavailable"
+      ],
+      "canonical_link_fields": [],
+      "canonical_link_policy": "Validated responses are returned without projection; canonical links remain in their public response fields."
+    },
+    {
+      "reference": "land.project.get@1",
+      "id": "land.project.get",
+      "version": "1.0.0",
+      "family": "land",
+      "method": "landProjectGet",
+      "tool": "get_land_project",
+      "input_schema_file": "schemas/land_project_get.input.schema.json",
+      "output_schema_file": "schemas/land_project_get.output.schema.json",
+      "bounds": {
+        "input": {
+          "projectIdMaximumLength": 32,
+          "maximum": 1
+        },
+        "output": {
+          "oneProject": true
+        }
+      },
+      "availability": [
+        "available",
+        "not_yet_public",
+        "unavailable"
+      ],
+      "canonical_link_fields": [],
+      "canonical_link_policy": "Validated responses are returned without projection; canonical links remain in their public response fields."
+    },
+    {
+      "reference": "land.projects.browse@1",
+      "id": "land.projects.browse",
+      "version": "1.0.0",
+      "family": "land",
+      "method": "landProjectsBrowse",
+      "tool": "browse_land_projects",
+      "input_schema_file": "schemas/land_projects_browse.input.schema.json",
+      "output_schema_file": "schemas/land_projects_browse.output.schema.json",
+      "bounds": {
+        "input": {
+          "filterMaximumLength": 240,
+          "cursorMaximumLength": 320,
+          "minimum": 1,
+          "maximum": 100,
+          "default": 25
+        },
+        "output": {
+          "maximumResults": 100
+        }
+      },
+      "availability": [
+        "complete",
+        "empty",
+        "unavailable"
+      ],
+      "canonical_link_fields": [],
+      "canonical_link_policy": "Validated responses are returned without projection; canonical links remain in their public response fields."
+    },
+    {
+      "reference": "land.decision_path.get@1",
+      "id": "land.decision_path.get",
+      "version": "1.0.0",
+      "family": "land",
+      "method": "landDecisionPathGet",
+      "tool": "get_land_decision_path",
+      "input_schema_file": "schemas/land_decision_path_get.input.schema.json",
+      "output_schema_file": "schemas/land_decision_path_get.output.schema.json",
+      "bounds": {
+        "input": {
+          "projectIdMaximumLength": 32,
+          "maximum": 1
+        },
+        "output": {
+          "oneProject": true
+        }
+      },
+      "availability": [
+        "available",
+        "not_yet_public",
+        "unavailable"
+      ],
+      "canonical_link_fields": [],
+      "canonical_link_policy": "Validated responses are returned without projection; canonical links remain in their public response fields."
+    }
+  ]
+}

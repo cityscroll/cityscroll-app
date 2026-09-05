@@ -1,0 +1,15 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "procurement_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 320,
+      "description": "Exact canonical procurement_id, including its procurement: prefix."
+    }
+  },
+  "required": [
+    "procurement_id"
+  ]
+}

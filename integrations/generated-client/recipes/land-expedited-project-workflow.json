@@ -1,0 +1,51 @@
+{
+  "schema": "cityscroll.integration_recipe.v1",
+  "id": "land-expedited-project-workflow",
+  "family": "land",
+  "question": "How can a resident browse an expedited land project, inspect it, and follow its decision path?",
+  "steps": [
+    {
+      "method": "landProjectsBrowse",
+      "capability_reference": "land.projects.browse@1",
+      "input": {
+        "procedure": "elurp",
+        "corpus": "historical",
+        "limit": 25
+      },
+      "output_schema": "schemas/land_projects_browse.output.schema.json",
+      "availability": [
+        "complete",
+        "empty",
+        "unavailable"
+      ]
+    },
+    {
+      "method": "landProjectGet",
+      "capability_reference": "land.project.get@1",
+      "input": {
+        "project_id": "2024Q0356"
+      },
+      "output_schema": "schemas/land_project_get.output.schema.json",
+      "availability": [
+        "available",
+        "not_yet_public",
+        "unavailable"
+      ]
+    },
+    {
+      "method": "landDecisionPathGet",
+      "capability_reference": "land.decision_path.get@1",
+      "input": {
+        "project_id": "2024Q0356"
+      },
+      "output_schema": "schemas/land_decision_path_get.output.schema.json",
+      "availability": [
+        "available",
+        "not_yet_public",
+        "unavailable"
+      ]
+    }
+  ],
+  "canonical_link_policy": "Each step returns its validated public response unchanged, including any canonical links.",
+  "evidence_class": "local_contract"
+}

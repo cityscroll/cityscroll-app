@@ -262,6 +262,7 @@ run_and_fail node tools/build_land_project_map_points.mjs --check
 run_and_fail node tools/build_land_authority_summary.mjs --check
 run_and_fail node tools/generate_source_docs.mjs --check
 run_and_fail node tools/build_capability_topology.mjs --check
+run_and_fail node tools/generate_integration_client.mjs --check
 run_and_fail node tools/build_product_updates.mjs --check
 run_and_fail node tools/run_capability_semantic_scout.mjs \
   --fixture test/fixtures/capability_semantic_scout.json \

@@ -1,0 +1,65 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "group_by": {
+      "type": "string",
+      "enum": [
+        "agency",
+        "vendor",
+        "registration_fiscal_year",
+        "amount_band"
+      ],
+      "default": "agency",
+      "description": "Grouping dimension."
+    },
+    "measure": {
+      "type": "string",
+      "enum": [
+        "current",
+        "original",
+        "count"
+      ],
+      "default": "current",
+      "description": "current or original registered contract value, or unique contract count."
+    },
+    "agency": {
+      "type": "string",
+      "maxLength": 240
+    },
+    "vendor": {
+      "type": "string",
+      "maxLength": 240
+    },
+    "fiscal_year": {
+      "type": "integer"
+    },
+    "amount_band": {
+      "type": "string",
+      "maxLength": 240
+    },
+    "min_amount": {
+      "type": "number"
+    },
+    "max_amount": {
+      "type": "number"
+    },
+    "retroactive": {
+      "type": "boolean"
+    },
+    "city_record_match": {
+      "type": "string",
+      "enum": [
+        "exact",
+        "none",
+        "cannot_evaluate_missing_pin"
+      ]
+    },
+    "limit": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 100,
+      "default": 10
+    }
+  }
+}

@@ -1,0 +1,114 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "status": {
+      "type": "string",
+      "maxLength": 240,
+      "description": "Exact publisher public/project status, e.g. 'public:Noticed' or 'project:Active'. Omit for every status — never active-only."
+    },
+    "query": {
+      "type": "string",
+      "maxLength": 240,
+      "description": "Case-insensitive terms matched against the existing Land browse row text."
+    },
+    "procedure": {
+      "type": "string",
+      "enum": [
+        "review",
+        "ulurp",
+        "elurp",
+        "non_ulurp"
+      ],
+      "description": "Resident review-procedure facet."
+    },
+    "family": {
+      "type": "string",
+      "enum": [
+        "any",
+        "acquisition",
+        "disposition",
+        "certification",
+        "renewal",
+        "major_concession",
+        "legal_document",
+        "rezoning",
+        "special_permit",
+        "authorization",
+        "site_selection",
+        "mapping",
+        "demapping",
+        "urban_renewal",
+        "landmark",
+        "follow_up",
+        "office_space",
+        "bid",
+        "franchise_consent",
+        "housing_plan",
+        "pops",
+        "landfill"
+      ],
+      "description": "Resident closed action-family facet."
+    },
+    "stage": {
+      "type": "string",
+      "enum": [
+        "any",
+        "active",
+        "public_review",
+        "pre_certification",
+        "community_board",
+        "borough_president",
+        "cpc",
+        "city_council",
+        "completed"
+      ],
+      "description": "Resident review-stage facet."
+    },
+    "regulatory_effect": {
+      "type": "string",
+      "enum": [
+        "any",
+        "upzone",
+        "downzone",
+        "mixed",
+        "no_density_change"
+      ],
+      "description": "Resident regulatory-effect facet."
+    },
+    "borough": {
+      "type": "string",
+      "maxLength": 240,
+      "description": "Exact borough name."
+    },
+    "community_district": {
+      "type": "string",
+      "maxLength": 240,
+      "description": "Borough-lettered community district substring, e.g. K02."
+    },
+    "council_district": {
+      "type": "string",
+      "maxLength": 240,
+      "description": "Council district number."
+    },
+    "corpus": {
+      "type": "string",
+      "enum": [
+        "live",
+        "historical"
+      ],
+      "description": "'live' (default) reads the current committed complete warehouse. 'historical' reads the frozen four-project expedited-procedure regression corpus, for reproducible verification."
+    },
+    "limit": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 100,
+      "default": 25
+    },
+    "cursor": {
+      "type": "string",
+      "maxLength": 320,
+      "description": "Opaque cursor returned by the previous page."
+    }
+  }
+}
