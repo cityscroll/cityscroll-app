@@ -1893,6 +1893,7 @@ warehouse/lib/procurement_intent_realization_matcher.mjs
 warehouse/lib/query.mjs
 warehouse/lib/semantic_civic_object_groups.mjs
 warehouse/lib/serve_publish_contract.mjs
+warehouse/lib/shared_payment_input.mjs
 warehouse/lib/source_passage_map.mjs
 warehouse/lib/ulurp_recommendation_rows_source_records.mjs
 warehouse/lib/ulurp_recommendation_source_records.mjs

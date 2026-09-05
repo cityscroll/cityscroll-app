@@ -23,6 +23,8 @@ import {
   sha256Json,
 } from "../lib/checkbook_payment_population.mjs";
 
+import { beginSharedPaymentRefresh, resolveSharedPaymentInput } from "../lib/shared_payment_input.mjs";
+
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
 const ENDPOINT = "https://www.checkbooknyc.com/api";
 const LANDING_PAGE = "https://www.checkbooknyc.com/data-feeds/api";
@@ -49,6 +51,7 @@ function parseArgs(argv) {
     output: DEFAULT_OUTPUT,
     fixture: DEFAULT_FIXTURE,
     reusePages: false,
+    refresh: false,
   };
   for (let index = 0; index < argv.length; index += 1) {
     const arg = argv[index];
@@ -61,6 +64,7 @@ function parseArgs(argv) {
     else if (arg === "--output") args.output = resolve(argv[++index]);
     else if (arg === "--fixture") args.fixture = resolve(argv[++index]);
     else if (arg === "--reuse-pages") args.reusePages = true;
+    else if (arg === "--refresh") args.refresh = true;
     else if (arg === "--help" || arg === "-h") args.help = true;
     else throw new Error(`unknown argument: ${arg}`);
   }
@@ -172,14 +176,16 @@ function agencyGroups(agencies) {
     .sort((a, b) => b.net_check_amount - a.net_check_amount || a.agency.localeCompare(b.agency));
 }
 
-function appendCsvRows(path, rows) {
+function appendCsvRows(path, rows, assertRoom = () => {}) {
   const chunkSize = 1_000;
   for (let start = 0; start < rows.length; start += chunkSize) {
     const lines = [];
     for (const row of rows.slice(start, start + chunkSize)) {
       lines.push(CSV_FIELDS.map((field) => csvCell(row[field])).join(","));
     }
-    writeFileSync(path, `${lines.join("\n")}\n`, { flag: "a" });
+    const chunk = `${lines.join("\n")}\n`;
+    assertRoom(Buffer.byteLength(chunk));
+    writeFileSync(path, chunk, { flag: "a" });
   }
 }
 
@@ -187,6 +193,7 @@ async function collectPartitions(args) {
   const fetchPage = args.fromFixture ? fixtureFetcher(args) : liveFetcher(args);
   const pagesDir = join(args.stageDir, "pages");
   mkdirSync(pagesDir, { recursive: true });
+  args.assertRoom?.(Buffer.byteLength(`${CSV_FIELDS.join(",")}\n`));
   writeFileSync(args.output, `${CSV_FIELDS.join(",")}\n`);
   const identitySet = new Set();
   const allAgencies = new Map();
@@ -224,10 +231,11 @@ async function collectPartitions(args) {
       }
       expectedCount = count;
       const parsed = parseCheckbookPaymentTransactions(xml);
+      args.assertRoom?.(Buffer.byteLength(xml));
       writeFileSync(join(pagesDir, file), xml);
       pageManifest.push({ fiscal_year: year, offset, record_count: count, row_count: parsed.length, file, fetched_at: page.fetchedAt, http_status: page.httpStatus, sha256: sha256Text(xml) });
       const normalizedPage = normalizeCheckbookPaymentRows(parsed, { fiscalYear: String(year) });
-      appendCsvRows(args.output, normalizedPage.rows);
+      appendCsvRows(args.output, normalizedPage.rows, args.assertRoom);
       for (const source of parsed) {
         const amount = Number(String(source.check_amount || "").replace(/[$,]/g, ""));
         if (Number.isFinite(amount)) {
@@ -366,6 +374,10 @@ export async function runPaymentPopulation(args) {
   const collection = await collectPartitions(args);
   const csv = { path: args.output, row_count: collection.normalized_rows, sha256: await sha256File(args.output) };
   const receipt = await buildReceipt(args, collection, csv);
+  if (args.assertRoom) {
+    receipt.conversion.csv.path = "warehouse/raw/checkbook-payment-population/payments.csv";
+    args.assertRoom(Buffer.byteLength(JSON.stringify(receipt)));
+  }
   writeJson(args.receipt, receipt);
   if (!receipt.reconciliation.reconciled) throw new Error("payment population reconciliation failed");
   return { collection, normalized: { counts: collection }, csv, receipt };
@@ -374,17 +386,39 @@ export async function runPaymentPopulation(args) {
 async function main() {
   const args = parseArgs(process.argv.slice(2));
   if (args.help) {
-    console.log("Usage: node warehouse/scripts/checkbook_payment_population.mjs [--from-fixture] [--fiscal-years 2026] [--page-size 20000]");
+    console.log("Usage: node warehouse/scripts/checkbook_payment_population.mjs [--from-fixture] [--fiscal-years 2026] [--page-size 20000] [--refresh]");
     return;
+  }
+  const useShared = process.env.CITYSCROLL_WAREHOUSE_CACHE && !args.fromFixture
+    && args.stageDir === DEFAULT_STAGE && args.output === DEFAULT_OUTPUT && args.receipt === DEFAULT_RECEIPT && !args.reusePages;
+  if (useShared && !args.refresh && existsSync(join(process.env.CITYSCROLL_WAREHOUSE_CACHE, "checkbook-payment-population/current.json"))) {
+    const current = resolveSharedPaymentInput();
+    const receipt = readJson(current.receipt);
+    const years = receipt?.population_contract?.fiscal_years;
+    if (receipt?.status === "complete" && receipt.reconciliation?.reconciled
+      && receipt.population_contract?.id === PAYMENT_POPULATION_CONTRACT
+      && JSON.stringify(years) === JSON.stringify(args.fiscalYears)) {
+      console.log(`reused payment population: version=${current.version} years=${args.fiscalYears.join(",")}`);
+      return;
+    }
+    throw new Error("shared payment selection differs; use --refresh to acquire and publish the requested fiscal years");
+  }
+  const shared = useShared ? beginSharedPaymentRefresh(process.env.CITYSCROLL_WAREHOUSE_CACHE) : null;
+  if (shared) {
+    args.stageDir = shared.stage;
+    args.output = join(shared.stage, "payments.csv");
+    args.receipt = join(shared.stage, "receipt.json");
+    args.assertRoom = shared.assertRoom;
   }
   try {
     const result = await runPaymentPopulation(args);
+    if (shared) await shared.publish();
     console.log(`wrote payment population: years=${args.fiscalYears.join(",")} rows=${result.receipt.population.normalized_rows} net=${result.receipt.reconciliation.normalized_net_check_amount} agencies=${result.receipt.population.agency_grouping.length}`);
   } catch (error) {
     writeJson(args.receipt, { schema: "cityscroll.checkbook_payment_population_receipt.v1", status: "failed", failure_state: { message: clean(error?.message || error) } });
     console.error(error?.stack || error);
     process.exitCode = 1;
-  }
+  } finally { shared?.close(); }
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) await main();

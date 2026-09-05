@@ -16,6 +16,8 @@ import {
   validateCommunityBoardPaymentActuals,
 } from "../site/community_board_payment_actuals.mjs";
 
+import { resolveSharedPaymentInput } from "../warehouse/lib/shared_payment_input.mjs";
+
 const ROOT = resolve(new URL("..", import.meta.url).pathname);
 const DEFAULT_INPUT = resolve(ROOT, "warehouse/raw/checkbook-payment-population/payments.csv");
 const DEFAULT_REGISTRY = resolve(ROOT, "site/data/community_board_financial_identity_crosswalk.json");
@@ -98,7 +100,10 @@ function sourceVintage(receipt, payments, paymentIssueDateThrough = null) {
   };
 }
 
-async function build({ input = DEFAULT_INPUT, registry = DEFAULT_REGISTRY, lookup = DEFAULT_LOOKUP, receipt = DEFAULT_RECEIPT, generated_at = "2026-08-27T00:00:00.000Z", through_date = "2026-08-27" } = {}) {
+async function build({ input, registry = DEFAULT_REGISTRY, lookup = DEFAULT_LOOKUP, receipt, generated_at = "2026-08-27T00:00:00.000Z", through_date = "2026-08-27" } = {}) {
+  const shared = resolveSharedPaymentInput({ input, receipt });
+  input = input || shared?.input || DEFAULT_INPUT;
+  receipt = receipt || shared?.receipt || DEFAULT_RECEIPT;
   const identityRegistry = JSON.parse(readFileSync(registry, "utf8"));
   const constellation = JSON.parse(readFileSync(lookup, "utf8"));
   const sourceReceipt = JSON.parse(readFileSync(receipt, "utf8"));
