@@ -11,10 +11,10 @@
         "subject_id": "20240119104",
         "value": 53000000,
         "rank": 4,
-        "observed_count": 264,
+        "observed_count": 272,
         "agency": "Housing Preservation and Development"
       },
-      "basis": "The committed comparative receipt reproduces the amount, ordinal rank, bounded peer count, agency, source, and observed window."
+      "basis": "The committed comparative receipt reproduces the amount, ordinal rank, bounded peer count, agency, source, and observed window. Re-inspected against the 2026-09-05 award snapshot: the same $53,000,000 award still ranks 4th, and the bounded peer group grew from 264 to 272 rows as the publisher added awards in the same window."
     },
     {
       "case_id": "registered_amount_change:CT110220271400286",

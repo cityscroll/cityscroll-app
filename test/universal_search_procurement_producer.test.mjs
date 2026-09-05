@@ -87,7 +87,15 @@ test("production corpus adds material CROL-negative recall without reducing CROL
   ));
   const canonical = buildProcurementSearchDocuments(shared).documents;
   const crol = searchContractAwardDocuments(awards, "contract award", { limit: 40 }).documents;
-  assert.ok(browse.rows.filter((row) => !row.request_id).length >= 1_000);
+  // CROL-negative rows are served contracts with no matching City Record award.
+  // A larger award snapshot matches more of them, so the count falls as coverage
+  // improves; the floor guards the share of the corpus that only the production
+  // read model can reach, not one snapshot's absolute count.
+  const crolNegative = browse.rows.filter((row) => !row.request_id).length;
+  assert.ok(
+    crolNegative >= browse.rows.length * 0.05,
+    `expected material CROL-negative recall, got ${crolNegative} of ${browse.rows.length}`,
+  );
   assert.ok(canonical.length >= 2_000);
   assert.ok(canonical.some((document) => document.provenance.notice_evidence.length));
   assert.ok(mergeUniversalSearchResults([], [...crol, ...canonical], 100).length >= crol.length);

@@ -114,8 +114,18 @@ def assert_mobile_surface(page: Page, name: str) -> None:
         assert not collision, "language selector overlaps the masthead title at 360px"
 
 
-def install_table_fixture(page: Page) -> None:
-    page.evaluate(
+def install_and_measure_table(page: Page) -> dict:
+    """Render the attachment-table fixture and measure it in one evaluation.
+
+    The Money lens owns #detail and repaints it whenever one of its own async
+    loads resolves, which clears anything injected there. Installing the
+    fixture and measuring it in separate calls therefore races that repaint:
+    the fixture can be gone by the time the measurement runs, and the
+    measurement then dereferences a missing element. Everything after the
+    module import runs on one synchronous turn, so a repaint cannot land
+    between rendering the fixture and reading its geometry.
+    """
+    return page.evaluate(
         """async () => {
           const mod = await import('./attachment_tables_ui.mjs');
           const detail = document.querySelector('#detail');
@@ -132,6 +142,14 @@ def install_table_fixture(page: Page) -> None:
             }],
           }, {t: key => key});
           detail.querySelector('.attachment-tables').open = true;
+          const body = detail.querySelector('.attachment-tables-body');
+          const head = detail.querySelector('.attachment-table th[tabindex]');
+          if (!body || !head) throw new Error('attachment table fixture did not render');
+          return {
+            contained: body.scrollWidth > body.clientWidth,
+            headHeight: head.getBoundingClientRect().height,
+            documentOverflow: document.documentElement.scrollWidth - innerWidth,
+          };
         }"""
     )
 
@@ -225,23 +243,11 @@ def run(base: str) -> None:
         page.goto(f"{base}#money", wait_until="domcontentloaded", timeout=30_000)
         wait_for_app_ready(page)
         wait_for_locator(page.locator("#list .row").first, label="attachment fixture source row")
-        install_table_fixture(page)
-        wait_for_locator(page.locator("table.attachment-table"), label="attachment table")
-        assert_mobile_surface(page, "attachment table")
-        table_metrics = page.evaluate(
-            """() => {
-              const body = document.querySelector('.attachment-tables-body');
-              const head = document.querySelector('.attachment-table th[tabindex]');
-              return {
-                contained: body.scrollWidth > body.clientWidth,
-                headHeight: head.getBoundingClientRect().height,
-                documentOverflow: document.documentElement.scrollWidth - innerWidth,
-              };
-            }"""
-        )
+        table_metrics = install_and_measure_table(page)
         assert table_metrics["contained"], table_metrics
         assert table_metrics["headHeight"] >= 43.5, table_metrics
         assert table_metrics["documentOverflow"] <= 1, table_metrics
+        assert_mobile_surface(page, "attachment table")
 
         page.goto(f"{base}#property", wait_until="domcontentloaded", timeout=30_000)
         wait_for_locator(page.locator("#property-domain-intro"), label="property domain intro")

@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.public_source_health.v1",
-  "generated_at": "2026-09-04T11:12:46.107Z",
+  "generated_at": "2026-09-05T13:44:00.909Z",
   "available": true,
   "source_count": 59,
   "sources": [
@@ -2570,12 +2570,12 @@
             "basis": null
           },
           "cityscroll_checked_acquired": {
-            "at": "2026-08-05T10:36:28.000Z",
+            "at": "2026-09-05T13:23:40.000Z",
             "state": "KNOWN",
             "basis": "cityscroll_acquisition"
           },
           "cityscroll_serving": {
-            "at": "2026-08-29T11:43:49.474Z",
+            "at": "2026-09-05T13:44:00.909Z",
             "state": "KNOWN",
             "basis": "cityscroll_materialization"
           }
@@ -2592,7 +2592,7 @@
           "max_date": null
         },
         "publisher_vintage": null,
-        "retrieved_at": "2026-08-05T10:36:28.000Z",
+        "retrieved_at": "2026-09-05T13:23:40.000Z",
         "expected_lag_tolerance_days": 14,
         "current_lag": {
           "value": null,
