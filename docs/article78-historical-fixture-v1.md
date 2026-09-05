@@ -82,3 +82,12 @@ node --test test/warehouse_article78_historical_fixture.test.mjs test/warehouse_
 The backtest gate prints the historical fixture's expectations under a
 `diagnostic_only` section and exits non-zero on any expectation failure, in
 the same run that checks A78-01's six-scenario backtest.
+
+## Coverage grades
+
+Each of the thirteen projects carries a coverage receipt recording the systems
+searched, the identifier variants tried and the docket details the source did
+not expose, so the fixture exercises A78-03's coverage ladder as well as the
+two derivations above: nine grade A, one B, two C and one U. Four of those are
+pinned as `coverage_grade` expectations in `index.json`. See
+`docs/article78-search-coverage-v1.md`.

@@ -28,10 +28,38 @@
       "judicial_case:ny_supreme_court_new_york_county:150101_2018"
     ],
     "coverage_grade": "A",
-    "coverage_note": "Docket search across both courts for the whole limitations window; one petition located and still pending decision.",
+    "coverage_note": "Docket search across both courts for the whole limitations window; one petition located and still pending decision. Published opinions were searched alongside the docket index, and the searched window runs past the close of the limitations window by more than the documented docketing-lag margin.",
     "observed_at": "2019-02-01T00:00:00Z",
     "source_id": "article78_historical_qa_fixture",
-    "source_record_id": "coverage/historical/inwood/0001"
+    "source_record_id": "coverage/historical/inwood/0001",
+    "systems_searched": [
+      {
+        "system": "nyscef"
+      },
+      {
+        "system": "official_reports"
+      },
+      {
+        "system": "webcivil_supreme"
+      }
+    ],
+    "variants_tried": [
+      {
+        "kind": "index_number",
+        "value": "150101/2018"
+      },
+      {
+        "kind": "party_name",
+        "value": "City Planning Commission"
+      },
+      {
+        "kind": "party_name_alternate_spelling",
+        "value": "N.Y.C. City Planning Commission"
+      }
+    ],
+    "docket_details_unavailable": [
+      "motion_history"
+    ]
   },
   {
     "fixture_role": "qa_historical",
@@ -63,10 +91,38 @@
       "judicial_case:ny_supreme_court_kings_county:500202_2022"
     ],
     "coverage_grade": "A",
-    "coverage_note": "Docket search across both courts for the whole limitations window; two petitions located.",
+    "coverage_note": "Docket search across both courts for the whole limitations window; two petitions located. Published opinions were searched alongside the docket index, and the searched window runs past the close of the limitations window by more than the documented docketing-lag margin.",
     "observed_at": "2022-05-15T00:00:00Z",
     "source_id": "article78_historical_qa_fixture",
-    "source_record_id": "coverage/historical/gowanus/0001"
+    "source_record_id": "coverage/historical/gowanus/0001",
+    "systems_searched": [
+      {
+        "system": "nyscef"
+      },
+      {
+        "system": "official_reports"
+      },
+      {
+        "system": "webcivil_supreme"
+      }
+    ],
+    "variants_tried": [
+      {
+        "kind": "index_number",
+        "value": "500201/2022"
+      },
+      {
+        "kind": "index_number",
+        "value": "500202/2022"
+      },
+      {
+        "kind": "party_name",
+        "value": "City Planning Commission"
+      }
+    ],
+    "docket_details_unavailable": [
+      "motion_history"
+    ]
   },
   {
     "fixture_role": "qa_historical",
@@ -97,10 +153,34 @@
       "judicial_case:ny_supreme_court_new_york_county:155001_2020"
     ],
     "coverage_grade": "A",
-    "coverage_note": "Docket search across both courts for the whole limitations window; one petition located.",
+    "coverage_note": "Docket search across both courts for the whole limitations window; one petition located. Published opinions were searched alongside the docket index, and the searched window runs past the close of the limitations window by more than the documented docketing-lag margin.",
     "observed_at": "2021-06-01T00:00:00Z",
     "source_id": "article78_historical_qa_fixture",
-    "source_record_id": "coverage/historical/haven_green/0001"
+    "source_record_id": "coverage/historical/haven_green/0001",
+    "systems_searched": [
+      {
+        "system": "nyscef"
+      },
+      {
+        "system": "official_reports"
+      },
+      {
+        "system": "webcivil_supreme"
+      }
+    ],
+    "variants_tried": [
+      {
+        "kind": "index_number",
+        "value": "155001/2020"
+      },
+      {
+        "kind": "party_name",
+        "value": "City Planning Commission"
+      }
+    ],
+    "docket_details_unavailable": [
+      "motion_history"
+    ]
   },
   {
     "fixture_role": "qa_historical",
@@ -132,10 +212,38 @@
       "judicial_case:ny_supreme_court_kings_county:501302_2014"
     ],
     "coverage_grade": "A",
-    "coverage_note": "Docket search across both courts for the whole limitations window; two petitions located.",
+    "coverage_note": "Docket search across both courts for the whole limitations window; two petitions located. Published opinions were searched alongside the docket index, and the searched window runs past the close of the limitations window by more than the documented docketing-lag margin.",
     "observed_at": "2014-11-15T00:00:00Z",
     "source_id": "article78_historical_qa_fixture",
-    "source_record_id": "coverage/historical/city_point/0001"
+    "source_record_id": "coverage/historical/city_point/0001",
+    "systems_searched": [
+      {
+        "system": "nyscef"
+      },
+      {
+        "system": "official_reports"
+      },
+      {
+        "system": "webcivil_supreme"
+      }
+    ],
+    "variants_tried": [
+      {
+        "kind": "index_number",
+        "value": "501301/2014"
+      },
+      {
+        "kind": "index_number",
+        "value": "501302/2014"
+      },
+      {
+        "kind": "party_name",
+        "value": "City Planning Commission"
+      }
+    ],
+    "docket_details_unavailable": [
+      "motion_history"
+    ]
   },
   {
     "fixture_role": "qa_historical",
@@ -166,10 +274,34 @@
       "judicial_case:ny_supreme_court_new_york_county:156201_2015"
     ],
     "coverage_grade": "A",
-    "coverage_note": "Docket search across both courts for the whole limitations window; one petition located, still pending decision.",
+    "coverage_note": "Docket search across both courts for the whole limitations window; one petition located, still pending decision. Published opinions were searched alongside the docket index, and the searched window runs past the close of the limitations window by more than the documented docketing-lag margin.",
     "observed_at": "2015-12-15T00:00:00Z",
     "source_id": "article78_historical_qa_fixture",
-    "source_record_id": "coverage/historical/jewish_home_lifecare/0001"
+    "source_record_id": "coverage/historical/jewish_home_lifecare/0001",
+    "systems_searched": [
+      {
+        "system": "nyscef"
+      },
+      {
+        "system": "official_reports"
+      },
+      {
+        "system": "webcivil_supreme"
+      }
+    ],
+    "variants_tried": [
+      {
+        "kind": "index_number",
+        "value": "156201/2015"
+      },
+      {
+        "kind": "party_name",
+        "value": "City Planning Commission"
+      }
+    ],
+    "docket_details_unavailable": [
+      "motion_history"
+    ]
   },
   {
     "fixture_role": "qa_historical",
@@ -201,10 +333,42 @@
       "judicial_case:ny_supreme_court_new_york_county:157302_2018"
     ],
     "coverage_grade": "A",
-    "coverage_note": "Docket search across both courts for the whole limitations window; the prior Board of Standards and Appeals administrative challenge that was itself carried into Article 78 review is located alongside the main proceeding.",
+    "coverage_note": "Docket search across both courts for the whole limitations window; the prior Board of Standards and Appeals administrative challenge that was itself carried into Article 78 review is located alongside the main proceeding. Published opinions were searched alongside the docket index, and the searched window runs past the close of the limitations window by more than the documented docketing-lag margin.",
     "observed_at": "2018-07-01T00:00:00Z",
     "source_id": "article78_historical_qa_fixture",
-    "source_record_id": "coverage/historical/200_amsterdam/0001"
+    "source_record_id": "coverage/historical/200_amsterdam/0001",
+    "systems_searched": [
+      {
+        "system": "nyscef"
+      },
+      {
+        "system": "official_reports"
+      },
+      {
+        "system": "webcivil_supreme"
+      }
+    ],
+    "variants_tried": [
+      {
+        "kind": "index_number",
+        "value": "157301/2018"
+      },
+      {
+        "kind": "index_number",
+        "value": "157302/2018"
+      },
+      {
+        "kind": "party_name",
+        "value": "Board of Standards and Appeals"
+      },
+      {
+        "kind": "party_name",
+        "value": "Department of Buildings"
+      }
+    ],
+    "docket_details_unavailable": [
+      "motion_history"
+    ]
   },
   {
     "fixture_role": "qa_historical",
@@ -235,10 +399,34 @@
       "judicial_case:ny_supreme_court_new_york_county:158401_2019"
     ],
     "coverage_grade": "A",
-    "coverage_note": "Docket search across both courts for the whole limitations window; one petition located.",
+    "coverage_note": "Docket search across both courts for the whole limitations window; one petition located. Published opinions were searched alongside the docket index, and the searched window runs past the close of the limitations window by more than the documented docketing-lag margin.",
     "observed_at": "2020-04-01T00:00:00Z",
     "source_id": "article78_historical_qa_fixture",
-    "source_record_id": "coverage/historical/escr/0001"
+    "source_record_id": "coverage/historical/escr/0001",
+    "systems_searched": [
+      {
+        "system": "nyscef"
+      },
+      {
+        "system": "official_reports"
+      },
+      {
+        "system": "webcivil_supreme"
+      }
+    ],
+    "variants_tried": [
+      {
+        "kind": "index_number",
+        "value": "158401/2019"
+      },
+      {
+        "kind": "party_name",
+        "value": "Department of Design and Construction"
+      }
+    ],
+    "docket_details_unavailable": [
+      "motion_history"
+    ]
   },
   {
     "fixture_role": "qa_historical",
@@ -267,10 +455,38 @@
     "result_count": 0,
     "located_case_keys": [],
     "coverage_grade": "A",
-    "coverage_note": "Docket search across both courts for the whole limitations window; no matching petitions found.",
+    "coverage_note": "Docket search across both courts for the whole limitations window; no matching petitions found. Published opinions were searched alongside the docket index, and the searched window runs past the close of the limitations window by more than the documented docketing-lag margin.",
     "observed_at": "2022-06-10T00:00:00Z",
     "source_id": "article78_historical_qa_fixture",
-    "source_record_id": "coverage/historical/soho_noho/0001"
+    "source_record_id": "coverage/historical/soho_noho/0001",
+    "systems_searched": [
+      {
+        "system": "nyscef"
+      },
+      {
+        "system": "official_reports"
+      },
+      {
+        "system": "webcivil_supreme"
+      }
+    ],
+    "variants_tried": [
+      {
+        "kind": "caption_fragment",
+        "value": "SoHo/NoHo"
+      },
+      {
+        "kind": "party_name",
+        "value": "City Planning Commission"
+      },
+      {
+        "kind": "party_name_alternate_spelling",
+        "value": "N.Y.C. City Planning Commission"
+      }
+    ],
+    "docket_details_unavailable": [
+      "motion_history"
+    ]
   },
   {
     "fixture_role": "qa_historical",
@@ -298,11 +514,29 @@
     },
     "result_count": 0,
     "located_case_keys": [],
-    "coverage_grade": "A",
-    "coverage_note": "Full-scope search run less than four months after the determination; adequate in scope, premature in time.",
+    "coverage_grade": "B",
+    "coverage_note": "Two docket systems searched under the determination identifier and an exact party name, with docket detail visible; no published-opinion search was run and the searched horizon stops two months before the limitations window closes, so this is a B rather than an A. Adequate in scope, premature in time.",
     "observed_at": "2023-02-20T00:00:00Z",
     "source_id": "article78_historical_qa_fixture",
-    "source_record_id": "coverage/historical/250_water/0001"
+    "source_record_id": "coverage/historical/250_water/0001",
+    "systems_searched": [
+      {
+        "system": "nyscef"
+      },
+      {
+        "system": "webcivil_supreme"
+      }
+    ],
+    "variants_tried": [
+      {
+        "kind": "party_name",
+        "value": "City Planning Commission"
+      }
+    ],
+    "docket_details_unavailable": [
+      "appeal_linkage",
+      "motion_history"
+    ]
   },
   {
     "fixture_role": "qa_historical",
@@ -330,10 +564,30 @@
     "result_count": 0,
     "located_case_keys": [],
     "coverage_grade": "U",
-    "coverage_note": "No recorded search covers whether the campus relocation's post-approval monitoring commitments were ever the subject of an Article 78 challenge; this searched window closes five months before the limitations window and the search is graded unusable rather than dropped.",
+    "coverage_note": "No usable search covers whether the campus relocation's post-approval monitoring commitments were ever the subject of an Article 78 challenge: only published opinions were consulted, which can never be a filing denominator, and this searched window closes five months before the limitations window. The search is graded unusable rather than dropped.",
     "observed_at": "2016-08-15T00:00:00Z",
     "source_id": "article78_historical_qa_fixture",
-    "source_record_id": "coverage/historical/mott_haven/0001"
+    "source_record_id": "coverage/historical/mott_haven/0001",
+    "systems_searched": [
+      {
+        "system": "official_reports"
+      }
+    ],
+    "variants_tried": [
+      {
+        "kind": "party_name_abbreviation",
+        "value": "SCA"
+      }
+    ],
+    "docket_details_unavailable": [
+      "appeal_linkage",
+      "disposition_date",
+      "document_list",
+      "filed_date",
+      "index_number",
+      "motion_history",
+      "party_names"
+    ]
   },
   {
     "fixture_role": "qa_historical",
@@ -364,10 +618,34 @@
       "judicial_case:ny_supreme_court_queens_county:705501_2023"
     ],
     "coverage_grade": "A",
-    "coverage_note": "Docket search matched this petition on party name and filing window; a manual caption review later found the petition challenges an unrelated Astoria site-plan variance and does not name this determination. It is retained here as a documented false positive rather than corrected out of the record, because the search's own bounds -- not a later editorial judgment -- are what this coverage record exists to preserve.",
+    "coverage_note": "Docket search matched this petition on party name and filing window; a manual caption review later found the petition challenges an unrelated Astoria site-plan variance and does not name this determination. It is retained here as a documented false positive rather than corrected out of the record, because the search's own bounds -- not a later editorial judgment -- are what this coverage record exists to preserve. Published opinions were searched alongside the docket index, and the searched window runs past the close of the limitations window by more than the documented docketing-lag margin.",
     "observed_at": "2023-11-20T00:00:00Z",
     "source_id": "article78_historical_qa_fixture",
-    "source_record_id": "coverage/historical/innovation_qns/0001"
+    "source_record_id": "coverage/historical/innovation_qns/0001",
+    "systems_searched": [
+      {
+        "system": "nyscef"
+      },
+      {
+        "system": "official_reports"
+      },
+      {
+        "system": "webcivil_supreme"
+      }
+    ],
+    "variants_tried": [
+      {
+        "kind": "index_number",
+        "value": "705501/2023"
+      },
+      {
+        "kind": "party_name",
+        "value": "City Planning Commission"
+      }
+    ],
+    "docket_details_unavailable": [
+      "motion_history"
+    ]
   },
   {
     "fixture_role": "qa_historical",
@@ -395,10 +673,26 @@
     "result_count": 0,
     "located_case_keys": [],
     "coverage_grade": "C",
-    "coverage_note": "Single county, and the searched window stops well before the limitations window closes; recorded so the inadequacy is a fact rather than a missing row.",
+    "coverage_note": "Single docket system, searched under an agency abbreviation rather than an index number or an exact party name, and the searched window stops well before the limitations window closes; recorded so the inadequacy is a fact rather than a missing row.",
     "observed_at": "2018-05-10T00:00:00Z",
     "source_id": "article78_historical_qa_fixture",
-    "source_record_id": "coverage/historical/halletts_north/0001"
+    "source_record_id": "coverage/historical/halletts_north/0001",
+    "systems_searched": [
+      {
+        "system": "webcivil_supreme"
+      }
+    ],
+    "variants_tried": [
+      {
+        "kind": "party_name_abbreviation",
+        "value": "BSA"
+      }
+    ],
+    "docket_details_unavailable": [
+      "appeal_linkage",
+      "document_list",
+      "motion_history"
+    ]
   },
   {
     "fixture_role": "qa_historical",
@@ -426,9 +720,25 @@
     "result_count": 0,
     "located_case_keys": [],
     "coverage_grade": "C",
-    "coverage_note": "A single environmental impact statement addressed the rezoning, the disposition of city-owned parcels, and the capital transit-access project together as one bundled action; that breadth of environmental review does not widen this search, which covers only Bronx County and stops well short of the limitations window's close.",
+    "coverage_note": "Single docket system, searched under an agency abbreviation, over a window that stops before the limitations window closes; an environmental impact statement covering several bundled actions is not a substitute for a court search, and this record says so rather than leaving the gap unrecorded.",
     "observed_at": "2024-02-10T00:00:00Z",
     "source_id": "article78_historical_qa_fixture",
-    "source_record_id": "coverage/historical/bronx_metro_north/0001"
+    "source_record_id": "coverage/historical/bronx_metro_north/0001",
+    "systems_searched": [
+      {
+        "system": "webcivil_supreme"
+      }
+    ],
+    "variants_tried": [
+      {
+        "kind": "party_name_abbreviation",
+        "value": "CPC"
+      }
+    ],
+    "docket_details_unavailable": [
+      "appeal_linkage",
+      "document_list",
+      "motion_history"
+    ]
   }
 ]

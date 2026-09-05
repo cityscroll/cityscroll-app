@@ -237,3 +237,14 @@ A separate, larger fixture of thirteen documented environmental-review
 projects exists purely to catch behavioral regressions in the two derivations
 above, and is walled off from ever training anything. See
 `docs/article78-historical-fixture-v1.md`.
+
+## Coverage grading
+
+`search_coverage` records what one bounded search covered; A78-03 grades how
+well a determination was searched across its receipts, and admits only
+adequately searched negatives into a denominator. The receipt carries three
+additive fields for it — `systems_searched`, `variants_tried` and
+`docket_details_unavailable` — and `challengeWatchValue` takes an optional
+`coverageGrade`, names it under `basis.coverage_grade`, and refuses to produce
+a number under a grade outside its countable set. See
+`docs/article78-search-coverage-v1.md`.
