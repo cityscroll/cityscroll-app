@@ -24,6 +24,7 @@ import {
 } from "../site/exam_calendar.mjs";
 import { renderExamDocument } from "../site/exam_document.mjs";
 import { FIXTURE_TODAY, fixtureExam } from "./fixtures/exam_calendar_fixtures.mjs";
+import { forbiddenVocabularyPattern } from "./helpers/internal_vocabulary.mjs";
 
 const artifact = JSON.parse(readFileSync(new URL("../site/data/staffing_exams.json", import.meta.url)));
 
@@ -300,8 +301,16 @@ test("today is required and the view build is a pure function of its arguments",
 test("rendered calendar copy carries no schema, join, or workstream vocabulary", () => {
   const html = documentHtml(fixtureExam("qualifying-three-date"));
   const section = html.slice(html.search(CALENDAR_SECTION));
-  // Internal project codenames are asserted absent without spelling them in a public file.
-  const internalTerms = ["kra" + "ken", "dyo" + "nun"].join("|");
-  const forbidden = new RegExp(String.raw`\b(cbics|workstream|control[- ]plane|object_ref|scope_ref|qualifying bundle|density rule|${internalTerms})\b`, "i");
+  // Internal product names come from the owner-controlled term set, never from
+  // this public file. See test/helpers/internal_vocabulary.mjs.
+  const forbidden = forbiddenVocabularyPattern([
+    "cbics",
+    "workstream",
+    String.raw`control[- ]plane`,
+    "object_ref",
+    "scope_ref",
+    "qualifying bundle",
+    "density rule",
+  ]);
   assert.doesNotMatch(section, forbidden);
 });
