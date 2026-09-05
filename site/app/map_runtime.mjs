@@ -827,6 +827,16 @@ function landMapFocusKey(panel){
   return null;
 }
 
+/* Whether focus is already somewhere inside this panel, with no opinion about where.
+ * A failed repaint has no equivalent control to key a marker or selection back onto -- the
+ * failure state offers only retry and dismiss -- so it only needs to know whether it is the
+ * one responsible for a lost focus at all. Captured before the loading state's own repaint,
+ * because that repaint runs first and would otherwise have already thrown focus to <body>. */
+function landMapPanelHasFocus(panel){
+  const active = panel?.ownerDocument?.activeElement;
+  return Boolean(active && typeof panel.contains === "function" && panel.contains(active));
+}
+
 export function landMapFocusTarget(panel, intent){
   if(!panel || !intent || typeof panel.querySelector !== "function") return null;
   const escapeId = (value) => (typeof CSS?.escape === "function" ? CSS.escape(value) : value);
@@ -876,7 +886,7 @@ function renderLandMapLoading(panel){
     + `${escapeMapHtml(mapCopy("land_map_loading"))}</p>`;
 }
 
-function renderLandMapFailure(panel){
+function renderLandMapFailure(panel, hadPanelFocus = false){
   panel.dataset.landMapState = "failed";
   panel.innerHTML = landMapFailureHTML();
   panel.querySelector("[data-land-map-retry]")?.addEventListener("click",()=>{
@@ -885,6 +895,15 @@ function renderLandMapFailure(panel){
   panel.querySelector("[data-land-map-dismiss]")?.addEventListener("click",()=>{
     globalThis.setLandView?.("list");
   });
+  // A resident already inside the panel -- a marker, the selected-project summary, or a
+  // prior retry attempt's own controls -- must land somewhere in the failure state rather
+  // than on <body>. Retry is the one useful next step it offers, so that is where focus goes.
+  if(hadPanelFocus){
+    const target = panel.querySelector("[data-land-map-retry]");
+    if(target && typeof target.focus === "function"){
+      try{ target.focus({preventScroll:true}); }catch(_e){ try{ target.focus(); }catch(_ignored){} }
+    }
+  }
 }
 
 /**
@@ -897,13 +916,15 @@ function renderLandMapFailure(panel){
 export async function mountLandBrowseMap(host, {rows, selectedProjectId, filters} = {}){
   const panel = landMapPanel(host);
   if(!panel) throw new Error("land-map-host-absent");
+  // Read before the loading state's own repaint below destroys it.
+  const hadPanelFocus = landMapPanelHasFocus(panel);
   renderLandMapLoading(panel);
   let payload;
   let boundaryContext;
   try{
     [payload, boundaryContext] = await Promise.all([loadLandMapPoints(), loadLandMapBoundaries()]);
   }catch(error){
-    renderLandMapFailure(panel);
+    renderLandMapFailure(panel, hadPanelFocus);
     throw error;
   }
   const population = Array.isArray(rows) ? rows : [];
@@ -926,7 +947,7 @@ export async function mountLandBrowseMap(host, {rows, selectedProjectId, filters
       globalThis.serializeState?.() || globalThis.location?.hash
         || (globalThis.location?.search ? `#land${globalThis.location.search}` : "#land"));
   }catch(error){
-    renderLandMapFailure(panel);
+    renderLandMapFailure(panel, hadPanelFocus);
     throw error;
   }
   if(intent) restoreLandMapFocus(panel, intent);
