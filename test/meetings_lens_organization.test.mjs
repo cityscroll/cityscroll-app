@@ -4,6 +4,7 @@ import { readFileSync } from "node:fs";
 
 const html = readFileSync(new URL("../site/index.html", import.meta.url), "utf8");
 const feedSource = readFileSync(new URL("../site/app/feed-actions.mjs", import.meta.url), "utf8");
+const meetingsCardFactsSource = readFileSync(new URL("../site/meetings_card_facts.mjs", import.meta.url), "utf8");
 const meetingsSource = readFileSync(new URL("../site/app/meetings.mjs", import.meta.url), "utf8");
 const i18nSource = readFileSync(new URL("../site/i18n.js", import.meta.url), "utf8");
 
@@ -127,7 +128,7 @@ test("Meetings keeps the community-board institution pivot visible after hydrati
 });
 
 test("Meeting affected-area board links open the board records surface", () => {
-  const area = extractFunction(feedSource, "hearingAreaHTML");
+  const area = extractFunction(meetingsCardFactsSource, "hearingAreaHTML");
   assert.match(area, /const href=communityBoardPageHref\(value\)/);
   assert.doesNotMatch(area, /communityBoardPlaceHref\(value\)/);
 });

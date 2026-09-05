@@ -39,6 +39,8 @@ import {
   renderReportIssueAffordance,
 } from "../report_issue.mjs";
 import { meetingScopedDisclosureHTML, meetingScopedKeywordState, refreshFeedScopedKeyword, startMeetingScopedKeyword } from "../feed_scoped_keyword.mjs";
+import { meetingPurposeAuthorityCardHTML } from "../meeting_purpose_authority.mjs";
+import { hearingAreaHTML, hearingAreaText, hearingVenueText } from "../meetings_card_facts.mjs";
 const SECTIONS={
   property:{section:"Property Disposition", showAddr:true},
   rules:{section:"Agency Rules"},
@@ -1336,49 +1338,6 @@ function paintLandActionRail(el, projectRow, outcomeRecord, phaseTools){
   // Watch CTA destinations already carry land scope via action_registry.watchDestination
   // (#alerts?lens=land&filter=…&project=…). No showTab side-channel — hash apply does the prefill.
 }
-function hearingAreaText(record){
-  const area=record.affected_area||{};
-  if(area.scope==="citywide") return t("citywide");
-  if(area.scope==="unlocated") return "";
-  const values=[
-    ...(area.neighborhoods||[]),
-    ...(area.boroughs||[]),
-    ...(area.community_districts||[]).map(cd=>t("community_district_short",{n:cd})),
-    ...(area.community_boards||[]),
-    ...(area.addresses||[]).map(address=>address.label),
-    ...(area.street_ranges||[]).map(range=>range.label),
-    ...(area.tax_lots||[]).map(lot=>lot.label),
-    ...(area.project_names||[]),
-  ].filter(Boolean);
-  return [...new Set(values)].join(" · ");
-}
-function hearingAreaHTML(record){
-  const area=record.affected_area||{};
-  if(area.scope==="citywide") return escUiHtml(t("citywide"));
-  if(area.scope==="unlocated") return "";
-  const values=[
-    ...(area.neighborhoods||[]),
-    ...(area.boroughs||[]),
-    ...(area.community_districts||[]).map(cd=>t("community_district_short",{n:cd})),
-    ...(area.community_boards||[]),
-    ...(area.addresses||[]).map(address=>address.label),
-    ...(area.street_ranges||[]).map(range=>range.label),
-    ...(area.tax_lots||[]).map(lot=>lot.label),
-    ...(area.project_names||[]),
-  ].filter(Boolean);
-  return [...new Set(values)].map(value=>{
-    const href=communityBoardPageHref(value);
-    return href
-      ? `<a class="community-board-reference" href="${escUiHtml(href)}">${escUiHtml(value)}</a>`
-      : escUiHtml(value);
-  }).join(" · ");
-}
-function hearingVenueText(record){
-  const venue=record.venue||{}, labels={
-    "virtual":"venue_virtual","in-person":"venue_in_person","hybrid":"venue_hybrid"
-  };
-  return [labels[venue.mode]?t(labels[venue.mode]):"", venue.building, venue.address].filter(Boolean).join(" · ");
-}
 function hearingCardHTML(record, terms=[]){
   // Flat fallback when the explorer module fails to load.
   return meetingsExplorerCardHTML({
@@ -1565,6 +1524,7 @@ function meetingsExplorerCardHTML(entry, terms=[]){
   const factsHTML=`${areaFact}${venueFact}${affectsFact}`;
   return `<article class="fcard hcard meetings-fcard" data-scope="${scope}" data-meeting-kind="${escUiHtml(entry.kind||"notice")}" data-process-stage="${escUiHtml(processStage||"unstaged")}" data-capability-reference="meeting.get@1"${boardId?` data-community-board-id="${escUiHtml(boardId)}"`:""}>
       <div class="ftype"><span class="tag asset">${t(sectionKey)}</span>${past?` <span class="tag closed">${t("past_tag")}</span>`:""}${record.event_date?` · <b style="color:var(--color-text)">${fdt(record.event_date)}</b>${eventTag(record.event_date)}`:""}</div>
+      ${meetingPurposeAuthorityCardHTML(record, { t, escape: escUiHtml, excerpt: excerptHtml })}
       ${processLine}
       <div class="ui-object-card-primary"><div class="ftitle">${interactionTitle}</div>${interactionCopy}</div>
       ${siblingsHtml}
@@ -1882,14 +1842,12 @@ globalThis.feedLoaded = feedLoaded;
 globalThis.feedRows = feedRows;
 globalThis.feedVisible = feedVisible;
 globalThis.goodAddr = goodAddr;
-globalThis.hearingAreaText = hearingAreaText;
 globalThis.hearingCardHTML = hearingCardHTML;
 globalThis.hearingEventRow = hearingEventRow;
 globalThis.hearingFilter = hearingFilter;
 globalThis.hearingFilterKey = hearingFilterKey;
 globalThis.hearingPastCache = hearingPastCache;
 globalThis.hearingSafeURL = hearingSafeURL;
-globalThis.hearingVenueText = hearingVenueText;
 globalThis.hearingViewFilter = hearingViewFilter;
 globalThis.hearingWidenedNone = hearingWidenedNone;
 globalThis.hearingWidenedShown = hearingWidenedShown;
