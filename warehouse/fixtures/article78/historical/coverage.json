@@ -1,0 +1,434 @@
+[
+  {
+    "fixture_role": "qa_historical",
+    "project_id": "inwood_rezoning",
+    "synthetic": true,
+    "record_schema": "cityscroll.article78_litigation.search_coverage.v1",
+    "coverage_key": "search_coverage:unified_court_system_ecourts:68f6fc1ca14885e2:20190201t000000z",
+    "determination_key": "determination:city_planning_commission:action_inwood_rezoning_0001:2018-08-08",
+    "source": "unified_court_system_ecourts",
+    "query_hash": "68f6fc1ca14885e2",
+    "searched_at": "2019-02-01T00:00:00Z",
+    "scope": {
+      "courts": [
+        "Appellate Division, First Department",
+        "NY Supreme Court, New York County"
+      ],
+      "date_window": {
+        "from": "2018-08-08",
+        "to": "2019-01-08"
+      },
+      "party_filters": [],
+      "determination_filters": [
+        "determination:city_planning_commission:action_inwood_rezoning_0001:2018-08-08"
+      ]
+    },
+    "result_count": 1,
+    "located_case_keys": [
+      "judicial_case:ny_supreme_court_new_york_county:150101_2018"
+    ],
+    "coverage_grade": "A",
+    "coverage_note": "Docket search across both courts for the whole limitations window; one petition located and still pending decision.",
+    "observed_at": "2019-02-01T00:00:00Z",
+    "source_id": "article78_historical_qa_fixture",
+    "source_record_id": "coverage/historical/inwood/0001"
+  },
+  {
+    "fixture_role": "qa_historical",
+    "project_id": "gowanus_neighborhood_rezoning",
+    "synthetic": true,
+    "record_schema": "cityscroll.article78_litigation.search_coverage.v1",
+    "coverage_key": "search_coverage:unified_court_system_ecourts:d97c118838ccc792:20220515t000000z",
+    "determination_key": "determination:city_planning_commission:action_gowanus_rezoning_0001:2021-11-23",
+    "source": "unified_court_system_ecourts",
+    "query_hash": "d97c118838ccc792",
+    "searched_at": "2022-05-15T00:00:00Z",
+    "scope": {
+      "courts": [
+        "Appellate Division, Second Department",
+        "NY Supreme Court, Kings County"
+      ],
+      "date_window": {
+        "from": "2021-11-23",
+        "to": "2022-04-23"
+      },
+      "party_filters": [],
+      "determination_filters": [
+        "determination:city_planning_commission:action_gowanus_rezoning_0001:2021-11-23"
+      ]
+    },
+    "result_count": 2,
+    "located_case_keys": [
+      "judicial_case:ny_supreme_court_kings_county:500201_2022",
+      "judicial_case:ny_supreme_court_kings_county:500202_2022"
+    ],
+    "coverage_grade": "A",
+    "coverage_note": "Docket search across both courts for the whole limitations window; two petitions located.",
+    "observed_at": "2022-05-15T00:00:00Z",
+    "source_id": "article78_historical_qa_fixture",
+    "source_record_id": "coverage/historical/gowanus/0001"
+  },
+  {
+    "fixture_role": "qa_historical",
+    "project_id": "haven_green_elizabeth_street_garden",
+    "synthetic": true,
+    "record_schema": "cityscroll.article78_litigation.search_coverage.v1",
+    "coverage_key": "search_coverage:unified_court_system_ecourts:1c280fe2502fbe42:20210601t000000z",
+    "determination_key": "determination:city_planning_commission:action_haven_green_0001:2020-08-11",
+    "source": "unified_court_system_ecourts",
+    "query_hash": "1c280fe2502fbe42",
+    "searched_at": "2021-06-01T00:00:00Z",
+    "scope": {
+      "courts": [
+        "Appellate Division, First Department",
+        "NY Supreme Court, New York County"
+      ],
+      "date_window": {
+        "from": "2020-08-11",
+        "to": "2021-01-11"
+      },
+      "party_filters": [],
+      "determination_filters": [
+        "determination:city_planning_commission:action_haven_green_0001:2020-08-11"
+      ]
+    },
+    "result_count": 1,
+    "located_case_keys": [
+      "judicial_case:ny_supreme_court_new_york_county:155001_2020"
+    ],
+    "coverage_grade": "A",
+    "coverage_note": "Docket search across both courts for the whole limitations window; one petition located.",
+    "observed_at": "2021-06-01T00:00:00Z",
+    "source_id": "article78_historical_qa_fixture",
+    "source_record_id": "coverage/historical/haven_green/0001"
+  },
+  {
+    "fixture_role": "qa_historical",
+    "project_id": "city_point",
+    "synthetic": true,
+    "record_schema": "cityscroll.article78_litigation.search_coverage.v1",
+    "coverage_key": "search_coverage:unified_court_system_ecourts:aa6b06f22fc59072:20141115t000000z",
+    "determination_key": "determination:city_planning_commission:action_city_point_0001:2014-05-20",
+    "source": "unified_court_system_ecourts",
+    "query_hash": "aa6b06f22fc59072",
+    "searched_at": "2014-11-15T00:00:00Z",
+    "scope": {
+      "courts": [
+        "Appellate Division, Second Department",
+        "NY Supreme Court, Kings County"
+      ],
+      "date_window": {
+        "from": "2014-05-20",
+        "to": "2014-10-20"
+      },
+      "party_filters": [],
+      "determination_filters": [
+        "determination:city_planning_commission:action_city_point_0001:2014-05-20"
+      ]
+    },
+    "result_count": 2,
+    "located_case_keys": [
+      "judicial_case:ny_supreme_court_kings_county:501301_2014",
+      "judicial_case:ny_supreme_court_kings_county:501302_2014"
+    ],
+    "coverage_grade": "A",
+    "coverage_note": "Docket search across both courts for the whole limitations window; two petitions located.",
+    "observed_at": "2014-11-15T00:00:00Z",
+    "source_id": "article78_historical_qa_fixture",
+    "source_record_id": "coverage/historical/city_point/0001"
+  },
+  {
+    "fixture_role": "qa_historical",
+    "project_id": "jewish_home_lifecare_ps_163",
+    "synthetic": true,
+    "record_schema": "cityscroll.article78_litigation.search_coverage.v1",
+    "coverage_key": "search_coverage:unified_court_system_ecourts:bddd7c90c95e3c78:20151215t000000z",
+    "determination_key": "determination:city_planning_commission:action_jewish_home_lifecare_0001:2015-06-24",
+    "source": "unified_court_system_ecourts",
+    "query_hash": "bddd7c90c95e3c78",
+    "searched_at": "2015-12-15T00:00:00Z",
+    "scope": {
+      "courts": [
+        "Appellate Division, First Department",
+        "NY Supreme Court, New York County"
+      ],
+      "date_window": {
+        "from": "2015-06-24",
+        "to": "2015-11-24"
+      },
+      "party_filters": [],
+      "determination_filters": [
+        "determination:city_planning_commission:action_jewish_home_lifecare_0001:2015-06-24"
+      ]
+    },
+    "result_count": 1,
+    "located_case_keys": [
+      "judicial_case:ny_supreme_court_new_york_county:156201_2015"
+    ],
+    "coverage_grade": "A",
+    "coverage_note": "Docket search across both courts for the whole limitations window; one petition located, still pending decision.",
+    "observed_at": "2015-12-15T00:00:00Z",
+    "source_id": "article78_historical_qa_fixture",
+    "source_record_id": "coverage/historical/jewish_home_lifecare/0001"
+  },
+  {
+    "fixture_role": "qa_historical",
+    "project_id": "200_amsterdam_avenue",
+    "synthetic": true,
+    "record_schema": "cityscroll.article78_litigation.search_coverage.v1",
+    "coverage_key": "search_coverage:unified_court_system_ecourts:51eeb22952f06e34:20180701t000000z",
+    "determination_key": "determination:department_of_buildings:action_200_amsterdam_0001:2017-10-05",
+    "source": "unified_court_system_ecourts",
+    "query_hash": "51eeb22952f06e34",
+    "searched_at": "2018-07-01T00:00:00Z",
+    "scope": {
+      "courts": [
+        "Appellate Division, First Department",
+        "NY Supreme Court, New York County"
+      ],
+      "date_window": {
+        "from": "2017-10-05",
+        "to": "2018-06-01"
+      },
+      "party_filters": [],
+      "determination_filters": [
+        "determination:department_of_buildings:action_200_amsterdam_0001:2017-10-05"
+      ]
+    },
+    "result_count": 2,
+    "located_case_keys": [
+      "judicial_case:ny_supreme_court_new_york_county:157301_2018",
+      "judicial_case:ny_supreme_court_new_york_county:157302_2018"
+    ],
+    "coverage_grade": "A",
+    "coverage_note": "Docket search across both courts for the whole limitations window; the prior Board of Standards and Appeals administrative challenge that was itself carried into Article 78 review is located alongside the main proceeding.",
+    "observed_at": "2018-07-01T00:00:00Z",
+    "source_id": "article78_historical_qa_fixture",
+    "source_record_id": "coverage/historical/200_amsterdam/0001"
+  },
+  {
+    "fixture_role": "qa_historical",
+    "project_id": "east_side_coastal_resiliency",
+    "synthetic": true,
+    "record_schema": "cityscroll.article78_litigation.search_coverage.v1",
+    "coverage_key": "search_coverage:unified_court_system_ecourts:bf42575c5c472e64:20200401t000000z",
+    "determination_key": "determination:department_of_design_and_construction:action_escr_0001:2019-10-08",
+    "source": "unified_court_system_ecourts",
+    "query_hash": "bf42575c5c472e64",
+    "searched_at": "2020-04-01T00:00:00Z",
+    "scope": {
+      "courts": [
+        "Appellate Division, First Department",
+        "NY Supreme Court, New York County"
+      ],
+      "date_window": {
+        "from": "2019-10-08",
+        "to": "2020-03-08"
+      },
+      "party_filters": [],
+      "determination_filters": [
+        "determination:department_of_design_and_construction:action_escr_0001:2019-10-08"
+      ]
+    },
+    "result_count": 1,
+    "located_case_keys": [
+      "judicial_case:ny_supreme_court_new_york_county:158401_2019"
+    ],
+    "coverage_grade": "A",
+    "coverage_note": "Docket search across both courts for the whole limitations window; one petition located.",
+    "observed_at": "2020-04-01T00:00:00Z",
+    "source_id": "article78_historical_qa_fixture",
+    "source_record_id": "coverage/historical/escr/0001"
+  },
+  {
+    "fixture_role": "qa_historical",
+    "project_id": "soho_noho_neighborhood_plan",
+    "synthetic": true,
+    "record_schema": "cityscroll.article78_litigation.search_coverage.v1",
+    "coverage_key": "search_coverage:unified_court_system_ecourts:09fb781ccf759ed3:20220610t000000z",
+    "determination_key": "determination:city_planning_commission:action_soho_noho_0001:2021-12-20",
+    "source": "unified_court_system_ecourts",
+    "query_hash": "09fb781ccf759ed3",
+    "searched_at": "2022-06-10T00:00:00Z",
+    "scope": {
+      "courts": [
+        "Appellate Division, First Department",
+        "NY Supreme Court, New York County"
+      ],
+      "date_window": {
+        "from": "2021-12-20",
+        "to": "2022-05-20"
+      },
+      "party_filters": [],
+      "determination_filters": [
+        "determination:city_planning_commission:action_soho_noho_0001:2021-12-20"
+      ]
+    },
+    "result_count": 0,
+    "located_case_keys": [],
+    "coverage_grade": "A",
+    "coverage_note": "Docket search across both courts for the whole limitations window; no matching petitions found.",
+    "observed_at": "2022-06-10T00:00:00Z",
+    "source_id": "article78_historical_qa_fixture",
+    "source_record_id": "coverage/historical/soho_noho/0001"
+  },
+  {
+    "fixture_role": "qa_historical",
+    "project_id": "250_water_street",
+    "synthetic": true,
+    "record_schema": "cityscroll.article78_litigation.search_coverage.v1",
+    "coverage_key": "search_coverage:unified_court_system_ecourts:d4ce7a1bd9f224cd:20230220t000000z",
+    "determination_key": "determination:city_planning_commission:action_250_water_0001:2022-12-15",
+    "source": "unified_court_system_ecourts",
+    "query_hash": "d4ce7a1bd9f224cd",
+    "searched_at": "2023-02-20T00:00:00Z",
+    "scope": {
+      "courts": [
+        "Appellate Division, First Department",
+        "NY Supreme Court, New York County"
+      ],
+      "date_window": {
+        "from": "2022-12-15",
+        "to": "2023-02-15"
+      },
+      "party_filters": [],
+      "determination_filters": [
+        "determination:city_planning_commission:action_250_water_0001:2022-12-15"
+      ]
+    },
+    "result_count": 0,
+    "located_case_keys": [],
+    "coverage_grade": "A",
+    "coverage_note": "Full-scope search run less than four months after the determination; adequate in scope, premature in time.",
+    "observed_at": "2023-02-20T00:00:00Z",
+    "source_id": "article78_historical_qa_fixture",
+    "source_record_id": "coverage/historical/250_water/0001"
+  },
+  {
+    "fixture_role": "qa_historical",
+    "project_id": "mott_haven_educational_campus",
+    "synthetic": true,
+    "record_schema": "cityscroll.article78_litigation.search_coverage.v1",
+    "coverage_key": "search_coverage:unified_court_system_ecourts:2292526dba6b74d9:20160815t000000z",
+    "determination_key": "determination:school_construction_authority:action_mott_haven_0001:2016-06-29",
+    "source": "unified_court_system_ecourts",
+    "query_hash": "2292526dba6b74d9",
+    "searched_at": "2016-08-15T00:00:00Z",
+    "scope": {
+      "courts": [
+        "NY Supreme Court, Bronx County"
+      ],
+      "date_window": {
+        "from": "2016-06-29",
+        "to": "2016-08-01"
+      },
+      "party_filters": [],
+      "determination_filters": [
+        "determination:school_construction_authority:action_mott_haven_0001:2016-06-29"
+      ]
+    },
+    "result_count": 0,
+    "located_case_keys": [],
+    "coverage_grade": "U",
+    "coverage_note": "No recorded search covers whether the campus relocation's post-approval monitoring commitments were ever the subject of an Article 78 challenge; this searched window closes five months before the limitations window and the search is graded unusable rather than dropped.",
+    "observed_at": "2016-08-15T00:00:00Z",
+    "source_id": "article78_historical_qa_fixture",
+    "source_record_id": "coverage/historical/mott_haven/0001"
+  },
+  {
+    "fixture_role": "qa_historical",
+    "project_id": "innovation_qns",
+    "synthetic": true,
+    "record_schema": "cityscroll.article78_litigation.search_coverage.v1",
+    "coverage_key": "search_coverage:unified_court_system_ecourts:55f9536b67b3f3a2:20231120t000000z",
+    "determination_key": "determination:city_planning_commission:action_innovation_qns_0001:2023-06-08",
+    "source": "unified_court_system_ecourts",
+    "query_hash": "55f9536b67b3f3a2",
+    "searched_at": "2023-11-20T00:00:00Z",
+    "scope": {
+      "courts": [
+        "Appellate Division, Second Department",
+        "NY Supreme Court, Queens County"
+      ],
+      "date_window": {
+        "from": "2023-06-08",
+        "to": "2023-11-08"
+      },
+      "party_filters": [],
+      "determination_filters": [
+        "determination:city_planning_commission:action_innovation_qns_0001:2023-06-08"
+      ]
+    },
+    "result_count": 2,
+    "located_case_keys": [
+      "judicial_case:ny_supreme_court_queens_county:705501_2023"
+    ],
+    "coverage_grade": "A",
+    "coverage_note": "Docket search matched this petition on party name and filing window; a manual caption review later found the petition challenges an unrelated Astoria site-plan variance and does not name this determination. It is retained here as a documented false positive rather than corrected out of the record, because the search's own bounds -- not a later editorial judgment -- are what this coverage record exists to preserve.",
+    "observed_at": "2023-11-20T00:00:00Z",
+    "source_id": "article78_historical_qa_fixture",
+    "source_record_id": "coverage/historical/innovation_qns/0001"
+  },
+  {
+    "fixture_role": "qa_historical",
+    "project_id": "halletts_north",
+    "synthetic": true,
+    "record_schema": "cityscroll.article78_litigation.search_coverage.v1",
+    "coverage_key": "search_coverage:unified_court_system_ecourts:c1ff377145b0c6b3:20180510t000000z",
+    "determination_key": "determination:board_of_standards_and_appeals:action_halletts_north_0001:2018-03-13",
+    "source": "unified_court_system_ecourts",
+    "query_hash": "c1ff377145b0c6b3",
+    "searched_at": "2018-05-10T00:00:00Z",
+    "scope": {
+      "courts": [
+        "NY Supreme Court, Queens County"
+      ],
+      "date_window": {
+        "from": "2018-03-13",
+        "to": "2018-05-01"
+      },
+      "party_filters": [],
+      "determination_filters": [
+        "determination:board_of_standards_and_appeals:action_halletts_north_0001:2018-03-13"
+      ]
+    },
+    "result_count": 0,
+    "located_case_keys": [],
+    "coverage_grade": "C",
+    "coverage_note": "Single county, and the searched window stops well before the limitations window closes; recorded so the inadequacy is a fact rather than a missing row.",
+    "observed_at": "2018-05-10T00:00:00Z",
+    "source_id": "article78_historical_qa_fixture",
+    "source_record_id": "coverage/historical/halletts_north/0001"
+  },
+  {
+    "fixture_role": "qa_historical",
+    "project_id": "bronx_metro_north_station_area_plan",
+    "synthetic": true,
+    "record_schema": "cityscroll.article78_litigation.search_coverage.v1",
+    "coverage_key": "search_coverage:unified_court_system_ecourts:577b9d847f79144f:20240210t000000z",
+    "determination_key": "determination:city_planning_commission:action_bronx_metro_north_0001:2023-12-13",
+    "source": "unified_court_system_ecourts",
+    "query_hash": "577b9d847f79144f",
+    "searched_at": "2024-02-10T00:00:00Z",
+    "scope": {
+      "courts": [
+        "NY Supreme Court, Bronx County"
+      ],
+      "date_window": {
+        "from": "2023-12-13",
+        "to": "2024-02-01"
+      },
+      "party_filters": [],
+      "determination_filters": [
+        "determination:city_planning_commission:action_bronx_metro_north_0001:2023-12-13"
+      ]
+    },
+    "result_count": 0,
+    "located_case_keys": [],
+    "coverage_grade": "C",
+    "coverage_note": "A single environmental impact statement addressed the rezoning, the disposition of city-owned parcels, and the capital transit-access project together as one bundled action; that breadth of environmental review does not widen this search, which covers only Bronx County and stops well short of the limitations window's close.",
+    "observed_at": "2024-02-10T00:00:00Z",
+    "source_id": "article78_historical_qa_fixture",
+    "source_record_id": "coverage/historical/bronx_metro_north/0001"
+  }
+]

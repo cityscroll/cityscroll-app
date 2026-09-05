@@ -44,6 +44,7 @@ import {
 } from "./seqra_label_builder.mjs";
 import { buildAppendOnlyLog, projectReviewStateAsOf } from "./seqra_review_event_log.mjs";
 import { SEQRA_TOPIC_ASSESSMENT_STATES } from "./seqra_ontology_spec.mjs";
+import { assertFixtureExcluded } from "./article78_historical_fixture.mjs";
 
 export const SEQRA_BASELINES_SCHEMA = "cityscroll.seqra_baselines.v1";
 
@@ -1162,7 +1163,7 @@ export function buildBaselineCorpus({ reviews, projects, folds, observationHoriz
     folds,
   });
 
-  return {
+  const corpus = {
     schema: SEQRA_BASELINES_SCHEMA,
     observation_horizon: observationHorizon,
     families,
@@ -1171,6 +1172,12 @@ export function buildBaselineCorpus({ reviews, projects, folds, observationHoriz
     feature_leakage_audit: { ...leakage, schema: "cityscroll.seqra_baseline_feature_leakage_rollup.v1" },
     refusals,
   };
+  // A78-02 (A1): this is the corpus entry point every training fold is built
+  // from. The QA-only historical litigation fixture must never enter it, so
+  // that is asserted here at construction time rather than left to a
+  // convention downstream code is trusted to honor.
+  assertFixtureExcluded(corpus, { context: "buildBaselineCorpus" });
+  return corpus;
 }
 
 /** Rows per fold and split, in a fixed order, so a fit never depends on input order. */
