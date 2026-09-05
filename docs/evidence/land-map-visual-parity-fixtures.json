@@ -1,0 +1,1612 @@
+{
+  "schema": "cityscroll.land-map-visual-parity-fixtures-receipt.v1",
+  "card": "cityscroll-land-map-view/lm-13-visual-parity-fixtures",
+  "manifest": "test/fixtures/land_map_visual_parity_fixtures/manifest.v1.json",
+  "browser_mode": "headless chromium (playwright), remote hosts blocked",
+  "provenance": {
+    "app_commit": "3208f7bc2a119fde73b420a29f950a399d01d371",
+    "default_snapshot_schema": 1,
+    "default_snapshot_count": 40,
+    "point_projection_schema": "cityscroll.land_project_map_points.v1",
+    "point_projection_resolver_version": "cityscroll.land_project_geography.v1",
+    "point_projection_join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1"
+  },
+  "baseline_default_total": 40,
+  "fixtures": [
+    {
+      "id": "default",
+      "title": "Default population: mapped and unmapped together",
+      "dependency_scenario": "healthy",
+      "readings": {
+        "narrow": {
+          "state": {
+            "url": "/browse/zoning/?view=map",
+            "map_state": "ready",
+            "failure_kind": null,
+            "boundary_state": "ready",
+            "boundary_evidence_present": true,
+            "counts": {
+              "total": 40,
+              "mapped": 33,
+              "unmapped": 7
+            },
+            "unmapped_note": "7 have no published location, so they stay in the list only.",
+            "summary_text": "33 of 40 projects are on the map.",
+            "list_empty": false,
+            "list_rows": 40,
+            "list_ids": [
+              "2026R0127",
+              "2024Q0325",
+              "2025K0305",
+              "2026K0123",
+              "2019K0383",
+              "2023M0213",
+              "2024K0214",
+              "2024K0358",
+              "2024M0244",
+              "2025K0287",
+              "2025M0338",
+              "2022K0416",
+              "2023M0116",
+              "2023X0149",
+              "2024K0286",
+              "2024Q0219",
+              "2025K0284",
+              "2025M0252",
+              "2025Q0142",
+              "2025Q0247",
+              "2025Q0316",
+              "2025R0137",
+              "2025R0222",
+              "2026R0186",
+              "2026Q0210",
+              "2022K0430",
+              "2023Q0303",
+              "2024K0196",
+              "2025M0395",
+              "2026K0233",
+              "2022Q0449",
+              "2023K0183",
+              "2024K0421",
+              "2024X0132",
+              "2025K0154",
+              "2020K0276",
+              "2022X0393",
+              "2023K0231",
+              "2024K0274",
+              "2025M0441"
+            ],
+            "marker_ids": [
+              "2026R0127",
+              "2024Q0325",
+              "2025K0305",
+              "2026K0123",
+              "2019K0383",
+              "2023M0213",
+              "2024K0214",
+              "2024K0358",
+              "2024M0244",
+              "2025K0287",
+              "2025M0338",
+              "2022K0416",
+              "2023M0116",
+              "2023X0149",
+              "2024K0286",
+              "2024Q0219",
+              "2025K0284",
+              "2025Q0142",
+              "2025Q0247",
+              "2025Q0316",
+              "2025R0137",
+              "2025R0222",
+              "2026R0186",
+              "2026Q0210",
+              "2022K0430",
+              "2023Q0303",
+              "2024K0196",
+              "2025M0395",
+              "2026K0233",
+              "2022Q0449",
+              "2023K0183",
+              "2024K0421",
+              "2025K0154"
+            ],
+            "marker_precisions": [
+              "exact",
+              "anchor"
+            ],
+            "marker_labels_all_present": true,
+            "selected": null,
+            "selected_method": null,
+            "selected_precision": null,
+            "overflow": 206,
+            "retry_present": false,
+            "dismiss_present": false,
+            "panel_no_overflow": true,
+            "list_route_rows": 40
+          },
+          "files": [
+            ".artifacts/land-map-visual-parity-fixtures/screenshots/default-list-narrow.png",
+            ".artifacts/land-map-visual-parity-fixtures/screenshots/default-map-narrow.png"
+          ]
+        },
+        "wide": {
+          "state": {
+            "url": "/browse/zoning/?view=map",
+            "map_state": "ready",
+            "failure_kind": null,
+            "boundary_state": "ready",
+            "boundary_evidence_present": true,
+            "counts": {
+              "total": 40,
+              "mapped": 33,
+              "unmapped": 7
+            },
+            "unmapped_note": "7 have no published location, so they stay in the list only.",
+            "summary_text": "33 of 40 projects are on the map.",
+            "list_empty": false,
+            "list_rows": 40,
+            "list_ids": [
+              "2026R0127",
+              "2024Q0325",
+              "2025K0305",
+              "2026K0123",
+              "2019K0383",
+              "2023M0213",
+              "2024K0214",
+              "2024K0358",
+              "2024M0244",
+              "2025K0287",
+              "2025M0338",
+              "2022K0416",
+              "2023M0116",
+              "2023X0149",
+              "2024K0286",
+              "2024Q0219",
+              "2025K0284",
+              "2025M0252",
+              "2025Q0142",
+              "2025Q0247",
+              "2025Q0316",
+              "2025R0137",
+              "2025R0222",
+              "2026R0186",
+              "2026Q0210",
+              "2022K0430",
+              "2023Q0303",
+              "2024K0196",
+              "2025M0395",
+              "2026K0233",
+              "2022Q0449",
+              "2023K0183",
+              "2024K0421",
+              "2024X0132",
+              "2025K0154",
+              "2020K0276",
+              "2022X0393",
+              "2023K0231",
+              "2024K0274",
+              "2025M0441"
+            ],
+            "marker_ids": [
+              "2026R0127",
+              "2024Q0325",
+              "2025K0305",
+              "2026K0123",
+              "2019K0383",
+              "2023M0213",
+              "2024K0214",
+              "2024K0358",
+              "2024M0244",
+              "2025K0287",
+              "2025M0338",
+              "2022K0416",
+              "2023M0116",
+              "2023X0149",
+              "2024K0286",
+              "2024Q0219",
+              "2025K0284",
+              "2025Q0142",
+              "2025Q0247",
+              "2025Q0316",
+              "2025R0137",
+              "2025R0222",
+              "2026R0186",
+              "2026Q0210",
+              "2022K0430",
+              "2023Q0303",
+              "2024K0196",
+              "2025M0395",
+              "2026K0233",
+              "2022Q0449",
+              "2023K0183",
+              "2024K0421",
+              "2025K0154"
+            ],
+            "marker_precisions": [
+              "exact",
+              "anchor"
+            ],
+            "marker_labels_all_present": true,
+            "selected": null,
+            "selected_method": null,
+            "selected_precision": null,
+            "overflow": 0,
+            "retry_present": false,
+            "dismiss_present": false,
+            "panel_no_overflow": true,
+            "list_route_rows": 40
+          },
+          "files": [
+            ".artifacts/land-map-visual-parity-fixtures/screenshots/default-list-wide.png",
+            ".artifacts/land-map-visual-parity-fixtures/screenshots/default-map-wide.png"
+          ]
+        }
+      },
+      "files": [
+        {
+          "path": ".artifacts/land-map-visual-parity-fixtures/screenshots/default-list-narrow.png",
+          "bytes": 73896,
+          "sha256": "23ecb9e667d5e4110fddfa12065d28a21e9b8048aeec31e9c09ae6ea0c1954fb"
+        },
+        {
+          "path": ".artifacts/land-map-visual-parity-fixtures/screenshots/default-map-narrow.png",
+          "bytes": 100274,
+          "sha256": "26ba7fcb0230331c4be5f672355bf49e352166ca21b3b53a384d4b6c1d23a972"
+        },
+        {
+          "path": ".artifacts/land-map-visual-parity-fixtures/screenshots/default-list-wide.png",
+          "bytes": 183770,
+          "sha256": "484ccbc82c841b3df298d9a1fea9991a7a24cd69d50672aa5599c9d6e6ced28e"
+        },
+        {
+          "path": ".artifacts/land-map-visual-parity-fixtures/screenshots/default-map-wide.png",
+          "bytes": 125535,
+          "sha256": "c60c2dfc9a658697402cc0106db9d58eee7ddb496112ff63a0fda27feb0ce7e4"
+        }
+      ]
+    },
+    {
+      "id": "unmapped-honesty",
+      "title": "An all-unmapped scope keeps every row counted and listed, with no invented marker",
+      "dependency_scenario": "healthy",
+      "readings": {
+        "narrow": {
+          "state": {
+            "url": "/browse/zoning/?stage=completed&view=map",
+            "map_state": "ready",
+            "failure_kind": null,
+            "boundary_state": "ready",
+            "boundary_evidence_present": true,
+            "counts": {
+              "total": 10,
+              "mapped": 0,
+              "unmapped": 10
+            },
+            "unmapped_note": "10 have no published location, so they stay in the list only.",
+            "summary_text": "0 of 10 projects are on the map.",
+            "list_empty": false,
+            "list_rows": 10,
+            "list_ids": [
+              "2026X0464",
+              "2022M0258",
+              "2021Q0168",
+              "2020M0429",
+              "2020M0385",
+              "2020K0444",
+              "2024Q0135",
+              "P2012X0048",
+              "2020Q0317",
+              "2023M0452"
+            ],
+            "marker_ids": [],
+            "marker_precisions": [],
+            "marker_labels_all_present": true,
+            "selected": null,
+            "selected_method": null,
+            "selected_precision": null,
+            "overflow": 0,
+            "retry_present": false,
+            "dismiss_present": false,
+            "panel_no_overflow": true,
+            "list_route_rows": 10
+          },
+          "files": [
+            ".artifacts/land-map-visual-parity-fixtures/screenshots/unmapped-honesty-list-narrow.png",
+            ".artifacts/land-map-visual-parity-fixtures/screenshots/unmapped-honesty-map-narrow.png"
+          ]
+        },
+        "wide": {
+          "state": {
+            "url": "/browse/zoning/?stage=completed&view=map",
+            "map_state": "ready",
+            "failure_kind": null,
+            "boundary_state": "ready",
+            "boundary_evidence_present": true,
+            "counts": {
+              "total": 10,
+              "mapped": 0,
+              "unmapped": 10
+            },
+            "unmapped_note": "10 have no published location, so they stay in the list only.",
+            "summary_text": "0 of 10 projects are on the map.",
+            "list_empty": false,
+            "list_rows": 10,
+            "list_ids": [
+              "2026X0464",
+              "2022M0258",
+              "2021Q0168",
+              "2020M0429",
+              "2020M0385",
+              "2020K0444",
+              "2024Q0135",
+              "P2012X0048",
+              "2020Q0317",
+              "2023M0452"
+            ],
+            "marker_ids": [],
+            "marker_precisions": [],
+            "marker_labels_all_present": true,
+            "selected": null,
+            "selected_method": null,
+            "selected_precision": null,
+            "overflow": 0,
+            "retry_present": false,
+            "dismiss_present": false,
+            "panel_no_overflow": true,
+            "list_route_rows": 10
+          },
+          "files": [
+            ".artifacts/land-map-visual-parity-fixtures/screenshots/unmapped-honesty-list-wide.png",
+            ".artifacts/land-map-visual-parity-fixtures/screenshots/unmapped-honesty-map-wide.png"
+          ]
+        }
+      },
+      "files": [
+        {
+          "path": ".artifacts/land-map-visual-parity-fixtures/screenshots/unmapped-honesty-list-narrow.png",
+          "bytes": 63735,
+          "sha256": "a22eac7b7e8971077464452bb411d4f0e5af98ccf2669561ae8c31f2b92b3811"
+        },
+        {
+          "path": ".artifacts/land-map-visual-parity-fixtures/screenshots/unmapped-honesty-map-narrow.png",
+          "bytes": 87624,
+          "sha256": "e24b7ee833ab1bc5d8cc3e389892e032d4e526a9455ae83877a0830cd552367f"
+        },
+        {
+          "path": ".artifacts/land-map-visual-parity-fixtures/screenshots/unmapped-honesty-list-wide.png",
+          "bytes": 165565,
+          "sha256": "44eb61e647c206b4426fc3de3b7a42899e74f95f5b9e18196e1d0fdfd9d567ab"
+        },
+        {
+          "path": ".artifacts/land-map-visual-parity-fixtures/screenshots/unmapped-honesty-map-wide.png",
+          "bytes": 109281,
+          "sha256": "af441b0fde8236d1e1f1a384fabcf8ffbee104c2693f9a883c635e7038e41cd3"
+        }
+      ]
+    },
+    {
+      "id": "selected",
+      "title": "Selecting the multi-BBL anchor reveals identity, method, and precision without leaving the map",
+      "dependency_scenario": "healthy",
+      "readings": {
+        "narrow": {
+          "state": {
+            "url": "/browse/zoning/?view=map",
+            "map_state": "ready",
+            "failure_kind": null,
+            "boundary_state": "ready",
+            "boundary_evidence_present": true,
+            "counts": {
+              "total": 40,
+              "mapped": 33,
+              "unmapped": 7
+            },
+            "unmapped_note": "7 have no published location, so they stay in the list only.",
+            "summary_text": "33 of 40 projects are on the map.",
+            "list_empty": false,
+            "list_rows": 40,
+            "list_ids": [
+              "2026R0127",
+              "2024Q0325",
+              "2025K0305",
+              "2026K0123",
+              "2019K0383",
+              "2023M0213",
+              "2024K0214",
+              "2024K0358",
+              "2024M0244",
+              "2025K0287",
+              "2025M0338",
+              "2022K0416",
+              "2023M0116",
+              "2023X0149",
+              "2024K0286",
+              "2024Q0219",
+              "2025K0284",
+              "2025M0252",
+              "2025Q0142",
+              "2025Q0247",
+              "2025Q0316",
+              "2025R0137",
+              "2025R0222",
+              "2026R0186",
+              "2026Q0210",
+              "2022K0430",
+              "2023Q0303",
+              "2024K0196",
+              "2025M0395",
+              "2026K0233",
+              "2022Q0449",
+              "2023K0183",
+              "2024K0421",
+              "2024X0132",
+              "2025K0154",
+              "2020K0276",
+              "2022X0393",
+              "2023K0231",
+              "2024K0274",
+              "2025M0441"
+            ],
+            "marker_ids": [
+              "2026R0127",
+              "2024Q0325",
+              "2025K0305",
+              "2026K0123",
+              "2019K0383",
+              "2023M0213",
+              "2024K0214",
+              "2024K0358",
+              "2024M0244",
+              "2025K0287",
+              "2025M0338",
+              "2022K0416",
+              "2023M0116",
+              "2023X0149",
+              "2024K0286",
+              "2024Q0219",
+              "2025K0284",
+              "2025Q0142",
+              "2025Q0247",
+              "2025Q0316",
+              "2025R0137",
+              "2025R0222",
+              "2026R0186",
+              "2026Q0210",
+              "2022K0430",
+              "2023Q0303",
+              "2024K0196",
+              "2025M0395",
+              "2026K0233",
+              "2022Q0449",
+              "2023K0183",
+              "2024K0421",
+              "2025K0154"
+            ],
+            "marker_precisions": [
+              "exact",
+              "anchor"
+            ],
+            "marker_labels_all_present": true,
+            "selected": "2025K0305",
+            "selected_method": "multi_bbl_anchor",
+            "selected_precision": "anchor",
+            "overflow": 206,
+            "retry_present": false,
+            "dismiss_present": false,
+            "panel_no_overflow": true,
+            "list_route_rows": 40
+          },
+          "files": [
+            ".artifacts/land-map-visual-parity-fixtures/screenshots/selected-list-narrow.png",
+            ".artifacts/land-map-visual-parity-fixtures/screenshots/selected-map-narrow.png"
+          ]
+        },
+        "wide": {
+          "state": {
+            "url": "/browse/zoning/?view=map",
+            "map_state": "ready",
+            "failure_kind": null,
+            "boundary_state": "ready",
+            "boundary_evidence_present": true,
+            "counts": {
+              "total": 40,
+              "mapped": 33,
+              "unmapped": 7
+            },
+            "unmapped_note": "7 have no published location, so they stay in the list only.",
+            "summary_text": "33 of 40 projects are on the map.",
+            "list_empty": false,
+            "list_rows": 40,
+            "list_ids": [
+              "2026R0127",
+              "2024Q0325",
+              "2025K0305",
+              "2026K0123",
+              "2019K0383",
+              "2023M0213",
+              "2024K0214",
+              "2024K0358",
+              "2024M0244",
+              "2025K0287",
+              "2025M0338",
+              "2022K0416",
+              "2023M0116",
+              "2023X0149",
+              "2024K0286",
+              "2024Q0219",
+              "2025K0284",
+              "2025M0252",
+              "2025Q0142",
+              "2025Q0247",
+              "2025Q0316",
+              "2025R0137",
+              "2025R0222",
+              "2026R0186",
+              "2026Q0210",
+              "2022K0430",
+              "2023Q0303",
+              "2024K0196",
+              "2025M0395",
+              "2026K0233",
+              "2022Q0449",
+              "2023K0183",
+              "2024K0421",
+              "2024X0132",
+              "2025K0154",
+              "2020K0276",
+              "2022X0393",
+              "2023K0231",
+              "2024K0274",
+              "2025M0441"
+            ],
+            "marker_ids": [
+              "2026R0127",
+              "2024Q0325",
+              "2025K0305",
+              "2026K0123",
+              "2019K0383",
+              "2023M0213",
+              "2024K0214",
+              "2024K0358",
+              "2024M0244",
+              "2025K0287",
+              "2025M0338",
+              "2022K0416",
+              "2023M0116",
+              "2023X0149",
+              "2024K0286",
+              "2024Q0219",
+              "2025K0284",
+              "2025Q0142",
+              "2025Q0247",
+              "2025Q0316",
+              "2025R0137",
+              "2025R0222",
+              "2026R0186",
+              "2026Q0210",
+              "2022K0430",
+              "2023Q0303",
+              "2024K0196",
+              "2025M0395",
+              "2026K0233",
+              "2022Q0449",
+              "2023K0183",
+              "2024K0421",
+              "2025K0154"
+            ],
+            "marker_precisions": [
+              "exact",
+              "anchor"
+            ],
+            "marker_labels_all_present": true,
+            "selected": "2025K0305",
+            "selected_method": "multi_bbl_anchor",
+            "selected_precision": "anchor",
+            "overflow": 0,
+            "retry_present": false,
+            "dismiss_present": false,
+            "panel_no_overflow": true,
+            "list_route_rows": 40
+          },
+          "files": [
+            ".artifacts/land-map-visual-parity-fixtures/screenshots/selected-list-wide.png",
+            ".artifacts/land-map-visual-parity-fixtures/screenshots/selected-map-wide.png"
+          ]
+        }
+      },
+      "files": [
+        {
+          "path": ".artifacts/land-map-visual-parity-fixtures/screenshots/selected-list-narrow.png",
+          "bytes": 73896,
+          "sha256": "23ecb9e667d5e4110fddfa12065d28a21e9b8048aeec31e9c09ae6ea0c1954fb"
+        },
+        {
+          "path": ".artifacts/land-map-visual-parity-fixtures/screenshots/selected-map-narrow.png",
+          "bytes": 137413,
+          "sha256": "6a19972558ab5e69db5502c6da4c112ae264a0e38a5cdc4e2d95fde58e4c37a0"
+        },
+        {
+          "path": ".artifacts/land-map-visual-parity-fixtures/screenshots/selected-list-wide.png",
+          "bytes": 183770,
+          "sha256": "484ccbc82c841b3df298d9a1fea9991a7a24cd69d50672aa5599c9d6e6ced28e"
+        },
+        {
+          "path": ".artifacts/land-map-visual-parity-fixtures/screenshots/selected-map-wide.png",
+          "bytes": 166113,
+          "sha256": "654be13781204c00a9d751cf255a2dd642f5299f4263309ca31b1e1297736d5a"
+        }
+      ]
+    },
+    {
+      "id": "boundary-context",
+      "title": "Brooklyn boundary context orients markers without becoming a result layer",
+      "dependency_scenario": "healthy",
+      "readings": {
+        "narrow": {
+          "state": {
+            "url": "/browse/zoning/?boro=Brooklyn&view=map",
+            "map_state": "ready",
+            "failure_kind": null,
+            "boundary_state": "ready",
+            "boundary_evidence_present": true,
+            "counts": {
+              "total": 40,
+              "mapped": 15,
+              "unmapped": 25
+            },
+            "unmapped_note": "25 have no published location, so they stay in the list only.",
+            "summary_text": "15 of 40 projects are on the map.",
+            "list_empty": false,
+            "list_rows": 40,
+            "list_ids": [
+              "2025K0305",
+              "2026K0123",
+              "2019K0383",
+              "2024K0214",
+              "2024K0358",
+              "2025K0287",
+              "2022K0416",
+              "2024K0286",
+              "2025K0284",
+              "2022K0430",
+              "2024K0196",
+              "2026K0233",
+              "2023K0183",
+              "2024K0421",
+              "2025K0154",
+              "2020K0276",
+              "2023K0231",
+              "2024K0274",
+              "2025K0226",
+              "2019K0190",
+              "2021K0380",
+              "2024K0240",
+              "2024K0233",
+              "2025K0470",
+              "2025K0229",
+              "2025K0497",
+              "2025K0232",
+              "2022K0121",
+              "2022K0419",
+              "2022K0302",
+              "2023K0368",
+              "2019K0147",
+              "2022K0252",
+              "2024K0444",
+              "2025K0306",
+              "2024K0369",
+              "2021K0261",
+              "2025K0250",
+              "2025K0150",
+              "2023K0148"
+            ],
+            "marker_ids": [
+              "2025K0305",
+              "2026K0123",
+              "2019K0383",
+              "2024K0214",
+              "2024K0358",
+              "2025K0287",
+              "2022K0416",
+              "2024K0286",
+              "2025K0284",
+              "2022K0430",
+              "2024K0196",
+              "2026K0233",
+              "2023K0183",
+              "2024K0421",
+              "2025K0154"
+            ],
+            "marker_precisions": [
+              "anchor",
+              "exact"
+            ],
+            "marker_labels_all_present": true,
+            "selected": null,
+            "selected_method": null,
+            "selected_precision": null,
+            "overflow": 162,
+            "retry_present": false,
+            "dismiss_present": false,
+            "panel_no_overflow": true,
+            "list_route_rows": 40
+          },
+          "files": [
+            ".artifacts/land-map-visual-parity-fixtures/screenshots/boundary-context-list-narrow.png",
+            ".artifacts/land-map-visual-parity-fixtures/screenshots/boundary-context-map-narrow.png"
+          ]
+        },
+        "wide": {
+          "state": {
+            "url": "/browse/zoning/?boro=Brooklyn&view=map",
+            "map_state": "ready",
+            "failure_kind": null,
+            "boundary_state": "ready",
+            "boundary_evidence_present": true,
+            "counts": {
+              "total": 40,
+              "mapped": 15,
+              "unmapped": 25
+            },
+            "unmapped_note": "25 have no published location, so they stay in the list only.",
+            "summary_text": "15 of 40 projects are on the map.",
+            "list_empty": false,
+            "list_rows": 40,
+            "list_ids": [
+              "2025K0305",
+              "2026K0123",
+              "2019K0383",
+              "2024K0214",
+              "2024K0358",
+              "2025K0287",
+              "2022K0416",
+              "2024K0286",
+              "2025K0284",
+              "2022K0430",
+              "2024K0196",
+              "2026K0233",
+              "2023K0183",
+              "2024K0421",
+              "2025K0154",
+              "2020K0276",
+              "2023K0231",
+              "2024K0274",
+              "2025K0226",
+              "2019K0190",
+              "2021K0380",
+              "2024K0240",
+              "2024K0233",
+              "2025K0470",
+              "2025K0229",
+              "2025K0497",
+              "2025K0232",
+              "2022K0121",
+              "2022K0419",
+              "2022K0302",
+              "2023K0368",
+              "2019K0147",
+              "2022K0252",
+              "2024K0444",
+              "2025K0306",
+              "2024K0369",
+              "2021K0261",
+              "2025K0250",
+              "2025K0150",
+              "2023K0148"
+            ],
+            "marker_ids": [
+              "2025K0305",
+              "2026K0123",
+              "2019K0383",
+              "2024K0214",
+              "2024K0358",
+              "2025K0287",
+              "2022K0416",
+              "2024K0286",
+              "2025K0284",
+              "2022K0430",
+              "2024K0196",
+              "2026K0233",
+              "2023K0183",
+              "2024K0421",
+              "2025K0154"
+            ],
+            "marker_precisions": [
+              "anchor",
+              "exact"
+            ],
+            "marker_labels_all_present": true,
+            "selected": null,
+            "selected_method": null,
+            "selected_precision": null,
+            "overflow": 0,
+            "retry_present": false,
+            "dismiss_present": false,
+            "panel_no_overflow": true,
+            "list_route_rows": 40
+          },
+          "files": [
+            ".artifacts/land-map-visual-parity-fixtures/screenshots/boundary-context-list-wide.png",
+            ".artifacts/land-map-visual-parity-fixtures/screenshots/boundary-context-map-wide.png"
+          ]
+        }
+      },
+      "files": [
+        {
+          "path": ".artifacts/land-map-visual-parity-fixtures/screenshots/boundary-context-list-narrow.png",
+          "bytes": 76781,
+          "sha256": "f0e780758ae494d16836b5e7a5659e5827a53247330217f812313df93f2a33f6"
+        },
+        {
+          "path": ".artifacts/land-map-visual-parity-fixtures/screenshots/boundary-context-map-narrow.png",
+          "bytes": 107692,
+          "sha256": "0c2e75bbc0db17dcbd3decd7dc61b2b9625d864f1a4cb0d114ded56ebe891b78"
+        },
+        {
+          "path": ".artifacts/land-map-visual-parity-fixtures/screenshots/boundary-context-list-wide.png",
+          "bytes": 176451,
+          "sha256": "fc0017ee50be562af9a3b387895054c3a77c30d82ee9d6b7837de573964acc3b"
+        },
+        {
+          "path": ".artifacts/land-map-visual-parity-fixtures/screenshots/boundary-context-map-wide.png",
+          "bytes": 177802,
+          "sha256": "f2f27394726a1d57a882aef1bb9407a74883bbb774a4c71a35eeae945389e7d3"
+        }
+      ]
+    },
+    {
+      "id": "filtered-single-result",
+      "title": "A single-result filter shows the same one project in List and Map",
+      "dependency_scenario": "healthy",
+      "readings": {
+        "narrow": {
+          "state": {
+            "url": "/browse/zoning/?cd=K09&stage=any&view=map",
+            "map_state": "ready",
+            "failure_kind": null,
+            "boundary_state": "ready",
+            "boundary_evidence_present": true,
+            "counts": {
+              "total": 1,
+              "mapped": 1,
+              "unmapped": 0
+            },
+            "unmapped_note": "",
+            "summary_text": "1 of 1 projects are on the map.",
+            "list_empty": false,
+            "list_rows": 1,
+            "list_ids": [
+              "2026K0123"
+            ],
+            "marker_ids": [
+              "2026K0123"
+            ],
+            "marker_precisions": [
+              "exact"
+            ],
+            "marker_labels_all_present": true,
+            "selected": null,
+            "selected_method": null,
+            "selected_precision": null,
+            "overflow": 0,
+            "retry_present": false,
+            "dismiss_present": false,
+            "panel_no_overflow": true,
+            "list_route_rows": 1
+          },
+          "files": [
+            ".artifacts/land-map-visual-parity-fixtures/screenshots/filtered-single-result-list-narrow.png",
+            ".artifacts/land-map-visual-parity-fixtures/screenshots/filtered-single-result-map-narrow.png"
+          ]
+        },
+        "wide": {
+          "state": {
+            "url": "/browse/zoning/?cd=K09&stage=any&view=map",
+            "map_state": "ready",
+            "failure_kind": null,
+            "boundary_state": "ready",
+            "boundary_evidence_present": true,
+            "counts": {
+              "total": 1,
+              "mapped": 1,
+              "unmapped": 0
+            },
+            "unmapped_note": "",
+            "summary_text": "1 of 1 projects are on the map.",
+            "list_empty": false,
+            "list_rows": 1,
+            "list_ids": [
+              "2026K0123"
+            ],
+            "marker_ids": [
+              "2026K0123"
+            ],
+            "marker_precisions": [
+              "exact"
+            ],
+            "marker_labels_all_present": true,
+            "selected": null,
+            "selected_method": null,
+            "selected_precision": null,
+            "overflow": 0,
+            "retry_present": false,
+            "dismiss_present": false,
+            "panel_no_overflow": true,
+            "list_route_rows": 1
+          },
+          "files": [
+            ".artifacts/land-map-visual-parity-fixtures/screenshots/filtered-single-result-list-wide.png",
+            ".artifacts/land-map-visual-parity-fixtures/screenshots/filtered-single-result-map-wide.png"
+          ]
+        }
+      },
+      "files": [
+        {
+          "path": ".artifacts/land-map-visual-parity-fixtures/screenshots/filtered-single-result-list-narrow.png",
+          "bytes": 29995,
+          "sha256": "09bd3d124cc1732f6de1dae0ffb54edcf483f8711afb1029d5773042dedda469"
+        },
+        {
+          "path": ".artifacts/land-map-visual-parity-fixtures/screenshots/filtered-single-result-map-narrow.png",
+          "bytes": 95566,
+          "sha256": "4390319820eeb53d3d55ce64b45fc5a88b1cf55db671af0245f5bcbaa3982daa"
+        },
+        {
+          "path": ".artifacts/land-map-visual-parity-fixtures/screenshots/filtered-single-result-list-wide.png",
+          "bytes": 53934,
+          "sha256": "9cda34909bcb818b33edecfdf3a246212afea2667e1e71834487dc653321c73f"
+        },
+        {
+          "path": ".artifacts/land-map-visual-parity-fixtures/screenshots/filtered-single-result-map-wide.png",
+          "bytes": 178655,
+          "sha256": "b2b423d831dac3c2b13b8c12a9013f97d4dabce8b0aefe68c153e0f28557ee8b"
+        }
+      ]
+    },
+    {
+      "id": "zero-result",
+      "title": "A zero-result filter explains itself instead of reading as a failed map",
+      "dependency_scenario": "healthy",
+      "readings": {
+        "narrow": {
+          "state": {
+            "url": "/browse/zoning/?q=zzzznotathing&stage=any&view=map",
+            "map_state": "ready",
+            "failure_kind": null,
+            "boundary_state": "ready",
+            "boundary_evidence_present": true,
+            "counts": {
+              "total": 0,
+              "mapped": 0,
+              "unmapped": 0
+            },
+            "unmapped_note": "",
+            "summary_text": "No projects match these filters, so the map has nothing to draw.",
+            "list_empty": true,
+            "list_rows": 0,
+            "list_ids": [],
+            "marker_ids": [],
+            "marker_precisions": [],
+            "marker_labels_all_present": true,
+            "selected": null,
+            "selected_method": null,
+            "selected_precision": null,
+            "overflow": 0,
+            "retry_present": false,
+            "dismiss_present": false,
+            "panel_no_overflow": true,
+            "list_route_rows": 0
+          },
+          "files": [
+            ".artifacts/land-map-visual-parity-fixtures/screenshots/zero-result-list-narrow.png",
+            ".artifacts/land-map-visual-parity-fixtures/screenshots/zero-result-map-narrow.png"
+          ]
+        },
+        "wide": {
+          "state": {
+            "url": "/browse/zoning/?q=zzzznotathing&stage=any&view=map",
+            "map_state": "ready",
+            "failure_kind": null,
+            "boundary_state": "ready",
+            "boundary_evidence_present": true,
+            "counts": {
+              "total": 0,
+              "mapped": 0,
+              "unmapped": 0
+            },
+            "unmapped_note": "",
+            "summary_text": "No projects match these filters, so the map has nothing to draw.",
+            "list_empty": true,
+            "list_rows": 0,
+            "list_ids": [],
+            "marker_ids": [],
+            "marker_precisions": [],
+            "marker_labels_all_present": true,
+            "selected": null,
+            "selected_method": null,
+            "selected_precision": null,
+            "overflow": 0,
+            "retry_present": false,
+            "dismiss_present": false,
+            "panel_no_overflow": true,
+            "list_route_rows": 0
+          },
+          "files": [
+            ".artifacts/land-map-visual-parity-fixtures/screenshots/zero-result-list-wide.png",
+            ".artifacts/land-map-visual-parity-fixtures/screenshots/zero-result-map-wide.png"
+          ]
+        }
+      },
+      "files": [
+        {
+          "path": ".artifacts/land-map-visual-parity-fixtures/screenshots/zero-result-list-narrow.png",
+          "bytes": 29930,
+          "sha256": "3ba1ba42da77d7eb0890e0e7a6a586e9e49a3cdaba2e3e5ff7241ef522b61ac0"
+        },
+        {
+          "path": ".artifacts/land-map-visual-parity-fixtures/screenshots/zero-result-map-narrow.png",
+          "bytes": 89951,
+          "sha256": "35635f0ed54882f4e6f1d07e28ecfdeb2034ebfcc1231f507fea5e6c3b7b5e79"
+        },
+        {
+          "path": ".artifacts/land-map-visual-parity-fixtures/screenshots/zero-result-list-wide.png",
+          "bytes": 34109,
+          "sha256": "50000e615ad209958c9df33de212f19d3eea937b75538338bd84df6420dfd5c0"
+        },
+        {
+          "path": ".artifacts/land-map-visual-parity-fixtures/screenshots/zero-result-map-wide.png",
+          "bytes": 110427,
+          "sha256": "6cbb6ab6ae91b3520c162ae4169cf5cc3781ad01db6c0cf7e50e4aae495e6f32"
+        }
+      ]
+    },
+    {
+      "id": "mobile",
+      "title": "Every control and count reads at a 320px phone width without overflow",
+      "dependency_scenario": "healthy",
+      "readings": {
+        "mobile": {
+          "state": {
+            "url": "/browse/zoning/?view=map",
+            "map_state": "ready",
+            "failure_kind": null,
+            "boundary_state": "ready",
+            "boundary_evidence_present": true,
+            "counts": {
+              "total": 40,
+              "mapped": 33,
+              "unmapped": 7
+            },
+            "unmapped_note": "7 have no published location, so they stay in the list only.",
+            "summary_text": "33 of 40 projects are on the map.",
+            "list_empty": false,
+            "list_rows": 40,
+            "list_ids": [
+              "2026R0127",
+              "2024Q0325",
+              "2025K0305",
+              "2026K0123",
+              "2019K0383",
+              "2023M0213",
+              "2024K0214",
+              "2024K0358",
+              "2024M0244",
+              "2025K0287",
+              "2025M0338",
+              "2022K0416",
+              "2023M0116",
+              "2023X0149",
+              "2024K0286",
+              "2024Q0219",
+              "2025K0284",
+              "2025M0252",
+              "2025Q0142",
+              "2025Q0247",
+              "2025Q0316",
+              "2025R0137",
+              "2025R0222",
+              "2026R0186",
+              "2026Q0210",
+              "2022K0430",
+              "2023Q0303",
+              "2024K0196",
+              "2025M0395",
+              "2026K0233",
+              "2022Q0449",
+              "2023K0183",
+              "2024K0421",
+              "2024X0132",
+              "2025K0154",
+              "2020K0276",
+              "2022X0393",
+              "2023K0231",
+              "2024K0274",
+              "2025M0441"
+            ],
+            "marker_ids": [
+              "2026R0127",
+              "2024Q0325",
+              "2025K0305",
+              "2026K0123",
+              "2019K0383",
+              "2023M0213",
+              "2024K0214",
+              "2024K0358",
+              "2024M0244",
+              "2025K0287",
+              "2025M0338",
+              "2022K0416",
+              "2023M0116",
+              "2023X0149",
+              "2024K0286",
+              "2024Q0219",
+              "2025K0284",
+              "2025Q0142",
+              "2025Q0247",
+              "2025Q0316",
+              "2025R0137",
+              "2025R0222",
+              "2026R0186",
+              "2026Q0210",
+              "2022K0430",
+              "2023Q0303",
+              "2024K0196",
+              "2025M0395",
+              "2026K0233",
+              "2022Q0449",
+              "2023K0183",
+              "2024K0421",
+              "2025K0154"
+            ],
+            "marker_precisions": [
+              "exact",
+              "anchor"
+            ],
+            "marker_labels_all_present": true,
+            "selected": "2025K0305",
+            "selected_method": "multi_bbl_anchor",
+            "selected_precision": "anchor",
+            "overflow": 276,
+            "retry_present": false,
+            "dismiss_present": false,
+            "panel_no_overflow": true,
+            "list_route_rows": 40
+          },
+          "files": [
+            ".artifacts/land-map-visual-parity-fixtures/screenshots/mobile-list-mobile.png",
+            ".artifacts/land-map-visual-parity-fixtures/screenshots/mobile-map-mobile.png"
+          ]
+        },
+        "narrow": {
+          "state": {
+            "url": "/browse/zoning/?view=map",
+            "map_state": "ready",
+            "failure_kind": null,
+            "boundary_state": "ready",
+            "boundary_evidence_present": true,
+            "counts": {
+              "total": 40,
+              "mapped": 33,
+              "unmapped": 7
+            },
+            "unmapped_note": "7 have no published location, so they stay in the list only.",
+            "summary_text": "33 of 40 projects are on the map.",
+            "list_empty": false,
+            "list_rows": 40,
+            "list_ids": [
+              "2026R0127",
+              "2024Q0325",
+              "2025K0305",
+              "2026K0123",
+              "2019K0383",
+              "2023M0213",
+              "2024K0214",
+              "2024K0358",
+              "2024M0244",
+              "2025K0287",
+              "2025M0338",
+              "2022K0416",
+              "2023M0116",
+              "2023X0149",
+              "2024K0286",
+              "2024Q0219",
+              "2025K0284",
+              "2025M0252",
+              "2025Q0142",
+              "2025Q0247",
+              "2025Q0316",
+              "2025R0137",
+              "2025R0222",
+              "2026R0186",
+              "2026Q0210",
+              "2022K0430",
+              "2023Q0303",
+              "2024K0196",
+              "2025M0395",
+              "2026K0233",
+              "2022Q0449",
+              "2023K0183",
+              "2024K0421",
+              "2024X0132",
+              "2025K0154",
+              "2020K0276",
+              "2022X0393",
+              "2023K0231",
+              "2024K0274",
+              "2025M0441"
+            ],
+            "marker_ids": [
+              "2026R0127",
+              "2024Q0325",
+              "2025K0305",
+              "2026K0123",
+              "2019K0383",
+              "2023M0213",
+              "2024K0214",
+              "2024K0358",
+              "2024M0244",
+              "2025K0287",
+              "2025M0338",
+              "2022K0416",
+              "2023M0116",
+              "2023X0149",
+              "2024K0286",
+              "2024Q0219",
+              "2025K0284",
+              "2025Q0142",
+              "2025Q0247",
+              "2025Q0316",
+              "2025R0137",
+              "2025R0222",
+              "2026R0186",
+              "2026Q0210",
+              "2022K0430",
+              "2023Q0303",
+              "2024K0196",
+              "2025M0395",
+              "2026K0233",
+              "2022Q0449",
+              "2023K0183",
+              "2024K0421",
+              "2025K0154"
+            ],
+            "marker_precisions": [
+              "exact",
+              "anchor"
+            ],
+            "marker_labels_all_present": true,
+            "selected": "2025K0305",
+            "selected_method": "multi_bbl_anchor",
+            "selected_precision": "anchor",
+            "overflow": 206,
+            "retry_present": false,
+            "dismiss_present": false,
+            "panel_no_overflow": true,
+            "list_route_rows": 40
+          },
+          "files": [
+            ".artifacts/land-map-visual-parity-fixtures/screenshots/mobile-list-narrow.png",
+            ".artifacts/land-map-visual-parity-fixtures/screenshots/mobile-map-narrow.png"
+          ]
+        },
+        "wide": {
+          "state": {
+            "url": "/browse/zoning/?view=map",
+            "map_state": "ready",
+            "failure_kind": null,
+            "boundary_state": "ready",
+            "boundary_evidence_present": true,
+            "counts": {
+              "total": 40,
+              "mapped": 33,
+              "unmapped": 7
+            },
+            "unmapped_note": "7 have no published location, so they stay in the list only.",
+            "summary_text": "33 of 40 projects are on the map.",
+            "list_empty": false,
+            "list_rows": 40,
+            "list_ids": [
+              "2026R0127",
+              "2024Q0325",
+              "2025K0305",
+              "2026K0123",
+              "2019K0383",
+              "2023M0213",
+              "2024K0214",
+              "2024K0358",
+              "2024M0244",
+              "2025K0287",
+              "2025M0338",
+              "2022K0416",
+              "2023M0116",
+              "2023X0149",
+              "2024K0286",
+              "2024Q0219",
+              "2025K0284",
+              "2025M0252",
+              "2025Q0142",
+              "2025Q0247",
+              "2025Q0316",
+              "2025R0137",
+              "2025R0222",
+              "2026R0186",
+              "2026Q0210",
+              "2022K0430",
+              "2023Q0303",
+              "2024K0196",
+              "2025M0395",
+              "2026K0233",
+              "2022Q0449",
+              "2023K0183",
+              "2024K0421",
+              "2024X0132",
+              "2025K0154",
+              "2020K0276",
+              "2022X0393",
+              "2023K0231",
+              "2024K0274",
+              "2025M0441"
+            ],
+            "marker_ids": [
+              "2026R0127",
+              "2024Q0325",
+              "2025K0305",
+              "2026K0123",
+              "2019K0383",
+              "2023M0213",
+              "2024K0214",
+              "2024K0358",
+              "2024M0244",
+              "2025K0287",
+              "2025M0338",
+              "2022K0416",
+              "2023M0116",
+              "2023X0149",
+              "2024K0286",
+              "2024Q0219",
+              "2025K0284",
+              "2025Q0142",
+              "2025Q0247",
+              "2025Q0316",
+              "2025R0137",
+              "2025R0222",
+              "2026R0186",
+              "2026Q0210",
+              "2022K0430",
+              "2023Q0303",
+              "2024K0196",
+              "2025M0395",
+              "2026K0233",
+              "2022Q0449",
+              "2023K0183",
+              "2024K0421",
+              "2025K0154"
+            ],
+            "marker_precisions": [
+              "exact",
+              "anchor"
+            ],
+            "marker_labels_all_present": true,
+            "selected": "2025K0305",
+            "selected_method": "multi_bbl_anchor",
+            "selected_precision": "anchor",
+            "overflow": 0,
+            "retry_present": false,
+            "dismiss_present": false,
+            "panel_no_overflow": true,
+            "list_route_rows": 40
+          },
+          "files": [
+            ".artifacts/land-map-visual-parity-fixtures/screenshots/mobile-list-wide.png",
+            ".artifacts/land-map-visual-parity-fixtures/screenshots/mobile-map-wide.png"
+          ]
+        }
+      },
+      "files": [
+        {
+          "path": ".artifacts/land-map-visual-parity-fixtures/screenshots/mobile-list-mobile.png",
+          "bytes": 67782,
+          "sha256": "3f5b26143a8a6d68d482b5382467663d0548b514a3e3b0d08f83fc5a2c6e8127"
+        },
+        {
+          "path": ".artifacts/land-map-visual-parity-fixtures/screenshots/mobile-map-mobile.png",
+          "bytes": 115230,
+          "sha256": "a5f5de8d51cb7b5abebaa70b3b8359d827b915e4aac02fe77a0e231c4f0fdf08"
+        },
+        {
+          "path": ".artifacts/land-map-visual-parity-fixtures/screenshots/mobile-list-narrow.png",
+          "bytes": 73896,
+          "sha256": "23ecb9e667d5e4110fddfa12065d28a21e9b8048aeec31e9c09ae6ea0c1954fb"
+        },
+        {
+          "path": ".artifacts/land-map-visual-parity-fixtures/screenshots/mobile-map-narrow.png",
+          "bytes": 137413,
+          "sha256": "6a19972558ab5e69db5502c6da4c112ae264a0e38a5cdc4e2d95fde58e4c37a0"
+        },
+        {
+          "path": ".artifacts/land-map-visual-parity-fixtures/screenshots/mobile-list-wide.png",
+          "bytes": 183770,
+          "sha256": "484ccbc82c841b3df298d9a1fea9991a7a24cd69d50672aa5599c9d6e6ced28e"
+        },
+        {
+          "path": ".artifacts/land-map-visual-parity-fixtures/screenshots/mobile-map-wide.png",
+          "bytes": 166113,
+          "sha256": "654be13781204c00a9d751cf255a2dd642f5299f4263309ca31b1e1297736d5a"
+        }
+      ]
+    },
+    {
+      "id": "dependency-failure",
+      "title": "A blocked point projection keeps the complete List and offers retry and dismiss",
+      "dependency_scenario": "projection-blocked",
+      "readings": {
+        "narrow": {
+          "state": {
+            "url": "/browse/zoning/?view=map",
+            "map_state": "failed",
+            "failure_kind": "dependency",
+            "boundary_state": null,
+            "boundary_evidence_present": false,
+            "counts": null,
+            "unmapped_note": "",
+            "summary_text": "",
+            "list_empty": false,
+            "list_rows": 40,
+            "list_ids": [
+              "2026R0127",
+              "2024Q0325",
+              "2025K0305",
+              "2026K0123",
+              "2019K0383",
+              "2023M0213",
+              "2024K0214",
+              "2024K0358",
+              "2024M0244",
+              "2025K0287",
+              "2025M0338",
+              "2022K0416",
+              "2023M0116",
+              "2023X0149",
+              "2024K0286",
+              "2024Q0219",
+              "2025K0284",
+              "2025M0252",
+              "2025Q0142",
+              "2025Q0247",
+              "2025Q0316",
+              "2025R0137",
+              "2025R0222",
+              "2026R0186",
+              "2026Q0210",
+              "2022K0430",
+              "2023Q0303",
+              "2024K0196",
+              "2025M0395",
+              "2026K0233",
+              "2022Q0449",
+              "2023K0183",
+              "2024K0421",
+              "2024X0132",
+              "2025K0154",
+              "2020K0276",
+              "2022X0393",
+              "2023K0231",
+              "2024K0274",
+              "2025M0441"
+            ],
+            "marker_ids": [],
+            "marker_precisions": [],
+            "marker_labels_all_present": true,
+            "selected": null,
+            "selected_method": null,
+            "selected_precision": null,
+            "overflow": 206,
+            "retry_present": true,
+            "dismiss_present": true,
+            "panel_no_overflow": true,
+            "list_route_rows": 40
+          },
+          "files": [
+            ".artifacts/land-map-visual-parity-fixtures/screenshots/dependency-failure-list-narrow.png",
+            ".artifacts/land-map-visual-parity-fixtures/screenshots/dependency-failure-map-narrow.png"
+          ]
+        },
+        "wide": {
+          "state": {
+            "url": "/browse/zoning/?view=map",
+            "map_state": "failed",
+            "failure_kind": "dependency",
+            "boundary_state": null,
+            "boundary_evidence_present": false,
+            "counts": null,
+            "unmapped_note": "",
+            "summary_text": "",
+            "list_empty": false,
+            "list_rows": 40,
+            "list_ids": [
+              "2026R0127",
+              "2024Q0325",
+              "2025K0305",
+              "2026K0123",
+              "2019K0383",
+              "2023M0213",
+              "2024K0214",
+              "2024K0358",
+              "2024M0244",
+              "2025K0287",
+              "2025M0338",
+              "2022K0416",
+              "2023M0116",
+              "2023X0149",
+              "2024K0286",
+              "2024Q0219",
+              "2025K0284",
+              "2025M0252",
+              "2025Q0142",
+              "2025Q0247",
+              "2025Q0316",
+              "2025R0137",
+              "2025R0222",
+              "2026R0186",
+              "2026Q0210",
+              "2022K0430",
+              "2023Q0303",
+              "2024K0196",
+              "2025M0395",
+              "2026K0233",
+              "2022Q0449",
+              "2023K0183",
+              "2024K0421",
+              "2024X0132",
+              "2025K0154",
+              "2020K0276",
+              "2022X0393",
+              "2023K0231",
+              "2024K0274",
+              "2025M0441"
+            ],
+            "marker_ids": [],
+            "marker_precisions": [],
+            "marker_labels_all_present": true,
+            "selected": null,
+            "selected_method": null,
+            "selected_precision": null,
+            "overflow": 0,
+            "retry_present": true,
+            "dismiss_present": true,
+            "panel_no_overflow": true,
+            "list_route_rows": 40
+          },
+          "files": [
+            ".artifacts/land-map-visual-parity-fixtures/screenshots/dependency-failure-list-wide.png",
+            ".artifacts/land-map-visual-parity-fixtures/screenshots/dependency-failure-map-wide.png"
+          ]
+        }
+      },
+      "files": [
+        {
+          "path": ".artifacts/land-map-visual-parity-fixtures/screenshots/dependency-failure-list-narrow.png",
+          "bytes": 73896,
+          "sha256": "23ecb9e667d5e4110fddfa12065d28a21e9b8048aeec31e9c09ae6ea0c1954fb"
+        },
+        {
+          "path": ".artifacts/land-map-visual-parity-fixtures/screenshots/dependency-failure-map-narrow.png",
+          "bytes": 21634,
+          "sha256": "640ef504ff3320c0c15ea1f2cd414f3c83b6b7ee28bab7810daf238e91445018"
+        },
+        {
+          "path": ".artifacts/land-map-visual-parity-fixtures/screenshots/dependency-failure-list-wide.png",
+          "bytes": 183770,
+          "sha256": "484ccbc82c841b3df298d9a1fea9991a7a24cd69d50672aa5599c9d6e6ced28e"
+        },
+        {
+          "path": ".artifacts/land-map-visual-parity-fixtures/screenshots/dependency-failure-map-wide.png",
+          "bytes": 24015,
+          "sha256": "f740613c0392e440d4c64e11ffdea25b78d46954de67463341caec0ecea136c8"
+        }
+      ]
+    }
+  ],
+  "checks_failed": []
+}
