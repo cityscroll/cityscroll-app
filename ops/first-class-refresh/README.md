@@ -37,7 +37,10 @@ On the machine that holds the warehouse:
    `CITYSCROLL_WAREHOUSE_ROOT`, falling back to the repository's `warehouse/`
    directory, and expects `duckdb/cityscroll.duckdb` plus a `receipts/`
    directory under that root.
-2. Copy `run-warehouse-refresh.sh` somewhere stable and make it executable.
+2. Copy `run-warehouse-refresh.sh` and `preflight.sh` (which it sources from
+   the same directory) somewhere stable and make `run-warehouse-refresh.sh`
+   executable. An installed copy predating `preflight.sh` needs both files
+   re-copied together, or the script will fail to find it.
 3. Edit the plist: set `CITYSCROLL_REPO` to the checkout, `CITYSCROLL_WAREHOUSE_ROOT`
    to the warehouse root, and `GH_TOKEN` to a token that can open a pull request.
 4. Copy the plist into the per-user `Library/LaunchAgents` directory of the
@@ -59,6 +62,47 @@ branch and never merges.
 `--run-due` stops after each owning builder, so the boundary rebuild is what
 keeps the served read models and the keyword search index coherent with the
 refreshed data.
+
+## Invariant: every run starts from the default branch's tip
+
+Before touching anything, the script (via `preflight.sh`) fetches `origin`
+and resets the checkout to the current tip of the default branch, then opens
+that day's `data/warehouse-refresh-YYYYMMDD` branch from there. This holds on
+every run, scheduled or by hand, regardless of what branch the checkout was
+left on by a previous run:
+
+- A dirty tree on a `data/warehouse-refresh-*` branch is treated as this
+  job's own leftovers from an interrupted run and is discarded — that
+  branch's committed history, if any, already lives on `origin`.
+- A dirty tree on any other branch (including the default branch itself) is
+  an operator's in-progress work. The script refuses to run and exits
+  non-zero rather than guess what to do with it.
+- When the run finishes, successfully or not, the checkout is left back on
+  the default branch. It never idles on a data branch between runs.
+
+The only force-push the job ever makes is to its own dated data branch when
+regenerating it; it never force-pushes anything else.
+
+### Recovering a checkout the job refused to touch
+
+If a scheduled run reports the refusal above, an operator left uncommitted
+changes on a branch the job won't guess about. On the machine that runs the
+job:
+
+1. `cd` into the checkout named by `CITYSCROLL_REPO` and run `git status` to
+   see what's pending.
+2. Commit, stash, or discard those changes as appropriate, then rerun the
+   job by hand (or wait for the next scheduled run).
+
+### Testing the preflight logic
+
+`test-preflight.sh` drives `preflight.sh` against a scratch git repository
+(clean checkout, stale data branch, dirty default branch, and the
+post-run state) and needs no warehouse catalog or network access:
+
+```bash
+ops/first-class-refresh/test-preflight.sh
+```
 
 ## Refreshing the warehouse snapshot itself
 
