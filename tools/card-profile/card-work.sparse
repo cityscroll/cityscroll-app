@@ -549,6 +549,8 @@
 /site/procurement_pursuit_snapshot.css
 /site/procurement_pursuit_snapshot.mjs
 /site/procurement_read_model_shards.mjs
+/site/procurement_related_context.css
+/site/procurement_related_context.mjs
 /site/procurement_search_producer.mjs
 /site/product-updates.json
 /site/product_updates_source.mjs
