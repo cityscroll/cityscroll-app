@@ -40,8 +40,10 @@ On the machine that holds the warehouse:
 2. Copy `run-warehouse-refresh.sh` somewhere stable and make it executable.
 3. Edit the plist: set `CITYSCROLL_REPO` to the checkout, `CITYSCROLL_WAREHOUSE_ROOT`
    to the warehouse root, and `GH_TOKEN` to a token that can open a pull request.
-4. Install it: `cp com.cityscroll.first-class-refresh.plist ~/Library/LaunchAgents/`
-   then `launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.cityscroll.first-class-refresh.plist`.
+4. Copy the plist into the per-user `Library/LaunchAgents` directory of the
+   account that will run it, then load it with
+   `launchctl bootstrap gui/$(id -u) "$AGENT_DIR/com.cityscroll.first-class-refresh.plist"`,
+   where `AGENT_DIR` is that directory.
 5. Rehearse once by hand before relying on the schedule:
    `CITYSCROLL_REPO=… CITYSCROLL_WAREHOUSE_ROOT=… ./run-warehouse-refresh.sh --dry-run`.
 
