@@ -76,60 +76,6 @@
       "output_paths": ["site/data/property_resident_snapshot.json"]
     },
     {
-      "id": "primary-documents",
-      "generator": "tools/build_primary_documents.mjs",
-      "source_paths": [
-        "site/index.html",
-        "site/data/person_hub_lookup.json",
-        "site/data/committee_graph_lookup.json",
-        "site/data/agency_constellation_lookup.json",
-        "site/data/ocp_awards_warehouse_lookup.json",
-        "site/data/community_board_geography_lookup.json",
-        "site/data/staffing_default_hires.json",
-        "site/data/community_board_people.json",
-        "site/data/non_council_outcome_sources/community_board_committees.json",
-        "site/data/community_board_meeting_index.json",
-        "site/data/meeting_outcomes_snapshot.json"
-      ],
-      "output_paths": [
-        "site/data/people_organizations_read_model.json",
-        "site/data/shared_meeting_read_model.json"
-      ]
-    },
-    {
-      "id": "keyword-search",
-      "generator": "tools/build_keyword_search_index.mjs",
-      "source_paths": [
-        "site/data/person_hub_lookup.json",
-        "site/data/agency_constellation_lookup.json",
-        "site/data/entity_intelligence_lookup.json",
-        "site/data/community_board_constellation_lookup.json",
-        "site/data/agency_route_identity_report.json",
-        "site/data/zap_projects_warehouse_lookup.json",
-        "site/data/shared_meeting_read_model.json",
-        "site/data/staffing_exams.json",
-        "site/data/property_cross_domain_lookup.json",
-        "site/data/property_resident_snapshot.json",
-        "site/data/committee_graph_lookup.json",
-        "site/data/community_board_people.json",
-        "site/data/non_council_outcome_sources/community_board_committees.json",
-        "site/data/shared_procurement_read_model.json",
-        "entity_resolution/review/alias_registry.json",
-        "site/agency_search_producer.mjs",
-        "site/board_search_producer.mjs",
-        "site/committee_search_producer.mjs",
-        "site/community_board_people_search_producer.mjs",
-        "site/exam_search_producer.mjs",
-        "site/land_search_producer.mjs",
-        "site/meeting_search_producer.mjs",
-        "site/parcel_search_producer.mjs",
-        "site/people_search_producer.mjs",
-        "site/procurement_search_producer.mjs",
-        "site/vendor_search_producer.mjs"
-      ],
-      "output_paths": ["worker/src/data/keyword_search_index_shards"]
-    },
-    {
       "id": "following",
       "generator": "tools/build_following_procurement_suggestions.mjs",
       "source_paths": [
@@ -140,38 +86,6 @@
         "site/data/procurement_browse_rows.json"
       ],
       "output_paths": ["site/data/following_procurement_suggestions.json"]
-    },
-    {
-      "id": "geography",
-      "generator": "tools/build_district_activity.mjs",
-      "source_paths": [
-        "site/data/district_boundaries.json",
-        "site/data/geography/layer_registry.json",
-        "site/data/zap_projects_warehouse_lookup.json",
-        "site/data/property_domain_observations.json",
-        "site/data/shared_meeting_read_model.json",
-        "site/data/meetings_domain_observations.json",
-        "site/data/community_board_geography_lookup.json",
-        "site/data/rules_domain_observations.json",
-        "site/data/money_domain_observations.json",
-        "site/data/contract_action_address_locations.json",
-        "site/data/notice_mandate_backlinks_lookup.json"
-      ],
-      "output_paths": [
-        "site/data/district_activity.json",
-        "site/data/district_weekly_digests.json",
-        "worker/src/data/district_activity.json"
-      ]
-    },
-    {
-      "id": "near-you-pages",
-      "generator": "tools/build_near_you_pages.mjs",
-      "source_paths": [
-        "site/data/district_activity.json",
-        "site/data/district_boundaries.json",
-        "site/data/community_board_geography_lookup.json"
-      ],
-      "output_paths": ["site/near-you"]
     },
     {
       "id": "following-page",
@@ -190,12 +104,6 @@
       "generator": "tools/build_exam_documents.mjs",
       "source_paths": ["site/data/staffing_exams.json"],
       "output_paths": ["site/exams"]
-    },
-    {
-      "id": "agency-documents",
-      "generator": "tools/build_agency_documents.mjs",
-      "source_paths": ["site/data/agency_constellation_lookup.json"],
-      "output_paths": ["site/agencies/index.html"]
     },
     {
       "id": "process-conformance",
@@ -238,6 +146,12 @@
       ]
     },
     {
+      "id": "agency-documents",
+      "generator": "tools/build_agency_documents.mjs",
+      "source_paths": ["site/data/agency_constellation_lookup.json"],
+      "output_paths": ["site/agencies/index.html"]
+    },
+    {
       "id": "community-board-constellation",
       "generator": "tools/build_community_board_constellation_documents.mjs",
       "source_paths": [
@@ -252,6 +166,92 @@
         "site/data/community_board_money.json"
       ],
       "output_paths": ["site/data/community_board_constellation_lookup.json"]
+    },
+    {
+      "id": "primary-documents",
+      "generator": "tools/build_primary_documents.mjs",
+      "source_paths": [
+        "site/index.html",
+        "site/data/person_hub_lookup.json",
+        "site/data/committee_graph_lookup.json",
+        "site/data/agency_constellation_lookup.json",
+        "site/data/ocp_awards_warehouse_lookup.json",
+        "site/data/community_board_geography_lookup.json",
+        "site/data/staffing_default_hires.json",
+        "site/data/community_board_people.json",
+        "site/data/non_council_outcome_sources/community_board_committees.json",
+        "site/data/community_board_meeting_index.json",
+        "site/data/meeting_outcomes_snapshot.json"
+      ],
+      "output_paths": [
+        "site/data/people_organizations_read_model.json",
+        "site/data/shared_meeting_read_model.json"
+      ]
+    },
+    {
+      "id": "geography",
+      "generator": "tools/build_district_activity.mjs",
+      "source_paths": [
+        "site/data/district_boundaries.json",
+        "site/data/geography/layer_registry.json",
+        "site/data/zap_projects_warehouse_lookup.json",
+        "site/data/property_domain_observations.json",
+        "site/data/shared_meeting_read_model.json",
+        "site/data/meetings_domain_observations.json",
+        "site/data/community_board_geography_lookup.json",
+        "site/data/rules_domain_observations.json",
+        "site/data/money_domain_observations.json",
+        "site/data/contract_action_address_locations.json",
+        "site/data/notice_mandate_backlinks_lookup.json"
+      ],
+      "output_paths": [
+        "site/data/district_activity.json",
+        "site/data/district_weekly_digests.json",
+        "worker/src/data/district_activity.json"
+      ]
+    },
+    {
+      "id": "near-you-pages",
+      "generator": "tools/build_near_you_pages.mjs",
+      "source_paths": [
+        "site/data/district_activity.json",
+        "site/data/district_boundaries.json",
+        "site/data/community_board_geography_lookup.json"
+      ],
+      "output_paths": ["site/near-you"]
+    },
+    {
+      "id": "keyword-search",
+      "generator": "tools/build_keyword_search_index.mjs",
+      "source_paths": [
+        "site/data/person_hub_lookup.json",
+        "site/data/agency_constellation_lookup.json",
+        "site/data/entity_intelligence_lookup.json",
+        "site/data/community_board_constellation_lookup.json",
+        "site/data/agency_route_identity_report.json",
+        "site/data/zap_projects_warehouse_lookup.json",
+        "site/data/shared_meeting_read_model.json",
+        "site/data/staffing_exams.json",
+        "site/data/property_cross_domain_lookup.json",
+        "site/data/property_resident_snapshot.json",
+        "site/data/committee_graph_lookup.json",
+        "site/data/community_board_people.json",
+        "site/data/non_council_outcome_sources/community_board_committees.json",
+        "site/data/shared_procurement_read_model.json",
+        "entity_resolution/review/alias_registry.json",
+        "site/agency_search_producer.mjs",
+        "site/board_search_producer.mjs",
+        "site/committee_search_producer.mjs",
+        "site/community_board_people_search_producer.mjs",
+        "site/exam_search_producer.mjs",
+        "site/land_search_producer.mjs",
+        "site/meeting_search_producer.mjs",
+        "site/parcel_search_producer.mjs",
+        "site/people_search_producer.mjs",
+        "site/procurement_search_producer.mjs",
+        "site/vendor_search_producer.mjs"
+      ],
+      "output_paths": ["worker/src/data/keyword_search_index_shards"]
     },
     {
       "id": "community-board-payroll-staff-count",

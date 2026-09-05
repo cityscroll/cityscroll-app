@@ -33,6 +33,30 @@ test("derived JSON manifest pins static delivery and a retained source snapshot"
   }
 });
 
+test("generated families run in an order where every family's inputs are produced before it runs", () => {
+  // The boundary regenerates families strictly in array order (tools/derived_json_build_boundary.mjs).
+  // A family whose source_paths name another family's output_paths must be listed after that
+  // family, or it will build from that family's stale prior output.
+  const manifest = JSON.parse(readFileSync(MANIFEST_PATH, "utf8"));
+  const families = manifest.generated_families;
+  const producedAt = new Map();
+  families.forEach((family, index) => {
+    for (const outputPath of family.output_paths) producedAt.set(outputPath, index);
+  });
+  families.forEach((family, index) => {
+    for (const sourcePath of family.source_paths) {
+      const producerIndex = producedAt.get(sourcePath);
+      if (producerIndex === undefined) continue;
+      assert.ok(
+        producerIndex < index,
+        `${family.id} (position ${index}) declares ${sourcePath} as a source, but that path is produced by `
+          + `${families[producerIndex].id} at position ${producerIndex}, which runs later or the same run; `
+          + `move ${family.id} after ${families[producerIndex].id} in generated_families`,
+      );
+    }
+  });
+});
+
 test("keyword search boundary tracks the committed sharded output tree", () => {
   const manifest = JSON.parse(readFileSync(MANIFEST_PATH, "utf8"));
   const family = manifest.generated_families.find(({ id }) => id === "keyword-search");
