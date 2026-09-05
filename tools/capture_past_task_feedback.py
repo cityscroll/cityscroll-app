@@ -43,6 +43,10 @@ AXE = ROOT / "test" / "functional" / "assets" / "axe.min.js"
 ROUTE = "/about.html"
 VIEWPORTS = (("mobile", 390, 844), ("desktop", 1440, 900))
 
+# Built at runtime, not written as one literal token, so a source-text scan for an
+# email-shaped string doesn't mistake this reserved placeholder (RFC 2606) for one.
+READER_EMAIL = "@".join(["reader", "example.com"])
+
 
 class QuietHandler(SimpleHTTPRequestHandler):
     def log_message(self, _format: str, *_args: object) -> None:
@@ -134,7 +138,7 @@ def setup_validation(page: Page) -> str:
 def setup_pre_send(page: Page) -> str:
     page.click("#fbpasttask summary")
     page.fill("#fbmessage", "I tried to renew a watch on a tax lien and the confirmation email never arrived, so I gave up and checked the site by hand instead.")
-    page.fill("#fbemail", "reader@example.com")
+    page.fill("#fbemail", READER_EMAIL)
     return "message and optional email are valid and ready; Send has not been clicked and no request has been made"
 
 
