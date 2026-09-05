@@ -4501,7 +4501,7 @@
       "normal_refresh_cadence_hours": 24,
       "warning_age_hours": 48,
       "hard_maximum_age_hours": 168,
-      "vintage_fields": ["generated_at"],
+      "vintage_fields": ["rules_snapshot_observed_at"],
       "population_fields": ["candidate_count", "candidates"],
       "last_known_good_behavior": "Retain the last verified semantic projection within its hard age and disclose degraded freshness.",
       "resident_stale_behavior": "Do not present semantic rule coverage as current after the hard maximum age.",

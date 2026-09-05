@@ -179,7 +179,8 @@ export function buildRulesSemanticLane({
   const artifact = {
     schema: RULES_SEMANTIC_LANE_SCHEMA,
     artifact_version: 1,
-    generated_at: corpusManifest.observed_on || retrievalReview?.observed_on || null,
+    rules_snapshot_observed_at: rulesSnapshot?.retrieved_at || null,
+    corpus_observed_on: corpusManifest.observed_on || retrievalReview?.observed_on || null,
     authorization: {
       runtime_semantic_retrieval: false,
       publication_scope: "precomputed_rules_related_language_pilot",
