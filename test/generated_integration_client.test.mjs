@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { execFileSync } from "node:child_process";
 import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { test } from "node:test";
@@ -17,6 +18,15 @@ import { buildApiCapabilityCatalog } from "../tools/build_capability_topology.mj
 
 const ROOT = new URL("..", import.meta.url);
 const CLIENT_ROOT = new URL("../integrations/generated-client/", import.meta.url);
+const GENERATOR = new URL("../tools/generate_integration_client.mjs", import.meta.url);
+
+function snapshotTree(root, prefix = "") {
+  return readdirSync(new URL(prefix, root), { withFileTypes: true }).flatMap((entry) => {
+    const relativePath = `${prefix}${entry.name}`;
+    if (entry.isDirectory()) return snapshotTree(root, `${relativePath}/`);
+    return [[relativePath, readFileSync(new URL(relativePath, root))]];
+  }).sort(([left], [right]) => left.localeCompare(right));
+}
 
 function read(relativePath) {
   return readFileSync(new URL(`../${relativePath}`, import.meta.url), "utf8");
@@ -147,4 +157,11 @@ test("generated evidence is limited to local contract and protocol interop", () 
     external_live_endpoint: false,
     deployed_runtime: false,
   });
+});
+
+test("generator check mode leaves the committed package byte-identical", () => {
+  const before = snapshotTree(CLIENT_ROOT);
+  execFileSync(process.execPath, [GENERATOR.pathname, "--check"], { cwd: ROOT, encoding: "utf8" });
+  const after = snapshotTree(CLIENT_ROOT);
+  assert.deepEqual(after, before);
 });

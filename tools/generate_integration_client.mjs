@@ -368,28 +368,39 @@ export function buildGeneratedOutputs() {
   return files;
 }
 
-export function writeOrCheckGeneratedClient({ check = false } = {}) {
-  const files = buildGeneratedOutputs();
+export function checkGeneratedClient(files) {
   const expectedPaths = [...files.keys()].sort();
-  if (check) {
-    const actualPaths = collectFiles(GENERATED_CLIENT_ROOT).sort();
-    if (JSON.stringify(actualPaths) !== JSON.stringify(expectedPaths)) throw new Error(`generated integration client file set is stale (expected ${expectedPaths.join(", ")})`);
-    for (const path of expectedPaths) {
-      const target = join(GENERATED_CLIENT_ROOT, path);
-      if (readFileSync(target, "utf8") !== files.get(path)) throw new Error(`${relative(ROOT, target)} is stale; regenerate the integration client`);
-    }
-    return files;
+  const actualPaths = collectFiles(GENERATED_CLIENT_ROOT).sort();
+  if (JSON.stringify(actualPaths) !== JSON.stringify(expectedPaths)) throw new Error(`generated integration client file set is stale (expected ${expectedPaths.join(", ")})`);
+  for (const path of expectedPaths) {
+    const target = join(GENERATED_CLIENT_ROOT, path);
+    if (readFileSync(target, "utf8") !== files.get(path)) throw new Error(`${relative(ROOT, target)} is stale; regenerate the integration client`);
   }
+  return files;
+}
+
+export function writeGeneratedClient(files) {
+  // determinism-lint: allow write non-check generated package output
   mkdirSync(SCHEMA_ROOT, { recursive: true });
+  // determinism-lint: allow write non-check generated package output
   mkdirSync(RECIPE_ROOT, { recursive: true });
+  // determinism-lint: allow write non-check generated package output
   mkdirSync(EVALUATION_ROOT, { recursive: true });
+  // determinism-lint: allow write non-check generated package output
   for (const path of collectFiles(GENERATED_CLIENT_ROOT)) if (!files.has(path)) rmSync(join(GENERATED_CLIENT_ROOT, path));
   for (const [path, content] of files) {
     const target = join(GENERATED_CLIENT_ROOT, path);
+    // determinism-lint: allow write non-check generated package output
     mkdirSync(dirname(target), { recursive: true });
+    // determinism-lint: allow write non-check generated package output
     writeFileSync(target, content, "utf8");
   }
   return files;
+}
+
+export function writeOrCheckGeneratedClient({ check = false } = {}) {
+  const files = buildGeneratedOutputs();
+  return check ? checkGeneratedClient(files) : writeGeneratedClient(files);
 }
 
 const invokedPath = process.argv[1] ? resolve(process.argv[1]) : "";
