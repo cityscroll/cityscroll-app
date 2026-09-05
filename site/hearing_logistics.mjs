@@ -4,12 +4,11 @@
 
 const URL_RE = /https?:\/\/[^\s<>"')]+/gi;
 const ONLINE_HOST_RE = /(?:^|\.)(?:zoom(?:gov)?\.com|zoom\.us|teams\.microsoft\.com|teams\.live\.com|webex\.com|meet\.google\.com)$/i;
-// One-way broadcast/video hosts: recognized as a published watch destination, never
-// as a two-way join platform. A record with only one of these is watch-only, not
-// remote participation (PHC-01 A6) — the same host set action_registry.js's
-// isLivestreamUrl already uses for the same distinction elsewhere. facebook.com is
-// only a broadcast destination on a /live path; the bare domain hosts far more than
-// video.
+// A bare YouTube, Vimeo, Twitch, or facebook.com/*live link is a one-way
+// broadcast destination, so it classifies as watch-only (PHC-01 A6) — the
+// same host set action_registry.js's isLivestreamUrl uses for that same
+// distinction elsewhere. facebook.com only qualifies on a /live path,
+// since the bare domain serves far more than video.
 const BROADCAST_HOST_RE = /(?:^|\.)(?:youtube\.com|youtu\.be|vimeo\.com|twitch\.tv)$/i;
 const BROADCAST_FACEBOOK_HOST_RE = /(?:^|\.)facebook\.com$/i;
 const CITY_RECORD_HOST = "a856-cityrecord.nyc.gov";
