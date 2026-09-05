@@ -250,6 +250,7 @@ run_and_fail node tools/inverse_control_plane_guard.mjs --check --all
 run_and_fail node tools/rcp05_cutover_receipt.mjs --check
 run_and_fail python3 test/functional/a11y_gate_test.py
 run_and_fail python3 test/functional/ci_waits_test.py
+run_and_fail python3 test/functional/land_map_visual_parity_receipt_test.py
 
 run_banner "Unit tests (site + worker)" "Site + worker metadata/unit suites + joins" \
   "node tools/generate_source_docs.mjs --check"

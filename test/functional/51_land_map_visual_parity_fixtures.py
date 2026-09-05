@@ -24,10 +24,22 @@ proof is the receipt at docs/evidence/land-map-visual-parity-fixtures.json -- ro
 viewport, revision, data vintage, expected/actual ids, counts, and assertions, plus each
 screenshot's byte count and sha256 so a reader can verify a locally regenerated image
 against what this run actually captured without an image binary ever entering history.
+
+Every run also writes the same receipt to a gitignored run-local path. By default the run
+then COMPARES that fresh receipt against the committed one, ignoring fields that vary run
+to run for reasons that carry no evidentiary weight -- the app_commit this run happened to
+measure at, and each screenshot's byte count/sha256, which change with font hinting and
+timing even when nothing the fixtures assert about changed. A mismatch in anything else
+(a fixture's routes, expectations, or measured ids/counts/state) means the committed
+receipt no longer describes what the app actually does, so the run fails loudly with a
+diff and the one-line command to regenerate it: `--write-evidence`. That flag is also how
+the receipt is meant to be refreshed on purpose, stamping the app_commit that was actually
+captured against -- never a side effect of an unrelated push landing.
 """
 
 from __future__ import annotations
 
+import argparse
 import hashlib
 import json
 import os
@@ -40,13 +52,16 @@ from playwright.sync_api import Page, Route, sync_playwright
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "test" / "functional" / "assets"))
 from a11y_gate import failing_violations  # noqa: E402
+from land_map_visual_parity_receipt import diff_receipts, normalize_receipt  # noqa: E402
 
 BASE = os.environ.get("CROL_BASE", "http://127.0.0.1:8000/").rstrip("/")
 AXE = ROOT / "test" / "functional" / "assets" / "axe.min.js"
 MANIFEST_PATH = ROOT / "test" / "fixtures" / "land_map_visual_parity_fixtures" / "manifest.v1.json"
 OUT = ROOT / ".artifacts" / "land-map-visual-parity-fixtures" / "screenshots"
 RECEIPT = ROOT / "docs" / "evidence" / "land-map-visual-parity-fixtures.json"
+LOCAL_RECEIPT = ROOT / ".artifacts" / "land-map-visual-parity-fixtures" / "receipt.local.json"
 PROJECTION = "data/land_project_map_points.json"
+REGEN_COMMAND = "python3 test/functional/51_land_map_visual_parity_fixtures.py --write-evidence"
 
 MANIFEST = json.loads(MANIFEST_PATH.read_text("utf-8"))
 VIEWPORTS = MANIFEST["viewports"]
@@ -380,6 +395,14 @@ def app_provenance() -> dict:
 
 
 def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--write-evidence",
+        action="store_true",
+        help="regenerate the committed receipt at docs/evidence, stamping this run's app_commit",
+    )
+    args = parser.parse_args()
+
     OUT.mkdir(parents=True, exist_ok=True)
     failures: list[str] = []
     with sync_playwright() as playwright:
@@ -398,13 +421,37 @@ def main() -> None:
         "fixtures": fixtures,
         "checks_failed": failures,
     }
-    RECEIPT.parent.mkdir(parents=True, exist_ok=True)
-    RECEIPT.write_text(json.dumps(receipt, indent=2) + "\n", encoding="utf-8")
-    print(f"wrote {RECEIPT.relative_to(ROOT)}")
+    LOCAL_RECEIPT.parent.mkdir(parents=True, exist_ok=True)
+    LOCAL_RECEIPT.write_text(json.dumps(receipt, indent=2) + "\n", encoding="utf-8")
+
     for line in failures:
         print("FAIL:", line)
     assert not failures, f"{len(failures)} visual-parity fixture check(s) failed: {failures}"
-    print(f"land map visual parity fixtures OK: {len(fixtures)} fixtures, baseline total {baseline_total}")
+
+    if args.write_evidence:
+        RECEIPT.parent.mkdir(parents=True, exist_ok=True)
+        RECEIPT.write_text(json.dumps(receipt, indent=2) + "\n", encoding="utf-8")
+        print(f"wrote {RECEIPT.relative_to(ROOT)} (app_commit {receipt['provenance']['app_commit']})")
+        return
+
+    if not RECEIPT.exists():
+        raise AssertionError(f"no committed evidence at {RECEIPT.relative_to(ROOT)} -- run: {REGEN_COMMAND}")
+    committed = json.loads(RECEIPT.read_text("utf-8"))
+    if normalize_receipt(committed) != normalize_receipt(receipt):
+        diff = diff_receipts(
+            committed,
+            receipt,
+            committed_label=f"committed {RECEIPT.relative_to(ROOT)}",
+            fresh_label="freshly measured (this run)",
+        )
+        raise AssertionError(
+            f"{RECEIPT.relative_to(ROOT)} no longer matches what this run measured -- "
+            f"regenerate it with: {REGEN_COMMAND}\n{diff}"
+        )
+    print(
+        f"land map visual parity fixtures OK: {len(fixtures)} fixtures, baseline total {baseline_total} "
+        f"(committed evidence matches; tree left clean)"
+    )
 
 
 if __name__ == "__main__":
