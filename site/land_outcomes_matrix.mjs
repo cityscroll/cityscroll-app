@@ -148,7 +148,7 @@ export function landOutcomesMatrixHTML(rows, { t, escape } = {}) {
 }
 
 /** One-call glue for a ZAP outcome record + its list row (route callers only). */
-export default function matrixHTML(record, listRow, t, escape) {
+export function mtxHTML(record, listRow, t, escape) {
   const outcomes = buildActorObservedOutcomes(record?.dispositions, {
     projectId: record?.project_id,
     project: listRow || record,

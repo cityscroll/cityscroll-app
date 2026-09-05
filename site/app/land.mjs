@@ -57,7 +57,7 @@ import {
 import { zoningHearingRowsForScope } from "../zoning_hearing_calendar.mjs";
 import { projectCalendarActionsHTML as projectCalendarActions } from "../project_calendar.mjs";
 import { attachAuth, authHTML, loadAuth } from "../land_authority_summary_view.mjs";
-import matrixHTML from "../land_outcomes_matrix.mjs";
+import { mtxHTML } from "../land_outcomes_matrix.mjs";
 import { attachLandLotSourceDigests, landLotSourceDigestsHTML, loadLandLotSourceDigests } from "../land_lot_source_digests.mjs";
 import {
   fetchBrowseScoped,
@@ -1412,7 +1412,7 @@ function landOutcomesHTML(record, phaseTools, listRow){
     })} ${portal}</div>
     ${spineHTML}
     <div class="chain">${actionHTML}${dispHTML}</div>
-    ${matrixHTML(record, listRow, t, escUiHtml)}
+    ${mtxHTML(record, listRow, t, escUiHtml)}
     ${docsHTML}
     ${dobHTML}
     <div class="note">${t("land_outcomes_provenance_html")}</div>`;
