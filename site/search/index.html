@@ -971,6 +971,31 @@
   .meetings-domain-intro{margin:0 0 18px;padding-bottom:14px;border-bottom:1px solid var(--rule)}
   .meetings-domain-heading{font:700 22px/1.15 var(--font-display);margin:0 0 8px}
   .meetings-domain-deck{font:14px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--ink-soft);max-width:820px;margin:0 0 12px}
+  /* PHC-09: one explainer component, two presentations. The wide default is an
+     inline disclosure inside the Meetings intro; at narrow widths the same
+     element becomes a full-width sheet that runs edge to edge. Only
+     presentation crosses the breakpoint - the markup, the copy and the one
+     focus target stay the same, and opening or closing leaves reading position
+     on the summary that did it. */
+  .public-input-explainer{margin:12px 0 0;border:1px solid var(--rule);border-radius:8px;background:var(--paper-2,#f6f7f9);max-width:46em}
+  .public-input-explainer>summary{cursor:pointer;padding:10px 14px;font:700 14px/1.3 ui-sans-serif,system-ui,sans-serif;color:var(--oxblood)}
+  .public-input-explainer:not([open])>.public-input-explainer-body{display:none}
+  .public-input-explainer-body{padding:0 14px 14px}
+  .public-input-explainer-subhead{font:700 13px/1.3 ui-sans-serif,system-ui,sans-serif;margin:14px 0 4px}
+  .public-input-explainer p,.public-input-explainer li{font:13px/1.55 ui-sans-serif,system-ui,sans-serif;color:var(--ink-soft)}
+  .public-input-explainer-body ul{margin:0 0 8px;padding-inline-start:20px}
+  .public-input-explainer-examples{list-style:none;margin:0;padding:0}
+  .public-input-explainer-example{margin:0 0 10px}
+  .public-input-explainer-example-title{margin:0 0 2px;font-weight:600}
+  .public-input-explainer-example-links{margin:0;display:flex;flex-wrap:wrap;gap:4px 14px}
+  .public-input-explainer-example-links a{color:var(--oxblood)}
+  .public-input-explainer-method{margin:12px 0 0}
+  .public-input-explainer-method>summary{cursor:pointer;font:600 12px/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--oxblood)}
+  @media(max-width:680px){
+    .public-input-explainer{margin-inline:calc(50% - 50vw);max-width:none;border-inline:0;border-radius:0;background:var(--paper,#f4f1ea)}
+    .public-input-explainer>summary{padding-inline:16px}
+    .public-input-explainer-body{padding:0 16px 18px}
+  }
   .meetings-rail-label{font:600 11px/1.2 var(--font-sc);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:12px 0 6px}
   .meetings-fcard .meetings-process-line{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:4px 0 6px}
   .meetings-fcard .meetings-action-lead{font:700 13px/1.35 ui-sans-serif,system-ui,sans-serif;color:var(--oxblood);margin:0 0 6px}
@@ -2557,6 +2582,7 @@
         <div class="hearingintro meetings-method-copy" data-i18n-html="meetings_method_arc_html">Public hearings follow a meeting arc — scheduled, agenda, held, then outcomes — with next steps when attendance or testimony is published. Same-board same-day notices collapse into one card. Each notice links to its City Record source.</div>
         <div class="hearingintro meetings-method-copy" data-i18n-html="hearings_location_note_html"><b>Affected place drives “near me.”</b> The venue is shown separately, because a Manhattan hearing can decide a Queens matter. Citywide and unlocated notices stay visible.</div>
       </details>
+      <div class="public-input-explainer-host" id="public-input-explainer-host" data-public-input-explainer-host="meetings-heading"></div>
     </div>
     <div class="lens-toolbar" id="meetings-toolbar">
       <div class="field kw"><label for="meetingskw" data-i18n="search_label">Search</label><input type="text" id="meetingskw" placeholder="Community Board, Brooklyn, landmark…" data-i18n-placeholder="kw_placeholder_meetings"></div>

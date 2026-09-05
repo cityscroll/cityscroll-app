@@ -2544,6 +2544,27 @@ const STRINGS = {
     meeting_body_role_decision_maker: "Can decide",
     meeting_body_role_oversight: "Can question and oversee, but cannot decide",
 
+    // PHC-09: one compact explainer of how public input works, opened from the
+    // Meetings heading and from a meeting's consequence disclosure. Each key is
+    // a whole sentence or a whole block, so a language missing one of them falls
+    // back to English in complete thoughts rather than half a paragraph.
+    public_input_explainer_open: "How public input works",
+    public_input_explainer_what_html: "<p>Taking part in a public proceeding means putting something on an official record: speaking at a hearing, or sending a written comment before a published deadline. What that record then does depends on the proceeding, and every listing on this site states which one applies to it.</p>",
+    public_input_explainer_destinations_heading: "Where what you say ends up",
+    public_input_explainer_destinations_html: "<ul><li><b>A public comment record</b> — a written comment filed in a comment period enters the record the body must consider.</li><li><b>Hearing testimony</b> — what you say at a hearing enters that hearing's testimony record.</li><li><b>A transcript</b> — some proceedings publish a word-for-word account of the session.</li><li><b>Minutes</b> — other bodies publish a summary of what happened instead.</li><li><b>A decision document</b> — a separate record, published when the body records a decision.</li></ul><p>Some proceedings also publish a report responding to the comments received. That is one of these destinations, and each listing states whether it applies.</p>",
+    public_input_explainer_limits_heading: "The limits of taking part",
+    public_input_explainer_limits_html: "<p>A reply from an official is a separate thing from a record entry. Filing a comment or giving testimony puts your words on the record, and no official is required to answer you personally. This site promises no such answer.</p><p>A count of comments stays a count of comments. A body weighs what is said against the law it works under, so this site reports no comment totals as support or opposition and treats no comment volume as a vote.</p>",
+    public_input_explainer_examples_heading: "Three ways this works in practice",
+    public_input_explainer_example_hearing: "Speak at a City Council hearing on a bill, or send written testimony.",
+    public_input_explainer_example_hearing_surface: "See scheduled hearings and meetings",
+    public_input_explainer_example_rule: "Comment on an agency's proposed rule before its published deadline.",
+    public_input_explainer_example_rule_surface: "See open rule comment periods",
+    public_input_explainer_example_contract: "Comment on a proposed contract award during its comment window.",
+    public_input_explainer_example_contract_surface: "See contract comment deadlines",
+    public_input_explainer_official_source: "Official source: {source}",
+    public_input_explainer_method_summary: "Where this explanation comes from",
+    public_input_explainer_method_html: "<p>Each example above links to the City page that governs it, and to the part of this site that lists live records of that kind. This explanation describes how those proceedings work in general. The specific date, status, purpose and participation channel for any one of them stays on its own listing, alongside its City Record source link.</p>",
+
     land_outcomes_heading: "Land-use outcomes",
     land_spine_heading: "Project timeline",
     land_spine_lag_behind_html: "The NYC Open Data milestone date ({open_date}) trails the live ZAP portal ({portal_date}) by {days} days.",

@@ -652,6 +652,21 @@ $("#meetingswhen").addEventListener("change",()=>loadSection("meetings"));
 $("#meetingsagency").addEventListener("change",()=>loadSection("meetings"));
 $("#meetingsboro").addEventListener("change",()=>{ meetingsCommunityDistrict=""; meetingsCouncilDistrict=""; loadSection("meetings"); });
 $("#meetingsattendance").addEventListener("change",()=>loadSection("meetings"));
+// PHC-09: one compact explainer of how public input works, rendered under the
+// Meetings heading and reopened by its own summary. Mounted through a dynamic
+// import so its PHC-00 consequence-projection dependency stays behind the same
+// boundary the attendance filter already uses, and re-mounted on a language
+// change so its section-level fallback re-resolves against the new dictionary.
+let publicInputExplainerToolsPromise=null;
+function mountPublicInputExplainerPanel(){
+  if(!document.querySelector("[data-public-input-explainer-host]")) return;
+  publicInputExplainerToolsPromise=publicInputExplainerToolsPromise
+    || import("../public_input_explainer.mjs").catch(()=>null);
+  publicInputExplainerToolsPromise.then(tools=>{
+    tools?.mountPublicInputExplainer?.(document,{lang:window.LANG,strings:window.STRINGS});
+  });
+}
+mountPublicInputExplainerPanel();
 $("#meetingsneighborhood").addEventListener("keydown",event=>{ if(event.key==="Enter") loadSection("meetings"); });
 $("#meetingsneighborhood").addEventListener("input",debounce(()=>{ meetingsCommunityDistrict=""; meetingsCouncilDistrict=""; loadSection("meetings"); },500));
 $("#propertyneighborhood").addEventListener("keydown",event=>{ if(event.key==="Enter"){ renderPropExplorer(); updateHash(); renderSearchComponents("property"); } });
@@ -703,6 +718,7 @@ function rerenderForLang(){
   const nav = document.querySelector(".tabs"); if(nav) nav.setAttribute("aria-label", t("tablist_label"));
   paintEditionSpan();
   loadAgencies();
+  mountPublicInputExplainerPanel();
   if(typeof globalThis.aWatchChange==="function"){
     globalThis.aWatchChange(true); globalThis.updateAWhen?.(); globalThis.aRenderSaved?.(); globalThis.renderAlertsRollupPrefs?.();
     if(document.querySelector("#tab-alerts.active")) globalThis.initWatchTemplates?.();
@@ -879,6 +895,7 @@ globalThis.paintEditionSpan = paintEditionSpan;
 // prefillAlertFromLink / applyNoticeWatchSeed / syncAlertsEntryHrefs / lastNoticeContext
 // are published earlier (before first applyHash) — see hashchange wiring above.
 globalThis.refreshQuizDisplay = refreshQuizDisplay;
+globalThis.mountPublicInputExplainerPanel = mountPublicInputExplainerPanel;
 globalThis.rerenderForLang = rerenderForLang;
 globalThis.sessionBoot = sessionBoot;
 globalThis.sessionCheck = sessionCheck;
