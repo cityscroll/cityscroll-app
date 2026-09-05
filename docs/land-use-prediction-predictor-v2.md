@@ -29,6 +29,21 @@ out-of-sample backtest in `worker/src/lib/land_prediction_backtest.mjs`
 (`docs/land-use-prediction-backtest-v2.md`) and Card 9 owns any promotion
 decision.
 
+Card 11 splits Council disposition from terminal project outcome and adds
+review-regime features (`worker/src/lib/land_prediction_regime_targets.mjs`);
+both stay experimental and shadow-only. Card 12 backtests that split with
+explicit factual, counterfactual, and negative-control cohorts held separate
+by the loader (`worker/src/lib/land_prediction_regime_backtest.mjs`). A
+counterfactual case is restricted to eligibility and branching semantics and
+is never assigned an outcome nobody observed; a null or unestimable finding
+-- the expected result while the factual post-reform sample stays small --
+is recorded as a successful evaluation rather than forced into a conclusion.
+
+```sh
+node --test test/lup2_regime_targets.test.mjs
+node --test test/lup2_regime_backtest.test.mjs
+```
+
 V2 is explicitly `shadow_only_until_backtest_gate`. `predictLandUse` preserves
 the incumbent `land_prediction_baseline_v1` path: a supplied
 `fallback_predictor` is invoked on failure, or the result carries an honest
