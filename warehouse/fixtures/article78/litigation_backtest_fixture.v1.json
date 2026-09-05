@@ -1,0 +1,307 @@
+{
+  "schema": "cityscroll.article78_litigation.backtest_fixture.v1",
+  "note": "Synthetic records for the A78-01 offline backtest. The court names are real institutions; every index number, caption, party, date and outcome below is invented. Nothing here is measured court data and nothing here is a claim about a real proceeding.",
+  "scenarios": [
+    {
+      "id": "located_challenge",
+      "determination_key": "determination:city_planning_commission:action_cpc_synth_ldc_0001:2024-03-14",
+      "expects": "an adequate recorded search located one challenge"
+    },
+    {
+      "id": "adequate_search_zero_challenges",
+      "determination_key": "determination:city_planning_commission:action_cpc_synth_ldc_0002:2024-04-11",
+      "expects": "an adequate recorded search found nothing"
+    },
+    {
+      "id": "nonfinal_determination",
+      "determination_key": "determination:city_planning_commission:action_cpc_synth_ldc_0003:2025-11-06",
+      "expects": "the challenge window has not opened"
+    },
+    {
+      "id": "inadequate_coverage",
+      "determination_key": "determination:board_of_standards_and_appeals:action_bsa_synth_ldc_0004:2024-05-09",
+      "expects": "the recorded search is too narrow to support a count"
+    },
+    {
+      "id": "open_limitations_window",
+      "determination_key": "determination:city_planning_commission:action_cpc_synth_ldc_0005:2026-08-20",
+      "expects": "an adequate search ran before the challenge window closed"
+    },
+    {
+      "id": "trial_decision_reversed",
+      "case_key": "judicial_case:ny_supreme_court_new_york_county:150001_2024",
+      "expects": "the trial annulment is superseded by the appellate reversal"
+    }
+  ],
+  "determinations": [
+    {
+      "record_schema": "cityscroll.article78_litigation.determination_context.v1",
+      "determination_key": "determination:city_planning_commission:action_cpc_synth_ldc_0001:2024-03-14",
+      "finality": "final",
+      "final_and_binding_date": "2024-03-14",
+      "limitations_window_closes_on": null
+    },
+    {
+      "record_schema": "cityscroll.article78_litigation.determination_context.v1",
+      "determination_key": "determination:city_planning_commission:action_cpc_synth_ldc_0002:2024-04-11",
+      "finality": "final",
+      "final_and_binding_date": "2024-04-11",
+      "limitations_window_closes_on": null
+    },
+    {
+      "record_schema": "cityscroll.article78_litigation.determination_context.v1",
+      "determination_key": "determination:city_planning_commission:action_cpc_synth_ldc_0003:2025-11-06",
+      "finality": "nonfinal",
+      "final_and_binding_date": null,
+      "limitations_window_closes_on": null
+    },
+    {
+      "record_schema": "cityscroll.article78_litigation.determination_context.v1",
+      "determination_key": "determination:board_of_standards_and_appeals:action_bsa_synth_ldc_0004:2024-05-09",
+      "finality": "final",
+      "final_and_binding_date": "2024-05-09",
+      "limitations_window_closes_on": null
+    },
+    {
+      "record_schema": "cityscroll.article78_litigation.determination_context.v1",
+      "determination_key": "determination:city_planning_commission:action_cpc_synth_ldc_0005:2026-08-20",
+      "finality": "final",
+      "final_and_binding_date": "2026-08-20",
+      "limitations_window_closes_on": null
+    }
+  ],
+  "coverage": [
+    {
+      "record_schema": "cityscroll.article78_litigation.search_coverage.v1",
+      "coverage_key": "search_coverage:unified_court_system_ecourts:d9b8bde306889a2c:20240801t000000z",
+      "determination_key": "determination:city_planning_commission:action_cpc_synth_ldc_0001:2024-03-14",
+      "source": "unified_court_system_ecourts",
+      "query_hash": "d9b8bde306889a2c",
+      "searched_at": "2024-08-01T00:00:00Z",
+      "scope": {
+        "courts": [
+          "Appellate Division, First Department",
+          "NY Supreme Court, New York County"
+        ],
+        "date_window": {
+          "from": "2024-03-14",
+          "to": "2024-07-15"
+        },
+        "party_filters": [
+          "City Planning Commission",
+          "Department of City Planning"
+        ],
+        "determination_filters": [
+          "determination:city_planning_commission:action_cpc_synth_ldc_0001:2024-03-14"
+        ]
+      },
+      "result_count": 3,
+      "located_case_keys": [
+        "judicial_case:ny_supreme_court_new_york_county:150001_2024"
+      ],
+      "coverage_grade": "A",
+      "coverage_note": "Docket index searched by respondent agency across both courts for the whole limitations window.",
+      "observed_at": "2024-08-01T00:00:00Z",
+      "source_id": "synthetic_court_record_fixture",
+      "source_record_id": "coverage/synthetic/0001"
+    },
+    {
+      "record_schema": "cityscroll.article78_litigation.search_coverage.v1",
+      "coverage_key": "search_coverage:unified_court_system_ecourts:0f9904963047a06a:20240902t000000z",
+      "determination_key": "determination:city_planning_commission:action_cpc_synth_ldc_0002:2024-04-11",
+      "source": "unified_court_system_ecourts",
+      "query_hash": "0f9904963047a06a",
+      "searched_at": "2024-09-02T00:00:00Z",
+      "scope": {
+        "courts": [
+          "Appellate Division, First Department",
+          "NY Supreme Court, New York County"
+        ],
+        "date_window": {
+          "from": "2024-04-11",
+          "to": "2024-08-12"
+        },
+        "party_filters": [
+          "City Planning Commission",
+          "Department of City Planning"
+        ],
+        "determination_filters": [
+          "determination:city_planning_commission:action_cpc_synth_ldc_0002:2024-04-11"
+        ]
+      },
+      "result_count": 2,
+      "located_case_keys": [],
+      "coverage_grade": "A",
+      "coverage_note": "Same query shape as the challenged determination; two unrelated proceedings returned, neither naming this determination.",
+      "observed_at": "2024-09-02T00:00:00Z",
+      "source_id": "synthetic_court_record_fixture",
+      "source_record_id": "coverage/synthetic/0002"
+    },
+    {
+      "record_schema": "cityscroll.article78_litigation.search_coverage.v1",
+      "coverage_key": "search_coverage:unified_court_system_ecourts:15e9c043b0d737a3:20241001t000000z",
+      "determination_key": "determination:board_of_standards_and_appeals:action_bsa_synth_ldc_0004:2024-05-09",
+      "source": "unified_court_system_ecourts",
+      "query_hash": "15e9c043b0d737a3",
+      "searched_at": "2024-10-01T00:00:00Z",
+      "scope": {
+        "courts": [
+          "NY Supreme Court, Queens County"
+        ],
+        "date_window": {
+          "from": "2024-05-09",
+          "to": "2024-08-01"
+        },
+        "party_filters": [],
+        "determination_filters": [
+          "determination:board_of_standards_and_appeals:action_bsa_synth_ldc_0004:2024-05-09"
+        ]
+      },
+      "result_count": 0,
+      "located_case_keys": [],
+      "coverage_grade": "C",
+      "coverage_note": "Single county, and the searched window stops five weeks before the limitations window closes; recorded so the inadequacy is a fact rather than a missing row.",
+      "observed_at": "2024-10-01T00:00:00Z",
+      "source_id": "synthetic_court_record_fixture",
+      "source_record_id": "coverage/synthetic/0003"
+    },
+    {
+      "record_schema": "cityscroll.article78_litigation.search_coverage.v1",
+      "coverage_key": "search_coverage:unified_court_system_ecourts:cb62ef915fb75aff:20260901t000000z",
+      "determination_key": "determination:city_planning_commission:action_cpc_synth_ldc_0005:2026-08-20",
+      "source": "unified_court_system_ecourts",
+      "query_hash": "cb62ef915fb75aff",
+      "searched_at": "2026-09-01T00:00:00Z",
+      "scope": {
+        "courts": [
+          "Appellate Division, First Department",
+          "NY Supreme Court, New York County"
+        ],
+        "date_window": {
+          "from": "2026-08-20",
+          "to": "2026-12-20"
+        },
+        "party_filters": [
+          "City Planning Commission"
+        ],
+        "determination_filters": [
+          "determination:city_planning_commission:action_cpc_synth_ldc_0005:2026-08-20"
+        ]
+      },
+      "result_count": 0,
+      "located_case_keys": [],
+      "coverage_grade": "A",
+      "coverage_note": "Full-scope search run three and a half months before the limitations window closes; adequate in scope, premature in time.",
+      "observed_at": "2026-09-01T00:00:00Z",
+      "source_id": "synthetic_court_record_fixture",
+      "source_record_id": "coverage/synthetic/0004"
+    }
+  ],
+  "cases": [
+    {
+      "record_schema": "cityscroll.article78_litigation.judicial_case.v1",
+      "case_key": "judicial_case:ny_supreme_court_new_york_county:150001_2024",
+      "determination_key": "determination:city_planning_commission:action_cpc_synth_ldc_0001:2024-03-14",
+      "court": "NY Supreme Court, New York County",
+      "court_level": "supreme_court",
+      "county": "New York",
+      "index_number": "150001/2024",
+      "caption": "Synthetic Neighbors Association v. City Planning Commission",
+      "filed_date": "2024-07-01",
+      "judicial_review_regime": "NY_ARTICLE_78",
+      "located_by_coverage_key": "search_coverage:unified_court_system_ecourts:d9b8bde306889a2c:20240801t000000z",
+      "observed_at": "2024-08-01T00:00:00Z",
+      "source_id": "synthetic_court_record_fixture",
+      "source_record_id": "case/synthetic/150001-2024"
+    }
+  ],
+  "filings": [
+    {
+      "record_schema": "cityscroll.article78_litigation.case_filing.v1",
+      "filing_key": "case_filing:judicial_case:ny_supreme_court_new_york_county:150001_2024:petition:2024-07-01:ec8999182d0a",
+      "case_key": "judicial_case:ny_supreme_court_new_york_county:150001_2024",
+      "filing_type": "petition",
+      "filed_date": "2024-07-01",
+      "document_key": null,
+      "decision": null,
+      "observed_at": "2024-08-01T00:00:00Z",
+      "source_id": "synthetic_court_record_fixture",
+      "source_record_id": "filing/synthetic/0001"
+    },
+    {
+      "record_schema": "cityscroll.article78_litigation.case_filing.v1",
+      "filing_key": "case_filing:judicial_case:ny_supreme_court_new_york_county:150001_2024:decision:2025-02-20:84faeb8241b0",
+      "case_key": "judicial_case:ny_supreme_court_new_york_county:150001_2024",
+      "filing_type": "decision",
+      "filed_date": "2025-02-20",
+      "document_key": null,
+      "decision": {
+        "court_level": "supreme_court",
+        "decided_date": "2025-02-20",
+        "procedural_survival": "survived",
+        "durable_petitioner_relief": "annulment",
+        "remedy_exposure": "approval_vacated"
+      },
+      "observed_at": "2025-03-01T00:00:00Z",
+      "source_id": "synthetic_court_record_fixture",
+      "source_record_id": "filing/synthetic/0002"
+    },
+    {
+      "record_schema": "cityscroll.article78_litigation.case_filing.v1",
+      "filing_key": "case_filing:judicial_case:ny_supreme_court_new_york_county:150001_2024:decision:2026-01-15:a5f914a8fcb6",
+      "case_key": "judicial_case:ny_supreme_court_new_york_county:150001_2024",
+      "filing_type": "decision",
+      "filed_date": "2026-01-15",
+      "document_key": null,
+      "decision": {
+        "court_level": "appellate_division",
+        "decided_date": "2026-01-15",
+        "procedural_survival": "survived",
+        "durable_petitioner_relief": "none",
+        "remedy_exposure": "no_remedy_ordered"
+      },
+      "observed_at": "2026-02-01T00:00:00Z",
+      "source_id": "synthetic_court_record_fixture",
+      "source_record_id": "filing/synthetic/0003"
+    }
+  ],
+  "claims": [
+    {
+      "record_schema": "cityscroll.article78_litigation.claim_theory.v1",
+      "claim_key": "claim_theory:judicial_case:ny_supreme_court_new_york_county:150001_2024:substantive_seqra_ceqr:84fdc9d8f976",
+      "case_key": "judicial_case:ny_supreme_court_new_york_county:150001_2024",
+      "theory_category": "substantive_seqra_ceqr",
+      "description": "The negative declaration took no hard look at construction-period noise.",
+      "raised_in_filing_key": "case_filing:judicial_case:ny_supreme_court_new_york_county:150001_2024:petition:2024-07-01:ec8999182d0a",
+      "observed_at": "2024-08-01T00:00:00Z",
+      "source_id": "synthetic_court_record_fixture",
+      "source_record_id": "claim/synthetic/0001"
+    },
+    {
+      "record_schema": "cityscroll.article78_litigation.claim_theory.v1",
+      "claim_key": "claim_theory:judicial_case:ny_supreme_court_new_york_county:150001_2024:procedural:9d600fddd481",
+      "case_key": "judicial_case:ny_supreme_court_new_york_county:150001_2024",
+      "theory_category": "procedural",
+      "description": "The lead agency did not circulate the notice of determination to the involved agencies.",
+      "raised_in_filing_key": "case_filing:judicial_case:ny_supreme_court_new_york_county:150001_2024:petition:2024-07-01:ec8999182d0a",
+      "observed_at": "2024-08-01T00:00:00Z",
+      "source_id": "synthetic_court_record_fixture",
+      "source_record_id": "claim/synthetic/0002"
+    }
+  ],
+  "supersessions": [
+    {
+      "record_schema": "cityscroll.article78_litigation.decision_supersession.v1",
+      "supersession_key": "decision_supersession:case_filing:judicial_case:ny_supreme_court_new_york_county:150001_2024:decision:2026-01-15:a5f914a8fcb6:case_filing:judicial_case:ny_supreme_court_new_york_county:150001_2024:decision:2025-02-20:84faeb8241b0",
+      "case_key": "judicial_case:ny_supreme_court_new_york_county:150001_2024",
+      "superseding_decision_key": "case_filing:judicial_case:ny_supreme_court_new_york_county:150001_2024:decision:2026-01-15:a5f914a8fcb6",
+      "superseded_decision_key": "case_filing:judicial_case:ny_supreme_court_new_york_county:150001_2024:decision:2025-02-20:84faeb8241b0",
+      "disposition": "reversed",
+      "procedural_posture": "appeal_as_of_right",
+      "effective_date": "2026-01-15",
+      "observed_at": "2026-02-01T00:00:00Z",
+      "source_id": "synthetic_court_record_fixture",
+      "source_record_id": "supersession/synthetic/0001"
+    }
+  ]
+}
