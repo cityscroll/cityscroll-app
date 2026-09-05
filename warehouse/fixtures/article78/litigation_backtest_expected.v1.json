@@ -1,0 +1,122 @@
+{
+  "schema": "cityscroll.article78_litigation.backtest_receipt.v1",
+  "module_schema": "cityscroll.article78_litigation.v1",
+  "fixture_schema": "cityscroll.article78_litigation.backtest_fixture.v1",
+  "record_set_findings": [],
+  "counts": {
+    "determinations": 5,
+    "searches": 4,
+    "cases": 1,
+    "filings": 3,
+    "decisions": 2,
+    "claims": 2,
+    "supersessions": 1
+  },
+  "challenge_watch": [
+    {
+      "determination_key": "determination:city_planning_commission:action_cpc_synth_ldc_0001:2024-03-14",
+      "value": 1,
+      "reason": "counted_under_recorded_search",
+      "as_of": "2024-08-01T00:00:00Z",
+      "coverage_keys": [
+        "search_coverage:unified_court_system_ecourts:d9b8bde306889a2c:20240801t000000z"
+      ],
+      "located_case_keys": [
+        "judicial_case:ny_supreme_court_new_york_county:150001_2024"
+      ],
+      "limitations_window": {
+        "opens_on": "2024-03-14",
+        "closes_on": "2024-07-14"
+      },
+      "rendered": "1 challenge found by the recorded search"
+    },
+    {
+      "determination_key": "determination:city_planning_commission:action_cpc_synth_ldc_0002:2024-04-11",
+      "value": 0,
+      "reason": "counted_under_recorded_search",
+      "as_of": "2024-09-02T00:00:00Z",
+      "coverage_keys": [
+        "search_coverage:unified_court_system_ecourts:0f9904963047a06a:20240902t000000z"
+      ],
+      "located_case_keys": [],
+      "limitations_window": {
+        "opens_on": "2024-04-11",
+        "closes_on": "2024-08-11"
+      },
+      "rendered": "no challenge found after the recorded search"
+    },
+    {
+      "determination_key": "determination:city_planning_commission:action_cpc_synth_ldc_0003:2025-11-06",
+      "value": null,
+      "reason": "determination_not_final",
+      "as_of": null,
+      "coverage_keys": [],
+      "located_case_keys": [],
+      "limitations_window": null,
+      "rendered": "not established: this determination is not recorded as final and binding, so the challenge window has not opened"
+    },
+    {
+      "determination_key": "determination:board_of_standards_and_appeals:action_bsa_synth_ldc_0004:2024-05-09",
+      "value": null,
+      "reason": "recorded_search_does_not_cover_this_determination",
+      "as_of": "2024-10-01T00:00:00Z",
+      "coverage_keys": [],
+      "located_case_keys": [],
+      "limitations_window": {
+        "opens_on": "2024-05-09",
+        "closes_on": "2024-09-09"
+      },
+      "rendered": "not established: the recorded searches do not cover this determination"
+    },
+    {
+      "determination_key": "determination:city_planning_commission:action_cpc_synth_ldc_0005:2026-08-20",
+      "value": null,
+      "reason": "limitations_window_open",
+      "as_of": "2026-09-01T00:00:00Z",
+      "coverage_keys": [
+        "search_coverage:unified_court_system_ecourts:cb62ef915fb75aff:20260901t000000z"
+      ],
+      "located_case_keys": [],
+      "limitations_window": {
+        "opens_on": "2026-08-20",
+        "closes_on": "2026-12-20"
+      },
+      "rendered": "not established: the challenge window is still open"
+    }
+  ],
+  "effective_decisions": [
+    {
+      "schema": "cityscroll.article78_effective_decision.v1",
+      "case_key": "judicial_case:ny_supreme_court_new_york_county:150001_2024",
+      "effective_decision_key": "case_filing:judicial_case:ny_supreme_court_new_york_county:150001_2024:decision:2026-01-15:a5f914a8fcb6",
+      "effective_decision_court_level": "appellate_division",
+      "effective_decision_date": "2026-01-15",
+      "superseded_decision_keys": [
+        "case_filing:judicial_case:ny_supreme_court_new_york_county:150001_2024:decision:2025-02-20:84faeb8241b0"
+      ],
+      "supersession_chain": [
+        {
+          "superseding_decision_key": "case_filing:judicial_case:ny_supreme_court_new_york_county:150001_2024:decision:2026-01-15:a5f914a8fcb6",
+          "superseded_decision_key": "case_filing:judicial_case:ny_supreme_court_new_york_county:150001_2024:decision:2025-02-20:84faeb8241b0",
+          "disposition": "reversed",
+          "procedural_posture": "appeal_as_of_right",
+          "effective_date": "2026-01-15",
+          "disturbs_relief": true
+        }
+      ],
+      "case_outcome": {
+        "procedural_survival": "survived",
+        "durable_petitioner_relief": "none",
+        "remedy_exposure": "no_remedy_ordered"
+      },
+      "unresolved": null
+    }
+  ],
+  "projected_entity_counts": {
+    "case_filing": 3,
+    "claim_theory": 2,
+    "judicial_case": 1,
+    "search_coverage": 4
+  },
+  "fixture_sha256": "1a5c08775be3c8aea331a644ba6796555777aed22da2a206bd5fbfe33d942826"
+}
