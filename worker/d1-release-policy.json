@@ -10,5 +10,38 @@
   },
   "abort_threshold": {
     "max_findings": 25
+  },
+  "budget_guardrail": {
+    "window": "rolling_30d",
+    "measurements": {
+      "rows_written": {
+        "receipt_field": "totals.observed_writes",
+        "aggregation": "sum"
+      },
+      "batch_count": {
+        "receipt_field": "totals.batch_count",
+        "aggregation": "sum"
+      },
+      "generation_count": {
+        "receipt_field": "generation",
+        "aggregation": "count_non_null"
+      }
+    },
+    "thresholds": {
+      "rows_written": 100000,
+      "batch_count": 250,
+      "generation_count": 50
+    },
+    "escalation_contact": "site-owner",
+    "escalation": {
+      "on": "any threshold reached",
+      "stop": "disable incremental publication and require an explicit recovery review"
+    }
+  },
+  "incremental_publication": {
+    "enabled": true,
+    "disable_input": "disable_incremental_publication",
+    "recovery": "workflow_dispatch explicit rebuild",
+    "ordinary_path": "delta_upsert_only"
   }
 }

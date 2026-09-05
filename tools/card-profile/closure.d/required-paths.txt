@@ -2061,6 +2061,7 @@ worker/src/lib/declared_interest_routing.mjs
 worker/src/lib/delivery_events.mjs
 worker/src/lib/deprecated_opt_in_recovery_manifest.mjs
 worker/src/lib/digest.mjs
+worker/src/lib/digest_funnel.mjs
 worker/src/lib/digest_item_awareness.mjs
 worker/src/lib/digest_ops.mjs
 worker/src/lib/digest_outbox.mjs

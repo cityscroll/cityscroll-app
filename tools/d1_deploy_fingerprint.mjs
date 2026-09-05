@@ -23,9 +23,11 @@ export const D1_PUBLICATION_RECEIPT_SCHEMA = "cityscroll.d1-publication-receipt.
 export const DEFAULT_FINGERPRINT_INPUTS = Object.freeze([
   "tools/build_worker_d1_read_models.mjs",
   "tools/d1_deploy_fingerprint.mjs",
+  "tools/d1_release_policy.mjs",
   "site/keyword_search_index_shards.mjs",
   "site/data/ocp_awards_warehouse_lookup.json",
   "worker/wrangler.toml",
+  "worker/d1-release-policy.json",
   "worker/src/data/entity_intelligence_lookup.json",
   "worker/src/data/keyword_search_index_shards",
   "worker/migrations",

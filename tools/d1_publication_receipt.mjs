@@ -75,6 +75,10 @@ export const OUTCOMES = Object.freeze([
   "abandoned",
   "rolled_back",
 ]);
+// D1-10 gives the ordinary no-write path a short outcome name. Keep the
+// d1-07 names above for receipt-log compatibility with older runs.
+export const SKIPPED_OUTCOME = "skipped";
+const ACCEPTED_OUTCOMES = new Set([...OUTCOMES, SKIPPED_OUTCOME]);
 
 const VERIFICATION_STATUSES = Object.freeze(["not_run", "passed", "failed"]);
 
@@ -386,7 +390,7 @@ export function validatePublicationReceipt(receipt) {
   assertNullablePositiveInteger(receipt.generation, "receipt.generation");
   assertSha256(receipt.deploy_fingerprint, "receipt.deploy_fingerprint");
   assertNullableSha256(receipt.previous_fingerprint, "receipt.previous_fingerprint");
-  if (!OUTCOMES.includes(receipt.outcome)) fail("receipt.outcome", `must be one of ${OUTCOMES.join(", ")}`);
+  if (!ACCEPTED_OUTCOMES.has(receipt.outcome)) fail("receipt.outcome", `must be one of ${[...OUTCOMES, SKIPPED_OUTCOME].join(", ")}`);
   assertText(receipt.reason, "receipt.reason");
   if (receipt.models !== null) {
     if (!Array.isArray(receipt.models)) fail("receipt.models", "must be an array or null");
@@ -612,6 +616,7 @@ export function buildPublicationReceipt({
   receiptId = null,
 }) {
   const models = summarizeModels({ snapshot, batchPlan, dryRun, publishReceipt });
+  const isZeroWriteSkip = outcome === SKIPPED_OUTCOME;
   const receipt = {
     schema: D1_PUBLICATION_RECEIPT_SCHEMA,
     receipt_id: receiptId || `${run.run_id}:${run.attempt}:${generation ?? "none"}`,
@@ -624,7 +629,9 @@ export function buildPublicationReceipt({
     outcome,
     reason,
     models,
-    totals: totalsFromModels(models),
+    totals: isZeroWriteSkip
+      ? { estimated_writes: 0, observed_writes: 0, total_ops: 0, batch_count: 0 }
+      : totalsFromModels(models),
     retries: retries || retriesFromPublishReceipt(publishReceipt),
     duration_ms: durationMs,
     verification: verification || { status: "not_run", detail: null },
@@ -671,7 +678,7 @@ export function compareReceipts(receipts, { from = null, to = null } = {}) {
     .sort((left, right) => compareText(left.recorded_at, right.recorded_at) || compareText(left.receipt_id, right.receipt_id));
 
   const byOutcome = {};
-  for (const outcome of OUTCOMES) byOutcome[outcome] = 0;
+  for (const outcome of [...OUTCOMES, SKIPPED_OUTCOME]) byOutcome[outcome] = 0;
   for (const receipt of inRange) byOutcome[receipt.outcome] += 1;
 
   return {

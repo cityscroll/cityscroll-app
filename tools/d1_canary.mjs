@@ -119,7 +119,9 @@ function requirePositiveInteger(value, field) {
 export function validateReleasePolicy(policy) {
   requirePlainObject(policy, "policy");
   if (policy.schema !== D1_RELEASE_POLICY_SCHEMA) policyFail(`policy.schema must be ${D1_RELEASE_POLICY_SCHEMA}`);
-  requireKnownKeys(policy, ["schema", "canary", "reconcile", "abort_threshold"], "policy");
+  requireKnownKeys(policy, [
+    "schema", "canary", "reconcile", "abort_threshold", "budget_guardrail", "incremental_publication",
+  ], "policy");
 
   requirePlainObject(policy.canary, "policy.canary");
   requireKnownKeys(policy.canary, ["max_partitions", "max_rows"], "policy.canary");
@@ -134,6 +136,53 @@ export function validateReleasePolicy(policy) {
   requirePlainObject(policy.abort_threshold, "policy.abort_threshold");
   requireKnownKeys(policy.abort_threshold, ["max_findings"], "policy.abort_threshold");
   requirePositiveInteger(policy.abort_threshold.max_findings, "policy.abort_threshold.max_findings");
+
+  if (policy.budget_guardrail !== undefined) {
+    requirePlainObject(policy.budget_guardrail, "policy.budget_guardrail");
+    requireKnownKeys(policy.budget_guardrail, ["window", "measurements", "thresholds", "escalation_contact", "escalation"], "policy.budget_guardrail");
+    if (typeof policy.budget_guardrail.window !== "string" || policy.budget_guardrail.window.trim() === "") {
+      policyFail("policy.budget_guardrail.window must be a non-empty string");
+    }
+    requirePlainObject(policy.budget_guardrail.measurements, "policy.budget_guardrail.measurements");
+    requireKnownKeys(policy.budget_guardrail.measurements, ["rows_written", "batch_count", "generation_count"], "policy.budget_guardrail.measurements");
+    for (const key of ["rows_written", "batch_count", "generation_count"]) {
+      const measurement = policy.budget_guardrail.measurements[key];
+      requirePlainObject(measurement, `policy.budget_guardrail.measurements.${key}`);
+      requireKnownKeys(measurement, ["receipt_field", "aggregation"], `policy.budget_guardrail.measurements.${key}`);
+      if (typeof measurement.receipt_field !== "string" || measurement.receipt_field.trim() === "") {
+        policyFail(`policy.budget_guardrail.measurements.${key}.receipt_field must be a non-empty string`);
+      }
+      if (typeof measurement.aggregation !== "string" || measurement.aggregation.trim() === "") {
+        policyFail(`policy.budget_guardrail.measurements.${key}.aggregation must be a non-empty string`);
+      }
+    }
+    requirePlainObject(policy.budget_guardrail.thresholds, "policy.budget_guardrail.thresholds");
+    requireKnownKeys(policy.budget_guardrail.thresholds, ["rows_written", "batch_count", "generation_count"], "policy.budget_guardrail.thresholds");
+    for (const key of ["rows_written", "batch_count", "generation_count"]) {
+      requirePositiveInteger(policy.budget_guardrail.thresholds[key], `policy.budget_guardrail.thresholds.${key}`);
+    }
+    if (typeof policy.budget_guardrail.escalation_contact !== "string" || policy.budget_guardrail.escalation_contact.trim() === "") {
+      policyFail("policy.budget_guardrail.escalation_contact must be a non-empty string");
+    }
+    requirePlainObject(policy.budget_guardrail.escalation, "policy.budget_guardrail.escalation");
+    requireKnownKeys(policy.budget_guardrail.escalation, ["on", "stop"], "policy.budget_guardrail.escalation");
+    for (const key of ["on", "stop"]) {
+      if (typeof policy.budget_guardrail.escalation[key] !== "string" || policy.budget_guardrail.escalation[key].trim() === "") {
+        policyFail(`policy.budget_guardrail.escalation.${key} must be a non-empty string`);
+      }
+    }
+  }
+
+  if (policy.incremental_publication !== undefined) {
+    requirePlainObject(policy.incremental_publication, "policy.incremental_publication");
+    requireKnownKeys(policy.incremental_publication, ["enabled", "disable_input", "recovery", "ordinary_path"], "policy.incremental_publication");
+    if (policy.incremental_publication.enabled !== true) policyFail("policy.incremental_publication.enabled must be true");
+    for (const key of ["disable_input", "recovery", "ordinary_path"]) {
+      if (typeof policy.incremental_publication[key] !== "string" || policy.incremental_publication[key].trim() === "") {
+        policyFail(`policy.incremental_publication.${key} must be a non-empty string`);
+      }
+    }
+  }
 
   return policy;
 }
