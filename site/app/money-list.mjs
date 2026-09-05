@@ -68,7 +68,6 @@ import { PROCUREMENT_PROCESS_STATE_LABELS } from "../procurement_process_state_v
 const MONEY_DEFAULT_SNAPSHOT_URL="data/money_default_open.json";
 const MONEY_AGENCIES_SNAPSHOT_URL="data/money_procurement_agencies.json";
 const MONEY_RESIDENT_SNAPSHOT_URL="data/money_resident_snapshot.json";
-const MONEY_PROCUREMENT_SNAPSHOT_URL="data/procurement_browse_rows.json";
 const MONEY_PROCUREMENT_QUERY_URL="data/procurement_browse_query.json";
 const PIN_FAMILY_REVIEW_URL="data/pin_family_mismatch_review.json";
 let moneyDefaultSnapshotPromise=null,moneyAgenciesSnapshotPromise=null,moneyResidentSnapshotPromise=null,moneyActionLocationToolsPromise=null,moneyPinSiblingPromise=null,pinFamilyReviewPromise=null;
@@ -180,7 +179,6 @@ function loadMoneyResidentSnapshot(){
 function loadMoneyProcurementSnapshot(options={}, baseRows=[]){
   return import("../procurement_browse_query.mjs").then(({loadProcurementBrowseQuery}) => loadProcurementBrowseQuery({
     manifestUrl:MONEY_PROCUREMENT_QUERY_URL,
-    legacyUrl:MONEY_PROCUREMENT_SNAPSHOT_URL,
     options:{...options,baseRows},
   }));
 }

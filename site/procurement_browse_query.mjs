@@ -97,7 +97,7 @@ function queryRowsFromManifest(manifest) {
 
 /**
  * Query the bounded rows using the same resident filter and sort contract as
- * the legacy full projection. The returned `total` is deliberately exposed so
+ * the full row projection. The returned `total` is deliberately exposed so
  * reconciliation can prove more than the visible first page.
  */
 export function queryProcurementBrowseRows(rows, options = {}) {
@@ -263,8 +263,13 @@ export function combineProcurementBrowseQueryShards(manifest, shards = []) {
 
 /**
  * Fetch a bounded first page and expose a post-paint full hydration promise.
- * Any bounded-artifact failure falls back to the legacy full projection before
- * resolving, so callers never receive a silently empty or truncated result.
+ *
+ * The bounded manifest, its query rows and the full-row shards are the whole
+ * read path: they are written together by one build boundary, and the
+ * monolithic projection they replaced is no longer published. A hydration that
+ * cannot assemble the complete row set therefore reports itself unavailable
+ * rather than resolving rows, so a caller keeps the bounded page it already
+ * painted instead of merging a truncated or stale superset over it.
  */
 function dataUrl(path) {
   const value = String(path || "");
@@ -274,7 +279,6 @@ function dataUrl(path) {
 export async function loadProcurementBrowseQuery({
   fetchImpl = globalThis.fetch,
   manifestUrl = "data/procurement_browse_query.json",
-  legacyUrl = "data/procurement_browse_rows.json",
   options = {},
 } = {}) {
   if (typeof fetchImpl !== "function") throw new Error("fetch unavailable");
@@ -306,8 +310,8 @@ export async function loadProcurementBrowseQuery({
             const shards = await Promise.all(shardResponses.map((response) => response.json()));
             const rows = combineProcurementBrowseQueryShards(manifest, shards);
             return { rows, source: "bounded-shards", manifest };
-          } catch (_error) {
-            return loadLegacy();
+          } catch (error) {
+            return { rows: null, source: "hydration-unavailable", manifest, reason: error?.message || String(error) };
           }
         })();
       }
@@ -319,16 +323,7 @@ export async function loadProcurementBrowseQuery({
       manifest,
       hydrate,
     };
-  } catch (_error) {
-    return loadLegacy();
-  }
-
-  async function loadLegacy() {
-    const response = await fetchImpl(legacyUrl);
-    if (!response?.ok) throw new Error("procurement browse data unavailable");
-    const payload = await response.json();
-    const rows = Array.isArray(payload?.rows) ? payload.rows : [];
-    if (!rows.length && Number(payload?.row_count || 0) > 0) throw new Error("empty procurement fallback");
-    return { rows, total: rows.length, facets: { method: moneyMethodFacet(rows, Number.MAX_SAFE_INTEGER) }, source: "legacy-full", hydrate: () => Promise.resolve({ rows, source: "legacy-full" }) };
+  } catch (error) {
+    throw new Error(`procurement browse data unavailable: ${error?.message || error}`);
   }
 }
