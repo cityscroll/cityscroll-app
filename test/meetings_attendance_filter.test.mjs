@@ -122,16 +122,37 @@ test("A6: a broadcast-only link is watch-only, and never upgraded to remote", ()
 
 test("A5: written testimony alone renders as not stated, never remote", () => {
   const record = {
+    meeting_id: "meeting:city_record:4",
+    request_id: "4",
+    decides: "Franchise renewal",
+    additional_description_1: "Register to testify at https://testimony.example.com/signup",
+  };
+  const projection = councilHearingConsequence(record);
+  assert.ok(projection.participation_modes.includes("register_to_testify"));
+  assert.ok(!projection.participation_modes.includes("join_remote"));
+  assert.ok(!projection.participation_modes.includes("attend_in_person"));
+  assert.equal(attendanceModeFromParticipation(projection.participation_modes), "not_stated");
+});
+
+test("attendanceModeForRecord classifies a City Council row as a council hearing", () => {
+  const record = {
+    agency: "City Council",
+    meeting_id: "meeting:city_record:5",
+    request_id: "5",
+    decides: "Local law hearing",
+    additional_description_1: "Join via https://zoomgov.com/j/555",
+  };
+  assert.equal(attendanceModeForRecord(record), "remote");
+});
+
+test("attendanceModeForRecord falls back to the honest meeting composer for a non-Council row", () => {
+  const record = {
+    agency: "Community Board 6",
     object_type: "meeting",
     schema: "cityscroll.meeting_object.v1",
-    meeting_id: "meeting:community_board:1",
     source_system: "community_board",
-    source_section: "Community Board Meetings",
-    request_id: null,
-    participation: { emails: ["testimony@example.gov"], links: [] },
   };
-  const mode = attendanceModeForRecord({ ...record, agency: null });
-  assert.equal(mode, "not_stated");
+  assert.equal(attendanceModeForRecord(record), "not_stated");
 });
 
 test("hybrid requires both an in-person venue and a recognized remote join", () => {
