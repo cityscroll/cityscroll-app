@@ -103,6 +103,7 @@ capabilities/contracts_analysis.mjs
 capabilities/entity_dossier.mjs
 capabilities/entity_relationships.mjs
 capabilities/federated_search.mjs
+capabilities/land_projects.mjs
 capabilities/mcp_tool_declarations.mjs
 capabilities/meetings.mjs
 capabilities/notice_get.mjs
@@ -1987,6 +1988,7 @@ worker/src/data/keyword_search_index_shards/procurements.json.br
 worker/src/data/keyword_search_index_shards/procurements.json.gz
 worker/src/data/keyword_search_index_shards/vendors.json.br
 worker/src/data/keyword_search_index_shards/vendors.json.gz
+worker/src/data/land_expedited_corpus.json
 worker/src/data/passport_ei_graph.json
 worker/src/data/payroll_title_warehouse_lookup.json
 worker/src/data/performance-coverage-contract.v1.json
@@ -2014,6 +2016,7 @@ worker/src/hearings.mjs
 worker/src/inbound.mjs
 worker/src/ingest.mjs
 worker/src/inv.mjs
+worker/src/land_projects.mjs
 worker/src/land_upcoming_hearings.mjs
 worker/src/lib/abo_awards_join.mjs
 worker/src/lib/action_log.mjs

@@ -12,6 +12,7 @@ import { executeContractGet, executeContractsBrowse } from "../../capabilities/c
 import { executeContractsAnalysis } from "../../capabilities/contracts_analysis.mjs";
 import { executeMeetingGet } from "../../capabilities/meetings.mjs";
 import { executePeopleGet, executeOrganizationsBrowse } from "../../capabilities/people_organizations.mjs";
+import { executeLandProjectGet, executeLandProjectsBrowse } from "../../capabilities/land_projects.mjs";
 import { buildSharedProcurementReadModel } from "../../site/shared_procurement_read_model.mjs";
 import { workerCitedPassages } from "../src/cited_retrieval.mjs";
 import { workerD1EntityDossier } from "../src/entity_dossier.mjs";
@@ -24,6 +25,7 @@ import { workerFederatedSearch } from "../src/search.mjs";
 import { workerContractsAnalysis, workerProcurementContracts } from "../src/contracts.mjs";
 import { workerPeopleOrganizations } from "../src/people_organizations.mjs";
 import { workerMeetingGet } from "../src/hearings.mjs";
+import { workerLandProjects } from "../src/land_projects.mjs";
 
 export const CAPABILITY_TOOL_CASES = Object.freeze([
   Object.freeze({
@@ -97,6 +99,16 @@ export const CAPABILITY_TOOL_CASES = Object.freeze([
     capabilityReference: "meeting.get@1",
     name: "get_meeting",
     arguments: Object.freeze({ meeting_id: "meeting:city_record:REMOTE-HEARING" }),
+  }),
+  Object.freeze({
+    capabilityReference: "land.project.get@1",
+    name: "get_land_project",
+    arguments: Object.freeze({ project_id: "2024Q0356" }),
+  }),
+  Object.freeze({
+    capabilityReference: "land.projects.browse@1",
+    name: "browse_land_projects",
+    arguments: Object.freeze({ procedure: "elurp", limit: 5 }),
   }),
 ]);
 
@@ -360,6 +372,16 @@ export async function directCapabilityResults(env) {
   results.set("get_meeting", await executeMeetingGet(
     workerMeetingGet(env),
     { meetingId: meetingArgs.meeting_id },
+  ));
+  const landGetArgs = argsFor("get_land_project");
+  results.set("get_land_project", await executeLandProjectGet(
+    workerLandProjects(env).get,
+    { projectId: landGetArgs.project_id },
+  ));
+  const landBrowseArgs = argsFor("browse_land_projects");
+  results.set("browse_land_projects", await executeLandProjectsBrowse(
+    workerLandProjects(env).browse,
+    { procedure: landBrowseArgs.procedure, limit: landBrowseArgs.limit },
   ));
   return results;
 }

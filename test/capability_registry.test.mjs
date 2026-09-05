@@ -21,6 +21,8 @@ import {
   MCP_CONTRACT_GET_ADAPTER,
   MCP_CONTRACTS_ANALYSIS_ADAPTER,
   MCP_CONTRACTS_BROWSE_ADAPTER,
+  MCP_LAND_PROJECT_GET_ADAPTER,
+  MCP_LAND_PROJECTS_BROWSE_ADAPTER,
   MCP_NOTICE_GET_ADAPTER,
   MCP_NOTICE_SEARCH_ADAPTER,
   MCP_TOOL_BINDINGS,
@@ -58,6 +60,12 @@ import {
 } from "../capabilities/contracts.mjs";
 import { CONTRACTS_ANALYSIS_CAPABILITY, CONTRACTS_ANALYSIS_CAPABILITY_REFERENCE } from "../capabilities/contracts_analysis.mjs";
 import { MEETING_GET_CAPABILITY, MEETING_GET_CAPABILITY_REFERENCE } from "../capabilities/meetings.mjs";
+import {
+  LAND_PROJECT_GET_CAPABILITY,
+  LAND_PROJECT_GET_CAPABILITY_REFERENCE,
+  LAND_PROJECTS_BROWSE_CAPABILITY,
+  LAND_PROJECTS_BROWSE_CAPABILITY_REFERENCE,
+} from "../capabilities/land_projects.mjs";
 import { workerD1NoticeSearch } from "../worker/src/lib/notices.mjs";
 import { NOTICE_GET_HTTP_ADAPTER, workerNoticeGet } from "../worker/src/notice.mjs";
 import { HTTP_CITED_PASSAGES_ADAPTER } from "../worker/src/cited_retrieval.mjs";
@@ -73,6 +81,11 @@ import {
   workerD1EntityRelationships,
 } from "../worker/src/public_relationship_graph.mjs";
 import { workerCitedPassages } from "../worker/src/cited_retrieval.mjs";
+import {
+  LAND_PROJECT_GET_HTTP_ADAPTER,
+  LAND_PROJECTS_BROWSE_HTTP_ADAPTER,
+  workerLandProjects,
+} from "../worker/src/land_projects.mjs";
 import {
   buildCapabilityTopology,
   buildApiCapabilityCatalog,
@@ -91,7 +104,7 @@ const API_CATALOG = new URL("../site/data/api_capability_catalog.json", import.m
 
 test("the registry is frozen, versioned, owned, and contains the federated search capability", () => {
   assert.equal(validateCapabilityRegistry(CAPABILITY_REGISTRY), CAPABILITY_REGISTRY);
-  assert.equal(CAPABILITY_REGISTRY.length, 12);
+  assert.equal(CAPABILITY_REGISTRY.length, 14);
   assert.equal(CAPABILITY_REGISTRY[0], NOTICE_SEARCH_CAPABILITY);
   assert.equal(CAPABILITY_REGISTRY[1], NOTICE_GET_CAPABILITY);
   assert.equal(CAPABILITY_REGISTRY[2], ENTITY_DOSSIER_CAPABILITY);
@@ -104,6 +117,8 @@ test("the registry is frozen, versioned, owned, and contains the federated searc
   assert.equal(CAPABILITY_REGISTRY[9].reference, "people.get@1");
   assert.equal(CAPABILITY_REGISTRY[10].reference, "organizations.browse@1");
   assert.equal(CAPABILITY_REGISTRY[11], MEETING_GET_CAPABILITY);
+  assert.equal(CAPABILITY_REGISTRY[12], LAND_PROJECT_GET_CAPABILITY);
+  assert.equal(CAPABILITY_REGISTRY[13], LAND_PROJECTS_BROWSE_CAPABILITY);
   assert.equal(NOTICE_SEARCH_CAPABILITY.reference, "notice.search@1");
   assert.equal(NOTICE_SEARCH_CAPABILITY.version, "1.0.0");
   assert.equal(NOTICE_SEARCH_CAPABILITY.owner, "notices");
@@ -130,6 +145,10 @@ test("the registry is frozen, versioned, owned, and contains the federated searc
   assert.equal(CONTRACTS_ANALYSIS_CAPABILITY.owner, "procurement");
   assert.equal(MEETING_GET_CAPABILITY.reference, MEETING_GET_CAPABILITY_REFERENCE);
   assert.equal(MEETING_GET_CAPABILITY.owner, "meetings");
+  assert.equal(LAND_PROJECT_GET_CAPABILITY.reference, LAND_PROJECT_GET_CAPABILITY_REFERENCE);
+  assert.equal(LAND_PROJECTS_BROWSE_CAPABILITY.reference, LAND_PROJECTS_BROWSE_CAPABILITY_REFERENCE);
+  assert.equal(LAND_PROJECT_GET_CAPABILITY.owner, "land");
+  assert.equal(LAND_PROJECTS_BROWSE_CAPABILITY.owner, "land");
   assert.ok(Object.isFrozen(CAPABILITY_REGISTRY));
   assert.ok(Object.isFrozen(NOTICE_SEARCH_CAPABILITY));
   assert.ok(Object.isFrozen(NOTICE_SEARCH_CAPABILITY.adapters));
@@ -147,6 +166,31 @@ test("the registry is frozen, versioned, owned, and contains the federated searc
   assert.ok(Object.isFrozen(CONTRACTS_BROWSE_CAPABILITY.adapters));
   assert.ok(Object.isFrozen(CONTRACTS_ANALYSIS_CAPABILITY));
   assert.ok(Object.isFrozen(CONTRACTS_ANALYSIS_CAPABILITY.adapters));
+  assert.ok(Object.isFrozen(LAND_PROJECT_GET_CAPABILITY));
+  assert.ok(Object.isFrozen(LAND_PROJECT_GET_CAPABILITY.adapters));
+  assert.ok(Object.isFrozen(LAND_PROJECTS_BROWSE_CAPABILITY));
+  assert.ok(Object.isFrozen(LAND_PROJECTS_BROWSE_CAPABILITY.adapters));
+});
+
+test("Land project retrieval has one authoritative provider and HTTP/MCP adapters", () => {
+  const providers = [LAND_PROJECT_GET_CAPABILITY, LAND_PROJECTS_BROWSE_CAPABILITY];
+  const adapters = [
+    LAND_PROJECT_GET_HTTP_ADAPTER, MCP_LAND_PROJECT_GET_ADAPTER,
+    LAND_PROJECTS_BROWSE_HTTP_ADAPTER, MCP_LAND_PROJECTS_BROWSE_ADAPTER,
+  ];
+  assert.deepEqual(adapters.map(({ id, capabilityReference, providerId }) => ({ id, capabilityReference, providerId })), [
+    { id: LAND_PROJECT_GET_CAPABILITY.adapters[0].id, capabilityReference: LAND_PROJECT_GET_CAPABILITY_REFERENCE, providerId: LAND_PROJECT_GET_CAPABILITY.provider.id },
+    { id: LAND_PROJECT_GET_CAPABILITY.adapters[1].id, capabilityReference: LAND_PROJECT_GET_CAPABILITY_REFERENCE, providerId: LAND_PROJECT_GET_CAPABILITY.provider.id },
+    { id: LAND_PROJECTS_BROWSE_CAPABILITY.adapters[0].id, capabilityReference: LAND_PROJECTS_BROWSE_CAPABILITY_REFERENCE, providerId: LAND_PROJECTS_BROWSE_CAPABILITY.provider.id },
+    { id: LAND_PROJECTS_BROWSE_CAPABILITY.adapters[1].id, capabilityReference: LAND_PROJECTS_BROWSE_CAPABILITY_REFERENCE, providerId: LAND_PROJECTS_BROWSE_CAPABILITY.provider.id },
+  ]);
+  assert.ok(providers.every((capability) => capability.adapters.length === 2));
+  const provider = workerLandProjects({});
+  assert.equal(provider.get.capabilityReference, LAND_PROJECT_GET_CAPABILITY_REFERENCE);
+  assert.equal(provider.get.providerId, LAND_PROJECT_GET_CAPABILITY.provider.id);
+  assert.equal(provider.browse.capabilityReference, LAND_PROJECTS_BROWSE_CAPABILITY_REFERENCE);
+  assert.equal(provider.browse.providerId, LAND_PROJECTS_BROWSE_CAPABILITY.provider.id);
+  assert.equal(validateRuntimeTopology(), true);
 });
 
 test("federated search provider and HTTP/MCP adapters reference one capability", () => {
@@ -301,6 +345,7 @@ test("core capability files contain no runtime or transport dependencies", () =>
     "capabilities/federated_search.mjs",
     "capabilities/contracts.mjs",
     "capabilities/contracts_analysis.mjs",
+    "capabilities/land_projects.mjs",
     "capabilities/registry.mjs",
   ]) {
     const source = readFileSync(new URL(`../${path}`, import.meta.url), "utf8");
@@ -331,6 +376,8 @@ test("topology and public MCP catalog are deterministic and committed", () => {
     "people.get@1",
     "organizations.browse@1",
     "meeting.get@1",
+    "land.project.get@1",
+    "land.projects.browse@1",
   ]);
   assert.deepEqual(catalog.tools.map(({ name }) => name), [
     "search_federated",
@@ -345,6 +392,8 @@ test("topology and public MCP catalog are deterministic and committed", () => {
     "get_person_or_organization",
     "browse_organizations",
     "get_meeting",
+    "get_land_project",
+    "browse_land_projects",
     "preview_watch",
     "create_watch",
   ]);
@@ -353,7 +402,7 @@ test("topology and public MCP catalog are deterministic and committed", () => {
   const embeddedCatalog = renderedApi.match(/<script type="application\/json" id="api-capability-catalog">([\s\S]*)<\/script>/);
   assert.ok(embeddedCatalog, "generated API page must embed its machine-readable catalog");
   assert.deepEqual(JSON.parse(embeddedCatalog[1]), buildApiCapabilityCatalog());
-  assert.equal(renderMcpCatalogHtml(catalog).match(/<li>/g).length, 14);
+  assert.equal(renderMcpCatalogHtml(catalog).match(/<li>/g).length, 16);
 });
 
 test("an undocumented capability operation fails the generated documentation check", () => {
