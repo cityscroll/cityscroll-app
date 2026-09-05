@@ -53,11 +53,12 @@ function currentWindow(snapshot, now) {
       start: iso(current.requested_start),
       end: iso(current.requested_end),
       status: current.status || "unknown",
+      fraction: Number.isFinite(current.window_fraction) ? current.window_fraction : null,
     };
   }
   const end = new Date(now);
   const start = new Date(end.getTime() - 7 * 86400000);
-  return { start: start.toISOString(), end: end.toISOString(), status: "unknown" };
+  return { start: start.toISOString(), end: end.toISOString(), status: "unknown", fraction: null };
 }
 
 function baselineWindow(baseline) {
@@ -84,16 +85,28 @@ function metricReasons(p75, p95) {
   ];
 }
 
-function statusFor(snapshot, series, instrumented, window, sampleFloor) {
-  if (!instrumented) return "uninstrumented";
-  if (snapshot?.status === "unavailable") return "unavailable";
-  const state = classifyPerformanceCoverage(series?.current, {
+// Shared with the admin operational status derivation (worker/src/admin_performance.mjs):
+// both read classifyPerformanceCoverage's determination directly instead of re-deriving
+// sufficiency, so a retained group in a partial window cannot disagree between surfaces.
+function classifyMetric(snapshot, series, instrumented, window, sampleFloor) {
+  if (!instrumented) return { dataStatus: "uninstrumented" };
+  if (snapshot?.status === "unavailable") return { dataStatus: "unavailable" };
+  const classification = classifyPerformanceCoverage(series?.current, {
     windowStatus: window.status,
     sampleFloor,
-  }).state;
-  if (state === "measured") return "flowing";
-  if (state === "insufficient_sample") return "insufficient_sample";
-  return "no_data";
+    windowFraction: window.fraction,
+  });
+  const dataStatus = classification.state === "measured"
+    ? "flowing"
+    : classification.state === "insufficient_sample"
+      ? "insufficient_sample"
+      : "no_data";
+  return {
+    dataStatus,
+    ...(classification.window_fraction != null
+      ? { windowFraction: classification.window_fraction, retainedCount: classification.retained_count }
+      : {}),
+  };
 }
 
 function findSeries(snapshot, surfaceId, metricId) {
@@ -164,13 +177,13 @@ function metricEvidence({
   measurementOrigin = "field",
 }) {
   const sampleFloor = snapshot?.sample_floor || PERFORMANCE_SAMPLE_FLOOR;
-  const dataStatus = statusFor(snapshot, series, instrumented, window, sampleFloor);
+  const { dataStatus, windowFraction, retainedCount } = classifyMetric(snapshot, series, instrumented, window, sampleFloor);
   const current = series?.current || {};
   const distribution = current.percentiles || {};
+  // Sufficiency (including the elapsed-window floor for a partial window) was already
+  // decided by classifyMetric via the shared classifier; only guard against a malformed
+  // upstream percentile here rather than re-deriving the floor.
   const hasPercentiles = dataStatus === "flowing"
-    && window.status === "complete"
-    && Number.isSafeInteger(current.sampled_count)
-    && current.sampled_count >= sampleFloor
     && Number.isFinite(distribution.p50)
     && Number.isFinite(distribution.p75)
     && Number.isFinite(distribution.p95);
@@ -196,6 +209,7 @@ function metricEvidence({
     measurement_origin: measurementOrigin,
     card_id: `cityscroll-snappiness/surface-${surface.surface_id}`,
     data_status: dataStatus,
+    ...(windowFraction != null ? { window_fraction: windowFraction, retained_count: retainedCount } : {}),
     slo_state: values.slo_state,
     sampled_count: Number.isSafeInteger(current.sampled_count) ? current.sampled_count : null,
     estimated_count: Number.isFinite(current.estimated_count) ? current.estimated_count : null,

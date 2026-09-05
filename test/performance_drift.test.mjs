@@ -83,7 +83,7 @@ test("sample floor and missing rows remain explicit and never become zero", () =
   assert.equal(overlay.surfaces.find((surface) => surface.surface_id === "now").data_status, "uninstrumented");
 });
 
-test("a partial window cannot surface a percentile even when retained rows clear the floor", () => {
+test("a partial window with no disclosed elapsed fraction cannot surface a percentile even when retained rows clear the full floor", () => {
   const snapshot = snapshotFor({ sampled: 40 });
   snapshot.retention.current.status = "partial";
   const overlay = buildDriftOverlay(snapshot, { now: new Date("2026-08-25T00:00:00.000Z") });
@@ -92,6 +92,31 @@ test("a partial window cannot surface a percentile even when retained rows clear
   assert.equal(metric.slo_state, "needs-data");
   assert.equal(Object.hasOwn(metric, "p75_ms"), false);
   assert.equal(buildCandidates(overlay).length, 0);
+});
+
+test("a retained group that clears its elapsed-window floor stays flowing in a partial window", () => {
+  const snapshot = snapshotFor({ sampled: 25 });
+  snapshot.retention.current.status = "partial";
+  snapshot.retention.current.window_fraction = 0.75;
+  const overlay = buildDriftOverlay(snapshot, { now: new Date("2026-08-25T00:00:00.000Z") });
+  const metric = overlay.surfaces.find((surface) => surface.surface_id === "home").metrics.content_ready_ms;
+  assert.equal(metric.data_status, "flowing");
+  assert.equal(metric.window_fraction, 0.75);
+  assert.equal(metric.retained_count, 25);
+  assert.equal(metric.p75_ms, 2000);
+  assert.notEqual(metric.slo_state, "needs-data");
+});
+
+test("a genuinely under-sampled group still reports insufficient_sample in a partial window", () => {
+  const snapshot = snapshotFor({ sampled: 10 });
+  snapshot.retention.current.status = "partial";
+  snapshot.retention.current.window_fraction = 0.75;
+  const overlay = buildDriftOverlay(snapshot, { now: new Date("2026-08-25T00:00:00.000Z") });
+  const metric = overlay.surfaces.find((surface) => surface.surface_id === "home").metrics.content_ready_ms;
+  assert.equal(metric.data_status, "insufficient_sample");
+  assert.equal(metric.window_fraction, 0.75);
+  assert.equal(metric.retained_count, 10);
+  assert.equal(Object.hasOwn(metric, "p75_ms"), false);
 });
 
 test("stored baseline produces a stable regression candidate", () => {

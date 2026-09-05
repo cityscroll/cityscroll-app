@@ -276,6 +276,30 @@ test("admin contract names every honest display state and never manufactures mis
   }
 });
 
+test("a retained group in a partial window reports flowing, not insufficient_sample, disclosing the elapsed fraction", () => {
+  const queryPlan = performanceAnalyticsQueryPlan(QUERY_FIXTURE.query, {
+    now: QUERY_FIXTURE.now,
+    // Five of the seven requested days are covered by retained data.
+    configuredSince: "2026-08-14T14:30:00.000Z",
+    sampleFloor: QUERY_FIXTURE.sample_floor,
+  });
+  const snapshot = buildPerformanceSnapshot(QUERY_FIXTURE.sql_results, queryPlan, {
+    dataHealth: { status: "available", accepted: 100 },
+  });
+  const body = buildAdminPerformanceResponse(snapshot);
+  const home = body.series.find((series) => series.dimensions.surface_id === "home");
+  assert.equal(home.current.status, "retention_partial");
+  assert.ok(home.current.percentiles);
+  assert.equal(home.current.window_fraction, 5 / 7);
+  assert.equal(home.current.retained_count, 4);
+  assert.equal(body.status, "available");
+  assert.equal(body.operational_status, "flowing", "an already-retained group must not fall back to insufficient_sample");
+  assert.equal(body.coarse_summary.status, "flowing");
+  const homeRow = body.coarse_summary.rows.find((row) => row.surface_id === "home");
+  assert.equal(homeRow.window_fraction, 5 / 7);
+  assert.equal(homeRow.retained_count, 4);
+});
+
 test("planned selections stay uninstrumented even when the query has no rows", () => {
   const snapshot = availableSnapshot({
     window: "7d",

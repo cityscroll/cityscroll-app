@@ -223,8 +223,15 @@ function sqlString(value) {
 function coverageFor(startMs, endMs, availableSinceMs) {
   const queryStartMs = Math.max(startMs, availableSinceMs);
   const queryable = queryStartMs < endMs;
+  const requestedMs = endMs - startMs;
+  const coveredMs = queryable ? endMs - queryStartMs : 0;
+  const status = startMs >= availableSinceMs ? "complete" : "partial";
   return Object.freeze({
-    status: startMs >= availableSinceMs ? "complete" : "partial",
+    status,
+    // The share of the requested window that retained data actually covers. Only
+    // meaningful when status is "partial" (retention started partway through the
+    // window); a complete window always has the full window available.
+    window_fraction: status === "complete" ? 1 : (requestedMs > 0 ? Math.min(1, coveredMs / requestedMs) : 0),
     requested_start: new Date(startMs).toISOString(),
     requested_end: new Date(endMs).toISOString(),
     available_since: new Date(availableSinceMs).toISOString(),
@@ -430,9 +437,21 @@ function distributionFromRow(row, coverage, sampleFloor) {
   const classification = classifyPerformanceCoverage({ ...counts, p50, p75, p95 }, {
     windowStatus: coverage.status,
     sampleFloor,
+    windowFraction: coverage.window_fraction,
   });
+  const disclosure = classification.window_fraction != null
+    ? { window_fraction: classification.window_fraction, retained_count: classification.retained_count }
+    : {};
   if (classification.state === "measured") {
-    return { status: "available", ...counts, percentiles: { p50, p75, p95 } };
+    // A retained group that clears its floor is "available" for a complete window, or
+    // still "retention_partial" (its window has not fully elapsed) but with the
+    // percentiles the retained sample already supports rather than a binary fallback.
+    return {
+      status: coverage.status === "complete" ? "available" : "retention_partial",
+      ...counts,
+      percentiles: { p50, p75, p95 },
+      ...disclosure,
+    };
   }
   if (classification.reason === "percentiles_missing") throw new PerformanceSqlError("invalid-query-result");
   return {
@@ -440,6 +459,7 @@ function distributionFromRow(row, coverage, sampleFloor) {
     reason: classification.reason,
     ...counts,
     sample_floor: sampleFloor,
+    ...disclosure,
   };
 }
 
@@ -783,6 +803,7 @@ function coverageLatticeFor(coveragePlan, rows, readStatus) {
     window: coveragePlan.window,
     trafficClass: coveragePlan.traffic_class,
     windowStatus: coveragePlan.current.status,
+    windowFraction: coveragePlan.current.window_fraction,
     sampleFloor: coveragePlan.sample_floor,
     readStatus,
   });

@@ -1970,6 +1970,7 @@
       "read_status": "not_read",
       "window": "7d",
       "window_status": "complete",
+      "window_fraction": 1,
       "traffic_class": "production",
       "sample_floor": 4,
       "dimensions": {
@@ -2941,6 +2942,7 @@
     "retention_days": 90,
     "current": {
       "status": "complete",
+      "window_fraction": 1,
       "requested_start": "2026-08-12T14:30:00.000Z",
       "requested_end": "2026-08-19T14:30:00.000Z",
       "available_since": "2026-05-21T14:30:00.000Z",
@@ -2949,6 +2951,7 @@
     },
     "previous": {
       "status": "complete",
+      "window_fraction": 1,
       "requested_start": "2026-08-05T14:30:00.000Z",
       "requested_end": "2026-08-12T14:30:00.000Z",
       "available_since": "2026-05-21T14:30:00.000Z",
