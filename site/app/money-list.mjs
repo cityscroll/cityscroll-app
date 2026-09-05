@@ -64,6 +64,7 @@ import {
 } from "../analytical_performance_evidence.mjs";
 import { buildContractReportTarget, renderReportIssueAffordance } from "../report_issue.mjs";
 import { PROCUREMENT_PROCESS_STATE_LABELS } from "../procurement_process_state_vocabulary.mjs";
+import { moneyBrowseReadPath, moneyBrowseReceipt } from "../procurement_browse_read_path.mjs";
 
 const MONEY_DEFAULT_SNAPSHOT_URL="data/money_default_open.json";
 const MONEY_AGENCIES_SNAPSHOT_URL="data/money_procurement_agencies.json";
@@ -1137,9 +1138,6 @@ async function search(){
       mode,agency,kw,methodSel,closingWeek,minAmount:minamt,sort,nlResolved:moneyNlResolved,
     });
     const awardArchive=mode==="award"||mode==="archive";
-    const snapshotPromise=defaultSearch
-      ? loadMoneyDefaultSnapshot()
-      : loadMoneyResidentSnapshot();
     const activeFacetValues=globalThis.CROL_ACTIVE_SCOPE_FACET_VALUES||{};
     const entityRefs=Array.isArray(activeFacetValues.entity_refs_all)
       ? activeFacetValues.entity_refs_all
@@ -1160,11 +1158,12 @@ async function search(){
     const analyticalScope = mode === "award" ? analyticalUrlFilters() : {};
     const analyticalScopeActive = analyticalScope.fact === "payment"
       || Object.entries(analyticalScope).some(([key, value]) => !["fact", "payment_view"].includes(key) && value != null && value !== "");
-    const compactFirstPage=awardArchive && !needsSearch && !analyticalScopeActive
-      && !agency && !methodSel && !closingWeek && !minamt
-      && !category && maxAmount==null && months==null && !excludeSpecial && !processState
-      && !entityRefs.length && !contractIdentity
-      && (!sort || sort==="newest");
+    const {eligible:compactFirstPage,fallbackReason}=moneyBrowseReadPath({mode,needsSearch,analyticalScopeActive,entityRefs,contractIdentity,defaultSearch});
+    const snapshotPromise=defaultSearch
+      ? loadMoneyDefaultSnapshot()
+      : compactFirstPage
+        ? null
+        : loadMoneyResidentSnapshot();
     const firstPageProcurementPromise=compactFirstPage
       ? loadMoneyProcurementSnapshot({...common,method:methodSel},[])
       : null;
@@ -1180,6 +1179,7 @@ async function search(){
         lineageRows:snapshotRows,
         rumInteraction,
       });
+      globalThis.CROL_BROWSE_READ_PATH_RECEIPT=moneyBrowseReceipt(mode,canonicalFirstPage.source||"bounded-query");
       if(mode==="award"){
         loadAnalyticalProjection().then((analyticsProjection)=>{
           if(stale()) return;
@@ -1188,7 +1188,7 @@ async function search(){
         }).catch(()=>{});
       }
       Promise.all([
-        snapshotPromise.catch(()=>null),
+        loadMoneyResidentSnapshot().catch(()=>null),
         Promise.resolve(typeof canonicalFirstPage.hydrate==="function"?canonicalFirstPage.hydrate():canonicalFirstPage.hydrate),
       ]).then(([snapshot,hydrated])=>{
         if(stale() || !Array.isArray(hydrated?.rows)) return;
@@ -1198,6 +1198,7 @@ async function search(){
       }).catch(()=>{});
       return true;
     }
+    globalThis.CROL_BROWSE_READ_PATH_RECEIPT=moneyBrowseReceipt(mode,defaultSearch?"default-snapshot":"full-read",fallbackReason);
     const snapshot=await snapshotPromise;
     // The default open-solicitation list is the one place a stale committed
     // snapshot could be mistaken for a genuinely empty population, so it is the
