@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "card": "cityscroll-resident-ux/ru-01-board-documents-without-debug-dump",
+  "capture_mode": "local_node_playwright_axe_static_render",
+  "repository_revision": "0fa2bdfedecaa93061e72e823bcde1f05df4ced9",
+  "note": "renderCommunityBoardConstellationDocument() rendered locally via node for three synthetic manhattan-cb-03 fixtures (dense: 276 unjoined source records reproducing the live-observed Unjoined source records (diagnostic) population; sparse: a single record; documents_only: three records with no accepted proceedings). axe-core (test/functional/assets/axe.min.js) ran against each rendered document at both review widths using the same failing-violation classification as test/functional/11_accessibility.py (a11y_gate.py: critical/serious impact, plus the WCAG 2.2 target-size ratchet). No live Worker/D1 backend was running.",
+  "data_vintage": "not_applicable_synthetic_fixture_records",
+  "viewports": [
+    { "name": "mobile", "width": 390, "height": 844 },
+    { "name": "desktop", "width": 1440, "height": 900 }
+  ],
+  "captures": [
+    {
+      "fixture": "dense",
+      "route": "renderCommunityBoardConstellationDocument(view) — community-board:manhattan-cb-03 with 276 source_records",
+      "viewport": "mobile",
+      "assertion": "A1: the 276-record population renders exactly 20 \"Official documents\" rows, no \"(diagnostic)\" heading, and a bounded-count note; no horizontal overflow; first document link is keyboard-focusable with a visible focus target",
+      "content_sha256": "439d7c39c20d5ea7954aa1c79e07a85f77c93bb8fca1778adb59774b02a0335d",
+      "file": null
+    },
+    {
+      "fixture": "dense",
+      "route": "renderCommunityBoardConstellationDocument(view) — community-board:manhattan-cb-03 with 276 source_records",
+      "viewport": "desktop",
+      "assertion": "A1/A4: same fixture at the wide review width — identical content, no reflow-introduced overflow or violation",
+      "content_sha256": "439d7c39c20d5ea7954aa1c79e07a85f77c93bb8fca1778adb59774b02a0335d",
+      "file": null
+    },
+    {
+      "fixture": "sparse",
+      "route": "renderCommunityBoardConstellationDocument(view) — community-board:manhattan-cb-03 with 1 source_record",
+      "viewport": "mobile",
+      "assertion": "A1/A2: a single useful record renders under \"Official documents\" with a direct source link and no bounding note (nothing truncated); no overflow",
+      "content_sha256": "052f92ff63a8209c058c922659cbe407fca250e1851d3038479ebf1dbf425bbe",
+      "file": null
+    },
+    {
+      "fixture": "sparse",
+      "route": "renderCommunityBoardConstellationDocument(view) — community-board:manhattan-cb-03 with 1 source_record",
+      "viewport": "desktop",
+      "assertion": "A1/A4: same fixture at the wide review width",
+      "content_sha256": "052f92ff63a8209c058c922659cbe407fca250e1851d3038479ebf1dbf425bbe",
+      "file": null
+    },
+    {
+      "fixture": "documents_only",
+      "route": "renderCommunityBoardConstellationDocument(view) — community-board:manhattan-cb-03 with 3 source_records and no accepted institution edges",
+      "viewport": "mobile",
+      "assertion": "A5: a board with only official source documents and no accepted events renders \"Official documents\" plus an honest empty-coverage note; meetings/members/recommendations stay unpromoted and no \"Published event\" text appears",
+      "content_sha256": "4a8a7f339e318e2125fdb70284bd7f796b136b3ba2f9cddd5a0b30c623d500bf",
+      "file": null
+    },
+    {
+      "fixture": "documents_only",
+      "route": "renderCommunityBoardConstellationDocument(view) — community-board:manhattan-cb-03 with 3 source_records and no accepted institution edges",
+      "viewport": "desktop",
+      "assertion": "A4/A5: same fixture at the wide review width",
+      "content_sha256": "4a8a7f339e318e2125fdb70284bd7f796b136b3ba2f9cddd5a0b30c623d500bf",
+      "file": null
+    }
+  ],
+  "accessibility": {
+    "tool": "axe-core (test/functional/assets/axe.min.js)",
+    "scope": "document",
+    "viewports_checked": ["390x844", "1440x900"],
+    "new_violations_introduced": 0,
+    "pre_existing_violations_observed": [],
+    "keyboard_and_focus_check": "Each fixture's first Official-documents link was programmatically focused at both viewports; document.activeElement matched the link and its bounding rect had nonzero width, confirming it is reachable and visibly focusable.",
+    "overflow_check": "document.documentElement.scrollWidth <= document.documentElement.clientWidth at both 390px and 1440px for all three fixtures — no horizontal overflow from the bounded document list or its truncation note."
+  }
+}
