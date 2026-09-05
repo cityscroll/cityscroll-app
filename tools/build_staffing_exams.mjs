@@ -297,6 +297,27 @@ export function staffingArtifactDataCurrentAsOf({ annual, activeList, listAggreg
   return candidates.sort().at(-1) || null;
 }
 
+/**
+ * Newest retrieval stamp among the sources the artifact actually carries.
+ *
+ * This is the only top-level vintage that moves with the daily acquisition itself.
+ * `data_current_as_of` / `list_current_as_of` track DCAS establishing an eligible
+ * list, and `annual_schedule_current_as_of` tracks the published schedule vintage —
+ * all three are upstream publication events that legitimately pause for weeks while
+ * the acquisition keeps running, so none of them can measure refresh freshness.
+ *
+ * Only retrieval stamps count. `data_publication_date` and `data_current_as_of` are
+ * publisher claims about the data, not records of when this project fetched it.
+ */
+export function staffingSourcesRetrievedAsOf(sources) {
+  return (Array.isArray(sources) ? sources : [])
+    .flatMap((source) => [source?.fetched_at, source?.verified_at, source?.observed_on])
+    .map((value) => isoDate(value))
+    .filter(Boolean)
+    .sort()
+    .at(-1) || null;
+}
+
 export function staffingListCurrentAsOf({ activeList, listAggregates } = {}) {
   return (
     isoDate(listAggregates?.summary?.latest_established)
@@ -1011,6 +1032,10 @@ export function buildArtifact({
   return {
     schema_version: STAFFING_EXAMS_SCHEMA_VERSION,
     generated_at: latestSourceAt,
+    // Newest retrieval stamp across the disclosed sources: the vintage the daily
+    // acquisition moves. First-class freshness is measured here, not on the
+    // publisher clocks below, which pause between upstream publication events.
+    sources_retrieved_as_of: staffingSourcesRetrievedAsOf(sources),
     // Freshest publisher clock across annual schedule vintage + active-list establishment.
     data_current_as_of: dataCurrentAsOf,
     // Active civil-service list establishment frontier (exam-level aggregates only).
