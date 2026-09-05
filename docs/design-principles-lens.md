@@ -1,5 +1,9 @@
 # Lens design principles — re-grounding the filter surface
 
+See also [`docs/design-principles-contextual-ux.md`](design-principles-contextual-ux.md) for
+sequence-preservation and other contextual-inquiry-derived principles applied elsewhere in
+the product.
+
 Status: adopted 2026-08-03. Reference instance: the Property lens (`#property`).
 This is the theory leg behind the Property redesign and the shared **lens filter
 template** the other lenses adopt. It exists so the next "this feels off" is checked

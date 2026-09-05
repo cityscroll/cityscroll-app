@@ -288,6 +288,7 @@ export function renderSearchDocument() {
       <p class="topic-search-recent-status" data-search-recent-status role="status" aria-live="polite"></p>
     </div>
     <section class="topic-search-coverage is-unavailable" data-search-coverage data-coverage-state="unavailable" role="status" hidden></section>
+    <nav class="topic-search-family-nav" data-search-family-nav aria-label="Jump to a result family" hidden><ul data-search-family-nav-list></ul></nav>
     <div class="topic-search-lanes" data-semantic-lanes aria-label="Search results by civic object" data-i18n-aria="topic_search_results_aria">
       ${searchLane("contracts", "Contracts", { semantic: true, titleKey: "tab_money" })}
       ${searchLane("people-organizations", "People + organizations", { semantic: true })}
