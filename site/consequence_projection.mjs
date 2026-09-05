@@ -188,7 +188,7 @@ function participationSignals({ logistics = null, handoff = null, sourceUrl = nu
   } else if (handoff?.join_kind === "livestream" && handoff?.participation_url) {
     add("watch", handoff.participation_url, "published_livestream_url");
   }
-  const livestreamUrl = httpsUrl(handoff?.livestream_url);
+  const livestreamUrl = httpsUrl(handoff?.livestream_url) || httpsUrl(logistics?.broadcast_url);
   if (livestreamUrl) add("watch", livestreamUrl, "published_livestream_url");
 
   if (clean(handoff?.testimony_signup_url)) {

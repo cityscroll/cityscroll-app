@@ -714,6 +714,7 @@ function nlFeed(key, placeholder){
                (key==='meetings'&&f.when)?`<span class="qchip"><b>${f.when}</b></span>`:"",
                (key==='meetings'&&f.borough)?`<span class="qchip">${t("affected_area_label")} <b>${f.borough}</b></span>`:"",
                (key==='meetings'&&f.neighborhood)?`<span class="qchip">${t("neighborhood_label")} <b>${f.neighborhood}</b></span>`:"",
+               (key==='meetings'&&f.attendance)?`<span class="qchip">${t("meetings_attendance_label")} <b>${f.attendance}</b></span>`:"",
                (key==='property'&&f.borough)?`<span class="qchip">${t("borough_label")} <b>${f.borough}</b></span>`:"",
                (key==='property'&&f.neighborhood)?`<span class="qchip">${t("neighborhood_label")} <b>${f.neighborhood}</b></span>`:"",
                (key==='rules'&&f.neighborhood)?`<span class="qchip">${t("neighborhood_label")} <b>${f.neighborhood}</b></span>`:"",
@@ -728,6 +729,7 @@ function nlFeed(key, placeholder){
           $("#meetingsboro").value=f.locationScope;
         } else if(f.borough) $("#meetingsboro").value=f.borough;
         if(f.neighborhood) $("#meetingsneighborhood").value=f.neighborhood;
+        if(f.attendance){ const at=$("#meetingsattendance"); if(at) at.value=f.attendance; }
         meetingsCommunityDistrict=f.communityDistrict||"";
         meetingsCouncilDistrict=f.councilDistrict||"";
         if(f.process && ["scheduled","agenda","held","outcomes","unstaged"].includes(f.process)){

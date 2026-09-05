@@ -1634,7 +1634,7 @@ async function renderHearingExplorer(options){
   renderMeetingsAgencyScope(hearingAll||[]);
   renderMeetingsBoardScope(hearingAll||[],seq);
   let selection=chooseHearingScope(records,searchFilter,todayISO(),allowWidening);
-  // The retained shared read model contains the supported past and current windows.
+  // The shared read model covers supported past and current windows.
   const needsPast=filter.when==="all" || filter.when==="past" || (allowWidening && !selection.rows.length);
   if(needsPast){
     try{
@@ -1665,7 +1665,7 @@ async function renderHearingExplorer(options){
     renderHearingExplorer();
   });
 
-  // Process-stage ontology + multi-notice collapse (pure module). Place grouping is opt-in.
+  // Process-stage ontology + collapse (pure); place grouping opt-in.
   const tools=await meetingsExplorerTools();
   if(seq!==hearingRenderSeq) return;
   const now=todayISO();
@@ -1673,10 +1673,10 @@ async function renderHearingExplorer(options){
   let pastEntries=[];
   if(tools && tools.buildMeetingsExplorerEntries){
     entries=tools.buildMeetingsExplorerEntries(rows,{ now });
-    entries=tools.filterMeetingsExplorerEntries(entries,{ process:meetingsProcessSel, now });
+    entries=tools.filterMeetingsExplorerEntries(entries,{ process:meetingsProcessSel, now, att:$("#meetingsattendance")?.value });
     pastEntries=tools.buildMeetingsExplorerEntries(selection.pastRows||[],{ now });
     pastEntries=tools.filterMeetingsExplorerEntries(pastEntries,{ process:meetingsProcessSel, now });
-    // Rail counts from the place/time-filtered set (before process chip).
+    // Rail counts reflect place/time, not the process chip.
     const base=tools.buildMeetingsExplorerEntries(rows,{ now });
     const pc=tools.countMeetingsProcessStages(base);
     const processRail=$("#meetingsprocessrail");

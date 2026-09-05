@@ -4,6 +4,13 @@
 
 const URL_RE = /https?:\/\/[^\s<>"')]+/gi;
 const ONLINE_HOST_RE = /(?:^|\.)(?:zoom(?:gov)?\.com|zoom\.us|teams\.microsoft\.com|teams\.live\.com|webex\.com|meet\.google\.com)$/i;
+// A bare YouTube, Vimeo, Twitch, or facebook.com/*live link is a one-way
+// broadcast destination, so it classifies as watch-only (PHC-01 A6) — the
+// same host set action_registry.js's isLivestreamUrl uses for that same
+// distinction elsewhere. facebook.com only qualifies on a /live path,
+// since the bare domain serves far more than video.
+const BROADCAST_HOST_RE = /(?:^|\.)(?:youtube\.com|youtu\.be|vimeo\.com|twitch\.tv)$/i;
+const BROADCAST_FACEBOOK_HOST_RE = /(?:^|\.)facebook\.com$/i;
 const CITY_RECORD_HOST = "a856-cityrecord.nyc.gov";
 const CITY_RECORD_REQUEST_RE = /\/RequestDetail\/([^/?#]+)/i;
 const ONLINE_LANGUAGE_RE = /\b(?:online|virtual|remote|remotely|via\s+(?:zoom|teams|webex)|video[- ]conference|conference\s+call)\b/i;
@@ -115,6 +122,15 @@ export function recognizedMeetingUrl(value) {
   return null;
 }
 
+export function recognizedBroadcastUrl(value) {
+  const normalized = normalizeUrl(value);
+  if (!normalized) return null;
+  const url = new URL(normalized);
+  if (BROADCAST_HOST_RE.test(url.hostname)) return url.toString();
+  if (BROADCAST_FACEBOOK_HOST_RE.test(url.hostname) && /\/live\b/i.test(url.pathname)) return url.toString();
+  return null;
+}
+
 function publishedMeetingUrl(value, sourceUrl = null) {
   let resolved;
   try { resolved = new URL(String(value || "").replace(/&amp;/gi, "&"), sourceUrl || undefined).toString(); } catch { return null; }
@@ -160,12 +176,15 @@ function physicalLocationFromBody(body, structuredLocation) {
 
 /**
  * @returns {{mode: "remote"|"hybrid"|"in-person"|"unknown", in_person_location: string|null,
- *   remote_join_url: string|null, dial_in: string[], passcode: string|null}}
+ *   remote_join_url: string|null, broadcast_url: string|null, dial_in: string[], passcode: string|null}}
  */
 export function inferHearingLogistics({ body = "", sourceLinks = [], physicalLocation = null } = {}) {
   const text = String(body || "");
   const urls = bodyUrls(text, sourceLinks);
   const joinUrl = joinUrlFrom(text, urls);
+  // A broadcast-only host (published alongside or instead of a join link) is
+  // evidence of watch-only participation; it never upgrades to remote_join_url.
+  const broadcastUrl = urls.map(recognizedBroadcastUrl).find(Boolean) || null;
   const online = ONLINE_LANGUAGE_RE.test(text) || !!joinUrl;
   const location = physicalLocationFromBody(text, physicalLocation);
   const inPerson = !!location || /\b(?:in[- ]person|at the .*\b(?:room|street|avenue|boulevard)\b)\b/i.test(text);
@@ -176,6 +195,7 @@ export function inferHearingLogistics({ body = "", sourceLinks = [], physicalLoc
     mode,
     in_person_location: location,
     remote_join_url: joinUrl,
+    broadcast_url: broadcastUrl,
     dial_in: dialIn,
     passcode: clean(passcode),
   };
