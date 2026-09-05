@@ -25,6 +25,12 @@
  *     (./mwbe_goal_surface.mjs) for M/WBE markers and rule-derived floors.
  *   - procurementOfficialSourceItems() (./procurement_document.mjs) and the
  *     alert atom's official/CityScroll URLs for official destinations.
+ *   - explainMatch() (./procurement_preference_set.mjs, card "PPD-05") for an
+ *     optional, caller-supplied "matches your stated preferences" list. This
+ *     module never computes that explanation itself; it only renders reasons
+ *     it is handed, and only after reasonsCarryPreferenceProvenance() confirms
+ *     every one carries that module's own "user-supplied" provenance token --
+ *     never blended with this module's own published-fact status grammar.
  *
  * A caller supplies one normalized flat `row` (a City Record notice row as
  * money-history.mjs already consumes, or an equivalent row a canonical-
@@ -38,6 +44,7 @@ import { buildProcurementAlertAtom } from "./procurement_alert_atom.mjs";
 import { buildSolicitationMwbeView } from "./mwbe_goal_surface.mjs";
 import { opportunityWindowDisplayLine } from "./procurement_opportunity_window.mjs";
 import { shortDate } from "./digest_item_awareness.mjs";
+import { reasonsCarryPreferenceProvenance } from "./procurement_preference_set.mjs";
 
 export const PROCUREMENT_PURSUIT_SNAPSHOT_SCHEMA = "cityscroll.procurement_pursuit_snapshot.v1";
 
@@ -124,6 +131,20 @@ function findImportantDate(importantDates, pattern) {
   return { value: day, label: shortDate(day) || day, status: PURSUIT_FIELD_STATUS.OBSERVED };
 }
 
+/**
+ * Optional "matches your stated preferences" list (card "PPD-05"). `opts.preference_match`
+ * is the raw explainMatch() output ({ eligible, reasons }); only reasons that
+ * are both satisfied and carry the exported preference-provenance token are
+ * ever passed through, so a caller mistake can never present a preference as
+ * a published fact. Absent or empty input renders nothing.
+ */
+function preferenceMatchSection(preferenceMatch) {
+  const reasons = Array.isArray(preferenceMatch?.reasons) ? preferenceMatch.reasons : [];
+  const satisfied = reasons.filter((entry) => entry?.satisfied === true);
+  if (!satisfied.length || !reasonsCarryPreferenceProvenance(satisfied)) return [];
+  return satisfied;
+}
+
 function contactFact(row) {
   const parts = [text(row?.contact_name), text(row?.contact_phone), text(row?.email)].filter(Boolean);
   if (!parts.length) return fact(null, PURSUIT_FIELD_STATUS.NOT_OBSERVED);
@@ -188,7 +209,7 @@ function officialActionSection(atom, opts) {
  * procurement_method, official_source_items, passport_action,
  * explicit_package_url, last_observed_at, important_dates, response_floor,
  * amount_benchmark, related_history_href, contextual_page_href,
- * nativeSolicitationStage).
+ * preference_match, nativeSolicitationStage).
  */
 export function buildPursuitSnapshot(row = {}, opts = {}) {
   const r = row || {};
@@ -219,6 +240,7 @@ export function buildPursuitSnapshot(row = {}, opts = {}) {
     },
     fit_context: {
       match_reasons: Array.isArray(atom.match_reasons) ? atom.match_reasons : [],
+      preference_reasons: preferenceMatchSection(opts.preference_match),
       amount_benchmark: opts.amount_benchmark || null,
       related_history_href: text(opts.related_history_href),
       contextual_page_href: text(opts.contextual_page_href),
@@ -341,12 +363,28 @@ function decisionFactsSectionHtml(facts) {
   return `<div class="pursuit-fact-group" data-pursuit-section="decision-facts"><dl class="pursuit-facts">${rows}</dl></div>`;
 }
 
+// Deliberately a separate <div>/<ul> from pursuit-match-reasons below, with
+// its own subhead and a per-item badge -- a preference-derived reason must
+// never render inside the same list as a published-fact match reason, and
+// must never lose its "your own stated preference" framing (card "PPD-05").
+function preferenceReasonsSectionHtml(reasons) {
+  if (!Array.isArray(reasons) || !reasons.length) return "";
+  const items = reasons.map((entry) => (
+    `<li>${esc(entry.wording)}<span class="pursuit-preference-badge" data-provenance="${esc(entry.provenance)}">Your stated preference</span></li>`
+  )).join("");
+  return `<div class="pursuit-preference-reasons" data-pursuit-preference-reasons="1"><p class="pursuit-subhead">Matches your stated preferences</p><ul>${items}</ul></div>`;
+}
+
 function fitContextSectionHtml(fitContext) {
   const parts = [];
   if (fitContext.match_reasons.length) {
     parts.push(`<div class="pursuit-match-reasons"><p class="pursuit-subhead">Why this reached you</p><ul>${
       fitContext.match_reasons.map((reason) => `<li>${esc(reason)}</li>`).join("")
     }</ul></div>`);
+  }
+  const preferenceHtml = preferenceReasonsSectionHtml(fitContext.preference_reasons);
+  if (preferenceHtml) {
+    parts.push(preferenceHtml);
   }
   if (fitContext.amount_benchmark?.label) {
     parts.push(`<p class="pursuit-benchmark">${esc(fitContext.amount_benchmark.label)}</p>`);
