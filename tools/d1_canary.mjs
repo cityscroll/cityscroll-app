@@ -242,9 +242,9 @@ async function verifyWatermark({ entry, sourceDocument, partition, adapter }) {
   return { model_id: entry.model_id, partition, status: observed === expected ? "match" : "mismatch", expected, observed };
 }
 
-function firstToken(text) {
-  const token = String(text || "").trim().split(/\s+/)[0] || "";
-  return token.replace(/[^\p{L}\p{N}_-]/gu, "");
+function firstWord(text) {
+  const word = String(text || "").trim().split(/\s+/)[0] || "";
+  return word.replace(/[^\p{L}\p{N}_-]/gu, "");
 }
 
 /** One representative query per model: an FTS lookup for keyword search, a key lookup for the others. */
@@ -252,16 +252,16 @@ const REPRESENTATIVE_QUERY = Object.freeze({
   async keyword_search({ entry, partition, rowsByTable, adapter }) {
     const sample = (rowsByTable.get("keyword_search_documents") || [])[0];
     if (!sample) return { model_id: entry.model_id, partition, status: "skipped_no_rows", detail: null };
-    const token = firstToken(sample.columns.search_text);
-    if (!token) return { model_id: entry.model_id, partition, status: "skipped_no_rows", detail: null };
+    const word = firstWord(sample.columns.search_text);
+    if (!word) return { model_id: entry.model_id, partition, status: "skipped_no_rows", detail: null };
     const rows = await adapter.select(
       "SELECT document_id FROM keyword_search_fts WHERE family_id = ? AND keyword_search_fts MATCH ?",
-      [partition, `"${token.replaceAll('"', '""')}"`],
+      [partition, `"${word.replaceAll('"', '""')}"`],
     );
     const found = rows.some((row) => row.document_id === sample.columns.document_id);
     return {
       model_id: entry.model_id, partition, status: found ? "passed" : "failed",
-      detail: found ? null : `fts lookup for "${token}" did not return ${sample.columns.document_id}`,
+      detail: found ? null : `fts lookup for "${word}" did not return ${sample.columns.document_id}`,
     };
   },
   async ocp_awards({ entry, partition, rowsByTable, adapter }) {

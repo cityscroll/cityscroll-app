@@ -620,17 +620,17 @@ function extractD1Invocations(yamlText) {
 
 const SHELL_CONTROL_OPERATORS = new Set(["||", "&&", ";"]);
 
-/** Tokenizes one shell command line, stopping at an unquoted control operator (e.g. `|| true`) that ends the invocation's own argv. */
-function tokenizeShellArgs(text) {
-  const tokens = [];
+/** Splits one shell command line into words, stopping at an unquoted control operator (e.g. `|| true`) that ends the invocation's own argv. */
+function splitShellWords(text) {
+  const words = [];
   const pattern = /"((?:[^"\\]|\\.)*)"|'((?:[^'\\]|\\.)*)'|(\S+)/g;
   let match;
   while ((match = pattern.exec(text)) !== null) {
-    const token = match[1] ?? match[2] ?? match[3];
-    if (match[3] !== undefined && SHELL_CONTROL_OPERATORS.has(token)) break;
-    tokens.push(token);
+    const word = match[1] ?? match[2] ?? match[3];
+    if (match[3] !== undefined && SHELL_CONTROL_OPERATORS.has(word)) break;
+    words.push(word);
   }
-  return tokens;
+  return words;
 }
 
 test("every d1_* CLI invocation in the deploy workflow parses through d1_canary and d1_reconcile without a flag swallowing another flag's name", () => {
@@ -639,15 +639,15 @@ test("every d1_* CLI invocation in the deploy workflow parses through d1_canary 
   assert.ok(invocations.length > 0, "the workflow does carry d1_* invocations to check against");
 
   for (const invocation of invocations) {
-    const tokens = tokenizeShellArgs(invocation.text);
-    // tokens[0]="node", tokens[1]="tools/d1_x.mjs" (or "../tools/..."), tokens[2]=command; the rest are flags/values.
+    const words = splitShellWords(invocation.text);
+    // words[0]="node", words[1]="tools/d1_x.mjs" (or "../tools/..."), words[2]=command; the rest are flags/values.
     // A bash array expansion (`"${some_flag[@]}"`) expands at shell runtime to zero or more
-    // literal tokens this static extraction cannot resolve; drop the placeholder rather than
+    // literal words this static extraction cannot resolve; drop the placeholder rather than
     // feeding it to the parser as a bare (and therefore always-invalid) argument.
-    const flagTokens = tokens.slice(3).filter((token) => !/^\$\{[a-zA-Z_][a-zA-Z0-9_]*\[@\]\}$/.test(token));
+    const flagWords = words.slice(3).filter((word) => !/^\$\{[a-zA-Z_][a-zA-Z0-9_]*\[@\]\}$/.test(word));
 
     for (const [label, parse] of [["d1_canary.mjs", parseCanaryArgs], ["d1_reconcile.mjs", parseReconcileArgs]]) {
-      const argv = ["node", `tools/${label}`, invocation.command, ...flagTokens];
+      const argv = ["node", `tools/${label}`, invocation.command, ...flagWords];
       let args;
       assert.doesNotThrow(() => {
         args = parse(argv);
