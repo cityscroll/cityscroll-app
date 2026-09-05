@@ -249,6 +249,8 @@ function landStageFilterIsApplied(){
   const stage=normalizeLandStage($("#lstage")?.value,status==="all"?"any":"active");
   return !((status==="active"&&stage==="active")||(status==="all"&&stage==="any"));
 }
+function landFilterState(status){return{stage:normalizeLandStage($("#lstage")?.value,status==="all"?"any":"active"),futureAction:normalizeLandFutureAction($("#lfuture")?.value),procedure:normalizeLandProcedure($("#lprocedure")?.value),family:normalizeLandFamily($("#lfamily")?.value),regulatoryEffect:normalizeLandRegulatoryEffect($("#leffect")?.value)};}
+function landObservedDatesView(r){const observed=r._observed_dates||landObservedDates(r,r._future_actions||[]);const bits=[observed.hearing_date?t("land_observed_hearing",{date:fdate(observed.hearing_date)}):"",observed.comment_deadline?t("land_observed_comment",{date:fdate(observed.comment_deadline)}):""].filter(Boolean);return{observed,bits};}
 function currentLandRouteHash(){
   return location.hash || (typeof serializeState === "function" ? serializeState() : "#land");
 }
@@ -282,11 +284,7 @@ function renderLandBoroughScopeLinks(){
 async function syncLandLensControls(){
   await landStatusFacetTools();
   const status=$("#lstatus")?.value||"all";
-  const stage=normalizeLandStage($("#lstage")?.value,status==="all"?"any":"active");
-  const futureAction=normalizeLandFutureAction($("#lfuture")?.value);
-  const procedure=normalizeLandProcedure($("#lprocedure")?.value);
-  const family=normalizeLandFamily($("#lfamily")?.value);
-  const regulatoryEffect=normalizeLandRegulatoryEffect($("#leffect")?.value);
+  const {stage,futureAction,procedure,family,regulatoryEffect}=landFilterState(status);
   const actionRows=futureAction==="hearing"
     ? filterLandHearingRows(landActionInventory,{mode:landAttendance,closingWeek:landClosingWeek,today:todayISO()})
     : landActionInventory;
@@ -516,11 +514,7 @@ function paintLandRows(rows, banner, kw, block, boro, stale, autoSelect, statusM
 async function landSearch(){
   let boro=landBorough, kw=$("#lkw").value.trim();
   const status=$("#lstatus").value;
-  const stage=normalizeLandStage($("#lstage")?.value,status==="all"?"any":"active");
-  const futureAction=normalizeLandFutureAction($("#lfuture")?.value);
-  const procedure=normalizeLandProcedure($("#lprocedure")?.value);
-  const family=normalizeLandFamily($("#lfamily")?.value);
-  const regulatoryEffect=normalizeLandRegulatoryEffect($("#leffect")?.value);
+  const {stage,futureAction,procedure,family,regulatoryEffect}=landFilterState(status);
   if(kw){
     try{
       const neighborhoodTools=await import("../neighborhood_search.mjs");
@@ -660,11 +654,7 @@ function landRowHTML(r, i, terms, contextTerms){
   const procedureChip=procedureKey
     ? `<span class="tag land-procedure" data-land-procedure="${escUiHtml(resolveLandProcedure(r)||"")}">${escUiHtml(t(procedureKey))}</span>`
     : "";
-  const observed=r._observed_dates||landObservedDates(r,r._future_actions||[]);
-  const observedBits=[
-    observed.hearing_date?t("land_observed_hearing",{date:fdate(observed.hearing_date)}):"",
-    observed.comment_deadline?t("land_observed_comment",{date:fdate(observed.comment_deadline)}):"",
-  ].filter(Boolean);
+  const {observed,bits:observedBits}=landObservedDatesView(r);
   const observedHTML=observedBits.length
     ? `<br><span class="land-observed-dates">${observedBits.join(" · ")}</span>`
     : "";
@@ -759,11 +749,7 @@ async function landSelect(i, el){
       <div><div class="big" style="font-size:17px" data-land-record-applicant>${escUiHtml(r.primary_applicant||"—")}</div><div class="lbl">${t("applicant_lbl")}</div></div>
       <div><div class="big" style="font-size:17px" data-land-record-place-group><span data-land-record-place="borough">${escUiHtml(r.borough||"")}</span>${r.community_district?` · <span data-land-record-place="community">${escUiHtml("CD "+r.community_district)}</span>`:""}${r.cc_district?` · <span data-land-record-place="council">${escUiHtml(t("council_district_short",{n:r.cc_district}))}</span>`:""}</div><div class="lbl">${t("where_lbl")}</div></div>
     </div>`;
-  const observed=r._observed_dates||landObservedDates(r,r._future_actions||[]);
-  const observedBits=[
-    observed.hearing_date?t("land_observed_hearing",{date:fdate(observed.hearing_date)}):"",
-    observed.comment_deadline?t("land_observed_comment",{date:fdate(observed.comment_deadline)}):"",
-  ].filter(Boolean);
+  const {bits:observedBits}=landObservedDatesView(r);
   if(observedBits.length){
     html+=`<p class="land-observed-dates" data-land-observed-dates="1">${observedBits.join(" · ")}</p>`;
   }
@@ -1244,7 +1230,6 @@ function landPhaseSpineHTML(view, tools, record){
       summary=parts.join(" · ") || t("land_spine_phase_empty");
     }
     const statutory=landStatutoryDeadlineHTML(p.id, clock, p.state);
-    const rsHTML=tools?.landRoleStrip?.(view,p.id,{t,escape:escUiHtml})||"";
     const body=(p.aggregates||[]).map((a,idx)=>landPhaseAggregateHTML(a,p.id,idx)).join("")
       || `<div class="land-phase-row"><div class="land-phase-row-meta">${t("land_spine_phase_empty")}</div></div>`;
     return `<details class="land-phase${p.state==="current"?" current-phase":""}${p.state==="overlap"?" overlap-phase":""}"${open} id="land-phase-${escUiHtml(p.id)}" data-land-phase-panel="${escUiHtml(p.id)}" data-land-phase-state="${escUiHtml(p.state||"")}">
@@ -1253,7 +1238,7 @@ function landPhaseSpineHTML(view, tools, record){
         <span class="land-phase-state">${escUiHtml(stateWord)}</span>
         <span class="land-phase-summary" lang="en" dir="ltr">${escUiHtml(summary)}</span>
       </summary>
-      <div class="land-phase-body">${rsHTML}${statutory}${body}</div>
+      <div class="land-phase-body">${tools?.landRoleStrip?.(view,p.id,{t,escape:escUiHtml})||""}${statutory}${body}</div>
     </details>`;
   };
   // Compact template: current (and explained overlap) open; earlier stages under history;

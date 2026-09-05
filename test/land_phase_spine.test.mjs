@@ -539,7 +539,7 @@ test("public Land detail phase panel wires the role strip above the observed row
   // wiring stays a single optional-chained call.
   assert.match(spineSrc, /export \{ landRoleStrip \} from "\.\/land_role_strip\.mjs";/);
   assert.match(landSrc, /tools\?\.landRoleStrip\?\.\(view,p\.id,\{t,escape:escUiHtml\}\)/);
-  assert.match(landSrc, /\$\{rsHTML\}\$\{statutory\}\$\{body\}/);
+  assert.match(landSrc, /\$\{tools\?\.landRoleStrip\?\.\(view,p\.id,\{t,escape:escUiHtml\}\)\|\|""\}\$\{statutory\}\$\{body\}/);
 
   const aggregateFn = landSrc.slice(
     landSrc.indexOf("function landPhaseAggregateHTML"),
