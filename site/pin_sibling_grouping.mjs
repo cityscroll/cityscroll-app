@@ -62,9 +62,11 @@ export function restOkForPrefixJoin(rest) {
   return REST_OK_RE.test(String(rest));
 }
 
-export function pinsShareFamily(left, right) {
-  const a = pinKey(left);
-  const b = pinKey(right);
+/**
+ * The PIN-family predicate over already-normalized keys, so a caller comparing
+ * one PIN against a large corpus can normalize the corpus once.
+ */
+export function pinKeysShareFamily(a, b) {
   if (!a || !b) return false;
   if (a === b) return a.length >= PIN_SIBLING_MIN_PIN_LEN;
   if (a.length < PIN_SIBLING_MIN_PIN_LEN && b.length < PIN_SIBLING_MIN_PIN_LEN) return false;
@@ -80,6 +82,10 @@ export function pinsShareFamily(left, right) {
   if (b.length >= PIN_SIBLING_MIN_PIN_LEN && a.length > b.length
     && a.startsWith(b) && restOkForPrefixJoin(a.slice(b.length))) return true;
   return false;
+}
+
+export function pinsShareFamily(left, right) {
+  return pinKeysShareFamily(pinKey(left), pinKey(right));
 }
 
 export function pinIndexKeys(pin) {
