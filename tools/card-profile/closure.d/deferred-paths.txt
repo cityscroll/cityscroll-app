@@ -107,6 +107,7 @@ site/data/land_authority_summary_receipt.json
 site/data/land_project_geometry_source_lookup.json
 site/data/land_project_map_points.json
 site/data/land_project_map_points_receipt.json
+site/data/land_review_regimes.json
 site/data/later_housing_activity.json
 site/data/legislative_matter_lookup.json
 site/data/legistar_sources/verification_receipts/legistar_depth_2026-07-30.json

@@ -80,7 +80,7 @@ function actorHref(bodyRef) {
   return null;
 }
 
-function actorLabel(bodyRef, translate) {
+export function actorLabel(bodyRef, translate) {
   const ref = clean(bodyRef) || "";
   const board = ref.match(/^community-board:([a-z]+(?:-[a-z]+)*)-cb-(\d{2})$/);
   if (board) {
