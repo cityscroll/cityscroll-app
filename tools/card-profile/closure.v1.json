@@ -58,7 +58,7 @@
       "scan_hops": 1,
       "scanned_source_count": 2148,
       "sources_skipped_not_materialised": 0,
-      "path_count": 1933,
+      "path_count": 1934,
       "worker_to_site_reference_count": 187,
       "worker_to_site_data_reference_count": 28,
       "worker_to_site_data_targets": [
@@ -118,7 +118,7 @@
         "warehouse",
         "worker/src/data"
       ],
-      "path_count": 3999
+      "path_count": 4020
     }
   },
   "required_paths": [
@@ -2923,7 +2923,7 @@
       "site/data/zap_projects_warehouse_lookup.json"
     ]
   },
-  "patterns_sha256": "44360042c3953bbf2278f8bb3fd755ebeb0330b13c98f4a536cc855434e4aa6f",
+  "patterns_sha256": "8151707454408dc5e24f616f68fc6d3b9e779fb75345ea7be05206c47b0dfe4e",
   "supported_gate_classes": [
     "worker-unit",
     "architecture-evidence-shards",
@@ -3047,30 +3047,30 @@
   },
   "measured": {
     "note": "A snapshot of what the profile costs at the revision named here. These figures are reporting only; they are not part of the checked contract, because a byte total moves whenever any tracked file does.",
-    "revision": "2f5c5475d2eee1bfbf26179d12f802b842be18b8",
+    "revision": "e3b41c13c5a7328a672d57e54ab62aa2e20532ed",
     "computed_in_reduced_checkout": false,
     "profile_paths": {
-      "count": 4217,
-      "logical_bytes": 199034151
+      "count": 4236,
+      "logical_bytes": 199231008
     },
     "deferred_paths": {
       "count": 298,
       "logical_bytes": 222598525
     },
     "excluded_paths": {
-      "count": 2381,
-      "logical_bytes": 736392952
+      "count": 2382,
+      "logical_bytes": 736403190
     },
     "site_data": {
       "tracked_count": 696,
-      "tracked_logical_bytes": 506184949,
+      "tracked_logical_bytes": 506224125,
       "profile_count": 48,
-      "profile_logical_bytes": 109965217
+      "profile_logical_bytes": 110004393
     },
     "tracked_total": {
-      "count": 6598,
-      "logical_bytes": 935427103
+      "count": 6620,
+      "logical_bytes": 935925498
     },
-    "pattern_count": 839
+    "pattern_count": 840
   }
 }
