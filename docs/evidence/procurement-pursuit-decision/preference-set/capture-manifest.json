@@ -1,0 +1,153 @@
+{
+  "schema": "cityscroll.procurement_pursuit_decision_preference_set_manifest.v1",
+  "captured_at": "2026-09-05T06:52:38Z",
+  "revision": "9e0a8e0590b3049c4035ec6c9efc7f2854518800",
+  "note": "Card \"PPD-05\" (procurement-pursuit-decision): a reusable vendor preference set and a \"matches your stated preferences\" list beneath the pursuit snapshot. Screenshot binaries are not committed to this repository; they are written to an external directory (default a docs-evidence/ sibling of the repository root, override with CAPTURE_EXTERNAL_OUT) named by 'external_filename' below, and this manifest is the reproducible, reviewable record of what each capture shows and why.",
+  "external_output_directory_note": "Not committed; see external_filename per capture. Re-run this script to regenerate byte-identical captures (same sha256) at this revision.",
+  "captures": [
+    {
+      "case": "preference-match-satisfied",
+      "surface": "procurement-detail",
+      "route": "/_capture/preference-match-satisfied",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "9e0a8e0590b3049c4035ec6c9efc7f2854518800",
+      "fixture_ids": [
+        "A"
+      ],
+      "data_vintage": "Fixture A (Parks, Playground reconstruction) explained against a caller-supplied preference set stating agency (Department of Parks and Recreation), a capability keyword (playground), and an amount range ($100,000-$900,000) -- every stated field is satisfied by this record's own published facts.",
+      "renders_preference_match": true,
+      "assertion": "A \"Matches your stated preferences\" list renders beneath the pursuit snapshot, visibly and structurally distinct from the existing \"Why this reached you\" published-match-reason list, with each item carrying a \"Your stated preference\" badge.",
+      "external_filename": "preference-match-satisfied-390x844.png",
+      "sha256": "b8038795a4b2075e1ec1790c46f4fd644622342e17fa18d349e12b1328cc039d",
+      "bytes": 305152,
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "case": "preference-match-satisfied",
+      "surface": "procurement-detail",
+      "route": "/_capture/preference-match-satisfied",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "9e0a8e0590b3049c4035ec6c9efc7f2854518800",
+      "fixture_ids": [
+        "A"
+      ],
+      "data_vintage": "Fixture A (Parks, Playground reconstruction) explained against a caller-supplied preference set stating agency (Department of Parks and Recreation), a capability keyword (playground), and an amount range ($100,000-$900,000) -- every stated field is satisfied by this record's own published facts.",
+      "renders_preference_match": true,
+      "assertion": "A \"Matches your stated preferences\" list renders beneath the pursuit snapshot, visibly and structurally distinct from the existing \"Why this reached you\" published-match-reason list, with each item carrying a \"Your stated preference\" badge.",
+      "external_filename": "preference-match-satisfied-1440x900.png",
+      "sha256": "7db24669a273fe61b6d59e9986b0b0935c41ac8b934f2872d873f3d8ac88ff2c",
+      "bytes": 376485,
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "case": "preference-match-unsatisfied",
+      "surface": "procurement-detail",
+      "route": "/_capture/preference-match-unsatisfied",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "9e0a8e0590b3049c4035ec6c9efc7f2854518800",
+      "fixture_ids": [
+        "A"
+      ],
+      "data_vintage": "The same Fixture A record explained against a preference set stating only an agency (Department of Transportation) this record's own published agency does not match.",
+      "renders_preference_match": false,
+      "assertion": "No \"Matches your stated preferences\" list renders -- an unsatisfied stated preference is never surfaced as though it were a match.",
+      "external_filename": "preference-match-unsatisfied-390x844.png",
+      "sha256": "3dd7fedf24589d3aa05fe7988a49657db72876425179d0b864fc13be9fe1154b",
+      "bytes": 269621,
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "case": "preference-match-unsatisfied",
+      "surface": "procurement-detail",
+      "route": "/_capture/preference-match-unsatisfied",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "9e0a8e0590b3049c4035ec6c9efc7f2854518800",
+      "fixture_ids": [
+        "A"
+      ],
+      "data_vintage": "The same Fixture A record explained against a preference set stating only an agency (Department of Transportation) this record's own published agency does not match.",
+      "renders_preference_match": false,
+      "assertion": "No \"Matches your stated preferences\" list renders -- an unsatisfied stated preference is never surfaced as though it were a match.",
+      "external_filename": "preference-match-unsatisfied-1440x900.png",
+      "sha256": "084b004ec743965491fc6cfbb74b366f7071aa3e6388c09653343c89f80c3c7a",
+      "bytes": 342360,
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "case": "preference-match-none",
+      "surface": "procurement-detail",
+      "route": "/_capture/preference-match-none",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "9e0a8e0590b3049c4035ec6c9efc7f2854518800",
+      "fixture_ids": [
+        "A"
+      ],
+      "data_vintage": "Fixture A rendered with no preferenceMatch supplied at all.",
+      "renders_preference_match": false,
+      "assertion": "No \"Matches your stated preferences\" section renders -- absence of a caller-supplied preference explanation never becomes a fabricated match claim; the page renders normally with its existing sections.",
+      "external_filename": "preference-match-none-390x844.png",
+      "sha256": "3dd7fedf24589d3aa05fe7988a49657db72876425179d0b864fc13be9fe1154b",
+      "bytes": 269621,
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "case": "preference-match-none",
+      "surface": "procurement-detail",
+      "route": "/_capture/preference-match-none",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "9e0a8e0590b3049c4035ec6c9efc7f2854518800",
+      "fixture_ids": [
+        "A"
+      ],
+      "data_vintage": "Fixture A rendered with no preferenceMatch supplied at all.",
+      "renders_preference_match": false,
+      "assertion": "No \"Matches your stated preferences\" section renders -- absence of a caller-supplied preference explanation never becomes a fabricated match claim; the page renders normally with its existing sections.",
+      "external_filename": "preference-match-none-1440x900.png",
+      "sha256": "084b004ec743965491fc6cfbb74b366f7071aa3e6388c09653343c89f80c3c7a",
+      "bytes": 342360,
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    }
+  ]
+}
