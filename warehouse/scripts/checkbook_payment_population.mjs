@@ -23,7 +23,7 @@ import {
   sha256Json,
 } from "../lib/checkbook_payment_population.mjs";
 
-import { beginSharedPaymentRefresh } from "../lib/shared_payment_input.mjs";
+import { beginSharedPaymentRefresh, resolveSharedPaymentInput } from "../lib/shared_payment_input.mjs";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
 const ENDPOINT = "https://www.checkbooknyc.com/api";
@@ -51,6 +51,7 @@ function parseArgs(argv) {
     output: DEFAULT_OUTPUT,
     fixture: DEFAULT_FIXTURE,
     reusePages: false,
+    refresh: false,
   };
   for (let index = 0; index < argv.length; index += 1) {
     const arg = argv[index];
@@ -63,6 +64,7 @@ function parseArgs(argv) {
     else if (arg === "--output") args.output = resolve(argv[++index]);
     else if (arg === "--fixture") args.fixture = resolve(argv[++index]);
     else if (arg === "--reuse-pages") args.reusePages = true;
+    else if (arg === "--refresh") args.refresh = true;
     else if (arg === "--help" || arg === "-h") args.help = true;
     else throw new Error(`unknown argument: ${arg}`);
   }
@@ -384,12 +386,24 @@ export async function runPaymentPopulation(args) {
 async function main() {
   const args = parseArgs(process.argv.slice(2));
   if (args.help) {
-    console.log("Usage: node warehouse/scripts/checkbook_payment_population.mjs [--from-fixture] [--fiscal-years 2026] [--page-size 20000]");
+    console.log("Usage: node warehouse/scripts/checkbook_payment_population.mjs [--from-fixture] [--fiscal-years 2026] [--page-size 20000] [--refresh]");
     return;
   }
-  const shared = process.env.CITYSCROLL_WAREHOUSE_CACHE && !args.fromFixture
-    && args.stageDir === DEFAULT_STAGE && args.output === DEFAULT_OUTPUT && args.receipt === DEFAULT_RECEIPT && !args.reusePages
-    ? beginSharedPaymentRefresh(process.env.CITYSCROLL_WAREHOUSE_CACHE) : null;
+  const useShared = process.env.CITYSCROLL_WAREHOUSE_CACHE && !args.fromFixture
+    && args.stageDir === DEFAULT_STAGE && args.output === DEFAULT_OUTPUT && args.receipt === DEFAULT_RECEIPT && !args.reusePages;
+  if (useShared && !args.refresh && existsSync(join(process.env.CITYSCROLL_WAREHOUSE_CACHE, "checkbook-payment-population/current.json"))) {
+    const current = resolveSharedPaymentInput();
+    const receipt = readJson(current.receipt);
+    const years = receipt?.population_contract?.fiscal_years;
+    if (receipt?.status === "complete" && receipt.reconciliation?.reconciled
+      && receipt.population_contract?.id === PAYMENT_POPULATION_CONTRACT
+      && JSON.stringify(years) === JSON.stringify(args.fiscalYears)) {
+      console.log(`reused payment population: version=${current.version} years=${args.fiscalYears.join(",")}`);
+      return;
+    }
+    throw new Error("shared payment selection differs; use --refresh to acquire and publish the requested fiscal years");
+  }
+  const shared = useShared ? beginSharedPaymentRefresh(process.env.CITYSCROLL_WAREHOUSE_CACHE) : null;
   if (shared) {
     args.stageDir = shared.stage;
     args.output = join(shared.stage, "payments.csv");

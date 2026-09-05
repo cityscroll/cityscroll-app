@@ -41,8 +41,9 @@ export function beginSharedPaymentRefresh(cacheRoot, { maxBytes = DEFAULT_LIMIT 
     throw error;
   }
   let stage;
+  const owner = randomUUID();
   try {
-    writeFileSync(join(lock, 'owner.json'), JSON.stringify({ pid: process.pid, started_at: new Date().toISOString() }));
+    writeFileSync(join(lock, 'owner.json'), JSON.stringify({ owner, pid: process.pid, started_at: new Date().toISOString() }));
     stage = join(root, 'staging', randomUUID());
     mkdirSync(stage, { recursive: true });
     mkdirSync(join(root, 'versions'), { recursive: true });
@@ -75,7 +76,9 @@ export function beginSharedPaymentRefresh(cacheRoot, { maxBytes = DEFAULT_LIMIT 
     },
     close() {
       // Failed source acquisitions remain bounded and inspectable, never silently discarded.
-      rmSync(lock, { recursive: true, force: true });
+      if (!existsSync(lock)) return;
+      const currentOwner = JSON.parse(readFileSync(join(lock, 'owner.json'), 'utf8'));
+      if (currentOwner.owner === owner) rmSync(lock, { recursive: true });
     },
   };
 }

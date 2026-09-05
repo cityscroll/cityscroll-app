@@ -43,6 +43,8 @@ test('identical publications deduplicate; refresh ownership excludes other write
   assert.throws(() => beginSharedPaymentRefresh(root), /already owned/);
   const a = await first.publish(); first.close();
   const next = beginSharedPaymentRefresh(root); fill(next);
+  first.close(); // A stale/double close cannot release the next writer's ownership.
+  assert.throws(() => beginSharedPaymentRefresh(root), /already owned/);
   const b = await next.publish(); next.close();
   assert.equal(a.version, b.version);
   assert.equal(readdirSync(join(root, 'checkbook-payment-population/versions')).length, 1);
@@ -75,6 +77,7 @@ test('existing completed fixture can seed cache and real analytical builder read
   for (const args of [
     ['warehouse/scripts/checkbook_payment_population.mjs', '--from-fixture', '--page-size', '2', '--stage-dir', stage, '--output', csv, '--receipt', receipt],
     ['warehouse/scripts/publish_payment_input.mjs', cache, csv, receipt],
+    ['warehouse/scripts/checkbook_payment_population.mjs'],
     ['tools/build_analytical_payments.mjs', '--output', join(root, 'projection.json')],
   ]) {
     const result = spawnSync(process.execPath, args, { encoding: 'utf8', env: { ...process.env, CITYSCROLL_WAREHOUSE_CACHE: cache } });

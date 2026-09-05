@@ -1,0 +1,33 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/shared-payment-inputs",
+  "status": "implemented",
+  "fingerprint": "shared-payment-inputs.v1",
+  "updated_at": "2026-09-05T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "immutable-publication",
+      "path": "warehouse/lib/shared_payment_input.mjs"
+    },
+    {
+      "id": "population-producer",
+      "path": "warehouse/scripts/checkbook_payment_population.mjs"
+    },
+    {
+      "id": "existing-input-import",
+      "path": "warehouse/scripts/publish_payment_input.mjs"
+    },
+    {
+      "id": "population-materializer",
+      "path": "tools/build_analytical_payments.mjs"
+    },
+    {
+      "id": "board-materializer",
+      "path": "tools/build_community_board_payment_actuals.mjs"
+    },
+    {
+      "id": "publication-contract-tests",
+      "path": "test/shared_payment_input.test.mjs"
+    }
+  ]
+}

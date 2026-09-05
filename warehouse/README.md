@@ -761,7 +761,10 @@ its checksum and successful reconciliation before publication. It never moves or
 edits the source, so existing workers retain their own inputs. Source XML pages
 are acquisition evidence rather than required reader inputs.
 
-With this variable set, a default live collector refresh acquires in a private
+With this variable set, the default collector reuses the current complete version
+when its fiscal-year selection matches. It makes no publisher request. A different
+selection fails with an explicit refresh instruction. Pass `--refresh` to acquire
+a new source vintage; a first acquisition with an empty cache also acquires in a private
 staging directory under the cache. A single-writer directory lock prevents
 simultaneous refreshes. Completed CSVs, source pages and receipts become
 content-addressed read-only versions; an atomic pointer switch exposes them only
