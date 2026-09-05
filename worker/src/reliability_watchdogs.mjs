@@ -79,6 +79,11 @@ export async function recordDigestShadowReceipt(env, summary, now = new Date()) 
     digest_count: Number(summary?.digest_count) || 0,
     evaluated_count: Number(summary?.evaluated_count) || 0,
     total_items: Number(summary?.total_items) || 0,
+    // The narrowing step the candidates did not survive, so an operator reading the
+    // reliability snapshot alone can tell an empty source from an exhausted watermark.
+    // A stage name is a bounded label, not a daily count, so it stays alert-signature safe.
+    collapse_stage: summary?.collapse_stage || null,
+    selection_funnel: summary?.selection_funnel || null,
   };
   await putJson(env?.ALERT_STATE, key(DIGEST_SHADOW_LEDGER_PREFIX, now), receipt);
   return receipt;
@@ -95,8 +100,14 @@ export function digestShadowFinding(shadow) {
     ? shadow.redline_codes.map((code) => trimmed(code, 60)).filter(Boolean)
     : [];
   const reason = trimmed(shadow?.reason, 200);
-  if (!codes.length && !reason) return base;
-  const label = codes.length ? codes.join(", ") : "";
+  // The collapsing selection stage is one of a small closed set of names, so it
+  // qualifies the fault the way a code does without making the text vary daily.
+  const stage = trimmed(shadow?.collapse_stage, 60);
+  if (!codes.length && !reason && !stage) return base;
+  const parts = [];
+  if (codes.length) parts.push(codes.join(", "));
+  if (stage) parts.push(`selection collapsed at ${stage}`);
+  const label = parts.join("; ");
   return `${base} (${label && reason ? `${label}: ${reason}` : label || reason})`;
 }
 

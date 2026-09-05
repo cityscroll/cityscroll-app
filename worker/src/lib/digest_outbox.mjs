@@ -406,6 +406,13 @@ function buildItem(section, row, index, options) {
 /**
  * Enqueue one evaluated section. Failed, partial, and skipped sections are
  * returned to the caller untouched; existing owed rows are not modified.
+ *
+ * A row with no declared lens identity is still refused — there is no content
+ * fingerprint fallback — but the refusal is isolated to that row. Aborting the
+ * whole section on the first unidentifiable row was silent data loss: the
+ * delivery watermark advances over every row the query returned, so the
+ * siblings that never reached the ledger became seen-but-never-owed and could
+ * not be recovered by any later run.
  */
 export async function enqueueEvaluatedSection(db, section, options = {}) {
   const status = sectionResultStatus(section);
@@ -415,18 +422,32 @@ export async function enqueueEvaluatedSection(db, section, options = {}) {
     attempted: 0,
     enqueued: 0,
     duplicates: 0,
+    rejected: 0,
     item_ids: [],
+    rejected_reasons: [],
   };
   if (status !== SECTION_STATUS.SUCCESS) return result;
   if (!db?.prepare) throw new TypeError("outbox enqueue requires a D1 database");
 
   for (const [index, row] of sectionRows(section).entries()) {
-    const item = buildItem(section, row, index, options);
+    let item;
+    try {
+      item = buildItem(section, row, index, options);
+    } catch (error) {
+      result.rejected++;
+      result.rejected_reasons.push(String(error?.message || error));
+      continue;
+    }
     result.attempted++;
     const changes = changesFrom(await runInsert(db, insertParams(item)));
     if (changes === 0) result.duplicates++;
     else result.enqueued++;
     result.item_ids.push(item.itemId);
+  }
+  if (result.rejected) {
+    result.status = result.attempted ? SECTION_STATUS.PARTIAL_ERROR : SECTION_STATUS.FAILED;
+    result.section_status = result.status;
+    result.error = result.rejected_reasons.join("; ");
   }
   return result;
 }
@@ -449,5 +470,6 @@ export async function enqueueEvaluatedSections(db, sections, options = {}) {
     attempted: results.reduce((sum, result) => sum + result.attempted, 0),
     enqueued: results.reduce((sum, result) => sum + result.enqueued, 0),
     duplicates: results.reduce((sum, result) => sum + result.duplicates, 0),
+    rejected: results.reduce((sum, result) => sum + (result.rejected || 0), 0),
   };
 }
