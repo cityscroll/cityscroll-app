@@ -4,10 +4,14 @@
 <dict>
   <key>Label</key>
   <string>com.cityscroll.external-schedules</string>
+  <!-- launchd starts an agent with the system default PATH, which does not
+       contain a user- or package-manager-installed Node. Looking the
+       interpreter up by name exits 127 before any code runs, and the only
+       symptom anywhere is the heartbeat the watchdog reports missing, so the
+       installer resolves an absolute interpreter and writes it here. -->
   <key>ProgramArguments</key>
   <array>
-    <string>/usr/bin/env</string>
-    <string>node</string>
+    <string>__CITYSCROLL_NODE__</string>
     <string>__CITYSCROLL_ROOT__/tools/external_schedule_runner.mjs</string>
     <string>--due</string>
   </array>
