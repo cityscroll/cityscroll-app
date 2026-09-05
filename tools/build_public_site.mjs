@@ -1,13 +1,6 @@
 #!/usr/bin/env node
 
-import {
-  cpSync,
-  mkdirSync,
-  readFileSync,
-  readdirSync,
-  rmSync,
-  statSync,
-} from "node:fs";
+import { cpSync, mkdirSync, rmSync } from "node:fs";
 import { dirname, join, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -16,6 +9,7 @@ import {
   repositoryRelativePath,
 } from "./client_module_graph.mjs";
 import { assertGeneratedOutputs } from "./generation_output_guard.mjs";
+import { publicSiteSourceRoot, walkPublicSitePayload } from "./lib/public_site_payload.mjs";
 
 const scriptRoot = dirname(fileURLToPath(import.meta.url));
 
@@ -39,53 +33,14 @@ function parseArgs(argv) {
   return result;
 }
 
-function readConfigList(config, key) {
-  const match = config.match(new RegExp(`^${key}:\\n((?:[ \\t]+- .*\\n?)*)`, "m"));
-  if (!match) return [];
-  return [...match[1].matchAll(/^[ \t]+- (.+)$/gm)].map((entry) => entry[1].trim());
-}
-
-function isExcluded(relativePath, excluded) {
-  const parts = relativePath.split(sep);
-  return excluded.some((entry) => {
-    const normalized = entry.replaceAll("/", sep);
-    return relativePath === normalized
-      || relativePath.startsWith(`${normalized}${sep}`)
-      || parts.includes(normalized);
-  });
-}
-
 function copyTree(sourceRoot, destinationRoot) {
-  const configPath = join(sourceRoot, "_config.yml");
-  const config = statSync(configPath, { throwIfNoEntry: false })
-    ? readFileSync(configPath, "utf8")
-    : "";
-  const excluded = readConfigList(config, "exclude");
-  const included = new Set(readConfigList(config, "include"));
-
   rmSync(destinationRoot, { recursive: true, force: true });
   mkdirSync(destinationRoot, { recursive: true });
-
-  function visit(sourceDir, destinationDir, prefix = "") {
-    for (const entry of readdirSync(sourceDir, { withFileTypes: true })) {
-      const relativePath = prefix ? `${prefix}/${entry.name}` : entry.name;
-      if (relativePath === "_config.yml" || isExcluded(relativePath, excluded)) continue;
-      if (entry.name.startsWith(".") || entry.name === ".git") continue;
-      if (entry.name.startsWith("_") && !included.has(relativePath)) continue;
-
-      const sourcePath = join(sourceDir, entry.name);
-      const destinationPath = join(destinationDir, entry.name);
-      if (entry.isDirectory()) {
-        mkdirSync(destinationPath, { recursive: true });
-        visit(sourcePath, destinationPath, relativePath);
-      } else if (entry.isFile() || entry.isSymbolicLink()) {
-        mkdirSync(dirname(destinationPath), { recursive: true });
-        cpSync(sourcePath, destinationPath, { dereference: false });
-      }
-    }
-  }
-
-  visit(sourceRoot, destinationRoot);
+  walkPublicSitePayload(sourceRoot, ({ sourcePath, relativePath }) => {
+    const destinationPath = join(destinationRoot, relativePath.replaceAll("/", sep));
+    mkdirSync(dirname(destinationPath), { recursive: true });
+    cpSync(sourcePath, destinationPath, { dereference: false });
+  });
 }
 
 function publishClientCapabilityModules(sourceDir, siteSource, siteDir) {
@@ -109,9 +64,7 @@ function publishClientCapabilityModules(sourceDir, siteSource, siteDir) {
 const args = parseArgs(process.argv.slice(2));
 const cwd = process.cwd();
 const sourceDir = resolve(cwd, args["source-dir"] || ".");
-const siteSource = statSync(join(sourceDir, "site", "index.html"), { throwIfNoEntry: false })
-  ? join(sourceDir, "site")
-  : sourceDir;
+const siteSource = publicSiteSourceRoot(sourceDir);
 const siteDir = resolve(cwd, args["site-dir"] || "_site");
 
 if (siteDir === sourceDir || siteDir === siteSource || siteDir.startsWith(`${sourceDir}${sep}`) && siteDir.startsWith(`${siteSource}${sep}`)) {

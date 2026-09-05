@@ -172,6 +172,12 @@ firstClassFreshnessReport = JSON.parse(readFileSync(firstClassReportPath, "utf8"
 // The derived boundary builds the page from the previous report; rebuild it
 // once more from this release's report before copying the public tree.
 runNode(sourceDir, "build_data_health_page.mjs");
+// Measure the published payload here, where the refresh boundary has just
+// finished regenerating it. The same guard runs again over the built payload
+// below; running it against the source first means a refreshed data artifact
+// that outgrew the Pages per-file limit fails on the artifact that grew,
+// before the rest of the build, instead of at the end of it.
+runNode(sourceDir, "check_pages_bundle_sizes.mjs", ["--source-dir", sourceDir]);
 if (existsSync(join(sourceDir, "tools", "build_url_migration_map.mjs"))) {
   runNode(sourceDir, "build_url_migration_map.mjs", ["--check"]);
 }
