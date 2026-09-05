@@ -1,9 +1,9 @@
 {
   "schema_version": 6,
-  "generated_at": "2026-08-23",
-  "data_current_as_of": "2026-08-19",
-  "list_current_as_of": "2026-08-19",
-  "open_window_as_of": "2026-08-23",
+  "generated_at": "2026-09-05",
+  "data_current_as_of": "2026-08-26",
+  "list_current_as_of": "2026-08-26",
+  "open_window_as_of": "2026-09-05",
   "annual_schedule_current_as_of": "2026-07-22",
   "interest_areas": [
     "public-safety",
@@ -92,32 +92,31 @@
       "public-safety": {
         "id": "public-safety",
         "exam_count": 60,
-        "open_count": 3,
-        "upcoming_count": 40,
-        "closed_count": 17,
+        "open_count": 5,
+        "upcoming_count": 35,
+        "closed_count": 20,
         "canceled_count": 0,
         "postponed_count": 0,
         "unscheduled_count": 0,
         "continuous_count": 0,
-        "actionable_count": 43,
+        "actionable_count": 40,
         "open_exam_numbers": [
-          "7323",
-          "7331",
-          "7509"
+          "7302",
+          "7307",
+          "7313",
+          "7327",
+          "7329"
         ],
         "upcoming_exam_numbers": [
           "7009",
           "7058",
-          "7302",
           "7303",
           "7304",
           "7305",
           "7306",
-          "7307",
           "7308",
           "7309",
           "7310",
-          "7313",
           "7314",
           "7315",
           "7316",
@@ -130,9 +129,7 @@
           "7324",
           "7325",
           "7326",
-          "7327",
           "7328",
-          "7329",
           "7330",
           "7332",
           "7333",
@@ -213,18 +210,16 @@
       },
       "health-care": {
         "id": "health-care",
-        "exam_count": 22,
-        "open_count": 1,
+        "exam_count": 19,
+        "open_count": 0,
         "upcoming_count": 9,
-        "closed_count": 12,
+        "closed_count": 10,
         "canceled_count": 0,
         "postponed_count": 0,
         "unscheduled_count": 0,
         "continuous_count": 0,
-        "actionable_count": 10,
-        "open_exam_numbers": [
-          "7018"
-        ],
+        "actionable_count": 9,
+        "open_exam_numbers": [],
         "upcoming_exam_numbers": [
           "7000",
           "7025",
@@ -247,11 +242,8 @@
           "6081",
           "6082",
           "6092",
-          "6125",
-          "6126",
           "6550",
           "7000",
-          "7018",
           "7025",
           "7026",
           "7031",
@@ -265,28 +257,24 @@
       "engineering-construction": {
         "id": "engineering-construction",
         "exam_count": 42,
-        "open_count": 6,
-        "upcoming_count": 14,
-        "closed_count": 22,
+        "open_count": 3,
+        "upcoming_count": 13,
+        "closed_count": 26,
         "canceled_count": 0,
         "postponed_count": 0,
         "unscheduled_count": 0,
         "continuous_count": 0,
-        "actionable_count": 20,
+        "actionable_count": 16,
         "open_exam_numbers": [
           "7006",
-          "7033",
-          "7056",
-          "7508",
-          "7522",
-          "7527"
+          "7041",
+          "7522"
         ],
         "upcoming_exam_numbers": [
           "7020",
           "7022",
           "7039",
           "7040",
-          "7041",
           "7042",
           "7043",
           "7061",
@@ -346,18 +334,19 @@
       "technology-science": {
         "id": "technology-science",
         "exam_count": 7,
-        "open_count": 0,
-        "upcoming_count": 4,
+        "open_count": 1,
+        "upcoming_count": 3,
         "closed_count": 3,
         "canceled_count": 0,
         "postponed_count": 0,
         "unscheduled_count": 0,
         "continuous_count": 0,
         "actionable_count": 4,
-        "open_exam_numbers": [],
+        "open_exam_numbers": [
+          "7065"
+        ],
         "upcoming_exam_numbers": [
           "7062",
-          "7065",
           "7068",
           "7538"
         ],
@@ -374,20 +363,19 @@
       },
       "community-social-services": {
         "id": "community-social-services",
-        "exam_count": 23,
+        "exam_count": 24,
         "open_count": 1,
-        "upcoming_count": 12,
-        "closed_count": 10,
-        "canceled_count": 0,
+        "upcoming_count": 10,
+        "closed_count": 12,
+        "canceled_count": 1,
         "postponed_count": 0,
         "unscheduled_count": 0,
         "continuous_count": 0,
-        "actionable_count": 13,
+        "actionable_count": 11,
         "open_exam_numbers": [
-          "7016"
+          "7501"
         ],
         "upcoming_exam_numbers": [
-          "7002",
           "7037",
           "7038",
           "7071",
@@ -395,7 +383,6 @@
           "7073",
           "7074",
           "7301",
-          "7501",
           "7511",
           "7518",
           "7541"
@@ -413,6 +400,7 @@
           "6532",
           "7002",
           "7016",
+          "7018",
           "7037",
           "7038",
           "7071",
@@ -430,20 +418,20 @@
       "administration-finance": {
         "id": "administration-finance",
         "exam_count": 29,
-        "open_count": 1,
-        "upcoming_count": 19,
-        "closed_count": 9,
+        "open_count": 2,
+        "upcoming_count": 17,
+        "closed_count": 10,
         "canceled_count": 0,
         "postponed_count": 0,
         "unscheduled_count": 0,
         "continuous_count": 0,
-        "actionable_count": 20,
+        "actionable_count": 19,
         "open_exam_numbers": [
-          "7023"
+          "7003",
+          "7502"
         ],
         "upcoming_exam_numbers": [
           "7001",
-          "7003",
           "7004",
           "7005",
           "7017",
@@ -454,7 +442,6 @@
           "7060",
           "7067",
           "7500",
-          "7502",
           "7503",
           "7504",
           "7505",
@@ -498,19 +485,21 @@
       "trades-operations": {
         "id": "trades-operations",
         "exam_count": 45,
-        "open_count": 4,
-        "upcoming_count": 30,
-        "closed_count": 11,
+        "open_count": 6,
+        "upcoming_count": 25,
+        "closed_count": 14,
         "canceled_count": 0,
         "postponed_count": 0,
         "unscheduled_count": 0,
         "continuous_count": 0,
-        "actionable_count": 34,
+        "actionable_count": 31,
         "open_exam_numbers": [
-          "7013",
-          "7028",
-          "7029",
-          "7070"
+          "7034",
+          "7035",
+          "7036",
+          "7070",
+          "7507",
+          "7539"
         ],
         "upcoming_exam_numbers": [
           "7008",
@@ -522,9 +511,6 @@
           "7021",
           "7027",
           "7030",
-          "7034",
-          "7035",
-          "7036",
           "7044",
           "7045",
           "7046",
@@ -534,14 +520,12 @@
           "7051",
           "7064",
           "7066",
-          "7507",
           "7512",
           "7513",
           "7521",
           "7525",
           "7526",
           "7536",
-          "7539",
           "7540"
         ],
         "continuous_exam_numbers": [],
@@ -611,11 +595,11 @@
       }
     },
     "summary": {
-      "exam_count": 228,
+      "exam_count": 226,
       "area_count": 8,
-      "tagged_non_other": 228,
-      "open_count": 16,
-      "upcoming_count": 128
+      "tagged_non_other": 226,
+      "open_count": 18,
+      "upcoming_count": 112
     }
   },
   "sources": [
@@ -623,10 +607,11 @@
       "id": "dcas-open-competitive",
       "name": "DCAS Open Competitive Exams for Anyone",
       "url": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page",
-      "verified_at": "2026-07-28",
+      "verified_at": "2026-09-05",
       "refresh_cadence": "Check daily while an application window is open; DCAS publishes a monthly schedule and may amend individual NOEs between releases.",
       "stale_after_days": 35,
-      "method": "The current DCAS table and each linked Notice of Examination were reviewed. This committed snapshot is required because nyc.gov sometimes blocks unattended requests from build networks."
+      "method": "The published schedule table is read directly and cross-checked against the OASys active-exam listing. Reviewed Notice of Examination prose from the previous snapshot is carried forward only while the exam and its filing window are unchanged.",
+      "fetched_at": "2026-09-05"
     },
     {
       "id": "dcas-annual-schedule",
@@ -634,7 +619,7 @@
       "dataset_id": "4ptz-hmtc",
       "url": "https://data.cityofnewyork.us/resource/4ptz-hmtc.json",
       "landing_page": "https://data.cityofnewyork.us/d/4ptz-hmtc",
-      "fetched_at": "2026-08-23",
+      "fetched_at": "2026-09-05",
       "data_current_as_of": "2026-07-22",
       "refresh_cadence": "DCAS says the public schedule is updated monthly; Open Data metadata says annual updates and quarterly data changes.",
       "stale_after_days": 95
@@ -644,7 +629,7 @@
       "name": "Civil Service List (Active)",
       "dataset_id": "vx8i-nprf",
       "url": "https://data.cityofnewyork.us/resource/vx8i-nprf.json",
-      "fetched_at": "2026-08-23",
+      "fetched_at": "2026-09-05",
       "refresh_cadence": "Daily",
       "stale_after_days": 3,
       "privacy": "Only aggregate counts are retained; candidate records and names are not copied."
@@ -655,7 +640,7 @@
       "dataset_id": "dg92-zbpx",
       "url": "https://data.cityofnewyork.us/resource/dg92-zbpx.json",
       "landing_page": "https://data.cityofnewyork.us/d/dg92-zbpx",
-      "fetched_at": "2026-08-23",
+      "fetched_at": "2026-09-05",
       "refresh_cadence": "Daily",
       "stale_after_days": 3,
       "role": "Negative control: keyword candidates are reviewed so unrelated contracts and uses of “examination” are not presented as civil-service exam announcements."
@@ -720,7 +705,7 @@
       "url": "https://a856-exams.nyc.gov/OASysWeb/api/Exam/GetActiveExams",
       "listing_page": "https://a856-exams.nyc.gov/OASysWeb/exams",
       "noe_url_pattern": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=:examId",
-      "fetched_at": "2026-08-23",
+      "fetched_at": "2026-09-05",
       "refresh_cadence": "Rebuild with staffing exams while application windows are open.",
       "stale_after_days": 3,
       "note": "OASys examId is not the DCAS exam number; join on examNumber from this listing."
@@ -739,21 +724,21 @@
   ],
   "source_checks": {
     "active_list": {
-      "candidate_rows": "403793",
-      "distinct_exams": "852",
-      "distinct_titles": "431",
-      "latest_established": "2026-08-19T00:00:00.000",
+      "candidate_rows": "403777",
+      "distinct_exams": "855",
+      "distinct_titles": "432",
+      "latest_established": "2026-08-26T00:00:00.000",
       "latest_extension": "2027-09-28T00:00:00.000"
     },
     "city_record": {
-      "candidate_rows": "184",
+      "candidate_rows": "185",
       "accepted_exam_announcements": 0,
       "finding": "The City Record dataset does not expose DCAS Notices of Examination as a notice section. DCAS schedule pages and NOEs are the authoritative application sources."
     },
     "list_aggregates": {
-      "distinct_exams": 852,
-      "total_list_rows_sum": 403793,
-      "latest_established": "2026-08-19"
+      "distinct_exams": 855,
+      "total_list_rows_sum": 403777,
+      "latest_established": "2026-08-26"
     },
     "list_depth_closed": {
       "count": 77,
@@ -761,28 +746,28 @@
     },
     "noe_fee_salary_densify": {
       "densify_records": 13,
-      "densify_applied": 13,
+      "densify_applied": 12,
       "fee_salary_non_null_before": {
-        "total": 228,
-        "both": 8,
-        "rate": 0.03508771929824561
+        "total": 226,
+        "both": 16,
+        "rate": 0.07079646017699115
       },
       "fee_salary_non_null_after": {
-        "total": 228,
-        "both": 21,
-        "rate": 0.09210526315789473
+        "total": 226,
+        "both": 28,
+        "rate": 0.12389380530973451
       }
     },
     "oasys_exam_map": {
       "source_id": "oasys-active-exams",
       "map_records": 18,
       "exams_deep_linked": 18,
-      "exams_landing": 210
+      "exams_landing": 208
     },
     "noe_differentiators": {
       "densify_records": 9,
-      "densify_applied": 9,
-      "exams_with_format": 9,
+      "densify_applied": 7,
+      "exams_with_format": 18,
       "corpus": {
         "field_stats": {
           "exam_format": {
@@ -859,8 +844,8 @@
     "interest_taxonomy": {
       "mapping_file": "interest_area_taxonomy.json",
       "area_count": 8,
-      "tagged_non_other": 228,
-      "exam_count": 228
+      "tagged_non_other": 226,
+      "exam_count": 226
     },
     "eligible_list_utilization": {
       "eligible": 228,
@@ -911,7 +896,7 @@
   "exam_cycle_coherence": {
     "metric": "exam_cycle_temporal_incoherence_count",
     "exam_cycle_temporal_incoherence_count": 0,
-    "exam_count": 228,
+    "exam_count": 226,
     "rate": 0,
     "incoherent_exam_numbers": []
   },
@@ -921,13 +906,13 @@
       "name": "Civil Service List (Active) — exam-level aggregates only",
       "dataset_id": "vx8i-nprf",
       "landing_page": "https://data.cityofnewyork.us/d/vx8i-nprf",
-      "fetched_at": "2026-08-23",
+      "fetched_at": "2026-09-05",
       "privacy": "Only exam-level counts and list dates are retained; candidate records and names are not copied."
     },
     "summary": {
-      "distinct_exams": 852,
-      "total_list_rows_sum": 403793,
-      "latest_established": "2026-08-19",
+      "distinct_exams": 855,
+      "total_list_rows_sum": 403777,
+      "latest_established": "2026-08-26",
       "exams_with_list_aggregate": 77
     }
   },
@@ -937,10 +922,10 @@
       "method": "exact_exam_number_zero_pad",
       "schedule_rows": 1271,
       "distinct_schedule_exams": 1271,
-      "distinct_list_aggregate_exams": 852,
-      "matched_pairs": 437,
+      "distinct_list_aggregate_exams": 855,
+      "matched_pairs": 441,
       "misses": {
-        "no_list_aggregate": 777,
+        "no_list_aggregate": 773,
         "missing_application_close": 6,
         "missing_established_date": 51,
         "established_before_application_close": 0
@@ -955,44 +940,44 @@
         "citywide": {
           "key": "citywide",
           "label": "citywide",
-          "n": 437,
+          "n": 441,
           "eligible": true,
-          "p10_days": 99,
+          "p10_days": 92,
           "p50_days": 281,
           "p90_days": 736,
           "median_months": 9,
           "train_from": "2021-05-05",
-          "train_to": "2026-08-19"
+          "train_to": "2026-08-26"
         },
         "open_competitive": {
           "key": "open_competitive",
           "label": "open competitive",
-          "n": 303,
+          "n": 304,
           "eligible": true,
           "p10_days": 92,
           "p50_days": 246,
           "p90_days": 757,
           "median_months": 8,
           "train_from": "2021-05-05",
-          "train_to": "2026-08-19"
+          "train_to": "2026-08-26"
         },
         "promotion": {
           "key": "promotion",
           "label": "promotion",
-          "n": 134,
+          "n": 137,
           "eligible": true,
-          "p10_days": 134,
+          "p10_days": 127,
           "p50_days": 358,
           "p90_days": 617,
           "median_months": 12,
           "train_from": "2021-05-26",
-          "train_to": "2026-07-15"
+          "train_to": "2026-08-26"
         }
       }
     },
     "backtest": {
       "protocol": "train establishment events through 2024; score lists established in 2025–2026 for exams already open at 2025-01-01",
-      "training_pairs": 282,
+      "training_pairs": 279,
       "scoring_pairs": 86,
       "scorecard": {
         "metric": "prediction_calibration",
@@ -32099,244 +32084,11 @@
       }
     },
     {
-      "exam_number": "6125",
-      "title_code": "53053",
-      "title": "Emergency Medical Specialist - EMT (Fire)",
-      "application_start": "2026-06-15",
-      "application_end": "2026-08-07",
-      "eligibility": "open_competitive",
-      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20266125000.pdf",
-      "fee": 30,
-      "fee_waiver": "Veterans, unemployed applicants, and applicants receiving public assistance or Supplemental Security Income may qualify under this NOE.",
-      "salary_min": 39386,
-      "salary_note": "Current minimum annual salary",
-      "summary": "Provide basic life support, emergency medical care, and ambulance transportation with FDNY.",
-      "qualifications": "A high school diploma or equivalent plus a valid New York State EMT-Basic or EMT-Paramedic certificate by the deadline stated in the NOE.",
-      "test_method": "See the NOE for every test part and deadline",
-      "interest_area": "health-care",
-      "schedule_status": "scheduled",
-      "sources": [
-        "dcas-open-competitive",
-        "dcas-noe",
-        "dcas-noe-differentiators",
-        "oasys_noe_html",
-        "oasys-active-exams"
-      ],
-      "exam_format": "education_experience",
-      "residency": "City residency is not required for this position.",
-      "residency_required": false,
-      "has_selective_certification": true,
-      "selective_certification_summary": "Selective Certification for Special Experience: If you have the experience in the areas listed below, you may be considered for appointment to positions requiring this experience through a process cal",
-      "card_leads": [
-        {
-          "key": "salary_min",
-          "value": 39386
-        },
-        {
-          "key": "qualifications",
-          "value": "for the examination before submitting your application. If you are deemed \"Not Qualified,\" your application fee will not be refunded and you will not receive a score. As per Section 54; of the Civil Service Law, the education requirement needed to qualify must be met by August 7, 2027. The certification requirement…"
-        }
-      ],
-      "salary_band": "under_45k",
-      "fee_level": "low",
-      "differentiator_provenance": {
-        "fee": {
-          "source": "noe_body",
-          "method": "labeled_application_fee",
-          "excerpt": "Application Fee: $30.00",
-          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9619"
-        },
-        "salary_min": {
-          "source": "noe_body",
-          "method": "labeled_minimum_salary",
-          "excerpt": "The current minimum salary is $39,386 per annum",
-          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9619"
-        },
-        "exam_format": {
-          "source": "oasys_get_active_exams",
-          "field": "examParts.partTypeCode",
-          "codes": [
-            "EEE"
-          ]
-        },
-        "qualifications": {
-          "source": "noe_body",
-          "method": "education_experience_or_how_to_qualify",
-          "excerpt": "education and experience requirements for the examination before submitting your application. If you are deemed \"Not Q",
-          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9619"
-        },
-        "residency": {
-          "source": "noe_body",
-          "method": "residency_requirement_advisory",
-          "excerpt": "Residency Requirement : City residency is not required for this position.",
-          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9619"
-        },
-        "has_selective_certification": {
-          "source": "noe_body",
-          "method": "selective_certification_heading",
-          "excerpt": "Selective Certification for Special Experience: If you have the experience in the areas listed below, you may be considered for appointment to positions requiring this experience through a process cal",
-          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9619"
-        },
-        "summary": {
-          "source": "noe_body",
-          "method": "what_the_job_involves",
-          "excerpt": "WHAT THE JOB INVOLVES: Emergency Medical Specialists - EMTs, under general supervision, perform tasks such as the following: provide timely, professional, pre-hospital emergency medical care/Basic Lif",
-          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9619"
-        }
-      },
-      "fee_waiver_is_boilerplate": false,
-      "noe_differentiators": {
-        "densify_method": "oasys_noe_html_body",
-        "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9619",
-        "oasys_exam_id": "9619"
-      },
-      "outcome": null,
-      "outcome_gap": {
-        "class": "not_yet_ingested",
-        "pending_stage": "list_establishment",
-        "public_sources": [
-          "dcas-annual-exam-outcomes",
-          "dcas-active-civil-service-list"
-        ]
-      },
-      "list_aggregate": null,
-      "fee_salary_gap": null,
-      "oasys_exam_id": "9619",
-      "oasys_noe_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9619",
-      "application_handoff_mode": "deep",
-      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9619",
-      "list_establishment_forecast": {
-        "method": "phase_duration_ecdf",
-        "target_event_kind": "staffing.list_established",
-        "cohort": "open_competitive",
-        "n": 303,
-        "since_year": 2018,
-        "p10_days": 92,
-        "p50_days": 246,
-        "p90_days": 757,
-        "median_months": 8,
-        "public_projection": "cohort_statistic_only",
-        "prediction": null
-      }
-    },
-    {
-      "exam_number": "6126",
-      "title_code": "53052",
-      "title": "Emergency Medical Specialist Trainee",
-      "application_start": "2026-06-15",
-      "application_end": "2026-08-07",
-      "eligibility": "open_competitive",
-      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20266126000.pdf",
-      "fee": 30,
-      "fee_waiver": "Veterans, unemployed applicants, and applicants receiving public assistance or Supplemental Security Income may qualify under this NOE.",
-      "salary_min": 36330,
-      "salary_note": "Current minimum annual salary",
-      "summary": "Train with FDNY to become an emergency medical technician and serve patients across the city.",
-      "qualifications": "A high school diploma or equivalent plus one of the work, military, college-credit, or approved EMS-coursework paths listed in the NOE.",
-      "test_method": "See the NOE for every test part and deadline",
-      "interest_area": "health-care",
-      "schedule_status": "scheduled",
-      "sources": [
-        "dcas-open-competitive",
-        "dcas-noe",
-        "dcas-noe-differentiators",
-        "oasys_noe_html",
-        "oasys-active-exams"
-      ],
-      "exam_format": "education_experience",
-      "residency": "Under New York City Administrative Code Section 12-120, you might need to be a resident of the City of New York within 90 days of the date you are appointed to this position.",
-      "card_leads": [
-        {
-          "key": "salary_min",
-          "value": 36330
-        },
-        {
-          "key": "qualifications",
-          "value": "for the examination before submitting your application. If you are deemed \"Not Qualified,\" your application fee will not be refunded and you will not receive a score. As per Section 54; of the Civil Service Law, the education requirement needed to qualify must be met by August 7, 2027. The experience requirement nee…"
-        }
-      ],
-      "salary_band": "under_45k",
-      "fee_level": "low",
-      "differentiator_provenance": {
-        "fee": {
-          "source": "noe_body",
-          "method": "labeled_application_fee",
-          "excerpt": "Application Fee: $30.00",
-          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9620"
-        },
-        "salary_min": {
-          "source": "noe_body",
-          "method": "labeled_minimum_salary",
-          "excerpt": "The current minimum salary is $36,330 per annum",
-          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9620"
-        },
-        "exam_format": {
-          "source": "oasys_get_active_exams",
-          "field": "examParts.partTypeCode",
-          "codes": [
-            "EEE"
-          ]
-        },
-        "qualifications": {
-          "source": "noe_body",
-          "method": "education_experience_or_how_to_qualify",
-          "excerpt": "education and experience requirements for the examination before submitting your application. If you are deemed \"Not Q",
-          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9620"
-        },
-        "residency": {
-          "source": "noe_body",
-          "method": "residency_requirement_advisory",
-          "excerpt": "Residency Requirement Advisory: Under New York City Administrative Code Section 12-120, you might need to be a resident of the City of New York within 90 days of the date you are appointed to this position.",
-          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9620"
-        },
-        "summary": {
-          "source": "noe_body",
-          "method": "what_the_job_involves",
-          "excerpt": "WHAT THE JOB INVOLVES: Emergency Medical Specialist Trainees attend a training program conducted by the New York City Fire Department. Emergency Medical Specialist Trainees receive Emergency Medical T",
-          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9620"
-        }
-      },
-      "fee_waiver_is_boilerplate": false,
-      "noe_differentiators": {
-        "densify_method": "oasys_noe_html_body",
-        "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9620",
-        "oasys_exam_id": "9620"
-      },
-      "outcome": null,
-      "outcome_gap": {
-        "class": "not_yet_ingested",
-        "pending_stage": "list_establishment",
-        "public_sources": [
-          "dcas-annual-exam-outcomes",
-          "dcas-active-civil-service-list"
-        ]
-      },
-      "list_aggregate": null,
-      "fee_salary_gap": null,
-      "oasys_exam_id": "9620",
-      "oasys_noe_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9620",
-      "application_handoff_mode": "deep",
-      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9620",
-      "list_establishment_forecast": {
-        "method": "phase_duration_ecdf",
-        "target_event_kind": "staffing.list_established",
-        "cohort": "open_competitive",
-        "n": 303,
-        "since_year": 2018,
-        "p10_days": 92,
-        "p50_days": 246,
-        "p90_days": 757,
-        "median_months": 8,
-        "public_projection": "cohort_statistic_only",
-        "prediction": null
-      }
-    },
-    {
       "exam_number": "7006",
       "title_code": "20210",
       "title": "Assistant Civil Engineer",
       "application_start": "2026-07-01",
-      "application_end": "2026-08-25",
+      "application_end": "2026-09-11",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
       "sources": [
@@ -32356,7 +32108,6 @@
       "summary": "Help design, inspect, and supervise City construction and infrastructure work.",
       "qualifications": "The NOE lists several paths, including a civil engineering degree plus experience or specified graduate study.",
       "test_method": "Education and experience exam",
-      "amendment": "The July 15 amended NOE extended the application deadline to August 25.",
       "exam_format": "education_experience",
       "education_level": "bachelors",
       "no_experience_required": false,
@@ -32449,7 +32200,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -32515,7 +32266,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -32530,16 +32281,15 @@
       "title_code": "92508",
       "title": "Automotive Service Worker",
       "application_start": "2026-07-01",
-      "application_end": "2026-08-25",
+      "application_end": "2026-07-21",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
       "sources": [
         "dcas-annual-schedule",
-        "dcas-open-competitive",
         "dcas-noe",
+        "dcas-open-competitive",
         "dcas-noe-differentiators",
-        "oasys_noe_html",
-        "oasys-active-exams"
+        "oasys_noe_html"
       ],
       "interest_area": "trades-operations",
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277013000.pdf",
@@ -32550,7 +32300,6 @@
       "summary": "Inspect, maintain, service, and help repair City cars, trucks, and other vehicles.",
       "qualifications": "Two years of automotive maintenance experience, relevant trade or technical education, an associate degree in automotive technology, or an allowed combination.",
       "test_method": "Education and experience exam",
-      "amendment": "The July 15 amended NOE extended the application deadline to August 25.",
       "exam_format": "education_experience",
       "education_level": "high_school",
       "no_experience_required": false,
@@ -32634,15 +32383,13 @@
       },
       "list_aggregate": null,
       "fee_salary_gap": null,
-      "oasys_exam_id": "9628",
-      "oasys_noe_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9628",
-      "application_handoff_mode": "deep",
-      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9628",
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -32657,16 +32404,15 @@
       "title_code": "52304",
       "title": "Caseworker",
       "application_start": "2026-07-01",
-      "application_end": "2026-08-25",
+      "application_end": "2026-07-21",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
       "sources": [
         "dcas-annual-schedule",
-        "dcas-open-competitive",
         "dcas-noe",
+        "dcas-open-competitive",
         "dcas-noe-differentiators",
-        "oasys_noe_html",
-        "oasys-active-exams"
+        "oasys_noe_html"
       ],
       "interest_area": "community-social-services",
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277016000.pdf",
@@ -32761,15 +32507,13 @@
       },
       "list_aggregate": null,
       "fee_salary_gap": null,
-      "oasys_exam_id": "9629",
-      "oasys_noe_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9629",
-      "application_handoff_mode": "deep",
-      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9629",
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -32782,20 +32526,19 @@
     {
       "exam_number": "7018",
       "title_code": "523400",
-      "title": "Caseworker (NYC Health + Hospitals)",
+      "title": "Caseworker (NYC H+H)",
       "application_start": "2026-07-01",
       "application_end": "2026-08-25",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
       "sources": [
         "dcas-annual-schedule",
-        "dcas-open-competitive",
         "dcas-noe",
+        "dcas-open-competitive",
         "dcas-noe-differentiators",
-        "oasys_noe_html",
-        "oasys-active-exams"
+        "oasys_noe_html"
       ],
-      "interest_area": "health-care",
+      "interest_area": "community-social-services",
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277018000.pdf",
       "fee": 68,
       "fee_waiver": "Veterans, unemployed applicants, NYC high school students, first-time test takers, and applicants receiving public assistance or Supplemental Security Income may qualify.",
@@ -32888,15 +32631,13 @@
       },
       "list_aggregate": null,
       "fee_salary_gap": null,
-      "oasys_exam_id": "9631",
-      "oasys_noe_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9631",
-      "application_handoff_mode": "deep",
-      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9631",
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -32949,9 +32690,9 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "promotion",
-        "n": 134,
+        "n": 137,
         "since_year": 2018,
-        "p10_days": 134,
+        "p10_days": 127,
         "p50_days": 358,
         "p90_days": 617,
         "median_months": 12,
@@ -33002,9 +32743,9 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "promotion",
-        "n": 134,
+        "n": 137,
         "since_year": 2018,
-        "p10_days": 134,
+        "p10_days": 127,
         "p50_days": 358,
         "p90_days": 617,
         "median_months": 12,
@@ -33068,7 +32809,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -33090,27 +32831,26 @@
       "title_code": "60817",
       "title": "School Safety Agent",
       "application_start": "2026-07-01",
-      "application_end": "2026-08-25",
+      "application_end": "2026-07-21",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
       "sources": [
         "dcas-annual-schedule",
-        "dcas-open-competitive",
         "dcas-noe",
+        "dcas-open-competitive",
         "dcas-noe-differentiators",
-        "oasys_noe_html",
-        "oasys-active-exams"
+        "oasys_noe_html"
       ],
       "interest_area": "public-safety",
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277323000.pdf",
       "fee": 61,
       "fee_waiver": "Veterans, unemployed applicants, NYC high school students, first-time test takers, and applicants receiving public assistance or Supplemental Security Income may qualify.",
       "salary_min": 40480,
+      "salary_max": 58345,
       "salary_note": "Current minimum annual salary; the NOE lists increases through five years",
       "summary": "Help keep public school buildings safe, assist visitors and students, and respond to incidents.",
       "qualifications": "A high school diploma or equivalent. The NOE also lists age, citizenship, residency, screening, and appointment requirements.",
       "test_method": "Multiple-choice testing is expected to begin October 20, 2026",
-      "salary_max": 58345,
       "exam_format": "multiple_choice",
       "has_selective_certification": true,
       "selective_certification_summary": "Selective Certification for Assistant School Safety Agent Program (ASA): If you have successfully completed at least six (6) months of satisfactory, full-time experience as an Assistant School Safety ",
@@ -33186,15 +32926,13 @@
       },
       "list_aggregate": null,
       "fee_salary_gap": null,
-      "oasys_exam_id": "9634",
-      "oasys_noe_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9634",
-      "application_handoff_mode": "deep",
-      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9634",
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -33221,11 +32959,10 @@
       "schedule_status": "scheduled",
       "sources": [
         "dcas-annual-schedule",
-        "dcas-open-competitive",
         "dcas-noe",
+        "dcas-open-competitive",
         "dcas-noe-differentiators",
-        "oasys_noe_html",
-        "oasys-active-exams"
+        "oasys_noe_html"
       ],
       "interest_area": "public-safety",
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277331000.pdf",
@@ -33325,15 +33062,13 @@
       },
       "list_aggregate": null,
       "fee_salary_gap": null,
-      "oasys_exam_id": "9635",
-      "oasys_noe_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9635",
-      "application_handoff_mode": "deep",
-      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9635",
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -33363,8 +33098,7 @@
         "dcas-noe",
         "dcas-noe-fee-salary-densify",
         "dcas-noe-differentiators",
-        "oasys_noe_html",
-        "oasys-active-exams"
+        "oasys_noe_html"
       ],
       "interest_area": "public-safety",
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277311000.pdf",
@@ -33480,15 +33214,13 @@
       },
       "list_aggregate": null,
       "fee_salary_gap": null,
-      "oasys_exam_id": "9646",
-      "oasys_noe_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9646",
-      "application_handoff_mode": "deep",
-      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9646",
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -33514,72 +33246,9 @@
       "eligibility": "promotion",
       "schedule_status": "scheduled",
       "sources": [
-        "dcas-annual-schedule",
-        "oasys-active-exams"
-      ],
-      "interest_area": "engineering-construction",
-      "card_leads": [],
-      "salary_band": "unknown",
-      "fee_level": "unknown",
-      "outcome": null,
-      "outcome_gap": {
-        "class": "not_yet_ingested",
-        "pending_stage": "list_establishment",
-        "public_sources": [
-          "dcas-annual-exam-outcomes",
-          "dcas-active-civil-service-list"
-        ]
-      },
-      "list_aggregate": null,
-      "fee_salary_gap": {
-        "class": "not_yet_ingested",
-        "missing": [
-          "fee",
-          "salary_min"
-        ],
-        "public_source": {
-          "name": "DCAS open-competitive exam schedule and Notices of Examination",
-          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
-          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
-        }
-      },
-      "oasys_exam_id": "9636",
-      "oasys_noe_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9636",
-      "application_handoff_mode": "deep",
-      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9636",
-      "list_establishment_forecast": {
-        "method": "phase_duration_ecdf",
-        "target_event_kind": "staffing.list_established",
-        "cohort": "promotion",
-        "n": 134,
-        "since_year": 2018,
-        "p10_days": 134,
-        "p50_days": 358,
-        "p90_days": 617,
-        "median_months": 12,
-        "public_projection": "cohort_statistic_only",
-        "prediction": null
-      },
-      "eligible_list_utilization": {
-        "status": "linked",
-        "row_count": 2,
-        "source_id": "dcas-eligible-list-utilization",
-        "dataset_id": "qjzt-ytn9",
-        "vintage": "2026-08-05"
-      }
-    },
-    {
-      "exam_number": "7509",
-      "title_code": "60821",
-      "title": "Associate Supervisor of School Security (Prom)",
-      "application_start": "2026-08-05",
-      "application_end": "2026-08-25",
-      "eligibility": "promotion",
-      "schedule_status": "scheduled",
-      "sources": [
         "dcas-annual-schedule"
       ],
-      "interest_area": "public-safety",
+      "interest_area": "engineering-construction",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -33611,9 +33280,72 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "promotion",
-        "n": 134,
+        "n": 137,
         "since_year": 2018,
-        "p10_days": 134,
+        "p10_days": 127,
+        "p50_days": 358,
+        "p90_days": 617,
+        "median_months": 12,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
+      },
+      "eligible_list_utilization": {
+        "status": "linked",
+        "row_count": 2,
+        "source_id": "dcas-eligible-list-utilization",
+        "dataset_id": "qjzt-ytn9",
+        "vintage": "2026-08-05"
+      }
+    },
+    {
+      "exam_number": "7509",
+      "title_code": "60821",
+      "title": "Associate Supervisor of School Security (Prom)",
+      "application_start": "2026-08-05",
+      "application_end": "2026-08-25",
+      "eligibility": "promotion",
+      "schedule_status": "scheduled",
+      "sources": [
+        "dcas-annual-schedule",
+        "oasys-active-exams"
+      ],
+      "interest_area": "public-safety",
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
+      },
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      },
+      "oasys_exam_id": "9637",
+      "oasys_noe_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9637",
+      "application_handoff_mode": "deep",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9637",
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "promotion",
+        "n": 137,
+        "since_year": 2018,
+        "p10_days": 127,
         "p50_days": 358,
         "p90_days": 617,
         "median_months": 12,
@@ -33630,8 +33362,7 @@
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
       "sources": [
-        "dcas-annual-schedule",
-        "oasys-active-exams"
+        "dcas-annual-schedule"
       ],
       "interest_area": "administration-finance",
       "card_leads": [],
@@ -33659,15 +33390,13 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
-      "oasys_exam_id": "9638",
-      "oasys_noe_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9638",
-      "application_handoff_mode": "deep",
-      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9638",
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -33693,8 +33422,7 @@
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
       "sources": [
-        "dcas-annual-schedule",
-        "oasys-active-exams"
+        "dcas-annual-schedule"
       ],
       "interest_area": "trades-operations",
       "card_leads": [],
@@ -33722,15 +33450,13 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
-      "oasys_exam_id": "9639",
-      "oasys_noe_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9639",
-      "application_handoff_mode": "deep",
-      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9639",
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -33749,8 +33475,7 @@
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
       "sources": [
-        "dcas-annual-schedule",
-        "oasys-active-exams"
+        "dcas-annual-schedule"
       ],
       "interest_area": "trades-operations",
       "card_leads": [],
@@ -33778,15 +33503,13 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
-      "oasys_exam_id": "9640",
-      "oasys_noe_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9640",
-      "application_handoff_mode": "deep",
-      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9640",
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -33812,8 +33535,7 @@
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
       "sources": [
-        "dcas-annual-schedule",
-        "oasys-active-exams"
+        "dcas-annual-schedule"
       ],
       "interest_area": "engineering-construction",
       "card_leads": [],
@@ -33841,15 +33563,13 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
-      "oasys_exam_id": "9641",
-      "oasys_noe_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9641",
-      "application_handoff_mode": "deep",
-      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9641",
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -33905,9 +33625,9 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "promotion",
-        "n": 134,
+        "n": 137,
         "since_year": 2018,
-        "p10_days": 134,
+        "p10_days": 127,
         "p50_days": 358,
         "p90_days": 617,
         "median_months": 12,
@@ -33924,8 +33644,7 @@
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
       "sources": [
-        "dcas-annual-schedule",
-        "oasys-active-exams"
+        "dcas-annual-schedule"
       ],
       "interest_area": "engineering-construction",
       "card_leads": [],
@@ -33953,15 +33672,13 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
-      "oasys_exam_id": "9643",
-      "oasys_noe_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9643",
-      "application_handoff_mode": "deep",
-      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9643",
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -33980,8 +33697,7 @@
       "eligibility": "promotion",
       "schedule_status": "scheduled",
       "sources": [
-        "dcas-annual-schedule",
-        "oasys-active-exams"
+        "dcas-annual-schedule"
       ],
       "interest_area": "engineering-construction",
       "card_leads": [],
@@ -34009,17 +33725,15 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
-      "oasys_exam_id": "9644",
-      "oasys_noe_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9644",
-      "application_handoff_mode": "deep",
-      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9644",
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "promotion",
-        "n": 134,
+        "n": 137,
         "since_year": 2018,
-        "p10_days": 134,
+        "p10_days": 127,
         "p50_days": 358,
         "p90_days": 617,
         "median_months": 12,
@@ -34044,12 +33758,24 @@
       "schedule_status": "scheduled",
       "sources": [
         "dcas-annual-schedule",
+        "dcas-open-competitive",
+        "dcas-noe",
         "oasys-active-exams"
       ],
       "interest_area": "trades-operations",
-      "card_leads": [],
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277070000.pdf",
+      "fee": 88,
+      "test_method": "Multiple-choice test",
+      "salary_publication": "The notice states a rate for this title rather than a yearly minimum salary.",
+      "exam_format": "multiple_choice",
+      "card_leads": [
+        {
+          "key": "fee",
+          "value": 88
+        }
+      ],
       "salary_band": "unknown",
-      "fee_level": "unknown",
+      "fee_level": "high",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -34061,16 +33787,11 @@
       },
       "list_aggregate": null,
       "fee_salary_gap": {
-        "class": "not_yet_ingested",
+        "class": "not_published",
         "missing": [
-          "fee",
           "salary_min"
         ],
-        "public_source": {
-          "name": "DCAS open-competitive exam schedule and Notices of Examination",
-          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
-          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
-        }
+        "would_appear_in": "the Notice of Examination if DCAS stated the amount"
       },
       "oasys_exam_id": "9645",
       "oasys_noe_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9645",
@@ -34080,7 +33801,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -34100,11 +33821,16 @@
       "schedule_status": "scheduled",
       "sources": [
         "dcas-annual-schedule",
+        "dcas-open-competitive",
         "dcas-noe",
-        "dcas-noe-fee-salary-densify"
+        "oasys-active-exams"
       ],
       "interest_area": "public-safety",
-      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277311000.pdf",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277313000.pdf",
+      "fee": 0,
+      "salary_min": 55942,
+      "salary_max": 109352,
+      "salary_note": "Current minimum annual salary",
       "card_leads": [
         {
           "key": "fee",
@@ -34115,11 +33841,6 @@
           "value": 55942
         }
       ],
-      "fee": 0,
-      "salary_min": 55942,
-      "salary_max": 109352,
-      "salary_note": "Current minimum annual salary",
-      "fee_salary_densify": "noe_pdf_body_multi_exam",
       "salary_band": "45k_60k",
       "fee_level": "none",
       "outcome": null,
@@ -34133,73 +33854,15 @@
       },
       "list_aggregate": null,
       "fee_salary_gap": null,
-      "official_application_url": "https://www.nyc.gov/examsforjobs",
-      "application_handoff_mode": "landing",
+      "oasys_exam_id": "9650",
+      "oasys_noe_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9650",
+      "application_handoff_mode": "deep",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9650",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
-        "since_year": 2018,
-        "p10_days": 92,
-        "p50_days": 246,
-        "p90_days": 757,
-        "median_months": 8,
-        "public_projection": "cohort_statistic_only",
-        "prediction": null
-      },
-      "eligible_list_utilization": {
-        "status": "linked",
-        "row_count": 3,
-        "source_id": "dcas-eligible-list-utilization",
-        "dataset_id": "qjzt-ytn9",
-        "vintage": "2026-08-05"
-      }
-    },
-    {
-      "exam_number": "7002",
-      "title_code": "83006",
-      "title": "Administrative Housing Development Specialist",
-      "application_start": "2026-09-02",
-      "application_end": "2026-09-22",
-      "eligibility": "open_competitive",
-      "schedule_status": "scheduled",
-      "sources": [
-        "dcas-annual-schedule"
-      ],
-      "interest_area": "community-social-services",
-      "card_leads": [],
-      "salary_band": "unknown",
-      "fee_level": "unknown",
-      "outcome": null,
-      "outcome_gap": {
-        "class": "not_yet_ingested",
-        "pending_stage": "list_establishment",
-        "public_sources": [
-          "dcas-annual-exam-outcomes",
-          "dcas-active-civil-service-list"
-        ]
-      },
-      "list_aggregate": null,
-      "fee_salary_gap": {
-        "class": "not_yet_ingested",
-        "missing": [
-          "fee",
-          "salary_min"
-        ],
-        "public_source": {
-          "name": "DCAS open-competitive exam schedule and Notices of Examination",
-          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
-          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
-        }
-      },
-      "official_application_url": "https://www.nyc.gov/examsforjobs",
-      "application_handoff_mode": "landing",
-      "list_establishment_forecast": {
-        "method": "phase_duration_ecdf",
-        "target_event_kind": "staffing.list_established",
-        "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -34259,9 +33922,9 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "promotion",
-        "n": 134,
+        "n": 137,
         "since_year": 2018,
-        "p10_days": 134,
+        "p10_days": 127,
         "p50_days": 358,
         "p90_days": 617,
         "median_months": 12,
@@ -34285,12 +33948,25 @@
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
       "sources": [
-        "dcas-annual-schedule"
+        "dcas-annual-schedule",
+        "dcas-open-competitive",
+        "dcas-noe",
+        "oasys-active-exams"
       ],
       "interest_area": "administration-finance",
-      "card_leads": [],
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277003000.pdf",
+      "fee": 82,
+      "test_method": "Education and experience exam",
+      "salary_publication": "The notice does not state a minimum annual salary for this title.",
+      "exam_format": "education_experience",
+      "card_leads": [
+        {
+          "key": "fee",
+          "value": 82
+        }
+      ],
       "salary_band": "unknown",
-      "fee_level": "unknown",
+      "fee_level": "high",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -34302,24 +33978,21 @@
       },
       "list_aggregate": null,
       "fee_salary_gap": {
-        "class": "not_yet_ingested",
+        "class": "not_published",
         "missing": [
-          "fee",
           "salary_min"
         ],
-        "public_source": {
-          "name": "DCAS open-competitive exam schedule and Notices of Examination",
-          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
-          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
-        }
+        "would_appear_in": "the Notice of Examination if DCAS stated the amount"
       },
-      "official_application_url": "https://www.nyc.gov/examsforjobs",
-      "application_handoff_mode": "landing",
+      "oasys_exam_id": "9653",
+      "oasys_noe_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9653",
+      "application_handoff_mode": "deep",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9653",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -34345,7 +34018,8 @@
       "eligibility": "promotion",
       "schedule_status": "scheduled",
       "sources": [
-        "dcas-annual-schedule"
+        "dcas-annual-schedule",
+        "oasys-active-exams"
       ],
       "interest_area": "administration-finance",
       "card_leads": [],
@@ -34373,15 +34047,17 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
-      "official_application_url": "https://www.nyc.gov/examsforjobs",
-      "application_handoff_mode": "landing",
+      "oasys_exam_id": "9654",
+      "oasys_noe_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9654",
+      "application_handoff_mode": "deep",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9654",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "promotion",
-        "n": 134,
+        "n": 137,
         "since_year": 2018,
-        "p10_days": 134,
+        "p10_days": 127,
         "p50_days": 358,
         "p90_days": 617,
         "median_months": 12,
@@ -34405,7 +34081,8 @@
       "eligibility": "promotion",
       "schedule_status": "scheduled",
       "sources": [
-        "dcas-annual-schedule"
+        "dcas-annual-schedule",
+        "oasys-active-exams"
       ],
       "interest_area": "trades-operations",
       "card_leads": [],
@@ -34433,15 +34110,17 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
-      "official_application_url": "https://www.nyc.gov/examsforjobs",
-      "application_handoff_mode": "landing",
+      "oasys_exam_id": "9655",
+      "oasys_noe_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9655",
+      "application_handoff_mode": "deep",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9655",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "promotion",
-        "n": 134,
+        "n": 137,
         "since_year": 2018,
-        "p10_days": 134,
+        "p10_days": 127,
         "p50_days": 358,
         "p90_days": 617,
         "median_months": 12,
@@ -34461,16 +34140,31 @@
       "title_code": "70410",
       "title": "Correction Officer",
       "application_start": "2026-09-02",
-      "application_end": "2026-09-22",
+      "application_end": "2026-10-27",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
       "sources": [
-        "dcas-annual-schedule"
+        "dcas-annual-schedule",
+        "dcas-open-competitive",
+        "dcas-noe",
+        "oasys-active-exams"
       ],
       "interest_area": "public-safety",
-      "card_leads": [],
-      "salary_band": "unknown",
-      "fee_level": "unknown",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277302000.pdf",
+      "fee": 0,
+      "salary_min": 56838,
+      "salary_max": 109352,
+      "salary_note": "Current minimum annual salary",
+      "test_method": "Multiple-choice test",
+      "exam_format": "multiple_choice",
+      "card_leads": [
+        {
+          "key": "fee",
+          "value": 0
+        }
+      ],
+      "salary_band": "45k_60k",
+      "fee_level": "none",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -34481,25 +34175,16 @@
         ]
       },
       "list_aggregate": null,
-      "fee_salary_gap": {
-        "class": "not_yet_ingested",
-        "missing": [
-          "fee",
-          "salary_min"
-        ],
-        "public_source": {
-          "name": "DCAS open-competitive exam schedule and Notices of Examination",
-          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
-          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
-        }
-      },
-      "official_application_url": "https://www.nyc.gov/examsforjobs",
-      "application_handoff_mode": "landing",
+      "fee_salary_gap": null,
+      "oasys_exam_id": "9656",
+      "oasys_noe_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9656",
+      "application_handoff_mode": "deep",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9656",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -34525,12 +34210,26 @@
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
       "sources": [
-        "dcas-annual-schedule"
+        "dcas-annual-schedule",
+        "dcas-open-competitive",
+        "dcas-noe",
+        "oasys-active-exams"
       ],
       "interest_area": "trades-operations",
-      "card_leads": [],
-      "salary_band": "unknown",
-      "fee_level": "unknown",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277034000.pdf",
+      "fee": 68,
+      "salary_min": 48154,
+      "salary_note": "Current minimum annual salary",
+      "test_method": "Education and experience exam",
+      "exam_format": "education_experience",
+      "card_leads": [
+        {
+          "key": "fee",
+          "value": 68
+        }
+      ],
+      "salary_band": "45k_60k",
+      "fee_level": "mid",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -34541,25 +34240,16 @@
         ]
       },
       "list_aggregate": null,
-      "fee_salary_gap": {
-        "class": "not_yet_ingested",
-        "missing": [
-          "fee",
-          "salary_min"
-        ],
-        "public_source": {
-          "name": "DCAS open-competitive exam schedule and Notices of Examination",
-          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
-          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
-        }
-      },
-      "official_application_url": "https://www.nyc.gov/examsforjobs",
-      "application_handoff_mode": "landing",
+      "fee_salary_gap": null,
+      "oasys_exam_id": "9657",
+      "oasys_noe_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9657",
+      "application_handoff_mode": "deep",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9657",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -34578,12 +34268,26 @@
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
       "sources": [
-        "dcas-annual-schedule"
+        "dcas-annual-schedule",
+        "dcas-open-competitive",
+        "dcas-noe",
+        "oasys-active-exams"
       ],
       "interest_area": "trades-operations",
-      "card_leads": [],
-      "salary_band": "unknown",
-      "fee_level": "unknown",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277035000.pdf",
+      "fee": 54,
+      "salary_min": 39922,
+      "salary_note": "Current minimum annual salary",
+      "test_method": "Education and experience exam",
+      "exam_format": "education_experience",
+      "card_leads": [
+        {
+          "key": "fee",
+          "value": 54
+        }
+      ],
+      "salary_band": "under_45k",
+      "fee_level": "mid",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -34594,25 +34298,16 @@
         ]
       },
       "list_aggregate": null,
-      "fee_salary_gap": {
-        "class": "not_yet_ingested",
-        "missing": [
-          "fee",
-          "salary_min"
-        ],
-        "public_source": {
-          "name": "DCAS open-competitive exam schedule and Notices of Examination",
-          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
-          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
-        }
-      },
-      "official_application_url": "https://www.nyc.gov/examsforjobs",
-      "application_handoff_mode": "landing",
+      "fee_salary_gap": null,
+      "oasys_exam_id": "9658",
+      "oasys_noe_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9658",
+      "application_handoff_mode": "deep",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9658",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -34638,12 +34333,26 @@
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
       "sources": [
-        "dcas-annual-schedule"
+        "dcas-annual-schedule",
+        "dcas-open-competitive",
+        "dcas-noe",
+        "oasys-active-exams"
       ],
       "interest_area": "trades-operations",
-      "card_leads": [],
-      "salary_band": "unknown",
-      "fee_level": "unknown",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277036000.pdf",
+      "fee": 68,
+      "salary_min": 50458,
+      "salary_note": "Current minimum annual salary",
+      "test_method": "Education and experience exam",
+      "exam_format": "education_experience",
+      "card_leads": [
+        {
+          "key": "fee",
+          "value": 68
+        }
+      ],
+      "salary_band": "45k_60k",
+      "fee_level": "mid",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -34654,25 +34363,16 @@
         ]
       },
       "list_aggregate": null,
-      "fee_salary_gap": {
-        "class": "not_yet_ingested",
-        "missing": [
-          "fee",
-          "salary_min"
-        ],
-        "public_source": {
-          "name": "DCAS open-competitive exam schedule and Notices of Examination",
-          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
-          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
-        }
-      },
-      "official_application_url": "https://www.nyc.gov/examsforjobs",
-      "application_handoff_mode": "landing",
+      "fee_salary_gap": null,
+      "oasys_exam_id": "9659",
+      "oasys_noe_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9659",
+      "application_handoff_mode": "deep",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9659",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -34698,12 +34398,26 @@
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
       "sources": [
-        "dcas-annual-schedule"
+        "dcas-annual-schedule",
+        "dcas-open-competitive",
+        "dcas-noe",
+        "oasys-active-exams"
       ],
       "interest_area": "engineering-construction",
-      "card_leads": [],
-      "salary_band": "unknown",
-      "fee_level": "unknown",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277041000.pdf",
+      "fee": 68,
+      "salary_min": 57717,
+      "salary_note": "Current minimum annual salary",
+      "test_method": "Multiple-choice test",
+      "exam_format": "multiple_choice",
+      "card_leads": [
+        {
+          "key": "fee",
+          "value": 68
+        }
+      ],
+      "salary_band": "45k_60k",
+      "fee_level": "mid",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -34714,25 +34428,16 @@
         ]
       },
       "list_aggregate": null,
-      "fee_salary_gap": {
-        "class": "not_yet_ingested",
-        "missing": [
-          "fee",
-          "salary_min"
-        ],
-        "public_source": {
-          "name": "DCAS open-competitive exam schedule and Notices of Examination",
-          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
-          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
-        }
-      },
-      "official_application_url": "https://www.nyc.gov/examsforjobs",
-      "application_handoff_mode": "landing",
+      "fee_salary_gap": null,
+      "oasys_exam_id": "9660",
+      "oasys_noe_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9660",
+      "application_handoff_mode": "deep",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9660",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -34754,16 +34459,30 @@
       "title_code": "71012",
       "title": "Police Communications Technician",
       "application_start": "2026-09-02",
-      "application_end": "2026-09-22",
+      "application_end": "2026-10-13",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
       "sources": [
-        "dcas-annual-schedule"
+        "dcas-annual-schedule",
+        "dcas-open-competitive",
+        "dcas-noe",
+        "oasys-active-exams"
       ],
       "interest_area": "public-safety",
-      "card_leads": [],
-      "salary_band": "unknown",
-      "fee_level": "unknown",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277307000.pdf",
+      "fee": 68,
+      "salary_min": 51790,
+      "salary_note": "Current minimum annual salary",
+      "test_method": "Multiple-choice test",
+      "exam_format": "multiple_choice",
+      "card_leads": [
+        {
+          "key": "fee",
+          "value": 68
+        }
+      ],
+      "salary_band": "45k_60k",
+      "fee_level": "mid",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -34774,25 +34493,16 @@
         ]
       },
       "list_aggregate": null,
-      "fee_salary_gap": {
-        "class": "not_yet_ingested",
-        "missing": [
-          "fee",
-          "salary_min"
-        ],
-        "public_source": {
-          "name": "DCAS open-competitive exam schedule and Notices of Examination",
-          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
-          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
-        }
-      },
-      "official_application_url": "https://www.nyc.gov/examsforjobs",
-      "application_handoff_mode": "landing",
+      "fee_salary_gap": null,
+      "oasys_exam_id": "9661",
+      "oasys_noe_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9661",
+      "application_handoff_mode": "deep",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9661",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -34818,12 +34528,26 @@
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
       "sources": [
-        "dcas-annual-schedule"
+        "dcas-annual-schedule",
+        "dcas-open-competitive",
+        "dcas-noe",
+        "oasys-active-exams"
       ],
       "interest_area": "technology-science",
-      "card_leads": [],
-      "salary_band": "unknown",
-      "fee_level": "unknown",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277065000.pdf",
+      "fee": 68,
+      "salary_min": 52804,
+      "salary_note": "Current minimum annual salary",
+      "test_method": "Education and experience exam",
+      "exam_format": "education_experience",
+      "card_leads": [
+        {
+          "key": "fee",
+          "value": 68
+        }
+      ],
+      "salary_band": "45k_60k",
+      "fee_level": "mid",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -34834,25 +34558,16 @@
         ]
       },
       "list_aggregate": null,
-      "fee_salary_gap": {
-        "class": "not_yet_ingested",
-        "missing": [
-          "fee",
-          "salary_min"
-        ],
-        "public_source": {
-          "name": "DCAS open-competitive exam schedule and Notices of Examination",
-          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
-          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
-        }
-      },
-      "official_application_url": "https://www.nyc.gov/examsforjobs",
-      "application_handoff_mode": "landing",
+      "fee_salary_gap": null,
+      "oasys_exam_id": "9662",
+      "oasys_noe_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9662",
+      "application_handoff_mode": "deep",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9662",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -34871,12 +34586,26 @@
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
       "sources": [
-        "dcas-annual-schedule"
+        "dcas-annual-schedule",
+        "dcas-open-competitive",
+        "dcas-noe",
+        "oasys-active-exams"
       ],
       "interest_area": "public-safety",
-      "card_leads": [],
-      "salary_band": "unknown",
-      "fee_level": "unknown",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277327000.pdf",
+      "fee": 61,
+      "salary_min": 40480,
+      "salary_note": "Current minimum annual salary",
+      "test_method": "Multiple-choice test",
+      "exam_format": "multiple_choice",
+      "card_leads": [
+        {
+          "key": "fee",
+          "value": 61
+        }
+      ],
+      "salary_band": "under_45k",
+      "fee_level": "mid",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -34887,25 +34616,16 @@
         ]
       },
       "list_aggregate": null,
-      "fee_salary_gap": {
-        "class": "not_yet_ingested",
-        "missing": [
-          "fee",
-          "salary_min"
-        ],
-        "public_source": {
-          "name": "DCAS open-competitive exam schedule and Notices of Examination",
-          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
-          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
-        }
-      },
-      "official_application_url": "https://www.nyc.gov/examsforjobs",
-      "application_handoff_mode": "landing",
+      "fee_salary_gap": null,
+      "oasys_exam_id": "9663",
+      "oasys_noe_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9663",
+      "application_handoff_mode": "deep",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9663",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -34931,12 +34651,26 @@
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
       "sources": [
-        "dcas-annual-schedule"
+        "dcas-annual-schedule",
+        "dcas-open-competitive",
+        "dcas-noe",
+        "oasys-active-exams"
       ],
       "interest_area": "public-safety",
-      "card_leads": [],
-      "salary_band": "unknown",
-      "fee_level": "unknown",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277329000.pdf",
+      "fee": 61,
+      "salary_min": 40480,
+      "salary_note": "Current minimum annual salary",
+      "test_method": "Multiple-choice test",
+      "exam_format": "multiple_choice",
+      "card_leads": [
+        {
+          "key": "fee",
+          "value": 61
+        }
+      ],
+      "salary_band": "under_45k",
+      "fee_level": "mid",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -34947,25 +34681,16 @@
         ]
       },
       "list_aggregate": null,
-      "fee_salary_gap": {
-        "class": "not_yet_ingested",
-        "missing": [
-          "fee",
-          "salary_min"
-        ],
-        "public_source": {
-          "name": "DCAS open-competitive exam schedule and Notices of Examination",
-          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
-          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
-        }
-      },
-      "official_application_url": "https://www.nyc.gov/examsforjobs",
-      "application_handoff_mode": "landing",
+      "fee_salary_gap": null,
+      "oasys_exam_id": "9664",
+      "oasys_noe_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9664",
+      "application_handoff_mode": "deep",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9664",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -34991,7 +34716,8 @@
       "eligibility": "promotion",
       "schedule_status": "scheduled",
       "sources": [
-        "dcas-annual-schedule"
+        "dcas-annual-schedule",
+        "oasys-active-exams"
       ],
       "interest_area": "trades-operations",
       "card_leads": [],
@@ -35019,15 +34745,17 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
-      "official_application_url": "https://www.nyc.gov/examsforjobs",
-      "application_handoff_mode": "landing",
+      "oasys_exam_id": "9665",
+      "oasys_noe_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9665",
+      "application_handoff_mode": "deep",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9665",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "promotion",
-        "n": 134,
+        "n": 137,
         "since_year": 2018,
-        "p10_days": 134,
+        "p10_days": 127,
         "p50_days": 358,
         "p90_days": 617,
         "median_months": 12,
@@ -35084,7 +34812,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -35144,7 +34872,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -35204,7 +34932,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -35264,7 +34992,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -35324,9 +35052,9 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "promotion",
-        "n": 134,
+        "n": 137,
         "since_year": 2018,
-        "p10_days": 134,
+        "p10_days": 127,
         "p50_days": 358,
         "p90_days": 617,
         "median_months": 12,
@@ -35377,9 +35105,9 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "promotion",
-        "n": 134,
+        "n": 137,
         "since_year": 2018,
-        "p10_days": 134,
+        "p10_days": 127,
         "p50_days": 358,
         "p90_days": 617,
         "median_months": 12,
@@ -35430,7 +35158,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -35490,7 +35218,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -35543,7 +35271,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -35603,7 +35331,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -35663,7 +35391,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -35716,7 +35444,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -35769,7 +35497,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -35822,7 +35550,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -35882,9 +35610,9 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "promotion",
-        "n": 134,
+        "n": 137,
         "since_year": 2018,
-        "p10_days": 134,
+        "p10_days": 127,
         "p50_days": 358,
         "p90_days": 617,
         "median_months": 12,
@@ -35941,7 +35669,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -36001,7 +35729,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -36061,7 +35789,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -36121,9 +35849,9 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "promotion",
-        "n": 134,
+        "n": 137,
         "since_year": 2018,
-        "p10_days": 134,
+        "p10_days": 127,
         "p50_days": 358,
         "p90_days": 617,
         "median_months": 12,
@@ -36181,7 +35909,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -36234,7 +35962,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -36287,7 +36015,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -36340,7 +36068,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -36400,7 +36128,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -36460,7 +36188,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -36513,9 +36241,9 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "promotion",
-        "n": 134,
+        "n": 137,
         "since_year": 2018,
-        "p10_days": 134,
+        "p10_days": 127,
         "p50_days": 358,
         "p90_days": 617,
         "median_months": 12,
@@ -36573,7 +36301,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -36626,7 +36354,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -36679,7 +36407,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -36738,7 +36466,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -36798,7 +36526,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -36858,7 +36586,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -36911,9 +36639,9 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "promotion",
-        "n": 134,
+        "n": 137,
         "since_year": 2018,
-        "p10_days": 134,
+        "p10_days": 127,
         "p50_days": 358,
         "p90_days": 617,
         "median_months": 12,
@@ -36971,7 +36699,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -37031,7 +36759,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -37091,7 +36819,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -37144,7 +36872,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -37204,9 +36932,9 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "promotion",
-        "n": 134,
+        "n": 137,
         "since_year": 2018,
-        "p10_days": 134,
+        "p10_days": 127,
         "p50_days": 358,
         "p90_days": 617,
         "median_months": 12,
@@ -37257,7 +36985,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -37310,7 +37038,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -37363,9 +37091,9 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "promotion",
-        "n": 134,
+        "n": 137,
         "since_year": 2018,
-        "p10_days": 134,
+        "p10_days": 127,
         "p50_days": 358,
         "p90_days": 617,
         "median_months": 12,
@@ -37416,7 +37144,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -37475,7 +37203,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -37528,7 +37256,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -37581,9 +37309,9 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "promotion",
-        "n": 134,
+        "n": 137,
         "since_year": 2018,
-        "p10_days": 134,
+        "p10_days": 127,
         "p50_days": 358,
         "p90_days": 617,
         "median_months": 12,
@@ -37641,7 +37369,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -37701,7 +37429,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -37761,7 +37489,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -37814,9 +37542,9 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "promotion",
-        "n": 134,
+        "n": 137,
         "since_year": 2018,
-        "p10_days": 134,
+        "p10_days": 127,
         "p50_days": 358,
         "p90_days": 617,
         "median_months": 12,
@@ -37874,7 +37602,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -37927,7 +37655,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -37980,9 +37708,9 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "promotion",
-        "n": 134,
+        "n": 137,
         "since_year": 2018,
-        "p10_days": 134,
+        "p10_days": 127,
         "p50_days": 358,
         "p90_days": 617,
         "median_months": 12,
@@ -38040,7 +37768,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -38093,7 +37821,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -38153,9 +37881,9 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "promotion",
-        "n": 134,
+        "n": 137,
         "since_year": 2018,
-        "p10_days": 134,
+        "p10_days": 127,
         "p50_days": 358,
         "p90_days": 617,
         "median_months": 12,
@@ -38212,7 +37940,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -38272,7 +38000,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -38325,7 +38053,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -38378,9 +38106,9 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "promotion",
-        "n": 134,
+        "n": 137,
         "since_year": 2018,
-        "p10_days": 134,
+        "p10_days": 127,
         "p50_days": 358,
         "p90_days": 617,
         "median_months": 12,
@@ -38438,7 +38166,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -38498,7 +38226,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -38558,9 +38286,9 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "promotion",
-        "n": 134,
+        "n": 137,
         "since_year": 2018,
-        "p10_days": 134,
+        "p10_days": 127,
         "p50_days": 358,
         "p90_days": 617,
         "median_months": 12,
@@ -38618,7 +38346,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -38671,7 +38399,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -38724,7 +38452,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -38777,9 +38505,9 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "promotion",
-        "n": 134,
+        "n": 137,
         "since_year": 2018,
-        "p10_days": 134,
+        "p10_days": 127,
         "p50_days": 358,
         "p90_days": 617,
         "median_months": 12,
@@ -38830,7 +38558,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -38889,7 +38617,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -38942,7 +38670,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -39002,9 +38730,9 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "promotion",
-        "n": 134,
+        "n": 137,
         "since_year": 2018,
-        "p10_days": 134,
+        "p10_days": 127,
         "p50_days": 358,
         "p90_days": 617,
         "median_months": 12,
@@ -39055,9 +38783,9 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "promotion",
-        "n": 134,
+        "n": 137,
         "since_year": 2018,
-        "p10_days": 134,
+        "p10_days": 127,
         "p50_days": 358,
         "p90_days": 617,
         "median_months": 12,
@@ -39115,9 +38843,9 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "promotion",
-        "n": 134,
+        "n": 137,
         "since_year": 2018,
-        "p10_days": 134,
+        "p10_days": 127,
         "p50_days": 358,
         "p90_days": 617,
         "median_months": 12,
@@ -39175,7 +38903,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -39235,7 +38963,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -39295,7 +39023,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -39348,7 +39076,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -39408,7 +39136,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -39461,7 +39189,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -39514,7 +39242,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -39573,7 +39301,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -39633,7 +39361,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -39693,9 +39421,9 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "promotion",
-        "n": 134,
+        "n": 137,
         "since_year": 2018,
-        "p10_days": 134,
+        "p10_days": 127,
         "p50_days": 358,
         "p90_days": 617,
         "median_months": 12,
@@ -39753,7 +39481,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -39806,7 +39534,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -39866,7 +39594,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -39926,7 +39654,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -39986,7 +39714,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -40046,9 +39774,9 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "promotion",
-        "n": 134,
+        "n": 137,
         "since_year": 2018,
-        "p10_days": 134,
+        "p10_days": 127,
         "p50_days": 358,
         "p90_days": 617,
         "median_months": 12,
@@ -40099,7 +39827,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -40152,9 +39880,9 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "promotion",
-        "n": 134,
+        "n": 137,
         "since_year": 2018,
-        "p10_days": 134,
+        "p10_days": 127,
         "p50_days": 358,
         "p90_days": 617,
         "median_months": 12,
@@ -40205,7 +39933,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -40265,9 +39993,9 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "promotion",
-        "n": 134,
+        "n": 137,
         "since_year": 2018,
-        "p10_days": 134,
+        "p10_days": 127,
         "p50_days": 358,
         "p90_days": 617,
         "median_months": 12,
@@ -40324,7 +40052,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -40384,9 +40112,9 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "promotion",
-        "n": 134,
+        "n": 137,
         "since_year": 2018,
-        "p10_days": 134,
+        "p10_days": 127,
         "p50_days": 358,
         "p90_days": 617,
         "median_months": 12,
@@ -40437,7 +40165,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -40490,7 +40218,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -40543,7 +40271,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -40596,9 +40324,9 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "promotion",
-        "n": 134,
+        "n": 137,
         "since_year": 2018,
-        "p10_days": 134,
+        "p10_days": 127,
         "p50_days": 358,
         "p90_days": 617,
         "median_months": 12,
@@ -40649,9 +40377,9 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "promotion",
-        "n": 134,
+        "n": 137,
         "since_year": 2018,
-        "p10_days": 134,
+        "p10_days": 127,
         "p50_days": 358,
         "p90_days": 617,
         "median_months": 12,
@@ -40709,7 +40437,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -40768,7 +40496,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -40828,7 +40556,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -40881,9 +40609,9 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "promotion",
-        "n": 134,
+        "n": 137,
         "since_year": 2018,
-        "p10_days": 134,
+        "p10_days": 127,
         "p50_days": 358,
         "p90_days": 617,
         "median_months": 12,
@@ -40941,9 +40669,9 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "promotion",
-        "n": 134,
+        "n": 137,
         "since_year": 2018,
-        "p10_days": 134,
+        "p10_days": 127,
         "p50_days": 358,
         "p90_days": 617,
         "median_months": 12,
@@ -40994,9 +40722,9 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "promotion",
-        "n": 134,
+        "n": 137,
         "since_year": 2018,
-        "p10_days": 134,
+        "p10_days": 127,
         "p50_days": 358,
         "p90_days": 617,
         "median_months": 12,
@@ -41054,7 +40782,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -41107,9 +40835,9 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "promotion",
-        "n": 134,
+        "n": 137,
         "since_year": 2018,
-        "p10_days": 134,
+        "p10_days": 127,
         "p50_days": 358,
         "p90_days": 617,
         "median_months": 12,
@@ -41160,7 +40888,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -41213,9 +40941,9 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "promotion",
-        "n": 134,
+        "n": 137,
         "since_year": 2018,
-        "p10_days": 134,
+        "p10_days": 127,
         "p50_days": 358,
         "p90_days": 617,
         "median_months": 12,
@@ -41266,7 +40994,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -41319,7 +41047,7 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "open_competitive",
-        "n": 303,
+        "n": 304,
         "since_year": 2018,
         "p10_days": 92,
         "p50_days": 246,
@@ -41372,14 +41100,66 @@
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
         "cohort": "promotion",
-        "n": 134,
+        "n": 137,
         "since_year": 2018,
-        "p10_days": 134,
+        "p10_days": 127,
         "p50_days": 358,
         "p90_days": 617,
         "median_months": 12,
         "public_projection": "cohort_statistic_only",
         "prediction": null
+      }
+    },
+    {
+      "exam_number": "7002",
+      "title_code": "83006",
+      "title": "Administrative Housing Development Specialist",
+      "application_start": null,
+      "application_end": null,
+      "eligibility": "open_competitive",
+      "schedule_status": "canceled",
+      "sources": [
+        "dcas-annual-schedule",
+        "dcas-open-competitive",
+        "dcas-noe"
+      ],
+      "interest_area": "community-social-services",
+      "notice_url": null,
+      "application_notes": "Canceled",
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
+      },
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
+      "list_establishment_forecast": null,
+      "eligible_list_utilization": {
+        "status": "linked",
+        "row_count": 3,
+        "source_id": "dcas-eligible-list-utilization",
+        "dataset_id": "qjzt-ytn9",
+        "vintage": "2026-08-05"
       }
     }
   ]

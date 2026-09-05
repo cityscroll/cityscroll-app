@@ -1,0 +1,388 @@
+{
+  "schema_version": 1,
+  "source_contract_id": "dcas-exam-notices",
+  "authoritative_feed": {
+    "name": "DCAS Open Competitive Exams for Anyone",
+    "url": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page",
+    "role": "Authoritative public schedule table for currently open application windows and linked Notices of Examination (NOE) PDFs."
+  },
+  "cross_check": {
+    "id": "oasys-active-exams",
+    "url": "https://a856-exams.nyc.gov/OASysWeb/api/Exam/GetActiveExams",
+    "rows": 18,
+    "role": "Independent structured listing of open filing windows and application fees; disagreements are recorded, and the published schedule page wins."
+  },
+  "verified_at": "2026-09-05",
+  "http_status": 200,
+  "page_bytes": 27322,
+  "page_sha256": "50b9a77ae832a23c81bca905162d2d50a6fa0519a917040b45344dac341bb30b",
+  "observed_exams": [
+    {
+      "exam_number": "7002",
+      "title": "Administrative Housing Development Specialist",
+      "present_on_page": true,
+      "live_application_start": null,
+      "live_application_end": null,
+      "schedule_status": "canceled",
+      "noe_path_present": false,
+      "notice_url": null,
+      "oasys_present": false,
+      "oasys_filing_start": null,
+      "oasys_filing_end": null,
+      "oasys_agrees": null,
+      "previous_application_start": null,
+      "previous_application_end": null,
+      "changed_since_previous": false
+    },
+    {
+      "exam_number": "7003",
+      "title": "Administrative Labor Relations Analyst",
+      "present_on_page": true,
+      "live_application_start": "2026-09-02",
+      "live_application_end": "2026-09-22",
+      "schedule_status": "scheduled",
+      "noe_path_present": true,
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277003000.pdf",
+      "oasys_present": true,
+      "oasys_filing_start": "2026-09-02",
+      "oasys_filing_end": "2026-09-22",
+      "oasys_agrees": true,
+      "previous_application_start": null,
+      "previous_application_end": null,
+      "changed_since_previous": null
+    },
+    {
+      "exam_number": "7006",
+      "title": "Assistant Civil Engineer",
+      "present_on_page": true,
+      "live_application_start": "2026-07-01",
+      "live_application_end": "2026-09-11",
+      "schedule_status": "scheduled",
+      "noe_path_present": true,
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277006000.pdf",
+      "oasys_present": true,
+      "oasys_filing_start": "2026-07-01",
+      "oasys_filing_end": "2026-09-11",
+      "oasys_agrees": true,
+      "previous_application_start": "2026-07-01",
+      "previous_application_end": "2026-09-11",
+      "changed_since_previous": false
+    },
+    {
+      "exam_number": "7302",
+      "title": "Correction Officer",
+      "present_on_page": true,
+      "live_application_start": "2026-09-02",
+      "live_application_end": "2026-10-27",
+      "schedule_status": "scheduled",
+      "noe_path_present": true,
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277302000.pdf",
+      "oasys_present": true,
+      "oasys_filing_start": "2026-09-02",
+      "oasys_filing_end": "2026-10-27",
+      "oasys_agrees": true,
+      "previous_application_start": "2026-09-02",
+      "previous_application_end": "2026-10-27",
+      "changed_since_previous": false
+    },
+    {
+      "exam_number": "7034",
+      "title": "Exterminator",
+      "present_on_page": true,
+      "live_application_start": "2026-09-02",
+      "live_application_end": "2026-09-22",
+      "schedule_status": "scheduled",
+      "noe_path_present": true,
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277034000.pdf",
+      "oasys_present": true,
+      "oasys_filing_start": "2026-09-02",
+      "oasys_filing_end": "2026-09-22",
+      "oasys_agrees": true,
+      "previous_application_start": "2026-09-02",
+      "previous_application_end": "2026-09-22",
+      "changed_since_previous": false
+    },
+    {
+      "exam_number": "7035",
+      "title": "Exterminator (CUNY)",
+      "present_on_page": true,
+      "live_application_start": "2026-09-02",
+      "live_application_end": "2026-09-22",
+      "schedule_status": "scheduled",
+      "noe_path_present": true,
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277035000.pdf",
+      "oasys_present": true,
+      "oasys_filing_start": "2026-09-02",
+      "oasys_filing_end": "2026-09-22",
+      "oasys_agrees": true,
+      "previous_application_start": "2026-09-02",
+      "previous_application_end": "2026-09-22",
+      "changed_since_previous": false
+    },
+    {
+      "exam_number": "7036",
+      "title": "Forester",
+      "present_on_page": true,
+      "live_application_start": "2026-09-02",
+      "live_application_end": "2026-09-22",
+      "schedule_status": "scheduled",
+      "noe_path_present": true,
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277036000.pdf",
+      "oasys_present": true,
+      "oasys_filing_start": "2026-09-02",
+      "oasys_filing_end": "2026-09-22",
+      "oasys_agrees": true,
+      "previous_application_start": "2026-09-02",
+      "previous_application_end": "2026-09-22",
+      "changed_since_previous": false
+    },
+    {
+      "exam_number": "7041",
+      "title": "Inspector (Electrical)",
+      "present_on_page": true,
+      "live_application_start": "2026-09-02",
+      "live_application_end": "2026-09-22",
+      "schedule_status": "scheduled",
+      "noe_path_present": true,
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277041000.pdf",
+      "oasys_present": true,
+      "oasys_filing_start": "2026-09-02",
+      "oasys_filing_end": "2026-09-22",
+      "oasys_agrees": true,
+      "previous_application_start": "2026-09-02",
+      "previous_application_end": "2026-09-22",
+      "changed_since_previous": false
+    },
+    {
+      "exam_number": "7070",
+      "title": "Plant Maintainer (Hospitals)/Tender (NYC H+H)",
+      "present_on_page": true,
+      "live_application_start": "2026-08-05",
+      "live_application_end": "2026-09-22",
+      "schedule_status": "scheduled",
+      "noe_path_present": true,
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277070000.pdf",
+      "oasys_present": true,
+      "oasys_filing_start": "2026-08-05",
+      "oasys_filing_end": "2026-09-22",
+      "oasys_agrees": true,
+      "previous_application_start": null,
+      "previous_application_end": null,
+      "changed_since_previous": null
+    },
+    {
+      "exam_number": "7307",
+      "title": "Police Communications Technician",
+      "present_on_page": true,
+      "live_application_start": "2026-09-02",
+      "live_application_end": "2026-10-13",
+      "schedule_status": "scheduled",
+      "noe_path_present": true,
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277307000.pdf",
+      "oasys_present": true,
+      "oasys_filing_start": "2026-09-02",
+      "oasys_filing_end": "2026-10-13",
+      "oasys_agrees": true,
+      "previous_application_start": "2026-09-02",
+      "previous_application_end": "2026-10-13",
+      "changed_since_previous": false
+    },
+    {
+      "exam_number": "7313",
+      "title": "Police Officer",
+      "present_on_page": true,
+      "live_application_start": "2026-09-01",
+      "live_application_end": "2026-09-14",
+      "schedule_status": "scheduled",
+      "noe_path_present": true,
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277313000.pdf",
+      "oasys_present": true,
+      "oasys_filing_start": "2026-09-01",
+      "oasys_filing_end": "2026-09-14",
+      "oasys_agrees": true,
+      "previous_application_start": "2026-09-01",
+      "previous_application_end": "2026-09-14",
+      "changed_since_previous": false
+    },
+    {
+      "exam_number": "7065",
+      "title": "Scientist (Water Ecology)",
+      "present_on_page": true,
+      "live_application_start": "2026-09-02",
+      "live_application_end": "2026-09-22",
+      "schedule_status": "scheduled",
+      "noe_path_present": true,
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277065000.pdf",
+      "oasys_present": true,
+      "oasys_filing_start": "2026-09-02",
+      "oasys_filing_end": "2026-09-22",
+      "oasys_agrees": true,
+      "previous_application_start": "2026-09-02",
+      "previous_application_end": "2026-09-22",
+      "changed_since_previous": false
+    },
+    {
+      "exam_number": "7327",
+      "title": "Special Officer",
+      "present_on_page": true,
+      "live_application_start": "2026-09-02",
+      "live_application_end": "2026-09-22",
+      "schedule_status": "scheduled",
+      "noe_path_present": true,
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277327000.pdf",
+      "oasys_present": true,
+      "oasys_filing_start": "2026-09-02",
+      "oasys_filing_end": "2026-09-22",
+      "oasys_agrees": true,
+      "previous_application_start": "2026-09-02",
+      "previous_application_end": "2026-09-22",
+      "changed_since_previous": false
+    },
+    {
+      "exam_number": "7329",
+      "title": "Special Officer (NYC H+H)",
+      "present_on_page": true,
+      "live_application_start": "2026-09-02",
+      "live_application_end": "2026-10-27",
+      "schedule_status": "scheduled",
+      "noe_path_present": true,
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277329000.pdf",
+      "oasys_present": true,
+      "oasys_filing_start": "2026-09-02",
+      "oasys_filing_end": "2026-10-27",
+      "oasys_agrees": true,
+      "previous_application_start": "2026-09-02",
+      "previous_application_end": "2026-10-27",
+      "changed_since_previous": false
+    }
+  ],
+  "carried_detail_fields": [
+    {
+      "exam_number": "7006",
+      "fields": [
+        "fee_waiver",
+        "qualifications",
+        "salary_min",
+        "salary_note",
+        "summary",
+        "test_method",
+        "title_code"
+      ],
+      "same_cycle": true
+    },
+    {
+      "exam_number": "7302",
+      "fields": [
+        "salary_max",
+        "salary_min",
+        "salary_note",
+        "test_method"
+      ],
+      "same_cycle": true
+    },
+    {
+      "exam_number": "7034",
+      "fields": [
+        "salary_min",
+        "salary_note",
+        "test_method"
+      ],
+      "same_cycle": true
+    },
+    {
+      "exam_number": "7035",
+      "fields": [
+        "salary_min",
+        "salary_note",
+        "test_method"
+      ],
+      "same_cycle": true
+    },
+    {
+      "exam_number": "7036",
+      "fields": [
+        "salary_min",
+        "salary_note",
+        "test_method"
+      ],
+      "same_cycle": true
+    },
+    {
+      "exam_number": "7041",
+      "fields": [
+        "salary_min",
+        "salary_note",
+        "test_method"
+      ],
+      "same_cycle": true
+    },
+    {
+      "exam_number": "7307",
+      "fields": [
+        "salary_min",
+        "salary_note",
+        "test_method"
+      ],
+      "same_cycle": true
+    },
+    {
+      "exam_number": "7313",
+      "fields": [
+        "salary_max",
+        "salary_min",
+        "salary_note"
+      ],
+      "same_cycle": true
+    },
+    {
+      "exam_number": "7065",
+      "fields": [
+        "salary_min",
+        "salary_note",
+        "test_method"
+      ],
+      "same_cycle": true
+    },
+    {
+      "exam_number": "7327",
+      "fields": [
+        "salary_min",
+        "salary_note",
+        "test_method"
+      ],
+      "same_cycle": true
+    },
+    {
+      "exam_number": "7329",
+      "fields": [
+        "salary_min",
+        "salary_note",
+        "test_method"
+      ],
+      "same_cycle": true
+    }
+  ],
+  "added_exam_numbers": [
+    "7003",
+    "7070"
+  ],
+  "dropped_exam_numbers": [],
+  "unstated_annual_salary": [
+    {
+      "exam_number": "7003",
+      "title": "Administrative Labor Relations Analyst",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277003000.pdf",
+      "fee": 82,
+      "reason": "The notice does not state a minimum annual salary for this title."
+    },
+    {
+      "exam_number": "7070",
+      "title": "Plant Maintainer (Hospitals)/Tender (NYC H+H)",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277070000.pdf",
+      "fee": 88,
+      "reason": "The notice states a rate for this title rather than a yearly minimum salary."
+    }
+  ],
+  "notices_read": 18,
+  "oasys_disagreements": []
+}

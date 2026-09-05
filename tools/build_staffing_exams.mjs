@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
@@ -22,8 +23,21 @@ import {
 } from "../worker/src/lib/staffing_list_prediction.mjs";
 import {
   attachOasysDeepLink,
+  oasysNoeUrl,
+  OASY_API_ACTIVE_EXAMS,
   OASY_SOURCE_ID,
 } from "./lib/oasys_exam_map.mjs";
+import {
+  buildOpenCompetitiveSnapshot,
+  indexOasysActiveExams,
+  parseDcasOpenCompetitivePage,
+} from "./lib/dcas_open_competitive.mjs";
+import { parseNoeFeeSalaryFromBody } from "../worker/src/lib/noe_fee_salary.mjs";
+import {
+  examFormatFromNoeText,
+  testMethodLabel,
+} from "../worker/src/lib/noe_differentiators.mjs";
+import { refreshOasysExamMap } from "./build_oasys_exam_map.mjs";
 import {
   applyNoeDifferentiatorRecord,
   stampExamDifferentiatorFacets,
@@ -50,6 +64,9 @@ const OUTCOMES_ID = "dcas-annual-exam-outcomes";
 const ACTIVE_LIST_ID = "vx8i-nprf";
 const CITY_RECORD_ID = "dg92-zbpx";
 const CURRENT_ID = "dcas-open-competitive";
+const CURRENT_PAGE_URL =
+  "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page";
+const CURRENT_FILE = "dcas_open_competitive.json";
 const NOE_ID = "dcas-noe";
 const NOE_DENSIFY_ID = "dcas-noe-fee-salary-densify";
 const NOE_DIFF_ID = "dcas-noe-differentiators";
@@ -1187,8 +1204,141 @@ export async function fetchCivilServiceListAggregates({ fetchedAt } = {}) {
   };
 }
 
+const NOTICE_FETCH_DELAY_MS = 1200;
+
+/**
+ * Read the amounts each open exam's Notice of Examination states.
+ *
+ * The notices are fetched politely and sequentially from the City's own
+ * application system. Only labelled, structured amounts are taken; the
+ * reviewed prose that describes a job stays out of this path.
+ */
+async function readNoticeDetail(oasysRows) {
+  const detail = new Map();
+  let last = 0;
+  for (const row of Array.isArray(oasysRows) ? oasysRows : []) {
+    const examNumber = String(row?.examNumber ?? "").trim();
+    const examId = row?.examId;
+    if (!/^\d{4}$/.test(examNumber) || examId == null) continue;
+    const wait = NOTICE_FETCH_DELAY_MS - (Date.now() - last);
+    if (wait > 0) await new Promise((resolve) => setTimeout(resolve, wait));
+    let html;
+    try {
+      ({ text: html } = await fetchText(oasysNoeUrl(examId)));
+    } catch (error) {
+      console.warn(`notice ${examNumber} not read: ${error.message || error}`);
+      continue;
+    } finally {
+      last = Date.now();
+    }
+    const text = String(html).replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+    const money = parseNoeFeeSalaryFromBody(text);
+    detail.set(examNumber, {
+      ...money,
+      test_method: testMethodLabel(examFormatFromNoeText(text).exam_format) || null,
+      // The notice printed an amount, but as a rate rather than a yearly salary.
+      salary_rate_stated: money.salary_min == null && /current\s+minimum\s+salary\s+is\s+\$/i.test(text),
+    });
+  }
+  return detail;
+}
+
+async function fetchText(url) {
+  const response = await fetch(url, { headers: { "user-agent": "cityscroll-build/1.0" } });
+  if (!response.ok) throw new Error(`${response.status} ${response.statusText}: ${url}`);
+  return { text: await response.text(), status: response.status };
+}
+
+/**
+ * Re-read the published DCAS open-competitive schedule and rewrite the
+ * committed snapshot plus a dated verification receipt.
+ *
+ * nyc.gov occasionally refuses unattended requests from build networks, so a
+ * failed read is reported and leaves the previous snapshot in place rather
+ * than emptying the exam surface. The freshness contract is what surfaces the
+ * resulting staleness; this function never invents a verification date.
+ */
+export async function refreshOpenCompetitiveSnapshot({ fetchedAt } = {}) {
+  const day = fetchedAt || new Date().toISOString().slice(0, 10);
+  const prior = await readJsonOptional(CURRENT_FILE);
+  let page;
+  try {
+    page = await fetchText(CURRENT_PAGE_URL);
+  } catch (error) {
+    console.warn(
+      `open-competitive schedule not read (${error.message || error}); `
+      + "keeping the previously verified snapshot",
+    );
+    return { refreshed: false, reason: String(error.message || error) };
+  }
+  let oasysRows = [];
+  try {
+    oasysRows = await fetchJson(OASY_API_ACTIVE_EXAMS);
+  } catch (error) {
+    console.warn(`OASys active-exam cross-check unavailable: ${error.message || error}`);
+  }
+  const pageRows = parseDcasOpenCompetitivePage(page.text, { pageUrl: CURRENT_PAGE_URL });
+  const noticeDetail = await readNoticeDetail(oasysRows);
+  const built = buildOpenCompetitiveSnapshot({
+    pageRows,
+    oasysIndex: indexOasysActiveExams(oasysRows),
+    noticeDetail,
+    prior,
+    verifiedAt: day,
+    fetchedAt: day,
+    pageUrl: CURRENT_PAGE_URL,
+  });
+  const receipt = {
+    schema_version: 1,
+    source_contract_id: "dcas-exam-notices",
+    authoritative_feed: {
+      name: "DCAS Open Competitive Exams for Anyone",
+      url: CURRENT_PAGE_URL,
+      role: "Authoritative public schedule table for currently open application windows and linked Notices of Examination (NOE) PDFs.",
+    },
+    cross_check: {
+      id: OASY_SOURCE_ID,
+      url: OASY_API_ACTIVE_EXAMS,
+      rows: Array.isArray(oasysRows) ? oasysRows.length : 0,
+      role: "Independent structured listing of open filing windows and application fees; disagreements are recorded, and the published schedule page wins.",
+    },
+    verified_at: day,
+    http_status: page.status,
+    page_bytes: Buffer.byteLength(page.text, "utf8"),
+    page_sha256: createHash("sha256").update(page.text).digest("hex"),
+    observed_exams: built.observed,
+    carried_detail_fields: built.carried,
+    added_exam_numbers: built.added_exam_numbers,
+    dropped_exam_numbers: built.dropped_exam_numbers,
+    unstated_annual_salary: built.unstated_annual_salary,
+    notices_read: noticeDetail.size,
+    oasys_disagreements: built.observed
+      .filter((row) => row.oasys_present && row.oasys_agrees === false)
+      .map((row) => row.exam_number),
+  };
+  await mkdir(DENSIFY_RECEIPT_DIR, { recursive: true });
+  await writeFile(path.join(SOURCE_DIR, CURRENT_FILE), stableJson(built.snapshot));
+  await writeFile(
+    path.join(DENSIFY_RECEIPT_DIR, `dcas_open_competitive_${day}.json`),
+    stableJson(receipt),
+  );
+  console.log(
+    `refreshed open-competitive snapshot (${built.snapshot.records.length} exams; `
+    + `+${built.added_exam_numbers.length} / -${built.dropped_exam_numbers.length}; verified ${day})`,
+  );
+  return { refreshed: true, receipt };
+}
+
 async function refreshSnapshots() {
   const fetchedAt = new Date().toISOString().slice(0, 10);
+  await refreshOpenCompetitiveSnapshot({ fetchedAt });
+  // The OASys map carries a 3-day window and is asserted below, so the declared
+  // acquisition command refreshes it here rather than relying on a separate run.
+  try {
+    await refreshOasysExamMap();
+  } catch (error) {
+    console.warn(`OASys exam map not refreshed: ${error.message || error}`);
+  }
   const annualMeta = await fetchJson(`https://data.cityofnewyork.us/api/views/${ANNUAL_ID}`);
   const latestAnnual = (await fetchJson(sodaUrl(ANNUAL_ID, {
     "$select": "max(data_current_as_of) as latest",

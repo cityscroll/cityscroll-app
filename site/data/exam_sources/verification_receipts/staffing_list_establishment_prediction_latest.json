@@ -4,15 +4,15 @@
     "annual-examination-schedule",
     "active-civil-service-list"
   ],
-  "verified_at": "2026-08-23",
+  "verified_at": "2026-09-05",
   "join": {
     "method": "exact_exam_number_zero_pad",
     "schedule_rows": 1271,
     "distinct_schedule_exams": 1271,
-    "distinct_list_aggregate_exams": 852,
-    "matched_pairs": 437,
+    "distinct_list_aggregate_exams": 855,
+    "matched_pairs": 441,
     "misses": {
-      "no_list_aggregate": 777,
+      "no_list_aggregate": 773,
       "missing_application_close": 6,
       "missing_established_date": 51,
       "established_before_application_close": 0
@@ -27,44 +27,44 @@
       "citywide": {
         "key": "citywide",
         "label": "citywide",
-        "n": 437,
+        "n": 441,
         "eligible": true,
-        "p10_days": 99,
+        "p10_days": 92,
         "p50_days": 281,
         "p90_days": 736,
         "median_months": 9,
         "train_from": "2021-05-05",
-        "train_to": "2026-08-19"
+        "train_to": "2026-08-26"
       },
       "open_competitive": {
         "key": "open_competitive",
         "label": "open competitive",
-        "n": 303,
+        "n": 304,
         "eligible": true,
         "p10_days": 92,
         "p50_days": 246,
         "p90_days": 757,
         "median_months": 8,
         "train_from": "2021-05-05",
-        "train_to": "2026-08-19"
+        "train_to": "2026-08-26"
       },
       "promotion": {
         "key": "promotion",
         "label": "promotion",
-        "n": 134,
+        "n": 137,
         "eligible": true,
-        "p10_days": 134,
+        "p10_days": 127,
         "p50_days": 358,
         "p90_days": 617,
         "median_months": 12,
         "train_from": "2021-05-26",
-        "train_to": "2026-07-15"
+        "train_to": "2026-08-26"
       }
     }
   },
   "backtest": {
     "protocol": "train establishment events through 2024; score lists established in 2025–2026 for exams already open at 2025-01-01",
-    "training_pairs": 282,
+    "training_pairs": 279,
     "scoring_pairs": 86,
     "scorecard": {
       "metric": "prediction_calibration",
