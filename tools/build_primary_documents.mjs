@@ -53,22 +53,62 @@ function cityRecordMeetingRows() {
   return { materialization, rows };
 }
 
-function assertMeetingCoverage(readModel, cityRows) {
-  const expectedIds = new Set(cityRows.map((row) => `meeting:city_record:${row.request_id}`).filter((id) => !id.endsWith(":undefined")));
+// Regression floors for build-time City Record notice richness. The City Record
+// acquisition serves a rolling forward window, so which individual meetings are
+// materialized changes every day; only the population is stable enough to gate a
+// deploy on. Both numbers sit well under the observed population -- on
+// 2026-09-05 the live window materialized 39 eligible notices of which 29
+// carried both a notice body and a rich signal, and the 2026-08-14 snapshot
+// carried 16 of 20 -- because they are a regression floor that catches a silent
+// collapse of the notice enrichment seam, not a target to grow toward.
+const MIN_RICH_CITY_RECORD_MEETINGS = 10;
+const MIN_RICH_CITY_RECORD_SHARE = 0.5;
+// The two notices the original richness check pinned by request id. Their event
+// dates have passed, so the forward-looking acquisition no longer serves them.
+// They stay here as an observable soft signal and never fail a deploy.
+const LEGACY_RICH_MEETING_SENTINELS = ["20260810053", "20260713006"];
+
+function hasNoticeBody(row) {
+  return [row.additional_description_1, row.additional_description_2, row.other_info_1, row.other_info_2, row.other_info_3]
+    .some((value) => String(value || "").trim());
+}
+
+function hasRichSignal(row) {
+  return [row.street_address_1, row.building_name, row.contact_name, row.contact_phone, row.email, row.document_links, row.source_links]
+    .some((value) => Array.isArray(value) ? value.length > 0 : String(value || "").trim());
+}
+
+function meetingId(row) {
+  return `meeting:city_record:${row.request_id}`;
+}
+
+export function assertMeetingCoverage(readModel, cityRows, materializedRows, log = console) {
+  const expectedIds = new Set(cityRows.map(meetingId).filter((id) => !id.endsWith(":undefined")));
   if (readModel.counts.city_record !== expectedIds.size) {
     throw new Error(`shared meeting model materialized ${readModel.counts.city_record}/${expectedIds.size} eligible City Record meetings`);
   }
-  for (const requestId of ["20260810053", "20260713006"]) {
+  const materializedIds = new Set((materializedRows || []).map(meetingId).filter((id) => !id.endsWith(":undefined")));
+  const materialized = readModel.rows.filter((row) => materializedIds.has(row.meeting_id));
+  const rich = materialized.filter((row) => hasNoticeBody(row) && hasRichSignal(row));
+  if (rich.length < MIN_RICH_CITY_RECORD_MEETINGS) {
+    throw new Error(
+      `shared meeting model carries notice richness for only ${rich.length} of ${materialized.length} materialized City Record meetings (floor ${MIN_RICH_CITY_RECORD_MEETINGS})`,
+    );
+  }
+  if (rich.length / materialized.length < MIN_RICH_CITY_RECORD_SHARE) {
+    throw new Error(
+      `only ${rich.length} of ${materialized.length} materialized City Record meetings carry notice richness (floor ${Math.round(MIN_RICH_CITY_RECORD_SHARE * 100)}%)`,
+    );
+  }
+  for (const requestId of LEGACY_RICH_MEETING_SENTINELS) {
     const row = readModel.rows.find((candidate) => candidate.meeting_id === `meeting:city_record:${requestId}`);
-    if (!row) throw new Error(`required City Record meeting ${requestId} is missing from the shared read model`);
-    const hasNoticeBody = [row.additional_description_1, row.additional_description_2, row.other_info_1, row.other_info_2, row.other_info_3]
-      .some((value) => String(value || "").trim());
-    const hasRichSignal = [row.street_address_1, row.building_name, row.contact_name, row.contact_phone, row.email, row.document_links, row.source_links]
-      .some((value) => Array.isArray(value) ? value.length > 0 : String(value || "").trim());
-    if (!hasNoticeBody || !hasRichSignal) {
-      throw new Error(`required City Record meeting ${requestId} lacks materialized notice richness`);
+    if (!row) {
+      log.warn(`City Record meeting ${requestId} is outside the current notice window`);
+    } else if (!hasNoticeBody(row) || !hasRichSignal(row)) {
+      log.warn(`City Record meeting ${requestId} is retained without materialized notice richness`);
     }
   }
+  return { materialized: materialized.length, rich: rich.length };
 }
 
 export function primaryDocumentOutputs(options = {}) {
@@ -93,7 +133,7 @@ export function primaryDocumentOutputs(options = {}) {
     generatedAt: materialization.generated_at,
     now: communityBoardMeetings.generated_at || materialization.generated_at,
   });
-  assertMeetingCoverage(sharedMeetings, cityRecordRows);
+  assertMeetingCoverage(sharedMeetings, cityRecordRows, cityRecordMeetings);
   payloads.meetings = {
     ...payloads.meetings,
     ...sharedMeetings,
@@ -227,7 +267,7 @@ function buildSharedMeetingArtifacts() {
     generatedAt: materialization.generated_at,
     now: communityBoardMeetings.generated_at || materialization.generated_at,
   });
-  assertMeetingCoverage(sharedMeetings, cityRecordRows);
+  assertMeetingCoverage(sharedMeetings, cityRecordRows, cityRecordMeetings);
   return { sharedMeetings };
 }
 
