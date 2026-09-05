@@ -17,6 +17,7 @@ import {
   LAND_PROCEDURE_PROFILE_REGISTRY,
   buildLandProcedureProfileView,
 } from "./land_procedure_profiles.mjs";
+import { buildActorObservedOutcomes, spinePhaseIdForActorKind } from "./land_actor_outcome.mjs";
 
 export const LAND_PHASE_SPINE_SCHEMA_VERSION = 1;
 
@@ -732,6 +733,21 @@ export function buildLandPhaseView(spine, opts = {}) {
     };
   });
 
+  // LDP-10: role-aware timeline evidence. The SAME observed_outcomes[] array
+  // that powers the recommendations-and-decisions matrix is attached here by
+  // spine phase id — this never re-parses a raw disposition row, and an
+  // explicit `opts.observed_outcomes` always wins over deriving one from
+  // `opts.dispositions` so a caller that already normalized outcomes is
+  // never re-normalized.
+  const observedOutcomes = Array.isArray(opts.observed_outcomes)
+    ? opts.observed_outcomes
+    : Array.isArray(opts.dispositions)
+      ? buildActorObservedOutcomes(opts.dispositions, { projectId, project: procedureFacts, affected: affectedReviewBodies })
+      : [];
+  for (const phase of phases) {
+    phase.observed_outcomes = observedOutcomes.filter((outcome) => spinePhaseIdForActorKind(outcome.actor_kind) === phase.id);
+  }
+
   // Next = first future phase AFTER current only. Never fall back to an earlier
   // incomplete template slot (that produced "What's next: Pre-certification"
   // while current was Mayoral on completed projects).
@@ -808,6 +824,10 @@ export function buildLandPhaseView(spine, opts = {}) {
     portal_row_link_candidates: countDuplicatePortalLinks({ events }, portalUrl),
     lag: spine?.lag || null,
     gaps: Array.isArray(spine?.gaps) ? spine.gaps : [],
+    // LDP-10: the same actor-aware observed_outcomes[] contract also grouped
+    // per phase above (phase.observed_outcomes) and consumed by the
+    // recommendations-and-decisions matrix (land_outcomes_matrix.mjs).
+    observed_outcomes: observedOutcomes,
     // Layer B (normative) remains structurally distinct from chronological,
     // phase, and aggregate Layer C observation fields above.
     procedure_profile: procedureProfile,
