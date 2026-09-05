@@ -152,10 +152,10 @@ export function mergeOasysPayloads(livePayload, priorRecords) {
  * refreshes every source it later asserts freshness on, instead of leaving a
  * daily-cadence source to a separate manual invocation.
  */
-export async function refreshOasysExamMap() {
-  const check = process.argv.includes("--check");
-  const useFixture = process.argv.includes("--fixture");
-  const retainPrior = process.argv.includes("--retain-mapped");
+export async function refreshOasysExamMap(options = {}) {
+  const check = options.check ?? process.argv.includes("--check");
+  const useFixture = options.fixture ?? process.argv.includes("--fixture");
+  const retainPrior = options.retainPrior ?? process.argv.includes("--retain-mapped");
   let payload;
   let meta = {};
   if (useFixture) {

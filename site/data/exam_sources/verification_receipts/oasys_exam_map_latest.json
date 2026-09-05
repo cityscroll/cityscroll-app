@@ -2,17 +2,25 @@
   "schema_version": 1,
   "source_id": "oasys-active-exams",
   "verified_at": "2026-09-05",
-  "verified_at_utc": "2026-09-05T11:09:57.793Z",
+  "verified_at_utc": "2026-09-05T12:11:43.860Z",
   "http_status": 200,
   "api_url": "https://a856-exams.nyc.gov/OASysWeb/api/Exam/GetActiveExams",
   "summary": {
-    "input_rows": 18,
-    "mapped": 18,
+    "input_rows": 33,
+    "mapped": 33,
     "skipped": 0
   },
   "golden_cases": {
-    "6125": null,
-    "7312": null
+    "6125": {
+      "oasys_exam_id": "9619",
+      "noe_page_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9619",
+      "title": "Emergency Medical Specialist - EMT"
+    },
+    "7312": {
+      "oasys_exam_id": "9646",
+      "noe_page_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9646",
+      "title": "Police Officer"
+    }
   },
   "policy": {
     "join_key": "exact exam_number (OASys examNumber)",

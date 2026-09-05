@@ -167,15 +167,29 @@ test("live staffing artifact: every exam builds a spine; no class-(b) aggregate 
     assert.ok(spine.gaps.every((g) => g.class === "not_yet_ingested"), spine.exam_number);
   }
 
-  // Known field cases from the committed artifact.
-  const openEmt = spineForExam(spines, "6125");
-  assert.ok(openEmt, "exam 6125 present");
-  assert.equal(openEmt.full, false, "open 6125 must not paint a full post-list spine");
-  assert.equal(openEmt.stages.find((s) => s.kind === STAGE_LIST_ESTABLISHMENT).matched, false);
-  const full = spineForExam(spines, "6311");
-  if (full) {
-    assert.equal(full.stages.find((s) => s.kind === STAGE_LIST_ESTABLISHMENT).matched, true);
+  // Field cases read from the committed artifact rather than named exams: the
+  // schedule rolls each fiscal year, so a pinned exam number becomes a false
+  // failure the day that exam leaves the published schedule.
+  const today = artifact.open_window_as_of || artifact.generated_at;
+  const stillFiling = artifact.exams.filter(
+    (e) => e.application_start && e.application_end
+      && e.application_start <= today && e.application_end >= today,
+  );
+  assert.ok(stillFiling.length > 0, "the schedule still has exams inside their filing window");
+  for (const exam of stillFiling) {
+    const spine = spineForExam(spines, exam.exam_number);
+    assert.ok(spine, `exam ${exam.exam_number} present`);
+    assert.equal(spine.full, false, `open ${exam.exam_number} must not paint a full post-list spine`);
+    assert.equal(
+      spine.stages.find((s) => s.kind === STAGE_LIST_ESTABLISHMENT).matched,
+      false,
+      exam.exam_number,
+    );
   }
+  const full = spines.find(
+    (spine) => spine.stages.find((s) => s.kind === STAGE_LIST_ESTABLISHMENT)?.matched,
+  );
+  assert.ok(full, "closed exams with an established list still paint that stage");
 
   const metrics = measureExamProcessSpineCompleteness(spines);
   assert.ok(metrics.spine_count === artifact.exams.length);

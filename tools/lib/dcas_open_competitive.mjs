@@ -177,11 +177,15 @@ export function buildOpenCompetitiveSnapshot({
     const record = {
       exam_number: row.exam_number,
       title: row.title,
-      application_start: row.application_start,
-      application_end: row.application_end,
       eligibility: "open_competitive",
       notice_url: row.notice_url,
     };
+    // A cancelled or postponed row prints prose where the dates go. Leaving the
+    // window off the record keeps the schedule's own dates for that exam rather
+    // than blanking them, so the card still says when the exam was to be held
+    // and says that it is cancelled.
+    if (row.application_start) record.application_start = row.application_start;
+    if (row.application_end) record.application_end = row.application_end;
     if (row.schedule_status !== "scheduled") record.application_notes = row.period_text;
     if (oasys && oasys.fee != null) record.fee = oasys.fee;
     else if (previous && previous.fee != null) record.fee = previous.fee;

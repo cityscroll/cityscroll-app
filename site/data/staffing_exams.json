@@ -760,9 +760,9 @@
     },
     "oasys_exam_map": {
       "source_id": "oasys-active-exams",
-      "map_records": 18,
-      "exams_deep_linked": 18,
-      "exams_landing": 208
+      "map_records": 33,
+      "exams_deep_linked": 31,
+      "exams_landing": 195
     },
     "noe_differentiators": {
       "densify_records": 9,
@@ -32289,7 +32289,8 @@
         "dcas-noe",
         "dcas-open-competitive",
         "dcas-noe-differentiators",
-        "oasys_noe_html"
+        "oasys_noe_html",
+        "oasys-active-exams"
       ],
       "interest_area": "trades-operations",
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277013000.pdf",
@@ -32383,8 +32384,10 @@
       },
       "list_aggregate": null,
       "fee_salary_gap": null,
-      "official_application_url": "https://www.nyc.gov/examsforjobs",
-      "application_handoff_mode": "landing",
+      "oasys_exam_id": "9628",
+      "oasys_noe_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9628",
+      "application_handoff_mode": "deep",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9628",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -32412,7 +32415,8 @@
         "dcas-noe",
         "dcas-open-competitive",
         "dcas-noe-differentiators",
-        "oasys_noe_html"
+        "oasys_noe_html",
+        "oasys-active-exams"
       ],
       "interest_area": "community-social-services",
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277016000.pdf",
@@ -32507,8 +32511,10 @@
       },
       "list_aggregate": null,
       "fee_salary_gap": null,
-      "official_application_url": "https://www.nyc.gov/examsforjobs",
-      "application_handoff_mode": "landing",
+      "oasys_exam_id": "9629",
+      "oasys_noe_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9629",
+      "application_handoff_mode": "deep",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9629",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -32536,7 +32542,8 @@
         "dcas-noe",
         "dcas-open-competitive",
         "dcas-noe-differentiators",
-        "oasys_noe_html"
+        "oasys_noe_html",
+        "oasys-active-exams"
       ],
       "interest_area": "community-social-services",
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277018000.pdf",
@@ -32631,8 +32638,10 @@
       },
       "list_aggregate": null,
       "fee_salary_gap": null,
-      "official_application_url": "https://www.nyc.gov/examsforjobs",
-      "application_handoff_mode": "landing",
+      "oasys_exam_id": "9631",
+      "oasys_noe_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9631",
+      "application_handoff_mode": "deep",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9631",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -32839,7 +32848,8 @@
         "dcas-noe",
         "dcas-open-competitive",
         "dcas-noe-differentiators",
-        "oasys_noe_html"
+        "oasys_noe_html",
+        "oasys-active-exams"
       ],
       "interest_area": "public-safety",
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277323000.pdf",
@@ -32926,8 +32936,10 @@
       },
       "list_aggregate": null,
       "fee_salary_gap": null,
-      "official_application_url": "https://www.nyc.gov/examsforjobs",
-      "application_handoff_mode": "landing",
+      "oasys_exam_id": "9634",
+      "oasys_noe_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9634",
+      "application_handoff_mode": "deep",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9634",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -32962,7 +32974,8 @@
         "dcas-noe",
         "dcas-open-competitive",
         "dcas-noe-differentiators",
-        "oasys_noe_html"
+        "oasys_noe_html",
+        "oasys-active-exams"
       ],
       "interest_area": "public-safety",
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277331000.pdf",
@@ -33062,8 +33075,10 @@
       },
       "list_aggregate": null,
       "fee_salary_gap": null,
-      "official_application_url": "https://www.nyc.gov/examsforjobs",
-      "application_handoff_mode": "landing",
+      "oasys_exam_id": "9635",
+      "oasys_noe_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9635",
+      "application_handoff_mode": "deep",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9635",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -33098,7 +33113,8 @@
         "dcas-noe",
         "dcas-noe-fee-salary-densify",
         "dcas-noe-differentiators",
-        "oasys_noe_html"
+        "oasys_noe_html",
+        "oasys-active-exams"
       ],
       "interest_area": "public-safety",
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277311000.pdf",
@@ -33214,8 +33230,10 @@
       },
       "list_aggregate": null,
       "fee_salary_gap": null,
-      "official_application_url": "https://www.nyc.gov/examsforjobs",
-      "application_handoff_mode": "landing",
+      "oasys_exam_id": "9646",
+      "oasys_noe_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9646",
+      "application_handoff_mode": "deep",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9646",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -33246,7 +33264,8 @@
       "eligibility": "promotion",
       "schedule_status": "scheduled",
       "sources": [
-        "dcas-annual-schedule"
+        "dcas-annual-schedule",
+        "oasys-active-exams"
       ],
       "interest_area": "engineering-construction",
       "card_leads": [],
@@ -33274,8 +33293,10 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
-      "official_application_url": "https://www.nyc.gov/examsforjobs",
-      "application_handoff_mode": "landing",
+      "oasys_exam_id": "9636",
+      "oasys_noe_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9636",
+      "application_handoff_mode": "deep",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9636",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -33362,7 +33383,8 @@
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
       "sources": [
-        "dcas-annual-schedule"
+        "dcas-annual-schedule",
+        "oasys-active-exams"
       ],
       "interest_area": "administration-finance",
       "card_leads": [],
@@ -33390,8 +33412,10 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
-      "official_application_url": "https://www.nyc.gov/examsforjobs",
-      "application_handoff_mode": "landing",
+      "oasys_exam_id": "9638",
+      "oasys_noe_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9638",
+      "application_handoff_mode": "deep",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9638",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -33422,7 +33446,8 @@
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
       "sources": [
-        "dcas-annual-schedule"
+        "dcas-annual-schedule",
+        "oasys-active-exams"
       ],
       "interest_area": "trades-operations",
       "card_leads": [],
@@ -33450,8 +33475,10 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
-      "official_application_url": "https://www.nyc.gov/examsforjobs",
-      "application_handoff_mode": "landing",
+      "oasys_exam_id": "9639",
+      "oasys_noe_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9639",
+      "application_handoff_mode": "deep",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9639",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -33475,7 +33502,8 @@
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
       "sources": [
-        "dcas-annual-schedule"
+        "dcas-annual-schedule",
+        "oasys-active-exams"
       ],
       "interest_area": "trades-operations",
       "card_leads": [],
@@ -33503,8 +33531,10 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
-      "official_application_url": "https://www.nyc.gov/examsforjobs",
-      "application_handoff_mode": "landing",
+      "oasys_exam_id": "9640",
+      "oasys_noe_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9640",
+      "application_handoff_mode": "deep",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9640",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -33535,7 +33565,8 @@
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
       "sources": [
-        "dcas-annual-schedule"
+        "dcas-annual-schedule",
+        "oasys-active-exams"
       ],
       "interest_area": "engineering-construction",
       "card_leads": [],
@@ -33563,8 +33594,10 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
-      "official_application_url": "https://www.nyc.gov/examsforjobs",
-      "application_handoff_mode": "landing",
+      "oasys_exam_id": "9641",
+      "oasys_noe_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9641",
+      "application_handoff_mode": "deep",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9641",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -33644,7 +33677,8 @@
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
       "sources": [
-        "dcas-annual-schedule"
+        "dcas-annual-schedule",
+        "oasys-active-exams"
       ],
       "interest_area": "engineering-construction",
       "card_leads": [],
@@ -33672,8 +33706,10 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
-      "official_application_url": "https://www.nyc.gov/examsforjobs",
-      "application_handoff_mode": "landing",
+      "oasys_exam_id": "9643",
+      "oasys_noe_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9643",
+      "application_handoff_mode": "deep",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9643",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -33697,7 +33733,8 @@
       "eligibility": "promotion",
       "schedule_status": "scheduled",
       "sources": [
-        "dcas-annual-schedule"
+        "dcas-annual-schedule",
+        "oasys-active-exams"
       ],
       "interest_area": "engineering-construction",
       "card_leads": [],
@@ -33725,8 +33762,10 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
-      "official_application_url": "https://www.nyc.gov/examsforjobs",
-      "application_handoff_mode": "landing",
+      "oasys_exam_id": "9644",
+      "oasys_noe_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9644",
+      "application_handoff_mode": "deep",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9644",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -33871,6 +33910,58 @@
         "public_projection": "cohort_statistic_only",
         "prediction": null
       },
+      "eligible_list_utilization": {
+        "status": "linked",
+        "row_count": 3,
+        "source_id": "dcas-eligible-list-utilization",
+        "dataset_id": "qjzt-ytn9",
+        "vintage": "2026-08-05"
+      }
+    },
+    {
+      "exam_number": "7002",
+      "title_code": "83006",
+      "title": "Administrative Housing Development Specialist",
+      "application_start": "2026-09-02",
+      "application_end": "2026-09-22",
+      "eligibility": "open_competitive",
+      "schedule_status": "canceled",
+      "sources": [
+        "dcas-annual-schedule",
+        "dcas-open-competitive",
+        "dcas-noe"
+      ],
+      "interest_area": "community-social-services",
+      "notice_url": null,
+      "application_notes": "Canceled",
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
+      },
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
+      "list_establishment_forecast": null,
       "eligible_list_utilization": {
         "status": "linked",
         "row_count": 3,
@@ -41108,58 +41199,6 @@
         "median_months": 12,
         "public_projection": "cohort_statistic_only",
         "prediction": null
-      }
-    },
-    {
-      "exam_number": "7002",
-      "title_code": "83006",
-      "title": "Administrative Housing Development Specialist",
-      "application_start": null,
-      "application_end": null,
-      "eligibility": "open_competitive",
-      "schedule_status": "canceled",
-      "sources": [
-        "dcas-annual-schedule",
-        "dcas-open-competitive",
-        "dcas-noe"
-      ],
-      "interest_area": "community-social-services",
-      "notice_url": null,
-      "application_notes": "Canceled",
-      "card_leads": [],
-      "salary_band": "unknown",
-      "fee_level": "unknown",
-      "outcome": null,
-      "outcome_gap": {
-        "class": "not_yet_ingested",
-        "pending_stage": "list_establishment",
-        "public_sources": [
-          "dcas-annual-exam-outcomes",
-          "dcas-active-civil-service-list"
-        ]
-      },
-      "list_aggregate": null,
-      "fee_salary_gap": {
-        "class": "not_yet_ingested",
-        "missing": [
-          "fee",
-          "salary_min"
-        ],
-        "public_source": {
-          "name": "DCAS open-competitive exam schedule and Notices of Examination",
-          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
-          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
-        }
-      },
-      "official_application_url": "https://www.nyc.gov/examsforjobs",
-      "application_handoff_mode": "landing",
-      "list_establishment_forecast": null,
-      "eligible_list_utilization": {
-        "status": "linked",
-        "row_count": 3,
-        "source_id": "dcas-eligible-list-utilization",
-        "dataset_id": "qjzt-ytn9",
-        "vintage": "2026-08-05"
       }
     }
   ]

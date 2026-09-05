@@ -444,11 +444,16 @@ function normalizeCurrent(row) {
   assert(/^\d{4}$/.test(examNumber), `invalid current exam number: ${row.exam_number}`);
   // When a raw NOE body is present, densify missing fee/salary before merge.
   // DCAS open-competitive schedule page is definitionally public eligibility.
+  // A cancelled or postponed row carries prose where its dates go. Omitting the
+  // window rather than writing nulls lets the annual schedule's dates stand, so
+  // the card still says when the exam was to be held.
+  const window = {};
+  if (row.application_start) window.application_start = isoDate(row.application_start);
+  if (row.application_end) window.application_end = isoDate(row.application_end);
   const densified = applyNoeFeeSalaryFromBody({
     exam_number: examNumber,
     ...row,
-    application_start: isoDate(row.application_start),
-    application_end: isoDate(row.application_end),
+    ...window,
     schedule_status: scheduleStatus(row),
     eligibility: "open_competitive",
     sources: [
@@ -1334,8 +1339,11 @@ async function refreshSnapshots() {
   await refreshOpenCompetitiveSnapshot({ fetchedAt });
   // The OASys map carries a 3-day window and is asserted below, so the declared
   // acquisition command refreshes it here rather than relying on a separate run.
+  // Previously mapped exams are retained: OASys rotates a title off its active
+  // list as soon as filing closes, and dropping it would break the apply
+  // deep-link on every card for an exam whose list is still being established.
   try {
-    await refreshOasysExamMap();
+    await refreshOasysExamMap({ retainPrior: true });
   } catch (error) {
     console.warn(`OASys exam map not refreshed: ${error.message || error}`);
   }

@@ -15,7 +15,7 @@
   "verified_at": "2026-09-05",
   "http_status": 200,
   "page_bytes": 27322,
-  "page_sha256": "50b9a77ae832a23c81bca905162d2d50a6fa0519a917040b45344dac341bb30b",
+  "page_sha256": "b7f21dee9927cf49cf898a3201f4b6c5afa4492b161526ff797d78851b8d26c5",
   "observed_exams": [
     {
       "exam_number": "7002",
@@ -47,9 +47,9 @@
       "oasys_filing_start": "2026-09-02",
       "oasys_filing_end": "2026-09-22",
       "oasys_agrees": true,
-      "previous_application_start": null,
-      "previous_application_end": null,
-      "changed_since_previous": null
+      "previous_application_start": "2026-09-02",
+      "previous_application_end": "2026-09-22",
+      "changed_since_previous": false
     },
     {
       "exam_number": "7006",
@@ -166,9 +166,9 @@
       "oasys_filing_start": "2026-08-05",
       "oasys_filing_end": "2026-09-22",
       "oasys_agrees": true,
-      "previous_application_start": null,
-      "previous_application_end": null,
-      "changed_since_previous": null
+      "previous_application_start": "2026-08-05",
+      "previous_application_end": "2026-09-22",
+      "changed_since_previous": false
     },
     {
       "exam_number": "7307",
@@ -258,6 +258,13 @@
   ],
   "carried_detail_fields": [
     {
+      "exam_number": "7003",
+      "fields": [
+        "test_method"
+      ],
+      "same_cycle": true
+    },
+    {
       "exam_number": "7006",
       "fields": [
         "fee_waiver",
@@ -317,6 +324,13 @@
       "same_cycle": true
     },
     {
+      "exam_number": "7070",
+      "fields": [
+        "test_method"
+      ],
+      "same_cycle": true
+    },
+    {
       "exam_number": "7307",
       "fields": [
         "salary_min",
@@ -362,10 +376,7 @@
       "same_cycle": true
     }
   ],
-  "added_exam_numbers": [
-    "7003",
-    "7070"
-  ],
+  "added_exam_numbers": [],
   "dropped_exam_numbers": [],
   "unstated_annual_salary": [
     {
