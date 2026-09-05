@@ -1,0 +1,25 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-land-map-view/lm-16-density-summary",
+  "status": "implemented",
+  "fingerprint": "lm-16-density-summary.v1",
+  "updated_at": "2026-09-05T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "land-map-density-measurement-module",
+      "path": "site/land_map_density_measurement.mjs"
+    },
+    {
+      "id": "land-map-density-measurement-contract",
+      "path": "test/land_map_density_measurement.test.mjs"
+    },
+    {
+      "id": "land-map-density-measurement-receipt-builder",
+      "path": "tools/build_land_map_density_receipt.mjs"
+    },
+    {
+      "id": "land-map-density-measurement-receipt",
+      "path": "docs/evidence/land-map-density-measurement.json"
+    }
+  ]
+}
