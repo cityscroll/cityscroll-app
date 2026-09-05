@@ -35,6 +35,7 @@
  *                                                [--publish-receipt <path>] [--duration-ms <n>]
  *                                                [--verification-status <s>] [--verification-detail "<text>"]
  *                                                [--rollback-compensates <id>] [--rollback-command "<text>"] [--rollback-reason "<text>"]
+ *                                                [--canary-evidence <path>] [--reconcile-report <path>]
  *                                                [--out <path>]
  *   node tools/d1_publication_receipt.mjs record  (same flags as build, plus)
  *                                                --local <path> [--state-file <path> | --binding <b> --config <path> --remote]
@@ -54,6 +55,8 @@ import {
   D1_BOUNDED_PUBLISH_PLAN_SCHEMA,
   D1_BOUNDED_PUBLISH_RECEIPT_SCHEMA,
 } from "./d1_bounded_publisher.mjs";
+import { D1_CANARY_EVIDENCE_SCHEMA, FINDING_CLASSIFICATIONS } from "./d1_canary.mjs";
+import { D1_RECONCILE_REPORT_SCHEMA } from "./d1_reconcile.mjs";
 
 const execFileAsync = promisify(execFile);
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
@@ -200,6 +203,24 @@ const TOTALS_KEYS = Object.freeze(["estimated_writes", "observed_writes", "total
 const RETRIES_KEYS = Object.freeze(["attempts", "transient_failures"]);
 const VERIFICATION_KEYS = Object.freeze(["status", "detail"]);
 const ROLLBACK_KEYS = Object.freeze(["compensates_receipt", "rebuild_command", "reason"]);
+const CANARY_STATUSES = Object.freeze(["passed", "failed"]);
+const CANARY_KEYS = Object.freeze([
+  "status",
+  "generation",
+  "findings_count",
+  "watermark_mismatch_count",
+  "representative_query_failed_count",
+  "content_hash",
+]);
+const RECONCILE_KEYS = Object.freeze([
+  "consistent",
+  "truncated",
+  "generation",
+  "findings_count",
+  "findings_by_classification",
+  "content_hash",
+]);
+const RECONCILE_CLASSIFICATION_KEYS = Object.freeze([...FINDING_CLASSIFICATIONS]);
 const TOP_LEVEL_KEYS = Object.freeze([
   "schema",
   "receipt_id",
@@ -216,6 +237,8 @@ const TOP_LEVEL_KEYS = Object.freeze([
   "duration_ms",
   "verification",
   "rollback",
+  "canary",
+  "reconcile",
 ]);
 
 function validateRun(run) {
@@ -295,6 +318,46 @@ function validateRollback(rollback, outcome) {
 }
 
 /**
+ * The canary and reconcile sections (release-control card d1-08) are bounded
+ * summaries of the evidence tools/d1_canary.mjs and tools/d1_reconcile.mjs
+ * produce, not the full findings array: a receipt never carries a source row
+ * or an unbounded list, only counts, a status/consistency flag, and the
+ * content hash a reader can use to fetch the full evidence elsewhere.
+ */
+function validateCanarySection(canary) {
+  if (canary === null) return;
+  requirePlainObject(canary, "receipt.canary");
+  requireKnownKeys(canary, CANARY_KEYS, "receipt.canary");
+  if (!CANARY_STATUSES.includes(canary.status)) fail("receipt.canary.status", `must be one of ${CANARY_STATUSES.join(", ")}`);
+  assertNullablePositiveInteger(canary.generation, "receipt.canary.generation");
+  requireNonNegativeInteger(canary.findings_count, "receipt.canary.findings_count");
+  requireNonNegativeInteger(canary.watermark_mismatch_count, "receipt.canary.watermark_mismatch_count");
+  requireNonNegativeInteger(canary.representative_query_failed_count, "receipt.canary.representative_query_failed_count");
+  assertSha256(canary.content_hash, "receipt.canary.content_hash");
+  if (canary.status === "passed" && (canary.findings_count > 0 || canary.watermark_mismatch_count > 0 || canary.representative_query_failed_count > 0)) {
+    fail("receipt.canary.status", `must not be "passed" while a finding, watermark mismatch, or representative-query failure is recorded`);
+  }
+}
+
+function validateReconcileSection(reconcile) {
+  if (reconcile === null) return;
+  requirePlainObject(reconcile, "receipt.reconcile");
+  requireKnownKeys(reconcile, RECONCILE_KEYS, "receipt.reconcile");
+  if (typeof reconcile.consistent !== "boolean") fail("receipt.reconcile.consistent", "must be a boolean");
+  if (typeof reconcile.truncated !== "boolean") fail("receipt.reconcile.truncated", "must be a boolean");
+  assertNullablePositiveInteger(reconcile.generation, "receipt.reconcile.generation");
+  requireNonNegativeInteger(reconcile.findings_count, "receipt.reconcile.findings_count");
+  requirePlainObject(reconcile.findings_by_classification, "receipt.reconcile.findings_by_classification");
+  requireKnownKeys(reconcile.findings_by_classification, RECONCILE_CLASSIFICATION_KEYS, "receipt.reconcile.findings_by_classification");
+  for (const classification of RECONCILE_CLASSIFICATION_KEYS) {
+    requireNonNegativeInteger(reconcile.findings_by_classification[classification], `receipt.reconcile.findings_by_classification.${classification}`);
+  }
+  assertSha256(reconcile.content_hash, "receipt.reconcile.content_hash");
+  if (reconcile.truncated && reconcile.consistent) fail("receipt.reconcile.consistent", "must be false while truncated is true");
+  if (reconcile.findings_count > 0 && reconcile.consistent) fail("receipt.reconcile.consistent", "must be false while a finding is recorded");
+}
+
+/**
  * Validate a publication receipt against the closed schema: no unknown field
  * anywhere, every string bounded and non-secret-shaped, exactly one closed
  * outcome, and a rollback pointer present if and only if the outcome is
@@ -323,7 +386,37 @@ export function validatePublicationReceipt(receipt) {
   assertNullableNonNegativeInteger(receipt.duration_ms, "receipt.duration_ms");
   validateVerification(receipt.verification);
   validateRollback(receipt.rollback, receipt.outcome);
+  validateCanarySection(receipt.canary);
+  validateReconcileSection(receipt.reconcile);
   return receipt;
+}
+
+/** Reduce a full canary evidence object (tools/d1_canary.mjs) to the receipt's bounded section. */
+export function summarizeCanaryEvidence(evidence) {
+  if (!evidence) return null;
+  if (evidence.schema !== D1_CANARY_EVIDENCE_SCHEMA) fail("canaryEvidence", "has the wrong schema");
+  return {
+    status: evidence.status,
+    generation: evidence.generation ?? null,
+    findings_count: evidence.findings_count,
+    watermark_mismatch_count: (evidence.watermarks || []).filter((watermark) => watermark.status === "mismatch").length,
+    representative_query_failed_count: (evidence.representative_queries || []).filter((query) => query.status === "failed").length,
+    content_hash: evidence.content_hash,
+  };
+}
+
+/** Reduce a full reconcile report (tools/d1_reconcile.mjs) to the receipt's bounded section. */
+export function summarizeReconcileReport(report) {
+  if (!report) return null;
+  if (report.schema !== D1_RECONCILE_REPORT_SCHEMA) fail("reconcileReport", "has the wrong schema");
+  return {
+    consistent: report.consistent,
+    truncated: report.truncated,
+    generation: report.generation ?? null,
+    findings_count: report.findings_count,
+    findings_by_classification: { ...report.findings_by_classification },
+    content_hash: report.content_hash,
+  };
 }
 
 /**
@@ -498,6 +591,8 @@ export function buildPublicationReceipt({
   durationMs = null,
   verification = null,
   rollback = null,
+  canaryEvidence = null,
+  reconcileReport = null,
   recordedAt = new Date().toISOString(),
   receiptId = null,
 }) {
@@ -524,6 +619,8 @@ export function buildPublicationReceipt({
           reason: rollback.reason,
         }
       : null,
+    canary: summarizeCanaryEvidence(canaryEvidence),
+    reconcile: summarizeReconcileReport(reconcileReport),
   };
   return validatePublicationReceipt(receipt);
 }
@@ -689,6 +786,8 @@ function receiptFromArgs(args) {
       ? { status: args["verification-status"], detail: args["verification-detail"] || null }
       : null,
     rollback,
+    canaryEvidence: readJsonIfGiven(args["canary-evidence"]),
+    reconcileReport: readJsonIfGiven(args["reconcile-report"]),
   });
 }
 
