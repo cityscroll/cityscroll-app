@@ -774,6 +774,7 @@
 /worker/README.md
 /worker/alerts.config.json
 /worker/d1-read-models.manifest.json
+/worker/d1-release-policy.json
 /worker/e2e/
 /worker/migrations/
 /worker/ops-contract.v1.json

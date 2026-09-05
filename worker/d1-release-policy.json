@@ -1,0 +1,14 @@
+{
+  "schema": "cityscroll.d1-release-policy.v1",
+  "canary": {
+    "max_partitions": 3,
+    "max_rows": 200
+  },
+  "reconcile": {
+    "max_partitions": 25,
+    "max_rows": 5000
+  },
+  "abort_threshold": {
+    "max_findings": 25
+  }
+}

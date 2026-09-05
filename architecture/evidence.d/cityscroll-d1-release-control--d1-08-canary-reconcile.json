@@ -1,0 +1,21 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-d1-release-control/d1-08-canary-reconcile",
+  "status": "implemented",
+  "fingerprint": "d1-08-canary-reconcile.v1",
+  "updated_at": "2026-09-05T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "d1-release-policy",
+      "path": "worker/d1-release-policy.json"
+    },
+    {
+      "id": "d1-canary",
+      "path": "tools/d1_canary.mjs"
+    },
+    {
+      "id": "d1-reconcile",
+      "path": "tools/d1_reconcile.mjs"
+    }
+  ]
+}
