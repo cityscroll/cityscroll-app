@@ -14,6 +14,7 @@ import {
   classifyPartitionFindings,
   keyPredicate,
   loadReleasePolicy,
+  parseArgs as parseCanaryArgs,
   runCanary,
   selectCanaryScope,
   validateReleasePolicy,
@@ -23,6 +24,7 @@ import {
   D1_RECONCILE_REPORT_SCHEMA,
   D1ReconcileError,
   buildReconcileReport,
+  parseArgs as parseReconcileArgs,
   runReconcile,
   selectReconcileScope,
 } from "../tools/d1_reconcile.mjs";
@@ -567,4 +569,96 @@ test("a receipt refuses a reconcile section claiming consistent while truncated 
 test("keyPredicate builds a bounded, escaped SQL predicate from the manifest's key columns", () => {
   const entry = manifest.models.find((model) => model.model_id === "ocp_awards");
   assert.equal(keyPredicate(entry, "ocp_awards_warehouse", ["r1's key"]), "row_key = 'r1''s key'");
+});
+
+// --- CLI argument parsing: bare boolean flags never swallow the next flag --
+
+test("a bare boolean flag directly ahead of another flag is recorded as true, not the next flag's name", () => {
+  // The exact production shape: --binding X --remote --config Y. A naive
+  // parser that unconditionally consumes the next token as a value reads
+  // --remote's value as "--config", then trips on the bare "Y" token that
+  // follows — which is exactly how this ladder's fence CLI broke tonight.
+  const argv = ["node", "tools/d1_canary.mjs", "select", "--binding", "ALERT_STATE", "--remote", "--config", "worker/wrangler.toml"];
+  const args = parseCanaryArgs(argv);
+  assert.equal(args.binding, "ALERT_STATE");
+  assert.equal(args.remote, true);
+  assert.equal(args.config, "worker/wrangler.toml");
+});
+
+test("a trailing bare boolean flag with nothing after it is recorded as true, not undefined swallowing past the array end", () => {
+  const argv = ["node", "tools/d1_reconcile.mjs", "select", "--policy", "worker/d1-release-policy.json", "--remote"];
+  const args = parseReconcileArgs(argv);
+  assert.equal(args.policy, "worker/d1-release-policy.json");
+  assert.equal(args.remote, true);
+});
+
+/**
+ * Extract every `node tools/d1_*.mjs <command> ...` (or `node ../tools/d1_*.mjs`)
+ * invocation from a GitHub Actions workflow's shell blocks, joining a
+ * backslash-continued command onto one line and tokenizing it the way a
+ * shell would: a double-quoted span (which may contain spaces, e.g. a
+ * `${{ ... }}` expression) is one token.
+ */
+function extractD1Invocations(yamlText) {
+  const lines = yamlText.split("\n");
+  const invocations = [];
+  const START = /^\s*node\s+(?:\.\.\/)?tools\/(d1_[a-z0-9_]+\.mjs)\s+(\S+)/;
+  for (let index = 0; index < lines.length; index += 1) {
+    const start = START.exec(lines[index]);
+    if (!start) continue;
+    const [, tool, command] = start;
+    let joined = lines[index].trim();
+    let cursor = index;
+    while (joined.endsWith("\\")) {
+      cursor += 1;
+      joined = `${joined.slice(0, -1)} ${lines[cursor].trim()}`;
+    }
+    invocations.push({ tool, command, text: joined });
+  }
+  return invocations;
+}
+
+const SHELL_CONTROL_OPERATORS = new Set(["||", "&&", ";"]);
+
+/** Tokenizes one shell command line, stopping at an unquoted control operator (e.g. `|| true`) that ends the invocation's own argv. */
+function tokenizeShellArgs(text) {
+  const tokens = [];
+  const pattern = /"((?:[^"\\]|\\.)*)"|'((?:[^'\\]|\\.)*)'|(\S+)/g;
+  let match;
+  while ((match = pattern.exec(text)) !== null) {
+    const token = match[1] ?? match[2] ?? match[3];
+    if (match[3] !== undefined && SHELL_CONTROL_OPERATORS.has(token)) break;
+    tokens.push(token);
+  }
+  return tokens;
+}
+
+test("every d1_* CLI invocation in the deploy workflow parses through d1_canary and d1_reconcile without a flag swallowing another flag's name", () => {
+  const workflow = readFileSync(resolve(ROOT, ".github/workflows/deploy-worker.yml"), "utf8");
+  const invocations = extractD1Invocations(workflow);
+  assert.ok(invocations.length > 0, "the workflow does carry d1_* invocations to check against");
+
+  for (const invocation of invocations) {
+    const tokens = tokenizeShellArgs(invocation.text);
+    // tokens[0]="node", tokens[1]="tools/d1_x.mjs" (or "../tools/..."), tokens[2]=command; the rest are flags/values.
+    // A bash array expansion (`"${some_flag[@]}"`) expands at shell runtime to zero or more
+    // literal tokens this static extraction cannot resolve; drop the placeholder rather than
+    // feeding it to the parser as a bare (and therefore always-invalid) argument.
+    const flagTokens = tokens.slice(3).filter((token) => !/^\$\{[a-zA-Z_][a-zA-Z0-9_]*\[@\]\}$/.test(token));
+
+    for (const [label, parse] of [["d1_canary.mjs", parseCanaryArgs], ["d1_reconcile.mjs", parseReconcileArgs]]) {
+      const argv = ["node", `tools/${label}`, invocation.command, ...flagTokens];
+      let args;
+      assert.doesNotThrow(() => {
+        args = parse(argv);
+      }, `${label} parsing ${invocation.tool} ${invocation.command}'s argv should not throw: ${invocation.text}`);
+      for (const [flag, value] of Object.entries(args)) {
+        if (flag === "command") continue;
+        assert.ok(
+          value === true || (typeof value === "string" && !value.startsWith("--")),
+          `${label}: --${flag} must not have swallowed a following flag's name in ${invocation.tool} ${invocation.command}: ${invocation.text}`,
+        );
+      }
+    }
+  }
 });

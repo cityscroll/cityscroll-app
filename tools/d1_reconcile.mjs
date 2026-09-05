@@ -183,12 +183,28 @@ export async function runReconcile({
   });
 }
 
-function parseArgs(argv) {
+/**
+ * A flag with no following token, or one immediately followed by another
+ * flag (e.g. `--remote --config path`, the shape a bare wrangler-style
+ * boolean flag takes in .github/workflows/deploy-worker.yml), is a boolean
+ * flag: it is recorded as `true` rather than swallowing the next flag's name
+ * as its own value. Swallowing it is exactly the bug class that broke this
+ * ladder's other CLIs on a bare `--remote` ahead of `--config`; parsing here
+ * must not repeat it.
+ */
+export function parseArgs(argv) {
   const args = { command: argv[2] };
   for (let index = 3; index < argv.length; index += 1) {
     const flag = argv[index];
     if (!flag.startsWith("--")) fail(`unknown argument ${flag}`);
-    args[flag.slice(2)] = argv[++index];
+    const name = flag.slice(2);
+    const next = argv[index + 1];
+    if (next === undefined || next.startsWith("--")) {
+      args[name] = true;
+    } else {
+      args[name] = next;
+      index += 1;
+    }
   }
   return args;
 }
