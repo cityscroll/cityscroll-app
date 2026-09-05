@@ -14,11 +14,12 @@ import http.server
 import json
 import socketserver
 import subprocess
-import tempfile
 import threading
 from pathlib import Path
 
 from playwright.sync_api import sync_playwright
+
+from lib.temp_workspace import cityscroll_temp_dir
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "docs" / "screenshots" / "agency-false-splits"
@@ -217,7 +218,7 @@ def main() -> None:
     pairs = resolve_pairs()
     OUT.mkdir(parents=True, exist_ok=True)
 
-    with tempfile.TemporaryDirectory() as tmp:
+    with cityscroll_temp_dir("agency-false-splits") as tmp:
         tmp_path = Path(tmp)
         (tmp_path / "before.html").write_text(render_html("before", BEFORE, pairs), encoding="utf-8")
         (tmp_path / "after.html").write_text(render_html("after", after_metrics, pairs), encoding="utf-8")

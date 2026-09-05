@@ -5,7 +5,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
-  mkdtempSync,
   writeFileSync,
   readFileSync,
   existsSync,
@@ -13,9 +12,9 @@ import {
   readdirSync,
 } from "node:fs";
 import { join, dirname } from "node:path";
-import { tmpdir } from "node:os";
 import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
+import { withTempDir } from "../tools/lib/with_temp_dir.mjs";
 
 import {
   parseMarkdownTable,
@@ -89,78 +88,79 @@ test("repo projection matches entries (pure projection check)", () => {
   assert.equal(tableMarkdown, renderRankedTable(entries));
 });
 
-test("two entry updates touch different files (merge-parallel safe)", () => {
-  const dir = mkdtempSync(join(tmpdir(), "cs-frontiers-"));
-  const entriesDir = join(dir, "entries");
-  const entries = [
-    {
-      schema: FRONTIER_ENTRY_SCHEMA,
-      id: "gap-alpha",
-      rank: 1,
-      gap_inventory_row: "`gap-alpha` — a",
-      source_and_access: "A",
-      join_feasibility: "Measured",
-      reader_value: "5",
-      effort: "API pull",
-      disposition: "Open",
-    },
-    {
-      schema: FRONTIER_ENTRY_SCHEMA,
-      id: "gap-beta",
-      rank: 2,
-      gap_inventory_row: "`gap-beta` — b",
-      source_and_access: "B",
-      join_feasibility: "Blocked",
-      reader_value: "3",
-      effort: "Scrape",
-      disposition: "Open",
-    },
-  ];
-  writeFrontierEntries(entriesDir, entries);
-  const alpha = frontierEntryFilename(entries[0]);
-  const beta = frontierEntryFilename(entries[1]);
-  const alphaBefore = readFileSync(join(entriesDir, alpha));
-  const betaBefore = readFileSync(join(entriesDir, beta));
+test("two entry updates touch different files (merge-parallel safe)", async () => {
+  await withTempDir("frontiers", async (dir) => {
+    const entriesDir = join(dir, "entries");
+    const entries = [
+      {
+        schema: FRONTIER_ENTRY_SCHEMA,
+        id: "gap-alpha",
+        rank: 1,
+        gap_inventory_row: "`gap-alpha` — a",
+        source_and_access: "A",
+        join_feasibility: "Measured",
+        reader_value: "5",
+        effort: "API pull",
+        disposition: "Open",
+      },
+      {
+        schema: FRONTIER_ENTRY_SCHEMA,
+        id: "gap-beta",
+        rank: 2,
+        gap_inventory_row: "`gap-beta` — b",
+        source_and_access: "B",
+        join_feasibility: "Blocked",
+        reader_value: "3",
+        effort: "Scrape",
+        disposition: "Open",
+      },
+    ];
+    writeFrontierEntries(entriesDir, entries);
+    const alpha = frontierEntryFilename(entries[0]);
+    const beta = frontierEntryFilename(entries[1]);
+    const alphaBefore = readFileSync(join(entriesDir, alpha));
+    const betaBefore = readFileSync(join(entriesDir, beta));
 
-  // Crank A updates alpha disposition only
-  const aDir = join(dir, "a/entries");
-  mkdirSync(aDir, { recursive: true });
-  for (const name of readdirSync(entriesDir)) {
-    writeFileSync(join(aDir, name), readFileSync(join(entriesDir, name)));
-  }
-  const aEntries = loadFrontierEntries(aDir);
-  aEntries[0].disposition = "Landed";
-  writeFileSync(join(aDir, alpha), `${JSON.stringify(aEntries[0], null, 2)}\n`);
+    // Crank A updates alpha disposition only
+    const aDir = join(dir, "a/entries");
+    mkdirSync(aDir, { recursive: true });
+    for (const name of readdirSync(entriesDir)) {
+      writeFileSync(join(aDir, name), readFileSync(join(entriesDir, name)));
+    }
+    const aEntries = loadFrontierEntries(aDir);
+    aEntries[0].disposition = "Landed";
+    writeFileSync(join(aDir, alpha), `${JSON.stringify(aEntries[0], null, 2)}\n`);
 
-  // Crank B updates beta disposition only
-  const bDir = join(dir, "b/entries");
-  mkdirSync(bDir, { recursive: true });
-  for (const name of readdirSync(entriesDir)) {
-    writeFileSync(join(bDir, name), readFileSync(join(entriesDir, name)));
-  }
-  const bEntries = loadFrontierEntries(bDir);
-  bEntries[1].disposition = "Stopped";
-  writeFileSync(join(bDir, beta), `${JSON.stringify(bEntries[1], null, 2)}\n`);
+    // Crank B updates beta disposition only
+    const bDir = join(dir, "b/entries");
+    mkdirSync(bDir, { recursive: true });
+    for (const name of readdirSync(entriesDir)) {
+      writeFileSync(join(bDir, name), readFileSync(join(entriesDir, name)));
+    }
+    const bEntries = loadFrontierEntries(bDir);
+    bEntries[1].disposition = "Stopped";
+    writeFileSync(join(bDir, beta), `${JSON.stringify(bEntries[1], null, 2)}\n`);
 
-  assert.notEqual(readFileSync(join(aDir, alpha)).toString(), alphaBefore.toString());
-  assert.equal(readFileSync(join(aDir, beta)).toString(), betaBefore.toString());
-  assert.equal(readFileSync(join(bDir, alpha)).toString(), alphaBefore.toString());
-  assert.notEqual(readFileSync(join(bDir, beta)).toString(), betaBefore.toString());
+    assert.notEqual(readFileSync(join(aDir, alpha)).toString(), alphaBefore.toString());
+    assert.equal(readFileSync(join(aDir, beta)).toString(), betaBefore.toString());
+    assert.equal(readFileSync(join(bDir, alpha)).toString(), alphaBefore.toString());
+    assert.notEqual(readFileSync(join(bDir, beta)).toString(), betaBefore.toString());
 
-  // Merge both entry files into one dir and rebuild markdown — no conflict surface
-  const mergedDir = join(dir, "merged/entries");
-  mkdirSync(mergedDir, { recursive: true });
-  writeFileSync(join(mergedDir, alpha), readFileSync(join(aDir, alpha)));
-  writeFileSync(join(mergedDir, beta), readFileSync(join(bDir, beta)));
-  const merged = loadFrontierEntries(mergedDir);
-  assert.equal(merged.find((e) => e.id === "gap-alpha").disposition, "Landed");
-  assert.equal(merged.find((e) => e.id === "gap-beta").disposition, "Stopped");
-  const md = renderFrontiersMarkdown(
-    { before: "# Frontiers\n\n## Ranked frontier table\n\n", after: "\n## Done\n" },
-    merged,
-  );
-  assert.match(md, /Landed/);
-  assert.match(md, /Stopped/);
+    // Merge both entry files into one dir and rebuild markdown — no conflict surface
+    const mergedDir = join(dir, "merged/entries");
+    mkdirSync(mergedDir, { recursive: true });
+    writeFileSync(join(mergedDir, alpha), readFileSync(join(aDir, alpha)));
+    writeFileSync(join(mergedDir, beta), readFileSync(join(bDir, beta)));
+    const merged = loadFrontierEntries(mergedDir);
+    assert.equal(merged.find((e) => e.id === "gap-alpha").disposition, "Landed");
+    assert.equal(merged.find((e) => e.id === "gap-beta").disposition, "Stopped");
+    const md = renderFrontiersMarkdown(
+      { before: "# Frontiers\n\n## Ranked frontier table\n\n", after: "\n## Done\n" },
+      merged,
+    );
+    assert.match(md, /Landed/);
+    assert.match(md, /Stopped/);
+  });
 });
 
 test("build_data_frontiers --check passes in the repo", () => {

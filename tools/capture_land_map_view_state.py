@@ -18,12 +18,13 @@ import functools
 import hashlib
 import json
 import subprocess
-import tempfile
 import threading
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
 from playwright.sync_api import Page, Route, sync_playwright
+
+from lib.temp_workspace import head_site_workspace
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "docs" / "screenshots" / "land-map-view-state"
@@ -54,23 +55,6 @@ class StaticServer:
         self.server.server_close()
 
 
-def merge_base_site(destination: Path) -> Path:
-    """Build the merge-base site tree offline, with no checkout switch in this working copy.
-
-    Browse documents are generated (site/browse/ is gitignored), so the before tree needs its
-    own detached worktree and its own document build rather than a source archive.
-    """
-    tree = destination / "head"
-    subprocess.run(["git", "worktree", "add", "--detach", str(tree), "HEAD"], cwd=ROOT, check=True)
-    subprocess.run(["node", "tools/build_primary_documents.mjs"], cwd=tree, check=True)
-    return tree / "site"
-
-
-def release_merge_base(destination: Path) -> None:
-    subprocess.run(
-        ["git", "worktree", "remove", "--force", str(destination / "head")], cwd=ROOT, check=False
-    )
-    subprocess.run(["git", "worktree", "prune"], cwd=ROOT, check=False)
 
 
 def install_routes(page: Page, base_url: str) -> None:
@@ -255,12 +239,8 @@ def capture(label: str, site_dir: Path) -> list[dict]:
 
 def main() -> None:
     OUT.mkdir(parents=True, exist_ok=True)
-    with tempfile.TemporaryDirectory() as staging:
-        staging_path = Path(staging)
-        try:
-            files = capture("before", merge_base_site(staging_path))
-        finally:
-            release_merge_base(staging_path)
+    with head_site_workspace(ROOT, "capture-land-map-view-state") as site_root:
+        files = capture("before", site_root)
     files += capture("after", ROOT / "site")
     with StaticServer(ROOT / "site") as base_url, sync_playwright() as playwright:
         history = capture_history_receipt(base_url, playwright)

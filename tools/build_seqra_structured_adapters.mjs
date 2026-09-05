@@ -35,6 +35,7 @@ import { execFileSync } from "node:child_process";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { withTempDirSync } from "./lib/with_temp_dir.mjs";
 
 import {
   SeqraPaginationIncompleteError,
@@ -288,18 +289,18 @@ await check("a complete live paginated walk reports pagination_complete on the n
 });
 
 await check("re-fetching an already-captured vintage under different bytes is refused, never silently overwritten", () => {
-  const scratchAbs = path.join(process.env.TMPDIR || "/tmp", `seqra03-vintage-immutability-${process.pid}`);
-  mkdirSync(scratchAbs, { recursive: true });
-  retainRawSnapshot({ rootAbs: scratchAbs, rootRel: "scratch", sourceId: "ceqr_projects", vintage: "v1", slug: "page-0000", text: "AAA" });
-  let threw = false;
-  try {
-    retainRawSnapshot({ rootAbs: scratchAbs, rootRel: "scratch", sourceId: "ceqr_projects", vintage: "v1", slug: "page-0000", text: "BBB" });
-  } catch (error) {
-    threw = error instanceof SeqraVintageImmutableError;
-  }
-  assertTrue(threw, "writing different bytes under an already-captured vintage label must throw");
-  const again = retainRawSnapshot({ rootAbs: scratchAbs, rootRel: "scratch", sourceId: "ceqr_projects", vintage: "v1", slug: "page-0000", text: "AAA" });
-  assertEqual(again.contentHash, contentHashOf("AAA"), "re-retaining identical bytes stays a no-op with the same hash");
+  withTempDirSync("seqra03-vintage-immutability", (scratchAbs) => {
+    retainRawSnapshot({ rootAbs: scratchAbs, rootRel: "scratch", sourceId: "ceqr_projects", vintage: "v1", slug: "page-0000", text: "AAA" });
+    let threw = false;
+    try {
+      retainRawSnapshot({ rootAbs: scratchAbs, rootRel: "scratch", sourceId: "ceqr_projects", vintage: "v1", slug: "page-0000", text: "BBB" });
+    } catch (error) {
+      threw = error instanceof SeqraVintageImmutableError;
+    }
+    assertTrue(threw, "writing different bytes under an already-captured vintage label must throw");
+    const again = retainRawSnapshot({ rootAbs: scratchAbs, rootRel: "scratch", sourceId: "ceqr_projects", vintage: "v1", slug: "page-0000", text: "AAA" });
+    assertEqual(again.contentHash, contentHashOf("AAA"), "re-retaining identical bytes stays a no-op with the same hash");
+  });
 });
 
 await check("a renamed ENB structural marker fails the adapter visibly instead of parsing zero notices (A3)", () => {

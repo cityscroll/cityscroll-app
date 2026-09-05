@@ -1,9 +1,10 @@
 import assert from "node:assert/strict";
-import { mkdtemp, readFile, writeFile } from "node:fs/promises";
+import { readFile, writeFile } from "node:fs/promises";
 import { spawnSync } from "node:child_process";
-import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
+
+import { withTempDir } from "../tools/lib/with_temp_dir.mjs";
 
 import {
   buildReleaseSurfaceReceipt,
@@ -135,62 +136,65 @@ test("generated evidence freshness uses the source-declared age and hash", () =>
 });
 
 test("release receipt retains stage failures and can be written as durable evidence", async () => {
-  const directory = await mkdtemp(join(tmpdir(), "cityscroll-release-surface-"));
-  const path = join(directory, "release-surface-receipt.json");
-  const receipt = buildReleaseSurfaceReceipt({
-    sourceCommitSha: SOURCE_SHA,
-    requiredStages: ["generation_output", "card_reconciliation", "generated_evidence_freshness"],
-    stages: {
-      generation_output: { status: "PASS", findings: [], evidence: {} },
-      card_reconciliation: { status: "FAIL", findings: ["source card rel-04 is missing from projection generated-board"], evidence: {} },
-      generated_evidence_freshness: { status: "PASS", findings: [], evidence: {} },
-    },
+  await withTempDir("release-surface", async (directory) => {
+    const path = join(directory, "release-surface-receipt.json");
+    const receipt = buildReleaseSurfaceReceipt({
+      sourceCommitSha: SOURCE_SHA,
+      requiredStages: ["generation_output", "card_reconciliation", "generated_evidence_freshness"],
+      stages: {
+        generation_output: { status: "PASS", findings: [], evidence: {} },
+        card_reconciliation: { status: "FAIL", findings: ["source card rel-04 is missing from projection generated-board"], evidence: {} },
+        generated_evidence_freshness: { status: "PASS", findings: [], evidence: {} },
+      },
+    });
+    writeReleaseSurfaceReceipt(receipt, path);
+    const persisted = JSON.parse(await readFile(path, "utf8"));
+    assert.equal(persisted.schema, "cityscroll.release-surface-receipt.v1");
+    assert.equal(persisted.kind, "release-surface");
+    assert.equal(persisted.status, "FAIL");
+    assert.match(persisted.findings[0], /rel-04/);
   });
-  writeReleaseSurfaceReceipt(receipt, path);
-  const persisted = JSON.parse(await readFile(path, "utf8"));
-  assert.equal(persisted.schema, "cityscroll.release-surface-receipt.v1");
-  assert.equal(persisted.kind, "release-surface");
-  assert.equal(persisted.status, "FAIL");
-  assert.match(persisted.findings[0], /rel-04/);
 });
 
 test("Pages deployment evidence can be joined to the existing release receipt", async () => {
-  const directory = await mkdtemp(join(tmpdir(), "cityscroll-release-pages-"));
-  const path = join(directory, "receipt.json");
-  const initial = buildReleaseSurfaceReceipt({
-    sourceCommitSha: SOURCE_SHA,
-    requiredStages: ["generation_output"],
-    stages: { generation_output: { status: "PASS", findings: [], evidence: {} } },
+  await withTempDir("release-pages", async (directory) => {
+    const path = join(directory, "receipt.json");
+    const initial = buildReleaseSurfaceReceipt({
+      sourceCommitSha: SOURCE_SHA,
+      requiredStages: ["generation_output"],
+      stages: { generation_output: { status: "PASS", findings: [], evidence: {} } },
+    });
+    await writeFile(path, JSON.stringify(initial) + "\n");
+    const result = spawnSync(process.execPath, [
+      "tools/update_release_surface_receipt.mjs",
+      "--receipt", path,
+      "--stage", "pages_deployment",
+      "--status", "PASS",
+      "--required-stage", "pages_deployment",
+      "--deployment-url", "https://pages.example.invalid/deploy-1",
+    ], { encoding: "utf8" });
+    assert.equal(result.status, 0, result.stderr);
+    const updated = JSON.parse(await readFile(path, "utf8"));
+    assert.equal(updated.status, "PASS");
+    assert.equal(updated.stages.pages_deployment.evidence.deployment_url, "https://pages.example.invalid/deploy-1");
+    assert.ok(updated.required_stages.includes("pages_deployment"));
   });
-  await writeFile(path, JSON.stringify(initial) + "\n");
-  const result = spawnSync(process.execPath, [
-    "tools/update_release_surface_receipt.mjs",
-    "--receipt", path,
-    "--stage", "pages_deployment",
-    "--status", "PASS",
-    "--required-stage", "pages_deployment",
-    "--deployment-url", "https://pages.example.invalid/deploy-1",
-  ], { encoding: "utf8" });
-  assert.equal(result.status, 0, result.stderr);
-  const updated = JSON.parse(await readFile(path, "utf8"));
-  assert.equal(updated.status, "PASS");
-  assert.equal(updated.stages.pages_deployment.evidence.deployment_url, "https://pages.example.invalid/deploy-1");
-  assert.ok(updated.required_stages.includes("pages_deployment"));
 });
 
 test("CLI failure injection writes a receipt before returning nonzero", async () => {
-  const directory = await mkdtemp(join(tmpdir(), "cityscroll-release-cli-"));
-  const output = join(directory, "receipt.json");
-  const result = spawnSync(process.execPath, [
-    "tools/check_release_surface_reconciliation.mjs",
-    "--generation-receipt", join(directory, "missing-generation.json"),
-    "--output", output,
-    "--required-stages", "generation_output",
-  ], { encoding: "utf8" });
-  assert.notEqual(result.status, 0);
-  const receipt = JSON.parse(await readFile(output, "utf8"));
-  assert.equal(receipt.status, "FAIL");
-  assert.ok(receipt.findings.some((finding) => /generation output receipt is missing/.test(finding)));
+  await withTempDir("release-cli", async (directory) => {
+    const output = join(directory, "receipt.json");
+    const result = spawnSync(process.execPath, [
+      "tools/check_release_surface_reconciliation.mjs",
+      "--generation-receipt", join(directory, "missing-generation.json"),
+      "--output", output,
+      "--required-stages", "generation_output",
+    ], { encoding: "utf8" });
+    assert.notEqual(result.status, 0);
+    const receipt = JSON.parse(await readFile(output, "utf8"));
+    assert.equal(receipt.status, "FAIL");
+    assert.ok(receipt.findings.some((finding) => /generation output receipt is missing/.test(finding)));
+  });
 });
 
 test("Pages provider identity and artifact binding fail closed", () => {

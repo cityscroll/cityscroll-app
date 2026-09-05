@@ -1,9 +1,9 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { EventEmitter } from "node:events";
-import { mkdtemp, readFile } from "node:fs/promises";
-import { tmpdir } from "node:os";
+import { readFile } from "node:fs/promises";
 import { join } from "node:path";
+import { withTempDir } from "../tools/lib/with_temp_dir.mjs";
 import {
   REPAIR_SUMMARY_LIMIT,
   publishHeartbeat,
@@ -111,94 +111,96 @@ test("a cycle with no configured dispatcher asks for a decision instead of prete
 });
 
 test("repair outcomes outlive the process and are reported exactly once", async () => {
-  const stateDir = await mkdtemp(join(tmpdir(), "crol-repair-"));
-  const spawn = fakeSpawn({ code: 0, stdout: "fixed" });
-  const results = await runLeasedRepairTasks(stateDir, [
-    leasedItem(),
-    leasedItem({ signature: "b".repeat(64), lease: { lease_id: "bbbbbbbbbbbb-cycle-1" } }),
-    // An item without a lease is not something this cycle may report on.
-    leasedItem({ signature: "c".repeat(64), lease: null }),
-  ], { command: "/opt/repair/dispatch", spawnImpl: spawn.impl });
-  assert.equal(results.length, 2);
-  const pending = JSON.parse(await readFile(join(stateDir, "repair", "pending-results.json"), "utf8"));
-  assert.equal(pending.results.length, 2);
+  await withTempDir("crol-repair", async (stateDir) => {
+    const spawn = fakeSpawn({ code: 0, stdout: "fixed" });
+    const results = await runLeasedRepairTasks(stateDir, [
+      leasedItem(),
+      leasedItem({ signature: "b".repeat(64), lease: { lease_id: "bbbbbbbbbbbb-cycle-1" } }),
+      // An item without a lease is not something this cycle may report on.
+      leasedItem({ signature: "c".repeat(64), lease: null }),
+    ], { command: "/opt/repair/dispatch", spawnImpl: spawn.impl });
+    assert.equal(results.length, 2);
+    const pending = JSON.parse(await readFile(join(stateDir, "repair", "pending-results.json"), "utf8"));
+    assert.equal(pending.results.length, 2);
 
-  const priorKey = process.env.CITYSCROLL_ADMIN_KEY;
-  const priorUrl = process.env.CITYSCROLL_SCHEDULER_HEARTBEAT_URL;
-  const priorCommand = process.env.CITYSCROLL_REPAIR_DISPATCH_COMMAND;
-  process.env.CITYSCROLL_ADMIN_KEY = "secret";
-  process.env.CITYSCROLL_SCHEDULER_HEARTBEAT_URL = "https://api.example.test/admin/reliability/scheduler";
-  process.env.CITYSCROLL_REPAIR_DISPATCH_COMMAND = "/opt/repair/dispatch";
-  const now = new Date("2026-09-01T12:00:00.000Z");
-  try {
-    // A worker that refuses the write keeps the results pending rather than
-    // dropping them: the next cycle reports them again.
-    let posted = null;
-    const refused = await publishHeartbeat(stateDir, now, [], {
-      runId: RUN_ID, sourceRevision: REVISION,
-      fetchImpl: async (_url, options = {}) => {
-        if (options.method === "POST") { posted = JSON.parse(options.body); return { ok: false, status: 503 }; }
-        return { ok: true, status: 200, json: async () => ({}) };
-      },
-    });
-    assert.equal(refused.status, "failed");
-    assert.equal(posted.repair_dispatch, true);
-    assert.equal(posted.repair_results.length, 2);
-    assert.equal(JSON.parse(await readFile(join(stateDir, "repair", "pending-results.json"), "utf8")).results.length, 2);
+    const priorKey = process.env.CITYSCROLL_ADMIN_KEY;
+    const priorUrl = process.env.CITYSCROLL_SCHEDULER_HEARTBEAT_URL;
+    const priorCommand = process.env.CITYSCROLL_REPAIR_DISPATCH_COMMAND;
+    process.env.CITYSCROLL_ADMIN_KEY = "secret";
+    process.env.CITYSCROLL_SCHEDULER_HEARTBEAT_URL = "https://api.example.test/admin/reliability/scheduler";
+    process.env.CITYSCROLL_REPAIR_DISPATCH_COMMAND = "/opt/repair/dispatch";
+    const now = new Date("2026-09-01T12:00:00.000Z");
+    try {
+      // A worker that refuses the write keeps the results pending rather than
+      // dropping them: the next cycle reports them again.
+      let posted = null;
+      const refused = await publishHeartbeat(stateDir, now, [], {
+        runId: RUN_ID, sourceRevision: REVISION,
+        fetchImpl: async (_url, options = {}) => {
+          if (options.method === "POST") { posted = JSON.parse(options.body); return { ok: false, status: 503 }; }
+          return { ok: true, status: 200, json: async () => ({}) };
+        },
+      });
+      assert.equal(refused.status, "failed");
+      assert.equal(posted.repair_dispatch, true);
+      assert.equal(posted.repair_results.length, 2);
+      assert.equal(JSON.parse(await readFile(join(stateDir, "repair", "pending-results.json"), "utf8")).results.length, 2);
 
-    const accepted = await publishHeartbeat(stateDir, now, [], {
-      runId: RUN_ID, sourceRevision: REVISION,
-      fetchImpl: async (_url, options = {}) => {
-        if (options.method === "POST") {
-          posted = JSON.parse(options.body);
-          return {
-            ok: true,
-            status: 200,
-            json: async () => ({
+      const accepted = await publishHeartbeat(stateDir, now, [], {
+        runId: RUN_ID, sourceRevision: REVISION,
+        fetchImpl: async (_url, options = {}) => {
+          if (options.method === "POST") {
+            posted = JSON.parse(options.body);
+            return {
               ok: true,
-              heartbeat: { ...posted, schema: "cityscroll.external-scheduler-heartbeat.v1" },
-              repair_queue: { reported: [], recovered: [], items: [leasedItem()] },
-            }),
-          };
-        }
-        return { ok: true, status: 200, json: async () => ({ ok: true, heartbeat: { ...posted, schema: "cityscroll.external-scheduler-heartbeat.v1" } }) };
-      },
-    });
-    assert.equal(accepted.status, "succeeded");
-    assert.equal(accepted.repair_reported, 2);
-    assert.equal(accepted.repair_leased, 1);
-    // Reported results are cleared only once the worker took them.
-    assert.deepEqual(JSON.parse(await readFile(join(stateDir, "repair", "pending-results.json"), "utf8")).results, []);
-  } finally {
-    if (priorKey === undefined) delete process.env.CITYSCROLL_ADMIN_KEY; else process.env.CITYSCROLL_ADMIN_KEY = priorKey;
-    if (priorUrl === undefined) delete process.env.CITYSCROLL_SCHEDULER_HEARTBEAT_URL; else process.env.CITYSCROLL_SCHEDULER_HEARTBEAT_URL = priorUrl;
-    if (priorCommand === undefined) delete process.env.CITYSCROLL_REPAIR_DISPATCH_COMMAND; else process.env.CITYSCROLL_REPAIR_DISPATCH_COMMAND = priorCommand;
-  }
+              status: 200,
+              json: async () => ({
+                ok: true,
+                heartbeat: { ...posted, schema: "cityscroll.external-scheduler-heartbeat.v1" },
+                repair_queue: { reported: [], recovered: [], items: [leasedItem()] },
+              }),
+            };
+          }
+          return { ok: true, status: 200, json: async () => ({ ok: true, heartbeat: { ...posted, schema: "cityscroll.external-scheduler-heartbeat.v1" } }) };
+        },
+      });
+      assert.equal(accepted.status, "succeeded");
+      assert.equal(accepted.repair_reported, 2);
+      assert.equal(accepted.repair_leased, 1);
+      // Reported results are cleared only once the worker took them.
+      assert.deepEqual(JSON.parse(await readFile(join(stateDir, "repair", "pending-results.json"), "utf8")).results, []);
+    } finally {
+      if (priorKey === undefined) delete process.env.CITYSCROLL_ADMIN_KEY; else process.env.CITYSCROLL_ADMIN_KEY = priorKey;
+      if (priorUrl === undefined) delete process.env.CITYSCROLL_SCHEDULER_HEARTBEAT_URL; else process.env.CITYSCROLL_SCHEDULER_HEARTBEAT_URL = priorUrl;
+      if (priorCommand === undefined) delete process.env.CITYSCROLL_REPAIR_DISPATCH_COMMAND; else process.env.CITYSCROLL_REPAIR_DISPATCH_COMMAND = priorCommand;
+    }
+  });
 });
 
 test("a cycle without a dispatcher declares that on the heartbeat so nothing is leased", async () => {
-  const stateDir = await mkdtemp(join(tmpdir(), "crol-repair-"));
-  const priorKey = process.env.CITYSCROLL_ADMIN_KEY;
-  const priorUrl = process.env.CITYSCROLL_SCHEDULER_HEARTBEAT_URL;
-  const priorCommand = process.env.CITYSCROLL_REPAIR_DISPATCH_COMMAND;
-  process.env.CITYSCROLL_ADMIN_KEY = "secret";
-  process.env.CITYSCROLL_SCHEDULER_HEARTBEAT_URL = "https://api.example.test/admin/reliability/scheduler";
-  delete process.env.CITYSCROLL_REPAIR_DISPATCH_COMMAND;
-  try {
-    let posted = null;
-    const beat = await publishHeartbeat(stateDir, new Date("2026-09-01T12:00:00.000Z"), [], {
-      runId: RUN_ID, sourceRevision: REVISION,
-      fetchImpl: async (_url, options = {}) => {
-        if (options.method === "POST") { posted = JSON.parse(options.body); return { ok: true, status: 200, json: async () => ({ ok: true }) }; }
-        return { ok: true, status: 200, json: async () => ({ ok: true, heartbeat: { ...posted, schema: "cityscroll.external-scheduler-heartbeat.v1" } }) };
-      },
-    });
-    assert.equal(posted.repair_dispatch, false);
-    assert.deepEqual(posted.repair_results, []);
-    assert.equal(beat.repair_leased, 0);
-  } finally {
-    if (priorKey === undefined) delete process.env.CITYSCROLL_ADMIN_KEY; else process.env.CITYSCROLL_ADMIN_KEY = priorKey;
-    if (priorUrl === undefined) delete process.env.CITYSCROLL_SCHEDULER_HEARTBEAT_URL; else process.env.CITYSCROLL_SCHEDULER_HEARTBEAT_URL = priorUrl;
-    if (priorCommand === undefined) delete process.env.CITYSCROLL_REPAIR_DISPATCH_COMMAND; else process.env.CITYSCROLL_REPAIR_DISPATCH_COMMAND = priorCommand;
-  }
+  await withTempDir("crol-repair", async (stateDir) => {
+    const priorKey = process.env.CITYSCROLL_ADMIN_KEY;
+    const priorUrl = process.env.CITYSCROLL_SCHEDULER_HEARTBEAT_URL;
+    const priorCommand = process.env.CITYSCROLL_REPAIR_DISPATCH_COMMAND;
+    process.env.CITYSCROLL_ADMIN_KEY = "secret";
+    process.env.CITYSCROLL_SCHEDULER_HEARTBEAT_URL = "https://api.example.test/admin/reliability/scheduler";
+    delete process.env.CITYSCROLL_REPAIR_DISPATCH_COMMAND;
+    try {
+      let posted = null;
+      const beat = await publishHeartbeat(stateDir, new Date("2026-09-01T12:00:00.000Z"), [], {
+        runId: RUN_ID, sourceRevision: REVISION,
+        fetchImpl: async (_url, options = {}) => {
+          if (options.method === "POST") { posted = JSON.parse(options.body); return { ok: true, status: 200, json: async () => ({ ok: true }) }; }
+          return { ok: true, status: 200, json: async () => ({ ok: true, heartbeat: { ...posted, schema: "cityscroll.external-scheduler-heartbeat.v1" } }) };
+        },
+      });
+      assert.equal(posted.repair_dispatch, false);
+      assert.deepEqual(posted.repair_results, []);
+      assert.equal(beat.repair_leased, 0);
+    } finally {
+      if (priorKey === undefined) delete process.env.CITYSCROLL_ADMIN_KEY; else process.env.CITYSCROLL_ADMIN_KEY = priorKey;
+      if (priorUrl === undefined) delete process.env.CITYSCROLL_SCHEDULER_HEARTBEAT_URL; else process.env.CITYSCROLL_SCHEDULER_HEARTBEAT_URL = priorUrl;
+      if (priorCommand === undefined) delete process.env.CITYSCROLL_REPAIR_DISPATCH_COMMAND; else process.env.CITYSCROLL_REPAIR_DISPATCH_COMMAND = priorCommand;
+    }
+  });
 });

@@ -5,7 +5,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
-  mkdtempSync,
   writeFileSync,
   readFileSync,
   existsSync,
@@ -13,9 +12,9 @@ import {
   mkdirSync,
 } from "node:fs";
 import { join, dirname } from "node:path";
-import { tmpdir } from "node:os";
 import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
+import { withTempDir } from "../tools/lib/with_temp_dir.mjs";
 
 import {
   emptyLedger,
@@ -80,8 +79,8 @@ test("foldLedger is a pure projection of meta + cards", () => {
   assert.equal(meta.card_count, 2);
 });
 
-test("writeLedgerStore only rewrites dirty card files", () => {
-  const dir = mkdtempSync(join(tmpdir(), "cs-ledger-"));
+test("writeLedgerStore only rewrites dirty card files", async () => {
+  await withTempDir("cs-ledger", async (dir) => {
   const ledgerPath = join(dir, "ledger.json");
   const ledger = emptyLedger({ updated_at: "1970-01-01T00:00:00.000Z" });
   ledger.cards = {
@@ -114,10 +113,11 @@ test("writeLedgerStore only rewrites dirty card files", () => {
   const loaded = loadLedgerStore(ledgerPath);
   assert.equal(loaded.cards["crol-list/a"].status, "fixed");
   assert.equal(loaded.cards["crol-list/b"].status, "proposed");
+  });
 });
 
-test("two independent card updates produce non-overlapping file sets", () => {
-  const dir = mkdtempSync(join(tmpdir(), "cs-ledger-merge-"));
+test("two independent card updates produce non-overlapping file sets", async () => {
+  await withTempDir("cs-ledger-merge", async (dir) => {
   const ledgerPath = join(dir, "ledger.json");
   const base = emptyLedger();
   base.cards = {
@@ -199,6 +199,7 @@ test("two independent card updates produce non-overlapping file sets", () => {
   const merged = loadLedgerStore(join(mergedDir, "ledger.json"));
   assert.equal(merged.cards["crol-list/card-one"].status, "fixed");
   assert.equal(merged.cards["crol-list/card-two"].status, "fixed");
+  });
 });
 
 test("repo ledger pointer remains a public-safe empty fixture", () => {
@@ -211,8 +212,8 @@ test("repo ledger pointer remains a public-safe empty fixture", () => {
   assert.ok(!pointer.cards || Object.keys(pointer.cards).length === 0);
 });
 
-test("CLI flywheel-run --update-ledger stays quiet on second pass (temp file mode)", () => {
-  const dir = mkdtempSync(join(tmpdir(), "cs-mf-store-"));
+test("CLI flywheel-run --update-ledger stays quiet on second pass (temp file mode)", async () => {
+  await withTempDir("cs-mf-store", async (dir) => {
   const ledgerPath = join(dir, "ledger.json");
   writeFileSync(ledgerPath, `${JSON.stringify(emptyLedger(), null, 2)}\n`);
 
@@ -244,6 +245,7 @@ test("CLI flywheel-run --update-ledger stays quiet on second pass (temp file mod
   assert.equal(second.status, 0, second.stderr || second.stdout);
   const queue2 = JSON.parse(readFileSync(join(dir, "queue.json"), "utf8"));
   assert.equal(queue2.stats.card_count, 0);
+  });
 });
 
 test("updateLedger preserves ledger note and prior fixed fields", () => {
@@ -263,11 +265,12 @@ test("updateLedger preserves ledger note and prior fixed fields", () => {
   assert.equal(next.cards["crol-list/z"].fixed_note, "done");
 });
 
-test("migrateMonolithicLedger preserves an empty public fixture", () => {
-  const dir = mkdtempSync(join(tmpdir(), "cs-ledger-migrate-"));
+test("migrateMonolithicLedger preserves an empty public fixture", async () => {
+  await withTempDir("cs-ledger-migrate", async (dir) => {
   const ledgerPath = join(dir, "ledger.json");
   writeFileSync(ledgerPath, readFileSync(REPO_LEDGER));
   const once = migrateMonolithicLedger(ledgerPath);
   assert.equal(once.migrated, true);
   assert.deepEqual(loadLedgerStore(ledgerPath).cards, {});
+  });
 });

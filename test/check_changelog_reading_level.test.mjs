@@ -22,12 +22,12 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import fs from "node:fs";
-import os from "node:os";
 import path from "node:path";
 import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { simulate, measureAgainstBaseline, formatRegressionMessage } from "../tools/check_changelog_reading_level.mjs";
 import { MAJOR_LABEL } from "../tools/changelog_extract.mjs";
+import { withTempDirSync } from "../tools/lib/with_temp_dir.mjs";
 
 const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const SCRIPT = path.join(ROOT, "tools", "check_changelog_reading_level.mjs");
@@ -167,7 +167,8 @@ test(
     assert.equal(sim.reason, "added");
     assert.equal(sim.text, PR_74_ORIGINAL);
 
-    const result = measureAgainstBaseline(sim.html, { baseline: writeTmpBaseline(), preset: "nycsg7" });
+    const result = withTmpBaseline((baselinePath) =>
+      measureAgainstBaseline(sim.html, { baseline: baselinePath, preset: "nycsg7" }));
     assert.equal(result.status, "fail");
     assert.ok(result.grade > result.baseline_grade);
 
@@ -194,7 +195,8 @@ test(
     });
     assert.equal(sim.reason, "added");
 
-    const result = measureAgainstBaseline(sim.html, { baseline: writeTmpBaseline(), preset: "nycsg7" });
+    const result = withTmpBaseline((baselinePath) =>
+      measureAgainstBaseline(sim.html, { baseline: baselinePath, preset: "nycsg7" }));
     assert.equal(result.status, "fail");
   }
 );
@@ -217,7 +219,8 @@ test(
         body: bodyWithMarker(text),
         labels: [MAJOR_LABEL],
       });
-      const result = measureAgainstBaseline(sim.html, { baseline: writeTmpBaseline(), preset: "nycsg7" });
+      const result = withTmpBaseline((baselinePath) =>
+        measureAgainstBaseline(sim.html, { baseline: baselinePath, preset: "nycsg7" }));
       assert.equal(result.status, "pass", `PR #${number}'s reworded text should pass: ${result.reason}`);
     }
   }
@@ -233,8 +236,7 @@ test(
     // PR's own committed changelog-data.json/changelog.html", exactly what the CI step's
     // fallback branch copies when `git ls-remote --heads origin bot/changelog-update` finds
     // nothing.
-    const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "changelog-gate-fresh-"));
-    try {
+    withTempDirSync("changelog-gate-fresh", (tmp) => {
       const baseDataPath = path.join(tmp, "base-data.json");
       const baseHtmlPath = path.join(tmp, "base.html");
       const i18nPath = path.join(tmp, "i18n.js");
@@ -263,9 +265,7 @@ test(
         { encoding: "utf8" }
       );
       assert.match(out, /^OK — simulated changelog\.html grade/);
-    } finally {
-      fs.rmSync(tmp, { recursive: true, force: true });
-    }
+    });
   }
 );
 
@@ -273,8 +273,7 @@ test(
   "CLI exit-code contract: regression exits 1 with an annotated stderr message, a passing entry exits 0",
   { skip: RO_SKIP },
   () => {
-    const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "changelog-gate-cli-"));
-    try {
+    withTempDirSync("changelog-gate-cli", (tmp) => {
       const baseDataPath = path.join(tmp, "base-data.json");
       const baseHtmlPath = path.join(tmp, "base.html");
       const i18nPath = path.join(tmp, "i18n.js");
@@ -313,15 +312,14 @@ test(
         { encoding: "utf8" }
       );
       assert.match(out, /^OK —/);
-    } finally {
-      fs.rmSync(tmp, { recursive: true, force: true });
-    }
+    });
   }
 );
 
-function writeTmpBaseline() {
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "changelog-gate-baseline-"));
-  const p = path.join(dir, "baseline.json");
-  fs.writeFileSync(p, JSON.stringify(BASELINE));
-  return p;
+function withTmpBaseline(fn) {
+  return withTempDirSync("changelog-gate-baseline", (dir) => {
+    const p = path.join(dir, "baseline.json");
+    fs.writeFileSync(p, JSON.stringify(BASELINE));
+    return fn(p);
+  });
 }

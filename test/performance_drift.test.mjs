@@ -1,6 +1,5 @@
 import assert from "node:assert/strict";
-import { mkdtempSync, readFileSync } from "node:fs";
-import { tmpdir } from "node:os";
+import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { spawnSync } from "node:child_process";
@@ -12,6 +11,7 @@ import {
   buildDriftOverlay,
   PERFORMANCE_DRIFT_SCHEMA,
 } from "../tools/lib/performance_drift.mjs";
+import { withTempDir } from "../tools/lib/with_temp_dir.mjs";
 
 const TEST_DIR = dirname(fileURLToPath(import.meta.url));
 
@@ -142,26 +142,27 @@ test("lab evidence is separate and cannot emit field candidates", () => {
   assert.equal(buildCandidates(overlay).length, 0);
 });
 
-test("the live CLI stays successful on an unavailable read and the workflow is once daily", () => {
-  const out = mkdtempSync(join(tmpdir(), "cityscroll-performance-drift-"));
-  const env = { ...process.env };
-  for (const key of ["ANALYTICS_ACCOUNT_ID", "ANALYTICS_READ_TOKEN"]) delete env[key];
-  const result = spawnSync(process.execPath, [
-    "tools/read_rum_drift.mjs",
-    "--out",
-    out,
-    "--now",
-    "2026-08-25T00:00:00.000Z",
-  ], { cwd: join(TEST_DIR, ".."), env, encoding: "utf8" });
-  assert.equal(result.status, 0, result.stderr);
-  const overlay = JSON.parse(readFileSync(join(out, "rum-status.json"), "utf8"));
-  assert.equal(overlay.query_status, "unavailable");
-  assert.equal(overlay.enforcement.ci_gate, false);
+test("the live CLI stays successful on an unavailable read and the workflow is once daily", async () => {
+  await withTempDir("performance-drift", async (out) => {
+    const env = { ...process.env };
+    for (const key of ["ANALYTICS_ACCOUNT_ID", "ANALYTICS_READ_TOKEN"]) delete env[key];
+    const result = spawnSync(process.execPath, [
+      "tools/read_rum_drift.mjs",
+      "--out",
+      out,
+      "--now",
+      "2026-08-25T00:00:00.000Z",
+    ], { cwd: join(TEST_DIR, ".."), env, encoding: "utf8" });
+    assert.equal(result.status, 0, result.stderr);
+    const overlay = JSON.parse(readFileSync(join(out, "rum-status.json"), "utf8"));
+    assert.equal(overlay.query_status, "unavailable");
+    assert.equal(overlay.enforcement.ci_gate, false);
 
-  const workflow = readFileSync(join(TEST_DIR, "../.github/workflows/performance-drift-daily.yml"), "utf8");
-  assert.match(workflow, /cron: "31 9 \* \* \*"/);
-  assert.doesNotMatch(workflow, /cron: "\d+  \* \* \* \*"/);
-  assert.doesNotMatch(workflow, /exit 1/);
-  assert.match(workflow, /Generate controlled RUM observations[\s\S]*CROL_RUM_E2E_GENERATE: "1"[\s\S]*python3 test\/functional\/rum_performance_e2e\.py[\s\S]*Read field and lab RUM/);
-  assert.match(workflow, /--generation artifacts\/performance-drift\/rum-generation\/chain\.json/);
+    const workflow = readFileSync(join(TEST_DIR, "../.github/workflows/performance-drift-daily.yml"), "utf8");
+    assert.match(workflow, /cron: "31 9 \* \* \*"/);
+    assert.doesNotMatch(workflow, /cron: "\d+  \* \* \* \*"/);
+    assert.doesNotMatch(workflow, /exit 1/);
+    assert.match(workflow, /Generate controlled RUM observations[\s\S]*CROL_RUM_E2E_GENERATE: "1"[\s\S]*python3 test\/functional\/rum_performance_e2e\.py[\s\S]*Read field and lab RUM/);
+    assert.match(workflow, /--generation artifacts\/performance-drift\/rum-generation\/chain\.json/);
+  });
 });

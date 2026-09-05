@@ -2,11 +2,14 @@
 import importlib.util
 import json
 import struct
-import tempfile
+import sys
 import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "tools"))
+from lib.temp_workspace import cityscroll_temp_dir  # noqa: E402
+
 SPEC = importlib.util.spec_from_file_location("desk_capture_guard", ROOT / "tools/check_public_image_captures.py")
 MODULE = importlib.util.module_from_spec(SPEC)
 assert SPEC and SPEC.loader
@@ -29,7 +32,7 @@ class DeskCaptureGuardTest(unittest.TestCase):
         self.assertTrue(findings)
 
     def test_png_url_and_nav_signature_are_detected(self):
-        with tempfile.TemporaryDirectory() as directory:
+        with cityscroll_temp_dir("desk-capture-guard-png") as directory:
             path = Path(directory) / "capture.png"
             path.write_bytes(png_with_text("https://desk.cityscroll.org/ Team Projects Settings Dashboard"))
             findings = MODULE.inspect_image(path, "docs/screenshots/capture.png", {})
@@ -37,7 +40,7 @@ class DeskCaptureGuardTest(unittest.TestCase):
         self.assertIn("PNG metadata matches the desk navigation signature", findings)
 
     def test_allowlist_requires_reason_and_suppresses_exact_path(self):
-        with tempfile.TemporaryDirectory() as directory:
+        with cityscroll_temp_dir("desk-capture-guard-allowlist") as directory:
             path = Path(directory) / "allowlist.json"
             path.write_text(json.dumps({"captures": {"docs/team-captures/home.png": "Public reference capture."}}))
             allowlist = MODULE.load_allowlist(path)

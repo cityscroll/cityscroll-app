@@ -5,15 +5,14 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
-  mkdtempSync,
   readFileSync,
   existsSync,
   writeFileSync,
 } from "node:fs";
 import { join, dirname } from "node:path";
-import { tmpdir } from "node:os";
 import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
+import { withTempDir } from "../tools/lib/with_temp_dir.mjs";
 
 import {
   loadDefaultInputs,
@@ -183,47 +182,48 @@ test("extractRecurringLessons and merge are idempotent by class token", () => {
   assert.ok(plan.text.includes("always-null-imputed-feature"));
 });
 
-test("CLI flywheel-run emits queue.json and stays quiet on second ledger pass", () => {
-  const dir = mkdtempSync(join(tmpdir(), "cs-mf-"));
-  const ledgerPath = join(dir, "ledger.json");
-  writeFileSync(ledgerPath, `${JSON.stringify(emptyLedger(), null, 2)}\n`);
+test("CLI flywheel-run emits queue.json and stays quiet on second ledger pass", async () => {
+  await withTempDir("cs-mf", async (dir) => {
+    const ledgerPath = join(dir, "ledger.json");
+    writeFileSync(ledgerPath, `${JSON.stringify(emptyLedger(), null, 2)}\n`);
 
-  const run = (extra = []) =>
-    spawnSync(
-      process.execPath,
-      [
-        join(ROOT, "tools/flywheel-run.mjs"),
-        "--fixture",
-        "--emit",
-        dir,
-        "--ledger",
-        ledgerPath,
-        "--update-ledger",
-        // High enough that one pass ledgers every candidate (cap must not
-        // leave a tail that reappears on the next idempotent run).
-        "--limit",
-        "200",
-        "--generated-at",
-        "1970-01-01T00:00:00.000Z",
-        ...extra,
-      ],
-      { encoding: "utf8", cwd: ROOT },
-    );
+    const run = (extra = []) =>
+      spawnSync(
+        process.execPath,
+        [
+          join(ROOT, "tools/flywheel-run.mjs"),
+          "--fixture",
+          "--emit",
+          dir,
+          "--ledger",
+          ledgerPath,
+          "--update-ledger",
+          // High enough that one pass ledgers every candidate (cap must not
+          // leave a tail that reappears on the next idempotent run).
+          "--limit",
+          "200",
+          "--generated-at",
+          "1970-01-01T00:00:00.000Z",
+          ...extra,
+        ],
+        { encoding: "utf8", cwd: ROOT },
+      );
 
-  const first = run();
-  assert.equal(first.status, 0, first.stderr || first.stdout);
-  assert.ok(existsSync(join(dir, "queue.json")));
-  assert.ok(existsSync(join(dir, "cards.jsonl")));
-  assert.ok(existsSync(join(dir, "receipt.json")));
-  const queue1 = JSON.parse(readFileSync(join(dir, "queue.json"), "utf8"));
-  assert.equal(queue1.schema, QUEUE_SCHEMA);
-  assert.ok(queue1.cards.length >= 1);
-  const n1 = queue1.stats.card_count;
+    const first = run();
+    assert.equal(first.status, 0, first.stderr || first.stdout);
+    assert.ok(existsSync(join(dir, "queue.json")));
+    assert.ok(existsSync(join(dir, "cards.jsonl")));
+    assert.ok(existsSync(join(dir, "receipt.json")));
+    const queue1 = JSON.parse(readFileSync(join(dir, "queue.json"), "utf8"));
+    assert.equal(queue1.schema, QUEUE_SCHEMA);
+    assert.ok(queue1.cards.length >= 1);
+    const n1 = queue1.stats.card_count;
 
-  const second = run();
-  assert.equal(second.status, 0, second.stderr || second.stdout);
-  const queue2 = JSON.parse(readFileSync(join(dir, "queue.json"), "utf8"));
-  // After ledger update, re-run should emit zero (all already proposed/open)
-  assert.equal(queue2.stats.card_count, 0, "second run must not re-emit open cards");
-  assert.ok(queue2.stats.skipped >= n1);
+    const second = run();
+    assert.equal(second.status, 0, second.stderr || second.stdout);
+    const queue2 = JSON.parse(readFileSync(join(dir, "queue.json"), "utf8"));
+    // After ledger update, re-run should emit zero (all already proposed/open)
+    assert.equal(queue2.stats.card_count, 0, "second run must not re-emit open cards");
+    assert.ok(queue2.stats.skipped >= n1);
+  });
 });

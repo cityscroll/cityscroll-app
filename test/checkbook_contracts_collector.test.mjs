@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { mkdirSync, mkdtempSync, readFileSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { spawnSync } from "node:child_process";
 import { describe, it } from "node:test";
@@ -12,6 +12,7 @@ import {
   sha256Json,
 } from "../warehouse/lib/checkbook_contracts.mjs";
 import { parseContractTransactions } from "../worker/src/lib/checkbook_lifecycle.mjs";
+import { withTempDir } from "../tools/lib/with_temp_dir.mjs";
 
 const ROOT = resolve(fileURLToPath(new URL("..", import.meta.url)));
 const FIXTURE = join(ROOT, "warehouse/fixtures/checkbook-contracts/collector.json");
@@ -73,43 +74,42 @@ describe("Checkbook Contracts normalization", () => {
 });
 
 describe("Checkbook Contracts fixture collector", () => {
-  it("checkpoints pages, records the denominator, and resumes without refetching", () => {
-    const generated = join(ROOT, ".generated");
-    mkdirSync(generated, { recursive: true });
-    const stage = mkdtempSync(join(generated, "checkbook-contracts-test-"));
-    const receipt = join(stage, "receipt.json");
-    const snapshot = join(stage, "normalized.json");
-    const command = [
-      "warehouse/scripts/checkbook_contracts.mjs",
-      "--from-fixture",
-      "--fiscal-years", "2026",
-      "--page-size", "2",
-      "--graph-cap", "2",
-      "--stage-dir", stage,
-      "--receipt", receipt,
-      "--snapshot", snapshot,
-    ];
-    const first = spawnSync(process.execPath, command, { cwd: ROOT, encoding: "utf8" });
-    assert.equal(first.status, 0, first.stderr);
-    const firstReceipt = JSON.parse(readFileSync(receipt, "utf8"));
-    assert.equal(firstReceipt.status, "complete");
-    assert.equal(firstReceipt.population.api_transaction_rows, 3);
-    assert.equal(firstReceipt.population.normalized_unique_contracts, 2);
-    assert.equal(firstReceipt.population.duplicate_slices_collapsed, 1);
-    assert.equal(firstReceipt.graph_slice.row_count, 2);
-    assert.equal(firstReceipt.paging.fetched_pages, 2);
-    assert.equal(firstReceipt.paging.checkpoint_hits, 0);
+  it("checkpoints pages, records the denominator, and resumes without refetching", async () => {
+    await withTempDir("checkbook-contracts-test", async (stage) => {
+      const receipt = join(stage, "receipt.json");
+      const snapshot = join(stage, "normalized.json");
+      const command = [
+        "warehouse/scripts/checkbook_contracts.mjs",
+        "--from-fixture",
+        "--fiscal-years", "2026",
+        "--page-size", "2",
+        "--graph-cap", "2",
+        "--stage-dir", stage,
+        "--receipt", receipt,
+        "--snapshot", snapshot,
+      ];
+      const first = spawnSync(process.execPath, command, { cwd: ROOT, encoding: "utf8" });
+      assert.equal(first.status, 0, first.stderr);
+      const firstReceipt = JSON.parse(readFileSync(receipt, "utf8"));
+      assert.equal(firstReceipt.status, "complete");
+      assert.equal(firstReceipt.population.api_transaction_rows, 3);
+      assert.equal(firstReceipt.population.normalized_unique_contracts, 2);
+      assert.equal(firstReceipt.population.duplicate_slices_collapsed, 1);
+      assert.equal(firstReceipt.graph_slice.row_count, 2);
+      assert.equal(firstReceipt.paging.fetched_pages, 2);
+      assert.equal(firstReceipt.paging.checkpoint_hits, 0);
 
-    const implicitReuse = spawnSync(process.execPath, command, { cwd: ROOT, encoding: "utf8" });
-    assert.notEqual(implicitReuse.status, 0);
-    assert.match(implicitReuse.stderr, /use --resume .* or --refresh/i);
+      const implicitReuse = spawnSync(process.execPath, command, { cwd: ROOT, encoding: "utf8" });
+      assert.notEqual(implicitReuse.status, 0);
+      assert.match(implicitReuse.stderr, /use --resume .* or --refresh/i);
 
-    const second = spawnSync(process.execPath, [...command, "--resume"], { cwd: ROOT, encoding: "utf8" });
-    assert.equal(second.status, 0, second.stderr);
-    const resumed = JSON.parse(readFileSync(receipt, "utf8"));
-    assert.equal(resumed.paging.fetched_pages, 0);
-    assert.equal(resumed.paging.checkpoint_hits, 2);
-    assert.equal(resumed.checksums.normalized_contracts_sha256, firstReceipt.checksums.normalized_contracts_sha256);
+      const second = spawnSync(process.execPath, [...command, "--resume"], { cwd: ROOT, encoding: "utf8" });
+      assert.equal(second.status, 0, second.stderr);
+      const resumed = JSON.parse(readFileSync(receipt, "utf8"));
+      assert.equal(resumed.paging.fetched_pages, 0);
+      assert.equal(resumed.paging.checkpoint_hits, 2);
+      assert.equal(resumed.checksums.normalized_contracts_sha256, firstReceipt.checksums.normalized_contracts_sha256);
+    });
   });
 });
 

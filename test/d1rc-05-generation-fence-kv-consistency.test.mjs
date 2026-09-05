@@ -1,8 +1,8 @@
 import assert from "node:assert/strict";
-import { mkdtempSync } from "node:fs";
-import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
+
+import { withTempDir } from "../tools/lib/with_temp_dir.mjs";
 
 import {
   D1_GENERATION_FENCE_SCHEMA,
@@ -110,33 +110,35 @@ const ACCEPTED = fenceState({ status: "accepted", accepted_at: "2026-09-05T08:17
 const AT = Date.parse("2026-09-05T08:17:50.000Z");
 
 test("a publication completes over a store whose reads lag its writes", async () => {
-  const kv = createLaggingKv({ lagReads: 3 });
-  const store = laggingWranglerStore(kv);
-  const ledger = createFileLedger(join(mkdtempSync(join(tmpdir(), "d1-fence-")), "ledger.json"));
-  const identity = { generation: 1, holder: HOLDER, fingerprint: FINGERPRINT };
+  await withTempDir("d1-fence", async (dir) => {
+    const kv = createLaggingKv({ lagReads: 3 });
+    const store = laggingWranglerStore(kv);
+    const ledger = createFileLedger(join(dir, "ledger.json"));
+    const identity = { generation: 1, holder: HOLDER, fingerprint: FINGERPRINT };
 
-  const claimed = await claimGeneration({
-    store, ledger, holder: HOLDER, fingerprint: FINGERPRINT, watermarks: WATERMARKS, now: AT, leaseMs: LEASE_MS,
+    const claimed = await claimGeneration({
+      store, ledger, holder: HOLDER, fingerprint: FINGERPRINT, watermarks: WATERMARKS, now: AT, leaseMs: LEASE_MS,
+    });
+    assert.equal(claimed.claimed, true, "the claim must survive a read that lags the put");
+    assert.equal(claimed.generation, 1);
+
+    const commit = await checkGenerationCommit({ store, ledger, ...identity, now: AT + 1_000 });
+    assert.equal(commit.committable, true);
+    assert.equal(commit.state.status, "accepted");
+
+    // The two renewals that bracket the D1 SQL commands in the deploy.
+    for (const offset of [7_000, 12_000]) {
+      const renewed = await renewGeneration({ store, ledger, ...identity, now: AT + offset, leaseMs: LEASE_MS });
+      assert.equal(renewed.renewed, true);
+      assert.equal(renewed.state.status, "accepted", "a renewal must not walk the generation back to claimed");
+      assert.equal(renewed.state.accepted_at, commit.state.accepted_at);
+    }
+
+    const completed = await completeGeneration({ store, ledger, ...identity, now: AT + 20_000 });
+    assert.equal(completed.completed, true, "the publication that ran must be recorded as published");
+    assert.equal(completed.state.status, "published");
+    assert.equal(completed.state.lease_until, null);
   });
-  assert.equal(claimed.claimed, true, "the claim must survive a read that lags the put");
-  assert.equal(claimed.generation, 1);
-
-  const commit = await checkGenerationCommit({ store, ledger, ...identity, now: AT + 1_000 });
-  assert.equal(commit.committable, true);
-  assert.equal(commit.state.status, "accepted");
-
-  // The two renewals that bracket the D1 SQL commands in the deploy.
-  for (const offset of [7_000, 12_000]) {
-    const renewed = await renewGeneration({ store, ledger, ...identity, now: AT + offset, leaseMs: LEASE_MS });
-    assert.equal(renewed.renewed, true);
-    assert.equal(renewed.state.status, "accepted", "a renewal must not walk the generation back to claimed");
-    assert.equal(renewed.state.accepted_at, commit.state.accepted_at);
-  }
-
-  const completed = await completeGeneration({ store, ledger, ...identity, now: AT + 20_000 });
-  assert.equal(completed.completed, true, "the publication that ran must be recorded as published");
-  assert.equal(completed.state.status, "published");
-  assert.equal(completed.state.lease_until, null);
 });
 
 test("compare-and-set refuses to report a write it cannot read back", async () => {

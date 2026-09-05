@@ -7,9 +7,9 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import path from "node:path";
 import fs from "node:fs";
-import os from "node:os";
 import { execFileSync, spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
+import { withTempDir } from "../tools/lib/with_temp_dir.mjs";
 
 const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const SCRIPT = path.join(ROOT, "tools", "list_pr_changed_paths.sh");
@@ -20,9 +20,9 @@ function sh(cmd, args, opts = {}) {
 
 // Builds a throwaway repo with a base commit (fileA.txt, fileB.txt) and a
 // head commit that modifies fileA.txt and adds fileC.txt — the small PR the
-// task asks us to prove the fallback against.
-function makeFixtureRepo() {
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "pr-changed-paths-"));
+// task asks us to prove the fallback against. `dir` is a caller-owned temp
+// directory (see withTempDir at each call site).
+function setupFixtureRepo(dir) {
   const env = { ...process.env, GIT_AUTHOR_NAME: "test", GIT_AUTHOR_EMAIL: "test@localhost", GIT_COMMITTER_NAME: "test", GIT_COMMITTER_EMAIL: "test@localhost" };
   sh("git", ["init", "-q"], { cwd: dir, env });
   fs.writeFileSync(path.join(dir, "fileA.txt"), "a\n");
@@ -42,9 +42,9 @@ function makeFixtureRepo() {
 // Installs a fake `gh` ahead of the real one on PATH. FAKE_GH_MODE=fail makes
 // it reproduce GitHub's "diff taking too long to generate" error exactly as
 // seen on the failing checks; FAKE_GH_MODE=success echoes a canned file list
-// so the API path can be exercised without a network call.
-function makeFakeGhBin() {
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "fake-gh-"));
+// so the API path can be exercised without a network call. `dir` is a
+// caller-owned temp directory (see withTempDir at each call site).
+function setupFakeGhBin(dir) {
   const ghPath = path.join(dir, "gh");
   fs.writeFileSync(
     ghPath,
@@ -88,51 +88,75 @@ function run(status, { fakeGhMode, fakeGhDir, cwd, extraEnv = {} }) {
   return { code: result.status, stdout: result.stdout ?? "", stderr: result.stderr ?? "" };
 }
 
-test("API path: added-only list matches the fixture PR", () => {
-  const { dir, baseSha } = makeFixtureRepo();
-  const fakeGh = makeFakeGhBin();
-  const result = run("added", { fakeGhMode: "success", fakeGhDir: fakeGh, cwd: dir, extraEnv: { __BASE_SHA__: baseSha } });
-  assert.equal(result.code, 0);
-  assert.deepEqual(result.stdout.trim().split("\n").filter(Boolean).sort(), ["fileC.txt"]);
+test("API path: added-only list matches the fixture PR", async () => {
+  await withTempDir("pr-changed-paths", async (dir) => {
+    const { baseSha } = setupFixtureRepo(dir);
+    await withTempDir("fake-gh", async (fakeGh) => {
+      setupFakeGhBin(fakeGh);
+      const result = run("added", { fakeGhMode: "success", fakeGhDir: fakeGh, cwd: dir, extraEnv: { __BASE_SHA__: baseSha } });
+      assert.equal(result.code, 0);
+      assert.deepEqual(result.stdout.trim().split("\n").filter(Boolean).sort(), ["fileC.txt"]);
+    });
+  });
 });
 
-test("API path: full changed list matches the fixture PR", () => {
-  const { dir, baseSha } = makeFixtureRepo();
-  const fakeGh = makeFakeGhBin();
-  const result = run("all", { fakeGhMode: "success", fakeGhDir: fakeGh, cwd: dir, extraEnv: { __BASE_SHA__: baseSha } });
-  assert.equal(result.code, 0);
-  assert.deepEqual(result.stdout.trim().split("\n").filter(Boolean).sort(), ["fileA.txt", "fileC.txt"]);
+test("API path: full changed list matches the fixture PR", async () => {
+  await withTempDir("pr-changed-paths", async (dir) => {
+    const { baseSha } = setupFixtureRepo(dir);
+    await withTempDir("fake-gh", async (fakeGh) => {
+      setupFakeGhBin(fakeGh);
+      const result = run("all", { fakeGhMode: "success", fakeGhDir: fakeGh, cwd: dir, extraEnv: { __BASE_SHA__: baseSha } });
+      assert.equal(result.code, 0);
+      assert.deepEqual(result.stdout.trim().split("\n").filter(Boolean).sort(), ["fileA.txt", "fileC.txt"]);
+    });
+  });
 });
 
-test("git fallback: reproduces the same added-only list as the API when gh returns the diff-too-large error", () => {
-  const { dir, baseSha } = makeFixtureRepo();
-  const fakeGh = makeFakeGhBin();
-  const result = run("added", { fakeGhMode: "fail", fakeGhDir: fakeGh, cwd: dir, extraEnv: { __BASE_SHA__: baseSha } });
-  assert.equal(result.code, 0);
-  assert.deepEqual(result.stdout.trim().split("\n").filter(Boolean).sort(), ["fileC.txt"]);
-  assert.match(result.stderr, /falling back to git diff/);
+test("git fallback: reproduces the same added-only list as the API when gh returns the diff-too-large error", async () => {
+  await withTempDir("pr-changed-paths", async (dir) => {
+    const { baseSha } = setupFixtureRepo(dir);
+    await withTempDir("fake-gh", async (fakeGh) => {
+      setupFakeGhBin(fakeGh);
+      const result = run("added", { fakeGhMode: "fail", fakeGhDir: fakeGh, cwd: dir, extraEnv: { __BASE_SHA__: baseSha } });
+      assert.equal(result.code, 0);
+      assert.deepEqual(result.stdout.trim().split("\n").filter(Boolean).sort(), ["fileC.txt"]);
+      assert.match(result.stderr, /falling back to git diff/);
+    });
+  });
 });
 
-test("git fallback: reproduces the same full changed list as the API when gh returns the diff-too-large error", () => {
-  const { dir, baseSha } = makeFixtureRepo();
-  const fakeGh = makeFakeGhBin();
-  const result = run("all", { fakeGhMode: "fail", fakeGhDir: fakeGh, cwd: dir, extraEnv: { __BASE_SHA__: baseSha } });
-  assert.equal(result.code, 0);
-  assert.deepEqual(result.stdout.trim().split("\n").filter(Boolean).sort(), ["fileA.txt", "fileC.txt"]);
+test("git fallback: reproduces the same full changed list as the API when gh returns the diff-too-large error", async () => {
+  await withTempDir("pr-changed-paths", async (dir) => {
+    const { baseSha } = setupFixtureRepo(dir);
+    await withTempDir("fake-gh", async (fakeGh) => {
+      setupFakeGhBin(fakeGh);
+      const result = run("all", { fakeGhMode: "fail", fakeGhDir: fakeGh, cwd: dir, extraEnv: { __BASE_SHA__: baseSha } });
+      assert.equal(result.code, 0);
+      assert.deepEqual(result.stdout.trim().split("\n").filter(Boolean).sort(), ["fileA.txt", "fileC.txt"]);
+    });
+  });
 });
 
-test("fails closed when gh fails and the base commit is not available locally either", () => {
-  const { dir } = makeFixtureRepo();
-  const fakeGh = makeFakeGhBin();
-  const bogusSha = "0".repeat(40);
-  const result = run("all", { fakeGhMode: "fail", fakeGhDir: fakeGh, cwd: dir, extraEnv: { __BASE_SHA__: bogusSha } });
-  assert.equal(result.code, 1);
-  assert.match(result.stderr, /not available locally/);
+test("fails closed when gh fails and the base commit is not available locally either", async () => {
+  await withTempDir("pr-changed-paths", async (dir) => {
+    setupFixtureRepo(dir);
+    await withTempDir("fake-gh", async (fakeGh) => {
+      setupFakeGhBin(fakeGh);
+      const bogusSha = "0".repeat(40);
+      const result = run("all", { fakeGhMode: "fail", fakeGhDir: fakeGh, cwd: dir, extraEnv: { __BASE_SHA__: bogusSha } });
+      assert.equal(result.code, 1);
+      assert.match(result.stderr, /not available locally/);
+    });
+  });
 });
 
-test("rejects an unknown status argument", () => {
-  const { dir, baseSha } = makeFixtureRepo();
-  const fakeGh = makeFakeGhBin();
-  const result = run("bogus-status", { fakeGhMode: "success", fakeGhDir: fakeGh, cwd: dir, extraEnv: { __BASE_SHA__: baseSha } });
-  assert.equal(result.code, 1);
+test("rejects an unknown status argument", async () => {
+  await withTempDir("pr-changed-paths", async (dir) => {
+    const { baseSha } = setupFixtureRepo(dir);
+    await withTempDir("fake-gh", async (fakeGh) => {
+      setupFakeGhBin(fakeGh);
+      const result = run("bogus-status", { fakeGhMode: "success", fakeGhDir: fakeGh, cwd: dir, extraEnv: { __BASE_SHA__: baseSha } });
+      assert.equal(result.code, 1);
+    });
+  });
 });
