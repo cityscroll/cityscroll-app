@@ -17,3 +17,13 @@ Ask what a collection, export, or brief enables, and who uses it next, before as
 Applied first in [`site/app/workspace.mjs`](../site/app/workspace.mjs)'s My investigation workspace: an empty collection previously showed share, freeze-research-package, export-.csv, export-.json, print, and clear-all controls with nothing yet for them to act on. It now explains the find -> open -> pin sequence and links directly to search, replacing those six controls until at least one item is pinned. Every populated-collection control, note, item type, and privacy behavior is unchanged, and deleting the last pinned item restores the same guidance. Whether a reader actually wants a brief-oriented first artifact, rather than another kind of collection, remains unvalidated; see the disconfirmation condition on `cityscroll-contextual-ux/cx-02-empty-investigation-first-artifact`.
 
 Source: Rob Fitzpatrick, *The Mom Test*, chapter 2, the Excel example; *Rapid Contextual Design*, chapter 6, p.134.
+
+## Ask about actual attempts, not hypothetical wants
+
+Favor a concrete work episode over a feature poll: what the reader actually tried, where it broke down, and what they did instead, rather than what they say they would want. Offer this as optional, collapsed guidance beside an existing feedback field — never as a mandatory step, a new required field, or a separate submission path. The reader keeps one editable message field and one explicit send action; guidance only helps them write, it never writes or submits for them.
+
+A self-report stays a self-report. Structuring the prompt this way does not turn a written account into observed behavior, and it does not establish that a breakdown is common, only that this one reader experienced it. Treat the resulting messages as evidence to review for specific, actionable episodes — not as a count of how many people share the same problem, and not as proof the mechanism worked until reviewed against real submissions.
+
+Applied first in [`site/about.html`](../site/about.html)'s feedback form: a collapsed `<details>` beside the message box asks about the last attempted task, where it broke down, and the workaround used, backed by [`site/contextual_ux_feedback_prompt.mjs`](../site/contextual_ux_feedback_prompt.mjs), which keeps the existing validation rules, the existing 2,000-character limit, and the existing `{category, message, email}` payload shape unchanged.
+
+Source: Rob Fitzpatrick, *The Mom Test*, chapter 1 and chapter 8; *Rapid Contextual Design*, chapter 4, p.90.
