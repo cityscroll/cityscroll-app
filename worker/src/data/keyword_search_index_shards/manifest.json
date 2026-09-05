@@ -1,15 +1,15 @@
 {
   "schema": "cityscroll.keyword_search_index.v1",
   "version": 1,
-  "generated_at": "2026-09-04T15:00:57.739Z",
+  "generated_at": "2026-09-05",
   "match_mode": "keyword",
   "representation": "family-sharded-compressed",
   "shard_schema": "cityscroll.keyword_search_index_shard.v1",
   "logical_index": {
-    "sha256": "42526edbabad08c2449e9ef2422c9f265f3976ae9fbc01e27ad030f3cdacfc90",
-    "bytes": 55793002,
+    "sha256": "fbdb5cce4f7f27fdcfd67be76df3d4b5a9e332906736a1d880042dd39828bb6d",
+    "bytes": 55791530,
     "family_count": 11,
-    "document_count": 15779
+    "document_count": 15777
   },
   "build_receipt": {
     "source_artifacts": {
@@ -144,14 +144,14 @@
       "family": "exams",
       "path": "exams.json.br",
       "gzip_path": "exams.json.gz",
-      "document_count": 228,
-      "uncompressed_bytes": 285689,
-      "gzip_bytes": 12135,
-      "brotli_bytes": 8815,
-      "sha256": "5da88af55ae5e793c563f1baac508fa7de4adeaedea66ede223c75ca8a0044da",
-      "gzip_sha256": "d465cce5cae21aac72810a7c9c3060dd4201c84ee8d844bcdb8756c7532d713c",
-      "brotli_sha256": "f2fef99c277a6f67a373c929531d8621db3e87e0f1c1a74f655d89cabbd3c765",
-      "receipt_sha256": "8aa08b4653a91b4f51ec106531c6a69767c4141f273955040374c0473489bbb3"
+      "document_count": 226,
+      "uncompressed_bytes": 284363,
+      "gzip_bytes": 12166,
+      "brotli_bytes": 8906,
+      "sha256": "dcb1ee9950da4e6307f746d69ae7f454ee58324aa87aa3c1231cc015fa37846d",
+      "gzip_sha256": "aa32d0f7d44798fd4d5a24a4df4429cecd7a03837981c6403332701ab7e74677",
+      "brotli_sha256": "f4c800983eea85ecbecaf1172cd24f28f5911902123c7b9eb3d1dfd97434a8ad",
+      "receipt_sha256": "ccc5eb69ee8e26b79fce3fffa2d365e7d4b0ff45c7ceefdb69ca401714588d33"
     },
     {
       "family": "parcels",

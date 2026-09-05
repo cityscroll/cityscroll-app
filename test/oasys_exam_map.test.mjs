@@ -120,9 +120,16 @@ test("attachOasysDeepLink stamps deep URL; unmapped keeps landing", () => {
   assert.equal(unmapped.oasys_exam_id, undefined);
 });
 
-test("committed OASys map + staffing artifact deep-link golden exams 6125 and 7312", () => {
+test("every mapped exam in the staffing artifact deep-links to its OASys notice", () => {
   assert.ok(oasysMap.records?.length >= 2);
-  for (const num of ["6125", "7312"]) {
+  // OASys rotates exams off its active list when filing closes and the annual
+  // schedule rolls each fiscal year, so the pairing is checked over whatever
+  // the map and the artifact currently share rather than over named exams.
+  const paired = oasysMap.records.filter(
+    (row) => row.oasys_exam_id && staffing.exams.some((e) => e.exam_number === row.exam_number),
+  );
+  assert.ok(paired.length > 0, "the map and the artifact still share exams");
+  for (const { exam_number: num } of paired) {
     const mapRow = oasysMap.records.find((r) => r.exam_number === num);
     assert.ok(mapRow, `map missing ${num}`);
     const exam = staffing.exams.find((e) => e.exam_number === num);

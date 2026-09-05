@@ -86,6 +86,7 @@ jobs:
         with:
           refresh-decision-outcomes: ${{ github.event_name == 'push' || inputs.refresh_decision_outcomes }}
           refresh-resident-snapshots: ${{ github.event_name == 'push' || github.event_name == 'schedule' || inputs.refresh_resident_snapshots }}
+          legistar-api-token: ${{ secrets.LEGISTAR_API_TOKEN }}
       - name: Verify hosting budgets
         run: node tools/check_pages_bundle_sizes.mjs --site-dir _site
       - name: Deploy to Cloudflare Pages

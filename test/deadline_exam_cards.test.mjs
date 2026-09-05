@@ -11,6 +11,14 @@ const receipt = JSON.parse(
   readFileSync(new URL("../site/data/exam_sources/verification_receipts/dcas_open_competitive_2026-07-29.json", import.meta.url)),
 );
 const contracts = JSON.parse(readFileSync(new URL("../site/data/source_contracts.json", import.meta.url)));
+const openCompetitive = JSON.parse(
+  readFileSync(new URL("../site/data/exam_sources/dcas_open_competitive.json", import.meta.url)),
+);
+const oasysMap = JSON.parse(
+  readFileSync(new URL("../site/data/exam_sources/oasys_exam_map.json", import.meta.url)),
+);
+/** The published cohort rolls monthly; card assertions read the artifact's own clock. */
+const CURRENT_DAY = artifact.open_window_as_of || artifact.generated_at;
 const html = SITE_SOURCE;
 const examSourceReadme = readFileSync(new URL("../site/data/exam_sources/README.md", import.meta.url), "utf8");
 
@@ -112,29 +120,35 @@ test("live verification receipt matches the committed open-competitive snapshot"
   }
 });
 
-test("acceptance exams carry verbatim qualifications, waivers, fees, and NOE links", () => {
-  for (const [examNumber, expected] of Object.entries(ACCEPTANCE)) {
-    const exam = artifact.exams.find(item => item.exam_number === examNumber);
-    assert.ok(exam, `missing exam ${examNumber}`);
-    assert.equal(exam.title, expected.title);
-    assert.equal(exam.application_end, expected.application_end);
-    assert.equal(exam.fee, expected.fee);
-    assert.equal(exam.fee_waiver, expected.fee_waiver);
-    assert.equal(exam.qualifications, expected.qualifications);
-    assert.equal(exam.notice_url, expected.notice_url);
-    assert.equal(exam.interest_area, expected.interest_area);
-    assert.equal(Staffing.statusFor(exam, TODAY), "open");
+test("open-competitive exams carry verbatim qualifications, waivers, fees, and NOE links", () => {
+  // The card must repeat what the schedule snapshot recorded, word for word.
+  // Reading the expectation from the snapshot keeps this honest as the
+  // published cohort rolls, instead of freezing one month's exams.
+  const linked = openCompetitive.records.filter((row) => row.notice_url);
+  assert.ok(linked.length > 0, "the snapshot still links Notices of Examination");
+  for (const row of linked) {
+    const exam = artifact.exams.find(item => item.exam_number === String(row.exam_number));
+    assert.ok(exam, `missing exam ${row.exam_number}`);
+    assert.equal(exam.title, row.title);
+    assert.equal(exam.application_end, row.application_end);
+    assert.equal(exam.fee, row.fee);
+    assert.equal(exam.notice_url, row.notice_url);
+    for (const field of ["fee_waiver", "qualifications", "salary_min", "salary_note"]) {
+      if (row[field] == null || row[field] === "") continue;
+      assert.equal(exam[field], row[field], `${row.exam_number} ${field}`);
+    }
+    assert.ok(exam.interest_area, `${row.exam_number} interest_area`);
     assert.ok(exam.sources.includes("dcas-open-competitive") || exam.sources.includes("dcas-noe"));
   }
 });
 
-test("open exams sort deadline-first, with acceptance set in order", () => {
+test("open exams sort deadline-first and every open notice is reachable", () => {
   const open = Staffing.filterExams(artifact.exams, {
     query: "",
     interest: "all",
     eligibility: "open_competitive",
     window: "open",
-  }, TODAY);
+  }, CURRENT_DAY);
   assert.ok(open.length >= 5);
   for (let i = 1; i < open.length; i += 1) {
     assert.ok(
@@ -142,13 +156,16 @@ test("open exams sort deadline-first, with acceptance set in order", () => {
       `${open[i - 1].exam_number} should not sort after ${open[i].exam_number}`,
     );
   }
-  const acceptanceOrder = open
-    .map(exam => exam.exam_number)
-    .filter(number => ACCEPTANCE[number]);
-  assert.deepEqual(acceptanceOrder, ["6125", "7006", "7013", "7016", "7331"]);
-  assert.equal(Staffing.applicationDaysLeft("2026-08-07", TODAY), 9);
-  assert.equal(Staffing.applicationDaysLeft("2026-08-25", TODAY), 27);
-  assert.equal(Staffing.applicationDaysLeft("2026-07-29", TODAY), 0);
+  // Every exam the schedule page shows as open today reaches the open list.
+  const openNumbers = new Set(open.map(exam => exam.exam_number));
+  for (const row of openCompetitive.records) {
+    if (!row.application_end || row.application_end < CURRENT_DAY) continue;
+    if (row.application_start && row.application_start > CURRENT_DAY) continue;
+    assert.ok(openNumbers.has(String(row.exam_number)), `${row.exam_number} must appear as open`);
+  }
+  assert.equal(Staffing.applicationDaysLeft("2026-08-07", "2026-07-29"), 9);
+  assert.equal(Staffing.applicationDaysLeft("2026-08-25", "2026-07-29"), 27);
+  assert.equal(Staffing.applicationDaysLeft("2026-07-29", "2026-07-29"), 0);
 });
 
 test("declarative interest routing never invents identity; engineering filter is exact", () => {
@@ -204,33 +221,45 @@ test("deadline-first card markup leads with the deadline and keeps OASys + NOE a
   assert.ok(cardFn.includes("careerOutcomeHTML"), "cards surface precomputed exam outcomes");
 });
 
-test("golden open exams 6125 and 7312 deep-link to OASys NOE pages (not examsforjobs)", () => {
-  for (const examNumber of ["6125", "7312"]) {
-    const exam = artifact.exams.find((item) => item.exam_number === examNumber);
-    assert.ok(exam, examNumber);
-    assert.equal(exam.application_handoff_mode, "deep", examNumber);
-    assert.match(exam.official_application_url, /a856-exams\.nyc\.gov\/OASysWeb\/noe\?examId=\d+$/, examNumber);
-    assert.notEqual(exam.official_application_url, Staffing.OASY_APPLY_URL, examNumber);
-    assert.ok(exam.oasys_exam_id, examNumber);
-    assert.notEqual(String(exam.oasys_exam_id), examNumber, "examId must not equal DCAS exam number");
+test("mapped exams deep-link to OASys NOE pages, unmapped ones keep the landing", () => {
+  const mapped = (oasysMap.records || []).filter((row) => row.oasys_exam_id);
+  assert.ok(mapped.length > 0, "the OASys map still carries open exams");
+  let checked = 0;
+  for (const row of mapped) {
+    const exam = artifact.exams.find((item) => item.exam_number === String(row.exam_number));
+    if (!exam) continue;
+    checked += 1;
+    assert.equal(exam.application_handoff_mode, "deep", row.exam_number);
+    assert.match(exam.official_application_url, /a856-exams\.nyc\.gov\/OASysWeb\/noe\?examId=\d+$/, row.exam_number);
+    assert.notEqual(exam.official_application_url, Staffing.OASY_APPLY_URL, row.exam_number);
+    assert.ok(exam.oasys_exam_id, row.exam_number);
+    assert.notEqual(String(exam.oasys_exam_id), String(row.exam_number), "examId must not equal DCAS exam number");
   }
+  assert.ok(checked > 0, "at least one mapped exam must reach the artifact");
+  const unmapped = artifact.exams.filter((exam) => !exam.oasys_exam_id);
+  assert.ok(unmapped.every((exam) => exam.application_handoff_mode !== "deep"));
 });
 
 test("acceptance cards flip outcome slots from gaps to joined aggregates where published", () => {
   // Cycle-coherent closed exams may join annual outcomes (published_on after application_end).
   const withOutcomes = ["6311", "6073"];
-  // Open exams without annual or list depth: class-(a) not-yet-ingested (public sources exist).
-  // 6125/7006 stay open-window — mid-window outcome joins are refused.
-  const withoutOutcomes = ["6125", "7006", "7013", "7016", "7331"];
   for (const examNumber of withOutcomes) {
     const exam = artifact.exams.find(item => item.exam_number === examNumber);
     assert.ok(exam?.outcome, examNumber);
     assert.equal(Staffing.examOutcomeView(exam).kind, "joined");
   }
-  for (const examNumber of withoutOutcomes) {
-    const exam = artifact.exams.find(item => item.exam_number === examNumber);
-    assert.equal(exam.outcome, null, examNumber);
-    assert.equal(Staffing.examOutcomeView(exam).kind, "not_yet_ingested");
+  // Exams still inside their filing window carry no outcome: an exam number
+  // names one cycle, so a mid-window join would report the previous one.
+  const openNow = artifact.exams.filter(
+    (exam) => Staffing.statusFor(exam, CURRENT_DAY) === "open",
+  );
+  assert.ok(openNow.length > 0, "the schedule still has open exams");
+  for (const exam of openNow) {
+    assert.equal(exam.outcome, null, exam.exam_number);
+    assert.ok(
+      ["not_yet_ingested", "list_joined"].includes(Staffing.examOutcomeView(exam).kind),
+      exam.exam_number,
+    );
   }
   // Closed exam with Civil Service List depth lands list_joined (non-null example).
   const listJoined = artifact.exams.find(item => item.exam_number === "6024");

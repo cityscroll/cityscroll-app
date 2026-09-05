@@ -27,6 +27,13 @@ inputs:
     description: Refresh every due first-class resident dataset and its declared downstream artifacts.
     required: false
     default: "false"
+  legistar-api-token:
+    description: >-
+      Credential for the authenticated committee-membership sample. Without it
+      the committee graph cannot be re-verified, so its refresh reports a failed
+      acquisition and the last reviewed graph is kept.
+    required: false
+    default: ""
 
 runs:
   using: composite
@@ -44,8 +51,11 @@ runs:
         COMMIT_SHA: ${{ inputs.commit-sha }}
         REFRESH_DECISION_OUTCOMES: ${{ inputs.refresh-decision-outcomes }}
         REFRESH_RESIDENT_SNAPSHOTS: ${{ inputs.refresh-resident-snapshots }}
+        LEGISTAR_API_TOKEN: ${{ inputs.legistar-api-token }}
       run: |
         set -euo pipefail
+        # The committee sample records the instant it was retrieved.
+        export COMMITTEE_RETRIEVED_AT="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
         args=(--source-dir "$SOURCE_DIR" --site-dir "$SITE_DIR")
         if [ "$REFRESH_DECISION_OUTCOMES" = "true" ]; then
           args+=(--refresh-decision-outcomes)

@@ -22,6 +22,7 @@ import { describeFilter } from "../worker/src/lib/confirm_email.mjs";
 import { formatSubjectRef, parseSubjectRef } from "../worker/src/lib/subject_registry.mjs";
 import { calendarSubscriptionHrefForBrowseView } from "../site/calendar_subscription.mjs";
 import { buildExamsBrowseView } from "../site/exams_surface.mjs";
+import { examFacetValue } from "../site/exam_detail_facets.mjs";
 
 const require = createRequire(import.meta.url);
 const Staffing = require("../site/staffing.js");
@@ -40,10 +41,18 @@ test("exam browse exposes a people-scoped calendar subscription", () => {
 });
 
 test("exam documents have typed identity, attached context, and static-first affordances", () => {
-  const exam = artifact.exams.find((row) => row.exam_number === "7016");
+  // Rendered against an exam that is inside its filing window on the artifact's
+  // own clock. Naming one exam and one calendar day would make this fail the
+  // day that exam's window closes, which says nothing about the renderer.
+  const today = artifact.open_window_as_of || artifact.generated_at;
+  const exam = artifact.exams.find(
+    (row) => Staffing.statusFor(row, today) === "open"
+      && row.fee != null && row.salary_min && row.exam_format && row.qualifications,
+  );
+  assert.ok(exam, "an open exam with published amounts is available to render");
   const html = renderExamDocument(exam, {
-    today: "2026-08-05",
-    status: Staffing.statusFor(exam, "2026-08-05"),
+    today,
+    status: Staffing.statusFor(exam, today),
     feeSalary: Staffing.examFeeSalaryView(exam),
     outcome: Staffing.examOutcomeView(exam),
     phaseView: buildExamPhaseView(buildExamProcessSpine(exam)),
@@ -53,11 +62,11 @@ test("exam documents have typed identity, attached context, and static-first aff
   assert.match(html, /class="node-document exam-document"/);
   assert.match(html, /class="node-hero exam-hero"/);
   assert.match(html, /class="[^"]*node-actions/);
-  assert.match(html, /data-subject-ref="exam:7016"/);
+  assert.match(html, new RegExp(`data-subject-ref="exam:${exam.exam_number}"`));
   assert.match(html, /Published by DCAS/);
   assert.match(html, /class="ui-constellation-link exam-publisher-link"/);
   assert.match(html, /class="ui-official-source-link [^"]*exam-action/);
-  assert.match(html, /data-exam-watch="7016"/);
+  assert.match(html, new RegExp(`data-exam-watch="${exam.exam_number}"`));
   assert.match(html, /data-export-class="exam_prediction"/);
   assert.match(html, /data-prediction-subject="eligible-list-establishment"/);
   assert.match(html, /data-prediction-value=/);
@@ -67,13 +76,13 @@ test("exam documents have typed identity, attached context, and static-first aff
   assert.match(html, /data-exam-print/);
   assert.match(html, /data-exam-export="json"/);
   assert.match(html, /data-exam-export="xlsx"/);
-  assert.match(html, /data-subject-ref="exam:7016"/);
-  assert.match(html, /class="ui-filter-chip exam-facet-pivot" aria-pressed="true"[^>]*data-scope-edge="people:format:education_experience"/);
-  assert.match(html, /data-scope-edge="people:salary:45k_60k"/);
-  assert.match(html, /data-scope-edge="people:fee:fee-bearing"/);
-  assert.match(html, /data-scope-edge="people:experience:yes"/);
+  assert.match(html, new RegExp(`data-subject-ref="exam:${exam.exam_number}"`));
+  assert.match(html, new RegExp(`class="ui-filter-chip exam-facet-pivot" aria-pressed="true"[^>]*data-scope-edge="people:format:${examFacetValue(exam, "format", { today })}"`));
+  assert.match(html, new RegExp(`data-scope-edge="people:salary:${examFacetValue(exam, "salary", { today })}"`));
+  assert.match(html, new RegExp(`data-scope-edge="people:fee:${examFacetValue(exam, "fee", { today })}"`));
+  assert.match(html, new RegExp(`data-scope-edge="people:experience:${examFacetValue(exam, "experience", { today })}"`));
   assert.match(html, /data-scope-edge="people:window:open"/);
-  assert.doesNotMatch(html, /href="#exam\/7016/);
+  assert.doesNotMatch(html, new RegExp(`href="#exam/${exam.exam_number}`));
   // Reader surface: no absence disclaimers or internal pipeline keys.
   assert.deepEqual(detectNodePageCruft(html), []);
   assert.doesNotMatch(html, /Snapshot source keys/i);

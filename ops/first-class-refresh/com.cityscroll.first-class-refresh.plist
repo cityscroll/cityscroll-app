@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Job definition for the warehouse-backed first-class dataset refresh.
+  Not installed by this repository; see README.md in this directory.
+  Replace every REPLACE-ME value before installing.
+-->
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.cityscroll.first-class-refresh</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>REPLACE-ME/run-warehouse-refresh.sh</string>
+  </array>
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>CITYSCROLL_REPO</key>
+    <string>REPLACE-ME</string>
+    <key>CITYSCROLL_WAREHOUSE_ROOT</key>
+    <string>REPLACE-ME</string>
+    <key>GH_TOKEN</key>
+    <string>REPLACE-ME</string>
+    <key>PATH</key>
+    <string>/usr/local/bin:/opt/homebrew/bin:/usr/bin:/bin</string>
+  </dict>
+  <key>StartCalendarInterval</key>
+  <dict>
+    <key>Hour</key>
+    <integer>7</integer>
+    <key>Minute</key>
+    <integer>10</integer>
+  </dict>
+  <key>StandardOutPath</key>
+  <string>REPLACE-ME/first-class-refresh.log</string>
+  <key>StandardErrorPath</key>
+  <string>REPLACE-ME/first-class-refresh.err.log</string>
+  <key>RunAtLoad</key>
+  <false/>
+</dict>
+</plist>
