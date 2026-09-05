@@ -46,7 +46,13 @@ const MODEL_KEYS = Object.freeze([
   "partition",
   "watermark",
   "publication_mode",
+  "deletes",
 ]);
+
+export const IDENTITY_STRATEGIES = Object.freeze(["natural", "companion"]);
+export const IDENTITY_FALLBACKS = Object.freeze(["content_hash"]);
+export const DUPLICATE_POLICIES = Object.freeze(["reject", "collapse_identical"]);
+export const DELETE_POLICIES = Object.freeze(["delete"]);
 
 const MODEL_ID_PATTERN = /^[a-z][a-z0-9]*(?:_[a-z0-9]+)*$/;
 
@@ -91,9 +97,39 @@ function sha256(value) {
   return createHash("sha256").update(value).digest("hex");
 }
 
+function validateIdentity(identity, field) {
+  requirePlainObject(identity, field);
+  requireNonEmptyString(identity.strategy, `${field}.strategy`);
+  if (!IDENTITY_STRATEGIES.includes(identity.strategy)) {
+    fail(`${field}.strategy`, `must be one of ${IDENTITY_STRATEGIES.join(", ")}`);
+  }
+  if (identity.strategy === "companion") {
+    requireKnownKeys(identity, ["strategy", "of"], field);
+    requireNonEmptyString(identity.of, `${field}.of`);
+    return identity;
+  }
+  requireKnownKeys(identity, ["strategy", "source_fields", "fallback", "duplicates"], field);
+  if (!Array.isArray(identity.source_fields) || identity.source_fields.length === 0) {
+    fail(`${field}.source_fields`, "must be a non-empty array");
+  }
+  identity.source_fields.forEach((column, index) => {
+    requireNonEmptyString(column, `${field}.source_fields[${index}]`);
+  });
+  if (new Set(identity.source_fields).size !== identity.source_fields.length) {
+    fail(`${field}.source_fields`, "must not repeat a field");
+  }
+  if ("fallback" in identity && !IDENTITY_FALLBACKS.includes(identity.fallback)) {
+    fail(`${field}.fallback`, `must be one of ${IDENTITY_FALLBACKS.join(", ")}`);
+  }
+  if ("duplicates" in identity && !DUPLICATE_POLICIES.includes(identity.duplicates)) {
+    fail(`${field}.duplicates`, `must be one of ${DUPLICATE_POLICIES.join(", ")}`);
+  }
+  return identity;
+}
+
 function validateTable(table, field) {
   requirePlainObject(table, field);
-  requireKnownKeys(table, ["name", "key_columns"], field);
+  requireKnownKeys(table, ["name", "key_columns", "identity"], field);
   requireNonEmptyString(table.name, `${field}.name`);
   if (!Array.isArray(table.key_columns) || table.key_columns.length === 0) {
     fail(`${field}.key_columns`, "must be a non-empty array");
@@ -104,6 +140,7 @@ function validateTable(table, field) {
   if (new Set(table.key_columns).size !== table.key_columns.length) {
     fail(`${field}.key_columns`, "must not repeat a column");
   }
+  validateIdentity(table.identity, `${field}.identity`);
   return table;
 }
 
@@ -136,6 +173,22 @@ function validateModel(model, index) {
     if (tableNames.has(table.name)) fail(`${field}.tables[${tableIndex}].name`, "is declared twice");
     tableNames.add(table.name);
   });
+  model.tables.forEach((table, tableIndex) => {
+    if (table.identity.strategy !== "companion") return;
+    const target = model.tables.find((candidate) => candidate.name === table.identity.of);
+    if (!target) fail(`${field}.tables[${tableIndex}].identity.of`, "must name a table of the same model");
+    if (target.identity.strategy === "companion") {
+      fail(`${field}.tables[${tableIndex}].identity.of`, "must name a table with a natural identity");
+    }
+    if (target.key_columns.join("|") !== table.key_columns.join("|")) {
+      fail(`${field}.tables[${tableIndex}].key_columns`, `must match the key columns of ${table.identity.of}`);
+    }
+  });
+
+  requireNonEmptyString(model.deletes, `${field}.deletes`);
+  if (!DELETE_POLICIES.includes(model.deletes)) {
+    fail(`${field}.deletes`, `must be one of ${DELETE_POLICIES.join(", ")}`);
+  }
 
   requirePlainObject(model.partition, `${field}.partition`);
   requireKnownKeys(model.partition, ["kind", "column"], `${field}.partition`);
@@ -254,6 +307,8 @@ export function sourceSnapshotVersion(entry, sourceDocument) {
  *
  * Included: everything that changes what is published or how it is keyed,
  * including the source snapshot field selector.
+ * Included as well: each table identity and the model delete policy, because they decide
+ * which logical row a source record becomes and what happens when it disappears.
  * Excluded on purpose: `builder.path`, `source.path`, `partition`, `watermark`,
  * and every source snapshot value. Paths are repository layout rather than
  * contract — moving a file does not change the published rows — and snapshot
@@ -276,8 +331,9 @@ export function fingerprintInputs(manifest) {
         source_snapshot_version_field: model.source.snapshot_version_field,
         tables: [...model.tables]
           .sort((left, right) => left.name.localeCompare(right.name, "en"))
-          .map((table) => ({ name: table.name, key_columns: [...table.key_columns] })),
+          .map((table) => ({ name: table.name, key_columns: [...table.key_columns], identity: canonical(table.identity) })),
         publication_mode: model.publication_mode,
+        deletes: model.deletes,
       })),
   };
 }

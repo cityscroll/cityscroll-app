@@ -122,10 +122,10 @@ test("golden: one changed source partition yields a bounded delta and unrelated 
   });
   const beta = plan.models.find((model) => model.model_id === "keyword_search").partitions.find((item) => item.partition === "beta");
   assert.deepEqual(beta.ops.insert, [
-    { table: "keyword_search_documents", key: "beta:1" },
-    { table: "keyword_search_fts", key: "beta:1" },
+    { table: "keyword_search_documents", key: "beta:notice:b2", key_values: ["beta:notice:b2"] },
+    { table: "keyword_search_fts", key: "beta:notice:b2", key_values: ["beta:notice:b2"] },
   ]);
-  assert.deepEqual(beta.ops.update, [{ table: "keyword_search_families", key: "beta" }]);
+  assert.deepEqual(beta.ops.update, [{ table: "keyword_search_families", key: "beta", key_values: ["beta"] }]);
   assert.deepEqual(countsByPartition(plan, "ocp_awards"), {
     [WHOLE_MODEL_PARTITION]: { status: "unchanged", insert: 0, update: 0, delete: 0, unchanged: 3, total_ops: 0 },
   });
@@ -144,7 +144,7 @@ test("deletions are explicit: dropped rows and dropped partitions become delete 
   assert.deepEqual(countsByPartition(plan, "ocp_awards")[WHOLE_MODEL_PARTITION],
     { status: "changed", insert: 0, update: 0, delete: 1, unchanged: 2, total_ops: 1 });
   const ocp = plan.models.find((model) => model.model_id === "ocp_awards").partitions[0];
-  assert.deepEqual(ocp.ops.delete, [{ table: "ocp_awards_warehouse", key: "r3|p3|2026-01-03|2" }]);
+  assert.deepEqual(ocp.ops.delete, [{ table: "ocp_awards_warehouse", key: "r3|p3|2026-01-03", key_values: ["r3|p3|2026-01-03"] }]);
   assert.deepEqual(countsByPartition(plan, "keyword_search"), {
     alpha: { status: "removed", insert: 0, update: 0, delete: 5, unchanged: 0, total_ops: 5 },
     beta: { status: "unchanged", insert: 0, update: 0, delete: 0, unchanged: 3, total_ops: 0 },
@@ -251,6 +251,7 @@ test("graph deltas follow published labels, dates, agency names, and last-link-w
     mutate(changed.entity_intelligence);
     assert.deepEqual(graphUpdates(changed), [{
       table: "entity_intelligence_graph_links", key: "project:p1|meeting:m1|decides_land_project",
+      key_values: ["project:p1", "meeting:m1", "decides_land_project"],
     }]);
   }
   const changed = clone(sources);

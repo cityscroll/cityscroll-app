@@ -32,7 +32,7 @@ import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { entityIntelligenceSummary, graphLinkRows } from "./d1_graph_link_rows.mjs";
+import { WHOLE_MODEL_PARTITION as MODEL_PARTITION, tableRows } from "./d1_stable_keys.mjs";
 import { loadManifest, manifestFingerprint, modelEntry, sourceSnapshotVersion } from "./d1_manifest.mjs";
 import {
   readKeywordSearchIndexShard,
@@ -40,9 +40,9 @@ import {
 } from "../site/keyword_search_index_shards.mjs";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-export const SNAPSHOT_SCHEMA = "cityscroll.d1-partition-snapshot.v1";
-export const PLAN_SCHEMA = "cityscroll.d1-delta-plan.v1";
-export const WHOLE_MODEL_PARTITION = "__model__";
+export const SNAPSHOT_SCHEMA = "cityscroll.d1-partition-snapshot.v2";
+export const PLAN_SCHEMA = "cityscroll.d1-delta-plan.v2";
+export const WHOLE_MODEL_PARTITION = MODEL_PARTITION;
 export const DEFAULT_SNAPSHOT_PATH = join(ROOT, "worker", ".d1-read-models", "partition-snapshot.json");
 
 export class DeltaPlanError extends Error {
@@ -74,98 +74,44 @@ function compareText(left, right) {
   return left < right ? -1 : left > right ? 1 : 0;
 }
 
-function ocpRowKey(row, ordinal) {
-  return [row?.request_id, row?.pin, row?.start_date, ordinal]
-    .map((value) => String(value ?? "").trim()).join("|");
-}
-
-/** Keyed records per partition for one model, mirroring the builder's row derivations. */
+/**
+ * Keyed records per partition for one model, from the shared stable-key derivation.
+ * Each partition maps `"<table>|<key>"` to `{ fp, kv }`: the content fingerprint of the
+ * published columns and the key values the builder needs to delete the row.
+ */
 export function partitionRecords(entry, sourceDocument) {
   const partitions = new Map();
-  const add = (partition, watermark, table, keyParts, record) => {
-    if (!partitions.has(partition)) partitions.set(partition, { watermark, rows: new Map() });
-    const bucket = partitions.get(partition);
-    const key = `${table}|${keyParts.map((part) => String(part ?? "")).join("|")}`;
-    if (bucket.rows.has(key)) {
-      fail("duplicate_key", `models[${entry.model_id}] partition ${partition} has duplicate key ${key}`,
-        { model_id: entry.model_id, partition, key });
+  const watermarkOf = partitionWatermarks(entry, sourceDocument);
+  // Every source partition gets a bucket even when it publishes no rows, so an emptied
+  // partition still carries its watermark and its removed rows become explicit deletes.
+  const declared = entry.watermark.scope === "partition"
+    ? Object.keys(sourceDocument?.families || {})
+    : [MODEL_PARTITION];
+  for (const partition of declared) {
+    partitions.set(partition, { watermark: watermarkOf(partition), rows: new Map() });
+  }
+  const { rows } = tableRows(entry, sourceDocument);
+  for (const row of rows) {
+    if (!partitions.has(row.partition)) {
+      partitions.set(row.partition, { watermark: watermarkOf(row.partition), rows: new Map() });
     }
-    bucket.rows.set(key, fingerprintRecord(record));
-  };
-
-  switch (entry.model_id) {
-    case "keyword_search": {
-      const families = sourceDocument?.families;
-      if (!families || typeof families !== "object" || Array.isArray(families)) {
-        fail("source_shape", "keyword_search source document needs a families object", { model_id: entry.model_id });
-      }
-      for (const familyId of Object.keys(families).sort()) {
-        const family = families[familyId] || {};
-        add(familyId, family.as_of, "keyword_search_families", [familyId], {
-          family_id: familyId, source: family.source ?? null, as_of: family.as_of ?? null,
-          source_row_count: Number(family.source_row_count) || 0,
-          indexed_count: Number(family.indexed_count) || 0, coverage: family.coverage || [],
-        });
-        for (const [ordinal, document] of (family.documents || []).entries()) {
-          const documentId = `${familyId}:${ordinal}`;
-          const searchText = [document.title, document.summary, document.search_text].filter(Boolean).join(" ");
-          add(familyId, family.as_of, "keyword_search_documents", [documentId], {
-            document_id: documentId, family_id: familyId, ordinal, object_ref: document.object_ref ?? null,
-            source_observation_refs: Array.isArray(document.source_observation_refs) ? document.source_observation_refs : [],
-            document, search_text: searchText,
-          });
-          add(familyId, family.as_of, "keyword_search_fts", [documentId], {
-            document_id: documentId, family_id: familyId, search_text: searchText,
-          });
-        }
-      }
-      break;
-    }
-    case "ocp_awards": {
-      const watermark = sourceDocument?.materialized_at;
-      const rows = sourceDocument?.rows || [];
-      partitions.set(WHOLE_MODEL_PARTITION, { watermark, rows: new Map() });
-      for (const [ordinal, row] of rows.entries()) {
-        add(WHOLE_MODEL_PARTITION, watermark, "ocp_awards_warehouse", [ocpRowKey(row, ordinal)], {
-          request_id: row.request_id ?? null, start_date: row.start_date ?? null,
-          agency_name: row.agency_name ?? null, type_of_notice_description: row.type_of_notice_description ?? null,
-          short_title: row.short_title ?? null, pin: row.pin == null ? null : String(row.pin).trim(),
-          contract_amount: row.contract_amount ?? null, vendor_name: row.vendor_name ?? null,
-        });
-      }
-      break;
-    }
-    case "entity_intelligence": {
-      const doc = sourceDocument || {};
-      const watermark = doc.generated_at;
-      add(WHOLE_MODEL_PARTITION, watermark, "entity_intelligence_meta", ["current"], {
-        generated_at: doc.generated_at ?? null, observation_count: Number(doc.observation_count) || 0,
-        entity_count: Number(doc.entity_count) || 0, multi_domain_count: Number(doc.multi_domain_count) || 0,
-        summary: entityIntelligenceSummary(doc),
-      });
-      for (const entityRef of Object.keys(doc.by_ref || {}).sort()) {
-        add(WHOLE_MODEL_PARTITION, watermark, "entity_intelligence_entities", [entityRef], doc.by_ref[entityRef]);
-      }
-      for (const subjectRef of Object.keys(doc.by_subject_ref || {}).sort()) {
-        for (const link of doc.by_subject_ref[subjectRef] || []) {
-          const entityRef = String(link?.entity_ref || "").trim();
-          const relation = String(link?.relation || "").trim();
-          const confidence = String(link?.confidence || "").trim();
-          if (!entityRef || !relation) continue;
-          add(WHOLE_MODEL_PARTITION, watermark, "entity_intelligence_subject_refs",
-            [subjectRef, entityRef, relation, confidence], link);
-        }
-      }
-      for (const row of graphLinkRows(doc)) {
-        add(WHOLE_MODEL_PARTITION, watermark, "entity_intelligence_graph_links",
-          [row.to_ref, row.from_ref, row.link_type], row.payload);
-      }
-      break;
-    }
-    default:
-      fail("unknown_model", `no record derivation for model ${entry.model_id}`, { model_id: entry.model_id });
+    partitions.get(row.partition).rows.set(`${row.table}|${row.key}`, {
+      fp: fingerprintRecord(row.columns),
+      kv: row.key_values,
+    });
   }
   return partitions;
+}
+
+/** Watermark lookup per partition, from the manifest's watermark scope and source field. */
+function partitionWatermarks(entry, sourceDocument) {
+  const field = entry.watermark.field;
+  if (entry.watermark.scope === "partition") {
+    const families = sourceDocument?.families || {};
+    return (partition) => families[partition]?.[field] ?? null;
+  }
+  const value = sourceDocument?.[field] ?? null;
+  return () => value;
 }
 
 /** Load the live source document for one manifest entry. */
@@ -234,18 +180,21 @@ export function watermarkRegressed(priorInstants, currentInstants) {
   return priorInstants.some((before, index) => currentInstants[index] < before);
 }
 
+function rowRef(key, record) {
+  const [table, ...rest] = key.split("|");
+  return { table, key: rest.join("|"), key_values: record?.kv ?? null };
+}
+
 function diffRows(priorRows, currentRows) {
   const ops = { insert: [], update: [], delete: [] };
   let unchanged = 0;
   const keys = new Set([...Object.keys(priorRows), ...Object.keys(currentRows)]);
   for (const key of [...keys].sort(compareText)) {
-    const [table, ...rest] = key.split("|");
-    const ref = { table, key: rest.join("|") };
     const before = priorRows[key];
     const after = currentRows[key];
-    if (before === undefined) ops.insert.push(ref);
-    else if (after === undefined) ops.delete.push(ref);
-    else if (before !== after) ops.update.push(ref);
+    if (before === undefined) ops.insert.push(rowRef(key, after));
+    else if (after === undefined) ops.delete.push(rowRef(key, before));
+    else if (before.fp !== after.fp) ops.update.push(rowRef(key, after));
     else unchanged += 1;
   }
   return { ops, unchanged };
@@ -289,10 +238,7 @@ export function planDelta({ prior, current, rebuild = null }) {
       models: Object.entries(current.models).map(([modelId, model]) => ({
         model_id: modelId, model_version: model.model_version, truncate: true,
         partitions: Object.entries(model.partitions).map(([partition, bucket]) => {
-          const ops = { insert: Object.keys(bucket.rows).sort(compareText).map((key) => {
-            const [table, ...rest] = key.split("|");
-            return { table, key: rest.join("|") };
-          }), update: [], delete: [] };
+          const ops = { insert: Object.keys(bucket.rows).sort(compareText).map((key) => rowRef(key, bucket.rows[key])), update: [], delete: [] };
           return { partition, status: "rebuild", prior_watermark: prior?.models?.[modelId]?.partitions?.[partition]?.watermark ?? null,
             current_watermark: bucket.watermark, ops, counts: counts(ops, 0) };
         }),

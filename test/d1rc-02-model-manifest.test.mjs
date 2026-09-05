@@ -145,7 +145,7 @@ test("the checked-in manifest loads, validates, and is stored in canonical form"
   const manifest = loadManifest();
 
   assert.equal(manifest.schema, D1_READ_MODEL_MANIFEST_SCHEMA);
-  assert.equal(manifest.manifest_version, 1);
+  assert.equal(manifest.manifest_version, 2);
   assert.equal(manifest.database, "crol-notices");
   assert.deepEqual(manifest.models.map((model) => model.model_id), MODEL_IDS);
   assert.equal(validateManifest(manifest), manifest);

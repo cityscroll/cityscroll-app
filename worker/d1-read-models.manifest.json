@@ -1,12 +1,13 @@
 {
   "database": "crol-notices",
-  "manifest_version": 1,
+  "manifest_version": 2,
   "models": [
     {
       "builder": {
         "path": "tools/build_worker_d1_read_models.mjs",
         "version": 1
       },
+      "deletes": "delete",
       "model_id": "keyword_search",
       "model_version": 1,
       "partition": {
@@ -21,18 +22,37 @@
       },
       "tables": [
         {
+          "identity": {
+            "duplicates": "reject",
+            "source_fields": [
+              "family_id"
+            ],
+            "strategy": "natural"
+          },
           "key_columns": [
             "family_id"
           ],
           "name": "keyword_search_families"
         },
         {
+          "identity": {
+            "duplicates": "reject",
+            "fallback": "content_hash",
+            "source_fields": [
+              "object_ref"
+            ],
+            "strategy": "natural"
+          },
           "key_columns": [
             "document_id"
           ],
           "name": "keyword_search_documents"
         },
         {
+          "identity": {
+            "of": "keyword_search_documents",
+            "strategy": "companion"
+          },
           "key_columns": [
             "document_id"
           ],
@@ -50,6 +70,7 @@
         "path": "tools/build_worker_d1_read_models.mjs",
         "version": 1
       },
+      "deletes": "delete",
       "model_id": "ocp_awards",
       "model_version": 1,
       "partition": {
@@ -63,6 +84,16 @@
       },
       "tables": [
         {
+          "identity": {
+            "duplicates": "reject",
+            "fallback": "content_hash",
+            "source_fields": [
+              "request_id",
+              "pin",
+              "start_date"
+            ],
+            "strategy": "natural"
+          },
           "key_columns": [
             "row_key"
           ],
@@ -80,6 +111,7 @@
         "path": "tools/build_worker_d1_read_models.mjs",
         "version": 1
       },
+      "deletes": "delete",
       "model_id": "entity_intelligence",
       "model_version": 1,
       "partition": {
@@ -93,18 +125,42 @@
       },
       "tables": [
         {
+          "identity": {
+            "duplicates": "reject",
+            "source_fields": [
+              "id"
+            ],
+            "strategy": "natural"
+          },
           "key_columns": [
             "id"
           ],
           "name": "entity_intelligence_meta"
         },
         {
+          "identity": {
+            "duplicates": "reject",
+            "source_fields": [
+              "entity_ref"
+            ],
+            "strategy": "natural"
+          },
           "key_columns": [
             "entity_ref"
           ],
           "name": "entity_intelligence_entities"
         },
         {
+          "identity": {
+            "duplicates": "reject",
+            "source_fields": [
+              "subject_ref",
+              "entity_ref",
+              "relation",
+              "confidence"
+            ],
+            "strategy": "natural"
+          },
           "key_columns": [
             "subject_ref",
             "entity_ref",
@@ -114,6 +170,15 @@
           "name": "entity_intelligence_subject_refs"
         },
         {
+          "identity": {
+            "duplicates": "reject",
+            "source_fields": [
+              "to_ref",
+              "from_ref",
+              "link_type"
+            ],
+            "strategy": "natural"
+          },
           "key_columns": [
             "to_ref",
             "from_ref",
