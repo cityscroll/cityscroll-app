@@ -300,3 +300,50 @@ test("row totals and partition totals use separate units", () => {
     unchanged_partitions: 1, changed_partitions: 0, added_partitions: 0, removed_partitions: 0,
   });
 });
+
+test("entity metadata deltas include derived project coverage and ontology inventory", () => {
+  const sources = fixtureSources();
+  sources.entity_intelligence.by_ref["agency:dep"].links.push({
+    type: "decides_land_project", from: "meeting:m2", to: "project:p2",
+  });
+  const prior = snapshotFor(manifest, sources);
+  for (const mutate of [
+    (doc) => { doc.by_ref["agency:dep"].links[0].to = "project:p1"; },
+    (doc) => { doc.by_ref["agency:dep"].root.kind = "organization"; },
+    (doc) => { doc.by_ref["agency:dep"].links[0].type = "related_to"; },
+    (doc) => { doc.by_ref["agency:dep"].domains.meetings = { objects: [{ link_type: "issued_by" }] }; },
+  ]) {
+    const changed = clone(sources);
+    mutate(changed.entity_intelligence);
+    const plan = planDelta({ prior, current: snapshotFor(manifest, changed) });
+    const updates = plan.models.find((model) => model.model_id === "entity_intelligence").partitions[0].ops.update;
+    assert.ok(updates.some((row) => row.table === "entity_intelligence_meta" && row.key === "current"));
+  }
+});
+
+test("SQL builder publishes nonempty entities and their complete metadata", () => {
+  const dir = mkdtempSync(join(tmpdir(), "d1rc-03-sql-"));
+  try {
+    const result = spawnSync(process.execPath, [join(ROOT, "tools/build_worker_d1_read_models.mjs"), "--output-dir", dir],
+      { cwd: ROOT, encoding: "utf8" });
+    assert.equal(result.status, 0, result.stderr);
+    const receipt = JSON.parse(result.stdout);
+    assert.ok(receipt.entity_count > 0);
+    const sql = readFileSync(receipt.entity_sql, "utf8");
+    const entity = JSON.parse(readFileSync(join(ROOT, "worker/src/data/entity_intelligence_lookup.json"), "utf8"));
+    const [ref, dossier] = Object.entries(entity.by_ref).find(([, value]) => value.root?.display_name);
+    const quote = (value) => `'${String(value).replaceAll("'", "''")}'`;
+    assert.ok(sql.includes(`VALUES (${quote(ref)}, ${quote(dossier.root.kind)}, ${quote(dossier.root.display_name)},`));
+    const summaryLiteral = sql.split("\n").find((line) => line.startsWith("INSERT INTO entity_intelligence_meta "))
+      .match(/, '((?:[^']|'')*)'\);$/)[1];
+    const summary = JSON.parse(summaryLiteral.replaceAll("''", "'"));
+    const projects = new Set(Object.values(entity.by_ref).flatMap((value) => value.links || [])
+      .filter((link) => link.type === "decides_land_project" && String(link.to || "").startsWith("project:"))
+      .map((link) => link.to));
+    assert.equal(summary.project_connection_coverage.meetings.linked, projects.size);
+    assert.equal(summary.ontology_inventory.as_of, entity.generated_at);
+    assert.ok(summary.ontology_inventory.entity_types.includes(dossier.root.kind));
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});

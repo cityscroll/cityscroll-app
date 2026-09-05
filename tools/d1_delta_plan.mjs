@@ -30,7 +30,7 @@ import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { graphLinkRows } from "./d1_graph_link_rows.mjs";
+import { entityIntelligenceSummary, graphLinkRows } from "./d1_graph_link_rows.mjs";
 import { loadManifest, manifestFingerprint, modelEntry, sourceSnapshotVersion } from "./d1_manifest.mjs";
 import {
   readKeywordSearchIndexShard,
@@ -139,12 +139,7 @@ export function partitionRecords(entry, sourceDocument) {
       add(WHOLE_MODEL_PARTITION, watermark, "entity_intelligence_meta", ["current"], {
         generated_at: doc.generated_at ?? null, observation_count: Number(doc.observation_count) || 0,
         entity_count: Number(doc.entity_count) || 0, multi_domain_count: Number(doc.multi_domain_count) || 0,
-        summary: {
-          schema_version: doc.schema_version, phase: doc.phase, title: doc.title, version: doc.version,
-          domains: doc.domains, demo_refs: doc.demo_refs, verified_demo: doc.verified_demo,
-          entity_index: doc.entity_index || [], provenance: doc.provenance,
-          vendor_footprint: doc.vendor_footprint || null, selection: doc.selection,
-        },
+        summary: entityIntelligenceSummary(doc),
       });
       for (const entityRef of Object.keys(doc.by_ref || {}).sort()) {
         add(WHOLE_MODEL_PARTITION, watermark, "entity_intelligence_entities", [entityRef], doc.by_ref[entityRef]);
