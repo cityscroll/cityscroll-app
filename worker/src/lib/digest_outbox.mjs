@@ -473,3 +473,150 @@ export async function enqueueEvaluatedSections(db, sections, options = {}) {
     rejected: results.reduce((sum, result) => sum + (result.rejected || 0), 0),
   };
 }
+
+// --- Operator reversal of an over-scoped owed set -----------------------------
+//
+// An evaluation that owes more than the site owner approved has to be
+// reversible before the next scheduled send, and the only writer that could do
+// it until now was the delivery path itself. Cancellation is therefore a
+// deliberately narrow write: it is scoped to explicitly named subscribers and a
+// required first_owed_at floor, and it can only ever move rows out of 'owed'.
+// Delivered rows are tombstones and are never touched, so a reversal cannot
+// rewrite the record of what was actually sent.
+
+/** A single cancel request may never name more than this many subscribers. */
+export const OWED_CANCEL_MAX_SUBSCRIBERS = 50;
+
+/** Stamped on every operator-cancelled row so the reason survives in the ledger. */
+export const OWED_CANCEL_REASON = "cancelled:operator";
+
+class OwedCancelScopeError extends TypeError {
+  constructor(code, message) {
+    super(message);
+    this.name = "OwedCancelScopeError";
+    this.code = code;
+  }
+}
+
+// SQLite compares TEXT lexicographically, and the stored stamps are not all
+// written with the same precision ("…:00Z" sorts after "…:00.000Z"). Normalize
+// both sides to one canonical instant so the floor means the time it names
+// rather than the bytes it happens to be spelled with.
+const NORMALIZED_FIRST_OWED_AT = "strftime('%Y-%m-%dT%H:%M:%fZ', first_owed_at)";
+
+function canonicalInstant(value, code, label) {
+  const clean = text(value);
+  if (!clean) throw new OwedCancelScopeError(code, `${label} is required`);
+  const parsed = Date.parse(clean);
+  if (!Number.isFinite(parsed)) throw new OwedCancelScopeError(code, `${label} must be an ISO timestamp`);
+  return new Date(parsed).toISOString();
+}
+
+/**
+ * Validate and canonicalize a cancel scope.
+ *
+ * Every guard here is a refusal rather than a default: an absent subscriber list
+ * or an absent floor must not widen into "everything currently owed".
+ */
+export function normalizeOwedCancelScope({ subscriberIds, firstOwedAtFrom, firstOwedAtTo = null, lens = null } = {}) {
+  if (!Array.isArray(subscriberIds)) throw new OwedCancelScopeError("subscriber-ids-required", "subscriberIds must be an array");
+  const ids = [];
+  for (const value of subscriberIds) {
+    const clean = text(value);
+    if (!clean) throw new OwedCancelScopeError("subscriber-ids-required", "subscriberIds entries must be non-empty strings");
+    if (!ids.includes(clean)) ids.push(clean);
+  }
+  if (!ids.length) throw new OwedCancelScopeError("subscriber-ids-required", "subscriberIds must name at least one subscriber");
+  if (ids.length > OWED_CANCEL_MAX_SUBSCRIBERS) {
+    throw new OwedCancelScopeError("too-many-subscribers", `subscriberIds may name at most ${OWED_CANCEL_MAX_SUBSCRIBERS} subscribers`);
+  }
+
+  const from = canonicalInstant(firstOwedAtFrom, "first-owed-at-from-required", "firstOwedAtFrom");
+  const to = firstOwedAtTo == null || text(firstOwedAtTo) === ""
+    ? null
+    : canonicalInstant(firstOwedAtTo, "first-owed-at-to-invalid", "firstOwedAtTo");
+  if (to && to < from) throw new OwedCancelScopeError("first-owed-at-range-invalid", "firstOwedAtTo must not precede firstOwedAtFrom");
+
+  const lensFilter = lens == null || text(lens) === "" ? null : text(lens).toLowerCase();
+  return { subscriberIds: ids, firstOwedAtFrom: from, firstOwedAtTo: to, lens: lensFilter };
+}
+
+function cancelScopeClause(scope, subscriberId) {
+  const clauses = [`subscriber_id = ?`, `status = 'owed'`, `${NORMALIZED_FIRST_OWED_AT} >= ?`];
+  const params = [subscriberId, scope.firstOwedAtFrom];
+  if (scope.firstOwedAtTo) {
+    clauses.push(`${NORMALIZED_FIRST_OWED_AT} <= ?`);
+    params.push(scope.firstOwedAtTo);
+  }
+  if (scope.lens) {
+    clauses.push("lens = ?");
+    params.push(scope.lens);
+  }
+  return { where: clauses.join(" AND "), params };
+}
+
+async function runFirst(db, sql, params = []) {
+  const statement = db.prepare(sql);
+  if (typeof statement.bind === "function") return statement.bind(...params).first();
+  return statement.first(...params);
+}
+
+async function matchedForSubscriber(db, scope, subscriberId) {
+  const { where, params } = cancelScopeClause(scope, subscriberId);
+  const row = await runFirst(db, `SELECT COUNT(*) AS matched FROM digest_outbox_items WHERE ${where}`, params);
+  return Math.max(0, Number(row?.matched) || 0);
+}
+
+/** Count what a cancel would move without writing anything. */
+export async function countOwedCancelCandidates(db, scope) {
+  if (!db?.prepare) throw new TypeError("owed cancel requires a D1 database");
+  const normalized = normalizeOwedCancelScope(scope);
+  const perSubscriber = [];
+  for (const subscriberId of normalized.subscriberIds) {
+    perSubscriber.push({
+      subscriber_id: subscriberId,
+      matched: await matchedForSubscriber(db, normalized, subscriberId),
+      cancelled: 0,
+    });
+  }
+  return {
+    scope: normalized,
+    matched: perSubscriber.reduce((sum, row) => sum + row.matched, 0),
+    cancelled: 0,
+    perSubscriber,
+  };
+}
+
+/**
+ * Move the named subscribers' owed rows at or after the floor to 'cancelled'.
+ *
+ * Rows already delivered keep their tombstone, and rows owed before the floor
+ * stay owed: the reversal is bounded by what the caller can name, never by what
+ * the table happens to hold.
+ */
+export async function cancelOwedItems(db, scope) {
+  if (!db?.prepare) throw new TypeError("owed cancel requires a D1 database");
+  const normalized = normalizeOwedCancelScope(scope);
+  const perSubscriber = [];
+  for (const subscriberId of normalized.subscriberIds) {
+    const matched = await matchedForSubscriber(db, normalized, subscriberId);
+    const { where, params } = cancelScopeClause(normalized, subscriberId);
+    const result = await runStatement(
+      db,
+      `UPDATE digest_outbox_items SET status = 'cancelled', last_error = ? WHERE ${where}`,
+      [OWED_CANCEL_REASON, ...params],
+    );
+    const changes = changesFrom(result);
+    perSubscriber.push({
+      subscriber_id: subscriberId,
+      matched,
+      cancelled: changes == null ? matched : changes,
+    });
+  }
+  return {
+    scope: normalized,
+    matched: perSubscriber.reduce((sum, row) => sum + row.matched, 0),
+    cancelled: perSubscriber.reduce((sum, row) => sum + row.cancelled, 0),
+    perSubscriber,
+  };
+}

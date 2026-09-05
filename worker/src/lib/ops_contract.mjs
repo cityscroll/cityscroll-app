@@ -33,7 +33,7 @@ import {
   SEARCH_USAGE_WINDOW_DAYS,
 } from "./search_usage.mjs";
 
-export const OPS_CONTRACT_VERSION = "1.14.0";
+export const OPS_CONTRACT_VERSION = "1.15.0";
 export const OPS_CONTRACT_ID = "ops-contract.v1";
 
 /** Digest delivery / evaluation modes the worker may stamp on receipts and daylogs. */
@@ -417,6 +417,12 @@ export const ADMIN_ROUTES = Object.freeze([
     methods: ["GET"],
     auth: "ADMIN_KEY",
     description: "Read-only owed digest items grouped by subscriber, with delivery state and next schedule.",
+  },
+  {
+    path: "/admin/owed-cancel",
+    methods: ["POST"],
+    auth: "ADMIN_KEY",
+    description: "Cancel owed digest items for explicitly named subscribers at or after a required first_owed_at floor; dry run by default and never touches delivered rows.",
   },
   {
     path: "/admin/next-digest-preview",

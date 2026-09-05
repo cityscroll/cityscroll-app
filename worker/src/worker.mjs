@@ -30,6 +30,7 @@ import {
   handleAdminPerformance,
   handleAdminStats,
   handleAdminOwedBacklog,
+  handleAdminOwedCancel,
   handleAdminNextDigestPreview,
   handleAdminDigestBackfill,
   handleAdminDigestRollup,
@@ -222,6 +223,7 @@ export default {
     if (pathname === "/admin/performance") return handleAdminPerformance(request, env);
     if (pathname === "/admin/stats") return handleAdminStats(request, env);
     if (pathname === "/admin/owed-backlog") return handleAdminOwedBacklog(request, env);
+    if (pathname === "/admin/owed-cancel") return handleAdminOwedCancel(request, env);
     if (pathname === "/admin/next-digest-preview") return handleAdminNextDigestPreview(request, env);
     if (pathname === "/admin/digest-backfill") return handleAdminDigestBackfill(request, env);
     if (pathname === "/admin/digest-rollup") return handleAdminDigestRollup(request, env);
