@@ -1,0 +1,43 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "capability_reference",
+    "availability",
+    "project_id",
+    "decision_path",
+    "error"
+  ],
+  "properties": {
+    "capability_reference": {
+      "type": "string",
+      "const": "land.decision_path.get@1"
+    },
+    "availability": {
+      "type": "string",
+      "enum": [
+        "available",
+        "not_yet_public",
+        "unavailable"
+      ]
+    },
+    "project_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "decision_path": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "error": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}

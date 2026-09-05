@@ -1,0 +1,34 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "query": {
+      "type": "string",
+      "maxLength": 240
+    },
+    "kind": {
+      "type": "string",
+      "enum": [
+        "official",
+        "exact-person-appointment",
+        "notice-only-hire",
+        "agency",
+        "vendor",
+        "committee",
+        "community-board",
+        "community-board-person",
+        "community-board-committee"
+      ]
+    },
+    "limit": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 100,
+      "default": 25
+    },
+    "cursor": {
+      "type": "string",
+      "maxLength": 320
+    }
+  }
+}

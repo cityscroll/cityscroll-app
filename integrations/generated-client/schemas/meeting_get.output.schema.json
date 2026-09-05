@@ -1,0 +1,57 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "capability_reference",
+    "availability",
+    "meeting",
+    "source",
+    "coverage",
+    "freshness",
+    "error"
+  ],
+  "properties": {
+    "capability_reference": {
+      "type": "string",
+      "const": "meeting.get@1"
+    },
+    "availability": {
+      "type": "string",
+      "enum": [
+        "available",
+        "not_yet_public",
+        "unavailable"
+      ]
+    },
+    "meeting": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "source": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "coverage": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "freshness": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "error": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}

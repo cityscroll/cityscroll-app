@@ -1,0 +1,611 @@
+{
+  "schema": "cityscroll.integration_recipe_index.v1",
+  "generated_from": "capabilities/registry.mjs + capabilities/mcp_tool_declarations.mjs",
+  "evidence_class": "local_contract",
+  "family_recipes": [
+    {
+      "schema": "cityscroll.integration_recipe.v1",
+      "id": "entity-resolution.capability-recipe",
+      "family": "entity-resolution",
+      "capability_reference": "entity.dossier.get@1",
+      "method": "entityDossierGet",
+      "input": {
+        "entity_id": "vendor:stem:ACME CONSTRUCTION"
+      },
+      "bounded_output": {
+        "availability": "available",
+        "maximumLinkedRecords": 250
+      },
+      "output_schema": "schemas/entity_dossier_get.output.schema.json",
+      "availability": [
+        "available",
+        "not_yet_public",
+        "unavailable"
+      ],
+      "canonical_link_fields": [],
+      "canonical_link_policy": "Validated responses are returned without projection; canonical links remain in their public response fields.",
+      "evidence_class": "local_contract"
+    },
+    {
+      "schema": "cityscroll.integration_recipe.v1",
+      "id": "land.capability-recipe",
+      "family": "land",
+      "capability_reference": "land.project.get@1",
+      "method": "landProjectGet",
+      "input": {
+        "project_id": "2024Q0356"
+      },
+      "bounded_output": {
+        "availability": "available",
+        "exactIdentity": true,
+        "procedureResolution": "preserved when resolvable"
+      },
+      "output_schema": "schemas/land_project_get.output.schema.json",
+      "availability": [
+        "available",
+        "not_yet_public",
+        "unavailable"
+      ],
+      "canonical_link_fields": [],
+      "canonical_link_policy": "Validated responses are returned without projection; canonical links remain in their public response fields.",
+      "evidence_class": "local_contract"
+    },
+    {
+      "schema": "cityscroll.integration_recipe.v1",
+      "id": "meetings.capability-recipe",
+      "family": "meetings",
+      "capability_reference": "meeting.get@1",
+      "method": "meetingGet",
+      "input": {
+        "meeting_id": "meeting:city_record:20260810053"
+      },
+      "bounded_output": {
+        "availability": "available",
+        "source": "city_record",
+        "exactIdentity": true
+      },
+      "output_schema": "schemas/meeting_get.output.schema.json",
+      "availability": [
+        "available",
+        "not_yet_public",
+        "unavailable"
+      ],
+      "canonical_link_fields": [],
+      "canonical_link_policy": "Validated responses are returned without projection; canonical links remain in their public response fields.",
+      "evidence_class": "local_contract"
+    },
+    {
+      "schema": "cityscroll.integration_recipe.v1",
+      "id": "notices.capability-recipe",
+      "family": "notices",
+      "capability_reference": "notice.search@1",
+      "method": "noticeSearch",
+      "input": {
+        "query": "construction scaffolding",
+        "limit": 10
+      },
+      "bounded_output": {
+        "availability": "complete",
+        "maximumResults": 10
+      },
+      "output_schema": "schemas/notice_search.output.schema.json",
+      "availability": [
+        "complete",
+        "empty",
+        "unavailable"
+      ],
+      "canonical_link_fields": [],
+      "canonical_link_policy": "Validated responses are returned without projection; canonical links remain in their public response fields.",
+      "evidence_class": "local_contract"
+    },
+    {
+      "schema": "cityscroll.integration_recipe.v1",
+      "id": "people-organizations.capability-recipe",
+      "family": "people-organizations",
+      "capability_reference": "people.get@1",
+      "method": "peopleGet",
+      "input": {
+        "entity_id": "official:example"
+      },
+      "bounded_output": {
+        "availability": "available",
+        "exactIdentity": true
+      },
+      "output_schema": "schemas/people_get.output.schema.json",
+      "availability": [
+        "available",
+        "not_yet_public",
+        "unavailable"
+      ],
+      "canonical_link_fields": [],
+      "canonical_link_policy": "Validated responses are returned without projection; canonical links remain in their public response fields.",
+      "evidence_class": "local_contract"
+    },
+    {
+      "schema": "cityscroll.integration_recipe.v1",
+      "id": "procurement.capability-recipe",
+      "family": "procurement",
+      "capability_reference": "contract.get@1",
+      "method": "contractGet",
+      "input": {
+        "procurement_id": "procurement:contract:20211201861"
+      },
+      "bounded_output": {
+        "availability": "available",
+        "exactIdentity": true,
+        "lifecycle": "preserved when present"
+      },
+      "output_schema": "schemas/contract_get.output.schema.json",
+      "availability": [
+        "available",
+        "not_yet_public",
+        "unavailable"
+      ],
+      "canonical_link_fields": [],
+      "canonical_link_policy": "Validated responses are returned without projection; canonical links remain in their public response fields.",
+      "evidence_class": "local_contract"
+    },
+    {
+      "schema": "cityscroll.integration_recipe.v1",
+      "id": "semantic-retrieval.capability-recipe",
+      "family": "semantic-retrieval",
+      "capability_reference": "cited.passages.retrieve@1",
+      "method": "citedPassagesRetrieve",
+      "input": {
+        "query": "energy conservation",
+        "source_family": "city_record_notice",
+        "limit": 5
+      },
+      "bounded_output": {
+        "availability": "partial",
+        "maximumCitations": 5,
+        "exactJoin": "matched-or-unknown"
+      },
+      "output_schema": "schemas/cited_passages_retrieve.output.schema.json",
+      "availability": [
+        "partial",
+        "complete",
+        "unknown"
+      ],
+      "canonical_link_fields": [
+        "citations[].source.canonical_href",
+        "citations[].source.url"
+      ],
+      "canonical_link_policy": "Validated responses are returned without projection; canonical links remain in their public response fields.",
+      "evidence_class": "local_contract"
+    },
+    {
+      "schema": "cityscroll.integration_recipe.v1",
+      "id": "universal-search.capability-recipe",
+      "family": "universal-search",
+      "capability_reference": "search.federated@1",
+      "method": "searchFederated",
+      "input": {
+        "query": "parks",
+        "limit": 10
+      },
+      "bounded_output": {
+        "coverageStates": [
+          "matched",
+          "empty",
+          "partial",
+          "stale",
+          "not_indexed",
+          "provider_unavailable",
+          "out_of_scope"
+        ],
+        "maximumResults": 10,
+        "maximumCardsPerLane": 8,
+        "requestedScope": "all_registered_lenses"
+      },
+      "output_schema": "schemas/search_federated.output.schema.json",
+      "availability": [
+        "matched",
+        "empty",
+        "partial",
+        "stale",
+        "not_indexed",
+        "provider_unavailable",
+        "out_of_scope"
+      ],
+      "canonical_link_fields": [],
+      "canonical_link_policy": "Validated responses are returned without projection; canonical links remain in their public response fields.",
+      "evidence_class": "local_contract"
+    }
+  ],
+  "capability_recipes": [
+    {
+      "schema": "cityscroll.integration_recipe.v1",
+      "id": "notices.capability-recipe",
+      "family": "notices",
+      "capability_reference": "notice.search@1",
+      "method": "noticeSearch",
+      "input": {
+        "query": "construction scaffolding",
+        "limit": 10
+      },
+      "bounded_output": {
+        "availability": "complete",
+        "maximumResults": 10
+      },
+      "output_schema": "schemas/notice_search.output.schema.json",
+      "availability": [
+        "complete",
+        "empty",
+        "unavailable"
+      ],
+      "canonical_link_fields": [],
+      "canonical_link_policy": "Validated responses are returned without projection; canonical links remain in their public response fields.",
+      "evidence_class": "local_contract"
+    },
+    {
+      "schema": "cityscroll.integration_recipe.v1",
+      "id": "notices.capability-recipe",
+      "family": "notices",
+      "capability_reference": "notice.get@1",
+      "method": "noticeGet",
+      "input": {
+        "request_id": "20260807001"
+      },
+      "bounded_output": {
+        "availability": "available",
+        "source": "materialized",
+        "stale": false
+      },
+      "output_schema": "schemas/notice_get.output.schema.json",
+      "availability": [
+        "available",
+        "not_yet_public",
+        "unavailable"
+      ],
+      "canonical_link_fields": [],
+      "canonical_link_policy": "Validated responses are returned without projection; canonical links remain in their public response fields.",
+      "evidence_class": "local_contract"
+    },
+    {
+      "schema": "cityscroll.integration_recipe.v1",
+      "id": "entity-resolution.capability-recipe",
+      "family": "entity-resolution",
+      "capability_reference": "entity.dossier.get@1",
+      "method": "entityDossierGet",
+      "input": {
+        "entity_id": "vendor:stem:ACME CONSTRUCTION"
+      },
+      "bounded_output": {
+        "availability": "available",
+        "maximumLinkedRecords": 250
+      },
+      "output_schema": "schemas/entity_dossier_get.output.schema.json",
+      "availability": [
+        "available",
+        "not_yet_public",
+        "unavailable"
+      ],
+      "canonical_link_fields": [],
+      "canonical_link_policy": "Validated responses are returned without projection; canonical links remain in their public response fields.",
+      "evidence_class": "local_contract"
+    },
+    {
+      "schema": "cityscroll.integration_recipe.v1",
+      "id": "entity-resolution.capability-recipe",
+      "family": "entity-resolution",
+      "capability_reference": "entity.relationships.get@1",
+      "method": "entityRelationshipsGet",
+      "input": {
+        "entity_id": "vendor:stem:ACME CONSTRUCTION",
+        "depth": 2,
+        "fan_out": 12
+      },
+      "bounded_output": {
+        "availability": "available",
+        "maximumDepth": 2,
+        "maximumFanOut": 25
+      },
+      "output_schema": "schemas/entity_relationships_get.output.schema.json",
+      "availability": [
+        "available",
+        "not_yet_public",
+        "unavailable"
+      ],
+      "canonical_link_fields": [],
+      "canonical_link_policy": "Validated responses are returned without projection; canonical links remain in their public response fields.",
+      "evidence_class": "local_contract"
+    },
+    {
+      "schema": "cityscroll.integration_recipe.v1",
+      "id": "semantic-retrieval.capability-recipe",
+      "family": "semantic-retrieval",
+      "capability_reference": "cited.passages.retrieve@1",
+      "method": "citedPassagesRetrieve",
+      "input": {
+        "query": "energy conservation",
+        "source_family": "city_record_notice",
+        "limit": 5
+      },
+      "bounded_output": {
+        "availability": "partial",
+        "maximumCitations": 5,
+        "exactJoin": "matched-or-unknown"
+      },
+      "output_schema": "schemas/cited_passages_retrieve.output.schema.json",
+      "availability": [
+        "partial",
+        "complete",
+        "unknown"
+      ],
+      "canonical_link_fields": [
+        "citations[].source.canonical_href",
+        "citations[].source.url"
+      ],
+      "canonical_link_policy": "Validated responses are returned without projection; canonical links remain in their public response fields.",
+      "evidence_class": "local_contract"
+    },
+    {
+      "schema": "cityscroll.integration_recipe.v1",
+      "id": "universal-search.capability-recipe",
+      "family": "universal-search",
+      "capability_reference": "search.federated@1",
+      "method": "searchFederated",
+      "input": {
+        "query": "parks",
+        "limit": 10
+      },
+      "bounded_output": {
+        "coverageStates": [
+          "matched",
+          "empty",
+          "partial",
+          "stale",
+          "not_indexed",
+          "provider_unavailable",
+          "out_of_scope"
+        ],
+        "maximumResults": 10,
+        "maximumCardsPerLane": 8,
+        "requestedScope": "all_registered_lenses"
+      },
+      "output_schema": "schemas/search_federated.output.schema.json",
+      "availability": [
+        "matched",
+        "empty",
+        "partial",
+        "stale",
+        "not_indexed",
+        "provider_unavailable",
+        "out_of_scope"
+      ],
+      "canonical_link_fields": [],
+      "canonical_link_policy": "Validated responses are returned without projection; canonical links remain in their public response fields.",
+      "evidence_class": "local_contract"
+    },
+    {
+      "schema": "cityscroll.integration_recipe.v1",
+      "id": "procurement.capability-recipe",
+      "family": "procurement",
+      "capability_reference": "contract.get@1",
+      "method": "contractGet",
+      "input": {
+        "procurement_id": "procurement:contract:20211201861"
+      },
+      "bounded_output": {
+        "availability": "available",
+        "exactIdentity": true,
+        "lifecycle": "preserved when present"
+      },
+      "output_schema": "schemas/contract_get.output.schema.json",
+      "availability": [
+        "available",
+        "not_yet_public",
+        "unavailable"
+      ],
+      "canonical_link_fields": [],
+      "canonical_link_policy": "Validated responses are returned without projection; canonical links remain in their public response fields.",
+      "evidence_class": "local_contract"
+    },
+    {
+      "schema": "cityscroll.integration_recipe.v1",
+      "id": "procurement.capability-recipe",
+      "family": "procurement",
+      "capability_reference": "contracts.browse@1",
+      "method": "contractsBrowse",
+      "input": {
+        "agency": "design and construction",
+        "stage": "award",
+        "limit": 10
+      },
+      "bounded_output": {
+        "availability": "complete",
+        "maximumResults": 10,
+        "oneRowPer": "exact procurement_id"
+      },
+      "output_schema": "schemas/contracts_browse.output.schema.json",
+      "availability": [
+        "complete",
+        "empty",
+        "unavailable"
+      ],
+      "canonical_link_fields": [],
+      "canonical_link_policy": "Validated responses are returned without projection; canonical links remain in their public response fields.",
+      "evidence_class": "local_contract"
+    },
+    {
+      "schema": "cityscroll.integration_recipe.v1",
+      "id": "procurement.capability-recipe",
+      "family": "procurement",
+      "capability_reference": "contracts.analysis@1",
+      "method": "contractsAnalysis",
+      "input": {
+        "group_by": "agency",
+        "measure": "current",
+        "fiscal_year": 2027,
+        "limit": 10
+      },
+      "bounded_output": {
+        "availability": "complete",
+        "measure": "current registered contract value in USD",
+        "denominator": "selected filtered population value"
+      },
+      "output_schema": "schemas/contracts_analysis.output.schema.json",
+      "availability": [
+        "complete",
+        "empty",
+        "unavailable"
+      ],
+      "canonical_link_fields": [],
+      "canonical_link_policy": "Validated responses are returned without projection; canonical links remain in their public response fields.",
+      "evidence_class": "local_contract"
+    },
+    {
+      "schema": "cityscroll.integration_recipe.v1",
+      "id": "people-organizations.capability-recipe",
+      "family": "people-organizations",
+      "capability_reference": "people.get@1",
+      "method": "peopleGet",
+      "input": {
+        "entity_id": "official:example"
+      },
+      "bounded_output": {
+        "availability": "available",
+        "exactIdentity": true
+      },
+      "output_schema": "schemas/people_get.output.schema.json",
+      "availability": [
+        "available",
+        "not_yet_public",
+        "unavailable"
+      ],
+      "canonical_link_fields": [],
+      "canonical_link_policy": "Validated responses are returned without projection; canonical links remain in their public response fields.",
+      "evidence_class": "local_contract"
+    },
+    {
+      "schema": "cityscroll.integration_recipe.v1",
+      "id": "people-organizations.capability-recipe",
+      "family": "people-organizations",
+      "capability_reference": "organizations.browse@1",
+      "method": "organizationsBrowse",
+      "input": {
+        "kind": "agency",
+        "limit": 10
+      },
+      "bounded_output": {
+        "availability": "complete",
+        "maximumResults": 10,
+        "oneRowPer": "exact read-model row id"
+      },
+      "output_schema": "schemas/organizations_browse.output.schema.json",
+      "availability": [
+        "complete",
+        "empty",
+        "unavailable"
+      ],
+      "canonical_link_fields": [],
+      "canonical_link_policy": "Validated responses are returned without projection; canonical links remain in their public response fields.",
+      "evidence_class": "local_contract"
+    },
+    {
+      "schema": "cityscroll.integration_recipe.v1",
+      "id": "meetings.capability-recipe",
+      "family": "meetings",
+      "capability_reference": "meeting.get@1",
+      "method": "meetingGet",
+      "input": {
+        "meeting_id": "meeting:city_record:20260810053"
+      },
+      "bounded_output": {
+        "availability": "available",
+        "source": "city_record",
+        "exactIdentity": true
+      },
+      "output_schema": "schemas/meeting_get.output.schema.json",
+      "availability": [
+        "available",
+        "not_yet_public",
+        "unavailable"
+      ],
+      "canonical_link_fields": [],
+      "canonical_link_policy": "Validated responses are returned without projection; canonical links remain in their public response fields.",
+      "evidence_class": "local_contract"
+    },
+    {
+      "schema": "cityscroll.integration_recipe.v1",
+      "id": "land.capability-recipe",
+      "family": "land",
+      "capability_reference": "land.project.get@1",
+      "method": "landProjectGet",
+      "input": {
+        "project_id": "2024Q0356"
+      },
+      "bounded_output": {
+        "availability": "available",
+        "exactIdentity": true,
+        "procedureResolution": "preserved when resolvable"
+      },
+      "output_schema": "schemas/land_project_get.output.schema.json",
+      "availability": [
+        "available",
+        "not_yet_public",
+        "unavailable"
+      ],
+      "canonical_link_fields": [],
+      "canonical_link_policy": "Validated responses are returned without projection; canonical links remain in their public response fields.",
+      "evidence_class": "local_contract"
+    },
+    {
+      "schema": "cityscroll.integration_recipe.v1",
+      "id": "land.capability-recipe",
+      "family": "land",
+      "capability_reference": "land.projects.browse@1",
+      "method": "landProjectsBrowse",
+      "input": {
+        "procedure": "elurp",
+        "corpus": "historical"
+      },
+      "bounded_output": {
+        "availability": "complete",
+        "oneRowPer": "exact project_id",
+        "fixedPopulation": "the frozen four-project expedited corpus"
+      },
+      "output_schema": "schemas/land_projects_browse.output.schema.json",
+      "availability": [
+        "complete",
+        "empty",
+        "unavailable"
+      ],
+      "canonical_link_fields": [],
+      "canonical_link_policy": "Validated responses are returned without projection; canonical links remain in their public response fields.",
+      "evidence_class": "local_contract"
+    },
+    {
+      "schema": "cityscroll.integration_recipe.v1",
+      "id": "land.capability-recipe",
+      "family": "land",
+      "capability_reference": "land.decision_path.get@1",
+      "method": "landDecisionPathGet",
+      "input": {
+        "project_id": "2024Q0356"
+      },
+      "bounded_output": {
+        "availability": "available",
+        "procedureResolution": "uniform",
+        "parallelReviewGroups": 1
+      },
+      "output_schema": "schemas/land_decision_path_get.output.schema.json",
+      "availability": [
+        "available",
+        "not_yet_public",
+        "unavailable"
+      ],
+      "canonical_link_fields": [],
+      "canonical_link_policy": "Validated responses are returned without projection; canonical links remain in their public response fields.",
+      "evidence_class": "local_contract"
+    }
+  ],
+  "unsupported_question": {
+    "gap": "civic.outcome.prediction",
+    "nearest": [
+      "land.project.get@1",
+      "land.decision_path.get@1"
+    ]
+  }
+}

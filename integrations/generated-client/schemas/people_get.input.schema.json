@@ -1,0 +1,15 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "entity_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 320,
+      "description": "Exact row id such as official:... or agency:id:..."
+    }
+  },
+  "required": [
+    "entity_id"
+  ]
+}

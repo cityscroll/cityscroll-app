@@ -1,0 +1,50 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "query": {
+      "type": "string",
+      "maxLength": 240,
+      "description": "Case-insensitive terms matched against the existing Contracts browse fields."
+    },
+    "agency": {
+      "type": "string",
+      "maxLength": 240,
+      "description": "Case-insensitive agency substring."
+    },
+    "vendor": {
+      "type": "string",
+      "maxLength": 240,
+      "description": "Case-insensitive vendor substring."
+    },
+    "stage": {
+      "type": "string",
+      "maxLength": 240,
+      "description": "Exact lifecycle stage."
+    },
+    "source_system": {
+      "type": "string",
+      "maxLength": 240,
+      "description": "Exact source-system value."
+    },
+    "min_amount": {
+      "type": "number",
+      "description": "Inclusive valid public amount floor."
+    },
+    "max_amount": {
+      "type": "number",
+      "description": "Inclusive valid public amount ceiling."
+    },
+    "limit": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 100,
+      "default": 25
+    },
+    "cursor": {
+      "type": "string",
+      "maxLength": 320,
+      "description": "Opaque cursor returned by the previous page."
+    }
+  }
+}
