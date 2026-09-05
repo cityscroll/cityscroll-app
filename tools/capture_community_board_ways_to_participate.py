@@ -10,12 +10,13 @@ from __future__ import annotations
 import functools
 import json
 import subprocess
-import tempfile
 import threading
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
 from playwright.sync_api import sync_playwright
+
+from lib.temp_workspace import cityscroll_temp_dir
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -46,7 +47,7 @@ class StaticServer:
 
 def main() -> None:
     OUT.mkdir(parents=True, exist_ok=True)
-    with tempfile.TemporaryDirectory() as tmp:
+    with cityscroll_temp_dir("community-board-ways-to-participate") as tmp:
         served = Path(tmp) / "site"
         served.mkdir()
         subprocess.run(

@@ -369,7 +369,7 @@ test("A4 the site scope is not scoped to changed files and reports its coverage"
   assert.match(tool, /report\.site = lintSiteProduction\(\{ root \}\);/);
   assert.doesNotMatch(tool, /lintSiteProduction\(\{[^}]*changedOnly/);
 
-  const result = spawnSync(process.execPath, [TOOL, "--check"], { cwd: ROOT, encoding: "utf8" });
+  const result = spawnSync(process.execPath, [TOOL, "--check"], { cwd: ROOT, encoding: "utf8", env: isolatedGitEnv() });
   assert.equal(result.status, 0, result.stderr);
   assert.match(result.stdout, /production site modules covered/);
   const covered = Number(result.stdout.match(/(\d+) production site modules covered/)?.[1]);
@@ -397,9 +397,9 @@ test("A4 a new production clock turns the required check red end to end", () => 
       `${JSON.stringify(buildSiteInventory({ root: repo }), null, 2)}\n`,
     );
 
-    const green = spawnSync(process.execPath, [TOOL, "--write-receipt", "--fixture", fixture], { cwd: ROOT, encoding: "utf8" });
+    const green = spawnSync(process.execPath, [TOOL, "--write-receipt", "--fixture", fixture], { cwd: ROOT, encoding: "utf8", env: isolatedGitEnv() });
     assert.equal(green.status, 0, green.stderr);
-    const clean = spawnSync(process.execPath, [TOOL, "--check", "--fixture", fixture], { cwd: ROOT, encoding: "utf8" });
+    const clean = spawnSync(process.execPath, [TOOL, "--check", "--fixture", fixture], { cwd: ROOT, encoding: "utf8", env: isolatedGitEnv() });
     assert.equal(clean.status, 0, clean.stderr);
     assert.match(clean.stdout, /1 production site modules covered/);
 
@@ -408,7 +408,7 @@ test("A4 a new production clock turns the required check red end to end", () => 
       path.join(repo, "site", "app", "list.mjs"),
       `export const openOn = (rows) => rows.filter((r) => r.due > ${NEW_DATE}.toISOString().slice(0, 10));\n`,
     );
-    const red = spawnSync(process.execPath, [TOOL, "--check", "--fixture", fixture], { cwd: ROOT, encoding: "utf8" });
+    const red = spawnSync(process.execPath, [TOOL, "--check", "--fixture", fixture], { cwd: ROOT, encoding: "utf8", env: isolatedGitEnv() });
     assert.equal(red.status, 1, red.stdout);
     assert.match(red.stderr, /determinism lint fixture receipt drifted/);
 

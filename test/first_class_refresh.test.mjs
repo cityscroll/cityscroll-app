@@ -1,7 +1,5 @@
 import assert from "node:assert/strict";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
-import { mkdtemp, rm } from "node:fs/promises";
-import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import test from "node:test";
 
@@ -14,6 +12,7 @@ import {
   runRefreshCommands,
   validateFirstClassRefreshContracts,
 } from "../tools/first_class_refresh.mjs";
+import { withTempDir } from "../tools/lib/with_temp_dir.mjs";
 
 const ROOT = new URL("..", import.meta.url).pathname;
 const canonical = () => JSON.parse(readFileSync(new URL("../site/data/source_contracts.json", import.meta.url), "utf8"));
@@ -153,8 +152,7 @@ test("failed acquisition preserves last-known-good output and does not block unr
 });
 
 test("fresh, genuinely empty, degraded LKG, stale, and unavailable remain distinct", async () => {
-  const root = await mkdtemp(join(tmpdir(), "cityscroll-first-class-"));
-  try {
+  await withTempDir("first-class", async (root) => {
     const definitions = [
       artifact("fresh", "site/data/fresh.json", "fresh-source"),
       artifact("empty", "site/data/empty.json", "empty-source"),
@@ -200,9 +198,7 @@ test("fresh, genuinely empty, degraded LKG, stale, and unavailable remain distin
     ]);
     assert.equal(report.deployment_identity, "release-1");
     assert.ok(report.surfaces.every((row) => row.public_artifact_path && row.source_vintage !== undefined && row.owning_builder));
-  } finally {
-    await rm(root, { recursive: true, force: true });
-  }
+  });
 });
 
 test("rules-semantic-lane freshness is measured from the daily rules snapshot vintage, not the bounded research corpus date", async () => {
@@ -210,8 +206,7 @@ test("rules-semantic-lane freshness is measured from the daily rules snapshot vi
   const rulesSemanticLane = registry.first_class_artifacts.find((row) => row.id === "rules-semantic-lane");
   assert.deepEqual(rulesSemanticLane.vintage_fields, ["rules_snapshot_observed_at"]);
 
-  const root = await mkdtemp(join(tmpdir(), "cityscroll-rules-semantic-lane-"));
-  try {
+  await withTempDir("rules-semantic-lane", async (root) => {
     const write = (value) => {
       const target = join(root, rulesSemanticLane.public_artifact_path);
       mkdirSync(dirname(target), { recursive: true });
@@ -227,9 +222,7 @@ test("rules-semantic-lane freshness is measured from the daily rules snapshot vi
     write({ rules_snapshot_observed_at: "2026-08-04T06:00:00.000Z", corpus_observed_on: "2026-08-04", candidate_count: 2, candidates: [{}, {}] });
     const stale = buildFirstClassFreshnessReport({ first_class_artifacts: definitions }, { root, now });
     assert.equal(stale.surfaces[0].freshness_state, "stale");
-  } finally {
-    await rm(root, { recursive: true, force: true });
-  }
+  });
 });
 
 test("staffing-exams freshness is measured from the acquisition's own retrieval vintage, not the eligible-list establishment date", async () => {
@@ -237,8 +230,7 @@ test("staffing-exams freshness is measured from the acquisition's own retrieval 
   const staffingExams = registry.first_class_artifacts.find((row) => row.id === "staffing-exams");
   assert.deepEqual(staffingExams.vintage_fields, ["sources_retrieved_as_of"]);
 
-  const root = await mkdtemp(join(tmpdir(), "cityscroll-staffing-exams-"));
-  try {
+  await withTempDir("staffing-exams", async (root) => {
     const write = (value) => {
       const target = join(root, staffingExams.public_artifact_path);
       mkdirSync(dirname(target), { recursive: true });
@@ -263,9 +255,7 @@ test("staffing-exams freshness is measured from the acquisition's own retrieval 
     write({ ...upstream, sources_retrieved_as_of: "2026-07-20" });
     const stale = buildFirstClassFreshnessReport({ first_class_artifacts: definitions }, { root, now });
     assert.equal(stale.surfaces[0].freshness_state, "stale");
-  } finally {
-    await rm(root, { recursive: true, force: true });
-  }
+  });
 });
 
 test("production build emits and retains the first-class freshness proof", () => {

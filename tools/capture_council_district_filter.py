@@ -15,12 +15,13 @@ import json
 from pathlib import Path
 import subprocess
 import tarfile
-import tempfile
 import threading
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import parse_qs, urlparse
 
 from playwright.sync_api import Browser, BrowserContext, Page, Route, sync_playwright
+
+from lib.temp_workspace import cityscroll_temp_dir
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -238,7 +239,7 @@ def main() -> None:
         capture_state(browser, ROOT / "site", "after-located", "#land", use_location=True)
 
         if args.before:
-            with tempfile.TemporaryDirectory() as tmp:
+            with cityscroll_temp_dir("council-district-filter") as tmp:
                 dest = Path(tmp) / "before"
                 dest.mkdir()
                 revision_snapshot(args.before, dest)

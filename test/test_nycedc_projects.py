@@ -1,6 +1,5 @@
 import json
 import sys
-import tempfile
 import unittest
 import zipfile
 from pathlib import Path
@@ -8,7 +7,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "warehouse/lib"))
+sys.path.insert(0, str(ROOT / "tools"))
 
+from lib.temp_workspace import cityscroll_temp_dir  # noqa: E402
 from nycedc_projects import (  # noqa: E402
     extract_annual_spreadsheet,
     extract_board_minutes_text,
@@ -70,7 +71,7 @@ class NycedcProjectsTest(unittest.TestCase):
                 f'<sheetData>{"".join(xml_rows)}</sheetData></worksheet>'
             )
 
-        with tempfile.TemporaryDirectory() as directory:
+        with cityscroll_temp_dir("nycedc-projects-test") as directory:
             path = Path(directory) / "projects.xlsx"
             with zipfile.ZipFile(path, "w") as archive:
                 archive.writestr("xl/workbook.xml", workbook)

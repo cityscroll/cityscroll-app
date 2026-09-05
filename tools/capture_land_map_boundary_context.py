@@ -6,12 +6,13 @@ from __future__ import annotations
 import functools
 import json
 import subprocess
-import tempfile
 import threading
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
 from playwright.sync_api import Page, Route, sync_playwright
+
+from lib.temp_workspace import head_site_workspace
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "docs" / "screenshots" / "land-map-boundary-context"
@@ -42,22 +43,6 @@ class StaticServer:
         self.server.shutdown()
         self.thread.join(timeout=5)
         self.server.server_close()
-
-
-def head_site(destination: Path) -> Path:
-    tree = destination / "head"
-    subprocess.run(["git", "worktree", "add", "--detach", str(tree), "HEAD"], cwd=ROOT, check=True)
-    # A detached worktree inherits the reduced checkout's sparse settings on this host. The
-    # before capture needs the complete tracked static site so it measures the old UI, not an
-    # artifact omitted by the card profile.
-    subprocess.run(["git", "sparse-checkout", "disable"], cwd=tree, check=True)
-    subprocess.run(["node", "tools/build_primary_documents.mjs"], cwd=tree, check=True)
-    return tree / "site"
-
-
-def release_head_site(destination: Path) -> None:
-    subprocess.run(["git", "worktree", "remove", "--force", str(destination / "head")], cwd=ROOT, check=False)
-    subprocess.run(["git", "worktree", "prune"], cwd=ROOT, check=False)
 
 
 def install_routes(page: Page, base_url: str, missing: bool = False) -> None:
@@ -143,17 +128,15 @@ def capture(site: Path, phase: str, route_key: str = "brooklyn", missing: bool =
 
 
 def main() -> None:
-    with tempfile.TemporaryDirectory() as workspace:
-        destination = Path(workspace)
-        try:
-            before = capture(head_site(destination), "before")
-            before_scope = capture(destination / "head" / "site", "before", route_key="scope")
-        finally:
-            release_head_site(destination)
-        subprocess.run(["node", "tools/build_primary_documents.mjs"], cwd=ROOT, check=True)
-        after = capture(ROOT / "site", "after")
-        after_scope = capture(ROOT / "site", "after", route_key="scope", handoff=True)
-        missing = capture(ROOT / "site", "after", missing=True)
+    with head_site_workspace(
+        ROOT, "capture-land-map-boundary-context", disable_sparse_checkout=True
+    ) as site_root:
+        before = capture(site_root, "before")
+        before_scope = capture(site_root, "before", route_key="scope")
+    subprocess.run(["node", "tools/build_primary_documents.mjs"], cwd=ROOT, check=True)
+    after = capture(ROOT / "site", "after")
+    after_scope = capture(ROOT / "site", "after", route_key="scope", handoff=True)
+    missing = capture(ROOT / "site", "after", missing=True)
     receipt = {
         "schema": "cityscroll.land-map-boundary-context-receipt.v1",
         "card": "cityscroll-land-map-view/lm-09-boundary-context",

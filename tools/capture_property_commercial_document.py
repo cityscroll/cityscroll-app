@@ -17,12 +17,13 @@ from pathlib import Path
 import re
 import subprocess
 import tarfile
-import tempfile
 import threading
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import urlsplit
 
 from playwright.sync_api import Browser, Page, Route, sync_playwright
+
+from lib.temp_workspace import cityscroll_temp_dir
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -150,7 +151,7 @@ def main() -> None:
 
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=True)
-        with tempfile.TemporaryDirectory() as temp:
+        with cityscroll_temp_dir("property-commercial-document") as temp:
             before_root = Path(temp) / "before"
             before_root.mkdir()
             revision_snapshot(args.before, before_root)

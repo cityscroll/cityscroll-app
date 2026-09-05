@@ -287,6 +287,9 @@ run_and_fail node tools/determinism_lint.mjs --check
 # deployed production MCP endpoint; CS10_SKIP_LIVE_CANARY tells it to no-op
 # here so this fast local gate stays network-independent (see its own guard
 # and .github/workflows/ci.yml's matching env var).
+TEMP_LEAK_UNIT_SNAPSHOT="$PROJECT_ROOT/.artifacts/temp-leak-snapshot-unit.json"
+node tools/check_temp_leaks.mjs snapshot --out "$TEMP_LEAK_UNIT_SNAPSHOT"
+
 CS10_SKIP_LIVE_CANARY=true run_and_fail node --test test/*.test.mjs
 run_and_fail node --test test/contract/*.test.mjs
 
@@ -294,6 +297,11 @@ run_banner "Unit tests (site + worker)" "Worker dependencies + worker unit tests
   "node --test (inside worker/)"
 run_and_fail tools/install_worker_dependencies.sh
 (cd worker && run_and_fail node --test)
+
+run_banner "Unit tests (site + worker)" "Fail closed on leaked temp directories" \
+  "node tools/check_temp_leaks.mjs check"
+run_and_fail node tools/check_temp_leaks.mjs check --in "$TEMP_LEAK_UNIT_SNAPSHOT" --label unit
+rm -f "$TEMP_LEAK_UNIT_SNAPSHOT"
 
 if [[ "$RUN_READING_LEVEL" == "1" ]]; then
   run_banner "Reading-level ratchet gate (readable-or-else)" "reading-level gate" \
@@ -329,6 +337,9 @@ else
 fi
 
 if [[ "$RUN_FULL" == "1" ]]; then
+  TEMP_LEAK_FULL_SNAPSHOT="$PROJECT_ROOT/.artifacts/temp-leak-snapshot-full.json"
+  node tools/check_temp_leaks.mjs snapshot --out "$TEMP_LEAK_FULL_SNAPSHOT"
+
   run_banner "Accessibility + language gate (axe on every PR)" "CI-equivalent full accessibility + stray-English runtime" \
     "Python playwright + test/functional/*"
   playwright_requirement="$(<.github/actions/setup-playwright/requirements.txt)"
@@ -449,6 +460,11 @@ if [[ "$RUN_FULL" == "1" ]]; then
   run_and_fail python3 test/functional/49_land_map_accessibility.py
   run_and_fail python3 test/functional/50_land_map_performance_and_failure.py
   run_and_fail python3 test/functional/51_land_map_visual_parity_fixtures.py
+
+  run_banner "Accessibility + language gate (axe on every PR)" "Fail closed on leaked temp directories" \
+    "node tools/check_temp_leaks.mjs check"
+  run_and_fail node tools/check_temp_leaks.mjs check --in "$TEMP_LEAK_FULL_SNAPSHOT" --label full
+  rm -f "$TEMP_LEAK_FULL_SNAPSHOT"
 else
   echo
   echo "Skipping full browser gates by default."

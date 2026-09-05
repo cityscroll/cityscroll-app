@@ -256,6 +256,8 @@ jobs:
         if: matrix.family != 'worker'
         with:
           node-version: "22"
+      - name: Snapshot temp-dir state before this family's tests
+        run: node tools/check_temp_leaks.mjs snapshot --out "$RUNNER_TEMP/temp-leak-${{ matrix.family }}.json"
       - name: Legacy repository-name guard
         if: matrix.family == 'static-standards'
         env:
@@ -416,6 +418,9 @@ jobs:
       - name: Detail panel fixture precondition regression proof
         if: matrix.family == 'static-standards'
         run: python3 test/functional/detail_panel_fixture_test.py
+      - name: Temp-directory cleanup helper regression proof
+        if: matrix.family == 'static-standards'
+        run: python3 -m unittest discover -s test -p 'temp_workspace_guard_test.py'
 
       - name: Site unit tests
         if: matrix.family == 'site-node'
@@ -455,6 +460,10 @@ jobs:
         if: matrix.family == 'worker'
         run: node --test
         working-directory: worker
+
+      - name: Fail closed on leaked temp directories
+        if: always()
+        run: node tools/check_temp_leaks.mjs check --in "$RUNNER_TEMP/temp-leak-${{ matrix.family }}.json" --label "${{ matrix.family }}"
 
       - name: Write Unit family timing receipt
         if: always()

@@ -1,9 +1,9 @@
 import assert from "node:assert/strict";
-import { mkdtempSync, readFileSync } from "node:fs";
-import { tmpdir } from "node:os";
+import { readFileSync } from "node:fs";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
 import { describe, it } from "node:test";
+import { withTempDirSync } from "../tools/lib/with_temp_dir.mjs";
 
 import {
   SeqraPaginationIncompleteError,
@@ -111,40 +111,39 @@ describe("paginateToCompletion", () => {
 });
 
 describe("named-vintage raw snapshot immutability", () => {
-  function scratchRoot() {
-    return mkdtempSync(path.join(tmpdir(), "seqra03-vintage-"));
-  }
-
   it("retaining the same bytes twice under one vintage label is a no-op that reports the same hash", () => {
-    const rootAbs = scratchRoot();
-    const first = retainRawSnapshot({ rootAbs, rootRel: "scratch", sourceId: "s", vintage: "v1", slug: "page-0000", text: "hello" });
-    const second = retainRawSnapshot({ rootAbs, rootRel: "scratch", sourceId: "s", vintage: "v1", slug: "page-0000", text: "hello" });
-    assert.equal(first.contentHash, contentHashOf("hello"));
-    assert.equal(first.contentHash, second.contentHash);
-    assert.equal(first.rawObjectPath, path.posix.join("scratch", "s", "v1", "page-0000.json"));
+    withTempDirSync("seqra03-vintage", (rootAbs) => {
+      const first = retainRawSnapshot({ rootAbs, rootRel: "scratch", sourceId: "s", vintage: "v1", slug: "page-0000", text: "hello" });
+      const second = retainRawSnapshot({ rootAbs, rootRel: "scratch", sourceId: "s", vintage: "v1", slug: "page-0000", text: "hello" });
+      assert.equal(first.contentHash, contentHashOf("hello"));
+      assert.equal(first.contentHash, second.contentHash);
+      assert.equal(first.rawObjectPath, path.posix.join("scratch", "s", "v1", "page-0000.json"));
+    });
   });
 
   it("retaining different bytes under an already-captured vintage label throws instead of overwriting (A1)", () => {
-    const rootAbs = scratchRoot();
-    retainRawSnapshot({ rootAbs, rootRel: "scratch", sourceId: "s", vintage: "v1", slug: "page-0000", text: "hello" });
-    assert.throws(
-      () => retainRawSnapshot({ rootAbs, rootRel: "scratch", sourceId: "s", vintage: "v1", slug: "page-0000", text: "goodbye" }),
-      (error) => {
-        assert.ok(error instanceof SeqraVintageImmutableError);
-        assert.equal(error.vintage, "v1");
-        return true;
-      },
-    );
-    // The file on disk must still hold the original bytes, not the rejected write.
-    const onDisk = readFileSync(path.join(rootAbs, "s", "v1", "page-0000.json"), "utf8");
-    assert.equal(onDisk, "hello");
+    withTempDirSync("seqra03-vintage", (rootAbs) => {
+      retainRawSnapshot({ rootAbs, rootRel: "scratch", sourceId: "s", vintage: "v1", slug: "page-0000", text: "hello" });
+      assert.throws(
+        () => retainRawSnapshot({ rootAbs, rootRel: "scratch", sourceId: "s", vintage: "v1", slug: "page-0000", text: "goodbye" }),
+        (error) => {
+          assert.ok(error instanceof SeqraVintageImmutableError);
+          assert.equal(error.vintage, "v1");
+          return true;
+        },
+      );
+      // The file on disk must still hold the original bytes, not the rejected write.
+      const onDisk = readFileSync(path.join(rootAbs, "s", "v1", "page-0000.json"), "utf8");
+      assert.equal(onDisk, "hello");
+    });
   });
 
   it("a new vintage label for the same source never collides with an earlier one", () => {
-    const rootAbs = scratchRoot();
-    retainRawSnapshot({ rootAbs, rootRel: "scratch", sourceId: "s", vintage: "v1", slug: "page-0000", text: "hello" });
-    assert.doesNotThrow(() =>
-      retainRawSnapshot({ rootAbs, rootRel: "scratch", sourceId: "s", vintage: "v2", slug: "page-0000", text: "goodbye" }));
+    withTempDirSync("seqra03-vintage", (rootAbs) => {
+      retainRawSnapshot({ rootAbs, rootRel: "scratch", sourceId: "s", vintage: "v1", slug: "page-0000", text: "hello" });
+      assert.doesNotThrow(() =>
+        retainRawSnapshot({ rootAbs, rootRel: "scratch", sourceId: "s", vintage: "v2", slug: "page-0000", text: "goodbye" }));
+    });
   });
 });
 
