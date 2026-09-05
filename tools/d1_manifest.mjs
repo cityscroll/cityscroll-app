@@ -32,6 +32,26 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 
 export const DEFAULT_MANIFEST_PATH = join(ROOT, "worker/d1-read-models.manifest.json");
 
+/** Repository-relative counterpart of DEFAULT_MANIFEST_PATH. */
+export const MANIFEST_REPO_PATH = "worker/d1-read-models.manifest.json";
+
+/**
+ * The repository-relative paths the Worker deploy fingerprint must cover for
+ * this module, probed by tools/d1_deploy_fingerprint.mjs.
+ *
+ * Deliberately distinct from `fingerprintInputs(manifest)` below: this one
+ * takes no arguments and returns an array of PATHS whose bytes invalidate a
+ * deploy, while that one takes a manifest OBJECT and returns the manifest
+ * FACTS that invalidate a publication. The two answer different questions for
+ * different callers and must never share a name.
+ *
+ * `tools/d1_manifest.mjs` itself is not listed here — the deploy tool already
+ * adds this module's own path whenever the probe succeeds.
+ */
+export function deployFingerprintInputs() {
+  return [MANIFEST_REPO_PATH];
+}
+
 export const PUBLICATION_MODES = Object.freeze(["replace_all", "delta_upsert"]);
 const PARTITION_KINDS = Object.freeze(["none", "family"]);
 

@@ -104,7 +104,7 @@ test("a later model manifest can extend the deploy fingerprint without becoming 
     writeFileSync(join(root, "worker/d1-read-models.manifest.json"), '{"version":1}\n');
     writeFileSync(
       join(root, "tools/d1_manifest.mjs"),
-      'export function fingerprintInputs() { return ["worker/d1-read-models.manifest.json"]; }\n',
+      'export function deployFingerprintInputs() { return ["worker/d1-read-models.manifest.json"]; }\n',
     );
     const inputs = await resolveFingerprintInputs({ root, baseInputs: ["builder.mjs"] });
     assert.deepEqual(inputs, [
@@ -149,4 +149,35 @@ test("workflow gates every D1 mutation without gating the Worker deploy", () => 
   const workerDeploy = workflow.slice(deployStart, deployEnd);
   assert.match(workerDeploy, /command: deploy /);
   assert.doesNotMatch(workerDeploy, /d1-publication-gate/);
+});
+
+// The two tests below run the deploy fingerprint against the REAL repository
+// root rather than a synthetic fixture. The fixture test above passes even when
+// tools/d1_manifest.mjs exports an incompatible `deployFingerprintInputs`,
+// because the fixture supplies its own module — so only these catch a contract
+// drift between tools/d1_deploy_fingerprint.mjs and tools/d1_manifest.mjs, which
+// otherwise surfaces for the first time in the production deploy.
+test("the deploy fingerprint resolves this repository's real manifest inputs", async () => {
+  const inputs = await resolveFingerprintInputs({ root: fileURLToPath(ROOT) });
+  assert.ok(inputs.includes("worker/d1-read-models.manifest.json"), "manifest is not a fingerprint input");
+  assert.ok(inputs.includes("tools/d1_manifest.mjs"), "manifest module is not a fingerprint input");
+  assert.ok(inputs.every((path) => typeof path === "string" && path), "inputs must be non-empty strings");
+});
+
+test("the deploy fingerprint command succeeds against this repository", () => {
+  const outputDir = mkdtempSync(join(tmpdir(), "cityscroll-d1rc-01-cli-"));
+  try {
+    const outputPath = join(outputDir, "github-output");
+    writeFileSync(outputPath, "");
+    const result = spawnSync(
+      process.execPath,
+      [fileURLToPath(new URL("tools/d1_deploy_fingerprint.mjs", ROOT)), "fingerprint", "--github-output", outputPath],
+      { cwd: fileURLToPath(ROOT), encoding: "utf8" },
+    );
+    assert.equal(result.status, 0, `fingerprint command failed:\n${result.stderr}`);
+    assert.match(readFileSync(outputPath, "utf8"), /^fingerprint=[a-f0-9]{64}$/m);
+    assert.match(JSON.parse(result.stdout).fingerprint, /^[a-f0-9]{64}$/);
+  } finally {
+    rmSync(outputDir, { recursive: true, force: true });
+  }
 });
