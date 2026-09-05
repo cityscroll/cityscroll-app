@@ -2518,6 +2518,14 @@ const STRINGS = {
     meeting_action_join_online: "Join online",
     meeting_action_open_materials: "Open materials",
     meeting_action_submit_testimony: "Submit testimony",
+    // PHC-02: sourced pending question + plain-language body role, ahead of
+    // provenance on the meetings result card.
+    meeting_purpose_question_label: "Considering:",
+    meeting_body_role_receives_record: "Must receive and consider the record, but cannot decide",
+    meeting_body_role_advisory: "Can recommend, but cannot decide",
+    meeting_body_role_conditional_decision_maker: "Can decide, conditioned on another body's action",
+    meeting_body_role_decision_maker: "Can decide",
+    meeting_body_role_oversight: "Can question and oversee, but cannot decide",
 
     land_outcomes_heading: "Land-use outcomes",
     land_spine_heading: "Project timeline",
