@@ -430,6 +430,70 @@ def main():
             assert TOPICAL_RECALL_RESULTS[query]["title"] in (keyword.text_content() or "")
             assert keyword.locator("mark").text_content().lower() == query
 
+        # US-22: /search/ is the explicit all-sources federated front door. The
+        # active scope is visible and URL-representable, and narrowing to the
+        # registered Contracts scope is a one-action toggle that preserves the
+        # exact query -- never a route-inferred, hidden narrowing.
+        keyword_requests = []
+        page.on("request", lambda request: (
+            keyword_requests.append(request.url) if "/search?" in request.url else None
+        ))
+
+        page.goto(f"{BASE}/search/?q=rat", wait_until="domcontentloaded", timeout=30000)
+        page.wait_for_selector('[data-semantic-family="contracts"] [data-search-result]')
+        scope_bar = page.locator("[data-search-scope]")
+        assert scope_bar.is_visible()
+        assert scope_bar.get_attribute("data-search-scope-id") == "all"
+        assert "All sources" in (scope_bar.text_content() or "")
+        narrow = scope_bar.locator("[data-search-scope-toggle]")
+        assert narrow.get_attribute("data-search-scope-toggle") == "contracts"
+        assert narrow.get_attribute("href") == "/search/?q=rat&source_scope=contracts"
+        assert "Contracts only" in (narrow.text_content() or "")
+        assert page.locator('[data-semantic-family="meetings"]').is_visible()
+        assert_axe_green(page, "search all-sources scope")
+
+        narrow.click()
+        page.wait_for_url(f"{BASE}/search/?q=rat&source_scope=contracts")
+        page.wait_for_function(
+            "document.querySelector('[data-search-coverage]')?.dataset.coverageState === 'complete'",
+            timeout=30000,
+        )
+        assert page.locator("[data-search-scope]").get_attribute("data-search-scope-id") == "contracts"
+        assert "Contracts" in (page.locator("[data-search-scope-label]").text_content() or "")
+        # An explicit narrowing hides the families it did not request -- it never
+        # silently drops them from the coverage receipt as if they had been
+        # searched and come back empty.
+        assert page.locator('[data-semantic-family="meetings"]').is_hidden()
+        assert page.locator('[data-semantic-family="land"]').is_hidden()
+        assert page.locator('[data-semantic-family="contracts"]').is_visible()
+        assert page.locator('[data-semantic-family="contracts"] [data-search-result]').count() == 1
+        assert any(
+            "scope=notices" in url and "scope=vendors" in url for url in keyword_requests
+        ), keyword_requests
+        assert_axe_green(page, "search Contracts-narrowed scope")
+
+        widen = page.locator("[data-search-scope-toggle]")
+        assert widen.get_attribute("href") == "/search/?q=rat"
+        assert "All sources" in (widen.text_content() or "")
+        widen.click()
+        page.wait_for_url(f"{BASE}/search/?q=rat")
+        page.wait_for_function(
+            "document.querySelector('[data-search-coverage]')?.dataset.coverageState === 'complete'",
+            timeout=30000,
+        )
+        assert page.locator("[data-search-scope]").get_attribute("data-search-scope-id") == "all"
+        assert page.locator('[data-semantic-family="meetings"]').is_visible()
+
+        # A hand-edited, unregistered source_scope value degrades to the honest
+        # all-sources default rather than silently narrowing or erroring.
+        page.goto(f"{BASE}/search/?q=rat&source_scope=bogus", wait_until="domcontentloaded", timeout=30000)
+        page.wait_for_function(
+            "document.querySelector('[data-search-coverage]')?.dataset.coverageState === 'complete'",
+            timeout=30000,
+        )
+        assert page.locator("[data-search-scope]").get_attribute("data-search-scope-id") == "all"
+        assert page.locator('[data-semantic-family="meetings"]').is_visible()
+
         page.goto(f"{BASE}/search/?q=software", wait_until="domcontentloaded", timeout=30000)
         page.wait_for_selector('[data-search-lane="contracts"] [data-search-result]')
         proposed = page.locator('[data-search-lane="contracts"] [data-search-result]').first

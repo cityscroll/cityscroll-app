@@ -93,14 +93,27 @@ function semanticItemsByFamily(semantic) {
 }
 
 /**
- * Families whose source could not be fully checked for this execution.
- * A missing keyword payload means the keyword producer itself was unavailable,
- * which leaves every family incomplete rather than merely empty.
+ * Families actually requested under the active scope. An explicit narrowing
+ * (e.g. Contracts-only) intentionally excludes other families; they are
+ * neither matched nor incomplete; they were never asked. Only the requested
+ * families can affect the honest matched/empty/partial/unavailable outcome.
  */
-function incompleteFamilies(keywordPayload) {
-  if (!keywordPayload) return [...SEARCH_RENDER_FAMILIES];
+function requestedFamilies(scope) {
+  return scope?.domains
+    ? SEARCH_RENDER_FAMILIES.filter((family) => scope.domains.includes(family))
+    : SEARCH_RENDER_FAMILIES;
+}
+
+/**
+ * Requested families whose source could not be fully checked for this
+ * execution. A missing keyword payload means the keyword producer itself was
+ * unavailable, which leaves every requested family incomplete rather than
+ * merely empty.
+ */
+function incompleteFamilies(keywordPayload, families) {
+  if (!keywordPayload) return [...families];
   const lanes = laneIndex(keywordPayload);
-  return SEARCH_RENDER_FAMILIES.filter((family) => {
+  return families.filter((family) => {
     const lane = lanes.get(family);
     return !lane || INCOMPLETE_FAMILY_STATUSES.has(clean(lane.status, 40));
   });
@@ -127,12 +140,24 @@ function producersFor(keywordPayload, semantic) {
  * `state` is the document's own settled-response record:
  *   { state: "legacy" | "combined" | "semantic" | "unavailable",
  *     payload?, keyword?, semantic?, coverage?, keywordCoverage? }
+ *
+ * `scope` (optional) is the active front-door scope
+ * (`site/search_front_door_scope.mjs`). An explicit narrowing excludes the
+ * families outside it from rendering and from the honest outcome — they were
+ * never requested, so they are neither matched nor incomplete.
+ *
+ * The canonical federated/keyword result is always the primary result
+ * authority: in "combined" mode it is listed first in every family, with the
+ * semantic candidates that survive dedupe appended after as
+ * evidence-preserving enrichment, never interleaved ahead of it.
  */
-export function buildSearchRenderPlan(state) {
+export function buildSearchRenderPlan(state, { scope = null } = {}) {
   const mode = clean(state?.state, 40) || "unavailable";
   const keywordPayload = mode === "legacy" ? (state?.payload || null) : (state?.keyword || null);
   const semantic = state?.semantic || null;
   const coverage = (mode === "legacy" ? state?.coverage : state?.keywordCoverage) || null;
+  const requested = requestedFamilies(scope);
+  const requestedSet = new Set(requested);
 
   const keywordItems = keywordItemsByFamily(keywordPayload);
   const semanticItems = mode === "legacy" || mode === "unavailable"
@@ -143,31 +168,41 @@ export function buildSearchRenderPlan(state) {
   const rows = [];
   const familyCounts = {};
   for (const family of SEARCH_RENDER_FAMILIES) {
-    const semanticForFamily = semanticItems.get(family) || [];
-    // Combined rendering suppresses a keyword result the semantic lane already shows.
-    const semanticHrefs = new Set(semanticForFamily
+    const inScope = requestedSet.has(family);
+    const keywordForFamily = (!inScope || mode === "unavailable") ? [] : (keywordItems.get(family) || []);
+    const candidateSemanticForFamily = inScope ? (semanticItems.get(family) || []) : [];
+    // The federated/keyword result is the one canonical result authority.
+    // When a semantic candidate restates the same canonical record, the
+    // duplicate semantic card is dropped — never the canonical result it
+    // duplicates — and a surviving candidate is evidence-preserving
+    // enrichment appended after the canonical results, never a peer ranked
+    // ahead of them. "semantic" mode has no keyword authority to defer to
+    // (or dedupe against), so it stands alone.
+    const keywordHrefs = new Set(keywordForFamily
       .map((item) => item.row.canonical_href)
       .filter(Boolean));
-    const keywordForFamily = (mode === "unavailable" ? [] : keywordItems.get(family) || [])
-      .filter((item) => !(mode === "combined" && semanticHrefs.has(item.row.canonical_href)));
+    const semanticForFamily = mode === "combined"
+      ? candidateSemanticForFamily.filter((item) => !keywordHrefs.has(item.row.canonical_href))
+      : candidateSemanticForFamily;
     const items = mode === "semantic"
       ? semanticForFamily
-      : [...semanticForFamily, ...keywordForFamily];
+      : [...keywordForFamily, ...semanticForFamily];
     for (const item of items) {
       item.row = { ...item.row, rank: rows.length + 1 };
       rows.push(item.row);
     }
     familyCounts[family] = items.length;
-    families.push({ id: family, items, count: items.length });
+    families.push({ id: family, items, count: items.length, in_scope: inScope });
   }
 
-  const incomplete = mode === "unavailable" ? [...SEARCH_RENDER_FAMILIES] : incompleteFamilies(keywordPayload);
+  const incomplete = mode === "unavailable" ? [...requested] : incompleteFamilies(keywordPayload, requested);
   return Object.freeze({
     schema: SEARCH_RENDER_PLAN_SCHEMA,
     mode,
     keyword_payload: keywordPayload,
     semantic,
     coverage,
+    scope: scope ? { id: scope.id, domains: scope.domains ? [...scope.domains] : null } : null,
     families,
     rows,
     rendered_count: rows.length,
