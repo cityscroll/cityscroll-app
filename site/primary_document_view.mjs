@@ -274,6 +274,7 @@ export function renderSearchDocument() {
       <div class="topic-search-form-row"><input id="search-query" name="q" type="search" maxlength="240" autocomplete="off" placeholder="Try a topic, place, or agency" data-i18n-placeholder="topic_search_placeholder"><button type="submit" data-i18n="search_label">Search</button></div>
     </form>
     <div class="topic-search-context" data-search-place hidden></div>
+    <div class="topic-search-scopebar" data-search-scope hidden></div>
     <div class="topic-search-recent-region" data-search-recent-region>
       <section class="topic-search-recent" data-search-recent aria-labelledby="search-recent-heading" hidden>
         <div class="topic-search-recent-head">

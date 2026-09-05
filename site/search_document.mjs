@@ -16,6 +16,12 @@ import {
   searchFamilyForResult,
 } from "./search_lens_handoff.mjs";
 import { buildSearchRenderPlan } from "./search_render_plan.mjs";
+import {
+  SEARCH_FRONT_DOOR_SCOPES,
+  searchFrontDoorHref,
+  searchFrontDoorRequestPath,
+  searchFrontDoorScopeFromParams,
+} from "./search_front_door_scope.mjs";
 import { recordSearchExecution, searchActivityScope } from "./search_activity_receipt.mjs";
 import {
   appendAccountSearchHistory,
@@ -95,6 +101,59 @@ function clean(value, max = MAX_QUERY_LENGTH) {
 function queryFromLocation() {
   const params = new URLSearchParams(location.search);
   return clean(params.get("q"));
+}
+
+/**
+ * The active front-door scope, read from `/search/`'s own URL. This is the
+ * one source of truth for "all sources" versus an explicit narrowing —
+ * never inferred from a referrer, prior page, or route context.
+ */
+function scopeFromLocation() {
+  return searchFrontDoorScopeFromParams(new URLSearchParams(location.search));
+}
+
+// Named "source_scope", not "scope": PLACE_KEYS already uses the bare
+// "scope" query parameter for an unrelated place/Area context (see
+// placeFromLocation/preservePlaceFields above), and this front-door
+// narrowing must never collide with it.
+function preserveScopeField(form, scope) {
+  if (!form || scope.id === "all") return;
+  const input = document.createElement("input");
+  input.type = "hidden";
+  input.name = "source_scope";
+  input.value = scope.id;
+  form.append(input);
+}
+
+function scopeBarHtml(scope) {
+  const target = SEARCH_FRONT_DOOR_SCOPES[scope.narrow_target];
+  const href = searchFrontDoorHref(target.id, new URLSearchParams(location.search));
+  return `<div class="topic-search-scopebar" data-search-scope data-search-scope-id="${scope.id}">
+    <p class="topic-search-scope-active"><span>${tr("preview_scope_label", null, "Scope")}: </span><strong data-search-scope-label>${tr(scope.label_key, null, scope.id)}</strong></p>
+    <a class="mini topic-search-scope-toggle" data-search-scope-toggle="${target.id}" href="${href}">${tr(target.narrow_label_key, null, target.id)}</a>
+  </div>`;
+}
+
+function renderScopeBar(root, scope) {
+  const bar = root.querySelector("[data-search-scope]");
+  if (!bar) return;
+  bar.outerHTML = scopeBarHtml(scope);
+}
+
+/**
+ * Hide the family lanes an explicit narrowing does not request. A scope is
+ * never inferred from route context; this only reflects the scope the URL
+ * already states, so a resident who follows the visible toggle sees the same
+ * families the URL and coverage receipt already describe.
+ */
+function applyScopeLaneVisibility(root, scope) {
+  const allowed = scope.domains ? new Set(scope.domains) : null;
+  for (const lane of root.querySelectorAll("[data-semantic-family]")) {
+    lane.hidden = Boolean(allowed) && !allowed.has(lane.dataset.semanticFamily);
+  }
+  for (const lane of root.querySelectorAll("[data-search-lane]")) {
+    lane.hidden = Boolean(allowed) && !allowed.has(lane.dataset.searchLane);
+  }
 }
 
 function placeFromLocation() {
@@ -498,21 +557,36 @@ function renderCombinedResults(root, plan) {
       appendFamilyReceipt(elements.body, families.get(group.id));
       continue;
     }
-    const list = document.createElement("div");
-    list.className = "topic-search-results";
-    for (const item of group.items) {
-      if (item.kind === "semantic") {
+    // The federated/keyword result is the one canonical result authority.
+    // Semantic candidates render after it in their own labeled group — they
+    // are evidence-preserving enrichment, never a second, competing result list.
+    const canonicalItems = group.items.filter((item) => item.kind !== "semantic");
+    const semanticItems = group.items.filter((item) => item.kind === "semantic");
+    if (canonicalItems.length) {
+      const list = document.createElement("div");
+      list.className = "topic-search-results";
+      for (const item of canonicalItems) {
+        const rendered = renderResult(item.record, keywordPayload);
+        if (rendered) {
+          list.append(rendered);
+          renderedCount += 1;
+        }
+      }
+      elements.body.append(list);
+    }
+    if (semanticItems.length) {
+      const enrichment = document.createElement("div");
+      enrichment.className = "topic-search-enrichment";
+      enrichment.dataset.searchEnrichment = "semantic";
+      const list = document.createElement("div");
+      list.className = "topic-search-results";
+      for (const item of semanticItems) {
         list.append(renderSemanticCandidate(item.candidate));
         renderedCount += 1;
-        continue;
       }
-      const rendered = renderResult(item.record, keywordPayload);
-      if (rendered) {
-        list.append(rendered);
-        renderedCount += 1;
-      }
+      enrichment.append(list);
+      elements.body.append(enrichment);
     }
-    elements.body.append(list);
     appendFamilyReceipt(elements.body, families.get(group.id));
   }
   renderCoverage(root, plan.coverage, renderedCount);
@@ -597,13 +671,14 @@ async function fetchSearchResults(query) {
   throw lastError || new Error("search unavailable");
 }
 
-async function fetchKeywordResults(query) {
+async function fetchKeywordResults(query, scope) {
+  const path = searchFrontDoorRequestPath(scope?.id, query);
   let lastError = null;
   for (const origin of apiOrigins()) {
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), SEARCH_TIMEOUT_MS);
     try {
-      const response = await fetch(`${origin}/search?q=${encodeURIComponent(query)}`, {
+      const response = await fetch(`${origin}${path}`, {
         headers: { Accept: "application/json" },
         signal: controller.signal,
       });
@@ -623,7 +698,7 @@ async function fetchKeywordResults(query) {
   throw lastError || new Error("keyword search unavailable");
 }
 
-async function loadResults(root, query) {
+async function loadResults(root, query, scope) {
   if (!query) return;
   renderLoadingState(root);
   const searching = tr("topic_search_searching", null, "Searching…");
@@ -638,7 +713,7 @@ async function loadResults(root, query) {
   }
   const [candidateAttempt, keywordAttempt] = await Promise.allSettled([
     fetchSearchResults(query),
-    fetchKeywordResults(query),
+    fetchKeywordResults(query, scope),
   ]);
   const candidatePayload = candidateAttempt.status === "fulfilled" ? candidateAttempt.value : null;
   const keywordPayload = keywordAttempt.status === "fulfilled" ? keywordAttempt.value : null;
@@ -659,8 +734,9 @@ async function loadResults(root, query) {
     keywordCoverage,
     candidateLegacy,
   });
-  const plan = buildSearchRenderPlan(lastResponse);
+  const plan = buildSearchRenderPlan(lastResponse, { scope });
   paintResults(root, plan);
+  applyScopeLaneVisibility(root, scope);
   observeSearchExecution(root, query, plan);
 }
 
@@ -834,16 +910,18 @@ function installSearchHistoryControls(root) {
 }
 
 let lastResponse = null;
+let activeScope = SEARCH_FRONT_DOOR_SCOPES.all;
 
 function repaintResults(root) {
   // Language switches repaint the same settled execution; they never re-observe it.
-  if (lastResponse) paintResults(root, buildSearchRenderPlan(lastResponse));
+  if (lastResponse) paintResults(root, buildSearchRenderPlan(lastResponse, { scope: activeScope }));
 }
 
 function render() {
   const root = document.querySelector("[data-search-document]");
   if (!root) return;
   const query = queryFromLocation();
+  activeScope = scopeFromLocation();
   const heading = root.querySelector("#search-heading");
   const input = root.querySelector("#search-query");
   const context = root.querySelector("[data-search-place]");
@@ -862,14 +940,18 @@ function render() {
   }
   const form = root.querySelector("[data-search-form]");
   if (form) preservePlaceFields(form);
+  if (form) preserveScopeField(form, activeScope);
+  renderScopeBar(root, activeScope);
+  applyScopeLaneVisibility(root, activeScope);
   paintRecentSearches(root);
   renderInitialState(root, query);
   installSearchHistoryControls(root);
   void loadSearchHistory(root);
-  void loadResults(root, query);
+  void loadResults(root, query, activeScope);
   window.initSubpageLangSwitcher?.(() => {
     paintHeading();
     paintRecentSearches(root);
+    renderScopeBar(root, activeScope);
     if (lastResponse) repaintResults(root);
     else renderInitialState(root, query);
   });

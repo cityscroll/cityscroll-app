@@ -29,6 +29,13 @@
 .topic-search-recent-remove:focus-visible{outline:3px solid var(--color-focus,var(--oxblood));outline-offset:-3px}
 .topic-search-recent-status{margin:8px 0 0;color:var(--muted);font:12px/1.4 ui-sans-serif,system-ui,sans-serif}
 .topic-search-recent-status:empty{margin:0}
+.topic-search-scopebar{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;min-width:0;margin:14px 0 0;padding:9px 12px;background:var(--paper-2);border:1px solid var(--rule);border-radius:8px}
+.topic-search-scopebar[hidden]{display:none}
+.topic-search-scope-active{margin:0;min-width:0;color:var(--muted);font:12.5px/1.4 ui-sans-serif,system-ui,sans-serif;overflow-wrap:anywhere}
+.topic-search-scope-active strong{color:var(--ink)}
+.topic-search-scope-toggle{margin-left:auto;padding:5px 10px;border:1px solid var(--rule-strong);border-radius:999px;background:var(--card);color:var(--ink);font:700 11px/1.2 ui-sans-serif,system-ui,sans-serif;text-decoration:none}
+.topic-search-scope-toggle:focus-visible,.topic-search-scope-toggle:hover{outline:3px solid var(--color-focus,var(--oxblood));outline-offset:2px}
+.topic-search-enrichment{margin-top:14px;padding-top:12px;border-top:1px dashed var(--rule)}
 .topic-search-coverage{min-width:0;margin:22px 0 12px;padding-bottom:9px;border-bottom:3px solid var(--ink);color:var(--muted);font:12.5px/1.45 ui-sans-serif,system-ui,sans-serif}
 .topic-search-coverage[hidden]{display:none}
 .topic-search-coverage p{margin:0}

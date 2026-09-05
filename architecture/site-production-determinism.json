@@ -457,6 +457,7 @@
     "site/search_document.mjs",
     "site/search_entry.mjs",
     "site/search_family_nav.mjs",
+    "site/search_front_door_scope.mjs",
     "site/search_history_client.mjs",
     "site/search_history_state.mjs",
     "site/search_intent.mjs",
