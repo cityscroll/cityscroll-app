@@ -229,3 +229,74 @@ test("the CLI snapshots the live read models and plans a zero-operation delta ag
     rmSync(dir, { recursive: true, force: true });
   }
 });
+
+test("graph deltas follow published labels, dates, agency names, and last-link-wins payloads", () => {
+  const sources = fixtureSources();
+  const doc = sources.entity_intelligence;
+  doc.by_ref["vendor:a"].domains.meetings = { objects: [{
+    subject_ref: "meeting:m1", root_ref: "agency:dep", label: "Original meeting", when: "2026-09-01",
+  }] };
+  doc.by_ref["agency:dep"].links = [{ ...doc.by_ref["vendor:a"].links[0], confidence: "exact" }];
+  const prior = snapshotFor(manifest, sources);
+  const graphUpdates = (changed) => planDelta({ prior, current: snapshotFor(manifest, changed) })
+    .models.find((model) => model.model_id === "entity_intelligence").partitions[0].ops.update
+    .filter((row) => row.table === "entity_intelligence_graph_links");
+  for (const mutate of [
+    (value) => { value.by_ref["vendor:a"].domains.meetings.objects[0].label = "Renamed meeting"; },
+    (value) => { value.by_ref["vendor:a"].domains.meetings.objects[0].when = "2026-09-02"; },
+    (value) => { value.by_ref["agency:dep"].root.display_name = "Department of Environmental Protection"; },
+    (value) => { value.by_ref["agency:dep"].links[0].confidence = "derived"; },
+  ]) {
+    const changed = clone(sources);
+    mutate(changed.entity_intelligence);
+    assert.deepEqual(graphUpdates(changed), [{
+      table: "entity_intelligence_graph_links", key: "project:p1|meeting:m1|decides_land_project",
+    }]);
+  }
+  const changed = clone(sources);
+  changed.entity_intelligence.by_ref["vendor:a"].links[0].confidence = "ignored earlier duplicate";
+  assert.deepEqual(graphUpdates(changed), []);
+});
+
+test("rebuilds enforce watermarks for first publication and existing partitions", () => {
+  const prior = snapshotFor(manifest, fixtureSources());
+  for (const watermark of [null, "not-a-date", "2026-08-01T00:00:00Z"]) {
+    const current = clone(prior);
+    current.models.ocp_awards.partitions[WHOLE_MODEL_PARTITION].watermark = watermark;
+    assert.throws(() => planDelta({ prior, current, rebuild: "refresh publication" }),
+      (error) => error.code === (watermark?.startsWith("2026") ? "watermark_regressed" : "watermark_missing"));
+    if (!watermark?.startsWith("2026")) {
+      assert.throws(() => planDelta({ prior: null, current, rebuild: "first publication" }),
+        (error) => error.code === "watermark_missing");
+    }
+  }
+  const invalidPrior = clone(prior);
+  invalidPrior.models.ocp_awards.partitions[WHOLE_MODEL_PARTITION].watermark = null;
+  assert.throws(() => planDelta({ prior: invalidPrior, current: prior, rebuild: "refresh publication" }),
+    (error) => error.code === "watermark_missing" && error.context.role === "prior");
+});
+
+test("empty OCP partitions retain watermarks without inventing published rows", () => {
+  const sources = fixtureSources();
+  const prior = snapshotFor(manifest, sources);
+  sources.ocp_awards.rows = [];
+  const current = snapshotFor(manifest, sources);
+  assert.deepEqual(current.models.ocp_awards.partitions[WHOLE_MODEL_PARTITION], {
+    watermark: sources.ocp_awards.materialized_at, rows: {},
+  });
+  const model = (plan) => plan.models.find((entry) => entry.model_id === "ocp_awards");
+  assert.deepEqual(model(planDelta({ prior, current })).partitions[0].counts,
+    { insert: 0, update: 0, delete: 3, unchanged: 0, total_ops: 3 });
+  assert.equal(model(planDelta({ prior: null, current, rebuild: "empty publication" })).partitions[0].counts.total_ops, 0);
+  assert.equal(model(planDelta({ prior: current, current })).totals.total_ops, 0);
+});
+
+test("row totals and partition totals use separate units", () => {
+  const current = snapshotFor(manifest, fixtureSources());
+  const plan = planDelta({ prior: current, current });
+  const ocp = plan.models.find((model) => model.model_id === "ocp_awards");
+  assert.deepEqual(ocp.totals, {
+    insert: 0, update: 0, delete: 0, unchanged: 3, total_ops: 0,
+    unchanged_partitions: 1, changed_partitions: 0, added_partitions: 0, removed_partitions: 0,
+  });
+});

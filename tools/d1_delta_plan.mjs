@@ -30,6 +30,7 @@ import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
+import { graphLinkRows } from "./d1_graph_link_rows.mjs";
 import { loadManifest, manifestFingerprint, modelEntry, sourceSnapshotVersion } from "./d1_manifest.mjs";
 import {
   readKeywordSearchIndexShard,
@@ -121,7 +122,7 @@ export function partitionRecords(entry, sourceDocument) {
     case "ocp_awards": {
       const watermark = sourceDocument?.materialized_at;
       const rows = sourceDocument?.rows || [];
-      if (rows.length === 0) add(WHOLE_MODEL_PARTITION, watermark, "ocp_awards_warehouse", ["__empty__"], { empty: true });
+      partitions.set(WHOLE_MODEL_PARTITION, { watermark, rows: new Map() });
       for (const [ordinal, row] of rows.entries()) {
         add(WHOLE_MODEL_PARTITION, watermark, "ocp_awards_warehouse", [ocpRowKey(row, ordinal)], {
           request_id: row.request_id ?? null, start_date: row.start_date ?? null,
@@ -158,15 +159,9 @@ export function partitionRecords(entry, sourceDocument) {
             [subjectRef, entityRef, relation, confidence], link);
         }
       }
-      const seenLinks = new Set();
-      for (const dossier of Object.values(doc.by_ref || {})) {
-        for (const link of dossier?.links || []) {
-          if (link?.type !== "decides_land_project" || !String(link?.to || "").startsWith("project:")) continue;
-          const key = [link.to, link.from, link.type].join("|");
-          if (seenLinks.has(key)) continue;
-          seenLinks.add(key);
-          add(WHOLE_MODEL_PARTITION, watermark, "entity_intelligence_graph_links", [link.to, link.from, link.type], link);
-        }
+      for (const row of graphLinkRows(doc)) {
+        add(WHOLE_MODEL_PARTITION, watermark, "entity_intelligence_graph_links",
+          [row.to_ref, row.from_ref, row.link_type], row.payload);
       }
       break;
     }
@@ -275,6 +270,21 @@ export function planDelta({ prior, current, rebuild = null }) {
   const reason = rebuild == null ? null : String(rebuild).trim();
   if (rebuild != null && !reason) fail("rebuild_reason", "a rebuild needs a non-empty reason");
 
+  for (const modelId of new Set([...Object.keys(prior?.models || {}), ...Object.keys(current.models)])) {
+    const beforePartitions = prior?.models?.[modelId]?.partitions || {};
+    const afterPartitions = current.models[modelId]?.partitions || {};
+    for (const partition of new Set([...Object.keys(beforePartitions), ...Object.keys(afterPartitions)])) {
+      const before = beforePartitions[partition];
+      const after = afterPartitions[partition];
+      const priorAt = before ? requireWatermark(modelId, partition, before.watermark, "prior") : null;
+      const currentAt = after ? requireWatermark(modelId, partition, after.watermark, "current") : null;
+      if (priorAt && currentAt && watermarkRegressed(priorAt, currentAt)) {
+        fail("watermark_regressed", `models[${modelId}] partition ${partition} watermark regressed ${before.watermark} -> ${after.watermark}`,
+          { model_id: modelId, partition, prior: before.watermark, current: after.watermark });
+      }
+    }
+  }
+
   if (reason) {
     return {
       schema: PLAN_SCHEMA, operation: "rebuild", reason, manifest_fingerprint: current.manifest_fingerprint,
@@ -316,18 +326,11 @@ export function planDelta({ prior, current, rebuild = null }) {
       const before = priorModel.partitions[partition];
       const after = currentModel.partitions[partition];
       if (before && after) {
-        const priorAt = requireWatermark(modelId, partition, before.watermark, "prior");
-        const currentAt = requireWatermark(modelId, partition, after.watermark, "current");
-        if (watermarkRegressed(priorAt, currentAt)) {
-          fail("watermark_regressed", `models[${modelId}] partition ${partition} watermark regressed ${before.watermark} -> ${after.watermark}`,
-            { model_id: modelId, partition, prior: before.watermark, current: after.watermark });
-        }
         const { ops, unchanged } = diffRows(before.rows, after.rows);
         const total = ops.insert.length + ops.update.length + ops.delete.length;
         partitions.push({ partition, status: total === 0 ? "unchanged" : "changed",
           prior_watermark: before.watermark, current_watermark: after.watermark, ops, counts: counts(ops, unchanged) });
       } else if (after) {
-        requireWatermark(modelId, partition, after.watermark, "current");
         const { ops, unchanged } = diffRows({}, after.rows);
         partitions.push({ partition, status: "added", prior_watermark: null, current_watermark: after.watermark, ops, counts: counts(ops, unchanged) });
       } else {
@@ -337,9 +340,10 @@ export function planDelta({ prior, current, rebuild = null }) {
     }
     const totals = partitions.reduce((acc, item) => {
       for (const field of ["insert", "update", "delete", "unchanged", "total_ops"]) acc[field] += item.counts[field];
-      acc[item.status] = (acc[item.status] || 0) + 1;
+      acc[`${item.status}_partitions`] += 1;
       return acc;
-    }, { insert: 0, update: 0, delete: 0, unchanged: 0, total_ops: 0 });
+    }, { insert: 0, update: 0, delete: 0, unchanged: 0, total_ops: 0,
+      unchanged_partitions: 0, changed_partitions: 0, added_partitions: 0, removed_partitions: 0 });
     models.push({ model_id: modelId, model_version: currentModel.model_version, truncate: false, partitions, totals });
   }
   return { schema: PLAN_SCHEMA, operation: "delta", reason: null, manifest_fingerprint: current.manifest_fingerprint,
@@ -397,7 +401,7 @@ function main() {
       const current = args.current ? JSON.parse(readFileSync(args.current, "utf8")) : liveSnapshot();
       const plan = planDelta({ prior, current, rebuild: args.rebuild });
       writeJson(args.outPath, plan);
-      const summary = plan.models.map((model) => `${model.model_id}: ${model.operation || plan.operation} ${model.totals ? `ops=${model.totals.total_ops} changed=${model.totals.changed || 0} unchanged=${model.totals.unchanged_partitions ?? model.totals.unchanged}` : "rebuild"}`);
+      const summary = plan.models.map((model) => `${model.model_id}: ${model.operation || plan.operation} ${model.totals ? `ops=${model.totals.total_ops} changed=${model.totals.changed_partitions} unchanged=${model.totals.unchanged_partitions}` : "rebuild"}`);
       if (args.outPath) console.error(summary.join("\n"));
       return 0;
     }
