@@ -605,6 +605,26 @@ export function landMapParcelSvg(markerLayer, { escape = escapeMapHtml } = {}){
   return `<g class="land-map-parcels" aria-hidden="true">${paths}</g>`;
 }
 
+/**
+ * The exact rendered position and shared circle radius for every marker in
+ * `model.markers`, in the same viewBox coordinate space `landMapCanvasSvg`
+ * paints with. LM-16's density measurement (site/land_map_density_measurement.mjs)
+ * takes these as plain `{projectId, x, y}` points plus one radius, so overlap
+ * geometry can be measured without a second, drifting copy of this
+ * projection: this function is the one place both the canvas and the
+ * measurement read it from.
+ */
+export function landMapMarkerPositions(model){
+  const viewBox = landMapViewBox(model?.bounds);
+  const width = Number(String(viewBox).split(/\s+/)[2]) || 1000;
+  const radius = Math.max(1.2, width/90);
+  const positions = (model?.markers || []).map(marker=>{
+    const [x,y] = projectLonLat(marker.lon, marker.lat);
+    return Object.freeze({ projectId: marker.projectId, x, y });
+  });
+  return Object.freeze({ viewBox, radius, positions: Object.freeze(positions) });
+}
+
 export function landMapCanvasSvg(model, {
   t: copy = mapCopy,
   escape = escapeMapHtml,

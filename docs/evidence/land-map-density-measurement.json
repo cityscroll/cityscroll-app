@@ -1,0 +1,141 @@
+{
+  "schema": "cityscroll.land_map_density_measurement.v1",
+  "version": 1,
+  "workstream_card": "cityscroll-land-map-view/lm-16-density-summary",
+  "marker_accounting": {
+    "total_ids": [
+      "2019K0383",
+      "2020K0444",
+      "2020M0385",
+      "2020Q0317",
+      "2022K0416",
+      "2022K0430",
+      "2022Q0449",
+      "2023K0183",
+      "2023M0116",
+      "2023M0213",
+      "2023M0452",
+      "2023Q0303",
+      "2023X0149",
+      "2024K0196",
+      "2024K0214",
+      "2024K0286",
+      "2024K0358",
+      "2024K0421",
+      "2024M0244",
+      "2024Q0135",
+      "2024Q0219",
+      "2024Q0325",
+      "2025K0154",
+      "2025K0284",
+      "2025K0287",
+      "2025K0305",
+      "2025M0252",
+      "2025M0338",
+      "2025M0395",
+      "2025Q0142",
+      "2025Q0247",
+      "2025Q0316",
+      "2025R0137",
+      "2025R0222",
+      "2026K0123",
+      "2026K0233",
+      "2026Q0210",
+      "2026R0127",
+      "2026R0186",
+      "P2012X0048"
+    ],
+    "mapped_ids": [
+      "2019K0383",
+      "2022K0416",
+      "2022K0430",
+      "2022Q0449",
+      "2023K0183",
+      "2023M0116",
+      "2023M0213",
+      "2023Q0303",
+      "2023X0149",
+      "2024K0196",
+      "2024K0214",
+      "2024K0286",
+      "2024K0358",
+      "2024K0421",
+      "2024M0244",
+      "2024Q0219",
+      "2024Q0325",
+      "2025K0154",
+      "2025K0284",
+      "2025K0287",
+      "2025K0305",
+      "2025M0338",
+      "2025M0395",
+      "2025Q0142",
+      "2025Q0247",
+      "2025Q0316",
+      "2025R0137",
+      "2025R0222",
+      "2026K0123",
+      "2026K0233",
+      "2026Q0210",
+      "2026R0127",
+      "2026R0186"
+    ],
+    "unmapped_ids": [
+      "2020K0444",
+      "2020M0385",
+      "2020Q0317",
+      "2023M0452",
+      "2024Q0135",
+      "2025M0252",
+      "P2012X0048"
+    ],
+    "total_count": 40,
+    "mapped_count": 33,
+    "unmapped_count": 7,
+    "accounting_reconciled": true
+  },
+  "overlap_measurement": {
+    "method": "rendered_circle_overlap_v1",
+    "radius": 8.936222222222222,
+    "marker_count": 33,
+    "overlapping_pairs": [
+      {
+        "a": "2024M0244",
+        "b": "2023M0213",
+        "distance": 0
+      },
+      {
+        "a": "2024K0358",
+        "b": "2025K0287",
+        "distance": 1.9513
+      }
+    ],
+    "overlap_rate": 0.003788,
+    "affected_marker_ids": [
+      "2023M0213",
+      "2024K0358",
+      "2024M0244",
+      "2025K0287"
+    ],
+    "affected_marker_share": 0.121212,
+    "threshold": 0.05
+  },
+  "disclosure": {
+    "numerator": 33,
+    "scope": "projects currently mapped in the active filtered Land Map result; unmapped projects and anything outside the current filter are excluded"
+  },
+  "source_vintages": {
+    "land_default_ulurp": "site/data/land_default_ulurp.json",
+    "land_project_map_points": "site/data/land_project_map_points.json"
+  },
+  "outcome": "stop",
+  "stop_reason": "below_overlap_threshold",
+  "negative_rules_enforced": [
+    "ship_district_or_borough_choropleth",
+    "infer_density_for_unmapped_projects",
+    "use_boundary_geometry_as_denominator",
+    "suppress_project_markers",
+    "aggregate_raw_point_data_outside_filtered_model",
+    "add_density_as_new_filter_engine"
+  ]
+}
