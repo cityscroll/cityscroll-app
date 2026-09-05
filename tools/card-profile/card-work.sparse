@@ -566,6 +566,7 @@
 /site/procurement_phase_spine.mjs
 /site/procurement_planning_gate.mjs
 /site/procurement_planning_surface.mjs
+/site/procurement_preference_set.mjs
 /site/procurement_process_events.mjs
 /site/procurement_process_state_vocabulary.mjs
 /site/procurement_process_watch.mjs
