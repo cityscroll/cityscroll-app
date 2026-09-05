@@ -176,7 +176,14 @@ test("panel rejects non-receipted, inexact, or incomplete rows", () => {
 });
 
 test("meeting detail loader conditionally reads and mounts the static outcome panel", () => {
-  assert.match(meetingsApp, /loadNonCouncilOutcomePanel/);
+  // The mount point is the outcome-state projection, which renders this panel
+  // for a matched decision and its own states otherwise (see
+  // site/outcome_not_located_state.mjs).
+  assert.match(meetingsApp, /loadOutcomeState/);
+  assert.match(
+    readFileSync(new URL("../site/outcome_not_located_state.mjs", import.meta.url), "utf8"),
+    /nonCouncilOutcomePanelHTML/,
+  );
   assert.match(panelSource, /loadNonCouncilOutcomeLookup/);
   assert.match(panelSource, /non_council_outcome_lookup\.json/);
 });
