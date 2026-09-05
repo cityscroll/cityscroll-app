@@ -50,3 +50,4 @@ export function attendanceModeForRecord(record = {}) {
   const projection = buildConsequenceProjection(domain, record, {});
   return attendanceModeFromParticipation(projection.participation_modes);
 }
+

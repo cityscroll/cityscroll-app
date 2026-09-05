@@ -9,6 +9,7 @@ import {
 } from "../site/meetings_attendance.mjs";
 import { meetingConsequence, councilHearingConsequence } from "../site/consequence_projection.mjs";
 import { emptyScope, routeHashFromScope, scopeFromRouteHash } from "../site/scope_v0.mjs";
+import { filterMeetingsExplorerEntries } from "../site/meetings_explorer.mjs";
 
 const html = readFileSync(new URL("../site/index.html", import.meta.url), "utf8");
 const i18nSource = readFileSync(new URL("../site/i18n.js", import.meta.url), "utf8");
@@ -201,4 +202,24 @@ test("filtering by remote attendance never changes the affected area", () => {
   const boroOf = (hash) => new URLSearchParams(hash.split("?")[1] || "").get("boro");
   assert.equal(boroOf(hashWith), boroOf(hashWithout));
   assert.equal(boroOf(hashWith), "Queens");
+});
+
+// ---- toolbar integration point: the Attendance select filters built entries ----
+
+test("filterMeetingsExplorerEntries filters collapsed cards by attendance without touching process stage", () => {
+  const remoteEntry = { primary: { meeting_id: "m:1", agency: "City Council", additional_description_1: "Join via https://zoomgov.com/j/1" }, process_filter: "scheduled" };
+  const inPersonEntry = { primary: { meeting_id: "m:2", agency: "City Council", street_address_1: "250 Broadway", venue: { address: "250 Broadway" } }, process_filter: "scheduled" };
+  const entries = [remoteEntry, inPersonEntry];
+
+  const anyAttendance = filterMeetingsExplorerEntries(entries, { process: "all" });
+  assert.equal(anyAttendance.length, 2);
+
+  const remoteOnly = filterMeetingsExplorerEntries(entries, { process: "all", att: "remote" });
+  assert.deepEqual(remoteOnly, [remoteEntry]);
+
+  const inPersonOnly = filterMeetingsExplorerEntries(entries, { process: "all", att: "in_person" });
+  assert.deepEqual(inPersonOnly, [inPersonEntry]);
+
+  const stillHonorsProcess = filterMeetingsExplorerEntries(entries, { process: "unstaged", att: "remote" });
+  assert.equal(stillHonorsProcess.length, 0);
 });

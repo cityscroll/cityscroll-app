@@ -18,6 +18,7 @@ import {
   meetingProcessProjection,
   observedMeetingStage,
 } from "./meeting_process_profile.mjs";
+import { attendanceModeForRecord } from "./meetings_attendance.mjs";
 
 export const MEETINGS_EXPLORER_SCHEMA_VERSION = 2;
 
@@ -539,14 +540,19 @@ export function buildMeetingsExplorerEntries(hearings, opts = {}) {
  */
 export function filterMeetingsExplorerEntries(entries, opts = {}) {
   const process = opts.process || "all";
-  if (process === "all") return (entries || []).filter((e) => e && e.primary);
-
+  // Attendance is independent of the process-stage facet above: it reads
+  // the collapsed card's primary record through the same PHC-00-derived
+  // buckets the Meetings toolbar's Attendance control offers, and never
+  // touches place/date/agency matching (PHC-01 A2/A3).
+  const attendance = opts.att || "";
   return (entries || []).filter((entry) => {
     if (!entry || !entry.primary) return false;
     // The list facet represents one current position for each collapsed card.
     // Earlier member phases remain visible on the card/detail timeline, but do
     // not make this mutually exclusive bucket overlap another stage.
-    return entry.process_filter === process;
+    if (process !== "all" && entry.process_filter !== process) return false;
+    if (attendance && attendanceModeForRecord(entry.primary) !== attendance) return false;
+    return true;
   });
 }
 

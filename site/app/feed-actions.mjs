@@ -39,7 +39,6 @@ import {
   renderReportIssueAffordance,
 } from "../report_issue.mjs";
 import { meetingScopedDisclosureHTML, meetingScopedKeywordState, refreshFeedScopedKeyword, startMeetingScopedKeyword } from "../feed_scoped_keyword.mjs";
-import { attendanceModeForRecord } from "../meetings_attendance.mjs";
 const SECTIONS={
   property:{section:"Property Disposition", showAddr:true},
   rules:{section:"Agency Rules"},
@@ -307,7 +306,6 @@ function hearingViewFilter(){
     communityDistrict:meetingsCommunityDistrict||null,
     councilDistrict:meetingsCouncilDistrict||null,
     contextSource:"route",
-    attendance:$("#meetingsattendance")?.value||"",
     ...hearingFilter(),
   };
 }
@@ -353,7 +351,6 @@ function hearingFilterKey(filter){
   return JSON.stringify([
     filter.when, filter.agency, filter.communityBoard, filter.keyword, filter.borough,
     filter.communityDistrict, filter.councilDistrict, filter.locationScope, filter.neighborhood,
-    filter.attendance,
   ]);
 }
 function hearingWidenedShown(scope){
@@ -1605,7 +1602,6 @@ function updateMeetingsMoreFiltersState(){
     +Number(!!meetingsCouncilDistrict)
     +Number(!!$("#meetingsneighborhood")?.value.trim())
     +Number(!!$("#meetingsagency")?.value)
-    +Number(!!$("#meetingsattendance")?.value)
     +Number(!!activeCommunityBoardRef())
     +Number(meetingsPlaceGroupSel==="place");
   badge.textContent=active?t("property_filters_active",{n:fmtNumber(active)}):"";
@@ -1638,7 +1634,7 @@ async function renderHearingExplorer(options){
   renderMeetingsAgencyScope(hearingAll||[]);
   renderMeetingsBoardScope(hearingAll||[],seq);
   let selection=chooseHearingScope(records,searchFilter,todayISO(),allowWidening);
-  // The retained shared read model contains the supported past and current windows.
+  // The shared read model covers supported past and current windows.
   const needsPast=filter.when==="all" || filter.when==="past" || (allowWidening && !selection.rows.length);
   if(needsPast){
     try{
@@ -1654,13 +1650,7 @@ async function renderHearingExplorer(options){
     }catch(e){ /* the exact zero state remains actionable below */ }
   }
   if(seq!==hearingRenderSeq) return;
-  // Attendance is an independent facet: it filters the resolved date/place/
-  // agency/keyword selection without perturbing the widening ladder above,
-  // and never narrows or replaces the affected-area result (PHC-01 A2/A3).
-  const attendanceSel=filter.attendance||"";
-  const matchesAttendance=row=>!attendanceSel||attendanceModeForRecord(row)===attendanceSel;
-  const rows=attendanceSel?selection.rows.filter(matchesAttendance):selection.rows;
-  const pastRowsFiltered=attendanceSel?(selection.pastRows||[]).filter(matchesAttendance):(selection.pastRows||[]);
+  const rows=selection.rows;
   const terms=filter.keyword?[filter.keyword]:[];
   if(ambiguousBoardSearch && !communityBoardScopeTools){
     await communityBoardScopeToolsLoad();
@@ -1675,7 +1665,7 @@ async function renderHearingExplorer(options){
     renderHearingExplorer();
   });
 
-  // Process-stage ontology + multi-notice collapse (pure module). Place grouping is opt-in.
+  // Process-stage ontology + collapse (pure); place grouping opt-in.
   const tools=await meetingsExplorerTools();
   if(seq!==hearingRenderSeq) return;
   const now=todayISO();
@@ -1683,10 +1673,10 @@ async function renderHearingExplorer(options){
   let pastEntries=[];
   if(tools && tools.buildMeetingsExplorerEntries){
     entries=tools.buildMeetingsExplorerEntries(rows,{ now });
-    entries=tools.filterMeetingsExplorerEntries(entries,{ process:meetingsProcessSel, now });
-    pastEntries=tools.buildMeetingsExplorerEntries(pastRowsFiltered,{ now });
+    entries=tools.filterMeetingsExplorerEntries(entries,{ process:meetingsProcessSel, now, att:$("#meetingsattendance")?.value });
+    pastEntries=tools.buildMeetingsExplorerEntries(selection.pastRows||[],{ now });
     pastEntries=tools.filterMeetingsExplorerEntries(pastEntries,{ process:meetingsProcessSel, now });
-    // Rail counts from the place/time-filtered set (before process chip).
+    // Rail counts reflect place/time, not the process chip.
     const base=tools.buildMeetingsExplorerEntries(rows,{ now });
     const pc=tools.countMeetingsProcessStages(base);
     const processRail=$("#meetingsprocessrail");
