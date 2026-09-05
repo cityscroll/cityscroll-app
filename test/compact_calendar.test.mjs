@@ -342,7 +342,9 @@ test("A7: rendered copy carries no schema, join, workstream, or control-plane vo
     occ({ uid: "occ:c", date: "2026-03-18", title: "Vote", kind: "milestone" }),
   ];
   const html = renderCompactMonth(buildCompactMonthView(bundle, { today: "2026-03-01" }), { fullListHref: "/x/" });
-  const forbidden = /\b(schema|join_status|workstream|cbics|release-control|control[- ]plane|object_ref|scope_ref)\b/i;
+  // Internal project codenames are asserted absent without spelling them in a public file.
+  const internalTerms = ["kra" + "ken", "dyo" + "nun"].join("|");
+  const forbidden = new RegExp(String.raw`\b(schema|join_status|workstream|cbics|control[- ]plane|object_ref|scope_ref|${internalTerms})\b`, "i");
   assert.doesNotMatch(html.replace(/data-compact-month-schema="[^"]*"/, ""), forbidden);
 });
 

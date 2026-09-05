@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Partition-level delta plans for the D1 read models (Release-control d1-03).
+ * Partition-level delta plans for the D1 read models (release-control card d1-03).
  *
  * This module makes the change set explicit: it reduces each published model
  * to keyed records grouped by the manifest's partition, fingerprints every record, and
