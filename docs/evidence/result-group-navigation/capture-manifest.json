@@ -1,0 +1,578 @@
+{
+  "schema": "cityscroll.result_group_navigation_capture.v1",
+  "change": "cityscroll-contextual-ux/cx-01-result-group-navigation",
+  "browser_mode": "headless chromium (playwright), remote hosts stubbed or blocked",
+  "route": "/search/?q=parks",
+  "viewports": [
+    {
+      "name": "mobile",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "name": "desktop",
+      "width": 1440,
+      "height": 900
+    }
+  ],
+  "revision": "35479c73bc308e84a2b8d11d496ae834ad80a664",
+  "no_query_change": "every capture's URL before and after activating a family control was identical",
+  "captures": [
+    {
+      "state": "complete",
+      "route": "/search/?q=parks",
+      "viewport": {
+        "name": "mobile",
+        "width": 390,
+        "height": 844
+      },
+      "revision": "35479c73bc308e84a2b8d11d496ae834ad80a664",
+      "file": null,
+      "sha256": "cb0566bf7fcd179efabbfa5840849734e5e3222657d8ba909e221b5ce0e5dd74",
+      "assertion": "every family has a match",
+      "observations": {
+        "nav_present": true,
+        "nav_visible": true,
+        "items": [
+          {
+            "label": "Contracts",
+            "status": "2 results",
+            "state": ""
+          },
+          {
+            "label": "People + organizations",
+            "status": "2 results",
+            "state": ""
+          },
+          {
+            "label": "Land",
+            "status": "2 results",
+            "state": ""
+          },
+          {
+            "label": "Rules",
+            "status": "2 results",
+            "state": ""
+          },
+          {
+            "label": "Meetings",
+            "status": "2 results",
+            "state": ""
+          },
+          {
+            "label": "Exams",
+            "status": "2 results",
+            "state": ""
+          }
+        ],
+        "horizontal_overflow": false
+      },
+      "focus_activation": {
+        "activated": true,
+        "focused_is_heading": true,
+        "focused_text": "Contracts",
+        "url_unchanged": true
+      }
+    },
+    {
+      "state": "complete",
+      "route": "/search/?q=parks",
+      "viewport": {
+        "name": "desktop",
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "35479c73bc308e84a2b8d11d496ae834ad80a664",
+      "file": null,
+      "sha256": "112309eaaa8462e2f507e15243db43736e4cfbc871158d2b2ae53ae6feb7f1b2",
+      "assertion": "every family has a match",
+      "observations": {
+        "nav_present": true,
+        "nav_visible": true,
+        "items": [
+          {
+            "label": "Contracts",
+            "status": "2 results",
+            "state": ""
+          },
+          {
+            "label": "People + organizations",
+            "status": "2 results",
+            "state": ""
+          },
+          {
+            "label": "Land",
+            "status": "2 results",
+            "state": ""
+          },
+          {
+            "label": "Rules",
+            "status": "2 results",
+            "state": ""
+          },
+          {
+            "label": "Meetings",
+            "status": "2 results",
+            "state": ""
+          },
+          {
+            "label": "Exams",
+            "status": "2 results",
+            "state": ""
+          }
+        ],
+        "horizontal_overflow": false
+      },
+      "focus_activation": {
+        "activated": true,
+        "focused_is_heading": true,
+        "focused_text": "Contracts",
+        "url_unchanged": true
+      }
+    },
+    {
+      "state": "partial",
+      "route": "/search/?q=parks",
+      "viewport": {
+        "name": "mobile",
+        "width": 390,
+        "height": 844
+      },
+      "revision": "35479c73bc308e84a2b8d11d496ae834ad80a664",
+      "file": null,
+      "sha256": "73ce3ff43dfe18fab40f27aeb19660ebcfffd699035fa0ac918f92274f68f68f",
+      "assertion": "some families match and others do not, in the same response",
+      "observations": {
+        "nav_present": true,
+        "nav_visible": true,
+        "items": [
+          {
+            "label": "Contracts",
+            "status": "3 results",
+            "state": ""
+          },
+          {
+            "label": "People + organizations",
+            "status": "No matches",
+            "state": ""
+          },
+          {
+            "label": "Land",
+            "status": "No matches",
+            "state": ""
+          },
+          {
+            "label": "Rules",
+            "status": "No matches",
+            "state": ""
+          },
+          {
+            "label": "Meetings",
+            "status": "1 result",
+            "state": ""
+          },
+          {
+            "label": "Exams",
+            "status": "No matches",
+            "state": ""
+          }
+        ],
+        "horizontal_overflow": false
+      },
+      "focus_activation": {
+        "activated": true,
+        "focused_is_heading": true,
+        "focused_text": "Contracts",
+        "url_unchanged": true
+      }
+    },
+    {
+      "state": "partial",
+      "route": "/search/?q=parks",
+      "viewport": {
+        "name": "desktop",
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "35479c73bc308e84a2b8d11d496ae834ad80a664",
+      "file": null,
+      "sha256": "89c78739db7c3421c7fecadc595b164ebf5279e8a8c5cd72e49f1006b9f5f2ad",
+      "assertion": "some families match and others do not, in the same response",
+      "observations": {
+        "nav_present": true,
+        "nav_visible": true,
+        "items": [
+          {
+            "label": "Contracts",
+            "status": "3 results",
+            "state": ""
+          },
+          {
+            "label": "People + organizations",
+            "status": "No matches",
+            "state": ""
+          },
+          {
+            "label": "Land",
+            "status": "No matches",
+            "state": ""
+          },
+          {
+            "label": "Rules",
+            "status": "No matches",
+            "state": ""
+          },
+          {
+            "label": "Meetings",
+            "status": "1 result",
+            "state": ""
+          },
+          {
+            "label": "Exams",
+            "status": "No matches",
+            "state": ""
+          }
+        ],
+        "horizontal_overflow": false
+      },
+      "focus_activation": {
+        "activated": true,
+        "focused_is_heading": true,
+        "focused_text": "Contracts",
+        "url_unchanged": true
+      }
+    },
+    {
+      "state": "empty",
+      "route": "/search/?q=parks",
+      "viewport": {
+        "name": "mobile",
+        "width": 390,
+        "height": 844
+      },
+      "revision": "35479c73bc308e84a2b8d11d496ae834ad80a664",
+      "file": null,
+      "sha256": "35f61b4e97a256003c17a22c891e09fc952341005c6e4c7fa04b04664b6e3b00",
+      "assertion": "no family has a match anywhere",
+      "observations": {
+        "nav_present": true,
+        "nav_visible": true,
+        "items": [
+          {
+            "label": "Contracts",
+            "status": "No matches",
+            "state": ""
+          },
+          {
+            "label": "People + organizations",
+            "status": "No matches",
+            "state": ""
+          },
+          {
+            "label": "Land",
+            "status": "No matches",
+            "state": ""
+          },
+          {
+            "label": "Rules",
+            "status": "No matches",
+            "state": ""
+          },
+          {
+            "label": "Meetings",
+            "status": "No matches",
+            "state": ""
+          },
+          {
+            "label": "Exams",
+            "status": "No matches",
+            "state": ""
+          }
+        ],
+        "horizontal_overflow": false
+      },
+      "focus_activation": {
+        "activated": true,
+        "focused_is_heading": true,
+        "focused_text": "Contracts",
+        "url_unchanged": true
+      }
+    },
+    {
+      "state": "empty",
+      "route": "/search/?q=parks",
+      "viewport": {
+        "name": "desktop",
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "35479c73bc308e84a2b8d11d496ae834ad80a664",
+      "file": null,
+      "sha256": "6021f505eb971b23dd0b9c4a32287cbd08149309b4019d0d3fb8ba856c4fa39d",
+      "assertion": "no family has a match anywhere",
+      "observations": {
+        "nav_present": true,
+        "nav_visible": true,
+        "items": [
+          {
+            "label": "Contracts",
+            "status": "No matches",
+            "state": ""
+          },
+          {
+            "label": "People + organizations",
+            "status": "No matches",
+            "state": ""
+          },
+          {
+            "label": "Land",
+            "status": "No matches",
+            "state": ""
+          },
+          {
+            "label": "Rules",
+            "status": "No matches",
+            "state": ""
+          },
+          {
+            "label": "Meetings",
+            "status": "No matches",
+            "state": ""
+          },
+          {
+            "label": "Exams",
+            "status": "No matches",
+            "state": ""
+          }
+        ],
+        "horizontal_overflow": false
+      },
+      "focus_activation": {
+        "activated": true,
+        "focused_is_heading": true,
+        "focused_text": "Contracts",
+        "url_unchanged": true
+      }
+    },
+    {
+      "state": "loading",
+      "route": "/search/?q=parks",
+      "viewport": {
+        "name": "mobile",
+        "width": 390,
+        "height": 844
+      },
+      "revision": "35479c73bc308e84a2b8d11d496ae834ad80a664",
+      "file": null,
+      "sha256": "93f7723d3434151ff190a2549e65bfa90cf2aa0ed82649400fa6c1b1b37e48ce",
+      "assertion": "captured mid-flight, before either endpoint answers",
+      "observations": {
+        "nav_present": true,
+        "nav_visible": true,
+        "items": [
+          {
+            "label": "Contracts",
+            "status": "Searching\u2026",
+            "state": "loading"
+          },
+          {
+            "label": "People + organizations",
+            "status": "Searching\u2026",
+            "state": "loading"
+          },
+          {
+            "label": "Land",
+            "status": "Searching\u2026",
+            "state": "loading"
+          },
+          {
+            "label": "Rules",
+            "status": "Searching\u2026",
+            "state": "loading"
+          },
+          {
+            "label": "Meetings",
+            "status": "Searching\u2026",
+            "state": "loading"
+          },
+          {
+            "label": "Exams",
+            "status": "Searching\u2026",
+            "state": "loading"
+          }
+        ],
+        "horizontal_overflow": false
+      },
+      "focus_activation": {
+        "activated": false,
+        "note": "skipped: targets still settling"
+      }
+    },
+    {
+      "state": "loading",
+      "route": "/search/?q=parks",
+      "viewport": {
+        "name": "desktop",
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "35479c73bc308e84a2b8d11d496ae834ad80a664",
+      "file": null,
+      "sha256": "63d660c24e1b987df4d8e693888ca397fe019fd5bd19f44c8e32dcc1eb9090d7",
+      "assertion": "captured mid-flight, before either endpoint answers",
+      "observations": {
+        "nav_present": true,
+        "nav_visible": true,
+        "items": [
+          {
+            "label": "Contracts",
+            "status": "Searching\u2026",
+            "state": "loading"
+          },
+          {
+            "label": "People + organizations",
+            "status": "Searching\u2026",
+            "state": "loading"
+          },
+          {
+            "label": "Land",
+            "status": "Searching\u2026",
+            "state": "loading"
+          },
+          {
+            "label": "Rules",
+            "status": "Searching\u2026",
+            "state": "loading"
+          },
+          {
+            "label": "Meetings",
+            "status": "Searching\u2026",
+            "state": "loading"
+          },
+          {
+            "label": "Exams",
+            "status": "Searching\u2026",
+            "state": "loading"
+          }
+        ],
+        "horizontal_overflow": false
+      },
+      "focus_activation": {
+        "activated": false,
+        "note": "skipped: targets still settling"
+      }
+    },
+    {
+      "state": "error",
+      "route": "/search/?q=parks",
+      "viewport": {
+        "name": "mobile",
+        "width": 390,
+        "height": 844
+      },
+      "revision": "35479c73bc308e84a2b8d11d496ae834ad80a664",
+      "file": null,
+      "sha256": "85783729f4aa684fde00b8b5d82493bc245faacc2f6a6db190669ee840510b4e",
+      "assertion": "both sources unreachable; every family reads Unavailable, not blank",
+      "observations": {
+        "nav_present": true,
+        "nav_visible": true,
+        "items": [
+          {
+            "label": "Contracts",
+            "status": "Unavailable",
+            "state": "error"
+          },
+          {
+            "label": "People + organizations",
+            "status": "Unavailable",
+            "state": "error"
+          },
+          {
+            "label": "Land",
+            "status": "Unavailable",
+            "state": "error"
+          },
+          {
+            "label": "Rules",
+            "status": "Unavailable",
+            "state": "error"
+          },
+          {
+            "label": "Meetings",
+            "status": "Unavailable",
+            "state": "error"
+          },
+          {
+            "label": "Exams",
+            "status": "Unavailable",
+            "state": "error"
+          }
+        ],
+        "horizontal_overflow": false
+      },
+      "focus_activation": {
+        "activated": true,
+        "focused_is_heading": true,
+        "focused_text": "Contracts",
+        "url_unchanged": true
+      }
+    },
+    {
+      "state": "error",
+      "route": "/search/?q=parks",
+      "viewport": {
+        "name": "desktop",
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "35479c73bc308e84a2b8d11d496ae834ad80a664",
+      "file": null,
+      "sha256": "ceffbb63d9f9592ce8df5fda3cac54645c3e05941a915c71470e8c1196f7867d",
+      "assertion": "both sources unreachable; every family reads Unavailable, not blank",
+      "observations": {
+        "nav_present": true,
+        "nav_visible": true,
+        "items": [
+          {
+            "label": "Contracts",
+            "status": "Unavailable",
+            "state": "error"
+          },
+          {
+            "label": "People + organizations",
+            "status": "Unavailable",
+            "state": "error"
+          },
+          {
+            "label": "Land",
+            "status": "Unavailable",
+            "state": "error"
+          },
+          {
+            "label": "Rules",
+            "status": "Unavailable",
+            "state": "error"
+          },
+          {
+            "label": "Meetings",
+            "status": "Unavailable",
+            "state": "error"
+          },
+          {
+            "label": "Exams",
+            "status": "Unavailable",
+            "state": "error"
+          }
+        ],
+        "horizontal_overflow": false
+      },
+      "focus_activation": {
+        "activated": true,
+        "focused_is_heading": true,
+        "focused_text": "Contracts",
+        "url_unchanged": true
+      }
+    }
+  ]
+}

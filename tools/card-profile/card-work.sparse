@@ -49,6 +49,7 @@
 /docs/data-frontiers/
 /docs/data-sources.md
 /docs/design-language.md
+/docs/design-principles-contextual-ux.md
 /docs/design-principles-lens.md
 /docs/digest-rollup-prefs.md
 /docs/digest-time-ontology.md
@@ -629,6 +630,7 @@
 /site/search_document.mjs
 /site/search_document_contract.mjs
 /site/search_entry.mjs
+/site/search_family_nav.mjs
 /site/search_history_client.mjs
 /site/search_history_state.mjs
 /site/search_intent.mjs
