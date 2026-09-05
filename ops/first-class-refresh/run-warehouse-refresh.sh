@@ -15,6 +15,10 @@ DRY_RUN=0
 
 cd "$CITYSCROLL_REPO"
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=preflight.sh
+source "$SCRIPT_DIR/preflight.sh"
+
 if [ ! -f "$CITYSCROLL_WAREHOUSE_ROOT/duckdb/cityscroll.duckdb" ]; then
   echo "no warehouse catalog at $CITYSCROLL_WAREHOUSE_ROOT/duckdb/cityscroll.duckdb" >&2
   exit 1
@@ -23,13 +27,21 @@ fi
 # A rehearsal reports what a run would select and changes nothing: no branch is
 # created, no acquisition contacts a publisher, and no artifact is rewritten.
 if [ "$DRY_RUN" = "1" ]; then
+  preflight_dry_run_report
   echo "Dry run; datasets a refresh would consider due:"
   node tools/first_class_refresh.mjs --list-due
   exit 0
 fi
 
-git fetch --quiet origin main
-git checkout --quiet -B "data/warehouse-refresh-$(date -u +%Y%m%d)" origin/main
+# preflight() is not wrapped in the exit trap below: a refusal on a dirty,
+# non-data branch is an operator's checkout to fix by hand, and the job must
+# not touch it further. The trap only guards the run once preflight has
+# succeeded and put the checkout on the default branch.
+preflight || exit 1
+trap return_to_default_branch EXIT
+
+DATA_BRANCH="${DATA_BRANCH_PREFIX}$(date -u +%Y%m%d)"
+git checkout --quiet -B "$DATA_BRANCH" "$DEFAULT_BRANCH"
 
 node tools/first_class_refresh.mjs --run-due
 # --run-due stops after each owning builder. The derived-JSON boundary is the
@@ -46,5 +58,13 @@ fi
 
 git add -- site worker
 git commit --quiet -m "Refresh warehouse-backed resident datasets"
+echo "force-pushing $DATA_BRANCH (only ever the job's own dated data branch)"
 git push --quiet --force-with-lease origin HEAD
-gh pr create --fill --base main >/dev/null || echo "A pull request is already open for this branch."
+
+PR_URL="$(gh pr create --fill --base "$DEFAULT_BRANCH" 2>/dev/null || true)"
+if [ -n "$PR_URL" ]; then
+  echo "pull request opened: $PR_URL"
+else
+  PR_URL="$(gh pr view "$DATA_BRANCH" --json url --jq .url 2>/dev/null || true)"
+  echo "pull request already open: ${PR_URL:-unknown}"
+fi
