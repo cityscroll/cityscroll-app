@@ -53,8 +53,14 @@ test("the private projection is bounded and contains admitted closed-template si
   assert.equal(projection.visibility, "private_experimental");
   assert.equal(projection.cards.length, PRIVATE_STORY_SIGNAL_LIMIT);
   assert.equal(Object.isFrozen(projection), true);
+  // The peer-group size moves with every warehouse snapshot, so take it from
+  // the admitted signal rather than freezing one snapshot's count here.
+  const observedCount = admitted.signals[0].comparison.observed_count;
+  const expected = new RegExp(
+    `4th-largest among ${observedCount} Housing Preservation and Development award rows observed`,
+  );
   for (const card of projection.cards) {
-    assert.match(card.what_stands_out, /4th-largest among 264 Housing Preservation and Development award rows observed/);
+    assert.match(card.what_stands_out, expected);
     assert.equal(card.actions.length, 5);
   }
 });

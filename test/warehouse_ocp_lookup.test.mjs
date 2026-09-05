@@ -19,6 +19,7 @@ import {
   rowToSodaShape,
   sqlOcpByRequestId,
 } from "../warehouse/lib/ocp_lookup.mjs";
+import { withScratchWarehouseRoot } from "./helpers/scratch_warehouse_root.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const LOOKUP_SITE = join(ROOT, "site", "data", "ocp_awards_warehouse_lookup.json");
@@ -96,11 +97,21 @@ describe("WH-03 committed materialization + speed receipt", () => {
     assert.equal(site.phase, "WH-03");
     assert.equal(site.mode, "bulk_warehouse");
     assert.match(site.source_snapshot.source_snapshot_hash, /^[0-9a-f]{64}$/);
-    assert.equal(site.source_snapshot.source_row_count, 53251);
-    assert.equal(site.source_snapshot.exported_row_count, 53251);
+    // The snapshot advances with every warehouse ingest, so assert the export
+    // contract rather than one snapshot's row count: the whole receipt is
+    // exported, nothing is limited, and only the integrity filter removes rows.
+    assert.equal(
+      site.source_snapshot.exported_row_count,
+      site.source_snapshot.source_row_count,
+    );
     assert.equal(site.source_snapshot.limited, false);
-    assert.equal(site.row_count, 53245);
-    assert.ok(site.row_count >= 3);
+    assert.equal(site.row_count, site.rows.length);
+    assert.ok(site.row_count <= site.source_snapshot.source_row_count);
+    assert.ok(
+      site.source_snapshot.source_row_count - site.row_count < 100,
+      "the integrity filter should remove only test-only rows",
+    );
+    assert.ok(site.row_count > 40000, "the committed artifact is a full bulk export");
     assert.equal(existsSync(LOOKUP_WORKER), false, "Worker OCP duplicate must not be committed");
     const tracked = spawnSync("git", ["ls-files", "--", "site/data/ocp_awards_warehouse_lookup.json", "worker/src/data/ocp_awards_warehouse_lookup.json"], { encoding: "utf8" });
     assert.equal(tracked.status, 0, tracked.stderr);
@@ -118,9 +129,11 @@ describe("WH-03 committed materialization + speed receipt", () => {
     assert.equal(r.replaced_fetch.soda_dataset, "qyyg-4tf5");
     assert.match(r.query, /FROM ocp_recent_contract_awards/);
     assert.match(r.source_snapshot_hash, /^[0-9a-f]{64}$/);
-    assert.equal(r.source_row_count, 53251);
-    assert.equal(r.row_count, 53245);
-    assert.equal(r.excluded_row_count, 6);
+    const site = JSON.parse(readFileSync(LOOKUP_SITE, "utf8"));
+    assert.equal(r.source_snapshot_hash, site.source_snapshot.source_snapshot_hash);
+    assert.equal(r.source_row_count, site.source_snapshot.source_row_count);
+    assert.equal(r.row_count, site.row_count);
+    assert.equal(r.excluded_row_count, r.source_row_count - r.row_count);
     assert.ok(r.p50_ms > 0);
     assert.ok(r.p95_ms >= r.p50_ms);
     assert.ok(r.materialized_index_edge_path);
@@ -139,31 +152,32 @@ describe("WH-03 committed materialization + speed receipt", () => {
 
 describe("WH-03 DuckDB query seam (when catalog present)", () => {
   it("looks up fixture rows by request_id without SODA", () => {
-    if (!catalogExists()) return;
     const py = join(WAREHOUSE_DIR, ".venv", "bin", "python");
     if (!existsSync(py)) return;
 
-    // Ensure fixture catalog is warm (idempotent).
-    spawnSync(
-      py,
-      [
-        join(WAREHOUSE_DIR, "scripts", "ingest.py"),
-        "--dataset",
-        "ocp-recent-contract-awards",
-        "--from-fixture",
-        "--limit",
-        "5",
-        "--force-headroom",
-      ],
-      { cwd: ROOT, encoding: "utf8" }
-    );
+    withScratchWarehouseRoot(() => {
+      spawnSync(
+        py,
+        [
+          join(WAREHOUSE_DIR, "scripts", "ingest.py"),
+          "--dataset",
+          "ocp-recent-contract-awards",
+          "--from-fixture",
+          "--limit",
+          "5",
+          "--force-headroom",
+        ],
+        { cwd: ROOT, encoding: "utf8", env: { ...process.env } }
+      );
+      assert.equal(catalogExists(), true, "fixture ingest should create a scratch catalog");
 
-    assert.match(sqlOcpByRequestId("FIX001"), /request_id/);
-    const r = lookupOcpAwardRowsFromWarehouse({ request_id: "FIX001" });
-    assert.equal(r.ok, true);
-    assert.equal(r.path, "warehouse");
-    assert.ok(r.rows.length >= 1);
-    assert.equal(r.rows[0].request_id, "FIX001");
-    assert.equal(r.rows[0].vendor_name, "FIXTURE VENDOR A");
+      assert.match(sqlOcpByRequestId("FIX001"), /request_id/);
+      const r = lookupOcpAwardRowsFromWarehouse({ request_id: "FIX001" });
+      assert.equal(r.ok, true);
+      assert.equal(r.path, "warehouse");
+      assert.ok(r.rows.length >= 1);
+      assert.equal(r.rows[0].request_id, "FIX001");
+      assert.equal(r.rows[0].vendor_name, "FIXTURE VENDOR A");
+    });
   });
 });

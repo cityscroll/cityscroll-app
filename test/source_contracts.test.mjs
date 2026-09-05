@@ -30,10 +30,15 @@ test("source-contract registry is valid and its generated public docs are curren
 
 test("OCP and ZAP contracts record their warehouse product snapshots", () => {
   const registry = loadSourceContracts();
+  // The OCP snapshot advances with every warehouse ingest, so the receipt is
+  // verified against the artifact it names rather than one frozen row count.
+  const ocpArtifact = "site/data/ocp_awards_warehouse_lookup.json";
+  const ocpLookup = JSON.parse(readFileSync(new URL(`../${ocpArtifact}`, import.meta.url), "utf8"));
   const expected = {
     "ocp-recent-contract-awards": {
-      artifact: "site/data/ocp_awards_warehouse_lookup.json",
-      row_count: 53245,
+      artifact: ocpArtifact,
+      row_count: ocpLookup.row_count,
+      materialized_at: ocpLookup.materialized_at,
     },
     "zap-projects": {
       artifact: "site/data/zap_projects_warehouse_lookup.json",
@@ -51,7 +56,11 @@ test("OCP and ZAP contracts record their warehouse product snapshots", () => {
     assert.equal(contract.warehouse_snapshot.status, "materialized");
     assert.equal(contract.warehouse_snapshot.artifact, snapshot.artifact);
     assert.equal(contract.warehouse_snapshot.row_count, snapshot.row_count);
-    assert.match(contract.warehouse_snapshot.materialized_at, /^2026-08-/);
+    if (snapshot.materialized_at) {
+      assert.equal(contract.warehouse_snapshot.materialized_at, snapshot.materialized_at);
+    } else {
+      assert.match(contract.warehouse_snapshot.materialized_at, /^\d{4}-\d{2}-\d{2}T/);
+    }
   }
 });
 

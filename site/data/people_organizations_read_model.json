@@ -51441,7 +51441,7 @@
         },
         "vendors": {
           "status": "matched",
-          "count": 7,
+          "count": 8,
           "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
@@ -53061,7 +53061,7 @@
         },
         "vendors": {
           "status": "matched",
-          "count": 4,
+          "count": 6,
           "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
@@ -54295,6 +54295,24 @@
     },
     {
       "kind": "vendor",
+      "id": "vendor:stem:A%20T%20J%20ELECTRICAL",
+      "label": "A T J Electrical Co Inc",
+      "href": "/vendors/A%20T%20J%20ELECTRICAL/",
+      "entity_ref": "vendor:stem:A%20T%20J%20ELECTRICAL",
+      "relation_state": "published",
+      "detail": "1 linked awards across 1 agency",
+      "institution": "vendor",
+      "institution_label": "Vendor",
+      "institution_context": "Published supplier organization",
+      "agency_ids": [
+        "agency:id:correction"
+      ],
+      "award_count": 1,
+      "search_text": "A T J Electrical Co Inc vendor organization",
+      "agency_count": 1
+    },
+    {
+      "kind": "vendor",
       "id": "vendor:stem:ABSORB%20SOFTWARE",
       "label": "Absorb Software, Inc.",
       "href": "/vendors/ABSORB%20SOFTWARE/",
@@ -54568,6 +54586,24 @@
     },
     {
       "kind": "vendor",
+      "id": "vendor:stem:ARIVA",
+      "label": "Ariva Inc",
+      "href": "/vendors/ARIVA/",
+      "entity_ref": "vendor:stem:ARIVA",
+      "relation_state": "published",
+      "detail": "2 linked awards across 1 agency",
+      "institution": "vendor",
+      "institution_label": "Vendor",
+      "institution_context": "Published supplier organization",
+      "agency_ids": [
+        "agency:id:consumer-and-worker-protection"
+      ],
+      "award_count": 2,
+      "search_text": "Ariva Inc vendor organization",
+      "agency_count": 1
+    },
+    {
+      "kind": "vendor",
       "id": "vendor:stem:ARON%20SECURITY",
       "label": "Aron Security Inc",
       "href": "/vendors/ARON%20SECURITY/",
@@ -54754,14 +54790,14 @@
       "href": "/vendors/BOWERY%20RESIDENTS%20COMMITTEE/",
       "entity_ref": "vendor:stem:BOWERY%20RESIDENTS%20COMMITTEE",
       "relation_state": "published",
-      "detail": "6 linked awards across 1 agency",
+      "detail": "9 linked awards across 1 agency",
       "institution": "vendor",
       "institution_label": "Vendor",
       "institution_context": "Published supplier organization",
       "agency_ids": [
         "agency:id:homeless-services"
       ],
-      "award_count": 6,
+      "award_count": 9,
       "search_text": "Bowery Residents' Committee, Inc. vendor organization",
       "agency_count": 1
     },
@@ -54925,24 +54961,6 @@
       ],
       "award_count": 1,
       "search_text": "CAC Industries Inc vendor organization",
-      "agency_count": 1
-    },
-    {
-      "kind": "vendor",
-      "id": "vendor:stem:CAMBA",
-      "label": "CAMBA Inc",
-      "href": "/vendors/CAMBA/",
-      "entity_ref": "vendor:stem:CAMBA",
-      "relation_state": "published",
-      "detail": "8 linked awards across 1 agency",
-      "institution": "vendor",
-      "institution_label": "Vendor",
-      "institution_context": "Published supplier organization",
-      "agency_ids": [
-        "agency:id:youth-and-community-development"
-      ],
-      "award_count": 8,
-      "search_text": "CAMBA Inc vendor organization",
       "agency_count": 1
     },
     {
@@ -55127,6 +55145,42 @@
     },
     {
       "kind": "vendor",
+      "id": "vendor:stem:CHILD%20DEVELOPMENT%20CENTER%20-%20MOSHOLU%20MONTEFIORE%20COMMUNITY%20CENTER",
+      "label": "Child Development Center - Mosholu Montefiore Community Center",
+      "href": "/vendors/CHILD%20DEVELOPMENT%20CENTER%20-%20MOSHOLU%20MONTEFIORE%20COMMUNITY%20CENTER/",
+      "entity_ref": "vendor:stem:CHILD%20DEVELOPMENT%20CENTER%20-%20MOSHOLU%20MONTEFIORE%20COMMUNITY%20CENTER",
+      "relation_state": "published",
+      "detail": "6 linked awards across 1 agency",
+      "institution": "vendor",
+      "institution_label": "Vendor",
+      "institution_context": "Published supplier organization",
+      "agency_ids": [
+        "agency:id:youth-and-community-development"
+      ],
+      "award_count": 6,
+      "search_text": "Child Development Center - Mosholu Montefiore Community Center vendor organization",
+      "agency_count": 1
+    },
+    {
+      "kind": "vendor",
+      "id": "vendor:stem:CHINESE%20AMERICAN%20PLANNING%20COUNCIL",
+      "label": "Chinese American Planning Council Inc",
+      "href": "/vendors/CHINESE%20AMERICAN%20PLANNING%20COUNCIL/",
+      "entity_ref": "vendor:stem:CHINESE%20AMERICAN%20PLANNING%20COUNCIL",
+      "relation_state": "published",
+      "detail": "8 linked awards across 1 agency",
+      "institution": "vendor",
+      "institution_label": "Vendor",
+      "institution_context": "Published supplier organization",
+      "agency_ids": [
+        "agency:id:youth-and-community-development"
+      ],
+      "award_count": 8,
+      "search_text": "Chinese American Planning Council Inc vendor organization",
+      "agency_count": 1
+    },
+    {
+      "kind": "vendor",
       "id": "vendor:stem:CITNALTA%20CONSTRUCTION",
       "label": "Citnalta Construction Corp.",
       "href": "/vendors/CITNALTA%20CONSTRUCTION/",
@@ -55204,14 +55258,14 @@
       "href": "/vendors/COMPCITI%20BUSINESS%20SOLUTIONS/",
       "entity_ref": "vendor:stem:COMPCITI%20BUSINESS%20SOLUTIONS",
       "relation_state": "published",
-      "detail": "5 linked awards across 1 agency",
+      "detail": "6 linked awards across 1 agency",
       "institution": "vendor",
       "institution_label": "Vendor",
       "institution_context": "Published supplier organization",
       "agency_ids": [
         "agency:id:financial-information-services-agency"
       ],
-      "award_count": 5,
+      "award_count": 6,
       "search_text": "CompCiti Business Solutions vendor organization",
       "agency_count": 1
     },
@@ -55234,6 +55288,24 @@
       "award_count": 13,
       "search_text": "Compulink Technologies Inc vendor organization",
       "agency_count": 3
+    },
+    {
+      "kind": "vendor",
+      "id": "vendor:stem:CORVEL%20HEALTHCARE",
+      "label": "CoRvel Healthcare Corporation",
+      "href": "/vendors/CORVEL%20HEALTHCARE/",
+      "entity_ref": "vendor:stem:CORVEL%20HEALTHCARE",
+      "relation_state": "published",
+      "detail": "1 linked awards across 1 agency",
+      "institution": "vendor",
+      "institution_label": "Vendor",
+      "institution_context": "Published supplier organization",
+      "agency_ids": [
+        "agency:id:law-department"
+      ],
+      "award_count": 1,
+      "search_text": "CoRvel Healthcare Corporation vendor organization",
+      "agency_count": 1
     },
     {
       "kind": "vendor",
@@ -55401,24 +55473,6 @@
     },
     {
       "kind": "vendor",
-      "id": "vendor:stem:DEWBERRY-GF%20RESIDENT%20ENGINEERING%20JV",
-      "label": "Dewberry-GF Resident Engineering JV",
-      "href": "/vendors/DEWBERRY-GF%20RESIDENT%20ENGINEERING%20JV/",
-      "entity_ref": "vendor:stem:DEWBERRY-GF%20RESIDENT%20ENGINEERING%20JV",
-      "relation_state": "published",
-      "detail": "1 linked awards across 1 agency",
-      "institution": "vendor",
-      "institution_label": "Vendor",
-      "institution_context": "Published supplier organization",
-      "agency_ids": [
-        "agency:id:design-and-construction"
-      ],
-      "award_count": 1,
-      "search_text": "Dewberry-GF Resident Engineering JV vendor organization",
-      "agency_count": 1
-    },
-    {
-      "kind": "vendor",
       "id": "vendor:stem:DIFAZIO%20IND",
       "label": "Difazio Ind LLC",
       "href": "/vendors/DIFAZIO%20IND/",
@@ -55514,17 +55568,16 @@
       "href": "/vendors/EAST%20SIDE%20HOUSE/",
       "entity_ref": "vendor:stem:EAST%20SIDE%20HOUSE",
       "relation_state": "published",
-      "detail": "4 linked awards across 2 agencies",
+      "detail": "1 linked awards across 1 agency",
       "institution": "vendor",
       "institution_label": "Vendor",
       "institution_context": "Published supplier organization",
       "agency_ids": [
-        "agency:id:education",
-        "agency:id:youth-and-community-development"
+        "agency:id:education"
       ],
-      "award_count": 4,
+      "award_count": 1,
       "search_text": "East Side House Inc. vendor organization",
-      "agency_count": 2
+      "agency_count": 1
     },
     {
       "kind": "vendor",
@@ -55656,6 +55709,24 @@
     },
     {
       "kind": "vendor",
+      "id": "vendor:stem:FAST%20ENTERPRISES",
+      "label": "Fast Enterprises LLC",
+      "href": "/vendors/FAST%20ENTERPRISES/",
+      "entity_ref": "vendor:stem:FAST%20ENTERPRISES",
+      "relation_state": "published",
+      "detail": "1 linked awards across 1 agency",
+      "institution": "vendor",
+      "institution_label": "Vendor",
+      "institution_context": "Published supplier organization",
+      "agency_ids": [
+        "agency:id:finance"
+      ],
+      "award_count": 1,
+      "search_text": "Fast Enterprises LLC vendor organization",
+      "agency_count": 1
+    },
+    {
+      "kind": "vendor",
       "id": "vendor:stem:FAUST%20HARRISON%20PIANOS",
       "label": "Faust Harrison Pianos Inc.",
       "href": "/vendors/FAUST%20HARRISON%20PIANOS/",
@@ -55711,24 +55782,6 @@
     },
     {
       "kind": "vendor",
-      "id": "vendor:stem:FINESSE%20CREATIONS",
-      "label": "Finesse Creations Inc",
-      "href": "/vendors/FINESSE%20CREATIONS/",
-      "entity_ref": "vendor:stem:FINESSE%20CREATIONS",
-      "relation_state": "published",
-      "detail": "1 linked awards across 1 agency",
-      "institution": "vendor",
-      "institution_label": "Vendor",
-      "institution_context": "Published supplier organization",
-      "agency_ids": [
-        "agency:id:police-department"
-      ],
-      "award_count": 1,
-      "search_text": "Finesse Creations Inc vendor organization",
-      "agency_count": 1
-    },
-    {
-      "kind": "vendor",
       "id": "vendor:stem:FORT%20GREENE%20COUNCIL",
       "label": "Fort Greene Council Inc.",
       "href": "/vendors/FORT%20GREENE%20COUNCIL/",
@@ -55761,24 +55814,6 @@
       ],
       "award_count": 2,
       "search_text": "Franco Belli Plumbing & Heating & Sons, Inc. vendor organization",
-      "agency_count": 1
-    },
-    {
-      "kind": "vendor",
-      "id": "vendor:stem:FRANGLAIS%20MANAGEMENT",
-      "label": "Franglais Management LLC",
-      "href": "/vendors/FRANGLAIS%20MANAGEMENT/",
-      "entity_ref": "vendor:stem:FRANGLAIS%20MANAGEMENT",
-      "relation_state": "published",
-      "detail": "1 linked awards across 1 agency",
-      "institution": "vendor",
-      "institution_label": "Vendor",
-      "institution_context": "Published supplier organization",
-      "agency_ids": [
-        "agency:id:consumer-and-worker-protection"
-      ],
-      "award_count": 1,
-      "search_text": "Franglais Management LLC vendor organization",
       "agency_count": 1
     },
     {
@@ -55873,20 +55908,38 @@
     },
     {
       "kind": "vendor",
+      "id": "vendor:stem:GLOCK",
+      "label": "Glock Inc",
+      "href": "/vendors/GLOCK/",
+      "entity_ref": "vendor:stem:GLOCK",
+      "relation_state": "published",
+      "detail": "1 linked awards across 1 agency",
+      "institution": "vendor",
+      "institution_label": "Vendor",
+      "institution_context": "Published supplier organization",
+      "agency_ids": [
+        "agency:id:police-department"
+      ],
+      "award_count": 1,
+      "search_text": "Glock Inc vendor organization",
+      "agency_count": 1
+    },
+    {
+      "kind": "vendor",
       "id": "vendor:stem:GOOD%20SHEPHERD%20SERVICES",
       "label": "Good Shepherd Services",
       "href": "/vendors/GOOD%20SHEPHERD%20SERVICES/",
       "entity_ref": "vendor:stem:GOOD%20SHEPHERD%20SERVICES",
       "relation_state": "published",
-      "detail": "14 linked awards across 2 agencies",
+      "detail": "9 linked awards across 2 agencies",
       "institution": "vendor",
       "institution_label": "Vendor",
       "institution_context": "Published supplier organization",
       "agency_ids": [
         "agency:id:administration-for-childrens-services",
-        "agency:id:youth-and-community-development"
+        "agency:id:probation"
       ],
-      "award_count": 14,
+      "award_count": 9,
       "search_text": "Good Shepherd Services vendor organization",
       "agency_count": 2
     },
@@ -55910,38 +55963,20 @@
     },
     {
       "kind": "vendor",
-      "id": "vendor:stem:GRAHAM-WINDHAM",
-      "label": "Graham-Windham",
-      "href": "/vendors/GRAHAM-WINDHAM/",
-      "entity_ref": "vendor:stem:GRAHAM-WINDHAM",
+      "id": "vendor:stem:GREENWICH%20HOUSE",
+      "label": "Greenwich House Inc.",
+      "href": "/vendors/GREENWICH%20HOUSE/",
+      "entity_ref": "vendor:stem:GREENWICH%20HOUSE",
       "relation_state": "published",
-      "detail": "7 linked awards across 1 agency",
+      "detail": "3 linked awards across 1 agency",
       "institution": "vendor",
       "institution_label": "Vendor",
       "institution_context": "Published supplier organization",
       "agency_ids": [
-        "agency:id:administration-for-childrens-services"
+        "agency:id:aging"
       ],
-      "award_count": 7,
-      "search_text": "Graham-Windham vendor organization",
-      "agency_count": 1
-    },
-    {
-      "kind": "vendor",
-      "id": "vendor:stem:GRAND%20STREET%20SETTLEMENT",
-      "label": "Grand Street Settlement Inc",
-      "href": "/vendors/GRAND%20STREET%20SETTLEMENT/",
-      "entity_ref": "vendor:stem:GRAND%20STREET%20SETTLEMENT",
-      "relation_state": "published",
-      "detail": "5 linked awards across 1 agency",
-      "institution": "vendor",
-      "institution_label": "Vendor",
-      "institution_context": "Published supplier organization",
-      "agency_ids": [
-        "agency:id:youth-and-community-development"
-      ],
-      "award_count": 5,
-      "search_text": "Grand Street Settlement Inc vendor organization",
+      "award_count": 3,
+      "search_text": "Greenwich House Inc. vendor organization",
       "agency_count": 1
     },
     {
@@ -56032,6 +56067,24 @@
       ],
       "award_count": 1,
       "search_text": "HANYC Foundation Inc. vendor organization",
+      "agency_count": 1
+    },
+    {
+      "kind": "vendor",
+      "id": "vendor:stem:HARDWICK%20LAW%20FIRM",
+      "label": "Hardwick Law Firm LLC",
+      "href": "/vendors/HARDWICK%20LAW%20FIRM/",
+      "entity_ref": "vendor:stem:HARDWICK%20LAW%20FIRM",
+      "relation_state": "published",
+      "detail": "1 linked awards across 1 agency",
+      "institution": "vendor",
+      "institution_label": "Vendor",
+      "institution_context": "Published supplier organization",
+      "agency_ids": [
+        "agency:id:law-department"
+      ],
+      "award_count": 1,
+      "search_text": "Hardwick Law Firm LLC vendor organization",
       "agency_count": 1
     },
     {
@@ -56145,19 +56198,19 @@
     {
       "kind": "vendor",
       "id": "vendor:stem:HIGHLAND%20PARK%20COMMUNITY%20DEVELOPMENT",
-      "label": "Highland Park Community Development Corp.",
+      "label": "Highland Park Community Development Corp",
       "href": "/vendors/HIGHLAND%20PARK%20COMMUNITY%20DEVELOPMENT/",
       "entity_ref": "vendor:stem:HIGHLAND%20PARK%20COMMUNITY%20DEVELOPMENT",
       "relation_state": "published",
-      "detail": "2 linked awards across 1 agency",
+      "detail": "3 linked awards across 1 agency",
       "institution": "vendor",
       "institution_label": "Vendor",
       "institution_context": "Published supplier organization",
       "agency_ids": [
         "agency:id:homeless-services"
       ],
-      "award_count": 2,
-      "search_text": "Highland Park Community Development Corp. vendor organization",
+      "award_count": 3,
+      "search_text": "Highland Park Community Development Corp vendor organization",
       "agency_count": 1
     },
     {
@@ -56379,24 +56432,6 @@
     },
     {
       "kind": "vendor",
-      "id": "vendor:stem:INTIVITY",
-      "label": "Intivity Inc",
-      "href": "/vendors/INTIVITY/",
-      "entity_ref": "vendor:stem:INTIVITY",
-      "relation_state": "published",
-      "detail": "1 linked awards across 1 agency",
-      "institution": "vendor",
-      "institution_label": "Vendor",
-      "institution_context": "Published supplier organization",
-      "agency_ids": [
-        "agency:id:buildings"
-      ],
-      "award_count": 1,
-      "search_text": "Intivity Inc vendor organization",
-      "agency_count": 1
-    },
-    {
-      "kind": "vendor",
       "id": "vendor:stem:ITEGIX",
       "label": "Itegix LLC",
       "href": "/vendors/ITEGIX/",
@@ -56415,40 +56450,21 @@
     },
     {
       "kind": "vendor",
-      "id": "vendor:stem:J%20PIZZIRUSSO%20LANDSCAPING",
-      "label": "J. Pizzirusso Landscaping Corp",
-      "href": "/vendors/J%20PIZZIRUSSO%20LANDSCAPING/",
-      "entity_ref": "vendor:stem:J%20PIZZIRUSSO%20LANDSCAPING",
-      "relation_state": "published",
-      "detail": "1 linked awards across 1 agency",
-      "institution": "vendor",
-      "institution_label": "Vendor",
-      "institution_context": "Published supplier organization",
-      "agency_ids": [
-        "agency:id:design-and-construction"
-      ],
-      "award_count": 1,
-      "search_text": "J. Pizzirusso Landscaping Corp vendor organization",
-      "agency_count": 1
-    },
-    {
-      "kind": "vendor",
       "id": "vendor:stem:JEWISH%20CHILD%20CARE%20ASSOCIATION",
       "label": "Jewish Child Care Association of New York",
       "href": "/vendors/JEWISH%20CHILD%20CARE%20ASSOCIATION/",
       "entity_ref": "vendor:stem:JEWISH%20CHILD%20CARE%20ASSOCIATION",
       "relation_state": "published",
-      "detail": "8 linked awards across 2 agencies",
+      "detail": "7 linked awards across 1 agency",
       "institution": "vendor",
       "institution_label": "Vendor",
       "institution_context": "Published supplier organization",
       "agency_ids": [
-        "agency:id:administration-for-childrens-services",
-        "agency:id:probation"
+        "agency:id:administration-for-childrens-services"
       ],
-      "award_count": 8,
+      "award_count": 7,
       "search_text": "Jewish Child Care Association of New York vendor organization",
-      "agency_count": 2
+      "agency_count": 1
     },
     {
       "kind": "vendor",
@@ -56493,16 +56509,17 @@
       "href": "/vendors/JUSTICE%20INNOVATION/",
       "entity_ref": "vendor:stem:JUSTICE%20INNOVATION",
       "relation_state": "published",
-      "detail": "1 linked awards across 1 agency",
+      "detail": "2 linked awards across 2 agencies",
       "institution": "vendor",
       "institution_label": "Vendor",
       "institution_context": "Published supplier organization",
       "agency_ids": [
-        "agency:id:mayors-office-of-criminal-justice"
+        "agency:id:mayors-office-of-criminal-justice",
+        "agency:id:probation"
       ],
-      "award_count": 1,
+      "award_count": 2,
       "search_text": "Justice Innovation Inc vendor organization",
-      "agency_count": 1
+      "agency_count": 2
     },
     {
       "kind": "vendor",
@@ -56520,24 +56537,6 @@
       ],
       "award_count": 1,
       "search_text": "Keefe Group LLC vendor organization",
-      "agency_count": 1
-    },
-    {
-      "kind": "vendor",
-      "id": "vendor:stem:KINGS%20BAY%20YM%20-YWHA",
-      "label": "Kings Bay YM -YWHA Inc.",
-      "href": "/vendors/KINGS%20BAY%20YM%20-YWHA/",
-      "entity_ref": "vendor:stem:KINGS%20BAY%20YM%20-YWHA",
-      "relation_state": "published",
-      "detail": "2 linked awards across 1 agency",
-      "institution": "vendor",
-      "institution_label": "Vendor",
-      "institution_context": "Published supplier organization",
-      "agency_ids": [
-        "agency:id:youth-and-community-development"
-      ],
-      "award_count": 2,
-      "search_text": "Kings Bay YM -YWHA Inc. vendor organization",
       "agency_count": 1
     },
     {
@@ -56650,6 +56649,42 @@
     },
     {
       "kind": "vendor",
+      "id": "vendor:stem:LIRO%20ARCHITECTS%20AND%20PLANNERS",
+      "label": "LiRo Architects and Planners, PC",
+      "href": "/vendors/LIRO%20ARCHITECTS%20AND%20PLANNERS/",
+      "entity_ref": "vendor:stem:LIRO%20ARCHITECTS%20AND%20PLANNERS",
+      "relation_state": "published",
+      "detail": "1 linked awards across 1 agency",
+      "institution": "vendor",
+      "institution_label": "Vendor",
+      "institution_context": "Published supplier organization",
+      "agency_ids": [
+        "agency:id:police-department"
+      ],
+      "award_count": 1,
+      "search_text": "LiRo Architects and Planners, PC vendor organization",
+      "agency_count": 1
+    },
+    {
+      "kind": "vendor",
+      "id": "vendor:stem:LIRO%20PROGRAM%20AND%20CONSTRUCTION%20MANAGEMENT%20PE",
+      "label": "LiRo Program and Construction Management PE PC",
+      "href": "/vendors/LIRO%20PROGRAM%20AND%20CONSTRUCTION%20MANAGEMENT%20PE/",
+      "entity_ref": "vendor:stem:LIRO%20PROGRAM%20AND%20CONSTRUCTION%20MANAGEMENT%20PE",
+      "relation_state": "published",
+      "detail": "3 linked awards across 1 agency",
+      "institution": "vendor",
+      "institution_label": "Vendor",
+      "institution_context": "Published supplier organization",
+      "agency_ids": [
+        "agency:id:design-and-construction"
+      ],
+      "award_count": 3,
+      "search_text": "LiRo Program and Construction Management PE PC vendor organization",
+      "agency_count": 1
+    },
+    {
+      "kind": "vendor",
       "id": "vendor:stem:LIVING%20REDEMPTION%20COMMUNITY%20DEVELOPMENT",
       "label": "Living Redemption Community Development Corporation",
       "href": "/vendors/LIVING%20REDEMPTION%20COMMUNITY%20DEVELOPMENT/",
@@ -56668,6 +56703,24 @@
     },
     {
       "kind": "vendor",
+      "id": "vendor:stem:LOWER%20MANHATTAN%20CULTURAL%20COUNCIL",
+      "label": "Lower Manhattan Cultural Council Inc",
+      "href": "/vendors/LOWER%20MANHATTAN%20CULTURAL%20COUNCIL/",
+      "entity_ref": "vendor:stem:LOWER%20MANHATTAN%20CULTURAL%20COUNCIL",
+      "relation_state": "published",
+      "detail": "1 linked awards across 1 agency",
+      "institution": "vendor",
+      "institution_label": "Vendor",
+      "institution_context": "Published supplier organization",
+      "agency_ids": [
+        "agency:id:cultural-affairs"
+      ],
+      "award_count": 1,
+      "search_text": "Lower Manhattan Cultural Council Inc vendor organization",
+      "agency_count": 1
+    },
+    {
+      "kind": "vendor",
       "id": "vendor:stem:MARSH",
       "label": "Marsh USA LLC",
       "href": "/vendors/MARSH/",
@@ -56682,6 +56735,24 @@
       ],
       "award_count": 2,
       "search_text": "Marsh USA LLC vendor organization",
+      "agency_count": 1
+    },
+    {
+      "kind": "vendor",
+      "id": "vendor:stem:MASPETH%20SUPPLY",
+      "label": "Maspeth Supply Co LLC",
+      "href": "/vendors/MASPETH%20SUPPLY/",
+      "entity_ref": "vendor:stem:MASPETH%20SUPPLY",
+      "relation_state": "published",
+      "detail": "2 linked awards across 1 agency",
+      "institution": "vendor",
+      "institution_label": "Vendor",
+      "institution_context": "Published supplier organization",
+      "agency_ids": [
+        "agency:id:design-and-construction"
+      ],
+      "award_count": 2,
+      "search_text": "Maspeth Supply Co LLC vendor organization",
       "agency_count": 1
     },
     {
@@ -56795,6 +56866,24 @@
     },
     {
       "kind": "vendor",
+      "id": "vendor:stem:MONTEFIORE%20MEDICAL%20CENTER",
+      "label": "Montefiore Medical Center",
+      "href": "/vendors/MONTEFIORE%20MEDICAL%20CENTER/",
+      "entity_ref": "vendor:stem:MONTEFIORE%20MEDICAL%20CENTER",
+      "relation_state": "published",
+      "detail": "1 linked awards across 1 agency",
+      "institution": "vendor",
+      "institution_label": "Vendor",
+      "institution_context": "Published supplier organization",
+      "agency_ids": [
+        "agency:id:fire-department"
+      ],
+      "award_count": 1,
+      "search_text": "Montefiore Medical Center vendor organization",
+      "agency_count": 1
+    },
+    {
+      "kind": "vendor",
       "id": "vendor:stem:MOUGONDHA%20ACHARYA",
       "label": "Mougondha Acharya",
       "href": "/vendors/MOUGONDHA%20ACHARYA/",
@@ -56832,24 +56921,6 @@
     },
     {
       "kind": "vendor",
-      "id": "vendor:stem:NATIONAL%20ASSOCIATION%20ON%20DRUG%20ABUSE%20PROBLEMS%20(NYS)",
-      "label": "National Association On Drug Abuse Problems (NYS)",
-      "href": "/vendors/NATIONAL%20ASSOCIATION%20ON%20DRUG%20ABUSE%20PROBLEMS%20(NYS)/",
-      "entity_ref": "vendor:stem:NATIONAL%20ASSOCIATION%20ON%20DRUG%20ABUSE%20PROBLEMS%20(NYS)",
-      "relation_state": "published",
-      "detail": "1 linked awards across 1 agency",
-      "institution": "vendor",
-      "institution_label": "Vendor",
-      "institution_context": "Published supplier organization",
-      "agency_ids": [
-        "agency:id:human-resources-administration"
-      ],
-      "award_count": 1,
-      "search_text": "National Association On Drug Abuse Problems (NYS) vendor organization",
-      "agency_count": 1
-    },
-    {
-      "kind": "vendor",
       "id": "vendor:stem:NATIONAL%20MEDICAL%20SERVICES",
       "label": "National Medical Services, Inc.",
       "href": "/vendors/NATIONAL%20MEDICAL%20SERVICES/",
@@ -56864,6 +56935,24 @@
       ],
       "award_count": 1,
       "search_text": "National Medical Services, Inc. vendor organization",
+      "agency_count": 1
+    },
+    {
+      "kind": "vendor",
+      "id": "vendor:stem:NEIGHBORHOOD%20ASSOCIATION%20FOR%20INTER-CULTURAL%20AFFAIRS",
+      "label": "Neighborhood Association for Inter-Cultural Affairs",
+      "href": "/vendors/NEIGHBORHOOD%20ASSOCIATION%20FOR%20INTER-CULTURAL%20AFFAIRS/",
+      "entity_ref": "vendor:stem:NEIGHBORHOOD%20ASSOCIATION%20FOR%20INTER-CULTURAL%20AFFAIRS",
+      "relation_state": "published",
+      "detail": "4 linked awards across 1 agency",
+      "institution": "vendor",
+      "institution_label": "Vendor",
+      "institution_context": "Published supplier organization",
+      "agency_ids": [
+        "agency:id:homeless-services"
+      ],
+      "award_count": 4,
+      "search_text": "Neighborhood Association for Inter-Cultural Affairs vendor organization",
       "agency_count": 1
     },
     {
@@ -56981,16 +57070,17 @@
       "href": "/vendors/NEW%20YORK%20EDGE/",
       "entity_ref": "vendor:stem:NEW%20YORK%20EDGE",
       "relation_state": "published",
-      "detail": "2 linked awards across 1 agency",
+      "detail": "5 linked awards across 2 agencies",
       "institution": "vendor",
       "institution_label": "Vendor",
       "institution_context": "Published supplier organization",
       "agency_ids": [
-        "agency:id:education"
+        "agency:id:education",
+        "agency:id:youth-and-community-development"
       ],
-      "award_count": 2,
+      "award_count": 5,
       "search_text": "New York Edge Inc. vendor organization",
-      "agency_count": 1
+      "agency_count": 2
     },
     {
       "kind": "vendor",
@@ -57031,20 +57121,21 @@
     {
       "kind": "vendor",
       "id": "vendor:stem:NEW%20YORK%20LEGAL%20ASSISTANCE%20GROUP",
-      "label": "New York Legal Assistance Group Inc",
+      "label": "New York Legal Assistance Group, Inc.",
       "href": "/vendors/NEW%20YORK%20LEGAL%20ASSISTANCE%20GROUP/",
       "entity_ref": "vendor:stem:NEW%20YORK%20LEGAL%20ASSISTANCE%20GROUP",
       "relation_state": "published",
-      "detail": "1 linked awards across 1 agency",
+      "detail": "2 linked awards across 2 agencies",
       "institution": "vendor",
       "institution_label": "Vendor",
       "institution_context": "Published supplier organization",
       "agency_ids": [
+        "agency:id:consumer-and-worker-protection",
         "agency:id:nyc-department-of-veterans-services"
       ],
-      "award_count": 1,
-      "search_text": "New York Legal Assistance Group Inc vendor organization",
-      "agency_count": 1
+      "award_count": 2,
+      "search_text": "New York Legal Assistance Group, Inc. vendor organization",
+      "agency_count": 2
     },
     {
       "kind": "vendor",
@@ -57068,24 +57159,6 @@
     },
     {
       "kind": "vendor",
-      "id": "vendor:stem:NEW%20YORK%20STATE%20TECHNOLOGY%20ENTERPRISE",
-      "label": "New York State Technology Enterprise Corporation",
-      "href": "/vendors/NEW%20YORK%20STATE%20TECHNOLOGY%20ENTERPRISE/",
-      "entity_ref": "vendor:stem:NEW%20YORK%20STATE%20TECHNOLOGY%20ENTERPRISE",
-      "relation_state": "published",
-      "detail": "1 linked awards across 1 agency",
-      "institution": "vendor",
-      "institution_label": "Vendor",
-      "institution_context": "Published supplier organization",
-      "agency_ids": [
-        "agency:id:fire-department"
-      ],
-      "award_count": 1,
-      "search_text": "New York State Technology Enterprise Corporation vendor organization",
-      "agency_count": 1
-    },
-    {
-      "kind": "vendor",
       "id": "vendor:stem:NEWTOWN%20CREEK%20CSO%20PARTNERS%20A%20JOINT%20VENTURE",
       "label": "Newtown Creek CSO Partners A Joint Venture",
       "href": "/vendors/NEWTOWN%20CREEK%20CSO%20PARTNERS%20A%20JOINT%20VENTURE/",
@@ -57100,6 +57173,24 @@
       ],
       "award_count": 1,
       "search_text": "Newtown Creek CSO Partners A Joint Venture vendor organization",
+      "agency_count": 1
+    },
+    {
+      "kind": "vendor",
+      "id": "vendor:stem:NIA%20COMMUNITY%20SERVICES%20NETWORK",
+      "label": "NIA Community Services Network Inc",
+      "href": "/vendors/NIA%20COMMUNITY%20SERVICES%20NETWORK/",
+      "entity_ref": "vendor:stem:NIA%20COMMUNITY%20SERVICES%20NETWORK",
+      "relation_state": "published",
+      "detail": "2 linked awards across 1 agency",
+      "institution": "vendor",
+      "institution_label": "Vendor",
+      "institution_context": "Published supplier organization",
+      "agency_ids": [
+        "agency:id:youth-and-community-development"
+      ],
+      "award_count": 2,
+      "search_text": "NIA Community Services Network Inc vendor organization",
       "agency_count": 1
     },
     {
@@ -57298,6 +57389,24 @@
       ],
       "award_count": 1,
       "search_text": "People Care Inc. vendor organization",
+      "agency_count": 1
+    },
+    {
+      "kind": "vendor",
+      "id": "vendor:stem:PERATON",
+      "label": "Peraton Inc",
+      "href": "/vendors/PERATON/",
+      "entity_ref": "vendor:stem:PERATON",
+      "relation_state": "published",
+      "detail": "1 linked awards across 1 agency",
+      "institution": "vendor",
+      "institution_label": "Vendor",
+      "institution_context": "Published supplier organization",
+      "agency_ids": [
+        "agency:id:fire-department"
+      ],
+      "award_count": 1,
+      "search_text": "Peraton Inc vendor organization",
       "agency_count": 1
     },
     {
@@ -57573,24 +57682,6 @@
     },
     {
       "kind": "vendor",
-      "id": "vendor:stem:REWORLD%20HOLDING%20CORPORATION%20FKA%20COVANTA%20HOLDING",
-      "label": "Reworld Holding Corporation FKA Covanta Holding Co.",
-      "href": "/vendors/REWORLD%20HOLDING%20CORPORATION%20FKA%20COVANTA%20HOLDING/",
-      "entity_ref": "vendor:stem:REWORLD%20HOLDING%20CORPORATION%20FKA%20COVANTA%20HOLDING",
-      "relation_state": "published",
-      "detail": "1 linked awards across 1 agency",
-      "institution": "vendor",
-      "institution_label": "Vendor",
-      "institution_context": "Published supplier organization",
-      "agency_ids": [
-        "agency:id:police-department"
-      ],
-      "award_count": 1,
-      "search_text": "Reworld Holding Corporation FKA Covanta Holding Co. vendor organization",
-      "agency_count": 1
-    },
-    {
-      "kind": "vendor",
       "id": "vendor:stem:RIS%20NYC",
       "label": "RIS NYC",
       "href": "/vendors/RIS%20NYC/",
@@ -57609,37 +57700,19 @@
     },
     {
       "kind": "vendor",
-      "id": "vendor:stem:RISEBORO%20COMMUNITY%20PARTNERSHIP",
-      "label": "Riseboro Community Partnership Inc",
-      "href": "/vendors/RISEBORO%20COMMUNITY%20PARTNERSHIP/",
-      "entity_ref": "vendor:stem:RISEBORO%20COMMUNITY%20PARTNERSHIP",
-      "relation_state": "published",
-      "detail": "1 linked awards across 1 agency",
-      "institution": "vendor",
-      "institution_label": "Vendor",
-      "institution_context": "Published supplier organization",
-      "agency_ids": [
-        "agency:id:aging"
-      ],
-      "award_count": 1,
-      "search_text": "Riseboro Community Partnership Inc vendor organization",
-      "agency_count": 1
-    },
-    {
-      "kind": "vendor",
       "id": "vendor:stem:RISING%20GROUND",
       "label": "Rising Ground Inc.",
       "href": "/vendors/RISING%20GROUND/",
       "entity_ref": "vendor:stem:RISING%20GROUND",
       "relation_state": "published",
-      "detail": "1 linked awards across 1 agency",
+      "detail": "13 linked awards across 1 agency",
       "institution": "vendor",
       "institution_label": "Vendor",
       "institution_context": "Published supplier organization",
       "agency_ids": [
-        "agency:id:probation"
+        "agency:id:administration-for-childrens-services"
       ],
-      "award_count": 1,
+      "award_count": 13,
       "search_text": "Rising Ground Inc. vendor organization",
       "agency_count": 1
     },
@@ -57699,24 +57772,6 @@
     },
     {
       "kind": "vendor",
-      "id": "vendor:stem:ROUTERATI",
-      "label": "Routerati Inc",
-      "href": "/vendors/ROUTERATI/",
-      "entity_ref": "vendor:stem:ROUTERATI",
-      "relation_state": "published",
-      "detail": "7 linked awards across 1 agency",
-      "institution": "vendor",
-      "institution_label": "Vendor",
-      "institution_context": "Published supplier organization",
-      "agency_ids": [
-        "agency:id:correction"
-      ],
-      "award_count": 7,
-      "search_text": "Routerati Inc vendor organization",
-      "agency_count": 1
-    },
-    {
-      "kind": "vendor",
       "id": "vendor:stem:S%20J%20TOUR%20BUS",
       "label": "S & J Tour & Bus Inc",
       "href": "/vendors/S%20J%20TOUR%20BUS/",
@@ -57735,37 +57790,19 @@
     },
     {
       "kind": "vendor",
-      "id": "vendor:stem:SAFE%20HORIZON",
-      "label": "Safe Horizon Inc.",
-      "href": "/vendors/SAFE%20HORIZON/",
-      "entity_ref": "vendor:stem:SAFE%20HORIZON",
-      "relation_state": "published",
-      "detail": "7 linked awards across 1 agency",
-      "institution": "vendor",
-      "institution_label": "Vendor",
-      "institution_context": "Published supplier organization",
-      "agency_ids": [
-        "agency:id:human-resources-administration"
-      ],
-      "award_count": 7,
-      "search_text": "Safe Horizon Inc. vendor organization",
-      "agency_count": 1
-    },
-    {
-      "kind": "vendor",
       "id": "vendor:stem:SAMARITAN%20DAYTOP%20VILLAGE",
       "label": "Samaritan Daytop Village Inc",
       "href": "/vendors/SAMARITAN%20DAYTOP%20VILLAGE/",
       "entity_ref": "vendor:stem:SAMARITAN%20DAYTOP%20VILLAGE",
       "relation_state": "published",
-      "detail": "4 linked awards across 1 agency",
+      "detail": "5 linked awards across 1 agency",
       "institution": "vendor",
       "institution_label": "Vendor",
       "institution_context": "Published supplier organization",
       "agency_ids": [
         "agency:id:homeless-services"
       ],
-      "award_count": 4,
+      "award_count": 5,
       "search_text": "Samaritan Daytop Village Inc vendor organization",
       "agency_count": 1
     },
@@ -57790,19 +57827,19 @@
     {
       "kind": "vendor",
       "id": "vendor:stem:SCAN-HARBOR",
-      "label": "SCAN-Harbor Inc.",
+      "label": "SCAN-Harbor Inc",
       "href": "/vendors/SCAN-HARBOR/",
       "entity_ref": "vendor:stem:SCAN-HARBOR",
       "relation_state": "published",
-      "detail": "4 linked awards across 1 agency",
+      "detail": "6 linked awards across 1 agency",
       "institution": "vendor",
       "institution_label": "Vendor",
       "institution_context": "Published supplier organization",
       "agency_ids": [
         "agency:id:youth-and-community-development"
       ],
-      "award_count": 4,
-      "search_text": "SCAN-Harbor Inc. vendor organization",
+      "award_count": 6,
+      "search_text": "SCAN-Harbor Inc vendor organization",
       "agency_count": 1
     },
     {
@@ -57812,14 +57849,14 @@
       "href": "/vendors/SCO%20FAMILY%20OF%20SERVICES/",
       "entity_ref": "vendor:stem:SCO%20FAMILY%20OF%20SERVICES",
       "relation_state": "published",
-      "detail": "8 linked awards across 1 agency",
+      "detail": "9 linked awards across 1 agency",
       "institution": "vendor",
       "institution_label": "Vendor",
       "institution_context": "Published supplier organization",
       "agency_ids": [
         "agency:id:administration-for-childrens-services"
       ],
-      "award_count": 8,
+      "award_count": 9,
       "search_text": "SCO Family of Services vendor organization",
       "agency_count": 1
     },
@@ -57862,22 +57899,21 @@
     {
       "kind": "vendor",
       "id": "vendor:stem:SHI%20INTERNATIONAL",
-      "label": "SHI International Corp.",
+      "label": "SHI International Corp",
       "href": "/vendors/SHI%20INTERNATIONAL/",
       "entity_ref": "vendor:stem:SHI%20INTERNATIONAL",
       "relation_state": "published",
-      "detail": "4 linked awards across 3 agencies",
+      "detail": "3 linked awards across 2 agencies",
       "institution": "vendor",
       "institution_label": "Vendor",
       "institution_context": "Published supplier organization",
       "agency_ids": [
-        "agency:id:finance",
         "agency:id:investigation",
         "agency:id:mayors-office-of-contract-services"
       ],
-      "award_count": 4,
-      "search_text": "SHI International Corp. vendor organization",
-      "agency_count": 3
+      "award_count": 3,
+      "search_text": "SHI International Corp vendor organization",
+      "agency_count": 2
     },
     {
       "kind": "vendor",
@@ -58007,6 +58043,24 @@
     },
     {
       "kind": "vendor",
+      "id": "vendor:stem:SPRAGUE%20OPERATING%20RESOURCES",
+      "label": "Sprague Operating Resources LLC",
+      "href": "/vendors/SPRAGUE%20OPERATING%20RESOURCES/",
+      "entity_ref": "vendor:stem:SPRAGUE%20OPERATING%20RESOURCES",
+      "relation_state": "published",
+      "detail": "3 linked awards across 1 agency",
+      "institution": "vendor",
+      "institution_label": "Vendor",
+      "institution_context": "Published supplier organization",
+      "agency_ids": [
+        "agency:id:citywide-administrative-services"
+      ],
+      "award_count": 3,
+      "search_text": "Sprague Operating Resources LLC vendor organization",
+      "agency_count": 1
+    },
+    {
+      "kind": "vendor",
       "id": "vendor:stem:SPRUCE%20TECHNOLOGY",
       "label": "Spruce Technology Inc.",
       "href": "/vendors/SPRUCE%20TECHNOLOGY/",
@@ -58049,14 +58103,14 @@
       "href": "/vendors/STATEWIDE%20DEMOLITION/",
       "entity_ref": "vendor:stem:STATEWIDE%20DEMOLITION",
       "relation_state": "published",
-      "detail": "15 linked awards across 1 agency",
+      "detail": "17 linked awards across 1 agency",
       "institution": "vendor",
       "institution_label": "Vendor",
       "institution_context": "Published supplier organization",
       "agency_ids": [
         "agency:id:housing-preservation-and-development"
       ],
-      "award_count": 15,
+      "award_count": 17,
       "search_text": "Statewide Demolition Corp vendor organization",
       "agency_count": 1
     },
@@ -58076,24 +58130,6 @@
       ],
       "award_count": 1,
       "search_text": "Steinway, Inc. vendor organization",
-      "agency_count": 1
-    },
-    {
-      "kind": "vendor",
-      "id": "vendor:stem:SUCCESS-ID",
-      "label": "Success-ID LLC",
-      "href": "/vendors/SUCCESS-ID/",
-      "entity_ref": "vendor:stem:SUCCESS-ID",
-      "relation_state": "published",
-      "detail": "1 linked awards across 1 agency",
-      "institution": "vendor",
-      "institution_label": "Vendor",
-      "institution_context": "Published supplier organization",
-      "agency_ids": [
-        "agency:id:consumer-and-worker-protection"
-      ],
-      "award_count": 1,
-      "search_text": "Success-ID LLC vendor organization",
       "agency_count": 1
     },
     {
@@ -58170,30 +58206,12 @@
     },
     {
       "kind": "vendor",
-      "id": "vendor:stem:THE%20CHILD%20CENTER",
-      "label": "The Child Center of NY Inc",
-      "href": "/vendors/THE%20CHILD%20CENTER/",
-      "entity_ref": "vendor:stem:THE%20CHILD%20CENTER",
-      "relation_state": "published",
-      "detail": "3 linked awards across 1 agency",
-      "institution": "vendor",
-      "institution_label": "Vendor",
-      "institution_context": "Published supplier organization",
-      "agency_ids": [
-        "agency:id:youth-and-community-development"
-      ],
-      "award_count": 3,
-      "search_text": "The Child Center of NY Inc vendor organization",
-      "agency_count": 1
-    },
-    {
-      "kind": "vendor",
       "id": "vendor:stem:THE%20CHILDREN%20S%20AID%20SOCIETY",
       "label": "The Children's Aid Society",
       "href": "/vendors/THE%20CHILDREN%20S%20AID%20SOCIETY/",
       "entity_ref": "vendor:stem:THE%20CHILDREN%20S%20AID%20SOCIETY",
       "relation_state": "published",
-      "detail": "15 linked awards across 2 agencies",
+      "detail": "17 linked awards across 2 agencies",
       "institution": "vendor",
       "institution_label": "Vendor",
       "institution_context": "Published supplier organization",
@@ -58201,7 +58219,7 @@
         "agency:id:administration-for-childrens-services",
         "agency:id:youth-and-community-development"
       ],
-      "award_count": 15,
+      "award_count": 17,
       "search_text": "The Children's Aid Society vendor organization",
       "agency_count": 2
     },
@@ -58340,16 +58358,17 @@
       "href": "/vendors/THE%20LEGAL%20AID%20SOCIETY/",
       "entity_ref": "vendor:stem:THE%20LEGAL%20AID%20SOCIETY",
       "relation_state": "published",
-      "detail": "1 linked awards across 1 agency",
+      "detail": "3 linked awards across 2 agencies",
       "institution": "vendor",
       "institution_label": "Vendor",
       "institution_context": "Published supplier organization",
       "agency_ids": [
+        "agency:id:human-resources-administration",
         "agency:id:mayors-office-of-criminal-justice"
       ],
-      "award_count": 1,
+      "award_count": 3,
       "search_text": "The Legal Aid Society vendor organization",
-      "agency_count": 1
+      "agency_count": 2
     },
     {
       "kind": "vendor",
@@ -58426,6 +58445,24 @@
     },
     {
       "kind": "vendor",
+      "id": "vendor:stem:THE%20YOUNG%20WOMEN%20S%20CHRISTIAN%20ASSOCIATION%20OF%20THE%20CITY",
+      "label": "The Young Women's Christian Association of the City of New York",
+      "href": "/vendors/THE%20YOUNG%20WOMEN%20S%20CHRISTIAN%20ASSOCIATION%20OF%20THE%20CITY/",
+      "entity_ref": "vendor:stem:THE%20YOUNG%20WOMEN%20S%20CHRISTIAN%20ASSOCIATION%20OF%20THE%20CITY",
+      "relation_state": "published",
+      "detail": "2 linked awards across 1 agency",
+      "institution": "vendor",
+      "institution_label": "Vendor",
+      "institution_context": "Published supplier organization",
+      "agency_ids": [
+        "agency:id:youth-and-community-development"
+      ],
+      "award_count": 2,
+      "search_text": "The Young Women's Christian Association of the City of New York vendor organization",
+      "agency_count": 1
+    },
+    {
+      "kind": "vendor",
       "id": "vendor:stem:THORNTON%20TOMASETTI",
       "label": "Thornton Tomasetti Inc",
       "href": "/vendors/THORNTON%20TOMASETTI/",
@@ -58440,24 +58477,6 @@
       ],
       "award_count": 1,
       "search_text": "Thornton Tomasetti Inc vendor organization",
-      "agency_count": 1
-    },
-    {
-      "kind": "vendor",
-      "id": "vendor:stem:TILCON%20NEW%20YORK",
-      "label": "Tilcon New York Inc.",
-      "href": "/vendors/TILCON%20NEW%20YORK/",
-      "entity_ref": "vendor:stem:TILCON%20NEW%20YORK",
-      "relation_state": "published",
-      "detail": "1 linked awards across 1 agency",
-      "institution": "vendor",
-      "institution_label": "Vendor",
-      "institution_context": "Published supplier organization",
-      "agency_ids": [
-        "agency:id:citywide-administrative-services"
-      ],
-      "award_count": 1,
-      "search_text": "Tilcon New York Inc. vendor organization",
       "agency_count": 1
     },
     {
@@ -58647,14 +58666,14 @@
       "href": "/vendors/URBAN%20RESOURCE%20INSTITUTE/",
       "entity_ref": "vendor:stem:URBAN%20RESOURCE%20INSTITUTE",
       "relation_state": "published",
-      "detail": "5 linked awards across 1 agency",
+      "detail": "10 linked awards across 1 agency",
       "institution": "vendor",
       "institution_label": "Vendor",
       "institution_context": "Published supplier organization",
       "agency_ids": [
         "agency:id:human-resources-administration"
       ],
-      "award_count": 5,
+      "award_count": 10,
       "search_text": "Urban Resource Institute vendor organization",
       "agency_count": 1
     },
@@ -58733,24 +58752,6 @@
     },
     {
       "kind": "vendor",
-      "id": "vendor:stem:VIRTAIR",
-      "label": "Virtair Inc",
-      "href": "/vendors/VIRTAIR/",
-      "entity_ref": "vendor:stem:VIRTAIR",
-      "relation_state": "published",
-      "detail": "1 linked awards across 1 agency",
-      "institution": "vendor",
-      "institution_label": "Vendor",
-      "institution_context": "Published supplier organization",
-      "agency_ids": [
-        "agency:id:fire-department"
-      ],
-      "award_count": 1,
-      "search_text": "Virtair Inc vendor organization",
-      "agency_count": 1
-    },
-    {
-      "kind": "vendor",
       "id": "vendor:stem:VISION%20GOVERNMENT%20SOLUTIONS",
       "label": "Vision Government Solutions, Inc.",
       "href": "/vendors/VISION%20GOVERNMENT%20SOLUTIONS/",
@@ -58765,6 +58766,24 @@
       ],
       "award_count": 1,
       "search_text": "Vision Government Solutions, Inc. vendor organization",
+      "agency_count": 1
+    },
+    {
+      "kind": "vendor",
+      "id": "vendor:stem:VISION%20SECURITY",
+      "label": "Vision Security Corporation",
+      "href": "/vendors/VISION%20SECURITY/",
+      "entity_ref": "vendor:stem:VISION%20SECURITY",
+      "relation_state": "published",
+      "detail": "1 linked awards across 1 agency",
+      "institution": "vendor",
+      "institution_label": "Vendor",
+      "institution_context": "Published supplier organization",
+      "agency_ids": [
+        "agency:id:buildings"
+      ],
+      "award_count": 1,
+      "search_text": "Vision Security Corporation vendor organization",
       "agency_count": 1
     },
     {
@@ -58788,19 +58807,19 @@
     {
       "kind": "vendor",
       "id": "vendor:stem:VOLUNTEERS%20OF%20AMERICA%20GREATER%20NEW%20YORK",
-      "label": "Volunteers of America Greater New York Inc",
+      "label": "Volunteers of America Greater New York Inc.",
       "href": "/vendors/VOLUNTEERS%20OF%20AMERICA%20GREATER%20NEW%20YORK/",
       "entity_ref": "vendor:stem:VOLUNTEERS%20OF%20AMERICA%20GREATER%20NEW%20YORK",
       "relation_state": "published",
-      "detail": "3 linked awards across 1 agency",
+      "detail": "5 linked awards across 1 agency",
       "institution": "vendor",
       "institution_label": "Vendor",
       "institution_context": "Published supplier organization",
       "agency_ids": [
-        "agency:id:homeless-services"
+        "agency:id:human-resources-administration"
       ],
-      "award_count": 3,
-      "search_text": "Volunteers of America Greater New York Inc vendor organization",
+      "award_count": 5,
+      "search_text": "Volunteers of America Greater New York Inc. vendor organization",
       "agency_count": 1
     },
     {
@@ -59053,6 +59072,24 @@
       ],
       "award_count": 1,
       "search_text": "Y and S Technologies, Inc. vendor organization",
+      "agency_count": 1
+    },
+    {
+      "kind": "vendor",
+      "id": "vendor:stem:YMCA%20OF%20GREATER%20NEW%20YORK",
+      "label": "YMCA of Greater New York",
+      "href": "/vendors/YMCA%20OF%20GREATER%20NEW%20YORK/",
+      "entity_ref": "vendor:stem:YMCA%20OF%20GREATER%20NEW%20YORK",
+      "relation_state": "published",
+      "detail": "6 linked awards across 1 agency",
+      "institution": "vendor",
+      "institution_label": "Vendor",
+      "institution_context": "Published supplier organization",
+      "agency_ids": [
+        "agency:id:youth-and-community-development"
+      ],
+      "award_count": 6,
+      "search_text": "YMCA of Greater New York vendor organization",
       "agency_count": 1
     },
     {
@@ -60546,6 +60583,12 @@
       "kind": "vendor"
     },
     {
+      "entity_id": "vendor:stem:A%20T%20J%20ELECTRICAL",
+      "label": "A T J Electrical Co Inc",
+      "href": "/vendors/A%20T%20J%20ELECTRICAL/",
+      "kind": "vendor"
+    },
+    {
       "entity_id": "vendor:stem:ABSORB%20SOFTWARE",
       "label": "Absorb Software, Inc.",
       "href": "/vendors/ABSORB%20SOFTWARE/",
@@ -60774,6 +60817,12 @@
       "kind": "official"
     },
     {
+      "entity_id": "vendor:stem:ARIVA",
+      "label": "Ariva Inc",
+      "href": "/vendors/ARIVA/",
+      "kind": "vendor"
+    },
+    {
       "entity_id": "vendor:stem:ARON%20SECURITY",
       "label": "Aron Security Inc",
       "href": "/vendors/ARON%20SECURITY/",
@@ -60966,12 +61015,6 @@
       "kind": "vendor"
     },
     {
-      "entity_id": "vendor:stem:CAMBA",
-      "label": "CAMBA Inc",
-      "href": "/vendors/CAMBA/",
-      "kind": "vendor"
-    },
-    {
       "entity_id": "agency:id:campaign-finance-board",
       "label": "Campaign Finance Board",
       "href": "/agencies/campaign-finance-board/",
@@ -61080,6 +61123,18 @@
       "kind": "official"
     },
     {
+      "entity_id": "vendor:stem:CHILD%20DEVELOPMENT%20CENTER%20-%20MOSHOLU%20MONTEFIORE%20COMMUNITY%20CENTER",
+      "label": "Child Development Center - Mosholu Montefiore Community Center",
+      "href": "/vendors/CHILD%20DEVELOPMENT%20CENTER%20-%20MOSHOLU%20MONTEFIORE%20COMMUNITY%20CENTER/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:CHINESE%20AMERICAN%20PLANNING%20COUNCIL",
+      "label": "Chinese American Planning Council Inc",
+      "href": "/vendors/CHINESE%20AMERICAN%20PLANNING%20COUNCIL/",
+      "kind": "vendor"
+    },
+    {
       "entity_id": "entity:official:7864",
       "label": "Chris Banks",
       "href": "/officials/7864/",
@@ -61174,6 +61229,12 @@
       "label": "Corey D. Johnson",
       "href": "/officials/7631/",
       "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:CORVEL%20HEALTHCARE",
+      "label": "CoRvel Healthcare Corporation",
+      "href": "/vendors/CORVEL%20HEALTHCARE/",
+      "kind": "vendor"
     },
     {
       "entity_id": "entity:official:7627",
@@ -61440,12 +61501,6 @@
       "kind": "vendor"
     },
     {
-      "entity_id": "vendor:stem:DEWBERRY-GF%20RESIDENT%20ENGINEERING%20JV",
-      "label": "Dewberry-GF Resident Engineering JV",
-      "href": "/vendors/DEWBERRY-GF%20RESIDENT%20ENGINEERING%20JV/",
-      "kind": "vendor"
-    },
-    {
       "entity_id": "entity:official:7742",
       "label": "Diana I. Ayala",
       "href": "/officials/7742/",
@@ -61620,6 +61675,12 @@
       "kind": "official"
     },
     {
+      "entity_id": "vendor:stem:FAST%20ENTERPRISES",
+      "label": "Fast Enterprises LLC",
+      "href": "/vendors/FAST%20ENTERPRISES/",
+      "kind": "vendor"
+    },
+    {
       "entity_id": "vendor:stem:FAUST%20HARRISON%20PIANOS",
       "label": "Faust Harrison Pianos Inc.",
       "href": "/vendors/FAUST%20HARRISON%20PIANOS/",
@@ -61650,12 +61711,6 @@
       "kind": "agency"
     },
     {
-      "entity_id": "vendor:stem:FINESSE%20CREATIONS",
-      "label": "Finesse Creations Inc",
-      "href": "/vendors/FINESSE%20CREATIONS/",
-      "kind": "vendor"
-    },
-    {
       "entity_id": "agency:id:fire-department",
       "label": "Fire Department of the City of New York",
       "href": "/agencies/fire-department/",
@@ -61677,12 +61732,6 @@
       "entity_id": "vendor:stem:FRANCO%20BELLI%20PLUMBING%20HEATING%20SONS",
       "label": "Franco Belli Plumbing & Heating & Sons, Inc.",
       "href": "/vendors/FRANCO%20BELLI%20PLUMBING%20HEATING%20SONS/",
-      "kind": "vendor"
-    },
-    {
-      "entity_id": "vendor:stem:FRANGLAIS%20MANAGEMENT",
-      "label": "Franglais Management LLC",
-      "href": "/vendors/FRANGLAIS%20MANAGEMENT/",
       "kind": "vendor"
     },
     {
@@ -61740,6 +61789,12 @@
       "kind": "vendor"
     },
     {
+      "entity_id": "vendor:stem:GLOCK",
+      "label": "Glock Inc",
+      "href": "/vendors/GLOCK/",
+      "kind": "vendor"
+    },
+    {
       "entity_id": "vendor:stem:GOOD%20SHEPHERD%20SERVICES",
       "label": "Good Shepherd Services",
       "href": "/vendors/GOOD%20SHEPHERD%20SERVICES/",
@@ -61752,15 +61807,9 @@
       "kind": "vendor"
     },
     {
-      "entity_id": "vendor:stem:GRAHAM-WINDHAM",
-      "label": "Graham-Windham",
-      "href": "/vendors/GRAHAM-WINDHAM/",
-      "kind": "vendor"
-    },
-    {
-      "entity_id": "vendor:stem:GRAND%20STREET%20SETTLEMENT",
-      "label": "Grand Street Settlement Inc",
-      "href": "/vendors/GRAND%20STREET%20SETTLEMENT/",
+      "entity_id": "vendor:stem:GREENWICH%20HOUSE",
+      "label": "Greenwich House Inc.",
+      "href": "/vendors/GREENWICH%20HOUSE/",
       "kind": "vendor"
     },
     {
@@ -61797,6 +61846,12 @@
       "entity_id": "vendor:stem:HANYC%20FOUNDATION",
       "label": "HANYC Foundation Inc.",
       "href": "/vendors/HANYC%20FOUNDATION/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:HARDWICK%20LAW%20FIRM",
+      "label": "Hardwick Law Firm LLC",
+      "href": "/vendors/HARDWICK%20LAW%20FIRM/",
       "kind": "vendor"
     },
     {
@@ -61873,7 +61928,7 @@
     },
     {
       "entity_id": "vendor:stem:HIGHLAND%20PARK%20COMMUNITY%20DEVELOPMENT",
-      "label": "Highland Park Community Development Corp.",
+      "label": "Highland Park Community Development Corp",
       "href": "/vendors/HIGHLAND%20PARK%20COMMUNITY%20DEVELOPMENT/",
       "kind": "vendor"
     },
@@ -61998,21 +62053,9 @@
       "kind": "vendor"
     },
     {
-      "entity_id": "vendor:stem:INTIVITY",
-      "label": "Intivity Inc",
-      "href": "/vendors/INTIVITY/",
-      "kind": "vendor"
-    },
-    {
       "entity_id": "vendor:stem:ITEGIX",
       "label": "Itegix LLC",
       "href": "/vendors/ITEGIX/",
-      "kind": "vendor"
-    },
-    {
-      "entity_id": "vendor:stem:J%20PIZZIRUSSO%20LANDSCAPING",
-      "label": "J. Pizzirusso Landscaping Corp",
-      "href": "/vendors/J%20PIZZIRUSSO%20LANDSCAPING/",
       "kind": "vendor"
     },
     {
@@ -62262,12 +62305,6 @@
       "kind": "official"
     },
     {
-      "entity_id": "vendor:stem:KINGS%20BAY%20YM%20-YWHA",
-      "label": "Kings Bay YM -YWHA Inc.",
-      "href": "/vendors/KINGS%20BAY%20YM%20-YWHA/",
-      "kind": "vendor"
-    },
-    {
       "entity_id": "vendor:stem:KNOX%20GOLF%20ACADEMY",
       "label": "Knox Golf Academy",
       "href": "/vendors/KNOX%20GOLF%20ACADEMY/",
@@ -62370,6 +62407,18 @@
       "kind": "official"
     },
     {
+      "entity_id": "vendor:stem:LIRO%20ARCHITECTS%20AND%20PLANNERS",
+      "label": "LiRo Architects and Planners, PC",
+      "href": "/vendors/LIRO%20ARCHITECTS%20AND%20PLANNERS/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:LIRO%20PROGRAM%20AND%20CONSTRUCTION%20MANAGEMENT%20PE",
+      "label": "LiRo Program and Construction Management PE PC",
+      "href": "/vendors/LIRO%20PROGRAM%20AND%20CONSTRUCTION%20MANAGEMENT%20PE/",
+      "kind": "vendor"
+    },
+    {
       "entity_id": "vendor:stem:LIVING%20REDEMPTION%20COMMUNITY%20DEVELOPMENT",
       "label": "Living Redemption Community Development Corporation",
       "href": "/vendors/LIVING%20REDEMPTION%20COMMUNITY%20DEVELOPMENT/",
@@ -62386,6 +62435,12 @@
       "label": "Long Island Rail Road",
       "href": "/agencies/long-island-rail-road/",
       "kind": "agency"
+    },
+    {
+      "entity_id": "vendor:stem:LOWER%20MANHATTAN%20CULTURAL%20COUNCIL",
+      "label": "Lower Manhattan Cultural Council Inc",
+      "href": "/vendors/LOWER%20MANHATTAN%20CULTURAL%20COUNCIL/",
+      "kind": "vendor"
     },
     {
       "entity_id": "entity:official:399",
@@ -62488,6 +62543,12 @@
       "label": "Mary Pinkett",
       "href": "/officials/35/",
       "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:MASPETH%20SUPPLY",
+      "label": "Maspeth Supply Co LLC",
+      "href": "/vendors/MASPETH%20SUPPLY/",
+      "kind": "vendor"
     },
     {
       "entity_id": "entity:official:7113",
@@ -62598,6 +62659,12 @@
       "kind": "vendor"
     },
     {
+      "entity_id": "vendor:stem:MONTEFIORE%20MEDICAL%20CENTER",
+      "label": "Montefiore Medical Center",
+      "href": "/vendors/MONTEFIORE%20MEDICAL%20CENTER/",
+      "kind": "vendor"
+    },
+    {
       "entity_id": "entity:official:24",
       "label": "Morton Povman",
       "href": "/officials/24/",
@@ -62634,15 +62701,15 @@
       "kind": "official"
     },
     {
-      "entity_id": "vendor:stem:NATIONAL%20ASSOCIATION%20ON%20DRUG%20ABUSE%20PROBLEMS%20(NYS)",
-      "label": "National Association On Drug Abuse Problems (NYS)",
-      "href": "/vendors/NATIONAL%20ASSOCIATION%20ON%20DRUG%20ABUSE%20PROBLEMS%20(NYS)/",
-      "kind": "vendor"
-    },
-    {
       "entity_id": "vendor:stem:NATIONAL%20MEDICAL%20SERVICES",
       "label": "National Medical Services, Inc.",
       "href": "/vendors/NATIONAL%20MEDICAL%20SERVICES/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:NEIGHBORHOOD%20ASSOCIATION%20FOR%20INTER-CULTURAL%20AFFAIRS",
+      "label": "Neighborhood Association for Inter-Cultural Affairs",
+      "href": "/vendors/NEIGHBORHOOD%20ASSOCIATION%20FOR%20INTER-CULTURAL%20AFFAIRS/",
       "kind": "vendor"
     },
     {
@@ -62767,7 +62834,7 @@
     },
     {
       "entity_id": "vendor:stem:NEW%20YORK%20LEGAL%20ASSISTANCE%20GROUP",
-      "label": "New York Legal Assistance Group Inc",
+      "label": "New York Legal Assistance Group, Inc.",
       "href": "/vendors/NEW%20YORK%20LEGAL%20ASSISTANCE%20GROUP/",
       "kind": "vendor"
     },
@@ -62778,15 +62845,15 @@
       "kind": "vendor"
     },
     {
-      "entity_id": "vendor:stem:NEW%20YORK%20STATE%20TECHNOLOGY%20ENTERPRISE",
-      "label": "New York State Technology Enterprise Corporation",
-      "href": "/vendors/NEW%20YORK%20STATE%20TECHNOLOGY%20ENTERPRISE/",
-      "kind": "vendor"
-    },
-    {
       "entity_id": "vendor:stem:NEWTOWN%20CREEK%20CSO%20PARTNERS%20A%20JOINT%20VENTURE",
       "label": "Newtown Creek CSO Partners A Joint Venture",
       "href": "/vendors/NEWTOWN%20CREEK%20CSO%20PARTNERS%20A%20JOINT%20VENTURE/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:NIA%20COMMUNITY%20SERVICES%20NETWORK",
+      "label": "NIA Community Services Network Inc",
+      "href": "/vendors/NIA%20COMMUNITY%20SERVICES%20NETWORK/",
       "kind": "vendor"
     },
     {
@@ -62976,6 +63043,12 @@
       "kind": "vendor"
     },
     {
+      "entity_id": "vendor:stem:PERATON",
+      "label": "Peraton Inc",
+      "href": "/vendors/PERATON/",
+      "kind": "vendor"
+    },
+    {
       "entity_id": "vendor:stem:PERSONAL%20-%20TOUCH%20HOME%20CARE",
       "label": "Personal - Touch Home Care of NY, Inc.",
       "href": "/vendors/PERSONAL%20-%20TOUCH%20HOME%20CARE/",
@@ -63138,21 +63211,9 @@
       "kind": "vendor"
     },
     {
-      "entity_id": "vendor:stem:REWORLD%20HOLDING%20CORPORATION%20FKA%20COVANTA%20HOLDING",
-      "label": "Reworld Holding Corporation FKA Covanta Holding Co.",
-      "href": "/vendors/REWORLD%20HOLDING%20CORPORATION%20FKA%20COVANTA%20HOLDING/",
-      "kind": "vendor"
-    },
-    {
       "entity_id": "vendor:stem:RIS%20NYC",
       "label": "RIS NYC",
       "href": "/vendors/RIS%20NYC/",
-      "kind": "vendor"
-    },
-    {
-      "entity_id": "vendor:stem:RISEBORO%20COMMUNITY%20PARTNERSHIP",
-      "label": "Riseboro Community Partnership Inc",
-      "href": "/vendors/RISEBORO%20COMMUNITY%20PARTNERSHIP/",
       "kind": "vendor"
     },
     {
@@ -63228,12 +63289,6 @@
       "kind": "official"
     },
     {
-      "entity_id": "vendor:stem:ROUTERATI",
-      "label": "Routerati Inc",
-      "href": "/vendors/ROUTERATI/",
-      "kind": "vendor"
-    },
-    {
       "entity_id": "entity:official:5267",
       "label": "Ruben Diaz",
       "href": "/officials/5267/",
@@ -63255,12 +63310,6 @@
       "entity_id": "vendor:stem:S%20J%20TOUR%20BUS",
       "label": "S & J Tour & Bus Inc",
       "href": "/vendors/S%20J%20TOUR%20BUS/",
-      "kind": "vendor"
-    },
-    {
-      "entity_id": "vendor:stem:SAFE%20HORIZON",
-      "label": "Safe Horizon Inc.",
-      "href": "/vendors/SAFE%20HORIZON/",
       "kind": "vendor"
     },
     {
@@ -63295,7 +63344,7 @@
     },
     {
       "entity_id": "vendor:stem:SCAN-HARBOR",
-      "label": "SCAN-Harbor Inc.",
+      "label": "SCAN-Harbor Inc",
       "href": "/vendors/SCAN-HARBOR/",
       "kind": "vendor"
     },
@@ -63355,7 +63404,7 @@
     },
     {
       "entity_id": "vendor:stem:SHI%20INTERNATIONAL",
-      "label": "SHI International Corp.",
+      "label": "SHI International Corp",
       "href": "/vendors/SHI%20INTERNATIONAL/",
       "kind": "vendor"
     },
@@ -63414,6 +63463,12 @@
       "kind": "vendor"
     },
     {
+      "entity_id": "vendor:stem:SPRAGUE%20OPERATING%20RESOURCES",
+      "label": "Sprague Operating Resources LLC",
+      "href": "/vendors/SPRAGUE%20OPERATING%20RESOURCES/",
+      "kind": "vendor"
+    },
+    {
       "entity_id": "vendor:stem:SPRUCE%20TECHNOLOGY",
       "label": "Spruce Technology Inc.",
       "href": "/vendors/SPRUCE%20TECHNOLOGY/",
@@ -63468,12 +63523,6 @@
       "kind": "official"
     },
     {
-      "entity_id": "vendor:stem:SUCCESS-ID",
-      "label": "Success-ID LLC",
-      "href": "/vendors/SUCCESS-ID/",
-      "kind": "vendor"
-    },
-    {
       "entity_id": "entity:official:7867",
       "label": "Susan Zhuang",
       "href": "/officials/7867/",
@@ -63507,12 +63556,6 @@
       "entity_id": "vendor:stem:THE%20BRONX%20DEFENDERS",
       "label": "The Bronx Defenders",
       "href": "/vendors/THE%20BRONX%20DEFENDERS/",
-      "kind": "vendor"
-    },
-    {
-      "entity_id": "vendor:stem:THE%20CHILD%20CENTER",
-      "label": "The Child Center of NY Inc",
-      "href": "/vendors/THE%20CHILD%20CENTER/",
       "kind": "vendor"
     },
     {
@@ -63594,6 +63637,12 @@
       "kind": "vendor"
     },
     {
+      "entity_id": "vendor:stem:THE%20YOUNG%20WOMEN%20S%20CHRISTIAN%20ASSOCIATION%20OF%20THE%20CITY",
+      "label": "The Young Women's Christian Association of the City of New York",
+      "href": "/vendors/THE%20YOUNG%20WOMEN%20S%20CHRISTIAN%20ASSOCIATION%20OF%20THE%20CITY/",
+      "kind": "vendor"
+    },
+    {
       "entity_id": "entity:official:393",
       "label": "Thomas K. Duane",
       "href": "/officials/393/",
@@ -63628,12 +63677,6 @@
       "label": "Tiffany L. Cabán",
       "href": "/officials/7813/",
       "kind": "official"
-    },
-    {
-      "entity_id": "vendor:stem:TILCON%20NEW%20YORK",
-      "label": "Tilcon New York Inc.",
-      "href": "/vendors/TILCON%20NEW%20YORK/",
-      "kind": "vendor"
     },
     {
       "entity_id": "vendor:stem:TOMEX%20ELECTRONICS",
@@ -63792,15 +63835,15 @@
       "kind": "official"
     },
     {
-      "entity_id": "vendor:stem:VIRTAIR",
-      "label": "Virtair Inc",
-      "href": "/vendors/VIRTAIR/",
-      "kind": "vendor"
-    },
-    {
       "entity_id": "vendor:stem:VISION%20GOVERNMENT%20SOLUTIONS",
       "label": "Vision Government Solutions, Inc.",
       "href": "/vendors/VISION%20GOVERNMENT%20SOLUTIONS/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:VISION%20SECURITY",
+      "label": "Vision Security Corporation",
+      "href": "/vendors/VISION%20SECURITY/",
       "kind": "vendor"
     },
     {
@@ -63811,7 +63854,7 @@
     },
     {
       "entity_id": "vendor:stem:VOLUNTEERS%20OF%20AMERICA%20GREATER%20NEW%20YORK",
-      "label": "Volunteers of America Greater New York Inc",
+      "label": "Volunteers of America Greater New York Inc.",
       "href": "/vendors/VOLUNTEERS%20OF%20AMERICA%20GREATER%20NEW%20YORK/",
       "kind": "vendor"
     },
@@ -63918,6 +63961,12 @@
       "kind": "official"
     },
     {
+      "entity_id": "vendor:stem:YMCA%20OF%20GREATER%20NEW%20YORK",
+      "label": "YMCA of Greater New York",
+      "href": "/vendors/YMCA%20OF%20GREATER%20NEW%20YORK/",
+      "kind": "vendor"
+    },
+    {
       "entity_id": "vendor:stem:YSKOUD",
       "label": "YSKOUD LLC",
       "href": "/vendors/YSKOUD/",
@@ -63950,7 +63999,7 @@
     "exact-person-appointment": 558,
     "committee": 96,
     "agency": 86,
-    "vendor": 267,
+    "vendor": 269,
     "notice-only-hire": 80
   },
   "relation_states": [

@@ -11,6 +11,7 @@ import { describe, it } from "node:test";
 
 import { WAREHOUSE_DIR, catalogExists, duckdbPath } from "../warehouse/lib/catalog.mjs";
 import { queryWarehouse } from "../warehouse/lib/query.mjs";
+import { withScratchWarehouseRoot } from "./helpers/scratch_warehouse_root.mjs";
 import {
   runErBatch,
   observationFromOcpRow,
@@ -406,6 +407,7 @@ describe("WH-04 end-to-end fixture materialization", () => {
       return;
     }
 
+    withScratchWarehouseRoot(() => {
     // Ensure OCP awards view exists so er_ocp_vendor_resolved can join.
     // Retry on lock contention (parallel WH-01 scaffold test may hold it).
     const ingest = spawnWithLockRetry(
@@ -419,7 +421,7 @@ describe("WH-04 end-to-end fixture materialization", () => {
         "5",
         "--force-headroom",
       ],
-      { cwd: ROOT, encoding: "utf8" }
+      { cwd: ROOT, encoding: "utf8", env: { ...process.env } }
     );
     assert.equal(ingest.status, 0, ingest.stderr || ingest.stdout);
 
@@ -434,7 +436,7 @@ describe("WH-04 end-to-end fixture materialization", () => {
         "--snapshot-date",
         "fixture",
       ],
-      { cwd: ROOT, encoding: "utf8" }
+      { cwd: ROOT, encoding: "utf8", env: { ...process.env } }
     );
     assert.equal(er.status, 0, er.stderr || er.stdout);
     assert.match(er.stdout, /OK/);
@@ -466,11 +468,9 @@ describe("WH-04 end-to-end fixture materialization", () => {
 
     // Resolved join view paints vendor ids onto fixture awards when request_ids match.
     // Fixture variants use ER00x ids not in the 5-row OCP sample — check metrics receipt.
-    const proof = join(
-      WAREHOUSE_DIR,
-      "receipts",
-      "wh04_er_batch_fixture.json"
-    );
+    // er_batch_run.py writes its fixture receipt beside the repository warehouse
+    // directory, not under the scratch data root.
+    const proof = join(WAREHOUSE_DIR, "receipts", "wh04_er_batch_fixture.json");
     assert.ok(existsSync(proof));
     const receipt = JSON.parse(readFileSync(proof, "utf8"));
     assert.equal(receipt.phase, "WH-04");
@@ -498,5 +498,6 @@ describe("WH-04 end-to-end fixture materialization", () => {
       { cwd: ROOT, encoding: "utf8" }
     );
     assert.equal(gold.status, 0, gold.stderr || gold.stdout);
+    });
   });
 });

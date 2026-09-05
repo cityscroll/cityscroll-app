@@ -57,7 +57,7 @@
     "artifacts": {
       "browse_rows": {
         "path": "site/data/procurement_browse_rows.json",
-        "sha256": "24dffbd3f6c2363cf27bcc0cde836657473afc3412be7e3a2e9b394420a53529",
+        "sha256": "7b6adab9ba366f7a4dd0c328b368bf4ec4d245edc2953d8370c8d8c676ce49ff",
         "row_count": 13791
       },
       "spine_sources": {
@@ -67,12 +67,12 @@
       },
       "shared_read_model": {
         "path": "site/data/shared_procurement_read_model.json",
-        "sha256": "39575859f561b3d97f86d6a26002f101da1bbd881af587302d6bc6d657b36f5c",
+        "sha256": "3a610c53b49d80d054841b70a715619e43d76182049fee287bc983621b57c735",
         "object_count": 13791
       }
     },
     "served_source_counts": {
-      "city_record": 12983,
+      "city_record": 13178,
       "passport_public_contracts": 12782,
       "checkbook_contracts": 1704
     },
@@ -455,7 +455,7 @@
     "source_snapshot_generated_at": "2026-08-18T04:05:51.552Z",
     "agency_predicate": "agency_name matches /department of education|^education$|education admin|^doe$/i",
     "source_row_counts": {
-      "city_record": 12983,
+      "city_record": 13178,
       "passport_public_contracts": 12782,
       "checkbook_contracts": 1704
     },

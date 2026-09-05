@@ -1,6 +1,6 @@
 {
   "phase": "WH-03",
-  "measured_at": "2026-08-29T11:43:50.532Z",
+  "measured_at": "2026-09-05T13:44:01.926Z",
   "replaced_fetch": {
     "function": "fetchOcpAwardRows",
     "file": "worker/src/checkbook_lifecycle.mjs",
@@ -8,42 +8,42 @@
     "product": "OCP award side-car on GET /contract-lifecycle"
   },
   "query": "SELECT request_id, start_date, agency_name, type_of_notice_description, short_title, pin, contract_amount, vendor_name FROM ocp_recent_contract_awards WHERE CAST(request_id AS VARCHAR) = '20260723031' LIMIT 5",
-  "source_snapshot_hash": "305feac515a6fed03fcfda68b2c6a8e6830784c18380b5b6ef280ef6d509e5a6",
-  "source_row_count": 53251,
-  "row_count": 53245,
+  "source_snapshot_hash": "9befe6ad5ac82ae6e643615433a8f414b7f02cde8bd17c28bc4581b6e3c5b1f5",
+  "source_row_count": 53606,
+  "row_count": 53600,
   "excluded_row_count": 6,
   "excluded_reason": "public payload integrity filter rejected test-only rows",
-  "p50_ms": 63.97,
-  "p95_ms": 65.76,
+  "p50_ms": 70.52,
+  "p95_ms": 74.27,
   "warehouse_duckdb_build_path": {
     "samples_ms": [
-      64.68,
-      65.76,
-      63.97,
-      63.83,
-      62.83
+      69.57,
+      70.25,
+      70.52,
+      71.66,
+      74.27
     ],
-    "p50_ms": 63.97,
-    "p95_ms": 65.76,
-    "mean_ms": 64.22,
+    "p50_ms": 70.52,
+    "p95_ms": 74.27,
+    "mean_ms": 71.25,
     "n": 5,
     "path": "warehouse",
     "rows": 1,
     "query": "SELECT request_id, start_date, agency_name, type_of_notice_description, short_title, pin, contract_amount, vendor_name FROM ocp_recent_contract_awards WHERE CAST(request_id AS VARCHAR) = '20260723031' LIMIT 5",
-    "source_snapshot_hash": "305feac515a6fed03fcfda68b2c6a8e6830784c18380b5b6ef280ef6d509e5a6",
-    "source_row_count": 53251,
+    "source_snapshot_hash": "9befe6ad5ac82ae6e643615433a8f414b7f02cde8bd17c28bc4581b6e3c5b1f5",
+    "source_row_count": 53606,
     "notice_request_id": "20260723031",
     "note": "Python DuckDB CLI spawn per query — build/ops only, not Worker request path"
   },
   "materialized_index_edge_path": {
     "samples_ms": [
-      0.0009,
+      0.0011,
+      0.0006,
       0.0005,
       0.0004,
-      0.0004,
-      0.0004
+      0.0005
     ],
-    "p50_ms": 0.0001,
+    "p50_ms": 0.0002,
     "p95_ms": 0.0004,
     "mean_ms": 0.0002,
     "n": 200,
@@ -54,13 +54,13 @@
   },
   "soda_live_previous_path": {
     "samples_ms": [
-      367.12,
-      104.27,
-      121.4
+      209.63,
+      159.51,
+      133.51
     ],
-    "p50_ms": 121.4,
-    "p95_ms": 367.12,
-    "mean_ms": 197.6,
+    "p50_ms": 159.51,
+    "p95_ms": 209.63,
+    "mean_ms": 167.55,
     "n": 3,
     "path": "soda_live",
     "rows": 1,
@@ -69,10 +69,10 @@
     "note": "Previous live path in fetchOcpAwardRows"
   },
   "speedup": {
-    "soda_p50_ms": 121.4,
-    "warehouse_materialized_p50_ms": 0.0001,
-    "ratio_vs_0_01ms_floor": 12140,
-    "summary": "OCP side-car lookup p50: live SODA 121.4ms → warehouse materialization 0.0001ms (sub-ms; removes a SODA RTT)",
+    "soda_p50_ms": 159.51,
+    "warehouse_materialized_p50_ms": 0.0002,
+    "ratio_vs_0_01ms_floor": 15951,
+    "summary": "OCP side-car lookup p50: live SODA 159.51ms → warehouse materialization 0.0002ms (sub-ms; removes a SODA RTT)",
     "note": "Edge path is the materialized index; DuckDB spawn is build-time only"
   }
 }

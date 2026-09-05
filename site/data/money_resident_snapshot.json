@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
   "delivery_tier": "resident-snapshot",
-  "generated_at": "2026-09-04T15:00:57.739Z",
+  "generated_at": "2026-09-05T13:44:00.909Z",
   "source_vintages": {
     "default_open": "2026-09-04T15:00:57.739Z",
     "domain_observations": "2026-08-03T22:31:10.617Z",
-    "award_warehouse": "2026-08-29T11:43:49.474Z"
+    "award_warehouse": "2026-09-05T13:44:00.909Z"
   },
   "count": 378,
   "rows": [
@@ -483,7 +483,7 @@
       "short_title": "Summer Youth Employment Program NAQ",
       "pin": "26026N0011068",
       "contract_amount": "2616983",
-      "vendor_name": "Child Development Center of the Mosholu-Montefiore",
+      "vendor_name": "Child Development Center - Mosholu Montefiore Community Center",
       "source_system": "ocp-recent-contract-awards",
       "place": {
         "scope": "citywide",
@@ -632,7 +632,7 @@
       "short_title": "Single Room Occupancy Housing Services- Washington Avenue",
       "pin": "06926R0001016",
       "contract_amount": "252579",
-      "vendor_name": "Volunteers of America Greater New York Inc",
+      "vendor_name": "Volunteers of America Greater New York Inc.",
       "source_system": "ocp-recent-contract-awards",
       "place": {
         "scope": "unlocated",
@@ -680,7 +680,7 @@
       "short_title": "Prevention Services - Family Support - BX4",
       "pin": "06820P8200KXLR001",
       "contract_amount": "5758826",
-      "vendor_name": "Arab-American Family Support Center Inc",
+      "vendor_name": "Arab-American Family Support Center Inc.",
       "source_system": "ocp-recent-contract-awards",
       "place": {
         "scope": "unlocated",
@@ -6129,7 +6129,7 @@
       "short_title": "Prevention Services - Family Support - Qns4",
       "pin": "06820P8236KXLR001",
       "contract_amount": "5764753",
-      "vendor_name": "Arab-American Family Support Center Inc",
+      "vendor_name": "Arab-American Family Support Center Inc.",
       "source_system": "ocp-recent-contract-awards",
       "place": {
         "scope": "unlocated",

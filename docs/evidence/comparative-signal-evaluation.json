@@ -12,13 +12,13 @@
     "measurement_mode": "deterministic_committed_inputs_no_llm"
   },
   "input_fingerprints": {
-    "awards": "e8d7a02452a588024feb720c98564fa6b232d2db4bb5cdee95186779e90f184f",
-    "source_contracts": "7493ac57a3a4cc9e89183a99aa3a807ae8b13ac2d34d790cdd80867f90da93fc",
-    "award_receipts": "95c8ec386d39df9ad1394ff48dfa8068a621a17206400934fd524e14306bfc5d",
-    "story_signals": "4a7ba27ff8f3163d3dc9566c8c343b6e2bffc172ee9b62aebd40aed2a4a2bf6a",
-    "procurement": "de092195ac9d59c1939763c5e90e05e27ad2e900bf7b2f6307ac61f84db26b02",
+    "awards": "01f108bd923c6bfe1a46af6408a4bcd2c6deedc7f29911105a3a34d9d46ee01a",
+    "source_contracts": "1f5cd88d3f29e98ded3d7997afb53755872ea5103e2635a385aab6bafb489604",
+    "award_receipts": "e0b92190ad9e371ce6eddca4449cbebc3fc08e30775cea3f7c663e447502b943",
+    "story_signals": "df030ac7adc058eae1a45ace7684912563e1dc9161534ae6ca8a6e354ebeeafe",
+    "procurement": "e20f90bf356fdb56f189feacedec5a99cde92830d039ce0123a6e4b0aae59d8e",
     "negative_control": "977d6ba5b8c45ea784a965b21b8fa7a9b142de401e14451d88873cbc6da5b8de",
-    "frozen_cases": "ad01330671f03901b0e687d92040c30a3a193da8e6360c9017f7e308fb2e09cd"
+    "frozen_cases": "5b66dd57ddb81041fc7c66031143d19a904187a6bf64f5b03b7d1c06fd94753d"
   },
   "dimensions": {
     "precision": {
@@ -68,7 +68,7 @@
           "numerator": 1,
           "denominator": 1,
           "rate": 1,
-          "peer_population_context": 8395
+          "peer_population_context": 8750
         },
         "within_contract_registered_amount_change": {
           "denominator_basis": "unique committed Checkbook observations with two positive registered amounts",
