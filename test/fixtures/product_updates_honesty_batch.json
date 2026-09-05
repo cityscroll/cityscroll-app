@@ -1,0 +1,36 @@
+{
+  "batch_id": "sample-weekly-batch-2026-09-04",
+  "source_artifact_hash": "6fd14bb9130679fc5e69a6936c86c0526ee48880614a24cb86533775078647cb",
+  "candidates": [
+    {
+      "candidate_id": "notice.get@1::notice-sanitation-connected-mandate",
+      "claim": "A rule notice pivots to the law that required it, its agency, and a mandate watch; publication evidence becomes a traversable civic object.",
+      "capability_ref": "notice.get@1",
+      "capability_version": "1.0.0",
+      "demo_id": "notice-sanitation-connected-mandate",
+      "demo_route": "/notices/20260605008",
+      "source_event": {
+        "kind": "architecture_reconciliation",
+        "path": "architecture/generated/reconciliation.json",
+        "status": "checked"
+      },
+      "regression_state": "passing",
+      "as_of": "2026-09-04T06:04:02Z"
+    },
+    {
+      "candidate_id": "search.federated@1::semantic-search-housing",
+      "claim": "One concept query returns cited passages across Rules and Meetings while preserving six typed lanes instead of flattening civic objects.",
+      "capability_ref": "search.federated@1",
+      "capability_version": "1.1.0",
+      "demo_id": "semantic-search-housing",
+      "demo_route": "/search/",
+      "source_event": {
+        "kind": "architecture_reconciliation",
+        "path": "architecture/generated/reconciliation.json",
+        "status": "checked"
+      },
+      "regression_state": "passing",
+      "as_of": "2026-09-04T06:04:02Z"
+    }
+  ]
+}
