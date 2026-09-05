@@ -1,0 +1,33 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-procurement-pursuit-decision/ppd-07-gated-research-lanes",
+  "status": "implemented",
+  "fingerprint": "ppd-07-gated-research-lanes.v1",
+  "updated_at": "2026-09-05T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "procurement-research-lane-registry",
+      "path": "site/procurement_research_lanes.json"
+    },
+    {
+      "id": "procurement-research-lane-gate",
+      "path": "tools/procurement_research_lane_gates.mjs"
+    },
+    {
+      "id": "procurement-access-classification-builder",
+      "path": "tools/build_procurement_access_classification.mjs"
+    },
+    {
+      "id": "procurement-access-classification",
+      "path": "docs/research/procurement-access-classification/classification.json"
+    },
+    {
+      "id": "procurement-handoff-copy-contract",
+      "path": "site/procurement_handoff_copy.mjs"
+    },
+    {
+      "id": "procurement-research-lane-gate-tests",
+      "path": "test/procurement_research_lane_gates.test.mjs"
+    }
+  ]
+}

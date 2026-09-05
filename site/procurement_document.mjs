@@ -37,6 +37,7 @@ import { extractSolicitationProcurementMethod } from "./solicitation_procurement
 import { buildSolicitationMwbeView } from "./mwbe_goal_surface.mjs";
 import { buildPursuitSnapshot, renderPursuitSnapshotHtml } from "./procurement_pursuit_snapshot.mjs";
 import { buildRelatedProcurementContext, renderRelatedProcurementContextHtml } from "./procurement_related_context.mjs";
+import { buildProcurementHandoffCopy, renderProcurementHandoffCopyHtml } from "./procurement_handoff_copy.mjs";
 
 const CHECKBOOK_SMART_SEARCH = "https://www.checkbooknyc.com/smart_search/citywide";
 const CHECKBOOK_CONTRACT_SEARCH = "https://www.checkbooknyc.com/contract_search";
@@ -154,6 +155,24 @@ function observationRows(object, observations) {
   const index = new Map((Array.isArray(observations) ? observations : [])
     .map((entry) => [entry?.source_observation_ref, entry]));
   return (object?.source_observation_refs || []).map((ref) => index.get(ref)).filter(Boolean);
+}
+
+/**
+ * Card "PPD-07" (procurement-pursuit-decision): the latest moment this
+ * product observed the matter, read from the record's own observations. This
+ * is deliberately not a clock reading -- the handoff copy beneath the official
+ * records tells a vendor when the matter was last seen, and a clock would tell
+ * them a stale record is fresh.
+ */
+function lastObservedAtFor(object, observations) {
+  let latest = "";
+  for (const row of observationRows(object, observations)) {
+    for (const value of [row?.ingested_at, row?.snapshot?.retrieval_timestamp, row?.snapshot?.retrieved_at]) {
+      const stamp = clean(value, 40);
+      if (stamp && stamp > latest) latest = stamp;
+    }
+  }
+  return latest || null;
 }
 
 function checkbookOfficialSource(object, rows) {
@@ -441,6 +460,7 @@ export function renderProcurementDocument(object = {}, observations = [], {
   relatedContextCandidates = null,
   relatedContextPopulationAmounts = null,
   preferenceMatch = null,
+  accessClassification = null,
 } = {}) {
   const id = clean(object?.procurement_id, 320);
   if (!id.startsWith("procurement:")) return null;
@@ -473,6 +493,16 @@ export function renderProcurementDocument(object = {}, observations = [], {
     ["Solicitation", object?.identity_keys?.solicitation_ids?.[0]], ["Event", object?.identity_keys?.event_ids?.[0]],
   ].filter(([, value]) => value).map(([label, value]) => `<div><dt>${esc(label)}</dt><dd>${esc(value)}</dd></div>`).join("");
   const sourceItems = procurementOfficialSourceItems(object, observations);
+  // Card "PPD-07": where the access classification says a field is reachable
+  // only after signing in, or is carried by no public source this product
+  // observes, say so beside the official-record handoff rather than leaving a
+  // vendor to discover it at the portal. Caller-supplied, like every other
+  // optional section on this page: absent that input this renders nothing.
+  const handoffCopyHtml = renderProcurementHandoffCopyHtml(
+    accessClassification
+      ? buildProcurementHandoffCopy(accessClassification, { record: { last_observed_at: lastObservedAtFor(object, observations) } })
+      : null,
+  );
   const canonical = procurementCanonicalHref(object);
   const html = `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -523,6 +553,12 @@ ${renderNodeSection({
   body: Array.isArray(object?.process_events) && object.process_events.length ? "" : stageList(object),
 })}
 ${renderNodeProvenance({ heading: sourceItems.length ? "Official records" : "", sourceItems })}
+${renderNodeSection({
+  heading: "What these official records do not carry",
+  headingId: "procurement-handoff-access",
+  extraClass: "procurement-handoff-access",
+  body: handoffCopyHtml,
+})}
 </main>${renderNodeFooter({})}</body></html>`;
   return gateNodePageRender(html);
 }

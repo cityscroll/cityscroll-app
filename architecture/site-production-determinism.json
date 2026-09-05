@@ -391,6 +391,7 @@
     "site/procurement_document.mjs",
     "site/procurement_event_log.mjs",
     "site/procurement_facet_links.mjs",
+    "site/procurement_handoff_copy.mjs",
     "site/procurement_object_contract.mjs",
     "site/procurement_opportunity_window.mjs",
     "site/procurement_phase_spine.mjs",
