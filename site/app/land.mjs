@@ -56,7 +56,8 @@ import {
 } from "../report_issue.mjs";
 import { zoningHearingRowsForScope } from "../zoning_hearing_calendar.mjs";
 import { projectCalendarActionsHTML as projectCalendarActions } from "../project_calendar.mjs";
-import { attachAuth, authHTML, loadAuth } from "../land_authority_summary_view.mjs";
+import { attachAuth, authHTML, landAuthoritySummaryFor, loadAuth } from "../land_authority_summary_view.mjs";
+import { landHearingRowRoleHTML } from "../land_hearing_authority_copy.mjs";
 import {
   landFilingEvidenceSectionsHTML,
   loadLandFilingEvidenceLookup,
@@ -429,9 +430,10 @@ function landHearingRowHTML(row, i){
   const open=row.project_id
     ? `<a class="act" href="#land/${encodeURIComponent(row.project_id)}">${t("land_hearings_open_project")}</a>`
     : "";
+  const roleTxt=landHearingRowRoleHTML(landAuthoritySummaryFor(row), {t, escape:escUiHtml});
   return `<div class="row land-hearing-row" data-i="${i}" data-project-id="${escUiHtml(row.project_id||"")}" tabindex="0" role="group">
     <p class="rtitle">${escUiHtml(title)}</p>
-    <p class="rmeta"><span class="ragency">${escUiHtml(row.borough||"")}${row.representing?` · ${escUiHtml(row.representing)}`:""}</span>
+    <p class="rmeta"><span class="ragency">${escUiHtml(row.borough||"")}${row.representing?` · ${escUiHtml(row.representing)}`:""}</span>${roleTxt?` · ${roleTxt}`:""}
       · ${t("land_hearings_card_when",{date:whenLabel})}${modeTxt?` · ${escUiHtml(modeTxt)}`:""}
       ${venue?`<br>${venue}`:""}
       ${row.hearing_location_raw&&!row.venue_address?`<br lang="en" dir="ltr">${escUiHtml(row.hearing_location_raw)}`:""}
