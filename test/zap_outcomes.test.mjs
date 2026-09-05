@@ -137,7 +137,52 @@ test("field case groups identical Community Board votes and carries action chips
   assert.deepEqual(board.action_codes, ["ZM", "ZR"]);
   assert.equal(board.n_source_rows, 2);
   assert.equal(board.n_documents, 2);
-  assert.equal(record.documents.length, 1);
+  // LDP-24: same-name/different-id documents are two distinct publisher
+  // documents (different serverRelativeUrl) and must both survive -- deduping
+  // by name alone would silently erase one of them.
+  assert.equal(record.documents.length, 2);
+  assert.notEqual(record.documents[0].id, record.documents[1].id);
+});
+
+test("LDP-24: n_documents reports the true count even past the 40-item resident digest bound", () => {
+  const artifact = (n) => ({
+    type: "artifacts",
+    id: `artifact-${n}`,
+    attributes: {
+      "dcp-name": `2024K0286_Artifact_${n}`,
+      documents: [{ name: `Exhibit ${n}.pdf`, serverRelativeUrl: `/EXHIBIT${String(n).padStart(3, "0")}AAAA` }],
+    },
+  });
+  const payload = {
+    data: { type: "projects", id: "2024K0286", attributes: { "dcp-publicstatus": "In Public Review" } },
+    included: Array.from({ length: 45 }, (_, i) => artifact(i + 1)),
+  };
+  const record = parseZapApiProject(payload);
+  assert.equal(record.n_documents, 45, "the true count must reflect every distinct document, not just the resident window");
+  assert.equal(record.documents.length, 40, "the live resident digest stays bounded");
+  const position41 = record.documents.find((d) => d.name === "Exhibit 41.pdf");
+  assert.equal(position41, undefined, "position 41 is excluded from the bounded resident digest, not silently substituted for a kept one");
+});
+
+test("LDP-24: a rotating/signed retrieval token does not fracture one document's identity", () => {
+  const disposition = (id, sig) => ({
+    type: "dispositions",
+    id,
+    attributes: {
+      "dcp-name": id,
+      "dcp-representing": "Community Board",
+      documents: [{ name: "CB recommendation.pdf", serverRelativeUrl: `/FAKESTABLEDOCUMENTPATH00001?sig=${sig}` }],
+    },
+  });
+  const payload = {
+    data: { type: "projects", id: "2024K0286", attributes: {} },
+    included: [disposition("2024K0286_ZM_signed_a", "aaa111"), disposition("2024K0286_ZM_signed_b", "bbb222")],
+  };
+  const record = parseZapApiProject(payload);
+  // Two different signed query strings naming the same underlying SharePoint
+  // object must collapse to one document, not fracture into two distinct ids.
+  assert.equal(record.documents.length, 1, "the same document under two rotating signed query strings is one document");
+  assert.equal(record.documents[0].id, "FAKESTABLEDOCUMENTPATH00001");
 });
 
 test("DOB exact BBL side-car accepts and rejects correctly", () => {
