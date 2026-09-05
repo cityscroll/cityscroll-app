@@ -69,6 +69,13 @@
   .btn:disabled{opacity:.55;cursor:default}
   .note{font:13px/1.6 var(--ui);color:var(--muted);margin-top:10px}
   #fbmsg{font:14px/1.6 var(--ui);margin-top:12px;min-height:1.2em}
+  .past-task-guidance-row{display:flex;align-items:flex-start;gap:8px;margin-top:6px}
+  .past-task-guidance-row .opt{margin-top:14px;white-space:nowrap}
+  .past-task-guidance{flex:1;min-width:0;border:1px solid var(--rule);border-radius:10px;padding:10px 14px;background:#fff}
+  .past-task-guidance summary{color:var(--oxblood);cursor:pointer;font-weight:700;min-height:44px;display:flex;align-items:center}
+  .past-task-guidance-body{font:14px/1.6 var(--ui);color:var(--ink-soft);margin-top:8px}
+  .past-task-guidance-body p{margin:6px 0}
+  .past-task-guidance-note{font:13px/1.5 var(--ui);color:var(--muted);margin:10px 0 0;padding-top:8px;border-top:1px solid var(--rule)}
   .loading{display:inline-block;width:12px;height:12px;border:2px solid var(--rule);border-top-color:var(--oxblood);border-radius:50%;animation:spin .8s linear infinite;vertical-align:-2px}
   @keyframes spin{to{transform:rotate(360deg)}}
   .foot{margin-top:40px;border-top:1px solid var(--rule);padding-top:14px;font:13px/1.6 var(--ui);color:var(--muted);text-align:center}
@@ -223,6 +230,18 @@ registration and real payment. Nothing here says anyone did wrong. It just saves
   </div>
 
   <label for="fbmessage" data-i18n="about_label_message">Your message</label>
+  <div class="past-task-guidance-row">
+    <span class="opt" data-i18n="about_pasttask_optional_badge">Optional</span>
+    <details class="past-task-guidance" id="fbpasttask">
+      <summary data-i18n="about_pasttask_summary">Describe a past attempt</summary>
+      <div class="past-task-guidance-body">
+        <p data-i18n-html="about_pasttask_task_html"><b>The task:</b> What were you actually trying to get done?</p>
+        <p data-i18n-html="about_pasttask_breakdown_html"><b>Where it broke down:</b> What happened, or where did it stop working the way you expected?</p>
+        <p data-i18n-html="about_pasttask_workaround_html"><b>What you did instead:</b> Did you find another way, give up, or leave it unfinished?</p>
+      </div>
+      <p class="past-task-guidance-note" data-i18n="about_pasttask_note">These are just prompts. Write your answer below, in your own words — there's no separate field to fill in.</p>
+    </details>
+  </div>
   <textarea id="fbmessage" maxlength="2000" placeholder="What happened, what you'd want, or anything else — the more specific the better." data-i18n-placeholder="about_ph_message"></textarea>
 
   <label for="fbemail"><span data-i18n="about_label_email">Email</span> <span class="opt" data-i18n="about_label_email_opt">— optional, only if you'd like a reply</span></label>
@@ -243,7 +262,8 @@ registration and real payment. Nothing here says anyone did wrong. It just saves
 <footer class="foot" data-i18n-html="about_foot_html">CityScroll · NYC’s public record, linked · <a href="stats.html">Stats</a> · <a href="mailto:feedback%40cityscroll.org">Feedback</a> · <a href="index.html">Home</a></footer>
 </div>
 
-<script>
+<script type="module">
+import { feedbackValidationError, feedbackPayload } from "./contextual_ux_feedback_prompt.mjs";
 const API = window.CROL_API_ORIGIN || "https://api.cityscroll.org";
 const API_FALLBACK = window.CROL_API_FALLBACK_ORIGIN || "https://cityscroll-worker.crol-worker.workers.dev"; // stale-DNS fallback
 async function workerFetch(path, opts){
@@ -260,19 +280,16 @@ document.querySelectorAll("#fbchips .chip").forEach(c=>c.addEventListener("click
   $("#fbcategory").value = c.dataset.cat;
 }));
 
-function fbIsEmail(s){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s||""); }
-
 async function sendFeedback(){
   const msg=$("#fbmsg");
   const category=$("#fbcategory").value;
   const message=$("#fbmessage").value.trim();
   const email=$("#fbemail").value.trim();
-  if(message.length<10){ msg.innerHTML=t("about_err_short"); return; }
-  if(message.length>2000){ msg.innerHTML=t("about_err_long"); return; }
-  if(email && !fbIsEmail(email)){ msg.innerHTML=t("about_err_bademail"); return; }
+  const errorKey = feedbackValidationError(message, email);
+  if(errorKey){ msg.innerHTML=t(errorKey); return; }
   const btn=$("#fbsend"); btn.disabled=true; msg.innerHTML='<span class="loading"></span> '+t("about_sending");
   try{
-    const r=await workerFetch("/feedback",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({category,message,email})});
+    const r=await workerFetch("/feedback",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(feedbackPayload(category,message,email))});
     const j=await r.json().catch(()=>({}));
     if(j.ok){
       msg.innerHTML=t("about_thanks_html")+(email?t("about_thanks_reply"):"");
