@@ -50,7 +50,7 @@
       "id": "full-rule-hearing-recognized-zoomgov-join",
       "kind": "full",
       "domain": "rule",
-      "source_note": "site/data/shared_meeting_read_model.json meeting_id meeting:city_record:20260806002 (title/decides/additional_description_1/source_links copied verbatim)",
+      "source_note": "site/data/shared_meeting_read_model.json meeting_id meeting:city_record:20260806002 (title/decides/source_links copied verbatim; additional_description_1 keeps the same structure and the same Zoom registration sentence but replaces the notice's named accessibility contact with a placeholder, since that contact detail is not needed to exercise the join_remote signal this fixture proves)",
       "projection": {
         "schema": "cityscroll.consequence_projection.v1",
         "proceeding_kind": "hearing",

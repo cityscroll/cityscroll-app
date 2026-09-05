@@ -57,14 +57,14 @@
       "id": "full-rule-hearing-recognized-zoomgov-join",
       "kind": "full",
       "domain": "rule",
-      "source_note": "site/data/shared_meeting_read_model.json meeting_id meeting:city_record:20260806002 (title/decides/additional_description_1/source_links copied verbatim)",
+      "source_note": "site/data/shared_meeting_read_model.json meeting_id meeting:city_record:20260806002 (title/decides/source_links copied verbatim; additional_description_1 keeps the same structure and the same Zoom registration sentence but replaces the notice's named accessibility contact with a placeholder, since that contact detail is not needed to exercise the join_remote signal this fixture proves)",
       "record": {
         "request_id": "20260806002",
         "event_date": "2026-09-16T10:00:00.000",
         "agency_name": "Health and Mental Hygiene",
         "decides": "Rules Regarding Restricted Substances in Personal Care Products",
         "title": "Rules Regarding Restricted Substances in Personal Care Products",
-        "additional_description_1": "Title: Rules Regarding Restricted Substances in Personal Care Products Agency Rules Section Health and Mental Hygiene (DOHMH) Agency Name General Counsel Agency Division 9/16/2026 10:00 AM Event Date and Time Accessibility questions: Svetlana Burdeynik, 347-396-6078, Resolutioncomments@health.nyc.gov, by Wednesday, September 2, 2026 4:00 PM Accessibility To participate in the public hearing, please register at Zoom meeting. External Links Current Status 8/14/2026 Publication Date Public Hearings Notice Type Attachments 1 Proposal to Add Chapter 42 to Title 24 of the Rules of the City of New York Regarding Restricted Substances in Personal Care Products",
+        "additional_description_1": "Title: Rules Regarding Restricted Substances in Personal Care Products Agency Rules Section Health and Mental Hygiene (DOHMH) Agency Name General Counsel Agency Division 9/16/2026 10:00 AM Event Date and Time Accessibility questions: [accessibility contact], by Wednesday, September 2, 2026 4:00 PM Accessibility To participate in the public hearing, please register at Zoom meeting. External Links Current Status 8/14/2026 Publication Date Public Hearings Notice Type Attachments 1 Proposal to Add Chapter 42 to Title 24 of the Rules of the City of New York Regarding Restricted Substances in Personal Care Products",
         "source_links": [
           "https://health-nyc.zoomgov.com/j/1652112788?pwd=ljlbJej2NHa9luN7b1rW1rCaob6nby.1",
           "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=4&requestId=20260806002&requestStatus=Current&documentId=44372"
