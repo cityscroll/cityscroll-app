@@ -1,0 +1,1655 @@
+{
+  "schema": "cityscroll.resident_copy_boundary_evidence_receipt.v1",
+  "captured_at": "2026-09-05T21:44:12Z",
+  "revision": "c157f2f5a8318668453b5f70c61df0e5617ae004",
+  "data_vintage": "committed Community Board sources plus literal in-fixture budget, payment and outcome records; no network, publisher, or production read at any point. Each capture records its own vintage in data_vintage.",
+  "viewports": [
+    {
+      "width": 390,
+      "height": 844
+    },
+    {
+      "width": 1440,
+      "height": 900
+    }
+  ],
+  "capture_convention": "the manifest is the committed proof; rendered image binaries stay under the ignored local path named per capture and are never committed",
+  "corpus_findings": 0,
+  "inherited_accessibility_findings": [
+    {
+      "fixture": "money-card:separate-fiscal-years",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "rule": "definition-list",
+      "impact": "serious",
+      "owner": "site/community_board_money.mjs",
+      "renderer": "renderCommunityBoardMoneyCard",
+      "detail": "metric() wraps <dt>/<dd> in a <div> inside <dl> and appends a <small> detail as a sibling; only <dt> and <dd> are permitted there, so the grouping is announced incorrectly. Reproduces wherever a board renders both a budget and a spending metric."
+    },
+    {
+      "fixture": "money-card:separate-fiscal-years",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "rule": "definition-list",
+      "impact": "serious",
+      "owner": "site/community_board_money.mjs",
+      "renderer": "renderCommunityBoardMoneyCard",
+      "detail": "metric() wraps <dt>/<dd> in a <div> inside <dl> and appends a <small> detail as a sibling; only <dt> and <dd> are permitted there, so the grouping is announced incorrectly. Reproduces wherever a board renders both a budget and a spending metric."
+    }
+  ],
+  "inherited_note": "these are real, reproducible defects in markup owned by other cards; this run reports them and does not gate on them, because fixing them changes rendered output outside this card's scope",
+  "captures_passing": 38,
+  "captures_total": 38,
+  "captures": [
+    {
+      "fixture": "community-board-document:manhattan-cb-03",
+      "polarity": "positive",
+      "state": "partial",
+      "locale": "en",
+      "owning_file": "site/community_board_constellation.mjs",
+      "owning_renderer": "renderCommunityBoardConstellationDocument",
+      "route": "/community-board-document--manhattan-cb-03.html",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "c157f2f5a8318668453b5f70c61df0e5617ae004",
+      "data_vintage": "committed Community Board sources: site/data/community_board_minutes_scorecard.json, site/data/community_board_geography_lookup.json, and site/data/non_council_outcome_sources/*.json",
+      "axe": {
+        "violations_total": 3,
+        "failing_violations": [],
+        "passes": true
+      },
+      "keyboard": {
+        "controls": 31,
+        "reached_by_tab": 31,
+        "unreachable": [],
+        "without_focus_indicator": []
+      },
+      "overflow": {
+        "scroll_width": 390,
+        "viewport_width": 390,
+        "horizontal_overflow": false,
+        "overflowing_nodes": []
+      },
+      "rendered_labels": {
+        "raw_key_in_visible_text": false,
+        "raw_key_in_accessible_name": false,
+        "visible_characters": 2260
+      },
+      "boundary_gate_findings": 0,
+      "assertion": "positive fixture: axe_passes=True keyboard_reachable_and_focus_visible=True no_horizontal_overflow=True no_raw_dynamic_label_in_dom=True boundary_gate_findings=0 (expected 0)",
+      "screenshot_local_path": "docs/screenshots/resident-copy-boundary/community-board-document--manhattan-cb-03-390.png",
+      "screenshot_sha256": "ec30b915ab7342799181bafde263ddbae4f84e7451c60657d10c66c1970385e0",
+      "axe_scoped_failing_violations": []
+    },
+    {
+      "fixture": "community-board-document:manhattan-cb-03",
+      "polarity": "positive",
+      "state": "partial",
+      "locale": "en",
+      "owning_file": "site/community_board_constellation.mjs",
+      "owning_renderer": "renderCommunityBoardConstellationDocument",
+      "route": "/community-board-document--manhattan-cb-03.html",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "c157f2f5a8318668453b5f70c61df0e5617ae004",
+      "data_vintage": "committed Community Board sources: site/data/community_board_minutes_scorecard.json, site/data/community_board_geography_lookup.json, and site/data/non_council_outcome_sources/*.json",
+      "axe": {
+        "violations_total": 3,
+        "failing_violations": [],
+        "passes": true
+      },
+      "keyboard": {
+        "controls": 31,
+        "reached_by_tab": 31,
+        "unreachable": [],
+        "without_focus_indicator": []
+      },
+      "overflow": {
+        "scroll_width": 1440,
+        "viewport_width": 1440,
+        "horizontal_overflow": false,
+        "overflowing_nodes": []
+      },
+      "rendered_labels": {
+        "raw_key_in_visible_text": false,
+        "raw_key_in_accessible_name": false,
+        "visible_characters": 2260
+      },
+      "boundary_gate_findings": 0,
+      "assertion": "positive fixture: axe_passes=True keyboard_reachable_and_focus_visible=True no_horizontal_overflow=True no_raw_dynamic_label_in_dom=True boundary_gate_findings=0 (expected 0)",
+      "screenshot_local_path": "docs/screenshots/resident-copy-boundary/community-board-document--manhattan-cb-03-1440.png",
+      "screenshot_sha256": "6c13010fc9ad9c1a7ade6ad83683d1dc7024eb2701bb27b51322cf5cacdf0e4c",
+      "axe_scoped_failing_violations": []
+    },
+    {
+      "fixture": "community-board-document:brooklyn-cb-02",
+      "polarity": "positive",
+      "state": "sparse",
+      "locale": "en",
+      "owning_file": "site/community_board_constellation.mjs",
+      "owning_renderer": "renderCommunityBoardConstellationDocument",
+      "route": "/community-board-document--brooklyn-cb-02.html",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "c157f2f5a8318668453b5f70c61df0e5617ae004",
+      "data_vintage": "committed Community Board sources: site/data/community_board_minutes_scorecard.json, site/data/community_board_geography_lookup.json, and site/data/non_council_outcome_sources/*.json",
+      "axe": {
+        "violations_total": 3,
+        "failing_violations": [],
+        "passes": true
+      },
+      "keyboard": {
+        "controls": 26,
+        "reached_by_tab": 26,
+        "unreachable": [],
+        "without_focus_indicator": []
+      },
+      "overflow": {
+        "scroll_width": 390,
+        "viewport_width": 390,
+        "horizontal_overflow": false,
+        "overflowing_nodes": []
+      },
+      "rendered_labels": {
+        "raw_key_in_visible_text": false,
+        "raw_key_in_accessible_name": false,
+        "visible_characters": 2187
+      },
+      "boundary_gate_findings": 0,
+      "assertion": "positive fixture: axe_passes=True keyboard_reachable_and_focus_visible=True no_horizontal_overflow=True no_raw_dynamic_label_in_dom=True boundary_gate_findings=0 (expected 0)",
+      "screenshot_local_path": "docs/screenshots/resident-copy-boundary/community-board-document--brooklyn-cb-02-390.png",
+      "screenshot_sha256": "87d4bd02b5428d8679fba3812780e9b21914c57f289c1b01c99f0a4b3d45b7e5",
+      "axe_scoped_failing_violations": []
+    },
+    {
+      "fixture": "community-board-document:brooklyn-cb-02",
+      "polarity": "positive",
+      "state": "sparse",
+      "locale": "en",
+      "owning_file": "site/community_board_constellation.mjs",
+      "owning_renderer": "renderCommunityBoardConstellationDocument",
+      "route": "/community-board-document--brooklyn-cb-02.html",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "c157f2f5a8318668453b5f70c61df0e5617ae004",
+      "data_vintage": "committed Community Board sources: site/data/community_board_minutes_scorecard.json, site/data/community_board_geography_lookup.json, and site/data/non_council_outcome_sources/*.json",
+      "axe": {
+        "violations_total": 3,
+        "failing_violations": [],
+        "passes": true
+      },
+      "keyboard": {
+        "controls": 26,
+        "reached_by_tab": 26,
+        "unreachable": [],
+        "without_focus_indicator": []
+      },
+      "overflow": {
+        "scroll_width": 1440,
+        "viewport_width": 1440,
+        "horizontal_overflow": false,
+        "overflowing_nodes": []
+      },
+      "rendered_labels": {
+        "raw_key_in_visible_text": false,
+        "raw_key_in_accessible_name": false,
+        "visible_characters": 2187
+      },
+      "boundary_gate_findings": 0,
+      "assertion": "positive fixture: axe_passes=True keyboard_reachable_and_focus_visible=True no_horizontal_overflow=True no_raw_dynamic_label_in_dom=True boundary_gate_findings=0 (expected 0)",
+      "screenshot_local_path": "docs/screenshots/resident-copy-boundary/community-board-document--brooklyn-cb-02-1440.png",
+      "screenshot_sha256": "837b06780a735c1a7e5f9783494169a562ebf193687cdac28dcf9ab18d488eb3",
+      "axe_scoped_failing_violations": []
+    },
+    {
+      "fixture": "community-board-document:manhattan-cb-06",
+      "polarity": "positive",
+      "state": "sparse",
+      "locale": "en",
+      "owning_file": "site/community_board_constellation.mjs",
+      "owning_renderer": "renderCommunityBoardConstellationDocument",
+      "route": "/community-board-document--manhattan-cb-06.html",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "c157f2f5a8318668453b5f70c61df0e5617ae004",
+      "data_vintage": "committed Community Board sources: site/data/community_board_minutes_scorecard.json, site/data/community_board_geography_lookup.json, and site/data/non_council_outcome_sources/*.json",
+      "axe": {
+        "violations_total": 3,
+        "failing_violations": [],
+        "passes": true
+      },
+      "keyboard": {
+        "controls": 34,
+        "reached_by_tab": 34,
+        "unreachable": [],
+        "without_focus_indicator": []
+      },
+      "overflow": {
+        "scroll_width": 390,
+        "viewport_width": 390,
+        "horizontal_overflow": false,
+        "overflowing_nodes": []
+      },
+      "rendered_labels": {
+        "raw_key_in_visible_text": false,
+        "raw_key_in_accessible_name": false,
+        "visible_characters": 2297
+      },
+      "boundary_gate_findings": 0,
+      "assertion": "positive fixture: axe_passes=True keyboard_reachable_and_focus_visible=True no_horizontal_overflow=True no_raw_dynamic_label_in_dom=True boundary_gate_findings=0 (expected 0)",
+      "screenshot_local_path": "docs/screenshots/resident-copy-boundary/community-board-document--manhattan-cb-06-390.png",
+      "screenshot_sha256": "710f4e14e4429121d7d9dc280a09b661fecf9d726a5afac7219f3e892daac6cc",
+      "axe_scoped_failing_violations": []
+    },
+    {
+      "fixture": "community-board-document:manhattan-cb-06",
+      "polarity": "positive",
+      "state": "sparse",
+      "locale": "en",
+      "owning_file": "site/community_board_constellation.mjs",
+      "owning_renderer": "renderCommunityBoardConstellationDocument",
+      "route": "/community-board-document--manhattan-cb-06.html",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "c157f2f5a8318668453b5f70c61df0e5617ae004",
+      "data_vintage": "committed Community Board sources: site/data/community_board_minutes_scorecard.json, site/data/community_board_geography_lookup.json, and site/data/non_council_outcome_sources/*.json",
+      "axe": {
+        "violations_total": 3,
+        "failing_violations": [],
+        "passes": true
+      },
+      "keyboard": {
+        "controls": 34,
+        "reached_by_tab": 34,
+        "unreachable": [],
+        "without_focus_indicator": []
+      },
+      "overflow": {
+        "scroll_width": 1440,
+        "viewport_width": 1440,
+        "horizontal_overflow": false,
+        "overflowing_nodes": []
+      },
+      "rendered_labels": {
+        "raw_key_in_visible_text": false,
+        "raw_key_in_accessible_name": false,
+        "visible_characters": 2297
+      },
+      "boundary_gate_findings": 0,
+      "assertion": "positive fixture: axe_passes=True keyboard_reachable_and_focus_visible=True no_horizontal_overflow=True no_raw_dynamic_label_in_dom=True boundary_gate_findings=0 (expected 0)",
+      "screenshot_local_path": "docs/screenshots/resident-copy-boundary/community-board-document--manhattan-cb-06-1440.png",
+      "screenshot_sha256": "10511b6d97d11a338d4a97272dfd6b1b5709fca7af38d53a73f54544c0fe3d5e",
+      "axe_scoped_failing_violations": []
+    },
+    {
+      "fixture": "edge-summary-rail:matched",
+      "polarity": "positive",
+      "state": "partial",
+      "locale": "en",
+      "owning_file": "site/edge_summary.mjs",
+      "owning_renderer": "renderEdgeSummaryRail",
+      "route": "/edge-summary-rail--matched.html",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "c157f2f5a8318668453b5f70c61df0e5617ae004",
+      "data_vintage": "literal edge records written into the fixture; no warehouse read",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": [],
+        "passes": true
+      },
+      "keyboard": {
+        "controls": 1,
+        "reached_by_tab": 1,
+        "unreachable": [],
+        "without_focus_indicator": []
+      },
+      "overflow": {
+        "scroll_width": 390,
+        "viewport_width": 390,
+        "horizontal_overflow": false,
+        "overflowing_nodes": []
+      },
+      "rendered_labels": {
+        "raw_key_in_visible_text": false,
+        "raw_key_in_accessible_name": false,
+        "visible_characters": 147
+      },
+      "boundary_gate_findings": 0,
+      "assertion": "positive fixture: axe_passes=True keyboard_reachable_and_focus_visible=True no_horizontal_overflow=True no_raw_dynamic_label_in_dom=True boundary_gate_findings=0 (expected 0)",
+      "screenshot_local_path": "docs/screenshots/resident-copy-boundary/edge-summary-rail--matched-390.png",
+      "screenshot_sha256": "4b969f008e75a83297eb3576dbcc07f97ca5c157c6ece5d0488ac2dc5cbbef68",
+      "axe_scoped_failing_violations": []
+    },
+    {
+      "fixture": "edge-summary-rail:matched",
+      "polarity": "positive",
+      "state": "partial",
+      "locale": "en",
+      "owning_file": "site/edge_summary.mjs",
+      "owning_renderer": "renderEdgeSummaryRail",
+      "route": "/edge-summary-rail--matched.html",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "c157f2f5a8318668453b5f70c61df0e5617ae004",
+      "data_vintage": "literal edge records written into the fixture; no warehouse read",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": [],
+        "passes": true
+      },
+      "keyboard": {
+        "controls": 1,
+        "reached_by_tab": 1,
+        "unreachable": [],
+        "without_focus_indicator": []
+      },
+      "overflow": {
+        "scroll_width": 1440,
+        "viewport_width": 1440,
+        "horizontal_overflow": false,
+        "overflowing_nodes": []
+      },
+      "rendered_labels": {
+        "raw_key_in_visible_text": false,
+        "raw_key_in_accessible_name": false,
+        "visible_characters": 147
+      },
+      "boundary_gate_findings": 0,
+      "assertion": "positive fixture: axe_passes=True keyboard_reachable_and_focus_visible=True no_horizontal_overflow=True no_raw_dynamic_label_in_dom=True boundary_gate_findings=0 (expected 0)",
+      "screenshot_local_path": "docs/screenshots/resident-copy-boundary/edge-summary-rail--matched-1440.png",
+      "screenshot_sha256": "1833e3c315595d5e92334b88c45020e3c91762b63352b66b8141996a7b80d1d9",
+      "axe_scoped_failing_violations": []
+    },
+    {
+      "fixture": "edge-summary-rail:retrieval-failure",
+      "polarity": "positive",
+      "state": "error",
+      "locale": "en",
+      "owning_file": "site/edge_summary.mjs",
+      "owning_renderer": "renderEdgeSummaryRail",
+      "route": "/edge-summary-rail--retrieval-failure.html",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "c157f2f5a8318668453b5f70c61df0e5617ae004",
+      "data_vintage": "literal edge records written into the fixture; no warehouse read",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": [],
+        "passes": true
+      },
+      "keyboard": {
+        "controls": 0,
+        "reached_by_tab": 0,
+        "unreachable": [],
+        "without_focus_indicator": []
+      },
+      "overflow": {
+        "scroll_width": 390,
+        "viewport_width": 390,
+        "horizontal_overflow": false,
+        "overflowing_nodes": []
+      },
+      "rendered_labels": {
+        "raw_key_in_visible_text": false,
+        "raw_key_in_accessible_name": false,
+        "visible_characters": 148
+      },
+      "boundary_gate_findings": 0,
+      "assertion": "positive fixture: axe_passes=True keyboard_reachable_and_focus_visible=True no_horizontal_overflow=True no_raw_dynamic_label_in_dom=True boundary_gate_findings=0 (expected 0)",
+      "screenshot_local_path": "docs/screenshots/resident-copy-boundary/edge-summary-rail--retrieval-failure-390.png",
+      "screenshot_sha256": "b6edf8e08ad98cccd51f930f971edc2bda4defb9cc628d3007e06a7f5b6bc4cc",
+      "axe_scoped_failing_violations": []
+    },
+    {
+      "fixture": "edge-summary-rail:retrieval-failure",
+      "polarity": "positive",
+      "state": "error",
+      "locale": "en",
+      "owning_file": "site/edge_summary.mjs",
+      "owning_renderer": "renderEdgeSummaryRail",
+      "route": "/edge-summary-rail--retrieval-failure.html",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "c157f2f5a8318668453b5f70c61df0e5617ae004",
+      "data_vintage": "literal edge records written into the fixture; no warehouse read",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": [],
+        "passes": true
+      },
+      "keyboard": {
+        "controls": 0,
+        "reached_by_tab": 0,
+        "unreachable": [],
+        "without_focus_indicator": []
+      },
+      "overflow": {
+        "scroll_width": 1440,
+        "viewport_width": 1440,
+        "horizontal_overflow": false,
+        "overflowing_nodes": []
+      },
+      "rendered_labels": {
+        "raw_key_in_visible_text": false,
+        "raw_key_in_accessible_name": false,
+        "visible_characters": 148
+      },
+      "boundary_gate_findings": 0,
+      "assertion": "positive fixture: axe_passes=True keyboard_reachable_and_focus_visible=True no_horizontal_overflow=True no_raw_dynamic_label_in_dom=True boundary_gate_findings=0 (expected 0)",
+      "screenshot_local_path": "docs/screenshots/resident-copy-boundary/edge-summary-rail--retrieval-failure-1440.png",
+      "screenshot_sha256": "e0c99052a3cbf39c3b4eb1834c15237d1de33e3da2c3729ff44613f4fc79a4c6",
+      "axe_scoped_failing_violations": []
+    },
+    {
+      "fixture": "money-card:separate-fiscal-years",
+      "polarity": "positive",
+      "state": "partial",
+      "locale": "en",
+      "owning_file": "site/community_board_money.mjs",
+      "owning_renderer": "renderCommunityBoardMoneyCard",
+      "route": "/money-card--separate-fiscal-years.html",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "c157f2f5a8318668453b5f70c61df0e5617ae004",
+      "data_vintage": "literal adopted-budget and payment-actual records written into the fixture; no warehouse read",
+      "axe": {
+        "violations_total": 2,
+        "failing_violations": [
+          {
+            "id": "definition-list",
+            "impact": "serious"
+          }
+        ],
+        "passes": false
+      },
+      "keyboard": {
+        "controls": 1,
+        "reached_by_tab": 1,
+        "unreachable": [],
+        "without_focus_indicator": []
+      },
+      "overflow": {
+        "scroll_width": 390,
+        "viewport_width": 390,
+        "horizontal_overflow": false,
+        "overflowing_nodes": []
+      },
+      "rendered_labels": {
+        "raw_key_in_visible_text": false,
+        "raw_key_in_accessible_name": false,
+        "visible_characters": 598
+      },
+      "boundary_gate_findings": 0,
+      "assertion": "positive fixture: axe_passes=False keyboard_reachable_and_focus_visible=True no_horizontal_overflow=True no_raw_dynamic_label_in_dom=True boundary_gate_findings=0 (expected 0)",
+      "screenshot_local_path": "docs/screenshots/resident-copy-boundary/money-card--separate-fiscal-years-390.png",
+      "screenshot_sha256": "68a048472f8ce66860d1fef9231ce75ca972d87ccf49911760a256120bd70d50",
+      "axe_scoped_failing_violations": []
+    },
+    {
+      "fixture": "money-card:separate-fiscal-years",
+      "polarity": "positive",
+      "state": "partial",
+      "locale": "en",
+      "owning_file": "site/community_board_money.mjs",
+      "owning_renderer": "renderCommunityBoardMoneyCard",
+      "route": "/money-card--separate-fiscal-years.html",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "c157f2f5a8318668453b5f70c61df0e5617ae004",
+      "data_vintage": "literal adopted-budget and payment-actual records written into the fixture; no warehouse read",
+      "axe": {
+        "violations_total": 2,
+        "failing_violations": [
+          {
+            "id": "definition-list",
+            "impact": "serious"
+          }
+        ],
+        "passes": false
+      },
+      "keyboard": {
+        "controls": 1,
+        "reached_by_tab": 1,
+        "unreachable": [],
+        "without_focus_indicator": []
+      },
+      "overflow": {
+        "scroll_width": 1440,
+        "viewport_width": 1440,
+        "horizontal_overflow": false,
+        "overflowing_nodes": []
+      },
+      "rendered_labels": {
+        "raw_key_in_visible_text": false,
+        "raw_key_in_accessible_name": false,
+        "visible_characters": 598
+      },
+      "boundary_gate_findings": 0,
+      "assertion": "positive fixture: axe_passes=False keyboard_reachable_and_focus_visible=True no_horizontal_overflow=True no_raw_dynamic_label_in_dom=True boundary_gate_findings=0 (expected 0)",
+      "screenshot_local_path": "docs/screenshots/resident-copy-boundary/money-card--separate-fiscal-years-1440.png",
+      "screenshot_sha256": "c6419dd196a011f5baee88dd7642b9e44047f317dcef1b3ddf16658c13cc6fe8",
+      "axe_scoped_failing_violations": []
+    },
+    {
+      "fixture": "money-card:valid-zero",
+      "polarity": "positive",
+      "state": "sparse",
+      "locale": "en",
+      "owning_file": "site/community_board_money.mjs",
+      "owning_renderer": "renderCommunityBoardMoneyCard",
+      "route": "/money-card--valid-zero.html",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "c157f2f5a8318668453b5f70c61df0e5617ae004",
+      "data_vintage": "literal adopted-budget and payment-actual records written into the fixture; no warehouse read",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": [],
+        "passes": true
+      },
+      "keyboard": {
+        "controls": 1,
+        "reached_by_tab": 1,
+        "unreachable": [],
+        "without_focus_indicator": []
+      },
+      "overflow": {
+        "scroll_width": 390,
+        "viewport_width": 390,
+        "horizontal_overflow": false,
+        "overflowing_nodes": []
+      },
+      "rendered_labels": {
+        "raw_key_in_visible_text": false,
+        "raw_key_in_accessible_name": false,
+        "visible_characters": 431
+      },
+      "boundary_gate_findings": 0,
+      "assertion": "positive fixture: axe_passes=True keyboard_reachable_and_focus_visible=True no_horizontal_overflow=True no_raw_dynamic_label_in_dom=True boundary_gate_findings=0 (expected 0)",
+      "screenshot_local_path": "docs/screenshots/resident-copy-boundary/money-card--valid-zero-390.png",
+      "screenshot_sha256": "6dd5a7515eb3800e3088d7c217914439f04468fe16bdc889b85473818036c531",
+      "axe_scoped_failing_violations": []
+    },
+    {
+      "fixture": "money-card:valid-zero",
+      "polarity": "positive",
+      "state": "sparse",
+      "locale": "en",
+      "owning_file": "site/community_board_money.mjs",
+      "owning_renderer": "renderCommunityBoardMoneyCard",
+      "route": "/money-card--valid-zero.html",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "c157f2f5a8318668453b5f70c61df0e5617ae004",
+      "data_vintage": "literal adopted-budget and payment-actual records written into the fixture; no warehouse read",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": [],
+        "passes": true
+      },
+      "keyboard": {
+        "controls": 1,
+        "reached_by_tab": 1,
+        "unreachable": [],
+        "without_focus_indicator": []
+      },
+      "overflow": {
+        "scroll_width": 1440,
+        "viewport_width": 1440,
+        "horizontal_overflow": false,
+        "overflowing_nodes": []
+      },
+      "rendered_labels": {
+        "raw_key_in_visible_text": false,
+        "raw_key_in_accessible_name": false,
+        "visible_characters": 431
+      },
+      "boundary_gate_findings": 0,
+      "assertion": "positive fixture: axe_passes=True keyboard_reachable_and_focus_visible=True no_horizontal_overflow=True no_raw_dynamic_label_in_dom=True boundary_gate_findings=0 (expected 0)",
+      "screenshot_local_path": "docs/screenshots/resident-copy-boundary/money-card--valid-zero-1440.png",
+      "screenshot_sha256": "2e3ea43c4342b0d60b164213ca6e83fa591e241c842a81d6da90b43dc72f1abe",
+      "axe_scoped_failing_violations": []
+    },
+    {
+      "fixture": "money-card:unresolved-identity",
+      "polarity": "positive",
+      "state": "sparse",
+      "locale": "en",
+      "owning_file": "site/community_board_money.mjs",
+      "owning_renderer": "renderCommunityBoardMoneyCard",
+      "route": "/money-card--unresolved-identity.html",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "c157f2f5a8318668453b5f70c61df0e5617ae004",
+      "data_vintage": "literal adopted-budget and payment-actual records written into the fixture; no warehouse read",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": [],
+        "passes": true
+      },
+      "keyboard": {
+        "controls": 1,
+        "reached_by_tab": 1,
+        "unreachable": [],
+        "without_focus_indicator": []
+      },
+      "overflow": {
+        "scroll_width": 390,
+        "viewport_width": 390,
+        "horizontal_overflow": false,
+        "overflowing_nodes": []
+      },
+      "rendered_labels": {
+        "raw_key_in_visible_text": false,
+        "raw_key_in_accessible_name": false,
+        "visible_characters": 462
+      },
+      "boundary_gate_findings": 0,
+      "assertion": "positive fixture: axe_passes=True keyboard_reachable_and_focus_visible=True no_horizontal_overflow=True no_raw_dynamic_label_in_dom=True boundary_gate_findings=0 (expected 0)",
+      "screenshot_local_path": "docs/screenshots/resident-copy-boundary/money-card--unresolved-identity-390.png",
+      "screenshot_sha256": "6ef254e40660e345ace70e60b47d644b024b48a7865f77944a89ba0f8c157af8",
+      "axe_scoped_failing_violations": []
+    },
+    {
+      "fixture": "money-card:unresolved-identity",
+      "polarity": "positive",
+      "state": "sparse",
+      "locale": "en",
+      "owning_file": "site/community_board_money.mjs",
+      "owning_renderer": "renderCommunityBoardMoneyCard",
+      "route": "/money-card--unresolved-identity.html",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "c157f2f5a8318668453b5f70c61df0e5617ae004",
+      "data_vintage": "literal adopted-budget and payment-actual records written into the fixture; no warehouse read",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": [],
+        "passes": true
+      },
+      "keyboard": {
+        "controls": 1,
+        "reached_by_tab": 1,
+        "unreachable": [],
+        "without_focus_indicator": []
+      },
+      "overflow": {
+        "scroll_width": 1440,
+        "viewport_width": 1440,
+        "horizontal_overflow": false,
+        "overflowing_nodes": []
+      },
+      "rendered_labels": {
+        "raw_key_in_visible_text": false,
+        "raw_key_in_accessible_name": false,
+        "visible_characters": 462
+      },
+      "boundary_gate_findings": 0,
+      "assertion": "positive fixture: axe_passes=True keyboard_reachable_and_focus_visible=True no_horizontal_overflow=True no_raw_dynamic_label_in_dom=True boundary_gate_findings=0 (expected 0)",
+      "screenshot_local_path": "docs/screenshots/resident-copy-boundary/money-card--unresolved-identity-1440.png",
+      "screenshot_sha256": "14f954161726c2bf9ce1da69032e0c9d087c1b3083eb3fdfba56abc7a83a4a26",
+      "axe_scoped_failing_violations": []
+    },
+    {
+      "fixture": "money-card:unavailable",
+      "polarity": "positive",
+      "state": "error",
+      "locale": "en",
+      "owning_file": "site/community_board_money.mjs",
+      "owning_renderer": "renderCommunityBoardMoneyCard",
+      "route": "/money-card--unavailable.html",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "c157f2f5a8318668453b5f70c61df0e5617ae004",
+      "data_vintage": "literal adopted-budget and payment-actual records written into the fixture; no warehouse read",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": [],
+        "passes": true
+      },
+      "keyboard": {
+        "controls": 0,
+        "reached_by_tab": 0,
+        "unreachable": [],
+        "without_focus_indicator": []
+      },
+      "overflow": {
+        "scroll_width": 390,
+        "viewport_width": 390,
+        "horizontal_overflow": false,
+        "overflowing_nodes": []
+      },
+      "rendered_labels": {
+        "raw_key_in_visible_text": false,
+        "raw_key_in_accessible_name": false,
+        "visible_characters": 226
+      },
+      "boundary_gate_findings": 0,
+      "assertion": "positive fixture: axe_passes=True keyboard_reachable_and_focus_visible=True no_horizontal_overflow=True no_raw_dynamic_label_in_dom=True boundary_gate_findings=0 (expected 0)",
+      "screenshot_local_path": "docs/screenshots/resident-copy-boundary/money-card--unavailable-390.png",
+      "screenshot_sha256": "18264bbcc48a544e6d90d975947f04be5f81be9e435c1414eaeca96335f9d22e",
+      "axe_scoped_failing_violations": []
+    },
+    {
+      "fixture": "money-card:unavailable",
+      "polarity": "positive",
+      "state": "error",
+      "locale": "en",
+      "owning_file": "site/community_board_money.mjs",
+      "owning_renderer": "renderCommunityBoardMoneyCard",
+      "route": "/money-card--unavailable.html",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "c157f2f5a8318668453b5f70c61df0e5617ae004",
+      "data_vintage": "literal adopted-budget and payment-actual records written into the fixture; no warehouse read",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": [],
+        "passes": true
+      },
+      "keyboard": {
+        "controls": 0,
+        "reached_by_tab": 0,
+        "unreachable": [],
+        "without_focus_indicator": []
+      },
+      "overflow": {
+        "scroll_width": 1440,
+        "viewport_width": 1440,
+        "horizontal_overflow": false,
+        "overflowing_nodes": []
+      },
+      "rendered_labels": {
+        "raw_key_in_visible_text": false,
+        "raw_key_in_accessible_name": false,
+        "visible_characters": 226
+      },
+      "boundary_gate_findings": 0,
+      "assertion": "positive fixture: axe_passes=True keyboard_reachable_and_focus_visible=True no_horizontal_overflow=True no_raw_dynamic_label_in_dom=True boundary_gate_findings=0 (expected 0)",
+      "screenshot_local_path": "docs/screenshots/resident-copy-boundary/money-card--unavailable-1440.png",
+      "screenshot_sha256": "e53aa4e7ecbec68e7e0e22145f2a7fc356471e214610c98a32ddaf412687d92f",
+      "axe_scoped_failing_violations": []
+    },
+    {
+      "fixture": "outcome-not-located:en",
+      "polarity": "positive",
+      "state": "sparse",
+      "locale": "en",
+      "owning_file": "site/outcome_not_located_state.mjs",
+      "owning_renderer": "renderOutcomeState",
+      "route": "/outcome-not-located--en.html",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "c157f2f5a8318668453b5f70c61df0e5617ae004",
+      "data_vintage": "literal outcome-lookup payload with no matching row; no warehouse read",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": [],
+        "passes": true
+      },
+      "keyboard": {
+        "controls": 1,
+        "reached_by_tab": 1,
+        "unreachable": [],
+        "without_focus_indicator": []
+      },
+      "overflow": {
+        "scroll_width": 390,
+        "viewport_width": 390,
+        "horizontal_overflow": false,
+        "overflowing_nodes": []
+      },
+      "rendered_labels": {
+        "raw_key_in_visible_text": false,
+        "raw_key_in_accessible_name": false,
+        "visible_characters": 445
+      },
+      "boundary_gate_findings": 0,
+      "assertion": "positive fixture: axe_passes=True keyboard_reachable_and_focus_visible=True no_horizontal_overflow=True no_raw_dynamic_label_in_dom=True boundary_gate_findings=0 (expected 0)",
+      "screenshot_local_path": "docs/screenshots/resident-copy-boundary/outcome-not-located--en-390.png",
+      "screenshot_sha256": "c869744c9872dee4936979e5f1ff90043b73383a29bf083f0ad6559fd0fad3c3",
+      "axe_scoped_failing_violations": []
+    },
+    {
+      "fixture": "outcome-not-located:en",
+      "polarity": "positive",
+      "state": "sparse",
+      "locale": "en",
+      "owning_file": "site/outcome_not_located_state.mjs",
+      "owning_renderer": "renderOutcomeState",
+      "route": "/outcome-not-located--en.html",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "c157f2f5a8318668453b5f70c61df0e5617ae004",
+      "data_vintage": "literal outcome-lookup payload with no matching row; no warehouse read",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": [],
+        "passes": true
+      },
+      "keyboard": {
+        "controls": 1,
+        "reached_by_tab": 1,
+        "unreachable": [],
+        "without_focus_indicator": []
+      },
+      "overflow": {
+        "scroll_width": 1440,
+        "viewport_width": 1440,
+        "horizontal_overflow": false,
+        "overflowing_nodes": []
+      },
+      "rendered_labels": {
+        "raw_key_in_visible_text": false,
+        "raw_key_in_accessible_name": false,
+        "visible_characters": 445
+      },
+      "boundary_gate_findings": 0,
+      "assertion": "positive fixture: axe_passes=True keyboard_reachable_and_focus_visible=True no_horizontal_overflow=True no_raw_dynamic_label_in_dom=True boundary_gate_findings=0 (expected 0)",
+      "screenshot_local_path": "docs/screenshots/resident-copy-boundary/outcome-not-located--en-1440.png",
+      "screenshot_sha256": "9162211248be3dd2625098ea66e10226babf293f08c1312592208b9050a3cd36",
+      "axe_scoped_failing_violations": []
+    },
+    {
+      "fixture": "outcome-not-located:fr",
+      "polarity": "positive",
+      "state": "sparse",
+      "locale": "fr",
+      "owning_file": "site/outcome_not_located_state.mjs",
+      "owning_renderer": "renderOutcomeState",
+      "route": "/outcome-not-located--fr.html",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "c157f2f5a8318668453b5f70c61df0e5617ae004",
+      "data_vintage": "literal outcome-lookup payload with no matching row; no warehouse read",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": [],
+        "passes": true
+      },
+      "keyboard": {
+        "controls": 1,
+        "reached_by_tab": 1,
+        "unreachable": [],
+        "without_focus_indicator": []
+      },
+      "overflow": {
+        "scroll_width": 390,
+        "viewport_width": 390,
+        "horizontal_overflow": false,
+        "overflowing_nodes": []
+      },
+      "rendered_labels": {
+        "raw_key_in_visible_text": false,
+        "raw_key_in_accessible_name": false,
+        "visible_characters": 515
+      },
+      "boundary_gate_findings": 0,
+      "assertion": "positive fixture: axe_passes=True keyboard_reachable_and_focus_visible=True no_horizontal_overflow=True no_raw_dynamic_label_in_dom=True boundary_gate_findings=0 (expected 0)",
+      "screenshot_local_path": "docs/screenshots/resident-copy-boundary/outcome-not-located--fr-390.png",
+      "screenshot_sha256": "a416ec7dea257751270d36f071e26f4efed331dc736f785e1e67252cf3d7b42b",
+      "axe_scoped_failing_violations": []
+    },
+    {
+      "fixture": "outcome-not-located:fr",
+      "polarity": "positive",
+      "state": "sparse",
+      "locale": "fr",
+      "owning_file": "site/outcome_not_located_state.mjs",
+      "owning_renderer": "renderOutcomeState",
+      "route": "/outcome-not-located--fr.html",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "c157f2f5a8318668453b5f70c61df0e5617ae004",
+      "data_vintage": "literal outcome-lookup payload with no matching row; no warehouse read",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": [],
+        "passes": true
+      },
+      "keyboard": {
+        "controls": 1,
+        "reached_by_tab": 1,
+        "unreachable": [],
+        "without_focus_indicator": []
+      },
+      "overflow": {
+        "scroll_width": 1440,
+        "viewport_width": 1440,
+        "horizontal_overflow": false,
+        "overflowing_nodes": []
+      },
+      "rendered_labels": {
+        "raw_key_in_visible_text": false,
+        "raw_key_in_accessible_name": false,
+        "visible_characters": 515
+      },
+      "boundary_gate_findings": 0,
+      "assertion": "positive fixture: axe_passes=True keyboard_reachable_and_focus_visible=True no_horizontal_overflow=True no_raw_dynamic_label_in_dom=True boundary_gate_findings=0 (expected 0)",
+      "screenshot_local_path": "docs/screenshots/resident-copy-boundary/outcome-not-located--fr-1440.png",
+      "screenshot_sha256": "bef9f118814af8c81ab90922a14cb74dfc80a9a226f8c4e61d46ecd5efca277b",
+      "axe_scoped_failing_violations": []
+    },
+    {
+      "fixture": "outcome-not-located:zh-Hans",
+      "polarity": "positive",
+      "state": "sparse",
+      "locale": "zh-Hans",
+      "owning_file": "site/outcome_not_located_state.mjs",
+      "owning_renderer": "renderOutcomeState",
+      "route": "/outcome-not-located--zh-Hans.html",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "c157f2f5a8318668453b5f70c61df0e5617ae004",
+      "data_vintage": "literal outcome-lookup payload with no matching row; no warehouse read",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": [],
+        "passes": true
+      },
+      "keyboard": {
+        "controls": 1,
+        "reached_by_tab": 1,
+        "unreachable": [],
+        "without_focus_indicator": []
+      },
+      "overflow": {
+        "scroll_width": 390,
+        "viewport_width": 390,
+        "horizontal_overflow": false,
+        "overflowing_nodes": []
+      },
+      "rendered_labels": {
+        "raw_key_in_visible_text": false,
+        "raw_key_in_accessible_name": false,
+        "visible_characters": 213
+      },
+      "boundary_gate_findings": 0,
+      "assertion": "positive fixture: axe_passes=True keyboard_reachable_and_focus_visible=True no_horizontal_overflow=True no_raw_dynamic_label_in_dom=True boundary_gate_findings=0 (expected 0)",
+      "screenshot_local_path": "docs/screenshots/resident-copy-boundary/outcome-not-located--zh-Hans-390.png",
+      "screenshot_sha256": "33d6e7bd79462d624da840bbc1a9dc7709c6cdbd6d312222dd830e33d7727453",
+      "axe_scoped_failing_violations": []
+    },
+    {
+      "fixture": "outcome-not-located:zh-Hans",
+      "polarity": "positive",
+      "state": "sparse",
+      "locale": "zh-Hans",
+      "owning_file": "site/outcome_not_located_state.mjs",
+      "owning_renderer": "renderOutcomeState",
+      "route": "/outcome-not-located--zh-Hans.html",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "c157f2f5a8318668453b5f70c61df0e5617ae004",
+      "data_vintage": "literal outcome-lookup payload with no matching row; no warehouse read",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": [],
+        "passes": true
+      },
+      "keyboard": {
+        "controls": 1,
+        "reached_by_tab": 1,
+        "unreachable": [],
+        "without_focus_indicator": []
+      },
+      "overflow": {
+        "scroll_width": 1440,
+        "viewport_width": 1440,
+        "horizontal_overflow": false,
+        "overflowing_nodes": []
+      },
+      "rendered_labels": {
+        "raw_key_in_visible_text": false,
+        "raw_key_in_accessible_name": false,
+        "visible_characters": 213
+      },
+      "boundary_gate_findings": 0,
+      "assertion": "positive fixture: axe_passes=True keyboard_reachable_and_focus_visible=True no_horizontal_overflow=True no_raw_dynamic_label_in_dom=True boundary_gate_findings=0 (expected 0)",
+      "screenshot_local_path": "docs/screenshots/resident-copy-boundary/outcome-not-located--zh-Hans-1440.png",
+      "screenshot_sha256": "d7bd050244f428819214c3498fd3db1de64669c67b046883b73c7be51238eee1",
+      "axe_scoped_failing_violations": []
+    },
+    {
+      "fixture": "following-personal-island:unavailable",
+      "polarity": "positive",
+      "state": "error",
+      "locale": "en",
+      "owning_file": "site/following_personal_state.mjs",
+      "owning_renderer": "followingPersonalIslandHtml",
+      "route": "/following-personal-island--unavailable.html",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "c157f2f5a8318668453b5f70c61df0e5617ae004",
+      "data_vintage": "no source data: a personal-read UI state with no civic record behind it",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": [],
+        "passes": true
+      },
+      "keyboard": {
+        "controls": 1,
+        "reached_by_tab": 1,
+        "unreachable": [],
+        "without_focus_indicator": []
+      },
+      "overflow": {
+        "scroll_width": 390,
+        "viewport_width": 390,
+        "horizontal_overflow": false,
+        "overflowing_nodes": []
+      },
+      "rendered_labels": {
+        "raw_key_in_visible_text": false,
+        "raw_key_in_accessible_name": false,
+        "visible_characters": 52
+      },
+      "boundary_gate_findings": 0,
+      "assertion": "positive fixture: axe_passes=True keyboard_reachable_and_focus_visible=True no_horizontal_overflow=True no_raw_dynamic_label_in_dom=True boundary_gate_findings=0 (expected 0)",
+      "screenshot_local_path": "docs/screenshots/resident-copy-boundary/following-personal-island--unavailable-390.png",
+      "screenshot_sha256": "33f6f245db91729a2045218e9cfc4a3a28a4e7f985b79cd3fee5483f021235fe",
+      "axe_scoped_failing_violations": []
+    },
+    {
+      "fixture": "following-personal-island:unavailable",
+      "polarity": "positive",
+      "state": "error",
+      "locale": "en",
+      "owning_file": "site/following_personal_state.mjs",
+      "owning_renderer": "followingPersonalIslandHtml",
+      "route": "/following-personal-island--unavailable.html",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "c157f2f5a8318668453b5f70c61df0e5617ae004",
+      "data_vintage": "no source data: a personal-read UI state with no civic record behind it",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": [],
+        "passes": true
+      },
+      "keyboard": {
+        "controls": 1,
+        "reached_by_tab": 1,
+        "unreachable": [],
+        "without_focus_indicator": []
+      },
+      "overflow": {
+        "scroll_width": 1440,
+        "viewport_width": 1440,
+        "horizontal_overflow": false,
+        "overflowing_nodes": []
+      },
+      "rendered_labels": {
+        "raw_key_in_visible_text": false,
+        "raw_key_in_accessible_name": false,
+        "visible_characters": 52
+      },
+      "boundary_gate_findings": 0,
+      "assertion": "positive fixture: axe_passes=True keyboard_reachable_and_focus_visible=True no_horizontal_overflow=True no_raw_dynamic_label_in_dom=True boundary_gate_findings=0 (expected 0)",
+      "screenshot_local_path": "docs/screenshots/resident-copy-boundary/following-personal-island--unavailable-1440.png",
+      "screenshot_sha256": "f9db2eacfcf97e4865b9bf6cdc24f3ffe4523d9d632aa6868465965a20de3513",
+      "axe_scoped_failing_violations": []
+    },
+    {
+      "fixture": "following-personal-island:error",
+      "polarity": "positive",
+      "state": "error",
+      "locale": "en",
+      "owning_file": "site/following_personal_state.mjs",
+      "owning_renderer": "followingPersonalIslandHtml",
+      "route": "/following-personal-island--error.html",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "c157f2f5a8318668453b5f70c61df0e5617ae004",
+      "data_vintage": "no source data: a personal-read UI state with no civic record behind it",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": [],
+        "passes": true
+      },
+      "keyboard": {
+        "controls": 1,
+        "reached_by_tab": 1,
+        "unreachable": [],
+        "without_focus_indicator": []
+      },
+      "overflow": {
+        "scroll_width": 390,
+        "viewport_width": 390,
+        "horizontal_overflow": false,
+        "overflowing_nodes": []
+      },
+      "rendered_labels": {
+        "raw_key_in_visible_text": false,
+        "raw_key_in_accessible_name": false,
+        "visible_characters": 39
+      },
+      "boundary_gate_findings": 0,
+      "assertion": "positive fixture: axe_passes=True keyboard_reachable_and_focus_visible=True no_horizontal_overflow=True no_raw_dynamic_label_in_dom=True boundary_gate_findings=0 (expected 0)",
+      "screenshot_local_path": "docs/screenshots/resident-copy-boundary/following-personal-island--error-390.png",
+      "screenshot_sha256": "fb0c429571b7b8dcee44a3261318fcbdafb77fd01ac47dfffeb12430c01ed356",
+      "axe_scoped_failing_violations": []
+    },
+    {
+      "fixture": "following-personal-island:error",
+      "polarity": "positive",
+      "state": "error",
+      "locale": "en",
+      "owning_file": "site/following_personal_state.mjs",
+      "owning_renderer": "followingPersonalIslandHtml",
+      "route": "/following-personal-island--error.html",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "c157f2f5a8318668453b5f70c61df0e5617ae004",
+      "data_vintage": "no source data: a personal-read UI state with no civic record behind it",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": [],
+        "passes": true
+      },
+      "keyboard": {
+        "controls": 1,
+        "reached_by_tab": 1,
+        "unreachable": [],
+        "without_focus_indicator": []
+      },
+      "overflow": {
+        "scroll_width": 1440,
+        "viewport_width": 1440,
+        "horizontal_overflow": false,
+        "overflowing_nodes": []
+      },
+      "rendered_labels": {
+        "raw_key_in_visible_text": false,
+        "raw_key_in_accessible_name": false,
+        "visible_characters": 39
+      },
+      "boundary_gate_findings": 0,
+      "assertion": "positive fixture: axe_passes=True keyboard_reachable_and_focus_visible=True no_horizontal_overflow=True no_raw_dynamic_label_in_dom=True boundary_gate_findings=0 (expected 0)",
+      "screenshot_local_path": "docs/screenshots/resident-copy-boundary/following-personal-island--error-1440.png",
+      "screenshot_sha256": "b7533f33e72b912924cb76f5bd76ee7d7db2b6774c6a08bce49b603cd3d4177c",
+      "axe_scoped_failing_violations": []
+    },
+    {
+      "fixture": "following-personal-island:empty",
+      "polarity": "positive",
+      "state": "sparse",
+      "locale": "en",
+      "owning_file": "site/following_personal_state.mjs",
+      "owning_renderer": "followingPersonalIslandHtml",
+      "route": "/following-personal-island--empty.html",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "c157f2f5a8318668453b5f70c61df0e5617ae004",
+      "data_vintage": "no source data: a personal-read UI state with no civic record behind it",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": [],
+        "passes": true
+      },
+      "keyboard": {
+        "controls": 1,
+        "reached_by_tab": 1,
+        "unreachable": [],
+        "without_focus_indicator": []
+      },
+      "overflow": {
+        "scroll_width": 390,
+        "viewport_width": 390,
+        "horizontal_overflow": false,
+        "overflowing_nodes": []
+      },
+      "rendered_labels": {
+        "raw_key_in_visible_text": false,
+        "raw_key_in_accessible_name": false,
+        "visible_characters": 92
+      },
+      "boundary_gate_findings": 0,
+      "assertion": "positive fixture: axe_passes=True keyboard_reachable_and_focus_visible=True no_horizontal_overflow=True no_raw_dynamic_label_in_dom=True boundary_gate_findings=0 (expected 0)",
+      "screenshot_local_path": "docs/screenshots/resident-copy-boundary/following-personal-island--empty-390.png",
+      "screenshot_sha256": "27411b4d0580298c21c0b82ff0ff2c46cf92afd98693b4764ccd538a1d2dcfe8",
+      "axe_scoped_failing_violations": []
+    },
+    {
+      "fixture": "following-personal-island:empty",
+      "polarity": "positive",
+      "state": "sparse",
+      "locale": "en",
+      "owning_file": "site/following_personal_state.mjs",
+      "owning_renderer": "followingPersonalIslandHtml",
+      "route": "/following-personal-island--empty.html",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "c157f2f5a8318668453b5f70c61df0e5617ae004",
+      "data_vintage": "no source data: a personal-read UI state with no civic record behind it",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": [],
+        "passes": true
+      },
+      "keyboard": {
+        "controls": 1,
+        "reached_by_tab": 1,
+        "unreachable": [],
+        "without_focus_indicator": []
+      },
+      "overflow": {
+        "scroll_width": 1440,
+        "viewport_width": 1440,
+        "horizontal_overflow": false,
+        "overflowing_nodes": []
+      },
+      "rendered_labels": {
+        "raw_key_in_visible_text": false,
+        "raw_key_in_accessible_name": false,
+        "visible_characters": 92
+      },
+      "boundary_gate_findings": 0,
+      "assertion": "positive fixture: axe_passes=True keyboard_reachable_and_focus_visible=True no_horizontal_overflow=True no_raw_dynamic_label_in_dom=True boundary_gate_findings=0 (expected 0)",
+      "screenshot_local_path": "docs/screenshots/resident-copy-boundary/following-personal-island--empty-1440.png",
+      "screenshot_sha256": "0e1ccbb72fdf6ee74bc78b360b7cbbf2165b9b0147644604e2120075a8864e8a",
+      "axe_scoped_failing_violations": []
+    },
+    {
+      "fixture": "document-footer:affiliation",
+      "polarity": "positive",
+      "state": "sparse",
+      "locale": "en",
+      "owning_file": "site/civic_document_chrome.mjs",
+      "owning_renderer": "renderNodeFooter",
+      "route": "/document-footer--affiliation.html",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "c157f2f5a8318668453b5f70c61df0e5617ae004",
+      "data_vintage": "no source data: static document chrome",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": [],
+        "passes": true
+      },
+      "keyboard": {
+        "controls": 1,
+        "reached_by_tab": 1,
+        "unreachable": [],
+        "without_focus_indicator": []
+      },
+      "overflow": {
+        "scroll_width": 390,
+        "viewport_width": 390,
+        "horizontal_overflow": false,
+        "overflowing_nodes": []
+      },
+      "rendered_labels": {
+        "raw_key_in_visible_text": false,
+        "raw_key_in_accessible_name": false,
+        "visible_characters": 56
+      },
+      "boundary_gate_findings": 0,
+      "assertion": "positive fixture: axe_passes=True keyboard_reachable_and_focus_visible=True no_horizontal_overflow=True no_raw_dynamic_label_in_dom=True boundary_gate_findings=0 (expected 0)",
+      "screenshot_local_path": "docs/screenshots/resident-copy-boundary/document-footer--affiliation-390.png",
+      "screenshot_sha256": "5bb1f9d92226e092b82b6c21abec7335f0319691f480f3d06a842e9db5e3a121",
+      "axe_scoped_failing_violations": []
+    },
+    {
+      "fixture": "document-footer:affiliation",
+      "polarity": "positive",
+      "state": "sparse",
+      "locale": "en",
+      "owning_file": "site/civic_document_chrome.mjs",
+      "owning_renderer": "renderNodeFooter",
+      "route": "/document-footer--affiliation.html",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "c157f2f5a8318668453b5f70c61df0e5617ae004",
+      "data_vintage": "no source data: static document chrome",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": [],
+        "passes": true
+      },
+      "keyboard": {
+        "controls": 1,
+        "reached_by_tab": 1,
+        "unreachable": [],
+        "without_focus_indicator": []
+      },
+      "overflow": {
+        "scroll_width": 1440,
+        "viewport_width": 1440,
+        "horizontal_overflow": false,
+        "overflowing_nodes": []
+      },
+      "rendered_labels": {
+        "raw_key_in_visible_text": false,
+        "raw_key_in_accessible_name": false,
+        "visible_characters": 56
+      },
+      "boundary_gate_findings": 0,
+      "assertion": "positive fixture: axe_passes=True keyboard_reachable_and_focus_visible=True no_horizontal_overflow=True no_raw_dynamic_label_in_dom=True boundary_gate_findings=0 (expected 0)",
+      "screenshot_local_path": "docs/screenshots/resident-copy-boundary/document-footer--affiliation-1440.png",
+      "screenshot_sha256": "5414992b981a7c72fe1c03e1c63211eb2180f11eeb1ebef6e0e699fabdf14fb6",
+      "axe_scoped_failing_violations": []
+    },
+    {
+      "fixture": "negative:diagnostic-section",
+      "polarity": "negative",
+      "state": "partial",
+      "locale": "en",
+      "owning_file": "site/community_board_constellation.mjs",
+      "owning_renderer": "renderCommunityBoardConstellationDocument",
+      "route": "/negative--diagnostic-section.html",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "c157f2f5a8318668453b5f70c61df0e5617ae004",
+      "data_vintage": "synthetic markup reproducing a rejected rendered state; no warehouse read",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": [],
+        "passes": true
+      },
+      "keyboard": {
+        "controls": 0,
+        "reached_by_tab": 0,
+        "unreachable": [],
+        "without_focus_indicator": []
+      },
+      "overflow": {
+        "scroll_width": 390,
+        "viewport_width": 390,
+        "horizontal_overflow": false,
+        "overflowing_nodes": []
+      },
+      "rendered_labels": {
+        "raw_key_in_visible_text": false,
+        "raw_key_in_accessible_name": false,
+        "visible_characters": 216
+      },
+      "boundary_gate_findings": 1,
+      "assertion": "negative fixture: axe_passes=True keyboard_reachable_and_focus_visible=True no_horizontal_overflow=True no_raw_dynamic_label_in_dom=True boundary_gate_findings=1 (expected >0)",
+      "screenshot_local_path": "docs/screenshots/resident-copy-boundary/negative--diagnostic-section-390.png",
+      "screenshot_sha256": "8b62f78fd8bf685b66721342cdf5f2f90f5e3e5ceba28045e3622ea2e1576882",
+      "axe_scoped_failing_violations": []
+    },
+    {
+      "fixture": "negative:diagnostic-section",
+      "polarity": "negative",
+      "state": "partial",
+      "locale": "en",
+      "owning_file": "site/community_board_constellation.mjs",
+      "owning_renderer": "renderCommunityBoardConstellationDocument",
+      "route": "/negative--diagnostic-section.html",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "c157f2f5a8318668453b5f70c61df0e5617ae004",
+      "data_vintage": "synthetic markup reproducing a rejected rendered state; no warehouse read",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": [],
+        "passes": true
+      },
+      "keyboard": {
+        "controls": 0,
+        "reached_by_tab": 0,
+        "unreachable": [],
+        "without_focus_indicator": []
+      },
+      "overflow": {
+        "scroll_width": 1440,
+        "viewport_width": 1440,
+        "horizontal_overflow": false,
+        "overflowing_nodes": []
+      },
+      "rendered_labels": {
+        "raw_key_in_visible_text": false,
+        "raw_key_in_accessible_name": false,
+        "visible_characters": 216
+      },
+      "boundary_gate_findings": 1,
+      "assertion": "negative fixture: axe_passes=True keyboard_reachable_and_focus_visible=True no_horizontal_overflow=True no_raw_dynamic_label_in_dom=True boundary_gate_findings=1 (expected >0)",
+      "screenshot_local_path": "docs/screenshots/resident-copy-boundary/negative--diagnostic-section-1440.png",
+      "screenshot_sha256": "7cd22af8b580e2b0eb4058abdcc1a630be983d3a15e546c928e1a60a1a23aafa",
+      "axe_scoped_failing_violations": []
+    },
+    {
+      "fixture": "negative:unbounded-projection",
+      "polarity": "negative",
+      "state": "partial",
+      "locale": "en",
+      "owning_file": "site/community_board_constellation.mjs",
+      "owning_renderer": "renderCommunityBoardConstellationDocument",
+      "route": "/negative--unbounded-projection.html",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "c157f2f5a8318668453b5f70c61df0e5617ae004",
+      "data_vintage": "synthetic markup reproducing a rejected rendered state; no warehouse read",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": [],
+        "passes": true
+      },
+      "keyboard": {
+        "controls": 0,
+        "reached_by_tab": 0,
+        "unreachable": [],
+        "without_focus_indicator": []
+      },
+      "overflow": {
+        "scroll_width": 390,
+        "viewport_width": 390,
+        "horizontal_overflow": false,
+        "overflowing_nodes": []
+      },
+      "rendered_labels": {
+        "raw_key_in_visible_text": false,
+        "raw_key_in_accessible_name": false,
+        "visible_characters": 17022
+      },
+      "boundary_gate_findings": 1,
+      "assertion": "negative fixture: axe_passes=True keyboard_reachable_and_focus_visible=True no_horizontal_overflow=True no_raw_dynamic_label_in_dom=True boundary_gate_findings=1 (expected >0)",
+      "screenshot_local_path": "docs/screenshots/resident-copy-boundary/negative--unbounded-projection-390.png",
+      "screenshot_sha256": "d3ce8a71385bf6fe79c3ceeddf6c5da0be5c2a59f4588c1b8944d7e1252efbd6",
+      "axe_scoped_failing_violations": []
+    },
+    {
+      "fixture": "negative:unbounded-projection",
+      "polarity": "negative",
+      "state": "partial",
+      "locale": "en",
+      "owning_file": "site/community_board_constellation.mjs",
+      "owning_renderer": "renderCommunityBoardConstellationDocument",
+      "route": "/negative--unbounded-projection.html",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "c157f2f5a8318668453b5f70c61df0e5617ae004",
+      "data_vintage": "synthetic markup reproducing a rejected rendered state; no warehouse read",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": [],
+        "passes": true
+      },
+      "keyboard": {
+        "controls": 0,
+        "reached_by_tab": 0,
+        "unreachable": [],
+        "without_focus_indicator": []
+      },
+      "overflow": {
+        "scroll_width": 1440,
+        "viewport_width": 1440,
+        "horizontal_overflow": false,
+        "overflowing_nodes": []
+      },
+      "rendered_labels": {
+        "raw_key_in_visible_text": false,
+        "raw_key_in_accessible_name": false,
+        "visible_characters": 17022
+      },
+      "boundary_gate_findings": 1,
+      "assertion": "negative fixture: axe_passes=True keyboard_reachable_and_focus_visible=True no_horizontal_overflow=True no_raw_dynamic_label_in_dom=True boundary_gate_findings=1 (expected >0)",
+      "screenshot_local_path": "docs/screenshots/resident-copy-boundary/negative--unbounded-projection-1440.png",
+      "screenshot_sha256": "af0721cf375f4b26b1f0581ed05a0787adba60a12d78409a14aa585669c5b6fb",
+      "axe_scoped_failing_violations": []
+    },
+    {
+      "fixture": "negative:untranslated-label",
+      "polarity": "negative",
+      "state": "sparse",
+      "locale": "ko",
+      "owning_file": "site/outcome_not_located_state.mjs",
+      "owning_renderer": "renderOutcomeState",
+      "route": "/negative--untranslated-label.html",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "c157f2f5a8318668453b5f70c61df0e5617ae004",
+      "data_vintage": "synthetic markup reproducing a rejected rendered state; no warehouse read",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": [],
+        "passes": true
+      },
+      "keyboard": {
+        "controls": 0,
+        "reached_by_tab": 0,
+        "unreachable": [],
+        "without_focus_indicator": []
+      },
+      "overflow": {
+        "scroll_width": 390,
+        "viewport_width": 390,
+        "horizontal_overflow": false,
+        "overflowing_nodes": []
+      },
+      "rendered_labels": {
+        "raw_key_in_visible_text": true,
+        "raw_key_in_accessible_name": true,
+        "visible_characters": 23
+      },
+      "boundary_gate_findings": 2,
+      "assertion": "negative fixture: axe_passes=True keyboard_reachable_and_focus_visible=True no_horizontal_overflow=True no_raw_dynamic_label_in_dom=False boundary_gate_findings=2 (expected >0)",
+      "screenshot_local_path": "docs/screenshots/resident-copy-boundary/negative--untranslated-label-390.png",
+      "screenshot_sha256": "c9191a4712ecd8ddc3089f537d33de456fff4c39100d971c298015dc572dbb90",
+      "axe_scoped_failing_violations": []
+    },
+    {
+      "fixture": "negative:untranslated-label",
+      "polarity": "negative",
+      "state": "sparse",
+      "locale": "ko",
+      "owning_file": "site/outcome_not_located_state.mjs",
+      "owning_renderer": "renderOutcomeState",
+      "route": "/negative--untranslated-label.html",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "c157f2f5a8318668453b5f70c61df0e5617ae004",
+      "data_vintage": "synthetic markup reproducing a rejected rendered state; no warehouse read",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": [],
+        "passes": true
+      },
+      "keyboard": {
+        "controls": 0,
+        "reached_by_tab": 0,
+        "unreachable": [],
+        "without_focus_indicator": []
+      },
+      "overflow": {
+        "scroll_width": 1440,
+        "viewport_width": 1440,
+        "horizontal_overflow": false,
+        "overflowing_nodes": []
+      },
+      "rendered_labels": {
+        "raw_key_in_visible_text": true,
+        "raw_key_in_accessible_name": true,
+        "visible_characters": 23
+      },
+      "boundary_gate_findings": 2,
+      "assertion": "negative fixture: axe_passes=True keyboard_reachable_and_focus_visible=True no_horizontal_overflow=True no_raw_dynamic_label_in_dom=False boundary_gate_findings=2 (expected >0)",
+      "screenshot_local_path": "docs/screenshots/resident-copy-boundary/negative--untranslated-label-1440.png",
+      "screenshot_sha256": "b1d12a0b3e974594d1abe66942af73b0d24400a9c66c35d94820a87b494225cd",
+      "axe_scoped_failing_violations": []
+    }
+  ]
+}
