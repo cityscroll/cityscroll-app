@@ -7,6 +7,7 @@
 // prewarms for itself (`land:zap-lookup:v1` / GET /zap-projects-lookup).
 
 import { resolveLandActionProcedures } from "../../site/land_action_procedure_resolution.mjs";
+import { buildLandDecisionPathView, publicLandDecisionPathView } from "../../site/land_decision_path.mjs";
 import { landProjectUrl } from "../../site/land_project_route.mjs";
 import { filterLandSnapshot } from "../../site/resident_snapshot_queries.mjs";
 import { getZapWarehouseIndex } from "./lib/zap_warehouse_lookup.mjs";
@@ -26,6 +27,12 @@ import {
   executeLandProjectGet,
   executeLandProjectsBrowse,
 } from "../../capabilities/land_projects.mjs";
+import {
+  LAND_DECISION_PATH_GET_CAPABILITY_REFERENCE,
+  LAND_DECISION_PATH_GET_PROVIDER_ID,
+  LAND_DECISION_PATH_REPRESENTATIONS,
+  executeLandDecisionPathGet,
+} from "../../capabilities/land_decision_path.mjs";
 
 export const LAND_PROJECT_GET_HTTP_ADAPTER = Object.freeze({
   id: "worker-http.land-project-get@1",
@@ -43,6 +50,15 @@ export const LAND_PROJECTS_BROWSE_HTTP_ADAPTER = Object.freeze({
   route: "GET /land-projects",
   surface: "Land browse",
   representations: LAND_PROJECT_REPRESENTATIONS,
+});
+
+export const LAND_DECISION_PATH_GET_HTTP_ADAPTER = Object.freeze({
+  id: "worker-http.land-decision-path-get@1",
+  capabilityReference: LAND_DECISION_PATH_GET_CAPABILITY_REFERENCE,
+  providerId: LAND_DECISION_PATH_GET_PROVIDER_ID,
+  route: "GET /land-decision-path",
+  surface: "Land project decision path",
+  representations: LAND_DECISION_PATH_REPRESENTATIONS,
 });
 
 function clean(value) {
@@ -175,6 +191,7 @@ function collectConflicts(landActions) {
  */
 export function projectLandProject(record, { richness = "open_data_only", populationAsOf = null, nowMs = Date.now() } = {}) {
   const resolved = resolveLandActionProcedures(record);
+  const decisionPath = publicLandDecisionPathView(buildLandDecisionPathView(record, { generatedAt: populationAsOf }));
   const projectId = resolved.project_id || clean(record?.project_id);
   const openData = record?.open_data && typeof record.open_data === "object" ? record.open_data : record || {};
   const isExact = richness === "exact";
@@ -213,6 +230,7 @@ export function projectLandProject(record, { richness = "open_data_only", popula
       actions: resolved.land_actions,
       raw: resolved.raw,
     },
+    decision_path: decisionPath,
     environmental: {
       ceqr_number: openData.ceqr_number || null,
       ceqr_type: openData.ceqr_type || null,
@@ -286,6 +304,44 @@ export function workerLandProjectGet(env, { nowMs = Date.now() } = {}) {
       } catch (error) {
         console.error("land project read model unavailable:", String(error?.message || error));
         return { capability_reference: LAND_PROJECT_GET_CAPABILITY_REFERENCE, availability: "unavailable", project: null, error: "unavailable" };
+      }
+    },
+  });
+}
+
+export function workerLandDecisionPathGet(env, { nowMs = Date.now() } = {}) {
+  const projectProvider = workerLandProjectGet(env, { nowMs });
+  return Object.freeze({
+    capabilityReference: LAND_DECISION_PATH_GET_CAPABILITY_REFERENCE,
+    providerId: LAND_DECISION_PATH_GET_PROVIDER_ID,
+    async execute(input) {
+      try {
+        const projectResult = await projectProvider.execute(input);
+        if (projectResult.availability !== "available") {
+          return {
+            capability_reference: LAND_DECISION_PATH_GET_CAPABILITY_REFERENCE,
+            availability: projectResult.availability,
+            project_id: null,
+            decision_path: null,
+            error: projectResult.error,
+          };
+        }
+        return {
+          capability_reference: LAND_DECISION_PATH_GET_CAPABILITY_REFERENCE,
+          availability: "available",
+          project_id: projectResult.project.project_id,
+          decision_path: projectResult.project.decision_path,
+          error: null,
+        };
+      } catch (error) {
+        console.error("land decision path read model unavailable:", String(error?.message || error));
+        return {
+          capability_reference: LAND_DECISION_PATH_GET_CAPABILITY_REFERENCE,
+          availability: "unavailable",
+          project_id: null,
+          decision_path: null,
+          error: "unavailable",
+        };
       }
     },
   });
@@ -373,10 +429,15 @@ export function workerLandProjects(env, opts = {}) {
   return Object.freeze({
     get: workerLandProjectGet(env, opts),
     browse: workerLandProjectsBrowse(env, opts),
+    decisionPath: workerLandDecisionPathGet(env, opts),
   });
 }
 
 export function mcpLandProjectGetInput(args = {}) {
+  return { projectId: String(args.project_id || args.id || "").trim() };
+}
+
+export function mcpLandDecisionPathGetInput(args = {}) {
   return { projectId: String(args.project_id || args.id || "").trim() };
 }
 
@@ -407,6 +468,18 @@ export function formatLandProjectText(result) {
   return `Land project is ${result.availability.replaceAll("_", " ")} (${result.error}).`;
 }
 
+export function formatLandDecisionPathText(result) {
+  if (result.availability !== "available") return `Land decision path is ${result.availability.replaceAll("_", " ")} (${result.error}).`;
+  const path = result.decision_path;
+  const current = path.observed.current_phase.phase_id || "unknown phase";
+  const procedure = path.procedure.profile_id || path.procedure.resolution;
+  const next = path.normative.expected_next_transition;
+  const nextText = next?.kind === "parallel_group"
+    ? `parallel review (${next.stages.map((stage) => stage.phase_id).join(" + ")})`
+    : next?.stages?.[0]?.phase_id || "no published next transition";
+  return `${result.project_id} · ${procedure} · observed ${current} · next ${nextText}`;
+}
+
 export function formatLandProjectsBrowseText(result) {
   if (result.availability === "empty") return "No Land projects match the bounded filters in the warehouse projection.";
   if (result.availability === "unavailable") return "Land projects browse is unavailable right now.";
@@ -433,6 +506,26 @@ export async function handleLandProject(request, env) {
   if (result.availability === "unavailable") return json(result, 503);
   if (formatRequested(request)) return new Response(formatLandProjectText(result), { status: 200, headers: { ...corsHeaders(), "Content-Type": "text/plain; charset=utf-8", "Cache-Control": "public, max-age=60" } });
   return json(result, 200, "public, max-age=60, s-maxage=300, stale-while-revalidate=3600");
+}
+
+export async function handleLandDecisionPath(request, env) {
+  if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: corsHeaders() });
+  if (request.method !== "GET") return json({ ok: false, reason: "method" }, 405);
+  const url = new URL(request.url);
+  const projectId = String(url.searchParams.get("id") || url.searchParams.get("project_id") || "").trim();
+  if (!projectId || !LAND_PROJECT_ID_PATTERN.test(projectId)) {
+    return json({ ok: false, reason: "invalid-request" }, 400);
+  }
+  try {
+    const result = await executeLandDecisionPathGet(workerLandDecisionPathGet(env), { projectId });
+    if (result.availability === "not_yet_public") return json(result, 404);
+    if (result.availability === "unavailable") return json(result, 503);
+    if (formatRequested(request)) return new Response(formatLandDecisionPathText(result), { status: 200, headers: { ...corsHeaders(), "Content-Type": "text/plain; charset=utf-8", "Cache-Control": "public, max-age=60" } });
+    return json(result, 200, "public, max-age=60, s-maxage=300, stale-while-revalidate=3600");
+  } catch (error) {
+    const invalid = /(?:field|bounded|string|integer|does not accept)/i.test(String(error?.message || error));
+    return json({ ok: false, reason: invalid ? "invalid-request" : "unavailable" }, invalid ? 400 : 503);
+  }
 }
 
 export async function handleLandProjectsBrowse(request, env) {

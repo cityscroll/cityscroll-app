@@ -59,6 +59,10 @@ import {
   LAND_PROJECTS_BROWSE_LIMITS,
 } from "../../capabilities/land_projects.mjs";
 import {
+  executeLandDecisionPathGet,
+  LAND_DECISION_PATH_GET_LIMITS,
+} from "../../capabilities/land_decision_path.mjs";
+import {
   executePeopleGet,
   executeOrganizationsBrowse,
   PEOPLE_GET_LIMITS,
@@ -97,7 +101,7 @@ import { workerD1EntityRelationships } from "./public_relationship_graph.mjs";
 import { workerNoticeGet } from "./notice.mjs";
 import { workerFederatedSearch } from "./search.mjs";
 import { formatContractsAnalysisText, formatContractsBrowseText, formatContractText, mcpContractGetInput, mcpContractsAnalysisInput, mcpContractsBrowseInput, workerProcurementContracts } from "./contracts.mjs";
-import { formatLandProjectText, formatLandProjectsBrowseText, mcpLandProjectGetInput, mcpLandProjectsBrowseInput, workerLandProjectGet, workerLandProjectsBrowse } from "./land_projects.mjs";
+import { formatLandDecisionPathText, formatLandProjectText, formatLandProjectsBrowseText, mcpLandDecisionPathGetInput, mcpLandProjectGetInput, mcpLandProjectsBrowseInput, workerLandDecisionPathGet, workerLandProjectGet, workerLandProjectsBrowse } from "./land_projects.mjs";
 import { formatPeopleGetText, formatOrganizationsBrowseText, mcpPeopleGetInput, mcpOrganizationsBrowseInput, workerPeopleOrganizations } from "./people_organizations.mjs";
 import { workerMeetingGet } from "./hearings.mjs";
 
@@ -377,6 +381,15 @@ async function callTool(env, req, name, args, { federatedProvider = null } = {})
       }
       const result = await executeLandProjectsBrowse(workerLandProjectsBrowse(env), input);
       return structuredResult(result, formatLandProjectsBrowseText(result));
+    }
+    case "get_land_decision_path": {
+      const input = mcpLandDecisionPathGetInput(args);
+      if (!input.projectId) return toolError("project_id is required.");
+      if (input.projectId.length > LAND_DECISION_PATH_GET_LIMITS.projectIdMaximumLength) {
+        return toolError(`project_id must be ${LAND_DECISION_PATH_GET_LIMITS.projectIdMaximumLength} characters or fewer.`);
+      }
+      const result = await executeLandDecisionPathGet(workerLandDecisionPathGet(env), input);
+      return structuredResult(result, formatLandDecisionPathText(result));
     }
     case "retrieve_cited_passages": {
       if (env.SEMANTIC_CANDIDATES_ENABLED === "false") {

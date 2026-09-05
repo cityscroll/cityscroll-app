@@ -1587,6 +1587,117 @@
           ]
         }
       ]
+    },
+    {
+      "reference": "land.decision_path.get@1",
+      "id": "land.decision_path.get",
+      "version": "1.0.0",
+      "owner": "land",
+      "operation": "read",
+      "authority": {
+        "class": "public-read",
+        "sideEffect": "none",
+        "approval": "none"
+      },
+      "cost": {
+        "class": "bounded-static-read-model",
+        "machineFanOut": "low"
+      },
+      "input_schema": "cityscroll.capability.land_decision_path_get.input.v1",
+      "output_schema": "cityscroll.capability.land_decision_path_get.output.v1",
+      "bounds": {
+        "input": {
+          "projectIdMaximumLength": 32,
+          "maximum": 1
+        },
+        "output": {
+          "oneProject": true
+        }
+      },
+      "examples": [
+        {
+          "input": {
+            "projectId": "2024Q0356"
+          },
+          "output": {
+            "availability": "available",
+            "procedureResolution": "uniform",
+            "parallelReviewGroups": 1
+          }
+        },
+        {
+          "input": {
+            "projectId": "not-a-real-project"
+          },
+          "output": {
+            "availability": "not_yet_public",
+            "error": "not-found"
+          }
+        }
+      ],
+      "availability": [
+        "available",
+        "not_yet_public",
+        "unavailable"
+      ],
+      "provenance": {
+        "identity": "decision_path.project_id (exact publisher ZAP project identity)",
+        "sourceIdentity": "evidence[].source_id",
+        "observationClock": "observed.current_phase and observed.events source times",
+        "identityAuthority": "site/land_decision_path.mjs buildLandDecisionPathView"
+      },
+      "freshness": {
+        "owner": "shared Land ZAP read model",
+        "projection": "committed warehouse materialized_at plus per-source generated_at"
+      },
+      "provider": {
+        "id": "worker-static.land-decision-path.get",
+        "module": "worker/src/land_projects.mjs",
+        "export": "workerLandProjects",
+        "store": "precomputed shared Land ZAP read model",
+        "readModel": "the same resident Land phase spine and reviewed procedure profile used by the detail interface"
+      },
+      "adapters": [
+        {
+          "id": "worker-http.land-decision-path-get@1",
+          "module": "worker/src/land_projects.mjs",
+          "kind": "http-route",
+          "route": "GET /land-decision-path",
+          "surface": "Land project decision path",
+          "representations": [
+            {
+              "id": "json",
+              "mediaType": "application/json",
+              "projection": "observed and normative Land decision-path view"
+            },
+            {
+              "id": "text-summary",
+              "mediaType": "text/plain",
+              "projection": "bounded Land decision-path summary"
+            }
+          ]
+        },
+        {
+          "id": "mcp.get_land_decision_path@1",
+          "module": "worker/src/mcp.mjs",
+          "kind": "mcp-tool",
+          "tool": "get_land_decision_path",
+          "route": "POST /mcp",
+          "surface": "MCP",
+          "representations": [
+            {
+              "id": "json",
+              "mediaType": "application/json",
+              "projection": "observed and normative Land decision-path view"
+            },
+            {
+              "id": "text-summary",
+              "mediaType": "text/plain",
+              "projection": "bounded Land decision-path summary"
+            }
+          ]
+        }
+      ]
     }
   ],
   "mcp": {
@@ -2333,6 +2444,53 @@
               "availability": "complete",
               "pagination": "cursor when more rows remain",
               "fixedPopulation": "none — reflects the current committed warehouse"
+            }
+          }
+        ],
+        "annotations": {
+          "readOnlyHint": true,
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "store_access": "provider-only"
+      },
+      {
+        "name": "get_land_decision_path",
+        "operation_class": "read",
+        "authority_class": "public_read",
+        "schema_reference": "land.decision_path.get@1",
+        "capability_reference": "land.decision_path.get@1",
+        "adapter_id": "mcp.get_land_decision_path@1",
+        "contract_reference": null,
+        "pilot_exception": null,
+        "bounds": {
+          "input": {
+            "projectIdMaximumLength": 32,
+            "maximum": 1
+          },
+          "output": {
+            "oneProject": true
+          }
+        },
+        "examples": [
+          {
+            "input": {
+              "projectId": "2024Q0356"
+            },
+            "output": {
+              "availability": "available",
+              "procedureResolution": "uniform",
+              "parallelReviewGroups": 1
+            }
+          },
+          {
+            "input": {
+              "projectId": "not-a-real-project"
+            },
+            "output": {
+              "availability": "not_yet_public",
+              "error": "not-found"
             }
           }
         ],

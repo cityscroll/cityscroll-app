@@ -101,7 +101,7 @@ import { handleSearch } from "./search.mjs";
 import { handleSemanticCandidates } from "./semantic_candidates.mjs";
 import { handleCitedPassages } from "./cited_retrieval.mjs";
 import { handleContract, handleContractsAnalysis, handleContractsBrowse } from "./contracts.mjs";
-import { handleLandProject, handleLandProjectsBrowse } from "./land_projects.mjs";
+import { handleLandDecisionPath, handleLandProject, handleLandProjectsBrowse } from "./land_projects.mjs";
 import { recordSourceAcquisitionReceipt } from "./lib/source_acquisition_receipt.mjs";
 
 const MIRROR_HOSTS = new Set(["cityscroll.org", "www.cityscroll.org"]);
@@ -156,6 +156,7 @@ export default {
     if (pathname === "/contracts") return handleContractsBrowse(request, env);
     if (pathname === "/contracts/analysis") return handleContractsAnalysis(request, env);
     if (pathname === "/land-project") return handleLandProject(request, env);
+    if (pathname === "/land-decision-path") return handleLandDecisionPath(request, env);
     if (pathname === "/land-projects") return handleLandProjectsBrowse(request, env);
     if (pathname === "/people-organizations") return handlePeopleOrganizations(request, env);
     if (pathname === "/search") return handleSearch(request, env);

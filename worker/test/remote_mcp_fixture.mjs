@@ -13,6 +13,7 @@ import { executeContractsAnalysis } from "../../capabilities/contracts_analysis.
 import { executeMeetingGet } from "../../capabilities/meetings.mjs";
 import { executePeopleGet, executeOrganizationsBrowse } from "../../capabilities/people_organizations.mjs";
 import { executeLandProjectGet, executeLandProjectsBrowse } from "../../capabilities/land_projects.mjs";
+import { executeLandDecisionPathGet } from "../../capabilities/land_decision_path.mjs";
 import { buildSharedProcurementReadModel } from "../../site/shared_procurement_read_model.mjs";
 import { workerCitedPassages } from "../src/cited_retrieval.mjs";
 import { workerD1EntityDossier } from "../src/entity_dossier.mjs";
@@ -109,6 +110,11 @@ export const CAPABILITY_TOOL_CASES = Object.freeze([
     capabilityReference: "land.projects.browse@1",
     name: "browse_land_projects",
     arguments: Object.freeze({ procedure: "elurp", limit: 5 }),
+  }),
+  Object.freeze({
+    capabilityReference: "land.decision_path.get@1",
+    name: "get_land_decision_path",
+    arguments: Object.freeze({ project_id: "2024Q0356" }),
   }),
 ]);
 
@@ -382,6 +388,11 @@ export async function directCapabilityResults(env) {
   results.set("browse_land_projects", await executeLandProjectsBrowse(
     workerLandProjects(env).browse,
     { procedure: landBrowseArgs.procedure, limit: landBrowseArgs.limit },
+  ));
+  const landDecisionPathArgs = argsFor("get_land_decision_path");
+  results.set("get_land_decision_path", await executeLandDecisionPathGet(
+    workerLandProjects(env).decisionPath,
+    { projectId: landDecisionPathArgs.project_id },
   ));
   return results;
 }

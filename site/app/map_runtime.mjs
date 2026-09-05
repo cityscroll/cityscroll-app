@@ -710,6 +710,7 @@ export function landMapSelectionHTML(model, {t: copy = mapCopy, escape = escapeM
     projectId: selectedId,
     row,
     panelHref: marker.href,
+    decisionPath: row?.decision_path || null,
   });
   const authorityLabel = authority.state === "available"
     ? copy("land_map_authority_available")

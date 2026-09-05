@@ -67,6 +67,7 @@ test("initialize + tools/list expose retrieval and action tools", async () => {
     "get_meeting",
     "get_land_project",
     "browse_land_projects",
+    "get_land_decision_path",
     "preview_watch",
     "create_watch",
   ]);

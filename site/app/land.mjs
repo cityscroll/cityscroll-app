@@ -1300,7 +1300,10 @@ function landSpineHTML(spine, record, phaseTools, listRow){
       open_data: record?.open_data || null,
       portal_url: record?.portal_url || null,
       public_status: publicStatus,
-      project_id: record?.project_id || spine.project_id || null
+      project_id: record?.project_id || spine.project_id || null,
+      actions: record?.actions || record?.zap_actions || null,
+      variant_evidence: record?.variant_evidence || null,
+      procedure_facts: record?.procedure_facts || null,
     });
     return landPhaseSpineHTML(view, phaseTools, record);
   }
