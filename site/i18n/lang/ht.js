@@ -1200,6 +1200,7 @@
     bid_guide_notice_submit_step: "Soumèt oswa mande dokiman nan: {where}.",
     bid_guide_notice_method_step: "Metòd seleksyon: {method}.",
     bid_guide_notice_fallback_step: "Sèvi ak kontak ak dat limit ki nan paj sa a pou mande dokiman yo epi soumèt anvan dat limit la.",
+    contract_comment_guide_consequence_step_html: "Dapre lwa, ajans lan dwe konsidere chak kòmantè li resevwa anvan li finalize atribisyon kontra sa a. <a href=\"{url}\" target=\"_blank\" rel=\"noopener noreferrer\">Aprann plis sou pwosesis kòmantè a<span class=\"sr-only\"> (ouvri nan yon nouvo onglet)</span></a>.",
     how_to_respond_heading: "Kijan pou reponn RFP sa a",
     prefer_feeds_html: "Ou pito flux? Siveyans sa a disponib tou kòm",
     notices_in_english_note_inline: "Tèks ofisyèl an angle. Tradiksyon non ofisyèl disponib.",

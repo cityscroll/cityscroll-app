@@ -1201,6 +1201,7 @@
     bid_guide_notice_submit_step: "Presente o solicite materiales en: {where}.",
     bid_guide_notice_method_step: "Método de selección: {method}.",
     bid_guide_notice_fallback_step: "Use el contacto y la fecha límite de esta página para solicitar el paquete y presentarlo antes de la fecha de vencimiento.",
+    contract_comment_guide_consequence_step_html: "Por ley, la agencia debe considerar todos los comentarios recibidos antes de finalizar la adjudicación de este contrato. <a href=\"{url}\" target=\"_blank\" rel=\"noopener noreferrer\">Más información sobre el proceso de comentarios<span class=\"sr-only\"> (se abre en una pestaña nueva)</span></a>.",
     how_to_respond_heading: "Cómo responder a esta RFP",
     prefer_feeds_html: "¿Prefiere fuentes? Este seguimiento también está disponible como",
     notices_in_english_note_inline: "Texto oficial en inglés. Traducción no oficial disponible.",

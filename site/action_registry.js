@@ -206,6 +206,14 @@
   }
 
   function kindFor(matter) {
+    // Checked ahead of every other branch, including a caller-supplied matter.kind: City
+    // Record still files most proposed-contract-award notices under the legacy "Contract
+    // Award Hearings" label even where the notice itself now publishes a written comment
+    // window rather than a hearing, and at least one caller (feed-actions.mjs's
+    // noticeActionMatter) pre-computes its own kind before this function ever runs. Only a
+    // positively evidenced comment window is reclassified — see contractPublicCommentEvidence
+    // — so this can never override a caller's kind for any other family.
+    if (contractPublicCommentEvidence(matter)) return "contract_comment";
     if (matter.kind) return matter.kind;
     const section = String(matter.section_name || "");
     const type = String(matter.type_of_notice_description || "");
@@ -216,6 +224,213 @@
     // Award chain + selection intermediates (Intent to Award already matches /Award/).
     if (/Award|Intent to Negotiate|Vendor List/i.test(type)) return "award";
     return "notice";
+  }
+
+  // PHC-08: NYC moved most proposed-contract-award review to a written notice-and-comment
+  // process on 2025-05-21, but City Record still files these notices under the legacy
+  // "Contract Award Hearings" section/type label (and an existing, never-matched
+  // "Public Comment on Contract Awards" label). A notice qualifies as that written comment
+  // process only on positive evidence published in the notice itself — never from the
+  // section label or a posting date alone — and never when the notice also publishes a
+  // genuinely separate live event (a recognized join platform or a physical venue), so a
+  // real hearing (including one that predates the process change) is never relabeled.
+  const CONTRACT_AWARD_HEARING_FAMILY_RE = /contract award hearing|public comment.+contract award/i;
+  const CONTRACT_COMMENT_LANGUAGE_RE = /\b(?:seeking|invit(?:e|ing)|accepting|requesting)\b[^.\n]{0,60}\bcomments?\b|\bcomments?\b[^.\n]{0,60}\b(?:invited|accepted|welcome|requested)\b/i;
+  // A bounded, lazy gap (not tight adjacency) between "comment(s)" and the deadline clause
+  // tolerates an intervening submission channel — "comments may be submitted at
+  // <url> before <date>" — while the 140-char cap still keeps this label-bound rather
+  // than picking up an unrelated "before" elsewhere in a long notice. [\s\S], not
+  // [^.\n]: a URL's own dots must not break the span.
+  const CONTRACT_COMMENT_DEADLINE_RE = new RegExp(
+    "\\bcomments?\\b[\\s\\S]{0,140}?\\b(?:before|by|until|no\\s+later\\s+than)\\s+"
+    + "((?:January|February|March|April|May|June|July|August|September|October|November|December)"
+    + "\\s+\\d{1,2}(?:st|nd|rd|th)?,?\\s+\\d{4}|\\d{1,2}[/-]\\d{1,2}[/-](?:\\d{2}|\\d{4}))",
+    "i",
+  );
+  const CONTRACT_COMMENT_MONTH_INDEX = Object.freeze({
+    january: 1, february: 2, march: 3, april: 4, may: 5, june: 6,
+    july: 7, august: 8, september: 9, october: 10, november: 11, december: 12,
+  });
+  const CONTRACT_COMMENT_CONSEQUENCE_URL = "https://www.nyc.gov/site/mocs/about/public-hearing.page";
+
+  function contractCommentParseDate(value) {
+    const text = String(value || "").trim();
+    let match = /^(\d{1,2})[/-](\d{1,2})[/-](\d{2}|\d{4})$/.exec(text);
+    let year;
+    let month;
+    let day;
+    if (match) {
+      month = Number(match[1]); day = Number(match[2]); year = Number(match[3]);
+      if (year < 100) year += 2000;
+    } else {
+      match = /^([A-Za-z]+)\s+(\d{1,2})(?:st|nd|rd|th)?,?\s+(\d{4})$/.exec(text);
+      if (!match) return null;
+      month = CONTRACT_COMMENT_MONTH_INDEX[match[1].toLowerCase()];
+      day = Number(match[2]); year = Number(match[3]);
+      if (!month) return null;
+    }
+    const probe = new Date(Date.UTC(year, month - 1, day));
+    if (probe.getUTCFullYear() !== year || probe.getUTCMonth() !== month - 1 || probe.getUTCDate() !== day) return null;
+    const two = (n) => String(n).padStart(2, "0");
+    return `${year}-${two(month)}-${two(day)}`;
+  }
+
+  // A URL only counts as the comment-submission channel when comment/submission
+  // language sits near it in the body — City Record rows carry no structured comment_url
+  // field, so this (mirroring extractTestimonySignupUrl's labeled-URL pattern) is the only
+  // real path to a verified channel for most published notices.
+  function contractCommentUrlFromBody(body) {
+    const text = String(body || "");
+    for (const match of text.matchAll(/https:\/\/[^\s<>"')]+/gi)) {
+      const url = String(match[0] || "").replace(/[.,;:)\]]+$/, "");
+      const start = Math.max(0, (match.index || 0) - 160);
+      const end = Math.min(text.length, (match.index || 0) + match[0].length + 80);
+      const context = text.slice(start, end);
+      if (/\b(?:submit|send|email|upload|file)\b[^.\n]{0,60}\bcomments?\b|\bcomments?\b[^.\n]{0,60}\b(?:submit|submitted|send|sent|to|at|via)\b/i.test(context)) {
+        const safe = httpsUrl(url);
+        if (safe) return safe;
+      }
+    }
+    return null;
+  }
+
+  function contractCommentBodyFacts(body) {
+    const text = String(body || "");
+    const hasCommentLanguage = CONTRACT_COMMENT_LANGUAGE_RE.test(text);
+    const deadlineMatch = CONTRACT_COMMENT_DEADLINE_RE.exec(text);
+    const deadline = deadlineMatch ? contractCommentParseDate(deadlineMatch[1]) : null;
+    const channelEmail = extractEmails(text)[0] || null;
+    const channelUrl = contractCommentUrlFromBody(text);
+    return {hasCommentLanguage, deadline, channelEmail, channelUrl};
+  }
+
+  // Notice body, normalized from whichever shape the caller has on hand: the client
+  // action rail's already-joined `notice_text`, or a raw City Record row's
+  // additional_description_1/2/3 fields (used by notice_object_links.mjs's search/
+  // procurement routing, which never sees a pre-joined notice_text).
+  function contractCommentNoticeBody(matter) {
+    const raw = matter && matter.notice_text
+      ? String(matter.notice_text)
+      : [matter && matter.additional_description_1, matter && matter.additional_description_2, matter && matter.additional_description_3]
+        .filter(Boolean).join(" ");
+    return raw
+      .replace(/<[^>]*>/g, " ")
+      .replace(/&nbsp;/gi, " ")
+      .replace(/&amp;/gi, "&")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
+  /**
+   * Evidence-gated classifier for the proposed-contract-award written comment window.
+   * Returns null — never classified — unless the family label matches AND the notice
+   * itself publishes explicit comment-process evidence AND no separate live event is
+   * also published. A record with neither comment evidence nor a live-event signal
+   * (a bare label with nothing else published) also returns null, so a bare label or a
+   * posting date alone can never drive the classification.
+   */
+  function contractPublicCommentEvidence(matter) {
+    const m = matter || {};
+    const section = String(m.section_name || "").toLowerCase();
+    const type = String(m.type_of_notice_description || "").toLowerCase();
+    if (!CONTRACT_AWARD_HEARING_FAMILY_RE.test(section) && !CONTRACT_AWARD_HEARING_FAMILY_RE.test(type)) return null;
+
+    const body = contractCommentNoticeBody(m);
+    const venue = venueFromMatter(m);
+    // Strictly a join/livestream URL — participationUrlFromBody's generic urls[0]
+    // fallback would wrongly disqualify a plain City Record comment-submission link.
+    const bodyUrls = (body.match(/https:\/\/[^\s<>"')]+/gi) || [])
+      .map((raw) => raw.replace(/[.,;:)\]]+$/, ""))
+      .map(httpsUrl)
+      .filter(Boolean);
+    const linkUrl = httpsUrl(m.participation_url)
+      || bodyUrls.find((url) => isJoinPlatformUrl(url) || isLivestreamUrl(url));
+    // A genuinely published live event (a recognized join platform or a physical venue)
+    // means this is a real hearing — never reclassify it (negative rule; A5, A6).
+    if (linkUrl || venue.address || venue.building) return null;
+
+    const facts = contractCommentBodyFacts(body);
+    const commentUrl = httpsUrl(m.comment_url) || facts.channelUrl || null;
+    const commentEmail = String(m.comment_email || "").trim() || facts.channelEmail || null;
+    // A generic `deadline` field is not comment-specific evidence (it powers many other
+    // notice kinds, e.g. a bid response date) — only a comment-labeled field or a body-
+    // extracted "comments must be submitted by" date counts here (negative rule: never
+    // from a date alone).
+    const deadline = String(m.comment_by_date || "").trim() || facts.deadline || null;
+    if (!commentUrl && !commentEmail && !deadline && !facts.hasCommentLanguage) return null;
+
+    const officialNoticeUrl = httpsUrl(m.official_notice_url)
+      || (m.request_id ? `https://a856-cityrecord.nyc.gov/RequestDetail/${encodeURIComponent(m.request_id)}` : null);
+
+    return {
+      comment_url: commentUrl,
+      comment_email: commentEmail,
+      comment_deadline: deadline || null,
+      official_notice_url: officialNoticeUrl,
+      original_section: String(m.section_name || "").trim() || null,
+      original_type: String(m.type_of_notice_description || "").trim() || null,
+    };
+  }
+
+  /**
+   * Comment-window handoff for the "contract_comment" rail: submission destination when a
+   * verified channel and an open deadline both exist, otherwise the official instructions.
+   * Never a hearing/attend/calendar affordance — see compileActionRail's contract_comment
+   * branch, which renders no calendar control for this kind (A2).
+   */
+  function contractCommentHandoff(matter, options) {
+    const opts = options || {};
+    const today = String(opts.today || new Date().toISOString().slice(0, 10)).slice(0, 10);
+    const evidence = contractPublicCommentEvidence(matter);
+    if (!evidence) {
+      return {system: "contract_comment_extracted", mode: "unknown", destination: null, has_fields: false};
+    }
+    const deadline = evidence.comment_deadline;
+    const closed = !!deadline && isPast(deadline, today);
+    const open = !closed && !!evidence.comment_url && !!deadline;
+    const mode = closed ? "closed" : open ? "comment_open" : "unknown";
+    return {
+      system: "contract_comment_extracted",
+      mode,
+      destination: open ? evidence.comment_url : null,
+      comment_url: evidence.comment_url,
+      comment_email: evidence.comment_email,
+      comment_deadline: deadline,
+      official_notice_url: evidence.official_notice_url,
+      original_section: evidence.original_section,
+      original_type: evidence.original_type,
+      has_fields: !!(evidence.comment_url || evidence.comment_email || deadline || evidence.official_notice_url),
+    };
+  }
+
+  /**
+   * render_steps payload for the contract-comment guide box (see actionRailGuideHTML).
+   * Reuses the file's existing email/contact and notice-link step copy so this card adds
+   * exactly one new dictionary string (the consider-before-award consequence, A4) rather
+   * than a full new set of per-field translations.
+   */
+  function contractCommentGuideStepsHTML(handoff, helpers) {
+    const h = helpers || {};
+    const t = h.t || ((key) => key);
+    const esc = h.escape || ((value) => String(value || ""));
+    const fdt = h.formatDate || ((value) => String(value || ""));
+    const guide = handoff || {};
+    const hostOf = (url) => { try { return new URL(url).hostname; } catch (_e) { return url; } };
+    const steps = [];
+    if (guide.comment_email) {
+      steps.push(t("bid_guide_notice_contact_step_html", {who: esc(guide.comment_email)}));
+    }
+    if (!guide.comment_url && guide.official_notice_url) {
+      steps.push(t("bid_guide_notice_package_step_html", {
+        url: esc(guide.official_notice_url),
+        host: esc(hostOf(guide.official_notice_url)),
+      }));
+    }
+    if (guide.comment_deadline) {
+      steps.push(t("bid_guide_notice_due_step", {date: fdt(guide.comment_deadline)}));
+    }
+    steps.push(t("contract_comment_guide_consequence_step_html", {url: esc(CONTRACT_COMMENT_CONSEQUENCE_URL)}));
+    return steps;
   }
 
   /** Format a published dollar amount for award rail labels (no fabrication of missing values). */
@@ -1729,7 +1944,7 @@
         agency ? `Follow ${agency} property notices` : "Follow property notices",
         watchDestination(m), null, agency ? {label_vars: {agency}} : null);
     }
-    if (kind === "solicitation" || type === "Solicitation" || kind === "award"
+    if (kind === "solicitation" || type === "Solicitation" || kind === "award" || kind === "contract_comment"
       || /Award|Intent to Negotiate|Vendor List/i.test(type)) {
       return local("watch", agency ? "next_action_watch_contracts" : "next_action_watch_contracts_general",
         agency ? `Follow ${agency} contracts` : "Follow city contracts",
@@ -1897,6 +2112,36 @@
         }
         if (deadline) actions.push(local("calendar", "calendar_ics", "Calendar (.ics)", null, deadline));
         actions.push(watch);
+      }
+    } else if (kind === "contract_comment") {
+      // A written comment window, not a hearing: no attend, conferencing, remote-join, or
+      // calendar control is ever rendered here (A2) — only a comment submission or a
+      // pointer to the official instructions, each carrying the consider-before-award
+      // consequence in its guide (A4).
+      const handoff = contractCommentHandoff(matter, {today});
+      // No custom heading_key: defaults to the existing "How to respond" guide heading.
+      const guide = {
+        ...handoff,
+        render_steps: (_actions, helpers) => contractCommentGuideStepsHTML(handoff, helpers),
+      };
+      if (handoff.mode === "closed") {
+        // Matches the rest of the file's convention: a closed window states its status and
+        // points to the official notice, without a guide panel.
+        actions = [
+          unavailable("comment", "next_action_comment_closed", "Public comment is not open now.", handoff.comment_deadline),
+          official("document", "read_official_notice", "Read official notice", handoff.official_notice_url, null),
+          watch,
+        ];
+      } else if (handoff.mode === "comment_open") {
+        actions = [
+          official("comment", "rule_comment_btn", "Comment", handoff.destination, handoff.comment_deadline, {guide}),
+          watch,
+        ];
+      } else {
+        actions = [
+          official("document", "read_official_notice", "Read official notice", handoff.official_notice_url, null, {guide}),
+          watch,
+        ];
       }
     } else if (kind === "zoning") {
       const handoff = zoningHandoff(matter, {today});
@@ -2174,6 +2419,8 @@
     ruleHandoff,
     zoningHandoff,
     franchiseHandoff,
+    contractPublicCommentEvidence,
+    contractCommentHandoff,
     zoningStage,
     landHearingBody,
     parcelLookupActions,

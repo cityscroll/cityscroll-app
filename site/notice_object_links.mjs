@@ -8,6 +8,9 @@
  */
 
 import { canonicalMandateId } from "./mandate_subject_ref.mjs";
+import * as actionRegistryModule from "./action_registry.js";
+
+const actionRegistry = globalThis.CrolActions || actionRegistryModule.default || actionRegistryModule;
 
 export const NOTICE_OBJECT_LINK_SCHEMA = "cityscroll.notice_object_link.v1";
 
@@ -98,8 +101,17 @@ export function mandateObjectTarget(row = {}) {
 
 function contractAwardNotice(row = {}) {
   const section = clean(row.section_name || row.type_of_notice_description, 160).toLowerCase();
-  return section === "public comment on contract awards"
-    || /public comment.+contract award/.test(section);
+  if (section === "public comment on contract awards" || /public comment.+contract award/.test(section)) {
+    return true;
+  }
+  // PHC-08: the legacy "Contract Award Hearings" taxonomy also covers this notice's
+  // stable procurement identity once it carries positive comment-window evidence —
+  // the same evidence-gated check that governs its consequence and affordances (see
+  // site/action_registry.js's contractPublicCommentEvidence). A bare label, or a
+  // notice that also publishes a genuinely separate live event, is left unmatched here
+  // exactly as it is left unclassified there.
+  return typeof actionRegistry.contractPublicCommentEvidence === "function"
+    && !!actionRegistry.contractPublicCommentEvidence(row);
 }
 
 function contractIdentifiers(row = {}) {
