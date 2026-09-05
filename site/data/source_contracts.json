@@ -4558,7 +4558,7 @@
       "normal_refresh_cadence_hours": 24,
       "warning_age_hours": 72,
       "hard_maximum_age_hours": 168,
-      "vintage_fields": ["data_current_as_of", "open_window_as_of", "generated_at"],
+      "vintage_fields": ["sources_retrieved_as_of"],
       "population_fields": ["exams"],
       "last_known_good_behavior": "Retain the last verified exam schedule within its hard age and disclose degraded freshness.",
       "resident_stale_behavior": "Do not describe application windows or eligible lists as current after the hard maximum age.",

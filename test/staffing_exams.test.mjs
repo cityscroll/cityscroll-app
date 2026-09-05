@@ -4,7 +4,7 @@ import assert from "node:assert/strict";
 import { createRequire } from "node:module";
 import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
-import { STAFFING_EXAMS_SCHEMA_VERSION } from "../tools/build_staffing_exams.mjs";
+import { STAFFING_EXAMS_SCHEMA_VERSION, staffingSourcesRetrievedAsOf } from "../tools/build_staffing_exams.mjs";
 
 const require = createRequire(import.meta.url);
 const Staffing = require("../site/staffing.js");
@@ -29,6 +29,55 @@ test("staffing artifact stamps honest list and open-window freshness clocks", ()
     assert.match(artifact.list_current_as_of, /^\d{4}-\d{2}-\d{2}$/);
     assert.match(String(artifact.data_current_as_of || ""), /^\d{4}-\d{2}-\d{2}$/);
   }
+});
+
+test("the acquisition vintage equals the newest retrieval stamp among the disclosed sources", () => {
+  assert.equal(
+    artifact.sources_retrieved_as_of,
+    staffingSourcesRetrievedAsOf(artifact.sources),
+    "the stamped vintage must be derivable from the artifact's own source list",
+  );
+  assert.match(String(artifact.sources_retrieved_as_of), /^\d{4}-\d{2}-\d{2}$/);
+
+  const retrievalStamps = artifact.sources
+    .flatMap((source) => [source.fetched_at, source.verified_at, source.observed_on])
+    .filter(Boolean)
+    .map((value) => String(value).slice(0, 10));
+  assert.ok(retrievalStamps.length, "sources must disclose retrieval stamps");
+  assert.equal(artifact.sources_retrieved_as_of, retrievalStamps.sort().at(-1));
+
+  // Publisher claims about the data are not records of when the project fetched it.
+  const publisherClaims = [
+    ...artifact.sources.map((source) => source.data_publication_date),
+    ...artifact.sources.map((source) => source.data_current_as_of),
+  ].filter(Boolean);
+  const fabricated = [...artifact.sources.map((s) => ({ ...s })), {
+    id: "hypothetical-future-publication",
+    data_publication_date: "2099-01-01",
+    data_current_as_of: "2099-01-01",
+  }];
+  assert.equal(
+    staffingSourcesRetrievedAsOf(fabricated),
+    artifact.sources_retrieved_as_of,
+    `publisher dates (${publisherClaims.length} present) must never advance the acquisition vintage`,
+  );
+});
+
+test("the acquisition vintage moves with a refresh while the upstream publication clocks hold", () => {
+  const refreshed = artifact.sources.map((source) => (
+    source.fetched_at ? { ...source, fetched_at: "2027-03-04" } : source
+  ));
+  assert.equal(staffingSourcesRetrievedAsOf(refreshed), "2027-03-04");
+  // data_current_as_of / list_current_as_of track DCAS establishing an eligible list,
+  // which can pause for weeks. A refresh cannot move them, so they can only ever lag
+  // the retrieval vintage — never lead it — and cannot measure refresh freshness.
+  assert.ok(
+    artifact.data_current_as_of <= artifact.sources_retrieved_as_of,
+    "an upstream publication clock can never be newer than the fetch that observed it",
+  );
+  assert.ok(
+    artifact.annual_schedule_current_as_of <= artifact.sources_retrieved_as_of,
+  );
 });
 
 test("every exam has a unique shareable identity and official provenance", () => {

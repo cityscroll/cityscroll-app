@@ -227,6 +227,42 @@ test("rules-semantic-lane freshness is measured from the daily rules snapshot vi
   }
 });
 
+test("staffing-exams freshness is measured from the acquisition's own retrieval vintage, not the eligible-list establishment date", async () => {
+  const registry = canonical();
+  const staffingExams = registry.first_class_artifacts.find((row) => row.id === "staffing-exams");
+  assert.deepEqual(staffingExams.vintage_fields, ["sources_retrieved_as_of"]);
+
+  const root = await mkdtemp(join(tmpdir(), "cityscroll-staffing-exams-"));
+  try {
+    const write = (value) => {
+      const target = join(root, staffingExams.public_artifact_path);
+      mkdirSync(dirname(target), { recursive: true });
+      writeFileSync(target, JSON.stringify(value));
+    };
+    const now = "2026-09-05T12:00:00.000Z";
+    const definitions = [staffingExams];
+    // DCAS last established an eligible list on 2026-08-26 in every case below: the
+    // upstream publication clock is held fixed so only the retrieval vintage varies.
+    const upstream = {
+      data_current_as_of: "2026-08-26",
+      list_current_as_of: "2026-08-26",
+      open_window_as_of: "2026-09-05",
+      exams: [{}, {}],
+    };
+
+    write({ ...upstream, sources_retrieved_as_of: "2026-09-05" });
+    const fresh = buildFirstClassFreshnessReport({ first_class_artifacts: definitions }, { root, now });
+    assert.equal(fresh.surfaces[0].freshness_state, "fresh");
+    assert.equal(fresh.surfaces[0].source_vintage, "2026-09-05T00:00:00.000Z");
+
+    write({ ...upstream, sources_retrieved_as_of: "2026-07-20" });
+    const stale = buildFirstClassFreshnessReport({ first_class_artifacts: definitions }, { root, now });
+    assert.equal(stale.surfaces[0].freshness_state, "stale");
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});
+
 test("production build emits and retains the first-class freshness proof", () => {
   const build = readFileSync(new URL("../tools/build_cloudflare_pages.mjs", import.meta.url), "utf8");
   assert.match(build, /first_class_refresh\.mjs/);
