@@ -1,0 +1,29 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-public-input-consequence/phc-08-contract-comment-as-deadline",
+  "status": "implemented",
+  "fingerprint": "phc-08-contract-comment-as-deadline.v1",
+  "updated_at": "2026-09-05T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "contract-comment-window-classification",
+      "path": "site/notice_object_links.mjs"
+    },
+    {
+      "id": "contract-comment-action-rail",
+      "path": "site/action_registry.js"
+    },
+    {
+      "id": "contract-comment-action-rail-worker",
+      "path": "worker/src/lib/action_registry.mjs"
+    },
+    {
+      "id": "contract-comment-notice-gate",
+      "path": "test/contract_public_comment_notice.test.mjs"
+    },
+    {
+      "id": "contract-comment-capture-manifest",
+      "path": "docs/evidence/public-input-consequence/phc-08-contract-public-comment/capture-manifest.json"
+    }
+  ]
+}
