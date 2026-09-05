@@ -1,0 +1,249 @@
+{
+  "schema": "cityscroll.procurement_pursuit_decision_related_context_manifest.v1",
+  "captured_at": "2026-09-05T02:54:20Z",
+  "revision": "bf578c2afa757e1b4dc4de5c4794840d79ad53e8",
+  "note": "Card 4 (procurement-pursuit-decision): related procurement context and amount benchmarks beneath the pursuit snapshot. Screenshot binaries are not committed to this repository; they are written to an external directory (default a docs-evidence/ sibling of the repository root, override with CAPTURE_EXTERNAL_OUT) named by 'external_filename' below, and this manifest is the reproducible, reviewable record of what each capture shows and why.",
+  "external_output_directory_note": "Not committed; see external_filename per capture. Re-run this script to regenerate byte-identical captures (same sha256) at this revision.",
+  "captures": [
+    {
+      "case": "related-context-both-groups",
+      "surface": "procurement-detail",
+      "route": "/_capture/related-context-both-groups",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "bf578c2afa757e1b4dc4de5c4794840d79ad53e8",
+      "fixture_ids": [
+        "A"
+      ],
+      "data_vintage": "Fixture A (Parks, Playground reconstruction) with a caller-supplied exact predecessor (same EPIN, Acme Builders, 2022) and a resemblance-only candidate (same agency, overlapping title, Beta Contracting, 2023); comparison population of 39 amounts (40 total with the subject) so the benchmark clears the percentile floor.",
+      "renders_related_context": true,
+      "assertion": "Exact procurement history and related procurement context render as two visibly and semantically distinct groups beneath the pursuit snapshot; the amount benchmark states a percentile because the cohort (n=40) is at or above the existing large-cohort floor.",
+      "external_filename": "related-context-both-groups-390x844.png",
+      "sha256": "f70cbfe0834902ea768842cdb0cfe5df88e48396df8d299be4742a0bcc20ed02",
+      "bytes": 305388,
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "case": "related-context-both-groups",
+      "surface": "procurement-detail",
+      "route": "/_capture/related-context-both-groups",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "bf578c2afa757e1b4dc4de5c4794840d79ad53e8",
+      "fixture_ids": [
+        "A"
+      ],
+      "data_vintage": "Fixture A (Parks, Playground reconstruction) with a caller-supplied exact predecessor (same EPIN, Acme Builders, 2022) and a resemblance-only candidate (same agency, overlapping title, Beta Contracting, 2023); comparison population of 39 amounts (40 total with the subject) so the benchmark clears the percentile floor.",
+      "renders_related_context": true,
+      "assertion": "Exact procurement history and related procurement context render as two visibly and semantically distinct groups beneath the pursuit snapshot; the amount benchmark states a percentile because the cohort (n=40) is at or above the existing large-cohort floor.",
+      "external_filename": "related-context-both-groups-1440x900.png",
+      "sha256": "ec80d468365331bed44c5d0f2db91af720023f303bd6974b5a283f465acf7ab5",
+      "bytes": 379055,
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "case": "related-context-exact-only",
+      "surface": "procurement-detail",
+      "route": "/_capture/related-context-exact-only",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "bf578c2afa757e1b4dc4de5c4794840d79ad53e8",
+      "fixture_ids": [
+        "A"
+      ],
+      "data_vintage": "Fixture A with only the exact predecessor candidate; comparison population of 3 amounts (4 total with the subject), below the existing small-cohort floor.",
+      "renders_related_context": true,
+      "assertion": "Only the exact-procurement-history group renders; no related group, and no benchmark line at all -- a cohort below the rank floor is omitted entirely, never reported with false precision.",
+      "external_filename": "related-context-exact-only-390x844.png",
+      "sha256": "48c85a5568eb0f4441e2bdec61985acaead73bdeefadae3a5d8440266a2d2a3c",
+      "bytes": 280277,
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "case": "related-context-exact-only",
+      "surface": "procurement-detail",
+      "route": "/_capture/related-context-exact-only",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "bf578c2afa757e1b4dc4de5c4794840d79ad53e8",
+      "fixture_ids": [
+        "A"
+      ],
+      "data_vintage": "Fixture A with only the exact predecessor candidate; comparison population of 3 amounts (4 total with the subject), below the existing small-cohort floor.",
+      "renders_related_context": true,
+      "assertion": "Only the exact-procurement-history group renders; no related group, and no benchmark line at all -- a cohort below the rank floor is omitted entirely, never reported with false precision.",
+      "external_filename": "related-context-exact-only-1440x900.png",
+      "sha256": "d2c410806b51c541b9b9f6bade049d216f4e758cf9f24337e02ea43f1edb6346",
+      "bytes": 353191,
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "case": "related-context-related-only",
+      "surface": "procurement-detail",
+      "route": "/_capture/related-context-related-only",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "bf578c2afa757e1b4dc4de5c4794840d79ad53e8",
+      "fixture_ids": [
+        "A"
+      ],
+      "data_vintage": "Fixture A with only the resemblance candidate (same agency, overlapping title, no shared identifier); no comparison population supplied.",
+      "renders_related_context": true,
+      "assertion": "Only the related (resemblance) group renders, explicitly labeled as resemblance; the rendered markup never uses the word \"incumbent\" for this vendor.",
+      "external_filename": "related-context-related-only-390x844.png",
+      "sha256": "c7c64a0943cf8c06851e5f8c576bb7718c972ef9bf706d712f4704aaa121c1e9",
+      "bytes": 289200,
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "case": "related-context-related-only",
+      "surface": "procurement-detail",
+      "route": "/_capture/related-context-related-only",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "bf578c2afa757e1b4dc4de5c4794840d79ad53e8",
+      "fixture_ids": [
+        "A"
+      ],
+      "data_vintage": "Fixture A with only the resemblance candidate (same agency, overlapping title, no shared identifier); no comparison population supplied.",
+      "renders_related_context": true,
+      "assertion": "Only the related (resemblance) group renders, explicitly labeled as resemblance; the rendered markup never uses the word \"incumbent\" for this vendor.",
+      "external_filename": "related-context-related-only-1440x900.png",
+      "sha256": "e001755024504c7f12a250a1cc491f8ab4bfb42faeeaf694f56b6e1234c2071f",
+      "bytes": 361746,
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "case": "related-context-rank-only-benchmark",
+      "surface": "procurement-detail",
+      "route": "/_capture/related-context-rank-only-benchmark",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "bf578c2afa757e1b4dc4de5c4794840d79ad53e8",
+      "fixture_ids": [
+        "A"
+      ],
+      "data_vintage": "Fixture A with the exact predecessor candidate; comparison population of 38 amounts (39 total with the subject), at or above the existing rank floor but below the percentile floor.",
+      "renders_related_context": true,
+      "assertion": "The amount benchmark states a rank with the percentile explicitly withheld for a small-to-medium cohort, per the existing unchanged small-population policy.",
+      "external_filename": "related-context-rank-only-benchmark-390x844.png",
+      "sha256": "4bcabc9df0cb80e50bb9409d80dc21367ebadecc7a5ff67d1677a3ded351ea0a",
+      "bytes": 287892,
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "case": "related-context-rank-only-benchmark",
+      "surface": "procurement-detail",
+      "route": "/_capture/related-context-rank-only-benchmark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "bf578c2afa757e1b4dc4de5c4794840d79ad53e8",
+      "fixture_ids": [
+        "A"
+      ],
+      "data_vintage": "Fixture A with the exact predecessor candidate; comparison population of 38 amounts (39 total with the subject), at or above the existing rank floor but below the percentile floor.",
+      "renders_related_context": true,
+      "assertion": "The amount benchmark states a rank with the percentile explicitly withheld for a small-to-medium cohort, per the existing unchanged small-population policy.",
+      "external_filename": "related-context-rank-only-benchmark-1440x900.png",
+      "sha256": "7a5bcabf2a21b9f9c16c3dd3d802c851ba43271796d1bbac9d7578cfa8966d99",
+      "bytes": 360546,
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "case": "related-context-none",
+      "surface": "procurement-detail",
+      "route": "/_capture/related-context-none",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "bf578c2afa757e1b4dc4de5c4794840d79ad53e8",
+      "fixture_ids": [
+        "A"
+      ],
+      "data_vintage": "Fixture A rendered with no relatedContextCandidates and no relatedContextPopulationAmounts supplied.",
+      "renders_related_context": false,
+      "assertion": "No related-context section renders at all -- absence of caller-supplied history never becomes a fabricated \"no history found\" claim; the page renders normally with its existing sections.",
+      "external_filename": "related-context-none-390x844.png",
+      "sha256": "5f76ef11bd4299cda2ee35ddbc0a5de005d2951450a231ec404fda71394607a1",
+      "bytes": 264957,
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "case": "related-context-none",
+      "surface": "procurement-detail",
+      "route": "/_capture/related-context-none",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "bf578c2afa757e1b4dc4de5c4794840d79ad53e8",
+      "fixture_ids": [
+        "A"
+      ],
+      "data_vintage": "Fixture A rendered with no relatedContextCandidates and no relatedContextPopulationAmounts supplied.",
+      "renders_related_context": false,
+      "assertion": "No related-context section renders at all -- absence of caller-supplied history never becomes a fabricated \"no history found\" claim; the page renders normally with its existing sections.",
+      "external_filename": "related-context-none-1440x900.png",
+      "sha256": "ef6bab0ea630d31f1ac1e9745d5ecf3a7149678d16dd9a57968b1488d3b6f42f",
+      "bytes": 336033,
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    }
+  ]
+}
