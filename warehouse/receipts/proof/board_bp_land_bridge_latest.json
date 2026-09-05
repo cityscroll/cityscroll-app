@@ -1,5 +1,111 @@
 {
+  "borough_board_sources": {
+    "coverage": {
+      "canonical_boards": 5,
+      "inventory_only": 4,
+      "supported": 1,
+      "unavailable": 0
+    },
+    "generated_at": "2026-09-05T00:00:00.000Z",
+    "schema": "cityscroll.borough_board_source_registry.v1",
+    "sources": [
+      {
+        "body_ref": "borough-board:bronx",
+        "borough": "Bronx",
+        "checked_at": "2026-09-05T00:00:00.000Z",
+        "observed_count": 0,
+        "official_pattern": {
+          "agency_pattern": "(?:Borough President\\s*-?\\s*|Office of the Borough President of\\s*)(Bronx|Brooklyn|Manhattan|Queens|Staten Island)",
+          "basis": "observed_publication_pattern",
+          "channel": "city_record",
+          "publisher": "City Record",
+          "source_domain": "a856-cityrecord.nyc.gov",
+          "title_pattern": "\\bBorough Board\\b"
+        },
+        "official_url": null,
+        "receipts": [],
+        "status": "inventory_only"
+      },
+      {
+        "body_ref": "borough-board:brooklyn",
+        "borough": "Brooklyn",
+        "checked_at": "2026-09-05T00:00:00.000Z",
+        "observed_count": 1,
+        "official_pattern": {
+          "agency_pattern": "(?:Borough President\\s*-?\\s*|Office of the Borough President of\\s*)(Bronx|Brooklyn|Manhattan|Queens|Staten Island)",
+          "basis": "observed_publication_pattern",
+          "channel": "city_record",
+          "publisher": "City Record",
+          "source_domain": "a856-cityrecord.nyc.gov",
+          "title_pattern": "\\bBorough Board\\b"
+        },
+        "official_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260518003",
+        "receipts": [
+          {
+            "checked_at": "2026-08-15T02:48:42.018Z",
+            "content_hash": "4fedbd52519673de4cbb97ec31c0703e7b089a6aa1018e5140191b553c08726b",
+            "source_record_id": "20260518003",
+            "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260518003",
+            "vintage": "2026-06-02T18:00:00.000"
+          }
+        ],
+        "status": "supported"
+      },
+      {
+        "body_ref": "borough-board:manhattan",
+        "borough": "Manhattan",
+        "checked_at": "2026-09-05T00:00:00.000Z",
+        "observed_count": 0,
+        "official_pattern": {
+          "agency_pattern": "(?:Borough President\\s*-?\\s*|Office of the Borough President of\\s*)(Bronx|Brooklyn|Manhattan|Queens|Staten Island)",
+          "basis": "observed_publication_pattern",
+          "channel": "city_record",
+          "publisher": "City Record",
+          "source_domain": "a856-cityrecord.nyc.gov",
+          "title_pattern": "\\bBorough Board\\b"
+        },
+        "official_url": null,
+        "receipts": [],
+        "status": "inventory_only"
+      },
+      {
+        "body_ref": "borough-board:queens",
+        "borough": "Queens",
+        "checked_at": "2026-09-05T00:00:00.000Z",
+        "observed_count": 0,
+        "official_pattern": {
+          "agency_pattern": "(?:Borough President\\s*-?\\s*|Office of the Borough President of\\s*)(Bronx|Brooklyn|Manhattan|Queens|Staten Island)",
+          "basis": "observed_publication_pattern",
+          "channel": "city_record",
+          "publisher": "City Record",
+          "source_domain": "a856-cityrecord.nyc.gov",
+          "title_pattern": "\\bBorough Board\\b"
+        },
+        "official_url": null,
+        "receipts": [],
+        "status": "inventory_only"
+      },
+      {
+        "body_ref": "borough-board:staten-island",
+        "borough": "Staten Island",
+        "checked_at": "2026-09-05T00:00:00.000Z",
+        "observed_count": 0,
+        "official_pattern": {
+          "agency_pattern": "(?:Borough President\\s*-?\\s*|Office of the Borough President of\\s*)(Bronx|Brooklyn|Manhattan|Queens|Staten Island)",
+          "basis": "observed_publication_pattern",
+          "channel": "city_record",
+          "publisher": "City Record",
+          "source_domain": "a856-cityrecord.nyc.gov",
+          "title_pattern": "\\bBorough Board\\b"
+        },
+        "official_url": null,
+        "receipts": [],
+        "status": "inventory_only"
+      }
+    ]
+  },
   "coverage": {
+    "eligible_borough_board_rows": 1,
     "eligible_borough_president_rows": 7,
     "eligible_community_board_rows": 395,
     "eligible_rows": 402,
