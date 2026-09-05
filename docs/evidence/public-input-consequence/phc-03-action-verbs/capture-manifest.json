@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "card": "cityscroll-public-input-consequence/phc-03-action-verbs-match-destination",
+  "capture_mode": "local_node_playwright_axe_static_render",
+  "repository_revision": "9e0a8e0590b3049c4035ec6c9efc7f2854518800",
+  "note": "renderMeetingDocument() rendered locally via node (no live Worker/D1 backend) for five synthetic City Council hearing/meeting records, one per participation-mode state named in the card. axe-core (test/functional/assets/axe.min.js) ran against each rendered document at both review widths using the same failing-violation classification as test/functional/11_accessibility.py (a11y_gate.py: critical/serious impact, plus the WCAG 2.2 target-size ratchet). Evidence proves the join/watch/in-person/written/unknown states render (A1-A6) and introduce no new axe violation; it does not evidence a live-data-populated card, since no Worker/D1 backend was running.",
+  "data_vintage": "not_applicable_synthetic_fixture_records",
+  "viewports": [
+    { "name": "mobile", "width": 390, "height": 844 },
+    { "name": "desktop", "width": 1440, "height": 900 }
+  ],
+  "captures": [
+    {
+      "fixture": "join_remote_state",
+      "route": "renderMeetingDocument(record) — meeting:city_record:phc03-a11y-join",
+      "viewport": "mobile",
+      "assertion": "A1: a recognized Zoom join URL renders \"Join remotely\" bound to that URL; the surrounding page (header, Where, contact, official source) renders unchanged",
+      "content_sha256": "36cd32879d093b0ca531a427d556022b4612f92354384d98b2b4933f1bce8735",
+      "file": null
+    },
+    {
+      "fixture": "join_remote_state",
+      "route": "renderMeetingDocument(record) — meeting:city_record:phc03-a11y-join",
+      "viewport": "desktop",
+      "assertion": "A1: same record at the wide review width — identical content, no reflow-introduced violation",
+      "content_sha256": "36cd32879d093b0ca531a427d556022b4612f92354384d98b2b4933f1bce8735",
+      "file": null
+    },
+    {
+      "fixture": "watch_state",
+      "route": "renderMeetingDocument(record) — meeting:city_record:phc03-a11y-watch",
+      "viewport": "mobile",
+      "assertion": "A2: a broadcast-only YouTube link renders \"Watch\" (previously silently absent from this page) and never \"Join online\"",
+      "content_sha256": "c93d46cc29459eac8238947629026542d0dc0634a6ae7aa885c815b35d7a922f",
+      "file": null
+    },
+    {
+      "fixture": "watch_state",
+      "route": "renderMeetingDocument(record) — meeting:city_record:phc03-a11y-watch",
+      "viewport": "desktop",
+      "assertion": "A2: same record at the wide review width",
+      "content_sha256": "c93d46cc29459eac8238947629026542d0dc0634a6ae7aa885c815b35d7a922f",
+      "file": null
+    },
+    {
+      "fixture": "in_person_state",
+      "route": "renderMeetingDocument(record) — meeting:city_record:phc03-a11y-inperson",
+      "viewport": "mobile",
+      "assertion": "A3/A5: a venue address alone renders only the existing \"Where\" section — no register-to-testify or written-testimony action is added without its own evidence",
+      "content_sha256": "efa0200360f1474e310258466e568143d989c78000c47f8a548c5e6eee05c33c",
+      "file": null
+    },
+    {
+      "fixture": "in_person_state",
+      "route": "renderMeetingDocument(record) — meeting:city_record:phc03-a11y-inperson",
+      "viewport": "desktop",
+      "assertion": "A3/A5: same record at the wide review width",
+      "content_sha256": "efa0200360f1474e310258466e568143d989c78000c47f8a548c5e6eee05c33c",
+      "file": null
+    },
+    {
+      "fixture": "written_state",
+      "route": "renderMeetingDocument(record) — meeting:city_record:phc03-a11y-written",
+      "viewport": "mobile",
+      "assertion": "A6: a testimony-signup URL renders \"Register to testify\" bound to that URL while no attendance mode (join/watch/in-person) is asserted",
+      "content_sha256": "ba034c20c98d96c870ad319ac613b6eead6334202d784f65e571922038cd1fba",
+      "file": null
+    },
+    {
+      "fixture": "written_state",
+      "route": "renderMeetingDocument(record) — meeting:city_record:phc03-a11y-written",
+      "viewport": "desktop",
+      "assertion": "A6: same record at the wide review width",
+      "content_sha256": "ba034c20c98d96c870ad319ac613b6eead6334202d784f65e571922038cd1fba",
+      "file": null
+    },
+    {
+      "fixture": "unknown_state",
+      "route": "renderMeetingDocument(record) — meeting:legistar:phc03-a11y-unknown",
+      "viewport": "mobile",
+      "assertion": "negative rule: a record with no evidenced participation mode renders no participation-actions list at all, rather than a guessed default",
+      "content_sha256": "530e42e852324eba244a82d741e10a4faeb64a4ae62550064bf34b2182f6e51e",
+      "file": null
+    },
+    {
+      "fixture": "unknown_state",
+      "route": "renderMeetingDocument(record) — meeting:legistar:phc03-a11y-unknown",
+      "viewport": "desktop",
+      "assertion": "negative rule: same record at the wide review width",
+      "content_sha256": "530e42e852324eba244a82d741e10a4faeb64a4ae62550064bf34b2182f6e51e",
+      "file": null
+    }
+  ],
+  "accessibility": {
+    "tool": "axe-core (test/functional/assets/axe.min.js)",
+    "scope": "document",
+    "viewports_checked": ["390x844", "1440x900"],
+    "new_violations_introduced": 0,
+    "pre_existing_violations_observed": [
+      {
+        "id": "target-size",
+        "impact": "serious",
+        "targets": [".document-brand", "a[href$=\"now/\"]", "a[href$=\"near-you/\"]"],
+        "note": "Pre-existing on the shared meeting-document masthead/nav markup (site/meeting_document.mjs's <header class=\"document-mast\">), present identically in the unknown-state baseline with no participation content at all; unchanged by this card's diff, which touches only the participation section. Left as-is rather than fixed out of scope, matching the phc-01-meetings-attendance capture manifest's precedent for a pre-existing finding outside the card's diff."
+      }
+    ],
+    "new_markup_scope_check": "axe.run(document.querySelector('.meeting-participation')) returned zero violations at both viewports for the join_remote, watch, in_person, and written states — the new participation-actions markup itself introduces nothing."
+  }
+}

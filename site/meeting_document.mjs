@@ -12,6 +12,9 @@ import { recognizedMeetingUrl } from "./hearing_logistics.mjs";
 import { cleanNoticeText } from "./text_clean.mjs";
 import { canonicalMeetingForRender } from "./meeting_capability_projection.mjs";
 import { buildCouncilHearingActionPath } from "./council_hearing_action_path.mjs";
+import { buildConsequenceProjection } from "./consequence_projection.mjs";
+import { attendanceDomainForRecord } from "./meetings_attendance.mjs";
+import { participationActionVerbs } from "./participation_action_verbs.mjs";
 import { renderCouncilHearingMatterContinuation } from "./council_hearing_matter_continuation.mjs";
 import {
   buildCrossSourceCoverageLedger,
@@ -534,6 +537,25 @@ function participationDetails(record) {
   return items;
 }
 
+// PHC-03: watch, register-to-testify, and submit-written-testimony are not
+// otherwise rendered anywhere on this page — participationDetails() above
+// only recognizes join and registration links. This surfaces those three
+// modes from PHC-00's evidence-gated consequence_projection.mjs, one action
+// per mode it actually evidenced. join_remote and attend_in_person are left
+// to the existing participationDetails()/locationDetails() rendering above,
+// so a real recognized join link is never rendered twice under two labels.
+const EXPOSED_EVIDENCED_MODES = Object.freeze(["watch", "register_to_testify", "submit_written"]);
+
+function evidencedParticipationActionRows(record) {
+  const domain = attendanceDomainForRecord(record);
+  const projection = buildConsequenceProjection(domain, record, {});
+  return participationActionVerbs(projection)
+    .filter((action) => EXPOSED_EVIDENCED_MODES.includes(action.mode))
+    .map((action) => (action.linkable && safeHref(action.href)
+      ? `<li><a href="${esc(safeHref(action.href))}" rel="noopener noreferrer">${esc(action.verb)}</a></li>`
+      : `<li>${esc(action.verb)}</li>`));
+}
+
 function relatedLinksDetails(record) {
   const values = [
     ...(Array.isArray(record.related_links) ? record.related_links : []),
@@ -611,14 +633,15 @@ export function renderMeetingDocument(record = {}, readModel = {}) {
     ? `<section class="node-section civic-object-section meeting-section meeting-location"><h2>Where</h2><ul>${locationRows.map((row) => `<li>${row}</li>`).join("")}</ul></section>`
     : "";
   const participationRows = participationDetails(record);
+  const evidencedActionRows = evidencedParticipationActionRows(record);
   const meetingMode = readerEnum(record.venue?.mode, {
     "in_person": "In person",
     "in-person": "In person",
     "hybrid": "Hybrid",
     "virtual": "Virtual",
   });
-  const participationSection = participationRows.length || meetingMode
-    ? `<section class="node-section civic-object-section meeting-section meeting-participation"><h2>How to participate</h2>${meetingMode ? `<p>Format: ${esc(meetingMode)}.</p>` : ""}${participationRows.length ? `<ul>${participationRows.join("")}</ul>` : ""}</section>`
+  const participationSection = participationRows.length || evidencedActionRows.length || meetingMode
+    ? `<section class="node-section civic-object-section meeting-section meeting-participation"><h2>How to participate</h2>${meetingMode ? `<p>Format: ${esc(meetingMode)}.</p>` : ""}${evidencedActionRows.length ? `<ul class="meeting-participation-actions">${evidencedActionRows.join("")}</ul>` : ""}${participationRows.length ? `<ul>${participationRows.join("")}</ul>` : ""}</section>`
     : "";
   const councilMatterPath = record.source_system === "city_record"
     ? buildCouncilHearingActionPath(record)
