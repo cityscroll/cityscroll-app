@@ -34,6 +34,8 @@ import {
   procurementOpportunityWindow,
 } from "./procurement_opportunity_window.mjs";
 import { extractSolicitationProcurementMethod } from "./solicitation_procurement_method.mjs";
+import { buildSolicitationMwbeView } from "./mwbe_goal_surface.mjs";
+import { buildPursuitSnapshot, renderPursuitSnapshotHtml } from "./procurement_pursuit_snapshot.mjs";
 
 const CHECKBOOK_SMART_SEARCH = "https://www.checkbooknyc.com/smart_search/citywide";
 const CHECKBOOK_CONTRACT_SEARCH = "https://www.checkbooknyc.com/contract_search";
@@ -291,8 +293,7 @@ export function renderProcurementInstitutionRoles(object = {}, observations = []
 // explicitly as "Window unavailable" rather than silently vanishing, per the
 // workstream's not-observed-must-never-read-as-no principle; per rule 3, that
 // state never gets a floor comparison.
-function opportunityWindowSectionBody(object, observations) {
-  const window = procurementOpportunityWindow(object, observations);
+function opportunityWindowSectionBody(object, observations, window) {
   if (!window.available && window.reason === "no_qualifying_observation") return "";
   if (!window.available) return `<p class="opportunity-window-line">${esc(window.label)}</p>`;
   const cityRecordRow = observationRows(object, observations)
@@ -303,6 +304,95 @@ function opportunityWindowSectionBody(object, observations) {
     ? `<p class="opportunity-window-rule-cite">Rule floor source: ${esc(method.response_floor.rule_cite)}</p>`
     : "";
   return `<p class="opportunity-window-line">${esc(line)}</p>${cite}`;
+}
+
+// Card 3 (procurement-pursuit-decision): a native-source object never carries
+// a City-Record-shaped notice type, so readiness for it is a deliberate,
+// explicit signal built from its own source system + observation_type rather
+// than an inferred absence of that field. mta_bid_results is excluded on
+// purpose -- a bid-opening result is already past the point of pursuit.
+const NATIVE_SOLICITATION_SOURCES = new Set(["nys_contract_reporter", "mta_current_opportunities"]);
+const AWARD_LIKE_RFX_STATUS = /award|selection/i;
+const SOLICITATION_NOTICE_TYPE = /solicitation/i;
+const AWARD_LIKE_NOTICE_TYPE = /award/i;
+
+function pursuitStageSignal(rows) {
+  let solicitation = false;
+  let nativeSparse = false;
+  for (const entry of rows) {
+    const system = String(entry.source_system || "").toLowerCase();
+    const snap = entry.snapshot || {};
+    if (system === "passport_public_rfx" && !AWARD_LIKE_RFX_STATUS.test(String(snap.rfx_status || ""))) {
+      solicitation = true;
+    }
+    if (system === "city_record") {
+      const type = String(snap.type_of_notice_description || "");
+      if (SOLICITATION_NOTICE_TYPE.test(type) && !AWARD_LIKE_NOTICE_TYPE.test(type)) solicitation = true;
+    }
+    if (NATIVE_SOLICITATION_SOURCES.has(system) && String(snap.observation_type || "").toLowerCase() === "opportunity") {
+      nativeSparse = true;
+    }
+  }
+  return { solicitation, nativeSparse };
+}
+
+/**
+ * Build the pursuit snapshot for a canonical procurement object, reusing
+ * every fact this page already computed (title/agency/amount via `facts`,
+ * the Card 2 opportunity window, the shared opportunity-calendar occurrence
+ * bundle, the M/WBE and official-source surfaces) rather than a second
+ * extraction pass. Returns null when pursuit is not meaningful here (an
+ * award, a contract-history-only object, a bid-opening result).
+ */
+function pursuitSnapshotFor(object, observations, facts, window, occurrences) {
+  const rows = observationRows(object, observations);
+  const stage = pursuitStageSignal(rows);
+  if (!stage.solicitation && !stage.nativeSparse) return null;
+
+  const cityRecordRow = rows.find((entry) => entry.source_system === "city_record")?.snapshot || null;
+  const rfxRow = rows.find((entry) => entry.source_system === "passport_public_rfx")?.snapshot || null;
+  const nativeRow = rows.find((entry) => NATIVE_SOLICITATION_SOURCES.has(String(entry.source_system || "").toLowerCase()))?.snapshot || null;
+
+  const method = cityRecordRow ? extractSolicitationProcurementMethod(cityRecordRow) : null;
+  const mwbeView = cityRecordRow ? buildSolicitationMwbeView(cityRecordRow, method) : null;
+
+  const importantDates = (Array.isArray(occurrences) ? occurrences : [])
+    .map((occurrence) => ({ title: occurrence.title, date: occurrence.date, starts_at: occurrence.starts_at }));
+
+  const numericAmount = facts.amount ? Number(String(facts.amount).replace(/[$,]/g, "")) : NaN;
+  const amountOpt = Number.isFinite(numericAmount) && numericAmount > 0
+    ? { value: numericAmount, status: "observed" }
+    : undefined;
+
+  const epin = object?.identity_keys?.epins?.[0] || rfxRow?.epin || cityRecordRow?.pin || null;
+  const sourceStatusLabel = rfxRow?.rfx_status || cityRecordRow?.type_of_notice_description
+    || nativeRow?.source_values?.status || nativeRow?.status || null;
+
+  const pursuitRow = {
+    short_title: facts.title,
+    agency_name: facts.agency,
+    type_of_notice_description: stage.solicitation ? "Solicitation" : undefined,
+    due_date: window?.due_date || null,
+    contact_name: cityRecordRow?.contact_name || null,
+    contact_phone: cityRecordRow?.contact_phone || null,
+    email: cityRecordRow?.email || null,
+    address_to_request: cityRecordRow?.address_to_request || null,
+    street_address_1: cityRecordRow?.street_address_1 || null,
+    selection_method_description: facts.method || null,
+    epin,
+  };
+
+  return buildPursuitSnapshot(pursuitRow, {
+    nativeSolicitationStage: stage.nativeSparse && !stage.solicitation,
+    amount: amountOpt,
+    opportunity_window: window,
+    important_dates: importantDates,
+    procurement_method: method,
+    mwbe_view: mwbeView,
+    official_source_items: procurementOfficialSourceItems(object, observations),
+    source_status_label: sourceStatusLabel,
+    cityscroll_url: `https://cityscroll.org${procurementCanonicalHref(object)}`,
+  });
 }
 
 export function renderProcurementDocument(object = {}, observations = [], {
@@ -318,13 +408,19 @@ export function renderProcurementDocument(object = {}, observations = [], {
   const id = clean(object?.procurement_id, 320);
   if (!id.startsWith("procurement:")) return null;
   const facts = factsFor(object, observations);
+  const occurrences = procurementOpportunityOccurrences(object, observations).occurrences;
   // One compact opportunity month (conference / questions / proposal dates)
   // ahead of the observed-event detail. Sparse bundles and an unsupplied day
   // render nothing; the long lifecycle stays in the sections below.
-  const opportunityMonth = opportunityMonthHTML(
-    procurementOpportunityOccurrences(object, observations).occurrences,
-    { today: clean(today, 10) || null },
-  );
+  const opportunityMonth = opportunityMonthHTML(occurrences, { today: clean(today, 10) || null });
+  const opportunityWindow = procurementOpportunityWindow(object, observations);
+  // Card 3: a compact pursuit snapshot near the top of solicitation-stage
+  // detail, composed from the same facts/window/occurrences/M-WBE/official-
+  // source surfaces this page already renders below. Null (never a section)
+  // for anything that is not at solicitation stage, per the same rule the
+  // existing calendar and window sections already follow.
+  const pursuitSnapshot = pursuitSnapshotFor(object, observations, facts, opportunityWindow, occurrences);
+  const pursuitSnapshotHtml = renderPursuitSnapshotHtml(pursuitSnapshot);
   const factRows = [
     ["Agency", facts.agency], ["Vendor", facts.vendor], ["Amount", facts.amount], ["Award date", facts.awardDate],
     ["Contract number", facts.contractNumber], ["Method", facts.method],
@@ -338,10 +434,11 @@ export function renderProcurementDocument(object = {}, observations = [], {
   const canonical = procurementCanonicalHref(object);
   const html = `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>${esc(facts.title)} · CityScroll</title><link rel="canonical" href="https://cityscroll.org${esc(canonical)}">${renderCivicDocumentAssets("/")}${opportunityMonth ? '<link rel="stylesheet" href="/compact_calendar.css" data-route-style="compact_calendar.css">' : ""}<script type="module" src="/report_issue.mjs"></script></head>
+<title>${esc(facts.title)} · CityScroll</title><link rel="canonical" href="https://cityscroll.org${esc(canonical)}">${renderCivicDocumentAssets("/")}${opportunityMonth ? '<link rel="stylesheet" href="/compact_calendar.css" data-route-style="compact_calendar.css">' : ""}${pursuitSnapshotHtml ? '<link rel="stylesheet" href="/procurement_pursuit_snapshot.css" data-route-style="procurement_pursuit_snapshot.css">' : ""}<script type="module" src="/report_issue.mjs"></script></head>
 <body>${renderCivicDocumentMast({ current: "browse" })}<main class="node-document" data-civic-object-kind="procurement" data-procurement-id="${esc(id)}">
 ${renderNodeBack({ href: "/browse/contracts/?mode=award", label: "Back to contracts", currentHref })}
 <header class="node-hero"><p class="ftype">Procurement</p><h1>${esc(facts.title)}</h1></header>
+${pursuitSnapshotHtml}
 ${procurementActions(object, facts)}
 ${renderCrossSourceEvidenceReceipt(object?.cross_source_evidence_receipt)}
 ${renderNodeSection({ heading: "Contract facts", body: factRows ? `<dl class="node-facts">${factRows}</dl>` : "" })}
@@ -363,7 +460,7 @@ ${renderNodeSection({
   headingId: "procurement-opportunity-window",
   extraClass: "procurement-opportunity-window",
   attrs: { id: "procurement-opportunity-window" },
-  body: opportunityWindowSectionBody(object, observations),
+  body: opportunityWindowSectionBody(object, observations, opportunityWindow),
 })}
 ${renderNodeSection({
   heading: "Opportunity dates",
