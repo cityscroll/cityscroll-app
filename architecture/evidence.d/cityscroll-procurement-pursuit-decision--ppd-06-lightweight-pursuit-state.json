@@ -1,0 +1,17 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-procurement-pursuit-decision/ppd-06-lightweight-pursuit-state",
+  "status": "implemented",
+  "fingerprint": "ppd-06-lightweight-pursuit-state.v1",
+  "updated_at": "2026-09-05T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "procurement-pursuit-state-contract",
+      "path": "site/procurement_pursuit_state.mjs"
+    },
+    {
+      "id": "procurement-pursuit-state-tests",
+      "path": "test/procurement_pursuit_state.test.mjs"
+    }
+  ]
+}
