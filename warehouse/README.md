@@ -737,3 +737,44 @@ node --test test/warehouse_scaffold.test.mjs test/warehouse_bulk.test.mjs \
 Optional: re-run the fixture ingest before the query assertions if the local
 catalog was wiped. Bulk verification needs a prior `--bulk` run (local/Mini only;
 CI does not download multi-MB packs).
+
+### Shared payment inputs across development workers
+
+Set `CITYSCROLL_WAREHOUSE_CACHE` to an existing host-local directory to share the
+Checkbook payment population. The two payment materializers resolve the current
+published CSV **and its matching receipt** once at process start. They read an
+immutable version directly; provisioning must not copy `warehouse/raw` into each
+worker or symlink a writable raw directory. Explicit `--input` or `--receipt`
+arguments keep using caller-owned files. Routine tests use `--from-fixture`, which
+never publishes to the shared cache or acquires live data.
+
+Before enabling the variable for readers, seed a completed population:
+
+```sh
+node warehouse/scripts/publish_payment_input.mjs "$CITYSCROLL_WAREHOUSE_CACHE" \
+  warehouse/raw/checkbook-payment-population/payments.csv \
+  warehouse/receipts/proof/checkbook_payment_population_latest.json
+```
+
+The importer copies only the normalized CSV and matching receipt, then verifies
+its checksum and successful reconciliation before publication. It never moves or
+edits the source, so existing workers retain their own inputs. Source XML pages
+are acquisition evidence rather than required reader inputs.
+
+With this variable set, a default live collector refresh acquires in a private
+staging directory under the cache. A single-writer directory lock prevents
+simultaneous refreshes. Completed CSVs, source pages and receipts become
+content-addressed read-only versions; an atomic pointer switch exposes them only
+after checksum and reconciliation verification. Existing readers stay on their
+original version. Explicit stage/output/receipt or `--reuse-pages` requests keep
+the legacy caller-owned acquisition behavior.
+
+The dataset has a 10 GiB byte ceiling covering versions and staging, checked
+before page/CSV writes and publication. Capacity exhaustion fails the refresh;
+it does not fall back to a worker's internal disk. Failed staging is retained for
+inspection within that ceiling. After a crashed writer, inspect `refresh.lock`
+and confirm its process is gone before removing the lock. Retiring old versions
+requires proving no readers still reference them; there is deliberately no
+age-only deletion of an input a long-running worker may have pinned. Finishing a
+worker never deletes the shared cache. A fleet can reclaim unreferenced versions
+at a drained maintenance boundary.

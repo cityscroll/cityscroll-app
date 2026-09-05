@@ -10,6 +10,8 @@ import { createInterface } from "node:readline";
 import { basename, resolve } from "node:path";
 import { PAYMENT_ANALYTICAL_PROJECTION_URL } from "../site/analytical_payment_projection.mjs";
 
+import { resolveSharedPaymentInput } from "../warehouse/lib/shared_payment_input.mjs";
+
 const ROOT = resolve(new URL("..", import.meta.url).pathname);
 const DEFAULT_INPUT = resolve(ROOT, "warehouse/raw/checkbook-payment-population/payments.csv");
 const DEFAULT_RECEIPT = resolve(ROOT, "warehouse/receipts/proof/checkbook_payment_population_latest.json");
@@ -60,7 +62,10 @@ function groupKey(agency, vendor, fiscalYear) {
   return JSON.stringify([agency || null, vendor || null, fiscalYear || null]);
 }
 
-async function build({ input = DEFAULT_INPUT, receipt = DEFAULT_RECEIPT, generatedAt = "2026-08-26T00:00:00.000Z" } = {}) {
+async function build({ input, receipt, generatedAt = "2026-08-26T00:00:00.000Z" } = {}) {
+  const shared = resolveSharedPaymentInput({ input, receipt });
+  input = input || shared?.input || DEFAULT_INPUT;
+  receipt = receipt || shared?.receipt || DEFAULT_RECEIPT;
   const receiptPayload = JSON.parse(readFileSync(receipt, "utf8"));
   const headerLine = await new Promise((resolveHeader, reject) => {
     const stream = createReadStream(input, { encoding: "utf8" });
