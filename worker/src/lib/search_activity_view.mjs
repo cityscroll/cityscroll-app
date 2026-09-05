@@ -14,6 +14,7 @@
 
 import {
   SEARCH_ACTIVITY_FAMILIES,
+  SEARCH_ACTIVITY_FRONT_DOOR_SCOPES,
   SEARCH_ACTIVITY_OUTCOME_STATES,
   cleanReceiptText,
   isSafeSearchActivityLink,
@@ -254,6 +255,12 @@ export function projectSearchActivityExecution(receipt = {}) {
     query_raw: receipt.query?.raw || null,
     query_normalized: receipt.query?.normalized || null,
     scope: receipt.scope && typeof receipt.scope === "object" ? receipt.scope : {},
+    // The front-door narrowing this execution actually requested. A receipt stored
+    // before the narrowing existed named none, and meant "all" — the same reading
+    // this projection gives an absent or malformed value today.
+    front_door_scope: SEARCH_ACTIVITY_FRONT_DOOR_SCOPES.includes(receipt.front_door_scope)
+      ? receipt.front_door_scope
+      : "all",
     visitor_id: receipt.visitor_id || null,
     subscriber_id: receipt.subscriber_id || null,
     account_label: receipt.account_label || null,

@@ -209,6 +209,51 @@ test("a retained rats execution appears inside Product Activity with its stored 
   assert.ok(html.includes(rats.execution_id), "the execution identity is shown");
 });
 
+// ---- reconciled with US-22's front-door scope: a narrowed search never reads
+// ---- as "every family checked out empty" ----
+
+test("a Contracts-only execution names its scope and never claims every family is complete", async () => {
+  const env = deskEnv();
+  await record(env, ratsSubmission({
+    occurred_at: "2026-09-01T12:20:00.000Z",
+    query: { raw: "widgets", normalized: "widgets" },
+    front_door_scope: "contracts",
+    rendered_count: 1,
+    family_counts: { contracts: 1 },
+    incomplete_families: [],
+    results: [{
+      reference: "procurement:widgets-2026",
+      entity_type: "procurement",
+      family: "contracts",
+      kind: "keyword",
+      rank: 1,
+      title: "Widget supply contract",
+      canonical_href: "/contracts/widgets-2026",
+    }],
+  }));
+  const html = await productActivity(env);
+  const card = html.slice(html.indexOf("<h3>widgets</h3>"), html.indexOf("</article>", html.indexOf("<h3>widgets</h3>")));
+
+  assert.match(card, /<dt>Scope<\/dt><dd>Contracts only<\/dd>/, "the requested scope is a visible fact");
+  assert.match(card, /All requested families complete \(Contracts only\)/,
+    "coverage never implies the five unrequested families were checked and found empty");
+  assert.ok(!card.includes("All families complete"),
+    "the unscoped wording never appears for a narrowed execution");
+
+  const { body } = await readModel(env);
+  const widgets = body.items.find((item) => item.query.raw === "widgets");
+  assert.equal(widgets.front_door_scope, "contracts");
+});
+
+test("a receipt stored before the front-door scope existed reads as all sources", async () => {
+  const env = deskEnv();
+  await record(env, ratsSubmission());
+  const html = await productActivity(env);
+  const card = html.slice(html.indexOf("<h3>rats</h3>"));
+  assert.match(card, /<dt>Scope<\/dt><dd>All sources<\/dd>/);
+  assert.match(card, /All families complete/);
+});
+
 // ---- A2: the stored result list, never a rerun ----
 
 test("expanding the rats execution shows the Contract and Meeting stored at execution time", async () => {

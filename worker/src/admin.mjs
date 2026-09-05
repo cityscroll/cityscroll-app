@@ -1353,17 +1353,30 @@ const SEARCH_ACTIVITY_OUTCOME_COPY = Object.freeze({
   unavailable: "Unavailable",
 });
 
+/** Desk label for the front-door scope a stored execution actually requested. */
+const SEARCH_ACTIVITY_FRONT_DOOR_SCOPE_COPY = Object.freeze({
+  all: "All sources",
+  contracts: "Contracts only",
+});
+
 /**
  * Coverage sentence for one execution. "Partial" and "no results" are different
  * facts about a reader's search and must never be rendered as the same state:
  * an honest zero says the corpus had nothing, a partial says a family was
  * missing from the page the reader actually saw.
+ *
+ * A narrowed front door only ever asked its own families, so "complete" here
+ * means every REQUESTED family checked out — never a claim about the five
+ * families a Contracts-only search never asked.
  */
 function searchActivityCoverage(execution) {
   if (execution.incomplete_families.length) {
     return `Incomplete: ${execution.incomplete_families.join(", ")}`;
   }
-  return execution.outcome === "empty" ? "Complete coverage, zero results" : "All families complete";
+  if (execution.outcome === "empty") return "Complete coverage, zero results";
+  return execution.front_door_scope === "all"
+    ? "All families complete"
+    : `All requested families complete (${SEARCH_ACTIVITY_FRONT_DOOR_SCOPE_COPY[execution.front_door_scope] || execution.front_door_scope})`;
 }
 
 function searchActivityFilterField(filter, filters) {
@@ -1399,6 +1412,7 @@ function searchActivityExecutionCard(execution, visitorHref) {
       <dt>Reader</dt><dd>${identity}</dd>
       <dt>Visitor</dt><dd><code>${escapeHtml(execution.visitor_id || "not recorded")}</code><br><small><a href="${escapeHtml(visitorHref)}">All retained searches from this browser</a></small></dd>
       <dt>Browser</dt><dd>${escapeHtml(execution.browser_summary || "Not observed")}</dd>
+      <dt>Scope</dt><dd>${escapeHtml(SEARCH_ACTIVITY_FRONT_DOOR_SCOPE_COPY[execution.front_door_scope] || execution.front_door_scope)}</dd>
       <dt>Rendered</dt><dd>${deskNumber(execution.rendered_count)} row${execution.rendered_count === 1 ? "" : "s"}<br><small>${escapeHtml(searchActivityCoverage(execution))}</small></dd>
       <dt>Execution</dt><dd><code>${escapeHtml(execution.execution_id || "not recorded")}</code></dd>
     </dl>${results}</article>`;

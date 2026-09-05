@@ -1,6 +1,6 @@
 {
   "contract": "ops-contract.v1",
-  "version": "1.13.0",
+  "version": "1.14.0",
   "generated_at": "2026-08-05T13:55:23.589Z",
   "min_compatible_version": "1.0.0",
   "note": "Machine-readable ops contract for desk panels. No secrets. Not served on public /stats.",
@@ -559,7 +559,7 @@
   },
   "search_activity": {
     "contract": "cityscroll.search_execution.v1",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "endpoint": "/admin/search-activity",
     "desk_surface": "/admin/stats?view=html#search-activity-heading",
     "desk_renderer": "worker/src/admin.mjs#renderSearchActivityPanel",
@@ -579,6 +579,10 @@
       "rules",
       "meetings",
       "exams"
+    ],
+    "front_door_scopes": [
+      "all",
+      "contracts"
     ],
     "retention_days": 30,
     "default_read_limit": 25,

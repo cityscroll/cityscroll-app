@@ -194,6 +194,41 @@ test("distinct outcomes survive the authenticated read path", async () => {
   assert.deepEqual(unavailable.incomplete_families, [...SEARCH_ACTIVITY_FAMILIES]);
 });
 
+// ---- front-door scope: which families this execution actually asked ----
+
+test("a receipt with no front-door scope stores the historical default of all", async () => {
+  const env = productionEnv();
+  assert.equal((await handleSearchActivity(intake(), env)).status, 202);
+  assert.equal(storedReceipts(env)[0].front_door_scope, "all");
+});
+
+test("a Contracts-only execution stores its requested scope, not an inferred one", async () => {
+  const env = productionEnv();
+  const body = submission({
+    front_door_scope: "contracts",
+    family_counts: { contracts: 1 },
+    results: [submission().results[0]],
+    rendered_count: 1,
+  });
+  assert.equal((await handleSearchActivity(intake(body), env)).status, 202);
+  assert.equal(storedReceipts(env)[0].front_door_scope, "contracts");
+
+  const read = await handleAdminSearchActivity(
+    new Request(`https://api.cityscroll.org/admin/search-activity?key=${ADMIN_KEY}`),
+    env,
+  );
+  const payload = await read.json();
+  assert.equal(payload.items[0].front_door_scope, "contracts");
+});
+
+test("an unregistered front-door scope is rejected rather than stored as all", async () => {
+  const env = productionEnv();
+  const response = await handleSearchActivity(intake(submission({ front_door_scope: "people" })), env);
+  assert.equal(response.status, 400);
+  assert.deepEqual(await response.json(), { ok: false, reason: "front_door_scope" });
+  assert.equal(storedReceipts(env).length, 0);
+});
+
 test("the read model returns newest executions first and honors its bound", async () => {
   const env = productionEnv();
   for (const query of ["one", "two", "three"]) {
