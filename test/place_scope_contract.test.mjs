@@ -3,8 +3,8 @@
  *
  * Establishes the canonical place-scope fixtures and cross-surface journey assertions the
  * later interface cards (Near You role control, Following preservation, evidence-quality
- * contract) are held to. See cityscroll-kraken/ps-06-place-scope-contract-tests and
- * cityscroll-kraken/ps-01-place-role-scope-predicate.
+ * contract) are held to. See card ps-06-place-scope-contract-tests and
+ * card ps-01-place-role-scope-predicate.
  *
  * Deliberately excludes derived/subjective geography (outer_borough, urban_core,
  * transit_desert, Manhattan_oriented, peripheral, walkable) — every fixture here is

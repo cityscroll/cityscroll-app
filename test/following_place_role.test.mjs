@@ -3,8 +3,8 @@
  *
  * Extends preview, watch serialization, watch evaluation, watch display, and email/digest
  * rendering so the shared place-role predicate (site/scope_v0.mjs PLACE_ROLES, landed by
- * cityscroll-kraken/ps-01-place-role-scope-predicate) survives end to end. Round-trip
- * preservation across scope/browse surfaces is covered by cityscroll-kraken/ps-06's
+ * card ps-01-place-role-scope-predicate) survives end to end. Round-trip
+ * preservation across scope/browse surfaces is covered by card ps-06's
  * test/place_scope_contract.test.mjs; this file covers the acceptance criteria specific to
  * Following: serialization + reopening (A1/A6), preview/evaluation parity (A2), plain-language
  * display (A3), edit-preserves-role (A4/A5), venue-vs-affected-area evaluation boundaries
