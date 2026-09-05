@@ -924,10 +924,21 @@ export async function handleSearch(request, env, {
     parcels: parcelsLane,
     committees: committeesLane,
     "people-organizations": peopleOrganizationsLane,
+    // The client-visible "land" family also displays Property/parcel results
+    // (site/search_lens_handoff.mjs groups the zoning and property domains
+    // into one family for rendering), so its coverage lane must track both
+    // registered scopes' lenses. Tracking only the zoning lens here would let
+    // a failed parcels provider silently render as a complete "land" family.
     land: federatedPresentationLane("land", federation, {
-      lenses: [...FEDERATED_SEARCH_PRESENTATION_SCOPES.land.lenses],
-      domains: [...FEDERATED_SEARCH_PRESENTATION_SCOPES.land.domains],
-      source: FEDERATED_SEARCH_PRESENTATION_SCOPES.land.source,
+      lenses: [
+        ...FEDERATED_SEARCH_PRESENTATION_SCOPES.land.lenses,
+        ...FEDERATED_SEARCH_PRESENTATION_SCOPES.property.lenses,
+      ],
+      domains: [
+        ...FEDERATED_SEARCH_PRESENTATION_SCOPES.land.domains,
+        ...FEDERATED_SEARCH_PRESENTATION_SCOPES.property.domains,
+      ],
+      source: `${FEDERATED_SEARCH_PRESENTATION_SCOPES.land.source}; ${FEDERATED_SEARCH_PRESENTATION_SCOPES.property.source}`,
     }),
     meetings: federatedPresentationLane("meetings", federation, {
       lenses: [...FEDERATED_SEARCH_PRESENTATION_SCOPES.meetings.lenses],
