@@ -45,14 +45,14 @@
           {
             "id": "procurement:81626S0021001",
             "rank": 2,
-            "score": 0.1113,
+            "score": 0.108,
             "relevant": true,
             "harm_control": false,
             "honest_label": "shadow_retrieval_candidate"
           }
         ],
         "relevant_rank": 2,
-        "relevant_score": 0.1113,
+        "relevant_score": 0.108,
         "relevant_in_top_k": true,
         "recovered_at_k": true,
         "recovered_at_floor": false,
@@ -113,7 +113,7 @@
           {
             "id": "procurement:81626S0021001",
             "rank": 1,
-            "score": 0.5431,
+            "score": 0.5224,
             "relevant": true,
             "harm_control": false,
             "honest_label": "shadow_retrieval_candidate"
@@ -128,7 +128,7 @@
           }
         ],
         "relevant_rank": 1,
-        "relevant_score": 0.5431,
+        "relevant_score": 0.5224,
         "relevant_in_top_k": true,
         "recovered_at_k": false,
         "recovered_at_floor": false,
@@ -163,14 +163,14 @@
           {
             "id": "procurement:81626S0021001",
             "rank": 2,
-            "score": 0.199,
+            "score": 0.1907,
             "relevant": true,
             "harm_control": false,
             "honest_label": "shadow_retrieval_candidate"
           }
         ],
         "relevant_rank": 2,
-        "relevant_score": 0.199,
+        "relevant_score": 0.1907,
         "relevant_in_top_k": true,
         "recovered_at_k": false,
         "recovered_at_floor": false,
