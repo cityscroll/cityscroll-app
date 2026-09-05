@@ -2,7 +2,7 @@
   "schema": "cityscroll.process_conformance.v1",
   "method": "mandate_expected_vs_observed_v1",
   "iteration": "v1",
-  "generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-23T07:59:09.786Z|2026-08-30T16:27:58.717Z|2026-09-05T13:44:00.909Z",
+  "generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-30T16:27:58.717Z|2026-09-05T19:55:31.252Z|2026-09-05T19:55:37.017Z",
   "as_of": "2026-09-05",
   "copy": {
     "lead": "Mandates set by law, alongside public records that show a related filing when one is found."
@@ -14,7 +14,7 @@
     "agency_count": 49,
     "mandate_count": 2931,
     "detectable_mandate_count": 735,
-    "observed_count": 18,
+    "observed_count": 17,
     "detectable_deliverables": [
       "rulemaking",
       "report"
@@ -1890,7 +1890,7 @@
         }
       },
       "share_path": "/agencies/board-of-correction/#mandates-conformance",
-      "candidate_corpus_size": 3,
+      "candidate_corpus_size": 4,
       "observations": {
         "63262-001": {
           "status": "expected_not_yet_observed",
@@ -3268,7 +3268,7 @@
         }
       },
       "share_path": "/agencies/buildings/#mandates-conformance",
-      "candidate_corpus_size": 9,
+      "candidate_corpus_size": 11,
       "observations": {
         "57287-006": {
           "status": "expected_not_yet_observed",
@@ -9115,7 +9115,7 @@
         }
       },
       "share_path": "/agencies/city-council/#mandates-conformance",
-      "candidate_corpus_size": 6,
+      "candidate_corpus_size": 9,
       "observations": {
         "53810-016": {
           "status": "expected_not_yet_observed",
@@ -9901,7 +9901,7 @@
         }
       },
       "share_path": "/agencies/citywide-administrative-services/#mandates-conformance",
-      "candidate_corpus_size": 10,
+      "candidate_corpus_size": 7,
       "observations": {
         "57845-001": {
           "status": "expected_not_yet_observed",
@@ -23042,7 +23042,7 @@
         }
       },
       "share_path": "/agencies/environmental-protection/#mandates-conformance",
-      "candidate_corpus_size": 2,
+      "candidate_corpus_size": 5,
       "observations": {
         "74605-002": {
           "status": "expected_not_yet_observed",
@@ -25453,7 +25453,7 @@
         }
       },
       "share_path": "/agencies/finance/#mandates-conformance",
-      "candidate_corpus_size": 11,
+      "candidate_corpus_size": 9,
       "observations": {
         "53810-010": {
           "status": "expected_not_yet_observed",
@@ -29269,7 +29269,7 @@
         }
       },
       "share_path": "/agencies/health-and-mental-hygiene/#mandates-conformance",
-      "candidate_corpus_size": 6,
+      "candidate_corpus_size": 8,
       "observations": {
         "53410-008": {
           "status": "expected_not_yet_observed",
@@ -35358,7 +35358,7 @@
         }
       },
       "share_path": "/agencies/housing-preservation-and-development/#mandates-conformance",
-      "candidate_corpus_size": 5,
+      "candidate_corpus_size": 9,
       "observations": {
         "67595-001": {
           "status": "expected_not_yet_observed",
@@ -39967,7 +39967,7 @@
         }
       },
       "share_path": "/agencies/independent-budget-office/#mandates-conformance",
-      "candidate_corpus_size": 1,
+      "candidate_corpus_size": 2,
       "observations": {
         "52306-003": {
           "status": "expected_not_yet_observed",
@@ -41146,7 +41146,7 @@
         }
       },
       "share_path": "/agencies/landmarks-preservation-commission/#mandates-conformance",
-      "candidate_corpus_size": 14,
+      "candidate_corpus_size": 15,
       "observations": {
         "54431-001": {
           "status": "observed",
@@ -43755,7 +43755,7 @@
         }
       },
       "share_path": "/agencies/office-of-the-mayor/#mandates-conformance",
-      "candidate_corpus_size": 2,
+      "candidate_corpus_size": 3,
       "observations": {
         "67686-005": {
           "status": "expected_not_yet_observed",
@@ -47437,7 +47437,7 @@
         }
       },
       "share_path": "/agencies/parks-and-recreation/#mandates-conformance",
-      "candidate_corpus_size": 5,
+      "candidate_corpus_size": 6,
       "observations": {
         "52114-001": {
           "status": "expected_not_yet_observed",
@@ -51474,107 +51474,37 @@
       "as_of": "2026-09-05",
       "counts": {
         "total": 51,
-        "observed": 1,
-        "expected_not_yet_observed": 10,
+        "observed": 0,
+        "expected_not_yet_observed": 13,
         "on_track": 0,
         "enrichment_pending": 37,
-        "evidence_only": 3,
+        "evidence_only": 1,
         "detectable": 14,
-        "appeared": 1,
-        "not_yet_observed": 10,
-        "data_incomplete": 40
+        "appeared": 0,
+        "not_yet_observed": 13,
+        "data_incomplete": 38
       },
       "categories": [
         "reports",
         "rules"
       ],
       "category_counts": {
-        "rules": {
-          "total": 8,
-          "appeared": 1,
-          "not_yet_observed": 4,
-          "data_incomplete": 3
-        },
         "reports": {
           "total": 6,
           "appeared": 0,
           "not_yet_observed": 6,
           "data_incomplete": 0
+        },
+        "rules": {
+          "total": 8,
+          "appeared": 0,
+          "not_yet_observed": 7,
+          "data_incomplete": 1
         }
       },
       "share_path": "/agencies/sanitation/#mandates-conformance",
       "candidate_corpus_size": 8,
       "observations": {
-        "64116-001": {
-          "status": "observed",
-          "observation_state": "appeared",
-          "category": "rules",
-          "data_as_of": "2026-09-05",
-          "label": "Evidence found",
-          "expected_event": {
-            "kind": "rule_filing",
-            "label": "Agency Rules filing (proposal, hearing, adoption, or notice)",
-            "deliverable_type": "rulemaking",
-            "deadline_date": null
-          },
-          "observed_record": {
-            "request_id": "20260605008",
-            "label": "DSNY Final Rule re Implementation Dates for the Brooklyn North and Upper Manhattan Commercial Waste Zones",
-            "when": "2026-06-11",
-            "href": "/notices/20260605008",
-            "signal_kind": "rule_filing",
-            "lifecycle_status": "adopted",
-            "lifecycle_label": "Adopted",
-            "effective_date": null,
-            "adoption_date": null
-          },
-          "match": {
-            "method": "topic_token_overlap_v1",
-            "score": 4,
-            "shared_tokens": [
-              "commercial",
-              "waste",
-              "zones",
-              "requirements"
-            ],
-            "publication": "public_inferred",
-            "evidence": {
-              "agency_exact": true,
-              "expected_event_match": true,
-              "topic_overlap": [
-                "commercial",
-                "waste",
-                "zones",
-                "requirements"
-              ],
-              "rule_body_overlap": [
-                "commercial",
-                "waste",
-                "zones",
-                "requirements"
-              ],
-              "citation_law_match": true,
-              "citation_law_overlap": [
-                "nyc-charter:753",
-                "section:753"
-              ],
-              "temporal_compatible": true,
-              "negative_evidence": [],
-              "negative_evidence_free": true,
-              "topic_score": 4,
-              "publication_eligible": true,
-              "publication_tier": "public_inferred",
-              "policy_gate": {
-                "version": "cross_spine_edge_policy_v2",
-                "gold_version": "cross_spine_gold_v3",
-                "min_precision": 0.9
-              }
-            }
-          },
-          "is_compliance_verdict": false,
-          "adjudication": "not_adjudicated",
-          "method": "mandate_expected_vs_observed_v1"
-        },
         "57287-009": {
           "status": "expected_not_yet_observed",
           "observation_state": "not_yet_observed",
@@ -51719,6 +51649,24 @@
           "adjudication": "not_adjudicated",
           "method": "mandate_expected_vs_observed_v1"
         },
+        "64116-004": {
+          "status": "expected_not_yet_observed",
+          "observation_state": "not_yet_observed",
+          "category": "rules",
+          "data_as_of": "2026-09-05",
+          "label": "Expected; no matching evidence in current sources",
+          "expected_event": {
+            "kind": "rule_filing",
+            "label": "Agency Rules filing (proposal, hearing, adoption, or notice)",
+            "deliverable_type": "rulemaking",
+            "deadline_date": null
+          },
+          "observed_record": null,
+          "match": null,
+          "is_compliance_verdict": false,
+          "adjudication": "not_adjudicated",
+          "method": "mandate_expected_vs_observed_v1"
+        },
         "75070-002": {
           "status": "expected_not_yet_observed",
           "observation_state": "not_yet_observed",
@@ -51755,12 +51703,12 @@
           "adjudication": "not_adjudicated",
           "method": "mandate_expected_vs_observed_v1"
         },
-        "64116-004": {
-          "status": "evidence_only",
-          "observation_state": "data_incomplete",
+        "75793-001": {
+          "status": "expected_not_yet_observed",
+          "observation_state": "not_yet_observed",
           "category": "rules",
           "data_as_of": "2026-09-05",
-          "label": "Evidence retained without a public link",
+          "label": "Expected; no matching evidence in current sources",
           "expected_event": {
             "kind": "rule_filing",
             "label": "Agency Rules filing (proposal, hearing, adoption, or notice)",
@@ -51768,80 +51716,30 @@
             "deadline_date": null
           },
           "observed_record": null,
-          "shadow_candidate": {
-            "request_id": "20260605008",
-            "label": "DSNY Final Rule re Implementation Dates for the Brooklyn North and Upper Manhattan Commercial Waste Zones",
-            "when": "2026-06-11",
-            "href": "/notices/20260605008",
-            "features": {
-              "agency_exact": true,
-              "expected_event_match": true,
-              "topic_overlap": [
-                "requiring",
-                "waste"
-              ],
-              "rule_body_overlap": [
-                "requiring",
-                "waste"
-              ],
-              "citation_law_match": false,
-              "citation_law_overlap": [
-                "section:16"
-              ],
-              "temporal_compatible": true,
-              "negative_evidence": [],
-              "negative_evidence_free": true,
-              "topic_score": 2,
-              "publication_eligible": false,
-              "publication_tier": "evidence_only",
-              "policy_gate": {
-                "version": "cross_spine_edge_policy_v2",
-                "gold_version": "cross_spine_gold_v3",
-                "min_precision": 0.9
-              }
-            }
-          },
-          "match": {
-            "method": "topic_token_overlap_v1",
-            "score": 2,
-            "shared_tokens": [
-              "requiring",
-              "waste"
-            ],
-            "publication": "evidence_only",
-            "evidence": {
-              "agency_exact": true,
-              "expected_event_match": true,
-              "topic_overlap": [
-                "requiring",
-                "waste"
-              ],
-              "rule_body_overlap": [
-                "requiring",
-                "waste"
-              ],
-              "citation_law_match": false,
-              "citation_law_overlap": [
-                "section:16"
-              ],
-              "temporal_compatible": true,
-              "negative_evidence": [],
-              "negative_evidence_free": true,
-              "topic_score": 2,
-              "publication_eligible": false,
-              "publication_tier": "evidence_only",
-              "policy_gate": {
-                "version": "cross_spine_edge_policy_v2",
-                "gold_version": "cross_spine_gold_v3",
-                "min_precision": 0.9
-              }
-            }
-          },
+          "match": null,
           "is_compliance_verdict": false,
           "adjudication": "not_adjudicated",
           "method": "mandate_expected_vs_observed_v1"
         },
-        "75793-001": {
+        "75793-002": {
+          "status": "expected_not_yet_observed",
+          "observation_state": "not_yet_observed",
+          "category": "rules",
+          "data_as_of": "2026-09-05",
+          "label": "Expected; no matching evidence in current sources",
+          "expected_event": {
+            "kind": "rule_filing",
+            "label": "Agency Rules filing (proposal, hearing, adoption, or notice)",
+            "deliverable_type": "rulemaking",
+            "deadline_date": null
+          },
+          "observed_record": null,
+          "match": null,
+          "is_compliance_verdict": false,
+          "adjudication": "not_adjudicated",
+          "method": "mandate_expected_vs_observed_v1"
+        },
+        "64116-001": {
           "status": "evidence_only",
           "observation_state": "data_incomplete",
           "category": "rules",
@@ -51863,21 +51761,46 @@
               "agency_exact": true,
               "expected_event_match": true,
               "topic_overlap": [
-                "sanitation",
-                "service",
-                "refuse"
+                "commercial",
+                "waste",
+                "zone"
               ],
-              "rule_body_overlap": [
-                "sanitation",
-                "service",
-                "refuse"
-              ],
+              "rule_body_overlap": [],
               "citation_law_match": false,
               "citation_law_overlap": [],
               "temporal_compatible": true,
               "negative_evidence": [],
               "negative_evidence_free": true,
               "topic_score": 3,
+              "topic_normalization": {
+                "registry_version": "topic_normalization_v1",
+                "applied": [
+                  {
+                    "id": "official-acronym-commercial-waste-zone-v1",
+                    "kind": "official_acronym",
+                    "matched_aliases": [
+                      "commercial waste zones"
+                    ],
+                    "canonical_tokens": [
+                      "commercial",
+                      "waste",
+                      "zone"
+                    ]
+                  },
+                  {
+                    "id": "official-acronym-commercial-waste-zone-v1",
+                    "kind": "official_acronym",
+                    "matched_aliases": [
+                      "cwzs"
+                    ],
+                    "canonical_tokens": [
+                      "commercial",
+                      "waste",
+                      "zone"
+                    ]
+                  }
+                ]
+              },
               "publication_eligible": false,
               "publication_tier": "evidence_only",
               "policy_gate": {
@@ -51888,119 +51811,58 @@
             }
           },
           "match": {
-            "method": "topic_token_overlap_v1",
+            "method": "reviewed_topic_overlap_v1",
             "score": 3,
             "shared_tokens": [
-              "sanitation",
-              "service",
-              "refuse"
+              "commercial",
+              "waste",
+              "zone"
             ],
             "publication": "evidence_only",
             "evidence": {
               "agency_exact": true,
               "expected_event_match": true,
               "topic_overlap": [
-                "sanitation",
-                "service",
-                "refuse"
+                "commercial",
+                "waste",
+                "zone"
               ],
-              "rule_body_overlap": [
-                "sanitation",
-                "service",
-                "refuse"
-              ],
+              "rule_body_overlap": [],
               "citation_law_match": false,
               "citation_law_overlap": [],
               "temporal_compatible": true,
               "negative_evidence": [],
               "negative_evidence_free": true,
               "topic_score": 3,
-              "publication_eligible": false,
-              "publication_tier": "evidence_only",
-              "policy_gate": {
-                "version": "cross_spine_edge_policy_v2",
-                "gold_version": "cross_spine_gold_v3",
-                "min_precision": 0.9
-              }
-            }
-          },
-          "is_compliance_verdict": false,
-          "adjudication": "not_adjudicated",
-          "method": "mandate_expected_vs_observed_v1"
-        },
-        "75793-002": {
-          "status": "evidence_only",
-          "observation_state": "data_incomplete",
-          "category": "rules",
-          "data_as_of": "2026-09-05",
-          "label": "Evidence retained without a public link",
-          "expected_event": {
-            "kind": "rule_filing",
-            "label": "Agency Rules filing (proposal, hearing, adoption, or notice)",
-            "deliverable_type": "rulemaking",
-            "deadline_date": null
-          },
-          "observed_record": null,
-          "shadow_candidate": {
-            "request_id": "20260605008",
-            "label": "DSNY Final Rule re Implementation Dates for the Brooklyn North and Upper Manhattan Commercial Waste Zones",
-            "when": "2026-06-11",
-            "href": "/notices/20260605008",
-            "features": {
-              "agency_exact": true,
-              "expected_event_match": true,
-              "topic_overlap": [
-                "requiring",
-                "collection"
-              ],
-              "rule_body_overlap": [
-                "requiring",
-                "collection"
-              ],
-              "citation_law_match": false,
-              "citation_law_overlap": [
-                "section:1"
-              ],
-              "temporal_compatible": true,
-              "negative_evidence": [],
-              "negative_evidence_free": true,
-              "topic_score": 2,
-              "publication_eligible": false,
-              "publication_tier": "evidence_only",
-              "policy_gate": {
-                "version": "cross_spine_edge_policy_v2",
-                "gold_version": "cross_spine_gold_v3",
-                "min_precision": 0.9
-              }
-            }
-          },
-          "match": {
-            "method": "topic_token_overlap_v1",
-            "score": 2,
-            "shared_tokens": [
-              "requiring",
-              "collection"
-            ],
-            "publication": "evidence_only",
-            "evidence": {
-              "agency_exact": true,
-              "expected_event_match": true,
-              "topic_overlap": [
-                "requiring",
-                "collection"
-              ],
-              "rule_body_overlap": [
-                "requiring",
-                "collection"
-              ],
-              "citation_law_match": false,
-              "citation_law_overlap": [
-                "section:1"
-              ],
-              "temporal_compatible": true,
-              "negative_evidence": [],
-              "negative_evidence_free": true,
-              "topic_score": 2,
+              "topic_normalization": {
+                "registry_version": "topic_normalization_v1",
+                "applied": [
+                  {
+                    "id": "official-acronym-commercial-waste-zone-v1",
+                    "kind": "official_acronym",
+                    "matched_aliases": [
+                      "commercial waste zones"
+                    ],
+                    "canonical_tokens": [
+                      "commercial",
+                      "waste",
+                      "zone"
+                    ]
+                  },
+                  {
+                    "id": "official-acronym-commercial-waste-zone-v1",
+                    "kind": "official_acronym",
+                    "matched_aliases": [
+                      "cwzs"
+                    ],
+                    "canonical_tokens": [
+                      "commercial",
+                      "waste",
+                      "zone"
+                    ]
+                  }
+                ]
+              },
               "publication_eligible": false,
               "publication_tier": "evidence_only",
               "policy_gate": {
@@ -52681,211 +52543,7 @@
           "method": "mandate_expected_vs_observed_v1"
         }
       },
-      "edge_observations": [
-        {
-          "conformance_id": "64116-001:rules:rulemaking:notice:20260605008",
-          "mandate_id": "64116-001",
-          "edge_type": "requires_rule_filing",
-          "edge": {
-            "type": "requires_rule_filing",
-            "from": "mandate:64116-001",
-            "to": "rulemaking:notice:20260605008",
-            "method": "mandate_rule_citation_topic_token_v1",
-            "confidence": "strong",
-            "publication_tier": "public_inferred",
-            "evidence": {
-              "agency_exact": true,
-              "expected_event_match": true,
-              "topic_overlap": [
-                "commercial",
-                "waste",
-                "zones",
-                "requirements"
-              ],
-              "rule_body_overlap": [
-                "commercial",
-                "waste",
-                "zones",
-                "requirements"
-              ],
-              "citation_law_match": true,
-              "citation_law_overlap": [
-                "nyc-charter:753",
-                "section:753"
-              ],
-              "temporal_compatible": true,
-              "negative_evidence": [],
-              "negative_evidence_free": true,
-              "topic_score": 4,
-              "publication_eligible": true,
-              "publication_tier": "public_inferred",
-              "policy_gate": {
-                "version": "cross_spine_edge_policy_v2",
-                "gold_version": "cross_spine_gold_v3",
-                "min_precision": 0.9
-              }
-            },
-            "provenance": {
-              "schema": "cityscroll.graph_edge_provenance.v1",
-              "method": "graph_edge_provenance_v1",
-              "claim_id": "mandate-rules:64116-001:rulemaking:notice:20260605008",
-              "kind": "graph_edge_claim",
-              "subject_ref": "64116-001:rulemaking:notice:20260605008",
-              "root_ref": "mandate:64116-001",
-              "category_id": "mandate-rules",
-              "relation": "requires rule filing",
-              "label": "DSNY Final Rule re Implementation Dates for the Brooklyn North and Upper Manhattan Commercial Waste Zones",
-              "object_href": "/notices/20260605008",
-              "where": {
-                "source_system": {
-                  "available": true,
-                  "value": "city_record"
-                },
-                "source_record_id": {
-                  "available": true,
-                  "value": "city_record:20260605008"
-                },
-                "source_href": {
-                  "available": true,
-                  "value": "/notices/20260605008"
-                },
-                "source_fields": {
-                  "available": true,
-                  "value": [
-                    "agency_name",
-                    "short_title",
-                    "rule_evidence.body_topic_keys",
-                    "rule_evidence.citation_keys",
-                    "start_date"
-                  ]
-                },
-                "input_value": {
-                  "available": true,
-                  "value": "nyc-charter:753, section:753"
-                },
-                "observed_at": {
-                  "available": true,
-                  "value": "2026-06-11"
-                },
-                "basis": {
-                  "available": true,
-                  "value": "mandate_rule_citation_topic_token_v1"
-                },
-                "source_excerpt": {
-                  "available": true,
-                  "value": "DSNY Final Rule re Implementation Dates for the Brooklyn North and Upper Manhattan Commercial Waste Zones"
-                }
-              },
-              "how": {
-                "method": {
-                  "available": true,
-                  "value": "mandate_rule_citation_topic_token_v1"
-                },
-                "warrant_class": "probabilistic",
-                "warrant_label": "Record-linkage match",
-                "decision": "auto_link"
-              },
-              "cross_spine": {
-                "confidence": "confirmed",
-                "explicit": true
-              },
-              "confidence": {
-                "band": "strong",
-                "identity_stance": "possible_link",
-                "identity_label": "Record-linkage connection",
-                "standable": true,
-                "counts_as_verified_total": false
-              },
-              "enrichment": {
-                "entity_link_id": {
-                  "available": false
-                },
-                "resolution_run_id": {
-                  "available": false
-                },
-                "next": null,
-                "missing_fields": [
-                  "entity_link_id",
-                  "resolution_run_id"
-                ]
-              },
-              "inspect_href": "/agencies/sanitation/?claim=mandate-rules%3A64116-001%3Arulemaking%3Anotice%3A20260605008",
-              "share_href": "/agencies/sanitation/?claim=mandate-rules%3A64116-001%3Arulemaking%3Anotice%3A20260605008"
-            },
-            "claim_id": "mandate-rules:64116-001:rulemaking:notice:20260605008",
-            "claim_inspect_href": "/agencies/sanitation/?claim=mandate-rules%3A64116-001%3Arulemaking%3Anotice%3A20260605008",
-            "warrant_class": "probabilistic"
-          },
-          "status": "observed",
-          "observation_state": "appeared",
-          "category": "rules",
-          "data_as_of": "2026-09-05",
-          "label": "Evidence found",
-          "expected_event": {
-            "kind": "rule_filing",
-            "label": "Agency Rules filing (proposal, hearing, adoption, or notice)",
-            "deliverable_type": "rulemaking",
-            "deadline_date": null
-          },
-          "observed_record": {
-            "request_id": "20260605008",
-            "label": "DSNY Final Rule re Implementation Dates for the Brooklyn North and Upper Manhattan Commercial Waste Zones",
-            "when": "2026-06-11",
-            "href": "/notices/20260605008",
-            "signal_kind": "rule_filing",
-            "lifecycle_status": "adopted",
-            "lifecycle_label": "Adopted",
-            "effective_date": null,
-            "adoption_date": null
-          },
-          "match": {
-            "method": "topic_token_overlap_v1",
-            "score": 4,
-            "shared_tokens": [
-              "commercial",
-              "waste",
-              "zones",
-              "requirements"
-            ],
-            "publication": "public_inferred",
-            "evidence": {
-              "agency_exact": true,
-              "expected_event_match": true,
-              "topic_overlap": [
-                "commercial",
-                "waste",
-                "zones",
-                "requirements"
-              ],
-              "rule_body_overlap": [
-                "commercial",
-                "waste",
-                "zones",
-                "requirements"
-              ],
-              "citation_law_match": true,
-              "citation_law_overlap": [
-                "nyc-charter:753",
-                "section:753"
-              ],
-              "temporal_compatible": true,
-              "negative_evidence": [],
-              "negative_evidence_free": true,
-              "topic_score": 4,
-              "publication_eligible": true,
-              "publication_tier": "public_inferred",
-              "policy_gate": {
-                "version": "cross_spine_edge_policy_v2",
-                "gold_version": "cross_spine_gold_v3",
-                "min_precision": 0.9
-              }
-            }
-          },
-          "is_compliance_verdict": false,
-          "adjudication": "not_adjudicated",
-          "method": "mandate_expected_vs_observed_v1"
-        }
-      ]
+      "edge_observations": []
     },
     "small-business-services": {
       "agency_id": "small-business-services",
@@ -55367,7 +55025,7 @@
         }
       },
       "share_path": "/agencies/transportation/#mandates-conformance",
-      "candidate_corpus_size": 12,
+      "candidate_corpus_size": 20,
       "observations": {
         "68103-008": {
           "status": "observed",
@@ -55382,10 +55040,10 @@
             "deadline_date": null
           },
           "observed_record": {
-            "request_id": "20260605006",
-            "label": "DINING OUT NYC PUBLIC HEARING",
-            "when": "2026-06-25",
-            "href": "/notices/20260605006",
+            "request_id": "20260716009",
+            "label": "Dining Out NYC Public Hearing",
+            "when": "2026-08-06",
+            "href": "/notices/20260716009",
             "signal_kind": "public_hearing",
             "lifecycle_status": null,
             "lifecycle_label": null,
@@ -57618,6 +57276,268 @@
       },
       "edge_observations": [
         {
+          "conformance_id": "68103-008:meetings:notice:20260827003",
+          "mandate_id": "68103-008",
+          "edge_type": "requires_public_hearing",
+          "edge": {
+            "type": "requires_public_hearing",
+            "from": "mandate:68103-008",
+            "to": "notice:20260827003",
+            "claim_id": "mandate-meetings:notice:20260827003",
+            "claim_inspect_href": "/agencies/transportation/?claim=mandate-meetings%3Anotice%3A20260827003",
+            "warrant_class": "probabilistic",
+            "method": "mandate_meeting_subject_temporal_v2",
+            "confidence": "strong",
+            "publication_tier": "public_inferred",
+            "provenance": {
+              "schema": "cityscroll.graph_edge_provenance.v1",
+              "method": "graph_edge_provenance_v1",
+              "claim_id": "mandate-meetings:notice:20260827003",
+              "kind": "graph_edge_claim",
+              "subject_ref": "notice:20260827003",
+              "root_ref": "mandate:68103-008",
+              "category_id": "mandate-meetings",
+              "relation": "requires public hearing",
+              "label": "Dining Out NYC Public Hearings",
+              "object_href": "/notices/20260827003",
+              "where": {
+                "source_system": {
+                  "available": true,
+                  "value": "city_record"
+                },
+                "source_record_id": {
+                  "available": true,
+                  "value": "city_record:20260827003"
+                },
+                "source_href": {
+                  "available": false
+                },
+                "source_fields": {
+                  "available": true,
+                  "value": [
+                    "agency_name",
+                    "type_of_notice_description",
+                    "matter_subject.subject_tokens",
+                    "short_title",
+                    "event_date"
+                  ]
+                },
+                "input_value": {
+                  "available": true,
+                  "value": "sidewalk, cafe"
+                },
+                "observed_at": {
+                  "available": true,
+                  "value": "2026-09-17"
+                },
+                "basis": {
+                  "available": true,
+                  "value": "agency+event_kind+matter_body_subject+temporal"
+                },
+                "source_excerpt": {
+                  "available": true,
+                  "value": "Dining Out NYC Public Hearings"
+                }
+              },
+              "how": {
+                "method": {
+                  "available": true,
+                  "value": "mandate_meeting_subject_temporal_v2"
+                },
+                "warrant_class": "probabilistic",
+                "warrant_label": "Record-linkage match",
+                "decision": "auto_link"
+              },
+              "cross_spine": {
+                "confidence": "unmatched",
+                "explicit": false
+              },
+              "confidence": {
+                "band": "strong",
+                "identity_stance": "possible_link",
+                "identity_label": "Record-linkage connection",
+                "standable": true,
+                "counts_as_verified_total": false
+              },
+              "enrichment": {
+                "entity_link_id": {
+                  "available": true,
+                  "value": "entity-link:mandate-meeting:68103-008:20260827003"
+                },
+                "resolution_run_id": {
+                  "available": true,
+                  "value": "resolution-run:mandate-meeting:transportation:2026-08-07t23:52:53.226z-2026-08-11t21:12:40.677z-2026-08-30t16:27:58.717z"
+                },
+                "next": null,
+                "missing_fields": []
+              },
+              "inspect_href": "/agencies/transportation/?claim=mandate-meetings%3Anotice%3A20260827003",
+              "share_href": "/agencies/transportation/?claim=mandate-meetings%3Anotice%3A20260827003"
+            }
+          },
+          "status": "observed",
+          "observation_state": "appeared",
+          "category": "meetings",
+          "data_as_of": "2026-09-05",
+          "label": "Appeared",
+          "expected_event": {
+            "kind": "public_hearing",
+            "label": "Public meeting or hearing",
+            "deliverable_type": "other",
+            "deadline_date": null
+          },
+          "observed_record": {
+            "request_id": "20260827003",
+            "label": "Dining Out NYC Public Hearings",
+            "when": "2026-09-17",
+            "href": "/notices/20260827003",
+            "signal_kind": "public_hearing",
+            "lifecycle_status": null,
+            "lifecycle_label": null,
+            "effective_date": null,
+            "adoption_date": null
+          },
+          "match": {
+            "shared_tokens": [],
+            "publication": null,
+            "evidence": null
+          },
+          "is_compliance_verdict": false,
+          "adjudication": "not_adjudicated",
+          "method": "mandate_expected_vs_observed_v1"
+        },
+        {
+          "conformance_id": "68103-008:meetings:notice:20260818004",
+          "mandate_id": "68103-008",
+          "edge_type": "requires_public_hearing",
+          "edge": {
+            "type": "requires_public_hearing",
+            "from": "mandate:68103-008",
+            "to": "notice:20260818004",
+            "claim_id": "mandate-meetings:notice:20260818004",
+            "claim_inspect_href": "/agencies/transportation/?claim=mandate-meetings%3Anotice%3A20260818004",
+            "warrant_class": "probabilistic",
+            "method": "mandate_meeting_subject_temporal_v2",
+            "confidence": "strong",
+            "publication_tier": "public_inferred",
+            "provenance": {
+              "schema": "cityscroll.graph_edge_provenance.v1",
+              "method": "graph_edge_provenance_v1",
+              "claim_id": "mandate-meetings:notice:20260818004",
+              "kind": "graph_edge_claim",
+              "subject_ref": "notice:20260818004",
+              "root_ref": "mandate:68103-008",
+              "category_id": "mandate-meetings",
+              "relation": "requires public hearing",
+              "label": "Dining Out NYC Public Hearing",
+              "object_href": "/notices/20260818004",
+              "where": {
+                "source_system": {
+                  "available": true,
+                  "value": "city_record"
+                },
+                "source_record_id": {
+                  "available": true,
+                  "value": "city_record:20260818004"
+                },
+                "source_href": {
+                  "available": false
+                },
+                "source_fields": {
+                  "available": true,
+                  "value": [
+                    "agency_name",
+                    "type_of_notice_description",
+                    "matter_subject.subject_tokens",
+                    "short_title",
+                    "event_date"
+                  ]
+                },
+                "input_value": {
+                  "available": true,
+                  "value": "sidewalk, cafe, petition"
+                },
+                "observed_at": {
+                  "available": true,
+                  "value": "2026-09-17"
+                },
+                "basis": {
+                  "available": true,
+                  "value": "agency+event_kind+matter_body_subject+temporal"
+                },
+                "source_excerpt": {
+                  "available": true,
+                  "value": "Dining Out NYC Public Hearing"
+                }
+              },
+              "how": {
+                "method": {
+                  "available": true,
+                  "value": "mandate_meeting_subject_temporal_v2"
+                },
+                "warrant_class": "probabilistic",
+                "warrant_label": "Record-linkage match",
+                "decision": "auto_link"
+              },
+              "cross_spine": {
+                "confidence": "unmatched",
+                "explicit": false
+              },
+              "confidence": {
+                "band": "strong",
+                "identity_stance": "possible_link",
+                "identity_label": "Record-linkage connection",
+                "standable": true,
+                "counts_as_verified_total": false
+              },
+              "enrichment": {
+                "entity_link_id": {
+                  "available": true,
+                  "value": "entity-link:mandate-meeting:68103-008:20260818004"
+                },
+                "resolution_run_id": {
+                  "available": true,
+                  "value": "resolution-run:mandate-meeting:transportation:2026-08-07t23:52:53.226z-2026-08-11t21:12:40.677z-2026-08-30t16:27:58.717z"
+                },
+                "next": null,
+                "missing_fields": []
+              },
+              "inspect_href": "/agencies/transportation/?claim=mandate-meetings%3Anotice%3A20260818004",
+              "share_href": "/agencies/transportation/?claim=mandate-meetings%3Anotice%3A20260818004"
+            }
+          },
+          "status": "observed",
+          "observation_state": "appeared",
+          "category": "meetings",
+          "data_as_of": "2026-09-05",
+          "label": "Appeared",
+          "expected_event": {
+            "kind": "public_hearing",
+            "label": "Public meeting or hearing",
+            "deliverable_type": "other",
+            "deadline_date": null
+          },
+          "observed_record": {
+            "request_id": "20260818004",
+            "label": "Dining Out NYC Public Hearing",
+            "when": "2026-09-17",
+            "href": "/notices/20260818004",
+            "signal_kind": "public_hearing",
+            "lifecycle_status": null,
+            "lifecycle_label": null,
+            "effective_date": null,
+            "adoption_date": null
+          },
+          "match": {
+            "shared_tokens": [],
+            "publication": null,
+            "evidence": null
+          },
+          "is_compliance_verdict": false,
+          "adjudication": "not_adjudicated",
+          "method": "mandate_expected_vs_observed_v1"
+        },
+        {
           "conformance_id": "68103-008:meetings:notice:20260716009",
           "mandate_id": "68103-008",
           "edge_type": "requires_public_hearing",
@@ -57708,7 +57628,7 @@
                 },
                 "resolution_run_id": {
                   "available": true,
-                  "value": "resolution-run:mandate-meeting:transportation:2026-08-07t23:52:53.226z-2026-08-11t21:12:40.677z-2026-08-23t07:59:09.786z"
+                  "value": "resolution-run:mandate-meeting:transportation:2026-08-07t23:52:53.226z-2026-08-11t21:12:40.677z-2026-08-30t16:27:58.717z"
                 },
                 "next": null,
                 "missing_fields": []
@@ -57733,268 +57653,6 @@
             "label": "Dining Out NYC Public Hearing",
             "when": "2026-08-06",
             "href": "/notices/20260716009",
-            "signal_kind": "public_hearing",
-            "lifecycle_status": null,
-            "lifecycle_label": null,
-            "effective_date": null,
-            "adoption_date": null
-          },
-          "match": {
-            "shared_tokens": [],
-            "publication": null,
-            "evidence": null
-          },
-          "is_compliance_verdict": false,
-          "adjudication": "not_adjudicated",
-          "method": "mandate_expected_vs_observed_v1"
-        },
-        {
-          "conformance_id": "68103-008:meetings:notice:20260605007",
-          "mandate_id": "68103-008",
-          "edge_type": "requires_public_hearing",
-          "edge": {
-            "type": "requires_public_hearing",
-            "from": "mandate:68103-008",
-            "to": "notice:20260605007",
-            "claim_id": "mandate-meetings:notice:20260605007",
-            "claim_inspect_href": "/agencies/transportation/?claim=mandate-meetings%3Anotice%3A20260605007",
-            "warrant_class": "probabilistic",
-            "method": "mandate_meeting_subject_temporal_v2",
-            "confidence": "strong",
-            "publication_tier": "public_inferred",
-            "provenance": {
-              "schema": "cityscroll.graph_edge_provenance.v1",
-              "method": "graph_edge_provenance_v1",
-              "claim_id": "mandate-meetings:notice:20260605007",
-              "kind": "graph_edge_claim",
-              "subject_ref": "notice:20260605007",
-              "root_ref": "mandate:68103-008",
-              "category_id": "mandate-meetings",
-              "relation": "requires public hearing",
-              "label": "DINING OUT NYC PUBLIC HEARING",
-              "object_href": "/notices/20260605007",
-              "where": {
-                "source_system": {
-                  "available": true,
-                  "value": "city_record"
-                },
-                "source_record_id": {
-                  "available": true,
-                  "value": "city_record:20260605007"
-                },
-                "source_href": {
-                  "available": false
-                },
-                "source_fields": {
-                  "available": true,
-                  "value": [
-                    "agency_name",
-                    "type_of_notice_description",
-                    "matter_subject.subject_tokens",
-                    "short_title",
-                    "event_date"
-                  ]
-                },
-                "input_value": {
-                  "available": true,
-                  "value": "cafe, petition"
-                },
-                "observed_at": {
-                  "available": true,
-                  "value": "2026-07-02"
-                },
-                "basis": {
-                  "available": true,
-                  "value": "agency+event_kind+matter_body_subject+temporal"
-                },
-                "source_excerpt": {
-                  "available": true,
-                  "value": "DINING OUT NYC PUBLIC HEARING"
-                }
-              },
-              "how": {
-                "method": {
-                  "available": true,
-                  "value": "mandate_meeting_subject_temporal_v2"
-                },
-                "warrant_class": "probabilistic",
-                "warrant_label": "Record-linkage match",
-                "decision": "auto_link"
-              },
-              "cross_spine": {
-                "confidence": "unmatched",
-                "explicit": false
-              },
-              "confidence": {
-                "band": "strong",
-                "identity_stance": "possible_link",
-                "identity_label": "Record-linkage connection",
-                "standable": true,
-                "counts_as_verified_total": false
-              },
-              "enrichment": {
-                "entity_link_id": {
-                  "available": true,
-                  "value": "entity-link:mandate-meeting:68103-008:20260605007"
-                },
-                "resolution_run_id": {
-                  "available": true,
-                  "value": "resolution-run:mandate-meeting:transportation:2026-08-07t23:52:53.226z-2026-08-11t21:12:40.677z-2026-08-23t07:59:09.786z"
-                },
-                "next": null,
-                "missing_fields": []
-              },
-              "inspect_href": "/agencies/transportation/?claim=mandate-meetings%3Anotice%3A20260605007",
-              "share_href": "/agencies/transportation/?claim=mandate-meetings%3Anotice%3A20260605007"
-            }
-          },
-          "status": "observed",
-          "observation_state": "appeared",
-          "category": "meetings",
-          "data_as_of": "2026-09-05",
-          "label": "Appeared",
-          "expected_event": {
-            "kind": "public_hearing",
-            "label": "Public meeting or hearing",
-            "deliverable_type": "other",
-            "deadline_date": null
-          },
-          "observed_record": {
-            "request_id": "20260605007",
-            "label": "DINING OUT NYC PUBLIC HEARING",
-            "when": "2026-07-02",
-            "href": "/notices/20260605007",
-            "signal_kind": "public_hearing",
-            "lifecycle_status": null,
-            "lifecycle_label": null,
-            "effective_date": null,
-            "adoption_date": null
-          },
-          "match": {
-            "shared_tokens": [],
-            "publication": null,
-            "evidence": null
-          },
-          "is_compliance_verdict": false,
-          "adjudication": "not_adjudicated",
-          "method": "mandate_expected_vs_observed_v1"
-        },
-        {
-          "conformance_id": "68103-008:meetings:notice:20260605006",
-          "mandate_id": "68103-008",
-          "edge_type": "requires_public_hearing",
-          "edge": {
-            "type": "requires_public_hearing",
-            "from": "mandate:68103-008",
-            "to": "notice:20260605006",
-            "claim_id": "mandate-meetings:notice:20260605006",
-            "claim_inspect_href": "/agencies/transportation/?claim=mandate-meetings%3Anotice%3A20260605006",
-            "warrant_class": "probabilistic",
-            "method": "mandate_meeting_subject_temporal_v2",
-            "confidence": "strong",
-            "publication_tier": "public_inferred",
-            "provenance": {
-              "schema": "cityscroll.graph_edge_provenance.v1",
-              "method": "graph_edge_provenance_v1",
-              "claim_id": "mandate-meetings:notice:20260605006",
-              "kind": "graph_edge_claim",
-              "subject_ref": "notice:20260605006",
-              "root_ref": "mandate:68103-008",
-              "category_id": "mandate-meetings",
-              "relation": "requires public hearing",
-              "label": "DINING OUT NYC PUBLIC HEARING",
-              "object_href": "/notices/20260605006",
-              "where": {
-                "source_system": {
-                  "available": true,
-                  "value": "city_record"
-                },
-                "source_record_id": {
-                  "available": true,
-                  "value": "city_record:20260605006"
-                },
-                "source_href": {
-                  "available": false
-                },
-                "source_fields": {
-                  "available": true,
-                  "value": [
-                    "agency_name",
-                    "type_of_notice_description",
-                    "matter_subject.subject_tokens",
-                    "short_title",
-                    "event_date"
-                  ]
-                },
-                "input_value": {
-                  "available": true,
-                  "value": "cafe, petition"
-                },
-                "observed_at": {
-                  "available": true,
-                  "value": "2026-06-25"
-                },
-                "basis": {
-                  "available": true,
-                  "value": "agency+event_kind+matter_body_subject+temporal"
-                },
-                "source_excerpt": {
-                  "available": true,
-                  "value": "DINING OUT NYC PUBLIC HEARING"
-                }
-              },
-              "how": {
-                "method": {
-                  "available": true,
-                  "value": "mandate_meeting_subject_temporal_v2"
-                },
-                "warrant_class": "probabilistic",
-                "warrant_label": "Record-linkage match",
-                "decision": "auto_link"
-              },
-              "cross_spine": {
-                "confidence": "unmatched",
-                "explicit": false
-              },
-              "confidence": {
-                "band": "strong",
-                "identity_stance": "possible_link",
-                "identity_label": "Record-linkage connection",
-                "standable": true,
-                "counts_as_verified_total": false
-              },
-              "enrichment": {
-                "entity_link_id": {
-                  "available": true,
-                  "value": "entity-link:mandate-meeting:68103-008:20260605006"
-                },
-                "resolution_run_id": {
-                  "available": true,
-                  "value": "resolution-run:mandate-meeting:transportation:2026-08-07t23:52:53.226z-2026-08-11t21:12:40.677z-2026-08-23t07:59:09.786z"
-                },
-                "next": null,
-                "missing_fields": []
-              },
-              "inspect_href": "/agencies/transportation/?claim=mandate-meetings%3Anotice%3A20260605006",
-              "share_href": "/agencies/transportation/?claim=mandate-meetings%3Anotice%3A20260605006"
-            }
-          },
-          "status": "observed",
-          "observation_state": "appeared",
-          "category": "meetings",
-          "data_as_of": "2026-09-05",
-          "label": "Appeared",
-          "expected_event": {
-            "kind": "public_hearing",
-            "label": "Public meeting or hearing",
-            "deliverable_type": "other",
-            "deadline_date": null
-          },
-          "observed_record": {
-            "request_id": "20260605006",
-            "label": "DINING OUT NYC PUBLIC HEARING",
-            "when": "2026-06-25",
-            "href": "/notices/20260605006",
             "signal_kind": "public_hearing",
             "lifecycle_status": null,
             "lifecycle_label": null,

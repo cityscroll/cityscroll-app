@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "delivery_tier": "inline-at-build",
-  "generated_at": "2026-08-23T07:59:14.162Z",
+  "generated_at": "2026-09-05T19:50:20.462Z",
   "source": {
     "name": "Zoning Application Portal projects (Open Data)",
     "dataset": "hgx4-8ukb",
@@ -1465,7 +1465,7 @@
       },
       "2026R0127": {
         "project_id": "2026R0127",
-        "public_status": "In Public Review",
+        "public_status": "Completed",
         "portal_url": "https://zap.planning.nyc.gov/projects/2026R0127",
         "join": {
           "matched": true,
@@ -1473,12 +1473,23 @@
           "reason": null
         },
         "filled": true,
+        "actions": [
+          {
+            "id": "27e384fd-3b8f-f011-b4cc-001dd80340cd",
+            "action": "PQ",
+            "ulurp_number": "C260330PQR",
+            "status": "Approved",
+            "approved": true,
+            "cc_resolution": null,
+            "sharepoint_url": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_projectaction/PQ_Acquisition of Property by the City_27E384FD3B8FF011B4CC001DD80340CD"
+          }
+        ],
         "approved_actions": [
           {
             "id": "27e384fd-3b8f-f011-b4cc-001dd80340cd",
             "action": "PQ",
             "ulurp_number": "C260330PQR",
-            "status": "Certified",
+            "status": "Approved",
             "approved": true,
             "cc_resolution": null,
             "sharepoint_url": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_projectaction/PQ_Acquisition of Property by the City_27E384FD3B8FF011B4CC001DD80340CD"
@@ -1601,7 +1612,7 @@
           }
         ],
         "n_documents": 19,
-        "generated_at": "2026-08-17T13:13:26.471Z",
+        "generated_at": "2026-09-04T13:09:05.719Z",
         "snapshot_state": "present"
       },
       "2025K0305": {
@@ -1614,6 +1625,17 @@
           "reason": null
         },
         "filled": true,
+        "actions": [
+          {
+            "id": "c97a279f-cecd-ef11-b8e9-001dd809b68c",
+            "action": "MM",
+            "ulurp_number": "250308MMK",
+            "status": "Active",
+            "approved": false,
+            "cc_resolution": null,
+            "sharepoint_url": null
+          }
+        ],
         "approved_actions": [],
         "dispositions": [
           {
@@ -1784,7 +1806,7 @@
           }
         ],
         "n_documents": 13,
-        "generated_at": "2026-08-16T13:10:49.743Z",
+        "generated_at": "2026-08-30T13:12:25.649Z",
         "snapshot_state": "present"
       },
       "2026K0123": {
@@ -1797,6 +1819,26 @@
           "reason": null
         },
         "filled": true,
+        "actions": [
+          {
+            "id": "610b5aaa-ee8c-f011-b4cc-001dd80c29f4",
+            "action": "ZM",
+            "ulurp_number": "260409ZMK",
+            "status": "Active",
+            "approved": false,
+            "cc_resolution": null,
+            "sharepoint_url": null
+          },
+          {
+            "id": "749c6fc2-ee8c-f011-b4cc-001dd80c29f4",
+            "action": "ZR",
+            "ulurp_number": "N260410ZRK",
+            "status": "Active",
+            "approved": false,
+            "cc_resolution": null,
+            "sharepoint_url": null
+          }
+        ],
         "approved_actions": [],
         "dispositions": [
           {
@@ -1919,7 +1961,7 @@
           }
         ],
         "n_documents": 14,
-        "generated_at": "2026-08-16T13:10:41.946Z",
+        "generated_at": "2026-08-30T13:12:17.280Z",
         "snapshot_state": "present"
       },
       "2024Q0325": {
@@ -1932,6 +1974,26 @@
           "reason": null
         },
         "filled": true,
+        "actions": [
+          {
+            "id": "c75bd1b5-aaa3-ef11-8a6a-001dd80552a0",
+            "action": "ZM",
+            "ulurp_number": "260230ZMQ",
+            "status": "Active",
+            "approved": false,
+            "cc_resolution": null,
+            "sharepoint_url": null
+          },
+          {
+            "id": "3814dcc7-aaa3-ef11-8a6a-001dd80552a0",
+            "action": "ZR",
+            "ulurp_number": "N260231ZRQ",
+            "status": "Active",
+            "approved": false,
+            "cc_resolution": null,
+            "sharepoint_url": null
+          }
+        ],
         "approved_actions": [],
         "dispositions": [
           {
@@ -2054,7 +2116,7 @@
           }
         ],
         "n_documents": 15,
-        "generated_at": "2026-08-16T13:07:42.954Z",
+        "generated_at": "2026-09-04T13:13:52.285Z",
         "snapshot_state": "present"
       },
       "2024K0214": {
@@ -2067,6 +2129,26 @@
           "reason": null
         },
         "filled": true,
+        "actions": [
+          {
+            "id": "de5277fa-f880-ef11-a670-001dd809b68c",
+            "action": "ZM",
+            "ulurp_number": "260295ZMK",
+            "status": "Active",
+            "approved": false,
+            "cc_resolution": null,
+            "sharepoint_url": null
+          },
+          {
+            "id": "78aecf12-f980-ef11-a670-001dd809b68c",
+            "action": "ZR",
+            "ulurp_number": "N260296ZRK",
+            "status": "Active",
+            "approved": false,
+            "cc_resolution": null,
+            "sharepoint_url": null
+          }
+        ],
         "approved_actions": [],
         "dispositions": [
           {
@@ -2189,7 +2271,7 @@
           }
         ],
         "n_documents": 22,
-        "generated_at": "2026-08-16T13:10:55.768Z",
+        "generated_at": "2026-08-30T13:12:25.594Z",
         "snapshot_state": "present"
       },
       "2024M0244": {
@@ -2202,6 +2284,53 @@
           "reason": null
         },
         "filled": true,
+        "actions": [
+          {
+            "id": "c4c0bb2e-7598-ee11-be37-001dd804eb39",
+            "action": "ZS",
+            "ulurp_number": "C260015ZSM",
+            "status": "Certified",
+            "approved": true,
+            "cc_resolution": null,
+            "sharepoint_url": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_projectaction/ZS_Zoning Special Permit_C4C0BB2E7598EE11BE37001DD804EB39"
+          },
+          {
+            "id": "3993a146-7598-ee11-be37-001dd804eb39",
+            "action": "ZM",
+            "ulurp_number": "C260013ZMM",
+            "status": "Certified",
+            "approved": true,
+            "cc_resolution": null,
+            "sharepoint_url": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_projectaction/ZM_Zoning Map Amendment_3993A1467598EE11BE37001DD804EB39"
+          },
+          {
+            "id": "85859158-7598-ee11-be37-001dd804eb39",
+            "action": "ZR",
+            "ulurp_number": "N260014ZRM",
+            "status": "Referred",
+            "approved": false,
+            "cc_resolution": null,
+            "sharepoint_url": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_projectaction/ZR_Zoning Text Amendment_858591587598EE11BE37001DD804EB39"
+          },
+          {
+            "id": "cd1510c7-00cb-f011-bbd3-001dd80a67c9",
+            "action": "LD",
+            "ulurp_number": "260201LDM",
+            "status": "Active",
+            "approved": false,
+            "cc_resolution": null,
+            "sharepoint_url": null
+          },
+          {
+            "id": "7e4803d3-00cb-f011-bbd3-001dd80a67c9",
+            "action": "LD",
+            "ulurp_number": "260202LDM",
+            "status": "Active",
+            "approved": false,
+            "cc_resolution": null,
+            "sharepoint_url": null
+          }
+        ],
         "approved_actions": [
           {
             "id": "c4c0bb2e-7598-ee11-be37-001dd804eb39",
@@ -2347,7 +2476,7 @@
           }
         ],
         "n_documents": 112,
-        "generated_at": "2026-08-17T13:13:27.022Z",
+        "generated_at": "2026-09-04T13:09:14.215Z",
         "snapshot_state": "present"
       },
       "2025M0338": {
@@ -2360,6 +2489,35 @@
           "reason": null
         },
         "filled": true,
+        "actions": [
+          {
+            "id": "6e7c08d2-4442-f011-877a-001dd806295a",
+            "action": "ZS",
+            "ulurp_number": "260275ZSM",
+            "status": "Active",
+            "approved": false,
+            "cc_resolution": null,
+            "sharepoint_url": null
+          },
+          {
+            "id": "a263e125-4542-f011-877a-001dd806295a",
+            "action": "ZR",
+            "ulurp_number": "N260276ZRM",
+            "status": "Active",
+            "approved": false,
+            "cc_resolution": null,
+            "sharepoint_url": null
+          },
+          {
+            "id": "cd56c5b1-3ec6-f011-bbd3-001dd80db495",
+            "action": "LD",
+            "ulurp_number": "260277LDM",
+            "status": "Active",
+            "approved": false,
+            "cc_resolution": null,
+            "sharepoint_url": null
+          }
+        ],
         "approved_actions": [],
         "dispositions": [
           {
@@ -2481,8 +2639,8 @@
             "time_created": "2026-06-30T21:43:30Z"
           }
         ],
-        "n_documents": 19,
-        "generated_at": "2026-08-16T13:07:43.070Z",
+        "n_documents": 22,
+        "generated_at": "2026-09-04T13:13:52.588Z",
         "snapshot_state": "present"
       },
       "2024K0358": {
@@ -2495,6 +2653,62 @@
           "reason": null
         },
         "filled": true,
+        "actions": [
+          {
+            "id": "ab0e1a75-357c-ef11-a671-001dd809d9d4",
+            "action": "ZM",
+            "ulurp_number": "C260105ZMK",
+            "status": "Certified",
+            "approved": true,
+            "cc_resolution": null,
+            "sharepoint_url": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_projectaction/ZM_Zoning Map Amendment_AB0E1A75357CEF11A671001DD809D9D4"
+          },
+          {
+            "id": "59e12187-357c-ef11-a671-001dd809d9d4",
+            "action": "ZR",
+            "ulurp_number": "N260106ZRK",
+            "status": "Referred",
+            "approved": false,
+            "cc_resolution": null,
+            "sharepoint_url": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_projectaction/ZR_Zoning Text Amendment_59E12187357CEF11A671001DD809D9D4"
+          },
+          {
+            "id": "66d53db8-a01b-f011-998a-001dd80c29f4",
+            "action": "ZS",
+            "ulurp_number": "C260107ZSK",
+            "status": "Certified",
+            "approved": true,
+            "cc_resolution": null,
+            "sharepoint_url": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_projectaction/ZS_Zoning Special Permit_66D53DB8A01BF011998A001DD80C29F4"
+          },
+          {
+            "id": "431733c4-a01b-f011-998a-001dd80c29f4",
+            "action": "ZC",
+            "ulurp_number": "N260108ZCK",
+            "status": "Active",
+            "approved": false,
+            "cc_resolution": null,
+            "sharepoint_url": null
+          },
+          {
+            "id": "afb641ec-3358-f011-877b-001dd80db62a",
+            "action": "LD",
+            "ulurp_number": "260110LDK",
+            "status": "Active",
+            "approved": false,
+            "cc_resolution": null,
+            "sharepoint_url": null
+          },
+          {
+            "id": "f41d0301-5a1c-f011-998a-001dd80db62a",
+            "action": "ZS",
+            "ulurp_number": "C260109ZSK",
+            "status": "Withdrawn",
+            "approved": false,
+            "cc_resolution": null,
+            "sharepoint_url": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_projectaction/ZS_Zoning Special Permit_F41D03015A1CF011998A001DD80DB62A"
+          }
+        ],
         "approved_actions": [
           {
             "id": "ab0e1a75-357c-ef11-a671-001dd809d9d4",
@@ -2679,7 +2893,7 @@
           }
         ],
         "n_documents": 122,
-        "generated_at": "2026-08-17T13:13:40.323Z",
+        "generated_at": "2026-09-04T13:09:34.543Z",
         "snapshot_state": "present"
       },
       "2023M0213": {
@@ -2692,6 +2906,53 @@
           "reason": null
         },
         "filled": true,
+        "actions": [
+          {
+            "id": "c4d4979d-b99e-ee11-be37-001dd804e43e",
+            "action": "ZR",
+            "ulurp_number": "N260062ZRM",
+            "status": "Referred",
+            "approved": false,
+            "cc_resolution": null,
+            "sharepoint_url": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_projectaction/ZR_Zoning Text Amendment_C4D4979DB99EEE11BE37001DD804E43E"
+          },
+          {
+            "id": "eb82cedc-8867-ed11-9562-001dd806abde",
+            "action": "ZM",
+            "ulurp_number": "C260060ZMM",
+            "status": "Certified",
+            "approved": true,
+            "cc_resolution": null,
+            "sharepoint_url": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_projectaction/ZM - Zoning Map Amendment _EB82CEDC8867ED119562001DD806ABDE"
+          },
+          {
+            "id": "a343ef30-8967-ed11-9562-001dd806abde",
+            "action": "ZS",
+            "ulurp_number": "C260061ZSM",
+            "status": "Certified",
+            "approved": true,
+            "cc_resolution": null,
+            "sharepoint_url": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_projectaction/ZS - Zoning Special Permit _A343EF308967ED119562001DD806ABDE"
+          },
+          {
+            "id": "ec6b327f-00cb-f011-bbd3-001dd80a67c9",
+            "action": "LD",
+            "ulurp_number": "260199LDM",
+            "status": "Active",
+            "approved": false,
+            "cc_resolution": null,
+            "sharepoint_url": null
+          },
+          {
+            "id": "f90f398b-00cb-f011-bbd3-001dd80a67c9",
+            "action": "LD",
+            "ulurp_number": "260200LDM",
+            "status": "Active",
+            "approved": false,
+            "cc_resolution": null,
+            "sharepoint_url": null
+          }
+        ],
         "approved_actions": [
           {
             "id": "eb82cedc-8867-ed11-9562-001dd806abde",
@@ -2837,7 +3098,7 @@
           }
         ],
         "n_documents": 111,
-        "generated_at": "2026-08-17T13:13:40.707Z",
+        "generated_at": "2026-09-04T13:09:34.759Z",
         "snapshot_state": "present"
       },
       "2019K0383": {
@@ -2850,6 +3111,26 @@
           "reason": null
         },
         "filled": true,
+        "actions": [
+          {
+            "id": "0d3c32e9-dc71-e911-8154-1458d04d06c8",
+            "action": "ZM",
+            "ulurp_number": "210395ZMK",
+            "status": "Active",
+            "approved": false,
+            "cc_resolution": null,
+            "sharepoint_url": null
+          },
+          {
+            "id": "0e03cdff-dc71-e911-8154-1458d04d06c8",
+            "action": "ZR",
+            "ulurp_number": "N210396ZRK",
+            "status": "Active",
+            "approved": false,
+            "cc_resolution": null,
+            "sharepoint_url": null
+          }
+        ],
         "approved_actions": [],
         "dispositions": [
           {
@@ -2965,8 +3246,8 @@
             "time_created": "2021-04-26T02:55:24Z"
           }
         ],
-        "n_documents": 45,
-        "generated_at": "2026-08-16T13:10:49.886Z",
+        "n_documents": 52,
+        "generated_at": "2026-08-30T13:12:25.665Z",
         "snapshot_state": "present"
       },
       "2025K0287": {
@@ -2979,6 +3260,17 @@
           "reason": null
         },
         "filled": true,
+        "actions": [
+          {
+            "id": "49b4181c-d2b7-ef11-b8e9-001dd805533f",
+            "action": "MM",
+            "ulurp_number": "C250326MMK",
+            "status": "Certified",
+            "approved": true,
+            "cc_resolution": null,
+            "sharepoint_url": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_projectaction/MM_Change in City Map_49B4181CD2B7EF11B8E9001DD805533F"
+          }
+        ],
         "approved_actions": [
           {
             "id": "49b4181c-d2b7-ef11-b8e9-001dd805533f",
@@ -3107,12 +3399,12 @@
           }
         ],
         "n_documents": 30,
-        "generated_at": "2026-08-17T13:13:26.965Z",
+        "generated_at": "2026-09-04T13:09:05.611Z",
         "snapshot_state": "present"
       },
       "2025M0252": {
         "project_id": "2025M0252",
-        "public_status": "In Public Review",
+        "public_status": "Completed",
         "portal_url": "https://zap.planning.nyc.gov/projects/2025M0252",
         "join": {
           "matched": true,
@@ -3120,6 +3412,17 @@
           "reason": null
         },
         "filled": true,
+        "actions": [
+          {
+            "id": "d2af9c94-e9d4-ef11-8eea-001dd809d9d4",
+            "action": "MC",
+            "ulurp_number": "C260123MCM",
+            "status": "Certified",
+            "approved": true,
+            "cc_resolution": null,
+            "sharepoint_url": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_projectaction/MC_Major Concessions_D2AF9C94E9D4EF118EEA001DD809D9D4"
+          }
+        ],
         "approved_actions": [
           {
             "id": "d2af9c94-e9d4-ef11-8eea-001dd809d9d4",
@@ -3244,7 +3547,7 @@
           }
         ],
         "n_documents": 56,
-        "generated_at": "2026-08-17T13:14:14.568Z",
+        "generated_at": "2026-09-04T13:09:59.575Z",
         "snapshot_state": "present"
       },
       "2024K0286": {
@@ -3257,6 +3560,26 @@
           "reason": null
         },
         "filled": true,
+        "actions": [
+          {
+            "id": "279fa42e-c831-f011-8c4e-001dd80a67c9",
+            "action": "ZM",
+            "ulurp_number": "C260149ZMK",
+            "status": "Certified",
+            "approved": true,
+            "cc_resolution": null,
+            "sharepoint_url": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_projectaction/ZM_Zoning Map Amendment_279FA42EC831F0118C4E001DD80A67C9"
+          },
+          {
+            "id": "cbf09640-c831-f011-8c4e-001dd80a67c9",
+            "action": "ZR",
+            "ulurp_number": "N260150ZRK",
+            "status": "Referred",
+            "approved": false,
+            "cc_resolution": null,
+            "sharepoint_url": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_projectaction/ZR_Zoning Text Amendment_CBF09640C831F0118C4E001DD80A67C9"
+          }
+        ],
         "approved_actions": [
           {
             "id": "279fa42e-c831-f011-8c4e-001dd80a67c9",
@@ -3389,7 +3712,7 @@
           }
         ],
         "n_documents": 51,
-        "generated_at": "2026-08-17T13:14:28.621Z",
+        "generated_at": "2026-09-04T13:10:12.006Z",
         "snapshot_state": "present"
       },
       "2023M0116": {
@@ -3402,6 +3725,26 @@
           "reason": null
         },
         "filled": true,
+        "actions": [
+          {
+            "id": "bb34f78d-2701-ed11-bb3a-001dd806830b",
+            "action": "ZS",
+            "ulurp_number": "C250336ZSM",
+            "status": "Certified",
+            "approved": true,
+            "cc_resolution": null,
+            "sharepoint_url": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_projectaction/ZS - Zoning Special Permit _BB34F78D2701ED11BB3A001DD806830B"
+          },
+          {
+            "id": "16dfed22-a254-ed11-bba2-001dd806abde",
+            "action": "LD",
+            "ulurp_number": "250337LDM",
+            "status": "Active",
+            "approved": false,
+            "cc_resolution": null,
+            "sharepoint_url": null
+          }
+        ],
         "approved_actions": [
           {
             "id": "bb34f78d-2701-ed11-bb3a-001dd806830b",
@@ -3530,7 +3873,7 @@
           }
         ],
         "n_documents": 32,
-        "generated_at": "2026-08-17T13:14:16.493Z",
+        "generated_at": "2026-09-04T13:09:59.524Z",
         "snapshot_state": "present"
       },
       "2024Q0219": {
@@ -3543,6 +3886,26 @@
           "reason": null
         },
         "filled": true,
+        "actions": [
+          {
+            "id": "a9be822e-85fd-ee11-a1fe-001dd830760a",
+            "action": "ZM",
+            "ulurp_number": "C250329ZMQ",
+            "status": "Certified",
+            "approved": true,
+            "cc_resolution": null,
+            "sharepoint_url": null
+          },
+          {
+            "id": "67c9a146-85fd-ee11-a1fe-001dd830760a",
+            "action": "ZR",
+            "ulurp_number": "N250330ZRQ",
+            "status": "Referred",
+            "approved": false,
+            "cc_resolution": null,
+            "sharepoint_url": null
+          }
+        ],
         "approved_actions": [
           {
             "id": "a9be822e-85fd-ee11-a1fe-001dd830760a",
@@ -3675,7 +4038,7 @@
           }
         ],
         "n_documents": 31,
-        "generated_at": "2026-08-17T13:14:02.034Z",
+        "generated_at": "2026-09-04T13:09:47.335Z",
         "snapshot_state": "present"
       },
       "2026R0186": {
@@ -3688,6 +4051,17 @@
           "reason": null
         },
         "filled": true,
+        "actions": [
+          {
+            "id": "ec511f0d-a4aa-f011-bbd3-001dd80340cd",
+            "action": "PC",
+            "ulurp_number": "C260248PCR",
+            "status": "Approved",
+            "approved": true,
+            "cc_resolution": null,
+            "sharepoint_url": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_projectaction/PC_Combination Acquisition and Site Selection by the City_EC511F0DA4AAF011BBD3001DD80340CD"
+          }
+        ],
         "approved_actions": [
           {
             "id": "ec511f0d-a4aa-f011-bbd3-001dd80340cd",
@@ -3816,7 +4190,7 @@
           }
         ],
         "n_documents": 24,
-        "generated_at": "2026-08-17T13:13:53.222Z",
+        "generated_at": "2026-09-04T13:09:47.188Z",
         "snapshot_state": "present"
       },
       "2025K0284": {
@@ -3829,6 +4203,26 @@
           "reason": null
         },
         "filled": true,
+        "actions": [
+          {
+            "id": "b853fe32-e4cd-ef11-b8e9-001dd809b68c",
+            "action": "ZM",
+            "ulurp_number": "C260238ZMK",
+            "status": "Certified",
+            "approved": true,
+            "cc_resolution": null,
+            "sharepoint_url": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_projectaction/ZM_Zoning Map Amendment_B853FE32E4CDEF11B8E9001DD809B68C"
+          },
+          {
+            "id": "c7754645-e4cd-ef11-b8e9-001dd809b68c",
+            "action": "ZR",
+            "ulurp_number": "N260239ZRK",
+            "status": "Referred",
+            "approved": false,
+            "cc_resolution": null,
+            "sharepoint_url": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_projectaction/ZR_Zoning Text Amendment_C7754645E4CDEF11B8E9001DD809B68C"
+          }
+        ],
         "approved_actions": [
           {
             "id": "b853fe32-e4cd-ef11-b8e9-001dd809b68c",
@@ -3837,7 +4231,7 @@
             "status": "Certified",
             "approved": true,
             "cc_resolution": null,
-            "sharepoint_url": null
+            "sharepoint_url": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_projectaction/ZM_Zoning Map Amendment_B853FE32E4CDEF11B8E9001DD809B68C"
           }
         ],
         "dispositions": [
@@ -3961,7 +4355,7 @@
           }
         ],
         "n_documents": 27,
-        "generated_at": "2026-08-17T13:14:28.754Z",
+        "generated_at": "2026-09-04T13:10:13.083Z",
         "snapshot_state": "present"
       },
       "2023X0149": {
@@ -3974,6 +4368,26 @@
           "reason": null
         },
         "filled": true,
+        "actions": [
+          {
+            "id": "6a6a1c92-5593-ed11-aad1-001dd806a702",
+            "action": "ZM",
+            "ulurp_number": "C240206ZMX",
+            "status": "Certified",
+            "approved": true,
+            "cc_resolution": null,
+            "sharepoint_url": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_projectaction/ZM - Zoning Map Amendment _6A6A1C925593ED11AAD1001DD806A702"
+          },
+          {
+            "id": "567c0aec-5593-ed11-aad1-001dd806a702",
+            "action": "ZR",
+            "ulurp_number": "N240207ZRX",
+            "status": "Referred",
+            "approved": false,
+            "cc_resolution": null,
+            "sharepoint_url": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_projectaction/ZR - Zoning Text Amendment _567C0AEC5593ED11AAD1001DD806A702"
+          }
+        ],
         "approved_actions": [
           {
             "id": "6a6a1c92-5593-ed11-aad1-001dd806a702",
@@ -3982,7 +4396,7 @@
             "status": "Certified",
             "approved": true,
             "cc_resolution": null,
-            "sharepoint_url": null
+            "sharepoint_url": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_projectaction/ZM - Zoning Map Amendment _6A6A1C925593ED11AAD1001DD806A702"
           }
         ],
         "dispositions": [
@@ -4106,7 +4520,7 @@
           }
         ],
         "n_documents": 80,
-        "generated_at": "2026-08-17T13:13:40.329Z",
+        "generated_at": "2026-09-04T13:09:35.251Z",
         "snapshot_state": "present"
       },
       "2022K0416": {
@@ -4119,6 +4533,26 @@
           "reason": null
         },
         "filled": true,
+        "actions": [
+          {
+            "id": "f1021982-4bab-ef11-b8e9-001dd80552a0",
+            "action": "ZR",
+            "ulurp_number": "N260316ZRK",
+            "status": "Referred",
+            "approved": false,
+            "cc_resolution": null,
+            "sharepoint_url": null
+          },
+          {
+            "id": "1445dd65-4bab-ef11-b8e9-001dd809d9d4",
+            "action": "ZM",
+            "ulurp_number": "C260315ZMK",
+            "status": "Certified",
+            "approved": true,
+            "cc_resolution": null,
+            "sharepoint_url": null
+          }
+        ],
         "approved_actions": [
           {
             "id": "1445dd65-4bab-ef11-b8e9-001dd809d9d4",
@@ -4251,7 +4685,7 @@
           }
         ],
         "n_documents": 22,
-        "generated_at": "2026-08-16T13:07:53.631Z",
+        "generated_at": "2026-09-04T13:14:02.712Z",
         "snapshot_state": "present"
       },
       "2025Q0142": {
@@ -4264,6 +4698,26 @@
           "reason": null
         },
         "filled": true,
+        "actions": [
+          {
+            "id": "e77befbd-746c-ef11-a670-001dd809b68c",
+            "action": "ZM",
+            "ulurp_number": "C260147ZMQ",
+            "status": "Certified",
+            "approved": true,
+            "cc_resolution": null,
+            "sharepoint_url": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_projectaction/ZM_Zoning Map Amendment_E77BEFBD746CEF11A670001DD809B68C"
+          },
+          {
+            "id": "a6b0d963-aebc-ef11-b8e9-001dd809b68c",
+            "action": "ZR",
+            "ulurp_number": "N260148ZRQ",
+            "status": "Referred",
+            "approved": false,
+            "cc_resolution": null,
+            "sharepoint_url": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_projectaction/ZR_Zoning Text Amendment_A6B0D963AEBCEF11B8E9001DD809B68C"
+          }
+        ],
         "approved_actions": [
           {
             "id": "e77befbd-746c-ef11-a670-001dd809b68c",
@@ -4396,7 +4850,7 @@
           }
         ],
         "n_documents": 34,
-        "generated_at": "2026-08-17T13:13:40.282Z",
+        "generated_at": "2026-09-04T13:09:26.148Z",
         "snapshot_state": "present"
       },
       "2025Q0247": {
@@ -4409,6 +4863,26 @@
           "reason": null
         },
         "filled": true,
+        "actions": [
+          {
+            "id": "cc6be1ca-eb96-ef11-ac21-001dd8055a8b",
+            "action": "ZM",
+            "ulurp_number": "C260186ZMQ",
+            "status": "Certified",
+            "approved": true,
+            "cc_resolution": null,
+            "sharepoint_url": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_projectaction/ZM_Zoning Map Amendment_CC6BE1CAEB96EF11AC21001DD8055A8B"
+          },
+          {
+            "id": "761d07e9-eb96-ef11-ac21-001dd8055a8b",
+            "action": "ZR",
+            "ulurp_number": "N260187ZRQ",
+            "status": "Referred",
+            "approved": false,
+            "cc_resolution": null,
+            "sharepoint_url": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_projectaction/ZR_Zoning Text Amendment_761D07E9EB96EF11AC21001DD8055A8B"
+          }
+        ],
         "approved_actions": [
           {
             "id": "cc6be1ca-eb96-ef11-ac21-001dd8055a8b",
@@ -4417,7 +4891,7 @@
             "status": "Certified",
             "approved": true,
             "cc_resolution": null,
-            "sharepoint_url": null
+            "sharepoint_url": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_projectaction/ZM_Zoning Map Amendment_CC6BE1CAEB96EF11AC21001DD8055A8B"
           }
         ],
         "dispositions": [
@@ -4541,7 +5015,7 @@
           }
         ],
         "n_documents": 26,
-        "generated_at": "2026-08-17T13:14:16.052Z",
+        "generated_at": "2026-09-04T13:09:59.256Z",
         "snapshot_state": "present"
       },
       "2025R0222": {
@@ -4554,12 +5028,60 @@
           "reason": null
         },
         "filled": true,
-        "approved_actions": [],
+        "actions": [
+          {
+            "id": "1e19ba8c-e343-f111-88b4-001dd800e224",
+            "action": "LD",
+            "ulurp_number": "260389LDR",
+            "status": "Active",
+            "approved": false,
+            "cc_resolution": null,
+            "sharepoint_url": null
+          },
+          {
+            "id": "69a64a1a-0739-f111-88b4-001dd8084607",
+            "action": "RA",
+            "ulurp_number": "N260325RAR",
+            "status": "Referred",
+            "approved": false,
+            "cc_resolution": null,
+            "sharepoint_url": null
+          },
+          {
+            "id": "e62e20b9-7c41-f011-b4cc-001dd80c29f4",
+            "action": "RS",
+            "ulurp_number": "C260323RSR",
+            "status": "Certified",
+            "approved": true,
+            "cc_resolution": null,
+            "sharepoint_url": null
+          },
+          {
+            "id": "4010ab43-7d41-f011-b4cc-001dd80c29f4",
+            "action": "RC",
+            "ulurp_number": "N260324RCR",
+            "status": "Referred",
+            "approved": false,
+            "cc_resolution": null,
+            "sharepoint_url": null
+          }
+        ],
+        "approved_actions": [
+          {
+            "id": "e62e20b9-7c41-f011-b4cc-001dd80c29f4",
+            "action": "RS",
+            "ulurp_number": "C260323RSR",
+            "status": "Certified",
+            "approved": true,
+            "cc_resolution": null,
+            "sharepoint_url": null
+          }
+        ],
         "dispositions": [
           {
             "id": "0dcd5f33-7154-f111-bec6-001dd803ffab",
             "name": "2025R0222_RA_SI BP",
-            "status": "Draft",
+            "status": "Deactivated",
             "representing": "Borough President",
             "vote_date": null,
             "hearing_date": null,
@@ -4672,7 +5194,7 @@
           }
         ],
         "n_documents": 25,
-        "generated_at": "2026-08-16T13:07:54.004Z",
+        "generated_at": "2026-09-04T13:14:02.848Z",
         "snapshot_state": "present"
       },
       "2025R0137": {
@@ -4685,6 +5207,17 @@
           "reason": null
         },
         "filled": true,
+        "actions": [
+          {
+            "id": "6266f86a-b46c-f011-bec3-001dd80db62a",
+            "action": "PS",
+            "ulurp_number": "C260227PSR",
+            "status": "Approved",
+            "approved": true,
+            "cc_resolution": null,
+            "sharepoint_url": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_projectaction/PS_Site Selection (City Facility)_6266F86AB46CF011BEC3001DD80DB62A"
+          }
+        ],
         "approved_actions": [
           {
             "id": "6266f86a-b46c-f011-bec3-001dd80db62a",
@@ -4809,12 +5342,12 @@
           }
         ],
         "n_documents": 23,
-        "generated_at": "2026-08-17T13:14:16.095Z",
+        "generated_at": "2026-09-04T13:09:59.486Z",
         "snapshot_state": "present"
       },
       "2025Q0316": {
         "project_id": "2025Q0316",
-        "public_status": "In Public Review",
+        "public_status": "Completed",
         "portal_url": "https://zap.planning.nyc.gov/projects/2025Q0316",
         "join": {
           "matched": true,
@@ -4822,12 +5355,23 @@
           "reason": null
         },
         "filled": true,
+        "actions": [
+          {
+            "id": "3ec869b3-22d4-ef11-8eea-001dd805533f",
+            "action": "PC",
+            "ulurp_number": "C260089PCQ",
+            "status": "Approved",
+            "approved": true,
+            "cc_resolution": null,
+            "sharepoint_url": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_projectaction/PC_Combination Acquisition and Site Selection by the City_3EC869B322D4EF118EEA001DD805533F"
+          }
+        ],
         "approved_actions": [
           {
             "id": "3ec869b3-22d4-ef11-8eea-001dd805533f",
             "action": "PC",
             "ulurp_number": "C260089PCQ",
-            "status": "Certified",
+            "status": "Approved",
             "approved": true,
             "cc_resolution": null,
             "sharepoint_url": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_projectaction/PC_Combination Acquisition and Site Selection by the City_3EC869B322D4EF118EEA001DD805533F"
@@ -4950,7 +5494,7 @@
           }
         ],
         "n_documents": 30,
-        "generated_at": "2026-08-17T13:13:53.491Z",
+        "generated_at": "2026-09-04T13:09:47.168Z",
         "snapshot_state": "present"
       },
       "2026Q0210": {
@@ -4963,6 +5507,17 @@
           "reason": null
         },
         "filled": true,
+        "actions": [
+          {
+            "id": "90e0bd58-ba97-f011-b4cc-001dd80340cd",
+            "action": "MM",
+            "ulurp_number": "C260226MMQ",
+            "status": "Certified",
+            "approved": true,
+            "cc_resolution": null,
+            "sharepoint_url": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_projectaction/MM_Change in City Map_90E0BD58BA97F011B4CC001DD80340CD"
+          }
+        ],
         "approved_actions": [
           {
             "id": "90e0bd58-ba97-f011-b4cc-001dd80340cd",
@@ -5091,7 +5646,7 @@
           }
         ],
         "n_documents": 27,
-        "generated_at": "2026-08-17T13:14:28.347Z",
+        "generated_at": "2026-09-04T13:10:13.260Z",
         "snapshot_state": "present"
       },
       "2025M0395": {
@@ -5104,6 +5659,26 @@
           "reason": null
         },
         "filled": true,
+        "actions": [
+          {
+            "id": "8838eb19-7266-f011-bec2-001dd806295a",
+            "action": "ZS",
+            "ulurp_number": "C260282ZSM",
+            "status": "Certified",
+            "approved": true,
+            "cc_resolution": null,
+            "sharepoint_url": null
+          },
+          {
+            "id": "f373d337-7266-f011-bec2-001dd806295a",
+            "action": "ZR",
+            "ulurp_number": "N260283ZRM",
+            "status": "Referred",
+            "approved": false,
+            "cc_resolution": null,
+            "sharepoint_url": null
+          }
+        ],
         "approved_actions": [
           {
             "id": "8838eb19-7266-f011-bec2-001dd806295a",
@@ -5236,7 +5811,7 @@
           }
         ],
         "n_documents": 22,
-        "generated_at": "2026-08-16T13:07:53.762Z",
+        "generated_at": "2026-09-04T13:14:07.124Z",
         "snapshot_state": "present"
       },
       "2022K0430": {
@@ -5249,6 +5824,26 @@
           "reason": null
         },
         "filled": true,
+        "actions": [
+          {
+            "id": "26e0d2c2-d032-ed11-9daf-001dd806887f",
+            "action": "ZM",
+            "ulurp_number": "C240218ZMK",
+            "status": "Certified",
+            "approved": true,
+            "cc_resolution": null,
+            "sharepoint_url": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_projectaction/ZM - Zoning Map Amendment _26E0D2C2D032ED119DAF001DD806887F"
+          },
+          {
+            "id": "04ae89ff-d032-ed11-9daf-001dd806887f",
+            "action": "ZR",
+            "ulurp_number": "N240219ZRK",
+            "status": "Referred",
+            "approved": false,
+            "cc_resolution": null,
+            "sharepoint_url": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_projectaction/ZR - Zoning Text Amendment _04AE89FFD032ED119DAF001DD806887F"
+          }
+        ],
         "approved_actions": [
           {
             "id": "26e0d2c2-d032-ed11-9daf-001dd806887f",
@@ -5257,7 +5852,7 @@
             "status": "Certified",
             "approved": true,
             "cc_resolution": null,
-            "sharepoint_url": null
+            "sharepoint_url": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_projectaction/ZM - Zoning Map Amendment _26E0D2C2D032ED119DAF001DD806887F"
           }
         ],
         "dispositions": [
@@ -5381,7 +5976,7 @@
           }
         ],
         "n_documents": 95,
-        "generated_at": "2026-08-17T13:14:29.329Z",
+        "generated_at": "2026-09-04T13:10:11.953Z",
         "snapshot_state": "present"
       },
       "2026K0233": {
@@ -5394,6 +5989,35 @@
           "reason": null
         },
         "filled": true,
+        "actions": [
+          {
+            "id": "bcfcc42e-46a9-f011-bbd3-001dd806295a",
+            "action": "ZM",
+            "ulurp_number": "C260395ZMK",
+            "status": "Certified",
+            "approved": true,
+            "cc_resolution": null,
+            "sharepoint_url": null
+          },
+          {
+            "id": "b728b3d0-46a9-f011-bbd3-001dd806295a",
+            "action": "ZR",
+            "ulurp_number": "N260396ZRK",
+            "status": "Referred",
+            "approved": false,
+            "cc_resolution": null,
+            "sharepoint_url": null
+          },
+          {
+            "id": "29e1afdc-46a9-f011-bbd3-001dd806295a",
+            "action": "ZS",
+            "ulurp_number": "C260397ZSK",
+            "status": "Certified",
+            "approved": true,
+            "cc_resolution": null,
+            "sharepoint_url": null
+          }
+        ],
         "approved_actions": [
           {
             "id": "bcfcc42e-46a9-f011-bbd3-001dd806295a",
@@ -5569,7 +6193,7 @@
           }
         ],
         "n_documents": 61,
-        "generated_at": "2026-08-16T13:08:05.740Z",
+        "generated_at": "2026-09-04T13:14:19.142Z",
         "snapshot_state": "present"
       },
       "2024K0196": {
@@ -5582,6 +6206,26 @@
           "reason": null
         },
         "filled": true,
+        "actions": [
+          {
+            "id": "1ecd3155-846d-f011-bec3-001dd80340cd",
+            "action": "ZR",
+            "ulurp_number": "N260136ZRK",
+            "status": "Referred",
+            "approved": false,
+            "cc_resolution": null,
+            "sharepoint_url": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_projectaction/ZR_Zoning Text Amendment_1ECD3155846DF011BEC3001DD80340CD"
+          },
+          {
+            "id": "82ce39c0-ec58-ef11-bfe2-001dd80552a0",
+            "action": "ZM",
+            "ulurp_number": "C260135ZMK",
+            "status": "Certified",
+            "approved": true,
+            "cc_resolution": null,
+            "sharepoint_url": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_projectaction/ZM_Zoning Map Amendment_82CE39C0EC58EF11BFE2001DD80552A0"
+          }
+        ],
         "approved_actions": [
           {
             "id": "82ce39c0-ec58-ef11-bfe2-001dd80552a0",
@@ -5714,12 +6358,12 @@
           }
         ],
         "n_documents": 36,
-        "generated_at": "2026-08-17T13:14:41.703Z",
+        "generated_at": "2026-09-04T13:10:29.051Z",
         "snapshot_state": "present"
       },
       "2023Q0303": {
         "project_id": "2023Q0303",
-        "public_status": "Noticed",
+        "public_status": "In Public Review",
         "portal_url": "https://zap.planning.nyc.gov/projects/2023Q0303",
         "join": {
           "matched": true,
@@ -5727,7 +6371,37 @@
           "reason": null
         },
         "filled": true,
-        "approved_actions": [],
+        "actions": [
+          {
+            "id": "b31d69ba-6410-ee11-8f6c-001dd8097c36",
+            "action": "ZM",
+            "ulurp_number": "C250112ZMQ",
+            "status": "Certified",
+            "approved": true,
+            "cc_resolution": null,
+            "sharepoint_url": null
+          },
+          {
+            "id": "d4cc72d2-6410-ee11-8f6c-001dd8097c36",
+            "action": "ZR",
+            "ulurp_number": "N250113ZRQ",
+            "status": "Referred",
+            "approved": false,
+            "cc_resolution": null,
+            "sharepoint_url": null
+          }
+        ],
+        "approved_actions": [
+          {
+            "id": "b31d69ba-6410-ee11-8f6c-001dd8097c36",
+            "action": "ZM",
+            "ulurp_number": "C250112ZMQ",
+            "status": "Certified",
+            "approved": true,
+            "cc_resolution": null,
+            "sharepoint_url": null
+          }
+        ],
         "dispositions": [
           {
             "id": "9bbb6e47-6dab-f011-bbd3-001dd8006beb",
@@ -5848,8 +6522,8 @@
             "time_created": "2025-10-17T03:02:53Z"
           }
         ],
-        "n_documents": 20,
-        "generated_at": "2026-08-16T13:07:54.094Z",
+        "n_documents": 27,
+        "generated_at": "2026-09-04T13:14:02.671Z",
         "snapshot_state": "present"
       },
       "2025K0154": {
@@ -5862,6 +6536,26 @@
           "reason": null
         },
         "filled": true,
+        "actions": [
+          {
+            "id": "c12526d2-1372-f011-bec3-001dd80db62a",
+            "action": "ZM",
+            "ulurp_number": "C260162ZMK",
+            "status": "Approved",
+            "approved": true,
+            "cc_resolution": null,
+            "sharepoint_url": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_projectaction/ZM_Zoning Map Amendment_C12526D21372F011BEC3001DD80DB62A"
+          },
+          {
+            "id": "b64a1be4-1372-f011-bec3-001dd80db62a",
+            "action": "ZR",
+            "ulurp_number": "N260163ZRK",
+            "status": "Approved",
+            "approved": true,
+            "cc_resolution": null,
+            "sharepoint_url": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_projectaction/ZR_Zoning Text Amendment_B64A1BE41372F011BEC3001DD80DB62A"
+          }
+        ],
         "approved_actions": [
           {
             "id": "c12526d2-1372-f011-bec3-001dd80db62a",
@@ -6003,7 +6697,7 @@
           }
         ],
         "n_documents": 20,
-        "generated_at": "2026-08-17T13:14:41.624Z",
+        "generated_at": "2026-09-04T13:10:25.730Z",
         "snapshot_state": "present"
       },
       "2024K0421": {
@@ -6016,6 +6710,26 @@
           "reason": null
         },
         "filled": true,
+        "actions": [
+          {
+            "id": "bca8bf11-3063-f011-bec2-001dd80db62a",
+            "action": "ZR",
+            "ulurp_number": "N260204ZRK",
+            "status": "Active",
+            "approved": false,
+            "cc_resolution": null,
+            "sharepoint_url": null
+          },
+          {
+            "id": "19aa910f-7d23-ef11-840b-001dd8306c80",
+            "action": "ZM",
+            "ulurp_number": "260203ZMK",
+            "status": "Active",
+            "approved": false,
+            "cc_resolution": null,
+            "sharepoint_url": null
+          }
+        ],
         "approved_actions": [],
         "dispositions": [
           {
@@ -6138,12 +6852,12 @@
           }
         ],
         "n_documents": 26,
-        "generated_at": "2026-08-16T13:08:05.437Z",
+        "generated_at": "2026-09-04T13:14:24.059Z",
         "snapshot_state": "present"
       },
       "2022Q0449": {
         "project_id": "2022Q0449",
-        "public_status": "In Public Review",
+        "public_status": "Completed",
         "portal_url": "https://zap.planning.nyc.gov/projects/2022Q0449",
         "join": {
           "matched": true,
@@ -6151,15 +6865,44 @@
           "reason": null
         },
         "filled": true,
+        "actions": [
+          {
+            "id": "d4bdb8f1-979d-ed11-aad0-001dd806abde",
+            "action": "ZM",
+            "ulurp_number": "C260155ZMQ",
+            "status": "Approved",
+            "approved": true,
+            "cc_resolution": null,
+            "sharepoint_url": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_projectaction/ZM - Zoning Map Amendment _D4BDB8F1979DED11AAD0001DD806ABDE"
+          },
+          {
+            "id": "7e8aa00f-989d-ed11-aad0-001dd806abde",
+            "action": "ZR",
+            "ulurp_number": "N260156ZRQ",
+            "status": "Approved",
+            "approved": true,
+            "cc_resolution": null,
+            "sharepoint_url": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_projectaction/ZR - Zoning Text Amendment _7E8AA00F989DED11AAD0001DD806ABDE"
+          }
+        ],
         "approved_actions": [
           {
             "id": "d4bdb8f1-979d-ed11-aad0-001dd806abde",
             "action": "ZM",
             "ulurp_number": "C260155ZMQ",
-            "status": "Certified",
+            "status": "Approved",
             "approved": true,
             "cc_resolution": null,
             "sharepoint_url": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_projectaction/ZM - Zoning Map Amendment _D4BDB8F1979DED11AAD0001DD806ABDE"
+          },
+          {
+            "id": "7e8aa00f-989d-ed11-aad0-001dd806abde",
+            "action": "ZR",
+            "ulurp_number": "N260156ZRQ",
+            "status": "Approved",
+            "approved": true,
+            "cc_resolution": null,
+            "sharepoint_url": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_projectaction/ZR - Zoning Text Amendment _7E8AA00F989DED11AAD0001DD806ABDE"
           }
         ],
         "dispositions": [
@@ -6283,7 +7026,7 @@
           }
         ],
         "n_documents": 29,
-        "generated_at": "2026-08-17T13:14:41.749Z",
+        "generated_at": "2026-09-04T13:10:28.191Z",
         "snapshot_state": "present"
       },
       "2023K0183": {
@@ -6296,6 +7039,53 @@
           "reason": null
         },
         "filled": true,
+        "actions": [
+          {
+            "id": "60271a43-d713-f011-998a-001dd80340cd",
+            "action": "ZS",
+            "ulurp_number": "C250215ZSK",
+            "status": "Certified",
+            "approved": true,
+            "cc_resolution": null,
+            "sharepoint_url": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_projectaction/ZS_Zoning Special Permit_60271A43D713F011998A001DD80340CD"
+          },
+          {
+            "id": "805ce056-0628-ee11-9965-001dd804c71d",
+            "action": "ZM",
+            "ulurp_number": "C250248ZMK",
+            "status": "Certified",
+            "approved": true,
+            "cc_resolution": null,
+            "sharepoint_url": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_projectaction/ZM_Zoning Map Amendment_805CE0560628EE119965001DD804C71D"
+          },
+          {
+            "id": "9764d068-0628-ee11-9965-001dd804c71d",
+            "action": "ZR",
+            "ulurp_number": "N250249ZRK",
+            "status": "Referred",
+            "approved": false,
+            "cc_resolution": null,
+            "sharepoint_url": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_projectaction/ZR_Zoning Text Amendment_9764D0680628EE119965001DD804C71D"
+          },
+          {
+            "id": "7f802b06-0828-ee11-9965-001dd804c71d",
+            "action": "ZS",
+            "ulurp_number": "C250250ZSK",
+            "status": "Certified",
+            "approved": true,
+            "cc_resolution": null,
+            "sharepoint_url": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_projectaction/ZS_Zoning Special Permit_7F802B060828EE119965001DD804C71D"
+          },
+          {
+            "id": "68d882d5-2396-ef11-ac21-001dd809b68c",
+            "action": "LD",
+            "ulurp_number": "250251LDK",
+            "status": "Referred",
+            "approved": false,
+            "cc_resolution": null,
+            "sharepoint_url": null
+          }
+        ],
         "approved_actions": [
           {
             "id": "60271a43-d713-f011-998a-001dd80340cd",
@@ -6452,7 +7242,7 @@
           }
         ],
         "n_documents": 59,
-        "generated_at": "2026-08-17T13:14:54.439Z",
+        "generated_at": "2026-09-04T13:10:49.976Z",
         "snapshot_state": "present"
       }
     }
