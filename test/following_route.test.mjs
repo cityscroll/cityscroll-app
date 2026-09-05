@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { readFileSync, readdirSync } from "node:fs";
 import test from "node:test";
 
 import {
@@ -136,4 +136,54 @@ test("district watches make the Community Board picker discoverable", () => {
   assert.match(meetingsHtml, /<details class="following-refinements" open>/);
   assert.match(meetingsHtml, /name="boardBorough"/);
   assert.match(meetingsHtml, /name="boardNumber"/);
+});
+
+// PU-06: delivery of an approved product-update batch is a separately
+// authorized milestone, not something /following/ infers. Prove both halves
+// of that boundary: the rendered surface carries no batch content, and no
+// module under the Following surface reaches for the delivery gate.
+
+const SITE_DIR = new URL("../site/", import.meta.url);
+const FOLLOWING_DIR = new URL("../site/following/", import.meta.url);
+
+function collectFollowingSurfaceFiles() {
+  const files = [];
+  for (const name of readdirSync(SITE_DIR)) {
+    if (name.startsWith("following") && name.endsWith(".mjs")) {
+      files.push(new URL(name, SITE_DIR));
+    }
+  }
+  const walk = (dirUrl) => {
+    for (const entry of readdirSync(dirUrl, { withFileTypes: true })) {
+      const childUrl = new URL(entry.isDirectory() ? `${entry.name}/` : entry.name, dirUrl);
+      if (entry.isDirectory()) walk(childUrl);
+      else files.push(childUrl);
+    }
+  };
+  walk(FOLLOWING_DIR);
+  return files;
+}
+
+test("the /following/ surface carries no product-update batch content and no module under it imports the delivery gate", () => {
+  const files = collectFollowingSurfaceFiles();
+  assert.ok(files.length >= 6, "expected the Following module family plus the built page and packs");
+
+  for (const file of files) {
+    const text = readFileSync(file, "utf8");
+    assert.doesNotMatch(
+      text,
+      /product_updates_delivery/,
+      `${file.pathname} must not import the delivery module`,
+    );
+    if (file.pathname.endsWith(".html")) {
+      assert.doesNotMatch(
+        text,
+        /product[_-]update|batch_id|source_artifact_hash|cityscroll\.product_updates/i,
+        `${file.pathname} must not carry product-update batch content`,
+      );
+    }
+  }
+
+  const rendered = renderFollowingDocument(buildFollowingViewModel({}));
+  assert.doesNotMatch(rendered, /product[_-]update|batch_id|source_artifact_hash/i);
 });
