@@ -46,7 +46,38 @@ On the machine that holds the warehouse:
    where `AGENT_DIR` is that directory.
 5. Rehearse once by hand before relying on the schedule:
    `CITYSCROLL_REPO=… CITYSCROLL_WAREHOUSE_ROOT=… ./run-warehouse-refresh.sh --dry-run`.
+   The rehearsal is read-only: it confirms the catalog is present, prints the
+   datasets a run would consider due (`node tools/first_class_refresh.mjs
+   --list-due`), and stops. It creates no branch, contacts no publisher, and
+   rewrites no artifact.
 
-The script refreshes only the datasets that are due, writes the freshness
-report, and opens a pull request when something changed. It never pushes to the
-default branch and never merges.
+The script refreshes only the datasets that are due, rebuilds every dependent
+artifact through the derived-JSON build boundary, writes the freshness report,
+and opens a pull request when something changed. It never pushes to the default
+branch and never merges.
+
+`--run-due` stops after each owning builder, so the boundary rebuild is what
+keeps the served read models and the keyword search index coherent with the
+refreshed data.
+
+## Refreshing the warehouse snapshot itself
+
+The scheduled job re-materialises the public artifacts from whatever snapshot
+the catalog already holds; it never downloads a new one. `site/data/ocp_awards_warehouse_lookup.json`
+takes its vintage from `source_snapshot.snapshot_date`, which is the ingest
+date, so the artifact cannot become fresher than the catalog behind it. Pull a
+new snapshot on the warehouse machine when that vintage approaches its hard
+maximum age:
+
+```bash
+export CITYSCROLL_WAREHOUSE_ROOT=…
+warehouse/.venv/bin/python warehouse/scripts/ingest.py \
+  --dataset ocp-recent-contract-awards --bulk --ack-large
+warehouse/.venv/bin/python warehouse/scripts/write_load_manifest.py \
+  --headroom-line "$(python3 "$HEADROOM_BIN" 2>&1 | tail -1)"
+```
+
+A new ingest rewrites `warehouse/receipts/proof/ocp-recent-contract-awards_bulk_latest.json`
+and `warehouse/manifests/wh02_load_manifest.json`, so the pinned checksums in
+`warehouse/derived_json_build_manifest.json#source_snapshot` must be restamped
+in the same change or the derived-JSON build boundary rejects the tree.

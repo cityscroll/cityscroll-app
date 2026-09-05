@@ -1,13 +1,13 @@
 {
   "schema": "cityscroll.keyword_search_index.v1",
   "version": 1,
-  "generated_at": "2026-09-05",
+  "generated_at": "2026-09-05T13:44:00.909Z",
   "match_mode": "keyword",
   "representation": "family-sharded-compressed",
   "shard_schema": "cityscroll.keyword_search_index_shard.v1",
   "logical_index": {
-    "sha256": "fbdb5cce4f7f27fdcfd67be76df3d4b5a9e332906736a1d880042dd39828bb6d",
-    "bytes": 55791530,
+    "sha256": "806f992a60f63e022b304c9b1227208aab845d853f81a14e07a080feecfded2e",
+    "bytes": 55999240,
     "family_count": 11,
     "document_count": 15777
   },
@@ -40,11 +40,11 @@
   },
   "coherence_receipt": {
     "schema": "cityscroll.procurement_index_coherence.v1",
-    "source_model_fingerprint": "93f36f3eba28ac26f802b0f2eec1d988b8e68abc084f249991932598e1edc405",
+    "source_model_fingerprint": "2cf20d591d478d13512a99f537389baff5255a10412a96a08b78fbdf03fb87bd",
     "generated_at": "2026-08-18T04:05:51.552Z",
-    "selected_row_count": 27475,
+    "selected_row_count": 27670,
     "artifact_hashes": {
-      "shared_procurement_read_model": "0f412e235e45b9e32fe6fc5aa3f54fad73e7f53286b783e8ab886f456ae8d370",
+      "shared_procurement_read_model": "02e312e52f7273551ec7e36a2bf8326274897f824634ff05ec738d1c850ee90a",
       "keyword_search_procurements": "cb6e46166ff4a2e937ed5663732fc57b152387626a719cdc8b6a1db1e13f7445"
     }
   },
@@ -68,12 +68,12 @@
       "gzip_path": "agencies.json.gz",
       "document_count": 86,
       "uncompressed_bytes": 200725,
-      "gzip_bytes": 8414,
-      "brotli_bytes": 6950,
-      "sha256": "99c74ede88c1197096bd06a3b20ef7e68f6efe33b743d72624ca88209f9a48d6",
-      "gzip_sha256": "ac3737a8741d0110b982ef0d62159d3db17faeb48625a19c7fbf320c0c66cd76",
-      "brotli_sha256": "cc3ce7b22560607a90ae94e9ca9435be9fc724aeb51a738db38bdaa717c9a209",
-      "receipt_sha256": "a336d768cef8ef4514b2f5f299ec4c6c0321ee22017365da3c8c918781d01efb"
+      "gzip_bytes": 8413,
+      "brotli_bytes": 6949,
+      "sha256": "acf6fe4a9010d28832892e01a2144a73c47261d8380a8544d2a2abb20f2de594",
+      "gzip_sha256": "96871b736a0943e9fa527898cbe6a0368d4d804344a428060d986bd027739bd1",
+      "brotli_sha256": "61879a6480e16d7db37e0c04e5792e00e1dd25464692b9aca3d544b5aa1efbe2",
+      "receipt_sha256": "3d4978823f2e1cb7bc0a8d395d4a099dafb961b8a8a94d57044f10b98c7a45a3"
     },
     {
       "family": "people-organizations",
@@ -81,12 +81,12 @@
       "gzip_path": "people-organizations.json.gz",
       "document_count": 86,
       "uncompressed_bytes": 200749,
-      "gzip_bytes": 8435,
-      "brotli_bytes": 6960,
-      "sha256": "e649525ff907610e6b2969fb133a6cb751c2277f0862f8eba67fbeeaf244214c",
-      "gzip_sha256": "10d4b7037466b5e7e5a12c928cb4fbf6ceb8d3082e950dc06e007928fd646b0e",
-      "brotli_sha256": "a86bd8663f5898a970b075429ce8dd717d892f0296ef8ae74e24fd706510ac92",
-      "receipt_sha256": "c5df123dcf88627ccbdc1e556f984cb91e8b6bb794eaa1198eb7bd37623ddbdb"
+      "gzip_bytes": 8433,
+      "brotli_bytes": 6957,
+      "sha256": "803039570e6487011c30ac403c4f4816bb3080f25d8beabf0a344283ce99c33a",
+      "gzip_sha256": "77a3ef09a75fdb7f1d118bbc7a1aca0ce76bfc0327c8fe89fd463d1e195e06a3",
+      "brotli_sha256": "c358bcaa5dbf35951f1561eea167d2faf36fd4a5a26c48a94674dcf58010d7f2",
+      "receipt_sha256": "57e2fbb56a01564465272e2cdbbe84a92dd8df9c6175e3bdf10c3a0094792029"
     },
     {
       "family": "vendors",
@@ -184,13 +184,13 @@
       "path": "procurements.json.br",
       "gzip_path": "procurements.json.gz",
       "document_count": 13791,
-      "uncompressed_bytes": 47528582,
-      "gzip_bytes": 2723914,
-      "brotli_bytes": 2014558,
-      "sha256": "f910d38d8af8fe015862819928fc6786ce5f73a61f08c762975741edcde6f262",
-      "gzip_sha256": "08210803669e244afb5d6ab6820ce80d7fbc1958e28f7d711a6649b70991208e",
-      "brotli_sha256": "b6770391d5388d014c4d9c65756b16813d053feec36a17c80c6899f1d5b5f960",
-      "receipt_sha256": "71b0d682fa6192e0b5f7509b86e65dc8b6ec0712353a24cda7dcd79d6b1a57a8"
+      "uncompressed_bytes": 47716082,
+      "gzip_bytes": 2738994,
+      "brotli_bytes": 2026319,
+      "sha256": "ad55db1bfad8dc93f8bb4659d0d8a6f93cde1af4c1397edbcb6eb82f7a7c55ea",
+      "gzip_sha256": "cb1a3c159c309dd691c0d700d212496f4ece96b9a4c47fa6b67b640bf22e64fa",
+      "brotli_sha256": "57489cd88d700cda67128dfa41578b995d1293296832643ed13d9f5330ea43e7",
+      "receipt_sha256": "f39ed8b7c92cecbe53da763edc04d3ecdd60063f7114e13972ae660dc5865008"
     }
   ]
 }

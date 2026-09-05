@@ -1,12 +1,12 @@
 {
   "schema": "cityscroll.story_signal_read_model.v1",
   "method": "published_comparative_story_signals_v1",
-  "generated_at": "2026-08-29T11:43:49.474Z",
+  "generated_at": "2026-09-05T13:44:00.909Z",
   "signals": [
     {
       "schema": "cityscroll.story_signal.v1",
-      "signal_id": "story_signal:comparative_fact:award_amount_rank:ocp_award:20240119104:2024-01-01:2026-08-29",
-      "fact_id": "comparative_fact:award_amount_rank:ocp_award:20240119104:2024-01-01:2026-08-29",
+      "signal_id": "story_signal:comparative_fact:award_amount_rank:ocp_award:20240119104:2024-01-01:2026-09-05",
+      "fact_id": "comparative_fact:award_amount_rank:ocp_award:20240119104:2024-01-01:2026-09-05",
       "subject": {
         "type": "ocp_award",
         "id": "20240119104",
@@ -19,7 +19,7 @@
         "unit": "USD"
       },
       "value": 53000000,
-      "basis_sentence": "This $53.0M award is 4th-largest among 264 Housing Preservation and Development award rows observed in the OCP snapshot from Jan. 1, 2024 through Aug. 29, 2026.",
+      "basis_sentence": "This $53.0M award is 4th-largest among 272 Housing Preservation and Development award rows observed in the OCP snapshot from Jan. 1, 2024 through Sept. 5, 2026.",
       "comparison": {
         "population": {
           "object_type": "award",
@@ -27,11 +27,11 @@
           "agency_id": "housing-preservation-and-development",
           "agency_name": "Housing Preservation and Development"
         },
-        "eligible_count": 264,
-        "observed_count": 264,
+        "eligible_count": 272,
+        "observed_count": 272,
         "window": {
           "start": "2024-01-01",
-          "end": "2026-08-29",
+          "end": "2026-09-05",
           "end_inclusive": true
         },
         "rank": 4
@@ -39,10 +39,10 @@
       "comparison_receipt": {
         "schema": "cityscroll.comparative_fact_reference.v1",
         "receipt_schema": "cityscroll.comparative_fact.v1",
-        "receipt_id": "comparative_fact:award_amount_rank:ocp_award:20240119104:2024-01-01:2026-08-29",
+        "receipt_id": "comparative_fact:award_amount_rank:ocp_award:20240119104:2024-01-01:2026-09-05",
         "metric_method": "source_bounded_award_amount_rank_v1",
         "peer_basis": {
-          "class_id": "award_amount_rank:ocp-recent-contract-awards:housing-preservation-and-development:2024-01-01:2026-08-29",
+          "class_id": "award_amount_rank:ocp-recent-contract-awards:housing-preservation-and-development:2024-01-01:2026-09-05",
           "observability_basis": "bounded_complete",
           "source_contract_versions": [
             "source_contracts.v1:ocp-recent-contract-awards"
@@ -52,8 +52,8 @@
               "source_contract_id": "ocp-recent-contract-awards",
               "source_contract_schema_version": 1,
               "dataset_id": "qyyg-4tf5",
-              "materialized_at": "2026-08-29T11:43:49.474Z",
-              "row_count": 53245
+              "materialized_at": "2026-09-05T13:44:00.909Z",
+              "row_count": 53600
             }
           ],
           "inclusion_rule": "award row in the explicit window with unique request_id, canonical agency, and positive amount below the money-honesty cap",
@@ -63,7 +63,7 @@
           "selected_level": "source_agency_window",
           "small_n_policy_id": "award_amount_rank_small_n_v1"
         },
-        "generated_at": "2026-08-29T11:43:49.474Z"
+        "generated_at": "2026-09-05T13:44:00.909Z"
       },
       "evidence": [
         {
@@ -73,7 +73,7 @@
           "href": "https://data.cityofnewyork.us/d/qyyg-4tf5"
         }
       ],
-      "generated_at": "2026-08-29T11:43:49.474Z"
+      "generated_at": "2026-09-05T13:44:00.909Z"
     }
   ]
 }

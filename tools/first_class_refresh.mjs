@@ -13,6 +13,7 @@ import { PERFORMANCE_EVIDENCE_ANALYTICAL_PROJECTION_URL } from "../site/analytic
 
 export const FIRST_CLASS_REPORT_SCHEMA = "cityscroll.first_class_freshness_report.v1";
 export const FIRST_CLASS_REFRESH_RECEIPT_SCHEMA = "cityscroll.first_class_refresh_receipt.v1";
+export const FIRST_CLASS_DUE_LIST_SCHEMA = "cityscroll.first_class_due_list.v1";
 export const FIRST_CLASS_STATES = Object.freeze([
   "fresh",
   "fresh_empty",
@@ -405,6 +406,27 @@ function main(argv = process.argv.slice(2)) {
     const output = resolve(root, option(argv, "--plan-out", relative(root, PLAN_PATH)));
     writeJson(output, buildScheduledRefreshPlan(registry));
     console.log(`wrote ${relative(root, output)}`);
+  }
+  if (argv.includes("--list-due")) {
+    // Read-only rehearsal: report what a refresh run would select, run nothing.
+    // determinism-lint: allow clock the due list is evaluated against the caller's production instant
+    const now = validInstant(option(argv, "--now", new Date().toISOString()));
+    const due = selectedArtifactsForRun(registry, root, now, argv.includes("--run-all"));
+    console.log(JSON.stringify({
+      schema: FIRST_CLASS_DUE_LIST_SCHEMA,
+      generated_at: now,
+      registry: "site/data/source_contracts.json#first_class_artifacts",
+      due_count: due.length,
+      due: due.map((artifact) => ({
+        id: artifact.id,
+        public_artifact_path: artifact.public_artifact_path,
+        source_contract_id: artifact.source_contract_id,
+        source_vintage: artifactSource(root, artifact).vintage,
+        normal_refresh_cadence_hours: Number(artifact.normal_refresh_cadence_hours),
+        acquisition_command: artifact.acquisition_command,
+        builder_command: artifact.builder_command,
+      })),
+    }, null, 2));
   }
   let refreshReceipt = null;
   if (argv.includes("--run-due") || argv.includes("--run-all")) {

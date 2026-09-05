@@ -20,20 +20,27 @@ if [ ! -f "$CITYSCROLL_WAREHOUSE_ROOT/duckdb/cityscroll.duckdb" ]; then
   exit 1
 fi
 
+# A rehearsal reports what a run would select and changes nothing: no branch is
+# created, no acquisition contacts a publisher, and no artifact is rewritten.
+if [ "$DRY_RUN" = "1" ]; then
+  echo "Dry run; datasets a refresh would consider due:"
+  node tools/first_class_refresh.mjs --list-due
+  exit 0
+fi
+
 git fetch --quiet origin main
 git checkout --quiet -B "data/warehouse-refresh-$(date -u +%Y%m%d)" origin/main
 
 node tools/first_class_refresh.mjs --run-due
+# --run-due stops after each owning builder. The derived-JSON boundary is the
+# repository's ordered rebuild of every dependent artifact, so run it before
+# committing; otherwise the pull request carries a read model whose coherence
+# receipt no longer matches the served keyword index.
+node tools/derived_json_build_boundary.mjs
 node tools/first_class_refresh.mjs --write-report
 
 if [ -z "$(git status --porcelain -- site worker)" ]; then
   echo "No warehouse-backed dataset changes."
-  exit 0
-fi
-
-if [ "$DRY_RUN" = "1" ]; then
-  echo "Dry run; leaving the following changes uncommitted:"
-  git status --short -- site worker
   exit 0
 fi
 

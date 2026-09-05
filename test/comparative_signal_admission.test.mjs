@@ -38,9 +38,16 @@ test("the complete positive award-rank receipt publishes one deterministic basis
   assert.equal(first.state, "published");
   assert.equal(JSON.stringify(first), JSON.stringify(second));
   assert.deepEqual(projectPublishedStorySignal(first), first.public_signal);
-  assert.equal(
+  // The closed template and every measured term are fixed; only the peer count
+  // and the observed window's end move with the award snapshot behind them.
+  const { observed_count: observedCount } = positiveFact().comparison;
+  assert.match(
     first.public_signal.basis_sentence,
-    "This $53.0M award is 4th-largest among 264 Housing Preservation and Development award rows observed in the OCP snapshot from Jan. 1, 2024 through Aug. 29, 2026.",
+    new RegExp(
+      `^This \\$53\\.0M award is 4th-largest among ${observedCount} `
+      + "Housing Preservation and Development award rows observed in the OCP snapshot "
+      + "from Jan\\. 1, 2024 through [A-Z][a-z]+\\.? \\d{1,2}, 2026\\.$",
+    ),
   );
   assert.equal(first.public_signal.schema, "cityscroll.story_signal.v1");
   assert.equal(Object.isFrozen(first), true);

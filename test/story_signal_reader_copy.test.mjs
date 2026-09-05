@@ -22,7 +22,14 @@ test("cards use the required story anatomy and put the comparison basis in the h
 
   assert.equal(projection.cards.length, 1);
   assert.match(html, /What stands out/);
-  assert.match(html, /This \$53\.0M award is 4th-largest among 264 Housing Preservation and Development award rows observed in the OCP snapshot from Jan\. 1, 2024 through Aug\. 29, 2026\./);
+  // Peer count and window end follow the award snapshot; the closed template
+  // and every measured term in it are what this test pins.
+  const { observed_count: observedCount } = admitted.signals[0].comparison;
+  assert.match(html, new RegExp(
+    `This \\$53\\.0M award is 4th-largest among ${observedCount} `
+    + "Housing Preservation and Development award rows observed in the OCP snapshot "
+    + "from Jan\\. 1, 2024 through [A-Z][a-z]+\\.? \\d{1,2}, 2026\\.",
+  ));
   assert.match(html, /What happened/);
   assert.match(html, /Context/);
   assert.match(html, /Next/);

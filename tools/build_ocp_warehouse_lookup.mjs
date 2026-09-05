@@ -70,6 +70,42 @@ const BENCH_RECEIPT = path.join(
   "proof",
   "wh03_ocp_lookup_speed.json"
 );
+const SOURCE_CONTRACTS = path.join(ROOT, "site", "data", "source_contracts.json");
+const SNAPSHOT_RECEIPT_PATTERN = new RegExp(
+  '("warehouse_snapshot": \\{\\s*\n'
+  + '\\s*"status": "materialized",\\s*\n'
+  + '\\s*"artifact": "site/data/ocp_awards_warehouse_lookup\\.json",\\s*\n'
+  + '\\s*"materialized_at": ")[^"]*("[,\\s]*\n\\s*"row_count": )\\d+',
+);
+
+/**
+ * The registry carries a warehouse_snapshot receipt for this artifact, and the
+ * comparative read models refuse to publish unless it matches the artifact's
+ * materialized_at and row_count exactly. Only this materializer knows those
+ * values, so it restamps the receipt whenever it writes a new artifact.
+ */
+function stampSourceContractSnapshot(doc) {
+  const text = readFileSync(SOURCE_CONTRACTS, "utf8");
+  const matches = text.match(new RegExp(SNAPSHOT_RECEIPT_PATTERN, "g")) || [];
+  assert.equal(
+    matches.length,
+    1,
+    "expected exactly one OCP warehouse_snapshot receipt in site/data/source_contracts.json",
+  );
+  const updated = text.replace(
+    SNAPSHOT_RECEIPT_PATTERN,
+    (_match, head, middle) => `${head}${doc.materialized_at}${middle}${doc.row_count}`,
+  );
+  if (updated === text) return { status: "current" };
+  // determinism-lint: allow write non-check materialization output
+  writeFileSync(SOURCE_CONTRACTS, updated);
+  return {
+    status: "stamped",
+    materialized_at: doc.materialized_at,
+    row_count: doc.row_count,
+  };
+}
+
 const SAMPLE_CSV = path.join(
   WAREHOUSE_DIR,
   "fixtures",
@@ -151,19 +187,31 @@ function loadWarehouseSnapshot() {
   const names = readdirSync(receiptsDir)
     .filter((name) => name.startsWith("ocp-recent-contract-awards_") && name.endsWith(".json"))
     .sort();
-  if (!names.length) {
+  // A fixture proof leaves ..._fixture.json beside the dated bulk receipts, and
+  // "fixture" sorts after every date. Selecting by name alone would stamp the
+  // five-row fixture's snapshot onto a full export, so read the candidates and
+  // keep only genuine bulk runs.
+  const candidates = [];
+  for (const name of names) {
+    let parsed;
+    try {
+      parsed = JSON.parse(readFileSync(path.join(receiptsDir, name), "utf8"));
+    } catch (error) {
+      throw new Error(`cannot read WH-02 OCP receipt: ${error.message || error}`);
+    }
+    if (parsed?.bulk !== true && parsed?.raw?.mode !== "soda_bulk") continue;
+    candidates.push({ name, receipt: parsed });
+  }
+  if (!candidates.length) {
     throw new Error(
       "WH-02 OCP receipt missing; the default WH-03 build refuses to use fixture or seed rows",
     );
   }
-  const receiptName = names.at(-1);
-  const receiptPath = path.join(receiptsDir, receiptName);
-  let receipt;
-  try {
-    receipt = JSON.parse(readFileSync(receiptPath, "utf8"));
-  } catch (error) {
-    throw new Error(`cannot read WH-02 OCP receipt: ${error.message || error}`);
-  }
+  candidates.sort((left, right) => (
+    String(left.receipt.observed_at || "").localeCompare(String(right.receipt.observed_at || ""))
+    || left.name.localeCompare(right.name)
+  ));
+  const { name: receiptName, receipt } = candidates.at(-1);
   const raw = receipt?.raw || {};
   const parquet = receipt?.parquet || {};
   const sourceHash = String(raw.sha256 || "").trim();
@@ -513,6 +561,9 @@ async function main() {
 
   const result = writeOutputs(doc, args.check);
   console.log(JSON.stringify(result, null, 2));
+  if (!args.check) {
+    console.log("source_contract_snapshot:", JSON.stringify(stampSourceContractSnapshot(doc)));
+  }
 
   if (args.bench || !args.check) {
     const receipt = await bench(doc.rows, sourceSnapshot);

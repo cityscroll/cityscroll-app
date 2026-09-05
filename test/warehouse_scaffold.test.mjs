@@ -31,6 +31,7 @@ import {
   queryWarehouse,
   exampleOcpAwardCount,
 } from "../warehouse/lib/query.mjs";
+import { withScratchWarehouseRoot } from "./helpers/scratch_warehouse_root.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const GITIGNORE = readFileSync(join(ROOT, ".gitignore"), "utf8");
@@ -130,32 +131,34 @@ describe("WH-01 proof ingest + query seam", () => {
       // CI without venv: structural tests above still run.
       return;
     }
-    // Retry when WH-04 ER tests hold the shared single-job lock.
-    const ingest = spawnWithLockRetry(
-      py,
-      [
-        join(WAREHOUSE_DIR, "scripts", "ingest.py"),
-        "--dataset",
-        "ocp-recent-contract-awards",
-        "--from-fixture",
-        "--limit",
-        "5",
-        "--force-headroom",
-      ],
-      { cwd: ROOT, encoding: "utf8" }
-    );
-    assert.equal(ingest.status, 0, ingest.stderr || ingest.stdout);
-    assert.match(ingest.stdout, /OK/);
-    assert.ok(catalogExists(), `expected catalog at ${duckdbPath()}`);
+    withScratchWarehouseRoot(() => {
+      // Retry when WH-04 ER tests hold the shared single-job lock.
+      const ingest = spawnWithLockRetry(
+        py,
+        [
+          join(WAREHOUSE_DIR, "scripts", "ingest.py"),
+          "--dataset",
+          "ocp-recent-contract-awards",
+          "--from-fixture",
+          "--limit",
+          "5",
+          "--force-headroom",
+        ],
+        { cwd: ROOT, encoding: "utf8", env: { ...process.env } }
+      );
+      assert.equal(ingest.status, 0, ingest.stderr || ingest.stdout);
+      assert.match(ingest.stdout, /OK/);
+      assert.ok(catalogExists(), `expected catalog at ${duckdbPath()}`);
 
-    const n = exampleOcpAwardCount();
-    assert.equal(n, 5);
+      const n = exampleOcpAwardCount();
+      assert.equal(n, 5);
 
-    const byAgency = queryWarehouse(
-      "SELECT agency_name, COUNT(*) AS n FROM ocp_recent_contract_awards GROUP BY 1 ORDER BY agency_name"
-    );
-    assert.ok(byAgency.length >= 1);
-    assert.ok(byAgency.every((r) => r.agency_name && Number(r.n) >= 1));
+      const byAgency = queryWarehouse(
+        "SELECT agency_name, COUNT(*) AS n FROM ocp_recent_contract_awards GROUP BY 1 ORDER BY agency_name"
+      );
+      assert.ok(byAgency.length >= 1);
+      assert.ok(byAgency.every((r) => r.agency_name && Number(r.n) >= 1));
+    });
 
     const proof = join(
       WAREHOUSE_DIR,
