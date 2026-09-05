@@ -21,6 +21,7 @@ import {
 
 import { buildUlurpStatutoryClockView } from "../site/ulurp_statutory_clock.mjs";
 import { resolveLandProcedureVariant } from "../site/land_procedure_profiles.mjs";
+import { buildLandPhaseRoleStrip, landPhaseRoleStripHTML } from "../site/land_role_strip.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const fixture2019 = JSON.parse(
@@ -371,4 +372,186 @@ test("A9 ordinary ULURP control retains the full fixed rail (CB -> BP -> CPC -> 
     view.phases.map((p) => p.id),
     ["pre_application", "certification", "community_board", "borough_president", "cpc", "city_council", "mayoral_appeals"],
   );
+});
+
+/**
+ * LDP-21: profile-backed normative role strips absorbed from the retired
+ * ldp-09-timeline-role-strips card (data/decisions/ldp09-absorb-retire.md).
+ * Historical: unlike LDP-08's current-stage-only "Where this stands" panel,
+ * a role strip is built for every profile-backed stage — passed, current,
+ * and future — never only the current one.
+ */
+const TEST_COPY = {
+  land_authority_unknown: "Unknown",
+  land_authority_provenance_profile: "Profile",
+  land_authority_role_here_advisory_reviewer: "advisory review",
+  land_authority_role_here_decision_maker: "decision role",
+  land_role_strip_kicker: "Normative role — not an observed event",
+  land_role_strip_role: "{actor}’s role here: {role}.",
+  land_role_strip_window_days_html: "<b>Calculated window:</b> up to {days} calendar days — not an observed date.",
+  land_role_strip_window_days_alt_eis_html: "<b>Calculated window:</b> up to {days} calendar days ({alt} days if an environmental impact statement is required) — not an observed date.",
+  land_role_strip_window_rules_defined: "Timing follows adopted procedural rules, not a fixed statutory count.",
+};
+function testTranslate(key, vars) {
+  let text = Object.hasOwn(TEST_COPY, key) ? TEST_COPY[key] : key;
+  if (vars) {
+    text = text.replace(/\{(\w+)\}/g, (match, name) => (Object.hasOwn(vars, name) ? String(vars[name] ?? "") : match));
+  }
+  return text;
+}
+function testEscape(value) {
+  return String(value ?? "").replace(/[&<>"]/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[ch]));
+}
+
+test("A1 ulurp_197c community_board role strip: advisory role, calculated 60-day window, profile citation", () => {
+  const view = viewFromLdp31Fixture(fixtureUlurpControl);
+  const strip = buildLandPhaseRoleStrip(view, "community_board");
+  assert.equal(strip.stage_id, "ulurp_197c.community_board_review");
+  assert.equal(strip.profile_id, "ulurp_197c");
+  assert.equal(strip.role, "advisory_reviewer");
+  assert.equal(strip.time_window.calculated, true);
+  assert.equal(strip.time_window.days, 60);
+  assert.match(strip.legal_basis.citation, /NYC Charter § 197-c\(c\)/);
+
+  const html = landPhaseRoleStripHTML(strip, { t: testTranslate, escape: testEscape });
+  assert.match(html, /data-land-authority-kind="role_definition"/);
+  assert.match(html, /data-land-role-strip-window="calculated"/);
+  assert.match(html, /<b>Calculated window:<\/b> up to 60 calendar days — not an observed date\./);
+  assert.match(html, /advisory review/);
+  assert.match(html, new RegExp(strip.legal_basis.citation.replace(/[()]/g, "\\$&")));
+});
+
+test("A1 the borough_president phase resolves the borough-board stage only when the affected fact is true", () => {
+  const view = viewFromLdp31Fixture(fixtureUlurpControl);
+  const withoutBoard = buildLandPhaseRoleStrip(view, "borough_president");
+  assert.equal(withoutBoard.stage_id, "ulurp_197c.borough_president_review");
+  assert.equal(withoutBoard.time_window.days, 30);
+
+  const withBoard = buildLandPhaseRoleStrip(
+    { ...view, affected_review_bodies: { ...(view.affected_review_bodies || {}), borough_board: true } },
+    "borough_president",
+  );
+  assert.equal(withBoard.stage_id, "ulurp_197c.borough_board_review");
+});
+
+test("A1 a rules_defined window is labelled without a fabricated day count", () => {
+  const strip = buildLandPhaseRoleStrip(
+    {
+      procedure_profile: {
+        status: "resolved",
+        profile_id: "plan_197a",
+        registry_version: "2026-08-27.v1",
+        stages: [{
+          stage_id: "plan_197a.affected_body_review",
+          spine_phase_id: "community_board",
+          role: "advisory_reviewer",
+          effect: "Reviews under adopted rules.",
+          actor_selector: { kind: "affected_community_board" },
+          time_window: { kind: "rules_defined", basis: "NYC Charter § 197-a(c)" },
+          legal_basis: [{ citation: "NYC Charter § 197-a(c)", source_url: "https://example.invalid/197a" }],
+        }],
+      },
+      affected_review_bodies: {},
+    },
+    "community_board",
+  );
+  assert.equal(strip.time_window.calculated, false);
+  const html = landPhaseRoleStripHTML(strip, { t: testTranslate, escape: testEscape });
+  assert.match(html, /data-land-role-strip-window="rules_defined"/);
+  assert.match(html, /Timing follows adopted procedural rules/);
+  assert.doesNotMatch(html, /Calculated window/);
+});
+
+test("negative rule: a phase the resolved profile does not model returns null, never inventing a stage", () => {
+  const view = viewFromLdp31Fixture(fixtureE1);
+  assert.equal(view.procedure_profile.status, "resolved");
+  assert.equal(view.procedure_profile.profile_id, "elurp_197e");
+  // elurp_197e models only pre_application/community_board/borough_president/cpc —
+  // environmental, pre_certification, certification, and city_council are all
+  // observed-only phases here; a role strip must never be invented for them.
+  for (const phaseId of ["environmental", "pre_certification", "certification", "city_council", "mayoral_appeals"]) {
+    assert.equal(buildLandPhaseRoleStrip(view, phaseId), null, phaseId);
+  }
+  assert.notEqual(buildLandPhaseRoleStrip(view, "community_board"), null);
+});
+
+test("an unresolved procedure never produces a role strip for any phase", () => {
+  const view = viewFromLdp31Fixture(fixtureUlurpControl);
+  const unresolvedView = { ...view, procedure_profile: { status: "unresolved", profile_id: null, stages: null } };
+  for (const phaseId of LAND_ULURP_PHASES) {
+    assert.equal(buildLandPhaseRoleStrip(unresolvedView, phaseId), null, phaseId);
+  }
+});
+
+test("A3 buildLandPhaseRoleStrip never mutates the observed event ledger", () => {
+  const view = viewFromLdp31Fixture(fixtureE1);
+  const before = JSON.stringify({
+    event_count: view.event_count,
+    chronological: view.chronological,
+    phases: view.phases.map((p) => ({
+      id: p.id,
+      state: p.state,
+      event_count: p.event_count,
+      total_count: p.total_count,
+      first: p.first,
+      last: p.last,
+      aggregates: p.aggregates,
+      events: p.events,
+      all_events: p.all_events,
+    })),
+  });
+  for (const phaseId of LAND_ULURP_PHASES) buildLandPhaseRoleStrip(view, phaseId);
+  const after = JSON.stringify({
+    event_count: view.event_count,
+    chronological: view.chronological,
+    phases: view.phases.map((p) => ({
+      id: p.id,
+      state: p.state,
+      event_count: p.event_count,
+      total_count: p.total_count,
+      first: p.first,
+      last: p.last,
+      aggregates: p.aggregates,
+      events: p.events,
+      all_events: p.all_events,
+    })),
+  });
+  assert.equal(after, before, "the observed ledger changed after building role strips — a role strip must never mutate it");
+});
+
+test("A3 the rendered role strip never emits a recommendation, vote, hearing, or decision row", () => {
+  const view = viewFromLdp31Fixture(fixtureUlurpControl);
+  const strip = buildLandPhaseRoleStrip(view, "community_board");
+  const html = landPhaseRoleStripHTML(strip, { t: testTranslate, escape: testEscape });
+  // Structural markers of an OBSERVED row (class/data-attribute, not prose) —
+  // the effect text is normative profile prose and may legitimately describe
+  // what a body is empowered to recommend, so only DOM markers are checked.
+  for (const marker of ["land-phase-row", "land-phase-agg", "land-spine-event", "data-land-authority-observed", "votes_for"]) {
+    assert.doesNotMatch(html, new RegExp(marker), marker);
+  }
+});
+
+test("public Land detail phase panel wires the role strip above the observed rows, never inside the aggregate/event renderers", () => {
+  const landSrc = readFileSync(new URL("../site/app/land.mjs", import.meta.url), "utf8");
+  const spineSrc = readFileSync(new URL("../site/land_phase_spine.mjs", import.meta.url), "utf8");
+  // The role-strip renderer rides the phase-spine's own lazy bundle (a barrel
+  // re-export — land_phase_spine.mjs gains no ledger logic) so land.mjs's own
+  // wiring stays a single optional-chained call.
+  assert.match(spineSrc, /export \{ landRoleStrip \} from "\.\/land_role_strip\.mjs";/);
+  assert.match(landSrc, /tools\?\.landRoleStrip\?\.\(view,p\.id,\{t,escape:escUiHtml\}\)/);
+  assert.match(landSrc, /\$\{tools\?\.landRoleStrip\?\.\(view,p\.id,\{t,escape:escUiHtml\}\)\|\|""\}\$\{statutory\}\$\{body\}/);
+
+  const aggregateFn = landSrc.slice(
+    landSrc.indexOf("function landPhaseAggregateHTML"),
+    landSrc.indexOf("function landStatutoryDeadlineHTML"),
+  );
+  const eventRowFn = landSrc.slice(
+    landSrc.indexOf("function landSpineEventRowHTML"),
+    landSrc.indexOf("function landPhaseAggregateHTML"),
+  );
+  assert.ok(aggregateFn.length > 0 && eventRowFn.length > 0);
+  for (const marker of ["roleStrip", "role_definition", "land-role-strip", "landRoleStrip"]) {
+    assert.doesNotMatch(aggregateFn, new RegExp(marker), `landPhaseAggregateHTML references ${marker}`);
+    assert.doesNotMatch(eventRowFn, new RegExp(marker), `landSpineEventRowHTML references ${marker}`);
+  }
 });

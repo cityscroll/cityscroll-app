@@ -18,6 +18,9 @@ import {
   buildLandProcedureProfileView,
 } from "./land_procedure_profiles.mjs";
 import { buildActorObservedOutcomes, spinePhaseIdForActorKind } from "./land_actor_outcome.mjs";
+// Re-exported so the lazy phase-spine bundle also carries the LDP-21 role-strip
+// renderer — a barrel re-export only, no ledger logic added to this module.
+export { landRoleStrip } from "./land_role_strip.mjs";
 
 export const LAND_PHASE_SPINE_SCHEMA_VERSION = 1;
 

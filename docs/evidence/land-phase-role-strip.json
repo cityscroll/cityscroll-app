@@ -1,0 +1,152 @@
+{
+  "schema": "cityscroll.land-phase-role-strip-receipt.v1",
+  "card": "cityscroll-land-decision-path/ldp-21-authority-panel-historical-semantics",
+  "browser_mode": "headless chromium (Playwright)",
+  "revision": "e19e6ac84058d3f2003f2af8757b0ede03df7fa5",
+  "specimens": [
+    {
+      "slug": "known",
+      "fixture": "2024Q0419",
+      "phase_id": "cpc",
+      "assertion": "current, resolved stage with a real institutional actor and an observed vote row underneath"
+    },
+    {
+      "slug": "incomplete",
+      "fixture": "2024Q0356",
+      "phase_id": "cpc",
+      "assertion": "resolved future stage renders its normative header with zero observed rows underneath \u2014 the expected CPC vote stays an expectation until a source observes it"
+    },
+    {
+      "slug": "calculated-window",
+      "fixture": "ulurp_control_2023X0100",
+      "phase_id": "community_board",
+      "assertion": "statutory_days window renders labelled as calculated, never as an observed date"
+    }
+  ],
+  "viewports": [
+    [
+      390,
+      844
+    ],
+    [
+      1440,
+      900
+    ]
+  ],
+  "files": [
+    {
+      "name": "known-390.png",
+      "bytes": 44957,
+      "sha256": "4fbb2f353392608295cb14ec1f9470951ee1b266237085806f3b517a680f91be",
+      "slug": "known",
+      "route": "/land/2024Q0419#land-phase-cpc",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "e19e6ac84058d3f2003f2af8757b0ede03df7fa5",
+      "source_vintage": "test/fixtures/land_phase_spine/2024Q0419.json",
+      "project_id": "2024Q0419",
+      "phase_id": "cpc",
+      "phase_state": "current",
+      "event_count": 1,
+      "assertion": "current, resolved stage with a real institutional actor and an observed vote row underneath",
+      "screenshot": "docs/screenshots/land-phase-role-strip/known-390.png"
+    },
+    {
+      "name": "known-1440.png",
+      "bytes": 44161,
+      "sha256": "010495c0dd990cfa8b6574e35349b6ac629d782edcc2473cff8a6d421d3c75a5",
+      "slug": "known",
+      "route": "/land/2024Q0419#land-phase-cpc",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "e19e6ac84058d3f2003f2af8757b0ede03df7fa5",
+      "source_vintage": "test/fixtures/land_phase_spine/2024Q0419.json",
+      "project_id": "2024Q0419",
+      "phase_id": "cpc",
+      "phase_state": "current",
+      "event_count": 1,
+      "assertion": "current, resolved stage with a real institutional actor and an observed vote row underneath",
+      "screenshot": "docs/screenshots/land-phase-role-strip/known-1440.png"
+    },
+    {
+      "name": "incomplete-390.png",
+      "bytes": 42410,
+      "sha256": "bb5b400b131499f1a54d299ce061822c915480a7a592732a5002b6c850ed3622",
+      "slug": "incomplete",
+      "route": "/land/2024Q0356#land-phase-cpc",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "e19e6ac84058d3f2003f2af8757b0ede03df7fa5",
+      "source_vintage": "test/fixtures/land_phase_spine/2024Q0356.json",
+      "project_id": "2024Q0356",
+      "phase_id": "cpc",
+      "phase_state": "future",
+      "event_count": 0,
+      "assertion": "resolved future stage renders its normative header with zero observed rows underneath \u2014 the expected CPC vote stays an expectation until a source observes it",
+      "screenshot": "docs/screenshots/land-phase-role-strip/incomplete-390.png"
+    },
+    {
+      "name": "incomplete-1440.png",
+      "bytes": 41399,
+      "sha256": "cac5b2bfe4418c697c35855d14d73daf4f87cf3263a7b7755cce5cae9e33d176",
+      "slug": "incomplete",
+      "route": "/land/2024Q0356#land-phase-cpc",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "e19e6ac84058d3f2003f2af8757b0ede03df7fa5",
+      "source_vintage": "test/fixtures/land_phase_spine/2024Q0356.json",
+      "project_id": "2024Q0356",
+      "phase_id": "cpc",
+      "phase_state": "future",
+      "event_count": 0,
+      "assertion": "resolved future stage renders its normative header with zero observed rows underneath \u2014 the expected CPC vote stays an expectation until a source observes it",
+      "screenshot": "docs/screenshots/land-phase-role-strip/incomplete-1440.png"
+    },
+    {
+      "name": "calculated-window-390.png",
+      "bytes": 40336,
+      "sha256": "eccf5a238a6a27e31e67bd58caf33dd993edcd0906945c353e1fc73ada17d3d8",
+      "slug": "calculated-window",
+      "route": "/land/2023X0100#land-phase-community_board",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "e19e6ac84058d3f2003f2af8757b0ede03df7fa5",
+      "source_vintage": "test/fixtures/land_phase_spine/ulurp_control_2023X0100.json",
+      "project_id": "2023X0100",
+      "phase_id": "community_board",
+      "phase_state": "current",
+      "event_count": 1,
+      "assertion": "statutory_days window renders labelled as calculated, never as an observed date",
+      "screenshot": "docs/screenshots/land-phase-role-strip/calculated-window-390.png"
+    },
+    {
+      "name": "calculated-window-1440.png",
+      "bytes": 41135,
+      "sha256": "6a594053558b509aefe53dcdf3522765aaca58df1a1b739f3d2ada5f83d5b8d4",
+      "slug": "calculated-window",
+      "route": "/land/2023X0100#land-phase-community_board",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "e19e6ac84058d3f2003f2af8757b0ede03df7fa5",
+      "source_vintage": "test/fixtures/land_phase_spine/ulurp_control_2023X0100.json",
+      "project_id": "2023X0100",
+      "phase_id": "community_board",
+      "phase_state": "current",
+      "event_count": 1,
+      "assertion": "statutory_days window renders labelled as calculated, never as an observed date",
+      "screenshot": "docs/screenshots/land-phase-role-strip/calculated-window-1440.png"
+    }
+  ]
+}
