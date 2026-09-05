@@ -237,7 +237,16 @@ export function buildDigestShadowSummary({
         "aggregate_count_collapse",
         "run",
         "Aggregate digest items collapsed against the trailing average.",
-        { current_item_count: totalItems, trailing_average: trailingAverage, ratio, history_days: historicalTotals.length },
+        // evaluated_count separates a corpus with nothing new for anyone from a
+        // run that selected nobody at all. Both land as zero items, and only
+        // one of them is a broken selection.
+        {
+          current_item_count: totalItems,
+          evaluated_count: results.length,
+          trailing_average: trailingAverage,
+          ratio,
+          history_days: historicalTotals.length,
+        },
       ));
     } else if (ratio > EXPLOSION_RATIO) {
       redlines.push(redline(
@@ -269,6 +278,10 @@ export function buildDigestShadowSummary({
     ok: redlines.length === 0,
     status,
     digest_count: previews.length,
+    // Every result that rendered nothing is dropped from previews, so the run
+    // count is recorded separately; without it a zero-item day cannot be told
+    // apart from a run that evaluated nothing.
+    evaluated_count: results.length,
     total_items: totalItems,
     per_watch_item_counts: watchCounts.map(({ historical_id: _historicalId, ...watch }) => watch),
     delta_vs_yesterday_send: {

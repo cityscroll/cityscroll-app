@@ -490,6 +490,45 @@ test("GET /admin/digest-shadow accepts the read-only SHADOW_STATUS_KEY; POST rej
   assert.equal(postWithAdmin.status, 400);
 });
 
+// The repair contract names POST /admin/digest-shadow as the rerun method for a
+// redlined run, but the rerun never wrote the receipt the dead-man switch reads.
+// A repaired run therefore stayed DEGRADED until the next scheduled rehearsal,
+// so the switch could not be cleared by the action it asked for.
+test("a shadow rerun writes the receipt the dead-man switch reads", async () => {
+  const receipts = new Map();
+  const ALERT_STATE = {
+    async get(key) { return receipts.get(key) || null; },
+    async put(key, value) { receipts.set(key, String(value)); },
+  };
+  const clean = summary([result()]);
+  const post = (runShadow) => handleAdminDigestShadow(
+    new Request("https://w/admin/digest-shadow", {
+      method: "POST",
+      headers: { authorization: "Bearer secret", "content-type": "application/json" },
+      body: JSON.stringify({ action: "rerun" }),
+    }),
+    { ADMIN_KEY: "secret", DB: readDb(clean), ALERT_STATE },
+    { now: NOW, runShadow },
+  );
+
+  const degraded = await post(async () => ({
+    ...summary([{ sub: "sub:er***", error: "boom" }]),
+    hold: null,
+  }));
+  assert.equal(degraded.status, 503);
+  const first = JSON.parse(receipts.get(`ops:digest:shadow:${NOW.toISOString().slice(0, 10)}`));
+  assert.equal(first.status, "DEGRADED");
+  assert.deepEqual(first.redline_codes, ["render_error"]);
+
+  // The repaired rerun clears the receipt on the same day rather than waiting
+  // for tomorrow's rehearsal.
+  const repaired = await post(async () => ({ ...clean, hold: null }));
+  assert.equal(repaired.status, 200);
+  const second = JSON.parse(receipts.get(`ops:digest:shadow:${NOW.toISOString().slice(0, 10)}`));
+  assert.equal(second.status, "READY");
+  assert.equal(second.redlines, 0);
+});
+
 test("SHADOW_STATUS_KEY cannot substitute for ADMIN_KEY when ADMIN_KEY is the configured secret", async () => {
   const clean = summary([result()]);
   const env = { ADMIN_KEY: "admin-key", DB: readDb(clean) };
