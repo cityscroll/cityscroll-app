@@ -10,6 +10,7 @@
  */
 
 import { communityBoardPageHref } from "./community_board_links.mjs";
+import { buildActorObservedOutcomes } from "./land_actor_outcome.mjs";
 
 export const LAND_OUTCOMES_MATRIX_SCHEMA = "cityscroll.land_outcomes_matrix.v1";
 
@@ -144,4 +145,16 @@ export function landOutcomesMatrixHTML(rows, { t, escape } = {}) {
     </tr></thead>
     <tbody>${body}</tbody>
   </table>`;
+}
+
+/** One-call glue for a ZAP outcome record + its list row (route callers only). */
+export default function matrixHTML(record, listRow, t, escape) {
+  const outcomes = buildActorObservedOutcomes(record?.dispositions, {
+    projectId: record?.project_id,
+    project: listRow || record,
+  });
+  const rows = buildLandOutcomesMatrixRows(outcomes, {
+    affectedEdges: listRow?.authority_summary?.affected_actor_refs || [],
+  });
+  return landOutcomesMatrixHTML(rows, { t, escape });
 }

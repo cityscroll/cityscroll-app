@@ -57,8 +57,7 @@ import {
 import { zoningHearingRowsForScope } from "../zoning_hearing_calendar.mjs";
 import { projectCalendarActionsHTML as projectCalendarActions } from "../project_calendar.mjs";
 import { attachAuth, authHTML, loadAuth } from "../land_authority_summary_view.mjs";
-import { buildActorObservedOutcomes } from "../land_actor_outcome.mjs";
-import { buildLandOutcomesMatrixRows, landOutcomesMatrixHTML } from "../land_outcomes_matrix.mjs";
+import matrixHTML from "../land_outcomes_matrix.mjs";
 import { attachLandLotSourceDigests, landLotSourceDigestsHTML, loadLandLotSourceDigests } from "../land_lot_source_digests.mjs";
 import {
   fetchBrowseScoped,
@@ -1298,8 +1297,7 @@ function landSpineHTML(spine, record, phaseTools, listRow){
       open_data: record?.open_data || null,
       portal_url: record?.portal_url || null,
       public_status: publicStatus,
-      project_id: record?.project_id || spine.project_id || null,
-      dispositions: Array.isArray(record?.dispositions) ? record.dispositions : null
+      project_id: record?.project_id || spine.project_id || null
     });
     return landPhaseSpineHTML(view, phaseTools, record);
   }
@@ -1344,17 +1342,6 @@ function landOutcomesHTML(record, phaseTools, listRow){
   const actions = Array.isArray(record.approved_actions) ? record.approved_actions : [];
   const dispositions = Array.isArray(record.dispositions) ? record.dispositions : [];
   const documents = Array.isArray(record.documents) ? record.documents : [];
-  // LDP-10: one normalized observed_outcomes[] object per accepted
-  // disposition row powers this matrix — it never re-paraphrases raw
-  // dispositions independently of the timeline evidence above.
-  const observedOutcomes = buildActorObservedOutcomes(dispositions, {
-    projectId: record.project_id,
-    project: listRow || record,
-  });
-  const matrixRows = buildLandOutcomesMatrixRows(observedOutcomes, {
-    affectedEdges: listRow?.authority_summary?.affected_actor_refs || [],
-  });
-  const matrixHTML = landOutcomesMatrixHTML(matrixRows, { t, escape: escUiHtml });
   let actionHTML = "";
   if(actions.length){
     actionHTML = actions.slice(0, 8).map(a =>
@@ -1425,7 +1412,7 @@ function landOutcomesHTML(record, phaseTools, listRow){
     })} ${portal}</div>
     ${spineHTML}
     <div class="chain">${actionHTML}${dispHTML}</div>
-    ${matrixHTML}
+    ${matrixHTML(record, listRow, t, escUiHtml)}
     ${docsHTML}
     ${dobHTML}
     <div class="note">${t("land_outcomes_provenance_html")}</div>`;
