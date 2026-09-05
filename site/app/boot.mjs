@@ -651,6 +651,7 @@ $("#meetingskw").addEventListener("keydown",e=>{ if(e.key==="Enter") loadSection
 $("#meetingswhen").addEventListener("change",()=>loadSection("meetings"));
 $("#meetingsagency").addEventListener("change",()=>loadSection("meetings"));
 $("#meetingsboro").addEventListener("change",()=>{ meetingsCommunityDistrict=""; meetingsCouncilDistrict=""; loadSection("meetings"); });
+$("#meetingsattendance").addEventListener("change",()=>loadSection("meetings"));
 $("#meetingsneighborhood").addEventListener("keydown",event=>{ if(event.key==="Enter") loadSection("meetings"); });
 $("#meetingsneighborhood").addEventListener("input",debounce(()=>{ meetingsCommunityDistrict=""; meetingsCouncilDistrict=""; loadSection("meetings"); },500));
 $("#propertyneighborhood").addEventListener("keydown",event=>{ if(event.key==="Enter"){ renderPropExplorer(); updateHash(); renderSearchComponents("property"); } });

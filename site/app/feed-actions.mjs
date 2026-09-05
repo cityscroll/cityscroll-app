@@ -39,6 +39,7 @@ import {
   renderReportIssueAffordance,
 } from "../report_issue.mjs";
 import { meetingScopedDisclosureHTML, meetingScopedKeywordState, refreshFeedScopedKeyword, startMeetingScopedKeyword } from "../feed_scoped_keyword.mjs";
+import { attendanceModeForRecord } from "../meetings_attendance.mjs";
 const SECTIONS={
   property:{section:"Property Disposition", showAddr:true},
   rules:{section:"Agency Rules"},
@@ -306,6 +307,7 @@ function hearingViewFilter(){
     communityDistrict:meetingsCommunityDistrict||null,
     councilDistrict:meetingsCouncilDistrict||null,
     contextSource:"route",
+    attendance:$("#meetingsattendance")?.value||"",
     ...hearingFilter(),
   };
 }
@@ -351,6 +353,7 @@ function hearingFilterKey(filter){
   return JSON.stringify([
     filter.when, filter.agency, filter.communityBoard, filter.keyword, filter.borough,
     filter.communityDistrict, filter.councilDistrict, filter.locationScope, filter.neighborhood,
+    filter.attendance,
   ]);
 }
 function hearingWidenedShown(scope){
@@ -1602,6 +1605,7 @@ function updateMeetingsMoreFiltersState(){
     +Number(!!meetingsCouncilDistrict)
     +Number(!!$("#meetingsneighborhood")?.value.trim())
     +Number(!!$("#meetingsagency")?.value)
+    +Number(!!$("#meetingsattendance")?.value)
     +Number(!!activeCommunityBoardRef())
     +Number(meetingsPlaceGroupSel==="place");
   badge.textContent=active?t("property_filters_active",{n:fmtNumber(active)}):"";
@@ -1650,7 +1654,13 @@ async function renderHearingExplorer(options){
     }catch(e){ /* the exact zero state remains actionable below */ }
   }
   if(seq!==hearingRenderSeq) return;
-  const rows=selection.rows;
+  // Attendance is an independent facet: it filters the resolved date/place/
+  // agency/keyword selection without perturbing the widening ladder above,
+  // and never narrows or replaces the affected-area result (PHC-01 A2/A3).
+  const attendanceSel=filter.attendance||"";
+  const matchesAttendance=row=>!attendanceSel||attendanceModeForRecord(row)===attendanceSel;
+  const rows=attendanceSel?selection.rows.filter(matchesAttendance):selection.rows;
+  const pastRowsFiltered=attendanceSel?(selection.pastRows||[]).filter(matchesAttendance):(selection.pastRows||[]);
   const terms=filter.keyword?[filter.keyword]:[];
   if(ambiguousBoardSearch && !communityBoardScopeTools){
     await communityBoardScopeToolsLoad();
@@ -1674,7 +1684,7 @@ async function renderHearingExplorer(options){
   if(tools && tools.buildMeetingsExplorerEntries){
     entries=tools.buildMeetingsExplorerEntries(rows,{ now });
     entries=tools.filterMeetingsExplorerEntries(entries,{ process:meetingsProcessSel, now });
-    pastEntries=tools.buildMeetingsExplorerEntries(selection.pastRows||[],{ now });
+    pastEntries=tools.buildMeetingsExplorerEntries(pastRowsFiltered,{ now });
     pastEntries=tools.filterMeetingsExplorerEntries(pastEntries,{ process:meetingsProcessSel, now });
     // Rail counts from the place/time-filtered set (before process chip).
     const base=tools.buildMeetingsExplorerEntries(rows,{ now });

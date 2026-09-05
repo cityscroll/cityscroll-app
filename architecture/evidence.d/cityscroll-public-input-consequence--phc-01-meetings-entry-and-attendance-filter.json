@@ -1,0 +1,17 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-public-input-consequence/phc-01-meetings-entry-and-attendance-filter",
+  "status": "implemented",
+  "fingerprint": "phc-01-meetings-entry-and-attendance-filter.v1",
+  "updated_at": "2026-09-05T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "meetings-attendance-mode-derivation",
+      "path": "site/meetings_attendance.mjs"
+    },
+    {
+      "id": "meetings-attendance-filter-gate",
+      "path": "test/meetings_attendance_filter.test.mjs"
+    }
+  ]
+}
