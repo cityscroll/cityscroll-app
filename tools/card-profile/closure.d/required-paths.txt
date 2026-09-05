@@ -105,6 +105,7 @@ capabilities/entity_relationships.mjs
 capabilities/federated_search.mjs
 capabilities/land_decision_path.mjs
 capabilities/land_projects.mjs
+capabilities/machine_client_profile.mjs
 capabilities/mcp_tool_declarations.mjs
 capabilities/meetings.mjs
 capabilities/notice_get.mjs
