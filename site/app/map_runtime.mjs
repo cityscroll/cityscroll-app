@@ -683,11 +683,36 @@ export function landMapSelectionHTML(model, {t: copy = mapCopy, escape = escapeM
     : authority.state === "partial"
       ? copy("land_map_authority_partial")
       : copy("land_map_authority_unavailable");
-  const authorityFields = authority.state === "unavailable" ? ""
+  // The procedure-state label is the typed read a resident actually needs: mixed, unknown, and
+  // stale each say a different thing about why "who has the ball" is not a clean answer, so
+  // none of them get flattened into the same "unavailable" wording the top-level state uses.
+  const procedureStateKey = {
+    known: "land_map_authority_procedure_known",
+    mixed: "land_map_authority_procedure_mixed",
+    unknown: "land_map_authority_procedure_unknown",
+    stale: "land_map_authority_procedure_stale",
+    missing: "land_map_authority_procedure_missing",
+  }[authority.procedure_state] || "land_map_authority_procedure_missing";
+  const showSupplied = authority.procedure_state !== "missing";
+  const roleLabel = authority.normative?.current_role
+    ? (() => {
+        const key = `land_authority_role_${authority.normative.current_role}`;
+        const label = copy(key);
+        return label === key ? authority.normative.current_role : label;
+      })()
+    : null;
+  const nextAction = authority.next_action || { status: "missing" };
+  const nextActionHTML = nextAction.status === "published"
+    ? escape(nextAction.date ? copy("land_map_authority_next_action_published", { date: nextAction.date }) : (nextAction.label || copy("land_map_authority_next_action_published", { date: "" })))
+    : escape(copy("land_map_authority_next_action_not_published"));
+  const authorityFields = !showSupplied ? ""
     : `<span data-land-map-authority-procedure="${escape(authority.procedure_id || "")}">${escape(authority.procedure_id || copy("land_authority_unknown"))}</span>`
-      + ` · <span data-land-map-authority-stage="${escape(authority.stage?.stage_id || "")}">${escape(authority.stage?.stage_id || copy("land_authority_unknown"))}</span>`;
-  const authorityHandoff = `<div class="land-map-authority-handoff" data-land-map-authority="1" data-land-map-authority-state="${escape(authority.state)}" data-land-map-authority-project="${escape(selectedId)}" data-land-map-authority-projection="${escape(authority.projection_version)}" data-land-map-authority-source-receipt="${escape(authority.source_receipt || "")}" data-land-map-authority-source-vintage="${escape(authority.source_vintage || "")}" data-land-map-location-state="mapped">`
+      + ` · <span data-land-map-authority-stage="${escape(authority.stage?.stage_id || "")}">${escape(authority.stage?.stage_id || copy("land_authority_unknown"))}</span>`
+      + (roleLabel ? ` · <span data-land-map-authority-role="${escape(authority.normative.current_role)}" data-land-map-authority-kind="role">${escape(roleLabel)}</span>` : "")
+      + `<div data-land-map-authority-next-action="${escape(nextAction.status)}" data-land-map-authority-next-action-date="${escape(nextAction.date || "")}" data-land-map-authority-kind="next_action">${nextActionHTML}</div>`;
+  const authorityHandoff = `<div class="land-map-authority-handoff" data-land-map-authority="1" data-land-map-authority-state="${escape(authority.state)}" data-land-map-authority-procedure-state="${escape(authority.procedure_state)}" data-land-map-authority-project="${escape(selectedId)}" data-land-map-authority-projection="${escape(authority.projection_version)}" data-land-map-authority-source-receipt="${escape(authority.source_receipt || "")}" data-land-map-authority-source-vintage="${escape(authority.source_vintage || "")}" data-land-map-location-state="mapped">`
     + `<strong>${escape(copy("land_map_authority_heading"))}</strong> <span data-land-map-authority-state-label="1">${escape(authorityLabel)}</span>`
+    + ` <span data-land-map-authority-procedure-state-label="1">${escape(copy(procedureStateKey))}</span>`
     + (authorityFields ? `<div data-land-map-authority-supplied="1">${authorityFields}</div>` : "")
     + (authority.panel_href ? `<a class="land-map-authority-link" href="${escape(authority.panel_href)}" data-land-map-authority-detail="${escape(selectedId)}">${escape(copy("land_map_authority_detail"))}</a>` : "")
     + `</div>`;
