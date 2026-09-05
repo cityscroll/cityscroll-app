@@ -38,6 +38,14 @@ function memoryKV(seed = {}) {
   };
 }
 
+/**
+ * Overlay subjects are read from the committed floor. The published schedule
+ * rolls with each fiscal year, so writing exam numbers into the fixture makes
+ * it fail the day one of them leaves the schedule.
+ */
+const ANNUAL_SUBJECT = FLOOR.exams[0].exam_number;
+const OASYS_SUBJECT = FLOOR.exams[1].exam_number;
+
 function listRecords(n = 120) {
   return Array.from({ length: n }, (_, i) => ({
     exam_number: String(6000 + i),
@@ -50,15 +58,15 @@ function listRecords(n = 120) {
 
 function staffingFetch({
   annual = [{
-    exam_number: "7016",
-    exam_title: "Caseworker",
+    exam_number: ANNUAL_SUBJECT,
+    exam_title: "Overlay subject",
     application_period_start: "2026-09-01",
     application_period_end_date: "2026-09-21",
     open_competitive_promotion: "Open-Competitive",
     data_current_as_of: "2026-08-22",
   }],
   list = listRecords(),
-  oasys = [{ examId: 9619, examNumber: "6125", title: "School Safety Agent", isPromotional: false }],
+  oasys = [{ examId: 9619, examNumber: OASYS_SUBJECT, title: "Overlay subject", isPromotional: false }],
 } = {}) {
   return async (url) => {
     const href = decodeURIComponent(String(url));
@@ -90,8 +98,13 @@ function staffingFetch({
 test("committed floor is the shape Staffing and compile already consume", () => {
   assert.equal(FLOOR.schema_version, 6);
   assert.ok(Array.isArray(FLOOR.exams) && FLOOR.exams.length >= 100);
-  assert.ok(FLOOR.exams.some((exam) => exam.exam_number === "7016"));
-  assert.ok(FLOOR.exams.some((exam) => exam.exam_number === "7312"));
+  // Shape, not named rows: every exam still names one cycle and the schedule
+  // join survived into the committed floor.
+  assert.ok(FLOOR.exams.every((exam) => /^\d{4}$/.test(String(exam.exam_number))));
+  assert.ok(
+    FLOOR.exams.filter((exam) => exam.application_start && exam.application_end).length
+      >= FLOOR.exams.length * 0.9,
+  );
   const parsed = parseStaffingExamsRecord(JSON.stringify(FLOOR));
   assert.equal(parsed.exams.length, FLOOR.exams.length);
   assert.equal(staffingExamsKvAcceptable(parsed), true);
@@ -127,7 +140,7 @@ test("cold, empty, unparseable, and failed KV fall back to the committed JSON", 
     ALERT_STATE: { async get() { throw new Error("kv down"); } },
   });
   assert.equal(throwing.source, "committed_floor");
-  assert.ok(throwing.record.exams.some((exam) => exam.exam_number === "6125"));
+  assert.equal(throwing.record.exams.length, FLOOR.exams.length);
 });
 
 test("GET /staffing-exams serves KV when present and the floor when not", async () => {
@@ -166,11 +179,11 @@ test("refresh overlays SODA windows and OASys links, and hashes skip unchanged e
   const stored = parseStaffingExamsRecord(kv.values.get(STAFFING_EXAMS_KV_KEY));
   assert.ok(stored);
   assert.equal(stored.refresh_mode, "worker_cron_overlay");
-  const caseworker = stored.exams.find((exam) => exam.exam_number === "7016");
-  assert.equal(caseworker.application_start, "2026-09-01");
-  assert.equal(caseworker.application_end, "2026-09-21");
-  const schoolSafety = stored.exams.find((exam) => exam.exam_number === "6125");
-  assert.match(String(schoolSafety.official_application_url || ""), /examId=9619/);
+  const overlaid = stored.exams.find((exam) => exam.exam_number === ANNUAL_SUBJECT);
+  assert.equal(overlaid.application_start, "2026-09-01");
+  assert.equal(overlaid.application_end, "2026-09-21");
+  const deepLinked = stored.exams.find((exam) => exam.exam_number === OASYS_SUBJECT);
+  assert.match(String(deepLinked.official_application_url || ""), /examId=9619/);
 
   const again = await refreshStaffingExams(
     { ALERT_STATE: kv },
@@ -185,10 +198,14 @@ test("refresh overlays SODA windows and OASys links, and hashes skip unchanged e
 });
 
 test("people/guide compile reads the KV payload and falls back to the floor", async () => {
+  // The guide answers for an exam inside its filing window, so the subject and
+  // the day are taken from the same committed row rather than pinned.
+  const subject = FLOOR.exams.find((exam) => exam.application_start && exam.application_end);
+  assert.ok(subject, "the committed floor still carries a dated exam");
   const q = compileSub({
     lens: "people",
-    filter: { view: "guide", examNumber: "7016" },
-  }, "2026-08-23");
+    filter: { view: "guide", examNumber: subject.exam_number },
+  }, subject.application_start);
   assert.equal(q.url, STAFFING_EXAMS);
   const kvRows = await rowsForCompiledQuery(q, {
     ALERT_STATE: memoryKV({
@@ -200,17 +217,17 @@ test("people/guide compile reads the KV payload and falls back to the floor", as
     }),
   });
   assert.equal(kvRows.length, 1);
-  assert.equal(kvRows[0].exam_number, "7016");
+  assert.equal(kvRows[0].exam_number, subject.exam_number);
 
   const floorRows = await rowsForCompiledQuery(q, {});
-  assert.ok(floorRows.some((row) => row.exam_number === "7016"));
+  assert.ok(floorRows.some((row) => row.exam_number === subject.exam_number));
 });
 
 test("overlay keeps densify extras while updating windows", () => {
   const overlaid = overlayStaffingExams(FLOOR, {
     annualRows: [{
-      exam_number: "7016",
-      exam_title: "Caseworker",
+      exam_number: ANNUAL_SUBJECT,
+      exam_title: "Overlay subject",
       application_period_start: "2026-10-01",
       application_period_end_date: "2026-10-21",
       open_competitive_promotion: "Open-Competitive",
@@ -219,9 +236,9 @@ test("overlay keeps densify extras while updating windows", () => {
     listRecords: listRecords(),
     now: NOW,
   });
-  const caseworker = overlaid.exams.find((exam) => exam.exam_number === "7016");
-  assert.equal(caseworker.application_start, "2026-10-01");
-  assert.ok(caseworker.fee != null || caseworker.notice_url || caseworker.title);
+  const subject = overlaid.exams.find((exam) => exam.exam_number === ANNUAL_SUBJECT);
+  assert.equal(subject.application_start, "2026-10-01");
+  assert.ok(subject.fee != null || subject.notice_url || subject.title);
 });
 
 test("scheduled staffing refresh is public SODA + OASys, not a secret-bearing path", () => {

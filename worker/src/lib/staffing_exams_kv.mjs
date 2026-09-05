@@ -24,7 +24,18 @@ export const STAFFING_EXAMS_MAX_AGE_MS = STAFFING_EXAMS_MAX_AGE_DAYS * 24 * 60 *
 export const STAFFING_EXAMS_MIN_EXAMS = 100;
 export const STAFFING_EXAMS_LIST_MIN_DISTINCT = 100;
 export const STAFFING_EXAMS_SCHEMA_VERSION = 6;
-export const STAFFING_EXAMS_CANARIES = Object.freeze(["6125", "7016", "7312"]);
+/**
+ * Shape floor for an accepted exams payload.
+ *
+ * This used to name three exam numbers. The published schedule rolls with each
+ * fiscal year, and the day one of those exams left it the payload stopped being
+ * acceptable: the scheduled refresh could no longer publish, and the endpoint
+ * would have served the same committed floor indefinitely. The guard's real job
+ * is to reject a truncated or half-joined payload, so it now measures the
+ * population instead of naming rows in it.
+ */
+export const STAFFING_EXAMS_MIN_WINDOW_SHARE = 0.9;
+export const STAFFING_EXAMS_MIN_NOTICE_ROWS = 5;
 export const STAFFING_ANNUAL_SODA_ID = "4ptz-hmtc";
 export const STAFFING_LIST_SODA_ID = "vx8i-nprf";
 export const STAFFING_EXAMS_USER_AGENT =
@@ -66,8 +77,20 @@ function rowHasPii(row) {
 }
 
 export function staffingExamsHasCanaries(doc) {
-  const ids = new Set((doc?.exams || []).map((exam) => String(exam?.exam_number || "")));
-  return STAFFING_EXAMS_CANARIES.every((id) => ids.has(id));
+  const exams = Array.isArray(doc?.exams) ? doc.exams : [];
+  if (!exams.length) return false;
+  // Identity survived the pipeline: every row still names one exam, and no
+  // exam is duplicated.
+  const ids = exams.map((exam) => String(exam?.exam_number || ""));
+  if (!ids.every((id) => /^\d{4}$/.test(id))) return false;
+  if (new Set(ids).size !== ids.length) return false;
+  // The schedule join survived: almost every exam carries its filing window.
+  const withWindow = exams.filter((exam) => exam?.application_start && exam?.application_end).length;
+  if (withWindow < exams.length * STAFFING_EXAMS_MIN_WINDOW_SHARE) return false;
+  // The Notice of Examination join survived: some exams still carry a notice
+  // and the fee it states.
+  const withNotice = exams.filter((exam) => exam?.notice_url && exam?.fee != null).length;
+  return withNotice >= STAFFING_EXAMS_MIN_NOTICE_ROWS;
 }
 
 export function staffingExamsKvAcceptable(doc) {
