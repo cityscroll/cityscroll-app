@@ -1,0 +1,37 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-snappiness/perf-03-browse-contracts-tail",
+  "status": "implemented",
+  "fingerprint": "perf-03-browse-contracts-tail.v1",
+  "updated_at": "2026-09-05T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "contracts-browse-scoped-surface",
+      "path": "site/app/money-list.mjs"
+    },
+    {
+      "id": "bounded-browse-read-path-decision",
+      "path": "site/procurement_browse_read_path.mjs"
+    },
+    {
+      "id": "bounded-browse-query",
+      "path": "site/procurement_browse_query.mjs"
+    },
+    {
+      "id": "results-owner-milestone",
+      "path": "site/contracts_rum.mjs"
+    },
+    {
+      "id": "bounded-first-page-test",
+      "path": "test/procurement_browse_first_page.test.mjs"
+    },
+    {
+      "id": "first-page-trace-capture",
+      "path": "tools/capture_browse_contracts_first_page.mjs"
+    },
+    {
+      "id": "first-page-trace-evidence",
+      "path": "docs/evidence/snappiness/browse-contracts-first-page/README.md"
+    }
+  ]
+}
