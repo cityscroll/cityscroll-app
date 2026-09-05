@@ -1,0 +1,45 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-seqra-foundation/a78-02-historical-fixture-loader",
+  "status": "implemented",
+  "fingerprint": "a78-02-historical-fixture-loader.v1",
+  "updated_at": "2026-09-05T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "article78-historical-fixture-loader",
+      "path": "warehouse/lib/article78_historical_fixture.mjs"
+    },
+    {
+      "id": "article78-historical-fixture-index",
+      "path": "warehouse/fixtures/article78/historical/index.json"
+    },
+    {
+      "id": "article78-historical-fixture-determinations",
+      "path": "warehouse/fixtures/article78/historical/determinations.json"
+    },
+    {
+      "id": "article78-historical-fixture-coverage",
+      "path": "warehouse/fixtures/article78/historical/coverage.json"
+    },
+    {
+      "id": "article78-historical-fixture-cases",
+      "path": "warehouse/fixtures/article78/historical/cases.json"
+    },
+    {
+      "id": "article78-historical-fixture-filings",
+      "path": "warehouse/fixtures/article78/historical/filings.json"
+    },
+    {
+      "id": "article78-historical-fixture-claims",
+      "path": "warehouse/fixtures/article78/historical/claims.json"
+    },
+    {
+      "id": "article78-historical-fixture-supersessions",
+      "path": "warehouse/fixtures/article78/historical/supersessions.json"
+    },
+    {
+      "id": "article78-historical-fixture-contract",
+      "path": "docs/article78-historical-fixture-v1.md"
+    }
+  ]
+}

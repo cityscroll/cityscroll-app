@@ -230,3 +230,10 @@ Every record in the fixture is synthetic. The court names are real
 institutions; every index number, caption, party, date and outcome is invented,
 and the fixture says so in its own `note` field. Nothing is fetched, and
 nothing there is a claim about a real proceeding.
+
+## The historical QA fixture
+
+A separate, larger fixture of thirteen documented environmental-review
+projects exists purely to catch behavioral regressions in the two derivations
+above, and is walled off from ever training anything. See
+`docs/article78-historical-fixture-v1.md`.

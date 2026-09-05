@@ -1,0 +1,191 @@
+[
+  {
+    "fixture_role": "qa_historical",
+    "project_id": "gowanus_neighborhood_rezoning",
+    "synthetic": true,
+    "record_schema": "cityscroll.article78_litigation.case_filing.v1",
+    "filing_key": "case_filing:judicial_case:ny_supreme_court_kings_county:500201_2022:decision:2022-09-02:61be21f30e75",
+    "case_key": "judicial_case:ny_supreme_court_kings_county:500201_2022",
+    "filing_type": "decision",
+    "filed_date": "2022-09-02",
+    "document_key": null,
+    "decision": {
+      "court_level": "supreme_court",
+      "decided_date": "2022-09-02",
+      "procedural_survival": "dismissed_other_threshold",
+      "durable_petitioner_relief": "none",
+      "remedy_exposure": "no_remedy_ordered"
+    },
+    "observed_at": "2022-10-01T00:00:00Z",
+    "source_id": "article78_historical_qa_fixture",
+    "source_record_id": "filing/historical/gowanus/0001"
+  },
+  {
+    "fixture_role": "qa_historical",
+    "project_id": "gowanus_neighborhood_rezoning",
+    "synthetic": true,
+    "record_schema": "cityscroll.article78_litigation.case_filing.v1",
+    "filing_key": "case_filing:judicial_case:ny_supreme_court_kings_county:500202_2022:decision:2022-11-18:f98e19926bc2",
+    "case_key": "judicial_case:ny_supreme_court_kings_county:500202_2022",
+    "filing_type": "decision",
+    "filed_date": "2022-11-18",
+    "document_key": null,
+    "decision": {
+      "court_level": "supreme_court",
+      "decided_date": "2022-11-18",
+      "procedural_survival": "survived",
+      "durable_petitioner_relief": "none",
+      "remedy_exposure": "no_remedy_ordered"
+    },
+    "observed_at": "2022-12-01T00:00:00Z",
+    "source_id": "article78_historical_qa_fixture",
+    "source_record_id": "filing/historical/gowanus/0002"
+  },
+  {
+    "fixture_role": "qa_historical",
+    "project_id": "haven_green_elizabeth_street_garden",
+    "synthetic": true,
+    "record_schema": "cityscroll.article78_litigation.case_filing.v1",
+    "filing_key": "case_filing:judicial_case:ny_supreme_court_new_york_county:155001_2020:decision:2021-03-01:9d508f039a76",
+    "case_key": "judicial_case:ny_supreme_court_new_york_county:155001_2020",
+    "filing_type": "decision",
+    "filed_date": "2021-03-01",
+    "document_key": null,
+    "decision": {
+      "court_level": "supreme_court",
+      "decided_date": "2021-03-01",
+      "procedural_survival": "survived",
+      "durable_petitioner_relief": "annulment",
+      "remedy_exposure": "approval_vacated"
+    },
+    "observed_at": "2021-04-01T00:00:00Z",
+    "source_id": "article78_historical_qa_fixture",
+    "source_record_id": "filing/historical/haven_green/0001"
+  },
+  {
+    "fixture_role": "qa_historical",
+    "project_id": "haven_green_elizabeth_street_garden",
+    "synthetic": true,
+    "record_schema": "cityscroll.article78_litigation.case_filing.v1",
+    "filing_key": "case_filing:judicial_case:ny_supreme_court_new_york_county:155001_2020:decision:2022-06-15:8737fc2457ba",
+    "case_key": "judicial_case:ny_supreme_court_new_york_county:155001_2020",
+    "filing_type": "decision",
+    "filed_date": "2022-06-15",
+    "document_key": null,
+    "decision": {
+      "court_level": "appellate_division",
+      "decided_date": "2022-06-15",
+      "procedural_survival": "survived",
+      "durable_petitioner_relief": "none",
+      "remedy_exposure": "no_remedy_ordered"
+    },
+    "observed_at": "2022-07-01T00:00:00Z",
+    "source_id": "article78_historical_qa_fixture",
+    "source_record_id": "filing/historical/haven_green/0002"
+  },
+  {
+    "fixture_role": "qa_historical",
+    "project_id": "city_point",
+    "synthetic": true,
+    "record_schema": "cityscroll.article78_litigation.case_filing.v1",
+    "filing_key": "case_filing:judicial_case:ny_supreme_court_kings_county:501302_2014:decision:2015-04-02:1ef4aa6b9c8c",
+    "case_key": "judicial_case:ny_supreme_court_kings_county:501302_2014",
+    "filing_type": "decision",
+    "filed_date": "2015-04-02",
+    "document_key": null,
+    "decision": {
+      "court_level": "supreme_court",
+      "decided_date": "2015-04-02",
+      "procedural_survival": "survived",
+      "durable_petitioner_relief": "none",
+      "remedy_exposure": "no_remedy_ordered"
+    },
+    "observed_at": "2015-05-01T00:00:00Z",
+    "source_id": "article78_historical_qa_fixture",
+    "source_record_id": "filing/historical/city_point/0001"
+  },
+  {
+    "fixture_role": "qa_historical",
+    "project_id": "city_point",
+    "synthetic": true,
+    "record_schema": "cityscroll.article78_litigation.case_filing.v1",
+    "filing_key": "case_filing:judicial_case:ny_supreme_court_kings_county:501301_2014:decision:2015-03-20:d0d1fb4c22a1",
+    "case_key": "judicial_case:ny_supreme_court_kings_county:501301_2014",
+    "filing_type": "decision",
+    "filed_date": "2015-03-20",
+    "document_key": null,
+    "decision": {
+      "court_level": "supreme_court",
+      "decided_date": "2015-03-20",
+      "procedural_survival": "survived",
+      "durable_petitioner_relief": "none",
+      "remedy_exposure": "no_remedy_ordered"
+    },
+    "observed_at": "2015-04-01T00:00:00Z",
+    "source_id": "article78_historical_qa_fixture",
+    "source_record_id": "filing/historical/city_point/0002b"
+  },
+  {
+    "fixture_role": "qa_historical",
+    "project_id": "200_amsterdam_avenue",
+    "synthetic": true,
+    "record_schema": "cityscroll.article78_litigation.case_filing.v1",
+    "filing_key": "case_filing:judicial_case:ny_supreme_court_new_york_county:157301_2018:decision:2018-11-01:57447ca60483",
+    "case_key": "judicial_case:ny_supreme_court_new_york_county:157301_2018",
+    "filing_type": "decision",
+    "filed_date": "2018-11-01",
+    "document_key": null,
+    "decision": {
+      "court_level": "supreme_court",
+      "decided_date": "2018-11-01",
+      "procedural_survival": "dismissed_ripeness",
+      "durable_petitioner_relief": "none",
+      "remedy_exposure": "no_remedy_ordered"
+    },
+    "observed_at": "2018-12-01T00:00:00Z",
+    "source_id": "article78_historical_qa_fixture",
+    "source_record_id": "filing/historical/200_amsterdam/0001"
+  },
+  {
+    "fixture_role": "qa_historical",
+    "project_id": "200_amsterdam_avenue",
+    "synthetic": true,
+    "record_schema": "cityscroll.article78_litigation.case_filing.v1",
+    "filing_key": "case_filing:judicial_case:ny_supreme_court_new_york_county:157302_2018:decision:2019-04-26:08b060ec9c1c",
+    "case_key": "judicial_case:ny_supreme_court_new_york_county:157302_2018",
+    "filing_type": "decision",
+    "filed_date": "2019-04-26",
+    "document_key": null,
+    "decision": {
+      "court_level": "supreme_court",
+      "decided_date": "2019-04-26",
+      "procedural_survival": "survived",
+      "durable_petitioner_relief": "injunctive_relief",
+      "remedy_exposure": "construction_restrained"
+    },
+    "observed_at": "2019-05-01T00:00:00Z",
+    "source_id": "article78_historical_qa_fixture",
+    "source_record_id": "filing/historical/200_amsterdam/0002"
+  },
+  {
+    "fixture_role": "qa_historical",
+    "project_id": "east_side_coastal_resiliency",
+    "synthetic": true,
+    "record_schema": "cityscroll.article78_litigation.case_filing.v1",
+    "filing_key": "case_filing:judicial_case:ny_supreme_court_new_york_county:158401_2019:decision:2020-08-11:449d175411e5",
+    "case_key": "judicial_case:ny_supreme_court_new_york_county:158401_2019",
+    "filing_type": "decision",
+    "filed_date": "2020-08-11",
+    "document_key": null,
+    "decision": {
+      "court_level": "supreme_court",
+      "decided_date": "2020-08-11",
+      "procedural_survival": "survived",
+      "durable_petitioner_relief": "remand_for_further_agency_action",
+      "remedy_exposure": "record_remand_only"
+    },
+    "observed_at": "2020-09-01T00:00:00Z",
+    "source_id": "article78_historical_qa_fixture",
+    "source_record_id": "filing/historical/escr/0001"
+  }
+]
