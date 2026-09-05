@@ -64,6 +64,10 @@ contracts. Do not turn it into a delivery log, roadmap, module inventory, or car
   rather than one collapsed flag. The Cloudflare OS deployment itself lives in a separate private
   repository; this repository holds the public schemas, contract tests, and the upstream reference
   in [`integrations/cloudflare-os-starter/`](integrations/cloudflare-os-starter/).
+- A gate over build-time refreshed source data asserts population properties, not named upstream
+  records: publisher windows roll, so a record id in a release gate becomes a deploy outage the day
+  that record leaves the window. Use counts, shares, or floors over the materialized set, and keep
+  any record-level expectation as a logged signal.
 - Preserve graceful degradation: the static/browser surface remains useful when Worker-backed,
   metered, delivery, or optional enrichment features are unavailable.
 - Keep resident copy plain-language and source-honest. Implementation field names, debug states,
