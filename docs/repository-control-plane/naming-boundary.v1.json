@@ -36,6 +36,7 @@
     ],
     "scope": "every tracked path, every tracked non-binary file regardless of extension, and every symlink target",
     "term_set": "supplied at run time from an owner-controlled input outside this repository; no private identifier is committed here",
+    "term_set_cardinality": "a set of any size; every supplied term is matched and reported independently, so adding another private name is a change to the owner-controlled input, never a change to this repository",
     "public_mode": "without a term set the scan reports SKIPPED and asserts nothing, so public CI stays credential-free",
     "private_mode": "with --private a missing term set is a hard failure; the scan never reports a pass with nothing to match",
     "output_discipline": "a finding names a surface, a normalization rule, and an opaque term reference; a matching path is reported as an ordinal, and the detailed inventory is written only to an explicit destination outside this repository",
@@ -45,5 +46,12 @@
     "front_door": "node tools/inverse_control_plane_guard.mjs --check --all",
     "receipt": "derived at check time and printed; never tracked, so no change has to rewrite a shared aggregate",
     "owner_controlled_run": "node tools/inverse_control_plane_guard.mjs --check --all --private --private-identifier-terms <path outside this repository>"
+  },
+  "rendered_copy_assertions": {
+    "implementation": "test/helpers/internal_vocabulary.mjs",
+    "purpose": "suites that assert internal vocabulary is absent from reader-facing copy draw their private terms from the same owner-controlled term set, so no such assertion has to spell a private name to make it",
+    "public_mode": "without a term set the internal clause contributes nothing and the assertion still pins its public vocabulary",
+    "term_set_error": "an unreadable term set is an error rather than an empty term set, so a mistyped owner-controlled path cannot read as a quiet pass",
+    "rationale": "an encoded denylist is still a denylist: a digest, a character-code table, or a pair of quoted fragments joined at run time is a mechanical, reversible spelling of the word, and the scan decodes exactly those shapes"
   }
 }
