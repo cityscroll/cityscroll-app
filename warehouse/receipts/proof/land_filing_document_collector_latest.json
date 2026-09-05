@@ -1,0 +1,78 @@
+{
+  "checks": [
+    {
+      "name": "a 45-document project keeps every document in the warehouse manifest, including position 41 (A1)",
+      "result": "pass"
+    },
+    {
+      "name": "same-name/different-ID documents remain distinct (A2)",
+      "result": "pass"
+    },
+    {
+      "name": "a publisher id resurfacing with a different publisher_created_at mints a new, coexisting occurrence (A3)",
+      "result": "pass"
+    },
+    {
+      "name": "exact byte duplicates are linked via content_duplicate_of, never erased (A4)",
+      "result": "pass"
+    },
+    {
+      "name": "a rotating/signed retrieval token collapses to one identity and never enters the canonical reference (A5)",
+      "result": "pass"
+    },
+    {
+      "name": "a malformed relationship item is skipped explicitly, never a crash (A6)",
+      "result": "pass"
+    },
+    {
+      "name": "a document with no publisher source id stays explicit and reachable (A7)",
+      "result": "pass"
+    },
+    {
+      "name": "a successful fetch records an immutable hash and receipt (A8)",
+      "result": "pass"
+    },
+    {
+      "name": "a garbled fetched page is distinguished from a clean one (A9)",
+      "result": "pass"
+    },
+    {
+      "name": "a failed fetch reports fetch_failed and stays reachable (A8)",
+      "result": "pass"
+    },
+    {
+      "name": "a fetched clean document is high quality and a fetched garbled one is low, distinguished by content alone (A9)",
+      "result": "pass"
+    },
+    {
+      "name": "a failed fetch reports fetch_failed explicitly and the document remains identifiable (A8)",
+      "result": "pass"
+    },
+    {
+      "name": "an as-of projection never advances a document's public visibility on a rerun that changes nothing about it (A9)",
+      "result": "pass"
+    },
+    {
+      "name": "a census document_type outside LDP-23's enum is carried as 'other' with the finer match preserved (classification)",
+      "result": "pass"
+    },
+    {
+      "name": "a no_match census classification never invents a document_type or non-empty evidence",
+      "result": "pass"
+    },
+    {
+      "name": "SEQRA-04's CEQR Access document pipeline gate is unaffected by this card (ZAP/CEQR regression)",
+      "result": "pass"
+    },
+    {
+      "name": "the ZAP outcomes unit suite (worker/src/lib/zap_outcomes.mjs) passes after the resident-digest identity fix (ZAP regression)",
+      "result": "pass"
+    }
+  ],
+  "gate": {
+    "failed_check_count": 0,
+    "result": "pass"
+  },
+  "sample_document_count_45": 45,
+  "schema": "cityscroll.land_filing_document_collector_receipt.v1"
+}

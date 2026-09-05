@@ -1,0 +1,29 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-land-decision-path/ldp-24-zap-document-manifest",
+  "status": "implemented",
+  "fingerprint": "ldp-24-zap-filing-document-collector.v1",
+  "updated_at": "2026-09-04T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "land-filing-document-collector",
+      "path": "warehouse/lib/land_filing_document_collector.mjs"
+    },
+    {
+      "id": "land-filing-document-fetcher",
+      "path": "warehouse/lib/land_filing_document_fetcher.mjs"
+    },
+    {
+      "id": "land-filing-document-collector-gate",
+      "path": "tools/check_land_filing_document_collector.mjs"
+    },
+    {
+      "id": "land-filing-document-collector-receipt",
+      "path": "warehouse/receipts/proof/land_filing_document_collector_latest.json"
+    },
+    {
+      "id": "zap-outcomes-resident-document-identity-fix",
+      "path": "worker/src/lib/zap_outcomes.mjs"
+    }
+  ]
+}

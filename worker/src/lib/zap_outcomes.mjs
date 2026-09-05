@@ -148,16 +148,43 @@ function parseMilestone(item) {
   };
 }
 
-function collectDocs(kind, attributes) {
+/**
+ * Strip a rotating/signed query string or fragment off a ZAP
+ * `serverRelativeUrl` before it becomes this document's identity. A signed
+ * retrieval token is a retrieval detail, not identity: the same underlying
+ * document fetched under two different tokens must still resolve to the same
+ * document id (see warehouse/lib/land_filing_document_collector.mjs,
+ * LDP-24, which applies the identical normalization warehouse-side).
+ */
+function normalizeDocumentSourceId(serverRelativeUrl) {
+  const raw = String(serverRelativeUrl || "").replace(/^\/+/, "").trim();
+  if (!raw) return null;
+  return raw.split(/[?#]/)[0].trim() || null;
+}
+
+/**
+ * `item` is the full JSON:API included item (artifact/package/disposition),
+ * not just its attributes, so each collected document carries the
+ * publisher's own group id/name (LDP-24: group metadata must survive, not
+ * only the nested document's own name).
+ */
+function collectDocs(kind, item) {
   const docs = [];
-  const list = attributes?.documents;
+  const a = item?.attributes || {};
+  const list = a.documents;
   if (!Array.isArray(list)) return docs;
+  const groupId = item?.id ?? null;
+  const groupName = clean(a["dcp-name"]);
   for (const d of list) {
     const name = clean(d?.name);
-    const url = documentProxyUrl(kind, d?.serverRelativeUrl);
-    if (!name && !url) continue;
+    const id = normalizeDocumentSourceId(d?.serverRelativeUrl);
+    const url = id ? documentProxyUrl(kind, id) : null;
+    if (!name && !url && !id) continue;
     docs.push({
       kind,
+      id,
+      group_id: groupId,
+      group_name: groupName,
       name: name || "Document",
       url,
       time_created: d?.timeCreated || null,
@@ -213,11 +240,20 @@ export function groupZapDispositions(dispositions) {
   }));
 }
 
-function dedupeDocumentsByName(documents) {
+/**
+ * Dedupe by publisher document identity, never by name (LDP-24: 36% of
+ * distinct names in the LDP-22 census spanned multiple source ids -- a
+ * same-name/different-id pair are two real, distinct documents and must both
+ * survive). A document with no derivable id cannot be proven identical to
+ * anything else, so it is never collapsed: each such entry gets its own
+ * unique key and always survives.
+ */
+function dedupeDocumentsById(documents) {
   const seen = new Set();
+  let anonymousCounter = 0;
   return (documents || []).filter((document) => {
-    const key = String(document.name || "").trim().toLocaleLowerCase();
-    if (!key || seen.has(key)) return false;
+    const key = document.id ? `id:${document.id}` : `anon:${anonymousCounter++}`;
+    if (seen.has(key)) return false;
     seen.add(key);
     return true;
   });
@@ -281,7 +317,7 @@ export function parseZapApiProject(payload) {
       const milestone = parseMilestone(item);
       if (milestone) milestones.push(milestone);
     } else if (type === "dispositions") {
-      const docs = collectDocs("disposition", a);
+      const docs = collectDocs("disposition", item);
       documents.push(...docs);
       dispositions.push({
         id: item.id || null,
@@ -308,14 +344,14 @@ export function parseZapApiProject(payload) {
         n_documents: docs.length,
       });
     } else if (type === "artifacts") {
-      documents.push(...collectDocs("artifact", a));
+      documents.push(...collectDocs("artifact", item));
     } else if (type === "packages") {
-      documents.push(...collectDocs("package", a));
+      documents.push(...collectDocs("package", item));
     }
   }
 
   const groupedDispositions = groupZapDispositions(dispositions);
-  const uniqueDocs = dedupeDocumentsByName(documents);
+  const uniqueDocs = dedupeDocumentsById(documents);
 
   const approvedActions = actions.filter((a) => a.approved);
   const useful =
@@ -346,6 +382,12 @@ export function parseZapApiProject(payload) {
     )),
     approved_actions: approvedActions,
     dispositions: groupedDispositions,
+    // LDP-24: this bound applies only to the resident digest served to the
+    // browser -- `n_documents` below always reports the true, undeduped-by-
+    // truncation count, and the warehouse-side manifest
+    // (warehouse/lib/land_filing_document_collector.mjs) never truncates at
+    // all, so a document at position 41+ is never lost, only excluded from
+    // this one bounded live response.
     documents: uniqueDocs.slice(0, 40),
     n_documents: uniqueDocs.length,
     n_dispositions: groupedDispositions.length,
