@@ -804,13 +804,32 @@ function sourceRecordMarkup(row) {
   return `<li class="node-record" data-source-record-kind="${esc(row.record_kind || "record")}"><div class="node-record-main"><strong>${label}</strong></div><span class="muted node-muted">${esc(row.label)}${date} · ${esc(state)}</span></li>`;
 }
 
+// A resident asking "is there a dated record worth opening" should reach a
+// bounded, task-labelled list of official documents, never the full
+// reconciliation population (G1/A1). Every record here already carries a
+// resident-safe label and source link from sourceRecordRows; unresolved
+// matching and adapter detail stay in the retained view.source_records data
+// for the diagnostic/Desk boundary and are never spelled out here (A2).
+export const COMMUNITY_BOARD_RESIDENT_DOCUMENT_LIMIT = 20;
+
+function documentSortDate(record) {
+  const value = clean(record?.date, 10);
+  return /^\d{4}-\d{2}-\d{2}$/.test(value) ? value : "";
+}
+
 function renderUnjoinedSourceSection(records = []) {
   if (!records.length) return "";
+  const ordered = [...records].sort((a, b) => documentSortDate(b).localeCompare(documentSortDate(a)));
+  const shown = ordered.slice(0, COMMUNITY_BOARD_RESIDENT_DOCUMENT_LIMIT);
+  const remaining = ordered.length - shown.length;
+  const note = remaining > 0
+    ? `<p class="muted node-muted">Showing the ${shown.length} most recently dated of ${ordered.length} official documents; earlier documents are kept on file.</p>`
+    : "";
   return renderNodeSection({
-    heading: "Unjoined source records (diagnostic)",
+    heading: "Official documents",
     extraClass: "node-card civic-object-section",
-    attrs: { "data-community-board-source-records": "1" },
-    body: `<ul class="node-record-list">${records.map(sourceRecordMarkup).join("")}</ul>`,
+    attrs: { "data-community-board-official-documents": "1" },
+    body: `<ul class="node-record-list">${shown.map(sourceRecordMarkup).join("")}</ul>${note}`,
   });
 }
 

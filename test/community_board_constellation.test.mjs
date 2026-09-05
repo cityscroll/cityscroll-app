@@ -200,7 +200,8 @@ test("board profile renders receipt-backed records without counting them as acce
   assert.equal(view.categories.find((category) => category.id === "members").status, "unknown");
   const html = renderCommunityBoardConstellationDocument(view);
   const visible = html.replace(/<script[\s\S]*?<\/script>/gi, "").replace(/<[^>]+>/g, " ");
-  assert.match(visible, /Unjoined source records \(diagnostic\)/);
+  assert.match(visible, /Official documents/);
+  assert.doesNotMatch(visible, /\(diagnostic\)/);
   assert.match(visible, /Full board minutes/);
   assert.match(visible, /Source observed/);
   assert.doesNotMatch(visible, /record_kind|source_record_id|observed_receipt|Source: Unavailable|Join method: Unavailable/);
