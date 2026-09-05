@@ -9,8 +9,14 @@ import {
 } from "./lib/repair_queue.mjs";
 
 export const DIGEST_SHADOW_LEDGER_PREFIX = "ops:digest:shadow:";
+// Bounded so one pathological rehearsal cannot grow the receipt without limit.
+export const DIGEST_SHADOW_REASON_CODE_LIMIT = 3;
 export const DIGEST_DELIVERY_LEDGER_PREFIX = "ops:digest:delivery:";
 export const SCHEDULER_HEARTBEAT_KEY = "ops:scheduler:heartbeat";
+// How long a heartbeat stands before the watchdog calls the scheduler dead.
+// The trigger that runs the cycle has to publish well inside this window, so
+// the producer's interval is checked against this number rather than a copy.
+export const SCHEDULER_HEARTBEAT_MAX_AGE_MS = 90 * 60 * 1000;
 export const SCHEDULER_HEARTBEAT_SCHEMA = "cityscroll.external-scheduler-heartbeat.v1";
 // The scheduled cycle proves itself by naming these fields; the store stamps
 // observed_at on acceptance. Liveness is a property of the run that wrote the
@@ -51,16 +57,57 @@ async function putJson(kv, name, value) {
   return true;
 }
 
+/**
+ * A DEGRADED receipt that records only a redline count sends the reader back to
+ * a rehearsal that may already have been rerun, so the receipt carries its own
+ * reason. Codes and prose are the stable half of a redline; the day's counts
+ * are kept out of the reason so an alert signature does not change daily.
+ */
 export async function recordDigestShadowReceipt(env, summary, now = new Date()) {
+  const redlines = Array.isArray(summary?.redlines) ? summary.redlines : [];
+  const codes = [...new Set(redlines.map((item) => trimmed(item?.code, 60)).filter(Boolean))];
   const receipt = {
     schema: "cityscroll.digest-shadow-ready-receipt.v1",
     day: day(now),
     observed_at: now.toISOString(),
     status: summary?.ok === true ? "READY" : "DEGRADED",
-    redlines: Number(summary?.redlines?.length) || 0,
+    redlines: redlines.length,
+    redline_codes: codes.slice(0, DIGEST_SHADOW_REASON_CODE_LIMIT),
+    reason: trimmed(redlines[0]?.reason, 200) || null,
+    // A rehearsal that built nothing is indistinguishable from a healthy quiet
+    // day in a count of redlines alone, so the build shape is recorded too.
+    digest_count: Number(summary?.digest_count) || 0,
+    evaluated_count: Number(summary?.evaluated_count) || 0,
+    total_items: Number(summary?.total_items) || 0,
   };
   await putJson(env?.ALERT_STATE, key(DIGEST_SHADOW_LEDGER_PREFIX, now), receipt);
   return receipt;
+}
+
+/**
+ * The watchdog finding for a shadow receipt that is not READY. It names the
+ * fault, and deliberately carries no counts or timestamps: the finding text is
+ * the alert's dedupe signature, so a varying number would re-alert every day.
+ */
+export function digestShadowFinding(shadow) {
+  const base = `shadow receipt is ${shadow?.status}`;
+  const codes = Array.isArray(shadow?.redline_codes)
+    ? shadow.redline_codes.map((code) => trimmed(code, 60)).filter(Boolean)
+    : [];
+  const reason = trimmed(shadow?.reason, 200);
+  if (!codes.length && !reason) return base;
+  const label = codes.length ? codes.join(", ") : "";
+  return `${base} (${label && reason ? `${label}: ${reason}` : label || reason})`;
+}
+
+/**
+ * Zero accepted sends is a symptom shared by a broken delivery leg and a
+ * legitimately quiet day. The receipt already records which one, so the finding
+ * names it rather than leaving the reader to guess between the two.
+ */
+export function digestZeroAcceptedSendsFinding(delivery) {
+  const reason = trimmed(delivery?.skipped_reason, 60);
+  return `enqueued digest has zero accepted sends (${reason || "no skip reason recorded"})`;
 }
 
 export async function recordDigestDeliveryReceipt(env, receipt, now = new Date(), error = null) {
@@ -461,11 +508,11 @@ export async function digestWatchdogSnapshot(env, { now = new Date(), deadlineHo
   const findings = [];
   let watermark = { ok: true, findings: [], stuck: [] };
   if (!shadow) findings.push("shadow READY receipt missing");
-  else if (shadow.status !== "READY") findings.push(`shadow receipt is ${shadow.status}`);
+  else if (shadow.status !== "READY") findings.push(digestShadowFinding(shadow));
   if (now.getUTCHours() >= deadlineHour) {
     if (!delivery) findings.push("terminal delivery receipt missing");
     else if (delivery.status !== "TERMINAL") findings.push(`delivery receipt is ${delivery.status}`);
-    else if (delivery.enqueued > 0 && delivery.accepted_sends === 0) findings.push("enqueued digest has zero accepted sends");
+    else if (delivery.enqueued > 0 && delivery.accepted_sends === 0) findings.push(digestZeroAcceptedSendsFinding(delivery));
     const priorDay = priorUtcDay(now);
     if (priorDay) {
       watermark = await watermarkStalenessFromStore(env, today, priorDay, delivery);
@@ -491,7 +538,7 @@ export async function digestWatchdogSnapshot(env, { now = new Date(), deadlineHo
  * Absent, unparseable, malformed, stale, or non-succeeding state all fail
  * closed, and mail findings stay a separate leg so neither can clear the other.
  */
-export async function schedulerWatchdogSnapshot(env, { now = new Date(), maxAgeMs = 90 * 60 * 1000 } = {}) {
+export async function schedulerWatchdogSnapshot(env, { now = new Date(), maxAgeMs = SCHEDULER_HEARTBEAT_MAX_AGE_MS } = {}) {
   const heartbeat = await readJson(env?.ALERT_STATE, SCHEDULER_HEARTBEAT_KEY);
   const mail = await mailWatchdogSnapshot(env, { now });
   const schedulerFindings = [];

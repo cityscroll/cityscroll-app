@@ -35,6 +35,7 @@ import {
   opsAlertEvidenceFindings,
   mailWatchdogHasMailFindings,
   mailWatchdogSnapshot,
+  recordDigestShadowReceipt,
   recordSchedulerHeartbeat,
   schedulerWatchdogSnapshot,
   dispatchRepairQueue,
@@ -1656,7 +1657,12 @@ export async function handleAdminDigestRollup(req, env) {
  * Machine-readable 06:00 rehearsal summary. A redlined run deliberately returns 503 so
  * scheduled monitoring can wake on HTTP status while still consuming structured evidence.
  */
-export async function handleAdminDigestShadow(req, env, { now = new Date() } = {}) {
+export async function handleAdminDigestShadow(req, env, {
+  now = new Date(),
+  // Injectable so the rerun's receipt write can be pinned without standing up
+  // the whole live rehearsal; production always uses the real run.
+  runShadow = runDigestShadow,
+} = {}) {
   const auth = checkDigestShadowAuth(req, env);
   if (!auth.ok) return auth.res;
   if (!new Set(["GET", "POST"]).has(req.method)) return json({ error: "method not allowed" }, 405);
@@ -1690,7 +1696,12 @@ export async function handleAdminDigestShadow(req, env, { now = new Date() } = {
         }
       }
       if (body.action && body.action !== "rerun") return json({ error: "invalid-action" }, 400);
-      const summary = await runDigestShadow(env);
+      const summary = await runShadow(env);
+      // The repair contract names this route as the rerun method, so the rerun
+      // has to leave the receipt the dead-man switch reads. Without this the
+      // day's receipt kept whatever the 06:00 ET rehearsal wrote and a repaired
+      // run could not clear the finding until the next scheduled cycle.
+      await recordDigestShadowReceipt(env, summary, new Date(now));
       return json({ summary, hold: summary.hold }, summary.ok ? 200 : 503);
     } catch (error) {
       return json({ error: "shadow-rerun-failed", detail: String(error?.message || error) }, 503);
