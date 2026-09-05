@@ -208,6 +208,7 @@ jobs:
           npx wrangler@4.126.0 d1 execute crol-notices --remote --yes --file .d1-read-models/entity_intelligence_read_model.sql
           trap - ERR
       - name: Record published D1 fingerprint
+        id: d1-record-published
         if: steps.d1-publication-gate.outputs.should-publish == 'true' && steps.d1-generation-claim.outputs.claimed == 'true' && steps.d1-publication-sql.outputs.sql-started == 'true'
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -234,6 +235,65 @@ jobs:
             echo "D1 generation was fenced before publication completion."
             exit 1
           fi
+      # release-control card d1-07: exactly one durable, machine-readable receipt per
+      # D1 publication decision and generation, covering every exit path above (gate
+      # skip, fence busy, publish success, publisher failure, and a superseded/abandoned
+      # claim). `always()` so a receipt is recorded even when an earlier D1 step failed.
+      # The local JSONL append is the durable CI record (retained as a workflow
+      # artifact below); the KV mirror under the receipt key prefix is best-effort and
+      # never fails this step. See tools/d1_publication_receipt.mjs.
+      - name: Record D1 publication receipt
+        if: always()
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          D1_RUN_WORKFLOW: ${{ github.workflow }}
+          D1_RUN_ID: ${{ github.run_id }}
+          D1_RUN_ATTEMPT: ${{ github.run_attempt }}
+          D1_FINGERPRINT: ${{ steps.d1-deploy-fingerprint.outputs.fingerprint }}
+          D1_GENERATION: ${{ steps.d1-generation-claim.outputs.generation }}
+          SHOULD_PUBLISH: ${{ steps.d1-publication-gate.outputs.should-publish }}
+          CLAIMED: ${{ steps.d1-generation-claim.outputs.claimed }}
+          SQL_OUTCOME: ${{ steps.d1-publication-sql.outcome }}
+          SQL_STARTED: ${{ steps.d1-publication-sql.outputs.sql-started }}
+          RECORD_OUTCOME: ${{ steps.d1-record-published.outcome }}
+        run: |
+          set -euo pipefail
+          if [ "$SHOULD_PUBLISH" != "true" ]; then
+            outcome=skipped_fingerprint_unchanged
+            reason="deploy fingerprint unchanged since the last publication"
+          elif [ "$CLAIMED" != "true" ]; then
+            outcome=skipped_fence_busy
+            reason="another publication run holds a live generation fence"
+          elif [ "$SQL_OUTCOME" = "failure" ]; then
+            outcome=failed_permanent
+            reason="the publication SQL step failed; its generation fence claim was abandoned"
+          elif [ "$SQL_STARTED" != "true" ]; then
+            outcome=abandoned
+            reason="the generation fence was superseded before SQL execution started"
+          elif [ "$RECORD_OUTCOME" = "failure" ]; then
+            outcome=abandoned
+            reason="the generation fence was superseded before publication could complete"
+          else
+            outcome=published
+            reason="D1 read models were published for this deploy fingerprint"
+          fi
+          mkdir -p .artifacts
+          generation_flag=()
+          if [ "$CLAIMED" = "true" ] && [ -n "${D1_GENERATION:-}" ]; then
+            generation_flag=(--generation "$D1_GENERATION")
+          fi
+          snapshot_flag=()
+          if [ -f .d1-publication-state/partition-snapshot.json ]; then
+            snapshot_flag=(--snapshot .d1-publication-state/partition-snapshot.json)
+          fi
+          node tools/d1_publication_receipt.mjs record \
+            --workflow "$D1_RUN_WORKFLOW" --run-id "$D1_RUN_ID" --attempt "$D1_RUN_ATTEMPT" \
+            --deploy-fingerprint "$D1_FINGERPRINT" \
+            --outcome "$outcome" --reason "$reason" \
+            "${generation_flag[@]}" "${snapshot_flag[@]}" \
+            --local .artifacts/d1-publication-receipts.jsonl \
+            --binding ALERT_STATE --remote true --config worker/wrangler.toml \
+            --out .artifacts/d1-publication-receipt-final.json
       # D1 publication rollback: pause new delta publication and use the explicit rebuild path
       # (`node tools/build_worker_d1_read_models.mjs --mode rebuild`). Never delete fence state.
       # Route slices are immutable and versioned. Publish every slice first, then
@@ -317,6 +377,7 @@ jobs:
             .artifacts/release-surface-receipt.json
             .artifacts/worker-trigger-coverage.json
             .artifacts/d1-publication-receipt.json
+            .artifacts/d1-publication-receipts.jsonl
             .artifacts/deployment-health/cloudflare-worker.json
           if-no-files-found: warn
 
