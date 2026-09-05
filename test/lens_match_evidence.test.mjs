@@ -111,6 +111,7 @@ const {
   extractFn("moneyRowHTML") +
   extractDecl("mihOn") +
   extractFn("landObjectCardProjection") +
+  extractFn("landObservedDatesView") +
   extractFn("landRowHTML") +
   extractDecl("SECTIONS") +
   extractFn("goodAddr") +
