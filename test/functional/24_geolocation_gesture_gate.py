@@ -23,6 +23,16 @@ class RouteAwareHandler(SimpleHTTPRequestHandler):
     def log_message(self, *_args):
         pass
 
+    def handle_one_request(self):
+        try:
+            super().handle_one_request()
+        except (ConnectionResetError, BrokenPipeError):
+            # A browser dropping its end mid-transition is routine, not a server
+            # defect. Without this the default handler dumps one traceback per
+            # occurrence, and the cascade buries the check's real result in the
+            # evidence log. Same posture as tools/local_site_server.QuietHandler.
+            self.close_connection = True
+
     def do_GET(self):
         route = self.path.split("?", 1)[0].rstrip("/")
         if route == "/now" or route == "/browse" or route.startswith("/browse/"):

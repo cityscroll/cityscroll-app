@@ -23,7 +23,12 @@ sys.modules["playwright.sync_api"] = sync_api
 
 ASSETS = pathlib.Path(__file__).parent / "assets"
 sys.path.insert(0, str(ASSETS))
-from ci_waits import ROUTE_STATE_DEFAULTS, wait_for_app_ready, wait_for_route_state  # noqa: E402
+from ci_waits import (  # noqa: E402
+    ROUTE_STATE_DEFAULTS,
+    wait_for_app_ready,
+    wait_for_locator,
+    wait_for_route_state,
+)
 
 
 class TimedOutPage:
@@ -106,6 +111,42 @@ class RouteStateReceiptTest(unittest.TestCase):
         self.assertEqual(page.wait_arguments[1]["expectedPath"], "/browse/staffing/")
         self.assertEqual(page.wait_arguments[2], 123)
         self.assertEqual(page.snapshot_arguments[1]["tab"], "people")
+
+
+class AlwaysTimingOutLocator:
+    def __init__(self):
+        self.attempts = 0
+
+    def wait_for(self, *, state, timeout):
+        self.attempts += 1
+        raise FakePlaywrightTimeoutError("locator never became visible")
+
+
+class ExhaustedRetryLabelTest(unittest.TestCase):
+    """A wait that expires on every attempt is not transient, and says so."""
+
+    def test_exhausted_retry_withdraws_the_transient_reading(self):
+        locator = AlwaysTimingOutLocator()
+        output = io.StringIO()
+        with contextlib.redirect_stdout(output):
+            with self.assertRaises(FakePlaywrightTimeoutError):
+                wait_for_locator(locator, timeout=5, attempts=2, label="attachment table")
+
+        lines = output.getvalue().strip().splitlines()
+        self.assertEqual(locator.attempts, 2)
+        self.assertTrue(lines[0].startswith("TRANSIENT wait timeout for attachment table"))
+        self.assertTrue(lines[-1].startswith("DETERMINISTIC wait failure for attachment table"))
+        self.assertIn("did not hold", lines[-1])
+
+    def test_single_attempt_wait_never_claims_a_retry_verdict(self):
+        locator = AlwaysTimingOutLocator()
+        output = io.StringIO()
+        with contextlib.redirect_stdout(output):
+            with self.assertRaises(FakePlaywrightTimeoutError):
+                wait_for_locator(locator, timeout=5, attempts=1, label="attachment table")
+
+        self.assertEqual(locator.attempts, 1)
+        self.assertEqual(output.getvalue(), "")
 
 
 if __name__ == "__main__":

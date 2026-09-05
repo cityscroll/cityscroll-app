@@ -37,6 +37,20 @@ def _retry_message(label: str, attempt: int, attempts: int) -> None:
     )
 
 
+def _exhausted_message(label: str, attempts: int) -> None:
+    """Withdraw the transient reading once every attempt has expired.
+
+    "TRANSIENT" is a prediction made before the retry, and a wait that expires on
+    every attempt has falsified it. Saying so keeps a reproducible failure from
+    being read as runner noise in the log it leaves behind.
+    """
+    print(
+        f"DETERMINISTIC wait failure for {label}: expired on all {attempts} "
+        f"attempt(s); the earlier transient reading did not hold",
+        flush=True,
+    )
+
+
 def _retry(
     operation: Callable[[], Any],
     *,
@@ -50,6 +64,8 @@ def _retry(
             return operation()
         except PlaywrightTimeoutError:
             if attempt + 1 >= attempts:
+                if attempts > 1:
+                    _exhausted_message(label, attempts)
                 raise
             _retry_message(label, attempt, attempts)
     raise AssertionError("unreachable retry loop")
