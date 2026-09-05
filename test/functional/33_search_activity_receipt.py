@@ -204,8 +204,8 @@ def install_search_api(page, results_for):
         page.route(f"{origin}/search?*", keyword_search_api)
 
 
-def load_search(page, query):
-    page.goto(f"{BASE}/search/?q={query}", wait_until="domcontentloaded", timeout=30000)
+def load_search(page, query, extra_params=""):
+    page.goto(f"{BASE}/search/?q={query}{extra_params}", wait_until="domcontentloaded", timeout=30000)
     page.wait_for_selector('[data-search-coverage][aria-busy="false"]', timeout=30000)
     page.wait_for_timeout(500)  # let the settled-state receipt submit
 
@@ -266,6 +266,24 @@ def main():
         assert receipts[0]["rendered_count"] == 0
         assert receipts[0]["results"] == []
         print("empty search records an empty outcome")
+
+        # A Contracts-only front door (US-22) never reads as "every other family
+        # checked out empty" — the receipt now names the scope it actually served.
+        receipts.clear()
+        load_search(page, "rats", extra_params="&source_scope=contracts")
+        visible_scoped = rendered_rows(page)
+        assert len(receipts) == 1, f"one settled search submits one receipt, got {len(receipts)}"
+        scoped_receipt = receipts[0]
+        assert scoped_receipt["front_door_scope"] == "contracts", scoped_receipt["front_door_scope"]
+        assert [row["title"] for row in visible_scoped] == ["Rats abatement services contract"], (
+            "the Meetings family is out of scope and must not render"
+        )
+        assert scoped_receipt["family_counts"]["contracts"] == 1, scoped_receipt["family_counts"]
+        assert scoped_receipt["family_counts"]["meetings"] == 0, scoped_receipt["family_counts"]
+        assert scoped_receipt["incomplete_families"] == [], (
+            "a family the front door never asked is unrequested, not incomplete"
+        )
+        print("Contracts-only search records its front-door scope, not a silent all-families claim")
         context.close()
 
         # ---- Search is identical when intake fails in every way it can ----

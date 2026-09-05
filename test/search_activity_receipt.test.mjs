@@ -14,12 +14,14 @@ import { test } from "node:test";
 
 import {
   SEARCH_ACTIVITY_FAMILIES,
+  SEARCH_ACTIVITY_FRONT_DOOR_SCOPES,
   SEARCH_ACTIVITY_MAX_RESULT_ROWS,
   SEARCH_ACTIVITY_SAFE_LINK_ROOTS,
   SEARCH_EXECUTION_RECEIPT_SCHEMA,
   isSafeSearchActivityLink,
   normalizeSearchExecutionSubmission,
 } from "../capabilities/search_activity.mjs";
+import { SEARCH_FRONT_DOOR_SCOPES } from "../site/search_front_door_scope.mjs";
 import { buildSearchRenderPlan } from "../site/search_render_plan.mjs";
 import {
   buildSearchExecutionSubmission,
@@ -356,6 +358,51 @@ test("no query means nothing to observe", () => {
   const plan = buildSearchRenderPlan({ state: "unavailable" });
   assert.equal(buildSearchExecutionSubmission(plan, { query: "   " }), null);
   assert.equal(buildSearchExecutionSubmission(null, { query: "rats" }), null);
+});
+
+// ---- reconciled with US-22: which front-door scope was actually served ----
+
+test("the receipt's front-door scope vocabulary stays in lockstep with the registered scopes", () => {
+  assert.deepEqual(
+    [...SEARCH_ACTIVITY_FRONT_DOOR_SCOPES].sort(),
+    Object.keys(SEARCH_FRONT_DOOR_SCOPES).sort(),
+    "a newly registered front-door scope must be added here too, or the receipt will reject it",
+  );
+});
+
+test("an unscoped execution submits the historical default of all", () => {
+  const plan = buildSearchRenderPlan({
+    state: "legacy", payload: RATS_KEYWORD_PAYLOAD, coverage: RATS_KEYWORD_PAYLOAD.coverage,
+  });
+  const submission = submissionFor(plan, "rats");
+  assert.equal(submission.front_door_scope, "all");
+  assert.ok(normalizeSearchExecutionSubmission(submission).ok);
+});
+
+test("a Contracts-scoped execution submits the scope it was actually served under", () => {
+  const plan = buildSearchRenderPlan(
+    { state: "legacy", payload: RATS_KEYWORD_PAYLOAD, coverage: RATS_KEYWORD_PAYLOAD.coverage },
+    { scope: SEARCH_FRONT_DOOR_SCOPES.contracts },
+  );
+  const submission = submissionFor(plan, "rats");
+  assert.equal(submission.front_door_scope, "contracts");
+  const normalized = normalizeSearchExecutionSubmission(submission);
+  assert.ok(normalized.ok, `expected a valid receipt, got ${normalized.reason}`);
+  assert.equal(normalized.value.front_door_scope, "contracts");
+
+  // The families a Contracts-only search never asked render as zero, but the receipt
+  // now names the scope so a consumer never reads that zero as "checked and empty".
+  assert.equal(normalized.value.family_counts.contracts, 1);
+  assert.equal(normalized.value.family_counts.meetings, 0);
+  assert.deepEqual(normalized.value.incomplete_families, []);
+});
+
+test("an unregistered front-door scope is rejected, never silently treated as all", () => {
+  const plan = buildSearchRenderPlan({
+    state: "legacy", payload: RATS_KEYWORD_PAYLOAD, coverage: RATS_KEYWORD_PAYLOAD.coverage,
+  });
+  const submission = { ...submissionFor(plan, "rats"), front_door_scope: "people" };
+  assert.equal(normalizeSearchExecutionSubmission(submission).reason, "front_door_scope");
 });
 
 test("place context travels as bounded scope, not as free-form fields", () => {

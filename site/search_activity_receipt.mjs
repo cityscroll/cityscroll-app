@@ -65,6 +65,10 @@ export function buildSearchExecutionSubmission(plan, { query, scope = {}, now = 
     query: { raw, normalized },
     search_path: SEARCH_ACTIVITY_CANONICAL_SEARCH_PATH,
     scope,
+    // The front-door narrowing actually requested (site/search_front_door_scope.mjs),
+    // not the place-context `scope` above. Without this, a Contracts-only execution's
+    // untouched families would read as "checked and empty" instead of "never asked".
+    front_door_scope: plan.scope?.id || "all",
     outcome: plan.outcome,
     rendered_count: plan.rendered_count,
     family_counts: plan.family_counts,
