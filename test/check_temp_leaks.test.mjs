@@ -54,7 +54,7 @@ test("check_temp_leaks fails closed and reports a deliberately leaked directory 
   });
 });
 
-test("check_temp_leaks ignores known non-repository residue (playwright, fm-secondmate-safety)", async () => {
+test("check_temp_leaks ignores known non-repository residue (Playwright scratch, dotfiles)", async () => {
   await withTempDir("leak-checker-fixture", async (fixtureDir) => {
     const isolatedTmp = join(fixtureDir, "tmp");
     mkdirSync(isolatedTmp);
@@ -62,7 +62,7 @@ test("check_temp_leaks ignores known non-repository residue (playwright, fm-seco
     const snapshot = await runChecker(["snapshot", "--out", snapshotPath], isolatedTmp);
     assert.equal(snapshot.status, 0, snapshot.stderr);
 
-    const ignoredNames = ["playwright-artifacts-abc123", "playwright_chromiumdev_profile-xyz", "fm-secondmate-safety.lock-dir"];
+    const ignoredNames = ["playwright-artifacts-abc123", "playwright_chromiumdev_profile-xyz", ".hidden-platform-bookkeeping"];
     for (const name of ignoredNames) mkdirSync(join(isolatedTmp, name));
     const check = await runChecker(["check", "--in", snapshotPath, "--label", "ignored-fixture"], isolatedTmp);
     assert.equal(check.status, 0, check.stderr);

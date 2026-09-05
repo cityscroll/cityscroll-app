@@ -24,12 +24,12 @@ import { dirname } from "node:path";
 //   - playwright / playwright_chromiumdev_profile*: Playwright removes its own
 //     download and browser-profile scratch as it reads it, and any residual
 //     directory belongs to Playwright's own lifecycle, not a suite in this repo.
-//   - fm-secondmate-safety*: another project's scratch on a shared machine.
 //   - dotfiles and platform bookkeeping entries (`.com.apple.*`, `.Trash`, etc.).
+// A shared machine may also host unrelated tools' scratch; extend this list with
+// an anchored prefix pattern rather than widening a check meant to catch new growth.
 const IGNORE_PATTERNS = [
   /^playwright/,
   /^playwright_chromiumdev_profile/,
-  /^fm-secondmate-safety/,
   /^\./,
   /^com\.apple/,
 ];
