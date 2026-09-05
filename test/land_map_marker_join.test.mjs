@@ -287,9 +287,11 @@ test("A4 the marker layer adds no choropleth, no search, and no fetch of its own
     "the only filled shapes are the schematic borough and parcel outlines");
   assert.doesNotMatch(html, /data-land-map-value|land-map-choropleth/);
 
-  // The whole projection is only ever reached through the shell's one committed URL.
-  assert.equal([...runtimeSrc.matchAll(/fetch\s*\(/g)].length, 1);
-  assert.match(runtimeSrc, /fetch\(LAND_MAP_POINTS_URL/);
+  // The whole projection is only ever reached through the shell's one committed URL, routed
+  // through fetchLandMapArtifact (LM-12's budgeted, typed-failure, bounded-retry wrapper).
+  assert.doesNotMatch(runtimeSrc, /\bfetch\s*\(/, "the shell should route requests through fetchLandMapArtifact, not fetch()");
+  assert.equal([...runtimeSrc.matchAll(/fetchLandMapArtifact\s*\(/g)].length, 1);
+  assert.match(runtimeSrc, /fetchLandMapArtifact\(LAND_MAP_POINTS_URL/);
 });
 
 test("A4 an id the canonical route rejects gets a point but never a link", () => {

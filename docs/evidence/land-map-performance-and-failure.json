@@ -1,0 +1,277 @@
+{
+  "schema": "cityscroll.land-map-performance-and-failure-receipt.v1",
+  "card": "cityscroll-land-map-view/lm-12-performance-and-failure",
+  "browser_mode": "headless chromium (playwright), offline: every remote host aborted",
+  "routes": {
+    "list": "/browse/zoning/",
+    "map": "/browse/zoning/?view=map"
+  },
+  "budgets": {
+    "list_snapshot_bytes_max": 400000,
+    "list_first_paint_ms_max": 3000,
+    "map_activation_requests_max": 4,
+    "map_activation_bytes_max": 500000,
+    "map_activation_ms_max": 3000,
+    "map_projection_bytes_max": 40000,
+    "map_request_timeout_ms": 4000,
+    "map_transient_retry_max": 2,
+    "map_transient_retry_delay_ms": 150
+  },
+  "budgets_source": "site/land_map_performance_budget.mjs#LAND_MAP_BUDGETS",
+  "snapshot_vintage": {
+    "projection_schema": "cityscroll.land_project_map_points.v1",
+    "resolver_version": "cityscroll.land_project_geography.v1",
+    "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1",
+    "list_snapshot_bytes": 249323,
+    "projection_bytes": 22849
+  },
+  "measurements": {
+    "cold": {
+      "cache_state": "cold",
+      "list_first_paint_ms": 2514.9,
+      "list_requests_count": 226,
+      "list_state": {
+        "rows": 40,
+        "map_state": "absent",
+        "failure_kind": null,
+        "markers": 0,
+        "mapped": 0,
+        "unmapped": 0,
+        "total": 0
+      },
+      "map_activation_ms": 145.0,
+      "map_activation_requests": [
+        {
+          "url": "/data/land_project_map_points.json",
+          "resource_type": "fetch",
+          "bytes": 22849
+        },
+        {
+          "url": "/data/geography/layers/borough/2026-05-26.json",
+          "resource_type": "fetch",
+          "bytes": 98592
+        },
+        {
+          "url": "/data/geography/layers/community_district/2026-05-26.json",
+          "resource_type": "fetch",
+          "bytes": 117203
+        },
+        {
+          "url": "/data/geography/layers/council_district/2026-05-26.json",
+          "resource_type": "fetch",
+          "bytes": 114996
+        }
+      ],
+      "map_activation_requests_count": 4,
+      "map_activation_bytes": 353640,
+      "map_state": {
+        "rows": 40,
+        "map_state": "ready",
+        "failure_kind": null,
+        "markers": 33,
+        "mapped": 33,
+        "unmapped": 7,
+        "total": 40
+      }
+    },
+    "warm": {
+      "cache_state": "warm",
+      "list_first_paint_ms": 1694.9,
+      "list_requests_count": 210,
+      "list_state": {
+        "rows": 40,
+        "map_state": "absent",
+        "failure_kind": null,
+        "markers": 0,
+        "mapped": 0,
+        "unmapped": 0,
+        "total": 0
+      },
+      "map_activation_ms": 145.9,
+      "map_activation_requests": [
+        {
+          "url": "/data/land_project_map_points.json",
+          "resource_type": "fetch",
+          "bytes": 22849
+        },
+        {
+          "url": "/data/geography/layers/borough/2026-05-26.json",
+          "resource_type": "fetch",
+          "bytes": 98592
+        },
+        {
+          "url": "/data/geography/layers/community_district/2026-05-26.json",
+          "resource_type": "fetch",
+          "bytes": 117203
+        },
+        {
+          "url": "/data/geography/layers/council_district/2026-05-26.json",
+          "resource_type": "fetch",
+          "bytes": 114996
+        }
+      ],
+      "map_activation_requests_count": 4,
+      "map_activation_bytes": 353640,
+      "map_state": {
+        "rows": 40,
+        "map_state": "ready",
+        "failure_kind": null,
+        "markers": 33,
+        "mapped": 33,
+        "unmapped": 7,
+        "total": 40
+      }
+    }
+  },
+  "scenarios": [
+    {
+      "scenario": "successful-map",
+      "state": {
+        "rows": 40,
+        "map_state": "ready",
+        "failure_kind": null,
+        "markers": 33,
+        "mapped": 33,
+        "unmapped": 7,
+        "total": 40
+      }
+    },
+    {
+      "scenario": "offline",
+      "state": {
+        "rows": 40,
+        "map_state": "failed",
+        "failure_kind": "dependency",
+        "markers": 0,
+        "mapped": 0,
+        "unmapped": 0,
+        "total": 0
+      }
+    },
+    {
+      "scenario": "malformed",
+      "state": {
+        "rows": 40,
+        "map_state": "failed",
+        "failure_kind": "invalid-data",
+        "markers": 0,
+        "mapped": 0,
+        "unmapped": 0,
+        "total": 0
+      }
+    },
+    {
+      "scenario": "dependency-404",
+      "state": {
+        "rows": 40,
+        "map_state": "failed",
+        "failure_kind": "projection",
+        "markers": 0,
+        "mapped": 0,
+        "unmapped": 0,
+        "total": 0
+      }
+    },
+    {
+      "scenario": "slow-network-recovering",
+      "state": {
+        "rows": 40,
+        "map_state": "ready",
+        "failure_kind": null,
+        "markers": 33,
+        "mapped": 33,
+        "unmapped": 7,
+        "total": 40
+      },
+      "projection_attempts": 2
+    }
+  ],
+  "list_completeness": {
+    "distinct_row_counts_across_every_scenario": [
+      40
+    ],
+    "list_remained_complete_and_canonical_through_every_map_failure": true
+  },
+  "budget_checks": {
+    "list_snapshot_bytes_within_budget": true,
+    "projection_bytes_within_budget": true,
+    "cold_list_first_paint_within_budget": true,
+    "warm_list_first_paint_within_budget": true,
+    "cold_map_activation_within_budget": true,
+    "warm_map_activation_within_budget": true,
+    "cold_activation_requests_within_budget": true,
+    "warm_activation_requests_within_budget": true
+  },
+  "files": [
+    {
+      "name": "land-map-successful.png",
+      "bytes": 969336,
+      "sha256": "4df9b534c0147fbd37a6d1296539954e57f171a24350cbfdd577dcfdb95ca721",
+      "observed": {
+        "rows": 40,
+        "map_state": "ready",
+        "failure_kind": null,
+        "markers": 33,
+        "mapped": 33,
+        "unmapped": 7,
+        "total": 40
+      }
+    },
+    {
+      "name": "land-map-offline.png",
+      "bytes": 876021,
+      "sha256": "11f8e01ce62d24fc2ba2a461229c5c4dd07ee2555181be3eaad3d5ec4d168d57",
+      "observed": {
+        "rows": 40,
+        "map_state": "failed",
+        "failure_kind": "dependency",
+        "markers": 0,
+        "mapped": 0,
+        "unmapped": 0,
+        "total": 0
+      }
+    },
+    {
+      "name": "land-map-malformed.png",
+      "bytes": 676474,
+      "sha256": "46a6f87734a01a6553b31d049905312bfe42c0fbee5a5a38c37d82e048ad600c",
+      "observed": {
+        "rows": 40,
+        "map_state": "failed",
+        "failure_kind": "invalid-data",
+        "markers": 0,
+        "mapped": 0,
+        "unmapped": 0,
+        "total": 0
+      }
+    },
+    {
+      "name": "land-map-dependency-404.png",
+      "bytes": 875095,
+      "sha256": "8c7c4c25a06f704613a5345a836829fe486d31f1361ae215b73890be65237531",
+      "observed": {
+        "rows": 40,
+        "map_state": "failed",
+        "failure_kind": "projection",
+        "markers": 0,
+        "mapped": 0,
+        "unmapped": 0,
+        "total": 0
+      }
+    },
+    {
+      "name": "land-map-slow-recovering.png",
+      "bytes": 974761,
+      "sha256": "d09396969f75bbf4b39e8f51f239223de12df99bf0f5c84b4a0910064bd7c3e5",
+      "observed": {
+        "rows": 40,
+        "map_state": "ready",
+        "failure_kind": null,
+        "markers": 33,
+        "mapped": 33,
+        "unmapped": 7,
+        "total": 40
+      }
+    }
+  ]
+}

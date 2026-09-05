@@ -100,7 +100,11 @@ test("A2 the runtime registers the renderer seam LM-04 left for it", () => {
 
 test("A2 browse Map activation requests exactly one approved projection path", () => {
   assert.equal(LAND_MAP_POINTS_URL, "data/land_project_map_points.json");
-  const fetches = [...runtimeSrc.matchAll(/fetch\(([^,)]+)/g)].map((match) => match[1].trim());
+  // LM-12 routes this fetch through fetchLandMapArtifact (the budgeted, typed-failure, bounded-
+  // retry wrapper) instead of a bare fetch() call; the shell itself still names exactly one
+  // artifact and holds no `fetch(` call site of its own.
+  assert.doesNotMatch(runtimeSrc, /\bfetch\(/, "the shell should route requests through fetchLandMapArtifact, not fetch() directly");
+  const fetches = [...runtimeSrc.matchAll(/fetchLandMapArtifact\(([^,)]+)/g)].map((match) => match[1].trim());
   assert.deepEqual(fetches, ["LAND_MAP_POINTS_URL"], "the shell adds no second request");
   assert.equal(points.schema, "cityscroll.land_project_map_points.v1");
 });

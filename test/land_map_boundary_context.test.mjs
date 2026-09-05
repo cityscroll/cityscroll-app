@@ -103,6 +103,20 @@ test("missing and malformed artifacts disclose missingness without erasing healt
   assert.match(evidence, /data-land-boundary-evidence-source="test-boundaries"/);
 });
 
+test("LM-12: a layer request that never settles degrades to 'unavailable' within its budget instead of hanging the whole context", async () => {
+  const now = Date.now();
+  const context = await loadLandMapBoundaryContext(async (url) => {
+    if (url.includes("council_district")) return new Promise(() => {}); // never resolves or rejects
+    if (url.includes("community_district")) return { ok: true, json: async () => payload("community_district", [feature("K03", "Brooklyn Community District 3")]) };
+    return { ok: true, json: async () => payload("borough", [feature("3", "Brooklyn")]) };
+  }, { timeoutMs: 30 });
+  const nowMs = Date.now();
+  assert.ok(nowMs - now < 500, "a hung layer must not hold the whole context open anywhere near a real request budget");
+  assert.equal(context.state, "partial");
+  assert.deepEqual(context.missing, ["council_district"]);
+  assert.equal(context.records.length, 2, "the two healthy layers still resolved");
+});
+
 test("boundary labels are explicit canonical links and geometry is non-interactive context", async () => {
   const context = await loadLandMapBoundaryContext(validFetch());
   const hash = "#land?status=all&stage=any&family=rezoning&view=map&facet=%7B%22regulatoryEffect%22%3A%22upzone%22%7D";
