@@ -208,6 +208,27 @@ function counts(ops, unchanged) {
 }
 
 /**
+ * Reduce a partition snapshot to the watermarks that identify the source
+ * vintage represented by each published model. The generation fence stores
+ * this read model rather than re-deriving watermarks from source documents.
+ */
+export function watermarksFromSnapshot(snapshot) {
+  if (!snapshot || snapshot.schema !== SNAPSHOT_SCHEMA) {
+    fail("snapshot_schema", "partition snapshot has the wrong schema");
+  }
+  const watermarks = {};
+  for (const modelId of Object.keys(snapshot.models || {}).sort(compareText)) {
+    const model = snapshot.models[modelId];
+    const partitions = {};
+    for (const partition of Object.keys(model?.partitions || {}).sort(compareText)) {
+      partitions[partition] = model.partitions[partition]?.watermark ?? null;
+    }
+    watermarks[modelId] = partitions;
+  }
+  return watermarks;
+}
+
+/**
  * Compare a prior snapshot with the current one. Returns the plan or throws a
  * DeltaPlanError; never returns a partial plan.
  */
