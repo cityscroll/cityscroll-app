@@ -1,0 +1,80 @@
+name: D1 explicit rebuild
+
+on:
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: Why the derived D1 state requires a full rebuild
+        required: true
+        type: string
+      source_snapshot:
+        description: Repository-relative path to the captured D1 partition snapshot
+        required: true
+        type: string
+      confirmation:
+        description: Exact confirmation token derived from the reason and snapshot hash
+        required: true
+        type: string
+      estimated_writes:
+        description: Positive estimate of D1 writes for the rebuild
+        required: true
+        type: string
+
+concurrency:
+  group: d1-explicit-rebuild
+  cancel-in-progress: false
+
+jobs:
+  stage:
+    name: Stage and verify D1 rebuild
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Require all rebuild inputs
+        env:
+          REBUILD_REASON: ${{ inputs.reason }}
+          SOURCE_SNAPSHOT: ${{ inputs.source_snapshot }}
+          CONFIRMATION: ${{ inputs.confirmation }}
+          ESTIMATED_WRITES: ${{ inputs.estimated_writes }}
+        run: |
+          set -euo pipefail
+          test -n "$REBUILD_REASON"
+          test -n "$SOURCE_SNAPSHOT"
+          test -n "$CONFIRMATION"
+          test -n "$ESTIMATED_WRITES"
+      - name: Stage guarded rebuild artifacts
+        env:
+          REBUILD_REASON: ${{ inputs.reason }}
+          SOURCE_SNAPSHOT: ${{ inputs.source_snapshot }}
+          CONFIRMATION: ${{ inputs.confirmation }}
+          ESTIMATED_WRITES: ${{ inputs.estimated_writes }}
+        run: |
+          set -euo pipefail
+          node tools/d1_explicit_rebuild.mjs \
+            --reason "$REBUILD_REASON" \
+            --source-snapshot "$SOURCE_SNAPSHOT" \
+            --confirm "$CONFIRMATION" \
+            --estimate-writes "$ESTIMATED_WRITES" \
+            --actor "$GITHUB_ACTOR" \
+            --run-id "$GITHUB_RUN_ID" \
+            --workflow "$GITHUB_WORKFLOW" \
+            --attempt "$GITHUB_RUN_ATTEMPT" \
+            --output-dir "$RUNNER_TEMP/d1-explicit-rebuild"
+      - name: Verify staged plan through the bounded publisher
+        run: |
+          set -euo pipefail
+          node tools/d1_bounded_publisher.mjs dry-run \
+            --plan "$RUNNER_TEMP/d1-explicit-rebuild/rebuild-plan.json" \
+            --generation 1 \
+            --out "$RUNNER_TEMP/d1-explicit-rebuild/bounded-publish-dry-run.verify.json"
+      - name: Upload staged rebuild artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: d1-explicit-rebuild-${{ github.run_id }}
+          path: ${{ runner.temp }}/d1-explicit-rebuild
+          if-no-files-found: error

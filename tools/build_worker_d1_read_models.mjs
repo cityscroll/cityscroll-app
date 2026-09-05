@@ -7,11 +7,11 @@
  * deliberately ephemeral: CI applies it to the existing D1 binding and does
  * not put the corpora back into the Worker bundle.
  *
- * Rows come from tools/d1_stable_keys.mjs, keyed by the identities the manifest
+ * Legacy SQL generator. Rows come from tools/d1_stable_keys.mjs, keyed by the identities the manifest
  * declares, so a rerun over the same inputs names the same logical rows in the
  * same order. Two publication shapes are generated from those rows:
  *
- *   --mode rebuild   (default) the explicit full rebuild: table-wide deletes, then
+ *   --mode rebuild   the guarded full rebuild: table-wide deletes, then
  *                    one insert per row. This is the rollback path and the first
  *                    publication path.
  *   --mode upsert    keyed convergence: one INSERT ... ON CONFLICT DO UPDATE per row
@@ -29,7 +29,8 @@
  * every current row, including rows the planner marks unchanged.
  *
  * Usage:
- *   node tools/build_worker_d1_read_models.mjs [--output-dir <dir>] [--mode rebuild|upsert]
+ *   node tools/build_worker_d1_read_models.mjs [--output-dir <dir>] [--mode upsert]
+ *                                              [--allow-rebuild <capability>]
  *                                              [--deletes <plan.json>] [--check]
  */
 
@@ -47,6 +48,7 @@ import {
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const DEFAULT_OUT = resolve(ROOT, "worker", ".d1-read-models");
 export const BUILD_MODES = Object.freeze(["rebuild", "upsert"]);
+export const REBUILD_ALLOW_TOKEN = "d1-explicit-rebuild-v1";
 const OUTPUT_FILES = Object.freeze({
   keyword_search: "keyword_search_read_model.sql",
   ocp_awards: "ocp_awards_read_model.sql",
@@ -152,33 +154,52 @@ export function statementsForModel(entry, sourceDocument, { mode = "rebuild", de
   return { sql: lines.join("\n"), rowCount: rows.length };
 }
 
-function parseArgs(argv) {
-  const out = { outputDir: DEFAULT_OUT, check: false, mode: "rebuild", deletesPath: null };
+export function parseArgs(argv) {
+  const out = { outputDir: DEFAULT_OUT, check: false, mode: "upsert", deletesPath: null, allowRebuild: null };
   for (let i = 2; i < argv.length; i += 1) {
-    if (argv[i] === "--output-dir") out.outputDir = resolve(ROOT, argv[++i]);
-    else if (argv[i] === "--check") out.check = true;
-    else if (argv[i] === "--mode") out.mode = argv[++i];
-    else if (argv[i] === "--deletes") out.deletesPath = resolve(ROOT, argv[++i]);
-    else throw new Error(`Unknown argument: ${argv[i]}`);
+    const flag = argv[i];
+    const next = () => {
+      i += 1;
+      if (i >= argv.length || argv[i].startsWith("--")) throw new Error(`${flag} needs a value`);
+      return argv[i];
+    };
+    if (flag === "--output-dir") out.outputDir = resolve(ROOT, next());
+    else if (flag === "--check") out.check = true;
+    else if (flag === "--mode") out.mode = next();
+    else if (flag === "--deletes") out.deletesPath = resolve(ROOT, next());
+    else if (flag === "--allow-rebuild") out.allowRebuild = next();
+    else throw new Error(`Unknown argument: ${flag}`);
   }
   if (!BUILD_MODES.includes(out.mode)) throw new Error(`--mode must be one of ${BUILD_MODES.join(", ")}`);
   if (out.deletesPath && out.mode !== "upsert") throw new Error("--deletes applies to --mode upsert only");
+  if (out.mode === "rebuild" && out.allowRebuild !== REBUILD_ALLOW_TOKEN) {
+    throw new Error("--mode rebuild is reserved for tools/d1_explicit_rebuild.mjs");
+  }
+  if (out.mode !== "rebuild" && out.allowRebuild !== null) {
+    throw new Error("--allow-rebuild applies only to --mode rebuild");
+  }
   return out;
 }
 
-function main() {
-  const { outputDir, check, mode, deletesPath } = parseArgs(process.argv);
-  const manifest = loadManifest();
-  const plan = deletesPath ? JSON.parse(readFileSync(deletesPath, "utf8")) : null;
-  mkdirSync(outputDir, { recursive: true });
-  const report = { check, mode, deletes: deletesPath ? "plan" : "none" };
+export function generateReadModelOutputs({ outputDir = DEFAULT_OUT, check = false, mode = "upsert", deletesPath = null, allowRebuild = null, manifest: suppliedManifest = null, sourceDocuments = null } = {}) {
+  const args = parseArgs([
+    "node", "tools/build_worker_d1_read_models.mjs",
+    "--output-dir", outputDir, "--mode", mode,
+    ...(check ? ["--check"] : []),
+    ...(deletesPath ? ["--deletes", deletesPath] : []),
+    ...(allowRebuild ? ["--allow-rebuild", allowRebuild] : []),
+  ]);
+  const manifest = suppliedManifest || loadManifest();
+  const plan = args.deletesPath ? JSON.parse(readFileSync(args.deletesPath, "utf8")) : null;
+  mkdirSync(args.outputDir, { recursive: true });
+  const report = { check: args.check, mode: args.mode, deletes: args.deletesPath ? "plan" : "none" };
   const written = {};
   for (const modelId of Object.keys(OUTPUT_FILES)) {
     const entry = modelEntry(manifest, modelId);
-    const source = readSourceDocument(entry);
+    const source = sourceDocuments?.[modelId] ?? readSourceDocument(entry);
     const deletes = plan?.models?.find((model) => model.model_id === modelId)?.partitions || null;
-    const { sql, rowCount } = statementsForModel(entry, source, { mode, deletes });
-    const path = resolve(outputDir, OUTPUT_FILES[modelId]);
+    const { sql, rowCount } = statementsForModel(entry, source, { mode: args.mode, deletes });
+    const path = resolve(args.outputDir, OUTPUT_FILES[modelId]);
     writeFileSync(path, sql);
     written[modelId] = { path, bytes: Buffer.byteLength(sql), rows: rowCount, source };
   }
@@ -195,7 +216,12 @@ function main() {
     entity_count: Object.keys(written.entity_intelligence.source.by_ref || {}).length,
     entity_rows: written.entity_intelligence.rows,
   });
-  console.log(JSON.stringify(report));
+  return report;
+}
+
+function main() {
+  const args = parseArgs(process.argv);
+  console.log(JSON.stringify(generateReadModelOutputs(args)));
 }
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {

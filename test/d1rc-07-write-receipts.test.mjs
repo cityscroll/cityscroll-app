@@ -252,7 +252,7 @@ test("every D1 exit path produces exactly one valid terminal receipt with the ri
     previousFingerprint: FINGERPRINT_A,
     rollback: {
       compensatesReceipt: "1004:1:none",
-      rebuildCommand: "node tools/build_worker_d1_read_models.mjs --mode rebuild",
+      rebuildCommand: "node tools/d1_explicit_rebuild.mjs --reason <reason> --source-snapshot <snapshot> --confirm <confirmation> --estimate-writes <n>",
       reason: "restore a consistent read model after the permanent failure",
     },
   });
@@ -272,7 +272,7 @@ test("rollback is refused outside outcome=rolled_back, and required inside it", 
       outcome: "published",
       reason: "should not carry a rollback pointer",
       deployFingerprint: FINGERPRINT_A,
-      rollback: { compensatesReceipt: "x", rebuildCommand: "node tools/build_worker_d1_read_models.mjs --mode rebuild", reason: "n/a" },
+      rollback: { compensatesReceipt: "x", rebuildCommand: "node tools/d1_explicit_rebuild.mjs --reason <reason> --source-snapshot <snapshot> --confirm <confirmation> --estimate-writes <n>", reason: "n/a" },
     }),
     /rollback.*must be null unless outcome is "rolled_back"/,
   );
@@ -436,7 +436,7 @@ test("a rollback appends a compensating receipt rather than rewriting the receip
       deployFingerprint: FINGERPRINT_A,
       rollback: {
         compensatesReceipt: original.receipt_id,
-        rebuildCommand: "node tools/build_worker_d1_read_models.mjs --mode rebuild",
+        rebuildCommand: "node tools/d1_explicit_rebuild.mjs --reason <reason> --source-snapshot <snapshot> --confirm <confirmation> --estimate-writes <n>",
         reason: "restore a consistent read model",
       },
     });

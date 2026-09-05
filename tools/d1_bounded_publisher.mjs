@@ -32,15 +32,14 @@
  * FTS5 companion's upsert rendering): that pair is generated from one op entry
  * and batches are chunked by op, never by rendered statement.
  *
- * This module only accepts "delta" plans (tools/d1_delta_plan.mjs plan without
- * --rebuild). A "rebuild" plan keeps using the existing full-reset path in
- * tools/build_worker_d1_read_models.mjs --mode rebuild; that remains the
- * rollback for this publisher (flag off + rebuild), with the operator's reason
- * recorded via recordRollback.
+ * This module accepts keyed delta plans and the staged "rebuild" plan produced
+ * by tools/d1_explicit_rebuild.mjs. Rebuild batches retain the same fence,
+ * checkpoint, retry, and receipt machinery; this module still never decides
+ * that a rebuild is necessary.
  *
- * This publisher is off by default (see boundedPublisherEnabled) and is not
- * yet wired into .github/workflows/deploy-worker.yml; that remains the
- * existing rebuild/upsert SQL path until a later card switches the gate.
+ * This publisher is off by default (see boundedPublisherEnabled). The ordinary
+ * deploy workflow uses the upsert SQL path; the workflow_dispatch rebuild job
+ * stages a plan for this publisher and does not directly execute SQL.
  *
  * Usage:
  *   node tools/d1_bounded_publisher.mjs plan --plan <deltaplan.json> --generation <n>
@@ -63,7 +62,7 @@ import { dirname, join, resolve } from "node:path";
 import { promisify } from "node:util";
 import { fileURLToPath } from "node:url";
 
-import { deleteOrder, deleteStatement, readSourceDocument, upsertStatements } from "./build_worker_d1_read_models.mjs";
+import { deleteOrder, deleteStatement, insertStatement, readSourceDocument, upsertStatements } from "./build_worker_d1_read_models.mjs";
 import { PLAN_SCHEMA } from "./d1_delta_plan.mjs";
 import { checkGenerationCommit, createWranglerKvStore, fileStore } from "./d1_generation_fence.mjs";
 import { loadManifest, modelEntry } from "./d1_manifest.mjs";
@@ -140,7 +139,7 @@ function estimatedWritesFor(op) {
  */
 export function planBatches({ plan, manifest, sourceDocuments, generation, maxOpsPerBatch = DEFAULT_MAX_OPS_PER_BATCH }) {
   if (!plan || plan.schema !== PLAN_SCHEMA) fail("plan is missing or has the wrong schema");
-  if (plan.operation !== "delta") fail(`bounded publisher accepts delta plans only, got operation "${plan.operation}"; use the rebuild path`);
+  if (!["delta", "rebuild"].includes(plan.operation)) fail(`bounded publisher accepts delta or rebuild plans only, got operation "${plan.operation}"`);
   if (!Number.isInteger(generation) || generation < 1) fail("generation must be a positive integer");
   if (!Number.isInteger(maxOpsPerBatch) || maxOpsPerBatch < 1) fail("maxOpsPerBatch must be a positive integer");
 
@@ -153,8 +152,17 @@ export function planBatches({ plan, manifest, sourceDocuments, generation, maxOp
     const entry = modelEntry(manifest, planModel.model_id);
     const source = sourceDocuments[planModel.model_id];
     if (source === undefined) fail(`no source document for ${planModel.model_id}`);
-    const currentRowsByKey = new Map(tableRows(entry, source).rows.map((row) => [`${row.table}|${row.key}`, row]));
-    const partitions = resolvePartitionOps(entry, planModel, currentRowsByKey);
+    const currentRows = tableRows(entry, source).rows;
+    const currentRowsByKey = new Map(currentRows.map((row) => [`${row.table}|${row.key}`, row]));
+    const partitions = plan.operation === "rebuild"
+      ? [{
+          partition: "__model__",
+          ops: [
+            ...deleteOrder(entry).map((table) => ({ kind: "truncate", table })),
+            ...currentRows.map((row) => ({ kind: "insert", table: row.table, key_values: row.key_values, columns: row.columns })),
+          ],
+        }]
+      : resolvePartitionOps(entry, planModel, currentRowsByKey);
 
     let modelBatchCount = 0;
     let modelEstimatedWrites = 0;
@@ -200,8 +208,12 @@ export function planBatches({ plan, manifest, sourceDocuments, generation, maxOp
 export function renderBatch(entry, ops) {
   const lines = [];
   for (const op of ops) {
-    if (op.kind === "delete") {
+    if (op.kind === "truncate") {
+      lines.push(`DELETE FROM ${op.table};`);
+    } else if (op.kind === "delete") {
       lines.push(deleteStatement(entry, op.table, op.key_values));
+    } else if (op.kind === "insert") {
+      lines.push(insertStatement(entry, { table: op.table, key_values: op.key_values, columns: op.columns }));
     } else {
       lines.push(...upsertStatements(entry, { table: op.table, key_values: op.key_values, columns: op.columns }));
     }
