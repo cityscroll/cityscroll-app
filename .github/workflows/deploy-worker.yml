@@ -160,7 +160,7 @@ jobs:
         run: node tools/build_keyword_search_index.mjs --check
       - name: Build D1 search, OCP, and entity-intelligence read models
         if: steps.d1-publication-gate.outputs.should-publish == 'true' && steps.d1-generation-claim.outputs.claimed == 'true'
-        run: node tools/build_worker_d1_read_models.mjs --output-dir worker/.d1-read-models
+        run: node tools/build_worker_d1_read_models.mjs --mode upsert --output-dir worker/.d1-read-models
       - name: Publish D1 search, OCP, and entity-intelligence read models
         id: d1-publication-sql
         if: steps.d1-publication-gate.outputs.should-publish == 'true' && steps.d1-generation-claim.outputs.claimed == 'true'
@@ -300,8 +300,8 @@ jobs:
             --local .artifacts/d1-publication-receipts.jsonl \
             --binding ALERT_STATE --remote true --config worker/wrangler.toml \
             --out .artifacts/d1-publication-receipt-final.json
-      # D1 publication rollback: pause new delta publication and use the explicit rebuild path
-      # (`node tools/build_worker_d1_read_models.mjs --mode rebuild`). Never delete fence state.
+      # D1 publication rollback is a separate, workflow_dispatch-only operation.
+      # Never delete fence state from the ordinary deploy path.
       # Route slices are immutable and versioned. Publish every slice first, then
       # publish the small manifests last so a live reader never follows a partial version.
       - name: Publish Near You and meeting route read models

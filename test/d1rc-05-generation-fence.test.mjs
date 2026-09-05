@@ -118,8 +118,10 @@ test("the workflow keeps every fence mutation behind the existing publication ga
   assert.match(workflow, /d1_generation_fence\.mjs renew/);
   assert.match(workflow, /d1_generation_fence\.mjs complete/);
   assert.match(workflow, /if: steps\.d1-publication-gate\.outputs\.should-publish == 'true'/);
-  assert.match(workflow, /D1 publication rollback: pause new delta publication and use the explicit rebuild path/);
-  assert.match(workflow, /node tools\/build_worker_d1_read_models\.mjs --mode rebuild/);
+  assert.match(workflow, /D1 publication rollback is a separate, workflow_dispatch-only operation/);
+  assert.match(workflow, /node tools\/build_worker_d1_read_models\.mjs --mode upsert/);
+  const rebuildWorkflow = readFileSync(join(ROOT, ".github/workflows/d1-rebuild.yml"), "utf8");
+  assert.match(rebuildWorkflow, /node tools\/d1_explicit_rebuild\.mjs/);
   assert.match(workflow, /d1-publication:state:v1/);
   assert.equal(D1_GENERATION_FENCE_SCHEMA, "cityscroll.d1-publication-generation-fence.v1");
 });

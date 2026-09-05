@@ -216,7 +216,7 @@ test("the CLI snapshots the live read models and plans a zero-operation delta ag
     assert.equal(result.status, 2, "plan without a prior or a rebuild reason is a usage error");
 
     const rebuildPath = join(dir, "rebuild.json");
-    result = spawnSync(process.execPath, [TOOL, "plan", "--prior", join(dir, "absent.json"), "--current", snapshotPath, "--rebuild", "first publication", "--out", rebuildPath], { cwd: ROOT, encoding: "utf8" });
+    result = spawnSync(process.execPath, [TOOL, "plan", "--prior", join(dir, "absent.json"), "--current", snapshotPath, "--rebuild", "first publication", "--allow-rebuild", "d1-explicit-rebuild-v1", "--out", rebuildPath], { cwd: ROOT, encoding: "utf8" });
     assert.equal(result.status, 0, result.stderr);
     const rebuild = JSON.parse(readFileSync(rebuildPath, "utf8"));
     assert.equal(rebuild.operation, "rebuild");
@@ -327,7 +327,7 @@ test("entity metadata deltas include derived project coverage and ontology inven
 test("SQL builder publishes nonempty entities and their complete metadata", () => {
   const dir = mkdtempSync(join(tmpdir(), "d1rc-03-sql-"));
   try {
-    const result = spawnSync(process.execPath, [join(ROOT, "tools/build_worker_d1_read_models.mjs"), "--output-dir", dir],
+    const result = spawnSync(process.execPath, [join(ROOT, "tools/build_worker_d1_read_models.mjs"), "--mode", "rebuild", "--allow-rebuild", "d1-explicit-rebuild-v1", "--output-dir", dir],
       { cwd: ROOT, encoding: "utf8" });
     assert.equal(result.status, 0, result.stderr);
     const receipt = JSON.parse(result.stdout);
