@@ -277,10 +277,9 @@ export async function resolveMachineClientProfile(env, authorizationHeader, prof
       : { resolution: "unauthorized", profile: null };
   }
 
-  // A presented-but-unmatched credential is rejected whenever ANY profile secret is
-  // configured — otherwise a revoked profile token would silently downgrade to
-  // anonymous access instead of failing.
-  if (presented && anyProfileSecretConfigured(env, profiles)) {
+  // A presented-but-unmatched credential always fails closed, including after the
+  // final profile secret is removed. Only callers without a bearer are anonymous.
+  if (presented) {
     return { resolution: "unauthorized", profile: null };
   }
 
