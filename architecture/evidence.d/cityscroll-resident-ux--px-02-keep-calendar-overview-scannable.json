@@ -1,0 +1,29 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-resident-ux/px-02-keep-calendar-overview-scannable",
+  "status": "implemented",
+  "fingerprint": "px-02-keep-calendar-overview-scannable.v1",
+  "updated_at": "2026-09-05T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "calendar-day-agenda-contract",
+      "path": "site/calendar_day_agenda.mjs"
+    },
+    {
+      "id": "calendar-density-gate",
+      "path": "test/calendar_density_disclosure.test.mjs"
+    },
+    {
+      "id": "calendar-density-harness",
+      "path": "test/harness/calendar_density_harness.html"
+    },
+    {
+      "id": "calendar-density-evidence-capture",
+      "path": "tools/capture_calendar_density_evidence.py"
+    },
+    {
+      "id": "calendar-density-evidence-manifest",
+      "path": "docs/evidence/calendar-density-disclosure/manifest.json"
+    }
+  ]
+}

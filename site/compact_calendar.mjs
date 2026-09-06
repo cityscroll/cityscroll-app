@@ -21,17 +21,50 @@
  * neither pointer hover nor script is required to read either form. Crowded
  * days keep every occurrence in the document behind a native `<details>`
  * disclosure rather than dropping or silently truncating any of them.
+ *
+ * Two bounds keep the overview readable without hiding anything. A day cell
+ * paints at most `MAX_VISIBLE_OCCURRENCES_PER_DAY` occurrences, and each of
+ * those titles is given a visual line budget in the grid — the full title
+ * stays in the document and in the accessibility tree, so the clipping is a
+ * painting decision and never a content one. A crowded day's remainder is
+ * reached through a labelled agenda trigger that opens the complete day beside
+ * the month (`calendar_day_agenda.mjs`) rather than by expanding the month row
+ * the reader is using to see the shape of the month.
  */
 
 import { occurrenceDay, evaluateDisplayCluster } from "./calendar_display.mjs";
 import {
+  bindCalendarEventPreview,
   calendarEventPreviewFacts,
   renderCalendarEventPreviewButton,
 } from "./calendar_event_preview.mjs";
+import {
+  bindCalendarDayAgenda,
+  calendarDayAgendaFacts,
+  renderCalendarDayAgendaButton,
+} from "./calendar_day_agenda.mjs";
 
-// Every surface that mounts this component reaches the shared in-place event
-// preview (PX-01) through it, so one import gives a host both halves.
-export { bindCalendarEventPreview } from "./calendar_event_preview.mjs";
+/**
+ * The one mount for everything this shared renderer emits: the in-place event
+ * preview (PX-01) and the crowded-day agenda (PX-02).
+ *
+ * Both are delegated, idempotent and rerender-proof, and both reveal their
+ * affordance only once the behaviour behind it is listening, so mounting them
+ * together is what makes a container's offer consistent: a calendar never
+ * shows a clipped title whose full reading is unreachable, nor an agenda
+ * trigger with nothing behind it.
+ *
+ * This is deliberately the only mount this module exports. Every registered
+ * host reaches its calendar behaviour through the shared renderer, so a host
+ * that mounts the component at all inherits both halves and cannot reach for
+ * one of them by mistake. It returns the preview controller, which is what
+ * this module's callers have always been handed.
+ */
+export function bindCompactMonthCalendar(root, options = {}) {
+  const preview = bindCalendarEventPreview(root, options);
+  bindCalendarDayAgenda(root, options);
+  return preview;
+}
 
 export const COMPACT_MONTH_VIEW_SCHEMA = "cityscroll.compact_month_view.v1";
 export const COMPACT_MONTH_NON_RENDER_SCHEMA = "cityscroll.compact_month_non_render.v1";
@@ -41,6 +74,20 @@ export const COMPACT_MONTH_NON_RENDER_SCHEMA = "cityscroll.compact_month_non_ren
 // commissioned density rule so crowded-day handling reads as one reviewed
 // number, not a per-surface guess.
 export const MAX_VISIBLE_OCCURRENCES_PER_DAY = 3;
+
+// The visual line budget applied to an occurrence title inside the month grid.
+// Bounding the item count alone does not bound reading density: one long
+// procurement title can be a paragraph, and three of them decide how tall a
+// week is. Two lines is enough to recognise a notice a reader has seen before
+// and to tell two neighbouring ones apart, which is the overview's job; the
+// unabridged title is one control away in the event preview and in the day
+// agenda, and it is never removed from the document, so nothing about the
+// budget reaches assistive technology as a truncation.
+//
+// The renderer emits it as a custom property rather than hard-coding it in
+// CSS, so the number a capture measures is the number this module declares.
+export const COMPACT_MONTH_TITLE_LINE_BUDGET = 2;
+export const COMPACT_MONTH_TITLE_LINES_PROPERTY = "--compact-month-title-lines";
 
 const WEEK_LENGTH = 7;
 const GRID_WEEKS = 6;
@@ -317,6 +364,29 @@ function occurrenceItemHTML(occurrence, esc) {
     "</li>";
 }
 
+// A crowded day's remainder, rendered twice for two different readers and
+// never dropped for either.
+//
+// The native `<details>` is the unenhanced reading: with scripting off it is
+// the only way to reach the fourth event, so it stays in the document and
+// stays complete. It is also what print opens, because a printed month owes
+// its reader every occurrence on the page.
+//
+// The agenda trigger is the enhanced reading. Expanding a disclosure inside a
+// month row destroys the overview the reader opened it from — the row grows,
+// the weeks below move, and the shape of the month is gone. The trigger opens
+// the same complete day beside the month instead, with every title unabridged.
+// CSS stands the disclosure down only once a binding has revealed the trigger,
+// so exactly one of the two readings is ever offered.
+function dayOverflowHTML(day, esc) {
+  if (day.hidden_count <= 0) return "";
+  const disclosure = `<details class="compact-month-overflow">` +
+    `<summary>+${day.hidden_count} more</summary>` +
+    `<ul class="compact-month-overflow-list">${day.overflow_occurrences.map((occurrence) => occurrenceItemHTML(occurrence, esc)).join("")}</ul>` +
+    "</details>";
+  return renderCalendarDayAgendaButton(calendarDayAgendaFacts(day), { esc }) + disclosure;
+}
+
 function dayCellHTML(day, esc) {
   const classes = ["compact-month-day"];
   if (!day.in_month) classes.push("compact-month-day-outside");
@@ -324,16 +394,12 @@ function dayCellHTML(day, esc) {
   if (day.occurrence_count === 0) classes.push("compact-month-day-empty");
   const dayNumber = Number(day.date.slice(8, 10));
   const items = day.visible_occurrences.map((occurrence) => occurrenceItemHTML(occurrence, esc)).join("");
-  const overflow = day.hidden_count > 0
-    ? `<details class="compact-month-overflow">` +
-      `<summary>+${day.hidden_count} more</summary>` +
-      `<ul class="compact-month-overflow-list">${day.overflow_occurrences.map((occurrence) => occurrenceItemHTML(occurrence, esc)).join("")}</ul>` +
-      "</details>"
-    : "";
-  return `<td class="${classes.join(" ")}">` +
+  return `<td class="${classes.join(" ")}" data-compact-month-day="${esc(day.date)}"` +
+    ` data-compact-month-day-total="${esc(day.occurrence_count)}"` +
+    ` data-compact-month-day-hidden="${esc(day.hidden_count)}">` +
     `<time class="compact-month-date" datetime="${esc(day.date)}"${day.is_today ? ' aria-current="date"' : ""}>${dayNumber}</time>` +
     (items ? `<ul class="compact-month-occurrences">${items}</ul>` : "") +
-    overflow +
+    dayOverflowHTML(day, esc) +
     "</td>";
 }
 
@@ -349,16 +415,12 @@ function gridTableHTML(view, esc) {
 
 function agendaDayHTML(day, esc) {
   const items = day.visible_occurrences.map((occurrence) => occurrenceItemHTML(occurrence, esc)).join("");
-  const overflow = day.hidden_count > 0
-    ? `<details class="compact-month-overflow">` +
-      `<summary>+${day.hidden_count} more</summary>` +
-      `<ul class="compact-month-overflow-list">${day.overflow_occurrences.map((occurrence) => occurrenceItemHTML(occurrence, esc)).join("")}</ul>` +
-      "</details>"
-    : "";
-  return `<li class="compact-month-agenda-day">` +
+  return `<li class="compact-month-agenda-day" data-compact-month-day="${esc(day.date)}"` +
+    ` data-compact-month-day-total="${esc(day.occurrence_count)}"` +
+    ` data-compact-month-day-hidden="${esc(day.hidden_count)}">` +
     `<time class="compact-month-date" datetime="${esc(day.date)}"${day.is_today ? ' aria-current="date"' : ""}>${esc(day.date)}</time>` +
     `<ul class="compact-month-occurrences">${items}</ul>` +
-    overflow +
+    dayOverflowHTML(day, esc) +
     "</li>";
 }
 
@@ -382,7 +444,12 @@ export function renderCompactMonth(view, options = {}) {
   const fullList = options.fullListHref
     ? `<p class="compact-month-full-list"><a href="${esc(options.fullListHref)}">${esc(options.fullListLabel || "View the full list")}</a></p>`
     : "";
-  return `<div class="compact-month" data-compact-month-schema="${esc(COMPACT_MONTH_VIEW_SCHEMA)}" data-compact-month="${esc(view.month)}">` +
+  // The line budget travels with the markup as a custom property, so the
+  // number the stylesheet clamps to and the number a capture measures are the
+  // one number this module declares.
+  return `<div class="compact-month" data-compact-month-schema="${esc(COMPACT_MONTH_VIEW_SCHEMA)}" data-compact-month="${esc(view.month)}"` +
+    ` data-compact-month-title-lines="${esc(COMPACT_MONTH_TITLE_LINE_BUDGET)}"` +
+    ` style="${esc(COMPACT_MONTH_TITLE_LINES_PROPERTY)}:${esc(COMPACT_MONTH_TITLE_LINE_BUDGET)}">` +
     gridTableHTML(view, esc) +
     agendaListHTML(view, esc) +
     fullList +
