@@ -3,10 +3,10 @@
   "record": "cityscroll-engineering/named-next-step-actions",
   "route": "component-harness:action-naming",
   "harness": "test/harness/action_scent_harness.html",
-  "revision": "bc1babe6dc2db3ccb28b4e5325288c3e8ed01f74",
+  "revision": "0698b5a8a7dec0696a38ab1edf9c48512b13cefd",
   "data_vintage": "2026-08-03 (Now lane) / 2026-03-15 (shared month)",
   "timezone": "America/New_York",
-  "captured_at": "2026-09-06T02:57:39Z",
+  "captured_at": "2026-09-06T03:28:24Z",
   "image_directory": ".artifacts/action-naming",
   "image_policy": "Capture images are written to the ignored local directory above and are never committed. This manifest is the tracked proof: route, viewport, revision, data vintage, assertion, observations and SHA-256 for each capture.",
   "measurement_policy": "Every observation is a measurement of what the rendered document does. No participant evaluation was run and no usability gain is claimed.",
@@ -21,10 +21,10 @@
         390,
         844
       ],
-      "revision": "bc1babe6dc2db3ccb28b4e5325288c3e8ed01f74",
+      "revision": "0698b5a8a7dec0696a38ab1edf9c48512b13cefd",
       "data_vintage": "2026-08-03 (Now lane) / 2026-03-15 (shared month)",
       "timezone": "America/New_York",
-      "assertion": "at 390px each of the 4 act-by cards states its window kind, its exact date and its next step as three different things; the reported procurement card now reads \"View response instructions\" and points at /notices/bid-open, and no control on the lane promises material positioned elsewhere on the page",
+      "assertion": "at 390px each of the 4 act-by cards states its window kind, its exact date and its next step as three different things; the reported procurement card now reads \"See how to respond\" and points at /notices/bid-open, and no control on the lane promises material positioned elsewhere on the page",
       "observations": {
         "act_by_cards": 4,
         "no_control_promises_material_elsewhere_on_the_page": true,
@@ -33,14 +33,14 @@
         "every_card_keeps_its_title": true,
         "every_card_keeps_its_exact_date": true,
         "every_card_keeps_its_agency": true,
-        "reported_card_badge": "Response window",
-        "reported_card_next_step": "View response instructions",
+        "reported_card_badge": "Open for bids",
+        "reported_card_next_step": "See how to respond",
         "reported_card_destination": "/notices/bid-open",
         "reported_card_names_its_destination": true,
         "no_horizontal_overflow": true
       },
-      "bytes": 189260,
-      "sha256": "384ff62a98252493a7d8a0096d77869c0845244f3bd9e145a3c5830bdd960946",
+      "bytes": 187734,
+      "sha256": "7d7d0bc9aa9c7c65b821e3749498fc4dfc9b569734a993db8573f7100a47b6b8",
       "axe": {
         "violations_total": 0,
         "failing_violations": [],
@@ -56,10 +56,10 @@
         1440,
         900
       ],
-      "revision": "bc1babe6dc2db3ccb28b4e5325288c3e8ed01f74",
+      "revision": "0698b5a8a7dec0696a38ab1edf9c48512b13cefd",
       "data_vintage": "2026-08-03 (Now lane) / 2026-03-15 (shared month)",
       "timezone": "America/New_York",
-      "assertion": "at 1440px each of the 4 act-by cards states its window kind, its exact date and its next step as three different things; the reported procurement card now reads \"View response instructions\" and points at /notices/bid-open, and no control on the lane promises material positioned elsewhere on the page",
+      "assertion": "at 1440px each of the 4 act-by cards states its window kind, its exact date and its next step as three different things; the reported procurement card now reads \"See how to respond\" and points at /notices/bid-open, and no control on the lane promises material positioned elsewhere on the page",
       "observations": {
         "act_by_cards": 4,
         "no_control_promises_material_elsewhere_on_the_page": true,
@@ -68,14 +68,14 @@
         "every_card_keeps_its_title": true,
         "every_card_keeps_its_exact_date": true,
         "every_card_keeps_its_agency": true,
-        "reported_card_badge": "Response window",
-        "reported_card_next_step": "View response instructions",
+        "reported_card_badge": "Open for bids",
+        "reported_card_next_step": "See how to respond",
         "reported_card_destination": "/notices/bid-open",
         "reported_card_names_its_destination": true,
         "no_horizontal_overflow": true
       },
-      "bytes": 219238,
-      "sha256": "68cf6e1025b828250ea04c6118cd02edb68c76d7c2063caa238c8f677877ceec",
+      "bytes": 218362,
+      "sha256": "7eb951d5add854f58708a1c18d6ced5d26c5909f4a1a581b440d8ec27f660a7d",
       "axe": {
         "violations_total": 0,
         "failing_violations": [],
@@ -91,7 +91,7 @@
         390,
         844
       ],
-      "revision": "bc1babe6dc2db3ccb28b4e5325288c3e8ed01f74",
+      "revision": "0698b5a8a7dec0696a38ab1edf9c48512b13cefd",
       "data_vintage": "2026-08-03 (Now lane) / 2026-03-15 (shared month)",
       "timezone": "America/New_York",
       "assertion": "at 390px the 2 external submission controls each carry the arrow, the isolated new tab and the announcement that goes with one, while the 5 internal controls carry none of that \u2014 and every card offering a handoff still offers an ordinary internal link beside it",
@@ -105,8 +105,8 @@
         "every_handoff_keeps_an_internal_way_on_beside_it": true,
         "no_horizontal_overflow": true
       },
-      "bytes": 189260,
-      "sha256": "384ff62a98252493a7d8a0096d77869c0845244f3bd9e145a3c5830bdd960946",
+      "bytes": 187734,
+      "sha256": "7d7d0bc9aa9c7c65b821e3749498fc4dfc9b569734a993db8573f7100a47b6b8",
       "axe": {
         "violations_total": 0,
         "failing_violations": [],
@@ -122,7 +122,7 @@
         1440,
         900
       ],
-      "revision": "bc1babe6dc2db3ccb28b4e5325288c3e8ed01f74",
+      "revision": "0698b5a8a7dec0696a38ab1edf9c48512b13cefd",
       "data_vintage": "2026-08-03 (Now lane) / 2026-03-15 (shared month)",
       "timezone": "America/New_York",
       "assertion": "at 1440px the 2 external submission controls each carry the arrow, the isolated new tab and the announcement that goes with one, while the 5 internal controls carry none of that \u2014 and every card offering a handoff still offers an ordinary internal link beside it",
@@ -136,8 +136,8 @@
         "every_handoff_keeps_an_internal_way_on_beside_it": true,
         "no_horizontal_overflow": true
       },
-      "bytes": 219238,
-      "sha256": "68cf6e1025b828250ea04c6118cd02edb68c76d7c2063caa238c8f677877ceec",
+      "bytes": 218362,
+      "sha256": "7eb951d5add854f58708a1c18d6ced5d26c5909f4a1a581b440d8ec27f660a7d",
       "axe": {
         "violations_total": 0,
         "failing_violations": [],
@@ -153,7 +153,7 @@
         390,
         844
       ],
-      "revision": "bc1babe6dc2db3ccb28b4e5325288c3e8ed01f74",
+      "revision": "0698b5a8a7dec0696a38ab1edf9c48512b13cefd",
       "data_vintage": "2026-08-03 (Now lane) / 2026-03-15 (shared month)",
       "timezone": "America/New_York",
       "assertion": "at 390px activating a preview opens a bounded summary in place: the reader stays on the same URL, the panel submits nothing and subscribes to nothing, 0 requests were made and none of them reached a publisher, and the publisher's record inside the panel is offered as the handoff it is rather than as another page of this site",
@@ -169,8 +169,8 @@
         "the_page_for_the_event_is_named_for_what_it_opens": true,
         "no_horizontal_overflow": true
       },
-      "bytes": 186314,
-      "sha256": "f2368244386894d552a3aa6f2ae97330b832d8cfb525ee57a5a1b57c5ad44659",
+      "bytes": 184750,
+      "sha256": "578257a0b5378a291b2305edfeffc07172e29a34e9d674e70955980a61dee469",
       "axe": {
         "violations_total": 0,
         "failing_violations": [],
@@ -186,7 +186,7 @@
         1440,
         900
       ],
-      "revision": "bc1babe6dc2db3ccb28b4e5325288c3e8ed01f74",
+      "revision": "0698b5a8a7dec0696a38ab1edf9c48512b13cefd",
       "data_vintage": "2026-08-03 (Now lane) / 2026-03-15 (shared month)",
       "timezone": "America/New_York",
       "assertion": "at 1440px activating a preview opens a bounded summary in place: the reader stays on the same URL, the panel submits nothing and subscribes to nothing, 0 requests were made and none of them reached a publisher, and the publisher's record inside the panel is offered as the handoff it is rather than as another page of this site",
@@ -202,8 +202,8 @@
         "the_page_for_the_event_is_named_for_what_it_opens": true,
         "no_horizontal_overflow": true
       },
-      "bytes": 227013,
-      "sha256": "ac24f5fef9cc222561bf1cbe38a2dd410a3ca175b2f047ff651eadf65b403443",
+      "bytes": 226133,
+      "sha256": "20c048ed18b772dfa71255986e21de77ebf9739c6124c7214e7d68b852a92142",
       "axe": {
         "violations_total": 0,
         "failing_violations": [],
@@ -219,7 +219,7 @@
         390,
         844
       ],
-      "revision": "bc1babe6dc2db3ccb28b4e5325288c3e8ed01f74",
+      "revision": "0698b5a8a7dec0696a38ab1edf9c48512b13cefd",
       "data_vintage": "2026-08-03 (Now lane) / 2026-03-15 (shared month)",
       "timezone": "America/New_York",
       "assertion": "at 390px the preview takes focus onto its Close control, and both Close and Escape return focus to the exact trigger that opened it rather than dropping it on the document",
@@ -231,8 +231,8 @@
         "focus_never_falls_to_the_document_body": true,
         "no_horizontal_overflow": true
       },
-      "bytes": 189661,
-      "sha256": "9815c2f3fab367df09328b5ffeeecca659bf75ff7552e8925bf956df3133517a",
+      "bytes": 188128,
+      "sha256": "71e335e21f79076c1c935f57a2b3cffc15a51c6dd0d33bb82f159d1a95409a71",
       "axe": {
         "violations_total": 0,
         "failing_violations": [],
@@ -248,7 +248,7 @@
         1440,
         900
       ],
-      "revision": "bc1babe6dc2db3ccb28b4e5325288c3e8ed01f74",
+      "revision": "0698b5a8a7dec0696a38ab1edf9c48512b13cefd",
       "data_vintage": "2026-08-03 (Now lane) / 2026-03-15 (shared month)",
       "timezone": "America/New_York",
       "assertion": "at 1440px the preview takes focus onto its Close control, and both Close and Escape return focus to the exact trigger that opened it rather than dropping it on the document",
@@ -260,8 +260,8 @@
         "focus_never_falls_to_the_document_body": true,
         "no_horizontal_overflow": true
       },
-      "bytes": 219603,
-      "sha256": "08dab148b6102dce13a74021766b14895b969408c934ff9978d1b0f5d8c17eb6",
+      "bytes": 218740,
+      "sha256": "18dff60c51ac0d85ddd2e1ae3a8a8949a7d546862a7d2e0a6d5e2fd4ebe624c3",
       "axe": {
         "violations_total": 0,
         "failing_violations": [],
@@ -277,7 +277,7 @@
         390,
         844
       ],
-      "revision": "bc1babe6dc2db3ccb28b4e5325288c3e8ed01f74",
+      "revision": "0698b5a8a7dec0696a38ab1edf9c48512b13cefd",
       "data_vintage": "2026-08-03 (Now lane) / 2026-03-15 (shared month)",
       "timezone": "America/New_York",
       "assertion": "at 390px a reader inspects an event in place, follows the named full-page link to https://cityscroll.org/x/density-spread-a, returns with Back to the same lane and month, and continues the original task by inspecting the same event again",
@@ -289,8 +289,8 @@
         "the_same_event_can_be_inspected_again": true,
         "no_horizontal_overflow": true
       },
-      "bytes": 186549,
-      "sha256": "bad6c585716b0f8b47484b7dc940b39829c208626f73b2ed87a4b96833ec13c9",
+      "bytes": 185008,
+      "sha256": "24fef7ccdf918237f2e071dae463d35017c5e949c1ddea255c567b0530f3cc26",
       "axe": {
         "violations_total": 0,
         "failing_violations": [],
@@ -306,7 +306,7 @@
         1440,
         900
       ],
-      "revision": "bc1babe6dc2db3ccb28b4e5325288c3e8ed01f74",
+      "revision": "0698b5a8a7dec0696a38ab1edf9c48512b13cefd",
       "data_vintage": "2026-08-03 (Now lane) / 2026-03-15 (shared month)",
       "timezone": "America/New_York",
       "assertion": "at 1440px a reader inspects an event in place, follows the named full-page link to https://cityscroll.org/x/density-spread-a, returns with Back to the same lane and month, and continues the original task by inspecting the same event again",
@@ -318,8 +318,8 @@
         "the_same_event_can_be_inspected_again": true,
         "no_horizontal_overflow": true
       },
-      "bytes": 227501,
-      "sha256": "479f794d4603339dbb76babe69b09c64a250d280e7bdbdeb91cd3e9f45fc7782",
+      "bytes": 226628,
+      "sha256": "fc0da52ee6c3454a42076d51c056a1091f96de2d7cebf76c63ccc9e50d66d50e",
       "axe": {
         "violations_total": 0,
         "failing_violations": [],
@@ -335,7 +335,7 @@
         390,
         844
       ],
-      "revision": "bc1babe6dc2db3ccb28b4e5325288c3e8ed01f74",
+      "revision": "0698b5a8a7dec0696a38ab1edf9c48512b13cefd",
       "data_vintage": "2026-08-03 (Now lane) / 2026-03-15 (shared month)",
       "timezone": "America/New_York",
       "assertion": "at 390px the preview opens from the keyboard alone and keeps focus inside it, and all 7 of the lane's next steps are ordinary focusable destinations",
@@ -348,8 +348,8 @@
         "every_next_step_on_the_lane_is_keyboard_reachable": true,
         "no_horizontal_overflow": true
       },
-      "bytes": 189649,
-      "sha256": "09609d4c4a0bf5b1c6d9a8614f1446db2e255b9d1a287a79152af75359b06a85",
+      "bytes": 188119,
+      "sha256": "70bb1fecc3df9670ffb3388d6d327cd3e217390ad065006da99fa87068075111",
       "axe": {
         "violations_total": 0,
         "failing_violations": [],
@@ -365,7 +365,7 @@
         1440,
         900
       ],
-      "revision": "bc1babe6dc2db3ccb28b4e5325288c3e8ed01f74",
+      "revision": "0698b5a8a7dec0696a38ab1edf9c48512b13cefd",
       "data_vintage": "2026-08-03 (Now lane) / 2026-03-15 (shared month)",
       "timezone": "America/New_York",
       "assertion": "at 1440px the preview opens from the keyboard alone and keeps focus inside it, and all 7 of the lane's next steps are ordinary focusable destinations",
@@ -378,8 +378,8 @@
         "every_next_step_on_the_lane_is_keyboard_reachable": true,
         "no_horizontal_overflow": true
       },
-      "bytes": 219607,
-      "sha256": "7b8b3afa1707427e1cb06d7b0735de79b50ba461adcf69cdafa98f6853d86545",
+      "bytes": 218745,
+      "sha256": "3ab9c1ce3c8035824edab89fc685240fded74ea86f72b77c446a48460d98078a",
       "axe": {
         "violations_total": 0,
         "failing_violations": [],
@@ -395,7 +395,7 @@
         390,
         844
       ],
-      "revision": "bc1babe6dc2db3ccb28b4e5325288c3e8ed01f74",
+      "revision": "0698b5a8a7dec0696a38ab1edf9c48512b13cefd",
       "data_vintage": "2026-08-03 (Now lane) / 2026-03-15 (shared month)",
       "timezone": "America/New_York",
       "assertion": "at 390px a modified click on an occurrence is left to the browser \u2014 no preview opens and the reader is not navigated away \u2014 and with scripting off no inspection control is offered at all while all 7 named next steps still work as links",
@@ -408,8 +408,8 @@
         "without_scripting_every_next_step_is_still_named": true,
         "no_horizontal_overflow": true
       },
-      "bytes": 183113,
-      "sha256": "51165e11bd912d7038d0b909d3d421d191b5b16d3d49c51e50bc0866579a3393",
+      "bytes": 181585,
+      "sha256": "c55a7db1d944a44737b8ffb08c0d5115849cbe1406854bccf13314ac10cc8eeb",
       "axe": {
         "violations_total": 0,
         "failing_violations": [],
@@ -425,7 +425,7 @@
         1440,
         900
       ],
-      "revision": "bc1babe6dc2db3ccb28b4e5325288c3e8ed01f74",
+      "revision": "0698b5a8a7dec0696a38ab1edf9c48512b13cefd",
       "data_vintage": "2026-08-03 (Now lane) / 2026-03-15 (shared month)",
       "timezone": "America/New_York",
       "assertion": "at 1440px a modified click on an occurrence is left to the browser \u2014 no preview opens and the reader is not navigated away \u2014 and with scripting off no inspection control is offered at all while all 7 named next steps still work as links",
@@ -438,8 +438,8 @@
         "without_scripting_every_next_step_is_still_named": true,
         "no_horizontal_overflow": true
       },
-      "bytes": 214247,
-      "sha256": "d7655ba21d22391c24c5dc0b9f74c19019ed40b12e4fbdc6d23f52c1a9c6796e",
+      "bytes": 213364,
+      "sha256": "d9b97360cf535d4539fc91117d196eaf0310cb350011ba1cf1f8a277997429b0",
       "axe": {
         "violations_total": 0,
         "failing_violations": [],
@@ -455,7 +455,7 @@
         390,
         844
       ],
-      "revision": "bc1babe6dc2db3ccb28b4e5325288c3e8ed01f74",
+      "revision": "0698b5a8a7dec0696a38ab1edf9c48512b13cefd",
       "data_vintage": "2026-08-03 (Now lane) / 2026-03-15 (shared month)",
       "timezone": "America/New_York",
       "assertion": "at 390px a preview whose optional enrichment fails keeps the selected item, every fact the cell was admitted with, and a working full-page link that is still named for what it opens; the failure is stated in its own line rather than replacing anything",
@@ -468,8 +468,8 @@
         "the_canonical_link_is_still_named_for_what_it_opens": true,
         "no_horizontal_overflow": true
       },
-      "bytes": 189252,
-      "sha256": "72aea87283cb9fcdf80dc640d087847ae23ad78d1afabbf924606a2824e5ecd9",
+      "bytes": 187700,
+      "sha256": "9b5ee51063d0d0c57c1b60d723d08b897f7592de75cc101927f47e3b0c476903",
       "axe": {
         "violations_total": 0,
         "failing_violations": [],
@@ -485,7 +485,7 @@
         1440,
         900
       ],
-      "revision": "bc1babe6dc2db3ccb28b4e5325288c3e8ed01f74",
+      "revision": "0698b5a8a7dec0696a38ab1edf9c48512b13cefd",
       "data_vintage": "2026-08-03 (Now lane) / 2026-03-15 (shared month)",
       "timezone": "America/New_York",
       "assertion": "at 1440px a preview whose optional enrichment fails keeps the selected item, every fact the cell was admitted with, and a working full-page link that is still named for what it opens; the failure is stated in its own line rather than replacing anything",
@@ -498,8 +498,8 @@
         "the_canonical_link_is_still_named_for_what_it_opens": true,
         "no_horizontal_overflow": true
       },
-      "bytes": 231348,
-      "sha256": "449609523ec189ff3906dfdd9dae17b21a9646bf89050a544d4aee1bfd789d2b",
+      "bytes": 230506,
+      "sha256": "6bc4b7f686e41fafd5398d529a33683675b038be46d2a6f68f930e310b5dc004",
       "axe": {
         "violations_total": 0,
         "failing_violations": [],
@@ -515,7 +515,7 @@
         390,
         844
       ],
-      "revision": "bc1babe6dc2db3ccb28b4e5325288c3e8ed01f74",
+      "revision": "0698b5a8a7dec0696a38ab1edf9c48512b13cefd",
       "data_vintage": "2026-08-03 (Now lane) / 2026-03-15 (shared month)",
       "timezone": "America/New_York",
       "assertion": "at the 195px CSS viewport a 200 percent zoom of a 390px window produces, the Now lane and the opened preview both read without any horizontal page scrolling, and every next step keeps its name",
@@ -528,8 +528,8 @@
         "every_next_step_is_still_named": true,
         "smallest_visible_control_px": 44
       },
-      "bytes": 195104,
-      "sha256": "3885b926f04c8249e00afab15b7575588ae52f1f7b36933043145f9a3d6cd736",
+      "bytes": 193618,
+      "sha256": "9b65da94f39b53595fad63e3d1c250880bd32a051020ea16699f6663f95e6839",
       "axe": {
         "violations_total": 0,
         "failing_violations": [],
@@ -545,7 +545,7 @@
         1440,
         900
       ],
-      "revision": "bc1babe6dc2db3ccb28b4e5325288c3e8ed01f74",
+      "revision": "0698b5a8a7dec0696a38ab1edf9c48512b13cefd",
       "data_vintage": "2026-08-03 (Now lane) / 2026-03-15 (shared month)",
       "timezone": "America/New_York",
       "assertion": "at the 720px CSS viewport a 200 percent zoom of a 1440px window produces, the Now lane and the opened preview both read without any horizontal page scrolling, and every next step keeps its name",
@@ -558,8 +558,8 @@
         "every_next_step_is_still_named": true,
         "smallest_visible_control_px": 24
       },
-      "bytes": 208340,
-      "sha256": "cd935326aa2edab8e984f508359c481e1d352cf58dae9079342de4760279f38d",
+      "bytes": 207664,
+      "sha256": "00305b81ad3e68d3b2d163002d49edf25b137721a2390a86bd97c55f6569f07e",
       "axe": {
         "violations_total": 0,
         "failing_violations": [],
@@ -575,7 +575,7 @@
         390,
         844
       ],
-      "revision": "bc1babe6dc2db3ccb28b4e5325288c3e8ed01f74",
+      "revision": "0698b5a8a7dec0696a38ab1edf9c48512b13cefd",
       "data_vintage": "2026-08-03 (Now lane) / 2026-03-15 (shared month)",
       "timezone": "America/New_York",
       "assertion": "at 390px every control this contract adds or renames \u2014 each named next step, the inspection trigger and every control in the panel \u2014 is at least 44px tall, so none of them is a target a finger cannot land on",
@@ -590,8 +590,8 @@
         "every_control_meets_the_floor": true,
         "no_horizontal_overflow": true
       },
-      "bytes": 186549,
-      "sha256": "bad6c585716b0f8b47484b7dc940b39829c208626f73b2ed87a4b96833ec13c9",
+      "bytes": 185008,
+      "sha256": "24fef7ccdf918237f2e071dae463d35017c5e949c1ddea255c567b0530f3cc26",
       "axe": {
         "violations_total": 0,
         "failing_violations": [],
@@ -607,7 +607,7 @@
         1440,
         900
       ],
-      "revision": "bc1babe6dc2db3ccb28b4e5325288c3e8ed01f74",
+      "revision": "0698b5a8a7dec0696a38ab1edf9c48512b13cefd",
       "data_vintage": "2026-08-03 (Now lane) / 2026-03-15 (shared month)",
       "timezone": "America/New_York",
       "assertion": "at 1440px every control this contract adds or renames \u2014 each named next step, the inspection trigger and every control in the panel \u2014 is at least 24px tall, so none of them is a target a finger cannot land on",
@@ -622,8 +622,8 @@
         "every_control_meets_the_floor": true,
         "no_horizontal_overflow": true
       },
-      "bytes": 227496,
-      "sha256": "387949f08b8a4c4c6348ce651e6c9f4d142e299440ecddaa3c85c0bed98753eb",
+      "bytes": 226628,
+      "sha256": "fc0da52ee6c3454a42076d51c056a1091f96de2d7cebf76c63ccc9e50d66d50e",
       "axe": {
         "violations_total": 0,
         "failing_violations": [],
