@@ -1,0 +1,26 @@
+{
+  "schema": "cityscroll.institution_petition_procedures.v1",
+  "reviewed_on": "2026-09-05",
+  "absence_meaning": "no_applicable_procedure_evidence",
+  "note": "An institution without an entry has no reviewed body-specific rulemaking-petition procedure indexed here. Absence records missing evidence, never a finding that petitioning that institution is legally unavailable. Directory membership, organizational form and a related body's procedure never supply an entry.",
+  "by_agency": {
+    "small-business-services": {
+      "agency_id": "small-business-services",
+      "applies_to": "rulemaking_petition",
+      "receiving_body": "Office of the General Counsel, NYC Department of Small Business Services",
+      "procedure_title": "Petitions for Agency Rulemaking (66 RCNY ch. 20)",
+      "procedure_url": "https://rules.cityofnewyork.us/rule/petitions-for-agency-rulemaking/",
+      "procedure_text_url": "https://rules.cityofnewyork.us/wp-content/uploads/2026/06/SBS-Petitions-for-Agency-Rulemaking-NOA-SBS-Final.pdf",
+      "destination_statement": "Petitions go to the DSBS Office of the General Counsel, at the address the rule directs you to on the DSBS website.",
+      "response_source_url": "https://rules.cityofnewyork.us/rule/petitions-for-agency-rulemaking/",
+      "response_days": 60,
+      "response_statement": "Within 60 days of receiving a petition in proper form, DSBS must either deny it in writing with its reasons, or approve it in writing and state the date by which it will begin rulemaking.",
+      "legal_basis": "NYC Charter § 1043(g); 66 RCNY ch. 20",
+      "rule_status": "adopted",
+      "effective_date": "2026-07-09",
+      "source_system": "nyc_rules",
+      "basis": "published_agency_rule",
+      "source_vintage": "2026-06"
+    }
+  }
+}

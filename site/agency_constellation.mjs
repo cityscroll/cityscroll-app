@@ -237,9 +237,27 @@ export function renderAgencyConstellationDocument(view, options = {}) {
     effectiveAsOf,
     showAsOf,
   });
-  const petitionAction = view.petition_handoff?.state === "ready"
-    && view.petition_handoff?.official?.form_url
-    ? { kind: "link", label: "Petition this agency", href: view.petition_handoff.official.form_url, primary: false, className: "civic-object-action" }
+  // An exact "Petition this agency" target needs this institution's own
+  // published petition procedure. With only the City-wide form, the action stays
+  // available but is labelled as the general guidance it actually is.
+  const petitionTarget = view.petition_handoff?.action_target || null;
+  const petitionDestination = petitionTarget === "exact_petition_target"
+    ? view.petition_handoff?.official?.institution_procedure_url
+    : (view.petition_handoff?.official?.form_url
+      || view.petition_handoff?.official?.guidance_url
+      || view.petition_handoff?.official?.page_url);
+  const petitionAction = petitionDestination && petitionTarget !== "no_supported_workflow"
+    ? {
+      kind: "source",
+      label: petitionTarget === "exact_petition_target"
+        ? "Petition this agency"
+        : "How to petition a city agency",
+      href: petitionDestination,
+      primary: false,
+      className: "civic-object-action",
+      newTabLabel: "(opens the official page in a new tab)",
+      attrs: { "data-action-target": petitionTarget || "target_unknown" },
+    }
     : null;
   const primaryActions = renderNodeActions([
     { kind: "link", label: "Follow this agency", href: view.follow_href, primary: true, className: "civic-object-action" },

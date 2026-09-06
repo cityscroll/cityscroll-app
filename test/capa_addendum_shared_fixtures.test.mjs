@@ -25,9 +25,13 @@ test("the shared matrix proves handoff, source, and absence behavior without aut
   assert.equal(byId.proposed_comments_open_hearing.petition_action_target, "no_supported_workflow");
   assert.equal(byId.comment_deadline_passed.petition_action_target, "no_supported_workflow");
   assert.equal(byId.adopted_future_effective.petition_action_target, "no_supported_workflow");
-  assert.equal(byId.effective_in_force.petition_action_target, "exact_petition_target");
+  // Rule surfaces for an institution with no indexed petition procedure keep
+  // the official handoff as general guidance; only the institution that
+  // publishes its own procedure reaches an exact target.
+  assert.equal(byId.effective_in_force.petition_action_target, "action_only_guidance");
+  assert.equal(byId.source_stated_citations.petition_action_target, "action_only_guidance");
   assert.equal(byId.agency_no_active_proposal.petition_action_target, "exact_petition_target");
-  assert.equal(byId.source_stated_citations.petition_action_target, "exact_petition_target");
+  assert.equal(byId.agency_no_active_proposal.petition_procedure_basis, "institution_procedure");
   assert.deepEqual(result.coverage.action_targets, coverageReceipt.action_targets);
   assert.deepEqual(result.coverage.response_expectation, coverageReceipt.response_expectation);
   assert.deepEqual(result.coverage.contacts, coverageReceipt.contacts);

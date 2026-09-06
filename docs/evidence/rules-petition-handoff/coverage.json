@@ -3,10 +3,20 @@
   "generated_from": "test/fixtures/capa_addendum/shared_fixtures.v1.json",
   "real_nyc_rules_canary": "rulemaking:dot:bicycle-racks",
   "action_targets": {
-    "exact_petition_target": 3,
-    "action_only_guidance": 0,
+    "exact_petition_target": 1,
+    "action_only_guidance": 2,
     "target_unknown": 0,
     "no_supported_workflow": 4
+  },
+  "procedure_basis": {
+    "institution_procedure": 1,
+    "general_official_guidance": 6,
+    "unknown": 0
+  },
+  "institution_procedure_evidence": {
+    "applicable": 1,
+    "absent": 6,
+    "missing_procedure_evidence_is_not_prohibition": true
   },
   "response_expectation": {
     "source_backed": 7,

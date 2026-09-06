@@ -252,20 +252,32 @@ export function rulemakingActionMatrix({
   const commentUrl = sourceUrl(rules.comment_url) || sourceUrl(comments_url) || sourceUrl(rules.url);
   const testimonyUrlValue = sourceUrl(testimony_url) || sourceUrl(comment_channel_url);
   const followUrl = text(follow_href);
-  const petitionHref = sourceUrl(petition_url)
+  const generalPetitionHref = sourceUrl(petition_url)
     || sourceUrl(petition_handoff?.official?.form_url)
     || sourceUrl(petition_handoff?.official?.guidance_url)
     || sourceUrl(petition_handoff?.official?.page_url);
   const petitionAgency = text(petition_handoff?.agency?.name);
-  const petitionLabel = petitionAgency
-    ? `How to petition ${petitionAgency}`
-    : "Petition agency to amend or repeal";
+  // Eligibility is decided once, in the petition handoff, which records both
+  // the target and the evidence it rests on. This card reads that decision
+  // rather than re-deriving it: `site/rules_petition.mjs` owns the rule, and it
+  // is a render-time module that must not enter the browser module graph.
   const petitionActionTarget = petition_handoff?.action_target
     || (state.state === "effective"
-      ? (petitionAgency && sourceUrl(petition_handoff?.official?.form_url)
+      ? (petitionAgency && petition_handoff?.institution_procedure
         ? "exact_petition_target"
-        : (petitionHref ? "action_only_guidance" : "target_unknown"))
+        : (generalPetitionHref ? "action_only_guidance" : "target_unknown"))
       : "no_supported_workflow");
+  // An exact target sends the reader to the institution's own published
+  // procedure; otherwise the City's general petition materials remain the
+  // destination.
+  const petitionHref = (petitionActionTarget === "exact_petition_target"
+    && sourceUrl(petition_handoff?.official?.institution_procedure_url))
+    || generalPetitionHref;
+  // The action label names the institution only when the handoff itself proves
+  // an exact target; otherwise it stays a general petition action.
+  const petitionLabel = petitionAgency && petitionActionTarget === "exact_petition_target"
+    ? `How to petition ${petitionAgency}`
+    : "Petition agency to amend or repeal";
   const watch = followUrl ? internalAction({ id: "watch_rulemaking", label: "Watch this rulemaking", href: followUrl }) : null;
   const out = [];
   const add = (item) => { if (item) out.push(item); };

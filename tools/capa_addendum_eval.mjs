@@ -91,6 +91,9 @@ function expectedFindings(fixture, result) {
     if (expected.petition_action_target && object.petition_handoff?.action_target !== expected.petition_action_target) {
       findings.push(`${fixture.id}: petition target ${object.petition_handoff?.action_target} != ${expected.petition_action_target}`);
     }
+    if (expected.petition_procedure_basis && object.petition_handoff?.procedure_basis !== expected.petition_procedure_basis) {
+      findings.push(`${fixture.id}: procedure basis ${object.petition_handoff?.procedure_basis} != ${expected.petition_procedure_basis}`);
+    }
     if (expected.citations_basis === "source_stated") {
       const effects = object.legal_effects || [];
       if (!effects.length) findings.push(`${fixture.id}: missing source-stated citations`);
@@ -112,6 +115,9 @@ function expectedFindings(fixture, result) {
     }
     if (expected.petition_action_target && view.petition_handoff?.action_target !== expected.petition_action_target) {
       findings.push(`${fixture.id}: petition target ${view.petition_handoff?.action_target} != ${expected.petition_action_target}`);
+    }
+    if (expected.petition_procedure_basis && view.petition_handoff?.procedure_basis !== expected.petition_procedure_basis) {
+      findings.push(`${fixture.id}: procedure basis ${view.petition_handoff?.procedure_basis} != ${expected.petition_procedure_basis}`);
     }
     for (const pattern of expected.html_matches || []) {
       if (!htmlHas(result.html, new RegExp(pattern))) findings.push(`${fixture.id}: missing copy /${pattern}/`);
@@ -153,6 +159,7 @@ export function evaluateCapaAddendumFixtures(manifest) {
       lifecycle_state: result.object?.lifecycle_state || null,
       action_ids: result.object ? actionIds(result.object) : [],
       petition_action_target: result.petition?.action_target || null,
+      petition_procedure_basis: result.petition?.procedure_basis || null,
       handoff: result.petition,
       html: result.html,
       findings: fixtureFindings,
@@ -170,6 +177,7 @@ export function evaluateCapaAddendumFixtures(manifest) {
       lifecycle_state: row.lifecycle_state,
       action_ids: Object.freeze(row.action_ids),
       petition_action_target: row.petition_action_target,
+      petition_procedure_basis: row.petition_procedure_basis,
       findings: Object.freeze(row.findings),
     }))),
     coverage,

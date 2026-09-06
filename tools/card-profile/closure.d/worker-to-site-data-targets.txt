@@ -7,6 +7,7 @@ site/data/comparative_story_signals.json
 site/data/district_activity.json
 site/data/exam_certification_constellation.json
 site/data/following_procurement_suggestions.json
+site/data/institution_petition_procedures.json
 site/data/land_default_ulurp.json
 site/data/land_upcoming_hearings.json
 site/data/mih_project_lookup.json

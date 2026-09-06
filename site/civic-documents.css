@@ -1082,6 +1082,31 @@ select {
   color: var(--color-text-muted);
 }
 
+/* The receiving body and the scope note carry the difference between an exact
+   institution target and the City's general guidance, so they read as their own
+   line rather than as body prose. */
+.rule-petition-receiving-body {
+  margin-block: var(--space-3);
+  padding: var(--space-3);
+  border-inline-start: 3px solid var(--color-action);
+  background: var(--color-canvas);
+  border-radius: var(--radius-sm);
+}
+
+.rule-petition-scope {
+  color: var(--color-text-muted);
+}
+
+/* A role-edge record's metadata line carries source receipts and vintages:
+   long, colon-joined tokens with no natural break opportunity, which pushed the
+   whole document sideways at narrow widths. */
+.agency-role-edge-record,
+.agency-role-edge-record .node-record-main,
+.agency-role-edge-record .node-muted {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
 .rulemaking-document .rule-version-diff,
 .rulemaking-document .rule-change-evidence {
   display: grid;
