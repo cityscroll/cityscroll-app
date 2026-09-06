@@ -27,7 +27,6 @@ import {
   COMPACT_MONTH_TITLE_LINE_BUDGET,
   MAX_VISIBLE_OCCURRENCES_PER_DAY,
   bindCompactMonthCalendar,
-  bindCalendarEventPreview,
   buildCompactMonthView,
   renderCompactMonth,
 } from "../site/compact_calendar.mjs";
@@ -572,14 +571,14 @@ test("A4: rendered copy carries no schema, join, workstream or control-plane voc
 
 /* ================= A4 — every registered host inherits the bound ================= */
 
-test("A4: all eight registered calendar hosts reach the one shared mount", () => {
+test("A4: all eight registered calendar hosts reach the one shared mount", async () => {
   const hosts = [
     // Browser-painted surfaces call the shared mount directly.
-    ["site/now_view.mjs", /bindCalendarEventPreview\(/],
-    ["site/app/property.mjs", /bindCalendarEventPreview\(/],
-    ["site/app/land.mjs", /bindCalendarEventPreview\(/],
-    ["site/app/rules.mjs", /bindCalendarEventPreview\(/],
-    ["site/exam_document.mjs", /bindCalendarEventPreview\(/],
+    ["site/now_view.mjs", /bindCompactMonthCalendar\(/],
+    ["site/app/property.mjs", /bindCompactMonthCalendar\(/],
+    ["site/app/land.mjs", /bindCompactMonthCalendar\(/],
+    ["site/app/rules.mjs", /bindCompactMonthCalendar\(/],
+    ["site/exam_document.mjs", /bindCompactMonthCalendar\(/],
     // Documents rendered ahead of the reader load the shared boot module.
     ["site/community_board_constellation.mjs", /renderCalendarEventPreviewScript\(/],
     ["site/legislative_matter_document.mjs", /renderCalendarEventPreviewScript\(/],
@@ -589,11 +588,17 @@ test("A4: all eight registered calendar hosts reach the one shared mount", () =>
   for (const [path, pattern] of hosts) {
     assert.match(readFileSync(new URL(`../${path}`, import.meta.url), "utf8"), pattern, `${path} mounts the calendar`);
   }
-  // The name every host reaches for is the complete mount, so a host cannot
-  // receive a clipped title without the panel that reads it in full.
-  assert.equal(bindCalendarEventPreview, bindCompactMonthCalendar);
+  // The shared renderer exports one mount and no half of one, so a host that
+  // reaches through it cannot receive a clipped title without the panel that
+  // reads it in full.
+  const shared = await import("../site/compact_calendar.mjs");
+  assert.equal(typeof shared.bindCompactMonthCalendar, "function");
+  assert.equal(shared.bindCalendarEventPreview, undefined,
+    "the preview-only binder is not reachable through the shared renderer");
+  assert.equal(shared.bindCalendarDayAgenda, undefined,
+    "the agenda-only binder is not reachable through the shared renderer");
   const boot = readFileSync(new URL("../site/calendar_event_preview_boot.mjs", import.meta.url), "utf8");
-  assert.match(boot, /from "\.\/compact_calendar\.mjs"/,
+  assert.match(boot, /bindCompactMonthCalendar\(document\)/,
     "the rendered-document boot mounts through the shared renderer, not one half of it");
 });
 

@@ -19,6 +19,6 @@
  * the canonical anchors and the native disclosure, which work on their own.
  */
 
-import { bindCalendarEventPreview } from "./compact_calendar.mjs";
+import { bindCompactMonthCalendar } from "./compact_calendar.mjs";
 
-if (typeof document !== "undefined") bindCalendarEventPreview(document);
+if (typeof document !== "undefined") bindCompactMonthCalendar(document);

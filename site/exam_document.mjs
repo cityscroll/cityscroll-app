@@ -11,7 +11,7 @@ import {
 import { entityHref, entityRouteRef } from "./entity_pivot.mjs";
 import { examFacetHref, examFacetValue } from "./exam_detail_facets.mjs";
 import { buildExamCalendarView, renderExamApplicationCalendar } from "./exam_calendar.mjs";
-import { bindCalendarEventPreview } from "./compact_calendar.mjs";
+import { bindCompactMonthCalendar } from "./compact_calendar.mjs";
 import { constellationLink, filterChip, installFilterChipNavigation, officialSourceLink, staticFact } from "./affordance_grammar.mjs";
 import { titleCodeFamilyView } from "./title_code_family.mjs";
 
@@ -335,7 +335,7 @@ if (typeof window !== "undefined") {
   const canonical = document.querySelector('link[rel="canonical"]')?.href || window.location.href;
   installFilterChipNavigation(root);
   // PX-01: the shared in-place event preview for the exam application month.
-  bindCalendarEventPreview(root || document);
+  bindCompactMonthCalendar(root || document);
   const copy = async (button) => {
     let ok = false;
     try { await navigator.clipboard.writeText(canonical); ok = true; } catch {

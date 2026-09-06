@@ -56,7 +56,7 @@
   import { fixtureOccurrences, FIXTURE_TODAY } from "../fixtures/compact_calendar_fixtures.mjs";
   import {
     COMPACT_MONTH_TITLE_LINE_BUDGET,
-    bindCalendarEventPreview,
+    bindCompactMonthCalendar,
     buildCompactMonthView,
     renderCompactMonth,
   } from "../../site/compact_calendar.mjs";
@@ -86,7 +86,7 @@
   // One mount, exactly as a registered host makes it: the shared renderer's
   // own binder, which is what gives a host the preview and the day agenda
   // together rather than one of them.
-  if (enhance) bindCalendarEventPreview(mount);
+  if (enhance) bindCompactMonthCalendar(mount);
 
   page.setAttribute("data-harness-state", view.render ? "rendered" : "non-render");
   page.setAttribute("data-harness-reason", view.render ? "eligible" : view.reason);

@@ -16,7 +16,7 @@ import { projectCalendarRecordsForRecord } from "./project_calendar.mjs";
 import { boundedDisplayOccurrences } from "./calendar_display.mjs";
 import { buildCompactMonthView, renderCompactMonth } from "./compact_calendar.mjs";
 
-export { bindCalendarEventPreview, bindCompactMonthPrintDisclosure } from "./compact_calendar.mjs";
+export { bindCompactMonthCalendar, bindCompactMonthPrintDisclosure } from "./compact_calendar.mjs";
 
 export const PROJECT_CONNECTED_CALENDAR_HEADING = "Connected dates";
 

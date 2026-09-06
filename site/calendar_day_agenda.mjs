@@ -13,8 +13,8 @@
  * what a cell paints; this opens the complete day beside the month rather than
  * inside it:
  *
- *   - the trigger is an explicit native `<button>` carrying the exact number
- *     of events the cell could not show, with an accessible name that states
+ *   - the trigger is an explicit native `button` element carrying the exact
+ *     number of events the cell could not show, with an accessible name stating
  *     the day and its complete total.
  *   - the panel it opens lists *every* accepted occurrence for that day, in
  *     the same order the cell used, with each title unabridged and its kind,
@@ -91,11 +91,6 @@ const AGENDA_STATE_LABELS = Object.freeze({
 });
 
 const AGENDA_ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
-
-function agendaText(value) {
-  const result = String(value ?? "").replace(/\s+/g, " ").trim();
-  return result || null;
-}
 
 function agendaDefaultEscape(value) {
   return String(value ?? "")

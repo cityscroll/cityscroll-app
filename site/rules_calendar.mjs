@@ -18,7 +18,7 @@ import { buildCompactMonthView, renderCompactMonth } from "./compact_calendar.mj
 
 // The rules route reaches the shared in-place event preview (PX-01) through
 // this module, the same way it reaches the shared month renderer.
-export { bindCalendarEventPreview } from "./compact_calendar.mjs";
+export { bindCompactMonthCalendar } from "./compact_calendar.mjs";
 
 const SITE_ORIGIN = "https://cityscroll.org";
 

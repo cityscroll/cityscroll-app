@@ -568,13 +568,15 @@ test("A6: the binder is a no-op without a document, so server-side rendering is 
 });
 
 test("A6: every audited host reaches the one shared behaviour", async () => {
+  // Hosts mount the shared month component's single binder, which is what
+  // gives every one of them this behaviour rather than each wiring its own.
   const hosts = [
     // Browser-painted surfaces call the binder directly.
-    ["site/now_view.mjs", /bindCalendarEventPreview\(/],
-    ["site/app/property.mjs", /bindCalendarEventPreview\(/],
-    ["site/app/land.mjs", /bindCalendarEventPreview\(/],
-    ["site/app/rules.mjs", /bindCalendarEventPreview\(/],
-    ["site/exam_document.mjs", /bindCalendarEventPreview\(/],
+    ["site/now_view.mjs", /bindCompactMonthCalendar\(/],
+    ["site/app/property.mjs", /bindCompactMonthCalendar\(/],
+    ["site/app/land.mjs", /bindCompactMonthCalendar\(/],
+    ["site/app/rules.mjs", /bindCompactMonthCalendar\(/],
+    ["site/exam_document.mjs", /bindCompactMonthCalendar\(/],
     // Documents rendered ahead of the reader load the shared boot module.
     ["site/community_board_constellation.mjs", /renderCalendarEventPreviewScript\(/],
     ["site/legislative_matter_document.mjs", /renderCalendarEventPreviewScript\(/],

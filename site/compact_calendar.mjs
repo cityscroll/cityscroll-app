@@ -34,7 +34,7 @@
 
 import { occurrenceDay, evaluateDisplayCluster } from "./calendar_display.mjs";
 import {
-  bindCalendarEventPreview as bindCalendarEventPreviewOnly,
+  bindCalendarEventPreview,
   calendarEventPreviewFacts,
   renderCalendarEventPreviewButton,
 } from "./calendar_event_preview.mjs";
@@ -43,8 +43,6 @@ import {
   calendarDayAgendaFacts,
   renderCalendarDayAgendaButton,
 } from "./calendar_day_agenda.mjs";
-
-export { bindCalendarDayAgenda } from "./calendar_day_agenda.mjs";
 
 /**
  * The one mount for everything this shared renderer emits: the in-place event
@@ -56,23 +54,17 @@ export { bindCalendarDayAgenda } from "./calendar_day_agenda.mjs";
  * shows a clipped title whose full reading is unreachable, nor an agenda
  * trigger with nothing behind it.
  *
- * Every registered host reaches its calendar behaviour through this module, so
- * this is the single seam a new host inherits by mounting the component at
- * all. It returns the preview controller, which is what its callers have
- * always used.
+ * This is deliberately the only mount this module exports. Every registered
+ * host reaches its calendar behaviour through the shared renderer, so a host
+ * that mounts the component at all inherits both halves and cannot reach for
+ * one of them by mistake. It returns the preview controller, which is what
+ * this module's callers have always been handed.
  */
 export function bindCompactMonthCalendar(root, options = {}) {
-  const preview = bindCalendarEventPreviewOnly(root, options);
+  const preview = bindCalendarEventPreview(root, options);
   bindCalendarDayAgenda(root, options);
   return preview;
 }
-
-/**
- * The retained name for the same complete mount. Hosts have always reached the
- * shared calendar behaviour through `bindCalendarEventPreview`, and a host
- * that keeps doing so must not silently receive half of it.
- */
-export const bindCalendarEventPreview = bindCompactMonthCalendar;
 
 export const COMPACT_MONTH_VIEW_SCHEMA = "cityscroll.compact_month_view.v1";
 export const COMPACT_MONTH_NON_RENDER_SCHEMA = "cityscroll.compact_month_non_render.v1";
