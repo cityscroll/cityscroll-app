@@ -348,7 +348,7 @@
     },
     {
       "adapter_id": "mcp.get_land_project@1",
-      "adapter_semantic_sha256": "bc5b8ea36d4c4c902ebfb79a98a0f2f324054af9f351da2a2a9f4e7f5320b86d",
+      "adapter_semantic_sha256": "6264cc42f0dfb45a9b56580a05d51a76aefb5868d193d14a2a39ad89a4c99e1c",
       "annotations": {
         "destructiveHint": false,
         "idempotentHint": true,
@@ -362,7 +362,7 @@
       },
       "calls": 1,
       "capability_reference": "land.project.get@1",
-      "direct_semantic_sha256": "bc5b8ea36d4c4c902ebfb79a98a0f2f324054af9f351da2a2a9f4e7f5320b86d",
+      "direct_semantic_sha256": "6264cc42f0dfb45a9b56580a05d51a76aefb5868d193d14a2a39ad89a4c99e1c",
       "name": "get_land_project",
       "operation_class": "read",
       "parity": "pass",
@@ -373,7 +373,7 @@
     },
     {
       "adapter_id": "mcp.browse_land_projects@1",
-      "adapter_semantic_sha256": "4612ea8a82ae79a7cb5f81c5969942073899e4dde87ee6836a45a86d97caf8bd",
+      "adapter_semantic_sha256": "c6da7dafe2f494f32b1e3961894b0fd69ae52fc18c2b7f328e039e70431799c1",
       "annotations": {
         "destructiveHint": false,
         "idempotentHint": true,
@@ -390,7 +390,7 @@
       },
       "calls": 1,
       "capability_reference": "land.projects.browse@1",
-      "direct_semantic_sha256": "4612ea8a82ae79a7cb5f81c5969942073899e4dde87ee6836a45a86d97caf8bd",
+      "direct_semantic_sha256": "c6da7dafe2f494f32b1e3961894b0fd69ae52fc18c2b7f328e039e70431799c1",
       "name": "browse_land_projects",
       "operation_class": "read",
       "parity": "pass",
@@ -401,7 +401,7 @@
     },
     {
       "adapter_id": "mcp.get_land_decision_path@1",
-      "adapter_semantic_sha256": "2064e69b76055321db81213c7d1d4acd5d36a91acbf9db040969909688526dac",
+      "adapter_semantic_sha256": "d62c9afc051719b8aa6e4d29d0386516958da501d9f30f1a8febbb9f619dc2df",
       "annotations": {
         "destructiveHint": false,
         "idempotentHint": true,
@@ -415,7 +415,7 @@
       },
       "calls": 1,
       "capability_reference": "land.decision_path.get@1",
-      "direct_semantic_sha256": "2064e69b76055321db81213c7d1d4acd5d36a91acbf9db040969909688526dac",
+      "direct_semantic_sha256": "d62c9afc051719b8aa6e4d29d0386516958da501d9f30f1a8febbb9f619dc2df",
       "name": "get_land_decision_path",
       "operation_class": "read",
       "parity": "pass",

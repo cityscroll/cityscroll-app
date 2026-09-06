@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "title": "Vendor footprint coverage and promotion receipt",
-  "generated_at": "2026-08-30T16:27:58.717Z",
+  "generated_at": "2026-09-06T17:41:05.860Z",
   "status": "qualified",
   "qualifier_required": true,
   "sections": [
@@ -20,13 +20,13 @@
     "not_scored"
   ],
   "summary": {
-    "known_awards": 53245,
-    "named_awards": 51812,
-    "linked_awards": 51812,
-    "award_linkage_rate": 0.9731,
+    "known_awards": 53600,
+    "named_awards": 52167,
+    "linked_awards": 52167,
+    "award_linkage_rate": 0.9733,
     "no_name_awards": 1429,
     "normalization_blocked_awards": 4,
-    "vendor_roots": 14463,
+    "vendor_roots": 14498,
     "multi_domain_vendor_roots": 2,
     "multi_domain_vendor_rate": 0.0001,
     "multi_kind_vendor_roots": 3683,
@@ -34,7 +34,7 @@
     "section_denominators": {
       "awards": {
         "status": "measured",
-        "rows": 53245,
+        "rows": 53600,
         "basis": "full OCP award census"
       },
       "contracts": {
@@ -79,11 +79,11 @@
   "census": {
     "strategy": "full_corpus_vendor_profile_aggregate",
     "survival": {
-      "observed": 53245,
-      "normalized": 51812,
+      "observed": 53600,
+      "normalized": 52167,
       "blocked": 1433,
-      "scored": 51812,
-      "published": 51812
+      "scored": 52167,
+      "published": 52167
     },
     "blockers": {
       "missing_vendor_name": 1429,
@@ -92,8 +92,8 @@
     },
     "no_name_floor": {
       "rows": 1429,
-      "rate": 0.0268,
-      "label": "2.68% of snapshot rows have no vendor name"
+      "rate": 0.0267,
+      "label": "2.67% of snapshot rows have no vendor name"
     }
   },
   "promotion": {
@@ -101,7 +101,7 @@
     "gates": {
       "award_linkage_rate": {
         "threshold": 0.95,
-        "actual": 0.9731,
+        "actual": 0.9733,
         "passed": true
       },
       "multi_domain_vendor_rate": {
@@ -129,11 +129,11 @@
   "provenance": {
     "denominator": "site/data/ocp_awards_warehouse_lookup.json",
     "denominator_dataset_id": "qyyg-4tf5",
-    "denominator_materialized_at": "2026-08-29T11:43:49.474Z",
-    "denominator_row_count": 53245,
+    "denominator_materialized_at": "2026-09-05T13:44:00.909Z",
+    "denominator_row_count": 53600,
     "numerator": "full-corpus exact vendor profile aggregate (vendor_stem_v1)",
     "precision_receipt": "warehouse/receipts/proof/wh04_er_batch_latest.json",
     "procurement_spine": "site/data/procurement_spine_sources.json",
-    "procurement_spine_observed_on": "2026-08-18"
+    "procurement_spine_observed_on": "2026-09-06"
   }
 }

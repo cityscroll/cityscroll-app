@@ -94,7 +94,10 @@ describe("GET /entity-intelligence", () => {
     assert.equal(body.root.ref, "agency:id:housing-preservation-and-development");
     assert.equal(body.metrics.domains_matched, 5);
     assert.equal(body.coverage.eligible, null);
-    assert.equal(body.coverage.linked, 18);
+    // The linked total moves with the publisher vintage; the contract is that
+    // coverage stays unmeasured (no eligible denominator, so no rate) and that
+    // every connection carries a strong or tentative confidence, never weak.
+    assert.equal(body.coverage.linked, 21);
     assert.equal(body.coverage.rate, null);
     assert.match(body.coverage.vintage, /^\d{4}-\d{2}-\d{2}T/);
     assert.equal(body.domains.land.strong_count, 0);
@@ -165,16 +168,25 @@ describe("GET /entity-intelligence", () => {
 
   it("gc-08: PASSPort/Checkbook contract corroboration (VI-02) counts separately from awards and payments", async () => {
     const res = await handleEntityIntelligence(
-      req("/entity-intelligence?kind=vendor&name=Make%20it%20Zesty%20LLC"),
+      // The witness is a vendor the served selection carries with contract rows
+      // from both PASSPort and Checkbook and a separate award notice. That
+      // selection is a bounded 200 of the candidate population, so which
+      // vendors it holds moves with the publisher vintage; the assertions below
+      // check this one still satisfies every part of VI-02 rather than assume it.
+      req("/entity-intelligence?kind=vendor&name=Grand%20Street%20Settlement%20Inc"),
       env,
     );
     assert.equal(res.status, 200);
     const body = await res.json();
     const contractObjects = (body.domains.money.objects || [])
       .filter((object) => object.object_kind === "contract");
-    // The committed procurement-spine fixture carries this vendor's PASSPort +
-    // Checkbook contract rows (VI-02); the award notice is a separate object_kind.
+    const contractSources = new Set(contractObjects.map((object) => object.provenance?.source_system));
+    // Contract rows are corroborated across both systems, and the award notice
+    // stays a separate object_kind rather than being folded into the contracts.
     assert.ok(contractObjects.length >= 1);
+    assert.ok(contractSources.has("passport-public-contracts"));
+    assert.ok(contractSources.has("checkbook-contracts"));
+    assert.ok((body.domains.money.objects || []).some((object) => object.object_kind === "award"));
     assert.ok(body.vendor_footprint.section_counts.contracts.confirmed_count >= 1);
     assert.ok(body.vendor_footprint.section_counts.awards.confirmed_count >= 1);
     assert.notEqual(

@@ -15,6 +15,7 @@ import {
   countDistinctAppearances,
   countMaterializedMatters,
   deriveFrozenCoverageOracle,
+  observedSnapshot,
   laterDiscoveries,
   snapshotFromJournalAppearances,
   withholdLaterMatterPackets,
@@ -50,9 +51,16 @@ import {
   fixtureItemId,
 } from "./matter_exact_refresh_oracle.mjs";
 
-export const SNAPSHOT = JSON.parse(
+const RAW_SNAPSHOT = JSON.parse(
   readFileSync(new URL("../../../site/data/meeting_outcomes_snapshot.json", import.meta.url), "utf8"),
 );
+
+// Replay the snapshot as of its own vintage. The committed file also carries
+// meetings scheduled after it, which have a placeholder action and no votes;
+// they are what a watch notifies about, not outcomes to replay, and the frozen
+// oracle already leaves them out. Filtering once here keeps every harness that
+// reads SNAPSHOT counting the same appearances the oracle does.
+export const SNAPSHOT = observedSnapshot(RAW_SNAPSHOT);
 export const ORACLE = deriveFrozenCoverageOracle(SNAPSHOT);
 export const DATA_VINTAGE = SNAPSHOT.generated_at;
 export { START, FROZEN_LATER_EVENT_WATCHES };
@@ -94,6 +102,8 @@ export function catalogFromSnapshot(snapshot) {
   const itemsByMatter = new Map();
   const events = new Map();
   const historiesByMatter = new Map();
+  // The caller passes the snapshot as of its own vintage (see SNAPSHOT above),
+  // so every event here is one the publisher had already held.
   for (const record of Object.values(snapshot.by_notice || {})) {
     const eventId = String(record?.event?.event_id || "");
     if (!eventId) continue;
@@ -287,7 +297,7 @@ export async function runFrozenCoverageReplay({
     await refreshExactMatterRoster(env, {
       now: day181,
       fetchImpl: failing.fetchImpl,
-      maxMatters: 66,
+      maxMatters: 64,
       maxRequests: 600,
       pageSize: 1,
     });
@@ -338,10 +348,10 @@ export async function runFrozenCoverageReplay({
   };
   const acceptance = buildAcceptanceIndex({
     A1: {
-      status: counts.materialized_matters === 66
-        && counts.distinct_appearances === 76
-        && counts.later_event_discoveries === 10
-        && counts.logical_later_updates === 10
+      status: counts.materialized_matters === 64
+        && counts.distinct_appearances === 79
+        && counts.later_event_discoveries === 15
+        && counts.logical_later_updates === 15
         && counts.replay_duplicates === 0
         ? "pass" : "fail",
       evidence: counts,
@@ -351,12 +361,12 @@ export async function runFrozenCoverageReplay({
       evidence: { beforeRelease, baseline_owed: owed, discovery: released.later_notices_in_discovery },
     },
     A3: {
-      status: countMaterializedMatters(journal181) === 66
-        && countDistinctAppearances(journal181) === 76
-        && laterDiscoveries(journal181, oracle).length === 10
+      status: countMaterializedMatters(journal181) === 64
+        && countDistinctAppearances(journal181) === 79
+        && laterDiscoveries(journal181, oracle).length === 15
         && recoveredUpdates === 0
         && recoveredUpdates365 === 0
-        && countDistinctAppearances(journal365) === 76
+        && countDistinctAppearances(journal365) === 79
         ? "pass" : "fail",
       evidence: {
         day181: { matters: countMaterializedMatters(journal181), appearances: countDistinctAppearances(journal181), recoveredUpdates },

@@ -1,11 +1,747 @@
 {
   "schema": "cityscroll.meeting_outcomes_snapshot.v1",
-  "generated_at": "2026-08-10T13:08:13.019Z",
+  "generated_at": "2026-09-04T13:09:00.447Z",
   "delivery_tier": "inline-at-build",
-  "record_count": 319,
-  "present_count": 16,
-  "absent_count": 303,
+  "record_count": 325,
+  "present_count": 17,
+  "absent_count": 308,
   "by_notice": {
+    "20260825026": {
+      "request_id": "20260825026",
+      "snapshot_state": "present",
+      "event": {
+        "event_id": "22617",
+        "name": "Subcommittee on Zoning and Franchises",
+        "date": "2026-09-09",
+        "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22617&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+        "documents": [
+          {
+            "name": "Agenda",
+            "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22617_A_Subcommittee_on_Zoning_and_Franchises_26-09-09_Committee_Agenda.pdf"
+          }
+        ]
+      },
+      "matters": [
+        {
+          "actions": [
+            "Committee"
+          ],
+          "documents": [],
+          "matter_id": "79331",
+          "matter_file": "LU 0127-2026",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79331",
+          "title": "Zoning, 21-31 46th Ave Rezoning, Queens (C 250125 ZMQ).",
+          "outcome": "Committee",
+          "votes": null
+        },
+        {
+          "actions": [
+            "Committee"
+          ],
+          "documents": [],
+          "matter_id": "79332",
+          "matter_file": "LU 0128-2026",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79332",
+          "title": "Zoning, 21-31 46th Ave Rezoning, Queens (N 250126 ZRQ).",
+          "outcome": "Committee",
+          "votes": null
+        },
+        {
+          "actions": [
+            "Committee"
+          ],
+          "documents": [],
+          "matter_id": "79292",
+          "matter_file": "LU 0120-2026",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79292",
+          "title": "Zoning, 815 Hutchinson River Parkway Rezoning, Bronx (C 240161 ZMX).",
+          "outcome": "Committee",
+          "votes": null
+        },
+        {
+          "actions": [
+            "Committee"
+          ],
+          "documents": [],
+          "matter_id": "79293",
+          "matter_file": "LU 0121-2026",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79293",
+          "title": "Zoning, 862-868 Kent Avenue, Brooklyn (C 240283 ZMK).",
+          "outcome": "Committee",
+          "votes": null
+        },
+        {
+          "actions": [
+            "Committee"
+          ],
+          "documents": [],
+          "matter_id": "79294",
+          "matter_file": "LU 0122-2026",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79294",
+          "title": "Zoning, 862-868 Kent Avenue, Brooklyn (N 240284 ZRK).",
+          "outcome": "Committee",
+          "votes": null
+        },
+        {
+          "actions": [
+            "Committee"
+          ],
+          "documents": [],
+          "matter_id": "79295",
+          "matter_file": "LU 0123-2026",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79295",
+          "title": "Zoning, 158-06 Northern Boulevard Rezoning, Queens (C 260171 ZMQ).",
+          "outcome": "Committee",
+          "votes": null
+        },
+        {
+          "actions": [
+            "Committee"
+          ],
+          "documents": [],
+          "matter_id": "79296",
+          "matter_file": "LU 0124-2026",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79296",
+          "title": "Zoning, 158-06 Northern Boulevard Rezoning, Queens (N 260172 ZRQ).",
+          "outcome": "Committee",
+          "votes": null
+        },
+        {
+          "actions": [
+            "Committee"
+          ],
+          "documents": [],
+          "matter_id": "79297",
+          "matter_file": "LU 0125-2026",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79297",
+          "title": "Zoning, 132 Melrose Street Rezoning, Brooklyn (C 260135 ZMK).",
+          "outcome": "Committee",
+          "votes": null
+        },
+        {
+          "actions": [
+            "Committee"
+          ],
+          "documents": [],
+          "matter_id": "79298",
+          "matter_file": "LU 0126-2026",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79298",
+          "title": "Zoning, 132 Melrose Street Rezoning, Brooklyn (N 260136 ZRK).",
+          "outcome": "Committee",
+          "votes": null
+        },
+        {
+          "actions": [
+            "Introduced"
+          ],
+          "documents": [],
+          "matter_id": "79452",
+          "matter_file": "T2026-2499",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79452",
+          "title": "Zoning, Fort Hamilton Mews Rezoning, Brooklyn (C 260238 ZMK).",
+          "outcome": "Introduced",
+          "votes": null
+        },
+        {
+          "actions": [
+            "Introduced"
+          ],
+          "documents": [],
+          "matter_id": "79453",
+          "matter_file": "T2026-2500",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79453",
+          "title": "Zoning, Fort Hamilton Mews Rezoning, Brooklyn (N 260239 ZRK).",
+          "outcome": "Introduced",
+          "votes": null
+        },
+        {
+          "actions": [
+            "Introduced"
+          ],
+          "documents": [],
+          "matter_id": "79454",
+          "matter_file": "T2026-2501",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79454",
+          "title": "Zoning, Park Avenue Brooklyn Rezoning, Brooklyn (C 240218 ZMK).",
+          "outcome": "Introduced",
+          "votes": null
+        },
+        {
+          "actions": [
+            "Introduced"
+          ],
+          "documents": [],
+          "matter_id": "79455",
+          "matter_file": "T2026-2502",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79455",
+          "title": "Zoning, Park Avenue Brooklyn Rezoning, Brooklyn (N 240219 ZRK).",
+          "outcome": "Introduced",
+          "votes": null
+        },
+        {
+          "actions": [
+            "Introduced"
+          ],
+          "documents": [],
+          "matter_id": "79456",
+          "matter_file": "T2026-2503",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79456",
+          "title": "Zoning, Sojourner Truth – Mapes Rezoning, Bronx (C 240206 ZMX).",
+          "outcome": "Introduced",
+          "votes": null
+        },
+        {
+          "actions": [
+            "Introduced"
+          ],
+          "documents": [],
+          "matter_id": "79457",
+          "matter_file": "T2026-2504",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79457",
+          "title": "Zoning, Sojourner Truth – Mapes Rezoning, Bronx (N 240207 ZRX).",
+          "outcome": "Introduced",
+          "votes": null
+        },
+        {
+          "actions": [
+            "Introduced"
+          ],
+          "documents": [],
+          "matter_id": "79458",
+          "matter_file": "T2026-2505",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79458",
+          "title": "Zoning, 69-67 108th Street Rezoning, Queens (C 260186 ZMQ).",
+          "outcome": "Introduced",
+          "votes": null
+        },
+        {
+          "actions": [
+            "Introduced"
+          ],
+          "documents": [],
+          "matter_id": "79459",
+          "matter_file": "T2026-2506",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79459",
+          "title": "Zoning, 69-67 108th Street Rezoning, Queens (N 260187 ZRQ).",
+          "outcome": "Introduced",
+          "votes": null
+        },
+        {
+          "actions": [
+            "Introduced"
+          ],
+          "documents": [],
+          "matter_id": "79460",
+          "matter_file": "T2026-2507",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79460",
+          "title": "Zoning, 289 Kent Avenue Rezoning, Brooklyn (C 260087 ZMK).",
+          "outcome": "Introduced",
+          "votes": null
+        },
+        {
+          "actions": [
+            "Introduced"
+          ],
+          "documents": [],
+          "matter_id": "79461",
+          "matter_file": "T2026-2508",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79461",
+          "title": "Zoning, 289 Kent Avenue Rezoning, Brooklyn (N 260088 ZRK).",
+          "outcome": "Introduced",
+          "votes": null
+        }
+      ]
+    },
+    "20260824048": {
+      "request_id": "20260824048",
+      "snapshot_state": "present",
+      "event": {
+        "event_id": "22619",
+        "name": "Subcommittee on Landmarks, Public Sitings, Resiliency and Dispositions",
+        "date": "2026-09-08",
+        "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22619&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+        "documents": [
+          {
+            "name": "Agenda",
+            "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22619_A_Subcommittee_on_Landmarks%2C_Public_Sitings%2C_Resiliency_and_Dispositions_26-09-08_Committee_Agenda.pdf"
+          }
+        ]
+      },
+      "matters": [
+        {
+          "actions": [
+            "Introduced"
+          ],
+          "documents": [],
+          "matter_id": "79450",
+          "matter_file": "T2026-2497",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79450",
+          "title": "Landmarks, 48-50 Convent Avenue (ANCP) - UDAAP, Manhattan (G 260006 NUM).",
+          "outcome": "Introduced",
+          "votes": null
+        },
+        {
+          "actions": [
+            "Introduced"
+          ],
+          "documents": [],
+          "matter_id": "79451",
+          "matter_file": "T2026-2498",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79451",
+          "title": "Landmarks, 48-50 Convent Avenue (ANCP) - Article XI, Manhattan (G 260007 XAM).",
+          "outcome": "Introduced",
+          "votes": null
+        }
+      ]
+    },
+    "20260729004": {
+      "request_id": "20260729004",
+      "snapshot_state": "present",
+      "event": {
+        "event_id": "22528",
+        "name": "Subcommittee on Zoning and Franchises",
+        "date": "2026-08-12",
+        "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22528&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+        "documents": [
+          {
+            "name": "Agenda",
+            "url": "https://nyc.legistar1.com/nyc/meetings/2026/8/22528_A_Subcommittee_on_Zoning_and_Franchises_26-08-12_Committee_Agenda.pdf"
+          },
+          {
+            "name": "Minutes",
+            "url": "https://nyc.legistar1.com/nyc/meetings/2026/8/22528_M_Subcommittee_on_Zoning_and_Franchises_26-08-12_Meeting_Minutes.pdf"
+          }
+        ]
+      },
+      "matters": [
+        {
+          "actions": [
+            "Hearing on P-C Item by Comm",
+            "P-C Item Laid Over by Comm"
+          ],
+          "documents": [],
+          "matter_id": "79292",
+          "matter_file": "LU 0120-2026",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79292",
+          "title": "Zoning, 815 Hutchinson River Parkway Rezoning, Bronx (C 240161 ZMX).",
+          "outcome": "P-C Item Laid Over by Comm",
+          "votes": null
+        },
+        {
+          "actions": [
+            "Hearing on P-C Item by Comm",
+            "P-C Item Laid Over by Comm"
+          ],
+          "documents": [],
+          "matter_id": "79293",
+          "matter_file": "LU 0121-2026",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79293",
+          "title": "Zoning, 862-868 Kent Avenue, Brooklyn (C 240283 ZMK).",
+          "outcome": "P-C Item Laid Over by Comm",
+          "votes": null
+        },
+        {
+          "actions": [
+            "Hearing on P-C Item by Comm",
+            "P-C Item Laid Over by Comm"
+          ],
+          "documents": [],
+          "matter_id": "79294",
+          "matter_file": "LU 0122-2026",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79294",
+          "title": "Zoning, 862-868 Kent Avenue, Brooklyn (N 240284 ZRK).",
+          "outcome": "P-C Item Laid Over by Comm",
+          "votes": null
+        },
+        {
+          "actions": [
+            "Hearing on P-C Item by Comm",
+            "P-C Item Laid Over by Comm"
+          ],
+          "documents": [],
+          "matter_id": "79295",
+          "matter_file": "LU 0123-2026",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79295",
+          "title": "Zoning, 158-06 Northern Boulevard Rezoning, Queens (C 260171 ZMQ).",
+          "outcome": "P-C Item Laid Over by Comm",
+          "votes": null
+        },
+        {
+          "actions": [
+            "Hearing on P-C Item by Comm",
+            "P-C Item Laid Over by Comm"
+          ],
+          "documents": [],
+          "matter_id": "79296",
+          "matter_file": "LU 0124-2026",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79296",
+          "title": "Zoning, 158-06 Northern Boulevard Rezoning, Queens (N 260172 ZRQ).",
+          "outcome": "P-C Item Laid Over by Comm",
+          "votes": null
+        },
+        {
+          "actions": [
+            "Hearing on P-C Item by Comm",
+            "P-C Item Laid Over by Comm"
+          ],
+          "documents": [],
+          "matter_id": "79297",
+          "matter_file": "LU 0125-2026",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79297",
+          "title": "Zoning, 132 Melrose Street Rezoning, Brooklyn (C 260135 ZMK).",
+          "outcome": "P-C Item Laid Over by Comm",
+          "votes": null
+        },
+        {
+          "actions": [
+            "Hearing on P-C Item by Comm",
+            "P-C Item Laid Over by Comm"
+          ],
+          "documents": [],
+          "matter_id": "79298",
+          "matter_file": "LU 0126-2026",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79298",
+          "title": "Zoning, 132 Melrose Street Rezoning, Brooklyn (N 260136 ZRK).",
+          "outcome": "P-C Item Laid Over by Comm",
+          "votes": null
+        },
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Approved by Subcommittee with Modifications and Referred to CPC"
+          ],
+          "documents": [],
+          "matter_id": "79201",
+          "matter_file": "LU 0115-2026",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79201",
+          "title": "Zoning, 200 Kent Avenue Rezoning, Brooklyn (C 260149 ZMK).",
+          "outcome": "Approved by Subcommittee with Modifications and Referred to CPC",
+          "votes": {
+            "result": "Passed",
+            "yes": 7,
+            "no": 0,
+            "abstain": 2,
+            "vote_identity": "roll_call",
+            "person_count": 9,
+            "by_person": [
+              {
+                "person_id": "7785",
+                "person_name": "Farah N. Louis",
+                "vote_bucket": "abstain"
+              },
+              {
+                "person_id": "7833",
+                "person_name": "David M. Carr",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7895",
+                "person_name": "Elsie Encarnación",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7810",
+                "person_name": "Amanda C. Farías",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "5289",
+                "person_name": "Simcha Felder",
+                "vote_bucket": "abstain"
+              },
+              {
+                "person_id": "7866",
+                "person_name": "Yusef Salaam",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7897",
+                "person_name": "Justin E. Sanchez",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7818",
+                "person_name": "Lynn C. Schulman",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7898",
+                "person_name": "Shanel Thomas-Henry",
+                "vote_bucket": "aye"
+              }
+            ]
+          }
+        },
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Approved by Subcommittee with Modifications and Referred to CPC"
+          ],
+          "documents": [],
+          "matter_id": "79202",
+          "matter_file": "LU 0116-2026",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79202",
+          "title": "Zoning, 200 Kent Avenue Rezoning, Brooklyn (N 260150 ZRK).",
+          "outcome": "Approved by Subcommittee with Modifications and Referred to CPC",
+          "votes": {
+            "result": "Passed",
+            "yes": 7,
+            "no": 0,
+            "abstain": 2,
+            "vote_identity": "roll_call",
+            "person_count": 9,
+            "by_person": [
+              {
+                "person_id": "7785",
+                "person_name": "Farah N. Louis",
+                "vote_bucket": "abstain"
+              },
+              {
+                "person_id": "7833",
+                "person_name": "David M. Carr",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7895",
+                "person_name": "Elsie Encarnación",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7810",
+                "person_name": "Amanda C. Farías",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "5289",
+                "person_name": "Simcha Felder",
+                "vote_bucket": "abstain"
+              },
+              {
+                "person_id": "7866",
+                "person_name": "Yusef Salaam",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7897",
+                "person_name": "Justin E. Sanchez",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7818",
+                "person_name": "Lynn C. Schulman",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7898",
+                "person_name": "Shanel Thomas-Henry",
+                "vote_bucket": "aye"
+              }
+            ]
+          }
+        },
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Approved by Subcommittee"
+          ],
+          "documents": [],
+          "matter_id": "79203",
+          "matter_file": "LU 0117-2026",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79203",
+          "title": "Zoning, Flatiron NoMad Major Concessions, Manhattan (C 260123 MCM).",
+          "outcome": "Approved by Subcommittee",
+          "votes": {
+            "result": "Passed",
+            "yes": 7,
+            "no": 0,
+            "abstain": 2,
+            "vote_identity": "roll_call",
+            "person_count": 9,
+            "by_person": [
+              {
+                "person_id": "7785",
+                "person_name": "Farah N. Louis",
+                "vote_bucket": "abstain"
+              },
+              {
+                "person_id": "7833",
+                "person_name": "David M. Carr",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7895",
+                "person_name": "Elsie Encarnación",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7810",
+                "person_name": "Amanda C. Farías",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "5289",
+                "person_name": "Simcha Felder",
+                "vote_bucket": "abstain"
+              },
+              {
+                "person_id": "7866",
+                "person_name": "Yusef Salaam",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7897",
+                "person_name": "Justin E. Sanchez",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7818",
+                "person_name": "Lynn C. Schulman",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7898",
+                "person_name": "Shanel Thomas-Henry",
+                "vote_bucket": "aye"
+              }
+            ]
+          }
+        },
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Approved by Subcommittee with Modifications and Referred to CPC"
+          ],
+          "documents": [],
+          "matter_id": "79204",
+          "matter_file": "LU 0118-2026",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79204",
+          "title": "Zoning, 47-03 108th Street Rezoning, Queens (C 260147 ZMQ).",
+          "outcome": "Approved by Subcommittee with Modifications and Referred to CPC",
+          "votes": {
+            "result": "Passed",
+            "yes": 7,
+            "no": 0,
+            "abstain": 2,
+            "vote_identity": "roll_call",
+            "person_count": 9,
+            "by_person": [
+              {
+                "person_id": "7785",
+                "person_name": "Farah N. Louis",
+                "vote_bucket": "abstain"
+              },
+              {
+                "person_id": "7833",
+                "person_name": "David M. Carr",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7895",
+                "person_name": "Elsie Encarnación",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7810",
+                "person_name": "Amanda C. Farías",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "5289",
+                "person_name": "Simcha Felder",
+                "vote_bucket": "abstain"
+              },
+              {
+                "person_id": "7866",
+                "person_name": "Yusef Salaam",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7897",
+                "person_name": "Justin E. Sanchez",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7818",
+                "person_name": "Lynn C. Schulman",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7898",
+                "person_name": "Shanel Thomas-Henry",
+                "vote_bucket": "aye"
+              }
+            ]
+          }
+        },
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Approved by Subcommittee with Modifications and Referred to CPC"
+          ],
+          "documents": [],
+          "matter_id": "79205",
+          "matter_file": "LU 0119-2026",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79205",
+          "title": "Zoning, 47-03 108th Street Rezoning, Queens (N 260148 ZRQ).",
+          "outcome": "Approved by Subcommittee with Modifications and Referred to CPC",
+          "votes": {
+            "result": "Passed",
+            "yes": 7,
+            "no": 0,
+            "abstain": 2,
+            "vote_identity": "roll_call",
+            "person_count": 9,
+            "by_person": [
+              {
+                "person_id": "7785",
+                "person_name": "Farah N. Louis",
+                "vote_bucket": "abstain"
+              },
+              {
+                "person_id": "7833",
+                "person_name": "David M. Carr",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7895",
+                "person_name": "Elsie Encarnación",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7810",
+                "person_name": "Amanda C. Farías",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "5289",
+                "person_name": "Simcha Felder",
+                "vote_bucket": "abstain"
+              },
+              {
+                "person_id": "7866",
+                "person_name": "Yusef Salaam",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7897",
+                "person_name": "Justin E. Sanchez",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7818",
+                "person_name": "Lynn C. Schulman",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7898",
+                "person_name": "Shanel Thomas-Henry",
+                "vote_bucket": "aye"
+              }
+            ]
+          }
+        }
+      ]
+    },
     "20260707022": {
       "request_id": "20260707022",
       "snapshot_state": "present",
@@ -72,7 +808,61 @@
           "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79201",
           "title": "Zoning, 200 Kent Avenue Rezoning, Brooklyn (C 260149 ZMK).",
           "outcome": "Laid Over by Subcommittee",
-          "votes": null
+          "votes": {
+            "result": "Passed",
+            "yes": 7,
+            "no": 0,
+            "abstain": 2,
+            "vote_identity": "roll_call",
+            "person_count": 9,
+            "by_person": [
+              {
+                "person_id": "7785",
+                "person_name": "Farah N. Louis",
+                "vote_bucket": "abstain"
+              },
+              {
+                "person_id": "7833",
+                "person_name": "David M. Carr",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7895",
+                "person_name": "Elsie Encarnación",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7810",
+                "person_name": "Amanda C. Farías",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "5289",
+                "person_name": "Simcha Felder",
+                "vote_bucket": "abstain"
+              },
+              {
+                "person_id": "7866",
+                "person_name": "Yusef Salaam",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7897",
+                "person_name": "Justin E. Sanchez",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7818",
+                "person_name": "Lynn C. Schulman",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7898",
+                "person_name": "Shanel Thomas-Henry",
+                "vote_bucket": "aye"
+              }
+            ]
+          }
         },
         {
           "actions": [
@@ -85,7 +875,61 @@
           "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79203",
           "title": "Zoning, Flatiron NoMad Major Concessions, Manhattan (C 260123 MCM).",
           "outcome": "Laid Over by Subcommittee",
-          "votes": null
+          "votes": {
+            "result": "Passed",
+            "yes": 7,
+            "no": 0,
+            "abstain": 2,
+            "vote_identity": "roll_call",
+            "person_count": 9,
+            "by_person": [
+              {
+                "person_id": "7785",
+                "person_name": "Farah N. Louis",
+                "vote_bucket": "abstain"
+              },
+              {
+                "person_id": "7833",
+                "person_name": "David M. Carr",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7895",
+                "person_name": "Elsie Encarnación",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7810",
+                "person_name": "Amanda C. Farías",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "5289",
+                "person_name": "Simcha Felder",
+                "vote_bucket": "abstain"
+              },
+              {
+                "person_id": "7866",
+                "person_name": "Yusef Salaam",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7897",
+                "person_name": "Justin E. Sanchez",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7818",
+                "person_name": "Lynn C. Schulman",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7898",
+                "person_name": "Shanel Thomas-Henry",
+                "vote_bucket": "aye"
+              }
+            ]
+          }
         },
         {
           "actions": [
@@ -98,7 +942,61 @@
           "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79202",
           "title": "Zoning, 200 Kent Avenue Rezoning, Brooklyn (N 260150 ZRK).",
           "outcome": "Laid Over by Subcommittee",
-          "votes": null
+          "votes": {
+            "result": "Passed",
+            "yes": 7,
+            "no": 0,
+            "abstain": 2,
+            "vote_identity": "roll_call",
+            "person_count": 9,
+            "by_person": [
+              {
+                "person_id": "7785",
+                "person_name": "Farah N. Louis",
+                "vote_bucket": "abstain"
+              },
+              {
+                "person_id": "7833",
+                "person_name": "David M. Carr",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7895",
+                "person_name": "Elsie Encarnación",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7810",
+                "person_name": "Amanda C. Farías",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "5289",
+                "person_name": "Simcha Felder",
+                "vote_bucket": "abstain"
+              },
+              {
+                "person_id": "7866",
+                "person_name": "Yusef Salaam",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7897",
+                "person_name": "Justin E. Sanchez",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7818",
+                "person_name": "Lynn C. Schulman",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7898",
+                "person_name": "Shanel Thomas-Henry",
+                "vote_bucket": "aye"
+              }
+            ]
+          }
         },
         {
           "actions": [
@@ -111,7 +1009,61 @@
           "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79204",
           "title": "Zoning, 47-03 108th Street Rezoning, Queens (C 260147 ZMQ).",
           "outcome": "Laid Over by Subcommittee",
-          "votes": null
+          "votes": {
+            "result": "Passed",
+            "yes": 7,
+            "no": 0,
+            "abstain": 2,
+            "vote_identity": "roll_call",
+            "person_count": 9,
+            "by_person": [
+              {
+                "person_id": "7785",
+                "person_name": "Farah N. Louis",
+                "vote_bucket": "abstain"
+              },
+              {
+                "person_id": "7833",
+                "person_name": "David M. Carr",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7895",
+                "person_name": "Elsie Encarnación",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7810",
+                "person_name": "Amanda C. Farías",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "5289",
+                "person_name": "Simcha Felder",
+                "vote_bucket": "abstain"
+              },
+              {
+                "person_id": "7866",
+                "person_name": "Yusef Salaam",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7897",
+                "person_name": "Justin E. Sanchez",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7818",
+                "person_name": "Lynn C. Schulman",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7898",
+                "person_name": "Shanel Thomas-Henry",
+                "vote_bucket": "aye"
+              }
+            ]
+          }
         },
         {
           "actions": [
@@ -124,7 +1076,61 @@
           "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79205",
           "title": "Zoning, 47-03 108th Street Rezoning, Queens (N 260148 ZRQ).",
           "outcome": "Laid Over by Subcommittee",
-          "votes": null
+          "votes": {
+            "result": "Passed",
+            "yes": 7,
+            "no": 0,
+            "abstain": 2,
+            "vote_identity": "roll_call",
+            "person_count": 9,
+            "by_person": [
+              {
+                "person_id": "7785",
+                "person_name": "Farah N. Louis",
+                "vote_bucket": "abstain"
+              },
+              {
+                "person_id": "7833",
+                "person_name": "David M. Carr",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7895",
+                "person_name": "Elsie Encarnación",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7810",
+                "person_name": "Amanda C. Farías",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "5289",
+                "person_name": "Simcha Felder",
+                "vote_bucket": "abstain"
+              },
+              {
+                "person_id": "7866",
+                "person_name": "Yusef Salaam",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7897",
+                "person_name": "Justin E. Sanchez",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7818",
+                "person_name": "Lynn C. Schulman",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7898",
+                "person_name": "Shanel Thomas-Henry",
+                "vote_bucket": "aye"
+              }
+            ]
+          }
         }
       ]
     },
@@ -1519,8 +2525,8 @@
         }
       ]
     },
-    "20260430007": {
-      "request_id": "20260430007",
+    "20260422047": {
+      "request_id": "20260422047",
       "snapshot_state": "present",
       "event": {
         "event_id": "22396",
@@ -1567,8 +2573,8 @@
         }
       ]
     },
-    "20260422047": {
-      "request_id": "20260422047",
+    "20260430007": {
+      "request_id": "20260430007",
       "snapshot_state": "present",
       "event": {
         "event_id": "22396",
@@ -2397,189 +3403,188 @@
         }
       ]
     },
-    "20260219004": {
-      "request_id": "20260219004",
-      "snapshot_state": "present",
-      "event": {
-        "event_id": "22197",
-        "name": "Subcommittee on Zoning and Franchises",
-        "date": "2026-03-04",
-        "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22197&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
-        "documents": [
-          {
-            "name": "Agenda",
-            "url": "https://nyc.legistar1.com/nyc/meetings/2026/3/22197_A_Subcommittee_on_Zoning_and_Franchises_26-03-04_Committee_Agenda.pdf"
-          },
-          {
-            "name": "Minutes",
-            "url": "https://nyc.legistar1.com/nyc/meetings/2026/3/22197_M_Subcommittee_on_Zoning_and_Franchises_26-03-04_Meeting_Minutes.pdf"
-          }
-        ]
-      },
-      "matters": [
-        {
-          "actions": [
-            "Hearing Held by Committee",
-            "Laid Over by Subcommittee"
-          ],
-          "documents": [],
-          "matter_id": "78268",
-          "matter_file": "LU 0038-2026",
-          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78268",
-          "title": "Zoning, 20 Berry Street, Brooklyn (C 240271 ZMK).",
-          "outcome": "Laid Over by Subcommittee",
-          "votes": null
-        },
-        {
-          "actions": [
-            "Hearing Held by Committee",
-            "Laid Over by Subcommittee"
-          ],
-          "documents": [],
-          "matter_id": "78269",
-          "matter_file": "LU 0039-2026",
-          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78269",
-          "title": "Zoning, 20 Berry Street, Brooklyn (N 240272 ZRK).",
-          "outcome": "Laid Over by Subcommittee",
-          "votes": null
-        },
-        {
-          "actions": [
-            "Hearing Held by Committee",
-            "Laid Over by Subcommittee"
-          ],
-          "documents": [],
-          "matter_id": "78270",
-          "matter_file": "LU 0040-2026",
-          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78270",
-          "title": "Zoning, 20 Berry Street, Brooklyn (C 240273 ZSK).",
-          "outcome": "Laid Over by Subcommittee",
-          "votes": null
-        },
-        {
-          "actions": [
-            "Hearing Held by Committee",
-            "Laid Over by Subcommittee"
-          ],
-          "documents": [],
-          "matter_id": "78271",
-          "matter_file": "LU 0041-2026",
-          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78271",
-          "title": "Zoning, 1325 Avenue of the Americas – Text Amendment, Manhattan (N 240303 ZRM).",
-          "outcome": "Laid Over by Subcommittee",
-          "votes": null
-        },
-        {
-          "actions": [
-            "Hearing Held by Committee",
-            "Laid Over by Subcommittee"
-          ],
-          "documents": [],
-          "matter_id": "78272",
-          "matter_file": "LU 0042-2026",
-          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78272",
-          "title": "Zoning, Allen Street Mall Demapping, Manhattan (C 250306 MMM).",
-          "outcome": "Laid Over by Subcommittee",
-          "votes": null
-        },
-        {
-          "actions": [
-            "Hearing Held by Committee",
-            "Laid Over by Subcommittee"
-          ],
-          "documents": [],
-          "matter_id": "78273",
-          "matter_file": "LU 0043-2026",
-          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78273",
-          "title": "Zoning, Allen Street Mall Demapping, Manhattan (N 250307 ZRM).",
-          "outcome": "Laid Over by Subcommittee",
-          "votes": null
-        }
-      ]
+    "20260827019": {
+      "request_id": "20260827019",
+      "snapshot_state": "absent"
     },
-    "20260217023": {
-      "request_id": "20260217023",
-      "snapshot_state": "present",
-      "event": {
-        "event_id": "22196",
-        "name": "Subcommittee on Landmarks, Public Sitings, Resiliency and Dispositions",
-        "date": "2026-03-03",
-        "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22196&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
-        "documents": [
-          {
-            "name": "Agenda",
-            "url": "https://nyc.legistar1.com/nyc/meetings/2026/3/22196_A_Subcommittee_on_Landmarks%2C_Public_Sitings%2C_Resiliency_and_Dispositions_26-03-03_Committee_Agenda.pdf"
-          },
-          {
-            "name": "Minutes",
-            "url": "https://nyc.legistar1.com/nyc/meetings/2026/3/22196_M_Subcommittee_on_Landmarks%2C_Public_Sitings%2C_Resiliency_and_Dispositions_26-03-03_Meeting_Minutes.pdf"
-          }
-        ]
-      },
-      "matters": [
-        {
-          "actions": [
-            "Hearing Held by Committee",
-            "Laid Over by Subcommittee"
-          ],
-          "documents": [],
-          "matter_id": "78266",
-          "matter_file": "LU 0035-2026",
-          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78266",
-          "title": "Landmarks, 1727 Amsterdam Avenue – Hill Top Apartments, Manhattan (C 260071 HAM).",
-          "outcome": "Laid Over by Subcommittee",
-          "votes": null
-        },
-        {
-          "actions": [
-            "Hearing Held by Committee",
-            "Laid Over by Subcommittee"
-          ],
-          "documents": [],
-          "matter_id": "78265",
-          "matter_file": "LU 0036-2026",
-          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78265",
-          "title": "Landmarks, DEP Newtown Creek CSO Tunnel, Brooklyn and Queens (C 260063 PCY).",
-          "outcome": "Laid Over by Subcommittee",
-          "votes": null
-        },
-        {
-          "actions": [
-            "Hearing Held by Committee",
-            "Laid Over by Subcommittee"
-          ],
-          "documents": [],
-          "matter_id": "78267",
-          "matter_file": "LU 0037-2026",
-          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78267",
-          "title": "Landmarks, DEP Newtown Creek CSO Tunnel, Brooklyn and Queens (C 260064 PSY).",
-          "outcome": "Laid Over by Subcommittee",
-          "votes": null
-        }
-      ]
+    "20260826001": {
+      "request_id": "20260826001",
+      "snapshot_state": "absent"
+    },
+    "20260827001": {
+      "request_id": "20260827001",
+      "snapshot_state": "absent"
+    },
+    "20260819004": {
+      "request_id": "20260819004",
+      "snapshot_state": "absent"
+    },
+    "20260817025": {
+      "request_id": "20260817025",
+      "snapshot_state": "absent"
+    },
+    "20260826006": {
+      "request_id": "20260826006",
+      "snapshot_state": "absent"
+    },
+    "20260814012": {
+      "request_id": "20260814012",
+      "snapshot_state": "absent"
+    },
+    "20260819033": {
+      "request_id": "20260819033",
+      "snapshot_state": "absent"
+    },
+    "20260812019": {
+      "request_id": "20260812019",
+      "snapshot_state": "absent"
+    },
+    "20260818004": {
+      "request_id": "20260818004",
+      "snapshot_state": "absent"
+    },
+    "20260810007": {
+      "request_id": "20260810007",
+      "snapshot_state": "absent"
+    },
+    "20260827003": {
+      "request_id": "20260827003",
+      "snapshot_state": "absent"
+    },
+    "20260805001": {
+      "request_id": "20260805001",
+      "snapshot_state": "absent"
+    },
+    "20260810005": {
+      "request_id": "20260810005",
+      "snapshot_state": "absent"
+    },
+    "20260806002": {
+      "request_id": "20260806002",
+      "snapshot_state": "absent"
+    },
+    "20260812022": {
+      "request_id": "20260812022",
+      "snapshot_state": "absent"
+    },
+    "20260803026": {
+      "request_id": "20260803026",
+      "snapshot_state": "absent"
+    },
+    "20260825003": {
+      "request_id": "20260825003",
+      "snapshot_state": "absent"
+    },
+    "20260819025": {
+      "request_id": "20260819025",
+      "snapshot_state": "absent"
+    },
+    "20260817015": {
+      "request_id": "20260817015",
+      "snapshot_state": "absent"
+    },
+    "20260803009": {
+      "request_id": "20260803009",
+      "snapshot_state": "absent"
+    },
+    "20260901022": {
+      "request_id": "20260901022",
+      "snapshot_state": "absent"
+    },
+    "20260826043": {
+      "request_id": "20260826043",
+      "snapshot_state": "absent"
+    },
+    "20260810025": {
+      "request_id": "20260810025",
+      "snapshot_state": "absent"
+    },
+    "20260810024": {
+      "request_id": "20260810024",
+      "snapshot_state": "absent"
+    },
+    "20260901021": {
+      "request_id": "20260901021",
+      "snapshot_state": "absent"
+    },
+    "20260831001": {
+      "request_id": "20260831001",
+      "snapshot_state": "absent"
+    },
+    "20260106034": {
+      "request_id": "20260106034",
+      "snapshot_state": "absent"
     },
     "20260728026": {
       "request_id": "20260728026",
-      "snapshot_state": "absent"
-    },
-    "20260714002": {
-      "request_id": "20260714002",
-      "snapshot_state": "absent"
-    },
-    "20260723022": {
-      "request_id": "20260723022",
       "snapshot_state": "absent"
     },
     "20260709020": {
       "request_id": "20260709020",
       "snapshot_state": "absent"
     },
+    "20260810050": {
+      "request_id": "20260810050",
+      "snapshot_state": "absent"
+    },
+    "20260714002": {
+      "request_id": "20260714002",
+      "snapshot_state": "absent"
+    },
+    "20260811001": {
+      "request_id": "20260811001",
+      "snapshot_state": "absent"
+    },
+    "20260818027": {
+      "request_id": "20260818027",
+      "snapshot_state": "absent"
+    },
+    "20260810051": {
+      "request_id": "20260810051",
+      "snapshot_state": "absent"
+    },
+    "20260814016": {
+      "request_id": "20260814016",
+      "snapshot_state": "absent"
+    },
+    "20260723022": {
+      "request_id": "20260723022",
+      "snapshot_state": "absent"
+    },
+    "20260805006": {
+      "request_id": "20260805006",
+      "snapshot_state": "absent"
+    },
+    "20260602001": {
+      "request_id": "20260602001",
+      "snapshot_state": "absent"
+    },
     "20260714029": {
       "request_id": "20260714029",
       "snapshot_state": "absent"
     },
+    "20260811003": {
+      "request_id": "20260811003",
+      "snapshot_state": "absent"
+    },
+    "20260728028": {
+      "request_id": "20260728028",
+      "snapshot_state": "absent"
+    },
     "20260715041": {
       "request_id": "20260715041",
+      "snapshot_state": "absent"
+    },
+    "20260730025": {
+      "request_id": "20260730025",
+      "snapshot_state": "absent"
+    },
+    "20260805038": {
+      "request_id": "20260805038",
+      "snapshot_state": "absent"
+    },
+    "20260722029": {
+      "request_id": "20260722029",
       "snapshot_state": "absent"
     },
     "20260708002": {
@@ -2594,16 +3599,20 @@
       "request_id": "20260713006",
       "snapshot_state": "absent"
     },
-    "20260729005": {
-      "request_id": "20260729005",
-      "snapshot_state": "absent"
-    },
     "20260729020": {
       "request_id": "20260729020",
       "snapshot_state": "absent"
     },
+    "20260729005": {
+      "request_id": "20260729005",
+      "snapshot_state": "absent"
+    },
     "20260727031": {
       "request_id": "20260727031",
+      "snapshot_state": "absent"
+    },
+    "20260810053": {
+      "request_id": "20260810053",
       "snapshot_state": "absent"
     },
     "20260723005": {
@@ -2618,20 +3627,20 @@
       "request_id": "20260710032",
       "snapshot_state": "absent"
     },
-    "20260721023": {
-      "request_id": "20260721023",
-      "snapshot_state": "absent"
-    },
     "20260618040": {
       "request_id": "20260618040",
       "snapshot_state": "absent"
     },
-    "20260709028": {
-      "request_id": "20260709028",
+    "20260721023": {
+      "request_id": "20260721023",
       "snapshot_state": "absent"
     },
     "20260716022": {
       "request_id": "20260716022",
+      "snapshot_state": "absent"
+    },
+    "20260709028": {
+      "request_id": "20260709028",
       "snapshot_state": "absent"
     },
     "20260723030": {
@@ -2666,12 +3675,12 @@
       "request_id": "20260708015",
       "snapshot_state": "absent"
     },
-    "20260624001": {
-      "request_id": "20260624001",
-      "snapshot_state": "absent"
-    },
     "20260707029": {
       "request_id": "20260707029",
+      "snapshot_state": "absent"
+    },
+    "20260624001": {
+      "request_id": "20260624001",
       "snapshot_state": "absent"
     },
     "20260624005": {
@@ -2770,12 +3779,12 @@
       "request_id": "20260609065",
       "snapshot_state": "absent"
     },
-    "20260522008": {
-      "request_id": "20260522008",
-      "snapshot_state": "absent"
-    },
     "20260610012": {
       "request_id": "20260610012",
+      "snapshot_state": "absent"
+    },
+    "20260522008": {
+      "request_id": "20260522008",
       "snapshot_state": "absent"
     },
     "20260506007": {
@@ -2982,16 +3991,16 @@
       "request_id": "20260518031",
       "snapshot_state": "absent"
     },
+    "20260515001": {
+      "request_id": "20260515001",
+      "snapshot_state": "absent"
+    },
     "20260512013": {
       "request_id": "20260512013",
       "snapshot_state": "absent"
     },
     "20260521019": {
       "request_id": "20260521019",
-      "snapshot_state": "absent"
-    },
-    "20260515001": {
-      "request_id": "20260515001",
       "snapshot_state": "absent"
     },
     "20260512014": {
@@ -3114,16 +4123,16 @@
       "request_id": "20260414033",
       "snapshot_state": "absent"
     },
+    "20260422037": {
+      "request_id": "20260422037",
+      "snapshot_state": "absent"
+    },
     "20260424018": {
       "request_id": "20260424018",
       "snapshot_state": "absent"
     },
     "20260407014": {
       "request_id": "20260407014",
-      "snapshot_state": "absent"
-    },
-    "20260422037": {
-      "request_id": "20260422037",
       "snapshot_state": "absent"
     },
     "20260428004": {
@@ -3218,16 +4227,16 @@
       "request_id": "20260323027",
       "snapshot_state": "absent"
     },
-    "20260408026": {
-      "request_id": "20260408026",
-      "snapshot_state": "absent"
-    },
     "20260331010": {
       "request_id": "20260331010",
       "snapshot_state": "absent"
     },
     "20260408001": {
       "request_id": "20260408001",
+      "snapshot_state": "absent"
+    },
+    "20260408026": {
+      "request_id": "20260408026",
       "snapshot_state": "absent"
     },
     "20260303009": {
@@ -3374,12 +4383,12 @@
       "request_id": "20260320012",
       "snapshot_state": "absent"
     },
-    "20260325031": {
-      "request_id": "20260325031",
-      "snapshot_state": "absent"
-    },
     "20260318017": {
       "request_id": "20260318017",
+      "snapshot_state": "absent"
+    },
+    "20260325031": {
+      "request_id": "20260325031",
       "snapshot_state": "absent"
     },
     "20260316027": {
@@ -3410,20 +4419,20 @@
       "request_id": "20260211001",
       "snapshot_state": "absent"
     },
-    "20260310005": {
-      "request_id": "20260310005",
+    "20260217032": {
+      "request_id": "20260217032",
       "snapshot_state": "absent"
     },
     "20260311019": {
       "request_id": "20260311019",
       "snapshot_state": "absent"
     },
-    "20260217032": {
-      "request_id": "20260217032",
-      "snapshot_state": "absent"
-    },
     "20260226038": {
       "request_id": "20260226038",
+      "snapshot_state": "absent"
+    },
+    "20260310005": {
+      "request_id": "20260310005",
       "snapshot_state": "absent"
     },
     "20260225001": {
@@ -3442,12 +4451,12 @@
       "request_id": "20260218015",
       "snapshot_state": "absent"
     },
-    "20260313001": {
-      "request_id": "20260313001",
-      "snapshot_state": "absent"
-    },
     "20260312016": {
       "request_id": "20260312016",
+      "snapshot_state": "absent"
+    },
+    "20260313001": {
+      "request_id": "20260313001",
       "snapshot_state": "absent"
     },
     "20260302015": {
@@ -3456,10 +4465,6 @@
     },
     "20260219017": {
       "request_id": "20260219017",
-      "snapshot_state": "absent"
-    },
-    "20260209023": {
-      "request_id": "20260209023",
       "snapshot_state": "absent"
     },
     "20260202014": {
@@ -3478,12 +4483,16 @@
       "request_id": "20260116030",
       "snapshot_state": "absent"
     },
-    "20260312025": {
-      "request_id": "20260312025",
+    "20260209023": {
+      "request_id": "20260209023",
       "snapshot_state": "absent"
     },
     "20260303033": {
       "request_id": "20260303033",
+      "snapshot_state": "absent"
+    },
+    "20260312025": {
+      "request_id": "20260312025",
       "snapshot_state": "absent"
     },
     "20260303007": {
@@ -3624,150 +4633,6 @@
     },
     "20260129030": {
       "request_id": "20260129030",
-      "snapshot_state": "absent"
-    },
-    "20260220054": {
-      "request_id": "20260220054",
-      "snapshot_state": "absent"
-    },
-    "20260202001": {
-      "request_id": "20260202001",
-      "snapshot_state": "absent"
-    },
-    "20260205025": {
-      "request_id": "20260205025",
-      "snapshot_state": "absent"
-    },
-    "20260217018": {
-      "request_id": "20260217018",
-      "snapshot_state": "absent"
-    },
-    "20260211022": {
-      "request_id": "20260211022",
-      "snapshot_state": "absent"
-    },
-    "20260202021": {
-      "request_id": "20260202021",
-      "snapshot_state": "absent"
-    },
-    "20260123008": {
-      "request_id": "20260123008",
-      "snapshot_state": "absent"
-    },
-    "20260130002": {
-      "request_id": "20260130002",
-      "snapshot_state": "absent"
-    },
-    "20260122018": {
-      "request_id": "20260122018",
-      "snapshot_state": "absent"
-    },
-    "20260213021": {
-      "request_id": "20260213021",
-      "snapshot_state": "absent"
-    },
-    "20260219006": {
-      "request_id": "20260219006",
-      "snapshot_state": "absent"
-    },
-    "20260116021": {
-      "request_id": "20260116021",
-      "snapshot_state": "absent"
-    },
-    "20251205033": {
-      "request_id": "20251205033",
-      "snapshot_state": "absent"
-    },
-    "20260129025": {
-      "request_id": "20260129025",
-      "snapshot_state": "absent"
-    },
-    "20260204012": {
-      "request_id": "20260204012",
-      "snapshot_state": "absent"
-    },
-    "20260130017": {
-      "request_id": "20260130017",
-      "snapshot_state": "absent"
-    },
-    "20260210001": {
-      "request_id": "20260210001",
-      "snapshot_state": "absent"
-    },
-    "20260203001": {
-      "request_id": "20260203001",
-      "snapshot_state": "absent"
-    },
-    "20260123016": {
-      "request_id": "20260123016",
-      "snapshot_state": "absent"
-    },
-    "20260203003": {
-      "request_id": "20260203003",
-      "snapshot_state": "absent"
-    },
-    "20260211029": {
-      "request_id": "20260211029",
-      "snapshot_state": "absent"
-    },
-    "20260213026": {
-      "request_id": "20260213026",
-      "snapshot_state": "absent"
-    },
-    "20260130022": {
-      "request_id": "20260130022",
-      "snapshot_state": "absent"
-    },
-    "20260112027": {
-      "request_id": "20260112027",
-      "snapshot_state": "absent"
-    },
-    "20260122023": {
-      "request_id": "20260122023",
-      "snapshot_state": "absent"
-    },
-    "20251231002": {
-      "request_id": "20251231002",
-      "snapshot_state": "absent"
-    },
-    "20260113005": {
-      "request_id": "20260113005",
-      "snapshot_state": "absent"
-    },
-    "20260205018": {
-      "request_id": "20260205018",
-      "snapshot_state": "absent"
-    },
-    "20260109013": {
-      "request_id": "20260109013",
-      "snapshot_state": "absent"
-    },
-    "20260107004": {
-      "request_id": "20260107004",
-      "snapshot_state": "absent"
-    },
-    "20260128021": {
-      "request_id": "20260128021",
-      "snapshot_state": "absent"
-    },
-    "20260129031": {
-      "request_id": "20260129031",
-      "snapshot_state": "absent"
-    },
-    "20260126024": {
-      "request_id": "20260126024",
-      "snapshot_state": "absent"
-    },
-    "20260105003": {
-      "request_id": "20260105003",
-      "snapshot_state": "absent"
-    },
-    "20251223005": {
-      "request_id": "20251223005",
-      "snapshot_state": "absent"
-    },
-    "20260109014": {
-      "request_id": "20260109014",
       "snapshot_state": "absent"
     }
   }

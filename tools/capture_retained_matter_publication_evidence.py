@@ -33,7 +33,12 @@ MANIFEST_SCHEMA = "cityscroll.retained_matter_publication_generation_evidence.v1
 ENGINEERING_RECORD = "cityscroll-engineering/retained-matter-publication-generation"
 RENDERER = "tools/render_retained_matter_publication_fixtures.mjs"
 VIEWPORTS = ((390, 844), (1440, 900))
-DATA_VINTAGE = "2026-08-10T13:08:13.019Z"
+# The vintage is the snapshot the renderer above actually reads, not a literal.
+# A hard-coded date silently records the wrong vintage on every dataset refresh,
+# and the manifest is the proof, so it has to move with the data it describes.
+DATA_VINTAGE = json.loads(
+    (ROOT / "site" / "data" / "meeting_outcomes_snapshot.json").read_text(encoding="utf-8")
+)["generated_at"]
 FORBIDDEN_COPY = ("testimony caused", "agency replied", "you testified", "successful following")
 
 

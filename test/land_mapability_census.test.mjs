@@ -73,7 +73,7 @@ test("aggregations preserve the 40-row denominator and named counts", () => {
   assert.equal(agg.unique_centroid_keys, 226);
   assert.equal(agg.methods.single_bbl_centroid, 11);
   assert.equal(agg.methods.multi_bbl_anchor, 22);
-  assert.equal(agg.list_baseline.bytes, 249323);
+  assert.equal(agg.list_baseline.bytes, LAND_MAPABILITY_LIST_BYTES);
   assert.equal(committed.projects.length, LAND_MAPABILITY_DENOMINATOR);
   assert.equal(committed.new_publisher_work, false);
   assert.equal(committed.runtime_network, false);
@@ -201,7 +201,7 @@ test("markdown receipt names coverage and the unmapped set", () => {
   assert.match(markdown, /33 of 40 projects \(82\.5 percent\)/);
   assert.match(markdown, /2026K0123/);
   assert.match(markdown, /2020M0385/);
-  assert.match(markdown, /249323/);
+  assert.match(markdown, new RegExp(String(LAND_MAPABILITY_LIST_BYTES)));
   assert.match(markdown, /node tools\/build_land_mapability_census\.mjs --check/);
   assert.ok(CENSUS_JSON.endsWith("land-map-view-census.json"));
 });
