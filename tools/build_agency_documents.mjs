@@ -1,47 +1,66 @@
 #!/usr/bin/env node
+/**
+ * Materialize the public-body directory at site/agencies/index.html.
+ *
+ * The directory used to be the keys of the reviewed agency alias table. It is
+ * now built from the destinations this repository actually publishes — the
+ * agency constellation lookup and the community-board lookup — so a reader can
+ * reach the profiles that exist rather than a list of interchangeable links.
+ * Both lookups are committed artifacts, which keeps this document reproducible
+ * from the tree and lets `--check` fail closed on drift.
+ *
+ *   node tools/build_agency_documents.mjs
+ *   node tools/build_agency_documents.mjs --check
+ */
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
-import { AGENCY_GROUPS, agencyCanonicalId } from "../site/agency_identity.mjs";
-import { constellationLink } from "../site/affordance_grammar.mjs";
+import {
+  buildAgencyDirectoryModel,
+  renderAgencyDirectoryDocument,
+} from "../site/agency_directory.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const OUTPUT = join(ROOT, "site/agencies/index.html");
+const AGENCY_LOOKUP = join(ROOT, "site/data/agency_constellation_lookup.json");
+const COMMUNITY_BOARD_LOOKUP = join(ROOT, "site/data/community_board_constellation_lookup.json");
 
-const esc = (value) => String(value ?? "").replace(/[&<>\"']/g, (char) => ({
-  "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;",
-}[char]));
+function readLookup(path) {
+  if (!existsSync(path)) {
+    throw new Error(`Missing ${path.slice(ROOT.length + 1)}; build it before the directory`);
+  }
+  return JSON.parse(readFileSync(path, "utf8"));
+}
+
+export function agencyDirectoryModel() {
+  return buildAgencyDirectoryModel({
+    agencies: readLookup(AGENCY_LOOKUP),
+    communityBoards: readLookup(COMMUNITY_BOARD_LOOKUP),
+  });
+}
 
 export function renderAgencyIndex() {
-  const links = Object.keys(AGENCY_GROUPS).map((name) => {
-    const id = agencyCanonicalId(name);
-    return `<li>${constellationLink({ href: `/agencies/${encodeURIComponent(id)}/`, label: name, className: "agency-index-link", attributes: { "data-subject-ref": `agency:id:${id}` }, escape: esc })}</li>`;
-  }).join("");
-  return `<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Agencies · CityScroll</title><link rel="stylesheet" href="/brand.css"><link rel="stylesheet" href="/civic-documents.css"></head>
-<body><a class="skip" href="#main">Skip to content</a>
-<main id="main" class="node-document civic-object-document" data-node-document="1"><p class="node-back"><a href="/browse/">Back to Browse</a></p>
-<header class="node-hero civic-object-hero"><p class="node-kicker civic-object-kicker">Agency profiles</p><h1>City agencies</h1>
-<p class="node-lede">Browse the agencies represented in CityScroll’s reviewed identity registry. Each page opens that agency’s cross-category constellation (contracts, meetings, rules, staffing exams) when records link to its published identity, plus a path to the interactive profile.</p>
-</header>
-<section class="node-section node-card civic-object-section" aria-labelledby="agency-list-heading"><h2 id="agency-list-heading">Agencies</h2><ul class="node-record-list">${links}</ul></section>
-</main><footer class="node-footer civic-object-footer">CityScroll is an unofficial reading aid. <a href="/about.html">About the data</a>.</footer></body></html>`;
+  return renderAgencyDirectoryDocument(agencyDirectoryModel());
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   const check = process.argv.includes("--check");
-  const content = renderAgencyIndex();
+  const model = agencyDirectoryModel();
+  const content = renderAgencyDirectoryDocument(model);
   const current = existsSync(OUTPUT) ? readFileSync(OUTPUT, "utf8") : "";
   if (current !== content) {
     if (check) {
-      console.error("Agency index is stale; rebuild with node tools/build_agency_documents.mjs");
+      console.error("Agency directory is stale; rebuild with node tools/build_agency_documents.mjs");
       process.exit(1);
     }
     mkdirSync(dirname(OUTPUT), { recursive: true });
     writeFileSync(OUTPUT, content);
     console.log("wrote", OUTPUT);
   }
-  console.log(check ? `Agency index is current (${Object.keys(AGENCY_GROUPS).length} links)` : `Agency index built (${Object.keys(AGENCY_GROUPS).length} links)`);
+  const state = check ? "current" : "built";
+  console.log(
+    `Agency directory is ${state} (${model.total} institutions, ${model.linked} linked, `
+    + `${model.classified} with a reviewed type, ${model.sections.length} sections)`,
+  );
 }

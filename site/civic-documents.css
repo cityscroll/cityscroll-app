@@ -3863,3 +3863,175 @@ select {
 .agency-coverage-item[data-identity-state="unresolved"] .agency-coverage-state {
   border-style: dashed;
 }
+
+/* Public-body directory: compact grouped rows a reader can scan.
+   The page width is the group's to use on a wide screen; a narrow screen keeps
+   one column. Every control here is a real form or anchor, so the layout does
+   not depend on the enhancement that filters it. */
+.agency-directory {
+  padding-block: var(--space-5);
+}
+
+.agency-directory-search {
+  display: grid;
+  /* A grid track defaults to min-content, which lets the controls below push
+     the form wider than the page at high zoom. Cap the track instead. */
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-2);
+  margin: 0 0 var(--space-4);
+  max-width: min(100%, var(--measure));
+}
+
+.agency-directory-search label {
+  font: 600 .8125rem/1.4 var(--font-label);
+  color: var(--color-text-soft);
+}
+
+.agency-directory-search-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  align-items: center;
+  min-width: 0;
+}
+
+.agency-directory-input {
+  flex: 1 1 10rem;
+  min-width: 0;
+  min-height: 44px;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-size: 1rem;
+}
+
+.agency-directory-groups {
+  margin: 0 0 var(--space-3);
+}
+
+.agency-directory-groups ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.agency-directory-group-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 44px;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border-strong);
+  border-radius: 999px;
+  background: var(--color-surface);
+  color: var(--color-action);
+  font: 600 .875rem/1.2 var(--font-label);
+  text-decoration: none;
+}
+
+.agency-directory-group-link:hover,
+.agency-directory-group-link:focus-visible {
+  text-decoration: underline;
+}
+
+.agency-directory-group-link[aria-current="true"] {
+  background: var(--cs-action-tint);
+  border-color: var(--cs-action-tint-border);
+}
+
+.agency-directory-count {
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+}
+
+.agency-directory-summary,
+.agency-directory-empty {
+  margin: 0 0 var(--space-4);
+  max-width: min(100%, var(--measure));
+  color: var(--color-text-soft);
+  font-size: .9375rem;
+}
+
+.agency-directory-group {
+  margin: 0 0 var(--space-6);
+}
+
+.agency-directory-group h2 {
+  margin: 0 0 var(--space-1);
+  font-size: 1.0625rem;
+}
+
+.agency-directory-group-note,
+.agency-directory-group-sources {
+  margin: 0 0 var(--space-3);
+  max-width: min(100%, var(--measure));
+  color: var(--color-text-muted);
+  font-size: .875rem;
+}
+
+.agency-directory-group-sources {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.agency-directory-rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-2);
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 21rem), 1fr));
+}
+
+.agency-directory-row {
+  min-width: 0;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-canvas);
+}
+
+.agency-directory-row a.agency-index-link,
+.agency-directory-name {
+  display: block;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font-weight: 600;
+  color: var(--color-action);
+  text-decoration: none;
+}
+
+.agency-directory-name {
+  color: var(--color-text);
+}
+
+.agency-directory-row a.agency-index-link:hover,
+.agency-directory-row a.agency-index-link:focus-visible {
+  text-decoration: underline;
+}
+
+.agency-directory-row-meta {
+  margin: var(--space-1) 0 0;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  color: var(--color-text-muted);
+  font-size: .8125rem;
+  line-height: 1.4;
+}
+
+.agency-directory-kind {
+  display: inline-block;
+  margin-inline-end: var(--space-1);
+  padding: 0 .5em;
+  border: 1px solid var(--color-border-strong);
+  border-radius: 999px;
+  color: var(--color-text-soft);
+  font: 600 .75rem/1.6 var(--font-label);
+}

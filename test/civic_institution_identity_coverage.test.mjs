@@ -182,9 +182,16 @@ test("A1 the disclosure ships in what the ordinary DSNY and MTA routes serve", (
 });
 
 // A2 [boundary] [G2]
-test("A2 the agency index keeps its scale with no role filters or evidence chips", () => {
+//
+// This boundary used to pin the directory to one unfiltered column of links.
+// The site owner has since asked for the directory to help a reader choose
+// between kinds of body, so its scale is no longer the invariant. What the
+// boundary was actually protecting still is: profile chrome — the identity and
+// coverage disclosure, the profile navigation, role filters and evidence
+// chips — belongs on a profile, and must not be pushed onto the entry page.
+test("A2 the directory carries no profile disclosure chrome", () => {
   const index = readFileSync(join(ROOT, "site/agencies/index.html"), "utf8");
-  assert.match(index, /<h1>City agencies<\/h1>/);
+  assert.match(index, /<h1>Agencies &amp; public bodies<\/h1>/);
   assert.doesNotMatch(index, /agency-identity-and-coverage/);
   assert.doesNotMatch(index, /institution-profile-navigation/);
   assert.doesNotMatch(index, /agency-coverage-/);

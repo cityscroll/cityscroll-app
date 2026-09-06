@@ -1,0 +1,588 @@
+{
+  "schema": "cityscroll.public_body_directory_evidence.v1",
+  "subject": "a grouped, searchable directory of the public bodies this site publishes",
+  "routes": [
+    "/agencies/",
+    "/agencies/city-planning-commission/",
+    "/agencies/economic-development-corporation/",
+    "/community-boards/manhattan-cb-06/"
+  ],
+  "revision": "cecfe2a6351dafe77f9b44b072bb23b6dd1ab2c9",
+  "data_vintage": "2026-09-05",
+  "captured_at": "2026-09-06T03:43:46Z",
+  "image_directory": ".artifacts/public-body-directory",
+  "image_policy": "Capture images are written to the ignored local directory above and are never committed. This manifest is the tracked proof: route, viewport, revision, data vintage, assertion and SHA-256 for each capture.",
+  "model_note": "Which rows a query or a browse group keeps is proven over the committed directory model in test/agency_directory_state.test.mjs. The captures below prove browser navigation, filtering and state restoration, and claim nothing they did not observe.",
+  "files": [
+    {
+      "name": "search-commission-and-back-390x844.png",
+      "specimen": "search-commission-and-back",
+      "route": "/agencies/",
+      "viewport": [
+        390,
+        844
+      ],
+      "scripting": true,
+      "revision": "cecfe2a6351dafe77f9b44b072bb23b6dd1ab2c9",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 390px a reader searching \u201cCPC\u201d in the public-body directory reaches City Planning Commission, opens its canonical destination, and browser Back returns them to the same query, rows, scroll position and focused row",
+      "observations": {
+        "directory_opened_unfiltered": true,
+        "search_narrowed_the_directory": true,
+        "search_kept_this_body": true,
+        "search_is_in_the_url": true,
+        "opened_the_canonical_destination": true,
+        "back_restored_the_query": true,
+        "back_restored_the_same_rows": true,
+        "back_restored_the_summary": true,
+        "back_restored_the_scroll": true,
+        "back_restored_focus_to_the_row_opened": true,
+        "touch_target_failures": [],
+        "no_horizontal_overflow": true
+      },
+      "bytes": 649643,
+      "sha256": "1600e1adcebf6fa165071b3f91dfe91795576a42f8055150d85f67e17dbbd0b8",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "search-commission-and-back-1440x900.png",
+      "specimen": "search-commission-and-back",
+      "route": "/agencies/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "scripting": true,
+      "revision": "cecfe2a6351dafe77f9b44b072bb23b6dd1ab2c9",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 1440px a reader searching \u201cCPC\u201d in the public-body directory reaches City Planning Commission, opens its canonical destination, and browser Back returns them to the same query, rows, scroll position and focused row",
+      "observations": {
+        "directory_opened_unfiltered": true,
+        "search_narrowed_the_directory": true,
+        "search_kept_this_body": true,
+        "search_is_in_the_url": true,
+        "opened_the_canonical_destination": true,
+        "back_restored_the_query": true,
+        "back_restored_the_same_rows": true,
+        "back_restored_the_summary": true,
+        "back_restored_the_scroll": true,
+        "back_restored_focus_to_the_row_opened": true,
+        "touch_target_failures": [],
+        "no_horizontal_overflow": true
+      },
+      "bytes": 724558,
+      "sha256": "77af3de3904aa468f96eeba72aa88004d20e1abbab8f6cbd5f021314af39b6c6",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "search-corporation-and-back-390x844.png",
+      "specimen": "search-corporation-and-back",
+      "route": "/agencies/",
+      "viewport": [
+        390,
+        844
+      ],
+      "scripting": true,
+      "revision": "cecfe2a6351dafe77f9b44b072bb23b6dd1ab2c9",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 390px a reader searching \u201cNYCEDC\u201d in the public-body directory reaches Economic Development Corporation, opens its canonical destination, and browser Back returns them to the same query, rows, scroll position and focused row",
+      "observations": {
+        "directory_opened_unfiltered": true,
+        "search_narrowed_the_directory": true,
+        "search_kept_this_body": true,
+        "search_is_in_the_url": true,
+        "opened_the_canonical_destination": true,
+        "back_restored_the_query": true,
+        "back_restored_the_same_rows": true,
+        "back_restored_the_summary": true,
+        "back_restored_the_scroll": true,
+        "back_restored_focus_to_the_row_opened": true,
+        "touch_target_failures": [],
+        "no_horizontal_overflow": true
+      },
+      "bytes": 535818,
+      "sha256": "62d26d39636952332432af81b8df1f281b32b2711a7f9cc3346886aed09a04af",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "search-corporation-and-back-1440x900.png",
+      "specimen": "search-corporation-and-back",
+      "route": "/agencies/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "scripting": true,
+      "revision": "cecfe2a6351dafe77f9b44b072bb23b6dd1ab2c9",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 1440px a reader searching \u201cNYCEDC\u201d in the public-body directory reaches Economic Development Corporation, opens its canonical destination, and browser Back returns them to the same query, rows, scroll position and focused row",
+      "observations": {
+        "directory_opened_unfiltered": true,
+        "search_narrowed_the_directory": true,
+        "search_kept_this_body": true,
+        "search_is_in_the_url": true,
+        "opened_the_canonical_destination": true,
+        "back_restored_the_query": true,
+        "back_restored_the_same_rows": true,
+        "back_restored_the_summary": true,
+        "back_restored_the_scroll": true,
+        "back_restored_focus_to_the_row_opened": true,
+        "touch_target_failures": [],
+        "no_horizontal_overflow": true
+      },
+      "bytes": 547852,
+      "sha256": "cb63c67ac22da29b324cf3896ee0cea1b67b1d9cdf525cb97e423d8a4d686e95",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "search-community-board-and-back-390x844.png",
+      "specimen": "search-community-board-and-back",
+      "route": "/agencies/",
+      "viewport": [
+        390,
+        844
+      ],
+      "scripting": true,
+      "revision": "cecfe2a6351dafe77f9b44b072bb23b6dd1ab2c9",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 390px a reader searching \u201cManhattan Community Board 6\u201d in the public-body directory reaches Manhattan Community Board 6, opens its canonical destination, and browser Back returns them to the same query, rows, scroll position and focused row",
+      "observations": {
+        "directory_opened_unfiltered": true,
+        "search_narrowed_the_directory": true,
+        "search_kept_this_body": true,
+        "search_is_in_the_url": true,
+        "opened_the_canonical_destination": true,
+        "back_restored_the_query": true,
+        "back_restored_the_same_rows": true,
+        "back_restored_the_summary": true,
+        "back_restored_the_scroll": true,
+        "back_restored_focus_to_the_row_opened": true,
+        "touch_target_failures": [],
+        "no_horizontal_overflow": true
+      },
+      "bytes": 1822370,
+      "sha256": "163d617dc8b786b7cbd2b692155443d266c3fa9b1e67c4c2bd0cc5684efc9fe6",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "search-community-board-and-back-1440x900.png",
+      "specimen": "search-community-board-and-back",
+      "route": "/agencies/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "scripting": true,
+      "revision": "cecfe2a6351dafe77f9b44b072bb23b6dd1ab2c9",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 1440px a reader searching \u201cManhattan Community Board 6\u201d in the public-body directory reaches Manhattan Community Board 6, opens its canonical destination, and browser Back returns them to the same query, rows, scroll position and focused row",
+      "observations": {
+        "directory_opened_unfiltered": true,
+        "search_narrowed_the_directory": true,
+        "search_kept_this_body": true,
+        "search_is_in_the_url": true,
+        "opened_the_canonical_destination": true,
+        "back_restored_the_query": true,
+        "back_restored_the_same_rows": true,
+        "back_restored_the_summary": true,
+        "back_restored_the_scroll": true,
+        "back_restored_focus_to_the_row_opened": true,
+        "touch_target_failures": [],
+        "no_horizontal_overflow": true
+      },
+      "bytes": 2067203,
+      "sha256": "f4d4a997914d66a9ec1d028d22a33b064b5fa48d378364d7a50c2adb3b96399d",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "browse-group-filter-390x844.png",
+      "specimen": "browse-group-filter",
+      "route": "/agencies/",
+      "viewport": [
+        390,
+        844
+      ],
+      "scripting": true,
+      "revision": "cecfe2a6351dafe77f9b44b072bb23b6dd1ab2c9",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 390px choosing a browse group narrows the directory, states the filtered count, and reaches a body placed in two groups exactly once in each",
+      "observations": {
+        "group_narrowed_the_directory": true,
+        "group_is_in_the_url": true,
+        "group_is_marked_current": true,
+        "group_kept_the_corporation": true,
+        "second_group_also_reaches_the_corporation": true,
+        "corporation_is_one_row_in_each_group": true,
+        "summary_states_the_filtered_count": true,
+        "touch_target_failures": [],
+        "no_horizontal_overflow": true
+      },
+      "bytes": 223483,
+      "sha256": "4cbf1543139681892ba75fb276a48ae70d88ed3a0273a72f60a0fbed235f840e",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "browse-group-filter-1440x900.png",
+      "specimen": "browse-group-filter",
+      "route": "/agencies/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "scripting": true,
+      "revision": "cecfe2a6351dafe77f9b44b072bb23b6dd1ab2c9",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 1440px choosing a browse group narrows the directory, states the filtered count, and reaches a body placed in two groups exactly once in each",
+      "observations": {
+        "group_narrowed_the_directory": true,
+        "group_is_in_the_url": true,
+        "group_is_marked_current": true,
+        "group_kept_the_corporation": true,
+        "second_group_also_reaches_the_corporation": true,
+        "corporation_is_one_row_in_each_group": true,
+        "summary_states_the_filtered_count": true,
+        "touch_target_failures": [],
+        "no_horizontal_overflow": true
+      },
+      "bytes": 234005,
+      "sha256": "2f2a8273c0cf3642253815f98251045a14cf4da11e42f73adfa3889fd4e2f3f4",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "keyboard-journey-390x844.png",
+      "specimen": "keyboard-journey",
+      "route": "/agencies/",
+      "viewport": [
+        390,
+        844
+      ],
+      "scripting": true,
+      "revision": "cecfe2a6351dafe77f9b44b072bb23b6dd1ab2c9",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 390px the whole search-to-profile-to-Back journey works from the keyboard alone, with visible focus, and Back returns the reader to the row they opened",
+      "observations": {
+        "keyboard_reached_a_kept_destination": true,
+        "focus_was_visible_on_the_destination": true,
+        "enter_opened_the_destination": true,
+        "back_restored_the_query": true,
+        "back_restored_the_same_rows": true,
+        "back_returned_focus_to_that_row": true,
+        "touch_target_failures": [],
+        "no_horizontal_overflow": true
+      },
+      "bytes": 649591,
+      "sha256": "5703f7528a3bfe558ad6d29c47de1d3aae86df0ea4949a1e3ab9481c9eb5960d",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "keyboard-journey-1440x900.png",
+      "specimen": "keyboard-journey",
+      "route": "/agencies/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "scripting": true,
+      "revision": "cecfe2a6351dafe77f9b44b072bb23b6dd1ab2c9",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 1440px the whole search-to-profile-to-Back journey works from the keyboard alone, with visible focus, and Back returns the reader to the row they opened",
+      "observations": {
+        "keyboard_reached_a_kept_destination": true,
+        "focus_was_visible_on_the_destination": true,
+        "enter_opened_the_destination": true,
+        "back_restored_the_query": true,
+        "back_restored_the_same_rows": true,
+        "back_returned_focus_to_that_row": true,
+        "touch_target_failures": [],
+        "no_horizontal_overflow": true
+      },
+      "bytes": 724562,
+      "sha256": "c96c27797f6263273aae97b07f4c1dd66ea8ebce41a8ccc1b6bcdd107e1b7827",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "modified-click-anchors-390x844.png",
+      "specimen": "modified-click-anchors",
+      "route": "/agencies/",
+      "viewport": [
+        390,
+        844
+      ],
+      "scripting": true,
+      "revision": "cecfe2a6351dafe77f9b44b072bb23b6dd1ab2c9",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 390px every destination and every browse group is an ordinary href, and a modified click opens a separate context while leaving the directory as it was",
+      "observations": {
+        "destination_is_a_real_href": true,
+        "group_is_a_real_href": true,
+        "group_href_carries_its_own_state": true,
+        "modified_click_opened_a_separate_context": true,
+        "modified_click_left_the_directory_in_place": true,
+        "directory_state_unchanged": true,
+        "touch_target_failures": [],
+        "no_horizontal_overflow": true
+      },
+      "bytes": 101639,
+      "sha256": "e44a4ddc99537ed45b9465d2ba626aef8111690ca8c6da51cd6a1da8a436e97a",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "modified-click-anchors-1440x900.png",
+      "specimen": "modified-click-anchors",
+      "route": "/agencies/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "scripting": true,
+      "revision": "cecfe2a6351dafe77f9b44b072bb23b6dd1ab2c9",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 1440px every destination and every browse group is an ordinary href, and a modified click opens a separate context while leaving the directory as it was",
+      "observations": {
+        "destination_is_a_real_href": true,
+        "group_is_a_real_href": true,
+        "group_href_carries_its_own_state": true,
+        "modified_click_opened_a_separate_context": true,
+        "modified_click_left_the_directory_in_place": true,
+        "directory_state_unchanged": true,
+        "touch_target_failures": [],
+        "no_horizontal_overflow": true
+      },
+      "bytes": 111789,
+      "sha256": "e14a19d991dcca7bab285c6a18d399eefba5b922de0908e8ed80a23f915f1218",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "no-match-recovery-390x844.png",
+      "specimen": "no-match-recovery",
+      "route": "/agencies/",
+      "viewport": [
+        390,
+        844
+      ],
+      "scripting": true,
+      "revision": "cecfe2a6351dafe77f9b44b072bb23b6dd1ab2c9",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 390px a search that matches nothing keeps the query, says so against the total rather than rendering as a loaded empty directory, and offers a control that restores it",
+      "observations": {
+        "no_match_kept_the_query_visible": true,
+        "no_match_is_stated_not_shown_as_empty": true,
+        "no_match_states_the_count_against_the_total": true,
+        "no_match_kept_the_query_in_the_url": true,
+        "recovery_restored_every_row": true,
+        "recovery_cleared_the_query": true,
+        "recovery_cleared_the_url": true,
+        "touch_target_failures": [],
+        "no_horizontal_overflow": true
+      },
+      "bytes": 81037,
+      "sha256": "7d47bc7e3d83b175607e435aa4149a1eb4c3600c1833ad8edc9dfdc1225cfca5",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "no-match-recovery-1440x900.png",
+      "specimen": "no-match-recovery",
+      "route": "/agencies/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "scripting": true,
+      "revision": "cecfe2a6351dafe77f9b44b072bb23b6dd1ab2c9",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 1440px a search that matches nothing keeps the query, says so against the total rather than rendering as a loaded empty directory, and offers a control that restores it",
+      "observations": {
+        "no_match_kept_the_query_visible": true,
+        "no_match_is_stated_not_shown_as_empty": true,
+        "no_match_states_the_count_against_the_total": true,
+        "no_match_kept_the_query_in_the_url": true,
+        "recovery_restored_every_row": true,
+        "recovery_cleared_the_query": true,
+        "recovery_cleared_the_url": true,
+        "touch_target_failures": [],
+        "no_horizontal_overflow": true
+      },
+      "bytes": 89332,
+      "sha256": "a1b0c006cce7653bd21d15b0f4bd6d1681b2e8455c8cc67e0b66d074a9d8fe74",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "without-scripting-390x844.png",
+      "specimen": "without-scripting",
+      "route": "/agencies/",
+      "viewport": [
+        390,
+        844
+      ],
+      "scripting": false,
+      "revision": "cecfe2a6351dafe77f9b44b072bb23b6dd1ab2c9",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 390px, with scripting unavailable, the directory renders every institution as a real anchor and offers the whole list rather than a filtered view a reader could not change, while a shared link keeps its query in the URL and its group anchor lands on that group's own section",
+      "observations": {
+        "every_row_is_rendered": true,
+        "nothing_is_hidden_behind_the_script": true,
+        "shows_the_whole_directory_rather_than_a_filtered_one": true,
+        "query_field_state": "empty; a static document does not reflect a query parameter",
+        "the_query_is_still_in_the_url": true,
+        "the_commission_destination_is_present": true,
+        "the_corporation_destination_is_present": true,
+        "the_board_destination_is_present": true,
+        "group_anchors_land_on_their_section": true,
+        "the_linked_group_section_exists": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 1235964,
+      "sha256": "d80b02bf766796ff94c509589df25cb90c10f7131967eed1e520ba4da40b08be",
+      "axe": {
+        "violations_total": null,
+        "failing_violations": [],
+        "passes": null,
+        "skipped": "scripting disabled for this specimen"
+      }
+    },
+    {
+      "name": "without-scripting-1440x900.png",
+      "specimen": "without-scripting",
+      "route": "/agencies/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "scripting": false,
+      "revision": "cecfe2a6351dafe77f9b44b072bb23b6dd1ab2c9",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 1440px, with scripting unavailable, the directory renders every institution as a real anchor and offers the whole list rather than a filtered view a reader could not change, while a shared link keeps its query in the URL and its group anchor lands on that group's own section",
+      "observations": {
+        "every_row_is_rendered": true,
+        "nothing_is_hidden_behind_the_script": true,
+        "shows_the_whole_directory_rather_than_a_filtered_one": true,
+        "query_field_state": "empty; a static document does not reflect a query parameter",
+        "the_query_is_still_in_the_url": true,
+        "the_commission_destination_is_present": true,
+        "the_corporation_destination_is_present": true,
+        "the_board_destination_is_present": true,
+        "group_anchors_land_on_their_section": true,
+        "the_linked_group_section_exists": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 951662,
+      "sha256": "13a634bf35f8c19743f73377edd9b8cdea1946ace9b3a199bd66ccde513f294b",
+      "axe": {
+        "violations_total": null,
+        "failing_violations": [],
+        "passes": null,
+        "skipped": "scripting disabled for this specimen"
+      }
+    },
+    {
+      "name": "two-hundred-percent-zoom-390x844.png",
+      "specimen": "two-hundred-percent-zoom",
+      "route": "/agencies/",
+      "viewport": [
+        390,
+        844
+      ],
+      "scripting": true,
+      "revision": "cecfe2a6351dafe77f9b44b072bb23b6dd1ab2c9",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 390px and 200 percent zoom the directory stays readable and searchable, with no horizontal overflow and no undersized target",
+      "observations": {
+        "directory_readable_at_zoom": true,
+        "search_still_narrows_at_zoom": true,
+        "summary_still_readable_at_zoom": true,
+        "no_horizontal_overflow": true,
+        "touch_target_failures": []
+      },
+      "bytes": 245208,
+      "sha256": "13251ef8ba721ae69dfc2e1c7bc8ac6a052d05569bdc05f6af0ba41cb8a23b2c",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "two-hundred-percent-zoom-1440x900.png",
+      "specimen": "two-hundred-percent-zoom",
+      "route": "/agencies/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "scripting": true,
+      "revision": "cecfe2a6351dafe77f9b44b072bb23b6dd1ab2c9",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 1440px and 200 percent zoom the directory stays readable and searchable, with no horizontal overflow and no undersized target",
+      "observations": {
+        "directory_readable_at_zoom": true,
+        "search_still_narrows_at_zoom": true,
+        "summary_still_readable_at_zoom": true,
+        "no_horizontal_overflow": true,
+        "touch_target_failures": []
+      },
+      "bytes": 229303,
+      "sha256": "cf46f436f484e374bb8d796927c2d26ca6c4aedc687ee50ba02cf1036c4aca2e",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    }
+  ]
+}

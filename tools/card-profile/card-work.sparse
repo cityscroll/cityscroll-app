@@ -193,6 +193,9 @@
 /site/agency_constellation_model.mjs
 /site/agency_constellation_section_registry.mjs
 /site/agency_constellation_sections/
+/site/agency_directory.mjs
+/site/agency_directory_contract.mjs
+/site/agency_directory_runtime.mjs
 /site/agency_fiscal_context.mjs
 /site/agency_identity.mjs
 /site/agency_identity_evidence.mjs
@@ -256,6 +259,7 @@
 /site/civic_geography_registry.mjs
 /site/civic_institution_accountability.mjs
 /site/civic_institution_borough_office.mjs
+/site/civic_institution_classification.mjs
 /site/civic_institution_council_committees.mjs
 /site/civic_institution_development_roles.mjs
 /site/civic_institution_development_specimens.mjs
