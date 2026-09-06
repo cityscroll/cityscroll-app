@@ -21,6 +21,7 @@ import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
+import { entityPivotRouteStatus } from "../site/edge_summary.mjs";
 import { parseGuideArticle, parseGuideHome, GuideSourceError } from "../site/guide_article_source.mjs";
 import {
   GUIDE_SOURCE_COVERAGE_INCLUDE,
@@ -64,6 +65,23 @@ function servedFromSiteTree(path) {
   return existsSync(join(SITE, relative)) || existsSync(join(SITE, relative, "index.html"));
 }
 
+/**
+ * A link to one civic record — a notice, an organisation, an exam — cannot be
+ * checked against the tree, because those documents are materialized at deploy
+ * time from rolling publisher data rather than tracked here. Requiring one to be
+ * present would either fail every worked example or make the build depend on a
+ * record still being in the publisher's window, which the repository's own
+ * invariant forbids.
+ *
+ * So the shape is checked instead, against the closed route inventory the edge
+ * surfaces already use: a mistyped family still fails the build, and that a
+ * particular record is live is proved where it belongs, by loading it — see
+ * docs/evidence/public-user-guide/.
+ */
+function servedAsRecordDocument(href) {
+  return entityPivotRouteStatus(href).verified;
+}
+
 function outputPathFor(url) {
   return join(SITE, `${url.replace(/^\/+|\/+$/g, "")}/index.html`);
 }
@@ -105,8 +123,10 @@ export function loadGuide() {
 
 /**
  * Every internal link on a guide page must resolve: to another guide page this
- * build writes, or to a route the site's own inventory says is served. An article
- * that links somewhere else is a broken promise to a reader, so it fails the build.
+ * build writes, to a route the site's own inventory says is served, or to a
+ * published record document whose family the closed route inventory recognizes.
+ * An article that links somewhere else is a broken promise to a reader, so it
+ * fails the build.
  */
 export function internalLinkFailures(documents, articles) {
   const guideRoutes = new Set([GUIDE_HOME_URL, ...articles.map((article) => article.url)]);
@@ -117,7 +137,8 @@ export function internalLinkFailures(documents, articles) {
       if (!href.startsWith("/")) continue;
       const path = href.split(/[?#]/)[0];
       if (guideRoutes.has(path) || SERVED_ROUTES.has(path) || servedFromSiteTree(path)) continue;
-      failures.push(`${name}: link ${href} does not resolve to a guide page or a served route`);
+      if (servedAsRecordDocument(href)) continue;
+      failures.push(`${name}: link ${href} does not resolve to a guide page, a served route, or a published record document`);
     }
   }
   return failures;

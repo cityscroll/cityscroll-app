@@ -35,16 +35,31 @@ document, so a prose change shows its rendered result in the diff.
    article; every field in it appears on the page.
 2. Check the article against the live site, then write today's date into
    `last_reviewed`.
-3. Run `node tools/build_guide_documents.mjs`, then
-   `node --test test/guide_documents.test.mjs` and
-   `python3 test/standards/guide_content.py`.
-4. Commit the source and the rendered document together.
+3. Register the new route in `tools/pages_route_parity.mjs`, `site/sitemap.xml`,
+   `test/standards/canonical_domain.py` and `test/functional/11_accessibility.py`.
+   The performance registry already covers `/guide/{section}/{article}` as a
+   template and needs nothing per article.
+4. Run `node tools/build_guide_documents.mjs`, then
+   `node --test test/guide_documents.test.mjs`,
+   `python3 test/standards/guide_content.py` and
+   `python3 tools/capture_guide_release.py`. The capture asks the builder which
+   articles exist, so a new one is covered the moment it is written; add an entry
+   to that tool's authored route table to say what this page in particular must
+   contain, which is worth more than the derived floor it falls back to.
+5. Commit the source and the rendered document together.
 
 The build fails rather than guesses. An unknown article type, a `last_reviewed`
 that is not a plain date, a `url` outside the section its type belongs to, a
 description outside the length the page-metadata gate allows, a link that resolves
-to no served route, or a Markdown construct the subset does not have — each stops
-the build and names the file.
+to neither a served route nor a recognized record-document family, or a Markdown
+construct the subset does not have — each stops the build and names the file.
+
+A link to one civic record is checked for its shape, not its existence: those
+documents are materialized at deploy time from rolling publisher data, so
+requiring one to be present would make the build depend on a record still being
+in the publisher's window. That a particular record is live is proved by loading
+it, and those loads are recorded in
+[`evidence/public-user-guide/worked-example-verification.md`](evidence/public-user-guide/worked-example-verification.md).
 
 Within a section, articles are listed in the order their ids give, so a section
 reads in the order it was meant to be read rather than alphabetically.

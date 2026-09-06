@@ -44,16 +44,22 @@ test("the guide home offers the four reader-facing sections in order", () => {
   assert.deepEqual(groupLabels, ["Start here", "How to…", "Understand", "Reference"]);
 });
 
-test("the guide home links published articles and says so plainly where there are none", () => {
+test("the guide home links every published article", () => {
   for (const article of articles) {
     assert.ok(homeHtml.includes(`href="${article.url}"`), `home does not link ${article.id}`);
     assert.ok(homeHtml.includes(article.title));
   }
-  const empty = GUIDE_GROUPS.filter((group) => !articles.some((article) => article.type === group.type));
-  assert.ok(empty.length, "this test stops being meaningful once every section is filled");
-  const text = textOf(homeHtml);
+});
+
+test("a section with nothing in it yet says so, and does not read like a failure", () => {
+  // Every section now holds an article, so the empty state can no longer be
+  // reached from the real set. It is still a state the renderer can produce —
+  // the next section someone opens starts empty — so it is rendered here from a
+  // deliberately narrowed set rather than left uncovered.
+  const startOnly = articles.filter((article) => article.type === "tutorial");
+  assert.ok(startOnly.length, "the fixture needs at least one tutorial to keep one section filled");
+  const text = textOf(renderGuideHome(home, startOnly));
   assert.match(text, /Articles for this section are being written/);
-  // An empty section must not read as a page that failed to load.
   for (const phrase of ["error", "unavailable", "failed", "try again"]) {
     assert.ok(!text.toLowerCase().includes(phrase), `empty-section copy suggests a failure: ${phrase}`);
   }
@@ -80,6 +86,19 @@ test("the tutorial shows its type, purpose, reader question, review date and a w
   assert.ok(tutorialHtml.includes(`href="${tutorial.return_to_task.href}"`));
   assert.ok(tutorialHtml.includes('href="/guide/"'), "an article must link back to the guide home");
   for (const source of tutorial.sources) assert.ok(tutorialHtml.includes(`href="${source.href}"`));
+});
+
+test("no guide page prints a field name the implementation uses", () => {
+  // The resident-surface catalog treats a snake_case token in rendered reader
+  // copy as an implementation-schema leak, and the guide's own rule is the same:
+  // a reader should never need to know what the code calls a thing. Naming a
+  // query parameter in prose broke this once, so it is checked for every page
+  // rather than for a list of words someone remembered.
+  const snakeCase = /\b[a-z]+(?:_[a-z0-9]+)+\b/g;
+  for (const [path, html] of documents) {
+    const leaked = [...new Set(textOf(html).match(snakeCase) || [])];
+    assert.deepEqual(leaked, [], `${path} prints implementation field name(s): ${leaked.join(", ")}`);
+  }
 });
 
 test("the tutorial teaches without the words the implementation uses for things", () => {
