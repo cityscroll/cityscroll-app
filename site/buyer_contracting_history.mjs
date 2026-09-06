@@ -47,6 +47,17 @@ export const BUYER_HISTORY_METRIC_MEANING = "Registered after start counts contr
   + "current published contract version. It is not an invoice delay, a fault finding, or a "
   + "prediction about a future award.";
 
+/** Selection query keys. These never filter the counted cohort. */
+export const BUYER_HISTORY_CASES_QUERY_KEY = "ap_cases";
+export const BUYER_HISTORY_INSPECT_QUERY_KEY = "ap_inspect";
+
+/** Retained exact-ID Checkbook/PASSPort start-date conflicts from the preflight. */
+export const CHECKBOOK_PASSPORT_DATE_CONFLICT_IDS = Object.freeze([
+  "CT182620278801514",
+  "CT182620268808879",
+  "CT182620268808015",
+]);
+
 const UNAVAILABLE = null;
 
 function trimmed(value) {
@@ -98,9 +109,236 @@ export function buyerContractingHistoryCase(row) {
     contract_version: row.contract_version || UNAVAILABLE,
     parent_contract_id: row.parent_contract_id || UNAVAILABLE,
     document_code: row.document_code || UNAVAILABLE,
+    pin: row.pin || UNAVAILABLE,
     // Conflicting slice observations stay visible rather than being coalesced.
     date_observations: row.date_ownership || null,
+    exact_destinations: Array.isArray(row.exact_destinations) ? row.exact_destinations.map(normalizeDestination).filter(Boolean) : [],
   };
+}
+
+function publicHref(value) {
+  const href = trimmed(value);
+  if (!href) return null;
+  if (href.startsWith("/") && !href.startsWith("//")) return href;
+  if (/^https:\/\//i.test(href)) return href;
+  return null;
+}
+
+function normalizeDestination(entry) {
+  if (!entry || typeof entry !== "object") return null;
+  const href = publicHref(entry.href);
+  if (!href) return null;
+  const kind = trimmed(entry.kind) === "notice" ? "notice" : "procurement";
+  return {
+    href,
+    kind,
+    basis: trimmed(entry.basis) || "exact_contract_id",
+    label: trimmed(entry.label),
+  };
+}
+
+function destinationKey(destination) {
+  return `${destination.kind}:${destination.href}`;
+}
+
+function exactContractId(value) {
+  const key = String(value ?? "").trim().toUpperCase().replace(/[^A-Z0-9]/g, "");
+  return key || null;
+}
+
+/**
+ * Exact procurement/notice destinations for one counted contract.
+ *
+ * Only an exact contract-id match may contribute a destination. A shared PIN
+ * is a procurement-family relationship: it may be classified elsewhere, but it
+ * never becomes this contract's detail URL and never copies dates.
+ */
+export function exactCountedContractDestinations(caseRecord, candidates = []) {
+  const contractId = trimmed(caseRecord?.source_contract_id);
+  if (!contractId) return [];
+  const found = [];
+  const seen = new Set();
+  const add = (destination) => {
+    const normalized = normalizeDestination(destination);
+    if (!normalized || normalized.basis !== "exact_contract_id") return;
+    const key = destinationKey(normalized);
+    if (seen.has(key)) return;
+    seen.add(key);
+    found.push(normalized);
+  };
+  for (const destination of caseRecord?.exact_destinations || []) add(destination);
+  for (const candidate of Array.isArray(candidates) ? candidates : []) {
+    if (!candidate) continue;
+    const candidateId = candidate.contract_id || candidate.prime_contract_id
+      || candidate.source_contract_id || candidate.id
+      || candidate.identity_keys?.contract_ids?.[0];
+    const basis = exactContractId(contractId) && exactContractId(contractId) === exactContractId(candidateId)
+      ? "exact_contract_id"
+      : null;
+    if (basis !== "exact_contract_id") continue;
+    add({ href: candidate.canonical_href || candidate.compatibility?.canonical_href, kind: "procurement", basis });
+    for (const href of [
+      ...(Array.isArray(candidate.city_record_notice_hrefs) ? candidate.city_record_notice_hrefs : []),
+      ...(Array.isArray(candidate.compatibility?.city_record_notice_hrefs)
+        ? candidate.compatibility.city_record_notice_hrefs : []),
+    ]) {
+      add({ href, kind: "notice", basis });
+    }
+    if (candidate.request_id && publicHref(`/notices/${candidate.request_id}`)) {
+      add({ href: `/notices/${candidate.request_id}`, kind: "notice", basis });
+    }
+    if (candidate.href) {
+      add({
+        href: candidate.href,
+        kind: trimmed(candidate.kind) === "notice" || /\/notices\//.test(String(candidate.href)) ? "notice" : "procurement",
+        basis,
+      });
+    }
+  }
+  return found;
+}
+
+export function withBuyerHistoryCases(href) {
+  const text = String(href || "");
+  const [path, query] = text.split("?", 2);
+  const params = new URLSearchParams(query || "");
+  params.set(BUYER_HISTORY_CASES_QUERY_KEY, "1");
+  return `${path}?${params.toString()}`;
+}
+
+export function buyerHistoryInspectHref(cohortHref, contractId) {
+  const id = trimmed(contractId);
+  if (!id) return withBuyerHistoryCases(cohortHref);
+  const text = String(cohortHref || "");
+  const [path, query] = text.split("?", 2);
+  const params = new URLSearchParams(query || "");
+  params.set(BUYER_HISTORY_CASES_QUERY_KEY, "1");
+  params.set(BUYER_HISTORY_INSPECT_QUERY_KEY, id);
+  return `${path}?${params.toString()}`;
+}
+
+export function buyerHistoryDismissInspectHref(href) {
+  const text = String(href || "");
+  const [path, query] = text.split("?", 2);
+  const params = new URLSearchParams(query || "");
+  params.delete(BUYER_HISTORY_INSPECT_QUERY_KEY);
+  const next = params.toString();
+  return next ? `${path}?${next}` : path;
+}
+
+/**
+ * The opened case list is a view of the already-counted cohort. Retroactive
+ * listing narrows which rows are shown; it does not change the denominator.
+ */
+export function openedBuyerHistoryCases(history, { retroactive } = {}) {
+  const cases = Array.isArray(history?.cases) ? history.cases : [];
+  if (retroactive === true || String(retroactive).toLowerCase() === "true") {
+    return cases.filter((entry) => entry.registration_timing === "registered_after_start");
+  }
+  return cases;
+}
+
+export function inspectBuyerHistoryCaseFailure(options = {}) {
+  const sourceContractId = trimmed(options.source_contract_id);
+  const buyerLabel = trimmed(options.agency);
+  const fiscalYear = options.registration_fiscal_year == null || options.registration_fiscal_year === ""
+    ? null : Number(options.registration_fiscal_year);
+  const scope = selectedScope(options);
+  return {
+    schema: BUYER_CONTRACTING_HISTORY_SCHEMA,
+    state: "unavailable",
+    source_contract_id: sourceContractId,
+    buyer: {
+      label: buyerLabel,
+      display_label: buyerLabel ? readerDimensionValue(buyerLabel) : null,
+    },
+    registration_fiscal_year: Number.isInteger(fiscalYear) ? fiscalYear : null,
+    scope,
+    destinations: [],
+    case: null,
+    retry: {
+      available: true,
+      source_contract_id: sourceContractId,
+      agency: buyerLabel,
+      registration_fiscal_year: Number.isInteger(fiscalYear) ? fiscalYear : null,
+      scope,
+    },
+    repair_observation: buyerHistoryRepairObservation({
+      reason: trimmed(options.reason) || "requested-case-unavailable",
+      registration_fiscal_year: Number.isInteger(fiscalYear) ? fiscalYear : null,
+      source_contract_id: sourceContractId,
+      detail: trimmed(options.detail),
+    }),
+  };
+}
+
+/**
+ * Open one counted Checkbook case without changing the cohort it came from.
+ * Optional destination lookup may fail while the source case stays readable.
+ */
+export function inspectBuyerHistoryCase(history, contractId, options = {}) {
+  const requestedId = trimmed(contractId);
+  if (!requestedId) return { state: "idle", source_contract_id: null, case: null, destinations: [] };
+  if (!history || history.state !== "available") {
+    return inspectBuyerHistoryCaseFailure({
+      ...options,
+      source_contract_id: requestedId,
+      agency: history?.buyer?.label || options.agency,
+      registration_fiscal_year: history?.registration_fiscal_year ?? options.registration_fiscal_year,
+      reason: "source-request-failed",
+    });
+  }
+  const record = (history.cases || []).find((entry) => entry.source_contract_id === requestedId);
+  if (!record) {
+    return inspectBuyerHistoryCaseFailure({
+      ...options,
+      source_contract_id: requestedId,
+      agency: history.buyer?.label,
+      registration_fiscal_year: history.registration_fiscal_year,
+      reason: "requested-case-unavailable",
+    });
+  }
+  let destinations = record.exact_destinations || [];
+  try {
+    destinations = exactCountedContractDestinations(record, options.candidates);
+  } catch {
+    destinations = record.exact_destinations || [];
+  }
+  return {
+    schema: BUYER_CONTRACTING_HISTORY_SCHEMA,
+    state: "available",
+    source_contract_id: requestedId,
+    case: record,
+    destinations,
+    cohort: {
+      contract_count: history.contract_count,
+      after_start_count: history.timing?.after_start_count ?? null,
+      early_on_time_count: history.timing?.early_on_time_count ?? null,
+    },
+    repair_observation: sourceDateConflictRepairObservation(record, options.source_conflicts),
+  };
+}
+
+export function countedContractsAreDistinctInstruments(left, right) {
+  const leftId = trimmed(left?.source_contract_id || left?.prime_contract_id || left?.contract_id);
+  const rightId = trimmed(right?.source_contract_id || right?.prime_contract_id || right?.contract_id);
+  return Boolean(leftId && rightId && leftId !== rightId);
+}
+
+export function sourceDateConflictRepairObservation(record, conflicts = []) {
+  const contractId = trimmed(record?.source_contract_id);
+  const listed = Array.isArray(conflicts) ? conflicts : [];
+  const match = listed.find((entry) => trimmed(entry?.id || entry?.source_contract_id) === contractId)
+    || (CHECKBOOK_PASSPORT_DATE_CONFLICT_IDS.includes(contractId) ? { id: contractId } : null);
+  if (!match) return null;
+  const observations = Array.isArray(match.date_sources) ? match.date_sources.map(trimmed).filter(Boolean) : [];
+  return buyerHistoryRepairObservation({
+    reason: "source-date-conflict",
+    source_contract_id: contractId,
+    detail: observations.length
+      ? `Checkbook and PASSPort publish different start dates for ${contractId}: ${observations.join(", ")}.`
+      : `Checkbook and PASSPort publish conflicting dates for ${contractId}.`,
+  });
 }
 
 function timingStateOf(summary) {
@@ -184,8 +422,8 @@ export function buyerContractingHistory(rows, options = {}) {
     cases: (caseLimit ? ordered.slice(0, caseLimit) : ordered)
       .map(buyerContractingHistoryCase).filter(Boolean),
     case_total: unique.length,
-    all_cases_href: hrefFor(false),
-    after_start_cases_href: measured ? hrefFor(true) : null,
+    all_cases_href: withBuyerHistoryCases(hrefFor(false)),
+    after_start_cases_href: measured ? withBuyerHistoryCases(hrefFor(true)) : null,
     source_observation: {
       snapshot_date: trimmed(options.snapshot_date),
       generated_at: trimmed(options.generated_at),
@@ -264,10 +502,15 @@ export function buyerContractingHistoryFailure(options = {}) {
  * hundredth reader to hit it advances a repeat count rather than opening a
  * hundredth item.
  */
-export function buyerHistoryFingerprint({ reason, registration_fiscal_year } = {}) {
+export function buyerHistoryFingerprint({ reason, registration_fiscal_year, source_contract_id } = {}) {
   const year = Number.isInteger(Number(registration_fiscal_year))
     ? `fy${Number(registration_fiscal_year)}` : "all-years";
-  return `${BUYER_HISTORY_REPAIR_GUARD}:checkbook:${year}:${trimmed(reason) || "unspecified"}`;
+  const code = trimmed(reason) || "unspecified";
+  const contract = trimmed(source_contract_id);
+  if ((code === "source-date-conflict" || code === "requested-case-unavailable") && contract) {
+    return `${BUYER_HISTORY_REPAIR_GUARD}:checkbook:${year}:${code}:${contract}`;
+  }
+  return `${BUYER_HISTORY_REPAIR_GUARD}:checkbook:${year}:${code}`;
 }
 
 const BUYER_HISTORY_REPAIR_MESSAGES = Object.freeze({
@@ -276,6 +519,10 @@ const BUYER_HISTORY_REPAIR_MESSAGES = Object.freeze({
     + "itself is unaffected.",
   "source-request-failed": "The registered-contract projection could not be read for this "
     + "buyer history request.",
+  "requested-case-unavailable": "A requested registered-contract case could not be opened from "
+    + "the counted Checkbook population.",
+  "source-date-conflict": "Checkbook and PASSPort publish different dates for the same exact "
+    + "contract id. Both observations are retained; neither overwrites the other.",
 });
 
 /** Structured observation for the existing repair lineage. One per fingerprint. */

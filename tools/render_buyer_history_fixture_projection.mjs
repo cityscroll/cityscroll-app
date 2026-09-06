@@ -24,6 +24,7 @@ import {
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const SLICES = join(ROOT, "test/fixtures/buyer_contracting_history_fy2026_slices.json");
+const DESTINATIONS = join(ROOT, "test/fixtures/buyer_contracting_history_exact_destinations.json");
 
 function sourceRows(document) {
   return document.slices.map((values) => {
@@ -59,8 +60,12 @@ function sourceRows(document) {
 
 const output = resolve(process.argv[2] || join(ROOT, ".artifacts/buyer-history/analytics_registered_contracts.json"));
 const document = JSON.parse(readFileSync(SLICES, "utf8"));
+const destinations = JSON.parse(readFileSync(DESTINATIONS, "utf8")).destinations || {};
 const normalized = normalizeCheckbookContractRows(sourceRows(document));
-const rows = normalized.rows.map(normalizeAnalyticalContractRow).filter(Boolean);
+const rows = normalized.rows.map(normalizeAnalyticalContractRow).filter(Boolean).map((row) => {
+  const exact = destinations[row.prime_contract_id];
+  return Array.isArray(exact) && exact.length ? { ...row, exact_destinations: exact } : row;
+});
 const observedAt = document.source.observed_at;
 const payload = {
   schema: "cityscroll.analytics_registered_contracts.v1",

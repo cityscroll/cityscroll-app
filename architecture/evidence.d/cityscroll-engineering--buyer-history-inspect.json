@@ -1,0 +1,41 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/buyer-history-inspect",
+  "status": "implemented",
+  "fingerprint": "buyer-history-inspect.v1",
+  "updated_at": "2026-09-06T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "buyer-history-read-model",
+      "path": "site/buyer_contracting_history.mjs"
+    },
+    {
+      "id": "buyer-history-presentation",
+      "path": "site/buyer_contracting_history_view.mjs"
+    },
+    {
+      "id": "registered-contract-projection",
+      "path": "site/analytical_projection.mjs"
+    },
+    {
+      "id": "contracts-browse-scoped-surface",
+      "path": "site/app/money-list.mjs"
+    },
+    {
+      "id": "buyer-history-regressions",
+      "path": "test/buyer_contracting_history.test.mjs"
+    },
+    {
+      "id": "retained-exact-destinations",
+      "path": "test/fixtures/buyer_contracting_history_exact_destinations.json"
+    },
+    {
+      "id": "buyer-history-journey",
+      "path": "test/functional/30_buyer_contracting_history.py"
+    },
+    {
+      "id": "buyer-history-inspect-capture",
+      "path": "docs/evidence/buyer-history-inspect/capture-manifest.json"
+    }
+  ]
+}

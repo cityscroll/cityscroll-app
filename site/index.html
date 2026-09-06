@@ -813,6 +813,23 @@
   .buyer-history-actions a{display:inline-block;min-height:44px;padding:11px 13px;border:1px solid var(--rule);border-radius:6px;overflow-wrap:anywhere}
   .buyer-history-retry{margin:0 0 8px}
   .buyer-history-retry button{min-height:44px}
+  .buyer-history-cases,.buyer-history-inspect{margin:10px 0 0;min-width:0}
+  .buyer-history-cases h4,.buyer-history-inspect h4{margin:0 0 6px;font:750 15px/1.25 var(--font-display);overflow-wrap:anywhere}
+  .buyer-history-cases-count,.buyer-history-inspect-status{margin:0 0 8px;color:var(--muted);font-size:13px;overflow-wrap:anywhere}
+  .buyer-history-case-list{margin:0;padding:0;list-style:none;display:grid;gap:8px}
+  .buyer-history-case-list li{min-width:0;display:grid;gap:4px}
+  .buyer-history-case-list a,.buyer-history-inspect-actions a,.buyer-history-inspect-destinations a{display:inline-block;min-height:44px;padding:11px 13px;border:1px solid var(--rule);border-radius:6px;overflow-wrap:anywhere}
+  .buyer-history-case-list a[aria-current="true"]{border-color:var(--ink)}
+  .buyer-history-case-list span{color:var(--muted);font-size:12px;overflow-wrap:anywhere}
+  .buyer-history-inspect{padding:12px;border:1px solid var(--rule);border-radius:8px;background:var(--paper)}
+  .buyer-history-inspect-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:0 0 10px}
+  .buyer-history-inspect-field{min-width:0;margin:0}
+  .buyer-history-inspect-field dt{color:var(--muted);font:650 10px/1.3 ui-sans-serif,system-ui,sans-serif;text-transform:uppercase;letter-spacing:.04em}
+  .buyer-history-inspect-field dd{margin:4px 0 0;overflow-wrap:anywhere}
+  .buyer-history-inspect-destinations p{margin:0 0 6px}
+  .buyer-history-inspect-destinations ul{margin:0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:8px}
+  .buyer-history-inspect-actions{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 0}
+  .buyer-history-inspect-actions button{min-height:44px}
   .contracts-analytics-timing{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;margin:14px 0 4px}
   .contracts-analytics-timing-metric{min-width:0;padding:10px 11px;border:1px solid var(--rule);border-radius:6px;background:var(--paper-2)}
   .contracts-analytics-timing-metric strong,.contracts-analytics-timing-metric span{display:block;overflow-wrap:anywhere}
@@ -901,7 +918,7 @@
   @media(max-width:680px){.contracts-analytics{padding:15px 13px}.contracts-analytics-group{grid-template-columns:minmax(0,1fr)}.contracts-analytics-group-meta{text-align:start;white-space:normal}}
   @media(max-width:680px){.contracts-analytics-fact-comparison-cards{grid-template-columns:1fr}}
   @media(max-width:900px){.contracts-analytics-timing{grid-template-columns:repeat(3,minmax(0,1fr))}}
-  @media(max-width:680px){.contracts-analytics{padding:15px 13px}.buyer-history-metrics{grid-template-columns:minmax(0,1fr)}.contracts-analytics-timing{grid-template-columns:repeat(2,minmax(0,1fr))}.contracts-analytics-group{grid-template-columns:minmax(0,1fr)}.contracts-analytics-group-meta{text-align:start;white-space:normal}}
+  @media(max-width:680px){.contracts-analytics{padding:15px 13px}.buyer-history-metrics,.buyer-history-inspect-fields{grid-template-columns:minmax(0,1fr)}.contracts-analytics-timing{grid-template-columns:repeat(2,minmax(0,1fr))}.contracts-analytics-group{grid-template-columns:minmax(0,1fr)}.contracts-analytics-group-meta{text-align:start;white-space:normal}}
   .money-method-slot{min-height:calc(var(--space-8) + var(--space-5) + var(--space-1))}
   .lens-search-state{margin:var(--space-3) 0 0}
   .lens-search-state:empty{display:none}
@@ -2096,6 +2113,8 @@
         <p class="buyer-history-actions" id="buyer-history-actions"></p>
         <p class="buyer-history-retry" id="buyer-history-retry" hidden><button type="button" class="act mini" id="buyer-history-retry-button" data-i18n="buyer_history_retry">Try again</button></p>
         <p class="buyer-history-source" id="buyer-history-source"></p>
+        <div class="buyer-history-cases" id="buyer-history-cases" hidden></div>
+        <section class="buyer-history-inspect" id="buyer-history-inspect" hidden aria-labelledby="buyer-history-inspect-heading"></section>
       </section>
       <section class="contracts-analytics-concentration" id="contracts-analytics-concentration" hidden aria-labelledby="contracts-analytics-concentration-heading">
         <h3 id="contracts-analytics-concentration-heading">Who receives this contract value?</h3>

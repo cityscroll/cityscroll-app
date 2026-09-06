@@ -25,17 +25,27 @@ import {
   BUYER_CONTRACTING_HISTORY_SCHEMA,
   BUYER_HISTORY_REPAIR_GUARD,
   BUYER_HISTORY_TIMING_STATES,
+  CHECKBOOK_PASSPORT_DATE_CONFLICT_IDS,
   buyerContractingHistory,
   buyerContractingHistoryCase,
   buyerContractingHistoryFailure,
+  buyerHistoryDismissInspectHref,
   buyerHistoryFingerprint,
+  buyerHistoryInspectHref,
   buyerHistoryRepairObservation,
+  countedContractsAreDistinctInstruments,
+  exactCountedContractDestinations,
+  inspectBuyerHistoryCase,
+  openedBuyerHistoryCases,
+  sourceDateConflictRepairObservation,
 } from "../site/buyer_contracting_history.mjs";
+import { exactIdentityBasis } from "../site/procurement_related_context.mjs";
 import { upsertRepairItem } from "../worker/src/lib/repair_queue.mjs";
 
 const readJson = (path) => JSON.parse(readFileSync(new URL(path, import.meta.url), "utf8"));
 const SLICES = readJson("./fixtures/buyer_contracting_history_fy2026_slices.json");
 const LEDGER = readJson("./fixtures/buyer_contracting_history_fy2026_ledger.json");
+const DESTINATIONS = readJson("./fixtures/buyer_contracting_history_exact_destinations.json");
 const SOURCE_PAGE = readFileSync(new URL("./fixtures/buyer_contracting_history_source_page.xml", import.meta.url), "utf8");
 
 /** Expand the columnar retained slices into the collector's row shape. */
@@ -522,3 +532,182 @@ describe("drill-through", () => {
     assert.ok(href.includes("ap_agency="));
   });
 });
+
+const PARKS_CONSTRUCTION_LATE = [
+  "CT184620258809333",
+  "CT184620268802665",
+  "CT184620268803841",
+  "CT184620268805367",
+  "CT184620268805555",
+];
+
+describe("inspectable counted cases", () => {
+  const parksConstruction = () => buyerContractingHistory(PROJECTION, {
+    agency: "Department of Parks and Recreation",
+    registration_fiscal_year: 2026,
+    industry: "Construction Services",
+    award_method: "COMPETITIVE SEALED BIDDING",
+  });
+
+  it("opens exactly 40 Parks construction/bidding cases and five after-start IDs", () => {
+    const history = parksConstruction();
+    assert.equal(history.contract_count, 40);
+    assert.equal(history.timing.after_start_count, 5);
+    const all = openedBuyerHistoryCases(history);
+    assert.equal(all.length, 40);
+    assert.equal(new Set(all.map((entry) => entry.source_contract_id)).size, 40);
+    assert.deepEqual(all.map((entry) => entry.source_contract_id).sort(), cohort("parks_construction_bid").contract_ids);
+    const late = openedBuyerHistoryCases(history, { retroactive: true });
+    assert.equal(late.length, 5);
+    assert.deepEqual(late.map((entry) => entry.source_contract_id).sort(), PARKS_CONSTRUCTION_LATE);
+    for (const entry of all) {
+      assert.ok(entry.buyer);
+      assert.ok(entry.vendor);
+      assert.ok(entry.source_contract_id);
+      assert.ok(entry.purpose);
+      assert.ok(Number.isFinite(entry.current_registered_amount));
+      assert.ok(entry.contract_start_date);
+      assert.ok(entry.registration_date);
+    }
+  });
+
+  it("inspects the linked Gross case with dates, lag, and exact destinations", () => {
+    const history = parksConstruction();
+    const candidates = [{
+      contract_id: "CT184620268805555",
+      canonical_href: DESTINATIONS.destinations.CT184620268805555[0].href,
+      city_record_notice_hrefs: [DESTINATIONS.destinations.CT184620268805555[1].href],
+    }];
+    const inspected = inspectBuyerHistoryCase(history, "CT184620268805555", { candidates });
+    assert.equal(inspected.state, "available");
+    assert.equal(inspected.case.contract_start_date, "2026-03-16");
+    assert.equal(inspected.case.registration_date, "2026-03-30");
+    assert.equal(inspected.case.registration_lag_days, 14);
+    assert.equal(inspected.cohort.contract_count, 40);
+    assert.deepEqual(
+      inspected.destinations.map((entry) => entry.href).sort(),
+      DESTINATIONS.destinations.CT184620268805555.map((entry) => entry.href).sort(),
+    );
+    assert.ok(inspected.destinations.every((entry) => entry.basis === "exact_contract_id"));
+  });
+
+  it("keeps the source-only Dragonetti case inspectable without inventing a destination", () => {
+    const history = parksConstruction();
+    const inspected = inspectBuyerHistoryCase(history, "CT184620268805367", {
+      candidates: [{
+        contract_id: "CT184620268805555",
+        canonical_href: "/procurements/procurement%3Acontract%3ACT184620268805555",
+      }, {
+        contract_id: "MMA1-841-20248803767",
+        pin: "84120P8912KXLR001",
+        canonical_href: "/procurements/guessed",
+      }],
+    });
+    assert.equal(inspected.state, "available");
+    assert.equal(inspected.case.contract_start_date, "2026-03-26");
+    assert.equal(inspected.case.registration_date, "2026-04-01");
+    assert.equal(inspected.case.registration_lag_days, 6);
+    assert.equal(inspected.destinations.length, 0);
+    assert.ok(!inspected.destinations.some((entry) => /guessed|checkbooknyc/.test(entry.href || "")));
+  });
+
+  it("does not merge a shared PIN into one instrument or copy dates", () => {
+    const checkbook = {
+      source_contract_id: "CTA184120277200151",
+      pin: "84120P8912KXLR001",
+      contract_start_date: "2025-01-01",
+    };
+    const passport = {
+      source_contract_id: "MMA1-841-20248803767",
+      pin: "84120P8912KXLR001",
+      contract_start_date: "2024-06-01",
+    };
+    assert.equal(exactIdentityBasis(
+      { contract_id: checkbook.source_contract_id, pin: checkbook.pin },
+      { contract_id: passport.source_contract_id, pin: passport.pin },
+    ), "exact_epin");
+    assert.equal(countedContractsAreDistinctInstruments(checkbook, passport), true);
+    assert.equal(exactCountedContractDestinations(checkbook, [{
+      contract_id: passport.source_contract_id,
+      pin: passport.pin,
+      canonical_href: "/procurements/passport-sibling",
+    }]).length, 0);
+    assert.notEqual(checkbook.contract_start_date, passport.contract_start_date);
+  });
+
+  it("preserves the three exact-ID Checkbook/PASSPort date conflicts as private repair observations", () => {
+    assert.deepEqual([...CHECKBOOK_PASSPORT_DATE_CONFLICT_IDS].sort(), [
+      "CT182620268808015",
+      "CT182620268808879",
+      "CT182620278801514",
+    ]);
+    const conflict = sourceDateConflictRepairObservation(
+      { source_contract_id: "CT182620268808015" },
+      [{ id: "CT182620268808015", date_sources: ["2026-05-01", "2026-10-26"] }],
+    );
+    assert.ok(conflict);
+    assert.match(conflict.signature, /source-date-conflict:CT182620268808015/);
+    assert.match(conflict.findings[0].detail, /2026-05-01/);
+    assert.match(conflict.findings[0].detail, /2026-10-26/);
+    assert.equal(
+      sourceDateConflictRepairObservation({ source_contract_id: "CT184620268805555" }),
+      null,
+    );
+  });
+
+  it("keeps the cohort unchanged when a case is selected, and optional joins may fail", () => {
+    const history = parksConstruction();
+    const before = history.contract_count;
+    const inspected = inspectBuyerHistoryCase(history, "CT184620268805555", {
+      candidates: { throw: true },
+    });
+    assert.equal(inspected.state, "available");
+    assert.equal(inspected.cohort.contract_count, before);
+    assert.equal(history.contract_count, 40);
+    const failing = inspectBuyerHistoryCase(history, "CT184620268805367", {
+      candidates: new Proxy([], { get() { throw new Error("join failed"); } }),
+    });
+    assert.equal(failing.state, "available");
+    assert.equal(failing.case.source_contract_id, "CT184620268805367");
+    assert.equal(failing.cohort.contract_count, 40);
+  });
+
+  it("retains a requested case id with retry when the case cannot be opened", () => {
+    const history = parksConstruction();
+    const missing = inspectBuyerHistoryCase(history, "CT-NOT-IN-COHORT");
+    assert.equal(missing.state, "unavailable");
+    assert.equal(missing.source_contract_id, "CT-NOT-IN-COHORT");
+    assert.equal(missing.retry.available, true);
+    assert.equal(missing.retry.source_contract_id, "CT-NOT-IN-COHORT");
+    assert.equal(missing.case, null);
+    assert.equal(missing.destinations.length, 0);
+    const failedLoad = inspectBuyerHistoryCase(
+      buyerContractingHistoryFailure({ agency: "Department of Parks and Recreation", registration_fiscal_year: 2026 }),
+      "CT184620268805555",
+    );
+    assert.equal(failedLoad.state, "unavailable");
+    assert.equal(failedLoad.source_contract_id, "CT184620268805555");
+    assert.equal(failedLoad.retry.source_contract_id, "CT184620268805555");
+    assert.ok(!failedLoad.destinations.some((entry) => entry.href));
+  });
+
+  it("inspect and dismiss hrefs keep the cohort and never use a guessed detail URL", () => {
+    const history = parksConstruction();
+    const inspectHref = buyerHistoryInspectHref(history.all_cases_href, "CT184620268805367");
+    const inspectQuery = new URLSearchParams(inspectHref.split("?", 2)[1]);
+    assert.equal(inspectQuery.get("ap_inspect"), "CT184620268805367");
+    assert.equal(inspectQuery.get("ap_cases"), "1");
+    assert.equal(inspectQuery.get("ap_agency"), "Department of Parks and Recreation");
+    assert.equal(inspectQuery.get("ap_industry"), "Construction Services");
+    assert.equal(inspectQuery.get("ap_award_method"), "COMPETITIVE SEALED BIDDING");
+    assert.ok(!inspectHref.includes("checkbooknyc.com"));
+    const dismissed = buyerHistoryDismissInspectHref(inspectHref);
+    const dismissedQuery = new URLSearchParams(dismissed.split("?", 2)[1]);
+    assert.equal(dismissedQuery.get("ap_inspect"), null);
+    assert.equal(dismissedQuery.get("ap_cases"), "1");
+    assert.equal(dismissedQuery.get("ap_agency"), "Department of Parks and Recreation");
+    assert.match(history.all_cases_href, /ap_cases=1/);
+    assert.match(history.after_start_cases_href, /ap_cases=1/);
+  });
+});
+
