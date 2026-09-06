@@ -613,7 +613,7 @@ test("A4: all eight registered calendar hosts reach the one shared mount", async
 test("A5: the capture tool records this card's proof as a manifest, at both required widths", () => {
   const tool = readFileSync(new URL("../tools/capture_calendar_density_evidence.py", import.meta.url), "utf8");
   assert.match(tool, /VIEWPORTS = \(\(390, 844\), \(1440, 900\)\)/);
-  assert.match(tool, /cityscroll-resident-ux\/px-02-keep-calendar-overview-scannable/);
+  assert.match(tool, /cityscroll-engineering\/keep-calendar-overview-scannable/);
   // The measurements this card owes its reader, recorded rather than asserted
   // as an improvement.
   assert.match(tool, /rendered_row_height_px/);
