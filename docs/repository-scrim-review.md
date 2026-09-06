@@ -14,4 +14,4 @@ tip, and none required credential rotation or history rewriting.
 The complete row-level inventory is owner-only evidence under the registered
 `cityscroll-engineering/private-generated-evidence-placement` disposition. Its public, digest-backed placement
 proof is derived at check time from the reviewed inputs in
-[`repository-control-plane/evidence-placement.d/`](repository-control-plane/evidence-placement.d/README.md).
+[`repository-governance/evidence-placement.d/`](repository-governance/evidence-placement.d/README.md).

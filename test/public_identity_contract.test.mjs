@@ -189,7 +189,7 @@ test("the migrated records keep their implementation status and projections", ()
 });
 
 test("the classification inventory references engineering records, not private registers", () => {
-  const path = "docs/repository-control-plane/classification.v1.json";
+  const path = "docs/repository-governance/classification.v1.json";
   const text = readRepo(path);
   const document = JSON.parse(text);
   const referencing = document.entries.filter((row) => row.register_id.startsWith(`${PUBLIC_NAMESPACE}/`));

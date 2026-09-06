@@ -7,7 +7,7 @@
   "projections": [
     {
       "id": "repository-evidence-placement-validator",
-      "path": "tools/rcp03_evidence_placement.mjs"
+      "path": "tools/governance_evidence_placement.mjs"
     },
     {
       "id": "repository-scrim-public-result",

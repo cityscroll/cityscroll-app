@@ -1,0 +1,35 @@
+{
+  "schema": "cityscroll.repository-governance.cutover-shard.v1",
+  "id": "coverage-reconciliation",
+  "owner": "coverage-reconciliation",
+  "card": "cityscroll-engineering/cutover-without-product-or-evidence-loss",
+  "kind": "constant",
+  "updated_at": "2026-09-01T00:00:00.000Z",
+  "value": {
+    "classification_entry_count": 111,
+    "deltas": [
+      {
+        "id": "private-locator-document-enumeration",
+        "finding": "The classification manifest enumerates 50 documents carrying an owner-only evidence locator. The repository-wide placement scan found 51. One document was carried by the placement migration without an individual classification entry.",
+        "path": "docs/performance/content-parity/notice-context-critical-path/reports/index.html",
+        "executing_migration": "private-evidence",
+        "canonical_owner": "cityscroll-engineering/private-generated-evidence-placement",
+        "state": "reconciled",
+        "loss": "none"
+      },
+      {
+        "id": "root-instruction-measurement-drift",
+        "finding": "The classification manifest measured the root instruction file at its own inspected commit; the rewrite measured it at the commit it replaced. Both measurements are correct at their commit and differ because unrelated changes landed between them.",
+        "classification_bytes": 321388,
+        "classification_lines": 4627,
+        "migration_parent_bytes": 322384,
+        "migration_parent_lines": 4641,
+        "executing_migration": "root-router",
+        "canonical_owner": "cityscroll-engineering/root-agents-router",
+        "state": "reconciled",
+        "loss": "none"
+      }
+    ],
+    "stopped_or_deferred": []
+  }
+}

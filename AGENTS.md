@@ -18,17 +18,17 @@ contracts. Do not turn it into a delivery log, roadmap, module inventory, or car
 - [`architecture/evidence.d/README.md`](architecture/evidence.d/README.md) owns the card-scoped
   architecture-evidence shard contract. The aggregate files under `architecture-evidence/` are
   derived at check/build time and must not be committed.
-- [`docs/repository-control-plane/classification.v1.json`](docs/repository-control-plane/classification.v1.json)
-  and [`docs/repository-control-plane/semantic-owner-mapping.v1.json`](docs/repository-control-plane/semantic-owner-mapping.v1.json)
+- [`docs/repository-governance/classification.v1.json`](docs/repository-governance/classification.v1.json)
+  and [`docs/repository-governance/semantic-owner-mapping.v1.json`](docs/repository-governance/semantic-owner-mapping.v1.json)
   classify repository guidance and route temporal intent to its canonical owner. The public
   repository is the implementation and reproducible-evidence plane, not a planning register.
-- [`docs/repository-control-plane/evidence-placement.d/README.md`](docs/repository-control-plane/evidence-placement.d/README.md)
+- [`docs/repository-governance/evidence-placement.d/README.md`](docs/repository-governance/evidence-placement.d/README.md)
   owns the reviewed evidence-placement inputs, one file per semantic key and one key per document
-  tree. `docs/repository-control-plane/evidence-placement.v1.json` is derived from them at check
+  tree. `docs/repository-governance/evidence-placement.v1.json` is derived from them at check
   time and must not be committed.
-- [`docs/repository-control-plane/cutover.d/README.md`](docs/repository-control-plane/cutover.d/README.md)
-  owns the reviewed cutover inputs proving the control-plane migrations moved content without
-  losing product behavior or evidence. `docs/repository-control-plane/cutover.v1.json` is derived
+- [`docs/repository-governance/cutover.d/README.md`](docs/repository-governance/cutover.d/README.md)
+  owns the reviewed cutover inputs proving the repository governance migrations moved content without
+  losing product behavior or evidence. `docs/repository-governance/cutover.v1.json` is derived
   from them at check time and must not be committed.
 
 ## Repository-wide invariants
@@ -111,7 +111,7 @@ contracts. Do not turn it into a delivery log, roadmap, module inventory, or car
   ceiling is a downward-only backstop.
 - For changes to repository content classification, placement, or the cutover proof, run
   `node tools/inverse_control_plane_guard.mjs --check --all` and
-  `node tools/rcp05_cutover_receipt.mjs --check`. Both reuse the architecture-evidence card
+  `node tools/governance_cutover_receipt.mjs --check`. Both reuse the architecture-evidence card
   inventory and need no register credentials.
 - Treat deployment and source refresh as separate from code verification. Release boundaries and
   required production evidence are documented in [`docs/release/cloudflare-native-builds.md`](docs/release/cloudflare-native-builds.md).

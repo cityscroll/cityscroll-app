@@ -345,7 +345,7 @@ function check() {
   if (manifest.default_profile.every_other_surface !== "full") {
     problems.push("the full-checkout control is not declared the default for every other surface");
   }
-  for (const required of ["ci", "deployment", "release-surface", "architecture", "repository-control-plane", "evidence", "complete-history"]) {
+  for (const required of ["ci", "deployment", "release-surface", "architecture", "repository-governance", "evidence", "complete-history"]) {
     const surface = manifest.surfaces.find((entry) => entry.id === required);
     if (!surface || !surface.full_only) problems.push(`required full-checkout surface is not declared full_only: ${required}`);
   }

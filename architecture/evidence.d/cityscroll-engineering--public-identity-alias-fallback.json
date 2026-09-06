@@ -27,7 +27,7 @@
     },
     {
       "id": "repository-naming-boundary-receipt",
-      "path": "docs/repository-control-plane/naming-boundary.v1.json"
+      "path": "docs/repository-governance/naming-boundary.v1.json"
     },
     {
       "id": "required-checks-preflight-seam",

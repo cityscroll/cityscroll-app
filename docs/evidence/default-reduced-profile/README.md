@@ -31,7 +31,7 @@ is routed to `focused-reduced` without being asked for it, and provisions in
 full control at the same revision: **4.8x faster and 6.7x smaller**, which
 reproduces CI-09's result to within 1% on bytes. Every other declared surface —
 CI, unit, accessibility, artifact, deployment, release-surface, architecture,
-repository-control-plane, evidence and complete-history — selects the control,
+repository-governance, evidence and complete-history — selects the control,
 with the rule and reason recorded. A request the router cannot classify is an
 error, not a default: an undeclared surface and an unclassified gate class both
 fail closed at exit 2, and the terminal rule in the ordered list is the control,
@@ -155,7 +155,7 @@ Full detail is in [`raw/environment.json`](raw/environment.json).
 | `deployment` | `full` | `full-only-surface` (order 3) | 0 |
 | `release-surface` | `full` | `full-only-surface` (order 3) | 0 |
 | `architecture` | `full` | `full-only-surface` (order 3) | 0 |
-| `repository-control-plane` | `full` | `full-only-surface` (order 3) | 0 |
+| `repository-governance` | `full` | `full-only-surface` (order 3) | 0 |
 | `evidence` | `full` | `full-only-surface` (order 3) | 0 |
 | `complete-history` | `full` | `full-only-surface` (order 3) | 0 |
 
@@ -277,7 +277,7 @@ charged figure to within 1.3%.
 | `swallowed-miss-bare` | `zero` | 0 | yes | A check that swallows the missing input and asserts nothing exits 0 on its own. This is the pass-by-omission the contract has to prevent. |
 | `swallowed-miss-gated` | `4` | 4 | yes | The same check through the gate front door fails, because the sentinel recorded a missing tracked path whatever the check returned. |
 | `gate-refused-evidence-placement` | `3` | 3 | yes | A full-checkout-only gate class is refused by the front door before it runs, carrying the routing rule that refused it. |
-| `gate-refused-cutover-receipt` | `3` | 3 | yes | The control-plane cutover receipt is refused too. CI-09 declared it profile-supported on a recorded read set; it asserts that retained evidence projections resolve with an existence check, which that recording could not see, so this card reclassified it. |
+| `gate-refused-cutover-receipt` | `3` | 3 | yes | The repository governance cutover receipt is refused too. CI-09 declared it profile-supported on a recorded read set; it asserts that retained evidence projections resolve with an existence check, which that recording could not see, so this card reclassified it. |
 | `merge-base-resolves` | `zero` | 0 | yes | The routed reduced profile keeps complete commit history, so a guard that resolves a merge base against the default branch still works in it. |
 | `missing-blob-absent-locally` | `non-zero` | 1 | yes | With lazy fetching disabled, the blob behind a deferred path is genuinely absent from the local object store, so the reduction is real rather than a working-tree trick. |
 | `missing-blob-unreachable-promisor` | `non-zero` | 128 | yes | With the promisor remote unreachable, reading a deferred blob fails loudly instead of yielding an empty or truncated object. |
@@ -367,7 +367,7 @@ Running every declared profile-supported gate class in a provisioned reduced
 checkout — rather than recording its exit status and moving on — found one that
 does not pass there.
 
-`tools/rcp05_cutover_receipt.mjs` asserts that every retained evidence projection
+`tools/governance_cutover_receipt.mjs` asserts that every retained evidence projection
 resolves on disk, and it does so with an **existence check** rather than a content
 read. CI-09's recorder captures only content reads, by design: an earlier
 iteration that recorded metadata probes grew the closure to the entire tracked

@@ -7,15 +7,15 @@
   "projections": [
     {
       "id": "repository-evidence-placement-inputs",
-      "path": "docs/repository-control-plane/evidence-placement.d"
+      "path": "docs/repository-governance/evidence-placement.d"
     },
     {
       "id": "repository-evidence-placement-input-schema",
-      "path": "docs/repository-control-plane/evidence-placement-shard.v1.schema.json"
+      "path": "docs/repository-governance/evidence-placement-shard.v1.schema.json"
     },
     {
       "id": "repository-evidence-placement-validator",
-      "path": "tools/rcp03_evidence_placement.mjs"
+      "path": "tools/governance_evidence_placement.mjs"
     }
   ]
 }

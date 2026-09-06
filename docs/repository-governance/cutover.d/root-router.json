@@ -1,0 +1,36 @@
+{
+  "schema": "cityscroll.repository-governance.cutover-shard.v1",
+  "id": "root-router",
+  "owner": "root-router",
+  "card": "cityscroll-engineering/cutover-without-product-or-evidence-loss",
+  "kind": "migration",
+  "updated_at": "2026-09-01T00:00:00.000Z",
+  "value": {
+    "register_card": "cityscroll-engineering/root-agents-router",
+    "migration_commit": "c9b83920345a2e1172390eafb3af6e7bd35651b2",
+    "summary": "The root instruction file became a routing and invariants document; the per-change delivery ledger it used to carry has no public replacement in the repository.",
+    "manifest_entry_count": 2,
+    "dispositions": { "migrate": 1, "split": 1 },
+    "measurements": [
+      {
+        "id": "root-instructions-bytes",
+        "kind": "blob-bytes",
+        "path": "AGENTS.md",
+        "before": 322384,
+        "after": 6115,
+        "tip_relation": "at-most-router-ceiling"
+      },
+      {
+        "id": "root-instructions-lines",
+        "kind": "blob-lines",
+        "path": "AGENTS.md",
+        "before": 4641,
+        "after": 87,
+        "tip_relation": "at-most-before"
+      }
+    ],
+    "served_artifact_delta_paths": 0,
+    "history_treatment": "none",
+    "reversible": true
+  }
+}

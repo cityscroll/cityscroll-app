@@ -1,0 +1,13 @@
+{
+  "schema": "cityscroll.repository-governance.evidence-placement-shard.v1",
+  "id": "placement-attestation",
+  "owner": "placement-attestation",
+  "card": "cityscroll-engineering/private-generated-evidence-placement",
+  "input_revision": "c9b83920345a2e1172390eafb3af6e7bd35651b2",
+  "updated_at": "2026-08-31T00:00:00.000Z",
+  "value": {
+    "privacy_model": "placement-not-deletion",
+    "inspected_main_commit": "c9b83920345a2e1172390eafb3af6e7bd35651b2",
+    "history_treatment": "none; this is a tip-level placement change"
+  }
+}

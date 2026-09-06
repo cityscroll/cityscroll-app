@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cityscroll.org/schemas/repository-governance-classification.v1.schema.json",
+  "title": "CityScroll repository governance classification manifest v1",
+  "type": "object",
+  "required": ["schema", "inspection", "entries"],
+  "properties": {
+    "schema": { "const": "cityscroll.repository_governance_classification.v1" },
+    "inspection": {
+      "type": "object",
+      "required": ["main_commit", "register_card", "frontier_declared_count", "frontier_enumerated_count", "frontier_discrepancy", "root_agents_bytes", "root_agents_lines", "scrim_occurrences_declared", "private_uri_document_count"],
+      "properties": {
+        "main_commit": { "type": "string", "pattern": "^[a-f0-9]{40}$" },
+        "register_card": { "const": "cityscroll-engineering/repository-classification" },
+        "frontier_declared_count": { "type": "integer" },
+        "frontier_enumerated_count": { "type": "integer" },
+        "frontier_discrepancy": { "type": "integer" },
+        "root_agents_bytes": { "type": "integer" },
+        "root_agents_lines": { "type": "integer" },
+        "scrim_occurrences_declared": { "type": "integer" },
+        "private_uri_document_count": { "type": "integer" }
+      },
+      "additionalProperties": false
+    },
+    "entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "path", "selector", "content_class", "canonical_owner", "register_id", "disposition", "stable_replacement_reference", "history_treatment", "source"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "path": { "type": "string", "minLength": 1 },
+          "selector": { "type": "string", "minLength": 1 },
+          "content_class": { "type": "string", "minLength": 1 },
+          "canonical_owner": { "type": "string", "minLength": 1 },
+          "register_id": { "type": "string", "minLength": 1 },
+          "disposition": { "enum": ["keep", "split", "migrate", "privatize", "archive", "delete-from-tip"] },
+          "stable_replacement_reference": { "type": "string", "minLength": 1 },
+          "history_treatment": { "enum": ["none", "review-required"] },
+          "source": {
+            "type": "object",
+            "required": ["path", "selector", "sha256"],
+            "properties": {
+              "path": { "type": "string", "minLength": 1 },
+              "selector": { "type": "string", "minLength": 1 },
+              "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

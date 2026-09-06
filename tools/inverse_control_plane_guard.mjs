@@ -21,7 +21,7 @@ import {
 } from "./public_identity_contract.mjs";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const MANIFEST_PATH = "docs/repository-control-plane/inverse-guard.v1.json";
+const MANIFEST_PATH = "docs/repository-governance/inverse-guard.v1.json";
 const SCHEMA = "cityscroll.repository_inverse_guard.v1";
 const TEXT_PATH = /\.(?:md|json|ya?ml)$/i;
 const IDENTITY_FIELDS = ["id", "register_id", "canonical_owner", "stable_replacement_reference"];

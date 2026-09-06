@@ -67,7 +67,7 @@ The repository is a modular monolith with separate browser, edge, and host-data 
 
 This enforced standard protects plain-language and cognitive accessibility for residents. Its
 canonical decision owner is recorded in the
-[RCP-01 semantic-owner receipt](docs/repository-control-plane/semantic-owner-mapping.v1.json).
+[semantic-owner receipt](docs/repository-governance/semantic-owner-mapping.v1.json).
 
 Resident-facing surfaces must not expose implementation-facing snake_case schema, column, or method
 vocabulary, `Unavailable` debug rows, or reconciliation disclaimers in their default content.
@@ -88,7 +88,7 @@ resident renderers must keep this invariant and its full built-site sweep green.
 
 This section records the current measured ceiling and its operational tradeoff. Its canonical
 decision owner is recorded in the
-[RCP-01 semantic-owner receipt](docs/repository-control-plane/semantic-owner-mapping.v1.json).
+[semantic-owner receipt](docs/repository-governance/semantic-owner-mapping.v1.json).
 
 The `home.cold` `wireBytes` budget protects the weight of the first uncached visit to the home
 surface, including the resources needed before the browser has a warm cache. Audience impact is

@@ -6,8 +6,8 @@ import { fileURLToPath } from "node:url";
 import { spawnSync } from "node:child_process";
 
 const ROOT = resolve(fileURLToPath(new URL("..", import.meta.url)));
-const POLICY_PATH = "docs/repository-control-plane/agents-router-policy.v1.json";
-const RECEIPT_PATH = "docs/repository-control-plane/agents-router-receipt.v1.json";
+const POLICY_PATH = "docs/repository-governance/agents-router-policy.v1.json";
+const RECEIPT_PATH = "docs/repository-governance/agents-router-receipt.v1.json";
 
 const RULES = Object.freeze([
   {
@@ -96,8 +96,8 @@ export function buildReceipt(policy, rootText) {
     inputs: {
       main_commit: "d1c0b1c66477f7efc056360253aeb40341dfc103",
       register_revision: "32727924c5f546ce5c41d0f68cb324fde7c7425b",
-      classification_manifest: "docs/repository-control-plane/classification.v1.json",
-      semantic_owner_mapping: "docs/repository-control-plane/semantic-owner-mapping.v1.json"
+      classification_manifest: "docs/repository-governance/classification.v1.json",
+      semantic_owner_mapping: "docs/repository-governance/semantic-owner-mapping.v1.json"
     },
     root_agents: {
       grounded_rcp00_before: { bytes: 321000, lines: 4621 },

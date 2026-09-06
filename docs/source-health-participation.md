@@ -102,7 +102,7 @@ RSS, ZAP outcomes) record `cityscroll.source_acquisition_receipt.v1` rows.
 Warehouse ingest receipts supply acquisition vintage; materialization timestamps
 are serving clocks and cannot clear ingestion staleness. Unknown publisher dates
 remain UNKNOWN. Ownership disposition is recorded in the
-[RCP-01 receipt](repository-control-plane/semantic-owner-mapping.v1.json).
+[semantic-owner receipt](repository-governance/semantic-owner-mapping.v1.json).
 
 The observation file is the private current-state read model. It is excluded
 from Pages in `site/_config.yml`. Rebuild it after contract or receipt changes;

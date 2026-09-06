@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "cityscroll.repository-governance.evidence-placement-shard.v1",
+  "title": "CityScroll reviewed evidence-placement input",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "id", "owner", "card", "input_revision", "updated_at", "value"],
+  "properties": {
+    "schema": { "const": "cityscroll.repository-governance.evidence-placement-shard.v1" },
+    "id": {
+      "type": "string",
+      "pattern": "^(placement-attestation|inventory-scope|scrim-inventory|public-result|bibliography|preservation|served-artifacts|document-tree:[a-z0-9][a-z0-9._-]*(/[a-z0-9][a-z0-9._-]*)*)$"
+    },
+    "owner": { "type": "string" },
+    "card": { "type": "string" },
+    "input_revision": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+    "updated_at": { "type": "string", "format": "date-time" },
+    "value": {}
+  }
+}

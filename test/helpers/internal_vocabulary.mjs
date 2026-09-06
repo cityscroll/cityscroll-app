@@ -4,7 +4,7 @@
  * The names are deliberately not written here, in any form.
  *
  * This repository is public, and its naming boundary
- * (docs/repository-control-plane/naming-boundary.v1.json) keeps every private
+ * (docs/repository-governance/naming-boundary.v1.json) keeps every private
  * identifier in an owner-controlled term set outside the tree, because a
  * committed denylist publishes the very name it exists to keep out. That holds
  * for an encoded denylist too: a digest, a character-code table, or a pair of

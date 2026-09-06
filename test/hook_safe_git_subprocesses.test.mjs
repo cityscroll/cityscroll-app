@@ -78,7 +78,7 @@ const SCRATCH_REPO_SUITES = Object.freeze([
   "test/list_pr_changed_paths.test.mjs",
   "test/prepare_changelog_base.test.mjs",
   "test/private_identifier_scan.test.mjs",
-  "test/rcp03_evidence_placement.test.mjs",
+  "test/governance_evidence_placement.test.mjs",
   "test/site_production_determinism.test.mjs",
 ]);
 

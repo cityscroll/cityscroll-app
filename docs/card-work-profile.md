@@ -7,7 +7,7 @@ repository metadata and the tracked `site/data` payload; the measurements are in
 
 There are two profiles, and **`focused-reduced` is the supported default for
 focused card work**. Everything else — CI, deployment, release, architecture and
-control-plane runs, evidence production, and anything declaring that it needs
+repository governance runs, evidence production, and anything declaring that it needs
 complete history — is provisioned as the `full` checkout control. Which one a
 request gets is a routing decision, not a flag the caller has to remember.
 
@@ -59,7 +59,7 @@ the last rule in the list is the control.
 | `deployment` | `full` | A deployment publishes the built site and the Worker bundle. Provisioning a deployment from anything but the full control would make the published artifact depend on a development convenience. |
 | `release-surface` | `full` | Release evidence is derived from the full tracked tree and from generated build output. |
 | `architecture` | `full` | The reconciliation run projects and publishes evidence over the whole declared architecture surface, not one --check invocation, and its output is an artifact other work is judged against. |
-| `repository-control-plane` | `full` | The RCP-03 evidence-placement receipt was measured reading 3,535 tracked paths totalling 615.4 MiB, close to the whole tracked tree, and the per-tree inputs it derives from span every documentation tree. |
+| `repository-governance` | `full` | The evidence-placement receipt was measured reading 3,535 tracked paths totalling 615.4 MiB, close to the whole tracked tree, and the per-tree inputs it derives from span every documentation tree. |
 | `evidence` | `full` | Producing or placing evidence reads and writes across documentation trees the reduced profile defers, and an evidence receipt taken in a partial working copy would record an incomplete tree as if it were the tree. |
 | `complete-history` | `full` | Declared explicitly by a caller that needs history beyond what its checkout carries. The default reduced profile keeps complete history, so this normally costs nothing extra; it is declared full because a caller that says it needs complete history must not be handed a checkout whose history depends on a profile option. |
 
@@ -81,7 +81,7 @@ Regenerate that table with `node tools/card_profile_router.mjs --table`; a test
 fails if it drifts from the manifest.
 
 Two surfaces need a word of explanation. `architecture` and
-`repository-control-plane` are full-checkout-only as **run surfaces** — the runs
+`repository-governance` are full-checkout-only as **run surfaces** — the runs
 that produce and publish evidence over a whole declared surface — while several
 of their individual `--check` commands are profile-supported gate classes that do
 run in a reduced checkout through the gate front door. The manifest records that
@@ -197,7 +197,7 @@ returned** — so a check that swallows an absent input cannot pass by omission.
 The supported and full-checkout-only gate classes, each with its reason, are
 listed in `tools/card-profile/closure.v1.json`. The site standards, site unit,
 generated-document, evidence-placement, reading-level, accessibility, browser,
-Pages build, release-surface and control-plane cutover-receipt families all
+Pages build, release-surface and repository governance cutover-receipt families all
 require the full checkout.
 
 ## Functional tests, and the corpus they need

@@ -5,7 +5,7 @@
   "fingerprint": "semantic-owner-migration.v1",
   "updated_at": "2026-08-31T00:00:00.000Z",
   "projections": [
-    { "id": "repository-control-plane-semantic-owner-mapping", "path": "docs/repository-control-plane/semantic-owner-mapping.v1.json" },
-    { "id": "repository-control-plane-semantic-owner-validator", "path": "tools/rcp01_semantic_owner_receipt.mjs" }
+    { "id": "repository-governance-semantic-owner-mapping", "path": "docs/repository-governance/semantic-owner-mapping.v1.json" },
+    { "id": "repository-governance-semantic-owner-validator", "path": "tools/governance_semantic_owner_receipt.mjs" }
   ]
 }
