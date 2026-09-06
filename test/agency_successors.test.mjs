@@ -78,6 +78,21 @@ test("dated kill sample clears the 95% precision bar on the product path", () =>
   assert.equal(measured.clears_precision_bar, true);
 });
 
+test("DoITT remains a former-name surface for the current OTI identifier", () => {
+  const oti = crosswalk.entries["information-technology-and-telecommunications"];
+  assert.equal(oti.canonical_name, "Office of Technology and Innovation");
+  assert.ok(oti.former_acronyms.includes("DoITT"));
+  assert.ok(oti.former_names.some((name) => /Information Technology and Telecommunications/i.test(name)));
+  assert.equal(
+    canonicalAgency("Dept of Info Tech & Telecomm").canonical_id,
+    "information-technology-and-telecommunications",
+  );
+  assert.equal(
+    canonicalAgency("Office of Technology and Innovation").canonical_id,
+    "information-technology-and-telecommunications",
+  );
+});
+
 test("product resolve joins densified renames and holds hard negatives", () => {
   // Gold gv0-026 + OTI residual renames.
   assert.equal(

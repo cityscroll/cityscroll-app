@@ -45,10 +45,13 @@ export function peopleBrowseRows(model = {}) {
     const label = String(row?.label || "").trim();
     if (!id || !PEOPLE_ORGANIZATIONS_BROWSE_CONFIG.facetValues.includes(kind) || !label) return [];
     const rawKindLabel = kind.replaceAll("-", " ");
-    const kindLabel = kindLabels[kind] || `${rawKindLabel[0].toUpperCase()}${rawKindLabel.slice(1)}`;
+    const kindLabel = String(row.kind_label || "").trim()
+      || kindLabels[kind]
+      || `${rawKindLabel[0].toUpperCase()}${rawKindLabel.slice(1)}`;
     const institutionLabel = String(row.institution_label || institutionLabels[kind] || "").trim();
     const isCommunityBoard = kind === "community-board";
-    const heading = isCommunityBoard
+    const isAgency = kind === "agency";
+    const heading = isCommunityBoard || isAgency
       ? label
       : institutionLabel
         ? `${institutionLabel} · ${kindLabel} · ${label}${kind === "official" ? "" : ` · ${id}`}`

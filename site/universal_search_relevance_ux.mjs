@@ -258,7 +258,10 @@ export function buildUniversalSearchResultView(record = {}) {
     summary: clean(record.summary, 1_200) || null,
     href,
     entity_type: entityType,
-    entity_type_label: TYPE_LABELS[entityType] || titleCase(entityType) || "Published record",
+    entity_type_label: clean(record?.provenance?.kind_label, 80)
+      || TYPE_LABELS[entityType]
+      || titleCase(entityType)
+      || "Published record",
     lens,
     lens_label: LENS_LABELS[lens] || titleCase(lens) || "Published records",
     lifecycle,

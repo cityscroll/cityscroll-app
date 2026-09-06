@@ -53,7 +53,7 @@ export function renderCardinalityAdaptiveFacet({
   const listId = `${safeId}-matches`;
   const rows = normalized.map((choice, index) => {
     const active = choice.id === selectedId;
-    return `<li class="facet-typeahead-option" data-facet-option data-facet-label="${escape(choice.label.toLocaleLowerCase())}"${index >= 5 && !active ? " hidden" : ""}>
+    return `<li class="facet-typeahead-option" data-facet-option data-facet-label="${escape((choice.search_label || choice.label).toLocaleLowerCase())}"${index >= 5 && !active ? " hidden" : ""}>
       ${constellationLink({ href: entityHref(choice), label: choice.label, className: "facet-entity-link", attributes: { "data-agency-entity-link": choice.id }, escape })}
       ${filterChip({ label: active ? "Filtered" : "Filter", pressed: active, attributes: { "data-agency-scope-link": choice.id, "data-filter-href": scopeHref(choice), "data-scope-edge": choice.scopeEdge }, escape })}
     </li>`;

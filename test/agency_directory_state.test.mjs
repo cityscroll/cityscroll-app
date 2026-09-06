@@ -28,8 +28,10 @@ import {
 } from "../site/agency_directory_contract.mjs";
 import {
   INSTITUTION_BROWSE_GROUPS,
-  projectInstitutionClassification,
 } from "../site/civic_institution_classification.mjs";
+import {
+  projectInstitutionClassification,
+} from "../site/civic_institution_classification_project.mjs";
 import { agencyDirectoryModel } from "../tools/build_agency_documents.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");

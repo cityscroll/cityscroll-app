@@ -41,6 +41,7 @@ import {
 } from "../site/civic_institution_profile_navigation.mjs";
 import { buildAgencySourceIdentitySnapshot } from "../tools/lib/agency_source_identity_snapshot.mjs";
 import { loadOntologyRegistry } from "../ontology/index.mjs";
+import { projectResidentInstitutionIdentity } from "../site/civic_institution_resident_identity.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const CASES = JSON.parse(
@@ -75,6 +76,27 @@ function contract() {
     routes: ROUTES,
   });
 }
+
+test("resident identity projection does not rename stored agency identifiers or routes", () => {
+  const ids = [
+    "city-planning",
+    "city-planning-commission",
+    "economic-development-corporation",
+    "housing-authority",
+    "city-council",
+    "office-of-racial-equity",
+    "commission-on-racial-equity",
+    "information-technology-and-telecommunications",
+  ];
+  for (const id of ids) {
+    const resident = projectResidentInstitutionIdentity(id);
+    assert.equal(resident.canonical_id, id);
+    assert.equal(resident.stored_identifier, id);
+    assert.equal(resident.subject_ref, `agency:id:${id}`);
+    assert.equal(resident.href, `/agencies/${id}/`);
+    assert.equal(classify(id).canonical_id || id, id);
+  }
+});
 
 test("reviewed aliases project through route_alias_of with exact compatibility evidence", () => {
   const edges = projectReviewedRouteAliasEdges(REPORT);

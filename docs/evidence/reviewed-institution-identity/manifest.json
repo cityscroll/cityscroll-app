@@ -1,0 +1,602 @@
+{
+  "schema": "cityscroll.reviewed_institution_identity_evidence.v1",
+  "subject": "the same reviewed institution identity across search, browse and profiles",
+  "routes": [
+    "/agencies/",
+    "/browse/people/",
+    "/agencies/city-planning-commission/",
+    "/agencies/city-planning/",
+    "/agencies/economic-development-corporation/",
+    "/agencies/information-technology-and-telecommunications/"
+  ],
+  "revision": "6e499e07875818d4159d2ad1864595eccf236f32",
+  "data_vintage": "2026-09-05",
+  "captured_at": "2026-09-06T04:38:30Z",
+  "image_directory": ".artifacts/reviewed-institution-identity",
+  "image_policy": "Capture images are written to the ignored local directory above and are never committed. This manifest is the tracked proof: route, viewport, revision, data vintage, assertion and SHA-256 for each capture.",
+  "search_note": "Which documents an acronym or former-name query keeps is proven over the committed search producer in test/civic_institution_resident_identity.test.mjs. The captures below prove browser navigation and rendering, and claim nothing about a live search API they did not call.",
+  "files": [
+    {
+      "name": "directory-cpc-and-back-390x844.png",
+      "specimen": "directory-cpc-and-back",
+      "route": "/agencies/",
+      "viewport": [
+        390,
+        844
+      ],
+      "scripting": true,
+      "revision": "6e499e07875818d4159d2ad1864595eccf236f32",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 390px a reader searching \u201cCPC\u201d reaches City Planning Commission, sees the same reviewed identity on the profile, and browser Back restores the query",
+      "observations": {
+        "search_kept_this_body": true,
+        "search_narrowed_the_directory": true,
+        "opened_the_canonical_destination": true,
+        "profile_heading_names_the_body": true,
+        "profile_omits_generic_agency_copy": true,
+        "back_restored_the_query": true,
+        "back_restored_focus_to_the_row_opened": true,
+        "touch_target_failures": [],
+        "no_horizontal_overflow": true,
+        "profile_kicker_is_the_reviewed_type": true,
+        "profile_states_the_reviewed_purpose": true
+      },
+      "bytes": 695590,
+      "sha256": "4ec7c00c728f3a866d9438559c6cbdf95482e39aa9e180629081e0d4c3ccfe24",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "directory-cpc-and-back-1440x900.png",
+      "specimen": "directory-cpc-and-back",
+      "route": "/agencies/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "scripting": true,
+      "revision": "6e499e07875818d4159d2ad1864595eccf236f32",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 1440px a reader searching \u201cCPC\u201d reaches City Planning Commission, sees the same reviewed identity on the profile, and browser Back restores the query",
+      "observations": {
+        "search_kept_this_body": true,
+        "search_narrowed_the_directory": true,
+        "opened_the_canonical_destination": true,
+        "profile_heading_names_the_body": true,
+        "profile_omits_generic_agency_copy": true,
+        "back_restored_the_query": true,
+        "back_restored_focus_to_the_row_opened": true,
+        "touch_target_failures": [],
+        "no_horizontal_overflow": true,
+        "profile_kicker_is_the_reviewed_type": true,
+        "profile_states_the_reviewed_purpose": true
+      },
+      "bytes": 780287,
+      "sha256": "d334173794ab7433280b3dce6cc17cc95b1a351a7ae10aa49c65209f912fd22e",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "directory-nycedc-and-back-390x844.png",
+      "specimen": "directory-nycedc-and-back",
+      "route": "/agencies/",
+      "viewport": [
+        390,
+        844
+      ],
+      "scripting": true,
+      "revision": "6e499e07875818d4159d2ad1864595eccf236f32",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 390px a reader searching \u201cNYCEDC\u201d reaches Economic Development Corporation, sees the same reviewed identity on the profile, and browser Back restores the query",
+      "observations": {
+        "search_kept_this_body": true,
+        "search_narrowed_the_directory": true,
+        "opened_the_canonical_destination": true,
+        "profile_heading_names_the_body": true,
+        "profile_omits_generic_agency_copy": true,
+        "back_restored_the_query": true,
+        "back_restored_focus_to_the_row_opened": true,
+        "touch_target_failures": [],
+        "no_horizontal_overflow": true,
+        "profile_kicker_is_the_reviewed_type": true,
+        "profile_states_the_reviewed_purpose": true
+      },
+      "bytes": 1373846,
+      "sha256": "b4eccf9aef0bf1a566a6304f794f2f5f82c396909fbf1132b4877d70c6e863fa",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "directory-nycedc-and-back-1440x900.png",
+      "specimen": "directory-nycedc-and-back",
+      "route": "/agencies/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "scripting": true,
+      "revision": "6e499e07875818d4159d2ad1864595eccf236f32",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 1440px a reader searching \u201cNYCEDC\u201d reaches Economic Development Corporation, sees the same reviewed identity on the profile, and browser Back restores the query",
+      "observations": {
+        "search_kept_this_body": true,
+        "search_narrowed_the_directory": true,
+        "opened_the_canonical_destination": true,
+        "profile_heading_names_the_body": true,
+        "profile_omits_generic_agency_copy": true,
+        "back_restored_the_query": true,
+        "back_restored_focus_to_the_row_opened": true,
+        "touch_target_failures": [],
+        "no_horizontal_overflow": true,
+        "profile_kicker_is_the_reviewed_type": true,
+        "profile_states_the_reviewed_purpose": true
+      },
+      "bytes": 1529767,
+      "sha256": "b046c0d9336e9a4075ed00d9b98d7f5af57a6ec293146a29d6d48450542c9601",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "directory-doitt-and-back-390x844.png",
+      "specimen": "directory-doitt-and-back",
+      "route": "/agencies/",
+      "viewport": [
+        390,
+        844
+      ],
+      "scripting": true,
+      "revision": "6e499e07875818d4159d2ad1864595eccf236f32",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 390px a reader searching \u201cDoITT\u201d reaches Office of Technology and Innovation, sees the same reviewed identity on the profile, and browser Back restores the query",
+      "observations": {
+        "search_kept_this_body": true,
+        "search_narrowed_the_directory": true,
+        "opened_the_canonical_destination": true,
+        "profile_heading_names_the_body": true,
+        "profile_omits_generic_agency_copy": true,
+        "back_restored_the_query": true,
+        "back_restored_focus_to_the_row_opened": true,
+        "touch_target_failures": [],
+        "no_horizontal_overflow": true
+      },
+      "bytes": 1755668,
+      "sha256": "2fe7b196fad447ce72231e02150b9704238541c0aa63ef65a7350c8769614241",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "directory-doitt-and-back-1440x900.png",
+      "specimen": "directory-doitt-and-back",
+      "route": "/agencies/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "scripting": true,
+      "revision": "6e499e07875818d4159d2ad1864595eccf236f32",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 1440px a reader searching \u201cDoITT\u201d reaches Office of Technology and Innovation, sees the same reviewed identity on the profile, and browser Back restores the query",
+      "observations": {
+        "search_kept_this_body": true,
+        "search_narrowed_the_directory": true,
+        "opened_the_canonical_destination": true,
+        "profile_heading_names_the_body": true,
+        "profile_omits_generic_agency_copy": true,
+        "back_restored_the_query": true,
+        "back_restored_focus_to_the_row_opened": true,
+        "touch_target_failures": [],
+        "no_horizontal_overflow": true
+      },
+      "bytes": 2080452,
+      "sha256": "e8a471c323e310fe89e4d46f032d1d9262c2d89bc15846eeb7c82e6e2595e0df",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "people-cpc-and-back-390x844.png",
+      "specimen": "people-cpc-and-back",
+      "route": "/browse/people/",
+      "viewport": [
+        390,
+        844
+      ],
+      "scripting": true,
+      "revision": "6e499e07875818d4159d2ad1864595eccf236f32",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 390px searching \u201cCPC\u201d in People & organizations reaches City Planning Commission with the same reviewed description, and Back keeps the query",
+      "observations": {
+        "people_result_names_the_body": true,
+        "people_result_omits_generic_agency_copy": true,
+        "people_result_states_the_reviewed_type": true,
+        "opened_the_canonical_destination": true,
+        "profile_heading_names_the_body": true,
+        "back_restored_the_query": true,
+        "touch_target_failures": [],
+        "no_horizontal_overflow": true
+      },
+      "bytes": 695590,
+      "sha256": "4ec7c00c728f3a866d9438559c6cbdf95482e39aa9e180629081e0d4c3ccfe24",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "people-cpc-and-back-1440x900.png",
+      "specimen": "people-cpc-and-back",
+      "route": "/browse/people/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "scripting": true,
+      "revision": "6e499e07875818d4159d2ad1864595eccf236f32",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 1440px searching \u201cCPC\u201d in People & organizations reaches City Planning Commission with the same reviewed description, and Back keeps the query",
+      "observations": {
+        "people_result_names_the_body": true,
+        "people_result_omits_generic_agency_copy": true,
+        "people_result_states_the_reviewed_type": true,
+        "opened_the_canonical_destination": true,
+        "profile_heading_names_the_body": true,
+        "back_restored_the_query": true,
+        "touch_target_failures": [],
+        "no_horizontal_overflow": true
+      },
+      "bytes": 780287,
+      "sha256": "d334173794ab7433280b3dce6cc17cc95b1a351a7ae10aa49c65209f912fd22e",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "people-nycedc-and-back-390x844.png",
+      "specimen": "people-nycedc-and-back",
+      "route": "/browse/people/",
+      "viewport": [
+        390,
+        844
+      ],
+      "scripting": true,
+      "revision": "6e499e07875818d4159d2ad1864595eccf236f32",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 390px searching \u201cNYCEDC\u201d in People & organizations reaches Economic Development Corporation with the same reviewed description, and Back keeps the query",
+      "observations": {
+        "people_result_names_the_body": true,
+        "people_result_omits_generic_agency_copy": true,
+        "people_result_states_the_reviewed_type": true,
+        "opened_the_canonical_destination": true,
+        "profile_heading_names_the_body": true,
+        "back_restored_the_query": true,
+        "touch_target_failures": [],
+        "no_horizontal_overflow": true
+      },
+      "bytes": 1373846,
+      "sha256": "b4eccf9aef0bf1a566a6304f794f2f5f82c396909fbf1132b4877d70c6e863fa",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "people-nycedc-and-back-1440x900.png",
+      "specimen": "people-nycedc-and-back",
+      "route": "/browse/people/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "scripting": true,
+      "revision": "6e499e07875818d4159d2ad1864595eccf236f32",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 1440px searching \u201cNYCEDC\u201d in People & organizations reaches Economic Development Corporation with the same reviewed description, and Back keeps the query",
+      "observations": {
+        "people_result_names_the_body": true,
+        "people_result_omits_generic_agency_copy": true,
+        "people_result_states_the_reviewed_type": true,
+        "opened_the_canonical_destination": true,
+        "profile_heading_names_the_body": true,
+        "back_restored_the_query": true,
+        "touch_target_failures": [],
+        "no_horizontal_overflow": true
+      },
+      "bytes": 1529767,
+      "sha256": "b046c0d9336e9a4075ed00d9b98d7f5af57a6ec293146a29d6d48450542c9601",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "distinct-planning-bodies-390x844.png",
+      "specimen": "distinct-planning-bodies",
+      "route": "/agencies/city-planning-commission/",
+      "viewport": [
+        390,
+        844
+      ],
+      "scripting": true,
+      "revision": "6e499e07875818d4159d2ad1864595eccf236f32",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 390px the planning department and planning commission profiles use different reviewed types and names rather than one generic agency heading",
+      "observations": {
+        "department_kicker": true,
+        "commission_kicker": true,
+        "headings_name_different_bodies": true,
+        "department_heading": true,
+        "commission_heading": true,
+        "no_generic_agency_copy": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 695590,
+      "sha256": "4ec7c00c728f3a866d9438559c6cbdf95482e39aa9e180629081e0d4c3ccfe24",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "distinct-planning-bodies-1440x900.png",
+      "specimen": "distinct-planning-bodies",
+      "route": "/agencies/city-planning-commission/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "scripting": true,
+      "revision": "6e499e07875818d4159d2ad1864595eccf236f32",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 1440px the planning department and planning commission profiles use different reviewed types and names rather than one generic agency heading",
+      "observations": {
+        "department_kicker": true,
+        "commission_kicker": true,
+        "headings_name_different_bodies": true,
+        "department_heading": true,
+        "commission_heading": true,
+        "no_generic_agency_copy": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 780287,
+      "sha256": "d334173794ab7433280b3dce6cc17cc95b1a351a7ae10aa49c65209f912fd22e",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "people-no-match-keeps-query-390x844.png",
+      "specimen": "people-no-match-keeps-query",
+      "route": "/browse/people/",
+      "viewport": [
+        390,
+        844
+      ],
+      "scripting": true,
+      "revision": "6e499e07875818d4159d2ad1864595eccf236f32",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 390px a People & organizations search that matches nothing keeps the query in the field and the URL instead of looking like a successful empty load",
+      "observations": {
+        "query_stayed_in_the_field": true,
+        "query_stayed_in_the_url": true,
+        "empty_state_is_shown": true,
+        "touch_target_failures": [],
+        "no_horizontal_overflow": true
+      },
+      "bytes": 374974,
+      "sha256": "ebab80c09927b504496db0e638e8ed04b27da507e94243fef6aadfff93bc92cd",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "people-no-match-keeps-query-1440x900.png",
+      "specimen": "people-no-match-keeps-query",
+      "route": "/browse/people/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "scripting": true,
+      "revision": "6e499e07875818d4159d2ad1864595eccf236f32",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 1440px a People & organizations search that matches nothing keeps the query in the field and the URL instead of looking like a successful empty load",
+      "observations": {
+        "query_stayed_in_the_field": true,
+        "query_stayed_in_the_url": true,
+        "empty_state_is_shown": true,
+        "touch_target_failures": [],
+        "no_horizontal_overflow": true
+      },
+      "bytes": 402225,
+      "sha256": "d9b7407b0190a4d005d2cd66bd6c90b2860fbf42e99a3ee554216946deab3f81",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "keyboard-directory-cpc-390x844.png",
+      "specimen": "keyboard-directory-cpc",
+      "route": "/agencies/",
+      "viewport": [
+        390,
+        844
+      ],
+      "scripting": true,
+      "revision": "6e499e07875818d4159d2ad1864595eccf236f32",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 390px the commission is reachable from the directory with the keyboard alone",
+      "observations": {
+        "keyboard_opened_the_commission": true,
+        "profile_kicker_is_the_reviewed_type": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 695590,
+      "sha256": "4ec7c00c728f3a866d9438559c6cbdf95482e39aa9e180629081e0d4c3ccfe24",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "keyboard-directory-cpc-1440x900.png",
+      "specimen": "keyboard-directory-cpc",
+      "route": "/agencies/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "scripting": true,
+      "revision": "6e499e07875818d4159d2ad1864595eccf236f32",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 1440px the commission is reachable from the directory with the keyboard alone",
+      "observations": {
+        "keyboard_opened_the_commission": true,
+        "profile_kicker_is_the_reviewed_type": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 780287,
+      "sha256": "d334173794ab7433280b3dce6cc17cc95b1a351a7ae10aa49c65209f912fd22e",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "without-scripting-cpc-profile-390x844.png",
+      "specimen": "without-scripting-cpc-profile",
+      "route": "/agencies/city-planning-commission/",
+      "viewport": [
+        390,
+        844
+      ],
+      "scripting": false,
+      "revision": "6e499e07875818d4159d2ad1864595eccf236f32",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 390px, with scripting unavailable, the commission profile is still a real document that names the commission as a commission",
+      "observations": {
+        "profile_is_a_real_document": true,
+        "heading_names_the_commission": true,
+        "kicker_is_the_reviewed_type": true,
+        "back_link_is_an_ordinary_href": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 211812,
+      "sha256": "85e90a69fa616fbb13034c8bdf9d02a9cb2167c8b9304ef79be22c79d1aeb6a8",
+      "axe": {
+        "violations_total": null,
+        "failing_violations": [],
+        "passes": null,
+        "skipped": "scripting disabled for this specimen"
+      }
+    },
+    {
+      "name": "without-scripting-cpc-profile-1440x900.png",
+      "specimen": "without-scripting-cpc-profile",
+      "route": "/agencies/city-planning-commission/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "scripting": false,
+      "revision": "6e499e07875818d4159d2ad1864595eccf236f32",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 1440px, with scripting unavailable, the commission profile is still a real document that names the commission as a commission",
+      "observations": {
+        "profile_is_a_real_document": true,
+        "heading_names_the_commission": true,
+        "kicker_is_the_reviewed_type": true,
+        "back_link_is_an_ordinary_href": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 248307,
+      "sha256": "c670b05a01304ca51216e883de34348c7518dc0b11568efc6d2ab669a52044e2",
+      "axe": {
+        "violations_total": null,
+        "failing_violations": [],
+        "passes": null,
+        "skipped": "scripting disabled for this specimen"
+      }
+    },
+    {
+      "name": "two-hundred-percent-zoom-390x844.png",
+      "specimen": "two-hundred-percent-zoom",
+      "route": "/agencies/",
+      "viewport": [
+        390,
+        844
+      ],
+      "scripting": true,
+      "revision": "6e499e07875818d4159d2ad1864595eccf236f32",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 390px and 200 percent zoom a CPC search still reaches the commission",
+      "observations": {
+        "search_kept_the_commission_at_zoom": true,
+        "no_horizontal_overflow": true,
+        "touch_target_failures": []
+      },
+      "bytes": 245252,
+      "sha256": "e7ff528ddd340a9f3d24f140cd8574aab3a5b4defa89db631ea010c1c510d2fd",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "two-hundred-percent-zoom-1440x900.png",
+      "specimen": "two-hundred-percent-zoom",
+      "route": "/agencies/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "scripting": true,
+      "revision": "6e499e07875818d4159d2ad1864595eccf236f32",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 1440px and 200 percent zoom a CPC search still reaches the commission",
+      "observations": {
+        "search_kept_the_commission_at_zoom": true,
+        "no_horizontal_overflow": true,
+        "touch_target_failures": []
+      },
+      "bytes": 229304,
+      "sha256": "75fd0b09d392ef5160ec73538aa72dfb40d0692374c5386dbf9ac5e51d1d0da9",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    }
+  ]
+}

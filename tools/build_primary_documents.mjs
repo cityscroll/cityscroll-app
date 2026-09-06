@@ -229,6 +229,7 @@ export function primaryDocumentOutputs(options = {}) {
     hires,
     communityBoardPeople,
     communityBoardCommittees,
+    publisherCrosswalk: JSON.parse(readFileSync(join(ROOT, "worker/src/data/agency_crosswalk.json"), "utf8")),
   };
   for (const kind of Object.keys(BROWSE_CONCEPTS)) {
     const document = kind === "people"
@@ -260,6 +261,7 @@ export function peopleOrganizationsOutputs() {
     hires: json("/data/staffing_default_hires.json"),
     communityBoardPeople: json("/data/community_board_people.json"),
     communityBoardCommittees: json("/data/non_council_outcome_sources/community_board_committees.json"),
+    publisherCrosswalk: JSON.parse(readFileSync(join(ROOT, "worker/src/data/agency_crosswalk.json"), "utf8")),
   });
   return [[
     join(SITE, "data/people_organizations_read_model.json"),
