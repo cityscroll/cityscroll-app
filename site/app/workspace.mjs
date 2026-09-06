@@ -205,6 +205,7 @@ function invEmptyGuideHtml(){
   return `<div id="inv-empty-guide">
     <p class="rmeta2" style="margin:0 0 14px">${t("inv_empty_guide_html")}</p>
     <div class="actions" style="margin:0 0 14px"><a class="act primary" href="/search/" id="invfind">${t("inv_find_record_link")}</a></div>
+    <p class="guide-help"><a href="/guide/how-to/collect-records-and-export-them/">How to collect records and export them</a></p>
     <p class="rmeta" style="margin:0">${t("inv_empty_later_outputs")}</p>
   </div>`;
 }

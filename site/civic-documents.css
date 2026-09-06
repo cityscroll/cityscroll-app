@@ -102,6 +102,15 @@ select {
   color: var(--color-action);
 }
 
+.guide-help {
+  margin: var(--space-2) 0 0;
+  font: 500 .875rem/1.45 var(--font-body);
+}
+
+.guide-help a {
+  color: var(--color-action);
+}
+
 .near-hero,
 .near-place-guide,
 .near-form,

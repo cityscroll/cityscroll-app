@@ -5,10 +5,13 @@ Seven articles were added to the guide — four under **Understand** and three u
 somewhere in this repository, and the point of this record is to say which owner,
 and what each article is allowed to say about it.
 
-Nothing was moved out of its owner by this change. About and the README still carry
-what they carried; shortening them is a later, separate step, and doing it before a
-replacement exists is how a citation breaks. What changed is that a reader now has a
-page to be sent to.
+The seven articles remain the meaning layer. About and the README now send readers
+to them: About keeps identity, independence, team/contact, accessibility, content
+policy, feedback, and the cited formula anchors; the README keeps the product
+overview, public entry points, a few representative examples, and maintainer links.
+The exact thresholds still live on the About anchors E4 already linked, so a
+citation that pointed at `#context` or a formula id still lands on a summary of
+that rule.
 
 ## The rule these articles follow
 

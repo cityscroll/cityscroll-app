@@ -3,6 +3,7 @@ import {
   DERIVED_FEATURE_ROLLUP_SCHEMA,
   buildDerivedFeatureRollup,
 } from "./derived_feature_rollup.mjs";
+import { renderGuideHelpLink } from "./guide_contextual_links.mjs";
 
 /**
  * Civic Time Ledger — as-of filter for agency constellation pages.
@@ -521,6 +522,7 @@ export function renderCivicTimeLedgerPanel({
       <details class="ctl-how">
         <summary aria-label="How as-of works">?</summary>
         <p>Shows only linked records whose publisher or event date is on or before the day you pick. Share the URL to reopen the same day.</p>
+        ${renderGuideHelpLink("asOf")}
       </details>
     </div>
     <p class="ctl-lede">Filter ${escCivicTime(subjectLabel)} by date.</p>

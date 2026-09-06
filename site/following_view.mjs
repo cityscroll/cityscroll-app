@@ -17,6 +17,7 @@ import {
   renderCivicDocumentAssets,
   renderCivicDocumentMast,
 } from "./civic_document_chrome.mjs";
+import { renderGuideHelpLink } from "./guide_contextual_links.mjs";
 import { constellationLink, filterChip } from "./affordance_grammar.mjs";
 import {
   communityBoardIdFromSelection,
@@ -1233,6 +1234,7 @@ export function renderFollowingBody(view) {
     <section class="following-hero">
       <h1>Following</h1>
       ${view.requested ? "" : `<p class="following-hero-lead">Choose a topic and a place. Preview matching records, then save that watch with your email.</p>`}
+      ${renderGuideHelpLink("following")}
     </section>
     ${surfaceTabsHtml()}
     ${create}
@@ -1254,7 +1256,7 @@ export function renderFollowingDocument(view, options = {}) {
 <body><a class="skip" href="#main">Skip to content</a>
 ${renderCivicDocumentMast({ current: "following", siteBase, surfaceClass: "following-mast" })}
 ${renderFollowingBody(view)}
-<footer class="following-footer">Check each item at its source.</footer>
+<footer class="following-footer">Check each item at its source. <a href="/guide/">Guide</a>.</footer>
 <script defer src="${esc(prefix)}analytics.js?v=1.3.0"></script>
 <script type="module" src="${esc(prefix)}app/following.mjs"></script></body></html>`.replace(/[ \t]+$/gm, "");
 }

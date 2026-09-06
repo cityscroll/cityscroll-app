@@ -215,7 +215,7 @@ export function renderMandateDocument(row = {}, { noticeEvidence = [], relatedEd
 <link rel="stylesheet" href="/civic-documents.css">
 </head>
 <body>
-<header class="document-mast"><div class="document-mast-inner"><a class="document-brand brand-lockup home" href="/" aria-label="CityScroll home">CityScroll</a><nav class="document-nav" aria-label="Primary"><a href="/now/">Now</a><a href="/near-you/">Near you</a><a href="/following/">Following</a><a href="/browse/">Browse</a></nav></div></header>
+<header class="document-mast"><div class="document-mast-inner"><a class="document-brand brand-lockup home" href="/" aria-label="CityScroll home">CityScroll</a><nav class="document-nav" aria-label="Primary"><a href="/now/">Now</a><a href="/near-you/">Near you</a><a href="/following/">Following</a><a href="/browse/">Browse</a><a href="/guide/">Guide</a></nav></div></header>
 <main id="main" class="civic-document node-document mandate-document" data-civic-object-kind="mandate" data-mandate-id="${esc(id)}" data-schema="${MANDATE_DOCUMENT_SCHEMA}" tabindex="-1">
   <p class="node-back"><a href="${esc(backHref)}">${backLabel}</a></p>
   <section class="node-hero civic-object-hero mandate-hero"><p class="node-kicker civic-object-kicker">Statutory mandate</p><h1>${esc(duty)}</h1><p class="node-lede">${esc(agency)}</p></section>

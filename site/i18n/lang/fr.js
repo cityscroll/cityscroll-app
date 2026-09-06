@@ -1265,6 +1265,7 @@
     // Footer
     footer_lede:       "CityScroll relie les archives publiques de NYC : 1 099 194 avis du City Record + 228 concours de la fonction publique, reliés aux données de 4 autres grands systèmes publics ; au 5 août 2026.",
     footer_about:      "À propos",
+    footer_guide:      "Guide",
     footer_feedback: "Commentaires",
     footer_investigation: "Mon enquête",
     footer_api:        "API et flux",
@@ -1274,6 +1275,8 @@
 
     // Skip link
     site_tagline: "Abonnez-vous aux contrats, rezonages et auditions publiques de la Ville de New York qui vous intéressent.",
+    nav_guide: "Guide",
+    guide_entry_desc: "Apprendre à lire les archives de la ville",
     skip_to_content: "Aller au contenu",
 
     // Announcements (sr-only)
@@ -2626,7 +2629,7 @@
 
     // about.html
     about_h_what: "Qu'est-ce que c'est",
-    about_p_what_html: "CityScroll vous aide à savoir ce qui se passe dans le gouvernement de la ville de New York et ce que vous pouvez faire ensuite. Consultez <b>Maintenant</b> pour les dates urgentes, <b>Près de vous</b> pour les changements locaux, <b>Suivi</b> pour les alertes enregistrées ou <b>Parcourir</b> pour les contrats et les plans, l'usage des sols, les réunions et les votes, les examens, les ventes de biens municipaux et les règles. Le site s'appuie sur des publications officielles de la ville, mais il est indépendant et n'est ni géré ni approuvé par la ville de New York.",
+    about_p_what_html: "CityScroll vous aide à savoir ce qui se passe dans le gouvernement de la ville de New York et ce que vous pouvez faire ensuite. Consultez <b>Maintenant</b> pour les dates urgentes, <b>Près de vous</b> pour les changements locaux, <b>Suivi</b> pour les alertes enregistrées ou <b>Parcourir</b> pour les contrats et les plans, l'usage des sols, les réunions et les votes, les examens, les ventes de biens municipaux et les règles. Consultez le <b>Guide</b> pour apprendre à lire un dossier. Le site s'appuie sur des publications officielles de la ville, mais il est indépendant et n'est ni géré ni approuvé par la ville de New York.",
     about_h_content: "À propos de notre contenu",
     about_p_content_html: "CityScroll utilise l'intelligence artificielle générative (IA) pour rédiger des ébauches de titres et d'explications en langage clair. Une personne examine et corrige ce contenu avant sa publication. L'IA ne crée ni ne modifie les documents officiels affichés sur le site.",
     about_h_flags: "Les signalements et leur contexte, expliqués",
@@ -2665,7 +2668,7 @@
     about_reason_badcategory: "Choisissez une catégorie — Bogue, Idée de fonctionnalité, ou Général.",
     about_reason_notconfigured: "Les commentaires ne sont pas encore activés.",
     about_reason_sendfailed: "Impossible d'enregistrer cela pour l'instant — réessayez dans un instant.",
-    about_foot_html: "CityScroll · les archives publiques de NYC, reliées · <a href=\"stats.html\">Statistiques</a> · <a href=\"mailto:feedback%40cityscroll.org\">Commentaires</a> · <a href=\"index.html\">Accueil</a>",
+    about_foot_html: "CityScroll · les archives publiques de NYC, reliées · <a href=\"/guide/\">Guide</a> · <a href=\"stats.html\">Statistiques</a> · <a href=\"mailto:feedback%40cityscroll.org\">Commentaires</a> · <a href=\"index.html\">Accueil</a>",
     session_signed_in: "Connecté comme {email} — vos épingles vous suivent sur cet appareil.",
     session_manage_watches: "Gérer les veilles",
     session_not_you: "Ce n'est pas vous ?",

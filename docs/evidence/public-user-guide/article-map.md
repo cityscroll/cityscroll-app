@@ -75,7 +75,9 @@ itself a stable destination: `/guide/start/`, `/guide/how-to/`,
   hand-maintaining a second list.
 - Formula detail stays where it is. E4 explains meaning and limits in plain
   language and links the existing formula documents; it does not copy
-  thresholds, pools, or coefficients into a second place.
+  thresholds, pools, or coefficients into a second place. About keeps the
+  cited anchors (`#context`, `#past-patterns`, and the four formula ids) as
+  short summaries that point at E4, so an old fragment still resolves.
 - Two pages named by the earlier inspection have already moved and must not be
   linked as if they still hold content: `site/standards.html` now forwards to
   `site/about.html#accessibility`, and `site/data.html` now forwards to

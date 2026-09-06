@@ -1854,6 +1854,7 @@ const STRINGS = {
     // Footer
     footer_lede:       "CityScroll connects NYC agencies, mandates, parcels, people, and processes across public records, with City Record as one source among five, through August 5, 2026.",
     footer_about:      "About",
+    footer_guide:      "Guide",
     footer_feedback:   "Feedback",
     footer_investigation: "My investigation",
     footer_api:        "API and feeds",
@@ -1863,6 +1864,8 @@ const STRINGS = {
 
     // Front-page masthead
     site_tagline: "Subscribe to NYC contracts, rezonings, and hearings that interest you.",
+    nav_guide: "Guide",
+    guide_entry_desc: "Learn how to read city records",
 
     // Skip link
     skip_to_content: "Skip to content",
@@ -3268,7 +3271,7 @@ const STRINGS = {
 
     // about.html
     about_h_what: "What this is",
-    about_p_what_html: "CityScroll connects official publications to agencies, mandates, parcels, people, and processes, so you can see what New York City government is doing and what you can do next. Use <b>Now</b> for urgent dates. Use <b>Near you</b> for local changes. Use <b>Following</b> for saved watches. Use <b>Browse</b> for contracts and plans, land use, meetings and votes, job exams, city property sales, and rules. The site uses official city publications. CityScroll is independent. It is not part of city government.",
+    about_p_what_html: "CityScroll connects official publications to agencies, mandates, parcels, people, and processes, so you can see what New York City government is doing and what you can do next. Use <b>Now</b> for urgent dates. Use <b>Near you</b> for local changes. Use <b>Following</b> for saved watches. Use <b>Browse</b> for contracts and plans, land use, meetings and votes, job exams, city property sales, and rules. Use the <b>Guide</b> to learn how to read a record. The site uses official city publications. CityScroll is independent. It is not part of city government.",
     about_h_content: "About our content",
     about_p_content_html: "CityScroll uses generative artificial intelligence (AI) to draft headings and plain-language explanations. A human reviews and edits this content before it goes live. AI does not create or change the official records shown on the site.",
     about_h_flags: "Flags and context, explained",
@@ -3309,7 +3312,7 @@ const STRINGS = {
     about_reason_badcategory: "Pick a category — Bug, Feature idea, or General.",
     about_reason_notconfigured: "Feedback isn't switched on yet.",
     about_reason_sendfailed: "Couldn't record that just now — try again in a moment.",
-    about_foot_html: "CityScroll · NYC’s public record, linked · <a href=\"stats.html\">Stats</a> · <a href=\"mailto:feedback%40cityscroll.org\">Feedback</a> · <a href=\"index.html\">Home</a>",
+    about_foot_html: "CityScroll · NYC’s public record, linked · <a href=\"/guide/\">Guide</a> · <a href=\"stats.html\">Stats</a> · <a href=\"mailto:feedback%40cityscroll.org\">Feedback</a> · <a href=\"index.html\">Home</a>",
     session_signed_in: "Signed in as {email} — pins follow you on this device.",
     session_manage_watches: "Manage watches",
     session_not_you: "Not you?",

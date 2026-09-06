@@ -8,6 +8,7 @@ import {
   residentOfficialSource,
 } from "./provenance_disclosure.mjs";
 import { readerLabel, readerValue } from "./reader_surface_labels.mjs";
+import { renderGuideHelpLink } from "./guide_contextual_links.mjs";
 
 /**
  * Evidence-bearing civic graph — edge / claim provenance inspection (first iteration).
@@ -609,6 +610,7 @@ export function renderEdgeProvenanceInspector(claim, { open = false } = {}) {
         ${officialSource}
       </section>
       ${claim.share_href ? `<p class="edge-prov-share"><a class="node-action civic-object-action" data-edge-claim-share="${esc(claim.claim_id)}" href="${esc(claim.share_href)}">Copy link to this connection</a></p>` : ""}
+      ${renderGuideHelpLink("connection")}
     </div>
   </details>`;
 }

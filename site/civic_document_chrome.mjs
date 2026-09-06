@@ -66,8 +66,12 @@ export function renderCivicDocumentMast({ current, siteBase = "", surfaceClass =
     ["near-you", "Near you"],
     ["following", "Following"],
     ["browse", "Browse"],
+    ["guide", "Guide"],
   ].map(([route, label]) => {
-    const href = appendPlaceContextToHref(`${base}/${route}/`, context);
+    const raw = `${base}/${route}/`;
+    // The guide is not a scoped product surface; carrying a place query would
+    // look like a filter it does not apply.
+    const href = route === "guide" ? raw : appendPlaceContextToHref(raw, context);
     return `<a${current === route ? ' aria-current="page"' : ""} href="${esc(href)}">${label}</a>`;
   }).join("");
   const classes = classNames("document-mast", surfaceClass);
@@ -118,8 +122,13 @@ export function renderNodeActions(items = [], { ariaLabel = "Document actions", 
 }
 
 /** Shared footer line for static node documents. */
-export function renderNodeFooter({ text = "CityScroll is an unofficial reading aid.", aboutHref = "/about.html", extraClass = "" } = {}) {
-  return `<footer class="${esc(classNames("node-footer", extraClass))}">${esc(text)} <a href="${esc(aboutHref)}">About the data</a>.</footer>`;
+export function renderNodeFooter({
+  text = "CityScroll is an unofficial reading aid.",
+  aboutHref = "/about.html",
+  guideHref = "/guide/",
+  extraClass = "",
+} = {}) {
+  return `<footer class="${esc(classNames("node-footer", extraClass))}">${esc(text)} <a href="${esc(guideHref)}">Guide</a>. <a href="${esc(aboutHref)}">About the data</a>.</footer>`;
 }
 
 /**
