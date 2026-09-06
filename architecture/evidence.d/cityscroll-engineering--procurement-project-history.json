@@ -1,0 +1,41 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/procurement-project-history",
+  "status": "implemented",
+  "fingerprint": "procurement-project-history.v1",
+  "updated_at": "2026-09-05T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "capital-project-history-contract",
+      "path": "warehouse/lib/capital_project_history.py"
+    },
+    {
+      "id": "capital-project-history-materializer",
+      "path": "warehouse/scripts/capital_project_history_run.py"
+    },
+    {
+      "id": "procurement-project-history-materialization",
+      "path": "site/data/procurement_project_history.json"
+    },
+    {
+      "id": "procurement-project-history-reader",
+      "path": "site/procurement_project_history.mjs"
+    },
+    {
+      "id": "procurement-project-history-tests",
+      "path": "test/ddc_project_history.test.mjs"
+    },
+    {
+      "id": "procurement-project-history-fixtures",
+      "path": "test/fixtures/ddc_project_history_fixtures.mjs"
+    },
+    {
+      "id": "procurement-project-history-evidence-builder",
+      "path": "tools/build_project_history_evidence.py"
+    },
+    {
+      "id": "procurement-project-history-evidence",
+      "path": "docs/evidence/procurement-project-history/verification-manifest.json"
+    }
+  ]
+}
