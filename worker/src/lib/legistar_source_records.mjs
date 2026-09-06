@@ -15,6 +15,7 @@ export const LEGISTAR_EVENTS_SOURCE_SYSTEM = "nyc_legistar_events";
 export const LEGISTAR_EVENT_ITEMS_SOURCE_SYSTEM = "nyc_legistar_event_items";
 export const LEGISTAR_VOTES_SOURCE_SYSTEM = "nyc_legistar_votes";
 export const LEGISTAR_ATTACHMENTS_SOURCE_SYSTEM = "nyc_legistar_attachments";
+export const LEGISTAR_MATTER_HISTORIES_SOURCE_SYSTEM = "nyc_legistar_matter_histories";
 
 /** D1 batch size for observation inserts (bound statements stay under request limits). */
 export const LEGISTAR_SOURCE_RECORD_BATCH = 40;
@@ -113,6 +114,18 @@ export function legistarAttachmentSourceSystemId(row) {
   return `attachment:${itemId}:${attachId}`;
 }
 
+/**
+ * Publisher-stable identity for one Legistar MatterHistory row.
+ * Shape: matter-history:<MatterHistoryId>
+ */
+export function legistarMatterHistorySourceSystemId(row) {
+  const id = normPart(
+    readFirst(row, ["MatterHistoryId", "MatterHistoryID", "id"]),
+    "no-history-id",
+  );
+  return `matter-history:${id}`;
+}
+
 async function writeStreamChunks(env, insert, sourceSystem, idFn, rows, ingestedAt) {
   const list = Array.isArray(rows) ? rows.filter(Boolean) : [];
   if (!list.length) {
@@ -162,7 +175,7 @@ async function writeStreamChunks(env, insert, sourceSystem, idFn, rows, ingested
  * Streams are isolated so one failed bag cannot zero another stream's writes.
  *
  * @param {object} env
- * @param {{ events?: object[], eventItems?: object[], votes?: object[], attachments?: object[] }} bags
+ * @param {{ events?: object[], eventItems?: object[], votes?: object[], attachments?: object[], histories?: object[] }} bags
  * @param {string} [ingestedAt]
  * @returns {Promise<{
  *   written: number,
@@ -204,6 +217,11 @@ export async function dualWriteLegistarObservations(env, bags = {}, ingestedAt) 
       sourceSystem: LEGISTAR_ATTACHMENTS_SOURCE_SYSTEM,
       rows: bags.attachments,
       idFn: legistarAttachmentSourceSystemId,
+    },
+    {
+      sourceSystem: LEGISTAR_MATTER_HISTORIES_SOURCE_SYSTEM,
+      rows: bags.histories,
+      idFn: legistarMatterHistorySourceSystemId,
     },
   ];
 

@@ -1,0 +1,23 @@
+{
+  "schema": "cityscroll.matter_histories_source_gate.v1",
+  "passed": false,
+  "sanitized": true,
+  "nyc_authenticated_histories_response": false,
+  "endpoint": "GET /v1/{Client}/Matters/{MatterId}/Histories",
+  "reason": "No sanitized authenticated NYC Histories HTTP response is retained. Identity joins below are reconstructed from the committed meeting-outcomes snapshot so the bounded EventItems-by-matter adapter can be verified without claiming the Histories source gate.",
+  "reconstructed_from": "site/data/meeting_outcomes_snapshot.json",
+  "data_vintage": "2026-08-10T13:08:13.019Z",
+  "event_item_id_note": "Numeric event_item_id values in this file are reconstructed fixture identifiers. They are not captured publisher MatterHistory or EventItem primary keys.",
+  "identity_joins": [
+    {"matter_id": "79163", "event_id": "22526", "event_item_id": "225260163", "action_name": "P-C Item Approved by Subcommittee with Companion Resolution"},
+    {"matter_id": "79164", "event_id": "22526", "event_item_id": "225260164", "action_name": "P-C Item Approved by Subcommittee with Companion Resolution"},
+    {"matter_id": "79062", "event_id": "22526", "event_item_id": "225260062", "action_name": "Approved by Subcommittee"},
+    {"matter_id": "79063", "event_id": "22526", "event_item_id": "225260063", "action_name": "Approved by Subcommittee"},
+    {"matter_id": "79064", "event_id": "22526", "event_item_id": "225260064", "action_name": "Approved by Subcommittee"},
+    {"matter_id": "78605", "event_id": "22375", "event_item_id": "223750605", "action_name": "Approved by Subcommittee"},
+    {"matter_id": "78606", "event_id": "22375", "event_item_id": "223750606", "action_name": "Approved by Subcommittee"},
+    {"matter_id": "78682", "event_id": "22375", "event_item_id": "223750682", "action_name": "Approved by Subcommittee"},
+    {"matter_id": "78409", "event_id": "22365", "event_item_id": "223650409", "action_name": "Approved by Subcommittee"},
+    {"matter_id": "78411", "event_id": "22365", "event_item_id": "223650411", "action_name": "Approved by Subcommittee"}
+  ]
+}

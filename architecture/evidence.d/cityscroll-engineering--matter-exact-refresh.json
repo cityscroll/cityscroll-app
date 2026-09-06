@@ -1,0 +1,45 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/matter-exact-refresh",
+  "status": "implemented",
+  "fingerprint": "matter-exact-refresh.v1",
+  "updated_at": "2026-09-06T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "matter-exact-refresh",
+      "path": "worker/src/lib/matter_exact_refresh.mjs"
+    },
+    {
+      "id": "matter-exact-refresh-schema",
+      "path": "worker/migrations/0028_matter_exact_refresh.sql"
+    },
+    {
+      "id": "matter-histories-source-gate",
+      "path": "worker/src/lib/matter_histories_source_gate.mjs"
+    },
+    {
+      "id": "matter-exact-refresh-operator-view",
+      "path": "worker/src/lib/matter_exact_refresh_operator_view.mjs"
+    },
+    {
+      "id": "legistar-page-client",
+      "path": "worker/src/lib/legistar_client.mjs"
+    },
+    {
+      "id": "matter-exact-refresh-tests",
+      "path": "worker/test/matter_followthrough_mf_04.test.mjs"
+    },
+    {
+      "id": "matter-exact-refresh-decision",
+      "path": "docs/adr/matter-exact-refresh.md"
+    },
+    {
+      "id": "matter-exact-refresh-fixture-renderer",
+      "path": "tools/render_matter_exact_refresh_fixtures.mjs"
+    },
+    {
+      "id": "matter-exact-refresh-evidence-capture",
+      "path": "tools/capture_matter_exact_refresh_evidence.py"
+    }
+  ]
+}

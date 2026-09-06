@@ -81,6 +81,7 @@ import { handleProperties, refreshProperties } from "./property.mjs";
 import { handleFranchiseConcessions, refreshFranchiseConcessions } from "./franchise_concession.mjs";
 import { handleRules, refreshRules } from "./rules.mjs";
 import { handleMeetingOutcomes, handleAdminMeetingOutcomesRefresh, refreshMeetingOutcomes } from "./meeting_outcomes.mjs";
+import { refreshExactMatterRoster } from "./lib/matter_exact_refresh.mjs";
 import { handleSourceVault } from "./source_vault.mjs";
 import { handleContractLifecycle, prewarmContractLifecycle } from "./checkbook_lifecycle.mjs";
 import { handleSubsidyLifecycle, prewarmSubsidyLifecycle } from "./subsidy_lifecycle.mjs";
@@ -445,6 +446,12 @@ export default {
       console.log("meeting outcomes:", JSON.stringify(r));
     } catch (e) {
       console.error("meeting outcomes refresh failed (digest continues):", String(e?.message || e));
+    }
+    try {
+      const r = await withWorkerAcquisitionReceipt(env, "nyc-council-legistar", `${runId}:exact-matter`, () => refreshExactMatterRoster(env));
+      console.log("exact matter refresh:", JSON.stringify(r));
+    } catch (e) {
+      console.error("exact matter refresh failed (digest continues):", String(e?.message || e));
     }
     // Land ZAP outcomes: write-ahead prewarm for sell-facing project_ids (In Public Review,
     // Noticed, Active, Filed — capped). Cold GET /zap-outcomes fans out to ZAP API + SODA and

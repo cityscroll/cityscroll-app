@@ -1,0 +1,315 @@
+{
+  "schema": "cityscroll.matter_exact_refresh_evidence.v1",
+  "engineering_record": "cityscroll-engineering/matter-exact-refresh",
+  "renderer": "tools/render_matter_exact_refresh_fixtures.mjs",
+  "revision": "6e499e07875818d4159d2ad1864595eccf236f32",
+  "data_vintage": "2026-08-10T13:08:13.019Z",
+  "captured_at": "2026-09-06T04:33:49Z",
+  "image_directory": ".artifacts/matter-exact-refresh",
+  "corpus_note": "Specimens render exact-matter refresh receipts from reconstructed snapshot fixtures. They describe operator acquisition state, not live publisher coverage.",
+  "image_policy": "Capture images are written to the ignored local directory above and are never committed. This manifest is the tracked proof: route, viewport, revision, data vintage, assertion and SHA-256 for each capture.",
+  "files": [
+    {
+      "name": "complete-390x844.png",
+      "specimen": "complete",
+      "route": "/operator/matter-refresh/complete/",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "6e499e07875818d4159d2ad1864595eccf236f32",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 390px the exact-matter receipt names attempted work and does not claim the Histories gate",
+      "observations": {
+        "status": "complete",
+        "attempted": "10",
+        "source_gate": "not-passed",
+        "target_size": {
+          "total_controls": 3,
+          "inline_text_links": 2,
+          "block_controls": 1,
+          "block_minimum_height": 44,
+          "block_controls_meet_24px": true
+        },
+        "no_horizontal_overflow": true
+      },
+      "bytes": 288124,
+      "sha256": "2eaba65bc44c59b80921d762500b54904a432aaa019cd079834e7138700558e1",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "complete-1440x900.png",
+      "specimen": "complete",
+      "route": "/operator/matter-refresh/complete/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "6e499e07875818d4159d2ad1864595eccf236f32",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 1440px the exact-matter receipt names attempted work and does not claim the Histories gate",
+      "observations": {
+        "status": "complete",
+        "attempted": "10",
+        "source_gate": "not-passed",
+        "target_size": {
+          "total_controls": 3,
+          "inline_text_links": 2,
+          "block_controls": 1,
+          "block_minimum_height": 44,
+          "block_controls_meet_24px": true
+        },
+        "no_horizontal_overflow": true
+      },
+      "bytes": 312698,
+      "sha256": "888c8939aa69b546209d492bf1d3ef98417d6cb5e317b5ac248fa3746e604544",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "retry-recovery-390x844.png",
+      "specimen": "retry-recovery",
+      "route": "/operator/matter-refresh/retry/",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "6e499e07875818d4159d2ad1864595eccf236f32",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 390px retry recovery remains a 44px native control after a later successful refresh",
+      "observations": {
+        "status": "complete",
+        "target_size": {
+          "total_controls": 3,
+          "inline_text_links": 2,
+          "block_controls": 1,
+          "block_minimum_height": 44,
+          "block_controls_meet_24px": true
+        },
+        "no_horizontal_overflow": true
+      },
+      "bytes": 287539,
+      "sha256": "baaacb4fc49b8cd6a2cfdd2fd17a06b66bd11e0626c76396c21d7740a20759d8",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "retry-recovery-1440x900.png",
+      "specimen": "retry-recovery",
+      "route": "/operator/matter-refresh/retry/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "6e499e07875818d4159d2ad1864595eccf236f32",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 1440px retry recovery remains a 44px native control after a later successful refresh",
+      "observations": {
+        "status": "complete",
+        "target_size": {
+          "total_controls": 3,
+          "inline_text_links": 2,
+          "block_controls": 1,
+          "block_minimum_height": 44,
+          "block_controls_meet_24px": true
+        },
+        "no_horizontal_overflow": true
+      },
+      "bytes": 303679,
+      "sha256": "ad06489e06078d1996ef9eedf45db5dad6015dd36acb8dfaaa0071d8d1bb68fb",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "without-scripting-390x844.png",
+      "specimen": "without-scripting",
+      "route": "/operator/matter-refresh/complete/",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "6e499e07875818d4159d2ad1864595eccf236f32",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "disabled",
+      "assertion": "at 390px the exact-matter receipt remains readable with scripting disabled",
+      "observations": {
+        "heading": "Exact matter refresh \u2014 complete run",
+        "no_horizontal_overflow": true
+      },
+      "bytes": 288124,
+      "sha256": "2eaba65bc44c59b80921d762500b54904a432aaa019cd079834e7138700558e1",
+      "axe": {
+        "violations_total": null,
+        "failing_violations": [],
+        "passes": true,
+        "note": "scripting disabled; the same page is gated scripted"
+      }
+    },
+    {
+      "name": "without-scripting-1440x900.png",
+      "specimen": "without-scripting",
+      "route": "/operator/matter-refresh/complete/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "6e499e07875818d4159d2ad1864595eccf236f32",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "disabled",
+      "assertion": "at 1440px the exact-matter receipt remains readable with scripting disabled",
+      "observations": {
+        "heading": "Exact matter refresh \u2014 complete run",
+        "no_horizontal_overflow": true
+      },
+      "bytes": 312698,
+      "sha256": "888c8939aa69b546209d492bf1d3ef98417d6cb5e317b5ac248fa3746e604544",
+      "axe": {
+        "violations_total": null,
+        "failing_violations": [],
+        "passes": true,
+        "note": "scripting disabled; the same page is gated scripted"
+      }
+    },
+    {
+      "name": "keyboard-and-return-390x844.png",
+      "specimen": "keyboard-and-return",
+      "route": "/operator/matter-refresh/complete/",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "6e499e07875818d4159d2ad1864595eccf236f32",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 390px keyboard activation opens source details and return remains a native focus target",
+      "observations": {
+        "details_open": true,
+        "target_size": {
+          "total_controls": 3,
+          "inline_text_links": 2,
+          "block_controls": 1,
+          "block_minimum_height": 44,
+          "block_controls_meet_24px": true
+        },
+        "no_horizontal_overflow": true
+      },
+      "bytes": 313682,
+      "sha256": "5b8f069ade597eca2330b430d8cc3f0f7a88a8effde9721125bcb0fe58ab150d",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "keyboard-and-return-1440x900.png",
+      "specimen": "keyboard-and-return",
+      "route": "/operator/matter-refresh/complete/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "6e499e07875818d4159d2ad1864595eccf236f32",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 1440px keyboard activation opens source details and return remains a native focus target",
+      "observations": {
+        "details_open": true,
+        "target_size": {
+          "total_controls": 3,
+          "inline_text_links": 2,
+          "block_controls": 1,
+          "block_minimum_height": 44,
+          "block_controls_meet_24px": true
+        },
+        "no_horizontal_overflow": true
+      },
+      "bytes": 341209,
+      "sha256": "8318076ec3407582523510783c33d9415f05ad298fc24ab9f12adc87cb9e7f7f",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "two-hundred-percent-zoom-390x844.png",
+      "specimen": "two-hundred-percent-zoom",
+      "route": "/operator/matter-refresh/complete/",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "6e499e07875818d4159d2ad1864595eccf236f32",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 390px zoomed to 200% the exact-matter receipt reflows without horizontal overflow",
+      "observations": {
+        "no_horizontal_overflow": true,
+        "target_size": {
+          "total_controls": 3,
+          "inline_text_links": 2,
+          "block_controls": 1,
+          "block_minimum_height": 108,
+          "block_controls_meet_24px": true
+        },
+        "heading_present": true
+      },
+      "bytes": 743121,
+      "sha256": "062c01aad2b86f6156be083c07a0e1d8eecbf238ecfc9582c05c855c48dd35ff",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "two-hundred-percent-zoom-1440x900.png",
+      "specimen": "two-hundred-percent-zoom",
+      "route": "/operator/matter-refresh/complete/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "6e499e07875818d4159d2ad1864595eccf236f32",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 1440px zoomed to 200% the exact-matter receipt reflows without horizontal overflow",
+      "observations": {
+        "no_horizontal_overflow": true,
+        "target_size": {
+          "total_controls": 3,
+          "inline_text_links": 2,
+          "block_controls": 1,
+          "block_minimum_height": 88,
+          "block_controls_meet_24px": true
+        },
+        "heading_present": true
+      },
+      "bytes": 676987,
+      "sha256": "799e2cac50dfba1e90632952510bf5230a3051de64f38c419e69890fc4409a2f",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    }
+  ]
+}
