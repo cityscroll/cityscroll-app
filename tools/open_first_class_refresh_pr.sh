@@ -29,7 +29,16 @@ if [ -z "${GH_TOKEN:-}" ] && [ -z "${PUSH_REMOTE:-}" ]; then
   exit 1
 fi
 
+# warehouse/receipts holds the acquisition receipts that attest the populations
+# published under site/. Committing the data without them leaves a receipt
+# describing an earlier pull beside the artifact it is supposed to prove, and
+# the collector's own row-count and checksum verification then compares a fresh
+# artifact against a stale receipt.
 paths=(site worker)
+# A checkout without any acquisition receipts is legitimate, and git add treats
+# a pathspec that matches nothing as an error, so only add the directory when it
+# is actually present.
+[ -d warehouse/receipts ] && paths+=(warehouse/receipts)
 if [ -z "$(git status --porcelain -- "${paths[@]}")" ]; then
   echo "No dataset changes to publish."
   exit 0

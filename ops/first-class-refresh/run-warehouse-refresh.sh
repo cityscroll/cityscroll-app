@@ -64,12 +64,16 @@ node tools/first_class_refresh.mjs --run-due
 node "$SCRIPT_DIR/rebuild-committed-read-models.mjs"
 node tools/first_class_refresh.mjs --write-report
 
-if [ -z "$(git status --porcelain -- site worker)" ]; then
+if [ -z "$(git status --porcelain -- site worker warehouse/receipts)" ]; then
   echo "No warehouse-backed dataset changes."
   exit 0
 fi
 
-git add -- site worker
+# Acquisition receipts travel with the populations they attest; see
+# tools/open_first_class_refresh_pr.sh for why.
+commit_paths=(site worker)
+[ -d warehouse/receipts ] && commit_paths+=(warehouse/receipts)
+git add -- "${commit_paths[@]}"
 git commit --quiet -m "Refresh warehouse-backed resident datasets"
 echo "force-pushing $DATA_BRANCH (only ever the job's own dated data branch)"
 git push --quiet --force-with-lease origin HEAD

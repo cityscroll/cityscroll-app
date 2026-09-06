@@ -444,9 +444,20 @@ export function resolveLandActionProcedures(input = {}, opts = {}) {
     }
 
     const typeLetter = identifierParsed?.type || null;
+    // City Planning numbers a project's applications by type: a `C` number is
+    // the ULURP application, an `N` number a related action filed with it and
+    // reviewed in the same public process. The publisher's per-action arrays
+    // carry those prefixes; the project-level identifier string they arrived
+    // alongside never did. Letting a companion's prefix select a procedure of
+    // its own would make one project read as two the moment the richer shape
+    // appeared, so inside a project the publisher declares as ULURP the
+    // companion's prefix is recorded as rejected evidence rather than followed.
+    const companionPrefix = Boolean(zapIdentifierRaw)
+      && typeLetter === "N"
+      && publisherProcedureId(row?.ulurp_non) === "ulurp_197c";
     // Negative rule: identifier prefix is secondary/conflict evidence only —
     // it must never override an explicit publisher ELURP declaration.
-    if (!explicitElurp && typeLetter) {
+    if (!explicitElurp && !companionPrefix && typeLetter) {
       const fromType = procedureFromTypeLetter(typeLetter);
       if (fromType) {
         return resolvedAction({
@@ -494,7 +505,7 @@ export function resolveLandActionProcedures(input = {}, opts = {}) {
     }
 
     sourceFields.push("ulurp_non");
-    const rejected = explicitElurp && typeLetter
+    const rejected = (explicitElurp || companionPrefix) && typeLetter
       ? [{
           fact: "procedure_id",
           value: procedureFromTypeLetter(typeLetter),
@@ -502,7 +513,9 @@ export function resolveLandActionProcedures(input = {}, opts = {}) {
           source_field: identifierSourceField,
           source_record_id: identifierSourceRecordId,
           source_vintage: identifierVintage,
-          reason: "identifier_prefix_cannot_override_explicit_elurp",
+          reason: explicitElurp
+            ? "identifier_prefix_cannot_override_explicit_elurp"
+            : "identifier_prefix_is_companion_application",
         }]
       : [];
     return resolvedAction({
