@@ -4,9 +4,10 @@
   "observed_at": "2026-09-06T03:18:02.454177+00:00",
   "evidence_class": "live-production-read",
   "pinned_revisions": {
-    "application": "fdc8bcfecc431c93cebf5624c560cbe50d30e932",
-    "deployed_consumer": "5fdb3424f3f46d170a100b400069a2d11f81f9df",
-    "inspection_connector": "53d2e5086c773ceaa01762e90bed488af876160b"
+    "format": "git-object-id-prefix-12",
+    "application": "fdc8bcfecc43",
+    "deployed_consumer": "5fdb3424f3f4",
+    "inspection_connector": "53d2e5086c77"
   },
   "surface_fetch": {
     "http_status": 200,
