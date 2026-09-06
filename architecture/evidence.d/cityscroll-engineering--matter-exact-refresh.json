@@ -27,7 +27,7 @@
     },
     {
       "id": "matter-exact-refresh-tests",
-      "path": "worker/test/matter_followthrough_mf_04.test.mjs"
+      "path": "worker/test/council_matter_exact_refresh.test.mjs"
     },
     {
       "id": "matter-exact-refresh-decision",

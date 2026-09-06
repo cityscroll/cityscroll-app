@@ -9,7 +9,6 @@ import {
 } from "../site/community_board_constellation.mjs";
 import { detectNodePageCruft } from "../site/civic_document_chrome.mjs";
 
-// Card: cityscroll-resident-ux/ru-01-board-documents-without-debug-dump
 // Story: on Manhattan CB3, an ordinary reader reached a default section
 // headed "Unjoined source records (diagnostic)" with 276 items. This suite
 // exercises the bounded, task-labelled "Official documents" projection that
