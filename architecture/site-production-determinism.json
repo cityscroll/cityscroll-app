@@ -341,6 +341,7 @@
     "site/mandate_subject_ref.mjs",
     "site/map_exploration.mjs",
     "site/matter_phase_spine.mjs",
+    "site/matter_publication_generation.mjs",
     "site/meeting_capability_projection.mjs",
     "site/meeting_document.mjs",
     "site/meeting_matter_stamps.mjs",

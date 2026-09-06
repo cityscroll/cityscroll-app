@@ -209,10 +209,18 @@ export function councilMatterChoiceMarkup(matters, { className = "matter-follow-
   return `<ul class="${esc(className)}" data-matter-follow-choice="${esc(String(rows.length))}">${rows.join("")}</ul>`;
 }
 
-export function councilMatterWatchSummaryHtml(watchInput, { latest = null, stale = false } = {}) {
+export function councilMatterWatchSummaryHtml(watchInput, {
+  latest = null,
+  stale = false,
+  confirmation = null,
+  unsupportedSource = false,
+} = {}) {
   const watch = exactCouncilMatterWatch(watchInput);
-  if (watch.status !== "ok") {
-    return `<p class="following-scope-error" role="status">This exact matter watch cannot be saved. ${esc(watch.reason || "The identity is not supported.")}</p>`;
+  if (unsupportedSource || watch.status !== "ok") {
+    return `<p class="following-scope-error matter-watch-unsupported" role="status" data-matter-coverage="unsupported-source">This exact matter source is not supported here. That is not a saved watch, and it is not a finding that officials took no action.</p>`;
+  }
+  if (confirmation === "failed") {
+    return `<p class="following-scope-error matter-watch-failed-confirmation" role="status" data-matter-coverage="failed-confirmation">Following this matter was not confirmed. Collector or delivery is not ready, so this is not successful following.</p>`;
   }
   const observed = latest || latestObservedAction(watch.matter_id);
   const kind = observed?.kind || classifyCouncilMatterChange({ current: observed }) || MATTER_UPDATE_KIND.OCCURRED;

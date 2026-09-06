@@ -13,6 +13,7 @@
 /Makefile
 /README.md
 /architecture/
+/architecture/evidence.d/cityscroll-engineering--retained-matter-publication-generation.json
 /artifacts/capability-spine/cs-03-entity-relationships.json
 /artifacts/capability-spine/cs-04-cited-passages.json
 /artifacts/capability-spine/cs-06-remote-mcp.json
@@ -23,6 +24,7 @@
 /data/rum-09-desk-contract-fixtures/desk-consumer-contract.v1.json
 /docs/action-log.md
 /docs/adr/
+/docs/adr/retained-matter-publication-generation.md
 /docs/analytics-event-taxonomy.md
 /docs/analytics-readiness-audit.md
 /docs/api-parity-b-final.md
@@ -69,6 +71,7 @@
 /docs/evidence-tip-migration.json
 /docs/evidence-tip-migration.md
 /docs/evidence/
+/docs/evidence/retained-matter-publication-generation/
 /docs/export-parity-audit.md
 /docs/external-schedule-outbox.md
 /docs/federated-search-scope.md
@@ -524,6 +527,7 @@
 /site/mandate_subject_ref.mjs
 /site/map_exploration.mjs
 /site/matter_phase_spine.mjs
+/site/matter_publication_generation.mjs
 /site/meeting_capability_projection.mjs
 /site/meeting_document.mjs
 /site/meeting_matter_stamps.mjs
@@ -767,6 +771,8 @@
 /test/
 /tests/
 /tools/
+/tools/capture_retained_matter_publication_evidence.py
+/tools/render_retained_matter_publication_fixtures.mjs
 /warehouse/datasets.v0.json
 /warehouse/experiments/semantic-layer-trial/build_corpus.mjs
 /warehouse/experiments/semantic-layer-trial/source_passage_map.json
@@ -888,6 +894,7 @@
 /worker/src/land_projects.mjs
 /worker/src/land_upcoming_hearings.mjs
 /worker/src/lib/
+/worker/src/lib/matter_publication.mjs
 /worker/src/mcp.mjs
 /worker/src/meeting_outcomes.mjs
 /worker/src/mirror.mjs
@@ -929,4 +936,5 @@
 /worker/src/zap_outcomes.mjs
 /worker/src/zap_projects_lookup.mjs
 /worker/test/
+/worker/test/retained_matter_publication_generation.test.mjs
 /worker/wrangler.toml

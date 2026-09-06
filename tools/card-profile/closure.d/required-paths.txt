@@ -29,6 +29,7 @@ architecture/evidence.d/cityscroll-civic-institutions--ci-j1-governing-board-com
 architecture/evidence.d/cityscroll-civic-institutions--ci-k1-compatibility-uncertainty-navigation.json
 architecture/evidence.d/cityscroll-engineering--exact-council-matter-watch-updates.json
 architecture/evidence.d/cityscroll-engineering--buyer-history-pursuit-comparison.json
+architecture/evidence.d/cityscroll-engineering--retained-matter-publication-generation.json
 architecture/evidence.d/cityscroll-engineering--shared-dependency-store.json
 architecture/evidence.d/cityscroll-engineering--working-copy-footprint.json
 architecture/evidence.d/cityscroll-frictionless-subscribe--fs-14-home-following-entry.json
@@ -139,6 +140,7 @@ docs/adr/legislative-matter-document-route.md
 docs/adr/link-not-merge.md
 docs/adr/ontology-registry-v0.md
 docs/adr/person-source-identity-seam.md
+docs/adr/retained-matter-publication-generation.md
 docs/adr/route-read-model-kv-publish.md
 docs/adr/source-vault.md
 docs/adr/static-first.md
@@ -153,6 +155,7 @@ docs/evidence/ci-09-working-copy-reduction/raw/closure/card-profile-contract.jso
 docs/evidence/ci-09-working-copy-reduction/raw/closure/card-reconciliation.json
 docs/evidence/ci-09-working-copy-reduction/raw/closure/worker-unit.json
 docs/evidence/exact-council-matter-watch-updates/manifest.json
+docs/evidence/retained-matter-publication-generation/manifest.json
 docs/repository-control-plane/agents-router-policy.v1.json
 docs/repository-control-plane/agents-router-receipt.v1.json
 entity_resolution/README.md
@@ -598,6 +601,7 @@ site/mandate_rules_bridge.mjs
 site/mandate_subject_ref.mjs
 site/map_exploration.mjs
 site/matter_phase_spine.mjs
+site/matter_publication_generation.mjs
 site/meeting_capability_projection.mjs
 site/meeting_document.mjs
 site/meeting_matter_stamps.mjs
@@ -1700,6 +1704,7 @@ tools/build_zap_warehouse_lookup.mjs
 tools/build_zoning_statistics.mjs
 tools/capa_addendum_eval.mjs
 tools/capture_exact_council_matter_watch_update_evidence.py
+tools/capture_retained_matter_publication_evidence.py
 tools/card-profile/card-work.sparse
 tools/card-profile/closure.v1.json
 tools/card-profile/profile.config.v1.json
@@ -1839,6 +1844,7 @@ tools/render_community_board_ways_to_participate.mjs
 tools/render_digest_awareness_evidence.mjs
 tools/render_exact_council_matter_watch_update_fixtures.mjs
 tools/render_process_conformance_fixture.mjs
+tools/render_retained_matter_publication_fixtures.mjs
 tools/repository_control_plane_manifest.mjs
 tools/retain_person_hub_source_records.mjs
 tools/retain_ulurp_recommendation_rows_source_records.mjs
@@ -2131,6 +2137,7 @@ worker/src/lib/matter_histories_source_gate.mjs
 worker/src/lib/matter_observation_journal.mjs
 worker/src/lib/matter_observation_operator_view.mjs
 worker/src/lib/matter_phase_spine.mjs
+worker/src/lib/matter_publication.mjs
 worker/src/lib/meeting_outcomes.mjs
 worker/src/lib/meter.mjs
 worker/src/lib/money_events.mjs
@@ -2395,6 +2402,7 @@ worker/test/legistar_source_records.test.mjs
 worker/test/lifecycle_coherence.test.mjs
 worker/test/lineage.test.mjs
 worker/test/markseen_policy.test.mjs
+worker/test/retained_matter_publication_generation.test.mjs
 worker/test/mcp.test.mjs
 worker/test/mcp_capability_adapter.test.mjs
 worker/test/mcp_streamable_http_interop.test.mjs
