@@ -104,6 +104,9 @@ const OPAQUE_VALUE_ALLOWLIST = Object.freeze([
   "ray_id",
   "evidence_source",
   "identity_digest_sha256_prefix",
+  // The gateway session identifier a gateway session receipt carries. Issued
+  // by the gateway, opaque by construction, and never a credential.
+  "session_id",
   // Container fields whose members are identifiers rather than free text.
   "provider_issued_identifier",
   "cloudflare_os_deployment",
@@ -114,7 +117,12 @@ const OPAQUE_VALUE_ALLOWLIST = Object.freeze([
  * Field names that read as credential-shaped but hold a list of provider
  * names, not credentials. Naming them keeps the scan strict everywhere else.
  */
-const NON_CREDENTIAL_FIELD_NAMES = Object.freeze(["external_provider_credentials"]);
+const NON_CREDENTIAL_FIELD_NAMES = Object.freeze([
+  "external_provider_credentials",
+  // Names *where* a gateway session's credential came from — a fixed label
+  // such as "worker_secret" — rather than carrying the credential itself.
+  "credential_source",
+]);
 
 const EMAIL_SHAPE = /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i;
 const BEARER_SHAPE = /\bBearer\s+\S+/i;

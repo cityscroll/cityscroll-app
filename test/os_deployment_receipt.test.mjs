@@ -557,3 +557,57 @@ test("this repository publishes the contract, not a deployment receipt", () => {
   assert.equal(testSource.includes(artifactPath), false, "the example receipt must never be written under artifacts/");
   assert.equal(/\bwriteFileSync\b/.test(testSource.replace(/"[^"]*"/g, '""')), false, "these tests must not write files");
 });
+
+/**
+ * A gateway session receipt as the deployment produces one: a gateway-issued
+ * session identifier, the label naming where the session's credential came
+ * from, and the closed set of fields describing the call it made. The
+ * identifier is synthetic and no value here is or resembles a real credential.
+ */
+function gatewaySession() {
+  return {
+    session_id: "1f0c8b53-6d47-4a92-8e15-4b0d7c93a621",
+    credential_source: "worker_secret",
+    opened_at: "2026-09-05T09:14:07Z",
+    calls: 1,
+    status: "completed",
+    latency_ms: 812,
+  };
+}
+
+test("A9: a gateway session receipt's identifier and credential label are not secrets", () => {
+  // The session identifier is long and opaque by construction, and the field
+  // naming where a credential came from reads credential-shaped while holding
+  // a fixed label. Flagging either would push authors to drop the two facts
+  // that make a gateway session auditable.
+  const receipt = baseReceipt();
+  receipt.gateway_session = gatewaySession();
+  assert.deepEqual(findUnsanitizedValues(receipt), []);
+  assert.doesNotThrow(() => assertOsDeploymentReceipt(receipt));
+});
+
+test("A9: a secret planted beside a gateway session is still refused", () => {
+  // Assembled rather than written literally so this file carries no value
+  // shaped like a credential.
+  const opaque = "Zm9vYmFy".repeat(8);
+
+  const withOpaque = baseReceipt();
+  withOpaque.gateway_session = { ...gatewaySession(), issued_value: opaque };
+  assertRejects(withOpaque, /long opaque value outside an identifier field/);
+
+  const withBearer = baseReceipt();
+  withBearer.gateway_session = { ...gatewaySession(), header: ["Bearer", opaque].join(" ") };
+  assertRejects(withBearer, /bearer credential present/);
+
+  const withClientSecret = baseReceipt();
+  withClientSecret.gateway_session = { ...gatewaySession(), client_secret: opaque };
+  assertRejects(withClientSecret, /credential-shaped field name: client_secret/);
+});
+
+test("A9: an identifier-shaped value outside an identifier field is still refused", () => {
+  // The allowlist is exact-match: naming session_id does not make every
+  // identifier-shaped value acceptable wherever it appears.
+  const receipt = baseReceipt();
+  receipt.gateway_session = { ...gatewaySession(), continued_from: "3a7d1e60-92c4-4b18-8f05-6e2a0d47b913" };
+  assertRejects(receipt, /long opaque value outside an identifier field/);
+});
