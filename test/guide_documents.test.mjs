@@ -291,16 +291,25 @@ test("the Community Board example keeps the board's full borough-qualified ident
   }
 });
 
-test("the Community Board watch's coverage is described as district-scoped", () => {
+test("the Community Board watch's coverage is described as it is actually resolved", () => {
+  // The watch resolves the board to the community district it covers, selects
+  // meetings tied to that district, then keeps the ones carrying the board's own
+  // identity — while the link beside it opens the district, which is wider. Both
+  // halves have to be on the page or the reader draws the wrong conclusion from
+  // whichever one they meet first.
   const text = textOf(howToHtml.get("H3"));
-  assert.match(text, /matched by\s+the community district the board covers/);
-  assert.match(text, /not a claim that the board convened it/);
+  assert.match(text, /the community district that board covers/);
+  assert.match(text, /keeps the ones carrying the board's own identity/);
+  assert.match(text, /Coverage depends on that district link/);
+  assert.match(text, /a quiet week is therefore not proof/i);
+  assert.match(text, /See current matches is not a preview of your email/);
+  assert.match(text, /Do not read a meeting in it as one your\s+board convened/);
   for (const pattern of [
     /every (match|meeting) (is|will be) (a|one of)? ?(meeting )?(of|convened|held) by (the|your) board/i,
-    /only the board's own meetings/i,
+    /you will receive every meeting/i,
     /all of (the|your) board's meetings/i,
   ]) {
-    assert.equal(pattern.exec(text), null, `H3 overclaims board convening: ${pattern}`);
+    assert.equal(pattern.exec(text), null, `H3 overclaims board coverage: ${pattern}`);
   }
 });
 

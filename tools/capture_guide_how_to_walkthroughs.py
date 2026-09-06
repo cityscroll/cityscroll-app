@@ -112,13 +112,14 @@ ARTICLES = (
         "product": "/following/",
         "assertion": "Follow a Community Board opens with the task, its prerequisites and the "
         "Following entry link, names Manhattan Community Board 7 in full, separates it from City "
-        "Council District 7, and says the matches are district-scoped.",
+        "Council District 7, and states how the watch resolves through that board's district.",
         "expect_text": [
             "Manhattan Community Board 7",
             "City Council District 7",
             "A board number is not a district number",
-            "the community district the board covers",
-            "not a claim that the board convened it",
+            "the community district that board covers",
+            "Coverage depends on that district link",
+            "not a preview of your email",
             "You are done when",
         ],
         "expect_links": ["/following/", "/community-boards/"],

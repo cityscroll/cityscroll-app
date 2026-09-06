@@ -78,27 +78,30 @@ know the borough was carried through and you are not about to follow a board in 
 
 > Checkpoint: the criteria and the rule sentence both say Manhattan Community Board 7 in full.
 
-## Step 4 — Look at what the matches actually cover
+## Step 4 — Know what the watch covers, and what it does not
 
-Follow **See current matches** from the watch summary. It opens the map view for **Manhattan Community District 7**,
-with meetings shown, rather than a list of that board's own agendas.
+Underneath, a board watch is resolved through place. CityScroll turns Manhattan Community Board 7
+into the community district that board covers — Manhattan Community District 7 — looks for meetings
+in the records tied to that district, and then keeps the ones carrying the board's own identity. So
+what reaches your inbox is the board's own meetings, found by way of its district. The preview you
+just read is that same set.
 
-That is the honest shape of this watch, and it is worth understanding before you rely on it. The
-board's own name is preserved everywhere you are shown it, but the records it gathers are matched by
-**the community district the board covers** — a place — not by the question of who called the
-meeting. Two consequences follow.
+Two consequences follow, and both are worth knowing before you rely on this.
 
-- **You will see more than the board's own meetings.** A meeting another body holds about something
-  in that district can match. That is usually what a resident wants, and it is not a claim that the
-  board convened it.
-- **Do not read a match as a board proceeding.** Each record names the body that is actually holding
-  it. Read that line before you describe a meeting as your board's.
+- **Coverage depends on that district link.** A meeting published without the district connection
+  CityScroll reads is not in the set. A quiet week is therefore not proof that the board did not
+  meet, and the board's own published calendar remains the authority on that question.
+- **See current matches is not a preview of your email.** Follow it and it opens Manhattan Community
+  District 7 as a place, with meetings shown. That view is deliberately wider than the watch: it
+  includes meetings other bodies hold in that district. It is useful for seeing what is happening
+  around you, and it is not the list you will be emailed. Do not read a meeting in it as one your
+  board convened — each record names the body actually holding it, so read that line first.
 
 If you want the board's own committees, membership and published record instead, the board's page
 under [Community Boards](/community-boards/) is the place for that, and it is a different question
-from being emailed about a place.
+from being emailed about meetings.
 
-> Checkpoint: you can look at one match and say which body is holding it, without assuming.
+> Checkpoint: you can say which of the two lists you are looking at — the preview, which is the watch, or the district view, which is the place around it.
 
 ## Step 5 — Create the watch
 
@@ -120,5 +123,5 @@ the link you will use to change or stop it later.
 ## You are done when
 
 You have a watch whose criteria and rule sentence both name your board in full, borough included,
-and you can say — before any email arrives — that its matches are the meetings tied to that board's
-district rather than only the meetings the board itself convenes.
+and you can say — before any email arrives — that it reaches your board's own meetings by way of the
+district that board covers, and that the district view it links to is a wider place, not the watch.
