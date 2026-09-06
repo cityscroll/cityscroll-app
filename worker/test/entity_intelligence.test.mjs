@@ -94,7 +94,10 @@ describe("GET /entity-intelligence", () => {
     assert.equal(body.root.ref, "agency:id:housing-preservation-and-development");
     assert.equal(body.metrics.domains_matched, 5);
     assert.equal(body.coverage.eligible, null);
-    assert.equal(body.coverage.linked, 18);
+    // The linked total moves with the publisher vintage; the contract is that
+    // coverage stays unmeasured (no eligible denominator, so no rate) and that
+    // every connection carries a strong or tentative confidence, never weak.
+    assert.equal(body.coverage.linked, 21);
     assert.equal(body.coverage.rate, null);
     assert.match(body.coverage.vintage, /^\d{4}-\d{2}-\d{2}T/);
     assert.equal(body.domains.land.strong_count, 0);

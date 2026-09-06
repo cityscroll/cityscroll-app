@@ -2,9 +2,9 @@
   "schema": "cityscroll.retained_matter_publication_generation_evidence.v1",
   "engineering_record": "cityscroll-engineering/retained-matter-publication-generation",
   "renderer": "tools/render_retained_matter_publication_fixtures.mjs",
-  "revision": "0321f539025e87f5aef4a6abc0e87fb6fded80ab",
-  "data_vintage": "2026-08-10T13:08:13.019Z",
-  "captured_at": "2026-09-06T07:03:56Z",
+  "revision": "3941ad1644b041b7829ab83cbad59133ac36e7f2",
+  "data_vintage": "2026-09-04T13:09:00.447Z",
+  "captured_at": "2026-09-06T17:37:12Z",
   "image_directory": ".artifacts/retained-matter-publication-generation",
   "corpus_note": "Specimens render the retained matter publication generation: hearing choice, current history, later update, older static fallback, stale refresh, failed confirmation, unsupported source, keyboard Back, native follow, and 200% zoom. They describe retained official actions, not live publisher coverage.",
   "image_policy": "Capture images are written to the ignored local directory above and are never committed. This manifest is the tracked proof: route, viewport, revision, data vintage, assertion, generation id, render hash, and SHA-256 for each capture.",
@@ -17,8 +17,8 @@
         390,
         844
       ],
-      "revision": "0321f539025e87f5aef4a6abc0e87fb6fded80ab",
-      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "revision": "3941ad1644b041b7829ab83cbad59133ac36e7f2",
+      "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "enabled",
       "assertion": "at 390px a multi-matter hearing requires an explicit choice",
       "observations": {
@@ -30,7 +30,7 @@
         },
         "no_horizontal_overflow": true,
         "matter_controls": 20,
-        "fixture_vintage": "2026-08-10T13:08:13.019Z",
+        "fixture_vintage": "2026-09-04T13:09:00.447Z",
         "generation_id": null,
         "render_hash": "1da8ce1a324e4314465d7d0b85876ed74e0e61bfdd8ee4fc20486e1c1996f70c"
       },
@@ -50,8 +50,8 @@
         1440,
         900
       ],
-      "revision": "0321f539025e87f5aef4a6abc0e87fb6fded80ab",
-      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "revision": "3941ad1644b041b7829ab83cbad59133ac36e7f2",
+      "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "enabled",
       "assertion": "at 1440px a multi-matter hearing requires an explicit choice",
       "observations": {
@@ -63,7 +63,7 @@
         },
         "no_horizontal_overflow": true,
         "matter_controls": 20,
-        "fixture_vintage": "2026-08-10T13:08:13.019Z",
+        "fixture_vintage": "2026-09-04T13:09:00.447Z",
         "generation_id": null,
         "render_hash": "1da8ce1a324e4314465d7d0b85876ed74e0e61bfdd8ee4fc20486e1c1996f70c"
       },
@@ -83,8 +83,8 @@
         390,
         844
       ],
-      "revision": "0321f539025e87f5aef4a6abc0e87fb6fded80ab",
-      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "revision": "3941ad1644b041b7829ab83cbad59133ac36e7f2",
+      "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "enabled",
       "assertion": "at 390px the current published generation shows the official action and source evidence",
       "observations": {
@@ -97,11 +97,11 @@
         },
         "no_horizontal_overflow": true,
         "generation_id": "gen-later",
-        "fixture_vintage": "2026-08-10T13:08:13.019Z",
-        "render_hash": "2b3ac7d3b1d3038182e0db6f56d3a632b5822bc9510f19d02fc0f0695c4dbf32"
+        "fixture_vintage": "2026-09-04T13:09:00.447Z",
+        "render_hash": "721034ca5f8ea4aac259b095078856b892ff57cbd4d5fdb3de92ff6521bb344f"
       },
-      "bytes": 290628,
-      "sha256": "49acae95eb3f4e0386eee3869c850a10486eecb94716338f2afd61049f8d984c",
+      "bytes": 290652,
+      "sha256": "57e48a0837bdd0ae08693e117b9f60853edaa882920a04a068f37d4e808ab4b5",
       "axe": {
         "violations_total": 1,
         "failing_violations": [],
@@ -116,8 +116,8 @@
         1440,
         900
       ],
-      "revision": "0321f539025e87f5aef4a6abc0e87fb6fded80ab",
-      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "revision": "3941ad1644b041b7829ab83cbad59133ac36e7f2",
+      "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "enabled",
       "assertion": "at 1440px the current published generation shows the official action and source evidence",
       "observations": {
@@ -130,11 +130,11 @@
         },
         "no_horizontal_overflow": true,
         "generation_id": "gen-later",
-        "fixture_vintage": "2026-08-10T13:08:13.019Z",
-        "render_hash": "2b3ac7d3b1d3038182e0db6f56d3a632b5822bc9510f19d02fc0f0695c4dbf32"
+        "fixture_vintage": "2026-09-04T13:09:00.447Z",
+        "render_hash": "721034ca5f8ea4aac259b095078856b892ff57cbd4d5fdb3de92ff6521bb344f"
       },
-      "bytes": 373634,
-      "sha256": "ea7c4c68ae3f0fa177549e6ea5ff3c936647ca007999468ecb56e85b14abd05e",
+      "bytes": 373741,
+      "sha256": "48feca356ab3df337c2859063e71b0060b0fbc9c616bfa0ddfd8d0c3c4bbcb33",
       "axe": {
         "violations_total": 1,
         "failing_violations": [],
@@ -149,8 +149,8 @@
         390,
         844
       ],
-      "revision": "0321f539025e87f5aef4a6abc0e87fb6fded80ab",
-      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "revision": "3941ad1644b041b7829ab83cbad59133ac36e7f2",
+      "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "enabled",
       "assertion": "at 390px a later update names subcommittee approval and a native history link",
       "observations": {
@@ -162,12 +162,12 @@
         },
         "no_horizontal_overflow": true,
         "native_history_link": true,
-        "fixture_vintage": "2026-08-10T13:08:13.019Z",
+        "fixture_vintage": "2026-09-04T13:09:00.447Z",
         "generation_id": "gen-later",
-        "render_hash": "f5f1f011a517c71dff510e70e269d45ab24ccdadfcc1761b47948d107ceca18d"
+        "render_hash": "47fff4e2a3285ea55023da49beb40c65679137decbac21a693fe44648050fcb6"
       },
-      "bytes": 74877,
-      "sha256": "0c0d0e1b30d28195184c7793a271cdf1da0524647077dbcc822fe634566f16af",
+      "bytes": 74751,
+      "sha256": "f7c43c4423d329b434814fa2a92bc07356b877334d969e735496c03ec420fab1",
       "axe": {
         "violations_total": 0,
         "failing_violations": [],
@@ -182,8 +182,8 @@
         1440,
         900
       ],
-      "revision": "0321f539025e87f5aef4a6abc0e87fb6fded80ab",
-      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "revision": "3941ad1644b041b7829ab83cbad59133ac36e7f2",
+      "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "enabled",
       "assertion": "at 1440px a later update names subcommittee approval and a native history link",
       "observations": {
@@ -195,12 +195,12 @@
         },
         "no_horizontal_overflow": true,
         "native_history_link": true,
-        "fixture_vintage": "2026-08-10T13:08:13.019Z",
+        "fixture_vintage": "2026-09-04T13:09:00.447Z",
         "generation_id": "gen-later",
-        "render_hash": "f5f1f011a517c71dff510e70e269d45ab24ccdadfcc1761b47948d107ceca18d"
+        "render_hash": "47fff4e2a3285ea55023da49beb40c65679137decbac21a693fe44648050fcb6"
       },
-      "bytes": 83252,
-      "sha256": "a21a46cc5ae5196dfb43c2c19058bcd2a99d74be70880eed4109ce533aa1cb8d",
+      "bytes": 83477,
+      "sha256": "16b7e6418d2bb85b2f9e73848bbca52c9ea6ea7d4aecd3ea05eee39984ad8e35",
       "axe": {
         "violations_total": 0,
         "failing_violations": [],
@@ -215,8 +215,8 @@
         390,
         844
       ],
-      "revision": "0321f539025e87f5aef4a6abc0e87fb6fded80ab",
-      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "revision": "3941ad1644b041b7829ab83cbad59133ac36e7f2",
+      "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "enabled",
       "assertion": "at 390px an older static fallback remains usable and does not claim current coverage",
       "observations": {
@@ -228,12 +228,12 @@
         },
         "no_horizontal_overflow": true,
         "current_coverage": false,
-        "fixture_vintage": "2026-08-10T13:08:13.019Z",
-        "generation_id": "static:2026-08-10T13:08:13.019Z",
-        "render_hash": "4f1a43bf3396644231cc72f75c5b1dd6da8b3703d4eb9424a63d60835032cffd"
+        "fixture_vintage": "2026-09-04T13:09:00.447Z",
+        "generation_id": "static:2026-09-04T13:09:00.447Z",
+        "render_hash": "6bb0c175f58174bf6614c4260952d9753fd358cccc2903707696a931b1e123d3"
       },
-      "bytes": 290994,
-      "sha256": "346d61e81b843520f75285112104ddd9883f390799d7d32d1875384030ec24d6",
+      "bytes": 291271,
+      "sha256": "3d531667d3702223dcf11870cddf156b8ab9cd9ad8d0491b0ac6a64cfa1ac4bd",
       "axe": {
         "violations_total": 1,
         "failing_violations": [],
@@ -248,8 +248,8 @@
         1440,
         900
       ],
-      "revision": "0321f539025e87f5aef4a6abc0e87fb6fded80ab",
-      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "revision": "3941ad1644b041b7829ab83cbad59133ac36e7f2",
+      "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "enabled",
       "assertion": "at 1440px an older static fallback remains usable and does not claim current coverage",
       "observations": {
@@ -261,12 +261,12 @@
         },
         "no_horizontal_overflow": true,
         "current_coverage": false,
-        "fixture_vintage": "2026-08-10T13:08:13.019Z",
-        "generation_id": "static:2026-08-10T13:08:13.019Z",
-        "render_hash": "4f1a43bf3396644231cc72f75c5b1dd6da8b3703d4eb9424a63d60835032cffd"
+        "fixture_vintage": "2026-09-04T13:09:00.447Z",
+        "generation_id": "static:2026-09-04T13:09:00.447Z",
+        "render_hash": "6bb0c175f58174bf6614c4260952d9753fd358cccc2903707696a931b1e123d3"
       },
-      "bytes": 375943,
-      "sha256": "28ba2bdd969aa429e9435cf399fd55e81d631991959a2d927eb634a948a1059c",
+      "bytes": 376193,
+      "sha256": "60b69da4569baf638ed79668cce716f6124467435d8d6bfda674ad93617cfda5",
       "axe": {
         "violations_total": 1,
         "failing_violations": [],
@@ -281,8 +281,8 @@
         390,
         844
       ],
-      "revision": "0321f539025e87f5aef4a6abc0e87fb6fded80ab",
-      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "revision": "3941ad1644b041b7829ab83cbad59133ac36e7f2",
+      "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "enabled",
       "assertion": "at 390px a stale refresh keeps last-known history visible",
       "observations": {
@@ -293,12 +293,12 @@
           "block_controls_meet_24px": true
         },
         "no_horizontal_overflow": true,
-        "fixture_vintage": "2026-08-10T13:08:13.019Z",
+        "fixture_vintage": "2026-09-04T13:09:00.447Z",
         "generation_id": "gen-later",
-        "render_hash": "bf568fc1000519f187b6f72c0898bfc4944723b375bc7541206811bc1d7ecf95"
+        "render_hash": "44d56660d2646221030ebd460dda3ac988ce50272014cf9c5016fd1b9756d2b0"
       },
-      "bytes": 290888,
-      "sha256": "44d449c39050c7cfd2862073bcd6ed866f7590791eb3c7b35aebd57398166206",
+      "bytes": 290908,
+      "sha256": "a1c2aa14df9a18718f857d3611492a9c422206b1787e3708ede48b6d66e4f5b9",
       "axe": {
         "violations_total": 1,
         "failing_violations": [],
@@ -313,8 +313,8 @@
         1440,
         900
       ],
-      "revision": "0321f539025e87f5aef4a6abc0e87fb6fded80ab",
-      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "revision": "3941ad1644b041b7829ab83cbad59133ac36e7f2",
+      "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "enabled",
       "assertion": "at 1440px a stale refresh keeps last-known history visible",
       "observations": {
@@ -325,12 +325,12 @@
           "block_controls_meet_24px": true
         },
         "no_horizontal_overflow": true,
-        "fixture_vintage": "2026-08-10T13:08:13.019Z",
+        "fixture_vintage": "2026-09-04T13:09:00.447Z",
         "generation_id": "gen-later",
-        "render_hash": "bf568fc1000519f187b6f72c0898bfc4944723b375bc7541206811bc1d7ecf95"
+        "render_hash": "44d56660d2646221030ebd460dda3ac988ce50272014cf9c5016fd1b9756d2b0"
       },
-      "bytes": 375458,
-      "sha256": "208716c231e0f48cf71685e7715f070741c62778227aecc72bc3fe5a3ebea93e",
+      "bytes": 375555,
+      "sha256": "0c333651bbba93ef1954fddf61bca11ada4b371c57696380f5c7a254154111e1",
       "axe": {
         "violations_total": 1,
         "failing_violations": [],
@@ -345,8 +345,8 @@
         390,
         844
       ],
-      "revision": "0321f539025e87f5aef4a6abc0e87fb6fded80ab",
-      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "revision": "3941ad1644b041b7829ab83cbad59133ac36e7f2",
+      "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "enabled",
       "assertion": "at 390px failed confirmation is distinct from successful following",
       "observations": {
@@ -357,7 +357,7 @@
           "block_controls_meet_24px": null
         },
         "no_horizontal_overflow": true,
-        "fixture_vintage": "2026-08-10T13:08:13.019Z",
+        "fixture_vintage": "2026-09-04T13:09:00.447Z",
         "generation_id": null,
         "render_hash": "199678fcc664e1bd96bfe02da335d4f33de86f27ed0fbe39b174c57d9e060526"
       },
@@ -377,8 +377,8 @@
         1440,
         900
       ],
-      "revision": "0321f539025e87f5aef4a6abc0e87fb6fded80ab",
-      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "revision": "3941ad1644b041b7829ab83cbad59133ac36e7f2",
+      "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "enabled",
       "assertion": "at 1440px failed confirmation is distinct from successful following",
       "observations": {
@@ -389,7 +389,7 @@
           "block_controls_meet_24px": null
         },
         "no_horizontal_overflow": true,
-        "fixture_vintage": "2026-08-10T13:08:13.019Z",
+        "fixture_vintage": "2026-09-04T13:09:00.447Z",
         "generation_id": null,
         "render_hash": "199678fcc664e1bd96bfe02da335d4f33de86f27ed0fbe39b174c57d9e060526"
       },
@@ -409,8 +409,8 @@
         390,
         844
       ],
-      "revision": "0321f539025e87f5aef4a6abc0e87fb6fded80ab",
-      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "revision": "3941ad1644b041b7829ab83cbad59133ac36e7f2",
+      "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "enabled",
       "assertion": "at 390px an unsupported source is not rendered as a saved watch",
       "observations": {
@@ -421,7 +421,7 @@
           "block_controls_meet_24px": null
         },
         "no_horizontal_overflow": true,
-        "fixture_vintage": "2026-08-10T13:08:13.019Z",
+        "fixture_vintage": "2026-09-04T13:09:00.447Z",
         "generation_id": null,
         "render_hash": "02ccd1a382c435d31e28e8c7240784e2582c36a1ae47c3658f4a7b7c80f823cf"
       },
@@ -441,8 +441,8 @@
         1440,
         900
       ],
-      "revision": "0321f539025e87f5aef4a6abc0e87fb6fded80ab",
-      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "revision": "3941ad1644b041b7829ab83cbad59133ac36e7f2",
+      "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "enabled",
       "assertion": "at 1440px an unsupported source is not rendered as a saved watch",
       "observations": {
@@ -453,7 +453,7 @@
           "block_controls_meet_24px": null
         },
         "no_horizontal_overflow": true,
-        "fixture_vintage": "2026-08-10T13:08:13.019Z",
+        "fixture_vintage": "2026-09-04T13:09:00.447Z",
         "generation_id": null,
         "render_hash": "02ccd1a382c435d31e28e8c7240784e2582c36a1ae47c3658f4a7b7c80f823cf"
       },
@@ -473,8 +473,8 @@
         390,
         844
       ],
-      "revision": "0321f539025e87f5aef4a6abc0e87fb6fded80ab",
-      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "revision": "3941ad1644b041b7829ab83cbad59133ac36e7f2",
+      "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "enabled",
       "assertion": "at 390px keyboard focus lands on the Back control and Back state is preserved",
       "observations": {
@@ -487,12 +487,12 @@
           "block_controls_meet_24px": true
         },
         "no_horizontal_overflow": true,
-        "fixture_vintage": "2026-08-10T13:08:13.019Z",
+        "fixture_vintage": "2026-09-04T13:09:00.447Z",
         "generation_id": "gen-later",
-        "render_hash": "2b3ac7d3b1d3038182e0db6f56d3a632b5822bc9510f19d02fc0f0695c4dbf32"
+        "render_hash": "721034ca5f8ea4aac259b095078856b892ff57cbd4d5fdb3de92ff6521bb344f"
       },
-      "bytes": 290569,
-      "sha256": "b5606c2b22294aa7523450bf8eaa2eaa74389d7ce50768c0135344e63b4aa515",
+      "bytes": 290594,
+      "sha256": "bce300a599fd2e44d060024035e8458e4fad41a0f80b2955b72eebf20bb9ba05",
       "axe": {
         "violations_total": 1,
         "failing_violations": [],
@@ -507,8 +507,8 @@
         1440,
         900
       ],
-      "revision": "0321f539025e87f5aef4a6abc0e87fb6fded80ab",
-      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "revision": "3941ad1644b041b7829ab83cbad59133ac36e7f2",
+      "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "enabled",
       "assertion": "at 1440px keyboard focus lands on the Back control and Back state is preserved",
       "observations": {
@@ -521,12 +521,12 @@
           "block_controls_meet_24px": true
         },
         "no_horizontal_overflow": true,
-        "fixture_vintage": "2026-08-10T13:08:13.019Z",
+        "fixture_vintage": "2026-09-04T13:09:00.447Z",
         "generation_id": "gen-later",
-        "render_hash": "2b3ac7d3b1d3038182e0db6f56d3a632b5822bc9510f19d02fc0f0695c4dbf32"
+        "render_hash": "721034ca5f8ea4aac259b095078856b892ff57cbd4d5fdb3de92ff6521bb344f"
       },
-      "bytes": 373609,
-      "sha256": "2d1563b035cc5616cb9c165a64832e66072cd6486a4d380c746c17f0fb7a9d35",
+      "bytes": 373706,
+      "sha256": "2a41c01f15d3d3432bfc3a0bb880f390f48534bd3717c41aee225c14d6217e29",
       "axe": {
         "violations_total": 1,
         "failing_violations": [],
@@ -541,8 +541,8 @@
         390,
         844
       ],
-      "revision": "0321f539025e87f5aef4a6abc0e87fb6fded80ab",
-      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "revision": "3941ad1644b041b7829ab83cbad59133ac36e7f2",
+      "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "enabled",
       "assertion": "at 390px the exact-matter follow control remains a native destination",
       "observations": {
@@ -554,12 +554,12 @@
           "block_controls_meet_24px": true
         },
         "no_horizontal_overflow": true,
-        "fixture_vintage": "2026-08-10T13:08:13.019Z",
+        "fixture_vintage": "2026-09-04T13:09:00.447Z",
         "generation_id": "gen-later",
-        "render_hash": "2b3ac7d3b1d3038182e0db6f56d3a632b5822bc9510f19d02fc0f0695c4dbf32"
+        "render_hash": "721034ca5f8ea4aac259b095078856b892ff57cbd4d5fdb3de92ff6521bb344f"
       },
-      "bytes": 290279,
-      "sha256": "7819da322d94b322889b8056b66a1825c5e0ce8d85e10a490f7709ae5c20d67e",
+      "bytes": 290302,
+      "sha256": "9446d09b3102f8c42f7055f474cb24cf049bb2b92b07f100790035c9109f7ad9",
       "axe": {
         "violations_total": 1,
         "failing_violations": [],
@@ -574,8 +574,8 @@
         1440,
         900
       ],
-      "revision": "0321f539025e87f5aef4a6abc0e87fb6fded80ab",
-      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "revision": "3941ad1644b041b7829ab83cbad59133ac36e7f2",
+      "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "enabled",
       "assertion": "at 1440px the exact-matter follow control remains a native destination",
       "observations": {
@@ -587,12 +587,12 @@
           "block_controls_meet_24px": true
         },
         "no_horizontal_overflow": true,
-        "fixture_vintage": "2026-08-10T13:08:13.019Z",
+        "fixture_vintage": "2026-09-04T13:09:00.447Z",
         "generation_id": "gen-later",
-        "render_hash": "2b3ac7d3b1d3038182e0db6f56d3a632b5822bc9510f19d02fc0f0695c4dbf32"
+        "render_hash": "721034ca5f8ea4aac259b095078856b892ff57cbd4d5fdb3de92ff6521bb344f"
       },
-      "bytes": 373242,
-      "sha256": "24ec4813307e98f4df014db08d07501abb7865207f9b817c70e0a141dd42d9cd",
+      "bytes": 373342,
+      "sha256": "695e7339b33dfc12f1c58405295d90b2454b569f9e308dcb9663f1a3f9f5ccbd",
       "axe": {
         "violations_total": 1,
         "failing_violations": [],
@@ -607,19 +607,19 @@
         390,
         844
       ],
-      "revision": "0321f539025e87f5aef4a6abc0e87fb6fded80ab",
-      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "revision": "3941ad1644b041b7829ab83cbad59133ac36e7f2",
+      "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "disabled",
       "assertion": "at 390px native matter history links remain usable with scripting disabled",
       "observations": {
         "follow_links": 1,
         "no_horizontal_overflow": true,
-        "fixture_vintage": "2026-08-10T13:08:13.019Z",
+        "fixture_vintage": "2026-09-04T13:09:00.447Z",
         "generation_id": "gen-later",
-        "render_hash": "2b3ac7d3b1d3038182e0db6f56d3a632b5822bc9510f19d02fc0f0695c4dbf32"
+        "render_hash": "721034ca5f8ea4aac259b095078856b892ff57cbd4d5fdb3de92ff6521bb344f"
       },
-      "bytes": 290279,
-      "sha256": "7819da322d94b322889b8056b66a1825c5e0ce8d85e10a490f7709ae5c20d67e",
+      "bytes": 290302,
+      "sha256": "9446d09b3102f8c42f7055f474cb24cf049bb2b92b07f100790035c9109f7ad9",
       "axe": {
         "violations_total": null,
         "failing_violations": [],
@@ -635,19 +635,19 @@
         1440,
         900
       ],
-      "revision": "0321f539025e87f5aef4a6abc0e87fb6fded80ab",
-      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "revision": "3941ad1644b041b7829ab83cbad59133ac36e7f2",
+      "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "disabled",
       "assertion": "at 1440px native matter history links remain usable with scripting disabled",
       "observations": {
         "follow_links": 1,
         "no_horizontal_overflow": true,
-        "fixture_vintage": "2026-08-10T13:08:13.019Z",
+        "fixture_vintage": "2026-09-04T13:09:00.447Z",
         "generation_id": "gen-later",
-        "render_hash": "2b3ac7d3b1d3038182e0db6f56d3a632b5822bc9510f19d02fc0f0695c4dbf32"
+        "render_hash": "721034ca5f8ea4aac259b095078856b892ff57cbd4d5fdb3de92ff6521bb344f"
       },
-      "bytes": 373242,
-      "sha256": "24ec4813307e98f4df014db08d07501abb7865207f9b817c70e0a141dd42d9cd",
+      "bytes": 373342,
+      "sha256": "695e7339b33dfc12f1c58405295d90b2454b569f9e308dcb9663f1a3f9f5ccbd",
       "axe": {
         "violations_total": null,
         "failing_violations": [],
@@ -663,8 +663,8 @@
         390,
         844
       ],
-      "revision": "0321f539025e87f5aef4a6abc0e87fb6fded80ab",
-      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "revision": "3941ad1644b041b7829ab83cbad59133ac36e7f2",
+      "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "enabled",
       "assertion": "at 390px zoomed to 200% the matter page reflows without horizontal overflow",
       "observations": {
@@ -680,12 +680,12 @@
           "block_controls_meet_24px": true
         },
         "zoom": "200%",
-        "fixture_vintage": "2026-08-10T13:08:13.019Z",
+        "fixture_vintage": "2026-09-04T13:09:00.447Z",
         "generation_id": "gen-later",
-        "render_hash": "2b3ac7d3b1d3038182e0db6f56d3a632b5822bc9510f19d02fc0f0695c4dbf32"
+        "render_hash": "721034ca5f8ea4aac259b095078856b892ff57cbd4d5fdb3de92ff6521bb344f"
       },
-      "bytes": 296587,
-      "sha256": "9a08cd493eaf7d2a9b042aa205a542d0f4c917427d36ba03ae7c80139ef7c666",
+      "bytes": 296372,
+      "sha256": "13a07586410669299209f003f1537aba89f997e1e7fdfd7b85fb8c1ca830115e",
       "axe": {
         "violations_total": 1,
         "failing_violations": [],
@@ -700,8 +700,8 @@
         1440,
         900
       ],
-      "revision": "0321f539025e87f5aef4a6abc0e87fb6fded80ab",
-      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "revision": "3941ad1644b041b7829ab83cbad59133ac36e7f2",
+      "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "enabled",
       "assertion": "at 1440px zoomed to 200% the matter page reflows without horizontal overflow",
       "observations": {
@@ -717,12 +717,12 @@
           "block_controls_meet_24px": true
         },
         "zoom": "200%",
-        "fixture_vintage": "2026-08-10T13:08:13.019Z",
+        "fixture_vintage": "2026-09-04T13:09:00.447Z",
         "generation_id": "gen-later",
-        "render_hash": "2b3ac7d3b1d3038182e0db6f56d3a632b5822bc9510f19d02fc0f0695c4dbf32"
+        "render_hash": "721034ca5f8ea4aac259b095078856b892ff57cbd4d5fdb3de92ff6521bb344f"
       },
-      "bytes": 325555,
-      "sha256": "cf2d2fd9437f4077cb22dc251de6dfce926550d7d45b8951289b54fc77d10191",
+      "bytes": 325708,
+      "sha256": "48cc924cc2d485f30ee8160a6523f7e707aa41e93826b90b29b2c7a747252477",
       "axe": {
         "violations_total": 1,
         "failing_violations": [],
