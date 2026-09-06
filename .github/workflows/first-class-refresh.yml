@@ -80,8 +80,15 @@ jobs:
           }
           NODE
 
+      # GitHub deliberately does not start workflows for pushes or pull
+      # requests made with a job's own GITHUB_TOKEN, so a pull request opened
+      # that way reported no checks at all and the merge queue could never
+      # admit it — someone had to close and reopen it by hand. The branch push
+      # and the pull request therefore both use the same automation token the
+      # other scheduled refreshes already use, which does start the required
+      # checks on the pull request's head commit.
       - name: Open a pull request with the refreshed datasets
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.REFRESH_PR_TOKEN }}
           REPOSITORY: ${{ github.repository }}
         run: bash tools/open_first_class_refresh_pr.sh

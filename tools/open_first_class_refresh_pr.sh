@@ -10,12 +10,24 @@
 # instead of against nothing, and it treats a closed pull request on the branch
 # as absent rather than as an existing one to update.
 #
+# The branch push and the pull request both use the same token, and it must not
+# be the workflow's own GITHUB_TOKEN: GitHub does not start workflows for events
+# created by that token, so the pull request would open with no checks and the
+# merge queue could never admit it. The caller passes the repository's automation
+# token instead; this script refuses to run without one rather than pushing
+# unauthenticated and failing further along.
+#
 # Environment:
 #   GH_TOKEN     token used for the push URL and for the gh calls
 #   REPOSITORY   owner/name, used to build the default push URL
 #   PUSH_REMOTE  overrides the push/read remote (used by the test)
 #   BRANCH_DATE  overrides the dated branch suffix (used by the test)
 set -euo pipefail
+
+if [ -z "${GH_TOKEN:-}" ] && [ -z "${PUSH_REMOTE:-}" ]; then
+  echo "GH_TOKEN is empty: the refresh needs an automation token that can push a branch and open a pull request." >&2
+  exit 1
+fi
 
 paths=(site worker)
 if [ -z "$(git status --porcelain -- "${paths[@]}")" ]; then

@@ -152,6 +152,38 @@ test("a run that regenerated nothing exits without touching the remote", () => {
   }
 });
 
+test("the pull request is opened with the automation token, not the job's own token", () => {
+  // GitHub does not start workflows for events created by a job's own
+  // GITHUB_TOKEN, so a pull request opened that way carries no checks and the
+  // merge queue cannot admit it. The publishing step must use the same
+  // automation token the other scheduled refreshes use.
+  const step = workflow.slice(workflow.indexOf("Open a pull request with the refreshed datasets"));
+  assert.match(step, /GH_TOKEN: \$\{\{ secrets\.REFRESH_PR_TOKEN \}\}/);
+  assert.doesNotMatch(step, /GH_TOKEN: \$\{\{ github\.token \}\}/);
+  assert.doesNotMatch(step, /GH_TOKEN: \$\{\{ secrets\.GITHUB_TOKEN \}\}/);
+});
+
+test("an empty token stops the run before it pushes anything", () => {
+  const f = fixture();
+  try {
+    // PUSH_REMOTE is the test's own override, so it is cleared here to exercise
+    // the path a real run takes when the automation token is missing.
+    const result = run("bash", [scriptPath], f.work, {
+      PATH: `${f.binDir}:${process.env.PATH}`,
+      PUSH_REMOTE: "",
+      BRANCH_DATE: "20260906",
+      GH_TOKEN: "",
+      REPOSITORY: "owner/name",
+    });
+    assert.equal(result.status, 1);
+    assert.match(result.stderr, /GH_TOKEN is empty/);
+    assert.equal(git(f.work, "ls-remote", f.remote, "refs/heads/data/*"), "");
+    assert.equal(ghCalls(f), "");
+  } finally {
+    rmSync(f.root, { recursive: true, force: true });
+  }
+});
+
 test("the refresh workflow publishes through the tested script and keeps its lease", () => {
   assert.match(workflow, /run: bash tools\/open_first_class_refresh_pr\.sh/);
   const script = readFileSync(scriptPath, "utf8");
