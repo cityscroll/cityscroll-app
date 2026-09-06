@@ -1,0 +1,29 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/cbd9348b54118",
+  "status": "implemented",
+  "fingerprint": "cbd9348b54118.field-coverage-readback.v1",
+  "updated_at": "2026-09-06T13:38:21.834Z",
+  "projections": [
+    {
+      "id": "coverage-contract",
+      "path": "worker/src/data/performance-coverage-contract.v1.json"
+    },
+    {
+      "id": "coverage-classifier",
+      "path": "worker/src/lib/performance_coverage.mjs"
+    },
+    {
+      "id": "coverage-tests",
+      "path": "worker/test/performance_coverage.test.mjs"
+    },
+    {
+      "id": "field-coverage-read-back",
+      "path": "docs/evidence/field-coverage-lattice-read-back/read-back.json"
+    },
+    {
+      "id": "field-coverage-read-back-readme",
+      "path": "docs/evidence/field-coverage-lattice-read-back/README.md"
+    }
+  ]
+}
