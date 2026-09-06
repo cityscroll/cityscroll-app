@@ -6,7 +6,7 @@
 | Date | 2026-08-29 |
 | Scope | Natural-person representations and the minimum future identity architecture |
 | Supersedes | — |
-| Related | `docs/adr/ontology-registry-v0.md` §1c, `docs/adr/link-not-merge.md`, `docs/adr/entity-resolution-taxonomy.md`, `docs/evidence/person-representation-inventory.md`, `ontology/person.mjs` |
+| Related | `docs/adr/ontology-registry-v0.md` §1c, `docs/adr/link-not-merge.md`, `docs/adr/entity-resolution-taxonomy.md`, `docs/evidence/person-representation-inventory.md`, `ontology/person.mjs`, `ontology/person_identity_link_ledger.mjs` |
 | Non-goals | No identity migration, no new public person object, no name-only merge |
 
 ## Context
@@ -60,7 +60,7 @@ later link:
 Display name is never an identity token (`ontology/person.mjs:98`,
 `ontology/registry.v0.json` `display_name_never_identity`).
 
-### Layer 2 — Exact / reviewed resolution (partial; writer awaiting implementation)
+### Layer 2 — Exact / reviewed resolution (ledger shipped)
 
 Wrap a source identity in `cityscroll.person.v1` without rewriting it:
 
@@ -76,9 +76,29 @@ Wrap a source identity in `cityscroll.person.v1` without rewriting it:
 - statuses: `candidate` / `accepted` / `rejected`;
 - only `accepted` may populate `canonical_person_ref`.
 
-No production review ledger or accepted-link materialization exists today. That
-gap is **awaiting implementation**, not an inferred empty-negative (“nobody is
-the same person”).
+The production review ledger is `ontology/person_identity_links.jsonl`, an
+append-only JSON Lines file written by `ontology/person_identity_link_ledger.mjs`.
+Line 1 is the ledger header, which states the ledger's own rules in-band; every
+later line is one reviewed decision. Appending is the only write: a reviewer who
+changes their mind appends a new record for the same pair, and the superseded
+record stays on disk and stays inspectable.
+
+Materialization is accepted-only. `canonical_person_ref` is populated for a pair
+whose most recent stored record is `accepted`; a candidate, a rejected record,
+and a superseded accepted record all materialize nothing. Candidate and rejected
+records are kept as non-linking evidence in the diagnostics listing
+(`node tools/check_person_identity_link_ledger.mjs --diagnostics`) rather than
+being dropped, so they are never read as accepted identity.
+
+The gate is `node tools/check_person_identity_link_ledger.mjs --check`, wired
+into the static-standards contract checks in CI and into
+`tools/preflight-required-checks.sh`. It prints one line per violation and exits
+non-zero when a stored link's method is not `explicit_reviewed_assertion`, its
+evidence carries no source locator, or an endpoint is a display name or a
+non-generic id (`official:…`, `community-board-person:…`).
+
+The ledger currently holds no reviewed assertion. That is an unreviewed state,
+not an inferred empty-negative (“nobody is the same person”).
 
 Name-only, unique-name, or payroll-name resemblance must not create a link.
 Lobby/CFB unique name keys bind **targets onto an already exact hub person**;
@@ -115,9 +135,10 @@ merge those bodies or copy Council UI onto a board person.
 
 ## Consequences
 
-- Future implementation cards add a review ledger / consumers for
-  `person_identity_link.v1`, additional grounded board rosters, or search-token
-  alignment. They do not migrate `official:` or `community-board-person:` ids.
+- The reviewed ledger and its check-mode gate ship with this seam. Future
+  implementation cards add consumers for accepted `person_identity_link.v1`
+  records, additional grounded board rosters, or search-token alignment. They do
+  not migrate `official:` or `community-board-person:` ids.
 - `/browse/people/` may keep machine kind `exact-person-appointment` until a
   separate rename; reader copy is already “City Council term”.
 - Staffing names stay notice-scoped. Payroll employee rows stay unpublished.
@@ -139,7 +160,7 @@ merge those bodies or copy Council UI onto a board person.
 
 Awaiting implementation, explicitly:
 
-- Append-only reviewed `person_identity_link.v1` ledger and check-mode gate.
+- Consumers that read accepted ledger records onto a public surface.
 - Optional alignment of People search `object_ref` `person:{id}` with
   `person:legistar:{id}` without changing `/officials/{id}/`.
 - Additional board roster grounding beyond Manhattan CB6.

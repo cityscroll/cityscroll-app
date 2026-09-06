@@ -30,6 +30,8 @@ cards only when metrics show a real gap.
 | `fixtures/cross_spine/` | Pass/fail subject bundles |
 | `fixtures/dimensions/` | Feature / view / disagreement inventories |
 | `queue/` | Emitted-queue schema + idempotency ledger |
+| `person.mjs` | Source-qualified person projection, `person_identity_link.v1` builder, capability boundary |
+| `person_identity_link_ledger.mjs` + `person_identity_links.jsonl` | Append-only reviewed same-person ledger, accepted-only `canonical_person_ref` materialization, diagnostics listing (`node tools/check_person_identity_link_ledger.mjs --check`) |
 | `land_use_filing.mjs` | LDP-23: land-use filing obligation, filing document, and Racial Equity Report envelope contracts, the five filing relations, and an as-of projector |
 | `index.mjs` | Package exports |
 
@@ -54,6 +56,9 @@ node tools/intelligence_flywheel.mjs --fixture --emit-cards /tmp/cs-intel
   enrichment roadmap in place of re-running the flywheel.
 - Emitted cards always carry a machine-checkable `verify` and a `demo_win`.
 - The ledger prevents re-emitting open or fixed cards (regression only when verify fails).
+- The reviewed same-person ledger is append-only: a new decision is a new line,
+  never an edit of a stored one, and only an accepted current record materializes
+  a `canonical_person_ref`.
 
 ## Schedule
 

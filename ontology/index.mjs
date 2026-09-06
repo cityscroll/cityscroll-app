@@ -123,6 +123,29 @@ export {
 } from "./person.mjs";
 
 export {
+  PERSON_IDENTITY_LINK_LEDGER_SCHEMA,
+  PERSON_IDENTITY_LINK_LEDGER_VERSION,
+  PERSON_IDENTITY_LINK_LEDGER_PATH,
+  PERSON_IDENTITY_LINK_LEDGER_RELATIVE_PATH,
+  PERSON_IDENTITY_LINK_LEDGER_POLICY,
+  NON_LINKING_STATUSES,
+  buildPersonIdentityLinkLedgerHeader,
+  buildPersonIdentityLinkRecord,
+  openPersonIdentityLinkLedger,
+  appendPersonIdentityLinkRecord,
+  appendPersonIdentityLink,
+  readPersonIdentityLinkLedger,
+  parsePersonIdentityLinkLedger,
+  personIdentityLinkRecords,
+  currentPersonIdentityLinkDecisions,
+  materializeCanonicalPersonRefs,
+  applyPersonIdentityLinkLedger,
+  personIdentityLinkLedgerDiagnostics,
+  checkPersonIdentityLinkLedger,
+  formatPersonIdentityLinkLedgerFindings,
+} from "./person_identity_link_ledger.mjs";
+
+export {
   CIVIC_INSTITUTION_PROJECTION_SCHEMA,
   CIVIC_INSTITUTION_SCHEMA,
   ENTITY_LINK_SCHEMA,

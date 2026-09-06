@@ -367,6 +367,12 @@ jobs:
       - name: Procurement search-index coherence
         if: matrix.family == 'static-standards'
         run: node tools/check_procurement_index_coherence.mjs
+      - name: Reviewed same-person identity-link ledger
+        if: matrix.family == 'static-standards'
+        # Refuses any stored link that is not an explicit reviewed assertion,
+        # carries no evidence source locator, or names a display name instead of
+        # a generic person identity. See docs/adr/person-source-identity-seam.md.
+        run: node tools/check_person_identity_link_ledger.mjs --check
       - name: Descriptive collapsed-group labels
         if: matrix.family == 'static-standards'
         run: node tools/check-collapsed-group-labels.mjs
