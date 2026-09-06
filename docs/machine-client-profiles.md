@@ -8,8 +8,8 @@
 | Endpoint-wide bearer | `MCP_BEARER_TOKEN` | full | connecting address |
 | Named profile | a profile secret binding | the profile's allowlist | the profile id |
 
-The first two are unchanged. Adding a profile does not alter them, and a deployment with no
-profile secret configured behaves exactly as it did before profiles existed.
+The first two are unchanged. Adding a profile does not alter them. Unmatched bearers follow
+the fail-closed rule under [Rotation](#rotation).
 
 `capabilities/machine_client_profile.mjs` owns the declarations, the resolution rules, and the
 validation. `test/machine_client_profile.test.mjs` is the contract test.
@@ -98,10 +98,12 @@ matches, so unsetting is the revocation.
 Rotation and revocation change **which credential authenticates**. They never change the profile
 id, its allowlist, or its meter key, so capability semantics survive a rotation untouched.
 
-A credential that is presented but matches nothing fails closed with `401` whenever any profile
-secret is configured. It does not fall back to anonymous access — otherwise revoking a profile
-token would quietly downgrade an integration to the unfiltered anonymous inventory instead of
-locking it out.
+A nonempty bearer that matches neither a profile secret nor the endpoint-wide bearer fails
+closed with `401`, even when no profile secrets remain configured. It does not fall back to
+anonymous access — otherwise revoking the last profile token would quietly downgrade an
+integration to the unfiltered anonymous inventory instead of locking it out. Empty and malformed
+bearer headers retain their existing handling: they present no credential, so they are anonymous
+unless `MCP_BEARER_TOKEN` requires authentication.
 
 ## Telemetry
 

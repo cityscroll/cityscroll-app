@@ -389,3 +389,21 @@ test("profile telemetry is emitted content-free", async () => {
   assert.ok(!serialized.includes(marker), "no request content in telemetry");
   assert.ok(!serialized.includes("money"), "no argument values in telemetry");
 });
+
+
+test("removing the final profile secret rejects bearer discovery and calls", async () => {
+  const env = { SUBS: new MockKV(), NL_METER: new MockKV() };
+  for (const [method, params] of [
+    ["tools/list", undefined],
+    ["tools/call", { name: "create_watch", arguments: {} }],
+  ]) {
+    const response = await handleMcp(post(
+      { jsonrpc: "2.0", id: 90, method, ...(params ? { params } : {}) },
+      { authorization: `Bearer ${PROFILE_SECRET}` },
+    ), env);
+    assert.equal(response.status, 401);
+  }
+  const anonymous = await handleMcp(post({ jsonrpc: "2.0", id: 91, method: "tools/list" }), env);
+  assert.equal(anonymous.status, 200);
+  assert.ok((await anonymous.json()).result.tools.some(tool => tool.name === "create_watch"));
+});

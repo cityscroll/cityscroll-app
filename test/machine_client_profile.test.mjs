@@ -306,3 +306,13 @@ test("A9 · the negative rule's exclusions are declared and honored", () => {
     assert.ok(!PROFILE.allowlist.includes(mutation.name), `${mutation.name} is not granted`);
   }
 });
+
+
+test("revoking the last profile binding rejects its former credential", async () => {
+  for (const env of [{}, { [PRIMARY_BINDING]: "", [PREVIOUS_BINDING]: undefined }]) {
+    assert.deepEqual(await resolveMachineClientProfile(env, auth(LIVE_SECRET)), {
+      resolution: "unauthorized", profile: null,
+    });
+    assert.equal((await resolveMachineClientProfile(env, null)).resolution, "anonymous");
+  }
+});
