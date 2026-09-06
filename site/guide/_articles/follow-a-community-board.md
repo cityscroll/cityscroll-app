@@ -117,8 +117,9 @@ the link you will use to change or stop it later.
   preview says so plainly, and a watch on a quiet district still works — it exists to tell you about
   meetings that have not been published yet.
 - **The board's own recent meetings are not all there.** CityScroll shows what has been published in
-  the sources it reads, and it marks a source it could not check rather than reporting an empty list
-  as a fact. Where a board publishes its own calendar, that remains the authoritative one.
+  the sources it reads, and where it could not check a source it says so rather than reporting an
+  empty list as a fact. For that source the answer is unknown, not none — try it again later, and
+  treat the board's own published calendar as the authority in the meantime.
 
 ## You are done when
 

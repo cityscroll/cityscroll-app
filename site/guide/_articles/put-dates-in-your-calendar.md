@@ -122,6 +122,10 @@ Some rows carry no fixed date at all. Now says so directly, under a heading for 
 open with no published closing date. Those cannot go in a calendar as a deadline, because the city
 has not published one; watch them instead, through [Following](/following/).
 
+A page that says a source could not be reached is a different case again. That is not an empty
+calendar — it is an unknown one, and the counts you can see cover only the sources that answered.
+Reload before concluding there is nothing to save.
+
 ## You are done when
 
 Either one event sits in your calendar as a fixed copy, or a subscribed calendar in your app is

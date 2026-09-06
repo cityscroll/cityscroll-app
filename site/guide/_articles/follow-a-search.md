@@ -106,6 +106,11 @@ there are two states worth telling apart.
   invalid or has expired, and asking you to use the link in a recent CityScroll email. Manage links
   are deliberately time-limited. The fix is always a newer email, never a retry.
 
+A third state is neither of those. If the page says it could not load your saved watches, or that
+the quick preview is not ready, nothing is missing and nothing has been lost — the page could not
+reach what it needed just then. Both offer a retry, and the answer after a retry is the one to
+believe.
+
 If you no longer have any CityScroll email, the reliable way back is to unsubscribe from any message
 you do still have; failing that, create the watch again and use the fresh welcome message as your
 way in.

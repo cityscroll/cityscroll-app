@@ -191,6 +191,27 @@ test("every how-to says what to do when there is nothing, or the answer is unkno
   }
 });
 
+test("every how-to separates a source that could not be read from one with nothing in it", () => {
+  // The two look identical on screen and mean opposite things: one is a finding
+  // about the city, the other is a finding about today's network. An article that
+  // conflated them would teach a reader to draw a conclusion from an outage.
+  const unreadable = [
+    /could not be reached/i,
+    /could not (be )?check(ed)?/i,
+    /(was )?not checked/i,
+    /not ready/i,
+    /not available/i,
+  ];
+  for (const article of howTos) {
+    const text = textOf(howToHtml.get(article.id));
+    assert.ok(
+      unreadable.some((pattern) => pattern.test(text)),
+      `${article.id} never distinguishes an unreadable source from an empty one`,
+    );
+    assert.match(text, /unknown|reload|try it again|retry/i);
+  }
+});
+
 test("no how-to invents a control, a submission channel, or a promised outcome", () => {
   // Every one of these describes something the product does not do. A guide that
   // said any of them would send a reader looking for a button that is not there,

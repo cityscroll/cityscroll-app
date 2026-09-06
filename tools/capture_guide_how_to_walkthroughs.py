@@ -301,6 +301,34 @@ def keyboard_reach(page: Page) -> dict:
     }
 
 
+def modified_click(page: Page, base: str, spec: dict) -> dict:
+    """A command/control click on a guide link must open a second page, not navigate.
+
+    Nothing on a guide page listens for a click, so this is a property of the
+    document rather than of a handler — which is exactly what makes it worth
+    recording. A page that started intercepting clicks would break the ordinary
+    browser gesture for opening a link in a new tab, silently.
+    """
+    page.goto(urljoin(base, spec["route"].lstrip("/")), wait_until="domcontentloaded")
+    settle(page)
+    before = urlsplit(page.url).path
+    opened = None
+    with page.context.expect_page() as popup:
+        page.locator(f'main a[href^="{spec["product"]}"]').first.click(
+            modifiers=["ControlOrMeta"]
+        )
+    opened_page = popup.value
+    opened_page.wait_for_load_state("domcontentloaded")
+    opened = urlsplit(opened_page.url).path
+    opened_page.close()
+    stayed = urlsplit(page.url).path
+    return {
+        "assertion_holds": opened == spec["product"] and stayed == before,
+        "opened_in_new_page": opened,
+        "original_page_stayed_on": stayed,
+    }
+
+
 def internal_links(page: Page) -> list[str]:
     return page.evaluate(
         """() => [...new Set([...document.querySelectorAll('a[href^="/"]')]
@@ -502,6 +530,19 @@ def capture(base: str, output_dir: Path) -> dict:
                 for spec in ARTICLES:
                     walkthroughs.append(
                         {
+                            "id": f"modified-click-{spec['id'].lower()}",
+                            "article": spec["id"],
+                            "viewport": name,
+                            "entry_route": spec["entry"],
+                            "assertion": "A command or control click on the product link opens a "
+                            "second page and leaves the article where it was, because nothing on a "
+                            "guide page intercepts a click.",
+                            **modified_click(page, base, spec),
+                        }
+                    )
+                for spec in ARTICLES:
+                    walkthroughs.append(
+                        {
                             "id": f"walkthrough-{spec['id'].lower()}",
                             "article": spec["id"],
                             "viewport": name,
@@ -597,6 +638,7 @@ def main() -> int:
             "HTTP status of every internal link on a guide page",
             "guide home to article to the product route it names, and browser Back twice",
             "the same reading path with JavaScript switched off",
+            "a command or control click opens a second page instead of navigating",
             "no form submission and no request to a state-changing route",
         ],
         "captures": observed["captures"],
