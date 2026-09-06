@@ -6,6 +6,12 @@ import { dirname, isAbsolute, join, relative } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 import { redactCredentialValues } from "./source_health_observations.mjs";
+import {
+  buildCommunityBoardRepairObservations,
+  repairCodeRevision,
+  repairObservationSet,
+  repairWorkObservations,
+} from "./repair_observations.mjs";
 import { classifySourceVintage } from "./source_vintage_status.mjs";
 import {
   backstageSourceVintage,
@@ -17,12 +23,14 @@ export const ROOT = dirname(dirname(fileURLToPath(import.meta.url)));
 export const DEFAULT_OUTPUT_DIR = "docs";
 export const JSON_OUTPUT = "data-source-graph.json";
 export const HTML_OUTPUT = "data-source-graph.html";
-export const DATA_SOURCE_GRAPH_SCHEMA_VERSION = 4;
+export const DATA_SOURCE_GRAPH_SCHEMA_VERSION = 5;
 export const DESK_CONSUMER_CONTRACT_PATH = "data/data-source-graph-desk-contract.v1.json";
 
 const CORE_INPUTS = [
   "docs/data-sources.md",
   "site/data/source_contracts.json",
+  "site/data/community_board_meeting_index.json",
+  "site/data/non_council_outcome_sources/board_source_inventory.json",
   "site/data/source_health_observations.json",
   "site/data/source_vintage_observations.json",
   "site/data/source_vintage_alternates.json",
@@ -48,6 +56,20 @@ const WORKER_JOBS = {
   "doing-business-entities": "refreshVendorProfiles",
   "zap-api-outcomes": "refreshZapOutcomes",
 };
+
+/**
+ * The code that decides a community-board source condition. Its digest is the
+ * repair record's code revision, so an operator comparing two passes can tell a
+ * condition that persisted across an adapter change from one that did not.
+ */
+const REPAIR_OBSERVATION_CODE_PATHS = Object.freeze([
+  "site/community_board_source_adapters.mjs",
+  "site/community_board_source_join.mjs",
+  "tools/build_community_board_meeting_index.mjs",
+]);
+
+/** The source contract that owns the community-board source family. */
+const COMMUNITY_BOARD_SOURCE_CONTRACT_ID = "non-council-board-minutes";
 
 const SURFACE_RULES = [
   ["Notices & search", /notice|core|feed|attachment|aggregate/i],
@@ -585,6 +607,9 @@ export function buildDataSourceGraph({
   healthObservations = { observations: [] },
   vintageObservations = { observations: [] },
   alternateRegistry = { alternates: [] },
+  repairObservations = [],
+  repairObservedAt = null,
+  repairSourceVintage = null,
   inputs = [],
 } = {}) {
   const contracts = registry?.contracts || [];
@@ -595,6 +620,13 @@ export function buildDataSourceGraph({
   const vintageById = new Map((vintageObservations?.observations || []).map((row) => [row.source_id, row]));
   const alternatesById = new Map((alternateRegistry?.alternates || []).map((row) => [row.alternate_id, row]));
   const context = { warehouse: warehouse.datasets ? warehouse : { datasets: warehouse }, cron, workerText, weeklyDays: weeklyGate(externalAwardText) };
+  const repairObservationsByContract = new Map();
+  for (const observation of Array.isArray(repairObservations) ? repairObservations : []) {
+    const id = observation?.source?.contract_id;
+    if (!id) continue;
+    if (!repairObservationsByContract.has(id)) repairObservationsByContract.set(id, []);
+    repairObservationsByContract.get(id).push(observation);
+  }
   const liveSources = contracts.map((contract) => {
     const evidence = receipts.get(contract.id) || [];
     const endpoint = endpointFor(contract);
@@ -649,6 +681,7 @@ export function buildDataSourceGraph({
       latest_evidence: evidence[0] || null,
       code_references: (contract.code_references || []).map((ref) => ref.path),
       ...deskHealthFor(contract, healthById.get(contract.id), ingest, researchState),
+      repair_observations: repairObservationsByContract.get(contract.id) || [],
       source_vintage: vintageObservation
         ? backstageSourceVintage({
           observation: vintageObservation,
@@ -674,8 +707,16 @@ export function buildDataSourceGraph({
     sources_hash: sourcesHash,
     declared_inputs: inputs,
     cron: { expressions: cron.expressions },
-    counts: { bodies: bodies.length, sources: sources.length, source_contracts: liveSources.length, candidate_sources: candidateSources.length, blocked_sources: blockedSources.length, surfaces: surfaces.length },
+    counts: { bodies: bodies.length, sources: sources.length, source_contracts: liveSources.length, candidate_sources: candidateSources.length, blocked_sources: blockedSources.length, surfaces: surfaces.length, repair_observations: repairObservations.length, open_repairs: repairWorkObservations(repairObservations).length },
     research: { candidates: candidateSources.length, blocked: blockedSources.length },
+    // The private repair projection. It rides the desk artifact rather than a
+    // route of its own precisely so it inherits the existing access boundary:
+    // this file is generated for the authenticated desk, is never served, and
+    // is not tracked. Nothing here reaches a public response.
+    repair_observations: repairObservationSet(repairObservations, {
+      observedAt: repairObservedAt,
+      sourceVintage: repairSourceVintage,
+    }),
     bodies,
     sources,
     surfaces,
@@ -773,8 +814,35 @@ function setView(view){const isGraph=view==="graph";document.getElementById("gra
 </script></body></html>\n`;
 }
 
+/**
+ * Project the retained community-board source receipts onto repair
+ * observations. The inputs are already-committed build artifacts, so this adds
+ * no acquisition, no network read, and no new retention.
+ */
+export function communityBoardRepairObservations(registry) {
+  const indexPath = "site/data/community_board_meeting_index.json";
+  const inventoryPath = "site/data/non_council_outcome_sources/board_source_inventory.json";
+  if (!existsSync(join(ROOT, indexPath)) || !existsSync(join(ROOT, inventoryPath))) {
+    return { observations: [], observedAt: null, sourceVintage: null };
+  }
+  const index = readJson(indexPath);
+  const contract = (registry?.contracts || []).find((row) => row.id === COMMUNITY_BOARD_SOURCE_CONTRACT_ID) || {};
+  const observations = buildCommunityBoardRepairObservations({
+    index,
+    inventory: readJson(inventoryPath),
+    contract,
+    indexPath,
+    codeRevision: repairCodeRevision(REPAIR_OBSERVATION_CODE_PATHS.map((path) => ({
+      path,
+      text: existsSync(join(ROOT, path)) ? readFileSync(join(ROOT, path), "utf8") : "",
+    }))),
+  });
+  return { observations, observedAt: index?.generated_at || null, sourceVintage: index?.generated_at || null };
+}
+
 export function generatedGraphFiles({ inputs = inputManifest() } = {}) {
   const registry = readJson("site/data/source_contracts.json");
+  const repair = communityBoardRepairObservations(registry);
   const receiptPaths = inputs.map((input) => input.path).filter((path) => path.includes("receipts/") || path.includes("verification_receipts/"));
   const graph = buildDataSourceGraph({
     registry,
@@ -791,6 +859,9 @@ export function generatedGraphFiles({ inputs = inputManifest() } = {}) {
     alternateRegistry: existsSync(join(ROOT, "site/data/source_vintage_alternates.json"))
       ? readJson("site/data/source_vintage_alternates.json")
       : { alternates: [] },
+    repairObservations: repair.observations,
+    repairObservedAt: repair.observedAt,
+    repairSourceVintage: repair.sourceVintage,
     inputs,
   });
   return {

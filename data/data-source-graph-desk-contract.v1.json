@@ -1,13 +1,23 @@
 {
   "schema": "cityscroll.data_source_graph.desk_consumer_contract.v1",
-  "producer_schema_version": 4,
-  "supported_consumer_versions": [1, 2, 3, 4],
+  "producer_schema_version": 5,
+  "supported_consumer_versions": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
   "compatibility": "additive_superset",
   "producer": "tools/data_source_graph.mjs",
   "acceptance_test": "test/data_source_graph.test.mjs",
   "v4_additions": {
-    "graph_fields": ["research"],
-    "count_fields": ["candidate_sources"],
+    "graph_fields": [
+      "research"
+    ],
+    "count_fields": [
+      "candidate_sources"
+    ],
     "source_fields": [
       "contract_fingerprint",
       "health",
@@ -21,7 +31,40 @@
       "operator_notes",
       "research_state"
     ],
-    "node_classes": ["candidate-source"],
+    "node_classes": [
+      "candidate-source"
+    ],
     "notes": "Version 4 keeps the version 3 topology and nullable current_as_of date. Health observations and uncontracted candidate research are additive. The authenticated desk must accept 4 without dropping those fields or requiring candidate rows to appear in source_contracts.json. Desk overlay must keep the version 4 maintainer-architecture lede in its known intro set."
+  },
+  "v5_additions": {
+    "graph_fields": [
+      "repair_observations"
+    ],
+    "count_fields": [
+      "repair_observations",
+      "open_repairs"
+    ],
+    "source_fields": [
+      "repair_observations"
+    ],
+    "observation_schema": "cityscroll.repair_observation.v1",
+    "set_schema": "cityscroll.repair_observation_set.v1",
+    "conditions": [
+      "checked-no-records",
+      "no-counterpart-record",
+      "record-identity-unresolved",
+      "records-do-not-correspond",
+      "scope-not-searched",
+      "source-format-unsupported",
+      "source-not-published",
+      "source-observation-stale",
+      "source-retrieval-failed"
+    ],
+    "dispositions": [
+      "repair",
+      "expected-absence",
+      "source-policy-limitation"
+    ],
+    "notes": "Version 5 keeps the version 4 topology, counts and source fields. It adds the private repair-observation projection: structured source and join conditions carried on this backstage artifact so the authenticated desk can inspect them without reading resident copy. Records are keyed by a stable fingerprint over source, scope and condition only, so a repeated observation or a presentation-copy change resolves to the same record. Only the 'repair' disposition is engineering work; 'expected-absence' and 'source-policy-limitation' record that a state was evaluated and must never be presented as a defect or as a claim against a publisher. The consumer must accept 5 without dropping these fields and must not project any of them onto a public response."
   }
 }
