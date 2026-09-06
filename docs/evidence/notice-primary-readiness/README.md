@@ -20,8 +20,9 @@ the optional owners are still in flight. A cold trace confirms that ordering.
 The size of the resulting improvement is **not** established. The planning
 projection for this change is a 3,000-7,000 ms reduction on slow devices; that
 remains an estimate.
-No production before/after window has been collected, so no percentile
-comparison is published here.
+A production before/after read-back has been run (`read-back.json`), but both
+sides are below the 30-sample floor — mobile Notice traffic on this metric is
+low-volume — so no percentile comparison is published from it.
 
 ## Exploring the boundary
 
@@ -53,11 +54,15 @@ bounded by the delay the trace injects, so the gap's magnitude is an artifact of
 the method and is not a measured saving. It corroborates neither the projected
 range nor any production result.
 
-`read-back.json` is the grouped read-back over `content_ready_ms` for the
-`notice` surface and the page-level `none` component. Both the before and after
-groups are below the 30-sample floor with incomplete windows, so no percentiles
-and no delta are published. The comparison names that reason rather than leaving
-the gap to be filled by the estimate.
+`read-back.json` is the grouped production read-back over `content_ready_ms`
+for the `notice` surface, the page-level `none` component, and mobile devices.
+The before window (2026-08-19 through the deploy) retains 5 rows; the after
+window (the deploy through the read-back run) retains 0 — mobile production
+traffic against this metric has not yet accumulated on either side of the
+boundary. Both groups are below the 30-sample floor, so no percentiles and no
+delta are published. The comparison names that reason rather than leaving the
+gap to be filled by the estimate, and an empty after window is recorded as zero
+retained rows, not skipped or rounded up to a pass.
 
 The 2026-08-26 field distribution for the Notice page (p50 2,073.8 ms,
 p75 3,798.1 ms, p95 8,615.2 ms over 64 retained rows) is carried as historical
@@ -78,6 +83,39 @@ itself as blocking.
 
 This adds no metric, surface, or component identity to production RUM. It groups
 observations the collector already reports.
+
+## Production read-back source
+
+`test/fixtures/notice-primary-readiness/read-back-input.json` carries the raw
+rows the builder groups into `before`/`after`. Its production rows were read
+from the Analytics Engine SQL API (`crol_rum_observations_v1`), scoped to
+`metric_id = content_ready_ms`, `surface_id = notice`, `component_id = none`,
+`device_class = mobile`, `traffic_class = production`, split at the delivery
+merge boundary (2026-09-02T22:10:27Z UTC):
+
+```
+SELECT count() AS sampled_count, sum(_sample_interval) AS estimated_count,
+  quantileExactWeighted(0.50)(double1, _sample_interval) AS p50,
+  quantileExactWeighted(0.75)(double1, _sample_interval) AS p75,
+  quantileExactWeighted(0.95)(double1, _sample_interval) AS p95
+FROM crol_rum_observations_v1
+WHERE blob1 = 'cityscroll.performance_observation.v1'
+  AND blob2 = 'content_ready_ms' AND blob3 = 'notice' AND blob4 = 'none'
+  AND blob6 = 'mobile' AND blob10 = 'production'
+  AND timestamp >= toDateTime(<window_start>) AND timestamp < toDateTime(<window_end>)
+```
+
+against `https://api.cloudflare.com/client/v4/accounts/<account>/analytics_engine/sql`.
+Before window `2026-08-19T00:00:00Z/2026-09-02T22:10:27Z`: 5 retained rows.
+After window `2026-09-02T22:10:27Z/2026-09-06T13:40:17Z` (run time): 0 retained
+rows. Both are below the 30-sample floor; no percentiles are computed or
+published for either side, and the zero-row after window is recorded as zero,
+not treated as absent data.
+
+Production `release_id` tags observed in this window do not correspond to any
+commit reachable in this repository's history, so the before/after split uses
+the merge timestamp rather than a `release_id` filter; `revision` is left
+`null` on both groups for that reason.
 
 Rebuild or verify with:
 

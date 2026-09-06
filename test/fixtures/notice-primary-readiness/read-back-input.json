@@ -1,11 +1,11 @@
 {
   "sampleFloor": 30,
-  "beforeWindowComplete": false,
+  "beforeWindowComplete": true,
   "afterWindowComplete": false,
-  "beforeWindow": null,
-  "afterWindow": null,
-  "beforeRevision": "9d8777d15",
-  "afterRevision": "cfa0f25c7",
+  "beforeWindow": "2026-08-19T00:00:00Z/2026-09-02T22:10:27Z",
+  "afterWindow": "2026-09-02T22:10:27Z/2026-09-06T13:40:17Z",
+  "beforeRevision": null,
+  "afterRevision": null,
   "fieldBaseline": {
     "source": "field-rum-readiness-2026-08-26",
     "sampled_count": 64,
@@ -22,56 +22,68 @@
       "surface_id": "notice",
       "component_id": "none",
       "result_state": "content",
-      "value": 4120,
-      "trace_key": "lab-before-edge-content",
+      "value": 4896,
+      "trace_key": "prod-before-2026-08-21T16:56:35Z",
       "device_class": "mobile",
-      "navigation_type": "navigate",
+      "navigation_type": "unknown",
       "delivery_class": "pages_edge",
-      "traffic_class": "lab",
-      "observed_at": "lab"
+      "traffic_class": "production",
+      "observed_at": "2026-08-21T16:56:35Z"
     },
-    {
-      "metric_id": "content_ready_ms",
-      "surface_id": "notice",
-      "component_id": "none",
-      "result_state": "unavailable",
-      "value": 3980,
-      "trace_key": "lab-before-edge-unavailable",
-      "device_class": "mobile",
-      "navigation_type": "navigate",
-      "delivery_class": "pages_edge",
-      "traffic_class": "lab",
-      "observed_at": "lab"
-    }
-  ],
-  "afterObservations": [
     {
       "metric_id": "content_ready_ms",
       "surface_id": "notice",
       "component_id": "none",
       "result_state": "content",
-      "value": 96,
-      "trace_key": "lab-after-edge-content",
+      "value": 1781,
+      "trace_key": "prod-before-2026-08-21T16:57:50Z",
       "device_class": "mobile",
-      "navigation_type": "navigate",
+      "navigation_type": "unknown",
       "delivery_class": "pages_edge",
-      "traffic_class": "lab",
-      "observed_at": "lab"
+      "traffic_class": "production",
+      "observed_at": "2026-08-21T16:57:50Z"
     },
     {
       "metric_id": "content_ready_ms",
       "surface_id": "notice",
       "component_id": "none",
-      "result_state": "unavailable",
-      "value": 88,
-      "trace_key": "lab-after-edge-unavailable",
+      "result_state": "content",
+      "value": 4468.9,
+      "trace_key": "prod-before-2026-08-26T13:10:50Z",
       "device_class": "mobile",
-      "navigation_type": "navigate",
+      "navigation_type": "unknown",
       "delivery_class": "pages_edge",
-      "traffic_class": "lab",
-      "observed_at": "lab"
+      "traffic_class": "production",
+      "observed_at": "2026-08-26T13:10:50Z"
+    },
+    {
+      "metric_id": "content_ready_ms",
+      "surface_id": "notice",
+      "component_id": "none",
+      "result_state": "content",
+      "value": 4960,
+      "trace_key": "prod-before-2026-08-29T01:18:41Z",
+      "device_class": "mobile",
+      "navigation_type": "unknown",
+      "delivery_class": "pages_edge",
+      "traffic_class": "production",
+      "observed_at": "2026-08-29T01:18:41Z"
+    },
+    {
+      "metric_id": "content_ready_ms",
+      "surface_id": "notice",
+      "component_id": "none",
+      "result_state": "content",
+      "value": 5841.9,
+      "trace_key": "prod-before-2026-09-01T13:05:14Z",
+      "device_class": "mobile",
+      "navigation_type": "unknown",
+      "delivery_class": "pages_edge",
+      "traffic_class": "production",
+      "observed_at": "2026-09-01T13:05:14Z"
     }
   ],
+  "afterObservations": [],
   "ownerCallTiming": [
     {
       "trace": "cold-mobile-edge-content",

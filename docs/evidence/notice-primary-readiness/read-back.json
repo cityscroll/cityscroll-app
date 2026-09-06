@@ -27,17 +27,17 @@
     "metric_id": "content_ready_ms",
     "surface_id": "notice",
     "component_id": "none",
-    "sampled_count": 2,
-    "window_complete": false,
+    "sampled_count": 5,
+    "window_complete": true,
     "sample_floor": 30,
     "sufficiency": "insufficient_sample",
     "p50_ms": null,
     "p75_ms": null,
     "p95_ms": null,
     "result_states": {
-      "content": 1,
+      "content": 5,
       "empty": 0,
-      "unavailable": 1,
+      "unavailable": 0,
       "error": 0
     },
     "population": {
@@ -45,25 +45,25 @@
         "mobile"
       ],
       "navigation_type": [
-        "navigate"
+        "unknown"
       ],
       "delivery_class": [
         "pages_edge"
       ],
       "traffic_class": [
-        "lab"
+        "production"
       ]
     },
-    "measurement_class": "lab",
-    "window": null,
-    "revision": "9d8777d15"
+    "measurement_class": "field",
+    "window": "2026-08-19T00:00:00Z/2026-09-02T22:10:27Z",
+    "revision": null
   },
   "after": {
     "label": "after",
     "metric_id": "content_ready_ms",
     "surface_id": "notice",
     "component_id": "none",
-    "sampled_count": 2,
+    "sampled_count": 0,
     "window_complete": false,
     "sample_floor": 30,
     "sufficiency": "insufficient_sample",
@@ -71,37 +71,29 @@
     "p75_ms": null,
     "p95_ms": null,
     "result_states": {
-      "content": 1,
+      "content": 0,
       "empty": 0,
-      "unavailable": 1,
+      "unavailable": 0,
       "error": 0
     },
     "population": {
-      "device_class": [
-        "mobile"
-      ],
-      "navigation_type": [
-        "navigate"
-      ],
-      "delivery_class": [
-        "pages_edge"
-      ],
-      "traffic_class": [
-        "lab"
-      ]
+      "device_class": [],
+      "navigation_type": [],
+      "delivery_class": [],
+      "traffic_class": []
     },
-    "measurement_class": "lab",
-    "window": null,
-    "revision": "cfa0f25c7"
+    "measurement_class": "unknown",
+    "window": "2026-09-02T22:10:27Z/2026-09-06T13:40:17Z",
+    "revision": null
   },
   "comparison": {
     "state": "insufficient_sample",
     "reason": "before/after windows must both be complete and meet the sample floor",
-    "measurement_class": "lab",
+    "measurement_class": "mixed",
     "metric_id": "content_ready_ms",
     "surface_id": "notice",
     "component_id": "none",
-    "population_matched": true,
+    "population_matched": false,
     "delta_p50_ms": null,
     "delta_p75_ms": null,
     "delta_p95_ms": null
