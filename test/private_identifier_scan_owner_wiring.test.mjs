@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
+import { randomUUID } from "node:crypto";
 import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
@@ -11,11 +12,13 @@ const GUARD = join(ROOT, "tools/inverse_control_plane_guard.mjs");
 const PREFLIGHT = join(ROOT, "tools/preflight-required-checks.sh");
 
 /**
- * An obviously synthetic sentinel term. Real terms come from an owner-supplied
- * file outside this repository; this fixture proves the wiring without the
- * repository ever carrying a real private identifier.
+ * This test drives the scan through its real entry point against the actual
+ * repository tree (inverse_control_plane_guard.mjs has no root override), so
+ * the term must not appear anywhere in tracked content — including this file's
+ * own source, which a hardcoded literal would put right back in scope. Minting
+ * it at run time keeps the guarantee without a scratch-repo fixture.
  */
-const SENTINEL = "zzqxownerwiringsentinel";
+const SENTINEL = `zzqxownerwiringsentinel-${randomUUID()}`;
 
 test("preflight wires the owner-controlled private-identifier scan behind a documented default path", () => {
   const source = readFileSync(PREFLIGHT, "utf8");
