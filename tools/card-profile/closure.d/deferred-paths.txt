@@ -4,6 +4,8 @@
 # deduplicate, and the next regeneration restores this canonical order.
 artifacts/capability-spine/cs-05-semantic-scout.json
 data/data-source-graph-desk-contract.v1.json
+data/desk-health-publication-cycle.v1.json
+data/diagnostic-card-producer.v1.json
 data/geography/oracles/moda-v2025.09.29.json
 data/geography/qa/first_four_pluto_cross_checks.json
 data/geography/qa/first_four_point_canaries.json
@@ -59,6 +61,7 @@ site/data/community_board_bylaws.json
 site/data/community_board_constellation_lookup.json
 site/data/community_board_financial_identity_crosswalk.json
 site/data/community_board_geography/verification_receipts/overlay_2026-08-12.json
+site/data/community_board_minutes_gap.json
 site/data/community_board_minutes_scorecard.json
 site/data/community_board_money.json
 site/data/community_board_money_comparison.json

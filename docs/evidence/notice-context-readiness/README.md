@@ -13,6 +13,9 @@ The grouped read-back lives in `read-back.json`. It keeps the primary
 undersized window. The 2026-08-26 field baseline remains historical context
 and is not a pass for the p75 ≤ 2500 ms / p95 ≤ 5000 ms gate.
 
+The read-back procedure, the baseline, and each production read-back result are
+recorded in `data/performance/field-rum-readiness-2026-08-26.md`.
+
 Rebuild or verify with:
 
 ```bash
