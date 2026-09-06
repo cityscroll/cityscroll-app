@@ -13,6 +13,7 @@
 /Makefile
 /README.md
 /architecture/
+/architecture/evidence.d/cityscroll-engineering--exact-institution-follow.json
 /architecture/evidence.d/cityscroll-engineering--matter-coverage-recovery.json
 /architecture/evidence.d/cityscroll-engineering--retained-matter-publication-generation.json
 /artifacts/capability-spine/cs-03-entity-relationships.json
@@ -73,6 +74,7 @@
 /docs/evidence-tip-migration.json
 /docs/evidence-tip-migration.md
 /docs/evidence/
+/docs/evidence/exact-institution-follow/
 /docs/evidence/matter-coverage-recovery/
 /docs/evidence/retained-matter-publication-generation/
 /docs/export-parity-audit.md
@@ -456,6 +458,7 @@
 /site/i18n/
 /site/incremental_list.mjs
 /site/index.html
+/site/institution_follow_scope.mjs
 /site/interpret_preview.mjs
 /site/investigation_comparative_signal.mjs
 /site/json_prefer_worker.mjs
@@ -775,11 +778,14 @@
 /site/zoning_hearing_calendar.mjs
 /test/
 /test/civic_institution_related_bodies.test.mjs
+/test/institution_follow_scope.test.mjs
 /tests/
 /tools/
+/tools/capture_exact_institution_follow_evidence.py
 /tools/capture_matter_coverage_recovery_evidence.py
 /tools/capture_related_public_bodies_evidence.py
 /tools/capture_retained_matter_publication_evidence.py
+/tools/render_exact_institution_follow_specimens.mjs
 /tools/render_matter_coverage_recovery_fixtures.mjs
 /tools/render_related_public_bodies_specimens.mjs
 /tools/render_retained_matter_publication_fixtures.mjs

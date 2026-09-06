@@ -15,6 +15,7 @@ import {
 import { renderNodeSection } from "./civic_document_chrome.mjs";
 import { communityBoardMeetingEdgeAccepted } from "./community_board_institution_edges.mjs";
 import { followingUrlFromWatch } from "./following_view.mjs";
+import { communityBoardLabel } from "./community_board_watch.mjs";
 import { calendarFeedUrlForScope } from "./scope_v0.mjs";
 import {
   buildCommunityBoardBylawGraph,
@@ -638,7 +639,7 @@ export function communityBoardParticipationPaths({
   if (followHref) {
     paths.push(pathRecord({
       kind: "follow_board",
-      verb: "Follow this board",
+      verb: `Follow ${communityBoardLabel(calendarWatch.filter.communityBoard) || "this board"}`,
       href: followHref,
       cta: true,
       destination_kind: "internal",

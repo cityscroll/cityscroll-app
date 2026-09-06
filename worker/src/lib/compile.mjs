@@ -27,6 +27,11 @@ import { landFamilySodaWhere, landRowMatchesFamily, normalizeLandFamily } from "
 import { landRowMatchesRegulatoryEffect, normalizeLandRegulatoryEffect } from "../../../site/land_regulatory_effect.mjs";
 import { normalizeGeographyKey } from "../../../site/scope_v0.mjs";
 import { normalizeCommunityBoardRef } from "../../../site/community_board_watch.mjs";
+import {
+  exactInstitutionNoticeMatches,
+  interpretStoredInstitutionFollow,
+  sodaAgencyNameClause,
+} from "../../../site/institution_follow_scope.mjs";
 import { examNumbersForAgency } from "../../../site/staffing_agency_scope.mjs";
 import examCertification from "../../../site/data/exam_certification_constellation.json" with { type: "json" };
 import { loadStaffingExams } from "./staffing_exams_kv.mjs";
@@ -519,9 +524,19 @@ export function compileSub(sub, todayISO) {
     if (!name) return null;
     const mergeRows = (rows) => mergeProcurementDigestMatches(sub, rows, digestSnapshot, todayISO);
     if (kind === "agency") {
+      const exact = interpretStoredInstitutionFollow({ lens: "entity", filter: f });
+      if (exact.status === "unsupported") return null;
+      const names = exact.matching_mode === "canonical_id"
+        ? (exact.publisher_names?.length ? exact.publisher_names : [name])
+        : [name];
+      const where = sodaAgencyNameClause(names);
+      if (!where) return null;
       return {
         url: SODA, idField: "digest_id", kind: "entity",
-        params: { "$select": CR_SELECT_EV, "$where": `agency_name='${name.replace(/'/g, "''")}'`, "$order": "start_date DESC", "$limit": "25" },
+        params: { "$select": CR_SELECT_EV, "$where": where, "$order": "start_date DESC", "$limit": "25" },
+        ...(exact.matching_mode === "canonical_id"
+          ? { postFilter: (row) => exactInstitutionNoticeMatches(exact, row) }
+          : {}),
         mergeRows,
       };
     }

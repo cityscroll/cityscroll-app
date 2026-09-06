@@ -29,6 +29,7 @@ architecture/evidence.d/cityscroll-civic-institutions--ci-j1-governing-board-com
 architecture/evidence.d/cityscroll-civic-institutions--ci-k1-compatibility-uncertainty-navigation.json
 architecture/evidence.d/cityscroll-engineering--exact-council-matter-watch-updates.json
 architecture/evidence.d/cityscroll-engineering--buyer-history-pursuit-comparison.json
+architecture/evidence.d/cityscroll-engineering--exact-institution-follow.json
 architecture/evidence.d/cityscroll-engineering--matter-coverage-recovery.json
 architecture/evidence.d/cityscroll-engineering--related-public-bodies.json
 architecture/evidence.d/cityscroll-engineering--retained-matter-publication-generation.json
@@ -158,6 +159,7 @@ docs/evidence/ci-09-working-copy-reduction/raw/closure/card-profile-contract.jso
 docs/evidence/ci-09-working-copy-reduction/raw/closure/card-reconciliation.json
 docs/evidence/ci-09-working-copy-reduction/raw/closure/worker-unit.json
 docs/evidence/exact-council-matter-watch-updates/manifest.json
+docs/evidence/exact-institution-follow/manifest.json
 docs/evidence/matter-coverage-recovery/manifest.json
 docs/evidence/related-public-bodies/manifest.json
 docs/evidence/retained-matter-publication-generation/manifest.json
@@ -555,6 +557,7 @@ site/i18n/lang/ur.js
 site/i18n/lang/zh-Hans.js
 site/incremental_list.mjs
 site/index.html
+site/institution_follow_scope.mjs
 site/interpret_preview.mjs
 site/investigation_comparative_signal.mjs
 site/json_prefer_worker.mjs
@@ -1148,6 +1151,7 @@ test/i18n_fallback_sync.test.mjs
 test/ibo_fiscal_history.test.mjs
 test/ida_notice_defects.test.mjs
 test/incremental_list.test.mjs
+test/institution_follow_scope.test.mjs
 test/intelligence_flywheel.test.mjs
 test/interpret_preview.test.mjs
 test/inverse_control_plane_guard.test.mjs
@@ -1712,6 +1716,7 @@ tools/build_zap_warehouse_lookup.mjs
 tools/build_zoning_statistics.mjs
 tools/capa_addendum_eval.mjs
 tools/capture_exact_council_matter_watch_update_evidence.py
+tools/capture_exact_institution_follow_evidence.py
 tools/capture_matter_coverage_recovery_evidence.py
 tools/capture_related_public_bodies_evidence.py
 tools/capture_retained_matter_publication_evidence.py
@@ -1853,6 +1858,7 @@ tools/render_civic_action_paths_after.mjs
 tools/render_community_board_ways_to_participate.mjs
 tools/render_digest_awareness_evidence.mjs
 tools/render_exact_council_matter_watch_update_fixtures.mjs
+tools/render_exact_institution_follow_specimens.mjs
 tools/render_matter_coverage_recovery_fixtures.mjs
 tools/render_process_conformance_fixture.mjs
 tools/render_related_public_bodies_specimens.mjs

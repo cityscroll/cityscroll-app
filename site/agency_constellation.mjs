@@ -34,7 +34,7 @@ import {
   projectAgencyConstellationAsOf,
   renderCivicTimeLedgerPanel,
 } from "./civic_time_ledger.mjs";
-import { buildAgencyEdgeSummary } from "./agency_constellation_model.mjs";
+import { agencyConstellationFollowLabel, buildAgencyEdgeSummary } from "./agency_constellation_model.mjs";
 import {
   buildAgencyConstellationClaimReportTarget,
   buildEntityProfileReportTarget,
@@ -269,7 +269,7 @@ export function renderAgencyConstellationDocument(view, options = {}) {
     }
     : null;
   const primaryActions = renderNodeActions([
-    { kind: "link", label: "Follow this agency", href: view.follow_href, primary: true, className: "civic-object-action" },
+    { kind: "link", label: agencyConstellationFollowLabel(view.canonical_id || view.subject_ref), href: view.follow_href, primary: true, className: "civic-object-action" },
     petitionAction,
     primaryRecordAction(surfaceEdgeSummary),
     { kind: "link", label: "Connection evidence", href: "#edge-provenance", className: "civic-object-action agency-evidence-action" },

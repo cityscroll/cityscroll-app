@@ -1,0 +1,473 @@
+{
+  "schema": "cityscroll.exact_institution_follow_evidence.v1",
+  "subject": "exact institution named through follow initiation, preview, failure recovery, and reload",
+  "routes": [
+    "/agencies/office-of-racial-equity/",
+    "/agencies/commission-on-racial-equity/",
+    "/agencies/metropolitan-transportation-authority/",
+    "/agencies/n-y-c-transit-authority/",
+    "/community-boards/brooklyn-cb-15/",
+    "/following-exact-office-of-racial-equity.html",
+    "/following-exact-commission-on-racial-equity.html",
+    "/following-exact-n-y-c-transit-authority.html",
+    "/following-exact-brooklyn-cb-15.html",
+    "/following-stored-office-spelling.html"
+  ],
+  "revision": "4b92a0c8e59d48cd912096e4d0590085126de44e",
+  "data_vintage": "2026-09-05",
+  "captured_at": "2026-09-06T10:50:56Z",
+  "image_directory": ".artifacts/exact-institution-follow",
+  "image_policy": "Capture images are written to the ignored local directory above and are never committed. This manifest is the tracked proof: route, viewport, revision, data vintage, assertion and SHA-256 for each capture.",
+  "files": [
+    {
+      "name": "ore-start-inspect-failed-save-retry-390x844.png",
+      "specimen": "ore-start-inspect-failed-save-retry",
+      "route": "/agencies/office-of-racial-equity/",
+      "viewport": [
+        390,
+        844
+      ],
+      "scripting": true,
+      "revision": "4b92a0c8e59d48cd912096e4d0590085126de44e",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 390px Office of Racial Equity follow, inspect, failed save, and retry keep that institution",
+      "observations": {
+        "follow_label_names_institution": true,
+        "follow_href_names_this_body": true,
+        "follow_href_excludes_the_other_body": true,
+        "inspected_related_source_without_leaving": true,
+        "inspection_did_not_save": true,
+        "preview_names_institution": true,
+        "preview_names_record_scope": true,
+        "inspected_scope_details": true,
+        "failed_save_kept_email": true,
+        "failed_save_kept_filter": true,
+        "retry_control_present": true,
+        "retry_kept_email": true,
+        "touch_target_failures": [],
+        "no_horizontal_overflow": true
+      },
+      "bytes": 309093,
+      "sha256": "d2b8b4e4e8b11e5aef8b52c6b33566bbe83473771976e9233f5141d87840b7d0",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "ore-start-inspect-failed-save-retry-1440x900.png",
+      "specimen": "ore-start-inspect-failed-save-retry",
+      "route": "/agencies/office-of-racial-equity/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "scripting": true,
+      "revision": "4b92a0c8e59d48cd912096e4d0590085126de44e",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 1440px Office of Racial Equity follow, inspect, failed save, and retry keep that institution",
+      "observations": {
+        "follow_label_names_institution": true,
+        "follow_href_names_this_body": true,
+        "follow_href_excludes_the_other_body": true,
+        "inspected_related_source_without_leaving": true,
+        "inspection_did_not_save": true,
+        "preview_names_institution": true,
+        "preview_names_record_scope": true,
+        "inspected_scope_details": true,
+        "failed_save_kept_email": true,
+        "failed_save_kept_filter": true,
+        "retry_control_present": true,
+        "retry_kept_email": true,
+        "touch_target_failures": [],
+        "no_horizontal_overflow": true
+      },
+      "bytes": 367852,
+      "sha256": "0cb46af194bc0f1d570ca4affb4def1c2486d96414e0dd5c7275216ac2309396",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "core-save-reload-390x844.png",
+      "specimen": "core-save-reload",
+      "route": "/agencies/commission-on-racial-equity/",
+      "viewport": [
+        390,
+        844
+      ],
+      "scripting": true,
+      "revision": "4b92a0c8e59d48cd912096e4d0590085126de44e",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 390px the Commission follow reloads as the Commission, not the Office",
+      "observations": {
+        "follow_href_is_commission": true,
+        "follow_href_is_not_office": true,
+        "preview_names_commission": true,
+        "reload_kept_commission": true,
+        "reload_excludes_office": true,
+        "touch_target_failures": [],
+        "no_horizontal_overflow": true
+      },
+      "bytes": 232177,
+      "sha256": "9f0502fd3def7c1fddb90cec9d733efc4d7565becc262ee1682f37d45b18332e",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "core-save-reload-1440x900.png",
+      "specimen": "core-save-reload",
+      "route": "/agencies/commission-on-racial-equity/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "scripting": true,
+      "revision": "4b92a0c8e59d48cd912096e4d0590085126de44e",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 1440px the Commission follow reloads as the Commission, not the Office",
+      "observations": {
+        "follow_href_is_commission": true,
+        "follow_href_is_not_office": true,
+        "preview_names_commission": true,
+        "reload_kept_commission": true,
+        "reload_excludes_office": true,
+        "touch_target_failures": [],
+        "no_horizontal_overflow": true
+      },
+      "bytes": 275160,
+      "sha256": "db612c5d7118541bbf9de982dd03044a913257d3fd10580e0dedea81eb0db7c6",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "operating-body-distinct-from-mta-390x844.png",
+      "specimen": "operating-body-distinct-from-mta",
+      "route": "/agencies/n-y-c-transit-authority/",
+      "viewport": [
+        390,
+        844
+      ],
+      "scripting": true,
+      "revision": "4b92a0c8e59d48cd912096e4d0590085126de44e",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 390px an MTA operating-body follow stays distinct from the authority",
+      "observations": {
+        "mta_and_operating_body_follows_differ": true,
+        "operating_body_follow_excludes_mta_id": true,
+        "preview_names_operating_body": true,
+        "preview_excludes_whole_mta_group": true,
+        "touch_target_failures": [],
+        "no_horizontal_overflow": true
+      },
+      "bytes": 230261,
+      "sha256": "aa94eaf85560c42637fef609cec1dd568b7145bb6af0183a74e3c506ccb65c55",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "operating-body-distinct-from-mta-1440x900.png",
+      "specimen": "operating-body-distinct-from-mta",
+      "route": "/agencies/n-y-c-transit-authority/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "scripting": true,
+      "revision": "4b92a0c8e59d48cd912096e4d0590085126de44e",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 1440px an MTA operating-body follow stays distinct from the authority",
+      "observations": {
+        "mta_and_operating_body_follows_differ": true,
+        "operating_body_follow_excludes_mta_id": true,
+        "preview_names_operating_body": true,
+        "preview_excludes_whole_mta_group": true,
+        "touch_target_failures": [],
+        "no_horizontal_overflow": true
+      },
+      "bytes": 272924,
+      "sha256": "ec1c2a0b5643e77a796d04ba04697eb03cd02034802d9b3babe14242b4942bfb",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "community-board-follow-390x844.png",
+      "specimen": "community-board-follow",
+      "route": "/community-boards/brooklyn-cb-15/",
+      "viewport": [
+        390,
+        844
+      ],
+      "scripting": true,
+      "revision": "4b92a0c8e59d48cd912096e4d0590085126de44e",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 390px Community Board follow reuses the board meetings capability",
+      "observations": {
+        "follow_names_board": true,
+        "follow_uses_board_identity": true,
+        "preview_names_board_meetings": true,
+        "scope_excludes_borough_office": true,
+        "touch_target_failures": [],
+        "no_horizontal_overflow": true
+      },
+      "bytes": 231641,
+      "sha256": "ea442c19e9a39608d4d4c48d49274530f43713d91ffe6bc0911d60eefa582e14",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "community-board-follow-1440x900.png",
+      "specimen": "community-board-follow",
+      "route": "/community-boards/brooklyn-cb-15/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "scripting": true,
+      "revision": "4b92a0c8e59d48cd912096e4d0590085126de44e",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 1440px Community Board follow reuses the board meetings capability",
+      "observations": {
+        "follow_names_board": true,
+        "follow_uses_board_identity": true,
+        "preview_names_board_meetings": true,
+        "scope_excludes_borough_office": true,
+        "touch_target_failures": [],
+        "no_horizontal_overflow": true
+      },
+      "bytes": 285306,
+      "sha256": "4fb65d95bd4179392db5bb94a5ea385e79160fad6be06a233b7f573dc50711f8",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "stored-name-not-reassigned-390x844.png",
+      "specimen": "stored-name-not-reassigned",
+      "route": "/following-stored-office-spelling.html",
+      "viewport": [
+        390,
+        844
+      ],
+      "scripting": true,
+      "revision": "4b92a0c8e59d48cd912096e4d0590085126de44e",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 390px a stored OFFICE OF RACIAL EQUITY watch keeps that name and offers an explicit correction",
+      "observations": {
+        "stored_name_still_shown": true,
+        "correction_is_explicit": true,
+        "filter_was_not_rewritten_to_office_id": true,
+        "touch_target_failures": [],
+        "no_horizontal_overflow": true
+      },
+      "bytes": 277530,
+      "sha256": "544531841a2139f036a5610634a93aeeb31703bf24b1198c48aab4e72cb08c7f",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "stored-name-not-reassigned-1440x900.png",
+      "specimen": "stored-name-not-reassigned",
+      "route": "/following-stored-office-spelling.html",
+      "viewport": [
+        1440,
+        900
+      ],
+      "scripting": true,
+      "revision": "4b92a0c8e59d48cd912096e4d0590085126de44e",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 1440px a stored OFFICE OF RACIAL EQUITY watch keeps that name and offers an explicit correction",
+      "observations": {
+        "stored_name_still_shown": true,
+        "correction_is_explicit": true,
+        "filter_was_not_rewritten_to_office_id": true,
+        "touch_target_failures": [],
+        "no_horizontal_overflow": true
+      },
+      "bytes": 323475,
+      "sha256": "71833850f8d863e6922ffe7f57862d81ba23373d4edafe0d01442c77f0989229",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "keyboard-office-follow-390x844.png",
+      "specimen": "keyboard-office-follow",
+      "route": "/agencies/office-of-racial-equity/",
+      "viewport": [
+        390,
+        844
+      ],
+      "scripting": true,
+      "revision": "4b92a0c8e59d48cd912096e4d0590085126de44e",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 390px keyboard focus opens Office of Racial Equity follow details without saving",
+      "observations": {
+        "keyboard_opened_scope_details": true,
+        "preview_names_office": true,
+        "touch_target_failures": [],
+        "no_horizontal_overflow": true
+      },
+      "bytes": 294954,
+      "sha256": "fcc4d259d3d706134d36c41785f86d332f52ec389521f636503a2008f198da89",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "keyboard-office-follow-1440x900.png",
+      "specimen": "keyboard-office-follow",
+      "route": "/agencies/office-of-racial-equity/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "scripting": true,
+      "revision": "4b92a0c8e59d48cd912096e4d0590085126de44e",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 1440px keyboard focus opens Office of Racial Equity follow details without saving",
+      "observations": {
+        "keyboard_opened_scope_details": true,
+        "preview_names_office": true,
+        "touch_target_failures": [],
+        "no_horizontal_overflow": true
+      },
+      "bytes": 350533,
+      "sha256": "d63ab015be2c8cbe8d354142a582b39a2228f2df1164551bc9358d3e988842b5",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "without-scripting-office-follow-390x844.png",
+      "specimen": "without-scripting-office-follow",
+      "route": "/agencies/office-of-racial-equity/",
+      "viewport": [
+        390,
+        844
+      ],
+      "scripting": false,
+      "revision": "4b92a0c8e59d48cd912096e4d0590085126de44e",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 390px with scripting unavailable the Office follow remains a real anchor",
+      "observations": {
+        "follow_is_real_anchor": true,
+        "follow_names_office": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 214999,
+      "sha256": "7550057b06c32952d79491328b7c835e6c3a2125876f37e24a0e69f3f5f662bb",
+      "axe": {
+        "violations_total": null,
+        "failing_violations": [],
+        "passes": null,
+        "skipped": "scripting disabled for this specimen"
+      }
+    },
+    {
+      "name": "without-scripting-office-follow-1440x900.png",
+      "specimen": "without-scripting-office-follow",
+      "route": "/agencies/office-of-racial-equity/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "scripting": false,
+      "revision": "4b92a0c8e59d48cd912096e4d0590085126de44e",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 1440px with scripting unavailable the Office follow remains a real anchor",
+      "observations": {
+        "follow_is_real_anchor": true,
+        "follow_names_office": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 250203,
+      "sha256": "0d334b47bf325fb83b8c4f11ae0accbc0255b9316e90932490af6e6357c9c1b1",
+      "axe": {
+        "violations_total": null,
+        "failing_violations": [],
+        "passes": null,
+        "skipped": "scripting disabled for this specimen"
+      }
+    },
+    {
+      "name": "two-hundred-percent-zoom-390x844.png",
+      "specimen": "two-hundred-percent-zoom",
+      "route": "/following-exact-office-of-racial-equity.html",
+      "viewport": [
+        390,
+        844
+      ],
+      "scripting": true,
+      "revision": "4b92a0c8e59d48cd912096e4d0590085126de44e",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 390px and 200 percent zoom the Office follow keeps its name and column",
+      "observations": {
+        "institution_named_at_zoom": true,
+        "touch_target_failures": [],
+        "no_horizontal_overflow": true
+      },
+      "bytes": 570211,
+      "sha256": "15feba4edef429c816077fc157b077dce7259f552b30288bca2354ba3b056739",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "two-hundred-percent-zoom-1440x900.png",
+      "specimen": "two-hundred-percent-zoom",
+      "route": "/following-exact-office-of-racial-equity.html",
+      "viewport": [
+        1440,
+        900
+      ],
+      "scripting": true,
+      "revision": "4b92a0c8e59d48cd912096e4d0590085126de44e",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 1440px and 200 percent zoom the Office follow keeps its name and column",
+      "observations": {
+        "institution_named_at_zoom": true,
+        "touch_target_failures": [],
+        "no_horizontal_overflow": true
+      },
+      "bytes": 613028,
+      "sha256": "fa19a377aa530a0e0c90d031f194059bb16ce00ab79e416235195b1cb2e6b87c",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    }
+  ]
+}

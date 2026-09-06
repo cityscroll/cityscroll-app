@@ -14,6 +14,10 @@
 
 import { vendorStem, monthsFromISO } from "./compile.mjs";
 import { d1DispatchExactCouncilMatter } from "./council_matter_watch_activation.mjs";
+import {
+  exactInstitutionNoticeMatches,
+  interpretStoredInstitutionFollow,
+} from "../../../site/institution_follow_scope.mjs";
 
 // Lenses whose data lives outside the D1 notices mirror — always use SODA for these.
 // land (ZAP dataset hgx4-8ukb) is the primary case.
@@ -98,8 +102,11 @@ export function subToD1Opts(sub, todayISO) {
     const kind = f.kind === "agency" ? "agency" : "vendor";
     if (!name) return null;
     if (kind === "agency") {
-      // Exact agency match across all sections
-      return { agency: name, limit: 25 };
+      const exact = interpretStoredInstitutionFollow({ lens: "entity", filter: f });
+      if (exact.status === "unsupported") return null;
+      // Exact stored name, or the selected institution's canonical name.
+      // Canonical-id watches add a postFilter so related bodies cannot match.
+      return { agency: exact.canonical_name || name, limit: 25 };
     }
     const stem = vendorStem(name);
     if (stem.length < 3) return null;
@@ -124,6 +131,14 @@ export function compileSub_d1(sub, todayISO) {
   if (sub.lens === "entity" && f.kind !== "agency" && f.name) {
     const stem = vendorStem(f.name);
     postFilter = (row) => vendorStem(row.vendor_name || "") === stem;
+  }
+  if (sub.lens === "entity" && f.kind === "agency") {
+    const exact = interpretStoredInstitutionFollow({ lens: "entity", filter: f });
+    if (exact.matching_mode === "canonical_id") {
+      postFilter = (row) => exactInstitutionNoticeMatches(exact, {
+        agency_name: row.agency_name || row.agency,
+      });
+    }
   }
 
   return { opts, postFilter };

@@ -230,7 +230,7 @@ test("Manhattan CB2 ways-to-participate keeps board-local verbs, closed applicat
     assert.match(html, /Ways to participate/);
     assert.match(html, /Attend the next board meeting/);
     assert.match(html, /Add to calendar/);
-    assert.match(html, /Follow this board/);
+    assert.match(html, /Follow Manhattan Community Board 2/);
     assert.match(html, /Contact this board/);
     assert.match(html, /Public committee membership/);
     assert.match(html, /The published application window is closed/);
@@ -264,7 +264,7 @@ test("a board without equivalent evidence omits service and application opportun
   assert.deepEqual(paths.map((path) => path.kind), ["follow_board", "contact_board"]);
   assert.equal(paths.every((path) => path.cross_board_inference === false), true);
   const html = renderCommunityBoardParticipationSection(paths);
-  assert.match(html, /Follow this board/);
+  assert.match(html, /Follow Bronx Community Board 2/);
   assert.match(html, /Contact this board/);
   assert.doesNotMatch(html, /Apply now/);
   assert.doesNotMatch(html, /Public committee membership/);

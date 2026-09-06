@@ -1,0 +1,29 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/exact-institution-follow",
+  "status": "implemented",
+  "fingerprint": "exact-institution-follow.v1",
+  "updated_at": "2026-09-06T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "exact-institution-follow-scope",
+      "path": "site/institution_follow_scope.mjs"
+    },
+    {
+      "id": "exact-institution-follow-tests",
+      "path": "test/institution_follow_scope.test.mjs"
+    },
+    {
+      "id": "exact-institution-follow-capture-manifest",
+      "path": "docs/evidence/exact-institution-follow/manifest.json"
+    },
+    {
+      "id": "exact-institution-follow-capture-tool",
+      "path": "tools/capture_exact_institution_follow_evidence.py"
+    },
+    {
+      "id": "exact-institution-follow-specimen-renderer",
+      "path": "tools/render_exact_institution_follow_specimens.mjs"
+    }
+  ]
+}

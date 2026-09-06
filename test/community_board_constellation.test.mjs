@@ -372,7 +372,7 @@ test("Manhattan CB2 board document composes source-backed ways to participate wi
   assert.match(html, /Ways to participate/);
   assert.match(html, /Attend the next board meeting/);
   assert.match(html, /Add to calendar/);
-  assert.match(html, /Follow this board/);
+  assert.match(html, /Follow Manhattan Community Board 2/);
   assert.match(html, /Contact this board/);
   assert.match(html, /Public committee membership/);
   assert.match(html, /participation-source:manhattan-bp:2026/);
@@ -390,7 +390,7 @@ test("a board without equivalent participation evidence keeps records and omits 
     communityBoardParticipation,
   }));
   assert.match(html, /data-community-board-participation="1"/);
-  assert.match(html, /Follow this board/);
+  assert.match(html, /Follow Bronx Community Board 2/);
   assert.match(html, /Contact this board/);
   assert.match(html, /About this board/);
   assert.match(html, /Sources &amp; coverage/);

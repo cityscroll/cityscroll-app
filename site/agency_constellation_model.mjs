@@ -9,6 +9,7 @@
  */
 
 import { reconcileAgencyIdentity, resolveAgencyIdentity } from "./agency_identity.mjs";
+import { exactInstitutionFollow } from "./institution_follow_scope.mjs";
 import { projectStatutoryInstitutionIdentity } from "./civic_institution_statutory_identity.mjs";
 import { projectRelatedPublicBodies } from "./civic_institution_related_bodies.mjs";
 import {
@@ -242,12 +243,17 @@ export function agencyCategoryFollowHref(id, categoryId, { frequency = "weekly" 
 }
 
 export function agencyConstellationFollowHref(id, { frequency = "weekly" } = {}) {
-  const identity = resolveAgencyIdentity(id);
-  if (!identity.canonical_name) return "/following/";
+  const exact = exactInstitutionFollow(id);
+  if (exact.status !== "ok") return "/following/";
   return followingUrlFromWatch(
-    { lens: "entity", filter: { kind: "agency", name: identity.canonical_name } },
+    { lens: exact.lens, filter: exact.filter },
     { frequency },
   );
+}
+
+export function agencyConstellationFollowLabel(id) {
+  const exact = exactInstitutionFollow(id);
+  return exact.status === "ok" ? exact.follow_label : "Follow this public body";
 }
 
 function attachClaim(item, { categoryId, relation, identity }) {
