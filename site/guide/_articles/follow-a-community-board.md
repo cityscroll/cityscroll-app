@@ -13,6 +13,8 @@ related:
   - Follow a search and manage your updates | /guide/how-to/follow-a-search/
   - Find and narrow records | /guide/how-to/find-and-narrow-records/
   - Community Boards on CityScroll | /community-boards/
+  - What a public record tells you | /guide/understand/what-a-public-record-tells-you/
+  - Glossary of CityScroll terms | /guide/reference/glossary/
 sources:
   - The City Record Online, published by the City of New York | https://a856-cityrecord.nyc.gov/
 ---
@@ -45,6 +47,11 @@ picked under the **Hearings and meetings** topic; council-district updates are t
 **City Council District weekly**, listed under **More topics**. That topic's district field carries
 a note reading "Not a Community Board", the numbering of each, and a link straight to the board
 picker. If you find yourself typing 7 into a box labelled 1 to 51, you are on the wrong control.
+
+Why they are different things, rather than two spellings of the same one, is
+[what a public record tells you](/guide/understand/what-a-public-record-tells-you/); the short
+definitions are in the [glossary](/guide/reference/glossary/). You do not need either to finish this
+page.
 
 ## Step 1 — Choose the hearings and meetings topic
 

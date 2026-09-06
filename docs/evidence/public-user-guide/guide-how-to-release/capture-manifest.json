@@ -3,7 +3,7 @@
   "record": "cityscroll-engineering/guide-everyday-how-to-articles",
   "capture_mode": "local_static_site_playwright_no_committed_image",
   "base": "local static site build (site/)",
-  "repository_revision": "c9f5e65d5976933949b0a34d26f14861f16447d0",
+  "repository_revision": "08e4ce1839ef17e296f8a9455aa3cd176deaa002",
   "repository_state": "uncommitted changes present at capture time",
   "note": "Usability and walkthrough evidence for the five everyday how-to guides. Every check runs against the tracked static documents served locally, so it reproduces from a checkout with no network and no deploy. Accessibility, keyboard, reflow and link checks cover the guide documents this change adds; the product routes each article names keep their existing owners and are exercised here only as walkthrough endpoints, where the assertion is that the document serves and Back returns. Screenshots stay under the ignored .artifacts/ path and only their sha256 is recorded, per docs/capture-manifest-guard.md.",
   "read_only_contract": "Public inspection only. The walkthroughs follow anchors to the routes named in tools/capture_guide_how_to_walkthroughs.py and nothing else. No email address is entered, no testimony is submitted and no calendar subscription is created; every form submission is blocked and recorded, and any request to a signup, preference, confirmation, unsubscribe or feed route would fail the run. Both counts are reported per walkthrough below.",
@@ -47,16 +47,16 @@
       "horizontal_overflow_at_200_percent_px": 0,
       "targets_below_24px": [],
       "keyboard": {
-        "links": 11,
-        "reached": 11,
+        "links": 13,
+        "reached": 13,
         "unreachable": [],
         "withoutIndicator": []
       },
       "axe_critical_or_serious": [],
-      "internal_links_checked": 14,
+      "internal_links_checked": 16,
       "broken_internal_links": [],
-      "visible_text_characters": 6470,
-      "content_sha256": "f6e0e50444d7705a7f2d241791d00da47477ff3d064e425fc679b3fafc665401",
+      "visible_text_characters": 6525,
+      "content_sha256": "6899dc4299cafd007f55178034834e4a3dd26325760349479651c9750e3e5976",
       "capture_sha256": "15ff1fa15a235d08e593deaf1fab6165d638db27f2284f299d506ea69065c0ef",
       "local_capture_path": ".artifacts/guide-how-to-release/h1-390.png",
       "file": null
@@ -74,16 +74,16 @@
       "horizontal_overflow_at_200_percent_px": 0,
       "targets_below_24px": [],
       "keyboard": {
-        "links": 6,
-        "reached": 6,
+        "links": 7,
+        "reached": 7,
         "unreachable": [],
         "withoutIndicator": []
       },
       "axe_critical_or_serious": [],
-      "internal_links_checked": 10,
+      "internal_links_checked": 11,
       "broken_internal_links": [],
-      "visible_text_characters": 6215,
-      "content_sha256": "948f43b0953648fa46533a8eb3ba2d4e461000d7c63fd6d0f3add88813ccbbd3",
+      "visible_text_characters": 6247,
+      "content_sha256": "4ba1624e5ac7bbb9d9892b3b236386a7c0c7246381e37f561bd57c0d79b0e7b4",
       "capture_sha256": "9c04c00842225078859d4e53ca0092f027c1a1a82d7373798870550fb5124e04",
       "local_capture_path": ".artifacts/guide-how-to-release/h2-390.png",
       "file": null
@@ -101,16 +101,16 @@
       "horizontal_overflow_at_200_percent_px": 0,
       "targets_below_24px": [],
       "keyboard": {
-        "links": 6,
-        "reached": 6,
+        "links": 8,
+        "reached": 8,
         "unreachable": [],
         "withoutIndicator": []
       },
       "axe_critical_or_serious": [],
-      "internal_links_checked": 10,
+      "internal_links_checked": 12,
       "broken_internal_links": [],
-      "visible_text_characters": 6437,
-      "content_sha256": "196b097c7d70e73e6448307c8542bd05fa4f63b2840b50bd132f9fa00983fdcc",
+      "visible_text_characters": 6694,
+      "content_sha256": "ba9935a463b2e756ebfd3ca79db762630f8b4596440eea39c04482da8435ce11",
       "capture_sha256": "d6d107a077c79a08fc13260a56a8a7de0545eccc6b1de461479f185e4e6a9541",
       "local_capture_path": ".artifacts/guide-how-to-release/h3-390.png",
       "file": null
@@ -128,16 +128,16 @@
       "horizontal_overflow_at_200_percent_px": 0,
       "targets_below_24px": [],
       "keyboard": {
-        "links": 8,
-        "reached": 8,
+        "links": 10,
+        "reached": 10,
         "unreachable": [],
         "withoutIndicator": []
       },
       "axe_critical_or_serious": [],
-      "internal_links_checked": 11,
+      "internal_links_checked": 13,
       "broken_internal_links": [],
-      "visible_text_characters": 6734,
-      "content_sha256": "c1b025da2c899b71a63ab3b191a6566cbb6b6b6b6057459abb1bf5b2cded0e89",
+      "visible_text_characters": 6793,
+      "content_sha256": "36a2fbd60cb1cb5b4510325708903a986651a751f495ffa8dfbee7fd39cde396",
       "capture_sha256": "11c48da91a17f40b493bf95cf1ca96431ec732ddbdedbc145553581e27d0745f",
       "local_capture_path": ".artifacts/guide-how-to-release/h4-390.png",
       "file": null
@@ -155,16 +155,16 @@
       "horizontal_overflow_at_200_percent_px": 0,
       "targets_below_24px": [],
       "keyboard": {
-        "links": 7,
-        "reached": 7,
+        "links": 9,
+        "reached": 9,
         "unreachable": [],
         "withoutIndicator": []
       },
       "axe_critical_or_serious": [],
-      "internal_links_checked": 11,
+      "internal_links_checked": 13,
       "broken_internal_links": [],
-      "visible_text_characters": 6291,
-      "content_sha256": "cf1799a167247666b97e69840ae19e14f4eb93b85b8f55c4b0310bf86c025101",
+      "visible_text_characters": 6349,
+      "content_sha256": "466d955b666a923229711e0b283302cc1f4ef31419e6a504a9e8b079e3bbf1e8",
       "capture_sha256": "0f372d362836e42063aa9d7f9bd9c1157abad4105b9df85e05d7dcd74881fc58",
       "local_capture_path": ".artifacts/guide-how-to-release/h5-390.png",
       "file": null
@@ -182,16 +182,16 @@
       "horizontal_overflow_at_200_percent_px": 0,
       "targets_below_24px": [],
       "keyboard": {
-        "links": 11,
-        "reached": 11,
+        "links": 13,
+        "reached": 13,
         "unreachable": [],
         "withoutIndicator": []
       },
       "axe_critical_or_serious": [],
-      "internal_links_checked": 14,
+      "internal_links_checked": 16,
       "broken_internal_links": [],
-      "visible_text_characters": 6470,
-      "content_sha256": "f6e0e50444d7705a7f2d241791d00da47477ff3d064e425fc679b3fafc665401",
+      "visible_text_characters": 6525,
+      "content_sha256": "6899dc4299cafd007f55178034834e4a3dd26325760349479651c9750e3e5976",
       "capture_sha256": "d1727968c42ca3e56a6bc7599737f8ebf844687d3e089fca2bda3f2bcf39c6e9",
       "local_capture_path": ".artifacts/guide-how-to-release/h1-1440.png",
       "file": null
@@ -209,16 +209,16 @@
       "horizontal_overflow_at_200_percent_px": 0,
       "targets_below_24px": [],
       "keyboard": {
-        "links": 6,
-        "reached": 6,
+        "links": 7,
+        "reached": 7,
         "unreachable": [],
         "withoutIndicator": []
       },
       "axe_critical_or_serious": [],
-      "internal_links_checked": 10,
+      "internal_links_checked": 11,
       "broken_internal_links": [],
-      "visible_text_characters": 6215,
-      "content_sha256": "948f43b0953648fa46533a8eb3ba2d4e461000d7c63fd6d0f3add88813ccbbd3",
+      "visible_text_characters": 6247,
+      "content_sha256": "4ba1624e5ac7bbb9d9892b3b236386a7c0c7246381e37f561bd57c0d79b0e7b4",
       "capture_sha256": "712a05c857bdf64556924b05452f4e524523b120f20f1d7cca6bb1a4353b6aec",
       "local_capture_path": ".artifacts/guide-how-to-release/h2-1440.png",
       "file": null
@@ -236,16 +236,16 @@
       "horizontal_overflow_at_200_percent_px": 0,
       "targets_below_24px": [],
       "keyboard": {
-        "links": 6,
-        "reached": 6,
+        "links": 8,
+        "reached": 8,
         "unreachable": [],
         "withoutIndicator": []
       },
       "axe_critical_or_serious": [],
-      "internal_links_checked": 10,
+      "internal_links_checked": 12,
       "broken_internal_links": [],
-      "visible_text_characters": 6437,
-      "content_sha256": "196b097c7d70e73e6448307c8542bd05fa4f63b2840b50bd132f9fa00983fdcc",
+      "visible_text_characters": 6694,
+      "content_sha256": "ba9935a463b2e756ebfd3ca79db762630f8b4596440eea39c04482da8435ce11",
       "capture_sha256": "9460a1d2314a9a4ed81643929f2de664e913afb97ba0aa07d89e6209116d5961",
       "local_capture_path": ".artifacts/guide-how-to-release/h3-1440.png",
       "file": null
@@ -263,16 +263,16 @@
       "horizontal_overflow_at_200_percent_px": 0,
       "targets_below_24px": [],
       "keyboard": {
-        "links": 8,
-        "reached": 8,
+        "links": 10,
+        "reached": 10,
         "unreachable": [],
         "withoutIndicator": []
       },
       "axe_critical_or_serious": [],
-      "internal_links_checked": 11,
+      "internal_links_checked": 13,
       "broken_internal_links": [],
-      "visible_text_characters": 6734,
-      "content_sha256": "c1b025da2c899b71a63ab3b191a6566cbb6b6b6b6057459abb1bf5b2cded0e89",
+      "visible_text_characters": 6793,
+      "content_sha256": "36a2fbd60cb1cb5b4510325708903a986651a751f495ffa8dfbee7fd39cde396",
       "capture_sha256": "9fc3eaefc4c0a961f0076c432cd6ce87a416c1c1141e4157e100ef7f8117ce6a",
       "local_capture_path": ".artifacts/guide-how-to-release/h4-1440.png",
       "file": null
@@ -290,16 +290,16 @@
       "horizontal_overflow_at_200_percent_px": 0,
       "targets_below_24px": [],
       "keyboard": {
-        "links": 7,
-        "reached": 7,
+        "links": 9,
+        "reached": 9,
         "unreachable": [],
         "withoutIndicator": []
       },
       "axe_critical_or_serious": [],
-      "internal_links_checked": 11,
+      "internal_links_checked": 13,
       "broken_internal_links": [],
-      "visible_text_characters": 6291,
-      "content_sha256": "cf1799a167247666b97e69840ae19e14f4eb93b85b8f55c4b0310bf86c025101",
+      "visible_text_characters": 6349,
+      "content_sha256": "466d955b666a923229711e0b283302cc1f4ef31419e6a504a9e8b079e3bbf1e8",
       "capture_sha256": "0526a538a5d10f7dd97b6b01abda894258f4164272f64711e6d9ecbcca9205ec",
       "local_capture_path": ".artifacts/guide-how-to-release/h5-1440.png",
       "file": null
@@ -611,7 +611,7 @@
           "Related pages",
           "Sources used in this article"
         ],
-        "paragraphs": 24,
+        "paragraphs": 25,
         "sourceLinks": [
           "https://a856-cityrecord.nyc.gov/"
         ],
@@ -993,7 +993,7 @@
           "Related pages",
           "Sources used in this article"
         ],
-        "paragraphs": 24,
+        "paragraphs": 25,
         "sourceLinks": [
           "https://a856-cityrecord.nyc.gov/"
         ],

@@ -13,6 +13,8 @@ related:
   - Put dates in your calendar | /guide/how-to/put-dates-in-your-calendar/
   - Follow a Community Board | /guide/how-to/follow-a-community-board/
   - Find and narrow records | /guide/how-to/find-and-narrow-records/
+  - What a public record tells you | /guide/understand/what-a-public-record-tells-you/
+  - What dates and blanks mean | /guide/understand/dates-and-missing-information/
 sources:
   - Zoning Application Portal, published by the NYC Department of City Planning | https://zap.planning.nyc.gov/
   - The City Record Online, published by the City of New York | https://a856-cityrecord.nyc.gov/

@@ -13,6 +13,7 @@ related:
   - Find and narrow records | /guide/how-to/find-and-narrow-records/
   - Follow a Community Board | /guide/how-to/follow-a-community-board/
   - Put dates in your calendar | /guide/how-to/put-dates-in-your-calendar/
+  - Controls and what they give you | /guide/reference/controls-and-outputs/
 sources:
   - The City Record Online, published by the City of New York | https://a856-cityrecord.nyc.gov/
 ---

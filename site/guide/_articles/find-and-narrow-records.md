@@ -13,6 +13,8 @@ related:
   - Explore housing across city records | /guide/start/explore-housing-across-city-records/
   - Follow a search and manage your updates | /guide/how-to/follow-a-search/
   - Browse every kind of record | /browse/
+  - What dates and blanks mean | /guide/understand/dates-and-missing-information/
+  - Where the records come from | /guide/reference/sources-and-coverage/
 sources:
   - The City Record Online, published by the City of New York | https://a856-cityrecord.nyc.gov/
 ---

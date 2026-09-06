@@ -13,6 +13,8 @@ related:
   - Follow a search and manage your updates | /guide/how-to/follow-a-search/
   - Read a land-use project's next step and documents | /guide/how-to/read-a-land-use-projects-next-step/
   - Find and narrow records | /guide/how-to/find-and-narrow-records/
+  - What dates and blanks mean | /guide/understand/dates-and-missing-information/
+  - Controls and what they give you | /guide/reference/controls-and-outputs/
 sources:
   - The City Record Online, published by the City of New York | https://a856-cityrecord.nyc.gov/
 ---
