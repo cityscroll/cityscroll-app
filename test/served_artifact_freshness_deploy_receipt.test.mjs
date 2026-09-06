@@ -108,12 +108,28 @@ test("the freshness workflow compares against published deploy evidence and name
   assert.match(workflow, /gh run download "\$DEPLOY_RUN_ID"/);
   // The rebuild basis is gone; nothing rebuilds main to compare hashes.
   assert.doesNotMatch(workflow, /uses: \.\/\.github\/actions\/build-site/);
-  // The alarm carries the evidence the relay now requires.
-  assert.match(workflow, /workflow:process\.env\.GITHUB_WORKFLOW/);
-  assert.match(workflow, /source_revision:process\.env\.GITHUB_SHA/);
+  // Detection and delivery are separate steps: the comparison writes its
+  // findings to a file and never posts, because a delivery that fails inside
+  // the comparison makes a real finding look like a quiet hour.
+  assert.match(workflow, /> \.artifacts\/freshness-comparison\.log 2> \.artifacts\/freshness-findings\.txt/);
+  assert.match(workflow, /name: Deliver the owner alert/);
+  assert.match(workflow, /--findings-file \.artifacts\/freshness-findings\.txt/);
+  // Nothing on the delivery command line grows with the size of the finding.
+  assert.doesNotMatch(workflow, /curl/);
+  assert.doesNotMatch(workflow, /--data/);
+  assert.doesNotMatch(workflow, /FINDINGS=/);
   // A failing check stays nonzero; no suppression on the freshness path.
-  assert.match(workflow, /\n {10}exit 1\n/);
+  assert.match(workflow, /node tools\/report_ops_alert_outcome\.mjs/);
   assert.doesNotMatch(workflow, /\|\| true/);
+  assert.doesNotMatch(workflow, /continue-on-error/);
+});
+
+test("the alarm still carries the evidence the relay requires, from the delivery tool", () => {
+  const delivery = readFileSync(new URL("../tools/deliver_ops_alert.mjs", import.meta.url), "utf8");
+  assert.match(delivery, /env\.GITHUB_WORKFLOW/);
+  assert.match(delivery, /env\.GITHUB_SHA/);
+  assert.match(delivery, /actions\/runs\/\$\{runId\}/);
+  assert.match(delivery, /#artifacts/);
 });
 
 test("the watchdog workflow sends the observing run identity with its scheduler probe", () => {

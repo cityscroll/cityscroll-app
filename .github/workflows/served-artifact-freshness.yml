@@ -10,6 +10,11 @@ on:
   schedule:
     - cron: "25 * * * *"
   workflow_dispatch:
+    inputs:
+      force_finding:
+        description: "Raise a synthetic oversized freshness finding to verify owner-alert delivery. Off by default; never reachable from the schedule."
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -21,7 +26,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: main
+          # The schedule always compares main. A manual run checks out the ref it
+          # was started from, so a change to this guard can be exercised on the
+          # same job it will run as, before it is merged.
+          ref: ${{ github.event_name == 'workflow_dispatch' && github.ref || 'main' }}
           persist-credentials: false
       - uses: actions/setup-node@v4
         with:
@@ -57,42 +65,91 @@ jobs:
             echo "deploy run $DEPLOY_RUN_ID retained no release evidence to compare against" >&2
             exit 1
           fi
+      # Detection only. The comparison writes its findings to a file and never
+      # delivers, because a delivery that fails inside the comparison step makes
+      # a real finding look like a quiet hour.
       - name: Compare the served artifact with the published deploy
         id: probe
         env:
-          CITYSCROLL_ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
           DEPLOY_RUN_URL: ${{ steps.deploy.outputs.run_url }}
           DEPLOYED_SHA: ${{ steps.deploy.outputs.head_sha }}
+          FORCE_FINDING: ${{ inputs.force_finding }}
         run: |
           set -euo pipefail
+          mkdir -p .artifacts
+          # The comparison reports each finding on its error stream and its full
+          # receipt on its output stream. Only the findings become the alert.
           set +e
-          findings="$(node tools/check_release_surface_reconciliation.mjs \
+          node tools/check_release_surface_reconciliation.mjs \
             --generation-receipt .deployed/.artifacts/generation-output-receipt.json \
             --expected-manifest .deployed/_site/artifact-manifest.json \
             --source-commit "$DEPLOYED_SHA" \
             --main-revision "$GITHUB_SHA" \
             --live-origin https://cityscroll.org \
             --required-stages generation_output,card_reconciliation,served_artifact_freshness \
-            --output .artifacts/release-surface-receipt.json 2>&1)"
+            --output .artifacts/release-surface-receipt.json \
+            > .artifacts/freshness-comparison.log 2> .artifacts/freshness-findings.txt
           status=$?
           set -e
-          if [ "$status" -eq 0 ]; then exit 0; fi
-          if [ -z "${CITYSCROLL_ADMIN_KEY:-}" ]; then
-            echo "CITYSCROLL_ADMIN_KEY is required to deliver the freshness alarm" >&2
-            echo "$findings" >&2
-            exit "$status"
+          if [ "${FORCE_FINDING:-false}" = "true" ]; then
+            node tools/force_freshness_finding.mjs \
+              --findings-file .artifacts/freshness-findings.txt > .artifacts/forced-findings.txt
+            mv .artifacts/forced-findings.txt .artifacts/freshness-findings.txt
+            status=1
           fi
-          FINDINGS="$findings" curl --fail-with-body --retry 2 -X POST "https://api.cityscroll.org/admin/ops-alert" \
-            -H "authorization: Bearer $CITYSCROLL_ADMIN_KEY" \
-            -H "content-type: application/json" \
-            --data "$(FINDINGS="$findings" node -e 'console.log(JSON.stringify({guard:"served-artifact-freshness",stage:"served_artifact_freshness",findings:(process.env.FINDINGS||"The served artifact is stale or mismatched.").split(/\n/).filter(Boolean).slice(0,20),first_seen:new Date().toISOString(),last_seen:new Date().toISOString(),workflow:process.env.GITHUB_WORKFLOW,source_revision:process.env.GITHUB_SHA,workflow_run_url:`${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}`,receipt_url:`${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}#artifacts`}))')"
-          echo "$findings"
-          echo "Compared against deploy run $DEPLOY_RUN_URL (revision $DEPLOYED_SHA)."
-          exit 1
-      - name: Retain freshness release-surface receipt
+          if [ "$status" -eq 0 ]; then
+            : > .artifacts/freshness-findings.txt
+            echo "finding=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "finding=true" >> "$GITHUB_OUTPUT"
+          fi
+          echo "Compared against deploy run $DEPLOY_RUN_URL (revision $DEPLOYED_SHA)." >> "$GITHUB_STEP_SUMMARY"
+      # Delivery only, and only when there is something to deliver. The findings
+      # travel in the request body: nothing on this command line grows with the
+      # size of the finding, so a large finding cannot refuse the delivery.
+      - name: Deliver the owner alert
+        id: deliver
+        if: steps.probe.outputs.finding == 'true'
+        env:
+          CITYSCROLL_ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
+        run: |
+          set -euo pipefail
+          node tools/deliver_ops_alert.mjs \
+            --findings-file .artifacts/freshness-findings.txt \
+            --receipt .artifacts/ops-alert-delivery-receipt.json \
+            --marker .artifacts/ops-alert-sent-marker.json \
+            --finding true
+      # A clean comparison still leaves a receipt saying so, so "no alert" is a
+      # recorded outcome rather than an absence of evidence.
+      - name: Record that a clean comparison sent nothing
+        # Only a comparison that actually completed can be called clean; a
+        # comparison that fell over is red on its own account and records
+        # nothing here.
+        if: steps.probe.conclusion == 'success' && steps.probe.outputs.finding != 'true'
+        run: |
+          set -euo pipefail
+          node tools/deliver_ops_alert.mjs \
+            --findings-file .artifacts/freshness-findings.txt \
+            --receipt .artifacts/ops-alert-delivery-receipt.json \
+            --marker .artifacts/ops-alert-sent-marker.json \
+            --finding false
+      - name: Retain the freshness and delivery receipts
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: served-artifact-freshness-${{ github.run_id }}
-          path: .artifacts/release-surface-receipt.json
+          path: |
+            .artifacts/release-surface-receipt.json
+            .artifacts/ops-alert-delivery-receipt.json
+            .artifacts/freshness-findings.txt
+            .artifacts/freshness-comparison.log
           if-no-files-found: warn
+      # The run says, in one place, whether there was a finding and what became
+      # of its alert. A refused delivery is red on its own account above; this
+      # step keeps a delivered finding red as the finding it is.
+      - name: Report the freshness outcome
+        if: always()
+        run: |
+          set -euo pipefail
+          node tools/report_ops_alert_outcome.mjs \
+            --receipt .artifacts/ops-alert-delivery-receipt.json
