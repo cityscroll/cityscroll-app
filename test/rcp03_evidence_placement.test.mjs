@@ -93,7 +93,7 @@ test("placement inputs are owned per document tree and decode to exactly one key
   assert.throws(() => shardPathForId("document-tree:docs/EVIDENCE"), /unsupported document tree/);
 });
 
-test("the derived receipt keeps the v1 contract and every RCP-03 count", () => {
+test("the derived receipt keeps the v1 contract and every placement count", () => {
   const receipt = aggregatePlacementShards(loadFixture(SHARD_DIRECTORY_RELATIVE), { directory: SHARD_DIRECTORY_RELATIVE });
   assert.equal(receipt.schema, "cityscroll.repository_evidence_placement.v1");
   assert.equal(receipt.card, "cityscroll-engineering/private-generated-evidence-placement");

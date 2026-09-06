@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 
 /**
- * Repository evidence-placement proof (RCP-03 semantics, RCP-06 materialization).
+ * Repository evidence-placement proof: private-generated evidence placement,
+ * materialized as a non-colliding source-owned receipt.
  *
  * Reviewed placement facts are source-owned shards under
  * docs/repository-control-plane/evidence-placement.d/. Each shard owns exactly one
@@ -142,7 +143,16 @@ export function idForShardPath(name) {
  */
 export function derivePlacementFacts() {
   const classification = JSON.parse(fromBase("docs/repository-control-plane/classification.v1.json"));
-  const classified = classification.entries.filter((entry) => entry.canonical_owner === CARD && entry.id.startsWith("private-uri:"));
+  // The inspected commit is a fixed point in the past, so it spells this record's
+  // identity the way that commit spelled it, not the way the current tree does.
+  // The set is defined by the private-uri classification itself; the owner is read
+  // back from that set and required to be a single one, so the derivation stays
+  // correct across a rename of the record without pinning either spelling here.
+  const classified = classification.entries.filter((entry) => entry.id.startsWith("private-uri:"));
+  const classifiedOwners = [...new Set(classified.map((entry) => entry.canonical_owner))];
+  if (classifiedOwners.length !== 1) {
+    throw new Error(`private-uri classification at the inspected commit must have exactly one canonical owner; found ${classifiedOwners.length}`);
+  }
   const evidencePaths = classified.map((entry) => entry.path);
   evidencePaths.push("docs/performance/content-parity/notice-context-critical-path/reports/index.html");
   const documents = [...new Set(evidencePaths)].sort().map((path) => {
@@ -484,7 +494,7 @@ function main(argv = process.argv.slice(2)) {
     writeFileSync(target, `${JSON.stringify(receipt, null, 2)}\n`);
     process.stdout.write(`derived placement receipt written to ${target}\n`);
   }
-  process.stdout.write(`RCP-03 evidence placement verified: ${receipt.private_inventory.scrim_review.row_count} review rows, ${receipt.private_inventory.reference_count} private references, ${receipt.materialization.shard_count} source-owned inputs, served artifacts unchanged\n`);
+  process.stdout.write(`evidence placement verified: ${receipt.private_inventory.scrim_review.row_count} review rows, ${receipt.private_inventory.reference_count} private references, ${receipt.materialization.shard_count} source-owned inputs, served artifacts unchanged\n`);
 }
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) main();
