@@ -182,9 +182,6 @@ export function renderResidentInstitutionIdentity(projection) {
       <ul class="institution-statutory-sources">${projection.former_names.map((name) => (
         `<li>${escapeHtml(name)}</li>`
       )).join("")}</ul>
-      ${projection.successor_basis
-        ? `<p class="muted node-muted">Successor evidence ${escapeHtml(projection.successor_basis)}.</p>`
-        : ""}
     </details>`
     : "";
   return `<div class="institution-resident-identity" id="${escapeHtml(CIVIC_INSTITUTION_RESIDENT_IDENTITY_ANCHOR)}" data-resident-schema="${escapeHtml(projection.schema)}" data-canonical-id="${escapeHtml(projection.canonical_id)}"${projection.kind_label ? ` data-kind-label="${escapeHtml(projection.kind_label)}"` : ""}>

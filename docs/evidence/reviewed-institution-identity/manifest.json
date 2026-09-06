@@ -9,9 +9,9 @@
     "/agencies/economic-development-corporation/",
     "/agencies/information-technology-and-telecommunications/"
   ],
-  "revision": "6e499e07875818d4159d2ad1864595eccf236f32",
+  "revision": "faecaf50e6a7529f5fc16a6ce6511352f362fa6f",
   "data_vintage": "2026-09-05",
-  "captured_at": "2026-09-06T04:38:30Z",
+  "captured_at": "2026-09-06T05:46:24Z",
   "image_directory": ".artifacts/reviewed-institution-identity",
   "image_policy": "Capture images are written to the ignored local directory above and are never committed. This manifest is the tracked proof: route, viewport, revision, data vintage, assertion and SHA-256 for each capture.",
   "search_note": "Which documents an acronym or former-name query keeps is proven over the committed search producer in test/civic_institution_resident_identity.test.mjs. The captures below prove browser navigation and rendering, and claim nothing about a live search API they did not call.",
@@ -25,7 +25,7 @@
         844
       ],
       "scripting": true,
-      "revision": "6e499e07875818d4159d2ad1864595eccf236f32",
+      "revision": "faecaf50e6a7529f5fc16a6ce6511352f362fa6f",
       "data_vintage": "2026-09-05",
       "assertion": "at 390px a reader searching \u201cCPC\u201d reaches City Planning Commission, sees the same reviewed identity on the profile, and browser Back restores the query",
       "observations": {
@@ -58,7 +58,7 @@
         900
       ],
       "scripting": true,
-      "revision": "6e499e07875818d4159d2ad1864595eccf236f32",
+      "revision": "faecaf50e6a7529f5fc16a6ce6511352f362fa6f",
       "data_vintage": "2026-09-05",
       "assertion": "at 1440px a reader searching \u201cCPC\u201d reaches City Planning Commission, sees the same reviewed identity on the profile, and browser Back restores the query",
       "observations": {
@@ -91,7 +91,7 @@
         844
       ],
       "scripting": true,
-      "revision": "6e499e07875818d4159d2ad1864595eccf236f32",
+      "revision": "faecaf50e6a7529f5fc16a6ce6511352f362fa6f",
       "data_vintage": "2026-09-05",
       "assertion": "at 390px a reader searching \u201cNYCEDC\u201d reaches Economic Development Corporation, sees the same reviewed identity on the profile, and browser Back restores the query",
       "observations": {
@@ -124,7 +124,7 @@
         900
       ],
       "scripting": true,
-      "revision": "6e499e07875818d4159d2ad1864595eccf236f32",
+      "revision": "faecaf50e6a7529f5fc16a6ce6511352f362fa6f",
       "data_vintage": "2026-09-05",
       "assertion": "at 1440px a reader searching \u201cNYCEDC\u201d reaches Economic Development Corporation, sees the same reviewed identity on the profile, and browser Back restores the query",
       "observations": {
@@ -157,7 +157,7 @@
         844
       ],
       "scripting": true,
-      "revision": "6e499e07875818d4159d2ad1864595eccf236f32",
+      "revision": "faecaf50e6a7529f5fc16a6ce6511352f362fa6f",
       "data_vintage": "2026-09-05",
       "assertion": "at 390px a reader searching \u201cDoITT\u201d reaches Office of Technology and Innovation, sees the same reviewed identity on the profile, and browser Back restores the query",
       "observations": {
@@ -171,8 +171,8 @@
         "touch_target_failures": [],
         "no_horizontal_overflow": true
       },
-      "bytes": 1755668,
-      "sha256": "2fe7b196fad447ce72231e02150b9704238541c0aa63ef65a7350c8769614241",
+      "bytes": 1753989,
+      "sha256": "a8b349920f340073e8543d859b7371bed07593a985903db4178c1e6cbf867b95",
       "axe": {
         "violations_total": 0,
         "failing_violations": [],
@@ -188,7 +188,7 @@
         900
       ],
       "scripting": true,
-      "revision": "6e499e07875818d4159d2ad1864595eccf236f32",
+      "revision": "faecaf50e6a7529f5fc16a6ce6511352f362fa6f",
       "data_vintage": "2026-09-05",
       "assertion": "at 1440px a reader searching \u201cDoITT\u201d reaches Office of Technology and Innovation, sees the same reviewed identity on the profile, and browser Back restores the query",
       "observations": {
@@ -202,8 +202,8 @@
         "touch_target_failures": [],
         "no_horizontal_overflow": true
       },
-      "bytes": 2080452,
-      "sha256": "e8a471c323e310fe89e4d46f032d1d9262c2d89bc15846eeb7c82e6e2595e0df",
+      "bytes": 2078596,
+      "sha256": "22d101d988ee4408291e37ee63c4d87dc6dffa74a16836e021c4ddb0236d140a",
       "axe": {
         "violations_total": 0,
         "failing_violations": [],
@@ -219,7 +219,7 @@
         844
       ],
       "scripting": true,
-      "revision": "6e499e07875818d4159d2ad1864595eccf236f32",
+      "revision": "faecaf50e6a7529f5fc16a6ce6511352f362fa6f",
       "data_vintage": "2026-09-05",
       "assertion": "at 390px searching \u201cCPC\u201d in People & organizations reaches City Planning Commission with the same reviewed description, and Back keeps the query",
       "observations": {
@@ -249,7 +249,7 @@
         900
       ],
       "scripting": true,
-      "revision": "6e499e07875818d4159d2ad1864595eccf236f32",
+      "revision": "faecaf50e6a7529f5fc16a6ce6511352f362fa6f",
       "data_vintage": "2026-09-05",
       "assertion": "at 1440px searching \u201cCPC\u201d in People & organizations reaches City Planning Commission with the same reviewed description, and Back keeps the query",
       "observations": {
@@ -279,7 +279,7 @@
         844
       ],
       "scripting": true,
-      "revision": "6e499e07875818d4159d2ad1864595eccf236f32",
+      "revision": "faecaf50e6a7529f5fc16a6ce6511352f362fa6f",
       "data_vintage": "2026-09-05",
       "assertion": "at 390px searching \u201cNYCEDC\u201d in People & organizations reaches Economic Development Corporation with the same reviewed description, and Back keeps the query",
       "observations": {
@@ -309,7 +309,7 @@
         900
       ],
       "scripting": true,
-      "revision": "6e499e07875818d4159d2ad1864595eccf236f32",
+      "revision": "faecaf50e6a7529f5fc16a6ce6511352f362fa6f",
       "data_vintage": "2026-09-05",
       "assertion": "at 1440px searching \u201cNYCEDC\u201d in People & organizations reaches Economic Development Corporation with the same reviewed description, and Back keeps the query",
       "observations": {
@@ -339,7 +339,7 @@
         844
       ],
       "scripting": true,
-      "revision": "6e499e07875818d4159d2ad1864595eccf236f32",
+      "revision": "faecaf50e6a7529f5fc16a6ce6511352f362fa6f",
       "data_vintage": "2026-09-05",
       "assertion": "at 390px the planning department and planning commission profiles use different reviewed types and names rather than one generic agency heading",
       "observations": {
@@ -368,7 +368,7 @@
         900
       ],
       "scripting": true,
-      "revision": "6e499e07875818d4159d2ad1864595eccf236f32",
+      "revision": "faecaf50e6a7529f5fc16a6ce6511352f362fa6f",
       "data_vintage": "2026-09-05",
       "assertion": "at 1440px the planning department and planning commission profiles use different reviewed types and names rather than one generic agency heading",
       "observations": {
@@ -397,7 +397,7 @@
         844
       ],
       "scripting": true,
-      "revision": "6e499e07875818d4159d2ad1864595eccf236f32",
+      "revision": "faecaf50e6a7529f5fc16a6ce6511352f362fa6f",
       "data_vintage": "2026-09-05",
       "assertion": "at 390px a People & organizations search that matches nothing keeps the query in the field and the URL instead of looking like a successful empty load",
       "observations": {
@@ -424,7 +424,7 @@
         900
       ],
       "scripting": true,
-      "revision": "6e499e07875818d4159d2ad1864595eccf236f32",
+      "revision": "faecaf50e6a7529f5fc16a6ce6511352f362fa6f",
       "data_vintage": "2026-09-05",
       "assertion": "at 1440px a People & organizations search that matches nothing keeps the query in the field and the URL instead of looking like a successful empty load",
       "observations": {
@@ -451,7 +451,7 @@
         844
       ],
       "scripting": true,
-      "revision": "6e499e07875818d4159d2ad1864595eccf236f32",
+      "revision": "faecaf50e6a7529f5fc16a6ce6511352f362fa6f",
       "data_vintage": "2026-09-05",
       "assertion": "at 390px the commission is reachable from the directory with the keyboard alone",
       "observations": {
@@ -476,7 +476,7 @@
         900
       ],
       "scripting": true,
-      "revision": "6e499e07875818d4159d2ad1864595eccf236f32",
+      "revision": "faecaf50e6a7529f5fc16a6ce6511352f362fa6f",
       "data_vintage": "2026-09-05",
       "assertion": "at 1440px the commission is reachable from the directory with the keyboard alone",
       "observations": {
@@ -501,7 +501,7 @@
         844
       ],
       "scripting": false,
-      "revision": "6e499e07875818d4159d2ad1864595eccf236f32",
+      "revision": "faecaf50e6a7529f5fc16a6ce6511352f362fa6f",
       "data_vintage": "2026-09-05",
       "assertion": "at 390px, with scripting unavailable, the commission profile is still a real document that names the commission as a commission",
       "observations": {
@@ -529,7 +529,7 @@
         900
       ],
       "scripting": false,
-      "revision": "6e499e07875818d4159d2ad1864595eccf236f32",
+      "revision": "faecaf50e6a7529f5fc16a6ce6511352f362fa6f",
       "data_vintage": "2026-09-05",
       "assertion": "at 1440px, with scripting unavailable, the commission profile is still a real document that names the commission as a commission",
       "observations": {
@@ -557,7 +557,7 @@
         844
       ],
       "scripting": true,
-      "revision": "6e499e07875818d4159d2ad1864595eccf236f32",
+      "revision": "faecaf50e6a7529f5fc16a6ce6511352f362fa6f",
       "data_vintage": "2026-09-05",
       "assertion": "at 390px and 200 percent zoom a CPC search still reaches the commission",
       "observations": {
@@ -582,7 +582,7 @@
         900
       ],
       "scripting": true,
-      "revision": "6e499e07875818d4159d2ad1864595eccf236f32",
+      "revision": "faecaf50e6a7529f5fc16a6ce6511352f362fa6f",
       "data_vintage": "2026-09-05",
       "assertion": "at 1440px and 200 percent zoom a CPC search still reaches the commission",
       "observations": {

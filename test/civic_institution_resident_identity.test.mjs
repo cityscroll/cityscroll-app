@@ -17,6 +17,7 @@ import { renderAgencyConstellationDocument } from "../site/agency_constellation.
 import { projectInstitutionProfileNavigation } from "../site/civic_institution_profile_navigation.mjs";
 import {
   projectResidentInstitutionIdentity,
+  renderResidentInstitutionIdentity,
   residentInstitutionSummary,
 } from "../site/civic_institution_resident_identity.mjs";
 import { buildPeopleOrganizationsReadModel } from "../site/people_organizations_read_model.mjs";
@@ -164,6 +165,20 @@ test("A2 DCP and CPC stay separate; ORE and CORE stay separate", () => {
   assert.equal(ore.canonical_href, "/agencies/office-of-racial-equity/");
   assert.equal(core.canonical_href, "/agencies/commission-on-racial-equity/");
   assert.notEqual(ore.object_ref, core.object_ref);
+});
+
+test("former-name disclosure does not print machine method tokens", () => {
+  const otiId = "information-technology-and-telecommunications";
+  const resident = projectResidentInstitutionIdentity(otiId, {
+    displayName: LOOKUP.by_id[otiId].display_name,
+    publisherRow: CROSSWALK.entries[otiId],
+  });
+  assert.equal(resident.successor_basis, "oti_alternate_or_former_names_v1");
+  const html = renderResidentInstitutionIdentity(resident);
+  assert.match(html, /Former names/);
+  assert.match(html, /DoITT/);
+  assert.doesNotMatch(html, /oti_alternate_or_former_names_v1/);
+  assert.doesNotMatch(html, /Successor evidence/);
 });
 
 test("A2 DoITT-era names stay discoverable while current display is OTI", () => {
