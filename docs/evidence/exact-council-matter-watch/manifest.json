@@ -1,0 +1,315 @@
+{
+  "schema": "cityscroll.exact_council_matter_watch_evidence.v1",
+  "engineering_record": "cityscroll-engineering/exact-council-matter-watch",
+  "renderer": "tools/render_exact_council_matter_watch_fixtures.mjs",
+  "revision": "6e499e07875818d4159d2ad1864595eccf236f32",
+  "data_vintage": "2026-08-10T13:08:13.019Z",
+  "captured_at": "2026-09-06T04:37:02Z",
+  "image_directory": ".artifacts/exact-council-matter-watch",
+  "corpus_note": "Specimens render exact Council-matter Following restore, a five-matter hearing choice, and last-known history from the committed meeting-outcomes snapshot. They describe retained identity, not live publisher coverage.",
+  "image_policy": "Capture images are written to the ignored local directory above and are never committed. This manifest is the tracked proof: route, viewport, revision, data vintage, assertion and SHA-256 for each capture.",
+  "files": [
+    {
+      "name": "following-exact-matter-390x844.png",
+      "specimen": "following-exact-matter",
+      "route": "/following/?lens=meetings",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "6e499e07875818d4159d2ad1864595eccf236f32",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 390px Following restores the exact Council matter and does not broaden to all meetings",
+      "observations": {
+        "matter_ref_present": true,
+        "target_size": {
+          "total_controls": 27,
+          "block_controls": 27,
+          "block_minimum_height": 0,
+          "block_controls_meet_24px": false
+        },
+        "no_horizontal_overflow": true
+      },
+      "bytes": 215561,
+      "sha256": "85e70ac246e073c9b4046cc21b1ab9218f2b40975377b95aa30c9d0e87351d93",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "following-exact-matter-1440x900.png",
+      "specimen": "following-exact-matter",
+      "route": "/following/?lens=meetings",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "6e499e07875818d4159d2ad1864595eccf236f32",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 1440px Following restores the exact Council matter and does not broaden to all meetings",
+      "observations": {
+        "matter_ref_present": true,
+        "target_size": {
+          "total_controls": 27,
+          "block_controls": 27,
+          "block_minimum_height": 0,
+          "block_controls_meet_24px": false
+        },
+        "no_horizontal_overflow": true
+      },
+      "bytes": 275642,
+      "sha256": "a737fdb45ffb492992a2af73da974be5efc4c02a444046fa3a2745d8d7cec951",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "five-matter-choice-390x844.png",
+      "specimen": "five-matter-choice",
+      "route": "/hearings/20260707021/",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "6e499e07875818d4159d2ad1864595eccf236f32",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 390px a five-matter hearing requires an explicit choice and never silently picks the first",
+      "observations": {
+        "matter_ids": [
+          "79201",
+          "79202",
+          "79203",
+          "79204",
+          "79205"
+        ],
+        "follow_links": 5,
+        "target_size": {
+          "total_controls": 6,
+          "block_controls": 6,
+          "block_minimum_height": 44,
+          "block_controls_meet_24px": true
+        },
+        "no_horizontal_overflow": true
+      },
+      "bytes": 38065,
+      "sha256": "85d398b4e6b1808d93f6626d126454176abbffb737bcdf47d8d71385cb60e524",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "five-matter-choice-1440x900.png",
+      "specimen": "five-matter-choice",
+      "route": "/hearings/20260707021/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "6e499e07875818d4159d2ad1864595eccf236f32",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 1440px a five-matter hearing requires an explicit choice and never silently picks the first",
+      "observations": {
+        "matter_ids": [
+          "79201",
+          "79202",
+          "79203",
+          "79204",
+          "79205"
+        ],
+        "follow_links": 5,
+        "target_size": {
+          "total_controls": 6,
+          "block_controls": 6,
+          "block_minimum_height": 44,
+          "block_controls_meet_24px": true
+        },
+        "no_horizontal_overflow": true
+      },
+      "bytes": 42230,
+      "sha256": "aba00e83f87704f6ada5c32c315528d57b30289a0b6ba246882ebd081d5cd607",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "stale-last-known-390x844.png",
+      "specimen": "stale-last-known",
+      "route": "/following/matter-79200/",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "6e499e07875818d4159d2ad1864595eccf236f32",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 390px a stale refresh keeps last-known history and places source identity behind disclosure",
+      "observations": {
+        "details_open": true,
+        "target_size": {
+          "total_controls": 2,
+          "block_controls": 2,
+          "block_minimum_height": 44,
+          "block_controls_meet_24px": true
+        },
+        "no_horizontal_overflow": true
+      },
+      "bytes": 53413,
+      "sha256": "aa354c1618c57a0165fff843569ea43a53d1c6697dd216e0af82a0ec75c4e786",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "stale-last-known-1440x900.png",
+      "specimen": "stale-last-known",
+      "route": "/following/matter-79200/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "6e499e07875818d4159d2ad1864595eccf236f32",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 1440px a stale refresh keeps last-known history and places source identity behind disclosure",
+      "observations": {
+        "details_open": true,
+        "target_size": {
+          "total_controls": 2,
+          "block_controls": 2,
+          "block_minimum_height": 44,
+          "block_controls_meet_24px": true
+        },
+        "no_horizontal_overflow": true
+      },
+      "bytes": 60222,
+      "sha256": "93916aebedf4d81291053aef4ac7e1c1f31bd0a6bc2b3eac091152562b3107df",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "without-scripting-390x844.png",
+      "specimen": "without-scripting",
+      "route": "/hearings/20260707021/",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "6e499e07875818d4159d2ad1864595eccf236f32",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "disabled",
+      "assertion": "at 390px native follow links remain usable with scripting disabled",
+      "observations": {
+        "follow_links": 5,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 38065,
+      "sha256": "85d398b4e6b1808d93f6626d126454176abbffb737bcdf47d8d71385cb60e524",
+      "axe": {
+        "violations_total": null,
+        "failing_violations": [],
+        "passes": true,
+        "note": "scripting disabled; the same page is gated scripted"
+      }
+    },
+    {
+      "name": "without-scripting-1440x900.png",
+      "specimen": "without-scripting",
+      "route": "/hearings/20260707021/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "6e499e07875818d4159d2ad1864595eccf236f32",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "disabled",
+      "assertion": "at 1440px native follow links remain usable with scripting disabled",
+      "observations": {
+        "follow_links": 5,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 42230,
+      "sha256": "aba00e83f87704f6ada5c32c315528d57b30289a0b6ba246882ebd081d5cd607",
+      "axe": {
+        "violations_total": null,
+        "failing_violations": [],
+        "passes": true,
+        "note": "scripting disabled; the same page is gated scripted"
+      }
+    },
+    {
+      "name": "two-hundred-percent-zoom-390x844.png",
+      "specimen": "two-hundred-percent-zoom",
+      "route": "/following/matter-79200/",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "6e499e07875818d4159d2ad1864595eccf236f32",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 390px zoomed to 200% last-known matter history reflows without horizontal overflow",
+      "observations": {
+        "no_horizontal_overflow": true,
+        "target_size": {
+          "total_controls": 2,
+          "block_controls": 2,
+          "block_minimum_height": 88,
+          "block_controls_meet_24px": true
+        }
+      },
+      "bytes": 102328,
+      "sha256": "fe038d4579beb0c1d18eb2272cd0252c1022492dfebb8cae0b825d1bd62815c5",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "two-hundred-percent-zoom-1440x900.png",
+      "specimen": "two-hundred-percent-zoom",
+      "route": "/following/matter-79200/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "6e499e07875818d4159d2ad1864595eccf236f32",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 1440px zoomed to 200% last-known matter history reflows without horizontal overflow",
+      "observations": {
+        "no_horizontal_overflow": true,
+        "target_size": {
+          "total_controls": 2,
+          "block_controls": 2,
+          "block_minimum_height": 88,
+          "block_controls_meet_24px": true
+        }
+      },
+      "bytes": 91957,
+      "sha256": "3c601e9cacfeae1ae3453acb3e3164eb81a6960923628c6b4225e88b21b1dfa2",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    }
+  ]
+}

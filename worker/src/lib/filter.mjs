@@ -3,6 +3,10 @@
 
 import { canonicalMandateId } from "../../../site/mandate_subject_ref.mjs";
 import { canonicalCodeProvisionId } from "../../../site/code_provision_watch_scope.mjs";
+import {
+  canonicalCouncilMatterRef,
+  exactCouncilMatterWatch,
+} from "../../../site/council_matter_watch_scope.mjs";
 import { normalizeGeographyKey, PLACE_ROLES } from "../../../site/scope_v0.mjs";
 import { normalizeCommunityBoardRef } from "../../../site/community_board_watch.mjs";
 import { KNOWN_PROCUREMENT_PROCESS_STATES } from "../../../site/procurement_process_state_vocabulary.mjs";
@@ -47,7 +51,7 @@ export const LENSES = {
   land:     ["keywords", "boro", "status", "communityDistrict", "councilDistrict", "nearMe", "procedure", "family", "regulatoryEffect", "futureAction", "attendance", "geographies", "place_role"],
   property: ["keywords", "agency", "process", "stage", "asset", "saleMethod", "priceBand", "sort", "borough", "neighborhood", "communityDistrict", "nearMe", "geographies", "place_role"],
   rules:    ["keywords", "agency", "process", "geographies", "place_role", "request_ids"],
-  meetings: ["keywords", "agency", "when", "borough", "neighborhood", "communityDistrict", "councilDistrict", "locationScope", "dateWindow", "process", "nearMe", "geographies", "place_role", "communityBoard"],
+  meetings: ["keywords", "agency", "when", "borough", "neighborhood", "communityDistrict", "councilDistrict", "locationScope", "dateWindow", "process", "nearMe", "geographies", "place_role", "communityBoard", "matter_ref", "matter_scope_version"],
   district: ["councilDistrict"],
   entity:   ["name", "kind", "tab", "entity_refs_all"],
   // World-state agency mandates (statutory duties / approaching deadlines). Not a City
@@ -113,6 +117,12 @@ function clampField(name, v) {
       return canonicalMandateId(v);
     case "provision_id":
       return canonicalCodeProvisionId(v);
+    case "matter_ref":
+      return canonicalCouncilMatterRef(v);
+    case "matter_scope_version": {
+      const n = typeof v === "number" ? v : (typeof v === "string" && v.trim() ? Number(v) : NaN);
+      return Number.isInteger(n) && n === 1 ? 1 : null;
+    }
     case "deliverable_type": {
       const s = typeof v === "string" ? v.trim().toLowerCase() : "";
       return MANDATE_DELIVERABLE_TYPES.includes(s) ? s : null;
@@ -293,6 +303,14 @@ export function resolveLens(lens) {
 // malformed/out-of-range/oversized model output can never propagate to the browser. This is
 // part of the defense in depth: even a misbehaving model yields a small, well-formed object.
 export function sanitize(lens, input) {
+  const exact = exactCouncilMatterWatch({ lens, filter: input || {} });
+  if (exact.attempted) {
+    if (exact.status === "ok") return { ...exact.filter };
+    return {
+      matter_ref: exact.matter_ref || "invalid",
+      matter_scope_version: Number.isInteger(exact.watch_scope_version) ? exact.watch_scope_version : 0,
+    };
+  }
   const fields = LENSES[resolveLens(lens)] || LENSES[lens] || LENSES.money;
   const f = input || {};
   const out = {};
@@ -306,7 +324,23 @@ export function sanitize(lens, input) {
   if (!out.processState) delete out.processState;
   if (!out.provision_id) delete out.provision_id;
   if (!out.interest) delete out.interest;
+  if (!out.matter_ref) delete out.matter_ref;
+  if (!out.matter_scope_version) delete out.matter_scope_version;
   return out;
+}
+
+/**
+ * Validate exact-matter attempts before sanitize can drop them into all meetings.
+ */
+export function prepareWatchFilter(lens, filter) {
+  const exact = exactCouncilMatterWatch({ lens, filter });
+  if (exact.attempted) {
+    if (exact.status !== "ok") {
+      return { ok: false, reason: exact.reason, exact, lens: null, filter: {} };
+    }
+    return { ok: true, lens: exact.lens, filter: exact.filter, exact };
+  }
+  return { ok: true, lens: resolveLens(lens), filter: sanitize(lens, filter), exact };
 }
 
 // Field evidence 2026-07-14: the ask button "required very specific wording" and a paraphrase

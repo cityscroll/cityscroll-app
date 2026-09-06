@@ -13,6 +13,7 @@
 // rendering keeps working without modification.
 
 import { vendorStem, monthsFromISO } from "./compile.mjs";
+import { d1DispatchExactCouncilMatter } from "./council_matter_watch_activation.mjs";
 
 // Lenses whose data lives outside the D1 notices mirror — always use SODA for these.
 // land (ZAP dataset hgx4-8ukb) is the primary case.
@@ -22,6 +23,8 @@ export const OFF_MIRROR_LENSES = new Set(["land", "meetings", "people", "distric
 // Returns buildNoticesQuery opts (for notices.mjs) or null if the lens can't be
 // expressed as a D1 query (caller must fall back to the SODA path).
 export function subToD1Opts(sub, todayISO) {
+  const matter = d1DispatchExactCouncilMatter(sub);
+  if (matter) return null;
   const f = (sub && sub.filter) || {};
   const kws = (Array.isArray(f.keywords) ? f.keywords : []).filter(Boolean);
   const lens = sub.lens;
@@ -110,6 +113,8 @@ export function subToD1Opts(sub, todayISO) {
 // Full compilation: opts + postFilter mirror.
 // Returns { opts, postFilter? } or null when the lens is off-mirror or not expressible.
 export function compileSub_d1(sub, todayISO) {
+  const matter = d1DispatchExactCouncilMatter(sub);
+  if (matter) return matter;
   const opts = subToD1Opts(sub, todayISO);
   if (!opts) return null;
 

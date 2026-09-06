@@ -15,6 +15,8 @@ import {
   canonicalCodeProvisionId,
   provisionWatchDigestRows,
 } from "../../../site/code_provision_watch.mjs";
+import { councilMatterDigestRows } from "../../../site/council_matter_watch.mjs";
+import { compileExactCouncilMatter } from "./council_matter_watch_activation.mjs";
 import {
   mandatePredictionDigestRowsForAgency,
   mergeObligationDigestWithPredictions,
@@ -219,6 +221,14 @@ export async function rowsForCompiledQuery(q, env, fetchImpl = fetch) {
       const decorated = await attachProjectConnections(record, { db: env?.DB });
       rows = projectCalendarOccurrencesForRecord(decorated, { as_of: q.routeReadModel.todayISO });
     }
+  } else if (q.routeReadModel?.kind === "council-matter") {
+    rows = typeof q.readRows === "function"
+      ? await Promise.resolve(q.readRows())
+      : councilMatterDigestRows({
+        matter_ref: q.routeReadModel.matter_ref,
+        confirmed: false,
+        deliveryEnabled: false,
+      });
   } else if (typeof q.readRows === "function") rows = await Promise.resolve(q.readRows());
   else if (q.url === STAFFING_EXAMS) {
     const { record } = await loadStaffingExams(env);
@@ -245,6 +255,8 @@ export function compileSub(sub, todayISO) {
   if (Object.prototype.hasOwnProperty.call(f, "request_ids")
       && (sub.lens !== "rules" || !requestIds.length
         || requestIds.length !== (Array.isArray(f.request_ids) ? f.request_ids.length : 0))) return null;
+  const matterQuery = compileExactCouncilMatter(sub, todayISO);
+  if (matterQuery !== undefined) return matterQuery.unsupported ? null : matterQuery;
   const requestedBoard = f.communityBoard;
   const hasRequestedBoard = requestedBoard !== undefined && requestedBoard !== null
     && String(requestedBoard).trim() !== "";

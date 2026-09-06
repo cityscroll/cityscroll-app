@@ -206,11 +206,13 @@ test("an unmatched notice acquires no matter, no local route, and no substitute 
 // ---------------------------------------------------------------------------
 
 test("continuation copy names a destination and never claims tracking, subscription, or attribution", () => {
-  const surfaces = [
+  const continuation = [
     renderCouncilHearingMatterContinuation(meeting("20260707022")),
     renderCouncilHearingMatterContinuation(meeting("20260707021")),
     renderCouncilHearingMatterContinuation(meeting("20260428021")),
     renderCouncilHearingMatterContinuation(meeting("20260707022", constructedOutcome([OFFICIAL_ONLY_MATTER]))),
+  ];
+  const firstPaint = [
     renderMeetingOutcomesFirstPaint(snapshot, "20260428021"),
     renderMeetingOutcomesFirstPaint(snapshot, "20260707022"),
   ];
@@ -225,13 +227,27 @@ test("continuation copy names a destination and never claims tracking, subscript
     /\bsubmitted\b/i,
     /\balert/i,
   ];
-  for (const html of surfaces) {
+  // Continuation copy stays destination-only. Exact-matter Following CTAs on
+  // first paint are a separate saved-watch control and are stripped here so
+  // this check cannot treat them as continuation claims.
+  const withoutExactMatterWatch = (html) => String(html).replace(
+    /<a class="[^"]*matter-follow-link[^"]*"[^>]*>[\s\S]*?<\/a>/g,
+    "",
+  );
+  for (const html of continuation) {
     for (const pattern of forbidden) {
       assert.doesNotMatch(html, pattern, `continuation copy must not claim ${pattern}`);
     }
   }
-  assert.match(surfaces[0], new RegExp(MATTER_HISTORY_LABEL));
-  assert.match(surfaces[3], new RegExp(MATTER_OFFICIAL_RECORD_LABEL));
+  for (const html of firstPaint) {
+    assert.match(html, /class="[^"]*matter-follow-link/);
+    const rest = withoutExactMatterWatch(html);
+    for (const pattern of forbidden) {
+      assert.doesNotMatch(rest, pattern, `first-paint continuation copy must not claim ${pattern}`);
+    }
+  }
+  assert.match(continuation[0], new RegExp(MATTER_HISTORY_LABEL));
+  assert.match(continuation[3], new RegExp(MATTER_OFFICIAL_RECORD_LABEL));
 });
 
 test("a matter with no reachable destination states that instead of offering a dead control", () => {

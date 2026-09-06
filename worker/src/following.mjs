@@ -10,7 +10,7 @@ import {
 } from "../../site/following_view.mjs";
 import { compileSub, rowsForCompiledQuery } from "./lib/compile.mjs";
 import { feedItems } from "./lib/feed.mjs";
-import { resolveLens, sanitize } from "./lib/filter.mjs";
+import { prepareWatchFilter, resolveLens } from "./lib/filter.mjs";
 import { corsHeaders } from "./lib/cors.mjs";
 import { emailFromRequest } from "./session.mjs";
 import { issuePrefsCredential, listWatchesForEmail } from "./prefs.mjs";
@@ -157,7 +157,20 @@ export async function handleFollowing(request, env = {}, ctx = {}, options = {})
     const html = renderFollowingDocument(view, { assetPrefix: `${SITE_ORIGIN}/`, siteBase: SITE_ORIGIN });
     return new Response(request.method === "HEAD" ? null : html, { status: 200, headers: publicHeaders() });
   }
-  const watch = { lens: parsed.lens, filter: sanitize(parsed.lens, parsed.filter) };
+  const prepared = prepareWatchFilter(parsed.lens, parsed.filter);
+  if (!prepared.ok) {
+    const view = buildFollowingViewModel({
+      ...parsed,
+      lens: null,
+      filter: {},
+      previewItems: [],
+      previewError: prepared.reason,
+      scopeStatus: "unrecognized_scope",
+    }, suggestedTemplates);
+    const html = renderFollowingDocument(view, { assetPrefix: `${SITE_ORIGIN}/`, siteBase: SITE_ORIGIN });
+    return new Response(request.method === "HEAD" ? null : html, { status: 200, headers: publicHeaders() });
+  }
+  const watch = { lens: prepared.lens, filter: prepared.filter };
   const preview = parsed.requested
     ? await previewFor(watch, options.fetchImpl || fetch, options.todayISO, env)
     : { items: [], count: null, error: null };

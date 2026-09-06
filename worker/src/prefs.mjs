@@ -202,6 +202,10 @@ async function applyPrefsAction(env, email, action, key, patch) {
 
   if (action === "delete") {
     const label = watchLabel(record) || record.label;
+    try {
+      const { removeExactMatterWatch } = await import("./lib/council_matter_watch_activation.mjs");
+      await removeExactMatterWatch(env, record);
+    } catch { /* removal still deletes the saved watch */ }
     try { await env.SUBS.delete(key); } catch { /* idempotent */ }
     await appendWatchLog(env, {
       action, email: record.email, subKey: key, lens: record.lens,

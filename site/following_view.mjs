@@ -37,6 +37,7 @@ import {
 } from "./following_preview_handoff.mjs";
 import { followingPersonalIslandHtml } from "./following_personal_state.mjs";
 import { exactProvisionWatch } from "./code_provision_watch_scope.mjs";
+import { councilMatterWatchSummaryHtml, exactCouncilMatterWatch } from "./council_matter_watch.mjs";
 
 const API_BASE = "https://api.cityscroll.org";
 const SITE_BASE = "https://cityscroll.org";
@@ -207,6 +208,37 @@ export function watchFromFollowingParams(input) {
   }
   if (params.has("type")) setOrDelete("noticeType", params.get("type"));
   const watch = normalizedWatch(lens, filter);
+  if (watch.lens === "meetings") {
+    const exact = exactCouncilMatterWatch(watch);
+    if (exact.attempted && exact.status !== "ok") {
+      return {
+        lens: null,
+        filter: {},
+        requested: true,
+        frequency: cleanFrequency(params.get("freq")),
+        matchCount: cleanCount(params.get("count")),
+        onboarding: params.get("onboarding") === "1",
+        handoff: {
+          schema: "cityscroll.following_preview_handoff.v1",
+          status: "unrecognized_scope",
+          lens: null,
+          filter: {},
+          frequency: cleanFrequency(params.get("freq")),
+          matchCount: null,
+          focus: null,
+          originRoute: null,
+        },
+        noticeId: null,
+        projectId: null,
+        originRoute: null,
+        scopeStatus: "unrecognized_scope",
+      };
+    }
+    if (exact.status === "ok") {
+      watch.lens = exact.lens;
+      watch.filter = exact.filter;
+    }
+  }
   if (watch.lens === "legal_code") {
     const exact = exactProvisionWatch(watch);
     if (exact.status !== "ok") {
@@ -285,6 +317,11 @@ export function followingUrlFromWatch(watch, options = {}) {
   const base = String(options.base || `${SITE_BASE}/following`).replace(/\/$/, "");
   const reviewed = reviewedFollowingLens(watch?.lens);
   if (!watch || reviewed.status !== "ok") return options.emptyBase || "/following/";
+  if (reviewed.lens === "meetings") {
+    const exact = exactCouncilMatterWatch({ lens: reviewed.lens, filter: watch.filter });
+    if (exact.attempted && exact.status !== "ok") return options.emptyBase || "/following/";
+    if (exact.status === "ok") watch = { ...watch, lens: exact.lens, filter: exact.filter };
+  }
   if (reviewed.lens === "legal_code") {
     const exact = exactProvisionWatch({ lens: reviewed.lens, filter: watch.filter });
     if (exact.status !== "ok") return options.emptyBase || "/following/";
@@ -566,6 +603,7 @@ function scopeSummary(lens, filter) {
     ["agency id", filter.agency_id],
     ["mandate", filter.mandate_id],
     ["provision", filter.provision_id],
+    ["Council matter", filter.matter_ref],
     ["deliverable type", filter.deliverable_type],
     ["deadline window", typeof filter.windowDays === "number" ? `next ${filter.windowDays} days` : null],
     ["exam number", Array.isArray(filter.examNumber) ? filter.examNumber.join(", ") : filter.examNumber],
@@ -589,6 +627,10 @@ export function composeWatchRuleSentence(lens, filter = {}, options = {}) {
     ? "citywide"
     : location.startsWith("in ") ? location : `in ${location}`;
 
+  if (wanted === "meetings" && f.matter_ref) {
+    const matterId = String(f.matter_ref).split(":").at(-1) || f.matter_ref;
+    return `Notify me when New York City Council matter ${matterId} has a newly observed official action.`;
+  }
   if (wanted === "meetings" && communityBoardLabel(f.communityBoard)) {
     return `Notify me when meetings for ${communityBoardLabel(f.communityBoard)} are published.`;
   }
@@ -1059,7 +1101,8 @@ function controlsHtml(view) {
   }
   const query = Array.isArray(view.filter.keywords) ? view.filter.keywords.join(" ") : "";
   const borough = placeBorough(view.filter);
-  const refinementsOpen = query || view.filter.agency || view.filter.councilDistrict || view.filter.communityBoard || view.lens === "meetings" ? " open" : "";
+  const exactMatter = Boolean(view.filter.matter_ref);
+  const refinementsOpen = !exactMatter && (query || view.filter.agency || view.filter.councilDistrict || view.filter.communityBoard || view.lens === "meetings") ? " open" : "";
   const councilFieldHidden = view.lens !== "district" ? " hidden" : "";
   const boardFieldHidden = view.lens !== "meetings" ? " hidden" : "";
   const boardSelection = communityBoardSelectionFromRef(view.filter.communityBoard);
@@ -1082,11 +1125,13 @@ function controlsHtml(view) {
     ${borough ? `<input type="hidden" name="boro" value="${esc(borough)}">` : ""}
     ${view.requested ? "" : `<input type="hidden" name="freq" value="${esc(view.frequency)}" data-following-choose-freq>`}
     <p class="following-next-action" data-following-next-action data-following-choice-boundary>${
-      view.requested
+      exactMatter
+        ? "This watch is for one Council matter. Review the latest observed action, then enter your email to save it."
+        : view.requested
         ? "Review the matching records, then enter your email to create this watch."
         : "Next: preview matching records. Choosing a topic or place does not start a watch."
     }</p>
-    <details class="following-refinements"${refinementsOpen}>
+    ${exactMatter ? "" : `<details class="following-refinements"${refinementsOpen}>
       <summary>Narrow it down</summary>
       <div class="following-refinement-grid">
         <label>Keyword<input name="q" value="${esc(query)}" placeholder="housing, school buses, curb…" data-following-refine="keywords"></label>
@@ -1104,7 +1149,7 @@ function controlsHtml(view) {
           <p id="following-community-board-help">Choose a borough and board (1–18). We’ll email its meetings.</p>
         </div>
       </div>
-    </details>
+    </details>`}
     ${view.requested ? cadenceCardsHtml(view) : ""}
     <div class="following-form-actions">
       <button type="submit" class="following-form-action-preview" data-following-primary-choice="preview" aria-label="${view.requested ? "Update matches" : "Preview matches"} before saving">${view.requested ? "Update matches" : "Preview matches"}</button>
@@ -1159,7 +1204,8 @@ export function renderFollowingBody(view) {
   // Handoff landing: scope chips + count + rule line before email (workspace order).
   // Panel workspace attribute supports the multi-watch surface tabs from main.
   const identity = view.requested && view.graphContext ? followingWatchIdentityHtml(view.graphContext) : "";
-  const workspace = `<div class="following-workspace" data-following-workspace data-following-panel-workspace>${identity}${scopeHtml(view)}${previewHtml(view)}${subscribeHtml(view)}</div>`;
+  const matterSummary = view.filter?.matter_ref ? councilMatterWatchSummaryHtml(view) : "";
+  const workspace = `<div class="following-workspace" data-following-workspace data-following-panel-workspace>${identity}${matterSummary}${scopeHtml(view)}${previewHtml(view)}${subscribeHtml(view)}</div>`;
   const personal = personalSectionHtml(view);
   const packs = `<section id="packs" class="following-packs" data-following-panel="packs" aria-labelledby="following-packs-heading"><p class="following-kicker">Start with a set</p><h2 id="following-packs-heading">Watch sets</h2><details class="following-secondary-entry" data-following-packs-disclosure><summary>Browse watch sets</summary><p class="following-pack-lead" data-following-choice-boundary>These packs are one type of suggestion. Each watch is made only after you check and submit.</p><div>${view.templates.map(templateHtml).join("")}</div></details></section>`;
   // Create flow leads for first-time / empty sessions; client reorders when
