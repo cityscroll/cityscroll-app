@@ -6,6 +6,8 @@
  * actor, outcome, or geography.
  */
 
+import { resolveLandAuthoritySourceBasis } from "./land_authority_summary.mjs";
+
 export const LAND_MAP_AUTHORITY_HANDOFF_SCHEMA = "cityscroll.land_map_authority_handoff.v1";
 export const LAND_MAP_AUTHORITY_PROJECTION_SCHEMA = "cityscroll.land_authority_summary.v1";
 export const LAND_MAP_AUTHORITY_PROJECTION_VERSION = "ldp05_authority_summary_v1";
@@ -120,8 +122,8 @@ export function landMapAuthorityHandoff({ projectId, row = null, panelHref = nul
       effect: summary.effect || null,
     },
     next_action: nextActionFrom(summary.published_next_opportunity ?? null, { stale, missing: false }),
-    authority_evidence: summary.source_basis?.profile || null,
-    observed_evidence: summary.source_basis?.phase || null,
+    authority_evidence: resolveLandAuthoritySourceBasis(summary)?.profile || null,
+    observed_evidence: resolveLandAuthoritySourceBasis(summary)?.phase || null,
     decision_path: suppliedDecisionPath,
   });
 }

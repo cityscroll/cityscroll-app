@@ -26,6 +26,7 @@ import {
   buildLandAuthoritySummary,
   materializeLandAuthoritySummaries,
   stampLandAuthoritySummary,
+  resolveLandAuthoritySourceBasis,
 } from "../site/land_authority_summary.mjs";
 import {
   landAuthoritySummaryHTML,
@@ -107,9 +108,10 @@ test("A1 2026Q0210 first paint keeps Council, CB12 observation, and published ne
   assert.deepEqual(summary.current_actor_refs, expected.current_actor_refs);
   assert.equal(summary.current_role, expected.current_role);
   assert.match(summary.effect, /approve|disapprove/i);
-  assert.equal(summary.source_basis.profile.registry_version, LAND_PROCEDURE_PROFILE_REGISTRY_VERSION);
-  assert.equal(summary.source_basis.phase.source_field, "current_milestone");
-  assert.equal(summary.source_basis.geography.source_type, "affected_review_body_for");
+  const firstPaintBasis = resolveLandAuthoritySourceBasis(summary);
+  assert.equal(firstPaintBasis.profile.registry_version, LAND_PROCEDURE_PROFILE_REGISTRY_VERSION);
+  assert.equal(firstPaintBasis.phase.source_field, "current_milestone");
+  assert.equal(firstPaintBasis.geography.source_type, "affected_review_body_for");
   assert.ok(affectedRefs(summary).includes(expected.observed_cb));
   const observed = summary.observed.recommendations.find((row) => row.body_ref === expected.observed_cb);
   assert.equal(observed.value, expected.observed_value);
@@ -204,12 +206,15 @@ test("A2 mixed, unknown, draft-only, stale, and unresolved stay explicit", () =>
 
 test("A3 provenance distinguishes profile, phase, geography, and publisher sources", () => {
   const summary = summarize("2026Q0210");
-  assert.equal(summary.source_basis.profile.source_type, "reviewed_static_registry");
-  assert.equal(summary.source_basis.profile.effect_source, "reviewed_static_registry");
-  assert.equal(summary.source_basis.phase.source_type, "publisher_current_milestone");
-  assert.equal(summary.source_basis.geography.source_type, "affected_review_body_for");
-  assert.equal(summary.source_basis.publisher.source_type, "published_hearing");
-  assert.equal(summary.source_basis.publisher.checked, true);
+  // Provenance shared by every summary is published once on the payload, so a
+  // reader resolves it rather than reading it off the summary directly.
+  const basis = resolveLandAuthoritySourceBasis(summary);
+  assert.equal(basis.profile.source_type, "reviewed_static_registry");
+  assert.equal(basis.profile.effect_source, "reviewed_static_registry");
+  assert.equal(basis.phase.source_type, "publisher_current_milestone");
+  assert.equal(basis.geography.source_type, "affected_review_body_for");
+  assert.equal(basis.publisher.source_type, "published_hearing");
+  assert.equal(basis.publisher.checked, true);
 });
 
 test("A4 materializer is bounded, fetch-free, and settles inside the first-paint budget", () => {

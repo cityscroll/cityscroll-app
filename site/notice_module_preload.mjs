@@ -96,6 +96,7 @@ export const NOTICE_MODULE_PRELOADS = Object.freeze([
   "/borough_board_identity.mjs",
   "/data/land_procedure_profiles.json",
   "/land_authority_summary_view.mjs",
+  "/land_authority_summary.mjs",
   "/project_calendar.mjs",
   "/land_next_decision_watch.mjs",
   "/land_hearing_authority_copy.mjs",
