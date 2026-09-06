@@ -182,6 +182,22 @@ export const MONEY_PARTY_RELATION_FIELDS = Object.freeze({
   named_vendor: "vendor_name",
 });
 
+/**
+ * The query axes a scope facet carries.
+ *
+ * A caller passing `facetValues` hands the filter the whole scope rather than
+ * copying its axes out one at a time — the axes belong together, and reading
+ * them here keeps a party relation from being separated from the refs it
+ * qualifies. An explicit `entityRefs`/`connectionRelation` still wins.
+ */
+export function moneyScopeAxes(facetValues = null) {
+  const values = facetValues && typeof facetValues === "object" ? facetValues : {};
+  return {
+    entityRefs: Array.isArray(values.entity_refs_all) ? values.entity_refs_all : [],
+    connectionRelation: typeof values.connection_relation === "string" ? values.connection_relation : "",
+  };
+}
+
 /** Institution ids requested as a party, for a party-reading relation only. */
 export function institutionPartyIdsFromEntityRefs(entityRefs = [], connectionRelation = "") {
   if (!MONEY_PARTY_RELATION_FIELDS[String(connectionRelation || "").trim()]) return [];
@@ -203,6 +219,7 @@ export function filterMoneySnapshot(rows, {
   excludeSpecial = false,
   entityRefs = [],
   connectionRelation = "",
+  facetValues = null,
   contractObjectRef = "",
   stages = [],
   processStates = [],
@@ -223,12 +240,15 @@ export function filterMoneySnapshot(rows, {
     .map((state) => residentSnapshotLower(state)).filter(Boolean);
   const requiredProcessStates = new Set(requestedProcessStates.filter(isKnownProcurementProcessState));
   const processStateFilterActive = requestedProcessStates.length > 0;
-  const requiredVendorStems = vendorStemsFromEntityRefs(entityRefs);
+  const scope = moneyScopeAxes(facetValues);
+  const scopedRefs = entityRefs?.length ? entityRefs : scope.entityRefs;
+  const scopedRelation = connectionRelation || scope.connectionRelation;
+  const requiredVendorStems = vendorStemsFromEntityRefs(scopedRefs);
   // A party relation makes the institution ref a predicate over the exact
   // reviewed party field it names. This is what keeps "contracts this body
   // received" from ever answering with "contracts this body published".
-  const partyField = MONEY_PARTY_RELATION_FIELDS[String(connectionRelation || "").trim()] || "";
-  const requiredPartyIds = institutionPartyIdsFromEntityRefs(entityRefs, connectionRelation);
+  const partyField = MONEY_PARTY_RELATION_FIELDS[String(scopedRelation || "").trim()] || "";
+  const requiredPartyIds = institutionPartyIdsFromEntityRefs(scopedRefs, scopedRelation);
   const selected = (Array.isArray(rows) ? rows : []).filter((row) => {
     const type = residentSnapshotClean(row?.type_of_notice_description);
     const typedStages = procurementStagesForRow(row);
