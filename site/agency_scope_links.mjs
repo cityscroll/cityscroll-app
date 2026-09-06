@@ -1,6 +1,7 @@
 /** Canonical agency scope links for browse lenses. */
 
-import { resolveAgencyIdentity } from "./agency_identity.mjs";
+import { agencyCanonicalId, resolveAgencyIdentity } from "./agency_identity.mjs";
+import { institutionClassification } from "./civic_institution_classification.mjs";
 import { routeHashFromScope, scopeFromRouteHash, scopeWithEntity } from "./scope_v0.mjs";
 import { renderCardinalityAdaptiveFacet } from "./cardinality_adaptive_facets.mjs";
 
@@ -24,16 +25,42 @@ function isAgencyRef(value) {
 }
 
 function agencyEntityRef(value) {
-  const identity = resolveAgencyIdentity(cleanAgencyScopeValue(value));
-  return identity?.matched && identity.canonical_id ? `agency:id:${identity.canonical_id}` : "";
+  const identity = resolveScopeIdentity(value);
+  return identity?.canonical_id ? `agency:id:${identity.canonical_id}` : "";
+}
+
+/**
+ * Scope choices follow reviewed destinations, not only the alias table.
+ * A published commission or corporation still has to be selectable when a
+ * record names it, even if that name was never an alias-table key.
+ */
+function resolveScopeIdentity(value) {
+  const label = cleanAgencyScopeValue(value);
+  if (!label) return null;
+  const identity = resolveAgencyIdentity(label);
+  if (identity?.matched && identity.canonical_id) return identity;
+  const slug = identity?.canonical_id || agencyCanonicalId(label);
+  if (institutionClassification(slug)) {
+    return {
+      canonical_id: slug,
+      canonical_name: identity?.canonical_name || label,
+      matched: true,
+    };
+  }
+  const asCity = label.replace(/^(?:the\s+)?new york city\s+/i, "City ");
+  if (asCity !== label) {
+    const viaCity = resolveScopeIdentity(asCity);
+    if (viaCity?.canonical_id) return viaCity;
+  }
+  return identity?.matched ? identity : null;
 }
 
 function unresolvedAgencyLabels(rows, knownLabels) {
   const labels = new Set();
   for (const row of rows) {
     const label = cleanAgencyScopeValue(typeof row === "string" ? row : row?.agency_name);
-    const identity = resolveAgencyIdentity(label);
-    if (label && (!identity?.matched || !identity.canonical_id) && !knownLabels.has(label)) labels.add(label);
+    const identity = resolveScopeIdentity(label);
+    if (label && !identity?.canonical_id && !knownLabels.has(label)) labels.add(label);
   }
   return [...labels].sort((left, right) => left.localeCompare(right));
 }
@@ -62,12 +89,18 @@ export function canonicalAgencyChoices(rows = []) {
   const choices = new Map();
   for (const row of rows) {
     const label = cleanAgencyScopeValue(typeof row === "string" ? row : row?.agency_name);
-    const identity = resolveAgencyIdentity(label);
-    if (!label || !identity?.matched || !identity.canonical_id) continue;
+    const identity = resolveScopeIdentity(label);
+    if (!label || !identity?.canonical_id) continue;
     if (!choices.has(identity.canonical_id)) {
+      const row = institutionClassification(identity.canonical_id);
+      const displayName = identity.canonical_name || label;
+      const kindLabel = row?.kind_label || null;
       choices.set(identity.canonical_id, {
         id: identity.canonical_id,
-        label: identity.canonical_name || label,
+        label: kindLabel ? `${displayName} · ${kindLabel}` : displayName,
+        search_label: [displayName, kindLabel, ...(row?.acronyms || [])]
+          .filter(Boolean)
+          .join(" "),
       });
     }
   }

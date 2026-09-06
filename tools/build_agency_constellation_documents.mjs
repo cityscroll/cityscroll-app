@@ -706,7 +706,11 @@ export function buildAgencyConstellationMaterialization(sources = loadSources())
     const deferredViewHref = `/agencies/${id}/relationships-data.json`;
     documents.push([
       join(SITE, "agencies", id, "index.html"),
-      renderAgencyConstellationDocument(view, { deferredDataHref, deferredViewHref }),
+      renderAgencyConstellationDocument(view, {
+        deferredDataHref,
+        deferredViewHref,
+        publisherRow: sources.publisher_crosswalk?.entries?.[id] || null,
+      }),
     ]);
     documents.push([
       join(SITE, "agencies", id, "relationships.json"),

@@ -26,6 +26,7 @@ import {
   projectCommunityBoardPersonAlias,
   projectCouncilOfficialAlias,
 } from "../ontology/person.mjs";
+import { projectResidentInstitutionIdentity } from "./civic_institution_resident_identity.mjs";
 
 export const PEOPLE_ORGANIZATION_ROW_KINDS = Object.freeze([
   "community-board",
@@ -191,23 +192,35 @@ function noticeOnlyHireRows(hires = {}) {
     .filter(Boolean);
 }
 
-function agencyRows(agencies = {}) {
+function agencyRows(agencies = {}, publisherCrosswalk = null) {
   return Object.values(agencies.by_id || {})
     .filter((agency) => clean(agency?.subject_ref) && clean(agency?.display_name))
-    .map((agency) => ({
-      kind: "agency",
-      id: clean(agency.subject_ref),
-      label: clean(agency.display_name),
-      href: entityHref({ ref: agency.subject_ref, label: agency.display_name }) || agency.path || null,
-      entity_ref: clean(agency.subject_ref),
-      relation_state: "published",
-      detail: `${Number(agency.matched_categories) || 0} linked record categories`,
-      institution: "agency",
-      institution_label: "Agency",
-      institution_context: "City agency organization",
-      search_text: `${agency.display_name} agency organization`,
-      categories: agency.categories || {},
-    }));
+    .map((agency) => {
+      const subjectRef = clean(agency.subject_ref);
+      const name = clean(agency.display_name);
+      const canonicalId = subjectRef.replace(/^agency:id:/, "");
+      const resident = projectResidentInstitutionIdentity(canonicalId, {
+        displayName: name,
+        publisherRow: publisherCrosswalk?.entries?.[canonicalId] || null,
+        href: agency.path || null,
+      });
+      const discovery = (resident?.discovery_terms || []).join(" ");
+      return {
+        kind: "agency",
+        id: subjectRef,
+        label: name,
+        href: entityHref({ ref: agency.subject_ref, label: agency.display_name }) || agency.path || null,
+        entity_ref: subjectRef,
+        relation_state: "published",
+        detail: `${Number(agency.matched_categories) || 0} linked record categories`,
+        institution: "agency",
+        institution_label: resident?.kind_label || "",
+        institution_context: resident?.purpose || "",
+        kind_label: resident?.kind_label || null,
+        search_text: `${name} ${discovery} ${resident?.description || ""}`.trim(),
+        categories: agency.categories || {},
+      };
+    });
 }
 
 function vendorRows(agencies = {}, awards = {}) {
@@ -565,7 +578,7 @@ export function buildPeopleOrganizationsReadModel(sources = {}) {
     ...officialRows(people),
     ...exactPersonAppointmentRows(people),
     ...committeeRows(committees, people),
-    ...agencyRows(agencies),
+    ...agencyRows(agencies, sources.publisherCrosswalk || sources.publisher_crosswalk || null),
     ...vendorRows(agencies, sources.awards || {}),
     ...noticeOnlyHireRows(hires),
   ];

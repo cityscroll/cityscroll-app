@@ -29,9 +29,12 @@ import {
 import { reviewedAgencyAcronyms } from "./canonical_entity_interpretation.mjs";
 import {
   INSTITUTION_BROWSE_GROUPS,
+} from "./civic_institution_classification.mjs";
+import {
   projectCommunityBoardClassification,
   projectInstitutionClassification,
-} from "./civic_institution_classification.mjs";
+} from "./civic_institution_classification_project.mjs";
+import { projectResidentInstitutionIdentity } from "./civic_institution_resident_identity.mjs";
 import {
   AGENCY_DIRECTORY_CONFIG,
   agencyDirectoryParams,
@@ -113,7 +116,11 @@ function directoryRow({
  * is site/data/community_board_constellation_lookup.json — the two artifacts
  * whose entries correspond one-to-one with the documents the builders write.
  */
-export function buildAgencyDirectoryModel({ agencies = {}, communityBoards = {} } = {}) {
+export function buildAgencyDirectoryModel({
+  agencies = {},
+  communityBoards = {},
+  publisherCrosswalk = null,
+} = {}) {
   const rows = [];
   const seen = new Set();
 
@@ -123,6 +130,10 @@ export function buildAgencyDirectoryModel({ agencies = {}, communityBoards = {} 
     const name = directoryText(entry?.display_name) || canonicalId;
     seen.add(canonicalId);
     const classification = projectInstitutionClassification(canonicalId, { canonicalName: name });
+    const resident = projectResidentInstitutionIdentity(canonicalId, {
+      displayName: name,
+      publisherRow: publisherCrosswalk?.entries?.[canonicalId] || null,
+    });
     rows.push(directoryRow({
       canonicalId,
       name,
@@ -133,6 +144,7 @@ export function buildAgencyDirectoryModel({ agencies = {}, communityBoards = {} 
       acronyms: [
         ...reviewedAgencyAcronyms(canonicalId),
         ...(classification?.acronyms || []),
+        ...(resident?.former_names || []),
       ],
     }));
   }

@@ -1,0 +1,41 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/reviewed-institution-identity",
+  "status": "implemented",
+  "fingerprint": "reviewed-institution-identity.v1",
+  "updated_at": "2026-09-06T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "resident-identity-projection",
+      "path": "site/civic_institution_resident_identity.mjs"
+    },
+    {
+      "id": "classification-build-projection",
+      "path": "site/civic_institution_classification_project.mjs"
+    },
+    {
+      "id": "agency-search-resident-identity",
+      "path": "site/agency_search_producer.mjs"
+    },
+    {
+      "id": "people-organizations-resident-identity",
+      "path": "site/people_organizations_read_model.mjs"
+    },
+    {
+      "id": "agency-scope-resident-identity",
+      "path": "site/agency_scope_links.mjs"
+    },
+    {
+      "id": "resident-identity-tests",
+      "path": "test/civic_institution_resident_identity.test.mjs"
+    },
+    {
+      "id": "resident-identity-capture-manifest",
+      "path": "docs/evidence/reviewed-institution-identity/manifest.json"
+    },
+    {
+      "id": "resident-identity-capture-tool",
+      "path": "tools/capture_reviewed_institution_identity_evidence.py"
+    }
+  ]
+}

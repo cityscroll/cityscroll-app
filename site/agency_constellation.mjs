@@ -9,6 +9,10 @@ export * from "./agency_constellation_model.mjs";
 
 import { renderStatutoryInstitutionIdentity } from "./civic_institution_statutory_identity.mjs";
 import {
+  projectResidentInstitutionIdentity,
+  renderResidentInstitutionIdentity,
+} from "./civic_institution_resident_identity.mjs";
+import {
   agencyConstellationSectionScripts,
   agencyConstellationSectionStyles,
   renderAgencyConstellationSections,
@@ -194,6 +198,10 @@ export function renderAgencyConstellationDocument(view, options = {}) {
     ? projectAgencyConstellationAsOf(view, asOf, { axis: "valid" })
     : view;
   const title = view.display_name;
+  const residentIdentity = projectResidentInstitutionIdentity(view.canonical_id || view.id, {
+    displayName: title,
+    publisherRow: options.publisherRow || view.publisher_row || null,
+  });
   const activeClaimId = clean(options.activeClaimId || options.claim, 200) || null;
   const effectiveAsOf = showAsOf ? asOf : null;
   const sharePath = agencyConstellationSharePath(view.path, { claim: activeClaimId, asOf: effectiveAsOf });
@@ -317,9 +325,11 @@ export function renderAgencyConstellationDocument(view, options = {}) {
   <main id="main" class="node-document civic-object-document" data-civic-object-kind="agency-constellation" data-subject-ref="${esc(view.subject_ref)}" data-er-match-basis="${esc(view.summary.er_match_basis)}" data-edge-provenance="1" data-node-document="1" data-as-of="${esc(effectiveAsOf || "")}" data-ctl-useful="${showAsOf ? "1" : "0"}" data-civic-object-deferred-href="${esc(options.deferredDataHref || `${view.path}relationships.json`)}" data-civic-object-view-href="${esc(options.deferredViewHref || `${view.path}relationships-data.json`)}" data-civic-object-settled="false">
     ${renderNodeBack({ href: "/agencies/", label: "Back to agencies", extraClass: "civic-object-back" })}
     <header class="node-hero civic-object-hero agency-constellation-hero" data-export-class="object_identity">
-      <p class="node-kicker civic-object-kicker">Agency constellation</p>
+      <p class="node-kicker civic-object-kicker">${esc(residentIdentity?.kind_label || "Agency constellation")}</p>
       <h1>${esc(title)}</h1>
-      ${renderStatutoryInstitutionIdentity(view.statutory_identity)}
+      ${view.statutory_identity
+        ? renderStatutoryInstitutionIdentity(view.statutory_identity)
+        : renderResidentInstitutionIdentity(residentIdentity)}
       <p class="node-lede">${esc(lead)}</p>
       ${metadata ? `<p class="agency-hero-meta">${metadata}</p>` : ""}
     </header>

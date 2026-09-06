@@ -315,6 +315,7 @@ export function buildBrowseConceptLanding(kind, sources = {}) {
       hires,
       communityBoardPeople,
       communityBoardCommittees,
+      publisherCrosswalk: sources.publisherCrosswalk || sources.publisher_crosswalk || null,
     })
     : null;
   const sections = kind === "people"

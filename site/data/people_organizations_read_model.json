@@ -50618,9 +50618,10 @@
       "relation_state": "published",
       "detail": "4 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Administration for Children's Services agency organization",
+      "institution_label": "",
+      "institution_context": "",
+      "kind_label": null,
+      "search_text": "Administration for Children's Services Administration for Children's Services ADMIN FOR CHILDREN'S SERVICES ADMIN FOR CHILDRENS SERVICES ADMIN FOR CHILDREN'S SVCS ADMIN FOR CHILDRENS SVCS ADMIN FOR CHILDREN' SVCS ACS AFCS",
       "categories": {
         "contracts": {
           "status": "matched",
@@ -50663,9 +50664,10 @@
       "relation_state": "published",
       "detail": "1 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Board Meetings agency organization",
+      "institution_label": "",
+      "institution_context": "",
+      "kind_label": null,
+      "search_text": "Board Meetings Board Meetings board-meetings",
       "categories": {
         "contracts": {
           "status": "empty",
@@ -50708,9 +50710,10 @@
       "relation_state": "published",
       "detail": "4 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Board of Correction agency organization",
+      "institution_label": "",
+      "institution_context": "",
+      "kind_label": null,
+      "search_text": "Board of Correction Board of Correction board-of-correction BOC",
       "categories": {
         "contracts": {
           "status": "empty",
@@ -50753,9 +50756,10 @@
       "relation_state": "published",
       "detail": "1 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Board of Elections agency organization",
+      "institution_label": "",
+      "institution_context": "",
+      "kind_label": null,
+      "search_text": "Board of Elections Board of Elections BOARD OF ELECTION BOE BOARD OF ELECTION POLL WORKERS",
       "categories": {
         "contracts": {
           "status": "empty",
@@ -50798,9 +50802,10 @@
       "relation_state": "published",
       "detail": "2 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Board of Standards and Appeals agency organization",
+      "institution_label": "",
+      "institution_context": "",
+      "kind_label": null,
+      "search_text": "Board of Standards and Appeals Board of Standards and Appeals board-of-standards-and-appeals BSA",
       "categories": {
         "contracts": {
           "status": "empty",
@@ -50843,9 +50848,10 @@
       "relation_state": "published",
       "detail": "1 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Bronx District Attorney's Office agency organization",
+      "institution_label": "",
+      "institution_context": "",
+      "kind_label": null,
+      "search_text": "Bronx District Attorney's Office Bronx District Attorney's Office District Attorney - Bronx County BRONX DISTRICT ATTORNEY Bronx County District Attorney's Office BCDA BCDAO DABC",
       "categories": {
         "contracts": {
           "status": "empty",
@@ -50888,9 +50894,10 @@
       "relation_state": "published",
       "detail": "1 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Brooklyn District Attorney's Office agency organization",
+      "institution_label": "",
+      "institution_context": "",
+      "kind_label": null,
+      "search_text": "Brooklyn District Attorney's Office Brooklyn District Attorney's Office District Attorney - Kings County DISTRICT ATTORNEY KINGS COUNTY Kings County District Attorney's Office DAKC KCDA KCDAO",
       "categories": {
         "contracts": {
           "status": "empty",
@@ -50933,9 +50940,10 @@
       "relation_state": "published",
       "detail": "5 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Business Integrity Commission agency organization",
+      "institution_label": "",
+      "institution_context": "",
+      "kind_label": null,
+      "search_text": "Business Integrity Commission Business Integrity Commission BIC",
       "categories": {
         "contracts": {
           "status": "matched",
@@ -50978,9 +50986,10 @@
       "relation_state": "published",
       "detail": "2 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Campaign Finance Board agency organization",
+      "institution_label": "",
+      "institution_context": "",
+      "kind_label": null,
+      "search_text": "Campaign Finance Board Campaign Finance Board CFB",
       "categories": {
         "contracts": {
           "status": "empty",
@@ -51023,9 +51032,10 @@
       "relation_state": "published",
       "detail": "1 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Charter Revision Commission agency organization",
+      "institution_label": "Charter revision commission",
+      "institution_context": "A commission of the kind that may propose charter amendments for the voters to approve, rather than run a department or adopt agency rules.",
+      "kind_label": "Charter revision commission",
+      "search_text": "Charter Revision Commission Charter Revision Commission charter-revision-commission Charter revision commission. A commission of the kind that may propose charter amendments for the voters to approve, rather than run a department or adopt agency rules.",
       "categories": {
         "contracts": {
           "status": "empty",
@@ -51068,9 +51078,10 @@
       "relation_state": "published",
       "detail": "5 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "City Commission on Human Rights agency organization",
+      "institution_label": "",
+      "institution_context": "",
+      "kind_label": null,
+      "search_text": "City Commission on Human Rights City Commission on Human Rights Commission on Human Rights HUMAN RIGHTS COMMISSION CHR COHR HRC CCHR",
       "categories": {
         "contracts": {
           "status": "matched",
@@ -51113,9 +51124,10 @@
       "relation_state": "published",
       "detail": "2 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "City Planning Commission agency organization",
+      "institution_label": "Commission",
+      "institution_context": "Holds public hearings and votes on planning and land use matters. A separate body from the Department of City Planning, which staffs it.",
+      "kind_label": "Commission",
+      "search_text": "City Planning Commission City Planning Commission city-planning-commission CPC Commission. Holds public hearings and votes on planning and land use matters. A separate body from the Department of City Planning, which staffs it.",
       "categories": {
         "contracts": {
           "status": "empty",
@@ -51158,9 +51170,10 @@
       "relation_state": "published",
       "detail": "2 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "City University of New York agency organization",
+      "institution_label": "",
+      "institution_context": "",
+      "kind_label": null,
+      "search_text": "City University of New York City University of New York city-university Borough Of Manhattan Community College COMMUNITY COLLEGE (BRONX) COMMUNITY COLLEGE (HOSTOS) COMMUNITY COLLEGE (KINGSBORO) COMMUNITY COLLEGE (LAGUARDIA) COMMUNITY COLLEGE (MANHATTAN) COMMUNITY COLLEGE (QUEENSBORO) CUNY CENTRAL OFFICE City University GUTTMAN COMMUNITY COLLEGE HUNTER COLLEGE HIGH SCHOOL Kingsborough Community College CUNY",
       "categories": {
         "contracts": {
           "status": "matched",
@@ -51203,9 +51216,10 @@
       "relation_state": "published",
       "detail": "5 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Civilian Complaint Review Board agency organization",
+      "institution_label": "",
+      "institution_context": "",
+      "kind_label": null,
+      "search_text": "Civilian Complaint Review Board Civilian Complaint Review Board CIVILIAN COMPLAINT REVIEW BD CCRB",
       "categories": {
         "contracts": {
           "status": "matched",
@@ -51248,9 +51262,10 @@
       "relation_state": "published",
       "detail": "1 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Commission on Racial Equity agency organization",
+      "institution_label": "Commission",
+      "institution_context": "A city commission established in its own Charter section.",
+      "kind_label": "Commission",
+      "search_text": "Commission on Racial Equity Commission on Racial Equity CORE CRE OFFICE OF RACIAL EQUITY Commission. A city commission established in its own Charter section.",
       "categories": {
         "contracts": {
           "status": "empty",
@@ -51293,9 +51308,10 @@
       "relation_state": "published",
       "detail": "1 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Community Boards agency organization",
+      "institution_label": "Community boards",
+      "institution_context": "The city's community boards as a group. Each board is its own body with its own district.",
+      "kind_label": "Community boards",
+      "search_text": "Community Boards Community Boards community-boards BRONX COMMUNITY BOARD #1 BRONX COMMUNITY BOARD #10 BRONX COMMUNITY BOARD #11 BRONX COMMUNITY BOARD #12 BRONX COMMUNITY BOARD #2 BRONX COMMUNITY BOARD #3 BRONX COMMUNITY BOARD #4 BRONX COMMUNITY BOARD #5 BRONX COMMUNITY BOARD #6 BRONX COMMUNITY BOARD #7 BRONX COMMUNITY BOARD #8 BRONX COMMUNITY BOARD #9 BRONX COMMUNITY BOARD 2 BRONX COMMUNITY BOARD 7 BROOKLYN COMMUNITY BOARD #1 BROOKLYN COMMUNITY BOARD #10 BROOKLYN COMMUNITY BOARD #11 BROOKLYN COMMUNITY BOARD #12 BROOKLYN COMMUNITY BOARD #13 BROOKLYN COMMUNITY BOARD #14 BROOKLYN COMMUNITY BOARD #15 BROOKLYN COMMUNITY BOARD #16 BROOKLYN COMMUNITY BOARD #17 BROOKLYN COMMUNITY BOARD #18 BROOKLYN COMMUNITY BOARD #2 BROOKLYN COMMUNITY BOARD #3 BROOKLYN COMMUNITY BOARD #4 BROOKLYN COMMUNITY BOARD #5 BROOKLYN COMMUNITY BOARD #6 BROOKLYN COMMUNITY BOARD #7 BROOKLYN COMMUNITY BOARD #8 BROOKLYN COMMUNITY BOARD #9 BROOKLYN COMMUNITY BOARD 4 MANHATTAN COMMUNITY BOARD #1 MANHATTAN COMMUNITY BOARD #10 MANHATTAN COMMUNITY BOARD #11 MANHATTAN COMMUNITY BOARD #12 MANHATTAN COMMUNITY BOARD #2 MANHATTAN COMMUNITY BOARD #3 MANHATTAN COMMUNITY BOARD #4 MANHATTAN COMMUNITY BOARD #5 MANHATTAN COMMUNITY BOARD #6 MANHATTAN COMMUNITY BOARD #7 MANHATTAN COMMUNITY BOARD #8 MANHATTAN COMMUNITY BOARD #9 QUEENS COMMUNITY BOARD #1 QUEENS COMMUNITY BOARD #10 QUEENS COMMUNITY BOARD #11 QUEENS COMMUNITY BOARD #12 QUEENS COMMUNITY BOARD #13 QUEENS COMMUNITY BOARD #14 QUEENS COMMUNITY BOARD #2 QUEENS COMMUNITY BOARD #3 QUEENS COMMUNITY BOARD #4 QUEENS COMMUNITY BOARD #5 QUEENS COMMUNITY BOARD #6 QUEENS COMMUNITY BOARD #7 QUEENS COMMUNITY BOARD #8 QUEENS COMMUNITY BOARD #9 QUEENS COMMUNITY BOARD 14 QUEENS COMMUNITY BOARD 2 QUEENS COMMUNITY BOARD 5 STATEN ISLAND COMMUNITY BD #1 STATEN ISLAND COMMUNITY BD #2 STATEN ISLAND COMMUNITY BD #3 CB Community boards. The city's community boards as a group. Each board is its own body with its own district.",
       "categories": {
         "contracts": {
           "status": "empty",
@@ -51338,9 +51354,10 @@
       "relation_state": "published",
       "detail": "1 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Criminal Justice Coordinator agency organization",
+      "institution_label": "",
+      "institution_context": "",
+      "kind_label": null,
+      "search_text": "Criminal Justice Coordinator Criminal Justice Coordinator OFFICE OF CRIMINAL JUSTICE CJC OCJ OOCJ",
       "categories": {
         "contracts": {
           "status": "empty",
@@ -51383,9 +51400,10 @@
       "relation_state": "published",
       "detail": "5 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Department for the Aging agency organization",
+      "institution_label": "",
+      "institution_context": "",
+      "kind_label": null,
+      "search_text": "Department for the Aging Department for the Aging Aging DFTA NYC Aging",
       "categories": {
         "contracts": {
           "status": "matched",
@@ -51428,9 +51446,10 @@
       "relation_state": "published",
       "detail": "6 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Department of Buildings agency organization",
+      "institution_label": "",
+      "institution_context": "",
+      "kind_label": null,
+      "search_text": "Department of Buildings Department of Buildings Buildings DOB",
       "categories": {
         "contracts": {
           "status": "matched",
@@ -51473,9 +51492,10 @@
       "relation_state": "published",
       "detail": "6 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Department of City Planning agency organization",
+      "institution_label": "City department",
+      "institution_context": "Prepares the city's planning work; its director also chairs the City Planning Commission, and its staff assist that commission.",
+      "kind_label": "City department",
+      "search_text": "Department of City Planning Department of City Planning City Planning DCP Department of City Planning DCP DDCP DDOCP DOCP City department. Prepares the city's planning work; its director also chairs the City Planning Commission, and its staff assist that commission.",
       "categories": {
         "contracts": {
           "status": "matched",
@@ -51518,9 +51538,10 @@
       "relation_state": "published",
       "detail": "5 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Department of Citywide Administrative Services agency organization",
+      "institution_label": "",
+      "institution_context": "",
+      "kind_label": null,
+      "search_text": "Department of Citywide Administrative Services Department of Citywide Administrative Services Citywide Administrative Services citywide-administrative-services CAS DCAS DOCAS DEPT OF CITYWIDE ADMIN SVCS PUBLIC SERVICE CORPS",
       "categories": {
         "contracts": {
           "status": "matched",
@@ -51563,9 +51584,10 @@
       "relation_state": "published",
       "detail": "6 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Department of Consumer and Worker Protection agency organization",
+      "institution_label": "",
+      "institution_context": "",
+      "kind_label": null,
+      "search_text": "Department of Consumer and Worker Protection Department of Consumer and Worker Protection Consumer and Worker Protection CONSUMER AFFAIRS Department of Consumer Affairs CAWP CWP DCA DCWP DOCA DOCAWP",
       "categories": {
         "contracts": {
           "status": "matched",
@@ -51608,9 +51630,10 @@
       "relation_state": "published",
       "detail": "4 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Department of Correction agency organization",
+      "institution_label": "",
+      "institution_context": "",
+      "kind_label": null,
+      "search_text": "Department of Correction Department of Correction Correction DOC",
       "categories": {
         "contracts": {
           "status": "matched",
@@ -51653,9 +51676,10 @@
       "relation_state": "published",
       "detail": "3 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Department of Cultural Affairs agency organization",
+      "institution_label": "",
+      "institution_context": "",
+      "kind_label": null,
+      "search_text": "Department of Cultural Affairs Department of Cultural Affairs Cultural Affairs DCLA",
       "categories": {
         "contracts": {
           "status": "matched",
@@ -51698,9 +51722,10 @@
       "relation_state": "published",
       "detail": "3 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Department of Design and Construction agency organization",
+      "institution_label": "",
+      "institution_context": "",
+      "kind_label": null,
+      "search_text": "Department of Design and Construction Department of Design and Construction Design and Construction DESIGN & CONSTRUCTION DEPT. OF DESIGN & CONSTRUCTION DDC DODAC",
       "categories": {
         "contracts": {
           "status": "matched",
@@ -51743,9 +51768,10 @@
       "relation_state": "published",
       "detail": "5 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Department of Environmental Protection agency organization",
+      "institution_label": "",
+      "institution_context": "",
+      "kind_label": null,
+      "search_text": "Department of Environmental Protection Department of Environmental Protection Environmental Protection DEPT OF ENVIRONMENT PROTECTION DEP DOEP",
       "categories": {
         "contracts": {
           "status": "matched",
@@ -51788,9 +51814,10 @@
       "relation_state": "published",
       "detail": "6 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Department of Finance agency organization",
+      "institution_label": "",
+      "institution_context": "",
+      "kind_label": null,
+      "search_text": "Department of Finance Department of Finance Finance DOF",
       "categories": {
         "contracts": {
           "status": "matched",
@@ -51833,9 +51860,10 @@
       "relation_state": "published",
       "detail": "6 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Department of Health and Mental Hygiene agency organization",
+      "institution_label": "",
+      "institution_context": "",
+      "kind_label": null,
+      "search_text": "Department of Health and Mental Hygiene Department of Health and Mental Hygiene Health and Mental Hygiene DEPT OF HEALTH/MENTAL HYGIENE DEPT OF MH MR AND ALC SVCS DHMH DMMAS DOHMH DOMMAAS HAMH HMH MMAS Health Department NYC Health DOH",
       "categories": {
         "contracts": {
           "status": "matched",
@@ -51878,9 +51906,10 @@
       "relation_state": "published",
       "detail": "4 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Department of Homeless Services agency organization",
+      "institution_label": "",
+      "institution_context": "",
+      "kind_label": null,
+      "search_text": "Department of Homeless Services Department of Homeless Services Homeless Services DEPT. OF HOMELESS SERVICES DHS DOHS",
       "categories": {
         "contracts": {
           "status": "matched",
@@ -51923,9 +51952,10 @@
       "relation_state": "published",
       "detail": "6 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Department of Housing Preservation and Development agency organization",
+      "institution_label": "",
+      "institution_context": "",
+      "kind_label": null,
+      "search_text": "Department of Housing Preservation and Development Department of Housing Preservation and Development Housing Preservation and Development HOUSING PRESERVATION & DVLPMNT HPD - NYC Dept of Housing Preservation & Development HPD - NYC Dept of Housing Preservation and Development DHPD DOHPAD HHPD HNDHPD HNDOHPAD HPAD HPD",
       "categories": {
         "contracts": {
           "status": "matched",
@@ -51968,9 +51998,10 @@
       "relation_state": "published",
       "detail": "4 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Department of Investigation agency organization",
+      "institution_label": "",
+      "institution_context": "",
+      "kind_label": null,
+      "search_text": "Department of Investigation Department of Investigation Investigation DOI",
       "categories": {
         "contracts": {
           "status": "matched",
@@ -52013,9 +52044,10 @@
       "relation_state": "published",
       "detail": "6 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Department of Parks and Recreation agency organization",
+      "institution_label": "",
+      "institution_context": "",
+      "kind_label": null,
+      "search_text": "Department of Parks and Recreation Department of Parks and Recreation Parks and Recreation DEPT OF PARKS & RECREATION DPR - Department of Parks & Recreation NYC DPR - Department of Parks and Recreation NYC DDOPARN DDPRN DOPAR DPR PAR NYC Parks Parks",
       "categories": {
         "contracts": {
           "status": "matched",
@@ -52058,9 +52090,10 @@
       "relation_state": "published",
       "detail": "4 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Department of Probation agency organization",
+      "institution_label": "",
+      "institution_context": "",
+      "kind_label": null,
+      "search_text": "Department of Probation Department of Probation Probation DOP",
       "categories": {
         "contracts": {
           "status": "matched",
@@ -52103,9 +52136,10 @@
       "relation_state": "published",
       "detail": "4 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Department of Records and Information Services agency organization",
+      "institution_label": "",
+      "institution_context": "",
+      "kind_label": null,
+      "search_text": "Department of Records and Information Services Department of Records and Information Services Records and Information Services DEPT OF RECORDS & INFO SERVICE DORAIS DRIS RAIS RIS DORIS",
       "categories": {
         "contracts": {
           "status": "matched",
@@ -52148,9 +52182,10 @@
       "relation_state": "published",
       "detail": "5 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Department of Small Business Services agency organization",
+      "institution_label": "",
+      "institution_context": "",
+      "kind_label": null,
+      "search_text": "Department of Small Business Services Department of Small Business Services Small Business Services DEPARTMENT OF BUSINESS SERV. Department of Business Services DBS DOBS DOSBS DSBS SBS",
       "categories": {
         "contracts": {
           "status": "matched",
@@ -52193,9 +52228,10 @@
       "relation_state": "published",
       "detail": "1 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Department of Social Services agency organization",
+      "institution_label": "",
+      "institution_context": "",
+      "kind_label": null,
+      "search_text": "Department of Social Services Department of Social Services department-of-social-services",
       "categories": {
         "contracts": {
           "status": "matched",
@@ -52238,9 +52274,10 @@
       "relation_state": "published",
       "detail": "4 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Department of Veterans' Services agency organization",
+      "institution_label": "",
+      "institution_context": "",
+      "kind_label": null,
+      "search_text": "Department of Veterans' Services Department of Veterans' Services NYC Department of Veterans' Services NYC DEPT OF VETERANS SERVICES NYC DEPT OF VETERANS' SERVICES Veterans' Services NDOVS NDVS DVS",
       "categories": {
         "contracts": {
           "status": "matched",
@@ -52283,9 +52320,10 @@
       "relation_state": "published",
       "detail": "4 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Department of Youth and Community Development agency organization",
+      "institution_label": "",
+      "institution_context": "",
+      "kind_label": null,
+      "search_text": "Department of Youth and Community Development Department of Youth and Community Development Youth and Community Development DEPT OF YOUTH & COMM DEV SRVS DOYACDS DYCDS YACD YCD YCDS DYCD",
       "categories": {
         "contracts": {
           "status": "matched",
@@ -52328,9 +52366,10 @@
       "relation_state": "published",
       "detail": "0 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Economic Development Corporation agency organization",
+      "institution_label": "Nonprofit organization",
+      "institution_context": "A nonprofit corporation doing economic development work in the city. Its own board materials discuss obligations that apply to local authorities.",
+      "kind_label": "Nonprofit organization",
+      "search_text": "Economic Development Corporation Economic Development Corporation economic-development-corporation NYCEDC EDC Nonprofit organization. A nonprofit corporation doing economic development work in the city. Its own board materials discuss obligations that apply to local authorities.",
       "categories": {
         "contracts": {
           "status": "empty",
@@ -52373,9 +52412,10 @@
       "relation_state": "published",
       "detail": "2 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Employees' Retirement System agency organization",
+      "institution_label": "",
+      "institution_context": "",
+      "kind_label": null,
+      "search_text": "Employees' Retirement System Employees' Retirement System employees-retirement-system ERS NERS",
       "categories": {
         "contracts": {
           "status": "empty",
@@ -52418,9 +52458,10 @@
       "relation_state": "published",
       "detail": "2 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Equal Employment Practices Commission agency organization",
+      "institution_label": "",
+      "institution_context": "",
+      "kind_label": null,
+      "search_text": "Equal Employment Practices Commission Equal Employment Practices Commission equal-employment-practices-commission EEPC",
       "categories": {
         "contracts": {
           "status": "empty",
@@ -52463,9 +52504,10 @@
       "relation_state": "published",
       "detail": "2 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Financial Information Services Agency agency organization",
+      "institution_label": "",
+      "institution_context": "",
+      "kind_label": null,
+      "search_text": "Financial Information Services Agency Financial Information Services Agency FINANCIAL INFO SVCS AGENCY FISA",
       "categories": {
         "contracts": {
           "status": "empty",
@@ -52508,9 +52550,10 @@
       "relation_state": "published",
       "detail": "5 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Fire Department of the City of New York agency organization",
+      "institution_label": "",
+      "institution_context": "",
+      "kind_label": null,
+      "search_text": "Fire Department of the City of New York Fire Department of the City of New York Fire Department FDNY",
       "categories": {
         "contracts": {
           "status": "matched",
@@ -52553,9 +52596,10 @@
       "relation_state": "published",
       "detail": "4 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Human Resources Administration agency organization",
+      "institution_label": "",
+      "institution_context": "",
+      "kind_label": null,
+      "search_text": "Human Resources Administration Human Resources Administration human-resources-administration DOSSHRA DSSHRA HDOSS HDSS HRA HSS SSHRA Dept. of Social Svcs/Human Resources Administration HRA/DEPT OF SOCIAL SERVICES",
       "categories": {
         "contracts": {
           "status": "matched",
@@ -52598,9 +52642,10 @@
       "relation_state": "published",
       "detail": "2 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Independent Budget Office agency organization",
+      "institution_label": "",
+      "institution_context": "",
+      "kind_label": null,
+      "search_text": "Independent Budget Office Independent Budget Office IBO",
       "categories": {
         "contracts": {
           "status": "empty",
@@ -52643,9 +52688,10 @@
       "relation_state": "published",
       "detail": "6 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Landmarks Preservation Commission agency organization",
+      "institution_label": "",
+      "institution_context": "",
+      "kind_label": null,
+      "search_text": "Landmarks Preservation Commission Landmarks Preservation Commission LANDMARKS PRESERVATION COMM LPC - NYC Landmarks Preservation Commission LLPC LNLPC LPC",
       "categories": {
         "contracts": {
           "status": "matched",
@@ -52688,9 +52734,10 @@
       "relation_state": "published",
       "detail": "1 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Long Island Rail Road agency organization",
+      "institution_label": "MTA operating body",
+      "institution_context": "One of the distinct operating bodies the MTA lists in its own directory. Being listed there does not establish that this body shares the authority's legal form.",
+      "kind_label": "MTA operating body",
+      "search_text": "Long Island Rail Road Long Island Rail Road LIRR MTA operating body. One of the distinct operating bodies the MTA lists in its own directory. Being listed there does not establish that this body shares the authority's legal form.",
       "categories": {
         "contracts": {
           "status": "matched",
@@ -52733,9 +52780,10 @@
       "relation_state": "published",
       "detail": "3 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Manhattan District Attorney's Office agency organization",
+      "institution_label": "",
+      "institution_context": "",
+      "kind_label": null,
+      "search_text": "Manhattan District Attorney's Office Manhattan District Attorney's Office District Attorney - New York County DISTRICT ATTORNEY-MANHATTAN New York County District Attorney's Office CDA DAM DANYC MDA MDAO NYCDAO",
       "categories": {
         "contracts": {
           "status": "matched",
@@ -52778,9 +52826,10 @@
       "relation_state": "published",
       "detail": "5 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Mayor's Office of Contract Services agency organization",
+      "institution_label": "",
+      "institution_context": "",
+      "kind_label": null,
+      "search_text": "Mayor's Office of Contract Services Mayor's Office of Contract Services mayors-office-of-contract-services MCS MOCS MOOCS MAYORS OFFICE OF CONTRACT SVCS",
       "categories": {
         "contracts": {
           "status": "empty",
@@ -52823,9 +52872,10 @@
       "relation_state": "published",
       "detail": "1 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Mayor's Office of Criminal Justice agency organization",
+      "institution_label": "",
+      "institution_context": "",
+      "kind_label": null,
+      "search_text": "Mayor's Office of Criminal Justice Mayor's Office of Criminal Justice mayors office of criminal justice mayors-office-of-criminal-justice MOCJ",
       "categories": {
         "contracts": {
           "status": "empty",
@@ -52868,9 +52918,10 @@
       "relation_state": "published",
       "detail": "3 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Mayor's Office of Management and Budget agency organization",
+      "institution_label": "",
+      "institution_context": "",
+      "kind_label": null,
+      "search_text": "Mayor's Office of Management and Budget Mayor's Office of Management and Budget Management and Budget OFFICE OF MANAGEMENT AND BUDGET OFFICE OF MANAGEMENT & BUDGET MAB OMB OOMAB",
       "categories": {
         "contracts": {
           "status": "matched",
@@ -52913,9 +52964,10 @@
       "relation_state": "published",
       "detail": "1 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Metropolitan Transportation Authority agency organization",
+      "institution_label": "Public benefit corporation",
+      "institution_context": "A state-created public benefit corporation running transit and commuter services for the region, with a state-level appointment process for its board.",
+      "kind_label": "Public benefit corporation",
+      "search_text": "Metropolitan Transportation Authority Metropolitan Transportation Authority MTA Public benefit corporation. A state-created public benefit corporation running transit and commuter services for the region, with a state-level appointment process for its board.",
       "categories": {
         "contracts": {
           "status": "matched",
@@ -52958,9 +53010,10 @@
       "relation_state": "published",
       "detail": "1 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "MTA Construction & Development agency organization",
+      "institution_label": "MTA operating body",
+      "institution_context": "One of the distinct operating bodies the MTA lists in its own directory. Being listed there does not establish that this body shares the authority's legal form.",
+      "kind_label": "MTA operating body",
+      "search_text": "MTA Construction & Development MTA Construction & Development mta-construction-and-development MCAD MCD MTA operating body. One of the distinct operating bodies the MTA lists in its own directory. Being listed there does not establish that this body shares the authority's legal form.",
       "categories": {
         "contracts": {
           "status": "matched",
@@ -53003,9 +53056,10 @@
       "relation_state": "published",
       "detail": "2 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "N.Y.C. Transit Authority agency organization",
+      "institution_label": "MTA operating body",
+      "institution_context": "One of the distinct operating bodies the MTA lists in its own directory. Being listed there does not establish that this body shares the authority's legal form.",
+      "kind_label": "MTA operating body",
+      "search_text": "N.Y.C. Transit Authority N.Y.C. Transit Authority n-y-c-transit-authority NYCT NYCTA MTA operating body. One of the distinct operating bodies the MTA lists in its own directory. Being listed there does not establish that this body shares the authority's legal form.",
       "categories": {
         "contracts": {
           "status": "matched",
@@ -53048,9 +53102,10 @@
       "relation_state": "published",
       "detail": "2 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "New York City Council agency organization",
+      "institution_label": "Legislative body",
+      "institution_context": "The city's legislative body, made up of members elected by district.",
+      "kind_label": "Legislative body",
+      "search_text": "New York City Council New York City Council City Council NYCC Legislative body. The city's legislative body, made up of members elected by district.",
       "categories": {
         "contracts": {
           "status": "empty",
@@ -53093,9 +53148,10 @@
       "relation_state": "published",
       "detail": "6 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "New York City Department of Sanitation agency organization",
+      "institution_label": "",
+      "institution_context": "",
+      "kind_label": null,
+      "search_text": "New York City Department of Sanitation New York City Department of Sanitation Sanitation DEPARTMENT OF SANITATION DOS NYC Sanitation DSNY",
       "categories": {
         "contracts": {
           "status": "matched",
@@ -53138,9 +53194,10 @@
       "relation_state": "published",
       "detail": "6 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "New York City Department of Transportation agency organization",
+      "institution_label": "",
+      "institution_context": "",
+      "kind_label": null,
+      "search_text": "New York City Department of Transportation New York City Department of Transportation Transportation DOT DEPARTMENT OF TRANSPORTATION NYC DOT Department of Transportation NYC Department of Transportation NDDOT NDDT NDOT NDT NYCDOT NYCDT NYC DOT",
       "categories": {
         "contracts": {
           "status": "matched",
@@ -53183,9 +53240,10 @@
       "relation_state": "published",
       "detail": "3 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "New York City Emergency Management agency organization",
+      "institution_label": "",
+      "institution_context": "",
+      "kind_label": null,
+      "search_text": "New York City Emergency Management New York City Emergency Management Emergency Management emergency-management NEM NYCEM OEM OOEM NYC Emergency Management Office of Emergency Management",
       "categories": {
         "contracts": {
           "status": "matched",
@@ -53228,9 +53286,10 @@
       "relation_state": "published",
       "detail": "4 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "New York City Housing Authority agency organization",
+      "institution_label": "Public housing authority",
+      "institution_context": "A body corporate and politic established by state law to provide public housing in the city.",
+      "kind_label": "Public housing authority",
+      "search_text": "New York City Housing Authority New York City Housing Authority Housing Authority housing-authority NYCHA NHA Public housing authority. A body corporate and politic established by state law to provide public housing in the city.",
       "categories": {
         "contracts": {
           "status": "matched",
@@ -53273,9 +53332,10 @@
       "relation_state": "published",
       "detail": "4 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "New York City Law Department agency organization",
+      "institution_label": "",
+      "institution_context": "",
+      "kind_label": null,
+      "search_text": "New York City Law Department New York City Law Department Law Department Office of the Corporation Counsel Law Dept. LAW",
       "categories": {
         "contracts": {
           "status": "matched",
@@ -53318,9 +53378,10 @@
       "relation_state": "published",
       "detail": "4 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "New York City Police Department agency organization",
+      "institution_label": "",
+      "institution_context": "",
+      "kind_label": null,
+      "search_text": "New York City Police Department New York City Police Department Police Department police-department NYPD",
       "categories": {
         "contracts": {
           "status": "empty",
@@ -53363,9 +53424,10 @@
       "relation_state": "published",
       "detail": "1 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "New York City Police Pension Fund agency organization",
+      "institution_label": "",
+      "institution_context": "",
+      "kind_label": null,
+      "search_text": "New York City Police Pension Fund New York City Police Pension Fund new-york-city-police-pension-fund PPF",
       "categories": {
         "contracts": {
           "status": "empty",
@@ -53408,9 +53470,10 @@
       "relation_state": "published",
       "detail": "4 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "New York City Public Schools agency organization",
+      "institution_label": "",
+      "institution_context": "",
+      "kind_label": null,
+      "search_text": "New York City Public Schools New York City Public Schools Education DEA DOEA NPS NYCPS Department of Education NYC Public Schools DOE DEPARTMENT OF EDUCATION ADMIN",
       "categories": {
         "contracts": {
           "status": "matched",
@@ -53453,9 +53516,10 @@
       "relation_state": "published",
       "detail": "2 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "New York City Tax Commission agency organization",
+      "institution_label": "",
+      "institution_context": "",
+      "kind_label": null,
+      "search_text": "New York City Tax Commission New York City Tax Commission Tax Commission NYC Tax Commission TAXCOMM",
       "categories": {
         "contracts": {
           "status": "empty",
@@ -53498,9 +53562,10 @@
       "relation_state": "published",
       "detail": "5 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "New York City Taxi and Limousine Commission agency organization",
+      "institution_label": "",
+      "institution_context": "",
+      "kind_label": null,
+      "search_text": "New York City Taxi and Limousine Commission New York City Taxi and Limousine Commission Taxi and Limousine Commission TAXI & LIMOUSINE COMMISSION TALC TLC NYC TLC",
       "categories": {
         "contracts": {
           "status": "empty",
@@ -53543,9 +53608,10 @@
       "relation_state": "published",
       "detail": "2 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "NYC Health + Hospitals agency organization",
+      "institution_label": "",
+      "institution_context": "",
+      "kind_label": null,
+      "search_text": "NYC Health + Hospitals NYC Health + Hospitals nyc health hospitals nyc-health-hospitals H+H",
       "categories": {
         "contracts": {
           "status": "matched",
@@ -53588,9 +53654,10 @@
       "relation_state": "published",
       "detail": "3 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Office of Administrative Trials and Hearings agency organization",
+      "institution_label": "",
+      "institution_context": "",
+      "kind_label": null,
+      "search_text": "Office of Administrative Trials and Hearings Office of Administrative Trials and Hearings Administrative Trials and Hearings administrative-trials-and-hearings ATAH ATH ADMIN TRIALS AND HEARINGS OATH",
       "categories": {
         "contracts": {
           "status": "empty",
@@ -53633,9 +53700,10 @@
       "relation_state": "published",
       "detail": "1 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Office of Collective Bargaining agency organization",
+      "institution_label": "",
+      "institution_context": "",
+      "kind_label": null,
+      "search_text": "Office of Collective Bargaining Office of Collective Bargaining OFFICE OF COLLECTIVE BARGAININ OCB OOCB",
       "categories": {
         "contracts": {
           "status": "empty",
@@ -53678,9 +53746,10 @@
       "relation_state": "published",
       "detail": "4 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Office of Labor Relations agency organization",
+      "institution_label": "",
+      "institution_context": "",
+      "kind_label": null,
+      "search_text": "Office of Labor Relations Office of Labor Relations OLR OOLR",
       "categories": {
         "contracts": {
           "status": "matched",
@@ -53723,9 +53792,10 @@
       "relation_state": "published",
       "detail": "1 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Office of Payroll Administration agency organization",
+      "institution_label": "",
+      "institution_context": "",
+      "kind_label": null,
+      "search_text": "Office of Payroll Administration Office of Payroll Administration Payroll Administration payroll-administration OOPA OPA OFF OF PAYROLL ADMINISTRATION",
       "categories": {
         "contracts": {
           "status": "empty",
@@ -53768,9 +53838,10 @@
       "relation_state": "published",
       "detail": "0 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Office of Racial Equity agency organization",
+      "institution_label": "Mayoral office",
+      "institution_context": "A city office established inside the executive office of the mayor.",
+      "kind_label": "Mayoral office",
+      "search_text": "Office of Racial Equity Office of Racial Equity ORE OORE Mayoral office. A city office established inside the executive office of the mayor.",
       "categories": {
         "contracts": {
           "status": "empty",
@@ -53813,9 +53884,10 @@
       "relation_state": "published",
       "detail": "5 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Office of Technology and Innovation agency organization",
+      "institution_label": "",
+      "institution_context": "",
+      "kind_label": null,
+      "search_text": "Office of Technology and Innovation Office of Technology and Innovation Information Technology and Telecommunications DEPT OF INFO TECH & TELECOMM TECHNOLOGY & INNOVATION Office of Technology & Innovation Department of Information Technology and Telecommunications DITT DOITAT ITAT ITT OOTAI OTI TAI DoITT",
       "categories": {
         "contracts": {
           "status": "matched",
@@ -53858,9 +53930,10 @@
       "relation_state": "published",
       "detail": "1 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Office of the Borough President of Brooklyn agency organization",
+      "institution_label": "Elected office",
+      "institution_context": "A borough office Chapter 68 names as elected. Borough presidents also sit on their borough board.",
+      "kind_label": "Elected office",
+      "search_text": "Office of the Borough President of Brooklyn Office of the Borough President of Brooklyn Borough President - Brooklyn BOROUGH PRESIDENT-BROOKLYN Elected office. A borough office Chapter 68 names as elected. Borough presidents also sit on their borough board.",
       "categories": {
         "contracts": {
           "status": "empty",
@@ -53903,9 +53976,10 @@
       "relation_state": "published",
       "detail": "2 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Office of the Borough President of Queens agency organization",
+      "institution_label": "Elected office",
+      "institution_context": "A borough office Chapter 68 names as elected. Borough presidents also sit on their borough board.",
+      "kind_label": "Elected office",
+      "search_text": "Office of the Borough President of Queens Office of the Borough President of Queens Borough President - Queens BOROUGH PRESIDENT-QUEENS BPQ Elected office. A borough office Chapter 68 names as elected. Borough presidents also sit on their borough board.",
       "categories": {
         "contracts": {
           "status": "empty",
@@ -53948,9 +54022,10 @@
       "relation_state": "published",
       "detail": "2 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Office of the Borough President of The Bronx agency organization",
+      "institution_label": "Elected office",
+      "institution_context": "A borough office Chapter 68 names as elected. Borough presidents also sit on their borough board.",
+      "kind_label": "Elected office",
+      "search_text": "Office of the Borough President of The Bronx Office of the Borough President of The Bronx Borough President - Bronx BOROUGH PRESIDENT-BRONX Elected office. A borough office Chapter 68 names as elected. Borough presidents also sit on their borough board.",
       "categories": {
         "contracts": {
           "status": "empty",
@@ -53993,9 +54068,10 @@
       "relation_state": "published",
       "detail": "1 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Office of the Chief Medical Examiner agency organization",
+      "institution_label": "",
+      "institution_context": "",
+      "kind_label": null,
+      "search_text": "Office of the Chief Medical Examiner Office of the Chief Medical Examiner chief medical examiner chief-medical-examiner OCME",
       "categories": {
         "contracts": {
           "status": "empty",
@@ -54038,9 +54114,10 @@
       "relation_state": "published",
       "detail": "2 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Office of the City Clerk agency organization",
+      "institution_label": "",
+      "institution_context": "",
+      "kind_label": null,
+      "search_text": "Office of the City Clerk Office of the City Clerk City Clerk",
       "categories": {
         "contracts": {
           "status": "empty",
@@ -54083,9 +54160,10 @@
       "relation_state": "published",
       "detail": "3 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Office of the Mayor agency organization",
+      "institution_label": "Elected office",
+      "institution_context": "The office of the mayor, one of the offices Chapter 68 names as elected.",
+      "kind_label": "Elected office",
+      "search_text": "Office of the Mayor Office of the Mayor office-of-the-mayor OOTM Mayor's Office Office of the Mayor of the City of New York OM Elected office. The office of the mayor, one of the offices Chapter 68 names as elected.",
       "categories": {
         "contracts": {
           "status": "empty",
@@ -54128,9 +54206,10 @@
       "relation_state": "published",
       "detail": "5 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Office of the New York City Comptroller agency organization",
+      "institution_label": "Elected office",
+      "institution_context": "A city-wide office Chapter 68 names as elected.",
+      "kind_label": "Elected office",
+      "search_text": "Office of the New York City Comptroller Office of the New York City Comptroller Comptroller OFFICE OF THE COMPTROLLER OOTC Elected office. A city-wide office Chapter 68 names as elected.",
       "categories": {
         "contracts": {
           "status": "empty",
@@ -54173,9 +54252,10 @@
       "relation_state": "published",
       "detail": "1 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Office of the Public Advocate agency organization",
+      "institution_label": "Elected office",
+      "institution_context": "A city-wide office Chapter 68 names as elected.",
+      "kind_label": "Elected office",
+      "search_text": "Office of the Public Advocate Office of the Public Advocate Public Advocate Office of the Public Advocate for the City of New York PUB ADV Elected office. A city-wide office Chapter 68 names as elected.",
       "categories": {
         "contracts": {
           "status": "empty",
@@ -54218,9 +54298,10 @@
       "relation_state": "published",
       "detail": "2 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Office of the Special Narcotics Prosecutor agency organization",
+      "institution_label": "",
+      "institution_context": "",
+      "kind_label": null,
+      "search_text": "Office of the Special Narcotics Prosecutor Office of the Special Narcotics Prosecutor Office of Special Narcotics Prosecutor office-of-special-narcotics-prosecutor DASN OOSNP OOTSNP OSNP SNP DISTRICT ATTORNEY-SPECIAL NARC Office of Special Narcotics Prose",
       "categories": {
         "contracts": {
           "status": "empty",
@@ -54263,9 +54344,10 @@
       "relation_state": "published",
       "detail": "1 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Public Design Commission agency organization",
+      "institution_label": "",
+      "institution_context": "",
+      "kind_label": null,
+      "search_text": "Public Design Commission Public Design Commission Art Commission PDC",
       "categories": {
         "contracts": {
           "status": "empty",
@@ -54308,9 +54390,10 @@
       "relation_state": "published",
       "detail": "1 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Queens District Attorney's Office agency organization",
+      "institution_label": "",
+      "institution_context": "",
+      "kind_label": null,
+      "search_text": "Queens District Attorney's Office Queens District Attorney's Office District Attorney - Queens County DISTRICT ATTORNEY QNS COUNTY Queens County District Attorney's Office DAQC QCDA QCDAO QDA QDAO",
       "categories": {
         "contracts": {
           "status": "empty",
@@ -54353,9 +54436,10 @@
       "relation_state": "published",
       "detail": "2 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Rent Guidelines Board agency organization",
+      "institution_label": "",
+      "institution_context": "",
+      "kind_label": null,
+      "search_text": "Rent Guidelines Board Rent Guidelines Board rent-guidelines-board RGB",
       "categories": {
         "contracts": {
           "status": "empty",
@@ -54398,9 +54482,10 @@
       "relation_state": "published",
       "detail": "1 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Staten Island District Attorney's Office agency organization",
+      "institution_label": "",
+      "institution_context": "",
+      "kind_label": null,
+      "search_text": "Staten Island District Attorney's Office Staten Island District Attorney's Office District Attorney - Richmond County DISTRICT ATTORNEY RICHMOND COU Richmond County District Attorney's Office DARC RCDA RCDAO SIDA SIDAO",
       "categories": {
         "contracts": {
           "status": "empty",
@@ -54443,9 +54528,10 @@
       "relation_state": "published",
       "detail": "3 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Teachers' Retirement System of City of New York agency organization",
+      "institution_label": "",
+      "institution_context": "",
+      "kind_label": null,
+      "search_text": "Teachers' Retirement System of City of New York Teachers' Retirement System of City of New York Teachers' Retirement System TEACHERS RETIREMENT SYSTEM TRS",
       "categories": {
         "contracts": {
           "status": "matched",
@@ -54488,9 +54574,10 @@
       "relation_state": "published",
       "detail": "1 linked record categories",
       "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Triborough Bridge and Tunnel Authority agency organization",
+      "institution_label": "MTA operating body",
+      "institution_context": "One of the distinct operating bodies the MTA lists in its own directory. Being listed there does not establish that this body shares the authority's legal form.",
+      "kind_label": "MTA operating body",
+      "search_text": "Triborough Bridge and Tunnel Authority Triborough Bridge and Tunnel Authority triborough-bridge-and-tunnel-authority TBTA MBAT MBT TBATA MTA operating body. One of the distinct operating bodies the MTA lists in its own directory. Being listed there does not establish that this body shares the authority's legal form.",
       "categories": {
         "contracts": {
           "status": "empty",

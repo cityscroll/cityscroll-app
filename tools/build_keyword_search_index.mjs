@@ -116,6 +116,7 @@ const vendors = json("site/data/entity_intelligence_lookup.json");
 const vendorAliases = json("entity_resolution/review/alias_registry.json");
 const communityBoards = json("site/data/community_board_constellation_lookup.json");
 const agencyIdentityReport = json("site/data/agency_route_identity_report.json");
+const agencyPublisherCrosswalk = json("worker/src/data/agency_crosswalk.json");
 const land = json("site/data/zap_projects_warehouse_lookup.json");
 const meetings = json("site/data/shared_meeting_read_model.json");
 const exams = json("site/data/staffing_exams.json");
@@ -126,7 +127,10 @@ const communityBoardPeople = json("site/data/community_board_people.json");
 const communityBoardCommittees = json("site/data/non_council_outcome_sources/community_board_committees.json");
 const procurements = readSharedProcurementReadModel(new URL("../site/data/shared_procurement_read_model.json", import.meta.url));
 const peopleCorpus = buildPeopleSearchDocuments(people);
-const agencyCorpus = buildAgencySearchDocuments(agencies, { identityReport: agencyIdentityReport });
+const agencyCorpus = buildAgencySearchDocuments(agencies, {
+  identityReport: agencyIdentityReport,
+  publisherCrosswalk: agencyPublisherCrosswalk,
+});
 const vendorCorpus = buildVendorSearchDocuments(vendors, { aliasRegistry: vendorAliases });
 // Production completeness is over currently eligible Vendor documents. Tentative
 // or unpublished roots stay outside the indexed family and are receipted below.

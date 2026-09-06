@@ -9,6 +9,10 @@
 import { resolveAgencyIdentity } from "./agency_identity.mjs";
 import { reviewedAgencyAcronyms } from "./canonical_entity_interpretation.mjs";
 import {
+  projectResidentInstitutionIdentity,
+  residentInstitutionSummary,
+} from "./civic_institution_resident_identity.mjs";
+import {
   SEARCH_DOCUMENT_SCHEMA,
   SEARCH_TEXT_MAX_LENGTH,
   admitSearchDocument,
@@ -122,14 +126,22 @@ export function projectAgencySearchDocument(agencyIdValue, row = {}, options = {
   if (!title) return failed("not_indexed", "missing_agency_name", ["title"]);
 
   const resolved = resolveAgencyIdentity(agencyId);
+  const resident = projectResidentInstitutionIdentity(agencyId, {
+    displayName: title,
+    publisherRow: options.publisherRow
+      || options.publisherCrosswalk?.entries?.[agencyId]
+      || null,
+  });
   // Reviewed acronyms are lexical recall, not a published claim: the phrase
   // index already drops any acronym two reviewed groups both derive, so an
-  // acronym here can only reach the one agency it resolves to.
+  // acronym here can only reach the one agency it resolves to. Former names
+  // stay searchable without becoming the current title.
   const aliases = unique([
     ...(Array.isArray(identity?.variants) ? identity.variants : []),
     ...(Array.isArray(resolved?.variants) ? resolved.variants : []),
     ...routeAliases(lookup, agencyId),
     ...reviewedAgencyAcronyms(agencyId),
+    ...(resident?.discovery_terms || []),
   ]);
   const relations = relationReceipts(row);
   const constellationLabels = matchedConstellationLabels(row, relations);
@@ -139,11 +151,13 @@ export function projectAgencySearchDocument(agencyIdValue, row = {}, options = {
     objectRef,
     ...aliases,
     ...constellationLabels,
+    resident?.kind_label,
+    resident?.purpose,
   ]).join(" ").slice(0, SEARCH_TEXT_MAX_LENGTH);
   const matchedCategories = Number(row?.matched_categories);
-  const summary = Number.isFinite(matchedCategories)
-    ? `Agency with public records in ${matchedCategories} connected ${matchedCategories === 1 ? "category" : "categories"}.`
-    : null;
+  const summary = residentInstitutionSummary(resident, {
+    matchedCategories: Number.isFinite(matchedCategories) ? matchedCategories : null,
+  });
   const basis = clean([
     lookup.er_match_basis,
     identity?.basis,
@@ -175,6 +189,8 @@ export function projectAgencySearchDocument(agencyIdValue, row = {}, options = {
       identity_aliases: aliases,
       constellation_relations: relations,
       searchable_constellation_labels: constellationLabels,
+      kind_label: resident?.kind_label || null,
+      purpose: resident?.purpose || null,
     },
   }, { outcome: "indexed" });
 

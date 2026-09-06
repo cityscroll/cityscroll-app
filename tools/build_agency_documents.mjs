@@ -25,6 +25,7 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const OUTPUT = join(ROOT, "site/agencies/index.html");
 const AGENCY_LOOKUP = join(ROOT, "site/data/agency_constellation_lookup.json");
 const COMMUNITY_BOARD_LOOKUP = join(ROOT, "site/data/community_board_constellation_lookup.json");
+const AGENCY_CROSSWALK = join(ROOT, "worker/src/data/agency_crosswalk.json");
 
 function readLookup(path) {
   if (!existsSync(path)) {
@@ -37,6 +38,7 @@ export function agencyDirectoryModel() {
   return buildAgencyDirectoryModel({
     agencies: readLookup(AGENCY_LOOKUP),
     communityBoards: readLookup(COMMUNITY_BOARD_LOOKUP),
+    publisherCrosswalk: existsSync(AGENCY_CROSSWALK) ? readLookup(AGENCY_CROSSWALK) : null,
   });
 }
 

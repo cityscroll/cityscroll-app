@@ -9,6 +9,7 @@
  */
 
 import { agencyComparisonKey, agencyRouteAliasTarget } from "./agency_identity.mjs";
+import { projectResidentInstitutionIdentity } from "./civic_institution_resident_identity.mjs";
 import {
   gateNodePageRender,
   renderCivicDocumentAssets,
@@ -545,6 +546,10 @@ export function projectInstitutionProfileNavigation({
     legal_form: null,
     classification_status: "unclassified",
   };
+  const resident = projectResidentInstitutionIdentity(canonicalId, {
+    displayName: canonicalName,
+    publisherRow: publisherRow || null,
+  });
   const identityState = projectIdentityState({
     canonicalId,
     canonicalName,
@@ -585,7 +590,12 @@ export function projectInstitutionProfileNavigation({
       institution_kind: institution.institution_kind || null,
       institution_kind_basis: institution.institution_kind_basis || null,
       legal_form: institution.legal_form || null,
-      classification_status: institution.classification_status || "unclassified",
+      classification_status: resident?.classified
+        ? "classified"
+        : (institution.classification_status || "unclassified"),
+      kind_label: resident?.kind_label || null,
+      purpose: resident?.purpose || null,
+      resident_description: resident?.description || null,
     }),
     identity_evidence_state: identityState,
     category_states: categoryStates,
@@ -686,7 +696,9 @@ export function renderInstitutionProfileNavigation(projection) {
   const aliases = `${renderAliasList(projection.route_aliases?.incoming || [], "Reviewed route aliases")}
     ${renderAliasList(projection.route_aliases?.outgoing || [], "This route aliases")}`;
   const body = `${collision}${unresolved}
-    <p class="node-muted">${esc(identity.copy || "")} Institution kind and legal form stay unclassified until independent evidence supports them. Publisher organization type is source vocabulary only.</p>
+    <p class="node-muted">${esc(identity.copy || "")}${projection.identity?.resident_description
+      ? ` ${esc(projection.identity.resident_description)}`
+      : " Institution kind and legal form stay unclassified until independent evidence supports them. Publisher organization type is source vocabulary only."}</p>
     ${firstPaint}
     <details class="institution-nav-disclosure" id="institution-profile-navigation-details">
       <summary>Inspect coverage details</summary>
