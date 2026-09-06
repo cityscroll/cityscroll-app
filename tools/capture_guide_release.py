@@ -33,6 +33,7 @@ import argparse
 import functools
 import hashlib
 import json
+import re
 import subprocess
 import sys
 import threading
@@ -57,7 +58,115 @@ GLOSSARY = "/guide/reference/glossary/"
 VIEWPORTS = (("mobile", 390, 844), ("desktop", 1440, 900))
 MIN_TARGET_PX = 24  # WCAG 2.2 AA, 2.5.8 Target Size (Minimum)
 
-ROUTES = (
+# The section-and-type line a reader sees above an article title. It mirrors the
+# kicker `site/guide_view.mjs` renders, which says "Reference" once rather than
+# twice when the section and the type are the same word.
+SECTION_AND_TYPE = {
+    "tutorial": "Start here \u00b7 Tutorial",
+    "how-to": "How to\u2026 \u00b7 How-to guide",
+    "explanation": "Understand \u00b7 Explanation",
+    "reference": "Reference",
+}
+
+# A guide article may send a reader to one civic record — a notice, an
+# organization, an exam. Those documents are materialized at deploy time from
+# rolling publisher data, so a local build serves the application shell for them
+# rather than the record. A local run can prove the route serves and no more; the
+# record itself is proved by loading it against the public deploy, and those
+# loads are recorded in docs/evidence/public-user-guide/.
+RECORD_ROUTE_PATTERNS = (
+    re.compile(r"^/(?:notices|agencies|vendors|officials|committees)/[^/]+/?$"),
+    re.compile(r"^/mandates/[^/]+/?$"),
+    re.compile(r"^/exams/[^/]+/?$"),
+    re.compile(r"^/parcels/[^/]+/?$"),
+    re.compile(r"^/meetings/.+$"),
+)
+
+
+def is_record_document(path: str) -> bool:
+    return any(pattern.match(path) for pattern in RECORD_ROUTE_PATTERNS)
+
+
+def load_guide_articles() -> list[dict]:
+    """Ask the builder which articles exist, rather than keeping a second list."""
+    script = (
+        "import {loadGuide} from './tools/build_guide_documents.mjs';"
+        "const {articles} = loadGuide();"
+        "process.stdout.write(JSON.stringify(articles.map((a) => ({"
+        "id: a.id, type: a.type, title: a.title, url: a.url,"
+        "group: a.group.label, last_reviewed: a.last_reviewed,"
+        "return_to_task: a.return_to_task}))));"
+    )
+    result = subprocess.run(
+        ["node", "--input-type=module", "-e", script],
+        cwd=ROOT, check=True, capture_output=True, text=True,
+    )
+    return json.loads(result.stdout)
+
+
+def derived_route_spec(article: dict) -> dict:
+    """The floor every published article is held to, written from its own metadata.
+
+    An article that someone wrote an assertion for below is checked against that
+    assertion instead; this exists so an article nobody has written one for yet is
+    still checked for the things every article owes a reader, rather than being
+    silently uncovered until somebody notices.
+    """
+    expect_text = [
+        article["title"],
+        SECTION_AND_TYPE[article["type"]],
+        f"Last reviewed {article['last_reviewed']}",
+        article["return_to_task"]["label"],
+    ]
+    # A lesson carries checkpoints; an explanation or a reference page has no task
+    # to check off, so requiring one of those to say "Checkpoint" would be wrong.
+    if article["type"] in ("tutorial", "how-to"):
+        expect_text.insert(3, "Checkpoint")
+    return {
+        "id": f"guide-article-{article['id'].lower()}",
+        "route": article["url"],
+        "assertion": (
+            f"{article['title']} loads directly with its section and type, its review date, "
+            "its own content, a link back to the guide home, and the link that returns the "
+            "reader to the product."
+        ),
+        "expect_text": expect_text,
+        "expect_links": [GUIDE_HOME, article["return_to_task"]["href"]],
+        "axe": True,
+    }
+
+
+def build_routes(articles: list[dict]) -> tuple[dict, ...]:
+    """The authored route table, with every uncovered article given a derived spec.
+
+    Hand-written assertions say what a particular page must contain and are worth
+    more than anything derivable, so they win. The derivation only fills gaps, and
+    the guide home is widened to every published article so that check cannot go
+    stale as the guide grows.
+    """
+    covered = {spec["route"] for spec in AUTHORED_ROUTES}
+    derived = [derived_route_spec(a) for a in articles if a["url"] not in covered]
+
+    routes: list[dict] = []
+    for spec in AUTHORED_ROUTES:
+        if spec["id"] == "guide-home":
+            spec = {
+                **spec,
+                "assertion": "The guide home orients a signed-out reader with the four "
+                "reader-facing sections and links every article that is published.",
+                "expect_text": sorted(
+                    {*spec["expect_text"], *(a["title"] for a in articles)},
+                    key=lambda text: (text not in spec["expect_text"], text),
+                ),
+                "expect_links": [a["url"] for a in articles],
+            }
+        if spec["id"] == "product-search":
+            routes.extend(derived)
+        routes.append(spec)
+    return tuple(routes)
+
+
+AUTHORED_ROUTES = (
     {
         "id": "home",
         "route": "/",
@@ -98,6 +207,79 @@ ROUTES = (
             "Try this search yourself",
         ],
         "expect_links": [GUIDE_HOME, SEARCH],
+        "axe": True,
+    },
+    {
+        "id": "guide-tutorial-notice-mandate",
+        "route": "/guide/start/trace-a-notice-to-the-duty-behind-it/",
+        "assertion": "The tutorial follows one notice to the duty behind it and its source law, and "
+        "keeps a publication, a connection and a compliance finding apart.",
+        "expect_text": [
+            "Connected mandate",
+            "Rules filing for this duty",
+            "Source law",
+            "Publication evidence",
+            "compliance finding",
+        ],
+        "expect_links": [GUIDE_HOME, "/notices/20260605008"],
+        "axe": True,
+    },
+    {
+        "id": "guide-tutorial-award-trail",
+        "route": "/guide/start/trace-an-award-and-keep-the-trail/",
+        "assertion": "The tutorial builds a two-step trail, shows that it travels in the address, "
+        "and says an awardee is not an opportunity.",
+        "expect_text": [
+            "awarded to",
+            "received award",
+            "Vendor profile",
+            "not an announcement that subcontracts are available",
+        ],
+        "expect_links": [GUIDE_HOME, "/agencies/homeless-services/"],
+        "axe": True,
+    },
+    {
+        "id": "guide-how-to-connection-evidence",
+        "route": "/guide/how-to/check-the-evidence-behind-a-connection/",
+        "assertion": "The how-to opens one connection receipt, says what it supports, and covers a "
+        "connection that carries no source document of its own.",
+        "expect_text": [
+            "Connection evidence",
+            "How this connection was made",
+            "Matched by a published record",
+            "Copy link to this connection",
+            "precomputed PASSPort contract graph",
+        ],
+        "expect_links": [GUIDE_HOME],
+        "axe": True,
+    },
+    {
+        "id": "guide-how-to-as-of-day",
+        "route": "/guide/how-to/look-at-records-as-of-a-day/",
+        "assertion": "The how-to filters an agency to a day and is explicit that an undated record "
+        "is not kept and that this is not a reconstruction of what the site knew.",
+        "expect_text": [
+            "As of day",
+            "Later records",
+            "cannot be placed on a timeline",
+            "not a reconstruction",
+        ],
+        "expect_links": [GUIDE_HOME, "/agencies/parks-and-recreation/?as_of=2024-06-01"],
+        "axe": True,
+    },
+    {
+        "id": "guide-how-to-collect-records",
+        "route": "/guide/how-to/collect-records-and-export-them/",
+        "assertion": "The how-to keeps device storage, a recognized session, a downloaded file and "
+        "a shared snapshot apart, and says what a share exposes and for how long.",
+        "expect_text": [
+            "stored only in this browser",
+            "Share read-only link",
+            "Freeze research package",
+            "90 days",
+            "Clear all",
+        ],
+        "expect_links": [GUIDE_HOME, "/notices/20231222103"],
         "axe": True,
     },
     {
@@ -382,11 +564,19 @@ def observe_route(page: Page, spec: dict, base: str, width: int) -> dict:
     violations = run_axe(page) if spec["axe"] else []
 
     link_statuses = []
+    deferred_records = []
     if spec["axe"]:
         for href in internal_links(page):
             target = urljoin(base, href.lstrip("/"))
             response = page.request.get(target)
+            path = href.split("?", 1)[0].split("#", 1)[0]
             link_statuses.append({"href": href, "status": response.status})
+            # The route serves, which is what a status can prove. Whether one
+            # particular record is still published is a different question, and a
+            # local build cannot answer it: those documents are materialized at
+            # deploy time, so what is served here is the application shell.
+            if is_record_document(path):
+                deferred_records.append(path)
 
     broken_links = [item for item in link_statuses if item["status"] >= 400]
     holds = not (
@@ -413,6 +603,7 @@ def observe_route(page: Page, spec: dict, base: str, width: int) -> dict:
         "axe_critical_or_serious": violations,
         "internal_links_checked": len(link_statuses),
         "broken_internal_links": broken_links,
+        "record_content_deferred_to_live_check": sorted(set(deferred_records)),
         "visible_text_characters": len(text),
         "content_sha256": sha256_text(
             page.evaluate("() => ((document.querySelector('main') || document.body).outerHTML)")
@@ -526,7 +717,44 @@ def reference_reached_without_script(page: Page, base: str) -> dict:
     }
 
 
-def capture(base: str, output_dir: Path) -> dict:
+def articles_without_script(page: Page, base: str, articles: list[dict]) -> dict:
+    """Read every published article with JavaScript switched off.
+
+    A guide article is prose. If any of it depends on script, the article has
+    stopped being the thing the guide promised, so this reads all of them rather
+    than trusting that the pattern held for the newest one.
+    """
+    observed = []
+    for article in articles:
+        page.goto(urljoin(base, article["url"].lstrip("/")), wait_until="domcontentloaded")
+        state = page.evaluate(
+            """(returnHref) => ({
+                headings: [...document.querySelectorAll('main h1, main h2, main h3')].length,
+                paragraphs: document.querySelectorAll('main p').length,
+                backToGuide: !!document.querySelector('main a[href="/guide/"]'),
+                returnToTask: !!document.querySelector(
+                    `main .guide-return a[href="${returnHref.replace(/"/g, '\\"')}"]`),
+                reviewed: (document.querySelector('.guide-reviewed') || {}).textContent || '',
+            })""",
+            article["return_to_task"]["href"],
+        )
+        state["id"] = article["id"]
+        state["url"] = article["url"]
+        state["holds"] = (
+            state["headings"] >= 4
+            and state["paragraphs"] >= 5
+            and state["backToGuide"]
+            and state["returnToTask"]
+            and article["last_reviewed"] in state["reviewed"]
+        )
+        observed.append(state)
+    return {
+        "assertion_holds": all(item["holds"] for item in observed),
+        "articles": observed,
+    }
+
+
+def capture(base: str, output_dir: Path, routes: tuple, articles: list[dict]) -> dict:
     output_dir.mkdir(parents=True, exist_ok=True)
     captures: list[dict] = []
     journeys: list[dict] = []
@@ -536,7 +764,7 @@ def capture(base: str, output_dir: Path) -> dict:
             for name, width, height in VIEWPORTS:
                 context = browser.new_context(viewport={"width": width, "height": height})
                 page = context.new_page()
-                for spec in ROUTES:
+                for spec in routes:
                     page.goto(urljoin(base, spec["route"].lstrip("/")), wait_until="domcontentloaded")
                     settle(page)
                     image = output_dir / f"{spec['id']}-{width}.png"
@@ -588,6 +816,16 @@ def capture(base: str, output_dir: Path) -> dict:
                         **reference_reached_without_script(no_script.new_page(), base),
                     }
                 )
+                journeys.append(
+                    {
+                        "id": "every-article-without-javascript",
+                        "viewport": name,
+                        "assertion": "With JavaScript switched off, every published article keeps "
+                        "its headings, prose, the link back to the guide home, the link that "
+                        "returns the reader to the product, and its recorded review date.",
+                        **articles_without_script(no_script.new_page(), base, articles),
+                    }
+                )
                 no_script.close()
         finally:
             browser.close()
@@ -606,9 +844,12 @@ def main() -> int:
     )
     args = parser.parse_args()
 
+    articles = load_guide_articles()
+    routes = build_routes(articles)
+
     server, thread, base = serve(args.site_dir)
     try:
-        observed = capture(base, args.output_dir)
+        observed = capture(base, args.output_dir, routes, articles)
     finally:
         server.shutdown()
         thread.join()
@@ -626,7 +867,12 @@ def main() -> int:
             "static documents served locally, so it reproduces from a checkout with no network and "
             "no deploy. Accessibility, keyboard, reflow and link checks cover the guide documents; "
             "the front page and the search document keep their existing owners and are exercised "
-            "here only as the journey's endpoints. Screenshots stay under the ignored .artifacts/ "
+            "here only as the journey's endpoints. A guide link to one civic record is followed "
+            "only far enough to prove the route serves: those documents are materialized at "
+            "deploy time, so a local build answers with the application shell rather than the "
+            "record. Each such route is named per capture under record content deferred to live "
+            "check, and the records themselves are proved by the live loads recorded in "
+            "docs/evidence/public-user-guide/. Screenshots stay under the ignored .artifacts/ "
             "path and only their sha256 is recorded, per docs/capture-manifest-guard.md."
         ),
         "data_vintage": (
@@ -649,6 +895,22 @@ def main() -> int:
             "front page to guide to tutorial to product, and browser Back",
             "the same reading path with JavaScript switched off",
             "an unfamiliar term in the tutorial reaching a reference page without script",
+            "every published article read with JavaScript switched off",
+        ],
+        "articles": [
+            {
+                "id": article["id"],
+                "type": article["type"],
+                "url": article["url"],
+                "last_reviewed": article["last_reviewed"],
+                "returns_to": article["return_to_task"]["href"],
+                "assertion_source": (
+                    "authored"
+                    if any(spec["route"] == article["url"] for spec in AUTHORED_ROUTES)
+                    else "derived"
+                ),
+            }
+            for article in articles
         ],
         **capture_sections(observed),
     }

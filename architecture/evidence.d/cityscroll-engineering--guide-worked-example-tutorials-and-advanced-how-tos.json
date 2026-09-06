@@ -1,0 +1,33 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/guide-worked-example-tutorials-and-advanced-how-tos",
+  "status": "implemented",
+  "fingerprint": "guide-worked-example-tutorials-and-advanced-how-tos.v1",
+  "updated_at": "2026-09-05T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "guide-tutorial-notice-to-mandate-source",
+      "path": "site/guide/_articles/trace-a-notice-to-the-duty-behind-it.md"
+    },
+    {
+      "id": "guide-tutorial-shareable-graph-walk",
+      "path": "site/guide/_articles/trace-an-award-and-keep-the-trail.md"
+    },
+    {
+      "id": "guide-how-to-connection-evidence",
+      "path": "site/guide/_articles/check-the-evidence-behind-a-connection.md"
+    },
+    {
+      "id": "guide-how-to-as-of-day",
+      "path": "site/guide/_articles/look-at-records-as-of-a-day.md"
+    },
+    {
+      "id": "guide-how-to-collect-and-export",
+      "path": "site/guide/_articles/collect-records-and-export-them.md"
+    },
+    {
+      "id": "guide-worked-example-verification-record",
+      "path": "docs/evidence/public-user-guide/worked-example-verification.md"
+    }
+  ]
+}

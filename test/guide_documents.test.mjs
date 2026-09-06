@@ -44,16 +44,22 @@ test("the guide home offers the four reader-facing sections in order", () => {
   assert.deepEqual(groupLabels, ["Start here", "How to…", "Understand", "Reference"]);
 });
 
-test("the guide home links published articles and says so plainly where there are none", () => {
+test("the guide home links every published article", () => {
   for (const article of articles) {
     assert.ok(homeHtml.includes(`href="${article.url}"`), `home does not link ${article.id}`);
     assert.ok(homeHtml.includes(article.title));
   }
-  const empty = GUIDE_GROUPS.filter((group) => !articles.some((article) => article.type === group.type));
-  assert.ok(empty.length, "this test stops being meaningful once every section is filled");
-  const text = textOf(homeHtml);
+});
+
+test("a section with nothing in it yet says so, and does not read like a failure", () => {
+  // Every section now holds an article, so the empty state can no longer be
+  // reached from the real set. It is still a state the renderer can produce —
+  // the next section someone opens starts empty — so it is rendered here from a
+  // deliberately narrowed set rather than left uncovered.
+  const startOnly = articles.filter((article) => article.type === "tutorial");
+  assert.ok(startOnly.length, "the fixture needs at least one tutorial to keep one section filled");
+  const text = textOf(renderGuideHome(home, startOnly));
   assert.match(text, /Articles for this section are being written/);
-  // An empty section must not read as a page that failed to load.
   for (const phrase of ["error", "unavailable", "failed", "try again"]) {
     assert.ok(!text.toLowerCase().includes(phrase), `empty-section copy suggests a failure: ${phrase}`);
   }

@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Look at records as of a day · CityScroll</title><meta name="description" content="Filter an agency page down to the records dated on or before a day you choose, share the result, and learn what that filter cannot tell you.">
+<link rel="canonical" href="https://cityscroll.org/guide/how-to/look-at-records-as-of-a-day/"><link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/brand.css">
+<link rel="stylesheet" href="/civic-documents.css">
+<link rel="stylesheet" href="/guide.css"></head>
+<body><a class="skip" href="#main">Skip to content</a>
+<header class="document-mast guide-mast"><div class="document-mast-inner">
+    <a class="document-brand brand-lockup home" href="/" aria-label="CityScroll home"><svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true">
+    <path d="M14 5h29l8 8v42a4 4 0 0 1-4 4H14a4 4 0 0 1-4-4V9a4 4 0 0 1 4-4Z" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round"/>
+    <path d="M43 5v10h8M20 23h22M20 31h22M20 49v-9h7v9h5V36h7v13h5v-6h7" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg><span>CityScroll</span></a>
+    <nav class="document-nav" aria-label="Primary"><a href="/now/">Now</a><a href="/near-you/">Near you</a><a href="/following/">Following</a><a href="/browse/">Browse</a></nav>
+  </div></header>
+<main class="node-document guide-document guide-article" id="main">
+  <p class="node-back"><a href="/guide/">Back to the guide</a></p>
+  <header class="node-hero guide-hero">
+    <p class="node-kicker">How to… · How-to guide</p>
+    <h1>Look at records as of a day</h1>
+    <p class="node-lede">Use the as-of control on an agency page to keep only the records dated on or before a day you choose, and understand exactly what that filter can and cannot tell you.</p>
+    <p class="guide-question">What did an agency&#39;s record set look like on a given day?</p>
+    <p class="node-meta guide-reviewed">Last reviewed 2026-09-05</p>
+  </header>
+  <div class="guide-body">
+<h2>What this is for</h2>
+<p>An agency page shows what is linked to that agency now. Sometimes the question is narrower: what was on the record by a particular day — before a policy changed, before a contract was signed, before something you are writing about happened.</p>
+<p>The <strong>As of day</strong> control answers that, within limits this page is careful about.</p>
+<h2>Before you start</h2>
+<ul><li>No account is needed.</li><li>The filtering happens in your browser, so this needs JavaScript switched on. Without it the control is still on the page and can still be submitted, but the page comes back unfiltered.</li></ul>
+<h2>Filter an agency to a day</h2>
+<ol><li>Open <a href="/agencies/parks-and-recreation/">the Parks and Recreation page</a>.</li><li>Find the panel headed <strong>As of day</strong>. Before you pick anything it says: pick a day to keep only records published or dated on or before that day.</li><li>Put a date in the <strong>As of</strong> field and press <strong>Apply</strong>.</li></ol>
+<p>Or open the day directly, which is the same thing with the date already in the address: <a href="/agencies/parks-and-recreation/?as_of=2024-06-01">the Parks page as of 1 June 2024</a>.</p>
+<p class="guide-checkpoint"><strong>Checkpoint:</strong> the date field holds your day, and the line under it has changed from an invitation into a count.</p>
+<h2>Read the comparison line</h2>
+<p>With 1 June 2024 chosen, the line reads in this shape: so many of so many dated records on or before that day, and a number of later ones. Underneath, <strong>Later records</strong> opens a list of what the filter set aside.</p>
+<p>The two counts are the point. The first is what survives your day. The second is how many dated records the page links at all. The gap between them, and the later list, is the change you are asking about.</p>
+<p>The numbers themselves move as the city publishes, so yours will not match the ones anyone else saw. Read the shape rather than the totals.</p>
+<p class="guide-checkpoint"><strong>Checkpoint:</strong> you can say how many dated records survived your day and roughly how many did not.</p>
+<h2>Reset it</h2>
+<p>The <strong>Clear</strong> link sits next to Apply and appears only once a day is set. It returns the page to everything linked now. Your browser&#39;s Back button does the same thing.</p>
+<p class="guide-checkpoint"><strong>Checkpoint:</strong> after Clear, the line is an invitation again and the full set is back.</p>
+<h2>Share it</h2>
+<p>The day is in the address, as <code>as_of</code> followed by the date. Copy the address and the person you send it to opens the same agency filtered to the same day.</p>
+<p>That is the whole sharing mechanism: no export, no account, nothing stored. It also means the link keeps working later, and will reflect whatever has been published in the meantime.</p>
+<p class="guide-checkpoint"><strong>Checkpoint:</strong> pasting the address into a new tab reopens the same agency on the same day.</p>
+<h2>What this filter actually does</h2>
+<p>It compares each linked record against your day using the record&#39;s own date: the date of the thing that happened, or the date the city published it when there is no event date. Records on or before your day are kept.</p>
+<p>Three consequences follow, and they matter more than the feature does.</p>
+<ul><li><strong>A record with no date at all cannot be placed on a timeline, so it is not kept.</strong> It has not been judged late or early. It simply has no date to compare, which is why the counts do not add up to the whole page.</li><li><strong>This is not a reconstruction of what CityScroll knew on that day.</strong> It filters by when things happened or were published, not by when this site learned about them. A record published in 2026 about an event in 2023 is kept by a 2023 day, even though nothing here knew about it then. A web archive is the tool for what a page looked like on a past date; this control answers the different question of which records carry a date on or before the day you picked.</li><li><strong>The counts describe what is linked now.</strong> Connections are added and corrected over time, so the same day asked twice, months apart, can honestly give different answers.</li></ul>
+<h2>When a day comes back empty</h2>
+<p>Pick a day early enough and the count reads zero, the later list holds everything, and the connected sections come back with nothing in them.</p>
+<p>That is a true answer, not a failure. It means nothing dated on or before that day is currently linked to this agency. It does not mean the agency did nothing then; the city&#39;s own archives go back further than the records collected here.</p>
+<p class="guide-checkpoint"><strong>Checkpoint:</strong> an empty result reads as an empty result, and you can say what it does and does not mean.</p>
+<h2>Do this on another record</h2>
+<p>The control sits on every agency page. Open the agency you are working on, pick the day your question turns on, and send yourself the address before you move on.</p>
+  </div>
+  <section class="node-section guide-related" aria-labelledby="guide-related">
+    <h2 id="guide-related">Related pages</h2>
+    <ul><li><a href="/guide/how-to/check-the-evidence-behind-a-connection/">Check the evidence behind a connection</a></li><li><a href="/guide/start/trace-a-notice-to-the-duty-behind-it/">Trace a notice to the duty behind it</a></li><li><a href="/browse/">Browse New York City public records by type</a></li><li><a href="/guide/understand/dates-and-missing-information/">What dates and missing information mean</a></li></ul>
+  </section>
+  <section class="node-section guide-sources" aria-labelledby="guide-sources">
+    <h2 id="guide-sources">Sources used in this article</h2>
+    <ul><li><a href="https://a856-cityrecord.nyc.gov/" target="_blank" rel="noopener noreferrer">The City Record Online, published by the City of New York</a></li></ul>
+  </section>
+  <p class="guide-return"><a href="/agencies/parks-and-recreation/?as_of=2024-06-01">Open the Parks page filtered to a day</a></p>
+</main>
+<footer class="node-footer guide-footer">CityScroll is an unofficial reading aid. Check each record at its official source. <a href="/about.html">About the data</a>.</footer>
+</body></html>

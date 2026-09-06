@@ -12,8 +12,14 @@ CityScroll gathers public records that New York City agencies already publish â€
 applications, rules, meetings, civil-service exams, and the agencies and organizations attached to
 them â€” and keeps each one linked to the official source it came from.
 
-If you are here for the first time, start with the tutorial. It uses one real search and takes about
-ten minutes, and you do not need an account or an email address to follow it.
+If you are here for the first time, start with the first tutorial. It uses one real search and takes
+about ten minutes, and you do not need an account or an email address to follow it. The two that
+follow it trace a single published notice back to the law behind it, and an agency through an
+organization it pays to one award.
+
+If you already have a task, go straight to How to. If a record has left you with a question about
+what it means, or a word you have not met before, Understand and Reference answer those without
+asking you to work through a lesson first.
 
 ## Start here
 

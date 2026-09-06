@@ -3,9 +3,9 @@
   "record": "cityscroll-engineering/public-guide-release",
   "capture_mode": "local_static_site_playwright_no_committed_image",
   "base": "local static site build (site/)",
-  "repository_revision": "e23dd23d1bfee8b51fa697a9ea0f16fbf2644f87",
+  "repository_revision": "4b2cc3b649b2986d67c43c525379f7c161252a66",
   "repository_state": "uncommitted changes present at capture time",
-  "note": "Usability evidence for the published guide. Every check runs against the tracked static documents served locally, so it reproduces from a checkout with no network and no deploy. Accessibility, keyboard, reflow and link checks cover the guide documents; the front page and the search document keep their existing owners and are exercised here only as the journey's endpoints. Screenshots stay under the ignored .artifacts/ path and only their sha256 is recorded, per docs/capture-manifest-guard.md.",
+  "note": "Usability evidence for the published guide. Every check runs against the tracked static documents served locally, so it reproduces from a checkout with no network and no deploy. Accessibility, keyboard, reflow and link checks cover the guide documents; the front page and the search document keep their existing owners and are exercised here only as the journey's endpoints. A guide link to one civic record is followed only far enough to prove the route serves: those documents are materialized at deploy time, so a local build answers with the application shell rather than the record. Each such route is named per capture under record content deferred to live check, and the records themselves are proved by the live loads recorded in docs/evidence/public-user-guide/. Screenshots stay under the ignored .artifacts/ path and only their sha256 is recorded, per docs/capture-manifest-guard.md.",
   "data_vintage": "Not applicable to the guide documents: they are prose built from tracked sources and contain no civic records. Their review dates are editorial facts recorded in the article sources, not observations of live data. The search document is served from the local build and its results are not asserted.",
   "viewports": [
     {
@@ -29,7 +29,114 @@
     "HTTP status of every internal link on a guide page",
     "front page to guide to tutorial to product, and browser Back",
     "the same reading path with JavaScript switched off",
-    "an unfamiliar term in the tutorial reaching a reference page without script"
+    "an unfamiliar term in the tutorial reaching a reference page without script",
+    "every published article read with JavaScript switched off"
+  ],
+  "articles": [
+    {
+      "id": "E1",
+      "type": "explanation",
+      "url": "/guide/understand/what-a-public-record-tells-you/",
+      "last_reviewed": "2026-09-06",
+      "returns_to": "/browse/",
+      "assertion_source": "authored"
+    },
+    {
+      "id": "E2",
+      "type": "explanation",
+      "url": "/guide/understand/how-records-are-connected/",
+      "last_reviewed": "2026-09-06",
+      "returns_to": "/browse/",
+      "assertion_source": "authored"
+    },
+    {
+      "id": "E3",
+      "type": "explanation",
+      "url": "/guide/understand/dates-and-missing-information/",
+      "last_reviewed": "2026-09-06",
+      "returns_to": "/browse/",
+      "assertion_source": "authored"
+    },
+    {
+      "id": "E4",
+      "type": "explanation",
+      "url": "/guide/understand/flags-and-historical-patterns/",
+      "last_reviewed": "2026-09-06",
+      "returns_to": "/browse/contracts/",
+      "assertion_source": "authored"
+    },
+    {
+      "id": "H6",
+      "type": "how-to",
+      "url": "/guide/how-to/check-the-evidence-behind-a-connection/",
+      "last_reviewed": "2026-09-05",
+      "returns_to": "/agencies/parks-and-recreation/?claim=rules%3Anotice%3A20260521021",
+      "assertion_source": "authored"
+    },
+    {
+      "id": "H7",
+      "type": "how-to",
+      "url": "/guide/how-to/look-at-records-as-of-a-day/",
+      "last_reviewed": "2026-09-05",
+      "returns_to": "/agencies/parks-and-recreation/?as_of=2024-06-01",
+      "assertion_source": "authored"
+    },
+    {
+      "id": "H8",
+      "type": "how-to",
+      "url": "/guide/how-to/collect-records-and-export-them/",
+      "last_reviewed": "2026-09-05",
+      "returns_to": "/#investigation",
+      "assertion_source": "authored"
+    },
+    {
+      "id": "R1",
+      "type": "reference",
+      "url": "/guide/reference/glossary/",
+      "last_reviewed": "2026-09-06",
+      "returns_to": "/browse/",
+      "assertion_source": "authored"
+    },
+    {
+      "id": "R2",
+      "type": "reference",
+      "url": "/guide/reference/controls-and-outputs/",
+      "last_reviewed": "2026-09-06",
+      "returns_to": "/browse/",
+      "assertion_source": "authored"
+    },
+    {
+      "id": "R3",
+      "type": "reference",
+      "url": "/guide/reference/sources-and-coverage/",
+      "last_reviewed": "2026-09-06",
+      "returns_to": "/browse/",
+      "assertion_source": "authored"
+    },
+    {
+      "id": "T1",
+      "type": "tutorial",
+      "url": "/guide/start/explore-housing-across-city-records/",
+      "last_reviewed": "2026-09-06",
+      "returns_to": "/search/?q=housing",
+      "assertion_source": "authored"
+    },
+    {
+      "id": "T2",
+      "type": "tutorial",
+      "url": "/guide/start/trace-a-notice-to-the-duty-behind-it/",
+      "last_reviewed": "2026-09-05",
+      "returns_to": "/notices/20260605008",
+      "assertion_source": "authored"
+    },
+    {
+      "id": "T3",
+      "type": "tutorial",
+      "url": "/guide/start/trace-an-award-and-keep-the-trail/",
+      "last_reviewed": "2026-09-05",
+      "returns_to": "/notices/20231222103?walk=eyJzY2hlbWEiOiJjaXR5c2Nyb2xsLnRyYXZlcnNhbC52MSIsInZlcnNpb24iOjEsInN0YXR1cyI6ImFjdGl2ZSIsImhvcHMiOlt7InNvdXJjZSI6eyJraW5kIjoiYWdlbmN5IiwiaWQiOiJob21lbGVzcy1zZXJ2aWNlcyIsIm5hbWUiOiJIb21lbGVzcyBTZXJ2aWNlcyIsImhyZWYiOiIvYWdlbmNpZXMvaG9tZWxlc3Mtc2VydmljZXMvIn0sInJlbGF0aW9uIjoiYXdhcmRlZCB0byIsImRlc3RpbmF0aW9uIjp7ImtpbmQiOiJ2ZW5kb3IiLCJpZCI6IkhPVVNJTkcgT1BUSU9OUyBHRVJJQVRSSUMgQVNTT0NJQVRJT04gUkVTT1VSQ0VTIiwibmFtZSI6IkhvdXNpbmcgT3B0aW9ucyAmIEdlcmlhdHJpYyBBc3NvY2lhdGlvbiBSZXNvdXJjZXMiLCJocmVmIjoiL3ZlbmRvcnMvSE9VU0lORyUyME9QVElPTlMlMjBHRVJJQVRSSUMlMjBBU1NPQ0lBVElPTiUyMFJFU09VUkNFUy8ifSwic2NvcGUiOm51bGx9LHsic291cmNlIjp7ImtpbmQiOiJ2ZW5kb3IiLCJpZCI6IkhPVVNJTkcgT1BUSU9OUyBHRVJJQVRSSUMgQVNTT0NJQVRJT04gUkVTT1VSQ0VTIiwibmFtZSI6IkhvdXNpbmcgT3B0aW9ucyAmIEdlcmlhdHJpYyBBc3NvY2lhdGlvbiBSZXNvdXJjZXMiLCJocmVmIjoiL3ZlbmRvcnMvSE9VU0lORyUyME9QVElPTlMlMjBHRVJJQVRSSUMlMjBBU1NPQ0lBVElPTiUyMFJFU09VUkNFUy8ifSwicmVsYXRpb24iOiJyZWNlaXZlZCBhd2FyZCIsImRlc3RpbmF0aW9uIjp7ImtpbmQiOiJub3RpY2UiLCJpZCI6IjIwMjMxMjIyMTAzIiwibmFtZSI6IlNoZWx0ZXIgc2VydmljZXMgYXdhcmQiLCJocmVmIjoiL25vdGljZXMvMjAyMzEyMjIxMDMifSwic2NvcGUiOm51bGx9XX0",
+      "assertion_source": "authored"
+    }
   ],
   "captures": [
     {
@@ -52,9 +159,10 @@
       "axe_critical_or_serious": [],
       "internal_links_checked": 0,
       "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [],
       "visible_text_characters": 1049,
       "content_sha256": "3b2581b5a8379fe64ebcfe6891b82ad218cbcd1c62adddb9fc15a3dca22f1029",
-      "capture_sha256": "2d16be6a8536955c5348646a7e184b75b4e6bc3d2fb6c83c269e125f2b1f1703",
+      "capture_sha256": "838416b32fc5885b163eaf654e32cdafaaea63c03421f987b57743d5c4842425",
       "local_capture_path": ".artifacts/guide-release/home-390.png",
       "file": null
     },
@@ -63,7 +171,7 @@
       "route": "/guide/",
       "viewport": "mobile",
       "viewport_width": 390,
-      "assertion": "The guide home orients a signed-out reader with the four reader-facing sections and links the tutorial that is published.",
+      "assertion": "The guide home orients a signed-out reader with the four reader-facing sections and links every article that is published.",
       "assertion_holds": true,
       "missing_expected_text": [],
       "missing_expected_links": [],
@@ -71,17 +179,18 @@
       "horizontal_overflow_at_200_percent_px": 0,
       "targets_below_24px": [],
       "keyboard": {
-        "links": 9,
-        "reached": 9,
+        "links": 14,
+        "reached": 14,
         "unreachable": [],
         "withoutIndicator": []
       },
       "axe_critical_or_serious": [],
-      "internal_links_checked": 14,
+      "internal_links_checked": 19,
       "broken_internal_links": [],
-      "visible_text_characters": 2798,
-      "content_sha256": "91faeb417ddf8a02190ccf0f053f3e13defea5a33e21fd3e520cb1d71eac8550",
-      "capture_sha256": "74620c311515d9a41b4652e8900bba850ef53292864cb16df448cd44bc1827ff",
+      "record_content_deferred_to_live_check": [],
+      "visible_text_characters": 3500,
+      "content_sha256": "371ae87bf9608c205875b63a7f20f16f03df35e7191781544592d75214d3dcb4",
+      "capture_sha256": "2e40aa24c9dde53bfe0d91c822c2b09dfed38a0e3846c75bf3b9c94f9d7f3fcb",
       "local_capture_path": ".artifacts/guide-release/guide-home-390.png",
       "file": null
     },
@@ -106,10 +215,163 @@
       "axe_critical_or_serious": [],
       "internal_links_checked": 10,
       "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [],
       "visible_text_characters": 6353,
       "content_sha256": "196670a03dd3b185afe1e48de01e94bdf9cd37a985176c729516be4bdde39398",
       "capture_sha256": "5c63a49ba53b1a51289a3a7e6f73e854312aaf46724cd0352e5a05e6e0566a41",
       "local_capture_path": ".artifacts/guide-release/guide-tutorial-390.png",
+      "file": null
+    },
+    {
+      "id": "guide-tutorial-notice-mandate",
+      "route": "/guide/start/trace-a-notice-to-the-duty-behind-it/",
+      "viewport": "mobile",
+      "viewport_width": 390,
+      "assertion": "The tutorial follows one notice to the duty behind it and its source law, and keeps a publication, a connection and a compliance finding apart.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 8,
+        "reached": 8,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 10,
+      "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [
+        "/notices/20260605008"
+      ],
+      "visible_text_characters": 6272,
+      "content_sha256": "97a6a8860c7e842253adbb2082f3173ee55f1ef725200a03c417eb6e04984f20",
+      "capture_sha256": "580490133dc134a7f21d1c1c2155c01c228a9bdc1af2a956c9951c5668bf36e7",
+      "local_capture_path": ".artifacts/guide-release/guide-tutorial-notice-mandate-390.png",
+      "file": null
+    },
+    {
+      "id": "guide-tutorial-award-trail",
+      "route": "/guide/start/trace-an-award-and-keep-the-trail/",
+      "viewport": "mobile",
+      "viewport_width": 390,
+      "assertion": "The tutorial builds a two-step trail, shows that it travels in the address, and says an awardee is not an opportunity.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 9,
+        "reached": 9,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 12,
+      "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [
+        "/agencies/homeless-services/",
+        "/notices/20231222103"
+      ],
+      "visible_text_characters": 6488,
+      "content_sha256": "b8b4f751a4ec2ff901c730838d1f916c9c5ae39a3187856ca9db5982cd3918db",
+      "capture_sha256": "451c0e4b6a3f6da6eeb9658d123ba473345ea9d9c1b452782c216cd099a3f6a2",
+      "local_capture_path": ".artifacts/guide-release/guide-tutorial-award-trail-390.png",
+      "file": null
+    },
+    {
+      "id": "guide-how-to-connection-evidence",
+      "route": "/guide/how-to/check-the-evidence-behind-a-connection/",
+      "viewport": "mobile",
+      "viewport_width": 390,
+      "assertion": "The how-to opens one connection receipt, says what it supports, and covers a connection that carries no source document of its own.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 8,
+        "reached": 8,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 12,
+      "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [
+        "/agencies/parks-and-recreation/"
+      ],
+      "visible_text_characters": 5075,
+      "content_sha256": "8da22c608defca79b6fd6df8ab2fc94dc27bbef2f42dad3639b73e68936dd26a",
+      "capture_sha256": "bdfa92de84c5bcc4619586f5811feaf460a16d1f5ddedd6b7f077d0f28b1d9ab",
+      "local_capture_path": ".artifacts/guide-release/guide-how-to-connection-evidence-390.png",
+      "file": null
+    },
+    {
+      "id": "guide-how-to-as-of-day",
+      "route": "/guide/how-to/look-at-records-as-of-a-day/",
+      "viewport": "mobile",
+      "viewport_width": 390,
+      "assertion": "The how-to filters an agency to a day and is explicit that an undated record is not kept and that this is not a reconstruction of what the site knew.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 8,
+        "reached": 8,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 11,
+      "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [
+        "/agencies/parks-and-recreation/"
+      ],
+      "visible_text_characters": 5071,
+      "content_sha256": "7275df133b30659717b572afd3da1ed8401d2ad35d0bf695cf9538b937e3d280",
+      "capture_sha256": "be91e27a04822e878d8ee06728fe3ec6f7d16e5bbbf205deee84abee045eae0d",
+      "local_capture_path": ".artifacts/guide-release/guide-how-to-as-of-day-390.png",
+      "file": null
+    },
+    {
+      "id": "guide-how-to-collect-records",
+      "route": "/guide/how-to/collect-records-and-export-them/",
+      "viewport": "mobile",
+      "viewport_width": 390,
+      "assertion": "The how-to keeps device storage, a recognized session, a downloaded file and a shared snapshot apart, and says what a share exposes and for how long.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 9,
+        "reached": 9,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 13,
+      "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [
+        "/notices/20231222103",
+        "/vendors/HOUSING%20OPTIONS%20GERIATRIC%20ASSOCIATION%20RESOURCES/"
+      ],
+      "visible_text_characters": 6266,
+      "content_sha256": "e3ef439e3ec02e15b1dd8e9f0caf7f5ed417fa0f65dd4c90cac9075f1c58dae6",
+      "capture_sha256": "8d097cdde955a05bfa489aa899b72c24e49aed89dd2039ba04b4e5798f2b1d81",
+      "local_capture_path": ".artifacts/guide-release/guide-how-to-collect-records-390.png",
       "file": null
     },
     {
@@ -133,6 +395,7 @@
       "axe_critical_or_serious": [],
       "internal_links_checked": 11,
       "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [],
       "visible_text_characters": 7129,
       "content_sha256": "26a190cf0afc43b99fe2a0e793b78826dc4b953feef454a25abdd01ba03df637",
       "capture_sha256": "77333878e15dc200eb74f01beff691dc636ae244bb16b4c6a37b574a88888c46",
@@ -160,6 +423,7 @@
       "axe_critical_or_serious": [],
       "internal_links_checked": 10,
       "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [],
       "visible_text_characters": 3860,
       "content_sha256": "b6e49797f1a8e9d54a36514024276588949a495b6f39be0aea6dff8cd7ed8fd2",
       "capture_sha256": "a59cccf2e29ee11c8430e0b217d2d3c821abfb8b2ccec1c97b7201d1503fd3a2",
@@ -187,6 +451,7 @@
       "axe_critical_or_serious": [],
       "internal_links_checked": 10,
       "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [],
       "visible_text_characters": 4174,
       "content_sha256": "07eeae18d53084565d3d82639491e3545adc2559c45ae2a91f69836f0f13cb7d",
       "capture_sha256": "f0163a63cb505d86bf974b31128f0321d2ad7ee77145c4a6044bcf24cccc8e1d",
@@ -214,6 +479,7 @@
       "axe_critical_or_serious": [],
       "internal_links_checked": 16,
       "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [],
       "visible_text_characters": 4860,
       "content_sha256": "fc7fe8431e139b7e6e30da2dc55b4b2ae05384cdf5881e4e009021510b035918",
       "capture_sha256": "0c611c65a6a1b76673bbff72f09782f7f3bbf56e6eff5b714a3d214417289cb9",
@@ -241,6 +507,7 @@
       "axe_critical_or_serious": [],
       "internal_links_checked": 13,
       "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [],
       "visible_text_characters": 6049,
       "content_sha256": "b9bcda323f3ee6452bb90a64a705d5cb3d03bff1eb9c6894052c077be8c0c3cd",
       "capture_sha256": "82f2e01de3f1399c508152faf6345a79ba906de32448da45243ae3e212f0a260",
@@ -268,6 +535,7 @@
       "axe_critical_or_serious": [],
       "internal_links_checked": 11,
       "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [],
       "visible_text_characters": 7080,
       "content_sha256": "53c6d85641f1a5b0eff7ad4bef71f92b3827ce4b46ecd406d384e45ca690979a",
       "capture_sha256": "41396d9f848390bb03f4b3116e6ca04f54e783289558a7e06bdc56a40e965b46",
@@ -295,6 +563,7 @@
       "axe_critical_or_serious": [],
       "internal_links_checked": 11,
       "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [],
       "visible_text_characters": 4793,
       "content_sha256": "7810356ef7468d7023363ffd886910a4e55f82c518e8b18bc0ea0c3f7700936e",
       "capture_sha256": "20572d5498fe09f5708d50f8899b2dfb1fa146c571391543343c34c40ba4e6b8",
@@ -321,6 +590,7 @@
       "axe_critical_or_serious": [],
       "internal_links_checked": 0,
       "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [],
       "visible_text_characters": 1079,
       "content_sha256": "382ae9cb39a99c0e4c21d8954f7b5cf77ca6316030ed4ad9c37d82cb1d445049",
       "capture_sha256": "282212439df0efeee393f150e325579b545739f0b018b1477a4b3628a1e11d2d",
@@ -347,9 +617,10 @@
       "axe_critical_or_serious": [],
       "internal_links_checked": 0,
       "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [],
       "visible_text_characters": 1049,
       "content_sha256": "3b2581b5a8379fe64ebcfe6891b82ad218cbcd1c62adddb9fc15a3dca22f1029",
-      "capture_sha256": "dd5e8b17d7e2f1bcb9bcd0a4a0f262fd5a1da87c1a0580320ec318009ca1d15d",
+      "capture_sha256": "8cc3dbe7e55d5b9684941235e8be5af924a68a72cead3c9622c074cd5729fc05",
       "local_capture_path": ".artifacts/guide-release/home-1440.png",
       "file": null
     },
@@ -358,7 +629,7 @@
       "route": "/guide/",
       "viewport": "desktop",
       "viewport_width": 1440,
-      "assertion": "The guide home orients a signed-out reader with the four reader-facing sections and links the tutorial that is published.",
+      "assertion": "The guide home orients a signed-out reader with the four reader-facing sections and links every article that is published.",
       "assertion_holds": true,
       "missing_expected_text": [],
       "missing_expected_links": [],
@@ -366,17 +637,18 @@
       "horizontal_overflow_at_200_percent_px": 0,
       "targets_below_24px": [],
       "keyboard": {
-        "links": 9,
-        "reached": 9,
+        "links": 14,
+        "reached": 14,
         "unreachable": [],
         "withoutIndicator": []
       },
       "axe_critical_or_serious": [],
-      "internal_links_checked": 14,
+      "internal_links_checked": 19,
       "broken_internal_links": [],
-      "visible_text_characters": 2798,
-      "content_sha256": "91faeb417ddf8a02190ccf0f053f3e13defea5a33e21fd3e520cb1d71eac8550",
-      "capture_sha256": "01bb95f63334c3588c4dfc8b8cfd40dfeeb71127247e70d58eeded2ffd8d179e",
+      "record_content_deferred_to_live_check": [],
+      "visible_text_characters": 3500,
+      "content_sha256": "371ae87bf9608c205875b63a7f20f16f03df35e7191781544592d75214d3dcb4",
+      "capture_sha256": "a771ab7549dec36506d8c3e209beb20309e1a22455f0155c34b1470cc47683cf",
       "local_capture_path": ".artifacts/guide-release/guide-home-1440.png",
       "file": null
     },
@@ -401,10 +673,163 @@
       "axe_critical_or_serious": [],
       "internal_links_checked": 10,
       "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [],
       "visible_text_characters": 6353,
       "content_sha256": "196670a03dd3b185afe1e48de01e94bdf9cd37a985176c729516be4bdde39398",
       "capture_sha256": "0efd524982dfd09544e731170fd37a6847bd6f57f36eac01d7b3df5b40f21961",
       "local_capture_path": ".artifacts/guide-release/guide-tutorial-1440.png",
+      "file": null
+    },
+    {
+      "id": "guide-tutorial-notice-mandate",
+      "route": "/guide/start/trace-a-notice-to-the-duty-behind-it/",
+      "viewport": "desktop",
+      "viewport_width": 1440,
+      "assertion": "The tutorial follows one notice to the duty behind it and its source law, and keeps a publication, a connection and a compliance finding apart.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 8,
+        "reached": 8,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 10,
+      "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [
+        "/notices/20260605008"
+      ],
+      "visible_text_characters": 6272,
+      "content_sha256": "97a6a8860c7e842253adbb2082f3173ee55f1ef725200a03c417eb6e04984f20",
+      "capture_sha256": "1e668fe622a4aa97df08f161197906e9e967d2a1be00d28f6a1cce714b28439d",
+      "local_capture_path": ".artifacts/guide-release/guide-tutorial-notice-mandate-1440.png",
+      "file": null
+    },
+    {
+      "id": "guide-tutorial-award-trail",
+      "route": "/guide/start/trace-an-award-and-keep-the-trail/",
+      "viewport": "desktop",
+      "viewport_width": 1440,
+      "assertion": "The tutorial builds a two-step trail, shows that it travels in the address, and says an awardee is not an opportunity.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 9,
+        "reached": 9,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 12,
+      "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [
+        "/agencies/homeless-services/",
+        "/notices/20231222103"
+      ],
+      "visible_text_characters": 6488,
+      "content_sha256": "b8b4f751a4ec2ff901c730838d1f916c9c5ae39a3187856ca9db5982cd3918db",
+      "capture_sha256": "ff7126472a903a9f9c8e3a8b1c4841f9a7d476790ee8ab80119a45dfec0016e7",
+      "local_capture_path": ".artifacts/guide-release/guide-tutorial-award-trail-1440.png",
+      "file": null
+    },
+    {
+      "id": "guide-how-to-connection-evidence",
+      "route": "/guide/how-to/check-the-evidence-behind-a-connection/",
+      "viewport": "desktop",
+      "viewport_width": 1440,
+      "assertion": "The how-to opens one connection receipt, says what it supports, and covers a connection that carries no source document of its own.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 8,
+        "reached": 8,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 12,
+      "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [
+        "/agencies/parks-and-recreation/"
+      ],
+      "visible_text_characters": 5075,
+      "content_sha256": "8da22c608defca79b6fd6df8ab2fc94dc27bbef2f42dad3639b73e68936dd26a",
+      "capture_sha256": "b016c22d59f69c4e1783b79736b5f068c5b55f40b6c9bff5f8056bd2409590cb",
+      "local_capture_path": ".artifacts/guide-release/guide-how-to-connection-evidence-1440.png",
+      "file": null
+    },
+    {
+      "id": "guide-how-to-as-of-day",
+      "route": "/guide/how-to/look-at-records-as-of-a-day/",
+      "viewport": "desktop",
+      "viewport_width": 1440,
+      "assertion": "The how-to filters an agency to a day and is explicit that an undated record is not kept and that this is not a reconstruction of what the site knew.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 8,
+        "reached": 8,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 11,
+      "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [
+        "/agencies/parks-and-recreation/"
+      ],
+      "visible_text_characters": 5071,
+      "content_sha256": "7275df133b30659717b572afd3da1ed8401d2ad35d0bf695cf9538b937e3d280",
+      "capture_sha256": "cfc6054e4182ca3276daa863b42f9e93222a3a8f97277c4eea35229113c34c50",
+      "local_capture_path": ".artifacts/guide-release/guide-how-to-as-of-day-1440.png",
+      "file": null
+    },
+    {
+      "id": "guide-how-to-collect-records",
+      "route": "/guide/how-to/collect-records-and-export-them/",
+      "viewport": "desktop",
+      "viewport_width": 1440,
+      "assertion": "The how-to keeps device storage, a recognized session, a downloaded file and a shared snapshot apart, and says what a share exposes and for how long.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 9,
+        "reached": 9,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 13,
+      "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [
+        "/notices/20231222103",
+        "/vendors/HOUSING%20OPTIONS%20GERIATRIC%20ASSOCIATION%20RESOURCES/"
+      ],
+      "visible_text_characters": 6266,
+      "content_sha256": "e3ef439e3ec02e15b1dd8e9f0caf7f5ed417fa0f65dd4c90cac9075f1c58dae6",
+      "capture_sha256": "06026b06af25558bd9d685ccbe28bfa77b7d347e7becfa208eff1f1f570697d4",
+      "local_capture_path": ".artifacts/guide-release/guide-how-to-collect-records-1440.png",
       "file": null
     },
     {
@@ -428,6 +853,7 @@
       "axe_critical_or_serious": [],
       "internal_links_checked": 11,
       "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [],
       "visible_text_characters": 7129,
       "content_sha256": "26a190cf0afc43b99fe2a0e793b78826dc4b953feef454a25abdd01ba03df637",
       "capture_sha256": "cf7e4cc01641fa18c970787c1687c30dabb333f1f07ebaa28cb0a6f0520671b5",
@@ -455,6 +881,7 @@
       "axe_critical_or_serious": [],
       "internal_links_checked": 10,
       "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [],
       "visible_text_characters": 3860,
       "content_sha256": "b6e49797f1a8e9d54a36514024276588949a495b6f39be0aea6dff8cd7ed8fd2",
       "capture_sha256": "1fc1627810846e4ea2046ee76f4780e6a5fe71eb20d2976233e96c118734476a",
@@ -482,6 +909,7 @@
       "axe_critical_or_serious": [],
       "internal_links_checked": 10,
       "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [],
       "visible_text_characters": 4174,
       "content_sha256": "07eeae18d53084565d3d82639491e3545adc2559c45ae2a91f69836f0f13cb7d",
       "capture_sha256": "2aa7a57c24189141cec79bce25b63a9df7a92bfd8b20db90cac4f2be711b4b93",
@@ -509,6 +937,7 @@
       "axe_critical_or_serious": [],
       "internal_links_checked": 16,
       "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [],
       "visible_text_characters": 4860,
       "content_sha256": "fc7fe8431e139b7e6e30da2dc55b4b2ae05384cdf5881e4e009021510b035918",
       "capture_sha256": "fdc8d7040be169a0349e38eaf1e989446368809bc17582ef29fbb5fe12368319",
@@ -536,6 +965,7 @@
       "axe_critical_or_serious": [],
       "internal_links_checked": 13,
       "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [],
       "visible_text_characters": 6049,
       "content_sha256": "b9bcda323f3ee6452bb90a64a705d5cb3d03bff1eb9c6894052c077be8c0c3cd",
       "capture_sha256": "b8e6f84849a4c98e89eff70c2097d7f947a6a0d1501f342e0dbb3f2375f6f80a",
@@ -563,6 +993,7 @@
       "axe_critical_or_serious": [],
       "internal_links_checked": 11,
       "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [],
       "visible_text_characters": 7080,
       "content_sha256": "53c6d85641f1a5b0eff7ad4bef71f92b3827ce4b46ecd406d384e45ca690979a",
       "capture_sha256": "09fdbe30b85da0933debe2cf0f81cb37b13aaa6163aec94788069ebded8142df",
@@ -590,6 +1021,7 @@
       "axe_critical_or_serious": [],
       "internal_links_checked": 11,
       "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [],
       "visible_text_characters": 4793,
       "content_sha256": "7810356ef7468d7023363ffd886910a4e55f82c518e8b18bc0ea0c3f7700936e",
       "capture_sha256": "d7de6e6b84e651f706f25c75f3ff11e923fb05cd7c9deb6de1775b475064194c",
@@ -616,9 +1048,10 @@
       "axe_critical_or_serious": [],
       "internal_links_checked": 0,
       "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [],
       "visible_text_characters": 1079,
       "content_sha256": "382ae9cb39a99c0e4c21d8954f7b5cf77ca6316030ed4ad9c37d82cb1d445049",
-      "capture_sha256": "7983088ed392971dfd9b75e22d150ca9d63688be2c5506c59cce8088cc1a601c",
+      "capture_sha256": "5074588d45184e3587844e43492b59dbdbd760b4ebd7a1ac7c2de838a74d27a8",
       "local_capture_path": ".artifacts/guide-release/product-search-1440.png",
       "file": null
     }
@@ -715,6 +1148,144 @@
       "back_path": "/guide/start/explore-housing-across-city-records/"
     },
     {
+      "id": "every-article-without-javascript",
+      "viewport": "mobile",
+      "assertion": "With JavaScript switched off, every published article keeps its headings, prose, the link back to the guide home, the link that returns the reader to the product, and its recorded review date.",
+      "assertion_holds": true,
+      "articles": [
+        {
+          "headings": 10,
+          "paragraphs": 21,
+          "backToGuide": true,
+          "returnToTask": true,
+          "reviewed": "Last reviewed 2026-09-06",
+          "id": "E1",
+          "url": "/guide/understand/what-a-public-record-tells-you/",
+          "holds": true
+        },
+        {
+          "headings": 8,
+          "paragraphs": 14,
+          "backToGuide": true,
+          "returnToTask": true,
+          "reviewed": "Last reviewed 2026-09-06",
+          "id": "E2",
+          "url": "/guide/understand/how-records-are-connected/",
+          "holds": true
+        },
+        {
+          "headings": 9,
+          "paragraphs": 16,
+          "backToGuide": true,
+          "returnToTask": true,
+          "reviewed": "Last reviewed 2026-09-06",
+          "id": "E3",
+          "url": "/guide/understand/dates-and-missing-information/",
+          "holds": true
+        },
+        {
+          "headings": 7,
+          "paragraphs": 13,
+          "backToGuide": true,
+          "returnToTask": true,
+          "reviewed": "Last reviewed 2026-09-06",
+          "id": "E4",
+          "url": "/guide/understand/flags-and-historical-patterns/",
+          "holds": true
+        },
+        {
+          "headings": 11,
+          "paragraphs": 23,
+          "backToGuide": true,
+          "returnToTask": true,
+          "reviewed": "Last reviewed 2026-09-05",
+          "id": "H6",
+          "url": "/guide/how-to/check-the-evidence-behind-a-connection/",
+          "holds": true
+        },
+        {
+          "headings": 12,
+          "paragraphs": 25,
+          "backToGuide": true,
+          "returnToTask": true,
+          "reviewed": "Last reviewed 2026-09-05",
+          "id": "H7",
+          "url": "/guide/how-to/look-at-records-as-of-a-day/",
+          "holds": true
+        },
+        {
+          "headings": 13,
+          "paragraphs": 30,
+          "backToGuide": true,
+          "returnToTask": true,
+          "reviewed": "Last reviewed 2026-09-05",
+          "id": "H8",
+          "url": "/guide/how-to/collect-records-and-export-them/",
+          "holds": true
+        },
+        {
+          "headings": 10,
+          "paragraphs": 7,
+          "backToGuide": true,
+          "returnToTask": true,
+          "reviewed": "Last reviewed 2026-09-06",
+          "id": "R1",
+          "url": "/guide/reference/glossary/",
+          "holds": true
+        },
+        {
+          "headings": 9,
+          "paragraphs": 13,
+          "backToGuide": true,
+          "returnToTask": true,
+          "reviewed": "Last reviewed 2026-09-06",
+          "id": "R2",
+          "url": "/guide/reference/controls-and-outputs/",
+          "holds": true
+        },
+        {
+          "headings": 8,
+          "paragraphs": 14,
+          "backToGuide": true,
+          "returnToTask": true,
+          "reviewed": "Last reviewed 2026-09-06",
+          "id": "R3",
+          "url": "/guide/reference/sources-and-coverage/",
+          "holds": true
+        },
+        {
+          "headings": 13,
+          "paragraphs": 34,
+          "backToGuide": true,
+          "returnToTask": true,
+          "reviewed": "Last reviewed 2026-09-06",
+          "id": "T1",
+          "url": "/guide/start/explore-housing-across-city-records/",
+          "holds": true
+        },
+        {
+          "headings": 14,
+          "paragraphs": 30,
+          "backToGuide": true,
+          "returnToTask": true,
+          "reviewed": "Last reviewed 2026-09-05",
+          "id": "T2",
+          "url": "/guide/start/trace-a-notice-to-the-duty-behind-it/",
+          "holds": true
+        },
+        {
+          "headings": 13,
+          "paragraphs": 31,
+          "backToGuide": true,
+          "returnToTask": true,
+          "reviewed": "Last reviewed 2026-09-05",
+          "id": "T3",
+          "url": "/guide/start/trace-an-award-and-keep-the-trail/",
+          "holds": true
+        }
+      ]
+    },
+    {
       "id": "scripted-journey",
       "viewport": "desktop",
       "assertion": "A reader reaches the tutorial from the front page through Guide, leaves for the product, and the browser Back button returns them to where they were.",
@@ -803,6 +1374,144 @@
         "backToGuide": true
       },
       "back_path": "/guide/start/explore-housing-across-city-records/"
+    },
+    {
+      "id": "every-article-without-javascript",
+      "viewport": "desktop",
+      "assertion": "With JavaScript switched off, every published article keeps its headings, prose, the link back to the guide home, the link that returns the reader to the product, and its recorded review date.",
+      "assertion_holds": true,
+      "articles": [
+        {
+          "headings": 10,
+          "paragraphs": 21,
+          "backToGuide": true,
+          "returnToTask": true,
+          "reviewed": "Last reviewed 2026-09-06",
+          "id": "E1",
+          "url": "/guide/understand/what-a-public-record-tells-you/",
+          "holds": true
+        },
+        {
+          "headings": 8,
+          "paragraphs": 14,
+          "backToGuide": true,
+          "returnToTask": true,
+          "reviewed": "Last reviewed 2026-09-06",
+          "id": "E2",
+          "url": "/guide/understand/how-records-are-connected/",
+          "holds": true
+        },
+        {
+          "headings": 9,
+          "paragraphs": 16,
+          "backToGuide": true,
+          "returnToTask": true,
+          "reviewed": "Last reviewed 2026-09-06",
+          "id": "E3",
+          "url": "/guide/understand/dates-and-missing-information/",
+          "holds": true
+        },
+        {
+          "headings": 7,
+          "paragraphs": 13,
+          "backToGuide": true,
+          "returnToTask": true,
+          "reviewed": "Last reviewed 2026-09-06",
+          "id": "E4",
+          "url": "/guide/understand/flags-and-historical-patterns/",
+          "holds": true
+        },
+        {
+          "headings": 11,
+          "paragraphs": 23,
+          "backToGuide": true,
+          "returnToTask": true,
+          "reviewed": "Last reviewed 2026-09-05",
+          "id": "H6",
+          "url": "/guide/how-to/check-the-evidence-behind-a-connection/",
+          "holds": true
+        },
+        {
+          "headings": 12,
+          "paragraphs": 25,
+          "backToGuide": true,
+          "returnToTask": true,
+          "reviewed": "Last reviewed 2026-09-05",
+          "id": "H7",
+          "url": "/guide/how-to/look-at-records-as-of-a-day/",
+          "holds": true
+        },
+        {
+          "headings": 13,
+          "paragraphs": 30,
+          "backToGuide": true,
+          "returnToTask": true,
+          "reviewed": "Last reviewed 2026-09-05",
+          "id": "H8",
+          "url": "/guide/how-to/collect-records-and-export-them/",
+          "holds": true
+        },
+        {
+          "headings": 10,
+          "paragraphs": 7,
+          "backToGuide": true,
+          "returnToTask": true,
+          "reviewed": "Last reviewed 2026-09-06",
+          "id": "R1",
+          "url": "/guide/reference/glossary/",
+          "holds": true
+        },
+        {
+          "headings": 9,
+          "paragraphs": 13,
+          "backToGuide": true,
+          "returnToTask": true,
+          "reviewed": "Last reviewed 2026-09-06",
+          "id": "R2",
+          "url": "/guide/reference/controls-and-outputs/",
+          "holds": true
+        },
+        {
+          "headings": 8,
+          "paragraphs": 14,
+          "backToGuide": true,
+          "returnToTask": true,
+          "reviewed": "Last reviewed 2026-09-06",
+          "id": "R3",
+          "url": "/guide/reference/sources-and-coverage/",
+          "holds": true
+        },
+        {
+          "headings": 13,
+          "paragraphs": 34,
+          "backToGuide": true,
+          "returnToTask": true,
+          "reviewed": "Last reviewed 2026-09-06",
+          "id": "T1",
+          "url": "/guide/start/explore-housing-across-city-records/",
+          "holds": true
+        },
+        {
+          "headings": 14,
+          "paragraphs": 30,
+          "backToGuide": true,
+          "returnToTask": true,
+          "reviewed": "Last reviewed 2026-09-05",
+          "id": "T2",
+          "url": "/guide/start/trace-a-notice-to-the-duty-behind-it/",
+          "holds": true
+        },
+        {
+          "headings": 13,
+          "paragraphs": 31,
+          "backToGuide": true,
+          "returnToTask": true,
+          "reviewed": "Last reviewed 2026-09-05",
+          "id": "T3",
+          "url": "/guide/start/trace-an-award-and-keep-the-trail/",
+          "holds": true
+        }
+      ]
     }
   ]
 }
