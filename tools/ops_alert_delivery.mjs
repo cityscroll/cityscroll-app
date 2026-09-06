@@ -255,7 +255,9 @@ export function buildDeliveryReceipt({
     response_status: delivery?.response_status ?? null,
     // The relay's own answer, so the delivery can be confirmed from the receipt
     // alone: it names whether this alert was sent or recognised as one already
-    // standing. It never carries a credential.
+    // standing. It is bounded to the first two thousand characters, so a long
+    // answer is retained in part rather than in full, and it never carries a
+    // credential.
     response_body: delivery?.response_body ?? null,
     delivered_at: delivery?.delivered_at || null,
     reason: delivery?.reason

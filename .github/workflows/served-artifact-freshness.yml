@@ -122,7 +122,10 @@ jobs:
       # A clean comparison still leaves a receipt saying so, so "no alert" is a
       # recorded outcome rather than an absence of evidence.
       - name: Record that a clean comparison sent nothing
-        if: steps.probe.outputs.finding != 'true'
+        # Only a comparison that actually completed can be called clean; a
+        # comparison that fell over is red on its own account and records
+        # nothing here.
+        if: steps.probe.conclusion == 'success' && steps.probe.outputs.finding != 'true'
         run: |
           set -euo pipefail
           node tools/deliver_ops_alert.mjs \
