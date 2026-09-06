@@ -40,6 +40,134 @@ function affordanceText(value) {
   return String(value ?? "").trim();
 }
 
+/* ---------- action scent ---------- */
+
+/**
+ * What activating a named next step actually does. These three are the whole
+ * vocabulary, because they are the three consequences a reader can be asked to
+ * predict before clicking:
+ *
+ *   inspect  — answers a question in place. Nothing is navigated to, nothing is
+ *              sent, and no publisher is contacted. A native button.
+ *   navigate — opens another page of this site. An ordinary anchor, so it keeps
+ *              working with scripting off, through the context menu and under a
+ *              modified click.
+ *   handoff  — leaves this site: an external page, a submission portal, a
+ *              download, a calendar subscription, a mail or telephone handler.
+ *              An anchor that says so before it is followed.
+ *
+ * The distinction is not decorative. A control that inspects must never submit
+ * or subscribe, and a control that hands off to a publisher must never be
+ * dressed as one that stays here.
+ */
+export const AFFORDANCE_ACTION_ROLES = Object.freeze({
+  inspect: "inspect",
+  navigate: "navigate",
+  handoff: "handoff",
+});
+
+// A label that positions its subject relative to the reader's current document
+// is a claim about layout, not about a destination. "Follow the response steps
+// below" is true on the notice that carries the steps and false on every
+// listing card that links to that notice. Such a label is therefore correct in
+// one place and misleading in another, which is why it is judged against the
+// surface rendering it rather than rewritten wherever it appears.
+const AFFORDANCE_POSITIONAL_PROMISE = /\b(?:below|above|further down|overleaf|on this page)\b/i;
+
+/** True when a label promises content positioned in the reader's own document. */
+export function affordancePositionalPromise(label) {
+  return AFFORDANCE_POSITIONAL_PROMISE.test(affordanceText(label));
+}
+
+/**
+ * Classify one next step by what activating it does. `inspects` is the caller's
+ * own declaration that the control answers in place; everything else is decided
+ * by the destination, so an owned host stays navigation however it is spelled
+ * and an absolute publisher URL can never be mistaken for a page of this site.
+ *
+ * Returns `null` for a step with no usable destination, which is not an action
+ * a reader can be offered at all.
+ */
+export function affordanceActionRole({ href, inspects = false, canonicalOrigin = AFFORDANCE_CANONICAL_ORIGIN } = {}) {
+  if (inspects === true) return AFFORDANCE_ACTION_ROLES.inspect;
+  const kind = affordanceDestinationKind(href, canonicalOrigin);
+  if (kind === "missing") return null;
+  return kind === "internal" ? AFFORDANCE_ACTION_ROLES.navigate : AFFORDANCE_ACTION_ROLES.handoff;
+}
+
+/**
+ * The presentation one destination is owed, factored out of the link renderers
+ * so a surface with its own class vocabulary — the shared month component and
+ * its two panels — inherits the same decision instead of restating it.
+ *
+ * A handoff always carries the visible glyph; only a real external page also
+ * takes a new tab, and only that case announces one, because a mail or
+ * telephone handler does not open a tab to announce.
+ */
+export function affordanceHandoffPresentation({
+  href,
+  inspects = false,
+  canonicalOrigin = AFFORDANCE_CANONICAL_ORIGIN,
+  newTabLabel = "(opens in new tab)",
+  escape = esc,
+} = {}) {
+  const role = affordanceActionRole({ href, inspects, canonicalOrigin });
+  const external = affordanceDestinationKind(href, canonicalOrigin) === "external";
+  const handoff = role === AFFORDANCE_ACTION_ROLES.handoff;
+  return Object.freeze({
+    role,
+    external,
+    attributes: external ? ' target="_blank" rel="noopener noreferrer"' : "",
+    glyph: handoff ? '<span aria-hidden="true">↗</span>' : "",
+    announcement: external && newTabLabel ? `<span class="sr-only"> ${escape(newTabLabel)}</span>` : "",
+  });
+}
+
+/**
+ * Audit one rendered next step against the shared naming rule: an action's name
+ * describes what activating it does, and a card never spends the same words
+ * twice on a fact and on the control beside it.
+ *
+ * `statedFacts` are the labels the same card already carries as non-interactive
+ * text — its kind badge, its date label, its domain tag. Repeating one of them
+ * verbatim as the control's name costs the reader a second reading and tells
+ * them nothing new about the click.
+ *
+ * `carriesSubject` is the rendering surface's own declaration that the promised
+ * material really is present in the same document. Only that surface knows;
+ * a listing card does not, so it does not get to claim it.
+ *
+ * Pure and presentation-free: it returns findings, and the caller decides
+ * whether a finding is a defect to fail on or a case it has justified.
+ */
+export function affordanceActionScent({
+  label,
+  href,
+  inspects = false,
+  statedFacts = [],
+  carriesSubject = false,
+  canonicalOrigin = AFFORDANCE_CANONICAL_ORIGIN,
+} = {}) {
+  const text = affordanceText(label);
+  const role = affordanceActionRole({ href, inspects, canonicalOrigin });
+  const problems = [];
+  if (!text) problems.push("unnamed");
+  if (!role) problems.push("undestined");
+  if (text && !carriesSubject && affordancePositionalPromise(text)) problems.push("positional_promise");
+  const comparable = affordanceComparableLabel(text);
+  if (comparable && (Array.isArray(statedFacts) ? statedFacts : [])
+    .some((fact) => affordanceComparableLabel(fact) === comparable)) {
+    problems.push("repeats_stated_fact");
+  }
+  return Object.freeze({ role, ok: problems.length === 0, problems: Object.freeze(problems) });
+}
+
+// Labels are compared as a reader hears them, not as bytes: case, surrounding
+// punctuation and repeated spacing are not distinctions a card is making.
+function affordanceComparableLabel(value) {
+  return affordanceText(value).toLocaleLowerCase().replace(/[^\p{L}\p{N}]+/gu, " ").trim();
+}
+
 export function affordanceDestinationKind(href, canonicalOrigin = AFFORDANCE_CANONICAL_ORIGIN) {
   const value = affordanceText(href);
   if (!value) return "missing";
@@ -169,17 +297,13 @@ export function externalActionLink({
   canonicalOrigin = AFFORDANCE_CANONICAL_ORIGIN,
   newTabLabel = "(opens in new tab)",
 } = {}) {
-  const kind = affordanceDestinationKind(href, canonicalOrigin);
-  if (kind === "missing") return "";
-  const classes = [kind === "internal" ? "ui-action-link" : "ui-external-action", primary ? "primary" : "", className]
+  const presentation = affordanceHandoffPresentation({ href, canonicalOrigin, newTabLabel, escape });
+  if (!presentation.role) return "";
+  const navigates = presentation.role === AFFORDANCE_ACTION_ROLES.navigate;
+  const classes = [navigates ? "ui-action-link" : "ui-external-action", primary ? "primary" : "", className]
     .filter(Boolean).map((value) => escape(value)).join(" ");
-  const external = kind === "external";
-  const handoff = external || kind === "protocol_handoff";
-  const tabAttrs = external ? ' target="_blank" rel="noopener noreferrer"' : "";
   const accessibleAttrs = `${ariaLabel ? ` aria-label="${escape(ariaLabel)}"` : ""}${title ? ` title="${escape(title)}"` : ""}`;
-  const glyph = handoff ? '<span aria-hidden="true">↗</span>' : "";
-  const announcement = external ? `<span class="sr-only"> ${escape(newTabLabel)}</span>` : "";
-  return `<a class="${classes}" href="${escape(href)}"${accessibleAttrs}${tabAttrs}${dataAttributes(attributes, escape)}>${escape(label)}${glyph}${announcement}</a>`;
+  return `<a class="${classes}" href="${escape(href)}"${accessibleAttrs}${presentation.attributes}${dataAttributes(attributes, escape)}>${escape(label)}${presentation.glyph}${presentation.announcement}</a>`;
 }
 
 export function renderObjectCardTitle(projection, { className = "ui-object-card-title", labelMarkup = null, escape = esc } = {}) {

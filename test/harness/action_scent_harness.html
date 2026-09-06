@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Action naming — fixture harness</title>
+<meta name="robots" content="noindex, nofollow">
+<!--
+  Repository-native test harness for the action-naming contract. Not a shipped
+  page: it exists only to give the headless evidence capture a neutral surface
+  that mounts the real Now listing renderer and the real shared month component
+  against committed fixtures. It is never linked from the public site and
+  carries no domain content of its own.
+
+  Two readings sit side by side because the contract is about telling them
+  apart: a Now card lane, where the next step is a named control, and a shared
+  month, where inspection is a button and the destination beside it is a link.
+
+  Query parameters:
+    enhance=off   skip binding, to read the page as a reader without scripting
+                  does — the anchors still work, and no control appears whose
+                  behaviour is not listening
+    handoff=on    give one occurrence the publisher's own canonical URL, which
+                  the occurrence contract allows, so a capture can show the
+                  handoff treatment beside the internal one
+    detail=fail   supply a host detail hook that fails, so a capture can show
+                  that the facts the cell was admitted with and the working
+                  full-page link survive a failed optional enrichment
+-->
+<link rel="stylesheet" href="../../site/brand.css">
+<link rel="stylesheet" href="../../site/compact_calendar.css">
+<style>
+  body { margin: 0; padding: 16px; background: #f5f6f8; font: 16px/1.5 ui-sans-serif, system-ui, sans-serif; color: #1d2330; }
+  main { max-width: 1200px; margin: 0 auto; }
+  h1 { font-size: 20px; }
+  h2 { font-size: 16px; margin-top: 28px; }
+  #status { font: 12px monospace; color: #5b6470; margin-top: 16px; }
+
+  /* The Now card treatment the shipped surface uses, reduced to what this
+     contract is about: the tag row, the date, the title, and the action row. */
+  .now-card { background: #fff; border: 1px solid #d7dbe3; border-radius: 8px; padding: 12px 14px; margin: 0 0 10px; }
+  .now-card-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 6px; }
+  .now-card-tags .tag, .now-source-badge { font-size: 12px; padding: 2px 8px; border-radius: 999px; background: #eef1f6; color: #3b4354; }
+  .now-card-tags .tag.urgency { background: #fdeceb; color: #8a1c13; }
+  .now-card-when { margin: 0 0 2px; font-size: 14px; }
+  .now-card-when span { margin-inline-start: 8px; color: #5b6470; }
+  .now-card h3 { margin: 2px 0 2px; font-size: 16px; }
+  .now-card-agency { margin: 0 0 8px; color: #5b6470; font-size: 14px; }
+  .now-card .actions { display: flex; flex-wrap: wrap; gap: 10px; }
+  /* WCAG 2.5.8: every control a reader can activate keeps a 44px target. */
+  .now-card .act {
+    display: inline-flex; align-items: center; min-height: 44px; padding: 6px 12px;
+    border-radius: 6px; text-decoration: none; color: #0b3ad1; border: 1px solid #b9c4de;
+  }
+  .now-card .act.primary { background: #0b3ad1; color: #fff; border-color: #0b3ad1; }
+  .now-card .act:focus-visible { outline: 3px solid #0b3ad1; outline-offset: 2px; }
+  .now-lane-head h3 { font-size: 15px; margin: 0; }
+  .now-lane-head p, .now-kicker, .now-deck, .now-bounded-note { color: #5b6470; font-size: 14px; }
+  .now-calview-row { margin: 8px 0; }
+  .empty, .note { color: #5b6470; font-size: 14px; }
+  .sr-only {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+  }
+</style>
+<script src="../../site/i18n.js"></script>
+<script src="../../site/action_registry.js"></script>
+</head>
+<body>
+<main id="page" data-harness-state="pending">
+<h1>Action naming harness</h1>
+
+<h2>Now cards</h2>
+<div id="nowview"></div>
+
+<h2>Shared month</h2>
+<div id="calendar"></div>
+
+<p id="status"></p>
+</main>
+<script type="module">
+  import { buildNowSurface } from "../../site/now_surface.mjs";
+  import { NOW_ACTION_SCENT_TODAY, nowActionScentSources } from "../fixtures/now_action_scent_fixtures.mjs";
+  import { FIXTURE_TODAY, fixtureOccurrences } from "../fixtures/compact_calendar_fixtures.mjs";
+  import { bindCompactMonthCalendar, buildCompactMonthView, renderCompactMonth } from "../../site/compact_calendar.mjs";
+
+  const params = new URLSearchParams(location.search);
+  const enhance = params.get("enhance") !== "off";
+  const handoff = params.get("handoff") === "on";
+  const detail = params.get("detail") || "none";
+  const page = document.getElementById("page");
+  const status = document.getElementById("status");
+
+  // The globals the shipped Now renderer reads. `fdt` is pinned to a fixed
+  // formatting of the fixture's own value rather than a locale-dependent one,
+  // so a capture describes the fixture and not the machine that ran it.
+  globalThis.$ = (selector) => document.querySelector(selector);
+  globalThis.announce = () => {};
+  globalThis.fdt = (value) => new Intl.DateTimeFormat("en-US", {
+    weekday: "short", month: "short", day: "numeric", year: "numeric",
+    ...(String(value).includes("T") ? { hour: "numeric", minute: "2-digit" } : {}),
+    timeZone: "UTC",
+  }).format(new Date(String(value).includes("T") ? `${value}Z` : `${value}T00:00:00Z`));
+
+  // The action rail is the shipped classic script, loaded exactly as the app
+  // loads it, so the labels a card renders are the ones the real rail compiled.
+  const { renderNowSurface } = await import("../../site/now_view.mjs");
+
+  renderNowSurface(buildNowSurface(nowActionScentSources(), {
+    today: NOW_ACTION_SCENT_TODAY,
+    compileActionRail: globalThis.CrolActions.compileActionRail,
+  }), { currentHash: "#now" });
+
+  // Two publisher destinations the shared component has to tell apart from a
+  // page of this site. Every occurrence carries the publisher's record for the
+  // notice it came from — the fixture bundle records the system but no URL —
+  // and, under `handoff=on`, the first occurrence is also published under the
+  // publisher's own canonical URL, which the occurrence contract accepts.
+  const occurrences = fixtureOccurrences("highDensity").map((occurrence, index) => ({
+    ...occurrence,
+    source: { ...occurrence.source, url: `https://a860-gpp.nyc.gov/notice/${occurrence.uid}` },
+    ...(handoff && index === 0
+      ? { canonical_url: "https://rules.cityofnewyork.us/rule/energy-code/" }
+      : {}),
+  }));
+  const view = buildCompactMonthView(occurrences, { today: FIXTURE_TODAY });
+  document.getElementById("calendar").innerHTML = renderCompactMonth(view);
+
+  // One mount, exactly as a registered host makes it. `loadDetail` is the
+  // host-supplied hook; failing it on purpose is how a capture shows what a
+  // reader keeps when optional enrichment does not arrive.
+  const options = detail === "fail"
+    ? { loadDetail: () => Promise.reject(new Error("detail unavailable")) }
+    : {};
+  if (enhance) bindCompactMonthCalendar(document.getElementById("calendar"), options);
+
+  page.setAttribute("data-harness-state", view.render ? "rendered" : "non-render");
+  page.setAttribute("data-harness-enhanced", enhance ? "1" : "0");
+  page.setAttribute("data-harness-handoff", handoff ? "1" : "0");
+  page.setAttribute("data-harness-detail", detail);
+  status.textContent = `now=${NOW_ACTION_SCENT_TODAY} calendar=${FIXTURE_TODAY} render=${view.render} enhanced=${enhance} handoff=${handoff} detail=${detail}`;
+</script>
+</body>
+</html>

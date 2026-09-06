@@ -1,0 +1,53 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/named-next-step-actions",
+  "status": "implemented",
+  "fingerprint": "named-next-step-actions.v1",
+  "updated_at": "2026-09-06T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "action-scent-classifier",
+      "path": "site/affordance_grammar.mjs"
+    },
+    {
+      "id": "compact-month-component",
+      "path": "site/compact_calendar.mjs"
+    },
+    {
+      "id": "calendar-event-preview-contract",
+      "path": "site/calendar_event_preview.mjs"
+    },
+    {
+      "id": "calendar-day-agenda-contract",
+      "path": "site/calendar_day_agenda.mjs"
+    },
+    {
+      "id": "now-listing-adapter",
+      "path": "site/now_view.mjs"
+    },
+    {
+      "id": "action-scent-grammar-gate",
+      "path": "test/affordance_grammar.test.mjs"
+    },
+    {
+      "id": "cross-family-action-scent-gate",
+      "path": "test/now_action_scent.test.mjs"
+    },
+    {
+      "id": "now-listing-adapter-gate",
+      "path": "test/now_view.test.mjs"
+    },
+    {
+      "id": "action-naming-harness",
+      "path": "test/harness/action_scent_harness.html"
+    },
+    {
+      "id": "action-naming-evidence-capture",
+      "path": "tools/capture_action_scent_evidence.py"
+    },
+    {
+      "id": "action-naming-evidence-manifest",
+      "path": "docs/evidence/action-naming/manifest.json"
+    }
+  ]
+}

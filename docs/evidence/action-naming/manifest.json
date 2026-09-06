@@ -1,0 +1,634 @@
+{
+  "schema": "cityscroll.action_naming_evidence.v1",
+  "record": "cityscroll-engineering/named-next-step-actions",
+  "route": "component-harness:action-naming",
+  "harness": "test/harness/action_scent_harness.html",
+  "revision": "0698b5a8a7dec0696a38ab1edf9c48512b13cefd",
+  "data_vintage": "2026-08-03 (Now lane) / 2026-03-15 (shared month)",
+  "timezone": "America/New_York",
+  "captured_at": "2026-09-06T03:28:24Z",
+  "image_directory": ".artifacts/action-naming",
+  "image_policy": "Capture images are written to the ignored local directory above and are never committed. This manifest is the tracked proof: route, viewport, revision, data vintage, assertion, observations and SHA-256 for each capture.",
+  "measurement_policy": "Every observation is a measurement of what the rendered document does. No participant evaluation was run and no usability gain is claimed.",
+  "network_policy": "Every destination outside the harness's own files is intercepted and answered locally, so no publisher is contacted and a full-page link can still be followed and returned from. The preview specimen records the requests made while inspecting.",
+  "files": [
+    {
+      "name": "named-next-step-390x844.png",
+      "specimen": "named-next-step",
+      "route": "component-harness:action-naming",
+      "harness": "test/harness/action_scent_harness.html",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "0698b5a8a7dec0696a38ab1edf9c48512b13cefd",
+      "data_vintage": "2026-08-03 (Now lane) / 2026-03-15 (shared month)",
+      "timezone": "America/New_York",
+      "assertion": "at 390px each of the 4 act-by cards states its window kind, its exact date and its next step as three different things; the reported procurement card now reads \"See how to respond\" and points at /notices/bid-open, and no control on the lane promises material positioned elsewhere on the page",
+      "observations": {
+        "act_by_cards": 4,
+        "no_control_promises_material_elsewhere_on_the_page": true,
+        "no_control_repeats_a_fact_beside_it": true,
+        "every_card_states_its_window_kind": true,
+        "every_card_keeps_its_title": true,
+        "every_card_keeps_its_exact_date": true,
+        "every_card_keeps_its_agency": true,
+        "reported_card_badge": "Open for bids",
+        "reported_card_next_step": "See how to respond",
+        "reported_card_destination": "/notices/bid-open",
+        "reported_card_names_its_destination": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 187734,
+      "sha256": "7d7d0bc9aa9c7c65b821e3749498fc4dfc9b569734a993db8573f7100a47b6b8",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "named-next-step-1440x900.png",
+      "specimen": "named-next-step",
+      "route": "component-harness:action-naming",
+      "harness": "test/harness/action_scent_harness.html",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "0698b5a8a7dec0696a38ab1edf9c48512b13cefd",
+      "data_vintage": "2026-08-03 (Now lane) / 2026-03-15 (shared month)",
+      "timezone": "America/New_York",
+      "assertion": "at 1440px each of the 4 act-by cards states its window kind, its exact date and its next step as three different things; the reported procurement card now reads \"See how to respond\" and points at /notices/bid-open, and no control on the lane promises material positioned elsewhere on the page",
+      "observations": {
+        "act_by_cards": 4,
+        "no_control_promises_material_elsewhere_on_the_page": true,
+        "no_control_repeats_a_fact_beside_it": true,
+        "every_card_states_its_window_kind": true,
+        "every_card_keeps_its_title": true,
+        "every_card_keeps_its_exact_date": true,
+        "every_card_keeps_its_agency": true,
+        "reported_card_badge": "Open for bids",
+        "reported_card_next_step": "See how to respond",
+        "reported_card_destination": "/notices/bid-open",
+        "reported_card_names_its_destination": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 218362,
+      "sha256": "7eb951d5add854f58708a1c18d6ced5d26c5909f4a1a581b440d8ec27f660a7d",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "handoff-versus-navigation-390x844.png",
+      "specimen": "handoff-versus-navigation",
+      "route": "component-harness:action-naming",
+      "harness": "test/harness/action_scent_harness.html",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "0698b5a8a7dec0696a38ab1edf9c48512b13cefd",
+      "data_vintage": "2026-08-03 (Now lane) / 2026-03-15 (shared month)",
+      "timezone": "America/New_York",
+      "assertion": "at 390px the 2 external submission controls each carry the arrow, the isolated new tab and the announcement that goes with one, while the 5 internal controls carry none of that \u2014 and every card offering a handoff still offers an ordinary internal link beside it",
+      "observations": {
+        "external_controls": 2,
+        "internal_controls": 5,
+        "every_handoff_carries_a_visible_signifier": true,
+        "every_handoff_announces_the_new_tab": true,
+        "every_handoff_isolates_the_opener": true,
+        "no_internal_control_is_dressed_as_a_handoff": true,
+        "every_handoff_keeps_an_internal_way_on_beside_it": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 187734,
+      "sha256": "7d7d0bc9aa9c7c65b821e3749498fc4dfc9b569734a993db8573f7100a47b6b8",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "handoff-versus-navigation-1440x900.png",
+      "specimen": "handoff-versus-navigation",
+      "route": "component-harness:action-naming",
+      "harness": "test/harness/action_scent_harness.html",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "0698b5a8a7dec0696a38ab1edf9c48512b13cefd",
+      "data_vintage": "2026-08-03 (Now lane) / 2026-03-15 (shared month)",
+      "timezone": "America/New_York",
+      "assertion": "at 1440px the 2 external submission controls each carry the arrow, the isolated new tab and the announcement that goes with one, while the 5 internal controls carry none of that \u2014 and every card offering a handoff still offers an ordinary internal link beside it",
+      "observations": {
+        "external_controls": 2,
+        "internal_controls": 5,
+        "every_handoff_carries_a_visible_signifier": true,
+        "every_handoff_announces_the_new_tab": true,
+        "every_handoff_isolates_the_opener": true,
+        "no_internal_control_is_dressed_as_a_handoff": true,
+        "every_handoff_keeps_an_internal_way_on_beside_it": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 218362,
+      "sha256": "7eb951d5add854f58708a1c18d6ced5d26c5909f4a1a581b440d8ec27f660a7d",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "preview-inspects-only-390x844.png",
+      "specimen": "preview-inspects-only",
+      "route": "component-harness:action-naming",
+      "harness": "test/harness/action_scent_harness.html",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "0698b5a8a7dec0696a38ab1edf9c48512b13cefd",
+      "data_vintage": "2026-08-03 (Now lane) / 2026-03-15 (shared month)",
+      "timezone": "America/New_York",
+      "assertion": "at 390px activating a preview opens a bounded summary in place: the reader stays on the same URL, the panel submits nothing and subscribes to nothing, 0 requests were made and none of them reached a publisher, and the publisher's record inside the panel is offered as the handoff it is rather than as another page of this site",
+      "observations": {
+        "the_reader_stayed_on_the_page": true,
+        "the_preview_is_labelled_by_its_own_heading": true,
+        "the_preview_submits_nothing": true,
+        "the_preview_changes_no_subscription": true,
+        "every_control_in_it_is_an_explicit_button": true,
+        "no_publisher_was_contacted": true,
+        "requests_made_while_inspecting": 0,
+        "the_publisher_record_is_offered_as_a_handoff": true,
+        "the_page_for_the_event_is_named_for_what_it_opens": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 184750,
+      "sha256": "578257a0b5378a291b2305edfeffc07172e29a34e9d674e70955980a61dee469",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "preview-inspects-only-1440x900.png",
+      "specimen": "preview-inspects-only",
+      "route": "component-harness:action-naming",
+      "harness": "test/harness/action_scent_harness.html",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "0698b5a8a7dec0696a38ab1edf9c48512b13cefd",
+      "data_vintage": "2026-08-03 (Now lane) / 2026-03-15 (shared month)",
+      "timezone": "America/New_York",
+      "assertion": "at 1440px activating a preview opens a bounded summary in place: the reader stays on the same URL, the panel submits nothing and subscribes to nothing, 0 requests were made and none of them reached a publisher, and the publisher's record inside the panel is offered as the handoff it is rather than as another page of this site",
+      "observations": {
+        "the_reader_stayed_on_the_page": true,
+        "the_preview_is_labelled_by_its_own_heading": true,
+        "the_preview_submits_nothing": true,
+        "the_preview_changes_no_subscription": true,
+        "every_control_in_it_is_an_explicit_button": true,
+        "no_publisher_was_contacted": true,
+        "requests_made_while_inspecting": 0,
+        "the_publisher_record_is_offered_as_a_handoff": true,
+        "the_page_for_the_event_is_named_for_what_it_opens": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 226133,
+      "sha256": "20c048ed18b772dfa71255986e21de77ebf9739c6124c7214e7d68b852a92142",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "close-and-return-focus-390x844.png",
+      "specimen": "close-and-return-focus",
+      "route": "component-harness:action-naming",
+      "harness": "test/harness/action_scent_harness.html",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "0698b5a8a7dec0696a38ab1edf9c48512b13cefd",
+      "data_vintage": "2026-08-03 (Now lane) / 2026-03-15 (shared month)",
+      "timezone": "America/New_York",
+      "assertion": "at 390px the preview takes focus onto its Close control, and both Close and Escape return focus to the exact trigger that opened it rather than dropping it on the document",
+      "observations": {
+        "focus_moves_into_the_panel": true,
+        "focus_lands_on_close_first": true,
+        "close_returns_focus_to_the_control_that_opened_it": true,
+        "escape_closes_and_returns_focus_too": true,
+        "focus_never_falls_to_the_document_body": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 188128,
+      "sha256": "71e335e21f79076c1c935f57a2b3cffc15a51c6dd0d33bb82f159d1a95409a71",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "close-and-return-focus-1440x900.png",
+      "specimen": "close-and-return-focus",
+      "route": "component-harness:action-naming",
+      "harness": "test/harness/action_scent_harness.html",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "0698b5a8a7dec0696a38ab1edf9c48512b13cefd",
+      "data_vintage": "2026-08-03 (Now lane) / 2026-03-15 (shared month)",
+      "timezone": "America/New_York",
+      "assertion": "at 1440px the preview takes focus onto its Close control, and both Close and Escape return focus to the exact trigger that opened it rather than dropping it on the document",
+      "observations": {
+        "focus_moves_into_the_panel": true,
+        "focus_lands_on_close_first": true,
+        "close_returns_focus_to_the_control_that_opened_it": true,
+        "escape_closes_and_returns_focus_too": true,
+        "focus_never_falls_to_the_document_body": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 218740,
+      "sha256": "18dff60c51ac0d85ddd2e1ae3a8a8949a7d546862a7d2e0a6d5e2fd4ebe624c3",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "full-page-back-and-continue-390x844.png",
+      "specimen": "full-page-back-and-continue",
+      "route": "component-harness:action-naming",
+      "harness": "test/harness/action_scent_harness.html",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "0698b5a8a7dec0696a38ab1edf9c48512b13cefd",
+      "data_vintage": "2026-08-03 (Now lane) / 2026-03-15 (shared month)",
+      "timezone": "America/New_York",
+      "assertion": "at 390px a reader inspects an event in place, follows the named full-page link to https://cityscroll.org/x/density-spread-a, returns with Back to the same lane and month, and continues the original task by inspecting the same event again",
+      "observations": {
+        "the_preview_offers_the_full_page_as_a_real_link": true,
+        "the_full_page_link_went_where_it_said": true,
+        "back_restores_the_lane": true,
+        "back_restores_the_calendar": true,
+        "the_same_event_can_be_inspected_again": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 185008,
+      "sha256": "24fef7ccdf918237f2e071dae463d35017c5e949c1ddea255c567b0530f3cc26",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "full-page-back-and-continue-1440x900.png",
+      "specimen": "full-page-back-and-continue",
+      "route": "component-harness:action-naming",
+      "harness": "test/harness/action_scent_harness.html",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "0698b5a8a7dec0696a38ab1edf9c48512b13cefd",
+      "data_vintage": "2026-08-03 (Now lane) / 2026-03-15 (shared month)",
+      "timezone": "America/New_York",
+      "assertion": "at 1440px a reader inspects an event in place, follows the named full-page link to https://cityscroll.org/x/density-spread-a, returns with Back to the same lane and month, and continues the original task by inspecting the same event again",
+      "observations": {
+        "the_preview_offers_the_full_page_as_a_real_link": true,
+        "the_full_page_link_went_where_it_said": true,
+        "back_restores_the_lane": true,
+        "back_restores_the_calendar": true,
+        "the_same_event_can_be_inspected_again": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 226628,
+      "sha256": "fc0da52ee6c3454a42076d51c056a1091f96de2d7cebf76c63ccc9e50d66d50e",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "keyboard-only-390x844.png",
+      "specimen": "keyboard-only",
+      "route": "component-harness:action-naming",
+      "harness": "test/harness/action_scent_harness.html",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "0698b5a8a7dec0696a38ab1edf9c48512b13cefd",
+      "data_vintage": "2026-08-03 (Now lane) / 2026-03-15 (shared month)",
+      "timezone": "America/New_York",
+      "assertion": "at 390px the preview opens from the keyboard alone and keeps focus inside it, and all 7 of the lane's next steps are ordinary focusable destinations",
+      "observations": {
+        "the_preview_trigger_takes_keyboard_focus": true,
+        "enter_opens_the_preview": true,
+        "focus_is_contained_while_it_is_open": true,
+        "every_link_in_the_panel_is_a_real_destination": true,
+        "every_link_in_the_panel_is_keyboard_reachable": true,
+        "every_next_step_on_the_lane_is_keyboard_reachable": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 188119,
+      "sha256": "70bb1fecc3df9670ffb3388d6d327cd3e217390ad065006da99fa87068075111",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "keyboard-only-1440x900.png",
+      "specimen": "keyboard-only",
+      "route": "component-harness:action-naming",
+      "harness": "test/harness/action_scent_harness.html",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "0698b5a8a7dec0696a38ab1edf9c48512b13cefd",
+      "data_vintage": "2026-08-03 (Now lane) / 2026-03-15 (shared month)",
+      "timezone": "America/New_York",
+      "assertion": "at 1440px the preview opens from the keyboard alone and keeps focus inside it, and all 7 of the lane's next steps are ordinary focusable destinations",
+      "observations": {
+        "the_preview_trigger_takes_keyboard_focus": true,
+        "enter_opens_the_preview": true,
+        "focus_is_contained_while_it_is_open": true,
+        "every_link_in_the_panel_is_a_real_destination": true,
+        "every_link_in_the_panel_is_keyboard_reachable": true,
+        "every_next_step_on_the_lane_is_keyboard_reachable": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 218745,
+      "sha256": "3ab9c1ce3c8035824edab89fc685240fded74ea86f72b77c446a48460d98078a",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "modified-click-and-without-scripting-390x844.png",
+      "specimen": "modified-click-and-without-scripting",
+      "route": "component-harness:action-naming",
+      "harness": "test/harness/action_scent_harness.html",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "0698b5a8a7dec0696a38ab1edf9c48512b13cefd",
+      "data_vintage": "2026-08-03 (Now lane) / 2026-03-15 (shared month)",
+      "timezone": "America/New_York",
+      "assertion": "at 390px a modified click on an occurrence is left to the browser \u2014 no preview opens and the reader is not navigated away \u2014 and with scripting off no inspection control is offered at all while all 7 named next steps still work as links",
+      "observations": {
+        "a_modified_click_opens_no_preview": true,
+        "a_modified_click_does_not_navigate_the_reader_away": true,
+        "without_scripting_no_inspection_control_is_offered": true,
+        "without_scripting_every_occurrence_is_still_a_real_link": true,
+        "without_scripting_every_next_step_is_still_a_real_link": true,
+        "without_scripting_every_next_step_is_still_named": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 181585,
+      "sha256": "c55a7db1d944a44737b8ffb08c0d5115849cbe1406854bccf13314ac10cc8eeb",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "modified-click-and-without-scripting-1440x900.png",
+      "specimen": "modified-click-and-without-scripting",
+      "route": "component-harness:action-naming",
+      "harness": "test/harness/action_scent_harness.html",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "0698b5a8a7dec0696a38ab1edf9c48512b13cefd",
+      "data_vintage": "2026-08-03 (Now lane) / 2026-03-15 (shared month)",
+      "timezone": "America/New_York",
+      "assertion": "at 1440px a modified click on an occurrence is left to the browser \u2014 no preview opens and the reader is not navigated away \u2014 and with scripting off no inspection control is offered at all while all 7 named next steps still work as links",
+      "observations": {
+        "a_modified_click_opens_no_preview": true,
+        "a_modified_click_does_not_navigate_the_reader_away": true,
+        "without_scripting_no_inspection_control_is_offered": true,
+        "without_scripting_every_occurrence_is_still_a_real_link": true,
+        "without_scripting_every_next_step_is_still_a_real_link": true,
+        "without_scripting_every_next_step_is_still_named": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 213364,
+      "sha256": "d9b97360cf535d4539fc91117d196eaf0310cb350011ba1cf1f8a277997429b0",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "failed-optional-enrichment-390x844.png",
+      "specimen": "failed-optional-enrichment",
+      "route": "component-harness:action-naming",
+      "harness": "test/harness/action_scent_harness.html",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "0698b5a8a7dec0696a38ab1edf9c48512b13cefd",
+      "data_vintage": "2026-08-03 (Now lane) / 2026-03-15 (shared month)",
+      "timezone": "America/New_York",
+      "assertion": "at 390px a preview whose optional enrichment fails keeps the selected item, every fact the cell was admitted with, and a working full-page link that is still named for what it opens; the failure is stated in its own line rather than replacing anything",
+      "observations": {
+        "the_selected_item_is_preserved": true,
+        "the_facts_it_was_admitted_with_are_preserved": true,
+        "the_failure_is_stated_plainly": true,
+        "the_failure_says_the_link_is_unaffected": true,
+        "the_canonical_link_still_works": true,
+        "the_canonical_link_is_still_named_for_what_it_opens": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 187700,
+      "sha256": "9b5ee51063d0d0c57c1b60d723d08b897f7592de75cc101927f47e3b0c476903",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "failed-optional-enrichment-1440x900.png",
+      "specimen": "failed-optional-enrichment",
+      "route": "component-harness:action-naming",
+      "harness": "test/harness/action_scent_harness.html",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "0698b5a8a7dec0696a38ab1edf9c48512b13cefd",
+      "data_vintage": "2026-08-03 (Now lane) / 2026-03-15 (shared month)",
+      "timezone": "America/New_York",
+      "assertion": "at 1440px a preview whose optional enrichment fails keeps the selected item, every fact the cell was admitted with, and a working full-page link that is still named for what it opens; the failure is stated in its own line rather than replacing anything",
+      "observations": {
+        "the_selected_item_is_preserved": true,
+        "the_facts_it_was_admitted_with_are_preserved": true,
+        "the_failure_is_stated_plainly": true,
+        "the_failure_says_the_link_is_unaffected": true,
+        "the_canonical_link_still_works": true,
+        "the_canonical_link_is_still_named_for_what_it_opens": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 230506,
+      "sha256": "6bc4b7f686e41fafd5398d529a33683675b038be46d2a6f68f930e310b5dc004",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "two-hundred-percent-zoom-390x844.png",
+      "specimen": "two-hundred-percent-zoom",
+      "route": "component-harness:action-naming",
+      "harness": "test/harness/action_scent_harness.html",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "0698b5a8a7dec0696a38ab1edf9c48512b13cefd",
+      "data_vintage": "2026-08-03 (Now lane) / 2026-03-15 (shared month)",
+      "timezone": "America/New_York",
+      "assertion": "at the 195px CSS viewport a 200 percent zoom of a 390px window produces, the Now lane and the opened preview both read without any horizontal page scrolling, and every next step keeps its name",
+      "observations": {
+        "css_viewport_width": 195,
+        "emulates": "200% browser zoom of a 390px window",
+        "lane_has_no_horizontal_overflow": true,
+        "panel_has_no_horizontal_overflow": true,
+        "panel_fits_the_viewport": true,
+        "every_next_step_is_still_named": true,
+        "smallest_visible_control_px": 44
+      },
+      "bytes": 193618,
+      "sha256": "9b65da94f39b53595fad63e3d1c250880bd32a051020ea16699f6663f95e6839",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "two-hundred-percent-zoom-1440x900.png",
+      "specimen": "two-hundred-percent-zoom",
+      "route": "component-harness:action-naming",
+      "harness": "test/harness/action_scent_harness.html",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "0698b5a8a7dec0696a38ab1edf9c48512b13cefd",
+      "data_vintage": "2026-08-03 (Now lane) / 2026-03-15 (shared month)",
+      "timezone": "America/New_York",
+      "assertion": "at the 720px CSS viewport a 200 percent zoom of a 1440px window produces, the Now lane and the opened preview both read without any horizontal page scrolling, and every next step keeps its name",
+      "observations": {
+        "css_viewport_width": 720,
+        "emulates": "200% browser zoom of a 1440px window",
+        "lane_has_no_horizontal_overflow": true,
+        "panel_has_no_horizontal_overflow": true,
+        "panel_fits_the_viewport": true,
+        "every_next_step_is_still_named": true,
+        "smallest_visible_control_px": 24
+      },
+      "bytes": 207664,
+      "sha256": "00305b81ad3e68d3b2d163002d49edf25b137721a2390a86bd97c55f6569f07e",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "touch-targets-390x844.png",
+      "specimen": "touch-targets",
+      "route": "component-harness:action-naming",
+      "harness": "test/harness/action_scent_harness.html",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "0698b5a8a7dec0696a38ab1edf9c48512b13cefd",
+      "data_vintage": "2026-08-03 (Now lane) / 2026-03-15 (shared month)",
+      "timezone": "America/New_York",
+      "assertion": "at 390px every control this contract adds or renames \u2014 each named next step, the inspection trigger and every control in the panel \u2014 is at least 44px tall, so none of them is a target a finger cannot land on",
+      "observations": {
+        "reading": "narrow",
+        "controls_measured_on_the_lane": 13,
+        "smallest_lane_control_px": 44,
+        "smallest_lane_control": "compact-month-occ-preview",
+        "controls_measured_with_the_panel_open": 16,
+        "smallest_control_px": 44,
+        "floor_px": 44,
+        "every_control_meets_the_floor": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 185008,
+      "sha256": "24fef7ccdf918237f2e071dae463d35017c5e949c1ddea255c567b0530f3cc26",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "touch-targets-1440x900.png",
+      "specimen": "touch-targets",
+      "route": "component-harness:action-naming",
+      "harness": "test/harness/action_scent_harness.html",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "0698b5a8a7dec0696a38ab1edf9c48512b13cefd",
+      "data_vintage": "2026-08-03 (Now lane) / 2026-03-15 (shared month)",
+      "timezone": "America/New_York",
+      "assertion": "at 1440px every control this contract adds or renames \u2014 each named next step, the inspection trigger and every control in the panel \u2014 is at least 24px tall, so none of them is a target a finger cannot land on",
+      "observations": {
+        "reading": "desktop",
+        "controls_measured_on_the_lane": 13,
+        "smallest_lane_control_px": 24,
+        "smallest_lane_control": "compact-month-occ-preview",
+        "controls_measured_with_the_panel_open": 16,
+        "smallest_control_px": 24,
+        "floor_px": 24,
+        "every_control_meets_the_floor": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 226628,
+      "sha256": "fc0da52ee6c3454a42076d51c056a1091f96de2d7cebf76c63ccc9e50d66d50e",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    }
+  ]
+}

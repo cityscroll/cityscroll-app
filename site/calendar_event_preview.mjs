@@ -38,6 +38,11 @@
  * as they were.
  */
 
+import {
+  AFFORDANCE_ACTION_ROLES,
+  affordanceHandoffPresentation,
+} from "./affordance_grammar.mjs";
+
 // Every top-level name below is scoped to this module's subject, because the
 // DOM-equivalence contract reconstructs a pre-split build by concatenating
 // module sources into one scope: a bare `KIND_LABELS` here would collide with
@@ -78,6 +83,13 @@ const PREVIEW_KIND_LABELS = Object.freeze({
 
 // The next action is a labelled destination, never a fabricated instruction:
 // each entry only names the page the reader already has a link to.
+//
+// Which set applies is decided by the destination, not by the surface. An
+// occurrence's canonical destination is usually a page of this site, but the
+// occurrence contract also accepts a publisher's own absolute URL, and a
+// reader promised "the event page" who is handed to a publisher instead has
+// been told the wrong thing about the click. When the destination leaves this
+// site the label says so and stops describing a page this site does not own.
 const PREVIEW_KIND_ACTION_LABELS = Object.freeze({
   event: "Open the event page",
   deadline: "Open the page for this deadline",
@@ -85,6 +97,9 @@ const PREVIEW_KIND_ACTION_LABELS = Object.freeze({
   window_close: "Open the page for this closing",
   milestone: "Open the page for this milestone",
 });
+
+const PREVIEW_HANDOFF_ACTION_LABEL = "Open the published event page";
+const PREVIEW_SOURCE_ACTION_LABEL = "Open the publisher's record";
 
 const PREVIEW_LIFECYCLE_NOTICES = Object.freeze({
   cancelled: "This event is cancelled.",
@@ -176,12 +191,16 @@ function previewLocation(location) {
 
 /* ---------- source ---------- */
 
+// The control's name states what following it does. It used to be built from
+// the publishing system's own identifier ("Source: city_record"), which named
+// neither the consequence nor anything a reader outside this repository knows;
+// the system slug is dropped rather than relocated, because a resident-facing
+// control is not where an implementation token belongs.
 function previewSource(source, canonicalUrl) {
   if (!source || typeof source !== "object") return null;
   const url = previewText(source.url);
-  const label = previewText(source.system) || previewText(source.record_id);
   if (!url || url === canonicalUrl) return null;
-  return { url, label: label ? `Source: ${label}` : "Open the publisher's record" };
+  return { url, label: PREVIEW_SOURCE_ACTION_LABEL };
 }
 
 /* ---------- facts ---------- */
@@ -300,10 +319,22 @@ export function renderCalendarEventPreviewBody(facts, options = {}) {
   const detailStatusHTML = detailStatus
     ? `<p class="calendar-event-preview-detail-status">${esc(detailStatus)}</p>`
     : "";
-  const source = facts.source
-    ? `<a class="calendar-event-preview-source" href="${esc(facts.source.url)}">${esc(facts.source.label)}</a>`
+  // A publisher's record always leaves this site, so it is rendered as the
+  // handoff it is: the arrow, the new tab, and the announcement that goes with
+  // one — rather than as an anchor indistinguishable from the internal link
+  // beside it.
+  const sourcePresentation = facts.source
+    ? affordanceHandoffPresentation({ href: facts.source.url, escape: esc })
+    : null;
+  const source = facts.source && sourcePresentation?.role
+    ? `<a class="calendar-event-preview-source" href="${esc(facts.source.url)}"` +
+      `${sourcePresentation.attributes}>${esc(facts.source.label)}` +
+      `${sourcePresentation.glyph}${sourcePresentation.announcement}</a>`
     : "";
-  const action = PREVIEW_KIND_ACTION_LABELS[facts.kind] || PREVIEW_KIND_ACTION_LABELS.event;
+  const openPresentation = affordanceHandoffPresentation({ href: facts.href, escape: esc });
+  const action = openPresentation.role === AFFORDANCE_ACTION_ROLES.handoff
+    ? PREVIEW_HANDOFF_ACTION_LABEL
+    : PREVIEW_KIND_ACTION_LABELS[facts.kind] || PREVIEW_KIND_ACTION_LABELS.event;
   return `<p class="calendar-event-preview-kicker">${esc(PREVIEW_KICKER)}</p>` +
     `<h2 class="calendar-event-preview-title" id="${esc(CALENDAR_EVENT_PREVIEW_TITLE_ID)}">${esc(facts.title)}</h2>` +
     noticeHTML +
@@ -311,7 +342,9 @@ export function renderCalendarEventPreviewBody(facts, options = {}) {
     detailHTML +
     detailStatusHTML +
     `<p class="calendar-event-preview-actions">` +
-    `<a class="calendar-event-preview-open" data-calendar-event-preview-open href="${esc(facts.href)}">${esc(action)}</a>` +
+    `<a class="calendar-event-preview-open" data-calendar-event-preview-open href="${esc(facts.href)}"` +
+    `${openPresentation.attributes}>${esc(action)}` +
+    `${openPresentation.glyph}${openPresentation.announcement}</a>` +
     source +
     "</p>";
 }

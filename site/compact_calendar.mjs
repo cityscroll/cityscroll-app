@@ -33,6 +33,7 @@
  */
 
 import { occurrenceDay, evaluateDisplayCluster } from "./calendar_display.mjs";
+import { affordanceHandoffPresentation } from "./affordance_grammar.mjs";
 import {
   bindCalendarEventPreview,
   calendarEventPreviewFacts,
@@ -109,6 +110,12 @@ const KIND_LABELS = Object.freeze({
   window_close: "Closes",
   milestone: "Milestone",
 });
+
+// The publisher handoff offered beside an occurrence. The visible word is what
+// fits a day cell; the accessible name is the complete promise, so the control
+// is never a bare category label to a screen reader either.
+const OCCURRENCE_SOURCE_LABEL = "Publisher";
+const OCCURRENCE_SOURCE_ACTION_LABEL = "Open the publisher's record";
 
 const COMPACT_CALENDAR_ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
 const ISO_MONTH = /^\d{4}-\d{2}$/;
@@ -345,19 +352,38 @@ function occurrenceItemHTML(occurrence, esc) {
     : occurrence.lifecycle === "rescheduled"
       ? '<span class="compact-month-occ-flag compact-month-occ-flag-rescheduled">Rescheduled</span>'
       : "";
+  // "Source" named a category, not a consequence, and was rendered as an
+  // ordinary anchor although following it always leaves this site. The cell is
+  // narrow, so the visible word stays short and the accessible name carries the
+  // whole promise; the handoff semantics come from the one shared classifier,
+  // so this cell, the preview and the day agenda cannot drift apart.
   const sourceUrl = occurrence.source && typeof occurrence.source === "object" ? occurrence.source.url : null;
-  const sourceLink = sourceUrl && sourceUrl !== occurrence.canonical_url
-    ? `<a class="compact-month-occ-source" href="${esc(sourceUrl)}">Source</a>`
+  const sourcePresentation = sourceUrl && sourceUrl !== occurrence.canonical_url
+    ? affordanceHandoffPresentation({ href: sourceUrl, escape: esc })
+    : null;
+  const sourceLink = sourcePresentation?.role
+    ? `<a class="compact-month-occ-source" href="${esc(sourceUrl)}"` +
+      ` aria-label="${esc(`${OCCURRENCE_SOURCE_ACTION_LABEL}: ${occurrence.title || "Civic calendar item"}`)}"` +
+      `${sourcePresentation.attributes}>${esc(OCCURRENCE_SOURCE_LABEL)}` +
+      `${sourcePresentation.glyph}${sourcePresentation.announcement}</a>`
     : "";
   // The preview trigger is a sibling of the anchor, never a child of it: the
   // link stays a destination that works with scripting off, through the
   // context menu and under a modified click, and the button stays an action.
   const previewButton = renderCalendarEventPreviewButton(calendarEventPreviewFacts(occurrence), { esc });
+  // An occurrence's canonical destination is usually a page of this site, but
+  // the occurrence contract also accepts a publisher's own absolute URL — a
+  // rulemaking month, for instance, is published under the rules portal. The
+  // cell's own link is therefore classified like every other control here
+  // rather than assumed internal, so a reader is never handed off to a
+  // publisher by a link that looked like the ones beside it.
+  const linkPresentation = affordanceHandoffPresentation({ href: occurrence.canonical_url, escape: esc });
   return `<li class="${classes.join(" ")}">` +
-    `<a class="compact-month-occ-link" href="${esc(occurrence.canonical_url)}">` +
+    `<a class="compact-month-occ-link" href="${esc(occurrence.canonical_url)}"${linkPresentation.attributes}>` +
     `<span class="compact-month-occ-kind">${esc(kindLabel)}</span>` +
     (timeLabel ? `<span class="compact-month-occ-time">${esc(timeLabel)}</span>` : "") +
     `<span class="compact-month-occ-title">${esc(occurrence.title || "Civic calendar item")}</span>` +
+    `${linkPresentation.glyph}${linkPresentation.announcement}` +
     "</a>" +
     previewButton +
     flag + sourceLink +

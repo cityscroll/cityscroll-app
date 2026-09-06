@@ -322,6 +322,19 @@
   color: var(--muted, #5b6470);
 }
 
+/* Both controls in the panel's action row are real destinations a reader is
+   asked to choose between, so both are laid out as targets rather than as run
+   of text. The row itself already separates them; this gives each one a box a
+   pointer can land on without hitting its neighbour. */
+.calendar-event-preview-open,
+.calendar-event-preview-source {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  min-height: 24px;
+  padding: 2px 0;
+}
+
 .compact-month-overflow {
   margin-top: 2px;
 }
@@ -546,6 +559,25 @@
     padding: 4px 12px;
     margin-top: 4px;
     font-size: 11px;
+  }
+
+  /* The same finger reaches the panel the trigger opens. Its Close control and
+     both of its destinations therefore take the full 44px target too, so
+     inspecting an event on a phone never ends at a control too small to hit or
+     too close to the one beside it. */
+  .calendar-event-preview-close {
+    min-height: 44px;
+    min-width: 44px;
+    padding: 8px 14px;
+  }
+  .calendar-event-preview-actions {
+    gap: 8px 16px;
+    align-items: stretch;
+  }
+  .calendar-event-preview-open,
+  .calendar-event-preview-source {
+    min-height: 44px;
+    padding: 8px 0;
   }
 
   /* The agenda trigger is a primary control on a narrow viewport — it is how a
