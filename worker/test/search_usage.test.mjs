@@ -37,6 +37,15 @@ import {
   readSearchUsage,
   searchUsageWindowStartMs,
 } from "../src/lib/search_usage.mjs";
+import {
+  PUBLIC_SEARCH_USAGE_KEY,
+  PUBLIC_SEARCH_USAGE_POPULATION,
+  PUBLIC_SEARCH_USAGE_SCHEMA,
+  projectPublicSearchUsage,
+  publicSearchUsageViolations,
+  readPublicSearchUsage,
+  refreshPublicSearchUsageSnapshot,
+} from "../src/lib/public_search_usage.mjs";
 import { sessionPayload } from "../src/lib/session.mjs";
 import { deriveSubscriberId } from "../src/lib/subscriptions.mjs";
 
@@ -441,7 +450,11 @@ test("the aggregate publishes counts only — no queries, rows, or identifiers",
   assert.doesNotMatch(text, /execution_id|receipt_id|visitor_id/, "no per-execution detail");
 });
 
-test("public corpus statistics are untouched by any of this", async () => {
+test("seeding receipts publishes nothing on its own: the public route reads a snapshot", async () => {
+  // The public boundary moved deliberately — two counts per named period are published now
+  // (see "the published summary…" below). What has not moved is where they come from: the
+  // receipt store is never the public route's input, so a store full of receipts and no
+  // scheduled refresh publishes an honest unavailable state, not a total.
   const target = env();
   await seedCorpus(target);
   const response = await handleStats(
@@ -460,9 +473,11 @@ test("public corpus statistics are untouched by any of this", async () => {
   );
   const text = await response.text();
   assert.equal(response.headers.get("cache-control"), "public, max-age=900");
-  assert.doesNotMatch(text, /search_executions|completed|unique_visitors|recognized/);
+  assert.doesNotMatch(text, /search_executions|unique_visitors|recognized|duplicate_intakes/);
   assert.deepEqual(Object.keys(JSON.parse(text)),
-    ["schema", "generated_at", "scope", "coverage", "language_coverage"]);
+    ["schema", "generated_at", "scope", "coverage", "language_coverage", "search_usage"]);
+  assert.equal(JSON.parse(text).search_usage.available, false);
+  assert.equal(JSON.parse(text).search_usage.unavailable_reason, "no_verified_snapshot");
 });
 
 // ---- A4: compatibility, the Desk consumer, and honest unavailability ----
@@ -482,6 +497,9 @@ test("Product Activity renders the completed-search cuts inside the existing des
   }
   assert.match(html, /Recognized accounts/);
   assert.match(html, /Unique browsers/);
+  // The measure the public page publishes is readable on the desk under the same name, so
+  // the two surfaces can be reconciled without translating between them.
+  assert.match(html, /Searches returning records/);
   assert.match(html, /not measured/, "optional cuts say so on the surface too");
 });
 
@@ -626,4 +644,410 @@ test("the front-door scope actually requested is part of what makes an execution
     await searchExecutionFingerprint(submission({ front_door_scope: undefined }), browser),
     "an explicit 'all' and an absent (historical) scope are the same request",
   );
+});
+
+// ---- the published summary -------------------------------------------------------------
+//
+// Everything below asserts on the FINAL SERIALIZED public artifact — the bytes GET /stats
+// answers with, and the bytes it puts in the edge cache — never on an intermediate object.
+// A projection that looks right in memory and leaks on the way out is the failure this
+// section exists to catch.
+
+/** Measurement established well before the widest window this specimen reports. */
+const MEASURED_SINCE = "2026-07-01T00:00:00.000Z";
+
+/** An edge cache double, so the published cache entry can be read back and inspected. */
+function edgeCache() {
+  const entries = new Map();
+  return {
+    entries,
+    default: {
+      match: async () => null,
+      put: async (request, response) => { entries.set(request.url, await response.text()); },
+    },
+  };
+}
+
+/** Run one step with a cache API present, the way the Worker runtime provides one. */
+async function withEdgeCache(cache, run) {
+  const had = "caches" in globalThis;
+  const previous = globalThis.caches;
+  globalThis.caches = cache;
+  try {
+    return await run();
+  } finally {
+    if (had) globalThis.caches = previous;
+    else delete globalThis.caches;
+  }
+}
+
+/** The public response text, exactly as a reader would receive it. */
+async function publicStatsText(target, { now = NOW, cache = null } = {}) {
+  const run = () => handleStats(new Request("https://api.cityscroll.org/stats"), target,
+    { waitUntil: async (promise) => promise }, { now, skipCacheRead: true });
+  const response = cache ? await withEdgeCache(cache, run) : await run();
+  assert.equal(response.status, 200);
+  return response.text();
+}
+
+async function publishedSearchUsage(target, options = {}) {
+  return JSON.parse(await publicStatsText(target, options)).search_usage;
+}
+
+function publishedMetric(period, metricId) {
+  return (period.metrics || []).find((metric) => metric.metric_id === metricId);
+}
+
+// ---- A1: the published counts are the accepted executions, counted once ----
+
+test("the published summary counts each accepted production execution exactly once", async () => {
+  const target = env({ SEARCH_ACTIVITY_MEASURED_SINCE: MEASURED_SINCE });
+  await seedCorpus(target);
+  await refreshPublicSearchUsageSnapshot(target, { now: NOW });
+
+  const usage = await publishedSearchUsage(target);
+  assert.equal(usage.schema, PUBLIC_SEARCH_USAGE_SCHEMA);
+  assert.equal(usage.available, true);
+
+  const week = usage.periods.find((period) => period.requested_days === 7);
+  const month = usage.periods.find((period) => period.requested_days === 30);
+  assert.equal(publishedMetric(week, "searches_run").value, 6,
+    "two-family + reload + three-contracts + empty + partial + boundary-unavailable");
+  assert.equal(publishedMetric(month, "searches_run").value, 8);
+  assert.equal(publishedMetric(week, "searches_returning_records").value, 4,
+    "three matched executions plus the partial that still rendered a row");
+  assert.equal(publishedMetric(month, "searches_returning_records").value, 6);
+});
+
+test("the published counts reconcile with the authenticated aggregate at the same cutoff", async () => {
+  const target = env({ SEARCH_ACTIVITY_MEASURED_SINCE: MEASURED_SINCE });
+  await seedCorpus(target);
+  await refreshPublicSearchUsageSnapshot(target, { now: NOW });
+
+  const published = await publishedSearchUsage(target);
+  const private_ = await privateStats(target);
+
+  for (const days of [7, 30]) {
+    const period = published.periods.find((entry) => entry.requested_days === days);
+    const cut = private_.windows[`last${days}d`];
+    assert.equal(publishedMetric(period, "searches_run").value, cut.completed,
+      `${days}d searches run matches the private aggregate`);
+    assert.equal(publishedMetric(period, "searches_returning_records").value, cut.returned_records,
+      `${days}d searches returning records matches the private aggregate`);
+    assert.equal(period.starts_at, cut.starts_at, `${days}d covers the same span`);
+    assert.equal(period.ends_at, cut.ends_at);
+  }
+  // Terminal states still reconcile privately; the public surface publishes neither.
+  assert.deepEqual(private_.windows.last7d.outcomes, { matched: 3, partial: 1, empty: 1, unavailable: 1 });
+  assert.deepEqual(private_.windows.last30d.outcomes, { matched: 5, partial: 1, empty: 1, unavailable: 1 });
+});
+
+test("a duplicate intake adds nothing to the published count; a reload adds one", async () => {
+  const target = env({ SEARCH_ACTIVITY_MEASURED_SINCE: MEASURED_SINCE });
+  await seedCorpus(target);
+  await refreshPublicSearchUsageSnapshot(target, { now: NOW });
+  const before = publishedMetric(
+    (await publishedSearchUsage(target)).periods.find((period) => period.requested_days === 7),
+    "searches_run").value;
+
+  // The same execution again: every input repeats, so the fingerprint repeats.
+  await recordAt("2026-09-15T09:45:00.000Z", target, submission(), { Cookie: visitor().header });
+  await refreshPublicSearchUsageSnapshot(target, { now: NOW });
+  const afterRetry = publishedMetric(
+    (await publishedSearchUsage(target)).periods.find((period) => period.requested_days === 7),
+    "searches_run").value;
+  assert.equal(afterRetry, before + 1,
+    "a different browser searching alike is a second execution, not a retry of the first");
+
+  const browser = visitor();
+  const twice = submission({ occurred_at: "2026-09-15T10:30:00.000Z" });
+  await recordAt("2026-09-15T10:30:05.000Z", target, twice, { Cookie: browser.header });
+  await recordAt("2026-09-15T10:30:09.000Z", target, twice, { Cookie: browser.header });
+  await refreshPublicSearchUsageSnapshot(target, { now: NOW });
+  const afterDuplicate = publishedMetric(
+    (await publishedSearchUsage(target)).periods.find((period) => period.requested_days === 7),
+    "searches_run").value;
+  assert.equal(afterDuplicate, afterRetry + 1, "two intakes of one execution published one count");
+});
+
+// ---- A2: what the counts are, and what they are not ----
+
+test("the published summary names its population and never folds in the legacy input counters", async () => {
+  const target = env({
+    SEARCH_ACTIVITY_MEASURED_SINCE: MEASURED_SINCE,
+    NL_METER: kv(),
+  });
+  await seedCorpus(target);
+  await refreshPublicSearchUsageSnapshot(target, { now: NOW });
+  const baseline = await publishedSearchUsage(target);
+
+  // Legacy "someone asked" counters answer a different question. Moving them must not
+  // move a receipt-derived total by one.
+  await target.NL_METER.put("stats:nl_search:2026-09-15", "500");
+  await target.ALERT_STATE.put("stats:search_run:2026-09-15", "500");
+  await refreshPublicSearchUsageSnapshot(target, { now: NOW });
+  const after = await publishedSearchUsage(target);
+
+  assert.deepEqual(after.periods, baseline.periods, "input counters are not completed searches");
+  assert.match(after.measurement.population, /Accepted production search-execution receipts/);
+  assert.equal(after.measurement.population, PUBLIC_SEARCH_USAGE_POPULATION);
+  assert.match(after.measurement.subset_rule, /never added/);
+
+  const week = after.periods.find((period) => period.requested_days === 7);
+  assert.deepEqual(week.metrics.map((metric) => metric.metric_id),
+    ["searches_run", "searches_returning_records"]);
+  assert.equal(week.metrics[0].label_key, "stats_search_use_run_label");
+  assert.equal(week.metrics[1].label_key, "stats_search_use_returning_label");
+  assert.ok(publishedMetric(week, "searches_returning_records").value
+    <= publishedMetric(week, "searches_run").value, "the subset never exceeds its population");
+});
+
+test("family appearances stay private: the published summary carries none of them", async () => {
+  const target = env({ SEARCH_ACTIVITY_MEASURED_SINCE: MEASURED_SINCE });
+  await seedCorpus(target);
+  await refreshPublicSearchUsageSnapshot(target, { now: NOW });
+
+  const text = await publicStatsText(target);
+  for (const family of SEARCH_ACTIVITY_FAMILIES) {
+    assert.equal(JSON.parse(text).search_usage && JSON.stringify(JSON.parse(text).search_usage).includes(family), false,
+      `${family} is not published in this slice`);
+  }
+  // The contract they would be published under is already pinned privately.
+  const private_ = await privateStats(target);
+  assert.equal(private_.windows.last7d.family_appearances.contracts, 4);
+  assert.equal(private_.windows.last7d.family_appearances.meetings, 2);
+  assert.equal(private_.windows.last7d.family_appearances.land, 0);
+});
+
+// ---- A3: boundaries, coverage, and the states that are not a zero ----
+
+test("a published period opens on its own midnight and says which days it covers", async () => {
+  const target = env({ SEARCH_ACTIVITY_MEASURED_SINCE: MEASURED_SINCE });
+  await seedCorpus(target);
+  await refreshPublicSearchUsageSnapshot(target, { now: NOW });
+  const usage = await publishedSearchUsage(target);
+
+  const week = usage.periods.find((period) => period.requested_days === 7);
+  const month = usage.periods.find((period) => period.requested_days === 30);
+  assert.equal(week.starts_at, WEEK_BOUNDARY);
+  assert.equal(week.ends_at, NOW);
+  assert.equal(month.starts_at, MONTH_BOUNDARY);
+  assert.equal(week.coverage, "complete");
+  assert.equal(month.coverage, "complete");
+});
+
+test("a complete empty period publishes zero; nothing else does", async () => {
+  const target = env({ SEARCH_ACTIVITY_MEASURED_SINCE: MEASURED_SINCE });
+  // Nothing recorded at all, and measurement established well before both windows.
+  const result = await refreshPublicSearchUsageSnapshot(target, { now: NOW });
+  assert.equal(result.verified, true);
+
+  const usage = await publishedSearchUsage(target);
+  for (const period of usage.periods) {
+    assert.equal(period.state, "measured");
+    assert.equal(period.coverage, "complete");
+    for (const metric of period.metrics) assert.equal(metric.value, 0);
+  }
+});
+
+test("a telemetry start inside a period publishes the shorter verified period, not the wider one", async () => {
+  const target = env({ SEARCH_ACTIVITY_MEASURED_SINCE: "2026-09-11T00:00:00.000Z" });
+  await seedCorpus(target);
+  await refreshPublicSearchUsageSnapshot(target, { now: NOW });
+  const usage = await publishedSearchUsage(target);
+
+  const week = usage.periods.find((period) => period.requested_days === 7);
+  assert.equal(week.coverage, "partial", "the 7-day window opens before measurement did");
+  assert.equal(week.starts_at, "2026-09-11T00:00:00.000Z", "it names the day counting began");
+  // Three matched on the 15th, the empty one on the 12th, the partial on the 11th.
+  assert.equal(publishedMetric(week, "searches_run").value, 5);
+  assert.equal(publishedMetric(week, "searches_returning_records").value, 4);
+  assert.equal(usage.measurement.measured_since, "2026-09-11T00:00:00.000Z");
+
+  const month = usage.periods.find((period) => period.requested_days === 30);
+  assert.equal(month.coverage, "partial");
+  assert.equal(month.starts_at, "2026-09-11T00:00:00.000Z");
+  assert.equal(publishedMetric(month, "searches_run").value, 5,
+    "a wider label may not carry a wider number than measurement supports");
+});
+
+test("no established measurement start publishes no period at all", async () => {
+  const target = env();
+  await seedCorpus(target);
+  // Reading with nothing configured and no prior refresh: the aggregate still reports the
+  // receipts it holds, and the projection publishes none of it.
+  const usage = projectPublicSearchUsage(await readSearchUsage(target, { now: NOW }), { now: NOW });
+  assert.equal(usage.available, false);
+  assert.equal(usage.unavailable_reason, "measurement_start_unknown");
+  for (const period of usage.periods) {
+    for (const metric of period.metrics) assert.equal(metric.value, null, "never a zero");
+  }
+});
+
+test("a capped scan is published as unavailable, never as a smaller-looking total", async () => {
+  const target = env({ SEARCH_ACTIVITY_MEASURED_SINCE: MEASURED_SINCE });
+  await seedCorpus(target);
+  const usage = projectPublicSearchUsage({
+    ...(await readSearchUsage(target, { now: NOW, measuredSince: MEASURED_SINCE })),
+    scan: { keys_seen: 5000, hydrated_receipts: 0, scan_complete: false, key_ceiling: 5000, hydrate_ceiling: 200 },
+  }, { now: NOW });
+
+  assert.equal(usage.available, false);
+  assert.equal(usage.measurement.state, "incomplete");
+  for (const period of usage.periods) {
+    assert.equal(period.unavailable_reason, "measurement_incomplete");
+    for (const metric of period.metrics) assert.equal(metric.value, null);
+  }
+});
+
+test("a corrupt retained receipt makes the period unavailable rather than a confident zero", async () => {
+  const target = env({ SEARCH_ACTIVITY_MEASURED_SINCE: MEASURED_SINCE });
+  await recordAt("2026-09-15T09:00:00.000Z", target, submission(), { Cookie: visitor().header });
+  for (const key of target.ALERT_STATE.store.keys()) {
+    if (!key.startsWith(SEARCH_ACTIVITY_KEY_PREFIX)) continue;
+    target.ALERT_STATE.metadata.delete(key);
+    target.ALERT_STATE.store.set(key, "{not json");
+  }
+  const result = await refreshPublicSearchUsageSnapshot(target, { now: NOW });
+  assert.equal(result.verified, false);
+
+  const usage = await publishedSearchUsage(target);
+  assert.equal(usage.available, false);
+  assert.equal(usage.refresh.state, "failed");
+  assert.equal(usage.refresh.failure_reason, "measurement_incomplete");
+});
+
+test("a failed refresh keeps the last verified snapshot standing and records the failure", async () => {
+  const target = env({ SEARCH_ACTIVITY_MEASURED_SINCE: MEASURED_SINCE });
+  await seedCorpus(target);
+  await refreshPublicSearchUsageSnapshot(target, { now: NOW });
+  const verified = await publishedSearchUsage(target);
+  assert.equal(verified.refresh.state, "fresh");
+
+  // The receipt store fails on the next scheduled refresh. The stored snapshot outlives it.
+  const listing = target.ALERT_STATE.list;
+  target.ALERT_STATE.list = async () => { throw new Error("kv down"); };
+  const failed = await refreshPublicSearchUsageSnapshot(target, { now: "2026-09-15T13:00:00.000Z" });
+  target.ALERT_STATE.list = listing;
+  assert.equal(failed.verified, false);
+
+  const after = await publishedSearchUsage(target, { now: "2026-09-15T13:00:00.000Z" });
+  assert.equal(after.available, true, "the last verified figures stay published");
+  assert.deepEqual(after.periods, verified.periods);
+  assert.equal(after.refresh.state, "failed");
+  assert.equal(after.refresh.failure_reason, "measurement_unavailable");
+  assert.equal(after.refresh.verified_at, verified.refresh.verified_at);
+  assert.equal(after.refresh.attempted_at, "2026-09-15T13:00:00.000Z");
+});
+
+test("a snapshot nobody could re-verify stops being published once its receipts have aged out", async () => {
+  const target = env({ SEARCH_ACTIVITY_MEASURED_SINCE: MEASURED_SINCE });
+  await seedCorpus(target);
+  await refreshPublicSearchUsageSnapshot(target, { now: NOW });
+
+  const stale = await readPublicSearchUsage(target, { now: "2026-09-17T00:00:00.000Z" });
+  assert.equal(stale.available, true);
+  assert.equal(stale.refresh.state, "stale", "older than a day, still true about its own days");
+
+  const expired = await readPublicSearchUsage(target, { now: "2026-09-30T00:00:00.000Z" });
+  assert.equal(expired.available, false);
+  assert.equal(expired.unavailable_reason, "snapshot_expired");
+  assert.deepEqual(expired.periods, []);
+});
+
+test("a public read never scans the receipt store", async () => {
+  const target = env({ SEARCH_ACTIVITY_MEASURED_SINCE: MEASURED_SINCE });
+  await seedCorpus(target);
+  await refreshPublicSearchUsageSnapshot(target, { now: NOW });
+
+  let listed = 0;
+  const listing = target.ALERT_STATE.list.bind(target.ALERT_STATE);
+  target.ALERT_STATE.list = async (...args) => { listed += 1; return listing(...args); };
+  const usage = await publishedSearchUsage(target);
+  assert.equal(listed, 0, "the scheduled refresh already did that work");
+  assert.equal(usage.available, true);
+});
+
+// ---- A4: the boundary, checked on the bytes that leave ----
+
+test("the published JSON and the edge cache entry carry nothing that identifies anyone", async () => {
+  const target = env({ SEARCH_ACTIVITY_MEASURED_SINCE: MEASURED_SINCE });
+  const identities = await seedCorpus(target);
+  await refreshPublicSearchUsageSnapshot(target, { now: NOW });
+
+  const cache = edgeCache();
+  const text = await publicStatsText(target, { cache });
+  const cached = [...cache.entries.values()];
+  assert.equal(cached.length, 1, "the response is cached under one versioned key");
+
+  for (const serialized of [text, ...cached]) {
+    assert.doesNotMatch(serialized, /rats|salt shed/, "no query text");
+    assert.doesNotMatch(serialized, /rats-abatement-2026|cb3-rats-hearing|only-answer/, "no result trace");
+    assert.doesNotMatch(serialized, /resident@example\.org|r…@example\.org/, "no account label");
+    assert.doesNotMatch(serialized, /rcpt_|exec_|exf_|subscriber:/, "no receipt or execution ids");
+    assert.doesNotMatch(serialized, /recognized_accounts|unique_visitors|recognition/, "no identity counts");
+    assert.doesNotMatch(serialized, /\/admin|cs_session|cs_visitor|ADMIN_KEY/, "no private route or credential");
+    assert.doesNotMatch(serialized, /keys_seen|hydrate|unclassified|key_ceiling/, "no scan diagnostics");
+    for (const identity of Object.values(identities)) {
+      assert.equal(serialized.includes(identity.id), false, "no visitor ids");
+    }
+  }
+});
+
+test("the published summary is a closed serialization, checked before it is served", async () => {
+  const target = env({ SEARCH_ACTIVITY_MEASURED_SINCE: MEASURED_SINCE });
+  await seedCorpus(target);
+  await refreshPublicSearchUsageSnapshot(target, { now: NOW });
+
+  const usage = await publishedSearchUsage(target);
+  assert.deepEqual(publicSearchUsageViolations(usage), []);
+
+  // Anything the allowlist does not name is refused, whatever it is called.
+  assert.ok(publicSearchUsageViolations({ ...usage, note: "hello" }).length,
+    "an added top-level field is refused");
+  assert.ok(publicSearchUsageViolations({
+    ...usage,
+    measurement: { ...usage.measurement, population: "resident@example.org searched for rats" },
+  }).length, "free text in a declared field is refused");
+
+  // A stored snapshot that fails the check is not served, and does not become a zero.
+  const stored = JSON.parse(await target.ALERT_STATE.get(PUBLIC_SEARCH_USAGE_KEY));
+  stored.artifact.periods[0].leaked_query = "rats";
+  await target.ALERT_STATE.put(PUBLIC_SEARCH_USAGE_KEY, JSON.stringify(stored));
+  const refused = await readPublicSearchUsage(target, { now: NOW });
+  assert.equal(refused.available, false);
+  assert.equal(refused.unavailable_reason, "snapshot_rejected");
+  assert.deepEqual(refused.periods, []);
+});
+
+test("publishing counts does not open the private surfaces: they still require the key", async () => {
+  const target = env({ SEARCH_ACTIVITY_MEASURED_SINCE: MEASURED_SINCE });
+  await seedCorpus(target);
+  await refreshPublicSearchUsageSnapshot(target, { now: NOW });
+
+  for (const path of ["/admin/stats", "/admin/stats?key=wrong", "/admin/stats?view=html"]) {
+    const response = await handleAdminStats(new Request(`https://api.cityscroll.org${path}`), target, { now: NOW });
+    assert.notEqual(response.status, 200, `${path} must not answer without the admin key`);
+    const body = await response.text();
+    assert.doesNotMatch(body, /rats|resident@example\.org|search_executions/);
+  }
+  // And the authenticated surface still carries everything the public one does not.
+  const private_ = await privateStats(target);
+  assert.equal(private_.windows.last7d.recognized_accounts, 1);
+  assert.equal(private_.windows.last7d.unique_visitors, 4);
+});
+
+test("the public scope statement says what is published and what stays private", async () => {
+  const target = env({ SEARCH_ACTIVITY_MEASURED_SINCE: MEASURED_SINCE });
+  await seedCorpus(target);
+  await refreshPublicSearchUsageSnapshot(target, { now: NOW });
+  const body = JSON.parse(await publicStatsText(target));
+
+  assert.match(body.scope, /searches run and searches returning records/);
+  assert.match(body.scope, /Search queries, results, readers, subscribers and delivery operations are private/);
+  assert.deepEqual(Object.keys(body),
+    ["schema", "generated_at", "scope", "coverage", "language_coverage", "search_usage"]);
+  for (const removed of ["subscriptions", "digests", "nl_search", "history", "usage", "search_executions"]) {
+    assert.equal(Object.hasOwn(body, removed), false, `${removed} must remain private`);
+  }
 });

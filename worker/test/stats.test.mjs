@@ -506,7 +506,7 @@ test("prewarmStats writes the public edge cache key (or reports no_cache_api off
     assert.equal(result.status, 200);
   }
   const key = statsEdgeCacheKey("https://api.cityscroll.org");
-  assert.match(key.url, /\/stats\?edge=served-coverage-v3$/);
+  assert.match(key.url, /\/stats\?edge=search-usage-v4$/);
 });
 
 test("public stats projects served coverage and no usage-class fields", async () => {
@@ -517,7 +517,7 @@ test("public stats projects served coverage and no usage-class fields", async ()
     { now: "2026-08-05T18:00:00Z" },
   );
   const body = await response.json();
-  assert.equal(body.schema, "public-stats.v3");
+  assert.equal(body.schema, "public-stats.v4");
   assert.equal(body.coverage.available, true);
   assert.equal(body.coverage.measurement.units_are_not_summed, true);
   // The replaced response reported an upstream notice population and a hardcoded system count.
@@ -531,6 +531,12 @@ test("public stats projects served coverage and no usage-class fields", async ()
   for (const removed of ["subscriptions", "digests", "digest_clicks", "feeds", "batch", "shared_investigations", "nl_search", "history", "usage"]) {
     assert.equal(Object.hasOwn(body, removed), false, `${removed} must remain private`);
   }
+  // The usage summary is present as a shape even with no snapshot behind it, and says so
+  // rather than reporting a zero nobody measured.
+  assert.equal(body.search_usage.schema, "cityscroll.public_search_usage.v1");
+  assert.equal(body.search_usage.available, false);
+  assert.equal(body.search_usage.unavailable_reason, "no_verified_snapshot");
+  assert.deepEqual(body.search_usage.periods, []);
 });
 
 test("the public response and the page project the same coverage artifact", async () => {

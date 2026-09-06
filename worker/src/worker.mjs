@@ -51,6 +51,7 @@ import { handleBatch } from "./batch.mjs";
 import { handleAgencies } from "./agencies.mjs";
 import { handleInv } from "./inv.mjs";
 import { handleStats, countActiveSubs, prewarmStats } from "./stats.mjs";
+import { refreshPublicSearchUsageSnapshot } from "./lib/public_search_usage.mjs";
 import { handleSourceHealth } from "./source_health.mjs";
 import { handleEvent } from "./events.mjs";
 import { handleSearchActivity } from "./search_activity.mjs";
@@ -507,6 +508,15 @@ export default {
       await ensureHistEra(env.ALERT_STATE, "watches_active", now);
     } catch (e) {
       console.error("watches_active snapshot failed (digest already ran):", String(e?.message || e));
+    }
+    // Public search-usage summary: read the accepted execution receipts once here and
+    // store the verified public projection, so a public /stats read never scans them.
+    // Fail-soft, and a failed refresh leaves the last verified snapshot standing.
+    try {
+      const r = await refreshPublicSearchUsageSnapshot(env);
+      console.log("public search usage snapshot:", JSON.stringify(r));
+    } catch (e) {
+      console.error("public search usage refresh failed (digest already ran):", String(e?.message || e));
     }
     // Public /stats: refresh and edge-cache the official corpus aggregate. Fail-soft.
     try {

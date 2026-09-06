@@ -63,6 +63,11 @@
   table.cov tbody tr.sub th.rowname{color:var(--ink-soft);font-size:13px}
   table.cov tbody tr.sub :is(td,th):first-child{padding-inline-start:26px}
   .cov-state{display:inline-block;font-family:var(--font-sc);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+  .use-defs{margin:14px 0 0;padding:0;font:14px/1.6 var(--ui);color:var(--ink-soft)}
+  .use-defs dt{font-family:var(--font-sc);font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-top:10px}
+  .use-defs dd{margin:2px 0 0}
+  .use-note{font:14px/1.6 var(--ui);color:var(--muted);margin:12px 0 0}
+  table.cov th.period small{display:block;font-family:var(--ui);font-size:11px;letter-spacing:normal;text-transform:none;font-weight:400}
   #msg{font:14px/1.6 var(--ui);color:var(--muted);min-height:1.5em;text-align:center}
   .foot{margin-top:40px;border-top:1px solid var(--rule);padding-top:14px;font:13px/1.6 var(--ui);color:var(--muted);text-align:center}
   .lang-switcher{position:absolute;top:12px;inset-inline-end:22px;z-index:6;display:flex;align-items:center;gap:.35rem;margin:0;justify-content:flex-end}
@@ -93,7 +98,7 @@
   <div class="cr-rule cr-rule--bottom"></div>
   <a class="backhome" href="index.html" data-i18n="back_to_crol">← Back to CityScroll</a>
 </header>
-<main id="main" tabindex="-1" data-coverage-schema="cityscroll.served_coverage_snapshot.v1">
+<main id="main" tabindex="-1" data-coverage-schema="cityscroll.served_coverage_snapshot.v1" data-search-usage-schema="cityscroll.public_search_usage.v1">
   <p class="lede" data-i18n="stats_public_lede">See what CityScroll has and how new it is.</p>
   <p id="msg" role="status" data-i18n="stats_loading">Loading coverage…</p>
   <h2 data-i18n="stats_h_general">Key facts</h2>
@@ -106,8 +111,11 @@
   <h2 data-i18n="stats_h_coverage">Served coverage</h2>
   <p class="src" data-i18n="stats_p_coverage">Each row counts the records published by the page it links to, using that page’s own record identity. A record that appears twice in one set is counted once.</p>
   <div id="coverage"></div>
+  <h2 data-i18n="stats_h_search_use">Search use</h2>
+  <p class="src" data-i18n="stats_search_use_intro">These counts cover the exact days named below. One finished search counts once, so a count is not a number of people, and a search that returned records is not proof it answered the question.</p>
+  <div id="search-use"></div>
   <h2 data-i18n="stats_public_method_heading">What is private</h2>
-  <p class="src" data-i18n-html="stats_coverage_method_html">These facts count records, not people. A registered source is not the same as a searchable one, and a collected total is not a served total. Visits, search, watches, and email totals stay private. Read the <a href="api.html#upstream">source notes</a> or open the <a href="https://api.cityscroll.org/stats">public JSON</a>.</p>
+  <p class="src" data-i18n-html="stats_coverage_method_html">These facts count records, not people. A registered source is not the same as a searchable one, and a collected total is not a served total. The search counts above are published. The searches themselves are not. Visits, watches, and email totals stay private. Read the <a href="api.html#upstream">source notes</a> or open the <a href="https://api.cityscroll.org/stats">public JSON</a>.</p>
 </main>
 <footer class="foot"><p data-i18n-html="stats_foot_html">Raw JSON: <a href="https://api.cityscroll.org/stats">api.cityscroll.org/stats</a> (cached ~15 min) · <a href="about.html">About</a> · <a href="index.html">Home</a></p></footer>
 </div>
@@ -116,6 +124,7 @@
   const msg = document.getElementById("msg");
   const coverage = document.getElementById("coverage");
   const schema = document.getElementById("main").dataset.coverageSchema;
+  const usageSchema = document.getElementById("main").dataset.searchUsageSchema;
   const curLoc = () => (window.LANG_META && window.LANG_META[window.LANG] || {}).intlDate || "en-US";
   const number = (value) => value == null ? "–" : Number(value).toLocaleString(curLoc());
   const day = (value) => {
@@ -244,8 +253,108 @@
     document.querySelectorAll("[data-stat-asof]").forEach((node) => { node.textContent = stamp; });
   }
 
+  // ---- Search use ----------------------------------------------------------------
+  // Two counts, each for a period the response names itself. The page renders exactly
+  // what the response publishes and never derives a figure of its own: a period the
+  // measurement cannot establish is drawn as "not published", never as a zero.
+  const API = window.CROL_API_ORIGIN || "https://api.cityscroll.org";
+  const API_FALLBACK = window.CROL_API_FALLBACK_ORIGIN || "https://cityscroll-worker.crol-worker.workers.dev";
+  async function workerFetch(path, opts) {
+    try { return await fetch(API + path, opts); }
+    catch (e) { return fetch(API_FALLBACK + path, opts); }
+  }
+
+  const searchUse = document.getElementById("search-use");
+  let usage = null;
+  let usageState = "loading";
+
+  function periodLabel(period) {
+    if (period.coverage === "partial") {
+      const since = day(period.starts_at);
+      return since ? t("stats_search_use_period_since", { date: since }) : t("stats_search_use_period_days", { days: number(period.requested_days) });
+    }
+    return t("stats_search_use_period_days", { days: number(period.requested_days) });
+  }
+
+  function periodSpan(period) {
+    const start = day(period.starts_at);
+    const end = day(period.ends_at);
+    return start && end ? t("stats_search_use_span", { start, end }) : "";
+  }
+
+  function usageTable(periods) {
+    const scroll = el("div", "cov-scroll");
+    scroll.setAttribute("role", "region");
+    scroll.tabIndex = 0;
+    scroll.setAttribute("aria-label", t("stats_h_search_use"));
+    const table = el("table", "cov");
+    table.append(el("caption", null, t("stats_search_use_caption")));
+
+    const head = document.createElement("thead");
+    const headRow = document.createElement("tr");
+    const corner = el("th", null, t("stats_search_use_measure"));
+    corner.scope = "col";
+    headRow.append(corner);
+    for (const period of periods) {
+      const cell = el("th", "period", periodLabel(period));
+      cell.scope = "col";
+      const span = periodSpan(period);
+      if (span) cell.append(el("small", null, span));
+      headRow.append(cell);
+    }
+    head.append(headRow);
+    table.append(head);
+
+    const body = document.createElement("tbody");
+    for (const metric of periods[0].metrics) {
+      const row = document.createElement("tr");
+      const name = el("th", "rowname", t(metric.label_key));
+      name.scope = "row";
+      row.append(name);
+      for (const period of periods) {
+        const entry = (period.metrics || []).find((item) => item.metric_id === metric.metric_id);
+        const cell = el("td", "num");
+        if (!entry || entry.state !== "measured") cell.append(el("span", "cov-state", t("stats_search_use_period_unavailable")));
+        else cell.textContent = number(entry.value);
+        row.append(cell);
+      }
+      body.append(row);
+    }
+    table.append(body);
+    scroll.append(table);
+    return scroll;
+  }
+
+  function usageDefinitions(periods) {
+    const list = el("dl", "use-defs");
+    for (const metric of periods[0].metrics) {
+      list.append(el("dt", null, t(metric.label_key)));
+      list.append(el("dd", null, t(metric.definition_key)));
+    }
+    return list;
+  }
+
+  function paintSearchUse() {
+    searchUse.replaceChildren();
+    // Nothing is drawn until the answer is in. A placeholder here would be a claim about
+    // counts nobody has read yet, and the section is small enough to arrive whole.
+    if (usageState === "loading") return;
+    if (usageState !== "ready" || !usage || !Array.isArray(usage.periods) || !usage.periods.length) {
+      searchUse.append(el("p", "use-note", t("stats_search_use_unavailable")));
+      return;
+    }
+    searchUse.append(usageTable(usage.periods));
+    searchUse.append(usageDefinitions(usage.periods));
+    const checked = day(usage.refresh && usage.refresh.verified_at);
+    const notes = [];
+    if (checked) notes.push(t("stats_search_use_checked", { date: checked }));
+    if (usage.refresh && usage.refresh.state !== "fresh") notes.push(t("stats_search_use_behind"));
+    if (notes.length) searchUse.append(el("p", "use-note", notes.join(" ")));
+  }
+
   paint();
-  initSubpageLangSwitcher(paint);
+  paintSearchUse();
+  initSubpageLangSwitcher(() => { paint(); paintSearchUse(); });
 
   // Materialised, first-party and static: the coverage snapshot is a build artifact served
   // beside this page. Loading Stats never reaches a publisher and never scans a receipt store.
@@ -261,6 +370,25 @@
       state = "failed";
     }
     paint();
+  })();
+
+  // The usage summary is a scheduled snapshot the API stores and projects; a public read
+  // never scans the receipts behind it. With the API unreachable the section says so and
+  // the coverage page above it is unaffected.
+  (async () => {
+    try {
+      const response = await workerFetch("/stats", { signal: AbortSignal.timeout(8000) });
+      if (!response.ok) throw new Error("stats returned " + response.status);
+      const candidate = await response.json();
+      const summary = candidate && candidate.search_usage;
+      if (!summary || summary.schema !== usageSchema) throw new Error("unexpected usage schema");
+      if (summary.available !== true) throw new Error("usage summary unavailable");
+      usage = summary;
+      usageState = "ready";
+    } catch {
+      usageState = "failed";
+    }
+    paintSearchUse();
   })();
 })();
 </script>

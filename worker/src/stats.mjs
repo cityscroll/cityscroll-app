@@ -1,8 +1,11 @@
-// GET /stats — served-product coverage facts only.
+// GET /stats — served-product coverage facts, plus a narrow verified search-usage summary.
 //
-// Product-use telemetry belongs behind the authenticated desk boundary. The public route says
-// what CityScroll actually serves: the materialised coverage snapshot and language coverage.
-// The former operational response remains available to the desk through GET /admin/stats.
+// Product-use telemetry belongs behind the authenticated desk boundary. Two counts are the
+// deliberate exception: how many searches finished, and how many of them returned records,
+// each for an explicitly named period. They are projected from the same accepted execution
+// receipts the desk reads, through a closed allowlist that carries no query, result, identity,
+// receipt id or private route — see lib/public_search_usage.mjs. Everything else about product
+// use, delivery and subscribers stays on GET /admin/stats.
 //
 // The response is assembled from a build-time artifact. It was once assembled from a live
 // publisher aggregate, which meant a public page load reached an upstream API and reported an
@@ -19,6 +22,11 @@ import {
   reconcileUsageWithDurableStores,
 } from "./lib/analytics.mjs";
 import { readSearchUsage } from "./lib/search_usage.mjs";
+import {
+  readPublicSearchUsage,
+  resolveSearchMeasurementStart,
+  unavailablePublicSearchUsage,
+} from "./lib/public_search_usage.mjs";
 import { isTestSubscriber } from "./lib/subscriptions.mjs";
 import servedCoverage from "../../site/data/served_coverage_snapshot.json" with { type: "json" };
 
@@ -29,7 +37,7 @@ const CATCHUP_RUN_LATEST_KEY = "digest:catchup:run:latest";
 
 const SITE_LANGUAGE_COUNT = 11;
 const NOTICE_TRANSLATION_LANGUAGE_COUNT = 10;
-export const PUBLIC_STATS_SCHEMA = "public-stats.v3";
+export const PUBLIC_STATS_SCHEMA = "public-stats.v4";
 export const SERVED_COVERAGE_SCHEMA = "cityscroll.served_coverage_snapshot.v1";
 
 /**
@@ -38,12 +46,12 @@ export const SERVED_COVERAGE_SCHEMA = "cityscroll.served_coverage_snapshot.v1";
  * nothing else the snapshot happens to carry. Labels stay as translation keys, so the page and
  * this response describe the same measurement in whatever language a reader asked for.
  */
-export function buildPublicStatsBody(coverage = servedCoverage, now = new Date()) {
+export function buildPublicStatsBody(coverage = servedCoverage, now = new Date(), searchUsage = null) {
   const usable = coverage && coverage.schema === SERVED_COVERAGE_SCHEMA ? coverage : null;
   return {
     schema: PUBLIC_STATS_SCHEMA,
     generated_at: new Date(now).toISOString(),
-    scope: "Served-product coverage aggregates only. Product usage and delivery operations are private.",
+    scope: "Served-product coverage aggregates, and verified counts of searches run and searches returning records for named periods. Search queries, results, readers, subscribers and delivery operations are private.",
     coverage: usable
       ? {
         available: true,
@@ -67,6 +75,10 @@ export function buildPublicStatsBody(coverage = servedCoverage, now = new Date()
       notice_translation_mode: "on_demand",
       official_notice_language: "English",
     },
+    // The projection is produced and closed-checked in lib/public_search_usage.mjs; this
+    // route only places it. A caller with no snapshot to hand gets the honest empty answer
+    // rather than an omitted key, so the shape of the response never depends on the store.
+    search_usage: searchUsage || unavailablePublicSearchUsage("no_verified_snapshot", now),
   };
 }
 
@@ -187,7 +199,7 @@ function growthFromHistories(nlHist = {}, digestHist = {}, pageViewHist = {}) {
 export function statsEdgeCacheKey(baseUrl = "https://api.cityscroll.org") {
   // Versioned away from the former usage response so a deploy cannot serve private fields
   // from a warm pre-change cache entry.
-  return new Request(new URL("/stats?edge=served-coverage-v3", baseUrl).toString(), {
+  return new Request(new URL("/stats?edge=search-usage-v4", baseUrl).toString(), {
     method: "GET",
   });
 }
@@ -228,7 +240,9 @@ export async function handleStats(req, env, ctx, options = {}) {
   }
 
   const now = options.now == null ? new Date() : new Date(options.now);
-  const body = buildPublicStatsBody(options.coverage || servedCoverage, now);
+  // One key read, never a receipt scan: the scheduled refresh already did that work.
+  const searchUsage = options.searchUsage || await readPublicSearchUsage(env, { now });
+  const body = buildPublicStatsBody(options.coverage || servedCoverage, now, searchUsage);
   const res = new Response(JSON.stringify(body, null, 2), {
     status: 200,
     headers: {
@@ -300,7 +314,9 @@ export async function handlePrivateStats(req, env, options = {}) {
       readStatAllTime(env.ALERT_STATE, "digest_catchup"),
       readCatchUpReceipt(env),
       countLaggingSubs(env, 2, now),
-      readSearchUsage(env, { now }),
+      // Same measurement start the public projection uses, so the two surfaces can be
+      // reconciled against each other at one cutoff instead of two.
+      resolveSearchMeasurementStart(env).then((measuredSince) => readSearchUsage(env, { now, measuredSince })),
     ]);
 
   // Store continuity: same ALERT_STATE / NL_METER namespaces used before and after the

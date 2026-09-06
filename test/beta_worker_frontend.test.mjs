@@ -6,7 +6,10 @@ import { SITE_SOURCE } from "./helpers/site_source.mjs";
 const read = (path) => readFileSync(new URL(`../site/${path}`, import.meta.url), "utf8");
 
 test("interactive pages default to the production API origin", () => {
-  for (const page of ["index.html", "about.html", "api.html"]) {
+  // Stats joined this list when it began reading the published search-usage summary: the
+  // coverage tables still come from its own origin, and the usage summary is the one
+  // first-party API read the page makes.
+  for (const page of ["index.html", "about.html", "api.html", "stats.html"]) {
     const source = page === "index.html" ? SITE_SOURCE : read(page);
     assert.match(source, /window\.CROL_API_ORIGIN \|\| "https:\/\/api\.cityscroll\.org"/, page);
     assert.match(
@@ -15,8 +18,7 @@ test("interactive pages default to the production API origin", () => {
       page,
     );
   }
-  // Stats reads a materialised artifact from its own origin, so it configures no API origin.
-  assert.doesNotMatch(read("stats.html"), /window\.CROL_API_ORIGIN/);
   assert.match(read("stats.html"), /fetch\("data\/served_coverage_snapshot\.json"/);
+  assert.match(read("stats.html"), /workerFetch\("\/stats"/);
   assert.match(read("analytics.js"), /window\.CROL_API_ORIGIN/);
 });
