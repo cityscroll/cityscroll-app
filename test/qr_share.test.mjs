@@ -174,7 +174,7 @@ test("QR stays composed with Excel and print controls in notice action rows", ()
   assert.match(indexSource, /id="dcopy"[\s\S]{0,200}qrButtonHTML\("dqr","act"\)[\s\S]{0,200}id="dxlsx"[\s\S]{0,200}id="dprint"/);
   assert.match(indexSource, /id="ncopy"[\s\S]{0,200}qrButtonHTML\("nqr","act"\)[\s\S]{0,500}id="nxlsx"[\s\S]{0,200}id="nprint"/);
   assert.match(indexSource, /bindQRShare\(\$\("#dqr"\), detailURL\);[\s\S]{0,200}exportNoticeXlsx\(r, chain\)[\s\S]{0,200}printCurrentView\("notice", detailURL\)/);
-  assert.match(indexSource, /bindQRShare\(\$\("#nqr"\), link\);[\s\S]{0,200}exportNoticeXlsx\(r,await loadChain\(r\)\)[\s\S]{0,200}printCurrentView\("notice",link\)/);
+  assert.match(indexSource, /bindQRShare\(\$\("#nqr"\), link\);[\s\S]{0,200}exportNoticeXlsx\(r,await noticeProcurementChain\(r\)\)[\s\S]{0,200}printCurrentView\("notice",link\)/);
 });
 
 test("headless interaction checks and committed 390/1440 captures pass", {

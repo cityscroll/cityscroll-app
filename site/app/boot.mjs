@@ -32,7 +32,7 @@ let editionRange=null;
 function paintEditionSpan(){ const el=$("#editionspan"); if(el&&editionRange){ el.textContent=fdtLocale(editionRange.a)+" – "+fdtLocale(editionRange.b); } }
 $("#kw").addEventListener("keydown", e=>{ if(e.key==="Enter"){ beginContractsRumInteraction({reusePending:true}); search(); } });
 $("#kw").addEventListener("input", ()=>beginContractsRumInteraction());
-$("#kw").addEventListener("input", debounce(search, 500));
+$("#kw").addEventListener("input", debounce(()=>search(), 500));
 ["#mode","#agency","#sort","#minamt","#moneycd","#moneycouncil"].forEach(s=>$(s).addEventListener("change", ()=>{ beginContractsRumInteraction(); search(); }));
 $("#moneylocationbasis").addEventListener("change",async()=>{
   beginContractsRumInteraction();
@@ -58,7 +58,7 @@ $("#staffing-query").addEventListener("input",debounce(()=>{
   renderStaffingFeed(); updateHash();
 },250));
 $("#pkw").addEventListener("keydown", e=>{ if(e.key==="Enter") pSearch(); });
-$("#pkw").addEventListener("input", debounce(pSearch, 500));
+$("#pkw").addEventListener("input", debounce(()=>pSearch(), 500));
 $("#pmode").addEventListener("change", ()=>{ $("#pkwlabel").textContent = $("#pmode").value==="role"?t("title_keyword_label"):t("person_name_label"); $("#pkw").placeholder = $("#pmode").value==="role"?t("kw_placeholder_people_role"):t("kw_placeholder_people_person"); });
 $("#career-eligibility").addEventListener("change",()=>{
   careerSelected=null; careerLimit=16; syncExamsModeUI(); renderCareerGuide(); updateHash();
@@ -575,9 +575,9 @@ $("#apreview").addEventListener("click", async ()=>{
 });
 
 $("#lkw").addEventListener("keydown", e=>{ if(e.key==="Enter") landSearch(); });
-const debouncedLandSearch=debounce(landSearch, 700); // geocoding behind it — a touch lazier
+const debouncedLandSearch=debounce(()=>landSearch(), 700); // geocoding behind it — a touch lazier
 $("#lkw").addEventListener("input", ()=>{ landResolvedArea=null; landCommunityDistrict=""; landCouncilDistrict=""; debouncedLandSearch(); });
-$("#lstatus").addEventListener("change", landSearch);
+$("#lstatus").addEventListener("change", ()=>landSearch());
 $("#lstage").addEventListener("change",()=>{
   $("#lstatus").value="all";
   landSearch();
@@ -671,7 +671,8 @@ $("#meetingsneighborhood").addEventListener("keydown",event=>{ if(event.key==="E
 $("#meetingsneighborhood").addEventListener("input",debounce(()=>{ meetingsCommunityDistrict=""; meetingsCouncilDistrict=""; loadSection("meetings"); },500));
 $("#propertyneighborhood").addEventListener("keydown",event=>{ if(event.key==="Enter"){ renderPropExplorer(); updateHash(); renderSearchComponents("property"); } });
 $("#propertyneighborhood").addEventListener("input",debounce(()=>{ propertyCouncilDistrict=""; renderPropExplorer(); updateHash(); renderSearchComponents("property"); },500));
-loadAgencies();
+// The agency facet is Contracts chrome filled by the Contracts lens. Its activation
+// gate now owns the first fill, so a route that never opens Contracts never fetches it.
 document.addEventListener("click",rememberItemRouteContext);
 window.addEventListener("popstate",event=>prepareHistoryRouteScroll(event.state));
 window.addEventListener("hashchange", async ()=>{
@@ -690,7 +691,11 @@ globalThis.currentAlertsEntryHref = currentAlertsEntryHref;
 globalThis.ensureAlertsContextCarry = ensureAlertsContextCarry;
 // Publish land context before routing.
 Object.defineProperty(globalThis, "lastNoticeContext", { configurable: true, get: () => lastNoticeContext, set: value => { lastNoticeContext = value; } });
-if(!applyHash()) search(); // an incoming permalink wins over the default Money load
+if(!applyHash()){
+  // an incoming permalink wins over the default Money load
+  if(typeof search==="function") search();
+  else Promise.resolve(globalThis.CrolRouteModules?.ensure("money")).then(()=>globalThis.search?.()).catch(()=>{});
+}
 // Keep the quiz unanswered unless the hash carries alert context.
 const alertsEntryHash = location.hash || "";
 const isAlertsContextEntry = (alertsEntryHash.startsWith("#alerts?")
@@ -717,7 +722,7 @@ function rerenderForLang(){
   document.querySelectorAll(".filtertoggle").forEach(b=>{ b.textContent = "☰ " + t("filters_toggle"); });
   const nav = document.querySelector(".tabs"); if(nav) nav.setAttribute("aria-label", t("tablist_label"));
   paintEditionSpan();
-  loadAgencies();
+  if(typeof loadAgencies==="function") loadAgencies();
   mountPublicInputExplainerPanel();
   if(typeof globalThis.aWatchChange==="function"){
     globalThis.aWatchChange(true); globalThis.updateAWhen?.(); globalThis.aRenderSaved?.(); globalThis.renderAlertsRollupPrefs?.();

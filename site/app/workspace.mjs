@@ -14,6 +14,7 @@ import {
   researchPackageNewerData,
   researchPackageRequestFromInvestigation,
 } from "../research_package.mjs";
+import { pinBase } from "../procurement_pin.mjs";
 
 /* ===================== INVESTIGATION WORKSPACE (#investigation) =====================
    Aleph's Investigations, account-free: pin notices/entities/matters into a named local

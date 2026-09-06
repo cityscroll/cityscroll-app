@@ -5,6 +5,7 @@ import test from "node:test";
 
 import { ROUTE_ISLAND_MODULES, SITE_MODULES } from "./helpers/site_source.mjs";
 import { computeModuleGraphDigest } from "../tools/site_module_architecture.mjs";
+import { bootChain } from "../tools/notice_cold_path.mjs";
 
 const evidence = JSON.parse(
   readFileSync(new URL("../docs/evidence/index-module-split.json", import.meta.url), "utf8"),
@@ -32,7 +33,36 @@ function behaviorSource(name) {
 test("index.html delegates application behavior to the ordered ES-module loader", () => {
   assert.match(index, /<script type="module" src="app\/main\.mjs"><\/script>/);
   assert.doesNotMatch(index, /<script>\s*const SODA/);
-  assert.deepEqual(loaderModules, SITE_MODULES);
+  // The route-gated lenses are registered in one block and awaited in place, so the
+  // registry is compared as a set and the wire order is read out of the boot chain
+  // the gate actually produces.
+  assert.deepEqual([...loaderModules].sort(), [...SITE_MODULES].sort());
+  const bootOrder = bootChain("other")
+    .filter((path) => path.startsWith("/app/"))
+    .map((path) => path.slice("/app/".length));
+  assert.deepEqual(bootOrder, [
+    "main.mjs",
+    "core.mjs",
+    "traversal.mjs",
+    "contracts-rum.mjs",
+    "money-list.mjs",
+    "search-share.mjs",
+    "exams.mjs",
+    "staffing.mjs",
+    "land.mjs",
+    "feed-actions.mjs",
+    "result-match.mjs",
+    "procurement-lifecycle.mjs",
+    "procurement-phase.mjs",
+    "subsidy.mjs",
+    "meetings.mjs",
+    "entities.mjs",
+    "entity_identity_report.mjs",
+    "workspace.mjs",
+    "now.mjs",
+    "routing.mjs",
+    "boot.mjs",
+  ]);
 });
 
 test("every application module is registered exactly once in the import graph", () => {
@@ -63,15 +93,17 @@ test("Property stays behind route activation while routing state remains eager",
 test("Meetings stays off the Rules route activation path", () => {
   const routeMap = loader.slice(
     loader.indexOf("function routeModuleForHash"),
-    loader.indexOf("function ensureRouteModule(name)"),
+    loader.indexOf("const ROUTE_COMPANION_MODULES"),
   );
-  assert.ok(routeMap.includes('raw.replace(/\\?.*$/,"")==="rules"'));
+  assert.ok(routeMap.includes('tab==="rules"'));
   assert.ok(routeMap.includes('path==="/browse/rules/"'));
-  assert.doesNotMatch(routeMap, /meetings|\/browse\/meetings\//);
-
-  const meetingsImport = loader.indexOf('await import("./meetings.mjs")');
-  const routeGate = loader.indexOf("await ensureRouteModulesForHash(location.hash)");
-  assert.ok(routeGate < meetingsImport, "route activation remains before the eager Meetings module");
+  // Rules resolves before every later branch, so a Rules route never activates the
+  // Meetings lens even though Meetings is now gated in the same map.
+  assert.ok(
+    routeMap.indexOf('return "rules"') < routeMap.indexOf('tab==="meetings"'),
+    "the rules branch must resolve before the meetings branch",
+  );
+  assert.equal(bootChain("other").includes("/app/rules.mjs"), false, "rules stays behind its gate");
 
   const meetingsSource = moduleSource("feed-actions.mjs");
   const listPaint = meetingsSource.indexOf('announce(t("meetings_entries_announce"');

@@ -35,7 +35,7 @@ test("credentialed account calls never fail over to a host that cannot share the
 });
 
 test("session recognition starts after the first Money paint", () => {
-  const firstPaint = INDEX.indexOf("if(!applyHash()) search()");
+  const firstPaint = INDEX.indexOf("if(!applyHash()){");
   const sessionInit = INDEX.indexOf("(function initSessionUi()");
   assert.ok(firstPaint >= 0, "initial Money search is missing");
   assert.ok(sessionInit > firstPaint, `session init ${sessionInit} must follow first paint ${firstPaint}`);

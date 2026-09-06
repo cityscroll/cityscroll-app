@@ -65,6 +65,35 @@ Evidence: `docs/evidence/notice-context-readiness/read-back.json`, built from
 `test/fixtures/notice-context-readiness/read-back-input.json` via
 `node tools/build_notice_context_readiness_evidence.mjs`.
 
+### Open read-back: Notice cold module path (pending)
+
+Opened by the change that moved the five lens module groups off the Notice
+route's cold module chain. That change claims no latency improvement; this
+read-back is where the effect on the budget is measured.
+
+- Status: **pending**. Not yet evaluated, and not a pass or a failure.
+- Delivered for review: `2026-09-06`. The measurement window opens at the
+  delivery merge commit, not at this date.
+- Metrics to read, exactly as identified in production:
+  - `component_ready_ms`, surface `notice`, component `notice-context` — the
+    primary Notice-context readiness group.
+  - `content_ready_ms`, surface `notice`, component `none` — the Notice
+    primary content-ready group.
+- Window length: one complete `7d` window measured from the delivery merge,
+  using the shared procedure above.
+- Sufficiency: the 30-observation floor applies. A window below the floor is
+  recorded as `insufficient_sample` and the percentiles are withheld.
+- Budget to evaluate against: p75 ≤ 2500 ms and p95 ≤ 5000 ms, unchanged.
+- Comparison point: the `2026-09-06` post-delivery read-back above
+  (`component_ready_ms`: p50 2754.8 ms / p75 3620.0 ms / p95 8484.3 ms over 79
+  retained observations).
+- Delivery-time module measurements for the same change are in
+  `docs/evidence/notice-cold-path/README.md`. They are a static measurement of
+  the module graph, not a latency claim.
+
+Due once the change has been live in production for one complete window. The
+evaluation belongs to this read-back rather than to the change that opened it.
+
 ## Browse Contracts
 
 Page-level content readiness: `content_ready_ms`, surface `browse-contracts`,

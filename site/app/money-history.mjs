@@ -212,6 +212,7 @@ import { renderObjectCardTitle } from "../affordance_grammar.mjs";
 import { buildContractReportTarget, renderReportIssueAffordance } from "../report_issue.mjs";
 import { buildPursuitSnapshot, renderPursuitSnapshotHtml } from "../procurement_pursuit_snapshot.mjs";
 import { buyerHistoryComparisonFromSolicitation } from "../buyer_history_pursuit_comparison.mjs";
+import { pinBase } from "../procurement_pin.mjs";
 
 // Every note naming an external source carries a working, scoped link to it
 // — a note that only SAYS the answer lives elsewhere, with no way to go look, isn't an
@@ -1120,7 +1121,14 @@ function renderDetail(r, chain, stats, loadContext = true){
   if(typeof globalThis.loadRuleLifecycle === "function") loadRuleLifecycle(r, $("#drules"));
   loadLifecycle(r, $("#dlifecycle"), $("#ddollars"), actionRailContextReady ? $("#dactions") : null, $("#dsuboutreach"));
   loadSubsidyLifecycle(r, $("#dsubsidy"));
-  loadMeetingOutcomes(r, $("#dmeet"));
+  const meetingOutcomesHost = $("#dmeet");
+  // Meeting outcomes are the Meetings lens's read model. Activate it on demand so a
+  // route that never shows a hearing outcome never boots it.
+  if(meetingOutcomesHost){
+    Promise.resolve(globalThis.CrolRouteModules?.ensure("meetings"))
+      .then(()=>globalThis.loadMeetingOutcomes?.(r, meetingOutcomesHost))
+      .catch(()=>{});
+  }
   priorCycleAwards(r, $("#dprior"));
   agencyForecastTeaser(r, $("#dforecast"));
   mountUnofficialTranslation($("#dxlate"), r);

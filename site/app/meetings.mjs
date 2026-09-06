@@ -1,18 +1,6 @@
 import { resolveMatterDestination } from "../legislative_matter_availability.mjs";
 import { councilMatterFollowMarkup } from "../council_matter_watch.mjs";
-
-function isMeetingOutcomesEligible(r){
-  const section = r.section_name || "";
-  if(section === "Public Hearings and Meetings") return true;
-  if(section === "Agency Rules" && r.type_of_notice_description === "Public Hearings") return true;
-  return false;
-}
-
-function isCityCouncilNotice(r){
-  const agency = String(r && r.agency_name || "").trim();
-  if(!agency) return false;
-  return /\bcity council\b/i.test(agency);
-}
+import { isCityCouncilNotice, isMeetingOutcomesEligible, readMeetingOutcome } from "../meeting_outcome_read.mjs";
 
 function matterDetailUrl(matterId){
   const id = String(matterId == null ? "" : matterId).trim();
@@ -644,7 +632,7 @@ function meetingOutcomesHTML(record, notice, phaseTools){
     ${listHTML}`;
 }
 
-async function loadMeetingOutcomes(r, el){
+async function loadMeetingOutcomes(r, el, prefetched=null){
   if(!el || !r.request_id) return;
   const eligible = isMeetingOutcomesEligible(r);
   const nonCouncil = r.section_name === "Public Hearings and Meetings" && !isCityCouncilNotice(r);
@@ -657,11 +645,9 @@ async function loadMeetingOutcomes(r, el){
         lang: window.LANG, esc: escUiHtml, date: fdate, externalSuffixHTML: extSR,
       })).catch(() => "")
     : Promise.resolve("");
-  let data = null;
-  try{
-    const resp = await workerFetch("/meeting-outcomes?id=" + encodeURIComponent(r.request_id), null, 8000);
-    if(resp && resp.ok) data = await resp.json();
-  }catch(e){}
+  // A caller that already read the record (to decide whether this lens was needed
+  // at all) hands it over rather than making the same read twice.
+  const data = prefetched || await readMeetingOutcome(r.request_id, workerFetch);
   const panelHTML = await panelHTMLPromise;
   if(!document.contains(el)) return;
   if(!data || data.ok === false || !data.record){
