@@ -620,3 +620,26 @@ export async function cancelOwedItems(db, scope) {
     perSubscriber,
   };
 }
+
+/**
+ * Cancel owed items that belong only to one named watch. Shared recipients keep
+ * items owed through any other still-active watch.
+ */
+export async function cancelOwedItemsForWatch(db, { watchId, reason = "cancelled:watch-removed" } = {}) {
+  const id = text(watchId);
+  if (!db?.prepare) throw new TypeError("owed cancel requires a D1 database");
+  if (!id) throw new TypeError("watchId is required");
+  const matchedRow = await runFirst(
+    db,
+    "SELECT COUNT(*) AS n FROM digest_outbox_items WHERE watch_id = ? AND status = 'owed'",
+    [id],
+  );
+  const matched = Number(matchedRow?.n || 0);
+  const result = await runStatement(
+    db,
+    `UPDATE digest_outbox_items SET status = 'cancelled', last_error = ? WHERE watch_id = ? AND status = 'owed'`,
+    [reason, id],
+  );
+  const cancelled = changesFrom(result);
+  return { watchId: id, matched, cancelled: cancelled == null ? matched : cancelled };
+}

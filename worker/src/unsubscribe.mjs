@@ -55,6 +55,12 @@ export async function handleUnsubscribe(req, env) {
     if (raw) record = JSON.parse(raw);
   } catch { /* logging is best effort */ }
   const label = watchLabel(record) || record?.label;
+  if (record) {
+    try {
+      const { removeExactMatterWatch } = await import("./lib/council_matter_watch_activation.mjs");
+      await removeExactMatterWatch(env, record);
+    } catch { /* still delete the saved watch */ }
+  }
   try { await env.SUBS.delete(key); } catch { /* idempotent: ignore */ }
   if (record?.email) {
     await appendWatchLog(env, {

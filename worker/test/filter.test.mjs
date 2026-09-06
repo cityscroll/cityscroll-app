@@ -227,6 +227,15 @@ test("mandates: mandate_id is exact-id only with legacy subject-ref compatibilit
   assert.equal(sanitize("obligations", { mandate_id: "cross-bridge-obligation-001" }).mandate_id, "cross-bridge-obligation-001");
 });
 
+test("meetings: exact matter_ref is source-qualified Council identity only", () => {
+  assert.equal(
+    sanitize("meetings", { matter_ref: "legistar:nyc:matter:79200", matter_scope_version: 1 }).matter_ref,
+    "legistar:nyc:matter:79200",
+  );
+  assert.equal(sanitize("meetings", { matter_id: "79200" }).matter_ref, "legistar:nyc:matter:79200");
+  assert.equal(sanitize("meetings", { matter_ref: "legistar:nyc:matter:79200", keywords: ["all"] }).matter_ref, "invalid");
+});
+
 test("legal_code: provision_id is exact Administrative Code identity only", () => {
   assert.equal(
     sanitize("legal_code", { provision_id: "nyc-administrative-code:16-120" }).provision_id,

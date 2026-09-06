@@ -145,6 +145,21 @@ test("an un-offered lens compiles to null (cron skips it)", () => {
   assert.equal(compileSub({ lens: "nonsense", filter: {} }, "2026-06-30"), null);
 });
 
+test("meetings exact matter compiles to the retained native reader", () => {
+  const q = compileSub({
+    lens: "meetings",
+    filter: { matter_ref: "legistar:nyc:matter:79200", matter_scope_version: 1 },
+  }, "2026-08-10");
+  assert.equal(q.kind, "council-matter");
+  assert.equal(q.nativeReader, "matter-observation-journal");
+  assert.equal(q.url, null);
+  assert.deepEqual(q.params, {});
+  assert.equal(compileSub({
+    lens: "meetings",
+    filter: { matter_ref: "legistar:nyc:matter:79200", keywords: ["hearings"] },
+  }, "2026-08-10"), null);
+});
+
 test("legal_code compiles an exact provision replay and rejects broadening extras", () => {
   const q = compileSub({
     lens: "legal_code",

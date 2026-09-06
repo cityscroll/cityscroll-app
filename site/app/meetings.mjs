@@ -1,4 +1,5 @@
 import { resolveMatterDestination } from "../legislative_matter_availability.mjs";
+import { councilMatterFollowMarkup } from "../council_matter_watch.mjs";
 
 function isMeetingOutcomesEligible(r){
   const section = r.section_name || "";
@@ -603,14 +604,19 @@ function meetingOutcomesHTML(record, notice, phaseTools){
     const details=detailRows
       ? `<details class="meeting-more"><summary>${detailsSummary}</summary><div class="meeting-detail"><dl>${detailRows}</dl></div></details>`
       : "";
+    const followHTML = councilMatterFollowMarkup({ lens: "meetings", matter_id: entry.matter_id }, {
+      label: t("next_action_watch_matter"),
+      className: "matter-follow-link",
+    });
 
-    listHTML += `<li class="meeting-matter" data-meeting-spine data-meeting-matter data-outcome-bucket="${bucket}">
+    listHTML += `<li class="meeting-matter" data-meeting-spine data-meeting-matter data-outcome-bucket="${bucket}" data-matter-id="${escUiHtml(entry.matter_id || "")}">
       <div class="meeting-matter-main">
         <div>
           ${fileHTML}
           <p class="meeting-title" lang="en" dir="ltr">${escUiHtml(shortTitle)}</p>
           ${subBits.length ? `<p class="meeting-sub" lang="en" dir="ltr">${escUiHtml(subBits.join(" · "))}</p>` : ""}
           ${rollCallChip}
+          ${followHTML}
         </div>
         ${bucket?`<span class="meeting-badge meeting-badge--${bucket}">${t(badgeKey)}</span>`:""}
       </div>

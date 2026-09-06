@@ -8,7 +8,11 @@
 // FAIL CLOSED: returns 503 until TOKEN_SECRET + RESEND_API_KEY + SUBS are configured.
 // Rate limits are the primary bot friction on this no-CAPTCHA path and run before any write/send.
 
-import { resolveLens, sanitize } from "./lib/filter.mjs";
+import { prepareWatchFilter, resolveLens } from "./lib/filter.mjs";
+import {
+  confirmExactMatterWatch,
+  resolveExactCouncilMatterWatch,
+} from "./lib/council_matter_watch_activation.mjs";
 import {
   TOPICLESS_SOURCE,
   isValidEmail,
@@ -75,11 +79,17 @@ export async function handleSubscribe(req, env) {
 
   const lang = typeof body.lang === "string" ? body.lang : "en";
   if (!topicless) {
-    const filter = sanitize(lens, body.filter);
+    const prepared = prepareWatchFilter(lens, body.filter);
+    if (!prepared.ok) return reply(req, { ok: false, reason: "unsupported-scope" }, 400, cors);
+    const resolvedMatter = resolveExactCouncilMatterWatch({ lens: prepared.lens, filter: prepared.filter });
+    if (resolvedMatter.attempted && resolvedMatter.status !== "ok") {
+      return reply(req, { ok: false, reason: "unsupported-scope" }, 400, cors);
+    }
+    const filter = prepared.filter;
     if (lens === "legal_code" && !filter.provision_id) {
       return reply(req, { ok: false, reason: "unsupported-scope" }, 400, cors);
     }
-    const sub = buildSubscription({ email, lens, filter, channel: "email", freq: body.freq, lang });
+    const sub = buildSubscription({ email, lens: prepared.lens, filter, channel: "email", freq: body.freq, lang });
     try {
       const enrolled = await enrollAndWelcome(env, sub, { source: "following" });
       return reply(req, { ok: true, key: enrolled.key }, 200, cors);
@@ -139,6 +149,19 @@ export async function enrollAndWelcome(env, candidate, { source = "following" } 
     const error = new Error("subscription save failed");
     error.code = "save-failed";
     throw error;
+  }
+  const matter = resolveExactCouncilMatterWatch({ lens: record.lens, filter: record.filter });
+  if (matter.status === "ok") {
+    try {
+      const confirmed = await confirmExactMatterWatch(env, record);
+      record.matter_watch_baseline = confirmed.baseline;
+      await env.SUBS.put(key, JSON.stringify(record));
+    } catch (cause) {
+      try { await env.SUBS.delete(key); } catch { /* compensating delete */ }
+      const error = new Error("exact matter baseline failed", { cause });
+      error.code = "save-failed";
+      throw error;
+    }
   }
 
   emitUsageEvent(env, { event: "alert_confirmed", lens: record.lens, surface: source });

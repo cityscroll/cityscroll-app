@@ -81,6 +81,10 @@ export function describeFilter(lens, filter) {
     const citation = String(f.provision_id || "").replace(/^nyc-administrative-code:/i, "§ ");
     return `Administrative Code ${citation || "provision"} — exact provision changes`;
   }
+  if (lens === "meetings" && f.matter_ref) {
+    const matterId = String(f.matter_ref).split(":").at(-1) || f.matter_ref;
+    return `New York City Council matter ${matterId} — exact matter`;
+  }
   if (lens === "mandates" || lens === "obligations") {
     const who = f.agency || f.agency_id || "?";
     if (f.mandate_id) {

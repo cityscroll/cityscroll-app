@@ -18,6 +18,16 @@ test("compileSub_d1 returns null for land", () => {
   assert.equal(compileSub_d1({ lens: "land", filter: { keywords: ["rezoning"] } }, "2026-07-10"), null);
 });
 
+test("exact Council matter watches stay off the City Record D1 mirror", () => {
+  const d1 = compileSub_d1({
+    lens: "meetings",
+    filter: { matter_ref: "legistar:nyc:matter:79200", matter_scope_version: 1 },
+  }, "2026-08-10");
+  assert.equal(d1.soda, false);
+  assert.equal(d1.opts, null);
+  assert.equal(d1.nativeReader, "matter-observation-journal");
+});
+
 test("legal_code provision watches stay off the City Record D1 mirror", () => {
   assert.ok(OFF_MIRROR_LENSES.has("legal_code"));
   assert.equal(compileSub_d1({

@@ -201,6 +201,8 @@
     "site/council_district_lookup.mjs",
     "site/council_hearing_action_path.mjs",
     "site/council_hearing_matter_continuation.mjs",
+    "site/council_matter_watch_scope.mjs",
+    "site/council_matter_watch.mjs",
     "site/crol_notice_publication_policy.mjs",
     "site/cross_source_coverage_ledger.mjs",
     "site/cross_source_evidence_receipt.mjs",

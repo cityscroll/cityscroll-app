@@ -21,6 +21,10 @@ import { signToken, listUnsubscribe } from "optin-token";
 import { issueEmailSessionToken } from "./session.mjs";
 import { compileSub, mergeCompiledRows, rowsForCompiledQuery, vendorStem } from "./lib/compile.mjs";
 import { compileSub_d1, toDigestRow, OFF_MIRROR_LENSES } from "./lib/compile_d1.mjs";
+import {
+  d1DispatchExactCouncilMatter,
+  matterWatchDeliveryEnabled,
+} from "./lib/council_matter_watch_activation.mjs";
 import { buildNoticesQuery, searchNotices } from "./lib/notices.mjs";
 import { describeFilter } from "./lib/confirm_email.mjs";
 import { emailT } from "./lib/i18n.mjs";
@@ -891,6 +895,11 @@ export async function processOneSub(env, s, ctx) {
     if (s.lens === "award") return processAwardSub(env, s, ctx);
     const q = compileSub(s, ctx.today);
     if (!q) return { sub: s.key, skipped: `lens:${s.lens}` };
+    const matterDispatch = d1DispatchExactCouncilMatter(s);
+    if (matterDispatch?.unsupported) return { sub: s.key, skipped: "unsupported-scope", kind: "subscription" };
+    if (matterDispatch?.nativeReader && !matterWatchDeliveryEnabled(env)) {
+      return { sub: s.key, skipped: "feature-gated", kind: "council-matter" };
+    }
 
     const forecasts = await matchForecasts(env, s, ctx.today);
 
@@ -905,7 +914,7 @@ export async function processOneSub(env, s, ctx) {
         const fresh = await isMirrorFresh(env.DB, ctx.today);
         if (fresh) {
           const d1 = compileSub_d1(s, ctx.today);
-          if (d1) {
+          if (d1?.opts && !d1.unsupported && !d1.nativeReader) {
             const { results: d1Rows } = await (async () => {
               const { sql, params } = buildNoticesQuery(d1.opts);
               const res = await env.DB.prepare(sql).bind(...params).all();
@@ -1436,6 +1445,13 @@ async function evaluateSubSection(env, s, ctx) {
     }
     const q = compileSub(s, ctx.today);
     if (!q) return { ...base, status: SECTION_STATUS.SKIPPED, skipped: `lens:${s.lens}` };
+    const matterDispatch = d1DispatchExactCouncilMatter(s);
+    if (matterDispatch?.unsupported) {
+      return { ...base, status: SECTION_STATUS.SKIPPED, skipped: "unsupported-scope" };
+    }
+    if (matterDispatch?.nativeReader && !matterWatchDeliveryEnabled(env)) {
+      return { ...base, status: SECTION_STATUS.SKIPPED, skipped: "feature-gated" };
+    }
 
     const forecasts = await matchForecasts(env, s, ctx.today);
     let rows;
@@ -1445,7 +1461,7 @@ async function evaluateSubSection(env, s, ctx) {
         const fresh = await isMirrorFresh(env.DB, ctx.today);
         if (fresh) {
           const d1 = compileSub_d1(s, ctx.today);
-          if (d1) {
+          if (d1?.opts && !d1.unsupported && !d1.nativeReader) {
             const { sql, params } = buildNoticesQuery(d1.opts);
             const res = await env.DB.prepare(sql).bind(...params).all();
             let mapped = (res.results ?? []).map(toDigestRow);
@@ -1921,6 +1937,13 @@ async function evaluateCatchUpSub(env, s, ctx) {
 
     const q = compileSub(s, ctx.today);
     if (!q) return { ...base, status: SECTION_STATUS.SKIPPED, skipped: `lens:${s.lens}`, zeroMatch: true, new: 0, found: 0 };
+    const matterDispatch = d1DispatchExactCouncilMatter(s);
+    if (matterDispatch?.unsupported) {
+      return { ...base, status: SECTION_STATUS.SKIPPED, skipped: "unsupported-scope", zeroMatch: true, new: 0, found: 0 };
+    }
+    if (matterDispatch?.nativeReader && !matterWatchDeliveryEnabled(env)) {
+      return { ...base, status: SECTION_STATUS.SKIPPED, skipped: "feature-gated", zeroMatch: true, new: 0, found: 0 };
+    }
     const sourceParams = { ...q.params, "$limit": "100" };
     let rows;
     let mirrorError = null;
@@ -1929,7 +1952,7 @@ async function evaluateCatchUpSub(env, s, ctx) {
         const fresh = await isMirrorFresh(env.DB, ctx.today);
         if (fresh) {
           const d1 = compileSub_d1(s, ctx.today);
-          if (d1) {
+          if (d1?.opts && !d1.unsupported && !d1.nativeReader) {
             const { sql, params } = buildNoticesQuery(d1.opts);
             const res = await env.DB.prepare(sql).bind(...params).all();
             rows = (res.results ?? []).map(toDigestRow);

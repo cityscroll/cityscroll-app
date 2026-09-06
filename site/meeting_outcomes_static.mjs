@@ -1,5 +1,6 @@
 import { officialSourceDisclosure, officialSourceLink } from "./affordance_grammar.mjs";
 import { resolveMatterDestination } from "./legislative_matter_availability.mjs";
+import { councilMatterFollowMarkup } from "./council_matter_watch.mjs";
 
 export const MEETING_OUTCOMES_SNAPSHOT_SCHEMA = "cityscroll.meeting_outcomes_snapshot.v1";
 
@@ -207,8 +208,12 @@ export function renderMeetingOutcomesFirstPaint(snapshotOrRecord, requestId) {
           newTabLabel: "(opens in new tab)",
         })
         : `<span class="meeting-file" data-matter-availability="unavailable">${esc(fileLabel)}</span>`;
-    return `<li class="meeting-matter" data-outcome-bucket="${outcomeBucket(label)}">
-      <div class="meeting-matter-main"><div>${file}<p class="meeting-title">${esc(matter.title)}</p>${vote}</div>
+    const follow = councilMatterFollowMarkup({ lens: "meetings", matter_id: matter.matter_id }, {
+      label: `Follow ${fileLabel}`,
+      className: "matter-follow-link meeting-matter-follow",
+    });
+    return `<li class="meeting-matter" data-outcome-bucket="${outcomeBucket(label)}" data-matter-id="${esc(matter.matter_id)}">
+      <div class="meeting-matter-main"><div>${file}<p class="meeting-title">${esc(matter.title)}</p>${vote}${follow}</div>
       ${label ? `<span class="meeting-badge meeting-badge--${outcomeBucket(label)}">${esc(label)}</span>` : ""}</div>
     </li>`;
   }).join("");

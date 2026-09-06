@@ -520,7 +520,7 @@ const DEEPLINK_LENSES = {
   land:     ["keywords", "boro", "status", "communityDistrict", "councilDistrict", "nearMe", "procedure", "family", "regulatoryEffect", "futureAction", "attendance", "geographies", "place_role"],
   property: ["keywords", "agency", "process", "stage", "asset", "saleMethod", "priceBand", "sort", "borough", "neighborhood", "communityDistrict", "nearMe", "geographies", "place_role"],
   rules:    ["keywords", "agency", "process", "geographies", "place_role", "request_ids"],
-  meetings: ["keywords", "agency", "when", "borough", "neighborhood", "communityDistrict", "councilDistrict", "locationScope", "dateWindow", "process", "nearMe", "geographies", "place_role", "communityBoard"],
+  meetings: ["keywords", "agency", "when", "borough", "neighborhood", "communityDistrict", "councilDistrict", "locationScope", "dateWindow", "process", "nearMe", "geographies", "place_role", "communityBoard", "matter_ref", "matter_scope_version"],
   district: ["councilDistrict"],
   entity:   ["name", "kind", "tab", "entity_refs_all"],
   mandates: ["agency_id", "agency", "mandate_id", "deliverable_type", "windowDays"],
@@ -548,6 +548,15 @@ function deeplinkClampField(name, v){
     case "agency": return typeof v==="string" && v.trim() ? v.trim() : null;
     case "communityBoard": return normalizeCommunityBoardRef(v);
     case "agency_id": { const s=typeof v==="string"?v.trim().toLowerCase():""; return /^[a-z0-9][a-z0-9-]{1,80}$/.test(s)?s:null; }
+    case "matter_ref": {
+      const s = typeof v === "string" ? v.trim().toLowerCase() : "";
+      const match = s.match(/^(legistar):([a-z0-9-]+):matter:(\d+)$/) || (/^\d+$/.test(s) ? ["", "legistar", "nyc", s] : null);
+      return match && match[2] === "nyc" ? `legistar:nyc:matter:${match[3]}` : null;
+    }
+    case "matter_scope_version": {
+      const n = typeof v === "number" ? v : (typeof v === "string" && v.trim() ? Number(v) : NaN);
+      return Number.isInteger(n) && n === 1 ? 1 : null;
+    }
     case "provision_id": {
       const s = typeof v === "string" ? v.trim() : "";
       const citation = s
@@ -660,6 +669,8 @@ function sanitizeDeepLinkFilter(lens, input){
   if(!out.procurement_id) delete out.procurement_id;
   if(!out.processState) delete out.processState;
   if(!out.provision_id) delete out.provision_id;
+  if(!out.matter_ref) delete out.matter_ref;
+  if(!out.matter_scope_version) delete out.matter_scope_version;
   return out;
 }
 // raw is already percent-decoded (URLSearchParams.get()). null on anything malformed, truncated
