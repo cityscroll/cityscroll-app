@@ -12,6 +12,8 @@ import {
   inspectPublicIdentity,
   inspectPublicReference,
   inspectRawIdentityEscapes,
+  isPublicAliasIdentity,
+  PUBLIC_ALIAS_PATTERN,
   PUBLIC_NAMESPACE,
   REFERENCE_SCHEME,
 } from "../tools/public_identity_contract.mjs";
@@ -51,6 +53,31 @@ test("a public identity that encodes a queue position is rejected", () => {
     `${PUBLIC_NAMESPACE}/ci-07-shared-dependency-store`,
     `${PUBLIC_NAMESPACE}/07`,
     `${PUBLIC_NAMESPACE}/work-item-42`,
+  ]) {
+    const violations = inspectPublicIdentity(id, { path: "fixture.json", field: "id" });
+    assert.equal(violations.length, 1, id);
+    assert.equal(violations[0].rule, "public-identity-form");
+  }
+});
+
+test("the rule-6 fallback token is accepted where no descriptive name exists yet", () => {
+  const id = `${PUBLIC_NAMESPACE}/c109ded0b4e91`;
+  assert.deepEqual(inspectPublicIdentity(id, { path: "fixture.json", field: "id" }), []);
+  assert.ok(isPublicAliasIdentity(id));
+  assert.match("c109ded0b4e91", PUBLIC_ALIAS_PATTERN);
+});
+
+test("a near-miss token is not read as the fallback shape", () => {
+  assert.equal(isPublicAliasIdentity(`${PUBLIC_NAMESPACE}/c109ded0b4e9`), false); // one hex short
+  assert.equal(isPublicAliasIdentity(`${PUBLIC_NAMESPACE}/c109ded0b4e9111`), false); // one hex long
+  assert.equal(isPublicAliasIdentity(`${PUBLIC_NAMESPACE}/shared-dependency-store`), false);
+  assert.equal(isPublicAliasIdentity("cityscroll-land-map-view/c109ded0b4e91"), false);
+});
+
+test("a card id or workstream slug placed inside the public namespace is still rejected", () => {
+  for (const id of [
+    `${PUBLIC_NAMESPACE}/cbics-03-rulemaking-participation-month`,
+    `${PUBLIC_NAMESPACE}/ru-02-task-aware-absence`,
   ]) {
     const violations = inspectPublicIdentity(id, { path: "fixture.json", field: "id" });
     assert.equal(violations.length, 1, id);

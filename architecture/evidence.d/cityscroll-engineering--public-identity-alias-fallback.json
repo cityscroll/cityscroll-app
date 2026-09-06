@@ -1,0 +1,41 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/public-identity-alias-fallback",
+  "status": "implemented",
+  "fingerprint": "public-identity-alias-fallback.v1",
+  "updated_at": "2026-09-05T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "public-engineering-record-identity-contract",
+      "path": "tools/public_identity_contract.mjs"
+    },
+    {
+      "id": "public-identity-contract-tests",
+      "path": "test/public_identity_contract.test.mjs"
+    },
+    {
+      "id": "architecture-evidence-alias-tests",
+      "path": "test/architecture_evidence_shards.test.mjs"
+    },
+    {
+      "id": "architecture-evidence-public-contract",
+      "path": "architecture/evidence.d/README.md"
+    },
+    {
+      "id": "capture-manifest-identity-doc",
+      "path": "docs/capture-manifest-guard.md"
+    },
+    {
+      "id": "repository-naming-boundary-receipt",
+      "path": "docs/repository-control-plane/naming-boundary.v1.json"
+    },
+    {
+      "id": "required-checks-preflight-seam",
+      "path": "tools/preflight-required-checks.sh"
+    },
+    {
+      "id": "owner-controlled-private-identifier-scan-tests",
+      "path": "test/private_identifier_scan_owner_wiring.test.mjs"
+    }
+  ]
+}

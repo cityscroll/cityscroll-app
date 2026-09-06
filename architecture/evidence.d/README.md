@@ -41,8 +41,24 @@ Where another document needs to reference such a record, the reference form is:
 engineering-record:cityscroll-engineering/<descriptive-public-id>#<fragment>
 ```
 
+Where a change has no descriptive name yet, `cityscroll-engineering/c<12-hex>` —
+the letter `c` followed by exactly 12 lowercase hex characters — is accepted as
+the public id in its own right. That fallback token is minted outside this
+repository; nothing in this repository can derive one from the other, and this
+schema carries no field that would let it try.
+
 `tools/public_identity_contract.mjs` is the machine statement of these rules and
 is applied by the aggregator below.
+
+### Legacy entries are unchanged
+
+Most entries still use a workstream/card-shaped id such as
+`cityscroll-land-map-view/lm-02-project-point-materializer`, predating the
+`cityscroll-engineering` namespace. Those paths are not renamed and their
+history is not rewritten — doing so would rewrite the public record for no
+reader benefit. `inspectPathIdentityAgreement` (rule 4) still requires every
+entry's path to decode to exactly its declared id, legacy or not; the
+namespace above applies only where an entry opts into it.
 
 ## Evidence, not roadmap
 

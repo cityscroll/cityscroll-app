@@ -1,5 +1,12 @@
 # Capture-manifest image guard
 
+A new `docs/evidence/<name>/` directory or `capture-manifest.json` names itself
+under the same public identity contract as `architecture/evidence.d`
+(`tools/public_identity_contract.mjs`): a descriptive name, or — where none
+applies yet — the `c<12-hex>` fallback token. Neither carries a card id or a
+workstream slug. Existing evidence directories that predate this convention are
+unchanged; see `architecture/evidence.d/README.md`.
+
 Visual proof for a change is a capture-manifest entry, not a committed screenshot. A manifest
 under `docs/evidence/**/capture-manifest.json` records, per capture, the `route` (or fixture),
 `viewport`, `revision`, data vintage, `assertion`, and a `sha256` of the rendered output; the image
