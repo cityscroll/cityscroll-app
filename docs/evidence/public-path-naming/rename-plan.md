@@ -37,13 +37,17 @@ names publishes the names.
 tracked path in `architecture/evidence.d`, `docs/evidence`, `artifacts` and `data`
 to it, so a path of this class cannot be added back.
 
-One control-plane receipt entry is left for a follow-up. Its identity is declared
-on the same physical source line as a published schema id, so no edit changes the
-identity without also reprinting that schema id, and renaming the schema id is a
-separate contract change with its own consumers. The test pins that one path by
-SHA-256 rather than by name — an exception written in plain characters would put
-back the kind of name this rule exists to remove — and it fails if a second path
-ever joins it, or if the pinned one stops needing the exception.
+The rule has no exceptions: every tracked path in those roots is held to it.
+
+One entry's identity shared a physical source line with a schema id in the same
+retired naming family, so this change renames that family too. Its three schema
+ids now read `cityscroll.repository_governance_<x>.v1` — the classification,
+cutover and semantic-owner-mapping receipts, their producers, their JSON Schema,
+and the tests that assert them. Nothing outside this repository reads those ids:
+they appear in no served payload and in no worker, site, integration or warehouse
+module, so the rename needs no compatibility read. The directory and the tool
+filenames that still carry the retired subsystem name are left to a follow-up
+that owns them.
 
 ## Beyond the paths
 

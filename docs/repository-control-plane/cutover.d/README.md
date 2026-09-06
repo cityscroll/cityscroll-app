@@ -5,7 +5,7 @@ cutover proof. Each JSON file owns exactly one semantic key, and the document
 `owner` must equal its `id`, so two candidates for one key fail validation
 instead of resolving by filename order.
 
-The whole-repository `cityscroll.repository_control_plane_cutover.v1` receipt is
+The whole-repository `cityscroll.repository_governance_cutover.v1` receipt is
 derived from these inputs at check time. It is never tracked: a change that
 introduces `docs/repository-control-plane/cutover.v1.json` into version control
 fails the check.

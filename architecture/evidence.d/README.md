@@ -52,10 +52,8 @@ is applied by the aggregator below.
 
 ### Every entry is in the namespace
 
-Every entry but one now declares an id in `cityscroll-engineering`, and every
-filename but one is `cityscroll-engineering--<descriptive-public-id>.json`. The
-remaining entry is left for a follow-up, for a reason recorded in
-`docs/evidence/public-path-naming/rename-plan.md`.
+Every entry now declares an id in `cityscroll-engineering`, and every filename in
+this directory is `cityscroll-engineering--<descriptive-public-id>.json`.
 Entries that once carried another registry namespace were renamed with `git mv`,
 so each file's history follows it; the identity, the fingerprint, and every
 reference to them moved at the same time.

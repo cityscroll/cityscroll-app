@@ -99,8 +99,8 @@
       "id": "rcp-owner-mapping-receipt",
       "path_pattern": "docs/repository-control-plane/semantic-owner-mapping.v1.json",
       "content_class": "repository-migration-receipt",
-      "canonical_owner": "cityscroll-repository-control-plane/rcp-01",
-      "register_id": "cityscroll-repository-control-plane/rcp-01",
+      "canonical_owner": "cityscroll-engineering/semantic-owner-migration",
+      "register_id": "cityscroll-engineering/semantic-owner-migration",
       "disposition": "retain",
       "allowed_evidence_contract": "rcp01-semantic-owner-receipt"
     },

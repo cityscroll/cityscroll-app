@@ -39,7 +39,7 @@ const built = buildReceipt({ root: ROOT });
 test("the cutover proof passes on the current tree", () => {
   assert.deepEqual(built.findings, []);
   assert.equal(built.receipt.status, "PASS");
-  assert.equal(built.receipt.schema, "cityscroll.repository_control_plane_cutover.v1");
+  assert.equal(built.receipt.schema, "cityscroll.repository_governance_cutover.v1");
   assert.equal(built.receipt.card, CARD);
 });
 
@@ -94,7 +94,7 @@ test("two conflicting owner references for one entry are reported", () => {
     stable_replacement_reference: "register:cityscroll-engineering/not-a-registered-record#elsewhere",
   };
   conflicted.canonical_owner = "unresolved";
-  conflicted.register_id = "cityscroll-repository-control-plane/rcp-01";
+  conflicted.register_id = "cityscroll-engineering/semantic-owner-migration";
   const { findings } = reconcileOwners({ entries: [conflicted], mappingItems: [], inventoryIds });
   assert.ok(findings.some((row) => row.includes("conflicting owner references")));
 });
@@ -112,7 +112,7 @@ test("unresolved outcome ownership stays explicit instead of becoming an implied
 
 test("a mapping that claims an unresolved outcome while naming an owner is contradictory", () => {
   const entry = classification.entries.find((row) => row.content_class === "repo-only-rollout-register");
-  const contradictory = [{ manifest_id: entry.id, canonical_owner: "cityscroll-repository-control-plane/rcp-01", resolution: "unresolved" }];
+  const contradictory = [{ manifest_id: entry.id, canonical_owner: "cityscroll-engineering/semantic-owner-migration", resolution: "unresolved" }];
   const { findings } = reconcileOwners({ entries: [entry], mappingItems: contradictory, inventoryIds });
   assert.ok(findings.some((row) => row.includes("unresolved outcome owner but also names")));
 });
@@ -132,7 +132,7 @@ test("mapping indirection resolves back to the manifest instead of duplicating a
   const id = "architecture-decision:home-wire-budget-rationale";
   assert.equal(resolveMappingOwner(`manifest:${id}#register_id`, entries), entries.get(id).register_id);
   assert.equal(resolveMappingOwner("manifest:does-not-exist#register_id", entries), null);
-  assert.equal(resolveMappingOwner("cityscroll-repository-control-plane/rcp-01", entries), "cityscroll-repository-control-plane/rcp-01");
+  assert.equal(resolveMappingOwner("cityscroll-engineering/semantic-owner-migration", entries), "cityscroll-engineering/semantic-owner-migration");
   assert.equal(resolveMappingOwner(null, entries), null);
 });
 

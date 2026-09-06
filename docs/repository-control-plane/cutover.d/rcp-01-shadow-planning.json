@@ -6,7 +6,7 @@
   "kind": "migration",
   "updated_at": "2026-09-01T00:00:00.000Z",
   "value": {
-    "register_card": "cityscroll-repository-control-plane/rcp-01",
+    "register_card": "cityscroll-engineering/semantic-owner-migration",
     "migration_commit": "d1c0b1c66477f7efc056360253aeb40341dfc103",
     "summary": "Repository-authored planning language left the public documents while every measured value, source record, and reproducible inventory stayed in place.",
     "manifest_entry_count": 47,

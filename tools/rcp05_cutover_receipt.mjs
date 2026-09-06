@@ -14,7 +14,7 @@
  * Reviewed inputs are source-owned shards under
  * docs/repository-control-plane/cutover.d/, one file per semantic key, so two
  * unrelated changes never edit the same file. The
- * `cityscroll.repository_control_plane_cutover.v1` receipt is derived from those
+ * `cityscroll.repository_governance_cutover.v1` receipt is derived from those
  * inputs at check time and is never tracked.
  *
  * Before/after values are anchored to each migration commit and its parent, which are
@@ -33,7 +33,7 @@ import { classifyPath, scanDocument } from "./inverse_control_plane_guard.mjs";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 
-export const RECEIPT_SCHEMA = "cityscroll.repository_control_plane_cutover.v1";
+export const RECEIPT_SCHEMA = "cityscroll.repository_governance_cutover.v1";
 export const SHARD_SCHEMA = "cityscroll.repository-control-plane.cutover-shard.v1";
 export const CARD = "cityscroll-engineering/cutover-without-product-or-evidence-loss";
 export const SHARD_DIRECTORY_RELATIVE = "docs/repository-control-plane/cutover.d";

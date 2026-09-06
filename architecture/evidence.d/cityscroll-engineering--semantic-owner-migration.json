@@ -1,8 +1,8 @@
 {
   "schema": "cityscroll.architecture-evidence-entry.v1",
-  "id": "cityscroll-repository-control-plane/rcp-01",
+  "id": "cityscroll-engineering/semantic-owner-migration",
   "status": "implemented",
-  "fingerprint": "rcp-01-semantic-owner-migration.v1",
+  "fingerprint": "semantic-owner-migration.v1",
   "updated_at": "2026-08-31T00:00:00.000Z",
   "projections": [
     { "id": "repository-control-plane-semantic-owner-mapping", "path": "docs/repository-control-plane/semantic-owner-mapping.v1.json" },
