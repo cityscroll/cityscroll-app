@@ -15,8 +15,8 @@ import {
   canonicalCodeProvisionId,
   provisionWatchDigestRows,
 } from "../../../site/code_provision_watch.mjs";
-import { councilMatterDigestRows } from "../../../site/council_matter_watch.mjs";
-import { compileExactCouncilMatter } from "./council_matter_watch_activation.mjs";
+import { councilMatterDigestRows, matterWatchDeliveryEnabled } from "../../../site/council_matter_watch.mjs";
+import { compileExactCouncilMatter, eligibleMatterWatchRows } from "./council_matter_watch_activation.mjs";
 import {
   mandatePredictionDigestRowsForAgency,
   mergeObligationDigestWithPredictions,
@@ -222,13 +222,22 @@ export async function rowsForCompiledQuery(q, env, fetchImpl = fetch) {
       rows = projectCalendarOccurrencesForRecord(decorated, { as_of: q.routeReadModel.todayISO });
     }
   } else if (q.routeReadModel?.kind === "council-matter") {
-    rows = typeof q.readRows === "function"
-      ? await Promise.resolve(q.readRows())
-      : councilMatterDigestRows({
+    if (typeof q.readRows === "function") {
+      rows = await Promise.resolve(q.readRows());
+    } else if (q.routeReadModel.watch_id && matterWatchDeliveryEnabled(env)) {
+      rows = await eligibleMatterWatchRows(env, {
+        lens: "meetings",
+        filter: q.routeReadModel.filter,
+        watch_id: q.routeReadModel.watch_id,
+        subscriber_id: q.routeReadModel.subscriber_id,
+      }, { asOf: q.routeReadModel.todayISO });
+    } else {
+      rows = councilMatterDigestRows({
         matter_ref: q.routeReadModel.matter_ref,
         confirmed: false,
         deliveryEnabled: false,
       });
+    }
   } else if (typeof q.readRows === "function") rows = await Promise.resolve(q.readRows());
   else if (q.url === STAFFING_EXAMS) {
     const { record } = await loadStaffingExams(env);

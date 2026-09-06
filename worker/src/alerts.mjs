@@ -781,6 +781,9 @@ function sameRenderedItem(a, b) {
   if (a.procurement_id && b.procurement_id) return String(a.procurement_id) === String(b.procurement_id);
   if (a.project_id && b.project_id) return String(a.project_id) === String(b.project_id);
   if (a.alert_id && b.alert_id) return String(a.alert_id) === String(b.alert_id);
+  if (a.matter_update_key && b.matter_update_key) {
+    return String(a.matter_update_key) === String(b.matter_update_key);
+  }
   return false;
 }
 
@@ -972,6 +975,7 @@ export async function processOneSub(env, s, ctx) {
     let fresh = dedupeFreshByContent(reconciled.fresh);
     funnel.content_deduped = fresh.length;
 
+    if (ctx.injectCrash === "before-enqueue") throw new Error("injected-crash-before-enqueue");
     const outboxSection = {
       sub: s.key,
       subKey: s.key,
@@ -983,7 +987,9 @@ export async function processOneSub(env, s, ctx) {
       freshRows: fresh,
       new: fresh.length,
     };
-    outboxSection.outboxEnqueue = await enqueueNormalSection(env, s, outboxSection, s.lens === "rules" ? fresh : rows, ctx, q.kind);
+    const enqueueRows = (s.lens === "rules" || q.kind === "council-matter") ? fresh : rows;
+    outboxSection.outboxEnqueue = await enqueueNormalSection(env, s, outboxSection, enqueueRows, ctx, q.kind);
+    if (ctx.injectCrash === "after-enqueue") throw new Error("injected-crash-after-enqueue");
     attachOwedRows([outboxSection], await owedForSubscriber(env, s.subscriber_id));
     fresh = outboxSection.freshRows || fresh;
     // Forecasts are digest content too, and the rollup path counts them the same way.
@@ -1085,7 +1091,9 @@ export async function processOneSub(env, s, ctx) {
             try { await markDeliveryAttempt(env.DB, includedOutboxItems, ctx.now || ctx.today); } catch { /* receipt is best effort */ }
           }
           try {
-            providerAccepted = await sendEmail(env, ctx.FROM, s.email, subject, html, `<${unsubUrl}>`, true);
+            providerAccepted = await sendEmail(env, ctx.FROM, s.email, subject, html, `<${unsubUrl}>`, true, {
+              idempotencyKey: reservation?.deliveryId || null,
+            });
           } catch (error) {
             if (reservation?.reserved) {
               try {
@@ -1094,6 +1102,9 @@ export async function processOneSub(env, s, ctx) {
             }
             throw error;
           }
+          if (ctx.injectCrash === "after-provider-accept") {
+            throw new Error("injected-crash-after-provider-accept");
+          }
           if (providerAccepted && ctx.advanceState !== false) {
             await recordConfirmedWatchSend(env, {
               key: s.key,
@@ -1101,6 +1112,9 @@ export async function processOneSub(env, s, ctx) {
               seenId: s.key,
               seenIds: reconciled.markSeenIds,
             });
+          }
+          if (ctx.injectCrash === "before-receipt") {
+            throw new Error("injected-crash-before-receipt");
           }
           delivery = reservation?.reserved
             ? await finalizeOutboxDelivery(env, reservation, s.subscriber_id, ctx, includedOutboxItems, providerAccepted, null)
@@ -1142,6 +1156,7 @@ export async function processOneSub(env, s, ctx) {
       sent: !!providerAccepted && delivery?.status !== "ledger_error",
       providerAccepted: !!providerAccepted,
       deliveryStatus: delivery?.status || (occasionReserved ? "reserved" : null),
+      physicalSendAmbiguous: Boolean(providerAccepted && delivery?.status === "ledger_error"),
       occasionReserved,
       dryRun: underCap && !ctx.LIVE,
       manageUrlPresent,
@@ -1558,7 +1573,14 @@ async function evaluateSubSection(env, s, ctx) {
     // The selected rows come from either the fresh D1 mirror branch or the
     // SODA branch above. Both source paths enter the same identity adapter;
     // source dates never decide whether an owed item is eligible.
-    section.outboxEnqueue = await enqueueNormalSection(env, s, section, s.lens === "rules" ? fresh : rows, ctx, q.kind);
+    section.outboxEnqueue = await enqueueNormalSection(
+      env,
+      s,
+      section,
+      (s.lens === "rules" || q.kind === "council-matter") ? fresh : rows,
+      ctx,
+      q.kind,
+    );
     return section;
   } catch (e) {
     return { ...base, status: SECTION_STATUS.FAILED, error: String(e?.message || e) };
@@ -2585,12 +2607,17 @@ export async function sendOpsAlert(env, { guard, subject, text, observedAt = new
   }
 }
 
-async function sendEmail(env, from, to, subject, html, listUnsub, oneClick) {
+async function sendEmail(env, from, to, subject, html, listUnsub, oneClick, options = {}) {
   // Callers must gate on ALERTS_LIVE / ctx.LIVE before invoking — this only hits Resend.
   const body = emailPayload(env, from, to, subject, html, listUnsub, oneClick);
+  const headers = {
+    "content-type": "application/json",
+    authorization: `Bearer ${env.RESEND_API_KEY}`,
+  };
+  if (options.idempotencyKey) headers["Idempotency-Key"] = options.idempotencyKey;
   const r = await fetch("https://api.resend.com/emails", {
     method: "POST",
-    headers: { "content-type": "application/json", authorization: `Bearer ${env.RESEND_API_KEY}` },
+    headers,
     body: JSON.stringify(body),
   });
   if (!r.ok) throw new Error(`Resend ${r.status}: ${await r.text()}`);
@@ -2755,6 +2782,16 @@ export function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https:
   const item = (r) => {
     const itemKind = kind === "district" ? r.district_kind : kind;
     const itemClass = kind === "district" ? ' class="district-item"' : "";
+    if (itemKind === "council-matter" || r.matter_update_key || r.council_matter_watch?.update_key) {
+      const link = r.href
+        ? (String(r.href).startsWith("http") ? r.href : `https://cityscroll.org${r.href}`)
+        : `https://cityscroll.org/matters/${encodeURIComponent(r.matter_id || "")}/`;
+      const kind = r.kind || r.council_matter_watch?.kind || "occurred";
+      const meta = [`Council matter ${r.matter_id || ""}`, kind].filter(Boolean).map(esc).join(" · ");
+      return `<li data-digest-item="1" data-matter-update-kind="${esc(kind)}"${itemClass} style="margin:0 0 14px"><b><a href="${esc(link)}">${esc(r.short_title || "Council matter update")}</a></b><br>
+        <span style="color:#555;font-size:13px">${meta}</span><br>
+        <span style="font-size:13px"><a href="${esc(link)}">View matter history</a></span></li>`;
+    }
     if (itemKind === "meetings" && r.meeting_id) {
       const meetingLink = `${digestPermalinkUrl("meetings", r.meeting_id)}/`;
       const institution = r.board_name || r.agency || r.agency_name || "";
@@ -3084,6 +3121,16 @@ export function rollupDigestHtml({
     const renderRow = (r) => {
       const itemKind = sec.kind === "district" ? r.district_kind : sec.kind;
       const itemClass = sec.kind === "district" ? ' class="district-item"' : "";
+      if (itemKind === "council-matter" || r.matter_update_key || r.council_matter_watch?.update_key) {
+        const link = r.href
+          ? (String(r.href).startsWith("http") ? r.href : `https://cityscroll.org${r.href}`)
+          : `https://cityscroll.org/matters/${encodeURIComponent(r.matter_id || "")}/`;
+        const kind = r.kind || r.council_matter_watch?.kind || "occurred";
+        const meta = [`Council matter ${r.matter_id || ""}`, kind].filter(Boolean).map(esc).join(" · ");
+        return `<li data-digest-item="1" data-matter-update-kind="${esc(kind)}"${itemClass} style="margin:0 0 12px"><b><a href="${esc(link)}">${esc(r.short_title || "Council matter update")}</a></b><br>
+          <span style="color:#555;font-size:13px">${meta}</span><br>
+          <span style="font-size:13px"><a href="${esc(link)}">View matter history</a></span></li>`;
+      }
       if (itemKind === "exam") {
         const link = `https://cityscroll.org/exams/${encodeURIComponent(r.exam_number)}/`;
         const dates = r.application_start && r.application_end ? `${String(r.application_start).slice(0, 10)}–${String(r.application_end).slice(0, 10)}` : "";

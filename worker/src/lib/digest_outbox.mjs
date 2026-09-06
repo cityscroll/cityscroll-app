@@ -40,6 +40,13 @@ const SELECT_OWED_ITEMS = `
    LIMIT ? OFFSET ?
 `;
 
+const SELECT_SUBSCRIBER_ITEM = `
+  SELECT watch_id, subscriber_id, item_id, status
+    FROM digest_outbox_items
+   WHERE subscriber_id = ? AND item_id = ?
+   LIMIT 1
+`;
+
 const MARK_ATTEMPT = `
   UPDATE digest_outbox_items
      SET attempt_count = attempt_count + 1,
@@ -156,6 +163,19 @@ export function extractLensIdentity(input, maybeRow) {
         itemKind: text(kind) || "procurement",
       };
     }
+    const matterUpdateKey = firstText(
+      row.matter_update_key,
+      row.council_matter_watch?.update_key,
+      row.council_matter_watch?.matter_update_key,
+    );
+    if (matterUpdateKey) {
+      return {
+        identityField: "matter_update_key",
+        identityValue: matterUpdateKey,
+        itemId: matterUpdateKey,
+        itemKind: text(kind) || "council-matter",
+      };
+    }
     const requestId = firstText(row.request_id);
     if (requestId) {
       return { identityField: "request_id", identityValue: requestId, itemId: `notice:${requestId}`, itemKind: text(kind) || lens };
@@ -260,6 +280,20 @@ async function runStatement(db, sql, params = []) {
   const statement = db.prepare(sql);
   if (typeof statement.bind === "function") return statement.bind(...params).run();
   return statement.run(...params);
+}
+
+async function subscriberHasItem(db, subscriberId, itemId) {
+  const statement = db.prepare(SELECT_SUBSCRIBER_ITEM);
+  const bound = typeof statement.bind === "function" ? statement.bind(subscriberId, itemId) : statement;
+  if (typeof bound.first === "function") {
+    const row = await bound.first();
+    return Boolean(row);
+  }
+  const result = typeof bound.all === "function"
+    ? await bound.all()
+    : await statement.all?.(subscriberId, itemId);
+  const rows = Array.isArray(result?.results) ? result.results : (Array.isArray(result) ? result : []);
+  return rows.length > 0;
 }
 
 function randomDeliveryId() {
@@ -439,6 +473,11 @@ export async function enqueueEvaluatedSection(db, section, options = {}) {
       continue;
     }
     result.attempted++;
+    if (item.itemKind === "council-matter" && await subscriberHasItem(db, item.subscriberId, item.itemId)) {
+      result.duplicates++;
+      result.item_ids.push(item.itemId);
+      continue;
+    }
     const changes = changesFrom(await runInsert(db, insertParams(item)));
     if (changes === 0) result.duplicates++;
     else result.enqueued++;

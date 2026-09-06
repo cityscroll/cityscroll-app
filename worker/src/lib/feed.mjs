@@ -134,15 +134,20 @@ export function feedItems(kind, rows) {
       };
     }
     if (kind === "council-matter") {
+      const kindLabel = r.kind === "scheduled"
+        ? "Scheduled hearing"
+        : r.kind === "correction"
+          ? "Corrected official record"
+          : "Observed official action";
       return {
-        id: String(r.alert_id || r.observation_id || ""),
+        id: String(r.matter_update_key || r.alert_id || r.observation_id || ""),
         url: r.href || `https://cityscroll.org/matters/${encodeURIComponent(r.matter_id || "")}/`,
         title: r.short_title || `Council matter ${r.matter_id || ""}`,
         date: r.start_date || r.observed_at || null,
-        summary: [r.matter_ref, r.event_id, r.semantic_revision].filter(Boolean).join(" · "),
+        summary: [r.matter_ref, kindLabel, r.action_name].filter(Boolean).join(" · "),
         eventDate: r.start_date || r.observed_at || null,
-        phase: r.short_title || "Observed official action",
-        nextStep: r.action_name || "No later official action has been located.",
+        phase: kindLabel,
+        nextStep: r.short_title || r.action_name || "No later official action has been located.",
       };
     }
     if (kind === "legal_code") {

@@ -1,0 +1,297 @@
+{
+  "schema": "cityscroll.exact_council_matter_watch_update_evidence.v1",
+  "engineering_record": "cityscroll-engineering/exact-council-matter-watch-updates",
+  "renderer": "tools/render_exact_council_matter_watch_update_fixtures.mjs",
+  "revision": "ee07f6a544e15d427fc077d933ade6bf4004035f",
+  "data_vintage": "2026-08-10T13:08:13.019Z",
+  "captured_at": "2026-09-06T05:54:15Z",
+  "image_directory": ".artifacts/exact-council-matter-watch-updates",
+  "corpus_note": "Specimens render occurred, scheduled, and correction updates for an exact Council-matter watch from the committed meeting-outcomes snapshot. They describe retained official actions, not live publisher coverage.",
+  "image_policy": "Capture images are written to the ignored local directory above and are never committed. This manifest is the tracked proof: route, viewport, revision, data vintage, assertion and SHA-256 for each capture.",
+  "files": [
+    {
+      "name": "occurred-update-390x844.png",
+      "specimen": "occurred-update",
+      "route": "/matters/78605/",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "ee07f6a544e15d427fc077d933ade6bf4004035f",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 390px an occurred matter update names the official action and a durable history link",
+      "observations": {
+        "details_open": true,
+        "target_size": {
+          "total_controls": 5,
+          "block_controls": 5,
+          "block_minimum_height": 44,
+          "block_controls_meet_24px": true
+        },
+        "no_horizontal_overflow": true
+      },
+      "bytes": 71329,
+      "sha256": "b98395e3d9bc373410f6fa87288c4b9e4a20dd71fe6ec953ed9399b2907aa2a5",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "occurred-update-1440x900.png",
+      "specimen": "occurred-update",
+      "route": "/matters/78605/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "ee07f6a544e15d427fc077d933ade6bf4004035f",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 1440px an occurred matter update names the official action and a durable history link",
+      "observations": {
+        "details_open": true,
+        "target_size": {
+          "total_controls": 5,
+          "block_controls": 5,
+          "block_minimum_height": 44,
+          "block_controls_meet_24px": true
+        },
+        "no_horizontal_overflow": true
+      },
+      "bytes": 80249,
+      "sha256": "9f4c4b38bcbf669ffe9aa4b42dcf76e10b4c2196a747cf496cf6587670a8eb74",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "scheduled-update-390x844.png",
+      "specimen": "scheduled-update",
+      "route": "/matters/78605/scheduled/",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "ee07f6a544e15d427fc077d933ade6bf4004035f",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 390px a future hearing is described as scheduled, never held",
+      "observations": {
+        "target_size": {
+          "total_controls": 3,
+          "block_controls": 3,
+          "block_minimum_height": 44,
+          "block_controls_meet_24px": true
+        },
+        "no_horizontal_overflow": true
+      },
+      "bytes": 23674,
+      "sha256": "faaf097fb62743b910774348b3c7886fdbd2deca3e2e11a984b42e70b2a11b87",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "scheduled-update-1440x900.png",
+      "specimen": "scheduled-update",
+      "route": "/matters/78605/scheduled/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "ee07f6a544e15d427fc077d933ade6bf4004035f",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 1440px a future hearing is described as scheduled, never held",
+      "observations": {
+        "target_size": {
+          "total_controls": 3,
+          "block_controls": 3,
+          "block_minimum_height": 44,
+          "block_controls_meet_24px": true
+        },
+        "no_horizontal_overflow": true
+      },
+      "bytes": 28601,
+      "sha256": "2f41f3c2345a599e631a2475232893d1a54f64e8ff73ba6645d24518927bd425",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "correction-update-390x844.png",
+      "specimen": "correction-update",
+      "route": "/matters/78605/correction/",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "ee07f6a544e15d427fc077d933ade6bf4004035f",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 390px a corrected same-event action is labelled a correction and stale history remains",
+      "observations": {
+        "target_size": {
+          "total_controls": 3,
+          "block_controls": 3,
+          "block_minimum_height": 44,
+          "block_controls_meet_24px": true
+        },
+        "no_horizontal_overflow": true
+      },
+      "bytes": 32714,
+      "sha256": "a81808126f1f43e614026fa4def88d2adbc9d129d7b044556924171bf6a3989f",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "correction-update-1440x900.png",
+      "specimen": "correction-update",
+      "route": "/matters/78605/correction/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "ee07f6a544e15d427fc077d933ade6bf4004035f",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 1440px a corrected same-event action is labelled a correction and stale history remains",
+      "observations": {
+        "target_size": {
+          "total_controls": 3,
+          "block_controls": 3,
+          "block_minimum_height": 44,
+          "block_controls_meet_24px": true
+        },
+        "no_horizontal_overflow": true
+      },
+      "bytes": 37332,
+      "sha256": "1837226f8d4f9234258ec3234c5cea8c92fd4ad1e2e2d599761b7b3754aa0d69",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "without-scripting-390x844.png",
+      "specimen": "without-scripting",
+      "route": "/matters/78605/",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "ee07f6a544e15d427fc077d933ade6bf4004035f",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "disabled",
+      "assertion": "at 390px native matter history links remain usable with scripting disabled",
+      "observations": {
+        "follow_links": 2,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 58397,
+      "sha256": "d858e36ddf35feb78b729aacc629e0e0fc0bdbcb87a9778344791ef8cb612b46",
+      "axe": {
+        "violations_total": null,
+        "failing_violations": [],
+        "passes": true,
+        "note": "scripting disabled; the same page is gated scripted"
+      }
+    },
+    {
+      "name": "without-scripting-1440x900.png",
+      "specimen": "without-scripting",
+      "route": "/matters/78605/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "ee07f6a544e15d427fc077d933ade6bf4004035f",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "disabled",
+      "assertion": "at 1440px native matter history links remain usable with scripting disabled",
+      "observations": {
+        "follow_links": 2,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 65722,
+      "sha256": "49508c22a8f1cda65d89b8ed7bc766e8fe71a6f05c56b0f9a62956ecce7a567d",
+      "axe": {
+        "violations_total": null,
+        "failing_violations": [],
+        "passes": true,
+        "note": "scripting disabled; the same page is gated scripted"
+      }
+    },
+    {
+      "name": "two-hundred-percent-zoom-390x844.png",
+      "specimen": "two-hundred-percent-zoom",
+      "route": "/matters/78605/",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "ee07f6a544e15d427fc077d933ade6bf4004035f",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 390px zoomed to 200% the matter update reflows without horizontal overflow",
+      "observations": {
+        "no_horizontal_overflow": true,
+        "target_size": {
+          "total_controls": 5,
+          "block_controls": 5,
+          "block_minimum_height": 88,
+          "block_controls_meet_24px": true
+        }
+      },
+      "bytes": 146052,
+      "sha256": "30a88ea705d40e16eb631e8e0251d36e43aae665381c76ebac697d4972e6cfe2",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "two-hundred-percent-zoom-1440x900.png",
+      "specimen": "two-hundred-percent-zoom",
+      "route": "/matters/78605/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "ee07f6a544e15d427fc077d933ade6bf4004035f",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 1440px zoomed to 200% the matter update reflows without horizontal overflow",
+      "observations": {
+        "no_horizontal_overflow": true,
+        "target_size": {
+          "total_controls": 5,
+          "block_controls": 5,
+          "block_minimum_height": 88,
+          "block_controls_meet_24px": true
+        }
+      },
+      "bytes": 140044,
+      "sha256": "9a2abe686187f0eb67e9c690e09e5120403c95c0b53556389def4f737afe95a4",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    }
+  ]
+}

@@ -16,6 +16,11 @@ import {
   parseCouncilMatterRef,
   retainedMatterIdsFromSnapshot,
 } from "./council_matter_watch_scope.mjs";
+import {
+  MATTER_UPDATE_KIND,
+  classifyCouncilMatterChange,
+  renderCouncilMatterWatchUpdate,
+} from "./council_matter_watch_change.mjs";
 
 export {
   COUNCIL_MATTER_KNOWN_TENANTS,
@@ -210,15 +215,21 @@ export function councilMatterWatchSummaryHtml(watchInput, { latest = null, stale
     return `<p class="following-scope-error" role="status">This exact matter watch cannot be saved. ${esc(watch.reason || "The identity is not supported.")}</p>`;
   }
   const observed = latest || latestObservedAction(watch.matter_id);
-  const action = observed?.action_name
-    ? `Latest observed official action: ${observed.action_name}${observed.event_time ? ` (${observed.event_time})` : ""}.`
-    : "No later official action has been located.";
+  const kind = observed?.kind || classifyCouncilMatterChange({ current: observed }) || MATTER_UPDATE_KIND.OCCURRED;
+  const action = observed?.short_title
+    || (kind === MATTER_UPDATE_KIND.SCHEDULED && observed?.event_time
+      ? `A hearing is scheduled for ${observed.event_time}.`
+      : observed?.action_name
+        ? `Latest observed official action: ${observed.action_name}${observed.event_time ? ` (${observed.event_time})` : ""}.`
+        : "No later official action has been located.");
   const staleNote = stale
     ? `<p class="matter-watch-stale" role="status">The last known history is still shown. A later refresh has not been applied.</p>`
     : "";
-  return `<section class="matter-watch-summary" data-matter-ref="${esc(watch.matter_ref)}">
+  const updateMarkup = observed?.matter_update_key ? renderCouncilMatterWatchUpdate(observed, { includeSource: false }) : "";
+  return `<section class="matter-watch-summary" data-matter-ref="${esc(watch.matter_ref)}" data-matter-update-kind="${esc(observed ? kind : "none")}">
     <p>This watch is for New York City Council matter ${esc(watch.matter_id)} only. Other matters heard at the same meeting are not included.</p>
     <p class="matter-watch-latest">${esc(action)}</p>
+    ${updateMarkup}
     ${staleNote}
     <details class="matter-watch-source"><summary>Source identity and acquisition</summary>
       <dl>
