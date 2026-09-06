@@ -1,0 +1,414 @@
+{
+  "schema": "cityscroll.desk_operator_overview_render_manifest.v1",
+  "evidence_class": "isolated-producer-render",
+  "capture_mode": "headless-playwright-loopback-static-render",
+  "captured_at": "2026-09-06T06:13:50Z",
+  "route": "/data-sources",
+  "revision_format": "git-object-id-prefix-12",
+  "revision": "5600c778fe76",
+  "data_vintage": "committed source-contract ledger and source-health observations at 2026-09-05T13:44:00.909Z; sources_hash b94236b6253641c3b6c3d6f25492716e5366e71e785cb4e1471d56dc287dd290; no publisher refresh",
+  "data_revision": "b94236b6253641c3b6c3d6f25492716e5366e71e785cb4e1471d56dc287dd290",
+  "image_directory": "docs/evidence/desk-operator-exception-overview/captures",
+  "image_policy": "Capture images remain ignored and are not committed. Their SHA-256 values bind this textual manifest to the reviewed render.",
+  "production_scope": "These captures are isolated render evidence and are not labeled as live.",
+  "denominators": {
+    "actionable_conditions": 3,
+    "affected_sources": 54,
+    "insufficient_monitoring": 54,
+    "definition": {
+      "actionable_conditions": "Distinct actionable condition identifiers present in the measured set.",
+      "affected_sources": "Distinct canonical sources carrying at least one actionable condition.",
+      "insufficient_monitoring": "Distinct canonical sources missing required monitoring evidence."
+    }
+  },
+  "checks": {
+    "opens_on_source_health": true,
+    "product_publisher_condition_mode_filters": true,
+    "inspect_dismiss_preserves_filters": true,
+    "no_javascript_destinations": true,
+    "missing_input_is_not_all_clear": true,
+    "zoom_200_percent": true,
+    "overview_target_minimum_css_pixels": 44,
+    "no_horizontal_page_overflow": true
+  },
+  "captures": [
+    {
+      "name": "overview-home-390.png",
+      "journey": "overview-home",
+      "viewport": [
+        390,
+        844
+      ],
+      "scripting": true,
+      "route": "/desk.html",
+      "revision": "5600c778fe76",
+      "data_vintage": "committed source-contract ledger and source-health observations at 2026-09-05T13:44:00.909Z; sources_hash b94236b6253641c3b6c3d6f25492716e5366e71e785cb4e1471d56dc287dd290; no publisher refresh",
+      "assertion": "the desk opens on source health with three denominators; axe_passes=True no_page_overflow=True zoom_overflow=True overview_targets_44=True",
+      "journey_state": {
+        "overview_hidden": false,
+        "graph_hidden": true,
+        "pressed": [
+          "overviewToggle"
+        ],
+        "denominators": [
+          "actionable-conditions",
+          "affected-sources",
+          "insufficient-monitoring"
+        ],
+        "complete_names": [
+          "2020 Neighborhood Tabulation Areas",
+          "Annual City Council Report on Eligible List Utilization (Local Law 50 of 2004)",
+          "Annual Examination Schedule"
+        ]
+      },
+      "axe": {
+        "violations_total": 0,
+        "critical_or_serious": [],
+        "failing_violations": [],
+        "passes": true
+      },
+      "overflow": {
+        "scroll_width": 390,
+        "viewport_width": 390,
+        "horizontal_overflow": false
+      },
+      "zoom_overflow": {
+        "scroll_width": 320,
+        "viewport_width": 320,
+        "horizontal_overflow": false
+      },
+      "overview_targets": {
+        "floor": 44,
+        "measured": 72,
+        "undersized": []
+      },
+      "sha256": "da511700504a22486c05cbbac00cf047360809c0dc82b63b35d26d9fcc4aada4",
+      "render_content_sha256": "da511700504a22486c05cbbac00cf047360809c0dc82b63b35d26d9fcc4aada4",
+      "screenshot_sha256": "08e03576d66d64602875ae02d8218fc22d094b0c42e4f566849885d78354615f",
+      "screenshot_local_path": "docs/evidence/desk-operator-exception-overview/captures/overview-home-390.png"
+    },
+    {
+      "name": "overview-home-1440.png",
+      "journey": "overview-home",
+      "viewport": [
+        1440,
+        900
+      ],
+      "scripting": true,
+      "route": "/desk.html",
+      "revision": "5600c778fe76",
+      "data_vintage": "committed source-contract ledger and source-health observations at 2026-09-05T13:44:00.909Z; sources_hash b94236b6253641c3b6c3d6f25492716e5366e71e785cb4e1471d56dc287dd290; no publisher refresh",
+      "assertion": "the desk opens on source health with three denominators; axe_passes=True no_page_overflow=True zoom_overflow=True overview_targets_44=True",
+      "journey_state": {
+        "overview_hidden": false,
+        "graph_hidden": true,
+        "pressed": [
+          "overviewToggle"
+        ],
+        "denominators": [
+          "actionable-conditions",
+          "affected-sources",
+          "insufficient-monitoring"
+        ],
+        "complete_names": [
+          "2020 Neighborhood Tabulation Areas",
+          "Annual City Council Report on Eligible List Utilization (Local Law 50 of 2004)",
+          "Annual Examination Schedule"
+        ]
+      },
+      "axe": {
+        "violations_total": 0,
+        "critical_or_serious": [],
+        "failing_violations": [],
+        "passes": true
+      },
+      "overflow": {
+        "scroll_width": 1440,
+        "viewport_width": 1440,
+        "horizontal_overflow": false
+      },
+      "zoom_overflow": {
+        "scroll_width": 720,
+        "viewport_width": 720,
+        "horizontal_overflow": false
+      },
+      "overview_targets": {
+        "floor": 44,
+        "measured": 72,
+        "undersized": []
+      },
+      "sha256": "da511700504a22486c05cbbac00cf047360809c0dc82b63b35d26d9fcc4aada4",
+      "render_content_sha256": "da511700504a22486c05cbbac00cf047360809c0dc82b63b35d26d9fcc4aada4",
+      "screenshot_sha256": "6714ff9b505f868e8b2f9bbb00e4e6e8239595d5331f1b82535c963e5dcd154d",
+      "screenshot_local_path": "docs/evidence/desk-operator-exception-overview/captures/overview-home-1440.png"
+    },
+    {
+      "name": "filter-inspect-dismiss-390.png",
+      "journey": "filter-inspect-dismiss",
+      "viewport": [
+        390,
+        844
+      ],
+      "scripting": true,
+      "route": "/desk.html",
+      "revision": "5600c778fe76",
+      "data_vintage": "committed source-contract ledger and source-health observations at 2026-09-05T13:44:00.909Z; sources_hash b94236b6253641c3b6c3d6f25492716e5366e71e785cb4e1471d56dc287dd290; no publisher refresh",
+      "assertion": "product filter, inspect, dismiss, and restored filters; axe_passes=True no_page_overflow=True zoom_overflow=True overview_targets_44=True",
+      "journey_state": {
+        "filtered_ids": [
+          "checkbook-contracts",
+          "checkbook-spending",
+          "city-record",
+          "ocp-recent-contract-awards"
+        ],
+        "inspected_heading": "Source health",
+        "product_filter": "contracts",
+        "overview_still_present": true
+      },
+      "axe": {
+        "violations_total": 0,
+        "critical_or_serious": [],
+        "failing_violations": [],
+        "passes": true
+      },
+      "overflow": {
+        "scroll_width": 390,
+        "viewport_width": 390,
+        "horizontal_overflow": false
+      },
+      "zoom_overflow": {
+        "scroll_width": 320,
+        "viewport_width": 320,
+        "horizontal_overflow": false
+      },
+      "overview_targets": {
+        "floor": 44,
+        "measured": 9,
+        "undersized": []
+      },
+      "sha256": "60bc4477762bfc6e8b92a356b5bfda7f84964a0a33815ef0fc2b2c7df40be0a8",
+      "render_content_sha256": "60bc4477762bfc6e8b92a356b5bfda7f84964a0a33815ef0fc2b2c7df40be0a8",
+      "screenshot_sha256": "a45e5ac7a01e571754ea5ff32f0d19bd303ab04a0ba98b2cf7faa380022915d3",
+      "screenshot_local_path": "docs/evidence/desk-operator-exception-overview/captures/filter-inspect-dismiss-390.png"
+    },
+    {
+      "name": "filter-inspect-dismiss-1440.png",
+      "journey": "filter-inspect-dismiss",
+      "viewport": [
+        1440,
+        900
+      ],
+      "scripting": true,
+      "route": "/desk.html",
+      "revision": "5600c778fe76",
+      "data_vintage": "committed source-contract ledger and source-health observations at 2026-09-05T13:44:00.909Z; sources_hash b94236b6253641c3b6c3d6f25492716e5366e71e785cb4e1471d56dc287dd290; no publisher refresh",
+      "assertion": "product filter, inspect, dismiss, and restored filters; axe_passes=True no_page_overflow=True zoom_overflow=True overview_targets_44=True",
+      "journey_state": {
+        "filtered_ids": [
+          "checkbook-contracts",
+          "checkbook-spending",
+          "city-record",
+          "ocp-recent-contract-awards"
+        ],
+        "inspected_heading": "Source health",
+        "product_filter": "contracts",
+        "overview_still_present": true
+      },
+      "axe": {
+        "violations_total": 0,
+        "critical_or_serious": [],
+        "failing_violations": [],
+        "passes": true
+      },
+      "overflow": {
+        "scroll_width": 1440,
+        "viewport_width": 1440,
+        "horizontal_overflow": false
+      },
+      "zoom_overflow": {
+        "scroll_width": 720,
+        "viewport_width": 720,
+        "horizontal_overflow": false
+      },
+      "overview_targets": {
+        "floor": 44,
+        "measured": 9,
+        "undersized": []
+      },
+      "sha256": "60bc4477762bfc6e8b92a356b5bfda7f84964a0a33815ef0fc2b2c7df40be0a8",
+      "render_content_sha256": "60bc4477762bfc6e8b92a356b5bfda7f84964a0a33815ef0fc2b2c7df40be0a8",
+      "screenshot_sha256": "1f62ea9b9d2a97aaa8a861dedc23b726e180349ed56c08f90346105921df1f97",
+      "screenshot_local_path": "docs/evidence/desk-operator-exception-overview/captures/filter-inspect-dismiss-1440.png"
+    },
+    {
+      "name": "no-javascript-390.png",
+      "journey": "no-javascript",
+      "viewport": [
+        390,
+        844
+      ],
+      "scripting": false,
+      "route": "/desk.html",
+      "revision": "5600c778fe76",
+      "data_vintage": "committed source-contract ledger and source-health observations at 2026-09-05T13:44:00.909Z; sources_hash b94236b6253641c3b6c3d6f25492716e5366e71e785cb4e1471d56dc287dd290; no publisher refresh",
+      "assertion": "declared destinations remain ordinary links without JavaScript; axe_passes=True no_page_overflow=True zoom_overflow=True overview_targets_44=True",
+      "journey_state": {
+        "checkbook_link": true,
+        "contracts_route": true
+      },
+      "axe": {
+        "passes": true,
+        "violations_total": 0,
+        "critical_or_serious": [],
+        "failing_violations": []
+      },
+      "overflow": {
+        "scroll_width": 390,
+        "viewport_width": 390,
+        "horizontal_overflow": false
+      },
+      "zoom_overflow": {
+        "scroll_width": 320,
+        "viewport_width": 320,
+        "horizontal_overflow": false
+      },
+      "overview_targets": {
+        "undersized": [],
+        "measured": 0,
+        "floor": 44
+      },
+      "sha256": "129bf0c73eac2c4d68e22b8448347e34556d48483053e3ec376e9f4c5ae624cb",
+      "render_content_sha256": "129bf0c73eac2c4d68e22b8448347e34556d48483053e3ec376e9f4c5ae624cb",
+      "screenshot_sha256": "77e112c00f40ea29b9626fac1840650b001d59ab77ff57034954174d02dfe805",
+      "screenshot_local_path": "docs/evidence/desk-operator-exception-overview/captures/no-javascript-390.png"
+    },
+    {
+      "name": "no-javascript-1440.png",
+      "journey": "no-javascript",
+      "viewport": [
+        1440,
+        900
+      ],
+      "scripting": false,
+      "route": "/desk.html",
+      "revision": "5600c778fe76",
+      "data_vintage": "committed source-contract ledger and source-health observations at 2026-09-05T13:44:00.909Z; sources_hash b94236b6253641c3b6c3d6f25492716e5366e71e785cb4e1471d56dc287dd290; no publisher refresh",
+      "assertion": "declared destinations remain ordinary links without JavaScript; axe_passes=True no_page_overflow=True zoom_overflow=True overview_targets_44=True",
+      "journey_state": {
+        "checkbook_link": true,
+        "contracts_route": true
+      },
+      "axe": {
+        "passes": true,
+        "violations_total": 0,
+        "critical_or_serious": [],
+        "failing_violations": []
+      },
+      "overflow": {
+        "scroll_width": 1440,
+        "viewport_width": 1440,
+        "horizontal_overflow": false
+      },
+      "zoom_overflow": {
+        "scroll_width": 720,
+        "viewport_width": 720,
+        "horizontal_overflow": false
+      },
+      "overview_targets": {
+        "undersized": [],
+        "measured": 0,
+        "floor": 44
+      },
+      "sha256": "129bf0c73eac2c4d68e22b8448347e34556d48483053e3ec376e9f4c5ae624cb",
+      "render_content_sha256": "129bf0c73eac2c4d68e22b8448347e34556d48483053e3ec376e9f4c5ae624cb",
+      "screenshot_sha256": "b5c458e0ff1ac45c6ec055647c79a18ba8cdc693f83bbe06b708fcea9a8932c3",
+      "screenshot_local_path": "docs/evidence/desk-operator-exception-overview/captures/no-javascript-1440.png"
+    },
+    {
+      "name": "overview-unavailable-390.png",
+      "journey": "overview-unavailable",
+      "viewport": [
+        390,
+        844
+      ],
+      "scripting": true,
+      "route": "/desk-unavailable.html",
+      "revision": "5600c778fe76",
+      "data_vintage": "committed source-contract ledger and source-health observations at 2026-09-05T13:44:00.909Z; sources_hash b94236b6253641c3b6c3d6f25492716e5366e71e785cb4e1471d56dc287dd290; no publisher refresh",
+      "assertion": "missing input is not an all-clear; axe_passes=True no_page_overflow=True zoom_overflow=True overview_targets_44=True",
+      "journey_state": {
+        "status": "unavailable",
+        "all_clear": true
+      },
+      "axe": {
+        "violations_total": 0,
+        "critical_or_serious": [],
+        "failing_violations": [],
+        "passes": true
+      },
+      "overflow": {
+        "scroll_width": 390,
+        "viewport_width": 390,
+        "horizontal_overflow": false
+      },
+      "zoom_overflow": {
+        "scroll_width": 320,
+        "viewport_width": 320,
+        "horizontal_overflow": false
+      },
+      "overview_targets": {
+        "floor": 44,
+        "measured": 1,
+        "undersized": []
+      },
+      "sha256": "c514ca38cdb6f560fe50b3e44003085928a1f875acda4d713152894a6f896b39",
+      "render_content_sha256": "c514ca38cdb6f560fe50b3e44003085928a1f875acda4d713152894a6f896b39",
+      "screenshot_sha256": "34406d7d60608c650772b3ed9f5c4e4077df8a8ed51c2d099baee8a8f66841d1",
+      "screenshot_local_path": "docs/evidence/desk-operator-exception-overview/captures/overview-unavailable-390.png"
+    },
+    {
+      "name": "overview-unavailable-1440.png",
+      "journey": "overview-unavailable",
+      "viewport": [
+        1440,
+        900
+      ],
+      "scripting": true,
+      "route": "/desk-unavailable.html",
+      "revision": "5600c778fe76",
+      "data_vintage": "committed source-contract ledger and source-health observations at 2026-09-05T13:44:00.909Z; sources_hash b94236b6253641c3b6c3d6f25492716e5366e71e785cb4e1471d56dc287dd290; no publisher refresh",
+      "assertion": "missing input is not an all-clear; axe_passes=True no_page_overflow=True zoom_overflow=True overview_targets_44=True",
+      "journey_state": {
+        "status": "unavailable",
+        "all_clear": true
+      },
+      "axe": {
+        "violations_total": 0,
+        "critical_or_serious": [],
+        "failing_violations": [],
+        "passes": true
+      },
+      "overflow": {
+        "scroll_width": 1440,
+        "viewport_width": 1440,
+        "horizontal_overflow": false
+      },
+      "zoom_overflow": {
+        "scroll_width": 720,
+        "viewport_width": 720,
+        "horizontal_overflow": false
+      },
+      "overview_targets": {
+        "floor": 44,
+        "measured": 1,
+        "undersized": []
+      },
+      "sha256": "c514ca38cdb6f560fe50b3e44003085928a1f875acda4d713152894a6f896b39",
+      "render_content_sha256": "c514ca38cdb6f560fe50b3e44003085928a1f875acda4d713152894a6f896b39",
+      "screenshot_sha256": "cc732ea36334f726b00e0970fdccf546944f53063ddad96e2c05e0bab26baf93",
+      "screenshot_local_path": "docs/evidence/desk-operator-exception-overview/captures/overview-unavailable-1440.png"
+    }
+  ],
+  "captures_passing": 8,
+  "captures_total": 8
+}
