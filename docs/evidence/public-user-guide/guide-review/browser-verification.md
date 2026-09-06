@@ -4,7 +4,7 @@
 8 journeys at 390px and 1440px, all assertions holding. This file records
 the two checks run alongside it that the manifest does not itself contain.
 
-Repository revision `320c011ee06d9aa0fa00845b587bb47d5095aa13`, against the
+Repository revision `8bf1a28c9c863c68841a63190faf6a5d898517ed`, against the
 local static build, with no network.
 
 ## The shared accessibility and focus gates

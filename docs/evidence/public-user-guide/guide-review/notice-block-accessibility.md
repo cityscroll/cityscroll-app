@@ -18,7 +18,7 @@ the accessibility checks before an editor can reach for them.
 ## What ran
 
 The full `tools/capture_guide_release.py` pass at repository revision
-`320c011ee06d9aa0fa00845b587bb47d5095aa13`, with a `correction` and a
+`8bf1a28c9c863c68841a63190faf6a5d898517ed`, with a `correction` and a
 `historical_note` on the tutorial: 42 captures and 8 journeys, all assertions
 holding.
 
@@ -39,8 +39,8 @@ the retained proof:
 
 | Capture | sha256 |
 | --- | --- |
-| tutorial with notices, 390 | `09b21331cdbde2f022b432b1a33e89db848ccd57b3bac5ccb38fa8c7fc3e743a` |
-| tutorial with notices, 1440 | `1b25b64228c141b0a56e939947edda96fac8ff716561cae32050ed13bb63507d` |
+| tutorial with notices, 390 | `3fe6fae019d4a7fe057f17198dd4c245e889c748030c759a425da2cc289331d5` |
+| tutorial with notices, 1440 | `90da981fef1846fd774f0d15c300843206c277603b87acfdd17e90ccda1278b1` |
 
 ## Reproducing it
 

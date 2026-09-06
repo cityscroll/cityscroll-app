@@ -3,8 +3,8 @@
   "record": "cityscroll-engineering/guide-review-lane",
   "capture_mode": "local_static_site_playwright_no_committed_image",
   "base": "local static site build (site/)",
-  "repository_revision": "320c011ee06d9aa0fa00845b587bb47d5095aa13",
-  "repository_state": "uncommitted changes present at capture time",
+  "repository_revision": "8bf1a28c9c863c68841a63190faf6a5d898517ed",
+  "repository_state": "clean",
   "note": "No-regression evidence for the change that adds the guide review lane. The lane is a build-time projection with no public surface of its own, so this capture answers the question that matters for a reader: every published guide document still behaves as it did. Every check runs against the tracked static documents served locally, so it reproduces from a checkout with no network and no deploy. Screenshots stay under the ignored .artifacts/ path and only their sha256 is recorded, per docs/capture-manifest-guard.md.",
   "data_vintage": "Not applicable to the guide documents: they are prose built from tracked sources and contain no civic records. Their review dates are editorial facts recorded in the article sources, not observations of live data. The search document is served from the local build and its results are not asserted.",
   "viewports": [
@@ -200,8 +200,8 @@
       "internal_links_checked": 0,
       "broken_internal_links": [],
       "record_content_deferred_to_live_check": [],
-      "visible_text_characters": 1049,
-      "content_sha256": "9c7871ab035dbe711470a25496eb6c3b5054f5b164c51ff9caca44d40d02884a",
+      "visible_text_characters": 1057,
+      "content_sha256": "266a6d2726b842f51e2a86b7dbc2b0db8704612ed744a0c4df0f57649a16e361",
       "capture_sha256": "838416b32fc5885b163eaf654e32cdafaaea63c03421f987b57743d5c4842425",
       "local_capture_path": ".artifacts/guide-review-capture/home-390.png",
       "file": null
@@ -225,12 +225,12 @@
         "withoutIndicator": []
       },
       "axe_critical_or_serious": [],
-      "internal_links_checked": 24,
+      "internal_links_checked": 25,
       "broken_internal_links": [],
       "record_content_deferred_to_live_check": [],
-      "visible_text_characters": 4385,
+      "visible_text_characters": 4398,
       "content_sha256": "3195fe1106f4efd85b2d44f013ff6a6d5deaf921304d5b93562cfe3303265e7d",
-      "capture_sha256": "91056f8347ce413d3f6443c3b5197b6849a3d8118810812635293c567d57894b",
+      "capture_sha256": "52be78d6214f9061f50f991d759d94c419e4078eb411513527abc180df0aee1f",
       "local_capture_path": ".artifacts/guide-review-capture/guide-home-390.png",
       "file": null
     },
@@ -256,9 +256,9 @@
       "internal_links_checked": 10,
       "broken_internal_links": [],
       "record_content_deferred_to_live_check": [],
-      "visible_text_characters": 6353,
+      "visible_text_characters": 6366,
       "content_sha256": "196670a03dd3b185afe1e48de01e94bdf9cd37a985176c729516be4bdde39398",
-      "capture_sha256": "5c63a49ba53b1a51289a3a7e6f73e854312aaf46724cd0352e5a05e6e0566a41",
+      "capture_sha256": "77d3d4904b6fc06c4d8d4704b1b213662201f099e3823c6f6e4f132e8d60c4a2",
       "local_capture_path": ".artifacts/guide-review-capture/guide-tutorial-390.png",
       "file": null
     },
@@ -286,9 +286,9 @@
       "record_content_deferred_to_live_check": [
         "/notices/20260605008"
       ],
-      "visible_text_characters": 6303,
+      "visible_text_characters": 6316,
       "content_sha256": "16e18b8952e76fecb12581473852117fcccfa93a37dc755d174bff2b97958125",
-      "capture_sha256": "580490133dc134a7f21d1c1c2155c01c228a9bdc1af2a956c9951c5668bf36e7",
+      "capture_sha256": "858f434fc4848d46c572df3b195f69e4586ca54d88321576aaf82e9c3f4b35c3",
       "local_capture_path": ".artifacts/guide-review-capture/guide-tutorial-notice-mandate-390.png",
       "file": null
     },
@@ -317,9 +317,9 @@
         "/agencies/homeless-services/",
         "/notices/20231222103"
       ],
-      "visible_text_characters": 6514,
+      "visible_text_characters": 6527,
       "content_sha256": "b32144f041cef479b77435fd2bb23659c2c3badadc63bf4023ca12b8dc3c8827",
-      "capture_sha256": "451c0e4b6a3f6da6eeb9658d123ba473345ea9d9c1b452782c216cd099a3f6a2",
+      "capture_sha256": "179d2bb674387232ed0912877b7d4758aeaee3b19d34b5e5246c3248ff3b8ec1",
       "local_capture_path": ".artifacts/guide-review-capture/guide-tutorial-award-trail-390.png",
       "file": null
     },
@@ -347,9 +347,9 @@
       "record_content_deferred_to_live_check": [
         "/agencies/parks-and-recreation/"
       ],
-      "visible_text_characters": 5052,
+      "visible_text_characters": 5065,
       "content_sha256": "4dae2e46917b92a1fd8e0ddd4aef09543cf73ec97dda0c68914b4695b3ea1171",
-      "capture_sha256": "bdfa92de84c5bcc4619586f5811feaf460a16d1f5ddedd6b7f077d0f28b1d9ab",
+      "capture_sha256": "251a2009b3698863fc84ca4a9cb1dcdaa3b998c926c3998197065c583abd6d84",
       "local_capture_path": ".artifacts/guide-review-capture/guide-how-to-connection-evidence-390.png",
       "file": null
     },
@@ -377,9 +377,9 @@
       "record_content_deferred_to_live_check": [
         "/agencies/parks-and-recreation/"
       ],
-      "visible_text_characters": 5089,
+      "visible_text_characters": 5102,
       "content_sha256": "4a96a8f6db5a5889c190bc2b28648af3c231001d0d6437d8b49875001a49fbf6",
-      "capture_sha256": "be91e27a04822e878d8ee06728fe3ec6f7d16e5bbbf205deee84abee045eae0d",
+      "capture_sha256": "fc855d41e8bc608252e037f03b25f080e7ad8efe1e9faf1ad168ef05064b9a5c",
       "local_capture_path": ".artifacts/guide-review-capture/guide-how-to-as-of-day-390.png",
       "file": null
     },
@@ -408,9 +408,9 @@
         "/notices/20231222103",
         "/vendors/HOUSING%20OPTIONS%20GERIATRIC%20ASSOCIATION%20RESOURCES/"
       ],
-      "visible_text_characters": 6262,
+      "visible_text_characters": 6275,
       "content_sha256": "d63f1804a60859febcec49434382fd30be3ba8b47f8e10d1692079649e842d44",
-      "capture_sha256": "8d097cdde955a05bfa489aa899b72c24e49aed89dd2039ba04b4e5798f2b1d81",
+      "capture_sha256": "8fb3b74be61f328646efe847dbed29dc7957475d460e6d44685bf7a273abad82",
       "local_capture_path": ".artifacts/guide-review-capture/guide-how-to-collect-records-390.png",
       "file": null
     },
@@ -436,9 +436,9 @@
       "internal_links_checked": 11,
       "broken_internal_links": [],
       "record_content_deferred_to_live_check": [],
-      "visible_text_characters": 7129,
+      "visible_text_characters": 7142,
       "content_sha256": "26a190cf0afc43b99fe2a0e793b78826dc4b953feef454a25abdd01ba03df637",
-      "capture_sha256": "77333878e15dc200eb74f01beff691dc636ae244bb16b4c6a37b574a88888c46",
+      "capture_sha256": "9f8564a67effffd2bfe0ff86364e47675f889f221ab15c52a21c39998c64c0fa",
       "local_capture_path": ".artifacts/guide-review-capture/guide-understand-public-record-390.png",
       "file": null
     },
@@ -464,9 +464,9 @@
       "internal_links_checked": 10,
       "broken_internal_links": [],
       "record_content_deferred_to_live_check": [],
-      "visible_text_characters": 3860,
+      "visible_text_characters": 3873,
       "content_sha256": "b6e49797f1a8e9d54a36514024276588949a495b6f39be0aea6dff8cd7ed8fd2",
-      "capture_sha256": "a59cccf2e29ee11c8430e0b217d2d3c821abfb8b2ccec1c97b7201d1503fd3a2",
+      "capture_sha256": "f82a8826e438e3e3c1da3551120fb2c3ff3e033a22d74881ae5924543fa62118",
       "local_capture_path": ".artifacts/guide-review-capture/guide-understand-connections-390.png",
       "file": null
     },
@@ -492,9 +492,9 @@
       "internal_links_checked": 10,
       "broken_internal_links": [],
       "record_content_deferred_to_live_check": [],
-      "visible_text_characters": 4174,
+      "visible_text_characters": 4187,
       "content_sha256": "07eeae18d53084565d3d82639491e3545adc2559c45ae2a91f69836f0f13cb7d",
-      "capture_sha256": "f0163a63cb505d86bf974b31128f0321d2ad7ee77145c4a6044bcf24cccc8e1d",
+      "capture_sha256": "9b26007be7eadc3f5695927ce49a663703cf77e7bfcc732032cbd02e213c9aba",
       "local_capture_path": ".artifacts/guide-review-capture/guide-understand-dates-390.png",
       "file": null
     },
@@ -520,9 +520,9 @@
       "internal_links_checked": 16,
       "broken_internal_links": [],
       "record_content_deferred_to_live_check": [],
-      "visible_text_characters": 4860,
+      "visible_text_characters": 4873,
       "content_sha256": "fc7fe8431e139b7e6e30da2dc55b4b2ae05384cdf5881e4e009021510b035918",
-      "capture_sha256": "0c611c65a6a1b76673bbff72f09782f7f3bbf56e6eff5b714a3d214417289cb9",
+      "capture_sha256": "b92801766c0f70b6f2b65d63016a709bdf388a3711689bb5841430475a638539",
       "local_capture_path": ".artifacts/guide-review-capture/guide-understand-flags-390.png",
       "file": null
     },
@@ -548,9 +548,9 @@
       "internal_links_checked": 13,
       "broken_internal_links": [],
       "record_content_deferred_to_live_check": [],
-      "visible_text_characters": 6049,
+      "visible_text_characters": 6062,
       "content_sha256": "b9bcda323f3ee6452bb90a64a705d5cb3d03bff1eb9c6894052c077be8c0c3cd",
-      "capture_sha256": "82f2e01de3f1399c508152faf6345a79ba906de32448da45243ae3e212f0a260",
+      "capture_sha256": "6a8f0955cfcaa5343bc5ed85b98d82d81010438c44d3a422c262ae220af8d34f",
       "local_capture_path": ".artifacts/guide-review-capture/guide-reference-glossary-390.png",
       "file": null
     },
@@ -576,9 +576,9 @@
       "internal_links_checked": 11,
       "broken_internal_links": [],
       "record_content_deferred_to_live_check": [],
-      "visible_text_characters": 7109,
+      "visible_text_characters": 7122,
       "content_sha256": "2006bda45e0c7a229b851c653eab54814fea679b83a88e0198f993c756ef3b30",
-      "capture_sha256": "41396d9f848390bb03f4b3116e6ca04f54e783289558a7e06bdc56a40e965b46",
+      "capture_sha256": "4c92389977b817309c4d0c8359a0ebc5b041f2e1cfc88ec4b19bfb21f491723e",
       "local_capture_path": ".artifacts/guide-review-capture/guide-reference-controls-390.png",
       "file": null
     },
@@ -604,9 +604,9 @@
       "internal_links_checked": 11,
       "broken_internal_links": [],
       "record_content_deferred_to_live_check": [],
-      "visible_text_characters": 4793,
+      "visible_text_characters": 4806,
       "content_sha256": "7810356ef7468d7023363ffd886910a4e55f82c518e8b18bc0ea0c3f7700936e",
-      "capture_sha256": "20572d5498fe09f5708d50f8899b2dfb1fa146c571391543343c34c40ba4e6b8",
+      "capture_sha256": "15ce62cd9cffec9282ebc6852a5509b514cb1a880a4c098d8a4ed480bcf967ed",
       "local_capture_path": ".artifacts/guide-review-capture/guide-reference-sources-390.png",
       "file": null
     },
@@ -634,9 +634,9 @@
       "record_content_deferred_to_live_check": [
         "/exams/7016/"
       ],
-      "visible_text_characters": 6525,
+      "visible_text_characters": 6538,
       "content_sha256": "6899dc4299cafd007f55178034834e4a3dd26325760349479651c9750e3e5976",
-      "capture_sha256": "15ff1fa15a235d08e593deaf1fab6165d638db27f2284f299d506ea69065c0ef",
+      "capture_sha256": "2ca1096f003c237d64c4e0d4bf62bf04d14ed1451fee76436eebfda3723bb6bd",
       "local_capture_path": ".artifacts/guide-review-capture/guide-article-h1-390.png",
       "file": null
     },
@@ -662,9 +662,9 @@
       "internal_links_checked": 11,
       "broken_internal_links": [],
       "record_content_deferred_to_live_check": [],
-      "visible_text_characters": 6247,
+      "visible_text_characters": 6260,
       "content_sha256": "4ba1624e5ac7bbb9d9892b3b236386a7c0c7246381e37f561bd57c0d79b0e7b4",
-      "capture_sha256": "9c04c00842225078859d4e53ca0092f027c1a1a82d7373798870550fb5124e04",
+      "capture_sha256": "0d3e03668c9ccf32f042a6623796789d3d889f151cf431dc746580aac4fa042a",
       "local_capture_path": ".artifacts/guide-review-capture/guide-article-h2-390.png",
       "file": null
     },
@@ -690,9 +690,9 @@
       "internal_links_checked": 12,
       "broken_internal_links": [],
       "record_content_deferred_to_live_check": [],
-      "visible_text_characters": 6694,
+      "visible_text_characters": 6707,
       "content_sha256": "ba9935a463b2e756ebfd3ca79db762630f8b4596440eea39c04482da8435ce11",
-      "capture_sha256": "d6d107a077c79a08fc13260a56a8a7de0545eccc6b1de461479f185e4e6a9541",
+      "capture_sha256": "43a32476f1bc8ccc4250b9ff92cbd6875504f615639418867d14329814049c82",
       "local_capture_path": ".artifacts/guide-review-capture/guide-article-h3-390.png",
       "file": null
     },
@@ -718,9 +718,9 @@
       "internal_links_checked": 13,
       "broken_internal_links": [],
       "record_content_deferred_to_live_check": [],
-      "visible_text_characters": 6793,
+      "visible_text_characters": 6806,
       "content_sha256": "36a2fbd60cb1cb5b4510325708903a986651a751f495ffa8dfbee7fd39cde396",
-      "capture_sha256": "11c48da91a17f40b493bf95cf1ca96431ec732ddbdedbc145553581e27d0745f",
+      "capture_sha256": "a028773955c8d7b30329864cfc2992476c6ccef8026aa6098d1c6e4ff8dc2d96",
       "local_capture_path": ".artifacts/guide-review-capture/guide-article-h4-390.png",
       "file": null
     },
@@ -746,9 +746,9 @@
       "internal_links_checked": 13,
       "broken_internal_links": [],
       "record_content_deferred_to_live_check": [],
-      "visible_text_characters": 6349,
+      "visible_text_characters": 6362,
       "content_sha256": "466d955b666a923229711e0b283302cc1f4ef31419e6a504a9e8b079e3bbf1e8",
-      "capture_sha256": "0f372d362836e42063aa9d7f9bd9c1157abad4105b9df85e05d7dcd74881fc58",
+      "capture_sha256": "929e1cb9f4e691611570525df9e2c1c14719911c8aeef8cd9fbeaac3abbcc969",
       "local_capture_path": ".artifacts/guide-review-capture/guide-article-h5-390.png",
       "file": null
     },
@@ -773,8 +773,8 @@
       "internal_links_checked": 0,
       "broken_internal_links": [],
       "record_content_deferred_to_live_check": [],
-      "visible_text_characters": 1079,
-      "content_sha256": "1ecbdf2ed6fca7f47fb3389d463355cd63b9ee9e7f4dc09c032def01920a362f",
+      "visible_text_characters": 1087,
+      "content_sha256": "65e4d577bae53f27285a6036a8cc557e69bbb12fe4879655b93494d5f14f2f7c",
       "capture_sha256": "282212439df0efeee393f150e325579b545739f0b018b1477a4b3628a1e11d2d",
       "local_capture_path": ".artifacts/guide-review-capture/product-search-390.png",
       "file": null
@@ -800,8 +800,8 @@
       "internal_links_checked": 0,
       "broken_internal_links": [],
       "record_content_deferred_to_live_check": [],
-      "visible_text_characters": 1049,
-      "content_sha256": "9c7871ab035dbe711470a25496eb6c3b5054f5b164c51ff9caca44d40d02884a",
+      "visible_text_characters": 1057,
+      "content_sha256": "266a6d2726b842f51e2a86b7dbc2b0db8704612ed744a0c4df0f57649a16e361",
       "capture_sha256": "8cc3dbe7e55d5b9684941235e8be5af924a68a72cead3c9622c074cd5729fc05",
       "local_capture_path": ".artifacts/guide-review-capture/home-1440.png",
       "file": null
@@ -825,12 +825,12 @@
         "withoutIndicator": []
       },
       "axe_critical_or_serious": [],
-      "internal_links_checked": 24,
+      "internal_links_checked": 25,
       "broken_internal_links": [],
       "record_content_deferred_to_live_check": [],
-      "visible_text_characters": 4385,
+      "visible_text_characters": 4398,
       "content_sha256": "3195fe1106f4efd85b2d44f013ff6a6d5deaf921304d5b93562cfe3303265e7d",
-      "capture_sha256": "77244d65719c77108165d1810c9d7a9c34de7601f456f9b50c30022d206419f9",
+      "capture_sha256": "ff290ba627093f6c4b6e56587899902444d4c6b6e1b89613a60db8acb2c51523",
       "local_capture_path": ".artifacts/guide-review-capture/guide-home-1440.png",
       "file": null
     },
@@ -856,9 +856,9 @@
       "internal_links_checked": 10,
       "broken_internal_links": [],
       "record_content_deferred_to_live_check": [],
-      "visible_text_characters": 6353,
+      "visible_text_characters": 6366,
       "content_sha256": "196670a03dd3b185afe1e48de01e94bdf9cd37a985176c729516be4bdde39398",
-      "capture_sha256": "0efd524982dfd09544e731170fd37a6847bd6f57f36eac01d7b3df5b40f21961",
+      "capture_sha256": "a0aec9719a66d6dc14b1be193cf2790e288499d1861b85550688ed5fdc2a5c6c",
       "local_capture_path": ".artifacts/guide-review-capture/guide-tutorial-1440.png",
       "file": null
     },
@@ -886,9 +886,9 @@
       "record_content_deferred_to_live_check": [
         "/notices/20260605008"
       ],
-      "visible_text_characters": 6303,
+      "visible_text_characters": 6316,
       "content_sha256": "16e18b8952e76fecb12581473852117fcccfa93a37dc755d174bff2b97958125",
-      "capture_sha256": "1e668fe622a4aa97df08f161197906e9e967d2a1be00d28f6a1cce714b28439d",
+      "capture_sha256": "51e9651028025b04e98d03a7332857dab07a940c2322ea9101a8ae6fd5afbf6e",
       "local_capture_path": ".artifacts/guide-review-capture/guide-tutorial-notice-mandate-1440.png",
       "file": null
     },
@@ -917,9 +917,9 @@
         "/agencies/homeless-services/",
         "/notices/20231222103"
       ],
-      "visible_text_characters": 6514,
+      "visible_text_characters": 6527,
       "content_sha256": "b32144f041cef479b77435fd2bb23659c2c3badadc63bf4023ca12b8dc3c8827",
-      "capture_sha256": "ff7126472a903a9f9c8e3a8b1c4841f9a7d476790ee8ab80119a45dfec0016e7",
+      "capture_sha256": "98994cf7f9b4ad6519610cc53387185c389bd2cfb2b9d4d71444f66d8862af1b",
       "local_capture_path": ".artifacts/guide-review-capture/guide-tutorial-award-trail-1440.png",
       "file": null
     },
@@ -947,9 +947,9 @@
       "record_content_deferred_to_live_check": [
         "/agencies/parks-and-recreation/"
       ],
-      "visible_text_characters": 5052,
+      "visible_text_characters": 5065,
       "content_sha256": "4dae2e46917b92a1fd8e0ddd4aef09543cf73ec97dda0c68914b4695b3ea1171",
-      "capture_sha256": "b016c22d59f69c4e1783b79736b5f068c5b55f40b6c9bff5f8056bd2409590cb",
+      "capture_sha256": "101e41385ca1b6cc82d1aebe3ffcc1f4694ab81d37f6a410cf513849a0bea1a5",
       "local_capture_path": ".artifacts/guide-review-capture/guide-how-to-connection-evidence-1440.png",
       "file": null
     },
@@ -977,9 +977,9 @@
       "record_content_deferred_to_live_check": [
         "/agencies/parks-and-recreation/"
       ],
-      "visible_text_characters": 5089,
+      "visible_text_characters": 5102,
       "content_sha256": "4a96a8f6db5a5889c190bc2b28648af3c231001d0d6437d8b49875001a49fbf6",
-      "capture_sha256": "cfc6054e4182ca3276daa863b42f9e93222a3a8f97277c4eea35229113c34c50",
+      "capture_sha256": "a00aa361e6335481d0dc9d776bac4b4171afca8127547794e9a8b5f0575fe11f",
       "local_capture_path": ".artifacts/guide-review-capture/guide-how-to-as-of-day-1440.png",
       "file": null
     },
@@ -1008,9 +1008,9 @@
         "/notices/20231222103",
         "/vendors/HOUSING%20OPTIONS%20GERIATRIC%20ASSOCIATION%20RESOURCES/"
       ],
-      "visible_text_characters": 6262,
+      "visible_text_characters": 6275,
       "content_sha256": "d63f1804a60859febcec49434382fd30be3ba8b47f8e10d1692079649e842d44",
-      "capture_sha256": "06026b06af25558bd9d685ccbe28bfa77b7d347e7becfa208eff1f1f570697d4",
+      "capture_sha256": "ffb45bb95828c4847ff81597eb7315af0d8d9fd4e6156dbc394c6ca8730fd313",
       "local_capture_path": ".artifacts/guide-review-capture/guide-how-to-collect-records-1440.png",
       "file": null
     },
@@ -1036,9 +1036,9 @@
       "internal_links_checked": 11,
       "broken_internal_links": [],
       "record_content_deferred_to_live_check": [],
-      "visible_text_characters": 7129,
+      "visible_text_characters": 7142,
       "content_sha256": "26a190cf0afc43b99fe2a0e793b78826dc4b953feef454a25abdd01ba03df637",
-      "capture_sha256": "cf7e4cc01641fa18c970787c1687c30dabb333f1f07ebaa28cb0a6f0520671b5",
+      "capture_sha256": "c6d09032c91b302abc64d9d21b492b69878964a67a87774da68cb8d03cb1aec2",
       "local_capture_path": ".artifacts/guide-review-capture/guide-understand-public-record-1440.png",
       "file": null
     },
@@ -1064,9 +1064,9 @@
       "internal_links_checked": 10,
       "broken_internal_links": [],
       "record_content_deferred_to_live_check": [],
-      "visible_text_characters": 3860,
+      "visible_text_characters": 3873,
       "content_sha256": "b6e49797f1a8e9d54a36514024276588949a495b6f39be0aea6dff8cd7ed8fd2",
-      "capture_sha256": "1fc1627810846e4ea2046ee76f4780e6a5fe71eb20d2976233e96c118734476a",
+      "capture_sha256": "acec6ddeb8d9fad6ec10a3660226f0a81bc960597496cd10aae9678b1dd372b0",
       "local_capture_path": ".artifacts/guide-review-capture/guide-understand-connections-1440.png",
       "file": null
     },
@@ -1092,9 +1092,9 @@
       "internal_links_checked": 10,
       "broken_internal_links": [],
       "record_content_deferred_to_live_check": [],
-      "visible_text_characters": 4174,
+      "visible_text_characters": 4187,
       "content_sha256": "07eeae18d53084565d3d82639491e3545adc2559c45ae2a91f69836f0f13cb7d",
-      "capture_sha256": "2aa7a57c24189141cec79bce25b63a9df7a92bfd8b20db90cac4f2be711b4b93",
+      "capture_sha256": "b01e38cfbf095595def767e03f56cd22238443c2e7d37fb7afab3eb854ba2ccb",
       "local_capture_path": ".artifacts/guide-review-capture/guide-understand-dates-1440.png",
       "file": null
     },
@@ -1120,9 +1120,9 @@
       "internal_links_checked": 16,
       "broken_internal_links": [],
       "record_content_deferred_to_live_check": [],
-      "visible_text_characters": 4860,
+      "visible_text_characters": 4873,
       "content_sha256": "fc7fe8431e139b7e6e30da2dc55b4b2ae05384cdf5881e4e009021510b035918",
-      "capture_sha256": "fdc8d7040be169a0349e38eaf1e989446368809bc17582ef29fbb5fe12368319",
+      "capture_sha256": "c06a48f66a4b63f7a8cd0bc71294ae52d202ee58124f2670c5191b45340ed0e2",
       "local_capture_path": ".artifacts/guide-review-capture/guide-understand-flags-1440.png",
       "file": null
     },
@@ -1148,9 +1148,9 @@
       "internal_links_checked": 13,
       "broken_internal_links": [],
       "record_content_deferred_to_live_check": [],
-      "visible_text_characters": 6049,
+      "visible_text_characters": 6062,
       "content_sha256": "b9bcda323f3ee6452bb90a64a705d5cb3d03bff1eb9c6894052c077be8c0c3cd",
-      "capture_sha256": "b8e6f84849a4c98e89eff70c2097d7f947a6a0d1501f342e0dbb3f2375f6f80a",
+      "capture_sha256": "222672bee907b2225c9f777b5b728e05afc90fb5043b12b48b36152287c74931",
       "local_capture_path": ".artifacts/guide-review-capture/guide-reference-glossary-1440.png",
       "file": null
     },
@@ -1176,9 +1176,9 @@
       "internal_links_checked": 11,
       "broken_internal_links": [],
       "record_content_deferred_to_live_check": [],
-      "visible_text_characters": 7109,
+      "visible_text_characters": 7122,
       "content_sha256": "2006bda45e0c7a229b851c653eab54814fea679b83a88e0198f993c756ef3b30",
-      "capture_sha256": "09fdbe30b85da0933debe2cf0f81cb37b13aaa6163aec94788069ebded8142df",
+      "capture_sha256": "04a41b2e9c4de217e865819fa6d3b663084bf0a9151f6ece537f70c2eb5660be",
       "local_capture_path": ".artifacts/guide-review-capture/guide-reference-controls-1440.png",
       "file": null
     },
@@ -1204,9 +1204,9 @@
       "internal_links_checked": 11,
       "broken_internal_links": [],
       "record_content_deferred_to_live_check": [],
-      "visible_text_characters": 4793,
+      "visible_text_characters": 4806,
       "content_sha256": "7810356ef7468d7023363ffd886910a4e55f82c518e8b18bc0ea0c3f7700936e",
-      "capture_sha256": "d7de6e6b84e651f706f25c75f3ff11e923fb05cd7c9deb6de1775b475064194c",
+      "capture_sha256": "ed2056e5a3217c0735c5bbc77f22b27025b6a85c77e10c3ad5a01075ef8005c7",
       "local_capture_path": ".artifacts/guide-review-capture/guide-reference-sources-1440.png",
       "file": null
     },
@@ -1234,9 +1234,9 @@
       "record_content_deferred_to_live_check": [
         "/exams/7016/"
       ],
-      "visible_text_characters": 6525,
+      "visible_text_characters": 6538,
       "content_sha256": "6899dc4299cafd007f55178034834e4a3dd26325760349479651c9750e3e5976",
-      "capture_sha256": "4926510476328aff06d55db4b0166b2c1598d63b91dff44bbda5dc14c7de6a6f",
+      "capture_sha256": "eb5697cb01234ee3a55a395d7092066dee20d8f7ca09d8ebc27b205ef730bd26",
       "local_capture_path": ".artifacts/guide-review-capture/guide-article-h1-1440.png",
       "file": null
     },
@@ -1262,9 +1262,9 @@
       "internal_links_checked": 11,
       "broken_internal_links": [],
       "record_content_deferred_to_live_check": [],
-      "visible_text_characters": 6247,
+      "visible_text_characters": 6260,
       "content_sha256": "4ba1624e5ac7bbb9d9892b3b236386a7c0c7246381e37f561bd57c0d79b0e7b4",
-      "capture_sha256": "712a05c857bdf64556924b05452f4e524523b120f20f1d7cca6bb1a4353b6aec",
+      "capture_sha256": "4a3a6c0affbe46e92eb96e2a34db1f6c2317d14567ce691df2cc8c56bbe446e2",
       "local_capture_path": ".artifacts/guide-review-capture/guide-article-h2-1440.png",
       "file": null
     },
@@ -1290,9 +1290,9 @@
       "internal_links_checked": 12,
       "broken_internal_links": [],
       "record_content_deferred_to_live_check": [],
-      "visible_text_characters": 6694,
+      "visible_text_characters": 6707,
       "content_sha256": "ba9935a463b2e756ebfd3ca79db762630f8b4596440eea39c04482da8435ce11",
-      "capture_sha256": "9460a1d2314a9a4ed81643929f2de664e913afb97ba0aa07d89e6209116d5961",
+      "capture_sha256": "d514ab032037f33d06401fa2c8c470019da157e06cd95832314262e981a01654",
       "local_capture_path": ".artifacts/guide-review-capture/guide-article-h3-1440.png",
       "file": null
     },
@@ -1318,9 +1318,9 @@
       "internal_links_checked": 13,
       "broken_internal_links": [],
       "record_content_deferred_to_live_check": [],
-      "visible_text_characters": 6793,
+      "visible_text_characters": 6806,
       "content_sha256": "36a2fbd60cb1cb5b4510325708903a986651a751f495ffa8dfbee7fd39cde396",
-      "capture_sha256": "9fc3eaefc4c0a961f0076c432cd6ce87a416c1c1141e4157e100ef7f8117ce6a",
+      "capture_sha256": "fcd1db641b93dfb4d22cc270b4788c4aac49968800bfc6a756fa753a7e9e28c5",
       "local_capture_path": ".artifacts/guide-review-capture/guide-article-h4-1440.png",
       "file": null
     },
@@ -1346,9 +1346,9 @@
       "internal_links_checked": 13,
       "broken_internal_links": [],
       "record_content_deferred_to_live_check": [],
-      "visible_text_characters": 6349,
+      "visible_text_characters": 6362,
       "content_sha256": "466d955b666a923229711e0b283302cc1f4ef31419e6a504a9e8b079e3bbf1e8",
-      "capture_sha256": "0526a538a5d10f7dd97b6b01abda894258f4164272f64711e6d9ecbcca9205ec",
+      "capture_sha256": "409a1ad0f7a6ae81b15b5d44eb034134dd47cb5a11974116638114bae576abde",
       "local_capture_path": ".artifacts/guide-review-capture/guide-article-h5-1440.png",
       "file": null
     },
@@ -1373,9 +1373,9 @@
       "internal_links_checked": 0,
       "broken_internal_links": [],
       "record_content_deferred_to_live_check": [],
-      "visible_text_characters": 1079,
-      "content_sha256": "1ecbdf2ed6fca7f47fb3389d463355cd63b9ee9e7f4dc09c032def01920a362f",
-      "capture_sha256": "7af490539042201386e946a3068f34b05ce4b5caa56740f10aff77d5b7050d52",
+      "visible_text_characters": 1087,
+      "content_sha256": "65e4d577bae53f27285a6036a8cc557e69bbb12fe4879655b93494d5f14f2f7c",
+      "capture_sha256": "4459b7bfb0bf515ed7056b1027a4d85e4840a9c35a7d8b099c335478d1715031",
       "local_capture_path": ".artifacts/guide-review-capture/product-search-1440.png",
       "file": null
     }
