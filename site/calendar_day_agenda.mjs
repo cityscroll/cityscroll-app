@@ -40,6 +40,7 @@
 // module sources into one scope: a bare `KIND_LABELS` here would collide with
 // the shared month renderer's.
 import { calendarEventPreviewFacts } from "./calendar_event_preview.mjs";
+import { affordanceHandoffPresentation } from "./affordance_grammar.mjs";
 
 export const CALENDAR_DAY_AGENDA_SCHEMA = "cityscroll.calendar_day_agenda.v1";
 
@@ -222,8 +223,15 @@ function agendaItemHTML(event, esc) {
     `<span class="calendar-day-agenda-item-time">${esc(agendaWhenValue(event))}</span>` +
     (flag ? `<span class="calendar-day-agenda-item-flag calendar-day-agenda-item-flag-${esc(event.lifecycle)}">${esc(flag)}</span>` : "") +
     "</p>";
-  // The unabridged title, as a real link to the event's own page.
-  const title = `<a class="calendar-day-agenda-item-link" href="${esc(event.href)}">${esc(event.title)}</a>`;
+  // The unabridged title, as a real link to the event's own page — or, when the
+  // occurrence's canonical destination is the publisher's own URL, as the
+  // handoff it actually is. A title alone cannot tell a reader which of the two
+  // they are about to get, so the shared classifier decides and the link says
+  // so before it is followed.
+  const linkPresentation = affordanceHandoffPresentation({ href: event.href, escape: esc });
+  const title = `<a class="calendar-day-agenda-item-link" href="${esc(event.href)}"` +
+    `${linkPresentation.attributes}>${esc(event.title)}` +
+    `${linkPresentation.glyph}${linkPresentation.announcement}</a>`;
   const noticeHTML = notices.length
     ? `<p class="calendar-day-agenda-item-notice">${notices.map((notice) => esc(notice)).join(" ")}</p>`
     : "";

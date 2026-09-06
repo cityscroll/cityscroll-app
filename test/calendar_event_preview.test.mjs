@@ -253,7 +253,11 @@ test("A5: the preview is one event summary and its links — never an embedded c
   // Exactly one titled event, its own page, and the publisher's record.
   assert.equal((body.match(/<h2/g) || []).length, 1);
   assert.match(body, /href="https:\/\/cityscroll\.org\/meetings\/occ:bounded"/);
-  assert.match(body, /Source: city_record/);
+  // The publisher's record names what following it does, and carries the
+  // handoff semantics that says it leaves this site.
+  assert.match(body, /Open the publisher's record/);
+  assert.doesNotMatch(body, /city_record/,
+    "a publishing system's own identifier is not resident-facing control copy");
 });
 
 test("A5: a source link identical to the canonical destination is not repeated as a second link", () => {

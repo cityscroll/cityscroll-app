@@ -213,7 +213,17 @@ const STRINGS = {
     now_open_details: "Open details",
     now_empty_act: "No dated action windows are open in this range.",
     now_empty_events: "No upcoming events are published in this range.",
-    now_action_object: "Submit an objection",
+    // An `act_by` badge names the kind of window; the control beside it names the
+    // next step. Keeping them separate is what stopped a card printing the same
+    // sentence twice.
+    now_window_response: "Response window",
+    now_window_application: "Application window",
+    now_window_comment: "Comment window",
+    now_window_objection: "Objection window",
+    now_window_request: "Request window",
+    // The listing form of the response guide. The full notice keeps its own
+    // "follow the steps below", which is true on the page that carries them.
+    now_action_response_instructions: "View response instructions",
     // Task-first entry experiment (#task/can-i-bid, #task/what-will-change)
     task_can_i_bid_link: "Can I bid? (examples)",
     task_what_will_change_link: "What will change here? (examples)",

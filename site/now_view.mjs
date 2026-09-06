@@ -2,6 +2,7 @@ import { buildNowSurface } from "./now_surface.mjs";
 import { nowItemMatchesScope } from "./scope_now_adapter.mjs";
 import { buildNowCalendarView } from "./now_calendar.mjs";
 import { bindCompactMonthCalendar, renderCompactMonth } from "./compact_calendar.mjs";
+import { AFFORDANCE_ACTION_ROLES, affordanceHandoffPresentation } from "./affordance_grammar.mjs";
 import {
   CALENDAR_VIEW_CALENDAR,
   installNowCalendarSwitch,
@@ -77,10 +78,32 @@ const DOMAIN_KEYS = Object.freeze({
   money: "tab_money", staffing: "tab_people", rules: "tab_rules",
   property: "tab_property", meetings: "tab_meetings", land: "tab_land",
 });
-const ACTION_KEYS = Object.freeze({
-  bid: "next_action_response_instructions", apply: "career_apply_oasys",
-  comment: "rule_comment_btn", object: "now_action_object",
-  request_accommodation: "property_event_accommodation",
+// The badge on an `act_by` card names the kind of window the card is about.
+// It used to be drawn from the same per-kind action-label map the control below
+// it used, so a card printed one sentence twice — once as a decorative fact and
+// again as the thing to click — and spent both readings on neither the window
+// nor the consequence. Badge, date label and control are now three distinct
+// statements: what kind of window this is, when it closes, and what the next
+// step does.
+const WINDOW_KEYS = Object.freeze({
+  bid: "now_window_response", apply: "now_window_application",
+  comment: "now_window_comment", object: "now_window_objection",
+  request_accommodation: "now_window_request",
+});
+
+// A compiled action already carries the label reviewed for it, and this listing
+// had been discarding that in favour of one label per kind. That is how a card
+// pointing at the OASys landing page came to read "Apply in OASys", and how a
+// property sale response came to read like a City Record procurement. The
+// compiled label is authoritative here.
+//
+// One class of label does not survive the move: an instruction positioned
+// against the reader's own document — "follow the response steps below" — is
+// true on the notice that carries those steps and false on a card that only
+// links to it. Those keys, and only those, are re-pointed to name the page the
+// link opens. Every other reviewed label is left exactly as its owner wrote it.
+const LISTING_LABEL_KEYS = Object.freeze({
+  next_action_response_guide: "now_action_response_instructions",
 });
 const EVENT_KEYS = Object.freeze({
   hearing: "disposition_stage_hearing", auction: "property_event_auction",
@@ -101,7 +124,7 @@ function nowEsc(value) {
 }
 
 function nowKindLabel(item) {
-  const key = item.lane === "act_by" ? ACTION_KEYS[item.kind] : EVENT_KEYS[item.kind];
+  const key = item.lane === "act_by" ? WINDOW_KEYS[item.kind] : EVENT_KEYS[item.kind];
   return key ? t(key) : item.kind;
 }
 
@@ -125,12 +148,39 @@ function nowDateProvenance(item) {
   return parts.join(" · ");
 }
 
+function nowActionLabel(action) {
+  const key = action?.label_key;
+  if (!key) return t("now_open_details");
+  const listing = LISTING_LABEL_KEYS[key];
+  if (listing) return t(listing);
+  const label = t(key, action.label_vars || {});
+  // `t` echoes the key back only when no dictionary carries it. A compiled
+  // action's own fallback text is a better answer to the reader than a raw key.
+  return label === key ? (action.label || t("now_open_details")) : label;
+}
+
+/**
+ * One card, one accurately named next step.
+ *
+ * Which affordance that is, is decided by the destination through the shared
+ * classifier rather than by testing the href for a scheme here: an absolute URL
+ * on a host this site owns is navigation however it is spelled, and a
+ * publisher's URL is a handoff that says so — the visible arrow, the new tab,
+ * and the announcement that goes with one — before it is followed. A handoff
+ * keeps the ordinary internal link beside it, so leaving the site is never the
+ * only way on from a card.
+ */
 function nowActionHTML(item) {
-  const destination = item.action?.destination || item.route;
-  const labelKey = item.lane === "act_by" ? ACTION_KEYS[item.kind] : null;
-  const label = labelKey ? t(labelKey) : t("now_open_details");
-  if (/^https:\/\//i.test(destination || "")) {
-    return `<a class="act primary" href="${nowEsc(destination)}" ${EXT_ATTRS}>${nowEsc(label)}${extSR()}</a>
+  const action = item.action;
+  const destination = action?.destination || item.route;
+  const presentation = affordanceHandoffPresentation({
+    href: destination,
+    escape: nowEsc,
+    newTabLabel: t("ext_link_new_tab_sr"),
+  });
+  const label = nowActionLabel(action);
+  if (presentation.role === AFFORDANCE_ACTION_ROLES.handoff) {
+    return `<a class="act primary" href="${nowEsc(destination)}"${presentation.attributes}>${nowEsc(label)}${presentation.glyph}${presentation.announcement}</a>
       <a class="act" href="${nowEsc(item.route)}">${t("now_open_details")}</a>`;
   }
   return `<a class="act primary" href="${nowEsc(item.route)}">${nowEsc(label)}</a>`;
