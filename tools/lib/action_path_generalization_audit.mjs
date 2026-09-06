@@ -225,7 +225,7 @@ export function assembleActionPathGeneralizationAudit(probes = {}) {
       }),
       card_decision: cardDecision({
         domain: "meetings",
-        shipped_cards: ["cityscroll-civic-action-paths/cap-3", "cityscroll-civic-action-paths/cap-4"],
+        shipped_cards: ["cap-3", "cap-4"],
         additional: "follow-on",
         follow_on_work: "Exact compiler family for matter:{legistar_id} continuation replay",
         cost: "substantial-ingestion-or-compiler",
@@ -275,9 +275,9 @@ export function assembleActionPathGeneralizationAudit(probes = {}) {
       card_decision: cardDecision({
         domain: "rules",
         shipped_cards: [
-          "cityscroll-civic-action-paths/cap-1",
-          "cityscroll-civic-action-paths/cap-2",
-          "cityscroll-civic-action-paths/cap-4",
+          "cap-1",
+          "cap-2",
+          "cap-4",
         ],
         additional: "none",
         cost: "none",
@@ -466,7 +466,7 @@ export function assembleActionPathGeneralizationAudit(probes = {}) {
       }),
       card_decision: cardDecision({
         domain: "community_boards",
-        shipped_cards: ["cityscroll-civic-action-paths/cap-5", "cityscroll-civic-action-paths/cap-6"],
+        shipped_cards: ["cap-5", "cap-6"],
         additional: "follow-on",
         follow_on_work: "Exact committee-identity replay without board fallback",
         cost: "substantial-ingestion-or-compiler",
@@ -646,7 +646,7 @@ export function renderActionPathGeneralizationMarkdown(audit) {
   for (const row of audit.domains || []) {
     const decision = row.card_decision;
     const card = [
-      ...(decision.shipped_cards || []).map((id) => id.replace("cityscroll-civic-action-paths/", "").toUpperCase()),
+      ...(decision.shipped_cards || []).map((id) => id.toUpperCase()),
       decision.additional === "follow-on" ? `follow-on: ${decision.follow_on_work}` : null,
       decision.additional === "none" && !(decision.shipped_cards || []).length ? NOT_ESTABLISHED : null,
     ].filter(Boolean).join("; ");

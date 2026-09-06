@@ -159,8 +159,8 @@
         "column": "card_decision",
         "status": "established",
         "shipped_cards": [
-          "cityscroll-civic-action-paths/cap-3",
-          "cityscroll-civic-action-paths/cap-4"
+          "cap-3",
+          "cap-4"
         ],
         "additional": "follow-on",
         "follow_on_work": "Exact compiler family for matter:{legistar_id} continuation replay",
@@ -270,9 +270,9 @@
         "column": "card_decision",
         "status": "established",
         "shipped_cards": [
-          "cityscroll-civic-action-paths/cap-1",
-          "cityscroll-civic-action-paths/cap-2",
-          "cityscroll-civic-action-paths/cap-4"
+          "cap-1",
+          "cap-2",
+          "cap-4"
         ],
         "additional": "none",
         "follow_on_work": null,
@@ -671,8 +671,8 @@
         "column": "card_decision",
         "status": "established",
         "shipped_cards": [
-          "cityscroll-civic-action-paths/cap-5",
-          "cityscroll-civic-action-paths/cap-6"
+          "cap-5",
+          "cap-6"
         ],
         "additional": "follow-on",
         "follow_on_work": "Exact committee-identity replay without board fallback",

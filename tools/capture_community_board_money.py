@@ -220,7 +220,7 @@ def main() -> int:
 
     OUTPUT.mkdir(parents=True, exist_ok=True)
     records: list[dict] = []
-    with tempfile.TemporaryDirectory(prefix="cityscroll-cb-money-before-") as temp:
+    with tempfile.TemporaryDirectory(prefix="capture-cb-money-before-") as temp:
         before_tree = Path(temp)
         revision_snapshot(args.before, before_tree)
         build_board_documents(before_tree)
