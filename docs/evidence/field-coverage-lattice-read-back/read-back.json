@@ -1,0 +1,1461 @@
+{
+  "schema": "cityscroll.performance.field_coverage_readback.v1",
+  "version": 1,
+  "public_alias": "cbd9348b54118",
+  "title": "Seven-day production field-coverage lattice read-back",
+  "queried_at": "2026-09-06T13:38:21.834Z",
+  "window": {
+    "label": "7d",
+    "timezone": "UTC",
+    "start": "2026-08-30T13:38:21.000Z",
+    "end": "2026-09-06T13:38:21.000Z",
+    "status": "complete",
+    "fraction": 1
+  },
+  "traffic_class": "production",
+  "sample_floor": 30,
+  "read_status": "available",
+  "measurement_class": "measured",
+  "command": {
+    "executable": "node tools/read_rum_drift.mjs --out <output-dir>",
+    "env": [
+      "ANALYTICS_ACCOUNT_ID=<production account id from worker/wrangler.toml>",
+      "ANALYTICS_READ_TOKEN=<token from the logged-in wrangler OAuth session>",
+      "RUM_ANALYTICS_DATASET=crol_rum_observations_v1",
+      "RUM_MEASURED_SINCE=2026-08-19",
+      "RUM_MIN_SAMPLED_ROWS=30"
+    ],
+    "notes": [
+      "tools/read_rum_drift.mjs requests coverage=true for production traffic and builds the coverage lattice from the repository classifier in worker/src/lib/performance_coverage.mjs.",
+      "Credentials are not stored in this report."
+    ]
+  },
+  "observation_counts": {
+    "readiness_cells": 23,
+    "device_cells": 48,
+    "phase_cells": 36,
+    "retained_readiness_rows": 555,
+    "readiness_states": {
+      "measured": 8,
+      "no_data": 15
+    },
+    "device_states": {
+      "measured": 8,
+      "insufficient_sample": 12,
+      "no_data": 28
+    },
+    "phase_states": {
+      "no_data": 23,
+      "measured": 12,
+      "insufficient_sample": 1
+    }
+  },
+  "surfaces": [
+    "home",
+    "near-you",
+    "following",
+    "browse-contracts",
+    "notice",
+    "agency"
+  ],
+  "readiness_metrics": [
+    "content_ready_ms",
+    "component_ready_ms"
+  ],
+  "attribution_phases": [
+    "route-import",
+    "response",
+    "owner-settlement",
+    "semantic-readiness"
+  ],
+  "acceptance_checks": {
+    "A1_six_surfaces_and_both_readiness_metrics": {
+      "pass": true,
+      "near_you_states": [
+        "no_data"
+      ],
+      "agency_states": [
+        "no_data"
+      ],
+      "note": "Near You and Agency remain explicit no_data zero-row states for every readiness cell."
+    },
+    "A2_percentiles_withheld_below_floor": {
+      "pass": true,
+      "insufficient_sample_cells_with_percentiles": 0,
+      "no_data_cells_with_percentiles": 0,
+      "sample_floor": 30
+    },
+    "A3_phase_dimensions_distinguishable": {
+      "pass": true,
+      "phase_state_summary": {
+        "route-import": {
+          "no_data": 6
+        },
+        "response": {
+          "measured": 4,
+          "no_data": 7,
+          "insufficient_sample": 1
+        },
+        "owner-settlement": {
+          "no_data": 6
+        },
+        "semantic-readiness": {
+          "measured": 8,
+          "no_data": 4
+        }
+      },
+      "note": "route-import and owner-settlement remain entirely no_data and stay distinguishable from measured response and semantic-readiness cells."
+    }
+  },
+  "readiness_by_surface": {
+    "agency": {
+      "states": {
+        "no_data": 3
+      },
+      "cells": [
+        {
+          "metric_id": "content_ready_ms",
+          "component_id": "none",
+          "state": "no_data"
+        },
+        {
+          "metric_id": "component_ready_ms",
+          "component_id": "agency-identity",
+          "state": "no_data"
+        },
+        {
+          "metric_id": "component_ready_ms",
+          "component_id": "agency-relationships",
+          "state": "no_data"
+        }
+      ]
+    },
+    "browse-contracts": {
+      "states": {
+        "measured": 2,
+        "no_data": 3
+      },
+      "cells": [
+        {
+          "metric_id": "content_ready_ms",
+          "component_id": "none",
+          "state": "measured",
+          "sampled_count": 48,
+          "estimated_count": 48,
+          "percentiles": {
+            "p50": 2241.400000035763,
+            "p75": 3039.2999999523163,
+            "p95": 7615.399999976158
+          }
+        },
+        {
+          "metric_id": "component_ready_ms",
+          "component_id": "browse-contracts-filter-apply",
+          "state": "no_data"
+        },
+        {
+          "metric_id": "component_ready_ms",
+          "component_id": "browse-contracts-results",
+          "state": "measured",
+          "sampled_count": 48,
+          "estimated_count": 48,
+          "percentiles": {
+            "p50": 2241.5,
+            "p75": 3039.399999976158,
+            "p95": 7615.5
+          }
+        },
+        {
+          "metric_id": "component_ready_ms",
+          "component_id": "browse-filter-apply",
+          "state": "no_data"
+        },
+        {
+          "metric_id": "component_ready_ms",
+          "component_id": "browse-results",
+          "state": "no_data"
+        }
+      ]
+    },
+    "following": {
+      "states": {
+        "measured": 2,
+        "no_data": 1
+      },
+      "cells": [
+        {
+          "metric_id": "content_ready_ms",
+          "component_id": "none",
+          "state": "measured",
+          "sampled_count": 54,
+          "estimated_count": 54,
+          "percentiles": {
+            "p50": 917.6999999284744,
+            "p75": 1680.3999999761581,
+            "p95": 3274.2000000029802
+          }
+        },
+        {
+          "metric_id": "component_ready_ms",
+          "component_id": "following-watch-change",
+          "state": "no_data"
+        },
+        {
+          "metric_id": "component_ready_ms",
+          "component_id": "following-watch-list",
+          "state": "measured",
+          "sampled_count": 49,
+          "estimated_count": 49,
+          "percentiles": {
+            "p50": 940.8999999761581,
+            "p75": 1690.0999999940395,
+            "p95": 3164.099999997765
+          }
+        }
+      ]
+    },
+    "home": {
+      "states": {
+        "measured": 2,
+        "no_data": 1
+      },
+      "cells": [
+        {
+          "metric_id": "content_ready_ms",
+          "component_id": "none",
+          "state": "measured",
+          "sampled_count": 89,
+          "estimated_count": 89,
+          "percentiles": {
+            "p50": 887.4000000001397,
+            "p75": 1325.1999999955297,
+            "p95": 2426.5
+          }
+        },
+        {
+          "metric_id": "component_ready_ms",
+          "component_id": "home-search-submit",
+          "state": "no_data"
+        },
+        {
+          "metric_id": "component_ready_ms",
+          "component_id": "home-topic-entry",
+          "state": "measured",
+          "sampled_count": 89,
+          "estimated_count": 89,
+          "percentiles": {
+            "p50": 887.4000000001397,
+            "p75": 1325.1999999955297,
+            "p95": 2426.5
+          }
+        }
+      ]
+    },
+    "near-you": {
+      "states": {
+        "no_data": 7
+      },
+      "cells": [
+        {
+          "metric_id": "content_ready_ms",
+          "component_id": "none",
+          "state": "no_data"
+        },
+        {
+          "metric_id": "component_ready_ms",
+          "component_id": "near-you-borough",
+          "state": "no_data"
+        },
+        {
+          "metric_id": "component_ready_ms",
+          "component_id": "near-you-community-district",
+          "state": "no_data"
+        },
+        {
+          "metric_id": "component_ready_ms",
+          "component_id": "near-you-council-district",
+          "state": "no_data"
+        },
+        {
+          "metric_id": "component_ready_ms",
+          "component_id": "near-you-map",
+          "state": "no_data"
+        },
+        {
+          "metric_id": "component_ready_ms",
+          "component_id": "near-you-map-data",
+          "state": "no_data"
+        },
+        {
+          "metric_id": "component_ready_ms",
+          "component_id": "near-you-scope-change",
+          "state": "no_data"
+        }
+      ]
+    },
+    "notice": {
+      "states": {
+        "measured": 2
+      },
+      "cells": [
+        {
+          "metric_id": "content_ready_ms",
+          "component_id": "none",
+          "state": "measured",
+          "sampled_count": 93,
+          "estimated_count": 93,
+          "percentiles": {
+            "p50": 2482.800000011921,
+            "p75": 3411,
+            "p95": 7109.09999999986
+          }
+        },
+        {
+          "metric_id": "component_ready_ms",
+          "component_id": "notice-context",
+          "state": "measured",
+          "sampled_count": 85,
+          "estimated_count": 85,
+          "percentiles": {
+            "p50": 2877.7999999999884,
+            "p75": 3782.800000000003,
+            "p95": 8001.899999976158
+          }
+        }
+      ]
+    }
+  },
+  "coverage_lattice": {
+    "schema": "cityscroll.performance.coverage_contract.v1",
+    "version": 1,
+    "read_status": "available",
+    "window": "7d",
+    "window_status": "complete",
+    "window_fraction": 1,
+    "traffic_class": "production",
+    "sample_floor": 30,
+    "dimensions": {
+      "surfaces": [
+        {
+          "surface_id": "home",
+          "operator_label": "Home"
+        },
+        {
+          "surface_id": "near-you",
+          "operator_label": "Near You"
+        },
+        {
+          "surface_id": "following",
+          "operator_label": "Following"
+        },
+        {
+          "surface_id": "browse-contracts",
+          "operator_label": "Browse Contracts"
+        },
+        {
+          "surface_id": "notice",
+          "operator_label": "Notice"
+        },
+        {
+          "surface_id": "agency",
+          "operator_label": "Agency"
+        }
+      ],
+      "readiness_metrics": [
+        {
+          "metric_id": "content_ready_ms",
+          "component_id": "none"
+        },
+        {
+          "metric_id": "component_ready_ms",
+          "component_id": "registered"
+        }
+      ],
+      "device_classes": [
+        "desktop",
+        "mobile",
+        "tablet",
+        "unknown"
+      ],
+      "attribution_phases": [
+        {
+          "phase_id": "route-import",
+          "metric_ids": [
+            "first_render_to_main_ms"
+          ]
+        },
+        {
+          "phase_id": "response",
+          "metric_ids": [
+            "ttfb_ms",
+            "response_to_first_render_ms"
+          ]
+        },
+        {
+          "phase_id": "owner-settlement",
+          "metric_ids": [
+            "main_to_useful_ms"
+          ]
+        },
+        {
+          "phase_id": "semantic-readiness",
+          "metric_ids": [
+            "content_ready_ms",
+            "component_ready_ms"
+          ]
+        }
+      ]
+    },
+    "readiness": {
+      "state_counts": {
+        "measured": 8,
+        "insufficient_sample": 0,
+        "no_data": 15
+      },
+      "cells": [
+        {
+          "surface_id": "home",
+          "metric_id": "content_ready_ms",
+          "component_id": "none",
+          "state": "measured",
+          "sampled_count": 89,
+          "estimated_count": 89,
+          "percentiles": {
+            "p50": 887.4000000001397,
+            "p75": 1325.1999999955297,
+            "p95": 2426.5
+          }
+        },
+        {
+          "surface_id": "home",
+          "metric_id": "component_ready_ms",
+          "component_id": "home-search-submit",
+          "state": "no_data",
+          "sampled_count": null,
+          "estimated_count": null
+        },
+        {
+          "surface_id": "home",
+          "metric_id": "component_ready_ms",
+          "component_id": "home-topic-entry",
+          "state": "measured",
+          "sampled_count": 89,
+          "estimated_count": 89,
+          "percentiles": {
+            "p50": 887.4000000001397,
+            "p75": 1325.1999999955297,
+            "p95": 2426.5
+          }
+        },
+        {
+          "surface_id": "near-you",
+          "metric_id": "content_ready_ms",
+          "component_id": "none",
+          "state": "no_data",
+          "sampled_count": null,
+          "estimated_count": null
+        },
+        {
+          "surface_id": "near-you",
+          "metric_id": "component_ready_ms",
+          "component_id": "near-you-borough",
+          "state": "no_data",
+          "sampled_count": null,
+          "estimated_count": null
+        },
+        {
+          "surface_id": "near-you",
+          "metric_id": "component_ready_ms",
+          "component_id": "near-you-community-district",
+          "state": "no_data",
+          "sampled_count": null,
+          "estimated_count": null
+        },
+        {
+          "surface_id": "near-you",
+          "metric_id": "component_ready_ms",
+          "component_id": "near-you-council-district",
+          "state": "no_data",
+          "sampled_count": null,
+          "estimated_count": null
+        },
+        {
+          "surface_id": "near-you",
+          "metric_id": "component_ready_ms",
+          "component_id": "near-you-map",
+          "state": "no_data",
+          "sampled_count": null,
+          "estimated_count": null
+        },
+        {
+          "surface_id": "near-you",
+          "metric_id": "component_ready_ms",
+          "component_id": "near-you-map-data",
+          "state": "no_data",
+          "sampled_count": null,
+          "estimated_count": null
+        },
+        {
+          "surface_id": "near-you",
+          "metric_id": "component_ready_ms",
+          "component_id": "near-you-scope-change",
+          "state": "no_data",
+          "sampled_count": null,
+          "estimated_count": null
+        },
+        {
+          "surface_id": "following",
+          "metric_id": "content_ready_ms",
+          "component_id": "none",
+          "state": "measured",
+          "sampled_count": 54,
+          "estimated_count": 54,
+          "percentiles": {
+            "p50": 917.6999999284744,
+            "p75": 1680.3999999761581,
+            "p95": 3274.2000000029802
+          }
+        },
+        {
+          "surface_id": "following",
+          "metric_id": "component_ready_ms",
+          "component_id": "following-watch-change",
+          "state": "no_data",
+          "sampled_count": null,
+          "estimated_count": null
+        },
+        {
+          "surface_id": "following",
+          "metric_id": "component_ready_ms",
+          "component_id": "following-watch-list",
+          "state": "measured",
+          "sampled_count": 49,
+          "estimated_count": 49,
+          "percentiles": {
+            "p50": 940.8999999761581,
+            "p75": 1690.0999999940395,
+            "p95": 3164.099999997765
+          }
+        },
+        {
+          "surface_id": "browse-contracts",
+          "metric_id": "content_ready_ms",
+          "component_id": "none",
+          "state": "measured",
+          "sampled_count": 48,
+          "estimated_count": 48,
+          "percentiles": {
+            "p50": 2241.400000035763,
+            "p75": 3039.2999999523163,
+            "p95": 7615.399999976158
+          }
+        },
+        {
+          "surface_id": "browse-contracts",
+          "metric_id": "component_ready_ms",
+          "component_id": "browse-contracts-filter-apply",
+          "state": "no_data",
+          "sampled_count": null,
+          "estimated_count": null
+        },
+        {
+          "surface_id": "browse-contracts",
+          "metric_id": "component_ready_ms",
+          "component_id": "browse-contracts-results",
+          "state": "measured",
+          "sampled_count": 48,
+          "estimated_count": 48,
+          "percentiles": {
+            "p50": 2241.5,
+            "p75": 3039.399999976158,
+            "p95": 7615.5
+          }
+        },
+        {
+          "surface_id": "browse-contracts",
+          "metric_id": "component_ready_ms",
+          "component_id": "browse-filter-apply",
+          "state": "no_data",
+          "sampled_count": null,
+          "estimated_count": null
+        },
+        {
+          "surface_id": "browse-contracts",
+          "metric_id": "component_ready_ms",
+          "component_id": "browse-results",
+          "state": "no_data",
+          "sampled_count": null,
+          "estimated_count": null
+        },
+        {
+          "surface_id": "notice",
+          "metric_id": "content_ready_ms",
+          "component_id": "none",
+          "state": "measured",
+          "sampled_count": 93,
+          "estimated_count": 93,
+          "percentiles": {
+            "p50": 2482.800000011921,
+            "p75": 3411,
+            "p95": 7109.09999999986
+          }
+        },
+        {
+          "surface_id": "notice",
+          "metric_id": "component_ready_ms",
+          "component_id": "notice-context",
+          "state": "measured",
+          "sampled_count": 85,
+          "estimated_count": 85,
+          "percentiles": {
+            "p50": 2877.7999999999884,
+            "p75": 3782.800000000003,
+            "p95": 8001.899999976158
+          }
+        },
+        {
+          "surface_id": "agency",
+          "metric_id": "content_ready_ms",
+          "component_id": "none",
+          "state": "no_data",
+          "sampled_count": null,
+          "estimated_count": null
+        },
+        {
+          "surface_id": "agency",
+          "metric_id": "component_ready_ms",
+          "component_id": "agency-identity",
+          "state": "no_data",
+          "sampled_count": null,
+          "estimated_count": null
+        },
+        {
+          "surface_id": "agency",
+          "metric_id": "component_ready_ms",
+          "component_id": "agency-relationships",
+          "state": "no_data",
+          "sampled_count": null,
+          "estimated_count": null
+        }
+      ]
+    },
+    "devices": {
+      "state_counts": {
+        "measured": 8,
+        "insufficient_sample": 12,
+        "no_data": 28
+      },
+      "cells": [
+        {
+          "surface_id": "home",
+          "metric_id": "content_ready_ms",
+          "device_class": "desktop",
+          "state": "measured",
+          "sampled_count": 67,
+          "estimated_count": 67,
+          "percentiles": {
+            "p50": 779.3999999999651,
+            "p75": 1173.5999999046326,
+            "p95": 1818
+          }
+        },
+        {
+          "surface_id": "home",
+          "metric_id": "content_ready_ms",
+          "device_class": "mobile",
+          "state": "insufficient_sample",
+          "sampled_count": 18,
+          "estimated_count": 18,
+          "reason": "below_floor",
+          "sample_floor": 30
+        },
+        {
+          "surface_id": "home",
+          "metric_id": "content_ready_ms",
+          "device_class": "tablet",
+          "state": "insufficient_sample",
+          "sampled_count": 4,
+          "estimated_count": 4,
+          "reason": "below_floor",
+          "sample_floor": 30
+        },
+        {
+          "surface_id": "home",
+          "metric_id": "content_ready_ms",
+          "device_class": "unknown",
+          "state": "no_data",
+          "sampled_count": null,
+          "estimated_count": null
+        },
+        {
+          "surface_id": "home",
+          "metric_id": "component_ready_ms",
+          "device_class": "desktop",
+          "state": "measured",
+          "sampled_count": 67,
+          "estimated_count": 67,
+          "percentiles": {
+            "p50": 779.3999999999651,
+            "p75": 1173.5999999046326,
+            "p95": 1818
+          }
+        },
+        {
+          "surface_id": "home",
+          "metric_id": "component_ready_ms",
+          "device_class": "mobile",
+          "state": "insufficient_sample",
+          "sampled_count": 18,
+          "estimated_count": 18,
+          "reason": "below_floor",
+          "sample_floor": 30
+        },
+        {
+          "surface_id": "home",
+          "metric_id": "component_ready_ms",
+          "device_class": "tablet",
+          "state": "insufficient_sample",
+          "sampled_count": 4,
+          "estimated_count": 4,
+          "reason": "below_floor",
+          "sample_floor": 30
+        },
+        {
+          "surface_id": "home",
+          "metric_id": "component_ready_ms",
+          "device_class": "unknown",
+          "state": "no_data",
+          "sampled_count": null,
+          "estimated_count": null
+        },
+        {
+          "surface_id": "near-you",
+          "metric_id": "content_ready_ms",
+          "device_class": "desktop",
+          "state": "no_data",
+          "sampled_count": null,
+          "estimated_count": null
+        },
+        {
+          "surface_id": "near-you",
+          "metric_id": "content_ready_ms",
+          "device_class": "mobile",
+          "state": "no_data",
+          "sampled_count": null,
+          "estimated_count": null
+        },
+        {
+          "surface_id": "near-you",
+          "metric_id": "content_ready_ms",
+          "device_class": "tablet",
+          "state": "no_data",
+          "sampled_count": null,
+          "estimated_count": null
+        },
+        {
+          "surface_id": "near-you",
+          "metric_id": "content_ready_ms",
+          "device_class": "unknown",
+          "state": "no_data",
+          "sampled_count": null,
+          "estimated_count": null
+        },
+        {
+          "surface_id": "near-you",
+          "metric_id": "component_ready_ms",
+          "device_class": "desktop",
+          "state": "no_data",
+          "sampled_count": null,
+          "estimated_count": null
+        },
+        {
+          "surface_id": "near-you",
+          "metric_id": "component_ready_ms",
+          "device_class": "mobile",
+          "state": "no_data",
+          "sampled_count": null,
+          "estimated_count": null
+        },
+        {
+          "surface_id": "near-you",
+          "metric_id": "component_ready_ms",
+          "device_class": "tablet",
+          "state": "no_data",
+          "sampled_count": null,
+          "estimated_count": null
+        },
+        {
+          "surface_id": "near-you",
+          "metric_id": "component_ready_ms",
+          "device_class": "unknown",
+          "state": "no_data",
+          "sampled_count": null,
+          "estimated_count": null
+        },
+        {
+          "surface_id": "following",
+          "metric_id": "content_ready_ms",
+          "device_class": "desktop",
+          "state": "measured",
+          "sampled_count": 49,
+          "estimated_count": 49,
+          "percentiles": {
+            "p50": 897.7000000476837,
+            "p75": 1894.8999999761581,
+            "p95": 3274.2000000029802
+          }
+        },
+        {
+          "surface_id": "following",
+          "metric_id": "content_ready_ms",
+          "device_class": "mobile",
+          "state": "insufficient_sample",
+          "sampled_count": 5,
+          "estimated_count": 5,
+          "reason": "below_floor",
+          "sample_floor": 30
+        },
+        {
+          "surface_id": "following",
+          "metric_id": "content_ready_ms",
+          "device_class": "tablet",
+          "state": "no_data",
+          "sampled_count": null,
+          "estimated_count": null
+        },
+        {
+          "surface_id": "following",
+          "metric_id": "content_ready_ms",
+          "device_class": "unknown",
+          "state": "no_data",
+          "sampled_count": null,
+          "estimated_count": null
+        },
+        {
+          "surface_id": "following",
+          "metric_id": "component_ready_ms",
+          "device_class": "desktop",
+          "state": "measured",
+          "sampled_count": 44,
+          "estimated_count": 44,
+          "percentiles": {
+            "p50": 896.2000000476837,
+            "p75": 1698.3999999761581,
+            "p95": 3164.099999997765
+          }
+        },
+        {
+          "surface_id": "following",
+          "metric_id": "component_ready_ms",
+          "device_class": "mobile",
+          "state": "insufficient_sample",
+          "sampled_count": 5,
+          "estimated_count": 5,
+          "reason": "below_floor",
+          "sample_floor": 30
+        },
+        {
+          "surface_id": "following",
+          "metric_id": "component_ready_ms",
+          "device_class": "tablet",
+          "state": "no_data",
+          "sampled_count": null,
+          "estimated_count": null
+        },
+        {
+          "surface_id": "following",
+          "metric_id": "component_ready_ms",
+          "device_class": "unknown",
+          "state": "no_data",
+          "sampled_count": null,
+          "estimated_count": null
+        },
+        {
+          "surface_id": "browse-contracts",
+          "metric_id": "content_ready_ms",
+          "device_class": "desktop",
+          "state": "measured",
+          "sampled_count": 44,
+          "estimated_count": 44,
+          "percentiles": {
+            "p50": 2235.600000000006,
+            "p75": 2904.300000011921,
+            "p95": 7615.399999976158
+          }
+        },
+        {
+          "surface_id": "browse-contracts",
+          "metric_id": "content_ready_ms",
+          "device_class": "mobile",
+          "state": "insufficient_sample",
+          "sampled_count": 4,
+          "estimated_count": 4,
+          "reason": "below_floor",
+          "sample_floor": 30
+        },
+        {
+          "surface_id": "browse-contracts",
+          "metric_id": "content_ready_ms",
+          "device_class": "tablet",
+          "state": "no_data",
+          "sampled_count": null,
+          "estimated_count": null
+        },
+        {
+          "surface_id": "browse-contracts",
+          "metric_id": "content_ready_ms",
+          "device_class": "unknown",
+          "state": "no_data",
+          "sampled_count": null,
+          "estimated_count": null
+        },
+        {
+          "surface_id": "browse-contracts",
+          "metric_id": "component_ready_ms",
+          "device_class": "desktop",
+          "state": "measured",
+          "sampled_count": 44,
+          "estimated_count": 44,
+          "percentiles": {
+            "p50": 2235.699999988079,
+            "p75": 2904.300000011921,
+            "p95": 7615.5
+          }
+        },
+        {
+          "surface_id": "browse-contracts",
+          "metric_id": "component_ready_ms",
+          "device_class": "mobile",
+          "state": "insufficient_sample",
+          "sampled_count": 4,
+          "estimated_count": 4,
+          "reason": "below_floor",
+          "sample_floor": 30
+        },
+        {
+          "surface_id": "browse-contracts",
+          "metric_id": "component_ready_ms",
+          "device_class": "tablet",
+          "state": "no_data",
+          "sampled_count": null,
+          "estimated_count": null
+        },
+        {
+          "surface_id": "browse-contracts",
+          "metric_id": "component_ready_ms",
+          "device_class": "unknown",
+          "state": "no_data",
+          "sampled_count": null,
+          "estimated_count": null
+        },
+        {
+          "surface_id": "notice",
+          "metric_id": "content_ready_ms",
+          "device_class": "desktop",
+          "state": "measured",
+          "sampled_count": 91,
+          "estimated_count": 91,
+          "percentiles": {
+            "p50": 2410.3000000715256,
+            "p75": 3400,
+            "p95": 6552.100000008941
+          }
+        },
+        {
+          "surface_id": "notice",
+          "metric_id": "content_ready_ms",
+          "device_class": "mobile",
+          "state": "insufficient_sample",
+          "sampled_count": 1,
+          "estimated_count": 1,
+          "reason": "below_floor",
+          "sample_floor": 30
+        },
+        {
+          "surface_id": "notice",
+          "metric_id": "content_ready_ms",
+          "device_class": "tablet",
+          "state": "insufficient_sample",
+          "sampled_count": 1,
+          "estimated_count": 1,
+          "reason": "below_floor",
+          "sample_floor": 30
+        },
+        {
+          "surface_id": "notice",
+          "metric_id": "content_ready_ms",
+          "device_class": "unknown",
+          "state": "no_data",
+          "sampled_count": null,
+          "estimated_count": null
+        },
+        {
+          "surface_id": "notice",
+          "metric_id": "component_ready_ms",
+          "device_class": "desktop",
+          "state": "measured",
+          "sampled_count": 83,
+          "estimated_count": 83,
+          "percentiles": {
+            "p50": 2754.8000000000175,
+            "p75": 3620,
+            "p95": 6762.70000000298
+          }
+        },
+        {
+          "surface_id": "notice",
+          "metric_id": "component_ready_ms",
+          "device_class": "mobile",
+          "state": "insufficient_sample",
+          "sampled_count": 1,
+          "estimated_count": 1,
+          "reason": "below_floor",
+          "sample_floor": 30
+        },
+        {
+          "surface_id": "notice",
+          "metric_id": "component_ready_ms",
+          "device_class": "tablet",
+          "state": "insufficient_sample",
+          "sampled_count": 1,
+          "estimated_count": 1,
+          "reason": "below_floor",
+          "sample_floor": 30
+        },
+        {
+          "surface_id": "notice",
+          "metric_id": "component_ready_ms",
+          "device_class": "unknown",
+          "state": "no_data",
+          "sampled_count": null,
+          "estimated_count": null
+        },
+        {
+          "surface_id": "agency",
+          "metric_id": "content_ready_ms",
+          "device_class": "desktop",
+          "state": "no_data",
+          "sampled_count": null,
+          "estimated_count": null
+        },
+        {
+          "surface_id": "agency",
+          "metric_id": "content_ready_ms",
+          "device_class": "mobile",
+          "state": "no_data",
+          "sampled_count": null,
+          "estimated_count": null
+        },
+        {
+          "surface_id": "agency",
+          "metric_id": "content_ready_ms",
+          "device_class": "tablet",
+          "state": "no_data",
+          "sampled_count": null,
+          "estimated_count": null
+        },
+        {
+          "surface_id": "agency",
+          "metric_id": "content_ready_ms",
+          "device_class": "unknown",
+          "state": "no_data",
+          "sampled_count": null,
+          "estimated_count": null
+        },
+        {
+          "surface_id": "agency",
+          "metric_id": "component_ready_ms",
+          "device_class": "desktop",
+          "state": "no_data",
+          "sampled_count": null,
+          "estimated_count": null
+        },
+        {
+          "surface_id": "agency",
+          "metric_id": "component_ready_ms",
+          "device_class": "mobile",
+          "state": "no_data",
+          "sampled_count": null,
+          "estimated_count": null
+        },
+        {
+          "surface_id": "agency",
+          "metric_id": "component_ready_ms",
+          "device_class": "tablet",
+          "state": "no_data",
+          "sampled_count": null,
+          "estimated_count": null
+        },
+        {
+          "surface_id": "agency",
+          "metric_id": "component_ready_ms",
+          "device_class": "unknown",
+          "state": "no_data",
+          "sampled_count": null,
+          "estimated_count": null
+        }
+      ]
+    },
+    "phases": {
+      "state_counts": {
+        "measured": 12,
+        "insufficient_sample": 1,
+        "no_data": 23
+      },
+      "cells": [
+        {
+          "surface_id": "home",
+          "phase_id": "route-import",
+          "metric_id": "first_render_to_main_ms",
+          "state": "no_data",
+          "sampled_count": null,
+          "estimated_count": null
+        },
+        {
+          "surface_id": "home",
+          "phase_id": "response",
+          "metric_id": "ttfb_ms",
+          "state": "measured",
+          "sampled_count": 150,
+          "estimated_count": 159,
+          "percentiles": {
+            "p50": 61.5,
+            "p75": 184.29999999998836,
+            "p95": 544.5
+          }
+        },
+        {
+          "surface_id": "home",
+          "phase_id": "response",
+          "metric_id": "response_to_first_render_ms",
+          "state": "no_data",
+          "sampled_count": null,
+          "estimated_count": null
+        },
+        {
+          "surface_id": "home",
+          "phase_id": "owner-settlement",
+          "metric_id": "main_to_useful_ms",
+          "state": "no_data",
+          "sampled_count": null,
+          "estimated_count": null
+        },
+        {
+          "surface_id": "home",
+          "phase_id": "semantic-readiness",
+          "metric_id": "content_ready_ms",
+          "state": "measured",
+          "sampled_count": 89,
+          "estimated_count": 89,
+          "percentiles": {
+            "p50": 887.4000000001397,
+            "p75": 1325.1999999955297,
+            "p95": 2426.5
+          }
+        },
+        {
+          "surface_id": "home",
+          "phase_id": "semantic-readiness",
+          "metric_id": "component_ready_ms",
+          "state": "measured",
+          "sampled_count": 89,
+          "estimated_count": 89,
+          "percentiles": {
+            "p50": 887.4000000001397,
+            "p75": 1325.1999999955297,
+            "p95": 2426.5
+          }
+        },
+        {
+          "surface_id": "near-you",
+          "phase_id": "route-import",
+          "metric_id": "first_render_to_main_ms",
+          "state": "no_data",
+          "sampled_count": null,
+          "estimated_count": null
+        },
+        {
+          "surface_id": "near-you",
+          "phase_id": "response",
+          "metric_id": "ttfb_ms",
+          "state": "no_data",
+          "sampled_count": null,
+          "estimated_count": null
+        },
+        {
+          "surface_id": "near-you",
+          "phase_id": "response",
+          "metric_id": "response_to_first_render_ms",
+          "state": "no_data",
+          "sampled_count": null,
+          "estimated_count": null
+        },
+        {
+          "surface_id": "near-you",
+          "phase_id": "owner-settlement",
+          "metric_id": "main_to_useful_ms",
+          "state": "no_data",
+          "sampled_count": null,
+          "estimated_count": null
+        },
+        {
+          "surface_id": "near-you",
+          "phase_id": "semantic-readiness",
+          "metric_id": "content_ready_ms",
+          "state": "no_data",
+          "sampled_count": null,
+          "estimated_count": null
+        },
+        {
+          "surface_id": "near-you",
+          "phase_id": "semantic-readiness",
+          "metric_id": "component_ready_ms",
+          "state": "no_data",
+          "sampled_count": null,
+          "estimated_count": null
+        },
+        {
+          "surface_id": "following",
+          "phase_id": "route-import",
+          "metric_id": "first_render_to_main_ms",
+          "state": "no_data",
+          "sampled_count": null,
+          "estimated_count": null
+        },
+        {
+          "surface_id": "following",
+          "phase_id": "response",
+          "metric_id": "ttfb_ms",
+          "state": "measured",
+          "sampled_count": 53,
+          "estimated_count": 53,
+          "percentiles": {
+            "p50": 74.20000004768372,
+            "p75": 337.09999999403954,
+            "p95": 2035.4000000059605
+          }
+        },
+        {
+          "surface_id": "following",
+          "phase_id": "response",
+          "metric_id": "response_to_first_render_ms",
+          "state": "no_data",
+          "sampled_count": null,
+          "estimated_count": null
+        },
+        {
+          "surface_id": "following",
+          "phase_id": "owner-settlement",
+          "metric_id": "main_to_useful_ms",
+          "state": "no_data",
+          "sampled_count": null,
+          "estimated_count": null
+        },
+        {
+          "surface_id": "following",
+          "phase_id": "semantic-readiness",
+          "metric_id": "content_ready_ms",
+          "state": "measured",
+          "sampled_count": 54,
+          "estimated_count": 54,
+          "percentiles": {
+            "p50": 917.6999999284744,
+            "p75": 1680.3999999761581,
+            "p95": 3274.2000000029802
+          }
+        },
+        {
+          "surface_id": "following",
+          "phase_id": "semantic-readiness",
+          "metric_id": "component_ready_ms",
+          "state": "measured",
+          "sampled_count": 49,
+          "estimated_count": 49,
+          "percentiles": {
+            "p50": 940.8999999761581,
+            "p75": 1690.0999999940395,
+            "p95": 3164.099999997765
+          }
+        },
+        {
+          "surface_id": "browse-contracts",
+          "phase_id": "route-import",
+          "metric_id": "first_render_to_main_ms",
+          "state": "no_data",
+          "sampled_count": null,
+          "estimated_count": null
+        },
+        {
+          "surface_id": "browse-contracts",
+          "phase_id": "response",
+          "metric_id": "ttfb_ms",
+          "state": "measured",
+          "sampled_count": 51,
+          "estimated_count": 51,
+          "percentiles": {
+            "p50": 27.799999999995634,
+            "p75": 137.09999990463257,
+            "p95": 640.6000000238419
+          }
+        },
+        {
+          "surface_id": "browse-contracts",
+          "phase_id": "response",
+          "metric_id": "response_to_first_render_ms",
+          "state": "no_data",
+          "sampled_count": null,
+          "estimated_count": null
+        },
+        {
+          "surface_id": "browse-contracts",
+          "phase_id": "owner-settlement",
+          "metric_id": "main_to_useful_ms",
+          "state": "no_data",
+          "sampled_count": null,
+          "estimated_count": null
+        },
+        {
+          "surface_id": "browse-contracts",
+          "phase_id": "semantic-readiness",
+          "metric_id": "content_ready_ms",
+          "state": "measured",
+          "sampled_count": 48,
+          "estimated_count": 48,
+          "percentiles": {
+            "p50": 2241.400000035763,
+            "p75": 3039.2999999523163,
+            "p95": 7615.399999976158
+          }
+        },
+        {
+          "surface_id": "browse-contracts",
+          "phase_id": "semantic-readiness",
+          "metric_id": "component_ready_ms",
+          "state": "measured",
+          "sampled_count": 48,
+          "estimated_count": 48,
+          "percentiles": {
+            "p50": 2241.5,
+            "p75": 3039.399999976158,
+            "p95": 7615.5
+          }
+        },
+        {
+          "surface_id": "notice",
+          "phase_id": "route-import",
+          "metric_id": "first_render_to_main_ms",
+          "state": "no_data",
+          "sampled_count": null,
+          "estimated_count": null
+        },
+        {
+          "surface_id": "notice",
+          "phase_id": "response",
+          "metric_id": "ttfb_ms",
+          "state": "measured",
+          "sampled_count": 100,
+          "estimated_count": 100,
+          "percentiles": {
+            "p50": 250.6999999999971,
+            "p75": 683,
+            "p95": 2012.0999999999913
+          }
+        },
+        {
+          "surface_id": "notice",
+          "phase_id": "response",
+          "metric_id": "response_to_first_render_ms",
+          "state": "no_data",
+          "sampled_count": null,
+          "estimated_count": null
+        },
+        {
+          "surface_id": "notice",
+          "phase_id": "owner-settlement",
+          "metric_id": "main_to_useful_ms",
+          "state": "no_data",
+          "sampled_count": null,
+          "estimated_count": null
+        },
+        {
+          "surface_id": "notice",
+          "phase_id": "semantic-readiness",
+          "metric_id": "content_ready_ms",
+          "state": "measured",
+          "sampled_count": 93,
+          "estimated_count": 93,
+          "percentiles": {
+            "p50": 2482.800000011921,
+            "p75": 3411,
+            "p95": 7109.09999999986
+          }
+        },
+        {
+          "surface_id": "notice",
+          "phase_id": "semantic-readiness",
+          "metric_id": "component_ready_ms",
+          "state": "measured",
+          "sampled_count": 85,
+          "estimated_count": 85,
+          "percentiles": {
+            "p50": 2877.7999999999884,
+            "p75": 3782.800000000003,
+            "p95": 8001.899999976158
+          }
+        },
+        {
+          "surface_id": "agency",
+          "phase_id": "route-import",
+          "metric_id": "first_render_to_main_ms",
+          "state": "no_data",
+          "sampled_count": null,
+          "estimated_count": null
+        },
+        {
+          "surface_id": "agency",
+          "phase_id": "response",
+          "metric_id": "ttfb_ms",
+          "state": "insufficient_sample",
+          "sampled_count": 10,
+          "estimated_count": 10,
+          "reason": "below_floor",
+          "sample_floor": 30
+        },
+        {
+          "surface_id": "agency",
+          "phase_id": "response",
+          "metric_id": "response_to_first_render_ms",
+          "state": "no_data",
+          "sampled_count": null,
+          "estimated_count": null
+        },
+        {
+          "surface_id": "agency",
+          "phase_id": "owner-settlement",
+          "metric_id": "main_to_useful_ms",
+          "state": "no_data",
+          "sampled_count": null,
+          "estimated_count": null
+        },
+        {
+          "surface_id": "agency",
+          "phase_id": "semantic-readiness",
+          "metric_id": "content_ready_ms",
+          "state": "no_data",
+          "sampled_count": null,
+          "estimated_count": null
+        },
+        {
+          "surface_id": "agency",
+          "phase_id": "semantic-readiness",
+          "metric_id": "component_ready_ms",
+          "state": "no_data",
+          "sampled_count": null,
+          "estimated_count": null
+        }
+      ]
+    }
+  },
+  "evidence_hash": "217905d145e23c06add58072758010718e29afdc72472002113e175a67c81b4c",
+  "query_hash": "c294d0d0fe2864cbe3b3ff1f331e118fa87ac22a01d4788999e60ffdf4384664"
+}
