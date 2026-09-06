@@ -3,7 +3,12 @@
 Most first-class resident datasets are refreshed daily by the
 `First-class dataset refresh` workflow, which runs the acquisition and owning
 builder that `site/data/source_contracts.json#first_class_artifacts` declares
-for each one.
+for each one. Whatever that workflow regenerates is published onto a dated
+branch by `tools/open_first_class_refresh_pr.sh`, which can run more than once on
+the same day: it reads the branch as the remote currently holds it before pushing
+under a stated lease, and it opens a new pull request when the previous one on
+that branch was closed. `test/first_class_refresh_pr_step.test.mjs` exercises that
+script against a local remote.
 
 A hosted runner cannot refresh every dataset. `site/data/ocp_awards_warehouse_lookup.json`
 and its dependants are materialised from the retained analytical warehouse — a

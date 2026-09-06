@@ -83,26 +83,5 @@ jobs:
       - name: Open a pull request with the refreshed datasets
         env:
           GH_TOKEN: ${{ github.token }}
-        run: |
-          set -euo pipefail
-          if [ -z "$(git status --porcelain -- site worker)" ]; then
-            echo "No dataset changes to publish."
-            exit 0
-          fi
-          branch="data/first-class-refresh-$(date -u +%Y%m%d)"
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git checkout -b "$branch"
-          git add -- site worker
-          git commit -m "Refresh first-class resident datasets from their publishers"
-          git push --force-with-lease \
-            "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git" \
-            "HEAD:${branch}"
-          existing="$(gh pr list --head "$branch" --state open --json number --jq '.[0].number // ""')"
-          if [ -n "$existing" ]; then
-            echo "Updated existing pull request #${existing}."
-            exit 0
-          fi
-          gh pr create --head "$branch" --base main \
-            --title "Refresh first-class resident datasets" \
-            --body "Scheduled refresh of every first-class resident dataset that was past its declared cadence. The run summary lists each dataset's freshness state and any acquisition that could not complete."
+          REPOSITORY: ${{ github.repository }}
+        run: bash tools/open_first_class_refresh_pr.sh
