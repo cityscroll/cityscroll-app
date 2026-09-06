@@ -7,9 +7,11 @@ url: /guide/start/explore-housing-across-city-records/
 reader_question: I want to learn how this works — where do I begin?
 purpose: Follow one real search from the front page to an official city record, and learn how CityScroll groups what it finds.
 description: A guided walk through one real CityScroll search — read the groups of results, open two of them, check a record against the official source, and keep the link.
-last_reviewed: 2026-09-05
+last_reviewed: 2026-09-06
 return_to_task: Try this search yourself | /search/?q=housing
 related:
+  - What a public record tells you | /guide/understand/what-a-public-record-tells-you/
+  - Glossary of terms used in this guide | /guide/reference/glossary/
   - Browse New York City public records by type | /browse/
   - Follow topics and get updates | /following/
   - About CityScroll and where its records come from | /about.html
@@ -47,11 +49,12 @@ you can still read every page this tutorial sends you to afterwards, including t
 ## Step 2 — Read the groups
 
 Near the top you will see a row that names each group and how many results it holds — groups such as
-Contracts, People and organizations, Land, Rules, Meetings, and Exams.
+Contracts, People + organizations, Land, Rules, Meetings, and Exams.
 
 Those group names are the point. A word like housing appears in a contract, in a land-use
 application, in a proposed rule and in a job exam, and those are genuinely different kinds of record.
-CityScroll keeps them apart so you can tell which kind you are looking at.
+CityScroll keeps them apart so you can tell which kind you are looking at. If one of the group names
+is unfamiliar, the [glossary](/guide/reference/glossary/) says what each kind of record is.
 
 How many results each group holds depends on what the city has put out recently, so your numbers will
 not match anyone else's — and some groups may hold nothing at all for a given word. Read the shape,
@@ -65,7 +68,7 @@ the body of the record itself.
 
 ## Step 3 — Open the first kind of result
 
-Find the group called People and organizations, and open one of its results by clicking its title.
+Find the group called People + organizations, and open one of its results by clicking its title.
 For this search you should see city agencies whose work is housing, such as the Department of Housing
 Preservation and Development.
 
@@ -129,3 +132,7 @@ you. Everything in this tutorial works signed out.
 
 Otherwise, try the same six steps with a word that matters to you: your street, your landlord, an
 agency you are dealing with, or a job title you are studying for.
+
+Before you rely on what you find, it is worth reading
+[what a public record tells you](/guide/understand/what-a-public-record-tells-you/). A record proves
+the city published something, and how much more it shows depends on which kind you are holding.

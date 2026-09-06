@@ -127,6 +127,17 @@ function sourcesSection(article) {
   </section>`;
 }
 
+/**
+ * The section a reader found the article in, and what kind of article it is. For
+ * Reference those are the same word, and a reader gains nothing from being told it
+ * twice, so it is said once.
+ */
+function articleKicker(article) {
+  const section = article.group.label;
+  const type = TYPE_LABELS[article.type];
+  return section === type ? section : `${section} · ${type}`;
+}
+
 /** One guide article. */
 export function renderGuideArticle(article) {
   return `${head({
@@ -137,7 +148,7 @@ export function renderGuideArticle(article) {
 <main class="node-document guide-document guide-article" id="main">
   <p class="node-back"><a href="${esc(GUIDE_HOME_URL)}">Back to the guide</a></p>
   <header class="node-hero guide-hero">
-    <p class="node-kicker">${esc(article.group.label)} · ${esc(TYPE_LABELS[article.type])}</p>
+    <p class="node-kicker">${esc(articleKicker(article))}</p>
     <h1>${esc(article.title)}</h1>
     <p class="node-lede">${esc(article.purpose)}</p>
     <p class="guide-question">${esc(article.reader_question)}</p>

@@ -35,6 +35,13 @@ PROMOTED_DOCUMENTS = [
     "https://cityscroll.org/browse/meetings/",
     "https://cityscroll.org/guide/",
     "https://cityscroll.org/guide/start/explore-housing-across-city-records/",
+    "https://cityscroll.org/guide/understand/what-a-public-record-tells-you/",
+    "https://cityscroll.org/guide/understand/how-records-are-connected/",
+    "https://cityscroll.org/guide/understand/dates-and-missing-information/",
+    "https://cityscroll.org/guide/understand/flags-and-historical-patterns/",
+    "https://cityscroll.org/guide/reference/glossary/",
+    "https://cityscroll.org/guide/reference/controls-and-outputs/",
+    "https://cityscroll.org/guide/reference/sources-and-coverage/",
 ]
 RETIRED_DESTINATIONS = {
     "changelog.html": "https://cityscroll.org/about.html",

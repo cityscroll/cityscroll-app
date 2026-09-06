@@ -52,6 +52,7 @@ OUTPUT_DIR = ROOT / ".artifacts" / "guide-release"
 GUIDE_HOME = "/guide/"
 TUTORIAL = "/guide/start/explore-housing-across-city-records/"
 SEARCH = "/search/?q=housing"
+GLOSSARY = "/guide/reference/glossary/"
 
 VIEWPORTS = (("mobile", 390, 844), ("desktop", 1440, 900))
 MIN_TARGET_PX = 24  # WCAG 2.2 AA, 2.5.8 Target Size (Minimum)
@@ -97,6 +98,99 @@ ROUTES = (
             "Try this search yourself",
         ],
         "expect_links": [GUIDE_HOME, SEARCH],
+        "axe": True,
+    },
+    {
+        "id": "guide-understand-public-record",
+        "route": "/guide/understand/what-a-public-record-tells-you/",
+        "assertion": "The explanation loads on its own, keeps the stages of a contract, a rule and "
+        "a land-use review apart, and distinguishes the four ways to take part.",
+        "expect_text": [
+            "Understand · Explanation",
+            "A record is a publication, not the action",
+            "A rule comment period",
+            "Community Board",
+            "A blank is not a zero",
+        ],
+        "expect_links": [GUIDE_HOME],
+        "axe": True,
+    },
+    {
+        "id": "guide-understand-connections",
+        "route": "/guide/understand/how-records-are-connected/",
+        "assertion": "The explanation names the three bases a connection can rest on and says why "
+        "a real relationship can still be missing.",
+        "expect_text": [
+            "Matched by a published record",
+            "Record-linkage match",
+            "Person-accepted",
+            "A connection is not a finding",
+        ],
+        "expect_links": [GUIDE_HOME],
+        "axe": True,
+    },
+    {
+        "id": "guide-understand-dates",
+        "route": "/guide/understand/dates-and-missing-information/",
+        "assertion": "The explanation separates the kinds of date and the kinds of blank, and says "
+        "an unknown is not a zero and a closed window is not an invitation.",
+        "expect_text": [
+            "Four kinds of date",
+            "Four kinds of blank",
+            "None of these is a zero",
+            "What it is not is a current invitation",
+        ],
+        "expect_links": [GUIDE_HOME],
+        "axe": True,
+    },
+    {
+        "id": "guide-understand-flags",
+        "route": "/guide/understand/flags-and-historical-patterns/",
+        "assertion": "The explanation gives each computed note a plain meaning and links the page "
+        "that owns its exact rule instead of restating a threshold.",
+        "expect_text": [
+            "statistical context, not a finding",
+            "Short ad window",
+            "Rules adoption lag",
+            "An estimate never becomes a deadline",
+        ],
+        "expect_links": [GUIDE_HOME, "/about.html#context"],
+        "axe": True,
+    },
+    {
+        "id": "guide-reference-glossary",
+        "route": GLOSSARY,
+        "assertion": "The glossary loads on its own and lays its terms out in tables, including "
+        "the identifiers a reader meets on a record.",
+        "expect_text": ["Reference", "Identifiers", "PIN", "BBL", "Eligible list"],
+        "expect_links": [GUIDE_HOME],
+        "axe": True,
+    },
+    {
+        "id": "guide-reference-controls",
+        "route": "/guide/reference/controls-and-outputs/",
+        "assertion": "The controls reference says what each control leaves the reader with, keeps "
+        "a preview apart from a subscription, and sends machine parameters to the API page.",
+        "expect_text": [
+            "Preview matches",
+            "A preview is not a subscription",
+            "Subscribe to calendar",
+            "Freeze research package",
+        ],
+        "expect_links": [GUIDE_HOME, "/api.html"],
+        "axe": True,
+    },
+    {
+        "id": "guide-reference-sources",
+        "route": "/guide/reference/sources-and-coverage/",
+        "assertion": "The sources reference shows the inventory generated from the source registry "
+        "and links the pages that own coverage and endpoints.",
+        "expect_text": [
+            "public sources behind these records",
+            "How it refreshes",
+            "What is not covered",
+        ],
+        "expect_links": [GUIDE_HOME, "/stats.html", "/api.html"],
         "axe": True,
     },
     {
@@ -391,6 +485,47 @@ def journey_without_script(page: Page, base: str) -> dict:
     }
 
 
+def reference_reached_without_script(page: Page, base: str) -> dict:
+    """A reader meets an unfamiliar term in the tutorial and follows it, with no script.
+
+    This is the property the reference section exists for: the first consequential
+    term in a lesson has somewhere to go, the page it goes to stands on its own, and
+    Back returns the reader to the step they left.
+    """
+    page.goto(urljoin(base, TUTORIAL.lstrip("/")), wait_until="domcontentloaded")
+    page.click(f'main a[href="{GLOSSARY}"]')
+    page.wait_for_load_state("domcontentloaded")
+    reached = urlsplit(page.url).path
+    glossary = page.evaluate(
+        """() => ({
+            tables: document.querySelectorAll('main table').length,
+            headerCells: document.querySelectorAll('main th[scope="col"]').length,
+            namedRegions: [...document.querySelectorAll('main .guide-table')]
+                .every((node) => !!node.getAttribute('aria-label')),
+            reviewed: /Last reviewed \\d{4}-\\d{2}-\\d{2}/.test(document.querySelector('main').innerText),
+            backToGuide: !!document.querySelector('main a[href="/guide/"]'),
+        })"""
+    )
+    page.go_back()
+    page.wait_for_load_state("domcontentloaded")
+    back_path = urlsplit(page.url).path
+    holds = (
+        reached == GLOSSARY
+        and glossary["tables"] >= 2
+        and glossary["headerCells"] >= 4
+        and glossary["namedRegions"]
+        and glossary["reviewed"]
+        and glossary["backToGuide"]
+        and back_path == TUTORIAL
+    )
+    return {
+        "assertion_holds": holds,
+        "reached_path": reached,
+        "glossary": glossary,
+        "back_path": back_path,
+    }
+
+
 def capture(base: str, output_dir: Path) -> dict:
     output_dir.mkdir(parents=True, exist_ok=True)
     captures: list[dict] = []
@@ -443,6 +578,16 @@ def capture(base: str, output_dir: Path) -> dict:
                         **journey_without_script(no_script.new_page(), base),
                     }
                 )
+                journeys.append(
+                    {
+                        "id": "reference-reached-without-javascript",
+                        "viewport": name,
+                        "assertion": "With JavaScript switched off, an unfamiliar term in the "
+                        "tutorial leads to a reference page that stands on its own, with named "
+                        "tables and its own review date, and Back returns to the step.",
+                        **reference_reached_without_script(no_script.new_page(), base),
+                    }
+                )
                 no_script.close()
         finally:
             browser.close()
@@ -471,19 +616,18 @@ def main() -> int:
 
     manifest = {
         "schema_version": 1,
-        "card": "cityscroll-public-user-guide/ug-01-guide-home-and-first-tutorial",
+        "record": "cityscroll-engineering/public-guide-release",
         "capture_mode": "local_static_site_playwright_no_committed_image",
         "base": "local static site build (site/)",
         "repository_revision": repository_revision(),
         "repository_state": working_tree_state(),
         "note": (
-            "Usability evidence for the first published slice of the public guide. Every check runs "
-            "against the tracked static documents served locally, so it reproduces from a checkout "
-            "with no network and no deploy. Accessibility, keyboard, reflow and link checks cover "
-            "the guide documents this change adds; the front page and the search document keep "
-            "their existing owners and are exercised here only as the journey's endpoints. "
-            "Screenshots stay under the ignored .artifacts/ path and only their sha256 is recorded, "
-            "per docs/capture-manifest-guard.md."
+            "Usability evidence for the published guide. Every check runs against the tracked "
+            "static documents served locally, so it reproduces from a checkout with no network and "
+            "no deploy. Accessibility, keyboard, reflow and link checks cover the guide documents; "
+            "the front page and the search document keep their existing owners and are exercised "
+            "here only as the journey's endpoints. Screenshots stay under the ignored .artifacts/ "
+            "path and only their sha256 is recorded, per docs/capture-manifest-guard.md."
         ),
         "data_vintage": (
             "Not applicable to the guide documents: they are prose built from tracked sources and "
@@ -504,6 +648,7 @@ def main() -> int:
             "HTTP status of every internal link on a guide page",
             "front page to guide to tutorial to product, and browser Back",
             "the same reading path with JavaScript switched off",
+            "an unfamiliar term in the tutorial reaching a reference page without script",
         ],
         **capture_sections(observed),
     }

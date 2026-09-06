@@ -22,6 +22,11 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { parseGuideArticle, parseGuideHome, GuideSourceError } from "../site/guide_article_source.mjs";
+import {
+  GUIDE_SOURCE_COVERAGE_INCLUDE,
+  GuideSourceCoverageError,
+  guideSourceCoverageTable,
+} from "../site/guide_source_coverage.mjs";
 import { renderGuideArticle, renderGuideHome, GUIDE_HOME_URL } from "../site/guide_view.mjs";
 import { ROUTE_INVENTORY } from "./pages_route_parity.mjs";
 
@@ -30,6 +35,20 @@ const SITE = join(ROOT, "site");
 const GUIDE = join(SITE, "guide");
 const HOME_SOURCE = join(GUIDE, "_home.md");
 const ARTICLE_DIR = join(GUIDE, "_articles");
+const SOURCE_CONTRACTS = join(SITE, "data", "source_contracts.json");
+
+/**
+ * Tables an owner generates, which an article places with a `::: <name>` line.
+ * Reading the registry here keeps `site/guide_source_coverage.mjs` a pure function
+ * of it, and keeps the reference page from carrying a second copy of the inventory.
+ */
+function generatedTables() {
+  return {
+    [GUIDE_SOURCE_COVERAGE_INCLUDE]: guideSourceCoverageTable(
+      JSON.parse(readFileSync(SOURCE_CONTRACTS, "utf8")),
+    ),
+  };
+}
 
 /**
  * Routes another owner serves. The public route inventory covers the routes the
@@ -49,12 +68,30 @@ function outputPathFor(url) {
   return join(SITE, `${url.replace(/^\/+|\/+$/g, "")}/index.html`);
 }
 
+/**
+ * Reading order inside a section, which is the order the article ids give: the
+ * explanation of what a record is comes before the one about how records connect.
+ * Sorting by file name would order a section alphabetically, which is no order at
+ * all to a reader. An id the pattern does not recognise sorts after the ones it
+ * does, by its own text, rather than silently jumping the queue.
+ */
+function byReadingOrder(left, right) {
+  const parse = (id) => /^([A-Z]+)(\d+)$/.exec(id);
+  const [a, b] = [parse(left.id), parse(right.id)];
+  if (a && b) return a[1].localeCompare(b[1]) || Number(a[2]) - Number(b[2]);
+  if (a) return -1;
+  if (b) return 1;
+  return left.id.localeCompare(right.id);
+}
+
 export function loadGuide() {
   const home = parseGuideHome("site/guide/_home.md", readFileSync(HOME_SOURCE, "utf8"));
+  const includes = generatedTables();
   const articles = readdirSync(ARTICLE_DIR)
     .filter((name) => name.endsWith(".md"))
     .sort()
-    .map((name) => parseGuideArticle(`site/guide/_articles/${name}`, readFileSync(join(ARTICLE_DIR, name), "utf8")));
+    .map((name) => parseGuideArticle(`site/guide/_articles/${name}`, readFileSync(join(ARTICLE_DIR, name), "utf8"), includes))
+    .sort(byReadingOrder);
 
   const seen = new Map();
   for (const article of articles) {
@@ -107,7 +144,7 @@ function main(argv) {
   try {
     documents = renderGuideDocuments();
   } catch (error) {
-    if (!(error instanceof GuideSourceError)) throw error;
+    if (!(error instanceof GuideSourceError) && !(error instanceof GuideSourceCoverageError)) throw error;
     console.error(error.message);
     return 1;
   }

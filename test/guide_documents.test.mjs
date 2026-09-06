@@ -6,6 +6,11 @@
  * being a recorded editorial fact rather than a build artefact, and an article
  * staying readable without script, without images, and without asking the reader
  * to know the words the implementation uses for things.
+ *
+ * The explanation and reference pages add two of their own: an explanation stands
+ * without a tutorial behind it, and the one inventory a reference page shows is
+ * derived from the source registry rather than typed, so it cannot drift away from
+ * what the site reads.
  */
 
 import assert from "node:assert/strict";
@@ -13,6 +18,7 @@ import { readFileSync } from "node:fs";
 import test from "node:test";
 
 import { GUIDE_GROUPS, GuideSourceError, parseGuideArticle, parseGuideHome } from "../site/guide_article_source.mjs";
+import { GuideSourceCoverageError, guideSourceCoverageTable } from "../site/guide_source_coverage.mjs";
 import { renderGuideArticle, renderGuideHome } from "../site/guide_view.mjs";
 import { internalLinkFailures, loadGuide, renderGuideDocuments } from "../tools/build_guide_documents.mjs";
 
@@ -97,6 +103,113 @@ test("the tutorial promises observable checkpoints, never a fixed number of resu
 
 test("the tutorial says where the product itself needs script", () => {
   assert.match(textOf(tutorialHtml), /needs JavaScript switched on/);
+});
+
+/* --------------------------------------- the explanations and reference pages */
+
+const understand = articles.filter((article) => article.type === "explanation");
+const reference = articles.filter((article) => article.type === "reference");
+const htmlFor = (article) => documents.get(
+  new URL(`../site${article.url}index.html`, import.meta.url).pathname,
+);
+
+test("every explanation and reference page stands on its own", () => {
+  assert.ok(understand.length >= 4, "the Understand section is short of its articles");
+  assert.ok(reference.length >= 3, "the Reference section is short of its articles");
+  for (const article of [...understand, ...reference]) {
+    const text = textOf(htmlFor(article));
+    // Nothing may make finishing a tutorial a condition of reading the page.
+    assert.ok(
+      !/(after|once) you (have )?(finish|complet)/i.test(text),
+      `${article.id} asks the reader to complete something first`,
+    );
+    assert.match(text, new RegExp(`Last reviewed ${article.last_reviewed}`));
+    assert.ok(text.includes(article.reader_question), `${article.id} does not show its reader question`);
+  }
+});
+
+test("a reference page is scannable — its terms are laid out in tables", () => {
+  for (const article of reference) {
+    const html = htmlFor(article);
+    const tables = [...html.matchAll(/<table>/g)].length;
+    assert.ok(tables >= 2, `${article.id} has ${tables} tables; a lookup page needs its terms laid out`);
+    // A scrollable region needs a name and a way in from the keyboard.
+    for (const region of html.matchAll(/<div class="guide-table"([^>]*)>/g)) {
+      assert.match(region[1], /role="region"/);
+      assert.match(region[1], /tabindex="0"/);
+      assert.match(region[1], /aria-label="[^"]+"/);
+    }
+    assert.ok(!/<th(?=[\s>])(?![^>]*scope=)/.test(html), `${article.id} has a header cell with no scope`);
+  }
+});
+
+test("the explanations keep unknown, closed and unpublished apart from a negative answer", () => {
+  const text = understand.map((article) => textOf(htmlFor(article))).join(" ");
+  for (const promise of [
+    /blank is not a zero/i,
+    /closed window is not (a current )?(an )?invitation/i,
+    /estimate is not a deadline/i,
+    /No published outcome is not a decision/i,
+  ]) {
+    assert.match(text, promise);
+  }
+});
+
+test("the reference pages link their owners instead of restating them", () => {
+  const controls = reference.find((article) => article.id === "R2");
+  const sources = reference.find((article) => article.id === "R3");
+  // Machine parameters belong to the API page; source health to the registry.
+  assert.ok(htmlFor(controls).includes('href="/api.html"'), "R2 does not point at the API page");
+  assert.ok(htmlFor(sources).includes('href="/stats.html"'), "R3 does not point at the stats page");
+  assert.ok(
+    htmlFor(sources).includes("docs/data-sources.md"),
+    "R3 does not link the published source ledger",
+  );
+});
+
+test("the source inventory a reference page shows is derived, not typed", () => {
+  const registry = JSON.parse(
+    readFileSync(new URL("../site/data/source_contracts.json", import.meta.url), "utf8"),
+  );
+  const table = guideSourceCoverageTable(registry);
+  const published = registry.contracts.filter(
+    (contract) => contract.health_policy.public_visibility === "public",
+  );
+  assert.ok(table.caption.includes(String(published.length)));
+  // Every counted source is accounted for by exactly one row.
+  const counted = table.rows.reduce((total, row) => total + Number(row[2]), 0);
+  assert.equal(counted, published.length);
+  const html = htmlFor(reference.find((article) => article.id === "R3"));
+  assert.ok(html.includes(table.caption), "the page does not show the derived table");
+  // A number nobody generated is the failure this is guarding against.
+  assert.ok(
+    !/\b\d{2,} (sources|public sources|contracts)\b/.test(
+      textOf(html).replace(table.caption, " "),
+    ),
+    "the page states a source count of its own beside the derived one",
+  );
+});
+
+test("a refresh mode with no plain-language meaning stops the build", () => {
+  assert.throws(
+    () => guideSourceCoverageTable({
+      contracts: [{
+        id: "invented",
+        health_policy: { public_visibility: "public" },
+        freshness_contract: { mode: "whenever" },
+      }],
+    }),
+    GuideSourceCoverageError,
+  );
+  assert.throws(() => guideSourceCoverageTable({ contracts: [] }), GuideSourceCoverageError);
+});
+
+test("the first unfamiliar term in the tutorial has somewhere to go", () => {
+  const destinations = [...understand, ...reference].map((article) => article.url);
+  assert.ok(
+    destinations.some((url) => tutorialHtml.includes(`href="${url}"`)),
+    "the tutorial sends a reader to no explanation or reference page",
+  );
 });
 
 /* ------------------------------------------------------- rebuild behaviour */
@@ -200,7 +313,7 @@ test("author text cannot inject markup, and unsupported syntax fails the build",
   const escaped = parseGuideArticle("fixture.md", MINIMAL.replace("Some prose.", "Some <b>prose</b> & more."));
   assert.match(escaped.bodyHtml, /&lt;b&gt;prose&lt;\/b&gt; &amp; more\./);
   assert.throws(
-    () => parseGuideArticle("fixture.md", MINIMAL.replace("Some prose.", "| a | table |")),
+    () => parseGuideArticle("fixture.md", MINIMAL.replace("Some prose.", "*** a rule ***")),
     /unsupported block/,
   );
 });
@@ -234,4 +347,45 @@ test("a list item wrapped across lines stays one item", () => {
     MINIMAL.replace("Some prose.", "- A point that runs\n  onto a second line.\n- A second point."),
   );
   assert.match(article.bodyHtml, /<ul><li>A point that runs onto a second line\.<\/li><li>A second point\.<\/li><\/ul>/);
+});
+
+test("a table renders with header cells and a named region, and a malformed one fails", () => {
+  const article = parseGuideArticle("fixture.md", MINIMAL.replace(
+    "Some prose.",
+    "| Term | Meaning |\n| --- | --- |\n| Notice | One published item |",
+  ));
+  assert.match(article.bodyHtml, /<div class="guide-table" role="region" tabindex="0" aria-label="A heading">/);
+  assert.match(article.bodyHtml, /<th scope="col">Term<\/th>/);
+  assert.match(article.bodyHtml, /<td>One published item<\/td>/);
+  assert.throws(
+    () => parseGuideArticle("fixture.md", MINIMAL.replace("Some prose.", "| Term | Meaning |\n| Notice | One |")),
+    /a table needs a header row, a --- divider row/,
+  );
+  assert.throws(
+    () => parseGuideArticle("fixture.md", MINIMAL.replace(
+      "Some prose.",
+      "| Term | Meaning |\n| --- | --- |\n| Notice |",
+    )),
+    /table row has 1 cells but the header has 2/,
+  );
+});
+
+test("a table with no heading above it is rejected rather than left unnamed", () => {
+  assert.throws(
+    () => parseGuideArticle("fixture.md", MINIMAL.replace(
+      "## A heading\n\nSome prose.",
+      "| Term | Meaning |\n| --- | --- |\n| Notice | One published item |",
+    )),
+    /a table needs a name/,
+  );
+});
+
+test("a generated table is placed by name, and an unknown name fails the build", () => {
+  const source = MINIMAL.replace("Some prose.", "::: made-up-table");
+  assert.throws(() => parseGuideArticle("fixture.md", source), /no owner generates a "made-up-table" table/);
+  const article = parseGuideArticle("fixture.md", source, {
+    "made-up-table": { caption: "Two things", columns: ["One", "Two"], rows: [["a", "b"]] },
+  });
+  assert.match(article.bodyHtml, /<caption>Two things<\/caption>/);
+  assert.match(article.bodyHtml, /aria-label="Two things"/);
 });
