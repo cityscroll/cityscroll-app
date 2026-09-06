@@ -1,0 +1,33 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/guide-everyday-how-to-articles",
+  "status": "implemented",
+  "fingerprint": "guide-everyday-how-to-articles.v1",
+  "updated_at": "2026-09-05T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "guide-how-to-find-and-narrow-records",
+      "path": "site/guide/_articles/find-and-narrow-records.md"
+    },
+    {
+      "id": "guide-how-to-follow-a-search",
+      "path": "site/guide/_articles/follow-a-search.md"
+    },
+    {
+      "id": "guide-how-to-follow-a-community-board",
+      "path": "site/guide/_articles/follow-a-community-board.md"
+    },
+    {
+      "id": "guide-how-to-put-dates-in-your-calendar",
+      "path": "site/guide/_articles/put-dates-in-your-calendar.md"
+    },
+    {
+      "id": "guide-how-to-read-a-land-use-project",
+      "path": "site/guide/_articles/read-a-land-use-projects-next-step.md"
+    },
+    {
+      "id": "guide-how-to-walkthrough-capture",
+      "path": "tools/capture_guide_how_to_walkthroughs.py"
+    }
+  ]
+}

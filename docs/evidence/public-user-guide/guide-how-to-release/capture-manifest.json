@@ -1,0 +1,973 @@
+{
+  "schema_version": 1,
+  "record": "cityscroll-engineering/guide-everyday-how-to-articles",
+  "capture_mode": "local_static_site_playwright_no_committed_image",
+  "base": "local static site build (site/)",
+  "repository_revision": "ec59a05c61248860c6eaa9db58473a5713371d57",
+  "repository_state": "uncommitted changes present at capture time",
+  "note": "Usability and walkthrough evidence for the five everyday how-to guides. Every check runs against the tracked static documents served locally, so it reproduces from a checkout with no network and no deploy. Accessibility, keyboard, reflow and link checks cover the guide documents this change adds; the product routes each article names keep their existing owners and are exercised here only as walkthrough endpoints, where the assertion is that the document serves and Back returns. Screenshots stay under the ignored .artifacts/ path and only their sha256 is recorded, per docs/capture-manifest-guard.md.",
+  "read_only_contract": "Public inspection only. The walkthroughs follow anchors to the routes named in tools/capture_guide_how_to_walkthroughs.py and nothing else. No email address is entered, no testimony is submitted and no calendar subscription is created; every form submission is blocked and recorded, and any request to a signup, preference, confirmation, unsubscribe or feed route would fail the run. Both counts are reported per walkthrough below.",
+  "data_vintage": "Not applicable to the guide documents: they are prose built from tracked sources and contain no civic records. Their review dates are editorial facts recorded in the article sources, not observations of live data. The product routes are served from the local build and the records they list are not asserted, because a guide that depended on today's records would be wrong tomorrow.",
+  "viewports": [
+    {
+      "name": "mobile",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "name": "desktop",
+      "width": 1440,
+      "height": 900
+    }
+  ],
+  "checks": [
+    "expected reader-facing text and the product entry link each article names",
+    "axe-core critical and serious violations on every guide document",
+    "horizontal overflow at the review width",
+    "horizontal overflow at 200 percent zoom (WCAG 1.4.10 reflow)",
+    "target size below 24px",
+    "keyboard focus reach and a visible focus indicator",
+    "HTTP status of every internal link on a guide page",
+    "guide home to article to the product route it names, and browser Back twice",
+    "the same reading path with JavaScript switched off",
+    "no form submission and no request to a state-changing route"
+  ],
+  "captures": [
+    {
+      "id": "H1",
+      "route": "/guide/how-to/find-and-narrow-records/",
+      "viewport": "mobile",
+      "viewport_width": 390,
+      "assertion": "Find and narrow records opens with the task, its prerequisites and a search entry link, teaches People + organizations, Staffing and Exams as three destinations, and ends on a view the reader can reopen.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 11,
+        "reached": 11,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 14,
+      "broken_internal_links": [],
+      "visible_text_characters": 6417,
+      "content_sha256": "d38d2fb9a4d2573011e0acb1366d209419fb22b8635d68a80adc7f4d53273572",
+      "capture_sha256": "15ff1fa15a235d08e593deaf1fab6165d638db27f2284f299d506ea69065c0ef",
+      "local_capture_path": ".artifacts/guide-how-to-release/h1-390.png",
+      "file": null
+    },
+    {
+      "id": "H2",
+      "route": "/guide/how-to/follow-a-search/",
+      "viewport": "mobile",
+      "viewport_width": 390,
+      "assertion": "Follow a search opens with the task, its prerequisites and the Following entry link, keeps a preview separate from a created watch, describes one-step enrolment, and ends with a watch the reader can manage.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 6,
+        "reached": 6,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 10,
+      "broken_internal_links": [],
+      "visible_text_characters": 5904,
+      "content_sha256": "422f8cc5d2cfacb8f98e554e8baf6881136369707fdcdcb3374eb1cb184be64d",
+      "capture_sha256": "9c04c00842225078859d4e53ca0092f027c1a1a82d7373798870550fb5124e04",
+      "local_capture_path": ".artifacts/guide-how-to-release/h2-390.png",
+      "file": null
+    },
+    {
+      "id": "H3",
+      "route": "/guide/how-to/follow-a-community-board/",
+      "viewport": "mobile",
+      "viewport_width": 390,
+      "assertion": "Follow a Community Board opens with the task, its prerequisites and the Following entry link, names Manhattan Community Board 7 in full, separates it from City Council District 7, and says the matches are district-scoped.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 6,
+        "reached": 6,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 10,
+      "broken_internal_links": [],
+      "visible_text_characters": 5876,
+      "content_sha256": "ed0e07098726028ce0fed6cded29be0ff106ec3875aca96f9b0c0cf38991587c",
+      "capture_sha256": "d6d107a077c79a08fc13260a56a8a7de0545eccc6b1de461479f185e4e6a9541",
+      "local_capture_path": ".artifacts/guide-how-to-release/h3-390.png",
+      "file": null
+    },
+    {
+      "id": "H4",
+      "route": "/guide/how-to/put-dates-in-your-calendar/",
+      "viewport": "mobile",
+      "viewport_width": 390,
+      "assertion": "Put dates in your calendar opens with the task, its prerequisites and the Now entry link, separates a single event from a continuing subscription, refuses to invent a time for a date-only deadline, and claims nothing about the reader's calendar.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 8,
+        "reached": 8,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 11,
+      "broken_internal_links": [],
+      "visible_text_characters": 6489,
+      "content_sha256": "2cdec13b33750e60bc14c5601f538495dc5a8c69de4e8afa5b0cc8a015cb1897",
+      "capture_sha256": "11c48da91a17f40b493bf95cf1ca96431ec732ddbdedbc145553581e27d0745f",
+      "local_capture_path": ".artifacts/guide-how-to-release/h4-390.png",
+      "file": null
+    },
+    {
+      "id": "H5",
+      "route": "/guide/how-to/read-a-land-use-projects-next-step/",
+      "viewport": "mobile",
+      "viewport_width": 390,
+      "assertion": "Read a land-use project opens with the task, its prerequisites and the land-use entry link, reads Where this stands, separates a calculated window from a published date, reaches real documents, and covers the unknown cases.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 7,
+        "reached": 7,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 11,
+      "broken_internal_links": [],
+      "visible_text_characters": 6291,
+      "content_sha256": "cf1799a167247666b97e69840ae19e14f4eb93b85b8f55c4b0310bf86c025101",
+      "capture_sha256": "0f372d362836e42063aa9d7f9bd9c1157abad4105b9df85e05d7dcd74881fc58",
+      "local_capture_path": ".artifacts/guide-how-to-release/h5-390.png",
+      "file": null
+    },
+    {
+      "id": "H1",
+      "route": "/guide/how-to/find-and-narrow-records/",
+      "viewport": "desktop",
+      "viewport_width": 1440,
+      "assertion": "Find and narrow records opens with the task, its prerequisites and a search entry link, teaches People + organizations, Staffing and Exams as three destinations, and ends on a view the reader can reopen.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 11,
+        "reached": 11,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 14,
+      "broken_internal_links": [],
+      "visible_text_characters": 6417,
+      "content_sha256": "d38d2fb9a4d2573011e0acb1366d209419fb22b8635d68a80adc7f4d53273572",
+      "capture_sha256": "d1727968c42ca3e56a6bc7599737f8ebf844687d3e089fca2bda3f2bcf39c6e9",
+      "local_capture_path": ".artifacts/guide-how-to-release/h1-1440.png",
+      "file": null
+    },
+    {
+      "id": "H2",
+      "route": "/guide/how-to/follow-a-search/",
+      "viewport": "desktop",
+      "viewport_width": 1440,
+      "assertion": "Follow a search opens with the task, its prerequisites and the Following entry link, keeps a preview separate from a created watch, describes one-step enrolment, and ends with a watch the reader can manage.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 6,
+        "reached": 6,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 10,
+      "broken_internal_links": [],
+      "visible_text_characters": 5904,
+      "content_sha256": "422f8cc5d2cfacb8f98e554e8baf6881136369707fdcdcb3374eb1cb184be64d",
+      "capture_sha256": "712a05c857bdf64556924b05452f4e524523b120f20f1d7cca6bb1a4353b6aec",
+      "local_capture_path": ".artifacts/guide-how-to-release/h2-1440.png",
+      "file": null
+    },
+    {
+      "id": "H3",
+      "route": "/guide/how-to/follow-a-community-board/",
+      "viewport": "desktop",
+      "viewport_width": 1440,
+      "assertion": "Follow a Community Board opens with the task, its prerequisites and the Following entry link, names Manhattan Community Board 7 in full, separates it from City Council District 7, and says the matches are district-scoped.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 6,
+        "reached": 6,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 10,
+      "broken_internal_links": [],
+      "visible_text_characters": 5876,
+      "content_sha256": "ed0e07098726028ce0fed6cded29be0ff106ec3875aca96f9b0c0cf38991587c",
+      "capture_sha256": "9460a1d2314a9a4ed81643929f2de664e913afb97ba0aa07d89e6209116d5961",
+      "local_capture_path": ".artifacts/guide-how-to-release/h3-1440.png",
+      "file": null
+    },
+    {
+      "id": "H4",
+      "route": "/guide/how-to/put-dates-in-your-calendar/",
+      "viewport": "desktop",
+      "viewport_width": 1440,
+      "assertion": "Put dates in your calendar opens with the task, its prerequisites and the Now entry link, separates a single event from a continuing subscription, refuses to invent a time for a date-only deadline, and claims nothing about the reader's calendar.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 8,
+        "reached": 8,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 11,
+      "broken_internal_links": [],
+      "visible_text_characters": 6489,
+      "content_sha256": "2cdec13b33750e60bc14c5601f538495dc5a8c69de4e8afa5b0cc8a015cb1897",
+      "capture_sha256": "9fc3eaefc4c0a961f0076c432cd6ce87a416c1c1141e4157e100ef7f8117ce6a",
+      "local_capture_path": ".artifacts/guide-how-to-release/h4-1440.png",
+      "file": null
+    },
+    {
+      "id": "H5",
+      "route": "/guide/how-to/read-a-land-use-projects-next-step/",
+      "viewport": "desktop",
+      "viewport_width": 1440,
+      "assertion": "Read a land-use project opens with the task, its prerequisites and the land-use entry link, reads Where this stands, separates a calculated window from a published date, reaches real documents, and covers the unknown cases.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 7,
+        "reached": 7,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 11,
+      "broken_internal_links": [],
+      "visible_text_characters": 6291,
+      "content_sha256": "cf1799a167247666b97e69840ae19e14f4eb93b85b8f55c4b0310bf86c025101",
+      "capture_sha256": "0526a538a5d10f7dd97b6b01abda894258f4164272f64711e6d9ecbcca9205ec",
+      "local_capture_path": ".artifacts/guide-how-to-release/h5-1440.png",
+      "file": null
+    }
+  ],
+  "walkthroughs": [
+    {
+      "id": "walkthrough-h1",
+      "article": "H1",
+      "viewport": "mobile",
+      "entry_route": "/search/",
+      "assertion": "A reader reaches the article from the guide home, follows it to an exam record whose application window is published as closed, and Back returns them to the article and then to the guide home.",
+      "assertion_holds": true,
+      "steps": [
+        {
+          "step": "guide home to article",
+          "path": "/guide/how-to/find-and-narrow-records/"
+        },
+        {
+          "step": "article to the product route it names",
+          "path": "/exams/7016/"
+        },
+        {
+          "step": "back to the article",
+          "path": "/guide/how-to/find-and-narrow-records/"
+        },
+        {
+          "step": "back to the guide home",
+          "path": "/guide/"
+        }
+      ],
+      "expected_paths": [
+        "/guide/how-to/find-and-narrow-records/",
+        "/exams/7016/",
+        "/guide/how-to/find-and-narrow-records/",
+        "/guide/"
+      ],
+      "product_document_title": "Caseworker \u00b7 Exam 7016 \u00b7 CityScroll",
+      "form_submissions": [],
+      "state_changing_requests": []
+    },
+    {
+      "id": "walkthrough-h2",
+      "article": "H2",
+      "viewport": "mobile",
+      "entry_route": "/following/",
+      "assertion": "A reader reaches the article from the guide home, follows it to Following, and Back returns them to the article and then to the guide home. Nothing is submitted.",
+      "assertion_holds": true,
+      "steps": [
+        {
+          "step": "guide home to article",
+          "path": "/guide/how-to/follow-a-search/"
+        },
+        {
+          "step": "article to the product route it names",
+          "path": "/following/"
+        },
+        {
+          "step": "back to the article",
+          "path": "/guide/how-to/follow-a-search/"
+        },
+        {
+          "step": "back to the guide home",
+          "path": "/guide/"
+        }
+      ],
+      "expected_paths": [
+        "/guide/how-to/follow-a-search/",
+        "/following/",
+        "/guide/how-to/follow-a-search/",
+        "/guide/"
+      ],
+      "product_document_title": "Following \u00b7 CityScroll",
+      "form_submissions": [],
+      "state_changing_requests": []
+    },
+    {
+      "id": "walkthrough-h3",
+      "article": "H3",
+      "viewport": "mobile",
+      "entry_route": "/following/",
+      "assertion": "A reader reaches the article from the guide home, follows it to Following, and Back returns them to the article and then to the guide home. No watch is created.",
+      "assertion_holds": true,
+      "steps": [
+        {
+          "step": "guide home to article",
+          "path": "/guide/how-to/follow-a-community-board/"
+        },
+        {
+          "step": "article to the product route it names",
+          "path": "/following/"
+        },
+        {
+          "step": "back to the article",
+          "path": "/guide/how-to/follow-a-community-board/"
+        },
+        {
+          "step": "back to the guide home",
+          "path": "/guide/"
+        }
+      ],
+      "expected_paths": [
+        "/guide/how-to/follow-a-community-board/",
+        "/following/",
+        "/guide/how-to/follow-a-community-board/",
+        "/guide/"
+      ],
+      "product_document_title": "Following \u00b7 CityScroll",
+      "form_submissions": [],
+      "state_changing_requests": []
+    },
+    {
+      "id": "walkthrough-h4",
+      "article": "H4",
+      "viewport": "mobile",
+      "entry_route": "/now/",
+      "assertion": "A reader reaches the article from the guide home, follows it to Now, and Back returns them to the article and then to the guide home. No subscription is created.",
+      "assertion_holds": true,
+      "steps": [
+        {
+          "step": "guide home to article",
+          "path": "/guide/how-to/put-dates-in-your-calendar/"
+        },
+        {
+          "step": "article to the product route it names",
+          "path": "/now/"
+        },
+        {
+          "step": "back to the article",
+          "path": "/guide/how-to/put-dates-in-your-calendar/"
+        },
+        {
+          "step": "back to the guide home",
+          "path": "/guide/"
+        }
+      ],
+      "expected_paths": [
+        "/guide/how-to/put-dates-in-your-calendar/",
+        "/now/",
+        "/guide/how-to/put-dates-in-your-calendar/",
+        "/guide/"
+      ],
+      "product_document_title": "Now \u00b7 CityScroll",
+      "form_submissions": [],
+      "state_changing_requests": []
+    },
+    {
+      "id": "walkthrough-h5",
+      "article": "H5",
+      "viewport": "mobile",
+      "entry_route": "/browse/zoning/",
+      "assertion": "A reader reaches the article from the guide home, follows it to the land-use collection, and Back returns them to the article and then to the guide home. Nothing is filed.",
+      "assertion_holds": true,
+      "steps": [
+        {
+          "step": "guide home to article",
+          "path": "/guide/how-to/read-a-land-use-projects-next-step/"
+        },
+        {
+          "step": "article to the product route it names",
+          "path": "/browse/zoning/"
+        },
+        {
+          "step": "back to the article",
+          "path": "/guide/how-to/read-a-land-use-projects-next-step/"
+        },
+        {
+          "step": "back to the guide home",
+          "path": "/guide/"
+        }
+      ],
+      "expected_paths": [
+        "/guide/how-to/read-a-land-use-projects-next-step/",
+        "/browse/zoning/",
+        "/guide/how-to/read-a-land-use-projects-next-step/",
+        "/guide/"
+      ],
+      "product_document_title": "Zoning \u00b7 Browse \u00b7 CityScroll",
+      "form_submissions": [],
+      "state_changing_requests": []
+    },
+    {
+      "id": "without-javascript-h1",
+      "article": {
+        "headings": [
+          "Find and narrow records",
+          "Your task",
+          "Before you start",
+          "Step 1 \u2014 Search for the topic, not the record type",
+          "Step 2 \u2014 Move to the collection that holds your kind of record",
+          "Step 3 \u2014 Narrow inside the collection",
+          "Step 4 \u2014 Keep the narrowed view",
+          "Step 5 \u2014 Read one record to the end",
+          "When nothing comes back",
+          "You are done when",
+          "Related pages",
+          "Sources used in this article"
+        ],
+        "paragraphs": 26,
+        "sourceLinks": [
+          "https://a856-cityrecord.nyc.gov/",
+          "https://a856-cityrecord.nyc.gov/"
+        ],
+        "backToGuide": true,
+        "returnToTask": true
+      },
+      "viewport": "mobile",
+      "entry_route": "/search/",
+      "assertion": "With JavaScript switched off, the article keeps its text, headings, source links and navigation, and Back still works.",
+      "assertion_holds": true,
+      "article_path": "/guide/how-to/find-and-narrow-records/",
+      "back_path": "/guide/"
+    },
+    {
+      "id": "without-javascript-h2",
+      "article": {
+        "headings": [
+          "Follow a search and manage your updates",
+          "Your task",
+          "Before you start",
+          "Step 1 \u2014 Choose what and where",
+          "Step 2 \u2014 Preview the matching records",
+          "Step 3 \u2014 Choose how often, then create the watch",
+          "Step 4 \u2014 Change, pause, or stop it later",
+          "When the page does not recognize you",
+          "You are done when",
+          "Related pages",
+          "Sources used in this article"
+        ],
+        "paragraphs": 28,
+        "sourceLinks": [
+          "https://a856-cityrecord.nyc.gov/"
+        ],
+        "backToGuide": true,
+        "returnToTask": true
+      },
+      "viewport": "mobile",
+      "entry_route": "/following/",
+      "assertion": "With JavaScript switched off, the article keeps its text, headings, source links and navigation, and Back still works.",
+      "assertion_holds": true,
+      "article_path": "/guide/how-to/follow-a-search/",
+      "back_path": "/guide/"
+    },
+    {
+      "id": "without-javascript-h3",
+      "article": {
+        "headings": [
+          "Follow a Community Board",
+          "Your task",
+          "Before you start",
+          "A board number is not a district number",
+          "Step 1 \u2014 Choose the hearings and meetings topic",
+          "Step 2 \u2014 Pick the borough, then the board",
+          "Step 3 \u2014 Preview, and read the rule sentence",
+          "Step 4 \u2014 Look at what the matches actually cover",
+          "Step 5 \u2014 Create the watch",
+          "When something is missing",
+          "You are done when",
+          "Related pages",
+          "Sources used in this article"
+        ],
+        "paragraphs": 24,
+        "sourceLinks": [
+          "https://a856-cityrecord.nyc.gov/"
+        ],
+        "backToGuide": true,
+        "returnToTask": true
+      },
+      "viewport": "mobile",
+      "entry_route": "/following/",
+      "assertion": "With JavaScript switched off, the article keeps its text, headings, source links and navigation, and Back still works.",
+      "assertion_holds": true,
+      "article_path": "/guide/how-to/follow-a-community-board/",
+      "back_path": "/guide/"
+    },
+    {
+      "id": "without-javascript-h4",
+      "article": {
+        "headings": [
+          "Put dates in your calendar",
+          "Your task",
+          "Before you start",
+          "Step 1 \u2014 Tell a deadline from an event",
+          "Step 2 \u2014 Take one event into your calendar",
+          "Step 3 \u2014 Subscribe to a whole list instead",
+          "Step 4 \u2014 Hand it to your calendar app",
+          "What CityScroll can and cannot tell you here",
+          "When there is nothing to subscribe to",
+          "You are done when",
+          "Related pages",
+          "Sources used in this article"
+        ],
+        "paragraphs": 27,
+        "sourceLinks": [
+          "https://a856-cityrecord.nyc.gov/"
+        ],
+        "backToGuide": true,
+        "returnToTask": true
+      },
+      "viewport": "mobile",
+      "entry_route": "/now/",
+      "assertion": "With JavaScript switched off, the article keeps its text, headings, source links and navigation, and Back still works.",
+      "assertion_holds": true,
+      "article_path": "/guide/how-to/put-dates-in-your-calendar/",
+      "back_path": "/guide/"
+    },
+    {
+      "id": "without-javascript-h5",
+      "article": {
+        "headings": [
+          "Read a land-use project's next step and documents",
+          "Your task",
+          "Before you start",
+          "Step 1 \u2014 Open the project",
+          "Step 2 \u2014 Read Where this stands",
+          "Step 3 \u2014 Separate a calculated window from a published date",
+          "Step 4 \u2014 Open the documents",
+          "When the page does not know",
+          "You are done when",
+          "Related pages",
+          "Sources used in this article"
+        ],
+        "paragraphs": 22,
+        "sourceLinks": [
+          "https://zap.planning.nyc.gov/",
+          "https://zap.planning.nyc.gov/",
+          "https://a856-cityrecord.nyc.gov/"
+        ],
+        "backToGuide": true,
+        "returnToTask": true
+      },
+      "viewport": "mobile",
+      "entry_route": "/browse/zoning/",
+      "assertion": "With JavaScript switched off, the article keeps its text, headings, source links and navigation, and Back still works.",
+      "assertion_holds": true,
+      "article_path": "/guide/how-to/read-a-land-use-projects-next-step/",
+      "back_path": "/guide/"
+    },
+    {
+      "id": "walkthrough-h1",
+      "article": "H1",
+      "viewport": "desktop",
+      "entry_route": "/search/",
+      "assertion": "A reader reaches the article from the guide home, follows it to an exam record whose application window is published as closed, and Back returns them to the article and then to the guide home.",
+      "assertion_holds": true,
+      "steps": [
+        {
+          "step": "guide home to article",
+          "path": "/guide/how-to/find-and-narrow-records/"
+        },
+        {
+          "step": "article to the product route it names",
+          "path": "/exams/7016/"
+        },
+        {
+          "step": "back to the article",
+          "path": "/guide/how-to/find-and-narrow-records/"
+        },
+        {
+          "step": "back to the guide home",
+          "path": "/guide/"
+        }
+      ],
+      "expected_paths": [
+        "/guide/how-to/find-and-narrow-records/",
+        "/exams/7016/",
+        "/guide/how-to/find-and-narrow-records/",
+        "/guide/"
+      ],
+      "product_document_title": "Caseworker \u00b7 Exam 7016 \u00b7 CityScroll",
+      "form_submissions": [],
+      "state_changing_requests": []
+    },
+    {
+      "id": "walkthrough-h2",
+      "article": "H2",
+      "viewport": "desktop",
+      "entry_route": "/following/",
+      "assertion": "A reader reaches the article from the guide home, follows it to Following, and Back returns them to the article and then to the guide home. Nothing is submitted.",
+      "assertion_holds": true,
+      "steps": [
+        {
+          "step": "guide home to article",
+          "path": "/guide/how-to/follow-a-search/"
+        },
+        {
+          "step": "article to the product route it names",
+          "path": "/following/"
+        },
+        {
+          "step": "back to the article",
+          "path": "/guide/how-to/follow-a-search/"
+        },
+        {
+          "step": "back to the guide home",
+          "path": "/guide/"
+        }
+      ],
+      "expected_paths": [
+        "/guide/how-to/follow-a-search/",
+        "/following/",
+        "/guide/how-to/follow-a-search/",
+        "/guide/"
+      ],
+      "product_document_title": "Following \u00b7 CityScroll",
+      "form_submissions": [],
+      "state_changing_requests": []
+    },
+    {
+      "id": "walkthrough-h3",
+      "article": "H3",
+      "viewport": "desktop",
+      "entry_route": "/following/",
+      "assertion": "A reader reaches the article from the guide home, follows it to Following, and Back returns them to the article and then to the guide home. No watch is created.",
+      "assertion_holds": true,
+      "steps": [
+        {
+          "step": "guide home to article",
+          "path": "/guide/how-to/follow-a-community-board/"
+        },
+        {
+          "step": "article to the product route it names",
+          "path": "/following/"
+        },
+        {
+          "step": "back to the article",
+          "path": "/guide/how-to/follow-a-community-board/"
+        },
+        {
+          "step": "back to the guide home",
+          "path": "/guide/"
+        }
+      ],
+      "expected_paths": [
+        "/guide/how-to/follow-a-community-board/",
+        "/following/",
+        "/guide/how-to/follow-a-community-board/",
+        "/guide/"
+      ],
+      "product_document_title": "Following \u00b7 CityScroll",
+      "form_submissions": [],
+      "state_changing_requests": []
+    },
+    {
+      "id": "walkthrough-h4",
+      "article": "H4",
+      "viewport": "desktop",
+      "entry_route": "/now/",
+      "assertion": "A reader reaches the article from the guide home, follows it to Now, and Back returns them to the article and then to the guide home. No subscription is created.",
+      "assertion_holds": true,
+      "steps": [
+        {
+          "step": "guide home to article",
+          "path": "/guide/how-to/put-dates-in-your-calendar/"
+        },
+        {
+          "step": "article to the product route it names",
+          "path": "/now/"
+        },
+        {
+          "step": "back to the article",
+          "path": "/guide/how-to/put-dates-in-your-calendar/"
+        },
+        {
+          "step": "back to the guide home",
+          "path": "/guide/"
+        }
+      ],
+      "expected_paths": [
+        "/guide/how-to/put-dates-in-your-calendar/",
+        "/now/",
+        "/guide/how-to/put-dates-in-your-calendar/",
+        "/guide/"
+      ],
+      "product_document_title": "Now \u00b7 CityScroll",
+      "form_submissions": [],
+      "state_changing_requests": []
+    },
+    {
+      "id": "walkthrough-h5",
+      "article": "H5",
+      "viewport": "desktop",
+      "entry_route": "/browse/zoning/",
+      "assertion": "A reader reaches the article from the guide home, follows it to the land-use collection, and Back returns them to the article and then to the guide home. Nothing is filed.",
+      "assertion_holds": true,
+      "steps": [
+        {
+          "step": "guide home to article",
+          "path": "/guide/how-to/read-a-land-use-projects-next-step/"
+        },
+        {
+          "step": "article to the product route it names",
+          "path": "/browse/zoning/"
+        },
+        {
+          "step": "back to the article",
+          "path": "/guide/how-to/read-a-land-use-projects-next-step/"
+        },
+        {
+          "step": "back to the guide home",
+          "path": "/guide/"
+        }
+      ],
+      "expected_paths": [
+        "/guide/how-to/read-a-land-use-projects-next-step/",
+        "/browse/zoning/",
+        "/guide/how-to/read-a-land-use-projects-next-step/",
+        "/guide/"
+      ],
+      "product_document_title": "Zoning \u00b7 Browse \u00b7 CityScroll",
+      "form_submissions": [],
+      "state_changing_requests": []
+    },
+    {
+      "id": "without-javascript-h1",
+      "article": {
+        "headings": [
+          "Find and narrow records",
+          "Your task",
+          "Before you start",
+          "Step 1 \u2014 Search for the topic, not the record type",
+          "Step 2 \u2014 Move to the collection that holds your kind of record",
+          "Step 3 \u2014 Narrow inside the collection",
+          "Step 4 \u2014 Keep the narrowed view",
+          "Step 5 \u2014 Read one record to the end",
+          "When nothing comes back",
+          "You are done when",
+          "Related pages",
+          "Sources used in this article"
+        ],
+        "paragraphs": 26,
+        "sourceLinks": [
+          "https://a856-cityrecord.nyc.gov/",
+          "https://a856-cityrecord.nyc.gov/"
+        ],
+        "backToGuide": true,
+        "returnToTask": true
+      },
+      "viewport": "desktop",
+      "entry_route": "/search/",
+      "assertion": "With JavaScript switched off, the article keeps its text, headings, source links and navigation, and Back still works.",
+      "assertion_holds": true,
+      "article_path": "/guide/how-to/find-and-narrow-records/",
+      "back_path": "/guide/"
+    },
+    {
+      "id": "without-javascript-h2",
+      "article": {
+        "headings": [
+          "Follow a search and manage your updates",
+          "Your task",
+          "Before you start",
+          "Step 1 \u2014 Choose what and where",
+          "Step 2 \u2014 Preview the matching records",
+          "Step 3 \u2014 Choose how often, then create the watch",
+          "Step 4 \u2014 Change, pause, or stop it later",
+          "When the page does not recognize you",
+          "You are done when",
+          "Related pages",
+          "Sources used in this article"
+        ],
+        "paragraphs": 28,
+        "sourceLinks": [
+          "https://a856-cityrecord.nyc.gov/"
+        ],
+        "backToGuide": true,
+        "returnToTask": true
+      },
+      "viewport": "desktop",
+      "entry_route": "/following/",
+      "assertion": "With JavaScript switched off, the article keeps its text, headings, source links and navigation, and Back still works.",
+      "assertion_holds": true,
+      "article_path": "/guide/how-to/follow-a-search/",
+      "back_path": "/guide/"
+    },
+    {
+      "id": "without-javascript-h3",
+      "article": {
+        "headings": [
+          "Follow a Community Board",
+          "Your task",
+          "Before you start",
+          "A board number is not a district number",
+          "Step 1 \u2014 Choose the hearings and meetings topic",
+          "Step 2 \u2014 Pick the borough, then the board",
+          "Step 3 \u2014 Preview, and read the rule sentence",
+          "Step 4 \u2014 Look at what the matches actually cover",
+          "Step 5 \u2014 Create the watch",
+          "When something is missing",
+          "You are done when",
+          "Related pages",
+          "Sources used in this article"
+        ],
+        "paragraphs": 24,
+        "sourceLinks": [
+          "https://a856-cityrecord.nyc.gov/"
+        ],
+        "backToGuide": true,
+        "returnToTask": true
+      },
+      "viewport": "desktop",
+      "entry_route": "/following/",
+      "assertion": "With JavaScript switched off, the article keeps its text, headings, source links and navigation, and Back still works.",
+      "assertion_holds": true,
+      "article_path": "/guide/how-to/follow-a-community-board/",
+      "back_path": "/guide/"
+    },
+    {
+      "id": "without-javascript-h4",
+      "article": {
+        "headings": [
+          "Put dates in your calendar",
+          "Your task",
+          "Before you start",
+          "Step 1 \u2014 Tell a deadline from an event",
+          "Step 2 \u2014 Take one event into your calendar",
+          "Step 3 \u2014 Subscribe to a whole list instead",
+          "Step 4 \u2014 Hand it to your calendar app",
+          "What CityScroll can and cannot tell you here",
+          "When there is nothing to subscribe to",
+          "You are done when",
+          "Related pages",
+          "Sources used in this article"
+        ],
+        "paragraphs": 27,
+        "sourceLinks": [
+          "https://a856-cityrecord.nyc.gov/"
+        ],
+        "backToGuide": true,
+        "returnToTask": true
+      },
+      "viewport": "desktop",
+      "entry_route": "/now/",
+      "assertion": "With JavaScript switched off, the article keeps its text, headings, source links and navigation, and Back still works.",
+      "assertion_holds": true,
+      "article_path": "/guide/how-to/put-dates-in-your-calendar/",
+      "back_path": "/guide/"
+    },
+    {
+      "id": "without-javascript-h5",
+      "article": {
+        "headings": [
+          "Read a land-use project's next step and documents",
+          "Your task",
+          "Before you start",
+          "Step 1 \u2014 Open the project",
+          "Step 2 \u2014 Read Where this stands",
+          "Step 3 \u2014 Separate a calculated window from a published date",
+          "Step 4 \u2014 Open the documents",
+          "When the page does not know",
+          "You are done when",
+          "Related pages",
+          "Sources used in this article"
+        ],
+        "paragraphs": 22,
+        "sourceLinks": [
+          "https://zap.planning.nyc.gov/",
+          "https://zap.planning.nyc.gov/",
+          "https://a856-cityrecord.nyc.gov/"
+        ],
+        "backToGuide": true,
+        "returnToTask": true
+      },
+      "viewport": "desktop",
+      "entry_route": "/browse/zoning/",
+      "assertion": "With JavaScript switched off, the article keeps its text, headings, source links and navigation, and Back still works.",
+      "assertion_holds": true,
+      "article_path": "/guide/how-to/read-a-land-use-projects-next-step/",
+      "back_path": "/guide/"
+    }
+  ]
+}

@@ -20,6 +20,7 @@ assertion or a reproducible receipt.
 | [`ownership-map.md`](ownership-map.md) | For the explanation and reference articles: the owner each one defers to, what it is allowed to say, and what it must never restate. |
 | [`capture-manifest.json`](capture-manifest.json) | Baseline of About and five entry points at 390px and 1440px, as hashes and assertions. No image is committed. |
 | [`guide-release/capture-manifest.json`](guide-release/capture-manifest.json) | Every published guide document: the reader's journey through the guide, with accessibility, reflow, keyboard, link and no-JavaScript checks at both widths. |
+| [`guide-how-to-release/capture-manifest.json`](guide-how-to-release/capture-manifest.json) | The five everyday how-to guides, where usability is not the question: one walkthrough each from the guide home to the product route the article names and back, a modified click on that link, and the evidence that the whole run changed nothing. |
 
 ## Reproducing the evidence
 
@@ -35,7 +36,15 @@ node tools/build_guide_documents.mjs --check
 node --test test/guide_documents.test.mjs
 python3 test/standards/guide_content.py
 python3 tools/capture_guide_release.py
+python3 tools/capture_guide_how_to_walkthroughs.py
 ```
+
+The last of those is a public-inspection check and stays one. It follows only the
+routes named in its own source, blocks and records every form submission, and
+fails if any page reaches a signup, preference-centre, confirmation, unsubscribe
+or feed route. No address is enrolled, no testimony is submitted and no calendar
+subscription is created, and the manifest reports both counts per walkthrough so
+the claim is checkable rather than asserted.
 
 The live example checks and the isolation of the harness limitation are recorded
 with their exact commands in
@@ -66,3 +75,8 @@ entry, recorded in
 [`guide-release/capture-manifest.json`](guide-release/capture-manifest.json).
 The baseline above is left as it was taken; a baseline that is edited to match
 what shipped stops being one.
+
+The second is now a published lesson rather than a note. The how-to on calendars
+teaches the condition itself: the subscription control appears only once a list
+holds a dated item that can become a calendar entry, so its absence is the answer
+rather than something for a reader to hunt for.
