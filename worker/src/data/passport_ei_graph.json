@@ -1,8 +1,8 @@
 {
   "schema": "cityscroll.passport_ei_graph.v1",
   "method": "passport_ei_graph_v1",
-  "observed_on": "2026-08-18",
-  "generated_at": "2026-08-18T04:05:51.552Z",
+  "observed_on": "2026-09-06",
+  "generated_at": "2026-09-06T15:49:29.834Z",
   "source": {
     "path": "site/data/procurement_spine_sources.json#rows.passport_contracts",
     "census_rows": 12782,
@@ -34,7 +34,7 @@
   "coverage": {
     "census_share": 1.000078235017994,
     "population_share": 0.20937203131653945,
-    "age_days": 12
+    "age_days": 0
   },
   "by_agency": {
     "department-of-social-services": {

@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "delivery_tier": "inline-at-build",
-  "generated_at": "2026-09-04T15:00:57.739Z",
-  "open_as_of": "2026-09-04",
+  "generated_at": "2026-09-06T16:04:20.611Z",
+  "open_as_of": "2026-09-06",
   "source": {
     "name": "City Record Online",
     "dataset": "dg92-zbpx",
@@ -10,56 +10,13 @@
   },
   "query": {
     "$select": "request_id,start_date,agency_name,type_of_notice_description,category_description,short_title,pin,contract_amount,vendor_name,due_date,selection_method_description",
-    "$where": "type_of_notice_description='Solicitation' AND due_date > '2026-09-04'",
+    "$where": "type_of_notice_description='Solicitation' AND due_date > '2026-09-06'",
     "$order": "due_date ASC",
     "$limit": "40",
     "note": "Default Money tab acquisition: open solicitations, all agencies, no keyword/method. Resident reads filter the committed snapshot."
   },
   "count": 40,
   "notices": [
-    {
-      "request_id": "20260727018",
-      "start_date": "2026-08-07T00:00:00.000",
-      "agency_name": "Housing Authority",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Goods",
-      "short_title": "Bid Extension: SMD_MATERIALS_MACHINERY SUPPLIES",
-      "pin": "525266",
-      "due_date": "2026-09-04T12:00:00.000",
-      "selection_method_description": "Competitive Sealed Bids"
-    },
-    {
-      "request_id": "20260720016",
-      "start_date": "2026-07-31T00:00:00.000",
-      "agency_name": "Parks and Recreation",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Services (other than human services)",
-      "short_title": "RFP For the Operation and Maintenance of a Ferry Service at Randall's Island Park, Manhattan",
-      "pin": "M104-B-M-2023",
-      "due_date": "2026-09-04T15:00:00.000",
-      "selection_method_description": "Competitive Sealed Proposals"
-    },
-    {
-      "request_id": "20260729006",
-      "start_date": "2026-08-05T00:00:00.000",
-      "agency_name": "Transportation",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Services (other than human services)",
-      "short_title": "84127Y0865-Request for Information (RFI) Regarding Methodologies and Best Practices for Conducting Climate Risk Assessments (CRAs) in the Transportation Sector",
-      "pin": "84127Y0865",
-      "due_date": "2026-09-04T17:00:00.000",
-      "selection_method_description": "Request for Information"
-    },
-    {
-      "request_id": "20260722022",
-      "start_date": "2026-07-29T00:00:00.000",
-      "agency_name": "City University",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Construction/Construction Services",
-      "short_title": "General Contractor Services Requirement Contract",
-      "due_date": "2026-09-04T23:59:00.000",
-      "selection_method_description": "Request for Qualifications"
-    },
     {
       "request_id": "20260810057",
       "start_date": "2026-08-17T00:00:00.000",
@@ -453,6 +410,50 @@
       "pin": "B5923040",
       "due_date": "2026-09-17T16:00:00.000",
       "selection_method_description": "Competitive Sealed Bids"
+    },
+    {
+      "request_id": "20260806027",
+      "start_date": "2026-08-12T00:00:00.000",
+      "agency_name": "New York City Police Pension Fund",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Services (other than human services)",
+      "short_title": "Virtual Chief Information Security Officer (vCISO) Services",
+      "pin": "26REQ0374",
+      "due_date": "2026-09-17T17:00:00.000",
+      "selection_method_description": "Competitive Sealed Proposals"
+    },
+    {
+      "request_id": "20260821027",
+      "start_date": "2026-08-28T00:00:00.000",
+      "agency_name": "NYC Health + Hospitals",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Services (other than human services)",
+      "short_title": "Public Relations Services",
+      "pin": "MHP-1123",
+      "due_date": "2026-09-18T15:00:00.000",
+      "selection_method_description": "Request for Proposals"
+    },
+    {
+      "request_id": "20260810037",
+      "start_date": "2026-08-17T00:00:00.000",
+      "agency_name": "Administration for Children's Services",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Services (other than human services)",
+      "short_title": "Installation and Warranty Service of Security System for 8th Floor for 345 Adams Street",
+      "pin": "06826B0003",
+      "due_date": "2026-09-18T17:00:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
+    },
+    {
+      "request_id": "20260825021",
+      "start_date": "2026-09-01T00:00:00.000",
+      "agency_name": "Emergency Management",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Services (other than human services)",
+      "short_title": "01727P0002-Strengthening Communities Database #2",
+      "pin": "01727P0002",
+      "due_date": "2026-09-21T14:00:00.000",
+      "selection_method_description": "Competitive Sealed Proposals"
     }
   ]
 }
