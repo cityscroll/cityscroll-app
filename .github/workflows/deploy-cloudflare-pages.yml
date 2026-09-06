@@ -87,6 +87,43 @@ jobs:
           refresh-decision-outcomes: ${{ github.event_name == 'push' || inputs.refresh_decision_outcomes }}
           refresh-resident-snapshots: ${{ github.event_name == 'push' || github.event_name == 'schedule' || inputs.refresh_resident_snapshots }}
           legistar-api-token: ${{ secrets.LEGISTAR_API_TOKEN }}
+      - name: Stage authenticated graph for the private Desk consumer
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+        uses: actions/upload-artifact@v4
+        with:
+          name: data-source-graph-${{ github.run_id }}
+          path: |
+            docs/data-source-graph.json
+            docs/data-source-graph.html
+            .artifacts/desk-health-publication-cycle.json
+          if-no-files-found: error
+      - name: Record Desk publication heartbeat
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+        env:
+          CITYSCROLL_ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
+        run: |
+          set -euo pipefail
+          receipt=".artifacts/desk-health-publication-cycle.json"
+          : "${CITYSCROLL_ADMIN_KEY:?CITYSCROLL_ADMIN_KEY is required to record Desk publication}"
+          payload="$(node --input-type=module -e '
+            import { readFileSync } from "node:fs";
+            const cycle = JSON.parse(readFileSync(process.argv[1], "utf8"));
+            process.stdout.write(JSON.stringify({
+              cycle: "desk-publication",
+              workflow: process.env.GITHUB_WORKFLOW,
+              run_id: String(process.env.GITHUB_RUN_ID),
+              source_revision: process.env.GITHUB_SHA,
+              result: "succeeded",
+              destination: "https://desk.cityscroll.org/data-sources",
+              evidence_revision: cycle.evidence_revision || cycle.clocks?.evidence_revision || null,
+              last_successful_observation_at: cycle.clocks?.last_successful_observation?.at || null,
+            }));
+          ' "$receipt")"
+          curl --fail-with-body --retry 2 -X POST \
+            "https://api.cityscroll.org/admin/reliability/scheduler" \
+            -H "authorization: Bearer $CITYSCROLL_ADMIN_KEY" \
+            -H "content-type: application/json" \
+            --data "$payload"
       - name: Verify hosting budgets
         run: node tools/check_pages_bundle_sizes.mjs --site-dir _site
       - name: Deploy to Cloudflare Pages

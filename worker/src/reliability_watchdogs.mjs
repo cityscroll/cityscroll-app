@@ -13,11 +13,17 @@ export const DIGEST_SHADOW_LEDGER_PREFIX = "ops:digest:shadow:";
 export const DIGEST_SHADOW_REASON_CODE_LIMIT = 3;
 export const DIGEST_DELIVERY_LEDGER_PREFIX = "ops:digest:delivery:";
 export const SCHEDULER_HEARTBEAT_KEY = "ops:scheduler:heartbeat";
+export const DESK_PUBLICATION_HEARTBEAT_KEY = "ops:desk-publication:heartbeat";
 // How long a heartbeat stands before the watchdog calls the scheduler dead.
 // The trigger that runs the cycle has to publish well inside this window, so
 // the producer's interval is checked against this number rather than a copy.
 export const SCHEDULER_HEARTBEAT_MAX_AGE_MS = 90 * 60 * 1000;
 export const SCHEDULER_HEARTBEAT_SCHEMA = "cityscroll.external-scheduler-heartbeat.v1";
+export const DESK_PUBLICATION_HEARTBEAT_SCHEMA = "cityscroll.desk-publication-heartbeat.v1";
+export const DESK_PUBLICATION_MONITOR_MS = 24 * 60 * 60 * 1000;
+export const DESK_PUBLICATION_GRACE_MS = 2 * 60 * 60 * 1000;
+export const DESK_PUBLICATION_TARGET_MS = 2 * 60 * 60 * 1000;
+export const DESK_PUBLICATION_OVERDUE_MS = DESK_PUBLICATION_MONITOR_MS + DESK_PUBLICATION_GRACE_MS;
 // The scheduled cycle proves itself by naming these fields; the store stamps
 // observed_at on acceptance. Liveness is a property of the run that wrote the
 // receipt, never of a downstream digest or shadow rehearsal.
@@ -214,6 +220,80 @@ export async function recordSchedulerHeartbeat(env, heartbeat = {}, now = new Da
   const stored = await putJson(env?.ALERT_STATE, SCHEDULER_HEARTBEAT_KEY, result);
   if (!stored) return { accepted: false, rejected: ["scheduler heartbeat store is unavailable"], heartbeat: null };
   return { accepted: true, rejected: [], heartbeat: result };
+}
+
+export function deskPublicationHeartbeatFindings(heartbeat = {}) {
+  return schedulerHeartbeatEvidenceFindings(heartbeat);
+}
+
+export async function recordDeskPublicationHeartbeat(env, heartbeat = {}, now = new Date()) {
+  const rejected = deskPublicationHeartbeatFindings(heartbeat);
+  if (rejected.length) return { accepted: false, rejected, heartbeat: null };
+  const prior = await readJson(env?.ALERT_STATE, DESK_PUBLICATION_HEARTBEAT_KEY);
+  const resultStatus = trimmed(heartbeat.result);
+  const succeeded = resultStatus === "succeeded";
+  const result = {
+    schema: DESK_PUBLICATION_HEARTBEAT_SCHEMA,
+    workflow: trimmed(heartbeat.workflow),
+    run_id: trimmed(heartbeat.run_id),
+    source_revision: trimmed(heartbeat.source_revision).toLowerCase(),
+    result: resultStatus,
+    observed_at: now.toISOString(),
+    destination: trimmed(heartbeat.destination) || "https://desk.cityscroll.org/data-sources",
+    evidence_revision: trimmed(heartbeat.evidence_revision) || null,
+    last_successful_observation_at: succeeded
+      ? (validDeskInstant(heartbeat.last_successful_observation_at) || now.toISOString())
+      : (prior?.last_successful_observation_at || null),
+    last_successful_publication_at: succeeded
+      ? now.toISOString()
+      : (prior?.last_successful_publication_at || null),
+    failing_stage: succeeded ? null : (trimmed(heartbeat.failing_stage) || "frozen-publication"),
+  };
+  const stored = await putJson(env?.ALERT_STATE, DESK_PUBLICATION_HEARTBEAT_KEY, result);
+  if (!stored) return { accepted: false, rejected: ["desk publication heartbeat store is unavailable"], heartbeat: null };
+  return { accepted: true, rejected: [], heartbeat: result };
+}
+
+function validDeskInstant(value) {
+  if (typeof value !== "string") return null;
+  const epoch = Date.parse(value);
+  return Number.isFinite(epoch) ? new Date(epoch).toISOString() : null;
+}
+
+export function deskPublicationWatchdogFindings(heartbeat, { now = new Date() } = {}) {
+  const findings = [];
+  const observed = Date.parse(heartbeat?.observed_at || "");
+  if (!heartbeat) {
+    findings.push("desk publication heartbeat missing");
+    return { ok: false, failing_stage: "missing-trigger", findings };
+  }
+  if (heartbeat.schema !== DESK_PUBLICATION_HEARTBEAT_SCHEMA) {
+    findings.push(`desk publication heartbeat has an unrecognized schema ${heartbeat.schema || "(absent)"}`);
+    return { ok: false, failing_stage: "rejected-heartbeat", findings };
+  }
+  findings.push(...deskPublicationHeartbeatFindings(heartbeat).map((item) => `desk publication ${item}`));
+  if (!Number.isFinite(observed)) {
+    findings.push("desk publication observed_at is missing or unparseable");
+  } else if (now.getTime() - observed > DESK_PUBLICATION_OVERDUE_MS) {
+    findings.push("desk publication cycle missed");
+  }
+  if (heartbeat.result && heartbeat.result !== "succeeded") {
+    findings.push(`desk publication cycle ${heartbeat.run_id} reported result ${heartbeat.result}`);
+  }
+  const observation = Date.parse(heartbeat.last_successful_observation_at || "");
+  const publication = Date.parse(heartbeat.last_successful_publication_at || "");
+  if (Number.isFinite(observation) && !Number.isFinite(publication) && now.getTime() - observation > DESK_PUBLICATION_TARGET_MS) {
+    findings.push("publication overdue after a completed evidence cycle");
+  }
+  const failingStage = heartbeat.failing_stage
+    || (findings.some((item) => /overdue/.test(item)) ? "frozen-publication"
+      : findings.some((item) => /missed|missing/.test(item)) ? "missing-trigger"
+        : findings.length ? "frozen-publication" : null);
+  return {
+    ok: findings.length === 0,
+    failing_stage: findings.length ? failingStage : null,
+    findings,
+  };
 }
 
 function priorUtcDay(value) {
@@ -551,6 +631,7 @@ export async function digestWatchdogSnapshot(env, { now = new Date(), deadlineHo
  */
 export async function schedulerWatchdogSnapshot(env, { now = new Date(), maxAgeMs = SCHEDULER_HEARTBEAT_MAX_AGE_MS } = {}) {
   const heartbeat = await readJson(env?.ALERT_STATE, SCHEDULER_HEARTBEAT_KEY);
+  const publicationHeartbeat = await readJson(env?.ALERT_STATE, DESK_PUBLICATION_HEARTBEAT_KEY);
   const mail = await mailWatchdogSnapshot(env, { now });
   const schedulerFindings = [];
   const observed = Date.parse(heartbeat?.observed_at || "");
@@ -568,13 +649,22 @@ export async function schedulerWatchdogSnapshot(env, { now = new Date(), maxAgeM
     }
   }
   if (heartbeat?.pending_outbox > 0) schedulerFindings.push(`scheduler outbox has ${heartbeat.pending_outbox} pending item(s)`);
-  const findings = [...schedulerFindings, ...mail.findings.map((item) => `mail: ${item}`)];
+  const publication = deskPublicationWatchdogFindings(publicationHeartbeat, { now });
+  const findings = [
+    ...schedulerFindings,
+    ...publication.findings.map((item) => `desk publication: ${item}`),
+    ...mail.findings.map((item) => `mail: ${item}`),
+  ];
   return {
     ok: findings.length === 0,
     scheduler_ok: schedulerFindings.length === 0,
+    publication_ok: publication.ok,
     findings,
     scheduler_findings: schedulerFindings,
+    publication_findings: publication.findings,
+    failing_stage: publication.failing_stage,
     heartbeat,
+    publication_heartbeat: publicationHeartbeat,
     mail,
   };
 }
@@ -657,7 +747,11 @@ export async function emitRepairJudgmentAlerts(env, judgments = [], { now = new 
 // Guards whose findings are only actionable with run and receipt evidence in
 // hand. A caller cannot opt out: an alert with nothing to dereference is held
 // back and reported as a delivery failure rather than emailed as "null".
-export const EVIDENCE_REQUIRED_GUARDS = Object.freeze(["scheduler-heartbeat", "served-artifact-freshness"]);
+export const EVIDENCE_REQUIRED_GUARDS = Object.freeze([
+  "scheduler-heartbeat",
+  "served-artifact-freshness",
+  "desk-publication-liveness",
+]);
 
 // The one guard that reports on the repair loop itself. rel-12 keeps it out of
 // the queue so a failed fix cannot enqueue a repair for its own failure notice.

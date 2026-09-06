@@ -7,6 +7,11 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 
 import { redactCredentialValues } from "./source_health_observations.mjs";
 import {
+  PUBLICATION_CYCLE_EXTENSION_VERSION,
+  evaluatePublicationCycle,
+  loadPublicationCycleContract,
+} from "./desk_health_publication_cycle.mjs";
+import {
   buildCommunityBoardRepairObservations,
   repairCodeRevision,
   repairObservationSet,
@@ -38,6 +43,7 @@ export const REPAIR_OBSERVATIONS_EXTENSION_VERSION = 1;
 export const REPAIR_QUEUE_EXTENSION_VERSION = 1;
 export { OPERATOR_OVERVIEW_EXTENSION_VERSION };
 export const DESK_CONSUMER_CONTRACT_PATH = "data/data-source-graph-desk-contract.v1.json";
+export { PUBLICATION_CYCLE_EXTENSION_VERSION };
 
 const CORE_INPUTS = [
   "docs/data-sources.md",
@@ -483,6 +489,36 @@ function formatFreshnessDate(value) {
   }).format(new Date(`${value}T00:00:00Z`));
 }
 
+function publicationClockText(clock) {
+  if (!clock || clock.state !== "KNOWN" || !clock.at) return "UNKNOWN";
+  return clock.at;
+}
+
+function renderPublicationCycle(cycle) {
+  const clocks = cycle?.clocks || {};
+  const stage = cycle?.failing_stage || "";
+  const lastGood = cycle?.last_good_retained
+    ? `<p class="last-good">Showing last valid evidence. ${stage === "frozen-publication" ? "Publication is overdue or failed." : "The last successful publication is retained."}</p>`
+    : "";
+  const isolated = cycle?.isolated ? `<p><small>Isolated specimen — not a live production read.</small></p>` : "";
+  return `<section class="publication-cycle" id="publicationCycle" data-stage="${esc(stage)}" aria-labelledby="publicationCycleHeading">
+<h2 id="publicationCycleHeading">Monitoring and Desk publication</h2>
+<dl class="publication-clocks">
+<div><dt>Last monitor attempt</dt><dd>${esc(publicationClockText(clocks.last_monitor_attempt))}</dd></div>
+<div><dt>Last successful observation</dt><dd>${esc(publicationClockText(clocks.last_successful_observation))}</dd></div>
+<div><dt>Evidence revision</dt><dd>${esc(clocks.evidence_revision || "UNKNOWN")}</dd></div>
+<div><dt>Last successful Desk publication</dt><dd>${esc(publicationClockText(clocks.last_successful_desk_publication))}</dd></div>
+</dl>
+${stage ? `<p role="status"><strong>${esc(stage)}</strong>${(cycle.reasons || []).length ? `<br><small>${cycle.reasons.map(esc).join(" · ")}</small>` : ""}</p>` : ""}
+${lastGood}
+<details id="publicationRecovery">
+<summary>What happens next</summary>
+<p>The next scheduled cycle retries publication; this page does not enqueue work. Opening a pull request is not successful publication.</p>
+</details>
+${isolated}
+</section>`;
+}
+
 function deriveBlockedSources(gapTaxonomy) {
   return (gapTaxonomy.partnership_blocked_sources || []).map((source) => {
     const requiredStrings = ["id", "wishlist_gap_id", "name", "data_offered", "collecting_body", "platform", "status", "status_note"];
@@ -626,6 +662,7 @@ export function buildDataSourceGraph({
   repairSourceVintage = null,
   repairRegister = null,
   repairIngestion = { available: true },
+  publicationCycle = null,
   inputs = [],
 } = {}) {
   const contracts = registry?.contracts || [];
@@ -743,6 +780,7 @@ export function buildDataSourceGraph({
       repair_observations: REPAIR_OBSERVATIONS_EXTENSION_VERSION,
       repair_queue: REPAIR_QUEUE_EXTENSION_VERSION,
       operator_overview: OPERATOR_OVERVIEW_EXTENSION_VERSION,
+      publication_cycle: PUBLICATION_CYCLE_EXTENSION_VERSION,
     },
     title: "CityScroll data-source topology",
     description: "Generated collecting-body → dataset → ingest → surface architecture for the authenticated desk.",
@@ -770,7 +808,64 @@ export function buildDataSourceGraph({
     sources,
     surfaces,
     edges: graphEdges(sources),
+    publication_cycle: publicationCycle || derivePublicationCycle({
+      healthObservations,
+      sourcesHash,
+    }),
   };
+}
+
+function newestHeartbeat(healthObservations) {
+  const rows = healthObservations?.observations || [];
+  const stamps = rows
+    .map((row) => row?.freshness_watchdog?.scheduler_heartbeat || row?.operator?.clocks?.scheduler_heartbeat)
+    .map((heartbeat) => ({
+      at: heartbeat?.observed_at || heartbeat?.at || null,
+      status: heartbeat?.status || null,
+      run_id: heartbeat?.run_id || null,
+    }))
+    .filter((row) => row.at);
+  stamps.sort((left, right) => Date.parse(right.at) - Date.parse(left.at));
+  return stamps[0] || null;
+}
+
+function derivePublicationCycle({ healthObservations, sourcesHash }) {
+  const contract = loadPublicationCycleContract();
+  const heartbeat = newestHeartbeat(healthObservations);
+  const generatedAt = healthObservations?.generated_at || null;
+  const monitorMissing = (healthObservations?.observations || []).some((row) => (
+    row?.freshness_watchdog?.reason_codes || []
+  ).includes("monitor-missing"));
+  if (!generatedAt) {
+    return {
+      schema: "cityscroll.desk_health_publication_cycle.v1",
+      isolated: false,
+      evidence_class: "derived-from-committed-observations",
+      observed_at: null,
+      clocks: {
+        last_monitor_attempt: { at: null, state: "UNKNOWN", basis: null },
+        last_successful_observation: { at: null, state: "UNKNOWN", basis: null },
+        evidence_revision: sourcesHash || null,
+        last_successful_desk_publication: { at: null, state: "UNKNOWN", basis: null },
+      },
+      failing_stage: null,
+      reasons: ["observation-timestamp-unknown"],
+      last_good_retained: false,
+    };
+  }
+  return evaluatePublicationCycle({
+    now: generatedAt,
+    trigger: { installed: true },
+    monitor_attempt: heartbeat?.at ? { at: heartbeat.at, basis: "scheduler_heartbeat" } : null,
+    collection: { status: "succeeded", completed_at: generatedAt },
+    publication: { status: "unknown" },
+    evidence_revision: sourcesHash,
+    scheduler_input: { present: heartbeat?.at ? true : !monitorMissing },
+    checks_current: Boolean(heartbeat?.at && heartbeat.status === "succeeded"),
+    publisher_vintage_stale: (healthObservations?.observations || []).some((row) => (
+      row?.health?.reason_codes || []
+    ).includes("publisher-clock-stale")),
+  }, contract);
 }
 
 function esc(value) {
@@ -796,10 +891,12 @@ export function renderGraphHtml(graph) {
 .repair-view{min-width:0;max-width:100%}.repair-view[hidden]{display:none}.repair-view h2{font:700 26px/1.12 Georgia,serif;margin:22px 0 6px}.queue-lede{color:var(--muted);max-width:820px;margin:0 0 4px}.repair-view .controls{display:flex;min-width:0;max-width:100%;margin:14px 0 10px}.repair-view .controls>*{min-width:0;max-width:100%}.repair-view label{color:var(--muted);font-size:12px}.queue-list{display:grid;min-width:0;max-width:100%;grid-template-columns:minmax(0,1fr);gap:10px}.queue-issue{min-width:0;background:var(--panel);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow)}.queue-issue[hidden]{display:none}.queue-issue>summary{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;min-width:0;padding:14px 16px;min-height:44px;cursor:pointer;border-radius:12px}.queue-issue>summary>*{min-width:0;max-width:100%}.queue-issue>summary:focus-visible{outline:3px solid var(--green);outline-offset:2px}.queue-title{flex:1 1 180px;font-weight:700;min-width:0;overflow-wrap:anywhere}.queue-title small{display:block;color:var(--muted);font-weight:400}.queue-scope,.queue-seen{color:var(--muted);font-size:12px}.queue-state,.queue-verification,.queue-flag{border:1px solid var(--line);border-radius:999px;padding:4px 9px;font-size:12px;font-weight:700;white-space:normal;overflow-wrap:anywhere}.queue-state-repair-candidate{color:var(--red);border-color:#daa5a1;background:#fdf3f2}.queue-state-regressed{color:var(--amber);border-color:#d9b989;background:#fdf6e9}.queue-state-expected-absence{color:var(--green);border-color:#9bc0a5;background:var(--mint)}.queue-state-source-policy-limitation{color:var(--ghost);border-color:#baa7c2;background:var(--ghost-paper)}.queue-state-resolved{color:var(--blue);border-color:#b5c8d0;background:#eef4f7}.queue-verification-candidate{color:var(--muted);font-weight:400}.queue-flag{font-weight:400;color:var(--muted)}.queue-body{min-width:0;padding:0 16px 18px;border-top:1px solid var(--line)}.queue-body h3{font-size:11px;text-transform:uppercase;letter-spacing:.09em;color:var(--green);margin:18px 0 5px}.queue-body a{display:inline-block;min-height:24px;line-height:24px}.queue-body p,.queue-body ul{margin:0;overflow-wrap:anywhere}.queue-body ul{padding-left:20px}.queue-detail{display:grid;grid-template-columns:minmax(0,max-content) minmax(0,1fr);gap:4px 14px;margin:0;min-width:0}.queue-detail dt{color:var(--muted)}.queue-detail dd{margin:0;overflow-wrap:anywhere}.queue-table-wrap{max-width:100%;min-width:0;width:100%;contain:inline-size;overflow-x:auto;margin-top:6px}.queue-table-wrap:focus-visible{outline:3px solid var(--green);outline-offset:2px}.queue-table-wrap table{min-width:760px}.queue-evidence{overflow-wrap:anywhere}.queue-evidence small,.retained-scope{color:var(--muted)}.queue-evidence small{display:block}.queue-unavailable{background:#fdf3f2;border:1px solid #daa5a1;border-radius:12px;padding:16px;color:#6d2b27}.queue-unavailable code{overflow-wrap:anywhere}.queue-empty{color:var(--muted)}@media(max-width:700px){.queue-issue>summary{gap:6px 10px}.queue-detail{grid-template-columns:minmax(0,1fr)}}
 .details ol,.details ul{padding-left:20px;margin:5px 0}.details pre{margin:6px 0 0;padding:8px;border:1px solid var(--line);border-radius:7px;background:#f4f1e9;color:#5f302d;font:11px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;white-space:pre-wrap;overflow-wrap:anywhere}.status-candidate{color:var(--ghost);border-color:#baa7c2;background:var(--ghost-paper)}tr[data-node-class="candidate-source"]{background:var(--ghost-paper)}
 .primary-pane{min-width:0}.overview-view{min-width:0;max-width:100%}.overview-view[hidden]{display:none}.overview-view h2{font:700 26px/1.12 Georgia,serif;margin:22px 0 6px}.overview-filters{display:flex;flex-wrap:wrap;gap:10px;align-items:center;max-width:100%}.overview-filters label{color:var(--muted);font-size:12px}.overview-filters select{min-height:44px;max-width:100%}.overview-table-wrap{max-width:100%;min-width:0;width:100%;contain:inline-size;overflow-x:auto}.overview-table-wrap:focus-visible{outline:3px solid var(--green);outline-offset:2px}.overview-table-wrap table{min-width:760px;width:100%}.overview-source{display:inline-flex;min-height:44px;align-items:center;overflow-wrap:anywhere;white-space:normal;color:var(--blue);font-weight:700}.overview-use,.overview-repair{overflow-wrap:anywhere}.overview-use small,.overview-repair small,td small{display:block;color:var(--muted)}.detail-toolbar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}.detail-toolbar button{min-height:44px;border:1px solid var(--line);background:var(--panel);border-radius:8px;padding:9px 11px}
+.publication-cycle{margin-top:16px;padding:14px 16px;background:var(--panel);border:1px solid var(--line);border-radius:12px;min-width:0;max-width:100%;overflow-wrap:anywhere;overflow-x:hidden}.publication-cycle[data-stage]:not([data-stage=""]){border-color:#daa5a1;background:#fdf3f2}.publication-cycle h2{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--green);margin:0 0 8px}.publication-clocks{display:grid;grid-template-columns:minmax(0,1fr);gap:10px;min-width:0}.publication-clocks div{min-width:0;max-width:100%}.publication-clocks dt{color:var(--muted);font-size:12px}.publication-clocks dd{margin:4px 0 0;font-weight:700;overflow-wrap:anywhere;word-break:break-word}.publication-cycle .last-good{margin:8px 0 0}.publication-cycle summary{display:flex;align-items:center;min-height:44px;cursor:pointer;font-weight:700}.publication-cycle summary:focus-visible{outline:3px solid var(--green);outline-offset:2px}@media(min-width:720px){.publication-clocks{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style><noscript><style>#graphView{display:none!important}#tableView[hidden],#detailLayer[hidden]{display:block!important}</style></noscript></head><body><main class="shell">
 <div class="eyebrow">Maintainer architecture</div><h1>Where CityScroll’s data comes from</h1>
 <p class="lede">Start from monitoring, publication, and the conditions that need attention. Collecting-body topology remains available as a secondary view. Trace a selected source through its declared artifacts, clocks, and existing repair group without treating a tolerated served age as a recent acquisition.</p>
 <div class="meta"><span class="pill">${graph.counts.bodies} collecting bodies</span><span class="pill">${graph.counts.source_contracts} source contracts</span><span class="pill">${graph.counts.candidate_sources || 0} candidates</span><span class="pill">${graph.counts.blocked_sources} access-gated sources</span><span class="pill">${graph.counts.surfaces} surfaces</span>${graph.current_as_of ? `<span class="pill">Current as of ${esc(formatFreshnessDate(graph.current_as_of))}</span>` : ""}<span class="pill">sources hash ${esc(graph.sources_hash.slice(0, 12))}</span></div>
+${renderPublicationCycle(graph.publication_cycle)}
 <div class="legend" aria-label="Graph visual classes"><span><i></i> Available source path</span><span><i class="ghost-key"></i> Candidate / access-gated research path</span></div>
 <div class="controls"><label class="sr-only" for="search">Filter sources</label><input id="search" type="search" placeholder="Filter by source, endpoint, adapter, error, or access route…"><label class="sr-only" for="status">Filter by source state</label><select id="status"><option value="">All statuses</option><option value="live">Live</option><option value="build-time">Build-time</option><option value="manual">Manual</option><option value="disabled">Disabled</option><option value="candidate">Candidate</option><option value="application-possible">Application possible</option><option value="blocked">Blocked</option><option value="declined">Declined</option></select><div class="toggle" aria-label="View"><button id="overviewToggle" type="button" aria-pressed="true">Source health</button><button id="graphToggle" type="button" aria-pressed="false">Departments</button><button id="tableToggle" type="button" aria-pressed="false">Table view</button><button id="repairToggle" type="button" aria-pressed="false">Repair queue</button></div></div>
 <div class="workspace" id="inspectWorkspace">

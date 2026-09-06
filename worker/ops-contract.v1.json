@@ -1,6 +1,6 @@
 {
   "contract": "ops-contract.v1",
-  "version": "1.15.0",
+  "version": "1.16.0",
   "generated_at": "2026-08-05T13:55:23.589Z",
   "min_compatible_version": "1.0.0",
   "note": "Machine-readable ops contract for desk panels. No secrets. Not served on public /stats.",
@@ -903,7 +903,7 @@
         "GET"
       ],
       "auth": "ADMIN_KEY",
-      "description": "POST records one external scheduler heartbeat and accepts it only with concrete workflow, run identity, source revision and cycle result; an unattributable heartbeat is rejected with 400 and never stored. GET reports scheduler liveness as its own leg alongside mail-leg receipts and returns 503 when unhealthy; scheduler alerts carry the observing workflow, run link, source revision and this route as the raw receipt, and are held rather than sent when that evidence is absent."
+      "description": "POST records one external scheduler heartbeat and accepts it only with concrete workflow, run identity, source revision and cycle result; an unattributable heartbeat is rejected with 400 and never stored. POST with cycle=desk-publication records the Desk evidence-publication heartbeat on the same route and store without replacing the scheduler heartbeat. GET reports scheduler liveness, Desk publication liveness, and mail-leg receipts as separate legs and returns 503 when unhealthy; alerts carry the observing workflow, run link, source revision and this route as the raw receipt, and are held rather than sent when that evidence is absent."
     },
     {
       "path": "/admin/reliability/mail",

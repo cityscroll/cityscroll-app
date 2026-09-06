@@ -123,6 +123,27 @@
         "unknown-dependency"
       ],
       "notes": "The versioned private extension adds the operator exception overview without changing the version 4 base envelope or creating a second diagnostic contract. Product uses join only declared first-class artifacts and their primary routes. Repair identity is the existing queue issue key. An unavailable overview retains null denominators rather than rendering zero exceptions or an all-clear. Cadence compliance is separate from tolerated served age. No extension field may enter a public response."
+    },
+    "publication_cycle": {
+      "version": 1,
+      "graph_fields": [
+        "publication_cycle"
+      ],
+      "clocks": [
+        "last_monitor_attempt",
+        "last_successful_observation",
+        "evidence_revision",
+        "last_successful_desk_publication"
+      ],
+      "failing_stages": [
+        "missing-trigger",
+        "rejected-heartbeat",
+        "collector-failure",
+        "frozen-publication"
+      ],
+      "cycle_schema": "cityscroll.desk_health_publication_cycle.v1",
+      "contract": "data/desk-health-publication-cycle.v1.json",
+      "notes": "Additive operator-service clocks for monitoring and private Desk publication. They stay distinct from publisher vintage and from the nullable current_as_of overview date. Unaware additive consumers may ignore the extension. No extension field may enter a public response."
     }
   }
 }

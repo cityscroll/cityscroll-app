@@ -33,7 +33,7 @@ import {
   SEARCH_USAGE_WINDOW_DAYS,
 } from "./search_usage.mjs";
 
-export const OPS_CONTRACT_VERSION = "1.15.0";
+export const OPS_CONTRACT_VERSION = "1.16.0";
 export const OPS_CONTRACT_ID = "ops-contract.v1";
 
 /** Digest delivery / evaluation modes the worker may stamp on receipts and daylogs. */
@@ -512,7 +512,7 @@ export const ADMIN_ROUTES = Object.freeze([
     path: "/admin/reliability/scheduler",
     methods: ["POST", "GET"],
     auth: "ADMIN_KEY",
-    description: "POST records one external scheduler heartbeat and accepts it only with concrete workflow, run identity, source revision and cycle result; an unattributable heartbeat is rejected with 400 and never stored. GET reports scheduler liveness as its own leg alongside mail-leg receipts and returns 503 when unhealthy; scheduler alerts carry the observing workflow, run link, source revision and this route as the raw receipt, and are held rather than sent when that evidence is absent.",
+    description: "POST records one external scheduler heartbeat and accepts it only with concrete workflow, run identity, source revision and cycle result; an unattributable heartbeat is rejected with 400 and never stored. POST with cycle=desk-publication records the Desk evidence-publication heartbeat on the same route and store without replacing the scheduler heartbeat. GET reports scheduler liveness, Desk publication liveness, and mail-leg receipts as separate legs and returns 503 when unhealthy; alerts carry the observing workflow, run link, source revision and this route as the raw receipt, and are held rather than sent when that evidence is absent.",
   },
   {
     path: "/admin/reliability/mail",

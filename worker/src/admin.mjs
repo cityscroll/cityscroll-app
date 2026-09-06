@@ -37,6 +37,7 @@ import {
   mailWatchdogSnapshot,
   recordDigestShadowReceipt,
   recordSchedulerHeartbeat,
+  recordDeskPublicationHeartbeat,
   schedulerWatchdogSnapshot,
   dispatchRepairQueue,
   reportRepairResults,
@@ -248,6 +249,13 @@ export async function handleAdminSchedulerHeartbeat(req, env, { now = new Date()
     try { body = await req.json(); } catch { return json({ error: "invalid-json" }, 400); }
     // Acceptance is explicit in both directions: an unattributable heartbeat is
     // rejected and never stored, so the watchdog cannot read a false liveness.
+    if (body?.cycle === "desk-publication") {
+      const write = await recordDeskPublicationHeartbeat(env, body, now);
+      if (!write.accepted) {
+        return json({ ok: false, accepted: false, error: "heartbeat-evidence-required", rejected: write.rejected }, 400);
+      }
+      return json({ ok: true, accepted: true, heartbeat: write.heartbeat, cycle: "desk-publication" }, 200);
+    }
     const write = await recordSchedulerHeartbeat(env, body, now);
     if (!write.accepted) {
       return json({ ok: false, accepted: false, error: "heartbeat-evidence-required", rejected: write.rejected }, 400);
@@ -274,8 +282,24 @@ export async function handleAdminSchedulerHeartbeat(req, env, { now = new Date()
   // rel-09: a dead mail rail alarms through HTTP/GitHub-red, never through
   // itself. Scheduler findings are now their own leg, so a healthy mail rail
   // still delivers scheduler alerts and a broken one stays red on the response.
+  const params = new URL(req.url).searchParams;
+  if (!snapshot.publication_ok && snapshot.mail.ok) {
+    alert = await emitOpsAlertOnce(env, {
+      guard: "desk-publication-liveness",
+      stage: snapshot.failing_stage || "frozen-publication",
+      fingerprint: (snapshot.publication_findings || []).join("|") || snapshot.failing_stage || "frozen-publication",
+      subject: "Desk evidence publication cycle missed",
+      findings: snapshot.publication_findings,
+      workflow: params.get("observer_workflow") || snapshot.publication_heartbeat?.workflow || null,
+      workflow_run_url: params.get("observer_run_url") || null,
+      source_revision: params.get("observer_revision") || snapshot.publication_heartbeat?.source_revision || null,
+      receipt_url: schedulerReceiptUrl(req),
+      first_seen: now.toISOString(),
+      last_seen: now.toISOString(),
+      now,
+    });
+  }
   if (!snapshot.scheduler_ok && snapshot.mail.ok) {
-    const params = new URL(req.url).searchParams;
     alert = await emitOpsAlertOnce(env, {
       guard: "scheduler-heartbeat",
       stage: "scheduler",

@@ -1,0 +1,41 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/c7a3381a02825",
+  "status": "implemented",
+  "fingerprint": "desk-health-publication-liveness.v1",
+  "updated_at": "2026-09-06T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "publication-cycle-contract",
+      "path": "data/desk-health-publication-cycle.v1.json"
+    },
+    {
+      "id": "publication-cycle-evaluator",
+      "path": "tools/desk_health_publication_cycle.mjs"
+    },
+    {
+      "id": "private-desk-export-boundary",
+      "path": "tools/data_source_graph.mjs"
+    },
+    {
+      "id": "private-desk-consumer-contract",
+      "path": "data/data-source-graph-desk-contract.v1.json"
+    },
+    {
+      "id": "ops-alert-signature-ledger",
+      "path": "worker/src/reliability_watchdogs.mjs"
+    },
+    {
+      "id": "publication-cycle-tests",
+      "path": "test/desk-health-publication-cycle.test.mjs"
+    },
+    {
+      "id": "production-watchdog-read",
+      "path": "docs/evidence/desk-health-publication-liveness/production-watchdog-read.json"
+    },
+    {
+      "id": "publication-cycle-render-manifest",
+      "path": "docs/evidence/desk-health-publication-liveness/capture-manifest.json"
+    }
+  ]
+}
