@@ -236,7 +236,7 @@ async function runDigestShadow(job, context) {
   const key = adminKey();
   if (!key) {
     const result = {
-      observed_at: new Date().toISOString(),
+      observed_at: context.now.toISOString(),
       status: "degraded",
       http_status: null,
       degraded_reason: "admin-credential-missing",
@@ -249,11 +249,11 @@ async function runDigestShadow(job, context) {
   let report = {};
   try { report = await response.json(); } catch { report = { error: `HTTP ${response.status}` }; }
   const summary = report.summary || report;
-  const today = new Date().toISOString().slice(0, 10);
+  const today = context.now.toISOString().slice(0, 10);
   const healthy = response.ok && summary.run_day === today && summary.status === "READY";
   const redlines = Array.isArray(summary.redlines) ? summary.redlines : [];
   const result = {
-    observed_at: new Date().toISOString(),
+    observed_at: context.now.toISOString(),
     status: healthy ? "healthy" : "degraded",
     http_status: response.status,
     degraded_reason: healthy ? null : response.status === 401 || response.status === 403 ? "admin-credential-rejected" : "rehearsal-not-ready",

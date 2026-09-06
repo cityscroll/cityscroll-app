@@ -216,7 +216,7 @@ test("the digest shadow probe authenticates from the credential file the schedul
       now: new Date("2026-08-07T10:10:00.000Z"),
       async fetchImpl(url, options) {
         calls.push({ url, options });
-        return { ok: true, status: 200, async json() { return { summary: { status: "READY", run_day: new Date().toISOString().slice(0, 10) } }; } };
+        return { ok: true, status: 200, async json() { return { summary: { status: "READY", run_day: "2026-08-07" } }; } };
       },
     }));
     assert.equal(calls.length, 1);
