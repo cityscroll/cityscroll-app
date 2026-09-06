@@ -96,6 +96,33 @@
         "unavailable"
       ],
       "notes": "The versioned private extension adds the work grain over repair observations without changing the version 4 base envelope. It keeps one issue per source contract, condition and adapter, with affected-scope count, recency, first evidence, owner, any existing engineering record and any resolution receipt. Only repair-candidate and regressed are engineering work. Nothing but the reviewed register can move an issue past candidate verification or into resolved. An unavailable queue retains null counts rather than rendering zero. No extension field may enter a public response."
+    },
+    "operator_overview": {
+      "version": 1,
+      "graph_fields": [
+        "operator_overview"
+      ],
+      "overview_schema": "cityscroll.operator_overview.v1",
+      "denominators": [
+        "actionable_conditions",
+        "affected_sources",
+        "insufficient_monitoring"
+      ],
+      "conditions": [
+        "historical",
+        "manual",
+        "disabled",
+        "candidate",
+        "unknown-publisher-timestamp",
+        "missing-required-monitoring",
+        "failed-acquisition",
+        "cadence-noncompliant",
+        "fresh-acquisition-stale-serving",
+        "eligible-fallback",
+        "failed-stage",
+        "unknown-dependency"
+      ],
+      "notes": "The versioned private extension adds the operator exception overview without changing the version 4 base envelope or creating a second diagnostic contract. Product uses join only declared first-class artifacts and their primary routes. Repair identity is the existing queue issue key. An unavailable overview retains null denominators rather than rendering zero exceptions or an all-clear. Cadence compliance is separate from tolerated served age. No extension field may enter a public response."
     }
   }
 }

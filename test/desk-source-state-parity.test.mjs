@@ -40,6 +40,13 @@ test("the authenticated graph stays inside the deployed additive compatibility e
   assert.equal(graph.repair_queue.schema, queueExtension.queue_schema);
   assert.equal(graph.repair_queue.visibility, "private");
   assert.deepEqual(graph.repair_queue.states, queueExtension.states);
+
+  const overviewExtension = contract.extensions.operator_overview;
+  assert.equal(overviewExtension.version, 1);
+  assert.equal(graph.extensions.operator_overview, overviewExtension.version);
+  assert.equal(graph.operator_overview.schema, overviewExtension.overview_schema);
+  assert.equal(graph.operator_overview.visibility, "private");
+  assert.deepEqual(graph.operator_overview.condition_ids, overviewExtension.conditions);
 });
 
 test("every registry contract and health observation has one explicit disposition", () => {

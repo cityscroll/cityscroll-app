@@ -1,13 +1,12 @@
 /**
  * Desk navigation and access boundary.
  *
- * The repair queue is a THIRD view on a desk that already had two. That makes
- * two things worth holding still. The first is navigation: the new view has to
- * join the existing toggle rather than replace it, the graph has to stay the
- * desk's home, and every view the toggle names has to exist. The second is the
- * boundary the desk inherits rather than declares — the artifact is derived,
- * untracked and never served, the Worker bundle never reaches it, and nothing
- * it renders is a link only its author can open.
+ * The repair queue is one view on a desk that now opens on source health.
+ * Navigation still has to join the existing toggle rather than replace it,
+ * every view the toggle names has to exist, and collecting-body topology stays
+ * reachable. The artifact remains derived, untracked and never served, the
+ * Worker bundle never reaches it, and nothing it renders is a link only its
+ * author can open.
  */
 
 import assert from "node:assert/strict";
@@ -31,7 +30,8 @@ const graph = JSON.parse(files[JSON_OUTPUT]);
 
 /** The desk's view toggle, as the document declares it. */
 const VIEWS = [
-  { toggle: "graphToggle", section: "graphView", label: "Graph view", home: true },
+  { toggle: "overviewToggle", section: "overviewView", label: "Source health", home: true },
+  { toggle: "graphToggle", section: "graphView", label: "Departments", home: false },
   { toggle: "tableToggle", section: "tableView", label: "Table view", home: false },
   { toggle: "repairToggle", section: "repairView", label: "Repair queue", home: false },
 ];
@@ -42,8 +42,7 @@ test("the desk keeps one view toggle and the repair queue joins it", () => {
   assert.equal(toggles.length, VIEWS.length, "one toggle per view, and no second navigation");
   assert.deepEqual(toggles.map((row) => row.id), VIEWS.map((row) => row.toggle));
   assert.deepEqual(toggles.map((row) => row.label), VIEWS.map((row) => row.label));
-  // Exactly one view is pressed on load, and it is the graph the desk opened
-  // with before this view existed.
+  // Exactly one view is pressed on load, and it is the exception overview.
   assert.deepEqual(toggles.map((row) => row.pressed === "true"), VIEWS.map((row) => row.home));
   assert.equal([...html.matchAll(/aria-pressed="true"/g)].length, 1);
 });
@@ -55,7 +54,7 @@ test("every named view exists, and only the home view is visible on load", () =>
     const openTag = section.slice(0, section.indexOf(">"));
     assert.equal(/\bhidden\b/.test(openTag), !view.home, `${view.section} default visibility`);
   }
-  // The switch names the same three views the toggle does, so a toggle can
+  // The switch names the same views the toggle does, so a toggle can
   // never point at a section that was renamed or removed.
   const switching = html.match(/const views=\{([^}]+)\}/);
   assert.ok(switching, "the view switch is present");

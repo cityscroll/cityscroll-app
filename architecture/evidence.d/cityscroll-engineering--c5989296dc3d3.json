@@ -1,0 +1,41 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/c5989296dc3d3",
+  "status": "implemented",
+  "fingerprint": "desk-operator-exception-overview.v1",
+  "updated_at": "2026-09-06T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "operator-overview-read-model",
+      "path": "tools/desk_health_overview.mjs"
+    },
+    {
+      "id": "private-desk-export-boundary",
+      "path": "tools/data_source_graph.mjs"
+    },
+    {
+      "id": "private-desk-consumer-contract",
+      "path": "data/data-source-graph-desk-contract.v1.json"
+    },
+    {
+      "id": "operator-overview-contract-tests",
+      "path": "test/desk-health-overview.test.mjs"
+    },
+    {
+      "id": "operator-overview-repair-link-tests",
+      "path": "test/desk-health-repair-links.test.mjs"
+    },
+    {
+      "id": "desk-navigation-and-access-boundary-tests",
+      "path": "test/desk-navigation.test.mjs"
+    },
+    {
+      "id": "operator-overview-browser-evidence",
+      "path": "tools/capture_desk_health_overview_evidence.py"
+    },
+    {
+      "id": "operator-overview-render-manifest",
+      "path": "docs/evidence/desk-operator-exception-overview/capture-manifest.json"
+    }
+  ]
+}

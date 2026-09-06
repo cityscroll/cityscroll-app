@@ -66,6 +66,10 @@ test("producer schema version stays in lockstep with the desk consumer contract"
   assert.equal(graph.repair_queue.visibility, "private");
   assert.deepEqual(graph.repair_queue.states, contract.extensions.repair_queue.states);
   assert.equal(graph.repair_queue.status, "available");
+  assert.equal(graph.extensions.operator_overview, contract.extensions.operator_overview.version);
+  assert.ok(contract.extensions.operator_overview.graph_fields.includes("operator_overview"));
+  assert.equal(graph.operator_overview.schema, "cityscroll.operator_overview.v1");
+  assert.equal(graph.operator_overview.visibility, "private");
   assert.match(
     generatedGraphFiles()[HTML_OUTPUT],
     /Trace each collecting body through its endpoint, adapters and runs, receipt-backed three-clock health, join gates, and product surfaces/,
