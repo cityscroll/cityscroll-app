@@ -2175,6 +2175,7 @@ worker/src/lib/property_disposition_timing.mjs
 worker/src/lib/property_list.mjs
 worker/src/lib/property_phase_spine.mjs
 worker/src/lib/property_saved_watch.mjs
+worker/src/lib/public_search_usage.mjs
 worker/src/lib/regulatory_agenda.mjs
 worker/src/lib/repair_queue.mjs
 worker/src/lib/report_adjudication.mjs
