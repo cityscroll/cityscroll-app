@@ -415,6 +415,7 @@
 /site/guide.css
 /site/guide/
 /site/guide_article_source.mjs
+/site/guide_source_coverage.mjs
 /site/guide_view.mjs
 /site/hearing_attend_pack.mjs
 /site/hearing_location.js

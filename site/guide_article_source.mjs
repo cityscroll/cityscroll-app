@@ -19,6 +19,16 @@
  * Sources live under an underscore-prefixed directory, which the public-site payload
  * walker already skips, so the Markdown is tracked and reviewable without becoming a
  * published route.
+ *
+ * Two constructs exist for reference articles, whose reading situation is lookup
+ * rather than narrative:
+ *
+ * * A pipe table, which must carry a header row and follow a heading. The heading
+ *   names the scrollable region, so a table can never reach a reader as an
+ *   unlabelled box they can scroll but not name.
+ * * `::: <name>`, one line, which drops in a table an owner generates. It is how a
+ *   reference page shows something the registry knows without a second copy of it
+ *   being typed here by hand. An unknown name fails the build.
  */
 
 /** Reader-facing section labels. These are the guide's contract with its readers. */
@@ -165,10 +175,45 @@ function renderInline(sourceName, text) {
   return html;
 }
 
-function renderBlocks(sourceName, body) {
+/**
+ * A table, wrapped in the region that carries its accessible name.
+ *
+ * The wrapper scrolls sideways when a table is wider than a narrow screen, and a
+ * region that scrolls has to be reachable from the keyboard, so it takes focus and
+ * carries a name. `label` is the name; a spec that also wants the name shown gives
+ * a `caption`.
+ */
+function renderTable(sourceName, { label, caption, columns, rows }) {
+  if (!label) fail(sourceName, "a table needs a name — put it under a heading, or give the generated table a caption");
+  if (!columns?.length) fail(sourceName, "a table needs a header row");
+  const cells = (values, tag) => values
+    .map((value) => `<${tag}${tag === "th" ? ' scope="col"' : ""}>${renderInline(sourceName, value)}</${tag}>`)
+    .join("");
+  for (const row of rows) {
+    if (row.length !== columns.length) {
+      fail(sourceName, `table row has ${row.length} cells but the header has ${columns.length}: ${JSON.stringify(row.join(" | "))}`);
+    }
+  }
+  const captionHtml = caption ? `<caption>${renderInline(sourceName, caption)}</caption>` : "";
+  const body = rows.map((row) => `<tr>${cells(row, "td")}</tr>`).join("");
+  return `<div class="guide-table" role="region" tabindex="0" aria-label="${escapeHtml(label)}">`
+    + `<table>${captionHtml}<thead><tr>${cells(columns, "th")}</tr></thead><tbody>${body}</tbody></table></div>`;
+}
+
+const TABLE_DIVIDER = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)*\|?\s*$/;
+
+/** Split one `| a | b |` line into its cells. */
+function tableCells(line) {
+  return line.trim().replace(/^\|/, "").replace(/\|$/, "").split("|").map((cell) => cell.trim());
+}
+
+function renderBlocks(sourceName, body, includes = {}) {
   const lines = body.split("\n");
   const html = [];
   let index = 0;
+  // A table takes its accessible name from the heading it sits under, so the
+  // heading a reader has just read is also what a screen reader announces.
+  let heading = null;
 
   const takeWhile = (predicate) => {
     const taken = [];
@@ -180,11 +225,34 @@ function renderBlocks(sourceName, body) {
     const line = lines[index];
     if (!line.trim()) { index += 1; continue; }
 
-    const heading = line.match(/^(#{2,3})\s+(.*)$/);
-    if (heading) {
-      const level = heading[1].length;
-      html.push(`<h${level}>${renderInline(sourceName, heading[2].trim())}</h${level}>`);
+    const headingMatch = line.match(/^(#{2,3})\s+(.*)$/);
+    if (headingMatch) {
+      const level = headingMatch[1].length;
+      heading = headingMatch[2].trim();
+      html.push(`<h${level}>${renderInline(sourceName, heading)}</h${level}>`);
       index += 1;
+      continue;
+    }
+
+    const include = line.match(/^:::\s+([a-z][a-z0-9-]*)\s*$/);
+    if (include) {
+      const spec = includes[include[1]];
+      if (!spec) fail(sourceName, `no owner generates a "${include[1]}" table`);
+      html.push(renderTable(sourceName, { label: spec.caption || heading, ...spec }));
+      index += 1;
+      continue;
+    }
+
+    if (line.trim().startsWith("|")) {
+      const rows = takeWhile((candidate) => candidate.trim().startsWith("|"));
+      if (rows.length < 3 || !TABLE_DIVIDER.test(rows[1])) {
+        fail(sourceName, "a table needs a header row, a --- divider row, and at least one row of its own");
+      }
+      html.push(renderTable(sourceName, {
+        label: heading,
+        columns: tableCells(rows[0]),
+        rows: rows.slice(2).map(tableCells),
+      }));
       continue;
     }
 
@@ -260,7 +328,7 @@ export function groupForType(type) {
 }
 
 /** Parse one article source file. Throws GuideSourceError on anything malformed. */
-export function parseGuideArticle(sourceName, text) {
+export function parseGuideArticle(sourceName, text, includes = {}) {
   const { fields, body } = parseFrontMatter(sourceName, text);
   const article = normalizeFields(sourceName, fields);
 
@@ -290,7 +358,7 @@ export function parseGuideArticle(sourceName, text) {
     related: article.related || [],
     sources: article.sources || [],
     examples: article.examples || [],
-    bodyHtml: renderBlocks(sourceName, body),
+    bodyHtml: renderBlocks(sourceName, body, includes),
   };
 }
 

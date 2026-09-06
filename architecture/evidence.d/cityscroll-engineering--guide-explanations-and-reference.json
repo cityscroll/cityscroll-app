@@ -1,0 +1,61 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/guide-explanations-and-reference",
+  "status": "implemented",
+  "fingerprint": "guide-explanations-and-reference.v1",
+  "updated_at": "2026-09-06T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "guide-explanation-public-record",
+      "path": "site/guide/_articles/what-a-public-record-tells-you.md"
+    },
+    {
+      "id": "guide-explanation-connections",
+      "path": "site/guide/_articles/how-records-are-connected.md"
+    },
+    {
+      "id": "guide-explanation-dates-and-gaps",
+      "path": "site/guide/_articles/dates-and-missing-information.md"
+    },
+    {
+      "id": "guide-explanation-flags",
+      "path": "site/guide/_articles/flags-and-historical-patterns.md"
+    },
+    {
+      "id": "guide-reference-glossary",
+      "path": "site/guide/_articles/glossary.md"
+    },
+    {
+      "id": "guide-reference-controls",
+      "path": "site/guide/_articles/controls-and-outputs.md"
+    },
+    {
+      "id": "guide-reference-sources",
+      "path": "site/guide/_articles/sources-and-coverage.md"
+    },
+    {
+      "id": "guide-source-coverage-derivation",
+      "path": "site/guide_source_coverage.mjs"
+    },
+    {
+      "id": "guide-article-source-format",
+      "path": "site/guide_article_source.mjs"
+    },
+    {
+      "id": "guide-document-builder",
+      "path": "tools/build_guide_documents.mjs"
+    },
+    {
+      "id": "guide-document-contracts",
+      "path": "test/guide_documents.test.mjs"
+    },
+    {
+      "id": "guide-ownership-record",
+      "path": "docs/evidence/public-user-guide/ownership-map.md"
+    },
+    {
+      "id": "guide-source-checks",
+      "path": "docs/evidence/public-user-guide/source-checks.md"
+    }
+  ]
+}

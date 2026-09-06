@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "card": "cityscroll-public-user-guide/ug-01-guide-home-and-first-tutorial",
+  "record": "cityscroll-engineering/public-guide-release",
   "capture_mode": "local_static_site_playwright_no_committed_image",
   "base": "local static site build (site/)",
-  "repository_revision": "9086143ed7b826d92ae3cf4a9547bbeea1a30c94",
+  "repository_revision": "e23dd23d1bfee8b51fa697a9ea0f16fbf2644f87",
   "repository_state": "uncommitted changes present at capture time",
-  "note": "Usability evidence for the first published slice of the public guide. Every check runs against the tracked static documents served locally, so it reproduces from a checkout with no network and no deploy. Accessibility, keyboard, reflow and link checks cover the guide documents this change adds; the front page and the search document keep their existing owners and are exercised here only as the journey's endpoints. Screenshots stay under the ignored .artifacts/ path and only their sha256 is recorded, per docs/capture-manifest-guard.md.",
+  "note": "Usability evidence for the published guide. Every check runs against the tracked static documents served locally, so it reproduces from a checkout with no network and no deploy. Accessibility, keyboard, reflow and link checks cover the guide documents; the front page and the search document keep their existing owners and are exercised here only as the journey's endpoints. Screenshots stay under the ignored .artifacts/ path and only their sha256 is recorded, per docs/capture-manifest-guard.md.",
   "data_vintage": "Not applicable to the guide documents: they are prose built from tracked sources and contain no civic records. Their review dates are editorial facts recorded in the article sources, not observations of live data. The search document is served from the local build and its results are not asserted.",
   "viewports": [
     {
@@ -28,7 +28,8 @@
     "keyboard focus reach and a visible focus indicator",
     "HTTP status of every internal link on a guide page",
     "front page to guide to tutorial to product, and browser Back",
-    "the same reading path with JavaScript switched off"
+    "the same reading path with JavaScript switched off",
+    "an unfamiliar term in the tutorial reaching a reference page without script"
   ],
   "captures": [
     {
@@ -53,7 +54,7 @@
       "broken_internal_links": [],
       "visible_text_characters": 1049,
       "content_sha256": "3b2581b5a8379fe64ebcfe6891b82ad218cbcd1c62adddb9fc15a3dca22f1029",
-      "capture_sha256": "838416b32fc5885b163eaf654e32cdafaaea63c03421f987b57743d5c4842425",
+      "capture_sha256": "2d16be6a8536955c5348646a7e184b75b4e6bc3d2fb6c83c269e125f2b1f1703",
       "local_capture_path": ".artifacts/guide-release/home-390.png",
       "file": null
     },
@@ -70,16 +71,16 @@
       "horizontal_overflow_at_200_percent_px": 0,
       "targets_below_24px": [],
       "keyboard": {
-        "links": 2,
-        "reached": 2,
+        "links": 9,
+        "reached": 9,
         "unreachable": [],
         "withoutIndicator": []
       },
       "axe_critical_or_serious": [],
-      "internal_links_checked": 7,
+      "internal_links_checked": 14,
       "broken_internal_links": [],
-      "visible_text_characters": 2256,
-      "content_sha256": "46b26b9c10cc071987f809e319d52003c6eb56f1ec6f533211843c2a56cd08df",
+      "visible_text_characters": 2798,
+      "content_sha256": "91faeb417ddf8a02190ccf0f053f3e13defea5a33e21fd3e520cb1d71eac8550",
       "capture_sha256": "74620c311515d9a41b4652e8900bba850ef53292864cb16df448cd44bc1827ff",
       "local_capture_path": ".artifacts/guide-release/guide-home-390.png",
       "file": null
@@ -97,18 +98,207 @@
       "horizontal_overflow_at_200_percent_px": 0,
       "targets_below_24px": [],
       "keyboard": {
+        "links": 9,
+        "reached": 9,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 10,
+      "broken_internal_links": [],
+      "visible_text_characters": 6353,
+      "content_sha256": "196670a03dd3b185afe1e48de01e94bdf9cd37a985176c729516be4bdde39398",
+      "capture_sha256": "5c63a49ba53b1a51289a3a7e6f73e854312aaf46724cd0352e5a05e6e0566a41",
+      "local_capture_path": ".artifacts/guide-release/guide-tutorial-390.png",
+      "file": null
+    },
+    {
+      "id": "guide-understand-public-record",
+      "route": "/guide/understand/what-a-public-record-tells-you/",
+      "viewport": "mobile",
+      "viewport_width": 390,
+      "assertion": "The explanation loads on its own, keeps the stages of a contract, a rule and a land-use review apart, and distinguishes the four ways to take part.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 12,
+        "reached": 12,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 11,
+      "broken_internal_links": [],
+      "visible_text_characters": 7129,
+      "content_sha256": "26a190cf0afc43b99fe2a0e793b78826dc4b953feef454a25abdd01ba03df637",
+      "capture_sha256": "77333878e15dc200eb74f01beff691dc636ae244bb16b4c6a37b574a88888c46",
+      "local_capture_path": ".artifacts/guide-release/guide-understand-public-record-390.png",
+      "file": null
+    },
+    {
+      "id": "guide-understand-connections",
+      "route": "/guide/understand/how-records-are-connected/",
+      "viewport": "mobile",
+      "viewport_width": 390,
+      "assertion": "The explanation names the three bases a connection can rest on and says why a real relationship can still be missing.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 6,
+        "reached": 6,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 10,
+      "broken_internal_links": [],
+      "visible_text_characters": 3860,
+      "content_sha256": "b6e49797f1a8e9d54a36514024276588949a495b6f39be0aea6dff8cd7ed8fd2",
+      "capture_sha256": "a59cccf2e29ee11c8430e0b217d2d3c821abfb8b2ccec1c97b7201d1503fd3a2",
+      "local_capture_path": ".artifacts/guide-release/guide-understand-connections-390.png",
+      "file": null
+    },
+    {
+      "id": "guide-understand-dates",
+      "route": "/guide/understand/dates-and-missing-information/",
+      "viewport": "mobile",
+      "viewport_width": 390,
+      "assertion": "The explanation separates the kinds of date and the kinds of blank, and says an unknown is not a zero and a closed window is not an invitation.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
         "links": 7,
         "reached": 7,
         "unreachable": [],
         "withoutIndicator": []
       },
       "axe_critical_or_serious": [],
-      "internal_links_checked": 8,
+      "internal_links_checked": 10,
       "broken_internal_links": [],
-      "visible_text_characters": 6002,
-      "content_sha256": "c8e98818883f2e4dbdc59f90bc2de28fd96cbb22f6c0ce77c29e37c26670037f",
-      "capture_sha256": "107511f91cf1d1c6d49bb1bdfc8b85a6f444250f4235fdcf8c6ee6dc04aa75f6",
-      "local_capture_path": ".artifacts/guide-release/guide-tutorial-390.png",
+      "visible_text_characters": 4174,
+      "content_sha256": "07eeae18d53084565d3d82639491e3545adc2559c45ae2a91f69836f0f13cb7d",
+      "capture_sha256": "f0163a63cb505d86bf974b31128f0321d2ad7ee77145c4a6044bcf24cccc8e1d",
+      "local_capture_path": ".artifacts/guide-release/guide-understand-dates-390.png",
+      "file": null
+    },
+    {
+      "id": "guide-understand-flags",
+      "route": "/guide/understand/flags-and-historical-patterns/",
+      "viewport": "mobile",
+      "viewport_width": 390,
+      "assertion": "The explanation gives each computed note a plain meaning and links the page that owns its exact rule instead of restating a threshold.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 16,
+        "reached": 16,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 16,
+      "broken_internal_links": [],
+      "visible_text_characters": 4860,
+      "content_sha256": "fc7fe8431e139b7e6e30da2dc55b4b2ae05384cdf5881e4e009021510b035918",
+      "capture_sha256": "0c611c65a6a1b76673bbff72f09782f7f3bbf56e6eff5b714a3d214417289cb9",
+      "local_capture_path": ".artifacts/guide-release/guide-understand-flags-390.png",
+      "file": null
+    },
+    {
+      "id": "guide-reference-glossary",
+      "route": "/guide/reference/glossary/",
+      "viewport": "mobile",
+      "viewport_width": 390,
+      "assertion": "The glossary loads on its own and lays its terms out in tables, including the identifiers a reader meets on a record.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 11,
+        "reached": 11,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 13,
+      "broken_internal_links": [],
+      "visible_text_characters": 6049,
+      "content_sha256": "b9bcda323f3ee6452bb90a64a705d5cb3d03bff1eb9c6894052c077be8c0c3cd",
+      "capture_sha256": "82f2e01de3f1399c508152faf6345a79ba906de32448da45243ae3e212f0a260",
+      "local_capture_path": ".artifacts/guide-release/guide-reference-glossary-390.png",
+      "file": null
+    },
+    {
+      "id": "guide-reference-controls",
+      "route": "/guide/reference/controls-and-outputs/",
+      "viewport": "mobile",
+      "viewport_width": 390,
+      "assertion": "The controls reference says what each control leaves the reader with, keeps a preview apart from a subscription, and sends machine parameters to the API page.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 6,
+        "reached": 6,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 11,
+      "broken_internal_links": [],
+      "visible_text_characters": 7080,
+      "content_sha256": "53c6d85641f1a5b0eff7ad4bef71f92b3827ce4b46ecd406d384e45ca690979a",
+      "capture_sha256": "41396d9f848390bb03f4b3116e6ca04f54e783289558a7e06bdc56a40e965b46",
+      "local_capture_path": ".artifacts/guide-release/guide-reference-controls-390.png",
+      "file": null
+    },
+    {
+      "id": "guide-reference-sources",
+      "route": "/guide/reference/sources-and-coverage/",
+      "viewport": "mobile",
+      "viewport_width": 390,
+      "assertion": "The sources reference shows the inventory generated from the source registry and links the pages that own coverage and endpoints.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 9,
+        "reached": 9,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 11,
+      "broken_internal_links": [],
+      "visible_text_characters": 4793,
+      "content_sha256": "7810356ef7468d7023363ffd886910a4e55f82c518e8b18bc0ea0c3f7700936e",
+      "capture_sha256": "20572d5498fe09f5708d50f8899b2dfb1fa146c571391543343c34c40ba4e6b8",
+      "local_capture_path": ".artifacts/guide-release/guide-reference-sources-390.png",
       "file": null
     },
     {
@@ -159,7 +349,7 @@
       "broken_internal_links": [],
       "visible_text_characters": 1049,
       "content_sha256": "3b2581b5a8379fe64ebcfe6891b82ad218cbcd1c62adddb9fc15a3dca22f1029",
-      "capture_sha256": "8cc3dbe7e55d5b9684941235e8be5af924a68a72cead3c9622c074cd5729fc05",
+      "capture_sha256": "dd5e8b17d7e2f1bcb9bcd0a4a0f262fd5a1da87c1a0580320ec318009ca1d15d",
       "local_capture_path": ".artifacts/guide-release/home-1440.png",
       "file": null
     },
@@ -176,16 +366,16 @@
       "horizontal_overflow_at_200_percent_px": 0,
       "targets_below_24px": [],
       "keyboard": {
-        "links": 2,
-        "reached": 2,
+        "links": 9,
+        "reached": 9,
         "unreachable": [],
         "withoutIndicator": []
       },
       "axe_critical_or_serious": [],
-      "internal_links_checked": 7,
+      "internal_links_checked": 14,
       "broken_internal_links": [],
-      "visible_text_characters": 2256,
-      "content_sha256": "46b26b9c10cc071987f809e319d52003c6eb56f1ec6f533211843c2a56cd08df",
+      "visible_text_characters": 2798,
+      "content_sha256": "91faeb417ddf8a02190ccf0f053f3e13defea5a33e21fd3e520cb1d71eac8550",
       "capture_sha256": "01bb95f63334c3588c4dfc8b8cfd40dfeeb71127247e70d58eeded2ffd8d179e",
       "local_capture_path": ".artifacts/guide-release/guide-home-1440.png",
       "file": null
@@ -203,18 +393,207 @@
       "horizontal_overflow_at_200_percent_px": 0,
       "targets_below_24px": [],
       "keyboard": {
+        "links": 9,
+        "reached": 9,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 10,
+      "broken_internal_links": [],
+      "visible_text_characters": 6353,
+      "content_sha256": "196670a03dd3b185afe1e48de01e94bdf9cd37a985176c729516be4bdde39398",
+      "capture_sha256": "0efd524982dfd09544e731170fd37a6847bd6f57f36eac01d7b3df5b40f21961",
+      "local_capture_path": ".artifacts/guide-release/guide-tutorial-1440.png",
+      "file": null
+    },
+    {
+      "id": "guide-understand-public-record",
+      "route": "/guide/understand/what-a-public-record-tells-you/",
+      "viewport": "desktop",
+      "viewport_width": 1440,
+      "assertion": "The explanation loads on its own, keeps the stages of a contract, a rule and a land-use review apart, and distinguishes the four ways to take part.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 12,
+        "reached": 12,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 11,
+      "broken_internal_links": [],
+      "visible_text_characters": 7129,
+      "content_sha256": "26a190cf0afc43b99fe2a0e793b78826dc4b953feef454a25abdd01ba03df637",
+      "capture_sha256": "cf7e4cc01641fa18c970787c1687c30dabb333f1f07ebaa28cb0a6f0520671b5",
+      "local_capture_path": ".artifacts/guide-release/guide-understand-public-record-1440.png",
+      "file": null
+    },
+    {
+      "id": "guide-understand-connections",
+      "route": "/guide/understand/how-records-are-connected/",
+      "viewport": "desktop",
+      "viewport_width": 1440,
+      "assertion": "The explanation names the three bases a connection can rest on and says why a real relationship can still be missing.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 6,
+        "reached": 6,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 10,
+      "broken_internal_links": [],
+      "visible_text_characters": 3860,
+      "content_sha256": "b6e49797f1a8e9d54a36514024276588949a495b6f39be0aea6dff8cd7ed8fd2",
+      "capture_sha256": "1fc1627810846e4ea2046ee76f4780e6a5fe71eb20d2976233e96c118734476a",
+      "local_capture_path": ".artifacts/guide-release/guide-understand-connections-1440.png",
+      "file": null
+    },
+    {
+      "id": "guide-understand-dates",
+      "route": "/guide/understand/dates-and-missing-information/",
+      "viewport": "desktop",
+      "viewport_width": 1440,
+      "assertion": "The explanation separates the kinds of date and the kinds of blank, and says an unknown is not a zero and a closed window is not an invitation.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
         "links": 7,
         "reached": 7,
         "unreachable": [],
         "withoutIndicator": []
       },
       "axe_critical_or_serious": [],
-      "internal_links_checked": 8,
+      "internal_links_checked": 10,
       "broken_internal_links": [],
-      "visible_text_characters": 6002,
-      "content_sha256": "c8e98818883f2e4dbdc59f90bc2de28fd96cbb22f6c0ce77c29e37c26670037f",
-      "capture_sha256": "b6c8f4dba73a79bb7fdd9f1681cd3ef29ff46364cf6a3f88ee0c33e2c2249190",
-      "local_capture_path": ".artifacts/guide-release/guide-tutorial-1440.png",
+      "visible_text_characters": 4174,
+      "content_sha256": "07eeae18d53084565d3d82639491e3545adc2559c45ae2a91f69836f0f13cb7d",
+      "capture_sha256": "2aa7a57c24189141cec79bce25b63a9df7a92bfd8b20db90cac4f2be711b4b93",
+      "local_capture_path": ".artifacts/guide-release/guide-understand-dates-1440.png",
+      "file": null
+    },
+    {
+      "id": "guide-understand-flags",
+      "route": "/guide/understand/flags-and-historical-patterns/",
+      "viewport": "desktop",
+      "viewport_width": 1440,
+      "assertion": "The explanation gives each computed note a plain meaning and links the page that owns its exact rule instead of restating a threshold.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 16,
+        "reached": 16,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 16,
+      "broken_internal_links": [],
+      "visible_text_characters": 4860,
+      "content_sha256": "fc7fe8431e139b7e6e30da2dc55b4b2ae05384cdf5881e4e009021510b035918",
+      "capture_sha256": "fdc8d7040be169a0349e38eaf1e989446368809bc17582ef29fbb5fe12368319",
+      "local_capture_path": ".artifacts/guide-release/guide-understand-flags-1440.png",
+      "file": null
+    },
+    {
+      "id": "guide-reference-glossary",
+      "route": "/guide/reference/glossary/",
+      "viewport": "desktop",
+      "viewport_width": 1440,
+      "assertion": "The glossary loads on its own and lays its terms out in tables, including the identifiers a reader meets on a record.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 11,
+        "reached": 11,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 13,
+      "broken_internal_links": [],
+      "visible_text_characters": 6049,
+      "content_sha256": "b9bcda323f3ee6452bb90a64a705d5cb3d03bff1eb9c6894052c077be8c0c3cd",
+      "capture_sha256": "b8e6f84849a4c98e89eff70c2097d7f947a6a0d1501f342e0dbb3f2375f6f80a",
+      "local_capture_path": ".artifacts/guide-release/guide-reference-glossary-1440.png",
+      "file": null
+    },
+    {
+      "id": "guide-reference-controls",
+      "route": "/guide/reference/controls-and-outputs/",
+      "viewport": "desktop",
+      "viewport_width": 1440,
+      "assertion": "The controls reference says what each control leaves the reader with, keeps a preview apart from a subscription, and sends machine parameters to the API page.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 6,
+        "reached": 6,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 11,
+      "broken_internal_links": [],
+      "visible_text_characters": 7080,
+      "content_sha256": "53c6d85641f1a5b0eff7ad4bef71f92b3827ce4b46ecd406d384e45ca690979a",
+      "capture_sha256": "09fdbe30b85da0933debe2cf0f81cb37b13aaa6163aec94788069ebded8142df",
+      "local_capture_path": ".artifacts/guide-release/guide-reference-controls-1440.png",
+      "file": null
+    },
+    {
+      "id": "guide-reference-sources",
+      "route": "/guide/reference/sources-and-coverage/",
+      "viewport": "desktop",
+      "viewport_width": 1440,
+      "assertion": "The sources reference shows the inventory generated from the source registry and links the pages that own coverage and endpoints.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 9,
+        "reached": 9,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 11,
+      "broken_internal_links": [],
+      "visible_text_characters": 4793,
+      "content_sha256": "7810356ef7468d7023363ffd886910a4e55f82c518e8b18bc0ea0c3f7700936e",
+      "capture_sha256": "d7de6e6b84e651f706f25c75f3ff11e923fb05cd7c9deb6de1775b475064194c",
+      "local_capture_path": ".artifacts/guide-release/guide-reference-sources-1440.png",
       "file": null
     },
     {
@@ -239,7 +618,7 @@
       "broken_internal_links": [],
       "visible_text_characters": 1079,
       "content_sha256": "382ae9cb39a99c0e4c21d8954f7b5cf77ca6316030ed4ad9c37d82cb1d445049",
-      "capture_sha256": "2910d86513aa228fafe50fb12a1e9249d5aeaaddf301319b2fbbecf61a089dd6",
+      "capture_sha256": "7983088ed392971dfd9b75e22d150ca9d63688be2c5506c59cce8088cc1a601c",
       "local_capture_path": ".artifacts/guide-release/product-search-1440.png",
       "file": null
     }
@@ -311,7 +690,7 @@
           "Related pages",
           "Sources used in this article"
         ],
-        "paragraphs": 33,
+        "paragraphs": 34,
         "sourceLinks": [
           "https://a856-cityrecord.nyc.gov/"
         ],
@@ -319,6 +698,21 @@
         "returnToTask": true
       },
       "back_path": "/guide/"
+    },
+    {
+      "id": "reference-reached-without-javascript",
+      "viewport": "mobile",
+      "assertion": "With JavaScript switched off, an unfamiliar term in the tutorial leads to a reference page that stands on its own, with named tables and its own review date, and Back returns to the step.",
+      "assertion_holds": true,
+      "reached_path": "/guide/reference/glossary/",
+      "glossary": {
+        "tables": 6,
+        "headerCells": 18,
+        "namedRegions": true,
+        "reviewed": true,
+        "backToGuide": true
+      },
+      "back_path": "/guide/start/explore-housing-across-city-records/"
     },
     {
       "id": "scripted-journey",
@@ -386,7 +780,7 @@
           "Related pages",
           "Sources used in this article"
         ],
-        "paragraphs": 33,
+        "paragraphs": 34,
         "sourceLinks": [
           "https://a856-cityrecord.nyc.gov/"
         ],
@@ -394,6 +788,21 @@
         "returnToTask": true
       },
       "back_path": "/guide/"
+    },
+    {
+      "id": "reference-reached-without-javascript",
+      "viewport": "desktop",
+      "assertion": "With JavaScript switched off, an unfamiliar term in the tutorial leads to a reference page that stands on its own, with named tables and its own review date, and Back returns to the step.",
+      "assertion_holds": true,
+      "reached_path": "/guide/reference/glossary/",
+      "glossary": {
+        "tables": 6,
+        "headerCells": 18,
+        "namedRegions": true,
+        "reviewed": true,
+        "backToGuide": true
+      },
+      "back_path": "/guide/start/explore-housing-across-city-records/"
     }
   ]
 }

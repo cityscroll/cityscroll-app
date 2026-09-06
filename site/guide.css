@@ -129,3 +129,71 @@
   outline: 2px solid var(--color-focus, var(--color-action));
   outline-offset: 3px;
 }
+
+/*
+ * Reference tables.
+ *
+ * A lookup table is scanned rather than read in lines, so it keeps the prose
+ * measure but drops the reading font for the narrower interface one, and lets a
+ * long term break rather than push the row sideways. The wrapper is the safety
+ * net for the cases that still do not fit — a long identifier, a large text size
+ * — and because a region that can scroll has to be reachable without a mouse, it
+ * takes focus and says its own name.
+ */
+.guide-document .guide-body .guide-table {
+  overflow-x: auto;
+  margin: var(--space-5) 0;
+}
+
+.guide-document .guide-body .guide-table:focus-visible {
+  outline: 2px solid var(--color-focus, var(--color-action));
+  outline-offset: 3px;
+}
+
+.guide-document .guide-body table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 1rem;
+  line-height: 1.55;
+  text-align: left;
+}
+
+.guide-document .guide-body caption {
+  margin-bottom: var(--space-3);
+  color: var(--color-text-soft);
+  font-size: .9375rem;
+  text-align: left;
+}
+
+.guide-document .guide-body th,
+.guide-document .guide-body td {
+  padding: var(--space-3) var(--space-3) var(--space-3) 0;
+  border-bottom: 1px solid var(--color-border);
+  vertical-align: top;
+  overflow-wrap: break-word;
+}
+
+.guide-document .guide-body thead th {
+  color: var(--color-text-soft);
+  font-family: var(--font-interface);
+  font-size: .8125rem;
+  letter-spacing: .02em;
+  text-transform: uppercase;
+}
+
+.guide-document .guide-body tbody th:first-child,
+.guide-document .guide-body tbody td:first-child {
+  font-weight: 600;
+}
+
+/*
+ * A cell whose whole content is a link is a target on its own, not a link inside a
+ * sentence, so it gets the comfortable height the other standalone links have. A
+ * link that shares its cell with words keeps the in-a-sentence treatment, because
+ * making that one a block would stop it wrapping.
+ */
+.guide-document .guide-body td > a:only-child {
+  display: inline-block;
+  min-height: 24px;
+  padding-block: 3px;
+}

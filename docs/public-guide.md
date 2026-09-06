@@ -16,6 +16,7 @@ with, and how those examples were verified — is in
 | `site/guide/_home.md` | The guide home: its orientation, the description under each of the four sections, and the note about language and review dates. |
 | `site/guide/_articles/*.md` | One file per article. |
 | `site/guide_article_source.mjs` | The source format: front matter, the Markdown subset, and the validation that rejects a malformed article. |
+| `site/guide_source_coverage.mjs` | The one table a reference page shows that is derived rather than written, read out of the source registry. |
 | `site/guide_view.mjs` | The rendered documents, built on the shared civic-document chrome. |
 | `site/guide.css` | The few rules `civic-documents.css` does not already cover. |
 | `tools/build_guide_documents.mjs` | The builder. Writes `site/guide/**/index.html`; `--check` fails when a document is stale. |
@@ -44,6 +45,39 @@ that is not a plain date, a `url` outside the section its type belongs to, a
 description outside the length the page-metadata gate allows, a link that resolves
 to no served route, or a Markdown construct the subset does not have — each stops
 the build and names the file.
+
+Within a section, articles are listed in the order their ids give, so a section
+reads in the order it was meant to be read rather than alphabetically.
+
+## Two constructs for reference pages
+
+A reference article is scanned rather than read in lines, so the subset carries two
+things a tutorial has no use for.
+
+A **table** is written the ordinary way, and must have a header row, a `---` divider,
+and a heading above it:
+
+    ## Identifiers
+
+    | Identifier | What it identifies |
+    | --- | --- |
+    | PIN | One procurement |
+
+The heading is not decoration. The table renders inside a region that can scroll
+sideways on a narrow screen, and a region that scrolls has to be reachable from the
+keyboard and has to say what it is — the heading is what it says. A table with no
+heading above it fails the build rather than reaching a reader as an unnamed box.
+
+A **generated table** is placed with one line:
+
+    ::: source-coverage
+
+That is how a reference page shows something an owner already knows without a second
+copy of it being typed here. The builder supplies the named tables; an unknown name
+fails the build. There is one today, `source-coverage`, derived from
+`site/data/source_contracts.json`. The rule for adding another is the same rule as
+everything else here: the guide gets the meaning, the owner keeps the value. If the
+number would go stale, generate it; if it would not, write it.
 
 ## Four dates that are not the same date
 
