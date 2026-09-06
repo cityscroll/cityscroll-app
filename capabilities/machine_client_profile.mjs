@@ -243,9 +243,9 @@ function presentedBearer(authorizationHeader) {
  * Resolves the caller's machine-client identity from the request's Authorization header.
  *
  * Returns one of:
- *   { resolution: "anonymous",    profile: null }  — no credential presented, and none required
+ *   { resolution: "anonymous",    profile: null }  — no parsed bearer and none required, or endpoint-wide match
  *   { resolution: "profile",      profile }        — a profile secret matched
- *   { resolution: "unauthorized", profile: null }  — a credential is required and did not match
+ *   { resolution: "unauthorized", profile: null }  — unmatched bearer, or required credential missing
  *
  * The endpoint-wide `MCP_BEARER_TOKEN` keeps working exactly as before: it authenticates
  * a caller without naming a profile, and such a caller keeps the unfiltered inventory
@@ -278,7 +278,8 @@ export async function resolveMachineClientProfile(env, authorizationHeader, prof
   }
 
   // A presented-but-unmatched credential always fails closed, including after the
-  // final profile secret is removed. Only callers without a bearer are anonymous.
+  // final profile secret is removed. With no endpoint-wide requirement, callers
+  // without a parsed bearer keep their existing anonymous access.
   if (presented) {
     return { resolution: "unauthorized", profile: null };
   }
