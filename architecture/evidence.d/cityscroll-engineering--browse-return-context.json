@@ -1,0 +1,37 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/browse-return-context",
+  "status": "implemented",
+  "fingerprint": "browse-return-context.v1",
+  "updated_at": "2026-09-06T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "browse-return-context-contract",
+      "path": "site/browse_return_context.mjs"
+    },
+    {
+      "id": "compact-month-component",
+      "path": "site/compact_calendar.mjs"
+    },
+    {
+      "id": "calendar-event-preview-contract",
+      "path": "site/calendar_event_preview.mjs"
+    },
+    {
+      "id": "browse-return-context-gate",
+      "path": "test/browse_return_context.test.mjs"
+    },
+    {
+      "id": "browse-return-harness",
+      "path": "test/harness/browse_return_harness.html"
+    },
+    {
+      "id": "browse-return-evidence-capture",
+      "path": "tools/capture_browse_journey_evidence.py"
+    },
+    {
+      "id": "browse-return-evidence-manifest",
+      "path": "docs/evidence/browse-return-context/manifest.json"
+    }
+  ]
+}

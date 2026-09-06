@@ -72,8 +72,13 @@ class FakeEvent {
   constructor(type, init = {}) {
     this.type = type;
     this.key = init.key;
+    this.button = init.button ?? 0;
+    this.metaKey = Boolean(init.metaKey);
+    this.ctrlKey = Boolean(init.ctrlKey);
+    this.altKey = Boolean(init.altKey);
     this.shiftKey = Boolean(init.shiftKey);
     this.bubbles = init.bubbles !== false;
+    this.persisted = Boolean(init.persisted);
     this.target = null;
     this.defaultPrevented = false;
   }
@@ -138,6 +143,10 @@ class FakeElement {
   contains(node) {
     for (let current = node; current; current = current.parentNode) if (current === this) return true;
     return false;
+  }
+
+  matches(selector) {
+    return parseSelectorList(selector).some((parts) => matchesSimple(this, parts));
   }
 
   closest(selector) {
@@ -306,8 +315,8 @@ export function mountDocument(html, { containerClass = "calendar-host" } = {}) {
   return { doc, container };
 }
 
-export function click(element) {
-  return element.dispatchEvent(new FakeEvent("click"));
+export function click(element, init = {}) {
+  return element.dispatchEvent(new FakeEvent("click", init));
 }
 
 export function keydown(element, key, init = {}) {

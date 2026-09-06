@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Browse return — fixture harness</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--
+  Repository-native test harness for browse-return context. Not a shipped
+  page: it mounts the real shared month renderer against committed fixtures
+  so a headless capture can inspect, dismiss, open a same-origin full page,
+  use Browser Back, and continue. Search and Following sections use their
+  existing preview/scope machinery and do not wrap those links in a calendar
+  preview.
+
+  Query parameters:
+    fixture=dense|crowded|sparse   which committed bundle to paint
+    enhance=off                    skip binding (canonical links still work)
+    detail=fail                    optional enrichment fails
+    gone=uid                       omit that occurrence, so a return has no invoker
+-->
+<link rel="stylesheet" href="../../site/compact_calendar.css">
+<style>
+  body { margin: 0; padding: 16px; background: #f5f6f8; font: 16px/1.5 ui-sans-serif, system-ui, sans-serif; color: #1d2330; }
+  main { max-width: 900px; }
+  h1 { font-size: 20px; }
+  h2 { font-size: 16px; margin-top: 28px; }
+  #status { font: 12px monospace; color: #5b6470; margin-top: 16px; }
+  .following-preview, .topic-search { background: #fff; border: 1px solid #d7dbe3; border-radius: 8px; padding: 12px 14px; }
+  .following-diglist, .topic-search-results { margin: 0; padding-left: 1.2em; }
+  .following-digitem a, .topic-search-results a,
+  [data-search-scope-link], [data-following-origin], [data-search-result] {
+    display: inline-flex; align-items: center; min-height: 44px; min-width: 44px;
+  }
+  .sr-only {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+  }
+</style>
+</head>
+<body>
+<main id="page" data-harness-state="pending">
+<h1>Browse return harness</h1>
+
+<h2 id="calendar-heading">Shared month</h2>
+<div id="calendar"></div>
+
+<h2 id="search-heading">Search</h2>
+<section id="search" class="topic-search" data-search-scope></section>
+
+<h2 id="following-heading">Following</h2>
+<section id="following" class="following-preview" data-following-preview-panel></section>
+
+<p id="status"></p>
+</main>
+<script type="module">
+  import { FIXTURE_TODAY, fixtureOccurrences } from "../fixtures/compact_calendar_fixtures.mjs";
+  import { bindCompactMonthCalendar, buildCompactMonthView, renderCompactMonth } from "../../site/compact_calendar.mjs";
+  import {
+    searchFrontDoorHref,
+    searchFrontDoorScopeFromParams,
+  } from "../../site/search_front_door_scope.mjs";
+  import {
+    followingFocusHref,
+    followingPreviewHandoffFromScope,
+    pinFollowingPreviewItems,
+  } from "../../site/following_preview_handoff.mjs";
+
+  const params = new URLSearchParams(location.search);
+  const fixtureName = params.get("fixture") || "dense";
+  const enhance = params.get("enhance") !== "off";
+  const detail = params.get("detail") || "off";
+  const gone = params.get("gone") || "";
+  const page = document.getElementById("page");
+  const mount = document.getElementById("calendar");
+  const status = document.getElementById("status");
+
+  if (!location.hash) {
+    history.replaceState(history.state, "", `${location.pathname}${location.search}#now?calview=calendar`);
+  }
+
+  const destinationFor = (uid) => `browse_return_destination.html?uid=${encodeURIComponent(uid)}`;
+
+  const occurrences = fixtureOccurrences(fixtureName)
+    .filter((occurrence) => occurrence.uid !== gone)
+    .map((occurrence) => ({
+      ...occurrence,
+      canonical_url: destinationFor(occurrence.uid),
+    }));
+  const view = buildCompactMonthView(occurrences, { today: FIXTURE_TODAY });
+  mount.innerHTML = renderCompactMonth(view, { fullListHref: "#now", fullListLabel: "View the full list" });
+
+  const options = detail === "fail"
+    ? { loadDetail: () => Promise.reject(new Error("detail unavailable")) }
+    : {};
+  if (enhance) bindCompactMonthCalendar(mount, options);
+
+  const searchParams = new URLSearchParams("q=parks&source_scope=contracts");
+  const searchScope = searchFrontDoorScopeFromParams(searchParams);
+  const searchHref = searchFrontDoorHref(searchScope.id, searchParams);
+  const searchResult = destinationFor("dense-timed");
+  document.getElementById("search").innerHTML =
+    `<p class="topic-search-scope-active"><span>Scope: </span><strong data-search-scope-label>${searchScope.id}</strong></p>` +
+    `<p><a data-search-scope-link href="${searchHref}">Search parks in Contracts</a></p>` +
+    `<ol class="topic-search-results"><li><a data-search-result href="${searchResult}">Parks hearing</a></li></ol>`;
+
+  const handoff = followingPreviewHandoffFromScope({
+    lens: "meetings",
+    filter: { agency: "Transportation" },
+    noticeId: "dense-timed",
+    originRoute: "/test/harness/browse_return_destination.html?uid=dense-timed",
+  });
+  const previewItems = pinFollowingPreviewItems([
+    { id: "other", title: "Other meeting", url: destinationFor("other") },
+    { id: "dense-timed", title: "Public hearing", url: destinationFor("dense-timed") },
+  ], handoff);
+  const origin = followingFocusHref(handoff) || destinationFor("dense-timed");
+  document.getElementById("following").innerHTML =
+    `<p class="following-kicker">Preview</p>` +
+    `<h3 id="following-preview-heading">${previewItems.length} matching records</h3>` +
+    `<ol class="following-diglist">${previewItems.map((item) =>
+      `<li class="following-digitem${item.id === handoff.focus?.id ? " is-focus" : ""}" data-preview-id="${item.id}"${item.id === handoff.focus?.id ? ' data-preview-focus="true"' : ""}>` +
+      `<a href="${item.url}">${item.title}</a></li>`).join("")}</ol>` +
+    `<p><a data-following-origin href="${origin}">Return to the record you started from</a></p>`;
+
+  page.setAttribute("data-harness-state", view.render ? "rendered" : "non-render");
+  page.setAttribute("data-harness-enhanced", enhance ? "1" : "0");
+  page.setAttribute("data-harness-fixture", fixtureName);
+  status.textContent = `fixture=${fixtureName} render=${view.render} enhanced=${enhance} hash=${location.hash} gone=${gone || "none"}`;
+</script>
+</body>
+</html>
