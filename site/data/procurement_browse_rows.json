@@ -1,14 +1,14 @@
 {
   "schema": "cityscroll.procurement_browse_rows.v1",
-  "generated_at": "2026-08-18T04:05:51.552Z",
+  "generated_at": "2026-09-06T15:49:29.834Z",
   "source_model_schema": "cityscroll.shared_procurement_read_model.v1",
-  "row_count": 13791,
+  "row_count": 19862,
   "coverage": {
     "passport_public_contracts": {
       "source_system": "passport_public_contracts",
       "status": "available",
       "available": true,
-      "generated_at": "2026-08-18T04:05:51.552Z",
+      "generated_at": "2026-09-06T15:49:29.834Z",
       "reason": null,
       "source_row_count": 12782
     },
@@ -16,7 +16,7 @@
       "source_system": "passport_public_rfx",
       "status": "available",
       "available": true,
-      "generated_at": "2026-08-18T04:05:51.552Z",
+      "generated_at": "2026-09-06T15:49:29.834Z",
       "reason": null,
       "source_row_count": 0
     },
@@ -24,15 +24,15 @@
       "source_system": "checkbook_contracts",
       "status": "available",
       "available": true,
-      "generated_at": "2026-08-18T04:05:51.552Z",
+      "generated_at": "2026-09-06T15:49:29.834Z",
       "reason": null,
-      "source_row_count": 1704
+      "source_row_count": 9055
     },
     "checkbook_nycha_contracts": {
       "source_system": "checkbook_nycha_contracts",
       "status": "available",
       "available": true,
-      "generated_at": "2026-08-18T04:05:51.552Z",
+      "generated_at": "2026-09-06T15:49:29.834Z",
       "reason": null,
       "source_row_count": 1
     },
@@ -40,7 +40,7 @@
       "source_system": "checkbook_spending",
       "status": "available",
       "available": true,
-      "generated_at": "2026-08-18T04:05:51.552Z",
+      "generated_at": "2026-09-06T15:49:29.834Z",
       "reason": null,
       "source_row_count": 0
     },
@@ -48,7 +48,7 @@
       "source_system": "nys_contract_reporter",
       "status": "available",
       "available": true,
-      "generated_at": "2026-08-18T04:05:51.552Z",
+      "generated_at": "2026-09-06T15:49:29.834Z",
       "reason": null,
       "source_row_count": 1
     },
@@ -56,7 +56,7 @@
       "source_system": "mta_current_opportunities",
       "status": "available",
       "available": true,
-      "generated_at": "2026-08-18T04:05:51.552Z",
+      "generated_at": "2026-09-06T15:49:29.834Z",
       "reason": null,
       "source_row_count": 1
     },
@@ -64,7 +64,7 @@
       "source_system": "mta_bid_results",
       "status": "available",
       "available": true,
-      "generated_at": "2026-08-18T04:05:51.552Z",
+      "generated_at": "2026-09-06T15:49:29.834Z",
       "reason": null,
       "source_row_count": 1
     },
@@ -72,7 +72,7 @@
       "source_system": "mta_annual_contracts",
       "status": "available",
       "available": true,
-      "generated_at": "2026-08-18T04:05:51.552Z",
+      "generated_at": "2026-09-06T15:49:29.834Z",
       "reason": null,
       "source_row_count": 1
     },
@@ -80,7 +80,7 @@
       "source_system": "mta_cd_awards",
       "status": "available",
       "available": true,
-      "generated_at": "2026-08-18T04:05:51.552Z",
+      "generated_at": "2026-09-06T15:49:29.834Z",
       "reason": null,
       "source_row_count": 1
     },
@@ -88,9 +88,9 @@
       "source_system": "city_record",
       "status": "available",
       "available": true,
-      "generated_at": "2026-08-18T04:05:51.552Z",
+      "generated_at": "2026-09-06T15:49:29.834Z",
       "reason": null,
-      "source_row_count": 13178
+      "source_row_count": 12993
     }
   },
   "publication": {
@@ -98,14 +98,14 @@
     "lookback_days": 365,
     "amount_min_exclusive": 0,
     "amount_max_exclusive": 10000000000,
-    "as_of": "2026-08-18",
-    "floor": "2025-08-18",
+    "as_of": "2026-09-06",
+    "floor": "2025-09-06",
     "row_cap": null,
     "coverage": "City Record Award window (valid amount, last 365 days); not a citywide inventory",
-    "selected_rows": 27670,
+    "selected_rows": 34836,
     "census_rows": {
       "passport_contracts": 12782,
-      "checkbook_contracts": 2000,
+      "checkbook_contracts": 9807,
       "checkbook_nycha_contracts": 1
     }
   },
@@ -114,13 +114,13 @@
   "shards": [
     {
       "path": "procurement_browse_rows_population/shard-000.json",
-      "bytes": 18712389,
-      "row_count": 11533
+      "bytes": 18695015,
+      "row_count": 12776
     },
     {
       "path": "procurement_browse_rows_population/shard-001.json",
-      "bytes": 3643567,
-      "row_count": 2258
+      "bytes": 10729763,
+      "row_count": 7086
     }
   ]
 }

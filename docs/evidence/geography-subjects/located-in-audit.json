@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.geography_located_in_audit.v1",
-  "polygon_memberships": 3717,
-  "public_edges": 3706,
+  "polygon_memberships": 3719,
+  "public_edges": 3708,
   "evidence_only_edges": 11,
   "reconciled": true,
   "by_lens": {
@@ -31,6 +31,11 @@
           "evidence_only": 0,
           "total": 2
         }
+      },
+      "by_tier": {
+        "strong": 748,
+        "derived": 0,
+        "weak": 0
       }
     },
     "property": {
@@ -49,56 +54,61 @@
           "evidence_only": 0,
           "total": 8
         }
+      },
+      "by_tier": {
+        "strong": 383,
+        "derived": 0,
+        "weak": 0
       }
     },
     "rules": {
-      "polygon_memberships": 7,
-      "public_edges": 7,
+      "polygon_memberships": 5,
+      "public_edges": 5,
       "evidence_only_edges": 0,
       "reconciled": true,
       "by_method": {
         "matter_title_place": {
-          "public": 7,
+          "public": 5,
           "evidence_only": 0,
-          "total": 7
+          "total": 5
         }
+      },
+      "by_tier": {
+        "strong": 5,
+        "derived": 0,
+        "weak": 0
       }
     },
     "meetings": {
-      "polygon_memberships": 2468,
-      "public_edges": 2468,
+      "polygon_memberships": 2472,
+      "public_edges": 2472,
       "evidence_only_edges": 0,
       "reconciled": true,
       "by_method": {
         "community_board_ontology": {
-          "public": 790,
+          "public": 814,
           "evidence_only": 0,
-          "total": 790
+          "total": 814
         },
         "cd_intersects_council": {
-          "public": 1446,
+          "public": 1441,
           "evidence_only": 0,
-          "total": 1446
+          "total": 1441
         },
         "civic_address_pip": {
-          "public": 126,
+          "public": 129,
           "evidence_only": 0,
-          "total": 126
-        },
-        "matter_body_borough": {
-          "public": 49,
-          "evidence_only": 0,
-          "total": 49
-        },
-        "neighborhood_place": {
-          "public": 2,
-          "evidence_only": 0,
-          "total": 2
+          "total": 129
         },
         "venue_line": {
-          "public": 9,
+          "public": 5,
           "evidence_only": 0,
-          "total": 9
+          "total": 5
+        },
+        "matter_body_borough": {
+          "public": 33,
+          "evidence_only": 0,
+          "total": 33
         },
         "matter_title_place": {
           "public": 21,
@@ -106,9 +116,9 @@
           "total": 21
         },
         "venue_column": {
-          "public": 6,
+          "public": 3,
           "evidence_only": 0,
-          "total": 6
+          "total": 3
         },
         "classic_affected_area": {
           "public": 3,
@@ -116,10 +126,15 @@
           "total": 3
         },
         "stamped": {
-          "public": 16,
+          "public": 23,
           "evidence_only": 0,
-          "total": 16
+          "total": 23
         }
+      },
+      "by_tier": {
+        "strong": 2357,
+        "derived": 115,
+        "weak": 0
       }
     },
     "money": {
@@ -153,6 +168,11 @@
           "evidence_only": 4,
           "total": 4
         }
+      },
+      "by_tier": {
+        "strong": 100,
+        "derived": 11,
+        "weak": 0
       }
     }
   },
@@ -160,28 +180,28 @@
     "citywide": {
       "land": 3,
       "property": 0,
-      "rules": 97,
-      "meetings": 15,
+      "rules": 98,
+      "meetings": 18,
       "money": 42
     },
     "virtual": {
       "land": 0,
       "property": 0,
       "rules": 0,
-      "meetings": 5,
+      "meetings": 1,
       "money": 0
     },
     "unlocated": {
       "land": 0,
       "property": 0,
       "rules": 0,
-      "meetings": 13,
+      "meetings": 26,
       "money": 212
     }
   },
   "note": "Each polygon membership has exactly one routed located_in candidate. Citywide, virtual, and unlocated remain non-polygon buckets. Weak agency-HQ and vendor fallbacks remain evidence-only.",
   "boundary_vintage": "2026-05-26",
-  "built_at": "2026-09-04T14:04:45.688Z",
+  "built_at": "2026-09-06T17:23:40.596Z",
   "subject_counts": {
     "borough": 5,
     "community-district": 59,

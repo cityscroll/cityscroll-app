@@ -84,11 +84,11 @@ describe("committed bounded CEQR observation", () => {
     assert.equal(committedReceipt.source_inventory.projects.duplicate_keys, 14);
     assert.equal(committedReceipt.source_inventory.projects.revision_keys, 14);
     assert.equal(committedReceipt.source_inventory.milestones.retained_rows, 34820);
-    assert.equal(committedReceipt.reconciliation.exact_project_matches, 197);
-    assert.equal(committedReceipt.reconciliation.joined_milestone_rows, 502);
-    assert.equal(committedReceipt.reconciliation.projects_with_incremental_milestones, 182);
+    assert.equal(committedReceipt.reconciliation.exact_project_matches, 195);
+    assert.equal(committedReceipt.reconciliation.joined_milestone_rows, 497);
+    assert.equal(committedReceipt.reconciliation.projects_with_incremental_milestones, 180);
     assert.equal(committedReceipt.gate.result, "GO");
-    assert.match(committedReceipt.gate.rationale, /197 exact project joins.*182 add milestone history/);
+    assert.match(committedReceipt.gate.rationale, /195 exact project joins.*180 add milestone history/);
     assert.equal(committedReceipt.gate.resident_ingestion_committed, false);
   });
 

@@ -197,7 +197,7 @@
         "projectIds": null,
         "today": "2026-08-31",
         "limit": 40,
-        "action_rows_count": 182
+        "action_rows_count": 169
       },
       "semantic_scope": {
         "status": "all",
@@ -388,7 +388,7 @@
         "projectIds": null,
         "today": "2026-08-31",
         "limit": 40,
-        "action_rows_count": 182
+        "action_rows_count": 169
       },
       "semantic_scope": {
         "status": "all",
@@ -579,7 +579,7 @@
         "projectIds": null,
         "today": "2026-08-31",
         "limit": 40,
-        "action_rows_count": 182
+        "action_rows_count": 169
       },
       "semantic_scope": {
         "status": "all",
@@ -657,7 +657,7 @@
         "projectIds": null,
         "today": "2026-08-31",
         "limit": 40,
-        "action_rows_count": 182
+        "action_rows_count": 169
       },
       "semantic_scope": {
         "status": "all",
@@ -735,7 +735,7 @@
         "projectIds": null,
         "today": "2026-08-31",
         "limit": 40,
-        "action_rows_count": 182
+        "action_rows_count": 169
       },
       "semantic_scope": {
         "status": "all",
@@ -846,7 +846,7 @@
         "projectIds": null,
         "today": "2026-08-31",
         "limit": 40,
-        "action_rows_count": 182
+        "action_rows_count": 169
       },
       "semantic_scope": {
         "status": "all",
@@ -923,7 +923,7 @@
         "projectIds": null,
         "today": "2026-08-31",
         "limit": 40,
-        "action_rows_count": 182
+        "action_rows_count": 169
       },
       "semantic_scope": {
         "status": "all",
@@ -998,7 +998,7 @@
         "projectIds": null,
         "today": "2026-08-31",
         "limit": 40,
-        "action_rows_count": 182
+        "action_rows_count": 169
       },
       "semantic_scope": {
         "status": "all",
@@ -1086,7 +1086,7 @@
         "projectIds": null,
         "today": "2026-08-31",
         "limit": 40,
-        "action_rows_count": 182
+        "action_rows_count": 169
       },
       "semantic_scope": {
         "status": "all",
@@ -1171,7 +1171,7 @@
         "projectIds": null,
         "today": "2026-08-31",
         "limit": 40,
-        "action_rows_count": 182
+        "action_rows_count": 169
       },
       "semantic_scope": {
         "status": "all",
@@ -1242,7 +1242,7 @@
         "projectIds": null,
         "today": "2026-08-31",
         "limit": 39,
-        "action_rows_count": 182
+        "action_rows_count": 169
       },
       "semantic_scope": {
         "status": "all",
@@ -1430,7 +1430,7 @@
         "projectIds": null,
         "today": "2026-08-31",
         "limit": 40,
-        "action_rows_count": 182
+        "action_rows_count": 169
       },
       "semantic_scope": {
         "status": "all",
@@ -1621,7 +1621,7 @@
         "projectIds": null,
         "today": "2026-08-31",
         "limit": 45,
-        "action_rows_count": 182
+        "action_rows_count": 169
       },
       "semantic_scope": {
         "status": "all",
@@ -1812,7 +1812,7 @@
         "projectIds": null,
         "today": "2026-08-31",
         "limit": 40,
-        "action_rows_count": 182
+        "action_rows_count": 169
       },
       "semantic_scope": {
         "status": "all",
@@ -1829,6 +1829,7 @@
         "2024M0244",
         "2024K0358",
         "2023M0213",
+        "2019K0383",
         "2025K0287",
         "2025M0252",
         "2024K0286",
@@ -1840,7 +1841,6 @@
         "2022K0416",
         "2025Q0142",
         "2025Q0247",
-        "2025R0222",
         "2025R0137",
         "2025Q0316",
         "2026Q0210",
@@ -1848,6 +1848,7 @@
         "2022K0430",
         "2026K0233",
         "2024K0196",
+        "2023Q0303",
         "2025K0154",
         "2022Q0449",
         "2023K0183"
@@ -1857,6 +1858,7 @@
         "2024M0244",
         "2024K0358",
         "2023M0213",
+        "2019K0383",
         "2025K0287",
         "2025M0252",
         "2024K0286",
@@ -1868,7 +1870,6 @@
         "2022K0416",
         "2025Q0142",
         "2025Q0247",
-        "2025R0222",
         "2025R0137",
         "2025Q0316",
         "2026Q0210",
@@ -1876,6 +1877,7 @@
         "2022K0430",
         "2026K0233",
         "2024K0196",
+        "2023Q0303",
         "2025K0154",
         "2022Q0449",
         "2023K0183"
@@ -1885,6 +1887,7 @@
         "2024M0244",
         "2024K0358",
         "2023M0213",
+        "2019K0383",
         "2025K0287",
         "2024K0286",
         "2023M0116",
@@ -1895,7 +1898,6 @@
         "2022K0416",
         "2025Q0142",
         "2025Q0247",
-        "2025R0222",
         "2025R0137",
         "2025Q0316",
         "2026Q0210",
@@ -1903,6 +1905,7 @@
         "2022K0430",
         "2026K0233",
         "2024K0196",
+        "2023Q0303",
         "2025K0154",
         "2022Q0449",
         "2023K0183"
@@ -1911,8 +1914,8 @@
         "2025M0252"
       ],
       "counts": {
-        "total": 26,
-        "mapped": 25,
+        "total": 27,
+        "mapped": 26,
         "unmapped": 1
       },
       "partition": {
@@ -1960,7 +1963,7 @@
         "projectIds": null,
         "today": "2026-08-31",
         "limit": 40,
-        "action_rows_count": 182
+        "action_rows_count": 169
       },
       "semantic_scope": {
         "status": "all",

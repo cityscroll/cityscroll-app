@@ -105871,96 +105871,6 @@
       }
     },
     {
-      "request_id": "20260609003",
-      "agency_name": "Consumer and Worker Protection",
-      "short_title": "DCWP NOH Recordkeeping Requirements for Third-Party Food Delivery Services",
-      "start_date": "2026-06-16T00:00:00.000",
-      "event_date": "2026-07-16T11:00:00.000",
-      "type_of_notice_description": "Public Hearings",
-      "section_name": "Agency Rules",
-      "source_system": "city_record",
-      "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260609003",
-      "matter_subject": {
-        "schema": "cityscroll.meeting_matter_stamp.v1",
-        "subject_tokens": [],
-        "matter_ids": []
-      },
-      "affected_area": {
-        "scope": "unlocated",
-        "unlocated_reason": "body_place_omitted",
-        "virtual_only": false
-      },
-      "object_type": "meeting",
-      "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260609003",
-      "source_keys": [
-        {
-          "source_system": "city_record",
-          "key_type": "request_id",
-          "value": "20260609003"
-        }
-      ],
-      "publisher_identifier": "20260609003",
-      "title": "DCWP NOH Recordkeeping Requirements for Third-Party Food Delivery Services",
-      "event_end": null,
-      "meeting_family": "descriptive_meeting_v0",
-      "venue": null,
-      "participation": null,
-      "committee": null,
-      "agency": "Consumer and Worker Protection",
-      "board_name": null,
-      "description": null,
-      "search_text": "DCWP NOH Recordkeeping Requirements for Third-Party Food Delivery Services Consumer and Worker Protection DCWP NOH Recordkeeping Requirements for Third-Party Food Delivery Services Public Hearings Agency Rules Consumer and Worker Protection",
-      "meeting_documents": [],
-      "source_receipt": {
-        "schema": "cityscroll.meeting_source_receipt.v1",
-        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260609003",
-        "observed_at": "2026-09-06T16:04:17.753Z",
-        "status": "ok",
-        "fetch_status": "snapshot",
-        "reason": null
-      },
-      "join_status": "not_applicable",
-      "institution_refs": {
-        "agency_ref": null,
-        "board_ref": null
-      },
-      "compatibility": {
-        "legacy_notice_href": "/notices/20260609003",
-        "legacy_fragment_href": "#notice/20260609003",
-        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260609003"
-      },
-      "source_record_id": "20260609003",
-      "board_id": null,
-      "source_record": {
-        "source_system": "city_record",
-        "identifier": "20260609003",
-        "url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260609003",
-        "receipt": {
-          "schema": "cityscroll.meeting_source_receipt.v1",
-          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260609003",
-          "observed_at": "2026-09-06T16:04:17.753Z",
-          "status": "ok",
-          "fetch_status": "snapshot",
-          "reason": null
-        }
-      },
-      "meeting_outcome": {
-        "request_id": "20260609003",
-        "snapshot_state": "absent",
-        "join": {
-          "matched": false,
-          "method": "exact_date_body_tokens"
-        }
-      },
-      "minutes_freshness": {
-        "status": "not_published",
-        "latest_date": null,
-        "checked_at": "2026-09-06T15:57:40.809Z"
-      }
-    },
-    {
       "request_id": "20260624036",
       "agency_name": "Transportation",
       "short_title": "Dining Out NYC Public Hearing",
@@ -110076,6 +109986,225 @@
       }
     },
     {
+      "request_id": "20260609065",
+      "agency_name": "City Planning",
+      "short_title": "Park Avenue Brooklyn Rezoning Public Hearing Notice for Draft Environmental Impact Statement",
+      "start_date": "2026-06-16T00:00:00.000",
+      "event_date": "2026-07-01T10:00:00.000",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Public Hearings and Meetings",
+      "street_address_1": "120 Broadway",
+      "street_address_2": "Lower Level",
+      "city": "New York",
+      "state": "NY",
+      "zip_code": "10271",
+      "source_system": "city_record",
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260609065",
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
+      },
+      "affected_area": {
+        "scope": "local",
+        "boroughs": [
+          "Brooklyn"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter",
+          "evidence": [
+            "Park Avenue Brooklyn Rezoning Public Hearing Notice for Draft Environmental Impact Statement"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "matter"
+      },
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260609065",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260609065"
+        }
+      ],
+      "publisher_identifier": "20260609065",
+      "title": "Park Avenue Brooklyn Rezoning Public Hearing Notice for Draft Environmental Impact Statement",
+      "event_end": null,
+      "meeting_family": "descriptive_meeting_v0",
+      "venue": null,
+      "participation": null,
+      "committee": null,
+      "agency": "City Planning",
+      "board_name": null,
+      "description": null,
+      "search_text": "Park Avenue Brooklyn Rezoning Public Hearing Notice for Draft Environmental Impact Statement City Planning Park Avenue Brooklyn Rezoning Public Hearing Notice for Draft Environmental Impact Statement Public Hearings Public Hearings and Meetings 120 Broadway Lower Level New York NY 10271 City Planning Brooklyn",
+      "meeting_documents": [],
+      "source_receipt": {
+        "schema": "cityscroll.meeting_source_receipt.v1",
+        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260609065",
+        "observed_at": "2026-09-06T16:04:17.753Z",
+        "status": "ok",
+        "fetch_status": "snapshot",
+        "reason": null
+      },
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260609065",
+        "legacy_fragment_href": "#notice/20260609065",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260609065"
+      },
+      "source_record_id": "20260609065",
+      "board_id": null,
+      "source_record": {
+        "source_system": "city_record",
+        "identifier": "20260609065",
+        "url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260609065",
+        "receipt": {
+          "schema": "cityscroll.meeting_source_receipt.v1",
+          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260609065",
+          "observed_at": "2026-09-06T16:04:17.753Z",
+          "status": "ok",
+          "fetch_status": "snapshot",
+          "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260609065",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
+      "minutes_freshness": {
+        "status": "not_published",
+        "latest_date": null,
+        "checked_at": "2026-09-06T15:57:40.809Z"
+      }
+    },
+    {
+      "request_id": "20260610012",
+      "agency_name": "City Planning Commission",
+      "short_title": "Correction: City Planning Commission Public Hearing Ad",
+      "start_date": "2026-06-16T00:00:00.000",
+      "event_date": "2026-07-01T10:00:00.000",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Public Hearings and Meetings",
+      "street_address_1": "120 Broadway",
+      "street_address_2": "Lower Level",
+      "city": "New York",
+      "state": "NY",
+      "zip_code": "10271",
+      "source_system": "city_record",
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260610012",
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
+      },
+      "affected_area": {
+        "scope": "local",
+        "boroughs": [
+          "Manhattan"
+        ],
+        "addresses": [
+          "120 Broadway, Lower Level, New York, NY, 10271"
+        ],
+        "derivation": {
+          "methods": [
+            "venue_column"
+          ],
+          "confidence": 0.65,
+          "role": "venue",
+          "evidence": [
+            "120 Broadway, Lower Level, New York, NY, 10271"
+          ]
+        },
+        "confidence_tier": "derived",
+        "source": "venue"
+      },
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260610012",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260610012"
+        }
+      ],
+      "publisher_identifier": "20260610012",
+      "title": "Correction: City Planning Commission Public Hearing Ad",
+      "event_end": null,
+      "meeting_family": "descriptive_meeting_v0",
+      "venue": null,
+      "participation": null,
+      "committee": null,
+      "agency": "City Planning Commission",
+      "board_name": null,
+      "description": null,
+      "search_text": "Correction: City Planning Commission Public Hearing Ad City Planning Commission Correction: City Planning Commission Public Hearing Ad Public Hearings Public Hearings and Meetings 120 Broadway Lower Level New York NY 10271 City Planning Commission Manhattan",
+      "meeting_documents": [],
+      "source_receipt": {
+        "schema": "cityscroll.meeting_source_receipt.v1",
+        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260610012",
+        "observed_at": "2026-09-06T16:04:17.753Z",
+        "status": "ok",
+        "fetch_status": "snapshot",
+        "reason": null
+      },
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260610012",
+        "legacy_fragment_href": "#notice/20260610012",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260610012"
+      },
+      "source_record_id": "20260610012",
+      "board_id": null,
+      "source_record": {
+        "source_system": "city_record",
+        "identifier": "20260610012",
+        "url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260610012",
+        "receipt": {
+          "schema": "cityscroll.meeting_source_receipt.v1",
+          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260610012",
+          "observed_at": "2026-09-06T16:04:17.753Z",
+          "status": "ok",
+          "fetch_status": "snapshot",
+          "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260610012",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
+      "minutes_freshness": {
+        "status": "not_published",
+        "latest_date": null,
+        "checked_at": "2026-09-06T15:57:40.809Z"
+      }
+    },
+    {
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
       "meeting_id": "meeting:community_board:7vsmie9r61kvrhv9ft2qupeq0p@google.com::2026-06-30",
@@ -112681,122 +112810,6 @@
       },
       "meeting_outcome": {
         "request_id": "20260610067",
-        "snapshot_state": "absent",
-        "join": {
-          "matched": false,
-          "method": "exact_date_body_tokens"
-        }
-      },
-      "minutes_freshness": {
-        "status": "not_published",
-        "latest_date": null,
-        "checked_at": "2026-09-06T15:57:40.809Z"
-      }
-    },
-    {
-      "request_id": "20260603039",
-      "agency_name": "Comptroller",
-      "short_title": "CITY OF NEW YORK AUDIT COMMITTEE MEETING",
-      "start_date": "2026-06-16T00:00:00.000",
-      "event_date": "2026-06-24T09:30:00.000",
-      "type_of_notice_description": "Meeting",
-      "section_name": "Public Hearings and Meetings",
-      "street_address_1": "1 Centre Street",
-      "street_address_2": "10th Floor North, Room 1005",
-      "city": "New York",
-      "state": "NY",
-      "zip_code": "10007",
-      "building_name": "The David N. Dinkins Municipal Building",
-      "additional_description_1": "<p>The City of New York Audit Committee Meeting is scheduled for Wednesday, June 24, 2026 at 9:30 A.M. at 1 Centre Street, Room 1005 North. The meeting will be open to the General Public</p>",
-      "source_system": "city_record",
-      "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260603039",
-      "matter_subject": {
-        "schema": "cityscroll.meeting_matter_stamp.v1",
-        "subject_tokens": [],
-        "matter_ids": []
-      },
-      "affected_area": {
-        "scope": "local",
-        "boroughs": [
-          "Manhattan"
-        ],
-        "addresses": [
-          "30 A.M. at 1 Centre Street",
-          "1 Centre Street, 10th Floor North, Room 1005, New York, NY, 10007"
-        ],
-        "derivation": {
-          "methods": [
-            "venue_line",
-            "venue_column"
-          ],
-          "confidence": 0.7,
-          "role": "venue",
-          "evidence": [
-            "30 A.M. at 1 Centre Street",
-            "1 Centre Street, 10th Floor North, Room 1005, New York, NY, 10007"
-          ]
-        },
-        "confidence_tier": "derived",
-        "source": "venue"
-      },
-      "object_type": "meeting",
-      "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260603039",
-      "source_keys": [
-        {
-          "source_system": "city_record",
-          "key_type": "request_id",
-          "value": "20260603039"
-        }
-      ],
-      "publisher_identifier": "20260603039",
-      "title": "CITY OF NEW YORK AUDIT COMMITTEE MEETING",
-      "event_end": null,
-      "meeting_family": "descriptive_meeting_v0",
-      "venue": null,
-      "participation": null,
-      "committee": null,
-      "agency": "Comptroller",
-      "board_name": null,
-      "description": null,
-      "search_text": "CITY OF NEW YORK AUDIT COMMITTEE MEETING Comptroller CITY OF NEW YORK AUDIT COMMITTEE MEETING Meeting Public Hearings and Meetings <p>The City of New York Audit Committee Meeting is scheduled for Wednesday, June 24, 2026 at 9:30 A.M. at 1 Centre Street, Room 1005 North. The meeting will be open to the General Public</p> 1 Centre Street 10th Floor North, Room 1005 The David N. Dinkins Municipal Building New York NY 10007 Comptroller Manhattan",
-      "meeting_documents": [],
-      "source_receipt": {
-        "schema": "cityscroll.meeting_source_receipt.v1",
-        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260603039",
-        "observed_at": "2026-09-06T16:04:17.753Z",
-        "status": "ok",
-        "fetch_status": "snapshot",
-        "reason": null
-      },
-      "join_status": "not_applicable",
-      "institution_refs": {
-        "agency_ref": null,
-        "board_ref": null
-      },
-      "compatibility": {
-        "legacy_notice_href": "/notices/20260603039",
-        "legacy_fragment_href": "#notice/20260603039",
-        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260603039"
-      },
-      "source_record_id": "20260603039",
-      "board_id": null,
-      "source_record": {
-        "source_system": "city_record",
-        "identifier": "20260603039",
-        "url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260603039",
-        "receipt": {
-          "schema": "cityscroll.meeting_source_receipt.v1",
-          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260603039",
-          "observed_at": "2026-09-06T16:04:17.753Z",
-          "status": "ok",
-          "fetch_status": "snapshot",
-          "reason": null
-        }
-      },
-      "meeting_outcome": {
-        "request_id": "20260603039",
         "snapshot_state": "absent",
         "join": {
           "matched": false,
@@ -231383,96 +231396,6 @@
       }
     },
     {
-      "request_id": "20260609003",
-      "agency_name": "Consumer and Worker Protection",
-      "short_title": "DCWP NOH Recordkeeping Requirements for Third-Party Food Delivery Services",
-      "start_date": "2026-06-16T00:00:00.000",
-      "event_date": "2026-07-16T11:00:00.000",
-      "type_of_notice_description": "Public Hearings",
-      "section_name": "Agency Rules",
-      "source_system": "city_record",
-      "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260609003",
-      "matter_subject": {
-        "schema": "cityscroll.meeting_matter_stamp.v1",
-        "subject_tokens": [],
-        "matter_ids": []
-      },
-      "affected_area": {
-        "scope": "unlocated",
-        "unlocated_reason": "body_place_omitted",
-        "virtual_only": false
-      },
-      "object_type": "meeting",
-      "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260609003",
-      "source_keys": [
-        {
-          "source_system": "city_record",
-          "key_type": "request_id",
-          "value": "20260609003"
-        }
-      ],
-      "publisher_identifier": "20260609003",
-      "title": "DCWP NOH Recordkeeping Requirements for Third-Party Food Delivery Services",
-      "event_end": null,
-      "meeting_family": "descriptive_meeting_v0",
-      "venue": null,
-      "participation": null,
-      "committee": null,
-      "agency": "Consumer and Worker Protection",
-      "board_name": null,
-      "description": null,
-      "search_text": "DCWP NOH Recordkeeping Requirements for Third-Party Food Delivery Services Consumer and Worker Protection DCWP NOH Recordkeeping Requirements for Third-Party Food Delivery Services Public Hearings Agency Rules Consumer and Worker Protection",
-      "meeting_documents": [],
-      "source_receipt": {
-        "schema": "cityscroll.meeting_source_receipt.v1",
-        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260609003",
-        "observed_at": "2026-09-06T16:04:17.753Z",
-        "status": "ok",
-        "fetch_status": "snapshot",
-        "reason": null
-      },
-      "join_status": "not_applicable",
-      "institution_refs": {
-        "agency_ref": null,
-        "board_ref": null
-      },
-      "compatibility": {
-        "legacy_notice_href": "/notices/20260609003",
-        "legacy_fragment_href": "#notice/20260609003",
-        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260609003"
-      },
-      "source_record_id": "20260609003",
-      "board_id": null,
-      "source_record": {
-        "source_system": "city_record",
-        "identifier": "20260609003",
-        "url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260609003",
-        "receipt": {
-          "schema": "cityscroll.meeting_source_receipt.v1",
-          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260609003",
-          "observed_at": "2026-09-06T16:04:17.753Z",
-          "status": "ok",
-          "fetch_status": "snapshot",
-          "reason": null
-        }
-      },
-      "meeting_outcome": {
-        "request_id": "20260609003",
-        "snapshot_state": "absent",
-        "join": {
-          "matched": false,
-          "method": "exact_date_body_tokens"
-        }
-      },
-      "minutes_freshness": {
-        "status": "not_published",
-        "latest_date": null,
-        "checked_at": "2026-09-06T15:57:40.809Z"
-      }
-    },
-    {
       "request_id": "20260624036",
       "agency_name": "Transportation",
       "short_title": "Dining Out NYC Public Hearing",
@@ -235588,6 +235511,225 @@
       }
     },
     {
+      "request_id": "20260609065",
+      "agency_name": "City Planning",
+      "short_title": "Park Avenue Brooklyn Rezoning Public Hearing Notice for Draft Environmental Impact Statement",
+      "start_date": "2026-06-16T00:00:00.000",
+      "event_date": "2026-07-01T10:00:00.000",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Public Hearings and Meetings",
+      "street_address_1": "120 Broadway",
+      "street_address_2": "Lower Level",
+      "city": "New York",
+      "state": "NY",
+      "zip_code": "10271",
+      "source_system": "city_record",
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260609065",
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
+      },
+      "affected_area": {
+        "scope": "local",
+        "boroughs": [
+          "Brooklyn"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter",
+          "evidence": [
+            "Park Avenue Brooklyn Rezoning Public Hearing Notice for Draft Environmental Impact Statement"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "matter"
+      },
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260609065",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260609065"
+        }
+      ],
+      "publisher_identifier": "20260609065",
+      "title": "Park Avenue Brooklyn Rezoning Public Hearing Notice for Draft Environmental Impact Statement",
+      "event_end": null,
+      "meeting_family": "descriptive_meeting_v0",
+      "venue": null,
+      "participation": null,
+      "committee": null,
+      "agency": "City Planning",
+      "board_name": null,
+      "description": null,
+      "search_text": "Park Avenue Brooklyn Rezoning Public Hearing Notice for Draft Environmental Impact Statement City Planning Park Avenue Brooklyn Rezoning Public Hearing Notice for Draft Environmental Impact Statement Public Hearings Public Hearings and Meetings 120 Broadway Lower Level New York NY 10271 City Planning Brooklyn",
+      "meeting_documents": [],
+      "source_receipt": {
+        "schema": "cityscroll.meeting_source_receipt.v1",
+        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260609065",
+        "observed_at": "2026-09-06T16:04:17.753Z",
+        "status": "ok",
+        "fetch_status": "snapshot",
+        "reason": null
+      },
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260609065",
+        "legacy_fragment_href": "#notice/20260609065",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260609065"
+      },
+      "source_record_id": "20260609065",
+      "board_id": null,
+      "source_record": {
+        "source_system": "city_record",
+        "identifier": "20260609065",
+        "url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260609065",
+        "receipt": {
+          "schema": "cityscroll.meeting_source_receipt.v1",
+          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260609065",
+          "observed_at": "2026-09-06T16:04:17.753Z",
+          "status": "ok",
+          "fetch_status": "snapshot",
+          "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260609065",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
+      "minutes_freshness": {
+        "status": "not_published",
+        "latest_date": null,
+        "checked_at": "2026-09-06T15:57:40.809Z"
+      }
+    },
+    {
+      "request_id": "20260610012",
+      "agency_name": "City Planning Commission",
+      "short_title": "Correction: City Planning Commission Public Hearing Ad",
+      "start_date": "2026-06-16T00:00:00.000",
+      "event_date": "2026-07-01T10:00:00.000",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Public Hearings and Meetings",
+      "street_address_1": "120 Broadway",
+      "street_address_2": "Lower Level",
+      "city": "New York",
+      "state": "NY",
+      "zip_code": "10271",
+      "source_system": "city_record",
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260610012",
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
+      },
+      "affected_area": {
+        "scope": "local",
+        "boroughs": [
+          "Manhattan"
+        ],
+        "addresses": [
+          "120 Broadway, Lower Level, New York, NY, 10271"
+        ],
+        "derivation": {
+          "methods": [
+            "venue_column"
+          ],
+          "confidence": 0.65,
+          "role": "venue",
+          "evidence": [
+            "120 Broadway, Lower Level, New York, NY, 10271"
+          ]
+        },
+        "confidence_tier": "derived",
+        "source": "venue"
+      },
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260610012",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260610012"
+        }
+      ],
+      "publisher_identifier": "20260610012",
+      "title": "Correction: City Planning Commission Public Hearing Ad",
+      "event_end": null,
+      "meeting_family": "descriptive_meeting_v0",
+      "venue": null,
+      "participation": null,
+      "committee": null,
+      "agency": "City Planning Commission",
+      "board_name": null,
+      "description": null,
+      "search_text": "Correction: City Planning Commission Public Hearing Ad City Planning Commission Correction: City Planning Commission Public Hearing Ad Public Hearings Public Hearings and Meetings 120 Broadway Lower Level New York NY 10271 City Planning Commission Manhattan",
+      "meeting_documents": [],
+      "source_receipt": {
+        "schema": "cityscroll.meeting_source_receipt.v1",
+        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260610012",
+        "observed_at": "2026-09-06T16:04:17.753Z",
+        "status": "ok",
+        "fetch_status": "snapshot",
+        "reason": null
+      },
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260610012",
+        "legacy_fragment_href": "#notice/20260610012",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260610012"
+      },
+      "source_record_id": "20260610012",
+      "board_id": null,
+      "source_record": {
+        "source_system": "city_record",
+        "identifier": "20260610012",
+        "url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260610012",
+        "receipt": {
+          "schema": "cityscroll.meeting_source_receipt.v1",
+          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260610012",
+          "observed_at": "2026-09-06T16:04:17.753Z",
+          "status": "ok",
+          "fetch_status": "snapshot",
+          "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260610012",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
+      "minutes_freshness": {
+        "status": "not_published",
+        "latest_date": null,
+        "checked_at": "2026-09-06T15:57:40.809Z"
+      }
+    },
+    {
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
       "meeting_id": "meeting:community_board:7vsmie9r61kvrhv9ft2qupeq0p@google.com::2026-06-30",
@@ -238193,122 +238335,6 @@
       },
       "meeting_outcome": {
         "request_id": "20260610067",
-        "snapshot_state": "absent",
-        "join": {
-          "matched": false,
-          "method": "exact_date_body_tokens"
-        }
-      },
-      "minutes_freshness": {
-        "status": "not_published",
-        "latest_date": null,
-        "checked_at": "2026-09-06T15:57:40.809Z"
-      }
-    },
-    {
-      "request_id": "20260603039",
-      "agency_name": "Comptroller",
-      "short_title": "CITY OF NEW YORK AUDIT COMMITTEE MEETING",
-      "start_date": "2026-06-16T00:00:00.000",
-      "event_date": "2026-06-24T09:30:00.000",
-      "type_of_notice_description": "Meeting",
-      "section_name": "Public Hearings and Meetings",
-      "street_address_1": "1 Centre Street",
-      "street_address_2": "10th Floor North, Room 1005",
-      "city": "New York",
-      "state": "NY",
-      "zip_code": "10007",
-      "building_name": "The David N. Dinkins Municipal Building",
-      "additional_description_1": "<p>The City of New York Audit Committee Meeting is scheduled for Wednesday, June 24, 2026 at 9:30 A.M. at 1 Centre Street, Room 1005 North. The meeting will be open to the General Public</p>",
-      "source_system": "city_record",
-      "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260603039",
-      "matter_subject": {
-        "schema": "cityscroll.meeting_matter_stamp.v1",
-        "subject_tokens": [],
-        "matter_ids": []
-      },
-      "affected_area": {
-        "scope": "local",
-        "boroughs": [
-          "Manhattan"
-        ],
-        "addresses": [
-          "30 A.M. at 1 Centre Street",
-          "1 Centre Street, 10th Floor North, Room 1005, New York, NY, 10007"
-        ],
-        "derivation": {
-          "methods": [
-            "venue_line",
-            "venue_column"
-          ],
-          "confidence": 0.7,
-          "role": "venue",
-          "evidence": [
-            "30 A.M. at 1 Centre Street",
-            "1 Centre Street, 10th Floor North, Room 1005, New York, NY, 10007"
-          ]
-        },
-        "confidence_tier": "derived",
-        "source": "venue"
-      },
-      "object_type": "meeting",
-      "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260603039",
-      "source_keys": [
-        {
-          "source_system": "city_record",
-          "key_type": "request_id",
-          "value": "20260603039"
-        }
-      ],
-      "publisher_identifier": "20260603039",
-      "title": "CITY OF NEW YORK AUDIT COMMITTEE MEETING",
-      "event_end": null,
-      "meeting_family": "descriptive_meeting_v0",
-      "venue": null,
-      "participation": null,
-      "committee": null,
-      "agency": "Comptroller",
-      "board_name": null,
-      "description": null,
-      "search_text": "CITY OF NEW YORK AUDIT COMMITTEE MEETING Comptroller CITY OF NEW YORK AUDIT COMMITTEE MEETING Meeting Public Hearings and Meetings <p>The City of New York Audit Committee Meeting is scheduled for Wednesday, June 24, 2026 at 9:30 A.M. at 1 Centre Street, Room 1005 North. The meeting will be open to the General Public</p> 1 Centre Street 10th Floor North, Room 1005 The David N. Dinkins Municipal Building New York NY 10007 Comptroller Manhattan",
-      "meeting_documents": [],
-      "source_receipt": {
-        "schema": "cityscroll.meeting_source_receipt.v1",
-        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260603039",
-        "observed_at": "2026-09-06T16:04:17.753Z",
-        "status": "ok",
-        "fetch_status": "snapshot",
-        "reason": null
-      },
-      "join_status": "not_applicable",
-      "institution_refs": {
-        "agency_ref": null,
-        "board_ref": null
-      },
-      "compatibility": {
-        "legacy_notice_href": "/notices/20260603039",
-        "legacy_fragment_href": "#notice/20260603039",
-        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260603039"
-      },
-      "source_record_id": "20260603039",
-      "board_id": null,
-      "source_record": {
-        "source_system": "city_record",
-        "identifier": "20260603039",
-        "url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260603039",
-        "receipt": {
-          "schema": "cityscroll.meeting_source_receipt.v1",
-          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260603039",
-          "observed_at": "2026-09-06T16:04:17.753Z",
-          "status": "ok",
-          "fetch_status": "snapshot",
-          "reason": null
-        }
-      },
-      "meeting_outcome": {
-        "request_id": "20260603039",
         "snapshot_state": "absent",
         "join": {
           "matched": false,
