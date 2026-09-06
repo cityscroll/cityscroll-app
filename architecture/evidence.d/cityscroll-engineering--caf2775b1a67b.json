@@ -1,0 +1,25 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/caf2775b1a67b",
+  "status": "implemented",
+  "fingerprint": "deployed-source-state-parity.v1",
+  "updated_at": "2026-09-05T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "private-desk-export-boundary",
+      "path": "tools/data_source_graph.mjs"
+    },
+    {
+      "id": "private-desk-consumer-contract",
+      "path": "data/data-source-graph-desk-contract.v1.json"
+    },
+    {
+      "id": "source-state-parity-tests",
+      "path": "test/desk-source-state-parity.test.mjs"
+    },
+    {
+      "id": "deployed-before-observation",
+      "path": "docs/evidence/desk-source-state-parity/before.json"
+    }
+  ]
+}

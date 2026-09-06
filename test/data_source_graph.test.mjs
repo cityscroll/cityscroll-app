@@ -44,25 +44,27 @@ test("generated topology covers every documented source with all four layers", (
 test("producer schema version stays in lockstep with the desk consumer contract", () => {
   const contract = JSON.parse(readFileSync(join(ROOT, DESK_CONSUMER_CONTRACT_PATH), "utf8"));
   assert.equal(contract.schema, "cityscroll.data_source_graph.desk_consumer_contract.v1");
-  assert.equal(DATA_SOURCE_GRAPH_SCHEMA_VERSION, 6);
+  assert.equal(DATA_SOURCE_GRAPH_SCHEMA_VERSION, 4);
   assert.equal(graph.schema_version, DATA_SOURCE_GRAPH_SCHEMA_VERSION);
   assert.equal(contract.producer_schema_version, DATA_SOURCE_GRAPH_SCHEMA_VERSION);
   assert.ok(contract.supported_consumer_versions.includes(DATA_SOURCE_GRAPH_SCHEMA_VERSION));
   assert.equal(graph.counts.candidate_sources, graph.research.candidates);
   assert.ok(graph.sources.some((source) => source.node_class === "candidate-source"));
   assert.ok(graph.sources.every((source) => source.health && source.clocks && source.join_gate));
-  assert.ok(Array.isArray(contract.v5_additions.graph_fields));
-  assert.ok(contract.v5_additions.graph_fields.includes("repair_observations"));
+  assert.equal(graph.extensions.repair_observations, contract.extensions.repair_observations.version);
+  assert.ok(Array.isArray(contract.extensions.repair_observations.graph_fields));
+  assert.ok(contract.extensions.repair_observations.graph_fields.includes("repair_observations"));
   assert.equal(graph.repair_observations.schema, "cityscroll.repair_observation_set.v1");
   assert.equal(graph.repair_observations.visibility, "private");
-  assert.deepEqual(graph.repair_observations.conditions, contract.v5_additions.conditions);
-  assert.deepEqual(graph.repair_observations.dispositions, contract.v5_additions.dispositions);
+  assert.deepEqual(graph.repair_observations.conditions, contract.extensions.repair_observations.conditions);
+  assert.deepEqual(graph.repair_observations.dispositions, contract.extensions.repair_observations.dispositions);
   assert.equal(graph.counts.repair_observations, graph.repair_observations.observations.length);
   assert.ok(graph.sources.every((source) => Array.isArray(source.repair_observations ?? [])));
-  assert.ok(contract.v6_additions.graph_fields.includes("repair_queue"));
+  assert.equal(graph.extensions.repair_queue, contract.extensions.repair_queue.version);
+  assert.ok(contract.extensions.repair_queue.graph_fields.includes("repair_queue"));
   assert.equal(graph.repair_queue.schema, "cityscroll.repair_queue.v1");
   assert.equal(graph.repair_queue.visibility, "private");
-  assert.deepEqual(graph.repair_queue.states, contract.v6_additions.states);
+  assert.deepEqual(graph.repair_queue.states, contract.extensions.repair_queue.states);
   assert.equal(graph.repair_queue.status, "available");
   assert.match(
     generatedGraphFiles()[HTML_OUTPUT],

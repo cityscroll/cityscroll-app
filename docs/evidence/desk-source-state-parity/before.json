@@ -1,0 +1,44 @@
+{
+  "schema": "cityscroll.deployed_source_state_observation.v1",
+  "route": "https://desk.cityscroll.org/data-sources",
+  "observed_at": "2026-09-06T03:18:02.454177+00:00",
+  "evidence_class": "live-production-read",
+  "pinned_revisions": {
+    "application": "fdc8bcfecc431c93cebf5624c560cbe50d30e932",
+    "deployed_consumer": "5fdb3424f3f46d170a100b400069a2d11f81f9df",
+    "inspection_connector": "53d2e5086c773ceaa01762e90bed488af876160b"
+  },
+  "surface_fetch": {
+    "http_status": 200,
+    "content_type": "text/html",
+    "render_content_sha256": "90faa6f9048bdc6fc7b00e97a47c1470cc6aae1fa88a6ba8db0a8b1bd4653f28",
+    "proof_limit": "HTTP success proves the authenticated fetch only; structured state and interaction coverage are separate observations."
+  },
+  "structured_state": {
+    "status": "partial",
+    "reason": "The first bounded inventory page returned 50 of 62 rows.",
+    "schema_version": 4,
+    "data_as_of": "2026-08-19",
+    "data_revision": "ea77100f9a63a8c07f9e60858c72ea69d4c98be310be165a4d60625cd9e8959f",
+    "snapshot": "d4fdf87fa5c8f19cd6138a230e2f7846d108102fb4bffb4a7bf78dad30264363",
+    "source_rows": 62,
+    "unique_source_ids": 62
+  },
+  "reproduced_fault": {
+    "producer_schema_version": 5,
+    "consumer_supported_schema_versions": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "outcome": "incompatible-schema",
+    "cause": "The publication command rejected the producer before rendering because an additive repair-observation field had raised the base schema version beyond the consumer's declared compatibility range."
+  },
+  "access_boundary": {
+    "provider_association_observed": "Personal organization with one associated workspace",
+    "private_tunnel_configuration": "unchanged",
+    "impersonation_or_access_expansion": false,
+    "anonymous_http_403_used_as_role_proof": false
+  }
+}
