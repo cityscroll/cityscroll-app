@@ -86,14 +86,59 @@ On the machine that holds the warehouse:
    --list-due`), and stops. It creates no branch, contacts no publisher, and
    rewrites no artifact.
 
-The script refreshes only the datasets that are due, rebuilds every dependent
-artifact through the derived-JSON build boundary, writes the freshness report,
-and opens a pull request when something changed. It never pushes to the default
-branch and never merges.
+The script refreshes only the datasets that are due, rebuilds every committed
+read model derived from them, writes the freshness report, and opens a pull
+request when something changed. It never pushes to the default branch and never
+merges.
 
-`--run-due` stops after each owning builder, so the boundary rebuild is what
-keeps the served read models and the keyword search index coherent with the
-refreshed data.
+`--run-due` stops after each owning builder, so the rebuild is what keeps the
+served read models and the keyword search index coherent with the refreshed
+data.
+
+## Committed read models are refreshed with their inputs
+
+Several read models are derived from the first-class datasets and committed to
+the repository: the keyword search index and its manifest, the agency
+constellation documents, the generated source-contract documentation and data
+source graph, the capability topology and the integration client projected from
+it, and the depot join registry. Every one of them is re-derived in check mode
+by a required gate in the `static-standards` unit family, so a refresh that
+publishes new inputs without rebuilding them opens a pull request that fails its
+own gates. That is exactly what happened before this rebuild existed.
+
+`committed-read-models.json` is the registry that prevents it. It lists every
+check-mode gate in that family exactly once, on one of two sides:
+
+- **rebuild_sequence** — what the refresh runs, in the order the inputs imply.
+  The derived-JSON build boundary comes first and covers every generated family
+  in `warehouse/derived_json_build_manifest.json`, including the keyword search
+  index and the agency constellation documents; the source-contract projections
+  follow, and the depot registry last. The builders run one at a time: these are
+  the repository's heavy builders, and the boundary measures itself against a
+  declared cold-build time budget that running them side by side would
+  invalidate.
+- **not_rebuilt** — the gates the refresh deliberately does not run, each with
+  its reason. The warehouse-backed lookups need the retained catalog a hosted
+  runner does not have, and the two check-only gates are validators with no
+  build mode and no committed output.
+
+Run it by hand from a checkout with:
+
+```bash
+node ops/first-class-refresh/rebuild-committed-read-models.mjs            # rebuild
+node ops/first-class-refresh/rebuild-committed-read-models.mjs --list     # show both sides
+node ops/first-class-refresh/rebuild-committed-read-models.mjs --check-registry
+```
+
+Both halves of the refresh call the same script — the hosted workflow before it
+opens its pull request, and this directory's warehouse-held script before it
+commits — so there is one list, not two.
+
+`test/first_class_refresh_committed_read_models.test.mjs` reads the gates back
+out of `.github/workflows/ci.yml` and compares them with the registry by builder
+path, in both directions. Adding a committed-freshness gate without deciding how
+the refresh handles it fails that test, and so does leaving a builder in the
+registry after its gate is removed.
 
 ## Invariant: every run starts from the default branch's tip
 

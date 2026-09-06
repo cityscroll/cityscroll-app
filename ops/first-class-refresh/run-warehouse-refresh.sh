@@ -56,11 +56,12 @@ tools/install_worker_dependencies.sh
 node tools/priority_source_warehouse_acquire.mjs --bounded
 
 node tools/first_class_refresh.mjs --run-due
-# --run-due stops after each owning builder. The derived-JSON boundary is the
-# repository's ordered rebuild of every dependent artifact, so run it before
-# committing; otherwise the pull request carries a read model whose coherence
-# receipt no longer matches the served keyword index.
-node tools/derived_json_build_boundary.mjs
+# --run-due stops after each owning builder. Every committed read model derived
+# from those datasets is rebuilt here, before committing; otherwise the pull
+# request carries a read model whose coherence receipt no longer matches the
+# served keyword index. The registry beside this script is the single list both
+# halves of the refresh share, and it is checked against the freshness gates.
+node "$SCRIPT_DIR/rebuild-committed-read-models.mjs"
 node tools/first_class_refresh.mjs --write-report
 
 if [ -z "$(git status --porcelain -- site worker)" ]; then

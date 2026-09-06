@@ -80,6 +80,17 @@ jobs:
           }
           NODE
 
+      - name: Rebuild the committed read models the refreshed datasets feed
+        # --run-due stops after each dataset's owning builder. The keyword search
+        # index, the agency constellation documents, and the generated
+        # source-contract projections are committed read models derived from those
+        # datasets, and continuous integration re-derives each one in check mode.
+        # Refreshing the inputs without rebuilding the read models opens a pull
+        # request that fails its own freshness gates. The registry beside this
+        # script records which gates it covers and which it deliberately leaves to
+        # the warehouse-held half of the refresh.
+        run: node ops/first-class-refresh/rebuild-committed-read-models.mjs
+
       # GitHub deliberately does not start workflows for pushes or pull
       # requests made with a job's own GITHUB_TOKEN, so a pull request opened
       # that way reported no checks at all and the merge queue could never
