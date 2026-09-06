@@ -120,3 +120,36 @@ node --test test/procurement_intent_radar_shadow_mode.test.mjs
 The internal outputs are
 `warehouse/fixtures/procurement-intent-radar/shadow_mode.v1.json` and
 `docs/evidence/procurement-intent-radar/shadow-mode.md`.
+
+## Watch continuity across the identity transition
+
+`site/procurement_intent_watch_continuity.mjs` carries one reader's explicit
+watch from the provisional subject to the publisher-native EPIN/PIN. Following
+is the only constructor: a realization can be applied to a watch that already
+exists, and never creates one. The watch key is derived from the reader and the
+provisional subject, so following twice is the same watch, and unfollowing then
+following again restores the same lineage rather than starting a second
+discovery.
+
+Accepted `realized_by` edges are added beside the provisional subject; they never
+replace it. Review candidates and ambiguous pairs are not identity and are not
+attached. When one intent realizes into several solicitations, every accepted
+relationship is kept and the cardinality is reported as `one_to_many` — no
+solicitation is selected as the realization.
+
+The digest projection emits one early-signal row for the followed statement and
+one row per realized publisher identity, each carrying advance lead as the day
+count between the observed statement and the observed publication. Every row
+keeps `source_fact`, `cityscroll_interpretation`, and `later_observation` as
+three separately labelled registers, and an intent with nothing published yet
+reports `not_yet_observed` rather than an absence. `worker/src/lib/digest_outbox.mjs`
+deduplicates on the update key, so publication never re-sends the early signal.
+
+Delivery remains gated by `PROCUREMENT_INTENT_WATCH_DELIVERY`, which is off. The
+module creates no route, no follow target, and no reader-facing prediction copy;
+it is the continuity contract the surfaces will use once prospective data is
+promoted out of shadow mode.
+
+```sh
+node --test test/procurement_intent_watch_continuity.test.mjs
+```
