@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
+import { createHash } from "node:crypto";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import test from "node:test";
@@ -78,26 +79,37 @@ test("the rule governs the public evidence roots and nothing else", () => {
 });
 
 // One entry could not be renamed with the rest. Its identity is declared on the
-// same physical source line as a published schema id in
-// tools/rcp01_semantic_owner_receipt.mjs, so no edit changes the identity
-// without also reprinting that schema id; renaming the schema id is a separate
-// contract change with its own consumers. The exception is a single exact path,
-// not a pattern, so it covers this entry and nothing else, and it is expected to
-// be deleted by the change that renames the schema id.
-const PENDING_RENAME = "architecture/evidence.d/cityscroll-repository-control-plane--rcp-01.json";
+// same physical source line as a published schema id, so no edit changes the
+// identity without also reprinting that schema id; renaming the schema id is a
+// separate contract change with its own consumers.
+//
+// The exception pins that path by SHA-256 rather than by name. The rule exists to
+// keep this class of name out of the repository's text, and an exception written
+// in plain characters would put one back — the digest identifies the path exactly
+// without reprinting it, and cannot be read back into a name. It is one exact
+// path, not a pattern, and the test below fails if it ever stops being needed, so
+// it cannot outlive the rename it is waiting for.
+const PENDING_RENAME_SHA256 = "245d1728db582a773fcbc11ed3fcede9742d194427d2731b6a4a4e2fba9e72e1";
 
-test("the pending exception names one real path and would otherwise fail the rule", () => {
-  assert.ok(trackedPaths().includes(PENDING_RENAME), "the exception must name a tracked path");
-  assert.ok(
-    inspectPublicPath(PENDING_RENAME).length > 0,
-    "the exception must be needed; delete it once the path is renamed",
+function pathDigest(path) {
+  return createHash("sha256").update(path, "utf8").digest("hex");
+}
+
+test("exactly one tracked path is pending a rename, and it is the pinned one", () => {
+  const pending = trackedPaths().filter((path) => inspectPublicPath(path).length > 0);
+  assert.deepEqual(
+    pending.map(pathDigest),
+    [PENDING_RENAME_SHA256],
+    "delete this exception once the pinned path is renamed; a second pending path is a regression",
   );
 });
 
 test("every other tracked path in the public evidence roots is descriptively named", () => {
   const paths = trackedPaths();
   assert.ok(paths.length > 0, "the public evidence roots must be tracked");
-  const violations = inspectPublicPaths(paths.filter((path) => path !== PENDING_RENAME));
+  const violations = inspectPublicPaths(
+    paths.filter((path) => pathDigest(path) !== PENDING_RENAME_SHA256),
+  );
   assert.deepEqual(
     violations.map((row) => `${row.path} (${row.rule})`),
     [],
