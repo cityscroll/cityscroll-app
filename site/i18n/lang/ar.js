@@ -302,6 +302,8 @@
     buyer_history_all_industries: "جميع القطاعات",
     buyer_history_award_method: "طريقة الترسية",
     buyer_history_all_award_methods: "جميع طرق الترسية",
+    buyer_history_amount_band: "المبلغ",
+    buyer_history_all_amount_bands: "كل المبالغ",
     buyer_history_metric_contracts: "العقود المسجلة",
     buyer_history_metric_after_start: "مسجلة بعد تاريخ البدء",
     buyer_history_metric_before_on_start: "مسجلة قبل تاريخ البدء أو في اليوم نفسه",

@@ -29,6 +29,7 @@ import {
   analyticalDrillThroughHref,
 } from "./analytical_projection.mjs";
 import { readerDimensionValue } from "./analytical_projection_contract.mjs";
+import { resolveAgencyIdentity } from "./agency_identity.mjs";
 
 export const BUYER_CONTRACTING_HISTORY_SCHEMA = "cityscroll.buyer_contracting_history.v1";
 
@@ -77,6 +78,34 @@ function selectedScope(options = {}) {
 
 function scopeIsNarrowed(scope) {
   return Object.values(scope).some((value) => value != null);
+}
+
+/**
+ * Notice and Checkbook spellings of the same public institution count as one
+ * buyer. An unmatched label still matches only itself, so it cannot become a
+ * clean zero by being compared to a different institution's rows.
+ */
+export function buyerAgenciesMatch(rowAgency, selectedAgency) {
+  if (selectedAgency == null || selectedAgency === "") return true;
+  const selected = readerDimensionValue(selectedAgency);
+  const row = readerDimensionValue(rowAgency);
+  if (row === selected) return true;
+  const left = resolveAgencyIdentity(rowAgency);
+  const right = resolveAgencyIdentity(selectedAgency);
+  return Boolean(left.matched && right.matched && left.canonical_id === right.canonical_id);
+}
+
+function sourceOwnedBuyerLabel(rows, selectedAgency) {
+  const counts = new Map();
+  for (const row of rows) {
+    if (!buyerAgenciesMatch(row?.agency, selectedAgency)) continue;
+    const label = trimmed(row.agency);
+    if (!label) continue;
+    counts.set(label, (counts.get(label) || 0) + 1);
+  }
+  return [...counts.entries()]
+    .sort((left, right) => right[1] - left[1] || left[0].localeCompare(right[0]))[0]?.[0]
+    || selectedAgency;
 }
 
 /**
@@ -361,7 +390,6 @@ export function buyerContractingHistory(rows, options = {}) {
     ? null : Number(options.registration_fiscal_year);
   const scope = selectedScope(options);
   const filters = {
-    agency: buyerLabel,
     registration_fiscal_year: Number.isInteger(fiscalYear) ? fiscalYear : null,
     industry: scope.industry,
     award_method: scope.award_method,
@@ -369,7 +397,12 @@ export function buyerContractingHistory(rows, options = {}) {
     min_amount: scope.min_amount,
     max_amount: scope.max_amount,
   };
-  const matched = filterAnalyticalContracts(Array.isArray(rows) ? rows : [], filters);
+  // Agency identity is applied after the other filters so a notice spelling
+  // and a Checkbook spelling of the same buyer share one denominator, while
+  // industry, method, and amount still intersect the full registered cohort
+  // before any case limit.
+  const matched = filterAnalyticalContracts(Array.isArray(rows) ? rows : [], filters)
+    .filter((row) => buyerAgenciesMatch(row.agency, buyerLabel));
   // The denominator is the deduplicated population, taken before any case
   // limit. registrationTimingSummary already collapses to one row per exact
   // contract id, so ten source slices of one contract count once.
@@ -377,6 +410,7 @@ export function buyerContractingHistory(rows, options = {}) {
   const unique = [...new Map(matched
     .filter((row) => row?.prime_contract_id)
     .map((row) => [row.prime_contract_id, row])).values()];
+  const sourceBuyerLabel = sourceOwnedBuyerLabel(unique, buyerLabel);
   const state = timingStateOf(summary);
   const measured = state === BUYER_HISTORY_TIMING_STATES.MEASURED
     || state === BUYER_HISTORY_TIMING_STATES.PARTIALLY_MEASURED;
@@ -388,7 +422,7 @@ export function buyerContractingHistory(rows, options = {}) {
     return rightLag - leftLag || String(left.prime_contract_id).localeCompare(String(right.prime_contract_id));
   });
   const hrefFor = (retroactive) => analyticalDrillThroughHref({
-    agency: buyerLabel,
+    agency: sourceBuyerLabel,
     registration_fiscal_year: Number.isInteger(fiscalYear) ? fiscalYear : undefined,
     industry: scope.industry || undefined,
     award_method: scope.award_method || undefined,
@@ -401,8 +435,9 @@ export function buyerContractingHistory(rows, options = {}) {
     schema: BUYER_CONTRACTING_HISTORY_SCHEMA,
     state: "available",
     buyer: {
-      label: buyerLabel,
-      display_label: buyerLabel ? readerDimensionValue(buyerLabel) : null,
+      label: sourceBuyerLabel,
+      selected_label: buyerLabel,
+      display_label: sourceBuyerLabel ? readerDimensionValue(sourceBuyerLabel) : null,
     },
     registration_fiscal_year: Number.isInteger(fiscalYear) ? fiscalYear : null,
     scope,

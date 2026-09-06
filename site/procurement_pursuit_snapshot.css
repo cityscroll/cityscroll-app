@@ -128,6 +128,17 @@
   color: var(--link, #1a5fb4);
 }
 
+.pursuit-buyer-history-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 11px 13px;
+  border: 1px solid var(--rule, #dde1e7);
+  border-radius: 6px;
+  box-sizing: border-box;
+  overflow-wrap: anywhere;
+}
+
 .pursuit-official-links {
   display: flex;
   flex-wrap: wrap;

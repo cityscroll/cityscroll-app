@@ -211,6 +211,7 @@ import { noticeDisplayTitle } from "../display_title.mjs";
 import { renderObjectCardTitle } from "../affordance_grammar.mjs";
 import { buildContractReportTarget, renderReportIssueAffordance } from "../report_issue.mjs";
 import { buildPursuitSnapshot, renderPursuitSnapshotHtml } from "../procurement_pursuit_snapshot.mjs";
+import { buyerHistoryComparisonFromSolicitation } from "../buyer_history_pursuit_comparison.mjs";
 
 // Every note naming an external source carries a working, scoped link to it
 // — a note that only SAYS the answer lives elsewhere, with no way to go look, isn't an
@@ -1052,8 +1053,10 @@ function solicitationContextHeadingHTML(r){
 // already use; a City Record row always carries its own literal notice
 // type, so the sparse-native-object extension never applies here.
 function pursuitSnapshotHTML(r){
+  const comparison = buyerHistoryComparisonFromSolicitation(r);
   return renderPursuitSnapshotHtml(buildPursuitSnapshot(r, {
     cityscroll_url: noticeLink(r.request_id),
+    buyer_history_href: comparison.href,
   }));
 }
 

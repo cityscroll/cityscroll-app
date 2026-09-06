@@ -268,11 +268,16 @@ function domainOccurrences(record, options) {
   return [...fields, ...explicitMilestones(record), ...labeledTextMilestones(record)];
 }
 
+function asObject(value) {
+  return value && typeof value === "object" ? value : null;
+}
+
 /**
  * Validate and normalize one occurrence. `starts_at` is a timestamp; `date`
  * is a publisher date-only value. They are mutually exclusive by design.
  */
 function createCalendarOccurrence(input = {}) {
+  input = asObject(input) || {};
   const uid = text(input.uid);
   const kind = text(input.kind);
   const status = text(input.status) || "scheduled";
@@ -332,6 +337,10 @@ function createCalendarOccurrence(input = {}) {
 const CalendarOccurrence = createCalendarOccurrence;
 
 function occurrenceInput(record, fields, options) {
+  record = asObject(record) || {};
+  fields = asObject(fields);
+  options = asObject(options) || {};
+  if (!fields) return null;
   const objectRef = text(options.object_ref || objectRefForRecord(record));
   const uid = text(fields.uid)
     || (text(fields.uid_suffix) ? `${objectRef}:${text(fields.uid_suffix)}`
@@ -363,12 +372,23 @@ function occurrenceInput(record, fields, options) {
   };
 }
 
+function occurrenceFromCandidate(record, value, options) {
+  const input = occurrenceInput(record, value, options);
+  return input ? createCalendarOccurrence(input) : null;
+}
+
 function explicitOccurrences(record, options) {
+  record = asObject(record) || {};
   if (!Array.isArray(record.calendar_occurrences)) return null;
-  return record.calendar_occurrences.map((value) => createCalendarOccurrence(occurrenceInput(record, {
-    ...value,
-    when: value.starts_at || value.date,
-  }, options)));
+  return record.calendar_occurrences.flatMap((value) => {
+    const candidate = asObject(value);
+    if (!candidate) return [];
+    const occurrence = occurrenceFromCandidate(record, {
+      ...candidate,
+      when: candidate.starts_at || candidate.date,
+    }, options);
+    return occurrence ? [occurrence] : [];
+  });
 }
 
 /**
@@ -403,18 +423,22 @@ function genericOccurrenceValues(record = {}, options = {}) {
  * identity. Historical display is served by the separate bounded display path.
  */
 function calendarOccurrencesForRecord(record = {}, options = {}) {
+  record = asObject(record) || {};
+  options = asObject(options) || {};
   const explicit = explicitOccurrences(record, options);
   if (explicit) return explicit.filter((occurrence) => occurrence.status === "cancelled"
     || isFuture(occurrence.starts_at || occurrence.date, asOfDate(options.as_of)));
   const domain = domainOccurrences(record, options);
   if (domain) {
     return domain
-      .filter((value) => isFuture(value.when, asOfDate(options.as_of)))
-      .map((value) => createCalendarOccurrence(occurrenceInput(record, value, options)));
+      .filter((value) => value && isFuture(value.when, asOfDate(options.as_of)))
+      .map((value) => occurrenceFromCandidate(record, value, options))
+      .filter(Boolean);
   }
   return genericOccurrenceValues(record, options)
-    .filter((value) => isFuture(value.when, asOfDate(options.as_of)))
-    .map((value) => createCalendarOccurrence(occurrenceInput(record, value, options)));
+    .filter((value) => value && isFuture(value.when, asOfDate(options.as_of)))
+    .map((value) => occurrenceFromCandidate(record, value, options))
+    .filter(Boolean);
 }
 
 /**
@@ -426,12 +450,19 @@ function calendarOccurrencesForRecord(record = {}, options = {}) {
  * past occurrences here cannot widen a subscription.
  */
 function displayCandidateOccurrencesForRecord(record = {}, options = {}) {
+  record = asObject(record) || {};
+  options = asObject(options) || {};
   const explicit = explicitOccurrences(record, options);
   if (explicit) return explicit;
   const domain = domainOccurrences(record, options);
-  if (domain) return domain.map((value) => createCalendarOccurrence(occurrenceInput(record, value, options)));
+  if (domain) {
+    return domain
+      .map((value) => occurrenceFromCandidate(record, value, options))
+      .filter(Boolean);
+  }
   return genericOccurrenceValues(record, options)
-    .map((value) => createCalendarOccurrence(occurrenceInput(record, value, options)));
+    .map((value) => occurrenceFromCandidate(record, value, options))
+    .filter(Boolean);
 }
 
 /** Compatibility producer for Cal-1 callers that still pass neutral items. */

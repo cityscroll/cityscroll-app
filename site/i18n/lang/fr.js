@@ -307,6 +307,8 @@
     buyer_history_all_industries: "Tous les secteurs",
     buyer_history_award_method: "Mode d'attribution",
     buyer_history_all_award_methods: "Tous les modes d'attribution",
+    buyer_history_amount_band: "Montant",
+    buyer_history_all_amount_bands: "Tous les montants",
     buyer_history_metric_contracts: "Contrats enregistrés",
     buyer_history_metric_after_start: "Enregistrés après le début",
     buyer_history_metric_before_on_start: "Enregistrés avant le début ou le jour même",

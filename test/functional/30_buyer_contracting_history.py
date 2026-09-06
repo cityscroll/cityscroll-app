@@ -415,6 +415,124 @@ def run_failure_and_retry(page):
     step("retry", "history recovered without re-choosing the buyer")
 
 
+AMOUNT_BAND_1M = "$1 million–$9.99 million"
+
+
+def render_pursuit_fixtures():
+    out = ROOT / ".artifacts" / "buyer-history-pursuit"
+    subprocess.run(
+        ["node", str(ROOT / "tools" / "render_buyer_history_pursuit_fixtures.mjs"), str(out)],
+        check=True, cwd=str(ROOT), capture_output=True,
+    )
+    return out
+
+
+def run_pursuit_from_opportunity(page):
+    fixtures = render_pursuit_fixtures()
+    html = (fixtures / "parks-20260608045.html").read_text()
+    page.set_content(html, wait_until="domcontentloaded")
+    link = page.locator("[data-buyer-history-comparison]")
+    assert link.count() == 1, page.content()[:800]
+    box = link.bounding_box()
+    assert box and box["height"] >= 44, box
+    href = link.get_attribute("href")
+    assert "ap_agency=" in href and "ap_industry=" in href and "ap_award_method=" in href, href
+    assert "ap_amount_band=" not in href, href
+    page.goto(BASE + href if href.startswith("/") else href, wait_until="domcontentloaded", timeout=60000)
+    wait_for_history(page)
+    scope = page.locator("#buyer-history-scope").inner_text()
+    metrics = " | ".join(page.locator("#buyer-history-metrics .buyer-history-metric").all_inner_texts())
+    assert "40" in scope, scope
+    assert "5" in metrics, metrics
+    assert page.locator("#analytics-industry").input_value() == "Construction Services"
+    assert page.locator("#analytics-award-method").input_value() == "COMPETITIVE SEALED BIDDING"
+    page.locator("#buyer-history-actions a").first.click()
+    wait_for_function(
+        page,
+        "() => new URLSearchParams(location.search).get('ap_cases') === '1'",
+        timeout=60000,
+    )
+    wait_for_history(page)
+    wait_for_cases(page, 40)
+    step("opportunity Parks", "5 of 40 from notice 20260608045")
+
+    page.locator("#analytics-amount-band").select_option(AMOUNT_BAND_1M)
+    wait_for_function(
+        page,
+        "() => (document.querySelector('#buyer-history-scope')?.textContent || '').includes('40') === false"
+        " && (document.querySelector('#buyer-history-scope')?.textContent || '').includes('31')",
+        timeout=60000,
+    )
+    wait_for_cases(page, 31)
+    query = parse_qs(urlparse(page.url).query)
+    assert query.get("ap_amount_band") == [AMOUNT_BAND_1M], page.url
+    assert "31" in page.locator("#buyer-history-scope").inner_text()
+    inspect = page.locator("#buyer-history-cases a[data-contract-id]").first
+    inspect.focus()
+    page.keyboard.press("Enter")
+    wait_for_function(
+        page,
+        "() => Boolean(new URLSearchParams(location.search).get('ap_inspect'))",
+        timeout=60000,
+    )
+    wait_for_history(page)
+    assert page.locator("#buyer-history-inspect").is_visible()
+    assert "31" in page.locator("#buyer-history-scope").inner_text()
+    page.locator("#buyer-history-inspect .buyer-history-inspect-actions a").click()
+    wait_for_function(
+        page,
+        "() => !new URLSearchParams(location.search).get('ap_inspect')",
+        timeout=60000,
+    )
+    wait_for_history(page)
+    wait_for_cases(page, 31)
+    restored_query = parse_qs(urlparse(page.url).query)
+    assert restored_query.get("ap_industry") == ["Construction Services"]
+    assert restored_query.get("ap_award_method") == ["COMPETITIVE SEALED BIDDING"]
+    assert restored_query.get("ap_amount_band") == [AMOUNT_BAND_1M]
+    step("narrow inspect", "4 of 31 restored after dismiss")
+
+    page.go_back()
+    wait_for_history(page)
+    page.locator("#analytics-amount-band").select_option("")
+    wait_for_function(
+        page,
+        "() => (document.querySelector('#buyer-history-scope')?.textContent || '').includes('40')",
+        timeout=60000,
+    )
+    wait_for_cases(page, 40)
+    assert "ap_amount_band" not in parse_qs(urlparse(page.url).query), page.url
+    hashed = hashlib.sha256(page.locator("#buyer-history").inner_html().encode("utf-8")).hexdigest()
+    step("clear amount", "5 of 40 restored " + hashed)
+
+    dot = cohort("dot_professional_rfp")
+    page.goto(
+        buyer_url(dot["buyer"], ap_industry=dot["industry"], ap_award_method=dot["award_method"], ap_cases="1"),
+        wait_until="domcontentloaded", timeout=60000,
+    )
+    wait_for_history(page)
+    wait_for_cases(page, 6)
+    text = page.locator("#buyer-history").inner_text().lower()
+    assert "percentile" not in text
+    meaning = page.locator("#buyer-history-meaning").inner_text().lower()
+    assert "invoice delay" in meaning
+    assert "not" in meaning and "prediction" in meaning
+    assert "6" in page.locator("#buyer-history-scope").inner_text()
+    step("DOT explicit", "5 of 6 inspectable cases")
+
+    dhs = cohort("dhs_human_pqvl")
+    page.goto(
+        buyer_url(dhs["buyer"], ap_industry=dhs["industry"], ap_award_method=dhs["award_method"], ap_cases="1"),
+        wait_until="domcontentloaded", timeout=60000,
+    )
+    wait_for_history(page)
+    wait_for_cases(page, 31)
+    assert str(dhs["after_start_count"]) in " | ".join(
+        page.locator("#buyer-history-metrics .buyer-history-metric").all_inner_texts()
+    )
+    step("DHS explicit", "29 of 31")
+
+
 def run_no_js(context):
     """Both actions are ordinary links, so they work with scripting disabled."""
     parks = cohort("parks_all")
@@ -447,6 +565,10 @@ def main():
         run_keyboard(page)
         run_axe(page)
         run_zoom(page)
+        page.set_viewport_size({"width": 1440, "height": 900})
+        run_pursuit_from_opportunity(page)
+        page.set_viewport_size({"width": 390, "height": 844})
+        run_pursuit_from_opportunity(page)
         page.set_viewport_size({"width": 1440, "height": 900})
         run_failure_and_retry(page)
         run_published_population(page)

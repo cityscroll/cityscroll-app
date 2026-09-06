@@ -300,6 +300,8 @@
     buyer_history_all_industries: "Todos los sectores",
     buyer_history_award_method: "Método de adjudicación",
     buyer_history_all_award_methods: "Todos los métodos de adjudicación",
+    buyer_history_amount_band: "Importe",
+    buyer_history_all_amount_bands: "Todos los importes",
     buyer_history_metric_contracts: "Contratos registrados",
     buyer_history_metric_after_start: "Registrados después del inicio",
     buyer_history_metric_before_on_start: "Registrados antes del inicio o el mismo día",

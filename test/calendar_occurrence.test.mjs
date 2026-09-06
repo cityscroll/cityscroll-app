@@ -56,6 +56,29 @@ test("CalendarOccurrence is a validated, presentation-neutral contract", () => {
   assert.equal(occurrence.source.url, "https://a856-cityrecord.nyc.gov/RequestDetail/1");
   assert.throws(() => createCalendarOccurrence({ ...occurrence, starts_at: null, date: null }), /starts_at or date/);
   assert.throws(() => createCalendarOccurrence({ ...occurrence, starts_at: "2026-09-15T18:00:00-04:00", date: "2026-09-15" }), /both/);
+  assert.throws(() => createCalendarOccurrence(null), /uid is required/);
+});
+
+test("display candidates skip null occurrence slots instead of reading sequence off null", () => {
+  const produced = displayCandidateOccurrencesForRecord({
+    object_ref: "notice:hole",
+    request_id: "hole",
+    calendar_occurrences: [
+      {
+        uid: "notice:hole:deadline:2026-10-01",
+        kind: "deadline",
+        date: "2026-10-01",
+        timezone: "America/New_York",
+      },
+      null,
+    ],
+    canonical_url: "https://cityscroll.org/notices/hole",
+    source_url: "https://a856-cityrecord.nyc.gov/RequestDetail/hole",
+    provenance: { basis: "publisher_record" },
+  });
+  assert.equal(produced.length, 1);
+  assert.equal(produced[0].uid, "notice:hole:deadline:2026-10-01");
+  assert.deepEqual(displayCandidateOccurrencesForRecord(null), []);
 });
 
 test("domain producers emit only meaningful semantic dates and preserve provenance", () => {

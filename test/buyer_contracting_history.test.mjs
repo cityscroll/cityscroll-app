@@ -39,7 +39,16 @@ import {
   openedBuyerHistoryCases,
   sourceDateConflictRepairObservation,
 } from "../site/buyer_contracting_history.mjs";
-import { exactIdentityBasis } from "../site/procurement_related_context.mjs";
+import {
+  BUYER_HISTORY_AMOUNT_BAND_1M_UNDER_10M,
+  buyerHistoryComparisonFailure,
+  compareBuyerHistoryFromSolicitation,
+  isBuyerHistoryComparisonDocument,
+  mapSolicitationAwardMethod,
+  mapSolicitationAmountBand,
+  mapSolicitationIndustry,
+} from "../site/buyer_history_pursuit_comparison.mjs";
+import { buildRelatedProcurementContext, exactIdentityBasis } from "../site/procurement_related_context.mjs";
 import { upsertRepairItem } from "../worker/src/lib/repair_queue.mjs";
 
 const readJson = (path) => JSON.parse(readFileSync(new URL(path, import.meta.url), "utf8"));
@@ -710,4 +719,194 @@ describe("inspectable counted cases", () => {
     assert.match(history.after_start_cases_href, /ap_cases=1/);
   });
 });
+
+const PARKS_NOTICE = {
+  request_id: "20260608045",
+  agency_name: "Parks and Recreation",
+  type_of_notice_description: "Solicitation",
+  category_description: "Construction/Construction Services",
+  selection_method_description: "Competitive Sealed Bids",
+  short_title: "MG-40550-117MA Mannahatta Park Recon",
+};
+
+const DOT_NOTICE = {
+  request_id: "20260720022",
+  agency_name: "Transportation",
+  type_of_notice_description: "Solicitation",
+  category_description: "Construction Related Services",
+  selection_method_description: "Competitive Sealed Proposals",
+  short_title: "84126P0018-Resident Engineering Inspection Services for Component Rehabilitation of 9 Bridges",
+};
+
+const SERVICES_NOTICE = {
+  request_id: "20251118032",
+  agency_name: "Investigation",
+  type_of_notice_description: "Solicitation",
+  category_description: "Services (other than human services)",
+  selection_method_description: "M/WBE Noncompetitive Small Purchase",
+};
+
+describe("pursuit comparison document", () => {
+  it("writes comparison query state only on contracts and search documents", () => {
+    assert.equal(isBuyerHistoryComparisonDocument({ pathname: "/browse/contracts/", search: "?ap_fy=2026" }), true);
+    assert.equal(isBuyerHistoryComparisonDocument({ pathname: "/search" }), true);
+    assert.equal(isBuyerHistoryComparisonDocument({ pathname: "/", hash: "" }), true);
+    assert.equal(isBuyerHistoryComparisonDocument({ pathname: "/", hash: "#money?mode=award" }), true);
+    assert.equal(isBuyerHistoryComparisonDocument({ pathname: "/browse/property/", search: "?asset=seized_property" }), false);
+    assert.equal(isBuyerHistoryComparisonDocument({ pathname: "/browse/property/", hash: "#money" }), false);
+    assert.equal(isBuyerHistoryComparisonDocument({ pathname: "/notices/20260608045" }), false);
+  });
+});
+
+describe("pursuit comparison vocabulary", () => {
+  it("maps Parks construction/bids and leaves broad Services and Construction Related Services unmapped", () => {
+    assert.deepEqual(mapSolicitationIndustry("Construction/Construction Services"), {
+      from: "Construction/Construction Services",
+      to: "Construction Services",
+      mapped: true,
+    });
+    assert.deepEqual(mapSolicitationAwardMethod("Competitive Sealed Bids"), {
+      from: "Competitive Sealed Bids",
+      to: "COMPETITIVE SEALED BIDDING",
+      mapped: true,
+    });
+    assert.equal(mapSolicitationIndustry("Services (other than human services)").to, null);
+    assert.equal(mapSolicitationIndustry("Construction Related Services").to, null);
+    assert.equal(mapSolicitationIndustry("Construction Related Services").to, null);
+    assert.notEqual(mapSolicitationIndustry("Services (other than human services)").to, "Professional Services");
+    assert.equal(mapSolicitationAwardMethod("Competitive Sealed Proposals").to, null);
+    assert.equal(mapSolicitationAwardMethod("RFP FROM A PQVL").to, "RFP FROM A PQVL");
+  });
+
+  it("leaves amount unrestricted when the solicitation publishes none", () => {
+    assert.equal(mapSolicitationAmountBand(PARKS_NOTICE).restricted, false);
+    assert.equal(mapSolicitationAmountBand(PARKS_NOTICE).to, null);
+    assert.equal(mapSolicitationAmountBand(DOT_NOTICE, { amount: "" }).restricted, false);
+    assert.equal(mapSolicitationAmountBand({}, { amount: 5_000_000 }).to, BUYER_HISTORY_AMOUNT_BAND_1M_UNDER_10M);
+  });
+});
+
+describe("pursuit comparison intersections", () => {
+  it("opens Parks notice 20260608045 at 5 of 40, narrows to 4 of 31, and restores 5 of 40", () => {
+    const opened = compareBuyerHistoryFromSolicitation(PROJECTION, PARKS_NOTICE);
+    assert.equal(opened.buyer.label, "Department of Parks and Recreation");
+    assert.equal(opened.registration_fiscal_year, 2026);
+    assert.equal(opened.scope.industry, "Construction Services");
+    assert.equal(opened.scope.award_method, "COMPETITIVE SEALED BIDDING");
+    assert.equal(opened.scope.contract_amount_band, null);
+    assert.equal(opened.history.contract_count, 40);
+    assert.equal(opened.history.timing.after_start_count, 5);
+    assert.deepEqual(
+      opened.history.cases.map((entry) => entry.source_contract_id).sort(),
+      cohort("parks_construction_bid").contract_ids,
+    );
+    const query = new URLSearchParams(opened.href.split("?", 2)[1]);
+    assert.equal(query.get("ap_agency"), "Department of Parks and Recreation");
+    assert.equal(query.get("ap_fy"), "2026");
+    assert.equal(query.get("ap_industry"), "Construction Services");
+    assert.equal(query.get("ap_award_method"), "COMPETITIVE SEALED BIDDING");
+    assert.equal(query.get("ap_amount_band"), null);
+
+    const narrowed = compareBuyerHistoryFromSolicitation(PROJECTION, PARKS_NOTICE, {
+      contract_amount_band: BUYER_HISTORY_AMOUNT_BAND_1M_UNDER_10M,
+    });
+    assert.equal(narrowed.history.contract_count, 31);
+    assert.equal(narrowed.history.timing.after_start_count, 4);
+    assert.deepEqual(
+      narrowed.history.cases.map((entry) => entry.source_contract_id).sort(),
+      cohort("parks_construction_bid_1m_10m").contract_ids,
+    );
+    assert.equal(new URLSearchParams(narrowed.href.split("?", 2)[1]).get("ap_amount_band"), BUYER_HISTORY_AMOUNT_BAND_1M_UNDER_10M);
+
+    const restored = compareBuyerHistoryFromSolicitation(PROJECTION, PARKS_NOTICE, {
+      contract_amount_band: null,
+    });
+    assert.equal(restored.history.contract_count, 40);
+    assert.equal(restored.history.timing.after_start_count, 5);
+    assert.deepEqual(
+      restored.history.cases.map((entry) => entry.source_contract_id).sort(),
+      cohort("parks_construction_bid").contract_ids,
+    );
+  });
+
+  it("requires an explicit DOT Professional Services/RFP choice and a DHS Human Services/PQVL choice", () => {
+    const fromNotice = compareBuyerHistoryFromSolicitation(PROJECTION, DOT_NOTICE);
+    assert.equal(fromNotice.buyer.label, "Department of Transportation");
+    assert.equal(fromNotice.scope.industry, null);
+    assert.equal(fromNotice.scope.award_method, null);
+    assert.notEqual(fromNotice.history.contract_count, 6);
+
+    const explicit = compareBuyerHistoryFromSolicitation(PROJECTION, DOT_NOTICE, {
+      industry: "Professional Services",
+      award_method: "REQUEST FOR PROPOSAL (RFP)",
+    });
+    assert.equal(explicit.history.contract_count, 6);
+    assert.equal(explicit.history.timing.after_start_count, 5);
+    assert.equal(explicit.history.cases.length, 6);
+    assert.deepEqual(
+      explicit.history.cases.map((entry) => entry.source_contract_id).sort(),
+      cohort("dot_professional_rfp").contract_ids,
+    );
+    assert.match(explicit.history.timing.metric_meaning, /not an invoice delay/);
+    assert.match(explicit.history.timing.metric_meaning, /not .*a prediction/s);
+    assert.ok(!JSON.stringify(explicit.history).includes("percentile"));
+    assert.ok(!JSON.stringify(explicit.history).includes("median late"));
+
+    const dhs = buyerContractingHistory(PROJECTION, {
+      agency: "Department of Homeless Services",
+      registration_fiscal_year: 2026,
+      industry: "Human Services",
+      award_method: "RFP FROM A PQVL",
+    });
+    assert.equal(dhs.contract_count, 31);
+    assert.equal(dhs.timing.after_start_count, 29);
+    assert.deepEqual(dhs.cases.map((entry) => entry.source_contract_id).sort(), cohort("dhs_human_pqvl").contract_ids);
+  });
+
+  it("intersects industry and method on the full registered cohort, not a related-context sample", () => {
+    const related = buildRelatedProcurementContext({
+      subject: { agency_name: "Parks and Recreation", pin: "84626B0083" },
+      candidates: [{ contract_id: "CT184620268805555", pin: "84626B0083" }],
+    });
+    const relatedCount = (related?.exact_chain?.length || 0) + (related?.related?.length || 0);
+    assert.ok(relatedCount < 40);
+    const opened = compareBuyerHistoryFromSolicitation(PROJECTION, PARKS_NOTICE);
+    assert.equal(opened.history.contract_count, 40);
+    assert.equal(opened.history.case_total, 40);
+  });
+});
+
+describe("pursuit comparison boundaries and failures", () => {
+  it("keeps master and release instruments distinct and names registered FY contracts", () => {
+    const opened = compareBuyerHistoryFromSolicitation(PROJECTION, PARKS_NOTICE);
+    assert.equal(opened.population, "registered_contracts_in_selected_fiscal_year");
+    assert.ok(countedContractsAreDistinctInstruments(
+      { source_contract_id: "CTA185620268804596" },
+      { source_contract_id: "MMA1-856-20240000000" },
+    ));
+    assert.equal(contract("CTA185620268804596").prime_contract_id, "CTA185620268804596");
+  });
+
+  it("does not auto-select Professional Services from a broad Services notice", () => {
+    const opened = compareBuyerHistoryFromSolicitation(PROJECTION, SERVICES_NOTICE);
+    assert.equal(opened.mapping.industry.to, null);
+    assert.equal(opened.scope.industry, null);
+    assert.notEqual(opened.scope.industry, "Professional Services");
+  });
+
+  it("preserves every comparison choice on a failed load and does not report a false zero", () => {
+    const failure = buyerHistoryComparisonFailure(PARKS_NOTICE, { rows: PROJECTION, reason: "source-request-failed" });
+    assert.equal(failure.state, "unavailable");
+    assert.equal(failure.history.state, "unavailable");
+    assert.equal(failure.buyer.label, "Department of Parks and Recreation");
+    assert.equal(failure.registration_fiscal_year, 2026);
+    assert.equal(failure.scope.industry, "Construction Services");
+    assert.equal(failure.scope.award_method, "COMPETITIVE SEALED BIDDING");
+    assert.equal(failure.history.retry.available, true);
+    assert.equal(failure.history.retry.agency, "Department of Parks and Recreation");
+    assert.equal(failure.history.contract_count, null);
+    assert.notEqual(failure.history.contract_count, 0);
+  });
+});
+
 
