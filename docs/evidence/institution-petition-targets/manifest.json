@@ -1,0 +1,466 @@
+{
+  "schema": "cityscroll.institution_petition_target_evidence.v1",
+  "routes": [
+    "/agencies/small-business-services/",
+    "/agencies/economic-development-corporation/"
+  ],
+  "revision": "835ba45fdd2290dedc8ec259e0056a901faa5405",
+  "data_vintage": "2026-09-05",
+  "timezone": "America/New_York",
+  "captured_at": "2026-09-06T03:34:33Z",
+  "image_directory": ".artifacts/institution-petition-targets",
+  "image_policy": "Capture images are written to the ignored local directory above and are never committed. This manifest is the tracked proof: route, viewport, revision, data vintage, assertion and SHA-256 for each capture.",
+  "scope": "Automated proof establishes rendered behavior at these revisions and viewports. It does not establish legal completeness of the indexed procedures, adoption, or participant feedback.",
+  "files": [
+    {
+      "name": "supported-exact-target-390x844.png",
+      "specimen": "supported-exact-target",
+      "route": "/agencies/small-business-services/",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "835ba45fdd2290dedc8ec259e0056a901faa5405",
+      "data_vintage": "2026-09-05",
+      "timezone": "America/New_York",
+      "javascript": true,
+      "assertion": "at 390px the profile that publishes its own petition procedure offers an exact Petition this agency target, and names the receiving body, the official destination and the response requirement from that same published procedure",
+      "observations": {
+        "exact_target": true,
+        "procedure_basis_is_institution": true,
+        "heading_names_an_exact_action": true,
+        "names_the_receiving_body": true,
+        "links_the_published_procedure": true,
+        "links_the_adopted_rule_text": true,
+        "response_cites_the_same_procedure": true,
+        "profile_action_is_the_exact_target": true,
+        "profile_action_labelled_exactly": true,
+        "profile_action_goes_to_the_procedure": true,
+        "states_no_submission": true,
+        "no_submission_affordance": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 2253691,
+      "sha256": "ebff2a694a280581f7c1a8fe5f72b6b81f8caff2c07f9832591bc6720ca7d98a",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "supported-exact-target-1440x900.png",
+      "specimen": "supported-exact-target",
+      "route": "/agencies/small-business-services/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "835ba45fdd2290dedc8ec259e0056a901faa5405",
+      "data_vintage": "2026-09-05",
+      "timezone": "America/New_York",
+      "javascript": true,
+      "assertion": "at 1440px the profile that publishes its own petition procedure offers an exact Petition this agency target, and names the receiving body, the official destination and the response requirement from that same published procedure",
+      "observations": {
+        "exact_target": true,
+        "procedure_basis_is_institution": true,
+        "heading_names_an_exact_action": true,
+        "names_the_receiving_body": true,
+        "links_the_published_procedure": true,
+        "links_the_adopted_rule_text": true,
+        "response_cites_the_same_procedure": true,
+        "profile_action_is_the_exact_target": true,
+        "profile_action_labelled_exactly": true,
+        "profile_action_goes_to_the_procedure": true,
+        "states_no_submission": true,
+        "no_submission_affordance": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 2694382,
+      "sha256": "99d3508abc425b81f8c46e46504d0925e8cbb01c330d11cfc77cefbf4215b857",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "unresolved-general-guidance-390x844.png",
+      "specimen": "unresolved-general-guidance",
+      "route": "/agencies/economic-development-corporation/",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "835ba45fdd2290dedc8ec259e0056a901faa5405",
+      "data_vintage": "2026-09-05",
+      "timezone": "America/New_York",
+      "javascript": true,
+      "assertion": "at 390px a profile with the same alias resolution and the same City-wide form, but no applicable procedure evidence, receives clearly general guidance instead of an exact target, keeps that guidance usable, and states missing evidence rather than a prohibition",
+      "observations": {
+        "not_an_exact_target": true,
+        "procedure_basis_is_general": true,
+        "heading_is_general": true,
+        "no_receiving_body_named": true,
+        "guidance_is_labelled_general": true,
+        "absence_is_not_a_prohibition": true,
+        "general_guidance_stays_reachable": true,
+        "profile_action_is_general": true,
+        "profile_action_labelled_generally": true,
+        "no_exact_label_anywhere": true,
+        "no_other_body_authority_claimed": true,
+        "no_submission_affordance": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 1355927,
+      "sha256": "ee0e66382c23949ed232462dfb63012d13653782519537afc115060a2ad395f7",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "unresolved-general-guidance-1440x900.png",
+      "specimen": "unresolved-general-guidance",
+      "route": "/agencies/economic-development-corporation/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "835ba45fdd2290dedc8ec259e0056a901faa5405",
+      "data_vintage": "2026-09-05",
+      "timezone": "America/New_York",
+      "javascript": true,
+      "assertion": "at 1440px a profile with the same alias resolution and the same City-wide form, but no applicable procedure evidence, receives clearly general guidance instead of an exact target, keeps that guidance usable, and states missing evidence rather than a prohibition",
+      "observations": {
+        "not_an_exact_target": true,
+        "procedure_basis_is_general": true,
+        "heading_is_general": true,
+        "no_receiving_body_named": true,
+        "guidance_is_labelled_general": true,
+        "absence_is_not_a_prohibition": true,
+        "general_guidance_stays_reachable": true,
+        "profile_action_is_general": true,
+        "profile_action_labelled_generally": true,
+        "no_exact_label_anywhere": true,
+        "no_other_body_authority_claimed": true,
+        "no_submission_affordance": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 1512236,
+      "sha256": "92fa1af8e3c93d32d05675c047c9d98e18fbe2a362ff20af6879b24de89265da",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "external-link-semantics-390x844.png",
+      "specimen": "external-link-semantics",
+      "route": "/agencies/small-business-services/",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "835ba45fdd2290dedc8ec259e0056a901faa5405",
+      "data_vintage": "2026-09-05",
+      "timezone": "America/New_York",
+      "javascript": true,
+      "assertion": "at 390px every off-site petition destination is labelled for what it reaches, opens in a new tab with noopener noreferrer, and announces the new tab to assistive technology",
+      "observations": {
+        "every_offsite_link_opens_in_a_new_tab": true,
+        "every_offsite_link_is_rel_protected": true,
+        "every_offsite_link_is_labelled": true,
+        "labels_match_their_destination": true,
+        "profile_action_opens_in_a_new_tab": true,
+        "profile_action_is_rel_protected": true,
+        "profile_action_announces_the_new_tab": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 2253694,
+      "sha256": "fca935d71948d1fb2ed00d4789cb12a08a5e93813ad0c449a2ac7d372f2f678c",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "external-link-semantics-1440x900.png",
+      "specimen": "external-link-semantics",
+      "route": "/agencies/small-business-services/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "835ba45fdd2290dedc8ec259e0056a901faa5405",
+      "data_vintage": "2026-09-05",
+      "timezone": "America/New_York",
+      "javascript": true,
+      "assertion": "at 1440px every off-site petition destination is labelled for what it reaches, opens in a new tab with noopener noreferrer, and announces the new tab to assistive technology",
+      "observations": {
+        "every_offsite_link_opens_in_a_new_tab": true,
+        "every_offsite_link_is_rel_protected": true,
+        "every_offsite_link_is_labelled": true,
+        "labels_match_their_destination": true,
+        "profile_action_opens_in_a_new_tab": true,
+        "profile_action_is_rel_protected": true,
+        "profile_action_announces_the_new_tab": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 2694382,
+      "sha256": "99d3508abc425b81f8c46e46504d0925e8cbb01c330d11cfc77cefbf4215b857",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "keyboard-and-focus-390x844.png",
+      "specimen": "keyboard-and-focus",
+      "route": "/agencies/small-business-services/",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "835ba45fdd2290dedc8ec259e0056a901faa5405",
+      "data_vintage": "2026-09-05",
+      "timezone": "America/New_York",
+      "javascript": true,
+      "assertion": "at 390px the petition action and the handoff's inspectable detail are native, keyboard-reachable controls that take focus and show a visible focus indicator",
+      "observations": {
+        "petition_action_is_a_real_link": true,
+        "petition_action_takes_focus": true,
+        "petition_action_is_tabbable": true,
+        "petition_action_shows_a_focus_indicator": true,
+        "detail_summary_is_a_native_control": true,
+        "detail_summary_takes_focus": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 2253804,
+      "sha256": "cc2393b347db92ef472abd4c9e3bdf25046eb237473766e2b893ec0c980a51e4",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "keyboard-and-focus-1440x900.png",
+      "specimen": "keyboard-and-focus",
+      "route": "/agencies/small-business-services/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "835ba45fdd2290dedc8ec259e0056a901faa5405",
+      "data_vintage": "2026-09-05",
+      "timezone": "America/New_York",
+      "javascript": true,
+      "assertion": "at 1440px the petition action and the handoff's inspectable detail are native, keyboard-reachable controls that take focus and show a visible focus indicator",
+      "observations": {
+        "petition_action_is_a_real_link": true,
+        "petition_action_takes_focus": true,
+        "petition_action_is_tabbable": true,
+        "petition_action_shows_a_focus_indicator": true,
+        "detail_summary_is_a_native_control": true,
+        "detail_summary_takes_focus": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 2694854,
+      "sha256": "bc69d5dcba6dee0fd295d49bfd34511c67fae463945c46ca868ca70ecf8fdd05",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "inspect-dismiss-and-back-390x844.png",
+      "specimen": "inspect-dismiss-and-back",
+      "route": "/agencies/small-business-services/",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "835ba45fdd2290dedc8ec259e0056a901faa5405",
+      "data_vintage": "2026-09-05",
+      "timezone": "America/New_York",
+      "javascript": true,
+      "assertion": "at 390px the handoff detail opens in place without navigating, saving or submitting, dismisses again, and a full-page journey to the other profile followed by browser Back returns to the supported profile with its exact target intact",
+      "observations": {
+        "inspection_opens_in_place": true,
+        "inspection_does_not_navigate": true,
+        "inspection_does_not_submit": true,
+        "inspection_states_nothing_is_saved": true,
+        "dismiss_closes_it": true,
+        "full_page_journey_reaches_the_other_profile": true,
+        "back_returns_to_the_supported_profile": true,
+        "back_restores_the_exact_target": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 2253691,
+      "sha256": "ebff2a694a280581f7c1a8fe5f72b6b81f8caff2c07f9832591bc6720ca7d98a",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "inspect-dismiss-and-back-1440x900.png",
+      "specimen": "inspect-dismiss-and-back",
+      "route": "/agencies/small-business-services/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "835ba45fdd2290dedc8ec259e0056a901faa5405",
+      "data_vintage": "2026-09-05",
+      "timezone": "America/New_York",
+      "javascript": true,
+      "assertion": "at 1440px the handoff detail opens in place without navigating, saving or submitting, dismisses again, and a full-page journey to the other profile followed by browser Back returns to the supported profile with its exact target intact",
+      "observations": {
+        "inspection_opens_in_place": true,
+        "inspection_does_not_navigate": true,
+        "inspection_does_not_submit": true,
+        "inspection_states_nothing_is_saved": true,
+        "dismiss_closes_it": true,
+        "full_page_journey_reaches_the_other_profile": true,
+        "back_returns_to_the_supported_profile": true,
+        "back_restores_the_exact_target": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 2694382,
+      "sha256": "99d3508abc425b81f8c46e46504d0925e8cbb01c330d11cfc77cefbf4215b857",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "without-scripting-390x844.png",
+      "specimen": "without-scripting",
+      "route": "/agencies/small-business-services/",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "835ba45fdd2290dedc8ec259e0056a901faa5405",
+      "data_vintage": "2026-09-05",
+      "timezone": "America/New_York",
+      "javascript": false,
+      "assertion": "at 390px with JavaScript disabled the handoff, its receiving body and its exact destination are already in the document, and the destination is a real anchor",
+      "observations": {
+        "handoff_is_server_rendered": true,
+        "exact_target_survives_without_scripting": true,
+        "receiving_body_survives": true,
+        "destination_is_a_real_anchor": true,
+        "no_submission_affordance": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 258857,
+      "sha256": "02de6ad616ae858292c70a9852a76aabb86680caae2113daa48650fbc2254610",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true,
+        "note": "axe needs scripting; this specimen is the no-JavaScript document"
+      }
+    },
+    {
+      "name": "without-scripting-1440x900.png",
+      "specimen": "without-scripting",
+      "route": "/agencies/small-business-services/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "835ba45fdd2290dedc8ec259e0056a901faa5405",
+      "data_vintage": "2026-09-05",
+      "timezone": "America/New_York",
+      "javascript": false,
+      "assertion": "at 1440px with JavaScript disabled the handoff, its receiving body and its exact destination are already in the document, and the destination is a real anchor",
+      "observations": {
+        "handoff_is_server_rendered": true,
+        "exact_target_survives_without_scripting": true,
+        "receiving_body_survives": true,
+        "destination_is_a_real_anchor": true,
+        "no_submission_affordance": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 305446,
+      "sha256": "d705833253ba2da7a0edfdaba6d91025f901d3385cda6cf837962f8737b82f91",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true,
+        "note": "axe needs scripting; this specimen is the no-JavaScript document"
+      }
+    },
+    {
+      "name": "zoom-and-touch-targets-390x844.png",
+      "specimen": "zoom-and-touch-targets",
+      "route": "/agencies/small-business-services/",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "835ba45fdd2290dedc8ec259e0056a901faa5405",
+      "data_vintage": "2026-09-05",
+      "timezone": "America/New_York",
+      "javascript": true,
+      "assertion": "at 390px the petition action meets the 24px target minimum, and at 200% zoom (320 CSS pixels, floored at the WCAG 1.4.10 reflow benchmark) the handoff keeps its exact target and receiving body with no horizontal overflow",
+      "observations": {
+        "profile_action_meets_the_target_minimum": true,
+        "every_handoff_link_is_at_least_one_line_tall": true,
+        "no_horizontal_overflow_at_100_percent": true,
+        "no_horizontal_overflow_at_200_percent_zoom": true,
+        "exact_target_survives_zoom": true,
+        "receiving_body_survives_zoom": true,
+        "zoomed_css_width": 320
+      },
+      "bytes": 2304321,
+      "sha256": "becdbcbf06a7b2e3bb3a1edce0b50ff536bb42b49b412932fa8a833f9dc53d09",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "zoom-and-touch-targets-1440x900.png",
+      "specimen": "zoom-and-touch-targets",
+      "route": "/agencies/small-business-services/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "835ba45fdd2290dedc8ec259e0056a901faa5405",
+      "data_vintage": "2026-09-05",
+      "timezone": "America/New_York",
+      "javascript": true,
+      "assertion": "at 1440px the petition action meets the 24px target minimum, and at 200% zoom (720 CSS pixels, floored at the WCAG 1.4.10 reflow benchmark) the handoff keeps its exact target and receiving body with no horizontal overflow",
+      "observations": {
+        "profile_action_meets_the_target_minimum": true,
+        "every_handoff_link_is_at_least_one_line_tall": true,
+        "no_horizontal_overflow_at_100_percent": true,
+        "no_horizontal_overflow_at_200_percent_zoom": true,
+        "exact_target_survives_zoom": true,
+        "receiving_body_survives_zoom": true,
+        "zoomed_css_width": 720
+      },
+      "bytes": 2521524,
+      "sha256": "fe1110ea3e2a6b2397734494da227484123a02e598b99f5d2af9d99f010855ab",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    }
+  ]
+}

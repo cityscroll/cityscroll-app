@@ -102,7 +102,14 @@ export function renderNodeActions(items = [], { ariaLabel = "Document actions", 
       return `<a class="${esc(classes)}" href="${esc(item.href || "#")}"${item.external ? ' target="_blank" rel="noopener noreferrer"' : ""}${attrPairs}>${esc(item.label)}</a>`;
     }
     if (item.kind === "source") {
-      return officialSourceLink({ href: item.href || "#", label: item.label, className: classes, attributes: item.attrs || {}, escape: esc });
+      return officialSourceLink({
+        href: item.href || "#",
+        label: item.label,
+        className: classes,
+        attributes: item.attrs || {},
+        escape: esc,
+        newTabLabel: item.newTabLabel || "",
+      });
     }
     return `<button class="${esc(classes)}" type="button"${attrPairs}>${esc(item.label)}</button>`;
   }).join("");

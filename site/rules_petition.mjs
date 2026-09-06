@@ -6,10 +6,25 @@
  * Agency names are publishable only when an explicit resolved identity is
  * supplied by the caller. A missing official form or guidance page is not
  * proof that petitioning is unavailable.
+ *
+ * An exact petition target additionally needs applicable institution-procedure
+ * evidence: a reviewed, source-backed petition procedure published for that
+ * same institution. Identity resolution plus the City's generic petition form
+ * establishes only general official guidance, which stays useful and clearly
+ * general. Absence of procedure evidence is missing evidence, never a finding
+ * that petitioning the institution is legally forbidden, and one institution's
+ * procedure never grounds a target on another.
  */
 
 export const RULEMAKING_PETITION_SCHEMA = "cityscroll.rulemaking_petition.v1";
 export const RULEMAKING_PETITION_COVERAGE_SCHEMA = "cityscroll.rulemaking_petition_coverage.v1";
+export const INSTITUTION_PETITION_PROCEDURE_SCHEMA = "cityscroll.institution_petition_procedures.v1";
+
+export const PETITION_PROCEDURE_BASES = Object.freeze([
+  "institution_procedure",
+  "general_official_guidance",
+  "unknown",
+]);
 
 export const PETITION_ACTION_TARGETS = Object.freeze([
   "exact_petition_target",
@@ -34,6 +49,7 @@ const DEFAULT_SOURCE_ROLES = Object.freeze({
   form_url: "petition_form",
   contact_lookup_url: "agency_contact_lookup",
   response_source_url: "petition_response_expectation",
+  institution_procedure_url: "institution_petition_procedure",
 });
 
 const clean = (value, max = 500) => String(value ?? "")
@@ -124,6 +140,52 @@ function explicitContact(input) {
   });
 }
 
+/**
+ * Normalize reviewed institution-procedure evidence.
+ *
+ * The evidence is applicable only when it names the *same* institution the
+ * caller already resolved, states that it covers rulemaking petitions, names a
+ * receiving body, and cites a published NYC Rules procedure. Anything short of
+ * that returns null, which downgrades the surface to general official guidance
+ * rather than asserting that petitioning is unavailable.
+ */
+function procedureEvidence(input, resolved) {
+  const value = input && typeof input === "object" ? input : null;
+  if (!value || !resolved) return null;
+  if (clean(value.applies_to, 80) !== "rulemaking_petition") return null;
+  const agencyId = clean(value.agency_id || value.canonical_id, 120).replace(/^agency:id:/, "");
+  // Authority is never transferred between institutions: one body's published
+  // procedure cannot ground an exact target on another body's profile.
+  if (!agencyId || agencyId !== resolved.canonical_id) return null;
+  const procedureUrl = officialUrl(value.procedure_url, ["rules.cityofnewyork.us"]);
+  const receivingBody = clean(value.receiving_body, 240);
+  if (!procedureUrl || !receivingBody) return null;
+  const responseSourceUrl = officialUrl(value.response_source_url, ["rules.cityofnewyork.us"]) || procedureUrl;
+  const responseDays = Number.isInteger(value.response_days) && value.response_days > 0 && value.response_days <= 3_650
+    ? value.response_days
+    : null;
+  const responseStatement = clean(value.response_statement, 500);
+  return Object.freeze({
+    role: DEFAULT_SOURCE_ROLES.institution_procedure_url,
+    agency_id: agencyId,
+    applies_to: "rulemaking_petition",
+    receiving_body: receivingBody,
+    procedure_title: clean(value.procedure_title, 240) || null,
+    procedure_url: procedureUrl,
+    procedure_text_url: officialUrl(value.procedure_text_url, ["rules.cityofnewyork.us"]),
+    destination_statement: clean(value.destination_statement, 500) || null,
+    response_source_url: responseSourceUrl,
+    response_days: responseDays,
+    response_statement: responseDays && responseStatement ? responseStatement : null,
+    legal_basis: clean(value.legal_basis, 240) || null,
+    rule_status: clean(value.rule_status, 80) || null,
+    effective_date: /^\d{4}-\d{2}-\d{2}$/.test(clean(value.effective_date, 10)) ? clean(value.effective_date, 10) : null,
+    source_system: "nyc_rules",
+    basis: clean(value.basis, 160) || "published_agency_rule",
+    source_vintage: clean(value.source_vintage, 20) || sourceVintageFromUrl(value.procedure_text_url) || null,
+  });
+}
+
 function petitionSupported({ entry_point, lifecycle_state }) {
   if (entry_point === "agency") return true;
   if (lifecycle_state === "effective") return true;
@@ -131,16 +193,24 @@ function petitionSupported({ entry_point, lifecycle_state }) {
   return false;
 }
 
+/**
+ * An exact target needs three things at once: a resolved institution identity,
+ * applicable procedure evidence for that same institution, and a reachable
+ * official destination. A resolved identity plus the City's generic form is
+ * general guidance, not an exact target.
+ */
 export function classifyPetitionActionTarget({
   agency = null,
+  procedure_evidence = null,
   form_url = null,
   guidance_url = null,
   entry_point = null,
   lifecycle_state = null,
 } = {}) {
   if (!petitionSupported({ entry_point, lifecycle_state })) return "no_supported_workflow";
-  if (agency && form_url) return "exact_petition_target";
-  if (form_url || guidance_url) return "action_only_guidance";
+  const procedureUrl = procedure_evidence?.procedure_url || null;
+  if (agency && procedure_evidence && (procedureUrl || form_url)) return "exact_petition_target";
+  if (form_url || guidance_url || procedureUrl) return "action_only_guidance";
   return "target_unknown";
 }
 
@@ -151,6 +221,7 @@ export function classifyPetitionActionTarget({
  */
 export function buildPetitionHandoff({
   agency_resolution = null,
+  procedure_evidence: procedure_evidence_input = null,
   contact = null,
   target = "adopt_amend_repeal",
   entry_point = null,
@@ -164,23 +235,35 @@ export function buildPetitionHandoff({
   void generic_clock_days;
   void emergency_clock_days;
   const resolved = agencyResolution(agency_resolution);
+  const procedure = procedureEvidence(procedure_evidence_input, resolved);
   const resolvedContact = explicitContact(contact);
   const source = mergeOfficialSources(sources);
   const indexed = [
+    procedure ? sourceRecord(DEFAULT_SOURCE_ROLES.institution_procedure_url, procedure.procedure_url) : null,
     source.page_url ? sourceRecord(DEFAULT_SOURCE_ROLES.page_url, source.page_url) : null,
     source.guidance_url ? sourceRecord(DEFAULT_SOURCE_ROLES.guidance_url, source.guidance_url) : null,
     source.form_url ? sourceRecord(DEFAULT_SOURCE_ROLES.form_url, source.form_url) : null,
     source.contact_lookup_url ? sourceRecord(DEFAULT_SOURCE_ROLES.contact_lookup_url, source.contact_lookup_url) : null,
   ].filter(Boolean);
-  const responseBacked = Boolean(source.response_source_url || source.page_url);
-  const responseUrl = source.response_source_url || source.page_url || null;
+  // A grounded institution procedure states its own response requirement, so
+  // the reader's response explanation cites that same procedure rather than the
+  // City-wide page.
+  const procedureResponse = procedure?.response_days ? procedure : null;
+  const responseBacked = Boolean(procedureResponse || source.response_source_url || source.page_url);
+  const responseUrl = procedureResponse
+    ? procedureResponse.response_source_url
+    : (source.response_source_url || source.page_url || null);
   const actionTarget = classifyPetitionActionTarget({
     agency: resolved,
+    procedure_evidence: procedure,
     form_url: source.form_url,
     guidance_url: source.guidance_url,
     entry_point,
     lifecycle_state,
   });
+  const procedureBasis = procedure
+    ? "institution_procedure"
+    : (source.form_url || source.guidance_url || source.page_url ? "general_official_guidance" : "unknown");
   const agencyEntry = entry_point === "agency"
     ? (resolved ? "available" : "unknown")
     : (entry_point === "effective_rule" ? "not_this_surface" : (resolved ? "available" : "unknown"));
@@ -206,7 +289,11 @@ export function buildPetitionHandoff({
         resolution: resolved,
       })
       : null,
+    procedure_basis: procedureBasis,
+    institution_procedure: procedure,
     official: Object.freeze({
+      institution_procedure_url: procedure?.procedure_url || null,
+      receiving_body: procedure?.receiving_body || null,
       page_url: source.page_url,
       guidance_url: source.guidance_url,
       form_url: source.form_url,
@@ -221,6 +308,8 @@ export function buildPetitionHandoff({
         form_vintage: sourceVintageFromUrl(source.form_url),
         guidance_vintage: sourceVintageFromUrl(source.guidance_url),
         procedure_page_vintage: sourceVintageFromUrl(source.page_url),
+        institution_procedure: procedure ? "applicable" : "absent",
+        institution_procedure_vintage: procedure?.source_vintage || null,
       }),
     }),
     purpose: Object.freeze([
@@ -230,20 +319,27 @@ export function buildPetitionHandoff({
     ]),
     response: responseBacked
       ? Object.freeze({
-        days: PETITION_RESPONSE_DAYS,
+        days: procedureResponse ? procedureResponse.response_days : PETITION_RESPONSE_DAYS,
         basis: "source_stated",
         source_url: responseUrl,
-        statement: "The agency must reply within 60 days.",
+        scope: procedureResponse ? "institution_procedure" : "general_official_guidance",
+        statement: procedureResponse
+          ? (procedureResponse.response_statement
+            || `The agency must reply within ${procedureResponse.response_days} days.`)
+          : "The agency must reply within 60 days.",
       })
       : Object.freeze({
         days: null,
         basis: "unknown",
         source_url: null,
+        scope: "unknown",
         statement: null,
       }),
-    procedure_source: source.page_url
-      ? sourceRecord("petition_procedure", source.page_url)
-      : Object.freeze({ role: "petition_procedure", url: null, source_url: null, source_system: "nyc_rules", basis: "unknown", source_vintage: null }),
+    procedure_source: procedure
+      ? sourceRecord("petition_procedure", procedure.procedure_url)
+      : source.page_url
+        ? sourceRecord("petition_procedure", source.page_url)
+        : Object.freeze({ role: "petition_procedure", url: null, source_url: null, source_system: "nyc_rules", basis: "unknown", source_vintage: null }),
     outcomes_source: source.page_url
       ? sourceRecord("petition_outcomes", source.page_url)
       : Object.freeze({ role: "petition_outcomes", url: null, source_url: null, source_system: "nyc_rules", basis: "unknown", source_vintage: null }),
@@ -258,6 +354,10 @@ export function buildPetitionHandoff({
     coverage: Object.freeze({
       procedure_mode: "rulemaking_petition",
       action_target: actionTarget,
+      procedure_basis: procedureBasis,
+      institution_procedure_evidence: procedure ? "applicable" : "absent",
+      // Absent evidence is an unproven target, never a legal prohibition.
+      missing_procedure_evidence_is_not_prohibition: true,
       agency_entry_point: agencyEntry,
       effective_rule_entry_point: ruleEntry,
       official_form: source.form_url ? "available" : "missing",
@@ -281,32 +381,50 @@ function officialLink(href, label) {
 export function renderPetitionHandoff(handoff, { mode = "agency" } = {}) {
   if (!handoff || handoff.schema !== RULEMAKING_PETITION_SCHEMA) return "";
   if (handoff.action_target === "no_supported_workflow") return "";
+  const procedure = handoff.institution_procedure || null;
+  const exact = handoff.action_target === "exact_petition_target" && Boolean(procedure);
   const agencyName = handoff.agency?.name || "this agency";
-  const heading = mode === "rule" ? `How to petition ${agencyName}` : "Petition this agency";
+  // Only a grounded institution procedure earns a heading that names an exact
+  // destination. Everything else is the City's general petition guidance.
+  const heading = exact
+    ? (mode === "rule" ? `How to petition ${agencyName}` : "Petition this agency")
+    : (mode === "rule" ? "How to petition an agency about this rule" : "How to petition a city agency");
   const identityCopy = handoff.agency
-    ? `CityScroll identified ${esc(agencyName)} from an explicit CityScroll–NYC Rules agency resolution.`
+    ? `CityScroll identified ${esc(agencyName)} from an explicit CityScroll\u2013NYC Rules agency resolution.`
     : "CityScroll could not resolve the responsible agency from an explicit NYC Rules agency record.";
+  const scopeCopy = exact
+    ? `<p class="rule-petition-scope">${esc(agencyName)} publishes its own rulemaking-petition procedure, so the destination and response below come from that procedure.</p>`
+    : `<p class="rule-petition-scope">This is the City's general rulemaking-petition guidance. CityScroll has not indexed a published petition procedure for ${esc(handoff.agency ? agencyName : "this body")}, so it does not name an exact destination here. That is missing evidence, not a finding that you cannot petition this body.</p>`;
+  const receivingBody = exact
+    ? `<p class="rule-petition-receiving-body"><strong>Where this petition goes:</strong> ${esc(procedure.receiving_body)}.${procedure.destination_statement ? ` ${esc(procedure.destination_statement)}` : ""} ${officialLink(procedure.procedure_url, `Read the published petition procedure${procedure.procedure_title ? ` \u2014 ${procedure.procedure_title}` : ""}`)}.${procedure.legal_basis ? ` <span class="muted">${esc(procedure.legal_basis)}</span>` : ""}</p>`
+    : "";
   const contact = handoff.contact
-    ? `<p class="rule-petition-contact"><strong>Official contact:</strong> ${handoff.contact.email ? `<a href="mailto:${esc(clean(handoff.contact.email, 240))}">${esc(clean(handoff.contact.email, 240))}</a>` : ""}${handoff.contact.email && handoff.contact.address ? " · " : ""}${handoff.contact.address ? esc(clean(handoff.contact.address, 500)) : ""} <a href="${esc(handoff.contact.source_url)}" target="_blank" rel="noopener noreferrer">Source</a></p>`
+    ? `<p class="rule-petition-contact"><strong>Official contact:</strong> ${handoff.contact.email ? `<a href="mailto:${esc(clean(handoff.contact.email, 240))}">${esc(clean(handoff.contact.email, 240))}</a>` : ""}${handoff.contact.email && handoff.contact.address ? " \u00b7 " : ""}${handoff.contact.address ? esc(clean(handoff.contact.address, 500)) : ""} <a href="${esc(handoff.contact.source_url)}" target="_blank" rel="noopener noreferrer">Source</a></p>`
     : (handoff.official.contact_lookup_url
-      ? `<p class="rule-petition-contact">An official submission contact is not resolved here. <a href="${esc(handoff.official.contact_lookup_url)}" target="_blank" rel="noopener noreferrer">Use the City's official agency-contact lookup</a>.</p>`
-      : `<p class="rule-petition-contact">An official submission contact is not resolved here, and the City's agency-contact lookup is not indexed.</p>`);
+      ? `<p class="rule-petition-contact">An official submission contact is not resolved here.${exact ? " The published procedure above still tells you where to send the petition." : ""} <a href="${esc(handoff.official.contact_lookup_url)}" target="_blank" rel="noopener noreferrer">Use the City's official agency-contact lookup</a>.</p>`
+      : `<p class="rule-petition-contact">An official submission contact is not resolved here, and the City's agency-contact lookup is not indexed.${exact ? " The published procedure above still tells you where to send the petition." : ""}</p>`);
   const formStep = handoff.official.form_url
     ? `Describe the rule you want adopted, amended, or repealed. ${officialLink(handoff.official.form_url, "Open the official petition form")}.`
     : "Describe the rule you want adopted, amended, or repealed. The official petition form is not indexed here.";
-  const guidanceStep = handoff.official.guidance_url
-    ? `Send the completed form to the responsible agency. ${officialLink(handoff.official.guidance_url, "Read the official guidance")}.`
-    : "Send the completed form to the responsible agency. Official guidance is not indexed here.";
+  const guidanceStep = exact
+    ? `Send the completed petition to ${esc(procedure.receiving_body)}, following the agency's published procedure. ${officialLink(procedure.procedure_text_url || procedure.procedure_url, "Read the adopted rule text")}.`
+    : (handoff.official.guidance_url
+      ? `Send the completed form to the responsible agency. ${officialLink(handoff.official.guidance_url, "Read the official guidance")}.`
+      : "Send the completed form to the responsible agency. Official guidance is not indexed here.");
   const responseStep = handoff.response.basis === "source_stated"
-    ? `Expect a response within 60 days. ${officialLink(handoff.response.source_url, "See the authoritative NYC Rules requirement")}.`
+    ? `${esc(handoff.response.statement)} ${officialLink(handoff.response.source_url, handoff.response.scope === "institution_procedure"
+      ? "See the agency's published response requirement"
+      : "See the authoritative NYC Rules requirement")}.`
     : "The agency's response deadline is not stated in the indexed official sources.";
   const outcomes = handoff.outcomes.length
     ? `<p class="rule-petition-outcomes"><strong>What may happen:</strong> the agency declines and gives its reason, or proceeds and initiates CAPA rulemaking.</p>`
     : `<p class="rule-petition-outcomes">Supported agency outcomes are not stated in the indexed official sources.</p>`;
-  return `<section id="${mode === "rule" ? "rulemaking-petition" : "agency-petition"}" class="rule-petition-handoff" data-petition-schema="${esc(handoff.schema)}" data-petition-state="${esc(handoff.state)}" data-contact-state="${esc(handoff.contact_state)}" data-action-target="${esc(handoff.action_target)}" data-response-basis="${esc(handoff.response.basis)}">
+  return `<section id="${mode === "rule" ? "rulemaking-petition" : "agency-petition"}" class="rule-petition-handoff" data-petition-schema="${esc(handoff.schema)}" data-petition-state="${esc(handoff.state)}" data-contact-state="${esc(handoff.contact_state)}" data-action-target="${esc(handoff.action_target)}" data-procedure-basis="${esc(handoff.procedure_basis)}" data-response-basis="${esc(handoff.response.basis)}">
     <h2>${esc(heading)}</h2>
-    <p>Petitioning asks an agency to begin rulemaking. It is different from commenting on an already-proposed rule.</p>
+    <p>Petitioning asks an agency to begin rulemaking. It is different from commenting on an already-proposed rule, and different again from speaking at a public hearing on one.</p>
     <p>${identityCopy}</p>
+    ${scopeCopy}
+    ${receivingBody}
     <ol class="rule-petition-steps">
       <li>${formStep}</li>
       <li>${guidanceStep}</li>
@@ -335,6 +453,8 @@ function bump(bag, key) {
 export function measurePetitionCoverage(cases = []) {
   const action_targets = Object.fromEntries(PETITION_ACTION_TARGETS.map((id) => [id, 0]));
   const response_expectation = { source_backed: 0, unknown: 0 };
+  const procedure_basis = Object.fromEntries(PETITION_PROCEDURE_BASES.map((id) => [id, 0]));
+  const institution_procedure_evidence = { applicable: 0, absent: 0 };
   const contacts = { resolved: 0, unresolved: 0, lookup_fallback: 0 };
   const petition_contract = {
     agency_entry_points: 0,
@@ -362,6 +482,8 @@ export function measurePetitionCoverage(cases = []) {
     const handoff = item?.handoff || item;
     if (!handoff || handoff.schema !== RULEMAKING_PETITION_SCHEMA) continue;
     bump(action_targets, handoff.action_target);
+    bump(procedure_basis, PETITION_PROCEDURE_BASES.includes(handoff.procedure_basis) ? handoff.procedure_basis : "unknown");
+    bump(institution_procedure_evidence, handoff.institution_procedure ? "applicable" : "absent");
     bump(response_expectation, handoff.response?.basis === "source_stated" ? "source_backed" : "unknown");
     bump(contacts, handoff.contact_state === "resolved"
       ? "resolved"
@@ -390,6 +512,11 @@ export function measurePetitionCoverage(cases = []) {
   return Object.freeze({
     schema: RULEMAKING_PETITION_COVERAGE_SCHEMA,
     action_targets: Object.freeze({ ...action_targets }),
+    procedure_basis: Object.freeze({ ...procedure_basis }),
+    institution_procedure_evidence: Object.freeze({
+      ...institution_procedure_evidence,
+      missing_procedure_evidence_is_not_prohibition: true,
+    }),
     response_expectation: Object.freeze({ ...response_expectation }),
     contacts: Object.freeze({ ...contacts }),
     petition_contract: Object.freeze({ ...petition_contract }),
@@ -412,4 +539,8 @@ export function measurePetitionCoverage(cases = []) {
   });
 }
 
-export { agencyResolution as normalizePetitionAgencyResolution, explicitContact as normalizePetitionContact };
+export {
+  agencyResolution as normalizePetitionAgencyResolution,
+  explicitContact as normalizePetitionContact,
+  procedureEvidence as normalizeInstitutionPetitionProcedure,
+};

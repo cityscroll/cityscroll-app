@@ -87,6 +87,7 @@ import { buildLocalConstellation } from "./local_constellation.mjs";
 import { buildDerivedFeatureRollup } from "./derived_feature_rollup.mjs";
 import { buildAgencyHorizon } from "./regulatory_agenda.mjs";
 import { NYC_RULES_PETITION_SOURCES, buildPetitionHandoff } from "./rules_petition.mjs";
+import defaultInstitutionPetitionProcedures from "./data/institution_petition_procedures.json" with { type: "json" };
 
 export const AGENCY_CONSTELLATION_SCHEMA = "cityscroll.agency_constellation.v1";
 export const AGENCY_CONSTELLATION_METHOD = "agency_constellation_v1";
@@ -1023,8 +1024,18 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
       basis: "cityscroll_nyc_rules_agency_crosswalk_v1",
     }
     : null);
+  // Identity resolution alone never establishes an exact petition target: the
+  // profile must also carry reviewed procedure evidence published for this same
+  // institution. Institutions without an entry keep the general official
+  // guidance, which is missing evidence rather than a legal prohibition.
+  const petitionProcedures = sources.institution_petition_procedures === undefined
+    ? defaultInstitutionPetitionProcedures
+    : sources.institution_petition_procedures;
   const petitionHandoff = buildPetitionHandoff({
     agency_resolution: petitionResolution,
+    procedure_evidence: petitionProcedures?.by_agency?.[identity.canonical_id]
+      || petitionProcedures?.[identity.canonical_id]
+      || null,
     contact: sources.rules_petition_contacts?.by_agency?.[identity.canonical_id]
       || sources.rules_petition_contacts?.[identity.canonical_id]
       || null,

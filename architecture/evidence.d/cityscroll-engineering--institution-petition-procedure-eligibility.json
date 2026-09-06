@@ -1,0 +1,13 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/institution-petition-procedure-eligibility",
+  "status": "implemented",
+  "fingerprint": "institution-petition-procedure-eligibility.v1",
+  "updated_at": "2026-09-05T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "institution-petition-procedures",
+      "path": "site/data/institution_petition_procedures.json"
+    }
+  ]
+}

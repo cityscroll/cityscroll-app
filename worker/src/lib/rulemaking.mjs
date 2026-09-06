@@ -11,6 +11,7 @@ import {
 import { buildRuleVersionsProjection } from "../../../site/rule_versions.mjs";
 import { resolveAgencyIdentity } from "../../../site/agency_identity.mjs";
 import { buildPetitionHandoff } from "../../../site/rules_petition.mjs";
+import institutionPetitionProcedures from "../../../site/data/institution_petition_procedures.json" with { type: "json" };
 import { buildRulesExceptionModesProjection } from "../../../site/rules_exception_modes.mjs";
 import { projectRulemakingAuthority } from "../../../site/rulemaking_authority.mjs";
 
@@ -219,8 +220,15 @@ function objectForRows(rows, options = {}) {
     events,
     now,
   });
+  const petitionResolution = petitionAgencyResolution(primary);
   const petitionHandoff = buildPetitionHandoff({
-    agency_resolution: petitionAgencyResolution(primary),
+    agency_resolution: petitionResolution,
+    // Same eligibility contract as the institution profile: the rule surface
+    // names an exact destination only when this institution publishes its own
+    // petition procedure.
+    procedure_evidence: petitionResolution?.canonical_id
+      ? institutionPetitionProcedures.by_agency?.[petitionResolution.canonical_id] || null
+      : null,
     contact: primary?.petition_contact || nycRules?.petition_contact,
     target: lifecycle.state === "effective" ? "amend_repeal" : "adopt_amend_repeal",
     entry_point: "effective_rule",

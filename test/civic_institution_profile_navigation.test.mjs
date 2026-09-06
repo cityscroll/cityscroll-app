@@ -28,6 +28,11 @@ import {
   NYCHA_CANONICAL_ID,
 } from "../site/civic_institution_governing_bodies.mjs";
 import { loadOntologyRegistry } from "../ontology/index.mjs";
+import { buildAgencyConstellationView } from "../site/agency_constellation_model.mjs";
+import { renderAgencyConstellationDocument } from "../site/agency_constellation.mjs";
+import { publisherAgencyRows } from "../tools/lib/agency_publisher_crosswalk.mjs";
+import agencyCrosswalk from "../worker/src/data/agency_crosswalk.json" with { type: "json" };
+import institutionPetitionProcedures from "../site/data/institution_petition_procedures.json" with { type: "json" };
 import { buildAgencyIdentityEvidence } from "../tools/lib/agency_identity_evidence.mjs";
 import { renderAgencyIndex } from "../tools/build_agency_documents.mjs";
 import edgeWorker from "../site/pages_edge.mjs";
@@ -354,4 +359,40 @@ test("unresolved and colliding routes render an evidence stop instead of a guess
   );
   assert.equal(alias.status, 308);
   assert.equal(alias.headers.get("Location"), "https://cityscroll.org/agencies/housing-authority/");
+});
+
+test("a reviewed route alias resolves identity without conferring an exact official action", () => {
+  const aliases = projectReviewedRouteAliases(REPORT);
+  const housing = aliases.find((edge) => edge.source_id === FIXTURES.housing_alias);
+  assert.equal(housing.canonical_id, NYCHA_CANONICAL_ID);
+
+  // Alias resolution is an identity fact. It carries no procedure evidence, so
+  // the profile it resolves to must not present an exact petition target.
+  const rows = publisherAgencyRows(agencyCrosswalk);
+  const resolved = buildAgencyConstellationView(housing.canonical_id, { publisher_agency_rows: rows });
+  assert.equal(resolved.petition_handoff.state, "ready");
+  assert.equal(resolved.petition_handoff.agency.id, NYCHA_CANONICAL_ID);
+  assert.equal(resolved.petition_handoff.action_target, "action_only_guidance");
+  assert.equal(resolved.petition_handoff.official.receiving_body, null);
+
+  // The same alias-resolved profile keeps the general official guidance usable.
+  const html = renderAgencyConstellationDocument(resolved);
+  assert.match(html, /How to petition a city agency/);
+  assert.doesNotMatch(html, /Petition this agency/);
+  assert.match(html, /official petition form/);
+});
+
+test("only institutions with reviewed procedure evidence expose an exact petition target", () => {
+  const rows = publisherAgencyRows(agencyCrosswalk);
+  const evidenced = Object.keys(institutionPetitionProcedures.by_agency);
+  assert.ok(evidenced.includes("small-business-services"));
+
+  // Every profile in the crosswalk, checked against the registry: an exact
+  // target appears only where the institution's own procedure is indexed.
+  const exact = [];
+  for (const row of rows) {
+    const view = buildAgencyConstellationView(row.canonical_id, { publisher_agency_rows: rows });
+    if (view?.petition_handoff?.action_target === "exact_petition_target") exact.push(row.canonical_id);
+  }
+  assert.deepEqual(exact.sort(), [...evidenced].sort());
 });

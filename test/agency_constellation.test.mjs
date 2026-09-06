@@ -572,9 +572,15 @@ test("shared agency template leads with compact actions and connected-record car
   assert.doesNotMatch(html, /class="node-pivot civic-object-pivot"/);
   assert.match(html, /class="agency-hero-meta"/);
   assert.match(primaryActions, /aria-label="Primary agency actions"/);
-  assert.equal((primaryActions.match(/<a class="node-action/g) || []).length, 4);
+  assert.equal((primaryActions.match(/<a class="/g) || []).length, 4);
   assert.match(primaryActions, />Follow this agency<\/a>/);
-  assert.match(primaryActions, />Petition this agency<\/a>/);
+  // Parks publishes no rulemaking-petition procedure of its own, so the action
+  // offers the City's general guidance and carries external-link semantics.
+  assert.match(primaryActions, /class="ui-official-source-link node-action[^"]*"[^>]*target="_blank" rel="noopener noreferrer"/);
+  assert.match(primaryActions, /How to petition a city agency/);
+  assert.match(primaryActions, /data-action-target="action_only_guidance"/);
+  assert.match(primaryActions, /opens the official page in a new tab/);
+  assert.doesNotMatch(primaryActions, />Petition this agency<\/a>/);
   assert.match(primaryActions, />View contracts<\/a>/);
   assert.match(primaryActions, /href="#edge-provenance"[^>]*>Connection evidence<\/a>/);
   assert.doesNotMatch(primaryActions, /Expected mandate events|Report mandates|Rulemaking mandates|Interactive profile|Copy link|Print|Download/);
