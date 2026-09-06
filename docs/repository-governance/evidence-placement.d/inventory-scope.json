@@ -1,0 +1,19 @@
+{
+  "schema": "cityscroll.repository-governance.evidence-placement-shard.v1",
+  "id": "inventory-scope",
+  "owner": "inventory-scope",
+  "card": "cityscroll-engineering/private-generated-evidence-placement",
+  "input_revision": "c9b83920345a2e1172390eafb3af6e7bd35651b2",
+  "updated_at": "2026-08-31T00:00:00.000Z",
+  "value": {
+    "document_trees": [
+      "docs",
+      "docs/evidence",
+      "docs/performance",
+      "docs/screenshots"
+    ],
+    "document_count": 51,
+    "reference_count": 2644,
+    "unresolved_research_owner": "register:cityscroll-engineering/private-generated-evidence-placement#private-research"
+  }
+}

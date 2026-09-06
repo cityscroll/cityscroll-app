@@ -150,8 +150,8 @@ docs/evidence/working-copy-reduction/raw/closure/architecture-reconcile.json
 docs/evidence/working-copy-reduction/raw/closure/card-profile-contract.json
 docs/evidence/working-copy-reduction/raw/closure/card-reconciliation.json
 docs/evidence/working-copy-reduction/raw/closure/worker-unit.json
-docs/repository-control-plane/agents-router-policy.v1.json
-docs/repository-control-plane/agents-router-receipt.v1.json
+docs/repository-governance/agents-router-policy.v1.json
+docs/repository-governance/agents-router-receipt.v1.json
 entity_resolution/README.md
 entity_resolution/authority_keys/index.mjs
 entity_resolution/candidate_generation/boards_wall.mjs
@@ -1097,7 +1097,7 @@ test/fixtures/land_prediction_features/unknown.json
 test/fixtures/land_prediction_shadow/gold.v1.json
 test/fixtures/land_use_action_type/2024M0158.json
 test/fixtures/procurement_search/golden_cohort.json
-test/fixtures/repository_control_plane/positive/test-example.mjs
+test/fixtures/repository_governance/positive/test-example.mjs
 test/fixtures/rules_stage/20260728026.json
 test/fixtures/rum_semantic_components.mjs
 test/fixtures/source_contracts/mocs-field-case.json
@@ -1122,6 +1122,9 @@ test/gen_changelog_restamp.test.mjs
 test/generation_output_guard.test.mjs
 test/geocoder_snapshot.test.mjs
 test/geolocation_gesture_gate.test.mjs
+test/governance_cutover_receipt.test.mjs
+test/governance_evidence_placement.test.mjs
+test/governance_semantic_owner_receipt.test.mjs
 test/graph_edge_provenance.test.mjs
 test/hash_routes.test.mjs
 test/hearing_logistics.test.mjs
@@ -1358,9 +1361,6 @@ test/qr_share.test.mjs
 test/qr_share_preflight_split.test.mjs
 test/quiz_narrow_resolve.test.mjs
 test/rc2_dependent_fields.test.mjs
-test/rcp01_semantic_owner_receipt.test.mjs
-test/rcp03_evidence_placement.test.mjs
-test/rcp05_cutover_receipt.test.mjs
 test/reconcile_architecture.test.mjs
 test/refresh_live_derived_kv_workflows.test.mjs
 test/refresh_preset_fallback_workflow.test.mjs
@@ -1371,7 +1371,7 @@ test/report_adjudication.test.mjs
 test/report_issue_ui.test.mjs
 test/report_target.test.mjs
 test/reports_domain_observations.test.mjs
-test/repository_control_plane_manifest.test.mjs
+test/repository_governance_manifest.test.mjs
 test/research_package.test.mjs
 test/resident_snapshot_queries.test.mjs
 test/resident_surface_catalog.test.mjs
@@ -1752,6 +1752,9 @@ tools/flywheel-run.mjs
 tools/gen_changelog.mjs
 tools/generate_source_docs.mjs
 tools/generation_output_guard.mjs
+tools/governance_cutover_receipt.mjs
+tools/governance_evidence_placement.mjs
+tools/governance_semantic_owner_receipt.mjs
 tools/home_cold_load.mjs
 tools/intelligence_flywheel.mjs
 tools/intelligence_receipt.mjs
@@ -1822,9 +1825,6 @@ tools/performance_metric_catalog.mjs
 tools/post_flip_checks.mjs
 tools/project_connections_smoke.mjs
 tools/property_a11y_census.mjs
-tools/rcp01_semantic_owner_receipt.mjs
-tools/rcp03_evidence_placement.mjs
-tools/rcp05_cutover_receipt.mjs
 tools/read_rum_drift.mjs
 tools/rebuild_flywheel_ledger.mjs
 tools/reconcile-money-ledger.mjs
@@ -1836,7 +1836,7 @@ tools/render_civic_action_paths_after.mjs
 tools/render_community_board_ways_to_participate.mjs
 tools/render_digest_awareness_evidence.mjs
 tools/render_process_conformance_fixture.mjs
-tools/repository_control_plane_manifest.mjs
+tools/repository_governance_manifest.mjs
 tools/retain_person_hub_source_records.mjs
 tools/retain_ulurp_recommendation_rows_source_records.mjs
 tools/retain_ulurp_recommendation_source_records.mjs

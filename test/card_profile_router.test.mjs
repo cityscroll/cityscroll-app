@@ -46,7 +46,7 @@ test("every other declared surface selects the full control, with a recorded rea
     "deployment",
     "release-surface",
     "architecture",
-    "repository-control-plane",
+    "repository-governance",
     "evidence",
     "complete-history"
   ];

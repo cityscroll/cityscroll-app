@@ -6,8 +6,8 @@
 {"command": "node tools/backtest_architecture_canaries.mjs --check", "exit_status": 0, "id": "architecture-canaries", "test_counts": null}
 {"command": "node tools/card_reconciliation_guard.mjs", "exit_status": 0, "id": "card-reconciliation", "test_counts": null}
 {"command": "node tools/build_capability_topology.mjs --check", "exit_status": 0, "id": "card-projection", "test_counts": null}
-{"command": "node tools/rcp03_evidence_placement.mjs --check", "exit_status": 0, "id": "evidence-placement", "test_counts": null}
-{"command": "node tools/rcp05_cutover_receipt.mjs --check", "exit_status": 0, "id": "cutover-receipt", "test_counts": null}
+{"command": "node tools/governance_evidence_placement.mjs --check", "exit_status": 0, "id": "evidence-placement", "test_counts": null}
+{"command": "node tools/governance_cutover_receipt.mjs --check", "exit_status": 0, "id": "cutover-receipt", "test_counts": null}
 {"command": "node tools/agents_router_guard.mjs --check", "exit_status": 0, "id": "agents-router", "test_counts": null}
 {"command": "node tools/check_stale_repo_name.mjs", "exit_status": 0, "id": "legacy-name-guard", "test_counts": null}
 {"command": "node tools/verify_source_contracts.mjs", "exit_status": 0, "id": "source-contracts", "test_counts": null}

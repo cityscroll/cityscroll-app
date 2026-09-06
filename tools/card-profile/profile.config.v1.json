@@ -150,7 +150,7 @@
     },
     {
       "id": "evidence-placement",
-      "title": "RCP-03 evidence placement receipt",
+      "title": "Evidence placement receipt",
       "reason": "Measured to read 3,535 tracked paths totalling 615.4 MiB, which is close to the whole tracked tree."
     },
     {
@@ -180,7 +180,7 @@
     },
     {
       "id": "cutover-receipt",
-      "title": "Repository control-plane cutover receipt",
+      "title": "Repository governance cutover receipt",
       "reason": "It asserts that every retained evidence projection resolves on disk, and it does so with an existence check rather than a content read. CI-09's recorder deliberately records only content reads, because recording metadata probes grew the closure to the whole tracked tree, so this gate's true closure was never observed. Its retained set reaches into site/data, warehouse/ and docs/screenshots, which the profile defers, and it was measured failing in a reduced checkout at this revision."
     }
   ],

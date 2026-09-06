@@ -99,5 +99,5 @@ against this PR's own diff caught the `awardContext()` gap in row #1 above that 
 fixture-test pass had missed.
 
 The runner is intentionally manual and informational in the current commit. Its trigger and
-enforcement status are not decided by this document; the RCP-01 receipt records that no unique
+enforcement status are not decided by this document; the semantic-owner receipt records that no unique
 semantic owner was established during migration.

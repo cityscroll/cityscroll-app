@@ -34,7 +34,7 @@ one-in-one-out ledger for anything retired.
 ## Surface examples
 
 The five historical rollout candidates are reconciled in the
-[RCP-01 semantic-owner receipt](repository-control-plane/semantic-owner-mapping.v1.json).
+[semantic-owner receipt](repository-governance/semantic-owner-mapping.v1.json).
 Their former repository-local status is not proof of a canonical card or completion.
 
 ### Contracts / Money (`#`)

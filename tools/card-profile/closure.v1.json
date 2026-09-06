@@ -2,7 +2,7 @@
   "schema": "cityscroll.card-profile.closure.v1",
   "profile": "card-work",
   "generated_by": "node tools/derive_card_profile.mjs",
-  "config_sha256": "c111a7264865fc3e24b85bbf7ae57e7ac75410b04bedb7ad74d42443d407e2c4",
+  "config_sha256": "f54e9351368a95c8f35a61f1371fd1769a1b4839c71ee0816095cf2c98ebd3ce",
   "inventories": {
     "description": "Derived path inventories, one sorted repository path per line, stored beside this contract so concurrent changes extend different lines instead of rewriting a shared aggregate. Read them through tools/card_profile_closure.mjs, which sorts and deduplicates, never positionally.",
     "directory": "tools/card-profile/closure.d",
@@ -128,7 +128,7 @@
     },
     {
       "id": "evidence-placement",
-      "title": "RCP-03 evidence placement receipt",
+      "title": "Evidence placement receipt",
       "reason": "Measured to read 3,535 tracked paths totalling 615.4 MiB, which is close to the whole tracked tree."
     },
     {
@@ -158,7 +158,7 @@
     },
     {
       "id": "cutover-receipt",
-      "title": "Repository control-plane cutover receipt",
+      "title": "Repository governance cutover receipt",
       "reason": "It asserts that every retained evidence projection resolves on disk, and it does so with an existence check rather than a content read. CI-09's recorder deliberately records only content reads, because recording metadata probes grew the closure to the whole tracked tree, so this gate's true closure was never observed. Its retained set reaches into site/data, warehouse/ and docs/screenshots, which the profile defers, and it was measured failing in a reduced checkout at this revision."
     }
   ],

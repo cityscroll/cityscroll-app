@@ -7,7 +7,7 @@
   "projections": [
     {
       "id": "repository-inverse-guard-classification",
-      "path": "docs/repository-control-plane/inverse-guard.v1.json"
+      "path": "docs/repository-governance/inverse-guard.v1.json"
     },
     {
       "id": "repository-inverse-guard",

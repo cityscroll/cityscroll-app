@@ -7,15 +7,15 @@
   "projections": [
     {
       "id": "repository-cutover-inputs",
-      "path": "docs/repository-control-plane/cutover.d"
+      "path": "docs/repository-governance/cutover.d"
     },
     {
       "id": "repository-cutover-input-schema",
-      "path": "docs/repository-control-plane/cutover-shard.v1.schema.json"
+      "path": "docs/repository-governance/cutover-shard.v1.schema.json"
     },
     {
       "id": "repository-cutover-validator",
-      "path": "tools/rcp05_cutover_receipt.mjs"
+      "path": "tools/governance_cutover_receipt.mjs"
     }
   ]
 }

@@ -325,7 +325,7 @@ probe gate-refused-evidence-placement "$FOCUSED_DEST" 3 \
   "A full-checkout-only gate class is refused by the front door before it runs, carrying the routing rule that refused it." \
   node tools/verify_card_profile.mjs --gate evidence-placement
 probe gate-refused-cutover-receipt "$FOCUSED_DEST" 3 \
-  "The control-plane cutover receipt is refused too. CI-09 declared it profile-supported on a recorded read set; it asserts that retained evidence projections resolve with an existence check, which that recording could not see, so this card reclassified it." \
+  "The repository governance cutover receipt is refused too. CI-09 declared it profile-supported on a recorded read set; it asserts that retained evidence projections resolve with an existence check, which that recording could not see, so this card reclassified it." \
   node tools/verify_card_profile.mjs --gate cutover-receipt
 probe merge-base-resolves "$FOCUSED_DEST" zero \
   "The routed reduced profile keeps complete commit history, so a guard that resolves a merge base against the default branch still works in it." \
@@ -530,8 +530,8 @@ CONTROL_DISPLAY_CMD=""
 control_gate architecture-canaries node tools/backtest_architecture_canaries.mjs --check
 control_gate card-reconciliation node tools/card_reconciliation_guard.mjs
 control_gate card-projection node tools/build_capability_topology.mjs --check
-control_gate evidence-placement node tools/rcp03_evidence_placement.mjs --check
-control_gate cutover-receipt node tools/rcp05_cutover_receipt.mjs --check
+control_gate evidence-placement node tools/governance_evidence_placement.mjs --check
+control_gate cutover-receipt node tools/governance_cutover_receipt.mjs --check
 control_gate agents-router node tools/agents_router_guard.mjs --check
 control_gate legacy-name-guard node tools/check_stale_repo_name.mjs
 control_gate source-contracts node tools/verify_source_contracts.mjs

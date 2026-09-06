@@ -9,7 +9,7 @@ import { classifyPath, evaluate, scanDocument, validateManifest } from "../tools
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const FIXTURES = "test/fixtures/inverse-control-plane";
-const manifest = JSON.parse(readFileSync(join(ROOT, "docs/repository-control-plane/inverse-guard.v1.json"), "utf8"));
+const manifest = JSON.parse(readFileSync(join(ROOT, "docs/repository-governance/inverse-guard.v1.json"), "utf8"));
 const architecture = aggregateArchitectureEvidence({ root: ROOT });
 
 function fixture(kind, name) {

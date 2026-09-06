@@ -24,7 +24,7 @@
     "docs/evidence/working-copy-reduction/raw/object-integrity.json",
     "docs/evidence/working-copy-reduction/raw/product-surface.json",
     "docs/evidence/working-copy-reduction/raw/provisioning-timings.jsonl",
-    "docs/repository-control-plane/agents-router-receipt.v1.json",
+    "docs/repository-governance/agents-router-receipt.v1.json",
     "test/card_profile.test.mjs",
     "test/fixtures/card-profile/swallowed-missing-input.mjs",
     "tools/card-profile/card-work.sparse",

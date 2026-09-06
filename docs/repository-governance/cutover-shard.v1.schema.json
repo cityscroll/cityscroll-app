@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cityscroll.org/schemas/repository-governance-cutover-shard.v1.schema.json",
+  "title": "CityScroll repository governance cutover input v1",
+  "type": "object",
+  "required": ["schema", "id", "owner", "card", "kind", "updated_at", "value"],
+  "properties": {
+    "schema": { "const": "cityscroll.repository-governance.cutover-shard.v1" },
+    "id": { "type": "string", "pattern": "^[a-z0-9]+(?:[._-][a-z0-9]+)*$" },
+    "owner": { "type": "string", "minLength": 1 },
+    "card": { "const": "cityscroll-engineering/cutover-without-product-or-evidence-loss" },
+    "kind": { "enum": ["migration", "constant"] },
+    "updated_at": { "type": "string", "format": "date-time" },
+    "value": { "type": "object" }
+  },
+  "additionalProperties": false
+}

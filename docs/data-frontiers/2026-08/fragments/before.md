@@ -2,7 +2,7 @@
 
 # Data frontiers: August 2026
 
-This evidence inventory records source access, measured join feasibility, and observed reader consequences for 33 source frontiers. Canonical ownership and disposition are recorded in the [RCP-01 semantic-owner receipt](repository-control-plane/semantic-owner-mapping.v1.json).
+This evidence inventory records source access, measured join feasibility, and observed reader consequences for 33 source frontiers. Canonical ownership and disposition are recorded in the [semantic-owner receipt](repository-governance/semantic-owner-mapping.v1.json).
 
 The inventory is evidence, not a work queue. Rows include landed sources, timing states that should remain empty, and publication limits. Their measurements remain available without implying priority or implementation status.
 

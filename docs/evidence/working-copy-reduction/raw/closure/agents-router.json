@@ -9,8 +9,8 @@
   "path_count": 4,
   "paths": [
     "AGENTS.md",
-    "docs/repository-control-plane/agents-router-policy.v1.json",
-    "docs/repository-control-plane/agents-router-receipt.v1.json",
+    "docs/repository-governance/agents-router-policy.v1.json",
+    "docs/repository-governance/agents-router-receipt.v1.json",
     "tools/agents_router_guard.mjs"
   ]
 }

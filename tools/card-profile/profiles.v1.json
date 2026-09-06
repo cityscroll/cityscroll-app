@@ -110,7 +110,7 @@
         "deployment",
         "release-surface",
         "architecture",
-        "repository-control-plane",
+        "repository-governance",
         "evidence",
         "complete-history"
       ],
@@ -179,12 +179,12 @@
       "local_gate_note": "The architecture shard, reconcile and canary --check commands are individually profile-supported gate classes and may be run in a reduced checkout through the gate front door. This surface is the evidence-producing run."
     },
     {
-      "id": "repository-control-plane",
-      "title": "Repository control-plane checks",
+      "id": "repository-governance",
+      "title": "Repository governance checks",
       "profile": "full",
       "full_only": true,
-      "reason": "The RCP-03 evidence-placement receipt was measured reading 3,535 tracked paths totalling 615.4 MiB, close to the whole tracked tree, and the per-tree inputs it derives from span every documentation tree.",
-      "local_gate_note": "No control-plane check is profile-supported. CI-09 declared the RCP-05 cutover receipt supported on a recorded read set of 66 tracked paths; that recording could not see the check's existence assertions over retained evidence projections, which reach into deferred trees, and this card measured it failing in a provisioned reduced checkout and reclassified it."
+      "reason": "The evidence-placement receipt was measured reading 3,535 tracked paths totalling 615.4 MiB, close to the whole tracked tree, and the per-tree inputs it derives from span every documentation tree.",
+      "local_gate_note": "No repository governance check is profile-supported. CI-09 declared the cutover receipt supported on a recorded read set of 66 tracked paths; that recording could not see the check's existence assertions over retained evidence projections, which reach into deferred trees, and this card measured it failing in a provisioned reduced checkout and reclassified it."
     },
     {
       "id": "evidence",
@@ -221,7 +221,7 @@
       "id": "full-only-surface",
       "when": "the requested surface is declared full_only",
       "outcome": "full",
-      "reason": "CI, unit, accessibility, artifact, deployment, release-surface, architecture, repository-control-plane, evidence and complete-history work is provisioned as the full-checkout control."
+      "reason": "CI, unit, accessibility, artifact, deployment, release-surface, architecture, repository-governance, evidence and complete-history work is provisioned as the full-checkout control."
     },
     {
       "order": 4,

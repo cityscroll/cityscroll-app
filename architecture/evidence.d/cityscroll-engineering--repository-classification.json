@@ -6,12 +6,12 @@
   "updated_at": "2026-08-31T00:00:00.000Z",
   "projections": [
     {
-      "id": "repository-control-plane-classification",
-      "path": "docs/repository-control-plane/classification.v1.json"
+      "id": "repository-governance-classification",
+      "path": "docs/repository-governance/classification.v1.json"
     },
     {
-      "id": "repository-control-plane-validator",
-      "path": "tools/repository_control_plane_manifest.mjs"
+      "id": "repository-governance-validator",
+      "path": "tools/repository_governance_manifest.mjs"
     }
   ]
 }

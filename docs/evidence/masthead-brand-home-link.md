@@ -112,7 +112,7 @@ python3 test/standards/i18n_glossary.py                      # OK
 python3 test/standards/es_diacritics.py                      # OK
 ./tools/with_local_a11y_python.sh python3 tools/capture_masthead_brand_home_link.py  # evidence + behavior assertions
 node tools/architecture_evidence_shards.mjs --check          # OK
-node tools/rcp03_evidence_placement.mjs --check              # OK, no placement input changed
+node tools/governance_evidence_placement.mjs --check              # OK, no placement input changed
 make prepush                                                 # full required-check battery
 ```
 

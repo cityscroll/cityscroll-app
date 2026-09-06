@@ -204,7 +204,7 @@ run_gate_family() {
     probe_gate "$checkout" "$profile" architecture-canaries node tools/verify_card_profile.mjs --gate architecture-canaries -- node tools/backtest_architecture_canaries.mjs --check
     probe_gate "$checkout" "$profile" card-reconciliation node tools/verify_card_profile.mjs --gate card-reconciliation -- node tools/card_reconciliation_guard.mjs
     probe_gate "$checkout" "$profile" agents-router node tools/verify_card_profile.mjs --gate agents-router -- node tools/agents_router_guard.mjs --check
-    probe_gate "$checkout" "$profile" cutover-receipt node tools/verify_card_profile.mjs --gate cutover-receipt -- node tools/rcp05_cutover_receipt.mjs --check
+    probe_gate "$checkout" "$profile" cutover-receipt node tools/verify_card_profile.mjs --gate cutover-receipt -- node tools/governance_cutover_receipt.mjs --check
     probe_gate "$checkout" "$profile" card-profile-contract node tools/verify_card_profile.mjs --gate card-profile-contract -- node tools/verify_card_profile.mjs --check
   else
     probe_gate "$checkout" "$profile" worker-unit bash -c 'cd worker && node --test'
@@ -213,9 +213,9 @@ run_gate_family() {
     probe_gate "$checkout" "$profile" architecture-canaries node tools/backtest_architecture_canaries.mjs --check
     probe_gate "$checkout" "$profile" card-reconciliation node tools/card_reconciliation_guard.mjs
     probe_gate "$checkout" "$profile" agents-router node tools/agents_router_guard.mjs --check
-    probe_gate "$checkout" "$profile" cutover-receipt node tools/rcp05_cutover_receipt.mjs --check
+    probe_gate "$checkout" "$profile" cutover-receipt node tools/governance_cutover_receipt.mjs --check
     probe_gate "$checkout" "$profile" card-profile-contract node tools/verify_card_profile.mjs --check
-    probe_gate "$checkout" "$profile" evidence-placement node tools/rcp03_evidence_placement.mjs --check
+    probe_gate "$checkout" "$profile" evidence-placement node tools/governance_evidence_placement.mjs --check
     probe_gate "$checkout" "$profile" site-unit bash -c 'node --test test/contract/*.test.mjs'
     probe_gate "$checkout" "$profile" generated-source-docs node tools/generate_source_docs.mjs --check
     probe_gate "$checkout" "$profile" site-standards python3 test/standards/js_syntax.py
