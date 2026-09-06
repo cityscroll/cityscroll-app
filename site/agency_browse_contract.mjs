@@ -7,6 +7,7 @@
  */
 
 import { BROWSE_FACETS, buildBrowseView } from "./browse_view.mjs";
+import { INSTITUTION_RECORD_CAPACITIES } from "./civic_institution_record_capacity.mjs";
 
 export const AGENCY_BROWSE_PREVIEW_LIMIT = 8;
 
@@ -25,6 +26,49 @@ function day(value) {
 
 function agencyId(identity) {
   return clean(identity?.canonical_id || identity, 120);
+}
+
+/**
+ * The Browse query for one institution capacity.
+ *
+ * A capacity's preview and its Browse-all destination must be the same
+ * question. Both are built from this one place: the same entity ref, the same
+ * capacity relation, the same mode. A capacity with no reader-facing scope
+ * returns nothing rather than a query that would answer a different question.
+ */
+export function agencyCapacityBrowseSearchParams(identity, capacityId, { asOf = "" } = {}) {
+  const capacity = Object.values(INSTITUTION_RECORD_CAPACITIES)
+    .find((entry) => entry.capacity_id === clean(capacityId, 80));
+  if (!capacity) return null;
+  const params = agencyBrowseSearchParams(identity, capacity.browse_relation, {
+    mode: capacity.browse_facet === "contracts" ? "archive" : "",
+    asOf,
+  });
+  return { capacity, facet: capacity.browse_facet, search: params };
+}
+
+/**
+ * Run a capacity's Browse query over the payload the destination itself reads,
+ * so the preview list, its count, and the Browse-all page cannot disagree.
+ */
+export function buildAgencyCapacityBrowseContract({
+  identity,
+  capacityId,
+  payload,
+  limit = AGENCY_BROWSE_PREVIEW_LIMIT,
+} = {}) {
+  const built = agencyCapacityBrowseSearchParams(identity, capacityId, {
+    asOf: payload?.open_as_of || payload?.generated_at || payload?.retrieved_at,
+  });
+  if (!built || !BROWSE_FACETS[built.facet] || !payload || typeof payload !== "object") return null;
+  const view = buildBrowseView(built.facet, payload, built.search, { limit });
+  return {
+    ...view,
+    capacity_id: built.capacity.capacity_id,
+    facet: built.facet,
+    relation: built.capacity.browse_relation,
+    search: built.search,
+  };
 }
 
 /** Build the exact query carried by an agency category's Browse action. */

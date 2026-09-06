@@ -33,6 +33,20 @@ import {
 import { buildAgencyVendorRollups } from "../site/agency_vendor_rollup.mjs";
 import { ACCEPTED_IDENTITY_CLASSIFICATIONS } from "../site/agency_search_producer.mjs";
 import { buildAgencyIdentityEvidence } from "./lib/agency_identity_evidence.mjs";
+import {
+  CIVIC_INSTITUTION_PARTY_SPELLINGS,
+  civicInstitutionIdForPartyValue,
+} from "../site/civic_institution_party_spellings.mjs";
+import {
+  buildInstitutionRecordCapacityView,
+  institutionRecordCapacities,
+  institutionRecordCapacityIndex,
+} from "../site/civic_institution_record_capacity.mjs";
+import { buildAgencyCapacityBrowseContract } from "../site/agency_browse_contract.mjs";
+import { BROWSE_FACETS } from "../site/browse_view.mjs";
+import { canonicalizeBrowseUrl } from "../site/route_migration.mjs";
+import { developmentRolesForInstitution } from "../site/civic_institution_development_roles.mjs";
+import { BOROUGH_BOARD_NOTICE_ID, SBS_MASTER_SOURCE_REF } from "../site/civic_institution_development_specimens.mjs";
 import { accountabilitySourcesFromLookup } from "../site/civic_institution_accountability.mjs";
 import {
   BROOKLYN_OFFICE_CANONICAL_ID,
@@ -197,34 +211,113 @@ function governingBodySourcesFor(id, sources) {
   };
 }
 
+/**
+ * Every retained row that names a reviewed party, not a named specimen.
+ *
+ * The previous selection looked up one project id and one EPIN, so the role
+ * edges only ever described those two records. Selecting by the reviewed party
+ * field instead is what makes the mapping general: any retained contract whose
+ * vendor and agency fields are reviewed spellings, and any retained project
+ * whose applicant field is one, mints the same typed role.
+ */
 function developmentRoleSourcesFor(id, sources) {
-  if (id !== "economic-development-corporation" && id !== "small-business-services") return null;
-  const projects = sources.land_default?.projects || sources.land_default?.rows || sources.land_projects?.rows || [];
-  const project = projects.find((row) => String(row?.project_id || "").trim() === "2024Q0135") || null;
-  const procurementRows = sources.procurement_browse?.rows || [];
-  const procurement = procurementRows.find((row) => String(row?.pin || "").trim() === "80125S0021001") || null;
+  const institutions = new Set(CIVIC_INSTITUTION_PARTY_SPELLINGS.map((entry) => entry.canonical_id));
+  if (!institutions.has(id)) return null;
+  const landRows = sources.land_default?.projects || sources.land_default?.rows || [];
+  const zapRows = sources.land_projects?.rows || sources.land_projects?.projects || [];
+  const projects = [...landRows, ...zapRows].filter((row) =>
+    civicInstitutionIdForPartyValue("primary_applicant", row?.primary_applicant));
+  const procurements = (sources.procurement_browse?.rows || []).filter((row) =>
+    civicInstitutionIdForPartyValue("vendor_name", row?.vendor_name)
+    && civicInstitutionIdForPartyValue("agency_name", row?.agency_name));
   const meetings = sources.meetings_domain?.meetings || sources.meetings_domain?.rows || sources.meetings_domain || [];
   const meetingList = Array.isArray(meetings) ? meetings : [];
-  const boroughBoardMeeting = meetingList.find((row) => String(row?.request_id || "").trim() === "20260518003") || null;
+  const boroughBoardMeeting = meetingList.find((row) => String(row?.request_id || "").trim() === BOROUGH_BOARD_NOTICE_ID) || null;
   const bblRows = sources.zap_bbl?.rows || sources.zap_bbl?.projects || (Array.isArray(sources.zap_bbl) ? sources.zap_bbl : []);
-  const bblHit = bblRows.find((row) => String(row?.project_id || "").trim() === "2024Q0135");
+  const projectIds = new Set(projects.map((row) => String(row?.project_id || "").trim()).filter(Boolean));
+  const projectBblsById = {};
+  for (const row of bblRows) {
+    const projectId = String(row?.project_id || "").trim();
+    if (!projectId || !projectIds.has(projectId) || !Array.isArray(row?.bbls)) continue;
+    projectBblsById[projectId] = row.bbls;
+  }
   return {
-    project,
-    procurement,
-    procurementObservations: procurement ? [{
-      source_observation_ref: "passport_public_contracts:contract:80125S0021001:5503551",
-      source_system: "passport_public_contracts",
-      snapshot: {
-        epin: procurement.pin,
-        agency: procurement.agency_name,
-        vendor: procurement.vendor_name,
-        title: procurement.short_title,
-      },
-      ingested_at: procurement.start_date,
-    }] : [],
+    projects,
+    procurements,
+    // The PASSPort master row's retained observation is the one hydrated
+    // snapshot this build carries; every other row cites its own retained ref.
+    procurementObservations: procurements
+      .filter((row) => (row.source_observation_refs || []).includes(SBS_MASTER_SOURCE_REF))
+      .map((row) => ({
+        source_observation_ref: SBS_MASTER_SOURCE_REF,
+        source_system: "passport_public_contracts",
+        snapshot: {
+          epin: row.pin,
+          agency: row.agency_name,
+          vendor: row.vendor_name,
+          title: row.short_title,
+        },
+        ingested_at: row.start_date,
+      })),
     boroughBoardMeeting,
-    projectBbls: Array.isArray(bblHit?.bbls) ? bblHit.bbls : [],
+    projectBblsById,
   };
+}
+
+/**
+ * Capacity groups whose preview, count, and Browse destination are one query.
+ *
+ * Each capacity runs against the payload its own Browse route reads, so a
+ * reader who follows "Browse all" lands on the same set the profile counted.
+ */
+function recordCapacityViewFor({ identity, roleBag, displayName, sources }) {
+  const payloadFor = (facet) => {
+    if (facet === "contracts") {
+      const rows = sources.procurement_browse?.rows || [];
+      return rows.length
+        ? { ...sources.procurement_browse, notices: rows, open_as_of: sources.procurement_browse?.generated_at || null }
+        : null;
+    }
+    if (facet === "zoning") return sources.land_default || null;
+    return null;
+  };
+  return buildInstitutionRecordCapacityView({
+    canonicalId: identity.canonical_id,
+    displayName,
+    roleBag,
+    browseContractFor: (group, { limit }) => {
+      const payload = payloadFor(group.browse_facet);
+      if (!payload) return null;
+      const contract = buildAgencyCapacityBrowseContract({
+        identity,
+        capacityId: group.capacity_id,
+        payload,
+        limit,
+      });
+      if (!contract) return null;
+      // The same query again, unbounded, purely to learn which records the
+      // destination actually carries. The preview is then a prefix of what
+      // "Browse all" shows, never a different set.
+      const scoped = buildAgencyCapacityBrowseContract({
+        identity,
+        capacityId: group.capacity_id,
+        payload,
+        limit: Math.max(1, Number(contract.total) || 1),
+      });
+      const route = BROWSE_FACETS[group.browse_facet]?.route || "";
+      return {
+        total: contract.total,
+        record_refs: new Set((scoped?.rows || []).map((row) => (
+          group.browse_facet === "zoning"
+            ? `project:${String(row?.project_id || "").trim()}`
+            : String(row?.procurement_id || "").trim()
+        )).filter((ref) => ref && ref !== "project:")),
+        universe: group.browse_facet === "contracts" ? "registered and awarded" : "active projects",
+        asOf: contract.asOf || null,
+        href: route ? canonicalizeBrowseUrl(`${route}?${contract.search.toString()}`) : null,
+      };
+    },
+  });
 }
 
 function agencySourceIdentity(id, name, publisherRows) {
@@ -551,6 +644,26 @@ export function buildAgencyConstellationMaterialization(sources = loadSources())
       boroughOfficeSources: boroughOfficeSourcesFor(id, sources),
       governingBodySources: governingBodySourcesFor(id, sources),
     });
+    const developmentRoleSources = developmentRoleSourcesFor(id, sources);
+    // Set only when a capacity actually resolves. An always-present `null`
+    // would rewrite every agency's committed artifact for a field none of them
+    // carry a value for.
+    const roleBag = developmentRoleSources
+      ? developmentRolesForInstitution(identity.canonical_id, developmentRoleSources)
+      : null;
+    const recordCapacities = roleBag
+      ? recordCapacityViewFor({ identity, displayName: view.display_name, roleBag, sources })
+      : null;
+    if (recordCapacities) view.record_capacities = recordCapacities;
+    // The flat per-record index the ordinary category rows read. An institution
+    // whose only capacity is a per-record one (a contracting agency) still gets
+    // it, so its own contract rows say what it did there.
+    const capacityIndex = roleBag
+      ? institutionRecordCapacityIndex(institutionRecordCapacities(identity.canonical_id, roleBag, {
+        displayName: view.display_name,
+      }))
+      : [];
+    if (capacityIndex.length) view.record_capacity_rows = capacityIndex;
     // Keep pages for agencies with at least one matched category, plus demos
     // and the identities a reviewed correction separated.
     if (view.summary.matched_categories === 0 && !alwaysMaterialized(id)) continue;

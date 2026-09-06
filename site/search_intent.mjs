@@ -39,6 +39,7 @@ const TYPED_REF = /^(?:agency:[^:\s]+:[^:\s]+|community-board:[a-z]+(?:-[a-z]+)*
 
 const CONNECTION_RELATIONS = new Set([
   "published_by_agency",
+  "applicant_agency",
   "named_vendor",
   "sited_on_parcel",
   "votes_on",

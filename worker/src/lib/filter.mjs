@@ -28,7 +28,7 @@ export const CATEGORIES = [
 // same scope contract while compileSub continues to use the ordinary agency predicate for
 // the City Record query.
 const CONNECTION_RELATIONS = new Set([
-  "published_by_agency", "named_vendor", "sited_on_parcel", "votes_on",
+  "published_by_agency", "applicant_agency", "named_vendor", "sited_on_parcel", "votes_on",
   "references_contract", "registered_as", "shares_authority_key", "about_notice",
   "parcel_links_project", "named_owner", "same_rulemaking",
 ]);

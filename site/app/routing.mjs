@@ -616,7 +616,7 @@ function deeplinkClampField(name, v){
     case "request_ids": return Array.isArray(v) ? [...new Set(v.map(item=>String(item||"").trim()).filter(item=>/^[A-Za-z0-9][A-Za-z0-9_-]{0,80}$/.test(item)))].sort().slice(0,24) : [];
     case "procurement_id": { const s=typeof v==="string"?v.trim():""; return /^procurement:[a-z0-9-]+:[A-Za-z0-9._:-]{3,120}$/.test(s)?s:null; }
     case "entity_refs_all": return Array.isArray(v) ? [...new Set(v.map(item=>String(item||"").trim()).filter(item=>/^(?:agency:[^:\s]+:[^:\s]+|vendor:stem:[^:\s]+|entity:official:[^:\s]+|project:[A-Za-z0-9][A-Za-z0-9_-]{2,24}|notice:[A-Za-z0-9][A-Za-z0-9_-]{3,39}|pin:[A-Za-z0-9][A-Za-z0-9_-]{3,39}|exam:\d{4}|bbl:\d{10})$/.test(item)))].slice(0,20) : [];
-    case "connection_relation": return typeof v==="string" && ["published_by_agency","hosts_meeting","named_vendor","sited_on_parcel","votes_on","references_contract","registered_as","shares_authority_key","about_notice","parcel_links_project","named_owner","same_rulemaking"].includes(v) ? v : null;
+    case "connection_relation": return typeof v==="string" && ["published_by_agency","applicant_agency","hosts_meeting","named_vendor","sited_on_parcel","votes_on","references_contract","registered_as","shares_authority_key","about_notice","parcel_links_project","named_owner","same_rulemaking"].includes(v) ? v : null;
     case "place_role": return DEEPLINK_PLACE_ROLES.includes(v) ? v : null;
     case "processState": {
       // Hand-synced with worker/src/lib/filter.mjs + KNOWN_PROCUREMENT_PROCESS_STATES.

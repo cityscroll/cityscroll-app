@@ -210,6 +210,11 @@ select {
   font-weight: 600;
   line-height: .98;
   letter-spacing: -.04em;
+  /* At 200% zoom on a narrow screen a single long institution word
+     ("Development") is wider than the column. Break it only when nothing else
+     will fit, rather than letting the title scroll the whole document. */
+  overflow-wrap: break-word;
+  min-width: 0;
 }
 
 .node-lede,
@@ -3820,7 +3825,12 @@ select {
   border: 1px solid var(--color-border);
   border-radius: 999px;
   padding: 0 .5em;
-  white-space: nowrap;
+  /* A multi-word state ("empty in this snapshot") is wider than a narrow
+     column at 200% zoom. The flex row already gives the pill its own line
+     first; when even that is not enough it wraps inside the pill rather than
+     pushing the whole document sideways. */
+  max-width: 100%;
+  overflow-wrap: anywhere;
 }
 
 .agency-coverage-item[data-evidence-state="blocked"] .agency-coverage-state,

@@ -1,5 +1,6 @@
 import { entityHref, parseEntityRef } from "./entity_pivot.mjs";
 import { resolveAgencyIdentity } from "./agency_identity.mjs";
+import { civicInstitutionIdForPartyValue } from "./civic_institution_party_spellings.mjs";
 import { meetingOriginLabel } from "./meeting_origin.mjs";
 import {
   constellationLink,
@@ -63,6 +64,11 @@ export const BROWSE_FACETS = Object.freeze({
     dataPath: "/data/money_default_open.json",
     rowsKey: "notices",
     connectionRelation: "published_by_agency",
+    // A contract names two institutions in two different fields. The default
+    // relation reads the publishing agency; `named_vendor` reads the vendor
+    // party instead, so "contracts this body issued" and "contracts this body
+    // received" stay separate scopes over the same rows.
+    partyRelations: Object.freeze({ named_vendor: "vendor_name" }),
   },
   staffing: {
     tab: STAFFING_SURFACE.navigationFamily,
@@ -85,6 +91,11 @@ export const BROWSE_FACETS = Object.freeze({
     container: "llist",
     dataPath: "/data/land_default_ulurp.json",
     rowsKey: "projects",
+    // The applicant field already is this facet's institution field. Declaring
+    // it as a party relation adds the reviewed canonical identity alongside the
+    // publisher spelling's own slug, so a profile and Browse agree on one
+    // institution without dropping links that use the source spelling.
+    partyRelations: Object.freeze({ applicant_agency: "primary_applicant" }),
   },
   property: {
     tab: "property",
@@ -387,10 +398,33 @@ function scopeFromFacetParams(facet, search) {
   };
 }
 
-function readAgencyIdFromRow(row, facet) {
+/**
+ * The institution a row names, in the capacity the scope asked about.
+ *
+ * With no relation, or with the facet's default relation, this reads the
+ * facet's own agency field exactly as before. A declared party relation
+ * instead reads the party field that relation names, and resolves it only
+ * through the reviewed party spellings — so being named in a contract's vendor
+ * field never resolves through display-name similarity, and never answers a
+ * question about who published the record.
+ */
+function readAgencyIdsFromRow(row, facet, relation = "") {
   const policy = BROWSE_SCOPE_POLICY[facet];
-  if (!policy || !policy.agencyField) return "";
-  return resolveAgencyIdentity(row?.[policy.agencyField] || row?.agency_name || row?.agency || "").canonical_id;
+  if (!policy || !policy.agencyField) return [];
+  const partyField = BROWSE_FACETS[facet]?.partyRelations?.[String(relation || "").trim()];
+  if (partyField) {
+    const value = row?.[partyField];
+    return [...new Set([
+      civicInstitutionIdForPartyValue(partyField, value),
+      resolveAgencyIdentity(value || "").canonical_id,
+    ].filter(Boolean))];
+  }
+  const id = resolveAgencyIdentity(row?.[policy.agencyField] || row?.agency_name || row?.agency || "").canonical_id;
+  return id ? [id] : [];
+}
+
+function readAgencyIdFromRow(row, facet, relation = "") {
+  return readAgencyIdsFromRow(row, facet, relation)[0] || "";
 }
 
 function readRowEntityRefs(row, facet) {
@@ -804,11 +838,12 @@ function scopeKeyFromKindAndRef(ref) {
   return `${ref.kind}:${ref.id}`;
 }
 
-function rowReferenceSet(row, facet) {
+function rowReferenceSet(row, facet, relation = "") {
   const refs = new Map();
   const rowRefs = new Map();
-  const rowAgencyId = readAgencyIdFromRow(row, facet);
-  if (rowAgencyId) appendScopeRef(rowRefs, { kind: "agency", id: normalizeAgencyIdFromRef(rowAgencyId), ref: `agency:id:${rowAgencyId}`, label: rowAgencyId });
+  for (const rowAgencyId of readAgencyIdsFromRow(row, facet, relation)) {
+    appendScopeRef(rowRefs, { kind: "agency", id: normalizeAgencyIdFromRef(rowAgencyId), ref: `agency:id:${rowAgencyId}`, label: rowAgencyId });
+  }
   for (const ref of readRowEntityRefs(row, facet)) {
     appendScopeRef(rowRefs, ref);
   }
@@ -833,9 +868,9 @@ function rowAgencyFilterMatches(row, facet, filter) {
   return false;
 }
 
-function rowMatchesScopeRefs(row, facet, requestedRefs, applicableKinds) {
+function rowMatchesScopeRefs(row, facet, requestedRefs, applicableKinds, relation = "") {
   if (!applicableKinds.length) return false;
-  const rowRefs = rowReferenceSet(row, facet);
+  const rowRefs = rowReferenceSet(row, facet, relation);
   return requestedRefs.every((item) => (
     applicableKinds.includes(item.kind)
       && rowRefs.has(scopeKeyFromKindAndRef(item))
@@ -844,7 +879,9 @@ function rowMatchesScopeRefs(row, facet, requestedRefs, applicableKinds) {
 
 function rowMatchesConnectionRelation(facet, relation) {
   if (!relation) return true;
-  const expected = BROWSE_FACETS[facet]?.connectionRelation;
+  const config = BROWSE_FACETS[facet] || {};
+  if (config.partyRelations && Object.hasOwn(config.partyRelations, relation)) return true;
+  const expected = config.connectionRelation;
   return !expected || relation === expected;
 }
 
@@ -1024,7 +1061,7 @@ export function buildBrowseView(facet, payload = {}, params = new URLSearchParam
     : applicability.supportedRequestedKinds;
   const matched = scopeState.hasScopeFacet && applicability.canApplyScope
     ? effectiveScopeRefs.length
-      ? matchedBase.filter((row) => rowMatchesScopeRefs(row, facet, effectiveScopeRefs, effectiveScopeKinds))
+      ? matchedBase.filter((row) => rowMatchesScopeRefs(row, facet, effectiveScopeRefs, effectiveScopeKinds, connectionRelation))
       : matchedBase
     : matchedBase;
   const semanticLane = facet === "rules" && options.semanticArtifact

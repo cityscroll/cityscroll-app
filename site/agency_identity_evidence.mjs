@@ -206,6 +206,13 @@ function governanceAnchor(edge) {
   return "";
 }
 
+// The role sections are the evidence view behind the reader-facing capacity
+// list. Once a party mapping generalizes, an institution can hold hundreds of
+// the same typed role, and rendering every one turns the profile into a
+// provenance dump. The list is bounded and says what it is showing; the full
+// set stays reachable through the capacity section's Browse-all scope.
+const ROLE_GROUP_PREVIEW_LIMIT = 8;
+
 function renderRoleGroup({
   rows,
   heading,
@@ -216,8 +223,12 @@ function renderRoleGroup({
   evidence,
 }) {
   if (!rows.length) return "";
-  const body = `<p class="node-muted">${intro}</p>
-    <ul class="node-record-list">${rows.map((edge) => roleRow(edge)).join("")}</ul>`;
+  const shown = rows.slice(0, ROLE_GROUP_PREVIEW_LIMIT);
+  const bounded = rows.length > shown.length
+    ? `\n    <p class="muted node-muted" data-role-preview-total="${rows.length}">Showing ${shown.length} of ${rows.length} with retained source evidence.</p>`
+    : "";
+  const body = `<p class="node-muted">${intro}</p>${bounded}
+    <ul class="node-record-list">${shown.map((edge) => roleRow(edge)).join("")}</ul>`;
   return renderNodeSection({
     heading,
     headingId,

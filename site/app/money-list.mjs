@@ -1151,7 +1151,8 @@ async function search(){
     const needsSearch=Boolean(contractIdentity||retrievalQuery);
     const common={
       mode,agency,keyword:kw,closingWeek,minAmount:minamt||null,maxAmount,category,months,
-      excludeSpecial,entityRefs,contractObjectRef:contractIdentity?.object_ref||"",sort,today:todayISO(),weekEnd:weekOutISO(),
+      excludeSpecial,entityRefs,connectionRelation:String(activeFacetValues.connection_relation||""),
+      contractObjectRef:contractIdentity?.object_ref||"",sort,today:todayISO(),weekEnd:weekOutISO(),
       processStates:processState?[processState]:[],
       monthEnd:months?addMonthsISO(todayISO(),months):null,
     };

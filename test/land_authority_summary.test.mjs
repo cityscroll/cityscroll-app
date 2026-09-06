@@ -8,7 +8,10 @@ import { readFileSync, statSync } from "node:fs";
 import { createRequire } from "node:module";
 import { test } from "node:test";
 
-import { LAND_PROCEDURE_PROFILE_REGISTRY_VERSION } from "../site/land_procedure_profiles.mjs";
+import {
+  LAND_PROCEDURE_PROFILE_REGISTRY,
+  LAND_PROCEDURE_PROFILE_REGISTRY_VERSION,
+} from "../site/land_procedure_profiles.mjs";
 import { buildLandPhaseView } from "../site/land_phase_spine.mjs";
 import { resolveLandActionProcedures } from "../site/land_action_procedure_resolution.mjs";
 import { buildUlurpStatutoryClockView } from "../site/ulurp_statutory_clock.mjs";
@@ -18,6 +21,7 @@ import {
   LAND_AUTHORITY_SUMMARY_RECEIPT_SCHEMA,
   LAND_AUTHORITY_SUMMARY_SCHEMA,
   LAND_AUTHORITY_SUMMARY_SPECIMENS,
+  LAND_AUTHORITY_SUMMARY_STATUSES,
   assertLandAuthoritySummaries,
   buildLandAuthoritySummary,
   materializeLandAuthoritySummaries,
@@ -533,6 +537,59 @@ test("LDP-32 negative corpus: no forbidden state ever coexists with its counterp
     // 6. no published date and an active calendar action never coexist.
     if (!summary.published_next_opportunity.date) {
       assert.doesNotMatch(html, /data-land-authority-calendar="1"/, `${id}: no dated event means no calendar button`);
+    }
+  }
+});
+
+// The record-capacity projection states that an applicant is not a
+// decision-maker and points the reader here for the body that decides. That
+// referral is only honest if this panel keeps saying what each procedure
+// actually gives a Community Board, rather than one flattened label.
+test("Community Board authority stays procedure-specific and is never flattened to one label", () => {
+  const boardStages = [];
+  for (const profile of LAND_PROCEDURE_PROFILE_REGISTRY.profiles || []) {
+    for (const stage of profile.stages || []) {
+      if (!/community_board/.test(stage.stage_id)) continue;
+      boardStages.push({ procedure_id: profile.procedure_id, ...stage });
+    }
+  }
+  assert.ok(boardStages.length >= 2, "more than one procedure models a Community Board stage");
+
+  for (const stage of boardStages) {
+    assert.ok(stage.effect, `${stage.stage_id} states its own effect`);
+    assert.ok(stage.role, `${stage.stage_id} states its own role`);
+    // The effect describes what this procedure lets the board do, not a bare
+    // verdict on its power.
+    assert.match(stage.effect, /recommendation|hearing|waiver/i);
+    assert.notEqual(
+      stage.effect.trim().toLowerCase(),
+      "nonbinding",
+      `${stage.stage_id} does not reduce to a one-word verdict`,
+    );
+  }
+
+  // Different procedures give a board materially different text, so a reader
+  // is never shown one procedure's effect in another's place.
+  const byProcedure = new Map(boardStages.map((stage) => [stage.procedure_id, stage.effect]));
+  assert.ok(byProcedure.size >= 2);
+  assert.equal(
+    new Set(byProcedure.values()).size,
+    byProcedure.size,
+    "each procedure's Community Board effect is written for that procedure",
+  );
+
+  // And the summary reads its effect from the resolved profile rather than a
+  // constant, so the panel a capacity row refers a reader to stays the one
+  // procedure-specific source of authority language.
+  const summary = summarize(LAND_AUTHORITY_SUMMARY_SPECIMENS.council);
+  if (summary.status === LAND_AUTHORITY_SUMMARY_STATUSES.RESOLVED) {
+    const profile = (LAND_PROCEDURE_PROFILE_REGISTRY.profiles || [])
+      .find((entry) => entry.procedure_id === summary.procedure_id);
+    assert.ok(profile, "the resolved summary names a registered procedure profile");
+    const stage = (profile.stages || []).find((entry) => entry.stage_id === summary.current_stage?.stage_id);
+    if (stage) {
+      assert.equal(summary.effect, stage.effect);
+      assert.equal(summary.current_role, stage.role);
     }
   }
 });
