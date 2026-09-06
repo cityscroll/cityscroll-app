@@ -150,6 +150,19 @@ export function extractLensIdentity(input, maybeRow) {
   }
 
   if (NOTICE_LENSES.has(lens)) {
+    // A followed procurement intent delivers its early signal and then each
+    // published identity it realizes into. Those are distinct delivery events on
+    // one explicit watch, so the update key is the identity: the reader never
+    // gets the same row twice, and publication never re-sends the early signal.
+    const intentUpdateKey = firstText(row.procurement_intent_watch?.update_key);
+    if (intentUpdateKey) {
+      return {
+        identityField: "procurement_intent_update_key",
+        identityValue: intentUpdateKey,
+        itemId: intentUpdateKey,
+        itemKind: text(kind) || "procurement-intent",
+      };
+    }
     // A procurement object can legitimately be delivered more than once: an
     // observed process transition is a distinct delivery event on the same
     // canonical identity, so it carries the transition key as its identity in

@@ -155,6 +155,15 @@ function realizationRef(realization) {
   return null;
 }
 
+/**
+ * The canonical realization ref for one later publisher observation. Exported so
+ * a consumer can join an accepted `realized_by` edge back to the observation it
+ * came from without re-deriving the rule.
+ */
+export function realizationRefFor(realization) {
+  return realizationRef(realization);
+}
+
 function processRefFor(input) {
   return text(input?.process_ref || input?.subject_ref || input?.stated_intent?.process_ref);
 }

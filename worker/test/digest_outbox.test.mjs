@@ -86,6 +86,38 @@ test("lens identity policies keep land projects distinct and use request_id for 
     itemKind: "procurement",
   });
 });
+test("a followed procurement intent keeps one identity across the publication transition", () => {
+  const watchKey = "procurement-intent-watch:subscriber%3Areader-1:procurement-intent:dycd-compass-2025";
+  const early = {
+    request_id: "20250519001",
+    procurement_intent_watch: {
+      watch_key: watchKey,
+      update_key: `${watchKey}::update::early_signal::procurement-intent:dycd-compass-2025`,
+      kind: "early_signal",
+    },
+  };
+  const published = {
+    request_id: "20251001017",
+    procurement_intent_watch: {
+      watch_key: watchKey,
+      update_key: `${watchKey}::update::published_identity::procurement:city_record:26026P0003`,
+      kind: "published_identity",
+    },
+  };
+  // Both rows come from one explicit watch, so they must not collapse onto the
+  // notice request_id — and publication must not repeat the early signal.
+  for (const row of [early, published]) {
+    const identity = extractLensIdentity("money", row);
+    assert.equal(identity.identityField, "procurement_intent_update_key");
+    assert.equal(identity.itemId, row.procurement_intent_watch.update_key);
+    assert.equal(identity.itemKind, "procurement-intent");
+  }
+  assert.notEqual(
+    extractLensIdentity("money", early).itemId,
+    extractLensIdentity("money", published).itemId,
+  );
+});
+
 test("rules identity is the semantic action key, not the notice content or request id", () => {
   const row = {
     request_id: "20260810001",
