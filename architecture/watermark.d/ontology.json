@@ -2,14 +2,14 @@
   "schema": "cityscroll.architecture.watermark-shard.v1",
   "id": "ontology",
   "owner": "ontology",
-  "updated_at": "2026-09-04T06:04:02Z",
-  "commit": "7116f50451f0316815491b856a45eeecc345d45d",
+  "updated_at": "2026-09-06T05:53:45-04:00",
+  "commit": "7443d5cc5e0f72be069fa777e168addbbcb648d3",
   "value": {
     "schema": "cityscroll.ontology.registry.v0",
     "version": "0.7.0",
     "collection_counts": {
       "object_types": 45,
-      "link_types": 74,
+      "link_types": 78,
       "event_kinds": 37,
       "assertion_classifications": 2,
       "assertion_facts": 10

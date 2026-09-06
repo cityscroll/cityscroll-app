@@ -327,6 +327,18 @@ test("agency index, routes, aliases, scopes, property keys, person-leader, staff
   assert.equal(LOOKUP.by_id["employees-retirement-system"].subject_ref, "agency:id:employees-retirement-system");
 });
 
+test("DCP profile navigation carries sourced related-body links to CPC", () => {
+  const projection = projectInstitutionProfileNavigation({
+    identity: { canonical_id: "city-planning", canonical_name: "Department of City Planning" },
+    publisherRow: CROSSWALK.entries["city-planning"],
+    hasRoute: true,
+    routeIdentityReport: REPORT,
+  });
+  assert.equal(projection.related_bodies.links.some((row) => (
+    row.relation_id === "staffs" && row.href === "/agencies/city-planning-commission/"
+  )), true);
+});
+
 test("profile navigation is a compact profile disclosure, not an index-wide filter rail", () => {
   const ids = AGENCY_CONSTELLATION_SECTIONS.map((section) => section.id);
   assert.ok(ids.includes("institution-navigation"));

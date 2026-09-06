@@ -30,6 +30,7 @@ architecture/evidence.d/cityscroll-civic-institutions--ci-k1-compatibility-uncer
 architecture/evidence.d/cityscroll-engineering--exact-council-matter-watch-updates.json
 architecture/evidence.d/cityscroll-engineering--buyer-history-pursuit-comparison.json
 architecture/evidence.d/cityscroll-engineering--matter-coverage-recovery.json
+architecture/evidence.d/cityscroll-engineering--related-public-bodies.json
 architecture/evidence.d/cityscroll-engineering--retained-matter-publication-generation.json
 architecture/evidence.d/cityscroll-engineering--shared-dependency-store.json
 architecture/evidence.d/cityscroll-engineering--working-copy-footprint.json
@@ -158,6 +159,7 @@ docs/evidence/ci-09-working-copy-reduction/raw/closure/card-reconciliation.json
 docs/evidence/ci-09-working-copy-reduction/raw/closure/worker-unit.json
 docs/evidence/exact-council-matter-watch-updates/manifest.json
 docs/evidence/matter-coverage-recovery/manifest.json
+docs/evidence/related-public-bodies/manifest.json
 docs/evidence/retained-matter-publication-generation/manifest.json
 docs/repository-control-plane/agents-router-policy.v1.json
 docs/repository-control-plane/agents-router-receipt.v1.json
@@ -395,6 +397,7 @@ site/civic_institution_development_roles.mjs
 site/civic_institution_development_specimens.mjs
 site/civic_institution_governing_bodies.mjs
 site/civic_institution_profile_navigation.mjs
+site/civic_institution_related_bodies.mjs
 site/civic_outcome_transition.mjs
 site/civic_time_composed_graph.mjs
 site/civic_time_ledger.mjs
@@ -917,6 +920,7 @@ test/civic_institution_development_roles.test.mjs
 test/civic_institution_governing_bodies.test.mjs
 test/civic_institution_profile.test.mjs
 test/civic_institution_profile_navigation.test.mjs
+test/civic_institution_related_bodies.test.mjs
 test/civic_institution_role_edge.test.mjs
 test/civic_law_receipts_matter_document.test.mjs
 test/civic_outcome_transition.test.mjs
@@ -1709,6 +1713,7 @@ tools/build_zoning_statistics.mjs
 tools/capa_addendum_eval.mjs
 tools/capture_exact_council_matter_watch_update_evidence.py
 tools/capture_matter_coverage_recovery_evidence.py
+tools/capture_related_public_bodies_evidence.py
 tools/capture_retained_matter_publication_evidence.py
 tools/card-profile/card-work.sparse
 tools/card-profile/closure.v1.json
@@ -1850,6 +1855,7 @@ tools/render_digest_awareness_evidence.mjs
 tools/render_exact_council_matter_watch_update_fixtures.mjs
 tools/render_matter_coverage_recovery_fixtures.mjs
 tools/render_process_conformance_fixture.mjs
+tools/render_related_public_bodies_specimens.mjs
 tools/render_retained_matter_publication_fixtures.mjs
 tools/repository_control_plane_manifest.mjs
 tools/retain_person_hub_source_records.mjs

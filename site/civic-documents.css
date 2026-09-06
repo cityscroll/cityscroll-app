@@ -317,6 +317,63 @@ select {
   align-items: center;
 }
 
+.related-public-bodies {
+  margin: var(--space-4) 0 0;
+  min-width: 0;
+  max-width: 62ch;
+}
+
+.related-public-bodies-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.related-public-bodies-item {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.related-public-bodies-statement {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: .35rem .6rem;
+  min-width: 0;
+}
+
+.related-public-bodies-verb {
+  font-weight: 650;
+}
+
+.related-public-bodies-link {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  overflow-wrap: anywhere;
+}
+
+.related-public-bodies-explanation {
+  margin: .2rem 0 0;
+}
+
+.related-public-bodies-source {
+  margin: .35rem 0 0;
+}
+
+.related-public-bodies-source > summary {
+  cursor: pointer;
+  color: var(--color-text-muted);
+  font-size: .9rem;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+}
+
 .institution-statutory-correction-list,
 .institution-statutory-sources {
   margin: 0;

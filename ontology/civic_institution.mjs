@@ -361,6 +361,7 @@ const DEVELOPMENT_ROLE_NEGATIVE_RULE = "Never infer an applicant from a project 
 const COUNCIL_COMMITTEE_NEGATIVE_RULE = "Never connect a committee because its display name resembles Zoning and Franchises, because a City Record notice is published by Council, or because a meeting date is nearby. Do not infer chair status without valid dates and exact is_chair evidence.";
 const BOROUGH_OFFICE_NEGATIVE_RULE = "Never infer an appointment from a Borough President title, board geography, a person on a board roster, a publisher label, or generic appointed-member wording. Do not re-key a Community Board as an agency or mint a parent-child agency edge.";
 const GOVERNING_BODY_NEGATIVE_RULE = "Never infer a NYCHA Board from a housing-authority contract, a BERS committee from a similarly named NYCHA notice, or a July 15 meeting from an expected calendar target without a retained record. Do not merge BERS with NYCHA because OTI assigns both to a public-benefit or pension bucket. Generic board titles, route spelling, vendor evidence, and staffing evidence never mint a governing edge.";
+const RELATED_BODY_NEGATIVE_RULE = "Never mint current members from statutory seat composition, treat appointment, chairing or staffing as general control, or assign every operating body the same legal form.";
 const ROLE_EVIDENCE = Object.freeze([
   "exact_source_observation",
   "exact_ids",
@@ -598,6 +599,74 @@ export const CIVIC_INSTITUTION_ROLE_RELATIONS = Object.freeze({
     ]),
     methods: ENTITY_LINK_METHODS,
     negative_rule: COUNCIL_COMMITTEE_NEGATIVE_RULE,
+  }),
+  staffs: Object.freeze({
+    relation: "staffs",
+    inverse: "has_staffing_from",
+    role: "staffing_institution",
+    inverse_role: "staffed_commission",
+    source_contract: "cityscroll.related_public_bodies.v1",
+    from_kind: "civic-institution",
+    object_kind: "civic-institution",
+    legacy_relation_id: null,
+    required_evidence: Object.freeze([
+      ...ROLE_EVIDENCE,
+      "exact_subject_institution",
+      "exact_object_institution",
+    ]),
+    methods: ENTITY_LINK_METHODS,
+    negative_rule: RELATED_BODY_NEGATIVE_RULE,
+  }),
+  director_chairs: Object.freeze({
+    relation: "director_chairs",
+    inverse: "chaired_by_director_of",
+    role: "chairing_director_office",
+    inverse_role: "chaired_commission",
+    source_contract: "cityscroll.related_public_bodies.v1",
+    from_kind: "civic-institution",
+    object_kind: "civic-institution",
+    legacy_relation_id: null,
+    required_evidence: Object.freeze([
+      ...ROLE_EVIDENCE,
+      "exact_subject_institution",
+      "exact_object_institution",
+    ]),
+    methods: ENTITY_LINK_METHODS,
+    negative_rule: RELATED_BODY_NEGATIVE_RULE,
+  }),
+  lists_operating_body: Object.freeze({
+    relation: "lists_operating_body",
+    inverse: "listed_as_operating_body_of",
+    role: "parent_authority",
+    inverse_role: "operating_body",
+    source_contract: "cityscroll.related_public_bodies.v1",
+    from_kind: "civic-institution",
+    object_kind: "civic-institution",
+    legacy_relation_id: null,
+    required_evidence: Object.freeze([
+      ...ROLE_EVIDENCE,
+      "exact_subject_institution",
+      "exact_object_institution",
+    ]),
+    methods: ENTITY_LINK_METHODS,
+    negative_rule: RELATED_BODY_NEGATIVE_RULE,
+  }),
+  chairs_body: Object.freeze({
+    relation: "chairs_body",
+    inverse: "body_chaired_by",
+    role: "chairing_office",
+    inverse_role: "chaired_body",
+    source_contract: "cityscroll.related_public_bodies.v1",
+    from_kind: "civic-institution",
+    object_kind: "civic-institution",
+    legacy_relation_id: null,
+    required_evidence: Object.freeze([
+      ...ROLE_EVIDENCE,
+      "exact_subject_institution",
+      "exact_object_institution",
+    ]),
+    methods: ENTITY_LINK_METHODS,
+    negative_rule: RELATED_BODY_NEGATIVE_RULE,
   }),
   considers: Object.freeze({
     relation: "considers",

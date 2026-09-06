@@ -10,6 +10,7 @@
 
 import { agencyComparisonKey, agencyRouteAliasTarget } from "./agency_identity.mjs";
 import { projectResidentInstitutionIdentity } from "./civic_institution_resident_identity.mjs";
+import { projectRelatedPublicBodies } from "./civic_institution_related_bodies.mjs";
 import {
   gateNodePageRender,
   renderCivicDocumentAssets,
@@ -598,6 +599,7 @@ export function projectInstitutionProfileNavigation({
       resident_description: resident?.description || null,
     }),
     identity_evidence_state: identityState,
+    related_bodies: projectRelatedPublicBodies(canonicalId),
     category_states: categoryStates,
     role_capabilities: capabilities,
     route_aliases: Object.freeze({

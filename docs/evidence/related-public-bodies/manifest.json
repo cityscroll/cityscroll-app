@@ -1,0 +1,363 @@
+{
+  "schema": "cityscroll.related_public_bodies_evidence.v1",
+  "subject": "sourced relationship links between related public bodies",
+  "routes": [
+    "/agencies/city-planning/",
+    "/agencies/city-planning-commission/",
+    "/agencies/metropolitan-transportation-authority/",
+    "/agencies/n-y-c-transit-authority/",
+    "/agencies/borough-president-brooklyn/",
+    "/agencies/brooklyn-borough-board/",
+    "/community-boards/brooklyn-cb-15/",
+    "/near-you/borough/brooklyn/"
+  ],
+  "revision": "f3d9ca5060029c8e90419d34b2458b2bd2cca3d9",
+  "data_vintage": "2026-09-05",
+  "captured_at": "2026-09-06T09:39:52Z",
+  "image_directory": ".artifacts/related-public-bodies",
+  "image_policy": "Capture images are written to the ignored local directory above and are never committed. This manifest is the tracked proof: route, viewport, revision, data vintage, assertion and SHA-256 for each capture.",
+  "files": [
+    {
+      "name": "dcp-to-cpc-and-back-390x844.png",
+      "specimen": "dcp-to-cpc-and-back",
+      "route": "/agencies/city-planning/",
+      "viewport": [
+        390,
+        844
+      ],
+      "scripting": true,
+      "revision": "f3d9ca5060029c8e90419d34b2458b2bd2cca3d9",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 390px DCP staffs CPC, source details inspect and dismiss, and Back restores DCP",
+      "observations": {
+        "started_on_dcp": true,
+        "opened_cpc": true,
+        "cpc_links_back_to_dcp": true,
+        "inspected_source": true,
+        "dismissed_source": true,
+        "back_returned_to_dcp": true,
+        "back_kept_related_panel": true,
+        "touch_target_failures": [],
+        "no_horizontal_overflow": true
+      },
+      "bytes": 729682,
+      "sha256": "08b50f58f7c745f42c0d2c824b3ed126573d2a5861289eae3aa4e18cad4d8a8f",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "dcp-to-cpc-and-back-1440x900.png",
+      "specimen": "dcp-to-cpc-and-back",
+      "route": "/agencies/city-planning/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "scripting": true,
+      "revision": "f3d9ca5060029c8e90419d34b2458b2bd2cca3d9",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 1440px DCP staffs CPC, source details inspect and dismiss, and Back restores DCP",
+      "observations": {
+        "started_on_dcp": true,
+        "opened_cpc": true,
+        "cpc_links_back_to_dcp": true,
+        "inspected_source": true,
+        "dismissed_source": true,
+        "back_returned_to_dcp": true,
+        "back_kept_related_panel": true,
+        "touch_target_failures": [],
+        "no_horizontal_overflow": true
+      },
+      "bytes": 820025,
+      "sha256": "ad6597800e377af0a87404672d58d193aa3e3d3c236287d23a0b00589a39b53b",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "mta-to-operating-body-and-back-390x844.png",
+      "specimen": "mta-to-operating-body-and-back",
+      "route": "/agencies/metropolitan-transportation-authority/",
+      "viewport": [
+        390,
+        844
+      ],
+      "scripting": true,
+      "revision": "f3d9ca5060029c8e90419d34b2458b2bd2cca3d9",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 390px MTA lists an operating body with its own identity, and Back restores MTA",
+      "observations": {
+        "started_on_mta": true,
+        "opened_operating_body": true,
+        "operating_body_keeps_own_heading": true,
+        "operating_body_links_to_mta": true,
+        "back_returned_to_mta": true,
+        "touch_target_failures": [],
+        "no_horizontal_overflow": true
+      },
+      "bytes": 445321,
+      "sha256": "dfe80b5b513357d5f16ccf2d5284eda40c96ff07f053d1357e81f04f95519b01",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "mta-to-operating-body-and-back-1440x900.png",
+      "specimen": "mta-to-operating-body-and-back",
+      "route": "/agencies/metropolitan-transportation-authority/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "scripting": true,
+      "revision": "f3d9ca5060029c8e90419d34b2458b2bd2cca3d9",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 1440px MTA lists an operating body with its own identity, and Back restores MTA",
+      "observations": {
+        "started_on_mta": true,
+        "opened_operating_body": true,
+        "operating_body_keeps_own_heading": true,
+        "operating_body_links_to_mta": true,
+        "back_returned_to_mta": true,
+        "touch_target_failures": [],
+        "no_horizontal_overflow": true
+      },
+      "bytes": 505870,
+      "sha256": "b9d0186c8c427453d33851d442eca27b703106128e1d496c438d8161f2de10c4",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "borough-office-board-community-geography-390x844.png",
+      "specimen": "borough-office-board-community-geography",
+      "route": "/agencies/borough-president-brooklyn/",
+      "viewport": [
+        390,
+        844
+      ],
+      "scripting": true,
+      "revision": "f3d9ca5060029c8e90419d34b2458b2bd2cca3d9",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 390px the Brooklyn office, borough board, Community Board and borough geography stay distinct, and Back restores the office",
+      "observations": {
+        "office_links_to_board": true,
+        "office_links_to_community_board": true,
+        "office_links_to_geography": true,
+        "opened_borough_board": true,
+        "opened_community_board": true,
+        "opened_geography": true,
+        "four_distinct_destinations": true,
+        "back_restored_office_after_board": true,
+        "back_restored_office_after_community_board": true,
+        "back_restored_office_after_geography": true,
+        "back_kept_related_panel": true,
+        "touch_target_failures": [],
+        "no_horizontal_overflow": true
+      },
+      "bytes": 945076,
+      "sha256": "abcb3d24fa738fd3f7c1fd6e15198496097f0b4399511282f80c81f396d4f25d",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "borough-office-board-community-geography-1440x900.png",
+      "specimen": "borough-office-board-community-geography",
+      "route": "/agencies/borough-president-brooklyn/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "scripting": true,
+      "revision": "f3d9ca5060029c8e90419d34b2458b2bd2cca3d9",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 1440px the Brooklyn office, borough board, Community Board and borough geography stay distinct, and Back restores the office",
+      "observations": {
+        "office_links_to_board": true,
+        "office_links_to_community_board": true,
+        "office_links_to_geography": true,
+        "opened_borough_board": true,
+        "opened_community_board": true,
+        "opened_geography": true,
+        "four_distinct_destinations": true,
+        "back_restored_office_after_board": true,
+        "back_restored_office_after_community_board": true,
+        "back_restored_office_after_geography": true,
+        "back_kept_related_panel": true,
+        "touch_target_failures": [],
+        "no_horizontal_overflow": true
+      },
+      "bytes": 1124943,
+      "sha256": "d54e3a18543ef3bb370efa1f8b08ad65ef4004de2362bc5d099e3d38a5f37ab9",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "keyboard-dcp-to-cpc-390x844.png",
+      "specimen": "keyboard-dcp-to-cpc",
+      "route": "/agencies/city-planning/",
+      "viewport": [
+        390,
+        844
+      ],
+      "scripting": true,
+      "revision": "f3d9ca5060029c8e90419d34b2458b2bd2cca3d9",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 390px keyboard activation of Staffs opens the City Planning Commission",
+      "observations": {
+        "keyboard_opened_cpc": true,
+        "touch_target_failures": [],
+        "no_horizontal_overflow": true
+      },
+      "bytes": 729682,
+      "sha256": "08b50f58f7c745f42c0d2c824b3ed126573d2a5861289eae3aa4e18cad4d8a8f",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "keyboard-dcp-to-cpc-1440x900.png",
+      "specimen": "keyboard-dcp-to-cpc",
+      "route": "/agencies/city-planning/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "scripting": true,
+      "revision": "f3d9ca5060029c8e90419d34b2458b2bd2cca3d9",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 1440px keyboard activation of Staffs opens the City Planning Commission",
+      "observations": {
+        "keyboard_opened_cpc": true,
+        "touch_target_failures": [],
+        "no_horizontal_overflow": true
+      },
+      "bytes": 820025,
+      "sha256": "ad6597800e377af0a87404672d58d193aa3e3d3c236287d23a0b00589a39b53b",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "without-scripting-dcp-390x844.png",
+      "specimen": "without-scripting-dcp",
+      "route": "/agencies/city-planning/",
+      "viewport": [
+        390,
+        844
+      ],
+      "scripting": false,
+      "revision": "f3d9ca5060029c8e90419d34b2458b2bd2cca3d9",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 390px with scripting unavailable the DCP staffing link remains a real CPC anchor",
+      "observations": {
+        "staffs_anchor_is_in_the_document": true,
+        "related_panel_present": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 250548,
+      "sha256": "991afb3e9c81ac78bade0d50165cc585710c424e4c35f0f806ab702ab137e26e",
+      "axe": {
+        "violations_total": null,
+        "failing_violations": [],
+        "passes": null,
+        "skipped": "scripting disabled for this specimen"
+      }
+    },
+    {
+      "name": "without-scripting-dcp-1440x900.png",
+      "specimen": "without-scripting-dcp",
+      "route": "/agencies/city-planning/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "scripting": false,
+      "revision": "f3d9ca5060029c8e90419d34b2458b2bd2cca3d9",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 1440px with scripting unavailable the DCP staffing link remains a real CPC anchor",
+      "observations": {
+        "staffs_anchor_is_in_the_document": true,
+        "related_panel_present": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 293959,
+      "sha256": "6dfbe3aa2378245519a76cfbe314bf491797162c66a0ec860c104517d46bc3e3",
+      "axe": {
+        "violations_total": null,
+        "failing_violations": [],
+        "passes": null,
+        "skipped": "scripting disabled for this specimen"
+      }
+    },
+    {
+      "name": "two-hundred-percent-zoom-390x844.png",
+      "specimen": "two-hundred-percent-zoom",
+      "route": "/agencies/city-planning/",
+      "viewport": [
+        390,
+        844
+      ],
+      "scripting": true,
+      "revision": "f3d9ca5060029c8e90419d34b2458b2bd2cca3d9",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 390px and 200 percent zoom the DCP related-bodies panel stays in column",
+      "observations": {
+        "related_panel_present_at_zoom": true,
+        "touch_target_failures": [],
+        "no_horizontal_overflow": true
+      },
+      "bytes": 4802052,
+      "sha256": "f299df5f0705204b17440443cb713620d59e575d7ea0c2777643f79f9296d54c",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "two-hundred-percent-zoom-1440x900.png",
+      "specimen": "two-hundred-percent-zoom",
+      "route": "/agencies/city-planning/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "scripting": true,
+      "revision": "f3d9ca5060029c8e90419d34b2458b2bd2cca3d9",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 1440px and 200 percent zoom the DCP related-bodies panel stays in column",
+      "observations": {
+        "related_panel_present_at_zoom": true,
+        "touch_target_failures": [],
+        "no_horizontal_overflow": true
+      },
+      "bytes": 4266262,
+      "sha256": "b2a78c376a845b80e05ef5003f7ef88827adbf7b0521e5cffcb80f23dfc24595",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    }
+  ]
+}
