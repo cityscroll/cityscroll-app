@@ -20,7 +20,7 @@ import { dirname, extname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const BASE = "21c3d22a3b2314506fda73229e77c80cc3c26de4";
+const BASE = "c9b83920345a2e1172390eafb3af6e7bd35651b2";
 const PRIVATE_MARKER = ["backstage", "://", "cityscroll-evidence/"].join("");
 const CARD = "cityscroll-repository-control-plane/rcp-03";
 const REVIEWED_AT = "2026-08-31T00:00:00.000Z";

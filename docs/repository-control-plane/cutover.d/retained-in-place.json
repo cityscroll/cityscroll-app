@@ -7,7 +7,7 @@
   "updated_at": "2026-09-01T00:00:00.000Z",
   "value": {
     "register_card": "cityscroll-repository-control-plane/rcp-00",
-    "migration_commit": "aaab23fd69b1237d5e8675943cd1e261f5a4715f",
+    "migration_commit": "d29c100802ed53bde72062fa3fe4c80a4fa65d42",
     "summary": "Classified content that the placement rule keeps in the public repository because removing it would make the current commit harder to build, verify, operate, or understand. No file in this group moved.",
     "manifest_entry_count": 9,
     "dispositions": { "keep": 9 },

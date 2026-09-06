@@ -7,7 +7,7 @@
   "updated_at": "2026-09-01T00:00:00.000Z",
   "value": {
     "register_card": "cityscroll-repository-control-plane/rcp-03",
-    "migration_commit": "f29fc27f31fc9b4908d875453ec68b317bc2e747",
+    "migration_commit": "dcfa249b00438eb1eb23736b12450a5f2b34eb05",
     "summary": "Owner-only evidence locators, the generated review inventory rows, and internal research bookkeeping left the public documents; the public review document kept its scanner policy and dated conclusion.",
     "manifest_entry_count": 53,
     "dispositions": { "privatize": 51, "split": 2 },
