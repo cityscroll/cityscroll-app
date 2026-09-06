@@ -1,0 +1,671 @@
+{
+  "schema": "cityscroll.desk_repair_queue_evidence_receipt.v1",
+  "captured_at": "2026-09-06T03:21:05Z",
+  "revision": "e19ae2ae561ec761631becc3ea848a46bcbc275a",
+  "data_vintage": "committed source-contract ledger, source-health observations and Community Board source receipts (site/data/source_contracts.json, site/data/source_health_observations.json, site/data/community_board_meeting_index.json, site/data/non_council_outcome_sources/board_source_inventory.json) plus the reviewed register data/repair-queue-register.v1.json, at index vintage 2026-08-25T01:57:25.541Z; no network, publisher, or production read at any point",
+  "viewports": [
+    {
+      "width": 390,
+      "height": 844
+    },
+    {
+      "width": 1440,
+      "height": 900
+    }
+  ],
+  "zoom_percent": 200,
+  "touch_target_floor_px": 24,
+  "capture_convention": "the manifest is the committed proof; rendered image binaries stay under the ignored local path named per capture and are never committed",
+  "observations_projected": 55,
+  "issues_grouped": 5,
+  "open_repairs": 2,
+  "issue_states": [
+    "repair-candidate",
+    "repair-candidate",
+    "expected-absence",
+    "expected-absence",
+    "source-policy-limitation"
+  ],
+  "inherited_accessibility_findings": [
+    {
+      "journey": "desk-home",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "rule": "nested-interactive",
+      "impact": "serious",
+      "owner": "tools/data_source_graph.mjs",
+      "renderer": "renderGraphHtml",
+      "target": "#sourceGraph",
+      "note": "role=\"img\" topology graph containing focusable source nodes; predates the repair view"
+    },
+    {
+      "journey": "desk-home",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "rule": "nested-interactive",
+      "impact": "serious",
+      "owner": "tools/data_source_graph.mjs",
+      "renderer": "renderGraphHtml",
+      "target": "#sourceGraph",
+      "note": "role=\"img\" topology graph containing focusable source nodes; predates the repair view"
+    }
+  ],
+  "inherited_note": "these are real, reproducible defects in markup owned by other cards; this run reports them and does not gate on them, because fixing them changes rendered output outside this card's scope",
+  "captures_passing": 8,
+  "captures_total": 8,
+  "captures": [
+    {
+      "journey": "desk-home",
+      "intent": "the desk opens on the graph view it opened on before the queue existed",
+      "owning_file": "tools/repair_queue.mjs",
+      "owning_renderer": "renderRepairQueueSection",
+      "route": "/desk.html",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "zoom_viewport": {
+        "width": 320,
+        "height": 422,
+        "zoom_percent": 200
+      },
+      "revision": "e19ae2ae561ec761631becc3ea848a46bcbc275a",
+      "data_vintage": "committed source-contract ledger, source-health observations and Community Board source receipts (site/data/source_contracts.json, site/data/source_health_observations.json, site/data/community_board_meeting_index.json, site/data/non_council_outcome_sources/board_source_inventory.json) plus the reviewed register data/repair-queue-register.v1.json, at index vintage 2026-08-25T01:57:25.541Z; no network, publisher, or production read at any point",
+      "journey_state": {
+        "view": "graph",
+        "repair_hidden": true,
+        "pressed": [
+          "graphToggle"
+        ]
+      },
+      "axe": {
+        "violations_total": 2,
+        "failing_violations": [
+          {
+            "id": "nested-interactive",
+            "impact": "serious",
+            "targets": [
+              "['#sourceGraph']"
+            ]
+          }
+        ],
+        "passes": false
+      },
+      "keyboard": {
+        "controls": 72,
+        "reached_by_tab": 72,
+        "unreachable": [],
+        "without_focus_indicator": []
+      },
+      "touch_targets": {
+        "floor": 24,
+        "measured": 5,
+        "undersized": []
+      },
+      "overflow": {
+        "scroll_width": 390,
+        "viewport_width": 390,
+        "horizontal_overflow": false,
+        "overflowing_nodes": [
+          "div.column-heads",
+          "div",
+          "b",
+          "span",
+          "svg.[object",
+          "g.[object",
+          "path.[object",
+          "rect.[object"
+        ]
+      },
+      "zoom_overflow": {
+        "scroll_width": 320,
+        "viewport_width": 320,
+        "horizontal_overflow": false,
+        "overflowing_nodes": [
+          "div.column-heads",
+          "div",
+          "b",
+          "span",
+          "svg.[object",
+          "g.[object",
+          "path.[object",
+          "rect.[object"
+        ]
+      },
+      "links": {
+        "links": 1,
+        "private_links": [],
+        "non_https_links": []
+      },
+      "assertion": "desk-home: the desk opens on the graph view it opened on before the queue existed; axe_passes=False keyboard_reachable_and_focus_visible=True touch_targets_at_least_24px=True no_private_or_local_link=True no_horizontal_overflow=True no_horizontal_overflow_at_200_percent_zoom=True",
+      "screenshot_local_path": "docs/screenshots/desk-repair-queue/desk-home-390.png",
+      "screenshot_sha256": "045e7a381cc34d94b63efa0d94ca6a8c9d6539bce0b609b9f943fe7926a10a8a",
+      "axe_scoped_failing_violations": []
+    },
+    {
+      "journey": "desk-home",
+      "intent": "the desk opens on the graph view it opened on before the queue existed",
+      "owning_file": "tools/repair_queue.mjs",
+      "owning_renderer": "renderRepairQueueSection",
+      "route": "/desk.html",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "zoom_viewport": {
+        "width": 720,
+        "height": 450,
+        "zoom_percent": 200
+      },
+      "revision": "e19ae2ae561ec761631becc3ea848a46bcbc275a",
+      "data_vintage": "committed source-contract ledger, source-health observations and Community Board source receipts (site/data/source_contracts.json, site/data/source_health_observations.json, site/data/community_board_meeting_index.json, site/data/non_council_outcome_sources/board_source_inventory.json) plus the reviewed register data/repair-queue-register.v1.json, at index vintage 2026-08-25T01:57:25.541Z; no network, publisher, or production read at any point",
+      "journey_state": {
+        "view": "graph",
+        "repair_hidden": true,
+        "pressed": [
+          "graphToggle"
+        ]
+      },
+      "axe": {
+        "violations_total": 2,
+        "failing_violations": [
+          {
+            "id": "nested-interactive",
+            "impact": "serious",
+            "targets": [
+              "['#sourceGraph']"
+            ]
+          }
+        ],
+        "passes": false
+      },
+      "keyboard": {
+        "controls": 72,
+        "reached_by_tab": 72,
+        "unreachable": [],
+        "without_focus_indicator": []
+      },
+      "touch_targets": {
+        "floor": 24,
+        "measured": 5,
+        "undersized": []
+      },
+      "overflow": {
+        "scroll_width": 1440,
+        "viewport_width": 1440,
+        "horizontal_overflow": false,
+        "overflowing_nodes": []
+      },
+      "zoom_overflow": {
+        "scroll_width": 720,
+        "viewport_width": 720,
+        "horizontal_overflow": false,
+        "overflowing_nodes": [
+          "div.column-heads",
+          "div",
+          "span",
+          "b",
+          "svg.[object",
+          "g.[object",
+          "path.[object",
+          "rect.[object"
+        ]
+      },
+      "links": {
+        "links": 1,
+        "private_links": [],
+        "non_https_links": []
+      },
+      "assertion": "desk-home: the desk opens on the graph view it opened on before the queue existed; axe_passes=False keyboard_reachable_and_focus_visible=True touch_targets_at_least_24px=True no_private_or_local_link=True no_horizontal_overflow=True no_horizontal_overflow_at_200_percent_zoom=True",
+      "screenshot_local_path": "docs/screenshots/desk-repair-queue/desk-home-1440.png",
+      "screenshot_sha256": "ecacd23b75c9e186496a58853f781f55d346df7db1805dddab9c0c60fd64e17c",
+      "axe_scoped_failing_violations": []
+    },
+    {
+      "journey": "repair-queue",
+      "intent": "every grouped row expands to its observation detail",
+      "owning_file": "tools/repair_queue.mjs",
+      "owning_renderer": "renderRepairQueueSection",
+      "route": "/desk.html",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "zoom_viewport": {
+        "width": 320,
+        "height": 422,
+        "zoom_percent": 200
+      },
+      "revision": "e19ae2ae561ec761631becc3ea848a46bcbc275a",
+      "data_vintage": "committed source-contract ledger, source-health observations and Community Board source receipts (site/data/source_contracts.json, site/data/source_health_observations.json, site/data/community_board_meeting_index.json, site/data/non_council_outcome_sources/board_source_inventory.json) plus the reviewed register data/repair-queue-register.v1.json, at index vintage 2026-08-25T01:57:25.541Z; no network, publisher, or production read at any point",
+      "journey_state": {
+        "view": "repair",
+        "groups": 5,
+        "expanded": 5,
+        "scope_rows": 55,
+        "unavailable_notice": 0,
+        "state_pills": [
+          "2 Repair candidate",
+          "0 Regressed",
+          "2 Expected absence",
+          "1 Source policy limitation",
+          "0 Resolved"
+        ]
+      },
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      },
+      "keyboard": {
+        "controls": 17,
+        "reached_by_tab": 17,
+        "unreachable": [],
+        "without_focus_indicator": []
+      },
+      "touch_targets": {
+        "floor": 24,
+        "measured": 12,
+        "undersized": []
+      },
+      "overflow": {
+        "scroll_width": 390,
+        "viewport_width": 390,
+        "horizontal_overflow": false,
+        "overflowing_nodes": [
+          "table",
+          "thead",
+          "tr",
+          "th",
+          "tbody",
+          "td",
+          "td.queue-evidence",
+          "small"
+        ]
+      },
+      "zoom_overflow": {
+        "scroll_width": 320,
+        "viewport_width": 320,
+        "horizontal_overflow": false,
+        "overflowing_nodes": [
+          "table",
+          "thead",
+          "tr",
+          "th",
+          "tbody",
+          "td",
+          "td.queue-evidence",
+          "small"
+        ]
+      },
+      "links": {
+        "links": 1,
+        "private_links": [],
+        "non_https_links": []
+      },
+      "assertion": "repair-queue: every grouped row expands to its observation detail; axe_passes=True keyboard_reachable_and_focus_visible=True touch_targets_at_least_24px=True no_private_or_local_link=True no_horizontal_overflow=True no_horizontal_overflow_at_200_percent_zoom=True",
+      "screenshot_local_path": "docs/screenshots/desk-repair-queue/repair-queue-390.png",
+      "screenshot_sha256": "545ea00afbcf1a276303dca184ee9e312f486f335a34f97626346b7067bd457b",
+      "axe_scoped_failing_violations": []
+    },
+    {
+      "journey": "repair-queue",
+      "intent": "every grouped row expands to its observation detail",
+      "owning_file": "tools/repair_queue.mjs",
+      "owning_renderer": "renderRepairQueueSection",
+      "route": "/desk.html",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "zoom_viewport": {
+        "width": 720,
+        "height": 450,
+        "zoom_percent": 200
+      },
+      "revision": "e19ae2ae561ec761631becc3ea848a46bcbc275a",
+      "data_vintage": "committed source-contract ledger, source-health observations and Community Board source receipts (site/data/source_contracts.json, site/data/source_health_observations.json, site/data/community_board_meeting_index.json, site/data/non_council_outcome_sources/board_source_inventory.json) plus the reviewed register data/repair-queue-register.v1.json, at index vintage 2026-08-25T01:57:25.541Z; no network, publisher, or production read at any point",
+      "journey_state": {
+        "view": "repair",
+        "groups": 5,
+        "expanded": 5,
+        "scope_rows": 55,
+        "unavailable_notice": 0,
+        "state_pills": [
+          "2 Repair candidate",
+          "0 Regressed",
+          "2 Expected absence",
+          "1 Source policy limitation",
+          "0 Resolved"
+        ]
+      },
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      },
+      "keyboard": {
+        "controls": 17,
+        "reached_by_tab": 17,
+        "unreachable": [],
+        "without_focus_indicator": []
+      },
+      "touch_targets": {
+        "floor": 24,
+        "measured": 12,
+        "undersized": []
+      },
+      "overflow": {
+        "scroll_width": 1440,
+        "viewport_width": 1440,
+        "horizontal_overflow": false,
+        "overflowing_nodes": []
+      },
+      "zoom_overflow": {
+        "scroll_width": 720,
+        "viewport_width": 720,
+        "horizontal_overflow": false,
+        "overflowing_nodes": [
+          "table",
+          "thead",
+          "tr",
+          "th",
+          "tbody",
+          "td",
+          "td.queue-evidence",
+          "small"
+        ]
+      },
+      "links": {
+        "links": 1,
+        "private_links": [],
+        "non_https_links": []
+      },
+      "assertion": "repair-queue: every grouped row expands to its observation detail; axe_passes=True keyboard_reachable_and_focus_visible=True touch_targets_at_least_24px=True no_private_or_local_link=True no_horizontal_overflow=True no_horizontal_overflow_at_200_percent_zoom=True",
+      "screenshot_local_path": "docs/screenshots/desk-repair-queue/repair-queue-1440.png",
+      "screenshot_sha256": "bd0a00f849915380ab276bed7e32452a552269c8df0a090810c373ea05c127dd",
+      "axe_scoped_failing_violations": []
+    },
+    {
+      "journey": "repair-queue-filtered",
+      "intent": "the shared search box and the state select filter grouped rows from the keyboard",
+      "owning_file": "tools/repair_queue.mjs",
+      "owning_renderer": "renderRepairQueueSection",
+      "route": "/desk.html",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "zoom_viewport": {
+        "width": 320,
+        "height": 422,
+        "zoom_percent": 200
+      },
+      "revision": "e19ae2ae561ec761631becc3ea848a46bcbc275a",
+      "data_vintage": "committed source-contract ledger, source-health observations and Community Board source receipts (site/data/source_contracts.json, site/data/source_health_observations.json, site/data/community_board_meeting_index.json, site/data/non_council_outcome_sources/board_source_inventory.json) plus the reviewed register data/repair-queue-register.v1.json, at index vintage 2026-08-25T01:57:25.541Z; no network, publisher, or production read at any point",
+      "journey_state": {
+        "view": "repair",
+        "filter_term": "html_pdf_v1",
+        "issues_total": 5,
+        "visible_after_text_filter": 2,
+        "visible_after_state_filter": 1
+      },
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      },
+      "keyboard": {
+        "controls": 7,
+        "reached_by_tab": 7,
+        "unreachable": [],
+        "without_focus_indicator": []
+      },
+      "touch_targets": {
+        "floor": 24,
+        "measured": 7,
+        "undersized": []
+      },
+      "overflow": {
+        "scroll_width": 390,
+        "viewport_width": 390,
+        "horizontal_overflow": false,
+        "overflowing_nodes": [
+          "table",
+          "thead",
+          "tr",
+          "th",
+          "tbody",
+          "td",
+          "td.queue-evidence",
+          "small"
+        ]
+      },
+      "zoom_overflow": {
+        "scroll_width": 320,
+        "viewport_width": 320,
+        "horizontal_overflow": false,
+        "overflowing_nodes": [
+          "table",
+          "thead",
+          "tr",
+          "th",
+          "tbody",
+          "td",
+          "td.queue-evidence",
+          "small"
+        ]
+      },
+      "links": {
+        "links": 1,
+        "private_links": [],
+        "non_https_links": []
+      },
+      "assertion": "repair-queue-filtered: the shared search box and the state select filter grouped rows from the keyboard; axe_passes=True keyboard_reachable_and_focus_visible=True touch_targets_at_least_24px=True no_private_or_local_link=True no_horizontal_overflow=True no_horizontal_overflow_at_200_percent_zoom=True",
+      "screenshot_local_path": "docs/screenshots/desk-repair-queue/repair-queue-filtered-390.png",
+      "screenshot_sha256": "bc451646b9508d29c2c014b47f05cc463aad42072207edd2000003475ae5d54d",
+      "axe_scoped_failing_violations": []
+    },
+    {
+      "journey": "repair-queue-filtered",
+      "intent": "the shared search box and the state select filter grouped rows from the keyboard",
+      "owning_file": "tools/repair_queue.mjs",
+      "owning_renderer": "renderRepairQueueSection",
+      "route": "/desk.html",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "zoom_viewport": {
+        "width": 720,
+        "height": 450,
+        "zoom_percent": 200
+      },
+      "revision": "e19ae2ae561ec761631becc3ea848a46bcbc275a",
+      "data_vintage": "committed source-contract ledger, source-health observations and Community Board source receipts (site/data/source_contracts.json, site/data/source_health_observations.json, site/data/community_board_meeting_index.json, site/data/non_council_outcome_sources/board_source_inventory.json) plus the reviewed register data/repair-queue-register.v1.json, at index vintage 2026-08-25T01:57:25.541Z; no network, publisher, or production read at any point",
+      "journey_state": {
+        "view": "repair",
+        "filter_term": "html_pdf_v1",
+        "issues_total": 5,
+        "visible_after_text_filter": 2,
+        "visible_after_state_filter": 1
+      },
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      },
+      "keyboard": {
+        "controls": 7,
+        "reached_by_tab": 7,
+        "unreachable": [],
+        "without_focus_indicator": []
+      },
+      "touch_targets": {
+        "floor": 24,
+        "measured": 7,
+        "undersized": []
+      },
+      "overflow": {
+        "scroll_width": 1440,
+        "viewport_width": 1440,
+        "horizontal_overflow": false,
+        "overflowing_nodes": []
+      },
+      "zoom_overflow": {
+        "scroll_width": 720,
+        "viewport_width": 720,
+        "horizontal_overflow": false,
+        "overflowing_nodes": [
+          "table",
+          "thead",
+          "tr",
+          "th",
+          "tbody",
+          "td",
+          "td.queue-evidence",
+          "small"
+        ]
+      },
+      "links": {
+        "links": 1,
+        "private_links": [],
+        "non_https_links": []
+      },
+      "assertion": "repair-queue-filtered: the shared search box and the state select filter grouped rows from the keyboard; axe_passes=True keyboard_reachable_and_focus_visible=True touch_targets_at_least_24px=True no_private_or_local_link=True no_horizontal_overflow=True no_horizontal_overflow_at_200_percent_zoom=True",
+      "screenshot_local_path": "docs/screenshots/desk-repair-queue/repair-queue-filtered-1440.png",
+      "screenshot_sha256": "0174a254cb035035123794c77ff89d47688f616a0fad87f771ad5e0e945a5b3f",
+      "axe_scoped_failing_violations": []
+    },
+    {
+      "journey": "repair-queue-unavailable",
+      "intent": "a failed ingestion renders an explicit failure, never an all-clear",
+      "owning_file": "tools/repair_queue.mjs",
+      "owning_renderer": "renderRepairQueueSection",
+      "route": "/desk-unavailable.html",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "zoom_viewport": {
+        "width": 320,
+        "height": 422,
+        "zoom_percent": 200
+      },
+      "revision": "e19ae2ae561ec761631becc3ea848a46bcbc275a",
+      "data_vintage": "committed source-contract ledger, source-health observations and Community Board source receipts (site/data/source_contracts.json, site/data/source_health_observations.json, site/data/community_board_meeting_index.json, site/data/non_council_outcome_sources/board_source_inventory.json) plus the reviewed register data/repair-queue-register.v1.json, at index vintage 2026-08-25T01:57:25.541Z; no network, publisher, or production read at any point",
+      "journey_state": {
+        "view": "repair",
+        "groups": 0,
+        "expanded": 0,
+        "scope_rows": 0,
+        "unavailable_notice": 1,
+        "state_pills": []
+      },
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      },
+      "keyboard": {
+        "controls": 5,
+        "reached_by_tab": 5,
+        "unreachable": [],
+        "without_focus_indicator": []
+      },
+      "touch_targets": {
+        "floor": 24,
+        "measured": 5,
+        "undersized": []
+      },
+      "overflow": {
+        "scroll_width": 390,
+        "viewport_width": 390,
+        "horizontal_overflow": false,
+        "overflowing_nodes": []
+      },
+      "zoom_overflow": {
+        "scroll_width": 320,
+        "viewport_width": 320,
+        "horizontal_overflow": false,
+        "overflowing_nodes": []
+      },
+      "links": {
+        "links": 0,
+        "private_links": [],
+        "non_https_links": []
+      },
+      "assertion": "repair-queue-unavailable: a failed ingestion renders an explicit failure, never an all-clear; axe_passes=True keyboard_reachable_and_focus_visible=True touch_targets_at_least_24px=True no_private_or_local_link=True no_horizontal_overflow=True no_horizontal_overflow_at_200_percent_zoom=True",
+      "screenshot_local_path": "docs/screenshots/desk-repair-queue/repair-queue-unavailable-390.png",
+      "screenshot_sha256": "413c60eaadc23c855b40c1c380d76c2abdbffc2e2835d726b52c14752c56a7a0",
+      "axe_scoped_failing_violations": []
+    },
+    {
+      "journey": "repair-queue-unavailable",
+      "intent": "a failed ingestion renders an explicit failure, never an all-clear",
+      "owning_file": "tools/repair_queue.mjs",
+      "owning_renderer": "renderRepairQueueSection",
+      "route": "/desk-unavailable.html",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "zoom_viewport": {
+        "width": 720,
+        "height": 450,
+        "zoom_percent": 200
+      },
+      "revision": "e19ae2ae561ec761631becc3ea848a46bcbc275a",
+      "data_vintage": "committed source-contract ledger, source-health observations and Community Board source receipts (site/data/source_contracts.json, site/data/source_health_observations.json, site/data/community_board_meeting_index.json, site/data/non_council_outcome_sources/board_source_inventory.json) plus the reviewed register data/repair-queue-register.v1.json, at index vintage 2026-08-25T01:57:25.541Z; no network, publisher, or production read at any point",
+      "journey_state": {
+        "view": "repair",
+        "groups": 0,
+        "expanded": 0,
+        "scope_rows": 0,
+        "unavailable_notice": 1,
+        "state_pills": []
+      },
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      },
+      "keyboard": {
+        "controls": 5,
+        "reached_by_tab": 5,
+        "unreachable": [],
+        "without_focus_indicator": []
+      },
+      "touch_targets": {
+        "floor": 24,
+        "measured": 5,
+        "undersized": []
+      },
+      "overflow": {
+        "scroll_width": 1440,
+        "viewport_width": 1440,
+        "horizontal_overflow": false,
+        "overflowing_nodes": []
+      },
+      "zoom_overflow": {
+        "scroll_width": 720,
+        "viewport_width": 720,
+        "horizontal_overflow": false,
+        "overflowing_nodes": []
+      },
+      "links": {
+        "links": 0,
+        "private_links": [],
+        "non_https_links": []
+      },
+      "assertion": "repair-queue-unavailable: a failed ingestion renders an explicit failure, never an all-clear; axe_passes=True keyboard_reachable_and_focus_visible=True touch_targets_at_least_24px=True no_private_or_local_link=True no_horizontal_overflow=True no_horizontal_overflow_at_200_percent_zoom=True",
+      "screenshot_local_path": "docs/screenshots/desk-repair-queue/repair-queue-unavailable-1440.png",
+      "screenshot_sha256": "5faddf0d1a503aa8813b7b52d1693cc7c6cb7f995337b052e8557073213e90ea",
+      "axe_scoped_failing_violations": []
+    }
+  ]
+}
