@@ -11,6 +11,7 @@ Two populations are exercised against the same shipped page.
              render as "0 registered after start".
 """
 
+import hashlib
 import json
 import os
 import re
@@ -121,6 +122,149 @@ def run_measured(page, width, height):
         assert box["height"] >= 44, f"touch target too small: {box}"
     assert_no_horizontal_overflow(page, f"measured {width}px")
     return all_href, after_href
+
+
+def wait_for_cases(page, count):
+    wait_for_function(
+        page,
+        f"() => document.querySelectorAll('#buyer-history-cases a[data-contract-id]').length === {count}",
+        timeout=60000,
+    )
+
+
+def run_inspect(page):
+    narrow = cohort("parks_construction_bid")
+    page.goto(
+        buyer_url(
+            narrow["buyer"],
+            ap_industry=narrow["industry"],
+            ap_award_method=narrow["award_method"],
+            ap_cases="1",
+        ),
+        wait_until="domcontentloaded", timeout=60000,
+    )
+    wait_for_history(page)
+    wait_for_cases(page, narrow["contract_count"])
+    ids = sorted(page.locator("#buyer-history-cases a[data-contract-id]").evaluate_all(
+        "els => els.map(el => el.getAttribute('data-contract-id'))"
+    ))
+    assert ids == narrow["contract_ids"], ids
+    assert str(narrow["contract_count"]) in page.locator("#buyer-history-scope").inner_text()
+    step("all cases", f"{len(ids)} distinct")
+
+    page.goto(
+        buyer_url(
+            narrow["buyer"],
+            ap_industry=narrow["industry"],
+            ap_award_method=narrow["award_method"],
+            ap_cases="1",
+            retroactive="true",
+        ),
+        wait_until="domcontentloaded", timeout=60000,
+    )
+    wait_for_history(page)
+    wait_for_cases(page, narrow["after_start_count"])
+    late_ids = sorted(page.locator("#buyer-history-cases a[data-contract-id]").evaluate_all(
+        "els => els.map(el => el.getAttribute('data-contract-id'))"
+    ))
+    assert late_ids == [
+        "CT184620258809333",
+        "CT184620268802665",
+        "CT184620268803841",
+        "CT184620268805367",
+        "CT184620268805555",
+    ], late_ids
+    assert str(narrow["contract_count"]) in page.locator("#buyer-history-scope").inner_text()
+    step("after-start cases", f"{len(late_ids)} of {narrow['contract_count']}")
+
+    linked = page.locator('#buyer-history-cases a[data-contract-id="CT184620268805555"]')
+    assert linked.bounding_box()["height"] >= 44
+    linked.click()
+    wait_for_function(
+        page,
+        "() => new URLSearchParams(location.search).get('ap_inspect') === 'CT184620268805555'",
+        timeout=60000,
+    )
+    wait_for_history(page)
+    inspect = page.locator("#buyer-history-inspect")
+    assert inspect.is_visible()
+    text = inspect.inner_text()
+    assert "WILLIAM A GROSS" in text.upper() or "Gross" in text
+    assert "2026-03-16" in text and "2026-03-30" in text
+    assert "14 days after start" in text
+    assert page.locator('#buyer-history-inspect a[data-destination-kind="procurement"]').count() == 1
+    assert page.locator('#buyer-history-inspect a[data-destination-kind="notice"]').count() == 1
+    assert "/procurements/procurement%3Acontract%3ACT184620268805555" in page.locator(
+        '#buyer-history-inspect a[data-destination-kind="procurement"]'
+    ).get_attribute("href")
+    assert "/notices/20260331013" in page.locator(
+        '#buyer-history-inspect a[data-destination-kind="notice"]'
+    ).get_attribute("href")
+    assert str(narrow["contract_count"]) in page.locator("#buyer-history-scope").inner_text()
+    assert page.locator("#buyer-history-cases a[data-contract-id]").count() == narrow["after_start_count"]
+    page.add_script_tag(path=str(AXE))
+    inspect_axe = page.evaluate(
+        "async () => (await axe.run('#buyer-history', { resultTypes: ['violations'] })).violations"
+        ".map(v => ({ id: v.id, impact: v.impact, nodes: v.nodes.length }))"
+    )
+    blocking = [v for v in inspect_axe if v["impact"] in ("serious", "critical")
+                or v["id"] in ("landmark-one-main", "region", "heading-order", "color-contrast")]
+    assert not blocking, f"axe violations while inspecting a counted case: {blocking}"
+    inspect_html = page.locator("#buyer-history-inspect").inner_html()
+    step("linked inspect", "14 days plus exact destinations "
+         + hashlib.sha256(inspect_html.encode("utf-8")).hexdigest())
+
+    page.locator("#buyer-history-inspect .buyer-history-inspect-actions a").click()
+    wait_for_function(
+        page,
+        "() => !new URLSearchParams(location.search).get('ap_inspect')",
+        timeout=60000,
+    )
+    wait_for_history(page)
+    assert page.locator("#buyer-history-inspect").is_hidden()
+    assert str(narrow["contract_count"]) in page.locator("#buyer-history-scope").inner_text()
+    wait_for_cases(page, narrow["after_start_count"])
+    step("dismiss", "cohort unchanged")
+
+    source_only = page.locator('#buyer-history-cases a[data-contract-id="CT184620268805367"]')
+    source_only.focus()
+    page.keyboard.press("Enter")
+    wait_for_function(
+        page,
+        "() => new URLSearchParams(location.search).get('ap_inspect') === 'CT184620268805367'",
+        timeout=60000,
+    )
+    wait_for_history(page)
+    source_text = page.locator("#buyer-history-inspect").inner_text()
+    assert "2026-03-26" in source_text and "2026-04-01" in source_text
+    assert "6 days after start" in source_text
+    assert page.locator("#buyer-history-inspect a[data-destination-kind]").count() == 0
+    assert "checkbooknyc.com" not in source_text.lower()
+    assert str(narrow["contract_count"]) in page.locator("#buyer-history-scope").inner_text()
+    step("source-only inspect", "six days, no invented destination")
+
+    page.goto(
+        buyer_url(
+            narrow["buyer"],
+            ap_industry=narrow["industry"],
+            ap_award_method=narrow["award_method"],
+            ap_cases="1",
+            ap_inspect="CT-NOT-IN-COHORT",
+        ),
+        wait_until="domcontentloaded", timeout=60000,
+    )
+    wait_for_history(page)
+    failure = page.locator("#buyer-history-inspect").inner_text()
+    assert "CT-NOT-IN-COHORT" in failure
+    assert page.locator("#buyer-history-inspect-retry").is_visible()
+    assert page.locator("#buyer-history-inspect-retry").bounding_box()["height"] >= 44
+    assert str(narrow["contract_count"]) in page.locator("#buyer-history-scope").inner_text()
+    assert "could not be loaded" not in page.locator("#buyer-history-scope").inner_text().lower()
+    assert_no_horizontal_overflow(page, "inspect failure 1440")
+    page.set_viewport_size({"width": 390, "height": 844})
+    assert_no_horizontal_overflow(page, "inspect failure 390")
+    page.set_viewport_size({"width": 1440, "height": 900})
+    step("requested-case failure", "selected id retained")
 
 
 def run_narrowed(page):
@@ -298,6 +442,7 @@ def main():
             run_measured(page, width, height)
         page.set_viewport_size({"width": 1440, "height": 900})
         run_narrowed(page)
+        run_inspect(page)
         run_drill_and_back(page)
         run_keyboard(page)
         run_axe(page)

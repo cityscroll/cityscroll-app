@@ -1,0 +1,57 @@
+{
+  "schema": "cityscroll.buyer-history-inspect.capture.v1",
+  "note": "Textual capture manifest. No image binaries are committed; local captures stay under the ignored .artifacts/ path.",
+  "route": "/browse/contracts/?mode=award&ap_agency=<buyer>&ap_fy=<registration fiscal year>&ap_industry=<industry>&ap_award_method=<method>&ap_cases=1&ap_inspect=<contract id>",
+  "surface": "site/buyer_contracting_history_view.mjs #buyer-history-inspect",
+  "runner": "test/functional/30_buyer_contracting_history.py",
+  "data_vintage": "2026-09-06 Checkbook NYC Contracts / registered / expense / fiscal_year=2026, bounded retained subset plus retained exact destinations for CT184620268805555",
+  "inputs": [
+    {
+      "path": "test/fixtures/buyer_contracting_history_fy2026_slices.json",
+      "sha256": "b4ffddf95e63075e937a271f5165d2f99cf2e9ef7a115f7a7d673433a2511d4c"
+    },
+    {
+      "path": "test/fixtures/buyer_contracting_history_fy2026_ledger.json",
+      "sha256": "197431113eafdaf5228e3607a7286d9adb91996a100de2e90093698fbf2d5214"
+    },
+    {
+      "path": "test/fixtures/buyer_contracting_history_exact_destinations.json",
+      "sha256": "be4ddc66577c21b9554de12c95f84c61399e051a8b3667571c9dec92c1db49eb"
+    }
+  ],
+  "captures": [
+    {
+      "assertion": "Parks construction services through competitive sealed bidding opens exactly 40 distinct inspectable Checkbook cases.",
+      "population": "measured",
+      "viewport": { "width": 1440, "height": 900 },
+      "route": "/browse/contracts/?mode=award&ap_agency=Department of Parks and Recreation&ap_fy=2026&ap_industry=Construction Services&ap_award_method=COMPETITIVE SEALED BIDDING&ap_cases=1",
+      "sha256": "be4ddc66577c21b9554de12c95f84c61399e051a8b3667571c9dec92c1db49eb"
+    },
+    {
+      "assertion": "Registered after start opens exactly the five retained late IDs without changing the 40-contract denominator.",
+      "population": "measured",
+      "viewport": { "width": 1440, "height": 900 },
+      "route": "/browse/contracts/?mode=award&ap_agency=Department of Parks and Recreation&ap_fy=2026&ap_industry=Construction Services&ap_award_method=COMPETITIVE SEALED BIDDING&ap_cases=1&retroactive=true",
+      "sha256": "197431113eafdaf5228e3607a7286d9adb91996a100de2e90093698fbf2d5214"
+    },
+    {
+      "assertion": "CT184620268805555 shows 2026-03-16 to 2026-03-30, 14 days after start, and its exact procurement and City Record notice destinations.",
+      "population": "measured",
+      "viewport": { "width": 1440, "height": 900 },
+      "route": "/browse/contracts/?mode=award&ap_agency=Department of Parks and Recreation&ap_fy=2026&ap_industry=Construction Services&ap_award_method=COMPETITIVE SEALED BIDDING&ap_cases=1&retroactive=true&ap_inspect=CT184620268805555",
+      "sha256": "60300f7100bdae6cd61ef1b9434439916f3cb4208369ba735ae85a38bb8272f7"
+    },
+    {
+      "assertion": "CT184620268805367 remains inspectable at 2026-03-26 to 2026-04-01, six days after start, with no invented canonical destination.",
+      "population": "measured",
+      "viewport": { "width": 1440, "height": 900 },
+      "sha256": "be4ddc66577c21b9554de12c95f84c61399e051a8b3667571c9dec92c1db49eb"
+    },
+    {
+      "assertion": "Dismissing a case restores the counted list and keeps the selected comparison; a missing requested case retains its ID and retry.",
+      "population": "measured",
+      "viewport": { "width": 390, "height": 844 },
+      "sha256": "60300f7100bdae6cd61ef1b9434439916f3cb4208369ba735ae85a38bb8272f7"
+    }
+  ]
+}

@@ -48,6 +48,7 @@ import {
   renderRegistrationTimingMetrics,
   syncBuyerHistoryComparisonControls,
 } from "../buyer_contracting_history_view.mjs";
+import { buyerHistoryInspectHref } from "../buyer_contracting_history.mjs";
 import { analyzeContractsProjection } from "../contracts_analysis_projection.mjs";
 import {
   PAYMENT_ANALYTICAL_PROJECTION_URL,
@@ -447,6 +448,8 @@ function analyticalUrlFilters(){
     city_record_match: params.get("ap_city_record_match") || null,
     performance_evidence_state: params.get("ap_evidence_state") || null,
     contract_id: params.get("ap_contract_id") || null,
+    cases: params.get("ap_cases") === "1" || params.get("ap_cases") === "true" ? true : null,
+    inspect: params.get("ap_inspect") || null,
   };
 }
 
@@ -473,7 +476,7 @@ function syncAnalyticalFiscalYears(rows, fact="registered_contract"){
   if(years.includes(Number(current))) select.value=current;
 }
 
-function analyticalMoneyRow(row){
+function analyticalMoneyRow(row, inspectHref=null){
   return {
     id: row.prime_contract_id,
     short_title: t("analytics_contract_title",{id:row.prime_contract_id}),
@@ -489,6 +492,7 @@ function analyticalMoneyRow(row){
     primary_stage: "registered",
     source_system: "analytics_registered_contracts",
     analytics_projection: true,
+    inspect_href: inspectHref || null,
     performance_evidence_state: row.performance_evidence_state || PERFORMANCE_EVIDENCE_STATES.NONE,
   };
 }
@@ -847,7 +851,10 @@ async function renderAnalyticalProjection(rows){
   // `controls` already carries the reader's own choices; a URL scope wins.
   syncBuyerHistoryComparisonControls(projectionRows,urlFilters,buyerHistoryUi());
   for(const key of ["industry","award_method"]) if(urlFilters[key]) filters[key]=urlFilters[key];
-  renderBuyerHistoryPanel(readableProjectionRows,registeredProjection,urlFilters,controls,buyerHistoryUi());
+  renderBuyerHistoryPanel(readableProjectionRows,registeredProjection,{
+    ...urlFilters,
+    destination_candidates: (currentMoneyLineageRows || currentRows || []).filter((row)=>row?.contract_id || row?.canonical_href),
+  },controls,buyerHistoryUi());
   const filtered=filterAnalyticalContracts(projectionRows,filters);
   const summary=populationSummary(filtered,{snapshot_date:registeredProjection.snapshot_date,population_definition:registeredProjection.population_definition});
   const timingSummary=registrationTimingSummary(filtered);
@@ -982,6 +989,17 @@ function bindAnalyticalControls(){
     retryButton.addEventListener("click",()=>{
       // Retry the same request. The reader's buyer, year, and comparison are
       // already in the URL and the controls, so nothing has to be re-chosen.
+      analyticalProjectionPromise=null;
+      loadAnalyticalProjection().then(renderAnalyticalProjection).catch(()=>{});
+    });
+  }
+  const historyPanel=$("#buyer-history");
+  if(historyPanel&&!historyPanel.dataset.inspectRetryBound){
+    historyPanel.dataset.inspectRetryBound="1";
+    historyPanel.addEventListener("click",(event)=>{
+      const retry=event.target.closest?.("#buyer-history-inspect-retry");
+      if(!retry) return;
+      event.preventDefault();
       analyticalProjectionPromise=null;
       loadAnalyticalProjection().then(renderAnalyticalProjection).catch(()=>{});
     });
@@ -1147,7 +1165,15 @@ async function search(){
     const analyticalScopeRows = analyticalScopeActive
       ? analyticalScope.fact === "payment"
         ? filterAnalyticalPayments(analyticsProjection?.payment?.rows || [], analyticalScope).map(analyticalPaymentMoneyRow)
-        : filterAnalyticalContracts(analyticsProjection?.registered_contract?.rows || [], analyticalScope).map(analyticalMoneyRow)
+        : filterAnalyticalContracts(analyticsProjection?.registered_contract?.rows || [], {
+          ...analyticalScope,
+          contract_id: null,
+          cases: null,
+          inspect: null,
+        }).map((row)=>analyticalMoneyRow(
+          row,
+          buyerHistoryInspectHref(`${location.pathname}${location.search}`, row.prime_contract_id),
+        ))
       : null;
     if (analyticalScopeActive) {
       if (stale()) return;
@@ -1338,6 +1364,7 @@ function moneyListPrimaryAction(r, today=todayISO()){
 }
 function moneyListInteractionProjection(r, today=todayISO()){
   const requestId=String(r?.request_id||"").trim();
+  const inspectHref=String(r?.inspect_href||"").trim();
   const canonicalHref=String(r?.canonical_href||"").trim();
   const presentation=moneyListPrimaryAction(r,today);
   const kineticActions=presentation ? [{
@@ -1348,8 +1375,8 @@ function moneyListInteractionProjection(r, today=todayISO()){
     primary:true,
   }] : [];
   return objectCardInteractionProjection({
-    target:(canonicalHref||requestId) ? {
-      href:canonicalHref||`/notices/${encodeURIComponent(requestId)}`,
+    target:(inspectHref||canonicalHref||requestId) ? {
+      href:inspectHref||canonicalHref||`/notices/${encodeURIComponent(requestId)}`,
       label:noticeDisplayTitle(r),
     } : null,
     kinetic_actions:kineticActions,
@@ -1512,6 +1539,7 @@ function bindMoneyListRowClicks(lineageRows=null){
     el.addEventListener("click",event=>{
       if(event.target.closest?.("a,button")) return;
       const row=currentRows[+el.dataset.i];
+      if(event.isTrusted&&row?.inspect_href){ location.assign(row.inspect_href); return; }
       if(event.isTrusted&&!row?.request_id&&row?.canonical_href){ location.assign(row.canonical_href); return; }
       select(+el.dataset.i, el, event.isTrusted, event.isTrusted?null:(currentMoneyLineageRows || lineageRows));
     });
@@ -1519,6 +1547,7 @@ function bindMoneyListRowClicks(lineageRows=null){
 }
 async function enhanceMoneyAwardList(rows, terms){
   if(mode!=="award" || !rows.length) return;
+  if(rows.every((row)=>row?.analytics_projection)) return;
   const grouping=await moneyPinSiblingGrouping();
   const review=await loadPinFamilyReview();
   const siblingEntries=grouping?.groupPinSiblingRows?.(rows,{review})
@@ -1607,6 +1636,7 @@ function renderList(autoSelect,lineageRows=null){
   document.querySelectorAll("#list .row").forEach(el=>el.addEventListener("click",event=>{
     if(event.target.closest?.("a,button")) return;
     const row=currentRows[+el.dataset.i];
+    if(event.isTrusted&&row?.inspect_href){ location.assign(row.inspect_href); return; }
     if(event.isTrusted&&!row?.request_id&&row?.canonical_href){ location.assign(row.canonical_href); return; }
       select(+el.dataset.i, el, event.isTrusted, event.isTrusted?null:(currentMoneyLineageRows || lineageRows));
   }));
@@ -1700,6 +1730,7 @@ async function select(i, el, planningDetailRequested=false, precomputedRows=null
   const r = currentRows[i];
   if(planningDetailRequested) r.planning_detail_requested = true;
   selectedRFP = r;
+  if(r?.inspect_href){ $("#detail").innerHTML=""; return; }
   if(!r?.request_id&&r?.canonical_href){ $("#detail").innerHTML=""; return; }
   if(typeof globalThis.renderDetail === "function") renderDetail(r, null, null, planningDetailRequested);
   else {

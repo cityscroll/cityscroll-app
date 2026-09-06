@@ -16,7 +16,7 @@ export const ANALYTICAL_GROUPS = Object.freeze({
 export const ANALYTICAL_PROJECTION_QUERY_KEYS = Object.freeze([
   "ap_fact", "ap_payment_view", "ap_agency", "ap_vendor", "ap_fy", "ap_amount_band", "ap_min", "ap_max",
   "retroactive", "ap_city_record_match", "ap_evidence_state", "ap_contract_id",
-  "ap_award_method", "ap_industry",
+  "ap_award_method", "ap_industry", "ap_cases", "ap_inspect",
 ]);
 export const ANALYTICAL_MEASURES = Object.freeze({
   count: "unique_contract_count",

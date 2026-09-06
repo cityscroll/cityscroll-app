@@ -1,0 +1,21 @@
+{
+  "schema": "cityscroll.buyer_contracting_history_exact_destinations.v1",
+  "note": "Retained exact procurement and City Record destinations from the preflight snapshot. These are source-qualified exact contract-id matches, not guessed detail URLs.",
+  "destinations": {
+    "CT184620268805555": [
+      {
+        "kind": "procurement",
+        "href": "/procurements/procurement%3Acontract%3ACT184620268805555",
+        "basis": "exact_contract_id",
+        "label": "procurement:contract:CT184620268805555"
+      },
+      {
+        "kind": "notice",
+        "href": "/notices/20260331013",
+        "basis": "exact_contract_id",
+        "label": "20260331013"
+      }
+    ],
+    "CT184620268805367": []
+  }
+}
