@@ -7,8 +7,22 @@ url: /guide/start/explore-housing-across-city-records/
 reader_question: I want to learn how this works — where do I begin?
 purpose: Follow one real search from the front page to an official city record, and learn how CityScroll groups what it finds.
 description: A guided walk through one real CityScroll search — read the groups of results, open two of them, check a record against the official source, and keep the link.
+published: 2026-09-05
+updated: 2026-09-06
 last_reviewed: 2026-09-06
 return_to_task: Try this search yourself | /search/?q=housing
+demos:
+  - semantic-search-housing
+capabilities:
+  - search.federated@1
+source_contracts:
+  - city-record
+depends_on:
+  - site/search/index.html
+  - site/search_document.mjs
+  - site/search_family_nav.mjs
+  - site/agency_constellation_model.mjs
+  - site/demo/demo-links.json
 related:
   - What a public record tells you | /guide/understand/what-a-public-record-tells-you/
   - Glossary of terms used in this guide | /guide/reference/glossary/

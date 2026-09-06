@@ -1,0 +1,77 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/guide-review-lane",
+  "status": "implemented",
+  "fingerprint": "guide-review-lane.v1",
+  "updated_at": "2026-09-06T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "guide-review-projection",
+      "path": "site/guide_review_source.mjs"
+    },
+    {
+      "id": "guide-review-builder",
+      "path": "tools/build_guide_review.mjs"
+    },
+    {
+      "id": "guide-review-contracts",
+      "path": "test/guide_review.test.mjs"
+    },
+    {
+      "id": "guide-review-lane-contract",
+      "path": "docs/guide-review-lane.md"
+    },
+    {
+      "id": "guide-article-source-format",
+      "path": "site/guide_article_source.mjs"
+    },
+    {
+      "id": "guide-document-view",
+      "path": "site/guide_view.mjs"
+    },
+    {
+      "id": "guide-document-builder",
+      "path": "tools/build_guide_documents.mjs"
+    },
+    {
+      "id": "guide-document-contracts",
+      "path": "test/guide_documents.test.mjs"
+    },
+    {
+      "id": "guide-first-tutorial-source",
+      "path": "site/guide/_articles/explore-housing-across-city-records.md"
+    },
+    {
+      "id": "guide-stylesheet",
+      "path": "site/guide.css"
+    },
+    {
+      "id": "example-pairing-authority",
+      "path": "site/product_updates_source.mjs"
+    },
+    {
+      "id": "shared-outbox-conventions",
+      "path": "tools/external_schedule_outbox.mjs"
+    },
+    {
+      "id": "scheduler-ownership-audit",
+      "path": "tools/audit_scheduler_ownership.mjs"
+    },
+    {
+      "id": "review-cadence-handoff",
+      "path": "docs/evidence/public-user-guide/review-cadence-handoff.md"
+    },
+    {
+      "id": "guide-review-capture",
+      "path": "docs/evidence/public-user-guide/guide-review/capture-manifest.json"
+    },
+    {
+      "id": "guide-review-notice-accessibility",
+      "path": "docs/evidence/public-user-guide/guide-review/notice-block-accessibility.md"
+    },
+    {
+      "id": "guide-review-browser-verification",
+      "path": "docs/evidence/public-user-guide/guide-review/browser-verification.md"
+    }
+  ]
+}

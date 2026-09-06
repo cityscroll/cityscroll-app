@@ -197,3 +197,27 @@
   min-height: 24px;
   padding-block: 3px;
 }
+
+/*
+ * Editor-written notices, shown above the article body.
+ *
+ * A correction and a historical note are the two things a reader has to see
+ * before they follow the steps below them, so they sit between the header and
+ * the body rather than at the foot of the page. They use the caution token the
+ * rest of the site already uses for "read this before you rely on it", and they
+ * are ordinary text, so they reflow and stay legible at 200 percent.
+ */
+.guide-document .guide-notices {
+  margin: var(--space-4) 0 0;
+  max-width: var(--measure);
+  display: grid;
+  gap: var(--space-3);
+}
+
+.guide-document .guide-notice {
+  margin: 0;
+  padding: var(--space-3) var(--space-4);
+  border-inline-start: 4px solid var(--color-caution);
+  background: var(--color-canvas-subtle);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}

@@ -304,6 +304,7 @@ run_and_fail node tools/build_exam_documents.mjs --check
 run_and_fail node tools/build_near_you_pages.mjs --check
 run_and_fail node tools/build_following_page.mjs --check
 run_and_fail node tools/build_guide_documents.mjs --check
+run_and_fail node tools/build_guide_review.mjs --check
 run_and_fail node tools/build_data_health_page.mjs --check
 run_and_fail node tools/depot_rederive.mjs --check
 run_and_fail node tools/validate_beta_flags.mjs

@@ -69,3 +69,17 @@ test("check_temp_leaks ignores known non-repository residue (Playwright scratch,
     assert.match(check.stdout, /no leaks/);
   });
 });
+
+test("check_temp_leaks still catches a directory whose name only starts like the compile cache", async () => {
+  await withTempDir("leak-checker-fixture", async (fixtureDir) => {
+    const isolatedTmp = join(fixtureDir, "tmp");
+    mkdirSync(isolatedTmp);
+    const snapshotPath = join(fixtureDir, "snapshot.json");
+    assert.equal((await runChecker(["snapshot", "--out", snapshotPath], isolatedTmp)).status, 0);
+
+    mkdirSync(join(isolatedTmp, "node-compile-cache-suite-scratch"));
+    const check = await runChecker(["check", "--in", snapshotPath, "--label", "anchored-fixture"], isolatedTmp);
+    assert.equal(check.status, 1);
+    assert.match(check.stderr, /node-compile-cache-suite-scratch/);
+  });
+});

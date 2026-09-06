@@ -121,24 +121,85 @@ export function loadGuide() {
   return { home, articles };
 }
 
+function documentPathFor(route) {
+  const relative = route === GUIDE_HOME_URL ? "guide" : route.replace(/^\/+|\/+$/g, "");
+  return `site/${relative}/index.html`;
+}
+
+/** Every `id` and `name` a document offers as a link target. */
+function anchorsIn(html) {
+  const anchors = new Set();
+  for (const match of html.matchAll(/\b(?:id|name)="([^"]+)"/g)) anchors.add(match[1]);
+  return anchors;
+}
+
+/**
+ * Resolve a route to the anchors a reader would find there. A guide page this build
+ * writes is read from the build; anything else is read from the tracked site tree.
+ * A route served by another owner that is not materialized in the working copy
+ * returns null, meaning "cannot be checked here" rather than "broken".
+ */
+function anchorsForRoute(route, rendered) {
+  const fromBuild = rendered.get(documentPathFor(route));
+  if (fromBuild !== undefined) return anchorsIn(fromBuild);
+  const relative = route.replace(/^\/+/, "");
+  for (const candidate of [join(SITE, relative), join(SITE, relative, "index.html")]) {
+    if (existsSync(candidate) && !candidate.endsWith("/")) {
+      try {
+        return anchorsIn(readFileSync(candidate, "utf8"));
+      } catch {
+        return null;
+      }
+    }
+  }
+  return null;
+}
+
 /**
  * Every internal link on a guide page must resolve: to another guide page this
  * build writes, to a route the site's own inventory says is served, or to a
  * published record document whose family the closed route inventory recognizes.
  * An article that links somewhere else is a broken promise to a reader, so it
  * fails the build.
+ *
+ * A fragment is checked the same way. An anchor is the part of a link a reader
+ * notices when it breaks — they land at the top of a long page with no idea which
+ * paragraph they were sent to — and a rename elsewhere in the site breaks one
+ * silently. Where the target document can be read here, its `#fragment` must
+ * exist in it; where the target is served by another owner and is not in the
+ * working copy, the fragment is left unchecked rather than guessed at.
  */
 export function internalLinkFailures(documents, articles) {
   const guideRoutes = new Set([GUIDE_HOME_URL, ...articles.map((article) => article.url)]);
+  const rendered = new Map(documents);
   const failures = [];
   for (const [name, html] of documents) {
+    const own = anchorsIn(html);
     for (const match of html.matchAll(/<a\b[^>]*\bhref="([^"]+)"/g)) {
       const href = match[1];
+      if (href.startsWith("#")) {
+        const fragment = decodeURIComponent(href.slice(1));
+        if (fragment && !own.has(fragment)) {
+          failures.push(`${name}: link ${href} points at no anchor on this page`);
+        }
+        continue;
+      }
       if (!href.startsWith("/")) continue;
       const path = href.split(/[?#]/)[0];
-      if (guideRoutes.has(path) || SERVED_ROUTES.has(path) || servedFromSiteTree(path)) continue;
-      if (servedAsRecordDocument(href)) continue;
-      failures.push(`${name}: link ${href} does not resolve to a guide page, a served route, or a published record document`);
+      const servedHere = guideRoutes.has(path) || SERVED_ROUTES.has(path) || servedFromSiteTree(path);
+      if (!servedHere) {
+        // A published record document is served by another owner and is not in
+        // the working copy, so it resolves but its anchors cannot be read here.
+        if (servedAsRecordDocument(href)) continue;
+        failures.push(`${name}: link ${href} does not resolve to a guide page, a served route, or a published record document`);
+        continue;
+      }
+      const hash = href.includes("#") ? decodeURIComponent(href.slice(href.indexOf("#") + 1)) : "";
+      if (!hash) continue;
+      const anchors = anchorsForRoute(path, rendered);
+      if (anchors && !anchors.has(hash)) {
+        failures.push(`${name}: link ${href} points at no anchor on ${path}`);
+      }
     }
   }
   return failures;
