@@ -31,3 +31,34 @@ node tools/capture_browse_contracts_first_page.mjs --check
 
 Covering tests: `test/procurement_browse_first_page.test.mjs`,
 `test/procurement_browse_query.test.mjs`.
+
+## Production content-ready read-back
+
+`read-back.json` records the grouped production RUM read-back for Browse
+Contracts page-level `content_ready_ms` (surface `browse-contracts`, component
+`none`). Procedure, baseline, and result notes also live in
+`data/performance/field-rum-readiness-2026-08-26.md`.
+
+| Field | Value |
+| --- | --- |
+| Queried at (UTC) | 2026-09-06T14:10:07.421Z |
+| Window (UTC) | 2026-08-30T14:10:07.000Z → 2026-09-06T14:10:07.000Z |
+| Window status | complete |
+| Traffic class | production |
+| Sample floor | 30 retained rows |
+| Retained observations | 48 |
+| p50 / p75 / p95 | 2241.4 ms / 3039.3 ms / 7615.4 ms |
+| Result | `needs-work` — sample floor met; p75 and p95 still above 2500 ms / 5000 ms |
+
+The post-delivery window since the bounded-first-page merge
+(2026-09-05T21:09:25Z → 2026-09-06T14:10:07Z) retains only 4 observations, so
+it is recorded as `insufficient_sample` with percentiles withheld.
+
+```bash
+ANALYTICS_ACCOUNT_ID=<from worker/wrangler.toml> \
+ANALYTICS_READ_TOKEN=<from the logged-in wrangler OAuth session> \
+RUM_ANALYTICS_DATASET=crol_rum_observations_v1 \
+RUM_MEASURED_SINCE=2026-08-19 \
+RUM_MIN_SAMPLED_ROWS=30 \
+node tools/read_rum_drift.mjs --out <output-dir>
+```

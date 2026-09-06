@@ -59,7 +59,7 @@ const fullBrowse = JSON.parse(readFileSync(
 ));
 const { manifest, shards, queryRowsArtifact } = buildProcurementBrowseQueryArtifacts({
   ...fullBrowse,
-  source_model_fingerprint: "perf-03-fixture-fingerprint",
+  source_model_fingerprint: "browse-contracts-first-page-fixture-fingerprint",
 });
 
 // Every combination `moneyBoundedAwardArchiveEligible` now waves through: the
