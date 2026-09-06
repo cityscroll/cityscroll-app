@@ -11,12 +11,12 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { execFile } from "node:child_process";
 import { createServer } from "node:http";
-import { mkdtempSync, readFileSync, writeFileSync } from "node:fs";
-import { tmpdir } from "node:os";
+import { readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { promisify } from "node:util";
 
+import { withTempDir } from "../tools/lib/with_temp_dir.mjs";
 import {
   DELIVERY_ACCEPTED,
   DELIVERY_NOT_ATTEMPTED,
@@ -37,10 +37,6 @@ const CLI = fileURLToPath(new URL("../tools/deliver_ops_alert.mjs", import.meta.
 const ARGUMENT_LIMIT_BYTES = 128 * 1024;
 
 const RUN_URL = "https://github.com/cityscroll/cityscroll-app/actions/runs/33574860994";
-
-function workspace() {
-  return mkdtempSync(join(tmpdir(), "ops-alert-delivery-"));
-}
 
 async function endpoint(handler) {
   const server = createServer(handler);
@@ -68,164 +64,168 @@ function cliArguments(dir, findingsPath, { finding = "true" } = {}) {
 }
 
 test("a finding larger than the command-argument limit is delivered in the request body, never on the command line", async () => {
-  const dir = workspace();
-  const findingsPath = join(dir, "freshness-findings.txt");
-  const findingsText = syntheticFreshnessFinding();
-  writeFileSync(findingsPath, findingsText, "utf8");
-  assert.ok(
-    Buffer.byteLength(findingsText) > ARGUMENT_LIMIT_BYTES,
-    "the specimen finding must exceed the limit that refused the original delivery",
-  );
+  await withTempDir("ops-alert-delivery", async (dir) => {
+    const findingsPath = join(dir, "freshness-findings.txt");
+    const findingsText = syntheticFreshnessFinding();
+    writeFileSync(findingsPath, findingsText, "utf8");
+    assert.ok(
+      Buffer.byteLength(findingsText) > ARGUMENT_LIMIT_BYTES,
+      "the specimen finding must exceed the limit that refused the original delivery",
+    );
 
-  let received = null;
-  const relay = await endpoint((req, res) => {
-    let body = "";
-    req.on("data", (chunk) => { body += chunk; });
-    req.on("end", () => {
-      received = { body, authorization: req.headers.authorization, idempotency: req.headers["idempotency-key"] };
-      res.writeHead(200, { "content-type": "application/json" });
-      res.end(JSON.stringify({ ok: true, sent: true }));
+    let received = null;
+    const relay = await endpoint((req, res) => {
+      let body = "";
+      req.on("data", (chunk) => { body += chunk; });
+      req.on("end", () => {
+        received = { body, authorization: req.headers.authorization, idempotency: req.headers["idempotency-key"] };
+        res.writeHead(200, { "content-type": "application/json" });
+        res.end(JSON.stringify({ ok: true, sent: true }));
+      });
     });
-  });
 
-  try {
-    const argv = cliArguments(dir, findingsPath);
-    argv[argv.indexOf("PLACEHOLDER")] = relay.url;
-    // Every argument is a flag or a path, so the command line stays small no
-    // matter how large the finding is.
-    const argvBytes = argv.reduce((total, value) => total + Buffer.byteLength(value) + 1, 0);
-    assert.ok(argvBytes < 4096, `command line grew to ${argvBytes} bytes`);
-    for (const value of argv) {
-      assert.ok(!value.includes("padding line"), "the finding text must never appear as an argument");
+    try {
+      const argv = cliArguments(dir, findingsPath);
+      argv[argv.indexOf("PLACEHOLDER")] = relay.url;
+      // Every argument is a flag or a path, so the command line stays small no
+      // matter how large the finding is.
+      const argvBytes = argv.reduce((total, value) => total + Buffer.byteLength(value) + 1, 0);
+      assert.ok(argvBytes < 4096, `command line grew to ${argvBytes} bytes`);
+      for (const value of argv) {
+        assert.ok(!value.includes("padding line"), "the finding text must never appear as an argument");
+      }
+
+      const { stdout } = await run(process.execPath, argv, {
+        env: { ...process.env, CITYSCROLL_ADMIN_KEY: "test-admin-key", GITHUB_OUTPUT: "" },
+      });
+      assert.match(stdout, /Delivery: accepted/);
+
+      assert.ok(received, "the endpoint received the alert");
+      assert.equal(received.authorization, "Bearer test-admin-key");
+      const payload = JSON.parse(received.body);
+      assert.equal(payload.guard, "served-artifact-freshness");
+      assert.equal(payload.stage, "served_artifact_freshness");
+      assert.equal(payload.findings.length, 20);
+      assert.match(payload.findings[0], /forced served-artifact freshness finding/);
+      assert.equal(payload.workflow_run_url, RUN_URL);
+      assert.equal(payload.receipt_url, `${RUN_URL}#artifacts`);
+      assert.equal(received.idempotency, idempotencyKeyFor(payload));
+
+      const receipt = JSON.parse(readFileSync(join(dir, "ops-alert-delivery-receipt.json"), "utf8"));
+      assert.equal(receipt.delivery_outcome, DELIVERY_ACCEPTED);
+      assert.equal(receipt.finding_present, true);
+      assert.equal(receipt.run_id, "33574860994");
+      assert.equal(receipt.source_revision, "dd4b708b6fe39bf8b2ea635ef3d4f493c4751ace");
+    } finally {
+      await relay.close();
     }
-
-    const { stdout } = await run(process.execPath, argv, {
-      env: { ...process.env, CITYSCROLL_ADMIN_KEY: "test-admin-key", GITHUB_OUTPUT: "" },
-    });
-    assert.match(stdout, /Delivery: accepted/);
-
-    assert.ok(received, "the endpoint received the alert");
-    assert.equal(received.authorization, "Bearer test-admin-key");
-    const payload = JSON.parse(received.body);
-    assert.equal(payload.guard, "served-artifact-freshness");
-    assert.equal(payload.stage, "served_artifact_freshness");
-    assert.equal(payload.findings.length, 20);
-    assert.match(payload.findings[0], /forced served-artifact freshness finding/);
-    assert.equal(payload.workflow_run_url, RUN_URL);
-    assert.equal(payload.receipt_url, `${RUN_URL}#artifacts`);
-    assert.equal(received.idempotency, idempotencyKeyFor(payload));
-
-    const receipt = JSON.parse(readFileSync(join(dir, "ops-alert-delivery-receipt.json"), "utf8"));
-    assert.equal(receipt.delivery_outcome, DELIVERY_ACCEPTED);
-    assert.equal(receipt.finding_present, true);
-    assert.equal(receipt.run_id, "33574860994");
-    assert.equal(receipt.source_revision, "dd4b708b6fe39bf8b2ea635ef3d4f493c4751ace");
-  } finally {
-    await relay.close();
-  }
+  });
 });
 
 test("one finding produces exactly one alert even when the delivery is repeated", async () => {
-  const dir = workspace();
-  const findingsPath = join(dir, "freshness-findings.txt");
-  writeFileSync(findingsPath, "artifact hash mismatch\n", "utf8");
+  await withTempDir("ops-alert-delivery", async (dir) => {
+    const findingsPath = join(dir, "freshness-findings.txt");
+    writeFileSync(findingsPath, "artifact hash mismatch\n", "utf8");
 
-  let posts = 0;
-  const relay = await endpoint((req, res) => {
-    req.resume();
-    req.on("end", () => {
-      posts += 1;
-      res.writeHead(200, { "content-type": "application/json" });
-      res.end(JSON.stringify({ ok: true }));
+    let posts = 0;
+    const relay = await endpoint((req, res) => {
+      req.resume();
+      req.on("end", () => {
+        posts += 1;
+        res.writeHead(200, { "content-type": "application/json" });
+        res.end(JSON.stringify({ ok: true }));
+      });
     });
+
+    try {
+      const argv = cliArguments(dir, findingsPath);
+      argv[argv.indexOf("PLACEHOLDER")] = relay.url;
+      const env = { ...process.env, CITYSCROLL_ADMIN_KEY: "test-admin-key", GITHUB_OUTPUT: "" };
+      await run(process.execPath, argv, { env });
+      await run(process.execPath, argv, { env });
+      assert.equal(posts, 1, "a repeated delivery must not send a second alert");
+
+      const receipt = JSON.parse(readFileSync(join(dir, "ops-alert-delivery-receipt.json"), "utf8"));
+      assert.equal(receipt.delivery_outcome, DELIVERY_ACCEPTED);
+      assert.equal(receipt.reused_marker, true);
+    } finally {
+      await relay.close();
+    }
   });
-
-  try {
-    const argv = cliArguments(dir, findingsPath);
-    argv[argv.indexOf("PLACEHOLDER")] = relay.url;
-    const env = { ...process.env, CITYSCROLL_ADMIN_KEY: "test-admin-key", GITHUB_OUTPUT: "" };
-    await run(process.execPath, argv, { env });
-    await run(process.execPath, argv, { env });
-    assert.equal(posts, 1, "a repeated delivery must not send a second alert");
-
-    const receipt = JSON.parse(readFileSync(join(dir, "ops-alert-delivery-receipt.json"), "utf8"));
-    assert.equal(receipt.delivery_outcome, DELIVERY_ACCEPTED);
-    assert.equal(receipt.reused_marker, true);
-  } finally {
-    await relay.close();
-  }
 });
 
 test("a refused delivery fails on its own account and carries the finding it could not deliver", async () => {
-  const dir = workspace();
-  const findingsPath = join(dir, "freshness-findings.txt");
-  writeFileSync(findingsPath, "artifact hash mismatch\nserved artifact is 3 deploys behind main\n", "utf8");
+  await withTempDir("ops-alert-delivery", async (dir) => {
+    const findingsPath = join(dir, "freshness-findings.txt");
+    writeFileSync(findingsPath, "artifact hash mismatch\nserved artifact is 3 deploys behind main\n", "utf8");
 
-  const relay = await endpoint((req, res) => {
-    req.resume();
-    req.on("end", () => {
-      res.writeHead(400, { "content-type": "application/json" });
-      res.end(JSON.stringify({ error: "validated-run-and-receipt-links-required" }));
+    const relay = await endpoint((req, res) => {
+      req.resume();
+      req.on("end", () => {
+        res.writeHead(400, { "content-type": "application/json" });
+        res.end(JSON.stringify({ error: "validated-run-and-receipt-links-required" }));
+      });
     });
+
+    try {
+      const argv = cliArguments(dir, findingsPath);
+      argv[argv.indexOf("PLACEHOLDER")] = relay.url;
+      const failure = await run(process.execPath, argv, {
+        env: { ...process.env, CITYSCROLL_ADMIN_KEY: "test-admin-key", GITHUB_OUTPUT: "" },
+      }).then(() => null, (error) => error);
+      assert.ok(failure, "a refused delivery must fail the step");
+      assert.equal(failure.code, 1);
+      assert.match(failure.stderr, /owner alert refused/);
+      assert.match(failure.stderr, /status 400/);
+      // The finding survives the delivery failure rather than vanishing with it.
+      assert.match(failure.stderr, /artifact hash mismatch/);
+      assert.match(failure.stderr, /served artifact is 3 deploys behind main/);
+
+      const receipt = JSON.parse(readFileSync(join(dir, "ops-alert-delivery-receipt.json"), "utf8"));
+      assert.equal(receipt.delivery_outcome, DELIVERY_REFUSED);
+      assert.equal(receipt.finding_present, true);
+      assert.deepEqual(receipt.findings, ["artifact hash mismatch", "served artifact is 3 deploys behind main"]);
+      assert.equal(receipt.status, "FAIL");
+      assert.match(summarizeDelivery(receipt), /Finding present: yes \(2 lines\)\. Delivery: refused\./);
+    } finally {
+      await relay.close();
+    }
   });
-
-  try {
-    const argv = cliArguments(dir, findingsPath);
-    argv[argv.indexOf("PLACEHOLDER")] = relay.url;
-    const failure = await run(process.execPath, argv, {
-      env: { ...process.env, CITYSCROLL_ADMIN_KEY: "test-admin-key", GITHUB_OUTPUT: "" },
-    }).then(() => null, (error) => error);
-    assert.ok(failure, "a refused delivery must fail the step");
-    assert.equal(failure.code, 1);
-    assert.match(failure.stderr, /owner alert refused/);
-    assert.match(failure.stderr, /status 400/);
-    // The finding survives the delivery failure rather than vanishing with it.
-    assert.match(failure.stderr, /artifact hash mismatch/);
-    assert.match(failure.stderr, /served artifact is 3 deploys behind main/);
-
-    const receipt = JSON.parse(readFileSync(join(dir, "ops-alert-delivery-receipt.json"), "utf8"));
-    assert.equal(receipt.delivery_outcome, DELIVERY_REFUSED);
-    assert.equal(receipt.finding_present, true);
-    assert.deepEqual(receipt.findings, ["artifact hash mismatch", "served artifact is 3 deploys behind main"]);
-    assert.equal(receipt.status, "FAIL");
-    assert.match(summarizeDelivery(receipt), /Finding present: yes \(2 lines\)\. Delivery: refused\./);
-  } finally {
-    await relay.close();
-  }
 });
 
 test("a clean comparison attempts no delivery at all", async () => {
-  const dir = workspace();
-  const findingsPath = join(dir, "freshness-findings.txt");
-  writeFileSync(findingsPath, "", "utf8");
+  await withTempDir("ops-alert-delivery", async (dir) => {
+    const findingsPath = join(dir, "freshness-findings.txt");
+    writeFileSync(findingsPath, "", "utf8");
 
-  let posts = 0;
-  const relay = await endpoint((req, res) => {
-    req.resume();
-    req.on("end", () => {
-      posts += 1;
-      res.writeHead(200).end("{}");
+    let posts = 0;
+    const relay = await endpoint((req, res) => {
+      req.resume();
+      req.on("end", () => {
+        posts += 1;
+        res.writeHead(200).end("{}");
+      });
     });
+
+    try {
+      const argv = cliArguments(dir, findingsPath, { finding: "false" });
+      argv[argv.indexOf("PLACEHOLDER")] = relay.url;
+      const { stdout } = await run(process.execPath, argv, {
+        env: { ...process.env, CITYSCROLL_ADMIN_KEY: "test-admin-key", GITHUB_OUTPUT: "" },
+      });
+      assert.equal(posts, 0, "a healthy comparison must send nothing");
+      assert.match(stdout, /Finding present: no\. Delivery: not attempted\./);
+
+      const receipt = JSON.parse(readFileSync(join(dir, "ops-alert-delivery-receipt.json"), "utf8"));
+      assert.equal(receipt.delivery_outcome, DELIVERY_NOT_ATTEMPTED);
+      assert.equal(receipt.finding_present, false);
+      assert.equal(receipt.delivery_attempted, false);
+      assert.equal(receipt.status, "PASS");
+      assert.equal(receipt.outcome, "");
+    } finally {
+      await relay.close();
+    }
   });
-
-  try {
-    const argv = cliArguments(dir, findingsPath, { finding: "false" });
-    argv[argv.indexOf("PLACEHOLDER")] = relay.url;
-    const { stdout } = await run(process.execPath, argv, {
-      env: { ...process.env, CITYSCROLL_ADMIN_KEY: "test-admin-key", GITHUB_OUTPUT: "" },
-    });
-    assert.equal(posts, 0, "a healthy comparison must send nothing");
-    assert.match(stdout, /Finding present: no\. Delivery: not attempted\./);
-
-    const receipt = JSON.parse(readFileSync(join(dir, "ops-alert-delivery-receipt.json"), "utf8"));
-    assert.equal(receipt.delivery_outcome, DELIVERY_NOT_ATTEMPTED);
-    assert.equal(receipt.finding_present, false);
-    assert.equal(receipt.delivery_attempted, false);
-    assert.equal(receipt.status, "PASS");
-    assert.equal(receipt.outcome, "");
-  } finally {
-    await relay.close();
-  }
 });
 
 test("a missing admin key is reported as a delivery that was never attempted, not as a clean run", async () => {
@@ -262,27 +262,28 @@ test("the forced-finding hook keeps real findings ahead of the padding that size
 });
 
 test("the retained receipt carries the endpoint's own answer, so delivery is confirmable from it", async () => {
-  const dir = workspace();
-  const findingsPath = join(dir, "freshness-findings.txt");
-  writeFileSync(findingsPath, "artifact hash mismatch\n", "utf8");
-  const relay = await endpoint((req, res) => {
-    req.resume();
-    req.on("end", () => {
-      res.writeHead(200, { "content-type": "application/json" });
-      res.end(JSON.stringify({ ok: true, sent: true, signature: "a1b2c3" }));
+  await withTempDir("ops-alert-delivery", async (dir) => {
+    const findingsPath = join(dir, "freshness-findings.txt");
+    writeFileSync(findingsPath, "artifact hash mismatch\n", "utf8");
+    const relay = await endpoint((req, res) => {
+      req.resume();
+      req.on("end", () => {
+        res.writeHead(200, { "content-type": "application/json" });
+        res.end(JSON.stringify({ ok: true, sent: true, signature: "a1b2c3" }));
+      });
     });
+    try {
+      const argv = cliArguments(dir, findingsPath);
+      argv[argv.indexOf("PLACEHOLDER")] = relay.url;
+      await run(process.execPath, argv, {
+        env: { ...process.env, CITYSCROLL_ADMIN_KEY: "test-admin-key", GITHUB_OUTPUT: "" },
+      });
+      const receipt = JSON.parse(readFileSync(join(dir, "ops-alert-delivery-receipt.json"), "utf8"));
+      assert.equal(receipt.response_status, 200);
+      assert.deepEqual(JSON.parse(receipt.response_body), { ok: true, sent: true, signature: "a1b2c3" });
+      assert.ok(!JSON.stringify(receipt).includes("test-admin-key"), "the receipt must never carry the key");
+    } finally {
+      await relay.close();
+    }
   });
-  try {
-    const argv = cliArguments(dir, findingsPath);
-    argv[argv.indexOf("PLACEHOLDER")] = relay.url;
-    await run(process.execPath, argv, {
-      env: { ...process.env, CITYSCROLL_ADMIN_KEY: "test-admin-key", GITHUB_OUTPUT: "" },
-    });
-    const receipt = JSON.parse(readFileSync(join(dir, "ops-alert-delivery-receipt.json"), "utf8"));
-    assert.equal(receipt.response_status, 200);
-    assert.deepEqual(JSON.parse(receipt.response_body), { ok: true, sent: true, signature: "a1b2c3" });
-    assert.ok(!JSON.stringify(receipt).includes("test-admin-key"), "the receipt must never carry the key");
-  } finally {
-    await relay.close();
-  }
 });
