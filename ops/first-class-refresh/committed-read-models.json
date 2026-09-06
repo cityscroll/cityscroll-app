@@ -1,0 +1,93 @@
+{
+  "schema": "cityscroll.committed_read_model_rebuild.v1",
+  "purpose": "Bind the scheduled first-class dataset refresh to the committed read models that continuous integration re-derives in check mode. Every check-mode gate in the static-standards unit family appears here exactly once, either in rebuild_sequence (the refresh regenerates it) or in not_rebuilt (with the reason it cannot or need not be regenerated on a hosted runner). test/first_class_refresh_committed_read_models.test.mjs compares this file with the workflow definition by builder path and fails when the two lists drift apart.",
+  "gate_workflow": ".github/workflows/ci.yml",
+  "gate_family": "static-standards",
+  "rebuild_sequence": [
+    {
+      "id": "derived-json-build-boundary",
+      "command": ["tools/derived_json_build_boundary.mjs"],
+      "covers": [
+        "tools/build_agency_constellation_documents.mjs",
+        "tools/build_keyword_search_index.mjs"
+      ],
+      "note": "The boundary rebuilds every declared generated family in warehouse/derived_json_build_manifest.json, in the order that manifest fixes, and re-derives each one in check mode immediately after building it. It is the repository's ordered rebuild for derived JSON, so the refresh runs it rather than invoking the covered builders directly. It runs the families one at a time under a single declared cold-build time budget; nothing here fans the builders out in parallel."
+    },
+    {
+      "id": "source-contract-docs",
+      "command": ["tools/generate_source_docs.mjs"],
+      "covers": ["tools/generate_source_docs.mjs"],
+      "note": "Reads the source contracts the refresh restamps, so it runs after the derived JSON boundary has settled the data those contracts describe."
+    },
+    {
+      "id": "data-source-graph",
+      "command": ["tools/data_source_graph.mjs"],
+      "covers": ["tools/data_source_graph.mjs"],
+      "note": "Projects the source-contract documentation the previous step regenerates."
+    },
+    {
+      "id": "capability-topology",
+      "command": ["tools/build_capability_topology.mjs"],
+      "covers": ["tools/build_capability_topology.mjs"]
+    },
+    {
+      "id": "integration-client",
+      "command": ["tools/generate_integration_client.mjs"],
+      "covers": ["tools/generate_integration_client.mjs"],
+      "note": "Projected from the capability registry, so it follows the topology build."
+    },
+    {
+      "id": "depot-registry",
+      "command": ["tools/depot_rederive.mjs"],
+      "covers": ["tools/depot_rederive.mjs"],
+      "note": "Re-derives the join graph from the refreshed source-contract measurements and gap taxonomy."
+    }
+  ],
+  "not_rebuilt": [
+    {
+      "builder": "tools/build_ocp_warehouse_lookup.mjs",
+      "disposition": "warehouse-backed",
+      "reason": "Materialized from the retained analytical catalog, which a hosted runner does not have. The warehouse-held half of the refresh runs it; see the dataset table in this directory's README."
+    },
+    {
+      "builder": "tools/build_zap_warehouse_lookup.mjs",
+      "disposition": "warehouse-backed",
+      "reason": "Materialized from the retained analytical catalog, which a hosted runner does not have."
+    },
+    {
+      "builder": "tools/build_zap_bbl_warehouse_lookup.mjs",
+      "disposition": "warehouse-backed",
+      "reason": "Materialized from the retained analytical catalog, which a hosted runner does not have."
+    },
+    {
+      "builder": "tools/build_e_designation_digest.mjs",
+      "disposition": "warehouse-backed",
+      "reason": "Materialized from the retained analytical catalog, which a hosted runner does not have."
+    },
+    {
+      "builder": "tools/build_later_housing_activity.mjs",
+      "disposition": "warehouse-backed",
+      "reason": "Materialized from the retained analytical catalog, which a hosted runner does not have."
+    },
+    {
+      "builder": "tools/build_doing_business_warehouse_lookup.mjs",
+      "disposition": "warehouse-backed",
+      "reason": "Materialized from the retained analytical catalog, which a hosted runner does not have."
+    },
+    {
+      "builder": "tools/build_city_record_pin_chain_lookup.mjs",
+      "disposition": "warehouse-backed",
+      "reason": "Materialized from the retained analytical catalog, which a hosted runner does not have."
+    },
+    {
+      "builder": "tools/check_person_identity_link_ledger.mjs",
+      "disposition": "validator",
+      "reason": "Judges the reviewed identity-link ledger against its evidence rules. It has no build mode and writes nothing, so there is no committed output for a refresh to regenerate."
+    },
+    {
+      "builder": "tools/determinism_lint.mjs",
+      "disposition": "validator",
+      "reason": "Static lint over the modules the site ships. It has no build mode and writes nothing."
+    }
+  ]
+}
