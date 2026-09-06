@@ -1244,6 +1244,7 @@
     // Footer
     footer_lede:       "CityScroll relie les archives publiques de NYC : 1 099 194 avis du City Record + 228 concours de la fonction publique, reliés aux données de 4 autres grands systèmes publics ; au 5 août 2026.",
     footer_about:      "À propos",
+    footer_guide:      "Guide",
     footer_feedback: "Commentaires",
     footer_investigation: "Mon enquête",
     footer_api:        "API et flux",
@@ -1253,6 +1254,8 @@
 
     // Skip link
     site_tagline: "Abonnez-vous aux contrats, rezonages et auditions publiques de la Ville de New York qui vous intéressent.",
+    nav_guide: "Guide",
+    guide_entry_desc: "Apprendre à lire les archives de la ville",
     skip_to_content: "Aller au contenu",
 
     // Announcements (sr-only)
