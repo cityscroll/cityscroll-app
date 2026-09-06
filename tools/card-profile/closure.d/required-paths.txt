@@ -27,6 +27,7 @@ architecture/evidence.d/cityscroll-civic-institutions--ci-g1-council-committee-p
 architecture/evidence.d/cityscroll-civic-institutions--ci-i1-borough-office-board-appointment.json
 architecture/evidence.d/cityscroll-civic-institutions--ci-j1-governing-board-committee-meetings.json
 architecture/evidence.d/cityscroll-civic-institutions--ci-k1-compatibility-uncertainty-navigation.json
+architecture/evidence.d/cityscroll-engineering--exact-council-matter-watch-updates.json
 architecture/evidence.d/cityscroll-engineering--shared-dependency-store.json
 architecture/evidence.d/cityscroll-engineering--working-copy-footprint.json
 architecture/evidence.d/cityscroll-frictionless-subscribe--fs-14-home-following-entry.json
@@ -129,6 +130,7 @@ docs/adr/duckdb-parquet.md
 docs/adr/entity-intelligence-keyed-reads.md
 docs/adr/entity-resolution-taxonomy.md
 docs/adr/evidence-assertion-layer.md
+docs/adr/exact-council-matter-watch-updates.md
 docs/adr/following-community-board-discoverability.md
 docs/adr/honest-absence.md
 docs/adr/kv-vs-d1-search.md
@@ -148,6 +150,7 @@ docs/evidence/ci-09-working-copy-reduction/raw/closure/architecture-reconcile.js
 docs/evidence/ci-09-working-copy-reduction/raw/closure/card-profile-contract.json
 docs/evidence/ci-09-working-copy-reduction/raw/closure/card-reconciliation.json
 docs/evidence/ci-09-working-copy-reduction/raw/closure/worker-unit.json
+docs/evidence/exact-council-matter-watch-updates/manifest.json
 docs/repository-control-plane/agents-router-policy.v1.json
 docs/repository-control-plane/agents-router-receipt.v1.json
 entity_resolution/README.md
@@ -438,6 +441,7 @@ site/council_district_lookup.mjs
 site/council_hearing_action_path.mjs
 site/council_hearing_matter_continuation.mjs
 site/council_matter_watch.mjs
+site/council_matter_watch_change.mjs
 site/council_matter_watch_scope.mjs
 site/crol_notice_publication_policy.mjs
 site/cross_source_coverage_ledger.mjs
@@ -1692,6 +1696,7 @@ tools/build_zap_bbl_warehouse_lookup.mjs
 tools/build_zap_warehouse_lookup.mjs
 tools/build_zoning_statistics.mjs
 tools/capa_addendum_eval.mjs
+tools/capture_exact_council_matter_watch_update_evidence.py
 tools/card-profile/card-work.sparse
 tools/card-profile/closure.v1.json
 tools/card-profile/profile.config.v1.json
@@ -1828,6 +1833,7 @@ tools/render_alert_temporal_email.mjs
 tools/render_civic_action_paths_after.mjs
 tools/render_community_board_ways_to_participate.mjs
 tools/render_digest_awareness_evidence.mjs
+tools/render_exact_council_matter_watch_update_fixtures.mjs
 tools/render_process_conformance_fixture.mjs
 tools/repository_control_plane_manifest.mjs
 tools/retain_person_hub_source_records.mjs
@@ -2290,6 +2296,7 @@ worker/test/contract_forecast_predictions.test.mjs
 worker/test/contracts_analysis_capability.test.mjs
 worker/test/contracts_capability.test.mjs
 worker/test/cors.test.mjs
+worker/test/council_matter_watch_updates.test.mjs
 worker/test/d1_read_models_canary.test.mjs
 worker/test/digest.test.mjs
 worker/test/digest_backfill.test.mjs

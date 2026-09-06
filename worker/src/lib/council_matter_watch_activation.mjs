@@ -16,6 +16,10 @@ import {
   parseCouncilMatterRef,
   resolveExactCouncilMatterWatch,
 } from "../../../site/council_matter_watch.mjs";
+import {
+  councilMatterUpdateDigestRows,
+  reduceCouncilMatterWatchUpdates,
+} from "../../../site/council_matter_watch_change.mjs";
 
 export {
   matterWatchDeliveryEnabled,
@@ -77,7 +81,9 @@ export async function readJournalObservationsForMatter(env, matterRef) {
   const parsed = parseCouncilMatterRef(matterRef);
   if (!parsed || !env?.DB?.prepare) return [];
   const rows = await env.DB.prepare(
-    `SELECT observation_id, matter_id, event_id, observed_at, acquired_at, semantic_revision, title, action_name
+    `SELECT observation_id, matter_id, event_id, native_event_item_id, publisher_action_id,
+            event_time, observed_at, acquired_at, semantic_revision, title, action_name,
+            notice_references_json, vote_binding_status, vote_event_item_id, superseded_by
        FROM matter_observation_journal
       WHERE source_system IN ('legistar', 'nyc_legistar_matter_bootstrap')
         AND tenant = ? AND matter_id = ?
@@ -192,6 +198,7 @@ export async function removeExactMatterWatch(env, record, { now = new Date().toI
 
 export async function eligibleMatterWatchRows(env, record, {
   observations = null,
+  asOf = null,
 } = {}) {
   const watch = exactCouncilMatterWatch({ lens: record.lens, filter: record.filter });
   if (watch.status !== "ok") return [];
@@ -200,13 +207,22 @@ export async function eligibleMatterWatchRows(env, record, {
     : record.matter_watch_baseline || null;
   const deliveryEnabled = matterWatchDeliveryEnabled(env);
   const journalRows = observations || await readJournalObservationsForMatter(env, watch.matter_ref);
-  return councilMatterDigestRows({
+  const mapped = journalRows.map((row) => ({ ...row, matter_id: watch.matter_id }));
+  if (!deliveryEnabled) {
+    return councilMatterDigestRows({
+      matter_ref: watch.matter_ref,
+      observations: mapped,
+      baseline,
+      confirmed: true,
+      deliveryEnabled,
+    });
+  }
+  return councilMatterUpdateDigestRows(reduceCouncilMatterWatchUpdates({
     matter_ref: watch.matter_ref,
-    observations: journalRows.map((row) => ({ ...row, matter_id: watch.matter_id })),
+    observations: mapped,
     baseline,
-    confirmed: true,
-    deliveryEnabled,
-  });
+    asOf,
+  }));
 }
 
 export function compileExactCouncilMatter(sub, todayISO) {
@@ -227,7 +243,7 @@ export function compileExactCouncilMatter(sub, todayISO) {
   return {
     url: null,
     params: {},
-    idField: "alert_id",
+    idField: "matter_update_key",
     kind: "council-matter",
     unsupported: false,
     soda: false,
@@ -239,6 +255,8 @@ export function compileExactCouncilMatter(sub, todayISO) {
       matter_id: watch.matter_id,
       todayISO,
       filter: watch.filter,
+      watch_id: sub?.watch_id || null,
+      subscriber_id: sub?.subscriber_id || null,
     },
   };
 }

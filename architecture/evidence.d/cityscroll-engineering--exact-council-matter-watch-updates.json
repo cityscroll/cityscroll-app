@@ -1,0 +1,37 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/exact-council-matter-watch-updates",
+  "status": "implemented",
+  "fingerprint": "exact-council-matter-watch-updates.v1",
+  "updated_at": "2026-09-06T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "council-matter-watch-change",
+      "path": "site/council_matter_watch_change.mjs"
+    },
+    {
+      "id": "council-matter-watch-activation",
+      "path": "worker/src/lib/council_matter_watch_activation.mjs"
+    },
+    {
+      "id": "digest-outbox-identity",
+      "path": "worker/src/lib/digest_outbox.mjs"
+    },
+    {
+      "id": "council-matter-watch-updates-decision",
+      "path": "docs/adr/exact-council-matter-watch-updates.md"
+    },
+    {
+      "id": "council-matter-watch-updates-tests",
+      "path": "worker/test/council_matter_watch_updates.test.mjs"
+    },
+    {
+      "id": "council-matter-watch-updates-fixture-renderer",
+      "path": "tools/render_exact_council_matter_watch_update_fixtures.mjs"
+    },
+    {
+      "id": "council-matter-watch-updates-evidence-capture",
+      "path": "tools/capture_exact_council_matter_watch_update_evidence.py"
+    }
+  ]
+}

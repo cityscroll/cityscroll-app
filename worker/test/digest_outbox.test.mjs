@@ -67,6 +67,15 @@ test("lens identity policies keep land projects distinct and use request_id for 
   assert.deepEqual(extractLensIdentity("meetings", { request_id: "20260810001", short_title: "same" }), {
     identityField: "request_id", identityValue: "20260810001", itemId: "notice:20260810001", itemKind: "meetings",
   });
+  assert.deepEqual(extractLensIdentity("meetings", {
+    request_id: "20260408025",
+    matter_update_key: "council-matter:legistar:nyc:matter:78605:rev:later",
+  }), {
+    identityField: "matter_update_key",
+    identityValue: "council-matter:legistar:nyc:matter:78605:rev:later",
+    itemId: "council-matter:legistar:nyc:matter:78605:rev:later",
+    itemKind: "council-matter",
+  });
   assert.deepEqual(extractLensIdentity("money", {
     procurement_id: "procurement:contract:CT101520271400806",
     short_title: "Small purchase legal services",
