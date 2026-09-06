@@ -1,0 +1,204 @@
+{
+  "artifacts": {
+    "comparison_contract": {
+      "path": "warehouse/lib/capital_project_history.py",
+      "sha256": "1209d7609295c078acee872a19255559fab74a0e674f9acb1ef3929953de1eb6"
+    },
+    "materialization": {
+      "path": "site/data/procurement_project_history.json",
+      "sha256": "4ce655e56429cd07d42d5ba36740f966f6f6b866a7497cc3cf06cee4c7777819"
+    },
+    "materializer": {
+      "path": "warehouse/scripts/capital_project_history_run.py",
+      "sha256": "f1ab238dfdf0ce39c81185f2c236f8f9c15712d4df3e6cfa669c531674f724da"
+    },
+    "reader": {
+      "path": "site/procurement_project_history.mjs",
+      "sha256": "3b9df3af35bec8a3cff8dfa0776fbca1d9c2fc2d4aadd8d43a7112054135f2bf"
+    }
+  },
+  "assertions": [
+    {
+      "assertion": "Whole-project budget rose $18,061,485.81 to $19,905,485.81, a $1,844,000.00 change, and recorded whole-project spending rose $426,525.36, between the January 2026 and May 2026 releases.",
+      "identity": "managing agency DDC + FMS identifier ACEDCA215",
+      "identity_rule": "managing_agency + fms_id",
+      "observed": {
+        "spend_to_date": {
+          "after": "2116345.32",
+          "before": "1689819.96",
+          "delta": "426525.36",
+          "state": "changed"
+        },
+        "total_budget": {
+          "after": "19905485.81",
+          "before": "18061485.81",
+          "delta": "1844000.00",
+          "state": "changed"
+        }
+      }
+    },
+    {
+      "assertion": "Published phase moved Design to Construction Procurement while the project forecast completion held at 2029-06-25.",
+      "identity": "managing agency DDC + project identifier 4369",
+      "identity_rule": "managing_agency + nonempty pid",
+      "observed": {
+        "current_phase": {
+          "after": "Construction Procurement",
+          "before": "Design",
+          "state": "changed"
+        },
+        "forecast_completion": {
+          "after": "2029-06-25",
+          "before": "2029-06-25",
+          "delta_days": 0,
+          "state": "unchanged"
+        }
+      }
+    },
+    {
+      "assertion": "Project forecast completion moved 175 days earlier, from 2028-09-29 to 2028-04-07. The movement is a project forecast and is not attributed to any contractor.",
+      "identity": "managing agency DDC + project identifier 5730",
+      "identity_rule": "managing_agency + nonempty pid",
+      "observed": {
+        "forecast_completion": {
+          "after": "2028-04-07",
+          "before": "2028-09-29",
+          "delta_days": -175,
+          "state": "changed"
+        }
+      }
+    },
+    {
+      "assertion": "Budget, recorded spending and project forecast completion were all unchanged. A later release existing is not itself a change.",
+      "identity": "managing agency DDC + FMS identifier HH112CGIU",
+      "identity_rule": "managing_agency + fms_id",
+      "observed": {
+        "changed": false,
+        "total_budget": {
+          "after": "3603580.20",
+          "before": "3603580.20",
+          "delta": "0.00",
+          "state": "unchanged"
+        }
+      }
+    },
+    {
+      "assertion": "The shared project forecast completion moved 102 days later, from 2026-07-31 to 2026-11-10. This is a whole-project forecast shared by three separately awarded trade contracts. It is not a contract extension and assigns no contractor responsibility.",
+      "identity": "managing agency DDC + FMS identifier PV669-NPC, project identifier 4205",
+      "identity_rule": "managing_agency + nonempty pid",
+      "observed": {
+        "forecast_completion": {
+          "after": "2026-11-10",
+          "before": "2026-07-31",
+          "delta_days": 102,
+          "state": "changed"
+        }
+      }
+    },
+    {
+      "assertion": "The publisher's own record identifier omits managing agency and collides on 96 retained rows. Adding managing agency to the observation identity resolves every collision.",
+      "identity": "observation identity",
+      "observed": {
+        "colliding_excess_agency_qualified": 0,
+        "colliding_excess_source_ids": 96,
+        "retained_rows": 50000
+      }
+    },
+    {
+      "assertion": "History is published only from releases retained completely, at or after January 2024. The two older releases are excluded and reported: one is absent entirely and one is retained short of the publisher's own count, because the retained pull is capped rather than paged.",
+      "identity": "release completeness",
+      "observed": [
+        {
+          "publisher_rows": 5752,
+          "reason": "below_release_floor",
+          "reporting_period": "202305",
+          "retained_complete": false,
+          "retained_rows": 0
+        },
+        {
+          "publisher_rows": 5667,
+          "reason": "below_release_floor",
+          "reporting_period": "202309",
+          "retained_complete": false,
+          "retained_rows": 4894
+        }
+      ]
+    },
+    {
+      "assertion": "Repeated rows sharing one identity are components of one project. Agreeing components collapse to their single agreed value and are never summed. Disagreeing components are quarantined and the field is reported as unpublished rather than resolved to one side.",
+      "identity": "component agreement",
+      "observed": {
+        "quarantined_financial": 0,
+        "quarantined_schedule": 19
+      }
+    }
+  ],
+  "data_vintage": {
+    "admitted_releases": [
+      "202401",
+      "202405",
+      "202409",
+      "202501",
+      "202505",
+      "202509",
+      "202601",
+      "202605"
+    ],
+    "compared_transition": {
+      "after": "202605",
+      "before": "202601"
+    },
+    "dataset_id": "fb86-vt7u",
+    "excluded_releases": [
+      {
+        "publisher_rows": 5752,
+        "reason": "below_release_floor",
+        "reporting_period": "202305",
+        "retained_complete": false,
+        "retained_rows": 0
+      },
+      {
+        "publisher_rows": 5667,
+        "reason": "below_release_floor",
+        "reporting_period": "202309",
+        "retained_complete": false,
+        "retained_rows": 4894
+      }
+    ],
+    "managing_agency": "DDC",
+    "release_floor": "202401",
+    "source": "capital_projects_dashboard",
+    "source_url": "https://data.cityofnewyork.us/d/fb86-vt7u"
+  },
+  "note": "Reproducible textual verification of the dated project comparisons. No image binaries are committed. This record proves the materialized comparison, its provenance and its arithmetic. It does not assert a rendered reader surface: the comparison is published here as data, a read model and an export, and the panel that displays it arrives with the project summary it attaches to.",
+  "population": {
+    "acquired_rows": 10002,
+    "admitted_agency_rows": 8070,
+    "financial": {
+      "changed": 611,
+      "compared": 932,
+      "disappeared": 17,
+      "first_observed": 60,
+      "identities": 1481,
+      "single_observation": 251,
+      "unchanged": 321
+    },
+    "quarantined_financial": 0,
+    "quarantined_schedule": 19,
+    "schedule": {
+      "changed": 520,
+      "compared": 635,
+      "disappeared": 6,
+      "first_observed": 32,
+      "identities": 726,
+      "single_observation": 35,
+      "unchanged": 115
+    }
+  },
+  "reproduce": [
+    "python3 warehouse/scripts/capital_project_history_run.py --check",
+    "python3 tools/build_project_history_evidence.py --check",
+    "node --test test/ddc_project_history.test.mjs"
+  ],
+  "schema": "cityscroll.procurement_project_history_verification.v1"
+}

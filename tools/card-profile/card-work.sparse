@@ -596,6 +596,7 @@
 /site/procurement_process_watch.mjs
 /site/procurement_project_context.css
 /site/procurement_project_context.mjs
+/site/procurement_project_history.mjs
 /site/procurement_pursuit_snapshot.css
 /site/procurement_pursuit_snapshot.mjs
 /site/procurement_pursuit_state.mjs
