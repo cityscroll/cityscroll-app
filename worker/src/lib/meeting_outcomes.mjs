@@ -29,6 +29,7 @@ import {
   MAX_TOTAL_ATTACHMENT_PROBES,
 } from "./legistar_client.mjs";
 import { dualWriteLegistarObservations } from "./legistar_source_records.mjs";
+import { retainNativeMatterObservations } from "./matter_observation_journal.mjs";
 import { linksFromMeetingRecord } from "./subject_registry.mjs";
 
 /** Bump when vote/person mapping or spine assembly changes so young-but-stale KV rebuilds. */
@@ -833,6 +834,7 @@ export async function buildMeetingOutcomesView({
 
   // Shadow dual-write: never block the public meeting-outcomes materialization.
   let dualWrite = null;
+  let matterJournal = null;
   if (env) {
     dualWrite = await dualWriteLegistarObservations(
       env,
@@ -843,6 +845,15 @@ export async function buildMeetingOutcomesView({
         attachments: attachmentBag.rawAttachments,
       },
       view.generated_at,
+    );
+    matterJournal = await retainNativeMatterObservations(
+      env,
+      {
+        events: eventRows,
+        eventItems: eventItemRows,
+        votes: voteBag.rawVotes,
+      },
+      { acquiredAt: view.generated_at },
     );
     // Guardrail: authenticated materialization with events must leave observations.
     // Nested Attachments may honestly be empty (event Agenda/Minutes live on Events).
@@ -862,21 +873,23 @@ export async function buildMeetingOutcomesView({
     }
   }
 
-  return { ...view, dual_write: dualWrite };
+  return { ...view, dual_write: dualWrite, matter_journal: matterJournal };
 }
 
 export async function refreshMeetingOutcomes(env, fetchImpl = fetch, now = new Date()) {
   if (!env?.ALERT_STATE) return { status: "skipped", reason: "no-kv" };
   const token = env?.LEGISTAR_API_TOKEN || null;
   const view = await buildMeetingOutcomesView({ token, fetchImpl, now, env });
-  // dual_write is operator telemetry only — strip before KV so public clients never see it.
-  const { dual_write: dualWrite, ...publicView } = view;
+  // dual_write and matter_journal are operator telemetry only — strip before KV
+  // so public clients never see them.
+  const { dual_write: dualWrite, matter_journal: matterJournal, ...publicView } = view;
   await env.ALERT_STATE.put(MEETING_OUTCOMES_KV_KEY, JSON.stringify(publicView));
   return {
     status: token ? "success" : "no-token",
     enrichment: token ? "authenticated" : "unavailable",
     ...publicView.counts,
     dual_write: dualWrite || null,
+    matter_journal: matterJournal || null,
   };
 }
 

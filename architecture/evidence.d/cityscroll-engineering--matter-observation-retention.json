@@ -1,0 +1,45 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/matter-observation-retention",
+  "status": "implemented",
+  "fingerprint": "matter-observation-retention.v1",
+  "updated_at": "2026-09-06T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "matter-observation-journal",
+      "path": "worker/src/lib/matter_observation_journal.mjs"
+    },
+    {
+      "id": "matter-observation-journal-schema",
+      "path": "worker/migrations/0027_matter_observation_journal.sql"
+    },
+    {
+      "id": "matter-observation-operator-view",
+      "path": "worker/src/lib/matter_observation_operator_view.mjs"
+    },
+    {
+      "id": "meeting-outcomes-journal-hook",
+      "path": "worker/src/lib/meeting_outcomes.mjs"
+    },
+    {
+      "id": "matter-observation-retention-tests",
+      "path": "worker/test/matter_observation_retention.test.mjs"
+    },
+    {
+      "id": "matter-observation-journal-replay-tests",
+      "path": "worker/test/matter_observation_journal_replay.test.mjs"
+    },
+    {
+      "id": "matter-observation-retention-decision",
+      "path": "docs/adr/matter-observation-retention.md"
+    },
+    {
+      "id": "matter-observation-retention-fixture-renderer",
+      "path": "tools/render_matter_observation_retention_fixtures.mjs"
+    },
+    {
+      "id": "matter-observation-retention-evidence-capture",
+      "path": "tools/capture_matter_observation_retention_evidence.py"
+    }
+  ]
+}
