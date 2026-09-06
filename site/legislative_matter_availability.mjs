@@ -17,8 +17,7 @@
  *
  * Three outcomes, and only three:
  *
- *   local_history   — this matter has a published history in
- *                     site/data/legislative_matter_lookup.json, so `/matters/<id>/`
+ *   local_history   — this matter has a published history, so `/matters/<id>/`
  *                     is a page that exists. Labelled "View matter history".
  *   official_record — no published local history, but the retained record
  *                     carries this matter's own official address. Labelled
@@ -33,9 +32,19 @@
  * The labels are navigation labels. They say what the reader will see, never
  * that anything was saved, subscribed, submitted, or attributed to them.
  * Follow language belongs to a saved watch, which this module does not create.
+ *
+ * Population source. This module is in the browser's first-load module graph,
+ * so it reads site/data/legislative_matter_index.json — the compact published
+ * population and each matter's own official address — rather than
+ * site/data/legislative_matter_lookup.json, which carries every retained
+ * appearance and is read only by the route that renders one. Both artifacts are
+ * written by one run of tools/build_legislative_matter_documents.mjs from one
+ * input, so they cannot describe different populations, and both satisfy the
+ * `{ matters: { <id>: { matter_href } } }` shape this module reads — a caller
+ * holding either generation can ask it the same question.
  */
 
-import publishedMatterLookup from "./data/legislative_matter_lookup.json" with { type: "json" };
+import publishedMatterIndex from "./data/legislative_matter_index.json" with { type: "json" };
 
 export const LEGISLATIVE_MATTER_AVAILABILITY_SCHEMA = "cityscroll.legislative_matter_availability.v1";
 
@@ -78,18 +87,18 @@ function safeHttps(value) {
 
 /**
  * The published population: the matter ids that have a materialized local
- * history right now. Accepts the lookup artifact, a plain id list, or a Set, so
- * a caller holding a different generation (a test, a build step reading a
- * candidate artifact) can ask the same question of it.
+ * history right now. Accepts the published index, the full lookup artifact, a
+ * plain id list, or a Set, so a caller holding a different generation (a test, a
+ * build step reading a candidate artifact) can ask the same question of it.
  */
-export function publishedMatterIds(source = publishedMatterLookup) {
+export function publishedMatterIds(source = publishedMatterIndex) {
   if (source instanceof Set) return new Set([...source].map(matterIdentity).filter(Boolean));
   if (Array.isArray(source)) return new Set(source.map(matterIdentity).filter(Boolean));
   const matters = source && typeof source === "object" ? source.matters || source : {};
   return new Set(Object.keys(matters || {}).map(matterIdentity).filter(Boolean));
 }
 
-const DEFAULT_PUBLISHED_MATTER_IDS = publishedMatterIds(publishedMatterLookup);
+const DEFAULT_PUBLISHED_MATTER_IDS = publishedMatterIds(publishedMatterIndex);
 
 /** True when `/matters/<id>/` is a materialized page rather than a 404. */
 export function isPublishedMatter(value, { published = DEFAULT_PUBLISHED_MATTER_IDS } = {}) {
@@ -105,14 +114,14 @@ export function publishedMatterHref(value, options = {}) {
 
 /**
  * The official address this matter is known by. Read from the record the caller
- * already holds, and otherwise from the published lookup's own retained
- * identity. This module composes no address of its own: it publishes the one
- * its caller or the published lookup already carries, or none at all.
+ * already holds, and otherwise from the published generation's own retained
+ * identity. This module composes no address of its own: it publishes the one its
+ * caller or the published generation already carries, or none at all.
  */
-function officialMatterHref(id, matter, lookup) {
+function officialMatterHref(id, matter, index) {
   const supplied = safeHttps(matter?.matter_url) || safeHttps(matter?.matter_href);
   if (supplied) return { href: supplied, basis: "supplied_matter_address" };
-  const entry = (lookup && typeof lookup === "object" ? lookup.matters : null)?.[id];
+  const entry = (index && typeof index === "object" ? index.matters : null)?.[id];
   const retained = safeHttps(entry?.matter_href);
   return retained ? { href: retained, basis: "published_matter_address" } : { href: null, basis: null };
 }
@@ -122,10 +131,12 @@ function officialMatterHref(id, matter, lookup) {
  *
  * `matter` is any shape that carries `matter_id` (or `subject_ref`) and,
  * optionally, the matter's own retained official address as `matter_url` or
- * `matter_href` — the retained City Record appearance, the published lookup
- * entry, and the client-side outcome row all satisfy that without conversion.
+ * `matter_href` — the retained City Record appearance, the published index or
+ * lookup entry, and the client-side outcome row all satisfy that without
+ * conversion.
  */
-export function resolveMatterDestination(matter = {}, { published, lookup = publishedMatterLookup } = {}) {
+export function resolveMatterDestination(matter = {}, { published, lookup = publishedMatterIndex } = {}) {
+  // `lookup` names either generation: the compact index or the full lookup.
   const id = matterIdentity(matter?.matter_id ?? matter?.subject_ref ?? matter);
   const base = {
     schema: LEGISLATIVE_MATTER_AVAILABILITY_SCHEMA,

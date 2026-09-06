@@ -6,7 +6,7 @@
 | Date | 2026-08-23 |
 | Scope | Exact static legislative matter document and Pages-edge route |
 | Supersedes | — |
-| Related | `docs/architecture.md`, `site/legislative_matter_document.mjs`, `architecture/generated/watermark.json` |
+| Related | `docs/architecture.md`, `site/legislative_matter_document.mjs`, `architecture/generated/watermark.json`, `docs/adr/legislative-matter-history-population.md` |
 
 ## Context
 
@@ -37,7 +37,9 @@ the committed architecture watermark records that reviewed topology change.
 
 - `/matters/78605/` is an independently navigable document with deterministic not-found behavior.
 - The Pages-edge renderer and route evidence must be re-baselined when this accepted surface lands.
-- Broader matter coverage and independent vote objects remain separate future decisions.
+- Broader matter coverage and independent vote objects remain separate future decisions. Coverage
+  was subsequently decided in `docs/adr/legislative-matter-history-population.md`, which publishes a
+  history for every retained exact matter over this same route; independent vote objects remain open.
 
 ## Evidence
 

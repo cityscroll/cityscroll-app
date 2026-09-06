@@ -1,0 +1,514 @@
+{
+  "schema": "cityscroll.legislative_matter_history_evidence.v1",
+  "engineering_record": "cityscroll-engineering/legislative-matter-history-population",
+  "renderer": "tools/render_legislative_matter_history_fixtures.mjs",
+  "revision": "0b082c0ced08684e3ebba6e389dce02348b4eca7",
+  "data_vintage": "2026-08-10T13:08:13.019Z",
+  "published_matter_count": 66,
+  "captured_at": "2026-09-06T01:48:34Z",
+  "image_directory": ".artifacts/legislative-matter-history-population",
+  "corpus_note": "Every specimen reads the committed published generation at the data vintage above. The observations describe that retained corpus, not live publisher coverage, and no capture claims a later action, an adoption, an agency reply, or a participant result.",
+  "image_policy": "Capture images are written to the ignored local directory above and are never committed. This manifest is the tracked proof: route, viewport, revision, data vintage, assertion and SHA-256 for each capture.",
+  "files": [
+    {
+      "name": "single-appearance-history-390x844.png",
+      "specimen": "single-appearance-history",
+      "route": "/matters/79200/",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "0b082c0ced08684e3ebba6e389dce02348b4eca7",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 390px a matter with one located appearance shows that appearance and says no later official step has been located, without claiming the matter is settled",
+      "observations": {
+        "appearance_count": 1,
+        "located_disclosure": "CityScroll holds one observed appearance for this matter, dated 2026-07-22. It comes from the Council meeting records materialized on 2026-08-10. No later official step has been located for it. That is the limit of what has been retained here, not a finding that the matter is settled.",
+        "every_control_is_an_anchor": true,
+        "target_size": {
+          "total_controls": 7,
+          "inline_text_links": 7,
+          "inline_exception": "WCAG 2.5.8: a target inside a sentence is sized by its line-height",
+          "block_controls": 0,
+          "block_minimum_height": null,
+          "block_controls_meet_24px": null,
+          "axe_target_size_rule": "evaluated in the axe run recorded on this capture"
+        },
+        "no_horizontal_overflow": true
+      },
+      "bytes": 161243,
+      "sha256": "bfaa1a7c3fbdbc0fee68b1a912c144e4284c08316a194a1732332b71f9790c31",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "single-appearance-history-1440x900.png",
+      "specimen": "single-appearance-history",
+      "route": "/matters/79200/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "0b082c0ced08684e3ebba6e389dce02348b4eca7",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 1440px a matter with one located appearance shows that appearance and says no later official step has been located, without claiming the matter is settled",
+      "observations": {
+        "appearance_count": 1,
+        "located_disclosure": "CityScroll holds one observed appearance for this matter, dated 2026-07-22. It comes from the Council meeting records materialized on 2026-08-10. No later official step has been located for it. That is the limit of what has been retained here, not a finding that the matter is settled.",
+        "every_control_is_an_anchor": true,
+        "target_size": {
+          "total_controls": 7,
+          "inline_text_links": 7,
+          "inline_exception": "WCAG 2.5.8: a target inside a sentence is sized by its line-height",
+          "block_controls": 0,
+          "block_minimum_height": null,
+          "block_controls_meet_24px": null,
+          "axe_target_size_rule": "evaluated in the axe run recorded on this capture"
+        },
+        "no_horizontal_overflow": true
+      },
+      "bytes": 230867,
+      "sha256": "303cb5b4a53e8f3094b283a0cff2aa3bd5b5265d894184ecfe42af7907e55de1",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "two-appearance-history-390x844.png",
+      "specimen": "two-appearance-history",
+      "route": "/matters/78605/",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "0b082c0ced08684e3ebba6e389dce02348b4eca7",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 390px a two-appearance history reads earlier appearance first, stays a list below the shared calendar density rule, and describes neither step as an adoption",
+      "observations": {
+        "appearance_count": 2,
+        "rendered_order": [
+          "2026-04-22",
+          "2026-05-19"
+        ],
+        "calendar_furniture": 0,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 260420,
+      "sha256": "c309b61cab962986a834ef0e873291cf67964682598c82cb579cadb01a570fe6",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "two-appearance-history-1440x900.png",
+      "specimen": "two-appearance-history",
+      "route": "/matters/78605/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "0b082c0ced08684e3ebba6e389dce02348b4eca7",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 1440px a two-appearance history reads earlier appearance first, stays a list below the shared calendar density rule, and describes neither step as an adoption",
+      "observations": {
+        "appearance_count": 2,
+        "rendered_order": [
+          "2026-04-22",
+          "2026-05-19"
+        ],
+        "calendar_furniture": 0,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 341320,
+      "sha256": "6c00ff903a2a60ba630ce0922601d38099d647f1cedb42da6c7ac1451a267fd6",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "coalesced-notice-references-390x844.png",
+      "specimen": "coalesced-notice-references",
+      "route": "/matters/78758/",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "0b082c0ced08684e3ebba6e389dce02348b4eca7",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 390px two notices announcing one meeting render as one appearance with both references separately openable and named",
+      "observations": {
+        "appearance_count": 1,
+        "notice_references": [
+          "20260422047",
+          "20260430007"
+        ],
+        "distinct_link_text": [
+          "CityScroll meeting notice 20260422047",
+          "CityScroll meeting notice 20260430007"
+        ],
+        "repeat_note": "Two meeting notices referenced this same meeting. They are two announcements of one appearance, not separate hearings.",
+        "no_horizontal_overflow": true
+      },
+      "bytes": 158981,
+      "sha256": "9ed5d086997c07ee52203112364f48599224d7eccfa3c044f3136592aeaef03f",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "coalesced-notice-references-1440x900.png",
+      "specimen": "coalesced-notice-references",
+      "route": "/matters/78758/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "0b082c0ced08684e3ebba6e389dce02348b4eca7",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 1440px two notices announcing one meeting render as one appearance with both references separately openable and named",
+      "observations": {
+        "appearance_count": 1,
+        "notice_references": [
+          "20260422047",
+          "20260430007"
+        ],
+        "distinct_link_text": [
+          "CityScroll meeting notice 20260422047",
+          "CityScroll meeting notice 20260430007"
+        ],
+        "repeat_note": "Two meeting notices referenced this same meeting. They are two announcements of one appearance, not separate hearings.",
+        "no_horizontal_overflow": true
+      },
+      "bytes": 222389,
+      "sha256": "c35816b577184a8b7e0a14ea90e83d7e195b2580f9523d1bf1d4a6eca123d008",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "unpublished-identity-390x844.png",
+      "specimen": "unpublished-identity",
+      "route": "/matters/909090/",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "0b082c0ced08684e3ebba6e389dce02348b4eca7",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 390px an identity the generation does not publish is a stated absence with a way back, not an empty history that looks like a matter with nothing in it",
+      "observations": {
+        "stated_absence": "Matter record not found  This legislative matter is not in the current CityScroll materialization.  Browse meetings",
+        "renders_no_empty_history": true,
+        "offers_a_way_back": [
+          "/browse/meetings/"
+        ],
+        "no_horizontal_overflow": true
+      },
+      "bytes": 15927,
+      "sha256": "9bfb3036c9ac981aaa23dec3896cc6bc337ced882cd20adf475f52f25b3e7883",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "unpublished-identity-1440x900.png",
+      "specimen": "unpublished-identity",
+      "route": "/matters/909090/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "0b082c0ced08684e3ebba6e389dce02348b4eca7",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 1440px an identity the generation does not publish is a stated absence with a way back, not an empty history that looks like a matter with nothing in it",
+      "observations": {
+        "stated_absence": "Matter record not found  This legislative matter is not in the current CityScroll materialization.  Browse meetings",
+        "renders_no_empty_history": true,
+        "offers_a_way_back": [
+          "/browse/meetings/"
+        ],
+        "no_horizontal_overflow": true
+      },
+      "bytes": 20245,
+      "sha256": "39ca919bf2084e1248300bcae6f47d371c8fba5f8211adae7f17942cd2cf3b5f",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "without-scripting-390x844.png",
+      "specimen": "without-scripting",
+      "route": "/matters/79200/",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "0b082c0ced08684e3ebba6e389dce02348b4eca7",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "disabled",
+      "assertion": "at 390px every destination on a matter history is an ordinary anchor that activates with scripting disabled, and browser Back returns to the history",
+      "observations": {
+        "scripting": "disabled",
+        "activated_href": "/notices/20260707022/",
+        "reached_destination": true,
+        "back_returns_to_the_history": true,
+        "control_count": 7
+      },
+      "bytes": 161243,
+      "sha256": "bfaa1a7c3fbdbc0fee68b1a912c144e4284c08316a194a1732332b71f9790c31",
+      "axe": {
+        "violations_total": null,
+        "failing_violations": [],
+        "passes": true,
+        "note": "scripting disabled for this specimen; the same page is gated scripted"
+      }
+    },
+    {
+      "name": "without-scripting-1440x900.png",
+      "specimen": "without-scripting",
+      "route": "/matters/79200/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "0b082c0ced08684e3ebba6e389dce02348b4eca7",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "disabled",
+      "assertion": "at 1440px every destination on a matter history is an ordinary anchor that activates with scripting disabled, and browser Back returns to the history",
+      "observations": {
+        "scripting": "disabled",
+        "activated_href": "/notices/20260707022/",
+        "reached_destination": true,
+        "back_returns_to_the_history": true,
+        "control_count": 7
+      },
+      "bytes": 230867,
+      "sha256": "303cb5b4a53e8f3094b283a0cff2aa3bd5b5265d894184ecfe42af7907e55de1",
+      "axe": {
+        "violations_total": null,
+        "failing_violations": [],
+        "passes": true,
+        "note": "scripting disabled for this specimen; the same page is gated scripted"
+      }
+    },
+    {
+      "name": "keyboard-and-return-390x844.png",
+      "specimen": "keyboard-and-return",
+      "route": "/matters/78605/",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "0b082c0ced08684e3ebba6e389dce02348b4eca7",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 390px an appearance destination takes keyboard focus, activates with Enter, and browser Back restores the whole history",
+      "observations": {
+        "focused_control": {
+          "href": "/notices/20260408025/",
+          "label": "CityScroll meeting notice 20260408025",
+          "outline": "auto",
+          "outline_width": "1px"
+        },
+        "tab_stops_to_reach_it": 10,
+        "activated_by_enter": true,
+        "back_restores_every_appearance": true
+      },
+      "bytes": 260420,
+      "sha256": "c309b61cab962986a834ef0e873291cf67964682598c82cb579cadb01a570fe6",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "keyboard-and-return-1440x900.png",
+      "specimen": "keyboard-and-return",
+      "route": "/matters/78605/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "0b082c0ced08684e3ebba6e389dce02348b4eca7",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 1440px an appearance destination takes keyboard focus, activates with Enter, and browser Back restores the whole history",
+      "observations": {
+        "focused_control": {
+          "href": "/notices/20260408025/",
+          "label": "CityScroll meeting notice 20260408025",
+          "outline": "auto",
+          "outline_width": "1px"
+        },
+        "tab_stops_to_reach_it": 10,
+        "activated_by_enter": true,
+        "back_restores_every_appearance": true
+      },
+      "bytes": 341320,
+      "sha256": "6c00ff903a2a60ba630ce0922601d38099d647f1cedb42da6c7ac1451a267fd6",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "modified-click-390x844.png",
+      "specimen": "modified-click",
+      "route": "/matters/78605/",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "0b082c0ced08684e3ebba6e389dce02348b4eca7",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 390px a modified click opens the source in a second context and the history stays where the reader left it",
+      "observations": {
+        "modifier": "ControlOrMeta",
+        "opened_second_context": true,
+        "original_page_unchanged": true,
+        "appearance_count": 2
+      },
+      "bytes": 260420,
+      "sha256": "c309b61cab962986a834ef0e873291cf67964682598c82cb579cadb01a570fe6",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "modified-click-1440x900.png",
+      "specimen": "modified-click",
+      "route": "/matters/78605/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "0b082c0ced08684e3ebba6e389dce02348b4eca7",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 1440px a modified click opens the source in a second context and the history stays where the reader left it",
+      "observations": {
+        "modifier": "ControlOrMeta",
+        "opened_second_context": true,
+        "original_page_unchanged": true,
+        "appearance_count": 2
+      },
+      "bytes": 341320,
+      "sha256": "6c00ff903a2a60ba630ce0922601d38099d647f1cedb42da6c7ac1451a267fd6",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "two-hundred-percent-zoom-390x844.png",
+      "specimen": "two-hundred-percent-zoom",
+      "route": "/matters/78605/",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "0b082c0ced08684e3ebba6e389dce02348b4eca7",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 390px zoomed to 200% the history reflows without horizontal scrolling and keeps every appearance, every destination, and its located-history disclosure",
+      "observations": {
+        "css_viewport_at_200_percent": [
+          320,
+          422
+        ],
+        "reflow_floor_applied": true,
+        "no_horizontal_overflow": true,
+        "every_control_still_present": 29,
+        "target_size": {
+          "total_controls": 29,
+          "inline_text_links": 29,
+          "inline_exception": "WCAG 2.5.8: a target inside a sentence is sized by its line-height",
+          "block_controls": 0,
+          "block_minimum_height": null,
+          "block_controls_meet_24px": null,
+          "axe_target_size_rule": "evaluated in the axe run recorded on this capture"
+        },
+        "history_still_readable": true,
+        "appearance_count": 2
+      },
+      "bytes": 263051,
+      "sha256": "5c0a16785c9c45c10f7f6b921f3de3d8fffe6286a0286b7c79f0aaef782cdc4f",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "two-hundred-percent-zoom-1440x900.png",
+      "specimen": "two-hundred-percent-zoom",
+      "route": "/matters/78605/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "0b082c0ced08684e3ebba6e389dce02348b4eca7",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 1440px zoomed to 200% the history reflows without horizontal scrolling and keeps every appearance, every destination, and its located-history disclosure",
+      "observations": {
+        "css_viewport_at_200_percent": [
+          720,
+          450
+        ],
+        "reflow_floor_applied": false,
+        "no_horizontal_overflow": true,
+        "every_control_still_present": 29,
+        "target_size": {
+          "total_controls": 29,
+          "inline_text_links": 29,
+          "inline_exception": "WCAG 2.5.8: a target inside a sentence is sized by its line-height",
+          "block_controls": 0,
+          "block_minimum_height": null,
+          "block_controls_meet_24px": null,
+          "axe_target_size_rule": "evaluated in the axe run recorded on this capture"
+        },
+        "history_still_readable": true,
+        "appearance_count": 2
+      },
+      "bytes": 293569,
+      "sha256": "a9281c48d7a8f6372b034cf4114b67b8c41321545e7bf8a1d6a2f0b73595517d",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": [],
+        "passes": true
+      }
+    }
+  ]
+}

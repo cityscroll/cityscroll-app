@@ -49,7 +49,11 @@ test("the one-matter Council canary composes an exact subject continuation", () 
   assert.match(html, /data-matter-id="79200"/);
   assert.match(html, /data-action-path-continuation="subject"/);
   assert.match(html, /data-subject-ref="matter:79200"/);
-  assert.match(html, /View official matter record/);
+  // 79200 has a published local history, so the continuation opens that page
+  // rather than handing the reader off to the publisher.
+  assert.match(html, /data-matter-availability="local_history"/);
+  assert.match(html, /View matter history/);
+  assert.match(html, /href="\/matters\/79200\/"/);
 });
 
 test("the materialized meeting document carries the canary continuation without changing ICS identity", () => {
