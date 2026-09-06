@@ -463,13 +463,22 @@ test("aggregate windows exclude old rows without inventing missing values", () =
 test("public stats page is a small coverage surface with dated cards and no usage panels", async () => {
   const html = await readFile(new URL("../site/stats.html", import.meta.url), "utf8");
   assert.match(html, /id="grid"(?![^>]*\bhidden\b)/);
-  assert.equal((html.match(/class="stat"/g) || []).length, 4);
-  assert.equal((html.match(/data-stat-asof/g) || []).length, 5);
+  // Three measured headline facts. Languages left the grid deliberately: the site's
+  // language list is a capability the page offers, not a measure of how it is used, and
+  // a headline tile invited it to be read as one.
+  assert.equal((html.match(/class="stat"/g) || []).length, 3);
+  assert.equal((html.match(/data-stat-asof/g) || []).length, 4);
   assert.doesNotMatch(html, /gridUsage|usageLensTableBody|usageGrowthTableBody|s-digests|s-subs|s-pageviews/);
+  assert.doesNotMatch(html, /id="s-languages"/);
   assert.match(html, /stats_sources_label/);
   assert.match(html, /stats_record_sets_label/);
-  assert.match(html, /stats_public_languages_label/);
   assert.match(html, /stats_evidence_label/);
+  // Each headline number is a description-list value under the term that names its unit,
+  // so a screen reader reads the figure with the thing it counts.
+  assert.match(html, /<dl class="grid" id="grid">/);
+  assert.match(html, /<dt class="l" data-i18n="stats_sources_label">[^<]*<\/dt><dd class="n" id="s-sources">/);
+  // Languages stay on the page as a stated capability, in the methodology list.
+  assert.match(html, /<dt data-i18n="stats_public_languages_label">/);
 });
 
 test("every public page loads the first-party collector and every locale covers new labels", async () => {

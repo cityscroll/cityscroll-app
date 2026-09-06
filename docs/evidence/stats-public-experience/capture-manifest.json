@@ -1,0 +1,989 @@
+{
+ "schema": "cityscroll.render_capture_manifest.v1",
+ "surface": "public Stats page — reader experience",
+ "route": "/stats.html",
+ "condition": "Served from the repository's own built site directory. Every off-origin request is denied for the language captures, and each state capture states the fixed statistics response it was given. The one deployed observation is labelled as such.",
+ "image_binaries_committed": false,
+ "local_capture_root": ".artifacts/stats-public-experience",
+ "captures": [
+  {
+   "id": "language-en-mobile",
+   "route": "/stats.html",
+   "viewport": {
+    "name": "mobile",
+    "width": 390,
+    "height": 844
+   },
+   "language": "en",
+   "language_note": "English, the language the source text stays in.",
+   "repository_revision": "1a4dbc604790ad410b38c8ce22836bb8d64b3ecf",
+   "source_blob": {
+    "site/stats.html": "6c6f5f969ea2a9b2691dccb9f5c56b4a7c044094"
+   },
+   "data_vintage": {
+    "served_coverage_evidence_oldest": "2026-05-26T00:00:00.000Z",
+    "served_coverage_evidence_newest": "2026-09-05T00:00:00.000Z"
+   },
+   "assertion": "The four sections render in order with three worked paths, three dated headline facts and six methodology terms, and the document does not scroll sideways at 390 CSS pixels.",
+   "assertion_holds": true,
+   "observed": {
+    "document_scroll_width": 390,
+    "document_client_width": 390,
+    "document_direction": "ltr",
+    "document_language": "en",
+    "section_headings": [
+     "WHAT YOU CAN EXPLORE",
+     "RECENT USE",
+     "SEE HOW RECORDS CONNECT",
+     "ABOUT THESE NUMBERS"
+    ],
+    "worked_paths": 3,
+    "headline_facts": 3,
+    "methodology_terms": 6,
+    "search_use_present": true,
+    "search_use_text": "Search counts are not published right now.",
+    "render_sha256": "cf41f3cb79a79faf7900df95077479e774b81a906dc06defee57235853620b02",
+    "off_origin_requests_attempted": [
+     "https://api.cityscroll.org/events",
+     "https://api.cityscroll.org/stats",
+     "https://cityscroll-worker.crol-worker.workers.dev/stats",
+     "https://fonts.googleapis.com/css2",
+     "https://static.cloudflareinsights.com/beacon.min.js",
+     "https://www.clarity.ms/tag/xusuca7gsv"
+    ]
+   },
+   "sha256": "cf41f3cb79a79faf7900df95077479e774b81a906dc06defee57235853620b02",
+   "render_sha256": "cf41f3cb79a79faf7900df95077479e774b81a906dc06defee57235853620b02",
+   "render_scope": "innerHTML of main",
+   "local_capture_path": ".artifacts/stats-public-experience/en-390.png",
+   "capture_sha256": "736c41ed367886811c85e197fa68f4e86b9fd7d4321ae76ecc81414c01f0d730",
+   "file": null
+  },
+  {
+   "id": "language-en-desktop",
+   "route": "/stats.html",
+   "viewport": {
+    "name": "desktop",
+    "width": 1440,
+    "height": 900
+   },
+   "language": "en",
+   "language_note": "English, the language the source text stays in.",
+   "repository_revision": "1a4dbc604790ad410b38c8ce22836bb8d64b3ecf",
+   "source_blob": {
+    "site/stats.html": "6c6f5f969ea2a9b2691dccb9f5c56b4a7c044094"
+   },
+   "data_vintage": {
+    "served_coverage_evidence_oldest": "2026-05-26T00:00:00.000Z",
+    "served_coverage_evidence_newest": "2026-09-05T00:00:00.000Z"
+   },
+   "assertion": "The four sections render in order with three worked paths, three dated headline facts and six methodology terms, and the document does not scroll sideways at 1440 CSS pixels.",
+   "assertion_holds": true,
+   "observed": {
+    "document_scroll_width": 1440,
+    "document_client_width": 1440,
+    "document_direction": "ltr",
+    "document_language": "en",
+    "section_headings": [
+     "WHAT YOU CAN EXPLORE",
+     "RECENT USE",
+     "SEE HOW RECORDS CONNECT",
+     "ABOUT THESE NUMBERS"
+    ],
+    "worked_paths": 3,
+    "headline_facts": 3,
+    "methodology_terms": 6,
+    "search_use_present": true,
+    "search_use_text": "Search counts are not published right now.",
+    "render_sha256": "cf41f3cb79a79faf7900df95077479e774b81a906dc06defee57235853620b02",
+    "off_origin_requests_attempted": [
+     "https://api.cityscroll.org/events",
+     "https://api.cityscroll.org/stats",
+     "https://cityscroll-worker.crol-worker.workers.dev/stats",
+     "https://fonts.googleapis.com/css2",
+     "https://static.cloudflareinsights.com/beacon.min.js",
+     "https://www.clarity.ms/tag/xusuca7gsv"
+    ]
+   },
+   "sha256": "cf41f3cb79a79faf7900df95077479e774b81a906dc06defee57235853620b02",
+   "render_sha256": "cf41f3cb79a79faf7900df95077479e774b81a906dc06defee57235853620b02",
+   "render_scope": "innerHTML of main",
+   "local_capture_path": ".artifacts/stats-public-experience/en-1440.png",
+   "capture_sha256": "1af6ba6b5f3f808e545b5e2b2e9e09cc912d7484ea9fc1e6ab80cff453bf50a1",
+   "file": null
+  },
+  {
+   "id": "language-fr-mobile",
+   "route": "/stats.html",
+   "viewport": {
+    "name": "mobile",
+    "width": 390,
+    "height": 844
+   },
+   "language": "fr",
+   "language_note": "French, the expansion-prone translation used to check that longer strings still fit.",
+   "repository_revision": "1a4dbc604790ad410b38c8ce22836bb8d64b3ecf",
+   "source_blob": {
+    "site/stats.html": "6c6f5f969ea2a9b2691dccb9f5c56b4a7c044094"
+   },
+   "data_vintage": {
+    "served_coverage_evidence_oldest": "2026-05-26T00:00:00.000Z",
+    "served_coverage_evidence_newest": "2026-09-05T00:00:00.000Z"
+   },
+   "assertion": "The four sections render in order with three worked paths, three dated headline facts and six methodology terms, and the document does not scroll sideways at 390 CSS pixels.",
+   "assertion_holds": true,
+   "observed": {
+    "document_scroll_width": 390,
+    "document_client_width": 390,
+    "document_direction": "ltr",
+    "document_language": "fr",
+    "section_headings": [
+     "CE QUE VOUS POUVEZ EXPLORER",
+     "UTILISATION RÉCENTE",
+     "VOYEZ COMMENT LES ENREGISTREMENTS SE RELIENT",
+     "À PROPOS DE CES CHIFFRES"
+    ],
+    "worked_paths": 3,
+    "headline_facts": 3,
+    "methodology_terms": 6,
+    "search_use_present": true,
+    "search_use_text": "Les chiffres de recherche ne sont pas publiés pour le moment.",
+    "render_sha256": "e00aec7184ecb9d901172965c796e446844b3014057b5a959f05ab410515df89",
+    "off_origin_requests_attempted": [
+     "https://api.cityscroll.org/events",
+     "https://api.cityscroll.org/stats",
+     "https://cityscroll-worker.crol-worker.workers.dev/stats",
+     "https://fonts.googleapis.com/css2",
+     "https://static.cloudflareinsights.com/beacon.min.js",
+     "https://www.clarity.ms/tag/xusuca7gsv"
+    ]
+   },
+   "sha256": "e00aec7184ecb9d901172965c796e446844b3014057b5a959f05ab410515df89",
+   "render_sha256": "e00aec7184ecb9d901172965c796e446844b3014057b5a959f05ab410515df89",
+   "render_scope": "innerHTML of main",
+   "local_capture_path": ".artifacts/stats-public-experience/fr-390.png",
+   "capture_sha256": "fd090903b86441c639a39a247df4b95095e2f75a5660911b5817023a2c43f08f",
+   "file": null
+  },
+  {
+   "id": "language-fr-desktop",
+   "route": "/stats.html",
+   "viewport": {
+    "name": "desktop",
+    "width": 1440,
+    "height": 900
+   },
+   "language": "fr",
+   "language_note": "French, the expansion-prone translation used to check that longer strings still fit.",
+   "repository_revision": "1a4dbc604790ad410b38c8ce22836bb8d64b3ecf",
+   "source_blob": {
+    "site/stats.html": "6c6f5f969ea2a9b2691dccb9f5c56b4a7c044094"
+   },
+   "data_vintage": {
+    "served_coverage_evidence_oldest": "2026-05-26T00:00:00.000Z",
+    "served_coverage_evidence_newest": "2026-09-05T00:00:00.000Z"
+   },
+   "assertion": "The four sections render in order with three worked paths, three dated headline facts and six methodology terms, and the document does not scroll sideways at 1440 CSS pixels.",
+   "assertion_holds": true,
+   "observed": {
+    "document_scroll_width": 1440,
+    "document_client_width": 1440,
+    "document_direction": "ltr",
+    "document_language": "fr",
+    "section_headings": [
+     "CE QUE VOUS POUVEZ EXPLORER",
+     "UTILISATION RÉCENTE",
+     "VOYEZ COMMENT LES ENREGISTREMENTS SE RELIENT",
+     "À PROPOS DE CES CHIFFRES"
+    ],
+    "worked_paths": 3,
+    "headline_facts": 3,
+    "methodology_terms": 6,
+    "search_use_present": true,
+    "search_use_text": "Les chiffres de recherche ne sont pas publiés pour le moment.",
+    "render_sha256": "e00aec7184ecb9d901172965c796e446844b3014057b5a959f05ab410515df89",
+    "off_origin_requests_attempted": [
+     "https://api.cityscroll.org/events",
+     "https://api.cityscroll.org/stats",
+     "https://cityscroll-worker.crol-worker.workers.dev/stats",
+     "https://fonts.googleapis.com/css2",
+     "https://static.cloudflareinsights.com/beacon.min.js",
+     "https://www.clarity.ms/tag/xusuca7gsv"
+    ]
+   },
+   "sha256": "e00aec7184ecb9d901172965c796e446844b3014057b5a959f05ab410515df89",
+   "render_sha256": "e00aec7184ecb9d901172965c796e446844b3014057b5a959f05ab410515df89",
+   "render_scope": "innerHTML of main",
+   "local_capture_path": ".artifacts/stats-public-experience/fr-1440.png",
+   "capture_sha256": "6e9a2a1f3b2f4aec6feb44f2a57d94764801f8c8d3ca309fa669f834e9f2ea18",
+   "file": null
+  },
+  {
+   "id": "language-ar-mobile",
+   "route": "/stats.html",
+   "viewport": {
+    "name": "mobile",
+    "width": 390,
+    "height": 844
+   },
+   "language": "ar",
+   "language_note": "Arabic, right to left, used to check that the page mirrors rather than breaks.",
+   "repository_revision": "1a4dbc604790ad410b38c8ce22836bb8d64b3ecf",
+   "source_blob": {
+    "site/stats.html": "6c6f5f969ea2a9b2691dccb9f5c56b4a7c044094"
+   },
+   "data_vintage": {
+    "served_coverage_evidence_oldest": "2026-05-26T00:00:00.000Z",
+    "served_coverage_evidence_newest": "2026-09-05T00:00:00.000Z"
+   },
+   "assertion": "The four sections render in order with three worked paths, three dated headline facts and six methodology terms, and the document does not scroll sideways at 390 CSS pixels.",
+   "assertion_holds": true,
+   "observed": {
+    "document_scroll_width": 390,
+    "document_client_width": 390,
+    "document_direction": "rtl",
+    "document_language": "ar",
+    "section_headings": [
+     "ما يمكنك استكشافه",
+     "الاستخدام الأخير",
+     "انظر كيف ترتبط السجلات",
+     "عن هذه الأرقام"
+    ],
+    "worked_paths": 3,
+    "headline_facts": 3,
+    "methodology_terms": 6,
+    "search_use_present": true,
+    "search_use_text": "أعداد عمليات البحث غير منشورة حالياً.",
+    "render_sha256": "9d6cfbca048b0ac29d34bb351f4043e77d474487d7ba24bdc33a99807800db37",
+    "off_origin_requests_attempted": [
+     "https://api.cityscroll.org/events",
+     "https://api.cityscroll.org/stats",
+     "https://cityscroll-worker.crol-worker.workers.dev/stats",
+     "https://fonts.googleapis.com/css2",
+     "https://static.cloudflareinsights.com/beacon.min.js",
+     "https://www.clarity.ms/tag/xusuca7gsv"
+    ]
+   },
+   "sha256": "9d6cfbca048b0ac29d34bb351f4043e77d474487d7ba24bdc33a99807800db37",
+   "render_sha256": "9d6cfbca048b0ac29d34bb351f4043e77d474487d7ba24bdc33a99807800db37",
+   "render_scope": "innerHTML of main",
+   "local_capture_path": ".artifacts/stats-public-experience/ar-390.png",
+   "capture_sha256": "fcde8296f694926307dba8ecc13d46f0ea9eb478409964e06a2ec17ee6cfd878",
+   "file": null
+  },
+  {
+   "id": "language-ar-desktop",
+   "route": "/stats.html",
+   "viewport": {
+    "name": "desktop",
+    "width": 1440,
+    "height": 900
+   },
+   "language": "ar",
+   "language_note": "Arabic, right to left, used to check that the page mirrors rather than breaks.",
+   "repository_revision": "1a4dbc604790ad410b38c8ce22836bb8d64b3ecf",
+   "source_blob": {
+    "site/stats.html": "6c6f5f969ea2a9b2691dccb9f5c56b4a7c044094"
+   },
+   "data_vintage": {
+    "served_coverage_evidence_oldest": "2026-05-26T00:00:00.000Z",
+    "served_coverage_evidence_newest": "2026-09-05T00:00:00.000Z"
+   },
+   "assertion": "The four sections render in order with three worked paths, three dated headline facts and six methodology terms, and the document does not scroll sideways at 1440 CSS pixels.",
+   "assertion_holds": true,
+   "observed": {
+    "document_scroll_width": 1440,
+    "document_client_width": 1440,
+    "document_direction": "rtl",
+    "document_language": "ar",
+    "section_headings": [
+     "ما يمكنك استكشافه",
+     "الاستخدام الأخير",
+     "انظر كيف ترتبط السجلات",
+     "عن هذه الأرقام"
+    ],
+    "worked_paths": 3,
+    "headline_facts": 3,
+    "methodology_terms": 6,
+    "search_use_present": true,
+    "search_use_text": "أعداد عمليات البحث غير منشورة حالياً.",
+    "render_sha256": "9d6cfbca048b0ac29d34bb351f4043e77d474487d7ba24bdc33a99807800db37",
+    "off_origin_requests_attempted": [
+     "https://api.cityscroll.org/events",
+     "https://api.cityscroll.org/stats",
+     "https://cityscroll-worker.crol-worker.workers.dev/stats",
+     "https://fonts.googleapis.com/css2",
+     "https://static.cloudflareinsights.com/beacon.min.js",
+     "https://www.clarity.ms/tag/xusuca7gsv"
+    ]
+   },
+   "sha256": "9d6cfbca048b0ac29d34bb351f4043e77d474487d7ba24bdc33a99807800db37",
+   "render_sha256": "9d6cfbca048b0ac29d34bb351f4043e77d474487d7ba24bdc33a99807800db37",
+   "render_scope": "innerHTML of main",
+   "local_capture_path": ".artifacts/stats-public-experience/ar-1440.png",
+   "capture_sha256": "4a643777d00c02b0ba079a6a9579bf59cb8a9376f2422d9fc32c4fd21d28d286",
+   "file": null
+  },
+  {
+   "id": "state-verified-zero",
+   "route": "/stats.html",
+   "viewport": {
+    "name": "mobile",
+    "width": 390,
+    "height": 844
+   },
+   "language": "en",
+   "repository_revision": "1a4dbc604790ad410b38c8ce22836bb8d64b3ecf",
+   "source_blob": {
+    "site/stats.html": "6c6f5f969ea2a9b2691dccb9f5c56b4a7c044094"
+   },
+   "data_vintage": {
+    "measured_since": "2026-07-01T00:00:00.000Z",
+    "verified_at": "2026-09-15T12:00:00.000Z"
+   },
+   "data_vintage_note": "Supplied by the fixed response recorded in this entry. These are acceptance figures for the rendering rule, not production totals.",
+   "supplied_response": {
+    "schema": "public-stats.v4",
+    "search_usage": {
+     "schema": "cityscroll.public_search_usage.v1",
+     "available": true,
+     "unavailable_reason": null,
+     "generated_at": "2026-09-15T12:00:00.000Z",
+     "measurement": {
+      "family": "search_usage",
+      "population": "Accepted production search-execution receipts.",
+      "population_key": "stats_search_use_run_desc",
+      "subset_rule": "Searches returning records is a subset of searches run.",
+      "state": "complete",
+      "measured_since": "2026-07-01T00:00:00.000Z"
+     },
+     "refresh": {
+      "state": "fresh",
+      "verified_at": "2026-09-15T12:00:00.000Z",
+      "attempted_at": "2026-09-15T12:00:00.000Z",
+      "failure_reason": null
+     },
+     "periods": [
+      {
+       "period_id": "last7d",
+       "requested_days": 7,
+       "state": "measured",
+       "coverage": "complete",
+       "unavailable_reason": null,
+       "starts_at": "2026-09-09T00:00:00.000Z",
+       "ends_at": "2026-09-16T00:00:00.000Z",
+       "metrics": [
+        {
+         "metric_id": "searches_run",
+         "label_key": "stats_search_use_run_label",
+         "definition_key": "stats_search_use_run_desc",
+         "state": "measured",
+         "value": 0
+        },
+        {
+         "metric_id": "searches_returning_records",
+         "label_key": "stats_search_use_returning_label",
+         "definition_key": "stats_search_use_returning_desc",
+         "state": "measured",
+         "value": 0
+        }
+       ]
+      }
+     ]
+    }
+   },
+   "assertion": "A complete period in which nobody searched publishes 0, not a state chip.",
+   "assertion_holds": true,
+   "observed": {
+    "document_scroll_width": 390,
+    "document_client_width": 390,
+    "document_direction": "ltr",
+    "document_language": "en",
+    "section_headings": [
+     "WHAT YOU CAN EXPLORE",
+     "RECENT USE",
+     "SEE HOW RECORDS CONNECT",
+     "ABOUT THESE NUMBERS"
+    ],
+    "worked_paths": 3,
+    "headline_facts": 3,
+    "methodology_terms": 6,
+    "search_use_present": true,
+    "search_use_text": "Finished searches in each period\nMEASURE\tLAST 7 DAYS\nSeptember 9, 2026 to September 16, 2026\n\nSearches run\t0\nSearches returning records\t0\nSEARCHES RUN\nEvery search that finished on the site in this period. A repeat of the same search counts again. Test and developer traffic is left out.\nSEARCHES RETURNING RECORDS\nSearches in this period that showed at least one record, including a part of a set. It does not say whether the reader found what they needed.\n\nLast checked September 15, 2026.",
+    "render_sha256": "bade5bc39deef63c88011295e5dbddc0b4a8118e32c4ea3f3f85cc95968a0082",
+    "missing_expected_text": []
+   },
+   "sha256": "bade5bc39deef63c88011295e5dbddc0b4a8118e32c4ea3f3f85cc95968a0082",
+   "render_sha256": "bade5bc39deef63c88011295e5dbddc0b4a8118e32c4ea3f3f85cc95968a0082",
+   "render_scope": "innerHTML of #search-use",
+   "local_capture_path": ".artifacts/stats-public-experience/state-verified-zero.png",
+   "capture_sha256": "b922fcd92b8b3372e20ed33bbf6bd181afaa669feb70d41d50c2b9651422cabf",
+   "file": null
+  },
+  {
+   "id": "state-small-volume",
+   "route": "/stats.html",
+   "viewport": {
+    "name": "mobile",
+    "width": 390,
+    "height": 844
+   },
+   "language": "en",
+   "repository_revision": "1a4dbc604790ad410b38c8ce22836bb8d64b3ecf",
+   "source_blob": {
+    "site/stats.html": "6c6f5f969ea2a9b2691dccb9f5c56b4a7c044094"
+   },
+   "data_vintage": {
+    "measured_since": "2026-07-01T00:00:00.000Z",
+    "verified_at": "2026-09-15T12:00:00.000Z"
+   },
+   "data_vintage_note": "Supplied by the fixed response recorded in this entry. These are acceptance figures for the rendering rule, not production totals.",
+   "supplied_response": {
+    "schema": "public-stats.v4",
+    "search_usage": {
+     "schema": "cityscroll.public_search_usage.v1",
+     "available": true,
+     "unavailable_reason": null,
+     "generated_at": "2026-09-15T12:00:00.000Z",
+     "measurement": {
+      "family": "search_usage",
+      "population": "Accepted production search-execution receipts.",
+      "population_key": "stats_search_use_run_desc",
+      "subset_rule": "Searches returning records is a subset of searches run.",
+      "state": "complete",
+      "measured_since": "2026-07-01T00:00:00.000Z"
+     },
+     "refresh": {
+      "state": "fresh",
+      "verified_at": "2026-09-15T12:00:00.000Z",
+      "attempted_at": "2026-09-15T12:00:00.000Z",
+      "failure_reason": null
+     },
+     "periods": [
+      {
+       "period_id": "last7d",
+       "requested_days": 7,
+       "state": "measured",
+       "coverage": "complete",
+       "unavailable_reason": null,
+       "starts_at": "2026-09-09T00:00:00.000Z",
+       "ends_at": "2026-09-16T00:00:00.000Z",
+       "metrics": [
+        {
+         "metric_id": "searches_run",
+         "label_key": "stats_search_use_run_label",
+         "definition_key": "stats_search_use_run_desc",
+         "state": "measured",
+         "value": 3
+        },
+        {
+         "metric_id": "searches_returning_records",
+         "label_key": "stats_search_use_returning_label",
+         "definition_key": "stats_search_use_returning_desc",
+         "state": "measured",
+         "value": 1
+        }
+       ]
+      }
+     ]
+    }
+   },
+   "assertion": "A small verified volume renders as the figure itself, with no rounding and no suppression.",
+   "assertion_holds": true,
+   "observed": {
+    "document_scroll_width": 390,
+    "document_client_width": 390,
+    "document_direction": "ltr",
+    "document_language": "en",
+    "section_headings": [
+     "WHAT YOU CAN EXPLORE",
+     "RECENT USE",
+     "SEE HOW RECORDS CONNECT",
+     "ABOUT THESE NUMBERS"
+    ],
+    "worked_paths": 3,
+    "headline_facts": 3,
+    "methodology_terms": 6,
+    "search_use_present": true,
+    "search_use_text": "Finished searches in each period\nMEASURE\tLAST 7 DAYS\nSeptember 9, 2026 to September 16, 2026\n\nSearches run\t3\nSearches returning records\t1\nSEARCHES RUN\nEvery search that finished on the site in this period. A repeat of the same search counts again. Test and developer traffic is left out.\nSEARCHES RETURNING RECORDS\nSearches in this period that showed at least one record, including a part of a set. It does not say whether the reader found what they needed.\n\nLast checked September 15, 2026.",
+    "render_sha256": "d7894dabe71bf785356ebbef9408266cf1cde65f5f960f105179ff9237b09278",
+    "missing_expected_text": []
+   },
+   "sha256": "d7894dabe71bf785356ebbef9408266cf1cde65f5f960f105179ff9237b09278",
+   "render_sha256": "d7894dabe71bf785356ebbef9408266cf1cde65f5f960f105179ff9237b09278",
+   "render_scope": "innerHTML of #search-use",
+   "local_capture_path": ".artifacts/stats-public-experience/state-small-volume.png",
+   "capture_sha256": "07212e4f954b62036c5b1e217826c0f5fa14cdd090fc8bb49a6fdcaacae33a05",
+   "file": null
+  },
+  {
+   "id": "state-normal-volume",
+   "route": "/stats.html",
+   "viewport": {
+    "name": "mobile",
+    "width": 390,
+    "height": 844
+   },
+   "language": "en",
+   "repository_revision": "1a4dbc604790ad410b38c8ce22836bb8d64b3ecf",
+   "source_blob": {
+    "site/stats.html": "6c6f5f969ea2a9b2691dccb9f5c56b4a7c044094"
+   },
+   "data_vintage": {
+    "measured_since": "2026-07-01T00:00:00.000Z",
+    "verified_at": "2026-09-15T12:00:00.000Z"
+   },
+   "data_vintage_note": "Supplied by the fixed response recorded in this entry. These are acceptance figures for the rendering rule, not production totals.",
+   "supplied_response": {
+    "schema": "public-stats.v4",
+    "search_usage": {
+     "schema": "cityscroll.public_search_usage.v1",
+     "available": true,
+     "unavailable_reason": null,
+     "generated_at": "2026-09-15T12:00:00.000Z",
+     "measurement": {
+      "family": "search_usage",
+      "population": "Accepted production search-execution receipts.",
+      "population_key": "stats_search_use_run_desc",
+      "subset_rule": "Searches returning records is a subset of searches run.",
+      "state": "complete",
+      "measured_since": "2026-07-01T00:00:00.000Z"
+     },
+     "refresh": {
+      "state": "fresh",
+      "verified_at": "2026-09-15T12:00:00.000Z",
+      "attempted_at": "2026-09-15T12:00:00.000Z",
+      "failure_reason": null
+     },
+     "periods": [
+      {
+       "period_id": "last30d",
+       "requested_days": 30,
+       "state": "measured",
+       "coverage": "complete",
+       "unavailable_reason": null,
+       "starts_at": "2026-08-17T00:00:00.000Z",
+       "ends_at": "2026-09-16T00:00:00.000Z",
+       "metrics": [
+        {
+         "metric_id": "searches_run",
+         "label_key": "stats_search_use_run_label",
+         "definition_key": "stats_search_use_run_desc",
+         "state": "measured",
+         "value": 4821
+        },
+        {
+         "metric_id": "searches_returning_records",
+         "label_key": "stats_search_use_returning_label",
+         "definition_key": "stats_search_use_returning_desc",
+         "state": "measured",
+         "value": 3960
+        }
+       ]
+      }
+     ]
+    }
+   },
+   "assertion": "An ordinary volume renders as one grouped number per measure for the period the response names.",
+   "assertion_holds": true,
+   "observed": {
+    "document_scroll_width": 390,
+    "document_client_width": 390,
+    "document_direction": "ltr",
+    "document_language": "en",
+    "section_headings": [
+     "WHAT YOU CAN EXPLORE",
+     "RECENT USE",
+     "SEE HOW RECORDS CONNECT",
+     "ABOUT THESE NUMBERS"
+    ],
+    "worked_paths": 3,
+    "headline_facts": 3,
+    "methodology_terms": 6,
+    "search_use_present": true,
+    "search_use_text": "Finished searches in each period\nMEASURE\tLAST 30 DAYS\nAugust 17, 2026 to September 16, 2026\n\nSearches run\t4,821\nSearches returning records\t3,960\nSEARCHES RUN\nEvery search that finished on the site in this period. A repeat of the same search counts again. Test and developer traffic is left out.\nSEARCHES RETURNING RECORDS\nSearches in this period that showed at least one record, including a part of a set. It does not say whether the reader found what they needed.\n\nLast checked September 15, 2026.",
+    "render_sha256": "f77aee2a4eaa4226e2e5e0b5d834eef9b8915a174a67358bd531e3e7a4342bb0",
+    "missing_expected_text": []
+   },
+   "sha256": "f77aee2a4eaa4226e2e5e0b5d834eef9b8915a174a67358bd531e3e7a4342bb0",
+   "render_sha256": "f77aee2a4eaa4226e2e5e0b5d834eef9b8915a174a67358bd531e3e7a4342bb0",
+   "render_scope": "innerHTML of #search-use",
+   "local_capture_path": ".artifacts/stats-public-experience/state-normal-volume.png",
+   "capture_sha256": "e82ecd22e4f650301bc611f067438f99fee6f7984495f49d5de00eb21ee1ffb8",
+   "file": null
+  },
+  {
+   "id": "state-incomplete-period",
+   "route": "/stats.html",
+   "viewport": {
+    "name": "mobile",
+    "width": 390,
+    "height": 844
+   },
+   "language": "en",
+   "repository_revision": "1a4dbc604790ad410b38c8ce22836bb8d64b3ecf",
+   "source_blob": {
+    "site/stats.html": "6c6f5f969ea2a9b2691dccb9f5c56b4a7c044094"
+   },
+   "data_vintage": {
+    "measured_since": "2026-07-01T00:00:00.000Z",
+    "verified_at": "2026-09-15T12:00:00.000Z"
+   },
+   "data_vintage_note": "Supplied by the fixed response recorded in this entry. These are acceptance figures for the rendering rule, not production totals.",
+   "supplied_response": {
+    "schema": "public-stats.v4",
+    "search_usage": {
+     "schema": "cityscroll.public_search_usage.v1",
+     "available": true,
+     "unavailable_reason": null,
+     "generated_at": "2026-09-15T12:00:00.000Z",
+     "measurement": {
+      "family": "search_usage",
+      "population": "Accepted production search-execution receipts.",
+      "population_key": "stats_search_use_run_desc",
+      "subset_rule": "Searches returning records is a subset of searches run.",
+      "state": "complete",
+      "measured_since": "2026-07-01T00:00:00.000Z"
+     },
+     "refresh": {
+      "state": "fresh",
+      "verified_at": "2026-09-15T12:00:00.000Z",
+      "attempted_at": "2026-09-15T12:00:00.000Z",
+      "failure_reason": null
+     },
+     "periods": [
+      {
+       "period_id": "last30d",
+       "requested_days": 30,
+       "state": "measured",
+       "coverage": "partial",
+       "unavailable_reason": null,
+       "starts_at": "2026-09-01T00:00:00.000Z",
+       "ends_at": "2026-09-16T00:00:00.000Z",
+       "metrics": [
+        {
+         "metric_id": "searches_run",
+         "label_key": "stats_search_use_run_label",
+         "definition_key": "stats_search_use_run_desc",
+         "state": "measured",
+         "value": 61
+        },
+        {
+         "metric_id": "searches_returning_records",
+         "label_key": "stats_search_use_returning_label",
+         "definition_key": "stats_search_use_returning_desc",
+         "state": "measured",
+         "value": 45
+        }
+       ]
+      }
+     ]
+    }
+   },
+   "assertion": "A period whose measurement began inside it is labelled from the day counting began, never with the wider period it cannot support.",
+   "assertion_holds": true,
+   "observed": {
+    "document_scroll_width": 390,
+    "document_client_width": 390,
+    "document_direction": "ltr",
+    "document_language": "en",
+    "section_headings": [
+     "WHAT YOU CAN EXPLORE",
+     "RECENT USE",
+     "SEE HOW RECORDS CONNECT",
+     "ABOUT THESE NUMBERS"
+    ],
+    "worked_paths": 3,
+    "headline_facts": 3,
+    "methodology_terms": 6,
+    "search_use_present": true,
+    "search_use_text": "Finished searches in each period\nMEASURE\tSINCE SEPTEMBER 1, 2026\nSeptember 1, 2026 to September 16, 2026\n\nSearches run\t61\nSearches returning records\t45\nSEARCHES RUN\nEvery search that finished on the site in this period. A repeat of the same search counts again. Test and developer traffic is left out.\nSEARCHES RETURNING RECORDS\nSearches in this period that showed at least one record, including a part of a set. It does not say whether the reader found what they needed.\n\nLast checked September 15, 2026.",
+    "render_sha256": "e5ad406188ca27a06766e81fa5f83da550477ac4d1fe6a52b5c3e3699cc73570",
+    "missing_expected_text": []
+   },
+   "sha256": "e5ad406188ca27a06766e81fa5f83da550477ac4d1fe6a52b5c3e3699cc73570",
+   "render_sha256": "e5ad406188ca27a06766e81fa5f83da550477ac4d1fe6a52b5c3e3699cc73570",
+   "render_scope": "innerHTML of #search-use",
+   "local_capture_path": ".artifacts/stats-public-experience/state-incomplete-period.png",
+   "capture_sha256": "63a4e7d9bd81b91dc96c7968c3e08a8471efe9ada48b437ddbd22a0eb9104159",
+   "file": null
+  },
+  {
+   "id": "state-partial-current-day",
+   "route": "/stats.html",
+   "viewport": {
+    "name": "mobile",
+    "width": 390,
+    "height": 844
+   },
+   "language": "en",
+   "repository_revision": "1a4dbc604790ad410b38c8ce22836bb8d64b3ecf",
+   "source_blob": {
+    "site/stats.html": "6c6f5f969ea2a9b2691dccb9f5c56b4a7c044094"
+   },
+   "data_vintage": {
+    "measured_since": "2026-07-01T00:00:00.000Z",
+    "verified_at": "2026-09-15T12:00:00.000Z"
+   },
+   "data_vintage_note": "Supplied by the fixed response recorded in this entry. These are acceptance figures for the rendering rule, not production totals.",
+   "supplied_response": {
+    "schema": "public-stats.v4",
+    "search_usage": {
+     "schema": "cityscroll.public_search_usage.v1",
+     "available": true,
+     "unavailable_reason": null,
+     "generated_at": "2026-09-15T12:00:00.000Z",
+     "measurement": {
+      "family": "search_usage",
+      "population": "Accepted production search-execution receipts.",
+      "population_key": "stats_search_use_run_desc",
+      "subset_rule": "Searches returning records is a subset of searches run.",
+      "state": "complete",
+      "measured_since": "2026-07-01T00:00:00.000Z"
+     },
+     "refresh": {
+      "state": "fresh",
+      "verified_at": "2026-09-15T12:00:00.000Z",
+      "attempted_at": "2026-09-15T12:00:00.000Z",
+      "failure_reason": null
+     },
+     "periods": [
+      {
+       "period_id": "last7d",
+       "requested_days": 7,
+       "state": "measured",
+       "coverage": "complete",
+       "unavailable_reason": null,
+       "starts_at": "2026-09-09T00:00:00.000Z",
+       "ends_at": "2026-09-15T12:00:00.000Z",
+       "metrics": [
+        {
+         "metric_id": "searches_run",
+         "label_key": "stats_search_use_run_label",
+         "definition_key": "stats_search_use_run_desc",
+         "state": "measured",
+         "value": 12
+        },
+        {
+         "metric_id": "searches_returning_records",
+         "label_key": "stats_search_use_returning_label",
+         "definition_key": "stats_search_use_returning_desc",
+         "state": "measured",
+         "value": 9
+        }
+       ]
+      }
+     ]
+    }
+   },
+   "assertion": "A period that ends inside a day says its last day is counted only up to the last check, so the current day is visibly partial.",
+   "assertion_holds": true,
+   "observed": {
+    "document_scroll_width": 390,
+    "document_client_width": 390,
+    "document_direction": "ltr",
+    "document_language": "en",
+    "section_headings": [
+     "WHAT YOU CAN EXPLORE",
+     "RECENT USE",
+     "SEE HOW RECORDS CONNECT",
+     "ABOUT THESE NUMBERS"
+    ],
+    "worked_paths": 3,
+    "headline_facts": 3,
+    "methodology_terms": 6,
+    "search_use_present": true,
+    "search_use_text": "Finished searches in each period\nMEASURE\tLAST 7 DAYS\nSeptember 9, 2026 to September 15, 2026, counted up to the last check that day\n\nSearches run\t12\nSearches returning records\t9\nSEARCHES RUN\nEvery search that finished on the site in this period. A repeat of the same search counts again. Test and developer traffic is left out.\nSEARCHES RETURNING RECORDS\nSearches in this period that showed at least one record, including a part of a set. It does not say whether the reader found what they needed.\n\nLast checked September 15, 2026.",
+    "render_sha256": "fc7a10b8f2e1f75ff6307d8c788a686321bcb822a0f5762269da353593d0baac",
+    "missing_expected_text": []
+   },
+   "sha256": "fc7a10b8f2e1f75ff6307d8c788a686321bcb822a0f5762269da353593d0baac",
+   "render_sha256": "fc7a10b8f2e1f75ff6307d8c788a686321bcb822a0f5762269da353593d0baac",
+   "render_scope": "innerHTML of #search-use",
+   "local_capture_path": ".artifacts/stats-public-experience/state-partial-current-day.png",
+   "capture_sha256": "0bd1d6ebdbaf18d2feab0ffb1bcb7c43bdec680fb99a203a9f46d880758202d9",
+   "file": null
+  },
+  {
+   "id": "state-last-verified-stale",
+   "route": "/stats.html",
+   "viewport": {
+    "name": "mobile",
+    "width": 390,
+    "height": 844
+   },
+   "language": "en",
+   "repository_revision": "1a4dbc604790ad410b38c8ce22836bb8d64b3ecf",
+   "source_blob": {
+    "site/stats.html": "6c6f5f969ea2a9b2691dccb9f5c56b4a7c044094"
+   },
+   "data_vintage": {
+    "measured_since": "2026-07-01T00:00:00.000Z",
+    "verified_at": "2026-09-15T12:00:00.000Z"
+   },
+   "data_vintage_note": "Supplied by the fixed response recorded in this entry. These are acceptance figures for the rendering rule, not production totals.",
+   "supplied_response": {
+    "schema": "public-stats.v4",
+    "search_usage": {
+     "schema": "cityscroll.public_search_usage.v1",
+     "available": true,
+     "unavailable_reason": null,
+     "generated_at": "2026-09-15T12:00:00.000Z",
+     "measurement": {
+      "family": "search_usage",
+      "population": "Accepted production search-execution receipts.",
+      "population_key": "stats_search_use_run_desc",
+      "subset_rule": "Searches returning records is a subset of searches run.",
+      "state": "complete",
+      "measured_since": "2026-07-01T00:00:00.000Z"
+     },
+     "refresh": {
+      "state": "stale",
+      "verified_at": "2026-09-15T12:00:00.000Z",
+      "attempted_at": "2026-09-15T12:00:00.000Z",
+      "failure_reason": "read_did_not_finish"
+     },
+     "periods": [
+      {
+       "period_id": "last7d",
+       "requested_days": 7,
+       "state": "measured",
+       "coverage": "complete",
+       "unavailable_reason": null,
+       "starts_at": "2026-09-09T00:00:00.000Z",
+       "ends_at": "2026-09-16T00:00:00.000Z",
+       "metrics": [
+        {
+         "metric_id": "searches_run",
+         "label_key": "stats_search_use_run_label",
+         "definition_key": "stats_search_use_run_desc",
+         "state": "measured",
+         "value": 6
+        },
+        {
+         "metric_id": "searches_returning_records",
+         "label_key": "stats_search_use_returning_label",
+         "definition_key": "stats_search_use_returning_desc",
+         "state": "measured",
+         "value": 4
+        }
+       ]
+      }
+     ]
+    }
+   },
+   "assertion": "When the newest check did not finish, the page stands on the last one that did and says both facts.",
+   "assertion_holds": true,
+   "observed": {
+    "document_scroll_width": 390,
+    "document_client_width": 390,
+    "document_direction": "ltr",
+    "document_language": "en",
+    "section_headings": [
+     "WHAT YOU CAN EXPLORE",
+     "RECENT USE",
+     "SEE HOW RECORDS CONNECT",
+     "ABOUT THESE NUMBERS"
+    ],
+    "worked_paths": 3,
+    "headline_facts": 3,
+    "methodology_terms": 6,
+    "search_use_present": true,
+    "search_use_text": "Finished searches in each period\nMEASURE\tLAST 7 DAYS\nSeptember 9, 2026 to September 16, 2026\n\nSearches run\t6\nSearches returning records\t4\nSEARCHES RUN\nEvery search that finished on the site in this period. A repeat of the same search counts again. Test and developer traffic is left out.\nSEARCHES RETURNING RECORDS\nSearches in this period that showed at least one record, including a part of a set. It does not say whether the reader found what they needed.\n\nLast checked September 15, 2026. The most recent check did not finish. These counts come from the last one that did.",
+    "render_sha256": "c9414883fe6b7153b843f34fc3970f980cce5ab59a58e0e4124be9d18ed601e7",
+    "missing_expected_text": []
+   },
+   "sha256": "c9414883fe6b7153b843f34fc3970f980cce5ab59a58e0e4124be9d18ed601e7",
+   "render_sha256": "c9414883fe6b7153b843f34fc3970f980cce5ab59a58e0e4124be9d18ed601e7",
+   "render_scope": "innerHTML of #search-use",
+   "local_capture_path": ".artifacts/stats-public-experience/state-last-verified-stale.png",
+   "capture_sha256": "a00834523517949c1b085b3e0a4c09cd39eee32afe3b1d6f37f5978dd85c33f9",
+   "file": null
+  },
+  {
+   "id": "state-unavailable",
+   "route": "/stats.html",
+   "viewport": {
+    "name": "mobile",
+    "width": 390,
+    "height": 844
+   },
+   "language": "en",
+   "repository_revision": "1a4dbc604790ad410b38c8ce22836bb8d64b3ecf",
+   "source_blob": {
+    "site/stats.html": "6c6f5f969ea2a9b2691dccb9f5c56b4a7c044094"
+   },
+   "data_vintage": null,
+   "data_vintage_note": "Supplied by the fixed response recorded in this entry. These are acceptance figures for the rendering rule, not production totals.",
+   "supplied_response": null,
+   "assertion": "With no summary reachable the section states that counts are not published, shows no zero, and leaves coverage and the worked paths standing.",
+   "assertion_holds": true,
+   "observed": {
+    "document_scroll_width": 390,
+    "document_client_width": 390,
+    "document_direction": "ltr",
+    "document_language": "en",
+    "section_headings": [
+     "WHAT YOU CAN EXPLORE",
+     "RECENT USE",
+     "SEE HOW RECORDS CONNECT",
+     "ABOUT THESE NUMBERS"
+    ],
+    "worked_paths": 3,
+    "headline_facts": 3,
+    "methodology_terms": 6,
+    "search_use_present": true,
+    "search_use_text": "Search counts are not published right now.",
+    "render_sha256": "056aff46ecfe8c3c62cc518d438aea9f069884b4586d6fbe69a7b61947036726",
+    "missing_expected_text": []
+   },
+   "sha256": "056aff46ecfe8c3c62cc518d438aea9f069884b4586d6fbe69a7b61947036726",
+   "render_sha256": "056aff46ecfe8c3c62cc518d438aea9f069884b4586d6fbe69a7b61947036726",
+   "render_scope": "innerHTML of #search-use",
+   "local_capture_path": ".artifacts/stats-public-experience/state-unavailable.png",
+   "capture_sha256": "736c41ed367886811c85e197fa68f4e86b9fd7d4321ae76ecc81414c01f0d730",
+   "file": null
+  },
+  {
+   "id": "deployed-observation",
+   "route": "/stats.html",
+   "base": "https://cityscroll.org",
+   "viewport": {
+    "name": "mobile",
+    "width": 390,
+    "height": 844
+   },
+   "language": "en",
+   "repository_revision": "1a4dbc604790ad410b38c8ce22836bb8d64b3ecf",
+   "source_blob": null,
+   "source_blob_note": "The deployed document is whatever the public deploy serves, which is not this working tree.",
+   "data_vintage": "Live public deploy read at capture time.",
+   "assertion": "One read of the deployed page, recorded so the fixed figures above are never read as traffic. The deployed document is whatever is live at capture time and may predate this branch; its sections are recorded verbatim rather than asserted against.",
+   "assertion_holds": true,
+   "observed": {
+    "document_scroll_width": 390,
+    "document_client_width": 390,
+    "document_direction": "ltr",
+    "document_language": "en",
+    "section_headings": [
+     "KEY FACTS",
+     "SERVED COVERAGE",
+     "SEARCH USE",
+     "WHAT IS PRIVATE"
+    ],
+    "worked_paths": 0,
+    "headline_facts": 4,
+    "methodology_terms": 0,
+    "search_use_present": true,
+    "search_use_text": "Search counts are not published right now.",
+    "render_sha256": "2e579cc58391583337f7d36dc083776206c89413251de5341e466a82f0855996"
+   },
+   "sha256": "2e579cc58391583337f7d36dc083776206c89413251de5341e466a82f0855996",
+   "render_sha256": "2e579cc58391583337f7d36dc083776206c89413251de5341e466a82f0855996",
+   "render_scope": "innerHTML of main",
+   "local_capture_path": ".artifacts/stats-public-experience/deployed-observation.png",
+   "capture_sha256": "fde50cedbea2227097c980b568e2e2faf5a67bec8ae6f61ed6d5109e254220a8",
+   "file": null
+  }
+ ]
+}

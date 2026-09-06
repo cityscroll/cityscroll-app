@@ -45,10 +45,26 @@
   h2{font-family:var(--font-sc);font-size:15px;letter-spacing:.06em;text-transform:uppercase;color:var(--oxblood);margin:32px 0 8px;border-top:1px solid var(--rule);padding-top:18px}
   .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:18px 0}
   .stat{min-width:0;background:var(--card);border:1px solid var(--rule);border-radius:12px;box-shadow:var(--shadow);padding:18px}
-  .stat .n{font-family:var(--font-nameplate);font-weight:700;font-size:clamp(1.8rem,5vw,2.55rem);line-height:1.05;color:var(--ink);overflow-wrap:anywhere}
-  .stat .l{font-family:var(--font-sc);font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-top:8px}
-  .stat .d{font:14px/1.5 var(--ui);color:var(--ink-soft);margin-top:8px}
+  .stat .n{font-family:var(--font-nameplate);font-weight:700;font-size:clamp(1.6rem,4.4vw,2.2rem);line-height:1.1;color:var(--ink);overflow-wrap:anywhere;margin:6px 0 0}
+  .stat .l{font-family:var(--font-sc);font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+  .stat .d{font:14px/1.5 var(--ui);color:var(--ink-soft);margin:8px 0 0}
   .stat .stat-asof{padding-top:8px;border-top:1px solid var(--rule);color:var(--muted);font-size:12px}
+  .paths{display:grid;gap:16px;margin:18px 0}
+  .path{min-width:0;background:var(--card);border:1px solid var(--rule);border-radius:12px;box-shadow:var(--shadow);padding:18px}
+  .path .path-domain{display:block;font-family:var(--font-sc);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+  .path h3{font-family:var(--font-nameplate);font-weight:700;font-size:1.15rem;line-height:1.25;color:var(--ink);margin:4px 0 0}
+  .path p{font:15px/1.6 var(--ui);color:var(--ink-soft);margin:10px 0 0}
+  .path .path-limit{color:var(--muted);font-size:14px}
+  ol.hops{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:10px}
+  ol.hops li{min-width:0;display:grid;gap:2px;padding-inline-start:14px;border-inline-start:3px solid var(--rule)}
+  .hop-role{font-family:var(--font-sc);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+  .hop-name{font:15px/1.5 var(--ui);color:var(--ink);overflow-wrap:anywhere}
+  ul.path-links{list-style:none;margin:14px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:8px 18px;font:600 14px/1.5 var(--ui)}
+  ul.path-links li{min-width:0}
+  .paths-note{font:14px/1.6 var(--ui);color:var(--muted);margin:14px 0 0}
+  dl.method{margin:14px 0 0;padding:0;font:15px/1.6 var(--ui);color:var(--ink-soft)}
+  dl.method dt{font-family:var(--font-sc);font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-top:14px}
+  dl.method dd{margin:3px 0 0}
   .src{font:14px/1.7 var(--ui);color:var(--ink-soft)}
   .cov-domain{margin-top:26px}
   .cov-domain h3{font-family:var(--font-sc);font-size:13px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink);margin:0 0 8px}
@@ -73,7 +89,10 @@
   .lang-switcher{position:absolute;top:12px;inset-inline-end:22px;z-index:6;display:flex;align-items:center;gap:.35rem;margin:0;justify-content:flex-end}
   .lang-select{font:600 12px/1.2 ui-sans-serif,system-ui,sans-serif;padding:8px 28px 8px 10px;min-height:36px;min-width:7.5rem;max-width:12rem;border:1px solid var(--rule-strong);border-radius:8px;background:var(--card);color:var(--ink);cursor:pointer;appearance:auto}
   .lang-notice{font:12px/1.4 var(--ui);color:var(--muted);text-align:center;margin-block-start:4px;padding-inline:22px}
-  .skip{position:absolute;left:-9999px;top:0;z-index:99;background:var(--ink);color:#fff;padding:11px 18px;border-radius:0 0 9px 0;font:600 13px/1 var(--ui);text-decoration:none}.skip:focus{left:0}
+  /* Parked off the inline-start edge, not off the physical left: under RTL a physical
+     left:-9999px sits outside the document's own start edge and drags the scrollable
+     width out with it. Same logical form the homepage already uses. */
+  .skip{position:absolute;inset-inline-start:-9999px;top:0;z-index:99;background:var(--ink);color:#fff;padding:11px 18px;border-end-end-radius:9px;font:600 13px/1 var(--ui);text-decoration:none}.skip:focus{inset-inline-start:0}
   :is(a,button,select,input,textarea,summary,.cov-scroll):focus-visible{outline:2px solid var(--oxblood);outline-offset:2px}
   :lang(zh-Hans),:lang(ko),:lang(bn),:lang(ar),:lang(ur){letter-spacing:normal!important;text-transform:none!important}
   @media(max-width:560px){.wrap{padding-inline:14px}.grid{grid-template-columns:1fr}.lang-switcher{position:static;margin-top:12px;justify-content:center}.stat{padding:16px}.lede{text-align:start}}
@@ -99,23 +118,89 @@
   <a class="backhome" href="index.html" data-i18n="back_to_crol">← Back to CityScroll</a>
 </header>
 <main id="main" tabindex="-1" data-coverage-schema="cityscroll.served_coverage_snapshot.v1" data-search-usage-schema="cityscroll.public_search_usage.v1">
-  <p class="lede" data-i18n="stats_public_lede">See what CityScroll has and how new it is.</p>
+  <p class="lede" data-i18n="stats_public_lede">CityScroll brings New York City public records together. This page shows what it covers, how it is used, and what each number means.</p>
+
+  <h2 id="explore" data-i18n="stats_h_explore">What you can explore</h2>
+  <p class="src" data-i18n="stats_p_explore">These are the records CityScroll serves today. Each group links to the page where you can read them.</p>
+  <dl class="grid" id="grid">
+    <div class="stat"><dt class="l" data-i18n="stats_sources_label">Sources in the served product</dt><dd class="n" id="s-sources">–</dd><dd class="d" data-i18n="stats_sources_desc">Registered public sources with records CityScroll actually serves. Not the number of sources it collects from.</dd><dd class="d stat-asof" data-stat-asof></dd></div>
+    <div class="stat"><dt class="l" data-i18n="stats_record_sets_label">Record sets counted</dt><dd class="n" id="s-recordsets">–</dd><dd class="d" data-i18n="stats_record_sets_desc">Separate served record sets listed below. They count different things and are never added together.</dd><dd class="d stat-asof" data-stat-asof></dd></div>
+    <div class="stat"><dt class="l" data-i18n="stats_evidence_label">Evidence dated</dt><dd class="n" id="s-evidence">–</dd><dd class="d" data-i18n="stats_evidence_desc">Oldest and newest evidence date among the record sets below. No date is taken from a publisher clock or from the build.</dd><dd class="d stat-asof" data-stat-asof></dd></div>
+  </dl>
   <p id="msg" role="status" data-i18n="stats_loading">Loading coverage…</p>
-  <h2 data-i18n="stats_h_general">Key facts</h2>
-  <div class="grid" id="grid">
-    <article class="stat"><div class="n" id="s-sources">–</div><div class="l" data-i18n="stats_sources_label">Sources in the served product</div><div class="d" data-i18n="stats_sources_desc">Registered public sources with records CityScroll actually serves. Not the number of sources it collects from.</div><div class="d stat-asof" data-stat-asof></div></article>
-    <article class="stat"><div class="n" id="s-recordsets">–</div><div class="l" data-i18n="stats_record_sets_label">Record sets counted</div><div class="d" data-i18n="stats_record_sets_desc">Separate served record sets listed below. They count different things and are never added together.</div><div class="d stat-asof" data-stat-asof></div></article>
-    <article class="stat"><div class="n" id="s-languages">–</div><div class="l" data-i18n="stats_public_languages_label">Site languages</div><div class="d" data-i18n="stats_public_languages_desc">The site has English and 10 more languages. Source text stays in English. A reader may ask for a translation.</div><div class="d stat-asof" data-stat-asof></div></article>
-    <article class="stat"><div class="n" id="s-evidence">–</div><div class="l" data-i18n="stats_evidence_label">Evidence dated</div><div class="d" data-i18n="stats_evidence_desc">Oldest and newest evidence date among the record sets below. No date is taken from a publisher clock or from the build.</div><div class="d stat-asof" data-stat-asof></div></article>
-  </div>
-  <h2 data-i18n="stats_h_coverage">Served coverage</h2>
   <p class="src" data-i18n="stats_p_coverage">Each row counts the records published by the page it links to, using that page’s own record identity. A record that appears twice in one set is counted once.</p>
   <div id="coverage"></div>
-  <h2 data-i18n="stats_h_search_use">Search use</h2>
+
+  <h2 id="recent-use" data-i18n="stats_h_recent_use">Recent use</h2>
   <p class="src" data-i18n="stats_search_use_intro">These counts cover the exact days named below. One finished search counts once, so a count is not a number of people, and a search that returned records is not proof it answered the question.</p>
   <div id="search-use"></div>
-  <h2 data-i18n="stats_public_method_heading">What is private</h2>
-  <p class="src" data-i18n-html="stats_coverage_method_html">These facts count records, not people. A registered source is not the same as a searchable one, and a collected total is not a served total. The search counts above are published. The searches themselves are not. Visits, watches, and email totals stay private. Read the <a href="api.html#upstream">source notes</a> or open the <a href="https://api.cityscroll.org/stats">public JSON</a>.</p>
+
+  <h2 id="connections" data-i18n="stats_h_connections">See how records connect</h2>
+  <p class="src" data-i18n="stats_p_connections">The counts show the size. These three paths show the point. Each one is a real record you can open now.</p>
+  <div class="paths" id="paths">
+    <article class="path" aria-labelledby="path-contracts-title">
+      <span class="path-domain" data-i18n="stats_domain_contracts">Contracts</span>
+      <h3 id="path-contracts-title" data-i18n="stats_path_contracts_title">From a city agency to one award</h3>
+      <p data-i18n="stats_path_contracts_what">Start at an agency, step to a group it pays, and land on the award notice. The link holds the whole path, so you can send it to someone.</p>
+      <ol class="hops">
+        <li><span class="hop-role" data-i18n="stats_path_role_agency">City agency</span><span class="hop-name" lang="en">Homeless Services</span></li>
+        <li><span class="hop-role" data-i18n="stats_path_role_paid">Group it pays</span><span class="hop-name" lang="en">Housing Options &amp; Geriatric Association Resources</span></li>
+        <li><span class="hop-role" data-i18n="stats_path_role_award">Award notice</span><span class="hop-name" lang="en">Notice 20231222103</span></li>
+      </ol>
+      <p class="path-limit" data-i18n="stats_path_contracts_limit">A named award does not mean there is work to bid on now.</p>
+      <ul class="path-links">
+        <li><a href="notices/20231222103?walk=eyJzY2hlbWEiOiJjaXR5c2Nyb2xsLnRyYXZlcnNhbC52MSIsInZlcnNpb24iOjEsInN0YXR1cyI6ImFjdGl2ZSIsImhvcHMiOlt7InNvdXJjZSI6eyJraW5kIjoiYWdlbmN5IiwiaWQiOiJob21lbGVzcy1zZXJ2aWNlcyIsIm5hbWUiOiJIb21lbGVzcyBTZXJ2aWNlcyIsImhyZWYiOiIvYWdlbmNpZXMvaG9tZWxlc3Mtc2VydmljZXMvIn0sInJlbGF0aW9uIjoiYXdhcmRlZCB0byIsImRlc3RpbmF0aW9uIjp7ImtpbmQiOiJ2ZW5kb3IiLCJpZCI6IkhPVVNJTkcgT1BUSU9OUyBHRVJJQVRSSUMgQVNTT0NJQVRJT04gUkVTT1VSQ0VTIiwibmFtZSI6IkhvdXNpbmcgT3B0aW9ucyAmIEdlcmlhdHJpYyBBc3NvY2lhdGlvbiBSZXNvdXJjZXMiLCJocmVmIjoiL3ZlbmRvcnMvSE9VU0lORyUyME9QVElPTlMlMjBHRVJJQVRSSUMlMjBBU1NPQ0lBVElPTiUyMFJFU09VUkNFUy8ifSwic2NvcGUiOm51bGx9LHsic291cmNlIjp7ImtpbmQiOiJ2ZW5kb3IiLCJpZCI6IkhPVVNJTkcgT1BUSU9OUyBHRVJJQVRSSUMgQVNTT0NJQVRJT04gUkVTT1VSQ0VTIiwibmFtZSI6IkhvdXNpbmcgT3B0aW9ucyAmIEdlcmlhdHJpYyBBc3NvY2lhdGlvbiBSZXNvdXJjZXMiLCJocmVmIjoiL3ZlbmRvcnMvSE9VU0lORyUyME9QVElPTlMlMjBHRVJJQVRSSUMlMjBBU1NPQ0lBVElPTiUyMFJFU09VUkNFUy8ifSwicmVsYXRpb24iOiJyZWNlaXZlZCBhd2FyZCIsImRlc3RpbmF0aW9uIjp7ImtpbmQiOiJub3RpY2UiLCJpZCI6IjIwMjMxMjIyMTAzIiwibmFtZSI6IlNoZWx0ZXIgc2VydmljZXMgYXdhcmQiLCJocmVmIjoiL25vdGljZXMvMjAyMzEyMjIxMDMifSwic2NvcGUiOm51bGx9XX0" data-i18n="stats_path_open">Open this record</a></li>
+        <li><a href="guide/start/trace-an-award-and-keep-the-trail/" data-i18n="stats_path_guide">Read the step-by-step guide</a></li>
+      </ul>
+    </article>
+    <article class="path" aria-labelledby="path-land-title">
+      <span class="path-domain" data-i18n="stats_domain_zoning">Zoning</span>
+      <h3 id="path-land-title" data-i18n="stats_path_land_title">Where a land-use project stands</h3>
+      <p data-i18n="stats_path_land_what">Open a project to see the stage it is in, which body acts next, and the city’s own filed papers.</p>
+      <ol class="hops">
+        <li><span class="hop-role" data-i18n="stats_path_role_project">Land-use project</span><span class="hop-name" lang="en">Timbale Terrace · 2022M0258</span></li>
+        <li><span class="hop-role" data-i18n="stats_path_role_applicant">Applicant on the record</span><span class="hop-name" lang="en">Housing Preservation and Development</span></li>
+        <li><span class="hop-role" data-i18n="stats_path_role_source">Official file</span><span class="hop-name" lang="en">Zoning Application Portal · project 2022M0258</span></li>
+      </ol>
+      <p class="path-limit" data-i18n="stats_path_land_limit">A stage is what the record shows. It is not a promise about a date.</p>
+      <ul class="path-links">
+        <li><a href="browse/zoning/#land/2022M0258" data-i18n="stats_path_open">Open this record</a></li>
+        <li><a href="guide/how-to/read-a-land-use-projects-next-step/" data-i18n="stats_path_guide">Read the step-by-step guide</a></li>
+      </ul>
+    </article>
+    <article class="path" aria-labelledby="path-rules-title">
+      <span class="path-domain" data-i18n="stats_domain_rules">Rules</span>
+      <h3 id="path-rules-title" data-i18n="stats_path_rules_title">From a notice to the law behind it</h3>
+      <p data-i18n="stats_path_rules_what">A rule notice points to the duty that called for it. From there you can read that duty at the city’s own source.</p>
+      <ol class="hops">
+        <li><span class="hop-role" data-i18n="stats_path_role_notice">Public notice</span><span class="hop-name" lang="en">Notice 20260605008</span></li>
+        <li><span class="hop-role" data-i18n="stats_path_role_duty">Duty behind it</span><span class="hop-name" lang="en">Mandate 64116-001</span></li>
+        <li><span class="hop-role" data-i18n="stats_path_role_law">Law at its source</span><span class="hop-name" lang="en">New York City Charter § 753(e)(2)</span></li>
+      </ol>
+      <p class="path-limit" data-i18n="stats_path_rules_limit">A published notice is not proof that the duty was met.</p>
+      <ul class="path-links">
+        <li><a href="notices/20260605008" data-i18n="stats_path_open">Open this record</a></li>
+        <li><a href="guide/start/trace-a-notice-to-the-duty-behind-it/" data-i18n="stats_path_guide">Read the step-by-step guide</a></li>
+      </ul>
+    </article>
+  </div>
+  <p class="paths-note" data-i18n-html="stats_paths_checked_html">Each path was opened and checked on <time datetime="2026-09-05">5 September 2026</time>.</p>
+
+  <h2 id="about-numbers" data-i18n="stats_h_about_numbers">About these numbers</h2>
+  <dl class="method">
+    <dt data-i18n="stats_method_counted_label">What the counts count</dt>
+    <dd data-i18n="stats_method_counted_desc">Each set counts one kind of record. The same record listed twice counts once. Sets are never added together.</dd>
+    <dt data-i18n="stats_method_periods_label">Which days the use counts cover</dt>
+    <dd data-i18n="stats_method_periods_desc">Each column names its own days. The last day is counted up to the last check, so it is not a whole day. A period nobody measured is left unpublished, never shown as a zero.</dd>
+    <dt data-i18n="stats_method_fresh_label">How current this is</dt>
+    <dd data-i18n="stats_method_fresh_desc">Each set states the date of the evidence it was counted from. No date comes from a publisher clock or from the build.</dd>
+    <dt data-i18n="stats_method_limits_label">What this page cannot tell you</dt>
+    <dd data-i18n="stats_method_limits_desc">It cannot tell you how many people came, or whether a search answered the question. A count of searches is not a count of readers.</dd>
+    <dt data-i18n="stats_public_languages_label">Site languages</dt>
+    <dd data-i18n="stats_public_languages_desc">The site has English and 10 more languages. Source text stays in English. A reader may ask for a translation.</dd>
+    <dt data-i18n="stats_method_private_label">What stays private</dt>
+    <dd data-i18n-html="stats_method_private_html">The search counts above are published. The searches themselves are not. Visits, watches, and email totals stay private. Read the <a href="api.html#upstream">source notes</a> or open the <a href="https://api.cityscroll.org/stats">public JSON</a>.</dd>
+  </dl>
 </main>
 <footer class="foot"><p data-i18n-html="stats_foot_html">Raw JSON: <a href="https://api.cityscroll.org/stats">api.cityscroll.org/stats</a> (cached ~15 min) · <a href="about.html">About</a> · <a href="index.html">Home</a></p></footer>
 </div>
@@ -134,9 +219,6 @@
       ? parsed.toLocaleDateString(curLoc(), { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" })
       : null;
   };
-  // Site languages are the shipping list this page already loads, not a number typed twice.
-  const siteLanguages = 1 + ((window.SHIPPING_LANGS || []).length);
-
   let data = null;
   let state = "loading";
 
@@ -225,7 +307,6 @@
   }
 
   function paint() {
-    document.getElementById("s-languages").textContent = number(siteLanguages);
     const metric = (id) => (data?.metrics || []).find((entry) => entry.metric_id === id) || null;
     const sources = metric("served_sources_represented");
     const sets = metric("served_record_sets");
@@ -240,10 +321,13 @@
 
     coverage.replaceChildren();
     if (state === "ready") {
-      for (const domain of data.domains || []) coverage.append(domainSection(domain));
-      msg.textContent = oldest && newest
-        ? t("stats_coverage_dated", { oldest, newest })
-        : t("coverage_state_unavailable");
+      const domains = data.domains || [];
+      for (const domain of domains) coverage.append(domainSection(domain));
+      msg.textContent = !domains.length
+        ? t("stats_coverage_empty")
+        : oldest && newest
+          ? t("stats_coverage_dated", { oldest, newest })
+          : t("coverage_state_unavailable");
     } else if (state === "failed") {
       msg.textContent = t("stats_coverage_unavailable");
     } else {
@@ -276,17 +360,22 @@
     return t("stats_search_use_period_days", { days: number(period.requested_days) });
   }
 
+  // A period that ends at an instant inside a day covers only part of that day. The
+  // response's own end instant says so; the page never consults a clock to decide it.
+  const endsMidDay = (value) => !!value && !/T00:00:00(?:\.0+)?Z$/.test(String(value));
+
   function periodSpan(period) {
     const start = day(period.starts_at);
     const end = day(period.ends_at);
-    return start && end ? t("stats_search_use_span", { start, end }) : "";
+    if (!start || !end) return "";
+    return t(endsMidDay(period.ends_at) ? "stats_search_use_span_partial" : "stats_search_use_span", { start, end });
   }
 
   function usageTable(periods) {
     const scroll = el("div", "cov-scroll");
     scroll.setAttribute("role", "region");
     scroll.tabIndex = 0;
-    scroll.setAttribute("aria-label", t("stats_h_search_use"));
+    scroll.setAttribute("aria-label", t("stats_h_recent_use"));
     const table = el("table", "cov");
     table.append(el("caption", null, t("stats_search_use_caption")));
 

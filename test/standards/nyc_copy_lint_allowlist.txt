@@ -22,3 +22,6 @@ currency	for example, education contracts over $200K due in 3 months, or awards 
 currency	education contracts over $200K due in 3 months
 # Official city product name (ACRIS = Automated City Register Information System).
 all_caps	ACRIS deeds
+# The published legal name of the organization in a real award record on the Stats page.
+# A record's own name is quoted exactly; spelling out the ampersand would misquote the source.
+ampersand	Housing Options & Geriatric Association Resources
