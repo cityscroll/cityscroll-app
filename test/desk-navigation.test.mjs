@@ -63,7 +63,7 @@ test("every named view exists, and only the home view is visible on load", () =>
 });
 
 test("the existing graph and table views are unchanged in kind", () => {
-  assert.match(html, /<svg id="sourceGraph" role="img" aria-label="Data source topology graph">/);
+  assert.match(html, /<svg id="sourceGraph" role="group" aria-label="Data source topology graph">/);
   assert.match(html, /<aside class="details" id="details" aria-live="polite">/);
   assert.match(html, /<th>Source<\/th><th>Collecting body<\/th>/);
   const rows = [...html.matchAll(/data-source-row="/g)];
@@ -164,17 +164,17 @@ test("the Worker bundle never reaches the repair queue", () => {
 
 test("the desk consumer contract stays in lockstep with the producer", () => {
   const contract = JSON.parse(readFileSync(join(ROOT, DESK_CONSUMER_CONTRACT_PATH), "utf8"));
-  assert.equal(DATA_SOURCE_GRAPH_SCHEMA_VERSION, 6);
+  assert.equal(DATA_SOURCE_GRAPH_SCHEMA_VERSION, 4);
   assert.equal(graph.schema_version, DATA_SOURCE_GRAPH_SCHEMA_VERSION);
   assert.equal(contract.producer_schema_version, DATA_SOURCE_GRAPH_SCHEMA_VERSION);
   assert.ok(contract.supported_consumer_versions.includes(DATA_SOURCE_GRAPH_SCHEMA_VERSION));
-  // Version 5 stayed additive; version 6 must too, or an older desk drops the
-  // fields it was reading.
-  assert.ok(contract.v5_additions.graph_fields.includes("repair_observations"));
-  assert.ok(contract.v6_additions.graph_fields.includes("repair_queue"));
-  assert.equal(contract.v6_additions.queue_schema, REPAIR_QUEUE_SCHEMA);
-  assert.deepEqual(contract.v6_additions.states, [...REPAIR_QUEUE_STATES]);
-  assert.deepEqual(contract.v6_additions.status_values, ["available", "unavailable"]);
+  assert.equal(graph.extensions.repair_observations, contract.extensions.repair_observations.version);
+  assert.equal(graph.extensions.repair_queue, contract.extensions.repair_queue.version);
+  assert.ok(contract.extensions.repair_observations.graph_fields.includes("repair_observations"));
+  assert.ok(contract.extensions.repair_queue.graph_fields.includes("repair_queue"));
+  assert.equal(contract.extensions.repair_queue.queue_schema, REPAIR_QUEUE_SCHEMA);
+  assert.deepEqual(contract.extensions.repair_queue.states, [...REPAIR_QUEUE_STATES]);
+  assert.deepEqual(contract.extensions.repair_queue.status_values, ["available", "unavailable"]);
   assert.equal(graph.repair_queue.schema, REPAIR_QUEUE_SCHEMA);
   assert.equal(graph.repair_observations.schema, "cityscroll.repair_observation_set.v1");
 });
