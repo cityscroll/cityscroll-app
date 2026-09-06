@@ -228,8 +228,24 @@ function sanitize(value) {
 
 async function runDigestShadow(job, context) {
   const url = process.env.CITYSCROLL_DIGEST_SHADOW_URL || "https://api.cityscroll.org/admin/digest-shadow";
-  const key = process.env.CITYSCROLL_ADMIN_KEY || process.env.ADMIN_KEY;
-  const response = await fetch(url, { headers: key ? { Authorization: `Bearer ${key}` } : {} });
+  const fetchImpl = context.fetchImpl || globalThis.fetch;
+  // The scheduler runs under a launch agent with no login shell, so the admin
+  // credential usually arrives as a mode-0600 file rather than an inherited
+  // export. Resolving it the same way every other scheduler call does keeps an
+  // unauthenticated probe from reporting the upstream service as unavailable.
+  const key = adminKey();
+  if (!key) {
+    const result = {
+      observed_at: new Date().toISOString(),
+      status: "degraded",
+      http_status: null,
+      degraded_reason: "admin-credential-missing",
+      summary: {},
+      body: "The digest shadow probe has no admin credential, so the rehearsal was not contacted. This is a scheduler configuration fault, not an upstream failure.",
+    };
+    return { result, issue: issueIntent(job, context.runKey, result, "open", { title: "Digest shadow probe has no admin credential" }) };
+  }
+  const response = await fetchImpl(url, { headers: { Authorization: `Bearer ${key}` } });
   let report = {};
   try { report = await response.json(); } catch { report = { error: `HTTP ${response.status}` }; }
   const summary = report.summary || report;
@@ -240,6 +256,7 @@ async function runDigestShadow(job, context) {
     observed_at: new Date().toISOString(),
     status: healthy ? "healthy" : "degraded",
     http_status: response.status,
+    degraded_reason: healthy ? null : response.status === 401 || response.status === 403 ? "admin-credential-rejected" : "rehearsal-not-ready",
     summary: sanitize(summary),
     body: healthy ? "The digest shadow rehearsal is READY." : `The digest shadow rehearsal reported ${summary.status || "UNAVAILABLE"}.\n\n${JSON.stringify({ redlines: sanitize(redlines), degraded_receipt: sanitize(report.degraded_receipt || null) }, null, 2).slice(0, 16000)}`,
   };
@@ -249,7 +266,7 @@ async function runDigestShadow(job, context) {
 export async function runScheduledJob(job, options = {}) {
   const now = options.now || new Date();
   const stateDir = options.stateDir || process.env.CROL_EXTERNAL_SCHEDULE_STATE_DIR || join(ROOT, ".external-schedule-state");
-  const context = { now, runKey: options.runKey || runKey(now), stateDir };
+  const context = { now, runKey: options.runKey || runKey(now), stateDir, fetchImpl: options.fetchImpl };
   let output;
   if (job.runner === "action-links") output = await runActionLinks(job, context);
   else if (job.runner === "source-contracts") output = await runSourceContracts(job, context);

@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
+import { readFile, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import test from "node:test";
 import {
@@ -8,7 +8,7 @@ import {
   replayOutbox,
 } from "../tools/external_schedule_outbox.mjs";
 import { auditSchedulerOwnership } from "../tools/audit_scheduler_ownership.mjs";
-import { SCHEDULER_WORKFLOW, publishHeartbeat, schedulerRunId } from "../tools/external_schedule_runner.mjs";
+import { SCHEDULER_WORKFLOW, publishHeartbeat, runScheduledJob, schedulerRunId } from "../tools/external_schedule_runner.mjs";
 import { withTempDir } from "../tools/lib/with_temp_dir.mjs";
 
 function fakeGithub() {
@@ -181,5 +181,66 @@ test("scheduler heartbeat distinguishes missing credential, rejection, and verif
       if (priorKey == null) delete process.env.CITYSCROLL_ADMIN_KEY; else process.env.CITYSCROLL_ADMIN_KEY = priorKey;
       if (priorUrl == null) delete process.env.CITYSCROLL_SCHEDULER_HEARTBEAT_URL; else process.env.CITYSCROLL_SCHEDULER_HEARTBEAT_URL = priorUrl;
     }
+  });
+});
+
+const DIGEST_SHADOW_JOB = {
+  id: "digest-shadow-monitor",
+  runner: "digest-shadow",
+  issue_title: "Digest shadow run needs attention",
+};
+
+async function withDigestShadowEnv(env, run) {
+  const keys = ["CITYSCROLL_ADMIN_KEY", "ADMIN_KEY", "CITYSCROLL_ADMIN_KEY_FILE", "CITYSCROLL_DIGEST_SHADOW_URL"];
+  const saved = Object.fromEntries(keys.map((key) => [key, process.env[key]]));
+  for (const key of keys) delete process.env[key];
+  Object.assign(process.env, env);
+  try { return await run(); } finally {
+    for (const key of keys) {
+      if (saved[key] === undefined) delete process.env[key];
+      else process.env[key] = saved[key];
+    }
+  }
+}
+
+test("the digest shadow probe authenticates from the credential file the schedule installs", async () => {
+  await withTempDir("crol-digest-shadow", async (stateDir) => {
+    const keyPath = join(stateDir, "admin.key");
+    await writeFile(keyPath, "file-resident-secret\n", "utf8");
+    const calls = [];
+    const result = await withDigestShadowEnv({
+      CITYSCROLL_ADMIN_KEY_FILE: keyPath,
+      CITYSCROLL_DIGEST_SHADOW_URL: "https://example.invalid/admin/digest-shadow",
+    }, () => runScheduledJob(DIGEST_SHADOW_JOB, {
+      stateDir,
+      now: new Date("2026-08-07T10:10:00.000Z"),
+      async fetchImpl(url, options) {
+        calls.push({ url, options });
+        return { ok: true, status: 200, async json() { return { summary: { status: "READY", run_day: new Date().toISOString().slice(0, 10) } }; } };
+      },
+    }));
+    assert.equal(calls.length, 1);
+    assert.equal(calls[0].url, "https://example.invalid/admin/digest-shadow");
+    assert.equal(calls[0].options.headers.Authorization, "Bearer file-resident-secret");
+    assert.equal(result.result.status, "healthy");
+  });
+});
+
+test("the digest shadow probe reports a missing credential instead of an anonymous request", async () => {
+  await withTempDir("crol-digest-shadow-anon", async (stateDir) => {
+    let called = false;
+    const result = await withDigestShadowEnv({
+      CITYSCROLL_DIGEST_SHADOW_URL: "https://example.invalid/admin/digest-shadow",
+    }, () => runScheduledJob(DIGEST_SHADOW_JOB, {
+      stateDir,
+      now: new Date("2026-08-07T10:10:00.000Z"),
+      async fetchImpl() { called = true; throw new Error("the probe must not call the admin route without a credential"); },
+    }));
+    assert.equal(called, false);
+    assert.equal(result.result.status, "degraded");
+    assert.equal(result.result.degraded_reason, "admin-credential-missing");
+    assert.equal(result.result.http_status, null);
+    assert.match(result.result.body, /no admin credential/);
+    assert.equal(result.issue.title, "Digest shadow probe has no admin credential");
   });
 });
