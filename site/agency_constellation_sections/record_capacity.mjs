@@ -14,11 +14,11 @@
 
 import { renderNodeSection } from "../civic_document_chrome.mjs";
 
-const esc = (value) => String(value ?? "").replace(/[<>&"']/g, (char) => ({
+const recordCapacityEsc = (value) => String(value ?? "").replace(/[<>&"']/g, (char) => ({
   "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;", "'": "&#39;",
 }[char]));
 
-function countLine(group) {
+function recordCapacityCountLine(group) {
   const total = Number(group.total_count) || 0;
   const shown = Number(group.shown_count) || 0;
   if (group.availability !== "matched") {
@@ -27,15 +27,15 @@ function countLine(group) {
   return shown < total ? `Showing ${shown} of ${total}` : `${total}`;
 }
 
-function recordRow(item) {
+function recordCapacityRow(item) {
   const when = item.when_label
-    ? `<span class="muted node-muted" data-capacity-when="${esc(item.when || "")}">${esc(item.when_label)}</span>`
+    ? `<span class="muted node-muted" data-capacity-when="${recordCapacityEsc(item.when || "")}">${recordCapacityEsc(item.when_label)}</span>`
     : "";
   const title = item.href
-    ? `<a class="ui-constellation-link agency-edge-link" href="${esc(item.href)}">${esc(item.record_label)}</a>`
-    : esc(item.record_label);
+    ? `<a class="ui-constellation-link agency-edge-link" href="${recordCapacityEsc(item.href)}">${recordCapacityEsc(item.record_label)}</a>`
+    : recordCapacityEsc(item.record_label);
   const counterparty = item.counterparty_id
-    ? `Other party: <a class="ui-constellation-link agency-edge-link" href="/agencies/${esc(item.counterparty_id)}/">${esc(item.counterparty_name || item.counterparty_id)}</a> (${esc(item.counterparty_label || "other party")})`
+    ? `Other party: <a class="ui-constellation-link agency-edge-link" href="/agencies/${recordCapacityEsc(item.counterparty_id)}/">${recordCapacityEsc(item.counterparty_name || item.counterparty_id)}</a> (${recordCapacityEsc(item.counterparty_label || "other party")})`
     : "";
   const evidence = [
     item.source_system ? `Source ${item.source_system}` : "",
@@ -45,39 +45,39 @@ function recordRow(item) {
     item.source_receipt ? `Receipt ${item.source_receipt}` : "",
   ].filter(Boolean).join(" · ");
   return `<li class="node-record agency-record-capacity-record"
-    data-record-capacity="${esc(item.capacity_id)}"
-    data-role-relation="${esc(item.relation_id)}"
-    data-record-ref="${esc(item.record_ref)}"
-    data-record-kind="${esc(item.record_kind)}"
-    data-browse-relation="${esc(item.browse_relation)}">
+    data-record-capacity="${recordCapacityEsc(item.capacity_id)}"
+    data-role-relation="${recordCapacityEsc(item.relation_id)}"
+    data-record-ref="${recordCapacityEsc(item.record_ref)}"
+    data-record-kind="${recordCapacityEsc(item.record_kind)}"
+    data-browse-relation="${recordCapacityEsc(item.browse_relation)}">
     <div class="node-record-main">${title}</div>
-    <p class="node-record-capacity-line"><span class="agency-record-capacity-badge">${esc(item.label)}</span> ${esc(item.sentence)}</p>
-    <span class="muted node-muted">${when ? `${when} · ` : ""}${esc(evidence)}</span>
+    <p class="node-record-capacity-line"><span class="agency-record-capacity-badge">${recordCapacityEsc(item.label)}</span> ${recordCapacityEsc(item.sentence)}</p>
+    <span class="muted node-muted">${when ? `${when} · ` : ""}${recordCapacityEsc(evidence)}</span>
     ${counterparty ? `<p class="muted node-muted">${counterparty}</p>` : ""}
   </li>`;
 }
 
-function capacityGroup(group) {
-  const rows = group.items.map(recordRow).join("");
+function recordCapacityGroup(group) {
+  const rows = group.items.map(recordCapacityRow).join("");
   if (!rows) return "";
   const action = group.view_all_href
-    ? `<p class="node-inline-actions civic-object-inline-actions"><a class="node-action civic-object-action" href="${esc(group.view_all_href)}">Browse all ${esc(group.label.toLowerCase())}</a></p>`
+    ? `<p class="node-inline-actions civic-object-inline-actions"><a class="node-action civic-object-action" href="${recordCapacityEsc(group.view_all_href)}">Browse all ${recordCapacityEsc(group.label.toLowerCase())}</a></p>`
     : "";
   const snapshot = group.as_of
-    ? `<p class="muted node-muted agency-category-asof" data-as-of="${esc(group.as_of)}">Records as of ${esc(group.as_of)}</p>`
+    ? `<p class="muted node-muted agency-category-asof" data-as-of="${recordCapacityEsc(group.as_of)}">Records as of ${recordCapacityEsc(group.as_of)}</p>`
     : "";
   const unavailable = group.availability === "matched"
     ? ""
-    : `<p class="muted node-muted" data-capacity-availability="${esc(group.availability)}">The full browse list for this capacity is not available right now. These are the records this profile resolved; this is not a count of zero elsewhere.</p>`;
+    : `<p class="muted node-muted" data-capacity-availability="${recordCapacityEsc(group.availability)}">The full browse list for this capacity is not available right now. These are the records this profile resolved; this is not a count of zero elsewhere.</p>`;
   return `<section class="agency-record-capacity-group"
-    data-record-capacity-group="${esc(group.group_id)}"
-    data-capacity="${esc(group.capacity_id)}"
-    data-browse-relation="${esc(group.browse_relation)}"
-    data-total-count="${esc(String(group.total_count))}"
-    data-count-basis="${esc(group.count_basis)}"
-    aria-labelledby="agency-record-capacity-${esc(group.group_id)}-heading">
-    <h3 id="agency-record-capacity-${esc(group.group_id)}-heading">${esc(group.label)} (${esc(countLine(group))})</h3>
-    <p class="node-muted muted">${esc(group.boundary)}</p>
+    data-record-capacity-group="${recordCapacityEsc(group.group_id)}"
+    data-capacity="${recordCapacityEsc(group.capacity_id)}"
+    data-browse-relation="${recordCapacityEsc(group.browse_relation)}"
+    data-total-count="${recordCapacityEsc(String(group.total_count))}"
+    data-count-basis="${recordCapacityEsc(group.count_basis)}"
+    aria-labelledby="agency-record-capacity-${recordCapacityEsc(group.group_id)}-heading">
+    <h3 id="agency-record-capacity-${recordCapacityEsc(group.group_id)}-heading">${recordCapacityEsc(group.label)} (${recordCapacityEsc(recordCapacityCountLine(group))})</h3>
+    <p class="node-muted muted">${recordCapacityEsc(group.boundary)}</p>
     ${unavailable}${snapshot}
     <ul class="node-record-list">${rows}</ul>
     ${action}
@@ -87,7 +87,7 @@ function capacityGroup(group) {
 export function renderAgencyRecordCapacitySection(view = {}) {
   const capacities = view?.record_capacities;
   const groups = Array.isArray(capacities?.groups) ? capacities.groups : [];
-  const rendered = groups.map(capacityGroup).filter(Boolean).join("");
+  const rendered = groups.map(recordCapacityGroup).filter(Boolean).join("");
   if (!rendered) return "";
   return renderNodeSection({
     heading: "What this institution did in each record",

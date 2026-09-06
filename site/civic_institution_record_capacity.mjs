@@ -29,7 +29,7 @@ import { resolveAgencyIdentity } from "./agency_identity.mjs";
 
 export const INSTITUTION_RECORD_CAPACITY_SCHEMA = "cityscroll.civic_institution_record_capacity.v1";
 
-const clean = (value, max = 300) => String(value ?? "")
+const capacityText = (value, max = 300) => String(value ?? "")
   .replace(/[\u0000-\u001f\u007f]/g, " ")
   .replace(/\s+/g, " ")
   .trim()
@@ -122,7 +122,7 @@ export const INSTITUTION_CAPACITY_SEPARATION = Object.freeze([
 ]);
 
 export function capacityForRelation(relationId) {
-  const id = clean(relationId, 80);
+  const id = capacityText(relationId, 80);
   return INSTITUTION_RECORD_CAPACITIES[id]
     || INSTITUTION_RECORD_CAPACITIES[INVERSE_CAPACITY_RELATIONS[id]]
     || null;
@@ -130,7 +130,7 @@ export function capacityForRelation(relationId) {
 
 /** The Browse predicate a capacity scopes on, or "" when it has none. */
 export function capacityBrowseRelation(capacityId) {
-  const id = clean(capacityId, 80);
+  const id = capacityText(capacityId, 80);
   return Object.values(INSTITUTION_RECORD_CAPACITIES)
     .find((entry) => entry.capacity_id === id)?.browse_relation || "";
 }
@@ -140,14 +140,14 @@ export function capacityBrowseRelation(capacityId) {
  * general alias table, and a route slug is only ever the last resort.
  */
 export function institutionDisplayName(canonicalId) {
-  const id = clean(canonicalId, 120);
+  const id = capacityText(canonicalId, 120);
   if (!id) return "";
   return reviewedInstitutionName(id) || resolveAgencyIdentity(id).canonical_name || id;
 }
 
-function recordOf(edge) {
+function capacityRecordOf(edge) {
   const record = edge?.record;
-  if (record && clean(record.record_ref, 320)) return record;
+  if (record && capacityText(record.record_ref, 320)) return record;
   return null;
 }
 
@@ -160,44 +160,44 @@ function recordOf(edge) {
  * profile never claims the other party's capacity as its own.
  */
 export function institutionRecordCapacities(canonicalId, roleBag = {}, { displayName = "" } = {}) {
-  const id = clean(canonicalId, 120);
-  const name = clean(displayName, 240) || institutionDisplayName(id);
+  const id = capacityText(canonicalId, 120);
+  const name = capacityText(displayName, 240) || institutionDisplayName(id);
   const edges = Array.isArray(roleBag?.accepted) ? roleBag.accepted : [];
   const rows = [];
   const seen = new Set();
   for (const edge of edges) {
     if (edge?.status !== "accepted") continue;
-    if (clean(edge.subject_canonical_id, 120) !== id) continue;
+    if (capacityText(edge.subject_canonical_id, 120) !== id) continue;
     const capacity = capacityForRelation(edge.relation_id);
-    const record = recordOf(edge);
+    const record = capacityRecordOf(edge);
     if (!capacity || !record) continue;
     const key = `${capacity.capacity_id}|${record.record_ref}`;
     if (seen.has(key)) continue;
     seen.add(key);
     const counterpartyId = capacity.capacity_id === "contractor"
-      ? clean(record.contracting_agency_id, 120) || null
+      ? capacityText(record.contracting_agency_id, 120) || null
       : capacity.capacity_id === "contracting_agency"
-        ? clean(record.contractor_id, 120) || null
+        ? capacityText(record.contractor_id, 120) || null
         : null;
     rows.push(Object.freeze({
       schema: INSTITUTION_RECORD_CAPACITY_SCHEMA,
       capacity_id: capacity.capacity_id,
-      relation_id: clean(edge.relation_id, 80),
+      relation_id: capacityText(edge.relation_id, 80),
       group_id: capacity.group_id,
       group_label: capacity.group_label,
       label: capacity.label,
       sentence: capacity.sentence(name),
       boundary: capacity.boundary,
       record_kind: capacity.record_kind,
-      record_ref: clean(record.record_ref, 320),
-      record_id: clean(record.record_id, 160),
-      record_label: clean(record.label, 240) || clean(record.record_id, 160),
-      when: clean(record.when, 40) || null,
+      record_ref: capacityText(record.record_ref, 320),
+      record_id: capacityText(record.record_id, 160),
+      record_label: capacityText(record.label, 240) || capacityText(record.record_id, 160),
+      when: capacityText(record.when, 40) || null,
       // What the source states about timing, in the source's own terms. A
       // record with neither a date nor a stage says so by carrying neither.
-      when_label: clean(record.when, 40) || clean(record.milestone, 120) || null,
+      when_label: capacityText(record.when, 40) || capacityText(record.milestone, 120) || null,
       amount: Number.isFinite(Number(record.amount)) ? Number(record.amount) : null,
-      href: clean(record.href, 500) || null,
+      href: capacityText(record.href, 500) || null,
       // The other institution named on the same record, in its own capacity.
       // Naming it is what stops a reader reading "contractor" as "the body that
       // decided this", and gives them the route to the one that did.
@@ -209,11 +209,11 @@ export function institutionRecordCapacities(canonicalId, roleBag = {}, { display
       browse_facet: capacity.browse_facet,
       browse_relation: capacity.browse_relation,
       scopes_records: capacity.scopes_records === true,
-      source_system: clean(edge.provenance?.source_system, 120) || null,
-      source_field: clean(edge.provenance?.source_field, 120) || null,
-      source_value: clean(edge.provenance?.source_value, 500) || null,
-      source_receipt: clean(edge.provenance?.source_receipt || edge.source_receipt, 320) || null,
-      as_of: clean(edge.as_of, 40) || null,
+      source_system: capacityText(edge.provenance?.source_system, 120) || null,
+      source_field: capacityText(edge.provenance?.source_field, 120) || null,
+      source_value: capacityText(edge.provenance?.source_value, 500) || null,
+      source_receipt: capacityText(edge.provenance?.source_receipt || edge.source_receipt, 320) || null,
+      as_of: capacityText(edge.as_of, 40) || null,
     }));
   }
   return Object.freeze(rows);
@@ -273,7 +273,7 @@ export function institutionCapacityGroups(rows = []) {
  * did there.
  */
 export function capacityForRecordRef(rows = [], ...recordRefs) {
-  const candidates = recordRefs.flat().map((ref) => clean(ref, 320)).filter(Boolean);
+  const candidates = recordRefs.flat().map((ref) => capacityText(ref, 320)).filter(Boolean);
   if (!candidates.length) return null;
   const list = Array.isArray(rows) ? rows : [];
   for (const ref of candidates) {

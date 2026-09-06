@@ -18,7 +18,7 @@
  * or issue.
  */
 
-const clean = (value, max = 500) => String(value ?? "")
+const partySpellingText = (value, max = 500) => String(value ?? "")
   .replace(/[\u0000-\u001f\u007f]/g, " ")
   .replace(/\s+/g, " ")
   .trim()
@@ -123,13 +123,13 @@ export const CIVIC_INSTITUTION_REVIEWED_NAMES = Object.freeze({
 
 /** The reviewed name for an institution, or "" when none is reviewed. */
 export function reviewedInstitutionName(canonicalId) {
-  return CIVIC_INSTITUTION_REVIEWED_NAMES[clean(canonicalId, 120)] || "";
+  return CIVIC_INSTITUTION_REVIEWED_NAMES[partySpellingText(canonicalId, 120)] || "";
 }
 
-const BY_FIELD = new Map();
+const PARTY_SPELLINGS_BY_FIELD = new Map();
 for (const entry of CIVIC_INSTITUTION_PARTY_SPELLINGS) {
-  if (!BY_FIELD.has(entry.source_field)) BY_FIELD.set(entry.source_field, new Map());
-  BY_FIELD.get(entry.source_field).set(entry.spelling, entry);
+  if (!PARTY_SPELLINGS_BY_FIELD.has(entry.source_field)) PARTY_SPELLINGS_BY_FIELD.set(entry.source_field, new Map());
+  PARTY_SPELLINGS_BY_FIELD.get(entry.source_field).set(entry.spelling, entry);
 }
 
 /**
@@ -138,7 +138,7 @@ for (const entry of CIVIC_INSTITUTION_PARTY_SPELLINGS) {
  * reviewed spelling in the exact reviewed field resolves.
  */
 export function civicInstitutionPartyFor(sourceField, value) {
-  return BY_FIELD.get(clean(sourceField, 80))?.get(clean(value, 500)) || null;
+  return PARTY_SPELLINGS_BY_FIELD.get(partySpellingText(sourceField, 80))?.get(partySpellingText(value, 500)) || null;
 }
 
 /** The canonical institution a reviewed field value names, or null. */
@@ -148,15 +148,15 @@ export function civicInstitutionIdForPartyValue(sourceField, value) {
 
 /** Every reviewed spelling one institution is named by, for one capacity. */
 export function reviewedPartySpellings(canonicalId, capacityId = null) {
-  const id = clean(canonicalId, 120);
+  const id = partySpellingText(canonicalId, 120);
   return Object.freeze(CIVIC_INSTITUTION_PARTY_SPELLINGS
     .filter((entry) => entry.canonical_id === id
-      && (!capacityId || entry.capacity_id === clean(capacityId, 80)))
+      && (!capacityId || entry.capacity_id === partySpellingText(capacityId, 80)))
     .map((entry) => entry.spelling));
 }
 
 /** True when the exact value is a reviewed spelling of this institution. */
 export function isReviewedPartySpelling(canonicalId, sourceField, value) {
   const entry = civicInstitutionPartyFor(sourceField, value);
-  return Boolean(entry) && entry.canonical_id === clean(canonicalId, 120);
+  return Boolean(entry) && entry.canonical_id === partySpellingText(canonicalId, 120);
 }
