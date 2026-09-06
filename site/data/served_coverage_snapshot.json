@@ -1,0 +1,437 @@
+{
+  "schema": "cityscroll.served_coverage_snapshot.v1",
+  "measurement": {
+    "family": "served_product_coverage",
+    "counting_rule_keys": [
+      "coverage_rule_canonical",
+      "coverage_rule_declared",
+      "coverage_rule_present_only"
+    ],
+    "record_unit_keys": [
+      "coverage_record_agency",
+      "coverage_record_award",
+      "coverage_record_board",
+      "coverage_record_contract",
+      "coverage_record_exam",
+      "coverage_record_hearing",
+      "coverage_record_meeting",
+      "coverage_record_meeting_outcome",
+      "coverage_record_membership",
+      "coverage_record_notice",
+      "coverage_record_obligation",
+      "coverage_record_official",
+      "coverage_record_organization",
+      "coverage_record_payment",
+      "coverage_record_procurement",
+      "coverage_record_project",
+      "coverage_record_property",
+      "coverage_record_rule"
+    ],
+    "state_keys": [
+      "measured",
+      "observed_zero",
+      "retained",
+      "unavailable"
+    ],
+    "units_are_not_summed": true
+  },
+  "metrics": [
+    {
+      "metric_id": "served_sources_represented",
+      "state": "measured",
+      "value": 18,
+      "counting_rule_key": "coverage_rule_source_represented",
+      "evidence_vintage": "2026-05-26T00:00:00.000Z"
+    },
+    {
+      "metric_id": "served_record_sets",
+      "state": "measured",
+      "value": 19,
+      "counting_rule_key": "coverage_rule_unit_published",
+      "evidence_vintage": "2026-05-26T00:00:00.000Z"
+    }
+  ],
+  "evidence_vintage": {
+    "oldest": "2026-05-26T00:00:00.000Z",
+    "newest": "2026-09-05T00:00:00.000Z"
+  },
+  "domains": [
+    {
+      "domain_id": "contracts",
+      "route": "/browse/contracts/",
+      "units": [
+        {
+          "unit_id": "procurement-records",
+          "domain_id": "contracts",
+          "record_unit_key": "coverage_record_procurement",
+          "counting_rule_key": "coverage_rule_canonical",
+          "route": "/browse/contracts/",
+          "source_id": null,
+          "source_name": null,
+          "state": "measured",
+          "value": 13791,
+          "evidence_vintage": "2026-08-18T04:05:51.552Z",
+          "vintage_field": "generated_at",
+          "vintage_basis": "single",
+          "sources": [
+            {
+              "source_id": "checkbook-contracts",
+              "source_name": "Checkbook NYC registered contracts",
+              "served_records": 1704,
+              "state": "measured"
+            },
+            {
+              "source_id": "checkbook-nycha-contracts",
+              "source_name": "Checkbook NYC NYCHA contracts",
+              "served_records": 1,
+              "state": "measured"
+            },
+            {
+              "source_id": "checkbook-spending",
+              "source_name": "Checkbook NYC spending transactions",
+              "served_records": 0,
+              "state": "observed_zero"
+            },
+            {
+              "source_id": "city-record",
+              "source_name": "City Record Online",
+              "served_records": 12899,
+              "state": "measured"
+            },
+            {
+              "source_id": "mta-bid-results",
+              "source_name": "MTA Construction & Development bid results",
+              "served_records": 1,
+              "state": "measured"
+            },
+            {
+              "source_id": "mta-current-opportunities",
+              "source_name": "MTA Construction & Development current opportunities",
+              "served_records": 1,
+              "state": "measured"
+            },
+            {
+              "source_id": "nys-contract-reporter",
+              "source_name": "New York State Contract Reporter",
+              "served_records": 1,
+              "state": "measured"
+            },
+            {
+              "source_id": "passport-public-contracts",
+              "source_name": "PASSPort Public contracts",
+              "served_records": 12770,
+              "state": "measured"
+            },
+            {
+              "source_id": "passport-public-rfx",
+              "source_name": "PASSPort Public solicitations (RFx)",
+              "served_records": 0,
+              "state": "observed_zero"
+            }
+          ]
+        },
+        {
+          "unit_id": "registered-contracts",
+          "domain_id": "contracts",
+          "record_unit_key": "coverage_record_contract",
+          "counting_rule_key": "coverage_rule_declared",
+          "route": "/browse/contracts/",
+          "source_id": "checkbook-contracts",
+          "source_name": "Checkbook NYC registered contracts",
+          "state": "measured",
+          "value": 26270,
+          "evidence_vintage": "2026-08-18T00:00:00.000Z",
+          "vintage_field": "snapshot_date",
+          "vintage_basis": "single"
+        },
+        {
+          "unit_id": "contract-payments",
+          "domain_id": "contracts",
+          "record_unit_key": "coverage_record_payment",
+          "counting_rule_key": "coverage_rule_declared",
+          "route": "/browse/contracts/",
+          "source_id": "checkbook-spending",
+          "source_name": "Checkbook NYC spending transactions",
+          "state": "measured",
+          "value": 28448,
+          "evidence_vintage": "2026-08-26T00:00:00.000Z",
+          "vintage_field": "generated_at",
+          "vintage_basis": "single"
+        },
+        {
+          "unit_id": "contract-awards",
+          "domain_id": "contracts",
+          "record_unit_key": "coverage_record_award",
+          "counting_rule_key": "coverage_rule_declared",
+          "route": "/browse/contracts/",
+          "source_id": "ocp-recent-contract-awards",
+          "source_name": "Recent Contract Awards (OCP)",
+          "state": "measured",
+          "value": 53600,
+          "evidence_vintage": "2026-09-05T00:00:00.000Z",
+          "vintage_field": "source_snapshot.snapshot_date",
+          "vintage_basis": "single"
+        }
+      ]
+    },
+    {
+      "domain_id": "meetings",
+      "route": "/browse/meetings/",
+      "units": [
+        {
+          "unit_id": "public-meetings",
+          "domain_id": "meetings",
+          "record_unit_key": "coverage_record_meeting",
+          "counting_rule_key": "coverage_rule_declared",
+          "route": "/browse/meetings/",
+          "source_id": "city-record",
+          "source_name": "City Record Online",
+          "state": "measured",
+          "value": 522,
+          "evidence_vintage": "2026-08-15T02:48:42.018Z",
+          "vintage_field": "sources.city_record.generated_at",
+          "vintage_basis": "single"
+        },
+        {
+          "unit_id": "board-meetings",
+          "domain_id": "meetings",
+          "record_unit_key": "coverage_record_meeting",
+          "counting_rule_key": "coverage_rule_declared",
+          "route": "/browse/meetings/",
+          "source_id": "non-council-board-minutes",
+          "source_name": "Community board and borough president minutes",
+          "state": "measured",
+          "value": 395,
+          "evidence_vintage": "2026-08-25T01:57:25.541Z",
+          "vintage_field": "generated_at",
+          "vintage_basis": "single"
+        },
+        {
+          "unit_id": "meeting-outcomes",
+          "domain_id": "meetings",
+          "record_unit_key": "coverage_record_meeting_outcome",
+          "counting_rule_key": "coverage_rule_present_only",
+          "route": "/browse/meetings/",
+          "source_id": "nyc-council-legistar",
+          "source_name": "NYC Council Legistar API",
+          "state": "measured",
+          "value": 16,
+          "evidence_vintage": "2026-08-10T13:08:13.019Z",
+          "vintage_field": "generated_at",
+          "vintage_basis": "single",
+          "records_considered": 319
+        }
+      ]
+    },
+    {
+      "domain_id": "people",
+      "route": "/browse/people/",
+      "units": [
+        {
+          "unit_id": "officials",
+          "domain_id": "people",
+          "record_unit_key": "coverage_record_official",
+          "counting_rule_key": "coverage_rule_declared",
+          "route": "/browse/people/",
+          "source_id": "nyc-council-members",
+          "source_name": "NYC Council Members (1999 to Present)",
+          "state": "measured",
+          "value": 215,
+          "evidence_vintage": "2026-08-11T19:21:19.284Z",
+          "vintage_field": "retrieved_at",
+          "vintage_basis": "single"
+        },
+        {
+          "unit_id": "organizations",
+          "domain_id": "people",
+          "record_unit_key": "coverage_record_organization",
+          "counting_rule_key": "coverage_rule_declared",
+          "route": "/browse/people/",
+          "source_id": "nyc-council-members",
+          "source_name": "NYC Council Members (1999 to Present)",
+          "state": "measured",
+          "value": 1370,
+          "evidence_vintage": "2026-08-11T19:21:19.284Z",
+          "vintage_field": "generated_at",
+          "vintage_basis": "single"
+        },
+        {
+          "unit_id": "committee-memberships",
+          "domain_id": "people",
+          "record_unit_key": "coverage_record_membership",
+          "counting_rule_key": "coverage_rule_declared",
+          "route": "/browse/people/",
+          "source_id": "nyc-council-legistar",
+          "source_name": "NYC Council Legistar API",
+          "state": "measured",
+          "value": 1142,
+          "evidence_vintage": "2026-08-12T14:37:51.000Z",
+          "vintage_field": "generated_at",
+          "vintage_basis": "single"
+        },
+        {
+          "unit_id": "agencies",
+          "domain_id": "people",
+          "record_unit_key": "coverage_record_agency",
+          "counting_rule_key": "coverage_rule_declared",
+          "route": "/browse/people/",
+          "source_id": "nyc-agencies",
+          "source_name": "NYC Agencies and Governance Organizations",
+          "state": "measured",
+          "value": 87,
+          "evidence_vintage": "2026-08-05T20:50:48.662Z",
+          "vintage_field": "generated_at",
+          "vintage_basis": "composite_oldest"
+        }
+      ]
+    },
+    {
+      "domain_id": "zoning",
+      "route": "/browse/zoning/",
+      "units": [
+        {
+          "unit_id": "land-projects",
+          "domain_id": "zoning",
+          "record_unit_key": "coverage_record_project",
+          "counting_rule_key": "coverage_rule_declared",
+          "route": "/browse/zoning/",
+          "source_id": "zap-projects",
+          "source_name": "Zoning Application Portal — projects",
+          "state": "measured",
+          "value": 238,
+          "evidence_vintage": "2026-08-23T07:59:09.786Z",
+          "vintage_field": "materialized_at",
+          "vintage_basis": "single"
+        },
+        {
+          "unit_id": "land-hearings",
+          "domain_id": "zoning",
+          "record_unit_key": "coverage_record_hearing",
+          "counting_rule_key": "coverage_rule_declared",
+          "route": "/browse/zoning/",
+          "source_id": "zap-api-outcomes",
+          "source_name": "Zoning Application Portal — project outcomes (Planning Labs API)",
+          "state": "measured",
+          "value": 182,
+          "evidence_vintage": "2026-08-23T08:51:36.144Z",
+          "vintage_field": "generated_at",
+          "vintage_basis": "single"
+        }
+      ]
+    },
+    {
+      "domain_id": "property",
+      "route": "/browse/property/",
+      "units": [
+        {
+          "unit_id": "properties",
+          "domain_id": "property",
+          "record_unit_key": "coverage_record_property",
+          "counting_rule_key": "coverage_rule_declared",
+          "route": "/browse/property/",
+          "source_id": "city-record",
+          "source_name": "City Record Online",
+          "state": "measured",
+          "value": 133,
+          "evidence_vintage": "2026-08-02T13:13:26.639Z",
+          "vintage_field": "source_generated_at",
+          "vintage_basis": "single"
+        }
+      ]
+    },
+    {
+      "domain_id": "rules",
+      "route": "/browse/rules/",
+      "units": [
+        {
+          "unit_id": "rules",
+          "domain_id": "rules",
+          "record_unit_key": "coverage_record_rule",
+          "counting_rule_key": "coverage_rule_declared",
+          "route": "/browse/rules/",
+          "source_id": "city-record",
+          "source_name": "City Record Online",
+          "state": "measured",
+          "value": 100,
+          "evidence_vintage": "2026-08-09T14:40:29.151Z",
+          "vintage_field": "retrieved_at",
+          "vintage_basis": "single"
+        }
+      ]
+    },
+    {
+      "domain_id": "staffing",
+      "route": "/browse/staffing/",
+      "units": [
+        {
+          "unit_id": "staffing-notices",
+          "domain_id": "staffing",
+          "record_unit_key": "coverage_record_notice",
+          "counting_rule_key": "coverage_rule_declared",
+          "route": "/browse/staffing/",
+          "source_id": "city-record",
+          "source_name": "City Record Online",
+          "state": "measured",
+          "value": 80,
+          "evidence_vintage": "2026-08-03T20:08:29.261Z",
+          "vintage_field": "generated_at",
+          "vintage_basis": "single"
+        }
+      ]
+    },
+    {
+      "domain_id": "exams",
+      "route": "/browse/exams/",
+      "units": [
+        {
+          "unit_id": "exams",
+          "domain_id": "exams",
+          "record_unit_key": "coverage_record_exam",
+          "counting_rule_key": "coverage_rule_declared",
+          "route": "/browse/exams/",
+          "source_id": "annual-examination-schedule",
+          "source_name": "Annual Examination Schedule",
+          "state": "measured",
+          "value": 226,
+          "evidence_vintage": "2026-09-05T00:00:00.000Z",
+          "vintage_field": "sources_retrieved_as_of",
+          "vintage_basis": "single"
+        }
+      ]
+    },
+    {
+      "domain_id": "citywide",
+      "route": "/browse/",
+      "units": [
+        {
+          "unit_id": "agency-obligations",
+          "domain_id": "citywide",
+          "record_unit_key": "coverage_record_obligation",
+          "counting_rule_key": "coverage_rule_declared",
+          "route": "/browse/",
+          "source_id": "nyc-administrative-code",
+          "source_name": "NYC Administrative Code (American Legal Publishing bulk XML)",
+          "state": "measured",
+          "value": 6683,
+          "evidence_vintage": "2026-08-07T00:00:00.000Z",
+          "vintage_field": "as_of",
+          "vintage_basis": "single"
+        },
+        {
+          "unit_id": "community-boards",
+          "domain_id": "citywide",
+          "record_unit_key": "coverage_record_board",
+          "counting_rule_key": "coverage_rule_declared",
+          "route": "/browse/",
+          "source_id": "community-district-boundaries",
+          "source_name": "Community Districts",
+          "state": "measured",
+          "value": 59,
+          "evidence_vintage": "2026-05-26T00:00:00.000Z",
+          "vintage_field": "boundary_vintage",
+          "vintage_basis": "single"
+        }
+      ]
+    }
+  ]
+}

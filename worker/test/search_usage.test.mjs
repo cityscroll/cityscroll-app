@@ -462,7 +462,7 @@ test("public corpus statistics are untouched by any of this", async () => {
   assert.equal(response.headers.get("cache-control"), "public, max-age=900");
   assert.doesNotMatch(text, /search_executions|completed|unique_visitors|recognized/);
   assert.deepEqual(Object.keys(JSON.parse(text)),
-    ["schema", "generated_at", "scope", "city_record", "sources", "language_coverage"]);
+    ["schema", "generated_at", "scope", "coverage", "language_coverage"]);
 });
 
 // ---- A4: compatibility, the Desk consumer, and honest unavailability ----

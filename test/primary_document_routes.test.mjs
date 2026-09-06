@@ -978,7 +978,7 @@ test("canonical committee routes serve exact graph records with linked officials
   assert.equal(missing.status, 404);
 });
 
-test("Stats document and API keep their exact public endpoints with the reduced coverage contract", async () => {
+test("Stats document and API keep their exact public endpoints with the served-coverage contract", async () => {
   const html = read("../site/stats.html");
   assert.match(html, /<link rel="canonical" href="https:\/\/cityscroll\.org\/stats\.html">/);
   assert.match(html, /https:\/\/api\.cityscroll\.org\/stats/);
@@ -987,18 +987,13 @@ test("Stats document and API keep their exact public endpoints with the reduced 
   const env = { ALERT_STATE: fakeKV(), NL_METER: fakeKV(), SUBS: fakeKV() };
   const response = await handleStats(new Request("https://api.cityscroll.org/stats"), env, { waitUntil() {} }, {
     now: "2026-08-05T12:00:00Z",
-    fetchImpl: async () => Response.json([{
-      notice_count: "1099194",
-      first_notice_date: "2003-01-02T00:00:00.000",
-      latest_notice_date: "2026-08-05T00:00:00.000",
-    }]),
   });
   assert.equal(response.status, 200);
   assert.match(response.headers.get("content-type"), /application\/json/);
   const body = await response.json();
-  assert.equal(body.schema, "public-stats.v2");
-  assert.equal(body.city_record.notice_count, 1099194);
-  assert.equal(body.sources.primary_system_count, 6);
+  assert.equal(body.schema, "public-stats.v3");
+  assert.equal(body.coverage.available, true);
+  assert.ok(body.coverage.domains.some((domain) => domain.units.some((unit) => unit.state === "measured")));
   assert.equal(body.language_coverage.site_languages, 11);
   for (const privateField of ["subscriptions", "digests", "nl_search", "history", "usage"]) {
     assert.equal(Object.hasOwn(body, privateField), false, `${privateField} stays behind the desk`);

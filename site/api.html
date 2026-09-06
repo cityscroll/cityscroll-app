@@ -2675,8 +2675,8 @@ For each name, <b>awards</b> means award/intent notices naming that vendor (name
 <code>/#investigation/shared/&lt;id&gt;</code>.</p>
 
 <h2 data-i18n="api_h_stats">Public stats</h2>
-<p class="src" data-i18n-html="api_p_stats_html"><code>GET /stats</code> — the project's own usage as aggregate counts (active subscriptions,
-digests sent, digest links followed, feed/batch/share activity). It's cached
+<p class="src" data-i18n-html="api_p_stats_html"><code>GET /stats</code> — served-product coverage as aggregate counts (record sets by section,
+each with its record type, counting rule and its own evidence date). It's cached
 about 15 minutes. Human-readable version: <a href="stats.html">stats</a>. Related: digest emails link notices via
 <code>GET /r/&lt;kind&gt;/&lt;request_id&gt;</code>, which checks the id against known notices, redirects to the
 matching permalink, and records a per-day count.</p>

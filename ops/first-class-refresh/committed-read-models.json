@@ -6,7 +6,9 @@
   "rebuild_sequence": [
     {
       "id": "derived-json-build-boundary",
-      "command": ["tools/derived_json_build_boundary.mjs"],
+      "command": [
+        "tools/derived_json_build_boundary.mjs"
+      ],
       "covers": [
         "tools/build_agency_constellation_documents.mjs",
         "tools/build_keyword_search_index.mjs"
@@ -15,31 +17,61 @@
     },
     {
       "id": "source-contract-docs",
-      "command": ["tools/generate_source_docs.mjs"],
-      "covers": ["tools/generate_source_docs.mjs"],
+      "command": [
+        "tools/generate_source_docs.mjs"
+      ],
+      "covers": [
+        "tools/generate_source_docs.mjs"
+      ],
       "note": "Reads the source contracts the refresh restamps, so it runs after the derived JSON boundary has settled the data those contracts describe."
     },
     {
       "id": "data-source-graph",
-      "command": ["tools/data_source_graph.mjs"],
-      "covers": ["tools/data_source_graph.mjs"],
+      "command": [
+        "tools/data_source_graph.mjs"
+      ],
+      "covers": [
+        "tools/data_source_graph.mjs"
+      ],
       "note": "Projects the source-contract documentation the previous step regenerates."
     },
     {
+      "id": "served-coverage-snapshot",
+      "command": [
+        "tools/build_served_coverage_snapshot.mjs"
+      ],
+      "covers": [
+        "tools/build_served_coverage_snapshot.mjs"
+      ],
+      "note": "Counts the served populations the refresh has just rebuilt, so it runs after the derived-JSON boundary and the source-contract projections have settled. It reads only committed artifacts and contacts no publisher."
+    },
+    {
       "id": "capability-topology",
-      "command": ["tools/build_capability_topology.mjs"],
-      "covers": ["tools/build_capability_topology.mjs"]
+      "command": [
+        "tools/build_capability_topology.mjs"
+      ],
+      "covers": [
+        "tools/build_capability_topology.mjs"
+      ]
     },
     {
       "id": "integration-client",
-      "command": ["tools/generate_integration_client.mjs"],
-      "covers": ["tools/generate_integration_client.mjs"],
+      "command": [
+        "tools/generate_integration_client.mjs"
+      ],
+      "covers": [
+        "tools/generate_integration_client.mjs"
+      ],
       "note": "Projected from the capability registry, so it follows the topology build."
     },
     {
       "id": "depot-registry",
-      "command": ["tools/depot_rederive.mjs"],
-      "covers": ["tools/depot_rederive.mjs"],
+      "command": [
+        "tools/depot_rederive.mjs"
+      ],
+      "covers": [
+        "tools/depot_rederive.mjs"
+      ],
       "note": "Re-derives the join graph from the refreshed source-contract measurements and gap taxonomy."
     }
   ],

@@ -5,13 +5,14 @@ import { test } from "node:test";
 import {
   POST_FLIP_NAMED_CHECKS,
   POST_FLIP_NAMED_CHECK_IDS,
-  classifyCorpusFreshness,
+  classifyCoverageVintage,
   classifyCoverageSanity,
   classifyEmailHealth,
   classifyHumanPathJourney,
   classifyStatsSanity,
   classifyWorkerAccess,
   runPostFlipNamedChecks,
+  PUBLIC_STATS_SCHEMA,
 } from "../tools/post_flip_checks.mjs";
 import { POST_FLIP_TARGETS, targetsFromCli } from "../tools/live_url_smoke.mjs";
 
@@ -27,7 +28,7 @@ function freshLastRun(overrides = {}) {
 
 test("named post-flip checks preserve private operations gates and add public coverage gates", () => {
   assert.deepEqual([...POST_FLIP_NAMED_CHECK_IDS].sort(), [
-    "corpus-freshness",
+    "coverage-vintage",
     "coverage-sanity",
     "email-health",
     "human-path-journey",
@@ -37,7 +38,7 @@ test("named post-flip checks preserve private operations gates and add public co
   const byId = Object.fromEntries(POST_FLIP_NAMED_CHECKS.map((c) => [c.id, c]));
   assert.equal(byId["email-health"].incident.class, "silent-five-day-alert");
   assert.equal(byId["stats-sanity"].incident.class, "sent_today-zero-and-frozen-gauge");
-  assert.equal(byId["corpus-freshness"].incident.class, "stale-public-corpus");
+  assert.equal(byId["coverage-vintage"].incident.class, "undated-public-coverage");
   assert.equal(byId["coverage-sanity"].incident.class, "public-private-contract-drift");
   assert.equal(byId["worker-access"].incident.class, "could-not-reach");
   assert.equal(byId["human-path-journey"].incident.class, "owner-manually-found-the-site-down");
@@ -79,27 +80,63 @@ test("STATS SANITY still rejects frozen gauges on authenticated operations data"
   assert.match(classifyStatsSanity({ ...privateStats, digests: { sent_today: 0, last_run: null } }).reason, /sent_today-zero/);
 });
 
-test("CORPUS FRESHNESS requires an available, recent City Record aggregate", () => {
+test("COVERAGE VINTAGE requires available coverage with a bounded, non-future evidence range", () => {
   const current = {
-    schema: "public-stats.v2",
-    city_record: { available: true, notice_count: 1099194, latest_notice_date: "2026-08-05" },
+    schema: PUBLIC_STATS_SCHEMA,
+    coverage: {
+      available: true,
+      evidence_vintage: { oldest: "2026-05-26T00:00:00.000Z", newest: "2026-09-05T00:00:00.000Z" },
+    },
   };
-  assert.equal(classifyCorpusFreshness(current, { now: new Date("2026-08-05T18:00:00Z") }).ok, true);
-  assert.equal(classifyCorpusFreshness({ ...current, city_record: { available: false } }).ok, false);
+  const now = new Date("2026-09-06T18:00:00Z");
+  assert.equal(classifyCoverageVintage(current, { now }).ok, true);
+  assert.match(classifyCoverageVintage({ ...current, schema: "public-stats.v2" }, { now }).reason, /unexpected public stats schema/);
   assert.match(
-    classifyCorpusFreshness({ ...current, city_record: { ...current.city_record, latest_notice_date: "2026-07-01" } }, { now: new Date("2026-08-05T18:00:00Z") }).reason,
-    /older than 3 days/,
+    classifyCoverageVintage({ ...current, coverage: { available: false, unavailable_reason: "coverage_snapshot_unavailable" } }, { now }).reason,
+    /coverage_snapshot_unavailable/,
+  );
+  assert.match(
+    classifyCoverageVintage({ ...current, coverage: { available: true, evidence_vintage: { oldest: null, newest: null } } }, { now }).reason,
+    /missing or unparseable/,
+  );
+  assert.match(
+    classifyCoverageVintage({ ...current, coverage: { available: true, evidence_vintage: { oldest: "2026-05-26T00:00:00.000Z", newest: "2027-01-01T00:00:00.000Z" } } }, { now }).reason,
+    /in the future/,
   );
 });
 
-test("COVERAGE SANITY requires coherent coverage and rejects usage-class fields", () => {
+test("COVERAGE SANITY requires measured, dated coverage and rejects usage-class fields", () => {
   const coverage = {
-    sources: { primary_system_count: 2, systems: ["A", "B"] },
+    coverage: {
+      metrics: [{ metric_id: "served_sources_represented", state: "measured", value: 18 }],
+      domains: [{
+        domain_id: "contracts",
+        units: [{ unit_id: "registered-contracts", state: "measured", value: 26270, evidence_vintage: "2026-08-18T00:00:00.000Z" }],
+      }],
+    },
     language_coverage: { site_languages: 11 },
   };
   assert.equal(classifyCoverageSanity(coverage).ok, true);
   assert.match(classifyCoverageSanity({ ...coverage, usage: {} }).reason, /usage-class fields leaked/);
-  assert.match(classifyCoverageSanity({ ...coverage, sources: { primary_system_count: 3, systems: ["A"] } }).reason, /disagree/);
+  assert.match(
+    classifyCoverageSanity({ ...coverage, coverage: { ...coverage.coverage, metrics: [{ metric_id: "served_sources_represented", state: "unavailable", value: null }] } }).reason,
+    /no source is measured as represented/,
+  );
+  assert.match(
+    classifyCoverageSanity({
+      ...coverage,
+      coverage: {
+        ...coverage.coverage,
+        domains: [{ domain_id: "contracts", units: [{ unit_id: "registered-contracts", state: "measured", value: 26270 }] }],
+      },
+    }).reason,
+    /counted without an evidence date/,
+  );
+});
+
+test("the post-flip stats schema matches the schema the Worker publishes", async () => {
+  const worker = await import("../worker/src/stats.mjs");
+  assert.equal(PUBLIC_STATS_SCHEMA, worker.PUBLIC_STATS_SCHEMA);
 });
 
 test("WORKER ACCESS requires health, stats JSON, and site-origin CORS on /events", () => {
@@ -173,9 +210,16 @@ test("HUMAN-PATH JOURNEY requires home/search/notice/deeplink/subscribe steps", 
 
 test("runPostFlipNamedChecks aggregates classifiers with incident annotations", async () => {
   const publicStatsBody = {
-    schema: "public-stats.v2",
-    city_record: { available: true, notice_count: 1099194, latest_notice_date: "2026-08-05" },
-    sources: { primary_system_count: 2, systems: ["A", "B"] },
+    schema: PUBLIC_STATS_SCHEMA,
+    coverage: {
+      available: true,
+      evidence_vintage: { oldest: "2026-05-26T00:00:00.000Z", newest: "2026-08-05T00:00:00.000Z" },
+      metrics: [{ metric_id: "served_sources_represented", state: "measured", value: 18 }],
+      domains: [{
+        domain_id: "contracts",
+        units: [{ unit_id: "registered-contracts", state: "measured", value: 26270, evidence_vintage: "2026-08-05T00:00:00.000Z" }],
+      }],
+    },
     language_coverage: { site_languages: 11 },
   };
   const privateStatsBody = {
@@ -254,7 +298,7 @@ test("private operations checks fail closed when no desk credential is configure
   const result = await runPostFlipNamedChecks({
     fetchImpl: async () => ({ status: 503, text: async () => "", headers: { get: () => null } }),
     runJourney: false,
-    skip: ["corpus-freshness", "coverage-sanity", "worker-access"],
+    skip: ["coverage-vintage", "coverage-sanity", "worker-access"],
     adminKey: "",
   });
   assert.equal(result.ok, false);
