@@ -94,7 +94,7 @@ export function buildReceipt(policy, rootText) {
     schema: "cityscroll.agents_router_receipt.v1",
     card: "cityscroll-repository-control-plane/rcp-02",
     inputs: {
-      main_commit: "2c310bcff9b71c3704493801ef23182375c5357d",
+      main_commit: "d1c0b1c66477f7efc056360253aeb40341dfc103",
       register_revision: "32727924c5f546ce5c41d0f68cb324fde7c7425b",
       classification_manifest: "docs/repository-control-plane/classification.v1.json",
       semantic_owner_mapping: "docs/repository-control-plane/semantic-owner-mapping.v1.json"

@@ -7,7 +7,7 @@
   "updated_at": "2026-09-01T00:00:00.000Z",
   "value": {
     "register_card": "cityscroll-repository-control-plane/rcp-02",
-    "migration_commit": "21c3d22a3b2314506fda73229e77c80cc3c26de4",
+    "migration_commit": "c9b83920345a2e1172390eafb3af6e7bd35651b2",
     "summary": "The root instruction file became a routing and invariants document; the per-change delivery ledger it used to carry has no public replacement in the repository.",
     "manifest_entry_count": 2,
     "dispositions": { "migrate": 1, "split": 1 },
