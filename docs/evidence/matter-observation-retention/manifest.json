@@ -1,0 +1,385 @@
+{
+  "schema": "cityscroll.matter_observation_retention_evidence.v1",
+  "engineering_record": "cityscroll-engineering/matter-observation-retention",
+  "renderer": "tools/render_matter_observation_retention_fixtures.mjs",
+  "revision": "07428bcfefd6b28b02fbcaf1c79754079c07469c",
+  "data_vintage": "2026-08-10T13:08:13.019Z",
+  "captured_at": "2026-09-06T03:37:20Z",
+  "image_directory": ".artifacts/matter-observation-retention",
+  "corpus_note": "Specimens render the indexed matter observation journal from the committed meeting-outcomes snapshot and bounded native fixtures. They describe retained operator history, not live publisher coverage.",
+  "image_policy": "Capture images are written to the ignored local directory above and are never committed. This manifest is the tracked proof: route, viewport, revision, data vintage, assertion and SHA-256 for each capture.",
+  "files": [
+    {
+      "name": "last-good-after-failed-refresh-390x844.png",
+      "specimen": "last-good-after-failed-refresh",
+      "route": "/operator/matter-observations/last-good/",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "07428bcfefd6b28b02fbcaf1c79754079c07469c",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 390px an empty later refresh keeps the last-good journal and shows one repair without deleting retained hearings",
+      "observations": {
+        "matters": "66",
+        "appearances": "76",
+        "repair_count": "1",
+        "target_size": {
+          "total_controls": 3,
+          "inline_text_links": 2,
+          "block_controls": 1,
+          "block_minimum_height": 44,
+          "block_controls_meet_24px": true
+        },
+        "no_horizontal_overflow": true
+      },
+      "bytes": 164482,
+      "sha256": "d9b0e919639e24a5ab152038be22d5f1685043e2c006e27bbbe7213e745fc512",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "last-good-after-failed-refresh-1440x900.png",
+      "specimen": "last-good-after-failed-refresh",
+      "route": "/operator/matter-observations/last-good/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "07428bcfefd6b28b02fbcaf1c79754079c07469c",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 1440px an empty later refresh keeps the last-good journal and shows one repair without deleting retained hearings",
+      "observations": {
+        "matters": "66",
+        "appearances": "76",
+        "repair_count": "1",
+        "target_size": {
+          "total_controls": 3,
+          "inline_text_links": 2,
+          "block_controls": 1,
+          "block_minimum_height": 44,
+          "block_controls_meet_24px": true
+        },
+        "no_horizontal_overflow": true
+      },
+      "bytes": 170519,
+      "sha256": "086b278d9132623569f6bacc8cf38bc924c9a69d6f61a9a015139178d59a8761",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "native-upgrade-390x844.png",
+      "specimen": "native-upgrade",
+      "route": "/operator/matter-observations/native-upgrade/",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "07428bcfefd6b28b02fbcaf1c79754079c07469c",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 390px a native match upgrades a coarse bootstrap appearance without opening a second hearing",
+      "observations": {
+        "granularities": [
+          "coarse",
+          "native"
+        ],
+        "target_size": {
+          "total_controls": 3,
+          "inline_text_links": 2,
+          "block_controls": 1,
+          "block_minimum_height": 44,
+          "block_controls_meet_24px": true
+        },
+        "no_horizontal_overflow": true
+      },
+      "bytes": 255309,
+      "sha256": "76e2a8ea397c146b87970b6a8d3a3ad935956802537d0983ec9b9ec401a584d7",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "native-upgrade-1440x900.png",
+      "specimen": "native-upgrade",
+      "route": "/operator/matter-observations/native-upgrade/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "07428bcfefd6b28b02fbcaf1c79754079c07469c",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 1440px a native match upgrades a coarse bootstrap appearance without opening a second hearing",
+      "observations": {
+        "granularities": [
+          "coarse",
+          "native"
+        ],
+        "target_size": {
+          "total_controls": 3,
+          "inline_text_links": 2,
+          "block_controls": 1,
+          "block_minimum_height": 44,
+          "block_controls_meet_24px": true
+        },
+        "no_horizontal_overflow": true
+      },
+      "bytes": 265645,
+      "sha256": "45357d6aae8c5ab907d7afb495f892c6918860fa5b9b74ee302b7fa94e47972f",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "correction-390x844.png",
+      "specimen": "correction",
+      "route": "/operator/matter-observations/correction/",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "07428bcfefd6b28b02fbcaf1c79754079c07469c",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 390px a corrected action keeps both observed versions on one event identity",
+      "observations": {
+        "appearance_count": 2,
+        "target_size": {
+          "total_controls": 2,
+          "inline_text_links": 1,
+          "block_controls": 1,
+          "block_minimum_height": 44,
+          "block_controls_meet_24px": true
+        },
+        "no_horizontal_overflow": true
+      },
+      "bytes": 214151,
+      "sha256": "317cae6ff4c6d79306205bff6960a98f296a97cb3cbf8717f84927e0afa5850d",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "correction-1440x900.png",
+      "specimen": "correction",
+      "route": "/operator/matter-observations/correction/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "07428bcfefd6b28b02fbcaf1c79754079c07469c",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 1440px a corrected action keeps both observed versions on one event identity",
+      "observations": {
+        "appearance_count": 2,
+        "target_size": {
+          "total_controls": 2,
+          "inline_text_links": 1,
+          "block_controls": 1,
+          "block_minimum_height": 44,
+          "block_controls_meet_24px": true
+        },
+        "no_horizontal_overflow": true
+      },
+      "bytes": 223730,
+      "sha256": "b7d92699c606c2e50114dddad36ef7b64634de8ee3b555487e2148a63288d188",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "without-scripting-390x844.png",
+      "specimen": "without-scripting",
+      "route": "/operator/matter-observations/last-good/",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "07428bcfefd6b28b02fbcaf1c79754079c07469c",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "disabled",
+      "assertion": "at 390px the operator journal remains readable with scripting disabled",
+      "observations": {
+        "heading": "Matter observation journal \u2014 last-good after a failed refresh",
+        "no_horizontal_overflow": true
+      },
+      "bytes": 164482,
+      "sha256": "d9b0e919639e24a5ab152038be22d5f1685043e2c006e27bbbe7213e745fc512",
+      "axe": {
+        "violations_total": null,
+        "failing_violations": [],
+        "passes": true,
+        "note": "scripting disabled; the same page is gated scripted"
+      }
+    },
+    {
+      "name": "without-scripting-1440x900.png",
+      "specimen": "without-scripting",
+      "route": "/operator/matter-observations/last-good/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "07428bcfefd6b28b02fbcaf1c79754079c07469c",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "disabled",
+      "assertion": "at 1440px the operator journal remains readable with scripting disabled",
+      "observations": {
+        "heading": "Matter observation journal \u2014 last-good after a failed refresh",
+        "no_horizontal_overflow": true
+      },
+      "bytes": 170519,
+      "sha256": "086b278d9132623569f6bacc8cf38bc924c9a69d6f61a9a015139178d59a8761",
+      "axe": {
+        "violations_total": null,
+        "failing_violations": [],
+        "passes": true,
+        "note": "scripting disabled; the same page is gated scripted"
+      }
+    },
+    {
+      "name": "keyboard-and-return-390x844.png",
+      "specimen": "keyboard-and-return",
+      "route": "/operator/matter-observations/last-good/",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "07428bcfefd6b28b02fbcaf1c79754079c07469c",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 390px keyboard activation opens source details and the return control remains a native focus target",
+      "observations": {
+        "details_open": true,
+        "return_control": "journal",
+        "target_size": {
+          "total_controls": 3,
+          "inline_text_links": 2,
+          "block_controls": 1,
+          "block_minimum_height": 44,
+          "block_controls_meet_24px": true
+        },
+        "no_horizontal_overflow": true
+      },
+      "bytes": 196643,
+      "sha256": "3e393e453297694a93c78222f5436ceb8fcfda51c55b1e17e67a982aacd1bd11",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "keyboard-and-return-1440x900.png",
+      "specimen": "keyboard-and-return",
+      "route": "/operator/matter-observations/last-good/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "07428bcfefd6b28b02fbcaf1c79754079c07469c",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 1440px keyboard activation opens source details and the return control remains a native focus target",
+      "observations": {
+        "details_open": true,
+        "return_control": "journal",
+        "target_size": {
+          "total_controls": 3,
+          "inline_text_links": 2,
+          "block_controls": 1,
+          "block_minimum_height": 44,
+          "block_controls_meet_24px": true
+        },
+        "no_horizontal_overflow": true
+      },
+      "bytes": 205450,
+      "sha256": "42d1ec1ae3763d1e69f823d744014234a5091c99e2cb1a98ff94e4f573f94cda",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "two-hundred-percent-zoom-390x844.png",
+      "specimen": "two-hundred-percent-zoom",
+      "route": "/operator/matter-observations/last-good/",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "07428bcfefd6b28b02fbcaf1c79754079c07469c",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 390px zoomed to 200% the operator journal reflows without horizontal overflow",
+      "observations": {
+        "no_horizontal_overflow": true,
+        "target_size": {
+          "total_controls": 3,
+          "inline_text_links": 2,
+          "block_controls": 1,
+          "block_minimum_height": 108,
+          "block_controls_meet_24px": true
+        },
+        "heading_present": true
+      },
+      "bytes": 454931,
+      "sha256": "e5ba99db75247ab743cd470948dff2eac2227771887813b6a50db33e654a0fcc",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "two-hundred-percent-zoom-1440x900.png",
+      "specimen": "two-hundred-percent-zoom",
+      "route": "/operator/matter-observations/last-good/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "07428bcfefd6b28b02fbcaf1c79754079c07469c",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 1440px zoomed to 200% the operator journal reflows without horizontal overflow",
+      "observations": {
+        "no_horizontal_overflow": true,
+        "target_size": {
+          "total_controls": 3,
+          "inline_text_links": 2,
+          "block_controls": 1,
+          "block_minimum_height": 88,
+          "block_controls_meet_24px": true
+        },
+        "heading_present": true
+      },
+      "bytes": 374891,
+      "sha256": "c4eadff62f2925b6e4047371aecea479c66b1d62de520da2d8d4abe6443f50d1",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    }
+  ]
+}
