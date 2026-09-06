@@ -17,6 +17,7 @@ import { meetingCalendarICS } from "./hearing_attend_pack.mjs";
 import sharedMeetingSnapshot from "./data/shared_meeting_read_model.json" with { type: "json" };
 import rulesSemanticLaneArtifact from "./data/rules_semantic_lane.json" with { type: "json" };
 import { NOTICE_MODULE_PRELOADS } from "./notice_module_preload.mjs";
+import { noticeEdgeCacheOutcome, noticeEdgeInstant, noticeEdgeTimingHeader } from "./notice_edge_response.mjs";
 import { renderNoticeMandateBacklinksForId } from "./notice_mandate_backlinks.mjs";
 import { projectNoticeObjectTarget } from "./notice_object_links.mjs";
 import {
@@ -892,6 +893,12 @@ function rewrittenResponse(asset, status, cacheControl) {
 async function noticeRow(id) {
   // Ordinary document reads use the Worker/D1 projection. Socrata remains an exceptional
   // degradation path for an older id or an unavailable/partial mirror.
+  //
+  // The record endpoint keeps the only edge cache on this path, and the platform
+  // reports its outcome back on `cf-cache-status`. That outcome is carried out of
+  // here so the response can say whether it waited on a cache that did not answer;
+  // an absent status stays `unknown` rather than being read as any of the four
+  // measured outcomes.
   try {
     const readModel = new URL(NOTICE_READ_MODEL);
     readModel.searchParams.set("id", id);
@@ -899,11 +906,12 @@ async function noticeRow(id) {
       headers: { Accept: "application/json" },
       cf: { cacheTtl: 86400, cacheEverything: true },
     });
+    const cacheOutcome = noticeEdgeCacheOutcome(response.headers?.get?.("cf-cache-status"));
     if (response.ok) {
       const payload = await response.json();
-      return { row: payload?.row || null, civic_time: payload?.civic_time || null };
+      return { row: payload?.row || null, civic_time: payload?.civic_time || null, cache_outcome: cacheOutcome };
     }
-    if (response.status === 404) return null;
+    if (response.status === 404) return { row: null, civic_time: null, cache_outcome: cacheOutcome };
   } catch (_error) {
     // Fall through to the public-source degradation path.
   }
@@ -913,8 +921,11 @@ async function noticeRow(id) {
   url.searchParams.set("$limit", "1");
   const response = await fetch(url, { headers: { Accept: "application/json" }, cf: { cacheTtl: 300, cacheEverything: true } });
   if (!response.ok) throw new Error(`City Record HTTP ${response.status}`);
+  const cacheOutcome = noticeEdgeCacheOutcome(response.headers?.get?.("cf-cache-status"));
   const rows = await response.json();
-  return Array.isArray(rows) ? { row: rows[0] || null, civic_time: null } : { row: null, civic_time: null };
+  return Array.isArray(rows)
+    ? { row: rows[0] || null, civic_time: null, cache_outcome: cacheOutcome }
+    : { row: null, civic_time: null, cache_outcome: cacheOutcome };
 }
 
 function rulemakingUnavailableResponse() {
@@ -1010,11 +1021,22 @@ async function handleProcurement(request, env, encodedId) {
 }
 
 async function handleNotice(request, env, id) {
+  const documentStartedAt = noticeEdgeInstant();
+  // The record read depends on nothing the resident reads produce, so it is
+  // started alongside them rather than queued behind them. Its rejection is
+  // captured here so a failing record read still reaches the unavailable
+  // terminal instead of rejecting the resident reads with it.
+  let recordSettledAt = null;
+  const recordRead = noticeRow(id).then(
+    (result) => { recordSettledAt = noticeEdgeInstant(); return { ok: true, result }; },
+    () => { recordSettledAt = noticeEdgeInstant(); return { ok: false, result: null }; },
+  );
   const [asset, meetingSnapshotResponse, mandateBacklinksResponse] = await Promise.all([
     staticAsset(env, request, "/"),
     staticAsset(env, request, "/data/meeting_outcomes_snapshot.json"),
     staticAsset(env, request, "/data/notice_mandate_backlinks_lookup.json"),
   ]);
+  const assetsSettledAt = noticeEdgeInstant();
   let meetingOutcome = null;
   try {
     const snapshot = meetingSnapshotResponse.ok ? await meetingSnapshotResponse.json() : null;
@@ -1030,16 +1052,10 @@ async function handleNotice(request, env, id) {
   } catch (_error) {
     mandateBacklinksLookup = null;
   }
-  let row = null;
-  let civicTime = null;
-  let upstreamFailed = false;
-  try {
-    const result = await noticeRow(id);
-    row = result?.row || null;
-    civicTime = result?.civic_time || null;
-  } catch (_error) {
-    upstreamFailed = true;
-  }
+  const record = await recordRead;
+  const row = record.ok ? record.result?.row || null : null;
+  const civicTime = record.ok ? record.result?.civic_time || null : null;
+  const upstreamFailed = !record.ok;
   const status = upstreamFailed ? 503 : row ? 200 : 404;
   const kind = row?.type_of_notice_description || row?.section_name || "Public record";
   const title = row?.short_title || (row ? `${kind} ${id}` : `CityScroll public record ${id}`);
@@ -1048,6 +1064,22 @@ async function handleNotice(request, env, id) {
     ? "public, max-age=60, s-maxage=86400, stale-while-revalidate=604800, stale-if-error=604800"
     : "public, max-age=60, s-maxage=60, stale-while-revalidate=60, stale-if-error=60";
   const response = rewrittenResponse(asset, status, cacheControl);
+  // How this response was produced, in the closed vocabulary
+  // `site/notice_edge_response.mjs` owns: durations and cache outcomes only,
+  // never the record or the reader. The edge clock advances on subrequest
+  // boundaries, so these durations measure waiting, not isolate work.
+  response.headers.set("Server-Timing", noticeEdgeTimingHeader({
+    documentMs: noticeEdgeInstant() - documentStartedAt,
+    recordMs: recordSettledAt === null ? null : recordSettledAt - documentStartedAt,
+    assetsMs: assetsSettledAt - documentStartedAt,
+    recordCacheOutcome: record.result?.cache_outcome || "unknown",
+  }));
+  // Node unit tests do not provide the Workers HTMLRewriter runtime.
+  if (typeof HTMLRewriter === "undefined") {
+    return request.method === "HEAD"
+      ? new Response(null, { status, headers: response.headers })
+      : response;
+  }
   const transformed = new HTMLRewriter()
     .on("title", { element(element) { element.setInnerContent(`${title} · CityScroll`); } })
     .on("head", { element(element) { element.append(renderNoticeModulePreloadHTML(), { html: true }); } })
