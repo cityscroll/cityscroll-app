@@ -2,17 +2,17 @@
   "schema": "cityscroll.matter_coverage_recovery_evidence.v1",
   "engineering_record": "cityscroll-engineering/matter-coverage-recovery",
   "renderer": "tools/render_matter_coverage_recovery_fixtures.mjs",
-  "revision": "e6fcbd1cbc162bfba0d27ca160d1e15dd2327ddb",
-  "data_vintage": "2026-08-10T13:08:13.019Z",
-  "captured_at": "2026-09-06T08:33:24Z",
+  "revision": "3a83385d987283052752b97e1e200339f477ef13",
+  "data_vintage": "2026-09-04T13:09:00.447Z",
+  "captured_at": "2026-09-06T18:05:18Z",
   "image_directory": ".artifacts/matter-coverage-recovery",
   "corpus_note": "Specimens render operator coverage and recovery receipts from frozen snapshot replay and labelled durability faults. They describe retained CityScroll state, not live publisher coverage.",
   "image_policy": "Capture images are written to the ignored local directory above and are never committed. This manifest is the tracked proof: route, viewport, revision, data vintage, assertion, and SHA-256 for each capture.",
   "replay_counts": {
-    "materialized_matters": 66,
-    "distinct_appearances": 76,
-    "later_event_discoveries": 10,
-    "logical_later_updates": 10,
+    "materialized_matters": 64,
+    "distinct_appearances": 79,
+    "later_event_discoveries": 15,
+    "logical_later_updates": 15,
     "replay_duplicates": 0,
     "recovered_updates_181": 0,
     "recovered_updates_365": 0
@@ -24,10 +24,10 @@
         "id": "A1",
         "status": "pass",
         "evidence": {
-          "materialized_matters": 66,
-          "distinct_appearances": 76,
-          "later_event_discoveries": 10,
-          "logical_later_updates": 10,
+          "materialized_matters": 64,
+          "distinct_appearances": 79,
+          "later_event_discoveries": 15,
+          "logical_later_updates": 15,
           "replay_duplicates": 0,
           "recovered_updates_181": 0,
           "recovered_updates_365": 0
@@ -37,8 +37,8 @@
         "id": "A2",
         "status": "pass",
         "evidence": {
-          "matters": 66,
-          "appearances": 66,
+          "matters": 64,
+          "appearances": 64,
           "later": 0
         }
       },
@@ -47,13 +47,13 @@
         "status": "pass",
         "evidence": {
           "day181": {
-            "matters": 66,
-            "appearances": 76,
+            "matters": 64,
+            "appearances": 79,
             "recoveredUpdates": 0
           },
           "day365": {
-            "matters": 66,
-            "appearances": 76,
+            "matters": 64,
+            "appearances": 79,
             "recoveredUpdates365": 0
           }
         }
@@ -150,14 +150,14 @@
         390,
         844
       ],
-      "revision": "e6fcbd1cbc162bfba0d27ca160d1e15dd2327ddb",
-      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "revision": "3a83385d987283052752b97e1e200339f477ef13",
+      "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "enabled",
       "assertion": "at 390px the healthy receipt stays usable and omits subscriber addresses",
       "observations": {
         "failure_class": "delivery-lag",
-        "active_watches": "10",
-        "pending_outbox": "10",
+        "active_watches": "15",
+        "pending_outbox": "15",
         "target_size": {
           "total_controls": 3,
           "inline_text_links": 2,
@@ -166,11 +166,11 @@
           "block_controls_meet_24px": true
         },
         "no_horizontal_overflow": true,
-        "render_hash": "d8bb21e7558bfee6e07fc94e4cb5e1087d9e5bad06eb45f352f363296357c2a9",
+        "render_hash": "f3dbfa52da3e44408b98f7da2b967c2040c032498e8d50d33601f634ed090c68",
         "fixture_vintage": "2026-08-10T13:08:13.019Z"
       },
-      "bytes": 229132,
-      "sha256": "ed07a5e8cc5dd660fd5aebccf735353f158eb856b42ecab5b51f6157e117642b",
+      "bytes": 228847,
+      "sha256": "7da90bfb7f0517a5076700ad8b3bf1ebd807a7c79d7e902c0208f5a1246f942e",
       "axe": {
         "violations_total": 0,
         "failing_violations": [],
@@ -185,14 +185,14 @@
         1440,
         900
       ],
-      "revision": "e6fcbd1cbc162bfba0d27ca160d1e15dd2327ddb",
-      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "revision": "3a83385d987283052752b97e1e200339f477ef13",
+      "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "enabled",
       "assertion": "at 1440px the healthy receipt stays usable and omits subscriber addresses",
       "observations": {
         "failure_class": "delivery-lag",
-        "active_watches": "10",
-        "pending_outbox": "10",
+        "active_watches": "15",
+        "pending_outbox": "15",
         "target_size": {
           "total_controls": 3,
           "inline_text_links": 2,
@@ -201,11 +201,11 @@
           "block_controls_meet_24px": true
         },
         "no_horizontal_overflow": true,
-        "render_hash": "d8bb21e7558bfee6e07fc94e4cb5e1087d9e5bad06eb45f352f363296357c2a9",
+        "render_hash": "f3dbfa52da3e44408b98f7da2b967c2040c032498e8d50d33601f634ed090c68",
         "fixture_vintage": "2026-08-10T13:08:13.019Z"
       },
-      "bytes": 241781,
-      "sha256": "0b2f90eef30761d2a747461d55984111271d9a8660e95f09acc0dd58075cab87",
+      "bytes": 242735,
+      "sha256": "7e45f287f7d402ecc9a97e694a560375957048c3bb1fc4722cbedd34e1d01937",
       "axe": {
         "violations_total": 0,
         "failing_violations": [],
@@ -220,8 +220,8 @@
         390,
         844
       ],
-      "revision": "e6fcbd1cbc162bfba0d27ca160d1e15dd2327ddb",
-      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "revision": "3a83385d987283052752b97e1e200339f477ef13",
+      "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "enabled",
       "assertion": "at 390px the stale refresh receipt stays usable and omits subscriber addresses",
       "observations": {
@@ -236,11 +236,11 @@
           "block_controls_meet_24px": true
         },
         "no_horizontal_overflow": true,
-        "render_hash": "c148b93d15ff10c1e9972c96310631cc719c7dfa4dd4248021d9c1774aedf0e2",
+        "render_hash": "bdbd0ba72068b2976ff1748e6e8f80fc0947c9606a910bf9308891e275361f78",
         "fixture_vintage": "2026-08-10T13:08:13.019Z"
       },
-      "bytes": 223682,
-      "sha256": "4cfdaa67526fef719bb39fd19dbc623a7ea6e5e34c4535a3b9975eae09ca720c",
+      "bytes": 223491,
+      "sha256": "63cea487f9a8da2f0845a6c3dd034eeb24ff3029bec10472b0345882d5ccf7a6",
       "axe": {
         "violations_total": 0,
         "failing_violations": [],
@@ -255,8 +255,8 @@
         1440,
         900
       ],
-      "revision": "e6fcbd1cbc162bfba0d27ca160d1e15dd2327ddb",
-      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "revision": "3a83385d987283052752b97e1e200339f477ef13",
+      "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "enabled",
       "assertion": "at 1440px the stale refresh receipt stays usable and omits subscriber addresses",
       "observations": {
@@ -271,11 +271,11 @@
           "block_controls_meet_24px": true
         },
         "no_horizontal_overflow": true,
-        "render_hash": "c148b93d15ff10c1e9972c96310631cc719c7dfa4dd4248021d9c1774aedf0e2",
+        "render_hash": "bdbd0ba72068b2976ff1748e6e8f80fc0947c9606a910bf9308891e275361f78",
         "fixture_vintage": "2026-08-10T13:08:13.019Z"
       },
-      "bytes": 238512,
-      "sha256": "bc6ddcb2fbcf5bce822d9785eb77ee4bd535299318c33613b22cf66f476c4f44",
+      "bytes": 238587,
+      "sha256": "cec3d0fafb1e01aab2667914d1a1c99dd11971452043eecdabbcd72dc06577e1",
       "axe": {
         "violations_total": 0,
         "failing_violations": [],
@@ -290,8 +290,8 @@
         390,
         844
       ],
-      "revision": "e6fcbd1cbc162bfba0d27ca160d1e15dd2327ddb",
-      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "revision": "3a83385d987283052752b97e1e200339f477ef13",
+      "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "enabled",
       "assertion": "at 390px the publication lag receipt stays usable and omits subscriber addresses",
       "observations": {
@@ -306,11 +306,11 @@
           "block_controls_meet_24px": true
         },
         "no_horizontal_overflow": true,
-        "render_hash": "25c5ffec37b004b49925ac3576e22a6200f843dd027ebaf644bf3a15a1bd773e",
+        "render_hash": "635664b3f7dc27e9cdc1b8b54eb69a3f080a8d93e6d4f1358dd4a3aeb564448a",
         "fixture_vintage": "2026-08-10T13:08:13.019Z"
       },
-      "bytes": 241895,
-      "sha256": "0ecafdeca5a0024ca8b9461e76a8466e5e0c0ebe547836564989677f23e4dbc7",
+      "bytes": 241855,
+      "sha256": "0b85ff583e49507bf4068ef68cd506f770c3b42ec0b5948942607bd2d30f0204",
       "axe": {
         "violations_total": 0,
         "failing_violations": [],
@@ -325,8 +325,8 @@
         1440,
         900
       ],
-      "revision": "e6fcbd1cbc162bfba0d27ca160d1e15dd2327ddb",
-      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "revision": "3a83385d987283052752b97e1e200339f477ef13",
+      "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "enabled",
       "assertion": "at 1440px the publication lag receipt stays usable and omits subscriber addresses",
       "observations": {
@@ -341,11 +341,11 @@
           "block_controls_meet_24px": true
         },
         "no_horizontal_overflow": true,
-        "render_hash": "25c5ffec37b004b49925ac3576e22a6200f843dd027ebaf644bf3a15a1bd773e",
+        "render_hash": "635664b3f7dc27e9cdc1b8b54eb69a3f080a8d93e6d4f1358dd4a3aeb564448a",
         "fixture_vintage": "2026-08-10T13:08:13.019Z"
       },
-      "bytes": 256418,
-      "sha256": "2ea262aca2b3c27fdaf1fbc0f56c0aa167c71faa0ab5358f5d00ed1d5a92026d",
+      "bytes": 256755,
+      "sha256": "2da5c8a2918a155544e432a7e9d96ff2dcf18901764c547e6148c891806a4dc8",
       "axe": {
         "violations_total": 0,
         "failing_violations": [],
@@ -360,14 +360,14 @@
         390,
         844
       ],
-      "revision": "e6fcbd1cbc162bfba0d27ca160d1e15dd2327ddb",
-      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "revision": "3a83385d987283052752b97e1e200339f477ef13",
+      "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "enabled",
       "assertion": "at 390px the delivery lag receipt stays usable and omits subscriber addresses",
       "observations": {
         "failure_class": "delivery-lag",
-        "active_watches": "10",
-        "pending_outbox": "10",
+        "active_watches": "15",
+        "pending_outbox": "15",
         "target_size": {
           "total_controls": 3,
           "inline_text_links": 2,
@@ -376,11 +376,11 @@
           "block_controls_meet_24px": true
         },
         "no_horizontal_overflow": true,
-        "render_hash": "dd84af2fbdcf33f0d03d5044e41dc1ff96e560bf59cbb245e5558dae76564b93",
+        "render_hash": "dd0516b1f9ed24832ae9e00c3ed7cecca7d8fadb35d6a3d36bf4ba61139355c7",
         "fixture_vintage": "2026-08-10T13:08:13.019Z"
       },
-      "bytes": 230444,
-      "sha256": "ff9a45ebb8a55835571be1d502b5047d1523d73d3596f46f69cffa17007e0174",
+      "bytes": 230161,
+      "sha256": "88e025af30d4d189251e1144675a2d183085af5844c0ba2ccb567745d1874f2c",
       "axe": {
         "violations_total": 0,
         "failing_violations": [],
@@ -395,14 +395,14 @@
         1440,
         900
       ],
-      "revision": "e6fcbd1cbc162bfba0d27ca160d1e15dd2327ddb",
-      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "revision": "3a83385d987283052752b97e1e200339f477ef13",
+      "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "enabled",
       "assertion": "at 1440px the delivery lag receipt stays usable and omits subscriber addresses",
       "observations": {
         "failure_class": "delivery-lag",
-        "active_watches": "10",
-        "pending_outbox": "10",
+        "active_watches": "15",
+        "pending_outbox": "15",
         "target_size": {
           "total_controls": 3,
           "inline_text_links": 2,
@@ -411,11 +411,11 @@
           "block_controls_meet_24px": true
         },
         "no_horizontal_overflow": true,
-        "render_hash": "dd84af2fbdcf33f0d03d5044e41dc1ff96e560bf59cbb245e5558dae76564b93",
+        "render_hash": "dd0516b1f9ed24832ae9e00c3ed7cecca7d8fadb35d6a3d36bf4ba61139355c7",
         "fixture_vintage": "2026-08-10T13:08:13.019Z"
       },
-      "bytes": 243173,
-      "sha256": "3e8ae15444816685d5f5e646e2978bde443ae717a8b6b2c665a6de33c3e5cb15",
+      "bytes": 244113,
+      "sha256": "b0acc2f5f97d11b63efdd98b01521aa9948a2b78d97023f62c223b42b22d9b53",
       "axe": {
         "violations_total": 0,
         "failing_violations": [],
@@ -430,13 +430,13 @@
         390,
         844
       ],
-      "revision": "e6fcbd1cbc162bfba0d27ca160d1e15dd2327ddb",
-      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "revision": "3a83385d987283052752b97e1e200339f477ef13",
+      "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "enabled",
       "assertion": "at 390px the recovered receipt stays usable and omits subscriber addresses",
       "observations": {
         "failure_class": "none",
-        "active_watches": "10",
+        "active_watches": "15",
         "pending_outbox": "0",
         "target_size": {
           "total_controls": 3,
@@ -446,11 +446,11 @@
           "block_controls_meet_24px": true
         },
         "no_horizontal_overflow": true,
-        "render_hash": "98a275e298673dff38bbac2b8096cb0710e0003f5694bf49e6715feb7e23a5e0",
+        "render_hash": "301db70cd7a3de51779ba9781d3293d666c41227618ae2535f64d7f6671492ed",
         "fixture_vintage": "2026-08-10T13:08:13.019Z"
       },
-      "bytes": 207254,
-      "sha256": "b491182c5dfaa36d1d3eb8c4f6ca9bfef02c1d7bc8a818027be2d5d956347b73",
+      "bytes": 206979,
+      "sha256": "6f86a596a597bcf1513713dbfae671145e7124ee45aed89d28ecc9cbe5e49151",
       "axe": {
         "violations_total": 0,
         "failing_violations": [],
@@ -465,13 +465,13 @@
         1440,
         900
       ],
-      "revision": "e6fcbd1cbc162bfba0d27ca160d1e15dd2327ddb",
-      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "revision": "3a83385d987283052752b97e1e200339f477ef13",
+      "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "enabled",
       "assertion": "at 1440px the recovered receipt stays usable and omits subscriber addresses",
       "observations": {
         "failure_class": "none",
-        "active_watches": "10",
+        "active_watches": "15",
         "pending_outbox": "0",
         "target_size": {
           "total_controls": 3,
@@ -481,11 +481,11 @@
           "block_controls_meet_24px": true
         },
         "no_horizontal_overflow": true,
-        "render_hash": "98a275e298673dff38bbac2b8096cb0710e0003f5694bf49e6715feb7e23a5e0",
+        "render_hash": "301db70cd7a3de51779ba9781d3293d666c41227618ae2535f64d7f6671492ed",
         "fixture_vintage": "2026-08-10T13:08:13.019Z"
       },
-      "bytes": 220115,
-      "sha256": "79e480ee8bb45201bf60550eaebf185db49f6f9702744d8e445aab03d58c44d0",
+      "bytes": 220771,
+      "sha256": "11bab6a212e045bfb0a0b3b294b42e6f014293943e57867016a0c06b8f5a2eed",
       "axe": {
         "violations_total": 0,
         "failing_violations": [],
@@ -500,18 +500,18 @@
         390,
         844
       ],
-      "revision": "e6fcbd1cbc162bfba0d27ca160d1e15dd2327ddb",
-      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "revision": "3a83385d987283052752b97e1e200339f477ef13",
+      "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "disabled",
       "assertion": "at 390px the coverage receipt remains readable with scripting disabled",
       "observations": {
         "heading": "Matter coverage \u2014 healthy",
         "no_horizontal_overflow": true,
-        "render_hash": "d8bb21e7558bfee6e07fc94e4cb5e1087d9e5bad06eb45f352f363296357c2a9",
+        "render_hash": "f3dbfa52da3e44408b98f7da2b967c2040c032498e8d50d33601f634ed090c68",
         "fixture_vintage": "2026-08-10T13:08:13.019Z"
       },
-      "bytes": 229132,
-      "sha256": "ed07a5e8cc5dd660fd5aebccf735353f158eb856b42ecab5b51f6157e117642b",
+      "bytes": 228847,
+      "sha256": "7da90bfb7f0517a5076700ad8b3bf1ebd807a7c79d7e902c0208f5a1246f942e",
       "axe": {
         "violations_total": null,
         "failing_violations": [],
@@ -527,18 +527,18 @@
         1440,
         900
       ],
-      "revision": "e6fcbd1cbc162bfba0d27ca160d1e15dd2327ddb",
-      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "revision": "3a83385d987283052752b97e1e200339f477ef13",
+      "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "disabled",
       "assertion": "at 1440px the coverage receipt remains readable with scripting disabled",
       "observations": {
         "heading": "Matter coverage \u2014 healthy",
         "no_horizontal_overflow": true,
-        "render_hash": "d8bb21e7558bfee6e07fc94e4cb5e1087d9e5bad06eb45f352f363296357c2a9",
+        "render_hash": "f3dbfa52da3e44408b98f7da2b967c2040c032498e8d50d33601f634ed090c68",
         "fixture_vintage": "2026-08-10T13:08:13.019Z"
       },
-      "bytes": 241781,
-      "sha256": "0b2f90eef30761d2a747461d55984111271d9a8660e95f09acc0dd58075cab87",
+      "bytes": 242735,
+      "sha256": "7e45f287f7d402ecc9a97e694a560375957048c3bb1fc4722cbedd34e1d01937",
       "axe": {
         "violations_total": null,
         "failing_violations": [],
@@ -554,8 +554,8 @@
         390,
         844
       ],
-      "revision": "e6fcbd1cbc162bfba0d27ca160d1e15dd2327ddb",
-      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "revision": "3a83385d987283052752b97e1e200339f477ef13",
+      "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "enabled",
       "assertion": "at 390px keyboard activation opens recovery details and return remains a native focus target",
       "observations": {
@@ -568,11 +568,11 @@
           "block_controls_meet_24px": true
         },
         "no_horizontal_overflow": true,
-        "render_hash": "a641c07671a2e8bf2ce8bb2fcf4dbae1cded80a8db91257a461173992ef25182",
+        "render_hash": "a21461e6db791226339ac73505cb2dc3b7dfdab702f9262a8c278bcb6b94dae1",
         "fixture_vintage": "2026-08-10T13:08:13.019Z"
       },
-      "bytes": 270812,
-      "sha256": "ee69879499352b9184574d53667b708c104e07a52c65ad0afc5d9c4d65bc6b3f",
+      "bytes": 270524,
+      "sha256": "40afcc2faf4167f4257adc8779ff76804faad78c409f0012fcc1e6f491ce48f5",
       "axe": {
         "violations_total": 0,
         "failing_violations": [],
@@ -587,8 +587,8 @@
         1440,
         900
       ],
-      "revision": "e6fcbd1cbc162bfba0d27ca160d1e15dd2327ddb",
-      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "revision": "3a83385d987283052752b97e1e200339f477ef13",
+      "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "enabled",
       "assertion": "at 1440px keyboard activation opens recovery details and return remains a native focus target",
       "observations": {
@@ -601,11 +601,11 @@
           "block_controls_meet_24px": true
         },
         "no_horizontal_overflow": true,
-        "render_hash": "a641c07671a2e8bf2ce8bb2fcf4dbae1cded80a8db91257a461173992ef25182",
+        "render_hash": "a21461e6db791226339ac73505cb2dc3b7dfdab702f9262a8c278bcb6b94dae1",
         "fixture_vintage": "2026-08-10T13:08:13.019Z"
       },
-      "bytes": 287314,
-      "sha256": "7c7df6a1e9f61a320cddb7b5ef420e8077bf0eafa94b8338d005bed5f33b84db",
+      "bytes": 288294,
+      "sha256": "d537b2abf8f93b4f7130b712f36a1f0ec2cc038e188329e90f921b7453d8dc13",
       "axe": {
         "violations_total": 0,
         "failing_violations": [],
@@ -620,8 +620,8 @@
         390,
         844
       ],
-      "revision": "e6fcbd1cbc162bfba0d27ca160d1e15dd2327ddb",
-      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "revision": "3a83385d987283052752b97e1e200339f477ef13",
+      "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "enabled",
       "assertion": "at 390px zoomed to 200% the coverage receipt reflows without horizontal overflow",
       "observations": {
@@ -635,11 +635,11 @@
         },
         "heading_present": true,
         "zoom": "200%",
-        "render_hash": "d8bb21e7558bfee6e07fc94e4cb5e1087d9e5bad06eb45f352f363296357c2a9",
+        "render_hash": "f3dbfa52da3e44408b98f7da2b967c2040c032498e8d50d33601f634ed090c68",
         "fixture_vintage": "2026-08-10T13:08:13.019Z"
       },
-      "bytes": 646715,
-      "sha256": "1a1a70d8b623c6a940dc421f8db5f741ad3ad55db4825c04d64b692e930a371e",
+      "bytes": 645721,
+      "sha256": "1dbb7b3ad61a951263ed1c5136a5f29c8cfb1e718930142d9790767edd7c2c42",
       "axe": {
         "violations_total": 0,
         "failing_violations": [],
@@ -654,8 +654,8 @@
         1440,
         900
       ],
-      "revision": "e6fcbd1cbc162bfba0d27ca160d1e15dd2327ddb",
-      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "revision": "3a83385d987283052752b97e1e200339f477ef13",
+      "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "enabled",
       "assertion": "at 1440px zoomed to 200% the coverage receipt reflows without horizontal overflow",
       "observations": {
@@ -669,11 +669,11 @@
         },
         "heading_present": true,
         "zoom": "200%",
-        "render_hash": "d8bb21e7558bfee6e07fc94e4cb5e1087d9e5bad06eb45f352f363296357c2a9",
+        "render_hash": "f3dbfa52da3e44408b98f7da2b967c2040c032498e8d50d33601f634ed090c68",
         "fixture_vintage": "2026-08-10T13:08:13.019Z"
       },
-      "bytes": 530472,
-      "sha256": "8f7aa56f7f8c295dada90c44c6fb727ad3d3f7fe8f153832596356590c71d494",
+      "bytes": 529578,
+      "sha256": "7e4ce9f9276503441358c3ab9be131445c81187749cf35052e859b993efd9458",
       "axe": {
         "violations_total": 0,
         "failing_violations": [],

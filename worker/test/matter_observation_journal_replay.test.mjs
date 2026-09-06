@@ -11,6 +11,8 @@
 
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
+
+import { observedSnapshot } from "../../site/matter_coverage_recovery.mjs";
 import test from "node:test";
 
 import {
@@ -22,9 +24,11 @@ import {
 } from "../src/lib/matter_observation_journal.mjs";
 import { matterJournalDatabase } from "./helpers/matter_observation_d1.mjs";
 
-const snapshot = JSON.parse(
+// Replayed as of the snapshot's own vintage, the same restriction the frozen
+// coverage oracle applies: a meeting scheduled after it has no outcome yet.
+const snapshot = observedSnapshot(JSON.parse(
   readFileSync(new URL("../../site/data/meeting_outcomes_snapshot.json", import.meta.url), "utf8"),
-);
+));
 
 function expectedFromEventPairs(source) {
   const hearings = new Set();
@@ -56,9 +60,9 @@ test("replay of the frozen snapshot is idempotent against an event-pair oracle",
   const env = { DB };
   const first = await retainSnapshotMatterObservations(env, snapshot, { acquiredAt: "2026-08-10T13:08:13.019Z" });
   const second = await retainSnapshotMatterObservations(env, snapshot, { acquiredAt: "2026-08-10T18:00:00.000Z" });
-  assert.equal(expected.matter_count, 66);
-  assert.equal(expected.appearance_count, 76);
-  assert.equal(expected.reference_count, 78);
+  assert.equal(expected.matter_count, 64);
+  assert.equal(expected.appearance_count, 79);
+  assert.equal(expected.reference_count, 81);
   assert.equal(first.after.matter_count, expected.matter_count);
   assert.equal(first.after.appearance_count, expected.appearance_count);
   assert.deepEqual(second.after.observation_ids, first.after.observation_ids);
