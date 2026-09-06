@@ -1,8 +1,8 @@
 {
   "schema": "cityscroll.architecture-evidence-entry.v1",
-  "id": "cityscroll-resident-ux/ru-01-board-documents-without-debug-dump",
+  "id": "cityscroll-engineering/board-documents-without-debug-dump",
   "status": "implemented",
-  "fingerprint": "ru-01-board-documents-without-debug-dump.v1",
+  "fingerprint": "board-documents-without-debug-dump.v1",
   "updated_at": "2026-09-05T00:00:00.000Z",
   "projections": [
     {

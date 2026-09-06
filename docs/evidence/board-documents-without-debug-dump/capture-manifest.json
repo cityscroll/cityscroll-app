@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "card": "cityscroll-resident-ux/ru-01-board-documents-without-debug-dump",
+  "card": "cityscroll-engineering/board-documents-without-debug-dump",
   "capture_mode": "local_node_playwright_axe_static_render",
   "repository_revision": "0fa2bdfedecaa93061e72e823bcde1f05df4ced9",
   "note": "renderCommunityBoardConstellationDocument() rendered locally via node for three synthetic manhattan-cb-03 fixtures (dense: 276 unjoined source records reproducing the live-observed Unjoined source records (diagnostic) population; sparse: a single record; documents_only: three records with no accepted proceedings). axe-core (test/functional/assets/axe.min.js) ran against each rendered document at both review widths using the same failing-violation classification as test/functional/11_accessibility.py (a11y_gate.py: critical/serious impact, plus the WCAG 2.2 target-size ratchet). No live Worker/D1 backend was running.",
