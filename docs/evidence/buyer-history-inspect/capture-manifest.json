@@ -3,6 +3,7 @@
   "note": "Textual capture manifest. No image binaries are committed; local captures stay under the ignored .artifacts/ path.",
   "route": "/browse/contracts/?mode=award&ap_agency=<buyer>&ap_fy=<registration fiscal year>&ap_industry=<industry>&ap_award_method=<method>&ap_cases=1&ap_inspect=<contract id>",
   "surface": "site/buyer_contracting_history_view.mjs #buyer-history-inspect",
+  "revision": "74bf2400d1ab3f1c39011c9f8dd08317a979b15b",
   "runner": "test/functional/30_buyer_contracting_history.py",
   "data_vintage": "2026-09-06 Checkbook NYC Contracts / registered / expense / fiscal_year=2026, bounded retained subset plus retained exact destinations for CT184620268805555",
   "inputs": [
