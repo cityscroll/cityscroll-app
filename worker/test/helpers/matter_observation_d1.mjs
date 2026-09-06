@@ -3,6 +3,7 @@ import { DatabaseSync } from "node:sqlite";
 
 const SOURCE_SCHEMA = readFileSync(new URL("../../migrations/0008_source_records.sql", import.meta.url), "utf8");
 const JOURNAL_SCHEMA = readFileSync(new URL("../../migrations/0027_matter_observation_journal.sql", import.meta.url), "utf8");
+const REFRESH_SCHEMA = readFileSync(new URL("../../migrations/0028_matter_exact_refresh.sql", import.meta.url), "utf8");
 
 export function d1FromSqlite(db, { failNextBatch = false } = {}) {
   const state = { failNextBatch };
@@ -53,9 +54,10 @@ export function d1FromSqlite(db, { failNextBatch = false } = {}) {
   };
 }
 
-export function matterJournalDatabase({ journal = true, observations = true } = {}) {
+export function matterJournalDatabase({ journal = true, observations = true, refresh = true } = {}) {
   const sqlite = new DatabaseSync(":memory:");
   if (observations) sqlite.exec(SOURCE_SCHEMA);
   if (journal) sqlite.exec(JOURNAL_SCHEMA);
+  if (refresh) sqlite.exec(REFRESH_SCHEMA);
   return { sqlite, DB: d1FromSqlite(sqlite) };
 }

@@ -7,7 +7,9 @@
 //
 // Materialization is polite: one paginated Events fetch per run, then a nested
 // EventItems fetch ONLY for events that the strict notice→event join matched,
-// plus a bounded best-effort roll-call vote fetch. No per-user live fan-out.
+// plus a bounded best-effort roll-call vote fetch. Exact-matter refresh is a
+// separate scheduled path over a roster; it never runs from a resident request.
+// No per-user live fan-out.
 //
 // Person-level vote rows are retained (not only aye/nay tallies) so the official
 // entity family can form votes_on edges naming the members who cast each vote.
@@ -30,6 +32,181 @@ export const MAX_ATTACHMENT_PROBES_PER_EVENT = 8;
 export const MAX_TOTAL_ATTACHMENT_PROBES = 320;
 export const MATTERS_PAGE_SIZE = 200;
 export const MATTERS_MAX_PAGES = 20;
+export const MATTER_HISTORIES_PAGE_SIZE = 100;
+export const MATTER_EVENT_ITEMS_PAGE_SIZE = 100;
+
+export function parseRetryAfter(header, now = new Date()) {
+  if (header == null || header === "") return null;
+  const trimmed = String(header).trim();
+  if (/^\d+$/.test(trimmed)) {
+    return new Date(now.getTime() + Number(trimmed) * 1000).toISOString();
+  }
+  const parsed = Date.parse(trimmed);
+  return Number.isFinite(parsed) ? new Date(parsed).toISOString() : null;
+}
+
+/**
+ * One bounded Legistar page with explicit failure kinds. Callers must not log
+ * the authed URL. Resident reads must not call this.
+ */
+export async function fetchLegistarPage({
+  path,
+  token,
+  fetchImpl = fetch,
+  params = {},
+  skip = 0,
+  top = 100,
+  filter,
+  orderby,
+  timeoutMs = 15000,
+  now = new Date(),
+} = {}) {
+  if (!token) {
+    return { ok: false, kind: "token-absent", status: 0, rows: [], retryAfter: null, complete: false };
+  }
+  const url = authedUrl(path, token, {
+    $top: String(top),
+    $skip: String(skip),
+    ...(orderby ? { $orderby: orderby } : {}),
+    ...(filter ? { $filter: filter } : {}),
+    ...params,
+  });
+  const ctl = new AbortController();
+  const timer = setTimeout(() => ctl.abort(), timeoutMs);
+  try {
+    const res = await fetchImpl(url, {
+      signal: ctl.signal,
+      headers: { Accept: "application/json", "User-Agent": "cityscroll-legistar/1.0" },
+    });
+    if (res.status === 429) {
+      return {
+        ok: false,
+        kind: "rate-limited",
+        status: 429,
+        rows: [],
+        retryAfter: parseRetryAfter(res.headers?.get?.("Retry-After"), now),
+        complete: false,
+      };
+    }
+    if (res.status === 403) {
+      return { ok: false, kind: "forbidden", status: 403, rows: [], retryAfter: null, complete: false };
+    }
+    if (!res.ok) {
+      return { ok: false, kind: "http", status: res.status, rows: [], retryAfter: null, complete: false };
+    }
+    let body;
+    try {
+      body = await res.json();
+    } catch {
+      return { ok: false, kind: "malformed", status: res.status, rows: [], retryAfter: null, complete: false };
+    }
+    const rows = Array.isArray(body)
+      ? body
+      : Array.isArray(body?.value)
+        ? body.value
+        : Array.isArray(body?.d)
+          ? body.d
+          : (body && typeof body === "object")
+            ? [body]
+            : null;
+    if (!rows) {
+      return { ok: false, kind: "malformed", status: res.status, rows: [], retryAfter: null, complete: false };
+    }
+    return {
+      ok: true,
+      kind: "ok",
+      status: res.status,
+      rows,
+      retryAfter: null,
+      complete: rows.length < Number(top),
+    };
+  } catch (error) {
+    if (error?.name === "AbortError" || /abort/i.test(String(error?.message || error))) {
+      return { ok: false, kind: "timeout", status: 0, rows: [], retryAfter: null, complete: false };
+    }
+    return {
+      ok: false,
+      kind: "network",
+      status: 0,
+      rows: [],
+      retryAfter: null,
+      complete: false,
+      message: String(error?.message || error),
+    };
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+export async function fetchLegistarMatterHistoriesPage({
+  matterId,
+  token,
+  fetchImpl = fetch,
+  skip = 0,
+  top = MATTER_HISTORIES_PAGE_SIZE,
+  timeoutMs = 15000,
+  now = new Date(),
+} = {}) {
+  if (!matterId) {
+    return { ok: false, kind: "malformed", status: 0, rows: [], retryAfter: null, complete: false };
+  }
+  return fetchLegistarPage({
+    path: `Matters/${encodeURIComponent(matterId)}/Histories`,
+    token,
+    fetchImpl,
+    skip,
+    top,
+    orderby: "MatterHistoryActionDate asc,MatterHistoryId asc",
+    timeoutMs,
+    now,
+  });
+}
+
+export async function fetchLegistarEventItemsByMatterPage({
+  matterId,
+  token,
+  fetchImpl = fetch,
+  skip = 0,
+  top = MATTER_EVENT_ITEMS_PAGE_SIZE,
+  timeoutMs = 15000,
+  now = new Date(),
+} = {}) {
+  if (!matterId) {
+    return { ok: false, kind: "malformed", status: 0, rows: [], retryAfter: null, complete: false };
+  }
+  return fetchLegistarPage({
+    path: "EventItems",
+    token,
+    fetchImpl,
+    skip,
+    top,
+    filter: `EventItemMatterId eq ${Number(matterId)}`,
+    orderby: "EventItemId asc",
+    timeoutMs,
+    now,
+  });
+}
+
+export async function fetchLegistarEventById({
+  eventId,
+  token,
+  fetchImpl = fetch,
+  timeoutMs = 15000,
+  now = new Date(),
+} = {}) {
+  if (!eventId) {
+    return { ok: false, kind: "malformed", status: 0, rows: [], retryAfter: null, complete: false };
+  }
+  return fetchLegistarPage({
+    path: `Events/${encodeURIComponent(eventId)}`,
+    token,
+    fetchImpl,
+    skip: 0,
+    top: 1,
+    timeoutMs,
+    now,
+  });
+}
 
 /**
  * Stitch the token into a URL without ever materializing it in a log line.
