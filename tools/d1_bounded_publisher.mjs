@@ -19,10 +19,10 @@
  *            for the existing rebuild/upsert paths. Statement text is never
  *            duplicated here.
  *   execute  publishBounded — applies rendered batches through an injected
- *            executor, one batch per D1 transaction, re-checking the
- *            publication generation fence (tools/d1_generation_fence.mjs)
- *            before every batch and writing a checkpoint receipt after every
- *            committed one.
+ *            executor, one batch per D1 transaction, settling the publication
+ *            generation fence (tools/d1_generation_fence.mjs) before any write
+ *            and re-checking it before every subsequent batch, and writing a
+ *            checkpoint receipt after every committed one.
  *
  * Every operation is keyed (natural or companion identity, per the manifest),
  * so replaying an already-applied batch through the same upsert/delete
@@ -266,9 +266,29 @@ function initialReceipt({ generation, holder, fingerprint, manifestFingerprint, 
     completed_batches: [],
     next_batch_id: null,
     status: "in_progress",
+    fence: null,
     stopped_reason: null,
     rollback: null,
   };
+}
+
+/**
+ * Record one fence decision on the receipt. A rejection is terminal for this
+ * run and names the stale generation alongside the generation that now holds
+ * the fence, so an overlap can be diagnosed from the receipt alone.
+ */
+function recordFenceRejection(receipt, boundary, batch) {
+  const outcome = boundary.outcome || {};
+  receipt.status = "stopped_fenced";
+  receipt.fence = {
+    ...outcome,
+    batch_id: batch ? batch.batch_id : null,
+    batches_applied: receipt.completed_batches.length,
+  };
+  receipt.stopped_reason = `generation ${receipt.generation} is fenced by generation ${outcome.current_generation ?? "unknown"}`
+    + `${batch ? ` before batch ${batch.batch_id}` : " before any write"} (${outcome.reason || "fenced"})`;
+  receipt.next_batch_id = batch ? batch.batch_id : receipt.next_batch_id;
+  return receipt;
 }
 
 function resumeIndex(batches, receipt) {
@@ -285,9 +305,11 @@ function sleep(ms) {
 /**
  * Apply every batch of a bounded plan, one D1 transaction at a time, resuming
  * from an existing checkpoint at `checkpointPath` when one names this same
- * generation and manifest fingerprint. The generation fence is re-checked
- * before every batch (checkGenerationCommit); a fenced result stops without
- * writing. A transient failure retries with bounded backoff and a bounded
+ * generation and manifest fingerprint. The generation fence is settled before
+ * the first batch and re-checked before every subsequent one
+ * (checkGenerationCommit); a fenced result stops without writing and leaves a
+ * receipt naming the stale generation and the generation that fenced it. A
+ * transient failure retries with bounded backoff and a bounded
  * attempt count; a permanent failure (or a transient one that exhausts its
  * attempts) stops the generation immediately, leaving the checkpoint naming
  * the first unfinished batch so a later call with the same arguments resumes
@@ -322,16 +344,27 @@ export async function publishBounded({
   }
   if (receipt.status === "complete") return receipt;
 
+  // The fence is settled once before any batch is rendered or executed, so a
+  // stale generation is rejected without a single visible mutation — including
+  // when its plan is empty or its checkpoint would otherwise resume mid-way.
+  const gate = await checkGenerationCommit({ store: fenceStore, generation: batchPlan.generation, holder, fingerprint });
+  if (gate.fenced) {
+    recordFenceRejection(receipt, gate, batchPlan.batches[resumeIndex(batchPlan.batches, receipt)] || null);
+    writeCheckpoint(checkpointPath, receipt);
+    return receipt;
+  }
+  receipt.fence = gate.outcome || null;
+
   const entryCache = new Map();
   const startIndex = resumeIndex(batchPlan.batches, receipt);
   for (let index = startIndex; index < batchPlan.batches.length; index += 1) {
     const batch = batchPlan.batches[index];
 
+    // A long publication re-checks the fence between batches: a generation that
+    // is superseded partway through stops here rather than continuing to write.
     const boundary = await checkGenerationCommit({ store: fenceStore, generation: batchPlan.generation, holder, fingerprint });
     if (boundary.fenced) {
-      receipt.status = "stopped_fenced";
-      receipt.stopped_reason = `generation fenced before batch ${batch.batch_id}`;
-      receipt.next_batch_id = batch.batch_id;
+      recordFenceRejection(receipt, boundary, batch);
       writeCheckpoint(checkpointPath, receipt);
       return receipt;
     }
@@ -381,7 +414,7 @@ export function recordRollback({ checkpointPath, reason, now = () => Date.now() 
   const receipt = loadCheckpoint(checkpointPath) || {
     schema: D1_BOUNDED_PUBLISH_RECEIPT_SCHEMA, generation: null, holder: null, fingerprint: null,
     manifest_fingerprint: null, total_batches: 0, completed_batches: [], next_batch_id: null,
-    status: "rolled_back", stopped_reason: null, rollback: null,
+    status: "rolled_back", fence: null, stopped_reason: null, rollback: null,
   };
   receipt.rollback = { at: new Date(now()).toISOString(), reason: String(reason).trim() };
   writeCheckpoint(checkpointPath, receipt);
