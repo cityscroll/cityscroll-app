@@ -17,6 +17,7 @@ import {
 } from "../worker/src/lib/subsidy_lifecycle.mjs";
 import { buildMeetingOutcomes } from "../worker/src/lib/meeting_outcomes.mjs";
 import { officialSourceLink } from "../site/affordance_grammar.mjs";
+import { resolveMatterDestination } from "../site/legislative_matter_availability.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const src = SITE_SOURCE;
@@ -63,7 +64,7 @@ function escUiHtml(s) {
 }
 
 const sandbox = new Function(
-  "t", "tn", "window", "money", "fdate", "cleanText", "vendorStem", "escUiHtml", "officialSourceLink",
+  "t", "tn", "window", "money", "fdate", "cleanText", "vendorStem", "escUiHtml", "officialSourceLink", "resolveMatterDestination",
   "const v=x=>escUiHtml(x);\n" +
   extractConst("escUiHtml").replace(/^const escUiHtml = /, "const escUiHtmlLocal = ") + "\n" +
   // Prefer the real extracted escUiHtml if present; fall back to injected one.
@@ -162,11 +163,11 @@ const sandbox = new Function(
 
 let helpers;
 try {
-  helpers = sandbox(t, tn, windowStub, money, fdate, cleanText, vendorStem, escUiHtml, officialSourceLink);
+  helpers = sandbox(t, tn, windowStub, money, fdate, cleanText, vendorStem, escUiHtml, officialSourceLink, resolveMatterDestination);
 } catch (err) {
   // Fallback: extract with simpler sandbox that injects all deps as args
   const simple = new Function(
-    "t", "tn", "money", "fdate", "cleanText", "vendorStem", "escUiHtml", "officialSourceLink",
+    "t", "tn", "money", "fdate", "cleanText", "vendorStem", "escUiHtml", "officialSourceLink", "resolveMatterDestination",
     `
     const extSR = () => '<span class="sr-only"> (opens in new tab)</span>';
     const REQ_URL = (id) => 'https://a856-cityrecord.nyc.gov/RequestDetail/' + encodeURIComponent(id);
@@ -259,7 +260,7 @@ try {
     };
     `
   );
-  helpers = simple(t, tn, money, fdate, cleanText, vendorStem, escUiHtml, officialSourceLink);
+  helpers = simple(t, tn, money, fdate, cleanText, vendorStem, escUiHtml, officialSourceLink, resolveMatterDestination);
 }
 
 const {

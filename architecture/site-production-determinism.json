@@ -295,6 +295,7 @@
     "site/legacy_hash_forward.mjs",
     "site/legal_change_edges.mjs",
     "site/legislative_hearing_consequence.mjs",
+    "site/legislative_matter_availability.mjs",
     "site/legislative_matter_calendar.mjs",
     "site/legislative_matter_document.mjs",
     "site/list_entity_pivots.mjs",

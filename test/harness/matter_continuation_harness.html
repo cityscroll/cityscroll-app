@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Matter continuation — fixture harness</title>
+<meta name="robots" content="noindex, nofollow">
+<!--
+  Repository-native test harness for the shared matter-continuation
+  availability rule. Not a shipped page: it exists only to give the headless
+  evidence-capture script a neutral surface carrying the exact markup a
+  materialized meeting document emits. It is never linked from the public site
+  and carries no domain content of its own.
+
+  The continuation is server-rendered in production, so this harness is a
+  template rather than a mounting point: tools/capture_matter_continuation_evidence.py
+  renders each specimen with the real module (tools/render_matter_continuation_fixtures.mjs)
+  and substitutes it for the CONTINUATION_SECTION marker below, writing the
+  filled page to an ignored local directory. There is no script on this page at
+  all, which is what makes the without-scripting specimen meaningful: what the
+  capture drives is what a reader with scripting disabled receives.
+-->
+<style>
+  :root { color-scheme: light; }
+  body { margin: 0; padding: 16px; background: #f5f6f8; color: #16202c; font: 16px/1.5 ui-sans-serif, system-ui, sans-serif; }
+  main { max-width: 900px; margin: 0 auto; }
+  h1 { font-size: 1.35rem; margin: 0 0 4px; }
+  h2 { font-size: 1.1rem; margin: 0 0 8px; }
+  .meeting-scope { font: 13px/1.4 ui-monospace, SFMono-Regular, monospace; color: #3c4757; margin: 0 0 16px; }
+  .meeting-matter-continuation { background: #fff; border: 1px solid #d6dae1; border-radius: 10px; padding: 16px; }
+  .meeting-matter-list { list-style: decimal; margin: 0; padding-left: 20px; }
+  .meeting-matter { padding: 12px 0; border-top: 1px solid #e7eaee; display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: flex-start; justify-content: space-between; }
+  .meeting-matter:first-child { border-top: 0; }
+  .meeting-matter > div { flex: 1 1 260px; min-width: 0; }
+  .meeting-matter-title { margin: 4px 0 0; color: #435061; }
+  .meeting-matter-link { color: #144a8c; }
+  .node-action { display: inline-block; min-height: 44px; min-width: 44px; padding: 10px 14px; border: 1px solid #144a8c; border-radius: 8px; color: #144a8c; text-decoration: none; }
+  .node-action.primary { background: #144a8c; color: #fff; }
+  .node-action:focus-visible, a:focus-visible { outline: 3px solid #b8471f; outline-offset: 2px; }
+  .node-muted { color: #435061; margin: 0; }
+  .meeting-matter-unavailable { flex: 1 1 260px; }
+  .harness-return { display: inline-block; margin-top: 16px; min-height: 44px; padding: 10px 0; }
+</style>
+</head>
+<body>
+<main id="page" data-harness-fixture="FIXTURE_NAME" data-harness-notice="FIXTURE_NOTICE">
+<h1>Public hearing</h1>
+<p class="meeting-scope" data-harness-scope="FIXTURE_SCOPE">Meeting scope: FIXTURE_SCOPE</p>
+CONTINUATION_SECTION
+<a class="harness-return" id="destination" href="destination.html">Leave for a full page</a>
+</main>
+</body>
+</html>

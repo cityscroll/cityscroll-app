@@ -1,3 +1,5 @@
+import { resolveMatterDestination } from "../legislative_matter_availability.mjs";
+
 function isMeetingOutcomesEligible(r){
   const section = r.section_name || "";
   if(section === "Public Hearings and Meetings") return true;
@@ -537,14 +539,15 @@ function meetingOutcomesHTML(record, notice, phaseTools){
       : "meeting_outcomes_badge_other";
     const shortTitle = meetingMatterShortTitle(entry);
     const fileLine = entry.matter_file || entry.matter_id || "";
-    // Increment B publishes one exact static matter route; other matter IDs
-    // retain their existing Legistar destination until a read model exists.
-    const publishedMatterHref = String(entry.matter_id == null ? "" : entry.matter_id).trim() === "78605"
-      ? "/matters/78605/" : null;
-    const matterHref = publishedMatterHref || entry.matter_url || matterDetailUrl(entry.matter_id) || "";
-    const matterExternal = !publishedMatterHref;
+    // One availability rule, shared with every other matter surface: a matter
+    // with a published local history opens that history, and any other exact
+    // matter opens its own official record. No surface names a published id
+    // inline, and none advertises a local route that does not exist.
+    const destination = resolveMatterDestination(entry);
+    const matterHref = destination.href || "";
+    const matterExternal = destination.external;
     const fileHTML = matterHref&&fileLine
-      ? `<a class="meeting-file meeting-matter-link${matterExternal ? "" : " ui-constellation-link"}" lang="en" dir="ltr" href="${escUiHtml(matterHref)}"${matterExternal ? ` ${EXT_ATTRS}` : ""} data-matter-id="${escUiHtml(entry.matter_id || "")}">${escUiHtml(fileLine)}${matterExternal ? extSR() : ""}</a>`
+      ? `<a class="meeting-file meeting-matter-link${matterExternal ? "" : " ui-constellation-link"}" lang="en" dir="ltr" href="${escUiHtml(matterHref)}"${matterExternal ? ` ${EXT_ATTRS}` : ""} data-matter-id="${escUiHtml(entry.matter_id || "")}" data-matter-availability="${escUiHtml(destination.availability)}">${escUiHtml(fileLine)}${matterExternal ? extSR() : ""}</a>`
       : (fileLine?`<div class="meeting-file" lang="en" dir="ltr">${escUiHtml(fileLine)}</div>`:"");
     const subBits = [];
     if(entry.agendaNumber) subBits.push("#" + entry.agendaNumber);

@@ -1,14 +1,7 @@
 import { officialSourceDisclosure, officialSourceLink } from "./affordance_grammar.mjs";
-import legislativeMatterLookup from "./data/legislative_matter_lookup.json" with { type: "json" };
+import { resolveMatterDestination } from "./legislative_matter_availability.mjs";
 
 export const MEETING_OUTCOMES_SNAPSHOT_SCHEMA = "cityscroll.meeting_outcomes_snapshot.v1";
-
-function matterCityScrollHref(matterId) {
-  const id = String(matterId ?? "").trim();
-  return /^\d+$/.test(id) && Object.hasOwn(legislativeMatterLookup?.matters || {}, id)
-    ? `/matters/${encodeURIComponent(id)}/`
-    : null;
-}
 
 function clean(value) {
   return String(value ?? "").replace(/\s+/g, " ").trim();
@@ -199,10 +192,21 @@ export function renderMeetingOutcomesFirstPaint(snapshotOrRecord, requestId) {
       : "";
     const vote = `${tally}${rollCallChip}`;
     const fileLabel = matter.matter_file || matter.matter_id;
-    const matterHref = matterCityScrollHref(matter.matter_id);
-    const file = matterHref
-      ? `<a class="meeting-file meeting-matter-link ui-constellation-link" href="${esc(matterHref)}" data-matter-id="${esc(matter.matter_id)}">${esc(fileLabel)}</a>`
-      : `<span class="meeting-file">${esc(fileLabel)}</span>`;
+    // The same availability rule every other matter surface uses: a published
+    // local history, this matter's own official address, or plain text.
+    const destination = resolveMatterDestination(matter);
+    const file = destination.availability === "local_history"
+      ? `<a class="meeting-file meeting-matter-link ui-constellation-link" href="${esc(destination.href)}" data-matter-id="${esc(matter.matter_id)}" data-matter-availability="local_history">${esc(fileLabel)}</a>`
+      : destination.availability === "official_record"
+        ? officialSourceLink({
+          href: destination.href,
+          label: fileLabel,
+          className: "meeting-file meeting-matter-link",
+          attributes: { "data-matter-id": matter.matter_id, "data-matter-availability": "official_record" },
+          escape: esc,
+          newTabLabel: "(opens in new tab)",
+        })
+        : `<span class="meeting-file" data-matter-availability="unavailable">${esc(fileLabel)}</span>`;
     return `<li class="meeting-matter" data-outcome-bucket="${outcomeBucket(label)}">
       <div class="meeting-matter-main"><div>${file}<p class="meeting-title">${esc(matter.title)}</p>${vote}</div>
       ${label ? `<span class="meeting-badge meeting-badge--${outcomeBucket(label)}">${esc(label)}</span>` : ""}</div>

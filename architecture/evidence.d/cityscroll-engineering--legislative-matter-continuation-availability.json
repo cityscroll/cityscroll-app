@@ -1,0 +1,45 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/legislative-matter-continuation-availability",
+  "status": "implemented",
+  "fingerprint": "legislative-matter-continuation-availability.v1",
+  "updated_at": "2026-09-06T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "legislative-matter-availability-contract",
+      "path": "site/legislative_matter_availability.mjs"
+    },
+    {
+      "id": "council-hearing-matter-continuation",
+      "path": "site/council_hearing_matter_continuation.mjs"
+    },
+    {
+      "id": "council-hearing-action-path-continuation-label",
+      "path": "site/council_hearing_action_path.mjs"
+    },
+    {
+      "id": "meeting-outcomes-first-paint-destinations",
+      "path": "site/meeting_outcomes_static.mjs"
+    },
+    {
+      "id": "meeting-outcomes-client-destinations",
+      "path": "site/app/meetings.mjs"
+    },
+    {
+      "id": "legislative-matter-continuation-availability-tests",
+      "path": "test/legislative_matter_continuation_availability.test.mjs"
+    },
+    {
+      "id": "legislative-matter-continuation-evidence-harness",
+      "path": "test/harness/matter_continuation_harness.html"
+    },
+    {
+      "id": "legislative-matter-continuation-evidence-capture",
+      "path": "tools/capture_matter_continuation_evidence.py"
+    },
+    {
+      "id": "legislative-matter-continuation-fixture-renderer",
+      "path": "tools/render_matter_continuation_fixtures.mjs"
+    }
+  ]
+}

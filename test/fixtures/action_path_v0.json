@@ -32,7 +32,7 @@
     "continuation": {
       "kind": "subject",
       "subject_ref": "matter:79200",
-      "label": "Follow what happens next",
+      "label": "View official matter record",
       "reason": "This hearing has an exact Council matter join."
     },
     "evidence": [
@@ -54,7 +54,7 @@
       "deadline": null
     },
     "continuation": {
-      "label": "Choose a matter to follow",
+      "label": "Choose a matter to open",
       "reason": "This hearing has multiple exact matter joins.",
       "candidates": [
         { "kind": "subject", "subject_ref": "matter:79201" },
