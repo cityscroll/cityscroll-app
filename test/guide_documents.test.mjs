@@ -88,6 +88,19 @@ test("the tutorial shows its type, purpose, reader question, review date and a w
   for (const source of tutorial.sources) assert.ok(tutorialHtml.includes(`href="${source.href}"`));
 });
 
+test("no guide page prints a field name the implementation uses", () => {
+  // The resident-surface catalog treats a snake_case token in rendered reader
+  // copy as an implementation-schema leak, and the guide's own rule is the same:
+  // a reader should never need to know what the code calls a thing. Naming a
+  // query parameter in prose broke this once, so it is checked for every page
+  // rather than for a list of words someone remembered.
+  const snakeCase = /\b[a-z]+(?:_[a-z0-9]+)+\b/g;
+  for (const [path, html] of documents) {
+    const leaked = [...new Set(textOf(html).match(snakeCase) || [])];
+    assert.deepEqual(leaked, [], `${path} prints implementation field name(s): ${leaked.join(", ")}`);
+  }
+});
+
 test("the tutorial teaches without the words the implementation uses for things", () => {
   const text = textOf(tutorialHtml).toLowerCase();
   const internalVocabulary = [

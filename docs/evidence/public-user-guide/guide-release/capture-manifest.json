@@ -3,7 +3,7 @@
   "record": "cityscroll-engineering/public-guide-release",
   "capture_mode": "local_static_site_playwright_no_committed_image",
   "base": "local static site build (site/)",
-  "repository_revision": "4b2cc3b649b2986d67c43c525379f7c161252a66",
+  "repository_revision": "7b6425deb6ac5d4e83872bd19355ea374a648947",
   "repository_state": "uncommitted changes present at capture time",
   "note": "Usability evidence for the published guide. Every check runs against the tracked static documents served locally, so it reproduces from a checkout with no network and no deploy. Accessibility, keyboard, reflow and link checks cover the guide documents; the front page and the search document keep their existing owners and are exercised here only as the journey's endpoints. A guide link to one civic record is followed only far enough to prove the route serves: those documents are materialized at deploy time, so a local build answers with the application shell rather than the record. Each such route is named per capture under record content deferred to live check, and the records themselves are proved by the live loads recorded in docs/evidence/public-user-guide/. Screenshots stay under the ignored .artifacts/ path and only their sha256 is recorded, per docs/capture-manifest-guard.md.",
   "data_vintage": "Not applicable to the guide documents: they are prose built from tracked sources and contain no civic records. Their review dates are editorial facts recorded in the article sources, not observations of live data. The search document is served from the local build and its results are not asserted.",
@@ -188,9 +188,9 @@
       "internal_links_checked": 19,
       "broken_internal_links": [],
       "record_content_deferred_to_live_check": [],
-      "visible_text_characters": 3500,
-      "content_sha256": "371ae87bf9608c205875b63a7f20f16f03df35e7191781544592d75214d3dcb4",
-      "capture_sha256": "2e40aa24c9dde53bfe0d91c822c2b09dfed38a0e3846c75bf3b9c94f9d7f3fcb",
+      "visible_text_characters": 3738,
+      "content_sha256": "5ad7ea39b21a69b0189e5fe391c08a83d336d0be8f83cea681dcfec851b3367d",
+      "capture_sha256": "91056f8347ce413d3f6443c3b5197b6849a3d8118810812635293c567d57894b",
       "local_capture_path": ".artifacts/guide-release/guide-home-390.png",
       "file": null
     },
@@ -235,19 +235,19 @@
       "horizontal_overflow_at_200_percent_px": 0,
       "targets_below_24px": [],
       "keyboard": {
-        "links": 8,
-        "reached": 8,
+        "links": 9,
+        "reached": 9,
         "unreachable": [],
         "withoutIndicator": []
       },
       "axe_critical_or_serious": [],
-      "internal_links_checked": 10,
+      "internal_links_checked": 11,
       "broken_internal_links": [],
       "record_content_deferred_to_live_check": [
         "/notices/20260605008"
       ],
-      "visible_text_characters": 6272,
-      "content_sha256": "97a6a8860c7e842253adbb2082f3173ee55f1ef725200a03c417eb6e04984f20",
+      "visible_text_characters": 6303,
+      "content_sha256": "16e18b8952e76fecb12581473852117fcccfa93a37dc755d174bff2b97958125",
       "capture_sha256": "580490133dc134a7f21d1c1c2155c01c228a9bdc1af2a956c9951c5668bf36e7",
       "local_capture_path": ".artifacts/guide-release/guide-tutorial-notice-mandate-390.png",
       "file": null
@@ -265,20 +265,20 @@
       "horizontal_overflow_at_200_percent_px": 0,
       "targets_below_24px": [],
       "keyboard": {
-        "links": 9,
-        "reached": 9,
+        "links": 10,
+        "reached": 10,
         "unreachable": [],
         "withoutIndicator": []
       },
       "axe_critical_or_serious": [],
-      "internal_links_checked": 12,
+      "internal_links_checked": 13,
       "broken_internal_links": [],
       "record_content_deferred_to_live_check": [
         "/agencies/homeless-services/",
         "/notices/20231222103"
       ],
-      "visible_text_characters": 6488,
-      "content_sha256": "b8b4f751a4ec2ff901c730838d1f916c9c5ae39a3187856ca9db5982cd3918db",
+      "visible_text_characters": 6514,
+      "content_sha256": "b32144f041cef479b77435fd2bb23659c2c3badadc63bf4023ca12b8dc3c8827",
       "capture_sha256": "451c0e4b6a3f6da6eeb9658d123ba473345ea9d9c1b452782c216cd099a3f6a2",
       "local_capture_path": ".artifacts/guide-release/guide-tutorial-award-trail-390.png",
       "file": null
@@ -302,13 +302,13 @@
         "withoutIndicator": []
       },
       "axe_critical_or_serious": [],
-      "internal_links_checked": 12,
+      "internal_links_checked": 13,
       "broken_internal_links": [],
       "record_content_deferred_to_live_check": [
         "/agencies/parks-and-recreation/"
       ],
-      "visible_text_characters": 5075,
-      "content_sha256": "8da22c608defca79b6fd6df8ab2fc94dc27bbef2f42dad3639b73e68936dd26a",
+      "visible_text_characters": 5052,
+      "content_sha256": "4dae2e46917b92a1fd8e0ddd4aef09543cf73ec97dda0c68914b4695b3ea1171",
       "capture_sha256": "bdfa92de84c5bcc4619586f5811feaf460a16d1f5ddedd6b7f077d0f28b1d9ab",
       "local_capture_path": ".artifacts/guide-release/guide-how-to-connection-evidence-390.png",
       "file": null
@@ -332,13 +332,13 @@
         "withoutIndicator": []
       },
       "axe_critical_or_serious": [],
-      "internal_links_checked": 11,
+      "internal_links_checked": 12,
       "broken_internal_links": [],
       "record_content_deferred_to_live_check": [
         "/agencies/parks-and-recreation/"
       ],
-      "visible_text_characters": 5071,
-      "content_sha256": "7275df133b30659717b572afd3da1ed8401d2ad35d0bf695cf9538b937e3d280",
+      "visible_text_characters": 5089,
+      "content_sha256": "4a96a8f6db5a5889c190bc2b28648af3c231001d0d6437d8b49875001a49fbf6",
       "capture_sha256": "be91e27a04822e878d8ee06728fe3ec6f7d16e5bbbf205deee84abee045eae0d",
       "local_capture_path": ".artifacts/guide-release/guide-how-to-as-of-day-390.png",
       "file": null
@@ -362,14 +362,14 @@
         "withoutIndicator": []
       },
       "axe_critical_or_serious": [],
-      "internal_links_checked": 13,
+      "internal_links_checked": 14,
       "broken_internal_links": [],
       "record_content_deferred_to_live_check": [
         "/notices/20231222103",
         "/vendors/HOUSING%20OPTIONS%20GERIATRIC%20ASSOCIATION%20RESOURCES/"
       ],
-      "visible_text_characters": 6266,
-      "content_sha256": "e3ef439e3ec02e15b1dd8e9f0caf7f5ed417fa0f65dd4c90cac9075f1c58dae6",
+      "visible_text_characters": 6262,
+      "content_sha256": "d63f1804a60859febcec49434382fd30be3ba8b47f8e10d1692079649e842d44",
       "capture_sha256": "8d097cdde955a05bfa489aa899b72c24e49aed89dd2039ba04b4e5798f2b1d81",
       "local_capture_path": ".artifacts/guide-release/guide-how-to-collect-records-390.png",
       "file": null
@@ -646,9 +646,9 @@
       "internal_links_checked": 19,
       "broken_internal_links": [],
       "record_content_deferred_to_live_check": [],
-      "visible_text_characters": 3500,
-      "content_sha256": "371ae87bf9608c205875b63a7f20f16f03df35e7191781544592d75214d3dcb4",
-      "capture_sha256": "a771ab7549dec36506d8c3e209beb20309e1a22455f0155c34b1470cc47683cf",
+      "visible_text_characters": 3738,
+      "content_sha256": "5ad7ea39b21a69b0189e5fe391c08a83d336d0be8f83cea681dcfec851b3367d",
+      "capture_sha256": "77244d65719c77108165d1810c9d7a9c34de7601f456f9b50c30022d206419f9",
       "local_capture_path": ".artifacts/guide-release/guide-home-1440.png",
       "file": null
     },
@@ -693,19 +693,19 @@
       "horizontal_overflow_at_200_percent_px": 0,
       "targets_below_24px": [],
       "keyboard": {
-        "links": 8,
-        "reached": 8,
+        "links": 9,
+        "reached": 9,
         "unreachable": [],
         "withoutIndicator": []
       },
       "axe_critical_or_serious": [],
-      "internal_links_checked": 10,
+      "internal_links_checked": 11,
       "broken_internal_links": [],
       "record_content_deferred_to_live_check": [
         "/notices/20260605008"
       ],
-      "visible_text_characters": 6272,
-      "content_sha256": "97a6a8860c7e842253adbb2082f3173ee55f1ef725200a03c417eb6e04984f20",
+      "visible_text_characters": 6303,
+      "content_sha256": "16e18b8952e76fecb12581473852117fcccfa93a37dc755d174bff2b97958125",
       "capture_sha256": "1e668fe622a4aa97df08f161197906e9e967d2a1be00d28f6a1cce714b28439d",
       "local_capture_path": ".artifacts/guide-release/guide-tutorial-notice-mandate-1440.png",
       "file": null
@@ -723,20 +723,20 @@
       "horizontal_overflow_at_200_percent_px": 0,
       "targets_below_24px": [],
       "keyboard": {
-        "links": 9,
-        "reached": 9,
+        "links": 10,
+        "reached": 10,
         "unreachable": [],
         "withoutIndicator": []
       },
       "axe_critical_or_serious": [],
-      "internal_links_checked": 12,
+      "internal_links_checked": 13,
       "broken_internal_links": [],
       "record_content_deferred_to_live_check": [
         "/agencies/homeless-services/",
         "/notices/20231222103"
       ],
-      "visible_text_characters": 6488,
-      "content_sha256": "b8b4f751a4ec2ff901c730838d1f916c9c5ae39a3187856ca9db5982cd3918db",
+      "visible_text_characters": 6514,
+      "content_sha256": "b32144f041cef479b77435fd2bb23659c2c3badadc63bf4023ca12b8dc3c8827",
       "capture_sha256": "ff7126472a903a9f9c8e3a8b1c4841f9a7d476790ee8ab80119a45dfec0016e7",
       "local_capture_path": ".artifacts/guide-release/guide-tutorial-award-trail-1440.png",
       "file": null
@@ -760,13 +760,13 @@
         "withoutIndicator": []
       },
       "axe_critical_or_serious": [],
-      "internal_links_checked": 12,
+      "internal_links_checked": 13,
       "broken_internal_links": [],
       "record_content_deferred_to_live_check": [
         "/agencies/parks-and-recreation/"
       ],
-      "visible_text_characters": 5075,
-      "content_sha256": "8da22c608defca79b6fd6df8ab2fc94dc27bbef2f42dad3639b73e68936dd26a",
+      "visible_text_characters": 5052,
+      "content_sha256": "4dae2e46917b92a1fd8e0ddd4aef09543cf73ec97dda0c68914b4695b3ea1171",
       "capture_sha256": "b016c22d59f69c4e1783b79736b5f068c5b55f40b6c9bff5f8056bd2409590cb",
       "local_capture_path": ".artifacts/guide-release/guide-how-to-connection-evidence-1440.png",
       "file": null
@@ -790,13 +790,13 @@
         "withoutIndicator": []
       },
       "axe_critical_or_serious": [],
-      "internal_links_checked": 11,
+      "internal_links_checked": 12,
       "broken_internal_links": [],
       "record_content_deferred_to_live_check": [
         "/agencies/parks-and-recreation/"
       ],
-      "visible_text_characters": 5071,
-      "content_sha256": "7275df133b30659717b572afd3da1ed8401d2ad35d0bf695cf9538b937e3d280",
+      "visible_text_characters": 5089,
+      "content_sha256": "4a96a8f6db5a5889c190bc2b28648af3c231001d0d6437d8b49875001a49fbf6",
       "capture_sha256": "cfc6054e4182ca3276daa863b42f9e93222a3a8f97277c4eea35229113c34c50",
       "local_capture_path": ".artifacts/guide-release/guide-how-to-as-of-day-1440.png",
       "file": null
@@ -820,14 +820,14 @@
         "withoutIndicator": []
       },
       "axe_critical_or_serious": [],
-      "internal_links_checked": 13,
+      "internal_links_checked": 14,
       "broken_internal_links": [],
       "record_content_deferred_to_live_check": [
         "/notices/20231222103",
         "/vendors/HOUSING%20OPTIONS%20GERIATRIC%20ASSOCIATION%20RESOURCES/"
       ],
-      "visible_text_characters": 6266,
-      "content_sha256": "e3ef439e3ec02e15b1dd8e9f0caf7f5ed417fa0f65dd4c90cac9075f1c58dae6",
+      "visible_text_characters": 6262,
+      "content_sha256": "d63f1804a60859febcec49434382fd30be3ba8b47f8e10d1692079649e842d44",
       "capture_sha256": "06026b06af25558bd9d685ccbe28bfa77b7d347e7becfa208eff1f1f570697d4",
       "local_capture_path": ".artifacts/guide-release/guide-how-to-collect-records-1440.png",
       "file": null
@@ -1051,7 +1051,7 @@
       "record_content_deferred_to_live_check": [],
       "visible_text_characters": 1079,
       "content_sha256": "382ae9cb39a99c0e4c21d8954f7b5cf77ca6316030ed4ad9c37d82cb1d445049",
-      "capture_sha256": "5074588d45184e3587844e43492b59dbdbd760b4ebd7a1ac7c2de838a74d27a8",
+      "capture_sha256": "12b16a4318f69f7b1bb20deb4937d25274f1396bceaa9853556f338399f7afa3",
       "local_capture_path": ".artifacts/guide-release/product-search-1440.png",
       "file": null
     }

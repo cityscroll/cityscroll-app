@@ -69,8 +69,8 @@ everything linked now. Your browser's Back button does the same thing.
 
 ## Share it
 
-The day is in the address, as `as_of` followed by the date. Copy the address and the person you send
-it to opens the same agency filtered to the same day.
+The day travels in the address itself: press Apply and you can see it appear there. Copy the address,
+and the person you send it to opens the same agency filtered to the same day.
 
 That is the whole sharing mechanism: no export, no account, nothing stored. It also means the link
 keeps working later, and will reflect whatever has been published in the meantime.
