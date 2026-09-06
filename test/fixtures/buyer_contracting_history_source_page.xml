@@ -1,0 +1,1296 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Retained Checkbook NYC Contracts-domain transaction blocks, verbatim from the
+     public API response for status=registered / category=expense / fiscal_year=2026.
+     Only the boundary contracts named in the buyer-history acceptance ledger are kept;
+     record_count reports this retained subset, not the published population. -->
+<response><status><result>success</result></status><result_records><record_count>30</record_count><contract_transactions><transaction>
+        <year>2026</year>
+        <document_code>CT1</document_code>
+        <prime_contract_id>CT184620268808401</prime_contract_id>
+        <contract_includes_sub_vendors>Yes</contract_includes_sub_vendors>
+        <mocs_registered>No</mocs_registered>
+        <vendor_record_type>Prime Vendor</vendor_record_type>
+        <prime_vendor>PMY CONSTRUCTION CORP.</prime_vendor>
+        <prime_vendor_mwbe_category>Asian American</prime_vendor_mwbe_category>
+        <prime_contract_purpose>M294-122M: Ruppert Park Reconstruction, Manhattan</prime_contract_purpose>
+        <prime_contract_current_amount>6381324.00</prime_contract_current_amount>
+        <prime_contract_original_amount>6381324.00</prime_contract_original_amount>
+        <prime_vendor_spent_to_date>0.00</prime_vendor_spent_to_date>
+        <prime_contract_start_date>2026-09-14</prime_contract_start_date>
+        <prime_contract_end_date>2027-09-13</prime_contract_end_date>
+        <prime_contract_registration_date>2026-06-30</prime_contract_registration_date>
+        <prime_contracting_agency>Department of Parks and Recreation</prime_contracting_agency>
+        <prime_oca_number/>
+        <prime_contract_version>1</prime_contract_version>
+        <parent_contract_id>-</parent_contract_id>
+        <prime_contract_type>CONSTRUCTION</prime_contract_type>
+        <prime_contract_award_method>COMPETITIVE SEALED BIDDING</prime_contract_award_method>
+        <prime_contract_expense_category>IOTB CONSTRUCTION, POLLUTION REMEDIATION OBLIGATIONS</prime_contract_expense_category>
+        <prime_contract_industry>Construction Services</prime_contract_industry>
+        <prime_contract_pin>84626B0062001</prime_contract_pin>
+        <prime_contract_apt_pin/>
+        <prime_woman_owned_business>No </prime_woman_owned_business>
+        <prime_emerging_business>No </prime_emerging_business>
+        <percent_covid_spending>-</percent_covid_spending>
+        <percent_other_spending/>
+        <sub_vendor>-</sub_vendor>
+        <sub_vendor_mwbe_category>-</sub_vendor_mwbe_category>
+        <sub_contract_purpose>-</sub_contract_purpose>
+        <sub_contract_status>-</sub_contract_status>
+        <sub_contract_industry>-</sub_contract_industry>
+        <sub_contract_current_amount>0.00</sub_contract_current_amount>
+        <sub_contract_original_amount>0.00</sub_contract_original_amount>
+        <sub_vendor_paid_to_date>0.00</sub_vendor_paid_to_date>
+        <sub_contract_start_date>-</sub_contract_start_date>
+        <sub_contract_end_date>-</sub_contract_end_date>
+        <sub_contract_reference_id>-</sub_contract_reference_id>
+        <sub_woman_owned_business>No </sub_woman_owned_business>
+        <sub_emerging_business>No </sub_emerging_business>
+      </transaction><transaction>
+        <year>2026</year>
+        <document_code>CT1</document_code>
+        <prime_contract_id>CT184620268808401</prime_contract_id>
+        <contract_includes_sub_vendors>Yes</contract_includes_sub_vendors>
+        <mocs_registered>No</mocs_registered>
+        <vendor_record_type>Sub Vendor</vendor_record_type>
+        <prime_vendor>PMY CONSTRUCTION CORP.</prime_vendor>
+        <prime_vendor_mwbe_category>Asian American</prime_vendor_mwbe_category>
+        <prime_contract_purpose>M294-122M: Ruppert Park Reconstruction, Manhattan</prime_contract_purpose>
+        <prime_contract_current_amount>0.00</prime_contract_current_amount>
+        <prime_contract_original_amount>0.00</prime_contract_original_amount>
+        <prime_vendor_spent_to_date>0.00</prime_vendor_spent_to_date>
+        <prime_contract_start_date>2026-09-14</prime_contract_start_date>
+        <prime_contract_end_date>2027-09-13</prime_contract_end_date>
+        <prime_contract_registration_date>2026-06-30</prime_contract_registration_date>
+        <prime_contracting_agency>Department of Parks and Recreation</prime_contracting_agency>
+        <prime_oca_number/>
+        <prime_contract_version>1</prime_contract_version>
+        <parent_contract_id>-</parent_contract_id>
+        <prime_contract_type>CONSTRUCTION</prime_contract_type>
+        <prime_contract_award_method>COMPETITIVE SEALED BIDDING</prime_contract_award_method>
+        <prime_contract_expense_category>IOTB CONSTRUCTION, POLLUTION REMEDIATION OBLIGATIONS</prime_contract_expense_category>
+        <prime_contract_industry>Construction Services</prime_contract_industry>
+        <prime_contract_pin>84626B0062001</prime_contract_pin>
+        <prime_contract_apt_pin/>
+        <prime_woman_owned_business>No </prime_woman_owned_business>
+        <prime_emerging_business>No </prime_emerging_business>
+        <percent_covid_spending>-</percent_covid_spending>
+        <percent_other_spending>-</percent_other_spending>
+        <sub_vendor>ACE ENVIRONMENTAL SERVICES INC</sub_vendor>
+        <sub_vendor_mwbe_category>Non-M/WBE</sub_vendor_mwbe_category>
+        <sub_contract_purpose>Air Monitoring</sub_contract_purpose>
+        <sub_contract_status>ACCO Reviewing Subcontract</sub_contract_status>
+        <sub_contract_industry>Construction Services</sub_contract_industry>
+        <sub_contract_current_amount>1000.00</sub_contract_current_amount>
+        <sub_contract_original_amount>1000.00</sub_contract_original_amount>
+        <sub_vendor_paid_to_date>0.00</sub_vendor_paid_to_date>
+        <sub_contract_start_date>2026-09-14</sub_contract_start_date>
+        <sub_contract_end_date>2027-09-13</sub_contract_end_date>
+        <sub_contract_reference_id>011</sub_contract_reference_id>
+        <sub_woman_owned_business>No </sub_woman_owned_business>
+        <sub_emerging_business>No </sub_emerging_business>
+      </transaction><transaction>
+        <year>2026</year>
+        <document_code>CT1</document_code>
+        <prime_contract_id>CT184620268808401</prime_contract_id>
+        <contract_includes_sub_vendors>Yes</contract_includes_sub_vendors>
+        <mocs_registered>No</mocs_registered>
+        <vendor_record_type>Sub Vendor</vendor_record_type>
+        <prime_vendor>PMY CONSTRUCTION CORP.</prime_vendor>
+        <prime_vendor_mwbe_category>Asian American</prime_vendor_mwbe_category>
+        <prime_contract_purpose>M294-122M: Ruppert Park Reconstruction, Manhattan</prime_contract_purpose>
+        <prime_contract_current_amount>0.00</prime_contract_current_amount>
+        <prime_contract_original_amount>0.00</prime_contract_original_amount>
+        <prime_vendor_spent_to_date>0.00</prime_vendor_spent_to_date>
+        <prime_contract_start_date>2026-09-14</prime_contract_start_date>
+        <prime_contract_end_date>2027-09-13</prime_contract_end_date>
+        <prime_contract_registration_date>2026-06-30</prime_contract_registration_date>
+        <prime_contracting_agency>Department of Parks and Recreation</prime_contracting_agency>
+        <prime_oca_number/>
+        <prime_contract_version>1</prime_contract_version>
+        <parent_contract_id>-</parent_contract_id>
+        <prime_contract_type>CONSTRUCTION</prime_contract_type>
+        <prime_contract_award_method>COMPETITIVE SEALED BIDDING</prime_contract_award_method>
+        <prime_contract_expense_category>IOTB CONSTRUCTION, POLLUTION REMEDIATION OBLIGATIONS</prime_contract_expense_category>
+        <prime_contract_industry>Construction Services</prime_contract_industry>
+        <prime_contract_pin>84626B0062001</prime_contract_pin>
+        <prime_contract_apt_pin/>
+        <prime_woman_owned_business>No </prime_woman_owned_business>
+        <prime_emerging_business>No </prime_emerging_business>
+        <percent_covid_spending>-</percent_covid_spending>
+        <percent_other_spending>-</percent_other_spending>
+        <sub_vendor>Fresh Meadow Mechanical Plumbing, LLC</sub_vendor>
+        <sub_vendor_mwbe_category>Non-M/WBE</sub_vendor_mwbe_category>
+        <sub_contract_purpose>Plumbing Work</sub_contract_purpose>
+        <sub_contract_status>No Subcontract Payments Submitted</sub_contract_status>
+        <sub_contract_industry>Construction Services</sub_contract_industry>
+        <sub_contract_current_amount>122801.00</sub_contract_current_amount>
+        <sub_contract_original_amount>122801.00</sub_contract_original_amount>
+        <sub_vendor_paid_to_date>0.00</sub_vendor_paid_to_date>
+        <sub_contract_start_date>2026-09-14</sub_contract_start_date>
+        <sub_contract_end_date>2027-09-13</sub_contract_end_date>
+        <sub_contract_reference_id>009</sub_contract_reference_id>
+        <sub_woman_owned_business>No </sub_woman_owned_business>
+        <sub_emerging_business>No </sub_emerging_business>
+      </transaction><transaction>
+        <year>2026</year>
+        <document_code>CT1</document_code>
+        <prime_contract_id>CT184620268808401</prime_contract_id>
+        <contract_includes_sub_vendors>Yes</contract_includes_sub_vendors>
+        <mocs_registered>No</mocs_registered>
+        <vendor_record_type>Sub Vendor</vendor_record_type>
+        <prime_vendor>PMY CONSTRUCTION CORP.</prime_vendor>
+        <prime_vendor_mwbe_category>Asian American</prime_vendor_mwbe_category>
+        <prime_contract_purpose>M294-122M: Ruppert Park Reconstruction, Manhattan</prime_contract_purpose>
+        <prime_contract_current_amount>0.00</prime_contract_current_amount>
+        <prime_contract_original_amount>0.00</prime_contract_original_amount>
+        <prime_vendor_spent_to_date>0.00</prime_vendor_spent_to_date>
+        <prime_contract_start_date>2026-09-14</prime_contract_start_date>
+        <prime_contract_end_date>2027-09-13</prime_contract_end_date>
+        <prime_contract_registration_date>2026-06-30</prime_contract_registration_date>
+        <prime_contracting_agency>Department of Parks and Recreation</prime_contracting_agency>
+        <prime_oca_number/>
+        <prime_contract_version>1</prime_contract_version>
+        <parent_contract_id>-</parent_contract_id>
+        <prime_contract_type>CONSTRUCTION</prime_contract_type>
+        <prime_contract_award_method>COMPETITIVE SEALED BIDDING</prime_contract_award_method>
+        <prime_contract_expense_category>IOTB CONSTRUCTION, POLLUTION REMEDIATION OBLIGATIONS</prime_contract_expense_category>
+        <prime_contract_industry>Construction Services</prime_contract_industry>
+        <prime_contract_pin>84626B0062001</prime_contract_pin>
+        <prime_contract_apt_pin/>
+        <prime_woman_owned_business>No </prime_woman_owned_business>
+        <prime_emerging_business>No </prime_emerging_business>
+        <percent_covid_spending>-</percent_covid_spending>
+        <percent_other_spending>-</percent_other_spending>
+        <sub_vendor>CNZ CONSTRUCTION CORP</sub_vendor>
+        <sub_vendor_mwbe_category>Non-M/WBE</sub_vendor_mwbe_category>
+        <sub_contract_purpose>Safety Surface Installation</sub_contract_purpose>
+        <sub_contract_status>No Subcontract Payments Submitted</sub_contract_status>
+        <sub_contract_industry>Construction Services</sub_contract_industry>
+        <sub_contract_current_amount>41400.00</sub_contract_current_amount>
+        <sub_contract_original_amount>41400.00</sub_contract_original_amount>
+        <sub_vendor_paid_to_date>0.00</sub_vendor_paid_to_date>
+        <sub_contract_start_date>2026-09-14</sub_contract_start_date>
+        <sub_contract_end_date>2027-09-13</sub_contract_end_date>
+        <sub_contract_reference_id>007</sub_contract_reference_id>
+        <sub_woman_owned_business>No </sub_woman_owned_business>
+        <sub_emerging_business>No </sub_emerging_business>
+      </transaction><transaction>
+        <year>2026</year>
+        <document_code>CT1</document_code>
+        <prime_contract_id>CT184620268808401</prime_contract_id>
+        <contract_includes_sub_vendors>Yes</contract_includes_sub_vendors>
+        <mocs_registered>No</mocs_registered>
+        <vendor_record_type>Sub Vendor</vendor_record_type>
+        <prime_vendor>PMY CONSTRUCTION CORP.</prime_vendor>
+        <prime_vendor_mwbe_category>Asian American</prime_vendor_mwbe_category>
+        <prime_contract_purpose>M294-122M: Ruppert Park Reconstruction, Manhattan</prime_contract_purpose>
+        <prime_contract_current_amount>0.00</prime_contract_current_amount>
+        <prime_contract_original_amount>0.00</prime_contract_original_amount>
+        <prime_vendor_spent_to_date>0.00</prime_vendor_spent_to_date>
+        <prime_contract_start_date>2026-09-14</prime_contract_start_date>
+        <prime_contract_end_date>2027-09-13</prime_contract_end_date>
+        <prime_contract_registration_date>2026-06-30</prime_contract_registration_date>
+        <prime_contracting_agency>Department of Parks and Recreation</prime_contracting_agency>
+        <prime_oca_number/>
+        <prime_contract_version>1</prime_contract_version>
+        <parent_contract_id>-</parent_contract_id>
+        <prime_contract_type>CONSTRUCTION</prime_contract_type>
+        <prime_contract_award_method>COMPETITIVE SEALED BIDDING</prime_contract_award_method>
+        <prime_contract_expense_category>IOTB CONSTRUCTION, POLLUTION REMEDIATION OBLIGATIONS</prime_contract_expense_category>
+        <prime_contract_industry>Construction Services</prime_contract_industry>
+        <prime_contract_pin>84626B0062001</prime_contract_pin>
+        <prime_contract_apt_pin/>
+        <prime_woman_owned_business>No </prime_woman_owned_business>
+        <prime_emerging_business>No </prime_emerging_business>
+        <percent_covid_spending>-</percent_covid_spending>
+        <percent_other_spending>-</percent_other_spending>
+        <sub_vendor>INSAREN INC</sub_vendor>
+        <sub_vendor_mwbe_category>Non-M/WBE</sub_vendor_mwbe_category>
+        <sub_contract_purpose>Asbestos Abatement</sub_contract_purpose>
+        <sub_contract_status>ACCO Reviewing Subcontract</sub_contract_status>
+        <sub_contract_industry>Construction Services</sub_contract_industry>
+        <sub_contract_current_amount>6700.00</sub_contract_current_amount>
+        <sub_contract_original_amount>6700.00</sub_contract_original_amount>
+        <sub_vendor_paid_to_date>0.00</sub_vendor_paid_to_date>
+        <sub_contract_start_date>2026-09-14</sub_contract_start_date>
+        <sub_contract_end_date>2027-09-13</sub_contract_end_date>
+        <sub_contract_reference_id>010</sub_contract_reference_id>
+        <sub_woman_owned_business>No </sub_woman_owned_business>
+        <sub_emerging_business>No </sub_emerging_business>
+      </transaction><transaction>
+        <year>2026</year>
+        <document_code>CT1</document_code>
+        <prime_contract_id>CT184620268808401</prime_contract_id>
+        <contract_includes_sub_vendors>Yes</contract_includes_sub_vendors>
+        <mocs_registered>No</mocs_registered>
+        <vendor_record_type>Sub Vendor</vendor_record_type>
+        <prime_vendor>PMY CONSTRUCTION CORP.</prime_vendor>
+        <prime_vendor_mwbe_category>Asian American</prime_vendor_mwbe_category>
+        <prime_contract_purpose>M294-122M: Ruppert Park Reconstruction, Manhattan</prime_contract_purpose>
+        <prime_contract_current_amount>0.00</prime_contract_current_amount>
+        <prime_contract_original_amount>0.00</prime_contract_original_amount>
+        <prime_vendor_spent_to_date>0.00</prime_vendor_spent_to_date>
+        <prime_contract_start_date>2026-09-14</prime_contract_start_date>
+        <prime_contract_end_date>2027-09-13</prime_contract_end_date>
+        <prime_contract_registration_date>2026-06-30</prime_contract_registration_date>
+        <prime_contracting_agency>Department of Parks and Recreation</prime_contracting_agency>
+        <prime_oca_number/>
+        <prime_contract_version>1</prime_contract_version>
+        <parent_contract_id>-</parent_contract_id>
+        <prime_contract_type>CONSTRUCTION</prime_contract_type>
+        <prime_contract_award_method>COMPETITIVE SEALED BIDDING</prime_contract_award_method>
+        <prime_contract_expense_category>IOTB CONSTRUCTION, POLLUTION REMEDIATION OBLIGATIONS</prime_contract_expense_category>
+        <prime_contract_industry>Construction Services</prime_contract_industry>
+        <prime_contract_pin>84626B0062001</prime_contract_pin>
+        <prime_contract_apt_pin/>
+        <prime_woman_owned_business>No </prime_woman_owned_business>
+        <prime_emerging_business>No </prime_emerging_business>
+        <percent_covid_spending>-</percent_covid_spending>
+        <percent_other_spending>-</percent_other_spending>
+        <sub_vendor>BLACK WIDOW TERMITE  PEST CONTROL CORP.</sub_vendor>
+        <sub_vendor_mwbe_category>Women (Non-Minority)</sub_vendor_mwbe_category>
+        <sub_contract_purpose>Rodent Extermination</sub_contract_purpose>
+        <sub_contract_status>No Subcontract Payments Submitted</sub_contract_status>
+        <sub_contract_industry>Construction Services</sub_contract_industry>
+        <sub_contract_current_amount>5000.00</sub_contract_current_amount>
+        <sub_contract_original_amount>5000.00</sub_contract_original_amount>
+        <sub_vendor_paid_to_date>0.00</sub_vendor_paid_to_date>
+        <sub_contract_start_date>2026-09-14</sub_contract_start_date>
+        <sub_contract_end_date>2027-09-13</sub_contract_end_date>
+        <sub_contract_reference_id>006</sub_contract_reference_id>
+        <sub_woman_owned_business>Yes</sub_woman_owned_business>
+        <sub_emerging_business>No </sub_emerging_business>
+      </transaction><transaction>
+        <year>2026</year>
+        <document_code>CT1</document_code>
+        <prime_contract_id>CT184620268808401</prime_contract_id>
+        <contract_includes_sub_vendors>Yes</contract_includes_sub_vendors>
+        <mocs_registered>No</mocs_registered>
+        <vendor_record_type>Sub Vendor</vendor_record_type>
+        <prime_vendor>PMY CONSTRUCTION CORP.</prime_vendor>
+        <prime_vendor_mwbe_category>Asian American</prime_vendor_mwbe_category>
+        <prime_contract_purpose>M294-122M: Ruppert Park Reconstruction, Manhattan</prime_contract_purpose>
+        <prime_contract_current_amount>0.00</prime_contract_current_amount>
+        <prime_contract_original_amount>0.00</prime_contract_original_amount>
+        <prime_vendor_spent_to_date>0.00</prime_vendor_spent_to_date>
+        <prime_contract_start_date>2026-09-14</prime_contract_start_date>
+        <prime_contract_end_date>2027-09-13</prime_contract_end_date>
+        <prime_contract_registration_date>2026-06-30</prime_contract_registration_date>
+        <prime_contracting_agency>Department of Parks and Recreation</prime_contracting_agency>
+        <prime_oca_number/>
+        <prime_contract_version>1</prime_contract_version>
+        <parent_contract_id>-</parent_contract_id>
+        <prime_contract_type>CONSTRUCTION</prime_contract_type>
+        <prime_contract_award_method>COMPETITIVE SEALED BIDDING</prime_contract_award_method>
+        <prime_contract_expense_category>IOTB CONSTRUCTION, POLLUTION REMEDIATION OBLIGATIONS</prime_contract_expense_category>
+        <prime_contract_industry>Construction Services</prime_contract_industry>
+        <prime_contract_pin>84626B0062001</prime_contract_pin>
+        <prime_contract_apt_pin/>
+        <prime_woman_owned_business>No </prime_woman_owned_business>
+        <prime_emerging_business>No </prime_emerging_business>
+        <percent_covid_spending>-</percent_covid_spending>
+        <percent_other_spending>-</percent_other_spending>
+        <sub_vendor>CMI SERVICES CORP</sub_vendor>
+        <sub_vendor_mwbe_category>Non-M/WBE</sub_vendor_mwbe_category>
+        <sub_contract_purpose>Drain Cleaning and Television Inspection</sub_contract_purpose>
+        <sub_contract_status>No Subcontract Payments Submitted</sub_contract_status>
+        <sub_contract_industry>Construction Services</sub_contract_industry>
+        <sub_contract_current_amount>4600.00</sub_contract_current_amount>
+        <sub_contract_original_amount>4600.00</sub_contract_original_amount>
+        <sub_vendor_paid_to_date>0.00</sub_vendor_paid_to_date>
+        <sub_contract_start_date>2026-09-14</sub_contract_start_date>
+        <sub_contract_end_date>2027-09-13</sub_contract_end_date>
+        <sub_contract_reference_id>005</sub_contract_reference_id>
+        <sub_woman_owned_business>No </sub_woman_owned_business>
+        <sub_emerging_business>No </sub_emerging_business>
+      </transaction><transaction>
+        <year>2026</year>
+        <document_code>CT1</document_code>
+        <prime_contract_id>CT184620268808401</prime_contract_id>
+        <contract_includes_sub_vendors>Yes</contract_includes_sub_vendors>
+        <mocs_registered>No</mocs_registered>
+        <vendor_record_type>Sub Vendor</vendor_record_type>
+        <prime_vendor>PMY CONSTRUCTION CORP.</prime_vendor>
+        <prime_vendor_mwbe_category>Asian American</prime_vendor_mwbe_category>
+        <prime_contract_purpose>M294-122M: Ruppert Park Reconstruction, Manhattan</prime_contract_purpose>
+        <prime_contract_current_amount>0.00</prime_contract_current_amount>
+        <prime_contract_original_amount>0.00</prime_contract_original_amount>
+        <prime_vendor_spent_to_date>0.00</prime_vendor_spent_to_date>
+        <prime_contract_start_date>2026-09-14</prime_contract_start_date>
+        <prime_contract_end_date>2027-09-13</prime_contract_end_date>
+        <prime_contract_registration_date>2026-06-30</prime_contract_registration_date>
+        <prime_contracting_agency>Department of Parks and Recreation</prime_contracting_agency>
+        <prime_oca_number/>
+        <prime_contract_version>1</prime_contract_version>
+        <parent_contract_id>-</parent_contract_id>
+        <prime_contract_type>CONSTRUCTION</prime_contract_type>
+        <prime_contract_award_method>COMPETITIVE SEALED BIDDING</prime_contract_award_method>
+        <prime_contract_expense_category>IOTB CONSTRUCTION, POLLUTION REMEDIATION OBLIGATIONS</prime_contract_expense_category>
+        <prime_contract_industry>Construction Services</prime_contract_industry>
+        <prime_contract_pin>84626B0062001</prime_contract_pin>
+        <prime_contract_apt_pin/>
+        <prime_woman_owned_business>No </prime_woman_owned_business>
+        <prime_emerging_business>No </prime_emerging_business>
+        <percent_covid_spending>-</percent_covid_spending>
+        <percent_other_spending>-</percent_other_spending>
+        <sub_vendor>Ace Irrigation LLC</sub_vendor>
+        <sub_vendor_mwbe_category>Non-M/WBE</sub_vendor_mwbe_category>
+        <sub_contract_purpose>Irrigation Work</sub_contract_purpose>
+        <sub_contract_status>ACCO Reviewing Subcontract</sub_contract_status>
+        <sub_contract_industry>Construction Services</sub_contract_industry>
+        <sub_contract_current_amount>69718.75</sub_contract_current_amount>
+        <sub_contract_original_amount>69718.75</sub_contract_original_amount>
+        <sub_vendor_paid_to_date>0.00</sub_vendor_paid_to_date>
+        <sub_contract_start_date>2026-09-14</sub_contract_start_date>
+        <sub_contract_end_date>2027-09-13</sub_contract_end_date>
+        <sub_contract_reference_id>004</sub_contract_reference_id>
+        <sub_woman_owned_business>No </sub_woman_owned_business>
+        <sub_emerging_business>No </sub_emerging_business>
+      </transaction><transaction>
+        <year>2026</year>
+        <document_code>CT1</document_code>
+        <prime_contract_id>CT184620268808401</prime_contract_id>
+        <contract_includes_sub_vendors>Yes</contract_includes_sub_vendors>
+        <mocs_registered>No</mocs_registered>
+        <vendor_record_type>Sub Vendor</vendor_record_type>
+        <prime_vendor>PMY CONSTRUCTION CORP.</prime_vendor>
+        <prime_vendor_mwbe_category>Asian American</prime_vendor_mwbe_category>
+        <prime_contract_purpose>M294-122M: Ruppert Park Reconstruction, Manhattan</prime_contract_purpose>
+        <prime_contract_current_amount>0.00</prime_contract_current_amount>
+        <prime_contract_original_amount>0.00</prime_contract_original_amount>
+        <prime_vendor_spent_to_date>0.00</prime_vendor_spent_to_date>
+        <prime_contract_start_date>2026-09-14</prime_contract_start_date>
+        <prime_contract_end_date>2027-09-13</prime_contract_end_date>
+        <prime_contract_registration_date>2026-06-30</prime_contract_registration_date>
+        <prime_contracting_agency>Department of Parks and Recreation</prime_contracting_agency>
+        <prime_oca_number/>
+        <prime_contract_version>1</prime_contract_version>
+        <parent_contract_id>-</parent_contract_id>
+        <prime_contract_type>CONSTRUCTION</prime_contract_type>
+        <prime_contract_award_method>COMPETITIVE SEALED BIDDING</prime_contract_award_method>
+        <prime_contract_expense_category>IOTB CONSTRUCTION, POLLUTION REMEDIATION OBLIGATIONS</prime_contract_expense_category>
+        <prime_contract_industry>Construction Services</prime_contract_industry>
+        <prime_contract_pin>84626B0062001</prime_contract_pin>
+        <prime_contract_apt_pin/>
+        <prime_woman_owned_business>No </prime_woman_owned_business>
+        <prime_emerging_business>No </prime_emerging_business>
+        <percent_covid_spending>-</percent_covid_spending>
+        <percent_other_spending>-</percent_other_spending>
+        <sub_vendor>LERCO ELECTRIC LLC</sub_vendor>
+        <sub_vendor_mwbe_category>Hispanic American</sub_vendor_mwbe_category>
+        <sub_contract_purpose>Park Security Lighting and Electrical Work</sub_contract_purpose>
+        <sub_contract_status>No Subcontract Payments Submitted</sub_contract_status>
+        <sub_contract_industry>Construction Services</sub_contract_industry>
+        <sub_contract_current_amount>287500.00</sub_contract_current_amount>
+        <sub_contract_original_amount>287500.00</sub_contract_original_amount>
+        <sub_vendor_paid_to_date>0.00</sub_vendor_paid_to_date>
+        <sub_contract_start_date>2026-09-14</sub_contract_start_date>
+        <sub_contract_end_date>2027-09-13</sub_contract_end_date>
+        <sub_contract_reference_id>002</sub_contract_reference_id>
+        <sub_woman_owned_business>No </sub_woman_owned_business>
+        <sub_emerging_business>No </sub_emerging_business>
+      </transaction><transaction>
+        <year>2026</year>
+        <document_code>CT1</document_code>
+        <prime_contract_id>CT184620268808401</prime_contract_id>
+        <contract_includes_sub_vendors>Yes</contract_includes_sub_vendors>
+        <mocs_registered>No</mocs_registered>
+        <vendor_record_type>Sub Vendor</vendor_record_type>
+        <prime_vendor>PMY CONSTRUCTION CORP.</prime_vendor>
+        <prime_vendor_mwbe_category>Asian American</prime_vendor_mwbe_category>
+        <prime_contract_purpose>M294-122M: Ruppert Park Reconstruction, Manhattan</prime_contract_purpose>
+        <prime_contract_current_amount>0.00</prime_contract_current_amount>
+        <prime_contract_original_amount>0.00</prime_contract_original_amount>
+        <prime_vendor_spent_to_date>0.00</prime_vendor_spent_to_date>
+        <prime_contract_start_date>2026-09-14</prime_contract_start_date>
+        <prime_contract_end_date>2027-09-13</prime_contract_end_date>
+        <prime_contract_registration_date>2026-06-30</prime_contract_registration_date>
+        <prime_contracting_agency>Department of Parks and Recreation</prime_contracting_agency>
+        <prime_oca_number/>
+        <prime_contract_version>1</prime_contract_version>
+        <parent_contract_id>-</parent_contract_id>
+        <prime_contract_type>CONSTRUCTION</prime_contract_type>
+        <prime_contract_award_method>COMPETITIVE SEALED BIDDING</prime_contract_award_method>
+        <prime_contract_expense_category>IOTB CONSTRUCTION, POLLUTION REMEDIATION OBLIGATIONS</prime_contract_expense_category>
+        <prime_contract_industry>Construction Services</prime_contract_industry>
+        <prime_contract_pin>84626B0062001</prime_contract_pin>
+        <prime_contract_apt_pin/>
+        <prime_woman_owned_business>No </prime_woman_owned_business>
+        <prime_emerging_business>No </prime_emerging_business>
+        <percent_covid_spending>-</percent_covid_spending>
+        <percent_other_spending>-</percent_other_spending>
+        <sub_vendor>CRAIG SULLIVAN THE AVANT GARDNER LLC</sub_vendor>
+        <sub_vendor_mwbe_category>Non-M/WBE</sub_vendor_mwbe_category>
+        <sub_contract_purpose>Landscaping and Planting Work</sub_contract_purpose>
+        <sub_contract_status>No Subcontract Payments Submitted</sub_contract_status>
+        <sub_contract_industry>Construction Services</sub_contract_industry>
+        <sub_contract_current_amount>618946.00</sub_contract_current_amount>
+        <sub_contract_original_amount>618946.00</sub_contract_original_amount>
+        <sub_vendor_paid_to_date>0.00</sub_vendor_paid_to_date>
+        <sub_contract_start_date>2026-09-14</sub_contract_start_date>
+        <sub_contract_end_date>2027-09-13</sub_contract_end_date>
+        <sub_contract_reference_id>003</sub_contract_reference_id>
+        <sub_woman_owned_business>No </sub_woman_owned_business>
+        <sub_emerging_business>No </sub_emerging_business>
+      </transaction><transaction>
+        <year>2026</year>
+        <document_code>CTA1</document_code>
+        <prime_contract_id>CTA185620268804596</prime_contract_id>
+        <contract_includes_sub_vendors>Yes</contract_includes_sub_vendors>
+        <mocs_registered>No</mocs_registered>
+        <vendor_record_type>Prime Vendor</vendor_record_type>
+        <prime_vendor>ARAMARK TECHNICAL SERVICES OF NEW YORK LLC</prime_vendor>
+        <prime_vendor_mwbe_category>Non-M/WBE</prime_vendor_mwbe_category>
+        <prime_contract_purpose>BMS Optimization</prime_contract_purpose>
+        <prime_contract_current_amount>1200000.00</prime_contract_current_amount>
+        <prime_contract_original_amount>1200000.00</prime_contract_original_amount>
+        <prime_vendor_spent_to_date>65806.00</prime_vendor_spent_to_date>
+        <prime_contract_start_date>2025-11-01</prime_contract_start_date>
+        <prime_contract_end_date>2028-10-31</prime_contract_end_date>
+        <prime_contract_registration_date>2026-02-04</prime_contract_registration_date>
+        <prime_contracting_agency>Department of Citywide Administrative Services</prime_contracting_agency>
+        <prime_oca_number/>
+        <prime_contract_version>3</prime_contract_version>
+        <parent_contract_id>MMA185620258806052</parent_contract_id>
+        <prime_contract_type>WORK/LABOR</prime_contract_type>
+        <prime_contract_award_method>MULTIPLE AWARDS</prime_contract_award_method>
+        <prime_contract_expense_category>PROF SERV OTHER</prime_contract_expense_category>
+        <prime_contract_industry>Professional Services</prime_contract_industry>
+        <prime_contract_pin>85626Z0002001</prime_contract_pin>
+        <prime_contract_apt_pin/>
+        <prime_woman_owned_business>No </prime_woman_owned_business>
+        <prime_emerging_business>No </prime_emerging_business>
+        <percent_covid_spending>-</percent_covid_spending>
+        <percent_other_spending/>
+        <sub_vendor>-</sub_vendor>
+        <sub_vendor_mwbe_category>-</sub_vendor_mwbe_category>
+        <sub_contract_purpose>-</sub_contract_purpose>
+        <sub_contract_status>-</sub_contract_status>
+        <sub_contract_industry>-</sub_contract_industry>
+        <sub_contract_current_amount>0.00</sub_contract_current_amount>
+        <sub_contract_original_amount>0.00</sub_contract_original_amount>
+        <sub_vendor_paid_to_date>0.00</sub_vendor_paid_to_date>
+        <sub_contract_start_date>-</sub_contract_start_date>
+        <sub_contract_end_date>-</sub_contract_end_date>
+        <sub_contract_reference_id>-</sub_contract_reference_id>
+        <sub_woman_owned_business>No </sub_woman_owned_business>
+        <sub_emerging_business>No </sub_emerging_business>
+      </transaction><transaction>
+        <year>2026</year>
+        <document_code>CTA1</document_code>
+        <prime_contract_id>CTA185620268804596</prime_contract_id>
+        <contract_includes_sub_vendors>Yes</contract_includes_sub_vendors>
+        <mocs_registered>No</mocs_registered>
+        <vendor_record_type>Sub Vendor</vendor_record_type>
+        <prime_vendor>ARAMARK TECHNICAL SERVICES OF NEW YORK LLC</prime_vendor>
+        <prime_vendor_mwbe_category>Non-M/WBE</prime_vendor_mwbe_category>
+        <prime_contract_purpose>BMS Optimization</prime_contract_purpose>
+        <prime_contract_current_amount>0.00</prime_contract_current_amount>
+        <prime_contract_original_amount>0.00</prime_contract_original_amount>
+        <prime_vendor_spent_to_date>0.00</prime_vendor_spent_to_date>
+        <prime_contract_start_date>2026-02-05</prime_contract_start_date>
+        <prime_contract_end_date>2029-02-04</prime_contract_end_date>
+        <prime_contract_registration_date>2026-02-04</prime_contract_registration_date>
+        <prime_contracting_agency>Department of Citywide Administrative Services</prime_contracting_agency>
+        <prime_oca_number/>
+        <prime_contract_version>1</prime_contract_version>
+        <parent_contract_id>MMA185620258806052</parent_contract_id>
+        <prime_contract_type>WORK/LABOR</prime_contract_type>
+        <prime_contract_award_method>MULTIPLE AWARDS</prime_contract_award_method>
+        <prime_contract_expense_category>PROF SERV OTHER</prime_contract_expense_category>
+        <prime_contract_industry>Professional Services</prime_contract_industry>
+        <prime_contract_pin>85626Z0002001</prime_contract_pin>
+        <prime_contract_apt_pin/>
+        <prime_woman_owned_business>No </prime_woman_owned_business>
+        <prime_emerging_business>No </prime_emerging_business>
+        <percent_covid_spending>-</percent_covid_spending>
+        <percent_other_spending>-</percent_other_spending>
+        <sub_vendor>DM ENGINEERS PLLC</sub_vendor>
+        <sub_vendor_mwbe_category>Hispanic American</sub_vendor_mwbe_category>
+        <sub_contract_purpose>Cx Agent and BMS Optimization Program</sub_contract_purpose>
+        <sub_contract_status>ACCO Reviewing Subcontract</sub_contract_status>
+        <sub_contract_industry>Professional Services</sub_contract_industry>
+        <sub_contract_current_amount>360000.00</sub_contract_current_amount>
+        <sub_contract_original_amount>360000.00</sub_contract_original_amount>
+        <sub_vendor_paid_to_date>0.00</sub_vendor_paid_to_date>
+        <sub_contract_start_date>2026-01-01</sub_contract_start_date>
+        <sub_contract_end_date>2028-12-31</sub_contract_end_date>
+        <sub_contract_reference_id>002</sub_contract_reference_id>
+        <sub_woman_owned_business>No </sub_woman_owned_business>
+        <sub_emerging_business>No </sub_emerging_business>
+      </transaction><transaction>
+        <year>2026</year>
+        <document_code>CT1</document_code>
+        <prime_contract_id>CT184620268805555</prime_contract_id>
+        <contract_includes_sub_vendors>Yes</contract_includes_sub_vendors>
+        <mocs_registered>No</mocs_registered>
+        <vendor_record_type>Prime Vendor</vendor_record_type>
+        <prime_vendor>WILLIAM A GROSS CONSTRUCTION ASSOCIATES INC.</prime_vendor>
+        <prime_vendor_mwbe_category>Non-M/WBE</prime_vendor_mwbe_category>
+        <prime_contract_purpose>Q300-121M Captain Mario Fajardo Pk and Sports Ct. Recon.</prime_contract_purpose>
+        <prime_contract_current_amount>3684000.00</prime_contract_current_amount>
+        <prime_contract_original_amount>3684000.00</prime_contract_original_amount>
+        <prime_vendor_spent_to_date>2227011.84</prime_vendor_spent_to_date>
+        <prime_contract_start_date>2026-03-16</prime_contract_start_date>
+        <prime_contract_end_date>2027-03-15</prime_contract_end_date>
+        <prime_contract_registration_date>2026-03-30</prime_contract_registration_date>
+        <prime_contracting_agency>Department of Parks and Recreation</prime_contracting_agency>
+        <prime_oca_number/>
+        <prime_contract_version>1</prime_contract_version>
+        <parent_contract_id>-</parent_contract_id>
+        <prime_contract_type>CONSTRUCTION</prime_contract_type>
+        <prime_contract_award_method>COMPETITIVE SEALED BIDDING</prime_contract_award_method>
+        <prime_contract_expense_category>IOTB CONSTRUCTION, POLLUTION REMEDIATION OBLIGATIONS</prime_contract_expense_category>
+        <prime_contract_industry>Construction Services</prime_contract_industry>
+        <prime_contract_pin>84626B0011001C002</prime_contract_pin>
+        <prime_contract_apt_pin/>
+        <prime_woman_owned_business>No </prime_woman_owned_business>
+        <prime_emerging_business>No </prime_emerging_business>
+        <percent_covid_spending>-</percent_covid_spending>
+        <percent_other_spending/>
+        <sub_vendor>-</sub_vendor>
+        <sub_vendor_mwbe_category>-</sub_vendor_mwbe_category>
+        <sub_contract_purpose>-</sub_contract_purpose>
+        <sub_contract_status>-</sub_contract_status>
+        <sub_contract_industry>-</sub_contract_industry>
+        <sub_contract_current_amount>0.00</sub_contract_current_amount>
+        <sub_contract_original_amount>0.00</sub_contract_original_amount>
+        <sub_vendor_paid_to_date>0.00</sub_vendor_paid_to_date>
+        <sub_contract_start_date>-</sub_contract_start_date>
+        <sub_contract_end_date>-</sub_contract_end_date>
+        <sub_contract_reference_id>-</sub_contract_reference_id>
+        <sub_woman_owned_business>No </sub_woman_owned_business>
+        <sub_emerging_business>No </sub_emerging_business>
+      </transaction><transaction>
+        <year>2026</year>
+        <document_code>CT1</document_code>
+        <prime_contract_id>CT184620268805555</prime_contract_id>
+        <contract_includes_sub_vendors>Yes</contract_includes_sub_vendors>
+        <mocs_registered>No</mocs_registered>
+        <vendor_record_type>Sub Vendor</vendor_record_type>
+        <prime_vendor>WILLIAM A GROSS CONSTRUCTION ASSOCIATES INC.</prime_vendor>
+        <prime_vendor_mwbe_category>Non-M/WBE</prime_vendor_mwbe_category>
+        <prime_contract_purpose>Q300-121M Captain Mario Fajardo Pk and Sports Ct. Recon.</prime_contract_purpose>
+        <prime_contract_current_amount>0.00</prime_contract_current_amount>
+        <prime_contract_original_amount>0.00</prime_contract_original_amount>
+        <prime_vendor_spent_to_date>0.00</prime_vendor_spent_to_date>
+        <prime_contract_start_date>2026-03-16</prime_contract_start_date>
+        <prime_contract_end_date>2027-03-15</prime_contract_end_date>
+        <prime_contract_registration_date>2026-03-30</prime_contract_registration_date>
+        <prime_contracting_agency>Department of Parks and Recreation</prime_contracting_agency>
+        <prime_oca_number/>
+        <prime_contract_version>1</prime_contract_version>
+        <parent_contract_id>-</parent_contract_id>
+        <prime_contract_type>CONSTRUCTION</prime_contract_type>
+        <prime_contract_award_method>COMPETITIVE SEALED BIDDING</prime_contract_award_method>
+        <prime_contract_expense_category>IOTB CONSTRUCTION, POLLUTION REMEDIATION OBLIGATIONS</prime_contract_expense_category>
+        <prime_contract_industry>Construction Services</prime_contract_industry>
+        <prime_contract_pin>84626B0011001C002</prime_contract_pin>
+        <prime_contract_apt_pin/>
+        <prime_woman_owned_business>No </prime_woman_owned_business>
+        <prime_emerging_business>No </prime_emerging_business>
+        <percent_covid_spending>-</percent_covid_spending>
+        <percent_other_spending>-</percent_other_spending>
+        <sub_vendor>CONCRETE CUTTING CO.</sub_vendor>
+        <sub_vendor_mwbe_category>Non-M/WBE</sub_vendor_mwbe_category>
+        <sub_contract_purpose>saw cut pavement</sub_contract_purpose>
+        <sub_contract_status>No Subcontract Payments Submitted</sub_contract_status>
+        <sub_contract_industry>Construction Services</sub_contract_industry>
+        <sub_contract_current_amount>2000.00</sub_contract_current_amount>
+        <sub_contract_original_amount>2000.00</sub_contract_original_amount>
+        <sub_vendor_paid_to_date>0.00</sub_vendor_paid_to_date>
+        <sub_contract_start_date>2026-03-16</sub_contract_start_date>
+        <sub_contract_end_date>2027-03-15</sub_contract_end_date>
+        <sub_contract_reference_id>021</sub_contract_reference_id>
+        <sub_woman_owned_business>No </sub_woman_owned_business>
+        <sub_emerging_business>No </sub_emerging_business>
+      </transaction><transaction>
+        <year>2026</year>
+        <document_code>CT1</document_code>
+        <prime_contract_id>CT184620268805555</prime_contract_id>
+        <contract_includes_sub_vendors>Yes</contract_includes_sub_vendors>
+        <mocs_registered>No</mocs_registered>
+        <vendor_record_type>Sub Vendor</vendor_record_type>
+        <prime_vendor>WILLIAM A GROSS CONSTRUCTION ASSOCIATES INC.</prime_vendor>
+        <prime_vendor_mwbe_category>Non-M/WBE</prime_vendor_mwbe_category>
+        <prime_contract_purpose>Q300-121M Captain Mario Fajardo Pk and Sports Ct. Recon.</prime_contract_purpose>
+        <prime_contract_current_amount>0.00</prime_contract_current_amount>
+        <prime_contract_original_amount>0.00</prime_contract_original_amount>
+        <prime_vendor_spent_to_date>0.00</prime_vendor_spent_to_date>
+        <prime_contract_start_date>2026-03-16</prime_contract_start_date>
+        <prime_contract_end_date>2027-03-15</prime_contract_end_date>
+        <prime_contract_registration_date>2026-03-30</prime_contract_registration_date>
+        <prime_contracting_agency>Department of Parks and Recreation</prime_contracting_agency>
+        <prime_oca_number/>
+        <prime_contract_version>1</prime_contract_version>
+        <parent_contract_id>-</parent_contract_id>
+        <prime_contract_type>CONSTRUCTION</prime_contract_type>
+        <prime_contract_award_method>COMPETITIVE SEALED BIDDING</prime_contract_award_method>
+        <prime_contract_expense_category>IOTB CONSTRUCTION, POLLUTION REMEDIATION OBLIGATIONS</prime_contract_expense_category>
+        <prime_contract_industry>Construction Services</prime_contract_industry>
+        <prime_contract_pin>84626B0011001C002</prime_contract_pin>
+        <prime_contract_apt_pin/>
+        <prime_woman_owned_business>No </prime_woman_owned_business>
+        <prime_emerging_business>No </prime_emerging_business>
+        <percent_covid_spending>-</percent_covid_spending>
+        <percent_other_spending>-</percent_other_spending>
+        <sub_vendor>AIM Environmental LLC</sub_vendor>
+        <sub_vendor_mwbe_category>Non-M/WBE</sub_vendor_mwbe_category>
+        <sub_contract_purpose>acm monitoring</sub_contract_purpose>
+        <sub_contract_status>No Subcontract Payments Submitted</sub_contract_status>
+        <sub_contract_industry>Construction Services</sub_contract_industry>
+        <sub_contract_current_amount>2250.00</sub_contract_current_amount>
+        <sub_contract_original_amount>2250.00</sub_contract_original_amount>
+        <sub_vendor_paid_to_date>0.00</sub_vendor_paid_to_date>
+        <sub_contract_start_date>2026-03-16</sub_contract_start_date>
+        <sub_contract_end_date>2027-03-15</sub_contract_end_date>
+        <sub_contract_reference_id>020</sub_contract_reference_id>
+        <sub_woman_owned_business>No </sub_woman_owned_business>
+        <sub_emerging_business>No </sub_emerging_business>
+      </transaction><transaction>
+        <year>2026</year>
+        <document_code>CT1</document_code>
+        <prime_contract_id>CT184620268805555</prime_contract_id>
+        <contract_includes_sub_vendors>Yes</contract_includes_sub_vendors>
+        <mocs_registered>No</mocs_registered>
+        <vendor_record_type>Sub Vendor</vendor_record_type>
+        <prime_vendor>WILLIAM A GROSS CONSTRUCTION ASSOCIATES INC.</prime_vendor>
+        <prime_vendor_mwbe_category>Non-M/WBE</prime_vendor_mwbe_category>
+        <prime_contract_purpose>Q300-121M Captain Mario Fajardo Pk and Sports Ct. Recon.</prime_contract_purpose>
+        <prime_contract_current_amount>0.00</prime_contract_current_amount>
+        <prime_contract_original_amount>0.00</prime_contract_original_amount>
+        <prime_vendor_spent_to_date>0.00</prime_vendor_spent_to_date>
+        <prime_contract_start_date>2026-03-16</prime_contract_start_date>
+        <prime_contract_end_date>2027-03-15</prime_contract_end_date>
+        <prime_contract_registration_date>2026-03-30</prime_contract_registration_date>
+        <prime_contracting_agency>Department of Parks and Recreation</prime_contracting_agency>
+        <prime_oca_number/>
+        <prime_contract_version>1</prime_contract_version>
+        <parent_contract_id>-</parent_contract_id>
+        <prime_contract_type>CONSTRUCTION</prime_contract_type>
+        <prime_contract_award_method>COMPETITIVE SEALED BIDDING</prime_contract_award_method>
+        <prime_contract_expense_category>IOTB CONSTRUCTION, POLLUTION REMEDIATION OBLIGATIONS</prime_contract_expense_category>
+        <prime_contract_industry>Construction Services</prime_contract_industry>
+        <prime_contract_pin>84626B0011001C002</prime_contract_pin>
+        <prime_contract_apt_pin/>
+        <prime_woman_owned_business>No </prime_woman_owned_business>
+        <prime_emerging_business>No </prime_emerging_business>
+        <percent_covid_spending>-</percent_covid_spending>
+        <percent_other_spending>-</percent_other_spending>
+        <sub_vendor>Wieslaw Kalemba</sub_vendor>
+        <sub_vendor_mwbe_category>Non-M/WBE</sub_vendor_mwbe_category>
+        <sub_contract_purpose>asbestos abatement</sub_contract_purpose>
+        <sub_contract_status>ACCO Reviewing Subcontract</sub_contract_status>
+        <sub_contract_industry>Construction Services</sub_contract_industry>
+        <sub_contract_current_amount>22400.00</sub_contract_current_amount>
+        <sub_contract_original_amount>22400.00</sub_contract_original_amount>
+        <sub_vendor_paid_to_date>0.00</sub_vendor_paid_to_date>
+        <sub_contract_start_date>2026-03-16</sub_contract_start_date>
+        <sub_contract_end_date>2027-03-15</sub_contract_end_date>
+        <sub_contract_reference_id>019</sub_contract_reference_id>
+        <sub_woman_owned_business>No </sub_woman_owned_business>
+        <sub_emerging_business>No </sub_emerging_business>
+      </transaction><transaction>
+        <year>2026</year>
+        <document_code>CT1</document_code>
+        <prime_contract_id>CT184620268805555</prime_contract_id>
+        <contract_includes_sub_vendors>Yes</contract_includes_sub_vendors>
+        <mocs_registered>No</mocs_registered>
+        <vendor_record_type>Sub Vendor</vendor_record_type>
+        <prime_vendor>WILLIAM A GROSS CONSTRUCTION ASSOCIATES INC.</prime_vendor>
+        <prime_vendor_mwbe_category>Non-M/WBE</prime_vendor_mwbe_category>
+        <prime_contract_purpose>Q300-121M Captain Mario Fajardo Pk and Sports Ct. Recon.</prime_contract_purpose>
+        <prime_contract_current_amount>0.00</prime_contract_current_amount>
+        <prime_contract_original_amount>0.00</prime_contract_original_amount>
+        <prime_vendor_spent_to_date>0.00</prime_vendor_spent_to_date>
+        <prime_contract_start_date>2026-03-16</prime_contract_start_date>
+        <prime_contract_end_date>2027-03-15</prime_contract_end_date>
+        <prime_contract_registration_date>2026-03-30</prime_contract_registration_date>
+        <prime_contracting_agency>Department of Parks and Recreation</prime_contracting_agency>
+        <prime_oca_number/>
+        <prime_contract_version>1</prime_contract_version>
+        <parent_contract_id>-</parent_contract_id>
+        <prime_contract_type>CONSTRUCTION</prime_contract_type>
+        <prime_contract_award_method>COMPETITIVE SEALED BIDDING</prime_contract_award_method>
+        <prime_contract_expense_category>IOTB CONSTRUCTION, POLLUTION REMEDIATION OBLIGATIONS</prime_contract_expense_category>
+        <prime_contract_industry>Construction Services</prime_contract_industry>
+        <prime_contract_pin>84626B0011001C002</prime_contract_pin>
+        <prime_contract_apt_pin/>
+        <prime_woman_owned_business>No </prime_woman_owned_business>
+        <prime_emerging_business>No </prime_emerging_business>
+        <percent_covid_spending>-</percent_covid_spending>
+        <percent_other_spending>-</percent_other_spending>
+        <sub_vendor>FAMILY TREE SERVICE, INC.</sub_vendor>
+        <sub_vendor_mwbe_category>Women (Non-Minority)</sub_vendor_mwbe_category>
+        <sub_contract_purpose>landscape</sub_contract_purpose>
+        <sub_contract_status>No Subcontract Payments Submitted</sub_contract_status>
+        <sub_contract_industry>Construction Services</sub_contract_industry>
+        <sub_contract_current_amount>82738.00</sub_contract_current_amount>
+        <sub_contract_original_amount>82738.00</sub_contract_original_amount>
+        <sub_vendor_paid_to_date>0.00</sub_vendor_paid_to_date>
+        <sub_contract_start_date>2026-03-16</sub_contract_start_date>
+        <sub_contract_end_date>2027-03-15</sub_contract_end_date>
+        <sub_contract_reference_id>015</sub_contract_reference_id>
+        <sub_woman_owned_business>Yes</sub_woman_owned_business>
+        <sub_emerging_business>No </sub_emerging_business>
+      </transaction><transaction>
+        <year>2026</year>
+        <document_code>CT1</document_code>
+        <prime_contract_id>CT184620268805555</prime_contract_id>
+        <contract_includes_sub_vendors>Yes</contract_includes_sub_vendors>
+        <mocs_registered>No</mocs_registered>
+        <vendor_record_type>Sub Vendor</vendor_record_type>
+        <prime_vendor>WILLIAM A GROSS CONSTRUCTION ASSOCIATES INC.</prime_vendor>
+        <prime_vendor_mwbe_category>Non-M/WBE</prime_vendor_mwbe_category>
+        <prime_contract_purpose>Q300-121M Captain Mario Fajardo Pk and Sports Ct. Recon.</prime_contract_purpose>
+        <prime_contract_current_amount>0.00</prime_contract_current_amount>
+        <prime_contract_original_amount>0.00</prime_contract_original_amount>
+        <prime_vendor_spent_to_date>0.00</prime_vendor_spent_to_date>
+        <prime_contract_start_date>2026-03-16</prime_contract_start_date>
+        <prime_contract_end_date>2027-03-15</prime_contract_end_date>
+        <prime_contract_registration_date>2026-03-30</prime_contract_registration_date>
+        <prime_contracting_agency>Department of Parks and Recreation</prime_contracting_agency>
+        <prime_oca_number/>
+        <prime_contract_version>1</prime_contract_version>
+        <parent_contract_id>-</parent_contract_id>
+        <prime_contract_type>CONSTRUCTION</prime_contract_type>
+        <prime_contract_award_method>COMPETITIVE SEALED BIDDING</prime_contract_award_method>
+        <prime_contract_expense_category>IOTB CONSTRUCTION, POLLUTION REMEDIATION OBLIGATIONS</prime_contract_expense_category>
+        <prime_contract_industry>Construction Services</prime_contract_industry>
+        <prime_contract_pin>84626B0011001C002</prime_contract_pin>
+        <prime_contract_apt_pin/>
+        <prime_woman_owned_business>No </prime_woman_owned_business>
+        <prime_emerging_business>No </prime_emerging_business>
+        <percent_covid_spending>-</percent_covid_spending>
+        <percent_other_spending>-</percent_other_spending>
+        <sub_vendor>AMERICAN ENGINEERING SERVICES, P.C.</sub_vendor>
+        <sub_vendor_mwbe_category>Non-M/WBE</sub_vendor_mwbe_category>
+        <sub_contract_purpose>surveyor</sub_contract_purpose>
+        <sub_contract_status>No Subcontract Payments Submitted</sub_contract_status>
+        <sub_contract_industry>Construction Services</sub_contract_industry>
+        <sub_contract_current_amount>10000.00</sub_contract_current_amount>
+        <sub_contract_original_amount>10000.00</sub_contract_original_amount>
+        <sub_vendor_paid_to_date>0.00</sub_vendor_paid_to_date>
+        <sub_contract_start_date>2026-03-16</sub_contract_start_date>
+        <sub_contract_end_date>2027-03-15</sub_contract_end_date>
+        <sub_contract_reference_id>011</sub_contract_reference_id>
+        <sub_woman_owned_business>No </sub_woman_owned_business>
+        <sub_emerging_business>No </sub_emerging_business>
+      </transaction><transaction>
+        <year>2026</year>
+        <document_code>CT1</document_code>
+        <prime_contract_id>CT184620268805555</prime_contract_id>
+        <contract_includes_sub_vendors>Yes</contract_includes_sub_vendors>
+        <mocs_registered>No</mocs_registered>
+        <vendor_record_type>Sub Vendor</vendor_record_type>
+        <prime_vendor>WILLIAM A GROSS CONSTRUCTION ASSOCIATES INC.</prime_vendor>
+        <prime_vendor_mwbe_category>Non-M/WBE</prime_vendor_mwbe_category>
+        <prime_contract_purpose>Q300-121M Captain Mario Fajardo Pk and Sports Ct. Recon.</prime_contract_purpose>
+        <prime_contract_current_amount>0.00</prime_contract_current_amount>
+        <prime_contract_original_amount>0.00</prime_contract_original_amount>
+        <prime_vendor_spent_to_date>0.00</prime_vendor_spent_to_date>
+        <prime_contract_start_date>2026-03-16</prime_contract_start_date>
+        <prime_contract_end_date>2027-03-15</prime_contract_end_date>
+        <prime_contract_registration_date>2026-03-30</prime_contract_registration_date>
+        <prime_contracting_agency>Department of Parks and Recreation</prime_contracting_agency>
+        <prime_oca_number/>
+        <prime_contract_version>1</prime_contract_version>
+        <parent_contract_id>-</parent_contract_id>
+        <prime_contract_type>CONSTRUCTION</prime_contract_type>
+        <prime_contract_award_method>COMPETITIVE SEALED BIDDING</prime_contract_award_method>
+        <prime_contract_expense_category>IOTB CONSTRUCTION, POLLUTION REMEDIATION OBLIGATIONS</prime_contract_expense_category>
+        <prime_contract_industry>Construction Services</prime_contract_industry>
+        <prime_contract_pin>84626B0011001C002</prime_contract_pin>
+        <prime_contract_apt_pin/>
+        <prime_woman_owned_business>No </prime_woman_owned_business>
+        <prime_emerging_business>No </prime_emerging_business>
+        <percent_covid_spending>-</percent_covid_spending>
+        <percent_other_spending>-</percent_other_spending>
+        <sub_vendor>IN-CITY ENTERPRISES INC</sub_vendor>
+        <sub_vendor_mwbe_category>Black American</sub_vendor_mwbe_category>
+        <sub_contract_purpose>steel fence</sub_contract_purpose>
+        <sub_contract_status>ACCO Canceled Subcontract</sub_contract_status>
+        <sub_contract_industry>Construction Services</sub_contract_industry>
+        <sub_contract_current_amount>93600.00</sub_contract_current_amount>
+        <sub_contract_original_amount>93600.00</sub_contract_original_amount>
+        <sub_vendor_paid_to_date>0.00</sub_vendor_paid_to_date>
+        <sub_contract_start_date>2026-03-16</sub_contract_start_date>
+        <sub_contract_end_date>2027-03-15</sub_contract_end_date>
+        <sub_contract_reference_id>005</sub_contract_reference_id>
+        <sub_woman_owned_business>No </sub_woman_owned_business>
+        <sub_emerging_business>No </sub_emerging_business>
+      </transaction><transaction>
+        <year>2026</year>
+        <document_code>CT1</document_code>
+        <prime_contract_id>CT184620268805555</prime_contract_id>
+        <contract_includes_sub_vendors>Yes</contract_includes_sub_vendors>
+        <mocs_registered>No</mocs_registered>
+        <vendor_record_type>Sub Vendor</vendor_record_type>
+        <prime_vendor>WILLIAM A GROSS CONSTRUCTION ASSOCIATES INC.</prime_vendor>
+        <prime_vendor_mwbe_category>Non-M/WBE</prime_vendor_mwbe_category>
+        <prime_contract_purpose>Q300-121M Captain Mario Fajardo Pk and Sports Ct. Recon.</prime_contract_purpose>
+        <prime_contract_current_amount>0.00</prime_contract_current_amount>
+        <prime_contract_original_amount>0.00</prime_contract_original_amount>
+        <prime_vendor_spent_to_date>0.00</prime_vendor_spent_to_date>
+        <prime_contract_start_date>2026-03-16</prime_contract_start_date>
+        <prime_contract_end_date>2027-03-15</prime_contract_end_date>
+        <prime_contract_registration_date>2026-03-30</prime_contract_registration_date>
+        <prime_contracting_agency>Department of Parks and Recreation</prime_contracting_agency>
+        <prime_oca_number/>
+        <prime_contract_version>1</prime_contract_version>
+        <parent_contract_id>-</parent_contract_id>
+        <prime_contract_type>CONSTRUCTION</prime_contract_type>
+        <prime_contract_award_method>COMPETITIVE SEALED BIDDING</prime_contract_award_method>
+        <prime_contract_expense_category>IOTB CONSTRUCTION, POLLUTION REMEDIATION OBLIGATIONS</prime_contract_expense_category>
+        <prime_contract_industry>Construction Services</prime_contract_industry>
+        <prime_contract_pin>84626B0011001C002</prime_contract_pin>
+        <prime_contract_apt_pin/>
+        <prime_woman_owned_business>No </prime_woman_owned_business>
+        <prime_emerging_business>No </prime_emerging_business>
+        <percent_covid_spending>-</percent_covid_spending>
+        <percent_other_spending>-</percent_other_spending>
+        <sub_vendor>IN-CITY ENTERPRISES INC</sub_vendor>
+        <sub_vendor_mwbe_category>Black American</sub_vendor_mwbe_category>
+        <sub_contract_purpose>steel fence</sub_contract_purpose>
+        <sub_contract_status>No Subcontract Payments Submitted</sub_contract_status>
+        <sub_contract_industry>Construction Services</sub_contract_industry>
+        <sub_contract_current_amount>82900.00</sub_contract_current_amount>
+        <sub_contract_original_amount>82900.00</sub_contract_original_amount>
+        <sub_vendor_paid_to_date>0.00</sub_vendor_paid_to_date>
+        <sub_contract_start_date>2026-03-16</sub_contract_start_date>
+        <sub_contract_end_date>2027-03-15</sub_contract_end_date>
+        <sub_contract_reference_id>018</sub_contract_reference_id>
+        <sub_woman_owned_business>No </sub_woman_owned_business>
+        <sub_emerging_business>No </sub_emerging_business>
+      </transaction><transaction>
+        <year>2026</year>
+        <document_code>CT1</document_code>
+        <prime_contract_id>CT184620268805555</prime_contract_id>
+        <contract_includes_sub_vendors>Yes</contract_includes_sub_vendors>
+        <mocs_registered>No</mocs_registered>
+        <vendor_record_type>Sub Vendor</vendor_record_type>
+        <prime_vendor>WILLIAM A GROSS CONSTRUCTION ASSOCIATES INC.</prime_vendor>
+        <prime_vendor_mwbe_category>Non-M/WBE</prime_vendor_mwbe_category>
+        <prime_contract_purpose>Q300-121M Captain Mario Fajardo Pk and Sports Ct. Recon.</prime_contract_purpose>
+        <prime_contract_current_amount>0.00</prime_contract_current_amount>
+        <prime_contract_original_amount>0.00</prime_contract_original_amount>
+        <prime_vendor_spent_to_date>0.00</prime_vendor_spent_to_date>
+        <prime_contract_start_date>2026-03-16</prime_contract_start_date>
+        <prime_contract_end_date>2027-03-15</prime_contract_end_date>
+        <prime_contract_registration_date>2026-03-30</prime_contract_registration_date>
+        <prime_contracting_agency>Department of Parks and Recreation</prime_contracting_agency>
+        <prime_oca_number/>
+        <prime_contract_version>1</prime_contract_version>
+        <parent_contract_id>-</parent_contract_id>
+        <prime_contract_type>CONSTRUCTION</prime_contract_type>
+        <prime_contract_award_method>COMPETITIVE SEALED BIDDING</prime_contract_award_method>
+        <prime_contract_expense_category>IOTB CONSTRUCTION, POLLUTION REMEDIATION OBLIGATIONS</prime_contract_expense_category>
+        <prime_contract_industry>Construction Services</prime_contract_industry>
+        <prime_contract_pin>84626B0011001C002</prime_contract_pin>
+        <prime_contract_apt_pin/>
+        <prime_woman_owned_business>No </prime_woman_owned_business>
+        <prime_emerging_business>No </prime_emerging_business>
+        <percent_covid_spending>-</percent_covid_spending>
+        <percent_other_spending>-</percent_other_spending>
+        <sub_vendor>EARTH REPAIR LLC</sub_vendor>
+        <sub_vendor_mwbe_category>Non-M/WBE</sub_vendor_mwbe_category>
+        <sub_contract_purpose>clear existing storm/sewer pipe</sub_contract_purpose>
+        <sub_contract_status>No Subcontract Payments Submitted</sub_contract_status>
+        <sub_contract_industry>Construction Services</sub_contract_industry>
+        <sub_contract_current_amount>6000.00</sub_contract_current_amount>
+        <sub_contract_original_amount>6000.00</sub_contract_original_amount>
+        <sub_vendor_paid_to_date>0.00</sub_vendor_paid_to_date>
+        <sub_contract_start_date>2026-03-16</sub_contract_start_date>
+        <sub_contract_end_date>2027-03-15</sub_contract_end_date>
+        <sub_contract_reference_id>017</sub_contract_reference_id>
+        <sub_woman_owned_business>No </sub_woman_owned_business>
+        <sub_emerging_business>No </sub_emerging_business>
+      </transaction><transaction>
+        <year>2026</year>
+        <document_code>CT1</document_code>
+        <prime_contract_id>CT184620268805555</prime_contract_id>
+        <contract_includes_sub_vendors>Yes</contract_includes_sub_vendors>
+        <mocs_registered>No</mocs_registered>
+        <vendor_record_type>Sub Vendor</vendor_record_type>
+        <prime_vendor>WILLIAM A GROSS CONSTRUCTION ASSOCIATES INC.</prime_vendor>
+        <prime_vendor_mwbe_category>Non-M/WBE</prime_vendor_mwbe_category>
+        <prime_contract_purpose>Q300-121M Captain Mario Fajardo Pk and Sports Ct. Recon.</prime_contract_purpose>
+        <prime_contract_current_amount>0.00</prime_contract_current_amount>
+        <prime_contract_original_amount>0.00</prime_contract_original_amount>
+        <prime_vendor_spent_to_date>0.00</prime_vendor_spent_to_date>
+        <prime_contract_start_date>2026-03-16</prime_contract_start_date>
+        <prime_contract_end_date>2027-03-15</prime_contract_end_date>
+        <prime_contract_registration_date>2026-03-30</prime_contract_registration_date>
+        <prime_contracting_agency>Department of Parks and Recreation</prime_contracting_agency>
+        <prime_oca_number/>
+        <prime_contract_version>1</prime_contract_version>
+        <parent_contract_id>-</parent_contract_id>
+        <prime_contract_type>CONSTRUCTION</prime_contract_type>
+        <prime_contract_award_method>COMPETITIVE SEALED BIDDING</prime_contract_award_method>
+        <prime_contract_expense_category>IOTB CONSTRUCTION, POLLUTION REMEDIATION OBLIGATIONS</prime_contract_expense_category>
+        <prime_contract_industry>Construction Services</prime_contract_industry>
+        <prime_contract_pin>84626B0011001C002</prime_contract_pin>
+        <prime_contract_apt_pin/>
+        <prime_woman_owned_business>No </prime_woman_owned_business>
+        <prime_emerging_business>No </prime_emerging_business>
+        <percent_covid_spending>-</percent_covid_spending>
+        <percent_other_spending>-</percent_other_spending>
+        <sub_vendor>MAINSTREAM ELECTRIC INC</sub_vendor>
+        <sub_vendor_mwbe_category>Black American</sub_vendor_mwbe_category>
+        <sub_contract_purpose>electrical</sub_contract_purpose>
+        <sub_contract_status>No Subcontract Payments Submitted</sub_contract_status>
+        <sub_contract_industry>Construction Services</sub_contract_industry>
+        <sub_contract_current_amount>157000.00</sub_contract_current_amount>
+        <sub_contract_original_amount>157000.00</sub_contract_original_amount>
+        <sub_vendor_paid_to_date>0.00</sub_vendor_paid_to_date>
+        <sub_contract_start_date>2026-03-16</sub_contract_start_date>
+        <sub_contract_end_date>2027-03-15</sub_contract_end_date>
+        <sub_contract_reference_id>009</sub_contract_reference_id>
+        <sub_woman_owned_business>No </sub_woman_owned_business>
+        <sub_emerging_business>No </sub_emerging_business>
+      </transaction><transaction>
+        <year>2026</year>
+        <document_code>CT1</document_code>
+        <prime_contract_id>CT184620268805555</prime_contract_id>
+        <contract_includes_sub_vendors>Yes</contract_includes_sub_vendors>
+        <mocs_registered>No</mocs_registered>
+        <vendor_record_type>Sub Vendor</vendor_record_type>
+        <prime_vendor>WILLIAM A GROSS CONSTRUCTION ASSOCIATES INC.</prime_vendor>
+        <prime_vendor_mwbe_category>Non-M/WBE</prime_vendor_mwbe_category>
+        <prime_contract_purpose>Q300-121M Captain Mario Fajardo Pk and Sports Ct. Recon.</prime_contract_purpose>
+        <prime_contract_current_amount>0.00</prime_contract_current_amount>
+        <prime_contract_original_amount>0.00</prime_contract_original_amount>
+        <prime_vendor_spent_to_date>0.00</prime_vendor_spent_to_date>
+        <prime_contract_start_date>2026-03-16</prime_contract_start_date>
+        <prime_contract_end_date>2027-03-15</prime_contract_end_date>
+        <prime_contract_registration_date>2026-03-30</prime_contract_registration_date>
+        <prime_contracting_agency>Department of Parks and Recreation</prime_contracting_agency>
+        <prime_oca_number/>
+        <prime_contract_version>1</prime_contract_version>
+        <parent_contract_id>-</parent_contract_id>
+        <prime_contract_type>CONSTRUCTION</prime_contract_type>
+        <prime_contract_award_method>COMPETITIVE SEALED BIDDING</prime_contract_award_method>
+        <prime_contract_expense_category>IOTB CONSTRUCTION, POLLUTION REMEDIATION OBLIGATIONS</prime_contract_expense_category>
+        <prime_contract_industry>Construction Services</prime_contract_industry>
+        <prime_contract_pin>84626B0011001C002</prime_contract_pin>
+        <prime_contract_apt_pin/>
+        <prime_woman_owned_business>No </prime_woman_owned_business>
+        <prime_emerging_business>No </prime_emerging_business>
+        <percent_covid_spending>-</percent_covid_spending>
+        <percent_other_spending>-</percent_other_spending>
+        <sub_vendor>UNITED METRO CONST CORP</sub_vendor>
+        <sub_vendor_mwbe_category>Non-M/WBE</sub_vendor_mwbe_category>
+        <sub_contract_purpose>safety surface installer</sub_contract_purpose>
+        <sub_contract_status>No Subcontract Payments Submitted</sub_contract_status>
+        <sub_contract_industry>Construction Services</sub_contract_industry>
+        <sub_contract_current_amount>63120.00</sub_contract_current_amount>
+        <sub_contract_original_amount>63120.00</sub_contract_original_amount>
+        <sub_vendor_paid_to_date>0.00</sub_vendor_paid_to_date>
+        <sub_contract_start_date>2026-03-16</sub_contract_start_date>
+        <sub_contract_end_date>2027-03-15</sub_contract_end_date>
+        <sub_contract_reference_id>010</sub_contract_reference_id>
+        <sub_woman_owned_business>No </sub_woman_owned_business>
+        <sub_emerging_business>No </sub_emerging_business>
+      </transaction><transaction>
+        <year>2026</year>
+        <document_code>CT1</document_code>
+        <prime_contract_id>CT184620268805555</prime_contract_id>
+        <contract_includes_sub_vendors>Yes</contract_includes_sub_vendors>
+        <mocs_registered>No</mocs_registered>
+        <vendor_record_type>Sub Vendor</vendor_record_type>
+        <prime_vendor>WILLIAM A GROSS CONSTRUCTION ASSOCIATES INC.</prime_vendor>
+        <prime_vendor_mwbe_category>Non-M/WBE</prime_vendor_mwbe_category>
+        <prime_contract_purpose>Q300-121M Captain Mario Fajardo Pk and Sports Ct. Recon.</prime_contract_purpose>
+        <prime_contract_current_amount>0.00</prime_contract_current_amount>
+        <prime_contract_original_amount>0.00</prime_contract_original_amount>
+        <prime_vendor_spent_to_date>0.00</prime_vendor_spent_to_date>
+        <prime_contract_start_date>2026-03-16</prime_contract_start_date>
+        <prime_contract_end_date>2027-03-15</prime_contract_end_date>
+        <prime_contract_registration_date>2026-03-30</prime_contract_registration_date>
+        <prime_contracting_agency>Department of Parks and Recreation</prime_contracting_agency>
+        <prime_oca_number/>
+        <prime_contract_version>1</prime_contract_version>
+        <parent_contract_id>-</parent_contract_id>
+        <prime_contract_type>CONSTRUCTION</prime_contract_type>
+        <prime_contract_award_method>COMPETITIVE SEALED BIDDING</prime_contract_award_method>
+        <prime_contract_expense_category>IOTB CONSTRUCTION, POLLUTION REMEDIATION OBLIGATIONS</prime_contract_expense_category>
+        <prime_contract_industry>Construction Services</prime_contract_industry>
+        <prime_contract_pin>84626B0011001C002</prime_contract_pin>
+        <prime_contract_apt_pin/>
+        <prime_woman_owned_business>No </prime_woman_owned_business>
+        <prime_emerging_business>No </prime_emerging_business>
+        <percent_covid_spending>-</percent_covid_spending>
+        <percent_other_spending>-</percent_other_spending>
+        <sub_vendor>YABOO FENCE COMPANY INC</sub_vendor>
+        <sub_vendor_mwbe_category>Women (Non-Minority)</sub_vendor_mwbe_category>
+        <sub_contract_purpose>fence</sub_contract_purpose>
+        <sub_contract_status>No Subcontract Payments Submitted</sub_contract_status>
+        <sub_contract_industry>Construction Services</sub_contract_industry>
+        <sub_contract_current_amount>166262.40</sub_contract_current_amount>
+        <sub_contract_original_amount>166262.40</sub_contract_original_amount>
+        <sub_vendor_paid_to_date>0.00</sub_vendor_paid_to_date>
+        <sub_contract_start_date>2026-03-16</sub_contract_start_date>
+        <sub_contract_end_date>2027-03-15</sub_contract_end_date>
+        <sub_contract_reference_id>014</sub_contract_reference_id>
+        <sub_woman_owned_business>Yes</sub_woman_owned_business>
+        <sub_emerging_business>No </sub_emerging_business>
+      </transaction><transaction>
+        <year>2026</year>
+        <document_code>CT1</document_code>
+        <prime_contract_id>CT184620268805555</prime_contract_id>
+        <contract_includes_sub_vendors>Yes</contract_includes_sub_vendors>
+        <mocs_registered>No</mocs_registered>
+        <vendor_record_type>Sub Vendor</vendor_record_type>
+        <prime_vendor>WILLIAM A GROSS CONSTRUCTION ASSOCIATES INC.</prime_vendor>
+        <prime_vendor_mwbe_category>Non-M/WBE</prime_vendor_mwbe_category>
+        <prime_contract_purpose>Q300-121M Captain Mario Fajardo Pk and Sports Ct. Recon.</prime_contract_purpose>
+        <prime_contract_current_amount>0.00</prime_contract_current_amount>
+        <prime_contract_original_amount>0.00</prime_contract_original_amount>
+        <prime_vendor_spent_to_date>0.00</prime_vendor_spent_to_date>
+        <prime_contract_start_date>2026-03-16</prime_contract_start_date>
+        <prime_contract_end_date>2027-03-15</prime_contract_end_date>
+        <prime_contract_registration_date>2026-03-30</prime_contract_registration_date>
+        <prime_contracting_agency>Department of Parks and Recreation</prime_contracting_agency>
+        <prime_oca_number/>
+        <prime_contract_version>1</prime_contract_version>
+        <parent_contract_id>-</parent_contract_id>
+        <prime_contract_type>CONSTRUCTION</prime_contract_type>
+        <prime_contract_award_method>COMPETITIVE SEALED BIDDING</prime_contract_award_method>
+        <prime_contract_expense_category>IOTB CONSTRUCTION, POLLUTION REMEDIATION OBLIGATIONS</prime_contract_expense_category>
+        <prime_contract_industry>Construction Services</prime_contract_industry>
+        <prime_contract_pin>84626B0011001C002</prime_contract_pin>
+        <prime_contract_apt_pin/>
+        <prime_woman_owned_business>No </prime_woman_owned_business>
+        <prime_emerging_business>No </prime_emerging_business>
+        <percent_covid_spending>-</percent_covid_spending>
+        <percent_other_spending>-</percent_other_spending>
+        <sub_vendor>CHENANGO CONTRACTING INC</sub_vendor>
+        <sub_vendor_mwbe_category>Non-M/WBE</sub_vendor_mwbe_category>
+        <sub_contract_purpose>geomembrane</sub_contract_purpose>
+        <sub_contract_status>No Subcontract Payments Submitted</sub_contract_status>
+        <sub_contract_industry>Construction Services</sub_contract_industry>
+        <sub_contract_current_amount>15500.00</sub_contract_current_amount>
+        <sub_contract_original_amount>15500.00</sub_contract_original_amount>
+        <sub_vendor_paid_to_date>0.00</sub_vendor_paid_to_date>
+        <sub_contract_start_date>2026-03-16</sub_contract_start_date>
+        <sub_contract_end_date>2027-03-15</sub_contract_end_date>
+        <sub_contract_reference_id>013</sub_contract_reference_id>
+        <sub_woman_owned_business>No </sub_woman_owned_business>
+        <sub_emerging_business>No </sub_emerging_business>
+      </transaction><transaction>
+        <year>2026</year>
+        <document_code>CT1</document_code>
+        <prime_contract_id>CT184620268805555</prime_contract_id>
+        <contract_includes_sub_vendors>Yes</contract_includes_sub_vendors>
+        <mocs_registered>No</mocs_registered>
+        <vendor_record_type>Sub Vendor</vendor_record_type>
+        <prime_vendor>WILLIAM A GROSS CONSTRUCTION ASSOCIATES INC.</prime_vendor>
+        <prime_vendor_mwbe_category>Non-M/WBE</prime_vendor_mwbe_category>
+        <prime_contract_purpose>Q300-121M Captain Mario Fajardo Pk and Sports Ct. Recon.</prime_contract_purpose>
+        <prime_contract_current_amount>0.00</prime_contract_current_amount>
+        <prime_contract_original_amount>0.00</prime_contract_original_amount>
+        <prime_vendor_spent_to_date>0.00</prime_vendor_spent_to_date>
+        <prime_contract_start_date>2026-03-16</prime_contract_start_date>
+        <prime_contract_end_date>2027-03-15</prime_contract_end_date>
+        <prime_contract_registration_date>2026-03-30</prime_contract_registration_date>
+        <prime_contracting_agency>Department of Parks and Recreation</prime_contracting_agency>
+        <prime_oca_number/>
+        <prime_contract_version>1</prime_contract_version>
+        <parent_contract_id>-</parent_contract_id>
+        <prime_contract_type>CONSTRUCTION</prime_contract_type>
+        <prime_contract_award_method>COMPETITIVE SEALED BIDDING</prime_contract_award_method>
+        <prime_contract_expense_category>IOTB CONSTRUCTION, POLLUTION REMEDIATION OBLIGATIONS</prime_contract_expense_category>
+        <prime_contract_industry>Construction Services</prime_contract_industry>
+        <prime_contract_pin>84626B0011001C002</prime_contract_pin>
+        <prime_contract_apt_pin/>
+        <prime_woman_owned_business>No </prime_woman_owned_business>
+        <prime_emerging_business>No </prime_emerging_business>
+        <percent_covid_spending>-</percent_covid_spending>
+        <percent_other_spending>-</percent_other_spending>
+        <sub_vendor>Straight Edge Striping</sub_vendor>
+        <sub_vendor_mwbe_category>Non-M/WBE</sub_vendor_mwbe_category>
+        <sub_contract_purpose>painted lines</sub_contract_purpose>
+        <sub_contract_status>No Subcontract Payments Submitted</sub_contract_status>
+        <sub_contract_industry>Construction Services</sub_contract_industry>
+        <sub_contract_current_amount>33120.00</sub_contract_current_amount>
+        <sub_contract_original_amount>33120.00</sub_contract_original_amount>
+        <sub_vendor_paid_to_date>0.00</sub_vendor_paid_to_date>
+        <sub_contract_start_date>2026-03-16</sub_contract_start_date>
+        <sub_contract_end_date>2027-03-15</sub_contract_end_date>
+        <sub_contract_reference_id>007</sub_contract_reference_id>
+        <sub_woman_owned_business>No </sub_woman_owned_business>
+        <sub_emerging_business>No </sub_emerging_business>
+      </transaction><transaction>
+        <year>2026</year>
+        <document_code>CT1</document_code>
+        <prime_contract_id>CT184620268805555</prime_contract_id>
+        <contract_includes_sub_vendors>Yes</contract_includes_sub_vendors>
+        <mocs_registered>No</mocs_registered>
+        <vendor_record_type>Sub Vendor</vendor_record_type>
+        <prime_vendor>WILLIAM A GROSS CONSTRUCTION ASSOCIATES INC.</prime_vendor>
+        <prime_vendor_mwbe_category>Non-M/WBE</prime_vendor_mwbe_category>
+        <prime_contract_purpose>Q300-121M Captain Mario Fajardo Pk and Sports Ct. Recon.</prime_contract_purpose>
+        <prime_contract_current_amount>0.00</prime_contract_current_amount>
+        <prime_contract_original_amount>0.00</prime_contract_original_amount>
+        <prime_vendor_spent_to_date>0.00</prime_vendor_spent_to_date>
+        <prime_contract_start_date>2026-03-16</prime_contract_start_date>
+        <prime_contract_end_date>2027-03-15</prime_contract_end_date>
+        <prime_contract_registration_date>2026-03-30</prime_contract_registration_date>
+        <prime_contracting_agency>Department of Parks and Recreation</prime_contracting_agency>
+        <prime_oca_number/>
+        <prime_contract_version>1</prime_contract_version>
+        <parent_contract_id>-</parent_contract_id>
+        <prime_contract_type>CONSTRUCTION</prime_contract_type>
+        <prime_contract_award_method>COMPETITIVE SEALED BIDDING</prime_contract_award_method>
+        <prime_contract_expense_category>IOTB CONSTRUCTION, POLLUTION REMEDIATION OBLIGATIONS</prime_contract_expense_category>
+        <prime_contract_industry>Construction Services</prime_contract_industry>
+        <prime_contract_pin>84626B0011001C002</prime_contract_pin>
+        <prime_contract_apt_pin/>
+        <prime_woman_owned_business>No </prime_woman_owned_business>
+        <prime_emerging_business>No </prime_emerging_business>
+        <percent_covid_spending>-</percent_covid_spending>
+        <percent_other_spending>-</percent_other_spending>
+        <sub_vendor>PIONEER LANDSCAPING &amp; ASPHALT PAVING INC</sub_vendor>
+        <sub_vendor_mwbe_category>Non-M/WBE</sub_vendor_mwbe_category>
+        <sub_contract_purpose>asphalt paving</sub_contract_purpose>
+        <sub_contract_status>No Subcontract Payments Submitted</sub_contract_status>
+        <sub_contract_industry>Construction Services</sub_contract_industry>
+        <sub_contract_current_amount>125979.00</sub_contract_current_amount>
+        <sub_contract_original_amount>125979.00</sub_contract_original_amount>
+        <sub_vendor_paid_to_date>0.00</sub_vendor_paid_to_date>
+        <sub_contract_start_date>2026-03-16</sub_contract_start_date>
+        <sub_contract_end_date>2027-03-15</sub_contract_end_date>
+        <sub_contract_reference_id>006</sub_contract_reference_id>
+        <sub_woman_owned_business>No </sub_woman_owned_business>
+        <sub_emerging_business>No </sub_emerging_business>
+      </transaction><transaction>
+        <year>2026</year>
+        <document_code>CT1</document_code>
+        <prime_contract_id>CT184620268805367</prime_contract_id>
+        <contract_includes_sub_vendors>Yes</contract_includes_sub_vendors>
+        <mocs_registered>No</mocs_registered>
+        <vendor_record_type>Prime Vendor</vendor_record_type>
+        <prime_vendor>DRAGONETTI BROTHERS LAND SCAPING NURSERY &amp; FLORIST INC</prime_vendor>
+        <prime_vendor_mwbe_category>Non-M/WBE</prime_vendor_mwbe_category>
+        <prime_contract_purpose>QG-724M Queens Park Tree Planting FY24</prime_contract_purpose>
+        <prime_contract_current_amount>3430000.00</prime_contract_current_amount>
+        <prime_contract_original_amount>3430000.00</prime_contract_original_amount>
+        <prime_vendor_spent_to_date>912157.64</prime_vendor_spent_to_date>
+        <prime_contract_start_date>2026-03-26</prime_contract_start_date>
+        <prime_contract_end_date>2027-09-16</prime_contract_end_date>
+        <prime_contract_registration_date>2026-04-01</prime_contract_registration_date>
+        <prime_contracting_agency>Department of Parks and Recreation</prime_contracting_agency>
+        <prime_oca_number>1018200760</prime_oca_number>
+        <prime_contract_version>1</prime_contract_version>
+        <parent_contract_id>-</parent_contract_id>
+        <prime_contract_type>CONSTRUCTION</prime_contract_type>
+        <prime_contract_award_method>COMPETITIVE SEALED BIDDING</prime_contract_award_method>
+        <prime_contract_expense_category>IOTB CONSTRUCTION</prime_contract_expense_category>
+        <prime_contract_industry>Construction Services</prime_contract_industry>
+        <prime_contract_pin>84625B0151001</prime_contract_pin>
+        <prime_contract_apt_pin/>
+        <prime_woman_owned_business>No </prime_woman_owned_business>
+        <prime_emerging_business>No </prime_emerging_business>
+        <percent_covid_spending>-</percent_covid_spending>
+        <percent_other_spending/>
+        <sub_vendor>-</sub_vendor>
+        <sub_vendor_mwbe_category>-</sub_vendor_mwbe_category>
+        <sub_contract_purpose>-</sub_contract_purpose>
+        <sub_contract_status>-</sub_contract_status>
+        <sub_contract_industry>-</sub_contract_industry>
+        <sub_contract_current_amount>0.00</sub_contract_current_amount>
+        <sub_contract_original_amount>0.00</sub_contract_original_amount>
+        <sub_vendor_paid_to_date>0.00</sub_vendor_paid_to_date>
+        <sub_contract_start_date>-</sub_contract_start_date>
+        <sub_contract_end_date>-</sub_contract_end_date>
+        <sub_contract_reference_id>-</sub_contract_reference_id>
+        <sub_woman_owned_business>No </sub_woman_owned_business>
+        <sub_emerging_business>No </sub_emerging_business>
+      </transaction><transaction>
+        <year>2026</year>
+        <document_code>CT1</document_code>
+        <prime_contract_id>CT184620268805367</prime_contract_id>
+        <contract_includes_sub_vendors>Yes</contract_includes_sub_vendors>
+        <mocs_registered>No</mocs_registered>
+        <vendor_record_type>Sub Vendor</vendor_record_type>
+        <prime_vendor>DRAGONETTI BROTHERS LAND SCAPING NURSERY &amp; FLORIST INC</prime_vendor>
+        <prime_vendor_mwbe_category>Non-M/WBE</prime_vendor_mwbe_category>
+        <prime_contract_purpose>QG-724M Queens Park Tree Planting FY24</prime_contract_purpose>
+        <prime_contract_current_amount>0.00</prime_contract_current_amount>
+        <prime_contract_original_amount>0.00</prime_contract_original_amount>
+        <prime_vendor_spent_to_date>0.00</prime_vendor_spent_to_date>
+        <prime_contract_start_date>2026-03-26</prime_contract_start_date>
+        <prime_contract_end_date>2027-09-16</prime_contract_end_date>
+        <prime_contract_registration_date>2026-04-01</prime_contract_registration_date>
+        <prime_contracting_agency>Department of Parks and Recreation</prime_contracting_agency>
+        <prime_oca_number/>
+        <prime_contract_version>1</prime_contract_version>
+        <parent_contract_id>-</parent_contract_id>
+        <prime_contract_type>CONSTRUCTION</prime_contract_type>
+        <prime_contract_award_method>COMPETITIVE SEALED BIDDING</prime_contract_award_method>
+        <prime_contract_expense_category>IOTB CONSTRUCTION</prime_contract_expense_category>
+        <prime_contract_industry>Construction Services</prime_contract_industry>
+        <prime_contract_pin>84625B0151001</prime_contract_pin>
+        <prime_contract_apt_pin/>
+        <prime_woman_owned_business>No </prime_woman_owned_business>
+        <prime_emerging_business>No </prime_emerging_business>
+        <percent_covid_spending>-</percent_covid_spending>
+        <percent_other_spending>-</percent_other_spending>
+        <sub_vendor>EAST END SOLUTIONS INC</sub_vendor>
+        <sub_vendor_mwbe_category>Women (Non-Minority)</sub_vendor_mwbe_category>
+        <sub_contract_purpose>Tree Guards</sub_contract_purpose>
+        <sub_contract_status>ACCO Reviewing Subcontract</sub_contract_status>
+        <sub_contract_industry>Construction Services</sub_contract_industry>
+        <sub_contract_current_amount>205800.00</sub_contract_current_amount>
+        <sub_contract_original_amount>205800.00</sub_contract_original_amount>
+        <sub_vendor_paid_to_date>0.00</sub_vendor_paid_to_date>
+        <sub_contract_start_date>2026-03-26</sub_contract_start_date>
+        <sub_contract_end_date>2027-09-11</sub_contract_end_date>
+        <sub_contract_reference_id>001</sub_contract_reference_id>
+        <sub_woman_owned_business>Yes</sub_woman_owned_business>
+        <sub_emerging_business>No </sub_emerging_business>
+      </transaction><transaction>
+        <year>2026</year>
+        <document_code>CT1</document_code>
+        <prime_contract_id>CT184120268807929</prime_contract_id>
+        <contract_includes_sub_vendors>No Data Entered</contract_includes_sub_vendors>
+        <mocs_registered>No</mocs_registered>
+        <vendor_record_type>Prime Vendor</vendor_record_type>
+        <prime_vendor>HNTB NEW YORK ENGINEERING ARCHITECTURE AND LANDSCAPE ARCHITE</prime_vendor>
+        <prime_vendor_mwbe_category>Non-M/WBE</prime_vendor_mwbe_category>
+        <prime_contract_purpose>TD/CSS for 21st Ave Bridge Over NYCTA-BMT Sea Beach Line</prime_contract_purpose>
+        <prime_contract_current_amount>13533763.08</prime_contract_current_amount>
+        <prime_contract_original_amount>13533763.08</prime_contract_original_amount>
+        <prime_vendor_spent_to_date>0.00</prime_vendor_spent_to_date>
+        <prime_contract_start_date>2024-10-11</prime_contract_start_date>
+        <prime_contract_end_date>2032-10-10</prime_contract_end_date>
+        <prime_contract_registration_date>2026-06-22</prime_contract_registration_date>
+        <prime_contracting_agency>Department of Transportation</prime_contracting_agency>
+        <prime_oca_number>1018639208</prime_oca_number>
+        <prime_contract_version>1</prime_contract_version>
+        <parent_contract_id>-</parent_contract_id>
+        <prime_contract_type>CONSULTANT</prime_contract_type>
+        <prime_contract_award_method>REQUEST FOR  PROPOSAL (RFP)</prime_contract_award_method>
+        <prime_contract_expense_category>DESIGN-CONSULTANT-IOTB</prime_contract_expense_category>
+        <prime_contract_industry>Professional Services</prime_contract_industry>
+        <prime_contract_pin>84124P0003001</prime_contract_pin>
+        <prime_contract_apt_pin/>
+        <prime_woman_owned_business>No </prime_woman_owned_business>
+        <prime_emerging_business>No </prime_emerging_business>
+        <percent_covid_spending>-</percent_covid_spending>
+        <percent_other_spending/>
+        <sub_vendor>-</sub_vendor>
+        <sub_vendor_mwbe_category>-</sub_vendor_mwbe_category>
+        <sub_contract_purpose>-</sub_contract_purpose>
+        <sub_contract_status>-</sub_contract_status>
+        <sub_contract_industry>-</sub_contract_industry>
+        <sub_contract_current_amount>0.00</sub_contract_current_amount>
+        <sub_contract_original_amount>0.00</sub_contract_original_amount>
+        <sub_vendor_paid_to_date>0.00</sub_vendor_paid_to_date>
+        <sub_contract_start_date>-</sub_contract_start_date>
+        <sub_contract_end_date>-</sub_contract_end_date>
+        <sub_contract_reference_id>-</sub_contract_reference_id>
+        <sub_woman_owned_business>No </sub_woman_owned_business>
+        <sub_emerging_business>No </sub_emerging_business>
+      </transaction></contract_transactions></result_records></response>

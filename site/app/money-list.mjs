@@ -33,18 +33,21 @@ import {
 import { renderProcurementRowCoverageHtml } from "../procurement_coverage_labels.mjs";
 import {
   ANALYTICAL_PROJECTION_URL,
-  CITY_RECORD_COVERAGE_DEFAULT_THRESHOLD,
   analyticalDrillThroughHref,
-  cityRecordCoverage,
   filterAnalyticalContracts,
   formatRegisteredValue,
-  groupCityRecordCoverage,
   groupAnalyticalContracts,
   populationSummary,
   vendorConcentration,
   registrationTimingSummary,
 } from "../analytical_projection.mjs";
 import { switchAnalyticalFact } from "../analytical_projection_contract.mjs";
+import { openCoverageDestination, renderCityRecordCoverage } from "../city_record_coverage_view.mjs";
+import {
+  renderBuyerHistoryPanel,
+  renderRegistrationTimingMetrics,
+  syncBuyerHistoryComparisonControls,
+} from "../buyer_contracting_history_view.mjs";
 import { analyzeContractsProjection } from "../contracts_analysis_projection.mjs";
 import {
   PAYMENT_ANALYTICAL_PROJECTION_URL,
@@ -73,6 +76,10 @@ const MONEY_PROCUREMENT_QUERY_URL="data/procurement_browse_query.json";
 const PIN_FAMILY_REVIEW_URL="data/pin_family_mismatch_review.json";
 let moneyDefaultSnapshotPromise=null,moneyAgenciesSnapshotPromise=null,moneyResidentSnapshotPromise=null,moneyActionLocationToolsPromise=null,moneyPinSiblingPromise=null,pinFamilyReviewPromise=null;
 let analyticalProjectionPromise=null;
+// Resolved at call time: these helpers come from the shared application scope,
+// so binding them while this module is still evaluating can read a declaration
+// that has not run yet.
+const buyerHistoryUi=()=>({$,t,esc:escUiHtml});
 let analyticalDroppedFilters=[];
 const contractSearchDocumentPromises=new Map();
 let moneyLocationFilter={layer:"",basis:"",borough:"",communityDistrict:"",councilDistrict:""};
@@ -432,6 +439,8 @@ function analyticalUrlFilters(){
     fiscal_year: params.get("ap_fy") || null,
     registration_fiscal_year: params.get("ap_fy") || null,
     contract_amount_band: params.get("ap_amount_band") || null,
+    award_method: params.get("ap_award_method") || null,
+    industry: params.get("ap_industry") || null,
     min_amount: params.get("ap_min") || null,
     max_amount: params.get("ap_max") || null,
     retroactive: params.get("retroactive") || null,
@@ -444,11 +453,16 @@ function analyticalUrlFilters(){
 function analyticalControlsFilters(){
   return {
     registration_fiscal_year: $("#analytics-fy")?.value || null,
+    industry: $("#analytics-industry")?.value || null,
+    award_method: $("#analytics-award-method")?.value || null,
     min_amount: $("#analytics-min")?.value || null,
     max_amount: $("#analytics-max")?.value || null,
   };
 }
 
+// The comparison controls list only values the published population actually
+// contains, so a reader can never select a scope that resolves to nothing for
+// a reason the page cannot explain.
 function syncAnalyticalFiscalYears(rows, fact="registered_contract"){
   const select=$("#analytics-fy");
   if(!select) return;
@@ -499,99 +513,6 @@ function analyticalPaymentMoneyRow(row){
     payment_transaction_count: row?.transaction_count || 0,
     actual_payment_amount: row?.actual_payment_amount || 0,
   };
-}
-
-function analyticalCoverageControls() {
-  return {
-    threshold: Number($("#analytics-coverage-threshold")?.value || CITY_RECORD_COVERAGE_DEFAULT_THRESHOLD),
-    contract_amount_band: $("#analytics-coverage-band")?.value || null,
-  };
-}
-
-function coveragePercent(value) {
-  return value == null ? "—" : `${(value * 100).toFixed(1)}%`;
-}
-
-function coverageBucketLabel(bucket) {
-  return bucket === "exact" ? t("analytics_coverage_exact")
-    : bucket === "none" ? t("analytics_coverage_none")
-      : t("analytics_coverage_missing_pin");
-}
-
-function coverageCell(stat, valueKey) {
-  const count = stat?.contract_count || 0;
-  const value = stat?.registered_value || 0;
-  return `${count.toLocaleString("en-US")} · ${formatRegisteredValue(value)}`;
-}
-
-function openCoverageDestination(panel) {
-  if (!panel || panel.tagName !== "DETAILS") return;
-  if (location.hash === "#contracts-analytics-coverage") panel.open = true;
-}
-
-function renderAnalyticalCoverage(projectionRows, filters) {
-  const panel = $("#contracts-analytics-coverage");
-  openCoverageDestination(panel);
-  const controls = analyticalCoverageControls();
-  const coverageFilters = {
-    min_amount: controls.threshold,
-    registration_fiscal_year: filters.registration_fiscal_year,
-    contract_amount_band: controls.contract_amount_band,
-    agency: filters.agency,
-  };
-  const coverage = cityRecordCoverage(projectionRows, coverageFilters);
-  const grouped = groupCityRecordCoverage(projectionRows, { groupBy: "agency", ...coverageFilters });
-  const summary = $("#contracts-analytics-coverage-summary");
-  const statement = $("#contracts-analytics-coverage-statement");
-  const table = $("#contracts-analytics-coverage-groups");
-  const tableWrap = table?.closest(".table-scroll");
-  const note = $("#contracts-analytics-coverage-note");
-  if (!coverage.eligible_contract_count) {
-    if (summary) summary.innerHTML = "";
-    if (statement) statement.textContent = t("analytics_coverage_empty");
-    if (table) table.innerHTML = "";
-    if (tableWrap) tableWrap.hidden = true;
-    if (note) note.textContent = "";
-    return;
-  }
-  if (tableWrap) tableWrap.hidden = false;
-  if (summary) {
-    summary.innerHTML = [
-      ["analytics_coverage_eligible", coverage.eligible_contract_count, coverage.eligible_registered_value],
-      ["analytics_coverage_exact", coverage.matched_contract_count, coverage.matched_registered_value],
-      ["analytics_coverage_none", coverage.unmatched_contract_count, coverage.unmatched_registered_value],
-      ["analytics_coverage_missing_pin", coverage.missing_pin_contract_count, coverage.missing_pin_registered_value],
-    ].map(([key, count, value]) => `<div class="contracts-analytics-coverage-stat"><dt>${escUiHtml(t(key))}</dt><dd>${Number(count).toLocaleString("en-US")}</dd><small>${escUiHtml(formatRegisteredValue(value))}</small></div>`).join("");
-  }
-  if (statement) {
-    statement.textContent = `${t("analytics_coverage_statement", {
-      matched: coverage.matched_contract_count.toLocaleString("en-US"),
-      eligible: coverage.eligible_contract_count.toLocaleString("en-US"),
-      rate: coveragePercent(coverage.match_rate),
-      value: formatRegisteredValue(coverage.matched_registered_value),
-      total: formatRegisteredValue(coverage.eligible_registered_value),
-    })} ${t("analytics_coverage_missing_sentence", {
-      count: coverage.missing_pin_contract_count.toLocaleString("en-US"),
-      value: formatRegisteredValue(coverage.missing_pin_registered_value),
-    })}`;
-  }
-  if (!table) return;
-  table.innerHTML = grouped.groups.map((group) => {
-    const link = (bucket) => analyticalDrillThroughHref({
-      agency: group.label,
-      registration_fiscal_year: filters.registration_fiscal_year,
-      contract_amount_band: controls.contract_amount_band,
-      min_amount: controls.threshold,
-      city_record_match: bucket,
-    });
-    const exact = group.buckets.exact;
-    const none = group.buckets.none;
-    const missing = group.buckets.cannot_evaluate_missing_pin;
-    return `<tr><th scope="row"><a href="${escUiHtml(analyticalDrillThroughHref({ agency: group.label, registration_fiscal_year: filters.registration_fiscal_year, contract_amount_band: controls.contract_amount_band, min_amount: controls.threshold }))}">${escUiHtml(group.label)}</a></th><td>${group.eligible_contract_count.toLocaleString("en-US")} · ${escUiHtml(formatRegisteredValue(group.eligible_registered_value))}</td><td><a href="${escUiHtml(link("exact"))}" aria-label="${escUiHtml(`${group.label}: ${coverageBucketLabel("exact")}`)}">${escUiHtml(coverageCell(exact))}</a></td><td><a href="${escUiHtml(link("none"))}" aria-label="${escUiHtml(`${group.label}: ${coverageBucketLabel("none")}`)}">${escUiHtml(coverageCell(none))}</a></td><td><a href="${escUiHtml(link("cannot_evaluate_missing_pin"))}" aria-label="${escUiHtml(`${group.label}: ${coverageBucketLabel("cannot_evaluate_missing_pin")}`)}">${escUiHtml(coverageCell(missing))}</a></td></tr>`;
-  }).join("");
-  if (note) note.textContent = t("analytics_coverage_note", {
-    evaluable: coverage.evaluable_match_rate == null ? "—" : coveragePercent(coverage.evaluable_match_rate),
-  });
 }
 
 function performanceEvidenceStateLabel(state) {
@@ -758,35 +679,6 @@ function syncAnalyticalViewControls(view, fact="registered_contract"){
   }
 }
 
-function formatLagDays(value){
-  return value == null ? t("analytics_not_available") : `${Number(value).toLocaleString("en-US")} ${t("analytics_days")}`;
-}
-
-function timingMetricHTML(label, value, className=""){
-  return `<div class="contracts-analytics-timing-metric ${className}"><strong>${escUiHtml(value)}</strong><span>${escUiHtml(label)}</span></div>`;
-}
-
-function renderRegistrationTimingSummary(summary, populationInfo){
-  const eligible = summary.eligible_contract_count.toLocaleString("en-US");
-  const retroactive = summary.retroactive_contract_count.toLocaleString("en-US");
-  const rate = summary.retroactive_share == null ? t("analytics_not_available") : `${(summary.retroactive_share * 100).toFixed(1)}%`;
-  const headline = summary.retroactive_share == null
-    ? t("analytics_timing_no_rate", { eligible })
-    : t("analytics_timing_headline", { rate, retroactive, eligible });
-  const populationElement = $("#contracts-analytics-population");
-  if(populationElement) populationElement.textContent = `${headline} · ${populationInfo.year_label}. ${t("analytics_population_suffix")} ${t("analytics_timing_missing", { missing: summary.missing_date_contract_count.toLocaleString("en-US"), total: summary.total_contract_count.toLocaleString("en-US"), share: summary.missing_date_share == null ? t("analytics_not_available") : `${(summary.missing_date_share * 100).toFixed(1)}%` })}`;
-  const metrics = $("#contracts-analytics-timing");
-  if(metrics) metrics.innerHTML = [
-    timingMetricHTML(t("analytics_metric_eligible"), eligible),
-    timingMetricHTML(t("analytics_metric_missing"), summary.missing_date_contract_count.toLocaleString("en-US")),
-    timingMetricHTML(t("analytics_metric_retroactive"), retroactive),
-    timingMetricHTML(t("analytics_metric_median"), formatLagDays(summary.median_lag_days)),
-    timingMetricHTML(t("analytics_metric_p75"), formatLagDays(summary.p75_lag_days)),
-    timingMetricHTML(t("analytics_metric_p90"), formatLagDays(summary.p90_lag_days)),
-  ].join("");
-  return headline;
-}
-
 function analyticalFilterLabel(key){
   return {
     contract_amount_band: t("analytics_group_amount_band"),
@@ -896,7 +788,13 @@ async function renderAnalyticalProjection(rows){
     return;
   }
   const registeredProjection=projection.registered_contract || projection;
-  const projectionRows=Array.isArray(registeredProjection.rows) ? registeredProjection.rows : [];
+  // A population that failed to load and a population with no matching rows are
+  // different answers. Only a readable rows array is a population; anything
+  // else is an unavailable source. The whole bundle still resolves to an object
+  // when one of its three documents fails, so the presence of the bundle is not
+  // evidence that this population was read.
+  const readableProjectionRows=Array.isArray(registeredProjection?.rows) ? registeredProjection.rows : null;
+  const projectionRows=readableProjectionRows || [];
   syncAnalyticalFiscalYears(projectionRows);
   const view=$("#analytics-view")?.value||"overview";
   syncAnalyticalViewControls(view,"registered_contract");
@@ -946,6 +844,10 @@ async function renderAnalyticalProjection(rows){
   if(urlFilters.min_amount) filters.min_amount=urlFilters.min_amount;
   if(urlFilters.max_amount) filters.max_amount=urlFilters.max_amount;
   if(urlFilters.retroactive) filters.retroactive=urlFilters.retroactive;
+  // `controls` already carries the reader's own choices; a URL scope wins.
+  syncBuyerHistoryComparisonControls(projectionRows,urlFilters,buyerHistoryUi());
+  for(const key of ["industry","award_method"]) if(urlFilters[key]) filters[key]=urlFilters[key];
+  renderBuyerHistoryPanel(readableProjectionRows,registeredProjection,urlFilters,controls,buyerHistoryUi());
   const filtered=filterAnalyticalContracts(projectionRows,filters);
   const summary=populationSummary(filtered,{snapshot_date:registeredProjection.snapshot_date,population_definition:registeredProjection.population_definition});
   const timingSummary=registrationTimingSummary(filtered);
@@ -983,7 +885,7 @@ async function renderAnalyticalProjection(rows){
   renderAnalyticalVendorConcentration(filtered,filters,measure,urlFilters.agency);
   const population=$("#contracts-analytics-population");
   if(population){
-    const headline=timingView ? renderRegistrationTimingSummary(timingSummary, summary) : measure==="count"
+    const headline=timingView ? renderRegistrationTimingMetrics(timingSummary, summary, buyerHistoryUi()) : measure==="count"
       ? t("analytics_population_count",{count:summary.contract_count.toLocaleString("en-US")})
       : t("analytics_population_value",{value:formatRegisteredValue(measure==="original" ? filtered.reduce((sum,row)=>sum+(Number(row.original_registered_amount)||0),0) : summary.current_registered_value),measure:measureLabel.toLowerCase(),count:summary.contract_count.toLocaleString("en-US")});
     if(!timingView) population.textContent=`${headline} · ${summary.year_label}. ${t("analytics_population_suffix")}`;
@@ -1014,7 +916,7 @@ async function renderAnalyticalProjection(rows){
     : remaining>0
       ? t("analytics_rank_note",{n:grouped.shown_groups.length,group:analyticalGroupLabel(groupBy),measure:measureLabel.toLowerCase(),remaining:remaining.toLocaleString("en-US")})
       : t("analytics_group_exact_note");
-  renderAnalyticalCoverage(projectionRows, filters);
+  renderCityRecordCoverage(projectionRows, filters, buyerHistoryUi());
   renderAnalyticalFactComparison(projection, { agency:filters.agency, prime_vendor:filters.prime_vendor, fiscal_year:filters.registration_fiscal_year });
   renderAnalyticalFactStatus();
 }
@@ -1074,7 +976,17 @@ function bindAnalyticalControls(){
     coveragePanel.dataset.coverageHashBound="1";
     addEventListener("hashchange",()=>openCoverageDestination($("#contracts-analytics-coverage")));
   }
-  ["#analytics-view","#analytics-group","#analytics-measure","#analytics-fy","#analytics-min","#analytics-max","#analytics-coverage-threshold","#analytics-coverage-band"].forEach((selector)=>{
+  const retryButton=$("#buyer-history-retry-button");
+  if(retryButton&&!retryButton.dataset.analyticsBound){
+    retryButton.dataset.analyticsBound="1";
+    retryButton.addEventListener("click",()=>{
+      // Retry the same request. The reader's buyer, year, and comparison are
+      // already in the URL and the controls, so nothing has to be re-chosen.
+      analyticalProjectionPromise=null;
+      loadAnalyticalProjection().then(renderAnalyticalProjection).catch(()=>{});
+    });
+  }
+  ["#analytics-view","#analytics-group","#analytics-measure","#analytics-fy","#analytics-industry","#analytics-award-method","#analytics-min","#analytics-max","#analytics-coverage-threshold","#analytics-coverage-band"].forEach((selector)=>{
     const element=$(selector);
     if(!element || element.dataset.analyticsBound) return;
     element.dataset.analyticsBound="1";

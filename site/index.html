@@ -800,6 +800,19 @@
   .contracts-analytics-controls label{display:block;color:var(--muted);font:700 10px/1.2 ui-sans-serif,system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase}
   .contracts-analytics-controls select,.contracts-analytics-controls input{width:100%;margin-top:4px}
   .contracts-analytics-controls .field[hidden]{display:none}
+  .buyer-history{margin:14px 0;padding:14px 15px;border:1px solid var(--rule);border-radius:8px;background:var(--paper-2);min-width:0}
+  .buyer-history h3{margin:0 0 6px;font:750 16px/1.25 var(--font-display);color:var(--ink);overflow-wrap:anywhere}
+  .buyer-history-scope{margin:0 0 10px;color:var(--muted);font-size:13px;overflow-wrap:anywhere}
+  .buyer-history-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:0 0 10px}
+  .buyer-history-metric{min-width:0;padding:10px 11px;border:1px solid var(--rule);border-radius:6px;background:var(--paper)}
+  .buyer-history-metric strong,.buyer-history-metric span{display:block;min-width:0;overflow-wrap:anywhere}
+  .buyer-history-metric strong{font:750 18px/1.1 var(--font-display);color:var(--ink)}
+  .buyer-history-metric span{margin-top:4px;color:var(--muted);font:650 10px/1.3 ui-sans-serif,system-ui,sans-serif;text-transform:uppercase;letter-spacing:.04em}
+  .buyer-history-meaning,.buyer-history-source{margin:0 0 8px;color:var(--muted);font-size:12px;overflow-wrap:anywhere}
+  .buyer-history-actions{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 8px;min-width:0}
+  .buyer-history-actions a{display:inline-block;min-height:44px;padding:11px 13px;border:1px solid var(--rule);border-radius:6px;overflow-wrap:anywhere}
+  .buyer-history-retry{margin:0 0 8px}
+  .buyer-history-retry button{min-height:44px}
   .contracts-analytics-timing{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;margin:14px 0 4px}
   .contracts-analytics-timing-metric{min-width:0;padding:10px 11px;border:1px solid var(--rule);border-radius:6px;background:var(--paper-2)}
   .contracts-analytics-timing-metric strong,.contracts-analytics-timing-metric span{display:block;overflow-wrap:anywhere}
@@ -888,7 +901,7 @@
   @media(max-width:680px){.contracts-analytics{padding:15px 13px}.contracts-analytics-group{grid-template-columns:minmax(0,1fr)}.contracts-analytics-group-meta{text-align:start;white-space:normal}}
   @media(max-width:680px){.contracts-analytics-fact-comparison-cards{grid-template-columns:1fr}}
   @media(max-width:900px){.contracts-analytics-timing{grid-template-columns:repeat(3,minmax(0,1fr))}}
-  @media(max-width:680px){.contracts-analytics{padding:15px 13px}.contracts-analytics-timing{grid-template-columns:repeat(2,minmax(0,1fr))}.contracts-analytics-group{grid-template-columns:minmax(0,1fr)}.contracts-analytics-group-meta{text-align:start;white-space:normal}}
+  @media(max-width:680px){.contracts-analytics{padding:15px 13px}.buyer-history-metrics{grid-template-columns:minmax(0,1fr)}.contracts-analytics-timing{grid-template-columns:repeat(2,minmax(0,1fr))}.contracts-analytics-group{grid-template-columns:minmax(0,1fr)}.contracts-analytics-group-meta{text-align:start;white-space:normal}}
   .money-method-slot{min-height:calc(var(--space-8) + var(--space-5) + var(--space-1))}
   .lens-search-state{margin:var(--space-3) 0 0}
   .lens-search-state:empty{display:none}
@@ -2064,6 +2077,8 @@
         <div class="field"><label for="analytics-group" data-i18n="analytics_group_by">Group by</label><select id="analytics-group"><option value="agency" data-i18n="analytics_group_agency">Agency</option><option value="vendor" data-i18n="analytics_group_vendor">Vendor</option><option value="registration_fiscal_year" data-i18n="analytics_group_fy">Registration FY</option><option value="amount_band" data-i18n="analytics_group_amount_band">Amount band</option></select></div>
         <div class="field"><label for="analytics-measure" data-i18n="analytics_measure">Measure</label><select id="analytics-measure"><option value="current" data-i18n="analytics_measure_current">Current registered contract value</option><option value="original" data-i18n="analytics_measure_original">Original registered contract value</option><option value="count" data-i18n="analytics_measure_count">Contract count</option></select></div>
         <div class="field"><label for="analytics-fy" data-i18n="analytics_registration_fy">Registration FY</label><select id="analytics-fy"><option value="" data-i18n="analytics_all_years">All years</option></select></div>
+        <div class="field"><label for="analytics-industry" data-i18n="buyer_history_industry">Industry</label><select id="analytics-industry"><option value="" data-i18n="buyer_history_all_industries">All industries</option></select></div>
+        <div class="field"><label for="analytics-award-method" data-i18n="buyer_history_award_method">Award method</label><select id="analytics-award-method"><option value="" data-i18n="buyer_history_all_award_methods">All award methods</option></select></div>
         <div class="field"><label for="analytics-min" data-i18n="analytics_min_current">Minimum current value</label><input id="analytics-min" type="number" min="0" step="1000" placeholder="No minimum" data-i18n-placeholder="analytics_no_minimum"></div>
         <div class="field"><label for="analytics-max" data-i18n="analytics_max_current">Maximum current value</label><input id="analytics-max" type="number" min="0" step="1000" placeholder="No maximum" data-i18n-placeholder="analytics_no_maximum"></div>
       </div>
@@ -2072,6 +2087,15 @@
         <h3 id="contracts-analytics-fact-comparison-heading" data-i18n="analytics_fact_comparison_heading">Two distinct facts for this selection</h3>
         <div class="contracts-analytics-fact-comparison-cards" id="contracts-analytics-fact-comparison-cards"></div>
         <p class="contracts-analytics-fact-comparison-note" data-i18n="analytics_fact_comparison_note">Registered value describes contract authorization. Actual payments describe cash outlays from Checkbook NYC, the Comptroller's spending ledger.</p>
+      </section>
+      <section class="buyer-history" id="buyer-history" hidden aria-labelledby="buyer-history-heading">
+        <h3 id="buyer-history-heading" data-i18n="buyer_history_heading">This buyer's registered contracting history</h3>
+        <p class="buyer-history-scope" id="buyer-history-scope" role="status"></p>
+        <div class="buyer-history-metrics" id="buyer-history-metrics" role="group" aria-labelledby="buyer-history-heading"></div>
+        <p class="buyer-history-meaning" id="buyer-history-meaning"></p>
+        <p class="buyer-history-actions" id="buyer-history-actions"></p>
+        <p class="buyer-history-retry" id="buyer-history-retry" hidden><button type="button" class="act mini" id="buyer-history-retry-button" data-i18n="buyer_history_retry">Try again</button></p>
+        <p class="buyer-history-source" id="buyer-history-source"></p>
       </section>
       <section class="contracts-analytics-concentration" id="contracts-analytics-concentration" hidden aria-labelledby="contracts-analytics-concentration-heading">
         <h3 id="contracts-analytics-concentration-heading">Who receives this contract value?</h3>

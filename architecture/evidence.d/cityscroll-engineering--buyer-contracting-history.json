@@ -1,0 +1,61 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/buyer-contracting-history",
+  "status": "implemented",
+  "fingerprint": "buyer-contracting-history.v1",
+  "updated_at": "2026-09-06T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "buyer-history-read-model",
+      "path": "site/buyer_contracting_history.mjs"
+    },
+    {
+      "id": "buyer-history-presentation",
+      "path": "site/buyer_contracting_history_view.mjs"
+    },
+    {
+      "id": "city-record-coverage-presentation",
+      "path": "site/city_record_coverage_view.mjs"
+    },
+    {
+      "id": "registered-contract-projection",
+      "path": "site/analytical_projection.mjs"
+    },
+    {
+      "id": "registered-contract-projection-contract",
+      "path": "site/analytical_projection_contract.mjs"
+    },
+    {
+      "id": "contracts-browse-scoped-surface",
+      "path": "site/app/money-list.mjs"
+    },
+    {
+      "id": "prime-owned-source-normalization",
+      "path": "warehouse/lib/checkbook_contracts.mjs"
+    },
+    {
+      "id": "source-field-retention",
+      "path": "worker/src/lib/checkbook_lifecycle.mjs"
+    },
+    {
+      "id": "materialization-source-guard",
+      "path": "tools/build_analytical_registered_contracts.mjs"
+    },
+    {
+      "id": "buyer-history-regressions",
+      "path": "test/buyer_contracting_history.test.mjs"
+    },
+    {
+      "id": "retained-source-population",
+      "path": "test/fixtures/buyer_contracting_history_fy2026_slices.json"
+    },
+    {
+      "id": "retained-population-ledger",
+      "path": "test/fixtures/buyer_contracting_history_fy2026_ledger.json"
+    },
+    {
+      "id": "buyer-history-journey",
+      "path": "test/functional/30_buyer_contracting_history.py"
+    }
+  ]
+}

@@ -69,6 +69,8 @@ export function normalizeCheckbookContractRows(inputRows) {
     missing_agency_contracts: 0,
     ambiguous_registration_date_contracts: 0,
     ambiguous_start_date_contracts: 0,
+    ambiguous_prime_registration_date_contracts: 0,
+    ambiguous_prime_start_date_contracts: 0,
     ambiguous_award_method_contracts: 0,
     ambiguous_mwbe_category_contracts: 0,
     ambiguous_duration_contracts: 0,
@@ -86,10 +88,26 @@ export function normalizeCheckbookContractRows(inputRows) {
     const agencies = unique(slices.map((row) => row?.agency || row?.agency_name || row?.prime_contracting_agency));
     const registrationDates = unique(slices.map((row) => row?.registered || row?.registration_date));
     const startDates = unique(slices.map((row) => row?.start || row?.start_date));
+    // A prime contract's dates belong to its prime-vendor observation. Subvendor
+    // slices of the same contract publish their own subcontract dates, so
+    // reading whichever date happened to be present would let a subcontract
+    // window stand in for the prime contract's own start. Selection is explicit
+    // here, and every distinct observation stays retained beside it.
+    const primeVendorSlices = slices.filter((row) => clean(row?.vendorRecordType).toLowerCase() === "prime vendor");
+    const dateOwnerSlices = primeVendorSlices.length ? primeVendorSlices : slices;
+    const dateOwner = primeVendorSlices.length ? "prime_vendor_slice" : "only_available_slice";
+    const primeRegistrationDates = unique(dateOwnerSlices.map((row) => row?.registered || row?.registration_date));
+    const primeStartDates = unique(dateOwnerSlices.map((row) => row?.start || row?.start_date));
     const awardMethods = unique(slices.map((row) => row?.awardMethod || row?.award_method));
     const mwbeCategories = unique(slices.map((row) => row?.mwbe || row?.mwbe_category));
     const durations = unique(slices.map((row) => row?.duration));
     const includesSubvendors = unique(slices.map((row) => row?.subs || row?.includes_subvendors));
+    const industries = unique(dateOwnerSlices.map((row) => row?.industry || row?.prime_contract_industry));
+    const purposes = unique(dateOwnerSlices.map((row) => row?.purpose || row?.prime_contract_purpose));
+    const documentCodes = unique(dateOwnerSlices.map((row) => row?.documentCode || row?.document_code));
+    const contractTypes = unique(dateOwnerSlices.map((row) => row?.contractType || row?.prime_contract_type));
+    const contractVersions = unique(dateOwnerSlices.map((row) => row?.contractVersion || row?.prime_contract_version));
+    const parentContractIds = unique(dateOwnerSlices.map((row) => row?.parentContractId || row?.parent_contract_id));
     const fiscalYears = unique(slices.flatMap((row) => row?.sourceFiscalYears || row?.source_fiscal_years || []));
     const subVendors = unique(slices.map((row) => row?.subVendor || row?.sub_vendor));
     const sliceCounts = { prime: 0, subvendor: 0, other: 0 };
@@ -110,6 +128,8 @@ export function normalizeCheckbookContractRows(inputRows) {
     else if (!agencies.length) blocked.missing_agency_contracts += 1;
     if (registrationDates.length > 1) blocked.ambiguous_registration_date_contracts += 1;
     if (startDates.length > 1) blocked.ambiguous_start_date_contracts += 1;
+    if (primeRegistrationDates.length > 1) blocked.ambiguous_prime_registration_date_contracts += 1;
+    if (primeStartDates.length > 1) blocked.ambiguous_prime_start_date_contracts += 1;
     if (awardMethods.length > 1) blocked.ambiguous_award_method_contracts += 1;
     if (mwbeCategories.length > 1) blocked.ambiguous_mwbe_category_contracts += 1;
     if (durations.length > 1) blocked.ambiguous_duration_contracts += 1;
@@ -125,8 +145,21 @@ export function normalizeCheckbookContractRows(inputRows) {
       mwbe_category: mwbeCategories.length === 1 ? mwbeCategories[0] : null,
       duration: durations.length === 1 ? durations[0] : null,
       includes_subvendors: includesSubvendors.length === 1 ? includesSubvendors[0] : null,
-      registration_date: registrationDates.length === 1 ? registrationDates[0] : null,
-      start_date: startDates.length === 1 ? startDates[0] : null,
+      registration_date: primeRegistrationDates.length === 1 ? primeRegistrationDates[0] : null,
+      start_date: primeStartDates.length === 1 ? primeStartDates[0] : null,
+      date_ownership: {
+        owner: dateOwner,
+        start_date_observations: startDates,
+        registration_date_observations: registrationDates,
+        conflicting_start_date_observations: startDates.length > 1,
+        conflicting_registration_date_observations: registrationDates.length > 1,
+      },
+      industry: industries.length === 1 ? industries[0] : null,
+      purpose: purposes.length === 1 ? purposes[0] : null,
+      document_code: documentCodes.length === 1 ? documentCodes[0] : null,
+      contract_type: contractTypes.length === 1 ? contractTypes[0] : null,
+      contract_version: contractVersions.length === 1 ? contractVersions[0] : null,
+      parent_contract_id: parentContractIds.length === 1 ? parentContractIds[0] : null,
       status: usable(best.status) || "registered",
       current: Number(best.current) || 0,
       original: Number(best.original) || 0,

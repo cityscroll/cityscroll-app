@@ -16,6 +16,7 @@ export const ANALYTICAL_GROUPS = Object.freeze({
 export const ANALYTICAL_PROJECTION_QUERY_KEYS = Object.freeze([
   "ap_fact", "ap_payment_view", "ap_agency", "ap_vendor", "ap_fy", "ap_amount_band", "ap_min", "ap_max",
   "retroactive", "ap_city_record_match", "ap_evidence_state", "ap_contract_id",
+  "ap_award_method", "ap_industry",
 ]);
 export const ANALYTICAL_MEASURES = Object.freeze({
   count: "unique_contract_count",
@@ -90,6 +91,11 @@ export function normalizeAnalyticalContractRow(row) {
       ? Number(registrationFiscalYearValue) : null,
     contract_amount_band: row?.contract_amount_band || contractAmountBand(current),
     award_method: row?.award_method || row?.awardMethod || null,
+    industry: row?.industry || row?.prime_contract_industry || null,
+    contract_purpose: row?.contract_purpose || row?.purpose || row?.prime_contract_purpose || null,
+    document_code: row?.document_code || row?.documentCode || null,
+    contract_version: row?.contract_version || row?.contractVersion || null,
+    parent_contract_id: row?.parent_contract_id || row?.parentContractId || null,
     registration_lag_days: hasRegistrationLag ? registrationLagDays : null,
     registration_timing: row?.registration_timing
       || (hasRegistrationLag
@@ -99,6 +105,7 @@ export function normalizeAnalyticalContractRow(row) {
     original_registered_amount: Number.isFinite(original) ? original : null,
     source_fiscal_years: Array.isArray(row?.source_fiscal_years) ? [...row.source_fiscal_years] : [],
     source: "checkbook-contracts",
+    ...(row?.date_ownership ? { date_ownership: row.date_ownership } : {}),
     ...(row?.city_record_match ? { city_record_match: row.city_record_match } : {}),
   };
 }
@@ -132,6 +139,8 @@ export function filterAnalyticalContracts(rows, filters = {}) {
   const vendor = filters.prime_vendor == null || filters.prime_vendor === "" ? null : String(filters.prime_vendor);
   const contractId = filters.contract_id == null || filters.contract_id === "" ? null : String(filters.contract_id);
   const amountBand = filters.contract_amount_band || null;
+  const awardMethod = filters.award_method == null || filters.award_method === "" ? null : String(filters.award_method);
+  const industry = filters.industry == null || filters.industry === "" ? null : String(filters.industry);
   const retroactive = filters.retroactive == null || filters.retroactive === ""
     ? null : String(filters.retroactive).toLowerCase() === "true";
   const cityRecordMatch = filters.city_record_match || null;
@@ -143,6 +152,8 @@ export function filterAnalyticalContracts(rows, filters = {}) {
     if (vendor != null && readerDimensionValue(row.prime_vendor) !== vendor) return false;
     if (contractId != null && readerDimensionValue(row.prime_contract_id) !== contractId) return false;
     if (amountBand && readerDimensionValue(row.contract_amount_band) !== amountBand) return false;
+    if (awardMethod != null && readerDimensionValue(row.award_method) !== awardMethod) return false;
+    if (industry != null && readerDimensionValue(row.industry) !== industry) return false;
     if (retroactive === true && row.registration_timing !== "retroactive") return false;
     if (retroactive === false && row.registration_timing !== "early_on_time") return false;
     if (min != null && (!Number.isFinite(current) || current < min)) return false;
@@ -319,12 +330,14 @@ export function populationSummary(rows, { snapshot_date, population_definition }
   };
 }
 
-export function analyticalDrillThroughHref({ agency, prime_vendor, registration_fiscal_year, contract_amount_band, min_amount, max_amount, retroactive, city_record_match, performance_evidence_state } = {}) {
+export function analyticalDrillThroughHref({ agency, prime_vendor, registration_fiscal_year, contract_amount_band, min_amount, max_amount, retroactive, city_record_match, performance_evidence_state, award_method, industry } = {}) {
   const params = new URLSearchParams({ mode: "award" });
   if (agency) params.set("ap_agency", agency);
   if (prime_vendor) params.set("ap_vendor", prime_vendor);
   if (registration_fiscal_year != null) params.set("ap_fy", String(registration_fiscal_year));
   if (contract_amount_band) params.set("ap_amount_band", contract_amount_band);
+  if (award_method) params.set("ap_award_method", award_method);
+  if (industry) params.set("ap_industry", industry);
   if (min_amount != null && min_amount !== "") params.set("ap_min", String(min_amount));
   if (max_amount != null && max_amount !== "") params.set("ap_max", String(max_amount));
   if (retroactive === true || String(retroactive).toLowerCase() === "true") params.set("retroactive", "true");
@@ -430,6 +443,10 @@ export const CHECKBOOK_DIMENSION_PROFILE_FIELDS = Object.freeze([
   { id: "registration_fiscal_year", source_tag: "prime_contract_registration_date", field: "registration_fiscal_year", usefulness: "required by AP-04; derived" },
   { id: "contract_amount_band", source_tag: "prime_contract_current_amount", field: "contract_amount_band", usefulness: "required by AP-04; derived" },
   { id: "award_method", source_tag: "prime_contract_award_method", field: "award_method", usefulness: "retained when published" },
+  { id: "industry", source_tag: "prime_contract_industry", field: "industry", usefulness: "buyer-history comparison control" },
+  { id: "contract_purpose", source_tag: "prime_contract_purpose", field: "contract_purpose", usefulness: "case inspection" },
+  { id: "document_code", source_tag: "document_code", field: "document_code", usefulness: "instrument boundary" },
+  { id: "contract_version", source_tag: "prime_contract_version", field: "contract_version", usefulness: "current source version semantics" },
   { id: "mwbe_category", source_tag: "prime_vendor_mwbe_category", field: "mwbe_category", usefulness: "deferred reader control" },
   { id: "duration", source_tag: "prime_contract_duration|prime_contract_term", field: "duration", usefulness: "deferred reader control" },
   { id: "includes_subvendors", source_tag: "contract_includes_sub_vendors", field: "includes_subvendors", usefulness: "deferred reader control" },

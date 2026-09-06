@@ -426,6 +426,11 @@ if [[ "$RUN_FULL" == "1" ]]; then
     exit 1
   fi
   echo "preflight: local site ready at ${CROL_BASE}"
+  # The handoff file has done its job once the URL is read. Removing it here
+  # rather than at exit keeps this run's own scratch out of the leaked-temp
+  # window below, which the exit trap would otherwise close too late.
+  rm -f "${SERVER_READY_FILE}"
+  SERVER_READY_FILE=""
   run_and_fail python3 test/functional/23_mobile_viewport.py
   run_and_fail python3 test/functional/24_geolocation_gesture_gate.py
   run_and_fail python3 test/functional/32_near_you_location.py
@@ -436,6 +441,7 @@ if [[ "$RUN_FULL" == "1" ]]; then
   run_and_fail python3 test/functional/14_focus_visible.py
   run_and_fail python3 test/functional/16_external_links.py
   run_and_fail python3 test/functional/30_browse_interaction_grammar.py
+  run_and_fail python3 test/functional/30_buyer_contracting_history.py
   run_and_fail python3 tools/capture_browse_interaction_grammar.py --verify-only
   run_banner "Accessibility + language gate (axe on every PR)" "Label-coverage census" \
     "python3 test/standards/label_coverage.py"
