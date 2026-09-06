@@ -1,0 +1,475 @@
+{
+  "schema": "cityscroll.browse_return_evidence.v1",
+  "record": "cityscroll-engineering/browse-return-context",
+  "route": "component-harness:browse-return-context",
+  "harness": "test/harness/browse_return_harness.html",
+  "revision": "cf722e37edd4bebcb9520ff5c06159b260ca49ee",
+  "data_vintage": "2026-03-15",
+  "timezone": "America/New_York",
+  "captured_at": "2026-09-06T04:39:52Z",
+  "image_directory": ".artifacts/browse-return-context",
+  "image_policy": "Capture images are written to the ignored local directory above and are never committed. This manifest is the tracked proof: route, viewport, revision, data vintage, assertion, observations and SHA-256 for each capture.",
+  "measurement_policy": "Every observation is a measurement of what the rendered document does. No participant evaluation was run and no usability gain is claimed.",
+  "files": [
+    {
+      "name": "inspect-close-open-back-continue-390x844.png",
+      "specimen": "inspect-close-open-back-continue",
+      "route": "component-harness:browse-return-context",
+      "harness": "test/harness/browse_return_harness.html",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "cf722e37edd4bebcb9520ff5c06159b260ca49ee",
+      "data_vintage": "2026-03-15",
+      "timezone": "America/New_York",
+      "assertion": "at 390px a reader sets Calendar view, inspects an event, closes it, opens its full page, returns with Back to the same event, and continues to the next item",
+      "observations": {
+        "non_default_view": true,
+        "inspected_in_place": true,
+        "closed_in_place": true,
+        "full_page_href": "browse_return_destination.html?uid=dense-past",
+        "opened_full_page": true,
+        "back_restored_the_lane": true,
+        "focus_returned_to_the_event": true,
+        "continued_to_the_next_item": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 75290,
+      "sha256": "6eabba69225ae1b75b20b899c16a20a0b10e80062685849cd4cad5375987172b",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "inspect-close-open-back-continue-1440x900.png",
+      "specimen": "inspect-close-open-back-continue",
+      "route": "component-harness:browse-return-context",
+      "harness": "test/harness/browse_return_harness.html",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "cf722e37edd4bebcb9520ff5c06159b260ca49ee",
+      "data_vintage": "2026-03-15",
+      "timezone": "America/New_York",
+      "assertion": "at 1440px a reader sets Calendar view, inspects an event, closes it, opens its full page, returns with Back to the same event, and continues to the next item",
+      "observations": {
+        "non_default_view": true,
+        "inspected_in_place": true,
+        "closed_in_place": true,
+        "full_page_href": "browse_return_destination.html?uid=dense-past",
+        "opened_full_page": true,
+        "back_restored_the_lane": true,
+        "focus_returned_to_the_event": true,
+        "continued_to_the_next_item": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 90232,
+      "sha256": "1a1316511d4e90f2b7beb75c8b1eefc2292f0eff390183abb64d224056f25222",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "fresh-direct-visit-390x844.png",
+      "specimen": "fresh-direct-visit",
+      "route": "component-harness:browse-return-context",
+      "harness": "test/harness/browse_return_harness.html",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "cf722e37edd4bebcb9520ff5c06159b260ca49ee",
+      "data_vintage": "2026-03-15",
+      "timezone": "America/New_York",
+      "assertion": "at 390px a fresh direct visit to the calendar does not steal focus onto an event",
+      "observations": {
+        "focus_stays_on_the_document": true,
+        "hash_is_the_calendar_view": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 71048,
+      "sha256": "250c08541611c8a7ed647f38db27a722f19f9f099a9493398d825d61defe5ae1",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "fresh-direct-visit-1440x900.png",
+      "specimen": "fresh-direct-visit",
+      "route": "component-harness:browse-return-context",
+      "harness": "test/harness/browse_return_harness.html",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "cf722e37edd4bebcb9520ff5c06159b260ca49ee",
+      "data_vintage": "2026-03-15",
+      "timezone": "America/New_York",
+      "assertion": "at 1440px a fresh direct visit to the calendar does not steal focus onto an event",
+      "observations": {
+        "focus_stays_on_the_document": true,
+        "hash_is_the_calendar_view": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 83606,
+      "sha256": "b8f327acc0542a57ad8f43b092ca1110a5c3af5c8cb5cc364f0f38955d8bc0c9",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "back-and-forward-390x844.png",
+      "specimen": "back-and-forward",
+      "route": "component-harness:browse-return-context",
+      "harness": "test/harness/browse_return_harness.html",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "cf722e37edd4bebcb9520ff5c06159b260ca49ee",
+      "data_vintage": "2026-03-15",
+      "timezone": "America/New_York",
+      "assertion": "at 390px Browser Back and Forward both keep the originating event as the focus target rather than dropping it on the document body",
+      "observations": {
+        "first_back_restored_the_event": true,
+        "forward_returned_to_the_full_page": true,
+        "second_back_restored_the_event": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 71077,
+      "sha256": "aa6d10eca6d43c41de7262dfd939bd28159ef93ce5dbe915f82795ab7248a493",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "back-and-forward-1440x900.png",
+      "specimen": "back-and-forward",
+      "route": "component-harness:browse-return-context",
+      "harness": "test/harness/browse_return_harness.html",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "cf722e37edd4bebcb9520ff5c06159b260ca49ee",
+      "data_vintage": "2026-03-15",
+      "timezone": "America/New_York",
+      "assertion": "at 1440px Browser Back and Forward both keep the originating event as the focus target rather than dropping it on the document body",
+      "observations": {
+        "first_back_restored_the_event": true,
+        "forward_returned_to_the_full_page": true,
+        "second_back_restored_the_event": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 83631,
+      "sha256": "3049a746c62ba30a2715e8995b80fc46ebc8eb7807bff74c6fa654b603c689a9",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "keyboard-focus-390x844.png",
+      "specimen": "keyboard-focus",
+      "route": "component-harness:browse-return-context",
+      "harness": "test/harness/browse_return_harness.html",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "cf722e37edd4bebcb9520ff5c06159b260ca49ee",
+      "data_vintage": "2026-03-15",
+      "timezone": "America/New_York",
+      "assertion": "at 390px the round trip works from the keyboard: inspect, Escape, open the full page, Back, and focus is not left on the document body",
+      "observations": {
+        "keyboard_opens_the_preview": true,
+        "escape_closes_the_preview": true,
+        "keyboard_full_page_and_back_restores_focus": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 71408,
+      "sha256": "ba0073336192117a62bd494717eeae8af58faa82a8904bee1f00a7dfd9ff8465",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "keyboard-focus-1440x900.png",
+      "specimen": "keyboard-focus",
+      "route": "component-harness:browse-return-context",
+      "harness": "test/harness/browse_return_harness.html",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "cf722e37edd4bebcb9520ff5c06159b260ca49ee",
+      "data_vintage": "2026-03-15",
+      "timezone": "America/New_York",
+      "assertion": "at 1440px the round trip works from the keyboard: inspect, Escape, open the full page, Back, and focus is not left on the document body",
+      "observations": {
+        "keyboard_opens_the_preview": true,
+        "escape_closes_the_preview": true,
+        "keyboard_full_page_and_back_restores_focus": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 83968,
+      "sha256": "203e4510e2328eda054a7edaa6f315c22765c65637d129eb70b024f4b9135cc5",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "modified-click-and-without-scripting-390x844.png",
+      "specimen": "modified-click-and-without-scripting",
+      "route": "component-harness:browse-return-context",
+      "harness": "test/harness/browse_return_harness.html",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "cf722e37edd4bebcb9520ff5c06159b260ca49ee",
+      "data_vintage": "2026-03-15",
+      "timezone": "America/New_York",
+      "assertion": "at 390px a modified click is left to the browser, and with scripting off the canonical link still reaches the event page",
+      "observations": {
+        "a_modified_click_opens_no_preview": true,
+        "a_modified_click_left_the_calendar_in_place": true,
+        "modified_click_did_not_steal_focus_onto_an_event": true,
+        "without_scripting_no_inspection_control_is_offered": true,
+        "without_scripting_the_canonical_link_still_works": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 64186,
+      "sha256": "8254499ebc6f229d0c5b7668072f235c5c9665a67049f372bba2ab017702ad72",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "modified-click-and-without-scripting-1440x900.png",
+      "specimen": "modified-click-and-without-scripting",
+      "route": "component-harness:browse-return-context",
+      "harness": "test/harness/browse_return_harness.html",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "cf722e37edd4bebcb9520ff5c06159b260ca49ee",
+      "data_vintage": "2026-03-15",
+      "timezone": "America/New_York",
+      "assertion": "at 1440px a modified click is left to the browser, and with scripting off the canonical link still reaches the event page",
+      "observations": {
+        "a_modified_click_opens_no_preview": true,
+        "a_modified_click_left_the_calendar_in_place": true,
+        "modified_click_did_not_steal_focus_onto_an_event": true,
+        "without_scripting_no_inspection_control_is_offered": true,
+        "without_scripting_the_canonical_link_still_works": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 77662,
+      "sha256": "84393d54f2a87e0c69e4723ed7b58f377fe5f6686716cb36b091ed91fd02f008",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "search-and-following-390x844.png",
+      "specimen": "search-and-following",
+      "route": "component-harness:browse-return-context",
+      "harness": "test/harness/browse_return_harness.html",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "cf722e37edd4bebcb9520ff5c06159b260ca49ee",
+      "data_vintage": "2026-03-15",
+      "timezone": "America/New_York",
+      "assertion": "at 390px Search and Following keep their existing preview and scope machinery: Contracts stays the Search scope, Following pins the originating record, and neither surface is wrapped in a calendar preview",
+      "observations": {
+        "search_keeps_its_own_scope": true,
+        "search_scope_url_is_canonical": true,
+        "following_pins_the_origin_record": true,
+        "search_was_not_wrapped_in_a_calendar_preview": true,
+        "following_was_not_wrapped_in_a_calendar_preview": true,
+        "search_round_trip_keeps_scope": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 71048,
+      "sha256": "250c08541611c8a7ed647f38db27a722f19f9f099a9493398d825d61defe5ae1",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "search-and-following-1440x900.png",
+      "specimen": "search-and-following",
+      "route": "component-harness:browse-return-context",
+      "harness": "test/harness/browse_return_harness.html",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "cf722e37edd4bebcb9520ff5c06159b260ca49ee",
+      "data_vintage": "2026-03-15",
+      "timezone": "America/New_York",
+      "assertion": "at 1440px Search and Following keep their existing preview and scope machinery: Contracts stays the Search scope, Following pins the originating record, and neither surface is wrapped in a calendar preview",
+      "observations": {
+        "search_keeps_its_own_scope": true,
+        "search_scope_url_is_canonical": true,
+        "following_pins_the_origin_record": true,
+        "search_was_not_wrapped_in_a_calendar_preview": true,
+        "following_was_not_wrapped_in_a_calendar_preview": true,
+        "search_round_trip_keeps_scope": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 83606,
+      "sha256": "b8f327acc0542a57ad8f43b092ca1110a5c3af5c8cb5cc364f0f38955d8bc0c9",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "two-hundred-percent-zoom-390x844.png",
+      "specimen": "two-hundred-percent-zoom",
+      "route": "component-harness:browse-return-context",
+      "harness": "test/harness/browse_return_harness.html",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "cf722e37edd4bebcb9520ff5c06159b260ca49ee",
+      "data_vintage": "2026-03-15",
+      "timezone": "America/New_York",
+      "assertion": "at the 195px CSS viewport a 200 percent zoom of a 390px window produces, the calendar and the opened preview both read without any horizontal page scrolling",
+      "observations": {
+        "css_viewport_width": 195,
+        "emulates": "200% browser zoom of a 390px window",
+        "lane_has_no_horizontal_overflow": true,
+        "panel_has_no_horizontal_overflow": true,
+        "hash_is_the_calendar_view": true
+      },
+      "bytes": 69513,
+      "sha256": "73fca6941ba8e3625967ff7016b5d9c319b05ff20f66c787cb29cf522615035f",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "two-hundred-percent-zoom-1440x900.png",
+      "specimen": "two-hundred-percent-zoom",
+      "route": "component-harness:browse-return-context",
+      "harness": "test/harness/browse_return_harness.html",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "cf722e37edd4bebcb9520ff5c06159b260ca49ee",
+      "data_vintage": "2026-03-15",
+      "timezone": "America/New_York",
+      "assertion": "at the 720px CSS viewport a 200 percent zoom of a 1440px window produces, the calendar and the opened preview both read without any horizontal page scrolling",
+      "observations": {
+        "css_viewport_width": 720,
+        "emulates": "200% browser zoom of a 1440px window",
+        "lane_has_no_horizontal_overflow": true,
+        "panel_has_no_horizontal_overflow": true,
+        "hash_is_the_calendar_view": true
+      },
+      "bytes": 84369,
+      "sha256": "6f40b11421eba99cf920c3307ceac8644d723f8a4d23945a1e38489563a96c25",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "touch-targets-390x844.png",
+      "specimen": "touch-targets",
+      "route": "component-harness:browse-return-context",
+      "harness": "test/harness/browse_return_harness.html",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "cf722e37edd4bebcb9520ff5c06159b260ca49ee",
+      "data_vintage": "2026-03-15",
+      "timezone": "America/New_York",
+      "assertion": "at 390px every control this contract adds or uses is at least 44px, so none of them is a target a finger cannot land on",
+      "observations": {
+        "reading": "narrow",
+        "controls_measured_on_the_lane": 9,
+        "smallest_lane_control_px": 44,
+        "controls_measured_with_the_panel_open": 10,
+        "smallest_control_px": 44,
+        "floor_px": 44,
+        "every_control_meets_the_floor": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 74610,
+      "sha256": "2250eb0c8582d1d8caa40d535ea8bfb7f110e017df44754abb7fec4cf143c521",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "touch-targets-1440x900.png",
+      "specimen": "touch-targets",
+      "route": "component-harness:browse-return-context",
+      "harness": "test/harness/browse_return_harness.html",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "cf722e37edd4bebcb9520ff5c06159b260ca49ee",
+      "data_vintage": "2026-03-15",
+      "timezone": "America/New_York",
+      "assertion": "at 1440px every control this contract adds or uses is at least 24px, so none of them is a target a finger cannot land on",
+      "observations": {
+        "reading": "desktop",
+        "controls_measured_on_the_lane": 9,
+        "smallest_lane_control_px": 24,
+        "controls_measured_with_the_panel_open": 10,
+        "smallest_control_px": 24,
+        "floor_px": 24,
+        "every_control_meets_the_floor": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 89097,
+      "sha256": "0352556df2bb8755c71146d7e412a0ee83de09a078d229773646a7dbd8ee825d",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    }
+  ]
+}
