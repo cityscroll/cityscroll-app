@@ -210,6 +210,11 @@ export async function recordSchedulerHeartbeat(env, heartbeat = {}, now = new Da
     result: trimmed(heartbeat.result),
     observed_at: now.toISOString(),
     pending_outbox: Number(heartbeat.pending_outbox) || 0,
+    // Whether the cycle had a delivery identity at all. A pending intent with a
+    // cycle that could not deliver is a configuration gap, not a flaky API.
+    outbox_delivery: heartbeat.outbox_delivery === "online" || heartbeat.outbox_delivery === "offline"
+      ? heartbeat.outbox_delivery
+      : null,
     due_jobs: Array.isArray(heartbeat.due_jobs) ? heartbeat.due_jobs.slice(0, 30) : [],
     run_key: heartbeat.run_key || null,
     // rel-12: whether this cycle can actually run a bounded repair task. A
@@ -648,7 +653,11 @@ export async function schedulerWatchdogSnapshot(env, { now = new Date(), maxAgeM
       schedulerFindings.push(`scheduler cycle ${heartbeat.run_id} reported result ${heartbeat.result}`);
     }
   }
-  if (heartbeat?.pending_outbox > 0) schedulerFindings.push(`scheduler outbox has ${heartbeat.pending_outbox} pending item(s)`);
+  if (heartbeat?.pending_outbox > 0) {
+    schedulerFindings.push(heartbeat.outbox_delivery === "offline"
+      ? `scheduler outbox has ${heartbeat.pending_outbox} pending item(s) and delivery is offline for lack of a configured token`
+      : `scheduler outbox has ${heartbeat.pending_outbox} pending item(s)`);
+  }
   const publication = deskPublicationWatchdogFindings(publicationHeartbeat, { now });
   const findings = [
     ...schedulerFindings,

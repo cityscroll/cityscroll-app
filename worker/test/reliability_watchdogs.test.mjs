@@ -175,6 +175,21 @@ test("scheduler watchdog fires on expired heartbeat and pending outbox", async (
   assert.match(result.findings.join("; "), /3 pending/);
 });
 
+test("a pending outbox with no delivery identity names the missing token", async () => {
+  // A cycle without a delivery token used to report the same pending count as a
+  // cycle whose delivery failed, so the configuration gap read as a flaky API.
+  const ALERT_STATE = kv();
+  const now = new Date("2026-08-25T13:35:00Z");
+  const write = await recordSchedulerHeartbeat(
+    { ALERT_STATE },
+    { ...CYCLE, pending_outbox: 2, outbox_delivery: "offline" },
+    new Date("2026-08-25T13:30:00Z"),
+  );
+  assert.equal(write.heartbeat.outbox_delivery, "offline");
+  const result = await schedulerWatchdogSnapshot({ ALERT_STATE }, { now });
+  assert.match(result.findings.join("; "), /2 pending item\(s\) and delivery is offline for lack of a configured token/);
+});
+
 test("ops failures have lossless stable signatures and restart-stable daily rollups", async () => {
   const ALERT_STATE = kv();
   const sent = [];

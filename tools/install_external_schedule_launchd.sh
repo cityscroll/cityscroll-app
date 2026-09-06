@@ -9,6 +9,11 @@ label=com.cityscroll.external-schedules
 target="$launch_agents_dir/$label.plist"
 
 key_file=${CITYSCROLL_ADMIN_KEY_FILE:-"$state_dir/admin-key"}
+# The issue loop's delivery identity. Only the path is written into the trigger;
+# the token itself stays in a mode-0600 file installed by a separate operator
+# step. Without it the cycle still runs and still records intents locally, and
+# it now says so instead of leaving them silently undelivered.
+gh_token_file=${GH_TOKEN_FILE:-"$state_dir/github-token"}
 # launchd resolves nothing from a login shell, so the interpreter is resolved
 # here and written into the trigger absolutely. A trigger that cannot start
 # exits before it can report why, and the only symptom is a missing heartbeat.
@@ -30,6 +35,7 @@ sed -e "s|__CITYSCROLL_ROOT__|$root|g" -e "s|__CROL_EXTERNAL_SCHEDULE_LOG_DIR__|
   -e "s|__CITYSCROLL_NODE__|$node_bin|g" \
   -e "s|__CROL_EXTERNAL_SCHEDULE_STATE_DIR__|$state_dir|g" \
   -e "s|__CITYSCROLL_ADMIN_KEY_FILE__|$key_file|g" \
+  -e "s|__GH_TOKEN_FILE__|$gh_token_file|g" \
   -e "s|__CITYSCROLL_REPAIR_DISPATCH_COMMAND__|$repair_command|g" \
   "$root/ops/launchd/$label.plist.template" > "$target"
 
@@ -40,10 +46,15 @@ if [ ! -f "$key_file" ]; then
   echo "  install it with: umask 177 && printf %s \"\$ADMIN_KEY\" > $key_file" >&2
 fi
 
+if [ ! -f "$gh_token_file" ]; then
+  echo "warning: $gh_token_file is absent; the cycle will report outbox delivery offline and record intents without delivering them" >&2
+  echo "  install it with: umask 177 && printf %s \"\$GH_TOKEN\" > $gh_token_file" >&2
+fi
+
 if [ -z "$repair_command" ]; then
   echo "note: CITYSCROLL_REPAIR_DISPATCH_COMMAND is unset; the cycle will not lease repair work" >&2
 fi
 
 launchctl unload "$target" 2>/dev/null || true
 launchctl load "$target"
-echo "loaded $label; state is $state_dir; credential file is $key_file; interpreter is $node_bin"
+echo "loaded $label; state is $state_dir; credential file is $key_file; delivery token file is $gh_token_file; interpreter is $node_bin"

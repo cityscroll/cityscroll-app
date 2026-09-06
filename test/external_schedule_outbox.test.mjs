@@ -4,11 +4,12 @@ import { join } from "node:path";
 import test from "node:test";
 import {
   applyIssueIntent,
+  createGitHubClient,
   persistScheduleResult,
   replayOutbox,
 } from "../tools/external_schedule_outbox.mjs";
 import { auditSchedulerOwnership } from "../tools/audit_scheduler_ownership.mjs";
-import { SCHEDULER_WORKFLOW, publishHeartbeat, runScheduledJob, schedulerRunId } from "../tools/external_schedule_runner.mjs";
+import { SCHEDULER_WORKFLOW, githubToken, publishHeartbeat, resolveCredential, runScheduledJob, schedulerRunId } from "../tools/external_schedule_runner.mjs";
 import { withTempDir } from "../tools/lib/with_temp_dir.mjs";
 
 function fakeGithub() {
@@ -242,5 +243,132 @@ test("the digest shadow probe reports a missing credential instead of an anonymo
     assert.equal(result.result.http_status, null);
     assert.match(result.result.body, /no admin credential/);
     assert.equal(result.issue.title, "Digest shadow probe has no admin credential");
+  });
+});
+
+// The issue loop had no delivery identity: the runner read a token only from an
+// inline export, while the trigger passes every credential as a file path. Every
+// cycle therefore replayed "offline" and monitor findings never became issues,
+// with pending intents sitting at attempts 0 and no error to act on.
+async function withTokenEnv(env, run) {
+  const keys = ["GH_TOKEN", "GITHUB_TOKEN", "GH_TOKEN_FILE", "GITHUB_TOKEN_FILE"];
+  const saved = Object.fromEntries(keys.map((key) => [key, process.env[key]]));
+  for (const key of keys) delete process.env[key];
+  Object.assign(process.env, env);
+  try { return await run(); } finally {
+    for (const key of keys) {
+      if (saved[key] === undefined) delete process.env[key];
+      else process.env[key] = saved[key];
+    }
+  }
+}
+
+test("the delivery token resolves from the file the trigger names, and an intent is delivered", async () => {
+  await withTempDir("crol-outbox-token", async (stateDir) => {
+    const tokenPath = join(stateDir, "github-token");
+    await writeFile(tokenPath, "file-resident-token\n", "utf8");
+    const token = await withTokenEnv({ GH_TOKEN_FILE: tokenPath }, () => githubToken());
+    assert.equal(token, "file-resident-token");
+
+    // The alias the operator process may use instead resolves identically.
+    assert.equal(await withTokenEnv({ GITHUB_TOKEN_FILE: tokenPath }, () => githubToken()), "file-resident-token");
+    // An inline export still wins over the file.
+    assert.equal(
+      await withTokenEnv({ GH_TOKEN: "inline-token", GH_TOKEN_FILE: tokenPath }, () => githubToken()),
+      "inline-token",
+    );
+
+    const requests = [];
+    const github = createGitHubClient({
+      token,
+      owner: "cityscroll",
+      repo: "cityscroll-app",
+      apiBase: "https://api.example.test",
+      async fetchImpl(url, options = {}) {
+        requests.push({ url, method: options.method || "GET", headers: options.headers });
+        if (url.endsWith("/issues?state=open&per_page=100")) return { ok: true, status: 200, async json() { return []; } };
+        return { ok: true, status: 201, async json() { return { number: 42 }; } };
+      },
+    });
+    assert.ok(github, "a resolved token must produce a client");
+
+    await persistScheduleResult({
+      stateDir,
+      jobId: "action-link-monitor",
+      runKey: "2026-09-06T11:00",
+      result: { observed_at: "2026-09-06T11:00:00.000Z", status: "degraded", body: "drift" },
+      issue: { mode: "open", title: "Monitor drift", body: "drift" },
+    });
+
+    const summary = await replayOutbox({ stateDir, github });
+    assert.equal(summary.status, "ok");
+    assert.equal(summary.delivered, 1);
+    assert.equal(summary.pending, 0);
+    assert.equal(requests.at(-1).method, "POST");
+    assert.equal(requests[0].headers.Authorization, "Bearer file-resident-token");
+  });
+});
+
+test("an unreadable or empty token file resolves to no token instead of failing the cycle", async () => {
+  await withTempDir("crol-outbox-token-bad", async (stateDir) => {
+    const logged = [];
+    const empty = join(stateDir, "empty-token");
+    await writeFile(empty, "   \n", "utf8");
+    assert.equal(
+      resolveCredential({ fileVars: ["GH_TOKEN_FILE"], env: { GH_TOKEN_FILE: empty }, log: (line) => logged.push(line) }),
+      null,
+    );
+    assert.equal(
+      resolveCredential({
+        fileVars: ["GH_TOKEN_FILE"],
+        env: { GH_TOKEN_FILE: join(stateDir, "absent-token") },
+        log: (line) => logged.push(line),
+      }),
+      null,
+    );
+    // One line per unusable file, naming the variable the operator must fix.
+    assert.equal(logged.length, 2);
+    for (const line of logged) assert.match(line, /GH_TOKEN_FILE/);
+  });
+});
+
+test("a cycle with no delivery token reports outbox delivery offline with the reason", async () => {
+  await withTempDir("crol-outbox-offline", async (stateDir) => {
+    assert.equal(await withTokenEnv({}, () => githubToken()), null);
+    assert.equal(createGitHubClient({ token: null, owner: "cityscroll", repo: "cityscroll-app" }), null);
+
+    await persistScheduleResult({
+      stateDir,
+      jobId: "action-link-monitor",
+      runKey: "2026-09-06T11:00",
+      result: { observed_at: "2026-09-06T11:00:00.000Z", status: "degraded", body: "drift" },
+      issue: { mode: "open", title: "Monitor drift", body: "drift" },
+    });
+
+    // Previously this reported pending 0 with no reason, so an undeliverable
+    // backlog was indistinguishable from an empty one.
+    const summary = await replayOutbox({ stateDir, github: null });
+    assert.equal(summary.status, "offline");
+    assert.equal(summary.reason, "github-token-missing");
+    assert.equal(summary.delivered, 0);
+    assert.equal(summary.pending, 1);
+
+    const priorKey = process.env.CITYSCROLL_ADMIN_KEY;
+    process.env.CITYSCROLL_ADMIN_KEY = "secret";
+    try {
+      const heartbeat = await publishHeartbeat(stateDir, new Date("2026-09-06T11:00:00.000Z"), [], {
+        runId: RUN_ID,
+        sourceRevision: REVISION,
+        outboxDelivery: "offline",
+        fetchImpl: async () => ({ ok: false, status: 503 }),
+      });
+      assert.equal(heartbeat.outbox_delivery, "offline");
+      assert.equal(
+        JSON.parse(await readFile(join(stateDir, "heartbeat", "latest.json"), "utf8")).outbox_delivery,
+        "offline",
+      );
+    } finally {
+      if (priorKey == null) delete process.env.CITYSCROLL_ADMIN_KEY; else process.env.CITYSCROLL_ADMIN_KEY = priorKey;
+    }
   });
 });
