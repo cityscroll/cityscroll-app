@@ -1,0 +1,850 @@
+{
+  "schema": "cityscroll.calendar_density_evidence.v1",
+  "card": "cityscroll-resident-ux/px-02-keep-calendar-overview-scannable",
+  "route": "component-harness:calendar-density-disclosure",
+  "harness": "test/harness/calendar_density_harness.html",
+  "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+  "data_vintage": "2026-03-15",
+  "timezone": "America/New_York",
+  "captured_at": "2026-09-05T23:53:00Z",
+  "image_directory": ".artifacts/calendar-density-disclosure",
+  "image_policy": "Capture images are written to the ignored local directory above and are never committed. This manifest is the tracked proof: route, viewport, revision, data vintage, assertion, rendered row height, text budget and SHA-256 for each capture.",
+  "measurement_policy": "Rendered row height and title line budget are measurements of what the stylesheet paints. No participant evaluation was run and no usability gain is claimed.",
+  "files": [
+    {
+      "name": "dense-month-overview-390x844.png",
+      "specimen": "dense-month-overview",
+      "route": "component-harness:calendar-density-disclosure",
+      "harness": "test/harness/calendar_density_harness.html",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "data_vintage": "2026-03-15",
+      "timezone": "America/New_York",
+      "assertion": "at 390px the same accepted month is measured with the title line budget lifted and applied: the tallest agenda day a reader is shown goes from 485px to 485px. This is a measurement of what the stylesheet does, not a measured usability gain",
+      "rendered_row_height_px": 485,
+      "title_line_budget": "2",
+      "observations": {
+        "measured_form": "agenda day",
+        "rows_measured": true,
+        "row_height_without_budget_px": 485,
+        "row_height_with_budget_px": 485,
+        "row_height_is_bounded_by_the_budget": true,
+        "longest_title_characters": 0,
+        "title_height_without_budget_px": null,
+        "title_height_with_budget_px": null,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 72601,
+      "sha256": "dd8f7ec6cc2eae70c2aeff2ee82c1645a4a302611a4d9f3098fe6bd1c8d14c26",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "dense-month-overview-1440x900.png",
+      "specimen": "dense-month-overview",
+      "route": "component-harness:calendar-density-disclosure",
+      "harness": "test/harness/calendar_density_harness.html",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "data_vintage": "2026-03-15",
+      "timezone": "America/New_York",
+      "assertion": "at 1440px the same accepted month is measured with the title line budget lifted and applied: the tallest grid week row a reader is shown goes from 592px to 296px. This is a measurement of what the stylesheet does, not a measured usability gain",
+      "rendered_row_height_px": 296,
+      "title_line_budget": "2",
+      "observations": {
+        "measured_form": "grid week row",
+        "rows_measured": true,
+        "row_height_without_budget_px": 592,
+        "row_height_with_budget_px": 296,
+        "row_height_is_bounded_by_the_budget": true,
+        "longest_title_characters": 244,
+        "title_height_without_budget_px": 174,
+        "title_height_with_budget_px": 35,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 66967,
+      "sha256": "9275aedb6ccefb69aaf2afd04b3a95554c7838bc27e2e3aa2036d905acf2375a",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "clipped-title-full-text-390x844.png",
+      "specimen": "clipped-title-full-text",
+      "route": "component-harness:calendar-density-disclosure",
+      "harness": "test/harness/calendar_density_harness.html",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "data_vintage": "2026-03-15",
+      "timezone": "America/New_York",
+      "assertion": "at 390px the published title is complete in the document and in the preview's accessible name; where the grid is the visible reading, the budget clips what is painted and nothing else",
+      "rendered_row_height_px": 485,
+      "title_line_budget": "2",
+      "observations": {
+        "grid_titles_measured": 0,
+        "title_line_budget": "2",
+        "published_title_characters": 244,
+        "full_title_in_the_accessible_name": true,
+        "no_horizontal_overflow": true,
+        "narrow_reading_does_not_clip": true
+      },
+      "bytes": 72601,
+      "sha256": "dd8f7ec6cc2eae70c2aeff2ee82c1645a4a302611a4d9f3098fe6bd1c8d14c26",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "clipped-title-full-text-1440x900.png",
+      "specimen": "clipped-title-full-text",
+      "route": "component-harness:calendar-density-disclosure",
+      "harness": "test/harness/calendar_density_harness.html",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "data_vintage": "2026-03-15",
+      "timezone": "America/New_York",
+      "assertion": "at 1440px the published title is complete in the document and in the preview's accessible name; where the grid is the visible reading, the budget clips what is painted and nothing else",
+      "rendered_row_height_px": 296,
+      "title_line_budget": "2",
+      "observations": {
+        "grid_titles_measured": 5,
+        "title_line_budget": "2",
+        "published_title_characters": 244,
+        "full_title_in_the_accessible_name": true,
+        "no_horizontal_overflow": true,
+        "computed_line_clamp": "2",
+        "painted_lines": 2,
+        "painted_height_px": 35,
+        "unclipped_height_px": 174,
+        "the_clip_is_visual": true,
+        "the_dom_text_is_the_whole_title": true
+      },
+      "bytes": 66967,
+      "sha256": "9275aedb6ccefb69aaf2afd04b3a95554c7838bc27e2e3aa2036d905acf2375a",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "more-count-390x844.png",
+      "specimen": "more-count",
+      "route": "component-harness:calendar-density-disclosure",
+      "harness": "test/harness/calendar_density_harness.html",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "data_vintage": "2026-03-15",
+      "timezone": "America/New_York",
+      "assertion": "at 390px a crowded day paints 3 of 9 events and its trigger states the exact remainder, 6, in words a reader can act on",
+      "rendered_row_height_px": 290,
+      "title_line_budget": "2",
+      "observations": {
+        "accepted_total": 9,
+        "painted_in_the_cell": 3,
+        "hidden_count": 6,
+        "count_is_exact": true,
+        "visible_text": "+6 more",
+        "visible_text_states_the_remainder": true,
+        "accessible_name": "Show all 9 events on Thursday, March 19, 2026",
+        "accessible_name_states_the_total_and_the_day": true,
+        "label_is_words_not_a_symbol": true
+      },
+      "bytes": 46620,
+      "sha256": "417768274ce4487d739a633692faaaa331c372c4b9a6f0692880fbde94b31675",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "more-count-1440x900.png",
+      "specimen": "more-count",
+      "route": "component-harness:calendar-density-disclosure",
+      "harness": "test/harness/calendar_density_harness.html",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "data_vintage": "2026-03-15",
+      "timezone": "America/New_York",
+      "assertion": "at 1440px a crowded day paints 3 of 9 events and its trigger states the exact remainder, 6, in words a reader can act on",
+      "rendered_row_height_px": 296,
+      "title_line_budget": "2",
+      "observations": {
+        "accepted_total": 9,
+        "painted_in_the_cell": 3,
+        "hidden_count": 6,
+        "count_is_exact": true,
+        "visible_text": "+6 more",
+        "visible_text_states_the_remainder": true,
+        "accessible_name": "Show all 9 events on Thursday, March 19, 2026",
+        "accessible_name_states_the_total_and_the_day": true,
+        "label_is_words_not_a_symbol": true
+      },
+      "bytes": 63723,
+      "sha256": "df78b3afa89b921da432930009fffdf3ae9c43457d4b2bd4d1ae3fbac91aa112",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "expanded-day-390x844.png",
+      "specimen": "expanded-day",
+      "route": "component-harness:calendar-density-disclosure",
+      "harness": "test/harness/calendar_density_harness.html",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "data_vintage": "2026-03-15",
+      "timezone": "America/New_York",
+      "assertion": "at 390px the trigger opens all 9 accepted events for the day in one labelled panel beside the month, taking focus with it, while the month keeps exactly the rows, cells and height it had",
+      "rendered_row_height_px": 290,
+      "title_line_budget": "2",
+      "observations": {
+        "opened": true,
+        "one_panel": true,
+        "labelled_by_its_own_heading": true,
+        "heading": "Thursday, March 19, 2026",
+        "events_listed": 9,
+        "every_accepted_event_listed": true,
+        "no_event_silently_omitted": true,
+        "focus_moved_into_the_panel": true,
+        "month_row_count_unchanged": true,
+        "month_cells_unchanged": true,
+        "month_did_not_grow": true,
+        "url_unchanged": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 62409,
+      "sha256": "e21fff9a6b0c558b247373a926a1aabe01a896036829d3075f8f08c3a95696d4",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "expanded-day-1440x900.png",
+      "specimen": "expanded-day",
+      "route": "component-harness:calendar-density-disclosure",
+      "harness": "test/harness/calendar_density_harness.html",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "data_vintage": "2026-03-15",
+      "timezone": "America/New_York",
+      "assertion": "at 1440px the trigger opens all 9 accepted events for the day in one labelled panel beside the month, taking focus with it, while the month keeps exactly the rows, cells and height it had",
+      "rendered_row_height_px": 296,
+      "title_line_budget": "2",
+      "observations": {
+        "opened": true,
+        "one_panel": true,
+        "labelled_by_its_own_heading": true,
+        "heading": "Thursday, March 19, 2026",
+        "events_listed": 9,
+        "every_accepted_event_listed": true,
+        "no_event_silently_omitted": true,
+        "focus_moved_into_the_panel": true,
+        "month_row_count_unchanged": true,
+        "month_cells_unchanged": true,
+        "month_did_not_grow": true,
+        "url_unchanged": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 106938,
+      "sha256": "995c3ec265067cd8f944394a0529f22a1943336040fa9d80b828c2cfee9af249",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "close-and-return-focus-390x844.png",
+      "specimen": "close-and-return-focus",
+      "route": "component-harness:calendar-density-disclosure",
+      "harness": "test/harness/calendar_density_harness.html",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "data_vintage": "2026-03-15",
+      "timezone": "America/New_York",
+      "assertion": "at 390px the visible Close control and Escape both dismiss the day panel and hand focus back to the control that opened it",
+      "rendered_row_height_px": 290,
+      "title_line_budget": "2",
+      "observations": {
+        "closed_by_the_visible_control": true,
+        "focus_returned_to_the_trigger": true,
+        "closed_by_escape": true,
+        "focus_returned_after_escape": true,
+        "focus_never_landed_on_the_body": true
+      },
+      "bytes": 62409,
+      "sha256": "e21fff9a6b0c558b247373a926a1aabe01a896036829d3075f8f08c3a95696d4",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "close-and-return-focus-1440x900.png",
+      "specimen": "close-and-return-focus",
+      "route": "component-harness:calendar-density-disclosure",
+      "harness": "test/harness/calendar_density_harness.html",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "data_vintage": "2026-03-15",
+      "timezone": "America/New_York",
+      "assertion": "at 1440px the visible Close control and Escape both dismiss the day panel and hand focus back to the control that opened it",
+      "rendered_row_height_px": 296,
+      "title_line_budget": "2",
+      "observations": {
+        "closed_by_the_visible_control": true,
+        "focus_returned_to_the_trigger": true,
+        "closed_by_escape": true,
+        "focus_returned_after_escape": true,
+        "focus_never_landed_on_the_body": true
+      },
+      "bytes": 106938,
+      "sha256": "995c3ec265067cd8f944394a0529f22a1943336040fa9d80b828c2cfee9af249",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "keyboard-only-390x844.png",
+      "specimen": "keyboard-only",
+      "route": "component-harness:calendar-density-disclosure",
+      "harness": "test/harness/calendar_density_harness.html",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "data_vintage": "2026-03-15",
+      "timezone": "America/New_York",
+      "assertion": "at 390px the day panel opens from the keyboard alone, keeps focus inside it, and offers all 9 of the day's events as real, focusable destinations",
+      "rendered_row_height_px": 290,
+      "title_line_budget": "2",
+      "observations": {
+        "trigger_takes_keyboard_focus": true,
+        "opened_by_enter": true,
+        "focus_moved_into_the_panel": true,
+        "focus_contained_through_tabs": true,
+        "every_event_is_a_real_link": true,
+        "every_event_is_keyboard_reachable": true
+      },
+      "bytes": 62450,
+      "sha256": "b7ee4579b17475876889bb146cef90397688a733fccf2e4f24e2bdd640bb7606",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "keyboard-only-1440x900.png",
+      "specimen": "keyboard-only",
+      "route": "component-harness:calendar-density-disclosure",
+      "harness": "test/harness/calendar_density_harness.html",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "data_vintage": "2026-03-15",
+      "timezone": "America/New_York",
+      "assertion": "at 1440px the day panel opens from the keyboard alone, keeps focus inside it, and offers all 9 of the day's events as real, focusable destinations",
+      "rendered_row_height_px": 296,
+      "title_line_budget": "2",
+      "observations": {
+        "trigger_takes_keyboard_focus": true,
+        "opened_by_enter": true,
+        "focus_moved_into_the_panel": true,
+        "focus_contained_through_tabs": true,
+        "every_event_is_a_real_link": true,
+        "every_event_is_keyboard_reachable": true
+      },
+      "bytes": 106980,
+      "sha256": "588b611372b4222d85dbba064dbf58cf5efb3974794b22be2c2851b8c0506d02",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "two-hundred-percent-zoom-390x844.png",
+      "specimen": "two-hundred-percent-zoom",
+      "route": "component-harness:calendar-density-disclosure",
+      "harness": "test/harness/calendar_density_harness.html",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "data_vintage": "2026-03-15",
+      "timezone": "America/New_York",
+      "assertion": "at the 195px CSS viewport a 200 percent zoom of a 390px window produces, the month overview and the expanded day both read without any horizontal page scrolling, and the day still lists every accepted event",
+      "rendered_row_height_px": 693,
+      "title_line_budget": "2",
+      "observations": {
+        "css_viewport_width": 195,
+        "emulates": "200% browser zoom of a 390px window",
+        "overview_has_no_horizontal_overflow": true,
+        "panel_has_no_horizontal_overflow": true,
+        "panel_fits_the_viewport": true,
+        "panel_scrolls_inside_itself": true,
+        "every_event_still_listed": true,
+        "smallest_visible_control_px": 44
+      },
+      "bytes": 48847,
+      "sha256": "d804b036cec4c411a7d50dbc082507a22bcc4a9d8a4aaa4771ed0168e0a27ab5",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "two-hundred-percent-zoom-1440x900.png",
+      "specimen": "two-hundred-percent-zoom",
+      "route": "component-harness:calendar-density-disclosure",
+      "harness": "test/harness/calendar_density_harness.html",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "data_vintage": "2026-03-15",
+      "timezone": "America/New_York",
+      "assertion": "at the 720px CSS viewport a 200 percent zoom of a 1440px window produces, the month overview and the expanded day both read without any horizontal page scrolling, and the day still lists every accepted event",
+      "rendered_row_height_px": 296,
+      "title_line_budget": "2",
+      "observations": {
+        "css_viewport_width": 720,
+        "emulates": "200% browser zoom of a 1440px window",
+        "overview_has_no_horizontal_overflow": true,
+        "panel_has_no_horizontal_overflow": true,
+        "panel_fits_the_viewport": true,
+        "panel_scrolls_inside_itself": true,
+        "every_event_still_listed": true,
+        "smallest_visible_control_px": 24
+      },
+      "bytes": 86549,
+      "sha256": "4b7b24c7286e639b22d6fe703748b7013abee1ac3665d37fc1a50919bad3e879",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "touch-targets-390x844.png",
+      "specimen": "touch-targets",
+      "route": "component-harness:calendar-density-disclosure",
+      "harness": "test/harness/calendar_density_harness.html",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "data_vintage": "2026-03-15",
+      "timezone": "America/New_York",
+      "assertion": "at 390px every control the narrow reading offers \u2014 the agenda trigger, the preview trigger and every control in the panel \u2014 is at least 44px tall, so none of them is a bare icon a finger cannot land on",
+      "rendered_row_height_px": 290,
+      "title_line_budget": "2",
+      "observations": {
+        "reading": "narrow agenda",
+        "controls_measured_in_the_month": 6,
+        "smallest_month_control_px": 44,
+        "smallest_month_control": "compact-month-occ-preview",
+        "controls_measured_in_the_panel": 16,
+        "smallest_panel_control_px": 44,
+        "floor_px": 44,
+        "every_control_meets_the_floor": true
+      },
+      "bytes": 62409,
+      "sha256": "e21fff9a6b0c558b247373a926a1aabe01a896036829d3075f8f08c3a95696d4",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "touch-targets-1440x900.png",
+      "specimen": "touch-targets",
+      "route": "component-harness:calendar-density-disclosure",
+      "harness": "test/harness/calendar_density_harness.html",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "data_vintage": "2026-03-15",
+      "timezone": "America/New_York",
+      "assertion": "at 1440px every control the desktop reading offers \u2014 the agenda trigger, the preview trigger and every control in the panel \u2014 is at least 24px tall, so none of them is a bare icon a finger cannot land on",
+      "rendered_row_height_px": 296,
+      "title_line_budget": "2",
+      "observations": {
+        "reading": "desktop grid",
+        "controls_measured_in_the_month": 6,
+        "smallest_month_control_px": 24,
+        "smallest_month_control": "compact-month-occ-preview",
+        "controls_measured_in_the_panel": 16,
+        "smallest_panel_control_px": 24,
+        "floor_px": 24,
+        "every_control_meets_the_floor": true
+      },
+      "bytes": 106938,
+      "sha256": "995c3ec265067cd8f944394a0529f22a1943336040fa9d80b828c2cfee9af249",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "long-localized-titles-390x844.png",
+      "specimen": "long-localized-titles",
+      "route": "component-harness:calendar-density-disclosure",
+      "harness": "test/harness/calendar_density_harness.html",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "data_vintage": "2026-03-15",
+      "timezone": "America/New_York",
+      "assertion": "at 390px titles published in Spanish, Chinese, Bengali, Russian, Haitian Creole and English render exactly as published \u2014 including the two scripts that do not break on spaces \u2014 without pushing the page sideways",
+      "rendered_row_height_px": 415,
+      "title_line_budget": "2",
+      "observations": {
+        "scripts_rendered": 4,
+        "every_title_rendered_as_published": true,
+        "no_horizontal_overflow": true,
+        "panel_chrome_stays_in_the_interface_language": true
+      },
+      "bytes": 80262,
+      "sha256": "5e07b5c8141d26e24f5255cd0dbb2a48758722a74dceeff51ccd23349b1b48b4",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "long-localized-titles-1440x900.png",
+      "specimen": "long-localized-titles",
+      "route": "component-harness:calendar-density-disclosure",
+      "harness": "test/harness/calendar_density_harness.html",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "data_vintage": "2026-03-15",
+      "timezone": "America/New_York",
+      "assertion": "at 1440px titles published in Spanish, Chinese, Bengali, Russian, Haitian Creole and English render exactly as published \u2014 including the two scripts that do not break on spaces \u2014 without pushing the page sideways",
+      "rendered_row_height_px": 296,
+      "title_line_budget": "2",
+      "observations": {
+        "scripts_rendered": 4,
+        "every_title_rendered_as_published": true,
+        "no_horizontal_overflow": true,
+        "panel_chrome_stays_in_the_interface_language": true
+      },
+      "bytes": 102854,
+      "sha256": "36a10dc00e465ccb91a7ba99859fd35e94f645f714d623746f7a00ea4146d822",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "cancelled-and-rescheduled-390x844.png",
+      "specimen": "cancelled-and-rescheduled",
+      "route": "component-harness:calendar-density-disclosure",
+      "harness": "test/harness/calendar_density_harness.html",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "data_vintage": "2026-03-15",
+      "timezone": "America/New_York",
+      "assertion": "at 390px a cancelled event says so, in its own sentence, before the link it qualifies, a rescheduled one says the date shown is the currently published one, and a date-only event acquires no clock time",
+      "rendered_row_height_px": 290,
+      "title_line_budget": "2",
+      "observations": {
+        "cancellation_stated": true,
+        "cancellation_flagged": true,
+        "cancellation_stated_before_the_link": true,
+        "rescheduling_stated": true,
+        "rescheduling_flagged": true,
+        "date_only_events_acquire_no_clock_time": true
+      },
+      "bytes": 62409,
+      "sha256": "e21fff9a6b0c558b247373a926a1aabe01a896036829d3075f8f08c3a95696d4",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "cancelled-and-rescheduled-1440x900.png",
+      "specimen": "cancelled-and-rescheduled",
+      "route": "component-harness:calendar-density-disclosure",
+      "harness": "test/harness/calendar_density_harness.html",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "data_vintage": "2026-03-15",
+      "timezone": "America/New_York",
+      "assertion": "at 1440px a cancelled event says so, in its own sentence, before the link it qualifies, a rescheduled one says the date shown is the currently published one, and a date-only event acquires no clock time",
+      "rendered_row_height_px": 296,
+      "title_line_budget": "2",
+      "observations": {
+        "cancellation_stated": true,
+        "cancellation_flagged": true,
+        "cancellation_stated_before_the_link": true,
+        "rescheduling_stated": true,
+        "rescheduling_flagged": true,
+        "date_only_events_acquire_no_clock_time": true
+      },
+      "bytes": 106938,
+      "sha256": "995c3ec265067cd8f944394a0529f22a1943336040fa9d80b828c2cfee9af249",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "repeated-identity-and-rerender-390x844.png",
+      "specimen": "repeated-identity-and-rerender",
+      "route": "component-harness:calendar-density-disclosure",
+      "harness": "test/harness/calendar_density_harness.html",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "data_vintage": "2026-03-15",
+      "timezone": "America/New_York",
+      "assertion": "at 390px a day rendered in both the grid and the parallel agenda opens the one shared panel for that day, and a repaint leaves exactly one panel still listing every event",
+      "rendered_row_height_px": 290,
+      "title_line_budget": "2",
+      "observations": {
+        "days_carrying_more_than_one_trigger": 1,
+        "repeated_identity_opens_one_panel": true,
+        "repeated_identity_shows_its_own_day": true,
+        "works_after_rerender": true,
+        "single_panel_after_rerender": true,
+        "every_event_still_listed_after_rerender": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 62409,
+      "sha256": "e21fff9a6b0c558b247373a926a1aabe01a896036829d3075f8f08c3a95696d4",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "repeated-identity-and-rerender-1440x900.png",
+      "specimen": "repeated-identity-and-rerender",
+      "route": "component-harness:calendar-density-disclosure",
+      "harness": "test/harness/calendar_density_harness.html",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "data_vintage": "2026-03-15",
+      "timezone": "America/New_York",
+      "assertion": "at 1440px a day rendered in both the grid and the parallel agenda opens the one shared panel for that day, and a repaint leaves exactly one panel still listing every event",
+      "rendered_row_height_px": 296,
+      "title_line_budget": "2",
+      "observations": {
+        "days_carrying_more_than_one_trigger": 1,
+        "repeated_identity_opens_one_panel": true,
+        "repeated_identity_shows_its_own_day": true,
+        "works_after_rerender": true,
+        "single_panel_after_rerender": true,
+        "every_event_still_listed_after_rerender": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 106938,
+      "sha256": "995c3ec265067cd8f944394a0529f22a1943336040fa9d80b828c2cfee9af249",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "before-state-and-without-scripting-390x844.png",
+      "specimen": "before-state-and-without-scripting",
+      "route": "component-harness:calendar-density-disclosure",
+      "harness": "test/harness/calendar_density_harness.html",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "data_vintage": "2026-03-15",
+      "timezone": "America/New_York",
+      "assertion": "at 390px a calendar without scripting offers no agenda trigger and keeps the native disclosure, which still reveals every one of the day's remaining events \u2014 the before state this work starts from, and the reading a reader without scripting keeps",
+      "rendered_row_height_px": 267,
+      "title_line_budget": "2",
+      "observations": {
+        "no_agenda_trigger_without_enhancement": true,
+        "the_native_disclosure_is_the_reading_on_offer": true,
+        "disclosure_summary": "+6 more",
+        "every_hidden_event_is_still_reachable": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 63252,
+      "sha256": "ebad3ffff21f1f51d1948fb166b5f1b94805c0f3541f1a2ca511b3f0b93061d5",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "before-state-and-without-scripting-1440x900.png",
+      "specimen": "before-state-and-without-scripting",
+      "route": "component-harness:calendar-density-disclosure",
+      "harness": "test/harness/calendar_density_harness.html",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "data_vintage": "2026-03-15",
+      "timezone": "America/New_York",
+      "assertion": "at 1440px a calendar without scripting offers no agenda trigger and keeps the native disclosure, which still reveals every one of the day's remaining events \u2014 the before state this work starts from, and the reading a reader without scripting keeps",
+      "rendered_row_height_px": 585,
+      "title_line_budget": "2",
+      "observations": {
+        "no_agenda_trigger_without_enhancement": true,
+        "the_native_disclosure_is_the_reading_on_offer": true,
+        "disclosure_summary": "+6 more",
+        "every_hidden_event_is_still_reachable": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 93295,
+      "sha256": "6c77466cfbd8516548a3c335eebb6e12186bd2799d9ab26e81c44473dc50542c",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "sparse-no-calendar-390x844.png",
+      "specimen": "sparse-no-calendar",
+      "route": "component-harness:calendar-density-disclosure",
+      "harness": "test/harness/calendar_density_harness.html",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "data_vintage": "2026-03-15",
+      "timezone": "America/New_York",
+      "assertion": "at 390px a bundle below the density rule renders no month at all, so the existing sparse fallback is preserved and there is nothing to disclose",
+      "rendered_row_height_px": 0,
+      "title_line_budget": null,
+      "observations": {
+        "renders_no_month": true,
+        "offers_no_agenda_trigger": true,
+        "offers_no_disclosure": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 18440,
+      "sha256": "d04cfe029c6bfc524dafee807c633a7294a877e947e59a47c36799efb3f445dc",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "sparse-no-calendar-1440x900.png",
+      "specimen": "sparse-no-calendar",
+      "route": "component-harness:calendar-density-disclosure",
+      "harness": "test/harness/calendar_density_harness.html",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "data_vintage": "2026-03-15",
+      "timezone": "America/New_York",
+      "assertion": "at 1440px a bundle below the density rule renders no month at all, so the existing sparse fallback is preserved and there is nothing to disclose",
+      "rendered_row_height_px": 0,
+      "title_line_budget": null,
+      "observations": {
+        "renders_no_month": true,
+        "offers_no_agenda_trigger": true,
+        "offers_no_disclosure": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 21919,
+      "sha256": "41e8786739080a04cc3ed46fbfc65b2a5ba186b34c408c234712b420d74db05e",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    }
+  ]
+}

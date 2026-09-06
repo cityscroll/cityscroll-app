@@ -105,6 +105,7 @@
     "site/browse_scoped_adapters.mjs",
     "site/browse_surface_contracts.mjs",
     "site/browse_view.mjs",
+    "site/calendar_day_agenda.mjs",
     "site/calendar_display_state.mjs",
     "site/calendar_display.mjs",
     "site/calendar_event_preview_boot.mjs",

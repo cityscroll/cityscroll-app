@@ -5,6 +5,14 @@
  * and print), `.compact-month-agenda` (narrow viewports), and the shared
  * `.compact-month-occ*` occurrence treatment. Kind, lifecycle, and temporal
  * state are always carried by text and markup first; colour is additive.
+ *
+ * Two density rules live here. Inside the grid an occurrence title is painted
+ * within the line budget the renderer declares on the component
+ * (`--compact-month-title-lines`), so one long notice cannot decide how tall a
+ * week is; the text itself is never removed, so the clip is visual only and
+ * assistive technology still reads the whole title. The narrow agenda, the day
+ * agenda panel, the event preview and print all show the same title in full,
+ * so the clipped reading never exists anywhere it would be the only one.
  */
 
 .compact-month {
@@ -76,6 +84,9 @@
   padding-left: 4px;
 }
 
+/* Kind, supplied clock time and lifecycle are separate flex items, so they
+   sit outside the clipped title: what a cell had to clip is never one of the
+   facts a reader scans for. */
 .compact-month-occ-link {
   display: flex;
   flex-wrap: wrap;
@@ -83,6 +94,7 @@
   align-items: baseline;
   text-decoration: none;
   color: inherit;
+  min-width: 0;
 }
 
 .compact-month-occ-link:hover .compact-month-occ-title,
@@ -112,6 +124,23 @@
 
 .compact-month-occ-title {
   font-size: 12px;
+  /* A single unbroken publisher token (a long PIN, a URL-like reference) must
+     wrap rather than push the table wider than its column. */
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+
+/* The visual line budget, applied only inside the month grid — the overview.
+   The narrow agenda below, the day agenda panel, the event preview and print
+   all render the same title in full. The text stays in the document either
+   way: this clips painting, never content, so the accessible name of the link
+   remains the complete published title. */
+.compact-month-grid .compact-month-occ-title {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: var(--compact-month-title-lines, 2);
+  line-clamp: var(--compact-month-title-lines, 2);
+  overflow: hidden;
 }
 
 /* Past occurrences are muted by weight and a dedicated colour token — never
@@ -302,6 +331,177 @@
   cursor: pointer;
 }
 
+/* ---------- crowded-day agenda (PX-02) ---------- */
+
+/* The two readings of a crowded day are mutually exclusive. Until a binding
+   marks the container ready, the native disclosure is the reading on offer,
+   because it is the one that works without scripting. Once the agenda
+   behaviour is listening, the disclosure stands down and the trigger — which
+   opens the complete day beside the month instead of expanding the row —
+   takes its place. */
+.compact-month-day-more {
+  display: none;
+}
+
+[data-calendar-day-agenda-ready] .compact-month-overflow {
+  display: none;
+}
+
+[data-calendar-day-agenda-ready] .compact-month-day-more {
+  display: inline-block;
+  margin-top: 2px;
+  padding: 2px 8px;
+  font: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-action, #1a44e0);
+  background: transparent;
+  border: 1px solid currentColor;
+  border-radius: 2px;
+  cursor: pointer;
+  /* Real text on a real target, never a bare glyph. */
+  min-height: 24px;
+}
+
+[data-calendar-day-agenda-ready] .compact-month-day-more:hover {
+  background: var(--paper-2, #eceef2);
+}
+
+.calendar-day-agenda-dialog {
+  max-width: 40rem;
+  width: min(40rem, calc(100vw - 24px));
+  max-height: calc(100vh - 24px);
+  padding: 0;
+  border: 1px solid var(--rule-strong, #7a828f);
+  border-radius: 4px;
+  background: var(--paper-0, #fff);
+  color: var(--ink, #12181f);
+}
+
+.calendar-day-agenda-dialog::backdrop {
+  background: rgb(18 24 31 / 45%);
+}
+
+.calendar-day-agenda-inner {
+  padding: 16px;
+  font: 14px/1.5 var(--font-interface, ui-sans-serif, system-ui, sans-serif);
+}
+
+.calendar-day-agenda-close {
+  float: right;
+  margin: -4px -4px 0 8px;
+  padding: 4px 10px;
+  font: inherit;
+  font-size: 13px;
+  color: inherit;
+  background: transparent;
+  border: 1px solid var(--rule-strong, #7a828f);
+  border-radius: 2px;
+  cursor: pointer;
+  min-height: 32px;
+}
+
+.calendar-day-agenda-kicker {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: var(--muted, #5b6470);
+}
+
+.calendar-day-agenda-title {
+  margin: 4px 0 2px;
+  font-size: 18px;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.calendar-day-agenda-count {
+  margin: 0 0 10px;
+  font-size: 13px;
+  color: var(--muted, #5b6470);
+}
+
+.calendar-day-agenda-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.calendar-day-agenda-item {
+  border-left: 3px solid var(--rule-strong, #7a828f);
+  padding-left: 10px;
+  min-width: 0;
+}
+
+.calendar-day-agenda-item-event { border-left-color: var(--color-brand, #1b3a8f); }
+.calendar-day-agenda-item-deadline { border-left-color: var(--color-danger, #c01829); }
+.calendar-day-agenda-item-window_open,
+.calendar-day-agenda-item-window_close { border-left-color: var(--color-caution, #8a5a00); }
+.calendar-day-agenda-item-milestone { border-left-color: var(--color-success, #1a6b34); }
+
+.calendar-day-agenda-item-meta {
+  margin: 0 0 2px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: baseline;
+  font-size: 11px;
+  color: var(--muted, #5b6470);
+}
+
+.calendar-day-agenda-item-kind {
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.calendar-day-agenda-item-flag {
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 1px 4px;
+  border-radius: 2px;
+  border: 1px solid currentColor;
+}
+
+.calendar-day-agenda-item-flag-cancelled { color: var(--color-danger, #c01829); }
+.calendar-day-agenda-item-flag-rescheduled { color: var(--color-caution, #8a5a00); }
+
+/* Cancellation is stated in its own sentence before the link, so a reader
+   never has to infer it from the styling of the title. */
+.calendar-day-agenda-item-notice {
+  margin: 0 0 2px;
+  font-weight: 600;
+  color: var(--color-danger, #c01829);
+}
+
+/* The unabridged title. Nothing clips it here — this panel exists to be the
+   place the whole title is readable. */
+.calendar-day-agenda-item-link {
+  display: block;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+  /* A comfortable target for a finger as well as a pointer. */
+  min-height: 24px;
+}
+
+.calendar-day-agenda-item-lifecycle-cancelled .calendar-day-agenda-item-link {
+  text-decoration-line: underline line-through;
+}
+
+.calendar-day-agenda-item-where {
+  margin: 2px 0 0;
+  font-size: 13px;
+  color: var(--muted, #5b6470);
+  overflow-wrap: anywhere;
+}
+
 .compact-month-full-list {
   margin-top: 8px;
   font-size: 13px;
@@ -347,6 +547,42 @@
     margin-top: 4px;
     font-size: 11px;
   }
+
+  /* The agenda trigger is a primary control on a narrow viewport — it is how a
+     reader reaches a crowded day at all — so it gets a full-width row and a
+     real 44px target rather than a chip wedged beside the last event. */
+  [data-calendar-day-agenda-ready] .compact-month-day-more {
+    display: block;
+    width: 100%;
+    min-height: 44px;
+    margin-top: 8px;
+    padding: 8px 12px;
+    font-size: 13px;
+    text-align: left;
+  }
+
+  /* At this width the panel is the page: full-bleed, and its own scroller, so
+     a high-density day scrolls inside the agenda instead of the document. */
+  .calendar-day-agenda-dialog {
+    width: calc(100vw - 16px);
+    max-width: none;
+    max-height: calc(100vh - 16px);
+  }
+
+  .calendar-day-agenda-list {
+    overflow-y: auto;
+  }
+
+  /* Every event in the agenda is a touch target in its own right. */
+  .calendar-day-agenda-item-link {
+    min-height: 44px;
+    padding: 4px 0;
+  }
+
+  .calendar-day-agenda-close {
+    min-height: 44px;
+    min-width: 44px;
+  }
 }
 
 /* ---------- print: never fracture, always fully disclosed ---------- */
@@ -371,6 +607,27 @@
   .compact-month-overflow > *:not(summary) {
     display: block !important;
   }
+
+  /* A printed month is read without any control at all, so the disclosure
+     comes back even on an enhanced page and the agenda trigger — which can
+     only open a panel that will never be on the paper — goes away. */
+  [data-calendar-day-agenda-ready] .compact-month-overflow {
+    display: block !important;
+  }
+  .compact-month-day-more,
+  [data-calendar-day-agenda-ready] .compact-month-day-more,
+  .calendar-day-agenda-dialog {
+    display: none !important;
+  }
+
+  /* Nothing on paper is one control away from its full reading, so the line
+     budget is lifted and every title prints complete. */
+  .compact-month-grid .compact-month-occ-title {
+    display: block !important;
+    -webkit-line-clamp: none !important;
+    line-clamp: none !important;
+    overflow: visible !important;
+  }
 }
 
 /* ---------- keyboard/focus ---------- */
@@ -378,10 +635,13 @@
 .compact-month-occ-link:focus-visible,
 .compact-month-occ-source:focus-visible,
 .compact-month-occ-preview:focus-visible,
+.compact-month-day-more:focus-visible,
 .compact-month-full-list a:focus-visible,
 .compact-month-overflow > summary:focus-visible,
 .calendar-event-preview-dialog a:focus-visible,
-.calendar-event-preview-close:focus-visible {
+.calendar-event-preview-close:focus-visible,
+.calendar-day-agenda-dialog a:focus-visible,
+.calendar-day-agenda-close:focus-visible {
   outline: 2px solid var(--color-action, #1a44e0);
   outline-offset: 2px;
 }

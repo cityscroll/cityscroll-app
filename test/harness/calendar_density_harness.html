@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Calendar density — fixture harness</title>
+<meta name="robots" content="noindex, nofollow">
+<!--
+  Repository-native test harness for the shared calendar density bound
+  (PX-02). Not a shipped page: it exists only to give the headless
+  evidence-capture script a neutral surface that mounts the real shared month
+  renderer and the real shared binders against committed fixtures. It is never
+  linked from the public site and carries no domain content of its own.
+
+  Query parameters:
+    fixture=dense|crowded|lifecycle|sparse|longTitles|highDensity|localized
+                                which committed bundle to paint
+    today=YYYY-MM-DD            the explicit day the view is built for
+    enhance=off                 skip binding, to read the page as a reader
+                                without scripting does
+    budget=off                  lift the grid's title line budget, so a capture
+                                can measure the same month with and without it
+-->
+<link rel="stylesheet" href="../../site/compact_calendar.css">
+<style>
+  body { margin: 0; padding: 16px; background: #f5f6f8; font: 16px/1.5 ui-sans-serif, system-ui, sans-serif; }
+  #mount { max-width: 1200px; }
+  #controls { margin: 0 0 12px; display: flex; gap: 12px; flex-wrap: wrap; }
+  #controls button { font: inherit; padding: 4px 10px; }
+  #status { font: 12px monospace; color: #5b6470; margin-top: 12px; }
+</style>
+<!--
+  The only reading this harness can offer that the shipped stylesheet does not:
+  the same month with the title line budget lifted. It is what the grid painted
+  before this work, so a capture can report the rendered row height of both
+  readings rather than asserting an improvement it never measured.
+-->
+<style id="budget-off" media="not all">
+  .compact-month-grid .compact-month-occ-title {
+    display: block;
+    -webkit-line-clamp: none;
+    line-clamp: none;
+    overflow: visible;
+  }
+</style>
+</head>
+<body>
+<main id="page" data-harness-state="pending">
+<h1>Calendar density harness</h1>
+<p id="controls">
+  <button type="button" id="repaint">Repaint the month</button>
+</p>
+<div id="mount"></div>
+<p id="status"></p>
+</main>
+<script type="module">
+  import { fixtureOccurrences, FIXTURE_TODAY } from "../fixtures/compact_calendar_fixtures.mjs";
+  import {
+    COMPACT_MONTH_TITLE_LINE_BUDGET,
+    bindCalendarEventPreview,
+    buildCompactMonthView,
+    renderCompactMonth,
+  } from "../../site/compact_calendar.mjs";
+
+  const params = new URLSearchParams(location.search);
+  const fixtureName = params.get("fixture") || "longTitles";
+  const today = params.get("today") || FIXTURE_TODAY;
+  const enhance = params.get("enhance") !== "off";
+  const budget = params.get("budget") !== "off";
+  const page = document.getElementById("page");
+  const mount = document.getElementById("mount");
+  const status = document.getElementById("status");
+
+  if (!budget) document.getElementById("budget-off").media = "all";
+
+  const occurrences = fixtureOccurrences(fixtureName);
+  const view = buildCompactMonthView(occurrences, { today });
+  const paint = () => {
+    mount.innerHTML = renderCompactMonth(view, { fullListHref: "#full-list-placeholder", fullListLabel: "View the full list" });
+  };
+  paint();
+  document.getElementById("repaint").addEventListener("click", () => {
+    paint();
+    page.setAttribute("data-harness-repainted", "1");
+  });
+
+  // One mount, exactly as a registered host makes it: the shared renderer's
+  // own binder, which is what gives a host the preview and the day agenda
+  // together rather than one of them.
+  if (enhance) bindCalendarEventPreview(mount);
+
+  page.setAttribute("data-harness-state", view.render ? "rendered" : "non-render");
+  page.setAttribute("data-harness-reason", view.render ? "eligible" : view.reason);
+  page.setAttribute("data-harness-enhanced", enhance ? "1" : "0");
+  page.setAttribute("data-harness-budget", budget ? String(COMPACT_MONTH_TITLE_LINE_BUDGET) : "off");
+  status.textContent = `fixture=${fixtureName} today=${today} render=${view.render} enhanced=${enhance} budget=${budget ? COMPACT_MONTH_TITLE_LINE_BUDGET : "off"}`;
+</script>
+</body>
+</html>

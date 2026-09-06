@@ -367,11 +367,10 @@ def specimen_repeated_identity_and_rerender(page, base, width):
     page.goto(f"{base}?fixture=crowded", wait_until="load")
     page.wait_for_selector(PREVIEW_BUTTON)
     # The shared renderer emits the same month twice -- a grid for wide
-    # viewports and a parallel agenda for narrow ones -- and puts a crowded
-    # day's remainder behind a disclosure as well, so one event identity is
-    # rendered in several places at once. Every one of them must resolve to
-    # the same single preview.
-    page.locator(".compact-month-overflow:visible > summary").first.click()
+    # viewports and a parallel agenda for narrow ones -- and a crowded day's
+    # remainder is in the document in both, so one event identity is rendered
+    # in several places at once. Every one of them must resolve to the same
+    # single preview.
     uid_counts = page.evaluate(
         "() => { const seen = {}; for (const el of document.querySelectorAll('[data-calendar-event-preview-uid]'))"
         " { const uid = el.dataset.calendarEventPreviewUid; seen[uid] = (seen[uid] || 0) + 1; } return seen; }"
@@ -400,9 +399,9 @@ def specimen_repeated_identity_and_rerender(page, base, width):
         "single_dialog_after_rerender": after_rerender["count"] == 1,
         "no_horizontal_overflow": no_horizontal_overflow(page),
     }, (
-        f"at {width}px an event identity rendered in several places at once -- the grid, the "
-        "parallel agenda, and a crowded day's disclosure -- opens the one shared preview for that "
-        "event, and a repaint leaves exactly one dialog still working"
+        f"at {width}px an event identity rendered in several places at once -- the grid and the "
+        "parallel agenda, each carrying the crowded day's remainder -- opens the one shared preview "
+        "for that event, and a repaint leaves exactly one dialog still working"
     )
 
 
