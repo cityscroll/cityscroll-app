@@ -44,7 +44,7 @@ test("generated topology covers every documented source with all four layers", (
 test("producer schema version stays in lockstep with the desk consumer contract", () => {
   const contract = JSON.parse(readFileSync(join(ROOT, DESK_CONSUMER_CONTRACT_PATH), "utf8"));
   assert.equal(contract.schema, "cityscroll.data_source_graph.desk_consumer_contract.v1");
-  assert.equal(DATA_SOURCE_GRAPH_SCHEMA_VERSION, 5);
+  assert.equal(DATA_SOURCE_GRAPH_SCHEMA_VERSION, 6);
   assert.equal(graph.schema_version, DATA_SOURCE_GRAPH_SCHEMA_VERSION);
   assert.equal(contract.producer_schema_version, DATA_SOURCE_GRAPH_SCHEMA_VERSION);
   assert.ok(contract.supported_consumer_versions.includes(DATA_SOURCE_GRAPH_SCHEMA_VERSION));
@@ -59,6 +59,11 @@ test("producer schema version stays in lockstep with the desk consumer contract"
   assert.deepEqual(graph.repair_observations.dispositions, contract.v5_additions.dispositions);
   assert.equal(graph.counts.repair_observations, graph.repair_observations.observations.length);
   assert.ok(graph.sources.every((source) => Array.isArray(source.repair_observations ?? [])));
+  assert.ok(contract.v6_additions.graph_fields.includes("repair_queue"));
+  assert.equal(graph.repair_queue.schema, "cityscroll.repair_queue.v1");
+  assert.equal(graph.repair_queue.visibility, "private");
+  assert.deepEqual(graph.repair_queue.states, contract.v6_additions.states);
+  assert.equal(graph.repair_queue.status, "available");
   assert.match(
     generatedGraphFiles()[HTML_OUTPUT],
     /Trace each collecting body through its endpoint, adapters and runs, receipt-backed three-clock health, join gates, and product surfaces/,
