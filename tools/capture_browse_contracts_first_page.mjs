@@ -103,7 +103,7 @@ function buildManifest(observed) {
   });
   return {
     schema: "cityscroll.snappiness_evidence_capture.v1",
-    change: "cityscroll-snappiness/perf-03-browse-contracts-tail",
+    change: "cityscroll-engineering/browse-contracts-load-tail",
     capture_kind: "functional network-order trace (no browser, no image capture)",
     route: ROUTE,
     viewport: { name: "not-applicable", note: "network-order trace; no rendered viewport was captured" },

@@ -1,0 +1,29 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/search-to-browse-query-handoff-repair",
+  "status": "implemented",
+  "fingerprint": "search-to-browse-query-handoff-repair.v1",
+  "updated_at": "2026-09-01T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "record-search-control",
+      "path": "site/walk_entry.mjs"
+    },
+    {
+      "id": "browse-landing-record-search",
+      "path": "site/browse_view.mjs"
+    },
+    {
+      "id": "walk-entry-hydration",
+      "path": "site/app/walk-entry.mjs"
+    },
+    {
+      "id": "legacy-browse-search-canonicalization",
+      "path": "site/route_migration.mjs"
+    },
+    {
+      "id": "search-to-browse-query-handoff-specimen",
+      "path": "test/search_to_browse_query_handoff.test.mjs"
+    }
+  ]
+}

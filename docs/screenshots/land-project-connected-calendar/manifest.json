@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "feature": "land-project-connected-calendar",
-  "card": "cityscroll-calendar-beyond-ics/cbics-06-land-project-connected-dates",
+  "card": "cityscroll-engineering/land-project-connected-dates",
   "route": "component-harness:land-project-connected-calendar",
   "revision": "42d872d66ae625a601731a733a756f4c1aadd27b",
   "today": "2026-03-15",

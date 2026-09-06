@@ -2,7 +2,7 @@
   "schema": "cityscroll.repository-control-plane.evidence-placement-shard.v1",
   "id": "document-tree:docs",
   "owner": "document-tree:docs",
-  "card": "cityscroll-repository-control-plane/rcp-03",
+  "card": "cityscroll-engineering/private-generated-evidence-placement",
   "input_revision": "c9b83920345a2e1172390eafb3af6e7bd35651b2",
   "updated_at": "2026-08-31T00:00:00.000Z",
   "value": {
@@ -16,8 +16,8 @@
         "private_reference_count": 4,
         "private_reference_set_sha256": "4f5a4937b3cb6911e5c60e5ea119f3dea76caab13724f9608baa2ea9b8b833c9",
         "classification": "owner-only-evidence-reference",
-        "disposition": "register:cityscroll-repository-control-plane/rcp-03#private-evidence",
-        "maintainer_resolution": "register:cityscroll-repository-control-plane/rcp-03#authorized-maintainer-access"
+        "disposition": "register:cityscroll-engineering/private-generated-evidence-placement#private-evidence",
+        "maintainer_resolution": "register:cityscroll-engineering/private-generated-evidence-placement#authorized-maintainer-access"
       },
       {
         "path": "docs/api-parity-b2-additional-migrations.md",
@@ -25,8 +25,8 @@
         "private_reference_count": 8,
         "private_reference_set_sha256": "cf1318830869ba08044a7e1263a480e75e047d40cdea88668c45bbd318771e20",
         "classification": "owner-only-evidence-reference",
-        "disposition": "register:cityscroll-repository-control-plane/rcp-03#private-evidence",
-        "maintainer_resolution": "register:cityscroll-repository-control-plane/rcp-03#authorized-maintainer-access"
+        "disposition": "register:cityscroll-engineering/private-generated-evidence-placement#private-evidence",
+        "maintainer_resolution": "register:cityscroll-engineering/private-generated-evidence-placement#authorized-maintainer-access"
       },
       {
         "path": "docs/api-parity-b2.md",
@@ -34,8 +34,8 @@
         "private_reference_count": 4,
         "private_reference_set_sha256": "db63f6b6362702c9f261a11b724e37b998f1e6e69bd26affca9ea86f0fb429b2",
         "classification": "owner-only-evidence-reference",
-        "disposition": "register:cityscroll-repository-control-plane/rcp-03#private-evidence",
-        "maintainer_resolution": "register:cityscroll-repository-control-plane/rcp-03#authorized-maintainer-access"
+        "disposition": "register:cityscroll-engineering/private-generated-evidence-placement#private-evidence",
+        "maintainer_resolution": "register:cityscroll-engineering/private-generated-evidence-placement#authorized-maintainer-access"
       },
       {
         "path": "docs/evidence-tip-migration.json",
@@ -43,8 +43,8 @@
         "private_reference_count": 2299,
         "private_reference_set_sha256": "b3464f18eb3118f967c94943bd21c01ca9bcf4e06a57e71ab1ea806d1dbaf2fe",
         "classification": "owner-only-evidence-reference",
-        "disposition": "register:cityscroll-repository-control-plane/rcp-03#private-evidence",
-        "maintainer_resolution": "register:cityscroll-repository-control-plane/rcp-03#authorized-maintainer-access"
+        "disposition": "register:cityscroll-engineering/private-generated-evidence-placement#private-evidence",
+        "maintainer_resolution": "register:cityscroll-engineering/private-generated-evidence-placement#authorized-maintainer-access"
       }
     ]
   }

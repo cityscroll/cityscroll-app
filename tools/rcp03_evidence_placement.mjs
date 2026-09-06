@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 
 /**
- * Repository evidence-placement proof (RCP-03 semantics, RCP-06 materialization).
+ * Repository evidence-placement proof: private-generated evidence placement,
+ * materialized as a non-colliding source-owned receipt.
  *
  * Reviewed placement facts are source-owned shards under
  * docs/repository-control-plane/evidence-placement.d/. Each shard owns exactly one
@@ -22,7 +23,7 @@ import { fileURLToPath } from "node:url";
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const BASE = "c9b83920345a2e1172390eafb3af6e7bd35651b2";
 const PRIVATE_MARKER = ["backstage", "://", "cityscroll-evidence/"].join("");
-const CARD = "cityscroll-repository-control-plane/rcp-03";
+const CARD = "cityscroll-engineering/private-generated-evidence-placement";
 const REVIEWED_AT = "2026-08-31T00:00:00.000Z";
 
 export const RECEIPT_SCHEMA = "cityscroll.repository_evidence_placement.v1";
@@ -38,8 +39,8 @@ const SERVED_TEXT_EXTENSIONS = new Set([
 const RETAINED_PROOF_PATHS = [
   "ARCHITECTURE.md",
   "architecture/evidence.d/README.md",
-  "architecture/evidence.d/cityscroll-merge-throughput--mt-7-architecture-evidence-shards.json",
-  "architecture/evidence.d/cityscroll-merge-throughput--mt-8-architecture-evidence-generated-aggregates.json",
+  "architecture/evidence.d/cityscroll-engineering--architecture-evidence-shards.json",
+  "architecture/evidence.d/cityscroll-engineering--architecture-evidence-generated-aggregates.json",
   "docs/architecture.md",
   "docs/repository-control-plane/evidence-placement.d/README.md",
   "docs/repository-control-plane/evidence-placement-shard.v1.schema.json",
@@ -142,7 +143,16 @@ export function idForShardPath(name) {
  */
 export function derivePlacementFacts() {
   const classification = JSON.parse(fromBase("docs/repository-control-plane/classification.v1.json"));
-  const classified = classification.entries.filter((entry) => entry.canonical_owner === CARD && entry.id.startsWith("private-uri:"));
+  // The inspected commit is a fixed point in the past, so it spells this record's
+  // identity the way that commit spelled it, not the way the current tree does.
+  // The set is defined by the private-uri classification itself; the owner is read
+  // back from that set and required to be a single one, so the derivation stays
+  // correct across a rename of the record without pinning either spelling here.
+  const classified = classification.entries.filter((entry) => entry.id.startsWith("private-uri:"));
+  const classifiedOwners = [...new Set(classified.map((entry) => entry.canonical_owner))];
+  if (classifiedOwners.length !== 1) {
+    throw new Error(`private-uri classification at the inspected commit must have exactly one canonical owner; found ${classifiedOwners.length}`);
+  }
   const evidencePaths = classified.map((entry) => entry.path);
   evidencePaths.push("docs/performance/content-parity/notice-context-critical-path/reports/index.html");
   const documents = [...new Set(evidencePaths)].sort().map((path) => {
@@ -250,7 +260,7 @@ export function expectedShardValues(facts) {
     fixtures: ["test/fixtures/"],
     generators: ["tools/build_*.mjs"],
     receipts: ["docs/evidence/", "warehouse/receipts/proof/"],
-    mt7_evidence: ["architecture/evidence.d/cityscroll-merge-throughput--mt-7-architecture-evidence-shards.json", "architecture/evidence.d/"]
+    mt7_evidence: ["architecture/evidence.d/cityscroll-engineering--architecture-evidence-shards.json", "architecture/evidence.d/"]
   });
   values.set("served-artifacts", {
     paths: ["site/", "worker/"],
@@ -484,7 +494,7 @@ function main(argv = process.argv.slice(2)) {
     writeFileSync(target, `${JSON.stringify(receipt, null, 2)}\n`);
     process.stdout.write(`derived placement receipt written to ${target}\n`);
   }
-  process.stdout.write(`RCP-03 evidence placement verified: ${receipt.private_inventory.scrim_review.row_count} review rows, ${receipt.private_inventory.reference_count} private references, ${receipt.materialization.shard_count} source-owned inputs, served artifacts unchanged\n`);
+  process.stdout.write(`evidence placement verified: ${receipt.private_inventory.scrim_review.row_count} review rows, ${receipt.private_inventory.reference_count} private references, ${receipt.materialization.shard_count} source-owned inputs, served artifacts unchanged\n`);
 }
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) main();

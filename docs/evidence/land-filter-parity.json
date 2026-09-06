@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.land-filter-parity-receipt.v1",
-  "card": "cityscroll-land-map-view/lm-08-filter-parity",
+  "card": "cityscroll-engineering/land-map-filter-parity",
   "model_schema": "cityscroll.land_filter_parity.v1",
   "determinism": {
     "today": "2026-08-31",

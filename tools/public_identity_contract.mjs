@@ -23,7 +23,13 @@
  *   4. A file path decodes to exactly the identity the document declares.
  *   5. Fields that would carry a private source id or a private alias mapping are
  *      not valid public fields.
- *   6. Where no descriptive name applies yet, a fallback token — the letter `c`
+ *   6. A tracked path in a public evidence root is named the same way: its
+ *      segments carry descriptive words, never a register namespace and never a
+ *      queue position. A file under the evidence registry is
+ *      `<namespace>--<descriptive-public-id>.json` for the one public namespace,
+ *      and no segment anywhere in these roots is a short abbreviation followed by
+ *      an ordinal.
+ *   7. Where no descriptive name applies yet, a fallback token — the letter `c`
  *      followed by 12 lowercase hex characters — is accepted as a public id in
  *      its own right. It is minted outside this repository from a key this
  *      repository never holds, so it carries no descriptive words and no queue
@@ -45,7 +51,7 @@ export const CONTRACT_VERSION = "cityscroll.public-engineering-record-identity.v
  */
 const PUBLIC_WORD = "[a-z][a-z0-9]*";
 /**
- * Rule 6's fallback token: `c` plus exactly 12 lowercase hex characters. The
+ * Rule 7's fallback token: `c` plus exactly 12 lowercase hex characters. The
  * leading letter is not decorative — it is what lets this token stand as its
  * own public id under rule 2's letter-led-word requirement, the same way a
  * descriptive word does.
@@ -60,7 +66,7 @@ export const REFERENCE_PATTERN = new RegExp(
 );
 
 /**
- * True only for the exact rule-6 fallback shape inside the public namespace —
+ * True only for the exact rule-7 fallback shape inside the public namespace —
  * not for a descriptive word that merely happens to start with a letter and
  * contain hex-looking characters.
  */
@@ -206,6 +212,75 @@ export function inspectPathIdentityAgreement({ path, id, expectedPath }) {
   )].map((row) => ({ ...row, id }));
 }
 
+/**
+ * Rule 6: the public evidence roots. Every tracked path under one of these is a
+ * public naming surface, so the same words-not-queue-positions rule that governs
+ * an identity governs the path that carries it.
+ */
+export const PUBLIC_PATH_ROOTS = Object.freeze([
+  "architecture/evidence.d",
+  "docs/evidence",
+  "artifacts",
+  "data",
+]);
+
+/**
+ * Shape A — a registry namespace other than the one public namespace. The
+ * evidence registry encodes `<namespace>/<public-id>` as `<namespace>--<public-id>`,
+ * so a file named `cityscroll-<something-else>--...` is publishing a second
+ * namespace this repository does not have.
+ */
+export const PRIVATE_NAMESPACE_FILENAME_PATTERN = /(^|\/)cityscroll-(?!engineering--)[a-z0-9-]+--/;
+
+/**
+ * Shape B — a queue position. A short letter abbreviation followed by a one- to
+ * three-digit ordinal at the head of a path segment is an index into an ordered
+ * register, not a description of anything: `<abbr>-<n>-<words>` names the words'
+ * position, and a bare `<abbr>-<n>` names nothing else at all.
+ *
+ * A bare segment is only read this way for a one- or two-digit ordinal, because a
+ * longer terminal number in these roots is a measurement — a viewport width, a
+ * shard index — and a measurement is a description. This is the same stance
+ * tools/check_stale_repo_name.mjs takes: state the shape that is legal and let
+ * the rule decide, rather than committing a list of the names to keep out. There
+ * is deliberately no allowlist here; a path that trips this rule is renamed.
+ */
+export const QUEUE_POSITION_SEGMENT_PATTERN = /(^|\/)[a-z]{2,6}-\d{1,3}-|(^|\/)[a-z]{2,6}-\d{1,2}(\.[a-z0-9]+)*$/;
+
+/**
+ * Rule 6, applied to one tracked path. Returns [] for a path outside the public
+ * evidence roots: those roots are the surface this rule governs.
+ */
+export function inspectPublicPath(path) {
+  const value = String(path || "").split("\\").join("/");
+  if (!PUBLIC_PATH_ROOTS.some((root) => value === root || value.startsWith(`${root}/`))) return [];
+  const violations = [];
+  if (PRIVATE_NAMESPACE_FILENAME_PATTERN.test(value)) {
+    violations.push(violation(
+      value,
+      "public-path-namespace",
+      "path",
+      `an evidence registry file names the one public namespace; ${PUBLIC_NAMESPACE}--<descriptive-public-id>.json is the only registry filename form`,
+    ));
+  }
+  if (QUEUE_POSITION_SEGMENT_PATTERN.test(value)) {
+    violations.push(violation(
+      value,
+      "public-path-queue-position",
+      "path",
+      "a path segment in a public evidence root is hyphen-separated words that each begin with a letter; an abbreviation followed by an ordinal is a queue position, not a description",
+    ));
+  }
+  return violations;
+}
+
+/**
+ * Rule 6 over a whole tracked-file listing.
+ */
+export function inspectPublicPaths(paths) {
+  return paths.flatMap((path) => inspectPublicPath(path));
+}
+
 export function describeContract() {
   return {
     contract: CONTRACT_VERSION,
@@ -215,5 +290,8 @@ export function describeContract() {
     reference_pattern: REFERENCE_PATTERN.source,
     alias_pattern: PUBLIC_ALIAS_PATTERN.source,
     forbidden_private_fields: [...FORBIDDEN_PRIVATE_FIELDS],
+    public_path_roots: [...PUBLIC_PATH_ROOTS],
+    private_namespace_filename_pattern: PRIVATE_NAMESPACE_FILENAME_PATTERN.source,
+    queue_position_segment_pattern: QUEUE_POSITION_SEGMENT_PATTERN.source,
   };
 }

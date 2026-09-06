@@ -1,0 +1,17 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/procurement-process-state-query-and-watch",
+  "status": "implemented",
+  "fingerprint": "procurement-process-state-query-and-watch.v1",
+  "updated_at": "2026-08-31T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "procurement-process-state-vocabulary",
+      "path": "site/procurement_process_state_vocabulary.mjs"
+    },
+    {
+      "id": "procurement-process-watch",
+      "path": "site/procurement_process_watch.mjs"
+    }
+  ]
+}

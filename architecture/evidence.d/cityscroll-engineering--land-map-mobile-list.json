@@ -1,0 +1,21 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/land-map-mobile-list",
+  "status": "implemented",
+  "fingerprint": "land-map-mobile-list.v1",
+  "updated_at": "2026-09-03T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "land-map-mobile-layout-evidence",
+      "path": "docs/evidence/land-map-mobile-layout.json"
+    },
+    {
+      "id": "land-map-mobile-layout-capture",
+      "path": "tools/capture_land_map_mobile_layout.py"
+    },
+    {
+      "id": "land-map-mobile-layout-contract",
+      "path": "test/land_map_mobile_layout.test.mjs"
+    }
+  ]
+}

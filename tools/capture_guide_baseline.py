@@ -226,7 +226,7 @@ def main() -> int:
     captures = capture(args.base, args.output_dir)
     manifest = {
         "schema_version": 1,
-        "card": "cityscroll-public-user-guide/ug-00-documentation-map",
+        "card": "cityscroll-engineering/guide-documentation-map",
         "capture_mode": "public_base_playwright_no_committed_image",
         "base": args.base,
         "repository_revision": repository_revision(),

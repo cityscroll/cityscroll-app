@@ -2,7 +2,7 @@
   "schema": "cityscroll.repository-control-plane.evidence-placement-shard.v1",
   "id": "served-artifacts",
   "owner": "served-artifacts",
-  "card": "cityscroll-repository-control-plane/rcp-03",
+  "card": "cityscroll-engineering/private-generated-evidence-placement",
   "input_revision": "c9b83920345a2e1172390eafb3af6e7bd35651b2",
   "updated_at": "2026-08-31T00:00:00.000Z",
   "value": {

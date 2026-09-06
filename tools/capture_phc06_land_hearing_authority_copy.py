@@ -9,7 +9,7 @@ real source below before capture) for the specimens named in the card, at both
 review widths. Runs axe-core against each rendered fragment.
 
 No image is written or committed — see docs/evidence/public-input-consequence/
-phc-06-land-use-authority-in-plain-terms/capture-manifest.json for the
+land-use-authority-in-plain-terms/capture-manifest.json for the
 committed proof (content hash + textual assertion per case), per the
 workstream's no-committed-image-binaries convention (spec.md).
 
@@ -37,7 +37,7 @@ ROOT = Path(__file__).resolve().parents[1]
 AXE = ROOT / "test/functional/assets/axe.min.js"
 VIEWPORTS = (("mobile", 390, 844), ("desktop", 1440, 900))
 TMP_DIR = ROOT / "site/.phc06-capture-tmp"
-OUT_DIR = ROOT / "docs/evidence/public-input-consequence/phc-06-land-use-authority-in-plain-terms"
+OUT_DIR = ROOT / "docs/evidence/public-input-consequence/land-use-authority-in-plain-terms"
 
 # The upcoming-hearing row template the .mjs helper reproduces is not exported
 # from site/app/land.mjs — these substrings must still be present in the real
@@ -182,7 +182,7 @@ def main() -> None:
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     manifest = {
         "schema_version": 1,
-        "card": "cityscroll-public-input-consequence/phc-06-land-use-authority-in-plain-terms",
+        "card": "cityscroll-engineering/land-use-authority-in-plain-terms",
         "capture_mode": "local_node_playwright_axe_static_render",
         "repository_revision": repository_revision,
         "note": (

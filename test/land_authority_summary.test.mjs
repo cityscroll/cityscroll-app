@@ -272,7 +272,7 @@ test("architecture-evidence projections reconcile the materializer card", () => 
   assert.equal(result.status, "PASS", result.findings.join("; "));
   assert.equal(
     result.evidence.projections["site/data/land_authority_summary.json"].represented_card_ids.includes(
-      "cityscroll-land-decision-path/ldp-05-authority-summary-materializer",
+      "cityscroll-engineering/authority-summary-materializer",
     ),
     true,
   );

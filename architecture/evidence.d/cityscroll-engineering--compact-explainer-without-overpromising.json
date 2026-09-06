@@ -1,0 +1,17 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/compact-explainer-without-overpromising",
+  "status": "implemented",
+  "fingerprint": "compact-explainer-without-overpromising.v1",
+  "updated_at": "2026-09-05T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "public-input-explainer-component",
+      "path": "site/public_input_explainer.mjs"
+    },
+    {
+      "id": "public-input-explainer-gate",
+      "path": "test/public_input_explainer.test.mjs"
+    }
+  ]
+}

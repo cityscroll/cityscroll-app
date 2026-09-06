@@ -1,0 +1,25 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/council-committee-proceedings",
+  "status": "implemented",
+  "fingerprint": "council-committee-proceedings.v1",
+  "updated_at": "2026-08-31T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "council-committee-proceedings-resolver",
+      "path": "site/civic_institution_council_committees.mjs"
+    },
+    {
+      "id": "council-committee-proceedings-lookup",
+      "path": "site/data/council_committee_proceedings.json"
+    },
+    {
+      "id": "council-committee-proceedings-fixtures",
+      "path": "test/fixtures/civic_institution_council_committees/cases.json"
+    },
+    {
+      "id": "council-committee-proceedings-tests",
+      "path": "test/civic_institution_council_committees.test.mjs"
+    }
+  ]
+}

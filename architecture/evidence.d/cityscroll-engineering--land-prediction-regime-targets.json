@@ -1,0 +1,17 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/land-prediction-regime-targets",
+  "status": "implemented",
+  "fingerprint": "land-prediction-regime-targets.v1",
+  "updated_at": "2026-09-05T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "lup2-c11-regime-targets-lib",
+      "path": "worker/src/lib/land_prediction_regime_targets.mjs"
+    },
+    {
+      "id": "lup2-c11-regime-targets-test",
+      "path": "test/lup2_regime_targets.test.mjs"
+    }
+  ]
+}

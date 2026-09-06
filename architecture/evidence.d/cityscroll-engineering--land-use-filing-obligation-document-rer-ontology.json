@@ -1,0 +1,13 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/land-use-filing-obligation-document-rer-ontology",
+  "status": "implemented",
+  "fingerprint": "land-use-filing-obligation-document-rer-ontology.v1",
+  "updated_at": "2026-09-04T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "land-use-filing-ontology",
+      "path": "ontology/land_use_filing.mjs"
+    }
+  ]
+}

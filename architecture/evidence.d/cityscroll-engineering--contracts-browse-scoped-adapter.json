@@ -1,0 +1,29 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/contracts-browse-scoped-adapter",
+  "status": "implemented",
+  "fingerprint": "contracts-browse-scoped-adapter.v1",
+  "updated_at": "2026-09-02T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "contracts-browse-registered-scope",
+      "path": "capabilities/federated_search.mjs"
+    },
+    {
+      "id": "contracts-browse-scoped-adapter",
+      "path": "site/contract_search_bridge.mjs"
+    },
+    {
+      "id": "contracts-browse-scoped-surface",
+      "path": "site/app/money-list.mjs"
+    },
+    {
+      "id": "contracts-browse-scoped-adapter-contract",
+      "path": "docs/contracts-browse-scoped-adapter.md"
+    },
+    {
+      "id": "contracts-browse-scoped-adapter-regression",
+      "path": "test/functional/31_contract_search_regression.py"
+    }
+  ]
+}

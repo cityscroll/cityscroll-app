@@ -371,7 +371,7 @@ test("architecture-evidence projections reconcile the PIR-5 card", () => {
   assert.equal(result.status, "PASS", result.findings.join("; "));
   assert.equal(
     result.evidence.projections["warehouse/fixtures/procurement-intent-radar/shadow_mode.v1.json"]
-      .represented_card_ids.includes("cityscroll-procurement-intent-radar/pir-5"),
+      .represented_card_ids.includes("cityscroll-engineering/procurement-intent-shadow-mode"),
     true,
   );
 });

@@ -71,13 +71,13 @@ test("a near-miss token is not read as the fallback shape", () => {
   assert.equal(isPublicAliasIdentity(`${PUBLIC_NAMESPACE}/c109ded0b4e9`), false); // one hex short
   assert.equal(isPublicAliasIdentity(`${PUBLIC_NAMESPACE}/c109ded0b4e9111`), false); // one hex long
   assert.equal(isPublicAliasIdentity(`${PUBLIC_NAMESPACE}/shared-dependency-store`), false);
-  assert.equal(isPublicAliasIdentity("cityscroll-land-map-view/c109ded0b4e91"), false);
+  assert.equal(isPublicAliasIdentity("some-other-namespace/c109ded0b4e91"), false);
 });
 
 test("a card id or workstream slug placed inside the public namespace is still rejected", () => {
   for (const id of [
-    `${PUBLIC_NAMESPACE}/cbics-03-rulemaking-participation-month`,
-    `${PUBLIC_NAMESPACE}/ru-02-task-aware-absence`,
+    `${PUBLIC_NAMESPACE}/xy-03-a-descriptive-tail`,
+    `${PUBLIC_NAMESPACE}/ab-02-another-descriptive-tail`,
   ]) {
     const violations = inspectPublicIdentity(id, { path: "fixture.json", field: "id" });
     assert.equal(violations.length, 1, id);
@@ -87,7 +87,7 @@ test("a card id or workstream slug placed inside the public namespace is still r
 
 test("an identity outside the public namespace is not this contract's business", () => {
   assert.deepEqual(
-    inspectPublicIdentity("cityscroll-land-map-view/lm-02-project-point-materializer", { path: "f.json", field: "id" }),
+    inspectPublicIdentity("some-other-namespace/anything-at-all", { path: "f.json", field: "id" }),
     [],
   );
 });

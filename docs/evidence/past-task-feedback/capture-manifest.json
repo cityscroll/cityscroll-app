@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.past_task_feedback_capture.v1",
-  "change": "cityscroll-contextual-ux/cx-03-past-task-feedback",
+  "change": "cityscroll-engineering/past-task-feedback",
   "browser_mode": "headless chromium (playwright), remote hosts stubbed or blocked",
   "route": "/about.html",
   "viewports": [

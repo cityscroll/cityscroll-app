@@ -242,9 +242,9 @@ test("findDisqualifyingFlags locates nested rehearsal/live/loader markers", () =
 // --- Existing CS-06/07/08 receipts: honestly classified, contract checks preserved. ---
 
 const EXISTING_RECEIPTS = [
-  { card: "cs-06-remote-mcp-public-adapter", path: "artifacts/capability-spine/cs-06-remote-mcp.json", sourcePath: "worker/scripts/build_remote_mcp_evidence.mjs" },
-  { card: "cs-07-cloudflare-os-composition-proof", path: "artifacts/capability-spine/cs-07-cloudflare-os-proof.json", sourcePath: "tools/verify_cloudflare_os_proof.mjs" },
-  { card: "cs-08-code-mode-measurement", path: "artifacts/capability-spine/cs-08-code-mode.json", sourcePath: "integrations/cloudflare-os-code-mode/src/experiment.mjs" },
+  { card: "remote-mcp-public-adapter", path: "artifacts/capability-spine/remote-mcp.json", sourcePath: "worker/scripts/build_remote_mcp_evidence.mjs" },
+  { card: "cs-07-cloudflare-os-composition-proof", path: "artifacts/capability-spine/cloudflare-os-proof.json", sourcePath: "tools/verify_cloudflare_os_proof.mjs" },
+  { card: "code-mode-measurement", path: "artifacts/capability-spine/code-mode.json", sourcePath: "integrations/cloudflare-os-code-mode/src/experiment.mjs" },
 ];
 
 for (const { card, path, sourcePath } of EXISTING_RECEIPTS) {
@@ -282,13 +282,13 @@ test("A5/A6: no existing receipt's rehearsal markers or identifier shapes satisf
 });
 
 test("A2: CS-07's receipt records the deterministic Gatekeeper/Gadget rehearsal mode honestly", () => {
-  const receipt = readJson("artifacts/capability-spine/cs-07-cloudflare-os-proof.json");
+  const receipt = readJson("artifacts/capability-spine/cloudflare-os-proof.json");
   assert.equal(receipt.deployment.mode, "isolated-rehearsal");
   assert.match(receipt.evidence_notes, /rehearsal/i);
 });
 
 test("A3: CS-08's receipt records the synthetic experiment harness honestly", () => {
-  const receipt = readJson("artifacts/capability-spine/cs-08-code-mode.json");
+  const receipt = readJson("artifacts/capability-spine/code-mode.json");
   assert.equal(receipt.versions.model_live, false);
   assert.match(receipt.evidence_notes, /synthetic/i);
 });

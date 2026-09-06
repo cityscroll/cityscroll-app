@@ -1,0 +1,14 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/land-prediction-shadow-comparison",
+  "status": "implemented",
+  "fingerprint": "land-prediction-shadow-comparison.v1",
+  "updated_at": "2026-08-31T00:00:00.000Z",
+  "projections": [
+    { "id": "lup2-c9-shadow-lib", "path": "worker/src/lib/land_prediction_shadow.mjs" },
+    { "id": "lup2-c9-shadow-tests", "path": "worker/test/land_prediction_shadow.test.mjs" },
+    { "id": "lup2-c9-shadow-fixture", "path": "test/fixtures/land_prediction_shadow/gold.v1.json" },
+    { "id": "lup2-c9-promotion-receipt", "path": "warehouse/receipts/proof/lup2_c9_shadow_latest.json" },
+    { "id": "lup2-c9-shadow-contract", "path": "docs/land-use-prediction-shadow-v1.md" }
+  ]
+}

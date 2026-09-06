@@ -1,11 +1,11 @@
 {
-  "schema": "cityscroll.repository_control_plane_semantic_owner_mapping.v1",
-  "card": "cityscroll-repository-control-plane/rcp-01",
+  "schema": "cityscroll.repository_governance_semantic_owner_mapping.v1",
+  "card": "cityscroll-engineering/semantic-owner-migration",
   "inputs": {
     "main_commit": "f2b31a001c2ceb796dc145987efed989f9035b37",
     "register_revision": "32727924c5f546ce5c41d0f68cb324fde7c7425b",
     "classification_manifest": "docs/repository-control-plane/classification.v1.json",
-    "classification_manifest_sha256": "32f6a257f6cad21b6c64347cd2c8eda6b2127f7f79a0733e38151f0179bbde66"
+    "classification_manifest_sha256": "b10896facda901eb481d01dff82e3d281e22d1e77ca8fa1fe2d3588b58aa3921"
   },
   "register_search": {
     "method": "case-insensitive semantic phrase and stable-ID search over the register at the pinned revision",
@@ -126,7 +126,7 @@
       "canonical_owner": null,
       "resolution": "unresolved",
       "reasoning": "No unique semantic owner was established at the pinned register revision; mutable intent was removed without inventing completion or a duplicate card.",
-      "replacement_reference": "register:cityscroll-repository-control-plane/rcp-01#drift-inventory:pending-work"
+      "replacement_reference": "register:cityscroll-engineering/semantic-owner-migration#drift-inventory:pending-work"
     },
     {
       "manifest_id": "frontier-projection:future-queue",
@@ -134,10 +134,10 @@
       "source_selector": "Ready-to-card bodies and Next joinable cards sections",
       "source_sha256_at_rcp00": "ebdd0e2838bb4908d11b2ac070c247599d0d5763188554947a5b9f1ce9498705",
       "source_sha256_after_migration": "98dff2d36395553b5a5e3c94d7159fa0d6d8d0919f8e9425131cf10a17f9e63d",
-      "canonical_owner": "cityscroll-repository-control-plane/rcp-01",
+      "canonical_owner": "cityscroll-engineering/semantic-owner-migration",
       "resolution": "reuse",
       "reasoning": "RCP-01 owns removal of the repository-only queue; product outcomes remain separately unresolved.",
-      "replacement_reference": "register:cityscroll-repository-control-plane/rcp-01#frontier-projection:future-queue"
+      "replacement_reference": "register:cityscroll-engineering/semantic-owner-migration#frontier-projection:future-queue"
     },
     {
       "manifest_id": "frontier:city-record-attachment-export-cliff",
@@ -148,7 +148,7 @@
       "canonical_owner": null,
       "resolution": "unresolved",
       "reasoning": "Related implementation records exist, but no single register card owns this source-specific residual outcome; no duplicate card was created.",
-      "replacement_reference": "register:cityscroll-repository-control-plane/rcp-01"
+      "replacement_reference": "register:cityscroll-engineering/semantic-owner-migration"
     },
     {
       "manifest_id": "frontier:committee-node-membership",
@@ -159,7 +159,7 @@
       "canonical_owner": null,
       "resolution": "unresolved",
       "reasoning": "Related implementation records exist, but no single register card owns this source-specific residual outcome; no duplicate card was created.",
-      "replacement_reference": "register:cityscroll-repository-control-plane/rcp-01"
+      "replacement_reference": "register:cityscroll-engineering/semantic-owner-migration"
     },
     {
       "manifest_id": "frontier:community-board-geography",
@@ -170,7 +170,7 @@
       "canonical_owner": null,
       "resolution": "unresolved",
       "reasoning": "Related implementation records exist, but no single register card owns this source-specific residual outcome; no duplicate card was created.",
-      "replacement_reference": "register:cityscroll-repository-control-plane/rcp-01"
+      "replacement_reference": "register:cityscroll-engineering/semantic-owner-migration"
     },
     {
       "manifest_id": "frontier:dcas-nonfleet-surplus-listings",
@@ -181,7 +181,7 @@
       "canonical_owner": null,
       "resolution": "unresolved",
       "reasoning": "Related implementation records exist, but no single register card owns this source-specific residual outcome; no duplicate card was created.",
-      "replacement_reference": "register:cityscroll-repository-control-plane/rcp-01"
+      "replacement_reference": "register:cityscroll-engineering/semantic-owner-migration"
     },
     {
       "manifest_id": "frontier:declared-count-discrepancy",
@@ -192,7 +192,7 @@
       "canonical_owner": null,
       "resolution": "unresolved",
       "reasoning": "Related implementation records exist, but no single register card owns this source-specific residual outcome; no duplicate card was created.",
-      "replacement_reference": "register:cityscroll-repository-control-plane/rcp-01"
+      "replacement_reference": "register:cityscroll-engineering/semantic-owner-migration"
     },
     {
       "manifest_id": "frontier:exam-outcome-aggregate",
@@ -203,7 +203,7 @@
       "canonical_owner": null,
       "resolution": "unresolved",
       "reasoning": "Related implementation records exist, but no single register card owns this source-specific residual outcome; no duplicate card was created.",
-      "replacement_reference": "register:cityscroll-repository-control-plane/rcp-01"
+      "replacement_reference": "register:cityscroll-engineering/semantic-owner-migration"
     },
     {
       "manifest_id": "frontier:exam-outcome-individual",
@@ -214,7 +214,7 @@
       "canonical_owner": null,
       "resolution": "unresolved",
       "reasoning": "Related implementation records exist, but no single register card owns this source-specific residual outcome; no duplicate card was created.",
-      "replacement_reference": "register:cityscroll-repository-control-plane/rcp-01"
+      "replacement_reference": "register:cityscroll-engineering/semantic-owner-migration"
     },
     {
       "manifest_id": "frontier:exam-salary-fee-not-published",
@@ -225,7 +225,7 @@
       "canonical_owner": null,
       "resolution": "unresolved",
       "reasoning": "Related implementation records exist, but no single register card owns this source-specific residual outcome; no duplicate card was created.",
-      "replacement_reference": "register:cityscroll-repository-control-plane/rcp-01"
+      "replacement_reference": "register:cityscroll-engineering/semantic-owner-migration"
     },
     {
       "manifest_id": "frontier:external-awards-abo-none",
@@ -236,7 +236,7 @@
       "canonical_owner": null,
       "resolution": "unresolved",
       "reasoning": "Related implementation records exist, but no single register card owns this source-specific residual outcome; no duplicate card was created.",
-      "replacement_reference": "register:cityscroll-repository-control-plane/rcp-01"
+      "replacement_reference": "register:cityscroll-engineering/semantic-owner-migration"
     },
     {
       "manifest_id": "frontier:external-awards-agency-absent",
@@ -247,7 +247,7 @@
       "canonical_owner": null,
       "resolution": "unresolved",
       "reasoning": "Related implementation records exist, but no single register card owns this source-specific residual outcome; no duplicate card was created.",
-      "replacement_reference": "register:cityscroll-repository-control-plane/rcp-01"
+      "replacement_reference": "register:cityscroll-engineering/semantic-owner-migration"
     },
     {
       "manifest_id": "frontier:land-outcome-detail",
@@ -258,7 +258,7 @@
       "canonical_owner": null,
       "resolution": "unresolved",
       "reasoning": "Related implementation records exist, but no single register card owns this source-specific residual outcome; no duplicate card was created.",
-      "replacement_reference": "register:cityscroll-repository-control-plane/rcp-01"
+      "replacement_reference": "register:cityscroll-engineering/semantic-owner-migration"
     },
     {
       "manifest_id": "frontier:meeting-community-board-votes",
@@ -269,7 +269,7 @@
       "canonical_owner": null,
       "resolution": "unresolved",
       "reasoning": "Related implementation records exist, but no single register card owns this source-specific residual outcome; no duplicate card was created.",
-      "replacement_reference": "register:cityscroll-repository-control-plane/rcp-01"
+      "replacement_reference": "register:cityscroll-engineering/semantic-owner-migration"
     },
     {
       "manifest_id": "frontier:meeting-matters-absent",
@@ -280,7 +280,7 @@
       "canonical_owner": null,
       "resolution": "unresolved",
       "reasoning": "Related implementation records exist, but no single register card owns this source-specific residual outcome; no duplicate card was created.",
-      "replacement_reference": "register:cityscroll-repository-control-plane/rcp-01"
+      "replacement_reference": "register:cityscroll-engineering/semantic-owner-migration"
     },
     {
       "manifest_id": "frontier:meeting-outcomes-unmatched",
@@ -291,7 +291,7 @@
       "canonical_owner": null,
       "resolution": "unresolved",
       "reasoning": "Related implementation records exist, but no single register card owns this source-specific residual outcome; no duplicate card was created.",
-      "replacement_reference": "register:cityscroll-repository-control-plane/rcp-01"
+      "replacement_reference": "register:cityscroll-engineering/semantic-owner-migration"
     },
     {
       "manifest_id": "frontier:meeting-votes-absent",
@@ -302,7 +302,7 @@
       "canonical_owner": null,
       "resolution": "unresolved",
       "reasoning": "Related implementation records exist, but no single register card owns this source-specific residual outcome; no duplicate card was created.",
-      "replacement_reference": "register:cityscroll-repository-control-plane/rcp-01"
+      "replacement_reference": "register:cityscroll-engineering/semantic-owner-migration"
     },
     {
       "manifest_id": "frontier:meetings-location-residual",
@@ -313,7 +313,7 @@
       "canonical_owner": null,
       "resolution": "unresolved",
       "reasoning": "Related implementation records exist, but no single register card owns this source-specific residual outcome; no duplicate card was created.",
-      "replacement_reference": "register:cityscroll-repository-control-plane/rcp-01"
+      "replacement_reference": "register:cityscroll-engineering/semantic-owner-migration"
     },
     {
       "manifest_id": "frontier:money-location-residual",
@@ -324,7 +324,7 @@
       "canonical_owner": null,
       "resolution": "unresolved",
       "reasoning": "Related implementation records exist, but no single register card owns this source-specific residual outcome; no duplicate card was created.",
-      "replacement_reference": "register:cityscroll-repository-control-plane/rcp-01"
+      "replacement_reference": "register:cityscroll-engineering/semantic-owner-migration"
     },
     {
       "manifest_id": "frontier:procurement-bid-counts",
@@ -335,7 +335,7 @@
       "canonical_owner": null,
       "resolution": "unresolved",
       "reasoning": "Related implementation records exist, but no single register card owns this source-specific residual outcome; no duplicate card was created.",
-      "replacement_reference": "register:cityscroll-repository-control-plane/rcp-01"
+      "replacement_reference": "register:cityscroll-engineering/semantic-owner-migration"
     },
     {
       "manifest_id": "frontier:procurement-no-pin",
@@ -346,7 +346,7 @@
       "canonical_owner": null,
       "resolution": "unresolved",
       "reasoning": "Related implementation records exist, but no single register card owns this source-specific residual outcome; no duplicate card was created.",
-      "replacement_reference": "register:cityscroll-repository-control-plane/rcp-01"
+      "replacement_reference": "register:cityscroll-engineering/semantic-owner-migration"
     },
     {
       "manifest_id": "frontier:procurement-ocp-recent-awards",
@@ -357,7 +357,7 @@
       "canonical_owner": null,
       "resolution": "unresolved",
       "reasoning": "Related implementation records exist, but no single register card owns this source-specific residual outcome; no duplicate card was created.",
-      "replacement_reference": "register:cityscroll-repository-control-plane/rcp-01"
+      "replacement_reference": "register:cityscroll-engineering/semantic-owner-migration"
     },
     {
       "manifest_id": "frontier:procurement-payment-unmatched",
@@ -368,7 +368,7 @@
       "canonical_owner": null,
       "resolution": "unresolved",
       "reasoning": "Related implementation records exist, but no single register card owns this source-specific residual outcome; no duplicate card was created.",
-      "replacement_reference": "register:cityscroll-repository-control-plane/rcp-01"
+      "replacement_reference": "register:cityscroll-engineering/semantic-owner-migration"
     },
     {
       "manifest_id": "frontier:procurement-pending-unmatched",
@@ -379,7 +379,7 @@
       "canonical_owner": null,
       "resolution": "unresolved",
       "reasoning": "Related implementation records exist, but no single register card owns this source-specific residual outcome; no duplicate card was created.",
-      "replacement_reference": "register:cityscroll-repository-control-plane/rcp-01"
+      "replacement_reference": "register:cityscroll-engineering/semantic-owner-migration"
     },
     {
       "manifest_id": "frontier:procurement-planning-budget",
@@ -390,7 +390,7 @@
       "canonical_owner": null,
       "resolution": "unresolved",
       "reasoning": "Related implementation records exist, but no single register card owns this source-specific residual outcome; no duplicate card was created.",
-      "replacement_reference": "register:cityscroll-repository-control-plane/rcp-01"
+      "replacement_reference": "register:cityscroll-engineering/semantic-owner-migration"
     },
     {
       "manifest_id": "frontier:procurement-registered-unmatched",
@@ -401,7 +401,7 @@
       "canonical_owner": null,
       "resolution": "unresolved",
       "reasoning": "Related implementation records exist, but no single register card owns this source-specific residual outcome; no duplicate card was created.",
-      "replacement_reference": "register:cityscroll-repository-control-plane/rcp-01"
+      "replacement_reference": "register:cityscroll-engineering/semantic-owner-migration"
     },
     {
       "manifest_id": "frontier:procurement-solicitation-documents",
@@ -412,7 +412,7 @@
       "canonical_owner": null,
       "resolution": "unresolved",
       "reasoning": "Related implementation records exist, but no single register card owns this source-specific residual outcome; no duplicate card was created.",
-      "replacement_reference": "register:cityscroll-repository-control-plane/rcp-01"
+      "replacement_reference": "register:cityscroll-engineering/semantic-owner-migration"
     },
     {
       "manifest_id": "frontier:procurement-subcontract-goal-percent",
@@ -423,7 +423,7 @@
       "canonical_owner": null,
       "resolution": "unresolved",
       "reasoning": "Related implementation records exist, but no single register card owns this source-specific residual outcome; no duplicate card was created.",
-      "replacement_reference": "register:cityscroll-repository-control-plane/rcp-01"
+      "replacement_reference": "register:cityscroll-engineering/semantic-owner-migration"
     },
     {
       "manifest_id": "frontier:property-parcel-key-residual",
@@ -434,7 +434,7 @@
       "canonical_owner": null,
       "resolution": "unresolved",
       "reasoning": "Related implementation records exist, but no single register card owns this source-specific residual outcome; no duplicate card was created.",
-      "replacement_reference": "register:cityscroll-repository-control-plane/rcp-01"
+      "replacement_reference": "register:cityscroll-engineering/semantic-owner-migration"
     },
     {
       "manifest_id": "frontier:rules-event-date-unpublished",
@@ -445,7 +445,7 @@
       "canonical_owner": null,
       "resolution": "unresolved",
       "reasoning": "Related implementation records exist, but no single register card owns this source-specific residual outcome; no duplicate card was created.",
-      "replacement_reference": "register:cityscroll-repository-control-plane/rcp-01"
+      "replacement_reference": "register:cityscroll-engineering/semantic-owner-migration"
     },
     {
       "manifest_id": "frontier:rules-event-spine-unmatched",
@@ -456,7 +456,7 @@
       "canonical_owner": null,
       "resolution": "unresolved",
       "reasoning": "Related implementation records exist, but no single register card owns this source-specific residual outcome; no duplicate card was created.",
-      "replacement_reference": "register:cityscroll-repository-control-plane/rcp-01"
+      "replacement_reference": "register:cityscroll-engineering/semantic-owner-migration"
     },
     {
       "manifest_id": "frontier:subsidy-field-city-record-hearing-feed",
@@ -467,7 +467,7 @@
       "canonical_owner": null,
       "resolution": "unresolved",
       "reasoning": "Related implementation records exist, but no single register card owns this source-specific residual outcome; no duplicate card was created.",
-      "replacement_reference": "register:cityscroll-repository-control-plane/rcp-01"
+      "replacement_reference": "register:cityscroll-engineering/semantic-owner-migration"
     },
     {
       "manifest_id": "frontier:subsidy-field-company-place-money",
@@ -478,7 +478,7 @@
       "canonical_owner": null,
       "resolution": "unresolved",
       "reasoning": "Related implementation records exist, but no single register card owns this source-specific residual outcome; no duplicate card was created.",
-      "replacement_reference": "register:cityscroll-repository-control-plane/rcp-01"
+      "replacement_reference": "register:cityscroll-engineering/semantic-owner-migration"
     },
     {
       "manifest_id": "frontier:subsidy-outcome-absent",
@@ -489,7 +489,7 @@
       "canonical_owner": null,
       "resolution": "unresolved",
       "reasoning": "Related implementation records exist, but no single register card owns this source-specific residual outcome; no duplicate card was created.",
-      "replacement_reference": "register:cityscroll-repository-control-plane/rcp-01"
+      "replacement_reference": "register:cityscroll-engineering/semantic-owner-migration"
     },
     {
       "manifest_id": "frontier:subsidy-project-unmatched",
@@ -500,7 +500,7 @@
       "canonical_owner": null,
       "resolution": "unresolved",
       "reasoning": "Related implementation records exist, but no single register card owns this source-specific residual outcome; no duplicate card was created.",
-      "replacement_reference": "register:cityscroll-repository-control-plane/rcp-01"
+      "replacement_reference": "register:cityscroll-engineering/semantic-owner-migration"
     },
     {
       "manifest_id": "frontier:subsidy-stage-unmatched",
@@ -511,7 +511,7 @@
       "canonical_owner": null,
       "resolution": "unresolved",
       "reasoning": "Related implementation records exist, but no single register card owns this source-specific residual outcome; no duplicate card was created.",
-      "replacement_reference": "register:cityscroll-repository-control-plane/rcp-01"
+      "replacement_reference": "register:cityscroll-engineering/semantic-owner-migration"
     },
     {
       "manifest_id": "lens:lens-tmpl-01",
@@ -522,7 +522,7 @@
       "canonical_owner": null,
       "resolution": "unresolved",
       "reasoning": "Related lens implementations do not prove ownership of this template-rollout outcome; repository adoption wording was not treated as completion.",
-      "replacement_reference": "register:cityscroll-repository-control-plane/rcp-01"
+      "replacement_reference": "register:cityscroll-engineering/semantic-owner-migration"
     },
     {
       "manifest_id": "lens:lens-tmpl-02",
@@ -533,7 +533,7 @@
       "canonical_owner": null,
       "resolution": "unresolved",
       "reasoning": "Related lens implementations do not prove ownership of this template-rollout outcome; repository adoption wording was not treated as completion.",
-      "replacement_reference": "register:cityscroll-repository-control-plane/rcp-01"
+      "replacement_reference": "register:cityscroll-engineering/semantic-owner-migration"
     },
     {
       "manifest_id": "lens:lens-tmpl-03",
@@ -544,7 +544,7 @@
       "canonical_owner": null,
       "resolution": "unresolved",
       "reasoning": "Related lens implementations do not prove ownership of this template-rollout outcome; repository adoption wording was not treated as completion.",
-      "replacement_reference": "register:cityscroll-repository-control-plane/rcp-01"
+      "replacement_reference": "register:cityscroll-engineering/semantic-owner-migration"
     },
     {
       "manifest_id": "lens:lens-tmpl-04",
@@ -555,7 +555,7 @@
       "canonical_owner": null,
       "resolution": "unresolved",
       "reasoning": "Related lens implementations do not prove ownership of this template-rollout outcome; repository adoption wording was not treated as completion.",
-      "replacement_reference": "register:cityscroll-repository-control-plane/rcp-01"
+      "replacement_reference": "register:cityscroll-engineering/semantic-owner-migration"
     },
     {
       "manifest_id": "lens:lens-tmpl-05",
@@ -566,7 +566,7 @@
       "canonical_owner": null,
       "resolution": "unresolved",
       "reasoning": "Related lens implementations do not prove ownership of this template-rollout outcome; repository adoption wording was not treated as completion.",
-      "replacement_reference": "register:cityscroll-repository-control-plane/rcp-01"
+      "replacement_reference": "register:cityscroll-engineering/semantic-owner-migration"
     },
     {
       "manifest_id": "precompute-first:migration-plan",
@@ -577,7 +577,7 @@
       "canonical_owner": null,
       "resolution": "unresolved",
       "reasoning": "No unique semantic owner was established at the pinned register revision; mutable intent was removed without inventing completion or a duplicate card.",
-      "replacement_reference": "register:cityscroll-repository-control-plane/rcp-01#precompute-first:migration-plan"
+      "replacement_reference": "register:cityscroll-engineering/semantic-owner-migration#precompute-first:migration-plan"
     },
     {
       "manifest_id": "property-a11y:ranked-plan",
@@ -588,7 +588,7 @@
       "canonical_owner": null,
       "resolution": "unresolved",
       "reasoning": "No unique semantic owner was established at the pinned register revision; mutable intent was removed without inventing completion or a duplicate card.",
-      "replacement_reference": "register:cityscroll-repository-control-plane/rcp-01#property-a11y:ranked-plan"
+      "replacement_reference": "register:cityscroll-engineering/semantic-owner-migration#property-a11y:ranked-plan"
     },
     {
       "manifest_id": "semantic-trial:next-step",
@@ -599,7 +599,7 @@
       "canonical_owner": null,
       "resolution": "unresolved",
       "reasoning": "No unique semantic owner was established at the pinned register revision; mutable intent was removed without inventing completion or a duplicate card.",
-      "replacement_reference": "register:cityscroll-repository-control-plane/rcp-01#semantic-trial:next-step"
+      "replacement_reference": "register:cityscroll-engineering/semantic-owner-migration#semantic-trial:next-step"
     },
     {
       "manifest_id": "source-health:follow-up-queue",
@@ -610,7 +610,7 @@
       "canonical_owner": null,
       "resolution": "unresolved",
       "reasoning": "No unique semantic owner was established at the pinned register revision; mutable intent was removed without inventing completion or a duplicate card.",
-      "replacement_reference": "register:cityscroll-repository-control-plane/rcp-01#source-health:follow-up-queue"
+      "replacement_reference": "register:cityscroll-engineering/semantic-owner-migration#source-health:follow-up-queue"
     }
   ]
 }

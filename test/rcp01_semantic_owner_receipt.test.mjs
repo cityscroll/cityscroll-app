@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { spawnSync } from "node:child_process";
 
-test("RCP-01 receipt covers every migrated candidate without duplicates", () => {
+test("the semantic-owner receipt covers every migrated candidate without duplicates", () => {
   const result = spawnSync(process.execPath, ["tools/rcp01_semantic_owner_receipt.mjs", "--check"], { encoding: "utf8" });
   assert.equal(result.status, 0, result.stderr || result.stdout);
   const receipt = JSON.parse(readFileSync("docs/repository-control-plane/semantic-owner-mapping.v1.json", "utf8"));

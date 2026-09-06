@@ -1,0 +1,248 @@
+{
+  "schema_version": 1,
+  "card": "cityscroll-engineering/land-use-authority-in-plain-terms",
+  "capture_mode": "local_node_playwright_axe_static_render",
+  "repository_revision": "73cbf7a7150d38782466218b39294397c459794b",
+  "note": "The authority-panel cases render landAuthoritySummaryHTML() directly against committed land-project fixtures (site/data/*.json, test/fixtures/land_authority_summary/elurp_197e_corpus.v1.json) via node, with no live Worker/D1 backend. The hearing-row cases render the new landHearingRowRoleHTML() projection composed with a literal reproduction of site/app/land.mjs's landHearingRowHTML() markup (that function is not exported); tools/capture_phc06_land_hearing_authority_copy.py checks fixed substrings of the real source before capture so a later edit to the real row markup fails this capture rather than silently drifting from it. Fragments are served from site/ (real /index.html CSS rules) via tools/local_site_server.py. axe-core (test/functional/assets/axe.min.js) ran against each rendered fragment at both review widths, using the same failing-violation classification as test/functional/11_accessibility.py (a11y_gate.py). Evidence proves the new plain-role line/span renders for a resolved current_role and does not render for an unresolved one (A1-A6), and introduces no new axe violation; it does not evidence a live-data-populated page, since no Worker/D1 backend was running.",
+  "data_vintage": "committed_fixture_snapshots_as_checked_in",
+  "viewports": [
+    {
+      "name": "mobile",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "name": "desktop",
+      "width": 1440,
+      "height": 900
+    }
+  ],
+  "captures": [
+    {
+      "fixture": "decision_maker_with_prior_advisory",
+      "kind": "panel",
+      "route": "landAuthoritySummaryHTML(summary) \u2014 project:2025M0252",
+      "viewport": "mobile",
+      "assertion": "A1/A2: CPC's decision role renders in plain terms in the existing panel while the CB/BP advisory recommendations that preceded it stay visible as separate, still-labeled-advisory prior events.",
+      "content_sha256": "de5bee686a61b9a21da601e640a3b55feda4934f540853b5f617ac6f7c179a5a",
+      "plain_role_present": true,
+      "plain_role_text": "Can decide",
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    },
+    {
+      "fixture": "conditional_decision_maker",
+      "kind": "panel",
+      "route": "landAuthoritySummaryHTML(summary) \u2014 project:2026Q0210",
+      "viewport": "mobile",
+      "assertion": "A1/A2: a conditional decision-maker (City Council under \u00a7 197-d) renders its own conditional plain-role sentence, distinct from an unconditional decider's.",
+      "content_sha256": "920da514b6ed8837a2012caa30dcc408e2bea29ec593477b590075db000f39c3",
+      "plain_role_present": true,
+      "plain_role_text": "Can decide, conditioned on another body's action",
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    },
+    {
+      "fixture": "advisory_only_never_final_decider",
+      "kind": "panel",
+      "route": "landAuthoritySummaryHTML(summary) \u2014 project:PHC06-ADVISORY-ONLY",
+      "viewport": "mobile",
+      "assertion": "A2/negative rule: an advisory-only body renders \"Can recommend, but cannot decide\" \u2014 never described as the final decider.",
+      "content_sha256": "19b107cdbc1064fa7cbb17ad24b0333f4b06296c55af9a4ca58af268afa5382a",
+      "plain_role_present": true,
+      "plain_role_text": "Can recommend, but cannot decide",
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    },
+    {
+      "fixture": "pre_application_certifier_no_vote",
+      "kind": "panel",
+      "route": "landAuthoritySummaryHTML(summary) \u2014 project:2024Q0356",
+      "viewport": "mobile",
+      "assertion": "A3: a project in pre-application/certification (DCP, ELURP) renders \"Certifies the filing is complete, but does not decide it\" \u2014 it does not acquire a public-review vote.",
+      "content_sha256": "7cb379dd30c3eb3cfcd29100c8ea1bb9a276d78fc0e285659d59ecb63c30d19b",
+      "plain_role_present": true,
+      "plain_role_text": "Certifies the filing is complete, but does not decide it",
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    },
+    {
+      "fixture": "expedited_terminal_decision_maker",
+      "kind": "panel",
+      "route": "landAuthoritySummaryHTML(summary) \u2014 project:2024Q0419",
+      "viewport": "mobile",
+      "assertion": "A4: an ELURP record terminal at CPC renders its own plain decision role without implying the ordinary-route Council stage this expedited profile omits.",
+      "content_sha256": "1a5a9fa9039ecee8905611c027fb3fc0a215d6a420fa9e610de0639ae6a17522",
+      "plain_role_present": true,
+      "plain_role_text": "Can decide",
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    },
+    {
+      "fixture": "unresolved_no_role_honest_gap",
+      "kind": "panel",
+      "route": "landAuthoritySummaryHTML(summary) \u2014 project:2026X0362",
+      "viewport": "mobile",
+      "assertion": "A5/A6: a record whose current stage does not resolve renders no plain-role line at all \u2014 an honest gap, never an inferred disposition.",
+      "content_sha256": "9ffba8b32c853ec1f198bf7cf23ed90f2187a13b546a59e5dcb8a98808f4d815",
+      "plain_role_present": false,
+      "plain_role_text": null,
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    },
+    {
+      "fixture": "hearing_row_decision_maker",
+      "kind": "row",
+      "route": "landHearingRowHTML(row) [literal reproduction, fidelity-checked] \u2014 project:2025M0252",
+      "viewport": "mobile",
+      "assertion": "A1: the compressed upcoming-hearing row states \"Decides\" for a decision-maker body, reusing the same authority evidence as the panel.",
+      "content_sha256": "e9ac98e9dc5ff730e3da952219acbbe16c610fd24641cdb77c33972542d89c7a",
+      "plain_role_present": true,
+      "plain_role_text": "Decides",
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    },
+    {
+      "fixture": "hearing_row_advisory",
+      "kind": "row",
+      "route": "landHearingRowHTML(row) [literal reproduction, fidelity-checked] \u2014 project:PHC06-ADVISORY-ONLY",
+      "viewport": "mobile",
+      "assertion": "A2: the compressed row states \"Recommends, doesn't decide\" for an advisory body, never a decision verb.",
+      "content_sha256": "ac6920d00335b48afdaf599b8e0273f97a0b0958ed050cba66cf1254117c466d",
+      "plain_role_present": true,
+      "plain_role_text": "Recommends, doesn't decide",
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    },
+    {
+      "fixture": "hearing_row_unresolved_no_role",
+      "kind": "row",
+      "route": "landHearingRowHTML(row) [literal reproduction, fidelity-checked] \u2014 project:2026X0362",
+      "viewport": "mobile",
+      "assertion": "A5/A6: a row for a record with no resolved current role shows no role text at all \u2014 an honest gap, never a guessed one.",
+      "content_sha256": "86b40ad367a56d3a54e0b48d148e20819748ae42d085645767b561fc87f77b4b",
+      "plain_role_present": false,
+      "plain_role_text": null,
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    },
+    {
+      "fixture": "decision_maker_with_prior_advisory",
+      "kind": "panel",
+      "route": "landAuthoritySummaryHTML(summary) \u2014 project:2025M0252",
+      "viewport": "desktop",
+      "assertion": "A1/A2: CPC's decision role renders in plain terms in the existing panel while the CB/BP advisory recommendations that preceded it stay visible as separate, still-labeled-advisory prior events.",
+      "content_sha256": "de5bee686a61b9a21da601e640a3b55feda4934f540853b5f617ac6f7c179a5a",
+      "plain_role_present": true,
+      "plain_role_text": "Can decide",
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    },
+    {
+      "fixture": "conditional_decision_maker",
+      "kind": "panel",
+      "route": "landAuthoritySummaryHTML(summary) \u2014 project:2026Q0210",
+      "viewport": "desktop",
+      "assertion": "A1/A2: a conditional decision-maker (City Council under \u00a7 197-d) renders its own conditional plain-role sentence, distinct from an unconditional decider's.",
+      "content_sha256": "920da514b6ed8837a2012caa30dcc408e2bea29ec593477b590075db000f39c3",
+      "plain_role_present": true,
+      "plain_role_text": "Can decide, conditioned on another body's action",
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    },
+    {
+      "fixture": "advisory_only_never_final_decider",
+      "kind": "panel",
+      "route": "landAuthoritySummaryHTML(summary) \u2014 project:PHC06-ADVISORY-ONLY",
+      "viewport": "desktop",
+      "assertion": "A2/negative rule: an advisory-only body renders \"Can recommend, but cannot decide\" \u2014 never described as the final decider.",
+      "content_sha256": "19b107cdbc1064fa7cbb17ad24b0333f4b06296c55af9a4ca58af268afa5382a",
+      "plain_role_present": true,
+      "plain_role_text": "Can recommend, but cannot decide",
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    },
+    {
+      "fixture": "pre_application_certifier_no_vote",
+      "kind": "panel",
+      "route": "landAuthoritySummaryHTML(summary) \u2014 project:2024Q0356",
+      "viewport": "desktop",
+      "assertion": "A3: a project in pre-application/certification (DCP, ELURP) renders \"Certifies the filing is complete, but does not decide it\" \u2014 it does not acquire a public-review vote.",
+      "content_sha256": "7cb379dd30c3eb3cfcd29100c8ea1bb9a276d78fc0e285659d59ecb63c30d19b",
+      "plain_role_present": true,
+      "plain_role_text": "Certifies the filing is complete, but does not decide it",
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    },
+    {
+      "fixture": "expedited_terminal_decision_maker",
+      "kind": "panel",
+      "route": "landAuthoritySummaryHTML(summary) \u2014 project:2024Q0419",
+      "viewport": "desktop",
+      "assertion": "A4: an ELURP record terminal at CPC renders its own plain decision role without implying the ordinary-route Council stage this expedited profile omits.",
+      "content_sha256": "1a5a9fa9039ecee8905611c027fb3fc0a215d6a420fa9e610de0639ae6a17522",
+      "plain_role_present": true,
+      "plain_role_text": "Can decide",
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    },
+    {
+      "fixture": "unresolved_no_role_honest_gap",
+      "kind": "panel",
+      "route": "landAuthoritySummaryHTML(summary) \u2014 project:2026X0362",
+      "viewport": "desktop",
+      "assertion": "A5/A6: a record whose current stage does not resolve renders no plain-role line at all \u2014 an honest gap, never an inferred disposition.",
+      "content_sha256": "9ffba8b32c853ec1f198bf7cf23ed90f2187a13b546a59e5dcb8a98808f4d815",
+      "plain_role_present": false,
+      "plain_role_text": null,
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    },
+    {
+      "fixture": "hearing_row_decision_maker",
+      "kind": "row",
+      "route": "landHearingRowHTML(row) [literal reproduction, fidelity-checked] \u2014 project:2025M0252",
+      "viewport": "desktop",
+      "assertion": "A1: the compressed upcoming-hearing row states \"Decides\" for a decision-maker body, reusing the same authority evidence as the panel.",
+      "content_sha256": "e9ac98e9dc5ff730e3da952219acbbe16c610fd24641cdb77c33972542d89c7a",
+      "plain_role_present": true,
+      "plain_role_text": "Decides",
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    },
+    {
+      "fixture": "hearing_row_advisory",
+      "kind": "row",
+      "route": "landHearingRowHTML(row) [literal reproduction, fidelity-checked] \u2014 project:PHC06-ADVISORY-ONLY",
+      "viewport": "desktop",
+      "assertion": "A2: the compressed row states \"Recommends, doesn't decide\" for an advisory body, never a decision verb.",
+      "content_sha256": "ac6920d00335b48afdaf599b8e0273f97a0b0958ed050cba66cf1254117c466d",
+      "plain_role_present": true,
+      "plain_role_text": "Recommends, doesn't decide",
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    },
+    {
+      "fixture": "hearing_row_unresolved_no_role",
+      "kind": "row",
+      "route": "landHearingRowHTML(row) [literal reproduction, fidelity-checked] \u2014 project:2026X0362",
+      "viewport": "desktop",
+      "assertion": "A5/A6: a row for a record with no resolved current role shows no role text at all \u2014 an honest gap, never a guessed one.",
+      "content_sha256": "86b40ad367a56d3a54e0b48d148e20819748ae42d085645767b561fc87f77b4b",
+      "plain_role_present": false,
+      "plain_role_text": null,
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    }
+  ],
+  "accessibility": {
+    "tool": "axe-core (test/functional/assets/axe.min.js)",
+    "scope": "main#main",
+    "viewports_checked": [
+      "390x844",
+      "1440x900"
+    ],
+    "new_violations_introduced": 0,
+    "pre_existing_violations_observed": []
+  }
+}

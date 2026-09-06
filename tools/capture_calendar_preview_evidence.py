@@ -44,7 +44,7 @@ IMAGES = ROOT / ".artifacts" / "calendar-event-preview"
 AXE = ROOT / "test" / "functional" / "assets" / "axe.min.js"
 
 MANIFEST_SCHEMA = "cityscroll.calendar_event_preview_evidence.v1"
-CARD = "cityscroll-resident-ux/px-01-preview-calendar-events"
+CARD = "cityscroll-engineering/preview-calendar-events"
 HARNESS = "test/harness/calendar_event_preview_harness.html"
 ROUTE = "component-harness:calendar-event-preview"
 

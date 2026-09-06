@@ -139,7 +139,7 @@ test("architecture-evidence projections reconcile the PIR-4 card", () => {
   assert.equal(result.status, "PASS", result.findings.join("; "));
   assert.equal(
     result.evidence.projections["warehouse/fixtures/procurement-intent-radar/corpus_backtest.v1.json"]
-      .represented_card_ids.includes("cityscroll-procurement-intent-radar/pir-4"),
+      .represented_card_ids.includes("cityscroll-engineering/procurement-intent-corpus-backtest"),
     true,
   );
 });

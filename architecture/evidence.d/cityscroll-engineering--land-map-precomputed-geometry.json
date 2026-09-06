@@ -1,0 +1,49 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/land-map-precomputed-geometry",
+  "status": "implemented",
+  "fingerprint": "land-map-precomputed-geometry.v1",
+  "updated_at": "2026-09-03T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "land-project-geometry-model",
+      "path": "site/land_project_geometry.mjs"
+    },
+    {
+      "id": "land-project-geometry-source-lookup",
+      "path": "site/data/land_project_geometry_source_lookup.json"
+    },
+    {
+      "id": "land-project-geometry-recon",
+      "path": "site/data/land_project_geometry.json"
+    },
+    {
+      "id": "land-project-geometry-recon-receipt",
+      "path": "site/data/land_project_geometry_receipt.json"
+    },
+    {
+      "id": "land-project-geometry-contract",
+      "path": "test/land_project_geometry.test.mjs"
+    },
+    {
+      "id": "land-project-geometry-source-contract",
+      "path": "test/land_project_geometry_source.test.mjs"
+    },
+    {
+      "id": "land-project-map-points",
+      "path": "site/data/land_project_map_points.json"
+    },
+    {
+      "id": "land-project-map-points-receipt",
+      "path": "site/data/land_project_map_points_receipt.json"
+    },
+    {
+      "id": "land-project-geometry-capture-receipt",
+      "path": "docs/evidence/land-project-geometry.json"
+    },
+    {
+      "id": "land-project-geometry-capture",
+      "path": "tools/capture_land_project_geometry.py"
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.calendar_event_preview_evidence.v1",
-  "card": "cityscroll-resident-ux/px-01-preview-calendar-events",
+  "card": "cityscroll-engineering/preview-calendar-events",
   "route": "component-harness:calendar-event-preview",
   "harness": "test/harness/calendar_event_preview_harness.html",
   "revision": "ffe9184fb98ef73878c5f529e9c45cfb73455e87",

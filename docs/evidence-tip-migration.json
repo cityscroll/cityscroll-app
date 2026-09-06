@@ -4,7 +4,7 @@
   "source_sha256": "9ab0f3e53ea533b893a8b52824efffc75511f66fe13647ce68f66163db329038",
   "private_reference_count": 2299,
   "private_reference_set_sha256": "b3464f18eb3118f967c94943bd21c01ca9bcf4e06a57e71ab1ea806d1dbaf2fe",
-  "disposition": "register:cityscroll-repository-control-plane/rcp-03#private-evidence",
-  "maintainer_resolution": "register:cityscroll-repository-control-plane/rcp-03#authorized-maintainer-access",
+  "disposition": "register:cityscroll-engineering/private-generated-evidence-placement#private-evidence",
+  "maintainer_resolution": "register:cityscroll-engineering/private-generated-evidence-placement#authorized-maintainer-access",
   "public_contract": "Deterministic test inputs and intentional public documentation captures remain in Git; owner-only captures remain content-addressed outside the public repository."
 }

@@ -1,0 +1,215 @@
+{
+  "schema": "cityscroll.capability_evidence.v1",
+  "card": "cited-passages-capability",
+  "capability": {
+    "reference": "cited.passages.retrieve@1",
+    "version": "1.0.0",
+    "provider_id": "worker-semantic.cited-passages",
+    "response_schema": "cityscroll.semantic_retrieval.cited_passage_response.v1",
+    "contract_version": 1,
+    "availability": [
+      "partial",
+      "complete",
+      "unknown"
+    ],
+    "bounds": {
+      "queryMaximumLength": 240,
+      "bodyIdMaximumLength": 120,
+      "defaultResults": 10,
+      "maximumResults": 20
+    },
+    "source_families": [
+      "attachment_text",
+      "city_record_notice",
+      "community_board_minutes"
+    ],
+    "representations": [
+      {
+        "id": "structured-content",
+        "media_type": "application/json"
+      },
+      {
+        "id": "text-summary",
+        "media_type": "text/plain"
+      }
+    ]
+  },
+  "retrieval_receipts": {
+    "corpus": {
+      "schema": "cityscroll.semantic_retrieval.corpus_manifest.v1",
+      "manifest_version": 1,
+      "manifest_sha256": "236a61160a3d2fd27c4d6010c4ccae824917b65bea27dddf2f8874293158c50f",
+      "content_sha256": "fc0c29536838a1521f95d55f603bfb2adb7de545db0ea9e9ac4790dad0e7cc81"
+    },
+    "passage_map": {
+      "schema": "cityscroll.semantic_retrieval.source_passage_map.v1",
+      "version": "acf9e6484f95ca814320e2ae8e2480dd9cd684e53d4764f8ce31e9530ef2028e",
+      "corpus_sha256": "66c16c80898d20b79f27d376687039efffca1a7335a11f8fb2b69d1db15c1b0a"
+    }
+  },
+  "fixtures": [
+    {
+      "source_family": "attachment_text",
+      "query": "forest management",
+      "limit": 5,
+      "coverage_state": "partial",
+      "corpus_manifest_sha256": "236a61160a3d2fd27c4d6010c4ccae824917b65bea27dddf2f8874293158c50f",
+      "corpus_content_sha256": "fc0c29536838a1521f95d55f603bfb2adb7de545db0ea9e9ac4790dad0e7cc81",
+      "passage_map_sha256": "acf9e6484f95ca814320e2ae8e2480dd9cd684e53d4764f8ce31e9530ef2028e",
+      "response_sha256": "794eac7cf702f530e83872cded589f970530d051222689416a92d52cc400d6ab",
+      "citations": [
+        {
+          "citation_id": "attachment_text:20240515016%23attachment-37470:p0001",
+          "source_id": "attachment_text:20240515016%23attachment-37470",
+          "source_url": "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=3&requestId=20240515016&requestStatus=Archived&documentId=37470",
+          "passage_text_sha256": "b75be323723e67c51f7e17334c68380d972c5e124d8c0e3b693e782cfbd57a8e",
+          "coverage_state": "partial",
+          "freshness": {
+            "state": "observed",
+            "observed_on": "2026-08-04",
+            "source_published_at": "2024-05-15"
+          },
+          "exact_join_evidence": {
+            "state": "matched",
+            "method": "candidate_source_passage_manifest_exact_id_v1",
+            "candidate_id": "attachment_text:20240515016%23attachment-37470:p0001",
+            "source_record_id": "attachment_text:20240515016%23attachment-37470",
+            "passage_id": "attachment_text:20240515016%23attachment-37470:p0001"
+          }
+        },
+        {
+          "citation_id": "attachment_text:20240515016%23attachment-37470:p0002",
+          "source_id": "attachment_text:20240515016%23attachment-37470",
+          "source_url": "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=3&requestId=20240515016&requestStatus=Archived&documentId=37470",
+          "passage_text_sha256": "8fb914ef71d7bf17b7a66061116387f62021ccbb19015d48b7a7b5d594fc0cc6",
+          "coverage_state": "partial",
+          "freshness": {
+            "state": "observed",
+            "observed_on": "2026-08-04",
+            "source_published_at": "2024-05-15"
+          },
+          "exact_join_evidence": {
+            "state": "matched",
+            "method": "candidate_source_passage_manifest_exact_id_v1",
+            "candidate_id": "attachment_text:20240515016%23attachment-37470:p0002",
+            "source_record_id": "attachment_text:20240515016%23attachment-37470",
+            "passage_id": "attachment_text:20240515016%23attachment-37470:p0002"
+          }
+        }
+      ]
+    },
+    {
+      "source_family": "city_record_notice",
+      "query": "energy conservation",
+      "limit": 5,
+      "coverage_state": "partial",
+      "corpus_manifest_sha256": "236a61160a3d2fd27c4d6010c4ccae824917b65bea27dddf2f8874293158c50f",
+      "corpus_content_sha256": "fc0c29536838a1521f95d55f603bfb2adb7de545db0ea9e9ac4790dad0e7cc81",
+      "passage_map_sha256": "acf9e6484f95ca814320e2ae8e2480dd9cd684e53d4764f8ce31e9530ef2028e",
+      "response_sha256": "aecc3836d330a30ffdefdbba82237f5e8565fdc687333258036872d96c9eeb90",
+      "citations": [
+        {
+          "citation_id": "city_record_notice:20260715041:p0001",
+          "source_id": "city_record_notice:20260715041",
+          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260715041",
+          "passage_text_sha256": "cc7553a257a230047dfd48e696ec3ec30df195f9db609f78b3db2a4e8d548f3f",
+          "coverage_state": "partial",
+          "freshness": {
+            "state": "observed",
+            "observed_on": "2026-08-04",
+            "source_published_at": "2026-07-23T00:00:00.000"
+          },
+          "exact_join_evidence": {
+            "state": "matched",
+            "method": "candidate_source_passage_manifest_exact_id_v1",
+            "candidate_id": "city_record_notice:20260715041:p0001",
+            "source_record_id": "city_record_notice:20260715041",
+            "passage_id": "city_record_notice:20260715041:p0001"
+          }
+        }
+      ]
+    },
+    {
+      "source_family": "community_board_minutes",
+      "query": "mountain bike trail",
+      "limit": 5,
+      "coverage_state": "partial",
+      "corpus_manifest_sha256": "236a61160a3d2fd27c4d6010c4ccae824917b65bea27dddf2f8874293158c50f",
+      "corpus_content_sha256": "fc0c29536838a1521f95d55f603bfb2adb7de545db0ea9e9ac4790dad0e7cc81",
+      "passage_map_sha256": "acf9e6484f95ca814320e2ae8e2480dd9cd684e53d4764f8ce31e9530ef2028e",
+      "response_sha256": "90605850ab818f020c4cf56d261dfe74b84458843374de276683e426ea905afb",
+      "citations": [
+        {
+          "citation_id": "community_board_minutes:queens-cb-08%3A2026-06-10%3Aminutes:p0003",
+          "source_id": "community_board_minutes:queens-cb-08%3A2026-06-10%3Aminutes",
+          "source_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/2026/Minutes-of-Community-Board-8-Board-Meeting-held-on-June-10-2026.pdf",
+          "passage_text_sha256": "98b7c047a3a3ebb1832bf1e23bcce78908b5d09c074c790969750e1e27802b2a",
+          "coverage_state": "partial",
+          "freshness": {
+            "state": "observed",
+            "observed_on": "2026-08-04",
+            "source_published_at": "2026-06-10"
+          },
+          "exact_join_evidence": {
+            "state": "matched",
+            "method": "candidate_source_passage_manifest_exact_id_v1",
+            "candidate_id": "community_board_minutes:queens-cb-08%3A2026-06-10%3Aminutes:p0003",
+            "source_record_id": "community_board_minutes:queens-cb-08%3A2026-06-10%3Aminutes",
+            "passage_id": "community_board_minutes:queens-cb-08%3A2026-06-10%3Aminutes:p0003"
+          }
+        },
+        {
+          "citation_id": "community_board_minutes:queens-cb-08%3A2026-06-10%3Aminutes:p0002",
+          "source_id": "community_board_minutes:queens-cb-08%3A2026-06-10%3Aminutes",
+          "source_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/2026/Minutes-of-Community-Board-8-Board-Meeting-held-on-June-10-2026.pdf",
+          "passage_text_sha256": "603c003e1b03e8ca84f7633f5eb1d095a812caf40cd0061873e9f6ea141c599f",
+          "coverage_state": "partial",
+          "freshness": {
+            "state": "observed",
+            "observed_on": "2026-08-04",
+            "source_published_at": "2026-06-10"
+          },
+          "exact_join_evidence": {
+            "state": "matched",
+            "method": "candidate_source_passage_manifest_exact_id_v1",
+            "candidate_id": "community_board_minutes:queens-cb-08%3A2026-06-10%3Aminutes:p0002",
+            "source_record_id": "community_board_minutes:queens-cb-08%3A2026-06-10%3Aminutes",
+            "passage_id": "community_board_minutes:queens-cb-08%3A2026-06-10%3Aminutes:p0002"
+          }
+        }
+      ]
+    }
+  ],
+  "parity_fields": [
+    "schema",
+    "contract_version",
+    "query",
+    "retrieval.method",
+    "retrieval.corpus",
+    "retrieval.index",
+    "hard_scope",
+    "coverage",
+    "citations[].citation_id",
+    "citations[].source",
+    "citations[].passage",
+    "citations[].freshness",
+    "citations[].exact_join_evidence"
+  ],
+  "boundary": {
+    "maximum_results": 20,
+    "matched_join_method": "candidate_source_passage_manifest_exact_id_v1",
+    "unknown_join_infers_identifiers": false,
+    "public_scores": "forbidden",
+    "generated_answers": "forbidden",
+    "civic_relationships": "forbidden"
+  },
+  "test_results": [
+    { "id": "direct-provider", "status": "pass" },
+    { "id": "all-source-families", "status": "pass" },
+    { "id": "bounded-input-output", "status": "pass" },
+    { "id": "exact-join-provenance", "status": "pass" },
+    { "id": "score-answer-relationship-redaction", "status": "pass" },
+    { "id": "mcp-structured-byte-parity", "status": "pass" },
+    { "id": "mcp-text-meaning-parity", "status": "pass" }
+  ]
+}

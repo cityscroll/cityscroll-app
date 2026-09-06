@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.civic_action_paths_documentation.v1",
   "method": "civic_action_paths_documentation_v1",
-  "card_id": "cityscroll-civic-action-paths/cap-9",
+  "card_id": "cityscroll-engineering/civic-action-path-documentation-receipt",
   "derived_projection": true,
   "semantic_graph_noun": false,
   "exact_replay_family": "rules.request_ids",

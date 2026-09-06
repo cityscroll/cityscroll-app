@@ -1,0 +1,442 @@
+{
+  "card": "remote-mcp-public-adapter",
+  "client": {
+    "package": "@modelcontextprotocol/sdk",
+    "transport": "StreamableHTTPClientTransport",
+    "version": "1.30.0"
+  },
+  "evidence_class": "local_protocol_interop",
+  "evidence_notes": "Exercises the current MCP SDK client against handleMcp() with the client transport's fetch overridden to dispatch in-process. It proves protocol and semantic parity, not that a deployed https://api.cityscroll.org/mcp endpoint is reachable.",
+  "execution_environment": "node-intercepted-transport-fixture",
+  "fixture_sha256": "70bf37432c331e90ef37a3a92a9f4b9c722d30d41de909186ad8bf91c6996d3b",
+  "layers": {
+    "adapter_policy": "worker/src/mcp.mjs plus capabilities/mcp_tool_declarations.mjs",
+    "cloudflare_os_runtime": "downstream and not built by cs-06",
+    "semantic_core": "capabilities/*.mjs plus explicit providers; transport-neutral"
+  },
+  "observed_at": "2026-08-19T00:00:00.000Z",
+  "policy_boundary": {
+    "mutation_capabilities": 0,
+    "raw_store_bindings_exposed": 0,
+    "registered_public_tools": 15,
+    "unregistered_public_tools": 0
+  },
+  "protocol": {
+    "authentication": "optional bearer; public-read proof uses none",
+    "endpoint": "POST /mcp",
+    "negotiated_version": "2025-06-18",
+    "stateless": true,
+    "transport": "Streamable HTTP"
+  },
+  "public_tool_inventory": [
+    {
+      "adapter_id": "mcp.search_federated@1",
+      "adapter_semantic_sha256": "eb16ac7bbd3b1d0547f7b5e2c9d08f2a65bac3192da276b42f1517fb32825f76",
+      "annotations": {
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "authority_class": "public_read",
+      "bounds": {
+        "defaultResults": 40,
+        "maximumCards": 8,
+        "maximumResults": 100,
+        "queryMaximumLength": 240
+      },
+      "calls": 1,
+      "capability_reference": "search.federated@1",
+      "direct_semantic_sha256": "eb16ac7bbd3b1d0547f7b5e2c9d08f2a65bac3192da276b42f1517fb32825f76",
+      "name": "search_federated",
+      "operation_class": "read",
+      "parity": "pass",
+      "provider_id": "worker-federated-search",
+      "store_access": "provider-only",
+      "store_read_operations": 0,
+      "store_rows_read": 0
+    },
+    {
+      "adapter_id": "mcp.search_notices@1",
+      "adapter_semantic_sha256": "fdfce907e1f111d1842275b129afe24ec8c2633c6ea20d9e7aed6fe139dc7b3a",
+      "annotations": {
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "authority_class": "public_read",
+      "bounds": {
+        "maximum": 100,
+        "minimum": 1
+      },
+      "calls": 1,
+      "capability_reference": "notice.search@1",
+      "direct_semantic_sha256": "fdfce907e1f111d1842275b129afe24ec8c2633c6ea20d9e7aed6fe139dc7b3a",
+      "name": "search_notices",
+      "operation_class": "read",
+      "parity": "pass",
+      "provider_id": "worker-d1.notice-search",
+      "store_access": "provider-only",
+      "store_read_operations": 2,
+      "store_rows_read": 4
+    },
+    {
+      "adapter_id": "mcp.get_notice@1",
+      "adapter_semantic_sha256": "35b86db1f4e08be3f80fd4de5ac620bc6552aa1d054ccfca0f8e93c00f8e3a4a",
+      "annotations": {
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "authority_class": "public_read",
+      "bounds": {
+        "maximum": 1,
+        "requestIdMaximumLength": 80
+      },
+      "calls": 1,
+      "capability_reference": "notice.get@1",
+      "direct_semantic_sha256": "35b86db1f4e08be3f80fd4de5ac620bc6552aa1d054ccfca0f8e93c00f8e3a4a",
+      "name": "get_notice",
+      "operation_class": "read",
+      "parity": "pass",
+      "provider_id": "worker-notices.notice-get",
+      "store_access": "provider-only",
+      "store_read_operations": 2,
+      "store_rows_read": 2
+    },
+    {
+      "adapter_id": "mcp.get_entity_dossier@1",
+      "adapter_semantic_sha256": "f2eecf61a5a2a75e2d7c4f07a096691d56937048db3ca318128523e50d492590",
+      "annotations": {
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "authority_class": "public_read",
+      "bounds": {
+        "entityIdMaximumLength": 300,
+        "recordLimit": 250
+      },
+      "calls": 1,
+      "capability_reference": "entity.dossier.get@1",
+      "direct_semantic_sha256": "f2eecf61a5a2a75e2d7c4f07a096691d56937048db3ca318128523e50d492590",
+      "name": "get_entity_dossier",
+      "operation_class": "read",
+      "parity": "pass",
+      "provider_id": "worker-d1.entity-dossier",
+      "store_access": "provider-only",
+      "store_read_operations": 1,
+      "store_rows_read": 2
+    },
+    {
+      "adapter_id": "mcp.get_entity_relationships@1",
+      "adapter_semantic_sha256": "9e7afdde1e9eb0da3ac87cb39c4bb80b6d9ee0932c5c37284a171b9617966bb4",
+      "annotations": {
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "authority_class": "public_read",
+      "bounds": {
+        "defaultDepth": 2,
+        "defaultFanOut": 12,
+        "entityIdMaximumLength": 300,
+        "maximumDepth": 2,
+        "maximumFanOut": 25,
+        "recordLimit": 250
+      },
+      "calls": 1,
+      "capability_reference": "entity.relationships.get@1",
+      "direct_semantic_sha256": "9e7afdde1e9eb0da3ac87cb39c4bb80b6d9ee0932c5c37284a171b9617966bb4",
+      "name": "get_entity_relationships",
+      "operation_class": "read",
+      "parity": "pass",
+      "provider_id": "worker-d1.entity-relationships",
+      "store_access": "provider-only",
+      "store_read_operations": 1,
+      "store_rows_read": 3
+    },
+    {
+      "adapter_id": "mcp.retrieve_cited_passages@1",
+      "adapter_semantic_sha256": "a7b681017372321e137d1fd30baf6b06c95e2876a93133a06c2852fc7154cd68",
+      "annotations": {
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "authority_class": "public_read",
+      "bounds": {
+        "bodyIdMaximumLength": 120,
+        "defaultResults": 10,
+        "maximumResults": 20,
+        "queryMaximumLength": 240
+      },
+      "calls": 1,
+      "capability_reference": "cited.passages.retrieve@1",
+      "direct_semantic_sha256": "a7b681017372321e137d1fd30baf6b06c95e2876a93133a06c2852fc7154cd68",
+      "name": "retrieve_cited_passages",
+      "operation_class": "read",
+      "parity": "pass",
+      "provider_id": "worker-semantic.cited-passages",
+      "store_access": "provider-only",
+      "store_read_operations": 0,
+      "store_rows_read": 0
+    },
+    {
+      "adapter_id": "mcp.get_contract@1",
+      "adapter_semantic_sha256": "36865786036adedc76c21ff4785f281617feba157d95a73c443ac92d2b41400e",
+      "annotations": {
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "authority_class": "public_read",
+      "bounds": {
+        "maximum": 1,
+        "procurementIdMaximumLength": 320
+      },
+      "calls": 1,
+      "capability_reference": "contract.get@1",
+      "direct_semantic_sha256": "36865786036adedc76c21ff4785f281617feba157d95a73c443ac92d2b41400e",
+      "name": "get_contract",
+      "operation_class": "read",
+      "parity": "pass",
+      "provider_id": "worker-static.procurement-contract.get",
+      "store_access": "provider-only",
+      "store_read_operations": 0,
+      "store_rows_read": 0
+    },
+    {
+      "adapter_id": "mcp.browse_contracts@1",
+      "adapter_semantic_sha256": "e2fdfa2d861260ca1b5af97093a61e6a1da971a38854ed589b60a9e474a6bd12",
+      "annotations": {
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "authority_class": "public_read",
+      "bounds": {
+        "cursorMaximumLength": 320,
+        "default": 25,
+        "filterMaximumLength": 240,
+        "maximum": 100,
+        "minimum": 1
+      },
+      "calls": 1,
+      "capability_reference": "contracts.browse@1",
+      "direct_semantic_sha256": "e2fdfa2d861260ca1b5af97093a61e6a1da971a38854ed589b60a9e474a6bd12",
+      "name": "browse_contracts",
+      "operation_class": "read",
+      "parity": "pass",
+      "provider_id": "worker-static.procurement-contracts.browse",
+      "store_access": "provider-only",
+      "store_read_operations": 0,
+      "store_rows_read": 0
+    },
+    {
+      "adapter_id": "mcp.analyze_contracts@1",
+      "adapter_semantic_sha256": "b81c8ab76570cb296ebe9d4486b879fb9f579c9662686175f53c919d5d10b6e4",
+      "annotations": {
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "authority_class": "public_read",
+      "bounds": {
+        "defaultGroups": 10,
+        "filterMaximumLength": 240,
+        "maximumGroups": 100,
+        "minimumGroups": 1
+      },
+      "calls": 1,
+      "capability_reference": "contracts.analysis@1",
+      "direct_semantic_sha256": "b81c8ab76570cb296ebe9d4486b879fb9f579c9662686175f53c919d5d10b6e4",
+      "name": "analyze_contracts",
+      "operation_class": "read",
+      "parity": "pass",
+      "provider_id": "worker-static.procurement-contracts.analysis",
+      "store_access": "provider-only",
+      "store_read_operations": 0,
+      "store_rows_read": 0
+    },
+    {
+      "adapter_id": "mcp.get_person_or_organization@1",
+      "adapter_semantic_sha256": "9d14621ff8128f0d5958f92d9fb2984e5aabd193c7e4f28e1097ade2e095187d",
+      "annotations": {
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "authority_class": "public_read",
+      "bounds": {
+        "entityIdMaximumLength": 320,
+        "maximum": 1
+      },
+      "calls": 1,
+      "capability_reference": "people.get@1",
+      "direct_semantic_sha256": "9d14621ff8128f0d5958f92d9fb2984e5aabd193c7e4f28e1097ade2e095187d",
+      "name": "get_person_or_organization",
+      "operation_class": "read",
+      "parity": "pass",
+      "provider_id": "worker-static.people-organizations.get",
+      "store_access": "provider-only",
+      "store_read_operations": 0,
+      "store_rows_read": 0
+    },
+    {
+      "adapter_id": "mcp.browse_organizations@1",
+      "adapter_semantic_sha256": "0a1ffbc9373d39607be8b73dffb6dd08581bb8e7bb9538d09b192bf18845ba51",
+      "annotations": {
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "authority_class": "public_read",
+      "bounds": {
+        "cursorMaximumLength": 320,
+        "default": 25,
+        "kindMaximumLength": 80,
+        "maximum": 100,
+        "minimum": 1,
+        "queryMaximumLength": 240
+      },
+      "calls": 1,
+      "capability_reference": "organizations.browse@1",
+      "direct_semantic_sha256": "0a1ffbc9373d39607be8b73dffb6dd08581bb8e7bb9538d09b192bf18845ba51",
+      "name": "browse_organizations",
+      "operation_class": "read",
+      "parity": "pass",
+      "provider_id": "worker-static.people-organizations.browse",
+      "store_access": "provider-only",
+      "store_read_operations": 0,
+      "store_rows_read": 0
+    },
+    {
+      "adapter_id": "mcp.get_meeting@1",
+      "adapter_semantic_sha256": "e8f8a9ea077f996568ea7a5d545aa48d17072fcf27d3183ef8d71a874dae9db7",
+      "annotations": {
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "authority_class": "public_read",
+      "bounds": {
+        "maximum": 1,
+        "meetingIdMaximumLength": 320
+      },
+      "calls": 1,
+      "capability_reference": "meeting.get@1",
+      "direct_semantic_sha256": "e8f8a9ea077f996568ea7a5d545aa48d17072fcf27d3183ef8d71a874dae9db7",
+      "name": "get_meeting",
+      "operation_class": "read",
+      "parity": "pass",
+      "provider_id": "worker-static.shared-meeting.get",
+      "store_access": "provider-only",
+      "store_read_operations": 0,
+      "store_rows_read": 0
+    },
+    {
+      "adapter_id": "mcp.get_land_project@1",
+      "adapter_semantic_sha256": "bc5b8ea36d4c4c902ebfb79a98a0f2f324054af9f351da2a2a9f4e7f5320b86d",
+      "annotations": {
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "authority_class": "public_read",
+      "bounds": {
+        "maximum": 1,
+        "projectIdMaximumLength": 32
+      },
+      "calls": 1,
+      "capability_reference": "land.project.get@1",
+      "direct_semantic_sha256": "bc5b8ea36d4c4c902ebfb79a98a0f2f324054af9f351da2a2a9f4e7f5320b86d",
+      "name": "get_land_project",
+      "operation_class": "read",
+      "parity": "pass",
+      "provider_id": "worker-static.land-project.get",
+      "store_access": "provider-only",
+      "store_read_operations": 0,
+      "store_rows_read": 0
+    },
+    {
+      "adapter_id": "mcp.browse_land_projects@1",
+      "adapter_semantic_sha256": "4612ea8a82ae79a7cb5f81c5969942073899e4dde87ee6836a45a86d97caf8bd",
+      "annotations": {
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "authority_class": "public_read",
+      "bounds": {
+        "cursorMaximumLength": 320,
+        "default": 25,
+        "filterMaximumLength": 240,
+        "maximum": 100,
+        "minimum": 1
+      },
+      "calls": 1,
+      "capability_reference": "land.projects.browse@1",
+      "direct_semantic_sha256": "4612ea8a82ae79a7cb5f81c5969942073899e4dde87ee6836a45a86d97caf8bd",
+      "name": "browse_land_projects",
+      "operation_class": "read",
+      "parity": "pass",
+      "provider_id": "worker-static.land-projects.browse",
+      "store_access": "provider-only",
+      "store_read_operations": 0,
+      "store_rows_read": 0
+    },
+    {
+      "adapter_id": "mcp.get_land_decision_path@1",
+      "adapter_semantic_sha256": "2064e69b76055321db81213c7d1d4acd5d36a91acbf9db040969909688526dac",
+      "annotations": {
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "authority_class": "public_read",
+      "bounds": {
+        "maximum": 1,
+        "projectIdMaximumLength": 32
+      },
+      "calls": 1,
+      "capability_reference": "land.decision_path.get@1",
+      "direct_semantic_sha256": "2064e69b76055321db81213c7d1d4acd5d36a91acbf9db040969909688526dac",
+      "name": "get_land_decision_path",
+      "operation_class": "read",
+      "parity": "pass",
+      "provider_id": "worker-static.land-decision-path.get",
+      "store_access": "provider-only",
+      "store_read_operations": 0,
+      "store_rows_read": 0
+    }
+  ],
+  "request_counts": {
+    "capability_calls": 15,
+    "initialize": 1,
+    "list_tools": 1,
+    "optional_get_probe": 1,
+    "post_requests": 18
+  },
+  "schema": "cityscroll.remote_mcp_public_adapter_receipt.v1",
+  "source_scan": {
+    "adapter_cloudflare_os_imports": 0,
+    "core_cloudflare_agents_imports": 0,
+    "core_transport_imports": 0
+  },
+  "status": "pass"
+}

@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "card": "cityscroll-engineering/scoped-machine-client-profile",
+  "capture_mode": "local_python_playwright_axe_static_site",
+  "repository_revision": "1365859e9ebfdd1bf720ab523c749d772d4598e1",
+  "note": "The tool-discovery surface (site/api.html, which renders site/data/mcp_tool_catalog.json) is byte-identical on this branch: machine-client profiles filter the per-request tools/list response, they do not change the declared inventory the page publishes. This capture is a no-regression check on that surface rather than evidence of a changed page. axe-core (test/functional/assets/axe.min.js) ran against the served page at both review widths using the critical/serious failing-violation classification. No live Worker/D1 backend was running. Captured images are kept out of the repository under the ignored .artifacts/ path; the sha256 of each is recorded here as the proof.",
+  "data_vintage": "mcp_tool_catalog.json sha256=2e41d08847c4de17",
+  "viewports": [
+    {
+      "name": "mobile",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "name": "desktop",
+      "width": 1440,
+      "height": 900
+    }
+  ],
+  "captures": [
+    {
+      "route": "/api.html",
+      "viewport": "mobile",
+      "assertion": "axe-core wcag2a/wcag2aa/wcag21a/wcag21aa reports no serious or critical violations on the tool-discovery surface; 0 non-serious findings observed",
+      "capture_sha256": "c23633df68c60e5104b23941a3300a25bdddd184ab99dde063102465c1bca674",
+      "local_capture_path": ".artifacts/cs-11-a11y/api-tool-discovery-390.png",
+      "file": null
+    },
+    {
+      "route": "/api.html",
+      "viewport": "desktop",
+      "assertion": "axe-core wcag2a/wcag2aa/wcag21a/wcag21aa reports no serious or critical violations on the tool-discovery surface; 0 non-serious findings observed",
+      "capture_sha256": "da96d25eaf06e4b63451f5ae7462680978c3ac79385a1421b3d19cb34f62f1b5",
+      "local_capture_path": ".artifacts/cs-11-a11y/api-tool-discovery-1440.png",
+      "file": null
+    }
+  ],
+  "accessibility": {
+    "tool": "axe-core (test/functional/assets/axe.min.js)",
+    "scope": "document",
+    "rulesets": [
+      "wcag2a",
+      "wcag2aa",
+      "wcag21a",
+      "wcag21aa"
+    ],
+    "viewports_checked": [
+      "390x844",
+      "1440x900"
+    ],
+    "new_violations_introduced": 0,
+    "pre_existing_violations_observed": [],
+    "suppressions_used": "none \u2014 no violation was waived, ignored, or excluded to reach this result"
+  },
+  "repository_revision_note": "The base commit this branch is built on. The captured surface (site/api.html and site/data/mcp_tool_catalog.json) is byte-identical between that base and this branch, so the receipt is anchored to the base rather than to a branch commit that would change on every amend or rebase. Re-running the capture at the branch tip reproduced both sha256 values exactly."
+}

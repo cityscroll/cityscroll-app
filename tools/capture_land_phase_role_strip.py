@@ -198,7 +198,7 @@ def capture() -> dict:
         browser.close()
     manifest = {
         "schema": "cityscroll.land-phase-role-strip-receipt.v1",
-        "card": "cityscroll-land-decision-path/ldp-21-authority-panel-historical-semantics",
+        "card": "cityscroll-engineering/authority-panel-historical-semantics",
         "browser_mode": "headless chromium (Playwright)",
         "revision": revision,
         "specimens": [

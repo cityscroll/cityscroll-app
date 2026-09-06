@@ -1,0 +1,41 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/institution-record-capacity",
+  "status": "implemented",
+  "fingerprint": "institution-record-capacity.v1",
+  "updated_at": "2026-09-05T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "reviewed-party-spellings",
+      "path": "site/civic_institution_party_spellings.mjs"
+    },
+    {
+      "id": "record-capacity-projection",
+      "path": "site/civic_institution_record_capacity.mjs"
+    },
+    {
+      "id": "record-capacity-profile-section",
+      "path": "site/agency_constellation_sections/record_capacity.mjs"
+    },
+    {
+      "id": "capacity-browse-contract",
+      "path": "site/agency_browse_contract.mjs"
+    },
+    {
+      "id": "capacity-qualified-resident-snapshot-filter",
+      "path": "site/resident_snapshot_queries.mjs"
+    },
+    {
+      "id": "generalized-development-role-mapping",
+      "path": "site/civic_institution_development_roles.mjs"
+    },
+    {
+      "id": "record-capacity-tests",
+      "path": "test/civic_institution_record_capacity.test.mjs"
+    },
+    {
+      "id": "record-capacity-capture-manifest",
+      "path": "docs/evidence/institution-record-capacity/capture-manifest.json"
+    }
+  ]
+}

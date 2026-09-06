@@ -175,7 +175,7 @@ function byteAccounting(footprint) {
     total: { logical_bytes: footprint.total.logical_bytes, allocated_bytes: footprint.total.allocated_bytes },
     hardlink_dedup: footprint.hardlink_dedup,
     shared_dependency_store_note:
-      "The shared dependency store is measured separately and is never folded into a checkout total; see docs/evidence/ci-09-working-copy-reduction/raw/footprint-shared-store.json"
+      "The shared dependency store is measured separately and is never folded into a checkout total; see docs/evidence/working-copy-reduction/raw/footprint-shared-store.json"
   };
 }
 

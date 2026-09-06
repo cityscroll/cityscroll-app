@@ -1,0 +1,17 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/board-bp-land-bridge",
+  "status": "implemented",
+  "fingerprint": "board-bp-land-bridge.v1",
+  "updated_at": "2026-09-05T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "board-bp-land-bridge",
+      "path": "warehouse/lib/board_bp_land_bridge.mjs"
+    },
+    {
+      "id": "board-bp-land-bridge-receipt",
+      "path": "warehouse/receipts/proof/board_bp_land_bridge_latest.json"
+    }
+  ]
+}

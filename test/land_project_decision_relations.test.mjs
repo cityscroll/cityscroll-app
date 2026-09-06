@@ -257,12 +257,12 @@ test("architecture-evidence projections reconcile the audit card", () => {
   assert.equal(result.status, "PASS", result.findings.join("; "));
   assert.equal(
     result.evidence.projections["docs/evidence/land-decision-path/decides-land-project-audit.json"]
-      .represented_card_ids.includes("cityscroll-land-decision-path/ldp-06-decides-land-project-audit"),
+      .represented_card_ids.includes("cityscroll-engineering/decides-land-project-audit"),
     true,
   );
   assert.equal(
     result.evidence.projections["docs/evidence/land-decision-path/about-project-edge.json"]
-      .represented_card_ids.includes("cityscroll-land-decision-path/ldp-07-exact-notice-project-edge"),
+      .represented_card_ids.includes("cityscroll-engineering/exact-notice-project-edge"),
     true,
   );
   assert.equal(audit.schema, "cityscroll.land_project_decision_relation.audit.v1");

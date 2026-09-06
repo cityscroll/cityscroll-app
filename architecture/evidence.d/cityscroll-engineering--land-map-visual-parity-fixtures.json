@@ -1,0 +1,25 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/land-map-visual-parity-fixtures",
+  "status": "implemented",
+  "fingerprint": "land-map-visual-parity-fixtures.v1",
+  "updated_at": "2026-09-05T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "land-map-visual-parity-fixtures-manifest",
+      "path": "test/fixtures/land_map_visual_parity_fixtures/manifest.v1.json"
+    },
+    {
+      "id": "land-map-visual-parity-fixtures-manifest-contract",
+      "path": "test/land_map_visual_parity_fixtures.test.mjs"
+    },
+    {
+      "id": "land-map-visual-parity-fixtures-capture",
+      "path": "test/functional/51_land_map_visual_parity_fixtures.py"
+    },
+    {
+      "id": "land-map-visual-parity-fixtures-receipt",
+      "path": "docs/evidence/land-map-visual-parity-fixtures.json"
+    }
+  ]
+}

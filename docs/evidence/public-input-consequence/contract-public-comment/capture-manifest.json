@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "card": "cityscroll-engineering/contract-comment-as-deadline",
+  "capture_mode": "local_python_playwright_axe_live_render",
+  "note": "/notices/<id> rendered through tools/local_site_server.py's static _site build (the same clean-route local server used by test/functional/*.py; no live Worker/D1 backend), with the upstream City Record dataset call (dg92-zbpx) stubbed to serve one synthetic row per case. This exercises the real client pipeline (site/action_registry.js's kindFor/compileActionRail, site/app/feed-actions.mjs's action-rail render) rather than a hand-built HTML fixture. axe-core (test/functional/assets/axe.min.js) ran against the #nactions region for each case at both review widths, using the same critical/serious + WCAG 2.2 AA classification as test/functional/11_accessibility.py (a11y_gate.py). Evidence proves the classification, withheld attendance/calendar/join affordances, submit-vs-instructions action, and preserved genuine-hearing rail (A1-A6) render as specified and introduce no new axe violation; it does not evidence a live-data-populated card, since no Worker/D1 backend was running.",
+  "data_vintage": "not_applicable_synthetic_fixture_records",
+  "viewports": [
+    {
+      "name": "mobile",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "name": "desktop",
+      "width": 1440,
+      "height": 900
+    }
+  ],
+  "captures": [
+    {
+      "fixture": "qualifying_open_comment_window",
+      "route": "/notices/SYN-PHC08-OPEN",
+      "viewport": "mobile",
+      "assertion": "A1/A2/A3/A4: a qualifying notice renders a Submit-a-comment action with no attend/conferencing/calendar control, and the guide carries the consider-before-award consequence.",
+      "content_sha256": "8b6d2bcec09f96d02a3c8ef59efe9ceb6f33a0c8fb9e237700d0eadf1d068c64",
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    },
+    {
+      "fixture": "qualifying_closed_comment_window",
+      "route": "/notices/SYN-PHC08-CLOSED",
+      "viewport": "mobile",
+      "assertion": "Negative rule: a stale comment window states Public comment is not open now \u2014 never offered as a live submission, and never a calendar control.",
+      "content_sha256": "37bb6ebb47640d8c7404cacb471bc18d617c09217f89099be2b321e5fd05d300",
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    },
+    {
+      "fixture": "qualifying_no_channel_reads_instructions",
+      "route": "/notices/SYN-PHC08-INSTRUCTIONS",
+      "viewport": "mobile",
+      "assertion": "A3: comment evidence without a verified submission channel falls back to Read official notice rather than inventing a submit control.",
+      "content_sha256": "de8ad216884b09a3dc70bd696d7dd95bd8a98fe5a7c58060387fa64a60a78b63",
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    },
+    {
+      "fixture": "genuine_hearing_same_legacy_label",
+      "route": "/notices/SYN-PHC08-HEARING",
+      "viewport": "mobile",
+      "assertion": "A5/A6: a genuinely published live hearing under the same legacy label keeps its real hearing rail (guide-first participation steps), never the comment-window rail.",
+      "content_sha256": "dba4a1b7ce3b7663d03baad4718c8309f1e9b9e008444ffefdf59c2c180a6a04",
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    },
+    {
+      "fixture": "qualifying_open_comment_window",
+      "route": "/notices/SYN-PHC08-OPEN",
+      "viewport": "desktop",
+      "assertion": "A1/A2/A3/A4: a qualifying notice renders a Submit-a-comment action with no attend/conferencing/calendar control, and the guide carries the consider-before-award consequence.",
+      "content_sha256": "8b6d2bcec09f96d02a3c8ef59efe9ceb6f33a0c8fb9e237700d0eadf1d068c64",
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    },
+    {
+      "fixture": "qualifying_closed_comment_window",
+      "route": "/notices/SYN-PHC08-CLOSED",
+      "viewport": "desktop",
+      "assertion": "Negative rule: a stale comment window states Public comment is not open now \u2014 never offered as a live submission, and never a calendar control.",
+      "content_sha256": "37bb6ebb47640d8c7404cacb471bc18d617c09217f89099be2b321e5fd05d300",
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    },
+    {
+      "fixture": "qualifying_no_channel_reads_instructions",
+      "route": "/notices/SYN-PHC08-INSTRUCTIONS",
+      "viewport": "desktop",
+      "assertion": "A3: comment evidence without a verified submission channel falls back to Read official notice rather than inventing a submit control.",
+      "content_sha256": "de8ad216884b09a3dc70bd696d7dd95bd8a98fe5a7c58060387fa64a60a78b63",
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    },
+    {
+      "fixture": "genuine_hearing_same_legacy_label",
+      "route": "/notices/SYN-PHC08-HEARING",
+      "viewport": "desktop",
+      "assertion": "A5/A6: a genuinely published live hearing under the same legacy label keeps its real hearing rail (guide-first participation steps), never the comment-window rail.",
+      "content_sha256": "dba4a1b7ce3b7663d03baad4718c8309f1e9b9e008444ffefdf59c2c180a6a04",
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    }
+  ]
+}

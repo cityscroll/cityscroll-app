@@ -79,7 +79,7 @@ test("current Streamable HTTP client initializes, discovers, and calls all publi
 
 test("the committed interoperability receipt is reproducible with the pinned client", async () => {
   const committed = JSON.parse(readFileSync(
-    new URL("../../artifacts/capability-spine/cs-06-remote-mcp.json", import.meta.url),
+    new URL("../../artifacts/capability-spine/remote-mcp.json", import.meta.url),
     "utf8",
   ));
   assert.deepEqual(await buildRemoteMcpEvidenceReceipt(), committed);

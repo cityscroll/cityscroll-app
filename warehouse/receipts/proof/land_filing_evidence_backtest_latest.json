@@ -65,7 +65,7 @@
     },
     {
       "detail": {
-        "architecture_shard_path": "architecture/evidence.d/cityscroll-land-decision-path--ldp-28-filing-evidence-backtest.json",
+        "architecture_shard_path": "architecture/evidence.d/cityscroll-engineering--filing-evidence-backtest.json",
         "outputs_written_elsewhere": 0,
         "receipt_path": "warehouse/receipts/proof/land_filing_evidence_backtest_latest.json"
       },

@@ -277,7 +277,7 @@ test("architecture-evidence projections reconcile the materializer card", () => 
   assert.equal(result.status, "PASS", result.findings.join("; "));
   assert.equal(
     result.evidence.projections["site/data/land_project_map_points.json"].represented_card_ids.includes(
-      "cityscroll-land-map-view/lm-02-project-point-materializer",
+      "cityscroll-engineering/land-map-project-point-materializer",
     ),
     true,
   );

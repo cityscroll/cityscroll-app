@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.land-map-boundary-context-receipt.v1",
-  "card": "cityscroll-land-map-view/lm-09-boundary-context",
+  "card": "cityscroll-engineering/land-map-boundary-context",
   "browser_mode": "headless chromium (playwright), remote hosts blocked",
   "revision": "417bc4e40cc6537921440ec52351a0de3d3273d3",
   "artifact_vintage": "2026-05-26",

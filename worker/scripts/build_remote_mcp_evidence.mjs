@@ -27,7 +27,7 @@ import {
 } from "../test/remote_mcp_fixture.mjs";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
-const DEFAULT_OUT = resolve(ROOT, "artifacts/capability-spine/cs-06-remote-mcp.json");
+const DEFAULT_OUT = resolve(ROOT, "artifacts/capability-spine/remote-mcp.json");
 const FIXTURE_PATH = resolve(ROOT, "test/fixtures/capability_semantic_scout.json");
 const CLIENT_PACKAGE_PATH = resolve(ROOT, "worker/node_modules/@modelcontextprotocol/sdk/package.json");
 const PROTOCOL_VERSION = "2025-06-18";
@@ -113,7 +113,7 @@ export async function buildRemoteMcpEvidenceReceipt() {
     const publicNames = new Set(CAPABILITY_TOOL_CASES.map(({ name }) => name));
     const receipt = {
       schema: "cityscroll.remote_mcp_public_adapter_receipt.v1",
-      card: "cs-06-remote-mcp-public-adapter",
+      card: "remote-mcp-public-adapter",
       evidence_class: "local_protocol_interop",
       execution_environment: "node-intercepted-transport-fixture",
       evidence_notes: "Exercises the current MCP SDK client against handleMcp() with the client transport's fetch overridden to dispatch in-process. It proves protocol and semantic parity, not that a deployed https://api.cityscroll.org/mcp endpoint is reachable.",

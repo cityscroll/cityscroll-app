@@ -2,7 +2,7 @@
 # One repository path per line, sorted. Merged with the union driver, so a
 # concurrent addition is kept rather than resolved by hand; readers sort and
 # deduplicate, and the next regeneration restores this canonical order.
-artifacts/capability-spine/cs-05-semantic-scout.json
+artifacts/capability-spine/semantic-scout.json
 data/data-source-graph-desk-contract.v1.json
 data/desk-health-publication-cycle.v1.json
 data/diagnostic-card-producer.v1.json

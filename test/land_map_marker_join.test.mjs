@@ -314,7 +314,7 @@ test("A4 an id the canonical route rejects gets a point but never a link", () =>
 test("A4 the marker-join receipt reports the before/after states it captured", () => {
   const receipt = JSON.parse(read("docs", "evidence", "land-map-marker-join.json"));
   assert.equal(receipt.schema, "cityscroll.land-map-marker-join-receipt.v1");
-  assert.equal(receipt.card, "cityscroll-land-map-view/lm-06-marker-join");
+  assert.equal(receipt.card, "cityscroll-engineering/land-map-marker-join");
   assert.match(receipt.browser_mode, /headless chromium/);
   assert.deepEqual(receipt.viewports, [[390, 844], [1440, 900]]);
   assert.equal(receipt.routes.default_map, "/browse/zoning/?view=map");

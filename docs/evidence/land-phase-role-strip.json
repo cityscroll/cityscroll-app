@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.land-phase-role-strip-receipt.v1",
-  "card": "cityscroll-land-decision-path/ldp-21-authority-panel-historical-semantics",
+  "card": "cityscroll-engineering/authority-panel-historical-semantics",
   "browser_mode": "headless chromium (Playwright)",
   "revision": "e19e6ac84058d3f2003f2af8757b0ede03df7fa5",
   "specimens": [

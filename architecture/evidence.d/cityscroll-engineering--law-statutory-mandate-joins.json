@@ -1,0 +1,29 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/law-statutory-mandate-joins",
+  "status": "implemented",
+  "fingerprint": "law-statutory-mandate-joins.v1",
+  "updated_at": "2026-08-31T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "statutory-mandate-provision-join",
+      "path": "site/statutory_mandate_provision_join.mjs"
+    },
+    {
+      "id": "mandate-document",
+      "path": "site/mandate_document.mjs"
+    },
+    {
+      "id": "administrative-code-provision-document",
+      "path": "site/admin_code.mjs"
+    },
+    {
+      "id": "mandate-search-producer",
+      "path": "site/universal_search_mandate_producer.mjs"
+    },
+    {
+      "id": "borough-office-role-registry",
+      "path": "ontology/registry.v0.json"
+    }
+  ]
+}

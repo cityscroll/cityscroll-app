@@ -12,7 +12,7 @@ must not be tracked.
 
 - Entry `id` is a **stable public change or engineering-record identity** — the
   name this repository knows the work by, for example
-  `cityscroll-land-map-view/lm-02-project-point-materializer` or
+  `cityscroll-engineering/land-map-project-point-materializer` or
   `cityscroll-engineering/shared-dependency-store`.
 - The file path is `architecture/evidence.d/<id with each / replaced by -->.json`.
 - Path segments may use `a-z`, `0-9`, `.`, `_`, and single `-`. A segment must not contain `--`.
@@ -50,15 +50,18 @@ schema carries no field that would let it try.
 `tools/public_identity_contract.mjs` is the machine statement of these rules and
 is applied by the aggregator below.
 
-### Legacy entries are unchanged
+### Every entry is in the namespace
 
-Most entries still use a workstream/card-shaped id such as
-`cityscroll-land-map-view/lm-02-project-point-materializer`, predating the
-`cityscroll-engineering` namespace. Those paths are not renamed and their
-history is not rewritten — doing so would rewrite the public record for no
-reader benefit. `inspectPathIdentityAgreement` (rule 4) still requires every
-entry's path to decode to exactly its declared id, legacy or not; the
-namespace above applies only where an entry opts into it.
+Every entry now declares an id in `cityscroll-engineering`, and every filename in
+this directory is `cityscroll-engineering--<descriptive-public-id>.json`.
+Entries that once carried another registry namespace were renamed with `git mv`,
+so each file's history follows it; the identity, the fingerprint, and every
+reference to them moved at the same time.
+
+`inspectPathIdentityAgreement` (rule 4) requires an entry's path to decode to
+exactly its declared id, and `test/public_path_contract.test.mjs` holds every
+tracked path in this directory — and in `docs/evidence`, `artifacts` and `data` —
+to the naming rule, so a second namespace cannot be reintroduced.
 
 ## Evidence, not roadmap
 

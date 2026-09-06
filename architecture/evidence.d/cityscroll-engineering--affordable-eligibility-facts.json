@@ -1,0 +1,17 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/affordable-eligibility-facts",
+  "status": "implemented",
+  "fingerprint": "affordable-eligibility-facts.v1",
+  "updated_at": "2026-09-05T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "ldp-19-eligibility-facts-lib",
+      "path": "site/affordable_eligibility_facts.mjs"
+    },
+    {
+      "id": "ldp-19-eligibility-facts-tests",
+      "path": "test/affordable_eligibility_facts.test.mjs"
+    }
+  ]
+}

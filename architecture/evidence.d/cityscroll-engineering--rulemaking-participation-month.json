@@ -1,0 +1,13 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/rulemaking-participation-month",
+  "status": "implemented",
+  "fingerprint": "rulemaking-participation-month.v1",
+  "updated_at": "2026-09-03T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "rule-participation-month-projection",
+      "path": "site/rules_calendar.mjs"
+    }
+  ]
+}

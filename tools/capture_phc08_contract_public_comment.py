@@ -8,7 +8,7 @@ Requires the CI-equivalent local static site: run tools/prepare_functional_site.
 before this script (builds _site).
 
 No image is written or committed — see docs/evidence/public-input-consequence/
-phc-08-contract-public-comment/capture-manifest.json for the committed proof (content
+contract-public-comment/capture-manifest.json for the committed proof (content
 hash + textual assertion per case), per the workstream's no-committed-image-binaries
 convention (spec.md).
 """
@@ -93,7 +93,7 @@ CASES = [
      "hearing rail (guide-first participation steps), never the comment-window rail."),
 ]
 
-OUT_DIR = ROOT / "docs/evidence/public-input-consequence/phc-08-contract-public-comment"
+OUT_DIR = ROOT / "docs/evidence/public-input-consequence/contract-public-comment"
 
 
 def make_router(row):
@@ -183,7 +183,7 @@ def main() -> None:
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     manifest = {
         "schema_version": 1,
-        "card": "cityscroll-public-input-consequence/phc-08-contract-comment-as-deadline",
+        "card": "cityscroll-engineering/contract-comment-as-deadline",
         "capture_mode": "local_python_playwright_axe_live_render",
         "note": (
             "/notices/<id> rendered through tools/local_site_server.py's static _site build "

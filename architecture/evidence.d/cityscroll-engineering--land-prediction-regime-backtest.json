@@ -1,0 +1,17 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/land-prediction-regime-backtest",
+  "status": "implemented",
+  "fingerprint": "land-prediction-regime-backtest.v1",
+  "updated_at": "2026-09-05T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "lup2-c12-regime-backtest-lib",
+      "path": "worker/src/lib/land_prediction_regime_backtest.mjs"
+    },
+    {
+      "id": "lup2-c12-regime-backtest-test",
+      "path": "test/lup2_regime_backtest.test.mjs"
+    }
+  ]
+}

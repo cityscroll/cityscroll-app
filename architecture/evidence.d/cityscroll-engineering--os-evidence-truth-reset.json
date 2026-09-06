@@ -1,0 +1,25 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/os-evidence-truth-reset",
+  "status": "implemented",
+  "fingerprint": "os-evidence-truth-reset.v1",
+  "updated_at": "2026-09-04T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "evidence-classification",
+      "path": "capabilities/evidence_classification.mjs"
+    },
+    {
+      "id": "capability-spine-state-builder",
+      "path": "tools/build_capability_spine_state.mjs"
+    },
+    {
+      "id": "capability-spine-report",
+      "path": "docs/capability-spine/report.html"
+    },
+    {
+      "id": "evidence-classification-gate",
+      "path": "test/os_evidence_classification.test.mjs"
+    }
+  ]
+}

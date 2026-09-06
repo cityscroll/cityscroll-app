@@ -24,7 +24,7 @@ import {
 import { SEMANTIC_SOURCE_FAMILIES } from "../src/semantic_candidates.mjs";
 
 const EVIDENCE_RECEIPT = JSON.parse(readFileSync(
-  new URL("../../artifacts/capability-spine/cs-04-cited-passages.json", import.meta.url),
+  new URL("../../artifacts/capability-spine/cited-passages.json", import.meta.url),
   "utf8",
 ));
 

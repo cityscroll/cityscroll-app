@@ -1,0 +1,13 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/root-agents-router",
+  "status": "implemented",
+  "fingerprint": "root-agents-router.v1",
+  "updated_at": "2026-08-31T00:00:00.000Z",
+  "projections": [
+    { "id": "root-agents-router", "path": "AGENTS.md" },
+    { "id": "agents-router-policy", "path": "docs/repository-control-plane/agents-router-policy.v1.json" },
+    { "id": "agents-router-guard", "path": "tools/agents_router_guard.mjs" },
+    { "id": "agents-router-receipt", "path": "docs/repository-control-plane/agents-router-receipt.v1.json" }
+  ]
+}

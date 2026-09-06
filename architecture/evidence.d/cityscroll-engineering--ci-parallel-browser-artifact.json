@@ -1,0 +1,17 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/ci-parallel-browser-artifact",
+  "status": "implemented",
+  "fingerprint": "ci-parallel-browser-artifact.v1",
+  "updated_at": "2026-08-31T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "ci-parallel-artifact-dag",
+      "path": ".github/workflows/ci.yml"
+    },
+    {
+      "id": "ci-parallel-artifact-contract",
+      "path": "test/ci_path_fast_path.test.mjs"
+    }
+  ]
+}

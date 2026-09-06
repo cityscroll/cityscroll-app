@@ -177,7 +177,7 @@ def main() -> None:
 
     receipt = {
         "schema": "cityscroll.land-project-geometry-receipt.v1",
-        "card": "cityscroll-land-map-view/lm-17-richer-precomputed-geometry",
+        "card": "cityscroll-engineering/land-map-precomputed-geometry",
         "browser_mode": "headless chromium (playwright), remote hosts blocked",
         "revision": revision(),
         "routes": {"default_map": DEFAULT_MAP_ROUTE},

@@ -256,7 +256,7 @@ test("A4 unknown copy, no publisher fetch, and legacy Land detail seams stay int
   assert.equal(result.status, "PASS", result.findings.join("; "));
   assert.equal(
     result.evidence.projections["site/land_authority_summary_view.mjs"].represented_card_ids.includes(
-      "cityscroll-land-decision-path/ldp-08-land-detail-authority-panel",
+      "cityscroll-engineering/land-detail-authority-panel",
     ),
     true,
   );

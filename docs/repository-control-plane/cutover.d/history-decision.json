@@ -2,7 +2,7 @@
   "schema": "cityscroll.repository-control-plane.cutover-shard.v1",
   "id": "history-decision",
   "owner": "history-decision",
-  "card": "cityscroll-repository-control-plane/rcp-05",
+  "card": "cityscroll-engineering/cutover-without-product-or-evidence-loss",
   "kind": "constant",
   "updated_at": "2026-09-01T00:00:00.000Z",
   "value": {

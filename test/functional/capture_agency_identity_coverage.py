@@ -207,7 +207,7 @@ def main() -> None:
 
     receipt = {
         "schema": "cityscroll.agency_identity_coverage_capture.v1",
-        "card": "cityscroll-civic-institutions/ci-k1-reader-profile-disclosure",
+        "card": "cityscroll-engineering/reader-profile-disclosure",
         "before_revision": revision,
         "viewports": [f"{width}x{height}" for width, height in VIEWPORTS],
         "demonstrates": (

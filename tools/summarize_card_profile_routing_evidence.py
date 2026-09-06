@@ -2,7 +2,7 @@
 """Regenerate the CI-10 routing evidence tables from their raw receipts.
 
 Reporting tool only. It reads the committed receipts under
-``docs/evidence/ci-10-default-reduced-profile/raw/`` and prints the Markdown
+``docs/evidence/default-reduced-profile/raw/`` and prints the Markdown
 tables that appear in that directory's README, so every routing decision, byte
 figure and probe exit status in the prose can be reproduced rather than trusted.
 
@@ -319,7 +319,7 @@ def main() -> int:
         "--evidence-dir",
         default=os.path.join(
             os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
-            "docs/evidence/ci-10-default-reduced-profile",
+            "docs/evidence/default-reduced-profile",
         ),
     )
     args = parser.parse_args()

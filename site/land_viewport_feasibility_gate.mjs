@@ -236,7 +236,7 @@ export function buildLandViewportFeasibilityReceipt({
   decision,
   requestSequence = [],
   sourceVintages = {},
-  cardId = "cityscroll-land-map-view/lm-18-viewport-search",
+  cardId = "cityscroll-engineering/land-map-viewport-search",
 } = {}) {
   const accounting = decision?.accounting || loadedRowAccounting(loadedModel);
   return {

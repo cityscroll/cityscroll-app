@@ -12,7 +12,7 @@ Generate and check the committed receipt with:
 
 ```sh
 node tools/verify_cloudflare_os_proof.mjs \
-  --receipt artifacts/capability-spine/cs-07-cloudflare-os-proof.json \
+  --receipt artifacts/capability-spine/cloudflare-os-proof.json \
   --source integrations/cloudflare-os-entity-research
 
 node tools/verify_code_mode_measurement.mjs \

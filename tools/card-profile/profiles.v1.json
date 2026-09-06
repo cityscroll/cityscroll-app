@@ -80,7 +80,7 @@
       "object_mode": "partial clone, --filter=blob:none, against the durable origin as promisor remote",
       "history": "complete - every commit and tree is fetched, so a merge base still resolves",
       "worktree_mode": "sparse checkout over the derived closure in tools/card-profile/card-work.sparse",
-      "measured_reference": "docs/evidence/ci-09-working-copy-reduction/",
+      "measured_reference": "docs/evidence/working-copy-reduction/",
       "eligible_surfaces": [
         "focused-card-work"
       ],
@@ -100,7 +100,7 @@
       "object_mode": "complete clone, every blob present, no promisor remote",
       "history": "complete",
       "worktree_mode": "every tracked path materialised",
-      "measured_reference": "docs/evidence/ci-09-working-copy-reduction/",
+      "measured_reference": "docs/evidence/working-copy-reduction/",
       "eligible_surfaces": [
         "focused-card-work",
         "ci",

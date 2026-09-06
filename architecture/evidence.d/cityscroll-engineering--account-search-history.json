@@ -1,0 +1,49 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/account-search-history",
+  "status": "implemented",
+  "fingerprint": "account-search-history.v1",
+  "updated_at": "2026-09-02T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "account-search-history-contract",
+      "path": "capabilities/search_history.mjs"
+    },
+    {
+      "id": "account-search-history-route",
+      "path": "worker/src/search_history.mjs"
+    },
+    {
+      "id": "account-search-history-account-state",
+      "path": "worker/src/lib/search_history.mjs"
+    },
+    {
+      "id": "account-search-history-browser-client",
+      "path": "site/search_history_client.mjs"
+    },
+    {
+      "id": "account-search-history-island",
+      "path": "site/search_history_state.mjs"
+    },
+    {
+      "id": "search-document-receipt-seam",
+      "path": "site/search_document.mjs"
+    },
+    {
+      "id": "account-search-history-worker-tests",
+      "path": "worker/test/search_history.test.mjs"
+    },
+    {
+      "id": "account-search-history-browser-tests",
+      "path": "test/search_history.test.mjs"
+    },
+    {
+      "id": "account-search-history-browser-gate",
+      "path": "test/functional/43_account_search_history.py"
+    },
+    {
+      "id": "account-search-history-evidence-capture",
+      "path": "tools/capture_account_search_history.py"
+    }
+  ]
+}

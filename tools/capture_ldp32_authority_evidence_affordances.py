@@ -261,7 +261,7 @@ def main() -> None:
     ).stdout.strip()
     receipt = {
         "schema": "cityscroll.land-authority-evidence-state-affordances.capture.v1",
-        "card": "cityscroll-land-decision-path/ldp-32-authority-evidence-state-affordances",
+        "card": "cityscroll-engineering/land-authority-evidence-state-affordances",
         "assertion": (
             "The authority panel materializes DCP/CPC/Council actors and roles only after "
             "the exact action/procedure join, distinguishes checked-and-empty from unknown "

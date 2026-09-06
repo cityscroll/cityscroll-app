@@ -1,12 +1,12 @@
 {
   "schema": "cityscroll.land-map-mobile-layout-receipt.v1",
-  "card": "cityscroll-land-map-view/lm-10-mobile-map-list",
+  "card": "cityscroll-engineering/land-map-mobile-list",
   "browser_mode": "headless chromium (playwright) with touch emulation, remote hosts blocked",
   "revision": {
     "before_commit": "79ddac103e137a9947f7b6d733b27dac6bf0bce2",
     "after_tree": "working tree at the commit above plus this card's changes",
     "after_changed_paths": [
-      "architecture/evidence.d/cityscroll-land-map-view--lm-10-mobile-map-list.json",
+      "architecture/evidence.d/cityscroll-engineering--land-map-mobile-list.json",
       "docs/evidence/land-map-mobile-layout.json",
       "docs/evidence/land-map-route-lazy-shell.json",
       "docs/screenshots/land-map-mobile-layout/after-list-handoff-1440.png",
