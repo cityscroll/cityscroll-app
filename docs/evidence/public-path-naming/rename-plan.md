@@ -37,14 +37,17 @@ names publishes the names.
 tracked path in `architecture/evidence.d`, `docs/evidence`, `artifacts` and `data`
 to it, so a path of this class cannot be added back.
 
-## Not covered here
+## Beyond the paths
 
-A handful of retired work-item references survive in the prose of
-`docs/civic-action-paths.md` and the audit evidence generated from
-`tools/lib/action_path_generalization_audit.mjs`. They appear only in file content,
-never in a path, and the public tree does not record what each one covered, so
-renaming them here would mean inventing descriptions for a published evidence
-claim. They are left for a change that can name them from their own record.
+The same registry namespace also appeared in file content, where it named a
+record rather than a path: in the ids the evidence entries declared, in the
+`card` field of capture manifests and receipts, in two scratch-directory
+prefixes, in one inventory note, and in the shipped-work list of the civic
+action-path audit. Those all moved in the same change. The audit keeps its own
+short local labels, which are what its published table has always rendered and
+what the surrounding documentation already refers to; only the registry
+namespace in front of them is gone.
 
-Some tool filenames under `tools/` also carry a planning identifier. They are
-outside the public evidence roots this rule governs and are not renamed here.
+Some tool filenames under `tools/` still carry an abbreviation-and-ordinal
+prefix. They are outside the public evidence roots this rule governs and are
+not renamed here.
