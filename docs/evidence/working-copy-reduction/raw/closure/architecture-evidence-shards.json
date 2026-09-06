@@ -48,7 +48,7 @@
     "architecture/evidence.d/cityscroll-engineering--ops-alerts-human-grade.json",
     "architecture/evidence.d/cityscroll-engineering--owner-alert-routing.json",
     "architecture/evidence.d/cityscroll-engineering--repository-classification.json",
-    "architecture/evidence.d/cityscroll-engineering--semantic-owner-migration.json",
+    "architecture/evidence.d/cityscroll-repository-control-plane--rcp-01.json",
     "architecture/evidence.d/cityscroll-engineering--root-agents-router.json",
     "architecture/evidence.d/cityscroll-engineering--private-generated-evidence-placement.json",
     "architecture/evidence.d/cityscroll-engineering--inverse-control-plane-guard.json",
