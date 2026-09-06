@@ -83,7 +83,9 @@ export function normalizeCheckbookContractRows(inputRows) {
   for (const { id, rows: slices } of groups.values()) {
     const best = bestSlice(slices);
     const types = unique(slices.map((row) => row?.vendorRecordType));
-    const pins = unique(slices.map((row) => row?.pin || row?.prime_contract_pin));
+    const publishedPins = unique(slices.map((row) => row?.pin || row?.prime_contract_pin));
+    const pins = publishedPins.filter((pin) => isContractPinShaped(pin));
+    const unusablePins = publishedPins.length && !pins.length;
     const vendors = unique(slices.map((row) => row?.vendor || row?.prime_vendor));
     const agencies = unique(slices.map((row) => row?.agency || row?.agency_name || row?.prime_contracting_agency));
     const registrationDates = unique(slices.map((row) => row?.registered || row?.registration_date));
@@ -174,7 +176,7 @@ export function normalizeCheckbookContractRows(inputRows) {
       subvendor_count: subVendors.length,
       exact_key_status: {
         contract_id: "exact",
-        pin: pins.length === 1 ? "exact" : pins.length ? "ambiguous" : "missing",
+        pin: pins.length === 1 ? "exact" : pins.length ? "ambiguous" : unusablePins ? "unusable" : "missing",
       },
     });
   }
@@ -334,6 +336,21 @@ function applyOptionalCap(linked, novel, cap) {
 }
 
 /** Admit Checkbook rows by the City Record Award window; optional cap is tests-only. */
+/**
+ * Whether a published identifier can be a contract PIN.
+ *
+ * Checkbook returns a PIN of ten characters or more for a contract it can
+ * identify — every PIN that exactly matches a PASSPort or City Record record is
+ * between ten and seventeen alphanumeric characters. It also returns short
+ * numeric codes for contracts it cannot, and those are not identifiers: they
+ * collide, so treating one as a key makes unrelated contracts look like one
+ * procurement. A contract whose PIN fails this test keeps its contract id and
+ * loses only the key it cannot support.
+ */
+export function isContractPinShaped(value) {
+  return /^[0-9A-Za-z]{10,}$/.test(String(value ?? "").trim());
+}
+
 export function selectCheckbookContractsForGraph(rows, passportRows, cityRecordRows, opts = {}) {
   const cap = opts.cap == null || opts.cap === "" ? null : Math.max(1, Number(opts.cap));
   if (cap != null && !Number.isInteger(cap)) {
