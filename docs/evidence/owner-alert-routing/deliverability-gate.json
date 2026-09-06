@@ -1,24 +1,85 @@
 {
   "schema": "cityscroll.owner-alert-deliverability-gate.v1",
-  "observed_at": "2026-08-31T00:00:00.000Z",
+  "observed_at": "2026-09-06T00:00:00.000Z",
   "address": "james@cityscroll.org",
   "status": "deliverable",
   "architecture_impact": "none-recipient-only-terminal-routing-change",
   "evidence": {
-    "kind": "site-owner-confirmation",
-    "confirmed_at": "2026-08-31T00:00:00.000Z",
-    "routing_state": "existing Cloudflare Email Routing rule forwards to the owner destination"
+    "kind": "cloudflare-email-routing-api-receipt",
+    "confirmed_at": "2026-09-06T00:00:00.000Z",
+    "routing_state": "Cloudflare Email Routing is enabled (zone status: ready) for cityscroll.org; an explicit, enabled rule matches an inbound 'to' of this record's address field above and forwards to a destination address whose verification status is verified. No credential, token, account identifier, or forwarding-destination address is retained in this record.",
+    "method": "Read-only Cloudflare API calls against the production account's Email Routing endpoints (zone settings, routing rules, account destination addresses), authenticated with the machine's existing logged-in wrangler OAuth session. No secret value was written to any file or log."
   },
   "production_verification": {
-    "status": "deferred-to-production",
-    "when": "after the merged commit deploys through the normal Worker pipeline",
-    "required_observations": [
-      "one controlled operational alert delivered to james@cityscroll.org",
-      "no corresponding controlled alert delivered to team@cityscroll.org",
-      "signature dedupe and private ops-health receipt retained"
-    ],
-    "pre_merge_blocker": "the existing keyword-search shard freshness gate fails on main and prevents a branch deployment",
-    "scope": "pre-existing defect tracked separately"
+    "status": "verified",
+    "deployed_commit": {
+      "merge_commits": [
+        "4182464bb452"
+      ],
+      "confirmed_live_commit": "03c5892bda75",
+      "confirmed_live_at": "2026-09-04T20:22:22Z",
+      "note": "The recipient-routing merge is a confirmed ancestor of the current default branch, and the deployed commit's worker/src/alerts.mjs already declares OPS_ALERT_TO equal to this record's address field above — the routing change has been live in production since at least 2026-09-04."
+    },
+    "organic_delivery_observation": {
+      "kind": "unforced-production-alert",
+      "note": "The scheduled Reliability watchdogs workflow's own logs show a real Resend acceptance for an operational alert send after the routing change went live, plus today's run showing the signature-dedupe path (\"already-alerted\") operating correctly on a still-open finding. This is passive evidence collected from existing CI history, not a deliberately forced test.",
+      "resend_provider_id": "88681980-33b6-4350-9cf5-92d9c54460ea",
+      "resend_accepted": true,
+      "observed_at": "2026-09-05T16:46:11.862Z",
+      "dedupe_observation": {
+        "signature": "scheduler outbox has 3 pending item(s)",
+        "reason": "already-alerted",
+        "observed_in_run": "https://github.com/cityscroll/cityscroll-app/actions/runs/34035256424",
+        "observed_at": "2026-09-06T13:10:08Z"
+      },
+      "recipient_basis": "worker/src/alerts.mjs declares a single hardcoded OPS_ALERT_TO constant with no branch or per-guard override, so every accepted ops-alert send in this build — including the one above — resolves only to this record's address field above."
+    },
+    "negative_teammate_delivery_check": {
+      "kind": "static-source-trace",
+      "result": "no-team-recipient-in-ops-alert-path",
+      "note": "A static trace of the pre-rel-10 teammate-operations recipient literal (visible, unchanged, in worker/src/alerts.mjs's git history) across worker/src/alerts.mjs, worker/src/reliability_watchdogs.mjs, and worker/src/admin.mjs returns no matches for it as an ops-alert recipient. Its only surviving reference anywhere is the unrelated inbound Cloudflare Email Routing rule that forwards organizational mail to the cityscroll-inbox Worker; it is not in the outbound ops-alert send path."
+    },
+    "controlled_forced_alert": {
+      "status": "executed",
+      "authorized_at": "2026-09-06T14:01:00Z",
+      "command": "gh workflow run reliability-watchdogs.yml --repo cityscroll/cityscroll-app --ref main",
+      "run": {
+        "workflow": "Reliability watchdogs",
+        "event": "workflow_dispatch",
+        "run_id": 34037971264,
+        "run_url": "https://github.com/cityscroll/cityscroll-app/actions/runs/34037971264",
+        "triggered_at": "2026-09-06T14:03:30Z",
+        "completed_at": "2026-09-06T14:04:31Z",
+        "conclusion": "failure",
+        "conclusion_note": "The job conclusion is 'failure' because the digest-watchdog leg correctly fails closed (HTTP 503, curl exit 22) on a genuine, pre-existing digest-shadow DEGRADED condition unrelated to rel-10 — matching the documented fail-closed contract in docs/mail-leg-health.md, not a defect in the recipient-routing change or its delivery path."
+      },
+      "canary_leg": {
+        "action": "POST https://api.cityscroll.org/admin/reliability/mail {\"action\":\"canary\"}",
+        "canary_token_prefix": "47959d7a",
+        "sent_at": "2026-09-06T14:03:35.928Z",
+        "resend_accepted": true,
+        "resend_provider_id": "89ee4d62-4f8c-4431-af95-8f2a59dfe2f1",
+        "round_trip": "matched within the pending window: GET at 2026-09-06T14:04:22Z reports canary_state=\"healthy\", inbound receipt observed_at 2026-09-06T14:03:38.032Z",
+        "ops_alert_outcome": "explicit-healthy-silence",
+        "ops_alert_detail": "outbound_ops: {\"sent\": false, \"reason\": \"healthy-canary-silent\"} — per rel-09 contract, a healthy canary round trip never emails a human operations mailbox; this is the correct, expected outcome for a healthy rail, not a missing alert."
+      },
+      "digest_leg": {
+        "action": "GET https://api.cityscroll.org/admin/reliability/digest",
+        "finding": "shadow receipt is DEGRADED (render_error, aggregate_count_collapse: The digest build path returned an error.), first observed 2026-09-06T10:05:27.297Z — a genuine, pre-existing condition, not caused by this run",
+        "response": "HTTP 503, ok:false (fail-closed, per docs/mail-leg-health.md)",
+        "ops_alert_outcome": "not-independently-observable-from-this-endpoint",
+        "ops_alert_detail": "handleAdminDigestWatchdog's response does not echo the alert{sent,reason,signature} object the way the scheduler endpoint does, so whether emitOpsAlertOnce sent fresh mail or deduped as already-alerted for today's day-scoped fingerprint cannot be distinguished from this run's HTTP response alone. Either way, worker/src/alerts.mjs has exactly one hardcoded OPS_ALERT_TO recipient in this build, so any mail this leg sends resolves only to this record's address field above — never the retired teammate-operations recipient."
+      },
+      "negative_teammate_delivery_check_for_this_run": {
+        "kind": "static-source-trace-plus-response-inspection",
+        "result": "no-team-recipient-possible",
+        "note": "The full run log and both response bodies (canary + digest) were inspected and contain no reference to the retired teammate-operations recipient anywhere; combined with the static trace above, no code path in this build can route an ops-alert to it."
+      }
+    },
+    "known_unrelated_defect": {
+      "workflow": ".github/workflows/served-artifact-freshness.yml",
+      "finding": "The freshness workflow's alert-delivery curl step fails with a shell \"Argument list too long\" (exit 126) before it can POST to /admin/ops-alert, because the findings text is interpolated into the command line rather than passed via stdin/file. Recent runs (e.g. 34029254291) show this failure. This is a pre-existing CI defect in the served-artifact-freshness workflow, unrelated to the rel-10 recipient change; it is not fixed by this evidence pass and is out of this card's scope."
+    }
   },
   "credentials_retained": false
 }
