@@ -41,6 +41,7 @@ import {
   vendorConcentration,
   registrationTimingSummary,
 } from "../analytical_projection.mjs";
+import { loadAnalyticalProjectionDocument } from "../analytical_projection_shards.mjs";
 import { switchAnalyticalFact } from "../analytical_projection_contract.mjs";
 import { openCoverageDestination, renderCityRecordCoverage } from "../city_record_coverage_view.mjs";
 import {
@@ -195,7 +196,7 @@ function loadMoneyProcurementSnapshot(options={}, baseRows=[]){
 function loadAnalyticalProjection(){
   if(!analyticalProjectionPromise){
     analyticalProjectionPromise=Promise.all([
-      fetch(ANALYTICAL_PROJECTION_URL).then(r=>r.ok?r.json():null),
+      loadAnalyticalProjectionDocument(ANALYTICAL_PROJECTION_URL,u=>fetch(u).then(r=>r.ok?r.json():null)),
       fetch(PAYMENT_ANALYTICAL_PROJECTION_URL).then(r=>r.ok?r.json():null),
       fetch(PERFORMANCE_EVIDENCE_ANALYTICAL_PROJECTION_URL).then(r=>r.ok?r.json():null),
     ]).then(([registered_contract, payment, performance_evidence])=>{

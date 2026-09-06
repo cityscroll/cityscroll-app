@@ -4043,7 +4043,7 @@
       "warning_age_hours": 720,
       "hard_maximum_age_hours": 1080,
       "vintage_fields": ["snapshot_date", "generated_at"],
-      "population_fields": ["rows"],
+      "population_fields": ["row_count", "rows"],
       "last_known_good_behavior": "Retain the last verified registered-contract population within its hard age and label the panel degraded.",
       "resident_stale_behavior": "Do not present registered-contract totals as current after the hard maximum age.",
       "resident_unavailable_behavior": "Show the registered-contract panel as unavailable; never translate a missing population into zero contracts.",

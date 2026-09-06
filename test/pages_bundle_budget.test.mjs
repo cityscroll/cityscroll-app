@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { mkdtempSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
+import { mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
@@ -10,6 +10,11 @@ import {
   oversizedPublishedSourceFiles,
   publishedSourceFiles,
 } from "../tools/check_pages_bundle_sizes.mjs";
+import {
+  DEFAULT_ANALYTICAL_PROJECTION_SHARD_MAX_BYTES,
+  buildAnalyticalProjectionShardArtifacts,
+  combineAnalyticalProjection,
+} from "../site/analytical_projection_shards.mjs";
 
 const ROOT = new URL("../", import.meta.url).pathname;
 
@@ -74,5 +79,69 @@ test("the monolithic Contracts Browse projection is not published", () => {
     false,
     "site/data/procurement_browse_rows.json is a builder input and repository artifact; the "
     + "bounded manifest, query rows and full-row shards are the read path",
+  );
+});
+
+// The two families that took production down on 2026-09-06. The registered
+// contract population outgrew the Pages per-file limit when its builder stopped
+// accepting its own field-stripped output, and the acquisition spine outgrew it
+// on the same refresh. Both are held to their fixed shape here so the next
+// growth fails in this suite rather than at deploy.
+test("the registered-contract projection is published as a bounded index and shards", () => {
+  const published = publishedSourceFiles(ROOT);
+  const index = published.find((file) => file.relativePath === "data/analytics_registered_contracts.json");
+  assert.ok(index, "the registered-contract projection index must stay published");
+
+  const document = JSON.parse(readFileSync(join(ROOT, "site", index.relativePath), "utf8"));
+  assert.equal(
+    Object.prototype.hasOwnProperty.call(document, "rows"),
+    false,
+    "the published document is the index: its rows belong in the shards it names, or a build-time "
+    + "source refresh puts it back over the 24 MiB Pages guard",
+  );
+  assert.ok(Array.isArray(document.shards) && document.shards.length, "the index must name its shards");
+  assert.ok(index.bytes < 1024 * 1024, `the index is ${index.bytes} bytes; it must stay a small document`);
+
+  const shards = published.filter((file) => file.relativePath.startsWith("data/analytics_registered_contracts/"));
+  assert.deepEqual(
+    shards.map((file) => file.relativePath).sort(),
+    document.shards.map((descriptor) => `data/${descriptor.path}`).sort(),
+    "every shard the index names is published, and no shard is published that it does not name",
+  );
+  assert.deepEqual(
+    shards.filter((file) => file.bytes > DEFAULT_ANALYTICAL_PROJECTION_SHARD_MAX_BYTES)
+      .map((file) => `${file.relativePath} (${(file.bytes / (1024 * 1024)).toFixed(2)} MiB)`),
+    [],
+    "a shard over the 18 MiB ceiling has lost its refresh headroom under the 24 MiB Pages guard",
+  );
+});
+
+test("the acquisition spine is a build input, not a published file", () => {
+  assert.equal(
+    publishedSourceFiles(ROOT).some((file) => file.relativePath === "data/procurement_spine_sources.json"),
+    false,
+    "site/data/procurement_spine_sources.json is read from the repository by the procurement, "
+    + "entity-intelligence and crosswalk builders; no route fetches it, and publishing it puts a "
+    + "refresh-grown copy back over the Pages per-file guard",
+  );
+});
+
+test("a population too large for one shard is split, and an unsplittable row is refused", () => {
+  const row = (id) => ({ prime_contract_id: id, purpose: "x".repeat(4096) });
+  const projection = {
+    schema: "cityscroll.analytics_registered_contracts.v1",
+    generated_at: "2026-09-06T00:00:00.000Z",
+    rows: Array.from({ length: 64 }, (_, index) => row(`CT-${index}`)),
+  };
+  const { manifest, shards } = buildAnalyticalProjectionShardArtifacts(projection, { maxShardBytes: 64 * 1024 });
+  assert.ok(manifest.shards.length > 1, "a population past the ceiling is split across shards");
+  assert.equal(manifest.row_count, projection.rows.length);
+  assert.deepEqual(manifest.shards.filter((descriptor) => descriptor.bytes > 64 * 1024), []);
+  assert.deepEqual(combineAnalyticalProjection(manifest, shards), projection, "the split round-trips exactly");
+
+  assert.throws(
+    () => buildAnalyticalProjectionShardArtifacts({ rows: [row("CT-HUGE")] }, { maxShardBytes: 512 }),
+    /above the 512-byte shard ceiling/,
+    "a row larger than a whole shard fails the build with the path that cannot be split",
   );
 });

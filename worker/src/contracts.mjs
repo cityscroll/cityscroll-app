@@ -5,6 +5,7 @@
 import {
   combineSharedProcurementReadModel,
 } from "../../site/procurement_read_model_shards.mjs";
+import { loadAnalyticalProjectionDocument } from "../../site/analytical_projection_shards.mjs";
 import {
   materializeProcurementSearchDocument,
 } from "../../site/procurement_search_producer.mjs";
@@ -109,17 +110,29 @@ async function readStaticJson(path) {
   return response.json();
 }
 
-async function readAnalyticalProjection(env) {
-  const injected = env?.ANALYTICAL_PROJECTION
-    || env?.ANALYTICAL_REGISTERED_CONTRACTS
-    || (env?.schema === ANALYTICAL_PROJECTION_SCHEMA ? env : null);
-  if (injected && typeof injected === "object") return injected;
-  const response = await fetch(`${ANALYTICAL_PROJECTION_ORIGIN}/${ANALYTICAL_PROJECTION_URL}`, {
+async function readAnalyticalProjectionJson(path) {
+  const response = await fetch(`${ANALYTICAL_PROJECTION_ORIGIN}/${path}`, {
     headers: { Accept: "application/json" },
     cf: { cacheTtl: 300, cacheEverything: true },
   });
   if (!response.ok) throw new Error(`registered contract analytical projection ${response.status}`);
   return response.json();
+}
+
+async function readAnalyticalProjection(env) {
+  const injected = env?.ANALYTICAL_PROJECTION
+    || env?.ANALYTICAL_REGISTERED_CONTRACTS
+    || (env?.schema === ANALYTICAL_PROJECTION_SCHEMA ? env : null);
+  if (injected && typeof injected === "object") return injected;
+  // The published document is the index; the population it names lives in
+  // bounded shards beside it. A shard that cannot be read fails the request
+  // rather than answering from a partial population.
+  const projection = await loadAnalyticalProjectionDocument(
+    ANALYTICAL_PROJECTION_URL,
+    readAnalyticalProjectionJson,
+  );
+  if (!projection) throw new Error("registered contract analytical projection is incomplete");
+  return projection;
 }
 
 /** Load the committed model, or a test-provided model, without source-store access. */

@@ -11,6 +11,7 @@ import {
   assertNoPerformanceOverclaim,
   projectPerformanceEvidenceCoverage,
 } from "../site/analytical_performance_evidence.mjs";
+import { readAnalyticalProjectionDocument } from "./lib/analytical_projection_io.mjs";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const DEFAULT_CONTRACTS = resolve(ROOT, "site/data/analytics_registered_contracts.json");
@@ -38,7 +39,7 @@ function rowsFrom(payload) {
 }
 
 function build({ contracts = DEFAULT_CONTRACTS, evidence = DEFAULT_EVIDENCE, output = DEFAULT_OUTPUT, check = false } = {}) {
-  const contractPayload = readJson(contracts);
+  const contractPayload = readAnalyticalProjectionDocument(contracts);
   const evidencePayload = existsSync(evidence) ? readJson(evidence) : { rows: [] };
   const projection = projectPerformanceEvidenceCoverage(
     rowsFrom(contractPayload),

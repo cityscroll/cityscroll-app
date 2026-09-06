@@ -33,6 +33,7 @@ import {
   vendorConcentration,
 } from "../site/analytical_projection.mjs";
 import { classifyCheckbookCityRecordMatches, normalizeCheckbookContractRows } from "../warehouse/lib/checkbook_contracts.mjs";
+import { readAnalyticalProjectionDocument } from "../tools/lib/analytical_projection_io.mjs";
 import { migrateLegacyUrl } from "../site/route_migration.mjs";
 import { routeHashFromScope, scopeFromRouteHash } from "../site/scope_v0.mjs";
 import {
@@ -334,7 +335,7 @@ describe("actual payment analytical projection", () => {
 
 describe("committed analytical population artifact", () => {
   it("is a distinct-contract population artifact with an auditable receipt", () => {
-    const projection = JSON.parse(readFileSync("site/data/analytics_registered_contracts.json", "utf8"));
+    const projection = readAnalyticalProjectionDocument("site/data/analytics_registered_contracts.json");
     const receipt = JSON.parse(readFileSync("warehouse/receipts/proof/analytics_registered_contracts_population_latest.json", "utf8"));
     const ids = new Set(projection.rows.map((row) => row.prime_contract_id));
     assert.equal(projection.schema, "cityscroll.analytics_registered_contracts.v1");

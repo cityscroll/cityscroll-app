@@ -56,6 +56,7 @@
     "site/analytical_payment_projection.mjs",
     "site/analytical_performance_evidence.mjs",
     "site/analytical_projection_contract.mjs",
+    "site/analytical_projection_shards.mjs",
     "site/analytical_projection.mjs",
     "site/analytics.js",
     "site/app/alerts.mjs",
