@@ -185,13 +185,44 @@ test("an incomplete or undersized production window cannot claim the p75/p95 gat
   assert.ok(slow.primary.p75_ms > 2500);
 });
 
-test("committed evidence is deterministic, insufficient, and free of record identifiers", () => {
+test("a pre-aggregated production primary classifies without fabricating raw rows", () => {
+  const insufficient = projectNoticeContextReadiness({
+    primaryAggregate: { sampledCount: 16, windowComplete: true, p50Ms: 2500, p75Ms: 3000, p95Ms: 6000 },
+  });
+  assert.equal(insufficient.primary.slo_state, "insufficient_sample");
+  assert.equal(insufficient.primary.sampled_count, 16);
+  assert.equal(insufficient.primary.p75_ms, null);
+  assert.equal(insufficient.primary.p95_ms, null);
+
+  const needsWork = projectNoticeContextReadiness({
+    primaryAggregate: { sampledCount: 79, windowComplete: true, p50Ms: 2754.8, p75Ms: 3620, p95Ms: 8484.3 },
+  });
+  assert.equal(needsWork.primary.slo_state, "needs-work");
+  assert.equal(needsWork.primary.sampled_count, 79);
+  assert.equal(needsWork.primary.p75_ms, 3620);
+  assert.equal(needsWork.primary.p95_ms, 8484.3);
+
+  const passing = projectNoticeContextReadiness({
+    primaryAggregate: { sampledCount: 40, windowComplete: true, p50Ms: 900, p75Ms: 1200, p95Ms: 2000 },
+  });
+  assert.equal(passing.primary.slo_state, "pass");
+
+  const incompleteWindow = projectNoticeContextReadiness({
+    primaryAggregate: { sampledCount: 90, windowComplete: false, p50Ms: 900, p75Ms: 1200, p95Ms: 2000 },
+  });
+  assert.equal(incompleteWindow.primary.slo_state, "insufficient_sample");
+  assert.equal(incompleteWindow.primary.window_complete, false);
+});
+
+test("committed evidence is deterministic, measured, and free of record identifiers", () => {
   const evidence = buildEvidence();
   assert.deepEqual(committed, evidence);
   const validation = validateNoticeContextReadinessEvidence(evidence);
   assert.equal(validation.ok, true, validation.errors.join("; "));
-  assert.equal(evidence.primary.slo_state, "insufficient_sample");
-  assert.equal(evidence.primary.sampled_count, 3);
+  assert.equal(evidence.primary.slo_state, "needs-work");
+  assert.equal(evidence.primary.sampled_count, 79);
+  assert.equal(evidence.primary.window_complete, true);
+  assert.ok(evidence.primary.p75_ms > 2500);
   assert.equal(evidence.baseline.not_a_pass, true);
   assert.equal(evidence.privacy.branch_metric_ingested, false);
   assert.equal(JSON.stringify(evidence).includes("request_id"), false);

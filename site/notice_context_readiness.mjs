@@ -110,6 +110,45 @@ export function dedupeNoticeContextObservations(rows = []) {
   return kept;
 }
 
+function classifiedGroup({
+  metricId,
+  surfaceId,
+  componentId,
+  branch = null,
+  sampledCount,
+  complete,
+  sampleFloor,
+  p50,
+  p75,
+  p95,
+}) {
+  const sufficient = complete && sampledCount >= sampleFloor;
+  const p50Out = sufficient ? roundMs(p50) : null;
+  const p75Out = sufficient ? roundMs(p75) : null;
+  const p95Out = sufficient ? roundMs(p95) : null;
+  let sloState = "insufficient_sample";
+  if (sufficient) {
+    sloState = p75Out <= NOTICE_CONTEXT_P75_BUDGET_MS && p95Out <= NOTICE_CONTEXT_P95_BUDGET_MS
+      ? "pass"
+      : "needs-work";
+  }
+  return {
+    metric_id: metricId,
+    surface_id: surfaceId,
+    component_id: componentId,
+    branch,
+    sampled_count: sampledCount,
+    window_complete: complete,
+    sample_floor: sampleFloor,
+    p50_ms: p50Out,
+    p75_ms: p75Out,
+    p95_ms: p95Out,
+    slo_state: sloState,
+    p75_budget_ms: NOTICE_CONTEXT_P75_BUDGET_MS,
+    p95_budget_ms: NOTICE_CONTEXT_P95_BUDGET_MS,
+  };
+}
+
 function summarizeGroup(rows, {
   metricId,
   surfaceId,
@@ -124,35 +163,56 @@ function summarizeGroup(rows, {
     .sort((a, b) => a - b);
   const sampledCount = durations.length;
   const complete = windowComplete === true;
-  const sufficient = complete && sampledCount >= sampleFloor;
-  const p50 = sufficient ? roundMs(percentile(durations, 0.5)) : null;
-  const p75 = sufficient ? roundMs(percentile(durations, 0.75)) : null;
-  const p95 = sufficient ? roundMs(percentile(durations, 0.95)) : null;
-  let sloState = "insufficient_sample";
-  if (sufficient) {
-    sloState = p75 <= NOTICE_CONTEXT_P75_BUDGET_MS && p95 <= NOTICE_CONTEXT_P95_BUDGET_MS
-      ? "pass"
-      : "needs-work";
-  }
-  return {
-    metric_id: metricId,
-    surface_id: surfaceId,
-    component_id: componentId,
+  return classifiedGroup({
+    metricId,
+    surfaceId,
+    componentId,
     branch,
-    sampled_count: sampledCount,
-    window_complete: complete,
-    sample_floor: sampleFloor,
-    p50_ms: p50,
-    p75_ms: p75,
-    p95_ms: p95,
-    slo_state: sloState,
-    p75_budget_ms: NOTICE_CONTEXT_P75_BUDGET_MS,
-    p95_budget_ms: NOTICE_CONTEXT_P95_BUDGET_MS,
-  };
+    sampledCount,
+    complete,
+    sampleFloor,
+    p50: percentile(durations, 0.5),
+    p75: percentile(durations, 0.75),
+    p95: percentile(durations, 0.95),
+  });
+}
+
+// Cloudflare Analytics Engine only ever returns a weighted-quantile aggregate for
+// production RUM (never raw per-request rows — see performance_query.mjs), so a real
+// production read-back cannot be expressed as primaryObservations without fabricating
+// individual rows that were never actually retained. This path classifies the primary
+// group directly from that aggregate instead.
+function summarizeMeasuredGroup({
+  sampledCount,
+  windowComplete,
+  p50Ms = null,
+  p75Ms = null,
+  p95Ms = null,
+}, {
+  metricId,
+  surfaceId,
+  componentId,
+  branch = null,
+  sampleFloor = NOTICE_CONTEXT_SAMPLE_FLOOR,
+} = {}) {
+  const count = Number.isSafeInteger(sampledCount) && sampledCount >= 0 ? sampledCount : 0;
+  return classifiedGroup({
+    metricId,
+    surfaceId,
+    componentId,
+    branch,
+    sampledCount: count,
+    complete: windowComplete === true,
+    sampleFloor,
+    p50: finiteMs(p50Ms),
+    p75: finiteMs(p75Ms),
+    p95: finiteMs(p95Ms),
+  });
 }
 
 export function projectNoticeContextReadiness({
   primaryObservations = [],
+  primaryAggregate = null,
   branchObservations = [],
   windowComplete = false,
   baseline = null,
@@ -170,13 +230,20 @@ export function projectNoticeContextReadiness({
     && row.component_id === NOTICE_CONTEXT_COMPONENT_ID
   ));
 
-  const primary = summarizeGroup(primaryRows, {
-    metricId: NOTICE_CONTEXT_PRIMARY_METRIC_ID,
-    surfaceId: NOTICE_CONTEXT_SURFACE_ID,
-    componentId: NOTICE_CONTEXT_COMPONENT_ID,
-    windowComplete,
-    sampleFloor,
-  });
+  const primary = isRecord(primaryAggregate)
+    ? summarizeMeasuredGroup(primaryAggregate, {
+      metricId: NOTICE_CONTEXT_PRIMARY_METRIC_ID,
+      surfaceId: NOTICE_CONTEXT_SURFACE_ID,
+      componentId: NOTICE_CONTEXT_COMPONENT_ID,
+      sampleFloor,
+    })
+    : summarizeGroup(primaryRows, {
+      metricId: NOTICE_CONTEXT_PRIMARY_METRIC_ID,
+      surfaceId: NOTICE_CONTEXT_SURFACE_ID,
+      componentId: NOTICE_CONTEXT_COMPONENT_ID,
+      windowComplete,
+      sampleFloor,
+    });
 
   const optionalBranches = [...NOTICE_CONTEXT_OPTIONAL_BRANCHES, ...NOTICE_CONTEXT_OPTIONAL_LATE_OWNERS]
     .map((branch) => summarizeGroup(

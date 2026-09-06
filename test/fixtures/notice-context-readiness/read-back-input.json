@@ -10,52 +10,15 @@
     "window": "2026-08-20T01:50:43Z/2026-08-26T13:10:50Z",
     "predates_owner_boundary": true
   },
-  "primaryObservations": [
-    {
-      "metric_id": "component_ready_ms",
-      "surface_id": "notice",
-      "component_id": "notice-context",
-      "result_state": "content",
-      "value": 420,
-      "trace_key": "lab-primary-success",
-      "navigation_type": "navigate",
-      "delivery_class": "pages_edge",
-      "observed_at": "lab"
-    },
-    {
-      "metric_id": "component_ready_ms",
-      "surface_id": "notice",
-      "component_id": "notice-context",
-      "result_state": "content",
-      "value": 420,
-      "trace_key": "lab-primary-success",
-      "navigation_type": "navigate",
-      "delivery_class": "pages_edge",
-      "observed_at": "lab-refresh"
-    },
-    {
-      "metric_id": "component_ready_ms",
-      "surface_id": "notice",
-      "component_id": "notice-context",
-      "result_state": "unavailable",
-      "value": 180,
-      "trace_key": "lab-primary-unavailable",
-      "navigation_type": "navigate",
-      "delivery_class": "pages_edge",
-      "observed_at": "lab"
-    },
-    {
-      "metric_id": "component_ready_ms",
-      "surface_id": "notice",
-      "component_id": "notice-context",
-      "result_state": "error",
-      "value": 90,
-      "trace_key": "lab-primary-error",
-      "navigation_type": "navigate",
-      "delivery_class": "pages_edge",
-      "observed_at": "lab"
-    }
-  ],
+  "primaryAggregate": {
+    "source": "production-analytics-engine",
+    "window": "2026-08-31T03:51:05Z/2026-09-06T12:46:28Z",
+    "sampledCount": 79,
+    "windowComplete": true,
+    "p50Ms": 2754.8,
+    "p75Ms": 3620.0,
+    "p95Ms": 8484.3
+  },
   "branchObservations": [
     {
       "surface_id": "notice",
