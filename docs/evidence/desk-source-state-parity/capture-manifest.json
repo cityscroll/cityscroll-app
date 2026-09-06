@@ -1,0 +1,69 @@
+{
+  "schema": "cityscroll.deployed_source_state_render_manifest.v1",
+  "evidence_class": "isolated-consumer-render",
+  "capture_mode": "headless-playwright-loopback-static-render",
+  "captured_at": "2026-09-06T04:03:56Z",
+  "route": "/data-sources?source=checkbook-contracts#source-checkbook-contracts",
+  "revision_format": "git-object-id-prefix-12",
+  "revision": "320bd54850de",
+  "consumer_revision": "5fdb3424f3f4",
+  "data_vintage": "2026-09-05",
+  "data_revision": "0e958926826dadbd0ce9d5996687c821ec196220157b61e648a6d6e349b9405a",
+  "registry_contracts_at_revision": 63,
+  "source_rows_at_revision": 67,
+  "image_directory": ".artifacts/source-state-parity/captures",
+  "image_policy": "Capture images remain ignored and are not committed. Their SHA-256 values bind this textual manifest to the reviewed render.",
+  "production_scope": "The before observation is live production evidence. These post-change captures are isolated render evidence and are not labeled as live.",
+  "checks": {
+    "selected_source_survives_reload": true,
+    "missing_source_is_explicit": true,
+    "missing_source_preserves_sibling_rows": true,
+    "keyboard_activation": true,
+    "repair_queue_inspectable": true,
+    "repair_table_scroll_region_focusable": true,
+    "no_javascript_deep_link": true,
+    "zoom_200_percent": true,
+    "new_source_target_minimum_css_pixels": 44,
+    "no_horizontal_page_overflow": true
+  },
+  "captures": [
+    {
+      "name": "scripted-390x844.png",
+      "viewport": [390, 844],
+      "scripting": true,
+      "assertion": "The selected source survives reload; a missing source reports a distinct state while preserving all 67 sibling rows; keyboard activation recovers to a valid source; the repair queue remains inspectable through a focusable named table scroller; the new source targets meet 44 CSS pixels; 200% zoom and the page viewport do not overflow.",
+      "axe": {
+        "violations_total": 0,
+        "critical_or_serious": [],
+        "passes": true
+      },
+      "render_content_sha256": "f2e6383c7f163560d78e2fb606ba1f52073c2090657464770bf2313d8bf445c4"
+    },
+    {
+      "name": "no-script-390x844.png",
+      "viewport": [390, 844],
+      "scripting": false,
+      "assertion": "The selected source has a visible canonical table row without JavaScript and the page viewport does not overflow.",
+      "render_content_sha256": "576c8881cff9515897164edfd0d05b291431f55be9ea4399f94f83676b3d83cc"
+    },
+    {
+      "name": "scripted-1440x900.png",
+      "viewport": [1440, 900],
+      "scripting": true,
+      "assertion": "The selected source survives reload; a missing source reports a distinct state while preserving all 67 sibling rows; keyboard activation recovers to a valid source; the repair queue remains inspectable through a focusable named table scroller; the new source targets meet 44 CSS pixels; 200% zoom and the page viewport do not overflow.",
+      "axe": {
+        "violations_total": 0,
+        "critical_or_serious": [],
+        "passes": true
+      },
+      "render_content_sha256": "7d7827e6ff25d9b261a4eadaacffeadb0a49b296e7445e3c1914ec36aa172357"
+    },
+    {
+      "name": "no-script-1440x900.png",
+      "viewport": [1440, 900],
+      "scripting": false,
+      "assertion": "The selected source has a visible canonical table row without JavaScript and the page viewport does not overflow.",
+      "render_content_sha256": "c011a87d82fac63f75eb58558a80323fc3056d57223ad35d5e6802593b8cf5af"
+    }
+  ]
+}

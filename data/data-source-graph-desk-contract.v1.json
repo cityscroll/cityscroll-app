@@ -1,13 +1,11 @@
 {
   "schema": "cityscroll.data_source_graph.desk_consumer_contract.v1",
-  "producer_schema_version": 6,
+  "producer_schema_version": 4,
   "supported_consumer_versions": [
     1,
     2,
     3,
-    4,
-    5,
-    6
+    4
   ],
   "compatibility": "additive_superset",
   "producer": "tools/data_source_graph.mjs",
@@ -37,63 +35,67 @@
     ],
     "notes": "Version 4 keeps the version 3 topology and nullable current_as_of date. Health observations and uncontracted candidate research are additive. The authenticated desk must accept 4 without dropping those fields or requiring candidate rows to appear in source_contracts.json. Desk overlay must keep the version 4 maintainer-architecture lede in its known intro set."
   },
-  "v5_additions": {
-    "graph_fields": [
-      "repair_observations"
-    ],
-    "count_fields": [
-      "repair_observations",
-      "open_repairs"
-    ],
-    "source_fields": [
-      "repair_observations"
-    ],
-    "observation_schema": "cityscroll.repair_observation.v1",
-    "set_schema": "cityscroll.repair_observation_set.v1",
-    "conditions": [
-      "checked-no-records",
-      "no-counterpart-record",
-      "record-identity-unresolved",
-      "records-do-not-correspond",
-      "scope-not-searched",
-      "source-format-unsupported",
-      "source-not-published",
-      "source-observation-stale",
-      "source-retrieval-failed"
-    ],
-    "dispositions": [
-      "repair",
-      "expected-absence",
-      "source-policy-limitation"
-    ],
-    "notes": "Version 5 keeps the version 4 topology, counts and source fields. It adds the private repair-observation projection: structured source and join conditions carried on this backstage artifact so the authenticated desk can inspect them without reading resident copy. Records are keyed by a stable fingerprint over source, scope and condition only, so a repeated observation or a presentation-copy change resolves to the same record. Only the 'repair' disposition is engineering work; 'expected-absence' and 'source-policy-limitation' record that a state was evaluated and must never be presented as a defect or as a claim against a publisher. The consumer must accept 5 without dropping these fields and must not project any of them onto a public response."
-  },
-  "v6_additions": {
-    "graph_fields": [
-      "repair_queue"
-    ],
-    "queue_schema": "cityscroll.repair_queue.v1",
-    "register": "data/repair-queue-register.v1.json",
-    "register_schema": "cityscroll.repair_queue_register.v1",
-    "states": [
-      "repair-candidate",
-      "regressed",
-      "expected-absence",
-      "source-policy-limitation",
-      "resolved"
-    ],
-    "work_states": [
-      "repair-candidate",
-      "regressed"
-    ],
-    "verification_states": [
-      "candidate",
-      "deduplication-verified"
-    ],
-    "status_values": [
-      "available",
-      "unavailable"
-    ],
-    "notes": "Version 6 keeps the version 5 topology, counts, source fields and repair-observation set. It adds the work grain over those observations: one issue per source contract, condition and adapter, carrying the affected-scope count, recency, the evidence that first recorded the condition, the owner, any existing engineering record and any resolution receipt. The issue key digests that identity alone, so a reworded condition detail, a newer last-seen instant, another affected scope or a fresh code revision folds into the issue that already exists. Only repair-candidate and regressed are engineering work; expected-absence and source-policy-limitation record that a condition was evaluated and correctly needs no repair. Nothing but the reviewed register can move an issue past the candidate verification state or into resolved, so the producer of a record verifies the deduplication rather than the pass asserting it. When status is 'unavailable' the counts are null and must not be rendered as zero: an unread queue and an empty queue are different answers. The consumer must accept 6 without dropping these fields and must not project any of them onto a public response."
+  "extensions": {
+    "repair_observations": {
+      "version": 1,
+      "graph_fields": [
+        "repair_observations"
+      ],
+      "count_fields": [
+        "repair_observations",
+        "open_repairs"
+      ],
+      "source_fields": [
+        "repair_observations"
+      ],
+      "observation_schema": "cityscroll.repair_observation.v1",
+      "set_schema": "cityscroll.repair_observation_set.v1",
+      "conditions": [
+        "checked-no-records",
+        "no-counterpart-record",
+        "record-identity-unresolved",
+        "records-do-not-correspond",
+        "scope-not-searched",
+        "source-format-unsupported",
+        "source-not-published",
+        "source-observation-stale",
+        "source-retrieval-failed"
+      ],
+      "dispositions": [
+        "repair",
+        "expected-absence",
+        "source-policy-limitation"
+      ],
+      "notes": "The versioned private extension adds structured repair observations without changing the version 4 base envelope. Unaware additive consumers may ignore it; aware consumers inspect the extension marker before reading it. Records are keyed by a stable fingerprint over source, scope and condition only. Only the 'repair' disposition is engineering work; the other dispositions record evaluated source states and are not defects or claims against a publisher. No extension field may enter a public response."
+    },
+    "repair_queue": {
+      "version": 1,
+      "graph_fields": [
+        "repair_queue"
+      ],
+      "queue_schema": "cityscroll.repair_queue.v1",
+      "register": "data/repair-queue-register.v1.json",
+      "register_schema": "cityscroll.repair_queue_register.v1",
+      "states": [
+        "repair-candidate",
+        "regressed",
+        "expected-absence",
+        "source-policy-limitation",
+        "resolved"
+      ],
+      "work_states": [
+        "repair-candidate",
+        "regressed"
+      ],
+      "verification_states": [
+        "candidate",
+        "deduplication-verified"
+      ],
+      "status_values": [
+        "available",
+        "unavailable"
+      ],
+      "notes": "The versioned private extension adds the work grain over repair observations without changing the version 4 base envelope. It keeps one issue per source contract, condition and adapter, with affected-scope count, recency, first evidence, owner, any existing engineering record and any resolution receipt. Only repair-candidate and regressed are engineering work. Nothing but the reviewed register can move an issue past candidate verification or into resolved. An unavailable queue retains null counts rather than rendering zero. No extension field may enter a public response."
+    }
   }
 }
