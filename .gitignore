@@ -156,3 +156,5 @@ site/.phc07-capture-tmp/
 
 # PHC-09 capture scratch (rendered fragments only, never images)
 site/.phc09-capture-tmp/
+docs/screenshots/desk-repair-queue/*.png
+docs/screenshots/desk-repair-queue/fixtures/

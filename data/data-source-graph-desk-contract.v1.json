@@ -1,12 +1,13 @@
 {
   "schema": "cityscroll.data_source_graph.desk_consumer_contract.v1",
-  "producer_schema_version": 5,
+  "producer_schema_version": 6,
   "supported_consumer_versions": [
     1,
     2,
     3,
     4,
-    5
+    5,
+    6
   ],
   "compatibility": "additive_superset",
   "producer": "tools/data_source_graph.mjs",
@@ -66,5 +67,33 @@
       "source-policy-limitation"
     ],
     "notes": "Version 5 keeps the version 4 topology, counts and source fields. It adds the private repair-observation projection: structured source and join conditions carried on this backstage artifact so the authenticated desk can inspect them without reading resident copy. Records are keyed by a stable fingerprint over source, scope and condition only, so a repeated observation or a presentation-copy change resolves to the same record. Only the 'repair' disposition is engineering work; 'expected-absence' and 'source-policy-limitation' record that a state was evaluated and must never be presented as a defect or as a claim against a publisher. The consumer must accept 5 without dropping these fields and must not project any of them onto a public response."
+  },
+  "v6_additions": {
+    "graph_fields": [
+      "repair_queue"
+    ],
+    "queue_schema": "cityscroll.repair_queue.v1",
+    "register": "data/repair-queue-register.v1.json",
+    "register_schema": "cityscroll.repair_queue_register.v1",
+    "states": [
+      "repair-candidate",
+      "regressed",
+      "expected-absence",
+      "source-policy-limitation",
+      "resolved"
+    ],
+    "work_states": [
+      "repair-candidate",
+      "regressed"
+    ],
+    "verification_states": [
+      "candidate",
+      "deduplication-verified"
+    ],
+    "status_values": [
+      "available",
+      "unavailable"
+    ],
+    "notes": "Version 6 keeps the version 5 topology, counts, source fields and repair-observation set. It adds the work grain over those observations: one issue per source contract, condition and adapter, carrying the affected-scope count, recency, the evidence that first recorded the condition, the owner, any existing engineering record and any resolution receipt. The issue key digests that identity alone, so a reworded condition detail, a newer last-seen instant, another affected scope or a fresh code revision folds into the issue that already exists. Only repair-candidate and regressed are engineering work; expected-absence and source-policy-limitation record that a condition was evaluated and correctly needs no repair. Nothing but the reviewed register can move an issue past the candidate verification state or into resolved, so the producer of a record verifies the deduplication rather than the pass asserting it. When status is 'unavailable' the counts are null and must not be rendered as zero: an unread queue and an empty queue are different answers. The consumer must accept 6 without dropping these fields and must not project any of them onto a public response."
   }
 }

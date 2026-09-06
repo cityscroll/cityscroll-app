@@ -1,0 +1,22 @@
+{
+  "schema": "cityscroll.repair_queue_register.v1",
+  "consumer": "tools/repair_queue.mjs",
+  "acceptance_test": "test/desk-diagnostic-queue.test.mjs",
+  "note": "The reviewed half of the Desk repair queue. Grouping is derived; everything a person has to judge is recorded here. An issue is a candidate until its producer records that the deduplication was verified, and only a resolution receipt here can move an issue to resolved or, if the condition returns, to regressed. issue_key is the sha256 the queue derives from identity, so a hand edit to one and not the other fails the register check rather than binding to nothing. Every reference must be a stable https URL: an owner-only or local locator is refused, because a link nobody outside this repository can open is worse than no link.",
+  "issues": [
+    {
+      "issue_key": "33596ed0eda9ea42f9a1455c0d84f04b4b46dbb00db978df66049879d97280d8",
+      "identity": {
+        "source_contract_id": "non-council-board-minutes",
+        "condition": "source-retrieval-failed",
+        "adapter": "airtable_v1"
+      },
+      "engineering_card": {
+        "reference": "https://github.com/cityscroll/cityscroll-app/blob/main/docs/meeting-source-completeness-audit.md#intentional-omissions-and-unknown-states",
+        "label": "Recorded disposition: browser-required community-board sources keep their typed state and never trigger a live page-load lookup"
+      },
+      "deduplication_verified": null,
+      "resolution_receipt": null
+    }
+  ]
+}

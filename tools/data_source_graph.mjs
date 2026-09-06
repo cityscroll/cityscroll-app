@@ -12,6 +12,11 @@ import {
   repairObservationSet,
   repairWorkObservations,
 } from "./repair_observations.mjs";
+import {
+  REPAIR_QUEUE_REGISTER_PATH,
+  buildRepairQueue,
+  renderRepairQueueSection,
+} from "./repair_queue.mjs";
 import { classifySourceVintage } from "./source_vintage_status.mjs";
 import {
   backstageSourceVintage,
@@ -23,7 +28,7 @@ export const ROOT = dirname(dirname(fileURLToPath(import.meta.url)));
 export const DEFAULT_OUTPUT_DIR = "docs";
 export const JSON_OUTPUT = "data-source-graph.json";
 export const HTML_OUTPUT = "data-source-graph.html";
-export const DATA_SOURCE_GRAPH_SCHEMA_VERSION = 5;
+export const DATA_SOURCE_GRAPH_SCHEMA_VERSION = 6;
 export const DESK_CONSUMER_CONTRACT_PATH = "data/data-source-graph-desk-contract.v1.json";
 
 const CORE_INPUTS = [
@@ -35,6 +40,7 @@ const CORE_INPUTS = [
   "site/data/source_vintage_observations.json",
   "site/data/source_vintage_alternates.json",
   "site/data/gap_taxonomy.json",
+  "data/repair-queue-register.v1.json",
   "warehouse/datasets.v0.json",
   "worker/wrangler.toml",
   "worker/src/worker.mjs",
@@ -610,6 +616,8 @@ export function buildDataSourceGraph({
   repairObservations = [],
   repairObservedAt = null,
   repairSourceVintage = null,
+  repairRegister = null,
+  repairIngestion = { available: true },
   inputs = [],
 } = {}) {
   const contracts = registry?.contracts || [];
@@ -717,6 +725,17 @@ export function buildDataSourceGraph({
       observedAt: repairObservedAt,
       sourceVintage: repairSourceVintage,
     }),
+    // The work grain over that evidence: one row per repair rather than one per
+    // symptom. It is derived from this pass and the reviewed register only, so
+    // re-running the build cannot move a count, and it inherits the same
+    // never-served boundary as the observations it reads.
+    repair_queue: buildRepairQueue({
+      observations: repairObservations,
+      register: repairRegister,
+      observedAt: repairObservedAt,
+      sourceVintage: repairSourceVintage,
+      ingestion: repairIngestion,
+    }),
     bodies,
     sources,
     surfaces,
@@ -744,15 +763,17 @@ export function renderGraphHtml(graph) {
 <style>
 :root{--ink:#18241d;--muted:#5d6d63;--paper:#f5f1e8;--panel:#fffdf8;--line:#ccd4cc;--green:#1f6a45;--mint:#dcecdf;--amber:#9d5b13;--red:#9f3a35;--blue:#315f78;--ghost:#775b85;--ghost-paper:#f7f1f8;--shadow:0 12px 32px rgba(24,36,29,.09)}
 *{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.45 ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,input,select{font:inherit}button{cursor:pointer}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}.shell{max-width:1720px;margin:auto;padding:28px}.eyebrow{text-transform:uppercase;letter-spacing:.13em;font-size:11px;font-weight:800;color:var(--green)}h1{font:700 clamp(30px,4vw,52px)/1.03 Georgia,serif;margin:6px 0 10px;max-width:850px}.lede{color:var(--muted);max-width:820px;margin:0}.meta,.legend{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}.legend{margin-top:9px;color:var(--muted);font-size:12px}.legend span{display:inline-flex;gap:6px;align-items:center}.legend i{display:inline-block;width:22px;border-top:2px solid var(--green)}.legend .ghost-key{border-top:2px dashed var(--ghost)}.pill,.status{border:1px solid var(--line);border-radius:999px;padding:4px 9px;background:var(--panel);font-size:12px}.controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:24px 0 14px}.controls input{min-width:280px;flex:1}.controls input,.controls select,.toggle button{border:1px solid var(--line);background:var(--panel);border-radius:8px;padding:9px 11px;color:var(--ink)}.toggle{display:flex}.toggle button{border-radius:0}.toggle button:first-child{border-radius:8px 0 0 8px}.toggle button:last-child{border-radius:0 8px 8px 0}.toggle button[aria-pressed=true]{background:var(--ink);color:white}.workspace{display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,370px);gap:16px;align-items:start}.canvas,.details,.table-wrap{background:var(--panel);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow)}.canvas{overflow:auto;min-height:700px}.column-heads{display:grid;grid-template-columns:170px 245px 230px 170px;gap:35px;padding:14px 20px;border-bottom:1px solid var(--line);min-width:960px;position:sticky;top:0;background:rgba(255,253,248,.96);z-index:2}.column-heads b{font-size:11px;letter-spacing:.1em;text-transform:uppercase}.column-heads span{display:block;color:var(--muted);font-size:11px;margin-top:2px}svg{display:block;min-width:960px}.details{position:sticky;top:16px;padding:22px;min-height:430px}.details h2{font:700 26px/1.12 Georgia,serif;margin:6px 0 8px}.details h3{font-size:11px;text-transform:uppercase;letter-spacing:.09em;color:var(--green);margin:20px 0 5px}.details p{margin:0;color:#35443b}.details a{color:var(--blue);font-weight:650}.details .endpoint{overflow-wrap:anywhere}.details ol{padding-left:20px;margin:5px 0}.details li+li{margin-top:10px}.route-preferred{color:var(--ghost);font-weight:800}.empty-detail{color:var(--muted);padding-top:30px}.status-live{color:var(--green);border-color:#9bc0a5}.status-build-time,.status-manual{color:var(--amber);border-color:#d9b989}.status-disabled{color:var(--red);border-color:#daa5a1}.status-application-possible,.status-blocked,.status-declined{color:var(--ghost);border-color:#baa7c2;background:var(--ghost-paper)}tr[data-node-class="blocked-source"]{background:var(--ghost-paper)}.table-wrap{overflow:auto}.table-wrap[hidden],.graph-view[hidden]{display:none}table{width:100%;border-collapse:collapse;min-width:1100px}th,td{text-align:left;vertical-align:top;padding:11px 13px;border-bottom:1px solid #e2e5df}th{font-size:11px;text-transform:uppercase;letter-spacing:.08em;background:#f6f3eb;position:sticky;top:0}td small{display:block;color:var(--muted);margin-top:3px}.table-source{border:0;background:none;padding:0;color:var(--blue);font-weight:700;text-align:left}.foot{color:var(--muted);font-size:12px;margin-top:15px}.source-node:focus rect,.source-node:hover rect{stroke:var(--green);stroke-width:2.5}.source-node{cursor:pointer}.source-node.blocked-node rect{stroke-dasharray:7 5}.edge{stroke:#9daca2;stroke-width:1;opacity:.18;fill:none}.edge.blocked-edge{stroke:var(--ghost);stroke-dasharray:6 5;opacity:.36}.edge.active{stroke:var(--green);stroke-width:2.4;opacity:.72}.node-muted{opacity:.28}@media(max-width:1000px){.shell{padding:18px}.workspace{grid-template-columns:1fr}.details{position:static}.controls input{min-width:220px}}
+.repair-view[hidden]{display:none}.repair-view h2{font:700 26px/1.12 Georgia,serif;margin:22px 0 6px}.queue-lede{color:var(--muted);max-width:820px;margin:0 0 4px}.repair-view .controls{margin:14px 0 10px}.repair-view label{color:var(--muted);font-size:12px}.queue-list{display:grid;grid-template-columns:minmax(0,1fr);gap:10px}.queue-issue{min-width:0;background:var(--panel);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow)}.queue-issue[hidden]{display:none}.queue-issue>summary{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;min-width:0;padding:14px 16px;min-height:44px;cursor:pointer;border-radius:12px}.queue-issue>summary:focus-visible{outline:3px solid var(--green);outline-offset:2px}.queue-title{flex:1 1 180px;font-weight:700;min-width:0;overflow-wrap:anywhere}.queue-title small{display:block;color:var(--muted);font-weight:400}.queue-scope,.queue-seen{color:var(--muted);font-size:12px}.queue-state,.queue-verification,.queue-flag{border:1px solid var(--line);border-radius:999px;padding:4px 9px;font-size:12px;font-weight:700;white-space:nowrap}.queue-state-repair-candidate{color:var(--red);border-color:#daa5a1;background:#fdf3f2}.queue-state-regressed{color:var(--amber);border-color:#d9b989;background:#fdf6e9}.queue-state-expected-absence{color:var(--green);border-color:#9bc0a5;background:var(--mint)}.queue-state-source-policy-limitation{color:var(--ghost);border-color:#baa7c2;background:var(--ghost-paper)}.queue-state-resolved{color:var(--blue);border-color:#b5c8d0;background:#eef4f7}.queue-verification-candidate{color:var(--muted);font-weight:400}.queue-flag{font-weight:400;color:var(--muted)}.queue-body{min-width:0;padding:0 16px 18px;border-top:1px solid var(--line)}.queue-body h3{font-size:11px;text-transform:uppercase;letter-spacing:.09em;color:var(--green);margin:18px 0 5px}.queue-body a{display:inline-block;min-height:24px;line-height:24px}.queue-body p,.queue-body ul{margin:0;overflow-wrap:anywhere}.queue-body ul{padding-left:20px}.queue-detail{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 14px;margin:0;min-width:0}.queue-detail dt{color:var(--muted)}.queue-detail dd{margin:0;overflow-wrap:anywhere}.queue-table-wrap{max-width:100%;overflow-x:auto;margin-top:6px}.queue-table-wrap:focus-visible{outline:3px solid var(--green);outline-offset:2px}.queue-table-wrap table{min-width:760px}.queue-evidence{overflow-wrap:anywhere}.queue-evidence small,.retained-scope{color:var(--muted)}.queue-evidence small{display:block}.queue-unavailable{background:#fdf3f2;border:1px solid #daa5a1;border-radius:12px;padding:16px;color:#6d2b27}.queue-unavailable code{overflow-wrap:anywhere}.queue-empty{color:var(--muted)}@media(max-width:700px){.queue-issue>summary{gap:6px 10px}.queue-detail{grid-template-columns:minmax(0,1fr)}}
 .details ol,.details ul{padding-left:20px;margin:5px 0}.details pre{margin:6px 0 0;padding:8px;border:1px solid var(--line);border-radius:7px;background:#f4f1e9;color:#5f302d;font:11px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;white-space:pre-wrap;overflow-wrap:anywhere}.status-candidate{color:var(--ghost);border-color:#baa7c2;background:var(--ghost-paper)}tr[data-node-class="candidate-source"]{background:var(--ghost-paper)}
 </style></head><body><main class="shell">
 <div class="eyebrow">Maintainer architecture</div><h1>Where CityScroll’s data comes from</h1>
 <p class="lede">Trace each collecting body through its endpoint, adapters and runs, receipt-backed three-clock health, join gates, and product surfaces. Dashed ghost paths keep candidate and access-blocked research visible without presenting it as a live source.</p>
 <div class="meta"><span class="pill">${graph.counts.bodies} collecting bodies</span><span class="pill">${graph.counts.source_contracts} source contracts</span><span class="pill">${graph.counts.candidate_sources || 0} candidates</span><span class="pill">${graph.counts.blocked_sources} access-gated sources</span><span class="pill">${graph.counts.surfaces} surfaces</span>${graph.current_as_of ? `<span class="pill">Current as of ${esc(formatFreshnessDate(graph.current_as_of))}</span>` : ""}<span class="pill">sources hash ${esc(graph.sources_hash.slice(0, 12))}</span></div>
 <div class="legend" aria-label="Graph visual classes"><span><i></i> Available source path</span><span><i class="ghost-key"></i> Candidate / access-gated research path</span></div>
-<div class="controls"><label class="sr-only" for="search">Filter sources</label><input id="search" type="search" placeholder="Filter by source, endpoint, adapter, error, or access route…"><select id="status"><option value="">All statuses</option><option value="live">Live</option><option value="build-time">Build-time</option><option value="manual">Manual</option><option value="disabled">Disabled</option><option value="candidate">Candidate</option><option value="application-possible">Application possible</option><option value="blocked">Blocked</option><option value="declined">Declined</option></select><div class="toggle" aria-label="View"><button id="graphToggle" type="button" aria-pressed="true">Graph view</button><button id="tableToggle" type="button" aria-pressed="false">Table view</button></div></div>
+<div class="controls"><label class="sr-only" for="search">Filter sources</label><input id="search" type="search" placeholder="Filter by source, endpoint, adapter, error, or access route…"><label class="sr-only" for="status">Filter by source state</label><select id="status"><option value="">All statuses</option><option value="live">Live</option><option value="build-time">Build-time</option><option value="manual">Manual</option><option value="disabled">Disabled</option><option value="candidate">Candidate</option><option value="application-possible">Application possible</option><option value="blocked">Blocked</option><option value="declined">Declined</option></select><div class="toggle" aria-label="View"><button id="graphToggle" type="button" aria-pressed="true">Graph view</button><button id="tableToggle" type="button" aria-pressed="false">Table view</button><button id="repairToggle" type="button" aria-pressed="false">Repair queue</button></div></div>
 <section class="graph-view" id="graphView"><div class="workspace"><div class="canvas"><div class="column-heads"><div><b>1 · Collecting bodies</b><span>Institutions that originate data</span></div><div><b>2 · Datasets / endpoints</b><span>Concrete source identity</span></div><div><b>3 · Our ingest</b><span>Job, cadence, transform</span></div><div><b>4 · Surfaces</b><span>Features that consume it</span></div></div><svg id="sourceGraph" role="img" aria-label="Data source topology graph"></svg></div><aside class="details" id="details" aria-live="polite"><div class="empty-detail"><div class="eyebrow">Source detail</div><h2>Select a dataset</h2><p>The selected path will highlight across all four layers.</p></div></aside></div></section>
 <section class="table-wrap" id="tableView" hidden><table><thead><tr><th>Source</th><th>Collecting body</th><th>Source state</th><th>Health</th><th>Ingest cadence</th><th>Join gate</th><th>Surfaces</th></tr></thead><tbody>${tableRows(graph)}</tbody></table></section>
+${renderRepairQueueSection(graph.repair_queue)}
 <p class="foot">Generated for the authenticated desk from the canonical source-contract ledger, the shared source-health observations, lifecycle research inventory, warehouse registry and receipts, and Worker cron implementation. Rebuild with <code>node tools/data_source_graph.mjs</code>; verify staleness with <code>--check</code>. This backstage artifact remains separate from the strict public projection and never includes credentials.</p>
 </main><script>
 const graph=${payload};
@@ -808,9 +829,12 @@ function selectSource(id){
   render();
 }
 function highlight(id){svg.querySelectorAll(".edge").forEach(node=>node.classList.toggle("active",node.classList.contains("edge-"+CSS.escape(id))))}
-function filterTable(){const q=search.value.trim().toLowerCase(),st=statusFilter.value;document.querySelectorAll("[data-source-row]").forEach(row=>row.hidden=Boolean((st&&row.dataset.status!==st)||(q&&!row.dataset.search.includes(q))))}
+function filterTable(){const q=search.value.trim().toLowerCase(),st=statusFilter.value;document.querySelectorAll("[data-source-row]").forEach(row=>row.hidden=Boolean((st&&row.dataset.status!==st)||(q&&!row.dataset.search.includes(q))));filterRepairQueue()}
+const repairState=document.getElementById("repairState");
+function filterRepairQueue(){const q=search.value.trim().toLowerCase(),st=repairState?repairState.value:"";document.querySelectorAll("[data-repair-issue]").forEach(row=>row.hidden=Boolean((st&&row.dataset.repairState!==st)||(q&&!row.dataset.search.includes(q))))}
+if(repairState)repairState.addEventListener("change",filterRepairQueue);
 search.addEventListener("input",render);statusFilter.addEventListener("change",render);document.querySelectorAll(".table-source").forEach(button=>button.addEventListener("click",()=>{selectSource(button.dataset.source);setView("graph")}));
-function setView(view){const isGraph=view==="graph";document.getElementById("graphView").hidden=!isGraph;document.getElementById("tableView").hidden=isGraph;document.getElementById("graphToggle").setAttribute("aria-pressed",String(isGraph));document.getElementById("tableToggle").setAttribute("aria-pressed",String(!isGraph))}document.getElementById("graphToggle").onclick=()=>setView("graph");document.getElementById("tableToggle").onclick=()=>setView("table");render();
+function setView(view){const views={graph:"graphView",table:"tableView",repair:"repairView"},toggles={graph:"graphToggle",table:"tableToggle",repair:"repairToggle"};for(const [name,id] of Object.entries(views)){const node=document.getElementById(id);if(node)node.hidden=name!==view;const toggle=document.getElementById(toggles[name]);if(toggle)toggle.setAttribute("aria-pressed",String(name===view))}}document.getElementById("graphToggle").onclick=()=>setView("graph");document.getElementById("tableToggle").onclick=()=>setView("table");document.getElementById("repairToggle").onclick=()=>setView("repair");render();
 </script></body></html>\n`;
 }
 
@@ -822,8 +846,21 @@ function setView(view){const isGraph=view==="graph";document.getElementById("gra
 export function communityBoardRepairObservations(registry) {
   const indexPath = "site/data/community_board_meeting_index.json";
   const inventoryPath = "site/data/non_council_outcome_sources/board_source_inventory.json";
-  if (!existsSync(join(ROOT, indexPath)) || !existsSync(join(ROOT, inventoryPath))) {
-    return { observations: [], observedAt: null, sourceVintage: null };
+  // An input that is not there is a failed read, not a clean pass. Saying which
+  // one is missing is what keeps the desk from rendering an all-clear it never
+  // measured.
+  const missing = [indexPath, inventoryPath].filter((path) => !existsSync(join(ROOT, path)));
+  if (missing.length) {
+    return {
+      observations: [],
+      observedAt: null,
+      sourceVintage: null,
+      ingestion: {
+        available: false,
+        reason: "the committed source receipts the repair projection reads were not available",
+        missing_inputs: missing,
+      },
+    };
   }
   const index = readJson(indexPath);
   const contract = (registry?.contracts || []).find((row) => row.id === COMMUNITY_BOARD_SOURCE_CONTRACT_ID) || {};
@@ -837,7 +874,12 @@ export function communityBoardRepairObservations(registry) {
       text: existsSync(join(ROOT, path)) ? readFileSync(join(ROOT, path), "utf8") : "",
     }))),
   });
-  return { observations, observedAt: index?.generated_at || null, sourceVintage: index?.generated_at || null };
+  return {
+    observations,
+    observedAt: index?.generated_at || null,
+    sourceVintage: index?.generated_at || null,
+    ingestion: { available: true, reason: null, missing_inputs: [] },
+  };
 }
 
 export function generatedGraphFiles({ inputs = inputManifest() } = {}) {
@@ -862,6 +904,8 @@ export function generatedGraphFiles({ inputs = inputManifest() } = {}) {
     repairObservations: repair.observations,
     repairObservedAt: repair.observedAt,
     repairSourceVintage: repair.sourceVintage,
+    repairRegister: readJson(REPAIR_QUEUE_REGISTER_PATH),
+    repairIngestion: repair.ingestion,
     inputs,
   });
   return {
