@@ -240,9 +240,20 @@ export async function eligibleMatterWatchRows(env, record, {
     });
   }
   const published = await readPublishedMatterLookup(env, {});
+  const generationId = published.generation?.generation_id || null;
+  const stamped = mapped.map((row) => (
+    generationId
+      ? {
+        ...row,
+        published_revision: generationId,
+        published_generation_id: generationId,
+        published_generation_sequence: published.generation?.sequence,
+      }
+      : row
+  ));
   const updates = reduceCouncilMatterWatchUpdates({
     matter_ref: watch.matter_ref,
-    observations: mapped,
+    observations: stamped,
     baseline,
     asOf,
     publishedGeneration: published.generation,

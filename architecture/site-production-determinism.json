@@ -340,6 +340,7 @@
     "site/mandate_rules_bridge.mjs",
     "site/mandate_subject_ref.mjs",
     "site/map_exploration.mjs",
+    "site/matter_coverage_recovery.mjs",
     "site/matter_phase_spine.mjs",
     "site/matter_publication_generation.mjs",
     "site/meeting_capability_projection.mjs",

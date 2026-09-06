@@ -1,0 +1,684 @@
+{
+  "schema": "cityscroll.matter_coverage_recovery_evidence.v1",
+  "engineering_record": "cityscroll-engineering/matter-coverage-recovery",
+  "renderer": "tools/render_matter_coverage_recovery_fixtures.mjs",
+  "revision": "e6fcbd1cbc162bfba0d27ca160d1e15dd2327ddb",
+  "data_vintage": "2026-08-10T13:08:13.019Z",
+  "captured_at": "2026-09-06T08:33:24Z",
+  "image_directory": ".artifacts/matter-coverage-recovery",
+  "corpus_note": "Specimens render operator coverage and recovery receipts from frozen snapshot replay and labelled durability faults. They describe retained CityScroll state, not live publisher coverage.",
+  "image_policy": "Capture images are written to the ignored local directory above and are never committed. This manifest is the tracked proof: route, viewport, revision, data vintage, assertion, and SHA-256 for each capture.",
+  "replay_counts": {
+    "materialized_matters": 66,
+    "distinct_appearances": 76,
+    "later_event_discoveries": 10,
+    "logical_later_updates": 10,
+    "replay_duplicates": 0,
+    "recovered_updates_181": 0,
+    "recovered_updates_365": 0
+  },
+  "acceptance": {
+    "schema": "cityscroll.matter_coverage_acceptance.v1",
+    "obligations": {
+      "A1": {
+        "id": "A1",
+        "status": "pass",
+        "evidence": {
+          "materialized_matters": 66,
+          "distinct_appearances": 76,
+          "later_event_discoveries": 10,
+          "logical_later_updates": 10,
+          "replay_duplicates": 0,
+          "recovered_updates_181": 0,
+          "recovered_updates_365": 0
+        }
+      },
+      "A2": {
+        "id": "A2",
+        "status": "pass",
+        "evidence": {
+          "matters": 66,
+          "appearances": 66,
+          "later": 0
+        }
+      },
+      "A3": {
+        "id": "A3",
+        "status": "pass",
+        "evidence": {
+          "day181": {
+            "matters": 66,
+            "appearances": 76,
+            "recoveredUpdates": 0
+          },
+          "day365": {
+            "matters": 66,
+            "appearances": 76,
+            "recoveredUpdates365": 0
+          }
+        }
+      },
+      "A4": {
+        "id": "A4",
+        "status": "pass",
+        "evidence": {
+          "fields": [
+            "schema",
+            "observed_at",
+            "active_watches",
+            "due_matters",
+            "last_complete_refresh_at",
+            "last_complete_refresh_age_ms",
+            "stale_active_watches",
+            "deferred_work",
+            "failed_refreshes",
+            "retained_counts",
+            "unpublished_eligible_changes",
+            "publication_lag_ms",
+            "publication_generation_id",
+            "pending_delivery_age_ms",
+            "pending_outbox_items",
+            "failed_outbox_items",
+            "delivered_outbox_items",
+            "cancelled_outbox_items",
+            "cadence_ms",
+            "playbook",
+            "failure_class",
+            "alerts"
+          ]
+        }
+      },
+      "A5": {
+        "id": "A5",
+        "status": "pass",
+        "evidence": {
+          "stale": {
+            "before": "stale-refresh",
+            "after": "none"
+          },
+          "publication": {
+            "before": "mixed",
+            "after": "stale-refresh"
+          },
+          "delivery": {
+            "before": "delivery-lag",
+            "after": "none"
+          }
+        }
+      },
+      "A6": {
+        "id": "A6",
+        "status": "pass",
+        "evidence": {
+          "canary": "local-rehearsal"
+        }
+      },
+      "A7": {
+        "id": "A7",
+        "status": "pass",
+        "evidence": {
+          "playbook": [
+            "token_recovery",
+            "budget_backlog",
+            "cursor_recovery",
+            "failed_publication",
+            "replay_safe_delivery",
+            "feature_rollback"
+          ]
+        }
+      }
+    },
+    "complete": true
+  },
+  "canary": {
+    "schema": "cityscroll.matter_coverage_canary.v1",
+    "kind": "local-rehearsal",
+    "named_live_record_gate": false,
+    "population_floor": {
+      "retained_matters_non_negative": true,
+      "active_watches_non_negative": true,
+      "pending_and_failed_non_negative": true
+    },
+    "ok": true
+  },
+  "files": [
+    {
+      "name": "healthy-390x844.png",
+      "specimen": "healthy",
+      "route": "/operator/matter-coverage/healthy/",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "e6fcbd1cbc162bfba0d27ca160d1e15dd2327ddb",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 390px the healthy receipt stays usable and omits subscriber addresses",
+      "observations": {
+        "failure_class": "delivery-lag",
+        "active_watches": "10",
+        "pending_outbox": "10",
+        "target_size": {
+          "total_controls": 3,
+          "inline_text_links": 2,
+          "block_controls": 1,
+          "block_minimum_height": 44,
+          "block_controls_meet_24px": true
+        },
+        "no_horizontal_overflow": true,
+        "render_hash": "d8bb21e7558bfee6e07fc94e4cb5e1087d9e5bad06eb45f352f363296357c2a9",
+        "fixture_vintage": "2026-08-10T13:08:13.019Z"
+      },
+      "bytes": 229132,
+      "sha256": "ed07a5e8cc5dd660fd5aebccf735353f158eb856b42ecab5b51f6157e117642b",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "healthy-1440x900.png",
+      "specimen": "healthy",
+      "route": "/operator/matter-coverage/healthy/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "e6fcbd1cbc162bfba0d27ca160d1e15dd2327ddb",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 1440px the healthy receipt stays usable and omits subscriber addresses",
+      "observations": {
+        "failure_class": "delivery-lag",
+        "active_watches": "10",
+        "pending_outbox": "10",
+        "target_size": {
+          "total_controls": 3,
+          "inline_text_links": 2,
+          "block_controls": 1,
+          "block_minimum_height": 44,
+          "block_controls_meet_24px": true
+        },
+        "no_horizontal_overflow": true,
+        "render_hash": "d8bb21e7558bfee6e07fc94e4cb5e1087d9e5bad06eb45f352f363296357c2a9",
+        "fixture_vintage": "2026-08-10T13:08:13.019Z"
+      },
+      "bytes": 241781,
+      "sha256": "0b2f90eef30761d2a747461d55984111271d9a8660e95f09acc0dd58075cab87",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "stale-refresh-390x844.png",
+      "specimen": "stale-refresh",
+      "route": "/operator/matter-coverage/stale-refresh/",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "e6fcbd1cbc162bfba0d27ca160d1e15dd2327ddb",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 390px the stale refresh receipt stays usable and omits subscriber addresses",
+      "observations": {
+        "failure_class": "stale-refresh",
+        "active_watches": "1",
+        "pending_outbox": "0",
+        "target_size": {
+          "total_controls": 3,
+          "inline_text_links": 2,
+          "block_controls": 1,
+          "block_minimum_height": 44,
+          "block_controls_meet_24px": true
+        },
+        "no_horizontal_overflow": true,
+        "render_hash": "c148b93d15ff10c1e9972c96310631cc719c7dfa4dd4248021d9c1774aedf0e2",
+        "fixture_vintage": "2026-08-10T13:08:13.019Z"
+      },
+      "bytes": 223682,
+      "sha256": "4cfdaa67526fef719bb39fd19dbc623a7ea6e5e34c4535a3b9975eae09ca720c",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "stale-refresh-1440x900.png",
+      "specimen": "stale-refresh",
+      "route": "/operator/matter-coverage/stale-refresh/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "e6fcbd1cbc162bfba0d27ca160d1e15dd2327ddb",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 1440px the stale refresh receipt stays usable and omits subscriber addresses",
+      "observations": {
+        "failure_class": "stale-refresh",
+        "active_watches": "1",
+        "pending_outbox": "0",
+        "target_size": {
+          "total_controls": 3,
+          "inline_text_links": 2,
+          "block_controls": 1,
+          "block_minimum_height": 44,
+          "block_controls_meet_24px": true
+        },
+        "no_horizontal_overflow": true,
+        "render_hash": "c148b93d15ff10c1e9972c96310631cc719c7dfa4dd4248021d9c1774aedf0e2",
+        "fixture_vintage": "2026-08-10T13:08:13.019Z"
+      },
+      "bytes": 238512,
+      "sha256": "bc6ddcb2fbcf5bce822d9785eb77ee4bd535299318c33613b22cf66f476c4f44",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "publication-lag-390x844.png",
+      "specimen": "publication-lag",
+      "route": "/operator/matter-coverage/publication-lag/",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "e6fcbd1cbc162bfba0d27ca160d1e15dd2327ddb",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 390px the publication lag receipt stays usable and omits subscriber addresses",
+      "observations": {
+        "failure_class": "mixed",
+        "active_watches": "1",
+        "pending_outbox": "0",
+        "target_size": {
+          "total_controls": 3,
+          "inline_text_links": 2,
+          "block_controls": 1,
+          "block_minimum_height": 44,
+          "block_controls_meet_24px": true
+        },
+        "no_horizontal_overflow": true,
+        "render_hash": "25c5ffec37b004b49925ac3576e22a6200f843dd027ebaf644bf3a15a1bd773e",
+        "fixture_vintage": "2026-08-10T13:08:13.019Z"
+      },
+      "bytes": 241895,
+      "sha256": "0ecafdeca5a0024ca8b9461e76a8466e5e0c0ebe547836564989677f23e4dbc7",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "publication-lag-1440x900.png",
+      "specimen": "publication-lag",
+      "route": "/operator/matter-coverage/publication-lag/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "e6fcbd1cbc162bfba0d27ca160d1e15dd2327ddb",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 1440px the publication lag receipt stays usable and omits subscriber addresses",
+      "observations": {
+        "failure_class": "mixed",
+        "active_watches": "1",
+        "pending_outbox": "0",
+        "target_size": {
+          "total_controls": 3,
+          "inline_text_links": 2,
+          "block_controls": 1,
+          "block_minimum_height": 44,
+          "block_controls_meet_24px": true
+        },
+        "no_horizontal_overflow": true,
+        "render_hash": "25c5ffec37b004b49925ac3576e22a6200f843dd027ebaf644bf3a15a1bd773e",
+        "fixture_vintage": "2026-08-10T13:08:13.019Z"
+      },
+      "bytes": 256418,
+      "sha256": "2ea262aca2b3c27fdaf1fbc0f56c0aa167c71faa0ab5358f5d00ed1d5a92026d",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "delivery-lag-390x844.png",
+      "specimen": "delivery-lag",
+      "route": "/operator/matter-coverage/delivery-lag/",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "e6fcbd1cbc162bfba0d27ca160d1e15dd2327ddb",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 390px the delivery lag receipt stays usable and omits subscriber addresses",
+      "observations": {
+        "failure_class": "delivery-lag",
+        "active_watches": "10",
+        "pending_outbox": "10",
+        "target_size": {
+          "total_controls": 3,
+          "inline_text_links": 2,
+          "block_controls": 1,
+          "block_minimum_height": 44,
+          "block_controls_meet_24px": true
+        },
+        "no_horizontal_overflow": true,
+        "render_hash": "dd84af2fbdcf33f0d03d5044e41dc1ff96e560bf59cbb245e5558dae76564b93",
+        "fixture_vintage": "2026-08-10T13:08:13.019Z"
+      },
+      "bytes": 230444,
+      "sha256": "ff9a45ebb8a55835571be1d502b5047d1523d73d3596f46f69cffa17007e0174",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "delivery-lag-1440x900.png",
+      "specimen": "delivery-lag",
+      "route": "/operator/matter-coverage/delivery-lag/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "e6fcbd1cbc162bfba0d27ca160d1e15dd2327ddb",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 1440px the delivery lag receipt stays usable and omits subscriber addresses",
+      "observations": {
+        "failure_class": "delivery-lag",
+        "active_watches": "10",
+        "pending_outbox": "10",
+        "target_size": {
+          "total_controls": 3,
+          "inline_text_links": 2,
+          "block_controls": 1,
+          "block_minimum_height": 44,
+          "block_controls_meet_24px": true
+        },
+        "no_horizontal_overflow": true,
+        "render_hash": "dd84af2fbdcf33f0d03d5044e41dc1ff96e560bf59cbb245e5558dae76564b93",
+        "fixture_vintage": "2026-08-10T13:08:13.019Z"
+      },
+      "bytes": 243173,
+      "sha256": "3e8ae15444816685d5f5e646e2978bde443ae717a8b6b2c665a6de33c3e5cb15",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "recovered-390x844.png",
+      "specimen": "recovered",
+      "route": "/operator/matter-coverage/recovered/",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "e6fcbd1cbc162bfba0d27ca160d1e15dd2327ddb",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 390px the recovered receipt stays usable and omits subscriber addresses",
+      "observations": {
+        "failure_class": "none",
+        "active_watches": "10",
+        "pending_outbox": "0",
+        "target_size": {
+          "total_controls": 3,
+          "inline_text_links": 2,
+          "block_controls": 1,
+          "block_minimum_height": 44,
+          "block_controls_meet_24px": true
+        },
+        "no_horizontal_overflow": true,
+        "render_hash": "98a275e298673dff38bbac2b8096cb0710e0003f5694bf49e6715feb7e23a5e0",
+        "fixture_vintage": "2026-08-10T13:08:13.019Z"
+      },
+      "bytes": 207254,
+      "sha256": "b491182c5dfaa36d1d3eb8c4f6ca9bfef02c1d7bc8a818027be2d5d956347b73",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "recovered-1440x900.png",
+      "specimen": "recovered",
+      "route": "/operator/matter-coverage/recovered/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "e6fcbd1cbc162bfba0d27ca160d1e15dd2327ddb",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 1440px the recovered receipt stays usable and omits subscriber addresses",
+      "observations": {
+        "failure_class": "none",
+        "active_watches": "10",
+        "pending_outbox": "0",
+        "target_size": {
+          "total_controls": 3,
+          "inline_text_links": 2,
+          "block_controls": 1,
+          "block_minimum_height": 44,
+          "block_controls_meet_24px": true
+        },
+        "no_horizontal_overflow": true,
+        "render_hash": "98a275e298673dff38bbac2b8096cb0710e0003f5694bf49e6715feb7e23a5e0",
+        "fixture_vintage": "2026-08-10T13:08:13.019Z"
+      },
+      "bytes": 220115,
+      "sha256": "79e480ee8bb45201bf60550eaebf185db49f6f9702744d8e445aab03d58c44d0",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "without-scripting-390x844.png",
+      "specimen": "without-scripting",
+      "route": "/operator/matter-coverage/healthy/",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "e6fcbd1cbc162bfba0d27ca160d1e15dd2327ddb",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "disabled",
+      "assertion": "at 390px the coverage receipt remains readable with scripting disabled",
+      "observations": {
+        "heading": "Matter coverage \u2014 healthy",
+        "no_horizontal_overflow": true,
+        "render_hash": "d8bb21e7558bfee6e07fc94e4cb5e1087d9e5bad06eb45f352f363296357c2a9",
+        "fixture_vintage": "2026-08-10T13:08:13.019Z"
+      },
+      "bytes": 229132,
+      "sha256": "ed07a5e8cc5dd660fd5aebccf735353f158eb856b42ecab5b51f6157e117642b",
+      "axe": {
+        "violations_total": null,
+        "failing_violations": [],
+        "passes": true,
+        "note": "scripting disabled; the same page is gated scripted"
+      }
+    },
+    {
+      "name": "without-scripting-1440x900.png",
+      "specimen": "without-scripting",
+      "route": "/operator/matter-coverage/healthy/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "e6fcbd1cbc162bfba0d27ca160d1e15dd2327ddb",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "disabled",
+      "assertion": "at 1440px the coverage receipt remains readable with scripting disabled",
+      "observations": {
+        "heading": "Matter coverage \u2014 healthy",
+        "no_horizontal_overflow": true,
+        "render_hash": "d8bb21e7558bfee6e07fc94e4cb5e1087d9e5bad06eb45f352f363296357c2a9",
+        "fixture_vintage": "2026-08-10T13:08:13.019Z"
+      },
+      "bytes": 241781,
+      "sha256": "0b2f90eef30761d2a747461d55984111271d9a8660e95f09acc0dd58075cab87",
+      "axe": {
+        "violations_total": null,
+        "failing_violations": [],
+        "passes": true,
+        "note": "scripting disabled; the same page is gated scripted"
+      }
+    },
+    {
+      "name": "keyboard-and-return-390x844.png",
+      "specimen": "keyboard-and-return",
+      "route": "/operator/matter-coverage/healthy/",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "e6fcbd1cbc162bfba0d27ca160d1e15dd2327ddb",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 390px keyboard activation opens recovery details and return remains a native focus target",
+      "observations": {
+        "details_open": true,
+        "target_size": {
+          "total_controls": 3,
+          "inline_text_links": 2,
+          "block_controls": 1,
+          "block_minimum_height": 44,
+          "block_controls_meet_24px": true
+        },
+        "no_horizontal_overflow": true,
+        "render_hash": "a641c07671a2e8bf2ce8bb2fcf4dbae1cded80a8db91257a461173992ef25182",
+        "fixture_vintage": "2026-08-10T13:08:13.019Z"
+      },
+      "bytes": 270812,
+      "sha256": "ee69879499352b9184574d53667b708c104e07a52c65ad0afc5d9c4d65bc6b3f",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "keyboard-and-return-1440x900.png",
+      "specimen": "keyboard-and-return",
+      "route": "/operator/matter-coverage/healthy/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "e6fcbd1cbc162bfba0d27ca160d1e15dd2327ddb",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 1440px keyboard activation opens recovery details and return remains a native focus target",
+      "observations": {
+        "details_open": true,
+        "target_size": {
+          "total_controls": 3,
+          "inline_text_links": 2,
+          "block_controls": 1,
+          "block_minimum_height": 44,
+          "block_controls_meet_24px": true
+        },
+        "no_horizontal_overflow": true,
+        "render_hash": "a641c07671a2e8bf2ce8bb2fcf4dbae1cded80a8db91257a461173992ef25182",
+        "fixture_vintage": "2026-08-10T13:08:13.019Z"
+      },
+      "bytes": 287314,
+      "sha256": "7c7df6a1e9f61a320cddb7b5ef420e8077bf0eafa94b8338d005bed5f33b84db",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "two-hundred-percent-zoom-390x844.png",
+      "specimen": "two-hundred-percent-zoom",
+      "route": "/operator/matter-coverage/healthy/",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "e6fcbd1cbc162bfba0d27ca160d1e15dd2327ddb",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 390px zoomed to 200% the coverage receipt reflows without horizontal overflow",
+      "observations": {
+        "no_horizontal_overflow": true,
+        "target_size": {
+          "total_controls": 3,
+          "inline_text_links": 2,
+          "block_controls": 1,
+          "block_minimum_height": 108,
+          "block_controls_meet_24px": true
+        },
+        "heading_present": true,
+        "zoom": "200%",
+        "render_hash": "d8bb21e7558bfee6e07fc94e4cb5e1087d9e5bad06eb45f352f363296357c2a9",
+        "fixture_vintage": "2026-08-10T13:08:13.019Z"
+      },
+      "bytes": 646715,
+      "sha256": "1a1a70d8b623c6a940dc421f8db5f741ad3ad55db4825c04d64b692e930a371e",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "two-hundred-percent-zoom-1440x900.png",
+      "specimen": "two-hundred-percent-zoom",
+      "route": "/operator/matter-coverage/healthy/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "e6fcbd1cbc162bfba0d27ca160d1e15dd2327ddb",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 1440px zoomed to 200% the coverage receipt reflows without horizontal overflow",
+      "observations": {
+        "no_horizontal_overflow": true,
+        "target_size": {
+          "total_controls": 3,
+          "inline_text_links": 2,
+          "block_controls": 1,
+          "block_minimum_height": 88,
+          "block_controls_meet_24px": true
+        },
+        "heading_present": true,
+        "zoom": "200%",
+        "render_hash": "d8bb21e7558bfee6e07fc94e4cb5e1087d9e5bad06eb45f352f363296357c2a9",
+        "fixture_vintage": "2026-08-10T13:08:13.019Z"
+      },
+      "bytes": 530472,
+      "sha256": "8f7aa56f7f8c295dada90c44c6fb727ad3d3f7fe8f153832596356590c71d494",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    }
+  ]
+}
