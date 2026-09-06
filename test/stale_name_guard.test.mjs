@@ -93,7 +93,7 @@ test("a same-PR allowlist entry covering a same-PR new line fails the guard", ()
   const digest = Buffer.from(`new ${legacyName} reference`, "utf8").toString("base64");
   try {
     withAllowlist(
-      (original) => `${original}${probeName}\t1\t${digest}\t# test: same-PR cover attempt.\n`,
+      (original) => `${original}${probeName}\t${digest}\t# test: same-PR cover attempt.\n`,
       () => {
         assert.throws(
           () => runGuard({ LEGACY_ALLOWLIST_BASE_SHA: headSha() }),
@@ -112,7 +112,7 @@ test("a 'future:' entry covering a same-PR new line still fails the guard", () =
   const digest = Buffer.from(`new ${legacyName} reference`, "utf8").toString("base64");
   try {
     withAllowlist(
-      (original) => `${original}future:${probeName}\t1\t${digest}\t# test: future-prefixed same-PR cover attempt.\n`,
+      (original) => `${original}future:${probeName}\t${digest}\t# test: future-prefixed same-PR cover attempt.\n`,
       () => {
         assert.throws(
           () => runGuard({ LEGACY_ALLOWLIST_BASE_SHA: headSha() }),
@@ -130,12 +130,12 @@ test("an allowlist entry covering a pre-existing line passes and prints a growth
   const existingLine = readFileSync(new URL(`../${targetPath}`, import.meta.url), "utf8").split(/\r?\n/)[0];
   const digest = Buffer.from(existingLine, "utf8").toString("base64");
   withAllowlist(
-    (original) => `${original}future:${targetPath}\t1\t${digest}\t# test: pre-existing line, legitimate legacy exception.\n`,
+    (original) => `${original}future:${targetPath}\t${digest}\t# test: pre-existing line, legitimate legacy exception.\n`,
     () => {
       const output = runGuard({ LEGACY_ALLOWLIST_BASE_SHA: headSha() });
       assert.match(output, /guard passed/i);
       assert.match(output, /ALLOWLIST GROWTH: 1 new entry added, covering 1 file/);
-      assert.match(output, new RegExp(`\\+ ${targetPath}:1`));
+      assert.match(output, new RegExp(`\\+ ${targetPath}  `));
     },
   );
 });
@@ -147,7 +147,7 @@ test("a same-PR wildcard entry covering a modified pre-existing file fails the g
   writeFileSync(targetUrl, `${original}new ${legacyName} reference\n`);
   try {
     withAllowlist(
-      (allowlist) => `${allowlist}${targetPath}\t*\t*\t# test: same-PR wildcard cover attempt.\n`,
+      (allowlist) => `${allowlist}${targetPath}\t*\t# test: same-PR wildcard cover attempt.\n`,
       () => {
         assert.throws(
           () => runGuard({ LEGACY_ALLOWLIST_BASE_SHA: headSha() }),
@@ -163,7 +163,7 @@ test("a same-PR wildcard entry covering a modified pre-existing file fails the g
 test("a wildcard entry covering an untouched pre-existing file passes the growth guard", () => {
   const targetPath = "README.md";
   withAllowlist(
-    (original) => `${original}future:${targetPath}\t*\t*\t# test: untouched pre-existing file, whole-file exemption.\n`,
+    (original) => `${original}future:${targetPath}\t*\t# test: untouched pre-existing file, whole-file exemption.\n`,
     () => {
       const output = runGuard({ LEGACY_ALLOWLIST_BASE_SHA: headSha() });
       assert.match(output, /guard passed/i);
@@ -183,7 +183,7 @@ test("growth guard fails closed when the merge-base cannot be resolved", () => {
   const existingLine = readFileSync(new URL(`../${targetPath}`, import.meta.url), "utf8").split(/\r?\n/)[0];
   const digest = Buffer.from(existingLine, "utf8").toString("base64");
   withAllowlist(
-    (original) => `${original}future:${targetPath}\t1\t${digest}\t# test: unresolved base.\n`,
+    (original) => `${original}future:${targetPath}\t${digest}\t# test: unresolved base.\n`,
     () => {
       assert.throws(
         () => runGuard({ LEGACY_ALLOWLIST_BASE_SHA: "0000000000000000000000000000000000000000" }),
@@ -191,4 +191,110 @@ test("growth guard fails closed when the merge-base cannot be resolved", () => {
       );
     },
   );
+});
+
+test("an old-format pin matches by content even when its recorded line number is stale", () => {
+  const probeName = ".legacy-name-guard-probe.txt";
+  const line = `kept ${legacyName} reference`;
+  const digest = Buffer.from(line, "utf8").toString("base64");
+  writeFileSync(PROBE, `unrelated insertion\n${line}\n`);
+  try {
+    withAllowlist(
+      (original) => `${original}${probeName}\t1\t${digest}\t# test: stale line number in old format.\n`,
+      () => {
+        assert.match(runGuard(), /guard passed/i);
+      },
+    );
+  } finally {
+    if (existsSync(PROBE)) unlinkSync(PROBE);
+  }
+});
+
+test("an unrelated insertion above a pinned line does not require an allowlist edit", () => {
+  const probeName = ".legacy-name-guard-probe.txt";
+  const line = `kept ${legacyName} reference`;
+  const digest = Buffer.from(line, "utf8").toString("base64");
+  writeFileSync(PROBE, `${line}\n`);
+  try {
+    withAllowlist(
+      (original) => `${original}${probeName}\t${digest}\t# test: content-addressed pin.\n`,
+      () => {
+        writeFileSync(PROBE, `unrelated insertion\n${line}\n`);
+        assert.match(runGuard(), /guard passed/i);
+      },
+    );
+  } finally {
+    if (existsSync(PROBE)) unlinkSync(PROBE);
+  }
+});
+
+test("an added unpinned copy of a pinned line fails the guard", () => {
+  const probeName = ".legacy-name-guard-probe.txt";
+  const line = `kept ${legacyName} reference`;
+  const digest = Buffer.from(line, "utf8").toString("base64");
+  writeFileSync(PROBE, `${line}\n${line}\n`);
+  try {
+    withAllowlist(
+      (original) => `${original}${probeName}\t${digest}\t# test: single-occurrence pin.\n`,
+      () => {
+        assert.throws(() => runGuard(), new RegExp(`legacy-name-guard-probe.*${legacyName}`));
+      },
+    );
+  } finally {
+    if (existsSync(PROBE)) unlinkSync(PROBE);
+  }
+});
+
+test("a declared count covers repeated identical lines and rejects an extra copy", () => {
+  const probeName = ".legacy-name-guard-probe.txt";
+  const line = `kept ${legacyName} reference`;
+  const digest = Buffer.from(line, "utf8").toString("base64");
+  writeFileSync(PROBE, `${line}\n${line}\n`);
+  try {
+    withAllowlist(
+      (original) => `${original}${probeName}\t${digest}\tcount=2\t# test: two-occurrence pin.\n`,
+      () => {
+        assert.match(runGuard(), /guard passed/i);
+        writeFileSync(PROBE, `${line}\n${line}\n${line}\n`);
+        assert.throws(() => runGuard(), new RegExp(`legacy-name-guard-probe.*${legacyName}`));
+      },
+    );
+  } finally {
+    if (existsSync(PROBE)) unlinkSync(PROBE);
+  }
+});
+
+test("removing a pinned occurrence is reported as stale", () => {
+  const probeName = ".legacy-name-guard-probe.txt";
+  const line = `kept ${legacyName} reference`;
+  const digest = Buffer.from(line, "utf8").toString("base64");
+  writeFileSync(PROBE, `${line}\n`);
+  try {
+    withAllowlist(
+      (original) => `${original}${probeName}\t${digest}\t# test: pin that will go missing.\n`,
+      () => {
+        unlinkSync(PROBE);
+        assert.throws(() => runGuard(), /stale entries/);
+      },
+    );
+  } finally {
+    if (existsSync(PROBE)) unlinkSync(PROBE);
+  }
+});
+
+test("duplicate content pins for one file must declare a single count", () => {
+  const probeName = ".legacy-name-guard-probe.txt";
+  const line = `kept ${legacyName} reference`;
+  const digest = Buffer.from(line, "utf8").toString("base64");
+  writeFileSync(PROBE, `${line}\n${line}\n`);
+  try {
+    withAllowlist(
+      (original) => `${original}${probeName}\t${digest}\t# test: first pin.\n${probeName}\t${digest}\t# test: duplicate pin.\n`,
+      () => {
+        assert.throws(() => runGuard(), /duplicate content pin/);
+      },
+    );
+  } finally {
+    if (existsSync(PROBE)) unlinkSync(PROBE);
+  }
 });
