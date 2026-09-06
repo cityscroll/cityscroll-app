@@ -13,9 +13,11 @@
       "A raw identity field is spelled plainly; a character escape in the source text is rejected even when it parses to a legal identity.",
       "A file path decodes to exactly the identity the document declares.",
       "A private source id or a private alias mapping is not a valid public field.",
+      "Where no descriptive name applies yet, the letter c followed by 12 lowercase hex characters is accepted as the public id in its own right; it is minted outside this repository and carries no descriptive words or queue position.",
       "A violation names the contract and the field, and never echoes the value it rejected."
     ],
-    "implementation": "tools/public_identity_contract.mjs"
+    "implementation": "tools/public_identity_contract.mjs",
+    "legacy_entries": "most existing architecture-evidence entries predate this namespace and keep their workstream/card-shaped id; they are not renamed and their history is not rewritten, and rule 4 (path decodes to the declared identity) still applies to them unchanged"
   },
   "private_identifier_scan": {
     "implementation": "tools/private_identifier_scan.mjs",

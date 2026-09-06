@@ -32,6 +32,7 @@ import {
   writeArchitectureEvidenceAggregates,
 } from "../tools/architecture_evidence_shards.mjs";
 import { evaluateCardReconciliation } from "../tools/card_reconciliation_guard.mjs";
+import { PUBLIC_NAMESPACE } from "../tools/public_identity_contract.mjs";
 import {
   parseReconciliationTriggerPaths,
   pathMatchesTriggerFilter,
@@ -88,6 +89,31 @@ test("entry-id-to-path mapping is deterministic and collision-safe", () => {
     const result = aggregateArchitectureEvidence({ root });
     assert.equal(result.status, "FAIL");
     assert.ok(result.findings.some((row) => row.includes("collision-safe")));
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("a new entry may use the card-alias fallback identity where no descriptive name exists yet", () => {
+  const root = tmpRoot();
+  try {
+    const id = `${PUBLIC_NAMESPACE}/c109ded0b4e91`;
+    put(root, entryRelativePath(id), validEntry(id));
+    const result = aggregateArchitectureEvidence({ root });
+    assert.equal(result.status, "PASS", result.findings.join("; "));
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("a new entry claiming the public namespace with a card id or workstream slug is rejected", () => {
+  const root = tmpRoot();
+  try {
+    const id = `${PUBLIC_NAMESPACE}/cbics-03-rulemaking-participation-month`;
+    put(root, entryRelativePath(id), validEntry(id));
+    const result = aggregateArchitectureEvidence({ root });
+    assert.equal(result.status, "FAIL");
+    assert.ok(result.findings.some((row) => row.includes("public identity contract")));
   } finally {
     rmSync(root, { recursive: true, force: true });
   }

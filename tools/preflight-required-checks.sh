@@ -252,6 +252,24 @@ run_and_fail python3 test/standards/demo_links.py
 run_and_fail node tools/check_stale_repo_name.mjs
 run_and_fail node tools/agents_router_guard.mjs --check
 run_and_fail node tools/inverse_control_plane_guard.mjs --check --all
+# Owner-controlled run: this is the local pre-push / owner path, never CI. CI
+# supplies no term set, so its identical `--check --all` call above always
+# reports the private-identifier scan as SKIPPED and stays credential-free.
+# Here, when an owner-supplied term-set file is present, the same check runs
+# again in --private mode against it, so the scan reports a real PASS/FAIL
+# instead of SKIPPED. The term set itself is never read into a shell variable
+# printed by this script, never logged, and never committed.
+PRIVATE_IDENTIFIER_TERMS_FILE="${PRIVATE_IDENTIFIER_TERMS_FILE:-$HOME/.config/estate/private-terms.txt}"
+if [[ -f "$PRIVATE_IDENTIFIER_TERMS_FILE" ]]; then
+  run_banner "Private-identifier scan (owner-controlled)" "Private mode with the owner-supplied term set" \
+    "node tools/inverse_control_plane_guard.mjs --check --all --private --private-identifier-terms <owner-supplied file>"
+  run_and_fail node tools/inverse_control_plane_guard.mjs --check --all \
+    --private --private-identifier-terms "$PRIVATE_IDENTIFIER_TERMS_FILE"
+else
+  echo
+  echo "Private-identifier scan: no owner-supplied term-set file found; skipping the private-mode gate."
+  echo "  Set PRIVATE_IDENTIFIER_TERMS_FILE, or place one at \$HOME/.config/estate/private-terms.txt, to enable it locally."
+fi
 run_and_fail node tools/rcp05_cutover_receipt.mjs --check
 run_and_fail python3 test/functional/a11y_gate_test.py
 run_and_fail python3 test/functional/ci_waits_test.py
