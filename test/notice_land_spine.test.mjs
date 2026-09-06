@@ -207,10 +207,14 @@ test("extractNoticeLandRefs prefers body ULURP over inventing from agency alone"
 
 test("notice page mounts #nland and loadNoticeLandSpine", () => {
   const index = SITE_SOURCE;
+  const noticeLensSections = readFileSync(join(ROOT, "site/notice_lens_sections.mjs"), "utf8");
   assert.match(index, /id="nland"/);
   assert.match(index, /function loadNoticeLandSpine/);
   assert.match(index, /function noticeLandSpineHTML/);
-  assert.match(index, /loadNoticeLandSpine\(\s*r,\s*\$\("#nland"\)\s*\)/);
+  // The notice route mounts the spine through the section helper, which resolves
+  // eligibility before activating the Land lens that renders it.
+  assert.match(index, /renderNoticeLandSpine\(\s*r,\s*\$\("#nland"\)\s*\)/);
+  assert.match(noticeLensSections, /globalThis\.loadNoticeLandSpine\?\.\(record, element\)/);
   assert.match(index, /notice_land_spine\.mjs/);
   assert.match(index, /zap_projects_warehouse_lookup\.json/);
   // Reuses phase-grouped land spine + edge outcomes (no live ZAP API from browser).

@@ -111,9 +111,14 @@ function digAwarenessHTML(kind, r, tools){
   const html=tools.itemAwarenessHtml(r, esc, lang, {kind:digAwarenessKind(kind,r),today:todayISO()});
   return html?`<div class="dig-awareness">${html}</div>`:"";
 }
+// Digest previews render exam and land rows on routes that never open those lenses,
+// so the two values they need are read here rather than borrowed from the lens
+// modules. The day comes from the shared civic clock, which a harness can pin.
+const digestExamToday = () => todayISO().slice(0,10);
+const digestMihOn = v => v===true || v==="true";
 function digItemHTML(kind, r, keywords, awarenessTools){
   if(kind==="exam"){
-    const band=CrolStaffing.openWindowBand(r,careerToday());
+    const band=CrolStaffing.openWindowBand(r,digestExamToday());
     const meta=[t("career_exam_number",{number:r.exam_number}),r.application_start&&r.application_end?`${r.application_start}–${r.application_end}`:"",band].filter(Boolean).join(" · ");
     const examLink = CrolStaffing.examUrl(r.exam_number, location.origin);
     return `<div class="digitem"><div class="dt"><a href="${examLink}">${escUiHtml(r.title||"")}</a></div><div class="dm" lang="en" dir="ltr">${escUiHtml(meta)}</div>${r.notice_url?`<div class="da" lang="en" dir="ltr">NOE posted</div>`:""}<div class="dc"><a href="${examLink}">${t("view_on_crol")}</a></div></div>`;
@@ -139,7 +144,7 @@ function digItemHTML(kind, r, keywords, awarenessTools){
     return `<div class="digitem"><div class="dt"><a href="#notice/${encodeURIComponent(r.request_id)}">${digTitleHTML(title,ev)}</a></div>${digEvidenceHTML(ev)}<div class="dm">${r.agency_name} · ${when}</div>${aw}${dc}</div>`;
   }
   const landHref=r.project_id?`#land/${encodeURIComponent(r.project_id)}`:"#land";
-  return `<div class="digitem"><div class="dt"><a href="${landHref}">${enTitle(landProjectDisplayTitle(r))}</a></div><div class="dm">${r.borough||""}${r.community_district?" · CD "+r.community_district:""} · ${r.public_status||""}${r.primary_applicant?" · "+r.primary_applicant:""}${mihOn(r.mih_flag)?" · "+t("affordable_housing_tag"):""}</div>${aw}<div class="dc"><a href="${landHref}">${t("land_dig_open_detail")}</a> · <a href="https://zap.planning.nyc.gov/projects/${r.project_id}" ${EXT_ATTRS}>${t("view_comment_zap")}${extSR()}</a></div></div>`;
+  return `<div class="digitem"><div class="dt"><a href="${landHref}">${enTitle(landProjectDisplayTitle(r))}</a></div><div class="dm">${r.borough||""}${r.community_district?" · CD "+r.community_district:""} · ${r.public_status||""}${r.primary_applicant?" · "+r.primary_applicant:""}${digestMihOn(r.mih_flag)?" · "+t("affordable_housing_tag"):""}</div>${aw}<div class="dc"><a href="${landHref}">${t("land_dig_open_detail")}</a> · <a href="https://zap.planning.nyc.gov/projects/${r.project_id}" ${EXT_ATTRS}>${t("view_comment_zap")}${extSR()}</a></div></div>`;
 }
 
 Object.assign(globalThis,{locateAnyTerm,matchEvidence,resultMatchEvidence,matchText,matchAttachmentText,digTitleHTML,digEvidenceHTML,digContact,ensureDigAwarenessTools,digAwarenessKind,digAwarenessHTML,digItemHTML});

@@ -71,6 +71,7 @@ import {
 import { buildContractReportTarget, renderReportIssueAffordance } from "../report_issue.mjs";
 import { PROCUREMENT_PROCESS_STATE_LABELS } from "../procurement_process_state_vocabulary.mjs";
 import { moneyBrowseReadPath, moneyBrowseReceipt } from "../procurement_browse_read_path.mjs";
+import { RENEWAL_SUFFIX_RE, pinBase } from "../procurement_pin.mjs";
 
 const MONEY_DEFAULT_SNAPSHOT_URL="data/money_default_open.json";
 const MONEY_AGENCIES_SNAPSHOT_URL="data/money_procurement_agencies.json";
@@ -1791,12 +1792,6 @@ async function hydrateMoneyActionLocationRow(r){
   return globalThis.MoneyActionLocations?.hydrateMoneyActionLocationRow?.(r)||r;
 }
 
-const RENEWAL_SUFFIX_RE = /R0\d+$/;
-function pinBase(pin){
-  const s = String(pin||"").trim();
-  const m = s.match(RENEWAL_SUFFIX_RE);
-  return m ? s.slice(0, m.index) : null;
-}
 async function loadChain(r,precomputedRows=null){
   if(!usablePin(r.pin)) return [r];
   try{

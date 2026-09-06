@@ -57,7 +57,9 @@ test("the shipped notice surface keeps real joins and omits missing states", () 
   assert.doesNotMatch(html, /async function checkbookByPin\(/);
   assert.doesNotMatch(html, /async function checkbookQueryByField\(/);
   assert.match(html, /async function externalAwardForNotice\(r, el\)/);
-  assert.match(html, /loadChain\(r\)/);
+  // The paper trail still comes from the renewal-chain reader; the notice route reaches
+  // it through the Contracts lens gate rather than importing that lens on its cold path.
+  assert.match(html, /noticeProcurementChain\(r\)/);
   assert.match(html, /function lifecycleDollarsHTML/);
   assert.doesNotMatch(html, /lifecycle_unmatched_registered_html|external_award_none_note_html/);
   assert.doesNotMatch(strings, /Not yet shown here — registered contracts live in \{source\}|Not yet shown here — matching awards live in \{source\}/);

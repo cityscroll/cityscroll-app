@@ -5,6 +5,7 @@ import {
   communityBoardLabel,
   normalizeCommunityBoardRef,
 } from "../community_board_watch.mjs";
+import { geocodeAddressText } from "../address_geocoder.mjs";
 
 /* ===================== ALERTS ===================== */
 const AKEY = "crd_alerts_v1";
@@ -1143,7 +1144,7 @@ async function fillAddressLinks(r, el){
   let geo = null;
   if(goodAddr(r.street_address_1)){
     const addr = cleanText(r.street_address_1);
-    try{ geo = await geocode(addr + " New York NY"); }catch(e){}
+    try{ geo = await geocodeAddressText(addr + " New York NY"); }catch(e){}
   }
   if(!document.contains(el)) return;
   if(geo && geo.bbl && /^\d{10}$/.test(geo.bbl)){

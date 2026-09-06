@@ -15,6 +15,7 @@ import {
   buildRulemakingLifecycleReportTarget,
   renderReportIssueAffordance,
 } from "../report_issue.mjs";
+import { geocodeAddressText } from "../address_geocoder.mjs";
 
 /* ===== Rules explorer: process-stage rail + multi-notice rulemaking collapse.
    Pure model: site/rules_explorer.mjs (same list-ontology pattern as property_explorer).
@@ -1077,7 +1078,7 @@ async function checkDemolition(r, btn){
   const address=r?._location?.addresses?.[0]?.label||r?.street_address_1;
   if(!r||!address) return;
   btn.textContent=t("checking_dob"); btn.disabled=true;
-  const geo=await geocode(cleanText(address)+" New York NY");
+  const geo=await geocodeAddressText(cleanText(address)+" New York NY");
   if(!geo||!geo.bbl||!/^\d{10}$/.test(geo.bbl)){ btn.textContent=t("lot_not_resolved"); btn.disabled=false; return; }
   const boro={"1":"MANHATTAN","2":"BRONX","3":"BROOKLYN","4":"QUEENS","5":"STATEN ISLAND"}[geo.bbl[0]]||"";
   const blkIn=`'${String(parseInt(geo.bbl.slice(1,6),10))}','${geo.bbl.slice(1,6)}'`;

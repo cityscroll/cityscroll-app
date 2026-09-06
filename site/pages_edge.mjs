@@ -16,6 +16,7 @@ import { procurementShardPathForId } from "./procurement_read_model_shards.mjs";
 import { meetingCalendarICS } from "./hearing_attend_pack.mjs";
 import sharedMeetingSnapshot from "./data/shared_meeting_read_model.json" with { type: "json" };
 import rulesSemanticLaneArtifact from "./data/rules_semantic_lane.json" with { type: "json" };
+import { NOTICE_MODULE_PRELOADS } from "./notice_module_preload.mjs";
 import { renderNoticeMandateBacklinksForId } from "./notice_mandate_backlinks.mjs";
 import { projectNoticeObjectTarget } from "./notice_object_links.mjs";
 import {
@@ -567,6 +568,19 @@ async function handleComposedObject(request, env, pathname, canonicalPath) {
   return transformed;
 }
 
+/**
+ * Preload hints for the Notice route's cold module chain.
+ *
+ * Without them the browser learns about each module only after the one that
+ * imports it has arrived, so a graph this deep is fetched as a staircase of
+ * round trips. Announcing the whole chain in the document turns that staircase
+ * into one parallel fetch. The list is generated from the real import closure by
+ * `tools/notice_cold_path.mjs`; nothing here is maintained by hand.
+ */
+export function renderNoticeModulePreloadHTML(modules = NOTICE_MODULE_PRELOADS) {
+  return modules.map((path) => `<link rel="modulepreload" href="${esc(path)}">`).join("");
+}
+
 function noticeReportSource(id) {
   return {
     source_system: "city_record",
@@ -1036,6 +1050,7 @@ async function handleNotice(request, env, id) {
   const response = rewrittenResponse(asset, status, cacheControl);
   const transformed = new HTMLRewriter()
     .on("title", { element(element) { element.setInnerContent(`${title} · CityScroll`); } })
+    .on("head", { element(element) { element.append(renderNoticeModulePreloadHTML(), { html: true }); } })
     .on('link[rel="canonical"]', { element(element) { element.setAttribute("href", canonical); } })
     .on('meta[property="og:title"]', { element(element) { element.setAttribute("content", `${title} · CityScroll`); } })
     .on('meta[property="og:url"]', { element(element) { element.setAttribute("content", canonical); } })

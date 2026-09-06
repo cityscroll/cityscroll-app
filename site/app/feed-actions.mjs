@@ -3,6 +3,8 @@ import {
   isFranchiseConcessionNoticeEligible,
 } from "../franchise_notice.mjs";
 import { landProjectDisplayTitle, noticeDisplayTitle } from "../display_title.mjs";
+import { isMeetingOutcomesEligible } from "../meeting_outcome_read.mjs";
+import { landPhaseLabelText } from "../land_phase_label.mjs";
 import { agencyScopeLinksHTML } from "../agency_scope_links.mjs";
 import { bindCardinalityAdaptiveFacets } from "../cardinality_adaptive_facets.mjs";
 import {
@@ -836,7 +838,7 @@ function actionRailGuideHTML(actions){
     const where=whereBits.map(escUiHtml).join(" · ");
     const phaseName=guide.phase_label
       ? escUiHtml(guide.phase_label)
-      : (guide.phase_id ? escUiHtml(landPhaseLabel(guide.phase_id)) : "");
+      : (guide.phase_id ? escUiHtml(landPhaseLabelText(guide.phase_id, t)) : "");
     facts=[
       phaseName?fact("land_phase",`<dt>${t("land_guide_phase_label")}</dt><dd>${phaseName}</dd>`):"",
       guide.public_status?fact("land_status",`<dt>${t("land_guide_status_label")}</dt><dd><b>${escUiHtml(guide.public_status)}</b></dd>`):"",
@@ -919,7 +921,7 @@ function actionRailGuideHTML(actions){
       if(!h||!h.event_date||h.past) return;
       if(guide.next_hearing&&h.request_id&&guide.next_hearing.request_id===h.request_id) return;
       if(guide.next_hearing&&!h.request_id&&h.event_date===guide.next_hearing.event_date) return;
-      const body=h.body_kind?landPhaseLabel(h.body_kind):escUiHtml(h.agency||h.title||"");
+      const body=h.body_kind?landPhaseLabelText(h.body_kind, t):escUiHtml(h.agency||h.title||"");
       if(body) steps.push(step(t("land_guide_other_hearing_step",{body:escUiHtml(body),date:fdt(h.event_date)}),"land_other_hearing"));
     });
     if(!steps.length) steps.push(t("land_guide_fallback_step"));

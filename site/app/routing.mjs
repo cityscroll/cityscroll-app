@@ -48,6 +48,7 @@ import {
   noticePrimaryTimingMark,
   runtimeRumSemanticMilestones,
 } from "../rum_static_record_instrumentation.mjs";
+import { noticeProcurementChain, renderNoticeLandSpine, renderNoticeMeetingOutcomes } from "../notice_lens_sections.mjs";
 
 /* ===================== PERMALINKS & URL STATE =====================
    Document routes are canonical for Now, Browse facets, notices, and entity profiles. The same finite
@@ -1631,7 +1632,7 @@ async function showNotice(id, watch){
   noticePrimaryReady(runtimeRumSemanticMilestones(),{resultState:"content"},clientPrimaryAt);
   $("#ncopy").addEventListener("click", ()=>copyText(link, $("#ncopy")));
   bindQRShare($("#nqr"), link);
-  $("#nxlsx").addEventListener("click", async ()=>exportNoticeXlsx(r,await loadChain(r)));
+  $("#nxlsx").addEventListener("click", async ()=>exportNoticeXlsx(r,await noticeProcurementChain(r)));
   $("#nprint").addEventListener("click", ()=>printCurrentView("notice",link));
   const contextElement=$("#ncontext");
   const attachmentHydration=attachmentDataPromise.then(attachmentData=>{
@@ -1707,10 +1708,10 @@ async function showNotice(id, watch){
     loadTaxLienForNotice(r,$("#ntaxlien"));
   });
   loadFranchiseConcessionSpine(r, $("#nfranchise"));
-  loadNoticeLandSpine(r, $("#nland"));
-  loadMeetingOutcomes(r, $("#nmeet"));
+  renderNoticeLandSpine(r, $("#nland"));
+  renderNoticeMeetingOutcomes(r, $("#nmeet"), workerFetch);
   mountUnofficialTranslation($("#nxlate"), r);
-  if(usablePin(r.pin)){ loadChain(r).then(chain=>{ if(chain.length>1) paintPaperTrail($("#nchain"), r, chain); }).catch(()=>{}); }
+  if(usablePin(r.pin)){ noticeProcurementChain(r).then(chain=>{ if(chain.length>1) paintPaperTrail($("#nchain"), r, chain); }).catch(()=>{}); }
   focusItemRouteTarget(box.querySelector(".route-item"));
   applyActiveHistoryRouteScroll();
 }

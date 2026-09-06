@@ -11,6 +11,7 @@ import {
   noticeContextTimingMeasure,
   runtimeRumSemanticMilestones,
 } from "../rum_static_record_instrumentation.mjs";
+import { geocodeAddressText } from "../address_geocoder.mjs";
 const SECTION_LENS={"Procurement":"money","Public Hearings and Meetings":"meetings","Agency Rules":"rules","Property Disposition":"property","Changes in Personnel":"people"};
 const NOTICE_CONTEXT_LOOKUP_URL="data/notice_context_lookup.json";
 let noticeContextLookupPromise=null;
@@ -73,7 +74,7 @@ function timedContextBranch(label,work){
 }
 function parcelLinksHTML(links,provenanceKey,displayBbl=links.bbl){if(!links)return "";return `<div class="rmeta2 property-parcel-links" style="margin:8px 0">${t("parcel_elsewhere_label")} <a href="${escUiHtml(links.zola_url)}" ${EXT_ATTRS}>${t("parcel_link_zola")}${extSR()}</a> · <a href="${escUiHtml(links.acris_url)}" ${EXT_ATTRS}>${t("parcel_link_acris")}${extSR()}</a> · <a href="${escUiHtml(links.who_owns_what_url)}" ${EXT_ATTRS}>${t("parcel_link_wow")}${extSR()}</a> <span class="muted" style="font-size:12px">· ${t(provenanceKey,{bbl:displayBbl})}</span></div>`;}
 async function fillAddressLinks(r,el){
-  if(!el||!r)return;let geo=null;if(goodAddr(r.street_address_1)){const addr=cleanText(r.street_address_1);try{geo=await geocode(addr+" New York NY");}catch(e){}}
+  if(!el||!r)return;let geo=null;if(goodAddr(r.street_address_1)){const addr=cleanText(r.street_address_1);try{geo=await geocodeAddressText(addr+" New York NY");}catch(e){}}
   if(!document.contains(el))return;if(geo&&geo.bbl&&/^\d{10}$/.test(geo.bbl)){const tools=await propertyLocationTools();if(!document.contains(el))return;const links=tools.parcelLinksFromBbl(geo.bbl);if(links){el.innerHTML=parcelLinksHTML(links,"parcel_via_pad_snapshot",tools.bblReaderLabel(geo.bbl));return;}}
   if(r.section_name!=="Property Disposition")return;const tools=await propertyLocationTools();if(!document.contains(el))return;const location=tools.propertyLocationFromRow(r),bbl=tools.primaryPropertyBbl(location),links=tools.parcelLinksFromBbl(bbl);if(!links||location.scope!=="local")return;el.innerHTML=`${propertyPlaceChips(location)}${parcelLinksHTML(links,"parcel_via_notice_tax_lot",tools.bblReaderLabel(bbl))}`;
 }

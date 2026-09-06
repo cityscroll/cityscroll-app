@@ -39,6 +39,14 @@ export const ROUTE_ISLAND_MODULES = ["alerts.mjs", "community-board-scorecard.mj
 // It is intentionally outside SITE_MODULES so this test seam never becomes a wire claim.
 export const SOURCE_ONLY_MODULES = ["alerts.mjs"];
 
+// Primitives an app module used to declare inline and now imports from site/. Source
+// extraction in tests reads the concatenation, so the declaration has to stay in it.
+export const SHARED_SOURCE_MODULES = [
+  "procurement_pin.mjs",
+  "land_phase_label.mjs",
+  "meeting_outcome_read.mjs",
+];
+
 export function readSiteSource() {
   const html = readFileSync(new URL("../../site/index.html", import.meta.url), "utf8");
   const modules = SITE_MODULES.map((name) =>
@@ -48,7 +56,12 @@ export function readSiteSource() {
     readFileSync(new URL(`../../site/app/${name}`, import.meta.url), "utf8"),
   );
   const listPivots = readFileSync(new URL("../../site/list_entity_pivots.mjs", import.meta.url), "utf8");
-  return [html, ...modules, ...sourceOnly, listPivots].join("\n");
+  // Shared primitives the app modules now import instead of declaring inline. Tests that
+  // slice a named function or const out of the app source still find them here.
+  const shared = SHARED_SOURCE_MODULES.map((name) =>
+    readFileSync(new URL(`../../site/${name}`, import.meta.url), "utf8"),
+  );
+  return [html, ...modules, ...sourceOnly, listPivots, ...shared].join("\n");
 }
 
 export const SITE_SOURCE = readSiteSource();

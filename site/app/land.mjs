@@ -11,7 +11,8 @@ import {
 } from "../affordance_grammar.mjs";
 import { listEntityMentionHTML } from "../list_entity_pivots.mjs";
 import { communityBoardPageHref } from "../community_board_links.mjs";
-import { createPrecomputedAddressGeocoder } from "../precomputed_address_geocoder.mjs";
+import { geocodeAddressText } from "../address_geocoder.mjs";
+import { landPhaseLabelText } from "../land_phase_label.mjs";
 import {
   bblsForProject,
   filterLandSnapshot,
@@ -85,7 +86,6 @@ let landCouncilDistrict="";
 let landProjectInventory=[];
 let landActionInventory=[];
 let landRecordLinksPromise=null;
-const geocodeAddress=createPrecomputedAddressGeocoder();
 const mihOn = v => v===true || v==="true";
 
 function hydrateLandRecordLinks(record, selection){
@@ -709,7 +709,7 @@ function landRenderList(kw, kwIsTextMatch, boro, autoSelect){
 }
 
 async function geocode(q){
-  return geocodeAddress(q);
+  return geocodeAddressText(q);
 }
 
 function landPermalinkActionHTML(r){
@@ -962,24 +962,7 @@ function normalizeLandRecord(record){
   return record;
 }
 function landPhaseLabel(phase){
-  if(!phase) return "—";
-  const key=phase.label_key || (typeof phase==="string"?null:null);
-  if(phase.label_key) return t(phase.label_key);
-  if(typeof phase==="string"){
-    const meta={
-      pre_application:"land_phase_pre_application",
-      environmental:"land_phase_environmental",
-      pre_certification:"land_phase_pre_certification",
-      certification:"land_phase_certification",
-      community_board:"land_phase_community_board",
-      borough_president:"land_phase_borough_president",
-      cpc:"land_phase_cpc",
-      city_council:"land_phase_city_council",
-      mayoral_appeals:"land_phase_mayoral_appeals"
-    };
-    return meta[phase]?t(meta[phase]):phase;
-  }
-  return phase.short || "—";
+  return landPhaseLabelText(phase, t);
 }
 function landSpineLagHTML(lag){
   lag=lag||{};
