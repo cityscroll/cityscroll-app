@@ -55,8 +55,8 @@ Three of them are about people, and they are genuinely different destinations. C
 one is the most common way to conclude a record does not exist when it does.
 
 - **People + organizations** — [Browse people and organizations](/browse/people/). Community Boards,
-  City Council, agencies and vendors. Every row names its institution. This is where you look up a
-  body, not a job.
+  City Council, agencies and vendors. Every row names its institution. Look up a body here — a
+  board, a council, an agency, a vendor. Job records live in the other two.
 - **Staffing** — [Browse appointments](/browse/staffing/). Appointments, payroll, eligible lists and
   hiring outcomes — what happened to positions.
 - **Exams** — [Browse exams](/browse/exams/). Civil-service exam schedules, applications, eligible

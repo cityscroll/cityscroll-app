@@ -96,8 +96,8 @@ still watching, so a quiet stretch never looks like something broken.
 
 ## When the page does not recognize you
 
-The manage pages work from the link in your email, not from a session your browser remembers, so
-there are two states worth telling apart.
+The manage pages work from the link in your email. Your browser is never asked to remember who you
+are, which leaves two states worth telling apart.
 
 - **On Following, under Your watches**, a browser that has not been recognized is told to open a
   CityScroll email to see its watches. Nothing is missing and nothing was lost — the page simply has
