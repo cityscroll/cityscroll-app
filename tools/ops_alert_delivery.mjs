@@ -253,6 +253,10 @@ export function buildDeliveryReceipt({
     reused_marker: Boolean(delivery?.reused_marker),
     idempotency_key: delivery?.idempotency_key || null,
     response_status: delivery?.response_status ?? null,
+    // The relay's own answer, so the delivery can be confirmed from the receipt
+    // alone: it names whether this alert was sent or recognised as one already
+    // standing. It never carries a credential.
+    response_body: delivery?.response_body ?? null,
     delivered_at: delivery?.delivered_at || null,
     reason: delivery?.reason
       || (findingPresent ? "a freshness finding was present and no delivery was attempted" : "the freshness comparison was clean, so no alert was sent"),

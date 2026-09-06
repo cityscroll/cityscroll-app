@@ -260,3 +260,29 @@ test("the forced-finding hook keeps real findings ahead of the padding that size
   assert.equal(payload.findings[1], "artifact hash mismatch");
   assert.equal(payload.findings[2], "served artifact is 3 deploys behind main");
 });
+
+test("the retained receipt carries the endpoint's own answer, so delivery is confirmable from it", async () => {
+  const dir = workspace();
+  const findingsPath = join(dir, "freshness-findings.txt");
+  writeFileSync(findingsPath, "artifact hash mismatch\n", "utf8");
+  const relay = await endpoint((req, res) => {
+    req.resume();
+    req.on("end", () => {
+      res.writeHead(200, { "content-type": "application/json" });
+      res.end(JSON.stringify({ ok: true, sent: true, signature: "a1b2c3" }));
+    });
+  });
+  try {
+    const argv = cliArguments(dir, findingsPath);
+    argv[argv.indexOf("PLACEHOLDER")] = relay.url;
+    await run(process.execPath, argv, {
+      env: { ...process.env, CITYSCROLL_ADMIN_KEY: "test-admin-key", GITHUB_OUTPUT: "" },
+    });
+    const receipt = JSON.parse(readFileSync(join(dir, "ops-alert-delivery-receipt.json"), "utf8"));
+    assert.equal(receipt.response_status, 200);
+    assert.deepEqual(JSON.parse(receipt.response_body), { ok: true, sent: true, signature: "a1b2c3" });
+    assert.ok(!JSON.stringify(receipt).includes("test-admin-key"), "the receipt must never carry the key");
+  } finally {
+    await relay.close();
+  }
+});
