@@ -2,10 +2,10 @@
   "schema": "cityscroll.institution_record_capacity_evidence.v1",
   "evidence_id": "cityscroll-civic-institutions/institution-record-capacity",
   "route": "/agencies/economic-development-corporation/",
-  "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+  "revision": "4d4e69f08c5dffd118208f0d254cb1008e4cd531",
   "data_vintage": "2026-08-18",
   "timezone": "America/New_York",
-  "captured_at": "2026-09-06T00:30:06Z",
+  "captured_at": "2026-09-06T02:19:21Z",
   "image_directory": ".artifacts/institution-record-capacity",
   "image_policy": "Capture images are written to the ignored local directory above and are never committed. This manifest is the tracked proof: route, viewport, revision, data vintage, assertion and SHA-256 for each capture.",
   "files": [
@@ -17,7 +17,7 @@
         390,
         844
       ],
-      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "revision": "4d4e69f08c5dffd118208f0d254cb1008e4cd531",
       "data_vintage": "2026-08-18",
       "timezone": "America/New_York",
       "assertion": "at 390px the profile states each record's title, its timing as the source gives it, and the institution's capacity in plain language, with the other party named and the received/issued and applicant/approver boundaries visible",
@@ -48,7 +48,7 @@
         1440,
         900
       ],
-      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "revision": "4d4e69f08c5dffd118208f0d254cb1008e4cd531",
       "data_vintage": "2026-08-18",
       "timezone": "America/New_York",
       "assertion": "at 1440px the profile states each record's title, its timing as the source gives it, and the institution's capacity in plain language, with the other party named and the received/issued and applicant/approver boundaries visible",
@@ -79,7 +79,7 @@
         390,
         844
       ],
-      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "revision": "4d4e69f08c5dffd118208f0d254cb1008e4cd531",
       "data_vintage": "2026-08-18",
       "timezone": "America/New_York",
       "assertion": "at 390px a keyboard reader reaches the capacity records and each group's Browse-all action, with a visible focus indicator",
@@ -105,7 +105,7 @@
         1440,
         900
       ],
-      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "revision": "4d4e69f08c5dffd118208f0d254cb1008e4cd531",
       "data_vintage": "2026-08-18",
       "timezone": "America/New_York",
       "assertion": "at 1440px a keyboard reader reaches the capacity records and each group's Browse-all action, with a visible focus indicator",
@@ -131,7 +131,7 @@
         390,
         844
       ],
-      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "revision": "4d4e69f08c5dffd118208f0d254cb1008e4cd531",
       "data_vintage": "2026-08-18",
       "timezone": "America/New_York",
       "assertion": "at 390px Browse-all carries the same capacity relation the preview used, the scoped result count equals the count the profile stated, and Back restores the section, its records and its total",
@@ -145,8 +145,8 @@
         "back_restores_the_same_total": true,
         "no_horizontal_overflow": true
       },
-      "bytes": 242212,
-      "sha256": "fe04d1a7dc1f03f7396aa74a03015c7d625e345b74b907edf5dcf09eeaa72788",
+      "bytes": 247539,
+      "sha256": "4387694a87bcb771fed53d08d67b4fd3eafc6a52de2086d2708dccc79d91f91f",
       "axe": {
         "violations_total": 0,
         "failing_violations": [],
@@ -161,7 +161,7 @@
         1440,
         900
       ],
-      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "revision": "4d4e69f08c5dffd118208f0d254cb1008e4cd531",
       "data_vintage": "2026-08-18",
       "timezone": "America/New_York",
       "assertion": "at 1440px Browse-all carries the same capacity relation the preview used, the scoped result count equals the count the profile stated, and Back restores the section, its records and its total",
@@ -175,8 +175,8 @@
         "back_restores_the_same_total": true,
         "no_horizontal_overflow": true
       },
-      "bytes": 266524,
-      "sha256": "f69ecaa4f47b83dfb534a2bdd4772ca763d9766cf8fc187c91ce8ba7d0c1bb91",
+      "bytes": 272840,
+      "sha256": "6fc95ae67a8cc95e568aa416600f440c9159e607a2f7f60878598891adda0634",
       "axe": {
         "violations_total": 0,
         "failing_violations": [],
@@ -191,7 +191,7 @@
         390,
         844
       ],
-      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "revision": "4d4e69f08c5dffd118208f0d254cb1008e4cd531",
       "data_vintage": "2026-08-18",
       "timezone": "America/New_York",
       "assertion": "at 390px a capacity record opens its own full page, which names the same two institutions in the same two capacities in plain language, and Back returns to the unchanged record list",
@@ -206,8 +206,8 @@
         "back_restores_the_total": true,
         "no_horizontal_overflow": true
       },
-      "bytes": 165397,
-      "sha256": "c040278181c65387b5bb05902e3371bce8bee7a70d27f89f9b5a38c0d20d0e57",
+      "bytes": 159553,
+      "sha256": "3583e60718659643e5e6e0a2b28d6b6bd6073c1cdfbd09dab968e2d71273fbef",
       "axe": {
         "violations_total": 0,
         "failing_violations": [],
@@ -222,7 +222,7 @@
         1440,
         900
       ],
-      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "revision": "4d4e69f08c5dffd118208f0d254cb1008e4cd531",
       "data_vintage": "2026-08-18",
       "timezone": "America/New_York",
       "assertion": "at 1440px a capacity record opens its own full page, which names the same two institutions in the same two capacities in plain language, and Back returns to the unchanged record list",
@@ -253,7 +253,7 @@
         390,
         844
       ],
-      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "revision": "4d4e69f08c5dffd118208f0d254cb1008e4cd531",
       "data_vintage": "2026-08-18",
       "timezone": "America/New_York",
       "assertion": "at 390px doubled to 200% the capacity section keeps every record readable in one column, nothing escapes the viewport horizontally, and its actions stay large enough to hit",
@@ -280,7 +280,7 @@
         1440,
         900
       ],
-      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "revision": "4d4e69f08c5dffd118208f0d254cb1008e4cd531",
       "data_vintage": "2026-08-18",
       "timezone": "America/New_York",
       "assertion": "at 1440px doubled to 200% the capacity section keeps every record readable in one column, nothing escapes the viewport horizontally, and its actions stay large enough to hit",
@@ -307,7 +307,7 @@
         390,
         844
       ],
-      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "revision": "4d4e69f08c5dffd118208f0d254cb1008e4cd531",
       "data_vintage": "2026-08-18",
       "timezone": "America/New_York",
       "assertion": "at 390px a failed relationships load leaves the profile and its identity intact and discloses the deferred state, rather than rendering an empty capacity section that would read as a finding of no records",
@@ -319,8 +319,8 @@
         "deferred_state_is_disclosed": true,
         "no_horizontal_overflow": true
       },
-      "bytes": 152434,
-      "sha256": "6897524485df17cf0b98a23b7d94168050537ff643da0e9418dbf82e9a43a8d7",
+      "bytes": 152448,
+      "sha256": "8bdfb067bff1e8ffe12e08975b5f9676044999c2742a5043c887cbb000565af0",
       "axe": {
         "violations_total": 0,
         "failing_violations": [],
@@ -335,7 +335,7 @@
         1440,
         900
       ],
-      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "revision": "4d4e69f08c5dffd118208f0d254cb1008e4cd531",
       "data_vintage": "2026-08-18",
       "timezone": "America/New_York",
       "assertion": "at 1440px a failed relationships load leaves the profile and its identity intact and discloses the deferred state, rather than rendering an empty capacity section that would read as a finding of no records",
