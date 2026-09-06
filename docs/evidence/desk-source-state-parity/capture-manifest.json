@@ -2,12 +2,12 @@
   "schema": "cityscroll.deployed_source_state_render_manifest.v1",
   "evidence_class": "isolated-consumer-render",
   "capture_mode": "headless-playwright-loopback-static-render",
-  "captured_at": "2026-09-06T03:29:20Z",
+  "captured_at": "2026-09-06T04:03:56Z",
   "route": "/data-sources?source=checkbook-contracts#source-checkbook-contracts",
-  "revision": "b578029efde2e8bf692ba16c78efb8b642e55c16",
+  "revision": "320bd54850dee025c22f59379482bf7bc919d6bf",
   "consumer_revision": "5fdb3424f3f46d170a100b400069a2d11f81f9df",
   "data_vintage": "2026-09-05",
-  "data_revision": "19bb1dd5326b044c295cab746ebbef2ae631279ff0750f6d7b53f1a7e53ff7a7",
+  "data_revision": "0e958926826dadbd0ce9d5996687c821ec196220157b61e648a6d6e349b9405a",
   "registry_contracts_at_revision": 63,
   "source_rows_at_revision": 67,
   "image_directory": ".artifacts/dh08/captures",
@@ -18,6 +18,8 @@
     "missing_source_is_explicit": true,
     "missing_source_preserves_sibling_rows": true,
     "keyboard_activation": true,
+    "repair_queue_inspectable": true,
+    "repair_table_scroll_region_focusable": true,
     "no_javascript_deep_link": true,
     "zoom_200_percent": true,
     "new_source_target_minimum_css_pixels": 44,
@@ -28,13 +30,13 @@
       "name": "scripted-390x844.png",
       "viewport": [390, 844],
       "scripting": true,
-      "assertion": "The selected source survives reload; a missing source reports a distinct state while preserving all 67 sibling rows; keyboard activation recovers to a valid source; the new source targets meet 44 CSS pixels; 200% zoom and the page viewport do not overflow.",
+      "assertion": "The selected source survives reload; a missing source reports a distinct state while preserving all 67 sibling rows; keyboard activation recovers to a valid source; the repair queue remains inspectable through a focusable named table scroller; the new source targets meet 44 CSS pixels; 200% zoom and the page viewport do not overflow.",
       "axe": {
         "violations_total": 0,
         "critical_or_serious": [],
         "passes": true
       },
-      "render_content_sha256": "6779c2189188dddfcd69188b973a9b63a85a437c81f067014d76bb9cfb348faa"
+      "render_content_sha256": "f2e6383c7f163560d78e2fb606ba1f52073c2090657464770bf2313d8bf445c4"
     },
     {
       "name": "no-script-390x844.png",
@@ -47,13 +49,13 @@
       "name": "scripted-1440x900.png",
       "viewport": [1440, 900],
       "scripting": true,
-      "assertion": "The selected source survives reload; a missing source reports a distinct state while preserving all 67 sibling rows; keyboard activation recovers to a valid source; the new source targets meet 44 CSS pixels; 200% zoom and the page viewport do not overflow.",
+      "assertion": "The selected source survives reload; a missing source reports a distinct state while preserving all 67 sibling rows; keyboard activation recovers to a valid source; the repair queue remains inspectable through a focusable named table scroller; the new source targets meet 44 CSS pixels; 200% zoom and the page viewport do not overflow.",
       "axe": {
         "violations_total": 0,
         "critical_or_serious": [],
         "passes": true
       },
-      "render_content_sha256": "575c6ffda3da2da98540c8be209ce250131bc013436d8c6f9affaf5cbd1474dd"
+      "render_content_sha256": "7d7827e6ff25d9b261a4eadaacffeadb0a49b296e7445e3c1914ec36aa172357"
     },
     {
       "name": "no-script-1440x900.png",
