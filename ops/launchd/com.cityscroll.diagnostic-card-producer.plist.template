@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.cityscroll.diagnostic-card-producer</string>
+  <!-- Hourly upsert of Desk repair issues into deduplicated engineering cards.
+       launchd has no login PATH, so the installer writes absolute python. -->
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/bash</string>
+    <string>__CITYSCROLL_ROOT__/tools/run_diagnostic_card_producer.sh</string>
+  </array>
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>CITYSCROLL_REPO</key>
+    <string>__CITYSCROLL_ROOT__</string>
+    <key>CITYSCROLL_DIAGNOSTIC_CARD_PRODUCER</key>
+    <string>on</string>
+    <key>PATH</key>
+    <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+  </dict>
+  <key>StartInterval</key>
+  <integer>3600</integer>
+  <key>RunAtLoad</key>
+  <false/>
+  <key>StandardOutPath</key>
+  <string>__CITYSCROLL_DIAGNOSTIC_CARD_LOG_DIR__/producer.stdout.log</string>
+  <key>StandardErrorPath</key>
+  <string>__CITYSCROLL_DIAGNOSTIC_CARD_LOG_DIR__/producer.stderr.log</string>
+</dict>
+</plist>

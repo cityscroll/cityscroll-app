@@ -5,6 +5,10 @@ __pycache__/
 docs/data-source-graph.json
 docs/data-source-graph.html
 
+# Operator state for the diagnostic repair-card producer. Generated cards,
+# lineage, receipts and checkpoints stay off the public tree.
+.diagnostic-card-producer/
+
 # Regenerable local build output; source lives under site/ outside these paths.
 _site/
 site/browse/
