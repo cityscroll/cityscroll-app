@@ -178,6 +178,7 @@ export function reduceCouncilMatterWatchUpdates({
   observations = [],
   baseline = null,
   asOf = null,
+  publishedGeneration = null,
 } = {}) {
   const parsed = parseCouncilMatterRef(matterRefInput);
   if (!parsed) return [];
@@ -244,6 +245,21 @@ export function reduceCouncilMatterWatchUpdates({
       matter_ref: matterRef,
       matter_id: parsed.matter_id,
       published_revision: revision,
+      published_generation_id: clean(
+        primary?.published_generation_id
+          || primary?.generation_id
+          || publishedGeneration?.generation_id,
+        128,
+      ) || null,
+      published_generation_sequence: Number.isInteger(Number(
+        primary?.published_generation_sequence ?? publishedGeneration?.sequence,
+      )) && clean(primary?.published_generation_id || primary?.generation_id || publishedGeneration?.generation_id, 128)
+        ? Number(primary?.published_generation_sequence ?? publishedGeneration?.sequence)
+        : null,
+      published_generation_at: clean(
+        primary?.published_generation_at || (publishedGeneration?.generation_id && publishedGeneration?.published_at),
+        80,
+      ) || null,
       kind,
       action_name: normalizeOfficialActionText(primary?.action_name || primary?.outcome) || null,
       event_id: primary?.event_id || null,
@@ -289,6 +305,9 @@ export function councilMatterUpdateDigestRows(updates = []) {
     href: update.href,
     kind: update.kind,
     published_revision: update.published_revision,
+    published_generation_id: update.published_generation_id,
+    published_generation_sequence: update.published_generation_sequence,
+    published_generation_at: update.published_generation_at,
     constituents: update.constituents,
     council_matter_watch: update.council_matter_watch,
     discovered_older: update.discovered_older,

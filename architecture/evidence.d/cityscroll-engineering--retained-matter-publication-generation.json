@@ -1,0 +1,33 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/retained-matter-publication-generation",
+  "status": "implemented",
+  "fingerprint": "retained-matter-publication-generation.v1",
+  "updated_at": "2026-09-06T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "matter-publication-generation",
+      "path": "site/matter_publication_generation.mjs"
+    },
+    {
+      "id": "matter-publication-store",
+      "path": "worker/src/lib/matter_publication.mjs"
+    },
+    {
+      "id": "retained-matter-publication-generation-decision",
+      "path": "docs/adr/retained-matter-publication-generation.md"
+    },
+    {
+      "id": "retained-matter-publication-generation-tests",
+      "path": "worker/test/retained_matter_publication_generation.test.mjs"
+    },
+    {
+      "id": "retained-matter-publication-fixture-renderer",
+      "path": "tools/render_retained_matter_publication_fixtures.mjs"
+    },
+    {
+      "id": "retained-matter-publication-evidence-capture",
+      "path": "tools/capture_retained_matter_publication_evidence.py"
+    }
+  ]
+}

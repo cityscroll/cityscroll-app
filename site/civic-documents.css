@@ -2039,6 +2039,22 @@ select {
   padding: 0.5rem 1rem;
 }
 
+.matter-coverage-state,
+.matter-current-action,
+.matter-watch-failed-confirmation,
+.matter-watch-unsupported,
+.matter-watch-stale {
+  margin-block: var(--space-3);
+}
+
+.matter-coverage-state[data-matter-current-coverage="false"],
+.matter-watch-failed-confirmation,
+.matter-watch-unsupported {
+  padding: var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
 .near-form,
 .following-create {
   border-block: 1px solid var(--color-border);

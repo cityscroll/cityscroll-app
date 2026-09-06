@@ -13,6 +13,11 @@ import { renderLegalChangeSummary } from "./legal_change_edges.mjs";
 import { publishedMatterHref } from "./legislative_matter_availability.mjs";
 import { councilMatterFollowMarkup } from "./council_matter_watch.mjs";
 import {
+  MATTER_COVERAGE_STATE,
+  approvalLanguage,
+  coverageCopy,
+} from "./matter_publication_generation.mjs";
+import {
   buildMatterAppearanceCalendarView,
   MATTER_APPEARANCES_ANCHOR,
   renderMatterAppearanceCalendar,
@@ -154,6 +159,9 @@ export function buildLegislativeMatterDocument(payload = {}, value = "78605") {
     .sort((left, right) => left.event.date.localeCompare(right.event.date)
       || left.event.event_id.localeCompare(right.event.event_id));
   if (!appearances.length) return null;
+  const latest = appearances[appearances.length - 1];
+  const coverageState = clean(payload.coverage_state, 80) || null;
+  const latestAction = latest.outcome || latest.actions.at(-1) || null;
   return {
     schema: LEGISLATIVE_MATTER_SCHEMA,
     id,
@@ -177,6 +185,13 @@ export function buildLegislativeMatterDocument(payload = {}, value = "78605") {
       .filter((revision) => revision.matter_file || revision.title),
     canonical_href: matterCanonicalHref(id, payload),
     generated_at: clean(payload.generated_at, 80) || null,
+    generation_id: clean(payload.generation_id, 128) || null,
+    generation_sequence: Number.isInteger(Number(payload.generation_sequence)) ? Number(payload.generation_sequence) : null,
+    published_at: clean(payload.published_at, 80) || null,
+    coverage_state: coverageState,
+    latest_official_action: latestAction,
+    latest_deciding_body: latest.committee?.label || null,
+    approval: approvalLanguage(latestAction),
     appearances,
   };
 }
@@ -293,6 +308,32 @@ function appearanceMarkup(appearance) {
  * has to keep it one — a page that reads as "nothing more happened" would be
  * asserting an outcome the materialization cannot support.
  */
+function coverageBannerMarkup(view) {
+  const state = view.coverage_state;
+  if (!state) return "";
+  const copy = coverageCopy(state, {
+    latestAction: view.latest_official_action,
+    decidingBody: view.latest_deciding_body,
+  });
+  const currentClaim = state === MATTER_COVERAGE_STATE.OLDER_STATIC_FALLBACK
+    || state === MATTER_COVERAGE_STATE.UNPUBLISHED
+    ? "false"
+    : (state === MATTER_COVERAGE_STATE.CURRENT ? "true" : "false");
+  return `<p class="matter-coverage-state" role="status" data-matter-coverage="${esc(state)}" data-matter-current-coverage="${currentClaim}">${esc(copy)}</p>`;
+}
+
+function currentActionMarkup(view) {
+  const action = view.latest_official_action;
+  if (!action) return "";
+  const body = view.latest_deciding_body;
+  const approval = view.approval;
+  const bodyNote = body ? ` Deciding body: ${body}.` : "";
+  const stage = /subcommittee/i.test(action)
+    ? " This approval is at subcommittee stage."
+    : (/committee/i.test(action) ? " This approval is at committee stage." : "");
+  return `<p class="matter-current-action" data-matter-current-action="${esc(action)}" data-matter-approval-body="${esc(body || "")}">Latest observed official action: ${esc(action)}.${esc(bodyNote)}${esc(stage)}${approval?.claims_testimony || approval?.claims_agency_reply || approval?.claims_resident_causation ? "" : ""}</p>`;
+}
+
 function historyScopeMarkup(view) {
   const count = view.appearances.length;
   const single = count === 1;
@@ -305,7 +346,10 @@ function historyScopeMarkup(view) {
   const source = vintage
     ? ` ${single ? "It comes" : "They come"} from the Council meeting records materialized on ${vintage}.`
     : "";
-  return `<p class="node-muted matter-history-scope" data-matter-appearance-count="${esc(String(count))}" data-matter-latest-observed="${esc(latest.event.date || "")}">${esc(`${held}${dated}.${source} No later official step has been located for it. That is the limit of what has been retained here, not a finding that the matter is settled.`)}</p>`;
+  const incomplete = view.coverage_state === MATTER_COVERAGE_STATE.INCOMPLETE_HISTORY
+    ? " This history is incomplete."
+    : " No later official step has been located for it. That is the limit of what has been retained here, not a finding that the matter is settled.";
+  return `<p class="node-muted matter-history-scope" data-matter-appearance-count="${esc(String(count))}" data-matter-latest-observed="${esc(latest.event.date || "")}">${esc(`${held}${dated}.${source}${incomplete}`)}</p>`;
 }
 
 /**
@@ -329,6 +373,8 @@ export function renderLegislativeMatterDocument(view, { currentHref = "", legalC
     : "";
   const identity = `<p class="node-meta"><span>${esc(view.matter_file || `Matter ${view.id}`)}</span> · <span>Matter ${esc(view.id)}</span>${view.matter_type ? ` · <span>${esc(view.matter_type)}</span>` : ""}${view.matter_status ? ` · <span>${esc(view.matter_status)}</span>` : ""}</p>`;
   const follow = `<p class="matter-document-follow">${councilMatterFollowMarkup({ lens: "meetings", matter_id: view.id }, { label: `Follow matter ${view.matter_file || view.id}` })}</p>`;
+  const coverage = coverageBannerMarkup(view);
+  const currentAction = currentActionMarkup(view);
   // The compact month is a hypothesis about temporal concentration, never a
   // claimed decision: it only renders when the appearances cluster densely
   // enough (CBICS-01 density rule), and it links back to the same evidence
@@ -343,10 +389,11 @@ export function renderLegislativeMatterDocument(view, { currentHref = "", legalC
   const provenance = renderNodeProvenance({
     heading: "Sources and receipts",
     headingId: "matter-sources",
-    note: `This matter view is a static projection of the committed Council meeting-outcome materialization. It preserves the publisher event, meeting notice, documents, and Legistar matter record for each observed appearance.`,
+    note: `This matter view is a retained projection of Council meeting records. It preserves the publisher event, meeting notice, documents, and Legistar matter record for each observed appearance.`,
     sourceItems: [
       matterSource ? { html: matterSource } : null,
       view.matter_ref ? `Publisher identity ${view.matter_ref}.` : null,
+      view.generation_id ? `Published generation ${view.generation_id}.` : null,
       ...labelRevisionItems(view),
       `Materialized at ${view.generated_at || "an unspecified source vintage"}.`,
     ].filter(Boolean),
@@ -354,5 +401,5 @@ export function renderLegislativeMatterDocument(view, { currentHref = "", legalC
   });
   const back = renderNodeBack({ href: "/browse/meetings/", label: "Browse meetings", currentHref });
   const legalChanges = renderLegalChangeSummary(legalChangeGraph);
-  return gateNodePageRender(`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(view.matter_file || view.title)} · CityScroll</title><meta name="description" content="A source-backed City Council matter history with observed meetings, actions, votes, and official records."><link rel="canonical" href="https://cityscroll.org${esc(view.canonical_href)}"><meta property="og:url" content="https://cityscroll.org${esc(view.canonical_href)}">${renderCivicDocumentAssets("/")}<link rel="stylesheet" href="/compact_calendar.css">${renderCalendarEventPreviewScript("/")}</head><body><a class="skip" href="#main">Skip to content</a>${renderCivicDocumentMast({ current: "browse", surfaceClass: "matter-document-mast" })}<main id="main" class="node-document civic-object-document legislative-matter-document" data-node-document="1" data-civic-object-kind="legislative-matter" data-matter-id="${esc(view.id)}" data-subject-ref="${esc(view.ref)}"><div class="civic-object-hero">${back}<p class="node-kicker civic-object-kicker">New York City Council legislative matter</p><h1>${esc(view.title)}</h1>${identity}${follow}<p class="civic-object-pivot">${matterSource}</p></div>${legalChanges}${appearanceCalendar}${appearanceSection}${provenance}</main>${renderNodeFooter()}</body></html>`);
+  return gateNodePageRender(`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(view.matter_file || view.title)} · CityScroll</title><meta name="description" content="A source-backed City Council matter history with observed meetings, actions, votes, and official records."><link rel="canonical" href="https://cityscroll.org${esc(view.canonical_href)}"><meta property="og:url" content="https://cityscroll.org${esc(view.canonical_href)}">${renderCivicDocumentAssets("/")}<link rel="stylesheet" href="/compact_calendar.css">${renderCalendarEventPreviewScript("/")}</head><body><a class="skip" href="#main">Skip to content</a>${renderCivicDocumentMast({ current: "browse", surfaceClass: "matter-document-mast" })}<main id="main" class="node-document civic-object-document legislative-matter-document" data-node-document="1" data-civic-object-kind="legislative-matter" data-matter-id="${esc(view.id)}" data-subject-ref="${esc(view.ref)}" data-matter-ref="${esc(view.matter_ref || "")}" data-matter-generation="${esc(view.generation_id || "")}" data-matter-coverage="${esc(view.coverage_state || "")}"><div class="civic-object-hero">${back}<p class="node-kicker civic-object-kicker">New York City Council legislative matter</p><h1>${esc(view.title)}</h1>${identity}${currentAction}${coverage}${follow}<p class="civic-object-pivot">${matterSource}</p></div>${legalChanges}${appearanceCalendar}${appearanceSection}${provenance}</main>${renderNodeFooter()}</body></html>`);
 }

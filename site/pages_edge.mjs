@@ -50,6 +50,7 @@ import regulatoryAgenda from "./data/regulatory_agenda.json" with { type: "json"
 import { buildRulemakingObjects, rulemakingObjectForId } from "../worker/src/lib/rulemaking.mjs";
 import { buildCommitteeDocumentView, renderCommitteeDocument } from "./committee_document.mjs";
 import { buildLegislativeMatterDocument, renderLegislativeMatterDocument } from "./legislative_matter_document.mjs";
+import { resolvePublishedMatterLookup } from "./matter_publication_generation.mjs";
 import { renderNoticeBitemporalHistory } from "./civic_time_ledger.mjs";
 import {
   buildPublicAssertionGraph,
@@ -387,10 +388,15 @@ function matterUnavailableResponse(matterId) {
 async function handleMatter(request, env, matterId) {
   const snapshotRequest = request.method === "HEAD" ? new Request(request, { method: "GET" }) : request;
   const snapshot = await staticAsset(env, snapshotRequest, "/data/legislative_matter_lookup.json");
-  if (!snapshot.ok) return matterUnavailableResponse(matterId);
+  let staticLookup = null;
+  if (snapshot.ok) {
+    try { staticLookup = await snapshot.json(); } catch { staticLookup = null; }
+  }
+  const published = await resolvePublishedMatterLookup(env, { staticLookup });
+  if (!published.lookup) return matterUnavailableResponse(matterId);
   let view = null;
   try {
-    view = buildLegislativeMatterDocument(await snapshot.json(), matterId);
+    view = buildLegislativeMatterDocument(published.lookup, matterId);
   } catch (_error) {
     view = null;
   }
@@ -405,6 +411,8 @@ async function handleMatter(request, env, matterId) {
     "Content-Type": "text/html; charset=utf-8",
     "Cache-Control": "public, max-age=300, s-maxage=1800, stale-while-revalidate=86400",
     "X-Content-Type-Options": "nosniff",
+    "X-Matter-Generation": String(view.generation_id || ""),
+    "X-Matter-Coverage": String(view.coverage_state || ""),
   };
   return request.method === "HEAD"
     ? new Response(null, { status: 200, headers })

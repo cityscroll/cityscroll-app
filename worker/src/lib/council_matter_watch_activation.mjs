@@ -20,6 +20,13 @@ import {
   councilMatterUpdateDigestRows,
   reduceCouncilMatterWatchUpdates,
 } from "../../../site/council_matter_watch_change.mjs";
+import {
+  holdUpdatesUntilPublished,
+  matterWatchActivationReadiness,
+  readPublishedMatterLookup,
+} from "./matter_publication.mjs";
+
+export { matterWatchActivationReadiness };
 
 export {
   matterWatchDeliveryEnabled,
@@ -105,6 +112,7 @@ export async function confirmExactMatterWatch(env, record, {
   roster = defaultRetainedMatterRoster(),
   now = new Date().toISOString(),
   observations = null,
+  requireReadiness = false,
 } = {}) {
   const watch = resolveExactCouncilMatterWatch({ lens: record.lens, filter: record.filter }, { roster });
   if (watch.status !== "ok") {
@@ -118,11 +126,25 @@ export async function confirmExactMatterWatch(env, record, {
     error.code = "missing-identity";
     throw error;
   }
+  const readiness = requireReadiness
+    ? await matterWatchActivationReadiness(env)
+    : { ready: true, reason: null, gated: false };
+  if (!readiness.ready) {
+    return {
+      created: false,
+      baseline: null,
+      watch,
+      confirmation: "failed",
+      following: false,
+      reason: readiness.reason,
+      readiness,
+    };
+  }
   const existing = env?.DB?.prepare
     ? baselineFromRow(await first(env.DB, SELECT_ACTIVE_SQL, [record.subscriber_id, watch.matter_ref]))
     : null;
   if (existing) {
-    return { created: false, baseline: existing, watch };
+    return { created: false, baseline: existing, watch, confirmation: "confirmed", following: true, readiness };
   }
   const journalRows = observations || await readJournalObservationsForMatter(env, watch.matter_ref);
   const snapshot = baselineFromObservations(journalRows, { now });
@@ -175,7 +197,7 @@ export async function confirmExactMatterWatch(env, record, {
       now,
     ).run();
   }
-  return { created: true, baseline, watch };
+  return { created: true, baseline, watch, confirmation: "confirmed", following: true, readiness };
 }
 
 export async function removeExactMatterWatch(env, record, { now = new Date().toISOString() } = {}) {
@@ -217,12 +239,16 @@ export async function eligibleMatterWatchRows(env, record, {
       deliveryEnabled,
     });
   }
-  return councilMatterUpdateDigestRows(reduceCouncilMatterWatchUpdates({
+  const published = await readPublishedMatterLookup(env, {});
+  const updates = reduceCouncilMatterWatchUpdates({
     matter_ref: watch.matter_ref,
     observations: mapped,
     baseline,
     asOf,
-  }));
+    publishedGeneration: published.generation,
+  });
+  const { released } = holdUpdatesUntilPublished(updates, published.generation);
+  return councilMatterUpdateDigestRows(released);
 }
 
 export function compileExactCouncilMatter(sub, todayISO) {
