@@ -314,6 +314,10 @@ function sleep(ms) {
  * attempts) stops the generation immediately, leaving the checkpoint naming
  * the first unfinished batch so a later call with the same arguments resumes
  * there.
+ *
+ * The injected `now` is the run's only clock: lease liveness at the fence and
+ * the receipt's timestamps are both read from it, so a fixture can drive the
+ * whole write path deterministically.
  */
 export async function publishBounded({
   batchPlan,
@@ -347,7 +351,7 @@ export async function publishBounded({
   // The fence is settled once before any batch is rendered or executed, so a
   // stale generation is rejected without a single visible mutation — including
   // when its plan is empty or its checkpoint would otherwise resume mid-way.
-  const gate = await checkGenerationCommit({ store: fenceStore, generation: batchPlan.generation, holder, fingerprint });
+  const gate = await checkGenerationCommit({ store: fenceStore, generation: batchPlan.generation, holder, fingerprint, now: now() });
   if (gate.fenced) {
     recordFenceRejection(receipt, gate, batchPlan.batches[resumeIndex(batchPlan.batches, receipt)] || null);
     writeCheckpoint(checkpointPath, receipt);
@@ -362,7 +366,7 @@ export async function publishBounded({
 
     // A long publication re-checks the fence between batches: a generation that
     // is superseded partway through stops here rather than continuing to write.
-    const boundary = await checkGenerationCommit({ store: fenceStore, generation: batchPlan.generation, holder, fingerprint });
+    const boundary = await checkGenerationCommit({ store: fenceStore, generation: batchPlan.generation, holder, fingerprint, now: now() });
     if (boundary.fenced) {
       recordFenceRejection(receipt, boundary, batch);
       writeCheckpoint(checkpointPath, receipt);

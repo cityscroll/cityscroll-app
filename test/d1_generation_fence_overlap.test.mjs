@@ -38,6 +38,10 @@ const MIGRATIONS = [
 const manifest = loadManifest();
 const FINGERPRINT_OLD = "a".repeat(64);
 const FINGERPRINT_NEW = "b".repeat(64);
+// One fixed fixture clock drives both the fence leases and the write path, so
+// the overlap is decided by generation order rather than by elapsed wall time.
+const CLOCK = Date.parse("2026-09-03T12:00:00Z");
+const clock = () => CLOCK;
 
 let DatabaseSync;
 try {
@@ -163,18 +167,16 @@ test(
     // Both runs claim from the same fence store. The older one is abandoned
     // mid-flight, exactly as a stalled publisher would be, and the newer one
     // then claims the next generation.
-    // publishBounded reads the wall clock, so the live lease is anchored to it.
-    const startedAt = Date.now();
     const store = createMemoryStateStore();
     const oldClaim = await claimGeneration({
       store, holder: "publisher-old", fingerprint: FINGERPRINT_OLD,
-      watermarks: watermarksFromSnapshot(snapshotFor(manifest, older)), now: startedAt, leaseMs: 60_000,
+      watermarks: watermarksFromSnapshot(snapshotFor(manifest, older)), now: CLOCK - 2, leaseMs: 60_000,
     });
     assert.equal(oldClaim.generation, 1);
-    await abandonGeneration({ store, generation: 1, holder: "publisher-old", fingerprint: FINGERPRINT_OLD, now: startedAt + 1 });
+    await abandonGeneration({ store, generation: 1, holder: "publisher-old", fingerprint: FINGERPRINT_OLD, now: CLOCK - 1 });
     const newClaim = await claimGeneration({
       store, holder: "publisher-new", fingerprint: FINGERPRINT_NEW,
-      watermarks: watermarksFromSnapshot(snapshotFor(manifest, newer)), now: startedAt + 2, leaseMs: 600_000,
+      watermarks: watermarksFromSnapshot(snapshotFor(manifest, newer)), now: CLOCK, leaseMs: 600_000,
     });
     assert.equal(newClaim.generation, 2);
 
@@ -191,7 +193,7 @@ test(
       const staleReceipt = await publishBounded({
         batchPlan: stalePlan, manifest, fenceStore: store,
         holder: "publisher-old", fingerprint: FINGERPRINT_OLD, executor: staleExecutor,
-        checkpointPath: join(checkpointDir, "stale.json"),
+        checkpointPath: join(checkpointDir, "stale.json"), now: clock,
       });
 
       // A1: rejected before any mutation became visible.
@@ -222,7 +224,7 @@ test(
       const currentReceipt = await publishBounded({
         batchPlan: currentPlan, manifest, fenceStore: store,
         holder: "publisher-new", fingerprint: FINGERPRINT_NEW, executor: currentExecutor,
-        checkpointPath: join(checkpointDir, "current.json"),
+        checkpointPath: join(checkpointDir, "current.json"), now: clock,
       });
       assert.equal(currentReceipt.status, "complete");
       assert.equal(currentReceipt.fence.result, "accepted");
