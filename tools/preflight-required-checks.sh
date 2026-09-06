@@ -17,16 +17,37 @@ RUN_READING_LEVEL=0
 RUN_FULL=0
 RECEIPT_PATH="${PREFLIGHT_RECEIPT:-$PROJECT_ROOT/.artifacts/preflight-required-checks.json}"
 
+# The unit families this script claims to cover, in the order CI's `unit-family`
+# matrix declares them (.github/workflows/ci.yml). This list is the preflight's
+# declared coverage, and test/standards/preflight_unit_family_parity.py fails if
+# it ever drifts from that matrix.
+PREFLIGHT_UNIT_FAMILIES=(static-standards site-node contract worker)
+FAMILY_STATUS=()
+for _declared_family in "${PREFLIGHT_UNIT_FAMILIES[@]}"; do
+  FAMILY_STATUS+=("not reached")
+done
+unset _declared_family
+FAMILY_FAILED=0
+
 usage() {
   cat <<'EOF'
 Usage: ./tools/preflight-required-checks.sh [--with-reading-level] [--full] [--receipt PATH] [--help]
 
-Runs the local, offline-first gates matching CI's Unit job and required check mapping:
-  - Unit tests (site + worker)
-    - syntax + i18n gates
-    - stray-English static lint
-    - generated-source docs + source contract docs/sanity checks
-    - site and worker unit test suites
+Runs the local, offline-first gates matching CI's Unit job and required check mapping.
+
+Covered: all four families of CI's `unit-family` matrix, in that order, each run
+even if an earlier one fails (CI runs them in parallel with fail-fast: false):
+  - static-standards  syntax, i18n, static lint, generated-source and read-model checks
+  - site-node         site unit tests + Community Board ontology gates
+  - contract          site/worker contract tests
+  - worker            worker dependencies + worker unit tests
+
+Every run ends with a coverage summary naming each family and whether it passed,
+failed, or was never reached, so an aborted run is never read as a pass.
+
+Not covered by default, and named as skipped in that summary: the reading-level
+ratchet (--with-reading-level), the browser gates (--full), and any deploy,
+Pages build, or network-crossing job, which are not run locally at all.
 
 Options:
   --with-reading-level  Run readable-or-else locally (same pages/arguments as CI reading-level job).
@@ -69,6 +90,60 @@ run_and_fail() {
     echo "do not open PR yet: failed preflight command: $*"
     exit 1
   fi
+}
+
+# Run one CI unit family. The body goes in a subshell so that run_and_fail's
+# exit ends only this family, matching CI's fail-fast: false matrix: a failure
+# in one family must not decide whether the others ever ran.
+run_family() {
+  local index="$1"
+  local name="$2"
+  local body="$3"
+  echo
+  echo "============================================================"
+  echo "Unit family ($name)"
+  echo "============================================================"
+  if ( "$body" ); then
+    FAMILY_STATUS[$index]="passed"
+  else
+    FAMILY_STATUS[$index]="FAILED"
+    FAMILY_FAILED=1
+  fi
+}
+
+# Printed on every exit path, including an early abort, so the log always states
+# which required families ran instead of leaving a reader to infer it.
+report_family_coverage() {
+  local index=0
+  local unreached=0
+  echo
+  echo "------------------------------------------------------------"
+  echo "Unit family coverage (mirrors CI job: unit-family)"
+  while [[ "$index" -lt "${#PREFLIGHT_UNIT_FAMILIES[@]}" ]]; do
+    printf '  %-17s %s\n' "${PREFLIGHT_UNIT_FAMILIES[$index]}" "${FAMILY_STATUS[$index]}"
+    if [[ "${FAMILY_STATUS[$index]}" == "not reached" ]]; then
+      unreached=1
+    fi
+    index=$((index + 1))
+  done
+  if [[ "$unreached" == "1" ]]; then
+    echo "  This run ended before every CI-required unit family executed."
+    echo "  Treat it as incomplete, not as a pass."
+  fi
+  echo
+  echo "  Not covered by this run, by design:"
+  if [[ "$RUN_READING_LEVEL" == "1" ]]; then
+    echo "    reading-level ratchet: ran (--with-reading-level)"
+  else
+    echo "    reading-level ratchet: skipped (CI-required; use --with-reading-level)"
+  fi
+  if [[ "$RUN_FULL" == "1" ]]; then
+    echo "    browser gates (axe, functional): ran (--full)"
+  else
+    echo "    browser gates (axe, functional): skipped (cost; use --full)"
+  fi
+  echo "    deploy, Pages build, and network-crossing jobs: never run locally"
+  echo "------------------------------------------------------------"
 }
 
 while [[ $# -gt 0 ]]; do
@@ -205,65 +280,164 @@ PY
 finish_preflight() {
   local status="$?"
   cleanup_local_resources
+  report_family_coverage
   write_receipt "$status"
   exit "$status"
 }
 trap finish_preflight EXIT
 
-run_banner "Unit tests (site + worker)" "Syntax + i18n + static lint" \
-  "python3 test/standards/{js_syntax,i18n_keys,i18n_refs,i18n_fallback_sync,es_diacritics,i18n_glossary,attribution,link_text,control_labels,outline_guard,form_border_contrast,nyc_copy_lint,reader_register,public_surface_vocab,claim_first_prediction,page_metadata,brand_identity,no_official_marks,canonical_domain,link_targets,heading_punctuation,genai_disclosure,nl_input_clarity,demo_links}.py"
-run_and_fail python3 test/standards/js_syntax.py
-run_and_fail python3 test/standards/i18n_keys.py
-run_and_fail python3 test/standards/i18n_refs.py
-run_and_fail python3 test/standards/i18n_fallback_sync.py
-run_and_fail python3 test/standards/stray_english.py
-run_and_fail python3 test/standards/es_diacritics.py
-run_and_fail python3 test/standards/i18n_glossary.py
-run_and_fail python3 test/standards/attribution.py
-run_and_fail python3 test/standards/link_text.py
-run_and_fail python3 test/standards/control_labels.py
-run_and_fail python3 test/standards/outline_guard.py
-run_and_fail python3 test/standards/form_border_contrast.py
-run_and_fail python3 test/standards/civic_token_contract.py
-run_and_fail python3 test/standards/nyc_copy_lint.py --gate
-run_banner "Accessibility + language gate (plain-language copy)" "No-disclaimer-slop check" \
-  "python3 test/standards/no_disclaimer_slop.py --mode ${NO_DISCLAIMER_SLOP_MODE:-warn}"
-run_and_fail python3 test/standards/no_disclaimer_slop.py \
-  --mode "${NO_DISCLAIMER_SLOP_MODE:-warn}"
-# The phrase scan above reads source text. This reads what the renderers
-# actually produce, so a diagnostic section or a raw dynamic label that carries
-# no banned phrase still fails. It is always blocking: it asserts structure
-# against bounded fixtures, so it has no calibration period to wait out.
-run_and_fail node tools/resident_copy_boundary.mjs --check
-run_and_fail python3 test/standards/public_surface_vocab.py --gate
-run_and_fail python3 test/standards/claim_first_prediction.py
-run_and_fail node tools/check_public_payload_integrity.mjs
-run_and_fail node tools/check_procurement_index_coherence.mjs
-run_and_fail node tools/check_person_identity_link_ledger.mjs --check
-run_and_fail node tools/check-collapsed-group-labels.mjs
-run_and_fail python3 test/standards/page_metadata.py
-run_and_fail python3 test/standards/brand_identity.py
-run_and_fail python3 test/standards/no_official_marks.py
-run_and_fail python3 test/standards/canonical_domain.py
-run_and_fail python3 test/standards/link_targets.py
-run_and_fail python3 test/standards/heading_punctuation.py
-run_and_fail python3 test/standards/genai_disclosure.py
-run_and_fail python3 test/standards/nl_input_clarity.py
-run_and_fail python3 test/standards/demo_links.py
-run_and_fail python3 test/standards/guide_content.py
-run_and_fail node tools/check_stale_repo_name.mjs
-run_and_fail node tools/agents_router_guard.mjs --check
-run_and_fail node tools/inverse_control_plane_guard.mjs --check --all
-# Owner-controlled run: this is the local pre-push / owner path, never CI. CI
-# supplies no term set, so its identical `--check --all` call above always
-# reports the private-identifier scan as SKIPPED and stays credential-free.
-# Here, when an owner-supplied term-set file is present, the same check runs
-# again in --private mode against it, so the scan reports a real PASS/FAIL
-# instead of SKIPPED. The term set itself is never read into a shell variable
-# printed by this script, never logged, and never committed.
+# ---------------------------------------------------------------------------
+# CI's `unit-family` job runs the four families below in parallel with
+# fail-fast: false, so one family failing never hides whether the others pass.
+# This script runs them serially, and gets the same guarantee by running each
+# family body in a subshell: run_and_fail's exit ends only that family. Every
+# run then prints the coverage summary below, so a reader can always tell which
+# CI-required families actually executed rather than inferring it from silence.
+# ---------------------------------------------------------------------------
+family_static_standards() {
+  run_banner "Unit tests (site + worker)" "Syntax + i18n + static lint" \
+    "python3 test/standards/{js_syntax,i18n_keys,i18n_refs,i18n_fallback_sync,es_diacritics,i18n_glossary,attribution,link_text,control_labels,outline_guard,form_border_contrast,nyc_copy_lint,reader_register,public_surface_vocab,claim_first_prediction,page_metadata,brand_identity,no_official_marks,canonical_domain,link_targets,heading_punctuation,genai_disclosure,nl_input_clarity,demo_links}.py"
+  run_and_fail python3 test/standards/preflight_unit_family_parity.py
+  run_and_fail python3 test/standards/js_syntax.py
+  run_and_fail python3 test/standards/i18n_keys.py
+  run_and_fail python3 test/standards/i18n_refs.py
+  run_and_fail python3 test/standards/i18n_fallback_sync.py
+  run_and_fail python3 test/standards/stray_english.py
+  run_and_fail python3 test/standards/es_diacritics.py
+  run_and_fail python3 test/standards/i18n_glossary.py
+  run_and_fail python3 test/standards/attribution.py
+  run_and_fail python3 test/standards/link_text.py
+  run_and_fail python3 test/standards/control_labels.py
+  run_and_fail python3 test/standards/outline_guard.py
+  run_and_fail python3 test/standards/form_border_contrast.py
+  run_and_fail python3 test/standards/civic_token_contract.py
+  run_and_fail python3 test/standards/nyc_copy_lint.py --gate
+  run_banner "Accessibility + language gate (plain-language copy)" "No-disclaimer-slop check" \
+    "python3 test/standards/no_disclaimer_slop.py --mode ${NO_DISCLAIMER_SLOP_MODE:-warn}"
+  run_and_fail python3 test/standards/no_disclaimer_slop.py \
+    --mode "${NO_DISCLAIMER_SLOP_MODE:-warn}"
+  # The phrase scan above reads source text. This reads what the renderers
+  # actually produce, so a diagnostic section or a raw dynamic label that carries
+  # no banned phrase still fails. It is always blocking: it asserts structure
+  # against bounded fixtures, so it has no calibration period to wait out.
+  run_and_fail node tools/resident_copy_boundary.mjs --check
+  run_and_fail python3 test/standards/public_surface_vocab.py --gate
+  run_and_fail python3 test/standards/claim_first_prediction.py
+  run_and_fail node tools/check_public_payload_integrity.mjs
+  run_and_fail node tools/check_procurement_index_coherence.mjs
+  run_and_fail node tools/check_person_identity_link_ledger.mjs --check
+  run_and_fail node tools/check-collapsed-group-labels.mjs
+  run_and_fail python3 test/standards/page_metadata.py
+  run_and_fail python3 test/standards/brand_identity.py
+  run_and_fail python3 test/standards/no_official_marks.py
+  run_and_fail python3 test/standards/canonical_domain.py
+  run_and_fail python3 test/standards/link_targets.py
+  run_and_fail python3 test/standards/heading_punctuation.py
+  run_and_fail python3 test/standards/genai_disclosure.py
+  run_and_fail python3 test/standards/nl_input_clarity.py
+  run_and_fail python3 test/standards/demo_links.py
+  run_and_fail python3 test/standards/guide_content.py
+  run_and_fail node tools/check_stale_repo_name.mjs
+  run_and_fail node tools/agents_router_guard.mjs --check
+  run_and_fail node tools/inverse_control_plane_guard.mjs --check --all
+  run_and_fail node tools/rcp05_cutover_receipt.mjs --check
+  run_and_fail python3 test/functional/a11y_gate_test.py
+  run_and_fail python3 test/functional/ci_waits_test.py
+  run_and_fail python3 test/functional/land_map_visual_parity_receipt_test.py
+  run_and_fail python3 test/functional/detail_panel_fixture_test.py
+
+  run_banner "Unit tests (site + worker)" "Generated-source and read-model check gates" \
+    "node tools/generate_source_docs.mjs --check"
+  run_and_fail node tools/build_bbl_mappluto_centroids.mjs --check
+  run_and_fail node tools/build_land_project_map_points.mjs --check
+  run_and_fail node tools/build_land_authority_summary.mjs --check
+  run_and_fail node tools/generate_source_docs.mjs --check
+  run_and_fail node tools/build_capability_topology.mjs --check
+  run_and_fail node tools/generate_integration_client.mjs --check
+  run_and_fail node tools/build_product_updates.mjs --check
+  run_and_fail node tools/run_capability_semantic_scout.mjs \
+    --fixture test/fixtures/capability_semantic_scout.json \
+    --out artifacts/capability-spine/semantic-scout.json \
+    --check
+  run_and_fail node tools/verify_capability_semantic_scout.mjs \
+    artifacts/capability-spine/semantic-scout.json
+  run_and_fail node tools/data_source_graph.mjs
+  run_and_fail node tools/data_source_graph.mjs --check
+  run_and_fail node tools/build_url_migration_map.mjs --check
+  run_and_fail node tools/build_money_resident_snapshot.mjs --check
+  run_and_fail node tools/build_property_resident_snapshot.mjs --check
+  run_and_fail node tools/build_primary_documents.mjs --check
+  run_and_fail node tools/build_exam_documents.mjs --check
+  run_and_fail node tools/build_near_you_pages.mjs --check
+  run_and_fail node tools/build_following_page.mjs --check
+  run_and_fail node tools/build_guide_documents.mjs --check
+  run_and_fail node tools/build_guide_review.mjs --check
+  run_and_fail node tools/build_data_health_page.mjs --check
+  run_and_fail node tools/depot_rederive.mjs --check
+  run_and_fail node tools/validate_beta_flags.mjs
+  run_and_fail node tools/audit-test-clocks.mjs
+  run_and_fail node tools/determinism_lint.mjs --check
+  run_and_fail python3 -m unittest tests.test_diagnostic_card_producer
+}
+
+family_site_node() {
+  run_banner "Unit tests (site + worker)" "Site unit tests + board ontology gates" \
+    "node --test test/*.test.mjs"
+  # test/live_mcp_canary.test.mjs (CS-10) deliberately crosses public DNS to the
+  # deployed production MCP endpoint; CS10_SKIP_LIVE_CANARY tells it to no-op
+  # here so this fast local gate stays network-independent (see its own guard
+  # and .github/workflows/ci.yml's matching env var).
+  CS10_SKIP_LIVE_CANARY=true run_and_fail node --test test/*.test.mjs
+  run_and_fail node --test test/community_board*.test.mjs \
+    test/people_organizations_community_boards.test.mjs
+  run_and_fail node tools/no_live_external_reads.mjs --check
+  run_and_fail node tools/build_geocoder_address_index.mjs --check
+}
+
+family_contract() {
+  run_banner "Unit tests (site + worker)" "Site/worker contract tests" \
+    "node --test test/contract/*.test.mjs"
+  run_and_fail node --test test/contract/*.test.mjs
+}
+
+family_worker() {
+  run_banner "Unit tests (site + worker)" "Worker dependencies + worker unit tests" \
+    "node --test (inside worker/)"
+  run_and_fail tools/install_worker_dependencies.sh
+  cd worker
+  run_and_fail node --test
+}
+
+TEMP_LEAK_UNIT_SNAPSHOT="$PROJECT_ROOT/.artifacts/temp-leak-snapshot-unit.json"
+node tools/check_temp_leaks.mjs snapshot --out "$TEMP_LEAK_UNIT_SNAPSHOT"
+
+run_family 0 static-standards family_static_standards
+run_family 1 site-node family_site_node
+run_family 2 contract family_contract
+run_family 3 worker family_worker
+
+run_banner "Unit tests (site + worker)" "Fail closed on leaked temp directories" \
+  "node tools/check_temp_leaks.mjs check"
+run_and_fail node tools/check_temp_leaks.mjs check --in "$TEMP_LEAK_UNIT_SNAPSHOT" --label unit
+rm -f "$TEMP_LEAK_UNIT_SNAPSHOT"
+
+if [[ "$FAMILY_FAILED" == "1" ]]; then
+  echo
+  echo "do not open PR yet: at least one CI-required unit family failed above."
+  exit 1
+fi
+
+# Owner-controlled run: this is the local pre-push / owner path, never CI, so it
+# is not one of the families above and runs only after all four have reported.
+# CI supplies no term set, so its identical `--check --all` call inside the
+# static-standards family always reports the private-identifier scan as SKIPPED
+# and stays credential-free. Here, when an owner-supplied term-set file is
+# present, the same check runs again in --private mode against it, so the scan
+# reports a real PASS/FAIL instead of SKIPPED. The term set itself is never read
+# into a shell variable printed by this script, never logged, and never committed.
 PRIVATE_IDENTIFIER_TERMS_FILE="${PRIVATE_IDENTIFIER_TERMS_FILE:-$HOME/.config/estate/private-terms.txt}"
 if [[ -f "$PRIVATE_IDENTIFIER_TERMS_FILE" ]]; then
-  run_banner "Private-identifier scan (owner-controlled)" "Private mode with the owner-supplied term set" \
+  run_banner "Private-identifier scan (owner-controlled, not a CI family)" "Private mode with the owner-supplied term set" \
     "node tools/inverse_control_plane_guard.mjs --check --all --private --private-identifier-terms <owner-supplied file>"
   run_and_fail node tools/inverse_control_plane_guard.mjs --check --all \
     --private --private-identifier-terms "$PRIVATE_IDENTIFIER_TERMS_FILE"
@@ -272,65 +446,6 @@ else
   echo "Private-identifier scan: no owner-supplied term-set file found; skipping the private-mode gate."
   echo "  Set PRIVATE_IDENTIFIER_TERMS_FILE, or place one at \$HOME/.config/estate/private-terms.txt, to enable it locally."
 fi
-run_and_fail node tools/rcp05_cutover_receipt.mjs --check
-run_and_fail python3 test/functional/a11y_gate_test.py
-run_and_fail python3 test/functional/ci_waits_test.py
-run_and_fail python3 test/functional/land_map_visual_parity_receipt_test.py
-run_and_fail python3 test/functional/detail_panel_fixture_test.py
-
-run_banner "Unit tests (site + worker)" "Site + worker metadata/unit suites + joins" \
-  "node tools/generate_source_docs.mjs --check"
-run_and_fail node tools/no_live_external_reads.mjs --check
-run_and_fail node tools/build_geocoder_address_index.mjs --check
-run_and_fail node tools/build_bbl_mappluto_centroids.mjs --check
-run_and_fail node tools/build_land_project_map_points.mjs --check
-run_and_fail node tools/build_land_authority_summary.mjs --check
-run_and_fail node tools/generate_source_docs.mjs --check
-run_and_fail node tools/build_capability_topology.mjs --check
-run_and_fail node tools/generate_integration_client.mjs --check
-run_and_fail node tools/build_product_updates.mjs --check
-run_and_fail node tools/run_capability_semantic_scout.mjs \
-  --fixture test/fixtures/capability_semantic_scout.json \
-  --out artifacts/capability-spine/semantic-scout.json \
-  --check
-run_and_fail node tools/verify_capability_semantic_scout.mjs \
-  artifacts/capability-spine/semantic-scout.json
-run_and_fail node tools/data_source_graph.mjs
-run_and_fail node tools/data_source_graph.mjs --check
-run_and_fail node tools/build_url_migration_map.mjs --check
-run_and_fail node tools/build_money_resident_snapshot.mjs --check
-run_and_fail node tools/build_property_resident_snapshot.mjs --check
-run_and_fail node tools/build_primary_documents.mjs --check
-run_and_fail node tools/build_exam_documents.mjs --check
-run_and_fail node tools/build_near_you_pages.mjs --check
-run_and_fail node tools/build_following_page.mjs --check
-run_and_fail node tools/build_guide_documents.mjs --check
-run_and_fail node tools/build_guide_review.mjs --check
-run_and_fail node tools/build_data_health_page.mjs --check
-run_and_fail node tools/depot_rederive.mjs --check
-run_and_fail node tools/validate_beta_flags.mjs
-run_and_fail node tools/audit-test-clocks.mjs
-run_and_fail node tools/determinism_lint.mjs --check
-# test/live_mcp_canary.test.mjs (CS-10) deliberately crosses public DNS to the
-# deployed production MCP endpoint; CS10_SKIP_LIVE_CANARY tells it to no-op
-# here so this fast local gate stays network-independent (see its own guard
-# and .github/workflows/ci.yml's matching env var).
-TEMP_LEAK_UNIT_SNAPSHOT="$PROJECT_ROOT/.artifacts/temp-leak-snapshot-unit.json"
-node tools/check_temp_leaks.mjs snapshot --out "$TEMP_LEAK_UNIT_SNAPSHOT"
-
-CS10_SKIP_LIVE_CANARY=true run_and_fail node --test test/*.test.mjs
-run_and_fail node --test test/contract/*.test.mjs
-run_and_fail python3 -m unittest tests.test_diagnostic_card_producer
-
-run_banner "Unit tests (site + worker)" "Worker dependencies + worker unit tests" \
-  "node --test (inside worker/)"
-run_and_fail tools/install_worker_dependencies.sh
-(cd worker && run_and_fail node --test)
-
-run_banner "Unit tests (site + worker)" "Fail closed on leaked temp directories" \
-  "node tools/check_temp_leaks.mjs check"
-run_and_fail node tools/check_temp_leaks.mjs check --in "$TEMP_LEAK_UNIT_SNAPSHOT" --label unit
-rm -f "$TEMP_LEAK_UNIT_SNAPSHOT"
 
 if [[ "$RUN_READING_LEVEL" == "1" ]]; then
   run_banner "Reading-level ratchet gate (readable-or-else)" "reading-level gate" \

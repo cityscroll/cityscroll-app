@@ -258,6 +258,12 @@ jobs:
           node-version: "22"
       - name: Snapshot temp-dir state before this family's tests
         run: node tools/check_temp_leaks.mjs snapshot --out "$RUNNER_TEMP/temp-leak-${{ matrix.family }}.json"
+      - name: Preflight unit-family parity
+        if: matrix.family == 'static-standards'
+        # Fails when this matrix and the local preflight's declared family list
+        # drift apart, so a new family cannot be required here while the local
+        # pre-push run silently skips it.
+        run: python3 test/standards/preflight_unit_family_parity.py
       - name: Legacy repository-name guard
         if: matrix.family == 'static-standards'
         env:
