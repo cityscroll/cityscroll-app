@@ -2,7 +2,7 @@
   "schema": "cityscroll.agency_source_identity_snapshot.v1",
   "generated_from": {
     "route_identity_report": "12783|2026-08-05T20:50:48.662Z|2026-08-06T00:00:00Z|2026-08-07T23:52:53.226Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-23T07:59:09.786Z|2026-08-30T16:27:58.717Z|2026-09-05T13:44:00.909Z|2026-08-18|2026-08-18T04:05:51.552Z|2026-08-18T04:05:51.552Z|2026-08-18T04:05:51.552Z|2026-08-26T00:00:00.000Z|2026-08-27T17:59:48Z|2026-08-30T16:27:58.717Z|2026-09-04|2026-09-04T15:00:57.739Z|2026-09-05T13:44:00.909Z",
-    "route_directory_count": 87
+    "route_directory_count": 88
   },
   "contract": {
     "schema": "cityscroll.agency_source_identity_contract.v1",
@@ -21,7 +21,7 @@
     },
     "subject_refs": {
       "pattern": "agency:id:{canonical_id}",
-      "count": 86,
+      "count": 87,
       "refs": [
         "agency:id:administration-for-childrens-services",
         "agency:id:administrative-trials-and-hearings",
@@ -91,6 +91,7 @@
         "agency:id:nyc-health-hospitals",
         "agency:id:office-of-collective-bargaining",
         "agency:id:office-of-labor-relations",
+        "agency:id:office-of-racial-equity",
         "agency:id:office-of-special-narcotics-prosecutor",
         "agency:id:office-of-the-mayor",
         "agency:id:parks-and-recreation",
@@ -113,7 +114,7 @@
     },
     "routes": {
       "pattern": "/agencies/{slug}/",
-      "count": 87,
+      "count": 88,
       "paths": [
         "/agencies/administration-for-childrens-services/",
         "/agencies/administrative-trials-and-hearings/",
@@ -184,6 +185,7 @@
         "/agencies/nyc-health-hospitals/",
         "/agencies/office-of-collective-bargaining/",
         "/agencies/office-of-labor-relations/",
+        "/agencies/office-of-racial-equity/",
         "/agencies/office-of-special-narcotics-prosecutor/",
         "/agencies/office-of-the-mayor/",
         "/agencies/parks-and-recreation/",
@@ -416,11 +418,55 @@
         "vintage": "12783|2026-08-05T20:50:48.662Z|2026-08-06T00:00:00Z|2026-08-07T23:52:53.226Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-23T07:59:09.786Z|2026-08-30T16:27:58.717Z|2026-09-05T13:44:00.909Z|2026-08-18|2026-08-18T04:05:51.552Z|2026-08-18T04:05:51.552Z|2026-08-18T04:05:51.552Z|2026-08-26T00:00:00.000Z|2026-08-27T17:59:48Z|2026-08-30T16:27:58.717Z|2026-09-04|2026-09-04T15:00:57.739Z|2026-09-05T13:44:00.909Z"
       }
     ],
+    "identity_corrections": {
+      "relation": {
+        "id": "corrects_source_spelling_of",
+        "inverse": "source_spelling_corrected_to",
+        "precision": "exact reviewed source spelling only",
+        "negative_rule": [
+          "a correction moves one exact published spelling, never a similar name",
+          "both the corrected and superseded routes stay named so old references resolve",
+          "a spelling naming neither body specifically stays unassigned",
+          "no record is duplicated across the corrected and superseded identities",
+          "a correction never widens an existing exact-institution scope"
+        ]
+      },
+      "corrections": [
+        {
+          "relation_id": "corrects_source_spelling_of",
+          "inverse": "source_spelling_corrected_to",
+          "source_spelling": "OFFICE OF RACIAL EQUITY",
+          "corrected_id": "office-of-racial-equity",
+          "corrected_name": "Office of Racial Equity",
+          "corrected_route": "/agencies/office-of-racial-equity/",
+          "superseded_id": "commission-on-racial-equity",
+          "superseded_name": "Commission on Racial Equity",
+          "superseded_route": "/agencies/commission-on-racial-equity/",
+          "basis": "New York City Charter § 3401 establishes the office of racial equity within the executive office of the mayor; § 3404 separately establishes the commission on racial equity. Administrative Code § 34-102 defines the two bodies separately.",
+          "sources": [
+            {
+              "citation": "New York City Charter § 3401",
+              "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-6483"
+            },
+            {
+              "citation": "New York City Charter § 3404",
+              "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-6480"
+            },
+            {
+              "citation": "Administrative Code § 34-102",
+              "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-228871"
+            }
+          ],
+          "corrected_on": "2026-09-05",
+          "reversible": true
+        }
+      ]
+    },
     "identity_states": {
       "counts": {
         "matched": 78,
         "source_only": 36,
-        "route_only": 3,
+        "route_only": 4,
         "alias_route": 16,
         "legitimate_external": 5,
         "collision": 2,
@@ -742,6 +788,16 @@
           "canonical_id": null,
           "route": "/agencies/office-of-criminal-justice-128/",
           "basis": "no exact publisher-crosswalk identity"
+        },
+        {
+          "source_id": "office-of-racial-equity",
+          "institution_kind": null,
+          "vintage": "12783|2026-08-05T20:50:48.662Z|2026-08-06T00:00:00Z|2026-08-07T23:52:53.226Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-23T07:59:09.786Z|2026-08-30T16:27:58.717Z|2026-09-05T13:44:00.909Z|2026-08-18|2026-08-18T04:05:51.552Z|2026-08-18T04:05:51.552Z|2026-08-18T04:05:51.552Z|2026-08-26T00:00:00.000Z|2026-08-27T17:59:48Z|2026-08-30T16:27:58.717Z|2026-09-04|2026-09-04T15:00:57.739Z|2026-09-05T13:44:00.909Z",
+          "status": "route_only",
+          "links_to_canonical": false,
+          "canonical_id": null,
+          "route": "/agencies/office-of-racial-equity/",
+          "basis": "route retained without publisher crosswalk"
         },
         {
           "source_id": "office-of-the-actuary",
@@ -1986,6 +2042,16 @@
           "basis": "reviewed route alias"
         },
         {
+          "source_id": "office-of-racial-equity",
+          "institution_kind": null,
+          "vintage": "12783|2026-08-05T20:50:48.662Z|2026-08-06T00:00:00Z|2026-08-07T23:52:53.226Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-23T07:59:09.786Z|2026-08-30T16:27:58.717Z|2026-09-05T13:44:00.909Z|2026-08-18|2026-08-18T04:05:51.552Z|2026-08-18T04:05:51.552Z|2026-08-18T04:05:51.552Z|2026-08-26T00:00:00.000Z|2026-08-27T17:59:48Z|2026-08-30T16:27:58.717Z|2026-09-04|2026-09-04T15:00:57.739Z|2026-09-05T13:44:00.909Z",
+          "status": "route_only",
+          "links_to_canonical": false,
+          "canonical_id": null,
+          "route": "/agencies/office-of-racial-equity/",
+          "basis": "route retained without publisher crosswalk"
+        },
+        {
           "source_id": "office-of-special-narcotics-prosecutor",
           "institution_kind": null,
           "vintage": "12783|2026-08-05T20:50:48.662Z|2026-08-06T00:00:00Z|2026-08-07T23:52:53.226Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-23T07:59:09.786Z|2026-08-30T16:27:58.717Z|2026-09-05T13:44:00.909Z|2026-08-18|2026-08-18T04:05:51.552Z|2026-08-18T04:05:51.552Z|2026-08-18T04:05:51.552Z|2026-08-26T00:00:00.000Z|2026-08-27T17:59:48Z|2026-08-30T16:27:58.717Z|2026-09-04|2026-09-04T15:00:57.739Z|2026-09-05T13:44:00.909Z",
@@ -2568,6 +2634,7 @@
           "agency:Office of Collective Bargaining",
           "agency:Office of Labor Relations",
           "agency:Office of Payroll Administration",
+          "agency:Office of Racial Equity",
           "agency:Office of Special Narcotics Prosecutor",
           "agency:Office of Technology and Innovation",
           "agency:Office of The Actuary",
@@ -3190,6 +3257,7 @@
     "agency:id:nyc-health-hospitals": "#rules?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Anyc-health-hospitals%22%5D%7D",
     "agency:id:office-of-collective-bargaining": "#rules?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aoffice-of-collective-bargaining%22%5D%7D",
     "agency:id:office-of-labor-relations": "#rules?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aoffice-of-labor-relations%22%5D%7D",
+    "agency:id:office-of-racial-equity": "#rules?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aoffice-of-racial-equity%22%5D%7D",
     "agency:id:office-of-special-narcotics-prosecutor": "#rules?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aoffice-of-special-narcotics-prosecutor%22%5D%7D",
     "agency:id:office-of-the-mayor": "#rules?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aoffice-of-the-mayor%22%5D%7D",
     "agency:id:parks-and-recreation": "#rules?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aparks-and-recreation%22%5D%7D",
@@ -3278,6 +3346,7 @@
     "agency:id:nyc-health-hospitals": "https://cityscroll.org/following?lens=money&filter=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Anyc-health-hospitals%22%5D%2C%22agency%22%3A%22nyc+health+hospitals%22%7D&freq=weekly",
     "agency:id:office-of-collective-bargaining": "https://cityscroll.org/following?lens=money&filter=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aoffice-of-collective-bargaining%22%5D%2C%22agency%22%3A%22Office+of+Collective+Bargaining%22%7D&freq=weekly",
     "agency:id:office-of-labor-relations": "https://cityscroll.org/following?lens=money&filter=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aoffice-of-labor-relations%22%5D%2C%22agency%22%3A%22Office+of+Labor+Relations%22%7D&freq=weekly",
+    "agency:id:office-of-racial-equity": "https://cityscroll.org/following?lens=money&filter=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aoffice-of-racial-equity%22%5D%2C%22agency%22%3A%22Office+of+Racial+Equity%22%7D&freq=weekly",
     "agency:id:office-of-special-narcotics-prosecutor": "https://cityscroll.org/following?lens=money&filter=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aoffice-of-special-narcotics-prosecutor%22%5D%2C%22agency%22%3A%22Office+of+Special+Narcotics+Prosecutor%22%7D&freq=weekly",
     "agency:id:office-of-the-mayor": "https://cityscroll.org/following?lens=money&filter=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aoffice-of-the-mayor%22%5D%2C%22agency%22%3A%22Office+of+the+Mayor%22%7D&freq=weekly",
     "agency:id:parks-and-recreation": "https://cityscroll.org/following?lens=money&filter=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aparks-and-recreation%22%5D%2C%22agency%22%3A%22Parks+and+Recreation%22%7D&freq=weekly",

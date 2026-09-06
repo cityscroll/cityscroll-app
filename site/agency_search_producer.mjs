@@ -7,6 +7,7 @@
  */
 
 import { resolveAgencyIdentity } from "./agency_identity.mjs";
+import { reviewedAgencyAcronyms } from "./canonical_entity_interpretation.mjs";
 import {
   SEARCH_DOCUMENT_SCHEMA,
   SEARCH_TEXT_MAX_LENGTH,
@@ -121,10 +122,14 @@ export function projectAgencySearchDocument(agencyIdValue, row = {}, options = {
   if (!title) return failed("not_indexed", "missing_agency_name", ["title"]);
 
   const resolved = resolveAgencyIdentity(agencyId);
+  // Reviewed acronyms are lexical recall, not a published claim: the phrase
+  // index already drops any acronym two reviewed groups both derive, so an
+  // acronym here can only reach the one agency it resolves to.
   const aliases = unique([
     ...(Array.isArray(identity?.variants) ? identity.variants : []),
     ...(Array.isArray(resolved?.variants) ? resolved.variants : []),
     ...routeAliases(lookup, agencyId),
+    ...reviewedAgencyAcronyms(agencyId),
   ]);
   const relations = relationReceipts(row);
   const constellationLabels = matchedConstellationLabels(row, relations);

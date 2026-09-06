@@ -26,6 +26,12 @@ const PHRASE_STOP = new Set([
   "THE", "YORK",
 ]);
 
+// Connectors carry no initial in a conventional acronym, while the leading
+// noun always does. Stripping only these keeps "Office of Racial Equity" ->
+// ORE and "Commission on Racial Equity" -> CORE, which PHRASE_STOP cannot do:
+// it drops OFFICE (losing the distinguishing initial) and keeps ON (adding one).
+const PHRASE_CONNECTORS = new Set(["AND", "AT", "FOR", "IN", "OF", "ON", "THE", "TO"]);
+
 function clean(value) {
   return String(value ?? "").replace(/\s+/g, " ").trim();
 }
@@ -76,6 +82,7 @@ function addPhrase(map, phrase, record, method) {
   map.set(key, Object.freeze({
     canonical_id: record.canonical_id,
     canonical_name: record.canonical_name,
+    phrase: String(phrase),
     method,
     ambiguous: false,
   }));
@@ -99,6 +106,9 @@ function derivePhrases(surface) {
   const significant = tokens.filter((token) => !PHRASE_STOP.has(token));
   const initialsSig = significant.map((token) => token[0]).join("");
   if (initialsSig.length >= 3) phrases.push([initialsSig, "reviewed_agency_acronym"]);
+  const named = tokens.filter((token) => !PHRASE_CONNECTORS.has(token));
+  const initialsNamed = named.map((token) => token[0]).join("");
+  if (initialsNamed.length >= 3) phrases.push([initialsNamed, "reviewed_agency_acronym"]);
 
   const rest = departmentRest(tokens);
   if (rest) {
@@ -145,6 +155,35 @@ function buildAgencyPhraseIndex() {
 }
 
 const AGENCY_PHRASES = buildAgencyPhraseIndex();
+
+function buildAgencyAcronymIndex() {
+  const byId = new Map();
+  for (const entry of AGENCY_PHRASES.values()) {
+    if (entry.method !== "reviewed_agency_acronym") continue;
+    const list = byId.get(entry.canonical_id) || [];
+    const phrase = String(entry.phrase || "").toUpperCase();
+    if (phrase && !list.includes(phrase)) list.push(phrase);
+    byId.set(entry.canonical_id, list);
+  }
+  for (const [id, list] of byId) byId.set(id, Object.freeze([...list].sort()));
+  return byId;
+}
+
+const AGENCY_ACRONYMS_BY_ID = buildAgencyAcronymIndex();
+
+/**
+ * Reviewed acronyms that resolve to exactly one agency. An acronym two
+ * reviewed groups both derive is dropped by the phrase index, so this list
+ * never hands one body's shorthand to another.
+ */
+export function reviewedAgencyAcronyms(value) {
+  const raw = clean(value);
+  if (!raw) return [];
+  const direct = AGENCY_ACRONYMS_BY_ID.get(raw);
+  if (direct) return direct;
+  const identity = resolveAgencyIdentity(raw);
+  return AGENCY_ACRONYMS_BY_ID.get(identity?.canonical_id) || [];
+}
 
 function vendorAliasForms(registry) {
   const forms = [];

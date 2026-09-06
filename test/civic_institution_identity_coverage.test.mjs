@@ -22,6 +22,11 @@ import {
   defaultRouteIdentityReport,
   projectInstitutionProfileNavigation,
 } from "../site/civic_institution_profile_navigation.mjs";
+import {
+  CIVIC_INSTITUTION_STATUTORY_IDENTITY_ANCHOR,
+  projectStatutoryInstitutionIdentity,
+  renderStatutoryInstitutionIdentity,
+} from "../site/civic_institution_statutory_identity.mjs";
 import { buildAgencyIdentityEvidence } from "../tools/lib/agency_identity_evidence.mjs";
 import edgeWorker from "../site/pages_edge.mjs";
 
@@ -310,4 +315,79 @@ test("A3 reviewed route aliases stay the only linking alias projection", () => {
     assert.ok(edge.disposition_basis);
     assert.ok(edge.source_report);
   }
+});
+
+const SEPARATED = JSON.parse(
+  readFileSync(
+    new URL("./fixtures/agency_source_identity_compatibility/cases.json", import.meta.url),
+    "utf8",
+  ),
+).separated_institutions;
+
+test("A1 each separated body shows its own sourced purpose at first paint", () => {
+  const correction = SEPARATED.correction;
+  for (const [canonicalId, siblingId] of [
+    [correction.corrected_id, correction.superseded_id],
+    [correction.superseded_id, correction.corrected_id],
+  ]) {
+    const projection = projectStatutoryInstitutionIdentity(canonicalId);
+    assert.ok(projection, `${canonicalId} needs a reviewed statutory identity`);
+    assert.equal(projection.canonical_id, canonicalId);
+    assert.equal(projection.distinguished_from.canonical_id, siblingId);
+    // The kind is asserted only with its own independent legal basis.
+    assert.ok(projection.institution.institution_kind);
+    assert.ok(projection.institution.institution_kind_basis);
+    assert.match(projection.legal_basis.source_url, /^https:\/\//);
+    assert.match(projection.definition_basis.source_url, /^https:\/\//);
+
+    const view = buildAgencyConstellationView(canonicalId, SOURCES);
+    const document = renderAgencyConstellationDocument(view);
+    // First paint, not the deferred fragment: the answer to "which body is
+    // this?" must survive with scripting unavailable.
+    assert.match(document, new RegExp(`id="${CIVIC_INSTITUTION_STATUTORY_IDENTITY_ANCHOR}"`), canonicalId);
+    assert.match(document, new RegExp(`data-institution-kind="${projection.institution.institution_kind}"`), canonicalId);
+    assert.ok(document.includes(projection.purpose), canonicalId);
+    assert.ok(document.includes(projection.legal_basis.source_url), canonicalId);
+    assert.ok(document.includes(projection.definition_basis.source_url), canonicalId);
+    // The sibling is named and reachable, so a reader who wanted the other
+    // body has a real anchor rather than a dead end.
+    assert.ok(document.includes(`href="/agencies/${siblingId}/"`), canonicalId);
+    assert.ok(document.includes(projection.distinguished_from.canonical_name), canonicalId);
+    assert.equal(
+      document.match(new RegExp(`id="${CIVIC_INSTITUTION_STATUTORY_IDENTITY_ANCHOR}"`, "g")).length,
+      1,
+      `${canonicalId} states its statutory identity exactly once`,
+    );
+  }
+});
+
+test("A2 the correction history stays in optional details on both profiles", () => {
+  const correction = SEPARATED.correction;
+  for (const canonicalId of [correction.corrected_id, correction.superseded_id]) {
+    const html = renderStatutoryInstitutionIdentity(projectStatutoryInstitutionIdentity(canonicalId));
+    assert.match(html, /<details class="institution-statutory-history"/, canonicalId);
+    assert.match(html, /<summary>Source name history<\/summary>/, canonicalId);
+    assert.ok(
+      html.includes(`data-correction-source-spelling="${correction.source_spelling}"`),
+      canonicalId,
+    );
+    // Both directions of the correction name the other route, so an old
+    // reference is explainable from either side.
+    assert.ok(
+      html.includes(`href="/agencies/${canonicalId === correction.corrected_id ? correction.superseded_id : correction.corrected_id}/"`),
+      canonicalId,
+    );
+    assert.ok(html.includes(correction.corrected_on), canonicalId);
+    // The correction sits behind the disclosure, never in the first line.
+    const summaryIndex = html.indexOf("<details");
+    assert.ok(html.indexOf(`data-correction-source-spelling`) > summaryIndex, canonicalId);
+  }
+});
+
+test("A2 an institution with no reviewed statutory basis renders no empty panel", () => {
+  assert.equal(projectStatutoryInstitutionIdentity(FIXTURES.dsny.canonical_id), null);
+  assert.equal(renderStatutoryInstitutionIdentity(null), "");
+  const view = buildAgencyConstellationView(FIXTURES.dsny.canonical_id, SOURCES);
+  const document = renderAgencyConstellationDocument(view);
+  assert.doesNotMatch(document, new RegExp(`id="${CIVIC_INSTITUTION_STATUTORY_IDENTITY_ANCHOR}"`));
 });
