@@ -1,0 +1,244 @@
+{
+  "schema": "cityscroll.priority_source_health_closure_render_manifest.v1",
+  "evidence_class": "isolated-producer-render",
+  "capture_mode": "headless-playwright-loopback-static-render",
+  "captured_at": "2026-09-06T07:43:18Z",
+  "route": "/data-sources",
+  "revision_format": "git-object-id-prefix-12",
+  "revision": "98638604ff50",
+  "data_vintage": "priority-source closure and board scorecard at 2026-09-06T07:20:20.822Z; sources_hash cff542455ce8e3e6215425b6f1db840feff7d3481968911dd46aee5233ff7c20; no publisher refresh",
+  "data_revision": "cff542455ce8e3e6215425b6f1db840feff7d3481968911dd46aee5233ff7c20",
+  "image_directory": "docs/evidence/priority-source-health-closure/captures",
+  "image_policy": "Capture images remain ignored and are not committed. Their SHA-256 values bind this textual manifest to the reviewed render.",
+  "production_scope": "These captures are isolated render evidence and are not labeled as live.",
+  "census": {
+    "numerator": 18,
+    "denominator": 54,
+    "definition": "Observed active sources over live/build-time sources that are not historical, manual, pointer, disabled, or candidate."
+  },
+  "families": [
+    "city-record",
+    "passport",
+    "checkbook",
+    "legistar",
+    "rules-rss",
+    "zap-projects",
+    "community-board-minutes"
+  ],
+  "captures": [
+    {
+      "name": "priority-closure-390.png",
+      "journey": "priority-closure",
+      "viewport": [
+        390,
+        844
+      ],
+      "scripting": true,
+      "route": "/desk.html",
+      "revision": "98638604ff50",
+      "data_vintage": "priority-source closure and board scorecard at 2026-09-06T07:20:20.822Z; sources_hash cff542455ce8e3e6215425b6f1db840feff7d3481968911dd46aee5233ff7c20; no publisher refresh",
+      "assertion": "Active-source observability is visible with seven priority families; axe_passes=True no_page_overflow=True zoom_overflow=True",
+      "journey_state": {
+        "has_priority_closure": true,
+        "observability": true,
+        "measurement": false,
+        "zero_laggards_claim": false
+      },
+      "axe": {
+        "violations_total": 0,
+        "critical_or_serious": [],
+        "failing_violations": [],
+        "passes": true
+      },
+      "overflow": {
+        "scroll_width": 390,
+        "viewport_width": 390,
+        "horizontal_overflow": false
+      },
+      "zoom_overflow": {
+        "scroll_width": 320,
+        "viewport_width": 320,
+        "horizontal_overflow": false
+      },
+      "targets": {
+        "floor": 44,
+        "measured": 135,
+        "undersized": [
+          "A",
+          "A",
+          "A",
+          "A",
+          "A",
+          "A",
+          "A",
+          "A"
+        ]
+      },
+      "sha256": "d53868f535416db0e0f48a038d2793de598c49504e40388e7a707c01f87f3640",
+      "render_content_sha256": "d53868f535416db0e0f48a038d2793de598c49504e40388e7a707c01f87f3640",
+      "screenshot_sha256": "d5ff3fb759fec07030660a10042235d08207cdd3d011dadb8ef7a22e6ffff896",
+      "screenshot_local_path": "docs/evidence/priority-source-health-closure/captures/priority-closure-390.png"
+    },
+    {
+      "name": "priority-closure-1440.png",
+      "journey": "priority-closure",
+      "viewport": [
+        1440,
+        900
+      ],
+      "scripting": true,
+      "route": "/desk.html",
+      "revision": "98638604ff50",
+      "data_vintage": "priority-source closure and board scorecard at 2026-09-06T07:20:20.822Z; sources_hash cff542455ce8e3e6215425b6f1db840feff7d3481968911dd46aee5233ff7c20; no publisher refresh",
+      "assertion": "Active-source observability is visible with seven priority families; axe_passes=True no_page_overflow=True zoom_overflow=True",
+      "journey_state": {
+        "has_priority_closure": true,
+        "observability": true,
+        "measurement": false,
+        "zero_laggards_claim": false
+      },
+      "axe": {
+        "violations_total": 0,
+        "critical_or_serious": [],
+        "failing_violations": [],
+        "passes": true
+      },
+      "overflow": {
+        "scroll_width": 1440,
+        "viewport_width": 1440,
+        "horizontal_overflow": false
+      },
+      "zoom_overflow": {
+        "scroll_width": 720,
+        "viewport_width": 720,
+        "horizontal_overflow": false
+      },
+      "targets": {
+        "floor": 44,
+        "measured": 135,
+        "undersized": [
+          "A",
+          "A",
+          "A",
+          "A",
+          "A",
+          "A",
+          "A",
+          "A"
+        ]
+      },
+      "sha256": "d53868f535416db0e0f48a038d2793de598c49504e40388e7a707c01f87f3640",
+      "render_content_sha256": "d53868f535416db0e0f48a038d2793de598c49504e40388e7a707c01f87f3640",
+      "screenshot_sha256": "9425b003c180feb7ba3163b24b9f2b5ec2dddf403652135cca423ceed660511c",
+      "screenshot_local_path": "docs/evidence/priority-source-health-closure/captures/priority-closure-1440.png"
+    },
+    {
+      "name": "priority-closure-nojs-390.png",
+      "journey": "priority-closure-nojs",
+      "viewport": [
+        390,
+        844
+      ],
+      "scripting": false,
+      "route": "/desk.html",
+      "revision": "98638604ff50",
+      "data_vintage": "priority-source closure and board scorecard at 2026-09-06T07:20:20.822Z; sources_hash cff542455ce8e3e6215425b6f1db840feff7d3481968911dd46aee5233ff7c20; no publisher refresh",
+      "assertion": "priority families remain in the static markup without JavaScript; axe_passes=True no_page_overflow=True zoom_overflow=True",
+      "journey_state": {
+        "has_priority_closure": true,
+        "observability": true,
+        "measurement": false,
+        "zero_laggards_claim": false
+      },
+      "axe": {
+        "passes": true,
+        "violations_total": 0,
+        "critical_or_serious": [],
+        "failing_violations": []
+      },
+      "overflow": {
+        "scroll_width": 390,
+        "viewport_width": 390,
+        "horizontal_overflow": false
+      },
+      "zoom_overflow": {
+        "scroll_width": 320,
+        "viewport_width": 320,
+        "horizontal_overflow": false
+      },
+      "targets": {
+        "floor": 44,
+        "measured": 202,
+        "undersized": [
+          "A",
+          "A",
+          "A",
+          "A",
+          "A",
+          "A",
+          "A",
+          "A"
+        ]
+      },
+      "sha256": "ba4f85dffcc8cb1cd96fc7d8ada1b899a841c2b68bdfb1dfb1e5b111a3e9a100",
+      "render_content_sha256": "ba4f85dffcc8cb1cd96fc7d8ada1b899a841c2b68bdfb1dfb1e5b111a3e9a100",
+      "screenshot_sha256": "43cf7ead5d9d8c40e05036758e00ae3516b939f8ad7d1ab43e8759768e8faa71",
+      "screenshot_local_path": "docs/evidence/priority-source-health-closure/captures/priority-closure-nojs-390.png"
+    },
+    {
+      "name": "priority-closure-nojs-1440.png",
+      "journey": "priority-closure-nojs",
+      "viewport": [
+        1440,
+        900
+      ],
+      "scripting": false,
+      "route": "/desk.html",
+      "revision": "98638604ff50",
+      "data_vintage": "priority-source closure and board scorecard at 2026-09-06T07:20:20.822Z; sources_hash cff542455ce8e3e6215425b6f1db840feff7d3481968911dd46aee5233ff7c20; no publisher refresh",
+      "assertion": "priority families remain in the static markup without JavaScript; axe_passes=True no_page_overflow=True zoom_overflow=True",
+      "journey_state": {
+        "has_priority_closure": true,
+        "observability": true,
+        "measurement": false,
+        "zero_laggards_claim": false
+      },
+      "axe": {
+        "passes": true,
+        "violations_total": 0,
+        "critical_or_serious": [],
+        "failing_violations": []
+      },
+      "overflow": {
+        "scroll_width": 1440,
+        "viewport_width": 1440,
+        "horizontal_overflow": false
+      },
+      "zoom_overflow": {
+        "scroll_width": 720,
+        "viewport_width": 720,
+        "horizontal_overflow": false
+      },
+      "targets": {
+        "floor": 44,
+        "measured": 202,
+        "undersized": [
+          "A",
+          "A",
+          "A",
+          "A",
+          "A",
+          "A",
+          "A",
+          "A"
+        ]
+      },
+      "sha256": "ba4f85dffcc8cb1cd96fc7d8ada1b899a841c2b68bdfb1dfb1e5b111a3e9a100",
+      "render_content_sha256": "ba4f85dffcc8cb1cd96fc7d8ada1b899a841c2b68bdfb1dfb1e5b111a3e9a100",
+      "screenshot_sha256": "bdb3617d84efa6c123611628f63af36f70be9add1cbc02c083fe474a584b86e6",
+      "screenshot_local_path": "docs/evidence/priority-source-health-closure/captures/priority-closure-nojs-1440.png"
+    }
+  ],
+  "captures_passing": 4,
+  "captures_total": 4
+}

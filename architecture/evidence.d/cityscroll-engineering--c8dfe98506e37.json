@@ -1,0 +1,45 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/c8dfe98506e37",
+  "status": "implemented",
+  "fingerprint": "priority-source-health-closure.v1",
+  "updated_at": "2026-09-06T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "priority-source-health-closure",
+      "path": "tools/priority_source_health_closure.mjs"
+    },
+    {
+      "id": "board-scorecard-observation-closure",
+      "path": "tools/board_scorecard_observation_closure.mjs"
+    },
+    {
+      "id": "source-health-observation-loader",
+      "path": "tools/source_health_observations.mjs"
+    },
+    {
+      "id": "private-desk-export-boundary",
+      "path": "tools/data_source_graph.mjs"
+    },
+    {
+      "id": "private-desk-consumer-contract",
+      "path": "data/data-source-graph-desk-contract.v1.json"
+    },
+    {
+      "id": "priority-source-health-closure-tests",
+      "path": "test/priority-source-health-closure.test.mjs"
+    },
+    {
+      "id": "board-scorecard-observation-closure-tests",
+      "path": "test/board-scorecard-observation-closure.test.mjs"
+    },
+    {
+      "id": "priority-source-health-closure-browser-evidence",
+      "path": "tools/capture_priority_source_health_closure_evidence.py"
+    },
+    {
+      "id": "priority-source-health-closure-render-manifest",
+      "path": "docs/evidence/priority-source-health-closure/capture-manifest.json"
+    }
+  ]
+}

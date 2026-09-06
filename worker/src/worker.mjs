@@ -38,6 +38,8 @@ import {
   handleAdminDigestSendTest,
   handleAdminDigestCatchUp,
   handleAdminPassportIngest,
+  handleAdminPassportIngestMeta,
+  handleAdminSourceHealthReceipts,
   handleAdminOpsAlert,
   handleAdminDigestWatchdog,
   handleAdminSchedulerHeartbeat,
@@ -85,7 +87,8 @@ import { refreshExactMatterRoster } from "./lib/matter_exact_refresh.mjs";
 import { handleSourceVault } from "./source_vault.mjs";
 import { handleContractLifecycle, prewarmContractLifecycle } from "./checkbook_lifecycle.mjs";
 import { handleSubsidyLifecycle, prewarmSubsidyLifecycle } from "./subsidy_lifecycle.mjs";
-import { ingestPassportPublic } from "./passport.mjs";
+import { ingestPassportPublic, readPassportIngestMeta } from "./passport.mjs";
+import { recordPassportAcquisitionFromMeta } from "./lib/source_acquisition_receipt.mjs";
 import {
   handleZapOutcomes,
   handleAdminZapOutcomesRefresh,
@@ -240,6 +243,8 @@ export default {
     if (pathname === "/admin/zap-outcomes-refresh") return handleAdminZapOutcomesRefresh(request, env);
     if (pathname === "/admin/digest-catchup") return handleAdminDigestCatchUp(request, env);
     if (pathname === "/admin/passport-ingest") return handleAdminPassportIngest(request, env);
+    if (pathname === "/admin/passport-ingest-meta") return handleAdminPassportIngestMeta(request, env);
+    if (pathname === "/admin/source-health-receipts") return handleAdminSourceHealthReceipts(request, env);
     if (pathname === "/admin/attachment-metadata") return handleAdminAttachmentMetadata(request, env);
     if (pathname === "/" || pathname === "/health") {
       return handleWorkerHealth(env);
@@ -377,7 +382,17 @@ export default {
     // PASSPort Public contracts + RFx: rebuild the edge materialization from the portal's
     // dataJs dumps before lifecycle prewarm so PIN↔EPIN joins see today's rows. Fail-soft.
     try {
-      const r = await withWorkerAcquisitionReceipt(env, "passport-public-contracts", runId, () => ingestPassportPublic(env));
+      const priorMeta = await readPassportIngestMeta(env);
+      const r = await ingestPassportPublic(env);
+      const meta = await readPassportIngestMeta(env);
+      await recordPassportAcquisitionFromMeta(env, meta.ok ? meta : {
+        last_attempt_at: new Date().toISOString(),
+        last_ok: r?.ok === true ? "true" : "false",
+        ingested_at: r?.ingested_at || null,
+        contract_rows: r?.contracts,
+        rfx_rows: r?.rfx,
+        last_modified: r?.last_modified || null,
+      }, { run_id: runId, previous_ingested_at: priorMeta?.ingested_at || null });
       console.log("passport public ingest:", JSON.stringify(r));
     } catch (e) {
       console.error("passport public ingest failed (digest continues):", String(e?.message || e));

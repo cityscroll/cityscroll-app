@@ -33,7 +33,7 @@ import {
   SEARCH_USAGE_WINDOW_DAYS,
 } from "./search_usage.mjs";
 
-export const OPS_CONTRACT_VERSION = "1.16.0";
+export const OPS_CONTRACT_VERSION = "1.17.0";
 export const OPS_CONTRACT_ID = "ops-contract.v1";
 
 /** Digest delivery / evaluation modes the worker may stamp on receipts and daylogs. */
@@ -555,6 +555,18 @@ export const ADMIN_ROUTES = Object.freeze([
     methods: ["POST"],
     auth: "ADMIN_KEY",
     description: "Rebuild PASSPort Public product tables and dual-write observations.",
+  },
+  {
+    path: "/admin/passport-ingest-meta",
+    methods: ["GET"],
+    auth: "ADMIN_KEY",
+    description: "Read PASSPort D1 ingest-meta acquisition receipts without fetching the publisher.",
+  },
+  {
+    path: "/admin/source-health-receipts",
+    methods: ["GET"],
+    auth: "ADMIN_KEY",
+    description: "List latest source-health acquisition receipts retained in worker state.",
   },
   {
     path: "/usage",

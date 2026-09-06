@@ -161,6 +161,22 @@ export function ensurePassportSchema(env) {
   return pending;
 }
 
+export async function readPassportIngestMeta(env) {
+  if (!env?.DB) return { ok: false, reason: "no-db" };
+  try {
+    await ensurePassportSchema(env);
+    const result = await env.DB.prepare("SELECT key, value FROM passport_ingest_meta").all();
+    const rows = result?.results || result || [];
+    const meta = { ok: true };
+    for (const row of rows) {
+      if (row?.key) meta[row.key] = row.value;
+    }
+    return meta;
+  } catch (error) {
+    return { ok: false, reason: String(error?.message || error) };
+  }
+}
+
 async function writePassportMeta(env, pairs) {
   if (!env?.DB || !pairs?.length) return;
   const stmts = pairs.map(([key, value]) =>

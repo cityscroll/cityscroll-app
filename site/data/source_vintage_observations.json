@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.source_vintage_observations.v1",
-  "generated_at": "2026-09-05T13:44:00.909Z",
+  "generated_at": "2026-09-06T07:20:20.822Z",
   "contract_count": 63,
   "observations": [
     {
@@ -1330,11 +1330,11 @@
       "publisher_last_updated_at": null,
       "publisher_last_update_basis": null,
       "cityscroll_retrieval": {
-        "status": "unknown",
-        "retrieved_at": null,
+        "status": "succeeded",
+        "retrieved_at": "2026-09-06T07:20:20.822Z",
         "receipt_ref": null,
-        "receipt_schema": null,
-        "run_id": null
+        "receipt_schema": "cityscroll.source_acquisition_receipt.v1",
+        "run_id": "cb-minutes-probes:2026-09-06T07:20:20.822Z"
       },
       "expected_cadence": "Heterogeneous; usually monthly for verified full-board minutes pages",
       "expected_lag_tolerance_days": 45,

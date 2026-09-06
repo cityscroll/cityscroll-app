@@ -106,8 +106,11 @@ ops/first-class-refresh/test-preflight.sh
 
 ## Refreshing the warehouse snapshot itself
 
-The scheduled job re-materialises the public artifacts from whatever snapshot
-the catalog already holds; it never downloads a new one. `site/data/ocp_awards_warehouse_lookup.json`
+The scheduled job first runs a bounded acquisition for warehouse-dependent
+priority sources (`node tools/priority_source_warehouse_acquire.mjs --bounded`),
+then rematerialises public artifacts. It never runs an undocumented bulk ingest
+(`--bulk --ack-large`). Rebuilding an unchanged old catalog is not freshness
+proof: acquisition input vintage stays distinct from the later serve clock. `site/data/ocp_awards_warehouse_lookup.json`
 takes its vintage from `source_snapshot.snapshot_date`, which is the ingest
 date, so the artifact cannot become fresher than the catalog behind it. Pull a
 new snapshot on the warehouse machine when that vintage approaches its hard

@@ -99,7 +99,11 @@ import {
   persistReportAdjudication,
 } from "./lib/report_adjudication_store.mjs";
 import { timingSafeEqualString } from "./lib/secret_compare.mjs";
-import { ingestPassportPublic } from "./passport.mjs";
+import { ingestPassportPublic, readPassportIngestMeta } from "./passport.mjs";
+import {
+  listSourceAcquisitionReceipts,
+  passportReceiptsFromMeta,
+} from "./lib/source_acquisition_receipt.mjs";
 import { readDigestShadow, runDigestShadow } from "./digest_shadow.mjs";
 import { handlePrivateStats } from "./stats.mjs";
 import { readOwedBacklog, scanSubscriberMetadata, scheduledTimes } from "./owed_backlog.mjs";
@@ -2002,4 +2006,36 @@ export async function handleAdminPassportIngest(req, env) {
   if (req.method !== "POST") return json({ error: "method not allowed" }, 405);
   const result = await ingestPassportPublic(env);
   return json({ mode: "passport_ingest", ...result }, result.ok ? 200 : 502);
+}
+
+// GET /admin/passport-ingest-meta?key=… — D1 ingest-meta receipts without a
+// publisher fetch. CI must not use POST /admin/passport-ingest as health proof.
+export async function handleAdminPassportIngestMeta(req, env) {
+  const auth = checkAdminKey(req, env);
+  if (!auth.ok) return auth.res;
+  if (req.method !== "GET") return json({ error: "method not allowed" }, 405);
+  const meta = await readPassportIngestMeta(env);
+  if (!meta.ok) return json({ mode: "passport_ingest_meta", ...meta }, 502);
+  const receipts = passportReceiptsFromMeta(meta, {
+    run_id: `passport-d1:${meta.ingested_at || meta.last_attempt_at || "unknown"}`,
+  });
+  return json({
+    mode: "passport_ingest_meta",
+    producer: "worker-d1-passport-ingest-meta",
+    meta,
+    receipts,
+  }, 200);
+}
+
+// GET /admin/source-health-receipts?key=… — latest KV acquisition receipts.
+export async function handleAdminSourceHealthReceipts(req, env) {
+  const auth = checkAdminKey(req, env);
+  if (!auth.ok) return auth.res;
+  if (req.method !== "GET") return json({ error: "method not allowed" }, 405);
+  const receipts = await listSourceAcquisitionReceipts(env);
+  return json({
+    schema: "cityscroll.source_acquisition_receipt_set.v1",
+    observed_at: new Date().toISOString(),
+    receipts,
+  }, 200);
 }

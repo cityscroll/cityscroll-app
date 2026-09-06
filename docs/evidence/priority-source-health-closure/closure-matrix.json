@@ -1,0 +1,248 @@
+{
+  "schema": "cityscroll.priority_source_closure_matrix.v1",
+  "evidence_class": "committed-receipt-plus-live-host-inspection",
+  "families": [
+    {
+      "family_id": "city-record",
+      "label": "City Record",
+      "sources": [
+        {
+          "source_id": "city-record",
+          "attempt_at": "2026-08-05T10:41:44.000Z",
+          "result_at": "2026-08-05T10:41:44.000Z",
+          "acquisition_or_no_change": true,
+          "producer_run_id": "warehouse/receipts/proof/city-record_bulk_latest.json",
+          "producer": "warehouse-acquisition-receipt",
+          "input_vintage": "2026-08-05T10:41:44.000Z",
+          "served_artifact_at": "2026-08-18T13:12:27.955Z",
+          "cityscroll_controlled_evidence": true,
+          "publisher_date_unknown": false,
+          "obligation_open": false
+        }
+      ],
+      "obligation_open": false,
+      "evidence_class": "committed-receipt"
+    },
+    {
+      "family_id": "passport",
+      "label": "PASSPort contracts/RFX",
+      "sources": [
+        {
+          "source_id": "passport-public-contracts",
+          "attempt_at": null,
+          "result_at": null,
+          "acquisition_or_no_change": false,
+          "producer_run_id": null,
+          "producer": "worker-d1-passport-ingest-meta",
+          "input_vintage": null,
+          "served_artifact_at": "2026-08-06T00:00:00.000Z",
+          "cityscroll_controlled_evidence": false,
+          "publisher_date_unknown": true,
+          "obligation_open": true
+        },
+        {
+          "source_id": "passport-public-rfx",
+          "attempt_at": null,
+          "result_at": null,
+          "acquisition_or_no_change": false,
+          "producer_run_id": null,
+          "producer": "worker-d1-passport-ingest-meta",
+          "input_vintage": null,
+          "served_artifact_at": null,
+          "cityscroll_controlled_evidence": false,
+          "publisher_date_unknown": true,
+          "obligation_open": true
+        }
+      ],
+      "obligation_open": true,
+      "evidence_class": "committed-receipt"
+    },
+    {
+      "family_id": "checkbook",
+      "label": "Checkbook contracts/spending",
+      "sources": [
+        {
+          "source_id": "checkbook-contracts",
+          "attempt_at": "2026-08-18T04:05:51.552Z",
+          "result_at": "2026-08-18T04:05:51.552Z",
+          "acquisition_or_no_change": true,
+          "producer_run_id": "warehouse/receipts/proof/checkbook_contracts_population_latest.json",
+          "producer": "warehouse-acquisition-receipt",
+          "input_vintage": "2026-08-18T04:05:51.552Z",
+          "served_artifact_at": "2026-08-18T04:05:51.552Z",
+          "cityscroll_controlled_evidence": true,
+          "publisher_date_unknown": true,
+          "obligation_open": false
+        },
+        {
+          "source_id": "checkbook-spending",
+          "attempt_at": "2026-08-11T19:25:33.574Z",
+          "result_at": "2026-08-11T19:25:33.574Z",
+          "acquisition_or_no_change": true,
+          "producer_run_id": "warehouse/receipts/proof/checkbook_spending_population_latest.json",
+          "producer": "warehouse-acquisition-receipt",
+          "input_vintage": "2026-08-11T19:25:33.574Z",
+          "served_artifact_at": "2026-08-26T00:00:00.000Z",
+          "cityscroll_controlled_evidence": true,
+          "publisher_date_unknown": true,
+          "obligation_open": false
+        }
+      ],
+      "obligation_open": false,
+      "evidence_class": "committed-receipt"
+    },
+    {
+      "family_id": "legistar",
+      "label": "Legistar",
+      "sources": [
+        {
+          "source_id": "nyc-council-legistar",
+          "attempt_at": null,
+          "result_at": null,
+          "acquisition_or_no_change": false,
+          "producer_run_id": null,
+          "producer": null,
+          "input_vintage": null,
+          "served_artifact_at": null,
+          "cityscroll_controlled_evidence": false,
+          "publisher_date_unknown": true,
+          "obligation_open": true
+        }
+      ],
+      "obligation_open": true,
+      "evidence_class": "committed-receipt"
+    },
+    {
+      "family_id": "rules-rss",
+      "label": "Rules RSS",
+      "sources": [
+        {
+          "source_id": "nyc-rules-rss",
+          "attempt_at": null,
+          "result_at": null,
+          "acquisition_or_no_change": false,
+          "producer_run_id": null,
+          "producer": null,
+          "input_vintage": null,
+          "served_artifact_at": null,
+          "cityscroll_controlled_evidence": false,
+          "publisher_date_unknown": true,
+          "obligation_open": true
+        }
+      ],
+      "obligation_open": true,
+      "evidence_class": "committed-receipt"
+    },
+    {
+      "family_id": "zap-projects",
+      "label": "ZAP projects",
+      "sources": [
+        {
+          "source_id": "zap-projects",
+          "attempt_at": "2026-08-03T05:05:03.000Z",
+          "result_at": "2026-08-03T05:05:03.000Z",
+          "acquisition_or_no_change": true,
+          "producer_run_id": "warehouse/receipts/proof/zap-projects_bulk_latest.json",
+          "producer": "warehouse-acquisition-receipt",
+          "input_vintage": "2026-08-03T05:05:03.000Z",
+          "served_artifact_at": "2026-08-23T07:59:09.786Z",
+          "cityscroll_controlled_evidence": true,
+          "publisher_date_unknown": true,
+          "obligation_open": false
+        }
+      ],
+      "obligation_open": false,
+      "evidence_class": "committed-receipt"
+    },
+    {
+      "family_id": "community-board-minutes",
+      "label": "Community-board minutes",
+      "sources": [
+        {
+          "source_id": "non-council-board-minutes",
+          "attempt_at": "2026-09-06T07:20:20.822Z",
+          "result_at": "2026-09-06T07:20:20.822Z",
+          "acquisition_or_no_change": true,
+          "producer_run_id": "cb-minutes-probes:2026-09-06T07:20:20.822Z",
+          "producer": "community-board-minutes-detector",
+          "input_vintage": "2026-09-06T07:20:20.822Z",
+          "served_artifact_at": "2026-09-06T00:00:00.000Z",
+          "cityscroll_controlled_evidence": true,
+          "publisher_date_unknown": true,
+          "obligation_open": false
+        }
+      ],
+      "obligation_open": false,
+      "evidence_class": "committed-receipt"
+    }
+  ],
+  "census": {
+    "numerator": 18,
+    "denominator": 54,
+    "definition": "Observed active sources over live/build-time sources that are not historical, manual, pointer, disabled, or candidate."
+  },
+  "observation_classes": {
+    "observed": 18,
+    "legitimately-historical-or-manual": 6,
+    "disabled-or-candidate": 3,
+    "requires-observation-producer": 36
+  },
+  "board_dispositions": {
+    "measured": 9,
+    "checked-no-dated-observation": 50,
+    "failed-collection": 0,
+    "unmeasured": 0
+  },
+  "board_evidence_revision": "a96003a19fe71595814ca6b06f147af6b089615aa700a5a697525b59f56edfae",
+  "remaining_non_priority_observation_gaps": [
+    "active-civil-service-list",
+    "annual-examination-schedule",
+    "cfb-campaign-contributions",
+    "checkbook-nycha-contracts",
+    "city-clerk-elobbyist",
+    "city-council-committee-membership",
+    "city-council-district-boundaries",
+    "citywide-payroll",
+    "civil-service-list-certification",
+    "civil-service-titles",
+    "community-district-boundaries",
+    "dcas-annual-exam-outcomes",
+    "dcas-eligible-list-utilization",
+    "dcas-vehicle-auction-list",
+    "dob-certificate-of-occupancy",
+    "dob-now-job-filings",
+    "expense-budget",
+    "legacy-dob-job-filings",
+    "mandatory-inclusionary-housing",
+    "mappluto",
+    "mta-bid-results",
+    "mta-current-opportunities",
+    "nyc-agencies",
+    "nyc-council-members",
+    "nyc-geosearch",
+    "nyc-jobs-postings",
+    "nyc-property-address-directory",
+    "nycida-build-nyc-projects",
+    "nys-contract-reporter",
+    "ocp-current-solicitations",
+    "suitability-city-owned-leased-property-ll48",
+    "zap-api-outcomes"
+  ],
+  "named_blockers": [
+    {
+      "family_id": "passport",
+      "blocker": "absent-live-receipt",
+      "note": "Worker/D1 ingest-meta export is instrumented on GET /admin/passport-ingest-meta; this checkout has no authenticated worker CLI for a live D1 read."
+    },
+    {
+      "family_id": "legistar",
+      "blocker": "absent-live-receipt",
+      "note": "Worker scheduled acquisition receipts are instrumented; no live KV export is present in this checkout."
+    },
+    {
+      "family_id": "rules-rss",
+      "blocker": "absent-live-receipt",
+      "note": "Worker scheduled acquisition receipts are instrumented; no live KV export is present in this checkout."
+    }
+  ]
+}

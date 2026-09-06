@@ -137,6 +137,7 @@ export const JOIN_REASON_CONDITIONS = Object.freeze({
 /** Scope kinds an observation may describe. */
 export const REPAIR_SCOPE_KINDS = Object.freeze([
   "community_board_source_role",
+  "canonical_source",
 ]);
 
 /**
@@ -354,11 +355,12 @@ export function validateRepairObservation(observation) {
  * fresh row per pass; a fingerprint absent from the new pass is retained and
  * marked resolved rather than deleted.
  */
-export function mergeRepairObservations(previous = [], next = [], { observedAt = null } = {}) {
+export function mergeRepairObservations(previous = [], next = [], { observedAt = null, monitoringAvailable = true } = {}) {
   const at = instant(observedAt);
   const rows = new Map();
+  const resolveAbsent = monitoringAvailable !== false;
   for (const row of Array.isArray(previous) ? previous : []) {
-    if (row?.fingerprint) rows.set(row.fingerprint, { ...row, resolved: true });
+    if (row?.fingerprint) rows.set(row.fingerprint, { ...row, resolved: resolveAbsent });
   }
   for (const row of Array.isArray(next) ? next : []) {
     if (!row?.fingerprint) continue;
@@ -558,6 +560,57 @@ export function buildJoinRepairObservations({
     evidence_locator: evidenceLocator,
     evidence_examples: group.examples,
   })).sort(byFingerprint);
+}
+
+/**
+ * Project source-health findings onto the existing repair identity. Missing
+ * monitoring is not a successful recheck and never appears here as a resolving
+ * pass — callers pass monitoringAvailable=false into mergeRepairObservations.
+ */
+export function buildHealthRepairObservations({
+  observations = [],
+  contracts = [],
+  observedAt = null,
+  codeRevision = null,
+  evidenceLocator = "site/data/source_health_observations.json",
+} = {}) {
+  const byId = new Map((contracts || []).map((row) => [row.id, row]));
+  const rows = [];
+  observations.forEach((observation, position) => {
+    const sourceId = observation?.source_id;
+    if (!sourceId) return;
+    const contract = byId.get(sourceId) || { id: sourceId, code_references: [] };
+    const locator = `${evidenceLocator}#/observations/${position}`;
+    const acquisitionFailed = ["failed", "held"].includes(observation?.acquisition_status)
+      || (observation?.health?.reason_codes || []).includes("acquisition-failed")
+      || observation?.health?.status === "Source-unavailable"
+        && (observation?.operator?.runs || []).some((run) => run.status === "failed");
+    const unsearched = !observation?.health?.clocks?.cityscroll_checked_acquired?.at
+      && observation?.acquisition_status !== "succeeded"
+      && observation?.check_status !== "succeeded";
+    const staleServing = observation?.health?.status === "Degraded"
+      && (observation?.health?.reason_codes || []).some((code) => /serving|stale/i.test(code));
+    const conditions = [];
+    if (acquisitionFailed) conditions.push("source-retrieval-failed");
+    else if (unsearched) conditions.push("scope-not-searched");
+    if (staleServing) conditions.push("source-observation-stale");
+    for (const condition of conditions) {
+      rows.push(buildRepairObservation({
+        condition,
+        source_contract_id: contract.id,
+        source_id: sourceId,
+        adapter: observation?.operator?.runs?.[0]?.adapter || "source-health",
+        scope_kind: "canonical_source",
+        scope_id: sourceId,
+        code_paths: (contract.code_references || []).map((row) => row.path).filter(Boolean),
+        observed_at: observedAt || observation?.freshness_watchdog?.observed_at,
+        code_revision: codeRevision,
+        evidence_locator: locator,
+        receipt_status: observation?.acquisition_status || null,
+      }));
+    }
+  });
+  return rows.sort(byFingerprint);
 }
 
 /** Wrap a pass in its set envelope for the private consumer. */

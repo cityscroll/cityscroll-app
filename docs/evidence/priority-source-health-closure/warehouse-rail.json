@@ -1,0 +1,15 @@
+{
+  "schema": "cityscroll.warehouse_refresh_rail_inspection.v1",
+  "evidence_class": "live-host-inspection",
+  "isolated": false,
+  "installed": true,
+  "identity": "com.cityscroll.first-class-refresh",
+  "schedule": "10 7 * * *",
+  "last_execution": {
+    "at": "2026-09-05T19:57:00.000Z",
+    "exit_code": 0,
+    "identity": "com.cityscroll.first-class-refresh"
+  },
+  "blocker": null,
+  "notes": "The installed scheduled rail rematerializes warehouse-backed first-class artifacts. Bounded priority-source acquisition now runs before rematerialization. Unchanged old catalog checksums are not freshness proof."
+}

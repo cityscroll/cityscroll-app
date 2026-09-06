@@ -13,10 +13,23 @@ import {
 } from "./desk_health_publication_cycle.mjs";
 import {
   buildCommunityBoardRepairObservations,
+  buildHealthRepairObservations,
+  mergeRepairObservations,
   repairCodeRevision,
   repairObservationSet,
   repairWorkObservations,
 } from "./repair_observations.mjs";
+import {
+  PRIORITY_SOURCE_HEALTH_CLOSURE_EXTENSION_VERSION,
+  buildPrioritySourceHealthClosure,
+  cardSynthesisOwner,
+  inspectWarehouseRefreshRail,
+  isActiveObservabilitySource,
+} from "./priority_source_health_closure.mjs";
+import {
+  buildMinutesGapDetector,
+  classifyBoardDispositions,
+} from "./board_scorecard_observation_closure.mjs";
 import {
   REPAIR_QUEUE_REGISTER_PATH,
   buildRepairQueue,
@@ -44,6 +57,7 @@ export const REPAIR_QUEUE_EXTENSION_VERSION = 1;
 export { OPERATOR_OVERVIEW_EXTENSION_VERSION };
 export const DESK_CONSUMER_CONTRACT_PATH = "data/data-source-graph-desk-contract.v1.json";
 export { PUBLICATION_CYCLE_EXTENSION_VERSION };
+export { PRIORITY_SOURCE_HEALTH_CLOSURE_EXTENSION_VERSION };
 
 const CORE_INPUTS = [
   "docs/data-sources.md",
@@ -519,6 +533,23 @@ ${isolated}
 </section>`;
 }
 
+function renderPrioritySourceClosure(closure) {
+  if (!closure) return "";
+  const coverage = closure.census?.active_source_observability || {};
+  const families = (closure.families || []).map((family) => {
+    const open = family.obligation_open ? "open" : "closed";
+    const sources = (family.sources || []).map((row) => `${esc(row.source_id)} · ${row.cityscroll_controlled_evidence ? "observed" : "obligation open"}`).join("<br>");
+    return `<div data-family="${esc(family.family_id)}"><dt>${esc(family.label)}</dt><dd data-obligation="${open}">${sources || "no sources"}</dd></div>`;
+  }).join("");
+  const gaps = (closure.remaining_non_priority_observation_gaps || []).slice(0, 12).map((id) => esc(id)).join(", ");
+  return `<section class="publication-cycle" id="prioritySourceClosure" aria-labelledby="prioritySourceClosureHeading">
+<h2 id="prioritySourceClosureHeading">Priority source observation closure</h2>
+<p>Active-source observability: ${Number(coverage.numerator) || 0} of ${Number(coverage.denominator) || 0}.</p>
+<dl class="publication-clocks">${families}</dl>
+${gaps ? `<p><small>Remaining non-priority observation gaps: ${gaps}</small></p>` : ""}
+</section>`;
+}
+
 function deriveBlockedSources(gapTaxonomy) {
   return (gapTaxonomy.partnership_blocked_sources || []).map((source) => {
     const requiredStrings = ["id", "wishlist_gap_id", "name", "data_offered", "collecting_body", "platform", "status", "status_note"];
@@ -663,6 +694,8 @@ export function buildDataSourceGraph({
   repairRegister = null,
   repairIngestion = { available: true },
   publicationCycle = null,
+  prioritySourceClosure = null,
+  cardSynthesis = null,
   inputs = [],
 } = {}) {
   const contracts = registry?.contracts || [];
@@ -781,6 +814,7 @@ export function buildDataSourceGraph({
       repair_queue: REPAIR_QUEUE_EXTENSION_VERSION,
       operator_overview: OPERATOR_OVERVIEW_EXTENSION_VERSION,
       publication_cycle: PUBLICATION_CYCLE_EXTENSION_VERSION,
+      priority_source_closure: PRIORITY_SOURCE_HEALTH_CLOSURE_EXTENSION_VERSION,
     },
     title: "CityScroll data-source topology",
     description: "Generated collecting-body → dataset → ingest → surface architecture for the authenticated desk.",
@@ -812,6 +846,13 @@ export function buildDataSourceGraph({
       healthObservations,
       sourcesHash,
     }),
+    priority_source_closure: prioritySourceClosure || buildPrioritySourceHealthClosure({
+      registry,
+      projection: healthObservations,
+      cardSynthesis,
+      evidenceRevision: sourcesHash,
+    }),
+    card_synthesis: cardSynthesis || cardSynthesisOwner(),
   };
 }
 
@@ -897,6 +938,7 @@ export function renderGraphHtml(graph) {
 <p class="lede">Start from monitoring, publication, and the conditions that need attention. Collecting-body topology remains available as a secondary view. Trace a selected source through its declared artifacts, clocks, and existing repair group without treating a tolerated served age as a recent acquisition.</p>
 <div class="meta"><span class="pill">${graph.counts.bodies} collecting bodies</span><span class="pill">${graph.counts.source_contracts} source contracts</span><span class="pill">${graph.counts.candidate_sources || 0} candidates</span><span class="pill">${graph.counts.blocked_sources} access-gated sources</span><span class="pill">${graph.counts.surfaces} surfaces</span>${graph.current_as_of ? `<span class="pill">Current as of ${esc(formatFreshnessDate(graph.current_as_of))}</span>` : ""}<span class="pill">sources hash ${esc(graph.sources_hash.slice(0, 12))}</span></div>
 ${renderPublicationCycle(graph.publication_cycle)}
+${renderPrioritySourceClosure(graph.priority_source_closure)}
 <div class="legend" aria-label="Graph visual classes"><span><i></i> Available source path</span><span><i class="ghost-key"></i> Candidate / access-gated research path</span></div>
 <div class="controls"><label class="sr-only" for="search">Filter sources</label><input id="search" type="search" placeholder="Filter by source, endpoint, adapter, error, or access route…"><label class="sr-only" for="status">Filter by source state</label><select id="status"><option value="">All statuses</option><option value="live">Live</option><option value="build-time">Build-time</option><option value="manual">Manual</option><option value="disabled">Disabled</option><option value="candidate">Candidate</option><option value="application-possible">Application possible</option><option value="blocked">Blocked</option><option value="declined">Declined</option></select><div class="toggle" aria-label="View"><button id="overviewToggle" type="button" aria-pressed="true">Source health</button><button id="graphToggle" type="button" aria-pressed="false">Departments</button><button id="tableToggle" type="button" aria-pressed="false">Table view</button><button id="repairToggle" type="button" aria-pressed="false">Repair queue</button></div></div>
 <div class="workspace" id="inspectWorkspace">
@@ -1028,7 +1070,7 @@ export function communityBoardRepairObservations(registry) {
   }
   const index = readJson(indexPath);
   const contract = (registry?.contracts || []).find((row) => row.id === COMMUNITY_BOARD_SOURCE_CONTRACT_ID) || {};
-  const observations = buildCommunityBoardRepairObservations({
+  const boardObservations = buildCommunityBoardRepairObservations({
     index,
     inventory: readJson(inventoryPath),
     contract,
@@ -1039,16 +1081,58 @@ export function communityBoardRepairObservations(registry) {
     }))),
   });
   return {
-    observations,
+    observations: boardObservations,
     observedAt: index?.generated_at || null,
     sourceVintage: index?.generated_at || null,
     ingestion: { available: true, reason: null, missing_inputs: [] },
   };
 }
 
+function healthRepairObservations(registry, healthObservations) {
+  const activeIds = new Set(
+    (registry?.contracts || []).filter((contract) => isActiveObservabilitySource(contract)).map((row) => row.id),
+  );
+  const observations = (healthObservations?.observations || []).filter((row) => activeIds.has(row.source_id));
+  return buildHealthRepairObservations({
+    observations,
+    contracts: registry?.contracts || [],
+    observedAt: healthObservations?.generated_at || null,
+    codeRevision: repairCodeRevision(REPAIR_OBSERVATION_CODE_PATHS.map((path) => ({
+      path,
+      text: existsSync(join(ROOT, path)) ? readFileSync(join(ROOT, path), "utf8") : "",
+    }))),
+  });
+}
+
+function prioritySourceClosureForGraph(registry, healthObservations) {
+  const boardRegistryPath = "site/data/non_council_outcome_sources/source_registry.json";
+  const probesPath = "site/data/non_council_outcome_sources/verification_receipts/cb_minutes_publication_probes.json";
+  const boardRegistry = existsSync(join(ROOT, boardRegistryPath)) ? readJson(boardRegistryPath) : { sources: [] };
+  const probes = existsSync(join(ROOT, probesPath)) ? readJson(probesPath) : null;
+  const detector = probes ? buildMinutesGapDetector({ registry: boardRegistry, probes }) : null;
+  const boardClosure = classifyBoardDispositions({ registry: boardRegistry, detector, probes });
+  return buildPrioritySourceHealthClosure({
+    registry,
+    projection: healthObservations,
+    boardClosure,
+    rail: existsSync(join(ROOT, "docs/evidence/priority-source-health-closure/warehouse-rail.json"))
+      ? readJson("docs/evidence/priority-source-health-closure/warehouse-rail.json")
+      : inspectWarehouseRefreshRail({}),
+    evidenceRevision: healthObservations?.generated_at || null,
+  });
+}
+
 export function generatedGraphFiles({ inputs = inputManifest() } = {}) {
   const registry = readJson("site/data/source_contracts.json");
   const repair = communityBoardRepairObservations(registry);
+  const healthObservations = readJson("site/data/source_health_observations.json");
+  const healthRepairs = healthRepairObservations(registry, healthObservations);
+  const repairObservations = mergeRepairObservations(repair.observations, healthRepairs, {
+    observedAt: healthObservations?.generated_at || repair.observedAt,
+    monitoringAvailable: !(healthObservations?.observations || []).every((row) => (
+      row?.freshness_watchdog?.reason_codes || []
+    ).includes("monitor-missing")),
+  });
   const receiptPaths = inputs.map((input) => input.path).filter((path) => path.includes("receipts/") || path.includes("verification_receipts/"));
   const graph = buildDataSourceGraph({
     registry,
@@ -1058,14 +1142,16 @@ export function generatedGraphFiles({ inputs = inputManifest() } = {}) {
     workerText: readFileSync(join(ROOT, "worker/src/worker.mjs"), "utf8"),
     externalAwardText: readFileSync(join(ROOT, "worker/src/external_award.mjs"), "utf8"),
     receipts: receiptEvidence(registry.contracts, receiptPaths),
-    healthObservations: readJson("site/data/source_health_observations.json"),
+    healthObservations,
     vintageObservations: existsSync(join(ROOT, "site/data/source_vintage_observations.json"))
       ? readJson("site/data/source_vintage_observations.json")
       : { observations: [] },
     alternateRegistry: existsSync(join(ROOT, "site/data/source_vintage_alternates.json"))
       ? readJson("site/data/source_vintage_alternates.json")
       : { alternates: [] },
-    repairObservations: repair.observations,
+    repairObservations,
+    prioritySourceClosure: prioritySourceClosureForGraph(registry, healthObservations),
+    cardSynthesis: cardSynthesisOwner(),
     repairObservedAt: repair.observedAt,
     repairSourceVintage: repair.sourceVintage,
     repairRegister: readJson(REPAIR_QUEUE_REGISTER_PATH),

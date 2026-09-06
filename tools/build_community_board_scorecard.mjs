@@ -4,22 +4,29 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { buildScorecard, renderScorecardPage } from "../site/community-board-scorecard.mjs";
 import { readCommunityBoardMeetingIndex } from "./lib/community_board_meeting_index_io.mjs";
+import { buildMinutesGapDetector } from "./board_scorecard_observation_closure.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const REGISTRY = join(ROOT, "site/data/non_council_outcome_sources/source_registry.json");
 const SOURCE_INVENTORY = join(ROOT, "site/data/non_council_outcome_sources/board_source_inventory.json");
 const OUTCOME_LOOKUP = join(ROOT, "site/data/non_council_outcome_lookup.json");
 const DETECTOR = join(ROOT, "site/data/community_board_minutes_gap.json");
+const PROBES = join(ROOT, "site/data/non_council_outcome_sources/verification_receipts/cb_minutes_publication_probes.json");
 const MEETING_INDEX = join(ROOT, "site/data/community_board_meeting_index.json");
 const BOUNDARIES = join(ROOT, "site/data/district_boundaries.json");
 const MONEY_COMPARISON = join(ROOT, "site/data/community_board_money_comparison.json");
 const JSON_OUT = join(ROOT, "site/data/community_board_minutes_scorecard.json");
 const HTML_OUT = join(ROOT, "site/community-boards/index.html");
 const check = process.argv.includes("--check");
-const detector = existsSync(DETECTOR) ? JSON.parse(readFileSync(DETECTOR, "utf8")) : null;
+const registry = JSON.parse(readFileSync(REGISTRY, "utf8"));
+const detector = existsSync(DETECTOR)
+  ? JSON.parse(readFileSync(DETECTOR, "utf8"))
+  : existsSync(PROBES)
+    ? buildMinutesGapDetector({ registry, probes: JSON.parse(readFileSync(PROBES, "utf8")) })
+    : null;
 const meetingIndex = existsSync(MEETING_INDEX) ? readCommunityBoardMeetingIndex(MEETING_INDEX) : null;
 const scorecard = buildScorecard({
-  registry: JSON.parse(readFileSync(REGISTRY, "utf8")),
+  registry,
   detector,
   sourceInventory: JSON.parse(readFileSync(SOURCE_INVENTORY, "utf8")),
   meetingIndex,
