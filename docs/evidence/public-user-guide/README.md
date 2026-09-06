@@ -16,12 +16,22 @@ assertion or a reproducible receipt.
 | [`example-selection-records.md`](example-selection-records.md) | Per-example canonical route, evidence class, observable result, and selection note, plus the check-harness limitation found on the topic-search example. |
 | [`review-cadence-handoff.md`](review-cadence-handoff.md) | What runs in this repository and how often, why the weekly review is not reachable from here, and the exact interface a guide-review lane needs on each side. |
 | [`capture-manifest.json`](capture-manifest.json) | Baseline of About and five entry points at 390px and 1440px, as hashes and assertions. No image is committed. |
+| [`guide-release/capture-manifest.json`](guide-release/capture-manifest.json) | The first published slice: the reader's journey through the guide, with accessibility, reflow, keyboard, link and no-JavaScript checks at both widths. |
 
 ## Reproducing the evidence
 
 ```sh
 python3 test/standards/demo_links.py
 python3 tools/capture_guide_baseline.py
+```
+
+The published guide has its own reproduction, which needs no network:
+
+```sh
+node tools/build_guide_documents.mjs --check
+node --test test/guide_documents.test.mjs
+python3 test/standards/guide_content.py
+python3 tools/capture_guide_release.py
 ```
 
 The live example checks and the isolation of the harness limitation are recorded
@@ -41,7 +51,13 @@ is stable across an ordinary civic-data refresh, so a later difference means the
 page shell changed. `content_sha256` hashes its rendered markup and is a
 point-in-time observation of live records, not a regression baseline.
 
-Two facts in the current capture are load-bearing for the articles that follow:
-the homepage carries no guide link yet, and the calendar subscription control on
-the deadlines surface is present but hidden until a scope offers a supported
-dated occurrence.
+Two facts in that baseline were load-bearing for the articles that follow: the
+homepage carried no guide link, and the calendar subscription control on the
+deadlines surface is present but hidden until a scope offers a supported dated
+occurrence.
+
+The first of those has since been answered — the homepage now carries a Guide
+entry, recorded in
+[`guide-release/capture-manifest.json`](guide-release/capture-manifest.json).
+The baseline above is left as it was taken; a baseline that is edited to match
+what shipped stops being one.

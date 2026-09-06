@@ -1,0 +1,237 @@
+/**
+ * Contracts for the public guide at /guide/.
+ *
+ * These cover the properties a reader depends on and a rebuild could quietly
+ * break: the four reader-facing sections and what they link to, the review date
+ * being a recorded editorial fact rather than a build artefact, and an article
+ * staying readable without script, without images, and without asking the reader
+ * to know the words the implementation uses for things.
+ */
+
+import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import test from "node:test";
+
+import { GUIDE_GROUPS, GuideSourceError, parseGuideArticle, parseGuideHome } from "../site/guide_article_source.mjs";
+import { renderGuideArticle, renderGuideHome } from "../site/guide_view.mjs";
+import { internalLinkFailures, loadGuide, renderGuideDocuments } from "../tools/build_guide_documents.mjs";
+
+const { home, articles } = loadGuide();
+const documents = renderGuideDocuments();
+const homeHtml = readFileSync(new URL("../site/guide/index.html", import.meta.url), "utf8");
+const tutorial = articles.find((article) => article.id === "T1");
+const tutorialHtml = readFileSync(
+  new URL("../site/guide/start/explore-housing-across-city-records/index.html", import.meta.url),
+  "utf8",
+);
+
+function textOf(html) {
+  return html.replace(/<[^>]+>/g, " ").replace(/&[a-z]+;/g, " ").replace(/\s+/g, " ");
+}
+
+/* ------------------------------------------------------- the guide home */
+
+test("the guide home offers the four reader-facing sections in order", () => {
+  const headings = [...homeHtml.matchAll(/<h2[^>]*>([^<]*)<\/h2>/g)].map((match) => match[1].trim());
+  const groupLabels = GUIDE_GROUPS.map((group) => group.label);
+  assert.deepEqual(headings.filter((heading) => groupLabels.includes(heading)), groupLabels);
+  assert.deepEqual(groupLabels, ["Start here", "How to…", "Understand", "Reference"]);
+});
+
+test("the guide home links published articles and says so plainly where there are none", () => {
+  for (const article of articles) {
+    assert.ok(homeHtml.includes(`href="${article.url}"`), `home does not link ${article.id}`);
+    assert.ok(homeHtml.includes(article.title));
+  }
+  const empty = GUIDE_GROUPS.filter((group) => !articles.some((article) => article.type === group.type));
+  assert.ok(empty.length, "this test stops being meaningful once every section is filled");
+  const text = textOf(homeHtml);
+  assert.match(text, /Articles for this section are being written/);
+  // An empty section must not read as a page that failed to load.
+  for (const phrase of ["error", "unavailable", "failed", "try again"]) {
+    assert.ok(!text.toLowerCase().includes(phrase), `empty-section copy suggests a failure: ${phrase}`);
+  }
+});
+
+test("every internal link on a published guide page resolves", () => {
+  const named = [...documents].map(([path, html]) => [path, html]);
+  assert.deepEqual(internalLinkFailures(named, articles), []);
+});
+
+test("the guide home says which language it is published in", () => {
+  assert.match(textOf(homeHtml), /published in English first/);
+});
+
+/* ------------------------------------------------------- the first tutorial */
+
+test("the tutorial shows its type, purpose, reader question, review date and a way back to the task", () => {
+  assert.equal(tutorial.group.label, "Start here");
+  const text = textOf(tutorialHtml);
+  assert.match(text, /Start here · Tutorial/);
+  assert.ok(text.includes(tutorial.purpose));
+  assert.ok(text.includes(tutorial.reader_question));
+  assert.match(text, new RegExp(`Last reviewed ${tutorial.last_reviewed}`));
+  assert.ok(tutorialHtml.includes(`href="${tutorial.return_to_task.href}"`));
+  assert.ok(tutorialHtml.includes('href="/guide/"'), "an article must link back to the guide home");
+  for (const source of tutorial.sources) assert.ok(tutorialHtml.includes(`href="${source.href}"`));
+});
+
+test("the tutorial teaches without the words the implementation uses for things", () => {
+  const text = textOf(tutorialHtml).toLowerCase();
+  const internalVocabulary = [
+    "lens", "entity_refs", "capability spine", "facet", "handoff", "projection",
+    "materializ", "read model", "snapshot", "schema", "endpoint", "payload",
+  ];
+  for (const term of internalVocabulary) {
+    assert.ok(!text.includes(term), `tutorial uses internal vocabulary: ${term}`);
+  }
+});
+
+test("the tutorial promises observable checkpoints, never a fixed number of results", () => {
+  const text = textOf(tutorialHtml);
+  assert.ok(text.split("Checkpoint").length - 1 >= 5, "a tutorial this long needs checkpoints throughout");
+  const counted = text.match(/\b\d[\d,]*\s+(results?|matches|records)\b/i);
+  assert.equal(counted, null, `tutorial promises a live count: ${counted && counted[0]}`);
+  assert.match(text, /your numbers will\s+not match anyone else's|Read the shape,\s+not the totals/);
+});
+
+test("the tutorial says where the product itself needs script", () => {
+  assert.match(textOf(tutorialHtml), /needs JavaScript switched on/);
+});
+
+/* ------------------------------------------------------- rebuild behaviour */
+
+test("guide documents carry no script and no images", () => {
+  for (const [path, html] of documents) {
+    assert.ok(!/<script\b/i.test(html), `${path} ships script`);
+    assert.ok(!/\son[a-z]+=/i.test(html), `${path} carries an inline event handler`);
+    assert.ok(!/<img\b/i.test(html), `${path} ships an image`);
+  }
+});
+
+test("an unchanged rebuild reproduces the same bytes", () => {
+  const again = renderGuideDocuments();
+  for (const [path, html] of documents) assert.equal(again.get(path), html);
+});
+
+test("every review date on a page was recorded in a source", () => {
+  const recorded = new Set([home.last_reviewed, ...articles.map((article) => article.last_reviewed)]);
+  for (const [path, html] of documents) {
+    const dates = [...html.matchAll(/Last reviewed (\d{4}-\d{2}-\d{2})/g)].map((match) => match[1]);
+    assert.ok(dates.length, `${path} shows no review date`);
+    for (const date of dates) {
+      assert.ok(recorded.has(date), `${path} shows a review date no source recorded: ${date}`);
+    }
+  }
+});
+
+test("nothing on the guide's build path can read a clock", () => {
+  // A rebuild that could ask the system what day it is could move a review date
+  // without an editor deciding to. The dates are parsed from the sources, so the
+  // modules that produce a guide page have no business holding a clock at all.
+  for (const module of ["site/guide_article_source.mjs", "site/guide_view.mjs", "tools/build_guide_documents.mjs"]) {
+    const source = readFileSync(new URL(`../${module}`, import.meta.url), "utf8");
+    for (const clock of ["new Date", "Date.now", "toISOString", "toLocaleDateString", "hrtime"]) {
+      assert.ok(!source.includes(clock), `${module} reads a clock (${clock})`);
+    }
+  }
+});
+
+test("the tracked documents match their sources", () => {
+  assert.equal(documents.get(new URL("../site/guide/index.html", import.meta.url).pathname), homeHtml);
+});
+
+/* ------------------------------------------------------- source format */
+
+const MINIMAL = `---
+id: T9
+type: tutorial
+title: A short walk
+page_title: A short walk · CityScroll
+url: /guide/start/a-short-walk/
+reader_question: How does this work?
+purpose: A very short example.
+description: ${"x".repeat(130)}
+last_reviewed: 2026-09-05
+return_to_task: Go back to the search | /search/
+---
+
+## A heading
+
+Some prose.
+`;
+
+function withField(source, key, value) {
+  return source.replace(new RegExp(`^${key}: .*$`, "m"), value === null ? "" : `${key}: ${value}`);
+}
+
+test("an article source is accepted when it carries everything a reader is shown", () => {
+  const article = parseGuideArticle("fixture.md", MINIMAL);
+  assert.equal(article.group.label, "Start here");
+  assert.match(article.bodyHtml, /<h2>A heading<\/h2>/);
+  assert.match(article.bodyHtml, /<p>Some prose\.<\/p>/);
+});
+
+test("an article without an editorially recorded review date is rejected", () => {
+  assert.throws(() => parseGuideArticle("fixture.md", withField(MINIMAL, "last_reviewed", null)), GuideSourceError);
+  assert.throws(
+    () => parseGuideArticle("fixture.md", withField(MINIMAL, "last_reviewed", "today")),
+    /last_reviewed must be an explicit YYYY-MM-DD date/,
+  );
+});
+
+test("an article is rejected when its type, address or metadata would mislead a reader", () => {
+  assert.throws(() => parseGuideArticle("fixture.md", withField(MINIMAL, "type", "essay")), /unknown type/);
+  assert.throws(
+    () => parseGuideArticle("fixture.md", withField(MINIMAL, "url", "/guide/how-to/a-short-walk/")),
+    /url must start with \/guide\/start\//,
+  );
+  assert.throws(
+    () => parseGuideArticle("fixture.md", withField(MINIMAL, "description", "too short")),
+    /description must be 120-160 characters/,
+  );
+  assert.throws(
+    () => parseGuideArticle("fixture.md", withField(MINIMAL, "return_to_task", "Go back to the search")),
+    /return_to_task must be written as "label \| href"/,
+  );
+});
+
+test("author text cannot inject markup, and unsupported syntax fails the build", () => {
+  const escaped = parseGuideArticle("fixture.md", MINIMAL.replace("Some prose.", "Some <b>prose</b> & more."));
+  assert.match(escaped.bodyHtml, /&lt;b&gt;prose&lt;\/b&gt; &amp; more\./);
+  assert.throws(
+    () => parseGuideArticle("fixture.md", MINIMAL.replace("Some prose.", "| a | table |")),
+    /unsupported block/,
+  );
+});
+
+test("a link in prose renders with its label, and an outside link is marked as leaving the site", () => {
+  const article = parseGuideArticle(
+    "fixture.md",
+    MINIMAL.replace("Some prose.", "See [the official record](https://a856-cityrecord.nyc.gov/) and [Browse](/browse/)."),
+  );
+  assert.match(article.bodyHtml, /<a href="https:\/\/a856-cityrecord\.nyc\.gov\/" target="_blank" rel="noopener noreferrer">the official record<\/a>/);
+  assert.match(article.bodyHtml, /<a href="\/browse\/">Browse<\/a>/);
+});
+
+test("the guide home source must carry every reader-facing section", () => {
+  const source = readFileSync(new URL("../site/guide/_home.md", import.meta.url), "utf8");
+  assert.doesNotThrow(() => parseGuideHome("site/guide/_home.md", source));
+  assert.throws(
+    () => parseGuideHome("fixture.md", source.replace("## Reference", "## Look it up")),
+    /missing a "## Reference" section/,
+  );
+});
+
+test("rendering is a pure function of the parsed sources", () => {
+  assert.equal(renderGuideHome(home, articles), renderGuideHome(home, articles));
+  assert.equal(renderGuideArticle(tutorial), renderGuideArticle(tutorial));
+});
+
+test("a list item wrapped across lines stays one item", () => {
+  const article = parseGuideArticle(
+    "fixture.md",
+    MINIMAL.replace("Some prose.", "- A point that runs\n  onto a second line.\n- A second point."),
+  );
+  assert.match(article.bodyHtml, /<ul><li>A point that runs onto a second line\.<\/li><li>A second point\.<\/li><\/ul>/);
+});

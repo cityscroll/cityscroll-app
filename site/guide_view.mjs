@@ -1,0 +1,154 @@
+/**
+ * Documents for the public guide at /guide/.
+ *
+ * The guide home and every guide article are plain static documents: prose,
+ * headings, source links and ordinary navigation, with no script of their own.
+ * A reader with JavaScript switched off gets the whole article, and an article
+ * says at the step itself when the product surface it sends them to needs
+ * script to work.
+ *
+ * Layout comes from the shared civic-document chrome and the node-* rules in
+ * civic-documents.css, so the guide inherits the site's design system instead
+ * of introducing a second one; guide.css adds only the few rules that have no
+ * equivalent there.
+ */
+
+import {
+  renderCivicDocumentAssets,
+  renderCivicDocumentMast,
+  renderNodeFooter,
+} from "./civic_document_chrome.mjs";
+import { GUIDE_GROUPS, escapeHtml as esc } from "./guide_article_source.mjs";
+
+export const GUIDE_HOME_URL = "/guide/";
+const TYPE_LABELS = Object.freeze({
+  tutorial: "Tutorial",
+  "how-to": "How-to guide",
+  explanation: "Explanation",
+  reference: "Reference",
+});
+
+/**
+ * Written where an article would otherwise be listed. A reader is told the
+ * section is real and still filling up, which is true, rather than being shown
+ * an empty heading that reads like something failed to load.
+ */
+const EMPTY_GROUP_NOTE = "Articles for this section are being written. Each one is listed here once an editor has checked it against the live site.";
+
+function linkHtml({ label, href }) {
+  const external = /^https?:/i.test(href);
+  const attrs = external ? ' target="_blank" rel="noopener noreferrer"' : "";
+  return `<a href="${esc(href)}"${attrs}>${esc(label)}</a>`;
+}
+
+function head({ title, description, canonical }) {
+  return `<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${esc(title)}</title><meta name="description" content="${esc(description)}">
+<link rel="canonical" href="${esc(canonical)}">${renderCivicDocumentAssets("/")}
+<link rel="stylesheet" href="/guide.css"></head>
+<body><a class="skip" href="#main">Skip to content</a>
+${renderCivicDocumentMast({ surfaceClass: "guide-mast" })}`;
+}
+
+function foot() {
+  return `${renderNodeFooter({ text: "CityScroll is an unofficial reading aid. Check each record at its official source.", extraClass: "guide-footer" })}
+</body></html>`;
+}
+
+function reviewLine(date) {
+  return `<p class="node-meta guide-reviewed">Last reviewed ${esc(date)}</p>`;
+}
+
+function articleListItem(article) {
+  return `<li class="guide-article-item">
+      <a class="guide-article-link" href="${esc(article.url)}">${esc(article.title)}</a>
+      <span class="guide-article-question">${esc(article.reader_question)}</span>
+      <span class="guide-article-meta">${esc(TYPE_LABELS[article.type])} · Last reviewed ${esc(article.last_reviewed)}</span>
+    </li>`;
+}
+
+function groupSection(group, articles, description) {
+  const published = articles.filter((article) => article.type === group.type);
+  const body = published.length
+    ? `<ul class="guide-article-list">\n${published.map(articleListItem).join("\n")}\n    </ul>`
+    : `<p class="guide-group-empty">${esc(EMPTY_GROUP_NOTE)}</p>`;
+  return `<section class="node-section guide-group" aria-labelledby="group-${esc(group.id)}">
+    <h2 id="group-${esc(group.id)}">${esc(group.label)}</h2>
+    ${description}
+    ${body}
+  </section>`;
+}
+
+/** The guide home: an orientation and the four reader-facing sections. */
+export function renderGuideHome(home, articles) {
+  const sections = home.sections;
+  const groups = GUIDE_GROUPS
+    .map((group) => groupSection(group, articles, sections.get(group.label)))
+    .join("\n  ");
+  return `${head({
+    title: home.page_title,
+    description: home.description,
+    canonical: "https://cityscroll.org/guide/",
+  })}
+<main class="node-document guide-document" id="main">
+  <header class="node-hero guide-hero">
+    <p class="node-kicker">Guide</p>
+    <h1>${esc(home.title)}</h1>
+    <p class="node-lede">${esc(home.purpose)}</p>
+    ${reviewLine(home.last_reviewed)}
+  </header>
+  <section class="node-section guide-orientation" aria-labelledby="guide-orientation">
+    <h2 id="guide-orientation">Where to start</h2>
+    ${sections.get("Orientation")}
+  </section>
+  ${groups}
+  <section class="node-section guide-language" aria-labelledby="guide-language">
+    <h2 id="guide-language">About this guide</h2>
+    ${sections.get("About this guide") || ""}
+  </section>
+</main>
+${foot()}`;
+}
+
+function relatedSection(article) {
+  if (!article.related.length) return "";
+  return `<section class="node-section guide-related" aria-labelledby="guide-related">
+    <h2 id="guide-related">Related pages</h2>
+    <ul>${article.related.map((item) => `<li>${linkHtml(item)}</li>`).join("")}</ul>
+  </section>`;
+}
+
+function sourcesSection(article) {
+  if (!article.sources.length) return "";
+  return `<section class="node-section guide-sources" aria-labelledby="guide-sources">
+    <h2 id="guide-sources">Sources used in this article</h2>
+    <ul>${article.sources.map((item) => `<li>${linkHtml(item)}</li>`).join("")}</ul>
+  </section>`;
+}
+
+/** One guide article. */
+export function renderGuideArticle(article) {
+  return `${head({
+    title: article.page_title || `${article.title} · CityScroll`,
+    description: article.description,
+    canonical: `https://cityscroll.org${article.url}`,
+  })}
+<main class="node-document guide-document guide-article" id="main">
+  <p class="node-back"><a href="${esc(GUIDE_HOME_URL)}">Back to the guide</a></p>
+  <header class="node-hero guide-hero">
+    <p class="node-kicker">${esc(article.group.label)} · ${esc(TYPE_LABELS[article.type])}</p>
+    <h1>${esc(article.title)}</h1>
+    <p class="node-lede">${esc(article.purpose)}</p>
+    <p class="guide-question">${esc(article.reader_question)}</p>
+    ${reviewLine(article.last_reviewed)}
+  </header>
+  <div class="guide-body">
+${article.bodyHtml}
+  </div>
+  ${relatedSection(article)}
+  ${sourcesSection(article)}
+  <p class="guide-return">${linkHtml(article.return_to_task)}</p>
+</main>
+${foot()}`;
+}

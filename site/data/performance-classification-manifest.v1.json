@@ -2,7 +2,7 @@
   "schema": "cityscroll.performance.browser_manifest.v1",
   "manifest_version": "rum-surfaces-v1",
   "registry_version": "1.0.0",
-  "registry_hash": "35353472a6794f7482d84beb60936d92bb6356da14b5fd2f71b99584784ff886",
+  "registry_hash": "d04f6a0a87f6869a361bc228bf0c8d2bf7bcdc9a690c172a80b1cba88c8c09bb",
   "collector": {
     "collector_version": "rum-browser-v1",
     "library_name": "web-vitals",
@@ -698,6 +698,56 @@
         }
       ],
       "delivery_class": "pages_edge",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "semantic_readiness_contract": "page-content-ready-v1",
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "introduced_version": "1.0.0"
+    },
+    {
+      "surface_id": "guide",
+      "kind": "surface",
+      "parent": null,
+      "route_family": "information-guide",
+      "public_safe_matcher": [
+        {
+          "kind": "exact",
+          "pathname": "/guide"
+        }
+      ],
+      "delivery_class": "static",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "semantic_readiness_contract": "page-content-ready-v1",
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "introduced_version": "1.0.0"
+    },
+    {
+      "surface_id": "guide-article",
+      "kind": "surface",
+      "parent": null,
+      "route_family": "information-guide",
+      "public_safe_matcher": [
+        {
+          "kind": "segment_template",
+          "pathname": "/guide/{section}/{article}"
+        }
+      ],
+      "delivery_class": "static",
       "applicable_metric_ids": [
         "cls_score",
         "content_ready_ms",

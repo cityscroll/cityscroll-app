@@ -33,6 +33,8 @@ PROMOTED_DOCUMENTS = [
     "https://cityscroll.org/browse/property/",
     "https://cityscroll.org/browse/rules/",
     "https://cityscroll.org/browse/meetings/",
+    "https://cityscroll.org/guide/",
+    "https://cityscroll.org/guide/start/explore-housing-across-city-records/",
 ]
 RETIRED_DESTINATIONS = {
     "changelog.html": "https://cityscroll.org/about.html",

@@ -34,6 +34,8 @@ export const ROUTE_INVENTORY = Object.freeze([
   { path: "/browse/property/", id: "browse-property", kind: "html", marker: CONTENT_MARKER },
   { path: "/browse/rules/", id: "browse-rules", kind: "html", marker: CONTENT_MARKER },
   { path: "/browse/meetings/", id: "browse-meetings", kind: "html", marker: CONTENT_MARKER },
+  { path: "/guide/", id: "guide", kind: "html", marker: CONTENT_MARKER },
+  { path: "/guide/start/explore-housing-across-city-records/", id: "guide-tutorial-housing", kind: "html", marker: CONTENT_MARKER },
   { path: "/about.html", id: "about", kind: "html", marker: CONTENT_MARKER },
   { path: "/api.html", id: "api", kind: "html", marker: CONTENT_MARKER },
   { path: "/changelog.html", id: "changelog-redirect", kind: "html", marker: CONTENT_MARKER, retired: true },

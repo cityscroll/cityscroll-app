@@ -99,6 +99,7 @@
 /docs/property-a11y-census-2026-08.md
 /docs/public-capture-allowlist.json
 /docs/public-capture-guard.md
+/docs/public-guide.md
 /docs/readme/
 /docs/release/
 /docs/remaining-browse-scoped-adapters.md
@@ -411,6 +412,10 @@
 /site/franchise_phase_spine.mjs
 /site/geography_relations.mjs
 /site/graph_edge_provenance.mjs
+/site/guide.css
+/site/guide/
+/site/guide_article_source.mjs
+/site/guide_view.mjs
 /site/hearing_attend_pack.mjs
 /site/hearing_location.js
 /site/hearing_logistics.mjs

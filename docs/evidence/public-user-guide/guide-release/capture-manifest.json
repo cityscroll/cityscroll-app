@@ -1,0 +1,399 @@
+{
+  "schema_version": 1,
+  "card": "cityscroll-public-user-guide/ug-01-guide-home-and-first-tutorial",
+  "capture_mode": "local_static_site_playwright_no_committed_image",
+  "base": "local static site build (site/)",
+  "repository_revision": "9086143ed7b826d92ae3cf4a9547bbeea1a30c94",
+  "repository_state": "uncommitted changes present at capture time",
+  "note": "Usability evidence for the first published slice of the public guide. Every check runs against the tracked static documents served locally, so it reproduces from a checkout with no network and no deploy. Accessibility, keyboard, reflow and link checks cover the guide documents this change adds; the front page and the search document keep their existing owners and are exercised here only as the journey's endpoints. Screenshots stay under the ignored .artifacts/ path and only their sha256 is recorded, per docs/capture-manifest-guard.md.",
+  "data_vintage": "Not applicable to the guide documents: they are prose built from tracked sources and contain no civic records. Their review dates are editorial facts recorded in the article sources, not observations of live data. The search document is served from the local build and its results are not asserted.",
+  "viewports": [
+    {
+      "name": "mobile",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "name": "desktop",
+      "width": 1440,
+      "height": 900
+    }
+  ],
+  "checks": [
+    "expected reader-facing text and links",
+    "axe-core critical and serious violations on guide documents",
+    "horizontal overflow at the review width",
+    "horizontal overflow at 200 percent zoom (WCAG 1.4.10 reflow)",
+    "target size below 24px",
+    "keyboard focus reach and a visible focus indicator",
+    "HTTP status of every internal link on a guide page",
+    "front page to guide to tutorial to product, and browser Back",
+    "the same reading path with JavaScript switched off"
+  ],
+  "captures": [
+    {
+      "id": "home",
+      "route": "/",
+      "viewport": "mobile",
+      "viewport_width": 390,
+      "assertion": "The front page carries a visible Guide entry in its primary navigation that links to the guide home.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 0,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 0,
+      "broken_internal_links": [],
+      "visible_text_characters": 1049,
+      "content_sha256": "3b2581b5a8379fe64ebcfe6891b82ad218cbcd1c62adddb9fc15a3dca22f1029",
+      "capture_sha256": "838416b32fc5885b163eaf654e32cdafaaea63c03421f987b57743d5c4842425",
+      "local_capture_path": ".artifacts/guide-release/home-390.png",
+      "file": null
+    },
+    {
+      "id": "guide-home",
+      "route": "/guide/",
+      "viewport": "mobile",
+      "viewport_width": 390,
+      "assertion": "The guide home orients a signed-out reader with the four reader-facing sections and links the tutorial that is published.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 2,
+        "reached": 2,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 7,
+      "broken_internal_links": [],
+      "visible_text_characters": 2256,
+      "content_sha256": "46b26b9c10cc071987f809e319d52003c6eb56f1ec6f533211843c2a56cd08df",
+      "capture_sha256": "74620c311515d9a41b4652e8900bba850ef53292864cb16df448cd44bc1827ff",
+      "local_capture_path": ".artifacts/guide-release/guide-home-390.png",
+      "file": null
+    },
+    {
+      "id": "guide-tutorial",
+      "route": "/guide/start/explore-housing-across-city-records/",
+      "viewport": "mobile",
+      "viewport_width": 390,
+      "assertion": "The first tutorial loads directly with its type, review date, steps, checkpoints, sources and a link back to the task.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 7,
+        "reached": 7,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 8,
+      "broken_internal_links": [],
+      "visible_text_characters": 6002,
+      "content_sha256": "c8e98818883f2e4dbdc59f90bc2de28fd96cbb22f6c0ce77c29e37c26670037f",
+      "capture_sha256": "107511f91cf1d1c6d49bb1bdfc8b85a6f444250f4235fdcf8c6ee6dc04aa75f6",
+      "local_capture_path": ".artifacts/guide-release/guide-tutorial-390.png",
+      "file": null
+    },
+    {
+      "id": "product-search",
+      "route": "/search/?q=housing",
+      "viewport": "mobile",
+      "viewport_width": 390,
+      "assertion": "The product route the tutorial returns the reader to serves its document. Result content is assembled from live records and is not asserted here.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 0,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 0,
+      "broken_internal_links": [],
+      "visible_text_characters": 1079,
+      "content_sha256": "382ae9cb39a99c0e4c21d8954f7b5cf77ca6316030ed4ad9c37d82cb1d445049",
+      "capture_sha256": "282212439df0efeee393f150e325579b545739f0b018b1477a4b3628a1e11d2d",
+      "local_capture_path": ".artifacts/guide-release/product-search-390.png",
+      "file": null
+    },
+    {
+      "id": "home",
+      "route": "/",
+      "viewport": "desktop",
+      "viewport_width": 1440,
+      "assertion": "The front page carries a visible Guide entry in its primary navigation that links to the guide home.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 0,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 0,
+      "broken_internal_links": [],
+      "visible_text_characters": 1049,
+      "content_sha256": "3b2581b5a8379fe64ebcfe6891b82ad218cbcd1c62adddb9fc15a3dca22f1029",
+      "capture_sha256": "8cc3dbe7e55d5b9684941235e8be5af924a68a72cead3c9622c074cd5729fc05",
+      "local_capture_path": ".artifacts/guide-release/home-1440.png",
+      "file": null
+    },
+    {
+      "id": "guide-home",
+      "route": "/guide/",
+      "viewport": "desktop",
+      "viewport_width": 1440,
+      "assertion": "The guide home orients a signed-out reader with the four reader-facing sections and links the tutorial that is published.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 2,
+        "reached": 2,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 7,
+      "broken_internal_links": [],
+      "visible_text_characters": 2256,
+      "content_sha256": "46b26b9c10cc071987f809e319d52003c6eb56f1ec6f533211843c2a56cd08df",
+      "capture_sha256": "01bb95f63334c3588c4dfc8b8cfd40dfeeb71127247e70d58eeded2ffd8d179e",
+      "local_capture_path": ".artifacts/guide-release/guide-home-1440.png",
+      "file": null
+    },
+    {
+      "id": "guide-tutorial",
+      "route": "/guide/start/explore-housing-across-city-records/",
+      "viewport": "desktop",
+      "viewport_width": 1440,
+      "assertion": "The first tutorial loads directly with its type, review date, steps, checkpoints, sources and a link back to the task.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 7,
+        "reached": 7,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 8,
+      "broken_internal_links": [],
+      "visible_text_characters": 6002,
+      "content_sha256": "c8e98818883f2e4dbdc59f90bc2de28fd96cbb22f6c0ce77c29e37c26670037f",
+      "capture_sha256": "b6c8f4dba73a79bb7fdd9f1681cd3ef29ff46364cf6a3f88ee0c33e2c2249190",
+      "local_capture_path": ".artifacts/guide-release/guide-tutorial-1440.png",
+      "file": null
+    },
+    {
+      "id": "product-search",
+      "route": "/search/?q=housing",
+      "viewport": "desktop",
+      "viewport_width": 1440,
+      "assertion": "The product route the tutorial returns the reader to serves its document. Result content is assembled from live records and is not asserted here.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 0,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 0,
+      "broken_internal_links": [],
+      "visible_text_characters": 1079,
+      "content_sha256": "382ae9cb39a99c0e4c21d8954f7b5cf77ca6316030ed4ad9c37d82cb1d445049",
+      "capture_sha256": "2910d86513aa228fafe50fb12a1e9249d5aeaaddf301319b2fbbecf61a089dd6",
+      "local_capture_path": ".artifacts/guide-release/product-search-1440.png",
+      "file": null
+    }
+  ],
+  "journeys": [
+    {
+      "id": "scripted-journey",
+      "viewport": "mobile",
+      "assertion": "A reader reaches the tutorial from the front page through Guide, leaves for the product, and the browser Back button returns them to where they were.",
+      "assertion_holds": true,
+      "steps": [
+        {
+          "step": "home to guide",
+          "path": "/guide/"
+        },
+        {
+          "step": "guide to tutorial",
+          "path": "/guide/start/explore-housing-across-city-records/"
+        },
+        {
+          "step": "tutorial to product",
+          "path": "/search/"
+        },
+        {
+          "step": "back to tutorial",
+          "path": "/guide/start/explore-housing-across-city-records/"
+        },
+        {
+          "step": "back to guide",
+          "path": "/guide/"
+        }
+      ],
+      "expected_paths": [
+        "/guide/",
+        "/guide/start/explore-housing-across-city-records/",
+        "/search/",
+        "/guide/start/explore-housing-across-city-records/",
+        "/guide/"
+      ]
+    },
+    {
+      "id": "journey-without-javascript",
+      "viewport": "mobile",
+      "assertion": "With JavaScript switched off, the guide home and the tutorial keep their text, headings, source links and navigation, and Back still works.",
+      "assertion_holds": true,
+      "guide_home_headings": [
+        "Using CityScroll",
+        "Where to start",
+        "Start here",
+        "How to\u2026",
+        "Understand",
+        "Reference",
+        "About this guide"
+      ],
+      "article_path": "/guide/start/explore-housing-across-city-records/",
+      "article": {
+        "headings": [
+          "Explore housing across city records",
+          "What you will do",
+          "Before you start",
+          "Step 1 \u2014 Search for a topic",
+          "Step 2 \u2014 Read the groups",
+          "Step 3 \u2014 Open the first kind of result",
+          "Step 4 \u2014 Go back and open a second kind",
+          "Step 5 \u2014 Check it against the city's own copy",
+          "Step 6 \u2014 Keep the link",
+          "What you learned",
+          "Where to go next",
+          "Related pages",
+          "Sources used in this article"
+        ],
+        "paragraphs": 33,
+        "sourceLinks": [
+          "https://a856-cityrecord.nyc.gov/"
+        ],
+        "backToGuide": true,
+        "returnToTask": true
+      },
+      "back_path": "/guide/"
+    },
+    {
+      "id": "scripted-journey",
+      "viewport": "desktop",
+      "assertion": "A reader reaches the tutorial from the front page through Guide, leaves for the product, and the browser Back button returns them to where they were.",
+      "assertion_holds": true,
+      "steps": [
+        {
+          "step": "home to guide",
+          "path": "/guide/"
+        },
+        {
+          "step": "guide to tutorial",
+          "path": "/guide/start/explore-housing-across-city-records/"
+        },
+        {
+          "step": "tutorial to product",
+          "path": "/search/"
+        },
+        {
+          "step": "back to tutorial",
+          "path": "/guide/start/explore-housing-across-city-records/"
+        },
+        {
+          "step": "back to guide",
+          "path": "/guide/"
+        }
+      ],
+      "expected_paths": [
+        "/guide/",
+        "/guide/start/explore-housing-across-city-records/",
+        "/search/",
+        "/guide/start/explore-housing-across-city-records/",
+        "/guide/"
+      ]
+    },
+    {
+      "id": "journey-without-javascript",
+      "viewport": "desktop",
+      "assertion": "With JavaScript switched off, the guide home and the tutorial keep their text, headings, source links and navigation, and Back still works.",
+      "assertion_holds": true,
+      "guide_home_headings": [
+        "Using CityScroll",
+        "Where to start",
+        "Start here",
+        "How to\u2026",
+        "Understand",
+        "Reference",
+        "About this guide"
+      ],
+      "article_path": "/guide/start/explore-housing-across-city-records/",
+      "article": {
+        "headings": [
+          "Explore housing across city records",
+          "What you will do",
+          "Before you start",
+          "Step 1 \u2014 Search for a topic",
+          "Step 2 \u2014 Read the groups",
+          "Step 3 \u2014 Open the first kind of result",
+          "Step 4 \u2014 Go back and open a second kind",
+          "Step 5 \u2014 Check it against the city's own copy",
+          "Step 6 \u2014 Keep the link",
+          "What you learned",
+          "Where to go next",
+          "Related pages",
+          "Sources used in this article"
+        ],
+        "paragraphs": 33,
+        "sourceLinks": [
+          "https://a856-cityrecord.nyc.gov/"
+        ],
+        "backToGuide": true,
+        "returnToTask": true
+      },
+      "back_path": "/guide/"
+    }
+  ]
+}
