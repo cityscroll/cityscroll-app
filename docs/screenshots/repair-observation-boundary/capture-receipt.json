@@ -1,0 +1,546 @@
+{
+  "schema": "cityscroll.repair_observation_boundary_evidence_receipt.v1",
+  "captured_at": "2026-09-06T01:05:16Z",
+  "revision": "0226fb6427d8ffdc5f8e05664f9b39fb91447a53",
+  "data_vintage": "committed Community Board sources: site/data/community_board_meeting_index.json, site/data/non_council_outcome_sources/*.json, site/data/community_board_minutes_scorecard.json and site/data/community_board_geography_lookup.json, at index vintage 2026-08-25T01:57:25.541Z; no network, publisher, or production read at any point",
+  "viewports": [
+    {
+      "width": 390,
+      "height": 844
+    },
+    {
+      "width": 1440,
+      "height": 900
+    }
+  ],
+  "zoom_percent": 200,
+  "capture_convention": "the manifest is the committed proof; rendered image binaries stay under the ignored local path named per capture and are never committed",
+  "observations_projected": 55,
+  "leak_markers_checked": 76,
+  "inherited_accessibility_findings": [],
+  "inherited_note": "these are real, reproducible defects in markup owned by other cards; this run reports them and does not gate on them, because fixing them changes rendered output outside this card's scope",
+  "captures_passing": 8,
+  "captures_total": 8,
+  "captures": [
+    {
+      "fixture": "community-board-document:manhattan-cb-03",
+      "polarity": "positive",
+      "owning_file": "site/community_board_constellation.mjs",
+      "owning_renderer": "renderCommunityBoardConstellationDocument",
+      "route": "/community-board-document--manhattan-cb-03.html",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "zoom_viewport": {
+        "width": 320,
+        "height": 422,
+        "zoom_percent": 200
+      },
+      "revision": "0226fb6427d8ffdc5f8e05664f9b39fb91447a53",
+      "data_vintage": "committed Community Board sources: site/data/community_board_meeting_index.json, site/data/non_council_outcome_sources/*.json, site/data/community_board_minutes_scorecard.json and site/data/community_board_geography_lookup.json, at index vintage 2026-08-25T01:57:25.541Z; no network, publisher, or production read at any point",
+      "axe": {
+        "violations_total": 3,
+        "failing_violations": [],
+        "passes": true
+      },
+      "keyboard": {
+        "controls": 31,
+        "reached_by_tab": 31,
+        "unreachable": [],
+        "without_focus_indicator": []
+      },
+      "overflow": {
+        "scroll_width": 390,
+        "viewport_width": 390,
+        "horizontal_overflow": false,
+        "overflowing_nodes": []
+      },
+      "zoom_overflow": {
+        "scroll_width": 320,
+        "viewport_width": 320,
+        "horizontal_overflow": false,
+        "overflowing_nodes": []
+      },
+      "repair_observation_leakage": {
+        "in_dom": [],
+        "in_visible_text": [],
+        "in_accessible_names": [],
+        "markers_checked": 76
+      },
+      "repair_observation_leakage_at_zoom": {
+        "in_dom": [],
+        "in_visible_text": [],
+        "in_accessible_names": [],
+        "markers_checked": 76
+      },
+      "contract_leak_findings": 0,
+      "assertion": "positive fixture: repair_observation_markers_in_dom=0 (expected 0) axe_passes=True keyboard_reachable_and_focus_visible=True no_horizontal_overflow=True no_horizontal_overflow_at_200_percent_zoom=True",
+      "screenshot_local_path": "docs/screenshots/repair-observation-boundary/community-board-document--manhattan-cb-03-390.png",
+      "screenshot_sha256": "ec30b915ab7342799181bafde263ddbae4f84e7451c60657d10c66c1970385e0",
+      "axe_scoped_failing_violations": []
+    },
+    {
+      "fixture": "community-board-document:manhattan-cb-03",
+      "polarity": "positive",
+      "owning_file": "site/community_board_constellation.mjs",
+      "owning_renderer": "renderCommunityBoardConstellationDocument",
+      "route": "/community-board-document--manhattan-cb-03.html",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "zoom_viewport": {
+        "width": 720,
+        "height": 450,
+        "zoom_percent": 200
+      },
+      "revision": "0226fb6427d8ffdc5f8e05664f9b39fb91447a53",
+      "data_vintage": "committed Community Board sources: site/data/community_board_meeting_index.json, site/data/non_council_outcome_sources/*.json, site/data/community_board_minutes_scorecard.json and site/data/community_board_geography_lookup.json, at index vintage 2026-08-25T01:57:25.541Z; no network, publisher, or production read at any point",
+      "axe": {
+        "violations_total": 3,
+        "failing_violations": [],
+        "passes": true
+      },
+      "keyboard": {
+        "controls": 31,
+        "reached_by_tab": 31,
+        "unreachable": [],
+        "without_focus_indicator": []
+      },
+      "overflow": {
+        "scroll_width": 1440,
+        "viewport_width": 1440,
+        "horizontal_overflow": false,
+        "overflowing_nodes": []
+      },
+      "zoom_overflow": {
+        "scroll_width": 720,
+        "viewport_width": 720,
+        "horizontal_overflow": false,
+        "overflowing_nodes": []
+      },
+      "repair_observation_leakage": {
+        "in_dom": [],
+        "in_visible_text": [],
+        "in_accessible_names": [],
+        "markers_checked": 76
+      },
+      "repair_observation_leakage_at_zoom": {
+        "in_dom": [],
+        "in_visible_text": [],
+        "in_accessible_names": [],
+        "markers_checked": 76
+      },
+      "contract_leak_findings": 0,
+      "assertion": "positive fixture: repair_observation_markers_in_dom=0 (expected 0) axe_passes=True keyboard_reachable_and_focus_visible=True no_horizontal_overflow=True no_horizontal_overflow_at_200_percent_zoom=True",
+      "screenshot_local_path": "docs/screenshots/repair-observation-boundary/community-board-document--manhattan-cb-03-1440.png",
+      "screenshot_sha256": "6c13010fc9ad9c1a7ade6ad83683d1dc7024eb2701bb27b51322cf5cacdf0e4c",
+      "axe_scoped_failing_violations": []
+    },
+    {
+      "fixture": "community-board-document:brooklyn-cb-02",
+      "polarity": "positive",
+      "owning_file": "site/community_board_constellation.mjs",
+      "owning_renderer": "renderCommunityBoardConstellationDocument",
+      "route": "/community-board-document--brooklyn-cb-02.html",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "zoom_viewport": {
+        "width": 320,
+        "height": 422,
+        "zoom_percent": 200
+      },
+      "revision": "0226fb6427d8ffdc5f8e05664f9b39fb91447a53",
+      "data_vintage": "committed Community Board sources: site/data/community_board_meeting_index.json, site/data/non_council_outcome_sources/*.json, site/data/community_board_minutes_scorecard.json and site/data/community_board_geography_lookup.json, at index vintage 2026-08-25T01:57:25.541Z; no network, publisher, or production read at any point",
+      "axe": {
+        "violations_total": 3,
+        "failing_violations": [],
+        "passes": true
+      },
+      "keyboard": {
+        "controls": 26,
+        "reached_by_tab": 26,
+        "unreachable": [],
+        "without_focus_indicator": []
+      },
+      "overflow": {
+        "scroll_width": 390,
+        "viewport_width": 390,
+        "horizontal_overflow": false,
+        "overflowing_nodes": []
+      },
+      "zoom_overflow": {
+        "scroll_width": 320,
+        "viewport_width": 320,
+        "horizontal_overflow": false,
+        "overflowing_nodes": []
+      },
+      "repair_observation_leakage": {
+        "in_dom": [],
+        "in_visible_text": [],
+        "in_accessible_names": [],
+        "markers_checked": 76
+      },
+      "repair_observation_leakage_at_zoom": {
+        "in_dom": [],
+        "in_visible_text": [],
+        "in_accessible_names": [],
+        "markers_checked": 76
+      },
+      "contract_leak_findings": 0,
+      "assertion": "positive fixture: repair_observation_markers_in_dom=0 (expected 0) axe_passes=True keyboard_reachable_and_focus_visible=True no_horizontal_overflow=True no_horizontal_overflow_at_200_percent_zoom=True",
+      "screenshot_local_path": "docs/screenshots/repair-observation-boundary/community-board-document--brooklyn-cb-02-390.png",
+      "screenshot_sha256": "87d4bd02b5428d8679fba3812780e9b21914c57f289c1b01c99f0a4b3d45b7e5",
+      "axe_scoped_failing_violations": []
+    },
+    {
+      "fixture": "community-board-document:brooklyn-cb-02",
+      "polarity": "positive",
+      "owning_file": "site/community_board_constellation.mjs",
+      "owning_renderer": "renderCommunityBoardConstellationDocument",
+      "route": "/community-board-document--brooklyn-cb-02.html",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "zoom_viewport": {
+        "width": 720,
+        "height": 450,
+        "zoom_percent": 200
+      },
+      "revision": "0226fb6427d8ffdc5f8e05664f9b39fb91447a53",
+      "data_vintage": "committed Community Board sources: site/data/community_board_meeting_index.json, site/data/non_council_outcome_sources/*.json, site/data/community_board_minutes_scorecard.json and site/data/community_board_geography_lookup.json, at index vintage 2026-08-25T01:57:25.541Z; no network, publisher, or production read at any point",
+      "axe": {
+        "violations_total": 3,
+        "failing_violations": [],
+        "passes": true
+      },
+      "keyboard": {
+        "controls": 26,
+        "reached_by_tab": 26,
+        "unreachable": [],
+        "without_focus_indicator": []
+      },
+      "overflow": {
+        "scroll_width": 1440,
+        "viewport_width": 1440,
+        "horizontal_overflow": false,
+        "overflowing_nodes": []
+      },
+      "zoom_overflow": {
+        "scroll_width": 720,
+        "viewport_width": 720,
+        "horizontal_overflow": false,
+        "overflowing_nodes": []
+      },
+      "repair_observation_leakage": {
+        "in_dom": [],
+        "in_visible_text": [],
+        "in_accessible_names": [],
+        "markers_checked": 76
+      },
+      "repair_observation_leakage_at_zoom": {
+        "in_dom": [],
+        "in_visible_text": [],
+        "in_accessible_names": [],
+        "markers_checked": 76
+      },
+      "contract_leak_findings": 0,
+      "assertion": "positive fixture: repair_observation_markers_in_dom=0 (expected 0) axe_passes=True keyboard_reachable_and_focus_visible=True no_horizontal_overflow=True no_horizontal_overflow_at_200_percent_zoom=True",
+      "screenshot_local_path": "docs/screenshots/repair-observation-boundary/community-board-document--brooklyn-cb-02-1440.png",
+      "screenshot_sha256": "837b06780a735c1a7e5f9783494169a562ebf193687cdac28dcf9ab18d488eb3",
+      "axe_scoped_failing_violations": []
+    },
+    {
+      "fixture": "community-board-document:manhattan-cb-06",
+      "polarity": "positive",
+      "owning_file": "site/community_board_constellation.mjs",
+      "owning_renderer": "renderCommunityBoardConstellationDocument",
+      "route": "/community-board-document--manhattan-cb-06.html",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "zoom_viewport": {
+        "width": 320,
+        "height": 422,
+        "zoom_percent": 200
+      },
+      "revision": "0226fb6427d8ffdc5f8e05664f9b39fb91447a53",
+      "data_vintage": "committed Community Board sources: site/data/community_board_meeting_index.json, site/data/non_council_outcome_sources/*.json, site/data/community_board_minutes_scorecard.json and site/data/community_board_geography_lookup.json, at index vintage 2026-08-25T01:57:25.541Z; no network, publisher, or production read at any point",
+      "axe": {
+        "violations_total": 3,
+        "failing_violations": [],
+        "passes": true
+      },
+      "keyboard": {
+        "controls": 34,
+        "reached_by_tab": 34,
+        "unreachable": [],
+        "without_focus_indicator": []
+      },
+      "overflow": {
+        "scroll_width": 390,
+        "viewport_width": 390,
+        "horizontal_overflow": false,
+        "overflowing_nodes": []
+      },
+      "zoom_overflow": {
+        "scroll_width": 320,
+        "viewport_width": 320,
+        "horizontal_overflow": false,
+        "overflowing_nodes": []
+      },
+      "repair_observation_leakage": {
+        "in_dom": [],
+        "in_visible_text": [],
+        "in_accessible_names": [],
+        "markers_checked": 76
+      },
+      "repair_observation_leakage_at_zoom": {
+        "in_dom": [],
+        "in_visible_text": [],
+        "in_accessible_names": [],
+        "markers_checked": 76
+      },
+      "contract_leak_findings": 0,
+      "assertion": "positive fixture: repair_observation_markers_in_dom=0 (expected 0) axe_passes=True keyboard_reachable_and_focus_visible=True no_horizontal_overflow=True no_horizontal_overflow_at_200_percent_zoom=True",
+      "screenshot_local_path": "docs/screenshots/repair-observation-boundary/community-board-document--manhattan-cb-06-390.png",
+      "screenshot_sha256": "710f4e14e4429121d7d9dc280a09b661fecf9d726a5afac7219f3e892daac6cc",
+      "axe_scoped_failing_violations": []
+    },
+    {
+      "fixture": "community-board-document:manhattan-cb-06",
+      "polarity": "positive",
+      "owning_file": "site/community_board_constellation.mjs",
+      "owning_renderer": "renderCommunityBoardConstellationDocument",
+      "route": "/community-board-document--manhattan-cb-06.html",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "zoom_viewport": {
+        "width": 720,
+        "height": 450,
+        "zoom_percent": 200
+      },
+      "revision": "0226fb6427d8ffdc5f8e05664f9b39fb91447a53",
+      "data_vintage": "committed Community Board sources: site/data/community_board_meeting_index.json, site/data/non_council_outcome_sources/*.json, site/data/community_board_minutes_scorecard.json and site/data/community_board_geography_lookup.json, at index vintage 2026-08-25T01:57:25.541Z; no network, publisher, or production read at any point",
+      "axe": {
+        "violations_total": 3,
+        "failing_violations": [],
+        "passes": true
+      },
+      "keyboard": {
+        "controls": 34,
+        "reached_by_tab": 34,
+        "unreachable": [],
+        "without_focus_indicator": []
+      },
+      "overflow": {
+        "scroll_width": 1440,
+        "viewport_width": 1440,
+        "horizontal_overflow": false,
+        "overflowing_nodes": []
+      },
+      "zoom_overflow": {
+        "scroll_width": 720,
+        "viewport_width": 720,
+        "horizontal_overflow": false,
+        "overflowing_nodes": []
+      },
+      "repair_observation_leakage": {
+        "in_dom": [],
+        "in_visible_text": [],
+        "in_accessible_names": [],
+        "markers_checked": 76
+      },
+      "repair_observation_leakage_at_zoom": {
+        "in_dom": [],
+        "in_visible_text": [],
+        "in_accessible_names": [],
+        "markers_checked": 76
+      },
+      "contract_leak_findings": 0,
+      "assertion": "positive fixture: repair_observation_markers_in_dom=0 (expected 0) axe_passes=True keyboard_reachable_and_focus_visible=True no_horizontal_overflow=True no_horizontal_overflow_at_200_percent_zoom=True",
+      "screenshot_local_path": "docs/screenshots/repair-observation-boundary/community-board-document--manhattan-cb-06-1440.png",
+      "screenshot_sha256": "10511b6d97d11a338d4a97272dfd6b1b5709fca7af38d53a73f54544c0fe3d5e",
+      "axe_scoped_failing_violations": []
+    },
+    {
+      "fixture": "negative:leaked-repair-observation",
+      "polarity": "negative",
+      "owning_file": "site/community_board_constellation.mjs",
+      "owning_renderer": "renderCommunityBoardConstellationDocument",
+      "route": "/negative--leaked-repair-observation.html",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "zoom_viewport": {
+        "width": 320,
+        "height": 422,
+        "zoom_percent": 200
+      },
+      "revision": "0226fb6427d8ffdc5f8e05664f9b39fb91447a53",
+      "data_vintage": "committed Community Board sources: site/data/community_board_meeting_index.json, site/data/non_council_outcome_sources/*.json, site/data/community_board_minutes_scorecard.json and site/data/community_board_geography_lookup.json, at index vintage 2026-08-25T01:57:25.541Z; no network, publisher, or production read at any point",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": [],
+        "passes": true
+      },
+      "keyboard": {
+        "controls": 0,
+        "reached_by_tab": 0,
+        "unreachable": [],
+        "without_focus_indicator": []
+      },
+      "overflow": {
+        "scroll_width": 574,
+        "viewport_width": 390,
+        "horizontal_overflow": true,
+        "overflowing_nodes": [
+          "li.node-record",
+          "div.node-record-main",
+          "span.muted"
+        ]
+      },
+      "zoom_overflow": {
+        "scroll_width": 574,
+        "viewport_width": 320,
+        "horizontal_overflow": true,
+        "overflowing_nodes": [
+          "li.node-record",
+          "div.node-record-main",
+          "span.muted"
+        ]
+      },
+      "repair_observation_leakage": {
+        "in_dom": [
+          "00be8a90f8c4063208ac6343944be40679b75fc8ccb9dd874fa3155a21ba1c4b",
+          "source-not-published",
+          "repair",
+          "source-policy-limitation",
+          "detail_code"
+        ],
+        "in_visible_text": [
+          "00be8a90f8c4063208ac6343944be40679b75fc8ccb9dd874fa3155a21ba1c4b",
+          "source-not-published",
+          "repair",
+          "source-policy-limitation",
+          "detail_code"
+        ],
+        "in_accessible_names": [],
+        "markers_checked": 76
+      },
+      "repair_observation_leakage_at_zoom": {
+        "in_dom": [
+          "00be8a90f8c4063208ac6343944be40679b75fc8ccb9dd874fa3155a21ba1c4b",
+          "source-not-published",
+          "repair",
+          "source-policy-limitation",
+          "detail_code"
+        ],
+        "in_visible_text": [
+          "00be8a90f8c4063208ac6343944be40679b75fc8ccb9dd874fa3155a21ba1c4b",
+          "source-not-published",
+          "repair",
+          "source-policy-limitation",
+          "detail_code"
+        ],
+        "in_accessible_names": [],
+        "markers_checked": 76
+      },
+      "contract_leak_findings": 6,
+      "assertion": "negative fixture: repair_observation_markers_in_dom=10 (expected >0) axe_passes=True keyboard_reachable_and_focus_visible=True no_horizontal_overflow=False no_horizontal_overflow_at_200_percent_zoom=False",
+      "screenshot_local_path": "docs/screenshots/repair-observation-boundary/negative--leaked-repair-observation-390.png",
+      "screenshot_sha256": "16fe0294cc0da97147824997103607b50bb23d8b65232070cf883f3c6e8f2d20",
+      "axe_scoped_failing_violations": []
+    },
+    {
+      "fixture": "negative:leaked-repair-observation",
+      "polarity": "negative",
+      "owning_file": "site/community_board_constellation.mjs",
+      "owning_renderer": "renderCommunityBoardConstellationDocument",
+      "route": "/negative--leaked-repair-observation.html",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "zoom_viewport": {
+        "width": 720,
+        "height": 450,
+        "zoom_percent": 200
+      },
+      "revision": "0226fb6427d8ffdc5f8e05664f9b39fb91447a53",
+      "data_vintage": "committed Community Board sources: site/data/community_board_meeting_index.json, site/data/non_council_outcome_sources/*.json, site/data/community_board_minutes_scorecard.json and site/data/community_board_geography_lookup.json, at index vintage 2026-08-25T01:57:25.541Z; no network, publisher, or production read at any point",
+      "axe": {
+        "violations_total": 1,
+        "failing_violations": [],
+        "passes": true
+      },
+      "keyboard": {
+        "controls": 0,
+        "reached_by_tab": 0,
+        "unreachable": [],
+        "without_focus_indicator": []
+      },
+      "overflow": {
+        "scroll_width": 1440,
+        "viewport_width": 1440,
+        "horizontal_overflow": false,
+        "overflowing_nodes": []
+      },
+      "zoom_overflow": {
+        "scroll_width": 720,
+        "viewport_width": 720,
+        "horizontal_overflow": false,
+        "overflowing_nodes": []
+      },
+      "repair_observation_leakage": {
+        "in_dom": [
+          "00be8a90f8c4063208ac6343944be40679b75fc8ccb9dd874fa3155a21ba1c4b",
+          "source-not-published",
+          "repair",
+          "source-policy-limitation",
+          "detail_code"
+        ],
+        "in_visible_text": [
+          "00be8a90f8c4063208ac6343944be40679b75fc8ccb9dd874fa3155a21ba1c4b",
+          "source-not-published",
+          "repair",
+          "source-policy-limitation",
+          "detail_code"
+        ],
+        "in_accessible_names": [],
+        "markers_checked": 76
+      },
+      "repair_observation_leakage_at_zoom": {
+        "in_dom": [
+          "00be8a90f8c4063208ac6343944be40679b75fc8ccb9dd874fa3155a21ba1c4b",
+          "source-not-published",
+          "repair",
+          "source-policy-limitation",
+          "detail_code"
+        ],
+        "in_visible_text": [
+          "00be8a90f8c4063208ac6343944be40679b75fc8ccb9dd874fa3155a21ba1c4b",
+          "source-not-published",
+          "repair",
+          "source-policy-limitation",
+          "detail_code"
+        ],
+        "in_accessible_names": [],
+        "markers_checked": 76
+      },
+      "contract_leak_findings": 6,
+      "assertion": "negative fixture: repair_observation_markers_in_dom=10 (expected >0) axe_passes=True keyboard_reachable_and_focus_visible=True no_horizontal_overflow=True no_horizontal_overflow_at_200_percent_zoom=True",
+      "screenshot_local_path": "docs/screenshots/repair-observation-boundary/negative--leaked-repair-observation-1440.png",
+      "screenshot_sha256": "9e07d8d716a8375392160b6f77b68a5b54b3f08375b3c32da86697152053a41f",
+      "axe_scoped_failing_violations": []
+    }
+  ]
+}
