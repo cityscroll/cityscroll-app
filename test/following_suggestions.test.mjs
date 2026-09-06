@@ -17,6 +17,7 @@ import {
   buildResultsBackedWatchTemplateRegistry,
   countOpenMatches,
 } from "../site/following_suggestions.mjs";
+import { readProcurementBrowsePopulation } from "../tools/lib/procurement_browse_population_io.mjs";
 
 const registry = {
   templates: [
@@ -84,7 +85,7 @@ test("missing source stays null instead of becoming a fabricated zero", () => {
 });
 
 test("the committed Worker registry is the source-row results-backed projection", () => {
-  const source = JSON.parse(readFileSync(new URL("../site/data/procurement_browse_rows.json", import.meta.url), "utf8"));
+  const source = readProcurementBrowsePopulation(new URL("../site/data/procurement_browse_rows.json", import.meta.url));
   const expected = buildResultsBackedWatchTemplateRegistry(templates, {
     money: { ...moneyOpen, notices: mergeCanonicalProcurementBrowseRows(moneyOpen.notices, source.rows) },
     rules: rulesOpen,

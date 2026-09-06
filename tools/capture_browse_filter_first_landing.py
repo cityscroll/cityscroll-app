@@ -35,6 +35,10 @@ from urllib.parse import parse_qs, urlparse
 from playwright.sync_api import Page, Route, sync_playwright
 
 ROOT = Path(__file__).resolve().parents[1]
+import sys
+sys.path.insert(0, str(ROOT / "tools" / "lib"))
+from procurement_browse_population import read_browse_population  # noqa: E402
+
 OUT = ROOT / "docs" / "screenshots" / "browse-filter-first-landing"
 RECEIPT = ROOT / "docs" / "evidence" / "browse-filter-first-landing.json"
 BASE_REV = "origin/main"
@@ -81,7 +85,7 @@ MEETING_SOURCE = "test/fixtures/calendar-contract/cases.json"
 
 def specimen_records() -> tuple[list[dict], dict]:
     contract_row = next(
-        row for row in json.loads((ROOT / CONTRACT_SOURCE).read_text("utf-8"))["rows"]
+        row for row in read_browse_population(ROOT / CONTRACT_SOURCE)["rows"]
         if row["short_title"] == "Mayoral Rat Reduction Initiative"
     )
     meeting_row = json.loads((ROOT / MEETING_SOURCE).read_text("utf-8"))["keyword_agency_feed"]["rows"][0]

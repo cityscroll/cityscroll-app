@@ -28,9 +28,10 @@ import { renderAgencyCategorySection } from "../site/agency_constellation_sectio
 import { renderProcurementInstitutionRoles } from "../site/procurement_document.mjs";
 import { buildBrowseView } from "../site/browse_view.mjs";
 import { buildAgencyCapacityBrowseContract } from "../site/agency_browse_contract.mjs";
+import { readProcurementBrowsePopulation } from "../tools/lib/procurement_browse_population_io.mjs";
 
-const procurementRows = JSON.parse(
-  readFileSync(new URL("../site/data/procurement_browse_rows.json", import.meta.url), "utf8"),
+const procurementRows = readProcurementBrowsePopulation(
+  new URL("../site/data/procurement_browse_rows.json", import.meta.url),
 );
 const landProjects = JSON.parse(
   readFileSync(new URL("../site/data/land_default_ulurp.json", import.meta.url), "utf8"),

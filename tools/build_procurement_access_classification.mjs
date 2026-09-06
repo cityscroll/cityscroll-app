@@ -47,6 +47,7 @@ const BROWSE_ROWS_RELATIVE = "site/data/procurement_browse_rows.json";
 const READ_MODEL_RELATIVE = "site/data/shared_procurement_read_model.json";
 const SOURCE_CONTRACTS_RELATIVE = "site/data/source_contracts.json";
 const ATTACHMENT_METADATA_RELATIVE = "site/data/attachment_metadata_lookup.json";
+import { readProcurementBrowsePopulation } from "./lib/procurement_browse_population_io.mjs";
 
 function repoPath(root, relative) {
   return isAbsolute(relative) ? relative : join(root, relative);
@@ -290,7 +291,7 @@ function sortedObject(map) {
 }
 
 export function buildAccessClassification({ root = ROOT } = {}) {
-  const browse = readJson(root, BROWSE_ROWS_RELATIVE);
+  const browse = readProcurementBrowsePopulation(repoPath(root, BROWSE_ROWS_RELATIVE));
   const readModel = readJson(root, READ_MODEL_RELATIVE);
   const contracts = readJson(root, SOURCE_CONTRACTS_RELATIVE);
   const attachments = readJson(root, ATTACHMENT_METADATA_RELATIVE);

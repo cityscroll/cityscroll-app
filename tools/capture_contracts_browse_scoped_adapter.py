@@ -27,6 +27,10 @@ from playwright.sync_api import Route, sync_playwright
 
 
 ROOT = Path(__file__).resolve().parents[1]
+import sys
+sys.path.insert(0, str(ROOT / "tools" / "lib"))
+from procurement_browse_population import read_browse_population  # noqa: E402
+
 DEFAULT_OUT = ROOT / "docs" / "screenshots" / "contracts-browse-scoped-adapter"
 VIEWPORTS = ((390, 844), (1440, 1000))
 SCHEMA = "cityscroll.contracts-browse-scoped-adapter-capture.v1"
@@ -163,7 +167,7 @@ def bounded_query_manifest(route: Route) -> None:
     if not source.exists():
         route.fulfill(status=404, content_type="application/json", body="{}")
         return
-    browse = json.loads(source.read_text())
+    browse = read_browse_population(source)
     rows = browse.get("rows", []) if isinstance(browse, dict) else []
     route.fulfill(status=200, content_type="application/json", body=json.dumps({
         "schema": "cityscroll.procurement_browse_query.v1",

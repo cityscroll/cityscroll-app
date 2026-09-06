@@ -14,6 +14,7 @@ import { buildProcurementSearchDocuments } from "../site/procurement_search_prod
 import { buildSharedProcurementReadModel } from "../site/shared_procurement_read_model.mjs";
 import { buildSharedProcurementReadModelShardArtifacts } from "../site/procurement_read_model_shards.mjs";
 import { buildProcurementBrowseQueryArtifacts } from "../site/procurement_browse_query.mjs";
+import { buildProcurementBrowsePopulationShardArtifacts } from "../site/procurement_browse_population_shards.mjs";
 import { recordsFromMtaOpportunityFixtures } from "../warehouse/lib/mta_opportunities.mjs";
 import {
   mtaAnnualContractSourceSystemId,
@@ -40,6 +41,7 @@ const BROWSE_OUT = new URL("../site/data/procurement_browse_rows.json", import.m
 const BROWSE_QUERY_OUT = new URL("../site/data/procurement_browse_query.json", import.meta.url);
 const BROWSE_QUERY_ROWS_OUT = new URL("../site/data/procurement_browse_query_rows.json", import.meta.url);
 const BROWSE_QUERY_SHARD_DIR = new URL("../site/data/procurement_browse_rows/", import.meta.url);
+const BROWSE_POPULATION_SHARD_DIR = new URL("../site/data/procurement_browse_rows_population/", import.meta.url);
 const DIGEST_OUT = new URL("../site/data/procurement_digest_snapshot.json", import.meta.url);
 const MTA_SOURCES = new URL("../site/data/mta_procurement_sources.json", import.meta.url);
 const ROOT = new URL("../", import.meta.url);
@@ -302,6 +304,30 @@ function shardedModelGroup(model) {
   };
 }
 
+function browsePopulationShardPath(descriptor) {
+  return new URL(`../site/data/${descriptor.path}`, import.meta.url);
+}
+
+// The Browse population is written as a small index plus bounded row shards.
+// A single document holding every row grows with the population, and a source
+// refresh had taken it past the size Cloudflare Pages will accept for one file.
+function browsePopulationGroup(browse) {
+  const artifacts = buildProcurementBrowsePopulationShardArtifacts(browse);
+  return {
+    artifactLabel: "stale procurement artifact",
+    shardLabel: "stale procurement browse population shard",
+    shardDir: BROWSE_POPULATION_SHARD_DIR,
+    expectedNames: new Set(artifacts.manifest.shards.map((descriptor) => descriptor.path.split("/").at(-1))),
+    outputs: [
+      [BROWSE_OUT, serialized(artifacts.manifest)],
+      ...artifacts.manifest.shards.map((descriptor, index) => [
+        browsePopulationShardPath(descriptor),
+        serialized(artifacts.shards[index]),
+      ]),
+    ],
+  };
+}
+
 function browseQueryShardPath(descriptor) {
   return new URL(`../site/data/${descriptor.path}`, import.meta.url);
 }
@@ -444,13 +470,13 @@ function buildAndEmit() {
   const groups = [
     shardedModelGroup(model),
     browseQueryGroup(browse, model.coherence_receipt.source_model_fingerprint),
+    browsePopulationGroup(browse),
     {
       artifactLabel: "stale procurement artifact",
       shardLabel: null,
       shardDir: null,
       expectedNames: null,
       outputs: [
-        [BROWSE_OUT, serialized(browse)],
         [DIGEST_OUT, serialized(digest)],
       ],
     },

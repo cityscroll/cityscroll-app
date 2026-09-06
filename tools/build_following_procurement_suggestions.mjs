@@ -16,8 +16,9 @@ import { buildResultsBackedWatchTemplateRegistry } from "../site/following_sugge
 const ROOT = resolve(fileURLToPath(new URL("..", import.meta.url)));
 const INPUT = resolve(ROOT, "site/data/procurement_browse_rows.json");
 const OUTPUT = resolve(ROOT, "site/data/following_procurement_suggestions.json");
+import { readProcurementBrowsePopulation } from "./lib/procurement_browse_population_io.mjs";
 
-const source = JSON.parse(readFileSync(INPUT, "utf8"));
+const source = readProcurementBrowsePopulation(INPUT);
 const sources = {
   money: {
     ...moneyOpen,

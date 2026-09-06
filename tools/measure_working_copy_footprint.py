@@ -64,6 +64,8 @@ GENERATED_SITE_GLOBS = [
     "site/data/procurement_browse_query_rows.json",
     "site/data/procurement_browse_rows",
     "site/data/procurement_browse_rows/*",
+    "site/data/procurement_browse_rows_population",
+    "site/data/procurement_browse_rows_population/*",
     "site/agencies/*/index.html",
     "site/community-boards/*/index.html",
 ]

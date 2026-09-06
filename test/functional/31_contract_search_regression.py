@@ -25,6 +25,10 @@ from playwright.sync_api import Route, sync_playwright
 
 BASE = os.environ.get("CROL_BASE", "http://localhost:8000/").rstrip("/")
 ROOT = pathlib.Path(__file__).parents[2]
+import sys
+sys.path.insert(0, str(ROOT / "tools" / "lib"))
+from procurement_browse_population import read_browse_population  # noqa: E402
+
 # The registered Contracts scope. Browse must request exactly these lenses, and
 # the worker's Contracts lane must be built from the same registered entry.
 SCOPE_LENSES = ("notices", "vendors")
@@ -232,7 +236,7 @@ def local_bounded_procurement_query(route: Route) -> None:
     if response.ok:
         route.fulfill(response=response)
         return
-    browse = json.loads((ROOT / "site" / "data" / "procurement_browse_rows.json").read_text())
+    browse = read_browse_population(ROOT / "site" / "data" / "procurement_browse_rows.json")
     rows = browse.get("rows", []) if isinstance(browse, dict) else []
     manifest = {
         "schema": "cityscroll.procurement_browse_query.v1",

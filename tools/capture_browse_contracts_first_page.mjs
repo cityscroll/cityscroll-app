@@ -21,6 +21,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 
 import { buildProcurementBrowseQueryArtifacts, loadProcurementBrowseQuery } from "../site/procurement_browse_query.mjs";
 import { filterMoneySnapshot } from "../site/resident_snapshot_queries.mjs";
+import { readProcurementBrowsePopulation } from "./lib/procurement_browse_population_io.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const FIXTURE = join(ROOT, "site/data/procurement_browse_rows.json");
@@ -47,7 +48,7 @@ function sha256(value) {
 }
 
 async function trace() {
-  const fullBrowse = JSON.parse(readFileSync(FIXTURE, "utf8"));
+  const fullBrowse = readProcurementBrowsePopulation(FIXTURE);
   const { manifest, shards, queryRowsArtifact } = buildProcurementBrowseQueryArtifacts({
     ...fullBrowse,
     source_model_fingerprint: "browse-contracts-first-page-evidence-fingerprint",

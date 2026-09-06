@@ -51,6 +51,7 @@
         "site/data/shared_procurement_read_model.json",
         "site/data/shared_procurement_read_model",
         "site/data/procurement_browse_rows.json",
+        "site/data/procurement_browse_rows_population",
         "site/data/procurement_browse_rows",
         "site/data/procurement_browse_query.json",
         "site/data/procurement_browse_query_rows.json",

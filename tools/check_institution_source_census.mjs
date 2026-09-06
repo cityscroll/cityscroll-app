@@ -4,6 +4,7 @@ import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { readProcurementBrowsePopulation } from './lib/procurement_browse_population_io.mjs';
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const censusPath = path.join(repoRoot, 'warehouse/fixtures/authority-native-procurement/institution_source_census.v1.json');
@@ -79,7 +80,7 @@ export function checkCensus() {
     assert(sha256(filePath) === census.existing_snapshot.artifacts[key].sha256, `${key} fingerprint drifted; refresh census evidence`);
   }
 
-  const browse = JSON.parse(fs.readFileSync(browsePath, 'utf8'));
+  const browse = readProcurementBrowsePopulation(browsePath);
   const doe = rowsForAgency(browse.rows, 'department of education|^education$|education admin|^doe$');
   assert(doe.length === census.doe_missing_record_census.doe_canonical_rows, 'DOE canonical row count changed');
   const counts = { city_record: 0, passport_public_contracts: 0, checkbook_contracts: 0 };
@@ -114,7 +115,7 @@ export function refreshExistingSnapshot() {
   const spinePath = path.join(repoRoot, 'site/data/procurement_spine_sources.json');
   const readModelPath = path.join(repoRoot, 'site/data/shared_procurement_read_model.json');
 
-  const browse = JSON.parse(fs.readFileSync(browsePath, 'utf8'));
+  const browse = readProcurementBrowsePopulation(browsePath);
   const spine = JSON.parse(fs.readFileSync(spinePath, 'utf8'));
   const sharedReadModel = JSON.parse(fs.readFileSync(readModelPath, 'utf8'));
 

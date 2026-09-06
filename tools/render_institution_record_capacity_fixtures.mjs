@@ -17,8 +17,9 @@ import { readFileSync } from "node:fs";
 import { renderProcurementDocument } from "../site/procurement_document.mjs";
 import { civicInstitutionIdForPartyValue } from "../site/civic_institution_party_spellings.mjs";
 import { SBS_MASTER_SOURCE_REF } from "../site/civic_institution_development_specimens.mjs";
+import { readProcurementBrowsePopulation } from "./lib/procurement_browse_population_io.mjs";
 
-const browse = JSON.parse(readFileSync(new URL("../site/data/procurement_browse_rows.json", import.meta.url), "utf8"));
+const browse = readProcurementBrowsePopulation(new URL("../site/data/procurement_browse_rows.json", import.meta.url));
 
 /**
  * The retained rows a reviewed party mapping resolves — the same selection the

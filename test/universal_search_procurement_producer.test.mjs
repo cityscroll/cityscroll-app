@@ -11,6 +11,7 @@ import {
   mergeUniversalSearchCandidates,
   mergeUniversalSearchResults,
 } from "../worker/src/search.mjs";
+import { readProcurementBrowsePopulation } from "../tools/lib/procurement_browse_population_io.mjs";
 
 const cohort = JSON.parse(readFileSync(
   new URL("./fixtures/procurement_search/golden_cohort.json", import.meta.url),
@@ -77,10 +78,9 @@ test("production corpus adds material CROL-negative recall without reducing CROL
   const shared = readSharedProcurementReadModel(
     new URL("../site/data/shared_procurement_read_model.json", import.meta.url),
   );
-  const browse = JSON.parse(readFileSync(
+  const browse = readProcurementBrowsePopulation(
     new URL("../site/data/procurement_browse_rows.json", import.meta.url),
-    "utf8",
-  ));
+  );
   const awards = JSON.parse(readFileSync(
     new URL("../site/data/ocp_awards_warehouse_lookup.json", import.meta.url),
     "utf8",

@@ -21,6 +21,7 @@ import { buildBrowseView, renderBrowseLanding, renderBrowseView } from "../site/
 import { legacyBrowseRecordSearchTarget } from "../site/route_migration.mjs";
 import { buildSearchLensHandoffHref } from "../site/search_lens_handoff.mjs";
 import { walkEntryHref } from "../site/walk_entry.mjs";
+import { readProcurementBrowsePopulation } from "../tools/lib/procurement_browse_population_io.mjs";
 
 const ORIGIN = "https://cityscroll.org";
 
@@ -28,7 +29,7 @@ function readJson(path) {
   return JSON.parse(readFileSync(new URL(path, import.meta.url), "utf8"));
 }
 
-const contractsRow = readJson("../site/data/procurement_browse_rows.json")
+const contractsRow = readProcurementBrowsePopulation(new URL("../site/data/procurement_browse_rows.json", import.meta.url))
   .rows.find((row) => row.short_title === "Mayoral Rat Reduction Initiative");
 const meetingsRow = readJson("./fixtures/calendar-contract/cases.json").keyword_agency_feed.rows[0];
 const contractsSnapshot = readJson("../site/data/money_default_open.json");

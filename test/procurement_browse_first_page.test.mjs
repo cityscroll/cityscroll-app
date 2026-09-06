@@ -11,6 +11,7 @@ import {
   moneyBoundedAwardArchiveEligible,
   moneyBoundedAwardArchiveFallbackReason,
 } from "../site/procurement_browse_read_path.mjs";
+import { readProcurementBrowsePopulation } from "../tools/lib/procurement_browse_population_io.mjs";
 
 const moneyListSource = readFileSync(new URL("../site/app/money-list.mjs", import.meta.url), "utf8");
 
@@ -53,10 +54,9 @@ test("A query the shards cannot answer falls back to the full read, with the rea
   assert.equal(moneyBoundedAwardArchiveFallbackReason({ ...base, contractIdentity: { object_ref: "procurement:x" } }), "entity_scope");
 });
 
-const fullBrowse = JSON.parse(readFileSync(
+const fullBrowse = readProcurementBrowsePopulation(
   new URL("../site/data/procurement_browse_rows.json", import.meta.url),
-  "utf8",
-));
+);
 const { manifest, shards, queryRowsArtifact } = buildProcurementBrowseQueryArtifacts({
   ...fullBrowse,
   source_model_fingerprint: "browse-contracts-first-page-fixture-fingerprint",
