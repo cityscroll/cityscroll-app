@@ -20,6 +20,10 @@
     {
       "id": "deployed-before-observation",
       "path": "docs/evidence/desk-source-state-parity/before.json"
+    },
+    {
+      "id": "isolated-render-manifest",
+      "path": "docs/evidence/desk-source-state-parity/capture-manifest.json"
     }
   ]
 }
