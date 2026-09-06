@@ -2,6 +2,45 @@
   "schema": "cityscroll.land_authority_summary.v1",
   "join_version": "ldp05_authority_summary_v1",
   "generated_at": "2026-09-06T15:58:50.482Z",
+  "source_basis_defaults": {
+    "profile": {
+      "source_type": "reviewed_static_registry",
+      "registry_version": "2026-08-27.v1",
+      "effect_source": "reviewed_static_registry"
+    },
+    "phase": {
+      "source_type": "publisher_current_milestone",
+      "source_field": "current_milestone"
+    },
+    "geography": {
+      "source_type": "affected_review_body_for",
+      "source_fields": [
+        "community_district",
+        "actions",
+        "ulurp_numbers",
+        "ulurp_non"
+      ],
+      "boundary_vintage": "2026-05-26"
+    },
+    "publisher": {
+      "source_type": "published_hearing",
+      "checked_vintage": "2026-09-06"
+    }
+  },
+  "legal_basis_by_stage": {
+    "ulurp_197c.application_certification": {
+      "citation": "NYC Charter § 197-c(b)",
+      "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-834"
+    },
+    "ulurp_197c.city_planning_commission_review": {
+      "citation": "NYC Charter § 197-c",
+      "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-834"
+    },
+    "ulurp_197c.city_council_review": {
+      "citation": "NYC Charter § 197-d(b)-(c)",
+      "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-6746"
+    }
+  },
   "summaries": {
     "2020M0385": {
       "schema": "cityscroll.land_authority_summary.v1",
@@ -22,30 +61,18 @@
       "source_basis": {
         "profile": null,
         "phase": {
-          "source_type": "publisher_current_milestone",
-          "source_field": "current_milestone",
           "current_milestone": "EAS - Final Letter Sent",
           "phase_id": "environmental",
           "milestone_phase_id": "environmental"
         },
         "geography": {
-          "source_type": "affected_review_body_for",
           "status": "unresolved",
-          "source_fields": [
-            "community_district",
-            "actions",
-            "ulurp_numbers",
-            "ulurp_non"
-          ],
-          "boundary_vintage": "2026-05-26",
           "profile_version": null
         },
         "publisher": {
-          "source_type": "published_hearing",
           "source": "land_upcoming_hearings",
           "source_id": null,
-          "checked": true,
-          "checked_vintage": "2026-09-06"
+          "checked": true
         }
       },
       "expected_next_stage": null,
@@ -96,30 +123,18 @@
       "source_basis": {
         "profile": null,
         "phase": {
-          "source_type": "publisher_current_milestone",
-          "source_field": "current_milestone",
           "current_milestone": "EAS - Final Letter Sent",
           "phase_id": "environmental",
           "milestone_phase_id": "environmental"
         },
         "geography": {
-          "source_type": "affected_review_body_for",
           "status": "unresolved",
-          "source_fields": [
-            "community_district",
-            "actions",
-            "ulurp_numbers",
-            "ulurp_non"
-          ],
-          "boundary_vintage": "2026-05-26",
           "profile_version": "2026-08-27.v1"
         },
         "publisher": {
-          "source_type": "published_hearing",
           "source": "land_upcoming_hearings",
           "source_id": null,
-          "checked": true,
-          "checked_vintage": "2026-09-06"
+          "checked": true
         }
       },
       "expected_next_stage": null,
@@ -171,42 +186,23 @@
       "effect": "Receives and circulates the application, then certifies it as complete for review.",
       "source_basis": {
         "profile": {
-          "source_type": "reviewed_static_registry",
-          "registry_version": "2026-08-27.v1",
           "procedure_id": "ulurp_197c",
-          "legal_basis": {
-            "citation": "NYC Charter § 197-c(b)",
-            "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-834"
-          },
           "stage_id": "ulurp_197c.application_certification",
-          "role": "administrative_certifier",
-          "effect_source": "reviewed_static_registry"
+          "role": "administrative_certifier"
         },
         "phase": {
-          "source_type": "publisher_current_milestone",
-          "source_field": "current_milestone",
           "current_milestone": "MM - Final Letter Sent",
           "phase_id": "pre_application",
           "milestone_phase_id": "pre_application"
         },
         "geography": {
-          "source_type": "affected_review_body_for",
           "status": "resolved",
-          "source_fields": [
-            "community_district",
-            "actions",
-            "ulurp_numbers",
-            "ulurp_non"
-          ],
-          "boundary_vintage": "2026-05-26",
           "profile_version": "2026-08-27.v1"
         },
         "publisher": {
-          "source_type": "published_hearing",
           "source": "land_upcoming_hearings",
           "source_id": null,
-          "checked": true,
-          "checked_vintage": "2026-09-06"
+          "checked": true
         }
       },
       "expected_next_stage": {
@@ -271,23 +267,13 @@
         "profile": null,
         "phase": null,
         "geography": {
-          "source_type": "affected_review_body_for",
           "status": "unresolved",
-          "source_fields": [
-            "community_district",
-            "actions",
-            "ulurp_numbers",
-            "ulurp_non"
-          ],
-          "boundary_vintage": "2026-05-26",
           "profile_version": null
         },
         "publisher": {
-          "source_type": "published_hearing",
           "source": "land_upcoming_hearings",
           "source_id": null,
-          "checked": true,
-          "checked_vintage": "2026-09-06"
+          "checked": true
         }
       },
       "expected_next_stage": null,
@@ -338,30 +324,18 @@
       "source_basis": {
         "profile": null,
         "phase": {
-          "source_type": "publisher_current_milestone",
-          "source_field": "current_milestone",
           "current_milestone": "EAS - Final Letter Sent",
           "phase_id": "environmental",
           "milestone_phase_id": "environmental"
         },
         "geography": {
-          "source_type": "affected_review_body_for",
           "status": "unresolved",
-          "source_fields": [
-            "community_district",
-            "actions",
-            "ulurp_numbers",
-            "ulurp_non"
-          ],
-          "boundary_vintage": "2026-05-26",
           "profile_version": null
         },
         "publisher": {
-          "source_type": "published_hearing",
           "source": "land_upcoming_hearings",
           "source_id": null,
-          "checked": true,
-          "checked_vintage": "2026-09-06"
+          "checked": true
         }
       },
       "expected_next_stage": null,
@@ -412,30 +386,18 @@
       "source_basis": {
         "profile": null,
         "phase": {
-          "source_type": "publisher_current_milestone",
-          "source_field": "current_milestone",
           "current_milestone": "MM - Final Letter Sent",
           "phase_id": "pre_application",
           "milestone_phase_id": "pre_application"
         },
         "geography": {
-          "source_type": "affected_review_body_for",
           "status": "unresolved",
-          "source_fields": [
-            "community_district",
-            "actions",
-            "ulurp_numbers",
-            "ulurp_non"
-          ],
-          "boundary_vintage": "2026-05-26",
           "profile_version": null
         },
         "publisher": {
-          "source_type": "published_hearing",
           "source": "land_upcoming_hearings",
           "source_id": null,
-          "checked": true,
-          "checked_vintage": "2026-09-06"
+          "checked": true
         }
       },
       "expected_next_stage": null,
@@ -487,42 +449,23 @@
       "effect": "Holds a public hearing and may approve, approve with modifications, or disapprove the application.",
       "source_basis": {
         "profile": {
-          "source_type": "reviewed_static_registry",
-          "registry_version": "2026-08-27.v1",
           "procedure_id": "ulurp_197c",
-          "legal_basis": {
-            "citation": "NYC Charter § 197-c",
-            "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-834"
-          },
           "stage_id": "ulurp_197c.city_planning_commission_review",
-          "role": "decision_maker",
-          "effect_source": "reviewed_static_registry"
+          "role": "decision_maker"
         },
         "phase": {
-          "source_type": "publisher_current_milestone",
-          "source_field": "current_milestone",
           "current_milestone": "PQ - Review Session - Post Hearing Follow-Up / Future Votes",
           "phase_id": "cpc",
           "milestone_phase_id": "cpc"
         },
         "geography": {
-          "source_type": "affected_review_body_for",
           "status": "resolved",
-          "source_fields": [
-            "community_district",
-            "actions",
-            "ulurp_numbers",
-            "ulurp_non"
-          ],
-          "boundary_vintage": "2026-05-26",
           "profile_version": "2026-08-27.v1"
         },
         "publisher": {
-          "source_type": "published_hearing",
           "source": "land_upcoming_hearings",
           "source_id": null,
-          "checked": true,
-          "checked_vintage": "2026-09-06"
+          "checked": true
         }
       },
       "expected_next_stage": null,
@@ -606,42 +549,23 @@
       "effect": "Receives and circulates the application, then certifies it as complete for review.",
       "source_basis": {
         "profile": {
-          "source_type": "reviewed_static_registry",
-          "registry_version": "2026-08-27.v1",
           "procedure_id": "ulurp_197c",
-          "legal_basis": {
-            "citation": "NYC Charter § 197-c(b)",
-            "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-834"
-          },
           "stage_id": "ulurp_197c.application_certification",
-          "role": "administrative_certifier",
-          "effect_source": "reviewed_static_registry"
+          "role": "administrative_certifier"
         },
         "phase": {
-          "source_type": "publisher_current_milestone",
-          "source_field": "current_milestone",
           "current_milestone": "MM - Review Filed Land Use Application",
           "phase_id": "pre_application",
           "milestone_phase_id": "pre_application"
         },
         "geography": {
-          "source_type": "affected_review_body_for",
           "status": "resolved",
-          "source_fields": [
-            "community_district",
-            "actions",
-            "ulurp_numbers",
-            "ulurp_non"
-          ],
-          "boundary_vintage": "2026-05-26",
           "profile_version": "2026-08-27.v1"
         },
         "publisher": {
-          "source_type": "published_hearing",
           "source": "zap-api-milestones",
           "source_id": "7cfc36ab-cecd-ef11-b8e9-001dd809b68c",
-          "checked": true,
-          "checked_vintage": "2026-09-06"
+          "checked": true
         }
       },
       "expected_next_stage": {
@@ -701,49 +625,47 @@
     "2026K0123": {
       "schema": "cityscroll.land_authority_summary.v1",
       "layer": "tier_a",
-      "status": "unknown",
-      "reason": "mixed_procedure",
+      "status": "resolved",
+      "reason": null,
       "project_id": "2026K0123",
-      "procedure_id": null,
-      "procedure_resolution": "mixed",
+      "procedure_id": "ulurp_197c",
+      "procedure_resolution": "uniform",
       "current_stage": {
-        "stage_id": null,
+        "stage_id": "ulurp_197c.application_certification",
         "spine_phase_id": "pre_application",
-        "status": "unknown"
+        "status": "known"
       },
-      "current_actor_refs": [],
-      "current_role": null,
-      "effect": null,
+      "current_actor_refs": [
+        "agency:id:city-planning"
+      ],
+      "current_role": "administrative_certifier",
+      "effect": "Receives and circulates the application, then certifies it as complete for review.",
       "source_basis": {
-        "profile": null,
+        "profile": {
+          "procedure_id": "ulurp_197c",
+          "stage_id": "ulurp_197c.application_certification",
+          "role": "administrative_certifier"
+        },
         "phase": {
-          "source_type": "publisher_current_milestone",
-          "source_field": "current_milestone",
           "current_milestone": "ZM - Review Filed Land Use Application",
           "phase_id": "pre_application",
           "milestone_phase_id": "pre_application"
         },
         "geography": {
-          "source_type": "affected_review_body_for",
-          "status": "unresolved",
-          "source_fields": [
-            "community_district",
-            "actions",
-            "ulurp_numbers",
-            "ulurp_non"
-          ],
-          "boundary_vintage": "2026-05-26",
+          "status": "resolved",
           "profile_version": "2026-08-27.v1"
         },
         "publisher": {
-          "source_type": "published_hearing",
           "source": "zap-api-milestones",
           "source_id": "e4dc27d1-ccb8-f011-bbd3-001dd80340cd",
-          "checked": true,
-          "checked_vintage": "2026-09-06"
+          "checked": true
         }
       },
-      "expected_next_stage": null,
+      "expected_next_stage": {
+        "stage_id": "ulurp_197c.community_board_review",
+        "spine_phase_id": "community_board",
+        "status": "known"
+      },
       "published_next_opportunity": {
         "status": "published",
         "checked": true,
@@ -756,8 +678,21 @@
         "phase_id": "cpc",
         "body_ref": "agency:id:city-planning-commission"
       },
-      "next_procedural_body": null,
-      "affected_actor_refs": [],
+      "next_procedural_body": {
+        "body_ref": "agency:id:city-planning-commission",
+        "source_id": "e4dc27d1-ccb8-f011-bbd3-001dd80340cd",
+        "source": "zap-api-milestones"
+      },
+      "affected_actor_refs": [
+        {
+          "body_ref": "community-board:brooklyn-cb-09",
+          "role": "affected_community_board"
+        },
+        {
+          "body_ref": "borough-president:brooklyn",
+          "role": "affected_borough_president"
+        }
+      ],
       "observed": {
         "status": "draft_only",
         "recommendations": []
@@ -775,49 +710,47 @@
     "2024Q0325": {
       "schema": "cityscroll.land_authority_summary.v1",
       "layer": "tier_a",
-      "status": "unknown",
-      "reason": "mixed_procedure",
+      "status": "resolved",
+      "reason": null,
       "project_id": "2024Q0325",
-      "procedure_id": null,
-      "procedure_resolution": "mixed",
+      "procedure_id": "ulurp_197c",
+      "procedure_resolution": "uniform",
       "current_stage": {
-        "stage_id": null,
+        "stage_id": "ulurp_197c.application_certification",
         "spine_phase_id": "pre_application",
-        "status": "unknown"
+        "status": "known"
       },
-      "current_actor_refs": [],
-      "current_role": null,
-      "effect": null,
+      "current_actor_refs": [
+        "agency:id:city-planning"
+      ],
+      "current_role": "administrative_certifier",
+      "effect": "Receives and circulates the application, then certifies it as complete for review.",
       "source_basis": {
-        "profile": null,
+        "profile": {
+          "procedure_id": "ulurp_197c",
+          "stage_id": "ulurp_197c.application_certification",
+          "role": "administrative_certifier"
+        },
         "phase": {
-          "source_type": "publisher_current_milestone",
-          "source_field": "current_milestone",
           "current_milestone": "ZM - Review Filed Land Use Application",
           "phase_id": "pre_application",
           "milestone_phase_id": "pre_application"
         },
         "geography": {
-          "source_type": "affected_review_body_for",
-          "status": "unresolved",
-          "source_fields": [
-            "community_district",
-            "actions",
-            "ulurp_numbers",
-            "ulurp_non"
-          ],
-          "boundary_vintage": "2026-05-26",
+          "status": "resolved",
           "profile_version": "2026-08-27.v1"
         },
         "publisher": {
-          "source_type": "published_hearing",
           "source": "zap-api-milestones",
           "source_id": "46ec6068-6ba7-ef11-8a6a-001dd80552a0",
-          "checked": true,
-          "checked_vintage": "2026-09-06"
+          "checked": true
         }
       },
-      "expected_next_stage": null,
+      "expected_next_stage": {
+        "stage_id": "ulurp_197c.community_board_review",
+        "spine_phase_id": "community_board",
+        "status": "known"
+      },
       "published_next_opportunity": {
         "status": "published",
         "checked": true,
@@ -830,8 +763,21 @@
         "phase_id": "cpc",
         "body_ref": "agency:id:city-planning-commission"
       },
-      "next_procedural_body": null,
-      "affected_actor_refs": [],
+      "next_procedural_body": {
+        "body_ref": "agency:id:city-planning-commission",
+        "source_id": "46ec6068-6ba7-ef11-8a6a-001dd80552a0",
+        "source": "zap-api-milestones"
+      },
+      "affected_actor_refs": [
+        {
+          "body_ref": "community-board:queens-cb-14",
+          "role": "affected_community_board"
+        },
+        {
+          "body_ref": "borough-president:queens",
+          "role": "affected_borough_president"
+        }
+      ],
       "observed": {
         "status": "draft_only",
         "recommendations": []
@@ -849,49 +795,47 @@
     "2024K0214": {
       "schema": "cityscroll.land_authority_summary.v1",
       "layer": "tier_a",
-      "status": "unknown",
-      "reason": "mixed_procedure",
+      "status": "resolved",
+      "reason": null,
       "project_id": "2024K0214",
-      "procedure_id": null,
-      "procedure_resolution": "mixed",
+      "procedure_id": "ulurp_197c",
+      "procedure_resolution": "uniform",
       "current_stage": {
-        "stage_id": null,
+        "stage_id": "ulurp_197c.application_certification",
         "spine_phase_id": "pre_application",
-        "status": "unknown"
+        "status": "known"
       },
-      "current_actor_refs": [],
-      "current_role": null,
-      "effect": null,
+      "current_actor_refs": [
+        "agency:id:city-planning"
+      ],
+      "current_role": "administrative_certifier",
+      "effect": "Receives and circulates the application, then certifies it as complete for review.",
       "source_basis": {
-        "profile": null,
+        "profile": {
+          "procedure_id": "ulurp_197c",
+          "stage_id": "ulurp_197c.application_certification",
+          "role": "administrative_certifier"
+        },
         "phase": {
-          "source_type": "publisher_current_milestone",
-          "source_field": "current_milestone",
           "current_milestone": "Ad-hoc - Review Filed Land Use Application",
           "phase_id": "pre_application",
           "milestone_phase_id": "pre_application"
         },
         "geography": {
-          "source_type": "affected_review_body_for",
-          "status": "unresolved",
-          "source_fields": [
-            "community_district",
-            "actions",
-            "ulurp_numbers",
-            "ulurp_non"
-          ],
-          "boundary_vintage": "2026-05-26",
+          "status": "resolved",
           "profile_version": "2026-08-27.v1"
         },
         "publisher": {
-          "source_type": "published_hearing",
           "source": "zap-api-milestones",
           "source_id": "b598310e-9360-ef11-bfe2-001dd80552a0",
-          "checked": true,
-          "checked_vintage": "2026-09-06"
+          "checked": true
         }
       },
-      "expected_next_stage": null,
+      "expected_next_stage": {
+        "stage_id": "ulurp_197c.community_board_review",
+        "spine_phase_id": "community_board",
+        "status": "known"
+      },
       "published_next_opportunity": {
         "status": "published",
         "checked": true,
@@ -904,8 +848,21 @@
         "phase_id": "cpc",
         "body_ref": "agency:id:city-planning-commission"
       },
-      "next_procedural_body": null,
-      "affected_actor_refs": [],
+      "next_procedural_body": {
+        "body_ref": "agency:id:city-planning-commission",
+        "source_id": "b598310e-9360-ef11-bfe2-001dd80552a0",
+        "source": "zap-api-milestones"
+      },
+      "affected_actor_refs": [
+        {
+          "body_ref": "community-board:brooklyn-cb-05",
+          "role": "affected_community_board"
+        },
+        {
+          "body_ref": "borough-president:brooklyn",
+          "role": "affected_borough_president"
+        }
+      ],
       "observed": {
         "status": "draft_only",
         "recommendations": []
@@ -926,7 +883,7 @@
       "status": "unknown",
       "reason": "mixed_procedure",
       "project_id": "2024M0244",
-      "procedure_id": null,
+      "procedure_id": "ulurp_197c",
       "procedure_resolution": "mixed",
       "current_stage": {
         "stage_id": null,
@@ -937,32 +894,22 @@
       "current_role": null,
       "effect": null,
       "source_basis": {
-        "profile": null,
+        "profile": {
+          "procedure_id": "ulurp_197c"
+        },
         "phase": {
-          "source_type": "publisher_current_milestone",
-          "source_field": "current_milestone",
           "current_milestone": "Ad-hoc - CPC Review of Modification Scope",
           "phase_id": "cpc",
           "milestone_phase_id": "cpc"
         },
         "geography": {
-          "source_type": "affected_review_body_for",
           "status": "unresolved",
-          "source_fields": [
-            "community_district",
-            "actions",
-            "ulurp_numbers",
-            "ulurp_non"
-          ],
-          "boundary_vintage": "2026-05-26",
           "profile_version": "2026-08-27.v1"
         },
         "publisher": {
-          "source_type": "published_hearing",
           "source": "land_upcoming_hearings",
           "source_id": null,
-          "checked": true,
-          "checked_vintage": "2026-09-06"
+          "checked": true
         }
       },
       "expected_next_stage": null,
@@ -1020,49 +967,47 @@
     "2025M0338": {
       "schema": "cityscroll.land_authority_summary.v1",
       "layer": "tier_a",
-      "status": "unknown",
-      "reason": "mixed_procedure",
+      "status": "resolved",
+      "reason": null,
       "project_id": "2025M0338",
-      "procedure_id": null,
-      "procedure_resolution": "mixed",
+      "procedure_id": "ulurp_197c",
+      "procedure_resolution": "uniform",
       "current_stage": {
-        "stage_id": null,
+        "stage_id": "ulurp_197c.application_certification",
         "spine_phase_id": "pre_application",
-        "status": "unknown"
+        "status": "known"
       },
-      "current_actor_refs": [],
-      "current_role": null,
-      "effect": null,
+      "current_actor_refs": [
+        "agency:id:city-planning"
+      ],
+      "current_role": "administrative_certifier",
+      "effect": "Receives and circulates the application, then certifies it as complete for review.",
       "source_basis": {
-        "profile": null,
+        "profile": {
+          "procedure_id": "ulurp_197c",
+          "stage_id": "ulurp_197c.application_certification",
+          "role": "administrative_certifier"
+        },
         "phase": {
-          "source_type": "publisher_current_milestone",
-          "source_field": "current_milestone",
           "current_milestone": "ZS - Review Filed Land Use Application",
           "phase_id": "pre_application",
           "milestone_phase_id": "pre_application"
         },
         "geography": {
-          "source_type": "affected_review_body_for",
-          "status": "unresolved",
-          "source_fields": [
-            "community_district",
-            "actions",
-            "ulurp_numbers",
-            "ulurp_non"
-          ],
-          "boundary_vintage": "2026-05-26",
+          "status": "resolved",
           "profile_version": "2026-08-27.v1"
         },
         "publisher": {
-          "source_type": "published_hearing",
           "source": "zap-api-milestones",
           "source_id": "72c89b39-4642-f011-877a-001dd806295a",
-          "checked": true,
-          "checked_vintage": "2026-09-06"
+          "checked": true
         }
       },
-      "expected_next_stage": null,
+      "expected_next_stage": {
+        "stage_id": "ulurp_197c.community_board_review",
+        "spine_phase_id": "community_board",
+        "status": "known"
+      },
       "published_next_opportunity": {
         "status": "published",
         "checked": true,
@@ -1075,8 +1020,21 @@
         "phase_id": "cpc",
         "body_ref": "agency:id:city-planning-commission"
       },
-      "next_procedural_body": null,
-      "affected_actor_refs": [],
+      "next_procedural_body": {
+        "body_ref": "agency:id:city-planning-commission",
+        "source_id": "72c89b39-4642-f011-877a-001dd806295a",
+        "source": "zap-api-milestones"
+      },
+      "affected_actor_refs": [
+        {
+          "body_ref": "community-board:manhattan-cb-05",
+          "role": "affected_community_board"
+        },
+        {
+          "body_ref": "borough-president:manhattan",
+          "role": "affected_borough_president"
+        }
+      ],
       "observed": {
         "status": "draft_only",
         "recommendations": []
@@ -1097,7 +1055,7 @@
       "status": "unknown",
       "reason": "mixed_procedure",
       "project_id": "2024K0358",
-      "procedure_id": null,
+      "procedure_id": "ulurp_197c",
       "procedure_resolution": "mixed",
       "current_stage": {
         "stage_id": null,
@@ -1108,32 +1066,22 @@
       "current_role": null,
       "effect": null,
       "source_basis": {
-        "profile": null,
+        "profile": {
+          "procedure_id": "ulurp_197c"
+        },
         "phase": {
-          "source_type": "publisher_current_milestone",
-          "source_field": "current_milestone",
           "current_milestone": "Ad-hoc - CPC Review of Modification Scope",
           "phase_id": "cpc",
           "milestone_phase_id": "cpc"
         },
         "geography": {
-          "source_type": "affected_review_body_for",
           "status": "unresolved",
-          "source_fields": [
-            "community_district",
-            "actions",
-            "ulurp_numbers",
-            "ulurp_non"
-          ],
-          "boundary_vintage": "2026-05-26",
           "profile_version": "2026-08-27.v1"
         },
         "publisher": {
-          "source_type": "published_hearing",
           "source": "land_upcoming_hearings",
           "source_id": null,
-          "checked": true,
-          "checked_vintage": "2026-09-06"
+          "checked": true
         }
       },
       "expected_next_stage": null,
@@ -1194,7 +1142,7 @@
       "status": "unknown",
       "reason": "mixed_procedure",
       "project_id": "2023M0213",
-      "procedure_id": null,
+      "procedure_id": "ulurp_197c",
       "procedure_resolution": "mixed",
       "current_stage": {
         "stage_id": null,
@@ -1205,32 +1153,22 @@
       "current_role": null,
       "effect": null,
       "source_basis": {
-        "profile": null,
+        "profile": {
+          "procedure_id": "ulurp_197c"
+        },
         "phase": {
-          "source_type": "publisher_current_milestone",
-          "source_field": "current_milestone",
           "current_milestone": "Ad-hoc - CPC Review of Modification Scope",
           "phase_id": "cpc",
           "milestone_phase_id": "cpc"
         },
         "geography": {
-          "source_type": "affected_review_body_for",
           "status": "unresolved",
-          "source_fields": [
-            "community_district",
-            "actions",
-            "ulurp_numbers",
-            "ulurp_non"
-          ],
-          "boundary_vintage": "2026-05-26",
           "profile_version": "2026-08-27.v1"
         },
         "publisher": {
-          "source_type": "published_hearing",
           "source": "land_upcoming_hearings",
           "source_id": null,
-          "checked": true,
-          "checked_vintage": "2026-09-06"
+          "checked": true
         }
       },
       "expected_next_stage": null,
@@ -1289,10 +1227,10 @@
       "schema": "cityscroll.land_authority_summary.v1",
       "layer": "tier_a",
       "status": "unknown",
-      "reason": "mixed_procedure",
+      "reason": "unresolved_procedure",
       "project_id": "2019K0383",
-      "procedure_id": "non_ulurp",
-      "procedure_resolution": "mixed",
+      "procedure_id": null,
+      "procedure_resolution": "unknown",
       "current_stage": {
         "stage_id": null,
         "spine_phase_id": "pre_application",
@@ -1304,30 +1242,18 @@
       "source_basis": {
         "profile": null,
         "phase": {
-          "source_type": "publisher_current_milestone",
-          "source_field": "current_milestone",
           "current_milestone": "ZM - Prepare Filed Land Use Application",
           "phase_id": "pre_application",
           "milestone_phase_id": "pre_application"
         },
         "geography": {
-          "source_type": "affected_review_body_for",
           "status": "unresolved",
-          "source_fields": [
-            "community_district",
-            "actions",
-            "ulurp_numbers",
-            "ulurp_non"
-          ],
-          "boundary_vintage": "2026-05-26",
           "profile_version": null
         },
         "publisher": {
-          "source_type": "published_hearing",
           "source": "zap-api-milestones",
           "source_id": "396cbbb9-bb87-e911-a988-001dd8308047",
-          "checked": true,
-          "checked_vintage": "2026-09-06"
+          "checked": true
         }
       },
       "expected_next_stage": null,
@@ -1379,42 +1305,23 @@
       "effect": "Holds a public hearing and may approve, approve with modifications, or disapprove the application.",
       "source_basis": {
         "profile": {
-          "source_type": "reviewed_static_registry",
-          "registry_version": "2026-08-27.v1",
           "procedure_id": "ulurp_197c",
-          "legal_basis": {
-            "citation": "NYC Charter § 197-c",
-            "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-834"
-          },
           "stage_id": "ulurp_197c.city_planning_commission_review",
-          "role": "decision_maker",
-          "effect_source": "reviewed_static_registry"
+          "role": "decision_maker"
         },
         "phase": {
-          "source_type": "publisher_current_milestone",
-          "source_field": "current_milestone",
           "current_milestone": "Ad-hoc - CPC Review of Modification Scope",
           "phase_id": "cpc",
           "milestone_phase_id": "cpc"
         },
         "geography": {
-          "source_type": "affected_review_body_for",
           "status": "resolved",
-          "source_fields": [
-            "community_district",
-            "actions",
-            "ulurp_numbers",
-            "ulurp_non"
-          ],
-          "boundary_vintage": "2026-05-26",
           "profile_version": "2026-08-27.v1"
         },
         "publisher": {
-          "source_type": "published_hearing",
           "source": "land_upcoming_hearings",
           "source_id": null,
-          "checked": true,
-          "checked_vintage": "2026-09-06"
+          "checked": true
         }
       },
       "expected_next_stage": null,
@@ -1498,42 +1405,23 @@
       "effect": "Holds a public hearing and may approve, approve with modifications, or disapprove the application.",
       "source_basis": {
         "profile": {
-          "source_type": "reviewed_static_registry",
-          "registry_version": "2026-08-27.v1",
           "procedure_id": "ulurp_197c",
-          "legal_basis": {
-            "citation": "NYC Charter § 197-c",
-            "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-834"
-          },
           "stage_id": "ulurp_197c.city_planning_commission_review",
-          "role": "decision_maker",
-          "effect_source": "reviewed_static_registry"
+          "role": "decision_maker"
         },
         "phase": {
-          "source_type": "publisher_current_milestone",
-          "source_field": "current_milestone",
           "current_milestone": "MC - CPC Public Meeting - Vote",
           "phase_id": "cpc",
           "milestone_phase_id": "cpc"
         },
         "geography": {
-          "source_type": "affected_review_body_for",
           "status": "resolved",
-          "source_fields": [
-            "community_district",
-            "actions",
-            "ulurp_numbers",
-            "ulurp_non"
-          ],
-          "boundary_vintage": "2026-05-26",
           "profile_version": "2026-08-27.v1"
         },
         "publisher": {
-          "source_type": "published_hearing",
           "source": "land_upcoming_hearings",
           "source_id": null,
-          "checked": true,
-          "checked_vintage": "2026-09-06"
+          "checked": true
         }
       },
       "expected_next_stage": null,
@@ -1600,46 +1488,40 @@
     "2024K0286": {
       "schema": "cityscroll.land_authority_summary.v1",
       "layer": "tier_a",
-      "status": "unknown",
-      "reason": "mixed_procedure",
+      "status": "resolved",
+      "reason": null,
       "project_id": "2024K0286",
-      "procedure_id": null,
-      "procedure_resolution": "mixed",
+      "procedure_id": "ulurp_197c",
+      "procedure_resolution": "uniform",
       "current_stage": {
-        "stage_id": null,
+        "stage_id": "ulurp_197c.city_planning_commission_review",
         "spine_phase_id": "cpc",
-        "status": "unknown"
+        "status": "known"
       },
-      "current_actor_refs": [],
-      "current_role": null,
-      "effect": null,
+      "current_actor_refs": [
+        "agency:id:city-planning-commission"
+      ],
+      "current_role": "decision_maker",
+      "effect": "Holds a public hearing and may approve, approve with modifications, or disapprove the application.",
       "source_basis": {
-        "profile": null,
+        "profile": {
+          "procedure_id": "ulurp_197c",
+          "stage_id": "ulurp_197c.city_planning_commission_review",
+          "role": "decision_maker"
+        },
         "phase": {
-          "source_type": "publisher_current_milestone",
-          "source_field": "current_milestone",
           "current_milestone": "EAS - CPC Public Meeting - Vote",
           "phase_id": "cpc",
           "milestone_phase_id": "cpc"
         },
         "geography": {
-          "source_type": "affected_review_body_for",
-          "status": "unresolved",
-          "source_fields": [
-            "community_district",
-            "actions",
-            "ulurp_numbers",
-            "ulurp_non"
-          ],
-          "boundary_vintage": "2026-05-26",
+          "status": "resolved",
           "profile_version": "2026-08-27.v1"
         },
         "publisher": {
-          "source_type": "published_hearing",
           "source": "land_upcoming_hearings",
           "source_id": null,
-          "checked": true,
-          "checked_vintage": "2026-09-06"
+          "checked": true
         }
       },
       "expected_next_stage": null,
@@ -1656,7 +1538,16 @@
         "body_ref": null
       },
       "next_procedural_body": null,
-      "affected_actor_refs": [],
+      "affected_actor_refs": [
+        {
+          "body_ref": "community-board:brooklyn-cb-01",
+          "role": "affected_community_board"
+        },
+        {
+          "body_ref": "borough-president:brooklyn",
+          "role": "affected_borough_president"
+        }
+      ],
       "observed": {
         "status": "observed",
         "recommendations": [
@@ -1672,7 +1563,7 @@
             "source_id": "987f36a1-43bb-f011-bbd2-001dd8089923"
           },
           {
-            "body_ref": null,
+            "body_ref": "borough-president:brooklyn",
             "representing": "Borough President",
             "value": "Conditional Favorable",
             "status": "Submitted",
@@ -1714,42 +1605,23 @@
       "effect": "Holds a public hearing and may approve, approve with modifications, or disapprove the application.",
       "source_basis": {
         "profile": {
-          "source_type": "reviewed_static_registry",
-          "registry_version": "2026-08-27.v1",
           "procedure_id": "ulurp_197c",
-          "legal_basis": {
-            "citation": "NYC Charter § 197-c",
-            "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-834"
-          },
           "stage_id": "ulurp_197c.city_planning_commission_review",
-          "role": "decision_maker",
-          "effect_source": "reviewed_static_registry"
+          "role": "decision_maker"
         },
         "phase": {
-          "source_type": "publisher_current_milestone",
-          "source_field": "current_milestone",
           "current_milestone": "EAS - CPC Public Meeting - Vote",
           "phase_id": "cpc",
           "milestone_phase_id": "cpc"
         },
         "geography": {
-          "source_type": "affected_review_body_for",
           "status": "resolved",
-          "source_fields": [
-            "community_district",
-            "actions",
-            "ulurp_numbers",
-            "ulurp_non"
-          ],
-          "boundary_vintage": "2026-05-26",
           "profile_version": "2026-08-27.v1"
         },
         "publisher": {
-          "source_type": "published_hearing",
           "source": "land_upcoming_hearings",
           "source_id": null,
-          "checked": true,
-          "checked_vintage": "2026-09-06"
+          "checked": true
         }
       },
       "expected_next_stage": null,
@@ -1819,7 +1691,7 @@
       "status": "unknown",
       "reason": "mixed_procedure",
       "project_id": "2024Q0219",
-      "procedure_id": null,
+      "procedure_id": "ulurp_197c",
       "procedure_resolution": "mixed",
       "current_stage": {
         "stage_id": null,
@@ -1830,32 +1702,22 @@
       "current_role": null,
       "effect": null,
       "source_basis": {
-        "profile": null,
+        "profile": {
+          "procedure_id": "ulurp_197c"
+        },
         "phase": {
-          "source_type": "publisher_current_milestone",
-          "source_field": "current_milestone",
           "current_milestone": "EAS - Review Session - Pre-Hearing Review / Post Referral",
           "phase_id": "cpc",
           "milestone_phase_id": "cpc"
         },
         "geography": {
-          "source_type": "affected_review_body_for",
           "status": "unresolved",
-          "source_fields": [
-            "community_district",
-            "actions",
-            "ulurp_numbers",
-            "ulurp_non"
-          ],
-          "boundary_vintage": "2026-05-26",
           "profile_version": "2026-08-27.v1"
         },
         "publisher": {
-          "source_type": "published_hearing",
           "source": "land_upcoming_hearings",
           "source_id": null,
-          "checked": true,
-          "checked_vintage": "2026-09-06"
+          "checked": true
         }
       },
       "expected_next_stage": null,
@@ -1930,42 +1792,23 @@
       "effect": "Holds a public hearing and may approve, approve with modifications, or disapprove the application.",
       "source_basis": {
         "profile": {
-          "source_type": "reviewed_static_registry",
-          "registry_version": "2026-08-27.v1",
           "procedure_id": "ulurp_197c",
-          "legal_basis": {
-            "citation": "NYC Charter § 197-c",
-            "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-834"
-          },
           "stage_id": "ulurp_197c.city_planning_commission_review",
-          "role": "decision_maker",
-          "effect_source": "reviewed_static_registry"
+          "role": "decision_maker"
         },
         "phase": {
-          "source_type": "publisher_current_milestone",
-          "source_field": "current_milestone",
           "current_milestone": "PC - CPC Public Meeting - Vote",
           "phase_id": "cpc",
           "milestone_phase_id": "cpc"
         },
         "geography": {
-          "source_type": "affected_review_body_for",
           "status": "resolved",
-          "source_fields": [
-            "community_district",
-            "actions",
-            "ulurp_numbers",
-            "ulurp_non"
-          ],
-          "boundary_vintage": "2026-05-26",
           "profile_version": "2026-08-27.v1"
         },
         "publisher": {
-          "source_type": "published_hearing",
           "source": "land_upcoming_hearings",
           "source_id": null,
-          "checked": true,
-          "checked_vintage": "2026-09-06"
+          "checked": true
         }
       },
       "expected_next_stage": null,
@@ -2032,46 +1875,40 @@
     "2025K0284": {
       "schema": "cityscroll.land_authority_summary.v1",
       "layer": "tier_a",
-      "status": "unknown",
-      "reason": "mixed_procedure",
+      "status": "resolved",
+      "reason": null,
       "project_id": "2025K0284",
-      "procedure_id": null,
-      "procedure_resolution": "mixed",
+      "procedure_id": "ulurp_197c",
+      "procedure_resolution": "uniform",
       "current_stage": {
-        "stage_id": null,
+        "stage_id": "ulurp_197c.city_planning_commission_review",
         "spine_phase_id": "cpc",
-        "status": "unknown"
+        "status": "known"
       },
-      "current_actor_refs": [],
-      "current_role": null,
-      "effect": null,
+      "current_actor_refs": [
+        "agency:id:city-planning-commission"
+      ],
+      "current_role": "decision_maker",
+      "effect": "Holds a public hearing and may approve, approve with modifications, or disapprove the application.",
       "source_basis": {
-        "profile": null,
+        "profile": {
+          "procedure_id": "ulurp_197c",
+          "stage_id": "ulurp_197c.city_planning_commission_review",
+          "role": "decision_maker"
+        },
         "phase": {
-          "source_type": "publisher_current_milestone",
-          "source_field": "current_milestone",
           "current_milestone": "EAS - CPC Public Meeting - Public Hearing",
           "phase_id": "cpc",
           "milestone_phase_id": "cpc"
         },
         "geography": {
-          "source_type": "affected_review_body_for",
-          "status": "unresolved",
-          "source_fields": [
-            "community_district",
-            "actions",
-            "ulurp_numbers",
-            "ulurp_non"
-          ],
-          "boundary_vintage": "2026-05-26",
+          "status": "resolved",
           "profile_version": "2026-08-27.v1"
         },
         "publisher": {
-          "source_type": "published_hearing",
           "source": "land_upcoming_hearings",
           "source_id": null,
-          "checked": true,
-          "checked_vintage": "2026-09-06"
+          "checked": true
         }
       },
       "expected_next_stage": null,
@@ -2088,12 +1925,21 @@
         "body_ref": null
       },
       "next_procedural_body": null,
-      "affected_actor_refs": [],
+      "affected_actor_refs": [
+        {
+          "body_ref": "community-board:brooklyn-cb-10",
+          "role": "affected_community_board"
+        },
+        {
+          "body_ref": "borough-president:brooklyn",
+          "role": "affected_borough_president"
+        }
+      ],
       "observed": {
         "status": "observed",
         "recommendations": [
           {
-            "body_ref": null,
+            "body_ref": "borough-president:brooklyn",
             "representing": "Borough President",
             "value": "Favorable",
             "status": "Submitted",
@@ -2132,7 +1978,7 @@
       "status": "unknown",
       "reason": "mixed_procedure",
       "project_id": "2023X0149",
-      "procedure_id": null,
+      "procedure_id": "ulurp_197c",
       "procedure_resolution": "mixed",
       "current_stage": {
         "stage_id": null,
@@ -2143,32 +1989,22 @@
       "current_role": null,
       "effect": null,
       "source_basis": {
-        "profile": null,
+        "profile": {
+          "procedure_id": "ulurp_197c"
+        },
         "phase": {
-          "source_type": "publisher_current_milestone",
-          "source_field": "current_milestone",
           "current_milestone": "EAS - Review Session - Pre-Hearing Review / Post Referral",
           "phase_id": "cpc",
           "milestone_phase_id": "cpc"
         },
         "geography": {
-          "source_type": "affected_review_body_for",
           "status": "unresolved",
-          "source_fields": [
-            "community_district",
-            "actions",
-            "ulurp_numbers",
-            "ulurp_non"
-          ],
-          "boundary_vintage": "2026-05-26",
           "profile_version": "2026-08-27.v1"
         },
         "publisher": {
-          "source_type": "published_hearing",
           "source": "land_upcoming_hearings",
           "source_id": null,
-          "checked": true,
-          "checked_vintage": "2026-09-06"
+          "checked": true
         }
       },
       "expected_next_stage": null,
@@ -2229,43 +2065,33 @@
       "status": "unknown",
       "reason": "mixed_procedure",
       "project_id": "2022K0416",
-      "procedure_id": null,
+      "procedure_id": "ulurp_197c",
       "procedure_resolution": "mixed",
       "current_stage": {
         "stage_id": null,
-        "spine_phase_id": "environmental",
+        "spine_phase_id": "pre_application",
         "status": "unknown"
       },
       "current_actor_refs": [],
       "current_role": null,
       "effect": null,
       "source_basis": {
-        "profile": null,
+        "profile": {
+          "procedure_id": "ulurp_197c"
+        },
         "phase": {
-          "source_type": "publisher_current_milestone",
-          "source_field": "current_milestone",
           "current_milestone": "EAS - Project Readiness",
-          "phase_id": "environmental",
+          "phase_id": "pre_application",
           "milestone_phase_id": "environmental"
         },
         "geography": {
-          "source_type": "affected_review_body_for",
           "status": "unresolved",
-          "source_fields": [
-            "community_district",
-            "actions",
-            "ulurp_numbers",
-            "ulurp_non"
-          ],
-          "boundary_vintage": "2026-05-26",
           "profile_version": "2026-08-27.v1"
         },
         "publisher": {
-          "source_type": "published_hearing",
           "source": "zap-api-milestones",
           "source_id": "54afc836-1624-ef11-840b-001dd8306c80",
-          "checked": true,
-          "checked_vintage": "2026-09-06"
+          "checked": true
         }
       },
       "expected_next_stage": null,
@@ -2303,7 +2129,7 @@
       "status": "unknown",
       "reason": "mixed_procedure",
       "project_id": "2025Q0142",
-      "procedure_id": null,
+      "procedure_id": "ulurp_197c",
       "procedure_resolution": "mixed",
       "current_stage": {
         "stage_id": null,
@@ -2314,32 +2140,22 @@
       "current_role": null,
       "effect": null,
       "source_basis": {
-        "profile": null,
+        "profile": {
+          "procedure_id": "ulurp_197c"
+        },
         "phase": {
-          "source_type": "publisher_current_milestone",
-          "source_field": "current_milestone",
           "current_milestone": "EAS - CPC Public Meeting - Vote",
           "phase_id": "cpc",
           "milestone_phase_id": "cpc"
         },
         "geography": {
-          "source_type": "affected_review_body_for",
           "status": "unresolved",
-          "source_fields": [
-            "community_district",
-            "actions",
-            "ulurp_numbers",
-            "ulurp_non"
-          ],
-          "boundary_vintage": "2026-05-26",
           "profile_version": "2026-08-27.v1"
         },
         "publisher": {
-          "source_type": "published_hearing",
           "source": "land_upcoming_hearings",
           "source_id": null,
-          "checked": true,
-          "checked_vintage": "2026-09-06"
+          "checked": true
         }
       },
       "expected_next_stage": null,
@@ -2397,46 +2213,40 @@
     "2025Q0247": {
       "schema": "cityscroll.land_authority_summary.v1",
       "layer": "tier_a",
-      "status": "unknown",
-      "reason": "mixed_procedure",
+      "status": "resolved",
+      "reason": null,
       "project_id": "2025Q0247",
-      "procedure_id": null,
-      "procedure_resolution": "mixed",
+      "procedure_id": "ulurp_197c",
+      "procedure_resolution": "uniform",
       "current_stage": {
-        "stage_id": null,
+        "stage_id": "ulurp_197c.city_planning_commission_review",
         "spine_phase_id": "cpc",
-        "status": "unknown"
+        "status": "known"
       },
-      "current_actor_refs": [],
-      "current_role": null,
-      "effect": null,
+      "current_actor_refs": [
+        "agency:id:city-planning-commission"
+      ],
+      "current_role": "decision_maker",
+      "effect": "Holds a public hearing and may approve, approve with modifications, or disapprove the application.",
       "source_basis": {
-        "profile": null,
+        "profile": {
+          "procedure_id": "ulurp_197c",
+          "stage_id": "ulurp_197c.city_planning_commission_review",
+          "role": "decision_maker"
+        },
         "phase": {
-          "source_type": "publisher_current_milestone",
-          "source_field": "current_milestone",
           "current_milestone": "EAS - Review Session - Pre-Hearing Review / Post Referral",
           "phase_id": "cpc",
           "milestone_phase_id": "cpc"
         },
         "geography": {
-          "source_type": "affected_review_body_for",
-          "status": "unresolved",
-          "source_fields": [
-            "community_district",
-            "actions",
-            "ulurp_numbers",
-            "ulurp_non"
-          ],
-          "boundary_vintage": "2026-05-26",
+          "status": "resolved",
           "profile_version": "2026-08-27.v1"
         },
         "publisher": {
-          "source_type": "published_hearing",
           "source": "land_upcoming_hearings",
           "source_id": null,
-          "checked": true,
-          "checked_vintage": "2026-09-06"
+          "checked": true
         }
       },
       "expected_next_stage": null,
@@ -2453,7 +2263,16 @@
         "body_ref": null
       },
       "next_procedural_body": null,
-      "affected_actor_refs": [],
+      "affected_actor_refs": [
+        {
+          "body_ref": "community-board:queens-cb-06",
+          "role": "affected_community_board"
+        },
+        {
+          "body_ref": "borough-president:queens",
+          "role": "affected_borough_president"
+        }
+      ],
       "observed": {
         "status": "observed",
         "recommendations": [
@@ -2469,7 +2288,7 @@
             "source_id": "25fa11d0-14ca-f011-bbd3-001dd80d9613"
           },
           {
-            "body_ref": null,
+            "body_ref": "borough-president:queens",
             "representing": "Borough President",
             "value": "Conditional Favorable",
             "status": "Submitted",
@@ -2494,49 +2313,47 @@
     "2025R0222": {
       "schema": "cityscroll.land_authority_summary.v1",
       "layer": "tier_a",
-      "status": "unknown",
-      "reason": "mixed_procedure",
+      "status": "resolved",
+      "reason": null,
       "project_id": "2025R0222",
-      "procedure_id": null,
-      "procedure_resolution": "mixed",
+      "procedure_id": "ulurp_197c",
+      "procedure_resolution": "uniform",
       "current_stage": {
-        "stage_id": null,
-        "spine_phase_id": "environmental",
-        "status": "unknown"
+        "stage_id": "ulurp_197c.application_certification",
+        "spine_phase_id": "pre_application",
+        "status": "known"
       },
-      "current_actor_refs": [],
-      "current_role": null,
-      "effect": null,
+      "current_actor_refs": [
+        "agency:id:city-planning"
+      ],
+      "current_role": "administrative_certifier",
+      "effect": "Receives and circulates the application, then certifies it as complete for review.",
       "source_basis": {
-        "profile": null,
+        "profile": {
+          "procedure_id": "ulurp_197c",
+          "stage_id": "ulurp_197c.application_certification",
+          "role": "administrative_certifier"
+        },
         "phase": {
-          "source_type": "publisher_current_milestone",
-          "source_field": "current_milestone",
           "current_milestone": "RS - Project Readiness",
-          "phase_id": "environmental",
+          "phase_id": "pre_application",
           "milestone_phase_id": "environmental"
         },
         "geography": {
-          "source_type": "affected_review_body_for",
-          "status": "unresolved",
-          "source_fields": [
-            "community_district",
-            "actions",
-            "ulurp_numbers",
-            "ulurp_non"
-          ],
-          "boundary_vintage": "2026-05-26",
+          "status": "resolved",
           "profile_version": "2026-08-27.v1"
         },
         "publisher": {
-          "source_type": "published_hearing",
           "source": "land_upcoming_hearings",
           "source_id": null,
-          "checked": true,
-          "checked_vintage": "2026-09-06"
+          "checked": true
         }
       },
-      "expected_next_stage": null,
+      "expected_next_stage": {
+        "stage_id": "ulurp_197c.community_board_review",
+        "spine_phase_id": "community_board",
+        "status": "known"
+      },
       "published_next_opportunity": {
         "status": "none",
         "checked": true,
@@ -2550,7 +2367,16 @@
         "body_ref": null
       },
       "next_procedural_body": null,
-      "affected_actor_refs": [],
+      "affected_actor_refs": [
+        {
+          "body_ref": "community-board:staten-island-cb-03",
+          "role": "affected_community_board"
+        },
+        {
+          "body_ref": "borough-president:staten-island",
+          "role": "affected_borough_president"
+        }
+      ],
       "observed": {
         "status": "no_observation",
         "recommendations": []
@@ -2585,42 +2411,23 @@
       "effect": "Holds a public hearing and may approve, approve with modifications, or disapprove the application.",
       "source_basis": {
         "profile": {
-          "source_type": "reviewed_static_registry",
-          "registry_version": "2026-08-27.v1",
           "procedure_id": "ulurp_197c",
-          "legal_basis": {
-            "citation": "NYC Charter § 197-c",
-            "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-834"
-          },
           "stage_id": "ulurp_197c.city_planning_commission_review",
-          "role": "decision_maker",
-          "effect_source": "reviewed_static_registry"
+          "role": "decision_maker"
         },
         "phase": {
-          "source_type": "publisher_current_milestone",
-          "source_field": "current_milestone",
           "current_milestone": "PS - CPC Public Meeting - Vote",
           "phase_id": "cpc",
           "milestone_phase_id": "cpc"
         },
         "geography": {
-          "source_type": "affected_review_body_for",
           "status": "resolved",
-          "source_fields": [
-            "community_district",
-            "actions",
-            "ulurp_numbers",
-            "ulurp_non"
-          ],
-          "boundary_vintage": "2026-05-26",
           "profile_version": "2026-08-27.v1"
         },
         "publisher": {
-          "source_type": "published_hearing",
           "source": "land_upcoming_hearings",
           "source_id": null,
-          "checked": true,
-          "checked_vintage": "2026-09-06"
+          "checked": true
         }
       },
       "expected_next_stage": null,
@@ -2704,42 +2511,23 @@
       "effect": "Holds a public hearing and may approve, approve with modifications, or disapprove the application.",
       "source_basis": {
         "profile": {
-          "source_type": "reviewed_static_registry",
-          "registry_version": "2026-08-27.v1",
           "procedure_id": "ulurp_197c",
-          "legal_basis": {
-            "citation": "NYC Charter § 197-c",
-            "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-834"
-          },
           "stage_id": "ulurp_197c.city_planning_commission_review",
-          "role": "decision_maker",
-          "effect_source": "reviewed_static_registry"
+          "role": "decision_maker"
         },
         "phase": {
-          "source_type": "publisher_current_milestone",
-          "source_field": "current_milestone",
           "current_milestone": "PC - CPC Public Meeting - Vote",
           "phase_id": "cpc",
           "milestone_phase_id": "cpc"
         },
         "geography": {
-          "source_type": "affected_review_body_for",
           "status": "resolved",
-          "source_fields": [
-            "community_district",
-            "actions",
-            "ulurp_numbers",
-            "ulurp_non"
-          ],
-          "boundary_vintage": "2026-05-26",
           "profile_version": "2026-08-27.v1"
         },
         "publisher": {
-          "source_type": "published_hearing",
           "source": "land_upcoming_hearings",
           "source_id": null,
-          "checked": true,
-          "checked_vintage": "2026-09-06"
+          "checked": true
         }
       },
       "expected_next_stage": null,
@@ -2823,42 +2611,23 @@
       "effect": "When § 197-d review applies, may approve, approve with modifications, or disapprove the CPC decision; otherwise this stage is not expected.",
       "source_basis": {
         "profile": {
-          "source_type": "reviewed_static_registry",
-          "registry_version": "2026-08-27.v1",
           "procedure_id": "ulurp_197c",
-          "legal_basis": {
-            "citation": "NYC Charter § 197-d(b)-(c)",
-            "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-6746"
-          },
           "stage_id": "ulurp_197c.city_council_review",
-          "role": "conditional_decision_maker",
-          "effect_source": "reviewed_static_registry"
+          "role": "conditional_decision_maker"
         },
         "phase": {
-          "source_type": "publisher_current_milestone",
-          "source_field": "current_milestone",
           "current_milestone": "MM - City Council Review",
           "phase_id": "city_council",
           "milestone_phase_id": "city_council"
         },
         "geography": {
-          "source_type": "affected_review_body_for",
           "status": "resolved",
-          "source_fields": [
-            "community_district",
-            "actions",
-            "ulurp_numbers",
-            "ulurp_non"
-          ],
-          "boundary_vintage": "2026-05-26",
           "profile_version": "2026-08-27.v1"
         },
         "publisher": {
-          "source_type": "published_hearing",
           "source": "land_upcoming_hearings",
           "source_id": null,
-          "checked": true,
-          "checked_vintage": "2026-09-06"
+          "checked": true
         }
       },
       "expected_next_stage": {
@@ -2929,49 +2698,47 @@
     "2025M0395": {
       "schema": "cityscroll.land_authority_summary.v1",
       "layer": "tier_a",
-      "status": "unknown",
-      "reason": "mixed_procedure",
+      "status": "resolved",
+      "reason": null,
       "project_id": "2025M0395",
-      "procedure_id": null,
-      "procedure_resolution": "mixed",
+      "procedure_id": "ulurp_197c",
+      "procedure_resolution": "uniform",
       "current_stage": {
-        "stage_id": null,
-        "spine_phase_id": "environmental",
-        "status": "unknown"
+        "stage_id": "ulurp_197c.application_certification",
+        "spine_phase_id": "pre_application",
+        "status": "known"
       },
-      "current_actor_refs": [],
-      "current_role": null,
-      "effect": null,
+      "current_actor_refs": [
+        "agency:id:city-planning"
+      ],
+      "current_role": "administrative_certifier",
+      "effect": "Receives and circulates the application, then certifies it as complete for review.",
       "source_basis": {
-        "profile": null,
+        "profile": {
+          "procedure_id": "ulurp_197c",
+          "stage_id": "ulurp_197c.application_certification",
+          "role": "administrative_certifier"
+        },
         "phase": {
-          "source_type": "publisher_current_milestone",
-          "source_field": "current_milestone",
           "current_milestone": "EAS - Project Readiness",
-          "phase_id": "environmental",
+          "phase_id": "pre_application",
           "milestone_phase_id": "environmental"
         },
         "geography": {
-          "source_type": "affected_review_body_for",
-          "status": "unresolved",
-          "source_fields": [
-            "community_district",
-            "actions",
-            "ulurp_numbers",
-            "ulurp_non"
-          ],
-          "boundary_vintage": "2026-05-26",
+          "status": "resolved",
           "profile_version": "2026-08-27.v1"
         },
         "publisher": {
-          "source_type": "published_hearing",
           "source": "zap-api-milestones",
           "source_id": "ab7813fc-7166-f011-bec2-001dd806295a",
-          "checked": true,
-          "checked_vintage": "2026-09-06"
+          "checked": true
         }
       },
-      "expected_next_stage": null,
+      "expected_next_stage": {
+        "stage_id": "ulurp_197c.community_board_review",
+        "spine_phase_id": "community_board",
+        "status": "known"
+      },
       "published_next_opportunity": {
         "status": "published",
         "checked": true,
@@ -2984,8 +2751,21 @@
         "phase_id": "cpc",
         "body_ref": "agency:id:city-planning-commission"
       },
-      "next_procedural_body": null,
-      "affected_actor_refs": [],
+      "next_procedural_body": {
+        "body_ref": "agency:id:city-planning-commission",
+        "source_id": "ab7813fc-7166-f011-bec2-001dd806295a",
+        "source": "zap-api-milestones"
+      },
+      "affected_actor_refs": [
+        {
+          "body_ref": "community-board:manhattan-cb-05",
+          "role": "affected_community_board"
+        },
+        {
+          "body_ref": "borough-president:manhattan",
+          "role": "affected_borough_president"
+        }
+      ],
       "observed": {
         "status": "draft_only",
         "recommendations": []
@@ -3006,7 +2786,7 @@
       "status": "unknown",
       "reason": "mixed_procedure",
       "project_id": "2022K0430",
-      "procedure_id": null,
+      "procedure_id": "ulurp_197c",
       "procedure_resolution": "mixed",
       "current_stage": {
         "stage_id": null,
@@ -3017,32 +2797,22 @@
       "current_role": null,
       "effect": null,
       "source_basis": {
-        "profile": null,
+        "profile": {
+          "procedure_id": "ulurp_197c"
+        },
         "phase": {
-          "source_type": "publisher_current_milestone",
-          "source_field": "current_milestone",
           "current_milestone": "EIS - Review Session - Pre-Hearing Review / Post Referral",
           "phase_id": "cpc",
           "milestone_phase_id": "cpc"
         },
         "geography": {
-          "source_type": "affected_review_body_for",
           "status": "unresolved",
-          "source_fields": [
-            "community_district",
-            "actions",
-            "ulurp_numbers",
-            "ulurp_non"
-          ],
-          "boundary_vintage": "2026-05-26",
           "profile_version": "2026-08-27.v1"
         },
         "publisher": {
-          "source_type": "published_hearing",
           "source": "land_upcoming_hearings",
           "source_id": null,
-          "checked": true,
-          "checked_vintage": "2026-09-06"
+          "checked": true
         }
       },
       "expected_next_stage": null,
@@ -3089,49 +2859,47 @@
     "2026K0233": {
       "schema": "cityscroll.land_authority_summary.v1",
       "layer": "tier_a",
-      "status": "unknown",
-      "reason": "mixed_procedure",
+      "status": "resolved",
+      "reason": null,
       "project_id": "2026K0233",
-      "procedure_id": null,
-      "procedure_resolution": "mixed",
+      "procedure_id": "ulurp_197c",
+      "procedure_resolution": "uniform",
       "current_stage": {
-        "stage_id": null,
+        "stage_id": "ulurp_197c.application_certification",
         "spine_phase_id": "pre_application",
-        "status": "unknown"
+        "status": "known"
       },
-      "current_actor_refs": [],
-      "current_role": null,
-      "effect": null,
+      "current_actor_refs": [
+        "agency:id:city-planning"
+      ],
+      "current_role": "administrative_certifier",
+      "effect": "Receives and circulates the application, then certifies it as complete for review.",
       "source_basis": {
-        "profile": null,
+        "profile": {
+          "procedure_id": "ulurp_197c",
+          "stage_id": "ulurp_197c.application_certification",
+          "role": "administrative_certifier"
+        },
         "phase": {
-          "source_type": "publisher_current_milestone",
-          "source_field": "current_milestone",
           "current_milestone": "ZM - Prepare Filed Land Use Fee Payment",
           "phase_id": "pre_application",
           "milestone_phase_id": "pre_application"
         },
         "geography": {
-          "source_type": "affected_review_body_for",
-          "status": "unresolved",
-          "source_fields": [
-            "community_district",
-            "actions",
-            "ulurp_numbers",
-            "ulurp_non"
-          ],
-          "boundary_vintage": "2026-05-26",
+          "status": "resolved",
           "profile_version": "2026-08-27.v1"
         },
         "publisher": {
-          "source_type": "published_hearing",
           "source": "zap-api-milestones",
           "source_id": "01bdc83a-46a9-f011-bbd3-001dd806295a",
-          "checked": true,
-          "checked_vintage": "2026-09-06"
+          "checked": true
         }
       },
-      "expected_next_stage": null,
+      "expected_next_stage": {
+        "stage_id": "ulurp_197c.community_board_review",
+        "spine_phase_id": "community_board",
+        "status": "known"
+      },
       "published_next_opportunity": {
         "status": "published",
         "checked": true,
@@ -3144,8 +2912,21 @@
         "phase_id": "cpc",
         "body_ref": "agency:id:city-planning-commission"
       },
-      "next_procedural_body": null,
-      "affected_actor_refs": [],
+      "next_procedural_body": {
+        "body_ref": "agency:id:city-planning-commission",
+        "source_id": "01bdc83a-46a9-f011-bbd3-001dd806295a",
+        "source": "zap-api-milestones"
+      },
+      "affected_actor_refs": [
+        {
+          "body_ref": "community-board:brooklyn-cb-02",
+          "role": "affected_community_board"
+        },
+        {
+          "body_ref": "borough-president:brooklyn",
+          "role": "affected_borough_president"
+        }
+      ],
       "observed": {
         "status": "no_observation",
         "recommendations": []
@@ -3163,46 +2944,40 @@
     "2024K0196": {
       "schema": "cityscroll.land_authority_summary.v1",
       "layer": "tier_a",
-      "status": "unknown",
-      "reason": "mixed_procedure",
+      "status": "resolved",
+      "reason": null,
       "project_id": "2024K0196",
-      "procedure_id": null,
-      "procedure_resolution": "mixed",
+      "procedure_id": "ulurp_197c",
+      "procedure_resolution": "uniform",
       "current_stage": {
-        "stage_id": null,
+        "stage_id": "ulurp_197c.city_planning_commission_review",
         "spine_phase_id": "cpc",
-        "status": "unknown"
+        "status": "known"
       },
-      "current_actor_refs": [],
-      "current_role": null,
-      "effect": null,
+      "current_actor_refs": [
+        "agency:id:city-planning-commission"
+      ],
+      "current_role": "decision_maker",
+      "effect": "Holds a public hearing and may approve, approve with modifications, or disapprove the application.",
       "source_basis": {
-        "profile": null,
+        "profile": {
+          "procedure_id": "ulurp_197c",
+          "stage_id": "ulurp_197c.city_planning_commission_review",
+          "role": "decision_maker"
+        },
         "phase": {
-          "source_type": "publisher_current_milestone",
-          "source_field": "current_milestone",
           "current_milestone": "EAS - Review Session - Pre-Hearing Review / Post Referral",
           "phase_id": "cpc",
           "milestone_phase_id": "cpc"
         },
         "geography": {
-          "source_type": "affected_review_body_for",
-          "status": "unresolved",
-          "source_fields": [
-            "community_district",
-            "actions",
-            "ulurp_numbers",
-            "ulurp_non"
-          ],
-          "boundary_vintage": "2026-05-26",
+          "status": "resolved",
           "profile_version": "2026-08-27.v1"
         },
         "publisher": {
-          "source_type": "published_hearing",
           "source": "land_upcoming_hearings",
           "source_id": null,
-          "checked": true,
-          "checked_vintage": "2026-09-06"
+          "checked": true
         }
       },
       "expected_next_stage": null,
@@ -3219,7 +2994,16 @@
         "body_ref": null
       },
       "next_procedural_body": null,
-      "affected_actor_refs": [],
+      "affected_actor_refs": [
+        {
+          "body_ref": "community-board:brooklyn-cb-04",
+          "role": "affected_community_board"
+        },
+        {
+          "body_ref": "borough-president:brooklyn",
+          "role": "affected_borough_president"
+        }
+      ],
       "observed": {
         "status": "observed",
         "recommendations": [
@@ -3235,7 +3019,7 @@
             "source_id": "797cb645-43bb-f011-bbd3-001dd8029d6b"
           },
           {
-            "body_ref": null,
+            "body_ref": "borough-president:brooklyn",
             "representing": "Borough President",
             "value": "Conditional Favorable",
             "status": "Submitted",
@@ -3260,49 +3044,47 @@
     "2023Q0303": {
       "schema": "cityscroll.land_authority_summary.v1",
       "layer": "tier_a",
-      "status": "unknown",
-      "reason": "mixed_procedure",
+      "status": "resolved",
+      "reason": null,
       "project_id": "2023Q0303",
-      "procedure_id": null,
-      "procedure_resolution": "mixed",
+      "procedure_id": "ulurp_197c",
+      "procedure_resolution": "uniform",
       "current_stage": {
-        "stage_id": null,
+        "stage_id": "ulurp_197c.application_certification",
         "spine_phase_id": "pre_application",
-        "status": "unknown"
+        "status": "known"
       },
-      "current_actor_refs": [],
-      "current_role": null,
-      "effect": null,
+      "current_actor_refs": [
+        "agency:id:city-planning"
+      ],
+      "current_role": "administrative_certifier",
+      "effect": "Receives and circulates the application, then certifies it as complete for review.",
       "source_basis": {
-        "profile": null,
+        "profile": {
+          "procedure_id": "ulurp_197c",
+          "stage_id": "ulurp_197c.application_certification",
+          "role": "administrative_certifier"
+        },
         "phase": {
-          "source_type": "publisher_current_milestone",
-          "source_field": "current_milestone",
           "current_milestone": "ZM - Review Filed Land Use Application",
           "phase_id": "pre_application",
           "milestone_phase_id": "pre_application"
         },
         "geography": {
-          "source_type": "affected_review_body_for",
-          "status": "unresolved",
-          "source_fields": [
-            "community_district",
-            "actions",
-            "ulurp_numbers",
-            "ulurp_non"
-          ],
-          "boundary_vintage": "2026-05-26",
+          "status": "resolved",
           "profile_version": "2026-08-27.v1"
         },
         "publisher": {
-          "source_type": "published_hearing",
           "source": "zap-api-milestones",
           "source_id": "e4f5352c-6510-ee11-8f6c-001dd8097c36",
-          "checked": true,
-          "checked_vintage": "2026-09-06"
+          "checked": true
         }
       },
-      "expected_next_stage": null,
+      "expected_next_stage": {
+        "stage_id": "ulurp_197c.community_board_review",
+        "spine_phase_id": "community_board",
+        "status": "known"
+      },
       "published_next_opportunity": {
         "status": "published",
         "checked": true,
@@ -3315,8 +3097,21 @@
         "phase_id": "cpc",
         "body_ref": "agency:id:city-planning-commission"
       },
-      "next_procedural_body": null,
-      "affected_actor_refs": [],
+      "next_procedural_body": {
+        "body_ref": "agency:id:city-planning-commission",
+        "source_id": "e4f5352c-6510-ee11-8f6c-001dd8097c36",
+        "source": "zap-api-milestones"
+      },
+      "affected_actor_refs": [
+        {
+          "body_ref": "community-board:queens-cb-08",
+          "role": "affected_community_board"
+        },
+        {
+          "body_ref": "borough-president:queens",
+          "role": "affected_borough_president"
+        }
+      ],
       "observed": {
         "status": "draft_only",
         "recommendations": []
@@ -3334,49 +3129,47 @@
     "2025K0154": {
       "schema": "cityscroll.land_authority_summary.v1",
       "layer": "tier_a",
-      "status": "unknown",
-      "reason": "mixed_procedure",
+      "status": "resolved",
+      "reason": null,
       "project_id": "2025K0154",
-      "procedure_id": null,
-      "procedure_resolution": "mixed",
+      "procedure_id": "ulurp_197c",
+      "procedure_resolution": "uniform",
       "current_stage": {
-        "stage_id": null,
+        "stage_id": "ulurp_197c.city_council_review",
         "spine_phase_id": "city_council",
-        "status": "unknown"
+        "status": "known"
       },
-      "current_actor_refs": [],
-      "current_role": null,
-      "effect": null,
+      "current_actor_refs": [
+        "agency:id:city-council"
+      ],
+      "current_role": "conditional_decision_maker",
+      "effect": "When § 197-d review applies, may approve, approve with modifications, or disapprove the CPC decision; otherwise this stage is not expected.",
       "source_basis": {
-        "profile": null,
+        "profile": {
+          "procedure_id": "ulurp_197c",
+          "stage_id": "ulurp_197c.city_council_review",
+          "role": "conditional_decision_maker"
+        },
         "phase": {
-          "source_type": "publisher_current_milestone",
-          "source_field": "current_milestone",
           "current_milestone": "EAS - City Council Review",
           "phase_id": "city_council",
           "milestone_phase_id": "city_council"
         },
         "geography": {
-          "source_type": "affected_review_body_for",
-          "status": "unresolved",
-          "source_fields": [
-            "community_district",
-            "actions",
-            "ulurp_numbers",
-            "ulurp_non"
-          ],
-          "boundary_vintage": "2026-05-26",
+          "status": "resolved",
           "profile_version": "2026-08-27.v1"
         },
         "publisher": {
-          "source_type": "published_hearing",
           "source": "land_upcoming_hearings",
           "source_id": null,
-          "checked": true,
-          "checked_vintage": "2026-09-06"
+          "checked": true
         }
       },
-      "expected_next_stage": null,
+      "expected_next_stage": {
+        "stage_id": "ulurp_197c.mayoral_review",
+        "spine_phase_id": "mayoral_appeals",
+        "status": "known"
+      },
       "published_next_opportunity": {
         "status": "none",
         "checked": true,
@@ -3390,12 +3183,21 @@
         "body_ref": null
       },
       "next_procedural_body": null,
-      "affected_actor_refs": [],
+      "affected_actor_refs": [
+        {
+          "body_ref": "community-board:brooklyn-cb-03",
+          "role": "affected_community_board"
+        },
+        {
+          "body_ref": "borough-president:brooklyn",
+          "role": "affected_borough_president"
+        }
+      ],
       "observed": {
         "status": "observed",
         "recommendations": [
           {
-            "body_ref": null,
+            "body_ref": "borough-president:brooklyn",
             "representing": "Borough President",
             "value": "Favorable",
             "status": "Submitted",
@@ -3420,49 +3222,47 @@
     "2024K0421": {
       "schema": "cityscroll.land_authority_summary.v1",
       "layer": "tier_a",
-      "status": "unknown",
-      "reason": "mixed_procedure",
+      "status": "resolved",
+      "reason": null,
       "project_id": "2024K0421",
-      "procedure_id": null,
-      "procedure_resolution": "mixed",
+      "procedure_id": "ulurp_197c",
+      "procedure_resolution": "uniform",
       "current_stage": {
-        "stage_id": null,
+        "stage_id": "ulurp_197c.application_certification",
         "spine_phase_id": "pre_application",
-        "status": "unknown"
+        "status": "known"
       },
-      "current_actor_refs": [],
-      "current_role": null,
-      "effect": null,
+      "current_actor_refs": [
+        "agency:id:city-planning"
+      ],
+      "current_role": "administrative_certifier",
+      "effect": "Receives and circulates the application, then certifies it as complete for review.",
       "source_basis": {
-        "profile": null,
+        "profile": {
+          "procedure_id": "ulurp_197c",
+          "stage_id": "ulurp_197c.application_certification",
+          "role": "administrative_certifier"
+        },
         "phase": {
-          "source_type": "publisher_current_milestone",
-          "source_field": "current_milestone",
           "current_milestone": "ZM - Review Filed Land Use Application",
           "phase_id": "pre_application",
           "milestone_phase_id": "pre_application"
         },
         "geography": {
-          "source_type": "affected_review_body_for",
-          "status": "unresolved",
-          "source_fields": [
-            "community_district",
-            "actions",
-            "ulurp_numbers",
-            "ulurp_non"
-          ],
-          "boundary_vintage": "2026-05-26",
+          "status": "resolved",
           "profile_version": "2026-08-27.v1"
         },
         "publisher": {
-          "source_type": "published_hearing",
           "source": "zap-api-milestones",
           "source_id": "55caeaa2-3ba5-f011-bbd3-001dd80340cd",
-          "checked": true,
-          "checked_vintage": "2026-09-06"
+          "checked": true
         }
       },
-      "expected_next_stage": null,
+      "expected_next_stage": {
+        "stage_id": "ulurp_197c.community_board_review",
+        "spine_phase_id": "community_board",
+        "status": "known"
+      },
       "published_next_opportunity": {
         "status": "published",
         "checked": true,
@@ -3475,8 +3275,21 @@
         "phase_id": "cpc",
         "body_ref": "agency:id:city-planning-commission"
       },
-      "next_procedural_body": null,
-      "affected_actor_refs": [],
+      "next_procedural_body": {
+        "body_ref": "agency:id:city-planning-commission",
+        "source_id": "55caeaa2-3ba5-f011-bbd3-001dd80340cd",
+        "source": "zap-api-milestones"
+      },
+      "affected_actor_refs": [
+        {
+          "body_ref": "community-board:brooklyn-cb-18",
+          "role": "affected_community_board"
+        },
+        {
+          "body_ref": "borough-president:brooklyn",
+          "role": "affected_borough_president"
+        }
+      ],
       "observed": {
         "status": "draft_only",
         "recommendations": []
@@ -3497,7 +3310,7 @@
       "status": "unknown",
       "reason": "mixed_procedure",
       "project_id": "2022Q0449",
-      "procedure_id": null,
+      "procedure_id": "ulurp_197c",
       "procedure_resolution": "mixed",
       "current_stage": {
         "stage_id": null,
@@ -3508,32 +3321,22 @@
       "current_role": null,
       "effect": null,
       "source_basis": {
-        "profile": null,
+        "profile": {
+          "procedure_id": "ulurp_197c"
+        },
         "phase": {
-          "source_type": "publisher_current_milestone",
-          "source_field": "current_milestone",
           "current_milestone": "EAS - City Council Review",
           "phase_id": "city_council",
           "milestone_phase_id": "city_council"
         },
         "geography": {
-          "source_type": "affected_review_body_for",
           "status": "unresolved",
-          "source_fields": [
-            "community_district",
-            "actions",
-            "ulurp_numbers",
-            "ulurp_non"
-          ],
-          "boundary_vintage": "2026-05-26",
           "profile_version": "2026-08-27.v1"
         },
         "publisher": {
-          "source_type": "published_hearing",
           "source": "land_upcoming_hearings",
           "source_id": null,
-          "checked": true,
-          "checked_vintage": "2026-09-06"
+          "checked": true
         }
       },
       "expected_next_stage": null,
@@ -3594,7 +3397,7 @@
       "status": "unknown",
       "reason": "mixed_procedure",
       "project_id": "2023K0183",
-      "procedure_id": null,
+      "procedure_id": "ulurp_197c",
       "procedure_resolution": "mixed",
       "current_stage": {
         "stage_id": null,
@@ -3605,32 +3408,22 @@
       "current_role": null,
       "effect": null,
       "source_basis": {
-        "profile": null,
+        "profile": {
+          "procedure_id": "ulurp_197c"
+        },
         "phase": {
-          "source_type": "publisher_current_milestone",
-          "source_field": "current_milestone",
           "current_milestone": "EAS - City Council Review",
           "phase_id": "city_council",
           "milestone_phase_id": "city_council"
         },
         "geography": {
-          "source_type": "affected_review_body_for",
           "status": "unresolved",
-          "source_fields": [
-            "community_district",
-            "actions",
-            "ulurp_numbers",
-            "ulurp_non"
-          ],
-          "boundary_vintage": "2026-05-26",
           "profile_version": "2026-08-27.v1"
         },
         "publisher": {
-          "source_type": "published_hearing",
           "source": "land_upcoming_hearings",
           "source_id": null,
-          "checked": true,
-          "checked_vintage": "2026-09-06"
+          "checked": true
         }
       },
       "expected_next_stage": null,

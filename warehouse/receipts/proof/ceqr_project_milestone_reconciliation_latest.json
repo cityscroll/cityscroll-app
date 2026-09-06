@@ -1,7 +1,7 @@
 {
   "gate": {
     "current_zap_behavior_changed": false,
-    "rationale": "197 exact project joins were established and 182 add milestone history beyond the retained ZAP environmental milestone/date; only bounded joined facts are retained.",
+    "rationale": "195 exact project joins were established and 180 add milestone history beyond the retained ZAP environmental milestone/date; only bounded joined facts are retained.",
     "resident_ingestion_committed": false,
     "result": "GO",
     "thresholds": {
@@ -7101,79 +7101,6 @@
       "zap_project_id": "2022X0393"
     },
     {
-      "ceqr_key": "25HPD069X",
-      "join": {
-        "ceqr_source_field": "ceqr",
-        "method": "normalized_ceqr_key_equality",
-        "normalization_version": "ceqr_key_trim_upper_v1",
-        "zap_source_field": "ceqr_number"
-      },
-      "materialized_at": "2026-08-31T13:51:17.569Z",
-      "milestones": {
-        "rows": [
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2025-11-05T00:00:00.000",
-            "milestone_name": "Type II Memo",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-3t35_usct~2xzk"
-          },
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2025-11-05T00:00:00.000",
-            "milestone_name": "Begin Additional Review",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-vbb9-z97g-rkna"
-          }
-        ],
-        "source_dataset_id": "8fj8-3sgg",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "milestone_name",
-          "milestone_date"
-        ],
-        "source_url": "https://data.cityofnewyork.us/d/8fj8-3sgg",
-        "source_vintage": "2026-08-28T14:05:23.000Z"
-      },
-      "project": {
-        "borough": "Bronx",
-        "lead_agency": "Department of Housing Preservation & Development",
-        "project_name": "351 Powers Avenue",
-        "source_dataset_id": "gezn-7mgk",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "project_description",
-          "borough",
-          "lead_agency",
-          "url"
-        ],
-        "source_record_id": "row-trjp-yrcr~z57k",
-        "source_url": "https://a002-ceqraccess.nyc.gov/ceqr/ProjectInformation/ProjectDetail/17590-25HPD069X",
-        "source_vintage": "2026-08-28T14:05:04.000Z"
-      },
-      "schema": "cityscroll.ceqr_project_milestone_join.v1",
-      "zap_comparison": {
-        "environmental_milestone": null,
-        "environmental_milestone_date": null,
-        "incremental_milestone_rows": 2
-      },
-      "zap_project_id": "2026X0362"
-    },
-    {
       "ceqr_key": "26DCP001X",
       "join": {
         "ceqr_source_field": "ceqr",
@@ -11865,92 +11792,6 @@
       "zap_project_id": "2025R0277"
     },
     {
-      "ceqr_key": "26DCP099Y",
-      "join": {
-        "ceqr_source_field": "ceqr",
-        "method": "normalized_ceqr_key_equality",
-        "normalization_version": "ceqr_key_trim_upper_v1",
-        "zap_source_field": "ceqr_number"
-      },
-      "materialized_at": "2026-08-31T13:51:17.569Z",
-      "milestones": {
-        "rows": [
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2026-02-18T00:00:00.000",
-            "milestone_name": "Lead Agency Letter",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-mvk2~hh6i-nfhm"
-          },
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2026-02-18T00:00:00.000",
-            "milestone_name": "Negative Declaration",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-xej4~y3aj~g4ee"
-          },
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2026-02-18T00:00:00.000",
-            "milestone_name": "EAS",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-iqfb_m64t~4eyw"
-          }
-        ],
-        "source_dataset_id": "8fj8-3sgg",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "milestone_name",
-          "milestone_date"
-        ],
-        "source_url": "https://data.cityofnewyork.us/d/8fj8-3sgg",
-        "source_vintage": "2026-08-28T14:05:23.000Z"
-      },
-      "project": {
-        "borough": "Citywide",
-        "lead_agency": "Department of City Planning",
-        "project_name": "Affordable Housing Fast Track Methodology Rulemaking",
-        "source_dataset_id": "gezn-7mgk",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "project_description",
-          "borough",
-          "lead_agency",
-          "url"
-        ],
-        "source_record_id": "row-gnny_jg6r-2ia2",
-        "source_url": "https://a002-ceqraccess.nyc.gov/ceqr/ProjectInformation/ProjectDetail/17938-26DCP099Y",
-        "source_vintage": "2026-08-28T14:05:04.000Z"
-      },
-      "schema": "cityscroll.ceqr_project_milestone_join.v1",
-      "zap_comparison": {
-        "environmental_milestone": null,
-        "environmental_milestone_date": null,
-        "incremental_milestone_rows": 3
-      },
-      "zap_project_id": "2026Y0360"
-    },
-    {
       "ceqr_key": "26DCP102M",
       "join": {
         "ceqr_source_field": "ceqr",
@@ -15802,16 +15643,16 @@
     "version": "ceqr_key_trim_upper_v1"
   },
   "reconciliation": {
-    "exact_match_rate": 0.942584,
-    "exact_project_matches": 197,
-    "incremental_project_rate": 0.923858,
-    "joined_milestone_rows": 502,
-    "joined_projects_with_milestones": 182,
+    "exact_match_rate": 0.942029,
+    "exact_project_matches": 195,
+    "incremental_project_rate": 0.923077,
+    "joined_milestone_rows": 497,
+    "joined_projects_with_milestones": 180,
     "joined_projects_without_milestones": 15,
     "milestone_exact_duplicate_rows": 5,
     "milestone_rows_missing_dates": 0,
-    "milestone_rows_with_dates": 502,
-    "projects_with_incremental_milestones": 182,
+    "milestone_rows_with_dates": 497,
+    "projects_with_incremental_milestones": 180,
     "revision_conflicted_keys": [],
     "rows_per_key": {
       "03DCP069M": 1,
@@ -16183,8 +16024,8 @@
       }
     ],
     "eas_action_rows_without_ceqr": 0,
-    "eligible_unique_keys": 209,
-    "rows_with_valid_ceqr_key": 213,
+    "eligible_unique_keys": 207,
+    "rows_with_valid_ceqr_key": 211,
     "specimens": {
       "eas_never_supplies_key": true,
       "no_retained_ceqr": null,
@@ -16198,6 +16039,6 @@
       }
     },
     "total_rows": 238,
-    "unique_ceqr_keys": 211
+    "unique_ceqr_keys": 209
   }
 }

@@ -46,14 +46,14 @@ function loadManifest() {
   );
 }
 
-test("frozen oracle derives 66/76 independently of the matter-document builder", () => {
+test("frozen oracle derives 64/79 independently of the matter-document builder", () => {
   const oracle = deriveFrozenCoverageOracle(SNAPSHOT);
-  assert.equal(oracle.materialized_matters, 66);
-  assert.equal(oracle.distinct_appearances, 76);
-  assert.equal(oracle.raw_appearances, 78);
-  assert.equal(oracle.two_event_histories, 10);
-  assert.equal(oracle.single_event_histories, 56);
-  assert.equal(oracle.later_event_watches, 10);
+  assert.equal(oracle.materialized_matters, 64);
+  assert.equal(oracle.distinct_appearances, 79);
+  assert.equal(oracle.raw_appearances, 81);
+  assert.equal(oracle.two_event_histories, 15);
+  assert.equal(oracle.single_event_histories, 49);
+  assert.equal(oracle.later_event_watches, 15);
   assert.deepEqual(oracle.two_event_matter_ids, FROZEN_LATER_EVENT_WATCHES.map((row) => row.matter_id).sort());
   const withheld = withholdLaterMatterPackets(SNAPSHOT, oracle);
   let laterStillPresent = 0;
@@ -66,17 +66,17 @@ test("frozen oracle derives 66/76 independently of the matter-document builder",
   assert.equal(laterStillPresent, 0);
 });
 
-test("A1-A3: withheld later packets yield 66/76/10/10/0 across day 181, day 365, restart, and partial failure", async () => {
+test("A1-A3: withheld later packets yield 64/79/15/15/0 across day 181, day 365, restart, and partial failure", async () => {
   const replay = await runFrozenCoverageReplay({ restart: true, partialFailure: true });
   try {
-    assert.equal(replay.counts.materialized_matters, 66);
-    assert.equal(replay.counts.distinct_appearances, 76);
-    assert.equal(replay.counts.later_event_discoveries, 10);
-    assert.equal(replay.counts.logical_later_updates, 10);
+    assert.equal(replay.counts.materialized_matters, 64);
+    assert.equal(replay.counts.distinct_appearances, 79);
+    assert.equal(replay.counts.later_event_discoveries, 15);
+    assert.equal(replay.counts.logical_later_updates, 15);
     assert.equal(replay.counts.replay_duplicates, 0);
     assert.equal(replay.beforeRelease.later, 0);
-    assert.equal(replay.discovered.length, 10);
-    assert.equal(new Set(replay.updateKeys).size, 10);
+    assert.equal(replay.discovered.length, 15);
+    assert.equal(new Set(replay.updateKeys).size, 15);
     assert.equal(replay.counts.recovered_updates_181, 0);
     assert.equal(replay.counts.recovered_updates_365, 0);
     assert.equal(replay.acceptance.obligations.A1.status, "pass");
@@ -155,8 +155,8 @@ test("A6: acceptance-keyed evidence index covers every obligation without named 
   assert.ok(manifest.files.some((file) => file.viewport[0] === 390));
   assert.ok(manifest.files.some((file) => file.viewport[0] === 1440));
   assert.ok(manifest.revision);
-  assert.equal(manifest.replay_counts.materialized_matters, 66);
-  assert.equal(manifest.replay_counts.distinct_appearances, 76);
+  assert.equal(manifest.replay_counts.materialized_matters, 64);
+  assert.equal(manifest.replay_counts.distinct_appearances, 79);
 });
 
 test("A7: recovery playbook documents token, budget, cursor, publication, delivery, and rollback owners", () => {
@@ -206,7 +206,7 @@ test("bounded canary uses population floors, not fixed live record ids", () => {
   const canary = evaluateDeployedCoverageCanary({
     deployment_kind: "local-rehearsal",
     active_watches: 10,
-    retained_counts: { matters: 66 },
+    retained_counts: { matters: 64 },
     pending_outbox_items: 0,
     failed_outbox_items: 0,
     live_required_record_ids: [],

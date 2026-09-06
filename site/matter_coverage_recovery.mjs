@@ -27,6 +27,18 @@ export const ALERT_CLASS = Object.freeze({
   MIXED: "mixed",
 });
 
+/**
+ * Matters observed being deferred at one event and resolved at a later one.
+ *
+ * A row is admitted only when the snapshot shows both halves as outcomes that
+ * have already happened: an early event whose actions record the matter being
+ * laid over, and a strictly later event whose actions record it being approved.
+ * A matter whose later event is still ahead of the snapshot's own vintage
+ * carries a placeholder action and no votes; it is the case a watch exists to
+ * notify about, so it is not evidence of follow-through and is left out. The
+ * table is a frozen time-ordered oracle, so every row states the events and the
+ * publisher's own action wording it was reviewed against.
+ */
 export const FROZEN_LATER_EVENT_WATCHES = Object.freeze([
   { matter_id: "79163", early_event: "22567", early_notice: "20260625040", later_event: "22526", later_notice: "20260706036", early_action: "P-C Item Laid Over by Comm", later_action: "P-C Item Approved by Subcommittee with Companion Resolution" },
   { matter_id: "79164", early_event: "22567", early_notice: "20260625040", later_event: "22526", later_notice: "20260706036", early_action: "P-C Item Laid Over by Comm", later_action: "P-C Item Approved by Subcommittee with Companion Resolution" },
@@ -38,6 +50,15 @@ export const FROZEN_LATER_EVENT_WATCHES = Object.freeze([
   { matter_id: "78682", early_event: "22342", early_notice: "20260408025", later_event: "22375", later_notice: "20260428021", early_action: "Laid Over by Subcommittee", later_action: "Approved by Subcommittee" },
   { matter_id: "78409", early_event: "22300", early_notice: "20260304007", later_event: "22365", later_notice: "20260331028", early_action: "Laid Over by Subcommittee", later_action: "Approved by Subcommittee" },
   { matter_id: "78411", early_event: "22300", early_notice: "20260304007", later_event: "22365", later_notice: "20260331028", early_action: "Laid Over by Subcommittee", later_action: "Approved by Subcommittee" },
+  // Reviewed against the criterion above from the 2026-09-04T13:09:00.447Z
+  // snapshot. Each was laid over by the subcommittee at event 22502 on
+  // 2026-07-21 and resolved at event 22528 on 2026-08-12, so both events are
+  // observed outcomes, not scheduled ones.
+  { matter_id: "79201", early_event: "22502", early_notice: "20260707021", later_event: "22528", later_notice: "20260729004", early_action: "Laid Over by Subcommittee", later_action: "Approved by Subcommittee with Modifications and Referred to CPC" },  // LU 0115-2026, 200 Kent Avenue Rezoning (C 260149 ZMK)
+  { matter_id: "79202", early_event: "22502", early_notice: "20260707021", later_event: "22528", later_notice: "20260729004", early_action: "Laid Over by Subcommittee", later_action: "Approved by Subcommittee with Modifications and Referred to CPC" },  // LU 0116-2026, 200 Kent Avenue Rezoning (N 260150 ZRK)
+  { matter_id: "79203", early_event: "22502", early_notice: "20260707021", later_event: "22528", later_notice: "20260729004", early_action: "Laid Over by Subcommittee", later_action: "Approved by Subcommittee" },  // LU 0117-2026, Flatiron NoMad Major Concessions (C 260123 MCM)
+  { matter_id: "79204", early_event: "22502", early_notice: "20260707021", later_event: "22528", later_notice: "20260729004", early_action: "Laid Over by Subcommittee", later_action: "Approved by Subcommittee with Modifications and Referred to CPC" },  // LU 0118-2026, 47-03 108th Street Rezoning (C 260147 ZMQ)
+  { matter_id: "79205", early_event: "22502", early_notice: "20260707021", later_event: "22528", later_notice: "20260729004", early_action: "Laid Over by Subcommittee", later_action: "Approved by Subcommittee with Modifications and Referred to CPC" },  // LU 0119-2026, 47-03 108th Street Rezoning (N 260148 ZRQ)
 ]);
 
 export const RECOVERY_PLAYBOOK = Object.freeze({
@@ -83,12 +104,47 @@ function laterWatchKey(row) {
   return `${row.matter_id}:${row.later_event}`;
 }
 
+/**
+ * True when the event carries a date the snapshot could already have observed.
+ * A meeting scheduled after the snapshot's own vintage has no outcome yet — the
+ * publisher records a placeholder action and no votes — so counting it as an
+ * appearance would make this frozen oracle depend on the publisher's future
+ * calendar. An event with no date is kept, because absence is not evidence that
+ * it has not happened.
+ */
+export function isObservedSnapshotEvent(record, vintage) {
+  const date = record?.event?.date;
+  if (!date || !vintage) return true;
+  return String(date) <= String(vintage).slice(0, 10);
+}
+
+/**
+ * The snapshot restricted to the events it could already have observed, with
+ * its own record counts recomputed so it stays internally consistent. A copy
+ * that drops notices but keeps the original present_count reads as a truncated
+ * acquisition, which the retention contract correctly refuses.
+ */
+export function observedSnapshot(snapshot = {}) {
+  const entries = Object.entries(snapshot.by_notice || {})
+    .filter(([, record]) => isObservedSnapshotEvent(record, snapshot.generated_at));
+  const present = entries.filter(([, record]) => record && record.snapshot_state !== "absent").length;
+  return {
+    ...snapshot,
+    by_notice: Object.fromEntries(entries),
+    record_count: entries.length,
+    present_count: present,
+    absent_count: entries.length - present,
+  };
+}
+
 export function deriveFrozenCoverageOracle(snapshot = {}) {
   const laterByMatter = new Map(FROZEN_LATER_EVENT_WATCHES.map((row) => [row.matter_id, row]));
   const laterNotices = new Set(FROZEN_LATER_EVENT_WATCHES.map((row) => row.later_notice));
+  const vintage = snapshot.generated_at;
   const seen = new Map();
   let rawAppearances = 0;
   for (const [noticeId, record] of Object.entries(snapshot.by_notice || {})) {
+    if (!isObservedSnapshotEvent(record, vintage)) continue;
     for (const matter of record?.matters || []) {
       const matterId = String(matter.matter_id);
       const eventId = String(record?.event?.event_id || "");

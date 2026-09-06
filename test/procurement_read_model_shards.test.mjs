@@ -12,10 +12,11 @@ import {
   combineSharedProcurementReadModel,
   SHARED_PROCUREMENT_READ_MODEL_SHARD_SCHEMA,
 } from "../site/procurement_read_model_shards.mjs";
-import { MAX_PAGES_FILE_BYTES } from "../tools/check_pages_bundle_sizes.mjs";
+import { MAX_PAGES_FILE_BYTES, publishedSourceFiles } from "../tools/check_pages_bundle_sizes.mjs";
 import { readCommunityBoardMeetingIndex } from "../tools/lib/community_board_meeting_index_io.mjs";
 
 const guard = new URL("../tools/check_pages_bundle_sizes.mjs", import.meta.url);
+const ROOT = new URL("../", import.meta.url).pathname;
 
 function record(id, snapshot) {
   return {
@@ -51,13 +52,52 @@ test("shards retain the read-model contract and round-trip rows and observations
   }
 });
 
-test("Pages bundle guard passes the committed site and fails a planted oversized file", () => {
+test("the guard passes the committed served payload", () => {
   const workerWorkflow = readFileSync(new URL("../.github/workflows/deploy-worker.yml", import.meta.url), "utf8");
   assert.match(workerWorkflow, /tools\/worker_deploy_guard\.mjs/);
   assert.match(workerWorkflow, /64 MiB uncompressed budget/);
-  const committed = spawnSync(process.execPath, [guard.pathname, "--site-dir", "site"], { encoding: "utf8" });
+  // The guard bounds what the deploy serves. Against a built payload every file
+  // in it is served, so --site-dir measures all of them; against the source tree
+  // it has to skip what site/_config.yml keeps out of the payload, or it reports
+  // a build input as an oversized served file. The limit is the same either way.
+  const committed = spawnSync(process.execPath, [guard.pathname, "--source-dir", "."], { encoding: "utf8" });
   assert.equal(committed.status, 0, committed.stderr);
+});
 
+test("the served payload set skips what the payload manifest excludes", () => {
+  const served = publishedSourceFiles(ROOT).map((file) => file.relativePath);
+  // A tracked build input the payload excludes is not a served file, whatever
+  // its size: no browser route, Pages handler or Worker endpoint fetches it.
+  assert.equal(
+    served.includes("data/procurement_spine_sources.json"),
+    false,
+    "the acquisition spine is excluded from the payload, so the guard must not measure it",
+  );
+  assert.ok(served.length > 0, "the served payload set is not empty");
+});
+
+test("a payload-included file over the limit still fails the guard", () => {
+  const root = mkdtempSync(join(tmpdir(), "cityscroll-pages-served-"));
+  try {
+    mkdirSync(join(root, "site", "data"), { recursive: true });
+    // A payload that excludes one oversized file and includes another. Only the
+    // included one is a served file, so only it may fail the guard.
+    writeFileSync(join(root, "site", "_config.yml"), "exclude:\n  - data/excluded.json\n");
+    writeFileSync(join(root, "site", "index.html"), "<!doctype html>\n");
+    writeFileSync(join(root, "site", "data", "excluded.json"), Buffer.alloc(MAX_PAGES_FILE_BYTES + 1));
+    writeFileSync(join(root, "site", "data", "served.json"), Buffer.alloc(MAX_PAGES_FILE_BYTES + 1));
+
+    const result = spawnSync(process.execPath, [guard.pathname, "--source-dir", root], { encoding: "utf8" });
+    assert.notEqual(result.status, 0, "an oversized served file fails");
+    assert.match(result.stderr, /served\.json/);
+    assert.doesNotMatch(result.stderr, /excluded\.json/);
+    assert.match(result.stderr, /24 MiB guard/);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("Pages bundle guard fails a planted oversized file in a built payload", () => {
   const root = mkdtempSync(join(tmpdir(), "cityscroll-pages-size-"));
   try {
     mkdirSync(join(root, "data"));

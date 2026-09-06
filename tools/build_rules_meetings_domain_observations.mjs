@@ -321,7 +321,7 @@ function cleanRule(row) {
     hearingArea: hearingArea.scope === "local" ? hearingArea : null,
   });
   const out = {
-    ...normalizeCityRecordMeeting(fullRow),
+    ...withoutSnapshotBodyFields(normalizeCityRecordMeeting(fullRow)),
     request_id: fullRow.request_id,
     agency_name: fullRow.agency_name,
     short_title: shortTitle,
@@ -339,6 +339,24 @@ function cleanRule(row) {
     // Alias for map aggregation (same shape as meetings affected_area).
     out.affected_area = place;
   }
+  return out;
+}
+
+// Publisher free-text the committed domain snapshots must not carry. The shared
+// meeting normalizer retains these for the canonical read model, which is a
+// different consumer; these two snapshots hold bounded stamps derived from the
+// body, so the body itself is dropped on the way out. They were absent from the
+// published rows only while the upstream feed left them empty.
+const SNAPSHOT_BODY_FIELDS = Object.freeze([
+  "additional_description_1", "additional_description_2", "additional_description_3",
+  "other_info_1", "other_info_2", "other_info_3",
+  "printout_1", "printout_2", "printout_3",
+  "email", "phone", "testimony",
+]);
+
+function withoutSnapshotBodyFields(row) {
+  const out = { ...row };
+  for (const field of SNAPSHOT_BODY_FIELDS) delete out[field];
   return out;
 }
 
@@ -403,15 +421,12 @@ function cleanHearing(row) {
     state: fullRow.state,
     zip_code: fullRow.zip_code,
     building_name: fullRow.building_name,
-    additional_description_1: fullRow.additional_description_1,
-    additional_description_2: fullRow.additional_description_2,
-    additional_description_3: fullRow.additional_description_3,
-    other_info_1: fullRow.other_info_1,
-    other_info_2: fullRow.other_info_2,
-    other_info_3: fullRow.other_info_3,
-    printout_1: fullRow.printout_1,
-    printout_2: fullRow.printout_2,
-    printout_3: fullRow.printout_3,
+    // The publisher's free-text body fields (additional_description_*,
+    // other_info_*, printout_*) are read from fullRow below to derive the ULURP
+    // and ZAP stamps, and are deliberately not carried here: the committed
+    // snapshot holds the stamps, never the body they were extracted from. They
+    // used to be absent from the published rows only because the upstream feed
+    // left them empty, which hid this from the contract test.
     source_links: fullRow.source_links,
     document_links: fullRow.document_links,
     source_system: "city_record",
