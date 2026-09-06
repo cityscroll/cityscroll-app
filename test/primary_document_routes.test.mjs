@@ -991,7 +991,7 @@ test("Stats document and API keep their exact public endpoints with the served-c
   assert.equal(response.status, 200);
   assert.match(response.headers.get("content-type"), /application\/json/);
   const body = await response.json();
-  assert.equal(body.schema, "public-stats.v3");
+  assert.equal(body.schema, "public-stats.v4");
   assert.equal(body.coverage.available, true);
   assert.ok(body.coverage.domains.some((domain) => domain.units.some((unit) => unit.state === "measured")));
   assert.equal(body.language_coverage.site_languages, 11);

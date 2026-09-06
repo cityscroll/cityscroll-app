@@ -268,11 +268,31 @@ test("the Stats page reads the materialised snapshot and reaches no publisher", 
   const page = readFileSync(join(ROOT, "site/stats.html"), "utf8");
   assert.match(page, /fetch\("data\/served_coverage_snapshot\.json"/);
   assert.match(page, new RegExp(`data-coverage-schema="${SNAPSHOT_SCHEMA}"`));
-  for (const gone of ["s-notices", "primary_system_count", "city_record", "data.cityofnewyork.us", "api.cityscroll.org/stats\", { signal"]) {
+  for (const gone of ["s-notices", "primary_system_count", "city_record", "data.cityofnewyork.us"]) {
     assert.equal(page.includes(gone), false, `the page must no longer carry ${gone}`);
   }
   const policy = readJson("architecture/resident-read-policy.json");
   assert.ok(policy.browser_entrypoints.includes("site/stats.html"));
+  // The search-usage summary is the one thing the page asks the API for. That route is a
+  // declared first-party snapshot read — it projects stored artifacts and never a
+  // publisher — so the page still reaches no publisher while loading.
+  assert.match(page, /workerFetch\("\/stats"/);
+  assert.ok(policy.first_party_routes.snapshot_only.includes("/stats"));
+  for (const classification of ["explicit_transaction", "temporary_debt"]) {
+    assert.equal(policy.first_party_routes[classification].includes("/stats"), false,
+      `/stats must not be classified ${classification}`);
+  }
+});
+
+test("the Stats page renders the search-usage summary from the published contract alone", () => {
+  const page = readFileSync(join(ROOT, "site/stats.html"), "utf8");
+  assert.match(page, /data-search-usage-schema="cityscroll\.public_search_usage\.v1"/);
+  assert.match(page, /<div id="search-use"><\/div>/);
+  // Counts are read out of the response, never derived on the page: nothing here adds,
+  // subtracts, or fills a missing period with a zero.
+  assert.equal(/search-use[\s\S]{0,4000}?(\+=|reduce\(|\|\| 0)/.test(page), false,
+    "the page must not compute a usage figure of its own");
+  assert.match(page, /entry\.state !== "measured"/, "an unmeasured period renders as a state, not a number");
 });
 
 test("every label the page renders resolves through the translation catalog", async () => {
@@ -297,6 +317,23 @@ test("every label the page renders resolves through the translation catalog", as
     "stats_sources_label",
     "stats_record_sets_label",
     "stats_evidence_label",
+    // The search-usage summary's labels come from the same catalog, including the two
+    // metric label/definition keys the published contract names for the page to resolve.
+    "stats_h_search_use",
+    "stats_search_use_intro",
+    "stats_search_use_caption",
+    "stats_search_use_measure",
+    "stats_search_use_run_label",
+    "stats_search_use_run_desc",
+    "stats_search_use_returning_label",
+    "stats_search_use_returning_desc",
+    "stats_search_use_period_days",
+    "stats_search_use_period_since",
+    "stats_search_use_span",
+    "stats_search_use_period_unavailable",
+    "stats_search_use_unavailable",
+    "stats_search_use_checked",
+    "stats_search_use_behind",
   ]);
   for (const key of keys) {
     assert.ok(STRINGS.en[key], `en is missing ${key}`);

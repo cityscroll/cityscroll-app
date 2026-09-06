@@ -172,7 +172,7 @@ export const POST_FLIP_TARGETS = Object.freeze([
     id: "post-flip-api-stats",
     url: "https://api.cityscroll.org/stats",
     // Stable versioned public coverage contract; product-use fields are private.
-    marker: /"schema"\s*:\s*"public-stats\.v3"/,
+    marker: /"schema"\s*:\s*"public-stats\.v4"/,
   },
   {
     id: "post-flip-pages-dev",

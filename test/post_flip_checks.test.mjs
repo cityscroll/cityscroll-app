@@ -134,6 +134,42 @@ test("COVERAGE SANITY requires measured, dated coverage and rejects usage-class 
   );
 });
 
+test("COVERAGE SANITY rejects a deployed search-usage summary carrying anything identifying", () => {
+  const coverage = {
+    coverage: {
+      metrics: [{ metric_id: "served_sources_represented", state: "measured", value: 18 }],
+      domains: [{
+        domain_id: "contracts",
+        units: [{ unit_id: "registered-contracts", state: "measured", value: 26270, evidence_vintage: "2026-08-18T00:00:00.000Z" }],
+      }],
+    },
+    language_coverage: { site_languages: 11 },
+    search_usage: {
+      schema: "cityscroll.public_search_usage.v1",
+      available: true,
+      periods: [{
+        period_id: "last7d",
+        requested_days: 7,
+        state: "measured",
+        metrics: [{ metric_id: "searches_run", state: "measured", value: 6 }],
+      }],
+    },
+  };
+  assert.equal(classifyCoverageSanity(coverage).ok, true, "counts alone are publishable");
+  // Each of these is a distinct way the boundary could fail in production, and the live
+  // matrix has to catch it on the deployed body rather than trust the build that made it.
+  for (const [field, leak] of [
+    ["query", { query: "rats" }],
+    ["receipt_id", { receipt_id: "rcpt_abc" }],
+    ["visitor", { visitor: "v1_abc" }],
+    ["recognized_accounts", { recognized_accounts: 1 }],
+    ["unique_visitors", { unique_visitors: 4 }],
+  ]) {
+    const leaked = { ...coverage, search_usage: { ...coverage.search_usage, ...leak } };
+    assert.match(classifyCoverageSanity(leaked).reason, new RegExp(`search usage exposed private fields: .*${field}`));
+  }
+});
+
 test("the post-flip stats schema matches the schema the Worker publishes", async () => {
   const worker = await import("../worker/src/stats.mjs");
   assert.equal(PUBLIC_STATS_SCHEMA, worker.PUBLIC_STATS_SCHEMA);

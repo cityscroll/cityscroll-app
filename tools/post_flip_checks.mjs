@@ -20,7 +20,7 @@ export const API_HEALTH_MARKER = /cityscroll-worker ok/;
  * module stays free of the Worker's runtime imports; test/post_flip_checks.test.mjs asserts
  * the two stay equal.
  */
-export const PUBLIC_STATS_SCHEMA = "public-stats.v3";
+export const PUBLIC_STATS_SCHEMA = "public-stats.v4";
 
 /**
  * Catalog of named checks. `incident` is the field case each check is designed to
@@ -169,6 +169,14 @@ export function classifyCoverageSanity(stats) {
   const nonPublicFields = ["subscriptions", "digests", "digest_clicks", "feeds", "batch", "shared_investigations", "nl_search", "history", "usage"];
   const leaked = nonPublicFields.filter((field) => Object.hasOwn(stats, field));
   if (leaked.length) return { ok: false, reason: `usage-class fields leaked: ${leaked.join(", ")}` };
+  // The published search-usage summary is counts and period bounds. A deployed response
+  // carrying anything that could identify a reader, a query or a receipt is an incident,
+  // so the live matrix looks for those names rather than trusting the build that made it.
+  const usageText = JSON.stringify(stats.search_usage ?? null);
+  const forbidden = ["query", "normalized", "results", "receipt_id", "execution_id", "visitor",
+    "subscriber", "account_label", "recognized_accounts", "unique_visitors", "/admin"];
+  const exposed = forbidden.filter((needle) => usageText.includes(needle));
+  if (exposed.length) return { ok: false, reason: `search usage exposed private fields: ${exposed.join(", ")}` };
   return { ok: true };
 }
 

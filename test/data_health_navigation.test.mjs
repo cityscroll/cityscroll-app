@@ -145,7 +145,7 @@ test("public /stats JSON contract stays served coverage only", async () => {
     { now: "2026-08-05T18:00:00Z" },
   );
   const body = await response.json();
-  assert.equal(body.schema, "public-stats.v3");
+  assert.equal(body.schema, "public-stats.v4");
   assert.equal(body.coverage.available, true);
   assert.ok(body.coverage.domains.length > 0);
   for (const privateField of ["subscriptions", "digests", "nl_search", "history", "usage", "source_health"]) {

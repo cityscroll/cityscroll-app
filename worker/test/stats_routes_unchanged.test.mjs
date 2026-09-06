@@ -86,11 +86,15 @@ test("RUM-08 leaves public /stats shape-compatible and performance-free", async 
   });
   const text = await response.text();
   const body = JSON.parse(text);
-  assert.deepEqual(Object.keys(body), ["schema", "generated_at", "scope", "coverage", "language_coverage"]);
+  assert.deepEqual(Object.keys(body),
+    ["schema", "generated_at", "scope", "coverage", "language_coverage", "search_usage"]);
   assert.deepEqual(Object.keys(body.coverage), ["available", "measurement", "metrics", "evidence_vintage", "domains"]);
   // The route publishes the projection and nothing else: no field is added on the way out.
+  // With no receipt snapshot stored, the usage summary is the honest empty answer, which is
+  // exactly what buildPublicStatsBody produces on its own.
   assert.equal(text, JSON.stringify(buildPublicStatsBody(undefined, new Date(NOW)), null, 2));
   const snapshot = JSON.parse(readFileSync(new URL("../../site/data/served_coverage_snapshot.json", import.meta.url), "utf8"));
   assert.deepEqual(body.coverage.domains, snapshot.domains);
   assert.doesNotMatch(text, /performance|percentile|p50|p75|p95|sample_floor/);
+  assert.equal(body.search_usage.available, false, "no snapshot is not a measured zero");
 });

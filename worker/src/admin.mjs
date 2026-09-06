@@ -1578,6 +1578,12 @@ export function renderCompletedSearchesPanel(usage = null) {
     ? `<li><strong>${escapeHtml(cut.label || id)}</strong>: ${deskNumber(cut.last7d)} · 7 days, ${deskNumber(cut.last30d)} · 30 days.</li>`
     : `<li><strong>${escapeHtml(cut?.label || id)}</strong>: not measured (${escapeHtml(cut?.unavailable_reason || "unavailable")}). ${escapeHtml(cut?.requires || "Requires a landed signal.")}</li>`).join("");
 
+  // The same measurement start the public summary is projected against, so the desk shows
+  // the limitation the public page is describing rather than a wider-looking number.
+  const clamped = [week, month].filter((cut) => cut && cut.measurement_complete === false);
+  const measured = clamped.length
+    ? ` Measurement is established from ${escapeHtml(String(clamped[0].covered_from))}, so ${clamped.length === 1 ? "one window covers" : "these windows cover"} a shorter span than the label.`
+    : "";
   const truncated = usage.scan?.scan_complete === false
     ? ` Read bounded at ${deskNumber(usage.scan?.key_ceiling)} receipts, so these are a floor, not a total.`
     : "";
@@ -1585,15 +1591,16 @@ export function renderCompletedSearchesPanel(usage = null) {
     ? ` ${deskNumber(usage.unclassified_receipts)} retained receipt${usage.unclassified_receipts === 1 ? " could" : "s could"} not be classified and ${usage.unclassified_receipts === 1 ? "is" : "are"} counted nowhere.`
     : "";
 
-  return `${open}<div class="panel-heading"><div>${heading}<p class="panel-note">One count per accepted production execution. A reload counts again; a duplicate intake of the same execution does not; developer, test, and rejected receipts never enter.${truncated}${unclassified}</p></div></div>
+  return `${open}<div class="panel-heading"><div>${heading}<p class="panel-note">One count per accepted production execution. A reload counts again; a duplicate intake of the same execution does not; developer, test, and rejected receipts never enter.${measured}${truncated}${unclassified}</p></div></div>
   <table><thead><tr><th>Measure</th><th>7 days</th><th>30 days</th></tr></thead><tbody>
   ${row("Completed searches", (cut) => cut.completed, true)}
+  ${row("Searches returning records", (cut) => cut.returned_records, true)}
   ${group("Terminal state")}${outcomeRows}
   ${group("Recognition")}${row("Recognized", (cut) => cut.recognition?.recognized)}${row("Unrecognized", (cut) => cut.recognition?.unrecognized)}
   ${group("Distinct identities")}${row("Unique browsers", (cut) => cut.unique_visitors)}${row("Recognized accounts", (cut) => cut.recognized_accounts)}
   ${group("Result-family appearances")}${familyRows}
   </tbody></table>
-  <p class="panel-note">Terminal states sum to completed searches; so do recognized and unrecognized. ${escapeHtml(usage.family_appearance_semantics || "")} ${escapeHtml(usage.identity_note || "")}</p>
+  <p class="panel-note">Terminal states sum to completed searches; so do recognized and unrecognized. ${escapeHtml(usage.returned_records_semantics || "")} ${escapeHtml(usage.family_appearance_semantics || "")} ${escapeHtml(usage.identity_note || "")}</p>
   <ul class="optional-cuts">${optional}</ul></section>`;
 }
 

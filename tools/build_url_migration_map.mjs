@@ -39,7 +39,7 @@ const PATTERN_ROWS = [
   ["Near-you view", "/#map?{scope}", "/near-you/?{scope}", "Forward supported place and shared-scope parameters.", "Legacy root location.replace().", "/#map?lens=property"],
   ["Following view", "/#alerts?{scope}", "/following/?{scope}", "Forward supported watch-scope and view parameters.", "Legacy root location.replace().", "/#alerts"],
   ["public Stats document", "/stats.html", "/stats.html", "URL unchanged; content is intentionally limited to served-product coverage facts.", "Explicitly excluded from route rewrites and the Pages edge route.", "/stats.html"],
-  ["public Stats API", "https://api.cityscroll.org/stats", "https://api.cityscroll.org/stats", "URL unchanged; public-stats.v3 publishes served-product coverage and keeps product-use and delivery fields on authenticated /admin/stats.", "Explicitly excluded from the site route migration.", "https://api.cityscroll.org/stats"],
+  ["public Stats API", "https://api.cityscroll.org/stats", "https://api.cityscroll.org/stats", "URL unchanged; public-stats.v4 publishes served-product coverage plus verified search counts for named periods, and keeps search queries, readers and delivery fields on authenticated /admin/stats.", "Explicitly excluded from the site route migration.", "https://api.cityscroll.org/stats"],
 ].map(([link_class, old_pattern, new_pattern, parameter_rule, forwarding_behavior, example]) => {
   const migrated = migrateLegacyUrl(example);
   const exampleTarget = link_class.startsWith("public Stats") ? example : migrated.target;

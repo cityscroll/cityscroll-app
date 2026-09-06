@@ -77,6 +77,22 @@ export const SEARCH_USAGE_IDENTITY_NOTE =
   "Unique visitors counts distinct browsers, recognized accounts counts distinct recognized subscribers. They overlap, they are not people, and they are never summed.";
 
 /**
+ * "Returned records" is positive rendered-result evidence, not satisfaction.
+ *
+ * The receipt contract already reconciles `rendered_count` with the stored result rows
+ * and each row's family, so a receipt renders at least one row exactly when at least one
+ * family carries a positive count. The stored dimensions keep that family list, so this
+ * measure is read off the same key metadata as the rest — no extra field, no second
+ * source of truth, and no read of a receipt body.
+ *
+ * A partial execution that rendered rows counts here: the reader saw records even though
+ * a lane did not answer. An empty or unavailable execution never does. Nothing here
+ * claims the reader found what they were looking for.
+ */
+export const SEARCH_USAGE_RETURNED_RECORDS_SEMANTICS =
+  "An execution that rendered at least one result row, including a partial result. Never a claim that the reader was satisfied.";
+
+/**
  * Cuts this contract has a shape for but no landed signal behind. Each names the
  * contract that would make it truthful. Until then it reports unavailable — never a
  * measured zero, which an operator would read as "nobody did this".
@@ -112,6 +128,16 @@ export function searchUsageWindowStartMs(nowMs, days) {
   return dayStart - (days - 1) * DAY_MS;
 }
 
+/**
+ * Normalize a declared measurement start. Anything unusable becomes null — "we do not
+ * know when counting began" — which is deliberately distinct from a start of zero.
+ */
+export function measurementStartMs(measuredSince) {
+  if (measuredSince == null) return null;
+  const ms = measuredSince instanceof Date ? measuredSince.getTime() : Date.parse(String(measuredSince));
+  return Number.isSafeInteger(ms) ? ms : null;
+}
+
 /** Normalize one stored dimension set; anything unusable becomes null, never a guess. */
 export function normalizeSearchUsageDimensions(raw, receivedAtMs) {
   if (!raw || typeof raw !== "object") return null;
@@ -130,15 +156,26 @@ export function normalizeSearchUsageDimensions(raw, receivedAtMs) {
     visitor: typeof raw.visitor === "string" && raw.visitor ? raw.visitor : null,
     subscriber: typeof raw.subscriber === "string" && raw.subscriber ? raw.subscriber : null,
     families,
+    // Positive rendered evidence. The receipt contract makes a non-empty family list and
+    // a positive rendered_count the same fact, so this is read, never guessed.
+    returnedRecords: families.length > 0,
   };
 }
 
-function emptyCut(days, nowMs) {
+function emptyCut(days, nowMs, coveredFromMs, measurementComplete) {
   return {
     window_days: days,
     starts_at: new Date(searchUsageWindowStartMs(nowMs, days)).toISOString(),
     ends_at: new Date(nowMs).toISOString(),
+    // Where counting actually began. It equals starts_at unless measurement began later,
+    // in which case this cut describes the shorter span measurement can defend.
+    covered_from: new Date(coveredFromMs).toISOString(),
+    // true: measurement covered the whole window. false: it began inside it.
+    // null: no measurement start is established, so completeness is unknown — which is
+    // not the same claim as "incomplete" and must never be read as one.
+    measurement_complete: measurementComplete,
     completed: 0,
+    returned_records: 0,
     outcomes: Object.fromEntries(SEARCH_ACTIVITY_OUTCOME_STATES.map((state) => [state, 0])),
     recognition: { recognized: 0, unrecognized: 0 },
     unique_visitors: 0,
@@ -183,8 +220,10 @@ export function foldSearchUsage(observations = [], {
   now = new Date(),
   scan = {},
   signals = {},
+  measuredSince = null,
 } = {}) {
   const nowMs = new Date(now).getTime();
+  const measuredSinceMs = measurementStartMs(measuredSince);
   const byExecution = new Map();
   let duplicateIntakes = 0;
   let futureDated = 0;
@@ -204,14 +243,20 @@ export function foldSearchUsage(observations = [], {
 
   const windows = {};
   for (const days of SEARCH_USAGE_WINDOW_DAYS) {
-    const cut = emptyCut(days, nowMs);
-    const startMs = searchUsageWindowStartMs(nowMs, days);
+    const windowStartMs = searchUsageWindowStartMs(nowMs, days);
+    // Counting never begins before measurement did. A window that opens earlier than the
+    // measurement start is reported over the span measurement can actually defend, and
+    // says so, rather than presenting an unmeasured stretch as a quiet zero.
+    const startMs = measuredSinceMs === null ? windowStartMs : Math.max(windowStartMs, measuredSinceMs);
+    const cut = emptyCut(days, nowMs, startMs,
+      measuredSinceMs === null ? null : measuredSinceMs <= windowStartMs);
     const visitors = new Set();
     const accounts = new Set();
     for (const execution of byExecution.values()) {
       if (execution.receivedAtMs > nowMs) continue;
       if (execution.receivedAtMs < startMs) continue;
       cut.completed += 1;
+      if (execution.returnedRecords) cut.returned_records += 1;
       cut.outcomes[execution.outcome] += 1;
       if (execution.recognized) cut.recognition.recognized += 1;
       else cut.recognition.unrecognized += 1;
@@ -237,6 +282,8 @@ export function foldSearchUsage(observations = [], {
     retention_days: SEARCH_ACTIVITY_RETENTION_DAYS,
     identity_note: SEARCH_USAGE_IDENTITY_NOTE,
     family_appearance_semantics: SEARCH_USAGE_FAMILY_APPEARANCE_SEMANTICS,
+    returned_records_semantics: SEARCH_USAGE_RETURNED_RECORDS_SEMANTICS,
+    measured_since: measuredSinceMs === null ? null : new Date(measuredSinceMs).toISOString(),
     executions_observed: byExecution.size,
     duplicate_intakes: duplicateIntakes,
     future_dated_executions: futureDated,
@@ -264,6 +311,7 @@ export function unavailableSearchUsage(reason, now = new Date()) {
     retention_days: SEARCH_ACTIVITY_RETENTION_DAYS,
     identity_note: SEARCH_USAGE_IDENTITY_NOTE,
     family_appearance_semantics: SEARCH_USAGE_FAMILY_APPEARANCE_SEMANTICS,
+    returned_records_semantics: SEARCH_USAGE_RETURNED_RECORDS_SEMANTICS,
     windows: {},
     optional_cuts: optionalSearchUsageCuts(),
   };
@@ -276,7 +324,7 @@ export function unavailableSearchUsage(reason, now = new Date()) {
  * failing the whole private stats response, and never returns a zero that would read
  * as "no one searched".
  */
-export async function readSearchUsage(env, { now = new Date(), signals = {} } = {}) {
+export async function readSearchUsage(env, { now = new Date(), signals = {}, measuredSince = null } = {}) {
   if (!env?.ALERT_STATE?.list) return unavailableSearchUsage("no-store", now);
 
   const nowMs = new Date(now).getTime();
@@ -356,6 +404,7 @@ export async function readSearchUsage(env, { now = new Date(), signals = {} } = 
   return foldSearchUsage(observations, {
     now,
     signals,
+    measuredSince,
     scan: { keysSeen, hydrated, unclassified, scanComplete },
   });
 }

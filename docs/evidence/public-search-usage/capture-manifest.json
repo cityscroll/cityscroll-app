@@ -1,0 +1,101 @@
+{
+  "schema": "cityscroll.render_capture_manifest.v1",
+  "surface": "public Stats page — search use",
+  "route": "/stats.html",
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "condition": "Served from the repository's own built site directory. Every off-origin request is denied except where a capture states that the public statistics response was supplied, so nothing a publisher holds can reach the render.",
+  "image_binaries_committed": false,
+  "captures": [
+    {
+      "id": "before",
+      "repository_revision": "553ffc79487e7b5904bba25c65960f23999bdca6",
+      "source_blob": {
+        "site/stats.html": "717870187875cc1f1ebde3792d789b3c6ffbd604"
+      },
+      "data_vintage": null,
+      "data_vintage_note": "No search-usage data existed on this surface at this revision.",
+      "assertion": "The page carried no search-use section and made no statistics request: the string \"search-use\" does not occur in site/stats.html at this revision.",
+      "observed": {
+        "search_use_section": null,
+        "search_use_occurrences_in_source": 0
+      },
+      "render_sha256": null,
+      "render_scope": "not rendered — the section did not exist, so there is no render to hash"
+    },
+    {
+      "id": "after-unreachable",
+      "repository_revision": "working tree on card/c3eb8caa83b59",
+      "source_blob": {
+        "site/stats.html": "91b47f8c3d2b8b81216cd0f57508f5ba26d01889"
+      },
+      "data_vintage": null,
+      "data_vintage_note": "No summary was reachable, so no measurement date is claimed.",
+      "assertion": "With every off-origin request denied, the search-use section states that counts are not published, shows no figure and no zero, leaves the served-coverage section above it unaffected, and does not scroll the document sideways at 390 CSS pixels.",
+      "observed": {
+        "section_text": "Search counts are not published right now.",
+        "render_sha256": "056aff46ecfe8c3c62cc518d438aea9f069884b4586d6fbe69a7b61947036726",
+        "document_scroll_width": 390,
+        "document_client_width": 390,
+        "off_origin_requests_attempted": [
+          "https://api.cityscroll.org/events",
+          "https://api.cityscroll.org/stats",
+          "https://cityscroll-worker.crol-worker.workers.dev/stats",
+          "https://fonts.googleapis.com/css2",
+          "https://static.cloudflareinsights.com/beacon.min.js",
+          "https://www.clarity.ms/tag/xusuca7gsv"
+        ]
+      },
+      "render_sha256": "056aff46ecfe8c3c62cc518d438aea9f069884b4586d6fbe69a7b61947036726",
+      "render_scope": "innerHTML of #search-use"
+    },
+    {
+      "id": "after-published",
+      "repository_revision": "working tree on card/c3eb8caa83b59",
+      "source_blob": {
+        "site/stats.html": "91b47f8c3d2b8b81216cd0f57508f5ba26d01889"
+      },
+      "data_vintage": {
+        "measured_since": "2026-07-01T00:00:00.000Z",
+        "verified_at": "2026-09-15T12:00:00.000Z"
+      },
+      "data_vintage_note": "Supplied by the fixture response below, which carries the synthetic acceptance specimen's figures. These are not production totals.",
+      "supplied_response": {
+        "origin": "https://api.cityscroll.org/stats",
+        "schema": "public-stats.v4",
+        "search_usage_schema": "cityscroll.public_search_usage.v1",
+        "periods": [
+          {
+            "requested_days": 7,
+            "coverage": "complete",
+            "searches_run": 6,
+            "searches_returning_records": 4
+          },
+          {
+            "requested_days": 30,
+            "coverage": "complete",
+            "searches_run": 8,
+            "searches_returning_records": 6
+          }
+        ]
+      },
+      "assertion": "Both published periods render as dated columns carrying 6 and 8 searches run and 4 and 6 searches returning records, each measure states what it counts, the last-checked date is shown, and the document does not scroll sideways at 390 CSS pixels.",
+      "observed": {
+        "section_text": "Finished searches in each period\nMEASURE\tLAST 7 DAYS\nSeptember 9, 2026 to September 15, 2026\n\tLAST 30 DAYS\nAugust 17, 2026 to September 15, 2026\n\nSearches run\t6\t8\nSearches returning records\t4\t6\nSEARCHES RUN\nEvery search that finished on the site in this period. A repeat of the same search counts again. Test and developer traffic is left out.\nSEARCHES RETURNING RECORDS\nSearches in this period that showed at least one record, including a part of a set. It does not say whether the reader found what they needed.\n\nLast checked September 15, 2026.",
+        "render_sha256": "39dc66da757d7611f74b801a65f5c4e103a0272bb9e9807c39feb36ca93e7b9d",
+        "document_scroll_width": 390,
+        "document_client_width": 390,
+        "off_origin_requests_attempted": [
+          "https://api.cityscroll.org/events",
+          "https://fonts.googleapis.com/css2",
+          "https://static.cloudflareinsights.com/beacon.min.js",
+          "https://www.clarity.ms/tag/xusuca7gsv"
+        ]
+      },
+      "render_sha256": "39dc66da757d7611f74b801a65f5c4e103a0272bb9e9807c39feb36ca93e7b9d",
+      "render_scope": "innerHTML of #search-use"
+    }
+  ]
+}
