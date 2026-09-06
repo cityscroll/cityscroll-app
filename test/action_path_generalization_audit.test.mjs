@@ -161,7 +161,7 @@ test("Community Boards keep board-local actions and leave committee replay not-e
   assert.match(boards.grounding.claim, /cross-board inference is false/i);
   assert.equal(boards.replay.status, NOT_ESTABLISHED);
   assert.match(boards.replay.claim, /committee identity replay is not-established/);
-  assert.equal(boards.card_decision.shipped_cards.includes("cityscroll-civic-action-paths/cap-6"), true);
+  assert.equal(boards.card_decision.shipped_cards.includes("cap-6"), true);
 });
 
 test("button density and missing citations cannot establish a cell", () => {
