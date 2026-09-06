@@ -3,10 +3,10 @@
   "card": "cityscroll-resident-ux/px-01-preview-calendar-events",
   "route": "component-harness:calendar-event-preview",
   "harness": "test/harness/calendar_event_preview_harness.html",
-  "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+  "revision": "ffe9184fb98ef73878c5f529e9c45cfb73455e87",
   "data_vintage": "2026-03-15",
   "timezone": "America/New_York",
-  "captured_at": "2026-09-05T23:53:28Z",
+  "captured_at": "2026-09-06T01:05:07Z",
   "image_directory": ".artifacts/calendar-event-preview",
   "image_policy": "Capture images are written to the ignored local directory above and are never committed. This manifest is the tracked proof: route, viewport, revision, data vintage, assertion and SHA-256 for each capture.",
   "files": [
@@ -19,7 +19,7 @@
         390,
         844
       ],
-      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "revision": "ffe9184fb98ef73878c5f529e9c45cfb73455e87",
       "data_vintage": "2026-03-15",
       "timezone": "America/New_York",
       "assertion": "at 390px the preview opens in place with focus inside, Close returns focus to the invoking control, and the month, its cells and the address are untouched",
@@ -50,7 +50,7 @@
         1440,
         900
       ],
-      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "revision": "ffe9184fb98ef73878c5f529e9c45cfb73455e87",
       "data_vintage": "2026-03-15",
       "timezone": "America/New_York",
       "assertion": "at 1440px the preview opens in place with focus inside, Close returns focus to the invoking control, and the month, its cells and the address are untouched",
@@ -81,7 +81,7 @@
         390,
         844
       ],
-      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "revision": "ffe9184fb98ef73878c5f529e9c45cfb73455e87",
       "data_vintage": "2026-03-15",
       "timezone": "America/New_York",
       "assertion": "at 390px Escape dismisses the preview and focus returns to the invoking control",
@@ -106,7 +106,7 @@
         1440,
         900
       ],
-      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "revision": "ffe9184fb98ef73878c5f529e9c45cfb73455e87",
       "data_vintage": "2026-03-15",
       "timezone": "America/New_York",
       "assertion": "at 1440px Escape dismisses the preview and focus returns to the invoking control",
@@ -131,7 +131,7 @@
         390,
         844
       ],
-      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "revision": "ffe9184fb98ef73878c5f529e9c45cfb73455e87",
       "data_vintage": "2026-03-15",
       "timezone": "America/New_York",
       "assertion": "at 390px Enter on the trigger opens the preview and Tab stays inside it",
@@ -157,7 +157,7 @@
         1440,
         900
       ],
-      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "revision": "ffe9184fb98ef73878c5f529e9c45cfb73455e87",
       "data_vintage": "2026-03-15",
       "timezone": "America/New_York",
       "assertion": "at 1440px Enter on the trigger opens the preview and Tab stays inside it",
@@ -183,7 +183,7 @@
         390,
         844
       ],
-      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "revision": "ffe9184fb98ef73878c5f529e9c45cfb73455e87",
       "data_vintage": "2026-03-15",
       "timezone": "America/New_York",
       "assertion": "at 390px the preview offers an explicit full-page destination, and after a real navigation and browser Back the calendar is back and its preview still works",
@@ -211,7 +211,7 @@
         1440,
         900
       ],
-      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "revision": "ffe9184fb98ef73878c5f529e9c45cfb73455e87",
       "data_vintage": "2026-03-15",
       "timezone": "America/New_York",
       "assertion": "at 1440px the preview offers an explicit full-page destination, and after a real navigation and browser Back the calendar is back and its preview still works",
@@ -239,7 +239,7 @@
         390,
         844
       ],
-      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "revision": "ffe9184fb98ef73878c5f529e9c45cfb73455e87",
       "data_vintage": "2026-03-15",
       "timezone": "America/New_York",
       "assertion": "at 390px the canonical link keeps its own behaviour under enhancement: a modified click is handed to the browser and opens no preview, and an ordinary click still navigates to the canonical destination",
@@ -268,7 +268,7 @@
         1440,
         900
       ],
-      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "revision": "ffe9184fb98ef73878c5f529e9c45cfb73455e87",
       "data_vintage": "2026-03-15",
       "timezone": "America/New_York",
       "assertion": "at 1440px the canonical link keeps its own behaviour under enhancement: a modified click is handed to the browser and opens no preview, and an ordinary click still navigates to the canonical destination",
@@ -297,7 +297,7 @@
         390,
         844
       ],
-      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "revision": "ffe9184fb98ef73878c5f529e9c45cfb73455e87",
       "data_vintage": "2026-03-15",
       "timezone": "America/New_York",
       "assertion": "at 390px an unenhanced calendar shows no preview affordance at all and activating an event navigates straight to its full page \u2014 which is both the behaviour a reader without scripting still gets and, because the anchor is unchanged, the before state this work starts from",
@@ -323,7 +323,7 @@
         1440,
         900
       ],
-      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "revision": "ffe9184fb98ef73878c5f529e9c45cfb73455e87",
       "data_vintage": "2026-03-15",
       "timezone": "America/New_York",
       "assertion": "at 1440px an unenhanced calendar shows no preview affordance at all and activating an event navigates straight to its full page \u2014 which is both the behaviour a reader without scripting still gets and, because the anchor is unchanged, the before state this work starts from",
@@ -349,7 +349,7 @@
         390,
         844
       ],
-      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "revision": "ffe9184fb98ef73878c5f529e9c45cfb73455e87",
       "data_vintage": "2026-03-15",
       "timezone": "America/New_York",
       "assertion": "at 390px a failed optional detail load leaves the event's own facts and a working full-page link untouched",
@@ -377,7 +377,7 @@
         1440,
         900
       ],
-      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "revision": "ffe9184fb98ef73878c5f529e9c45cfb73455e87",
       "data_vintage": "2026-03-15",
       "timezone": "America/New_York",
       "assertion": "at 1440px a failed optional detail load leaves the event's own facts and a working full-page link untouched",
@@ -405,7 +405,7 @@
         390,
         844
       ],
-      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "revision": "ffe9184fb98ef73878c5f529e9c45cfb73455e87",
       "data_vintage": "2026-03-15",
       "timezone": "America/New_York",
       "assertion": "at 390px a detail response for a selection the reader has left never replaces the newer one on screen",
@@ -432,7 +432,7 @@
         1440,
         900
       ],
-      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "revision": "ffe9184fb98ef73878c5f529e9c45cfb73455e87",
       "data_vintage": "2026-03-15",
       "timezone": "America/New_York",
       "assertion": "at 1440px a detail response for a selection the reader has left never replaces the newer one on screen",
@@ -459,7 +459,7 @@
         390,
         844
       ],
-      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "revision": "ffe9184fb98ef73878c5f529e9c45cfb73455e87",
       "data_vintage": "2026-03-15",
       "timezone": "America/New_York",
       "assertion": "at 390px a cancelled event says so before offering an action, a past event says its date has passed, and a date-only event acquires no clock time",
@@ -486,7 +486,7 @@
         1440,
         900
       ],
-      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "revision": "ffe9184fb98ef73878c5f529e9c45cfb73455e87",
       "data_vintage": "2026-03-15",
       "timezone": "America/New_York",
       "assertion": "at 1440px a cancelled event says so before offering an action, a past event says its date has passed, and a date-only event acquires no clock time",
@@ -513,7 +513,7 @@
         390,
         844
       ],
-      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "revision": "ffe9184fb98ef73878c5f529e9c45cfb73455e87",
       "data_vintage": "2026-03-15",
       "timezone": "America/New_York",
       "assertion": "at 390px an event identity rendered in several places at once -- the grid and the parallel agenda, each carrying the crowded day's remainder -- opens the one shared preview for that event, and a repaint leaves exactly one dialog still working",
@@ -542,7 +542,7 @@
         1440,
         900
       ],
-      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "revision": "ffe9184fb98ef73878c5f529e9c45cfb73455e87",
       "data_vintage": "2026-03-15",
       "timezone": "America/New_York",
       "assertion": "at 1440px an event identity rendered in several places at once -- the grid and the parallel agenda, each carrying the crowded day's remainder -- opens the one shared preview for that event, and a repaint leaves exactly one dialog still working",
@@ -571,7 +571,7 @@
         390,
         844
       ],
-      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "revision": "ffe9184fb98ef73878c5f529e9c45cfb73455e87",
       "data_vintage": "2026-03-15",
       "timezone": "America/New_York",
       "assertion": "at 390px a bundle below the density rule renders no month and therefore offers no preview affordance either",
@@ -596,7 +596,7 @@
         1440,
         900
       ],
-      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "revision": "ffe9184fb98ef73878c5f529e9c45cfb73455e87",
       "data_vintage": "2026-03-15",
       "timezone": "America/New_York",
       "assertion": "at 1440px a bundle below the density rule renders no month and therefore offers no preview affordance either",

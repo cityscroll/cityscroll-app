@@ -3,10 +3,10 @@
   "card": "cityscroll-resident-ux/px-02-keep-calendar-overview-scannable",
   "route": "component-harness:calendar-density-disclosure",
   "harness": "test/harness/calendar_density_harness.html",
-  "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+  "revision": "ffe9184fb98ef73878c5f529e9c45cfb73455e87",
   "data_vintage": "2026-03-15",
   "timezone": "America/New_York",
-  "captured_at": "2026-09-05T23:53:00Z",
+  "captured_at": "2026-09-06T01:04:56Z",
   "image_directory": ".artifacts/calendar-density-disclosure",
   "image_policy": "Capture images are written to the ignored local directory above and are never committed. This manifest is the tracked proof: route, viewport, revision, data vintage, assertion, rendered row height, text budget and SHA-256 for each capture.",
   "measurement_policy": "Rendered row height and title line budget are measurements of what the stylesheet paints. No participant evaluation was run and no usability gain is claimed.",
@@ -20,7 +20,7 @@
         390,
         844
       ],
-      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "revision": "ffe9184fb98ef73878c5f529e9c45cfb73455e87",
       "data_vintage": "2026-03-15",
       "timezone": "America/New_York",
       "assertion": "at 390px the same accepted month is measured with the title line budget lifted and applied: the tallest agenda day a reader is shown goes from 485px to 485px. This is a measurement of what the stylesheet does, not a measured usability gain",
@@ -54,7 +54,7 @@
         1440,
         900
       ],
-      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "revision": "ffe9184fb98ef73878c5f529e9c45cfb73455e87",
       "data_vintage": "2026-03-15",
       "timezone": "America/New_York",
       "assertion": "at 1440px the same accepted month is measured with the title line budget lifted and applied: the tallest grid week row a reader is shown goes from 592px to 296px. This is a measurement of what the stylesheet does, not a measured usability gain",
@@ -88,7 +88,7 @@
         390,
         844
       ],
-      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "revision": "ffe9184fb98ef73878c5f529e9c45cfb73455e87",
       "data_vintage": "2026-03-15",
       "timezone": "America/New_York",
       "assertion": "at 390px the published title is complete in the document and in the preview's accessible name; where the grid is the visible reading, the budget clips what is painted and nothing else",
@@ -119,7 +119,7 @@
         1440,
         900
       ],
-      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "revision": "ffe9184fb98ef73878c5f529e9c45cfb73455e87",
       "data_vintage": "2026-03-15",
       "timezone": "America/New_York",
       "assertion": "at 1440px the published title is complete in the document and in the preview's accessible name; where the grid is the visible reading, the budget clips what is painted and nothing else",
@@ -155,7 +155,7 @@
         390,
         844
       ],
-      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "revision": "ffe9184fb98ef73878c5f529e9c45cfb73455e87",
       "data_vintage": "2026-03-15",
       "timezone": "America/New_York",
       "assertion": "at 390px a crowded day paints 3 of 9 events and its trigger states the exact remainder, 6, in words a reader can act on",
@@ -189,7 +189,7 @@
         1440,
         900
       ],
-      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "revision": "ffe9184fb98ef73878c5f529e9c45cfb73455e87",
       "data_vintage": "2026-03-15",
       "timezone": "America/New_York",
       "assertion": "at 1440px a crowded day paints 3 of 9 events and its trigger states the exact remainder, 6, in words a reader can act on",
@@ -223,7 +223,7 @@
         390,
         844
       ],
-      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "revision": "ffe9184fb98ef73878c5f529e9c45cfb73455e87",
       "data_vintage": "2026-03-15",
       "timezone": "America/New_York",
       "assertion": "at 390px the trigger opens all 9 accepted events for the day in one labelled panel beside the month, taking focus with it, while the month keeps exactly the rows, cells and height it had",
@@ -261,7 +261,7 @@
         1440,
         900
       ],
-      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "revision": "ffe9184fb98ef73878c5f529e9c45cfb73455e87",
       "data_vintage": "2026-03-15",
       "timezone": "America/New_York",
       "assertion": "at 1440px the trigger opens all 9 accepted events for the day in one labelled panel beside the month, taking focus with it, while the month keeps exactly the rows, cells and height it had",
@@ -299,7 +299,7 @@
         390,
         844
       ],
-      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "revision": "ffe9184fb98ef73878c5f529e9c45cfb73455e87",
       "data_vintage": "2026-03-15",
       "timezone": "America/New_York",
       "assertion": "at 390px the visible Close control and Escape both dismiss the day panel and hand focus back to the control that opened it",
@@ -329,7 +329,7 @@
         1440,
         900
       ],
-      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "revision": "ffe9184fb98ef73878c5f529e9c45cfb73455e87",
       "data_vintage": "2026-03-15",
       "timezone": "America/New_York",
       "assertion": "at 1440px the visible Close control and Escape both dismiss the day panel and hand focus back to the control that opened it",
@@ -359,7 +359,7 @@
         390,
         844
       ],
-      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "revision": "ffe9184fb98ef73878c5f529e9c45cfb73455e87",
       "data_vintage": "2026-03-15",
       "timezone": "America/New_York",
       "assertion": "at 390px the day panel opens from the keyboard alone, keeps focus inside it, and offers all 9 of the day's events as real, focusable destinations",
@@ -390,7 +390,7 @@
         1440,
         900
       ],
-      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "revision": "ffe9184fb98ef73878c5f529e9c45cfb73455e87",
       "data_vintage": "2026-03-15",
       "timezone": "America/New_York",
       "assertion": "at 1440px the day panel opens from the keyboard alone, keeps focus inside it, and offers all 9 of the day's events as real, focusable destinations",
@@ -421,7 +421,7 @@
         390,
         844
       ],
-      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "revision": "ffe9184fb98ef73878c5f529e9c45cfb73455e87",
       "data_vintage": "2026-03-15",
       "timezone": "America/New_York",
       "assertion": "at the 195px CSS viewport a 200 percent zoom of a 390px window produces, the month overview and the expanded day both read without any horizontal page scrolling, and the day still lists every accepted event",
@@ -454,7 +454,7 @@
         1440,
         900
       ],
-      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "revision": "ffe9184fb98ef73878c5f529e9c45cfb73455e87",
       "data_vintage": "2026-03-15",
       "timezone": "America/New_York",
       "assertion": "at the 720px CSS viewport a 200 percent zoom of a 1440px window produces, the month overview and the expanded day both read without any horizontal page scrolling, and the day still lists every accepted event",
@@ -487,7 +487,7 @@
         390,
         844
       ],
-      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "revision": "ffe9184fb98ef73878c5f529e9c45cfb73455e87",
       "data_vintage": "2026-03-15",
       "timezone": "America/New_York",
       "assertion": "at 390px every control the narrow reading offers \u2014 the agenda trigger, the preview trigger and every control in the panel \u2014 is at least 44px tall, so none of them is a bare icon a finger cannot land on",
@@ -520,7 +520,7 @@
         1440,
         900
       ],
-      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "revision": "ffe9184fb98ef73878c5f529e9c45cfb73455e87",
       "data_vintage": "2026-03-15",
       "timezone": "America/New_York",
       "assertion": "at 1440px every control the desktop reading offers \u2014 the agenda trigger, the preview trigger and every control in the panel \u2014 is at least 24px tall, so none of them is a bare icon a finger cannot land on",
@@ -553,7 +553,7 @@
         390,
         844
       ],
-      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "revision": "ffe9184fb98ef73878c5f529e9c45cfb73455e87",
       "data_vintage": "2026-03-15",
       "timezone": "America/New_York",
       "assertion": "at 390px titles published in Spanish, Chinese, Bengali, Russian, Haitian Creole and English render exactly as published \u2014 including the two scripts that do not break on spaces \u2014 without pushing the page sideways",
@@ -582,7 +582,7 @@
         1440,
         900
       ],
-      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "revision": "ffe9184fb98ef73878c5f529e9c45cfb73455e87",
       "data_vintage": "2026-03-15",
       "timezone": "America/New_York",
       "assertion": "at 1440px titles published in Spanish, Chinese, Bengali, Russian, Haitian Creole and English render exactly as published \u2014 including the two scripts that do not break on spaces \u2014 without pushing the page sideways",
@@ -611,7 +611,7 @@
         390,
         844
       ],
-      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "revision": "ffe9184fb98ef73878c5f529e9c45cfb73455e87",
       "data_vintage": "2026-03-15",
       "timezone": "America/New_York",
       "assertion": "at 390px a cancelled event says so, in its own sentence, before the link it qualifies, a rescheduled one says the date shown is the currently published one, and a date-only event acquires no clock time",
@@ -642,7 +642,7 @@
         1440,
         900
       ],
-      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "revision": "ffe9184fb98ef73878c5f529e9c45cfb73455e87",
       "data_vintage": "2026-03-15",
       "timezone": "America/New_York",
       "assertion": "at 1440px a cancelled event says so, in its own sentence, before the link it qualifies, a rescheduled one says the date shown is the currently published one, and a date-only event acquires no clock time",
@@ -673,7 +673,7 @@
         390,
         844
       ],
-      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "revision": "ffe9184fb98ef73878c5f529e9c45cfb73455e87",
       "data_vintage": "2026-03-15",
       "timezone": "America/New_York",
       "assertion": "at 390px a day rendered in both the grid and the parallel agenda opens the one shared panel for that day, and a repaint leaves exactly one panel still listing every event",
@@ -705,7 +705,7 @@
         1440,
         900
       ],
-      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "revision": "ffe9184fb98ef73878c5f529e9c45cfb73455e87",
       "data_vintage": "2026-03-15",
       "timezone": "America/New_York",
       "assertion": "at 1440px a day rendered in both the grid and the parallel agenda opens the one shared panel for that day, and a repaint leaves exactly one panel still listing every event",
@@ -737,7 +737,7 @@
         390,
         844
       ],
-      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "revision": "ffe9184fb98ef73878c5f529e9c45cfb73455e87",
       "data_vintage": "2026-03-15",
       "timezone": "America/New_York",
       "assertion": "at 390px a calendar without scripting offers no agenda trigger and keeps the native disclosure, which still reveals every one of the day's remaining events \u2014 the before state this work starts from, and the reading a reader without scripting keeps",
@@ -767,7 +767,7 @@
         1440,
         900
       ],
-      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "revision": "ffe9184fb98ef73878c5f529e9c45cfb73455e87",
       "data_vintage": "2026-03-15",
       "timezone": "America/New_York",
       "assertion": "at 1440px a calendar without scripting offers no agenda trigger and keeps the native disclosure, which still reveals every one of the day's remaining events \u2014 the before state this work starts from, and the reading a reader without scripting keeps",
@@ -797,7 +797,7 @@
         390,
         844
       ],
-      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "revision": "ffe9184fb98ef73878c5f529e9c45cfb73455e87",
       "data_vintage": "2026-03-15",
       "timezone": "America/New_York",
       "assertion": "at 390px a bundle below the density rule renders no month at all, so the existing sparse fallback is preserved and there is nothing to disclose",
@@ -826,7 +826,7 @@
         1440,
         900
       ],
-      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "revision": "ffe9184fb98ef73878c5f529e9c45cfb73455e87",
       "data_vintage": "2026-03-15",
       "timezone": "America/New_York",
       "assertion": "at 1440px a bundle below the density rule renders no month at all, so the existing sparse fallback is preserved and there is nothing to disclose",
