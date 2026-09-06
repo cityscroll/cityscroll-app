@@ -1,0 +1,601 @@
+{
+  "schema": "cityscroll.community_board_minutes_gap_detector.v1",
+  "as_of": "2026-09-06",
+  "measurement_available": true,
+  "evidence_revision": "a96003a19fe71595814ca6b06f147af6b089615aa700a5a697525b59f56edfae",
+  "generated_at": "2026-09-06T07:20:20.822Z",
+  "rows": [
+    {
+      "body_id": "bronx-cb-01",
+      "last_minutes_date": "2025-11-20",
+      "minutes_url": "https://www.nyc.gov/site/bronxcb1/calendar/board-meeting-minutes.page",
+      "notice_completeness": null,
+      "media_completeness": null,
+      "receipts": [
+        {
+          "kind": "publication-probe",
+          "path": "site/data/non_council_outcome_sources/verification_receipts/cb_minutes_publication_probes.json",
+          "observed_on": "2026-09-06",
+          "content_sha256": "68fe5e8c65eed9bfdc1f2fb43dc6fb02d4f6509d3acefdc2fb63c77197982074"
+        }
+      ]
+    },
+    {
+      "body_id": "bronx-cb-02",
+      "last_minutes_date": null,
+      "minutes_url": "https://www.nyc.gov/site/bronxcb2/meetings/minutes.page",
+      "notice_completeness": null,
+      "media_completeness": null,
+      "receipts": [
+        {
+          "kind": "publication-probe",
+          "path": "site/data/non_council_outcome_sources/verification_receipts/cb_minutes_publication_probes.json",
+          "observed_on": "2026-08-11",
+          "content_sha256": "b10dc093ffdd31ce0032d5cf22978317c4fb3a3805f53e7314b68f09729acfb7"
+        }
+      ]
+    },
+    {
+      "body_id": "bronx-cb-03",
+      "last_minutes_date": null,
+      "minutes_url": "https://www.nyc.gov/site/bronxcb3/minutes/board-meeting-minutes.page",
+      "notice_completeness": null,
+      "media_completeness": null,
+      "receipts": [
+        {
+          "kind": "publication-probe",
+          "path": "site/data/non_council_outcome_sources/verification_receipts/cb_minutes_publication_probes.json",
+          "observed_on": "2026-08-11",
+          "content_sha256": "1a0f6748af0f34c40dd55203520a8b18edfe61ea523fc16da0e0bff539f611c2"
+        }
+      ]
+    },
+    {
+      "body_id": "bronx-cb-04",
+      "last_minutes_date": "2021-10-26",
+      "minutes_url": "https://www.nyc.gov/site/bronxcb4/meetings/board-meeting-minutes.page",
+      "notice_completeness": null,
+      "media_completeness": null,
+      "receipts": [
+        {
+          "kind": "publication-probe",
+          "path": "site/data/non_council_outcome_sources/verification_receipts/cb_minutes_publication_probes.json",
+          "observed_on": "2026-08-11",
+          "content_sha256": "f4e71f4d9298ed27acc506e3ddb6cb1e2851a03d884f66fc4d90ce1c6949a1a6"
+        }
+      ]
+    },
+    {
+      "body_id": "bronx-cb-05",
+      "last_minutes_date": "2026-05-27",
+      "minutes_url": "https://www.nyc.gov/site/bronxcb5/minutes/general-board-meeting-minutes.page",
+      "notice_completeness": null,
+      "media_completeness": null,
+      "receipts": [
+        {
+          "kind": "publication-probe",
+          "path": "site/data/non_council_outcome_sources/verification_receipts/cb_minutes_publication_probes.json",
+          "observed_on": "2026-08-11",
+          "content_sha256": "06821b49c4e5a92a4efd27551bca7c6a600e082de5e7a6911d9d8dd1794463eb"
+        }
+      ]
+    },
+    {
+      "body_id": "bronx-cb-06",
+      "last_minutes_date": "2025-01-01",
+      "minutes_url": "https://cbbronx.cityofnewyork.us/cb6/minutes/",
+      "notice_completeness": null,
+      "media_completeness": null,
+      "receipts": [
+        {
+          "kind": "publication-probe",
+          "path": "site/data/non_council_outcome_sources/verification_receipts/cb_minutes_publication_probes.json",
+          "observed_on": "2026-08-11",
+          "content_sha256": "29077e9b33ce4e79f972e99c62b9142f2a95f838e73d266204be82806aac040d"
+        }
+      ]
+    },
+    {
+      "body_id": "bronx-cb-07",
+      "last_minutes_date": null,
+      "minutes_url": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "receipts": []
+    },
+    {
+      "body_id": "bronx-cb-08",
+      "last_minutes_date": null,
+      "minutes_url": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "receipts": []
+    },
+    {
+      "body_id": "bronx-cb-09",
+      "last_minutes_date": null,
+      "minutes_url": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "receipts": []
+    },
+    {
+      "body_id": "bronx-cb-10",
+      "last_minutes_date": null,
+      "minutes_url": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "receipts": []
+    },
+    {
+      "body_id": "bronx-cb-11",
+      "last_minutes_date": null,
+      "minutes_url": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "receipts": []
+    },
+    {
+      "body_id": "bronx-cb-12",
+      "last_minutes_date": "2026-05-28",
+      "minutes_url": "https://www.nyc.gov/site/bronxcb12/minutes/minutes.page",
+      "notice_completeness": null,
+      "media_completeness": null,
+      "receipts": [
+        {
+          "kind": "publication-probe",
+          "path": "site/data/non_council_outcome_sources/verification_receipts/cb_minutes_publication_probes.json",
+          "observed_on": "2026-08-11",
+          "content_sha256": "2199730c7f7488fcdaa34f28cc6e36f0fb89e1bd13958b9792e74b03199cef27"
+        }
+      ]
+    },
+    {
+      "body_id": "brooklyn-cb-01",
+      "last_minutes_date": null,
+      "minutes_url": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "receipts": []
+    },
+    {
+      "body_id": "brooklyn-cb-02",
+      "last_minutes_date": null,
+      "minutes_url": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "receipts": []
+    },
+    {
+      "body_id": "brooklyn-cb-03",
+      "last_minutes_date": null,
+      "minutes_url": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "receipts": []
+    },
+    {
+      "body_id": "brooklyn-cb-04",
+      "last_minutes_date": null,
+      "minutes_url": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "receipts": []
+    },
+    {
+      "body_id": "brooklyn-cb-05",
+      "last_minutes_date": null,
+      "minutes_url": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "receipts": []
+    },
+    {
+      "body_id": "brooklyn-cb-06",
+      "last_minutes_date": null,
+      "minutes_url": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "receipts": []
+    },
+    {
+      "body_id": "brooklyn-cb-07",
+      "last_minutes_date": null,
+      "minutes_url": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "receipts": []
+    },
+    {
+      "body_id": "brooklyn-cb-08",
+      "last_minutes_date": null,
+      "minutes_url": "https://www.brooklyncb8.org/downloads/minutes/",
+      "notice_completeness": null,
+      "media_completeness": null,
+      "receipts": [
+        {
+          "kind": "publication-probe",
+          "path": "site/data/non_council_outcome_sources/verification_receipts/cb_minutes_publication_probes.json",
+          "observed_on": "2026-08-06",
+          "content_sha256": "127373edded047ecc53e92a08244ed04fca397082d619b08594b0c08e44e1be1"
+        }
+      ]
+    },
+    {
+      "body_id": "brooklyn-cb-09",
+      "last_minutes_date": null,
+      "minutes_url": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "receipts": []
+    },
+    {
+      "body_id": "brooklyn-cb-10",
+      "last_minutes_date": null,
+      "minutes_url": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "receipts": []
+    },
+    {
+      "body_id": "brooklyn-cb-11",
+      "last_minutes_date": "2026-06-05",
+      "minutes_url": "https://www.brooklyncb11.org/minutes/",
+      "notice_completeness": null,
+      "media_completeness": null,
+      "receipts": [
+        {
+          "kind": "publication-probe",
+          "path": "site/data/non_council_outcome_sources/verification_receipts/cb_minutes_publication_probes.json",
+          "observed_on": "2026-08-06",
+          "content_sha256": "4eaa7da4d28821c96c0ce91e481cf9bbd44645a5b3ddb3452403d955ecaedb5a"
+        }
+      ]
+    },
+    {
+      "body_id": "brooklyn-cb-12",
+      "last_minutes_date": null,
+      "minutes_url": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "receipts": []
+    },
+    {
+      "body_id": "brooklyn-cb-13",
+      "last_minutes_date": null,
+      "minutes_url": "https://www.nyc.gov/site/brooklyncb13/minutes/minutes.page",
+      "notice_completeness": null,
+      "media_completeness": null,
+      "receipts": [
+        {
+          "kind": "publication-probe",
+          "path": "site/data/non_council_outcome_sources/verification_receipts/cb_minutes_publication_probes.json",
+          "observed_on": "2026-08-11",
+          "content_sha256": "293571da887234350833a28397d759da4f39bb6d1199069ab9b485e7c73cc76e"
+        }
+      ]
+    },
+    {
+      "body_id": "brooklyn-cb-14",
+      "last_minutes_date": null,
+      "minutes_url": "https://cb14brooklyn.com/board-meeting-minutes/",
+      "notice_completeness": null,
+      "media_completeness": null,
+      "receipts": [
+        {
+          "kind": "publication-probe",
+          "path": "site/data/non_council_outcome_sources/verification_receipts/cb_minutes_publication_probes.json",
+          "observed_on": "2026-08-06",
+          "content_sha256": "e338975b996a47dc98f28d7cf56b4ff93d5131d99d15b851c74d0ed07cb62e5a"
+        }
+      ]
+    },
+    {
+      "body_id": "brooklyn-cb-15",
+      "last_minutes_date": null,
+      "minutes_url": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "receipts": []
+    },
+    {
+      "body_id": "brooklyn-cb-16",
+      "last_minutes_date": null,
+      "minutes_url": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "receipts": []
+    },
+    {
+      "body_id": "brooklyn-cb-17",
+      "last_minutes_date": null,
+      "minutes_url": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "receipts": []
+    },
+    {
+      "body_id": "brooklyn-cb-18",
+      "last_minutes_date": null,
+      "minutes_url": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "receipts": []
+    },
+    {
+      "body_id": "manhattan-cb-01",
+      "last_minutes_date": null,
+      "minutes_url": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "receipts": []
+    },
+    {
+      "body_id": "manhattan-cb-02",
+      "last_minutes_date": "2026-07-06",
+      "minutes_url": "https://cbmanhattan.cityofnewyork.us/cb2/minutes/",
+      "notice_completeness": null,
+      "media_completeness": null,
+      "receipts": [
+        {
+          "kind": "publication-probe",
+          "path": "site/data/non_council_outcome_sources/verification_receipts/cb_minutes_publication_probes.json",
+          "observed_on": "2026-08-11",
+          "content_sha256": "067783032b5e76689505da9bfcd42f905d5d74bad22273c2bf9cc364645af985"
+        }
+      ]
+    },
+    {
+      "body_id": "manhattan-cb-03",
+      "last_minutes_date": null,
+      "minutes_url": "https://www.nyc.gov/site/manhattancb3/minutes/meeting-vote-records.page",
+      "notice_completeness": null,
+      "media_completeness": null,
+      "receipts": [
+        {
+          "kind": "publication-probe",
+          "path": "site/data/non_council_outcome_sources/verification_receipts/cb_minutes_publication_probes.json",
+          "observed_on": "2026-08-06",
+          "content_sha256": "710458aa075a00cd5f1e3a7a2c75618f353c5c1461bd2c8eb88386fc1bb45411"
+        }
+      ]
+    },
+    {
+      "body_id": "manhattan-cb-04",
+      "last_minutes_date": null,
+      "minutes_url": "https://cbmanhattan.cityofnewyork.us/cb4/archives/",
+      "notice_completeness": null,
+      "media_completeness": null,
+      "receipts": [
+        {
+          "kind": "publication-probe",
+          "path": "site/data/non_council_outcome_sources/verification_receipts/cb_minutes_publication_probes.json",
+          "observed_on": "2026-08-06",
+          "content_sha256": "fbf930b951daebf47f357fa6b5a316793941ff139be94d092428938ad0e08159"
+        }
+      ]
+    },
+    {
+      "body_id": "manhattan-cb-05",
+      "last_minutes_date": null,
+      "minutes_url": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "receipts": []
+    },
+    {
+      "body_id": "manhattan-cb-06",
+      "last_minutes_date": null,
+      "minutes_url": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "receipts": []
+    },
+    {
+      "body_id": "manhattan-cb-07",
+      "last_minutes_date": null,
+      "minutes_url": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "receipts": []
+    },
+    {
+      "body_id": "manhattan-cb-08",
+      "last_minutes_date": null,
+      "minutes_url": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "receipts": []
+    },
+    {
+      "body_id": "manhattan-cb-09",
+      "last_minutes_date": null,
+      "minutes_url": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "receipts": []
+    },
+    {
+      "body_id": "manhattan-cb-10",
+      "last_minutes_date": null,
+      "minutes_url": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "receipts": []
+    },
+    {
+      "body_id": "manhattan-cb-11",
+      "last_minutes_date": null,
+      "minutes_url": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "receipts": []
+    },
+    {
+      "body_id": "manhattan-cb-12",
+      "last_minutes_date": null,
+      "minutes_url": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "receipts": []
+    },
+    {
+      "body_id": "queens-cb-01",
+      "last_minutes_date": null,
+      "minutes_url": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "receipts": []
+    },
+    {
+      "body_id": "queens-cb-02",
+      "last_minutes_date": null,
+      "minutes_url": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "receipts": []
+    },
+    {
+      "body_id": "queens-cb-03",
+      "last_minutes_date": null,
+      "minutes_url": "https://queenscb3.cityofnewyork.us/board-meeting-minutes/",
+      "notice_completeness": null,
+      "media_completeness": null,
+      "receipts": [
+        {
+          "kind": "publication-probe",
+          "path": "site/data/non_council_outcome_sources/verification_receipts/cb_minutes_publication_probes.json",
+          "observed_on": "2026-08-11",
+          "content_sha256": "7aec6a433e0299da5432e087e2c4d697fcd2f91d58072ef9ca9901287e47b044"
+        }
+      ]
+    },
+    {
+      "body_id": "queens-cb-04",
+      "last_minutes_date": null,
+      "minutes_url": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "receipts": []
+    },
+    {
+      "body_id": "queens-cb-05",
+      "last_minutes_date": null,
+      "minutes_url": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "receipts": []
+    },
+    {
+      "body_id": "queens-cb-06",
+      "last_minutes_date": null,
+      "minutes_url": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "receipts": []
+    },
+    {
+      "body_id": "queens-cb-07",
+      "last_minutes_date": null,
+      "minutes_url": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "receipts": []
+    },
+    {
+      "body_id": "queens-cb-08",
+      "last_minutes_date": "2026-06-10",
+      "minutes_url": "https://www.nyc.gov/site/queenscb8/meetings/board-meeting-minutes.page",
+      "notice_completeness": null,
+      "media_completeness": null,
+      "receipts": [
+        {
+          "kind": "publication-probe",
+          "path": "site/data/non_council_outcome_sources/verification_receipts/cb_minutes_publication_probes.json",
+          "observed_on": "2026-08-06",
+          "content_sha256": "1efa93c9865b15213eb7ed141972746246787dd9c3c29e9badc3f77547be91f7"
+        }
+      ]
+    },
+    {
+      "body_id": "queens-cb-09",
+      "last_minutes_date": null,
+      "minutes_url": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "receipts": []
+    },
+    {
+      "body_id": "queens-cb-10",
+      "last_minutes_date": null,
+      "minutes_url": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "receipts": []
+    },
+    {
+      "body_id": "queens-cb-11",
+      "last_minutes_date": null,
+      "minutes_url": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "receipts": []
+    },
+    {
+      "body_id": "queens-cb-12",
+      "last_minutes_date": null,
+      "minutes_url": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "receipts": []
+    },
+    {
+      "body_id": "queens-cb-13",
+      "last_minutes_date": null,
+      "minutes_url": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "receipts": []
+    },
+    {
+      "body_id": "queens-cb-14",
+      "last_minutes_date": null,
+      "minutes_url": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "receipts": []
+    },
+    {
+      "body_id": "staten-island-cb-01",
+      "last_minutes_date": null,
+      "minutes_url": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "receipts": []
+    },
+    {
+      "body_id": "staten-island-cb-02",
+      "last_minutes_date": null,
+      "minutes_url": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "receipts": []
+    },
+    {
+      "body_id": "staten-island-cb-03",
+      "last_minutes_date": "2026-05-26",
+      "minutes_url": "https://www.nyc.gov/site/statenislandcb3/meetings/general-board-minutes.page",
+      "notice_completeness": null,
+      "media_completeness": null,
+      "receipts": [
+        {
+          "kind": "publication-probe",
+          "path": "site/data/non_council_outcome_sources/verification_receipts/cb_minutes_publication_probes.json",
+          "observed_on": "2026-08-06",
+          "content_sha256": "e278cb555a2e148a5f0bc0fa14c79f3f523d139202e2f8f8b0550ce8275445be"
+        }
+      ]
+    }
+  ],
+  "missing_input": false
+}

@@ -330,6 +330,10 @@ function selectedArtifactsForRun(registry, root, now, all) {
   });
 }
 
+export function rematerializationIsNotAcquisition(artifact = {}) {
+  return JSON.stringify(artifact.acquisition_command || []) === JSON.stringify(artifact.builder_command || []);
+}
+
 export function runRefreshCommands(registry, options = {}) {
   const root = options.root || ROOT;
   const now = validInstant(options.now || new Date().toISOString());

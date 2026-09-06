@@ -144,6 +144,22 @@
       "cycle_schema": "cityscroll.desk_health_publication_cycle.v1",
       "contract": "data/desk-health-publication-cycle.v1.json",
       "notes": "Additive operator-service clocks for monitoring and private Desk publication. They stay distinct from publisher vintage and from the nullable current_as_of overview date. Unaware additive consumers may ignore the extension. No extension field may enter a public response."
+    },
+    "priority_source_closure": {
+      "version": 1,
+      "graph_fields": [
+        "priority_source_closure",
+        "card_synthesis"
+      ],
+      "census_schema": "cityscroll.source_observation_census.v1",
+      "closure_schema": "cityscroll.priority_source_health_closure.v1",
+      "observation_classes": [
+        "observed",
+        "legitimately-historical-or-manual",
+        "disabled-or-candidate",
+        "requires-observation-producer"
+      ],
+      "notes": "Additive coverage of CityScroll-controlled acquisition and serving observations for the seven priority source families, plus the remaining non-priority observation gaps. Acquisition input vintage stays distinct from later materialization. Unaware additive consumers may ignore the extension. No extension field may enter a public response."
     }
   }
 }

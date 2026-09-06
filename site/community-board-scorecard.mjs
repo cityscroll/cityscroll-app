@@ -13,6 +13,9 @@ import {
   METRIC_KEYS,
   moneyComparisonMapProjection,
 } from "./community_board_money_comparison.mjs";
+import {
+  classifyBoardDispositions,
+} from "../tools/board_scorecard_observation_closure.mjs";
 
 const MONTHS = [
   "January", "February", "March", "April", "May", "June",
@@ -309,8 +312,19 @@ function sourceCard(source = {}, role) {
 }
 
 export function buildScorecard({ registry, detector = null, observedOn = null, sourceInventory = null, joinedLookup = null, meetingIndex = null, moneyComparison = null } = {}) {
-  const asOf = detector?.as_of || observedOn || sourceInventory?.observed_on || registry?.observed_on;
-  const detectorRows = new Map((detector?.rows || []).map((row) => [row.body_id, row]));
+  const detectorPresent = Boolean(detector)
+    && detector.missing_input !== true
+    && Array.isArray(detector.rows)
+    && detector.measurement_available !== false;
+  const asOf = detectorPresent
+    ? (detector?.as_of || observedOn || sourceInventory?.observed_on || registry?.observed_on)
+    : (observedOn || sourceInventory?.observed_on || registry?.observed_on);
+  const detectorRows = new Map((detectorPresent ? detector.rows : []).map((row) => [row.body_id, row]));
+  const dispositions = classifyBoardDispositions({
+    registry,
+    detector: detectorPresent ? detector : { missing_input: true, rows: [] },
+  });
+  const dispositionById = new Map(dispositions.rows.map((row) => [row.body_id, row.disposition]));
   const boards = (registry?.sources || []).filter((row) => row.body_type === "community_board");
   const inventoryRows = new Map(buildBoardSourceInventory({ registry, inventory: sourceInventory, joinedLookup, meetingIndex })
     .map((row) => [row.body_id, row]));
@@ -338,11 +352,12 @@ export function buildScorecard({ registry, detector = null, observedOn = null, s
       notice_completeness: detected.notice_completeness ?? null,
       media_completeness: detected.media_completeness ?? null,
       freshness_status: days == null ? "not_measured" : "measured",
+      observation_disposition: dispositionById.get(source.body_id) || "unmeasured",
       sources: inventoryRows.get(source.body_id)?.sources || {},
       receipts,
     };
   });
-  const ranked = stableRank(baseRows);
+  const ranked = detectorPresent ? stableRank(baseRows) : [];
   const ranks = new Map(ranked.map((row) => [row.body_id, row.rank]));
   const rows = baseRows
     .map((row) => ({ ...row, rank: ranks.get(row.body_id) ?? null }))
@@ -351,6 +366,7 @@ export function buildScorecard({ registry, detector = null, observedOn = null, s
     schema: SCORECARD_SCHEMA,
     version: 1,
     as_of: asOf,
+    evidence_revision: detectorPresent ? detector.evidence_revision || null : null,
     source_contract: {
       detector_schema: DETECTOR_SCHEMA,
       detector_artifact: "site/data/community_board_minutes_gap.json",
@@ -363,11 +379,18 @@ export function buildScorecard({ registry, detector = null, observedOn = null, s
       text: "The City Comptroller has recommended that community boards post minutes from the past 12 months.",
       citation_url: "https://comptroller.nyc.gov/reports/audit-report-on-the-twelve-manhattan-community-boards-compliance-with-new-york-city-charter-and-new-york-city-administrative-code-requirements-for-public-meetings-and-hearings-and-for-web/",
     },
-    coverage: { boards: rows.length, measured: rows.filter((row) => row.freshness_status === "measured").length },
-    rankings: {
-      leaders: ranked.slice(0, 5).map(({ body_id, rank }) => ({ body_id, rank })),
-      laggards: ranked.slice(-5).reverse().map(({ body_id, rank }) => ({ body_id, rank })),
+    coverage: {
+      boards: rows.length,
+      measured: rows.filter((row) => row.freshness_status === "measured").length,
+      measurement_available: detectorPresent,
     },
+    rankings: detectorPresent
+      ? {
+        leaders: ranked.slice(0, 5).map(({ body_id, rank }) => ({ body_id, rank })),
+        laggards: ranked.slice(-5).reverse().map(({ body_id, rank }) => ({ body_id, rank })),
+        suppressed: false,
+      }
+      : { leaders: null, laggards: null, suppressed: true },
     money_comparison: moneyComparison?.comparisons?.[moneyComparison.default_key || "latest"] || null,
     money_comparisons: moneyComparison?.comparisons || null,
     rows,
@@ -552,7 +575,7 @@ export function renderScorecardPage(scorecard, { boundaries = {} } = {}) {
   const details = scorecard.rows.map((row) => renderBoardDetail(row, row.body_id === defaultBoardId, scorecard)).join("");
   const legalText = "The City Comptroller ";
   const legalLink = `<a href="${esc(scorecard.legal_basis.citation_url)}">has recommended</a>`;
-  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Community board sources and money · CityScroll</title><meta name="description" content="A public, receipt-backed view of community board sources, minutes freshness, and money facts."><link rel="canonical" href="https://cityscroll.org/community-boards/"><link rel="stylesheet" href="/brand.css"><link rel="stylesheet" href="/civic-documents.css"><link rel="stylesheet" href="/community-board-scorecard.css"></head><body><a class="skip" href="#main">Skip to content</a><header class="document-mast"><div class="document-mast-inner"><a class="document-brand brand-lockup home" href="/" aria-label="CityScroll home"><span aria-hidden="true">▣</span><span>CityScroll</span></a><nav class="document-nav" aria-label="Primary"><a href="/now/">Now</a><a href="/near-you/">Near you</a><a href="/following/">Following</a><a href="/browse/">Browse</a><a href="/guide/">Guide</a></nav></div></header><main id="main" class="scorecard" data-community-board-root data-selected-board="${esc(defaultBoardId)}"><section class="scorecard-hero"><h1>Community board sources</h1><p class="scorecard-dek">See each of New York City’s 59 community boards with its explicit calendar, homepage, minutes sources, and financial facts.</p><p class="scorecard-asof">Sources checked through ${esc(scorecard.as_of)} · ${scorecard.coverage.boards} boards listed</p></section><p class="scorecard-legal">${legalText}${legalLink} that community boards post minutes from the past 12 months.</p><nav class="scorecard-view-switch" aria-label="Community board view"><a class="is-active" href="#scorecard-map" data-scorecard-view="map" aria-current="page">Map</a><a href="#scorecard-table" data-scorecard-view="table">Table</a></nav><section class="scorecard-map-view" id="scorecard-map" data-view-panel="map" aria-labelledby="scorecard-map-heading"><div class="scorecard-heading"><div><p class="scorecard-kicker">All boards</p><h2 id="scorecard-map-heading">Community districts by source coverage</h2></div><span class="scorecard-map-count">${map.features.length} boundaries</span></div>${renderMoneyMapControls(scorecard)}<div class="scorecard-map-grid"><div class="scorecard-map-wrap"><svg class="community-board-map" role="group" aria-labelledby="scorecard-map-title scorecard-map-desc" viewBox="${esc(map.viewBox || defaultViewBox())}" preserveAspectRatio="xMidYMid meet"><title id="scorecard-map-title">New York City community district boundaries</title><desc id="scorecard-map-desc">All ${map.features.length} community district boundaries are selectable. Use Tab to focus a district, then Enter or Space to select it.</desc><g fill-rule="evenodd">${mapPaths}</g><g>${mapLabels}</g></svg><p class="scorecard-map-boundary-note">Boundaries: ${esc(map.vintage || "not published")}. Select a district to see its source details.</p></div><aside class="scorecard-detail-panel" aria-label="Selected community board details">${details}</aside></div>${renderCoverageLegend(map)}</section><section id="scorecard-table" data-view-panel="table" aria-labelledby="scorecard-table-heading">${renderMoneyComparisonSection(scorecard)}<div class="scorecard-heading"><div><p class="scorecard-kicker">All boards</p><h2 id="scorecard-table-heading">Official source inventory</h2></div><a class="scorecard-json" href="/data/community_board_minutes_scorecard.json">Machine-readable JSON</a></div><div class="scorecard-table-wrap"><table><thead><tr><th scope="col">Board</th><th scope="col">Minutes freshness</th><th scope="col">Official sources</th></tr></thead><tbody>${rows}</tbody></table></div></section></main><script type="module" src="/app/community-board-scorecard.mjs"></script></body></html>`;
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Community board sources and money · CityScroll</title><meta name="description" content="A public, receipt-backed view of community board sources, minutes freshness, and money facts."><link rel="canonical" href="https://cityscroll.org/community-boards/"><link rel="stylesheet" href="/brand.css"><link rel="stylesheet" href="/civic-documents.css"><link rel="stylesheet" href="/community-board-scorecard.css"></head><body><a class="skip" href="#main">Skip to content</a><header class="document-mast"><div class="document-mast-inner"><a class="document-brand brand-lockup home" href="/" aria-label="CityScroll home"><span aria-hidden="true">▣</span><span>CityScroll</span></a><nav class="document-nav" aria-label="Primary"><a href="/now/">Now</a><a href="/near-you/">Near you</a><a href="/following/">Following</a><a href="/browse/">Browse</a><a href="/guide/">Guide</a></nav></div></header><main id="main" class="scorecard" data-community-board-root data-selected-board="${esc(defaultBoardId)}"><section class="scorecard-hero"><h1>Community board sources</h1><p class="scorecard-dek">See each of New York City’s 59 community boards with its explicit calendar, homepage, minutes sources, and financial facts.</p><p class="scorecard-asof">${scorecard.coverage.measurement_available ? `Sources checked through ${esc(scorecard.as_of)} · ${scorecard.coverage.measured} of ${scorecard.coverage.boards} boards measured` : "Minutes measurement is unavailable. An empty detector input does not mean boards published no minutes, and it does not mean there are zero laggards."}</p></section><p class="scorecard-legal">${legalText}${legalLink} that community boards post minutes from the past 12 months.</p><nav class="scorecard-view-switch" aria-label="Community board view"><a class="is-active" href="#scorecard-map" data-scorecard-view="map" aria-current="page">Map</a><a href="#scorecard-table" data-scorecard-view="table">Table</a></nav><section class="scorecard-map-view" id="scorecard-map" data-view-panel="map" aria-labelledby="scorecard-map-heading"><div class="scorecard-heading"><div><p class="scorecard-kicker">All boards</p><h2 id="scorecard-map-heading">Community districts by source coverage</h2></div><span class="scorecard-map-count">${map.features.length} boundaries</span></div>${renderMoneyMapControls(scorecard)}<div class="scorecard-map-grid"><div class="scorecard-map-wrap"><svg class="community-board-map" role="group" aria-labelledby="scorecard-map-title scorecard-map-desc" viewBox="${esc(map.viewBox || defaultViewBox())}" preserveAspectRatio="xMidYMid meet"><title id="scorecard-map-title">New York City community district boundaries</title><desc id="scorecard-map-desc">All ${map.features.length} community district boundaries are selectable. Use Tab to focus a district, then Enter or Space to select it.</desc><g fill-rule="evenodd">${mapPaths}</g><g>${mapLabels}</g></svg><p class="scorecard-map-boundary-note">Boundaries: ${esc(map.vintage || "not published")}. Select a district to see its source details.</p></div><aside class="scorecard-detail-panel" aria-label="Selected community board details">${details}</aside></div>${renderCoverageLegend(map)}</section><section id="scorecard-table" data-view-panel="table" aria-labelledby="scorecard-table-heading">${renderMoneyComparisonSection(scorecard)}<div class="scorecard-heading"><div><p class="scorecard-kicker">All boards</p><h2 id="scorecard-table-heading">Official source inventory</h2></div><a class="scorecard-json" href="/data/community_board_minutes_scorecard.json">Machine-readable JSON</a></div><div class="scorecard-table-wrap"><table><thead><tr><th scope="col">Board</th><th scope="col">Minutes freshness</th><th scope="col">Official sources</th></tr></thead><tbody>${rows}</tbody></table></div></section></main><script type="module" src="/app/community-board-scorecard.mjs"></script></body></html>`;
 }
 
 export { esc };

@@ -1,7 +1,8 @@
 {
   "schema": "cityscroll.community_board_minutes_scorecard.v1",
   "version": 1,
-  "as_of": "2026-08-13",
+  "as_of": "2026-09-06",
+  "evidence_revision": "a96003a19fe71595814ca6b06f147af6b089615aa700a5a697525b59f56edfae",
   "source_contract": {
     "detector_schema": "cityscroll.community_board_minutes_gap_detector.v1",
     "detector_artifact": "site/data/community_board_minutes_gap.json",
@@ -16,11 +17,55 @@
   },
   "coverage": {
     "boards": 59,
-    "measured": 0
+    "measured": 9,
+    "measurement_available": true
   },
   "rankings": {
-    "leaders": [],
-    "laggards": []
+    "leaders": [
+      {
+        "body_id": "manhattan-cb-02",
+        "rank": 1
+      },
+      {
+        "body_id": "queens-cb-08",
+        "rank": 2
+      },
+      {
+        "body_id": "brooklyn-cb-11",
+        "rank": 3
+      },
+      {
+        "body_id": "bronx-cb-12",
+        "rank": 4
+      },
+      {
+        "body_id": "bronx-cb-05",
+        "rank": 5
+      }
+    ],
+    "laggards": [
+      {
+        "body_id": "bronx-cb-04",
+        "rank": 9
+      },
+      {
+        "body_id": "bronx-cb-06",
+        "rank": 8
+      },
+      {
+        "body_id": "bronx-cb-01",
+        "rank": 7
+      },
+      {
+        "body_id": "staten-island-cb-03",
+        "rank": 6
+      },
+      {
+        "body_id": "bronx-cb-05",
+        "rank": 5
+      }
+    ],
+    "suppressed": false
   },
   "money_comparison": {
     "schema": "cityscroll.community_board_money_comparison.v1",
@@ -18398,11 +18443,12 @@
       "homepage_url": "https://www.nyc.gov/site/bronxcb1/index.page",
       "directory_url": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page",
       "minutes_url": "https://www.nyc.gov/site/bronxcb1/calendar/board-meeting-minutes.page",
-      "last_minutes_date": null,
-      "days_since_last_minutes": null,
+      "last_minutes_date": "2025-11-20",
+      "days_since_last_minutes": 290,
       "notice_completeness": null,
       "media_completeness": null,
-      "freshness_status": "not_measured",
+      "freshness_status": "measured",
+      "observation_disposition": "measured",
       "sources": {
         "upcoming_meetings": {
           "source_type": "upcoming_meetings",
@@ -18611,9 +18657,15 @@
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
           "observed_on": "2026-08-11"
+        },
+        {
+          "kind": "publication-probe",
+          "path": "site/data/non_council_outcome_sources/verification_receipts/cb_minutes_publication_probes.json",
+          "observed_on": "2026-09-06",
+          "content_sha256": "68fe5e8c65eed9bfdc1f2fb43dc6fb02d4f6509d3acefdc2fb63c77197982074"
         }
       ],
-      "rank": null
+      "rank": 7
     },
     {
       "body_id": "bronx-cb-02",
@@ -18628,6 +18680,7 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "observation_disposition": "checked-no-dated-observation",
       "sources": {
         "upcoming_meetings": {
           "source_type": "upcoming_meetings",
@@ -18836,6 +18889,12 @@
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
           "observed_on": "2026-08-11"
+        },
+        {
+          "kind": "publication-probe",
+          "path": "site/data/non_council_outcome_sources/verification_receipts/cb_minutes_publication_probes.json",
+          "observed_on": "2026-08-11",
+          "content_sha256": "b10dc093ffdd31ce0032d5cf22978317c4fb3a3805f53e7314b68f09729acfb7"
         }
       ],
       "rank": null
@@ -18853,6 +18912,7 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "observation_disposition": "checked-no-dated-observation",
       "sources": {
         "upcoming_meetings": {
           "source_type": "upcoming_meetings",
@@ -19061,6 +19121,12 @@
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
           "observed_on": "2026-08-11"
+        },
+        {
+          "kind": "publication-probe",
+          "path": "site/data/non_council_outcome_sources/verification_receipts/cb_minutes_publication_probes.json",
+          "observed_on": "2026-08-11",
+          "content_sha256": "1a0f6748af0f34c40dd55203520a8b18edfe61ea523fc16da0e0bff539f611c2"
         }
       ],
       "rank": null
@@ -19073,11 +19139,12 @@
       "homepage_url": "https://www.nyc.gov/site/bronxcb4/index.page",
       "directory_url": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page",
       "minutes_url": "https://www.nyc.gov/site/bronxcb4/meetings/board-meeting-minutes.page",
-      "last_minutes_date": null,
-      "days_since_last_minutes": null,
+      "last_minutes_date": "2021-10-26",
+      "days_since_last_minutes": 1776,
       "notice_completeness": null,
       "media_completeness": null,
-      "freshness_status": "not_measured",
+      "freshness_status": "measured",
+      "observation_disposition": "measured",
       "sources": {
         "upcoming_meetings": {
           "source_type": "upcoming_meetings",
@@ -19286,9 +19353,15 @@
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
           "observed_on": "2026-08-11"
+        },
+        {
+          "kind": "publication-probe",
+          "path": "site/data/non_council_outcome_sources/verification_receipts/cb_minutes_publication_probes.json",
+          "observed_on": "2026-08-11",
+          "content_sha256": "f4e71f4d9298ed27acc506e3ddb6cb1e2851a03d884f66fc4d90ce1c6949a1a6"
         }
       ],
-      "rank": null
+      "rank": 9
     },
     {
       "body_id": "bronx-cb-05",
@@ -19298,11 +19371,12 @@
       "homepage_url": "https://www.nyc.gov/site/bronxcb5/index.page",
       "directory_url": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page",
       "minutes_url": "https://www.nyc.gov/site/bronxcb5/minutes/general-board-meeting-minutes.page",
-      "last_minutes_date": null,
-      "days_since_last_minutes": null,
+      "last_minutes_date": "2026-05-27",
+      "days_since_last_minutes": 102,
       "notice_completeness": null,
       "media_completeness": null,
-      "freshness_status": "not_measured",
+      "freshness_status": "measured",
+      "observation_disposition": "measured",
       "sources": {
         "upcoming_meetings": {
           "source_type": "upcoming_meetings",
@@ -19511,9 +19585,15 @@
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
           "observed_on": "2026-08-11"
+        },
+        {
+          "kind": "publication-probe",
+          "path": "site/data/non_council_outcome_sources/verification_receipts/cb_minutes_publication_probes.json",
+          "observed_on": "2026-08-11",
+          "content_sha256": "06821b49c4e5a92a4efd27551bca7c6a600e082de5e7a6911d9d8dd1794463eb"
         }
       ],
-      "rank": null
+      "rank": 5
     },
     {
       "body_id": "bronx-cb-06",
@@ -19523,11 +19603,12 @@
       "homepage_url": "https://cbbronx.cityofnewyork.us/cb6/",
       "directory_url": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page",
       "minutes_url": "https://cbbronx.cityofnewyork.us/cb6/minutes/",
-      "last_minutes_date": null,
-      "days_since_last_minutes": null,
+      "last_minutes_date": "2025-01-01",
+      "days_since_last_minutes": 613,
       "notice_completeness": null,
       "media_completeness": null,
-      "freshness_status": "not_measured",
+      "freshness_status": "measured",
+      "observation_disposition": "measured",
       "sources": {
         "upcoming_meetings": {
           "source_type": "upcoming_meetings",
@@ -19736,9 +19817,15 @@
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
           "observed_on": "2026-08-11"
+        },
+        {
+          "kind": "publication-probe",
+          "path": "site/data/non_council_outcome_sources/verification_receipts/cb_minutes_publication_probes.json",
+          "observed_on": "2026-08-11",
+          "content_sha256": "29077e9b33ce4e79f972e99c62b9142f2a95f838e73d266204be82806aac040d"
         }
       ],
-      "rank": null
+      "rank": 8
     },
     {
       "body_id": "bronx-cb-07",
@@ -19753,6 +19840,7 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "observation_disposition": "checked-no-dated-observation",
       "sources": {
         "upcoming_meetings": {
           "source_type": "upcoming_meetings",
@@ -19978,6 +20066,7 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "observation_disposition": "checked-no-dated-observation",
       "sources": {
         "upcoming_meetings": {
           "source_type": "upcoming_meetings",
@@ -20203,6 +20292,7 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "observation_disposition": "checked-no-dated-observation",
       "sources": {
         "upcoming_meetings": {
           "source_type": "upcoming_meetings",
@@ -20428,6 +20518,7 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "observation_disposition": "checked-no-dated-observation",
       "sources": {
         "upcoming_meetings": {
           "source_type": "upcoming_meetings",
@@ -20653,6 +20744,7 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "observation_disposition": "checked-no-dated-observation",
       "sources": {
         "upcoming_meetings": {
           "source_type": "upcoming_meetings",
@@ -20873,11 +20965,12 @@
       "homepage_url": "https://www.nyc.gov/site/bronxcb12/index.page",
       "directory_url": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page",
       "minutes_url": "https://www.nyc.gov/site/bronxcb12/minutes/minutes.page",
-      "last_minutes_date": null,
-      "days_since_last_minutes": null,
+      "last_minutes_date": "2026-05-28",
+      "days_since_last_minutes": 101,
       "notice_completeness": null,
       "media_completeness": null,
-      "freshness_status": "not_measured",
+      "freshness_status": "measured",
+      "observation_disposition": "measured",
       "sources": {
         "upcoming_meetings": {
           "source_type": "upcoming_meetings",
@@ -21086,9 +21179,15 @@
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
           "observed_on": "2026-08-11"
+        },
+        {
+          "kind": "publication-probe",
+          "path": "site/data/non_council_outcome_sources/verification_receipts/cb_minutes_publication_probes.json",
+          "observed_on": "2026-08-11",
+          "content_sha256": "2199730c7f7488fcdaa34f28cc6e36f0fb89e1bd13958b9792e74b03199cef27"
         }
       ],
-      "rank": null
+      "rank": 4
     },
     {
       "body_id": "brooklyn-cb-01",
@@ -21103,6 +21202,7 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "observation_disposition": "checked-no-dated-observation",
       "sources": {
         "upcoming_meetings": {
           "source_type": "upcoming_meetings",
@@ -21328,6 +21428,7 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "observation_disposition": "checked-no-dated-observation",
       "sources": {
         "upcoming_meetings": {
           "source_type": "upcoming_meetings",
@@ -21553,6 +21654,7 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "observation_disposition": "checked-no-dated-observation",
       "sources": {
         "upcoming_meetings": {
           "source_type": "upcoming_meetings",
@@ -21778,6 +21880,7 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "observation_disposition": "checked-no-dated-observation",
       "sources": {
         "upcoming_meetings": {
           "source_type": "upcoming_meetings",
@@ -22003,6 +22106,7 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "observation_disposition": "checked-no-dated-observation",
       "sources": {
         "upcoming_meetings": {
           "source_type": "upcoming_meetings",
@@ -22228,6 +22332,7 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "observation_disposition": "checked-no-dated-observation",
       "sources": {
         "upcoming_meetings": {
           "source_type": "upcoming_meetings",
@@ -22453,6 +22558,7 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "observation_disposition": "checked-no-dated-observation",
       "sources": {
         "upcoming_meetings": {
           "source_type": "upcoming_meetings",
@@ -22678,6 +22784,7 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "observation_disposition": "checked-no-dated-observation",
       "sources": {
         "upcoming_meetings": {
           "source_type": "upcoming_meetings",
@@ -22886,6 +22993,12 @@
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
           "observed_on": "2026-08-11"
+        },
+        {
+          "kind": "publication-probe",
+          "path": "site/data/non_council_outcome_sources/verification_receipts/cb_minutes_publication_probes.json",
+          "observed_on": "2026-08-06",
+          "content_sha256": "127373edded047ecc53e92a08244ed04fca397082d619b08594b0c08e44e1be1"
         }
       ],
       "rank": null
@@ -22903,6 +23016,7 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "observation_disposition": "checked-no-dated-observation",
       "sources": {
         "upcoming_meetings": {
           "source_type": "upcoming_meetings",
@@ -23128,6 +23242,7 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "observation_disposition": "checked-no-dated-observation",
       "sources": {
         "upcoming_meetings": {
           "source_type": "upcoming_meetings",
@@ -23348,11 +23463,12 @@
       "homepage_url": "https://www.brooklyncb11.org/",
       "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
       "minutes_url": "https://www.brooklyncb11.org/minutes/",
-      "last_minutes_date": null,
-      "days_since_last_minutes": null,
+      "last_minutes_date": "2026-06-05",
+      "days_since_last_minutes": 93,
       "notice_completeness": null,
       "media_completeness": null,
-      "freshness_status": "not_measured",
+      "freshness_status": "measured",
+      "observation_disposition": "measured",
       "sources": {
         "upcoming_meetings": {
           "source_type": "upcoming_meetings",
@@ -23561,9 +23677,15 @@
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
           "observed_on": "2026-08-11"
+        },
+        {
+          "kind": "publication-probe",
+          "path": "site/data/non_council_outcome_sources/verification_receipts/cb_minutes_publication_probes.json",
+          "observed_on": "2026-08-06",
+          "content_sha256": "4eaa7da4d28821c96c0ce91e481cf9bbd44645a5b3ddb3452403d955ecaedb5a"
         }
       ],
-      "rank": null
+      "rank": 3
     },
     {
       "body_id": "brooklyn-cb-12",
@@ -23578,6 +23700,7 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "observation_disposition": "checked-no-dated-observation",
       "sources": {
         "upcoming_meetings": {
           "source_type": "upcoming_meetings",
@@ -23803,6 +23926,7 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "observation_disposition": "checked-no-dated-observation",
       "sources": {
         "upcoming_meetings": {
           "source_type": "upcoming_meetings",
@@ -24011,6 +24135,12 @@
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
           "observed_on": "2026-08-11"
+        },
+        {
+          "kind": "publication-probe",
+          "path": "site/data/non_council_outcome_sources/verification_receipts/cb_minutes_publication_probes.json",
+          "observed_on": "2026-08-11",
+          "content_sha256": "293571da887234350833a28397d759da4f39bb6d1199069ab9b485e7c73cc76e"
         }
       ],
       "rank": null
@@ -24028,6 +24158,7 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "observation_disposition": "checked-no-dated-observation",
       "sources": {
         "upcoming_meetings": {
           "source_type": "upcoming_meetings",
@@ -24236,6 +24367,12 @@
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
           "observed_on": "2026-08-11"
+        },
+        {
+          "kind": "publication-probe",
+          "path": "site/data/non_council_outcome_sources/verification_receipts/cb_minutes_publication_probes.json",
+          "observed_on": "2026-08-06",
+          "content_sha256": "e338975b996a47dc98f28d7cf56b4ff93d5131d99d15b851c74d0ed07cb62e5a"
         }
       ],
       "rank": null
@@ -24253,6 +24390,7 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "observation_disposition": "checked-no-dated-observation",
       "sources": {
         "upcoming_meetings": {
           "source_type": "upcoming_meetings",
@@ -24478,6 +24616,7 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "observation_disposition": "checked-no-dated-observation",
       "sources": {
         "upcoming_meetings": {
           "source_type": "upcoming_meetings",
@@ -24703,6 +24842,7 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "observation_disposition": "checked-no-dated-observation",
       "sources": {
         "upcoming_meetings": {
           "source_type": "upcoming_meetings",
@@ -24928,6 +25068,7 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "observation_disposition": "checked-no-dated-observation",
       "sources": {
         "upcoming_meetings": {
           "source_type": "upcoming_meetings",
@@ -25153,6 +25294,7 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "observation_disposition": "checked-no-dated-observation",
       "sources": {
         "upcoming_meetings": {
           "source_type": "upcoming_meetings",
@@ -25373,11 +25515,12 @@
       "homepage_url": "https://cbmanhattan.cityofnewyork.us/cb2/",
       "directory_url": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page",
       "minutes_url": "https://cbmanhattan.cityofnewyork.us/cb2/minutes/",
-      "last_minutes_date": null,
-      "days_since_last_minutes": null,
+      "last_minutes_date": "2026-07-06",
+      "days_since_last_minutes": 62,
       "notice_completeness": null,
       "media_completeness": null,
-      "freshness_status": "not_measured",
+      "freshness_status": "measured",
+      "observation_disposition": "measured",
       "sources": {
         "upcoming_meetings": {
           "source_type": "upcoming_meetings",
@@ -25586,9 +25729,15 @@
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
           "observed_on": "2026-08-11"
+        },
+        {
+          "kind": "publication-probe",
+          "path": "site/data/non_council_outcome_sources/verification_receipts/cb_minutes_publication_probes.json",
+          "observed_on": "2026-08-11",
+          "content_sha256": "067783032b5e76689505da9bfcd42f905d5d74bad22273c2bf9cc364645af985"
         }
       ],
-      "rank": null
+      "rank": 1
     },
     {
       "body_id": "manhattan-cb-03",
@@ -25603,6 +25752,7 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "observation_disposition": "checked-no-dated-observation",
       "sources": {
         "upcoming_meetings": {
           "source_type": "upcoming_meetings",
@@ -25811,6 +25961,12 @@
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
           "observed_on": "2026-08-11"
+        },
+        {
+          "kind": "publication-probe",
+          "path": "site/data/non_council_outcome_sources/verification_receipts/cb_minutes_publication_probes.json",
+          "observed_on": "2026-08-06",
+          "content_sha256": "710458aa075a00cd5f1e3a7a2c75618f353c5c1461bd2c8eb88386fc1bb45411"
         }
       ],
       "rank": null
@@ -25828,6 +25984,7 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "observation_disposition": "checked-no-dated-observation",
       "sources": {
         "upcoming_meetings": {
           "source_type": "upcoming_meetings",
@@ -26036,6 +26193,12 @@
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
           "observed_on": "2026-08-11"
+        },
+        {
+          "kind": "publication-probe",
+          "path": "site/data/non_council_outcome_sources/verification_receipts/cb_minutes_publication_probes.json",
+          "observed_on": "2026-08-06",
+          "content_sha256": "fbf930b951daebf47f357fa6b5a316793941ff139be94d092428938ad0e08159"
         }
       ],
       "rank": null
@@ -26053,6 +26216,7 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "observation_disposition": "checked-no-dated-observation",
       "sources": {
         "upcoming_meetings": {
           "source_type": "upcoming_meetings",
@@ -26278,6 +26442,7 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "observation_disposition": "checked-no-dated-observation",
       "sources": {
         "upcoming_meetings": {
           "source_type": "upcoming_meetings",
@@ -26503,6 +26668,7 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "observation_disposition": "checked-no-dated-observation",
       "sources": {
         "upcoming_meetings": {
           "source_type": "upcoming_meetings",
@@ -26728,6 +26894,7 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "observation_disposition": "checked-no-dated-observation",
       "sources": {
         "upcoming_meetings": {
           "source_type": "upcoming_meetings",
@@ -26953,6 +27120,7 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "observation_disposition": "checked-no-dated-observation",
       "sources": {
         "upcoming_meetings": {
           "source_type": "upcoming_meetings",
@@ -27178,6 +27346,7 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "observation_disposition": "checked-no-dated-observation",
       "sources": {
         "upcoming_meetings": {
           "source_type": "upcoming_meetings",
@@ -27403,6 +27572,7 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "observation_disposition": "checked-no-dated-observation",
       "sources": {
         "upcoming_meetings": {
           "source_type": "upcoming_meetings",
@@ -27628,6 +27798,7 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "observation_disposition": "checked-no-dated-observation",
       "sources": {
         "upcoming_meetings": {
           "source_type": "upcoming_meetings",
@@ -27853,6 +28024,7 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "observation_disposition": "checked-no-dated-observation",
       "sources": {
         "upcoming_meetings": {
           "source_type": "upcoming_meetings",
@@ -28078,6 +28250,7 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "observation_disposition": "checked-no-dated-observation",
       "sources": {
         "upcoming_meetings": {
           "source_type": "upcoming_meetings",
@@ -28303,6 +28476,7 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "observation_disposition": "checked-no-dated-observation",
       "sources": {
         "upcoming_meetings": {
           "source_type": "upcoming_meetings",
@@ -28511,6 +28685,12 @@
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
           "observed_on": "2026-08-11"
+        },
+        {
+          "kind": "publication-probe",
+          "path": "site/data/non_council_outcome_sources/verification_receipts/cb_minutes_publication_probes.json",
+          "observed_on": "2026-08-11",
+          "content_sha256": "7aec6a433e0299da5432e087e2c4d697fcd2f91d58072ef9ca9901287e47b044"
         }
       ],
       "rank": null
@@ -28528,6 +28708,7 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "observation_disposition": "checked-no-dated-observation",
       "sources": {
         "upcoming_meetings": {
           "source_type": "upcoming_meetings",
@@ -28753,6 +28934,7 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "observation_disposition": "checked-no-dated-observation",
       "sources": {
         "upcoming_meetings": {
           "source_type": "upcoming_meetings",
@@ -28978,6 +29160,7 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "observation_disposition": "checked-no-dated-observation",
       "sources": {
         "upcoming_meetings": {
           "source_type": "upcoming_meetings",
@@ -29203,6 +29386,7 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "observation_disposition": "checked-no-dated-observation",
       "sources": {
         "upcoming_meetings": {
           "source_type": "upcoming_meetings",
@@ -29423,11 +29607,12 @@
       "homepage_url": "https://www.nyc.gov/site/queenscb8/index.page",
       "directory_url": "https://www.nyc.gov/site/communityboards/about/queens-boards.page",
       "minutes_url": "https://www.nyc.gov/site/queenscb8/meetings/board-meeting-minutes.page",
-      "last_minutes_date": null,
-      "days_since_last_minutes": null,
+      "last_minutes_date": "2026-06-10",
+      "days_since_last_minutes": 88,
       "notice_completeness": null,
       "media_completeness": null,
-      "freshness_status": "not_measured",
+      "freshness_status": "measured",
+      "observation_disposition": "measured",
       "sources": {
         "upcoming_meetings": {
           "source_type": "upcoming_meetings",
@@ -29636,9 +29821,15 @@
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
           "observed_on": "2026-08-11"
+        },
+        {
+          "kind": "publication-probe",
+          "path": "site/data/non_council_outcome_sources/verification_receipts/cb_minutes_publication_probes.json",
+          "observed_on": "2026-08-06",
+          "content_sha256": "1efa93c9865b15213eb7ed141972746246787dd9c3c29e9badc3f77547be91f7"
         }
       ],
-      "rank": null
+      "rank": 2
     },
     {
       "body_id": "queens-cb-09",
@@ -29653,6 +29844,7 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "observation_disposition": "checked-no-dated-observation",
       "sources": {
         "upcoming_meetings": {
           "source_type": "upcoming_meetings",
@@ -29878,6 +30070,7 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "observation_disposition": "checked-no-dated-observation",
       "sources": {
         "upcoming_meetings": {
           "source_type": "upcoming_meetings",
@@ -30103,6 +30296,7 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "observation_disposition": "checked-no-dated-observation",
       "sources": {
         "upcoming_meetings": {
           "source_type": "upcoming_meetings",
@@ -30328,6 +30522,7 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "observation_disposition": "checked-no-dated-observation",
       "sources": {
         "upcoming_meetings": {
           "source_type": "upcoming_meetings",
@@ -30553,6 +30748,7 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "observation_disposition": "checked-no-dated-observation",
       "sources": {
         "upcoming_meetings": {
           "source_type": "upcoming_meetings",
@@ -30778,6 +30974,7 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "observation_disposition": "checked-no-dated-observation",
       "sources": {
         "upcoming_meetings": {
           "source_type": "upcoming_meetings",
@@ -31003,6 +31200,7 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "observation_disposition": "checked-no-dated-observation",
       "sources": {
         "upcoming_meetings": {
           "source_type": "upcoming_meetings",
@@ -31228,6 +31426,7 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "observation_disposition": "checked-no-dated-observation",
       "sources": {
         "upcoming_meetings": {
           "source_type": "upcoming_meetings",
@@ -31448,11 +31647,12 @@
       "homepage_url": "https://www.nyc.gov/site/statenislandcb3/index.page",
       "directory_url": "https://www.nyc.gov/site/communityboards/about/staten-island-boards.page",
       "minutes_url": "https://www.nyc.gov/site/statenislandcb3/meetings/general-board-minutes.page",
-      "last_minutes_date": null,
-      "days_since_last_minutes": null,
+      "last_minutes_date": "2026-05-26",
+      "days_since_last_minutes": 103,
       "notice_completeness": null,
       "media_completeness": null,
-      "freshness_status": "not_measured",
+      "freshness_status": "measured",
+      "observation_disposition": "measured",
       "sources": {
         "upcoming_meetings": {
           "source_type": "upcoming_meetings",
@@ -31661,9 +31861,15 @@
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
           "observed_on": "2026-08-11"
+        },
+        {
+          "kind": "publication-probe",
+          "path": "site/data/non_council_outcome_sources/verification_receipts/cb_minutes_publication_probes.json",
+          "observed_on": "2026-08-06",
+          "content_sha256": "e278cb555a2e148a5f0bc0fa14c79f3f523d139202e2f8f8b0550ce8275445be"
         }
       ],
-      "rank": null
+      "rank": 6
     }
   ]
 }

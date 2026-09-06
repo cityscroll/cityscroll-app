@@ -13,6 +13,11 @@ import {
   SERVE_LOOKUP_CONTRACTS,
   servePublishFindings,
 } from "../warehouse/lib/serve_publish_contract.mjs";
+import {
+  acquisitionObservationDate,
+  servingObservationDate,
+} from "./priority_source_health_closure.mjs";
+import { passportReceiptsFromMeta } from "../worker/src/lib/source_acquisition_receipt.mjs";
 
 const SERVE_ARTIFACTS = Object.freeze({
   city_record_pin_chain: "site/data/city_record_pin_chain_warehouse_lookup.json",
@@ -148,6 +153,24 @@ const ADDITIONAL_SERVE_LOOKUPS = Object.freeze([
       return null;
     },
   },
+  {
+    path: "site/data/analytics_payments.json",
+    sourceIds() {
+      return ["checkbook-spending"];
+    },
+    at(payload) {
+      return servingObservationDate(payload);
+    },
+  },
+  {
+    path: "site/data/community_board_minutes_scorecard.json",
+    sourceIds() {
+      return ["non-council-board-minutes"];
+    },
+    at(payload) {
+      return servingObservationDate(payload) || validAt(payload?.as_of);
+    },
+  },
 ]);
 
 const COVERAGE_ALIASES = Object.freeze({
@@ -210,23 +233,7 @@ function newestAt(values) {
 }
 
 function observationDate(payload) {
-  return newestAt([
-    payload?.observed_at,
-    payload?.observed_at_utc,
-    payload?.finished_at,
-    payload?.completed_at,
-    payload?.generated_at,
-    payload?.materialized_at,
-    payload?.observed_on,
-    payload?.snapshot_date,
-    payload?.retrieved_at,
-    payload?.fetched_at,
-    payload?.pulled_at,
-    payload?.source?.pulled_at,
-    payload?.source?.retrieved_at,
-    payload?.source?.fetched_at,
-    payload?.source?.observed_at,
-  ]);
+  return acquisitionObservationDate(payload) || servingObservationDate(payload);
 }
 
 function notAfter(value, observedAt) {
@@ -549,6 +556,19 @@ export function buildSourceHealthObservations(registry, inputs = {}) {
   const acquisitions = [
     ...(inputs.warehouseReceipts || []).map((row) => ({ ...row, evidence_kind: "warehouse-acquisition-receipt" })),
     ...(inputs.scheduleObservations || []).map((row) => ({ ...row, evidence_kind: "external-schedule-receipt" })),
+    ...(inputs.workerAcquisitionReceipts || []).map((row) => ({
+      ...row,
+      source_id: row.source_id || row.source_contract_id,
+      evidence_kind: row.adapter || "worker-scheduled-refresh",
+    })),
+    ...(inputs.passportIngestMeta ? passportReceiptsFromMeta(inputs.passportIngestMeta, {
+      run_id: inputs.passportIngestMeta.run_id || "passport-d1-ingest-meta",
+    }).map((row) => ({
+      ...row,
+      source_id: row.source_contract_id,
+      evidence_kind: "worker-d1-passport-ingest-meta",
+      path: row.path || "worker/src/passport.mjs#passport_ingest_meta",
+    })) : []),
   ];
   const statusOrder = { unknown: 0, succeeded: 1, partial: 2, held: 3, failed: 4 };
   acquisitions.sort((left, right) => (
@@ -564,7 +584,19 @@ export function buildSourceHealthObservations(registry, inputs = {}) {
     if (!target) throw new Error(`${input.source_id}: source health receipt has no canonical contract`);
     applyAcquisition(target, input, input.evidence_kind);
   }
-  for (const input of [...(inputs.serveObservations || [])].sort((a, b) => String(a.source_id).localeCompare(String(b.source_id)))) {
+  const passportServing = inputs.passportIngestMeta && validAt(inputs.passportIngestMeta.ingested_at)
+    ? ["passport-public-contracts", "passport-public-rfx"].map((sourceId) => ({
+      source_id: sourceId,
+      at: inputs.passportIngestMeta.ingested_at,
+      status: inputs.passportIngestMeta.last_ok === true || inputs.passportIngestMeta.last_ok === "true"
+        ? "current"
+        : "unavailable",
+      fallback_valid: false,
+      path: "worker/src/passport.mjs#passport_ingest_meta",
+      basis: "worker_d1_passport_ingest_meta",
+    }))
+    : [];
+  for (const input of [...(inputs.serveObservations || []), ...passportServing].sort((a, b) => String(a.source_id).localeCompare(String(b.source_id)))) {
     const target = byId.get(input.source_id);
     if (!target) throw new Error(`${input.source_id}: serving receipt has no canonical contract`);
     applyServing(target, input);
@@ -653,7 +685,7 @@ function warehouseReceipts(root, registry) {
       let payload;
       try { payload = readJson(path); } catch { return []; }
       const sourceIds = receiptSourceIds(payload);
-      const observedAt = observationDate(payload);
+      const observedAt = acquisitionObservationDate(payload);
       if (!sourceIds.length || !observedAt) return [];
       const failed = payload?.status === "failed" || payload?.ok === false || payload?.passes === false;
       return sourceIds.map((sourceId) => {
@@ -666,7 +698,9 @@ function warehouseReceipts(root, registry) {
           status: failed ? "failed" : "succeeded",
           path: relative(root, path),
           adapter: "warehouse-acquisition-receipt",
-          run_id: payload?.run_id || payload?.receipt_id || null,
+          run_id: payload?.run_id || payload?.receipt_id || relative(root, path),
+          clock_kind: "acquisition",
+          input_vintage: observedAt,
           exact_error: failed
             ? redactCredentialValues(payload?.exact_error || payload?.error || payload?.message || "warehouse receipt reported failure")
             : null,
@@ -1038,6 +1072,53 @@ function externalScheduleEvents(root, stateDir) {
     });
 }
 
+function workerAcquisitionReceiptFile(root) {
+  const path = join(root, "warehouse/receipts/proof/worker_source_acquisition_latest.json");
+  if (!existsSync(path)) return [];
+  try {
+    const payload = readJson(path);
+    const rows = Array.isArray(payload) ? payload : payload?.receipts || [];
+    return rows.map((row) => ({
+      ...row,
+      source_id: row.source_id || row.source_contract_id,
+      path: row.path || relative(root, path),
+      adapter: row.adapter || "worker-scheduled-refresh",
+    }));
+  } catch {
+    return [];
+  }
+}
+
+function boardMinutesAcquisitionReceipts(root) {
+  const path = join(root, "site/data/non_council_outcome_sources/verification_receipts/cb_minutes_publication_probes.json");
+  if (!existsSync(path)) return [];
+  try {
+    const payload = readJson(path);
+    const observedAt = validAt(payload?.generated_at)
+      || newestAt((payload?.probes || []).map((row) => row?.fetched_at));
+    if (!observedAt) return [];
+    const dated = (payload.probes || []).some((row) => (row.observations || []).some((item) => item?.meeting_date));
+    return [{
+      source_id: "non-council-board-minutes",
+      observed_at: observedAt,
+      status: dated ? "succeeded" : "partial",
+      path: relative(root, path),
+      adapter: "community-board-minutes-detector",
+      run_id: `cb-minutes-probes:${observedAt}`,
+      clock_kind: "acquisition",
+      input_vintage: observedAt,
+    }];
+  } catch {
+    return [];
+  }
+}
+
+function passportIngestMetaFile(root) {
+  const path = join(root, "warehouse/receipts/proof/passport_d1_ingest_meta_latest.json");
+  if (!existsSync(path)) return null;
+  try { return readJson(path); } catch { return null; }
+}
+
 export function loadSourceHealthInputs(root, registry, options = {}) {
   const coveragePath = join(root, "entity_resolution/source_coverage.json");
   const events = externalScheduleEvents(root, options.externalScheduleStateDir);
@@ -1048,6 +1129,7 @@ export function loadSourceHealthInputs(root, registry, options = {}) {
       ...geographyReceipts(root),
       ...iboFiscalHistoryReceipts(root),
       ...aboRuntime.acquisitions,
+      ...boardMinutesAcquisitionReceipts(root),
     ],
     serveObservations: [
       ...serveObservations(root, registry),
@@ -1056,6 +1138,8 @@ export function loadSourceHealthInputs(root, registry, options = {}) {
     ],
     scheduleObservations: externalScheduleReceiptRows(events),
     schedulerHeartbeats: externalScheduleHeartbeats(events),
+    workerAcquisitionReceipts: options.workerAcquisitionReceipts || workerAcquisitionReceiptFile(root),
+    passportIngestMeta: options.passportIngestMeta || passportIngestMetaFile(root),
     runtimeServedSourceIds: [...runtimeServedSourceIds(root, registry)],
     coverageCensus: existsSync(coveragePath) ? readJson(coveragePath) : null,
   };

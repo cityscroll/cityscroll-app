@@ -95,10 +95,13 @@ the receipt names the contract another honest way.
 
 The resident `/data-health/` page lists every source CityScroll serves or
 copies. A served source is never omitted because clocks are still UNKNOWN.
-Runtime caches without dated receipts (including PASSPort D1 ingest metadata,
-Rules RSS, Legistar, and live SODA lenses) retain honest UNKNOWN clocks. This
-is the current projection contract, not a follow-up queue; do not invent
-`last_refresh` or publisher dates. Ownership disposition is recorded in the
+Runtime caches participate through dated acquisition receipts at the collector
+boundary. PASSPort clocks come from Worker/D1 `passport_ingest_meta`, never from
+a CI publisher fetch. Worker scheduled refreshes (City Record, Legistar, Rules
+RSS, ZAP outcomes) record `cityscroll.source_acquisition_receipt.v1` rows.
+Warehouse ingest receipts supply acquisition vintage; materialization timestamps
+are serving clocks and cannot clear ingestion staleness. Unknown publisher dates
+remain UNKNOWN. Ownership disposition is recorded in the
 [RCP-01 receipt](repository-control-plane/semantic-owner-mapping.v1.json).
 
 The observation file is the private current-state read model. It is excluded

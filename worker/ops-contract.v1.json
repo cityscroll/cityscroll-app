@@ -1,6 +1,6 @@
 {
   "contract": "ops-contract.v1",
-  "version": "1.16.0",
+  "version": "1.17.0",
   "generated_at": "2026-08-05T13:55:23.589Z",
   "min_compatible_version": "1.0.0",
   "note": "Machine-readable ops contract for desk panels. No secrets. Not served on public /stats.",
@@ -961,6 +961,22 @@
       ],
       "auth": "ADMIN_KEY",
       "description": "Rebuild PASSPort Public product tables and dual-write observations."
+    },
+    {
+      "path": "/admin/passport-ingest-meta",
+      "methods": [
+        "GET"
+      ],
+      "auth": "ADMIN_KEY",
+      "description": "Read PASSPort D1 ingest-meta acquisition receipts without fetching the publisher."
+    },
+    {
+      "path": "/admin/source-health-receipts",
+      "methods": [
+        "GET"
+      ],
+      "auth": "ADMIN_KEY",
+      "description": "List latest source-health acquisition receipts retained in worker state."
     },
     {
       "path": "/usage",
