@@ -43,10 +43,9 @@ acceptance are preserved; the producer only refreshes managed evidence.
 A resolved finding closes only after a fresh successful check. Recurrence
 reopens the same lineage.
 
-## Card contract
+## Generated proposal contract
 
 Generated proposals are operator engineering cards. They must pass
-`tools/diagnostic_card_fitness.py` (card fitness plus the resident-UX
-operator contract) before they are written.
+`tools/diagnostic_card_fitness.py` before they are written.
 
 <p id="repair-card-contract">Every generated repair card uses this page as its spec anchor and names a runnable verify command from the owning repository, never a local-machine path.</p>
