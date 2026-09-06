@@ -43,6 +43,7 @@ import {
   BUYER_HISTORY_AMOUNT_BAND_1M_UNDER_10M,
   buyerHistoryComparisonFailure,
   compareBuyerHistoryFromSolicitation,
+  isBuyerHistoryComparisonDocument,
   mapSolicitationAwardMethod,
   mapSolicitationAmountBand,
   mapSolicitationIndustry,
@@ -744,6 +745,18 @@ const SERVICES_NOTICE = {
   category_description: "Services (other than human services)",
   selection_method_description: "M/WBE Noncompetitive Small Purchase",
 };
+
+describe("pursuit comparison document", () => {
+  it("writes comparison query state only on contracts and search documents", () => {
+    assert.equal(isBuyerHistoryComparisonDocument({ pathname: "/browse/contracts/", search: "?ap_fy=2026" }), true);
+    assert.equal(isBuyerHistoryComparisonDocument({ pathname: "/search" }), true);
+    assert.equal(isBuyerHistoryComparisonDocument({ pathname: "/", hash: "" }), true);
+    assert.equal(isBuyerHistoryComparisonDocument({ pathname: "/", hash: "#money?mode=award" }), true);
+    assert.equal(isBuyerHistoryComparisonDocument({ pathname: "/browse/property/", search: "?asset=seized_property" }), false);
+    assert.equal(isBuyerHistoryComparisonDocument({ pathname: "/browse/property/", hash: "#money" }), false);
+    assert.equal(isBuyerHistoryComparisonDocument({ pathname: "/notices/20260608045" }), false);
+  });
+});
 
 describe("pursuit comparison vocabulary", () => {
   it("maps Parks construction/bids and leaves broad Services and Construction Related Services unmapped", () => {

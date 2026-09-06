@@ -155,6 +155,20 @@ function solicitationFrom(input = {}) {
 }
 
 /**
+ * Comparison query params belong on the contracts (or search) document.
+ * The amount-band control lives in the shared shell, so a change or popstate
+ * on Property / other browse children must not rewrite those routes to
+ * `mode=award` or re-render the hidden buyer-history panel.
+ */
+export function isBuyerHistoryComparisonDocument(locationLike = {}) {
+  const path = String(locationLike.pathname || "").replace(/\/+$/, "") || "/";
+  if (path === "/browse/contracts" || path === "/search") return true;
+  if (path !== "/") return false;
+  const hash = String(locationLike.hash || "").replace(/^#/, "");
+  return !hash || hash === "money" || hash.startsWith("money?");
+}
+
+/**
  * Build the explicit comparison a pursuit page can open. Unmapped industry,
  * method, or amount stay unrestricted rather than inferred.
  */

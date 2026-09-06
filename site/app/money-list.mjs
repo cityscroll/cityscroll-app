@@ -48,6 +48,7 @@ import {
   renderRegistrationTimingMetrics,
   syncBuyerHistoryComparisonControls,
 } from "../buyer_contracting_history_view.mjs";
+import { isBuyerHistoryComparisonDocument } from "../buyer_history_pursuit_comparison.mjs";
 import { buyerHistoryInspectHref } from "../buyer_contracting_history.mjs";
 import { analyzeContractsProjection } from "../contracts_analysis_projection.mjs";
 import {
@@ -465,6 +466,7 @@ function analyticalControlsFilters(){
 }
 
 function writeBuyerHistoryComparisonQuery(push){
+  if(!isBuyerHistoryComparisonDocument(location)) return;
   const params=new URLSearchParams(location.search);
   if(!params.get("mode")) params.set("mode","award");
   const set=(key,value)=>{
@@ -1038,6 +1040,7 @@ function bindAnalyticalControls(){
   if(!window.__buyerHistoryComparisonPopstate){
     window.__buyerHistoryComparisonPopstate=true;
     addEventListener("popstate",()=>{
+      if(!isBuyerHistoryComparisonDocument(location)) return;
       if(!analyticalProjectionPromise) return;
       analyticalProjectionPromise.then(renderAnalyticalProjection).catch(()=>{});
     });

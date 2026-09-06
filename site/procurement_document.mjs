@@ -424,6 +424,7 @@ function pursuitSnapshotFor(object, observations, facts, window, occurrences, pr
   const mwbeView = cityRecordRow ? buildSolicitationMwbeView(cityRecordRow, method) : null;
 
   const importantDates = (Array.isArray(occurrences) ? occurrences : [])
+    .filter((occurrence) => occurrence && typeof occurrence === "object")
     .map((occurrence) => ({ title: occurrence.title, date: occurrence.date, starts_at: occurrence.starts_at }));
 
   const numericAmount = facts.amount ? Number(String(facts.amount).replace(/[$,]/g, "")) : NaN;
