@@ -1,0 +1,53 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/buyer-history-pursuit-comparison",
+  "status": "implemented",
+  "fingerprint": "buyer-history-pursuit-comparison.v1",
+  "updated_at": "2026-09-06T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "buyer-history-pursuit-comparison",
+      "path": "site/buyer_history_pursuit_comparison.mjs"
+    },
+    {
+      "id": "buyer-history-read-model",
+      "path": "site/buyer_contracting_history.mjs"
+    },
+    {
+      "id": "buyer-history-presentation",
+      "path": "site/buyer_contracting_history_view.mjs"
+    },
+    {
+      "id": "procurement-pursuit-snapshot-contract",
+      "path": "site/procurement_pursuit_snapshot.mjs"
+    },
+    {
+      "id": "procurement-pursuit-snapshot-style",
+      "path": "site/procurement_pursuit_snapshot.css"
+    },
+    {
+      "id": "procurement-opportunity-month",
+      "path": "site/procurement_document.mjs"
+    },
+    {
+      "id": "procurement-pursuit-snapshot-notice-detail-mount",
+      "path": "site/app/money-history.mjs"
+    },
+    {
+      "id": "contracts-browse-scoped-surface",
+      "path": "site/app/money-list.mjs"
+    },
+    {
+      "id": "buyer-history-regressions",
+      "path": "test/buyer_contracting_history.test.mjs"
+    },
+    {
+      "id": "buyer-history-journey",
+      "path": "test/functional/30_buyer_contracting_history.py"
+    },
+    {
+      "id": "buyer-history-pursuit-comparison-capture",
+      "path": "docs/evidence/buyer-history-pursuit-comparison/capture-manifest.json"
+    }
+  ]
+}

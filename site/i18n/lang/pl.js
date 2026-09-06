@@ -308,6 +308,8 @@
     buyer_history_all_industries: "Wszystkie branże",
     buyer_history_award_method: "Tryb udzielenia",
     buyer_history_all_award_methods: "Wszystkie tryby udzielenia",
+    buyer_history_amount_band: "Kwota",
+    buyer_history_all_amount_bands: "Wszystkie kwoty",
     buyer_history_metric_contracts: "Zarejestrowane umowy",
     buyer_history_metric_after_start: "Zarejestrowane po dacie rozpoczęcia",
     buyer_history_metric_before_on_start: "Zarejestrowane przed datą rozpoczęcia lub w tym dniu",

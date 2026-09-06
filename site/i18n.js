@@ -559,6 +559,8 @@ const STRINGS = {
     buyer_history_all_industries: "All industries",
     buyer_history_award_method: "Award method",
     buyer_history_all_award_methods: "All award methods",
+    buyer_history_amount_band: "Amount",
+    buyer_history_all_amount_bands: "All amounts",
     buyer_history_metric_contracts: "Registered contracts",
     buyer_history_metric_after_start: "Registered after start",
     buyer_history_metric_before_on_start: "Registered before or on start",

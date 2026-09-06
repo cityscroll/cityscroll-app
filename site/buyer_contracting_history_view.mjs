@@ -27,6 +27,7 @@ export function syncBuyerHistoryComparisonControls(rows, urlFilters, ui){
   for(const [selector, field, allKey] of [
     ["#analytics-industry", "industry", "buyer_history_all_industries"],
     ["#analytics-award-method", "award_method", "buyer_history_all_award_methods"],
+    ["#analytics-amount-band", "contract_amount_band", "buyer_history_all_amount_bands"],
   ]){
     const select=$(selector);
     if(!select) continue;
@@ -193,7 +194,7 @@ export function renderBuyerHistoryPanel(projectionRows, registeredProjection, ur
       registration_fiscal_year: fiscalYear,
       industry: controls.industry || urlFilters.industry,
       award_method: controls.award_method || urlFilters.award_method,
-      contract_amount_band: urlFilters.contract_amount_band,
+      contract_amount_band: controls.contract_amount_band || urlFilters.contract_amount_band,
       min_amount: controls.min_amount || urlFilters.min_amount,
       max_amount: controls.max_amount || urlFilters.max_amount,
       snapshot_date: registeredProjection?.snapshot_date,
@@ -205,6 +206,7 @@ export function renderBuyerHistoryPanel(projectionRows, registeredProjection, ur
       registration_fiscal_year: fiscalYear,
       industry: controls.industry || urlFilters.industry,
       award_method: controls.award_method || urlFilters.award_method,
+      contract_amount_band: controls.contract_amount_band || urlFilters.contract_amount_band,
       reason: "source-request-failed",
     });
   const unavailable=history.state !== "available";

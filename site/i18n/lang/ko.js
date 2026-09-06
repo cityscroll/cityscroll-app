@@ -300,6 +300,8 @@
     buyer_history_all_industries: "모든 산업 분야",
     buyer_history_award_method: "낙찰 방식",
     buyer_history_all_award_methods: "모든 낙찰 방식",
+    buyer_history_amount_band: "금액",
+    buyer_history_all_amount_bands: "모든 금액",
     buyer_history_metric_contracts: "등록 계약",
     buyer_history_metric_after_start: "개시일 이후 등록",
     buyer_history_metric_before_on_start: "개시일 이전 또는 당일 등록",

@@ -300,6 +300,8 @@
     buyer_history_all_industries: "Все отрасли",
     buyer_history_award_method: "Способ размещения",
     buyer_history_all_award_methods: "Все способы размещения",
+    buyer_history_amount_band: "Сумма",
+    buyer_history_all_amount_bands: "Все суммы",
     buyer_history_metric_contracts: "Зарегистрированные контракты",
     buyer_history_metric_after_start: "Зарегистрированы после начала",
     buyer_history_metric_before_on_start: "Зарегистрированы до начала или в день начала",

@@ -13,6 +13,7 @@ import {
   renderRelatedProcurementContextHtml,
 } from "../site/procurement_related_context.mjs";
 import { AWARD_RANK_SMALL_N_POLICY } from "../site/comparative_award_rank.mjs";
+import { buyerHistoryComparisonFromSolicitation } from "../site/buyer_history_pursuit_comparison.mjs";
 
 const AGENCY = "Department of Parks and Recreation";
 
@@ -283,4 +284,19 @@ test("a benchmark below the rank floor is never reported, even when candidates a
   assert.equal(view.amount_benchmark, null);
   const html = renderRelatedProcurementContextHtml(view);
   assert.doesNotMatch(html, /related-context-benchmark/);
+});
+
+test("buyer-history comparison is a registered-contract cohort, not the related-context candidate list", () => {
+  const related = buildRelatedProcurementContext({
+    subject: subject({ pin: "84626B0083" }),
+    candidates: [{ id: "REQ-PRIOR", epin: "846-2026-0001", pin: "84626B0083", contract_id: "CT-1" }],
+  });
+  const comparison = buyerHistoryComparisonFromSolicitation({
+    agency_name: "Parks and Recreation",
+    category_description: "Construction/Construction Services",
+    selection_method_description: "Competitive Sealed Bids",
+  });
+  assert.ok((related?.exact_chain?.length || 0) <= 1);
+  assert.match(comparison.href, /ap_industry=/);
+  assert.equal(comparison.population, "registered_contracts_in_selected_fiscal_year");
 });

@@ -1,0 +1,64 @@
+{
+  "schema": "cityscroll.buyer-history-pursuit-comparison.capture.v1",
+  "note": "Textual capture manifest. No image binaries are committed; local captures stay under the ignored .artifacts/ path.",
+  "route": "/browse/contracts/?mode=award&ap_agency=<buyer>&ap_fy=<registration fiscal year>&ap_industry=<industry>&ap_award_method=<method>&ap_amount_band=<optional band>&ap_cases=1",
+  "surface": "site/buyer_history_pursuit_comparison.mjs plus site/procurement_pursuit_snapshot.mjs [data-buyer-history-comparison] and site/buyer_contracting_history_view.mjs #buyer-history",
+  "revision": "aa6eafeac45b5801d00feb5c9ade106a02465f88",
+  "runner": "test/functional/30_buyer_contracting_history.py",
+  "data_vintage": "2026-09-06 Checkbook NYC Contracts / registered / expense / fiscal_year=2026, bounded retained subset; retained City Record notices 20260608045, 20260720022, and 20251118032",
+  "inputs": [
+    {
+      "path": "test/fixtures/buyer_contracting_history_fy2026_slices.json",
+      "sha256": "b4ffddf95e63075e937a271f5165d2f99cf2e9ef7a115f7a7d673433a2511d4c"
+    },
+    {
+      "path": "test/fixtures/buyer_contracting_history_fy2026_ledger.json",
+      "sha256": "197431113eafdaf5228e3607a7286d9adb91996a100de2e90093698fbf2d5214"
+    },
+    {
+      "path": "site/buyer_history_pursuit_comparison.mjs",
+      "sha256": "336597c3b351df55b59f5f1cabfe7a9f0ee787d87bff14f58b92d1feae3efcf9"
+    }
+  ],
+  "captures": [
+    {
+      "assertion": "Parks notice 20260608045 opens buyer Parks with FY2026 Construction Services and COMPETITIVE SEALED BIDDING at 5 of 40.",
+      "population": "measured",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "/browse/contracts/?mode=award&ap_agency=Department of Parks and Recreation&ap_fy=2026&ap_industry=Construction Services&ap_award_method=COMPETITIVE SEALED BIDDING",
+      "sha256": "1303570ae9a0032531360763d9dbbb1991e2aa62f3689e3e2f3dcf04c42e15ab"
+    },
+    {
+      "assertion": "Choosing $1 million\u2013under $10 million changes both count and inspectable cases to 4 of 31; clearing the amount restores 5 of 40.",
+      "population": "measured",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "route": "/browse/contracts/?mode=award&ap_agency=Department of Parks and Recreation&ap_fy=2026&ap_industry=Construction Services&ap_award_method=COMPETITIVE SEALED BIDDING&ap_amount_band=$1 million\u2013$9.99 million&ap_cases=1",
+      "sha256": "961dabed78086cb60920ee29880201d85818007955bc04346d6962d788ac030a"
+    },
+    {
+      "assertion": "DOT notice 20260720022 does not auto-select Professional Services; the explicit FY2026 Professional Services/RFP choice yields 5 of 6 inspectable records without a percentile badge.",
+      "population": "measured",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "/browse/contracts/?mode=award&ap_agency=Department of Transportation&ap_fy=2026&ap_industry=Professional Services&ap_award_method=REQUEST FOR PROPOSAL (RFP)&ap_cases=1",
+      "sha256": "2cb7e8e64d94fffc427f1e02311eadb9bf3c0a6673e0addb852b9fea8e9abac6"
+    },
+    {
+      "assertion": "DHS Human Services/RFP FROM A PQVL yields 29 of 31 from buyer history. Broad Services leaves industry unrestricted.",
+      "population": "measured",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "0484fed6b7a17abe19cfe02e393ed0f1125eaec860addfa966aa49075e374dbc"
+    }
+  ]
+}

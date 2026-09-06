@@ -458,9 +458,27 @@ function analyticalControlsFilters(){
     registration_fiscal_year: $("#analytics-fy")?.value || null,
     industry: $("#analytics-industry")?.value || null,
     award_method: $("#analytics-award-method")?.value || null,
+    contract_amount_band: $("#analytics-amount-band")?.value || null,
     min_amount: $("#analytics-min")?.value || null,
     max_amount: $("#analytics-max")?.value || null,
   };
+}
+
+function writeBuyerHistoryComparisonQuery(push){
+  const params=new URLSearchParams(location.search);
+  if(!params.get("mode")) params.set("mode","award");
+  const set=(key,value)=>{
+    if(value) params.set(key,value);
+    else params.delete(key);
+  };
+  set("ap_fy", $("#analytics-fy")?.value);
+  set("ap_industry", $("#analytics-industry")?.value);
+  set("ap_award_method", $("#analytics-award-method")?.value);
+  set("ap_amount_band", $("#analytics-amount-band")?.value);
+  const query=params.toString();
+  const next=`${location.pathname}${query?`?${query}`:""}${location.hash}`;
+  if(push) history.pushState(null,"",next);
+  else history.replaceState(null,"",next);
 }
 
 // The comparison controls list only values the published population actually
@@ -841,7 +859,7 @@ async function renderAnalyticalProjection(rows){
   if(coveragePanel) coveragePanel.hidden=false;
   const controls=analyticalControlsFilters();
   if(urlFilters.registration_fiscal_year && [...($("#analytics-fy")?.options || [])].some((option)=>option.value===urlFilters.registration_fiscal_year)) $("#analytics-fy").value=urlFilters.registration_fiscal_year;
-  const filters={...controls, agency:urlFilters.agency, prime_vendor:urlFilters.prime_vendor, contract_amount_band:urlFilters.contract_amount_band};
+  const filters={...controls, agency:urlFilters.agency, prime_vendor:urlFilters.prime_vendor, contract_amount_band:controls.contract_amount_band || urlFilters.contract_amount_band};
   // A drill-through scope is authoritative for the population shown in the
   // ordinary list, while the panel still lets the reader change its grouping.
   if(urlFilters.registration_fiscal_year) filters.registration_fiscal_year=urlFilters.registration_fiscal_year;
@@ -851,6 +869,7 @@ async function renderAnalyticalProjection(rows){
   // `controls` already carries the reader's own choices; a URL scope wins.
   syncBuyerHistoryComparisonControls(projectionRows,urlFilters,buyerHistoryUi());
   for(const key of ["industry","award_method"]) if(urlFilters[key]) filters[key]=urlFilters[key];
+  if(urlFilters.contract_amount_band && !controls.contract_amount_band) filters.contract_amount_band=urlFilters.contract_amount_band;
   renderBuyerHistoryPanel(readableProjectionRows,registeredProjection,{
     ...urlFilters,
     destination_candidates: (currentMoneyLineageRows || currentRows || []).filter((row)=>row?.contract_id || row?.canonical_href),
@@ -1004,15 +1023,25 @@ function bindAnalyticalControls(){
       loadAnalyticalProjection().then(renderAnalyticalProjection).catch(()=>{});
     });
   }
-  ["#analytics-view","#analytics-group","#analytics-measure","#analytics-fy","#analytics-industry","#analytics-award-method","#analytics-min","#analytics-max","#analytics-coverage-threshold","#analytics-coverage-band"].forEach((selector)=>{
+  ["#analytics-view","#analytics-group","#analytics-measure","#analytics-fy","#analytics-industry","#analytics-award-method","#analytics-amount-band","#analytics-min","#analytics-max","#analytics-coverage-threshold","#analytics-coverage-band"].forEach((selector)=>{
     const element=$(selector);
     if(!element || element.dataset.analyticsBound) return;
     element.dataset.analyticsBound="1";
     element.addEventListener("change",()=>{
+      if(["#analytics-fy","#analytics-industry","#analytics-award-method","#analytics-amount-band"].includes(selector)){
+        writeBuyerHistoryComparisonQuery(true);
+      }
       if(!analyticalProjectionPromise) return;
       analyticalProjectionPromise.then(renderAnalyticalProjection).catch(()=>{});
     });
   });
+  if(!window.__buyerHistoryComparisonPopstate){
+    window.__buyerHistoryComparisonPopstate=true;
+    addEventListener("popstate",()=>{
+      if(!analyticalProjectionPromise) return;
+      analyticalProjectionPromise.then(renderAnalyticalProjection).catch(()=>{});
+    });
+  }
 }
 
 async function search(){

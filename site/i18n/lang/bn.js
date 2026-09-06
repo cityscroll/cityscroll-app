@@ -300,6 +300,8 @@
     buyer_history_all_industries: "সব শিল্পক্ষেত্র",
     buyer_history_award_method: "চুক্তি প্রদানের পদ্ধতি",
     buyer_history_all_award_methods: "সব প্রদান পদ্ধতি",
+    buyer_history_amount_band: "পরিমাণ",
+    buyer_history_all_amount_bands: "সব পরিমাণ",
     buyer_history_metric_contracts: "নিবন্ধিত চুক্তি",
     buyer_history_metric_after_start: "শুরুর পরে নিবন্ধিত",
     buyer_history_metric_before_on_start: "শুরুর আগে বা শুরুর দিনে নিবন্ধিত",

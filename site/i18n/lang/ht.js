@@ -299,6 +299,8 @@
     buyer_history_all_industries: "Tout sektè",
     buyer_history_award_method: "Metòd atribisyon",
     buyer_history_all_award_methods: "Tout metòd atribisyon",
+    buyer_history_amount_band: "Montan",
+    buyer_history_all_amount_bands: "Tout montan",
     buyer_history_metric_contracts: "Kontra anrejistre",
     buyer_history_metric_after_start: "Anrejistre apre dat kòmansman",
     buyer_history_metric_before_on_start: "Anrejistre anvan oswa jou kòmansman an",

@@ -41,6 +41,7 @@ import {
 import { extractSolicitationProcurementMethod } from "./solicitation_procurement_method.mjs";
 import { buildSolicitationMwbeView } from "./mwbe_goal_surface.mjs";
 import { buildPursuitSnapshot, renderPursuitSnapshotHtml } from "./procurement_pursuit_snapshot.mjs";
+import { buyerHistoryComparisonFromSolicitation } from "./buyer_history_pursuit_comparison.mjs";
 import { buildRelatedProcurementContext, renderRelatedProcurementContextHtml } from "./procurement_related_context.mjs";
 import {
   buildProjectContextView,
@@ -429,6 +430,15 @@ function pursuitSnapshotFor(object, observations, facts, window, occurrences, pr
   const amountOpt = Number.isFinite(numericAmount) && numericAmount > 0
     ? { value: numericAmount, status: "observed" }
     : undefined;
+  const buyerHistoryComparison = buyerHistoryComparisonFromSolicitation({
+    request_id: cityRecordRow?.request_id,
+    agency_name: cityRecordRow?.agency_name || facts.agency,
+    category_description: cityRecordRow?.category_description,
+    selection_method_description: cityRecordRow?.selection_method_description || facts.method,
+    contract_amount: cityRecordRow?.contract_amount,
+  }, {
+    amount: Number.isFinite(numericAmount) && numericAmount > 0 ? numericAmount : null,
+  });
 
   const epin = object?.identity_keys?.epins?.[0] || rfxRow?.epin || cityRecordRow?.pin || null;
   const sourceStatusLabel = rfxRow?.rfx_status || cityRecordRow?.type_of_notice_description
@@ -459,6 +469,7 @@ function pursuitSnapshotFor(object, observations, facts, window, occurrences, pr
     source_status_label: sourceStatusLabel,
     cityscroll_url: `https://cityscroll.org${procurementCanonicalHref(object)}`,
     preference_match: preferenceMatch || null,
+    buyer_history_href: buyerHistoryComparison.href,
   });
 }
 

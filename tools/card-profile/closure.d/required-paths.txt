@@ -28,6 +28,7 @@ architecture/evidence.d/cityscroll-civic-institutions--ci-i1-borough-office-boar
 architecture/evidence.d/cityscroll-civic-institutions--ci-j1-governing-board-committee-meetings.json
 architecture/evidence.d/cityscroll-civic-institutions--ci-k1-compatibility-uncertainty-navigation.json
 architecture/evidence.d/cityscroll-engineering--exact-council-matter-watch-updates.json
+architecture/evidence.d/cityscroll-engineering--buyer-history-pursuit-comparison.json
 architecture/evidence.d/cityscroll-engineering--shared-dependency-store.json
 architecture/evidence.d/cityscroll-engineering--working-copy-footprint.json
 architecture/evidence.d/cityscroll-frictionless-subscribe--fs-14-home-following-entry.json
@@ -143,6 +144,7 @@ docs/adr/source-vault.md
 docs/adr/static-first.md
 docs/adr/subject-registry.md
 docs/architecture.md
+docs/evidence/buyer-history-pursuit-comparison/capture-manifest.json
 docs/evidence/ci-09-working-copy-reduction/raw/closure/agents-router.json
 docs/evidence/ci-09-working-copy-reduction/raw/closure/architecture-canaries.json
 docs/evidence/ci-09-working-copy-reduction/raw/closure/architecture-evidence-shards.json
@@ -366,6 +368,7 @@ site/browse_concept_view.mjs
 site/browse_list_contract.mjs
 site/browse_surface_contracts.mjs
 site/browse_view.mjs
+site/buyer_history_pursuit_comparison.mjs
 site/calendar_occurrence.mjs
 site/calendar_subscription.mjs
 site/canonical_entity_interpretation.mjs
@@ -1830,6 +1833,7 @@ tools/reconcile_architecture.mjs
 tools/refresh_land_zap_freshness.mjs
 tools/release_surface_reconciliation.mjs
 tools/render_alert_temporal_email.mjs
+tools/render_buyer_history_pursuit_fixtures.mjs
 tools/render_civic_action_paths_after.mjs
 tools/render_community_board_ways_to_participate.mjs
 tools/render_digest_awareness_evidence.mjs

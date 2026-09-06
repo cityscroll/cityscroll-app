@@ -302,6 +302,8 @@
     buyer_history_all_industries: "تمام شعبے",
     buyer_history_award_method: "معاہدہ دینے کا طریقہ",
     buyer_history_all_award_methods: "تمام طریقے",
+    buyer_history_amount_band: "رقم",
+    buyer_history_all_amount_bands: "تمام رقوم",
     buyer_history_metric_contracts: "رجسٹرڈ معاہدے",
     buyer_history_metric_after_start: "آغاز کے بعد رجسٹرڈ",
     buyer_history_metric_before_on_start: "آغاز سے پہلے یا اسی دن رجسٹرڈ",

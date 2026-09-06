@@ -208,7 +208,7 @@ function officialActionSection(atom, opts) {
  * plus pursuit-specific additions (epin, source_status_label, mwbe_view,
  * procurement_method, official_source_items, passport_action,
  * explicit_package_url, last_observed_at, important_dates, response_floor,
- * amount_benchmark, related_history_href, contextual_page_href,
+ * amount_benchmark, related_history_href, buyer_history_href, contextual_page_href,
  * preference_match, nativeSolicitationStage).
  */
 export function buildPursuitSnapshot(row = {}, opts = {}) {
@@ -243,6 +243,7 @@ export function buildPursuitSnapshot(row = {}, opts = {}) {
       preference_reasons: preferenceMatchSection(opts.preference_match),
       amount_benchmark: opts.amount_benchmark || null,
       related_history_href: text(opts.related_history_href),
+      buyer_history_href: text(opts.buyer_history_href),
       contextual_page_href: text(opts.contextual_page_href),
     },
     official_action: officialActionSection(atom, opts),
@@ -388,6 +389,9 @@ function fitContextSectionHtml(fitContext) {
   }
   if (fitContext.amount_benchmark?.label) {
     parts.push(`<p class="pursuit-benchmark">${esc(fitContext.amount_benchmark.label)}</p>`);
+  }
+  if (fitContext.buyer_history_href) {
+    parts.push(`<p><a class="pursuit-context-link pursuit-buyer-history-link" data-buyer-history-comparison="1" href="${esc(fitContext.buyer_history_href)}">This buyer's registered contracting history</a></p>`);
   }
   if (fitContext.related_history_href) {
     parts.push(`<p><a class="pursuit-context-link" href="${esc(fitContext.related_history_href)}">Related procurement history</a></p>`);

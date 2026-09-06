@@ -76,8 +76,15 @@ function fixtureADetailHtml(refs, observations) {
 }
 
 test("Fixture A: dense solicitation renders a complete pursuit snapshot near the top of detail", () => {
-  const html = fixtureADetailHtml([RFX_REF, SOLICITATION_REF], [rfxObservation(), cityRecordObservation()]);
+  const html = fixtureADetailHtml([RFX_REF, SOLICITATION_REF], [rfxObservation(), cityRecordObservation({
+    agency_name: "Department of Parks and Recreation",
+    category_description: "Construction/Construction Services",
+    selection_method_description: "Competitive Sealed Bids",
+  })]);
   assert.ok(html.includes("pursuit-snapshot"), "pursuit snapshot section must render");
+  assert.match(html, /data-buyer-history-comparison="1"/);
+  assert.match(html, /ap_industry=Construction(\+|%20)Services/);
+  assert.match(html, /ap_award_method=COMPETITIVE(\+|%20)SEALED(\+|%20)BIDDING/);
   assert.ok(html.indexOf("pursuit-snapshot") < html.indexOf("Contract facts"), "snapshot must sit above the existing lifecycle sections (rule 10)");
   assert.match(html, /Department of Parks and Recreation/);
   assert.match(html, /Playground reconstruction/);

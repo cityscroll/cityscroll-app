@@ -300,6 +300,8 @@
     buyer_history_all_industries: "所有行业",
     buyer_history_award_method: "授予方式",
     buyer_history_all_award_methods: "所有授予方式",
+    buyer_history_amount_band: "金额",
+    buyer_history_all_amount_bands: "全部金额",
     buyer_history_metric_contracts: "已登记合同",
     buyer_history_metric_after_start: "开始日之后登记",
     buyer_history_metric_before_on_start: "开始日当天或之前登记",
