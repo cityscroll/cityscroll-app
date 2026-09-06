@@ -19,6 +19,7 @@ import { collectNychaPages } from "../warehouse/scripts/checkbook_nycha_contract
 import { buildProcurementObjects } from "../site/procurement_object_contract.mjs";
 import { renderProcurementDocument } from "../site/procurement_document.mjs";
 import { readKeywordSearchIndexFromShards } from "../site/keyword_search_index_shards.mjs";
+import { readProcurementBrowsePopulation } from "../tools/lib/procurement_browse_population_io.mjs";
 
 const xml = `<response><status><result>success</result></status><record_count>1</record_count><transaction><contract_id>BA2335819</contract_id><record_type>Agreement</record_type><vendor>VITAL PLUMBING INC</vendor><pin>19056829</pin><purpose>Steam control valve work</purpose><contract_start_date>2025-01-14</contract_start_date><contract_end_date>2028-01-13</contract_end_date><contract_current_amount>4348681.74</contract_current_amount></transaction></response>`;
 
@@ -101,7 +102,7 @@ test("re-ingestion preserves one source identity and one canonical contract iden
 });
 
 test("frozen native row reaches shared search, agency, vendor, and detail artifacts", () => {
-  const browse = JSON.parse(readFileSync("site/data/procurement_browse_rows.json", "utf8"));
+  const browse = readProcurementBrowsePopulation("site/data/procurement_browse_rows.json");
   const nativeRows = browse.rows.filter((row) => row.contract_id === "BA2335819");
   assert.equal(nativeRows.length, 1);
   assert.equal(nativeRows[0].vendor_name, "VITAL PLUMBING INC");

@@ -21,6 +21,9 @@ from playwright.sync_api import sync_playwright
 
 
 ROOT = pathlib.Path(__file__).parents[2]
+sys.path.insert(0, str(ROOT / "tools" / "lib"))
+from procurement_browse_population import read_browse_population  # noqa: E402
+
 MANIFEST = json.loads((ROOT / "site" / "demo" / "demo-links.json").read_text())
 with (ROOT / "docs" / "url-migration-map.csv").open(newline="") as migration_file:
     DEMO_ROUTE_TARGETS = {
@@ -329,7 +332,7 @@ def install_demo_routes(page) -> None:
         if response.ok:
             route.fulfill(response=response)
             return
-        browse = json.loads((ROOT / "site" / "data" / "procurement_browse_rows.json").read_text())
+        browse = read_browse_population(ROOT / "site" / "data" / "procurement_browse_rows.json")
         rows = browse.get("rows", []) if isinstance(browse, dict) else []
         query_fields = (
             "procurement_id", "canonical_href", "procurement_stages", "primary_stage",

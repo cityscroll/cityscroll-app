@@ -30,6 +30,7 @@ const DEFAULT_FIXTURE = join(ROOT, "warehouse/fixtures/checkbook-contracts/colle
 const DEFAULT_SOURCE_RECEIPT = join(ROOT, "warehouse/receipts/proof/checkbook_contracts_population_latest.json");
 const DEFAULT_CITY_RECORD_INPUT = join(ROOT, "site/data/ocp_awards_warehouse_lookup.json");
 const DEFAULT_PIN_SOURCE = join(ROOT, "site/data/procurement_browse_rows.json");
+import { readProcurementBrowsePopulation } from "./lib/procurement_browse_population_io.mjs";
 
 function readJson(path) {
   return JSON.parse(readFileSync(path, "utf8"));
@@ -114,7 +115,9 @@ function parseArgs(argv) {
 
 function rowsFromDocument(path) {
   if (!path || !existsSync(path)) return [];
-  const value = readJson(path);
+  // The Browse population is an index over bounded shards; the helper follows
+  // them and returns the whole document, so a plain fixture still reads.
+  const value = readProcurementBrowsePopulation(path);
   return Array.isArray(value) ? value : Array.isArray(value.rows) ? value.rows : [];
 }
 

@@ -89,6 +89,7 @@ function alwaysMaterialized(id) {
 function readJson(path) {
   return JSON.parse(readFileSync(path, "utf8"));
 }
+import { readProcurementBrowsePopulation } from "./lib/procurement_browse_population_io.mjs";
 
 // Mandate predictions are timed against the obligations lookup's own vintage.
 // Reading the ambient clock here would make every committed document differ the
@@ -121,7 +122,9 @@ function loadSources() {
   if (!existsSync(intelligencePath)) {
     throw new Error("Missing site/data/entity_intelligence_lookup.json");
   }
-  const procurementBrowse = existsSync(procurementBrowsePath) ? readJson(procurementBrowsePath) : null;
+  const procurementBrowse = existsSync(procurementBrowsePath)
+    ? readProcurementBrowsePopulation(procurementBrowsePath)
+    : null;
   const authorityRows = (procurementBrowse?.rows || []).filter((row) =>
     (row?.source_systems || []).some((system) => (
       /^mta_/.test(String(system || "")) || system === "nys_contract_reporter"
@@ -142,7 +145,9 @@ function loadSources() {
     regulatory_agenda: existsSync(regulatoryAgendaPath) ? readJson(regulatoryAgendaPath) : null,
     meetings_domain: existsSync(meetingsDomainPath) ? readJson(meetingsDomainPath) : null,
     money_open: existsSync(moneyOpenPath) ? readJson(moneyOpenPath) : null,
-    procurement_browse: existsSync(procurementBrowsePath) ? readJson(procurementBrowsePath) : null,
+    procurement_browse: existsSync(procurementBrowsePath)
+      ? readProcurementBrowsePopulation(procurementBrowsePath)
+      : null,
     cross_spine_gate: existsSync(crossSpineGatePath) ? readJson(crossSpineGatePath) : null,
     authority_procurement: authorityRows.length
       ? { ...procurementBrowse, open_as_of: procurementBrowse.generated_at || null, notices: authorityRows }

@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { mkdtempSync, mkdirSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
@@ -15,6 +15,11 @@ import {
   buildAnalyticalProjectionShardArtifacts,
   combineAnalyticalProjection,
 } from "../site/analytical_projection_shards.mjs";
+import {
+  DEFAULT_PROCUREMENT_BROWSE_POPULATION_SHARD_MAX_BYTES,
+  buildProcurementBrowsePopulationShardArtifacts,
+  combineProcurementBrowsePopulation,
+} from "../site/procurement_browse_population_shards.mjs";
 
 const ROOT = new URL("../", import.meta.url).pathname;
 
@@ -73,12 +78,54 @@ test("every published file this checkout carries keeps its refresh headroom", ()
   );
 });
 
-test("the monolithic Contracts Browse projection is not published", () => {
+test("the Contracts Browse projection is not published", () => {
+  const published = publishedSourceFiles(ROOT);
   assert.equal(
-    publishedSourceFiles(ROOT).some((file) => file.relativePath === "data/procurement_browse_rows.json"),
+    published.some((file) => file.relativePath === "data/procurement_browse_rows.json"),
     false,
     "site/data/procurement_browse_rows.json is a builder input and repository artifact; the "
     + "bounded manifest, query rows and full-row shards are the read path",
+  );
+  assert.deepEqual(
+    published.filter((file) => file.relativePath.startsWith("data/procurement_browse_rows_population/"))
+      .map((file) => file.relativePath),
+    [],
+    "the population shards follow the index they belong to: builder inputs, not published files",
+  );
+});
+
+// The Browse projection is not published, but it is tracked, and the size guard
+// measures every file under site/ as well as the built payload. Hold it to the
+// same index-and-shards shape so a source refresh cannot grow one file past the
+// per-file ceiling again.
+test("the Contracts Browse projection is a bounded index over row shards", () => {
+  const indexPath = join(ROOT, "site/data/procurement_browse_rows.json");
+  const index = JSON.parse(readFileSync(indexPath, "utf8"));
+  assert.equal(
+    Object.prototype.hasOwnProperty.call(index, "rows"),
+    false,
+    "the committed document is the index: its rows belong in the shards it names, or a build-time "
+    + "source refresh puts it back over the 24 MiB Pages guard",
+  );
+  assert.ok(Array.isArray(index.shards) && index.shards.length, "the index must name its shards");
+  assert.ok(
+    statSync(indexPath).size < 1024 * 1024,
+    "the index must stay a small document beside the shards that carry the rows",
+  );
+
+  const directory = join(ROOT, "site/data/procurement_browse_rows_population");
+  assert.deepEqual(
+    readdirSync(directory).sort(),
+    index.shards.map((descriptor) => descriptor.path.split("/").at(-1)).sort(),
+    "every shard the index names is on disk, and no shard is on disk that it does not name",
+  );
+  assert.deepEqual(
+    index.shards
+      .map((descriptor) => ({ path: descriptor.path, bytes: statSync(join(ROOT, "site/data", descriptor.path)).size }))
+      .filter((shard) => shard.bytes > DEFAULT_PROCUREMENT_BROWSE_POPULATION_SHARD_MAX_BYTES)
+      .map((shard) => `${shard.path} (${(shard.bytes / (1024 * 1024)).toFixed(2)} MiB)`),
+    [],
+    "a shard over the 18 MiB ceiling has lost its refresh headroom under the 24 MiB Pages guard",
   );
 });
 
@@ -141,6 +188,26 @@ test("a population too large for one shard is split, and an unsplittable row is 
 
   assert.throws(
     () => buildAnalyticalProjectionShardArtifacts({ rows: [row("CT-HUGE")] }, { maxShardBytes: 512 }),
+    /above the 512-byte shard ceiling/,
+    "a row larger than a whole shard fails the build with the path that cannot be split",
+  );
+});
+
+test("a Browse population too large for one shard is split, and an unsplittable row is refused", () => {
+  const row = (id) => ({ procurement_id: id, short_title: "x".repeat(4096) });
+  const population = {
+    schema: "cityscroll.procurement_browse_rows.v1",
+    generated_at: "2026-09-06T00:00:00.000Z",
+    row_count: 64,
+    rows: Array.from({ length: 64 }, (_, index) => row(`procurement:contract:CT-${index}`)),
+  };
+  const { manifest, shards } = buildProcurementBrowsePopulationShardArtifacts(population, { maxShardBytes: 64 * 1024 });
+  assert.ok(manifest.shards.length > 1, "a population past the ceiling is split across shards");
+  assert.deepEqual(manifest.shards.filter((descriptor) => descriptor.bytes > 64 * 1024), []);
+  assert.deepEqual(combineProcurementBrowsePopulation(manifest, shards), population, "the split round-trips exactly");
+
+  assert.throws(
+    () => buildProcurementBrowsePopulationShardArtifacts({ rows: [row("procurement:contract:CT-HUGE")] }, { maxShardBytes: 512 }),
     /above the 512-byte shard ceiling/,
     "a row larger than a whole shard fails the build with the path that cannot be split",
   );

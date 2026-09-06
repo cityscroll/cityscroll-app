@@ -3,11 +3,13 @@
 # available in the repository without becoming Pages routes.
 #
 # A tracked data file that no route reads is excluded on the same grounds.
-# data/procurement_browse_rows.json is the monolithic Contracts Browse
-# projection: it remains a repository artifact and a builder input, but the
-# read path is the bounded manifest, its query rows and the full-row shards
-# that tools/build_shared_procurement_read_model.mjs writes beside it, so
-# publishing it would ship a second and much larger copy of the same rows.
+# data/procurement_browse_rows.json is the whole Contracts Browse projection:
+# a small index over the bounded row shards under
+# data/procurement_browse_rows_population/. Index and shards remain repository
+# artifacts and builder inputs, but the read path is the bounded manifest, its
+# query rows and the full-row shards that
+# tools/build_shared_procurement_read_model.mjs writes beside them, so
+# publishing them would ship a second and much larger copy of the same rows.
 # data/ocp_awards_warehouse_lookup.json is the materialized award census the
 # procurement builders and the Worker read model consume; no browser route or
 # Pages handler fetches it, and a build-time refresh had already grown it to
@@ -37,6 +39,7 @@ exclude:
   - backlog
   - data/ocp_awards_warehouse_lookup.json
   - data/procurement_browse_rows.json
+  - data/procurement_browse_rows_population
   - data/procurement_spine_sources.json
   - data/source_health_observations.json
   - data/source_vintage_observations.json

@@ -418,6 +418,7 @@
     "site/primary_document_view.mjs",
     "site/process_conformance.mjs",
     "site/procurement_alert_atom.mjs",
+    "site/procurement_browse_population_shards.mjs",
     "site/procurement_browse_query.mjs",
     "site/procurement_browse_read_path.mjs",
     "site/procurement_coverage_labels.mjs",
