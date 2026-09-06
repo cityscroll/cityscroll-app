@@ -1,0 +1,580 @@
+{
+  "schema": "cityscroll.legislative_matter_continuation_evidence.v1",
+  "engineering_record": "cityscroll-engineering/legislative-matter-continuation-availability",
+  "route": "component-harness:matter-continuation",
+  "harness": "test/harness/matter_continuation_harness.html",
+  "renderer": "tools/render_matter_continuation_fixtures.mjs",
+  "fixture_digest": "fd127146bced8154249365ea40cdf25c1421b5c390d25d5a4c5335b4685c3e51",
+  "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+  "data_vintage": "2026-08-10T13:08:13.019Z",
+  "captured_at": "2026-09-06T00:16:51Z",
+  "image_directory": ".artifacts/matter-continuation-availability",
+  "corpus_note": "Every specimen reads the committed retained corpus at the data vintage above. The observations describe that corpus, not live publisher coverage, and no capture claims a cause, an adoption, or a participant result.",
+  "image_policy": "Capture images are written to the ignored local directory above and are never committed. This manifest is the tracked proof: route, viewport, revision, data vintage, assertion and SHA-256 for each capture.",
+  "files": [
+    {
+      "name": "published-local-history-390x844.png",
+      "specimen": "published-local-history",
+      "route": "component-harness:matter-continuation",
+      "harness": "test/harness/matter_continuation_harness.html",
+      "fixture_digest": "fd127146bced8154249365ea40cdf25c1421b5c390d25d5a4c5335b4685c3e51",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 390px a hearing whose matter has a published history offers 'View matter history' to that matter and 'View official matter record' to the rest, every control a real anchor at a 44px target",
+      "observations": {
+        "local_history_controls": [
+          "/matters/78605/"
+        ],
+        "local_history_label": "View matter history",
+        "official_record_labels": [
+          "View official matter record"
+        ],
+        "every_control_is_an_anchor": true,
+        "every_control_meets_the_touch_target": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 70619,
+      "sha256": "ec9782ec26725e52a8a421c7ce3b97a1cb7fe9dab43267db430574cacda80230",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "published-local-history-1440x900.png",
+      "specimen": "published-local-history",
+      "route": "component-harness:matter-continuation",
+      "harness": "test/harness/matter_continuation_harness.html",
+      "fixture_digest": "fd127146bced8154249365ea40cdf25c1421b5c390d25d5a4c5335b4685c3e51",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 1440px a hearing whose matter has a published history offers 'View matter history' to that matter and 'View official matter record' to the rest, every control a real anchor at a 44px target",
+      "observations": {
+        "local_history_controls": [
+          "/matters/78605/"
+        ],
+        "local_history_label": "View matter history",
+        "official_record_labels": [
+          "View official matter record"
+        ],
+        "every_control_is_an_anchor": true,
+        "every_control_meets_the_touch_target": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 79416,
+      "sha256": "ddda847e7f77f54308860719592c0e75fc6c9a945c2cf8c172c71130ec95a8a0",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "single-exact-official-record-390x844.png",
+      "specimen": "single-exact-official-record",
+      "route": "component-harness:matter-continuation",
+      "harness": "test/harness/matter_continuation_harness.html",
+      "fixture_digest": "fd127146bced8154249365ea40cdf25c1421b5c390d25d5a4c5335b4685c3e51",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 390px an exact matter with no published history opens its own official record and advertises no local route",
+      "observations": {
+        "control_count": 1,
+        "label": "View official matter record",
+        "href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79200",
+        "availability": "official_record",
+        "advertises_no_local_route": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 35979,
+      "sha256": "153269457637816e9722032a993425a60b4112fd4ff233b5694edd0be3240c32",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "single-exact-official-record-1440x900.png",
+      "specimen": "single-exact-official-record",
+      "route": "component-harness:matter-continuation",
+      "harness": "test/harness/matter_continuation_harness.html",
+      "fixture_digest": "fd127146bced8154249365ea40cdf25c1421b5c390d25d5a4c5335b4685c3e51",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 1440px an exact matter with no published history opens its own official record and advertises no local route",
+      "observations": {
+        "control_count": 1,
+        "label": "View official matter record",
+        "href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79200",
+        "availability": "official_record",
+        "advertises_no_local_route": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 41840,
+      "sha256": "969a58d5ac47d17cfd6c0864a686f3844877d9d27bc21cd8a2908db9f6ef55f8",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "multiple-exact-matters-390x844.png",
+      "specimen": "multiple-exact-matters",
+      "route": "component-harness:matter-continuation",
+      "harness": "test/harness/matter_continuation_harness.html",
+      "fixture_digest": "fd127146bced8154249365ea40cdf25c1421b5c390d25d5a4c5335b4685c3e51",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 390px a hearing with five exact matters keeps all five as separate choices, each with its own destination, and promotes none of them",
+      "observations": {
+        "choices": [
+          "matter:79201",
+          "matter:79203",
+          "matter:79202",
+          "matter:79204",
+          "matter:79205"
+        ],
+        "distinct_destinations": 5,
+        "prompt": true,
+        "none_promoted": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 84146,
+      "sha256": "cfc887806fe6a131d5c7a1a42a7aae78e5109e49ea7800ce3dbc1089278fc220",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "multiple-exact-matters-1440x900.png",
+      "specimen": "multiple-exact-matters",
+      "route": "component-harness:matter-continuation",
+      "harness": "test/harness/matter_continuation_harness.html",
+      "fixture_digest": "fd127146bced8154249365ea40cdf25c1421b5c390d25d5a4c5335b4685c3e51",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 1440px a hearing with five exact matters keeps all five as separate choices, each with its own destination, and promotes none of them",
+      "observations": {
+        "choices": [
+          "matter:79201",
+          "matter:79203",
+          "matter:79202",
+          "matter:79204",
+          "matter:79205"
+        ],
+        "distinct_destinations": 5,
+        "prompt": true,
+        "none_promoted": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 90604,
+      "sha256": "2a1988c11df1fcc3fde77c6a838dafc7c0410aeed87170662ab1af0a333de7a5",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "unmatched-notice-390x844.png",
+      "specimen": "unmatched-notice",
+      "route": "component-harness:matter-continuation",
+      "harness": "test/harness/matter_continuation_harness.html",
+      "fixture_digest": "fd127146bced8154249365ea40cdf25c1421b5c390d25d5a4c5335b4685c3e51",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 390px an unmatched notice offers no matter and no substitute destination, and says why instead",
+      "observations": {
+        "continuation_state": "unmatched",
+        "control_count": 0,
+        "links_inside_the_continuation": 0,
+        "states_the_absence": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 24625,
+      "sha256": "06ca0958b05125903870a31e9a919f2aec67aa87719cfea317533944abbc0b68",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "unmatched-notice-1440x900.png",
+      "specimen": "unmatched-notice",
+      "route": "component-harness:matter-continuation",
+      "harness": "test/harness/matter_continuation_harness.html",
+      "fixture_digest": "fd127146bced8154249365ea40cdf25c1421b5c390d25d5a4c5335b4685c3e51",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 1440px an unmatched notice offers no matter and no substitute destination, and says why instead",
+      "observations": {
+        "continuation_state": "unmatched",
+        "control_count": 0,
+        "links_inside_the_continuation": 0,
+        "states_the_absence": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 29600,
+      "sha256": "cdcd5564f0ee426b50a291f4e10d4acf58e27a3bb142c279abb29e47a8ed2f75",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "unavailable-destination-390x844.png",
+      "specimen": "unavailable-destination",
+      "route": "component-harness:matter-continuation",
+      "harness": "test/harness/matter_continuation_harness.html",
+      "fixture_digest": "fd127146bced8154249365ea40cdf25c1421b5c390d25d5a4c5335b4685c3e51",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 390px an exact matter with no reachable record keeps its identity visible and states the absence rather than offering a dead control",
+      "observations": {
+        "control_count": 0,
+        "identity_still_visible": true,
+        "states_the_absence": "No matter record is available to open for this identity yet.",
+        "links_inside_the_continuation": 0,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 35585,
+      "sha256": "022dd239da14f0eaf9ad3a443331805227030746b4819baa6d1d70405e9001b9",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "unavailable-destination-1440x900.png",
+      "specimen": "unavailable-destination",
+      "route": "component-harness:matter-continuation",
+      "harness": "test/harness/matter_continuation_harness.html",
+      "fixture_digest": "fd127146bced8154249365ea40cdf25c1421b5c390d25d5a4c5335b4685c3e51",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 1440px an exact matter with no reachable record keeps its identity visible and states the absence rather than offering a dead control",
+      "observations": {
+        "control_count": 0,
+        "identity_still_visible": true,
+        "states_the_absence": "No matter record is available to open for this identity yet.",
+        "links_inside_the_continuation": 0,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 40644,
+      "sha256": "620de3f51375fd576ba88e02f12cea56b75a3e128e74256e365b44ee75768801",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "keyboard-and-return-390x844.png",
+      "specimen": "keyboard-and-return",
+      "route": "component-harness:matter-continuation",
+      "harness": "test/harness/matter_continuation_harness.html",
+      "fixture_digest": "fd127146bced8154249365ea40cdf25c1421b5c390d25d5a4c5335b4685c3e51",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 390px the destination is reached from the keyboard alone, and browser Back returns to the same meeting with its scope and continuation state intact and the control focusable again",
+      "observations": {
+        "keyboard_focus_reached_the_control": "matter:78605",
+        "activated_by_keyboard": true,
+        "destination": "/matters/78605/",
+        "returned_to_the_meeting": true,
+        "meeting_scope_preserved": true,
+        "continuation_state_preserved": true,
+        "control_refocusable_after_return": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 70619,
+      "sha256": "ec9782ec26725e52a8a421c7ce3b97a1cb7fe9dab43267db430574cacda80230",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "keyboard-and-return-1440x900.png",
+      "specimen": "keyboard-and-return",
+      "route": "component-harness:matter-continuation",
+      "harness": "test/harness/matter_continuation_harness.html",
+      "fixture_digest": "fd127146bced8154249365ea40cdf25c1421b5c390d25d5a4c5335b4685c3e51",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 1440px the destination is reached from the keyboard alone, and browser Back returns to the same meeting with its scope and continuation state intact and the control focusable again",
+      "observations": {
+        "keyboard_focus_reached_the_control": "matter:78605",
+        "activated_by_keyboard": true,
+        "destination": "/matters/78605/",
+        "returned_to_the_meeting": true,
+        "meeting_scope_preserved": true,
+        "continuation_state_preserved": true,
+        "control_refocusable_after_return": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 79416,
+      "sha256": "ddda847e7f77f54308860719592c0e75fc6c9a945c2cf8c172c71130ec95a8a0",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "modified-click-390x844.png",
+      "specimen": "modified-click",
+      "route": "component-harness:matter-continuation",
+      "harness": "test/harness/matter_continuation_harness.html",
+      "fixture_digest": "fd127146bced8154249365ea40cdf25c1421b5c390d25d5a4c5335b4685c3e51",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 390px the destination is an ordinary anchor: a modified click is handed to the browser and leaves the meeting in place, and a plain click still navigates",
+      "observations": {
+        "destination": "/matters/78605/",
+        "modified_click_opened_a_separate_context": true,
+        "modified_click_left_the_meeting_in_place": true,
+        "plain_click_still_reaches_the_destination": true,
+        "returned_to_the_meeting": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 70619,
+      "sha256": "ec9782ec26725e52a8a421c7ce3b97a1cb7fe9dab43267db430574cacda80230",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "modified-click-1440x900.png",
+      "specimen": "modified-click",
+      "route": "component-harness:matter-continuation",
+      "harness": "test/harness/matter_continuation_harness.html",
+      "fixture_digest": "fd127146bced8154249365ea40cdf25c1421b5c390d25d5a4c5335b4685c3e51",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 1440px the destination is an ordinary anchor: a modified click is handed to the browser and leaves the meeting in place, and a plain click still navigates",
+      "observations": {
+        "destination": "/matters/78605/",
+        "modified_click_opened_a_separate_context": true,
+        "modified_click_left_the_meeting_in_place": true,
+        "plain_click_still_reaches_the_destination": true,
+        "returned_to_the_meeting": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 79416,
+      "sha256": "ddda847e7f77f54308860719592c0e75fc6c9a945c2cf8c172c71130ec95a8a0",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "two-hundred-percent-zoom-390x844.png",
+      "specimen": "two-hundred-percent-zoom",
+      "route": "component-harness:matter-continuation",
+      "harness": "test/harness/matter_continuation_harness.html",
+      "fixture_digest": "fd127146bced8154249365ea40cdf25c1421b5c390d25d5a4c5335b4685c3e51",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 390px zoomed to 200% every matter choice is still present, still an anchor at a 44px target, and the page does not scroll sideways",
+      "observations": {
+        "css_viewport_at_200_percent": [
+          195,
+          422
+        ],
+        "controls_still_present": 5,
+        "every_control_still_an_anchor": true,
+        "every_control_meets_the_touch_target": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 90621,
+      "sha256": "e19963ee770102ec83fe72a537bc0fd1506900cd6e5a4f373576ae73349807d6",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "two-hundred-percent-zoom-1440x900.png",
+      "specimen": "two-hundred-percent-zoom",
+      "route": "component-harness:matter-continuation",
+      "harness": "test/harness/matter_continuation_harness.html",
+      "fixture_digest": "fd127146bced8154249365ea40cdf25c1421b5c390d25d5a4c5335b4685c3e51",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "enabled",
+      "assertion": "at 1440px zoomed to 200% every matter choice is still present, still an anchor at a 44px target, and the page does not scroll sideways",
+      "observations": {
+        "css_viewport_at_200_percent": [
+          720,
+          450
+        ],
+        "controls_still_present": 5,
+        "every_control_still_an_anchor": true,
+        "every_control_meets_the_touch_target": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 88490,
+      "sha256": "a71ab3cc6ba3a0812b2923bfd1acb180ecb5652b90edd662c29d373f1edf8f83",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "without-scripting-390x844.png",
+      "specimen": "without-scripting",
+      "route": "component-harness:matter-continuation",
+      "harness": "test/harness/matter_continuation_harness.html",
+      "fixture_digest": "fd127146bced8154249365ea40cdf25c1421b5c390d25d5a4c5335b4685c3e51",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "disabled",
+      "assertion": "at 390px a reader without scripting receives the same labelled destination and activating it navigates, with Back returning to the meeting",
+      "observations": {
+        "scripting": "disabled",
+        "control_count": 1,
+        "label": "View official matter record",
+        "href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79200",
+        "navigated": true,
+        "returned_to_the_meeting": true
+      },
+      "bytes": 35979,
+      "sha256": "153269457637816e9722032a993425a60b4112fd4ff233b5694edd0be3240c32",
+      "axe": {
+        "violations_total": null,
+        "failing_violations": [],
+        "passes": true,
+        "note": "axe-core needs scripting; this specimen is the no-scripting read of a page axe already passed with scripting on"
+      }
+    },
+    {
+      "name": "without-scripting-1440x900.png",
+      "specimen": "without-scripting",
+      "route": "component-harness:matter-continuation",
+      "harness": "test/harness/matter_continuation_harness.html",
+      "fixture_digest": "fd127146bced8154249365ea40cdf25c1421b5c390d25d5a4c5335b4685c3e51",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "data_vintage": "2026-08-10T13:08:13.019Z",
+      "scripting": "disabled",
+      "assertion": "at 1440px a reader without scripting receives the same labelled destination and activating it navigates, with Back returning to the meeting",
+      "observations": {
+        "scripting": "disabled",
+        "control_count": 1,
+        "label": "View official matter record",
+        "href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79200",
+        "navigated": true,
+        "returned_to_the_meeting": true
+      },
+      "bytes": 41840,
+      "sha256": "969a58d5ac47d17cfd6c0864a686f3844877d9d27bc21cd8a2908db9f6ef55f8",
+      "axe": {
+        "violations_total": null,
+        "failing_violations": [],
+        "passes": true,
+        "note": "axe-core needs scripting; this specimen is the no-scripting read of a page axe already passed with scripting on"
+      }
+    }
+  ]
+}

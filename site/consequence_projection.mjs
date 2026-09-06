@@ -276,7 +276,7 @@ export function councilHearingConsequence(record = {}, opts = {}) {
     }
     if (matched && actionPath.continuation?.subject_ref) {
       next_official_action = {
-        label: matter?.outcome ? `Committee action: ${matter.outcome}` : "Follow what happens next",
+        label: matter?.outcome ? `Committee action: ${matter.outcome}` : "Matter continuation",
         date: outcome?.event?.date || null,
         status: matter?.outcome || "matter_continuation",
         source_url: matter?.matter_url || outcome?.event?.url || sourceUrl,

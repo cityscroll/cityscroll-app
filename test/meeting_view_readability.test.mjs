@@ -12,6 +12,7 @@ import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import { buildMeetingOutcomes } from "../worker/src/lib/meeting_outcomes.mjs";
 import { buildPhaseViewForMatter } from "../site/meeting_phase_spine.mjs";
+import { resolveMatterDestination } from "../site/legislative_matter_availability.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const src = SITE_SOURCE;
@@ -50,7 +51,7 @@ const {
   nonCouncilHearingOutcomesHTML,
   officialHref,
 } = new Function(
-  "t", "fdate", "cleanText", "escUiHtml",
+  "t", "fdate", "cleanText", "escUiHtml", "resolveMatterDestination",
   `
   const extSR = () => '<span class="sr-only"> (opens in new tab)</span>';
   const EXT_ATTRS = 'target="_blank" rel="noopener noreferrer"';
@@ -78,7 +79,7 @@ const {
   extractFn("meetingMatterPhaseHTML") +
   extractFn("meetingOutcomesHTML") +
   `return { meetingOutcomeBucket, collapseMeetingAgenda, meetingOutcomesHTML, meetingMatterPhaseHTML, matterDetailUrl, nonCouncilWhereHTML, nonCouncilHearingOutcomesHTML, meetingRollCallChipHTML, meetingVotesHTML, officialHref };`,
-)(t, fdate, cleanText, escUiHtml);
+)(t, fdate, cleanText, escUiHtml, resolveMatterDestination);
 
 test("outcome bucket maps approve / hold / refer", () => {
   assert.equal(meetingOutcomeBucket("Approved by Subcommittee"), "approved");

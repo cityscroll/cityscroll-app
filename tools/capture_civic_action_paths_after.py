@@ -102,7 +102,7 @@ def observe(page, spec: dict) -> dict:
     for phrase in FORBIDDEN:
         if phrase in lowered:
             raise AssertionError(f"{spec['fixture']} contains forbidden copy: {phrase}")
-    follow = page.get_by_text("Follow what happens next").count()
+    follow = page.locator('[data-action-path-continuation="subject"]').count()
     calendar = page.get_by_text("Add to calendar").count()
     apply_now = page.get_by_text("Apply now").count()
     attend = page.get_by_text("Attend the next board meeting").count()
@@ -145,7 +145,7 @@ def required_rows(captures: list[dict]) -> None:
         if not privately_placed and not file_url.startswith(private_object_root):
             raise AssertionError(f"capture is not an evidence object: {file_url}")
         if row["fixture"] == "strict_matter_join" and row.get("observations", {}).get("follow_cta") is not True:
-            raise AssertionError("strict hearing after-state lost Follow what happens next")
+            raise AssertionError("strict hearing after-state lost its matter continuation control")
         if row["fixture"] == "cb_unknown" and row.get("observations", {}).get("apply_now"):
             raise AssertionError("negative board fabricated Apply now")
 

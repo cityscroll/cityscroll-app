@@ -49,7 +49,7 @@ test("the one-matter Council canary composes an exact subject continuation", () 
   assert.match(html, /data-matter-id="79200"/);
   assert.match(html, /data-action-path-continuation="subject"/);
   assert.match(html, /data-subject-ref="matter:79200"/);
-  assert.match(html, /Follow what happens next/);
+  assert.match(html, /View official matter record/);
 });
 
 test("the materialized meeting document carries the canary continuation without changing ICS identity", () => {
@@ -74,11 +74,11 @@ test("multiple exact matters remain individually selectable", () => {
   assert.equal(path.continuation.ambiguity, "multiple");
   assert.equal(path.process_ref, null);
   const html = renderCouncilHearingMatterContinuation(record);
-  assert.match(html, /Choose a matter to follow/);
+  assert.match(html, /Choose a matter to open/);
   for (const id of ["79201", "79203", "79202", "79204", "79205"]) {
     assert.match(html, new RegExp(`data-subject-ref="matter:${id}"`));
   }
-  assert.doesNotMatch(html, /primary.*matter-follow/);
+  assert.doesNotMatch(html, /primary.*matter-choice/);
 });
 
 test("unmatched notices and logistics hearings do not invent a continuation", () => {

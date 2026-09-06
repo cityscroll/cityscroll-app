@@ -10,6 +10,7 @@ import {
   renderNodeSection,
 } from "./civic_document_chrome.mjs";
 import { renderLegalChangeSummary } from "./legal_change_edges.mjs";
+import { publishedMatterHref } from "./legislative_matter_availability.mjs";
 import {
   buildMatterAppearanceCalendarView,
   MATTER_APPEARANCES_ANCHOR,
@@ -33,9 +34,13 @@ function numericMatterId(value) {
   return /^\d+$/.test(id) ? id : "";
 }
 
-export function matterCanonicalHref(value) {
-  const id = numericMatterId(value);
-  return id ? `/matters/${encodeURIComponent(id)}/` : null;
+/**
+ * The local route for this matter, resolved by the one shared availability rule
+ * against the generation this document was built from -- so a document never
+ * links itself to a route the generation does not publish.
+ */
+export function matterCanonicalHref(value, published) {
+  return publishedMatterHref(value, published === undefined ? {} : { published });
 }
 
 export function officialVoteHref({ personId, eventId, requestId } = {}) {
@@ -137,7 +142,7 @@ export function buildLegislativeMatterDocument(payload = {}, value = "78605") {
     matter_type: clean(source.matter_type, 120) || null,
     matter_status: clean(source.matter_status, 160) || null,
     matter_href: clean(source.matter_href, 1000) || null,
-    canonical_href: matterCanonicalHref(id),
+    canonical_href: matterCanonicalHref(id, payload),
     generated_at: clean(payload.generated_at, 80) || null,
     appearances,
   };

@@ -56,11 +56,16 @@ remains usable when CityScroll cannot ground what should be followed afterward.
 Ontology registration is the kinetic capability `action_path_v0` in
 `ontology/registry.v0.json`. There is no `action_path` semantic object type.
 
-Copy should name the machine part that moves next: “Follow what happens next,”
-“Apply to serve on this committee,” “Applications close Feb 14.” Current
-time-sensitive actions come first, direct participation second, durable
-follow/continuation third, and informational source links last. Calendar
-handoffs and official destinations are not completed participation.
+Copy should name the machine part that moves next: “View official matter record,”
+“Apply to serve on this committee,” “Applications close Feb 14.” A navigation
+control says what the reader will see — “View matter history” for a retained
+history, “View official matter record” for the publisher's own record. Follow
+language is reserved for a saved watch that actually exists, so a link that only
+navigates never implies saved tracking, a subscription, a submission, or
+testimony attribution. Current time-sensitive actions come first, direct
+participation second, durable continuation third, and informational source links
+last. Calendar handoffs and official destinations are not completed
+participation.
 
 ## Continuation safety
 
@@ -102,7 +107,7 @@ Path v0.
 
 | Fixture | City Record | Result |
 | --- | --- | --- |
-| One exact matter | `20260707022` | `matter:79200` / LU 0114-2026 with “Follow what happens next.” The retained outcome is **Laid Over by Subcommittee** after **Hearing Held by Committee**. |
+| One exact matter | `20260707022` | `matter:79200` / LU 0114-2026 with “View official matter record.” The retained outcome is **Laid Over by Subcommittee** after **Hearing Held by Committee**. |
 | Multiple exact matters | `20260707021` | Matters `79201`, `79203`, `79202`, `79204`, `79205` remain individually selectable. There is no single continuation CTA. |
 | No grounded matter | `20260728026` | Unmatched Buildings hearing. No matter continuation is shown. |
 
@@ -243,7 +248,7 @@ map, and the DOT bicycle-racks rules list plus adoption notice, at 1440px and
 
 After-state captures (CAP-6 / CAP-9) are listed in
 [`docs/evidence/civic-action-paths/after/capture-manifest.json`](evidence/civic-action-paths/after/capture-manifest.json).
-They cover the grounded Council hearing with “Follow what happens next” and
+They cover the grounded Council hearing with its matter continuation control and
 the later laid-over matter state, the unmatched hearing with no continuation,
 Manhattan CB2 Ways to participate, Bronx CB2 negative evidence, and DOT T2/T3
 outcome copy without causal claims.

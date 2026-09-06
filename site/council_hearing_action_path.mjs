@@ -1,6 +1,9 @@
 import { buildActionPath } from "./action_path_v0.mjs";
 import { projectCouncilHearingMatterContinuation, STRICT_COUNCIL_MEETING_JOIN_METHOD } from "./council_hearing_matter_continuation.mjs";
 
+/** Stated when an exact matter has no reachable record to open yet. */
+export const MATTER_RECORD_UNAVAILABLE_LABEL = "Matter record not available";
+
 function text(value) {
   const normalized = String(value ?? "").trim();
   return normalized || null;
@@ -60,16 +63,20 @@ export function buildCouncilHearingActionPath(record = {}, outcome = null) {
     evidence,
   };
   if (projection.state === "single") {
-    input.process_ref = projection.matters[0].subject_ref;
+    const [matter] = projection.matters;
+    input.process_ref = matter.subject_ref;
+    // The continuation names where the reader is taken, resolved by the one
+    // availability rule. It is a navigation label, not a promise that anything
+    // was saved on the reader's behalf.
     input.continuation = {
       kind: "subject",
-      subject_ref: projection.matters[0].subject_ref,
-      label: "Follow what happens next",
+      subject_ref: matter.subject_ref,
+      label: matter.destination.label || MATTER_RECORD_UNAVAILABLE_LABEL,
       reason: "This hearing has an exact Council matter join.",
     };
   } else if (projection.state === "multiple") {
     input.continuation = {
-      label: "Choose a matter to follow",
+      label: "Choose a matter to open",
       reason: "This hearing has multiple exact matter joins.",
       candidates: projection.matters.map((matter) => ({
         kind: "subject",

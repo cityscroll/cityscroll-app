@@ -52,7 +52,7 @@ export const REQUIRED_PHRASES = Object.freeze([
   "rules.request_ids",
   "source_does_not_establish",
   "cross_board_inference",
-  "Follow what happens next",
+  "View official matter record",
   "never attributes adoption or effectiveness to a resident comment",
   "unknown never becomes zero",
   "no_action",
@@ -196,7 +196,7 @@ export function documentationFindings(root = ROOT) {
 
   const strict = (after.captures || []).find((row) => row.fixture === "strict_matter_join" && row.viewport === "desktop");
   if (strict && strict.observations?.follow_cta !== true) {
-    findings.push({ message: "strict hearing after-state must show Follow what happens next" });
+    findings.push({ message: "strict hearing after-state must show a matter continuation control" });
   }
   if (strict && strict.observations?.calendar_creates_watch === true) {
     findings.push({ message: "calendar click must remain distinct from Following" });
