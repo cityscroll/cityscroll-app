@@ -268,6 +268,7 @@
     "site/i18n/lang/ur.js",
     "site/i18n/lang/zh-Hans.js",
     "site/incremental_list.mjs",
+    "site/institution_follow_scope.mjs",
     "site/interpret_preview.mjs",
     "site/investigation_comparative_signal.mjs",
     "site/json_prefer_worker.mjs",

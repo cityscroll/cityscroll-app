@@ -279,6 +279,35 @@ test("entity/agency → exact agency query, all sections", () => {
   assert.equal(q.postFilter, undefined);
 });
 
+test("entity/agency with a canonical institution ref matches that body and not a related one", () => {
+  const q = compileSub({
+    lens: "entity",
+    filter: {
+      kind: "agency",
+      name: "Metropolitan Transportation Authority",
+      entity_refs_all: ["agency:id:metropolitan-transportation-authority"],
+    },
+  }, "2026-07-02");
+  assert.match(q.params["$where"], /agency_name='Metropolitan Transportation Authority'/);
+  assert.equal(typeof q.postFilter, "function");
+  assert.equal(q.postFilter({ agency_name: "Metropolitan Transportation Authority" }), true);
+  assert.equal(q.postFilter({ agency_name: "N.Y.C. Transit Authority" }), false);
+});
+
+test("entity/agency with two institution refs fails closed instead of becoming a union", () => {
+  assert.equal(compileSub({
+    lens: "entity",
+    filter: {
+      kind: "agency",
+      name: "Metropolitan Transportation Authority",
+      entity_refs_all: [
+        "agency:id:metropolitan-transportation-authority",
+        "agency:id:n-y-c-transit-authority",
+      ],
+    },
+  }, "2026-07-02"), null);
+});
+
 test("entity: empty or too-short names compile to null", () => {
   assert.equal(compileSub({ lens: "entity", filter: { kind: "vendor", name: "" } }, "2026-07-02"), null);
   assert.equal(compileSub({ lens: "entity", filter: { kind: "vendor", name: "AB" } }, "2026-07-02"), null);

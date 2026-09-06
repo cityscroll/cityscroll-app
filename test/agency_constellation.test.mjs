@@ -441,6 +441,7 @@ test("follow URLs are shareable entity/agency watches", () => {
   assert.match(href, /\/following/);
   assert.match(href, /lens=entity/);
   assert.match(href, /Parks/);
+  assert.match(href, /parks-and-recreation/);
 });
 
 test("empty categories stay honest and never invent items", () => {
@@ -490,7 +491,7 @@ test("rendered document is a parcel-shaped civic object with ER basis stamp", ()
   assert.match(deferred, /data-agency-constellation-category="staffing"/);
   assert.match(deferred, /class="ui-constellation-link agency-edge-link"/);
   assert.match(deferred, /class="ui-official-source-link agency-source-link"/);
-  assert.match(html, />Follow this agency<\/a>/);
+  assert.match(html, />Follow Parks and Recreation<\/a>/);
   assert.doesNotMatch(html, /class="agency-connection-action"/);
   assert.match(deferred, /class="agency-connection-action">View mandates/);
   const actionNav = html.match(/<nav class="node-actions civic-object-actions agency-primary-actions"[\s\S]*?<\/nav>/)?.[0] || "";
@@ -573,7 +574,7 @@ test("shared agency template leads with compact actions and connected-record car
   assert.match(html, /class="agency-hero-meta"/);
   assert.match(primaryActions, /aria-label="Primary agency actions"/);
   assert.equal((primaryActions.match(/<a class="/g) || []).length, 4);
-  assert.match(primaryActions, />Follow this agency<\/a>/);
+  assert.match(primaryActions, />Follow Parks and Recreation<\/a>/);
   // Parks publishes no rulemaking-petition procedure of its own, so the action
   // offers the City's general guidance and carries external-link semantics.
   assert.match(primaryActions, /class="ui-official-source-link node-action[^"]*"[^>]*target="_blank" rel="noopener noreferrer"/);

@@ -607,9 +607,15 @@ function wireSubscribe() {
     // Sync cadence from the refine radio cards before POST.
     updateRuleLine();
     const status = form.querySelector("[data-following-submit-status]");
-    const button = form.querySelector("button" + "[type=submit]");
-    if (status) status.textContent = msg("msgSubmitLoading");
+    const button = form.querySelector("[data-following-subscribe-submit]") || form.querySelector("button" + "[type=submit]");
+    if (status) {
+      status.textContent = msg("msgSubmitLoading");
+      delete status.dataset.followingSubmitFailed;
+    }
     if (button) button.disabled = true;
+    form.querySelector("[data-following-subscribe-retry]")?.remove();
+    const selectedFilter = form.elements.filter?.value;
+    const selectedEmail = form.elements.email?.value;
     try {
       const body = Object.fromEntries(new FormData(form).entries());
       body.filter = JSON.parse(body.filter || "{}");
@@ -628,7 +634,19 @@ function wireSubscribe() {
         setTab("watches", { historyMode: "push" });
       }
     } catch {
-      if (status) status.textContent = msg("msgSubmitError");
+      if (form.elements.filter && selectedFilter) form.elements.filter.value = selectedFilter;
+      if (form.elements.email && selectedEmail) form.elements.email.value = selectedEmail;
+      if (status) {
+        status.textContent = msg("msgSubmitError");
+        status.dataset.followingSubmitFailed = "true";
+      }
+      if (!form.querySelector("[data-following-subscribe-retry]")) {
+        const retry = document.createElement("button");
+        retry.type = "submit";
+        retry.dataset.followingSubscribeRetry = "true";
+        retry.textContent = msg("msgSubmitRetry");
+        form.appendChild(retry);
+      }
     } finally {
       if (button) button.disabled = false;
     }

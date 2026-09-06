@@ -3,6 +3,7 @@
 // templates are unit-tested on their own.
 
 import { communityBoardLabel, normalizeCommunityBoardRef } from "../../../site/community_board_watch.mjs";
+import { interpretStoredInstitutionFollow } from "../../../site/institution_follow_scope.mjs";
 import { PLACE_ROLES, PLACE_ROLE_VERB, placeRoleSupportedForDomain } from "../../../site/scope_v0.mjs";
 
 const LENS_LABEL = {
@@ -113,6 +114,10 @@ export function describeFilter(lens, filter) {
     return `Award watch — notice ${f.requestId || "?"}${f.agency ? ` (${f.agency})` : ""} — you'll hear when the award registers`;
   }
   if (lens === "entity") {
+    const institution = interpretStoredInstitutionFollow({ lens: "entity", filter: f });
+    if (institution.status === "ok") {
+      return `${institution.canonical_name} — ${institution.record_scope}`;
+    }
     const k = f.kind === "agency" ? "agency" : "vendor";
     return `${k} “${f.name || "?"}” — every new public record naming them`;
   }

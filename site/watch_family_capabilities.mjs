@@ -74,7 +74,7 @@ const CAPABILITIES = [
   {
     id: "agency-activity",
     label: "Agency activity",
-    description: "Start with agency records. Edit the agency name before you save.",
+    description: "Start with one public body. Edit the institution name before you save. This is not a group follow.",
     lens: "entity",
     filter: { kind: "agency", name: "an agency" },
     rank: 80,

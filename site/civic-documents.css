@@ -3035,6 +3035,25 @@ select {
   font: 600 .9375rem/1.45 var(--font-interface);
 }
 
+.following-identity-scope,
+.following-identity-correction {
+  margin: var(--space-3) 0 0;
+  color: var(--color-text-soft);
+  font: 500 .9375rem/1.45 var(--font-body);
+}
+
+.following-identity-correction {
+  color: var(--color-text);
+}
+
+.following-subscribe [data-following-subscribe-retry] {
+  min-height: 44px;
+}
+
+.following-subscribe [role="status"][data-following-submit-failed] {
+  color: var(--color-danger);
+}
+
 .following-identity-cadence {
   margin: var(--space-2) 0 0;
   color: var(--color-text-soft);
@@ -3054,6 +3073,9 @@ select {
 
 .following-identity-details summary,
 .following-watch-facts summary {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
   cursor: pointer;
 }
 

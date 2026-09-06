@@ -28,6 +28,7 @@ import {
 } from "./community_board_watch.mjs";
 import { communityBoardPlaceHref } from "./community_board_links.mjs";
 import { rankWatchFamilySuggestions } from "./watch_family_capabilities.mjs";
+import { interpretStoredInstitutionFollow } from "./institution_follow_scope.mjs";
 import {
   followingFocusHref,
   followingPreviewHandoffFromParams,
@@ -409,6 +410,7 @@ export function buildFollowingGraphContext(watch = {}, options = {}) {
   const filter = normalized.filter;
   const boardLabel = communityBoardLabel(filter.communityBoard);
   const entity = entityPivotForWatch(normalized);
+  const institutionFollow = interpretStoredInstitutionFollow(normalized);
   return {
     schema: "cityscroll.following_graph_context.v1",
     ...normalized,
@@ -418,6 +420,7 @@ export function buildFollowingGraphContext(watch = {}, options = {}) {
     scopeSummary: scopeSummary(normalized.lens, filter),
     currentMatchesHref: currentMatchesHref({ ...normalized, frequency }),
     entity,
+    institutionFollow: institutionFollow.status === "not_institution" ? null : institutionFollow,
     topicLabel: LENS_LABELS[normalized.lens] || normalized.lens,
     placeLabel: boardLabel || filter.borough || filter.boro || filter.neighborhood || "Citywide",
     keywordLabel: Array.isArray(filter.keywords) && filter.keywords.length
@@ -511,12 +514,16 @@ function refinementClauses(f) {
 }
 
 function watchIdentityRows(context) {
+  const institution = context.institutionFollow;
   const rows = [
     ["Topic", context.topicLabel, null],
+    ["Institution", institution?.canonical_name || null, null],
+    ["Kind", institution?.kind_label || null, null],
+    ["Record scope", institution?.record_scope || null, null],
     ["Place", context.placeLabel, null],
     ["Community Board", context.communityBoardLabel, null],
     ["Keyword", context.keywordLabel, null],
-    ["Agency", context.agencyLabel, null],
+    ["Agency", institution ? null : context.agencyLabel, null],
     ["Geography", context.districtLabel, null],
   ].filter(([, value]) => value);
   if (context.entity) {
@@ -575,9 +582,30 @@ export function followingWatchIdentityHtml(context, {
       ${entityAction}
     </nav>`
     : "";
-  return `<section class="following-watch-identity${className ? ` ${esc(className)}` : ""}" data-following-watch-identity>
+  const institution = context.institutionFollow;
+  const scope = institution?.record_scope
+    ? `<p class="following-identity-scope" data-following-identity-scope>${escText(institution.record_scope)}</p>`
+    : "";
+  const correction = institution?.correction?.offer
+    ? `<p class="following-identity-correction" data-institution-follow-correction role="status">${escText(institution.correction.offer)}${
+      institution.correction.follow?.status === "ok"
+        ? ` ${constellationLink({
+          href: followingUrlFromWatch({
+            lens: institution.correction.follow.lens,
+            filter: institution.correction.follow.filter,
+          }, { frequency: context.frequency }),
+          label: `Start a new follow for ${institution.correction.follow.canonical_name}`,
+          className: "following-identity-correction-link",
+          escape: esc,
+        })}`
+        : ""
+    }</p>`
+    : "";
+  return `<section class="following-watch-identity${className ? ` ${esc(className)}` : ""}" data-following-watch-identity${institution?.canonical_id ? ` data-institution-id="${esc(institution.canonical_id)}"` : ""}>
     <p class="following-kicker">Watch summary</p><${headingTag}>${esc(heading)}</${headingTag}>
     <p class="following-identity-rule" aria-live="polite" role="status" aria-atomic="true" data-following-identity-rule>${escText(context.ruleSentence)}</p>
+    ${scope}
+    ${correction}
     <p class="following-identity-cadence">Email frequency: <strong data-following-identity-cadence>${esc(cadenceLabel)}</strong></p>
     <details class="following-identity-details">
       <summary>Show technical details</summary>
@@ -659,6 +687,10 @@ export function composeWatchRuleSentence(lens, filter = {}, options = {}) {
     if (projectRef) {
       const project = f.name || projectRef.slice("project:".length);
       return `Notify me when civic processes connected to project ${project} change.`;
+    }
+    const institution = interpretStoredInstitutionFollow({ lens: "entity", filter: f });
+    if (institution.status === "ok" || institution.status === "placeholder") {
+      return institution.rule_sentence;
     }
     const kind = f.kind === "agency" ? "agency" : "vendor";
     const name = f.name || "this name";
@@ -1024,7 +1056,7 @@ function subscribeHtml(view) {
       <input type="hidden" name="freq" value="${esc(view.frequency)}" data-following-subscribe-freq>
       <input type="hidden" name="lang" value="en">
       <label>Email address<input type="email" name="email" required autocomplete="email" inputmode="email" aria-describedby="following-delivery-help"></label>
-      <button type="submit">Create watch</button>
+      <button type="submit" data-following-subscribe-submit>Create watch</button>
       <p id="following-delivery-help" class="following-note" data-following-delivery-help>
         Daily sends when there are matches. Weekly digest sends Monday.
       </p>
@@ -1220,7 +1252,8 @@ export function renderFollowingBody(view) {
     data-msg-preview-error="The quick preview is not ready. Submit again to open the full preview."
     data-msg-submit-loading="Subscribing…"
     data-msg-submit-ready="You're subscribed — we'll email you. Manage or unsubscribe anytime."
-    data-msg-submit-error="We could not create the watch. Check the address and try again."
+    data-msg-submit-error="We could not create the watch. The selected institution and your edits are still here. Try again."
+    data-msg-submit-retry="Try creating this watch again"
     data-msg-personal-saving="Saving…"
     data-msg-personal-saved="Saved."
     data-msg-personal-error="Could not save that change. Try again."
