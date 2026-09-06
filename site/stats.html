@@ -69,7 +69,7 @@
   .lang-select{font:600 12px/1.2 ui-sans-serif,system-ui,sans-serif;padding:8px 28px 8px 10px;min-height:36px;min-width:7.5rem;max-width:12rem;border:1px solid var(--rule-strong);border-radius:8px;background:var(--card);color:var(--ink);cursor:pointer;appearance:auto}
   .lang-notice{font:12px/1.4 var(--ui);color:var(--muted);text-align:center;margin-block-start:4px;padding-inline:22px}
   .skip{position:absolute;left:-9999px;top:0;z-index:99;background:var(--ink);color:#fff;padding:11px 18px;border-radius:0 0 9px 0;font:600 13px/1 var(--ui);text-decoration:none}.skip:focus{left:0}
-  :is(a,button,select,input,textarea,summary):focus-visible{outline:2px solid var(--oxblood);outline-offset:2px}
+  :is(a,button,select,input,textarea,summary,.cov-scroll):focus-visible{outline:2px solid var(--oxblood);outline-offset:2px}
   :lang(zh-Hans),:lang(ko),:lang(bn),:lang(ar),:lang(ur){letter-spacing:normal!important;text-transform:none!important}
   @media(max-width:560px){.wrap{padding-inline:14px}.grid{grid-template-columns:1fr}.lang-switcher{position:static;margin-top:12px;justify-content:center}.stat{padding:16px}.lede{text-align:start}}
 </style>
@@ -178,6 +178,11 @@
     section.append(heading);
 
     const scroll = el("div", "cov-scroll");
+    // The table scrolls sideways on narrow viewports, so the region it scrolls in has to be
+    // reachable and named for a keyboard reader (WCAG 2.1.1) — same shape as the guide tables.
+    scroll.setAttribute("role", "region");
+    scroll.tabIndex = 0;
+    scroll.setAttribute("aria-label", t("stats_domain_" + domain.domain_id));
     const table = el("table", "cov");
     table.append(el("caption", null, t("stats_coverage_caption")));
     const head = document.createElement("thead");
