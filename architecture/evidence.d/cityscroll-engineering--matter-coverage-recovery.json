@@ -1,0 +1,37 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/matter-coverage-recovery",
+  "status": "implemented",
+  "fingerprint": "matter-coverage-recovery.v1",
+  "updated_at": "2026-09-06T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "matter-coverage-recovery-contract",
+      "path": "site/matter_coverage_recovery.mjs"
+    },
+    {
+      "id": "matter-coverage-recovery-receipts",
+      "path": "worker/src/lib/matter_coverage_recovery.mjs"
+    },
+    {
+      "id": "matter-coverage-recovery-operator-view",
+      "path": "worker/src/lib/matter_coverage_recovery_operator_view.mjs"
+    },
+    {
+      "id": "matter-coverage-recovery-decision",
+      "path": "docs/adr/matter-coverage-recovery.md"
+    },
+    {
+      "id": "matter-coverage-recovery-tests",
+      "path": "worker/test/council_matter_coverage_recovery.test.mjs"
+    },
+    {
+      "id": "matter-coverage-recovery-fixture-renderer",
+      "path": "tools/render_matter_coverage_recovery_fixtures.mjs"
+    },
+    {
+      "id": "matter-coverage-recovery-evidence-capture",
+      "path": "tools/capture_matter_coverage_recovery_evidence.py"
+    }
+  ]
+}
