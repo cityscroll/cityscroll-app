@@ -18,11 +18,11 @@ paths. Every rename is a `git mv`, so each file's history follows it.
 
 | Root | Paths renamed |
 | --- | --- |
-| `architecture/evidence.d` | 165 |
+| `architecture/evidence.d` | 164 |
 | `artifacts` | 8 |
 | `data` | 2 |
 | `docs/evidence` | 83 |
-| **Total** | **258** |
+| **Total** | **257** |
 
 ## The rule that keeps them named this way
 
