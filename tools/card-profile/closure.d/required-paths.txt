@@ -1942,6 +1942,7 @@ worker/migrations/0023_civic_time_graph_observations.sql
 worker/migrations/0024_pin_family_verify.sql
 worker/migrations/0025_search_and_ocp_read_models.sql
 worker/migrations/0026_entity_intelligence_read_model.sql
+worker/migrations/0027_matter_observation_journal.sql
 worker/ops-contract.v1.json
 worker/scripts/analytics-dev-token.mjs
 worker/scripts/backfill-history.mjs
@@ -2108,6 +2109,8 @@ worker/src/lib/legistar_join.mjs
 worker/src/lib/legistar_source_records.mjs
 worker/src/lib/lifecycle_coherence.mjs
 worker/src/lib/lineage.mjs
+worker/src/lib/matter_observation_journal.mjs
+worker/src/lib/matter_observation_operator_view.mjs
 worker/src/lib/matter_phase_spine.mjs
 worker/src/lib/meeting_outcomes.mjs
 worker/src/lib/meter.mjs
@@ -2349,6 +2352,7 @@ worker/test/franchise_concession.test.mjs
 worker/test/hearings.test.mjs
 worker/test/helpers/digest_backfill_fixture.mjs
 worker/test/helpers/entity_intelligence_d1.mjs
+worker/test/helpers/matter_observation_d1.mjs
 worker/test/home_cta_subscribe.test.mjs
 worker/test/honest_data.test.mjs
 worker/test/inbound_helpers.test.mjs
