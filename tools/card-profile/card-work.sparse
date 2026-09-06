@@ -260,6 +260,7 @@
 /site/civic_institution_governing_bodies.mjs
 /site/civic_institution_identity_coverage.mjs
 /site/civic_institution_profile_navigation.mjs
+/site/civic_institution_statutory_identity.mjs
 /site/civic_outcome_transition.mjs
 /site/civic_time_composed_graph.mjs
 /site/civic_time_ledger.mjs

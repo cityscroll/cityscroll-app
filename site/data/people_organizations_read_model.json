@@ -53761,6 +53761,51 @@
     },
     {
       "kind": "agency",
+      "id": "agency:id:office-of-racial-equity",
+      "label": "Office of Racial Equity",
+      "href": "/agencies/office-of-racial-equity/",
+      "entity_ref": "agency:id:office-of-racial-equity",
+      "relation_state": "published",
+      "detail": "0 linked record categories",
+      "institution": "agency",
+      "institution_label": "Agency",
+      "institution_context": "City agency organization",
+      "search_text": "Office of Racial Equity agency organization",
+      "categories": {
+        "contracts": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_browse_snapshot_v1"
+        },
+        "vendors": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        "meetings": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_browse_snapshot_v1"
+        },
+        "rules": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_canonical_v1"
+        },
+        "obligations": {
+          "status": "empty",
+          "count": 0,
+          "method": "mandate_expected_vs_observed_v1"
+        },
+        "staffing": {
+          "status": "empty",
+          "count": 0,
+          "method": "publisher_certification_record_v1"
+        }
+      }
+    },
+    {
+      "kind": "agency",
       "id": "agency:id:information-technology-and-telecommunications",
       "label": "Office of Technology and Innovation",
       "href": "/agencies/information-technology-and-telecommunications/",
@@ -63140,6 +63185,12 @@
       "kind": "agency"
     },
     {
+      "entity_id": "agency:id:office-of-racial-equity",
+      "label": "Office of Racial Equity",
+      "href": "/agencies/office-of-racial-equity/",
+      "kind": "agency"
+    },
+    {
       "entity_id": "agency:id:information-technology-and-telecommunications",
       "label": "Office of Technology and Innovation",
       "href": "/agencies/information-technology-and-telecommunications/",
@@ -64221,7 +64272,7 @@
     "official": 215,
     "exact-person-appointment": 558,
     "committee": 96,
-    "agency": 86,
+    "agency": 87,
     "vendor": 269,
     "notice-only-hire": 80
   },

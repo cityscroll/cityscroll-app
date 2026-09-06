@@ -30,7 +30,7 @@ export const AGENCY_GROUPS = Object.freeze({
   "Civilian Complaint Review Board": ["CIVILIAN COMPLAINT REVIEW BD"],
   "Civil Service Commission": ["CIVIL SERVICE COMMISSION"],
   "Commission on Human Rights": ["HUMAN RIGHTS COMMISSION"],
-  "Commission on Racial Equity": ["COMMISSION ON RACIAL EQUITY", "OFFICE OF RACIAL EQUITY"],
+  "Commission on Racial Equity": ["COMMISSION ON RACIAL EQUITY"],
   "Comptroller": ["OFFICE OF THE COMPTROLLER"],
   "Consumer and Worker Protection": ["CONSUMER AFFAIRS", "CONSUMER AND WORKER PROTECTION", "Department of Consumer Affairs", "Department of Consumer and Worker Protection"],
   "Correction": ["DEPARTMENT OF CORRECTION"],
@@ -76,6 +76,7 @@ export const AGENCY_GROUPS = Object.freeze({
   "NYC Department of Veterans' Services": ["NYC DEPT OF VETERANS SERVICES", "NYC DEPT OF VETERANS' SERVICES", "Veterans' Services"],
   "Office of Collective Bargaining": ["OFFICE OF COLLECTIVE BARGAININ"],
   "Office of Labor Relations": ["OFFICE OF LABOR RELATIONS"],
+  "Office of Racial Equity": ["OFFICE OF RACIAL EQUITY"],
   "Office of Special Narcotics Prosecutor": ["DISTRICT ATTORNEY-SPECIAL NARC", "Office of Special Narcotics Prose", "Office of the Special Narcotics Prosecutor"],
   "Office of The Actuary": ["OFFICE OF THE ACTUARY"],
   "Office of the Mayor": ["OFFICE OF THE MAYOR", "Mayor's Office"],
@@ -100,6 +101,44 @@ export const AGENCY_GROUPS = Object.freeze({
   ],
   "Youth and Community Development": ["DEPT OF YOUTH & COMM DEV SRVS"],
 });
+
+/**
+ * Reviewed identity corrections applied at the shared resolution boundary.
+ *
+ * A correction records one source spelling an earlier reviewed group merged
+ * into the wrong canonical identity. Each row names the spelling, the identity
+ * that absorbed it, the identity the cited law supports, and the evidence, so
+ * the correction is explicit, auditable and reversible: delete the row and the
+ * previous resolution returns. Corrections only move an exact source spelling.
+ * A spelling that names the shared policy area without naming one body stays
+ * unassigned; it is never duplicated across both identities and never
+ * transferred on similarity alone.
+ */
+export const AGENCY_IDENTITY_CORRECTIONS = Object.freeze([
+  Object.freeze({
+    source_spelling: "OFFICE OF RACIAL EQUITY",
+    corrected_id: "office-of-racial-equity",
+    corrected_name: "Office of Racial Equity",
+    superseded_id: "commission-on-racial-equity",
+    superseded_name: "Commission on Racial Equity",
+    basis: "New York City Charter § 3401 establishes the office of racial equity within the executive office of the mayor; § 3404 separately establishes the commission on racial equity. Administrative Code § 34-102 defines the two bodies separately.",
+    sources: Object.freeze([
+      Object.freeze({
+        citation: "New York City Charter § 3401",
+        url: "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-6483",
+      }),
+      Object.freeze({
+        citation: "New York City Charter § 3404",
+        url: "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-6480",
+      }),
+      Object.freeze({
+        citation: "Administrative Code § 34-102",
+        url: "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-228871",
+      }),
+    ]),
+    corrected_on: "2026-09-05",
+  }),
+]);
 
 const ROUTE_ALIAS_TARGETS = new Map([
   ["board-of-corrections", "board-of-correction"],
@@ -157,6 +196,21 @@ for (const [canonical, variants] of Object.entries(AGENCY_GROUPS)) {
   const group = Object.freeze({ canonical_id, canonical_name: canonical, variants: Object.freeze([canonical, ...variants]), matched: true });
   GROUP_BY_ID.set(canonical_id, group);
   for (const value of group.variants) PREFERRED_BY_KEY.set(agencyComparisonKey(value), group);
+}
+
+const AGENCY_CORRECTION_BY_KEY = new Map(
+  AGENCY_IDENTITY_CORRECTIONS.map((row) => [agencyComparisonKey(row.source_spelling), row]),
+);
+
+/** The reviewed correction for one source spelling, or null when none applies. */
+export function agencyIdentityCorrection(value) {
+  return AGENCY_CORRECTION_BY_KEY.get(agencyComparisonKey(value)) || null;
+}
+
+/** True when a publisher surface is a spelling a correction moved elsewhere. */
+function agencySpellingCorrectedAway(surface, canonicalId) {
+  const correction = agencyIdentityCorrection(surface);
+  return Boolean(correction) && correction.corrected_id !== canonicalId;
 }
 
 function patternCanonical(raw, key) {
@@ -230,8 +284,14 @@ export function reconcileAgencyIdentity(value, rows) {
     || resolveAgencyIdentity(value);
   const list = Array.isArray(rows) ? rows : [];
   const inputKey = agencyComparisonKey(value);
+  // A publisher snapshot taken before a reviewed correction still carries the
+  // corrected spelling under the identity that absorbed it. The correction is
+  // the reviewed fact, so that stale surface never re-mints the false merge.
+  const correction = agencyIdentityCorrection(value);
   const exactIds = new Set(list.filter((row) => [row?.canonical_id, row?.canonical_name, row?.raw_string, ...(row?.variants || [])]
-    .some((surface) => agencyComparisonKey(surface) === inputKey)).map((row) => row.canonical_id));
+    .some((surface) => agencyComparisonKey(surface) === inputKey))
+    .map((row) => row.canonical_id)
+    .filter((id) => !correction || id !== correction.superseded_id));
   const directPublisherId = String(value || "").trim().toLowerCase();
   const directPublisher = list.some((row) => row?.canonical_id === directPublisherId) ? directPublisherId : null;
   if (!directPublisher && exactIds.size > 1) {
@@ -254,14 +314,15 @@ export function reconcileAgencyIdentity(value, rows) {
   const publisher = list.find((row) => row?.canonical_id === canonical_id);
   if (!publisher) return local;
   const canonical_name = String(publisher.canonical_name || local.canonical_name).trim();
-  // Preserve every publisher spelling for exact source queries.
+  // Preserve every publisher spelling for exact source queries, minus the
+  // spellings a reviewed correction assigned to a different institution.
   const variants = uniqueStrings([
     publisher.raw_string,
     ...(publisher.variants || []),
     ...(Array.isArray(local.variants) ? local.variants : []),
     value,
     canonical_name,
-  ]);
+  ]).filter((surface) => !agencySpellingCorrectedAway(surface, canonical_id));
   return Object.freeze({
     canonical_id,
     canonical_name,

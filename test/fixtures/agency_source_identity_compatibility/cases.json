@@ -14,19 +14,64 @@
     "collision": false,
     "source_contract": "cityscroll.agency_route_identity_report.v1"
   },
+  "separated_institutions": {
+    "correction": {
+      "source_spelling": "OFFICE OF RACIAL EQUITY",
+      "corrected_id": "office-of-racial-equity",
+      "corrected_name": "Office of Racial Equity",
+      "corrected_route": "/agencies/office-of-racial-equity/",
+      "superseded_id": "commission-on-racial-equity",
+      "superseded_name": "Commission on Racial Equity",
+      "superseded_route": "/agencies/commission-on-racial-equity/",
+      "corrected_on": "2026-09-05",
+      "reversible": true
+    },
+    "full_name_queries": {
+      "Office of Racial Equity": "office-of-racial-equity",
+      "OFFICE OF RACIAL EQUITY": "office-of-racial-equity",
+      "Commission on Racial Equity": "commission-on-racial-equity",
+      "COMMISSION ON RACIAL EQUITY": "commission-on-racial-equity"
+    },
+    "acronym_queries": {
+      "ORE": "office-of-racial-equity",
+      "CORE": "commission-on-racial-equity"
+    },
+    "ambiguous_source_spellings": [
+      "RACIAL EQUITY",
+      "Racial Equity Office and Commission"
+    ],
+    "commission_stable_references": {
+      "route": "/agencies/commission-on-racial-equity/",
+      "subject_ref": "agency:id:commission-on-racial-equity",
+      "publisher_variant": "COMMISSION ON RACIAL EQUITY",
+      "identity_status": "matched"
+    },
+    "correction_count": 1
+  },
   "collision": {
     "comparison_key": "EQUAL EMPLOYMENT PRACTICES COMMISSION",
-    "source_ids": ["equal-employ-practices-comm", "equal-employment-practices-commission"],
+    "source_ids": [
+      "equal-employ-practices-comm",
+      "equal-employment-practices-commission"
+    ],
     "links_to_canonical": false,
     "institution_kind": null
   },
   "unresolved": {
-    "source_ids": ["nyc-taxi-and-limousine-commission", "office-of-criminal-justice-128"],
+    "source_ids": [
+      "nyc-taxi-and-limousine-commission",
+      "office-of-criminal-justice-128"
+    ],
     "links_to_canonical": false,
     "institution_kind": null
   },
   "route_only": {
-    "source_ids": ["board-meetings", "employees-retirement-system", "long-island-rail-road"],
+    "source_ids": [
+      "board-meetings",
+      "employees-retirement-system",
+      "long-island-rail-road",
+      "office-of-racial-equity"
+    ],
     "links_to_canonical": false,
     "institution_kind": null
   },
@@ -37,12 +82,30 @@
   ],
   "key_shape_cases": {
     "agency_subject_refs": {
-      "positive": ["agency:id:sanitation", "agency:id:economic-development-corporation", "agency:id:housing-authority"],
-      "negative": ["agency:Sanitation", "agency:id:", "sanitation", "agency:id:Sanitation"]
+      "positive": [
+        "agency:id:sanitation",
+        "agency:id:economic-development-corporation",
+        "agency:id:housing-authority"
+      ],
+      "negative": [
+        "agency:Sanitation",
+        "agency:id:",
+        "sanitation",
+        "agency:id:Sanitation"
+      ]
     },
     "agency_object_keys": {
-      "positive": ["agency:sanitation", "agency:Sanitation", "agency:Housing Authority"],
-      "negative": ["agency:id:sanitation", "agency:", "agency:sanitation;drop", "agency:sanitation/extra"]
+      "positive": [
+        "agency:sanitation",
+        "agency:Sanitation",
+        "agency:Housing Authority"
+      ],
+      "negative": [
+        "agency:id:sanitation",
+        "agency:",
+        "agency:sanitation;drop",
+        "agency:sanitation/extra"
+      ]
     },
     "property_disposition_keys": {
       "positive": [
@@ -63,11 +126,24 @@
         "person-leader:police-department:name:jessica%20tisch",
         "person-leader:sanitation:name:gregory%20anderson"
       ],
-      "negative": ["person-leader::name:x", "person-leader:sanitation:", "person-leader:sanitation:name:"]
+      "negative": [
+        "person-leader::name:x",
+        "person-leader:sanitation:",
+        "person-leader:sanitation:name:"
+      ]
     },
     "community_board_body_ids": {
-      "positive": ["brooklyn-cb-15", "bronx-cb-01", "queens-cb-14"],
-      "negative": ["brooklyn-cb-1", "brooklyncb15", "cb-15", "Brooklyn-cb-15"]
+      "positive": [
+        "brooklyn-cb-15",
+        "bronx-cb-01",
+        "queens-cb-14"
+      ],
+      "negative": [
+        "brooklyn-cb-1",
+        "brooklyncb15",
+        "cb-15",
+        "Brooklyn-cb-15"
+      ]
     }
   },
   "community_boards": {
@@ -77,13 +153,13 @@
   "identity_counts": {
     "matched": 78,
     "source_only": 36,
-    "route_only": 3,
+    "route_only": 4,
     "alias_route": 16,
     "legitimate_external": 5,
     "collision": 2,
     "unresolved": 2
   },
   "alias_edge_count": 15,
-  "route_count": 87,
-  "subject_ref_count": 86
+  "route_count": 88,
+  "subject_ref_count": 87
 }

@@ -6,6 +6,9 @@ import test from "node:test";
 
 import {
   AGENCY_SOURCE_IDENTITY_CONTRACT_METHOD,
+  IDENTITY_CORRECTION_INVERSE,
+  IDENTITY_CORRECTION_RELATION,
+  projectReviewedIdentityCorrections,
   AGENCY_SOURCE_IDENTITY_CONTRACT_SCHEMA,
   AGENCY_SOURCE_IDENTITY_NON_LINKING_STATUSES,
   AGENCY_OBJECT_KEY_PATTERN,
@@ -25,6 +28,13 @@ import {
   isStaffingAgencyKey,
   projectReviewedRouteAliasEdges,
 } from "../site/agency_source_identity_contract.mjs";
+import {
+  AGENCY_IDENTITY_CORRECTIONS,
+  agencyIdentityCorrection,
+  reconcileAgencyIdentity,
+  resolveAgencyIdentity,
+} from "../site/agency_identity.mjs";
+import { publisherAgencyRows } from "../tools/lib/agency_publisher_crosswalk.mjs";
 import {
   projectInstitutionProfileNavigation,
   projectReviewedRouteAliases,
@@ -321,4 +331,98 @@ test("the machine contract is consumable without resident chrome or a global ren
     String(row.from).split("|").includes("community-board")
     && String(row.to).split("|").includes("agency"));
   assert.deepEqual(cbChild, []);
+});
+
+test("a reviewed correction separates two bodies and keeps both references resolvable", () => {
+  const expected = CASES.separated_institutions.correction;
+  const corrections = projectReviewedIdentityCorrections();
+  assert.equal(corrections.length, CASES.separated_institutions.correction_count);
+  const correction = corrections.find((row) => row.source_spelling === expected.source_spelling);
+  assert.ok(correction, "expected the reviewed source-spelling correction");
+  assert.equal(correction.relation_id, IDENTITY_CORRECTION_RELATION);
+  assert.equal(correction.inverse, IDENTITY_CORRECTION_INVERSE);
+  assert.equal(correction.corrected_id, expected.corrected_id);
+  assert.equal(correction.corrected_route, expected.corrected_route);
+  assert.equal(correction.superseded_id, expected.superseded_id);
+  // The superseded side stays named, so an old reference is still explainable
+  // rather than silently gone.
+  assert.equal(correction.superseded_route, expected.superseded_route);
+  assert.equal(correction.corrected_on, expected.corrected_on);
+  assert.equal(correction.reversible, expected.reversible);
+  assert.ok(correction.basis.length > 0);
+  assert.ok(correction.sources.length >= 2);
+  for (const source of correction.sources) {
+    assert.ok(source.citation);
+    assert.match(source.url, /^https:\/\//);
+  }
+
+  const built = contract();
+  assert.deepEqual(built.identity_corrections.corrections, corrections);
+  assert.equal(built.identity_corrections.relation.id, IDENTITY_CORRECTION_RELATION);
+  assert.ok(built.identity_corrections.relation.negative_rule.length >= 4);
+  // Both destinations exist; neither side of the correction is a dangling route.
+  assert.ok(built.routes.paths.includes(expected.corrected_route));
+  assert.ok(built.routes.paths.includes(expected.superseded_route));
+  assert.ok(built.subject_refs.refs.includes(`agency:id:${expected.corrected_id}`));
+  assert.ok(built.subject_refs.refs.includes(`agency:id:${expected.superseded_id}`));
+});
+
+test("the corrected spelling moves once and no record is readable from both identities", () => {
+  const expected = CASES.separated_institutions.correction;
+  const stable = CASES.separated_institutions.commission_stable_references;
+  const rows = publisherAgencyRows(CROSSWALK);
+
+  const corrected = reconcileAgencyIdentity(expected.source_spelling, rows);
+  assert.equal(corrected.canonical_id, expected.corrected_id);
+  assert.ok(corrected.variants.includes(expected.source_spelling));
+
+  // The superseded identity keeps its own published spelling and loses only
+  // the spelling the correction moved. A publisher snapshot taken before the
+  // correction still lists it, so this is the guard against re-merging.
+  const superseded = reconcileAgencyIdentity(stable.publisher_variant, rows);
+  assert.equal(superseded.canonical_id, expected.superseded_id);
+  assert.ok(superseded.variants.includes(stable.publisher_variant));
+  assert.equal(superseded.variants.includes(expected.source_spelling), false);
+  assert.ok(CROSSWALK.entries[expected.superseded_id].variants.includes(expected.source_spelling));
+
+  // The commission's published route, subject ref and identity status are the
+  // same references it had before the correction.
+  const commission = classify(expected.superseded_id);
+  assert.equal(commission.status, stable.identity_status);
+  assert.equal(commission.route, stable.route);
+  assert.equal(commission.canonical_id, expected.superseded_id);
+  assert.equal(`agency:id:${commission.source_id}`, stable.subject_ref);
+
+  // The corrected identity keeps its own route and never claims the other one.
+  const office = classify(expected.corrected_id);
+  assert.equal(office.route, expected.corrected_route);
+  assert.equal(office.institution_kind, null);
+});
+
+test("a source spelling naming neither body stays unassigned rather than transferred", () => {
+  const expected = CASES.separated_institutions.correction;
+  const rows = publisherAgencyRows(CROSSWALK);
+  for (const spelling of CASES.separated_institutions.ambiguous_source_spellings) {
+    assert.equal(agencyIdentityCorrection(spelling), null, spelling);
+    for (const identity of [resolveAgencyIdentity(spelling), reconcileAgencyIdentity(spelling, rows)]) {
+      assert.equal(identity.matched, false, spelling);
+      assert.notEqual(identity.canonical_id, expected.corrected_id, spelling);
+      assert.notEqual(identity.canonical_id, expected.superseded_id, spelling);
+    }
+    // An unassigned spelling never becomes a published destination either.
+    const built = contract();
+    assert.equal(built.routes.paths.includes(`/agencies/${resolveAgencyIdentity(spelling).canonical_id}/`), false, spelling);
+  }
+});
+
+test("every reviewed correction names both sides with dated, cited evidence", () => {
+  for (const row of AGENCY_IDENTITY_CORRECTIONS) {
+    assert.ok(row.source_spelling);
+    assert.ok(row.corrected_id);
+    assert.ok(row.superseded_id);
+    assert.notEqual(row.corrected_id, row.superseded_id);
+    assert.match(row.corrected_on, /^\d{4}-\d{2}-\d{2}$/);
+    assert.ok(row.basis.length > 40);
+    assert.ok(row.sources.length >= 2);
+  }
 });

@@ -17,6 +17,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 
 import {
   AGENCY_GROUPS,
+  AGENCY_IDENTITY_CORRECTIONS,
   reconcileAgencyIdentity,
 } from "../site/agency_identity.mjs";
 import { AGENCY_ROUTE_CLASSIFICATIONS } from "./lib/agency_route_classifications.mjs";
@@ -57,6 +58,17 @@ const DEMO_IDS = Object.freeze([
   "housing-preservation-and-development",
   "economic-development-corporation",
 ]);
+// A reviewed identity correction only reaches a reader when the identity it
+// separated has its own destination. Publishing the corrected side is what
+// turns the register entry into a result someone can open, so these routes
+// materialize even before a category joins to them.
+const CORRECTED_IDENTITY_IDS = Object.freeze(
+  AGENCY_IDENTITY_CORRECTIONS.map((row) => row.corrected_id),
+);
+
+function alwaysMaterialized(id) {
+  return DEMO_IDS.includes(id) || CORRECTED_IDENTITY_IDS.includes(id);
+}
 
 function readJson(path) {
   return JSON.parse(readFileSync(path, "utf8"));
@@ -396,6 +408,7 @@ function candidateAgencyIds(sources) {
     if (row?.agency_name) ids.add(reconcileAgencyIdentity(row.agency_name, sources.publisher_agency_rows).canonical_id);
   }
   for (const demo of DEMO_IDS) ids.add(reconcileAgencyIdentity(demo, sources.publisher_agency_rows).canonical_id);
+  for (const corrected of CORRECTED_IDENTITY_IDS) ids.add(corrected);
   return [...ids].sort();
 }
 
@@ -538,15 +551,16 @@ export function buildAgencyConstellationMaterialization(sources = loadSources())
       boroughOfficeSources: boroughOfficeSourcesFor(id, sources),
       governingBodySources: governingBodySourcesFor(id, sources),
     });
-    // Keep pages for agencies with at least one matched category, plus demos.
-    if (view.summary.matched_categories === 0 && !DEMO_IDS.includes(id)) continue;
+    // Keep pages for agencies with at least one matched category, plus demos
+    // and the identities a reviewed correction separated.
+    if (view.summary.matched_categories === 0 && !alwaysMaterialized(id)) continue;
     // A denser PASSPort graph can light up unmatched route spellings. Public
     // pages stay on identities the SearchDocument producer can admit.
     const matched = (view.categories || []).filter((category) => category.status === "matched");
     const onlyGraphContracts = matched.length > 0
       && matched.every((category) => category.id === "contracts" && category.method === "passport_ei_graph_v1");
     if (
-      !DEMO_IDS.includes(id)
+      !alwaysMaterialized(id)
       && !ACCEPTED_IDENTITY_CLASSIFICATIONS.has(identity.route_classification)
       && onlyGraphContracts
     ) {

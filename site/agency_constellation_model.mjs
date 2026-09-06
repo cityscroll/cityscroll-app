@@ -9,6 +9,7 @@
  */
 
 import { reconcileAgencyIdentity, resolveAgencyIdentity } from "./agency_identity.mjs";
+import { projectStatutoryInstitutionIdentity } from "./civic_institution_statutory_identity.mjs";
 import {
   AGENCY_OBLIGATIONS_CERTIFICATION,
   AGENCY_OBLIGATIONS_ER_BASIS,
@@ -1301,6 +1302,7 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
     ...(mandatesLandUse?.procedure_paths || []).map((path) => path.claim).filter(Boolean),
   ];
 
+  const statutoryIdentity = projectStatutoryInstitutionIdentity(identity.canonical_id);
   return {
     schema: AGENCY_CONSTELLATION_SCHEMA,
     kind: "agency-constellation",
@@ -1311,6 +1313,10 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
     canonical_id: identity.canonical_id,
     categories,
     identity_evidence: sources.identity_evidence || null,
+    // Reviewed legal basis, present only where a primary source separates this
+    // body from a similarly named one. Every other institution omits the key
+    // entirely rather than carrying an empty panel through the payload.
+    ...(statutoryIdentity ? { statutory_identity: statutoryIdentity } : {}),
     petition_handoff: petitionHandoff,
     fiscal_context: fiscalContext,
     edge_summary: edgeSummary,

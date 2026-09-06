@@ -1,0 +1,397 @@
+{
+  "schema": "cityscroll.institution_identity_separation_evidence.v1",
+  "subject": "separate public destinations for the racial equity office and commission",
+  "routes": [
+    "/agencies/",
+    "/agencies/office-of-racial-equity/",
+    "/agencies/commission-on-racial-equity/"
+  ],
+  "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+  "data_vintage": "2026-09-05",
+  "captured_at": "2026-09-06T00:45:10Z",
+  "image_directory": ".artifacts/institution-identity-separation",
+  "image_policy": "Capture images are written to the ignored local directory above and are never committed. This manifest is the tracked proof: route, viewport, revision, data vintage, assertion and SHA-256 for each capture.",
+  "search_note": "Name and acronym resolution is proven over the committed search corpus and this repository's own ranking in test/civic_institution_separated_bodies.test.mjs. The captures below prove browser navigation and rendering, and claim nothing about a search response they did not receive.",
+  "files": [
+    {
+      "name": "directory-to-office-and-back-390x844.png",
+      "specimen": "directory-to-office-and-back",
+      "route": "/agencies/",
+      "viewport": [
+        390,
+        844
+      ],
+      "scripting": true,
+      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 390px the agency directory lists Office of Racial Equity separately from Commission on Racial Equity, opening it reaches a profile that states its own kind, cites its own sources and names the other body, and browser Back restores the directory unchanged",
+      "observations": {
+        "directory_lists_this_body": true,
+        "directory_lists_the_other_body": true,
+        "opened_own_profile": true,
+        "profile_states_its_kind": true,
+        "profile_names_the_other_body": true,
+        "profile_cites_sources": true,
+        "history_starts_closed": true,
+        "history_opens_without_leaving": true,
+        "history_names_the_moved_spelling": true,
+        "history_cites_sources": true,
+        "returned_to_directory": true,
+        "directory_restored": true,
+        "touch_target_failures": [],
+        "no_horizontal_overflow": true
+      },
+      "bytes": 401149,
+      "sha256": "fc3f4b89614bd2429eec64cac0fc144bc4a2c9f5a62ff012a0121bf7a5eca985",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "directory-to-office-and-back-1440x900.png",
+      "specimen": "directory-to-office-and-back",
+      "route": "/agencies/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "scripting": true,
+      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 1440px the agency directory lists Office of Racial Equity separately from Commission on Racial Equity, opening it reaches a profile that states its own kind, cites its own sources and names the other body, and browser Back restores the directory unchanged",
+      "observations": {
+        "directory_lists_this_body": true,
+        "directory_lists_the_other_body": true,
+        "opened_own_profile": true,
+        "profile_states_its_kind": true,
+        "profile_names_the_other_body": true,
+        "profile_cites_sources": true,
+        "history_starts_closed": true,
+        "history_opens_without_leaving": true,
+        "history_names_the_moved_spelling": true,
+        "history_cites_sources": true,
+        "returned_to_directory": true,
+        "directory_restored": true,
+        "touch_target_failures": [],
+        "no_horizontal_overflow": true
+      },
+      "bytes": 477303,
+      "sha256": "b739f0e28b42a7882a9bc4743ea9c24f3afb460e052d0d803349a9cc8b1352c8",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "directory-to-commission-and-back-390x844.png",
+      "specimen": "directory-to-commission-and-back",
+      "route": "/agencies/",
+      "viewport": [
+        390,
+        844
+      ],
+      "scripting": true,
+      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 390px the agency directory lists Commission on Racial Equity separately from Office of Racial Equity, opening it reaches a profile that states its own kind, cites its own sources and names the other body, and browser Back restores the directory unchanged",
+      "observations": {
+        "directory_lists_this_body": true,
+        "directory_lists_the_other_body": true,
+        "opened_own_profile": true,
+        "profile_states_its_kind": true,
+        "profile_names_the_other_body": true,
+        "profile_cites_sources": true,
+        "history_starts_closed": true,
+        "history_opens_without_leaving": true,
+        "history_names_the_moved_spelling": true,
+        "history_cites_sources": true,
+        "returned_to_directory": true,
+        "directory_restored": true,
+        "touch_target_failures": [],
+        "no_horizontal_overflow": true
+      },
+      "bytes": 1138945,
+      "sha256": "d18f9191aacd1b2b02dd9593afe2705f0603c0713ac6d21a092ecef014a684be",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "directory-to-commission-and-back-1440x900.png",
+      "specimen": "directory-to-commission-and-back",
+      "route": "/agencies/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "scripting": true,
+      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 1440px the agency directory lists Commission on Racial Equity separately from Office of Racial Equity, opening it reaches a profile that states its own kind, cites its own sources and names the other body, and browser Back restores the directory unchanged",
+      "observations": {
+        "directory_lists_this_body": true,
+        "directory_lists_the_other_body": true,
+        "opened_own_profile": true,
+        "profile_states_its_kind": true,
+        "profile_names_the_other_body": true,
+        "profile_cites_sources": true,
+        "history_starts_closed": true,
+        "history_opens_without_leaving": true,
+        "history_names_the_moved_spelling": true,
+        "history_cites_sources": true,
+        "returned_to_directory": true,
+        "directory_restored": true,
+        "touch_target_failures": [],
+        "no_horizontal_overflow": true
+      },
+      "bytes": 1337255,
+      "sha256": "93f3873df5ed6cafc0ff947a93daa4a1d5b761bcd51c8d9618b6b66bc5864fe7",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "distinct-follow-targets-390x844.png",
+      "specimen": "distinct-follow-targets",
+      "route": "/agencies/office-of-racial-equity/",
+      "viewport": [
+        390,
+        844
+      ],
+      "scripting": true,
+      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 390px each profile offers its own follow, and neither watch names the other institution",
+      "observations": {
+        "office_follow": "https://cityscroll.org/following?lens=entity&filter=%7B%22kind%22%3A%22agency%22%2C%22name%22%3A%22Office+of+Racial+Equity%22%7D&freq=weekly",
+        "commission_follow": "https://cityscroll.org/following?lens=entity&filter=%7B%22kind%22%3A%22agency%22%2C%22name%22%3A%22Commission+on+Racial+Equity%22%7D&freq=weekly",
+        "follow_targets_differ": true,
+        "office_follow_names_only_its_own_body": true,
+        "commission_follow_names_only_its_own_body": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 1083389,
+      "sha256": "8250326b90c6a594f114dc71bedad7f215dbc4d52d1e908e32c610b8414f5c95",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "distinct-follow-targets-1440x900.png",
+      "specimen": "distinct-follow-targets",
+      "route": "/agencies/office-of-racial-equity/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "scripting": true,
+      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 1440px each profile offers its own follow, and neither watch names the other institution",
+      "observations": {
+        "office_follow": "https://cityscroll.org/following?lens=entity&filter=%7B%22kind%22%3A%22agency%22%2C%22name%22%3A%22Office+of+Racial+Equity%22%7D&freq=weekly",
+        "commission_follow": "https://cityscroll.org/following?lens=entity&filter=%7B%22kind%22%3A%22agency%22%2C%22name%22%3A%22Commission+on+Racial+Equity%22%7D&freq=weekly",
+        "follow_targets_differ": true,
+        "office_follow_names_only_its_own_body": true,
+        "commission_follow_names_only_its_own_body": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 1272676,
+      "sha256": "15f09a3f44da564024c5ab71b7b3a664714a979e6e8ddbc24a9518ab04d0ee2a",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "sibling-anchor-modified-click-390x844.png",
+      "specimen": "sibling-anchor-modified-click",
+      "route": "/agencies/office-of-racial-equity/",
+      "viewport": [
+        390,
+        844
+      ],
+      "scripting": true,
+      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 390px the anchor to the other body is an ordinary href, a modified click opens a separate context and leaves this profile in place, a plain click reaches the other body, and browser Back returns here",
+      "observations": {
+        "sibling_anchor_href": "/agencies/commission-on-racial-equity/",
+        "sibling_anchor_is_a_real_href": true,
+        "modified_click_opened_a_separate_context": true,
+        "modified_click_left_this_profile_in_place": true,
+        "plain_click_reaches_the_other_body": true,
+        "browser_back_returns_to_this_profile": true,
+        "back_to_directory_is_a_real_anchor": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 344793,
+      "sha256": "7e58cae13c8dddc20365d06f53786c8108bb2a3cc9ba92ef3583fa5e6d15007c",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "sibling-anchor-modified-click-1440x900.png",
+      "specimen": "sibling-anchor-modified-click",
+      "route": "/agencies/office-of-racial-equity/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "scripting": true,
+      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 1440px the anchor to the other body is an ordinary href, a modified click opens a separate context and leaves this profile in place, a plain click reaches the other body, and browser Back returns here",
+      "observations": {
+        "sibling_anchor_href": "/agencies/commission-on-racial-equity/",
+        "sibling_anchor_is_a_real_href": true,
+        "modified_click_opened_a_separate_context": true,
+        "modified_click_left_this_profile_in_place": true,
+        "plain_click_reaches_the_other_body": true,
+        "browser_back_returns_to_this_profile": true,
+        "back_to_directory_is_a_real_anchor": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 412942,
+      "sha256": "5d3eb0c6b38337bbca313bec902f950aed3ef4d6f398438162fe5e8b9b1a52e3",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "without-scripting-390x844.png",
+      "specimen": "without-scripting",
+      "route": "/agencies/office-of-racial-equity/",
+      "viewport": [
+        390,
+        844
+      ],
+      "scripting": false,
+      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 390px, with scripting unavailable, both profiles still state which body they are, cite the sections that establish them, link the other body, and keep the source-name history reachable",
+      "observations": {
+        "office-of-racial-equity_states_its_kind": true,
+        "office-of-racial-equity_cites_sources": true,
+        "office-of-racial-equity_links_the_other_body": true,
+        "office-of-racial-equity_keeps_source_name_history": true,
+        "commission-on-racial-equity_states_its_kind": true,
+        "commission-on-racial-equity_cites_sources": true,
+        "commission-on-racial-equity_links_the_other_body": true,
+        "commission-on-racial-equity_keeps_source_name_history": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 181991,
+      "sha256": "508134ce5cab4d37a322ccf1a5348f8122c4429936318d50bcbf36145a3fb4a1",
+      "axe": {
+        "violations_total": null,
+        "failing_violations": [],
+        "passes": null,
+        "skipped": "scripting disabled for this specimen"
+      }
+    },
+    {
+      "name": "without-scripting-1440x900.png",
+      "specimen": "without-scripting",
+      "route": "/agencies/office-of-racial-equity/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "scripting": false,
+      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 1440px, with scripting unavailable, both profiles still state which body they are, cite the sections that establish them, link the other body, and keep the source-name history reachable",
+      "observations": {
+        "office-of-racial-equity_states_its_kind": true,
+        "office-of-racial-equity_cites_sources": true,
+        "office-of-racial-equity_links_the_other_body": true,
+        "office-of-racial-equity_keeps_source_name_history": true,
+        "commission-on-racial-equity_states_its_kind": true,
+        "commission-on-racial-equity_cites_sources": true,
+        "commission-on-racial-equity_links_the_other_body": true,
+        "commission-on-racial-equity_keeps_source_name_history": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 210769,
+      "sha256": "e57fb0ff408d9de0589bbdc94243a12e4355cffa7cf10d8c7bea5a0c95600dfa",
+      "axe": {
+        "violations_total": null,
+        "failing_violations": [],
+        "passes": null,
+        "skipped": "scripting disabled for this specimen"
+      }
+    },
+    {
+      "name": "two-hundred-percent-zoom-390x844.png",
+      "specimen": "two-hundred-percent-zoom",
+      "route": "/agencies/office-of-racial-equity/",
+      "viewport": [
+        390,
+        844
+      ],
+      "scripting": true,
+      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 390px and 200 percent zoom both profiles keep their statement of which body they are, with no horizontal overflow and no undersized target",
+      "observations": {
+        "office-of-racial-equity_statement_still_readable": true,
+        "office-of-racial-equity_no_horizontal_overflow": true,
+        "office-of-racial-equity_touch_target_failures": [],
+        "commission-on-racial-equity_statement_still_readable": true,
+        "commission-on-racial-equity_no_horizontal_overflow": true,
+        "commission-on-racial-equity_touch_target_failures": []
+      },
+      "bytes": 2986211,
+      "sha256": "38a850db6091058610a3b69804682bf6e028419fa5a9c674d045b946a644bf48",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "two-hundred-percent-zoom-1440x900.png",
+      "specimen": "two-hundred-percent-zoom",
+      "route": "/agencies/office-of-racial-equity/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "scripting": true,
+      "revision": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "data_vintage": "2026-09-05",
+      "assertion": "at 1440px and 200 percent zoom both profiles keep their statement of which body they are, with no horizontal overflow and no undersized target",
+      "observations": {
+        "office-of-racial-equity_statement_still_readable": true,
+        "office-of-racial-equity_no_horizontal_overflow": true,
+        "office-of-racial-equity_touch_target_failures": [],
+        "commission-on-racial-equity_statement_still_readable": true,
+        "commission-on-racial-equity_no_horizontal_overflow": true,
+        "commission-on-racial-equity_touch_target_failures": []
+      },
+      "bytes": 2684908,
+      "sha256": "bd67ec29d3cad0e4702e9b237ee2b359c644370e9b2025d0c9b7a7b29e2dd2f7",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    }
+  ]
+}

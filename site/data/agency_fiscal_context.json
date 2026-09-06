@@ -818,7 +818,7 @@
       "label": "Actual payments",
       "fiscal_year": 2026,
       "snapshot_date": "2026",
-      "agency_count": 52,
+      "agency_count": 53,
       "rows": [
         {
           "agency_id": "education",
@@ -1002,7 +1002,7 @@
         },
         {
           "agency_id": "commission-on-racial-equity",
-          "value": 2051596.07,
+          "value": 1866255.49,
           "rank": 37
         },
         {
@@ -1071,23 +1071,28 @@
           "rank": 50
         },
         {
+          "agency_id": "office-of-racial-equity",
+          "value": 185340.58,
+          "rank": 51
+        },
+        {
           "agency_id": "borough-president-staten-island",
           "value": 136196.47,
-          "rank": 51
+          "rank": 52
         },
         {
           "agency_id": "civil-service-commission",
           "value": 15040.26,
-          "rank": 52
+          "rank": 53
         }
       ]
     }
   ],
   "coverage": {
-    "agency_count": 61,
+    "agency_count": 62,
     "exact_fiscal_join_count": 57,
     "fallback_fiscal_join_count": 0,
-    "unknown_fiscal_context_count": 4,
+    "unknown_fiscal_context_count": 5,
     "fiscal_history_years": [
       1980,
       1981,
@@ -3822,7 +3827,7 @@
         },
         "actual_payments": {
           "rank": 6,
-          "agency_count": 52,
+          "agency_count": 53,
           "value": 1494619186.86,
           "fiscal_year": 2026,
           "snapshot_date": "2026"
@@ -6542,7 +6547,7 @@
         },
         "actual_payments": {
           "rank": 15,
-          "agency_count": 52,
+          "agency_count": 53,
           "value": 512231485.71,
           "fiscal_year": 2026,
           "snapshot_date": "2026"
@@ -9243,7 +9248,7 @@
         },
         "actual_payments": {
           "rank": 49,
-          "agency_count": 52,
+          "agency_count": 53,
           "value": 275186.95,
           "fiscal_year": 2026,
           "snapshot_date": "2026"
@@ -11943,7 +11948,7 @@
         },
         "actual_payments": {
           "rank": 23,
-          "agency_count": 52,
+          "agency_count": 53,
           "value": 102394052.65,
           "fiscal_year": 2026,
           "snapshot_date": "2026"
@@ -14617,7 +14622,7 @@
         },
         "actual_payments": {
           "rank": 47,
-          "agency_count": 52,
+          "agency_count": 53,
           "value": 335299.06,
           "fiscal_year": 2026,
           "snapshot_date": "2026"
@@ -17333,7 +17338,7 @@
         },
         "actual_payments": {
           "rank": 46,
-          "agency_count": 52,
+          "agency_count": 53,
           "value": 338211.08,
           "fiscal_year": 2026,
           "snapshot_date": "2026"
@@ -20034,7 +20039,7 @@
         },
         "actual_payments": {
           "rank": 43,
-          "agency_count": 52,
+          "agency_count": 53,
           "value": 616843.6,
           "fiscal_year": 2026,
           "snapshot_date": "2026"
@@ -22733,7 +22738,7 @@
         },
         "actual_payments": {
           "rank": 45,
-          "agency_count": 52,
+          "agency_count": 53,
           "value": 483450.64,
           "fiscal_year": 2026,
           "snapshot_date": "2026"
@@ -25432,8 +25437,8 @@
           "snapshot_date": "2026-08-18"
         },
         "actual_payments": {
-          "rank": 51,
-          "agency_count": 52,
+          "rank": 52,
+          "agency_count": 53,
           "value": 136196.47,
           "fiscal_year": 2026,
           "snapshot_date": "2026"
@@ -28152,7 +28157,7 @@
         },
         "actual_payments": {
           "rank": 32,
-          "agency_count": 52,
+          "agency_count": 53,
           "value": 24244111.74,
           "fiscal_year": 2026,
           "snapshot_date": "2026"
@@ -30834,7 +30839,7 @@
         },
         "actual_payments": {
           "rank": 38,
-          "agency_count": 52,
+          "agency_count": 53,
           "value": 1774757.85,
           "fiscal_year": 2026,
           "snapshot_date": "2026"
@@ -33533,7 +33538,7 @@
         },
         "actual_payments": {
           "rank": 27,
-          "agency_count": 52,
+          "agency_count": 53,
           "value": 40623375.56,
           "fiscal_year": 2026,
           "snapshot_date": "2026"
@@ -36207,7 +36212,7 @@
         },
         "actual_payments": {
           "rank": 35,
-          "agency_count": 52,
+          "agency_count": 53,
           "value": 2384934.56,
           "fiscal_year": 2026,
           "snapshot_date": "2026"
@@ -38923,7 +38928,7 @@
         },
         "actual_payments": {
           "rank": 30,
-          "agency_count": 52,
+          "agency_count": 53,
           "value": 26462818.62,
           "fiscal_year": 2026,
           "snapshot_date": "2026"
@@ -41624,7 +41629,7 @@
         },
         "actual_payments": {
           "rank": 33,
-          "agency_count": 52,
+          "agency_count": 53,
           "value": 12621947.68,
           "fiscal_year": 2026,
           "snapshot_date": "2026"
@@ -44343,7 +44348,7 @@
         },
         "actual_payments": {
           "rank": 4,
-          "agency_count": 52,
+          "agency_count": 53,
           "value": 1714924166.2,
           "fiscal_year": 2026,
           "snapshot_date": "2026"
@@ -47017,8 +47022,8 @@
           "snapshot_date": null
         },
         "actual_payments": {
-          "rank": 52,
-          "agency_count": 52,
+          "rank": 53,
+          "agency_count": 53,
           "value": 15040.26,
           "fiscal_year": 2026,
           "snapshot_date": "2026"
@@ -49734,7 +49739,7 @@
         },
         "actual_payments": {
           "rank": 41,
-          "agency_count": 52,
+          "agency_count": 53,
           "value": 1018143.27,
           "fiscal_year": 2026,
           "snapshot_date": "2026"
@@ -52455,7 +52460,7 @@
         },
         "actual_payments": {
           "rank": 39,
-          "agency_count": 52,
+          "agency_count": 53,
           "value": 1553902.73,
           "fiscal_year": 2026,
           "snapshot_date": "2026"
@@ -52515,9 +52520,9 @@
           "current_registered_value": 1200000,
           "original_registered_value": 1200000,
           "registered_contract_count": 1,
-          "actual_payment_amount": 2051596.07,
-          "payment_transaction_count": 291,
-          "payment_contract_count": 259,
+          "actual_payment_amount": 1866255.49,
+          "payment_transaction_count": 233,
+          "payment_contract_count": 212,
           "measure_provenance": {
             "ibo_actual_expenditures": null,
             "ibo_personal_services": null,
@@ -52536,8 +52541,8 @@
         },
         "actual_payments": {
           "rank": 37,
-          "agency_count": 52,
-          "value": 2051596.07,
+          "agency_count": 53,
+          "value": 1866255.49,
           "fiscal_year": 2026,
           "snapshot_date": "2026"
         }
@@ -55247,7 +55252,7 @@
         },
         "actual_payments": {
           "rank": 25,
-          "agency_count": 52,
+          "agency_count": 53,
           "value": 48255398.58,
           "fiscal_year": 2026,
           "snapshot_date": "2026"
@@ -57967,7 +57972,7 @@
         },
         "actual_payments": {
           "rank": 28,
-          "agency_count": 52,
+          "agency_count": 53,
           "value": 38368659.95,
           "fiscal_year": 2026,
           "snapshot_date": "2026"
@@ -60250,7 +60255,7 @@
         },
         "actual_payments": {
           "rank": 20,
-          "agency_count": 52,
+          "agency_count": 53,
           "value": 139178218.04,
           "fiscal_year": 2026,
           "snapshot_date": "2026"
@@ -60369,7 +60374,7 @@
         },
         "actual_payments": {
           "rank": 9,
-          "agency_count": 52,
+          "agency_count": 53,
           "value": 834982809.27,
           "fiscal_year": 2026,
           "snapshot_date": "2026"
@@ -63082,7 +63087,7 @@
         },
         "actual_payments": {
           "rank": 18,
-          "agency_count": 52,
+          "agency_count": 53,
           "value": 229484786.15,
           "fiscal_year": 2026,
           "snapshot_date": "2026"
@@ -68008,7 +68013,7 @@
         },
         "actual_payments": {
           "rank": 2,
-          "agency_count": 52,
+          "agency_count": 53,
           "value": 8924015731.76,
           "fiscal_year": 2026,
           "snapshot_date": "2026"
@@ -70728,7 +70733,7 @@
         },
         "actual_payments": {
           "rank": 29,
-          "agency_count": 52,
+          "agency_count": 53,
           "value": 33885471.26,
           "fiscal_year": 2026,
           "snapshot_date": "2026"
@@ -78297,7 +78302,7 @@
         },
         "actual_payments": {
           "rank": 1,
-          "agency_count": 52,
+          "agency_count": 53,
           "value": 13250741764.93,
           "fiscal_year": 2026,
           "snapshot_date": "2026"
@@ -81017,7 +81022,7 @@
         },
         "actual_payments": {
           "rank": 26,
-          "agency_count": 52,
+          "agency_count": 53,
           "value": 45608023.03,
           "fiscal_year": 2026,
           "snapshot_date": "2026"
@@ -83737,7 +83742,7 @@
         },
         "actual_payments": {
           "rank": 8,
-          "agency_count": 52,
+          "agency_count": 53,
           "value": 987878086.62,
           "fiscal_year": 2026,
           "snapshot_date": "2026"
@@ -86457,7 +86462,7 @@
         },
         "actual_payments": {
           "rank": 19,
-          "agency_count": 52,
+          "agency_count": 53,
           "value": 167328746,
           "fiscal_year": 2026,
           "snapshot_date": "2026"
@@ -89177,7 +89182,7 @@
         },
         "actual_payments": {
           "rank": 24,
-          "agency_count": 52,
+          "agency_count": 53,
           "value": 64272859.31,
           "fiscal_year": 2026,
           "snapshot_date": "2026"
@@ -91460,7 +91465,7 @@
         },
         "actual_payments": {
           "rank": 16,
-          "agency_count": 52,
+          "agency_count": 53,
           "value": 265574644.1,
           "fiscal_year": 2026,
           "snapshot_date": "2026"
@@ -94180,7 +94185,7 @@
         },
         "actual_payments": {
           "rank": 5,
-          "agency_count": 52,
+          "agency_count": 53,
           "value": 1626244863.63,
           "fiscal_year": 2026,
           "snapshot_date": "2026"
@@ -96900,7 +96905,7 @@
         },
         "actual_payments": {
           "rank": 3,
-          "agency_count": 52,
+          "agency_count": 53,
           "value": 4398091123.06,
           "fiscal_year": 2026,
           "snapshot_date": "2026"
@@ -99620,7 +99625,7 @@
         },
         "actual_payments": {
           "rank": 11,
-          "agency_count": 52,
+          "agency_count": 53,
           "value": 785672597.17,
           "fiscal_year": 2026,
           "snapshot_date": "2026"
@@ -104527,7 +104532,7 @@
         },
         "actual_payments": {
           "rank": 40,
-          "agency_count": 52,
+          "agency_count": 53,
           "value": 1042370.97,
           "fiscal_year": 2026,
           "snapshot_date": "2026"
@@ -104645,7 +104650,7 @@
         },
         "actual_payments": {
           "rank": 12,
-          "agency_count": 52,
+          "agency_count": 53,
           "value": 729316859.84,
           "fiscal_year": 2026,
           "snapshot_date": "2026"
@@ -112644,7 +112649,7 @@
         },
         "actual_payments": {
           "rank": 42,
-          "agency_count": 52,
+          "agency_count": 53,
           "value": 685986.88,
           "fiscal_year": 2026,
           "snapshot_date": "2026"
@@ -115364,7 +115369,7 @@
         },
         "actual_payments": {
           "rank": 21,
-          "agency_count": 52,
+          "agency_count": 53,
           "value": 113173376.32,
           "fiscal_year": 2026,
           "snapshot_date": "2026"
@@ -116768,7 +116773,7 @@
         },
         "actual_payments": {
           "rank": 36,
-          "agency_count": 52,
+          "agency_count": 53,
           "value": 2122744.17,
           "fiscal_year": 2026,
           "snapshot_date": "2026"
@@ -119442,7 +119447,7 @@
         },
         "actual_payments": {
           "rank": 50,
-          "agency_count": 52,
+          "agency_count": 53,
           "value": 253249.89,
           "fiscal_year": 2026,
           "snapshot_date": "2026"
@@ -119462,6 +119467,69 @@
           "expenditure_workbook": "AgencyExpenditures.xlsx",
           "staffing_workbook": "FullTimePositions.xlsx"
         },
+        "fallback_source": null,
+        "fiscal_receipt_schema": "cityscroll.ibo_fiscal_history_receipt.v1",
+        "registered_contract_source": {
+          "projection_schema": "cityscroll.analytics_registered_contracts.v1",
+          "snapshot_date": "2026-08-18",
+          "population_definition": "Normalized Checkbook NYC registered expense contracts; one row per exact prime_contract_id across explicit collection fiscal-year partitions."
+        },
+        "payment_source": {
+          "projection_schema": "cityscroll.analytics_payments.v1",
+          "snapshot_date": "2026",
+          "population_definition": "AP-08 independent Checkbook Spending contract-payment population; grouped by agency, payee, and payment fiscal year."
+        },
+        "overlapping_fiscal_years": [],
+        "registered_contract_years": [],
+        "payment_years": [
+          2026
+        ]
+      }
+    },
+    "office-of-racial-equity": {
+      "schema": "cityscroll.agency_fiscal_context.v1",
+      "agency_id": "office-of-racial-equity",
+      "agency_name": "Office of Racial Equity",
+      "procurement_agency_name": null,
+      "status": "unknown",
+      "fiscal_history": null,
+      "years": [
+        {
+          "fiscal_year": 2026,
+          "ibo_actual_expenditures": null,
+          "ibo_personal_services": null,
+          "ibo_other_than_personal_services": null,
+          "ibo_staffing": null,
+          "current_registered_value": null,
+          "original_registered_value": null,
+          "registered_contract_count": null,
+          "actual_payment_amount": 185340.58,
+          "payment_transaction_count": 58,
+          "payment_contract_count": 47,
+          "measure_provenance": {
+            "ibo_actual_expenditures": null,
+            "ibo_personal_services": null,
+            "ibo_other_than_personal_services": null,
+            "ibo_staffing": null
+          }
+        }
+      ],
+      "rankings": {
+        "actual_payments": {
+          "rank": 51,
+          "agency_count": 53,
+          "value": 185340.58,
+          "fiscal_year": 2026,
+          "snapshot_date": "2026"
+        }
+      },
+      "provenance": {
+        "join_method": "agency_fiscal_context_ibo_authoritative_exact_id_join_v2",
+        "agency_identity_id": "office-of-racial-equity",
+        "identity_resolver": "site/agency_identity.mjs",
+        "fiscal_history_status": "unknown",
+        "fiscal_history_source": null,
+        "fiscal_source": null,
         "fallback_source": null,
         "fiscal_receipt_schema": "cityscroll.ibo_fiscal_history_receipt.v1",
         "registered_contract_source": {
@@ -122158,7 +122226,7 @@
         },
         "actual_payments": {
           "rank": 44,
-          "agency_count": 52,
+          "agency_count": 53,
           "value": 592759.56,
           "fiscal_year": 2026,
           "snapshot_date": "2026"
@@ -124878,7 +124946,7 @@
         },
         "actual_payments": {
           "rank": 22,
-          "agency_count": 52,
+          "agency_count": 53,
           "value": 104005263.76,
           "fiscal_year": 2026,
           "snapshot_date": "2026"
@@ -128507,7 +128575,7 @@
         },
         "actual_payments": {
           "rank": 14,
-          "agency_count": 52,
+          "agency_count": 53,
           "value": 698678462.04,
           "fiscal_year": 2026,
           "snapshot_date": "2026"
@@ -131227,7 +131295,7 @@
         },
         "actual_payments": {
           "rank": 31,
-          "agency_count": 52,
+          "agency_count": 53,
           "value": 25998892.33,
           "fiscal_year": 2026,
           "snapshot_date": "2026"
@@ -133902,7 +133970,7 @@
         },
         "actual_payments": {
           "rank": 48,
-          "agency_count": 52,
+          "agency_count": 53,
           "value": 276713.32,
           "fiscal_year": 2026,
           "snapshot_date": "2026"
@@ -134017,7 +134085,7 @@
         },
         "actual_payments": {
           "rank": 34,
-          "agency_count": 52,
+          "agency_count": 53,
           "value": 6811292.01,
           "fiscal_year": 2026,
           "snapshot_date": "2026"
@@ -136293,7 +136361,7 @@
         },
         "actual_payments": {
           "rank": 10,
-          "agency_count": 52,
+          "agency_count": 53,
           "value": 820063549.83,
           "fiscal_year": 2026,
           "snapshot_date": "2026"
@@ -139013,7 +139081,7 @@
         },
         "actual_payments": {
           "rank": 17,
-          "agency_count": 52,
+          "agency_count": 53,
           "value": 251780073.12,
           "fiscal_year": 2026,
           "snapshot_date": "2026"
@@ -147019,7 +147087,7 @@
         },
         "actual_payments": {
           "rank": 13,
-          "agency_count": 52,
+          "agency_count": 53,
           "value": 702488784.84,
           "fiscal_year": 2026,
           "snapshot_date": "2026"
@@ -149739,7 +149807,7 @@
         },
         "actual_payments": {
           "rank": 7,
-          "agency_count": 52,
+          "agency_count": 53,
           "value": 1248673253.3,
           "fiscal_year": 2026,
           "snapshot_date": "2026"

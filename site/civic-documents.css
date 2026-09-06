@@ -264,6 +264,71 @@ select {
   font: 500 .8125rem/1.4 var(--font-label);
 }
 
+/* Reviewed statutory identity: the first-paint answer to "which body is this?".
+   Static markup in the hero, so it survives with scripting unavailable. */
+.institution-statutory-identity {
+  margin: var(--space-3) 0 0;
+  max-width: 62ch;
+}
+
+.institution-statutory-identity > p {
+  margin: 0 0 var(--space-2);
+}
+
+.institution-statutory-kind {
+  font-size: 1.0625rem;
+}
+
+.institution-statutory-kind-label {
+  font-weight: 600;
+}
+
+.institution-statutory-basis,
+.institution-statutory-distinction {
+  color: var(--color-text-muted);
+  font-size: .9375rem;
+  line-height: 1.5;
+}
+
+.institution-statutory-history {
+  margin: var(--space-2) 0 0;
+}
+
+.institution-statutory-history > summary {
+  cursor: pointer;
+  color: var(--color-text-muted);
+  font-size: .9rem;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+}
+
+.institution-statutory-correction-list,
+.institution-statutory-sources {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.institution-statutory-correction {
+  margin: 0 0 var(--space-3);
+}
+
+.institution-statutory-correction > p {
+  margin: 0 0 var(--space-1);
+  overflow-wrap: anywhere;
+}
+
+.institution-statutory-correction-meta {
+  color: var(--color-text-muted);
+  font-size: .875rem;
+}
+
+.institution-statutory-sources > li {
+  margin: 0 0 var(--space-1);
+}
+
+
 .agency-hero-meta a {
   color: var(--color-action);
 }

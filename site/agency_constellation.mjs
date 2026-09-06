@@ -7,6 +7,7 @@
 
 export * from "./agency_constellation_model.mjs";
 
+import { renderStatutoryInstitutionIdentity } from "./civic_institution_statutory_identity.mjs";
 import {
   agencyConstellationSectionScripts,
   agencyConstellationSectionStyles,
@@ -300,6 +301,7 @@ export function renderAgencyConstellationDocument(view, options = {}) {
     <header class="node-hero civic-object-hero agency-constellation-hero" data-export-class="object_identity">
       <p class="node-kicker civic-object-kicker">Agency constellation</p>
       <h1>${esc(title)}</h1>
+      ${renderStatutoryInstitutionIdentity(view.statutory_identity)}
       <p class="node-lede">${esc(lead)}</p>
       ${metadata ? `<p class="agency-hero-meta">${metadata}</p>` : ""}
     </header>

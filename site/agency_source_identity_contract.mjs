@@ -14,7 +14,7 @@
  * additive machine surface read-model adapters consume.
  */
 
-import { AGENCY_GROUPS, agencyRouteAliasTarget } from "./agency_identity.mjs";
+import { AGENCY_GROUPS, AGENCY_IDENTITY_CORRECTIONS, agencyRouteAliasTarget } from "./agency_identity.mjs";
 import { personLeaderEntityId } from "../entity_resolution/leaders/index.mjs";
 import defaultRouteIdentityReport from "./data/agency_route_identity_report.json" with { type: "json" };
 import defaultConstellationLookup from "./data/agency_constellation_lookup.json" with { type: "json" };
@@ -33,6 +33,8 @@ export const AGENCY_OBJECT_KEY_PATTERN = "agency:{canonical_id|name}";
 export const PROPERTY_SITE_KEY_PATTERN = "disposition:{agency}:{bbl|taxlot}|notice:{notice_id}";
 export const PERSON_LEADER_KEY_PATTERN = "person-leader:{agency_id}:{person_id|name}";
 export const STAFFING_AGENCY_KEY_PATTERN = "agency:id:{canonical_id}";
+export const IDENTITY_CORRECTION_RELATION = "corrects_source_spelling_of";
+export const IDENTITY_CORRECTION_INVERSE = "source_spelling_corrected_to";
 
 // Identity statuses that never mint a link to a canonical subject and never
 // carry an institution kind. `route_only` retains its own route but is still
@@ -276,6 +278,37 @@ function collectNoticeSubjects(agencyObjects, acc) {
   }
 }
 
+/**
+ * Reviewed identity corrections as machine rows.
+ *
+ * A correction is the only way a published source spelling changes which
+ * canonical identity reads it, and it always names both sides, so an old
+ * reference stays resolvable and the change stays reversible. A correction
+ * moves one exact spelling; it never widens a scope, never duplicates a record
+ * across both identities, and never reassigns a spelling that names neither
+ * body specifically.
+ */
+export function projectReviewedIdentityCorrections(corrections = AGENCY_IDENTITY_CORRECTIONS) {
+  return (Array.isArray(corrections) ? corrections : []).map((row) => Object.freeze({
+    relation_id: IDENTITY_CORRECTION_RELATION,
+    inverse: IDENTITY_CORRECTION_INVERSE,
+    source_spelling: clean(row.source_spelling, 240),
+    corrected_id: clean(row.corrected_id, 160),
+    corrected_name: clean(row.corrected_name, 240),
+    corrected_route: `/agencies/${clean(row.corrected_id, 160)}/`,
+    superseded_id: clean(row.superseded_id, 160),
+    superseded_name: clean(row.superseded_name, 240),
+    superseded_route: `/agencies/${clean(row.superseded_id, 160)}/`,
+    basis: clean(row.basis, 800),
+    sources: Object.freeze((row.sources || []).map((source) => Object.freeze({
+      citation: clean(source.citation, 200),
+      url: clean(source.url, 2_000),
+    }))),
+    corrected_on: clean(row.corrected_on, 40),
+    reversible: true,
+  }));
+}
+
 function crosswalkEntries(crosswalk) {
   const entries = crosswalk?.entries ?? crosswalk;
   return entries && typeof entries === "object" && !Array.isArray(entries) ? entries : {};
@@ -323,6 +356,7 @@ export function buildAgencySourceIdentityContract({
   );
 
   const aliasEdges = projectReviewedRouteAliasEdges(routeIdentityReport);
+  const identityCorrections = projectReviewedIdentityCorrections();
   const dispositionSubjects = new Set();
   collectDispositionSubjects(propertyObservations, dispositionSubjects);
   const noticeSubjects = new Set();
@@ -391,6 +425,21 @@ export function buildAgencySourceIdentityContract({
       paths: Object.freeze(routeNames.map((name) => `/agencies/${name}/`)),
     }),
     route_alias_of: Object.freeze(aliasEdges.map((edge) => Object.freeze({ ...edge }))),
+    identity_corrections: Object.freeze({
+      relation: Object.freeze({
+        id: IDENTITY_CORRECTION_RELATION,
+        inverse: IDENTITY_CORRECTION_INVERSE,
+        precision: "exact reviewed source spelling only",
+        negative_rule: Object.freeze([
+          "a correction moves one exact published spelling, never a similar name",
+          "both the corrected and superseded routes stay named so old references resolve",
+          "a spelling naming neither body specifically stays unassigned",
+          "no record is duplicated across the corrected and superseded identities",
+          "a correction never widens an existing exact-institution scope",
+        ]),
+      }),
+      corrections: Object.freeze(identityCorrections),
+    }),
     identity_states: Object.freeze({
       counts: Object.freeze(statusCounts),
       non_linking_statuses: Object.freeze([...AGENCY_SOURCE_IDENTITY_NON_LINKING_STATUSES]),

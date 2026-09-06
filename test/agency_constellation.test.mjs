@@ -24,7 +24,7 @@ import {
   finalizeDerivedFeatureRollup,
 } from "../site/derived_feature_rollup.mjs";
 import { AGENCY_CONSTELLATION_SECTIONS } from "../site/agency_constellation_section_registry.mjs";
-import { reconcileAgencyIdentity, resolveAgencyIdentity } from "../site/agency_identity.mjs";
+import { agencyIdentityCorrection, reconcileAgencyIdentity, resolveAgencyIdentity } from "../site/agency_identity.mjs";
 import { AGENCY_ROUTE_CLASSIFICATIONS } from "../tools/lib/agency_route_classifications.mjs";
 import { agencyPublisherCollisions, publisherAgencyRows } from "../tools/lib/agency_publisher_crosswalk.mjs";
 import { detectNodePageCruft } from "../site/civic_document_chrome.mjs";
@@ -161,6 +161,22 @@ test("publisher reconciliation retains every exact source spelling and fails clo
   for (const row of publisherRows) {
     const identity = reconcileAgencyIdentity(row.canonical_id, publisherRows);
     for (const variant of row.variants) {
+      // A reviewed correction moves a spelling to the identity its cited law
+      // supports. The spelling is still retained exactly once — by the other
+      // identity — so nothing is dropped and nothing is readable from both.
+      const correction = agencyIdentityCorrection(variant);
+      if (correction && correction.corrected_id !== row.canonical_id) {
+        assert.equal(
+          identity.variants.includes(variant),
+          false,
+          `${row.canonical_id} released ${variant}`,
+        );
+        assert.ok(
+          reconcileAgencyIdentity(correction.corrected_id, publisherRows).variants.includes(variant),
+          `${correction.corrected_id} retains ${variant}`,
+        );
+        continue;
+      }
       assert.ok(identity.variants.includes(variant), `${row.canonical_id} retains ${variant}`);
     }
   }
