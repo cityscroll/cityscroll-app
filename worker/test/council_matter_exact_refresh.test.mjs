@@ -1,7 +1,7 @@
 /**
  * Exact Council matters refresh without a new notice or a rolling cutoff.
  *
- *   node --test worker/test/matter_followthrough_mf_04.test.mjs
+ *   node --test worker/test/council_matter_exact_refresh.test.mjs
  *
  * Fixtures are reconstructed from the committed meeting-outcomes snapshot.
  * No test in this file contacts a publisher.
