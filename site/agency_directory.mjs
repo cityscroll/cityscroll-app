@@ -312,7 +312,7 @@ ${renderDirectoryGroupNav(model, state)}
 <p class="agency-directory-empty" data-directory-empty="1" hidden>No public body in this directory matches that search. Clear the search to see all ${model.total}, or choose another group.</p>
 ${model.sections.map(renderDirectorySection).join("\n")}
 </div>
-</main><footer class="node-footer civic-object-footer">CityScroll is an unofficial reading aid. <a href="/about.html">About the data</a>.</footer>
+</main><footer class="node-footer civic-object-footer">CityScroll is an unofficial reading aid. <a href="/guide/">Guide</a>. <a href="/about.html">About the data</a>.</footer>
 <script type="module" src="/agency_directory_runtime.mjs"></script>
 </body></html>`;
 }

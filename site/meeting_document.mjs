@@ -744,7 +744,7 @@ export function renderMeetingDocument(record = {}, readModel = {}) {
 <script type="module" src="/report_issue.mjs"></script>
 </head>
 <body>
-<header class="document-mast"><div class="document-mast-inner"><a class="document-brand brand-lockup home" href="/" aria-label="CityScroll home">CityScroll</a><nav class="document-nav" aria-label="Primary"><a href="/now/">Now</a><a href="/near-you/">Near you</a><a href="/following/">Following</a><a href="/browse/">Browse</a></nav></div></header>
+<header class="document-mast"><div class="document-mast-inner"><a class="document-brand brand-lockup home" href="/" aria-label="CityScroll home">CityScroll</a><nav class="document-nav" aria-label="Primary"><a href="/now/">Now</a><a href="/near-you/">Near you</a><a href="/following/">Following</a><a href="/browse/">Browse</a><a href="/guide/">Guide</a></nav></div></header>
 <main id="main" class="civic-document node-document meeting-document" data-civic-object-kind="meeting" data-meeting-id="${esc(id)}" data-source-record-id="${esc(record.source_record_id || "")}" data-capability-reference="meeting.get@1" tabindex="-1">
   <p class="node-back"><a href="/browse/meetings/">Browse meetings and hearings</a></p>
   <section class="node-hero civic-object-hero meeting-hero"><p class="node-kicker civic-object-kicker">${esc(record.source_system === "community_board" ? "Community board meeting" : "City Record meeting")}</p><h1>${esc(title)}</h1>${record.event_date ? `<p class="node-lede"><time datetime="${esc(record.event_date)}">${esc(record.event_date)}</time></p>` : ""}${record.event_end ? `<p class="node-muted">Ends <time datetime="${esc(record.event_end)}">${esc(record.event_end)}</time></p>` : ""}</section>

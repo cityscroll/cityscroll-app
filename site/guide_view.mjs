@@ -48,7 +48,7 @@ function head({ title, description, canonical }) {
 <link rel="canonical" href="${esc(canonical)}">${renderCivicDocumentAssets("/")}
 <link rel="stylesheet" href="/guide.css"></head>
 <body><a class="skip" href="#main">Skip to content</a>
-${renderCivicDocumentMast({ surfaceClass: "guide-mast" })}`;
+${renderCivicDocumentMast({ current: "guide", surfaceClass: "guide-mast" })}`;
 }
 
 function foot() {

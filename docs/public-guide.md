@@ -18,12 +18,20 @@ with, and how those examples were verified — is in
 | `site/guide_article_source.mjs` | The source format: front matter, the Markdown subset, and the validation that rejects a malformed article. |
 | `site/guide_source_coverage.mjs` | The one table a reference page shows that is derived rather than written, read out of the source registry. |
 | `site/guide_view.mjs` | The rendered documents, built on the shared civic-document chrome. |
+| `site/guide_contextual_links.mjs` | The one help link each product control group may show, and the `/guide/` path the shared mast and footer use. |
 | `site/guide.css` | The few rules `civic-documents.css` does not already cover. |
 | `tools/build_guide_documents.mjs` | The builder. Writes `site/guide/**/index.html`; `--check` fails when a document is stale. |
 | `test/guide_documents.test.mjs` | The reader-facing contracts. |
 | `test/standards/guide_content.py` | Points the site's own metadata, link-text and heading gates at the guide pages. |
 | `tools/capture_guide_release.py` | Drives the reader's journey and records the usability evidence as a manifest. |
 | `tools/capture_guide_how_to_walkthroughs.py` | Walks the everyday how-tos to the product route each one names and back, and records that the run changed nothing. Usability belongs to the runner above; this answers whether the journey arrives. |
+| `tools/capture_guide_product_access.py` | Home → Guide → example → explanation → product at 390px and 1440px, plus About anchors and Following's help link. |
+
+The shared document mast and footer (`site/civic_document_chrome.mjs`) include
+Guide next to Now, Near you, Following, and Browse. Following, the calendar
+handoff, connection evidence, the as-of control, and an empty investigation each
+offer one of those contextual links — never a second help system, and never a
+URL that carries a watch or session credential.
 
 Article sources sit under underscore-prefixed directories, which the public-site
 payload walker already skips, so the Markdown is tracked and reviewable without

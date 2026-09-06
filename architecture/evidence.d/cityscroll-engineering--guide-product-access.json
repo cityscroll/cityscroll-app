@@ -1,0 +1,57 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/guide-product-access",
+  "status": "implemented",
+  "fingerprint": "guide-product-access.v1",
+  "updated_at": "2026-09-06T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "guide-contextual-link-owner",
+      "path": "site/guide_contextual_links.mjs"
+    },
+    {
+      "id": "shared-document-chrome",
+      "path": "site/civic_document_chrome.mjs"
+    },
+    {
+      "id": "calendar-handoff-guide-help",
+      "path": "site/calendar_subscription.mjs"
+    },
+    {
+      "id": "connection-evidence-guide-help",
+      "path": "site/graph_edge_provenance.mjs"
+    },
+    {
+      "id": "as-of-guide-help",
+      "path": "site/civic_time_ledger.mjs"
+    },
+    {
+      "id": "empty-collection-guide-help",
+      "path": "site/app/workspace.mjs"
+    },
+    {
+      "id": "readme-entry",
+      "path": "README.md"
+    },
+    {
+      "id": "guide-contextual-access-contracts",
+      "path": "test/guide_contextual_access.test.mjs"
+    },
+    {
+      "id": "article-entry-map",
+      "path": "docs/evidence/public-user-guide/article-entry-map.md"
+    },
+    {
+      "id": "about-readme-migration",
+      "path": "docs/evidence/public-user-guide/about-readme-migration.md"
+    },
+    {
+      "id": "guide-product-access-capture",
+      "path": "tools/capture_guide_product_access.py"
+    },
+    {
+      "id": "guide-product-access-manifest",
+      "path": "docs/evidence/public-user-guide/guide-product-access/capture-manifest.json"
+    }
+  ]
+}

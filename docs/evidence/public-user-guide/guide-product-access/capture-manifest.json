@@ -1,0 +1,280 @@
+{
+  "schema_version": 1,
+  "record": "cityscroll-engineering/guide-product-access",
+  "capture_mode": "local_static_site_playwright_no_committed_image",
+  "base": "local static site build (site/)",
+  "repository_revision": "3638ce2951dbcd5ac1fb1f2c0922acbe4088dc6b",
+  "repository_state": "uncommitted changes present at capture time",
+  "note": "Reachability evidence for connecting the published guide to the product. The run covers home \u2192 Guide \u2192 an example \u2192 a relevant explanation \u2192 the product, About's preserved anchors, and Following's one help link, at 390px and 1440px. Screenshots stay under .artifacts/; only sha256 values are committed.",
+  "data_vintage": "Not applicable: these documents are tracked prose and chrome, not civic records.",
+  "viewports": [
+    {
+      "name": "mobile",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "name": "desktop",
+      "width": 1440,
+      "height": 900
+    }
+  ],
+  "captures": [
+    {
+      "id": "home-mobile",
+      "route": "/",
+      "viewport": "mobile",
+      "viewport_width": 390,
+      "assertion": "Home primary navigation includes Guide.",
+      "assertion_holds": true,
+      "capture_sha256": "838416b32fc5885b163eaf654e32cdafaaea63c03421f987b57743d5c4842425",
+      "content_sha256": "9c7871ab035dbe711470a25496eb6c3b5054f5b164c51ff9caca44d40d02884a",
+      "local_capture_path": ".artifacts/guide-product-access/home-390.png",
+      "file": null,
+      "path": "/",
+      "overflow": {
+        "scrollWidth": 390,
+        "clientWidth": 390
+      }
+    },
+    {
+      "id": "guide-home-mobile",
+      "route": "/guide/",
+      "viewport": "mobile",
+      "viewport_width": 390,
+      "assertion": "Guide home lists Start here and marks Guide current in the mast.",
+      "assertion_holds": true,
+      "capture_sha256": "52be78d6214f9061f50f991d759d94c419e4078eb411513527abc180df0aee1f",
+      "content_sha256": "3195fe1106f4efd85b2d44f013ff6a6d5deaf921304d5b93562cfe3303265e7d",
+      "local_capture_path": ".artifacts/guide-product-access/guide-home-390.png",
+      "file": null,
+      "path": "/guide/",
+      "overflow": {
+        "scrollWidth": 390,
+        "clientWidth": 390
+      }
+    },
+    {
+      "id": "about-mobile",
+      "route": "/about.html",
+      "viewport": "mobile",
+      "viewport_width": 390,
+      "assertion": "About still names independence and links Guide.",
+      "assertion_holds": true,
+      "capture_sha256": "888973cb8a03c559c67fc1ca3ce9fe0f9f4182316be5fe2d952b80361c40a929",
+      "content_sha256": "804a1e4144acba2fc39f93aabfded5b6ea295b00bfd50cc58de8c83f080b3111",
+      "local_capture_path": ".artifacts/guide-product-access/about-390.png",
+      "file": null,
+      "path": "/about.html",
+      "overflow": {
+        "scrollWidth": 390,
+        "clientWidth": 390
+      }
+    },
+    {
+      "id": "home-desktop",
+      "route": "/",
+      "viewport": "desktop",
+      "viewport_width": 1440,
+      "assertion": "Home primary navigation includes Guide.",
+      "assertion_holds": true,
+      "capture_sha256": "8cc3dbe7e55d5b9684941235e8be5af924a68a72cead3c9622c074cd5729fc05",
+      "content_sha256": "9c7871ab035dbe711470a25496eb6c3b5054f5b164c51ff9caca44d40d02884a",
+      "local_capture_path": ".artifacts/guide-product-access/home-1440.png",
+      "file": null,
+      "path": "/",
+      "overflow": {
+        "scrollWidth": 1440,
+        "clientWidth": 1440
+      }
+    },
+    {
+      "id": "guide-home-desktop",
+      "route": "/guide/",
+      "viewport": "desktop",
+      "viewport_width": 1440,
+      "assertion": "Guide home lists Start here and marks Guide current in the mast.",
+      "assertion_holds": true,
+      "capture_sha256": "e72077ef16a4149dbac41a017c248d26059212d14d32e521dbf5366a1111b46f",
+      "content_sha256": "3195fe1106f4efd85b2d44f013ff6a6d5deaf921304d5b93562cfe3303265e7d",
+      "local_capture_path": ".artifacts/guide-product-access/guide-home-1440.png",
+      "file": null,
+      "path": "/guide/",
+      "overflow": {
+        "scrollWidth": 1440,
+        "clientWidth": 1440
+      }
+    },
+    {
+      "id": "about-desktop",
+      "route": "/about.html",
+      "viewport": "desktop",
+      "viewport_width": 1440,
+      "assertion": "About still names independence and links Guide.",
+      "assertion_holds": true,
+      "capture_sha256": "f91908f59a8e809bc2a97123c18a43b9d289e9ffb1a105d8b900d4b12e0bcb3e",
+      "content_sha256": "804a1e4144acba2fc39f93aabfded5b6ea295b00bfd50cc58de8c83f080b3111",
+      "local_capture_path": ".artifacts/guide-product-access/about-1440.png",
+      "file": null,
+      "path": "/about.html",
+      "overflow": {
+        "scrollWidth": 1440,
+        "clientWidth": 1440
+      }
+    }
+  ],
+  "journeys": [
+    {
+      "id": "scripted-journey-mobile",
+      "viewport": "mobile",
+      "assertion": "Home \u2192 Guide \u2192 example \u2192 explanation \u2192 product, then Back.",
+      "assertion_holds": true,
+      "steps": [
+        {
+          "step": "home to guide",
+          "path": "/guide/"
+        },
+        {
+          "step": "guide to example",
+          "path": "/guide/start/explore-housing-across-city-records/"
+        },
+        {
+          "step": "example to explanation",
+          "path": "/guide/understand/what-a-public-record-tells-you/"
+        },
+        {
+          "step": "explanation to product",
+          "path": "/browse/"
+        },
+        {
+          "step": "back to explanation",
+          "path": "/guide/understand/what-a-public-record-tells-you/"
+        }
+      ],
+      "expected_paths": [
+        "/guide/",
+        "/guide/start/explore-housing-across-city-records/",
+        "/guide/understand/what-a-public-record-tells-you/",
+        "/browse/",
+        "/guide/understand/what-a-public-record-tells-you/"
+      ]
+    },
+    {
+      "id": "about-anchors-mobile",
+      "viewport": "mobile",
+      "assertion": "Every cited About fragment still has an in-page target.",
+      "assertion_holds": true,
+      "anchors": {
+        "context": true,
+        "past-patterns": true,
+        "staffing-list-establishment-formula": true,
+        "property-disposition-timing-formula": true,
+        "tax-lien-sale-predictions": true,
+        "zoning-base-rates": true,
+        "applicant-conditioned-ulurp": true
+      },
+      "guide_link": true,
+      "flags_link": true
+    },
+    {
+      "id": "following-help-mobile",
+      "viewport": "mobile",
+      "assertion": "Following shows one help link to the follow-a-search article.",
+      "assertion_holds": true,
+      "help_hrefs": [
+        "/guide/how-to/follow-a-search/"
+      ],
+      "primary_nav": [
+        "/now/",
+        "/near-you/",
+        "/following/",
+        "/browse/",
+        "/guide/"
+      ]
+    },
+    {
+      "id": "journey-without-javascript-mobile",
+      "viewport": "mobile",
+      "assertion": "The same Guide path works with JavaScript switched off, including Back.",
+      "assertion_holds": true,
+      "tutorial_path": "/guide/start/explore-housing-across-city-records/",
+      "back_path": "/guide/"
+    },
+    {
+      "id": "scripted-journey-desktop",
+      "viewport": "desktop",
+      "assertion": "Home \u2192 Guide \u2192 example \u2192 explanation \u2192 product, then Back.",
+      "assertion_holds": true,
+      "steps": [
+        {
+          "step": "home to guide",
+          "path": "/guide/"
+        },
+        {
+          "step": "guide to example",
+          "path": "/guide/start/explore-housing-across-city-records/"
+        },
+        {
+          "step": "example to explanation",
+          "path": "/guide/understand/what-a-public-record-tells-you/"
+        },
+        {
+          "step": "explanation to product",
+          "path": "/browse/"
+        },
+        {
+          "step": "back to explanation",
+          "path": "/guide/understand/what-a-public-record-tells-you/"
+        }
+      ],
+      "expected_paths": [
+        "/guide/",
+        "/guide/start/explore-housing-across-city-records/",
+        "/guide/understand/what-a-public-record-tells-you/",
+        "/browse/",
+        "/guide/understand/what-a-public-record-tells-you/"
+      ]
+    },
+    {
+      "id": "about-anchors-desktop",
+      "viewport": "desktop",
+      "assertion": "Every cited About fragment still has an in-page target.",
+      "assertion_holds": true,
+      "anchors": {
+        "context": true,
+        "past-patterns": true,
+        "staffing-list-establishment-formula": true,
+        "property-disposition-timing-formula": true,
+        "tax-lien-sale-predictions": true,
+        "zoning-base-rates": true,
+        "applicant-conditioned-ulurp": true
+      },
+      "guide_link": true,
+      "flags_link": true
+    },
+    {
+      "id": "following-help-desktop",
+      "viewport": "desktop",
+      "assertion": "Following shows one help link to the follow-a-search article.",
+      "assertion_holds": true,
+      "help_hrefs": [
+        "/guide/how-to/follow-a-search/"
+      ],
+      "primary_nav": [
+        "/now/",
+        "/near-you/",
+        "/following/",
+        "/browse/",
+        "/guide/"
+      ]
+    },
+    {
+      "id": "journey-without-javascript-desktop",
+      "viewport": "desktop",
+      "assertion": "The same Guide path works with JavaScript switched off, including Back.",
+      "assertion_holds": true,
+      "tutorial_path": "/guide/start/explore-housing-across-city-records/",
+      "back_path": "/guide/"
+    }
+  ]
+}

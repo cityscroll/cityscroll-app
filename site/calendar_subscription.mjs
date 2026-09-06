@@ -1,5 +1,6 @@
 import { calendarFeedUrlForScope, scopeFromRouteHash } from "./scope_v0.mjs";
 import { zoningHearingCalendarOccurrence } from "./zoning_hearing_calendar.mjs";
+import { renderGuideHelpLink } from "./guide_contextual_links.mjs";
 
 export const CALENDAR_SUBSCRIPTION_LABEL = "Subscribe to calendar";
 
@@ -157,6 +158,7 @@ export function renderCalendarSubscriptionHandoff({ feedUrl, webcalUrl, scopeLab
         <button class="calendar-subscription-copy" type="button" data-calendar-subscription-copy data-copy-url="${escape(feedUrl)}">Copy subscription URL</button>
       </div>
       <p class="calendar-subscription-note">No account is required to get this feed. CityScroll cannot tell whether another calendar kept the subscription.</p>
+      ${renderGuideHelpLink("calendar", { extraClass: "calendar-subscription-guide-help" })}
       <details class="calendar-subscription-guidance" open>
         <summary>How to subscribe</summary>
         <ul>

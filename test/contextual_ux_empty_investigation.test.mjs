@@ -93,6 +93,7 @@ test("empty: the guided empty state names the find -> open -> pin sequence, link
   assert.match(html, /use its Pin button/, "explains how the first record gets pinned");
   assert.match(html, /<a class="act primary" href="\/search\/" id="invfind">/, "a real, natively keyboard-operable link to search");
   assert.match(html, />Find something to pin</);
+  assert.match(html, /href="\/guide\/how-to\/collect-records-and-export-them\/"/, "one help link for the empty collection");
   assert.doesNotMatch(html, /tabindex="-1"/, "the find link stays in the normal tab order");
 
   assert.match(html, /share a read-only link/);
