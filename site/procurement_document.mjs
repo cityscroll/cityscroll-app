@@ -38,6 +38,11 @@ import { extractSolicitationProcurementMethod } from "./solicitation_procurement
 import { buildSolicitationMwbeView } from "./mwbe_goal_surface.mjs";
 import { buildPursuitSnapshot, renderPursuitSnapshotHtml } from "./procurement_pursuit_snapshot.mjs";
 import { buildRelatedProcurementContext, renderRelatedProcurementContextHtml } from "./procurement_related_context.mjs";
+import {
+  buildProjectContextView,
+  projectContextInspectSummary,
+  renderProjectContextHtml,
+} from "./procurement_project_context.mjs";
 import { buildProcurementHandoffCopy, renderProcurementHandoffCopyHtml } from "./procurement_handoff_copy.mjs";
 
 const CHECKBOOK_SMART_SEARCH = "https://www.checkbooknyc.com/smart_search/citywide";
@@ -449,6 +454,35 @@ function relatedProcurementContextFor(object, facts, pursuitSnapshot, opts) {
   return buildRelatedProcurementContext({ subject, candidates, populationAmounts });
 }
 
+// Inline JSON destined for a <script> element: the closing-tag sequence and the
+// two line separators JSON leaves bare are escaped so the payload cannot end
+// its own element or break the parse.
+function procurementJsonScriptPayload(value) {
+  return JSON.stringify(value)
+    .replace(/</g, "\\u003c")
+    .replace(/\u2028/g, "\\u2028")
+    .replace(/\u2029/g, "\\u2029");
+}
+
+// Wider-project context beneath the pursuit snapshot: the capital project the
+// notice's own published project code belongs to. The relation is materialized
+// during acquisition; this page reads the materialized rows and never matches
+// anything itself, the same caller-supplied contract relatedContextCandidates
+// already uses. Absent that input, or absent a relation for this notice, the
+// section renders nothing rather than an empty panel.
+function procurementProjectContextFor(object, observations, pursuitSnapshot, materialization) {
+  if (!pursuitSnapshot || !materialization) return null;
+  const rows = observationRows(object, observations);
+  const cityRecordRow = rows.find((entry) => entry.source_system === "city_record")?.snapshot || null;
+  const requestId = cityRecordRow?.request_id
+    || rows.find((entry) => entry.source_system === "city_record")?.source_system_id
+    || null;
+  if (!requestId) return null;
+  return buildProjectContextView(materialization, { request_id: requestId }, {
+    officialNotice: pursuitSnapshot.official_action?.official_notice || null,
+  });
+}
+
 export function renderProcurementDocument(object = {}, observations = [], {
   currentHref = "",
   sourceStatus = {},
@@ -460,6 +494,7 @@ export function renderProcurementDocument(object = {}, observations = [], {
   today = null,
   relatedContextCandidates = null,
   relatedContextPopulationAmounts = null,
+  projectContextMaterialization = null,
   preferenceMatch = null,
   accessClassification = null,
 } = {}) {
@@ -484,6 +519,12 @@ export function renderProcurementDocument(object = {}, observations = [], {
     relatedContextPopulationAmounts,
   });
   const relatedContextHtml = renderRelatedProcurementContextHtml(relatedContext);
+  const projectContext = procurementProjectContextFor(object, observations, pursuitSnapshot, projectContextMaterialization);
+  const projectContextHtml = renderProjectContextHtml(projectContext);
+  // The same section, reduced to one line, for the in-place event inspection on
+  // this page. Serialized as inert JSON the shared preview binder reads: no
+  // fetch, no second copy of the relation, and nothing to load at read time.
+  const projectContextInspect = projectContext ? projectContextInspectSummary(projectContext) : null;
   const factRows = [
     ["Agency", facts.agency], ["Vendor", facts.vendor], ["Amount", facts.amount], ["Award date", facts.awardDate],
     ["Contract number", facts.contractNumber], ["Method", facts.method],
@@ -507,12 +548,14 @@ export function renderProcurementDocument(object = {}, observations = [], {
   const canonical = procurementCanonicalHref(object);
   const html = `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>${esc(facts.title)} · CityScroll</title><link rel="canonical" href="https://cityscroll.org${esc(canonical)}">${renderCivicDocumentAssets("/")}${opportunityMonth ? '<link rel="stylesheet" href="/compact_calendar.css" data-route-style="compact_calendar.css">' : ""}${opportunityMonth ? renderCalendarEventPreviewScript("/") : ""}${pursuitSnapshotHtml ? '<link rel="stylesheet" href="/procurement_pursuit_snapshot.css" data-route-style="procurement_pursuit_snapshot.css">' : ""}${relatedContextHtml ? '<link rel="stylesheet" href="/procurement_related_context.css" data-route-style="procurement_related_context.css">' : ""}<script type="module" src="/report_issue.mjs"></script></head>
+<title>${esc(facts.title)} · CityScroll</title><link rel="canonical" href="https://cityscroll.org${esc(canonical)}">${renderCivicDocumentAssets("/")}${opportunityMonth ? '<link rel="stylesheet" href="/compact_calendar.css" data-route-style="compact_calendar.css">' : ""}${opportunityMonth ? renderCalendarEventPreviewScript("/") : ""}${pursuitSnapshotHtml ? '<link rel="stylesheet" href="/procurement_pursuit_snapshot.css" data-route-style="procurement_pursuit_snapshot.css">' : ""}${relatedContextHtml ? '<link rel="stylesheet" href="/procurement_related_context.css" data-route-style="procurement_related_context.css">' : ""}${projectContextHtml ? '<link rel="stylesheet" href="/procurement_project_context.css" data-route-style="procurement_project_context.css">' : ""}<script type="module" src="/report_issue.mjs"></script></head>
 <body>${renderCivicDocumentMast({ current: "browse" })}<main class="node-document" data-civic-object-kind="procurement" data-procurement-id="${esc(id)}">
 ${renderNodeBack({ href: "/browse/contracts/?mode=award", label: "Back to contracts", currentHref })}
 <header class="node-hero"><p class="ftype">Procurement</p><h1>${esc(facts.title)}</h1></header>
 ${pursuitSnapshotHtml}
+${projectContextHtml}
 ${relatedContextHtml}
+${projectContextInspect ? `<script type="application/json" data-project-context-inspect="1">${procurementJsonScriptPayload({ summary: projectContextInspect })}</script>` : ""}
 ${procurementActions(object, facts)}
 ${renderCrossSourceEvidenceReceipt(object?.cross_source_evidence_receipt)}
 ${renderNodeSection({ heading: "Contract facts", body: factRows ? `<dl class="node-facts">${factRows}</dl>` : "" })}

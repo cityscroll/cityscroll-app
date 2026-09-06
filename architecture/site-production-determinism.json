@@ -410,6 +410,7 @@
     "site/procurement_process_events.mjs",
     "site/procurement_process_state_vocabulary.mjs",
     "site/procurement_process_watch.mjs",
+    "site/procurement_project_context.mjs",
     "site/procurement_pursuit_snapshot.mjs",
     "site/procurement_pursuit_state.mjs",
     "site/procurement_read_model_shards.mjs",

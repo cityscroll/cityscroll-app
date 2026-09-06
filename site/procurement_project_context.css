@@ -1,0 +1,150 @@
+/*
+ * Wider-project context beneath the pursuit facts.
+ *
+ * Reuses the token vocabulary of .pursuit-snapshot and .related-context for
+ * visual continuity, and keeps its own outer border so a reader can see at a
+ * glance that these figures describe a different thing from the solicitation
+ * facts above them. Mobile-first: nothing here assumes more than a 320px-wide
+ * viewport, and every long identifier, project name and published paragraph is
+ * allowed to wrap rather than push the page sideways.
+ */
+
+.project-context {
+  font: 14px/1.5 var(--font-interface, ui-sans-serif, system-ui, sans-serif);
+  color: var(--ink, #12181f);
+  border: 1px solid var(--rule, #dde1e7);
+  border-inline-start: 3px solid var(--muted, #5b6470);
+  border-radius: 10px;
+  padding: 14px 16px 16px;
+  margin: 0 0 16px;
+  background: var(--paper-2, #f7f8fa);
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.project-context h2 {
+  margin: 0 0 6px;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.project-context-lede {
+  margin: 0 0 12px;
+  font-size: 12px;
+  color: var(--muted, #5b6470);
+}
+
+.project-context-project {
+  border: 1px solid var(--rule, #e4e7ec);
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin: 0 0 10px;
+  min-width: 0;
+  background: var(--paper, #fff);
+}
+
+.project-context-project:last-of-type {
+  margin-bottom: 12px;
+}
+
+.project-context-facts {
+  margin: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+}
+
+.project-context-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 12px;
+  align-items: baseline;
+  padding: 5px 0;
+  border-bottom: 1px solid var(--rule, #eef0f3);
+  min-width: 0;
+}
+
+.project-context-row:last-child {
+  border-bottom: none;
+}
+
+.project-context-row dt {
+  flex: 0 0 auto;
+  min-width: 0;
+  font-size: 12px;
+  color: var(--muted, #5b6470);
+}
+
+.project-context-row dd {
+  flex: 1 1 auto;
+  margin: 0;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font-weight: 600;
+}
+
+.project-context-scope {
+  margin: 10px 0 0;
+  padding-top: 10px;
+  border-top: 1px solid var(--rule, #eef0f3);
+  overflow-wrap: anywhere;
+}
+
+.project-context-observations {
+  margin: 10px 0 0;
+  font-size: 12px;
+  color: var(--muted, #5b6470);
+}
+
+/* A standalone control, not a link inside a sentence: it carries its own
+   minimum target height rather than relying on the inline-target exception. */
+.project-context-observations summary {
+  cursor: pointer;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  min-height: 24px;
+}
+
+.project-context-observations p {
+  margin: 6px 0 0;
+}
+
+.project-context-boundaries {
+  margin: 0 0 12px;
+  padding: 0 0 0 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--ink, #12181f);
+}
+
+.project-context-boundaries li {
+  overflow-wrap: anywhere;
+}
+
+.project-context-official {
+  margin: 0;
+}
+
+/* Both are the only content of their paragraph, so both are standalone targets
+   and take the same minimum height as any other control on the page. */
+.project-context-official-link,
+.project-context-source-link {
+  color: var(--link, #1a5fb4);
+  font-weight: 600;
+  overflow-wrap: anywhere;
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+}
+
+@media (min-width: 640px) {
+  .project-context-row {
+    display: grid;
+    grid-template-columns: minmax(0, 200px) minmax(0, 1fr);
+    gap: 0 16px;
+  }
+}

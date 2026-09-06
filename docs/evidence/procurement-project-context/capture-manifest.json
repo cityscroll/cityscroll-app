@@ -1,0 +1,795 @@
+{
+  "schema": "cityscroll.procurement_project_context_capture_manifest.v1",
+  "captured_at": "2026-09-06T01:53:14Z",
+  "revision": "e942968a7b2b4bf451f78e2f9a4e2d5e48689011",
+  "note": "Wider-project context on procurement detail. Screenshot binaries are not committed to this repository; they are written to an external directory (default a docs-evidence/ sibling of the repository root, override with CAPTURE_EXTERNAL_OUT) named by 'external_filename' below, and this manifest is the reproducible, reviewable record of what each capture shows and why.",
+  "external_output_directory_note": "Not committed; see external_filename per capture. Re-run this script to regenerate byte-identical captures (same sha256) at this revision.",
+  "minimum_target_size_px": 24,
+  "captures": [
+    {
+      "case": "project-context-matched",
+      "surface": "procurement-detail",
+      "route": "/_capture/project-context-matched",
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "note": "narrow phone"
+      },
+      "revision": "e942968a7b2b4bf451f78e2f9a4e2d5e48689011",
+      "data_vintage": "Committed project-context materialization: 347 published procurement notices through 2026-09-04, joined to the 202605 capital project reporting period. A matched construction solicitation whose notice names one published project code.",
+      "assertion": "The section states the wider project's published scope, sponsor, phase, project budget, recorded project spending and project forecast completion beside the existing pursuit facts, attributes them to the whole project rather than the advertised package, and keeps the official City Record notice reachable.",
+      "renders_project_context": true,
+      "layout": {
+        "horizontal_overflow": false,
+        "section_overflows": false,
+        "document_scroll_width": 390,
+        "document_client_width": 390,
+        "interactive_targets": 3,
+        "smallest_target_px": 24,
+        "meets_minimum_target_size": true
+      },
+      "keyboard_focus_order": [
+        "summary:Source records:focus-visible",
+        "a:City Record notice:focus-visible",
+        "summary:Source records:focus-visible",
+        "a:City Record notice:focus-visible",
+        "summary:Source records:focus-visible",
+        "a:City Record notice:focus-visible",
+        "summary:Source records:focus-visible",
+        "a:City Record notice:focus-visible"
+      ],
+      "external_filename": "project-context-matched-390x844.png",
+      "sha256": "08585bd7a64bbfff2b046dd3a196de4a629c9b270f0b0b17fadb83d73c2a8cd2",
+      "bytes": 407349,
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "case": "project-context-matched",
+      "surface": "procurement-detail",
+      "route": "/_capture/project-context-matched",
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "note": "desktop"
+      },
+      "revision": "e942968a7b2b4bf451f78e2f9a4e2d5e48689011",
+      "data_vintage": "Committed project-context materialization: 347 published procurement notices through 2026-09-04, joined to the 202605 capital project reporting period. A matched construction solicitation whose notice names one published project code.",
+      "assertion": "The section states the wider project's published scope, sponsor, phase, project budget, recorded project spending and project forecast completion beside the existing pursuit facts, attributes them to the whole project rather than the advertised package, and keeps the official City Record notice reachable.",
+      "renders_project_context": true,
+      "layout": {
+        "horizontal_overflow": false,
+        "section_overflows": false,
+        "document_scroll_width": 1440,
+        "document_client_width": 1440,
+        "interactive_targets": 3,
+        "smallest_target_px": 24,
+        "meets_minimum_target_size": true
+      },
+      "keyboard_focus_order": [
+        "summary:Source records:focus-visible",
+        "a:City Record notice:focus-visible",
+        "summary:Source records:focus-visible",
+        "a:City Record notice:focus-visible",
+        "summary:Source records:focus-visible",
+        "a:City Record notice:focus-visible",
+        "summary:Source records:focus-visible",
+        "a:City Record notice:focus-visible"
+      ],
+      "external_filename": "project-context-matched-1440x900.png",
+      "sha256": "277d889bda7d1744563a34bd565c96640e5e8d8bd9e280f65618ebaebe911cba",
+      "bytes": 463638,
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "case": "project-context-matched",
+      "surface": "procurement-detail",
+      "route": "/_capture/project-context-matched",
+      "viewport": {
+        "width": 720,
+        "height": 450,
+        "note": "desktop at 200% zoom"
+      },
+      "revision": "e942968a7b2b4bf451f78e2f9a4e2d5e48689011",
+      "data_vintage": "Committed project-context materialization: 347 published procurement notices through 2026-09-04, joined to the 202605 capital project reporting period. A matched construction solicitation whose notice names one published project code.",
+      "assertion": "The section states the wider project's published scope, sponsor, phase, project budget, recorded project spending and project forecast completion beside the existing pursuit facts, attributes them to the whole project rather than the advertised package, and keeps the official City Record notice reachable.",
+      "renders_project_context": true,
+      "layout": {
+        "horizontal_overflow": false,
+        "section_overflows": false,
+        "document_scroll_width": 720,
+        "document_client_width": 720,
+        "interactive_targets": 3,
+        "smallest_target_px": 24,
+        "meets_minimum_target_size": true
+      },
+      "keyboard_focus_order": [
+        "summary:Source records:focus-visible",
+        "a:City Record notice:focus-visible",
+        "summary:Source records:focus-visible",
+        "a:City Record notice:focus-visible",
+        "summary:Source records:focus-visible",
+        "a:City Record notice:focus-visible",
+        "summary:Source records:focus-visible",
+        "a:City Record notice:focus-visible"
+      ],
+      "external_filename": "project-context-matched-720x450.png",
+      "sha256": "0c3a322d03dc6f5c5e4428b6fae15aeca3f4f9a0af154cdc7dba66d426a5797b",
+      "bytes": 438282,
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "case": "project-context-partial-component",
+      "surface": "procurement-detail",
+      "route": "/_capture/project-context-partial-component",
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "note": "narrow phone"
+      },
+      "revision": "e942968a7b2b4bf451f78e2f9a4e2d5e48689011",
+      "data_vintage": "Committed project-context materialization: 347 published procurement notices through 2026-09-04, joined to the 202605 capital project reporting period. A bundled solicitation naming two components, only one of which the city publishes as a project code.",
+      "assertion": "Only the resolved component's project renders; the unjoined component is named as not covered, and no schedule number is shown for a project that publishes none.",
+      "renders_project_context": true,
+      "layout": {
+        "horizontal_overflow": false,
+        "section_overflows": false,
+        "document_scroll_width": 390,
+        "document_client_width": 390,
+        "interactive_targets": 3,
+        "smallest_target_px": 24,
+        "meets_minimum_target_size": true
+      },
+      "keyboard_focus_order": [
+        "summary:Source records:focus-visible",
+        "a:City Record notice:focus-visible",
+        "summary:Source records:focus-visible",
+        "a:City Record notice:focus-visible",
+        "summary:Source records:focus-visible",
+        "a:City Record notice:focus-visible",
+        "summary:Source records:focus-visible",
+        "a:City Record notice:focus-visible"
+      ],
+      "external_filename": "project-context-partial-component-390x844.png",
+      "sha256": "025034ec7914b9a2e55e381c96ba9e0ed3aebe0f22b92d58ae13b73a01a1db8d",
+      "bytes": 333924,
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "case": "project-context-partial-component",
+      "surface": "procurement-detail",
+      "route": "/_capture/project-context-partial-component",
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "note": "desktop"
+      },
+      "revision": "e942968a7b2b4bf451f78e2f9a4e2d5e48689011",
+      "data_vintage": "Committed project-context materialization: 347 published procurement notices through 2026-09-04, joined to the 202605 capital project reporting period. A bundled solicitation naming two components, only one of which the city publishes as a project code.",
+      "assertion": "Only the resolved component's project renders; the unjoined component is named as not covered, and no schedule number is shown for a project that publishes none.",
+      "renders_project_context": true,
+      "layout": {
+        "horizontal_overflow": false,
+        "section_overflows": false,
+        "document_scroll_width": 1440,
+        "document_client_width": 1440,
+        "interactive_targets": 3,
+        "smallest_target_px": 24,
+        "meets_minimum_target_size": true
+      },
+      "keyboard_focus_order": [
+        "summary:Source records:focus-visible",
+        "a:City Record notice:focus-visible",
+        "summary:Source records:focus-visible",
+        "a:City Record notice:focus-visible",
+        "summary:Source records:focus-visible",
+        "a:City Record notice:focus-visible",
+        "summary:Source records:focus-visible",
+        "a:City Record notice:focus-visible"
+      ],
+      "external_filename": "project-context-partial-component-1440x900.png",
+      "sha256": "c9bb393191487823f09589a59fae867867b2ca5a1609ea5457595f7eb8acfe03",
+      "bytes": 416330,
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "case": "project-context-partial-component",
+      "surface": "procurement-detail",
+      "route": "/_capture/project-context-partial-component",
+      "viewport": {
+        "width": 720,
+        "height": 450,
+        "note": "desktop at 200% zoom"
+      },
+      "revision": "e942968a7b2b4bf451f78e2f9a4e2d5e48689011",
+      "data_vintage": "Committed project-context materialization: 347 published procurement notices through 2026-09-04, joined to the 202605 capital project reporting period. A bundled solicitation naming two components, only one of which the city publishes as a project code.",
+      "assertion": "Only the resolved component's project renders; the unjoined component is named as not covered, and no schedule number is shown for a project that publishes none.",
+      "renders_project_context": true,
+      "layout": {
+        "horizontal_overflow": false,
+        "section_overflows": false,
+        "document_scroll_width": 720,
+        "document_client_width": 720,
+        "interactive_targets": 3,
+        "smallest_target_px": 24,
+        "meets_minimum_target_size": true
+      },
+      "keyboard_focus_order": [
+        "summary:Source records:focus-visible",
+        "a:City Record notice:focus-visible",
+        "summary:Source records:focus-visible",
+        "a:City Record notice:focus-visible",
+        "summary:Source records:focus-visible",
+        "a:City Record notice:focus-visible",
+        "summary:Source records:focus-visible",
+        "a:City Record notice:focus-visible"
+      ],
+      "external_filename": "project-context-partial-component-720x450.png",
+      "sha256": "818f1c3af7a713dec858e5a0e7c9afd077ccd304243131c51a2323e183cb8b3f",
+      "bytes": 362563,
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "case": "project-context-blank-scope",
+      "surface": "procurement-detail",
+      "route": "/_capture/project-context-blank-scope",
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "note": "narrow phone"
+      },
+      "revision": "e942968a7b2b4bf451f78e2f9a4e2d5e48689011",
+      "data_vintage": "Committed project-context materialization: 347 published procurement notices through 2026-09-04, joined to the 202605 capital project reporting period. A matched project whose published description column is the publisher's blank marker.",
+      "assertion": "No scope paragraph and no empty row render; the published facts that do exist are unaffected, and the blank marker never reaches a reader.",
+      "renders_project_context": true,
+      "layout": {
+        "horizontal_overflow": false,
+        "section_overflows": false,
+        "document_scroll_width": 390,
+        "document_client_width": 390,
+        "interactive_targets": 3,
+        "smallest_target_px": 24,
+        "meets_minimum_target_size": true
+      },
+      "keyboard_focus_order": [
+        "summary:Source records:focus-visible",
+        "a:City Record notice:focus-visible",
+        "summary:Source records:focus-visible",
+        "a:City Record notice:focus-visible",
+        "summary:Source records:focus-visible",
+        "a:City Record notice:focus-visible",
+        "summary:Source records:focus-visible",
+        "a:City Record notice:focus-visible"
+      ],
+      "external_filename": "project-context-blank-scope-390x844.png",
+      "sha256": "74b082dc28c9f2bb4ab52d8a812c3f78b1cd6b6978177f226f565c6788c59f42",
+      "bytes": 313719,
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "case": "project-context-blank-scope",
+      "surface": "procurement-detail",
+      "route": "/_capture/project-context-blank-scope",
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "note": "desktop"
+      },
+      "revision": "e942968a7b2b4bf451f78e2f9a4e2d5e48689011",
+      "data_vintage": "Committed project-context materialization: 347 published procurement notices through 2026-09-04, joined to the 202605 capital project reporting period. A matched project whose published description column is the publisher's blank marker.",
+      "assertion": "No scope paragraph and no empty row render; the published facts that do exist are unaffected, and the blank marker never reaches a reader.",
+      "renders_project_context": true,
+      "layout": {
+        "horizontal_overflow": false,
+        "section_overflows": false,
+        "document_scroll_width": 1440,
+        "document_client_width": 1440,
+        "interactive_targets": 3,
+        "smallest_target_px": 24,
+        "meets_minimum_target_size": true
+      },
+      "keyboard_focus_order": [
+        "summary:Source records:focus-visible",
+        "a:City Record notice:focus-visible",
+        "summary:Source records:focus-visible",
+        "a:City Record notice:focus-visible",
+        "summary:Source records:focus-visible",
+        "a:City Record notice:focus-visible",
+        "summary:Source records:focus-visible",
+        "a:City Record notice:focus-visible"
+      ],
+      "external_filename": "project-context-blank-scope-1440x900.png",
+      "sha256": "5b9a43b639f87c7b5e761198441abc96d4c0679f169a0a6c8278860a79a1065e",
+      "bytes": 374101,
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "case": "project-context-blank-scope",
+      "surface": "procurement-detail",
+      "route": "/_capture/project-context-blank-scope",
+      "viewport": {
+        "width": 720,
+        "height": 450,
+        "note": "desktop at 200% zoom"
+      },
+      "revision": "e942968a7b2b4bf451f78e2f9a4e2d5e48689011",
+      "data_vintage": "Committed project-context materialization: 347 published procurement notices through 2026-09-04, joined to the 202605 capital project reporting period. A matched project whose published description column is the publisher's blank marker.",
+      "assertion": "No scope paragraph and no empty row render; the published facts that do exist are unaffected, and the blank marker never reaches a reader.",
+      "renders_project_context": true,
+      "layout": {
+        "horizontal_overflow": false,
+        "section_overflows": false,
+        "document_scroll_width": 720,
+        "document_client_width": 720,
+        "interactive_targets": 3,
+        "smallest_target_px": 24,
+        "meets_minimum_target_size": true
+      },
+      "keyboard_focus_order": [
+        "summary:Source records:focus-visible",
+        "a:City Record notice:focus-visible",
+        "summary:Source records:focus-visible",
+        "a:City Record notice:focus-visible",
+        "summary:Source records:focus-visible",
+        "a:City Record notice:focus-visible",
+        "summary:Source records:focus-visible",
+        "a:City Record notice:focus-visible"
+      ],
+      "external_filename": "project-context-blank-scope-720x450.png",
+      "sha256": "324aee9e8ff9f594970804dd9fbbf0b701903b22cefbc988a13d15848fb142aa",
+      "bytes": 335009,
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "case": "project-context-qualification-route",
+      "surface": "procurement-detail",
+      "route": "/_capture/project-context-qualification-route",
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "note": "narrow phone"
+      },
+      "revision": "e942968a7b2b4bf451f78e2f9a4e2d5e48689011",
+      "data_vintage": "Committed project-context materialization: 347 published procurement notices through 2026-09-04, joined to the 202605 capital project reporting period. A matched notice whose structured identifier is a qualification-list route.",
+      "assertion": "The section says the published date belongs to a qualified vendor list rather than a construction bid deadline.",
+      "renders_project_context": true,
+      "layout": {
+        "horizontal_overflow": false,
+        "section_overflows": false,
+        "document_scroll_width": 390,
+        "document_client_width": 390,
+        "interactive_targets": 3,
+        "smallest_target_px": 24,
+        "meets_minimum_target_size": true
+      },
+      "keyboard_focus_order": [
+        "summary:Source records:focus-visible",
+        "a:City Record notice:focus-visible",
+        "summary:Source records:focus-visible",
+        "a:City Record notice:focus-visible",
+        "summary:Source records:focus-visible",
+        "a:City Record notice:focus-visible",
+        "summary:Source records:focus-visible",
+        "a:City Record notice:focus-visible"
+      ],
+      "external_filename": "project-context-qualification-route-390x844.png",
+      "sha256": "406f8e2ddbe41032a32c9740f3f7671bf1e9a62bd8fafa36207d04a2f5c6d1d9",
+      "bytes": 363911,
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "case": "project-context-qualification-route",
+      "surface": "procurement-detail",
+      "route": "/_capture/project-context-qualification-route",
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "note": "desktop"
+      },
+      "revision": "e942968a7b2b4bf451f78e2f9a4e2d5e48689011",
+      "data_vintage": "Committed project-context materialization: 347 published procurement notices through 2026-09-04, joined to the 202605 capital project reporting period. A matched notice whose structured identifier is a qualification-list route.",
+      "assertion": "The section says the published date belongs to a qualified vendor list rather than a construction bid deadline.",
+      "renders_project_context": true,
+      "layout": {
+        "horizontal_overflow": false,
+        "section_overflows": false,
+        "document_scroll_width": 1440,
+        "document_client_width": 1440,
+        "interactive_targets": 3,
+        "smallest_target_px": 24,
+        "meets_minimum_target_size": true
+      },
+      "keyboard_focus_order": [
+        "summary:Source records:focus-visible",
+        "a:City Record notice:focus-visible",
+        "summary:Source records:focus-visible",
+        "a:City Record notice:focus-visible",
+        "summary:Source records:focus-visible",
+        "a:City Record notice:focus-visible",
+        "summary:Source records:focus-visible",
+        "a:City Record notice:focus-visible"
+      ],
+      "external_filename": "project-context-qualification-route-1440x900.png",
+      "sha256": "ddd92b0325e7bb849c03902e8c18077108a7577c2285757588d02b4547f10502",
+      "bytes": 449064,
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "case": "project-context-qualification-route",
+      "surface": "procurement-detail",
+      "route": "/_capture/project-context-qualification-route",
+      "viewport": {
+        "width": 720,
+        "height": 450,
+        "note": "desktop at 200% zoom"
+      },
+      "revision": "e942968a7b2b4bf451f78e2f9a4e2d5e48689011",
+      "data_vintage": "Committed project-context materialization: 347 published procurement notices through 2026-09-04, joined to the 202605 capital project reporting period. A matched notice whose structured identifier is a qualification-list route.",
+      "assertion": "The section says the published date belongs to a qualified vendor list rather than a construction bid deadline.",
+      "renders_project_context": true,
+      "layout": {
+        "horizontal_overflow": false,
+        "section_overflows": false,
+        "document_scroll_width": 720,
+        "document_client_width": 720,
+        "interactive_targets": 3,
+        "smallest_target_px": 24,
+        "meets_minimum_target_size": true
+      },
+      "keyboard_focus_order": [
+        "summary:Source records:focus-visible",
+        "a:City Record notice:focus-visible",
+        "summary:Source records:focus-visible",
+        "a:City Record notice:focus-visible",
+        "summary:Source records:focus-visible",
+        "a:City Record notice:focus-visible",
+        "summary:Source records:focus-visible",
+        "a:City Record notice:focus-visible"
+      ],
+      "external_filename": "project-context-qualification-route-720x450.png",
+      "sha256": "099c57bded3cb58752f57d7cdabe6cbd56771358aa4f5e77ed61616af3843bb8",
+      "bytes": 396933,
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "case": "project-context-in-place-inspection",
+      "surface": "procurement-detail",
+      "route": "/_capture/project-context-in-place-inspection",
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "note": "narrow phone"
+      },
+      "revision": "e942968a7b2b4bf451f78e2f9a4e2d5e48689011",
+      "data_vintage": "Committed project-context materialization: 347 published procurement notices through 2026-09-04, joined to the 202605 capital project reporting period. The matched project context on a page whose opportunity month carries enough dated milestones to paint a calendar (the extra milestone dates are constructed by the fixture, not published).",
+      "assertion": "The in-place inspection control sits beside the canonical anchor rather than replacing it, and the section is reachable without leaving the page.",
+      "renders_project_context": true,
+      "layout": {
+        "horizontal_overflow": false,
+        "section_overflows": false,
+        "document_scroll_width": 390,
+        "document_client_width": 390,
+        "interactive_targets": 7,
+        "smallest_target_px": 24,
+        "meets_minimum_target_size": true
+      },
+      "keyboard_focus_order": [
+        "summary:Source records:focus-visible",
+        "a:City Record notice:focus-visible",
+        "summary:Source records:focus-visible",
+        "a:City Record notice:focus-visible",
+        "summary:Source records:focus-visible",
+        "a:City Record notice:focus-visible"
+      ],
+      "external_filename": "project-context-in-place-inspection-390x844.png",
+      "sha256": "bb6727bba07361bd08f557914dfd96fb513f6573b5bc5be964339118cc151aed",
+      "bytes": 431743,
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "case": "project-context-in-place-inspection",
+      "surface": "procurement-detail",
+      "route": "/_capture/project-context-in-place-inspection",
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "note": "desktop"
+      },
+      "revision": "e942968a7b2b4bf451f78e2f9a4e2d5e48689011",
+      "data_vintage": "Committed project-context materialization: 347 published procurement notices through 2026-09-04, joined to the 202605 capital project reporting period. The matched project context on a page whose opportunity month carries enough dated milestones to paint a calendar (the extra milestone dates are constructed by the fixture, not published).",
+      "assertion": "The in-place inspection control sits beside the canonical anchor rather than replacing it, and the section is reachable without leaving the page.",
+      "renders_project_context": true,
+      "layout": {
+        "horizontal_overflow": false,
+        "section_overflows": false,
+        "document_scroll_width": 1440,
+        "document_client_width": 1440,
+        "interactive_targets": 7,
+        "smallest_target_px": 24,
+        "meets_minimum_target_size": true
+      },
+      "keyboard_focus_order": [
+        "summary:Source records:focus-visible",
+        "a:City Record notice:focus-visible",
+        "summary:Source records:focus-visible",
+        "a:City Record notice:focus-visible",
+        "summary:Source records:focus-visible",
+        "a:City Record notice:focus-visible"
+      ],
+      "external_filename": "project-context-in-place-inspection-1440x900.png",
+      "sha256": "a4f47d4511e7bd98a3bc8576dccfd9ee9e2e4f8aa1db656f01886b56de55e70b",
+      "bytes": 499985,
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "case": "project-context-in-place-inspection",
+      "surface": "procurement-detail",
+      "route": "/_capture/project-context-in-place-inspection",
+      "viewport": {
+        "width": 720,
+        "height": 450,
+        "note": "desktop at 200% zoom"
+      },
+      "revision": "e942968a7b2b4bf451f78e2f9a4e2d5e48689011",
+      "data_vintage": "Committed project-context materialization: 347 published procurement notices through 2026-09-04, joined to the 202605 capital project reporting period. The matched project context on a page whose opportunity month carries enough dated milestones to paint a calendar (the extra milestone dates are constructed by the fixture, not published).",
+      "assertion": "The in-place inspection control sits beside the canonical anchor rather than replacing it, and the section is reachable without leaving the page.",
+      "renders_project_context": true,
+      "layout": {
+        "horizontal_overflow": false,
+        "section_overflows": false,
+        "document_scroll_width": 720,
+        "document_client_width": 720,
+        "interactive_targets": 7,
+        "smallest_target_px": 24,
+        "meets_minimum_target_size": true
+      },
+      "keyboard_focus_order": [
+        "summary:Source records:focus-visible",
+        "a:City Record notice:focus-visible",
+        "summary:Source records:focus-visible",
+        "a:City Record notice:focus-visible",
+        "summary:Source records:focus-visible",
+        "a:City Record notice:focus-visible"
+      ],
+      "external_filename": "project-context-in-place-inspection-720x450.png",
+      "sha256": "a3ac3ac782c6aecc2712398cf0533c032a3355291ce2e24417a1c486b9d80a75",
+      "bytes": 469340,
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "case": "project-context-absent",
+      "surface": "procurement-detail",
+      "route": "/_capture/project-context-absent",
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "note": "narrow phone"
+      },
+      "revision": "e942968a7b2b4bf451f78e2f9a4e2d5e48689011",
+      "data_vintage": "Committed project-context materialization: 347 published procurement notices through 2026-09-04, joined to the 202605 capital project reporting period. The same solicitation rendered with no materialization supplied.",
+      "assertion": "No section, no heading and no empty panel render; the page keeps its existing sections and its official record link.",
+      "renders_project_context": false,
+      "layout": {
+        "horizontal_overflow": false,
+        "section_overflows": false,
+        "document_scroll_width": 390,
+        "document_client_width": 390,
+        "interactive_targets": 0,
+        "smallest_target_px": null,
+        "meets_minimum_target_size": true
+      },
+      "keyboard_focus_order": [],
+      "external_filename": "project-context-absent-390x844.png",
+      "sha256": "e9e614fac36ac1868c1d5900441b7065296c334300a5a7f9b14246ef8096838e",
+      "bytes": 257675,
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "case": "project-context-absent",
+      "surface": "procurement-detail",
+      "route": "/_capture/project-context-absent",
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "note": "desktop"
+      },
+      "revision": "e942968a7b2b4bf451f78e2f9a4e2d5e48689011",
+      "data_vintage": "Committed project-context materialization: 347 published procurement notices through 2026-09-04, joined to the 202605 capital project reporting period. The same solicitation rendered with no materialization supplied.",
+      "assertion": "No section, no heading and no empty panel render; the page keeps its existing sections and its official record link.",
+      "renders_project_context": false,
+      "layout": {
+        "horizontal_overflow": false,
+        "section_overflows": false,
+        "document_scroll_width": 1440,
+        "document_client_width": 1440,
+        "interactive_targets": 0,
+        "smallest_target_px": null,
+        "meets_minimum_target_size": true
+      },
+      "keyboard_focus_order": [],
+      "external_filename": "project-context-absent-1440x900.png",
+      "sha256": "2dad7434952b5cdf687b9c0e178cdbdbf29a092635e28cfe70c927b4ce87fa6c",
+      "bytes": 316038,
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "case": "project-context-absent",
+      "surface": "procurement-detail",
+      "route": "/_capture/project-context-absent",
+      "viewport": {
+        "width": 720,
+        "height": 450,
+        "note": "desktop at 200% zoom"
+      },
+      "revision": "e942968a7b2b4bf451f78e2f9a4e2d5e48689011",
+      "data_vintage": "Committed project-context materialization: 347 published procurement notices through 2026-09-04, joined to the 202605 capital project reporting period. The same solicitation rendered with no materialization supplied.",
+      "assertion": "No section, no heading and no empty panel render; the page keeps its existing sections and its official record link.",
+      "renders_project_context": false,
+      "layout": {
+        "horizontal_overflow": false,
+        "section_overflows": false,
+        "document_scroll_width": 720,
+        "document_client_width": 720,
+        "interactive_targets": 0,
+        "smallest_target_px": null,
+        "meets_minimum_target_size": true
+      },
+      "keyboard_focus_order": [],
+      "external_filename": "project-context-absent-720x450.png",
+      "sha256": "04df5393715adc23a09ac16aa649794a4665b4b974b65ac2552979d0c4edadbd",
+      "bytes": 278768,
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    }
+  ],
+  "journeys": [
+    {
+      "journey": "inspect, dismiss, open full page, Back",
+      "route": "/_capture/project-context-in-place-inspection",
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "note": "narrow phone"
+      },
+      "revision": "e942968a7b2b4bf451f78e2f9a4e2d5e48689011",
+      "result": {
+        "scrolled_to": 4215,
+        "inspection_opened_in_place": true,
+        "event_facts_preserved_in_dialog": true,
+        "scroll_preserved_while_open": true,
+        "full_page_link": "https://cityscroll.org/procurements/procurement%3Acity-record%3A20260810048",
+        "scroll_preserved_on_dismiss": true,
+        "left_for": "https://cityscroll.org/procurements/procurement%3Acity-record%3A20260810048",
+        "scroll_restored_on_back": true,
+        "project_context_preserved": true,
+        "selected_event_preserved": true
+      }
+    },
+    {
+      "journey": "requested detail fails to load",
+      "route": "/_capture/project-context-in-place-inspection",
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "note": "narrow phone"
+      },
+      "revision": "e942968a7b2b4bf451f78e2f9a4e2d5e48689011",
+      "result": {
+        "inspection_stays_open": true,
+        "recovery_stated": true,
+        "no_half_built_context": true,
+        "full_page_link_works": true,
+        "official_notice_on_page": true
+      }
+    },
+    {
+      "journey": "inspect, dismiss, open full page, Back",
+      "route": "/_capture/project-context-in-place-inspection",
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "note": "desktop"
+      },
+      "revision": "e942968a7b2b4bf451f78e2f9a4e2d5e48689011",
+      "result": {
+        "scrolled_to": 3162,
+        "inspection_opened_in_place": true,
+        "event_facts_preserved_in_dialog": true,
+        "scroll_preserved_while_open": true,
+        "full_page_link": "https://cityscroll.org/procurements/procurement%3Acity-record%3A20260810048",
+        "scroll_preserved_on_dismiss": true,
+        "left_for": "https://cityscroll.org/procurements/procurement%3Acity-record%3A20260810048",
+        "scroll_restored_on_back": true,
+        "project_context_preserved": true,
+        "selected_event_preserved": true
+      }
+    },
+    {
+      "journey": "requested detail fails to load",
+      "route": "/_capture/project-context-in-place-inspection",
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "note": "desktop"
+      },
+      "revision": "e942968a7b2b4bf451f78e2f9a4e2d5e48689011",
+      "result": {
+        "inspection_stays_open": true,
+        "recovery_stated": true,
+        "no_half_built_context": true,
+        "full_page_link_works": true,
+        "official_notice_on_page": true
+      }
+    }
+  ]
+}
