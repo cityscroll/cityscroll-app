@@ -20,6 +20,8 @@
  *      (the normative profile successor), elapsed time, or display text.
  */
 
+import { resolveLandAuthoritySourceBasis } from "./land_authority_summary.mjs";
+
 export const LAND_NEXT_DECISION_RELIABILITY_SCHEMA = "cityscroll.land_next_decision_reliability.v1";
 export const LAND_NEXT_DECISION_WATCH_KEY_SCHEMA = "cityscroll.land_next_decision_watch_key.v1";
 export const LAND_NEXT_DECISION_FIRE_RECEIPT_SCHEMA = "cityscroll.land_next_decision_fire_receipt.v1";
@@ -106,7 +108,10 @@ export function buildTransitionIdentity(summary = {}) {
       .filter(Boolean)
       .sort(),
   );
-  const profileVersion = clean(summary.source_basis?.profile?.registry_version);
+  // The registry version is shared provenance published once on the payload, so
+  // it is resolved rather than read off the summary; the watch's dedupe key
+  // depends on it, and an undefined version would collapse distinct keys.
+  const profileVersion = clean(resolveLandAuthoritySourceBasis(summary)?.profile?.registry_version);
   const role = clean(summary.current_role);
   const known = summary.status === "resolved" && Boolean(stageId) && actorRefs.length > 0;
   return Object.freeze({
