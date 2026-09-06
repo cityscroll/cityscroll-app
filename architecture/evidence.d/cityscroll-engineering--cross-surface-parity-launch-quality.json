@@ -1,0 +1,21 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/cross-surface-parity-launch-quality",
+  "status": "implemented",
+  "fingerprint": "cross-surface-parity-launch-quality.v1",
+  "updated_at": "2026-09-04T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "cross-surface-parity-fixture-matrix",
+      "path": "test/fixtures/calendar_parity_matrix.mjs"
+    },
+    {
+      "id": "cross-surface-parity-gate",
+      "path": "test/calendar_parity_matrix.test.mjs"
+    },
+    {
+      "id": "now-calendar-view-evidence-capture",
+      "path": "tools/capture_now_calendar_evidence.py"
+    }
+  ]
+}

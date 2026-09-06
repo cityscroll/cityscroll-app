@@ -325,7 +325,7 @@ def capture() -> dict:
     manifest = {
         "schema_version": 1,
         "feature": "land-filing-evidence",
-        "card": "cityscroll-land-decision-path/ldp-27-filing-evidence-surfaces",
+        "card": "cityscroll-engineering/filing-evidence-surfaces",
         "route": ROUTE,
         "revision": revision,
         "files": files,

@@ -223,7 +223,7 @@ export function assembleCivicActionPathsDocumentationReceipt(root = ROOT) {
   return freezeDeep({
     schema: DOCUMENTATION_SCHEMA,
     method: DOCUMENTATION_METHOD,
-    card_id: "cityscroll-civic-action-paths/cap-9",
+    card_id: "cityscroll-engineering/civic-action-path-documentation-receipt",
     derived_projection: true,
     semantic_graph_noun: false,
     exact_replay_family: EXACT_REPLAY_FAMILY,

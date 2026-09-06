@@ -1,0 +1,29 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/past-task-feedback",
+  "status": "implemented",
+  "fingerprint": "past-task-feedback.v1",
+  "updated_at": "2026-09-05T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "cx-03-past-task-feedback-prompt",
+      "path": "site/contextual_ux_feedback_prompt.mjs"
+    },
+    {
+      "id": "cx-03-past-task-feedback-form",
+      "path": "site/about.html"
+    },
+    {
+      "id": "cx-03-past-task-feedback-contract",
+      "path": "test/contextual_ux_feedback_prompt.test.mjs"
+    },
+    {
+      "id": "cx-03-past-task-feedback-captures",
+      "path": "docs/evidence/past-task-feedback/capture-manifest.json"
+    },
+    {
+      "id": "cx-03-past-task-feedback-receipt",
+      "path": "docs/evidence/past-task-feedback.md"
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.land_project_about_project.receipt.v1",
-  "id": "cityscroll-land-decision-path/ldp-07-exact-notice-project-edge",
+  "id": "cityscroll-engineering/exact-notice-project-edge",
   "method": "exact_ulurp_token_v1",
   "method_version": "1",
   "tier": "deterministic_exact_key",

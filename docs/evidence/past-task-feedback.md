@@ -1,6 +1,6 @@
 # Past-task feedback guidance — implementation receipt
 
-Card: `cityscroll-contextual-ux/cx-03-past-task-feedback`
+Card: `cityscroll-engineering/past-task-feedback`
 
 ## Orientation
 

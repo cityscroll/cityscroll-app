@@ -2,7 +2,7 @@
 """Regenerate the CI-09 card-profile evidence tables from their raw receipts.
 
 Reporting tool only. It reads the committed receipts under
-``docs/evidence/ci-09-working-copy-reduction/raw/`` and prints the Markdown
+``docs/evidence/working-copy-reduction/raw/`` and prints the Markdown
 tables that appear in that directory's README, so every byte, percentage and
 timing figure in the prose can be reproduced rather than trusted.
 
@@ -298,7 +298,7 @@ def main() -> int:
     parser.add_argument(
         "--evidence-dir",
         default=os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
-                             "docs/evidence/ci-09-working-copy-reduction"),
+                             "docs/evidence/working-copy-reduction"),
     )
     args = parser.parse_args()
     raw = os.path.join(args.evidence_dir, "raw")

@@ -9,7 +9,7 @@
       "card": "PPD-01",
       "title": "Opportunity-first alert atom",
       "evidence_shards": [
-        "cityscroll-procurement-pursuit-decision/card-1-opportunity-first-alert-atom"
+        "cityscroll-engineering/opportunity-first-alert-atom"
       ],
       "manifests": [
         "docs/evidence/procurement-pursuit-decision/alerts/capture-manifest.json"
@@ -28,7 +28,7 @@
       "card": "PPD-03",
       "title": "Pursuit snapshot on solicitation-stage procurement detail",
       "evidence_shards": [
-        "cityscroll-procurement-pursuit-decision/card-3-pursuit-snapshot"
+        "cityscroll-engineering/pursuit-snapshot"
       ],
       "manifests": [
         "docs/evidence/procurement-pursuit-decision/pursuit-snapshot/capture-manifest.json"
@@ -38,7 +38,7 @@
       "card": "PPD-04",
       "title": "Related context and benchmarks",
       "evidence_shards": [
-        "cityscroll-procurement-pursuit-decision/ppd-04-related-context-and-benchmarks"
+        "cityscroll-engineering/related-context-and-benchmarks"
       ],
       "manifests": [
         "docs/evidence/procurement-pursuit-decision/related-context/capture-manifest.json"
@@ -48,7 +48,7 @@
       "card": "PPD-05",
       "title": "Explainable preference set",
       "evidence_shards": [
-        "cityscroll-procurement-pursuit-decision/ppd-05-explainable-preference-set"
+        "cityscroll-engineering/explainable-preference-set"
       ],
       "manifests": [
         "docs/evidence/procurement-pursuit-decision/preference-set/capture-manifest.json"
@@ -58,7 +58,7 @@
       "card": "PPD-06",
       "title": "Lightweight pursuit state",
       "evidence_shards": [
-        "cityscroll-procurement-pursuit-decision/ppd-06-lightweight-pursuit-state"
+        "cityscroll-engineering/lightweight-pursuit-state"
       ],
       "manifests": [
         "docs/evidence/procurement-pursuit-decision/pursuit-state/capture-manifest.json"

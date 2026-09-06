@@ -79,8 +79,8 @@ function validEntry(id, extra = {}) {
 
 test("entry-id-to-path mapping is deterministic and collision-safe", () => {
   assert.equal(
-    entryRelativePath("cityscroll-land-map-view/lm-02-project-point-materializer"),
-    "architecture/evidence.d/cityscroll-land-map-view--lm-02-project-point-materializer.json",
+    entryRelativePath("cityscroll-engineering/land-map-project-point-materializer"),
+    "architecture/evidence.d/cityscroll-engineering--land-map-project-point-materializer.json",
   );
   assert.equal(encodeEntryId("fixture-stream/card-alpha"), "fixture-stream--card-alpha");
   const root = tmpRoot();
@@ -123,10 +123,10 @@ test("migration parity preserves the monolithic land-map inventories", () => {
   const root = tmpRoot();
   try {
     const source = readFileSync(
-      path.join(FIXTURE, "migration/entries/cityscroll-land-map-view--lm-02-project-point-materializer.json"),
+      path.join(FIXTURE, "migration/entries/cityscroll-engineering--land-map-project-point-materializer.json"),
       "utf8",
     );
-    put(root, "architecture/evidence.d/cityscroll-land-map-view--lm-02-project-point-materializer.json", source);
+    put(root, "architecture/evidence.d/cityscroll-engineering--land-map-project-point-materializer.json", source);
     const result = aggregateArchitectureEvidence({ root });
     assert.equal(result.status, "PASS", result.findings.join("; "));
     const expectedSource = JSON.parse(readFileSync(path.join(FIXTURE, "migration/expected/source-cards.json"), "utf8"));
@@ -289,16 +289,16 @@ test("live shards aggregate, reconcile, and keep architecture path coverage", ()
   const live = aggregateArchitectureEvidence({ root: ROOT });
   assert.equal(live.status, "PASS", live.findings.join("; "));
   assert.ok(live.receipt.entry_ids.includes(
-    "cityscroll-land-map-view/lm-02-project-point-materializer",
+    "cityscroll-engineering/land-map-project-point-materializer",
   ));
   assert.ok(live.receipt.entry_ids.includes(
-    "cityscroll-merge-throughput/mt-7-architecture-evidence-shards",
+    "cityscroll-engineering/architecture-evidence-shards",
   ));
   assert.ok(live.receipt.entry_ids.includes(
-    "cityscroll-merge-throughput/mt-8-architecture-evidence-generated-aggregates",
+    "cityscroll-engineering/architecture-evidence-generated-aggregates",
   ));
   assert.ok(live.receipt.entry_ids.includes(
-    "cityscroll-procurement-intent-radar/pir-4",
+    "cityscroll-engineering/procurement-intent-corpus-backtest",
   ));
   const reconciliation = evaluateCardReconciliation({
     sourceCards: live.sourceCards,
@@ -306,7 +306,7 @@ test("live shards aggregate, reconcile, and keep architecture path coverage", ()
   });
   assert.equal(reconciliation.status, "PASS", reconciliation.findings.join("; "));
   const patterns = parseReconciliationTriggerPaths();
-  assert.equal(pathMatchesTriggerFilter(`${ENTRY_DIR}/cityscroll-land-map-view--lm-02-project-point-materializer.json`, patterns), true);
+  assert.equal(pathMatchesTriggerFilter(`${ENTRY_DIR}/cityscroll-engineering--land-map-project-point-materializer.json`, patterns), true);
   assert.equal(pathMatchesTriggerFilter("tools/architecture_evidence_shards.mjs", patterns), true);
   assert.equal(pathMatchesTriggerFilter("architecture/evidence-entry.v1.schema.json", patterns), true);
   assert.equal(pathMatchesTriggerFilter("architecture-evidence/source-cards.json", patterns), true);

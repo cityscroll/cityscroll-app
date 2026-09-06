@@ -455,7 +455,7 @@ def main() -> None:
     head_entry = files[0]["head_entry"]
     receipt = {
         "schema": "cityscroll.land-map-route-lazy-shell-receipt.v1",
-        "card": "cityscroll-land-map-view/lm-05-route-lazy-shell",
+        "card": "cityscroll-engineering/land-map-route-lazy-shell",
         "browser_mode": "headless chromium (playwright), offline: every remote host aborted",
         "routes": {"list": LIST_ROUTE, "map": MAP_ROUTE},
         "viewports": [list(viewport) for viewport in VIEWPORTS],

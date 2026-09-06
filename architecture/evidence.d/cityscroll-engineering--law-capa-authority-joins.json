@@ -1,0 +1,25 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/law-capa-authority-joins",
+  "status": "implemented",
+  "fingerprint": "law-capa-authority-joins.v1",
+  "updated_at": "2026-08-31T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "rulemaking-authority-join",
+      "path": "site/rulemaking_authority.mjs"
+    },
+    {
+      "id": "rulemaking-document",
+      "path": "site/rulemaking_document.mjs"
+    },
+    {
+      "id": "administrative-code-provision-document",
+      "path": "site/admin_code.mjs"
+    },
+    {
+      "id": "code-provision-identity",
+      "path": "ontology/code_provision.mjs"
+    }
+  ]
+}

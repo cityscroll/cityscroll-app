@@ -1,0 +1,17 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/authority-summary-materializer",
+  "status": "implemented",
+  "fingerprint": "authority-summary-materializer.v1",
+  "updated_at": "2026-08-30T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "land-authority-summary",
+      "path": "site/data/land_authority_summary.json"
+    },
+    {
+      "id": "land-authority-summary-receipt",
+      "path": "site/data/land_authority_summary_receipt.json"
+    }
+  ]
+}

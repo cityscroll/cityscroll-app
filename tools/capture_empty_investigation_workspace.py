@@ -257,7 +257,7 @@ def main() -> None:
 
     manifest = {
         "schema": "cityscroll.empty_investigation_workspace_capture.v1",
-        "change": "cityscroll-contextual-ux/cx-02-empty-investigation-first-artifact",
+        "change": "cityscroll-engineering/empty-investigation-first-artifact",
         "browser_mode": "headless chromium (playwright), remote hosts stubbed or blocked",
         "route": ROUTE,
         "viewports": [{"name": name, "width": w, "height": h} for name, w, h in VIEWPORTS],

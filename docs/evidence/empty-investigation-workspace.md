@@ -1,6 +1,6 @@
 # Empty My investigation workspace — implementation receipt
 
-Card: `cityscroll-contextual-ux/cx-02-empty-investigation-first-artifact`
+Card: `cityscroll-engineering/empty-investigation-first-artifact`
 
 ## Orientation
 

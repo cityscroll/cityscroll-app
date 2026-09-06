@@ -1,0 +1,17 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/affordable-review-transitions",
+  "status": "implemented",
+  "fingerprint": "affordable-review-transitions.v1",
+  "updated_at": "2026-09-05T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "ldp-20-review-transitions-lib",
+      "path": "site/affordable_review_transitions.mjs"
+    },
+    {
+      "id": "ldp-20-review-transitions-tests",
+      "path": "test/affordable_review_transitions.test.mjs"
+    }
+  ]
+}

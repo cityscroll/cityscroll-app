@@ -1,0 +1,21 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/procurement-intent-shadow-mode",
+  "status": "implemented",
+  "fingerprint": "procurement-intent-shadow-mode.v1",
+  "updated_at": "2026-09-01T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "pir-5-shadow-mode",
+      "path": "warehouse/fixtures/procurement-intent-radar/shadow_mode.v1.json"
+    },
+    {
+      "id": "pir-5-shadow-mode-report",
+      "path": "docs/evidence/procurement-intent-radar/shadow-mode.md"
+    },
+    {
+      "id": "pir-5-shadow-arrival-stream",
+      "path": "test/fixtures/procurement_intent_radar/shadow_arrivals.v0.json"
+    }
+  ]
+}

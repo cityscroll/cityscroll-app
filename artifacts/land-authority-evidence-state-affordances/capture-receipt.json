@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.land-authority-evidence-state-affordances.capture.v1",
-  "card": "cityscroll-land-decision-path/ldp-32-authority-evidence-state-affordances",
+  "card": "cityscroll-engineering/land-authority-evidence-state-affordances",
   "assertion": "The authority panel materializes DCP/CPC/Council actors and roles only after the exact action/procedure join, distinguishes checked-and-empty from unknown and stale published-opportunity evidence, and gates the calendar and watch affordances on real dated events and materialized next-stage transitions (A1-A10) across the real ELURP regression corpus (E1-E4). Rendered via the production buildLandAuthoritySummary/landAuthoritySummaryHTML functions in a minimal static harness (not the full app shell). 390x844 mobile viewport is captured first per canary.",
   "revision": "4fd426b2e331a9e09b1294e82350cedb85e05629",
   "vintage": "2026-09-04T10:06:00Z",

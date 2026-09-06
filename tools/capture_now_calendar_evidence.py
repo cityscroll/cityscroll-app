@@ -196,7 +196,7 @@ def capture() -> dict:
     manifest = {
         "schema_version": 1,
         "feature": "now-calendar-view",
-        "card": "cityscroll-calendar-beyond-ics/cbics-10-cross-surface-parity-launch-quality",
+        "card": "cityscroll-engineering/cross-surface-parity-launch-quality",
         "route": ROUTE,
         "revision": revision,
         "today": TODAY,

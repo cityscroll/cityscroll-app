@@ -225,7 +225,7 @@ check("A7: every report carries a signed GO or stop verdict, and no artifact com
 check("A8 / dispatch directive: this run writes only its own receipt, and cites the exact outputs a later prediction card must reference", () => {
   return {
     receipt_path: "warehouse/receipts/proof/land_filing_evidence_backtest_latest.json",
-    architecture_shard_path: "architecture/evidence.d/cityscroll-land-decision-path--ldp-28-filing-evidence-backtest.json",
+    architecture_shard_path: "architecture/evidence.d/cityscroll-engineering--filing-evidence-backtest.json",
     outputs_written_elsewhere: 0,
   };
 });

@@ -1,0 +1,277 @@
+{
+  "schema": "cityscroll.cloudflare_os_deployment_receipt.v1",
+  "card": "cityscroll-engineering/os-deployment-foundation",
+  "evidence_class": "cloudflare_os_deployed",
+  "execution_environment": "cloudflare-os-deployment",
+  "generated_at": "2026-09-04",
+  "upstream": {
+    "starter": {
+      "repository": "https://github.com/cloudflare/cloudflare-os-starter",
+      "commit": "3d211477ad009e13a98d863d843e5c12a29ad02b",
+      "check": {
+        "command": "pnpm check",
+        "passed": true,
+        "exit_code": 0
+      }
+    },
+    "cloudflare_os": {
+      "repository": "https://github.com/cloudflare/cloudflare-os",
+      "submodule_commit": "6478a1448a11524e2f7c2575ad66fab0bc47c433"
+    }
+  },
+  "workers": {
+    "router": {
+      "name": "cityscroll-os-lab-router",
+      "version_id": "4395ad56-afff-4752-a8b7-7986d6a310da",
+      "verified_by": "cloudflare_api",
+      "public_route": "https://lab.cityscroll.org/",
+      "workers_dev": false
+    },
+    "workshop": {
+      "name": "cityscroll-os-lab-workshop",
+      "version_id": "ba008860-a2fa-49a3-b319-9db19abd7bca",
+      "verified_by": "cloudflare_api",
+      "public_route": null,
+      "workers_dev": false,
+      "service_binding": "WORKSHOP_BACKEND",
+      "reachable_from_router": true
+    },
+    "context": {
+      "name": "cityscroll-os-lab-context",
+      "version_id": "9e724bde-b240-4404-9976-e4a6422d724d",
+      "verified_by": "cloudflare_api",
+      "public_route": null,
+      "workers_dev": false,
+      "service_binding": "GATEKEEPER_CONTEXT",
+      "reachable_from_router": true
+    },
+    "scheduler": {
+      "name": "cityscroll-os-lab-scheduler",
+      "version_id": "65a42827-bd0a-47e1-ae5d-1f17f84e2bca",
+      "verified_by": "cloudflare_api",
+      "public_route": null,
+      "workers_dev": false,
+      "service_binding": "GATEKEEPER_SCHEDULER",
+      "reachable_from_router": true
+    },
+    "customGatekeeper": {
+      "name": "cityscroll-os-lab-gatekeeper",
+      "version_id": "5dc7c6c0-d69b-4921-9205-abbc6b3f7ab2",
+      "verified_by": "cloudflare_api",
+      "public_route": null,
+      "workers_dev": false,
+      "service_binding": "GATEKEEPER_CUSTOM",
+      "reachable_from_router": true
+    },
+    "errorReporter": {
+      "name": "cityscroll-os-lab-error-reporter",
+      "version_id": "b743e0ce-dc19-40bc-8554-bf15cb94bbe2",
+      "verified_by": "cloudflare_api",
+      "public_route": null,
+      "workers_dev": false,
+      "service_binding": "ERROR_REPORTER",
+      "reachable_from_router": true
+    }
+  },
+  "access": {
+    "mode": "cloudflare_access",
+    "application_id": "27ff5e35-cbc7-4474-b8a4-a17eccae33f7",
+    "audience_tag": "e72e3cda5f3d04576ec055c1599fd714903c4b00a8b085132a4c866dc0a6b481",
+    "public_signup_enabled": false,
+    "allowlist_size": 1,
+    "administrator_identifiers_redacted": true,
+    "unauthenticated_request": {
+      "admitted": false,
+      "response_status": 302
+    },
+    "approved_evaluator_request": {
+      "admitted": true,
+      "evidence_source": "cloudflare_access_authentication_log",
+      "event_at": "2026-09-04T20:56:02Z",
+      "ray_id": "a35fe6074f39437f",
+      "app_uid": "27ff5e35-cbc7-4474-b8a4-a17eccae33f7",
+      "identity_digest_sha256_prefix": "a17c00b69ea8339d",
+      "identity_matches_policy_allowlist": true,
+      "note": "The identity is recorded as a digest that matches the single-entry policy allowlist; the address itself is never stored."
+    }
+  },
+  "agent_turn": {
+    "interface_opened": true,
+    "started": true,
+    "model_call_live": true,
+    "evidence_source": "ai_gateway_request_analytics",
+    "requests": 2,
+    "tokens_in": 6117,
+    "tokens_out": 48,
+    "models": [
+      "@cf/meta/llama-3.3-70b-instruct-fp8-fast",
+      "@cf/moonshotai/kimi-k2.7-code"
+    ],
+    "workspace_bootstrapped": true,
+    "bootstrap_evidence": "the Workshop wrote its seed keys (.adminConfig, .featured, format.*) to the provisioned blueprints namespace",
+    "note": "Gateway analytics lagged the turn by several minutes; the rows were polled until they landed rather than read once and reported absent."
+  },
+  "spend_governance": {
+    "provider": "cloudflare",
+    "external_provider_credentials": [],
+    "enforcement": "fail_closed",
+    "on_exceeded_status": 429,
+    "gateway_id": "cityscroll-cs12-eval-20260904",
+    "provider_side_rule": {
+      "rule_id": "350a7906",
+      "limit_usd": 5,
+      "window_seconds": 86400,
+      "technique": "sliding"
+    },
+    "governed_by_rule_id": "0fb5d3ea",
+    "note": "Every request transited the evaluation gateway with provider workers-ai and no external provider credential. Both ceilings were enabled and evaluated for each call.",
+    "enforced_controls": [
+      {
+        "mechanism": "ai_gateway_spend_limit",
+        "rule_id": "350a7906",
+        "limit_usd": 5,
+        "scope": "sliding_day",
+        "window_seconds": 86400,
+        "technique": "sliding",
+        "enforcement": "fail_closed",
+        "on_exceeded_status": 429,
+        "deployed": true
+      },
+      {
+        "mechanism": "ai_gateway_spend_limit",
+        "rule_id": "0fb5d3ea",
+        "limit_usd": 25,
+        "scope": "evaluation_total",
+        "window_seconds": 31536000,
+        "technique": "fixed",
+        "enforcement": "fail_closed",
+        "on_exceeded_status": 429,
+        "deployed": true
+      }
+    ],
+    "observed_spend_usd": 0.0013985,
+    "observed_requests": 2,
+    "ceiling_usd": 25,
+    "enforcement_notes": [
+      "Both ceilings are gateway rules, so every model call transits them before reaching the provider; either being over budget blocks the request with 429.",
+      "The cumulative rule uses the longest window the API accepted (365 days). It is effectively non-replenishing for an evaluation deleted within 30 days of close, but it is a long window rather than a literal never-reset.",
+      "Cloudflare documents spend limits as eventually consistent: a burst of concurrent requests can briefly exceed a limit before enforcement catches up. A reservation-based Worker-side ledger would be strictly stronger.",
+      "Configured and provider-documented as fail-closed; a 429 has not been demonstrated on this gateway, because forcing one would require either real spend or a temporary low limit that would pollute the clean pre-turn baseline."
+    ],
+    "workers_ai_billing_mode": "unified",
+    "governed_by_rule_ids": [
+      "350a7906",
+      "0fb5d3ea"
+    ],
+    "headroom_usd": {
+      "sliding_day": 4.9986,
+      "evaluation_total": 24.9986
+    },
+    "all_requests_via_gateway": true
+  },
+  "bindings": [
+    {
+      "binding": "CONTEXT_COLLECTIONS",
+      "type": "kv_namespace",
+      "resource_id": "393da48061eb470aac67e550ec66f729",
+      "isolated_from_production": true
+    },
+    {
+      "binding": "BLUEPRINTS",
+      "type": "kv_namespace",
+      "resource_id": "cityscroll-os-lab-workshop-blueprints",
+      "isolated_from_production": true
+    },
+    {
+      "binding": "AVATARS",
+      "type": "kv_namespace",
+      "resource_id": "cityscroll-os-lab-workshop-avatars",
+      "isolated_from_production": true
+    },
+    {
+      "binding": "BLUEPRINT_CONTENT",
+      "type": "r2_bucket",
+      "resource_id": "cityscroll-os-lab-workshop-blueprint-content",
+      "isolated_from_production": true
+    }
+  ],
+  "rollback_rehearsal": {
+    "performed": true,
+    "verified_by": "cloudflare_api",
+    "workers": {
+      "router": {
+        "prior_version_id": "d44d7404-b0da-4fd0-a450-3d9349f995a1",
+        "restored_version_id": "4395ad56-afff-4752-a8b7-7986d6a310da"
+      },
+      "workshop": {
+        "prior_version_id": "684ec3a1-dfae-4abe-b726-e0482602f5db",
+        "restored_version_id": "ba008860-a2fa-49a3-b319-9db19abd7bca"
+      },
+      "context": {
+        "prior_version_id": "3b32a413-54ea-4911-8ecd-4ed1548cdbb9",
+        "restored_version_id": "9e724bde-b240-4404-9976-e4a6422d724d"
+      },
+      "scheduler": {
+        "prior_version_id": "fd6de891-a32a-4255-9ef7-344c594074cb",
+        "restored_version_id": "65a42827-bd0a-47e1-ae5d-1f17f84e2bca"
+      },
+      "customGatekeeper": {
+        "prior_version_id": "275c8c2e-2102-4e51-a216-077a4d6fed87",
+        "restored_version_id": "5dc7c6c0-d69b-4921-9205-abbc6b3f7ab2"
+      },
+      "errorReporter": {
+        "prior_version_id": "6afd0c32-385e-4a49-b282-4bbc9cd89511",
+        "restored_version_id": "b743e0ce-dc19-40bc-8554-bf15cb94bbe2"
+      }
+    }
+  },
+  "retention": {
+    "operational_metadata_only": true,
+    "retention_days": 7,
+    "workspace_deletion_due_days": 30,
+    "fields": [
+      "service",
+      "operation",
+      "capability",
+      "availability",
+      "status",
+      "latency_ms",
+      "token_count",
+      "cost_usd",
+      "error_class",
+      "release",
+      "correlation_id"
+    ]
+  },
+  "protocol": {
+    "transport": "https",
+    "negotiated_version": null
+  },
+  "network_observation": {
+    "transport": "public-internet",
+    "dns_resolved": true,
+    "response_status": 302,
+    "fetch_override": false,
+    "transport_intercepted": false,
+    "note": "302 is this receipt's own unauthenticated external probe, which is the A5a rejection observation; the evaluator's authenticated traffic is evidenced separately by Access and gateway telemetry."
+  },
+  "provider_issued_identifier": {
+    "kind": "worker_version",
+    "value": "4395ad56-afff-4752-a8b7-7986d6a310da",
+    "verified_by": "cloudflare_api",
+    "verification_method": "GET /accounts/:account_id/workers/scripts/:name/deployments"
+  },
+  "cloudflare_os_deployment": {
+    "control_plane_response": true,
+    "provider_receipt_sha256": "eedc84e74bf3e30c7c9641a50ebf58720e7b16cbe28967eec0e173b2a28843ea"
+  },
+  "cityscroll_connected": false,
+  "configuration_changes": [
+    {
+      "at": "2026-09-04",
+      "change": "added cumulative $25 fail-closed gateway spend rule 0fb5d3ea",
+      "reason": "the daily rule alone does not satisfy a ceiling that must fail closed at either limit",
+      "side_effect_caught_and_reverted": "the update call omitted workers_ai_billing_mode, which reset it from unified to postpaid; restored to unified, since spend limits track Unified Billing requests and the reset would have undercut the new ceiling"
+    }
+  ]
+}

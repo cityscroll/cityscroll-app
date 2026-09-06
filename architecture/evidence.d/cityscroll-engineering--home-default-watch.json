@@ -1,0 +1,21 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/home-default-watch",
+  "status": "implemented",
+  "fingerprint": "home-default-watch.v1",
+  "updated_at": "2026-09-02T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "homepage-following-cta",
+      "path": "site/index.html"
+    },
+    {
+      "id": "home-entry-default-subscribe",
+      "path": "site/home_entry.mjs"
+    },
+    {
+      "id": "worker-default-watch-intent",
+      "path": "worker/src/subscribe.mjs"
+    }
+  ]
+}

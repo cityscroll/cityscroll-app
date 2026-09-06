@@ -300,7 +300,7 @@ def main() -> None:
 
     receipt = {
         "schema": "cityscroll.land-map-marker-selection-receipt.v1",
-        "card": "cityscroll-land-map-view/lm-07-marker-selection",
+        "card": "cityscroll-engineering/land-map-marker-selection",
         "browser_mode": "headless chromium (playwright), remote hosts blocked",
         "revision": revision(),
         "routes": {"default_map": DEFAULT_MAP_ROUTE, "filtered_map": FILTERED_MAP_ROUTE},

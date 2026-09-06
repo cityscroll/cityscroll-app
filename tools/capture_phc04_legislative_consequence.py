@@ -8,7 +8,7 @@ matter's most recent observed appearance. Runs axe-core against each rendered do
 both review widths.
 
 No image is written or committed — see docs/evidence/public-input-consequence/
-phc-04-legislative-consequence/capture-manifest.json for the committed proof (content hash
+legislative-consequence/capture-manifest.json for the committed proof (content hash
 + textual assertion per case), per the workstream's no-committed-image-binaries convention
 (spec.md).
 
@@ -36,7 +36,7 @@ ROOT = Path(__file__).resolve().parents[1]
 AXE = ROOT / "test/functional/assets/axe.min.js"
 VIEWPORTS = (("mobile", 390, 844), ("desktop", 1440, 900))
 TMP_DIR = ROOT / "site/.phc04-capture-tmp"
-OUT_DIR = ROOT / "docs/evidence/public-input-consequence/phc-04-legislative-consequence"
+OUT_DIR = ROOT / "docs/evidence/public-input-consequence/legislative-consequence"
 
 
 def start_local_site_server() -> tuple[subprocess.Popen, str]:
@@ -120,7 +120,7 @@ def main() -> None:
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     manifest = {
         "schema_version": 1,
-        "card": "cityscroll-public-input-consequence/phc-04-legislative-consequence-on-exact-joins",
+        "card": "cityscroll-engineering/legislative-consequence-on-exact-joins",
         "capture_mode": "local_node_playwright_axe_static_render",
         "repository_revision": repository_revision,
         "note": (

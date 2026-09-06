@@ -1,0 +1,25 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/empty-investigation-first-artifact",
+  "status": "implemented",
+  "fingerprint": "empty-investigation-first-artifact.v1",
+  "updated_at": "2026-09-05T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "cx-02-empty-investigation-first-artifact-contract",
+      "path": "test/contextual_ux_empty_investigation.test.mjs"
+    },
+    {
+      "id": "cx-02-empty-investigation-first-artifact-captures",
+      "path": "docs/evidence/empty-investigation-workspace/capture-manifest.json"
+    },
+    {
+      "id": "cx-02-empty-investigation-first-artifact-receipt",
+      "path": "docs/evidence/empty-investigation-workspace.md"
+    },
+    {
+      "id": "cx-01-result-group-navigation-principle",
+      "path": "docs/design-principles-contextual-ux.md"
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 /**
  * PS-07: grades place-scoped discovery as a measured capability contract rather than a
  * claim that a filter control exists. See
- * cityscroll-capability-spine/ps-07-place-scope-capability.
+ * cityscroll-engineering/place-scope-capability.
  *
  * The prior interface cards (PS-02 Near You role control, PS-03 Following preservation,
  * PS-04 evidence tiers, PS-05 typed geography relations, PS-06 contract fixtures) each

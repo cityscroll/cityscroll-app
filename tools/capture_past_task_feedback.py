@@ -199,7 +199,7 @@ def main() -> None:
 
     manifest = {
         "schema": "cityscroll.past_task_feedback_capture.v1",
-        "change": "cityscroll-contextual-ux/cx-03-past-task-feedback",
+        "change": "cityscroll-engineering/past-task-feedback",
         "browser_mode": "headless chromium (playwright), remote hosts stubbed or blocked",
         "route": ROUTE,
         "viewports": [{"name": name, "width": w, "height": h} for name, w, h in VIEWPORTS],

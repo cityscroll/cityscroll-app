@@ -48,7 +48,7 @@
     }
   ],
   "register_discrepancy": {
-    "record": "cityscroll-reliability/rel-09-ops-alerts-human-grade",
+    "record": "cityscroll-engineering/ops-alerts-human-grade",
     "recorded_status": "implemented",
     "observed_gap": "The scheduler-heartbeat item was folded into that record, but no scheduled cycle ever wrote a heartbeat and the watchdog's own alerts carried null run and receipt evidence. The completed record is left unamended; this receipt is the discrepancy note.",
     "preserved_from_rel_09": [

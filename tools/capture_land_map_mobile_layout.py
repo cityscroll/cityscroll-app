@@ -263,7 +263,7 @@ def main() -> None:
 
     receipt = {
         "schema": "cityscroll.land-map-mobile-layout-receipt.v1",
-        "card": "cityscroll-land-map-view/lm-10-mobile-map-list",
+        "card": "cityscroll-engineering/land-map-mobile-list",
         "browser_mode": "headless chromium (playwright) with touch emulation, remote hosts blocked",
         "revision": revision(),
         "routes": {"default_map": DEFAULT_MAP_ROUTE},

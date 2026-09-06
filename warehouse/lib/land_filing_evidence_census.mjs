@@ -360,7 +360,7 @@ export function buildLandFilingEvidenceCensusReceipt(observation) {
 
   const receipt = {
     schema: LAND_FILING_CENSUS_RECEIPT_SCHEMA,
-    card: "cityscroll-land-decision-path/ldp-22-filing-evidence-census",
+    card: "cityscroll-engineering/census-rer-applicability-zap-filing-document-coverage",
     generated_at: observation.materialized_at,
 
     source_receipt: {

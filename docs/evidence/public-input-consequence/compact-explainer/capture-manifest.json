@@ -1,0 +1,280 @@
+{
+  "schema_version": 1,
+  "card": "cityscroll-engineering/compact-explainer-without-overpromising",
+  "capture_mode": "local_node_playwright_axe_static_render",
+  "repository_revision": "c995329c5575b421c2b25b4594e2e320e8821e15",
+  "note": "Each case renders site/public_input_explainer.mjs's publicInputExplainerHTML() directly via node, with no live Worker/D1 backend, and serves the fragment from site/ with the component's own /index.html CSS rules via tools/local_site_server.py. tools/capture_phc09_public_input_explainer.py checks that the Meetings intro still carries the explainer host and that site/app/boot.mjs still mounts it, so a later rewiring fails this capture rather than evidencing a component the product no longer shows. At each width the capture opens the explainer with one keypress on its own control, checks the browser left focus on that control, closes it with the same control, and checks focus is still there. The capture fails unless each case hashes identically at both widths and offers the same focus targets, which is the evidence that one component serves both presentations, and unless the two widths compute different boxes, which is the evidence that both presentations ship. It also fails unless the untranslated locale renders exactly the English component while the translated and partially translated locales do not, which is the evidence that fallback runs whole sections. axe-core (test/functional/assets/axe.min.js) ran against each rendered state at both review widths, using the same failing-violation classification as test/functional/11_accessibility.py (a11y_gate.py). It does not evidence a live-data-populated page, since no Worker/D1 backend was running.",
+  "data_vintage": "committed site/i18n.js dictionary and its ten shipping language files at this revision, plus the official-source table in site/consequence_projection.mjs (PHC-00). This component reads no publisher record, so no publisher vintage applies to it.",
+  "viewports": [
+    {
+      "name": "mobile",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "name": "desktop",
+      "width": 1440,
+      "height": 900
+    }
+  ],
+  "captures": [
+    {
+      "fixture": "english",
+      "language_requested": "en",
+      "section_languages": {
+        "chrome": "en",
+        "what": "en",
+        "destinations": "en",
+        "limits": "en",
+        "examples": "en",
+        "method": "en"
+      },
+      "route": "publicInputExplainerHTML() rendered into the Meetings intro host (#meetings) \u2014 language:en",
+      "viewport": "mobile",
+      "assertion": "A7: the English rendering is one component whose markup is identical at both review widths, so the inline and sheet presentations cannot carry different copy.",
+      "content_sha256": "b55eb90f41e2570f3a77569b10c0f26998e07876eae194180263ed654762a8c6",
+      "presentation": "-16px|none|0px",
+      "opens_in_one_action": true,
+      "focus_returns_to_invoking_control": true,
+      "focus_targets": [
+        "summary:How public input works",
+        "a:See scheduled hearings and meetings",
+        "a:Official source: NYC Council testimony \u2197",
+        "a:See open rule comment periods",
+        "a:Official source: NYC Rules \u2197",
+        "a:See contract comment deadlines",
+        "a:Official source: Mayor's Office of Contr",
+        "summary:Where this explanation comes from"
+      ],
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    },
+    {
+      "fixture": "translated_locale",
+      "language_requested": "es",
+      "section_languages": {
+        "chrome": "es",
+        "what": "es",
+        "destinations": "es",
+        "limits": "es",
+        "examples": "es",
+        "method": "es"
+      },
+      "route": "publicInputExplainerHTML() rendered into the Meetings intro host (#meetings) \u2014 language:es",
+      "viewport": "mobile",
+      "assertion": "A6: a fully translated locale renders every section in that locale, with no English fragment left inside a translated block.",
+      "content_sha256": "71966962a61e82483061f8aa89c415989ba5b5fc73d413f20a2b2bb31760837f",
+      "presentation": "-16px|none|0px",
+      "opens_in_one_action": true,
+      "focus_returns_to_invoking_control": true,
+      "focus_targets": [
+        "summary:C\u00f3mo funciona la participaci\u00f3n p\u00fablica",
+        "a:Ver audiencias y reuniones programadas",
+        "a:Fuente oficial: NYC Council testimony \u2197",
+        "a:Ver periodos de comentarios abiertos sob",
+        "a:Fuente oficial: NYC Rules \u2197",
+        "a:Ver plazos de comentarios sobre contrato",
+        "a:Fuente oficial: Mayor's Office of Contra",
+        "summary:De d\u00f3nde viene esta explicaci\u00f3n"
+      ],
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    },
+    {
+      "fixture": "partially_translated_locale",
+      "language_requested": "es",
+      "section_languages": {
+        "chrome": "es",
+        "what": "es",
+        "destinations": "es",
+        "limits": "es",
+        "examples": "en",
+        "method": "es"
+      },
+      "route": "publicInputExplainerHTML() rendered into the Meetings intro host (#meetings) \u2014 language:es",
+      "viewport": "mobile",
+      "assertion": "A6: a locale missing public_input_explainer_example_rule_surface renders that whole section in English while its other sections stay translated, so no block mixes languages.",
+      "content_sha256": "efd7d1fd7248cc13f3060e3fbf7d85e5b875ad62a32ba9e7e26ff4022db67d72",
+      "presentation": "-16px|none|0px",
+      "opens_in_one_action": true,
+      "focus_returns_to_invoking_control": true,
+      "focus_targets": [
+        "summary:C\u00f3mo funciona la participaci\u00f3n p\u00fablica",
+        "a:See scheduled hearings and meetings",
+        "a:Official source: NYC Council testimony \u2197",
+        "a:See open rule comment periods",
+        "a:Official source: NYC Rules \u2197",
+        "a:See contract comment deadlines",
+        "a:Official source: Mayor's Office of Contr",
+        "summary:De d\u00f3nde viene esta explicaci\u00f3n"
+      ],
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    },
+    {
+      "fixture": "untranslated_locale",
+      "language_requested": "zz-absent",
+      "section_languages": {
+        "chrome": "en",
+        "what": "en",
+        "destinations": "en",
+        "limits": "en",
+        "examples": "en",
+        "method": "en"
+      },
+      "route": "publicInputExplainerHTML() rendered into the Meetings intro host (#meetings) \u2014 language:zz-absent",
+      "viewport": "mobile",
+      "assertion": "A6: a locale with no dictionary at all renders wholly in English rather than showing raw keys or partial copy.",
+      "content_sha256": "b55eb90f41e2570f3a77569b10c0f26998e07876eae194180263ed654762a8c6",
+      "presentation": "-16px|none|0px",
+      "opens_in_one_action": true,
+      "focus_returns_to_invoking_control": true,
+      "focus_targets": [
+        "summary:How public input works",
+        "a:See scheduled hearings and meetings",
+        "a:Official source: NYC Council testimony \u2197",
+        "a:See open rule comment periods",
+        "a:Official source: NYC Rules \u2197",
+        "a:See contract comment deadlines",
+        "a:Official source: Mayor's Office of Contr",
+        "summary:Where this explanation comes from"
+      ],
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    },
+    {
+      "fixture": "english",
+      "language_requested": "en",
+      "section_languages": {
+        "chrome": "en",
+        "what": "en",
+        "destinations": "en",
+        "limits": "en",
+        "examples": "en",
+        "method": "en"
+      },
+      "route": "publicInputExplainerHTML() rendered into the Meetings intro host (#meetings) \u2014 language:en",
+      "viewport": "desktop",
+      "assertion": "A7: the English rendering is one component whose markup is identical at both review widths, so the inline and sheet presentations cannot carry different copy.",
+      "content_sha256": "b55eb90f41e2570f3a77569b10c0f26998e07876eae194180263ed654762a8c6",
+      "presentation": "0px|736px|1px",
+      "opens_in_one_action": true,
+      "focus_returns_to_invoking_control": true,
+      "focus_targets": [
+        "summary:How public input works",
+        "a:See scheduled hearings and meetings",
+        "a:Official source: NYC Council testimony \u2197",
+        "a:See open rule comment periods",
+        "a:Official source: NYC Rules \u2197",
+        "a:See contract comment deadlines",
+        "a:Official source: Mayor's Office of Contr",
+        "summary:Where this explanation comes from"
+      ],
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    },
+    {
+      "fixture": "translated_locale",
+      "language_requested": "es",
+      "section_languages": {
+        "chrome": "es",
+        "what": "es",
+        "destinations": "es",
+        "limits": "es",
+        "examples": "es",
+        "method": "es"
+      },
+      "route": "publicInputExplainerHTML() rendered into the Meetings intro host (#meetings) \u2014 language:es",
+      "viewport": "desktop",
+      "assertion": "A6: a fully translated locale renders every section in that locale, with no English fragment left inside a translated block.",
+      "content_sha256": "71966962a61e82483061f8aa89c415989ba5b5fc73d413f20a2b2bb31760837f",
+      "presentation": "0px|736px|1px",
+      "opens_in_one_action": true,
+      "focus_returns_to_invoking_control": true,
+      "focus_targets": [
+        "summary:C\u00f3mo funciona la participaci\u00f3n p\u00fablica",
+        "a:Ver audiencias y reuniones programadas",
+        "a:Fuente oficial: NYC Council testimony \u2197",
+        "a:Ver periodos de comentarios abiertos sob",
+        "a:Fuente oficial: NYC Rules \u2197",
+        "a:Ver plazos de comentarios sobre contrato",
+        "a:Fuente oficial: Mayor's Office of Contra",
+        "summary:De d\u00f3nde viene esta explicaci\u00f3n"
+      ],
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    },
+    {
+      "fixture": "partially_translated_locale",
+      "language_requested": "es",
+      "section_languages": {
+        "chrome": "es",
+        "what": "es",
+        "destinations": "es",
+        "limits": "es",
+        "examples": "en",
+        "method": "es"
+      },
+      "route": "publicInputExplainerHTML() rendered into the Meetings intro host (#meetings) \u2014 language:es",
+      "viewport": "desktop",
+      "assertion": "A6: a locale missing public_input_explainer_example_rule_surface renders that whole section in English while its other sections stay translated, so no block mixes languages.",
+      "content_sha256": "efd7d1fd7248cc13f3060e3fbf7d85e5b875ad62a32ba9e7e26ff4022db67d72",
+      "presentation": "0px|736px|1px",
+      "opens_in_one_action": true,
+      "focus_returns_to_invoking_control": true,
+      "focus_targets": [
+        "summary:C\u00f3mo funciona la participaci\u00f3n p\u00fablica",
+        "a:See scheduled hearings and meetings",
+        "a:Official source: NYC Council testimony \u2197",
+        "a:See open rule comment periods",
+        "a:Official source: NYC Rules \u2197",
+        "a:See contract comment deadlines",
+        "a:Official source: Mayor's Office of Contr",
+        "summary:De d\u00f3nde viene esta explicaci\u00f3n"
+      ],
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    },
+    {
+      "fixture": "untranslated_locale",
+      "language_requested": "zz-absent",
+      "section_languages": {
+        "chrome": "en",
+        "what": "en",
+        "destinations": "en",
+        "limits": "en",
+        "examples": "en",
+        "method": "en"
+      },
+      "route": "publicInputExplainerHTML() rendered into the Meetings intro host (#meetings) \u2014 language:zz-absent",
+      "viewport": "desktop",
+      "assertion": "A6: a locale with no dictionary at all renders wholly in English rather than showing raw keys or partial copy.",
+      "content_sha256": "b55eb90f41e2570f3a77569b10c0f26998e07876eae194180263ed654762a8c6",
+      "presentation": "0px|736px|1px",
+      "opens_in_one_action": true,
+      "focus_returns_to_invoking_control": true,
+      "focus_targets": [
+        "summary:How public input works",
+        "a:See scheduled hearings and meetings",
+        "a:Official source: NYC Council testimony \u2197",
+        "a:See open rule comment periods",
+        "a:Official source: NYC Rules \u2197",
+        "a:See contract comment deadlines",
+        "a:Official source: Mayor's Office of Contr",
+        "summary:Where this explanation comes from"
+      ],
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    }
+  ],
+  "accessibility": {
+    "tool": "axe-core (test/functional/assets/axe.min.js)",
+    "scope": "main#main",
+    "viewports_checked": [
+      "390x844",
+      "1440x900"
+    ],
+    "new_violations_introduced": 0,
+    "pre_existing_violations_observed": []
+  }
+}

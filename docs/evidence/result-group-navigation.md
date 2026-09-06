@@ -1,6 +1,6 @@
 # Result-family jump control — implementation receipt
 
-Card: `cityscroll-contextual-ux/cx-01-result-group-navigation`
+Card: `cityscroll-engineering/result-group-navigation`
 
 ## Orientation
 

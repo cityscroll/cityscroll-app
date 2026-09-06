@@ -1,0 +1,25 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/law-follow-provision-watches",
+  "status": "implemented",
+  "fingerprint": "law-follow-provision-watches.v1",
+  "updated_at": "2026-08-31T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "provision-follow-watch",
+      "path": "site/code_provision_watch.mjs"
+    },
+    {
+      "id": "provision-follow-scope",
+      "path": "site/code_provision_watch_scope.mjs"
+    },
+    {
+      "id": "administrative-code-provision-document",
+      "path": "site/admin_code.mjs"
+    },
+    {
+      "id": "following-serializer",
+      "path": "site/following_view.mjs"
+    }
+  ]
+}

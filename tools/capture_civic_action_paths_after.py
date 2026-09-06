@@ -200,7 +200,7 @@ def main() -> int:
                             shot,
                             root=EVIDENCE_ROOT,
                             pr_number=None,
-                            card_id="cityscroll-civic-action-paths/cap-9",
+                            card_id="cityscroll-engineering/civic-action-path-documentation-receipt",
                             capture_kind="civic-action-path-after",
                             surface=f"docs/evidence/civic-action-paths/after/{spec['fixture']}",
                             phase="after",

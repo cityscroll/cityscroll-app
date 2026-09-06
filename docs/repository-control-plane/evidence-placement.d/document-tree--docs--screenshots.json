@@ -2,7 +2,7 @@
   "schema": "cityscroll.repository-control-plane.evidence-placement-shard.v1",
   "id": "document-tree:docs/screenshots",
   "owner": "document-tree:docs/screenshots",
-  "card": "cityscroll-repository-control-plane/rcp-03",
+  "card": "cityscroll-engineering/private-generated-evidence-placement",
   "input_revision": "c9b83920345a2e1172390eafb3af6e7bd35651b2",
   "updated_at": "2026-08-31T00:00:00.000Z",
   "value": {
@@ -16,8 +16,8 @@
         "private_reference_count": 2,
         "private_reference_set_sha256": "37db070db0284051a1c9f118fcea43be26c3c919c2a3f7237ceacc4fa101ce3f",
         "classification": "owner-only-evidence-reference",
-        "disposition": "register:cityscroll-repository-control-plane/rcp-03#private-evidence",
-        "maintainer_resolution": "register:cityscroll-repository-control-plane/rcp-03#authorized-maintainer-access"
+        "disposition": "register:cityscroll-engineering/private-generated-evidence-placement#private-evidence",
+        "maintainer_resolution": "register:cityscroll-engineering/private-generated-evidence-placement#authorized-maintainer-access"
       },
       {
         "path": "docs/screenshots/agency-false-splits/summary.json",
@@ -25,8 +25,8 @@
         "private_reference_count": 4,
         "private_reference_set_sha256": "15558f6a90f64cef7d40e6126664e71c4076aea022e12e6b43fd6b53fd4ac889",
         "classification": "owner-only-evidence-reference",
-        "disposition": "register:cityscroll-repository-control-plane/rcp-03#private-evidence",
-        "maintainer_resolution": "register:cityscroll-repository-control-plane/rcp-03#authorized-maintainer-access"
+        "disposition": "register:cityscroll-engineering/private-generated-evidence-placement#private-evidence",
+        "maintainer_resolution": "register:cityscroll-engineering/private-generated-evidence-placement#authorized-maintainer-access"
       },
       {
         "path": "docs/screenshots/api-parity-b2-search/capture-receipt.json",
@@ -34,8 +34,8 @@
         "private_reference_count": 4,
         "private_reference_set_sha256": "52223cad279d21e95eb6899ad29a7588a4d85fa5ba94a3a80b0375c65180a0b7",
         "classification": "owner-only-evidence-reference",
-        "disposition": "register:cityscroll-repository-control-plane/rcp-03#private-evidence",
-        "maintainer_resolution": "register:cityscroll-repository-control-plane/rcp-03#authorized-maintainer-access"
+        "disposition": "register:cityscroll-engineering/private-generated-evidence-placement#private-evidence",
+        "maintainer_resolution": "register:cityscroll-engineering/private-generated-evidence-placement#authorized-maintainer-access"
       },
       {
         "path": "docs/screenshots/browse-civic-domains/manifest.json",
@@ -43,8 +43,8 @@
         "private_reference_count": 8,
         "private_reference_set_sha256": "4bef75ebb84931bcdffa5e2151956f1ad5f32cd2b42b925c0264cf630537c93b",
         "classification": "owner-only-evidence-reference",
-        "disposition": "register:cityscroll-repository-control-plane/rcp-03#private-evidence",
-        "maintainer_resolution": "register:cityscroll-repository-control-plane/rcp-03#authorized-maintainer-access"
+        "disposition": "register:cityscroll-engineering/private-generated-evidence-placement#private-evidence",
+        "maintainer_resolution": "register:cityscroll-engineering/private-generated-evidence-placement#authorized-maintainer-access"
       },
       {
         "path": "docs/screenshots/browse-interaction-grammar/capture-receipt.json",
@@ -52,8 +52,8 @@
         "private_reference_count": 12,
         "private_reference_set_sha256": "9ffc40d45829c2ced577fcc245f69dc9e7c67c047a9c60675eb2a467c2d11aea",
         "classification": "owner-only-evidence-reference",
-        "disposition": "register:cityscroll-repository-control-plane/rcp-03#private-evidence",
-        "maintainer_resolution": "register:cityscroll-repository-control-plane/rcp-03#authorized-maintainer-access"
+        "disposition": "register:cityscroll-engineering/private-generated-evidence-placement#private-evidence",
+        "maintainer_resolution": "register:cityscroll-engineering/private-generated-evidence-placement#authorized-maintainer-access"
       },
       {
         "path": "docs/screenshots/city-record-decentering/capture-receipt.json",
@@ -61,8 +61,8 @@
         "private_reference_count": 12,
         "private_reference_set_sha256": "9b895307a096258b98374e17153106e6d9af6465544367b14edcc4506f2dad29",
         "classification": "owner-only-evidence-reference",
-        "disposition": "register:cityscroll-repository-control-plane/rcp-03#private-evidence",
-        "maintainer_resolution": "register:cityscroll-repository-control-plane/rcp-03#authorized-maintainer-access"
+        "disposition": "register:cityscroll-engineering/private-generated-evidence-placement#private-evidence",
+        "maintainer_resolution": "register:cityscroll-engineering/private-generated-evidence-placement#authorized-maintainer-access"
       },
       {
         "path": "docs/screenshots/community-board-money/manifest.json",
@@ -70,8 +70,8 @@
         "private_reference_count": 8,
         "private_reference_set_sha256": "00c46d5bee1834c4fe367a072e41dfe80d1b4bfb9738fb8a08c47bee0d802dba",
         "classification": "owner-only-evidence-reference",
-        "disposition": "register:cityscroll-repository-control-plane/rcp-03#private-evidence",
-        "maintainer_resolution": "register:cityscroll-repository-control-plane/rcp-03#authorized-maintainer-access"
+        "disposition": "register:cityscroll-engineering/private-generated-evidence-placement#private-evidence",
+        "maintainer_resolution": "register:cityscroll-engineering/private-generated-evidence-placement#authorized-maintainer-access"
       },
       {
         "path": "docs/screenshots/community-boards-directory/manifest.json",
@@ -79,8 +79,8 @@
         "private_reference_count": 4,
         "private_reference_set_sha256": "45197f365477af557c27209e1da9d683a872c7e587d16a5a46ec6b774c3145b7",
         "classification": "owner-only-evidence-reference",
-        "disposition": "register:cityscroll-repository-control-plane/rcp-03#private-evidence",
-        "maintainer_resolution": "register:cityscroll-repository-control-plane/rcp-03#authorized-maintainer-access"
+        "disposition": "register:cityscroll-engineering/private-generated-evidence-placement#private-evidence",
+        "maintainer_resolution": "register:cityscroll-engineering/private-generated-evidence-placement#authorized-maintainer-access"
       },
       {
         "path": "docs/screenshots/community-boards-map/manifest.json",
@@ -88,8 +88,8 @@
         "private_reference_count": 4,
         "private_reference_set_sha256": "ab0b100a5fdfde319d2302ba75594fcff5e5fb9819001ca0f5e889ee573a22ee",
         "classification": "owner-only-evidence-reference",
-        "disposition": "register:cityscroll-repository-control-plane/rcp-03#private-evidence",
-        "maintainer_resolution": "register:cityscroll-repository-control-plane/rcp-03#authorized-maintainer-access"
+        "disposition": "register:cityscroll-engineering/private-generated-evidence-placement#private-evidence",
+        "maintainer_resolution": "register:cityscroll-engineering/private-generated-evidence-placement#authorized-maintainer-access"
       },
       {
         "path": "docs/screenshots/deadline-exam-cards/metrics.json",
@@ -97,8 +97,8 @@
         "private_reference_count": 6,
         "private_reference_set_sha256": "4df9c232f7723f8ecc07ffe5cd757ee7ed8bd6a6406684c0285446568fc98235",
         "classification": "owner-only-evidence-reference",
-        "disposition": "register:cityscroll-repository-control-plane/rcp-03#private-evidence",
-        "maintainer_resolution": "register:cityscroll-repository-control-plane/rcp-03#authorized-maintainer-access"
+        "disposition": "register:cityscroll-engineering/private-generated-evidence-placement#private-evidence",
+        "maintainer_resolution": "register:cityscroll-engineering/private-generated-evidence-placement#authorized-maintainer-access"
       },
       {
         "path": "docs/screenshots/exam-outcomes/metrics.json",
@@ -106,8 +106,8 @@
         "private_reference_count": 10,
         "private_reference_set_sha256": "7a0f9d7c123595b2ec5a4ba88bf30ed9cf4b21a382f15d46660e902269d5d3b0",
         "classification": "owner-only-evidence-reference",
-        "disposition": "register:cityscroll-repository-control-plane/rcp-03#private-evidence",
-        "maintainer_resolution": "register:cityscroll-repository-control-plane/rcp-03#authorized-maintainer-access"
+        "disposition": "register:cityscroll-engineering/private-generated-evidence-placement#private-evidence",
+        "maintainer_resolution": "register:cityscroll-engineering/private-generated-evidence-placement#authorized-maintainer-access"
       },
       {
         "path": "docs/screenshots/footer-browse-hierarchy/manifest.json",
@@ -115,8 +115,8 @@
         "private_reference_count": 16,
         "private_reference_set_sha256": "5aea367879a7eaee1dba9f7c2d189b8f13e3515ffa920d7022971f0091e47c09",
         "classification": "owner-only-evidence-reference",
-        "disposition": "register:cityscroll-repository-control-plane/rcp-03#private-evidence",
-        "maintainer_resolution": "register:cityscroll-repository-control-plane/rcp-03#authorized-maintainer-access"
+        "disposition": "register:cityscroll-engineering/private-generated-evidence-placement#private-evidence",
+        "maintainer_resolution": "register:cityscroll-engineering/private-generated-evidence-placement#authorized-maintainer-access"
       },
       {
         "path": "docs/screenshots/gap-taxonomy/metrics.json",
@@ -124,8 +124,8 @@
         "private_reference_count": 8,
         "private_reference_set_sha256": "946567cfd4d2987db35dc92a85f784b2c5b6a52744fe81fb0b3cb50afc152600",
         "classification": "owner-only-evidence-reference",
-        "disposition": "register:cityscroll-repository-control-plane/rcp-03#private-evidence",
-        "maintainer_resolution": "register:cityscroll-repository-control-plane/rcp-03#authorized-maintainer-access"
+        "disposition": "register:cityscroll-engineering/private-generated-evidence-placement#private-evidence",
+        "maintainer_resolution": "register:cityscroll-engineering/private-generated-evidence-placement#authorized-maintainer-access"
       },
       {
         "path": "docs/screenshots/land-stage-coherence/manifest.json",
@@ -133,8 +133,8 @@
         "private_reference_count": 4,
         "private_reference_set_sha256": "89202a6313dc1ced11dbb61509d5bcbf4d590637e5441ed16aa78537d293085a",
         "classification": "owner-only-evidence-reference",
-        "disposition": "register:cityscroll-repository-control-plane/rcp-03#private-evidence",
-        "maintainer_resolution": "register:cityscroll-repository-control-plane/rcp-03#authorized-maintainer-access"
+        "disposition": "register:cityscroll-engineering/private-generated-evidence-placement#private-evidence",
+        "maintainer_resolution": "register:cityscroll-engineering/private-generated-evidence-placement#authorized-maintainer-access"
       },
       {
         "path": "docs/screenshots/mandate-edges-specific/receipt.json",
@@ -142,8 +142,8 @@
         "private_reference_count": 16,
         "private_reference_set_sha256": "673d9cfe8ac7352c6f1afe3e6bbba3ef81003105affeae9dfb191d508d5a3cba",
         "classification": "owner-only-evidence-reference",
-        "disposition": "register:cityscroll-repository-control-plane/rcp-03#private-evidence",
-        "maintainer_resolution": "register:cityscroll-repository-control-plane/rcp-03#authorized-maintainer-access"
+        "disposition": "register:cityscroll-engineering/private-generated-evidence-placement#private-evidence",
+        "maintainer_resolution": "register:cityscroll-engineering/private-generated-evidence-placement#authorized-maintainer-access"
       },
       {
         "path": "docs/screenshots/map-geography-labels/manifest.json",
@@ -151,8 +151,8 @@
         "private_reference_count": 8,
         "private_reference_set_sha256": "754693d8ab3e04ac33c58c05b3c127f8a2f39683c4f58a4b5088b2688874eae1",
         "classification": "owner-only-evidence-reference",
-        "disposition": "register:cityscroll-repository-control-plane/rcp-03#private-evidence",
-        "maintainer_resolution": "register:cityscroll-repository-control-plane/rcp-03#authorized-maintainer-access"
+        "disposition": "register:cityscroll-engineering/private-generated-evidence-placement#private-evidence",
+        "maintainer_resolution": "register:cityscroll-engineering/private-generated-evidence-placement#authorized-maintainer-access"
       },
       {
         "path": "docs/screenshots/mobile-intentional/capture-receipt.json",
@@ -160,8 +160,8 @@
         "private_reference_count": 24,
         "private_reference_set_sha256": "f0aa891db44938b3c77704f86529727c331130b25f391117e9fcdda61a5320cc",
         "classification": "owner-only-evidence-reference",
-        "disposition": "register:cityscroll-repository-control-plane/rcp-03#private-evidence",
-        "maintainer_resolution": "register:cityscroll-repository-control-plane/rcp-03#authorized-maintainer-access"
+        "disposition": "register:cityscroll-engineering/private-generated-evidence-placement#private-evidence",
+        "maintainer_resolution": "register:cityscroll-engineering/private-generated-evidence-placement#authorized-maintainer-access"
       },
       {
         "path": "docs/screenshots/near-you-map-nav-fixes/manifest.json",
@@ -169,8 +169,8 @@
         "private_reference_count": 4,
         "private_reference_set_sha256": "1619b9f2e2d8a31c771f24800d88c3d3b6e9b8b98f83a2b74b1f5e735baf4183",
         "classification": "owner-only-evidence-reference",
-        "disposition": "register:cityscroll-repository-control-plane/rcp-03#private-evidence",
-        "maintainer_resolution": "register:cityscroll-repository-control-plane/rcp-03#authorized-maintainer-access"
+        "disposition": "register:cityscroll-engineering/private-generated-evidence-placement#private-evidence",
+        "maintainer_resolution": "register:cityscroll-engineering/private-generated-evidence-placement#authorized-maintainer-access"
       },
       {
         "path": "docs/screenshots/near-you-static-first/manifest.json",
@@ -178,8 +178,8 @@
         "private_reference_count": 7,
         "private_reference_set_sha256": "9660ae40d6058f8c41285201d5bf8b4c6849a3d75b05a8ee97dcfbe708b4899d",
         "classification": "owner-only-evidence-reference",
-        "disposition": "register:cityscroll-repository-control-plane/rcp-03#private-evidence",
-        "maintainer_resolution": "register:cityscroll-repository-control-plane/rcp-03#authorized-maintainer-access"
+        "disposition": "register:cityscroll-engineering/private-generated-evidence-placement#private-evidence",
+        "maintainer_resolution": "register:cityscroll-engineering/private-generated-evidence-placement#authorized-maintainer-access"
       },
       {
         "path": "docs/screenshots/near-you-surface-polish/manifest.json",
@@ -187,8 +187,8 @@
         "private_reference_count": 2,
         "private_reference_set_sha256": "b63141893a345e2b5ff83e1c7444670da6c737ccbb63085c634dab4a3e11d43a",
         "classification": "owner-only-evidence-reference",
-        "disposition": "register:cityscroll-repository-control-plane/rcp-03#private-evidence",
-        "maintainer_resolution": "register:cityscroll-repository-control-plane/rcp-03#authorized-maintainer-access"
+        "disposition": "register:cityscroll-engineering/private-generated-evidence-placement#private-evidence",
+        "maintainer_resolution": "register:cityscroll-engineering/private-generated-evidence-placement#authorized-maintainer-access"
       },
       {
         "path": "docs/screenshots/notice-methodology/capture-receipt.json",
@@ -196,8 +196,8 @@
         "private_reference_count": 4,
         "private_reference_set_sha256": "a7cc46e9763deb7364dccd73eee0734ee1a6b6abad660b47004639d2e8eee35c",
         "classification": "owner-only-evidence-reference",
-        "disposition": "register:cityscroll-repository-control-plane/rcp-03#private-evidence",
-        "maintainer_resolution": "register:cityscroll-repository-control-plane/rcp-03#authorized-maintainer-access"
+        "disposition": "register:cityscroll-engineering/private-generated-evidence-placement#private-evidence",
+        "maintainer_resolution": "register:cityscroll-engineering/private-generated-evidence-placement#authorized-maintainer-access"
       },
       {
         "path": "docs/screenshots/now-surface/manifest.json",
@@ -205,8 +205,8 @@
         "private_reference_count": 4,
         "private_reference_set_sha256": "5661fe6dd85f2429b28c7699148bdf2123688bc842cec3309c94c68c755a399b",
         "classification": "owner-only-evidence-reference",
-        "disposition": "register:cityscroll-repository-control-plane/rcp-03#private-evidence",
-        "maintainer_resolution": "register:cityscroll-repository-control-plane/rcp-03#authorized-maintainer-access"
+        "disposition": "register:cityscroll-engineering/private-generated-evidence-placement#private-evidence",
+        "maintainer_resolution": "register:cityscroll-engineering/private-generated-evidence-placement#authorized-maintainer-access"
       },
       {
         "path": "docs/screenshots/project-calendar/README.md",
@@ -214,8 +214,8 @@
         "private_reference_count": 1,
         "private_reference_set_sha256": "084d7a1b2a76cfd852abb0d42f748f1ab9ca999c4e0a19d6541281c0e6834389",
         "classification": "owner-only-evidence-reference",
-        "disposition": "register:cityscroll-repository-control-plane/rcp-03#private-evidence",
-        "maintainer_resolution": "register:cityscroll-repository-control-plane/rcp-03#authorized-maintainer-access"
+        "disposition": "register:cityscroll-engineering/private-generated-evidence-placement#private-evidence",
+        "maintainer_resolution": "register:cityscroll-engineering/private-generated-evidence-placement#authorized-maintainer-access"
       },
       {
         "path": "docs/screenshots/r2-token-consistency/manifest.json",
@@ -223,8 +223,8 @@
         "private_reference_count": 8,
         "private_reference_set_sha256": "a59df5a418273e3e781e5fb7876db3e12c236ed7e1937f1d370ef476a3967068",
         "classification": "owner-only-evidence-reference",
-        "disposition": "register:cityscroll-repository-control-plane/rcp-03#private-evidence",
-        "maintainer_resolution": "register:cityscroll-repository-control-plane/rcp-03#authorized-maintainer-access"
+        "disposition": "register:cityscroll-engineering/private-generated-evidence-placement#private-evidence",
+        "maintainer_resolution": "register:cityscroll-engineering/private-generated-evidence-placement#authorized-maintainer-access"
       },
       {
         "path": "docs/screenshots/rfx-documents-recon/manifest.json",
@@ -232,8 +232,8 @@
         "private_reference_count": 2,
         "private_reference_set_sha256": "0210886a840daafbd32a0a56c26cde9476a11410810848d941e2e90753cad9a8",
         "classification": "owner-only-evidence-reference",
-        "disposition": "register:cityscroll-repository-control-plane/rcp-03#private-evidence",
-        "maintainer_resolution": "register:cityscroll-repository-control-plane/rcp-03#authorized-maintainer-access"
+        "disposition": "register:cityscroll-engineering/private-generated-evidence-placement#private-evidence",
+        "maintainer_resolution": "register:cityscroll-engineering/private-generated-evidence-placement#authorized-maintainer-access"
       },
       {
         "path": "docs/screenshots/staffing-guide/metrics.json",
@@ -241,8 +241,8 @@
         "private_reference_count": 2,
         "private_reference_set_sha256": "eebb225f82e9b22e9a36c4cd102fdb04c6a3a28202788826ae007c34556b298b",
         "classification": "owner-only-evidence-reference",
-        "disposition": "register:cityscroll-repository-control-plane/rcp-03#private-evidence",
-        "maintainer_resolution": "register:cityscroll-repository-control-plane/rcp-03#authorized-maintainer-access"
+        "disposition": "register:cityscroll-engineering/private-generated-evidence-placement#private-evidence",
+        "maintainer_resolution": "register:cityscroll-engineering/private-generated-evidence-placement#authorized-maintainer-access"
       },
       {
         "path": "docs/screenshots/ulurp-statutory-clock/manifest.json",
@@ -250,8 +250,8 @@
         "private_reference_count": 3,
         "private_reference_set_sha256": "a0e341ca84b8356d1934f1e0aa3f978393d55099f997198fa26f75b46ce8bb1c",
         "classification": "owner-only-evidence-reference",
-        "disposition": "register:cityscroll-repository-control-plane/rcp-03#private-evidence",
-        "maintainer_resolution": "register:cityscroll-repository-control-plane/rcp-03#authorized-maintainer-access"
+        "disposition": "register:cityscroll-engineering/private-generated-evidence-placement#private-evidence",
+        "maintainer_resolution": "register:cityscroll-engineering/private-generated-evidence-placement#authorized-maintainer-access"
       },
       {
         "path": "docs/screenshots/us16-parcels-worker-corpus/README.md",
@@ -259,8 +259,8 @@
         "private_reference_count": 2,
         "private_reference_set_sha256": "2f0e652fc79fede85b2cb34432fb2ddbfd18b25b169331810dffac0d5456430a",
         "classification": "owner-only-evidence-reference",
-        "disposition": "register:cityscroll-repository-control-plane/rcp-03#private-evidence",
-        "maintainer_resolution": "register:cityscroll-repository-control-plane/rcp-03#authorized-maintainer-access"
+        "disposition": "register:cityscroll-engineering/private-generated-evidence-placement#private-evidence",
+        "maintainer_resolution": "register:cityscroll-engineering/private-generated-evidence-placement#authorized-maintainer-access"
       },
       {
         "path": "docs/screenshots/us17-committees-worker-lens/README.md",
@@ -268,8 +268,8 @@
         "private_reference_count": 2,
         "private_reference_set_sha256": "b1a66c9f5b9e1690461aa06b6d2d158db29d6609635f3b5d39acfb7ada58211d",
         "classification": "owner-only-evidence-reference",
-        "disposition": "register:cityscroll-repository-control-plane/rcp-03#private-evidence",
-        "maintainer_resolution": "register:cityscroll-repository-control-plane/rcp-03#authorized-maintainer-access"
+        "disposition": "register:cityscroll-engineering/private-generated-evidence-placement#private-evidence",
+        "maintainer_resolution": "register:cityscroll-engineering/private-generated-evidence-placement#authorized-maintainer-access"
       },
       {
         "path": "docs/screenshots/zap-hearing-logistics/receipt.json",
@@ -277,8 +277,8 @@
         "private_reference_count": 4,
         "private_reference_set_sha256": "8e644a5b085bf46392718a3d63dff287cd9f629922f6a952fb70cda58b830ac8",
         "classification": "owner-only-evidence-reference",
-        "disposition": "register:cityscroll-repository-control-plane/rcp-03#private-evidence",
-        "maintainer_resolution": "register:cityscroll-repository-control-plane/rcp-03#authorized-maintainer-access"
+        "disposition": "register:cityscroll-engineering/private-generated-evidence-placement#private-evidence",
+        "maintainer_resolution": "register:cityscroll-engineering/private-generated-evidence-placement#authorized-maintainer-access"
       }
     ]
   }

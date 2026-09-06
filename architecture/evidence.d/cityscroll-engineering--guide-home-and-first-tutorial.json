@@ -1,0 +1,45 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/guide-home-and-first-tutorial",
+  "status": "implemented",
+  "fingerprint": "guide-home-and-first-tutorial.v1",
+  "updated_at": "2026-09-05T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "guide-article-source-format",
+      "path": "site/guide_article_source.mjs"
+    },
+    {
+      "id": "guide-document-view",
+      "path": "site/guide_view.mjs"
+    },
+    {
+      "id": "guide-document-builder",
+      "path": "tools/build_guide_documents.mjs"
+    },
+    {
+      "id": "guide-home-source",
+      "path": "site/guide/_home.md"
+    },
+    {
+      "id": "guide-first-tutorial-source",
+      "path": "site/guide/_articles/explore-housing-across-city-records.md"
+    },
+    {
+      "id": "guide-stylesheet",
+      "path": "site/guide.css"
+    },
+    {
+      "id": "guide-document-contracts",
+      "path": "test/guide_documents.test.mjs"
+    },
+    {
+      "id": "guide-content-gate",
+      "path": "test/standards/guide_content.py"
+    },
+    {
+      "id": "guide-release-capture",
+      "path": "tools/capture_guide_release.py"
+    }
+  ]
+}

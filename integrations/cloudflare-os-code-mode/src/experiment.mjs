@@ -29,7 +29,7 @@ const CS07_SOURCE = resolve(ROOT, "integrations/cloudflare-os-entity-research");
 const CS08_SOURCE = resolve(ROOT, "integrations/cloudflare-os-code-mode");
 const PIN = /^[a-f0-9]{40}$/;
 export const OBSERVED_AT = "2026-08-29T00:00:00.000Z";
-export const CARD = "cs-08-code-mode-measurement";
+export const CARD = "code-mode-measurement";
 export const RECEIPT_SCHEMA = "cityscroll.code_mode_measurement_receipt.v1";
 export const FROZEN_MODEL_ID = "cs-08-frozen-plan-v1";
 export const INJECTED_FAILURE = Object.freeze({
@@ -597,7 +597,7 @@ export async function runCodeModeMeasurement({
     blocked_reason: blockedReason,
     prerequisite: {
       card: "cs-07-cloudflare-os-composition-proof",
-      receipt: "artifacts/capability-spine/cs-07-cloudflare-os-proof.json",
+      receipt: "artifacts/capability-spine/cloudflare-os-proof.json",
       status: cs07Proof?.status || "missing",
       capability_versions: cs07Proof?.tool_grant?.capability_versions || [],
       raw_store_bindings: cs07Proof?.deployment?.raw_store_bindings ?? null,

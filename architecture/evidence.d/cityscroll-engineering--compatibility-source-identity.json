@@ -1,0 +1,33 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/compatibility-source-identity",
+  "status": "implemented",
+  "fingerprint": "compatibility-source-identity.v1",
+  "updated_at": "2026-09-01T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "agency-source-identity-contract",
+      "path": "site/agency_source_identity_contract.mjs"
+    },
+    {
+      "id": "agency-source-identity-snapshot-builder",
+      "path": "tools/build_agency_source_identity_snapshot.mjs"
+    },
+    {
+      "id": "agency-source-identity-snapshot-lib",
+      "path": "tools/lib/agency_source_identity_snapshot.mjs"
+    },
+    {
+      "id": "agency-source-identity-contract-fixtures",
+      "path": "test/fixtures/agency_source_identity_compatibility/cases.json"
+    },
+    {
+      "id": "agency-source-identity-regression-snapshot",
+      "path": "test/fixtures/agency_source_identity_compatibility/snapshot.v1.json"
+    },
+    {
+      "id": "agency-source-identity-contract-tests",
+      "path": "test/agency_source_identity_contract.test.mjs"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/borough-board-source-collector",
+  "status": "implemented",
+  "fingerprint": "borough-board-source-collector.v1",
+  "updated_at": "2026-09-05T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "board-bp-land-bridge",
+      "path": "warehouse/lib/board_bp_land_bridge.mjs"
+    },
+    {
+      "id": "board-bp-land-bridge-receipt",
+      "path": "warehouse/receipts/proof/board_bp_land_bridge_latest.json"
+    }
+  ]
+}

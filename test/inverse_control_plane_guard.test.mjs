@@ -24,7 +24,7 @@ function publicScan(kind, name, contentClass = "public-current-contract") {
     text: fixture(kind, name),
     classification: {
       content_class: contentClass,
-      canonical_owner: "cityscroll-repository-control-plane/rcp-04",
+      canonical_owner: "cityscroll-engineering/inverse-control-plane-guard",
       allowed_evidence_contract: "current-contract-only",
     },
   });
@@ -44,7 +44,7 @@ test("manifest is versioned, typed, and every register id resolves through MT-7 
 
 test("invalid register reference fails through the existing source-card inventory", () => {
   const candidate = structuredClone(manifest);
-  candidate.classifications[0].register_id = "cityscroll-repository-control-plane/does-not-exist";
+  candidate.classifications[0].register_id = "cityscroll-engineering/does-not-exist";
   assert.deepEqual(validateManifest(candidate, architecture.sourceCards).map((row) => row.rule), ["unresolved-register-id"]);
 });
 
@@ -68,7 +68,7 @@ test("findings name path, rule, class, and owner", () => {
   const [row] = publicScan("negative", "rollout-register.md");
   assert.deepEqual(Object.keys(row), ["path", "rule", "class", "owner", "detail"]);
   assert.equal(row.class, "public-current-contract");
-  assert.equal(row.owner, "cityscroll-repository-control-plane/rcp-04");
+  assert.equal(row.owner, "cityscroll-engineering/inverse-control-plane-guard");
 });
 
 const positiveMatrix = [

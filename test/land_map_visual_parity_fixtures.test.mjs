@@ -40,7 +40,7 @@ function assertNoLocalPath(value, label) {
 
 test("manifest identity and viewport registry", () => {
   assert.equal(manifest.schema, "cityscroll.land-map-visual-parity-fixtures-manifest.v1");
-  assert.equal(manifest.card, "cityscroll-land-map-view/lm-13-visual-parity-fixtures");
+  assert.equal(manifest.card, "cityscroll-engineering/land-map-visual-parity-fixtures");
   assert.equal(manifest.join, "exact_project_id");
   assert.match(manifest.anchor_specimen.project_id, PROJECT_ID_RE);
   assert.match(manifest.exact_precision_specimen.project_id, PROJECT_ID_RE);

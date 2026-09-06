@@ -1,0 +1,17 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/explainable-preference-set",
+  "status": "implemented",
+  "fingerprint": "explainable-preference-set.v1",
+  "updated_at": "2026-09-05T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "procurement-preference-set-contract",
+      "path": "site/procurement_preference_set.mjs"
+    },
+    {
+      "id": "procurement-preference-set-tests",
+      "path": "test/procurement_preference_set.test.mjs"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/d1-explicit-rebuild",
+  "status": "implemented",
+  "fingerprint": "d1-explicit-rebuild.v1",
+  "updated_at": "2026-09-05T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "d1-explicit-rebuild",
+      "path": "tools/d1_explicit_rebuild.mjs"
+    },
+    {
+      "id": "d1-rebuild-workflow",
+      "path": ".github/workflows/d1-rebuild.yml"
+    },
+    {
+      "id": "d1-explicit-rebuild-documentation",
+      "path": "docs/d1-explicit-rebuild-v1.md"
+    }
+  ]
+}

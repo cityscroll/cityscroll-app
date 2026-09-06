@@ -24,7 +24,7 @@ import { deriveMaximumProvableClass } from "../capabilities/evidence_classificat
 import { assertOsDeploymentReceipt } from "../capabilities/os_deployment_receipt.mjs";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const RECEIPT = resolve(ROOT, "artifacts/capability-spine/cs-12-cloudflare-os-deployment.json");
+const RECEIPT = resolve(ROOT, "artifacts/capability-spine/cloudflare-os-deployment.json");
 
 export function verifyCloudflareOsDeployment(path = RECEIPT) {
   const receipt = JSON.parse(readFileSync(path, "utf8"));

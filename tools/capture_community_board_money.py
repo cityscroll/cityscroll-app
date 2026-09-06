@@ -148,7 +148,7 @@ def capture_page(browser, tree: Path, *, state: str, canary: dict, width: int, h
             shot,
             root=EVIDENCE_ROOT,
             pr_number=None,
-            card_id="cityscroll-cb-money/cb-money-04",
+            card_id="cityscroll-engineering/community-board-money-capture",
             capture_kind="community-board-money-card",
             surface=f"docs/screenshots/community-board-money/{canary['board']}",
             phase=state,

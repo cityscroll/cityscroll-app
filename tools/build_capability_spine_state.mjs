@@ -100,7 +100,7 @@ export function buildCapabilitySpineState() {
   // access control, a fail-closed spend ceiling, a rehearsed rollback, and a
   // receipt carrying neither administrator identifiers nor a connection claim.
   const osDeployed = proves(
-    "artifacts/capability-spine/cs-12-cloudflare-os-deployment.json",
+    "artifacts/capability-spine/cloudflare-os-deployment.json",
     "tools/verify_cloudflare_os_deployment.mjs",
     "cloudflare_os_deployed",
     { contract: assertOsDeploymentReceipt },
@@ -132,9 +132,9 @@ export function buildCapabilitySpineState() {
     // Rehearsal evidence is preserved and honestly labeled — not discarded —
     // but it never counts toward any of the five states above.
     preserved_local_rehearsal_evidence: [
-      "artifacts/capability-spine/cs-06-remote-mcp.json",
-      "artifacts/capability-spine/cs-07-cloudflare-os-proof.json",
-      "artifacts/capability-spine/cs-08-code-mode.json",
+      "artifacts/capability-spine/remote-mcp.json",
+      "artifacts/capability-spine/cloudflare-os-proof.json",
+      "artifacts/capability-spine/code-mode.json",
     ],
   };
 }

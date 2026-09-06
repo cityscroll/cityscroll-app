@@ -18,7 +18,7 @@
 // this file's and the canary's own source text, not just against one run's
 // behavior.
 //
-// Card: cityscroll-capability-spine/cs-10-live-remote-mcp-canary
+// Card: cityscroll-engineering/live-remote-mcp-canary
 // Verify: node --test test/live_mcp_canary.test.mjs
 
 import assert from "node:assert/strict";

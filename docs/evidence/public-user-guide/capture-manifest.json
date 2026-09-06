@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "card": "cityscroll-public-user-guide/ug-00-documentation-map",
+  "card": "cityscroll-engineering/guide-documentation-map",
   "capture_mode": "public_base_playwright_no_committed_image",
   "base": "https://cityscroll.org",
   "repository_revision": "ad171636d835ffec49c2db9bb1dfaa9d87dc0433",

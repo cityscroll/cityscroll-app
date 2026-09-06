@@ -1,0 +1,21 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/decides-land-project-audit",
+  "status": "implemented",
+  "fingerprint": "decides-land-project-audit.v1",
+  "updated_at": "2026-08-31T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "land-project-decision-relations",
+      "path": "site/land_project_decision_relations.mjs"
+    },
+    {
+      "id": "land-project-decision-vocabulary-adr",
+      "path": "docs/adr/decides-land-project-vocabulary.md"
+    },
+    {
+      "id": "land-project-decision-audit",
+      "path": "docs/evidence/land-decision-path/decides-land-project-audit.json"
+    }
+  ]
+}

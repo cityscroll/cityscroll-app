@@ -36,7 +36,7 @@ test("architecture-evidence projections reconcile the LUP2-C7 card", () => {
   assert.equal(result.status, "PASS", result.findings.join("; "));
   assert.equal(
     result.evidence.projections["warehouse/fixtures/land-use-prediction-v2/stance_backtest.v1.json"]
-      .represented_card_ids.includes("cityscroll-landuse-prediction-v2/lup2-c7"),
+      .represented_card_ids.includes("cityscroll-engineering/land-prediction-stance-backtest"),
     true,
   );
 });

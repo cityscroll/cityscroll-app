@@ -51,7 +51,7 @@ sys.path.insert(0, str(ROOT / "test" / "functional" / "assets"))
 from a11y_gate import failing_violations  # noqa: E402
 
 MANIFEST_SCHEMA = "cityscroll.institution_record_capacity_evidence.v1"
-EVIDENCE_ID = "cityscroll-civic-institutions/institution-record-capacity"
+EVIDENCE_ID = "cityscroll-engineering/institution-record-capacity"
 
 PROFILE_ROUTE = "/agencies/economic-development-corporation/"
 CAPACITY_SECTION = "#agency-record-capacity"

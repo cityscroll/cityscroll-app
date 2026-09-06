@@ -1,0 +1,21 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/internal-challenge-watch-card",
+  "status": "implemented",
+  "fingerprint": "internal-challenge-watch-card.v1",
+  "updated_at": "2026-09-05T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "article78-challenge-watch-card-model",
+      "path": "warehouse/lib/article78_challenge_watch_card.mjs"
+    },
+    {
+      "id": "article78-challenge-watch-card-tests",
+      "path": "test/warehouse_article78_challenge_watch_card.test.mjs"
+    },
+    {
+      "id": "article78-challenge-watch-card-contract",
+      "path": "docs/article78-challenge-watch-card-v1.md"
+    }
+  ]
+}

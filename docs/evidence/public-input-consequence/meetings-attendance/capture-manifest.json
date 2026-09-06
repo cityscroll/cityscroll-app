@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "card": "cityscroll-engineering/meetings-entry-and-attendance-filter",
+  "capture_mode": "chrome_devtools_local_static_shell",
+  "repository_revision": "bf578c2afa757e1b4dc4de5c4794840d79ad53e8",
+  "note": "Static site shell served locally (no live Worker/D1 backend); the meetings feed itself renders its loading-skeleton state rather than populated notices. Captures evidence the deck copy, disclosure, and independent attendance control render correctly at both viewports (A1, A2, A6); they do not evidence a data-populated attendance badge on a live notice card.",
+  "data_vintage": "not_applicable_static_shell",
+  "viewports": [
+    { "name": "mobile", "width": 390, "height": 844 },
+    { "name": "desktop", "width": 1440, "height": 1000 }
+  ],
+  "captures": [
+    {
+      "fixture": "meetings_domain_deck_and_disclosure",
+      "route": "#meetings",
+      "viewport": "mobile",
+      "assertion": "A1: the lead deck states the hearing-versus-meeting distinction (not the data method) and fits a narrow viewport without truncation or an opened disclosure",
+      "content_sha256": "8858994991c4b55bd58974dea849b3f0ef1aac8fc760086be117fd306260f337",
+      "file": null
+    },
+    {
+      "fixture": "meetings_toolbar_attendance_control",
+      "route": "#meetings",
+      "viewport": "desktop",
+      "assertion": "A2/A6: Attendance renders as its own control beside Affected area, with 'Any attendance mode' as the default first-level option (watch-only is a plain sibling option in the same select, not nested)",
+      "content_sha256": "6c676074c8b12cd005d27d62181e424ab8428e043caa90c5ea7f036b2c175e0b",
+      "file": null
+    }
+  ],
+  "accessibility": {
+    "tool": "axe-core (test/functional/assets/axe.min.js)",
+    "scope": "#tab-meetings",
+    "viewports_checked": ["390x844", "1440x1000"],
+    "new_violations_introduced": 0,
+    "pre_existing_violations_observed": [
+      {
+        "id": "aria-allowed-role",
+        "impact": "minor",
+        "targets": ["#meetings-agency-scope", "#meetings-board-scope"],
+        "note": "Pre-existing on main, unrelated to this card's diff (unchanged <nav role=\"group\"> elements); left as-is rather than fixed out of scope."
+      }
+    ]
+  }
+}

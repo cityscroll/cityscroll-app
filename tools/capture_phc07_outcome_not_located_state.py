@@ -4,7 +4,7 @@ site/outcome_not_located_state.mjs at both review widths and run axe-core
 against each rendered fragment.
 
 No image is written or committed - see docs/evidence/public-input-consequence/
-phc-07-outcome-not-located/capture-manifest.json for the committed proof
+outcome-not-located/capture-manifest.json for the committed proof
 (route, viewport, repository revision, data vintage, assertion and a content
 hash per case), per the workstream's no-committed-image-binaries convention
 (spec.md).
@@ -34,7 +34,7 @@ ROOT = Path(__file__).resolve().parents[1]
 AXE = ROOT / "test/functional/assets/axe.min.js"
 VIEWPORTS = (("mobile", 390, 844), ("desktop", 1440, 900))
 TMP_DIR = ROOT / "site/.phc07-capture-tmp"
-OUT_DIR = ROOT / "docs/evidence/public-input-consequence/phc-07-outcome-not-located"
+OUT_DIR = ROOT / "docs/evidence/public-input-consequence/outcome-not-located"
 
 # The mount point these states render through. If the meeting detail page stops
 # routing through the outcome-state projection, this capture fails rather than
@@ -185,7 +185,7 @@ def main() -> None:
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     manifest = {
         "schema_version": 1,
-        "card": "cityscroll-public-input-consequence/phc-07-outcome-not-located-is-honest",
+        "card": "cityscroll-engineering/outcome-not-located-is-honest",
         "capture_mode": "local_node_playwright_axe_static_render",
         "repository_revision": repository_revision,
         "note": (

@@ -1,0 +1,142 @@
+{
+  "schema_version": 1,
+  "card": "cityscroll-engineering/rulemaking-comment-consequence",
+  "capture_mode": "local_node_playwright_axe_static_render",
+  "repository_revision": "73cbf7a7150d38782466218b39294397c459794b",
+  "note": "ruleParticipationHTML()/ruleClosedConsequenceHTML() (site/app/rules.mjs), built from buildRuleCommentConsequence() (site/rules_participation.mjs), rendered locally via node (no live Worker/D1 backend) for five synthetic rulemaking records, one per state named in the card, then served from site/ (real /brand.css plus the .rule-participation rules from site/index.html's inline stylesheet) via tools/local_site_server.py. axe-core (test/functional/assets/axe.min.js) ran against the rendered <main id=\"main\"> for each case at both review widths, using the same failing-violation classification as test/functional/11_accessibility.py (a11y_gate.py). Evidence proves the consequence receipt's placement, content, and omission states (A1-A7) render as specified and introduce no new axe violation; it does not evidence a live-data-populated page, since no Worker/D1 backend was running.",
+  "data_vintage": "not_applicable_synthetic_fixture_records",
+  "viewports": [
+    {
+      "name": "mobile",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "name": "desktop",
+      "width": 1440,
+      "height": 900
+    }
+  ],
+  "captures": [
+    {
+      "fixture": "open_dense",
+      "route": "ruleParticipationHTML()/ruleClosedConsequenceHTML() \u2014 open_dense",
+      "viewport": "mobile",
+      "assertion": "A2/A3/A6/A7: an open comment window with a channel, deadline, and a distinct future hearing renders the primary comment action, the consequence receipt below the channel/deadline, and a separate hearing note with its own date.",
+      "content_sha256": "f8d6a6a879d5dd19d73bfdf2c7701176852a49c83d8bf23ecbd8b2e9e4bf33b7",
+      "consequence_present": true,
+      "consequence_open": true,
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    },
+    {
+      "fixture": "open_partial",
+      "route": "ruleParticipationHTML()/ruleClosedConsequenceHTML() \u2014 open_partial",
+      "viewport": "mobile",
+      "assertion": "A6: an open comment window with only a deadline (no published hearing) renders the consequence receipt with no fabricated hearing note.",
+      "content_sha256": "bf5f976a9ec328fd18744739a53cc5a122e1f50f8edca57e77190e43cc9494cf",
+      "consequence_present": true,
+      "consequence_open": true,
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    },
+    {
+      "fixture": "closed_dense",
+      "route": "ruleParticipationHTML()/ruleClosedConsequenceHTML() \u2014 closed_dense",
+      "viewport": "mobile",
+      "assertion": "A4: a comment window with a published deadline now in the past removes the submission control but keeps the public-record consequence explanation and the distinct hearing date that preceded it.",
+      "content_sha256": "45e1eaab70d6b42d462cba062feea8982a723f867ebbed23e37c6d28a2662b13",
+      "consequence_present": true,
+      "consequence_open": false,
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    },
+    {
+      "fixture": "closed_partial",
+      "route": "ruleParticipationHTML()/ruleClosedConsequenceHTML() \u2014 closed_partial",
+      "viewport": "mobile",
+      "assertion": "A4/A6: a closed window with no published hearing keeps the consequence explanation with no fabricated hearing note.",
+      "content_sha256": "69e8df8de39fe83862158be39bb478cf8ceba04147020f6ca1fa1339b807cb84",
+      "consequence_present": true,
+      "consequence_open": false,
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    },
+    {
+      "fixture": "sparse_no_evidence",
+      "route": "ruleParticipationHTML()/ruleClosedConsequenceHTML() \u2014 sparse_no_evidence",
+      "viewport": "mobile",
+      "assertion": "A1/A6: a rulemaking record with no comment-period evidence at all (e.g. adopted with no retained comment history) renders no consequence receipt and no fabricated closed state.",
+      "content_sha256": "dd6fc3819fee69101adb50bed30d4a0ab8e214d04702416bb22302e405195aaf",
+      "consequence_present": false,
+      "consequence_open": null,
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    },
+    {
+      "fixture": "open_dense",
+      "route": "ruleParticipationHTML()/ruleClosedConsequenceHTML() \u2014 open_dense",
+      "viewport": "desktop",
+      "assertion": "A2/A3/A6/A7: an open comment window with a channel, deadline, and a distinct future hearing renders the primary comment action, the consequence receipt below the channel/deadline, and a separate hearing note with its own date.",
+      "content_sha256": "f8d6a6a879d5dd19d73bfdf2c7701176852a49c83d8bf23ecbd8b2e9e4bf33b7",
+      "consequence_present": true,
+      "consequence_open": true,
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    },
+    {
+      "fixture": "open_partial",
+      "route": "ruleParticipationHTML()/ruleClosedConsequenceHTML() \u2014 open_partial",
+      "viewport": "desktop",
+      "assertion": "A6: an open comment window with only a deadline (no published hearing) renders the consequence receipt with no fabricated hearing note.",
+      "content_sha256": "bf5f976a9ec328fd18744739a53cc5a122e1f50f8edca57e77190e43cc9494cf",
+      "consequence_present": true,
+      "consequence_open": true,
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    },
+    {
+      "fixture": "closed_dense",
+      "route": "ruleParticipationHTML()/ruleClosedConsequenceHTML() \u2014 closed_dense",
+      "viewport": "desktop",
+      "assertion": "A4: a comment window with a published deadline now in the past removes the submission control but keeps the public-record consequence explanation and the distinct hearing date that preceded it.",
+      "content_sha256": "45e1eaab70d6b42d462cba062feea8982a723f867ebbed23e37c6d28a2662b13",
+      "consequence_present": true,
+      "consequence_open": false,
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    },
+    {
+      "fixture": "closed_partial",
+      "route": "ruleParticipationHTML()/ruleClosedConsequenceHTML() \u2014 closed_partial",
+      "viewport": "desktop",
+      "assertion": "A4/A6: a closed window with no published hearing keeps the consequence explanation with no fabricated hearing note.",
+      "content_sha256": "69e8df8de39fe83862158be39bb478cf8ceba04147020f6ca1fa1339b807cb84",
+      "consequence_present": true,
+      "consequence_open": false,
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    },
+    {
+      "fixture": "sparse_no_evidence",
+      "route": "ruleParticipationHTML()/ruleClosedConsequenceHTML() \u2014 sparse_no_evidence",
+      "viewport": "desktop",
+      "assertion": "A1/A6: a rulemaking record with no comment-period evidence at all (e.g. adopted with no retained comment history) renders no consequence receipt and no fabricated closed state.",
+      "content_sha256": "dd6fc3819fee69101adb50bed30d4a0ab8e214d04702416bb22302e405195aaf",
+      "consequence_present": false,
+      "consequence_open": null,
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    }
+  ],
+  "accessibility": {
+    "tool": "axe-core (test/functional/assets/axe.min.js)",
+    "scope": "main#main",
+    "viewports_checked": [
+      "390x844",
+      "1440x900"
+    ],
+    "new_violations_introduced": 0,
+    "pre_existing_violations_observed": []
+  }
+}

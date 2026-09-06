@@ -1,0 +1,37 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/field-measurement-honesty",
+  "status": "implemented",
+  "fingerprint": "field-measurement-honesty.v1",
+  "updated_at": "2026-09-05T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "owner-call-timestamp",
+      "path": "site/rum_production.mjs"
+    },
+    {
+      "id": "semantic-owner-timestamp",
+      "path": "site/rum_semantic_milestones.mjs"
+    },
+    {
+      "id": "additive-rum-intake-field",
+      "path": "worker/src/performance_events.mjs"
+    },
+    {
+      "id": "grouped-readiness-query",
+      "path": "worker/src/lib/performance_query.mjs"
+    },
+    {
+      "id": "owner-call-timestamp-test",
+      "path": "test/rum_owner_call_timestamp.test.mjs"
+    },
+    {
+      "id": "grouped-readback-test",
+      "path": "test/performance_query_grouping.test.mjs"
+    },
+    {
+      "id": "measurement-contract",
+      "path": "docs/performance/rum-refresh-03/README.md"
+    }
+  ]
+}

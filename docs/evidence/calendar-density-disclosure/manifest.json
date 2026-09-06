@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.calendar_density_evidence.v1",
-  "card": "cityscroll-resident-ux/px-02-keep-calendar-overview-scannable",
+  "card": "cityscroll-engineering/keep-calendar-overview-scannable",
   "route": "component-harness:calendar-density-disclosure",
   "harness": "test/harness/calendar_density_harness.html",
   "revision": "ffe9184fb98ef73878c5f529e9c45cfb73455e87",

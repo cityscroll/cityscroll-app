@@ -1,0 +1,132 @@
+{
+  "schema_version": 1,
+  "card": "cityscroll-engineering/purpose-and-authority-on-cards",
+  "capture_mode": "local_node_playwright_axe_static_render",
+  "repository_revision": "1ffc2032b96deabdb2435f9ba159fb59421e5136",
+  "note": "renderMeetingDocument() rendered locally via node (no live Worker/D1 backend) for five synthetic City Record records, one per state named in the card, then served from site/ (real /brand.css, /civic-documents.css, /report_issue.mjs) via tools/local_site_server.py. axe-core (test/functional/assets/axe.min.js) ran against the rendered <main id=\"main\"> for each case at both review widths, using the same failing-violation classification as test/functional/11_accessibility.py (a11y_gate.py). Evidence proves the sourced consequence block's placement, content, and omission states (A1-A6) render as specified and introduce no new axe violation; it does not evidence a live-data-populated page, since no Worker/D1 backend was running.",
+  "data_vintage": "not_applicable_synthetic_fixture_records",
+  "viewports": [
+    {
+      "name": "mobile",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "name": "desktop",
+      "width": 1440,
+      "height": 900
+    }
+  ],
+  "captures": [
+    {
+      "fixture": "sourced_purpose_and_authority",
+      "route": "renderMeetingDocument(record) \u2014 meeting:city_record:phc02-cap-sourced",
+      "viewport": "mobile",
+      "assertion": "A1/A2/G1: a sourced pending question, plain-language body role, record destination, and the nearest exact next official action render in one consequence block, before the participation controls.",
+      "content_sha256": "905c4e6351fcf8dfdb26c29ff66563820c64790e5ad52118b964762587985332",
+      "consequence_block_present": true,
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    },
+    {
+      "fixture": "unsourced_purpose_descriptive_meeting",
+      "route": "renderMeetingDocument(record) \u2014 meeting:city_record:phc02-cap-unsourced",
+      "viewport": "mobile",
+      "assertion": "A3/G2: a City Record \"Public Hearings and Meetings\" row this repository cannot classify into a specific proceeding family renders no consequence block at all \u2014 never a pending question paraphrased from its own title.",
+      "content_sha256": "870fc0094c9679ab871300a1de79b21341e7787d082b09b8d8000d8710298300",
+      "consequence_block_present": false,
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    },
+    {
+      "fixture": "listen_only_no_testimony_invite",
+      "route": "renderMeetingDocument(record) \u2014 meeting:city_record:phc02-cap-listen",
+      "viewport": "mobile",
+      "assertion": "A4/G3: a hearing with a published venue address (rendered as informational location text, per the existing Where section) and no testimony or comment channel renders its sourced purpose/authority but no participation-actions list and never invites testimony.",
+      "content_sha256": "13273c9b0cbc53fab385dfdc76b05213f235d3bce9979ceb9ba96f08f32961a4",
+      "consequence_block_present": true,
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    },
+    {
+      "fixture": "testimony_signup_state",
+      "route": "renderMeetingDocument(record) \u2014 meeting:city_record:phc02-cap-testify",
+      "viewport": "mobile",
+      "assertion": "A5: the same sourced hearing shape with a published testimony-signup URL renders \"Register to testify\" \u2014 a different, evidence-backed participation state on the same underlying agenda, contrasted with the listen-only case.",
+      "content_sha256": "b04f8748137771144f71a9dbb95cb34b6ed4207dff2bf37cd8611a8ebac5e5dd",
+      "consequence_block_present": true,
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    },
+    {
+      "fixture": "held_without_outcome_honest_unknown_next_step",
+      "route": "renderMeetingDocument(record) \u2014 meeting:city_record:phc02-cap-held",
+      "viewport": "mobile",
+      "assertion": "A6/negative rule: a hearing whose notice states it was held, with no published outcome, keeps its sourced purpose/authority but states the next official step honestly as not yet published \u2014 never inferring an outcome from the event having been held.",
+      "content_sha256": "7940221d4ce0dac5e813540da71b9238bd55092ccfb6fe693166727fc7406197",
+      "consequence_block_present": true,
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    },
+    {
+      "fixture": "sourced_purpose_and_authority",
+      "route": "renderMeetingDocument(record) \u2014 meeting:city_record:phc02-cap-sourced",
+      "viewport": "desktop",
+      "assertion": "A1/A2/G1: a sourced pending question, plain-language body role, record destination, and the nearest exact next official action render in one consequence block, before the participation controls.",
+      "content_sha256": "905c4e6351fcf8dfdb26c29ff66563820c64790e5ad52118b964762587985332",
+      "consequence_block_present": true,
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    },
+    {
+      "fixture": "unsourced_purpose_descriptive_meeting",
+      "route": "renderMeetingDocument(record) \u2014 meeting:city_record:phc02-cap-unsourced",
+      "viewport": "desktop",
+      "assertion": "A3/G2: a City Record \"Public Hearings and Meetings\" row this repository cannot classify into a specific proceeding family renders no consequence block at all \u2014 never a pending question paraphrased from its own title.",
+      "content_sha256": "870fc0094c9679ab871300a1de79b21341e7787d082b09b8d8000d8710298300",
+      "consequence_block_present": false,
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    },
+    {
+      "fixture": "listen_only_no_testimony_invite",
+      "route": "renderMeetingDocument(record) \u2014 meeting:city_record:phc02-cap-listen",
+      "viewport": "desktop",
+      "assertion": "A4/G3: a hearing with a published venue address (rendered as informational location text, per the existing Where section) and no testimony or comment channel renders its sourced purpose/authority but no participation-actions list and never invites testimony.",
+      "content_sha256": "13273c9b0cbc53fab385dfdc76b05213f235d3bce9979ceb9ba96f08f32961a4",
+      "consequence_block_present": true,
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    },
+    {
+      "fixture": "testimony_signup_state",
+      "route": "renderMeetingDocument(record) \u2014 meeting:city_record:phc02-cap-testify",
+      "viewport": "desktop",
+      "assertion": "A5: the same sourced hearing shape with a published testimony-signup URL renders \"Register to testify\" \u2014 a different, evidence-backed participation state on the same underlying agenda, contrasted with the listen-only case.",
+      "content_sha256": "b04f8748137771144f71a9dbb95cb34b6ed4207dff2bf37cd8611a8ebac5e5dd",
+      "consequence_block_present": true,
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    },
+    {
+      "fixture": "held_without_outcome_honest_unknown_next_step",
+      "route": "renderMeetingDocument(record) \u2014 meeting:city_record:phc02-cap-held",
+      "viewport": "desktop",
+      "assertion": "A6/negative rule: a hearing whose notice states it was held, with no published outcome, keeps its sourced purpose/authority but states the next official step honestly as not yet published \u2014 never inferring an outcome from the event having been held.",
+      "content_sha256": "7940221d4ce0dac5e813540da71b9238bd55092ccfb6fe693166727fc7406197",
+      "consequence_block_present": true,
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    }
+  ],
+  "accessibility": {
+    "tool": "axe-core (test/functional/assets/axe.min.js)",
+    "scope": "main#main",
+    "viewports_checked": [
+      "390x844",
+      "1440x900"
+    ],
+    "new_violations_introduced": 0,
+    "pre_existing_violations_observed": []
+  }
+}

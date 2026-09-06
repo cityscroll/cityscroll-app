@@ -2,11 +2,11 @@
   "schema": "cityscroll.repository-control-plane.cutover-shard.v1",
   "id": "rcp-03-private-evidence",
   "owner": "rcp-03-private-evidence",
-  "card": "cityscroll-repository-control-plane/rcp-05",
+  "card": "cityscroll-engineering/cutover-without-product-or-evidence-loss",
   "kind": "migration",
   "updated_at": "2026-09-01T00:00:00.000Z",
   "value": {
-    "register_card": "cityscroll-repository-control-plane/rcp-03",
+    "register_card": "cityscroll-engineering/private-generated-evidence-placement",
     "migration_commit": "dcfa249b00438eb1eb23736b12450a5f2b34eb05",
     "summary": "Owner-only evidence locators, the generated review inventory rows, and internal research bookkeeping left the public documents; the public review document kept its scanner policy and dated conclusion.",
     "manifest_entry_count": 53,

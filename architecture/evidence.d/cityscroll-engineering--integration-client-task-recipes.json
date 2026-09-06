@@ -1,0 +1,33 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/integration-client-task-recipes",
+  "status": "implemented",
+  "fingerprint": "integration-client-task-recipes.v1",
+  "updated_at": "2026-09-05T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "integration-client-generator",
+      "path": "tools/generate_integration_client.mjs"
+    },
+    {
+      "id": "integration-client-contract",
+      "path": "integrations/generated-client/index.mjs"
+    },
+    {
+      "id": "integration-client-manifest",
+      "path": "integrations/generated-client/manifest.json"
+    },
+    {
+      "id": "integration-task-recipes",
+      "path": "integrations/generated-client/recipes/"
+    },
+    {
+      "id": "integration-evaluation-corpus",
+      "path": "integrations/generated-client/evaluation/corpus.json"
+    },
+    {
+      "id": "integration-client-contract-tests",
+      "path": "test/generated_integration_client.test.mjs"
+    }
+  ]
+}

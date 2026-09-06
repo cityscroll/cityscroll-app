@@ -11,7 +11,7 @@ const TEMPORAL = new Set(["repo-only-rollout-register", "mixed-measurement-and-t
 const OWNERS = new Map([
   ["architecture-decision:home-wire-budget-rationale", "manifest:architecture-decision:home-wire-budget-rationale#register_id"],
   ["architecture-decision:resident-rendering-rationale", "manifest:architecture-decision:resident-rendering-rationale#register_id"],
-  ["frontier-projection:future-queue", "cityscroll-repository-control-plane/rcp-01"],
+  ["frontier-projection:future-queue", "cityscroll-engineering/semantic-owner-migration"],
 ]);
 const hash = (path) => createHash("sha256").update(readFileSync(resolve(ROOT, path))).digest("hex");
 
@@ -28,7 +28,7 @@ function build() {
   const items = manifest.entries.filter((e) => TEMPORAL.has(e.content_class)).map((e) => ({
     manifest_id: e.id, source_path: e.path, source_selector: e.selector,
     source_sha256_at_rcp00: e.source.sha256, source_sha256_after_migration: hash(e.path),
-    ...resolution(e), replacement_reference: e.id.startsWith("frontier:") || e.id.startsWith("lens:") ? "register:cityscroll-repository-control-plane/rcp-01" : e.id.startsWith("architecture-decision:") ? `manifest:${e.id}#stable_replacement_reference` : e.stable_replacement_reference,
+    ...resolution(e), replacement_reference: e.id.startsWith("frontier:") || e.id.startsWith("lens:") ? "register:cityscroll-engineering/semantic-owner-migration" : e.id.startsWith("architecture-decision:") ? `manifest:${e.id}#stable_replacement_reference` : e.stable_replacement_reference,
   })).sort((a, b) => a.manifest_id.localeCompare(b.manifest_id));
   const frontier = items.filter((i) => i.manifest_id.startsWith("frontier:") && i.manifest_id !== "frontier:declared-count-discrepancy");
   const lenses = items.filter((i) => i.manifest_id.startsWith("lens:"));
@@ -47,7 +47,7 @@ function build() {
   }
   if (phraseHits.length) throw new Error(`migrated roadmap phrases remain: ${JSON.stringify(phraseHits)}`);
   return {
-    schema: "cityscroll.repository_control_plane_semantic_owner_mapping.v1", card: "cityscroll-repository-control-plane/rcp-01",
+    schema: "cityscroll.repository_control_plane_semantic_owner_mapping.v1", card: "cityscroll-engineering/semantic-owner-migration",
     inputs: { main_commit: "f2b31a001c2ceb796dc145987efed989f9035b37", register_revision: "32727924c5f546ce5c41d0f68cb324fde7c7425b", classification_manifest: MANIFEST, classification_manifest_sha256: hash(MANIFEST) },
     register_search: { method: "case-insensitive semantic phrase and stable-ID search over the register at the pinned revision", focused_queries: ["lens filter toolbar", "33 data frontier source ids", "architecture rationale", "property accessibility", "precompute-first", "drift synthesis", "source health participation", "BM25 ranked lexical retrieval"], semantic_non_title_matches: [{ query: "architecture rationale", match: "manifest architecture owner" }, { query: "BM25 ranked lexical retrieval", match: "universal-search FTS cards and semantic-retrieval records", disposition: "related-only; no unique owner" }] },
     frontier_reconciliation: { declared_count_before: 31, source_of_truth_count: 33, discrepancy: 2, explanation: "The metadata count was stale. All 33 per-entry source records are retained; no entry or measurement was discarded.", covered_manifest_ids: frontier.map((i) => i.manifest_id) },

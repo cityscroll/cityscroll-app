@@ -1,0 +1,21 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/community-board-month-list",
+  "status": "implemented",
+  "fingerprint": "community-board-month-list.v1",
+  "updated_at": "2026-09-03T18:17:53.000Z",
+  "projections": [
+    {
+      "id": "community-board-proceedings-calendar",
+      "path": "site/community_board_constellation.mjs"
+    },
+    {
+      "id": "community-board-proceedings-view-styling",
+      "path": "site/civic-documents.css"
+    },
+    {
+      "id": "community-board-calendar-evidence-capture",
+      "path": "tools/capture_community_board_calendar_evidence.py"
+    }
+  ]
+}

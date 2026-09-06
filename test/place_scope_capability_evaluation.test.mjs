@@ -2,7 +2,7 @@
  * PS-07: the place-scope capability evaluation must distinguish knowing WHERE a record is
  * from knowing WHY a place is relevant, grade the end-to-end predicate on the built /
  * partial / complete ladder, and always name the failing domain or surface. See
- * cityscroll-capability-spine/ps-07-place-scope-capability and
+ * cityscroll-engineering/place-scope-capability and
  * tools/evaluate_place_scope_capability.mjs.
  *
  * Two kinds of coverage live here:

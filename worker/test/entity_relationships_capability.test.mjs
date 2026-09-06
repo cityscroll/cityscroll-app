@@ -21,7 +21,7 @@ import {
 
 const ENTITY_ID = "vendor:stem:ACME CONSTRUCTION";
 const EVIDENCE_RECEIPT = JSON.parse(readFileSync(
-  new URL("../../artifacts/capability-spine/cs-03-entity-relationships.json", import.meta.url),
+  new URL("../../artifacts/capability-spine/entity-relationships.json", import.meta.url),
   "utf8",
 ));
 

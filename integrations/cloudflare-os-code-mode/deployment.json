@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.cloudflare_os_code_mode_experiment_deployment.v1",
   "adapter": "cloudflare-os.typed-code-mode@1",
-  "card": "cs-08-code-mode-measurement",
+  "card": "code-mode-measurement",
   "runtime": "isolated Code Mode rehearsal",
   "upstream": {
     "starter": {

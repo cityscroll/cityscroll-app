@@ -348,7 +348,7 @@ def main() -> None:
 
     receipt = {
         "schema": "cityscroll.account-search-history-receipt.v1",
-        "change": "cityscroll-search-activity-history/sah-04-account-search-history",
+        "change": "cityscroll-engineering/account-search-history",
         "browser_mode": "headless chromium (playwright), remote hosts stubbed or blocked",
         "revision": revision(),
         "routes": {"search": SEARCH_ROUTE, "continuation": CONTINUATION_ROUTE},

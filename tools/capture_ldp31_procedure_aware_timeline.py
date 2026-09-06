@@ -181,7 +181,7 @@ def main() -> None:
     ).stdout.strip()
     receipt = {
         "schema": "cityscroll.land-procedure-aware-timeline.capture.v1",
-        "card": "cityscroll-land-decision-path/ldp-31-procedure-aware-timeline",
+        "card": "cityscroll-engineering/land-procedure-aware-timeline",
         "assertion": (
             "Phase selection, grouping, labels, and terminal stages are driven by the "
             "resolved procedure profile plus observed-event topology (A1-A5, A9), never a "
