@@ -712,3 +712,98 @@ test("a generated table is placed by name, and an unknown name fails the build",
   assert.match(article.bodyHtml, /<caption>Two things<\/caption>/);
   assert.match(article.bodyHtml, /aria-label="Two things"/);
 });
+
+/* -------------------------------------- corrections and dated examples */
+
+test("an article with no notice renders exactly as it did before notices existed", () => {
+  const plain = parseGuideArticle("fixture.md", MINIMAL);
+  assert.equal(plain.correction, null);
+  assert.equal(plain.historical_note, null);
+  assert.ok(!renderGuideArticle(plain).includes("guide-notices"));
+  assert.ok(!renderGuideArticle(tutorial).includes("guide-notices"));
+});
+
+test("a correction says what changed in place instead of the article being pulled", () => {
+  const article = parseGuideArticle(
+    "fixture.md",
+    MINIMAL.replace(
+      "last_reviewed: 2026-09-05",
+      "last_reviewed: 2026-09-05\ncorrection: The second step named the wrong filter; it is now Agency.",
+    ),
+  );
+  const html = renderGuideArticle(article);
+  assert.match(html, /<aside class="guide-notices" aria-label="Notices about this article">/);
+  assert.match(html, /<strong>Correction:<\/strong> The second step named the wrong filter/);
+  // The article itself still renders; a correction annotates, it does not withdraw.
+  assert.match(html, /A heading/);
+  assert.match(html, /Some prose\./);
+});
+
+test("a historical note keeps a dated example useful without inviting a dead action", () => {
+  const article = parseGuideArticle(
+    "fixture.md",
+    MINIMAL.replace(
+      "last_reviewed: 2026-09-05",
+      [
+        "last_reviewed: 2026-09-05",
+        "demos:",
+        "  - semantic-search-housing",
+        "historical_demos:",
+        "  - semantic-search-housing",
+        "historical_note: This solicitation closed in 2024. The method still applies to an open one.",
+      ].join("\n"),
+    ),
+  );
+  const html = renderGuideArticle(article);
+  assert.match(html, /<strong>About this example:<\/strong> This solicitation closed in 2024/);
+  assert.deepEqual(article.historical_demos, ["semantic-search-housing"]);
+});
+
+test("a dated example must say it is dated, and a note must name what it is about", () => {
+  const withNote = (extra) => MINIMAL.replace("last_reviewed: 2026-09-05", `last_reviewed: 2026-09-05\n${extra}`);
+  assert.throws(
+    () => parseGuideArticle("fixture.md", withNote("demos:\n  - a-demo\nhistorical_demos:\n  - a-demo")),
+    GuideSourceError,
+  );
+  assert.throws(
+    () => parseGuideArticle("fixture.md", withNote("historical_note: An example from 2024.")),
+    GuideSourceError,
+  );
+});
+
+test("escaped notice text cannot inject markup into the page", () => {
+  const article = parseGuideArticle(
+    "fixture.md",
+    MINIMAL.replace(
+      "last_reviewed: 2026-09-05",
+      "last_reviewed: 2026-09-05\ncorrection: The <script>alert(1)</script> filter was renamed.",
+    ),
+  );
+  const html = renderGuideArticle(article);
+  assert.ok(!html.includes("<script>alert(1)</script>"));
+  assert.match(html, /&lt;script&gt;alert\(1\)&lt;\/script&gt;/);
+});
+
+/* ------------------------------------------- links that name a fragment */
+
+test("a link to a fragment another page does not render fails the build", () => {
+  const named = [...documents].map(([path, html]) => [
+    path,
+    path.endsWith("explore-housing-across-city-records/index.html")
+      ? html.replace("</main>", '<a href="/about/#a-section-that-does-not-exist">Read more</a></main>')
+      : html,
+  ]);
+  const failures = internalLinkFailures(named, articles);
+  assert.ok(failures.some((failure) => /a-section-that-does-not-exist/.test(failure)), failures.join("\n"));
+});
+
+test("a same-page fragment must name an anchor that page actually renders", () => {
+  const named = [...documents].map(([path, html]) => [
+    path,
+    path.endsWith("explore-housing-across-city-records/index.html")
+      ? html.replace("</main>", '<a href="#not-a-real-anchor">Jump</a></main>')
+      : html,
+  ]);
+  const failures = internalLinkFailures(named, articles);
+  assert.ok(failures.some((failure) => /not-a-real-anchor/.test(failure)), failures.join("\n"));
+});

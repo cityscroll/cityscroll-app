@@ -25,6 +25,12 @@ What it checks, and why each one is here rather than in an existing gate:
 
     python3 tools/capture_guide_release.py
     python3 tools/capture_guide_release.py --keep-going
+
+A later change that touches the guide re-runs the same checks for its own record
+by naming its record identity and its own manifest path, so an existing manifest
+is never rewritten to describe a different change:
+
+    python3 tools/capture_guide_release.py --record <record-id> --manifest <path> --note "..."
 """
 
 from __future__ import annotations
@@ -48,6 +54,7 @@ from local_site_server import QuietHandler, _RobustThreadingHTTPServer, probe_ba
 
 AXE = ROOT / "test" / "functional" / "assets" / "axe.min.js"
 MANIFEST = ROOT / "docs" / "evidence" / "public-user-guide" / "guide-release" / "capture-manifest.json"
+DEFAULT_RECORD = "cityscroll-engineering/public-guide-release"
 OUTPUT_DIR = ROOT / ".artifacts" / "guide-release"
 
 GUIDE_HOME = "/guide/"
@@ -832,17 +839,39 @@ def capture(base: str, output_dir: Path, routes: tuple, articles: list[dict]) ->
     return {"captures": captures, "journeys": journeys}
 
 
+def relative_label(path: Path) -> str:
+    """Name the manifest relative to the repository when it lives inside it."""
+    try:
+        return str(path.relative_to(ROOT))
+    except ValueError:
+        return str(path)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--site-dir", type=Path, default=ROOT / "site")
     parser.add_argument("--manifest", type=Path, default=MANIFEST)
     parser.add_argument("--output-dir", type=Path, default=OUTPUT_DIR)
     parser.add_argument(
+        "--record",
+        default=DEFAULT_RECORD,
+        help="the public engineering-record identity this capture is evidence for",
+    )
+    parser.add_argument(
+        "--note",
+        default=None,
+        help="replace the manifest note when a later change re-runs this capture for its own record",
+    )
+    parser.add_argument(
         "--keep-going",
         action="store_true",
         help="write the manifest and report failures without a non-zero exit",
     )
     args = parser.parse_args()
+    # Both paths are reported and stored relative to the repository root, so a
+    # relative argument has to be resolved against it before anything is written.
+    args.manifest = Path(args.manifest) if Path(args.manifest).is_absolute() else ROOT / args.manifest
+    args.output_dir = Path(args.output_dir) if Path(args.output_dir).is_absolute() else ROOT / args.output_dir
 
     articles = load_guide_articles()
     routes = build_routes(articles)
@@ -857,12 +886,12 @@ def main() -> int:
 
     manifest = {
         "schema_version": 1,
-        "record": "cityscroll-engineering/public-guide-release",
+        "record": args.record,
         "capture_mode": "local_static_site_playwright_no_committed_image",
         "base": "local static site build (site/)",
         "repository_revision": repository_revision(),
         "repository_state": working_tree_state(),
-        "note": (
+        "note": args.note or (
             "Usability evidence for the published guide. Every check runs against the tracked "
             "static documents served locally, so it reproduces from a checkout with no network and "
             "no deploy. Accessibility, keyboard, reflow and link checks cover the guide documents; "
@@ -920,7 +949,7 @@ def main() -> int:
     failed = [item for item in observed["captures"] + observed["journeys"] if not item["assertion_holds"]]
     print(
         f"guide release: {len(observed['captures'])} captures and {len(observed['journeys'])} journeys "
-        f"written to {args.manifest.relative_to(ROOT)}"
+        f"written to {relative_label(args.manifest)}"
     )
     for item in failed:
         print(f"  assertion did not hold: {item['id']} @ {item.get('viewport')}")

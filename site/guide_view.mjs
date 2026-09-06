@@ -116,6 +116,32 @@ export function renderGuideHome(home, articles) {
 ${foot()}`;
 }
 
+/**
+ * Two notices an editor can attach to an article, and the only review metadata a
+ * reader is ever shown.
+ *
+ * A correction is written when an article is known to be misleading: it says what
+ * changed, in place, instead of the article being pulled. A historical note is
+ * written when an article teaches with a dated example whose opportunity has
+ * closed: it stops the example inviting an action the reader can no longer take,
+ * while the method it teaches stays on the page. Neither is generated, and neither
+ * appears unless an editor wrote it.
+ */
+function noticeSection(article) {
+  const notices = [];
+  if (article.correction) {
+    notices.push(`<p class="guide-notice guide-correction"><strong>Correction:</strong> ${esc(article.correction)}</p>`);
+  }
+  if (article.historical_note) {
+    notices.push(`<p class="guide-notice guide-historical"><strong>About this example:</strong> ${esc(article.historical_note)}</p>`);
+  }
+  if (!notices.length) return "";
+  return `
+  <aside class="guide-notices" aria-label="Notices about this article">
+    ${notices.join("\n    ")}
+  </aside>`;
+}
+
 function relatedSection(article) {
   if (!article.related.length) return "";
   return `<section class="node-section guide-related" aria-labelledby="guide-related">
@@ -158,7 +184,7 @@ export function renderGuideArticle(article) {
     <p class="node-lede">${esc(article.purpose)}</p>
     <p class="guide-question">${esc(article.reader_question)}</p>
     ${reviewLine(article.last_reviewed)}
-  </header>
+  </header>${noticeSection(article)}
   <div class="guide-body">
 ${article.bodyHtml}
   </div>

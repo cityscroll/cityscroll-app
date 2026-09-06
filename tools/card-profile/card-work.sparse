@@ -74,6 +74,7 @@
 /docs/federated-search-scope.md
 /docs/formulas/
 /docs/gap-taxonomy.md
+/docs/guide-review-lane.md
 /docs/ibo-fiscal-history.md
 /docs/land-map-view-default-question.md
 /docs/land-use-prediction-actor-resolution-v1.md
@@ -434,6 +435,7 @@
 /site/guide/
 /site/guide_article_source.mjs
 /site/guide_contextual_links.mjs
+/site/guide_review_source.mjs
 /site/guide_source_coverage.mjs
 /site/guide_view.mjs
 /site/hearing_attend_pack.mjs

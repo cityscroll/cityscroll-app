@@ -245,6 +245,7 @@
     "site/graph_edge_provenance.mjs",
     "site/guide_article_source.mjs",
     "site/guide_contextual_links.mjs",
+    "site/guide_review_source.mjs",
     "site/guide_source_coverage.mjs",
     "site/guide_view.mjs",
     "site/hearing_attend_pack.mjs",

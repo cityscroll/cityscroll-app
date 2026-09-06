@@ -21,6 +21,9 @@ assertion or a reproducible receipt.
 | [`capture-manifest.json`](capture-manifest.json) | Baseline of About and five entry points at 390px and 1440px, as hashes and assertions. No image is committed. |
 | [`guide-release/capture-manifest.json`](guide-release/capture-manifest.json) | Every published guide document: the reader's journey through the guide, with accessibility, reflow, keyboard, link and no-JavaScript checks at both widths. |
 | [`guide-how-to-release/capture-manifest.json`](guide-how-to-release/capture-manifest.json) | The five everyday how-to guides, where usability is not the question: one walkthrough each from the guide home to the product route the article names and back, a modified click on that link, and the evidence that the whole run changed nothing. |
+| [`guide-review/capture-manifest.json`](guide-review/capture-manifest.json) | The same journey re-run for the change that adds the guide review lane, proving every published guide document is unregressed. |
+| [`guide-review/notice-block-accessibility.md`](guide-review/notice-block-accessibility.md) | The correction and dated-example block put through the same checks on a local render, since no published article carries one yet. |
+| [`guide-review/browser-verification.md`](guide-review/browser-verification.md) | The shared accessibility and focus gates run over the guide documents, and modified clicks behaving like native links. |
 
 ## Reproducing the evidence
 
@@ -33,7 +36,9 @@ The published guide has its own reproduction, which needs no network:
 
 ```sh
 node tools/build_guide_documents.mjs --check
+node tools/build_guide_review.mjs --check
 node --test test/guide_documents.test.mjs
+node --test test/guide_review.test.mjs
 python3 test/standards/guide_content.py
 python3 tools/capture_guide_release.py
 python3 tools/capture_guide_how_to_walkthroughs.py
@@ -49,6 +54,10 @@ reaches a signup, preference-centre, confirmation, unsubscribe or feed route. No
 address is enrolled, no testimony is submitted and no calendar subscription is
 created, and the manifest reports both counts per walkthrough so the claim is
 checkable rather than asserted.
+
+The review lane itself, and the one acceptance item that stays open until the
+private consumer runs it, are documented in
+[`docs/guide-review-lane.md`](../../guide-review-lane.md).
 
 The live example checks and the isolation of the harness limitation are recorded
 with their exact commands in

@@ -46,6 +46,22 @@ const LINK_LIST_KEYS = new Set(["related", "sources", "examples"]);
 /** Front-matter keys whose value is a single `label | href` item. */
 const LINK_KEYS = new Set(["return_to_task"]);
 
+/**
+ * Review metadata: lists of bare identifiers rather than links.
+ *
+ * These name what an article is coupled to, so a change to the product can be
+ * mapped back to the articles that might now be wrong. They are read by
+ * `site/guide_review_source.mjs` and are not rendered: an identifier is a
+ * maintenance fact, not something a reader is shown.
+ */
+const ID_LIST_KEYS = new Set([
+  "demos",
+  "historical_demos",
+  "capabilities",
+  "source_contracts",
+  "depends_on",
+]);
+
 const REQUIRED_ARTICLE_KEYS = [
   "id",
   "type",
@@ -58,7 +74,60 @@ const REQUIRED_ARTICLE_KEYS = [
   "return_to_task",
 ];
 
+/**
+ * The complete set of keys an article source may carry. An unknown key fails the
+ * build rather than being ignored, which is what keeps private review state —
+ * an assignee, a queue position, a desk link — out of a public source file: there
+ * is no key it could be written under.
+ */
+const ALLOWED_ARTICLE_KEYS = new Set([
+  ...REQUIRED_ARTICLE_KEYS,
+  ...LINK_LIST_KEYS,
+  ...ID_LIST_KEYS,
+  "page_title",
+  "published",
+  "updated",
+  "correction",
+  "historical_note",
+]);
+
+const ALLOWED_HOME_KEYS = new Set([
+  "title",
+  "page_title",
+  "description",
+  "purpose",
+  "last_reviewed",
+]);
+
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
+
+/** Optional editorial dates. `last_reviewed` stays required and is checked separately. */
+const OPTIONAL_DATE_KEYS = ["published", "updated"];
+
+// Identifier shapes. Each one is owned somewhere else — the demo manifest, the
+// frozen capability registry, the source-contract registry, the repository tree —
+// so these only reject a value that could not name anything there.
+const DEMO_ID = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+const CAPABILITY_REFERENCE = /^[a-z][a-z0-9]*(?:\.[a-z][a-z0-9_]*)*@[1-9]\d*$/;
+const SOURCE_CONTRACT_ID = /^[a-z0-9]+(?:[._-][a-z0-9]+)*$/;
+// A dependency needs at least two path segments. One segment is a whole top-level
+// directory, and an article that declares `site` is stale every time anything at
+// all changes, which is the same as declaring nothing.
+const DEPENDENCY_PATH = /^[a-z0-9][a-z0-9_.-]*(?:\/[a-z0-9][a-z0-9_.-]*)+$/;
+
+const ID_LIST_SHAPES = new Map([
+  ["demos", { pattern: DEMO_ID, what: "a demo id from site/demo/demo-links.json" }],
+  ["historical_demos", { pattern: DEMO_ID, what: "a demo id from site/demo/demo-links.json" }],
+  ["capabilities", { pattern: CAPABILITY_REFERENCE, what: "a capability reference such as notice.get@1" }],
+  ["source_contracts", { pattern: SOURCE_CONTRACT_ID, what: "a source-contract id" }],
+  ["depends_on", { pattern: DEPENDENCY_PATH, what: "a repository path with at least two segments" }],
+]);
+
+/**
+ * Values that would mean a private review lane leaked into a public source file.
+ * The same shapes the public product-updates artifact refuses.
+ */
+const PRIVATE_LEAK = /(?:\/Users\/|\/var\/folders|file:\/\/|127\.0\.0\.1|localhost|ADMIN_KEY|cityscroll-internal|desk\.cityscroll\.org|operator[_ -]?state)/i;
 
 // The site-wide page-metadata gate (civic-content-gates) reads a rendered page and
 // requires a 120-160 character description and a title under 60 characters carrying
@@ -139,6 +208,34 @@ function parseFrontMatter(sourceName, text) {
   return { fields, body };
 }
 
+function parseIdList(sourceName, key, value) {
+  if (!Array.isArray(value)) fail(sourceName, `${key} must be a list of bare identifiers`);
+  const { pattern, what } = ID_LIST_SHAPES.get(key);
+  const seen = new Set();
+  return value.map((raw) => {
+    const item = String(raw).trim();
+    if (!pattern.test(item)) fail(sourceName, `${key} entry ${JSON.stringify(item)} is not ${what}`);
+    if (seen.has(item)) fail(sourceName, `${key} lists ${JSON.stringify(item)} twice`);
+    seen.add(item);
+    return item;
+  });
+}
+
+function rejectPrivateValues(sourceName, fields) {
+  for (const [key, value] of Object.entries(fields)) {
+    const text = Array.isArray(value) ? value.join(" ") : String(value ?? "");
+    if (PRIVATE_LEAK.test(text)) {
+      fail(sourceName, `${key} carries a private path, host, or credential and cannot be published`);
+    }
+  }
+}
+
+function rejectUnknownKeys(sourceName, fields, allowed) {
+  for (const key of Object.keys(fields)) {
+    if (!allowed.has(key)) fail(sourceName, `unknown front-matter key ${JSON.stringify(key)}`);
+  }
+}
+
 function normalizeFields(sourceName, fields) {
   const out = {};
   for (const [key, value] of Object.entries(fields)) {
@@ -148,6 +245,8 @@ function normalizeFields(sourceName, fields) {
     } else if (LINK_KEYS.has(key)) {
       if (Array.isArray(value)) fail(sourceName, `${key} must be a single "label | href" item`);
       out[key] = parseLinkItem(sourceName, key, value);
+    } else if (ID_LIST_KEYS.has(key)) {
+      out[key] = parseIdList(sourceName, key, value);
     } else if (Array.isArray(value)) {
       fail(sourceName, `${key} does not take a list`);
     } else {
@@ -155,6 +254,42 @@ function normalizeFields(sourceName, fields) {
     }
   }
   return out;
+}
+
+/**
+ * The dates, the identifier lists, and the two notices that depend on them.
+ *
+ * `last_reviewed` is the editor's date and is checked by the caller. The rest are
+ * maintenance facts, and the only ordering asserted here is the one that cannot be
+ * true otherwise: nothing is updated or reviewed before it was published. A review
+ * date that is older than the update date is not an error — it is precisely the
+ * signal the review lane exists to raise.
+ */
+function validateReviewMetadata(sourceName, article) {
+  for (const key of OPTIONAL_DATE_KEYS) {
+    if (article[key] === undefined) continue;
+    if (!ISO_DATE.test(article[key])) {
+      fail(sourceName, `${key} must be an explicit YYYY-MM-DD date, got ${JSON.stringify(article[key])}`);
+    }
+  }
+  if (article.published) {
+    for (const key of ["updated", "last_reviewed"]) {
+      if (article[key] && article[key] < article.published) {
+        fail(sourceName, `${key} ${article[key]} is before published ${article.published}`);
+      }
+    }
+  }
+  const demos = new Set(article.demos || []);
+  for (const id of article.historical_demos || []) {
+    if (!demos.has(id)) fail(sourceName, `historical_demos entry ${JSON.stringify(id)} is not in demos`);
+  }
+  if ((article.historical_demos || []).length && !article.historical_note) {
+    // A dated example that is not labelled reads as a current invitation to act.
+    fail(sourceName, "an article with historical_demos must carry a historical_note explaining what has closed");
+  }
+  if (article.historical_note !== undefined && !(article.historical_demos || []).length) {
+    fail(sourceName, "historical_note has no historical_demos to explain");
+  }
 }
 
 /* ---------------------------------------------------------------- rendering */
@@ -330,6 +465,8 @@ export function groupForType(type) {
 /** Parse one article source file. Throws GuideSourceError on anything malformed. */
 export function parseGuideArticle(sourceName, text, includes = {}) {
   const { fields, body } = parseFrontMatter(sourceName, text);
+  rejectUnknownKeys(sourceName, fields, ALLOWED_ARTICLE_KEYS);
+  rejectPrivateValues(sourceName, fields);
   const article = normalizeFields(sourceName, fields);
 
   for (const key of REQUIRED_ARTICLE_KEYS) {
@@ -351,6 +488,7 @@ export function parseGuideArticle(sourceName, text, includes = {}) {
     fail(sourceName, `url must start with ${expectedPrefix} and end with /, got ${JSON.stringify(article.url)}`);
   }
   if (!body.trim()) fail(sourceName, "article body is empty");
+  validateReviewMetadata(sourceName, article);
 
   return {
     ...article,
@@ -358,6 +496,15 @@ export function parseGuideArticle(sourceName, text, includes = {}) {
     related: article.related || [],
     sources: article.sources || [],
     examples: article.examples || [],
+    demos: article.demos || [],
+    historical_demos: article.historical_demos || [],
+    capabilities: article.capabilities || [],
+    source_contracts: article.source_contracts || [],
+    depends_on: article.depends_on || [],
+    published: article.published ?? null,
+    updated: article.updated ?? null,
+    correction: article.correction ?? null,
+    historical_note: article.historical_note ?? null,
     bodyHtml: renderBlocks(sourceName, body, includes),
   };
 }
@@ -365,6 +512,8 @@ export function parseGuideArticle(sourceName, text, includes = {}) {
 /** Parse the guide-home source: front matter plus one section per named heading. */
 export function parseGuideHome(sourceName, text) {
   const { fields, body } = parseFrontMatter(sourceName, text);
+  rejectUnknownKeys(sourceName, fields, ALLOWED_HOME_KEYS);
+  rejectPrivateValues(sourceName, fields);
   const home = normalizeFields(sourceName, fields);
   for (const key of ["title", "page_title", "description", "last_reviewed", "purpose"]) {
     if (home[key] === undefined) fail(sourceName, `missing required front-matter key: ${key}`);
