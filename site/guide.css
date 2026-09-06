@@ -1,0 +1,131 @@
+/*
+ * Public guide (/guide/) — the few rules the shared node-document styles in
+ * civic-documents.css do not already cover: the article list on the guide home,
+ * the reading measure for long prose, and the checkpoint callout a tutorial uses
+ * where another article would have put a screenshot.
+ *
+ * Everything else (document width, hero, section rhythm, footer, colours, type)
+ * comes from brand.css and civic-documents.css, so the guide reads as part of the
+ * site rather than as a separate manual.
+ */
+
+.guide-document .guide-body {
+  max-width: var(--measure);
+}
+
+.guide-document .guide-body h2 {
+  margin: var(--space-7) 0 var(--space-4);
+  font-size: clamp(1.4rem, 2.6vw, 1.9rem);
+  line-height: 1.15;
+}
+
+.guide-document .guide-body h3 {
+  margin: var(--space-6) 0 var(--space-3);
+  font-size: clamp(1.1rem, 2vw, 1.35rem);
+  line-height: 1.2;
+}
+
+.guide-document .guide-body p,
+.guide-document .guide-body li {
+  font-family: var(--font-reading);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+}
+
+.guide-document .guide-body ul,
+.guide-document .guide-body ol {
+  margin: var(--space-4) 0;
+  padding-inline-start: 1.5rem;
+  display: grid;
+  gap: var(--space-2);
+}
+
+/* A checkpoint is what this guide uses instead of a screenshot: the reader is
+   told in words what they should be able to see, which stays readable at any
+   zoom level, in a screen reader, and when the page it describes changes. */
+.guide-document .guide-checkpoint {
+  margin: var(--space-4) 0;
+  padding: var(--space-3) var(--space-4);
+  border-inline-start: 4px solid var(--color-action);
+  background: var(--color-canvas-subtle);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+
+.guide-document .guide-question {
+  margin: var(--space-3) 0 0;
+  max-width: var(--measure);
+  font-style: italic;
+  color: var(--color-text-soft);
+}
+
+.guide-document .guide-reviewed {
+  margin: var(--space-4) 0 0;
+  color: var(--color-text-muted);
+}
+
+.guide-document .guide-article-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: var(--space-4);
+}
+
+.guide-document .guide-article-item {
+  display: grid;
+  gap: var(--space-1);
+  padding-block-end: var(--space-4);
+  border-block-end: 1px solid var(--color-border);
+}
+
+.guide-document .guide-article-item:last-child {
+  padding-block-end: 0;
+  border-block-end: 0;
+}
+
+.guide-document .guide-article-link {
+  font-family: var(--font-brand);
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.guide-document .guide-article-question {
+  color: var(--color-text-soft);
+}
+
+.guide-document .guide-article-meta,
+.guide-document .guide-group-empty {
+  color: var(--color-text-muted);
+  font-size: .9375rem;
+}
+
+.guide-document .guide-return {
+  margin: var(--space-6) 0 var(--space-7);
+  font-family: var(--font-brand);
+  font-size: 1.125rem;
+}
+
+/*
+ * A link that stands on its own — a listed article, a source, the way back to the
+ * task — is a target a finger has to hit, so it gets a comfortable height. A link
+ * inside a sentence is left alone deliberately: making it a block would stop it
+ * wrapping mid-paragraph, and WCAG 2.5.8 exempts targets that sit in a line of text.
+ */
+.guide-document .guide-article-link,
+.guide-document .guide-return a,
+.guide-document .guide-related li a,
+.guide-document .guide-sources li a,
+.guide-document .node-back a {
+  display: inline-block;
+  min-height: 24px;
+  padding-block: 3px;
+}
+
+/*
+ * The shared document styles give each component its own focus treatment rather
+ * than one global rule, so the guide states its own, matching that pattern.
+ */
+.guide-document a:focus-visible {
+  outline: 2px solid var(--color-focus, var(--color-action));
+  outline-offset: 3px;
+}

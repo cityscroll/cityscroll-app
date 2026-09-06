@@ -249,6 +249,7 @@ run_and_fail python3 test/standards/heading_punctuation.py
 run_and_fail python3 test/standards/genai_disclosure.py
 run_and_fail python3 test/standards/nl_input_clarity.py
 run_and_fail python3 test/standards/demo_links.py
+run_and_fail python3 test/standards/guide_content.py
 run_and_fail node tools/check_stale_repo_name.mjs
 run_and_fail node tools/agents_router_guard.mjs --check
 run_and_fail node tools/inverse_control_plane_guard.mjs --check --all
@@ -284,6 +285,7 @@ run_and_fail node tools/build_primary_documents.mjs --check
 run_and_fail node tools/build_exam_documents.mjs --check
 run_and_fail node tools/build_near_you_pages.mjs --check
 run_and_fail node tools/build_following_page.mjs --check
+run_and_fail node tools/build_guide_documents.mjs --check
 run_and_fail node tools/build_data_health_page.mjs --check
 run_and_fail node tools/depot_rederive.mjs --check
 run_and_fail node tools/validate_beta_flags.mjs

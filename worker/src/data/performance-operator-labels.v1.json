@@ -2,7 +2,7 @@
   "schema": "cityscroll.performance.operator_inventory.v1",
   "manifest_version": "rum-surfaces-v1",
   "registry_version": "1.0.0",
-  "registry_hash": "35353472a6794f7482d84beb60936d92bb6356da14b5fd2f71b99584784ff886",
+  "registry_hash": "d04f6a0a87f6869a361bc228bf0c8d2bf7bcdc9a690c172a80b1cba88c8c09bb",
   "surfaces": [
     {
       "surface_id": "about",
@@ -789,6 +789,72 @@
       "supersedes": [],
       "introduced_version": "1.0.0",
       "owner_source_path": "site/pages_edge.mjs"
+    },
+    {
+      "surface_id": "guide",
+      "operator_label": "Guide home",
+      "kind": "surface",
+      "parent": null,
+      "route_family": "information-guide",
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "static",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "semantic_readiness": {
+        "contract_id": "page-content-ready-v1",
+        "metric_id": "content_ready_ms",
+        "terminal_result_states": [
+          "content",
+          "empty",
+          "unavailable",
+          "error"
+        ],
+        "definition": "The surface has meaningful primary content or an honest empty, unavailable, or error state. DOM presence and spinner removal alone are insufficient."
+      },
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "supersedes": [],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "tools/build_guide_documents.mjs"
+    },
+    {
+      "surface_id": "guide-article",
+      "operator_label": "Guide article",
+      "kind": "surface",
+      "parent": null,
+      "route_family": "information-guide",
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "static",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "semantic_readiness": {
+        "contract_id": "page-content-ready-v1",
+        "metric_id": "content_ready_ms",
+        "terminal_result_states": [
+          "content",
+          "empty",
+          "unavailable",
+          "error"
+        ],
+        "definition": "The surface has meaningful primary content or an honest empty, unavailable, or error state. DOM presence and spinner removal alone are insufficient."
+      },
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "supersedes": [],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "tools/build_guide_documents.mjs"
     },
     {
       "surface_id": "home",
