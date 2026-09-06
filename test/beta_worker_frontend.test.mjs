@@ -15,6 +15,8 @@ test("interactive pages default to the production API origin", () => {
       page,
     );
   }
-  assert.match(read("stats.html"), /window\.CROL_API_ORIGIN/);
+  // Stats reads a materialised artifact from its own origin, so it configures no API origin.
+  assert.doesNotMatch(read("stats.html"), /window\.CROL_API_ORIGIN/);
+  assert.match(read("stats.html"), /fetch\("data\/served_coverage_snapshot\.json"/);
   assert.match(read("analytics.js"), /window\.CROL_API_ORIGIN/);
 });

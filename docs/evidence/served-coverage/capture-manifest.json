@@ -1,0 +1,85 @@
+{
+  "schema": "cityscroll.render_capture_manifest.v1",
+  "surface": "public Stats page",
+  "route": "/stats.html",
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "condition": "Served from the repository's own site directory with every off-origin request denied, so only what the origin itself can supply is rendered.",
+  "image_binaries_committed": false,
+  "captures": [
+    {
+      "id": "before",
+      "repository_revision": "d98353be15f18869c6111c56a1931d7eeed17073",
+      "source_blob": {
+        "site/stats.html": "4907c4e27f794f5f67986fa205b0f63032b509b8"
+      },
+      "data_vintage": null,
+      "data_vintage_note": "The page held no materialised coverage data. Every figure came from a request made while the page was loading.",
+      "assertion": "With off-origin requests denied, the four key-fact tiles render as – and the status line reads that coverage totals are unreachable.",
+      "observed": {
+        "status_line": "Coverage totals are unreachable right now — the public JSON lives at api.cityscroll.org/stats.",
+        "tiles": {
+          "s-notices": "–",
+          "s-sources": "–",
+          "s-languages": "–",
+          "s-current": "–"
+        },
+        "coverage_domains": 0
+      },
+      "render_sha256": "829bc38c2edc955cc92fb790510eae34ddbb1438868315f383db1c531d58484c",
+      "render_scope": "innerHTML of #main"
+    },
+    {
+      "id": "after",
+      "repository_revision": "working tree on card/c94dd02dd79a1",
+      "data_vintage": {
+        "oldest": "2026-05-26T00:00:00.000Z",
+        "newest": "2026-09-05T00:00:00.000Z"
+      },
+      "data_vintage_note": "Oldest and newest evidence date across the published record sets, taken from each artifact's own declared vintage field.",
+      "assertion": "With off-origin requests denied, the page renders every key fact and the full served-coverage section from the materialised snapshot served beside it, with no horizontal overflow at 390 CSS pixels.",
+      "observed": {
+        "status_line": "Evidence dated May 26, 2026 to September 5, 2026.",
+        "tiles": {
+          "s-sources": "18",
+          "s-recordsets": "19",
+          "s-languages": "11",
+          "s-evidence": "May 26, 2026 to September 5, 2026"
+        },
+        "coverage_domains": 9,
+        "coverage_rows": 28,
+        "document_scroll_width": 390,
+        "document_client_width": 390,
+        "off_origin_requests_attempted": [
+          "https://api.cityscroll.org/events",
+          "https://fonts.googleapis.com/css2",
+          "https://static.cloudflareinsights.com/beacon.min.js",
+          "https://www.clarity.ms/tag/xusuca7gsv"
+        ],
+        "off_origin_publisher_requests": []
+      },
+      "render_sha256": "4251bac5b543023b40a68f368290ec1d87658cbea34f637dd224707344ee022f",
+      "render_scope": "innerHTML of #main"
+    },
+    {
+      "id": "after-rtl",
+      "repository_revision": "working tree on card/c94dd02dd79a1",
+      "language": "ar",
+      "assertion": "The same section renders right-to-left with translated column headings, record types, counting rules and states; official source titles remain in their published form and are isolated with lang=\"en\".",
+      "observed": {
+        "status_line": "أدلة مؤرخة من 26 مايو 2026 إلى 5 سبتمبر 2026.",
+        "coverage_domains": 9
+      },
+      "render_scope": "innerHTML of #main"
+    }
+  ],
+  "baseline_blobs_at_checked_out_commit": {
+    "site/stats.html": "4907c4e27f794f5f67986fa205b0f63032b509b8",
+    "worker/src/stats.mjs": "450e4e8822c0a82996a0b1f073af0376bbfe822e",
+    "site/data/source_contracts.json": "0ce1b0554d987d46ce380d011b14d1c1ed4d9df3",
+    "tools/first_class_refresh.mjs": "1381da33dfaab966a3495d446f4fe33fc43ab8ff",
+    "ops/first-class-refresh/README.md": "7f5780ae2036aa003402fd9b47c7c14a2a611b2f"
+  }
+}

@@ -489,6 +489,7 @@ site/data/regulatory_agenda.json
 site/data/rule_versions.json
 site/data/rules_domain_observations.json
 site/data/rules_semantic_lane.json
+site/data/served_coverage_snapshot.json
 site/data/shared_meeting_read_model.json
 site/data/source_contracts.json
 site/data/source_health_public.json
@@ -759,6 +760,7 @@ site/source_vintage_public_projection.mjs
 site/staffing.js
 site/staffing_agency_scope.mjs
 site/staffing_surface.mjs
+site/stats.html
 site/statutory_mandate_provision_join.mjs
 site/story_signal_projection.mjs
 site/sub_outreach.mjs

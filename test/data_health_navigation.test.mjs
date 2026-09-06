@@ -55,7 +55,8 @@ test("stats page points at Data health with one semantic-boundary sentence when 
   assert.deepEqual(dataHealthNavigationFindings(statsHtml, "stats"), []);
   assert.doesNotMatch(statsHtml, /Publisher updated|CityScroll last checked|all operational|all systems operational/i);
   assert.doesNotMatch(statsHtml, /\/source-health/);
-  assert.match(statsHtml, /base \+ "\/stats"/);
+  // The page reads its own origin's materialised coverage artifact, never a Worker route.
+  assert.match(statsHtml, /fetch\("data\/served_coverage_snapshot\.json"/);
   if (DATA_HEALTH_PUBLIC) {
     assert.match(statsHtml, /stats-data-health-crosslink/);
     assert.match(statsHtml, /data-i18n-html="stats_data_health_html"/);
@@ -135,25 +136,18 @@ test("Pages edge returns not-found for public data-health while the gate is off"
   }
 });
 
-test("public /stats JSON contract stays corpus coverage only", async () => {
+test("public /stats JSON contract stays served coverage only", async () => {
   assert.doesNotMatch(statsJs, /data_health_navigation|source_health_public/);
   const response = await handleStats(
     new Request("https://api.cityscroll.org/stats"),
     {},
     { waitUntil() {} },
-    {
-      now: "2026-08-05T18:00:00Z",
-      fetchImpl: async () => Response.json([{
-        notice_count: "1099194",
-        first_notice_date: "2003-01-02T00:00:00.000",
-        latest_notice_date: "2026-08-05T00:00:00.000",
-      }]),
-    },
+    { now: "2026-08-05T18:00:00Z" },
   );
   const body = await response.json();
-  assert.equal(body.schema, "public-stats.v2");
-  assert.equal(body.city_record.notice_count, 1099194);
-  assert.equal(body.sources.primary_system_count, 6);
+  assert.equal(body.schema, "public-stats.v3");
+  assert.equal(body.coverage.available, true);
+  assert.ok(body.coverage.domains.length > 0);
   for (const privateField of ["subscriptions", "digests", "nl_search", "history", "usage", "source_health"]) {
     assert.equal(Object.hasOwn(body, privateField), false, `${privateField} stays off public /stats`);
   }

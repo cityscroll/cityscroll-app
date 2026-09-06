@@ -287,6 +287,12 @@ jobs:
       - name: Generated integration client contract
         if: matrix.family == 'static-standards'
         run: node tools/generate_integration_client.mjs --check
+      - name: Served-product coverage snapshot
+        if: matrix.family == 'static-standards'
+        # The public Stats page and GET /stats both project this snapshot. Re-deriving it here
+        # keeps the published coverage counts equal to the served artifacts they were counted
+        # from, and fails a refresh that publishes new inputs without restating the coverage.
+        run: node tools/build_served_coverage_snapshot.mjs --check
       - name: Recorded civic-data source contracts
         if: matrix.family == 'static-standards'
         # Pull-request CI is deterministic. The daily source-contract workflow owns live

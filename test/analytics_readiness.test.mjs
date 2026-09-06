@@ -466,10 +466,10 @@ test("public stats page is a small coverage surface with dated cards and no usag
   assert.equal((html.match(/class="stat"/g) || []).length, 4);
   assert.equal((html.match(/data-stat-asof/g) || []).length, 5);
   assert.doesNotMatch(html, /gridUsage|usageLensTableBody|usageGrowthTableBody|s-digests|s-subs|s-pageviews/);
-  assert.match(html, /stats_public_notices_label/);
-  assert.match(html, /stats_public_sources_label/);
+  assert.match(html, /stats_sources_label/);
+  assert.match(html, /stats_record_sets_label/);
   assert.match(html, /stats_public_languages_label/);
-  assert.match(html, /stats_public_current_label/);
+  assert.match(html, /stats_evidence_label/);
 });
 
 test("every public page loads the first-party collector and every locale covers new labels", async () => {
@@ -478,7 +478,7 @@ test("every public page loads the first-party collector and every locale covers 
   }
   for (const locale of ["es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar", "ur"]) {
     const source = await readFile(new URL(`../site/i18n/lang/${locale}.js`, import.meta.url), "utf8");
-    for (const key of ["stats_public_lede", "stats_public_notices_label", "stats_public_sources_label", "stats_public_languages_label", "stats_public_asof"]) {
+    for (const key of ["stats_public_lede", "stats_sources_label", "stats_record_sets_label", "stats_public_languages_label", "stats_public_asof"]) {
       assert.match(source, new RegExp(`${key}:`), `${locale}: ${key}`);
     }
   }

@@ -506,42 +506,61 @@ test("prewarmStats writes the public edge cache key (or reports no_cache_api off
     assert.equal(result.status, 200);
   }
   const key = statsEdgeCacheKey("https://api.cityscroll.org");
-  assert.match(key.url, /\/stats\?edge=public-corpus-v2$/);
+  assert.match(key.url, /\/stats\?edge=served-coverage-v3$/);
 });
 
-test("public stats v2 contains corpus coverage and no usage-class fields", async () => {
+test("public stats projects served coverage and no usage-class fields", async () => {
   const response = await handleStats(
     new Request("https://api.cityscroll.org/stats"),
     {},
     { waitUntil: async (promise) => promise },
-    {
-      now: "2026-08-05T18:00:00Z",
-      fetchImpl: async () => Response.json([{
-        notice_count: "1099194",
-        first_notice_date: "2003-01-02T00:00:00.000",
-        latest_notice_date: "2026-08-05T00:00:00.000",
-      }]),
-    },
+    { now: "2026-08-05T18:00:00Z" },
   );
   const body = await response.json();
-  assert.equal(body.schema, "public-stats.v2");
-  assert.equal(body.city_record.notice_count, 1099194);
-  assert.equal(body.city_record.latest_notice_date, "2026-08-05");
-  assert.equal(body.sources.primary_system_count, 6);
+  assert.equal(body.schema, "public-stats.v3");
+  assert.equal(body.coverage.available, true);
+  assert.equal(body.coverage.measurement.units_are_not_summed, true);
+  // The replaced response reported an upstream notice population and a hardcoded system count.
+  assert.equal(Object.hasOwn(body, "city_record"), false);
+  assert.equal(Object.hasOwn(body, "sources"), false);
+  const sources = body.coverage.metrics.find((metric) => metric.metric_id === "served_sources_represented");
+  assert.equal(sources.state, "measured");
+  assert.ok(sources.value > 0);
+  assert.ok(body.coverage.domains.length > 0);
   assert.equal(body.language_coverage.site_languages, 11);
   for (const removed of ["subscriptions", "digests", "digest_clicks", "feeds", "batch", "shared_investigations", "nl_search", "history", "usage"]) {
     assert.equal(Object.hasOwn(body, removed), false, `${removed} must remain private`);
   }
 });
 
-test("public stats stays honest when the live corpus aggregate is unavailable", () => {
-  const body = buildPublicStatsBody({
-    available: false,
-    notice_count: null,
-    first_notice_date: null,
-    latest_notice_date: null,
-  }, new Date("2026-08-05T18:00:00Z"));
-  assert.equal(body.city_record.available, false);
-  assert.equal(body.city_record.notice_count, null);
-  assert.equal(body.sources.primary_system_count, 6);
+test("the public response and the page project the same coverage artifact", async () => {
+  const { readFileSync } = await import("node:fs");
+  const snapshot = JSON.parse(readFileSync(new URL("../../site/data/served_coverage_snapshot.json", import.meta.url), "utf8"));
+  const body = buildPublicStatsBody(undefined, new Date("2026-08-05T18:00:00Z"));
+  assert.deepEqual(body.coverage.metrics, snapshot.metrics);
+  assert.deepEqual(body.coverage.domains, snapshot.domains);
+  assert.deepEqual(body.coverage.evidence_vintage, snapshot.evidence_vintage);
+  // The page reads the same file over the static origin, so the two cannot disagree.
+  const page = readFileSync(new URL("../../site/stats.html", import.meta.url), "utf8");
+  assert.match(page, /fetch\("data\/served_coverage_snapshot\.json"/);
+});
+
+test("public stats never fetches a publisher while answering a request", async () => {
+  let calls = 0;
+  const response = await handleStats(
+    new Request("https://api.cityscroll.org/stats"),
+    {},
+    { waitUntil: async (promise) => promise },
+    { now: "2026-08-05T18:00:00Z", fetchImpl: async () => { calls += 1; return Response.json([]); } },
+  );
+  assert.equal(response.status, 200);
+  assert.equal(calls, 0, "a public stats read must not reach an upstream publisher");
+});
+
+test("public stats states coverage as unavailable rather than inventing an empty one", () => {
+  const body = buildPublicStatsBody({ schema: "something-else" }, new Date("2026-08-05T18:00:00Z"));
+  assert.equal(body.coverage.available, false);
+  assert.equal(body.coverage.unavailable_reason, "coverage_snapshot_unavailable");
+  assert.deepEqual(body.coverage.metrics, []);
+  assert.equal(body.language_coverage.site_languages, 11);
 });

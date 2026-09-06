@@ -1,8 +1,13 @@
-// GET /stats — public corpus and coverage facts only.
+// GET /stats — served-product coverage facts only.
 //
 // Product-use telemetry belongs behind the authenticated desk boundary. The public route says
-// what CityScroll knows: corpus size and dates, primary source coverage, and language coverage.
+// what CityScroll actually serves: the materialised coverage snapshot and language coverage.
 // The former operational response remains available to the desk through GET /admin/stats.
+//
+// The response is assembled from a build-time artifact. It was once assembled from a live
+// publisher aggregate, which meant a public page load reached an upstream API and reported an
+// upstream population as if it were CityScroll coverage. Both are gone: the snapshot is
+// produced by tools/build_served_coverage_snapshot.mjs, and this route only projects it.
 
 import {
   dayStr, sumStat, readStatAllTime, readAllCategoryStats, readAllCategoryStatsWindow,
@@ -15,85 +20,46 @@ import {
 } from "./lib/analytics.mjs";
 import { readSearchUsage } from "./lib/search_usage.mjs";
 import { isTestSubscriber } from "./lib/subscriptions.mjs";
+import servedCoverage from "../../site/data/served_coverage_snapshot.json" with { type: "json" };
 
 // Same key as alerts.mjs DIGEST_RUN_LATEST_KEY — kept local so /stats does not import the
 // full alerts module (cron + Resend path) on every public read.
 const DIGEST_RUN_LATEST_KEY = "digest:run:latest";
 const CATCHUP_RUN_LATEST_KEY = "digest:catchup:run:latest";
 
-const CITY_RECORD_DATASET_ID = "dg92-zbpx";
-const CITY_RECORD_STATS_URL = `https://data.cityofnewyork.us/resource/${CITY_RECORD_DATASET_ID}.json`;
-const PUBLIC_SOURCE_SYSTEMS = Object.freeze([
-  "City Record Online",
-  "Citywide Payroll",
-  "Civil Service List",
-  "Zoning Application Portal",
-  "PASSPort Public",
-  "Checkbook NYC",
-]);
 const SITE_LANGUAGE_COUNT = 11;
 const NOTICE_TRANSLATION_LANGUAGE_COUNT = 10;
+export const PUBLIC_STATS_SCHEMA = "public-stats.v3";
+export const SERVED_COVERAGE_SCHEMA = "cityscroll.served_coverage_snapshot.v1";
 
-function isoDay(value) {
-  const match = /^(\d{4}-\d{2}-\d{2})/.exec(String(value || ""));
-  return match ? match[1] : null;
-}
-
-function nonnegativeInt(value) {
-  const parsed = Number.parseInt(String(value ?? ""), 10);
-  return Number.isFinite(parsed) && parsed >= 0 ? parsed : null;
-}
-
-export async function readPublicCorpusStats(options = {}) {
-  const fetchImpl = options.fetchImpl || fetch;
-  const url = new URL(CITY_RECORD_STATS_URL);
-  url.searchParams.set(
-    "$select",
-    "count(*) as notice_count,min(start_date) as first_notice_date,max(start_date) as latest_notice_date",
-  );
-  url.searchParams.set("$limit", "1");
-  try {
-    const response = await fetchImpl(url.toString(), {
-      headers: { accept: "application/json" },
-      signal: AbortSignal.timeout(8000),
-    });
-    if (!response.ok) throw new Error(`City Record aggregate returned ${response.status}`);
-    const [row] = await response.json();
-    const noticeCount = nonnegativeInt(row?.notice_count);
-    if (noticeCount == null) throw new Error("City Record aggregate omitted notice_count");
-    return {
-      available: true,
-      notice_count: noticeCount,
-      first_notice_date: isoDay(row?.first_notice_date),
-      latest_notice_date: isoDay(row?.latest_notice_date),
-    };
-  } catch {
-    return {
-      available: false,
-      notice_count: null,
-      first_notice_date: null,
-      latest_notice_date: null,
-    };
-  }
-}
-
-export function buildPublicStatsBody(corpus, now = new Date()) {
+/**
+ * Project the materialised coverage snapshot into the public response. The projection is a
+ * closed selection: it names the metrics, the per-unit counts and their evidence dates, and
+ * nothing else the snapshot happens to carry. Labels stay as translation keys, so the page and
+ * this response describe the same measurement in whatever language a reader asked for.
+ */
+export function buildPublicStatsBody(coverage = servedCoverage, now = new Date()) {
+  const usable = coverage && coverage.schema === SERVED_COVERAGE_SCHEMA ? coverage : null;
   return {
-    schema: "public-stats.v2",
+    schema: PUBLIC_STATS_SCHEMA,
     generated_at: new Date(now).toISOString(),
-    scope: "Corpus and coverage aggregates only. Product usage and delivery operations are private.",
-    city_record: {
-      ...corpus,
-      source: {
-        name: "NYC Open Data — City Record Online",
-        dataset_id: CITY_RECORD_DATASET_ID,
-        url: `https://data.cityofnewyork.us/d/${CITY_RECORD_DATASET_ID}`,
+    scope: "Served-product coverage aggregates only. Product usage and delivery operations are private.",
+    coverage: usable
+      ? {
+        available: true,
+        measurement: usable.measurement,
+        metrics: usable.metrics,
+        evidence_vintage: usable.evidence_vintage,
+        domains: usable.domains,
+      }
+      : {
+        available: false,
+        unavailable_reason: "coverage_snapshot_unavailable",
+        measurement: null,
+        metrics: [],
+        evidence_vintage: { oldest: null, newest: null },
+        domains: [],
       },
-    },
-    sources: {
-      primary_system_count: PUBLIC_SOURCE_SYSTEMS.length,
-      systems: [...PUBLIC_SOURCE_SYSTEMS],
-    },
     language_coverage: {
       site_languages: SITE_LANGUAGE_COUNT,
       translated_interface_languages: NOTICE_TRANSLATION_LANGUAGE_COUNT,
@@ -221,14 +187,14 @@ function growthFromHistories(nlHist = {}, digestHist = {}, pageViewHist = {}) {
 export function statsEdgeCacheKey(baseUrl = "https://api.cityscroll.org") {
   // Versioned away from the former usage response so a deploy cannot serve private fields
   // from a warm pre-change cache entry.
-  return new Request(new URL("/stats?edge=public-corpus-v2", baseUrl).toString(), {
+  return new Request(new URL("/stats?edge=served-coverage-v3", baseUrl).toString(), {
     method: "GET",
   });
 }
 
 /**
- * Write-ahead prewarm for public /stats. This primes the official corpus aggregate after the
- * daily scheduled run; later cache expiries refresh it on demand. Called from daily cron.
+ * Write-ahead prewarm for public /stats. This primes the coverage projection after the daily
+ * scheduled run; later cache expiries refresh it on demand. Called from daily cron.
  * Fail-soft: returns { warmed:false, reason } on missing caches API.
  */
 export async function prewarmStats(env, options = {}) {
@@ -262,8 +228,7 @@ export async function handleStats(req, env, ctx, options = {}) {
   }
 
   const now = options.now == null ? new Date() : new Date(options.now);
-  const corpus = await readPublicCorpusStats(options);
-  const body = buildPublicStatsBody(corpus, now);
+  const body = buildPublicStatsBody(options.coverage || servedCoverage, now);
   const res = new Response(JSON.stringify(body, null, 2), {
     status: 200,
     headers: {

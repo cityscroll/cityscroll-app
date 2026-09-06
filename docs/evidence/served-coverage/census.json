@@ -1,0 +1,1293 @@
+{
+  "schema": "cityscroll.served_coverage_census.v1",
+  "purpose": "Disposition of every registered source contract against the served product, and the served-population evidence behind each published coverage unit. Not a served artifact: this is the receipt the public snapshot is derived from.",
+  "registry": {
+    "reviewed_registry_size": 63,
+    "observed_registry_size": 63,
+    "changed": false
+  },
+  "disposition_vocabulary": [
+    "publicly_represented",
+    "context_only",
+    "not_served",
+    "unresolved"
+  ],
+  "disposition_counts": {
+    "publicly_represented": 18,
+    "context_only": 28,
+    "not_served": 8,
+    "unresolved": 9
+  },
+  "served_units": [
+    {
+      "unit_id": "procurement-records",
+      "first_class_artifact_id": "contracts-procurement-rows",
+      "artifact_path": "site/data/procurement_browse_rows.json",
+      "population_field": "row_count",
+      "vintage_field": "generated_at",
+      "vintage_basis": "single",
+      "state": "measured",
+      "value": 13791,
+      "reason": null
+    },
+    {
+      "unit_id": "registered-contracts",
+      "first_class_artifact_id": "contracts-registered",
+      "artifact_path": "site/data/analytics_registered_contracts.json",
+      "population_field": "row_count",
+      "vintage_field": "snapshot_date",
+      "vintage_basis": "single",
+      "state": "measured",
+      "value": 26270,
+      "reason": null
+    },
+    {
+      "unit_id": "contract-payments",
+      "first_class_artifact_id": "contracts-payments",
+      "artifact_path": "site/data/analytics_payments.json",
+      "population_field": "rows",
+      "vintage_field": "generated_at",
+      "vintage_basis": "single",
+      "state": "measured",
+      "value": 28448,
+      "reason": null
+    },
+    {
+      "unit_id": "contract-awards",
+      "first_class_artifact_id": "ocp-awards",
+      "artifact_path": "site/data/ocp_awards_warehouse_lookup.json",
+      "population_field": "row_count",
+      "vintage_field": "source_snapshot.snapshot_date",
+      "vintage_basis": "single",
+      "state": "measured",
+      "value": 53600,
+      "reason": null
+    },
+    {
+      "unit_id": "public-meetings",
+      "first_class_artifact_id": "shared-meetings",
+      "artifact_path": "site/data/shared_meeting_read_model.json",
+      "population_field": "rows",
+      "vintage_field": "sources.city_record.generated_at",
+      "vintage_basis": "single",
+      "state": "measured",
+      "value": 522,
+      "reason": null
+    },
+    {
+      "unit_id": "board-meetings",
+      "first_class_artifact_id": "community-board-meetings",
+      "artifact_path": "site/data/community_board_meeting_index.json",
+      "population_field": "coverage.records_indexed",
+      "vintage_field": "generated_at",
+      "vintage_basis": "single",
+      "state": "measured",
+      "value": 395,
+      "reason": null
+    },
+    {
+      "unit_id": "meeting-outcomes",
+      "first_class_artifact_id": "meeting-outcomes",
+      "artifact_path": "site/data/meeting_outcomes_snapshot.json",
+      "population_field": "present_count",
+      "vintage_field": "generated_at",
+      "vintage_basis": "single",
+      "state": "measured",
+      "value": 16,
+      "reason": null
+    },
+    {
+      "unit_id": "officials",
+      "first_class_artifact_id": "person-hub",
+      "artifact_path": "site/data/person_hub_lookup.json",
+      "population_field": "person_count",
+      "vintage_field": "retrieved_at",
+      "vintage_basis": "single",
+      "state": "measured",
+      "value": 215,
+      "reason": null
+    },
+    {
+      "unit_id": "organizations",
+      "first_class_artifact_id": "people-organizations",
+      "artifact_path": "site/data/people_organizations_read_model.json",
+      "population_field": "rows",
+      "vintage_field": "generated_at",
+      "vintage_basis": "single",
+      "state": "measured",
+      "value": 1370,
+      "reason": null
+    },
+    {
+      "unit_id": "committee-memberships",
+      "first_class_artifact_id": "committee-graph",
+      "artifact_path": "site/data/committee_graph_lookup.json",
+      "population_field": "public_edges",
+      "vintage_field": "generated_at",
+      "vintage_basis": "single",
+      "state": "measured",
+      "value": 1142,
+      "reason": null
+    },
+    {
+      "unit_id": "agencies",
+      "first_class_artifact_id": "agency-constellation",
+      "artifact_path": "site/data/agency_constellation_lookup.json",
+      "population_field": "agency_count",
+      "vintage_field": "generated_at",
+      "vintage_basis": "composite_oldest",
+      "state": "measured",
+      "value": 87,
+      "reason": null
+    },
+    {
+      "unit_id": "land-projects",
+      "first_class_artifact_id": "zap-projects",
+      "artifact_path": "site/data/zap_projects_warehouse_lookup.json",
+      "population_field": "row_count",
+      "vintage_field": "materialized_at",
+      "vintage_basis": "single",
+      "state": "measured",
+      "value": 238,
+      "reason": null
+    },
+    {
+      "unit_id": "land-hearings",
+      "first_class_artifact_id": "land-upcoming-hearings",
+      "artifact_path": "site/data/land_upcoming_hearings.json",
+      "population_field": "hearings",
+      "vintage_field": "generated_at",
+      "vintage_basis": "single",
+      "state": "measured",
+      "value": 182,
+      "reason": null
+    },
+    {
+      "unit_id": "properties",
+      "first_class_artifact_id": "property-domain",
+      "artifact_path": "site/data/property_domain_observations.json",
+      "population_field": "property_count",
+      "vintage_field": "source_generated_at",
+      "vintage_basis": "single",
+      "state": "measured",
+      "value": 133,
+      "reason": null
+    },
+    {
+      "unit_id": "rules",
+      "first_class_artifact_id": "rules-domain",
+      "artifact_path": "site/data/rules_domain_observations.json",
+      "population_field": "row_count",
+      "vintage_field": "retrieved_at",
+      "vintage_basis": "single",
+      "state": "measured",
+      "value": 100,
+      "reason": null
+    },
+    {
+      "unit_id": "staffing-notices",
+      "first_class_artifact_id": "staffing-hires",
+      "artifact_path": "site/data/staffing_default_hires.json",
+      "population_field": "count",
+      "vintage_field": "generated_at",
+      "vintage_basis": "single",
+      "state": "measured",
+      "value": 80,
+      "reason": null
+    },
+    {
+      "unit_id": "exams",
+      "first_class_artifact_id": "staffing-exams",
+      "artifact_path": "site/data/staffing_exams.json",
+      "population_field": "exams",
+      "vintage_field": "sources_retrieved_as_of",
+      "vintage_basis": "single",
+      "state": "measured",
+      "value": 226,
+      "reason": null
+    },
+    {
+      "unit_id": "agency-obligations",
+      "first_class_artifact_id": "agency-obligations",
+      "artifact_path": "site/data/agency_obligations_lookup.json",
+      "population_field": "summary.obligation_count",
+      "vintage_field": "as_of",
+      "vintage_basis": "single",
+      "state": "measured",
+      "value": 6683,
+      "reason": null
+    },
+    {
+      "unit_id": "community-boards",
+      "first_class_artifact_id": "community-board-geography",
+      "artifact_path": "site/data/community_board_geography_lookup.json",
+      "population_field": "inventory.boards_inventoried",
+      "vintage_field": "boundary_vintage",
+      "vintage_basis": "single",
+      "state": "measured",
+      "value": 59,
+      "reason": null
+    }
+  ],
+  "procurement_source_census": [
+    {
+      "source_system": "checkbook_contracts",
+      "source_contract_id": "checkbook-contracts",
+      "registered": true,
+      "served_observations": 1704,
+      "declared_input_rows": 1704,
+      "specimen": {
+        "source_observation_ref": "checkbook_contracts:contract:registered:CT100220268808241:EMPIRE ELECTRONICS INC:prime-vendor:2026-06-04",
+        "procurement_id": "procurement:contract:CT100220268808241",
+        "canonical_route": "/procurements/procurement%3Acontract%3ACT100220268808241"
+      }
+    },
+    {
+      "source_system": "checkbook_nycha_contracts",
+      "source_contract_id": "checkbook-nycha-contracts",
+      "registered": true,
+      "served_observations": 1,
+      "declared_input_rows": 1,
+      "specimen": {
+        "source_observation_ref": "checkbook_nycha_contracts:contract:BA2335819:Agreement",
+        "procurement_id": "procurement:contract:BA2335819",
+        "canonical_route": "/procurements/procurement%3Acontract%3ABA2335819"
+      }
+    },
+    {
+      "source_system": "checkbook_spending",
+      "source_contract_id": "checkbook-spending",
+      "registered": true,
+      "served_observations": 0,
+      "declared_input_rows": 0,
+      "specimen": null
+    },
+    {
+      "source_system": "city_record",
+      "source_contract_id": "city-record",
+      "registered": true,
+      "served_observations": 12899,
+      "declared_input_rows": 13178,
+      "specimen": {
+        "source_observation_ref": "city_record:20210621107",
+        "procurement_id": "procurement:contract:20211201861",
+        "canonical_route": "/procurements/procurement%3Acontract%3A20211201861"
+      }
+    },
+    {
+      "source_system": "mta_annual_contracts",
+      "source_contract_id": null,
+      "registered": true,
+      "served_observations": 1,
+      "declared_input_rows": 1,
+      "specimen": {
+        "source_observation_ref": "mta_annual_contracts:contract:8000000863",
+        "procurement_id": "procurement:contract:8000000863",
+        "canonical_route": "/procurements/procurement%3Acontract%3A8000000863"
+      }
+    },
+    {
+      "source_system": "mta_bid_results",
+      "source_contract_id": "mta-bid-results",
+      "registered": true,
+      "served_observations": 1,
+      "declared_input_rows": 1,
+      "specimen": {
+        "source_observation_ref": "mta_bid_results:mta-bid-results:AW-9Y:TDP-ASSOCIATES-INC",
+        "procurement_id": "procurement:solicitation:AW9Y",
+        "canonical_route": "/procurements/procurement%3Asolicitation%3AAW9Y"
+      }
+    },
+    {
+      "source_system": "mta_cd_awards",
+      "source_contract_id": null,
+      "registered": true,
+      "served_observations": 1,
+      "declared_input_rows": 1,
+      "specimen": {
+        "source_observation_ref": "mta_cd_awards:award:A37703",
+        "procurement_id": "procurement:contract:A37703",
+        "canonical_route": "/procurements/procurement%3Acontract%3AA37703"
+      }
+    },
+    {
+      "source_system": "mta_current_opportunities",
+      "source_contract_id": "mta-current-opportunities",
+      "registered": true,
+      "served_observations": 1,
+      "declared_input_rows": 1,
+      "specimen": {
+        "source_observation_ref": "mta_current_opportunities:mta-current:S48020:0000541781",
+        "procurement_id": "procurement:solicitation:S48020",
+        "canonical_route": "/procurements/procurement%3Asolicitation%3AS48020"
+      }
+    },
+    {
+      "source_system": "nys_contract_reporter",
+      "source_contract_id": "nys-contract-reporter",
+      "registered": true,
+      "served_observations": 1,
+      "declared_input_rows": 1,
+      "specimen": {
+        "source_observation_ref": "nys_contract_reporter:contract-reporter:2138505",
+        "procurement_id": "procurement:contract_reporter_number:2138505",
+        "canonical_route": "/procurements/procurement%3Acontract_reporter_number%3A2138505"
+      }
+    },
+    {
+      "source_system": "passport_public_contracts",
+      "source_contract_id": "passport-public-contracts",
+      "registered": true,
+      "served_observations": 12770,
+      "declared_input_rows": 12782,
+      "specimen": {
+        "source_observation_ref": "passport_public_contracts:contract:85719G8260KXLR001:4543333",
+        "procurement_id": "procurement:contract:20211201861",
+        "canonical_route": "/procurements/procurement%3Acontract%3A20211201861"
+      }
+    },
+    {
+      "source_system": "passport_public_rfx",
+      "source_contract_id": "passport-public-rfx",
+      "registered": true,
+      "served_observations": 0,
+      "declared_input_rows": 0,
+      "specimen": null
+    }
+  ],
+  "sources_represented": [
+    "annual-examination-schedule",
+    "checkbook-contracts",
+    "checkbook-nycha-contracts",
+    "checkbook-spending",
+    "city-record",
+    "community-district-boundaries",
+    "mta-bid-results",
+    "mta-current-opportunities",
+    "non-council-board-minutes",
+    "nyc-administrative-code",
+    "nyc-agencies",
+    "nyc-council-legistar",
+    "nyc-council-members",
+    "nys-contract-reporter",
+    "ocp-recent-contract-awards",
+    "passport-public-contracts",
+    "zap-api-outcomes",
+    "zap-projects"
+  ],
+  "sources": [
+    {
+      "source_id": "abo-local-authorities",
+      "name": "NYS Authorities Budget Office — local authorities",
+      "disposition": "context_only",
+      "reason": "Authority-scoped award context on mapped authority profiles; the awards themselves are counted in the procurement population, so a separate count would restate the same records.",
+      "evidence": {
+        "registry": {
+          "status": "live",
+          "delivery_tier": "edge-materialized",
+          "used_for": "Authority-scoped recent-award context for mapped local-authority profiles. RC-4 stopped the notice-level residual bridge below threshold."
+        }
+      }
+    },
+    {
+      "source_id": "abo-local-development-corporations",
+      "name": "NYS Authorities Budget Office — local development corporations",
+      "disposition": "context_only",
+      "reason": "Authority-scoped award context on mapped local-development-corporation profiles; no independent served record population.",
+      "evidence": {
+        "registry": {
+          "status": "live",
+          "delivery_tier": "edge-materialized",
+          "used_for": "Authority-scoped recent-award context for mapped local-development-corporation profiles. RC-4 stopped the notice-level residual bridge below threshold."
+        }
+      }
+    },
+    {
+      "source_id": "abo-state-authorities",
+      "name": "NYS Authorities Budget Office — state authorities",
+      "disposition": "context_only",
+      "reason": "Authority-scoped award context on mapped state-authority profiles; no independent served record population.",
+      "evidence": {
+        "registry": {
+          "status": "live",
+          "delivery_tier": "edge-materialized",
+          "used_for": "Authority-scoped recent-award context for mapped state-authority profiles, including the MTA. RC-4 stopped the notice-level residual bridge below threshold."
+        }
+      }
+    },
+    {
+      "source_id": "active-civil-service-list",
+      "name": "Civil Service List (Active)",
+      "disposition": "unresolved",
+      "reason": "Serves aggregate list depth on exam cards through a live-only read; no committed served population artifact establishes a count.",
+      "evidence": {
+        "registry": {
+          "status": "live",
+          "delivery_tier": "live-only",
+          "used_for": "Competitive-list checks, active-list totals, and post-list aggregate depth on exam cards (list_count and established dates only — never per-applicant rows)."
+        }
+      }
+    },
+    {
+      "source_id": "annual-examination-schedule",
+      "name": "Annual Examination Schedule",
+      "disposition": "publicly_represented",
+      "reason": "Declared source of a counted served population.",
+      "evidence": {
+        "units": [
+          {
+            "unit_id": "exams",
+            "route": "/browse/exams/",
+            "served_records": 226,
+            "evidence_vintage": "2026-09-05T00:00:00.000Z"
+          }
+        ]
+      }
+    },
+    {
+      "source_id": "bid-tabulations-historical",
+      "name": "Bid Tabulations (Historical)",
+      "disposition": "not_served",
+      "reason": "Registry status is disabled and the contract records no current product output; the measured join fell below the materialization threshold.",
+      "evidence": {
+        "registry": {
+          "status": "disabled",
+          "delivery_tier": "live-only",
+          "used_for": "No current product output. Ranked class-(a) bid-count source was measured; strict join usefulness is below the materialization threshold."
+        }
+      }
+    },
+    {
+      "source_id": "business-improvement-district-boundaries",
+      "name": "Business Improvement Districts",
+      "disposition": "not_served",
+      "reason": "Backstage ingestion and overlap quality assurance only; the registry states no resident-facing filter or relationship is published.",
+      "evidence": {
+        "registry": {
+          "status": "build-time",
+          "delivery_tier": "inline-at-build",
+          "used_for": "Backstage-only BID ingestion and sparse/overlap QA. No resident-facing filter or institutional relationship is published."
+        }
+      }
+    },
+    {
+      "source_id": "capital-projects",
+      "name": "Capital Projects",
+      "disposition": "not_served",
+      "reason": "Registry status is disabled and the contract records no current product output.",
+      "evidence": {
+        "registry": {
+          "status": "disabled",
+          "delivery_tier": "live-only",
+          "used_for": "No current product output. Class-(b) pointer for procurement planning/budget names this dataset when a PIN/EPIN is not published on the notice."
+        }
+      }
+    },
+    {
+      "source_id": "capital-projects-dashboard",
+      "name": "Capital Projects Dashboard - Citywide Budget and Schedule",
+      "disposition": "unresolved",
+      "reason": "Committed procurement-planning rows exist, but no first-class served-population artifact declares this contract as its source, so no served count is established.",
+      "evidence": {
+        "registry": {
+          "status": "manual",
+          "delivery_tier": "inline-at-build",
+          "used_for": "Committed cityscroll.procurement_planning.v1 capital budget, spend, FMS identifier, project description, phase, and schedule rows. Capital→notice/PASSPort bridges remain below usefulness (no PIN/EPIN); MOCS plan→PASSPort prefix edges ship separately."
+        }
+      }
+    },
+    {
+      "source_id": "cfb-campaign-contributions",
+      "name": "Campaign Finance Board Contributions",
+      "disposition": "context_only",
+      "reason": "Contribution edges shown on official profiles; officials are counted once as their own record unit.",
+      "evidence": {
+        "registry": {
+          "status": "live",
+          "delivery_tier": "edge-materialized",
+          "used_for": "Donor → official recipient influence edges on official profiles via person hub name keys (exact unique person-name join on modern City Council officecd=5 sample; partial coverage)."
+        }
+      }
+    },
+    {
+      "source_id": "checkbook-contracts",
+      "name": "Checkbook NYC registered contracts",
+      "disposition": "publicly_represented",
+      "reason": "Declared source of a counted served population.",
+      "evidence": {
+        "units": [
+          {
+            "unit_id": "registered-contracts",
+            "route": "/browse/contracts/",
+            "served_records": 26270,
+            "evidence_vintage": "2026-08-18T00:00:00.000Z"
+          }
+        ]
+      }
+    },
+    {
+      "source_id": "checkbook-nycha-contracts",
+      "name": "Checkbook NYC NYCHA contracts",
+      "disposition": "publicly_represented",
+      "reason": "Source-qualified observations counted in the served procurement population.",
+      "evidence": {
+        "procurement": {
+          "source_system": "checkbook_nycha_contracts",
+          "served_observations": 1,
+          "declared_input_rows": 1,
+          "specimen": {
+            "source_observation_ref": "checkbook_nycha_contracts:contract:BA2335819:Agreement",
+            "procurement_id": "procurement:contract:BA2335819",
+            "canonical_route": "/procurements/procurement%3Acontract%3ABA2335819"
+          }
+        }
+      }
+    },
+    {
+      "source_id": "checkbook-spending",
+      "name": "Checkbook NYC spending transactions",
+      "disposition": "publicly_represented",
+      "reason": "Declared source of a counted served population.",
+      "evidence": {
+        "units": [
+          {
+            "unit_id": "contract-payments",
+            "route": "/browse/contracts/",
+            "served_records": 28448,
+            "evidence_vintage": "2026-08-26T00:00:00.000Z"
+          }
+        ]
+      }
+    },
+    {
+      "source_id": "city-clerk-elobbyist",
+      "name": "City Clerk eLobbyist Data",
+      "disposition": "context_only",
+      "reason": "Lobbying edges shown on official profiles; officials are counted once as their own record unit.",
+      "evidence": {
+        "registry": {
+          "status": "live",
+          "delivery_tier": "edge-materialized",
+          "used_for": "Org → Lobbyist → Official influence edges on official profiles via person hub name keys (exact unique person-name join; no fuzzy public edges)."
+        }
+      }
+    },
+    {
+      "source_id": "city-council-committee-membership",
+      "name": "City Council Committee Membership (1999 to 2025)",
+      "disposition": "context_only",
+      "reason": "Committee membership evidence on official profiles; the served membership population is counted once from the committee graph.",
+      "evidence": {
+        "registry": {
+          "status": "live",
+          "delivery_tier": "edge-materialized",
+          "used_for": "Exact-key committee membership evidence on official profiles."
+        }
+      }
+    },
+    {
+      "source_id": "city-council-district-boundaries",
+      "name": "City Council Districts",
+      "disposition": "context_only",
+      "reason": "Resolves council districts for geocoded pins and location filters; a boundary is not a served record unit.",
+      "evidence": {
+        "registry": {
+          "status": "build-time",
+          "delivery_tier": "inline-at-build",
+          "used_for": "Resolve council districts for geocoded place pins and location-aware Land filters (point-in-polygon at build/request time against simplified polygons; no live GIS)."
+        }
+      }
+    },
+    {
+      "source_id": "city-council-meetings-open-data",
+      "name": "City Council Meetings (Open Data)",
+      "disposition": "not_served",
+      "reason": "Registry status is disabled and the contract records no current product output for modern notice detail.",
+      "evidence": {
+        "registry": {
+          "status": "disabled",
+          "delivery_tier": "edge-materialized",
+          "used_for": "No current product output for modern notice detail. Measured as an event-identity recon source only (no vote or agenda-item columns)."
+        }
+      }
+    },
+    {
+      "source_id": "city-record",
+      "name": "City Record Online",
+      "disposition": "publicly_represented",
+      "reason": "Declared source of a counted served population.",
+      "evidence": {
+        "units": [
+          {
+            "unit_id": "public-meetings",
+            "route": "/browse/meetings/",
+            "served_records": 522,
+            "evidence_vintage": "2026-08-15T02:48:42.018Z"
+          },
+          {
+            "unit_id": "properties",
+            "route": "/browse/property/",
+            "served_records": 133,
+            "evidence_vintage": "2026-08-02T13:13:26.639Z"
+          },
+          {
+            "unit_id": "rules",
+            "route": "/browse/rules/",
+            "served_records": 100,
+            "evidence_vintage": "2026-08-09T14:40:29.151Z"
+          },
+          {
+            "unit_id": "staffing-notices",
+            "route": "/browse/staffing/",
+            "served_records": 80,
+            "evidence_vintage": "2026-08-03T20:08:29.261Z"
+          }
+        ]
+      }
+    },
+    {
+      "source_id": "citywide-payroll",
+      "name": "Citywide Payroll Data",
+      "disposition": "unresolved",
+      "reason": "Serves title and pay history in the staffing experience, but no first-class served-population artifact declares this contract as its source, so no served count is established.",
+      "evidence": {
+        "registry": {
+          "status": "live",
+          "delivery_tier": "edge-materialized",
+          "used_for": "Title and pay history in the Staffing experience and source-qualified institutional payroll context on exact Community Board dossiers."
+        }
+      }
+    },
+    {
+      "source_id": "civil-service-list-certification",
+      "name": "Civil Service List Certification",
+      "disposition": "context_only",
+      "reason": "Certification edges between exams and agency identities; exams are counted once as their own record unit.",
+      "evidence": {
+        "registry": {
+          "status": "live",
+          "delivery_tier": "edge-materialized",
+          "used_for": "Publisher-issued certified_to_agency edges between civil-service exams and canonical agency identities, with aggregate certification, request, vacancy, and source-record counts. This relation is distinct from appointing_agency."
+        }
+      }
+    },
+    {
+      "source_id": "civil-service-titles",
+      "name": "NYC Civil Service Titles",
+      "disposition": "context_only",
+      "reason": "Canonical title-code identities backing the alias registry; an identity registry is not a served record unit.",
+      "evidence": {
+        "registry": {
+          "status": "build-time",
+          "delivery_tier": "inline-at-build",
+          "used_for": "Canonical civil-service title-code identities backing the exact-label alias registry."
+        }
+      }
+    },
+    {
+      "source_id": "community-district-boundaries",
+      "name": "Community Districts",
+      "disposition": "publicly_represented",
+      "reason": "Declared source of a counted served population.",
+      "evidence": {
+        "units": [
+          {
+            "unit_id": "community-boards",
+            "route": "/browse/",
+            "served_records": 59,
+            "evidence_vintage": "2026-05-26T00:00:00.000Z"
+          }
+        ]
+      }
+    },
+    {
+      "source_id": "dcas-annual-exam-outcomes",
+      "name": "DCAS annual civil-service exam outcome aggregates",
+      "disposition": "context_only",
+      "reason": "Aggregate post-cycle outcomes joined onto exam cards; exams are counted once as their own record unit.",
+      "evidence": {
+        "registry": {
+          "status": "build-time",
+          "delivery_tier": "inline-at-build",
+          "used_for": "Aggregate post-cycle outcomes (eligible-list size, hiring-pool certifications, hire counts) joined by exam_number onto deadline-first exam cards and exam detail in the precomputed staffing guide."
+        }
+      }
+    },
+    {
+      "source_id": "dcas-eligible-list-utilization",
+      "name": "Annual City Council Report on Eligible List Utilization (Local Law 50 of 2004)",
+      "disposition": "context_only",
+      "reason": "List utilization evidence on exam cards and exam documents; exams are counted once as their own record unit.",
+      "evidence": {
+        "registry": {
+          "status": "build-time",
+          "delivery_tier": "inline-at-build",
+          "used_for": "Agency/list utilization evidence on staffing exam cards and exam documents, including appointed, certified, and removal counts."
+        }
+      }
+    },
+    {
+      "source_id": "dcas-exam-notices",
+      "name": "DCAS open-competitive exam schedule and Notices of Examination",
+      "disposition": "context_only",
+      "reason": "Application windows, fees and notice links shown on exam cards; exams are counted once as their own record unit.",
+      "evidence": {
+        "registry": {
+          "status": "manual",
+          "delivery_tier": "inline-at-build",
+          "used_for": "Current open-competitive application windows, qualifications, fees, fee waivers, Notice of Examination PDF links, and the OASys application handoff."
+        }
+      }
+    },
+    {
+      "source_id": "dcas-vehicle-auction-list",
+      "name": "DCAS Vehicle Auction List",
+      "disposition": "unresolved",
+      "reason": "Serves the property open-now surface, but its rows are deliberately excluded from parcel chains and map counts and no first-class served-population artifact declares it, so no served count is established.",
+      "evidence": {
+        "registry": {
+          "status": "build-time",
+          "delivery_tier": "edge-materialized",
+          "used_for": "Official fleet-auction inventory leading the Property open-now surface. Rows are excluded from parcel chains, BBL joins, map counts, parcel exports, and City Record saved-watch claims."
+        }
+      }
+    },
+    {
+      "source_id": "dcp-nta2020-boundaries",
+      "name": "2020 Neighborhood Tabulation Areas",
+      "disposition": "not_served",
+      "reason": "Backstage ingestion and crosswalk quality assurance only; the registry states this is not a resident-facing identity or filter.",
+      "evidence": {
+        "registry": {
+          "status": "build-time",
+          "delivery_tier": "inline-at-build",
+          "used_for": "Backstage-only NTA 2020 ingestion, point-resolution canaries, and crosswalk QA; it is not a canonical neighborhood identity or resident-facing filter."
+        }
+      }
+    },
+    {
+      "source_id": "dcp-police-precinct-boundaries",
+      "name": "Police Precinct Boundaries",
+      "disposition": "not_served",
+      "reason": "Backstage ingestion and point-resolution canaries only; the registry states no resident-facing scope or filter is enabled.",
+      "evidence": {
+        "registry": {
+          "status": "build-time",
+          "delivery_tier": "inline-at-build",
+          "used_for": "Backstage-only police-precinct ingestion, native-key QA, and point-resolution canaries; no resident-facing scope or filter is enabled."
+        }
+      }
+    },
+    {
+      "source_id": "dob-certificate-of-occupancy",
+      "name": "DOB Certificate Of Occupancy",
+      "disposition": "context_only",
+      "reason": "Certificate evidence inside the observed parcel biography; properties are counted once as their own record unit.",
+      "evidence": {
+        "registry": {
+          "status": "live",
+          "delivery_tier": "edge-materialized",
+          "used_for": "Certificate of Occupancy evidence in the observed parcel biography."
+        }
+      }
+    },
+    {
+      "source_id": "dob-now-job-filings",
+      "name": "DOB NOW job application filings",
+      "disposition": "context_only",
+      "reason": "Current demolition-filing verification against an already served record; no independent served record population.",
+      "evidence": {
+        "registry": {
+          "status": "live",
+          "delivery_tier": "live-only",
+          "used_for": "Current demolition-filing verification."
+        }
+      }
+    },
+    {
+      "source_id": "dof-tax-lien-sale-lists",
+      "name": "DOF Tax Lien Sale Lists",
+      "disposition": "context_only",
+      "reason": "Per-parcel lien progression and cycle rates shown on property surfaces; properties are counted once as their own record unit.",
+      "evidence": {
+        "registry": {
+          "status": "live",
+          "delivery_tier": "inline-at-build",
+          "used_for": "Per-BBL tax-lien notice progression, borough and NTA cycle counts, and historical stage-to-sale base rates."
+        }
+      }
+    },
+    {
+      "source_id": "doing-business-entities",
+      "name": "Doing Business Search - Entities",
+      "disposition": "context_only",
+      "reason": "Vendor identity enrichment on vendor profiles; vendors appear through the procurement records already counted.",
+      "evidence": {
+        "registry": {
+          "status": "live",
+          "delivery_tier": "edge-materialized",
+          "used_for": "Vendor identity enrichment on vendor profiles: Doing Business Search listing, ownership structure, organization phone, and doing-business start date when organization_name stems match a City Record award vendor."
+        }
+      }
+    },
+    {
+      "source_id": "dsny-district-boundaries",
+      "name": "DSNY Districts",
+      "disposition": "not_served",
+      "reason": "Backstage ingestion and congruence drift measurement only; no resident-facing scope is published.",
+      "evidence": {
+        "registry": {
+          "status": "build-time",
+          "delivery_tier": "inline-at-build",
+          "used_for": "Backstage-only sanitation-district ingestion, MapPLUTO QA, and DSNY-to-Community-District congruence drift measurement."
+        }
+      }
+    },
+    {
+      "source_id": "expense-budget",
+      "name": "NYC Expense Budget",
+      "disposition": "context_only",
+      "reason": "Agency budget codes and adopted totals used as agency context; agencies are counted once as their own record unit.",
+      "evidence": {
+        "registry": {
+          "status": "build-time",
+          "delivery_tier": "inline-at-build",
+          "used_for": "Agency budget codes and adopted budget totals."
+        }
+      }
+    },
+    {
+      "source_id": "ibo-fiscal-history",
+      "name": "NYC Independent Budget Office fiscal history",
+      "disposition": "context_only",
+      "reason": "Fiscal-year expenditure and staffing context inside the agency fiscal projection. The registry records this source as a family of two component workbooks; a component artifact is not a searchable source, and the family is not two.",
+      "evidence": {
+        "registry": {
+          "status": "build-time",
+          "delivery_tier": "inline-at-build",
+          "used_for": "Authoritative IBO agency-expenditure and fiscal-year-end staffing context in the agency fiscal context projection."
+        }
+      }
+    },
+    {
+      "source_id": "legacy-dob-job-filings",
+      "name": "Legacy DOB job application filings",
+      "disposition": "context_only",
+      "reason": "Legacy demolition-filing verification against an already served record; no independent served record population.",
+      "evidence": {
+        "registry": {
+          "status": "live",
+          "delivery_tier": "live-only",
+          "used_for": "Legacy demolition-filing verification."
+        }
+      }
+    },
+    {
+      "source_id": "mandatory-inclusionary-housing",
+      "name": "Mandatory Inclusionary Housing",
+      "disposition": "context_only",
+      "reason": "Housing status evidence on land-use projects; projects are counted once as their own record unit.",
+      "evidence": {
+        "registry": {
+          "status": "live",
+          "delivery_tier": "edge-materialized",
+          "used_for": "Exact ZAP project evidence for Mandatory Inclusionary Housing status, adoption date, map, community district, and affordability option."
+        }
+      }
+    },
+    {
+      "source_id": "mappluto",
+      "name": "MapPLUTO",
+      "disposition": "context_only",
+      "reason": "Tax-lot attribution and bounded parcel geometry behind property and land surfaces; a parcel reference layer is not a served record unit.",
+      "evidence": {
+        "registry": {
+          "status": "build-time",
+          "delivery_tier": "inline-at-build",
+          "used_for": "Official attribution for tax-lot map context, retained BBL→centroid pins for Land, and — bounded to the exact single-BBL project subset — a retained BBL→parcel-polygon lookup for the optional Land project-geometry field."
+        }
+      }
+    },
+    {
+      "source_id": "mocs-ll1-plans",
+      "name": "MOCS Local Law 1 M/WBE procurement plans",
+      "disposition": "unresolved",
+      "reason": "Committed procurement-planning rows exist, but no first-class served-population artifact declares this contract as its source, so no served count is established.",
+      "evidence": {
+        "registry": {
+          "status": "manual",
+          "delivery_tier": "inline-at-build",
+          "used_for": "Committed cityscroll.procurement_planning.v1 source rows. Identifier-bearing plan→PASSPort prefix join re-measured 2026-08-11 clears usefulness and precision; receipt-backed bridge edges feed the Money planning phase. Capital paths remain stopped."
+        }
+      }
+    },
+    {
+      "source_id": "mocs-ll63-plans",
+      "name": "MOCS Local Law 63 procurement plans",
+      "disposition": "unresolved",
+      "reason": "Committed procurement-planning rows exist, but no first-class served-population artifact declares this contract as its source, so no served count is established.",
+      "evidence": {
+        "registry": {
+          "status": "manual",
+          "delivery_tier": "inline-at-build",
+          "used_for": "Committed cityscroll.procurement_planning.v1 source rows. Identifier-bearing plan→PASSPort prefix join re-measured 2026-08-11 clears usefulness and precision; receipt-backed bridge edges feed the Money planning phase. Capital paths remain stopped."
+        }
+      }
+    },
+    {
+      "source_id": "mta-bid-results",
+      "name": "MTA Construction & Development bid results",
+      "disposition": "publicly_represented",
+      "reason": "Source-qualified observations counted in the served procurement population.",
+      "evidence": {
+        "procurement": {
+          "source_system": "mta_bid_results",
+          "served_observations": 1,
+          "declared_input_rows": 1,
+          "specimen": {
+            "source_observation_ref": "mta_bid_results:mta-bid-results:AW-9Y:TDP-ASSOCIATES-INC",
+            "procurement_id": "procurement:solicitation:AW9Y",
+            "canonical_route": "/procurements/procurement%3Asolicitation%3AAW9Y"
+          }
+        }
+      }
+    },
+    {
+      "source_id": "mta-current-opportunities",
+      "name": "MTA Construction & Development current opportunities",
+      "disposition": "publicly_represented",
+      "reason": "Source-qualified observations counted in the served procurement population.",
+      "evidence": {
+        "procurement": {
+          "source_system": "mta_current_opportunities",
+          "served_observations": 1,
+          "declared_input_rows": 1,
+          "specimen": {
+            "source_observation_ref": "mta_current_opportunities:mta-current:S48020:0000541781",
+            "procurement_id": "procurement:solicitation:S48020",
+            "canonical_route": "/procurements/procurement%3Asolicitation%3AS48020"
+          }
+        }
+      }
+    },
+    {
+      "source_id": "non-council-board-minutes",
+      "name": "Community board and borough president minutes",
+      "disposition": "publicly_represented",
+      "reason": "Declared source of a counted served population.",
+      "evidence": {
+        "units": [
+          {
+            "unit_id": "board-meetings",
+            "route": "/browse/meetings/",
+            "served_records": 395,
+            "evidence_vintage": "2026-08-25T01:57:25.541Z"
+          }
+        ]
+      }
+    },
+    {
+      "source_id": "nyc-administrative-code",
+      "name": "NYC Administrative Code (American Legal Publishing bulk XML)",
+      "disposition": "publicly_represented",
+      "reason": "Declared source of a counted served population.",
+      "evidence": {
+        "units": [
+          {
+            "unit_id": "agency-obligations",
+            "route": "/browse/",
+            "served_records": 6683,
+            "evidence_vintage": "2026-08-07T00:00:00.000Z"
+          }
+        ]
+      }
+    },
+    {
+      "source_id": "nyc-agencies",
+      "name": "NYC Agencies and Governance Organizations",
+      "disposition": "publicly_represented",
+      "reason": "Declared source of a counted served population.",
+      "evidence": {
+        "units": [
+          {
+            "unit_id": "agencies",
+            "route": "/browse/people/",
+            "served_records": 87,
+            "evidence_vintage": "2026-08-05T20:50:48.662Z"
+          }
+        ]
+      }
+    },
+    {
+      "source_id": "nyc-council-legistar",
+      "name": "NYC Council Legistar API",
+      "disposition": "publicly_represented",
+      "reason": "Declared source of a counted served population.",
+      "evidence": {
+        "units": [
+          {
+            "unit_id": "meeting-outcomes",
+            "route": "/browse/meetings/",
+            "served_records": 16,
+            "evidence_vintage": "2026-08-10T13:08:13.019Z"
+          },
+          {
+            "unit_id": "committee-memberships",
+            "route": "/browse/people/",
+            "served_records": 1142,
+            "evidence_vintage": "2026-08-12T14:37:51.000Z"
+          }
+        ]
+      }
+    },
+    {
+      "source_id": "nyc-council-members",
+      "name": "NYC Council Members (1999 to Present)",
+      "disposition": "publicly_represented",
+      "reason": "Declared source of a counted served population.",
+      "evidence": {
+        "units": [
+          {
+            "unit_id": "officials",
+            "route": "/browse/people/",
+            "served_records": 215,
+            "evidence_vintage": "2026-08-11T19:21:19.284Z"
+          },
+          {
+            "unit_id": "organizations",
+            "route": "/browse/people/",
+            "served_records": 1370,
+            "evidence_vintage": "2026-08-11T19:21:19.284Z"
+          }
+        ]
+      }
+    },
+    {
+      "source_id": "nyc-geosearch",
+      "name": "NYC GeoSearch",
+      "disposition": "context_only",
+      "reason": "Build-time geocoding of bounded snapshots; a geocoder is not a served record unit.",
+      "evidence": {
+        "registry": {
+          "status": "live",
+          "delivery_tier": "edge-materialized",
+          "used_for": "Build-time geocoding of bounded hearing and contract-action snapshots."
+        }
+      }
+    },
+    {
+      "source_id": "nyc-jobs-postings",
+      "name": "Jobs NYC Postings",
+      "disposition": "context_only",
+      "reason": "Title-code aliases and agency observations for coverage measurement; no independent served record population.",
+      "evidence": {
+        "registry": {
+          "status": "build-time",
+          "delivery_tier": "inline-at-build",
+          "used_for": "Exact-label title-code aliases and agency observations for title-family coverage measurement."
+        }
+      }
+    },
+    {
+      "source_id": "nyc-property-address-directory",
+      "name": "NYC Property Address Directory",
+      "disposition": "context_only",
+      "reason": "Address to parcel resolution without request-time publisher calls; an address directory is not a served record unit.",
+      "evidence": {
+        "registry": {
+          "status": "build-time",
+          "delivery_tier": "inline-at-build",
+          "used_for": "Exact full-address to BBL resolution without request-time publisher calls."
+        }
+      }
+    },
+    {
+      "source_id": "nyc-rules-rss",
+      "name": "NYC Rules RSS feed",
+      "disposition": "context_only",
+      "reason": "Rule lifecycle enrichment joined to already served rule records; rules are counted once as their own record unit.",
+      "evidence": {
+        "registry": {
+          "status": "live",
+          "delivery_tier": "edge-materialized",
+          "used_for": "Rule lifecycle enrichment: official comment/adoption page links, comment deadlines, hearing dates, adoption and effective dates joined to City Record Agency Rules notices."
+        }
+      }
+    },
+    {
+      "source_id": "nycida-build-nyc-projects",
+      "name": "NYCIDA/Build NYC subsidy project records",
+      "disposition": "unresolved",
+      "reason": "Serves a separate subsidy timeline reader, but no first-class served-population artifact declares this contract as its source, so no served count is established.",
+      "evidence": {
+        "registry": {
+          "status": "live",
+          "delivery_tier": "inline-at-build",
+          "used_for": "A versioned NYCEDC project payload and evidence-gated City Record join bridge for a separate subsidy timeline reader."
+        }
+      }
+    },
+    {
+      "source_id": "nys-contract-reporter",
+      "name": "New York State Contract Reporter",
+      "disposition": "publicly_represented",
+      "reason": "Source-qualified observations counted in the served procurement population.",
+      "evidence": {
+        "procurement": {
+          "source_system": "nys_contract_reporter",
+          "served_observations": 1,
+          "declared_input_rows": 1,
+          "specimen": {
+            "source_observation_ref": "nys_contract_reporter:contract-reporter:2138505",
+            "procurement_id": "procurement:contract_reporter_number:2138505",
+            "canonical_route": "/procurements/procurement%3Acontract_reporter_number%3A2138505"
+          }
+        }
+      }
+    },
+    {
+      "source_id": "ocp-current-solicitations",
+      "name": "Current Solicitations (OCP / Open Data)",
+      "disposition": "context_only",
+      "reason": "Solicitation-stage enrichment joined to already served procurement records.",
+      "evidence": {
+        "registry": {
+          "status": "live",
+          "delivery_tier": "edge-materialized",
+          "used_for": "Procurement lifecycle solicitation-stage enrichment: due dates and contact fields joined to City Record notices by request_id or PIN. Package document links when present (historical GetFile only on modern measurement); not a modern document source."
+        }
+      }
+    },
+    {
+      "source_id": "ocp-recent-contract-awards",
+      "name": "Recent Contract Awards (OCP)",
+      "disposition": "publicly_represented",
+      "reason": "Declared source of a counted served population.",
+      "evidence": {
+        "units": [
+          {
+            "unit_id": "contract-awards",
+            "route": "/browse/contracts/",
+            "served_records": 53600,
+            "evidence_vintage": "2026-09-05T00:00:00.000Z"
+          }
+        ]
+      }
+    },
+    {
+      "source_id": "passport-public-contracts",
+      "name": "PASSPort Public contracts",
+      "disposition": "publicly_represented",
+      "reason": "Source-qualified observations counted in the served procurement population.",
+      "evidence": {
+        "procurement": {
+          "source_system": "passport_public_contracts",
+          "served_observations": 12770,
+          "declared_input_rows": 12782,
+          "specimen": {
+            "source_observation_ref": "passport_public_contracts:contract:85719G8260KXLR001:4543333",
+            "procurement_id": "procurement:contract:20211201861",
+            "canonical_route": "/procurements/procurement%3Acontract%3A20211201861"
+          }
+        }
+      }
+    },
+    {
+      "source_id": "passport-public-rfx",
+      "name": "PASSPort Public solicitations (RFx)",
+      "disposition": "not_served",
+      "reason": "Declared available in the served procurement population and observed with no rows at this vintage.",
+      "evidence": {
+        "procurement": {
+          "source_system": "passport_public_rfx",
+          "served_observations": 0,
+          "declared_input_rows": 0
+        }
+      }
+    },
+    {
+      "source_id": "suitability-city-owned-leased-property-ll48",
+      "name": "Suitability of City-Owned and Leased Property for Urban Agriculture (LL48)",
+      "disposition": "context_only",
+      "reason": "Suitability evidence on property parcel biographies; properties are counted once as their own record unit.",
+      "evidence": {
+        "registry": {
+          "status": "live",
+          "delivery_tier": "edge-materialized",
+          "used_for": "Exact-BBL city-owned and leased property suitability evidence on Property parcel biographies."
+        }
+      }
+    },
+    {
+      "source_id": "ulurp-recommendation-pdfs",
+      "name": "ULURP Recommendation PDFs",
+      "disposition": "unresolved",
+      "reason": "Serves the land recommendation panel behind a usefulness gate, but no first-class served-population artifact declares this contract as its source.",
+      "evidence": {
+        "registry": {
+          "status": "live",
+          "delivery_tier": "live-only",
+          "used_for": "Land detail Borough President recommendation panel via site/data/ulurp_recommendations_lookup.json when the recommendation-row usefulness gate clears."
+        }
+      }
+    },
+    {
+      "source_id": "ulurp-recommendations",
+      "name": "ULURP Recommendations (Borough President positions)",
+      "disposition": "unresolved",
+      "reason": "Serves the land recommendation panel behind a usefulness gate, but no first-class served-population artifact declares this contract as its source.",
+      "evidence": {
+        "registry": {
+          "status": "live",
+          "delivery_tier": "live-only",
+          "used_for": "Land detail Borough President recommendation panel via site/data/ulurp_recommendations_lookup.json when the recommendation-row usefulness gate clears."
+        }
+      }
+    },
+    {
+      "source_id": "zap-api-outcomes",
+      "name": "Zoning Application Portal — project outcomes (Planning Labs API)",
+      "disposition": "publicly_represented",
+      "reason": "Declared source of a counted served population.",
+      "evidence": {
+        "units": [
+          {
+            "unit_id": "land-hearings",
+            "route": "/browse/zoning/",
+            "served_records": 182,
+            "evidence_vintage": "2026-08-23T08:51:36.144Z"
+          }
+        ]
+      }
+    },
+    {
+      "source_id": "zap-bbl",
+      "name": "Zoning Application Portal — tax lots",
+      "disposition": "context_only",
+      "reason": "Tax-lot joins from land-use projects to parcels; projects and properties are each counted once as their own record unit.",
+      "evidence": {
+        "registry": {
+          "status": "live",
+          "delivery_tier": "edge-materialized",
+          "used_for": "Tax-lot joins from ZAP projects to MapPLUTO."
+        }
+      }
+    },
+    {
+      "source_id": "zap-projects",
+      "name": "Zoning Application Portal — projects",
+      "disposition": "publicly_represented",
+      "reason": "Declared source of a counted served population.",
+      "evidence": {
+        "units": [
+          {
+            "unit_id": "land-projects",
+            "route": "/browse/zoning/",
+            "served_records": 238,
+            "evidence_vintage": "2026-08-23T07:59:09.786Z"
+          }
+        ]
+      }
+    }
+  ]
+}

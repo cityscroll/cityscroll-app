@@ -4,13 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Stats · CityScroll</title>
-<meta name="description" content="CityScroll coverage totals: indexed notices, public sources, language coverage, update recency, and the civic records available.">
+<meta name="description" content="What CityScroll actually serves: records counted per section, each with its record type, counting rule and evidence date.">
 <meta name="robots" content="index,follow">
 <link rel="canonical" href="https://cityscroll.org/stats.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="CityScroll">
 <meta property="og:title" content="Stats · CityScroll">
-<meta property="og:description" content="See what public records CityScroll covers and how current that coverage is.">
+<meta property="og:description" content="See which public records CityScroll serves, how each set is counted, and how current the evidence behind it is.">
 <meta property="og:url" content="https://cityscroll.org/stats.html">
 <meta property="og:image" content="https://cityscroll.org/assets/brand/cityscroll-social-card.png">
 <meta property="og:image:alt" content="CityScroll — NYC’s public record, linked">
@@ -50,13 +50,26 @@
   .stat .d{font:14px/1.5 var(--ui);color:var(--ink-soft);margin-top:8px}
   .stat .stat-asof{padding-top:8px;border-top:1px solid var(--rule);color:var(--muted);font-size:12px}
   .src{font:14px/1.7 var(--ui);color:var(--ink-soft)}
+  .cov-domain{margin-top:26px}
+  .cov-domain h3{font-family:var(--font-sc);font-size:13px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink);margin:0 0 8px}
+  .cov-scroll{overflow-x:auto}
+  table.cov{width:100%;border-collapse:collapse;font:14px/1.5 var(--ui)}
+  table.cov caption{text-align:start;color:var(--muted);font-size:12px;padding-bottom:6px}
+  table.cov th,table.cov td{text-align:start;padding:8px 10px;border-bottom:1px solid var(--rule);vertical-align:top}
+  table.cov th{font-family:var(--font-sc);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600;white-space:nowrap}
+  table.cov th.rowname{font-weight:400;font-size:14px;text-transform:none;letter-spacing:normal;white-space:normal;color:var(--ink)}
+  table.cov td.num{text-align:end;font-variant-numeric:tabular-nums;white-space:nowrap}
+  table.cov tbody tr.sub :is(td,th){color:var(--ink-soft);font-size:13px}
+  table.cov tbody tr.sub th.rowname{color:var(--ink-soft);font-size:13px}
+  table.cov tbody tr.sub :is(td,th):first-child{padding-inline-start:26px}
+  .cov-state{display:inline-block;font-family:var(--font-sc);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
   #msg{font:14px/1.6 var(--ui);color:var(--muted);min-height:1.5em;text-align:center}
   .foot{margin-top:40px;border-top:1px solid var(--rule);padding-top:14px;font:13px/1.6 var(--ui);color:var(--muted);text-align:center}
   .lang-switcher{position:absolute;top:12px;inset-inline-end:22px;z-index:6;display:flex;align-items:center;gap:.35rem;margin:0;justify-content:flex-end}
   .lang-select{font:600 12px/1.2 ui-sans-serif,system-ui,sans-serif;padding:8px 28px 8px 10px;min-height:36px;min-width:7.5rem;max-width:12rem;border:1px solid var(--rule-strong);border-radius:8px;background:var(--card);color:var(--ink);cursor:pointer;appearance:auto}
   .lang-notice{font:12px/1.4 var(--ui);color:var(--muted);text-align:center;margin-block-start:4px;padding-inline:22px}
   .skip{position:absolute;left:-9999px;top:0;z-index:99;background:var(--ink);color:#fff;padding:11px 18px;border-radius:0 0 9px 0;font:600 13px/1 var(--ui);text-decoration:none}.skip:focus{left:0}
-  :is(a,button,select,input,textarea,summary):focus-visible{outline:2px solid var(--oxblood);outline-offset:2px}
+  :is(a,button,select,input,textarea,summary,.cov-scroll):focus-visible{outline:2px solid var(--oxblood);outline-offset:2px}
   :lang(zh-Hans),:lang(ko),:lang(bn),:lang(ar),:lang(ur){letter-spacing:normal!important;text-transform:none!important}
   @media(max-width:560px){.wrap{padding-inline:14px}.grid{grid-template-columns:1fr}.lang-switcher{position:static;margin-top:12px;justify-content:center}.stat{padding:16px}.lede{text-align:start}}
 </style>
@@ -80,61 +93,173 @@
   <div class="cr-rule cr-rule--bottom"></div>
   <a class="backhome" href="index.html" data-i18n="back_to_crol">← Back to CityScroll</a>
 </header>
-<main id="main" tabindex="-1" data-stats-schema="public-stats.v2">
+<main id="main" tabindex="-1" data-coverage-schema="cityscroll.served_coverage_snapshot.v1">
   <p class="lede" data-i18n="stats_public_lede">See what CityScroll has and how new it is.</p>
   <p id="msg" role="status" data-i18n="stats_loading">Loading coverage…</p>
   <h2 data-i18n="stats_h_general">Key facts</h2>
   <div class="grid" id="grid">
-    <article class="stat"><div class="n" id="s-notices">–</div><div class="l" data-i18n="stats_public_notices_label">Published notice rows</div><div class="d" data-i18n="stats_public_notices_desc">Rows in the indexed notice data, from the first date to the last.</div><div class="d stat-asof" data-stat-asof></div></article>
-    <article class="stat"><div class="n" id="s-sources">–</div><div class="l" data-i18n="stats_public_sources_label">Main public data sets</div><div class="d" data-i18n="stats_public_sources_desc">Public data for news, jobs, land, deals, and pay.</div><div class="d stat-asof" data-stat-asof></div></article>
+    <article class="stat"><div class="n" id="s-sources">–</div><div class="l" data-i18n="stats_sources_label">Sources in the served product</div><div class="d" data-i18n="stats_sources_desc">Registered public sources with records CityScroll actually serves. Not the number of sources it collects from.</div><div class="d stat-asof" data-stat-asof></div></article>
+    <article class="stat"><div class="n" id="s-recordsets">–</div><div class="l" data-i18n="stats_record_sets_label">Record sets counted</div><div class="d" data-i18n="stats_record_sets_desc">Separate served record sets listed below. They count different things and are never added together.</div><div class="d stat-asof" data-stat-asof></div></article>
     <article class="stat"><div class="n" id="s-languages">–</div><div class="l" data-i18n="stats_public_languages_label">Site languages</div><div class="d" data-i18n="stats_public_languages_desc">The site has English and 10 more languages. Source text stays in English. A reader may ask for a translation.</div><div class="d stat-asof" data-stat-asof></div></article>
-    <article class="stat"><div class="n" id="s-current">–</div><div class="l" data-i18n="stats_public_current_label">Latest publication date</div><div class="d" data-i18n="stats_public_current_desc">The most recent date in the indexed notice data.</div><div class="d stat-asof" data-stat-asof></div></article>
+    <article class="stat"><div class="n" id="s-evidence">–</div><div class="l" data-i18n="stats_evidence_label">Evidence dated</div><div class="d" data-i18n="stats_evidence_desc">Oldest and newest evidence date among the record sets below. No date is taken from a publisher clock or from the build.</div><div class="d stat-asof" data-stat-asof></div></article>
   </div>
+  <h2 data-i18n="stats_h_coverage">Served coverage</h2>
+  <p class="src" data-i18n="stats_p_coverage">Each row counts the records published by the page it links to, using that page’s own record identity. A record that appears twice in one set is counted once.</p>
+  <div id="coverage"></div>
   <h2 data-i18n="stats_public_method_heading">What is private</h2>
-  <p class="src" data-i18n-html="stats_public_method_html">These facts count records, not people. Visits, search, watches, and email totals stay private. Read the <a href="api.html#upstream">source notes</a> or open the <a href="https://api.cityscroll.org/stats">public JSON</a>.</p>
+  <p class="src" data-i18n-html="stats_coverage_method_html">These facts count records, not people. A registered source is not the same as a searchable one, and a collected total is not a served total. Visits, search, watches, and email totals stay private. Read the <a href="api.html#upstream">source notes</a> or open the <a href="https://api.cityscroll.org/stats">public JSON</a>.</p>
 </main>
 <footer class="foot"><p data-i18n-html="stats_foot_html">Raw JSON: <a href="https://api.cityscroll.org/stats">api.cityscroll.org/stats</a> (cached ~15 min) · <a href="about.html">About</a> · <a href="index.html">Home</a></p></footer>
 </div>
 <script>
 (() => {
   const msg = document.getElementById("msg");
+  const coverage = document.getElementById("coverage");
+  const schema = document.getElementById("main").dataset.coverageSchema;
   const curLoc = () => (window.LANG_META && window.LANG_META[window.LANG] || {}).intlDate || "en-US";
   const number = (value) => value == null ? "–" : Number(value).toLocaleString(curLoc());
-  const date = (value) => value ? new Date(value + "T00:00:00Z").toLocaleDateString(curLoc(), { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" }) : "–";
+  const day = (value) => {
+    if (!value) return null;
+    const parsed = new Date(value);
+    return Number.isFinite(parsed.getTime())
+      ? parsed.toLocaleDateString(curLoc(), { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" })
+      : null;
+  };
+  // Site languages are the shipping list this page already loads, not a number typed twice.
+  const siteLanguages = 1 + ((window.SHIPPING_LANGS || []).length);
+
   let data = null;
   let state = "loading";
-  function paint() {
-    document.getElementById("s-notices").textContent = number(data?.city_record?.notice_count);
-    document.getElementById("s-sources").textContent = number(data?.sources?.primary_system_count);
-    document.getElementById("s-languages").textContent = number(data?.language_coverage?.site_languages);
-    document.getElementById("s-current").textContent = date(data?.city_record?.latest_notice_date);
-    if (state === "ready") msg.textContent = t("stats_public_asof", { date: new Date(data.generated_at).toLocaleString(curLoc()) });
-    else if (state === "partial") msg.textContent = t("stats_public_corpus_unavailable");
-    else if (state === "failed") msg.textContent = t("stats_public_unreachable");
-    else msg.textContent = t("stats_loading");
-    const stamp = data?.generated_at ? t("stats_public_asof", { date: new Date(data.generated_at).toLocaleString(curLoc()) }) : t("stats_metric_unavailable");
-    document.querySelectorAll("[data-stat-asof]").forEach((el) => { el.textContent = stamp; });
+
+  const el = (tag, className, text) => {
+    const node = document.createElement(tag);
+    if (className) node.className = className;
+    if (text != null) node.textContent = text;
+    return node;
+  };
+
+  function stateLabel(unitState) {
+    return t("coverage_state_" + unitState);
   }
+
+  function unitRow(unit, isSub) {
+    const row = el("tr", isSub ? "sub" : null);
+    const name = el("th", "rowname", t(unit.record_unit_key));
+    name.scope = "row";
+    row.append(name);
+
+    const count = el("td", "num");
+    if (unit.state === "unavailable" || unit.value == null) count.append(el("span", "cov-state", stateLabel(unit.state)));
+    else count.textContent = number(unit.value);
+    row.append(count);
+
+    const source = el("td", null, unit.source_name || t("stats_coverage_multi_source"));
+    // Source titles are official published names and keep the existing source-title policy.
+    if (unit.source_name) source.lang = "en";
+    row.append(source);
+
+    row.append(el("td", null, unit.counting_rule_key ? t(unit.counting_rule_key) : "—"));
+
+    const asOf = el("td", null);
+    const dated = day(unit.evidence_vintage);
+    if (dated) asOf.textContent = unit.state === "retained" ? t("coverage_state_retained") + " · " + dated : dated;
+    else asOf.append(el("span", "cov-state", t("coverage_state_unavailable")));
+    row.append(asOf);
+    return row;
+  }
+
+  function domainSection(domain) {
+    const section = el("section", "cov-domain");
+    const heading = el("h3");
+    const link = document.createElement("a");
+    link.href = domain.route;
+    link.textContent = t("stats_domain_" + domain.domain_id);
+    heading.append(link);
+    section.append(heading);
+
+    const scroll = el("div", "cov-scroll");
+    // The table scrolls sideways on narrow viewports, so the region it scrolls in has to be
+    // reachable and named for a keyboard reader (WCAG 2.1.1) — same shape as the guide tables.
+    scroll.setAttribute("role", "region");
+    scroll.tabIndex = 0;
+    scroll.setAttribute("aria-label", t("stats_domain_" + domain.domain_id));
+    const table = el("table", "cov");
+    table.append(el("caption", null, t("stats_coverage_caption")));
+    const head = document.createElement("thead");
+    const headRow = document.createElement("tr");
+    for (const key of ["stats_col_record_unit", "stats_col_records", "stats_col_source", "stats_col_counting", "stats_col_evidence"]) {
+      const cell = el("th", null, t(key));
+      cell.scope = "col";
+      headRow.append(cell);
+    }
+    head.append(headRow);
+    table.append(head);
+
+    const body = document.createElement("tbody");
+    for (const unit of domain.units || []) {
+      body.append(unitRow(unit, false));
+      for (const source of unit.sources || []) {
+        body.append(unitRow({
+          record_unit_key: unit.record_unit_key,
+          counting_rule_key: "coverage_rule_source_qualified",
+          source_name: source.source_name,
+          state: source.state,
+          value: source.served_records,
+          evidence_vintage: unit.evidence_vintage,
+        }, true));
+      }
+    }
+    table.append(body);
+    scroll.append(table);
+    section.append(scroll);
+    return section;
+  }
+
+  function paint() {
+    document.getElementById("s-languages").textContent = number(siteLanguages);
+    const metric = (id) => (data?.metrics || []).find((entry) => entry.metric_id === id) || null;
+    const sources = metric("served_sources_represented");
+    const sets = metric("served_record_sets");
+    document.getElementById("s-sources").textContent = sources && sources.state === "measured" ? number(sources.value) : "–";
+    document.getElementById("s-recordsets").textContent = sets && sets.state === "measured" ? number(sets.value) : "–";
+
+    const oldest = day(data?.evidence_vintage?.oldest);
+    const newest = day(data?.evidence_vintage?.newest);
+    document.getElementById("s-evidence").textContent = oldest && newest
+      ? (oldest === newest ? oldest : t("stats_evidence_range", { oldest, newest }))
+      : "–";
+
+    coverage.replaceChildren();
+    if (state === "ready") {
+      for (const domain of data.domains || []) coverage.append(domainSection(domain));
+      msg.textContent = oldest && newest
+        ? t("stats_coverage_dated", { oldest, newest })
+        : t("coverage_state_unavailable");
+    } else if (state === "failed") {
+      msg.textContent = t("stats_coverage_unavailable");
+    } else {
+      msg.textContent = t("stats_loading");
+    }
+    const stamp = oldest ? t("stats_public_asof", { date: oldest }) : t("stats_metric_unavailable");
+    document.querySelectorAll("[data-stat-asof]").forEach((node) => { node.textContent = stamp; });
+  }
+
   paint();
   initSubpageLangSwitcher(paint);
-  const primary = window.CROL_API_ORIGIN || "https://api.cityscroll.org";
-  const fallback = window.CROL_API_FALLBACK_ORIGIN || "https://cityscroll-worker.crol-worker.workers.dev";
-  const bases = primary === fallback ? [primary] : [primary, fallback];
+
+  // Materialised, first-party and static: the coverage snapshot is a build artifact served
+  // beside this page. Loading Stats never reaches a publisher and never scans a receipt store.
   (async () => {
-    const publicSchema = document.getElementById("main").dataset.statsSchema;
-    for (const base of bases) {
-      try {
-        const response = await fetch(base + "/stats", { signal: AbortSignal.timeout(8000) });
-        if (!response.ok) continue;
-        const candidate = await response.json();
-        if (candidate?.schema !== publicSchema) continue;
-        data = candidate;
-        state = candidate.city_record?.available ? "ready" : "partial";
-        paint();
-        return;
-      } catch { /* try the compatibility origin */ }
+    try {
+      const response = await fetch("data/served_coverage_snapshot.json", { signal: AbortSignal.timeout(8000) });
+      if (!response.ok) throw new Error("coverage snapshot returned " + response.status);
+      const candidate = await response.json();
+      if (candidate?.schema !== schema) throw new Error("unexpected coverage schema");
+      data = candidate;
+      state = "ready";
+    } catch {
+      state = "failed";
     }
-    state = "failed";
     paint();
   })();
 })();

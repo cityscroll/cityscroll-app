@@ -390,6 +390,7 @@
 /site/data/rule_versions.json
 /site/data/rules_domain_observations.json
 /site/data/rules_semantic_lane.json
+/site/data/served_coverage_snapshot.json
 /site/data/shared_meeting_read_model.json
 /site/data/source_contracts.json
 /site/data/source_health_public.json

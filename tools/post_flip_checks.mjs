@@ -16,6 +16,13 @@ const HERE = path.dirname(fileURLToPath(import.meta.url));
 export const API_HEALTH_MARKER = /cityscroll-worker ok/;
 
 /**
+ * Public stats response schema. Declared here rather than imported so this dormant check
+ * module stays free of the Worker's runtime imports; test/post_flip_checks.test.mjs asserts
+ * the two stay equal.
+ */
+export const PUBLIC_STATS_SCHEMA = "public-stats.v3";
+
+/**
  * Catalog of named checks. `incident` is the field case each check is designed to
  * catch — keep these annotations stable so the matrix stays audit-linked.
  */
@@ -47,17 +54,18 @@ export const POST_FLIP_NAMED_CHECKS = Object.freeze([
       "Authenticated usage and digest counters are live and unexplained zeros are rejected.",
   }),
   Object.freeze({
-    id: "corpus-freshness",
-    name: "CORPUS FRESHNESS",
+    id: "coverage-vintage",
+    name: "COVERAGE VINTAGE",
     incident: Object.freeze({
-      class: "stale-public-corpus",
+      class: "undated-public-coverage",
       field_case:
-        "The public Stats contract now reports civic-corpus recency rather than private delivery activity; "
-        + "a stale latest_notice_date must remain visible to public monitoring.",
-      detection_was: "public stats recency check",
+        "The public Stats contract reports served-product coverage rather than an upstream population; "
+        + "coverage published without a real evidence range, or with one dated ahead of the clock, "
+        + "must remain visible to public monitoring.",
+      detection_was: "public stats evidence-vintage check",
     }),
     description:
-      "The City Record aggregate is available and its latest publication date is recent.",
+      "Served coverage is available and carries a bounded, non-future evidence date range.",
   }),
   Object.freeze({
     id: "coverage-sanity",
@@ -65,7 +73,7 @@ export const POST_FLIP_NAMED_CHECKS = Object.freeze([
     incident: Object.freeze({
       class: "public-private-contract-drift",
       field_case:
-        "The public Stats response must retain corpus/source/language coverage while excluding "
+        "The public Stats response must retain served-coverage and language coverage while excluding "
         + "subscriptions, sends, visits, searches, and daily-use series.",
       detection_was: "public schema inspection",
     }),
@@ -105,19 +113,29 @@ export const POST_FLIP_NAMED_CHECK_IDS = Object.freeze(
 );
 
 /**
- * CORPUS FRESHNESS classifier (pure).
+ * COVERAGE VINTAGE classifier (pure).
+ *
+ * The served coverage snapshot dates itself from its own evidence, so this cannot assert a
+ * recency window: a slow-moving boundary set is legitimately months old while a daily one is
+ * hours old. What it can assert is that the deployed response carries a real, bounded and
+ * non-future evidence range rather than a build clock or an empty placeholder.
  */
-export function classifyCorpusFreshness(stats, { now = new Date() } = {}) {
+export function classifyCoverageVintage(stats, { now = new Date() } = {}) {
   if (!stats || typeof stats !== "object") {
     return { ok: false, reason: "stats body missing or not an object" };
   }
-  if (stats.schema !== "public-stats.v2") return { ok: false, reason: "unexpected public stats schema" };
-  const corpus = stats.city_record;
-  if (!corpus?.available) return { ok: false, reason: "live City Record aggregate is unavailable" };
-  if (!(Number(corpus.notice_count) > 0)) return { ok: false, reason: "City Record notice_count is empty" };
-  const latest = String(corpus.latest_notice_date || "").slice(0, 10);
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(latest)) return { ok: false, reason: "latest_notice_date is missing" };
-  if (latest < prevUtcDay(dayStrUtc(now), 3)) return { ok: false, reason: `latest_notice_date ${latest} is older than 3 days` };
+  if (stats.schema !== PUBLIC_STATS_SCHEMA) return { ok: false, reason: "unexpected public stats schema" };
+  const coverage = stats.coverage;
+  if (!coverage?.available) {
+    return { ok: false, reason: `served coverage is unavailable (${coverage?.unavailable_reason || "no reason given"})` };
+  }
+  const oldest = Date.parse(coverage.evidence_vintage?.oldest || "");
+  const newest = Date.parse(coverage.evidence_vintage?.newest || "");
+  if (!Number.isFinite(oldest) || !Number.isFinite(newest)) {
+    return { ok: false, reason: "coverage evidence vintage is missing or unparseable" };
+  }
+  if (newest < oldest) return { ok: false, reason: "coverage evidence vintage range is inverted" };
+  if (newest > now.getTime() + 5 * 60 * 1000) return { ok: false, reason: "coverage evidence vintage is in the future" };
   return { ok: true };
 }
 
@@ -128,10 +146,22 @@ export function classifyCoverageSanity(stats) {
   if (!stats || typeof stats !== "object") {
     return { ok: false, reason: "stats body missing or not an object" };
   }
-  const sourceCount = Number(stats.sources?.primary_system_count) || 0;
-  const systems = stats.sources?.systems;
-  if (sourceCount < 1 || !Array.isArray(systems) || systems.length !== sourceCount) {
-    return { ok: false, reason: "primary source count and source list disagree" };
+  const metrics = stats.coverage?.metrics;
+  if (!Array.isArray(metrics) || !metrics.length) {
+    return { ok: false, reason: "coverage metrics are missing" };
+  }
+  const sources = metrics.find((metric) => metric?.metric_id === "served_sources_represented");
+  if (!sources || sources.state !== "measured" || !(Number(sources.value) > 0)) {
+    return { ok: false, reason: "no source is measured as represented in the served product" };
+  }
+  const units = (stats.coverage?.domains || []).flatMap((domain) => domain?.units || []);
+  if (!units.some((unit) => unit?.state === "measured")) {
+    return { ok: false, reason: "no served record set carries a measured count" };
+  }
+  for (const unit of units) {
+    if (unit?.state === "measured" && !unit.evidence_vintage) {
+      return { ok: false, reason: `served record set ${unit.unit_id} is counted without an evidence date` };
+    }
   }
   if ((Number(stats.language_coverage?.site_languages) || 0) < 2) {
     return { ok: false, reason: "language coverage is missing" };
@@ -252,7 +282,7 @@ export function classifyWorkerAccess(probe = {}) {
     };
   }
   if (!probe.statsOkJson) {
-    return { ok: false, reason: "GET /stats did not return public-stats.v2 JSON" };
+    return { ok: false, reason: `GET /stats did not return ${PUBLIC_STATS_SCHEMA} JSON` };
   }
   const acao = probe.eventsCorsOrigin;
   if (!acao) {
@@ -342,7 +372,7 @@ export async function runPostFlipNamedChecks(opts = {}) {
   if (opts.runJourney === false) skip.add("human-path-journey");
   const results = [];
 
-  // Shared public coverage fetch for CORPUS FRESHNESS + COVERAGE SANITY + WORKER ACCESS.
+  // Shared public coverage fetch for COVERAGE VINTAGE + COVERAGE SANITY + WORKER ACCESS.
   let statsStatus = 0;
   let statsJson = null;
   let statsOkJson = false;
@@ -352,7 +382,7 @@ export async function runPostFlipNamedChecks(opts = {}) {
   let opsStatsJson = null;
   let opsStatsError = null;
 
-  if (!skip.has("corpus-freshness") || !skip.has("coverage-sanity") || !skip.has("worker-access")) {
+  if (!skip.has("coverage-vintage") || !skip.has("coverage-sanity") || !skip.has("worker-access")) {
     try {
       const health = await fetchText(`${apiBase}/health`, { fetchImpl });
       healthStatus = health.status;
@@ -366,7 +396,7 @@ export async function runPostFlipNamedChecks(opts = {}) {
       statsStatus = stats.status;
       try {
         statsJson = JSON.parse(stats.body);
-        statsOkJson = statsJson?.schema === "public-stats.v2";
+        statsOkJson = statsJson?.schema === PUBLIC_STATS_SCHEMA;
       } catch {
         statsJson = null;
         statsOkJson = false;
@@ -440,8 +470,8 @@ export async function runPostFlipNamedChecks(opts = {}) {
     );
   }
 
-  if (!skip.has("corpus-freshness")) {
-    pushResult("corpus-freshness", classifyCorpusFreshness(statsJson, { now }));
+  if (!skip.has("coverage-vintage")) {
+    pushResult("coverage-vintage", classifyCoverageVintage(statsJson, { now }));
   }
   if (!skip.has("coverage-sanity")) {
     pushResult("coverage-sanity", classifyCoverageSanity(statsJson));
@@ -544,7 +574,7 @@ export async function main(argv = process.argv.slice(2)) {
   if (opts.help) {
     console.log(`Usage: node tools/post_flip_checks.mjs [options]
 
-Named post-flip operational checks (EMAIL HEALTH, STATS SANITY, CORPUS FRESHNESS,
+Named post-flip operational checks (EMAIL HEALTH, STATS SANITY, COVERAGE VINTAGE,
 COVERAGE SANITY, WORKER ACCESS, HUMAN-PATH JOURNEY). Each is annotated with the incident
 class it descends from.
 

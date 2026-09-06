@@ -19,7 +19,8 @@
     "site/index.html",
     "site/api.html",
     "site/data.html",
-    "site/about.html"
+    "site/about.html",
+    "site/stats.html"
   ],
   "first_party_routes": {
     "snapshot_only": [
