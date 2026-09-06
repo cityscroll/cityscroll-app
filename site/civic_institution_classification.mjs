@@ -264,6 +264,16 @@ export const REVIEWED_INSTITUTION_CLASSIFICATIONS = Object.freeze([
   }),
 
   // ---- Community & borough boards ----
+  ...["bronx", "brooklyn", "manhattan", "queens", "staten-island"].map((slug) => Object.freeze({
+    canonical_id: `${slug}-borough-board`,
+    browse_group: "community-borough-boards",
+    institution_kind: "board",
+    kind_label: "Borough board",
+    purpose: "A borough board with the borough president, the borough's council members and the community board chairs as statutory seats. Those seats are not a roster of current members.",
+    kind_basis: "New York City Charter § 85 establishes borough boards with borough-president, council-member and community-board-chair participation.",
+    kind_sources: Object.freeze([SOURCE.charter_85]),
+    acronyms: Object.freeze([]),
+  })),
   Object.freeze({
     canonical_id: "community-boards",
     browse_group: "community-borough-boards",

@@ -12,6 +12,7 @@ import {
   projectResidentInstitutionIdentity,
   renderResidentInstitutionIdentity,
 } from "./civic_institution_resident_identity.mjs";
+import { renderRelatedPublicBodiesFor } from "./civic_institution_related_bodies.mjs";
 import {
   agencyConstellationSectionScripts,
   agencyConstellationSectionStyles,
@@ -330,6 +331,7 @@ export function renderAgencyConstellationDocument(view, options = {}) {
       ${view.statutory_identity
         ? renderStatutoryInstitutionIdentity(view.statutory_identity)
         : renderResidentInstitutionIdentity(residentIdentity)}
+      ${renderRelatedPublicBodiesFor(view.canonical_id || view.id)}
       <p class="node-lede">${esc(lead)}</p>
       ${metadata ? `<p class="agency-hero-meta">${metadata}</p>` : ""}
     </header>

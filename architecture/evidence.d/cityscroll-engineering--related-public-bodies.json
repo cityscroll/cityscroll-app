@@ -1,0 +1,29 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/related-public-bodies",
+  "status": "implemented",
+  "fingerprint": "related-public-bodies.v1",
+  "updated_at": "2026-09-06T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "related-bodies-projection",
+      "path": "site/civic_institution_related_bodies.mjs"
+    },
+    {
+      "id": "related-bodies-specimen-renderer",
+      "path": "tools/render_related_public_bodies_specimens.mjs"
+    },
+    {
+      "id": "related-bodies-tests",
+      "path": "test/civic_institution_related_bodies.test.mjs"
+    },
+    {
+      "id": "related-bodies-capture-manifest",
+      "path": "docs/evidence/related-public-bodies/manifest.json"
+    },
+    {
+      "id": "related-bodies-capture-tool",
+      "path": "tools/capture_related_public_bodies_evidence.py"
+    }
+  ]
+}

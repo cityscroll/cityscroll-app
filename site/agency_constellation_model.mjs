@@ -10,6 +10,7 @@
 
 import { reconcileAgencyIdentity, resolveAgencyIdentity } from "./agency_identity.mjs";
 import { projectStatutoryInstitutionIdentity } from "./civic_institution_statutory_identity.mjs";
+import { projectRelatedPublicBodies } from "./civic_institution_related_bodies.mjs";
 import {
   AGENCY_OBLIGATIONS_CERTIFICATION,
   AGENCY_OBLIGATIONS_ER_BASIS,
@@ -1314,6 +1315,7 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
   ];
 
   const statutoryIdentity = projectStatutoryInstitutionIdentity(identity.canonical_id);
+  const relatedBodies = projectRelatedPublicBodies(identity.canonical_id);
   return {
     schema: AGENCY_CONSTELLATION_SCHEMA,
     kind: "agency-constellation",
@@ -1328,6 +1330,7 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
     // body from a similarly named one. Every other institution omits the key
     // entirely rather than carrying an empty panel through the payload.
     ...(statutoryIdentity ? { statutory_identity: statutoryIdentity } : {}),
+    ...(relatedBodies ? { related_bodies: relatedBodies } : {}),
     petition_handoff: petitionHandoff,
     fiscal_context: fiscalContext,
     edge_summary: edgeSummary,

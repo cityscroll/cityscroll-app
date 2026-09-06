@@ -282,6 +282,7 @@
 /site/civic_institution_party_spellings.mjs
 /site/civic_institution_profile_navigation.mjs
 /site/civic_institution_record_capacity.mjs
+/site/civic_institution_related_bodies.mjs
 /site/civic_institution_resident_identity.mjs
 /site/civic_institution_statutory_identity.mjs
 /site/civic_outcome_transition.mjs
@@ -773,11 +774,14 @@
 /site/zap_action_labels.mjs
 /site/zoning_hearing_calendar.mjs
 /test/
+/test/civic_institution_related_bodies.test.mjs
 /tests/
 /tools/
 /tools/capture_matter_coverage_recovery_evidence.py
+/tools/capture_related_public_bodies_evidence.py
 /tools/capture_retained_matter_publication_evidence.py
 /tools/render_matter_coverage_recovery_fixtures.mjs
+/tools/render_related_public_bodies_specimens.mjs
 /tools/render_retained_matter_publication_fixtures.mjs
 /warehouse/datasets.v0.json
 /warehouse/experiments/semantic-layer-trial/build_corpus.mjs

@@ -1532,6 +1532,150 @@
       "grounding": "gap"
     },
     {
+      "id": "staffs",
+      "status": "registered",
+      "from": "civic-institution",
+      "to": "civic-institution",
+      "relation": "staffs",
+      "inverse": "has_staffing_from",
+      "reason": "Institution-to-institution staffing from a sourced legal basis such as Charter § 191. Staffing a commission is not a merge and is not general control.",
+      "edge_schema": "cityscroll.civic_institution_role_edge.v1",
+      "required_fields": [
+        "relation_id",
+        "role",
+        "from",
+        "to",
+        "inverse",
+        "source_contract",
+        "source_observation",
+        "evidence_refs",
+        "confidence",
+        "basis"
+      ],
+      "allowed_methods": [
+        "exact_source_identifier",
+        "exact_normalized_publisher_value",
+        "reviewed_publisher_alias"
+      ],
+      "allowed_statuses": [
+        "accepted",
+        "unknown",
+        "held",
+        "unresolved"
+      ],
+      "negative_rule": "Never mint current members from statutory seat composition, treat appointment, chairing or staffing as general control, or assign every operating body the same legal form.",
+      "label": "Staffs",
+      "grounding": "partial"
+    },
+    {
+      "id": "director_chairs",
+      "status": "registered",
+      "from": "civic-institution",
+      "to": "civic-institution",
+      "relation": "director_chairs",
+      "inverse": "chaired_by_director_of",
+      "reason": "A sourced role that a department's director chairs a separate commission. Chairing is not departmental control of every commission decision.",
+      "edge_schema": "cityscroll.civic_institution_role_edge.v1",
+      "required_fields": [
+        "relation_id",
+        "role",
+        "from",
+        "to",
+        "inverse",
+        "source_contract",
+        "source_observation",
+        "evidence_refs",
+        "confidence",
+        "basis"
+      ],
+      "allowed_methods": [
+        "exact_source_identifier",
+        "exact_normalized_publisher_value",
+        "reviewed_publisher_alias"
+      ],
+      "allowed_statuses": [
+        "accepted",
+        "unknown",
+        "held",
+        "unresolved"
+      ],
+      "negative_rule": "Never mint current members from statutory seat composition, treat appointment, chairing or staffing as general control, or assign every operating body the same legal form.",
+      "label": "Director chairs",
+      "grounding": "partial"
+    },
+    {
+      "id": "lists_operating_body",
+      "status": "registered",
+      "from": "civic-institution",
+      "to": "civic-institution",
+      "relation": "lists_operating_body",
+      "inverse": "listed_as_operating_body_of",
+      "reason": "An authority's own directory lists a distinct operating body. The listing does not confer the parent authority's legal form.",
+      "edge_schema": "cityscroll.civic_institution_role_edge.v1",
+      "required_fields": [
+        "relation_id",
+        "role",
+        "from",
+        "to",
+        "inverse",
+        "source_contract",
+        "source_observation",
+        "evidence_refs",
+        "confidence",
+        "basis"
+      ],
+      "allowed_methods": [
+        "exact_source_identifier",
+        "exact_normalized_publisher_value",
+        "reviewed_publisher_alias"
+      ],
+      "allowed_statuses": [
+        "accepted",
+        "unknown",
+        "held",
+        "unresolved"
+      ],
+      "negative_rule": "Never mint current members from statutory seat composition, treat appointment, chairing or staffing as general control, or assign every operating body the same legal form.",
+      "label": "Lists operating body",
+      "grounding": "partial"
+    },
+    {
+      "id": "chairs_body",
+      "status": "registered",
+      "from": "civic-institution",
+      "to": "civic-institution",
+      "relation": "chairs_body",
+      "inverse": "body_chaired_by",
+      "reason": "An elected office chairs a distinct governing body, such as a borough president chairing a borough board under Charter § 85. Chairing is not general control.",
+      "edge_schema": "cityscroll.civic_institution_role_edge.v1",
+      "required_fields": [
+        "relation_id",
+        "role",
+        "from",
+        "to",
+        "inverse",
+        "source_contract",
+        "source_observation",
+        "evidence_refs",
+        "confidence",
+        "basis"
+      ],
+      "allowed_methods": [
+        "exact_source_identifier",
+        "exact_normalized_publisher_value",
+        "reviewed_publisher_alias"
+      ],
+      "allowed_statuses": [
+        "accepted",
+        "unknown",
+        "held",
+        "unresolved"
+      ],
+      "negative_rule": "Never mint current members from statutory seat composition, treat appointment, chairing or staffing as general control, or assign every operating body the same legal form.",
+      "label": "Chairs body",
+      "grounding": "partial"
+    },
+    {
       "id": "same_person",
       "status": "registered",
       "from": "person",

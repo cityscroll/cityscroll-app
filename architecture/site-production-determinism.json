@@ -144,6 +144,7 @@
     "site/civic_institution_party_spellings.mjs",
     "site/civic_institution_profile_navigation.mjs",
     "site/civic_institution_record_capacity.mjs",
+    "site/civic_institution_related_bodies.mjs",
     "site/civic_institution_resident_identity.mjs",
     "site/civic_institution_statutory_identity.mjs",
     "site/civic_outcome_transition.mjs",

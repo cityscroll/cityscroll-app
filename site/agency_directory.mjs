@@ -35,6 +35,7 @@ import {
   projectInstitutionClassification,
 } from "./civic_institution_classification_project.mjs";
 import { projectResidentInstitutionIdentity } from "./civic_institution_resident_identity.mjs";
+import { reviewedBoroughBoardDestinations } from "./civic_institution_related_bodies.mjs";
 import {
   AGENCY_DIRECTORY_CONFIG,
   agencyDirectoryParams,
@@ -165,6 +166,21 @@ export function buildAgencyDirectoryModel({
       href,
       subjectRef: `community-board:${canonicalId}`,
       classification: projectCommunityBoardClassification(canonicalId, name),
+      sourceSpellings: [],
+      acronyms: [],
+    }));
+  }
+
+  for (const board of reviewedBoroughBoardDestinations()) {
+    const canonicalId = directoryText(board.canonical_id);
+    if (!canonicalId || seen.has(canonicalId)) continue;
+    seen.add(canonicalId);
+    rows.push(directoryRow({
+      canonicalId,
+      name: directoryText(board.name),
+      href: directoryText(board.href),
+      subjectRef: directoryText(board.subject_ref),
+      classification: projectInstitutionClassification(canonicalId, { canonicalName: board.name }),
       sourceSpellings: [],
       acronyms: [],
     }));

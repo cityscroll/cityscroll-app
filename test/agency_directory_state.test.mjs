@@ -177,6 +177,17 @@ test("A2 the corporation's nonprofit form and its authority regime are separatel
 });
 
 // A2 [outcome] [G1]
+test("borough boards are distinct directory destinations from the borough office", () => {
+  const office = row("borough-president-brooklyn");
+  const board = row("brooklyn-borough-board");
+  assert.equal(office.href, "/agencies/borough-president-brooklyn/");
+  assert.equal(board.href, "/agencies/brooklyn-borough-board/");
+  assert.notEqual(office.href, board.href);
+  assert.equal(board.kind_label, "Borough board");
+  assert.equal(board.subject_ref, "borough-board:brooklyn");
+  assert.match(INDEX, /href="\/agencies\/brooklyn-borough-board\/"/);
+});
+
 test("A2 an MTA operating body is navigable without inheriting the authority's legal form", () => {
   const parent = projectInstitutionClassification("metropolitan-transportation-authority");
   assert.equal(parent.institution.institution_kind, "public_benefit_corporation");

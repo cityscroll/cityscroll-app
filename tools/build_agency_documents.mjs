@@ -20,6 +20,11 @@ import {
   buildAgencyDirectoryModel,
   renderAgencyDirectoryDocument,
 } from "../site/agency_directory.mjs";
+import {
+  renderBoroughBoardDocument,
+  reviewedBoroughBoardDestinations,
+} from "../site/civic_institution_related_bodies.mjs";
+import { REVIEWED_BOROUGH_BOARDS } from "../site/borough_board_identity.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const OUTPUT = join(ROOT, "site/agencies/index.html");
@@ -59,6 +64,17 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
     mkdirSync(dirname(OUTPUT), { recursive: true });
     writeFileSync(OUTPUT, content);
     console.log("wrote", OUTPUT);
+  }
+  // Per-agency HTML is gitignored. Write borough-board destinations on build
+  // so the directory links resolve; --check only owns the tracked directory.
+  if (!check) {
+    for (const board of REVIEWED_BOROUGH_BOARDS) {
+      const destination = reviewedBoroughBoardDestinations().find((row) => row.borough_slug === board.borough_slug);
+      const pagePath = join(ROOT, "site", destination.href.replace(/^\//, ""), "index.html");
+      mkdirSync(dirname(pagePath), { recursive: true });
+      writeFileSync(pagePath, renderBoroughBoardDocument(board));
+      console.log("wrote", pagePath);
+    }
   }
   const state = check ? "current" : "built";
   console.log(

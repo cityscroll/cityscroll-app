@@ -59,6 +59,8 @@ import {
   BERS_ROUTE_ID,
   NYCHA_CANONICAL_ID,
 } from "../site/civic_institution_governing_bodies.mjs";
+import { renderBoroughBoardDocument } from "../site/civic_institution_related_bodies.mjs";
+import { REVIEWED_BOROUGH_BOARDS } from "../site/borough_board_identity.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SITE = join(ROOT, "site");
@@ -730,6 +732,13 @@ export function buildAgencyConstellationMaterialization(sources = loadSources())
         generated_at: generatedAt,
         view,
       }, (key, value) => key === "route_identity_report" ? undefined : value)}\n`,
+    ]);
+  }
+
+  for (const board of REVIEWED_BOROUGH_BOARDS) {
+    documents.push([
+      join(SITE, "agencies", `${board.borough_slug}-borough-board`, "index.html"),
+      renderBoroughBoardDocument(board),
     ]);
   }
 
