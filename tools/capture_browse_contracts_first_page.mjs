@@ -24,7 +24,7 @@ import { filterMoneySnapshot } from "../site/resident_snapshot_queries.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const FIXTURE = join(ROOT, "site/data/procurement_browse_rows.json");
-const OUTPUT = join(ROOT, "docs/evidence/snappiness/browse-contracts-first-page/manifest.json");
+const OUTPUT = join(ROOT, "docs/evidence/browse-contracts-first-page-read-back/manifest.json");
 const RESIDENT_SNAPSHOT_URL = "data/money_resident_snapshot.json";
 
 const TRACE_QUERY = { mode: "award", agency: "Youth and Community Development", sort: "newest" };
@@ -50,7 +50,7 @@ async function trace() {
   const fullBrowse = JSON.parse(readFileSync(FIXTURE, "utf8"));
   const { manifest, shards, queryRowsArtifact } = buildProcurementBrowseQueryArtifacts({
     ...fullBrowse,
-    source_model_fingerprint: "perf-03-evidence-fingerprint",
+    source_model_fingerprint: "browse-contracts-first-page-evidence-fingerprint",
   });
   const calls = [];
   const events = [];
@@ -102,12 +102,12 @@ function buildManifest(observed) {
     bounded_source: observed.bounded_source,
   });
   return {
-    schema: "cityscroll.snappiness_evidence_capture.v1",
-    change: "cityscroll-engineering/browse-contracts-load-tail",
+    schema: "cityscroll.browse_contracts_evidence_capture.v1",
+    change: "cityscroll-engineering/browse-contracts-first-page",
     capture_kind: "functional network-order trace (no browser, no image capture)",
     route: ROUTE,
     viewport: { name: "not-applicable", note: "network-order trace; no rendered viewport was captured" },
-    revision: revision(),
+    revision: null,
     data_vintage: {
       fixture: "site/data/procurement_browse_rows.json",
       fixture_generated_at: observed.fixture_generated_at,

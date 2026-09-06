@@ -1,9 +1,9 @@
 {
   "schema": "cityscroll.architecture-evidence-entry.v1",
-  "id": "cityscroll-engineering/browse-contracts-load-tail",
+  "id": "cityscroll-engineering/browse-contracts-first-page",
   "status": "implemented",
-  "fingerprint": "browse-contracts-load-tail.v1",
-  "updated_at": "2026-09-05T00:00:00.000Z",
+  "fingerprint": "browse-contracts-first-page.v1",
+  "updated_at": "2026-09-06T14:10:07.421Z",
   "projections": [
     {
       "id": "contracts-browse-scoped-surface",
@@ -31,7 +31,7 @@
     },
     {
       "id": "first-page-trace-evidence",
-      "path": "docs/evidence/snappiness/browse-contracts-first-page/README.md"
+      "path": "docs/evidence/browse-contracts-first-page-read-back/README.md"
     }
   ]
 }

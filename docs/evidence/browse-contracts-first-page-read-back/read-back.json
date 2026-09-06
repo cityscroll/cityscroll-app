@@ -1,0 +1,112 @@
+{
+  "schema": "cityscroll.browse_contracts_content_ready_readback.v1",
+  "version": 1,
+  "public_alias": "cfafae5fd7133",
+  "title": "Browse Contracts content-ready production read-back",
+  "metric_id": "content_ready_ms",
+  "surface_id": "browse-contracts",
+  "component_id": "none",
+  "traffic_class": "production",
+  "sample_floor": 30,
+  "p75_budget_ms": 2500,
+  "p95_budget_ms": 5000,
+  "queried_at": "2026-09-06T14:10:07.421Z",
+  "measurement_class": "measured",
+  "command": {
+    "executable": "node tools/read_rum_drift.mjs --out <output-dir>",
+    "env": [
+      "ANALYTICS_ACCOUNT_ID=<production account id from worker/wrangler.toml>",
+      "ANALYTICS_READ_TOKEN=<token from the logged-in wrangler OAuth session>",
+      "RUM_ANALYTICS_DATASET=crol_rum_observations_v1",
+      "RUM_MEASURED_SINCE=2026-08-19",
+      "RUM_MIN_SAMPLED_ROWS=30"
+    ],
+    "corroborating_query": {
+      "executable": "node (admin performance grammar via worker/src/lib/performance_query.mjs)",
+      "filters": {
+        "surface_id": "browse-contracts",
+        "metric_id": "content_ready_ms",
+        "window": "7d",
+        "traffic_class": "production"
+      },
+      "queried_at": "2026-09-06T14:10:06.595Z",
+      "note": "Same retained count and percentiles as the drift overlay for the page-level content_ready_ms group (component_id none)."
+    },
+    "notes": [
+      "tools/read_rum_drift.mjs reads production RUM through worker/src/lib/performance_query.mjs.",
+      "Analytics Engine returns only the aggregate distribution for this dataset, never raw per-request rows.",
+      "Credentials are not stored in this report."
+    ]
+  },
+  "baseline": {
+    "source": "card-stated-pre-intervention-field-snapshot",
+    "measurement_class": "measured",
+    "sampled_count": 68,
+    "p50_ms": 1809.5,
+    "p75_ms": 3264.1,
+    "p95_ms": 9622.0,
+    "note": "Historical field snapshot cited by the change before the bounded first-page delivery. Not a pass for the p75 <= 2500 ms / p95 <= 5000 ms budget."
+  },
+  "primary": {
+    "label": "seven-day-production",
+    "window": {
+      "label": "7d",
+      "timezone": "UTC",
+      "start": "2026-08-30T14:10:07.000Z",
+      "end": "2026-09-06T14:10:07.000Z",
+      "status": "complete",
+      "fraction": 1
+    },
+    "first_observation_at": "2026-08-30T14:21:36.000Z",
+    "latest_observation_at": "2026-09-06T12:46:14.000Z",
+    "sampled_count": 48,
+    "estimated_count": 48,
+    "window_complete": true,
+    "p50_ms": 2241.4,
+    "p75_ms": 3039.3,
+    "p95_ms": 7615.4,
+    "slo_state": "needs-work",
+    "acceptance_A3": {
+      "sample_floor_met": true,
+      "p75_within_budget": false,
+      "p95_within_budget": false,
+      "pass": false,
+      "note": "Retained observations clear the 30-row floor, but content-ready p75 and p95 remain above the 2500 ms / 5000 ms budgets."
+    }
+  },
+  "post_delivery_window": {
+    "label": "since-delivery-merge",
+    "delivery_merged_at": "2026-09-05T21:09:25.000Z",
+    "window": {
+      "timezone": "UTC",
+      "start": "2026-09-05T21:09:25.000Z",
+      "end": "2026-09-06T14:10:07.000Z",
+      "status": "partial"
+    },
+    "sampled_count": 4,
+    "estimated_count": 4,
+    "sample_floor": 30,
+    "slo_state": "insufficient_sample",
+    "measurement_class": "insufficient",
+    "p50_ms": null,
+    "p75_ms": null,
+    "p95_ms": null,
+    "note": "Only 4 retained observations since the delivery merge. Below the 30-row floor, so percentiles are withheld and this window is not treated as a pass."
+  },
+  "previous_seven_day_window": {
+    "label": "previous-7d",
+    "window": {
+      "timezone": "UTC",
+      "start": "2026-08-23T14:10:06.000Z",
+      "end": "2026-08-30T14:10:06.000Z",
+      "status": "complete"
+    },
+    "sampled_count": 72,
+    "estimated_count": 72,
+    "p50_ms": 1809.1,
+    "p75_ms": 2673.8,
+    "p95_ms": 5768.0,
+    "measurement_class": "measured",
+    "note": "Preceding complete seven-day window from the same admin performance comparison, for context only."
+  }
+}

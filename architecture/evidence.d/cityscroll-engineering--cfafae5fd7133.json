@@ -1,0 +1,21 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/cfafae5fd7133",
+  "status": "implemented",
+  "fingerprint": "cfafae5fd7133.content-ready-readback.v1",
+  "updated_at": "2026-09-06T14:10:07.421Z",
+  "projections": [
+    {
+      "id": "content-ready-production-read-back",
+      "path": "docs/evidence/browse-contracts-first-page-read-back/read-back.json"
+    },
+    {
+      "id": "content-ready-read-back-manifest",
+      "path": "docs/evidence/browse-contracts-first-page-read-back/manifest.json"
+    },
+    {
+      "id": "field-rum-readiness-note",
+      "path": "data/performance/field-rum-readiness-2026-08-26.md"
+    }
+  ]
+}
