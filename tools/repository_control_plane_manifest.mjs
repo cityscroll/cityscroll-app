@@ -47,17 +47,17 @@ export function buildManifest() {
     const sourceId = data.id ?? data.entry_id ?? path.split("/").at(-1).replace(/\.json$/, "");
     entries.push(entry(
       `frontier:${sourceId}`, path, `entry:${sourceId}`, "mixed-measurement-and-temporal-intent",
-      "cityscroll-engineering/semantic-owner-migration", "cityscroll-engineering/semantic-owner-migration", "split",
-      `register:cityscroll-engineering/semantic-owner-migration#frontier-${sourceId}`,
+      "cityscroll-repository-control-plane/rcp-01", "cityscroll-repository-control-plane/rcp-01", "split",
+      `register:cityscroll-repository-control-plane/rcp-01#frontier-${sourceId}`,
     ));
   }
 
   const meta = JSON.parse(text("docs/data-frontiers/2026-08/meta.json"));
   entries.push(entry(
     "frontier:declared-count-discrepancy", "docs/data-frontiers/2026-08/meta.json", "json-pointer:/entry_count",
-    "stale-measurement-and-reconciliation-intent", "cityscroll-engineering/semantic-owner-migration",
-    "cityscroll-engineering/semantic-owner-migration", "split",
-    "register:cityscroll-engineering/semantic-owner-migration#frontier-count-reconciliation",
+    "stale-measurement-and-reconciliation-intent", "cityscroll-repository-control-plane/rcp-01",
+    "cityscroll-repository-control-plane/rcp-01", "split",
+    "register:cityscroll-repository-control-plane/rcp-01#frontier-count-reconciliation",
   ));
 
   for (let n = 1; n <= 5; n += 1) {
@@ -65,7 +65,7 @@ export function buildManifest() {
     entries.push(entry(
       `lens:${lensId}`, "docs/lens-filter-template.md", `heading:card ${lensId}`,
       "repo-only-rollout-register", "unresolved", "unresolved", "migrate",
-      `register:cityscroll-engineering/semantic-owner-migration#unresolved-${lensId}`,
+      `register:cityscroll-repository-control-plane/rcp-01#unresolved-${lensId}`,
     ));
   }
 
@@ -94,14 +94,14 @@ export function buildManifest() {
   }
 
   for (const [id, path, selector, owner, registerId] of [
-    ["frontier-projection:future-queue", "docs/data-frontiers-2026-08.md", "Ready-to-card bodies and Next joinable cards sections", "cityscroll-engineering/semantic-owner-migration", "cityscroll-engineering/semantic-owner-migration"],
+    ["frontier-projection:future-queue", "docs/data-frontiers-2026-08.md", "Ready-to-card bodies and Next joinable cards sections", "cityscroll-repository-control-plane/rcp-01", "cityscroll-repository-control-plane/rcp-01"],
     ["property-a11y:ranked-plan", "docs/property-a11y-census-2026-08.md", "ranked plan for ships 2-4", "unresolved", "unresolved"],
     ["precompute-first:migration-plan", "docs/precompute-first-inventory-2026-07-29.md", "mutable migration-plan sections", "unresolved", "unresolved"],
     ["drift-inventory:pending-work", "docs/drift-inventory.md", "pending implementation design and unwired triggers", "cityscroll-living-architecture", "unresolved"],
     ["source-health:follow-up-queue", "docs/source-health-participation.md", "uncarded follow-up queue", "unresolved", "unresolved"],
     ["semantic-trial:next-step", "docs/research/semantic-layer-trial-2026-08-04.md", "best next step and internal research state", "unresolved", "unresolved"],
   ]) {
-    entries.push(entry(id, path, selector, "mixed-current-contract-and-temporal-intent", owner, registerId, "split", `register:cityscroll-engineering/semantic-owner-migration#${id}`));
+    entries.push(entry(id, path, selector, "mixed-current-contract-and-temporal-intent", owner, registerId, "split", `register:cityscroll-repository-control-plane/rcp-01#${id}`));
   }
 
   const publicDocs = walk("")
