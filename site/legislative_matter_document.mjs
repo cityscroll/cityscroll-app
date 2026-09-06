@@ -100,12 +100,32 @@ function sourceDocuments(appearance) {
     .filter((document) => /^https:\/\//.test(document.href));
 }
 
+/**
+ * Every City Record notice that referenced this matter at this event.
+ *
+ * One meeting is often announced by more than one notice. Those are repeated
+ * references to a single appearance, not repeated hearings, so they are kept
+ * together on one appearance as provenance. A generation that predates the
+ * coalesced shape carries only `request_id`, which reads as a single reference.
+ */
+function noticeReferences(raw = {}) {
+  const supplied = Array.isArray(raw.notice_references) ? raw.notice_references : [];
+  const ids = [...new Set(
+    [...supplied.map((notice) => clean(notice?.request_id, 80)), clean(raw.request_id, 80)].filter(Boolean),
+  )].sort();
+  return ids.map((requestId) => ({
+    request_id: requestId,
+    href: `/notices/${encodeURIComponent(requestId)}/`,
+  }));
+}
+
 function normalizeAppearance(raw = {}) {
   const event = raw.event && typeof raw.event === "object" ? raw.event : {};
   const matter = raw.matter && typeof raw.matter === "object" ? raw.matter : raw;
   const committee = committeeProjection({ ...raw, event });
   return {
     request_id: clean(raw.request_id, 80),
+    notice_references: noticeReferences(raw),
     event: {
       event_id: clean(event.event_id, 80),
       name: clean(event.name || "Council meeting", 240),
@@ -142,6 +162,18 @@ export function buildLegislativeMatterDocument(payload = {}, value = "78605") {
     matter_type: clean(source.matter_type, 120) || null,
     matter_status: clean(source.matter_status, 160) || null,
     matter_href: clean(source.matter_href, 1000) || null,
+    matter_ref: clean(source.matter_ref, 120) || null,
+    publisher_tenant: clean(source.publisher_tenant, 80) || null,
+    // Identity is the publisher id; the label is whatever the publisher most
+    // recently called it. Earlier observed labels stay visible as provenance so
+    // a renamed matter reads as one history rather than a broken one.
+    label_revisions: (Array.isArray(source.label_revisions) ? source.label_revisions : [])
+      .map((revision) => ({
+        matter_file: clean(revision?.matter_file, 120),
+        title: clean(revision?.title, 500),
+        observed_event_date: clean(revision?.observed_event_date, 20),
+      }))
+      .filter((revision) => revision.matter_file || revision.title),
     canonical_href: matterCanonicalHref(id, payload),
     generated_at: clean(payload.generated_at, 80) || null,
     appearances,
@@ -197,8 +229,33 @@ function voteMarkup(vote) {
   return `${tally}<p class="matter-vote-count">${esc(String(vote.person_count))} named vote${vote.person_count === 1 ? "" : "s"} · ${esc(vote.vote_identity)}</p>${people}`;
 }
 
+/**
+ * The notice references for one appearance. Each carries its own identifier in
+ * its link text, so a reader can tell two announcements of one meeting apart
+ * and open either, and the count is stated plainly rather than left to be
+ * inferred from two links that look the same.
+ */
+function noticeReferenceMarkup(appearance) {
+  return appearance.notice_references
+    .map((notice) => `<a href="${esc(notice.href)}" data-notice-reference="${esc(notice.request_id)}">CityScroll meeting notice ${esc(notice.request_id)}</a>`)
+    .join(" · ");
+}
+
+const SMALL_NUMBERS = ["no", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"];
+
+/** Plain-language counts: small numbers read as words in resident copy. */
+function spelled(count) {
+  return SMALL_NUMBERS[count] || String(count);
+}
+
+function repeatedNoticeNote(appearance) {
+  const count = appearance.notice_references.length;
+  if (count < 2) return "";
+  const written = spelled(count);
+  return `<p class="node-muted matter-notice-note">${esc(written.charAt(0).toUpperCase() + written.slice(1))} meeting notices referenced this same meeting. They are ${esc(written)} announcements of one appearance, not separate hearings.</p>`;
+}
+
 function appearanceMarkup(appearance) {
-  const noticeHref = `/notices/${encodeURIComponent(appearance.request_id)}/`;
   const event = appearance.event;
   const eventSource = event.href
     ? officialSourceLink({ href: event.href, label: event.name, className: "node-source-link", escape: esc })
@@ -210,7 +267,7 @@ function appearanceMarkup(appearance) {
     escape: esc,
   })).join(" · ");
   const sourceList = [
-    `<a href="${esc(noticeHref)}">CityScroll meeting notice</a>`,
+    noticeReferenceMarkup(appearance),
     documents,
   ].filter(Boolean).join(" · ");
   const action = actionMarkup(appearance.actions);
@@ -219,11 +276,49 @@ function appearanceMarkup(appearance) {
     action ? renderNodeSection({ heading: "Actions", body: action, headingId: `matter-actions-${appearance.event.event_id}`, exportClass: "matter_actions" }) : "",
     `<div class="matter-appearance-vote">${vote}</div>`,
   ].filter(Boolean).join("");
-  return `<article class="matter-appearance" data-matter-appearance="${esc(appearance.event.event_id)}" data-request-id="${esc(appearance.request_id)}">
-    <header class="matter-appearance-head"><p class="node-kicker">${esc(event.date || "Dated meeting")}</p><h3>${eventSource}</h3><p class="matter-appearance-links">${sourceList}</p></header>
+  return `<article class="matter-appearance" data-matter-appearance="${esc(appearance.event.event_id)}" data-request-id="${esc(appearance.request_id)}" data-notice-reference-count="${esc(String(appearance.notice_references.length))}">
+    <header class="matter-appearance-head"><p class="node-kicker">${esc(event.date || "Dated meeting")}</p><h3>${eventSource}</h3><p class="matter-appearance-links">${sourceList}</p>${repeatedNoticeNote(appearance)}</header>
     <p class="matter-committee"><strong>Committee:</strong> ${committeeMarkup(appearance.committee)}</p>
     ${sections}
   </article>`;
+}
+
+/**
+ * What this history covers, said before the records themselves.
+ *
+ * A matter with one retained appearance and a matter whose last retained
+ * appearance is months old are the same situation: CityScroll has located
+ * nothing later. That is a statement about what has been retained, and the copy
+ * has to keep it one — a page that reads as "nothing more happened" would be
+ * asserting an outcome the materialization cannot support.
+ */
+function historyScopeMarkup(view) {
+  const count = view.appearances.length;
+  const single = count === 1;
+  const latest = view.appearances[count - 1];
+  const vintage = view.generated_at ? clean(view.generated_at, 80).slice(0, 10) : "";
+  const held = `CityScroll holds ${spelled(count)} observed appearance${single ? "" : "s"} for this matter`;
+  const dated = latest.event.date
+    ? `, ${single ? "dated" : "the most recent dated"} ${latest.event.date}`
+    : "";
+  const source = vintage
+    ? ` ${single ? "It comes" : "They come"} from the Council meeting records materialized on ${vintage}.`
+    : "";
+  return `<p class="node-muted matter-history-scope" data-matter-appearance-count="${esc(String(count))}" data-matter-latest-observed="${esc(latest.event.date || "")}">${esc(`${held}${dated}.${source} No later official step has been located for it. That is the limit of what has been retained here, not a finding that the matter is settled.`)}</p>`;
+}
+
+/**
+ * The labels this matter was previously observed under. A publisher can rename
+ * a matter; the identity that addresses this page does not change with it, so
+ * an earlier name is provenance for the same history rather than evidence of a
+ * different matter.
+ */
+function labelRevisionItems(view) {
+  return (Array.isArray(view.label_revisions) ? view.label_revisions : []).map((revision) => {
+    const label = [revision.matter_file, revision.title].filter(Boolean).join(" — ");
+    const when = revision.observed_event_date ? ` when observed on ${revision.observed_event_date}` : "";
+    return `Previously listed as ${label}${when}.`;
+  });
 }
 
 export function renderLegislativeMatterDocument(view, { currentHref = "", legalChangeGraph = null, today = null } = {}) {
@@ -240,7 +335,7 @@ export function renderLegislativeMatterDocument(view, { currentHref = "", legalC
   const appearanceSection = renderNodeSection({
     heading: "Observed appearances",
     headingId: MATTER_APPEARANCES_ANCHOR,
-    body: view.appearances.map(appearanceMarkup).join(""),
+    body: `${historyScopeMarkup(view)}${view.appearances.map(appearanceMarkup).join("")}`,
     exportClass: "matter_appearances",
   });
   const provenance = renderNodeProvenance({
@@ -249,6 +344,8 @@ export function renderLegislativeMatterDocument(view, { currentHref = "", legalC
     note: `This matter view is a static projection of the committed Council meeting-outcome materialization. It preserves the publisher event, meeting notice, documents, and Legistar matter record for each observed appearance.`,
     sourceItems: [
       matterSource ? { html: matterSource } : null,
+      view.matter_ref ? `Publisher identity ${view.matter_ref}.` : null,
+      ...labelRevisionItems(view),
       `Materialized at ${view.generated_at || "an unspecified source vintage"}.`,
     ].filter(Boolean),
     exportClass: "matter_provenance",

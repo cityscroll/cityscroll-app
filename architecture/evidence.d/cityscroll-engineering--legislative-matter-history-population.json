@@ -1,0 +1,41 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/legislative-matter-history-population",
+  "status": "implemented",
+  "fingerprint": "legislative-matter-history-population.v1",
+  "updated_at": "2026-09-06T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "legislative-matter-population-builder",
+      "path": "tools/build_legislative_matter_documents.mjs"
+    },
+    {
+      "id": "legislative-matter-published-history",
+      "path": "site/data/legislative_matter_lookup.json"
+    },
+    {
+      "id": "legislative-matter-published-index",
+      "path": "site/data/legislative_matter_index.json"
+    },
+    {
+      "id": "matter-document-calendar-mount",
+      "path": "site/legislative_matter_document.mjs"
+    },
+    {
+      "id": "legislative-matter-availability-contract",
+      "path": "site/legislative_matter_availability.mjs"
+    },
+    {
+      "id": "legislative-matter-history-population-tests",
+      "path": "test/legislative_matter_history_population.test.mjs"
+    },
+    {
+      "id": "legislative-matter-history-population-decision",
+      "path": "docs/adr/legislative-matter-history-population.md"
+    },
+    {
+      "id": "legislative-matter-history-population-evidence-capture",
+      "path": "tools/capture_legislative_matter_history_evidence.py"
+    }
+  ]
+}

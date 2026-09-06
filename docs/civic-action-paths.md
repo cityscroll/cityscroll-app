@@ -107,15 +107,15 @@ Path v0.
 
 | Fixture | City Record | Result |
 | --- | --- | --- |
-| One exact matter | `20260707022` | `matter:79200` / LU 0114-2026 with “View official matter record.” The retained outcome is **Laid Over by Subcommittee** after **Hearing Held by Committee**. |
+| One exact matter | `20260707022` | `matter:79200` / LU 0114-2026 with “View matter history.” The retained outcome is **Laid Over by Subcommittee** after **Hearing Held by Committee**. |
 | Multiple exact matters | `20260707021` | Matters `79201`, `79203`, `79202`, `79204`, `79205` remain individually selectable. There is no single continuation CTA. |
 | No grounded matter | `20260728026` | Unmatched Buildings hearing. No matter continuation is shown. |
 
 The canonical meeting document keeps calendar UIDs on
 `UID:<meeting_id>@cityscroll.org`. The Follow control is a separate explicit
-path. A later standalone `/matters/79200/` document is not in the current
-legislative-matter materialization; the hearing page is the retained later
-matter-state evidence.
+path. `/matters/79200/` is now a published history like every other exact matter
+the materialization retains; it carries the one appearance that has been located
+and says so, rather than implying that nothing further will happen.
 
 ## DOT City-Owned Bicycle Racks
 

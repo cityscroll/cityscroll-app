@@ -197,8 +197,12 @@ test("multi-matter multi-action meeting collapses and suppresses empty tallies",
   assert.equal((html.match(/example\.test\/m\.pdf/g) || []).length, 1);
   // Empty aye/nay tallies suppressed
   assert.doesNotMatch(html, /aye 0 · nay 0/);
-  // Numeric Legistar MatterIds deep-link via Gateway M=L (not plain text)
-  assert.match(html, /Gateway\.aspx\?M=L&amp;ID=79062|Gateway\.aspx\?M=L&ID=79062/);
+  // A numeric Legistar MatterId is a destination, not plain text. Where the
+  // generation publishes a local history the row opens that; where it does not,
+  // the row falls back to the matter's own Gateway record. Either way the
+  // shared availability rule decides, and the row never composes a href itself.
+  assert.match(html, /href="\/matters\/79062\/"|Gateway\.aspx\?M=L&amp;ID=79062|Gateway\.aspx\?M=L&ID=79062/);
+  assert.match(html, /data-matter-availability="(?:local_history|official_record)"/);
   assert.match(html, /meeting-matter-link/);
   assert.match(html, /LU 0091-2026/);
 });
