@@ -1,8 +1,8 @@
 {
   "schema": "cityscroll.analytics_registered_contracts.v1",
   "projection_contract": "cityscroll.analytical_projection.v1",
-  "generated_at": "2026-08-18T04:05:51.552Z",
-  "snapshot_date": "2026-08-18",
+  "generated_at": "2026-09-06T15:49:29.834Z",
+  "snapshot_date": "2026-09-06",
   "population_definition": "Normalized Checkbook NYC registered expense contracts; one row per exact prime_contract_id across explicit collection fiscal-year partitions.",
   "dimensions": [
     "agency",
@@ -10,6 +10,7 @@
     "registration_fiscal_year",
     "contract_amount_band",
     "award_method",
+    "industry",
     "registration_timing",
     "city_record_match"
   ],
@@ -30,19 +31,34 @@
     "city_record_unmatched_contract_count",
     "city_record_missing_pin_contract_count"
   ],
+  "registration_timing_summary": {
+    "total_contract_count": 26796,
+    "eligible_contract_count": 26796,
+    "missing_date_contract_count": 0,
+    "retroactive_contract_count": 14552,
+    "early_on_time_contract_count": 12244,
+    "retroactive_share": 0.5430661292730258,
+    "missing_date_share": 0,
+    "median_lag_days": 5,
+    "p75_lag_days": 116,
+    "p90_lag_days": 459,
+    "excluded_row_count": 0
+  },
   "city_record_match": {
     "join": "existing exact normalized Checkbook PIN ↔ City Record award PIN overlap",
     "city_record_input": "site/data/ocp_awards_warehouse_lookup.json",
     "pin_enrichment": null,
     "buckets": {
-      "exact": 4210,
-      "none": 2366,
-      "cannot_evaluate_missing_pin": 19694
+      "exact": 4915,
+      "none": 21875,
+      "cannot_evaluate_missing_pin": 6
     }
   },
   "source_population": {
     "source_tag": "checkbook-contracts",
-    "normalized_unique_contracts": 26270,
+    "observed_at": "2026-09-06T15:49:29.834Z",
+    "observation_basis": "acquisition receipt pulled_at",
+    "normalized_unique_contracts": 26796,
     "source_fiscal_years": [
       2025,
       2026,
@@ -50,27 +66,19 @@
     ],
     "normalized_receipt": "embedded source_receipt envelope in the committed analytical population receipt"
   },
-  "registration_timing_summary": {
-    "total_contract_count": 26270,
-    "eligible_contract_count": 0,
-    "missing_date_contract_count": 26270,
-    "retroactive_contract_count": 0,
-    "early_on_time_contract_count": 0,
-    "retroactive_share": null,
-    "missing_date_share": 1,
-    "median_lag_days": null,
-    "p75_lag_days": null,
-    "p90_lag_days": null,
-    "excluded_row_count": 26270
-  },
   "representation": "sharded",
   "shard_schema": "cityscroll.analytics_registered_contracts_shard.v1",
-  "row_count": 26270,
+  "row_count": 26796,
   "shards": [
     {
       "path": "analytics_registered_contracts/shard-000.json",
-      "bytes": 18446934,
-      "row_count": 26270
+      "bytes": 18663951,
+      "row_count": 15004
+    },
+    {
+      "path": "analytics_registered_contracts/shard-001.json",
+      "bytes": 14656216,
+      "row_count": 11792
     }
   ]
 }

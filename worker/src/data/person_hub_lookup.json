@@ -3,7 +3,7 @@
   "title": "NYC Council Members person hub (Legistar PersonId)",
   "description": "council_member_id from uvw5-9znb equals Legistar PersonId used on roll-call votes. District and term stamps for official profiles.",
   "source_contract": "uvw5-9znb",
-  "retrieved_at": "2026-08-11T19:21:19.284Z",
+  "retrieved_at": "2026-09-06T16:04:22.087Z",
   "person_count": 215,
   "term_row_count": 558,
   "demo_person_ids": [
