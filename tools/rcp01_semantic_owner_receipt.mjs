@@ -17,7 +17,7 @@ const hash = (path) => createHash("sha256").update(readFileSync(resolve(ROOT, pa
 
 function resolution(entry) {
   const owner = OWNERS.get(entry.id);
-  if (owner) return { canonical_owner: owner, resolution: "reuse", reasoning: entry.id.startsWith("architecture-decision:") ? "The implemented living-architecture narrative owns the root decision record; no second decision card was created." : "RCP-01 owns removal of the repository-only queue; product outcomes remain separately unresolved." };
+  if (owner) return { canonical_owner: owner, resolution: "reuse", reasoning: entry.id.startsWith("architecture-decision:") ? "The implemented living-architecture narrative owns the root decision record; no second decision card was created." : "The semantic-owner migration owns removal of the repository-only queue; product outcomes remain separately unresolved." };
   if (entry.id.startsWith("frontier:")) return { canonical_owner: null, resolution: "unresolved", reasoning: "Related implementation records exist, but no single register card owns this source-specific residual outcome; no duplicate card was created." };
   if (entry.id.startsWith("lens:")) return { canonical_owner: null, resolution: "unresolved", reasoning: "Related lens implementations do not prove ownership of this template-rollout outcome; repository adoption wording was not treated as completion." };
   return { canonical_owner: null, resolution: "unresolved", reasoning: "No unique semantic owner was established at the pinned register revision; mutable intent was removed without inventing completion or a duplicate card." };
@@ -27,7 +27,7 @@ function build() {
   const manifest = JSON.parse(readFileSync(resolve(ROOT, MANIFEST), "utf8"));
   const items = manifest.entries.filter((e) => TEMPORAL.has(e.content_class)).map((e) => ({
     manifest_id: e.id, source_path: e.path, source_selector: e.selector,
-    source_sha256_at_rcp00: e.source.sha256, source_sha256_after_migration: hash(e.path),
+    source_sha256_at_classification: e.source.sha256, source_sha256_after_migration: hash(e.path),
     ...resolution(e), replacement_reference: e.id.startsWith("frontier:") || e.id.startsWith("lens:") ? "register:cityscroll-engineering/semantic-owner-migration" : e.id.startsWith("architecture-decision:") ? `manifest:${e.id}#stable_replacement_reference` : e.stable_replacement_reference,
   })).sort((a, b) => a.manifest_id.localeCompare(b.manifest_id));
   const frontier = items.filter((i) => i.manifest_id.startsWith("frontier:") && i.manifest_id !== "frontier:declared-count-discrepancy");
@@ -64,6 +64,6 @@ function build() {
 }
 const expected = `${JSON.stringify(build(), null, 2)}\n`;
 if (process.argv.includes("--check")) {
-  if (!existsSync(OUTPUT) || readFileSync(OUTPUT, "utf8") !== expected) { console.error("RCP-01 semantic-owner receipt is missing or stale"); process.exitCode = 1; }
-  else console.log("RCP-01 semantic-owner receipt check ok");
+  if (!existsSync(OUTPUT) || readFileSync(OUTPUT, "utf8") !== expected) { console.error("semantic-owner receipt is missing or stale"); process.exitCode = 1; }
+  else console.log("semantic-owner receipt check ok");
 } else { writeFileSync(OUTPUT, expected); console.log("wrote docs/repository-control-plane/semantic-owner-mapping.v1.json"); }
