@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "feature": "land-filing-evidence",
-  "card": "cityscroll-land-decision-path/ldp-27-filing-evidence-surfaces",
+  "card": "cityscroll-engineering/filing-evidence-surfaces",
   "route": "component-harness:land-filing-evidence",
   "revision": "2ea0193a62ad2e49c0f995ad45312262c27fd205",
   "files": [

@@ -1,6 +1,6 @@
 # Masthead brand home link — implementation receipt
 
-Card: `cityscroll-universal-search/us-27-masthead-brand-home-link`
+Card: `cityscroll-engineering/masthead-brand-home-link`
 
 ## Orientation
 

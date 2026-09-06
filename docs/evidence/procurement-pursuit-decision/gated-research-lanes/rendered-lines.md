@@ -25,7 +25,7 @@ Every one of cards PPD-01 through PPD-06 carries its own evidence shard or captu
     {
       "card": "PPD-01",
       "evidence_shards": [
-        "architecture/evidence.d/cityscroll-procurement-pursuit-decision--card-1-opportunity-first-alert-atom.json"
+        "architecture/evidence.d/cityscroll-engineering--opportunity-first-alert-atom.json"
       ],
       "manifests": [
         "docs/evidence/procurement-pursuit-decision/alerts/capture-manifest.json"
@@ -41,7 +41,7 @@ Every one of cards PPD-01 through PPD-06 carries its own evidence shard or captu
     {
       "card": "PPD-03",
       "evidence_shards": [
-        "architecture/evidence.d/cityscroll-procurement-pursuit-decision--card-3-pursuit-snapshot.json"
+        "architecture/evidence.d/cityscroll-engineering--pursuit-snapshot.json"
       ],
       "manifests": [
         "docs/evidence/procurement-pursuit-decision/pursuit-snapshot/capture-manifest.json"
@@ -50,7 +50,7 @@ Every one of cards PPD-01 through PPD-06 carries its own evidence shard or captu
     {
       "card": "PPD-04",
       "evidence_shards": [
-        "architecture/evidence.d/cityscroll-procurement-pursuit-decision--ppd-04-related-context-and-benchmarks.json"
+        "architecture/evidence.d/cityscroll-engineering--related-context-and-benchmarks.json"
       ],
       "manifests": [
         "docs/evidence/procurement-pursuit-decision/related-context/capture-manifest.json"
@@ -59,7 +59,7 @@ Every one of cards PPD-01 through PPD-06 carries its own evidence shard or captu
     {
       "card": "PPD-05",
       "evidence_shards": [
-        "architecture/evidence.d/cityscroll-procurement-pursuit-decision--ppd-05-explainable-preference-set.json"
+        "architecture/evidence.d/cityscroll-engineering--explainable-preference-set.json"
       ],
       "manifests": [
         "docs/evidence/procurement-pursuit-decision/preference-set/capture-manifest.json"
@@ -68,7 +68,7 @@ Every one of cards PPD-01 through PPD-06 carries its own evidence shard or captu
     {
       "card": "PPD-06",
       "evidence_shards": [
-        "architecture/evidence.d/cityscroll-procurement-pursuit-decision--ppd-06-lightweight-pursuit-state.json"
+        "architecture/evidence.d/cityscroll-engineering--lightweight-pursuit-state.json"
       ],
       "manifests": [
         "docs/evidence/procurement-pursuit-decision/pursuit-state/capture-manifest.json"
@@ -126,12 +126,12 @@ The registry is copied in memory with one prerequisite card pointing at an evide
 ```json
 {
   "withdrawn_card": "PPD-01",
-  "withdrawn_shard": "cityscroll-procurement-pursuit-decision/card-1-opportunity-first-alert-atom",
+  "withdrawn_shard": "cityscroll-engineering/opportunity-first-alert-atom",
   "ok": false,
   "failures": [
     {
       "code": "missing_evidence_shard",
-      "detail": "Card PPD-01 names evidence shard cityscroll-procurement-pursuit-decision/card-1-opportunity-first-alert-atom-withdrawn-for-this-capture, which is not present at architecture/evidence.d/cityscroll-procurement-pursuit-decision--card-1-opportunity-first-alert-atom-withdrawn-for-this-capture.json.",
+      "detail": "Card PPD-01 names evidence shard cityscroll-engineering/opportunity-first-alert-atom-withdrawn-for-this-capture, which is not present at architecture/evidence.d/cityscroll-engineering--opportunity-first-alert-atom-withdrawn-for-this-capture.json.",
       "card": "PPD-01"
     }
   ]

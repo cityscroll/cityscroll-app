@@ -207,7 +207,7 @@ function metricEvidence({
     metric_id: metricId,
     traffic_class: trafficClass,
     measurement_origin: measurementOrigin,
-    card_id: `cityscroll-snappiness/surface-${surface.surface_id}`,
+    card_id: `cityscroll-engineering/performance-surface-${surface.surface_id}`,
     data_status: dataStatus,
     ...(windowFraction != null ? { window_fraction: windowFraction, retained_count: retainedCount } : {}),
     slo_state: values.slo_state,
@@ -263,7 +263,7 @@ export function buildDriftOverlay(snapshot, {
       measurementOrigin: "field",
     }));
     return {
-      card_id: `cityscroll-snappiness/surface-${surface.surface_id}`,
+      card_id: `cityscroll-engineering/performance-surface-${surface.surface_id}`,
       surface_id: surface.surface_id,
       operator_label: surface.operator_label,
       lifecycle_state: surface.lifecycle_state,
@@ -369,9 +369,9 @@ function candidateFor(metric, trigger, overlay) {
     drift: metric.drift,
     evidence_hash: metric.evidence_hash,
     trigger,
-    suggested_owner: `cityscroll-snappiness/surface-${metric.surface_id}`,
+    suggested_owner: `cityscroll-engineering/performance-surface-${metric.surface_id}`,
   };
-  const id = `cityscroll-snappiness/candidate-${metric.surface_id}-${metric.metric_id}-${trigger}`;
+  const id = `cityscroll-engineering/performance-candidate-${metric.surface_id}-${metric.metric_id}-${trigger}`;
   return {
     schema: PERFORMANCE_CANDIDATE_SCHEMA,
     id,

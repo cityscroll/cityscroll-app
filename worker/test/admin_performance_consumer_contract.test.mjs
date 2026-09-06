@@ -16,7 +16,7 @@ import {
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "../..");
 const readJson = (path) => JSON.parse(readFileSync(join(ROOT, path), "utf8"));
-const MANIFEST_PATH = "data/rum-09-desk-contract-fixtures/desk-consumer-contract.v1.json";
+const MANIFEST_PATH = "data/desk-contract-fixtures/desk-consumer-contract.v1.json";
 const manifest = readJson(MANIFEST_PATH);
 const response = readJson(manifest.reference_response.path);
 const stateMatrix = readJson(manifest.edge_states.path);

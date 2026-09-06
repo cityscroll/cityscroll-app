@@ -1,0 +1,25 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/pursuit-snapshot",
+  "status": "implemented",
+  "fingerprint": "pursuit-snapshot.v1",
+  "updated_at": "2026-09-04T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "procurement-pursuit-snapshot-contract",
+      "path": "site/procurement_pursuit_snapshot.mjs"
+    },
+    {
+      "id": "procurement-pursuit-snapshot-style",
+      "path": "site/procurement_pursuit_snapshot.css"
+    },
+    {
+      "id": "procurement-pursuit-snapshot-notice-detail-mount",
+      "path": "site/app/money-history.mjs"
+    },
+    {
+      "id": "procurement-pursuit-snapshot-tests",
+      "path": "test/procurement_pursuit_snapshot.test.mjs"
+    }
+  ]
+}

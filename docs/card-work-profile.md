@@ -3,7 +3,7 @@
 A fresh full working copy costs about 1.4-1.6 GiB and spends most of its
 provisioning time transferring Git objects. Two thirds of the bytes are Git
 repository metadata and the tracked `site/data` payload; the measurements are in
-[`docs/evidence/ci-08-working-copy-footprint/`](evidence/ci-08-working-copy-footprint/).
+[`docs/evidence/working-copy-footprint/`](evidence/working-copy-footprint/).
 
 There are two profiles, and **`focused-reduced` is the supported default for
 focused card work**. Everything else — CI, deployment, release, architecture and
@@ -251,7 +251,7 @@ correct rather than the whole site complete; `measured_functional_tests` in the
 closure records which those are. And the harness scan is a scan: a harness that
 starts reading another tracked read model is caught by regenerating the profile,
 which a test enforces. The measurements are in
-[`docs/evidence/ci-11-functional-test-safe-reduced-profile/`](evidence/ci-11-functional-test-safe-reduced-profile/).
+[`docs/evidence/functional-test-safe-reduced-profile/`](evidence/functional-test-safe-reduced-profile/).
 
 ## When a path is missing
 
@@ -278,4 +278,4 @@ python3 tools/summarize_card_profile_evidence.py
 ```
 
 The committed receipts and the before/after tables are in
-[`docs/evidence/ci-09-working-copy-reduction/`](evidence/ci-09-working-copy-reduction/).
+[`docs/evidence/working-copy-reduction/`](evidence/working-copy-reduction/).

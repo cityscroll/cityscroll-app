@@ -51,7 +51,7 @@ IMAGES = ROOT / ".artifacts" / "calendar-density-disclosure"
 AXE = ROOT / "test" / "functional" / "assets" / "axe.min.js"
 
 MANIFEST_SCHEMA = "cityscroll.calendar_density_evidence.v1"
-CARD = "cityscroll-resident-ux/px-02-keep-calendar-overview-scannable"
+CARD = "cityscroll-engineering/keep-calendar-overview-scannable"
 HARNESS = "test/harness/calendar_density_harness.html"
 ROUTE = "component-harness:calendar-density-disclosure"
 

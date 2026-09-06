@@ -1,0 +1,214 @@
+{
+  "schema_version": 1,
+  "card": "cityscroll-engineering/outcome-not-located-is-honest",
+  "capture_mode": "local_node_playwright_axe_static_render",
+  "repository_revision": "772ad0bd4dca270c2d7f17f7f831ea609876a1d0",
+  "note": "Each case renders site/outcome_not_located_state.mjs's renderOutcomeState() directly via node, with no live Worker/D1 backend. The matched-decision and recorded-no-action cases use a synthetic lookup whose single row passes the receipt-backed exact source join; the not-located cases use the committed site/data/non_council_outcome_lookup.json, which matches no notices at all, and one case uses no lookup to evidence the fetch-failure path. tools/capture_phc07_outcome_not_located_state.py checks that site/app/meetings.mjs still mounts this projection before capture, so a later rewiring fails this capture rather than silently evidencing a component the product no longer shows. Fragments are served from site/ (real /index.html CSS rules) via tools/local_site_server.py. axe-core (test/functional/assets/axe.min.js) ran against each rendered fragment at both review widths, using the same failing-violation classification as test/functional/11_accessibility.py (a11y_gate.py). The capture fails unless all seven cases hash distinctly at each width, which is the evidence for A1. It does not evidence a live-data-populated page, since no Worker/D1 backend was running.",
+  "data_vintage": "committed_non_council_outcome_lookup_generated_at_2026-08-11 (0 of 10 notices matched); synthetic joined rows for the two matched states",
+  "viewports": [
+    {
+      "name": "mobile",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "name": "desktop",
+      "width": 1440,
+      "height": 900
+    }
+  ],
+  "captures": [
+    {
+      "fixture": "matched_decision",
+      "outcome_state": "matched_decision",
+      "route": "renderOutcomeState(lookup, request:20260102003, notice) \u2014 body:Queens Community Board 8",
+      "viewport": "mobile",
+      "assertion": "A1/A2: an exact source join plus an explicit approved disposition renders the decision panel, visibly unlike either absence state.",
+      "content_sha256": "d55d5b9537cad0f9728e4371564e439ceeae27297b95b9286fcb884303efab07",
+      "heading_text": "COMMUNITY BOARD DECISION",
+      "follow_up_label": null,
+      "follow_up_href": null,
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    },
+    {
+      "fixture": "recorded_no_action",
+      "outcome_state": "recorded_no_action",
+      "route": "renderOutcomeState(lookup, request:20260102003, notice) \u2014 body:Queens Community Board 8",
+      "viewport": "mobile",
+      "assertion": "A1: an explicit no-action disposition on the same exact join renders a sourced negative, worded unlike the not-located state.",
+      "content_sha256": "e9f9fec9d917ff4cd660abefddeb3e3e2a504862f0f67409a19a2c36e00099f8",
+      "heading_text": "RECORDED: NO ACTION TAKEN",
+      "follow_up_label": null,
+      "follow_up_href": null,
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    },
+    {
+      "fixture": "not_located_community_board",
+      "outcome_state": "not_located",
+      "route": "renderOutcomeState(lookup, request:20260102003, notice) \u2014 body:Queens Community Board 8",
+      "viewport": "mobile",
+      "assertion": "A1/A4/A7: the committed lookup matches nothing, so a community-board record says the outcome was not found and offers following that board.",
+      "content_sha256": "0f86bb5dd0216c02f3360533149bb06795ec4fd59cb33c413dfc5fabfc20644b",
+      "heading_text": "OUTCOME NOT FOUND",
+      "follow_up_label": "Follow this community board",
+      "follow_up_href": "/community-boards/queens-cb-08/",
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    },
+    {
+      "fixture": "not_located_borough_level",
+      "outcome_state": "not_located",
+      "route": "renderOutcomeState(lookup, request:20260102003, notice) \u2014 body:Office of the Brooklyn Borough President",
+      "viewport": "mobile",
+      "assertion": "A4: an unmatched borough-level record lands on the borough president's own site rather than a community-board path.",
+      "content_sha256": "27b9a02539939f30a0769422691a1715117c9aa33b60e989f1267a0dbfb45418",
+      "heading_text": "OUTCOME NOT FOUND",
+      "follow_up_label": "Follow the Brooklyn Borough President",
+      "follow_up_href": "https://www.brooklynbp.nyc.gov/",
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    },
+    {
+      "fixture": "not_located_readable_minutes",
+      "outcome_state": "not_located",
+      "route": "renderOutcomeState(lookup, request:20260102003, notice) \u2014 body:Queens Community Board 8",
+      "viewport": "mobile",
+      "assertion": "A3: minutes joined by exact source evidence but recording no disposition stay readable and mint no decision.",
+      "content_sha256": "0db11baad0c918a8218f93778784253e3ddacbe7cf3712e1d09046ac34b73fb1",
+      "heading_text": "OUTCOME NOT FOUND",
+      "follow_up_label": "Follow this community board",
+      "follow_up_href": "/community-boards/queens-cb-08/",
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    },
+    {
+      "fixture": "not_located_undated_old_notice",
+      "outcome_state": "not_located",
+      "route": "renderOutcomeState(lookup, request:20260102003, notice) \u2014 body:Queens Community Board 8",
+      "viewport": "mobile",
+      "assertion": "A5: a record with a missing date whose notice is years old stays not-located and never advances to held.",
+      "content_sha256": "0f86bb5dd0216c02f3360533149bb06795ec4fd59cb33c413dfc5fabfc20644b",
+      "heading_text": "OUTCOME NOT FOUND",
+      "follow_up_label": "Follow this community board",
+      "follow_up_href": "/community-boards/queens-cb-08/",
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    },
+    {
+      "fixture": "not_located_lookup_unavailable",
+      "outcome_state": "not_located",
+      "route": "renderOutcomeState(lookup, request:20260102003, notice) \u2014 body:Queens Community Board 8",
+      "viewport": "mobile",
+      "assertion": "A6/negative rule: with no lookup at all the state is still an honest gap, and the disclosure says the last-checked date is not recorded.",
+      "content_sha256": "9b6e0cd314f35f5a259c9ad51c5d9c6e259c0ded2e1538897e597d052e1718ab",
+      "heading_text": "OUTCOME NOT FOUND",
+      "follow_up_label": "Follow this community board",
+      "follow_up_href": "/community-boards/queens-cb-08/",
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    },
+    {
+      "fixture": "matched_decision",
+      "outcome_state": "matched_decision",
+      "route": "renderOutcomeState(lookup, request:20260102003, notice) \u2014 body:Queens Community Board 8",
+      "viewport": "desktop",
+      "assertion": "A1/A2: an exact source join plus an explicit approved disposition renders the decision panel, visibly unlike either absence state.",
+      "content_sha256": "d55d5b9537cad0f9728e4371564e439ceeae27297b95b9286fcb884303efab07",
+      "heading_text": "COMMUNITY BOARD DECISION",
+      "follow_up_label": null,
+      "follow_up_href": null,
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    },
+    {
+      "fixture": "recorded_no_action",
+      "outcome_state": "recorded_no_action",
+      "route": "renderOutcomeState(lookup, request:20260102003, notice) \u2014 body:Queens Community Board 8",
+      "viewport": "desktop",
+      "assertion": "A1: an explicit no-action disposition on the same exact join renders a sourced negative, worded unlike the not-located state.",
+      "content_sha256": "e9f9fec9d917ff4cd660abefddeb3e3e2a504862f0f67409a19a2c36e00099f8",
+      "heading_text": "RECORDED: NO ACTION TAKEN",
+      "follow_up_label": null,
+      "follow_up_href": null,
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    },
+    {
+      "fixture": "not_located_community_board",
+      "outcome_state": "not_located",
+      "route": "renderOutcomeState(lookup, request:20260102003, notice) \u2014 body:Queens Community Board 8",
+      "viewport": "desktop",
+      "assertion": "A1/A4/A7: the committed lookup matches nothing, so a community-board record says the outcome was not found and offers following that board.",
+      "content_sha256": "0f86bb5dd0216c02f3360533149bb06795ec4fd59cb33c413dfc5fabfc20644b",
+      "heading_text": "OUTCOME NOT FOUND",
+      "follow_up_label": "Follow this community board",
+      "follow_up_href": "/community-boards/queens-cb-08/",
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    },
+    {
+      "fixture": "not_located_borough_level",
+      "outcome_state": "not_located",
+      "route": "renderOutcomeState(lookup, request:20260102003, notice) \u2014 body:Office of the Brooklyn Borough President",
+      "viewport": "desktop",
+      "assertion": "A4: an unmatched borough-level record lands on the borough president's own site rather than a community-board path.",
+      "content_sha256": "27b9a02539939f30a0769422691a1715117c9aa33b60e989f1267a0dbfb45418",
+      "heading_text": "OUTCOME NOT FOUND",
+      "follow_up_label": "Follow the Brooklyn Borough President",
+      "follow_up_href": "https://www.brooklynbp.nyc.gov/",
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    },
+    {
+      "fixture": "not_located_readable_minutes",
+      "outcome_state": "not_located",
+      "route": "renderOutcomeState(lookup, request:20260102003, notice) \u2014 body:Queens Community Board 8",
+      "viewport": "desktop",
+      "assertion": "A3: minutes joined by exact source evidence but recording no disposition stay readable and mint no decision.",
+      "content_sha256": "0db11baad0c918a8218f93778784253e3ddacbe7cf3712e1d09046ac34b73fb1",
+      "heading_text": "OUTCOME NOT FOUND",
+      "follow_up_label": "Follow this community board",
+      "follow_up_href": "/community-boards/queens-cb-08/",
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    },
+    {
+      "fixture": "not_located_undated_old_notice",
+      "outcome_state": "not_located",
+      "route": "renderOutcomeState(lookup, request:20260102003, notice) \u2014 body:Queens Community Board 8",
+      "viewport": "desktop",
+      "assertion": "A5: a record with a missing date whose notice is years old stays not-located and never advances to held.",
+      "content_sha256": "0f86bb5dd0216c02f3360533149bb06795ec4fd59cb33c413dfc5fabfc20644b",
+      "heading_text": "OUTCOME NOT FOUND",
+      "follow_up_label": "Follow this community board",
+      "follow_up_href": "/community-boards/queens-cb-08/",
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    },
+    {
+      "fixture": "not_located_lookup_unavailable",
+      "outcome_state": "not_located",
+      "route": "renderOutcomeState(lookup, request:20260102003, notice) \u2014 body:Queens Community Board 8",
+      "viewport": "desktop",
+      "assertion": "A6/negative rule: with no lookup at all the state is still an honest gap, and the disclosure says the last-checked date is not recorded.",
+      "content_sha256": "9b6e0cd314f35f5a259c9ad51c5d9c6e259c0ded2e1538897e597d052e1718ab",
+      "heading_text": "OUTCOME NOT FOUND",
+      "follow_up_label": "Follow this community board",
+      "follow_up_href": "/community-boards/queens-cb-08/",
+      "axe_critical_or_serious_violations": [],
+      "file": null
+    }
+  ],
+  "accessibility": {
+    "tool": "axe-core (test/functional/assets/axe.min.js)",
+    "scope": "main#main",
+    "viewports_checked": [
+      "390x844",
+      "1440x900"
+    ],
+    "new_violations_introduced": 0,
+    "pre_existing_violations_observed": []
+  }
+}

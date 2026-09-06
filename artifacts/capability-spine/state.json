@@ -20,7 +20,7 @@
       "state": "proven",
       "max_provable_class": "cloudflare_os_deployed",
       "required_class": "cloudflare_os_deployed",
-      "receipt": "artifacts/capability-spine/cs-12-cloudflare-os-deployment.json",
+      "receipt": "artifacts/capability-spine/cloudflare-os-deployment.json",
       "reason": null
     },
     "gatekeeper_connected": {
@@ -37,8 +37,8 @@
     }
   },
   "preserved_local_rehearsal_evidence": [
-    "artifacts/capability-spine/cs-06-remote-mcp.json",
-    "artifacts/capability-spine/cs-07-cloudflare-os-proof.json",
-    "artifacts/capability-spine/cs-08-code-mode.json"
+    "artifacts/capability-spine/remote-mcp.json",
+    "artifacts/capability-spine/cloudflare-os-proof.json",
+    "artifacts/capability-spine/code-mode.json"
   ]
 }

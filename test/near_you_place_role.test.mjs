@@ -5,7 +5,7 @@
  * here, about this place, affecting this place — built on the one shared place-role predicate
  * from PS-01 (site/scope_v0.mjs PLACE_ROLES) and exercised against the canonical PS-06
  * geography fixtures (test/fixtures/place_scope_contract). See
- * cityscroll-geography-spine/ps-02-near-you-place-role-control.
+ * cityscroll-engineering/near-you-place-role-control.
  */
 
 import assert from "node:assert/strict";

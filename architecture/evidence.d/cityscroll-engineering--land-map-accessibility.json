@@ -1,0 +1,17 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/land-map-accessibility",
+  "status": "implemented",
+  "fingerprint": "land-map-accessibility.v1",
+  "updated_at": "2026-09-04T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "land-map-runtime",
+      "path": "site/app/map_runtime.mjs"
+    },
+    {
+      "id": "land-map-accessibility-proof",
+      "path": "test/functional/49_land_map_accessibility.py"
+    }
+  ]
+}

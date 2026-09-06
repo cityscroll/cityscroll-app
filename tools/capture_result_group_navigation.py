@@ -337,7 +337,7 @@ def main() -> None:
 
     manifest = {
         "schema": "cityscroll.result_group_navigation_capture.v1",
-        "change": "cityscroll-contextual-ux/cx-01-result-group-navigation",
+        "change": "cityscroll-engineering/result-group-navigation",
         "browser_mode": "headless chromium (playwright), remote hosts stubbed or blocked",
         "route": ROUTE,
         "viewports": [{"name": name, "width": w, "height": h} for name, w, h in VIEWPORTS],

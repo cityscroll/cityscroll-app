@@ -4,7 +4,7 @@ both review widths, in each language state its section-level fallback produces,
 and run axe-core against every rendered state.
 
 No image is written or committed - see docs/evidence/public-input-consequence/
-phc-09-compact-explainer/capture-manifest.json for the committed proof (route,
+compact-explainer/capture-manifest.json for the committed proof (route,
 viewport, repository revision, data vintage, assertion and a content hash per
 case), per the workstream's no-committed-image-binaries convention (spec.md).
 
@@ -33,7 +33,7 @@ ROOT = Path(__file__).resolve().parents[1]
 AXE = ROOT / "test/functional/assets/axe.min.js"
 VIEWPORTS = (("mobile", 390, 844), ("desktop", 1440, 900))
 TMP_DIR = ROOT / "site/.phc09-capture-tmp"
-OUT_DIR = ROOT / "docs/evidence/public-input-consequence/phc-09-compact-explainer"
+OUT_DIR = ROOT / "docs/evidence/public-input-consequence/compact-explainer"
 
 # How the product reaches this component. If the Meetings context stops
 # carrying it, this capture fails rather than quietly evidencing an explainer
@@ -257,7 +257,7 @@ def main() -> None:
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     manifest = {
         "schema_version": 1,
-        "card": "cityscroll-public-input-consequence/phc-09-compact-explainer-without-overpromising",
+        "card": "cityscroll-engineering/compact-explainer-without-overpromising",
         "capture_mode": "local_node_playwright_axe_static_render",
         "repository_revision": repository_revision,
         "note": (

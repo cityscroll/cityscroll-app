@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/land-map-authority-summary-handoff",
+  "status": "implemented",
+  "fingerprint": "land-map-authority-summary-handoff.v1",
+  "updated_at": "2026-09-02T00:00:00.000Z",
+  "projections": [
+    { "id": "land-map-authority-handoff-adapter", "path": "site/land_map_authority_handoff.mjs" },
+    { "id": "land-map-authority-handoff-contract", "path": "test/land_map_authority_handoff.test.mjs" }
+  ]
+}

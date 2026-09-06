@@ -286,7 +286,7 @@ const COMMITTED_DERIVED_ARTIFACTS_WITH_FRESHNESS_ASSERTIONS = [
     generator: "tools/build_land_project_map_points.mjs",
   },
   {
-    artifact: "worker/artifacts/capability-spine/cs-06-remote-mcp.json",
+    artifact: "worker/artifacts/capability-spine/remote-mcp.json",
     generator: "worker/scripts/build_remote_mcp_evidence.mjs",
   },
   {

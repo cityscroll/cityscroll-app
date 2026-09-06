@@ -33,7 +33,7 @@ import { decide } from "./card_profile_router.mjs";
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const CONFIG_PATH = resolve(ROOT, "tools/card-profile/profile.config.v1.json");
 const SENTINEL = resolve(ROOT, "tools/card_profile_sentinel.cjs");
-const OBSERVATION_DIR = resolve(ROOT, "docs/evidence/ci-09-working-copy-reduction/raw/closure");
+const OBSERVATION_DIR = resolve(ROOT, "docs/evidence/working-copy-reduction/raw/closure");
 
 function git(args, options = {}) {
   return execFileSync("git", args, {

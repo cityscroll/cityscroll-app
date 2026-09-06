@@ -46,7 +46,7 @@ test("architecture-evidence projections include the petition-handoff card", () =
   assert.equal(result.status, "PASS", result.findings.join("; "));
   assert.equal(
     result.evidence.projections["site/rules_petition.mjs"].represented_card_ids.includes(
-      "cityscroll-rules-decrol/rd-m5",
+      "cityscroll-engineering/rules-petition-handoff",
     ),
     true,
   );

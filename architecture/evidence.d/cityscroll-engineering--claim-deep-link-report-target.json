@@ -1,0 +1,17 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/claim-deep-link-report-target",
+  "status": "implemented",
+  "fingerprint": "claim-deep-link-report-target.v1",
+  "updated_at": "2026-08-31T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "agency-constellation-claim-report-action",
+      "path": "site/agency_constellation.mjs"
+    },
+    {
+      "id": "agency-claim-deep-link-report-fixtures",
+      "path": "test/fixtures/report_target/agency_claim_deep_link.json"
+    }
+  ]
+}

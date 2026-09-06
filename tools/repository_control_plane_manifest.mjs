@@ -8,7 +8,7 @@ import { fileURLToPath } from "node:url";
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const OUTPUT = join(ROOT, "docs/repository-control-plane/classification.v1.json");
 const SCHEMA = "cityscroll.repository_control_plane_classification.v1";
-const CARD = "cityscroll-repository-control-plane/rcp-00";
+const CARD = "cityscroll-engineering/repository-classification";
 // The public CityScroll Engineering Record for the living-architecture narrative.
 // Any private owner record it corresponds to is not part of this repository.
 const LIVING_ARCHITECTURE_RECORD = "cityscroll-engineering/living-architecture-narrative";
@@ -47,17 +47,17 @@ export function buildManifest() {
     const sourceId = data.id ?? data.entry_id ?? path.split("/").at(-1).replace(/\.json$/, "");
     entries.push(entry(
       `frontier:${sourceId}`, path, `entry:${sourceId}`, "mixed-measurement-and-temporal-intent",
-      "cityscroll-repository-control-plane/rcp-01", "cityscroll-repository-control-plane/rcp-01", "split",
-      `register:cityscroll-repository-control-plane/rcp-01#frontier-${sourceId}`,
+      "cityscroll-engineering/semantic-owner-migration", "cityscroll-engineering/semantic-owner-migration", "split",
+      `register:cityscroll-engineering/semantic-owner-migration#frontier-${sourceId}`,
     ));
   }
 
   const meta = JSON.parse(text("docs/data-frontiers/2026-08/meta.json"));
   entries.push(entry(
     "frontier:declared-count-discrepancy", "docs/data-frontiers/2026-08/meta.json", "json-pointer:/entry_count",
-    "stale-measurement-and-reconciliation-intent", "cityscroll-repository-control-plane/rcp-01",
-    "cityscroll-repository-control-plane/rcp-01", "split",
-    "register:cityscroll-repository-control-plane/rcp-01#frontier-count-reconciliation",
+    "stale-measurement-and-reconciliation-intent", "cityscroll-engineering/semantic-owner-migration",
+    "cityscroll-engineering/semantic-owner-migration", "split",
+    "register:cityscroll-engineering/semantic-owner-migration#frontier-count-reconciliation",
   ));
 
   for (let n = 1; n <= 5; n += 1) {
@@ -65,7 +65,7 @@ export function buildManifest() {
     entries.push(entry(
       `lens:${lensId}`, "docs/lens-filter-template.md", `heading:card ${lensId}`,
       "repo-only-rollout-register", "unresolved", "unresolved", "migrate",
-      `register:cityscroll-repository-control-plane/rcp-01#unresolved-${lensId}`,
+      `register:cityscroll-engineering/semantic-owner-migration#unresolved-${lensId}`,
     ));
   }
 
@@ -86,22 +86,22 @@ export function buildManifest() {
   ));
 
   entries.push(entry("agents:durable-routing", "AGENTS.md", "durable routing and current invariants", "current-maintainer-routing", "repository", "not-applicable", "split", "repo:AGENTS.md#durable-routing"));
-  entries.push(entry("agents:implementation-scrapbook", "AGENTS.md", "implementation-history and temporal status entries", "implementation-history-scrapbook", "cityscroll-repository-control-plane/rcp-02", "cityscroll-repository-control-plane/rcp-02", "migrate", "register:cityscroll-repository-control-plane/rcp-02#root-guidance-rewrite"));
-  entries.push(entry("scrim:generated-inventory", "docs/repository-scrim-review.md", "1144-occurrence generated inventory", "bulky-generated-review-inventory", "cityscroll-repository-control-plane/rcp-03", "cityscroll-repository-control-plane/rcp-03", "privatize", "register:cityscroll-repository-control-plane/rcp-03#scrim-inventory", "review-required"));
+  entries.push(entry("agents:implementation-scrapbook", "AGENTS.md", "implementation-history and temporal status entries", "implementation-history-scrapbook", "cityscroll-engineering/root-agents-router", "cityscroll-engineering/root-agents-router", "migrate", "register:cityscroll-engineering/root-agents-router#root-guidance-rewrite"));
+  entries.push(entry("scrim:generated-inventory", "docs/repository-scrim-review.md", "1144-occurrence generated inventory", "bulky-generated-review-inventory", "cityscroll-engineering/private-generated-evidence-placement", "cityscroll-engineering/private-generated-evidence-placement", "privatize", "register:cityscroll-engineering/private-generated-evidence-placement#scrim-inventory", "review-required"));
 
   for (const path of ["docs/adr/civic-time-event-contract.md", "docs/design-principles-lens.md"]) {
-    entries.push(entry(`research:${path}`, path, "Cangshu identifiers, acquisition state, or internal research debt", "internal-research-bookkeeping", "cityscroll-repository-control-plane/rcp-03", "cityscroll-repository-control-plane/rcp-03", "split", `register:cityscroll-repository-control-plane/rcp-03#research-${sha(path).slice(0, 12)}`, "review-required"));
+    entries.push(entry(`research:${path}`, path, "Cangshu identifiers, acquisition state, or internal research debt", "internal-research-bookkeeping", "cityscroll-engineering/private-generated-evidence-placement", "cityscroll-engineering/private-generated-evidence-placement", "split", `register:cityscroll-engineering/private-generated-evidence-placement#research-${sha(path).slice(0, 12)}`, "review-required"));
   }
 
   for (const [id, path, selector, owner, registerId] of [
-    ["frontier-projection:future-queue", "docs/data-frontiers-2026-08.md", "Ready-to-card bodies and Next joinable cards sections", "cityscroll-repository-control-plane/rcp-01", "cityscroll-repository-control-plane/rcp-01"],
+    ["frontier-projection:future-queue", "docs/data-frontiers-2026-08.md", "Ready-to-card bodies and Next joinable cards sections", "cityscroll-engineering/semantic-owner-migration", "cityscroll-engineering/semantic-owner-migration"],
     ["property-a11y:ranked-plan", "docs/property-a11y-census-2026-08.md", "ranked plan for ships 2-4", "unresolved", "unresolved"],
     ["precompute-first:migration-plan", "docs/precompute-first-inventory-2026-07-29.md", "mutable migration-plan sections", "unresolved", "unresolved"],
     ["drift-inventory:pending-work", "docs/drift-inventory.md", "pending implementation design and unwired triggers", "cityscroll-living-architecture", "unresolved"],
     ["source-health:follow-up-queue", "docs/source-health-participation.md", "uncarded follow-up queue", "unresolved", "unresolved"],
     ["semantic-trial:next-step", "docs/research/semantic-layer-trial-2026-08-04.md", "best next step and internal research state", "unresolved", "unresolved"],
   ]) {
-    entries.push(entry(id, path, selector, "mixed-current-contract-and-temporal-intent", owner, registerId, "split", `register:cityscroll-repository-control-plane/rcp-01#${id}`));
+    entries.push(entry(id, path, selector, "mixed-current-contract-and-temporal-intent", owner, registerId, "split", `register:cityscroll-engineering/semantic-owner-migration#${id}`));
   }
 
   const publicDocs = walk("")
@@ -112,7 +112,7 @@ export function buildManifest() {
   const privateEvidenceRoot = ["backstage", "://", "cityscroll-evidence/"].join("");
   const privateUriPaths = publicDocs.filter((p) => text(p).includes(privateEvidenceRoot));
   for (const path of privateUriPaths) {
-    entries.push(entry(`private-uri:${path}`, path, "all private evidence URI occurrences", "private-evidence-reference", "cityscroll-repository-control-plane/rcp-03", "cityscroll-repository-control-plane/rcp-03", "privatize", `register:cityscroll-repository-control-plane/rcp-03#private-uri-${sha(path).slice(0, 12)}`, "review-required"));
+    entries.push(entry(`private-uri:${path}`, path, "all private evidence URI occurrences", "private-evidence-reference", "cityscroll-engineering/private-generated-evidence-placement", "cityscroll-engineering/private-generated-evidence-placement", "privatize", `register:cityscroll-engineering/private-generated-evidence-placement#private-uri-${sha(path).slice(0, 12)}`, "review-required"));
   }
 
   const retained = [
@@ -122,7 +122,7 @@ export function buildManifest() {
     ["retained:fixtures", "test/fixtures/**", "fixtures", "repository", "repo:test/fixtures/"],
     ["retained:generators", "tools/build_*.mjs", "deterministic-generators", "repository", "repo:tools/"],
     ["retained:runbooks", "docs/*runbook*.md", "current-maintainer-runbooks", "repository", "repo:docs/"],
-    ["retained:mt7-shards", "architecture/evidence.d/*.json", "implementation-evidence-shards", "cityscroll-merge-throughput/mt-7-architecture-evidence-shards", "repo:architecture/evidence.d/"],
+    ["retained:mt7-shards", "architecture/evidence.d/*.json", "implementation-evidence-shards", "cityscroll-engineering/architecture-evidence-shards", "repo:architecture/evidence.d/"],
     ["retained:public-evidence", "docs/evidence/** excluding private-reference sections", "reproducible-public-evidence", "repository", "repo:docs/evidence/"],
   ];
   for (const [id, path, contentClass, owner, replacement] of retained) {

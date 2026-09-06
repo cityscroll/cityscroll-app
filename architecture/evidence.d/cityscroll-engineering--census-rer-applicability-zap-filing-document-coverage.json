@@ -1,0 +1,21 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/census-rer-applicability-zap-filing-document-coverage",
+  "status": "implemented",
+  "fingerprint": "census-rer-applicability-zap-filing-document-coverage.v1",
+  "updated_at": "2026-09-04T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "land-filing-evidence-census",
+      "path": "warehouse/lib/land_filing_evidence_census.mjs"
+    },
+    {
+      "id": "land-filing-evidence-census-builder",
+      "path": "tools/build_land_filing_evidence_census.mjs"
+    },
+    {
+      "id": "land-filing-evidence-census-receipt",
+      "path": "warehouse/receipts/proof/land_filing_evidence_census_latest.json"
+    }
+  ]
+}

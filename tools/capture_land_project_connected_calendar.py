@@ -246,7 +246,7 @@ def capture() -> dict:
     manifest = {
         "schema_version": 1,
         "feature": "land-project-connected-calendar",
-        "card": "cityscroll-calendar-beyond-ics/cbics-06-land-project-connected-dates",
+        "card": "cityscroll-engineering/land-project-connected-dates",
         "route": ROUTE,
         "revision": revision,
         "today": TODAY,

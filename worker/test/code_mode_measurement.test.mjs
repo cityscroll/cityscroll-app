@@ -122,7 +122,7 @@ test("CS-08 measurement receipt is isolated and matches the CS-07 frozen fixture
     maxP95Regression: 0.10,
   });
   assert.equal(receipt.schema, "cityscroll.code_mode_measurement_receipt.v1");
-  assert.equal(receipt.card, "cs-08-code-mode-measurement");
+  assert.equal(receipt.card, "code-mode-measurement");
   assert.equal(receipt.prerequisite.status, "pass");
   assert.equal(receipt.prerequisite.raw_store_bindings, 0);
   assert.deepEqual(receipt.grant.capability_versions, [

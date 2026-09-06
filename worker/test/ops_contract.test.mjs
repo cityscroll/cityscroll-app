@@ -115,7 +115,7 @@ test("performance discovery advertises the cross-repository Desk consumer handof
   assert.deepEqual(doc.performance.consumer_handoff, {
     owner_repository: "cityscroll-internal",
     integration_status: "separate_cross_repository_deliverable",
-    manifest: "data/rum-09-desk-contract-fixtures/desk-consumer-contract.v1.json",
+    manifest: "data/desk-contract-fixtures/desk-consumer-contract.v1.json",
     reference_response: "worker/test/fixtures/admin_performance_available.v1.json",
     edge_states: "worker/test/fixtures/admin_performance_states.v1.json",
     acceptance_test: "worker/test/admin_performance_consumer_contract.test.mjs",

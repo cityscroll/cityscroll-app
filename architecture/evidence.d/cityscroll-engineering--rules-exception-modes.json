@@ -1,0 +1,17 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/rules-exception-modes",
+  "status": "implemented",
+  "fingerprint": "rules-exception-modes.v1",
+  "updated_at": "2026-08-31T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "rules-exception-modes",
+      "path": "site/rules_exception_modes.mjs"
+    },
+    {
+      "id": "rules-exception-modes-coverage",
+      "path": "docs/evidence/rules-exception-modes/coverage.json"
+    }
+  ]
+}

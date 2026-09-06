@@ -1,0 +1,25 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/procurement-property-opportunity-bundles",
+  "status": "implemented",
+  "fingerprint": "procurement-property-opportunity-bundles.v1",
+  "updated_at": "2026-09-03T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "opportunity-bundle-adapter",
+      "path": "site/opportunity_calendar.mjs"
+    },
+    {
+      "id": "procurement-opportunity-month",
+      "path": "site/procurement_document.mjs"
+    },
+    {
+      "id": "property-opportunity-month",
+      "path": "site/property_commercial_ui.mjs"
+    },
+    {
+      "id": "property-opportunity-wiring",
+      "path": "site/app/property.mjs"
+    }
+  ]
+}

@@ -92,7 +92,7 @@ export function buildReceipt(policy, rootText) {
   const audit = instructionAudit(policy);
   return {
     schema: "cityscroll.agents_router_receipt.v1",
-    card: "cityscroll-repository-control-plane/rcp-02",
+    card: "cityscroll-engineering/root-agents-router",
     inputs: {
       main_commit: "d1c0b1c66477f7efc056360253aeb40341dfc103",
       register_revision: "32727924c5f546ce5c41d0f68cb324fde7c7425b",
@@ -139,7 +139,7 @@ export function buildReceipt(policy, rootText) {
     architecture_preflight: {
       observed_surface_affected: false,
       basis: "Instruction and repository-governance paths are outside architecture/observer-canaries.json; the card-owned evidence shard records the governance change.",
-      card_owned_shard: "architecture/evidence.d/cityscroll-repository-control-plane--rcp-02.json",
+      card_owned_shard: "architecture/evidence.d/cityscroll-engineering--root-agents-router.json",
       generated_aggregate_paths_changed: false
     },
     product_or_served_artifact_changed: false

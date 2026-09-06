@@ -8,8 +8,7 @@
  * computed by land_phase_spine.mjs; never inspects or mutates observed
  * events, aggregates, or chronological rows.
  *
- * Absorbed from the retired cityscroll-land-decision-path/ldp-09-timeline-
- * role-strips card — see data/decisions/ldp09-absorb-retire.md. Historical:
+ * Absorbed from a retired timeline role-strips record. Historical:
  * unlike the current-stage-only "Where this stands" panel
  * (land_authority_summary_view.mjs), this renders a strip for every
  * profile-backed stage — passed, current, and future — that the resolved

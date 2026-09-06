@@ -194,7 +194,7 @@ def main() -> None:
 
     receipt = {
         "schema": "cityscroll.land-map-marker-join-receipt.v1",
-        "card": "cityscroll-land-map-view/lm-06-marker-join",
+        "card": "cityscroll-engineering/land-map-marker-join",
         "browser_mode": "headless chromium (playwright), remote hosts blocked",
         "revision": revision(),
         "routes": {"default_map": DEFAULT_MAP_ROUTE, "filtered_map": FILTERED_MAP_ROUTE},

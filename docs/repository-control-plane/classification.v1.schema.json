@@ -11,7 +11,7 @@
       "required": ["main_commit", "register_card", "frontier_declared_count", "frontier_enumerated_count", "frontier_discrepancy", "root_agents_bytes", "root_agents_lines", "scrim_occurrences_declared", "private_uri_document_count"],
       "properties": {
         "main_commit": { "type": "string", "pattern": "^[a-f0-9]{40}$" },
-        "register_card": { "const": "cityscroll-repository-control-plane/rcp-00" },
+        "register_card": { "const": "cityscroll-engineering/repository-classification" },
         "frontier_declared_count": { "type": "integer" },
         "frontier_enumerated_count": { "type": "integer" },
         "frontier_discrepancy": { "type": "integer" },

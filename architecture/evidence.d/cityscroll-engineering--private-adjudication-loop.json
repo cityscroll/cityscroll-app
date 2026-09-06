@@ -1,0 +1,25 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/private-adjudication-loop",
+  "status": "implemented",
+  "fingerprint": "private-adjudication-loop.v1",
+  "updated_at": "2026-08-31T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "report-adjudication-contract",
+      "path": "worker/src/lib/report_adjudication.mjs"
+    },
+    {
+      "id": "report-verdict-public-seam",
+      "path": "site/report_verdict_public.mjs"
+    },
+    {
+      "id": "report-verdict-labels",
+      "path": "site/data/report_verdict_labels.json"
+    },
+    {
+      "id": "cc9-adjudication-rehearsal",
+      "path": "docs/evidence/cc9-adjudication/rehearsal.json"
+    }
+  ]
+}

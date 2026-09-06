@@ -14,8 +14,8 @@ import {
 } from "./verify_cloudflare_os_proof.mjs";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const DEFAULT_RECEIPT = resolve(ROOT, "artifacts/capability-spine/cs-08-code-mode.json");
-const CS07_RECEIPT = resolve(ROOT, "artifacts/capability-spine/cs-07-cloudflare-os-proof.json");
+const DEFAULT_RECEIPT = resolve(ROOT, "artifacts/capability-spine/code-mode.json");
+const CS07_RECEIPT = resolve(ROOT, "artifacts/capability-spine/cloudflare-os-proof.json");
 const CS07_SOURCE = resolve(ROOT, "integrations/cloudflare-os-entity-research");
 
 function readJson(path) {

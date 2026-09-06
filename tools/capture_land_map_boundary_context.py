@@ -139,7 +139,7 @@ def main() -> None:
     missing = capture(ROOT / "site", "after", missing=True)
     receipt = {
         "schema": "cityscroll.land-map-boundary-context-receipt.v1",
-        "card": "cityscroll-land-map-view/lm-09-boundary-context",
+        "card": "cityscroll-engineering/land-map-boundary-context",
         "browser_mode": "headless chromium (playwright), remote hosts blocked",
         "revision": subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True, check=True).stdout.strip(),
         "artifact_vintage": "2026-05-26",

@@ -290,10 +290,10 @@ run_and_fail node tools/generate_integration_client.mjs --check
 run_and_fail node tools/build_product_updates.mjs --check
 run_and_fail node tools/run_capability_semantic_scout.mjs \
   --fixture test/fixtures/capability_semantic_scout.json \
-  --out artifacts/capability-spine/cs-05-semantic-scout.json \
+  --out artifacts/capability-spine/semantic-scout.json \
   --check
 run_and_fail node tools/verify_capability_semantic_scout.mjs \
-  artifacts/capability-spine/cs-05-semantic-scout.json
+  artifacts/capability-spine/semantic-scout.json
 run_and_fail node tools/data_source_graph.mjs
 run_and_fail node tools/data_source_graph.mjs --check
 run_and_fail node tools/build_url_migration_map.mjs --check

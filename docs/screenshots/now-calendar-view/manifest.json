@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "feature": "now-calendar-view",
-  "card": "cityscroll-calendar-beyond-ics/cbics-10-cross-surface-parity-launch-quality",
+  "card": "cityscroll-engineering/cross-surface-parity-launch-quality",
   "route": "component-harness:now-calendar-view",
   "revision": "c88731d19645332f9cf84b49ed9a8f990c460967",
   "today": "2026-06-01",

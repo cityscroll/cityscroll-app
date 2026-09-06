@@ -96,7 +96,7 @@ test("placement inputs are owned per document tree and decode to exactly one key
 test("the derived receipt keeps the v1 contract and every RCP-03 count", () => {
   const receipt = aggregatePlacementShards(loadFixture(SHARD_DIRECTORY_RELATIVE), { directory: SHARD_DIRECTORY_RELATIVE });
   assert.equal(receipt.schema, "cityscroll.repository_evidence_placement.v1");
-  assert.equal(receipt.card, "cityscroll-repository-control-plane/rcp-03");
+  assert.equal(receipt.card, "cityscroll-engineering/private-generated-evidence-placement");
   assert.equal(receipt.privacy_model, "placement-not-deletion");
   assert.equal(receipt.generated_at, "2026-08-31T00:00:00.000Z");
   assert.equal(receipt.private_inventory.scrim_review.row_count, 1144);
@@ -111,8 +111,8 @@ test("the derived receipt keeps the v1 contract and every RCP-03 count", () => {
   // Every retained document keeps its digest-backed disposition and maintainer resolution.
   for (const row of receipt.private_inventory.private_reference_documents) {
     assert.match(row.source_sha256, /^[a-f0-9]{64}$/);
-    assert.equal(row.disposition, "register:cityscroll-repository-control-plane/rcp-03#private-evidence");
-    assert.equal(row.maintainer_resolution, "register:cityscroll-repository-control-plane/rcp-03#authorized-maintainer-access");
+    assert.equal(row.disposition, "register:cityscroll-engineering/private-generated-evidence-placement#private-evidence");
+    assert.equal(row.maintainer_resolution, "register:cityscroll-engineering/private-generated-evidence-placement#authorized-maintainer-access");
   }
   const paths = receipt.private_inventory.private_reference_documents.map((row) => row.path);
   assert.deepEqual(paths, [...paths].sort(), "document rows aggregate in stable path order");
@@ -236,7 +236,7 @@ test("retained public policy, contracts, and merge-throughput evidence stay acce
   for (const path of ["ARCHITECTURE.md", "docs/architecture.md", "docs/adr"]) assert.ok(existsSync(path), `${path} is retained`);
   for (const path of receipt.preservation.architecture) assert.ok(existsSync(path.replace(/\/$/, "")), `${path} is retained`);
   for (const path of receipt.preservation.mt7_evidence) assert.ok(existsSync(path.replace(/\/$/, "")), `${path} is retained`);
-  assert.ok(existsSync("architecture/evidence.d/cityscroll-merge-throughput--mt-8-architecture-evidence-generated-aggregates.json"));
+  assert.ok(existsSync("architecture/evidence.d/cityscroll-engineering--architecture-evidence-generated-aggregates.json"));
   assert.ok(existsSync("ontology"), "public source contracts are retained");
   assert.ok(existsSync("test/fixtures"), "fixtures are retained");
   assert.ok(existsSync("docs/evidence"), "legitimate public evidence is retained");
@@ -370,7 +370,7 @@ test("every disposition and maintainer resolution names a registered card", () =
     assert.ok(match, `${reference} must be a register reference`);
     assert.ok(registered.has(match[1]), `${match[1]} must be a registered card`);
   }
-  assert.ok(registered.has("cityscroll-repository-control-plane/rcp-06"), "this change registers its own entry");
+  assert.ok(registered.has("cityscroll-engineering/noncolliding-evidence-placement-receipt"), "this change registers its own entry");
 });
 
 test("the placement check passes on the current tip and under a merge-group ref", () => {

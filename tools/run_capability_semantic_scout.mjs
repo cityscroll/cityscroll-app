@@ -38,7 +38,7 @@ import { workerCitedPassages } from "../worker/src/cited_retrieval.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const DEFAULT_FIXTURE = join(ROOT, "test/fixtures/capability_semantic_scout.json");
-const DEFAULT_OUT = join(ROOT, "artifacts/capability-spine/cs-05-semantic-scout.json");
+const DEFAULT_OUT = join(ROOT, "artifacts/capability-spine/semantic-scout.json");
 const NOTICE_SCHEMA = readFileSync(join(ROOT, "worker/migrations/0001_notices.sql"), "utf8");
 const NOTICE_FACTS_SCHEMA = readFileSync(join(ROOT, "worker/migrations/0010_notice_facts.sql"), "utf8");
 const NOTICE_FTS_SCHEMA = readFileSync(join(ROOT, "worker/migrations/0016_notice_fts.sql"), "utf8");

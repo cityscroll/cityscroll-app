@@ -123,7 +123,7 @@ function article78Surfaces() {
   walk("docs", (name) => name.startsWith("article78-") && name.endsWith(".md"));
   walk("test", (name) => name.startsWith("warehouse_article78_") && name.endsWith(".test.mjs"));
   files.push("tools/backtest_article78_ontology.mjs");
-  files.push("architecture/evidence.d/cityscroll-seqra-foundation--a78-04-cutoff-aware-challenge-watch-features.json");
+  files.push("architecture/evidence.d/cityscroll-engineering--cutoff-aware-challenge-watch-features.json");
   return files.sort();
 }
 

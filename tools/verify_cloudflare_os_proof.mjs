@@ -18,7 +18,7 @@ import { createRemoteMcpFixtureEnv, semanticHash } from "../worker/test/remote_m
 import { handleMcp } from "../worker/src/mcp.mjs";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const DEFAULT_RECEIPT = resolve(ROOT, "artifacts/capability-spine/cs-07-cloudflare-os-proof.json");
+const DEFAULT_RECEIPT = resolve(ROOT, "artifacts/capability-spine/cloudflare-os-proof.json");
 const DEFAULT_SOURCE = resolve(ROOT, "integrations/cloudflare-os-entity-research");
 const FIXTURE_PATH = resolve(ROOT, "test/fixtures/cloudflare_os_entity_research.json");
 const OBSERVED_AT = "2026-08-24T00:00:00.000Z";

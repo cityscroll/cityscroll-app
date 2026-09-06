@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "feature": "land-next-decision-watch",
-  "card": "cityscroll-land-decision-path/ldp-16-procedure-aware-watches",
+  "card": "cityscroll-engineering/procedure-aware-watches",
   "route": "component-harness:land-next-decision-watch",
   "revision": "d550908d1b930e815409eb4ae554803a07d5b5d2",
   "files": [

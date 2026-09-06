@@ -2,7 +2,7 @@
   "schema": "cityscroll.repository-control-plane.evidence-placement-shard.v1",
   "id": "preservation",
   "owner": "preservation",
-  "card": "cityscroll-repository-control-plane/rcp-03",
+  "card": "cityscroll-engineering/private-generated-evidence-placement",
   "input_revision": "c9b83920345a2e1172390eafb3af6e7bd35651b2",
   "updated_at": "2026-08-31T00:00:00.000Z",
   "value": {
@@ -33,7 +33,7 @@
       "warehouse/receipts/proof/"
     ],
     "mt7_evidence": [
-      "architecture/evidence.d/cityscroll-merge-throughput--mt-7-architecture-evidence-shards.json",
+      "architecture/evidence.d/cityscroll-engineering--architecture-evidence-shards.json",
       "architecture/evidence.d/"
     ]
   }

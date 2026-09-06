@@ -2,7 +2,7 @@
 """Regenerate the CI-08 working-copy evidence tables from their raw inputs.
 
 Measurement-only reporting tool. It reads the committed raw receipts under
-``docs/evidence/ci-08-working-copy-footprint/raw/`` and prints the Markdown tables
+``docs/evidence/working-copy-footprint/raw/`` and prints the Markdown tables
 that appear in that directory's README, so a reviewer can reproduce every byte,
 percentage and timing figure rather than trusting the prose.
 
@@ -175,7 +175,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
         "--evidence-dir",
-        default=os.path.join("docs", "evidence", "ci-08-working-copy-footprint"),
+        default=os.path.join("docs", "evidence", "working-copy-footprint"),
     )
     args = parser.parse_args()
     raw = os.path.join(args.evidence_dir, "raw")

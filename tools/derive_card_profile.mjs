@@ -71,7 +71,7 @@ const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const CONFIG_PATH = resolve(ROOT, "tools/card-profile/profile.config.v1.json");
 const SPARSE_PATH = sparsePath(ROOT);
 const CLOSURE_PATH = closurePath(ROOT);
-const OBSERVATION_DIR = resolve(ROOT, "docs/evidence/ci-09-working-copy-reduction/raw/closure");
+const OBSERVATION_DIR = resolve(ROOT, "docs/evidence/working-copy-reduction/raw/closure");
 
 const STATIC_SCAN_EXTENSIONS = new Set([".mjs", ".js", ".cjs", ".ts"]);
 

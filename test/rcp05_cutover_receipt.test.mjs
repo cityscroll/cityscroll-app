@@ -91,10 +91,10 @@ test("two conflicting owner references for one entry are reported", () => {
   const conflicted = {
     ...classification.entries.find((entry) => entry.canonical_owner === "unresolved"),
     id: "conflict:example",
-    stable_replacement_reference: "register:cityscroll-repository-control-plane/rcp-99#elsewhere",
+    stable_replacement_reference: "register:cityscroll-engineering/not-a-registered-record#elsewhere",
   };
   conflicted.canonical_owner = "unresolved";
-  conflicted.register_id = "cityscroll-repository-control-plane/rcp-01";
+  conflicted.register_id = "cityscroll-engineering/semantic-owner-migration";
   const { findings } = reconcileOwners({ entries: [conflicted], mappingItems: [], inventoryIds });
   assert.ok(findings.some((row) => row.includes("conflicting owner references")));
 });
@@ -112,7 +112,7 @@ test("unresolved outcome ownership stays explicit instead of becoming an implied
 
 test("a mapping that claims an unresolved outcome while naming an owner is contradictory", () => {
   const entry = classification.entries.find((row) => row.content_class === "repo-only-rollout-register");
-  const contradictory = [{ manifest_id: entry.id, canonical_owner: "cityscroll-repository-control-plane/rcp-01", resolution: "unresolved" }];
+  const contradictory = [{ manifest_id: entry.id, canonical_owner: "cityscroll-engineering/semantic-owner-migration", resolution: "unresolved" }];
   const { findings } = reconcileOwners({ entries: [entry], mappingItems: contradictory, inventoryIds });
   assert.ok(findings.some((row) => row.includes("unresolved outcome owner but also names")));
 });
@@ -121,7 +121,7 @@ test("owner references are classified by how the repository can check them", () 
   assert.equal(ownerResolution("unresolved", inventoryIds), "unresolved");
   assert.equal(ownerResolution(null, inventoryIds), "unresolved");
   assert.equal(ownerResolution("repository", inventoryIds), "repository");
-  assert.equal(ownerResolution("cityscroll-repository-control-plane/rcp-03", inventoryIds), "card-inventory");
+  assert.equal(ownerResolution("cityscroll-engineering/private-generated-evidence-placement", inventoryIds), "card-inventory");
   assert.equal(ownerResolution("cityscroll-living-architecture", inventoryIds), "register-asserted");
   const counts = built.receipt.ownership.disposition_owner_resolution_counts;
   assert.equal(Object.values(counts).reduce((sum, value) => sum + value, 0), classification.entries.length);
@@ -132,7 +132,7 @@ test("mapping indirection resolves back to the manifest instead of duplicating a
   const id = "architecture-decision:home-wire-budget-rationale";
   assert.equal(resolveMappingOwner(`manifest:${id}#register_id`, entries), entries.get(id).register_id);
   assert.equal(resolveMappingOwner("manifest:does-not-exist#register_id", entries), null);
-  assert.equal(resolveMappingOwner("cityscroll-repository-control-plane/rcp-01", entries), "cityscroll-repository-control-plane/rcp-01");
+  assert.equal(resolveMappingOwner("cityscroll-engineering/semantic-owner-migration", entries), "cityscroll-engineering/semantic-owner-migration");
   assert.equal(resolveMappingOwner(null, entries), null);
 });
 
@@ -193,8 +193,8 @@ test("retained architecture-evidence projections resolve at the tip", () => {
 test("every privatized disposition names one authorized-maintainer resolution", () => {
   assert.equal(built.receipt.private_access.public_url_resolutions, 0);
   assert.equal(built.receipt.private_access.payload_published, false);
-  assert.deepEqual(built.receipt.private_access.resolutions, ["register:cityscroll-repository-control-plane/rcp-03#authorized-maintainer-access"]);
-  const expected = { resolution_scheme: "register", expected_resolution: "register:cityscroll-repository-control-plane/rcp-03#authorized-maintainer-access", expected_disposition_count: 1 };
+  assert.deepEqual(built.receipt.private_access.resolutions, ["register:cityscroll-engineering/private-generated-evidence-placement#authorized-maintainer-access"]);
+  const expected = { resolution_scheme: "register", expected_resolution: "register:cityscroll-engineering/private-generated-evidence-placement#authorized-maintainer-access", expected_disposition_count: 1 };
   const invented = privateAccessFindings({
     placement: {
       private_inventory: {

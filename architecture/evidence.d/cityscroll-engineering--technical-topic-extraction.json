@@ -1,0 +1,45 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/technical-topic-extraction",
+  "status": "implemented",
+  "fingerprint": "technical-topic-extraction.v1",
+  "updated_at": "2026-09-04T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "seqra-manual-vintage",
+      "path": "warehouse/lib/seqra_manual_vintage.mjs"
+    },
+    {
+      "id": "seqra-topic-finding",
+      "path": "warehouse/lib/seqra_topic_finding.mjs"
+    },
+    {
+      "id": "seqra-topic-finding-extraction",
+      "path": "warehouse/lib/seqra_topic_finding_extraction.mjs"
+    },
+    {
+      "id": "seqra-comment-response-extraction",
+      "path": "warehouse/lib/seqra_comment_response_extraction.mjs"
+    },
+    {
+      "id": "seqra-topic-assessment-projection",
+      "path": "warehouse/lib/seqra_topic_assessment_projection.mjs"
+    },
+    {
+      "id": "seqra-topic-finding-quarantine",
+      "path": "warehouse/lib/seqra_topic_finding_quarantine.mjs"
+    },
+    {
+      "id": "seqra-topic-extraction-benchmark",
+      "path": "warehouse/lib/seqra_topic_extraction_benchmark.mjs"
+    },
+    {
+      "id": "seqra-document-pipeline-gate",
+      "path": "tools/check_seqra_document_pipeline.mjs"
+    },
+    {
+      "id": "seqra-document-pipeline-receipt",
+      "path": "warehouse/receipts/proof/seqra_document_pipeline_latest.json"
+    }
+  ]
+}

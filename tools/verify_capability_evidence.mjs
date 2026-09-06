@@ -177,7 +177,7 @@ function verifyDossierEvidence(receipt) {
   if (receipt?.schema !== "cityscroll.capability_evidence.v1") {
     throw new Error("capability evidence schema is invalid");
   }
-  if (receipt.card !== "cs-02-entity-dossier-capability") {
+  if (receipt.card !== "entity-dossier-capability") {
     throw new Error("capability evidence card is invalid");
   }
   const capability = receipt.capability || {};
@@ -368,7 +368,7 @@ function verifyCitedPassagesEvidence(receipt) {
 
 function verifyRemoteMcpEvidence(receipt) {
   if (receipt?.schema !== "cityscroll.remote_mcp_public_adapter_receipt.v1"
-      || receipt.card !== "cs-06-remote-mcp-public-adapter") {
+      || receipt.card !== "remote-mcp-public-adapter") {
     throw new Error("remote MCP evidence identity is invalid");
   }
   if (receipt.protocol?.transport !== "Streamable HTTP"
@@ -450,15 +450,15 @@ function verifyRemoteMcpEvidence(receipt) {
 }
 
 export function verifyCapabilityEvidence(receipt) {
-  if (receipt?.card === "cs-06-remote-mcp-public-adapter") {
+  if (receipt?.card === "remote-mcp-public-adapter") {
     return verifyRemoteMcpEvidence(receipt);
   }
   if (receipt?.schema !== "cityscroll.capability_evidence.v1") {
     throw new Error("capability evidence schema is invalid");
   }
-  if (receipt.card === "cs-02-entity-dossier-capability") return verifyDossierEvidence(receipt);
-  if (receipt.card === "cs-03-entity-relationships-capability") return verifyRelationshipsEvidence(receipt);
-  if (receipt.card === "cs-04-cited-passages-capability") return verifyCitedPassagesEvidence(receipt);
+  if (receipt.card === "entity-dossier-capability") return verifyDossierEvidence(receipt);
+  if (receipt.card === "entity-relationships-capability") return verifyRelationshipsEvidence(receipt);
+  if (receipt.card === "cited-passages-capability") return verifyCitedPassagesEvidence(receipt);
   throw new Error("capability evidence card is invalid");
 }
 

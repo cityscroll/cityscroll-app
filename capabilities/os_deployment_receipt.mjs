@@ -18,7 +18,7 @@
 // provider-issued identifier, an observed response, or a recorded control-plane
 // attestation; a receipt that lacks them is rejected rather than downgraded.
 //
-// Card: cityscroll-capability-spine/cs-12-os-deployment-foundation
+// Card: cityscroll-engineering/os-deployment-foundation
 
 import { assertReceiptEvidenceClass, deriveMaximumProvableClass } from "./evidence_classification.mjs";
 
@@ -510,8 +510,8 @@ export function assertOsDeploymentReceipt(receipt, { sourceText } = {}) {
 
   const errors = [];
 
-  if (receipt.card !== "cityscroll-capability-spine/cs-12-os-deployment-foundation") {
-    errors.push("card must be cityscroll-capability-spine/cs-12-os-deployment-foundation");
+  if (receipt.card !== "cityscroll-engineering/os-deployment-foundation") {
+    errors.push("card must be cityscroll-engineering/os-deployment-foundation");
   }
   if (receipt.evidence_class !== "cloudflare_os_deployed") {
     errors.push(`evidence_class must be cloudflare_os_deployed, got ${JSON.stringify(receipt.evidence_class)}`);

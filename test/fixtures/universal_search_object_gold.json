@@ -510,7 +510,7 @@
       "coverage_honesty"
     ],
     "coverage_honesty_twin": {
-      "card": "cityscroll-search-quality/sq-05-coverage-honesty-twin",
+      "card": "cityscroll-engineering/coverage-honesty-twin",
       "feeds": "LA7",
       "observer_canaries": "architecture/observer-canaries.json",
       "canary_ids": [

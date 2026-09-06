@@ -2,7 +2,7 @@
 # One repository path per line, sorted. Merged with the union driver, so a
 # concurrent addition is kept rather than resolved by hand; readers sort and
 # deduplicate, and the next regeneration restores this canonical order.
-artifacts/capability-spine/cs-05-semantic-scout.json
+artifacts/capability-spine/semantic-scout.json
 data/data-source-graph-desk-contract.v1.json
 data/geography/oracles/moda-v2025.09.29.json
 data/geography/qa/first_four_pluto_cross_checks.json

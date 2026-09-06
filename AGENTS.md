@@ -129,7 +129,7 @@ contracts. Do not turn it into a delivery log, roadmap, module inventory, or car
   classification). A document pipeline for a new source consumes it rather than reimplementing any
   of its primitives; `warehouse/lib/seqra_*` shows the binding pattern one publisher uses.
 - Measured working-copy sizes, provisioning phase timings, and the cost of the Pages build are in
-  [`docs/evidence/ci-08-working-copy-footprint/`](docs/evidence/ci-08-working-copy-footprint/);
+  [`docs/evidence/working-copy-footprint/`](docs/evidence/working-copy-footprint/);
   regenerate its tables with `python3 tools/summarize_working_copy_evidence.py`.
 - [`docs/card-work-profile.md`](docs/card-work-profile.md) owns the two provisioning profiles and
   the routing contract between them. `focused-reduced` is the supported default for focused card

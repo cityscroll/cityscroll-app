@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.cloudflare_os_upstream_starter_reference.v1",
-  "card": "cityscroll-capability-spine/cs-12-os-deployment-foundation",
+  "card": "cityscroll-engineering/os-deployment-foundation",
   "purpose": "Records the upstream Cloudflare OS starter as it actually exists, so the deployment repository pins a real revision and this repository's earlier rehearsal manifests are not mistaken for its shape.",
   "provides_deployment_evidence": false,
   "observed_at": "2026-09-04",

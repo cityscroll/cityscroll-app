@@ -1,0 +1,13 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/land-map-filtered-result-model",
+  "status": "implemented",
+  "fingerprint": "land-map-filtered-result-model.v1",
+  "updated_at": "2026-08-31T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "land-map-model",
+      "path": "site/land_map_model.mjs"
+    }
+  ]
+}

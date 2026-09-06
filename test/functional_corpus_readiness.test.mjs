@@ -343,7 +343,7 @@ test("the functional-site gate class is declared, supported, and carries a recor
   assert.equal(gate.profile_supported, true);
   assert.ok(CLOSURE.supported_gate_classes.includes("functional-site"));
   const observation = JSON.parse(
-    readFileSync(join(ROOT, "docs/evidence/ci-09-working-copy-reduction/raw/closure", gate.observation), "utf8")
+    readFileSync(join(ROOT, "docs/evidence/working-copy-reduction/raw/closure", gate.observation), "utf8")
   );
   assert.equal(observation.gate_class, "functional-site");
   assert.equal(observation.exit_status, 0, "an observation recorded from a failed run does not describe the closure");

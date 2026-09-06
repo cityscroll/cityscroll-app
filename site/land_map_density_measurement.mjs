@@ -180,7 +180,7 @@ export function evaluateLandMapDensitySummary({
 export function buildLandMapDensityReceipt({
   decision,
   sourceVintages = {},
-  cardId = "cityscroll-land-map-view/lm-16-density-summary",
+  cardId = "cityscroll-engineering/land-map-density-summary",
 } = {}) {
   const accounting = decision?.accounting || { total: [], mapped: [], unmapped: [], reconciled: false };
   const overlap = decision?.overlap || null;

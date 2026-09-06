@@ -134,7 +134,7 @@ export function buildParityEvidence() {
   }
   return {
     schema: "cityscroll.land-filter-parity-receipt.v1",
-    card: "cityscroll-land-map-view/lm-08-filter-parity",
+    card: "cityscroll-engineering/land-map-filter-parity",
     model_schema: LAND_FILTER_PARITY_SCHEMA,
     determinism: {
       today: TODAY,

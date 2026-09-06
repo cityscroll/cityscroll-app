@@ -188,7 +188,7 @@ def capture() -> dict:
     manifest = {
         "schema_version": 1,
         "feature": "land-next-decision-watch",
-        "card": "cityscroll-land-decision-path/ldp-16-procedure-aware-watches",
+        "card": "cityscroll-engineering/procedure-aware-watches",
         "route": ROUTE,
         "revision": revision,
         "files": files,

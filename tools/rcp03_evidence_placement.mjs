@@ -22,7 +22,7 @@ import { fileURLToPath } from "node:url";
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const BASE = "c9b83920345a2e1172390eafb3af6e7bd35651b2";
 const PRIVATE_MARKER = ["backstage", "://", "cityscroll-evidence/"].join("");
-const CARD = "cityscroll-repository-control-plane/rcp-03";
+const CARD = "cityscroll-engineering/private-generated-evidence-placement";
 const REVIEWED_AT = "2026-08-31T00:00:00.000Z";
 
 export const RECEIPT_SCHEMA = "cityscroll.repository_evidence_placement.v1";
@@ -38,8 +38,8 @@ const SERVED_TEXT_EXTENSIONS = new Set([
 const RETAINED_PROOF_PATHS = [
   "ARCHITECTURE.md",
   "architecture/evidence.d/README.md",
-  "architecture/evidence.d/cityscroll-merge-throughput--mt-7-architecture-evidence-shards.json",
-  "architecture/evidence.d/cityscroll-merge-throughput--mt-8-architecture-evidence-generated-aggregates.json",
+  "architecture/evidence.d/cityscroll-engineering--architecture-evidence-shards.json",
+  "architecture/evidence.d/cityscroll-engineering--architecture-evidence-generated-aggregates.json",
   "docs/architecture.md",
   "docs/repository-control-plane/evidence-placement.d/README.md",
   "docs/repository-control-plane/evidence-placement-shard.v1.schema.json",
@@ -250,7 +250,7 @@ export function expectedShardValues(facts) {
     fixtures: ["test/fixtures/"],
     generators: ["tools/build_*.mjs"],
     receipts: ["docs/evidence/", "warehouse/receipts/proof/"],
-    mt7_evidence: ["architecture/evidence.d/cityscroll-merge-throughput--mt-7-architecture-evidence-shards.json", "architecture/evidence.d/"]
+    mt7_evidence: ["architecture/evidence.d/cityscroll-engineering--architecture-evidence-shards.json", "architecture/evidence.d/"]
   });
   values.set("served-artifacts", {
     paths: ["site/", "worker/"],

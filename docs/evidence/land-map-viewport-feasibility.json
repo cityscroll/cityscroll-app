@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.land_viewport_feasibility.v1",
   "version": 1,
-  "workstream_card": "cityscroll-land-map-view/lm-18-viewport-search",
+  "workstream_card": "cityscroll-engineering/land-map-viewport-search",
   "viewport": {
     "note": "Land Map pan/zoom is reversible presentation state; no viewport-to-filter action exists to evaluate.",
     "surfaces": [

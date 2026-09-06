@@ -138,7 +138,7 @@ test("the cross-boundary risk CI-08 measured is represented in the closure", () 
 
 test("every supported gate class has a recorded observation receipt", () => {
   for (const gate of config.gate_classes.filter((entry) => entry.profile_supported)) {
-    const path = `docs/evidence/ci-09-working-copy-reduction/raw/closure/${gate.observation}`;
+    const path = `docs/evidence/working-copy-reduction/raw/closure/${gate.observation}`;
     assert.ok(existsSync(resolve(ROOT, path)), `missing observation receipt: ${path}`);
     const receipt = readJson(path);
     assert.equal(receipt.gate_class, gate.id);
@@ -156,7 +156,7 @@ test("every observed read of a supported gate class is inside the profile", () =
   );
   const deferred = new Set(closure.deferred_hydration_set.paths);
   for (const gate of config.gate_classes.filter((entry) => entry.profile_supported)) {
-    const receipt = readJson(`docs/evidence/ci-09-working-copy-reduction/raw/closure/${gate.observation}`);
+    const receipt = readJson(`docs/evidence/working-copy-reduction/raw/closure/${gate.observation}`);
     for (const path of receipt.paths) {
       assert.ok(profilePaths.has(path), `observed path is not tracked: ${path}`);
       assert.ok(!deferred.has(path), `an observed path was deferred out of the profile: ${path}`);

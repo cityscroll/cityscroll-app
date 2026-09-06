@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.land_map_density_measurement.v1",
   "version": 1,
-  "workstream_card": "cityscroll-land-map-view/lm-16-density-summary",
+  "workstream_card": "cityscroll-engineering/land-map-density-summary",
   "marker_accounting": {
     "total_ids": [
       "2019K0383",

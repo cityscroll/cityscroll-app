@@ -273,7 +273,7 @@ def main() -> None:
     list_rows = {cold["list_state"]["rows"], warm["list_state"]["rows"], *(entry["state"]["rows"] for entry in scenarios)}
     receipt = {
         "schema": "cityscroll.land-map-performance-and-failure-receipt.v1",
-        "card": "cityscroll-land-map-view/lm-12-performance-and-failure",
+        "card": "cityscroll-engineering/land-map-performance-and-failure",
         "browser_mode": "headless chromium (playwright), offline: every remote host aborted",
         "routes": {"list": LIST_ROUTE, "map": MAP_ROUTE},
         "budgets": budgets,

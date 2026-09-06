@@ -1,0 +1,81 @@
+{
+  "schema": "cityscroll.capability_evidence.v1",
+  "card": "entity-dossier-capability",
+  "capability": {
+    "reference": "entity.dossier.get@1",
+    "version": "1.0.0",
+    "provider_id": "worker-d1.entity-dossier",
+    "availability": [
+      "available",
+      "not_yet_public",
+      "unavailable"
+    ],
+    "bounds": {
+      "entityIdMaximumLength": 300,
+      "recordLimit": 250
+    },
+    "representations": [
+      {
+        "id": "json",
+        "media_type": "application/json"
+      },
+      {
+        "id": "html",
+        "media_type": "text/html"
+      }
+    ]
+  },
+  "fixture": {
+    "entity_id": "vendor:stem:ACME CONSTRUCTION",
+    "source_ids": [
+      "city_record:20260730001",
+      "checkbook:CT-850-1"
+    ],
+    "dossier_version": "public_entity_dossier_v1"
+  },
+  "parity_fields": [
+    "version",
+    "entity.id",
+    "entity.type",
+    "entity.name",
+    "scope.record_limit",
+    "scope.truncated",
+    "linked_records.length",
+    "assertions",
+    "derived_assertions",
+    "provenance",
+    "redaction"
+  ],
+  "redaction": {
+    "authority": "entity_resolution/publication/dossier.mjs",
+    "private_confidence_scores": "forbidden",
+    "raw_source_snapshots": "forbidden",
+    "review_markers": "forbidden"
+  },
+  "test_results": [
+    {
+      "id": "direct-provider",
+      "status": "pass"
+    },
+    {
+      "id": "availability-states",
+      "status": "pass"
+    },
+    {
+      "id": "json-byte-parity",
+      "status": "pass"
+    },
+    {
+      "id": "html-byte-parity",
+      "status": "pass"
+    },
+    {
+      "id": "public-redaction",
+      "status": "pass"
+    },
+    {
+      "id": "record-limit",
+      "status": "pass"
+    }
+  ]
+}

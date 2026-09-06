@@ -1,0 +1,21 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/masthead-brand-home-link",
+  "status": "implemented",
+  "fingerprint": "masthead-brand-home-link.v1",
+  "updated_at": "2026-09-01T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "masthead-brand-home-link-contract",
+      "path": "test/masthead_brand_home_link.test.mjs"
+    },
+    {
+      "id": "masthead-brand-home-link-captures",
+      "path": "docs/screenshots/masthead-brand-home-link/capture-receipt.json"
+    },
+    {
+      "id": "masthead-brand-home-link-receipt",
+      "path": "docs/evidence/masthead-brand-home-link.md"
+    }
+  ]
+}

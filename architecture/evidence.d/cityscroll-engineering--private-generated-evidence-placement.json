@@ -1,0 +1,17 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/private-generated-evidence-placement",
+  "status": "implemented",
+  "fingerprint": "private-generated-evidence-placement.v1",
+  "updated_at": "2026-09-01T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "repository-evidence-placement-validator",
+      "path": "tools/rcp03_evidence_placement.mjs"
+    },
+    {
+      "id": "repository-scrim-public-result",
+      "path": "docs/repository-scrim-review.md"
+    }
+  ]
+}

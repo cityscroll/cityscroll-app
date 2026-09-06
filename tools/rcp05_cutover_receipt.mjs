@@ -35,7 +35,7 @@ const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 
 export const RECEIPT_SCHEMA = "cityscroll.repository_control_plane_cutover.v1";
 export const SHARD_SCHEMA = "cityscroll.repository-control-plane.cutover-shard.v1";
-export const CARD = "cityscroll-repository-control-plane/rcp-05";
+export const CARD = "cityscroll-engineering/cutover-without-product-or-evidence-loss";
 export const SHARD_DIRECTORY_RELATIVE = "docs/repository-control-plane/cutover.d";
 export const FORBIDDEN_AGGREGATE_RELATIVE = "docs/repository-control-plane/cutover.v1.json";
 export const DERIVED_AGGREGATE_RELATIVE = ".artifacts/repository-control-plane/cutover.v1.json";

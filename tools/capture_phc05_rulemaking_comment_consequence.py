@@ -7,7 +7,7 @@ named in the card. Runs axe-core against each rendered fragment at both
 review widths.
 
 No image is written or committed — see docs/evidence/public-input-consequence/
-phc-05-rulemaking-comment-consequence/capture-manifest.json for the committed
+rulemaking-comment-consequence/capture-manifest.json for the committed
 proof (content hash + textual assertion per case), per the workstream's
 no-committed-image-binaries convention (spec.md).
 
@@ -35,7 +35,7 @@ ROOT = Path(__file__).resolve().parents[1]
 AXE = ROOT / "test/functional/assets/axe.min.js"
 VIEWPORTS = (("mobile", 390, 844), ("desktop", 1440, 900))
 TMP_DIR = ROOT / "site/.phc05-capture-tmp"
-OUT_DIR = ROOT / "docs/evidence/public-input-consequence/phc-05-rulemaking-comment-consequence"
+OUT_DIR = ROOT / "docs/evidence/public-input-consequence/rulemaking-comment-consequence"
 
 
 def start_local_site_server() -> tuple[subprocess.Popen, str]:
@@ -121,7 +121,7 @@ def main() -> None:
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     manifest = {
         "schema_version": 1,
-        "card": "cityscroll-public-input-consequence/phc-05-rulemaking-comment-consequence",
+        "card": "cityscroll-engineering/rulemaking-comment-consequence",
         "capture_mode": "local_node_playwright_axe_static_render",
         "repository_revision": repository_revision,
         "note": (

@@ -40,7 +40,7 @@
       "value": 151
     }
   },
-  "card": "cityscroll-land-decision-path/ldp-22-filing-evidence-census",
+  "card": "cityscroll-engineering/census-rer-applicability-zap-filing-document-coverage",
   "ceqr_document_overlap": {
     "reason": "CEQR document identity is SEQRA-04 scope and does not exist yet; no CEQR document set exists to overlap against. LDP-13's exact CEQR *project/milestone* joins are consumed unchanged and are not document-level.",
     "status": "unknown",

@@ -10,7 +10,7 @@
 // this file and never written to artifacts/, because a receipt that no deploy
 // produced is exactly the fabricated evidence CS-09 exists to prevent.
 //
-// Card: cityscroll-capability-spine/cs-12-os-deployment-foundation
+// Card: cityscroll-engineering/os-deployment-foundation
 // Verify: node --test test/os_deployment_receipt.test.mjs
 
 import assert from "node:assert/strict";
@@ -67,7 +67,7 @@ function backendWorker(role) {
 function baseReceipt() {
   return {
     schema: "cityscroll.cloudflare_os_deployment_receipt.v1",
-    card: "cityscroll-capability-spine/cs-12-os-deployment-foundation",
+    card: "cityscroll-engineering/os-deployment-foundation",
     evidence_class: "cloudflare_os_deployed",
     execution_environment: "cloudflare-os-deployment",
     upstream: {

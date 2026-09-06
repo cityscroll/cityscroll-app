@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.snappiness_evidence_capture.v1",
-  "change": "cityscroll-snappiness/perf-03-browse-contracts-tail",
+  "change": "cityscroll-engineering/browse-contracts-load-tail",
   "capture_kind": "functional network-order trace (no browser, no image capture)",
   "route": "/browse/contracts/?mode=award&agency=Youth%20and%20Community%20Development",
   "viewport": {

@@ -1,0 +1,17 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/outcome-not-located-is-honest",
+  "status": "implemented",
+  "fingerprint": "outcome-not-located-is-honest.v1",
+  "updated_at": "2026-09-05T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "outcome-not-located-state-projection",
+      "path": "site/outcome_not_located_state.mjs"
+    },
+    {
+      "id": "outcome-not-located-state-gate",
+      "path": "test/outcome_not_located_state.test.mjs"
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.land_project_decision_relation.audit.v1",
-  "id": "cityscroll-land-decision-path/ldp-06-decides-land-project-audit",
+  "id": "cityscroll-engineering/decides-land-project-audit",
   "method": "land_project_decision_relation_v1",
   "method_version": "1.0.0",
   "migration": "staged_compatibility",

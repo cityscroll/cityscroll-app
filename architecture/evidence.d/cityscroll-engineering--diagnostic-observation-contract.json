@@ -1,0 +1,37 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/diagnostic-observation-contract",
+  "status": "implemented",
+  "fingerprint": "diagnostic-observation-contract.v1",
+  "updated_at": "2026-09-05T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "repair-observation-contract",
+      "path": "tools/repair_observations.mjs"
+    },
+    {
+      "id": "repair-observation-contract-tests",
+      "path": "test/diagnostic_observation_contract.test.mjs"
+    },
+    {
+      "id": "private-desk-export-boundary",
+      "path": "tools/data_source_graph.mjs"
+    },
+    {
+      "id": "private-desk-consumer-contract",
+      "path": "data/data-source-graph-desk-contract.v1.json"
+    },
+    {
+      "id": "materialized-source-condition-seam",
+      "path": "tools/build_community_board_meeting_index.mjs"
+    },
+    {
+      "id": "exact-source-join-seam",
+      "path": "site/community_board_source_join.mjs"
+    },
+    {
+      "id": "public-source-health-serialization-boundary",
+      "path": "site/source_health_public_projection.mjs"
+    }
+  ]
+}

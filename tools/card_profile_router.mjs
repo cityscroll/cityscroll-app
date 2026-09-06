@@ -45,7 +45,7 @@ import {
 export const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const MANIFEST_PATH = resolve(ROOT, "tools/card-profile/profiles.v1.json");
 const CONFIG_PATH = resolve(ROOT, "tools/card-profile/profile.config.v1.json");
-const OBSERVATION_DIR = resolve(ROOT, "docs/evidence/ci-09-working-copy-reduction/raw/closure");
+const OBSERVATION_DIR = resolve(ROOT, "docs/evidence/working-copy-reduction/raw/closure");
 
 const EXIT_OK = 0;
 const EXIT_FAIL_CLOSED = 2;

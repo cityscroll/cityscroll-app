@@ -201,7 +201,7 @@ test("A4 a transient dependency failure that clears within the bounded retry rea
 test("the committed receipt reports every scenario against the budget module's own fixed numbers", () => {
   const receipt = JSON.parse(read("docs/evidence/land-map-performance-and-failure.json"));
   assert.equal(receipt.schema, "cityscroll.land-map-performance-and-failure-receipt.v1");
-  assert.equal(receipt.card, "cityscroll-land-map-view/lm-12-performance-and-failure");
+  assert.equal(receipt.card, "cityscroll-engineering/land-map-performance-and-failure");
   assert.deepEqual(receipt.budgets, LAND_MAP_BUDGETS, "the receipt's budgets must be read from the module, not retyped");
   for (const [name, passed] of Object.entries(receipt.budget_checks)) {
     assert.equal(passed, true, `${name} failed in the committed receipt`);

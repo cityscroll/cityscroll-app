@@ -2,11 +2,11 @@
   "schema": "cityscroll.repository-control-plane.cutover-shard.v1",
   "id": "rcp-02-root-router",
   "owner": "rcp-02-root-router",
-  "card": "cityscroll-repository-control-plane/rcp-05",
+  "card": "cityscroll-engineering/cutover-without-product-or-evidence-loss",
   "kind": "migration",
   "updated_at": "2026-09-01T00:00:00.000Z",
   "value": {
-    "register_card": "cityscroll-repository-control-plane/rcp-02",
+    "register_card": "cityscroll-engineering/root-agents-router",
     "migration_commit": "c9b83920345a2e1172390eafb3af6e7bd35651b2",
     "summary": "The root instruction file became a routing and invariants document; the per-change delivery ledger it used to carry has no public replacement in the repository.",
     "manifest_entry_count": 2,
