@@ -69,7 +69,12 @@ function articleListItem(article) {
 }
 
 function groupSection(group, articles, description) {
-  const published = articles.filter((article) => article.type === group.type);
+  // Sources are loaded in filename order, which is not the order a reader should
+  // meet them in. A section lists its articles by their own id, so "follow a
+  // search" precedes "follow a Community Board" the way the section was written.
+  const published = articles
+    .filter((article) => article.type === group.type)
+    .sort((left, right) => left.id.localeCompare(right.id, "en", { numeric: true }));
   const body = published.length
     ? `<ul class="guide-article-list">\n${published.map(articleListItem).join("\n")}\n    </ul>`
     : `<p class="guide-group-empty">${esc(EMPTY_GROUP_NOTE)}</p>`;

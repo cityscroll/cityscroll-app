@@ -23,6 +23,7 @@ with, and how those examples were verified — is in
 | `test/guide_documents.test.mjs` | The reader-facing contracts. |
 | `test/standards/guide_content.py` | Points the site's own metadata, link-text and heading gates at the guide pages. |
 | `tools/capture_guide_release.py` | Drives the reader's journey and records the usability evidence as a manifest. |
+| `tools/capture_guide_how_to_walkthroughs.py` | Walks the everyday how-tos to the product route each one names and back, and records that the run changed nothing. Usability belongs to the runner above; this answers whether the journey arrives. |
 
 Article sources sit under underscore-prefixed directories, which the public-site
 payload walker already skips, so the Markdown is tracked and reviewable without
@@ -110,6 +111,26 @@ The guide keeps these apart on purpose, and an article says only the second one:
 
 A machine can tell you a referenced route changed. It cannot tell you the sentence
 about it is now wrong, so a review date only ever moves when a person moves it.
+
+## Writing a how-to
+
+A how-to answers a task the reader already has, so it is shaped by the task
+rather than by the product:
+
+- Open with the task, then what the reader needs before starting, then a link to
+  the real place they start from. End with the state they can observe when they
+  are done.
+- Name a control with the words on the screen, and say where a control only
+  appears under a condition. A step that tells a reader to press something they
+  cannot see is worse than no step.
+- Say what an action commits them to at the moment they take it. Where two
+  similar controls carry different commitments — a preview and a saved watch, one
+  event and a continuing subscription — the difference is the article's job.
+- Cover the empty and unknown cases in the article, not in a separate page. An
+  empty result, an unrecognized session and an unpublished date are ordinary
+  outcomes, and a guide that only describes the happy path is wrong most days.
+- Claim nothing about a system CityScroll cannot see. It cannot tell whether
+  another calendar kept a subscription, and the article says so.
 
 ## Writing
 

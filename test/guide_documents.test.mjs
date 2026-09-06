@@ -17,7 +17,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
 
-import { GUIDE_GROUPS, GuideSourceError, parseGuideArticle, parseGuideHome } from "../site/guide_article_source.mjs";
+import { GUIDE_GROUPS, GuideSourceError, escapeHtml, parseGuideArticle, parseGuideHome } from "../site/guide_article_source.mjs";
 import { GuideSourceCoverageError, guideSourceCoverageTable } from "../site/guide_source_coverage.mjs";
 import { renderGuideArticle, renderGuideHome } from "../site/guide_view.mjs";
 import { internalLinkFailures, loadGuide, renderGuideDocuments } from "../tools/build_guide_documents.mjs";
@@ -32,7 +32,15 @@ const tutorialHtml = readFileSync(
 );
 
 function textOf(html) {
-  return html.replace(/<[^>]+>/g, " ").replace(/&[a-z]+;/g, " ").replace(/\s+/g, " ");
+  // Restore the entities an author actually wrote, so a contract can be stated in
+  // the words on the page rather than in their escaped form.
+  return html
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&#39;/g, "'")
+    .replace(/&quot;/g, '"')
+    .replace(/&amp;/g, "&")
+    .replace(/&[a-z]+;/g, " ")
+    .replace(/\s+/g, " ");
 }
 
 /* ------------------------------------------------------- the guide home */
@@ -47,7 +55,7 @@ test("the guide home offers the four reader-facing sections in order", () => {
 test("the guide home links every published article", () => {
   for (const article of articles) {
     assert.ok(homeHtml.includes(`href="${article.url}"`), `home does not link ${article.id}`);
-    assert.ok(homeHtml.includes(article.title));
+    assert.ok(homeHtml.includes(escapeHtml(article.title)), `home does not name ${article.id}`);
   }
 });
 
@@ -101,13 +109,21 @@ test("no guide page prints a field name the implementation uses", () => {
   }
 });
 
+/**
+ * Words this codebase uses for things a reader has a plainer word for. "snapshot"
+ * was on this list and is deliberately not: a reference page uses it in its
+ * ordinary English sense ("not a snapshot of what this site knew then"), which is
+ * exactly the writing the guide wants. The test is for implementation identifiers
+ * leaking into prose, not for banning a normal word.
+ */
+const INTERNAL_VOCABULARY = [
+  "lens", "entity_refs", "capability spine", "facet", "handoff", "projection",
+  "materializ", "read model", "schema", "endpoint", "payload",
+];
+
 test("the tutorial teaches without the words the implementation uses for things", () => {
   const text = textOf(tutorialHtml).toLowerCase();
-  const internalVocabulary = [
-    "lens", "entity_refs", "capability spine", "facet", "handoff", "projection",
-    "materializ", "read model", "snapshot", "schema", "endpoint", "payload",
-  ];
-  for (const term of internalVocabulary) {
+  for (const term of INTERNAL_VOCABULARY) {
     assert.ok(!text.includes(term), `tutorial uses internal vocabulary: ${term}`);
   }
 });
@@ -122,6 +138,294 @@ test("the tutorial promises observable checkpoints, never a fixed number of resu
 
 test("the tutorial says where the product itself needs script", () => {
   assert.match(textOf(tutorialHtml), /needs JavaScript switched on/);
+});
+
+/* ------------------------------------------------------- the how-to guides */
+
+const howTos = articles.filter((article) => article.type === "how-to");
+const howToHtml = new Map(howTos.map((article) => [
+  article.id,
+  readFileSync(new URL(`../site${article.url}index.html`, import.meta.url), "utf8"),
+]));
+
+/** Split an article body into its `## ` sections, in order, as plain text. */
+function sections(article) {
+  const parts = article.bodyHtml.split(/<h2>/).slice(1);
+  return parts.map((part) => {
+    const heading = part.slice(0, part.indexOf("</h2>"));
+    const body = part.slice(part.indexOf("</h2>") + 5);
+    return { heading: textOf(heading).trim(), body, text: textOf(body).trim() };
+  });
+}
+
+/**
+ * The five articles written against the everyday-tasks acceptance criteria. Some
+ * contracts below are house rules every how-to keeps; a few are specific to what
+ * this set was commissioned to prove, and those say so where they are scoped.
+ */
+const EVERYDAY_TASK_IDS = ["H1", "H2", "H3", "H4", "H5"];
+const everydayTasks = howTos.filter((article) => EVERYDAY_TASK_IDS.includes(article.id));
+
+test("the everyday-task how-tos are published and addressed as how-to guides", () => {
+  assert.deepEqual(everydayTasks.map((article) => article.id), EVERYDAY_TASK_IDS);
+  for (const article of howTos) {
+    assert.equal(article.group.label, "How to…");
+    assert.match(article.url, /^\/guide\/how-to\/[a-z0-9-]+\/$/);
+  }
+});
+
+// A how-to opens by saying what it is for, in one of these forms, and never with a
+// step. Both spellings are in use; a third would be a decision, not a typo.
+const OPENING_HEADINGS = ["Your task", "What this is for"];
+
+test("every how-to opens with the task, its prerequisites and a real product entry link", () => {
+  for (const article of howTos) {
+    const parts = sections(article);
+    const [task, prerequisites] = parts;
+    assert.ok(
+      OPENING_HEADINGS.includes(task.heading),
+      `${article.id} opens with ${JSON.stringify(task.heading)} rather than saying what it is for`,
+    );
+    assert.ok(task.text.length > 80, `${article.id} states its task too thinly`);
+    assert.equal(prerequisites.heading, "Before you start", `${article.id} does not state prerequisites second`);
+    // The place the reader starts has to be reachable from the opening, not found
+    // at the end. Some articles name it among the prerequisites and some at the
+    // first step, which is the same promise made one section later.
+    const opening = parts.slice(0, 3).map((part) => part.body).join("");
+    const entries = [...opening.matchAll(/href="(\/[^"#?]*)/g)]
+      .map((match) => match[1])
+      .filter((href) => !href.startsWith("/guide/"));
+    assert.ok(entries.length, `${article.id} names no product entry point in its opening`);
+  }
+});
+
+test("every how-to ends on a state the reader can observe, with checkpoints on the way", () => {
+  for (const article of howTos) {
+    const parts = sections(article);
+    const last = parts[parts.length - 1];
+    // The last section either states the state the reader can check, or hands them
+    // the same method to use on a record of their own. Either way the article ends
+    // on the reader rather than in the middle of a procedure.
+    assert.match(
+      last.heading,
+      /^(You are done when|Do this\b)/,
+      `${article.id} ends on ${JSON.stringify(last.heading)} rather than on the reader`,
+    );
+    assert.ok(last.text.length > 80, `${article.id} ends too thinly to be checkable`);
+    const checkpoints = (howToHtml.get(article.id).match(/class="guide-checkpoint"/g) || []).length;
+    assert.ok(checkpoints >= 3, `${article.id} has ${checkpoints} checkpoints`);
+  }
+});
+
+test("every how-to says what to do when there is nothing, or the answer is unknown", () => {
+  for (const article of howTos) {
+    const absence = sections(article).find((part) => /^When /.test(part.heading));
+    assert.ok(absence, `${article.id} has no section for the empty or unknown case`);
+    assert.ok(absence.text.length > 200, `${article.id} treats absence too briefly`);
+  }
+});
+
+test("every how-to separates a source that could not be read from one with nothing in it", () => {
+  // The two look identical on screen and mean opposite things: one is a finding
+  // about the city, the other is a finding about today's network. An article that
+  // conflated them would teach a reader to draw a conclusion from an outage.
+  const unreadable = [
+    /could not be reached/i,
+    /could not (be )?check(ed)?/i,
+    /(was )?not checked/i,
+    /not ready/i,
+    /not available/i,
+  ];
+  // Scoped to this set. Whether a how-to has an unreadable-source state to describe
+  // depends on its subject: a connection that carries no source document is plain
+  // absence, and writing a retry into that article would describe a state it does
+  // not have.
+  for (const article of everydayTasks) {
+    const text = textOf(howToHtml.get(article.id));
+    assert.ok(
+      unreadable.some((pattern) => pattern.test(text)),
+      `${article.id} never distinguishes an unreadable source from an empty one`,
+    );
+    assert.match(text, /unknown|reload|try it again|retry/i);
+  }
+});
+
+test("no how-to invents a control, a submission channel, or a promised outcome", () => {
+  // Every one of these describes something the product does not do. A guide that
+  // said any of them would send a reader looking for a button that is not there,
+  // or promise a decision CityScroll has no part in.
+  const forbidden = [
+    /submit (your |a )?(testimony|comment|objection|application)[^.]{0,30}(here|through CityScroll|on this page)/i,
+    /CityScroll (will|can) (file|submit|send|deliver) (your|a) /i,
+    /apply (here|through CityScroll|on this page)/i,
+    /(guarantee|guarantees|ensures) that (the|your)/i,
+    /(we|CityScroll) will (decide|approve|reject)/i,
+  ];
+  for (const article of howTos) {
+    const text = textOf(howToHtml.get(article.id));
+    for (const pattern of forbidden) {
+      assert.equal(pattern.exec(text), null, `${article.id} matches ${pattern}`);
+    }
+  }
+});
+
+test("every tutorial and how-to teaches without the words the implementation uses", () => {
+  // Scoped to the articles that walk a resident through a task. A reference page
+  // is excluded on purpose: part of its subject is the machine surface, so
+  // "endpoint" there is the correct word for the thing it is pointing at, not
+  // implementation vocabulary leaking into resident prose.
+  const taught = articles.filter((article) => ["tutorial", "how-to"].includes(article.type));
+  assert.ok(taught.length >= 6, "this contract covers the articles that teach a task");
+  for (const article of taught) {
+    const text = textOf(readFileSync(
+      new URL(`../site${article.url}index.html`, import.meta.url), "utf8",
+    )).toLowerCase();
+    for (const term of INTERNAL_VOCABULARY) {
+      assert.ok(!text.includes(term), `${article.id} uses internal vocabulary: ${term}`);
+    }
+  }
+});
+
+/* ----- H2: enrolment is one step, and a preview is not a subscription (A2) */
+
+test("following a search is described as the one-step enrolment it is", () => {
+  const text = textOf(howToHtml.get("H2"));
+  assert.match(text, /no confirmation email to click/);
+  assert.match(text, /The watch exists as soon as you submit it/);
+  // A confirmation step would be a different product. Saying there is one, in any
+  // of the ways a writer reaches for, would send a reader waiting for an email
+  // that never comes.
+  for (const pattern of [
+    /confirm your (watch|subscription|email)/i,
+    /click the link in (the|your) email to (confirm|activate)/i,
+    /(until|before) you confirm/i,
+  ]) {
+    assert.equal(pattern.exec(text), null, `H2 describes a confirmation step: ${pattern}`);
+  }
+});
+
+test("a preview is never described as a subscription, and no account rules are borrowed", () => {
+  const text = textOf(howToHtml.get("H2"));
+  assert.match(text, /It is not a subscription, nothing has been saved/);
+  for (const pattern of [
+    /preview (is|becomes|counts as|acts as) (a|an|your) (watch|subscription)/i,
+    /previewing (creates|starts|saves)/i,
+  ]) {
+    assert.equal(pattern.exec(text), null, `H2 equates a preview with a subscription: ${pattern}`);
+  }
+  assert.match(text, /not the city's own account system/);
+  for (const pattern of [
+    /(enter|create|reset|choose) (your |a )?password/i,
+    /\bsign in\b/i,
+    /\blog in\b/i,
+    /\byour account\b/i,
+  ]) {
+    assert.equal(pattern.exec(text), null, `H2 imports account rules: ${pattern}`);
+  }
+});
+
+test("the manage pages are described with the two states a reader actually meets", () => {
+  const text = textOf(howToHtml.get("H2"));
+  assert.match(text, /open a\s+CityScroll email to see its watches/);
+  assert.match(text, /invalid or has expired/);
+  assert.match(text, /applies to the next digest/);
+  assert.match(text, /Unsubscribing takes effect immediately/);
+});
+
+/* ----- H3: a board keeps its identity, and its coverage is stated honestly (A3) */
+
+test("the Community Board example keeps the board's full borough-qualified identity", () => {
+  const text = textOf(howToHtml.get("H3"));
+  assert.match(text, /Manhattan Community Board 7/);
+  assert.match(text, /numbered 1 to 18 within each borough/);
+  assert.match(text, /City Council District 7/);
+  assert.match(text, /numbered 1 to 51 across the whole city/);
+  // A bare board number is the mistake the article exists to prevent, so every
+  // mention of a board has to carry the borough that makes it an identity.
+  for (const match of text.matchAll(/Community Board \d+/g)) {
+    const before = text.slice(Math.max(0, match.index - 32), match.index);
+    assert.match(
+      before,
+      /(Manhattan|Brooklyn|Queens|Bronx|Staten Island) $/,
+      `H3 names a board without its borough: ...${before}${match[0]}`,
+    );
+  }
+});
+
+test("the Community Board watch's coverage is described as it is actually resolved", () => {
+  // The watch resolves the board to the community district it covers, selects
+  // meetings tied to that district, then keeps the ones carrying the board's own
+  // identity — while the link beside it opens the district, which is wider. Both
+  // halves have to be on the page or the reader draws the wrong conclusion from
+  // whichever one they meet first.
+  const text = textOf(howToHtml.get("H3"));
+  assert.match(text, /the community district that board covers/);
+  assert.match(text, /keeps the ones carrying the board's own identity/);
+  assert.match(text, /Coverage depends on that district link/);
+  assert.match(text, /a quiet week is therefore not proof/i);
+  assert.match(text, /See current matches is not a preview of your email/);
+  assert.match(text, /Do not read a meeting in it as one your\s+board convened/);
+  for (const pattern of [
+    /every (match|meeting) (is|will be) (a|one of)? ?(meeting )?(of|convened|held) by (the|your) board/i,
+    /you will receive every meeting/i,
+    /all of (the|your) board's meetings/i,
+  ]) {
+    assert.equal(pattern.exec(text), null, `H3 overclaims board coverage: ${pattern}`);
+  }
+});
+
+/* ----- H4: no confirmed external subscription, and no invented time (A4) */
+
+test("the calendar guide claims nothing about what an external calendar did", () => {
+  const text = textOf(howToHtml.get("H4"));
+  assert.match(text, /CityScroll has no way to know what your calendar did with it/);
+  assert.match(text, /It cannot confirm that a subscription was added/);
+  for (const pattern of [
+    /CityScroll (confirms|has confirmed|will confirm|verifies) (that )?(the|your|a) subscription/i,
+    /(you|we) will (see|get) confirmation (from|in) (your|the) calendar/i,
+    /once (CityScroll )?confirms (your|the) subscription/i,
+  ]) {
+    assert.equal(pattern.exec(text), null, `H4 claims an external confirmation: ${pattern}`);
+  }
+});
+
+test("the calendar guide gives a date-only deadline no invented time", () => {
+  const text = textOf(howToHtml.get("H4"));
+  assert.match(text, /will not invent nine o'clock/);
+  assert.match(text, /arrives as an all-day entry rather\s+than an invented hour/);
+  // The surest way to check the article invents no time is that it contains none.
+  const clock = /\b\d{1,2}:\d{2}\b/.exec(text);
+  assert.equal(clock, null, `H4 states a clock time: ${clock && clock[0]}`);
+});
+
+test("one event and a continuing subscription stay two different things", () => {
+  const text = textOf(howToHtml.get("H4"));
+  assert.match(text, /One event is a copy\. It does not change afterwards/);
+  assert.match(text, /Importing a downloaded file is not the same thing/);
+  assert.match(text, /Only a\s+URL your calendar keeps fetching is a subscription/);
+});
+
+/* ----- H5: unknown project facts are stated as unknown (A5) */
+
+test("the land-use guide separates a published date from a calculated window", () => {
+  const text = textOf(howToHtml.get("H5"));
+  assert.match(text, /calculated from the\s+statutory review windows/);
+  assert.match(text, /It is not an appointment/);
+  assert.match(text, /can say whether the city published it or CityScroll worked it out/);
+});
+
+test("the land-use guide names each way a project fact can be unknown", () => {
+  const text = textOf(howToHtml.get("H5"));
+  for (const state of [
+    /Where this stands is unknown/,
+    /No published next opportunity found/,
+    /source was not checked/,
+    /A document is not here yet/,
+    /has not been observed/,
+  ]) {
+    assert.match(text, state);
+  }
+  assert.match(text, /An unknown stage is a statement about the evidence, not a claim that\s+nothing is happening/);
 });
 
 /* --------------------------------------- the explanations and reference pages */
