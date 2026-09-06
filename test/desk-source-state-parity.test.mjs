@@ -33,6 +33,13 @@ test("the authenticated graph stays inside the deployed additive compatibility e
   assert.equal(graph.repair_observations.visibility, "private");
   assert.deepEqual(graph.repair_observations.conditions, extension.conditions);
   assert.deepEqual(graph.repair_observations.dispositions, extension.dispositions);
+
+  const queueExtension = contract.extensions.repair_queue;
+  assert.equal(queueExtension.version, 1);
+  assert.equal(graph.extensions.repair_queue, queueExtension.version);
+  assert.equal(graph.repair_queue.schema, queueExtension.queue_schema);
+  assert.equal(graph.repair_queue.visibility, "private");
+  assert.deepEqual(graph.repair_queue.states, queueExtension.states);
 });
 
 test("every registry contract and health observation has one explicit disposition", () => {
@@ -100,5 +107,10 @@ test("selected-source URLs survive reload and retain a no-JavaScript destination
   assert.match(html, /window\.addEventListener\("popstate"/);
   assert.match(html, /function revealSelectedSourceLayer\(\)/);
   assert.match(html, /#detailLayer\[hidden\]\{display:block!important\}/);
+  assert.match(html, /\.repair-view\{min-width:0;max-width:100%\}/);
+  assert.match(html, /\.queue-list\{display:grid;min-width:0;max-width:100%;grid-template-columns:minmax\(0,1fr\)/);
+  assert.match(html, /\.queue-detail\{display:grid;grid-template-columns:minmax\(0,max-content\) minmax\(0,1fr\)/);
+  assert.match(html, /\.queue-table-wrap\{max-width:100%;min-width:0;width:100%;contain:inline-size;overflow-x:auto/);
+  assert.match(html, /class="queue-table-wrap" tabindex="0" role="region" aria-label="Affected scopes for/);
   assert.match(html, /Source not found/);
 });
