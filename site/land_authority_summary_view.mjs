@@ -5,6 +5,7 @@
  * in separate DOM/data structures.
  */
 
+import { resolveLandAuthoritySourceBasis } from "./land_authority_summary.mjs";
 import { communityBoardPageHref } from "./community_board_links.mjs";
 import { calendarNativeSubscriptionUrl } from "./calendar_subscription.mjs";
 import {
@@ -232,8 +233,10 @@ function whyProvenanceKind(summary) {
   return "geography";
 }
 
-export function profileLegalBasis(summary) {
-  const profile = summary?.source_basis?.profile || {};
+// `payload` carries the provenance defaults the summaries share; passing it
+// keeps the citation resolvable from a bounded summary.
+export function profileLegalBasis(summary, payload = null) {
+  const profile = resolveLandAuthoritySourceBasis(summary, payload)?.profile || {};
   const basis = profile.legal_basis && typeof profile.legal_basis === "object"
     ? profile.legal_basis
     : null;
@@ -271,7 +274,7 @@ function calendarEligible(published) {
   return published?.status === "published" && Boolean(published?.date);
 }
 
-export function landAuthorityPanelProjection(summary) {
+export function landAuthorityPanelProjection(summary, payload = null) {
   if (!summary || summary.schema !== "cityscroll.land_authority_summary.v1") return null;
   const published = summary.published_next_opportunity || {};
   return {
@@ -290,7 +293,7 @@ export function landAuthorityPanelProjection(summary) {
     observed_status: summary.observed?.status || "no_observation",
     why_kind: whyKind(summary),
     why_provenance: whyProvenanceKind(summary),
-    profile_citation: profileLegalBasis(summary),
+    profile_citation: profileLegalBasis(summary, payload),
     phase_milestone: summary.source_basis?.phase?.current_milestone || null,
     milestone_phase_id: summary.source_basis?.phase?.milestone_phase_id || null,
     geography_status: summary.source_basis?.geography?.status || null,
@@ -330,7 +333,7 @@ function panelActionsHTML(summary, esc, translate) {
   return `<div class="land-authority-actions" data-land-authority-actions="1">${bits.join("")}</div>`;
 }
 
-export function landAuthoritySummaryHTML(summary, { t, escape } = {}) {
+export function landAuthoritySummaryHTML(summary, { t, escape, payload = null } = {}) {
   if (!summary || summary.schema !== "cityscroll.land_authority_summary.v1") return "";
   const translate = typeof t === "function"
     ? (key, vars) => applyVars(t(key, vars), vars)
@@ -396,7 +399,7 @@ export function landAuthoritySummaryHTML(summary, { t, escape } = {}) {
       role: resolvedRoleHere,
       why,
     });
-  const citation = profileLegalBasis(summary);
+  const citation = profileLegalBasis(summary, payload);
   const phaseMilestone = summary.source_basis?.phase?.current_milestone || "";
   const publisher = summary.published_next_opportunity || {};
   const publisherCopy = publishedOpportunityCopy(publisher, translate);

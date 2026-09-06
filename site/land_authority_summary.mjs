@@ -63,14 +63,14 @@ export const LAND_AUTHORITY_PUBLISHED_OPPORTUNITY_MAX_AGE_DAYS = 30;
 // profile's own certification stage.
 const PRE_REVIEW_MILESTONE_PHASE_IDS = new Set(["environmental", "pre_certification", "certification"]);
 
-const INSTITUTIONAL_ACTORS = Object.freeze({
+const AUTHORITY_INSTITUTIONAL_ACTORS = Object.freeze({
   department_of_city_planning: "agency:id:city-planning",
   city_planning_commission: "agency:id:city-planning-commission",
   city_council: "agency:id:city-council",
   mayor: "agency:id:mayor",
 });
 
-const PROFILE_BY_ID = new Map(
+const AUTHORITY_PROFILE_BY_ID = new Map(
   (LAND_PROCEDURE_PROFILE_REGISTRY.profiles || []).map((profile) => [profile.procedure_id, profile]),
 );
 
@@ -105,9 +105,9 @@ function asObject(value) {
   return value && typeof value === "object" && !Array.isArray(value) ? value : {};
 }
 
-const sourceBag = mergeLandActionEvidence;
+const authoritySourceBag = mergeLandActionEvidence;
 
-function isoDate(value) {
+function authorityIsoDate(value) {
   const text = clean(value);
   if (!text) return null;
   const match = text.match(/^(\d{4}-\d{2}-\d{2})/);
@@ -127,7 +127,7 @@ function daysBetweenIso(left, right) {
  * date never fabricates staleness — that gap is `unknown`, a separate state.
  */
 function opportunityIsStale(vintage, asOf) {
-  const gap = daysBetweenIso(isoDate(vintage), isoDate(asOf));
+  const gap = daysBetweenIso(authorityIsoDate(vintage), authorityIsoDate(asOf));
   return gap != null && gap > LAND_AUTHORITY_PUBLISHED_OPPORTUNITY_MAX_AGE_DAYS;
 }
 
@@ -215,17 +215,17 @@ function compactExpectedNext(next) {
 }
 
 function institutionalActorRef(kind) {
-  return INSTITUTIONAL_ACTORS[kind] || null;
+  return AUTHORITY_INSTITUTIONAL_ACTORS[kind] || null;
 }
 
 function representingBodyRef(representing, extra = {}) {
   if (clean(extra.board_id)) return `community-board:${clean(extra.board_id)}`;
   const label = clean(representing)?.toLowerCase() || "";
   if (!label) return null;
-  if (label === "city planning commission" || label === "cpc") return INSTITUTIONAL_ACTORS.city_planning_commission;
-  if (label === "city council") return INSTITUTIONAL_ACTORS.city_council;
-  if (label === "department of city planning" || label === "dcp") return INSTITUTIONAL_ACTORS.department_of_city_planning;
-  if (label === "mayor" || label === "office of the mayor") return INSTITUTIONAL_ACTORS.mayor;
+  if (label === "city planning commission" || label === "cpc") return AUTHORITY_INSTITUTIONAL_ACTORS.city_planning_commission;
+  if (label === "city council") return AUTHORITY_INSTITUTIONAL_ACTORS.city_council;
+  if (label === "department of city planning" || label === "dcp") return AUTHORITY_INSTITUTIONAL_ACTORS.department_of_city_planning;
+  if (label === "mayor" || label === "office of the mayor") return AUTHORITY_INSTITUTIONAL_ACTORS.mayor;
   if (label === "community board") return extra.body_ref || null;
   if (label === "borough president") return extra.borough_president_ref || extra.body_ref || null;
   if (label === "borough board") return extra.borough_board_ref || extra.body_ref || null;
@@ -276,7 +276,7 @@ function observedFromDispositions(dispositions = [], affected = null) {
       representing: clean(disposition.representing),
       value: observed.value,
       status: observed.status,
-      vote_date: isoDate(disposition.vote_date),
+      vote_date: authorityIsoDate(disposition.vote_date),
       votes_for: disposition.votes_for ?? null,
       votes_against: disposition.votes_against ?? null,
       votes_abstain: disposition.votes_abstain ?? null,
@@ -300,7 +300,7 @@ function hearingsList(publishedOpportunities) {
 
 function publishedOpportunity(projectId, publishedOpportunities, asOf) {
   const hearings = hearingsList(publishedOpportunities);
-  const vintage = isoDate(publishedOpportunities?.generated_at);
+  const vintage = authorityIsoDate(publishedOpportunities?.generated_at);
   if (!hearings) {
     return {
       status: "unknown",
@@ -315,13 +315,13 @@ function publishedOpportunity(projectId, publishedOpportunities, asOf) {
       body_ref: null,
     };
   }
-  const checkedVintage = vintage || isoDate(asOf);
+  const checkedVintage = vintage || authorityIsoDate(asOf);
   const stale = opportunityIsStale(vintage, asOf);
-  const cutoff = isoDate(asOf) || null;
+  const cutoff = authorityIsoDate(asOf) || null;
   const future = hearings
-    .filter((row) => clean(row?.project_id) === projectId && isoDate(row?.hearing_date))
-    .filter((row) => !cutoff || isoDate(row.hearing_date) >= cutoff)
-    .sort((left, right) => String(isoDate(left.hearing_date)).localeCompare(String(isoDate(right.hearing_date))));
+    .filter((row) => clean(row?.project_id) === projectId && authorityIsoDate(row?.hearing_date))
+    .filter((row) => !cutoff || authorityIsoDate(row.hearing_date) >= cutoff)
+    .sort((left, right) => String(authorityIsoDate(left.hearing_date)).localeCompare(String(authorityIsoDate(right.hearing_date))));
   const first = future[0];
   if (!first) {
     return {
@@ -346,7 +346,7 @@ function publishedOpportunity(projectId, publishedOpportunities, asOf) {
     source_id: sourceId,
     source: clean(first.source) || clean(first.provenance?.source) || null,
     label: clean(first.milestone_title) || clean(first.milestone_source_title) || null,
-    date: isoDate(first.hearing_date),
+    date: authorityIsoDate(first.hearing_date),
     representing,
     phase_id: clean(first.phase_id),
     body_ref: representingBodyRef(representing, first),
@@ -416,8 +416,80 @@ function unknownSummary({
  * Project a bounded authority summary. Observed dispositions never replace
  * the current-stage actor. Profile successors never mint next_procedural_body.
  */
+/**
+ * Provenance that is the same on every summary.
+ *
+ * Each fact in a summary names the source that produced it. Those source names,
+ * and the registry and boundary versions behind them, do not vary by project,
+ * so repeating them on every summary spends the bounded payload on forty
+ * identical copies. They are published once here and merged back by
+ * resolveLandAuthoritySourceBasis, which is what every reader should use.
+ */
+/** The legal citation the reviewed registry records for one stage. */
+function legalBasisForStage(stageId) {
+  for (const profile of LAND_PROCEDURE_PROFILE_REGISTRY.profiles || []) {
+    for (const stage of profile.stages || []) {
+      if (stage.stage_id !== stageId) continue;
+      const citation = (stage.legal_basis && stage.legal_basis[0])
+        || (profile.legal_basis && profile.legal_basis[0])
+        || null;
+      if (citation) return citation;
+    }
+  }
+  return null;
+}
+
+export const LAND_AUTHORITY_SOURCE_BASIS_DEFAULTS = Object.freeze({
+  profile: Object.freeze({
+    source_type: "reviewed_static_registry",
+    registry_version: LAND_PROCEDURE_PROFILE_REGISTRY_VERSION,
+    effect_source: "reviewed_static_registry",
+  }),
+  phase: Object.freeze({
+    source_type: "publisher_current_milestone",
+    source_field: "current_milestone",
+  }),
+  geography: Object.freeze({
+    source_type: "affected_review_body_for",
+    source_fields: Object.freeze(["community_district", "actions", "ulurp_numbers", "ulurp_non"]),
+  }),
+  publisher: Object.freeze({
+    source_type: "published_hearing",
+  }),
+});
+
+/**
+ * One summary's provenance, with the shared defaults merged back in.
+ *
+ * `legalBasisByStage` carries the legal citation for each stage the payload
+ * uses, so a citation is published once per stage rather than once per project.
+ */
+export function resolveLandAuthoritySourceBasis(summary, payload = null) {
+  const basis = summary?.source_basis;
+  if (!basis || typeof basis !== "object") return null;
+  const defaults = payload?.source_basis_defaults || LAND_AUTHORITY_SOURCE_BASIS_DEFAULTS;
+  const byStage = payload?.legal_basis_by_stage || {};
+  const merge = (key) => (basis[key] ? { ...(defaults[key] || {}), ...basis[key] } : null);
+  const profile = merge("profile");
+  // A summary that carries its own citation keeps it. A bounded one resolves it
+  // from the payload's per-stage table, and failing that from the reviewed
+  // registry itself, so a summary read on its own is never short a citation.
+  if (profile) {
+    profile.legal_basis = basis.profile?.legal_basis
+      || byStage[profile.stage_id]
+      || legalBasisForStage(profile.stage_id)
+      || null;
+  }
+  return {
+    profile,
+    phase: merge("phase"),
+    geography: merge("geography"),
+    publisher: merge("publisher"),
+  };
+}
+
 export function buildLandAuthoritySummary(input = {}) {
-  const project = sourceBag(input);
+  const project = authoritySourceBag(input);
   const projectId = clean(project.project_id);
   const asOf = input.asOf || input.now || null;
   const generatedAt = input.generatedAt || asOf || null;
@@ -435,7 +507,7 @@ export function buildLandAuthoritySummary(input = {}) {
   const resolvedActions = actionResolution.land_actions.filter((action) => action.status === "resolved");
   const procedureIds = [...new Set(resolvedActions.map((action) => action.procedure_id).filter(Boolean))];
   const procedureId = procedureIds.length === 1 ? procedureIds[0] : null;
-  const profile = procedureId ? PROFILE_BY_ID.get(procedureId) : null;
+  const profile = procedureId ? AUTHORITY_PROFILE_BY_ID.get(procedureId) : null;
   const affected = projectAffectedReviewBodies(project, { geography });
   const facts = {
     ...project,
@@ -446,19 +518,18 @@ export function buildLandAuthoritySummary(input = {}) {
   const phaseId = milestonePhaseId ? clampMilestonePhaseToProfile(milestonePhaseId, profile) : null;
   const observed = observedFromDispositions(dispositions, affected);
   const published = publishedOpportunity(projectId, publishedOpportunities, asOf);
+  // Only what differs between projects is carried per project. The constant
+  // half of the provenance — which source produced each fact, the registry and
+  // boundary versions behind it, and the legal citation for a procedure — is
+  // identical on all forty summaries, so it is stated once on the payload as
+  // LAND_AUTHORITY_SOURCE_BASIS_DEFAULTS and read back through
+  // resolveLandAuthoritySourceBasis. Nothing is dropped; it is said once
+  // instead of forty times, which is what keeps the bounded payload bounded as
+  // more projects resolve.
   const sourceBasis = {
-    profile: profile
-      ? {
-          source_type: "reviewed_static_registry",
-          registry_version: LAND_PROCEDURE_PROFILE_REGISTRY_VERSION,
-          procedure_id: procedureId,
-          legal_basis: (profile.legal_basis && profile.legal_basis[0]) || null,
-        }
-      : null,
+    profile: profile ? { procedure_id: procedureId } : null,
     phase: milestone
       ? {
-          source_type: "publisher_current_milestone",
-          source_field: "current_milestone",
           current_milestone: milestone,
           phase_id: phaseId,
           milestone_phase_id: milestonePhaseId,
@@ -466,15 +537,12 @@ export function buildLandAuthoritySummary(input = {}) {
       : null,
     geography: affected
       ? {
-          source_type: "affected_review_body_for",
           status: affected.status,
-          source_fields: affected.provenance?.source_fields || [],
-          boundary_vintage: affected.boundary_vintage || null,
           profile_version: affected.profile_version || null,
+          boundary_vintage: affected.boundary_vintage || null,
         }
       : null,
     publisher: {
-      source_type: "published_hearing",
       source: published.source,
       source_id: published.source_id,
       checked: published.checked === true,
@@ -570,10 +638,6 @@ export function buildLandAuthoritySummary(input = {}) {
         ...sourceBasis.profile,
         stage_id: stage.stage_id,
         role: stage.role,
-        effect_source: "reviewed_static_registry",
-        legal_basis: (stage.legal_basis && stage.legal_basis[0])
-          || sourceBasis.profile.legal_basis
-          || null,
       },
     },
     expected_next_stage: compactExpectedNext(next),
@@ -685,10 +749,48 @@ export function materializeLandAuthoritySummaries(inputs = {}) {
     });
   }
 
+  // The legal citation for a stage is the same wherever that stage appears, so
+  // it is published once per stage rather than once per project.
+  // A vintage that is the same on every summary is a property of the build, not
+  // of a project, so it is hoisted into the defaults rather than repeated. One
+  // that differs stays where it is.
+  const hoistUniform = (group, key) => {
+    const values = new Set(Object.values(summaries)
+      .map((summary) => summary?.source_basis?.[group]?.[key])
+      .filter((value) => value != null));
+    if (values.size !== 1) return null;
+    const [only] = values;
+    for (const summary of Object.values(summaries)) {
+      if (summary?.source_basis?.[group]) delete summary.source_basis[group][key];
+    }
+    return only;
+  };
+  const boundaryVintage = hoistUniform("geography", "boundary_vintage");
+  const checkedVintage = hoistUniform("publisher", "checked_vintage");
+  const sourceBasisDefaults = {
+    ...LAND_AUTHORITY_SOURCE_BASIS_DEFAULTS,
+    geography: {
+      ...LAND_AUTHORITY_SOURCE_BASIS_DEFAULTS.geography,
+      ...(boundaryVintage ? { boundary_vintage: boundaryVintage } : {}),
+    },
+    publisher: {
+      ...LAND_AUTHORITY_SOURCE_BASIS_DEFAULTS.publisher,
+      ...(checkedVintage ? { checked_vintage: checkedVintage } : {}),
+    },
+  };
+  const legalBasisByStage = {};
+  for (const stageId of new Set(Object.values(summaries)
+    .map((summary) => summary?.source_basis?.profile?.stage_id)
+    .filter(Boolean))) {
+    const citation = legalBasisForStage(stageId);
+    if (citation) legalBasisByStage[stageId] = citation;
+  }
   const payload = {
     schema: LAND_AUTHORITY_SUMMARY_SCHEMA,
     join_version: LAND_AUTHORITY_SUMMARY_JOIN_VERSION,
     generated_at: generatedAt,
+    source_basis_defaults: sourceBasisDefaults,
+    legal_basis_by_stage: legalBasisByStage,
     summaries,
   };
   const receipt = {
@@ -767,7 +869,7 @@ export function assertLandAuthoritySummaries(payload, receipt, opts = {}) {
   return true;
 }
 
-export function actorHref(bodyRef) {
+export function authorityActorHref(bodyRef) {
   const ref = clean(bodyRef);
   if (!ref) return null;
   const board = ref.match(/^community-board:(.+)$/);

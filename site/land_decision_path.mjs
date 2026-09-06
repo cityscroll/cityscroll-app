@@ -6,6 +6,7 @@
  * handoff, and the public capability provider; it does not fetch a publisher.
  */
 
+import { resolveLandAuthoritySourceBasis } from "./land_authority_summary.mjs";
 import {
   LAND_ULURP_PHASES,
   buildLandPhaseView,
@@ -166,8 +167,9 @@ function evidenceReferences(record, phaseView, authority) {
   if (record?.generated_at) refs.push({ kind: "outcomes", source_id: `zap-api-outcomes:${projectId}`, observed_at: record.generated_at, layer: "observed" });
   const profile = phaseView?.procedure_profile;
   if (profile?.provenance) refs.push({ kind: "procedure_profile", ...clone(profile.provenance), layer: "normative" });
-  if (authority?.source_basis?.phase) refs.push({ kind: "current_milestone", ...clone(authority.source_basis.phase), layer: "observed" });
-  if (authority?.source_basis?.profile) refs.push({ kind: "authority_profile", ...clone(authority.source_basis.profile), layer: "normative" });
+  const authorityBasis = resolveLandAuthoritySourceBasis(authority);
+  if (authorityBasis?.phase) refs.push({ kind: "current_milestone", ...clone(authorityBasis.phase), layer: "observed" });
+  if (authorityBasis?.profile) refs.push({ kind: "authority_profile", ...clone(authorityBasis.profile), layer: "normative" });
   return refs;
 }
 
