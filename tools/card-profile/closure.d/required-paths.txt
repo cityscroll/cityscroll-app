@@ -150,12 +150,6 @@ docs/evidence/working-copy-reduction/raw/closure/architecture-reconcile.json
 docs/evidence/working-copy-reduction/raw/closure/card-profile-contract.json
 docs/evidence/working-copy-reduction/raw/closure/card-reconciliation.json
 docs/evidence/working-copy-reduction/raw/closure/worker-unit.json
-docs/repository-control-plane/agents-router-policy.v1.json
-docs/repository-control-plane/agents-router-receipt.v1.json
-docs/evidence/exact-council-matter-watch-updates/manifest.json
-docs/evidence/exact-institution-follow/manifest.json
-docs/evidence/matter-coverage-recovery/manifest.json
-docs/evidence/retained-matter-publication-generation/manifest.json
 docs/repository-governance/agents-router-policy.v1.json
 docs/repository-governance/agents-router-receipt.v1.json
 entity_resolution/README.md
