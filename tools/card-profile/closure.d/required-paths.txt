@@ -437,6 +437,8 @@ site/contracts_rum.mjs
 site/council_district_lookup.mjs
 site/council_hearing_action_path.mjs
 site/council_hearing_matter_continuation.mjs
+site/council_matter_watch.mjs
+site/council_matter_watch_scope.mjs
 site/crol_notice_publication_policy.mjs
 site/cross_source_coverage_ledger.mjs
 site/cross_source_evidence_receipt.mjs
@@ -1943,6 +1945,7 @@ worker/migrations/0024_pin_family_verify.sql
 worker/migrations/0025_search_and_ocp_read_models.sql
 worker/migrations/0026_entity_intelligence_read_model.sql
 worker/migrations/0027_matter_observation_journal.sql
+worker/migrations/0028_matter_watch_baseline.sql
 worker/ops-contract.v1.json
 worker/scripts/analytics-dev-token.mjs
 worker/scripts/backfill-history.mjs
@@ -2059,6 +2062,7 @@ worker/src/lib/continuation_replay.mjs
 worker/src/lib/contract_forecast_predictions.mjs
 worker/src/lib/cors.mjs
 worker/src/lib/council_district.mjs
+worker/src/lib/council_matter_watch_activation.mjs
 worker/src/lib/coverage_ledger.mjs
 worker/src/lib/curation_review_command.mjs
 worker/src/lib/curation_verdicts.mjs

@@ -18,6 +18,7 @@ import {
 import { buildMeetingOutcomes } from "../worker/src/lib/meeting_outcomes.mjs";
 import { officialSourceLink } from "../site/affordance_grammar.mjs";
 import { resolveMatterDestination } from "../site/legislative_matter_availability.mjs";
+import { councilMatterFollowMarkup } from "../site/council_matter_watch.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const src = SITE_SOURCE;
@@ -64,7 +65,7 @@ function escUiHtml(s) {
 }
 
 const sandbox = new Function(
-  "t", "tn", "window", "money", "fdate", "cleanText", "vendorStem", "escUiHtml", "officialSourceLink", "resolveMatterDestination",
+  "t", "tn", "window", "money", "fdate", "cleanText", "vendorStem", "escUiHtml", "officialSourceLink", "resolveMatterDestination", "councilMatterFollowMarkup",
   "const v=x=>escUiHtml(x);\n" +
   extractConst("escUiHtml").replace(/^const escUiHtml = /, "const escUiHtmlLocal = ") + "\n" +
   // Prefer the real extracted escUiHtml if present; fall back to injected one.
@@ -163,11 +164,11 @@ const sandbox = new Function(
 
 let helpers;
 try {
-  helpers = sandbox(t, tn, windowStub, money, fdate, cleanText, vendorStem, escUiHtml, officialSourceLink, resolveMatterDestination);
+  helpers = sandbox(t, tn, windowStub, money, fdate, cleanText, vendorStem, escUiHtml, officialSourceLink, resolveMatterDestination, councilMatterFollowMarkup);
 } catch (err) {
   // Fallback: extract with simpler sandbox that injects all deps as args
   const simple = new Function(
-    "t", "tn", "money", "fdate", "cleanText", "vendorStem", "escUiHtml", "officialSourceLink", "resolveMatterDestination",
+    "t", "tn", "money", "fdate", "cleanText", "vendorStem", "escUiHtml", "officialSourceLink", "resolveMatterDestination", "councilMatterFollowMarkup",
     `
     const extSR = () => '<span class="sr-only"> (opens in new tab)</span>';
     const REQ_URL = (id) => 'https://a856-cityrecord.nyc.gov/RequestDetail/' + encodeURIComponent(id);
@@ -260,7 +261,7 @@ try {
     };
     `
   );
-  helpers = simple(t, tn, money, fdate, cleanText, vendorStem, escUiHtml, officialSourceLink, resolveMatterDestination);
+  helpers = simple(t, tn, money, fdate, cleanText, vendorStem, escUiHtml, officialSourceLink, resolveMatterDestination, councilMatterFollowMarkup);
 }
 
 const {

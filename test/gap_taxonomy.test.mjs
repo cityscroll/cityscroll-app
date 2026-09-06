@@ -16,6 +16,7 @@ import { dirname, join } from "node:path";
 import { assembleSubsidyLifecycle } from "../worker/src/lib/subsidy_lifecycle.mjs";
 import { officialSourceLink } from "../site/affordance_grammar.mjs";
 import { resolveMatterDestination } from "../site/legislative_matter_availability.mjs";
+import { councilMatterFollowMarkup } from "../site/council_matter_watch.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const src = SITE_SOURCE;
@@ -59,7 +60,7 @@ function escUiHtml(s) {
 }
 
 const helpers = new Function(
-  "t", "tn", "money", "fdate", "cleanText", "escUiHtml", "officialSourceLink", "resolveMatterDestination",
+  "t", "tn", "money", "fdate", "cleanText", "escUiHtml", "officialSourceLink", "resolveMatterDestination", "councilMatterFollowMarkup",
   `
   const extSR = () => '<span class="sr-only"> (opens in new tab)</span>';
   const REQ_URL = (id) => 'https://a856-cityrecord.nyc.gov/RequestDetail/' + encodeURIComponent(id);
@@ -141,7 +142,7 @@ const helpers = new Function(
   `
   return { lifecycleTimelineHTML, subsidyLifecycleHTML, meetingOutcomesHTML, t };
   `,
-)(t, tn, money, fdate, cleanText, escUiHtml, officialSourceLink, resolveMatterDestination);
+)(t, tn, money, fdate, cleanText, escUiHtml, officialSourceLink, resolveMatterDestination, councilMatterFollowMarkup);
 
 const { lifecycleTimelineHTML, subsidyLifecycleHTML, meetingOutcomesHTML } = helpers;
 
