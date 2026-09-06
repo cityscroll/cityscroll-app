@@ -39,12 +39,16 @@ python3 tools/capture_guide_release.py
 python3 tools/capture_guide_how_to_walkthroughs.py
 ```
 
-The last of those is a public-inspection check and stays one. It follows only the
-routes named in its own source, blocks and records every form submission, and
-fails if any page reaches a signup, preference-centre, confirmation, unsubscribe
-or feed route. No address is enrolled, no testimony is submitted and no calendar
-subscription is created, and the manifest reports both counts per walkthrough so
-the claim is checkable rather than asserted.
+The first of those holds every published article to what it owes a reader, and
+takes its list from the builder, so a new article is covered without editing it.
+The second does not repeat any of that. It records whether the journey each
+everyday how-to describes actually arrives at the product route it names, and it
+is a public-inspection check that stays one: it follows only the routes named in
+its own source, blocks and records every form submission, and fails if any page
+reaches a signup, preference-centre, confirmation, unsubscribe or feed route. No
+address is enrolled, no testimony is submitted and no calendar subscription is
+created, and the manifest reports both counts per walkthrough so the claim is
+checkable rather than asserted.
 
 The live example checks and the isolation of the harness limitation are recorded
 with their exact commands in

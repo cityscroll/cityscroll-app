@@ -1,31 +1,34 @@
 #!/usr/bin/env python3
-"""Walk the five everyday how-to guides the way a reader would, and record the proof.
+"""Walk the five everyday how-to guides to the product, and record the proof.
 
 Each how-to sends a reader to a real product route and promises an observable end
 state. This drives that journey for every one of them against a locally served
-static site, checks the properties a reader depends on at both review widths, and
-writes the result as a manifest. No image enters the repository: rendered
-screenshots stay under the ignored .artifacts/ path and only their sha256 is
-retained, per docs/capture-manifest-guard.md.
+static site and records the result as a manifest.
 
-Everything here is read-only by construction, and says so with evidence rather
-than assertion. The walkthroughs only ever follow anchors to routes named in this
-file; the run records every form submission the pages attempted (expected: none)
-and every network request that reached a route capable of changing state — the
-signup endpoint, the calendar feed, the preference centre. A guide that told a
-reader to enrol an address, submit testimony or create a subscription could not be
-verified this way, which is the point: the guides describe those steps, and the
-check proves the walkthrough did not take them.
+What every published guide article owes a reader — accessibility, keyboard reach
+and focus, reflow at 200 percent, target size, overflow, the status of every
+internal link, and the page read with JavaScript switched off — belongs to
+tools/capture_guide_release.py, which derives its list from the builder and so
+already covers these five. This runner does not repeat any of it. It answers the
+question that one cannot: whether the journey each article describes actually
+arrives somewhere, and whether describing it cost the reader anything.
 
-What is checked, per article, at 390px and 1440px:
+So it records three things per article, at both review widths:
 
-* the reader-facing text the article promises, and the product entry link it names;
-* axe-core critical and serious findings;
-* horizontal overflow at the review width and at 200 percent zoom (WCAG 1.4.10);
-* target size, keyboard reach, and a visible focus indicator;
-* the HTTP status of every internal link on the page;
-* guide home to article to product route and back again, including browser Back;
-* the same reading path with JavaScript switched off.
+* the walkthrough — guide home, article, the product route the article names, then
+  the browser Back button twice, back to where the reader started;
+* a command or control click on that same link, which must open a second page and
+  leave the article where it was. Nothing on a guide page listens for a click, so
+  this is a property of the document rather than of a handler — which is why it is
+  worth recording, since a page that started intercepting clicks would break the
+  ordinary gesture for opening a link in a new tab with no other symptom;
+* the read-only evidence. Public inspection is read-only here by construction and
+  says so with evidence rather than assertion: the run follows only the routes
+  named in this file, blocks and records every form submission, and fails on any
+  request to a signup, preference, confirmation, unsubscribe or feed route. A
+  guide that told a reader to enrol an address, submit testimony or create a
+  subscription could not be verified this way, which is the point — the guides
+  describe those steps, and this proves the walkthrough did not take them.
 
     python3 tools/capture_guide_how_to_walkthroughs.py
     python3 tools/capture_guide_how_to_walkthroughs.py --keep-going
@@ -35,7 +38,6 @@ from __future__ import annotations
 
 import argparse
 import functools
-import hashlib
 import json
 import subprocess
 import sys
@@ -49,13 +51,10 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "tools"))
 from local_site_server import QuietHandler, _RobustThreadingHTTPServer, probe_base  # noqa: E402
 
-AXE = ROOT / "test" / "functional" / "assets" / "axe.min.js"
 MANIFEST = ROOT / "docs" / "evidence" / "public-user-guide" / "guide-how-to-release" / "capture-manifest.json"
-OUTPUT_DIR = ROOT / ".artifacts" / "guide-how-to-release"
 
 GUIDE_HOME = "/guide/"
 VIEWPORTS = (("mobile", 390, 844), ("desktop", 1440, 900))
-MIN_TARGET_PX = 24  # WCAG 2.2 AA, 2.5.8 Target Size (Minimum)
 
 # Routes that would change something if they were requested. The walkthroughs
 # never navigate to one, and the run fails if a page reaches for one on its own.
@@ -173,14 +172,6 @@ ARTICLES = (
 )
 
 
-def sha256_text(value: str) -> str:
-    return hashlib.sha256(value.encode("utf-8")).hexdigest()
-
-
-def sha256_file(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest()
-
-
 def repository_revision() -> str:
     return subprocess.run(
         ["git", "rev-parse", "HEAD"], cwd=ROOT, check=True, capture_output=True, text=True
@@ -211,96 +202,6 @@ def settle(page: Page) -> None:
     page.wait_for_timeout(400)
 
 
-def run_axe(page: Page) -> list[dict]:
-    page.add_script_tag(path=str(AXE))
-    result = page.evaluate("async () => await axe.run(document, {resultTypes: ['violations']})")
-    return [
-        {"id": item["id"], "impact": item["impact"], "nodes": len(item["nodes"])}
-        for item in result["violations"]
-        if item["impact"] in ("critical", "serious")
-    ]
-
-
-def overflow(page: Page) -> dict:
-    return page.evaluate(
-        """() => ({
-            scrollWidth: document.documentElement.scrollWidth,
-            clientWidth: document.documentElement.clientWidth,
-        })"""
-    )
-
-
-def small_targets(page: Page, minimum: int) -> list[dict]:
-    """Targets below the minimum, excluding links that sit inside a sentence.
-
-    WCAG 2.5.8 exempts a target "in a sentence or its associated text", which is
-    what a link inside a paragraph of guide prose is.
-    """
-    return page.evaluate(
-        """(minimum) => [...document.querySelectorAll('main a, main button')]
-            .filter((node) => {
-                const parent = node.parentElement;
-                if (!parent) return true;
-                const inProse = parent.tagName === 'P' || parent.tagName === 'LI';
-                const otherText = (parent.innerText || '').trim().length
-                    > (node.innerText || '').trim().length + 1;
-                return !(inProse && otherText);
-            })
-            .map((node) => {
-                const box = node.getBoundingClientRect();
-                return {
-                    text: (node.innerText || '').trim().slice(0, 40),
-                    width: Math.round(box.width),
-                    height: Math.round(box.height),
-                };
-            })
-            .filter((item) => item.width > 0 && item.height > 0)
-            .filter((item) => item.width < minimum || item.height < minimum)""",
-        minimum,
-    )
-
-
-def keyboard_reach(page: Page) -> dict:
-    """Tab through the document and record what a keyboard actually reaches."""
-    expected = page.evaluate(
-        """() => [...new Set([...document.querySelectorAll('main a[href]')]
-            .map((node) => node.getAttribute('href')))]"""
-    )
-    page.evaluate("() => document.body.focus()")
-    page.keyboard.press("Home")
-    reached: list[str] = []
-    without_indicator: list[str] = []
-    for _ in range(len(expected) * 3 + 30):
-        page.keyboard.press("Tab")
-        state = page.evaluate(
-            """() => {
-                const node = document.activeElement;
-                if (!node || node === document.body) return null;
-                const style = getComputedStyle(node);
-                return {
-                    href: node.getAttribute && node.getAttribute('href'),
-                    text: (node.innerText || '').trim().slice(0, 40),
-                    inMain: !!node.closest('main'),
-                    visibleFocus: style.outlineStyle !== 'none' && parseFloat(style.outlineWidth) > 0,
-                };
-            }"""
-        )
-        if not state or not state["inMain"] or not state["href"]:
-            continue
-        if state["href"] not in reached:
-            reached.append(state["href"])
-            if not state["visibleFocus"]:
-                without_indicator.append(state["text"] or state["href"])
-        if len(reached) >= len(expected):
-            break
-    return {
-        "links": len(expected),
-        "reached": len(reached),
-        "unreachable": [href for href in expected if href not in reached],
-        "withoutIndicator": without_indicator,
-    }
-
-
 def modified_click(page: Page, base: str, spec: dict) -> dict:
     """A command/control click on a guide link must open a second page, not navigate.
 
@@ -326,72 +227,6 @@ def modified_click(page: Page, base: str, spec: dict) -> dict:
         "assertion_holds": opened == spec["product"] and stayed == before,
         "opened_in_new_page": opened,
         "original_page_stayed_on": stayed,
-    }
-
-
-def internal_links(page: Page) -> list[str]:
-    return page.evaluate(
-        """() => [...new Set([...document.querySelectorAll('a[href^="/"]')]
-            .map((node) => node.getAttribute('href')))]"""
-    )
-
-
-def observe_route(page: Page, spec: dict, base: str, width: int) -> dict:
-    text = page.evaluate("() => (document.body.innerText || '')")
-    folded = text.casefold()
-    missing_text = [needle for needle in spec["expect_text"] if needle.casefold() not in folded]
-    hrefs = page.evaluate("() => [...document.querySelectorAll('a')].map((n) => n.getAttribute('href'))")
-    missing_links = [href for href in spec["expect_links"] if href not in hrefs]
-
-    metrics = overflow(page)
-    overflowing = metrics["scrollWidth"] > metrics["clientWidth"] + 1
-
-    # WCAG 1.4.10 reflow: the same content at half the review width.
-    page.set_viewport_size({"width": max(width // 2, 320), "height": 844})
-    settle(page)
-    zoom_metrics = overflow(page)
-    zoom_overflowing = zoom_metrics["scrollWidth"] > zoom_metrics["clientWidth"] + 1
-    page.set_viewport_size({"width": width, "height": 844})
-    settle(page)
-
-    targets = small_targets(page, MIN_TARGET_PX)
-    focus = keyboard_reach(page)
-    violations = run_axe(page)
-
-    link_statuses = []
-    for href in internal_links(page):
-        response = page.request.get(urljoin(base, href.lstrip("/")))
-        link_statuses.append({"href": href, "status": response.status})
-    broken_links = [item for item in link_statuses if item["status"] >= 400]
-
-    holds = not (
-        missing_text
-        or missing_links
-        or overflowing
-        or zoom_overflowing
-        or targets
-        or focus["unreachable"]
-        or focus["withoutIndicator"]
-        or violations
-        or broken_links
-    )
-    return {
-        "assertion_holds": holds,
-        "missing_expected_text": missing_text,
-        "missing_expected_links": missing_links,
-        "horizontal_overflow_px": max(metrics["scrollWidth"] - metrics["clientWidth"], 0),
-        "horizontal_overflow_at_200_percent_px": max(
-            zoom_metrics["scrollWidth"] - zoom_metrics["clientWidth"], 0
-        ),
-        "targets_below_%dpx" % MIN_TARGET_PX: targets,
-        "keyboard": focus,
-        "axe_critical_or_serious": violations,
-        "internal_links_checked": len(link_statuses),
-        "broken_internal_links": broken_links,
-        "visible_text_characters": len(text),
-        "content_sha256": sha256_text(
-            page.evaluate("() => ((document.querySelector('main') || document.body).outerHTML)")
-        ),
     }
 
 
@@ -468,39 +303,7 @@ def walkthrough(page: Page, base: str, spec: dict, watch: ReadOnlyWatch) -> dict
     }
 
 
-def without_script(page: Page, base: str, spec: dict) -> dict:
-    """The same reading path with JavaScript switched off."""
-    page.goto(urljoin(base, GUIDE_HOME.lstrip("/")), wait_until="domcontentloaded")
-    page.locator(f'main a[href="{spec["route"]}"]').first.click()
-    page.wait_for_load_state("domcontentloaded")
-    article_path = urlsplit(page.url).path
-    article = page.evaluate(
-        """() => ({
-            headings: [...document.querySelectorAll('main h1, main h2')].map((n) => n.innerText.trim()),
-            paragraphs: document.querySelectorAll('main p').length,
-            sourceLinks: [...document.querySelectorAll('main a[href^="http"]')].map((n) => n.getAttribute('href')),
-            backToGuide: !!document.querySelector('main a[href="/guide/"]'),
-            returnToTask: !!document.querySelector('main .guide-return a'),
-        })"""
-    )
-    page.go_back()
-    page.wait_for_load_state("domcontentloaded")
-    back_path = urlsplit(page.url).path
-    holds = (
-        article_path == spec["route"]
-        and len(article["headings"]) >= 6
-        and article["paragraphs"] >= 10
-        and bool(article["sourceLinks"])
-        and article["backToGuide"]
-        and article["returnToTask"]
-        and back_path == GUIDE_HOME
-    )
-    return {"assertion_holds": holds, "article_path": article_path, "article": article, "back_path": back_path}
-
-
-def capture(base: str, output_dir: Path) -> dict:
-    output_dir.mkdir(parents=True, exist_ok=True)
-    captures: list[dict] = []
+def capture(base: str) -> dict:
     walkthroughs: list[dict] = []
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=True)
@@ -510,29 +313,13 @@ def capture(base: str, output_dir: Path) -> dict:
                 page = context.new_page()
                 watch = ReadOnlyWatch(page)
                 for spec in ARTICLES:
-                    page.goto(urljoin(base, spec["route"].lstrip("/")), wait_until="domcontentloaded")
-                    settle(page)
-                    image = output_dir / f"{spec['id'].lower()}-{width}.png"
-                    page.screenshot(path=str(image), full_page=False)
-                    captures.append(
-                        {
-                            "id": spec["id"],
-                            "route": spec["route"],
-                            "viewport": name,
-                            "viewport_width": width,
-                            "assertion": spec["assertion"],
-                            **observe_route(page, spec, base, width),
-                            "capture_sha256": sha256_file(image),
-                            "local_capture_path": str(image.relative_to(ROOT)),
-                            "file": None,
-                        }
-                    )
-                for spec in ARTICLES:
                     walkthroughs.append(
                         {
                             "id": f"modified-click-{spec['id'].lower()}",
                             "article": spec["id"],
+                            "route": spec["route"],
                             "viewport": name,
+                            "viewport_width": width,
                             "entry_route": spec["entry"],
                             "assertion": "A command or control click on the product link opens a "
                             "second page and leaves the article where it was, because nothing on a "
@@ -545,41 +332,24 @@ def capture(base: str, output_dir: Path) -> dict:
                         {
                             "id": f"walkthrough-{spec['id'].lower()}",
                             "article": spec["id"],
+                            "route": spec["route"],
                             "viewport": name,
+                            "viewport_width": width,
                             "entry_route": spec["entry"],
                             "assertion": spec["walkthrough"],
                             **walkthrough(page, base, spec, watch),
                         }
                     )
                 context.close()
-
-                no_script = browser.new_context(
-                    viewport={"width": width, "height": height}, java_script_enabled=False
-                )
-                quiet_page = no_script.new_page()
-                for spec in ARTICLES:
-                    walkthroughs.append(
-                        {
-                            "id": f"without-javascript-{spec['id'].lower()}",
-                            "article": spec["id"],
-                            "viewport": name,
-                            "entry_route": spec["entry"],
-                            "assertion": "With JavaScript switched off, the article keeps its text, "
-                            "headings, source links and navigation, and Back still works.",
-                            **without_script(quiet_page, base, spec),
-                        }
-                    )
-                no_script.close()
         finally:
             browser.close()
-    return {"captures": captures, "walkthroughs": walkthroughs}
+    return {"walkthroughs": walkthroughs}
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--site-dir", type=Path, default=ROOT / "site")
     parser.add_argument("--manifest", type=Path, default=MANIFEST)
-    parser.add_argument("--output-dir", type=Path, default=OUTPUT_DIR)
     parser.add_argument(
         "--keep-going",
         action="store_true",
@@ -589,7 +359,7 @@ def main() -> int:
 
     server, thread, base = serve(args.site_dir)
     try:
-        observed = capture(base, args.output_dir)
+        observed = capture(base)
     finally:
         server.shutdown()
         thread.join()
@@ -598,19 +368,19 @@ def main() -> int:
     manifest = {
         "schema_version": 1,
         "record": "cityscroll-engineering/guide-everyday-how-to-articles",
-        "capture_mode": "local_static_site_playwright_no_committed_image",
+        "capture_mode": "local_static_site_playwright_no_image_taken",
         "base": "local static site build (site/)",
         "repository_revision": repository_revision(),
         "repository_state": working_tree_state(),
         "note": (
-            "Usability and walkthrough evidence for the five everyday how-to guides. Every check "
-            "runs against the tracked static documents served locally, so it reproduces from a "
-            "checkout with no network and no deploy. Accessibility, keyboard, reflow and link "
-            "checks cover the guide documents this change adds; the product routes each article "
-            "names keep their existing owners and are exercised here only as walkthrough "
-            "endpoints, where the assertion is that the document serves and Back returns. "
-            "Screenshots stay under the ignored .artifacts/ path and only their sha256 is "
-            "recorded, per docs/capture-manifest-guard.md."
+            "Journey evidence for the five everyday how-to guides. Every check runs against the "
+            "tracked static documents served locally, so it reproduces from a checkout with no "
+            "network and no deploy. What every published article owes a reader — accessibility, "
+            "keyboard reach and focus, reflow, target size, overflow, internal link status, and "
+            "the page read without JavaScript — is not repeated here: tools/capture_guide_release.py "
+            "derives its list from the builder and already covers these five. This runner records "
+            "what that one cannot, which is whether the journey each article describes arrives, "
+            "and what taking it cost. No image is taken at all, so none can be committed."
         ),
         "read_only_contract": (
             "Public inspection only. The walkthroughs follow anchors to the routes named in "
@@ -629,28 +399,29 @@ def main() -> int:
         ),
         "viewports": [{"name": name, "width": width, "height": height} for name, width, height in VIEWPORTS],
         "checks": [
-            "expected reader-facing text and the product entry link each article names",
-            "axe-core critical and serious violations on every guide document",
-            "horizontal overflow at the review width",
-            "horizontal overflow at 200 percent zoom (WCAG 1.4.10 reflow)",
-            f"target size below {MIN_TARGET_PX}px",
-            "keyboard focus reach and a visible focus indicator",
-            "HTTP status of every internal link on a guide page",
             "guide home to article to the product route it names, and browser Back twice",
-            "the same reading path with JavaScript switched off",
             "a command or control click opens a second page instead of navigating",
             "no form submission and no request to a state-changing route",
         ],
-        "captures": observed["captures"],
+        "covered_elsewhere": {
+            "owner": "tools/capture_guide_release.py",
+            "checks": [
+                "axe-core critical and serious violations on every guide document",
+                "horizontal overflow at the review width and at 200 percent zoom",
+                "target size, keyboard focus reach and a visible focus indicator",
+                "HTTP status of every internal link on a guide page",
+                "every article read with JavaScript switched off",
+            ],
+        },
         "walkthroughs": observed["walkthroughs"],
     }
     args.manifest.parent.mkdir(parents=True, exist_ok=True)
     args.manifest.write_text(json.dumps(manifest, indent=2) + "\n")
 
-    failed = [item for item in observed["captures"] + observed["walkthroughs"] if not item["assertion_holds"]]
+    failed = [item for item in observed["walkthroughs"] if not item["assertion_holds"]]
     print(
-        f"guide how-to release: {len(observed['captures'])} captures and "
-        f"{len(observed['walkthroughs'])} walkthroughs written to {args.manifest.relative_to(ROOT)}"
+        f"guide how-to walkthroughs: {len(observed['walkthroughs'])} recorded in "
+        f"{args.manifest.relative_to(ROOT)}"
     )
     for item in failed:
         print(f"  assertion did not hold: {item['id']} @ {item.get('viewport')}")

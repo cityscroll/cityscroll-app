@@ -23,7 +23,7 @@ with, and how those examples were verified — is in
 | `test/guide_documents.test.mjs` | The reader-facing contracts. |
 | `test/standards/guide_content.py` | Points the site's own metadata, link-text and heading gates at the guide pages. |
 | `tools/capture_guide_release.py` | Drives the reader's journey and records the usability evidence as a manifest. |
-| `tools/capture_guide_how_to_walkthroughs.py` | Walks every how-to to the product route it names and back, and records that evidence — including proof the walkthrough changed nothing. |
+| `tools/capture_guide_how_to_walkthroughs.py` | Walks the everyday how-tos to the product route each one names and back, and records that the run changed nothing. Usability belongs to the runner above; this answers whether the journey arrives. |
 
 Article sources sit under underscore-prefixed directories, which the public-site
 payload walker already skips, so the Markdown is tracked and reviewable without
