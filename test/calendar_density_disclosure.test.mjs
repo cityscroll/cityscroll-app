@@ -598,7 +598,13 @@ test("A4: all eight registered calendar hosts reach the one shared mount", async
   assert.equal(shared.bindCalendarDayAgenda, undefined,
     "the agenda-only binder is not reachable through the shared renderer");
   const boot = readFileSync(new URL("../site/calendar_event_preview_boot.mjs", import.meta.url), "utf8");
-  assert.match(boot, /bindCompactMonthCalendar\(document\)/,
+  // The mount may carry options (a host-supplied detail hook, for one), so this
+  // pins the callee and its first argument rather than an exact call shape --
+  // the same open-paren match every other host above is checked with. Reaching
+  // for `bindCalendarEventPreview(document` or `bindCalendarDayAgenda(document`
+  // still fails here, and the two export assertions above independently keep
+  // either half out of the shared renderer.
+  assert.match(boot, /bindCompactMonthCalendar\(document[,)]/,
     "the rendered-document boot mounts through the shared renderer, not one half of it");
 });
 

@@ -1,0 +1,37 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/procurement-project-context",
+  "status": "implemented",
+  "fingerprint": "procurement-project-context.v1",
+  "updated_at": "2026-09-05T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "capital-project-relation-contract",
+      "path": "warehouse/lib/capital_project_relations.py"
+    },
+    {
+      "id": "capital-project-relation-materializer",
+      "path": "warehouse/scripts/capital_project_relations_run.py"
+    },
+    {
+      "id": "procurement-project-context-materialization",
+      "path": "site/data/procurement_project_context.json"
+    },
+    {
+      "id": "procurement-project-context-reader",
+      "path": "site/procurement_project_context.mjs"
+    },
+    {
+      "id": "procurement-project-context-style",
+      "path": "site/procurement_project_context.css"
+    },
+    {
+      "id": "procurement-project-context-tests",
+      "path": "test/ddc_project_context.test.mjs"
+    },
+    {
+      "id": "procurement-project-context-fixtures",
+      "path": "test/fixtures/procurement_project_context_fixtures.mjs"
+    }
+  ]
+}
