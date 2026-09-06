@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 /** Build the precomputed registered-contract analytical projection. */
 
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
-import { basename, dirname, join, relative, resolve } from "node:path";
+import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { basename, dirname, extname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { parseContractTransactions } from "../worker/src/lib/checkbook_lifecycle.mjs";
@@ -18,6 +18,9 @@ import {
   profileDimension,
   registrationTimingSummary,
 } from "../site/analytical_projection.mjs";
+import { buildAnalyticalProjectionShardArtifacts } from "../site/analytical_projection_shards.mjs";
+import { shardNamesOnDisk } from "./lib/generated_artifact_check_receipt.mjs";
+import { readAnalyticalProjectionDocument } from "./lib/analytical_projection_io.mjs";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const DEFAULT_INPUT = join(ROOT, "warehouse/raw/checkbook-contracts/normalized.json");
@@ -34,7 +37,46 @@ function readJson(path) {
 
 function writeJson(path, value) {
   mkdirSync(dirname(path), { recursive: true });
-  writeFileSync(path, `${JSON.stringify(value, null, 2)}\n`);
+  writeFileSync(path, serialized(value));
+}
+
+function serialized(value) {
+  return `${JSON.stringify(value, null, 2)}\n`;
+}
+
+/**
+ * The published population is sharded, so the document at the projection path
+ * is the index and the rows live beside it in a directory named after it.
+ * Both come from one build, and a shard the build no longer names is removed
+ * rather than left behind to be published as a stale population fragment.
+ */
+function projectionArtifacts(output, payload) {
+  const { manifest, shards } = buildAnalyticalProjectionShardArtifacts(payload);
+  const shardDir = join(dirname(output), basename(output, extname(output)));
+  return {
+    shardDir,
+    expectedNames: new Set(manifest.shards.map((descriptor) => descriptor.path.split("/").at(-1))),
+    outputs: [
+      [output, serialized(manifest)],
+      ...manifest.shards.map((descriptor, index) => [
+        join(dirname(output), descriptor.path),
+        serialized(shards[index]),
+      ]),
+    ],
+  };
+}
+
+function writeProjection(output, payload) {
+  const artifacts = projectionArtifacts(output, payload);
+  mkdirSync(artifacts.shardDir, { recursive: true });
+  for (const name of shardNamesOnDisk(artifacts.shardDir)) {
+    if (!artifacts.expectedNames.has(name)) rmSync(join(artifacts.shardDir, name));
+  }
+  for (const [path, content] of artifacts.outputs) {
+    mkdirSync(dirname(path), { recursive: true });
+    writeFileSync(path, content);
+  }
+  return artifacts;
 }
 
 function sourcePathLabel(path) {
@@ -258,13 +300,16 @@ function build(args) {
       reproducible_input: sourcePathLabel(args.fixture ? args.fixture : args.input),
     },
   };
-  writeJson(args.output, payload);
+  const artifacts = writeProjection(args.output, payload);
   writeJson(args.receipt, receipt);
-  return { payload, receipt };
+  return { payload, receipt, artifacts };
 }
 
 function check(args) {
-  const payload = readJson(args.output);
+  const index = readJson(args.output);
+  // Read the population the way every consumer reads it, through the index, so
+  // a shard the index no longer names or a shard missing from disk fails here.
+  const payload = readAnalyticalProjectionDocument(args.output);
   const receipt = readJson(args.receipt);
   const ids = new Set((payload.rows || []).map((row) => row.prime_contract_id));
   if (payload.schema !== "cityscroll.analytics_registered_contracts.v1") throw new Error("wrong projection schema");
@@ -272,7 +317,16 @@ function check(args) {
     throw new Error("projection distinct-contract check failed");
   }
   if (payload.rows.length !== receipt.population.normalized_unique_contracts) throw new Error("projection receipt count mismatch");
-  console.log(`analytics registered contracts ok: population=${ids.size} table=analytics_registered_contracts`);
+  if (Number(index.row_count) !== payload.rows.length) {
+    throw new Error(`projection index reports ${index.row_count} rows and its shards carry ${payload.rows.length}`);
+  }
+  const shardDir = join(dirname(args.output), basename(args.output, extname(args.output)));
+  const expectedNames = new Set((index.shards || []).map((descriptor) => String(descriptor.path).split("/").at(-1)));
+  for (const name of shardNamesOnDisk(shardDir)) {
+    if (!expectedNames.has(name)) throw new Error(`stale registered-contract projection shard: ${join(shardDir, name)}`);
+  }
+  console.log(`analytics registered contracts ok: population=${ids.size} shards=${expectedNames.size} `
+    + "table=analytics_registered_contracts");
 }
 
 const args = parseArgs(process.argv.slice(2));

@@ -12,6 +12,13 @@
 # procurement builders and the Worker read model consume; no browser route or
 # Pages handler fetches it, and a build-time refresh had already grown it to
 # within a refresh of the Pages per-file guard.
+# data/procurement_spine_sources.json is the acquisition spine the procurement,
+# entity-intelligence and crosswalk builders read from the repository. It is a
+# pure build input: no browser route, Pages handler or Worker endpoint fetches
+# it, and the rows it carries reach readers through the shared procurement read
+# model that is built from it. A build-time refresh grew the published copy past
+# the Pages per-file guard, so it stays a repository artifact rather than a
+# published one.
 #
 # The list below is parsed as consecutive "  - value" lines. A comment inside
 # either list ends it, so keep prose here.
@@ -30,6 +37,7 @@ exclude:
   - backlog
   - data/ocp_awards_warehouse_lookup.json
   - data/procurement_browse_rows.json
+  - data/procurement_spine_sources.json
   - data/source_health_observations.json
   - data/source_vintage_observations.json
   - data/source_vintage_alternates.json

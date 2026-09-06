@@ -214,6 +214,7 @@
 /site/analytical_performance_evidence.mjs
 /site/analytical_projection.mjs
 /site/analytical_projection_contract.mjs
+/site/analytical_projection_shards.mjs
 /site/analytics.js
 /site/api.html
 /site/app/

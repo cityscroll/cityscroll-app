@@ -1,11 +1,11 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
 import test from "node:test";
 
 import { analyzeContractsProjection } from "../site/contracts_analysis_projection.mjs";
 import { workerContractsAnalysis } from "../worker/src/contracts.mjs";
+import { readAnalyticalProjectionDocument } from "../tools/lib/analytical_projection_io.mjs";
 
-const projection = JSON.parse(readFileSync(new URL("../site/data/analytics_registered_contracts.json", import.meta.url), "utf8"));
+const projection = readAnalyticalProjectionDocument(new URL("../site/data/analytics_registered_contracts.json", import.meta.url));
 
 test("Contracts analysis UI projection and Worker adapter share the capability envelope", async () => {
   const input = { groupBy: "agency", measure: "current", fiscalYear: 2027, limit: 5 };

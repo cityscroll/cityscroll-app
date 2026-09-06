@@ -13,6 +13,28 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from paths import duckdb_path  # noqa: E402
 
 
+def read_projection_rows(payload: dict, directory: Path) -> list | None:
+    """Read the population through the index when the projection is sharded.
+
+    The published document names bounded shards instead of carrying the rows,
+    so the whole population is the concatenation of the shards it names, in the
+    order it names them.
+    """
+    if isinstance(payload.get("rows"), list):
+        return payload["rows"]
+    shards = payload.get("shards")
+    if not isinstance(shards, list):
+        return None
+    rows: list = []
+    for descriptor in shards:
+        shard_path = directory / str(descriptor.get("path", ""))
+        shard = json.loads(shard_path.read_text(encoding="utf-8"))
+        if not isinstance(shard.get("rows"), list):
+            raise SystemExit(f"projection shard is missing rows[]: {shard_path}")
+        rows.extend(shard["rows"])
+    return rows
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--input", type=Path, default=Path("site/data/analytics_registered_contracts.json"))
@@ -23,7 +45,7 @@ def main() -> int:
     except ImportError as exc:
         raise SystemExit("duckdb Python package required. Use warehouse/.venv/bin/python.") from exc
     payload = json.loads(args.input.read_text(encoding="utf-8"))
-    rows = payload.get("rows")
+    rows = read_projection_rows(payload, args.input.parent)
     if not isinstance(rows, list):
         raise SystemExit("projection input must contain rows[]")
     ids = [row.get("prime_contract_id") for row in rows]

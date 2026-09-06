@@ -4,6 +4,7 @@ import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { buildAgencyFiscalContext, AGENCY_FISCAL_CONTEXT_URL } from "../site/agency_fiscal_context.mjs";
+import { readAnalyticalProjectionDocument } from "./lib/analytical_projection_io.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const OUTPUT = join(ROOT, "site", AGENCY_FISCAL_CONTEXT_URL);
@@ -20,7 +21,7 @@ export function build() {
   const fiscalRows = readJsonl(FISCAL_ROWS);
   const iboReceipt = readJson(IBO_RECEIPT);
   const fallbackFiscalContext = existsSync(FALLBACK_CONTEXT) ? readJson(FALLBACK_CONTEXT) : null;
-  const contractProjection = readJson(CONTRACTS);
+  const contractProjection = readAnalyticalProjectionDocument(CONTRACTS);
   const paymentProjection = readJson(PAYMENTS);
   return buildAgencyFiscalContext({
     fiscalRows,
