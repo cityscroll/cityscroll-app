@@ -10,7 +10,7 @@
   "data_revision": "0e958926826dadbd0ce9d5996687c821ec196220157b61e648a6d6e349b9405a",
   "registry_contracts_at_revision": 63,
   "source_rows_at_revision": 67,
-  "image_directory": ".artifacts/dh08/captures",
+  "image_directory": ".artifacts/source-state-parity/captures",
   "image_policy": "Capture images remain ignored and are not committed. Their SHA-256 values bind this textual manifest to the reviewed render.",
   "production_scope": "The before observation is live production evidence. These post-change captures are isolated render evidence and are not labeled as live.",
   "checks": {
