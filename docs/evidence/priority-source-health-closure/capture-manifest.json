@@ -5,7 +5,7 @@
   "captured_at": "2026-09-06T07:43:18Z",
   "route": "/data-sources",
   "revision_format": "git-object-id-prefix-12",
-  "revision": "98638604ff50",
+  "revision": "8ac92878bf20",
   "data_vintage": "priority-source closure and board scorecard at 2026-09-06T07:20:20.822Z; sources_hash cff542455ce8e3e6215425b6f1db840feff7d3481968911dd46aee5233ff7c20; no publisher refresh",
   "data_revision": "cff542455ce8e3e6215425b6f1db840feff7d3481968911dd46aee5233ff7c20",
   "image_directory": "docs/evidence/priority-source-health-closure/captures",
@@ -35,7 +35,7 @@
       ],
       "scripting": true,
       "route": "/desk.html",
-      "revision": "98638604ff50",
+      "revision": "8ac92878bf20",
       "data_vintage": "priority-source closure and board scorecard at 2026-09-06T07:20:20.822Z; sources_hash cff542455ce8e3e6215425b6f1db840feff7d3481968911dd46aee5233ff7c20; no publisher refresh",
       "assertion": "Active-source observability is visible with seven priority families; axe_passes=True no_page_overflow=True zoom_overflow=True",
       "journey_state": {
@@ -88,7 +88,7 @@
       ],
       "scripting": true,
       "route": "/desk.html",
-      "revision": "98638604ff50",
+      "revision": "8ac92878bf20",
       "data_vintage": "priority-source closure and board scorecard at 2026-09-06T07:20:20.822Z; sources_hash cff542455ce8e3e6215425b6f1db840feff7d3481968911dd46aee5233ff7c20; no publisher refresh",
       "assertion": "Active-source observability is visible with seven priority families; axe_passes=True no_page_overflow=True zoom_overflow=True",
       "journey_state": {
@@ -141,7 +141,7 @@
       ],
       "scripting": false,
       "route": "/desk.html",
-      "revision": "98638604ff50",
+      "revision": "8ac92878bf20",
       "data_vintage": "priority-source closure and board scorecard at 2026-09-06T07:20:20.822Z; sources_hash cff542455ce8e3e6215425b6f1db840feff7d3481968911dd46aee5233ff7c20; no publisher refresh",
       "assertion": "priority families remain in the static markup without JavaScript; axe_passes=True no_page_overflow=True zoom_overflow=True",
       "journey_state": {
@@ -194,7 +194,7 @@
       ],
       "scripting": false,
       "route": "/desk.html",
-      "revision": "98638604ff50",
+      "revision": "8ac92878bf20",
       "data_vintage": "priority-source closure and board scorecard at 2026-09-06T07:20:20.822Z; sources_hash cff542455ce8e3e6215425b6f1db840feff7d3481968911dd46aee5233ff7c20; no publisher refresh",
       "assertion": "priority families remain in the static markup without JavaScript; axe_passes=True no_page_overflow=True zoom_overflow=True",
       "journey_state": {
