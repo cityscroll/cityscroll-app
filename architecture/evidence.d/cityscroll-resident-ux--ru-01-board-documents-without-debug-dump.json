@@ -14,6 +14,10 @@
       "path": "test/resident_board_document_projection.test.mjs"
     },
     {
+      "id": "board-documents-without-debug-dump-capture",
+      "path": "docs/evidence/board-documents-without-debug-dump/capture-manifest.json"
+    },
+    {
       "id": "cx-01-result-group-navigation-principle",
       "path": "docs/design-principles-contextual-ux.md"
     }

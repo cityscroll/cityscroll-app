@@ -27,7 +27,7 @@
     },
     {
       "id": "council-matter-watch-tests",
-      "path": "worker/test/matter_followthrough_mf_05.test.mjs"
+      "path": "worker/test/council_matter_following_scope.test.mjs"
     },
     {
       "id": "council-matter-watch-boundary-tests",
