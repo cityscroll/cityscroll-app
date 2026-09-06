@@ -93,7 +93,7 @@ def capture(browser, tree: Path, state: str, width: int, height: int, label: str
 def main() -> None:
     OUTPUT.mkdir(parents=True, exist_ok=True)
     records = []
-    with tempfile.TemporaryDirectory(prefix="cityscroll-community-boards-before-") as temp:
+    with tempfile.TemporaryDirectory(prefix="community-boards-before-") as temp:
         before_tree = Path(temp)
         revision_snapshot("HEAD", before_tree)
         with sync_playwright() as playwright:
