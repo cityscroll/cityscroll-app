@@ -10,6 +10,7 @@ site/data/following_procurement_suggestions.json
 site/data/institution_petition_procedures.json
 site/data/land_default_ulurp.json
 site/data/land_upcoming_hearings.json
+site/data/meeting_outcomes_snapshot.json
 site/data/mih_project_lookup.json
 site/data/money_resident_snapshot.json
 site/data/ocp_awards_warehouse_lookup.json

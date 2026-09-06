@@ -1,0 +1,37 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "diagnostic-card-producer",
+  "status": "implemented",
+  "fingerprint": "diagnostic-card-producer.v1",
+  "updated_at": "2026-09-06T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "diagnostic-card-producer",
+      "path": "tools/diagnostic_card_producer.py"
+    },
+    {
+      "id": "diagnostic-card-fitness",
+      "path": "tools/diagnostic_card_fitness.py"
+    },
+    {
+      "id": "diagnostic-card-producer-policy",
+      "path": "data/diagnostic-card-producer.v1.json"
+    },
+    {
+      "id": "diagnostic-card-producer-tests",
+      "path": "tests/test_diagnostic_card_producer.py"
+    },
+    {
+      "id": "diagnostic-card-producer-schedule",
+      "path": "ops/launchd/com.cityscroll.diagnostic-card-producer.plist.template"
+    },
+    {
+      "id": "diagnostic-card-producer-runner",
+      "path": "tools/run_diagnostic_card_producer.sh"
+    },
+    {
+      "id": "repair-queue-read-model",
+      "path": "tools/repair_queue.mjs"
+    }
+  ]
+}

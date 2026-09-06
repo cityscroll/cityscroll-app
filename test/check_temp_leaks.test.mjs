@@ -62,7 +62,7 @@ test("check_temp_leaks ignores known non-repository residue (Playwright scratch,
     const snapshot = await runChecker(["snapshot", "--out", snapshotPath], isolatedTmp);
     assert.equal(snapshot.status, 0, snapshot.stderr);
 
-    const ignoredNames = ["playwright-artifacts-abc123", "playwright_chromiumdev_profile-xyz", ".hidden-platform-bookkeeping"];
+    const ignoredNames = ["playwright-artifacts-abc123", "playwright_chromiumdev_profile-xyz", "node-compile-cache", ".hidden-platform-bookkeeping"];
     for (const name of ignoredNames) mkdirSync(join(isolatedTmp, name));
     const check = await runChecker(["check", "--in", snapshotPath, "--label", "ignored-fixture"], isolatedTmp);
     assert.equal(check.status, 0, check.stderr);

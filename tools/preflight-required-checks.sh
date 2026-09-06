@@ -318,6 +318,7 @@ node tools/check_temp_leaks.mjs snapshot --out "$TEMP_LEAK_UNIT_SNAPSHOT"
 
 CS10_SKIP_LIVE_CANARY=true run_and_fail node --test test/*.test.mjs
 run_and_fail node --test test/contract/*.test.mjs
+run_and_fail python3 -m unittest tests.test_diagnostic_card_producer
 
 run_banner "Unit tests (site + worker)" "Worker dependencies + worker unit tests" \
   "node --test (inside worker/)"

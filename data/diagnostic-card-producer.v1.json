@@ -1,0 +1,20 @@
+{
+  "schema": "cityscroll.diagnostic_card_producer.v1",
+  "consumer": "tools/diagnostic_card_producer.py",
+  "acceptance_test": "python3 -m unittest tests.test_diagnostic_card_producer",
+  "interval_seconds": 3600,
+  "batch_size": 20,
+  "retry_limit": 3,
+  "kill_switch_env": "CITYSCROLL_DIAGNOSTIC_CARD_PRODUCER",
+  "kill_switch_off_values": ["off", "0", "false", "disabled"],
+  "kill_switch_file": ".diagnostic-card-producer.off",
+  "queue_schema": "cityscroll.repair_queue.v1",
+  "lineage_schema": "cityscroll.diagnostic_card_lineage.v1",
+  "receipt_schema": "cityscroll.diagnostic_card_producer_receipt.v1",
+  "work_states": ["repair-candidate", "regressed"],
+  "skip_states": ["expected-absence", "source-policy-limitation"],
+  "card_spec": "docs/diagnostic-repair-cards.md#repair-card-contract",
+  "verify": "node --test test/desk-diagnostic-queue.test.mjs",
+  "public_path_prefixes": ["site/", "_site/"],
+  "note": "Scheduled producer over the authenticated Desk repair queue. It upserts one engineering candidate card per repair fingerprint, never mutates public resident copy, and treats a failed collection as unavailable rather than an all-clear."
+}
