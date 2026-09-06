@@ -323,14 +323,56 @@ async function pendingOutboxCount(stateDir) {
 
 export const SCHEDULER_WORKFLOW = "com.cityscroll.external-schedules";
 
+/**
+ * Resolve one credential the same way for every secret the cycle needs: an
+ * inline export wins, then a mode-0600 file named by the job definition, whose
+ * contents are trimmed. launchd starts an agent with no login shell, so a file
+ * path is the only way a credential reaches the cycle without being written
+ * into a checked-in trigger.
+ *
+ * A named file that cannot be read, or that holds nothing, resolves to no
+ * credential and logs one line naming the variable. The caller then reports a
+ * named degradation instead of the cycle dying on an unreadable path.
+ */
+export function resolveCredential({ inlineVars = [], fileVars = [], env = process.env, log = console.error } = {}) {
+  for (const name of inlineVars) {
+    const value = String(env[name] || "").trim();
+    if (value) return value;
+  }
+  for (const name of fileVars) {
+    const path = env[name];
+    if (!path) continue;
+    let value = null;
+    try {
+      value = readFileSync(path, "utf8").trim();
+    } catch (error) {
+      log(`${name} names a credential file that could not be read (${error?.code || error?.message || "unknown error"}); continuing without it`);
+      return null;
+    }
+    if (value) return value;
+    log(`${name} names a credential file that is empty; continuing without it`);
+    return null;
+  }
+  return null;
+}
+
 function adminKey() {
-  const inline = process.env.CITYSCROLL_ADMIN_KEY || process.env.ADMIN_KEY;
-  if (inline) return inline;
-  // launchd starts an agent with no login shell, so the credential arrives as a
-  // mode-0600 file named by the job definition rather than an inherited export.
-  const file = process.env.CITYSCROLL_ADMIN_KEY_FILE;
-  if (!file) return null;
-  try { return readFileSync(file, "utf8").trim() || null; } catch { return null; }
+  return resolveCredential({
+    inlineVars: ["CITYSCROLL_ADMIN_KEY", "ADMIN_KEY"],
+    fileVars: ["CITYSCROLL_ADMIN_KEY_FILE"],
+  });
+}
+
+/**
+ * The delivery identity for the issue loop: a dedicated account's fine-grained
+ * token with issue read/write on this repository only. It arrives by the same
+ * file route as the admin key, so no secret is written into the trigger.
+ */
+export function githubToken() {
+  return resolveCredential({
+    inlineVars: ["GH_TOKEN", "GITHUB_TOKEN"],
+    fileVars: ["GH_TOKEN_FILE", "GITHUB_TOKEN_FILE"],
+  });
 }
 
 /**
@@ -501,7 +543,7 @@ async function persistHeartbeatReceipt(stateDir, receipt) {
  * evidence that the write landed; the round-tripped run_id is.
  */
 export async function publishHeartbeat(stateDir, now, dueJobs, options = {}) {
-  const { fetchImpl = fetch, cycleResult = "succeeded" } = options;
+  const { fetchImpl = fetch, cycleResult = "succeeded", outboxDelivery = null } = options;
   const url = process.env.CITYSCROLL_SCHEDULER_HEARTBEAT_URL
     || "https://api.cityscroll.org/admin/reliability/scheduler";
   const runId = options.runId || schedulerRunId(now);
@@ -515,6 +557,10 @@ export async function publishHeartbeat(stateDir, now, dueJobs, options = {}) {
     observed_at: now.toISOString(),
     run_key: runKey(now),
     due_jobs: dueJobs,
+    // Whether this cycle could deliver its outbox at all. Without it, a cycle
+    // with no delivery identity is indistinguishable from one with nothing to
+    // deliver: pending intents simply sit with attempts 0 and no error.
+    outbox_delivery: outboxDelivery,
   };
   const key = adminKey();
   // An unpublishable heartbeat is a failed cycle, not a quiet one: the runner
@@ -583,7 +629,14 @@ export async function publishHeartbeat(stateDir, now, dueJobs, options = {}) {
 async function main() {
   const jobs = await loadJobs();
   const stateDir = arg("--state-dir") || process.env.CROL_EXTERNAL_SCHEDULE_STATE_DIR || join(ROOT, ".external-schedule-state");
-  const github = createGitHubClient({ token: process.env.GH_TOKEN || process.env.GITHUB_TOKEN, owner: "cityscroll", repo: "cityscroll-app", apiBase: process.env.GITHUB_API_URL });
+  const github = createGitHubClient({ token: githubToken(), owner: "cityscroll", repo: "cityscroll-app", apiBase: process.env.GITHUB_API_URL });
+  // Delivery without an identity used to be silent. It is now stated once per
+  // cycle, in the log and on the heartbeat, so pending intents are visibly
+  // undeliverable rather than merely unattempted.
+  if (!github) {
+    console.error("outbox delivery is offline: no GitHub token is configured; set GH_TOKEN_FILE to a mode-0600 file holding the delivery identity's token");
+  }
+  const outboxDelivery = github ? "online" : "offline";
   const replayBefore = await replayOutbox({ stateDir, github });
   const selected = arg("--job");
   const now = new Date();
@@ -601,6 +654,7 @@ async function main() {
   const degraded = summaries.some((summary) => summary.status !== "healthy");
   const heartbeat = await publishHeartbeat(stateDir, new Date(), due.map((job) => job.id), {
     cycleResult: degraded ? "degraded" : "succeeded",
+    outboxDelivery,
   });
   // Repair runs after liveness is proven, on the leases this cycle was granted.
   // Outcomes are reported on the next heartbeat, so a repair never becomes mail

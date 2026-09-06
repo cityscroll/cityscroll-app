@@ -24,6 +24,10 @@
     <string>__CROL_EXTERNAL_SCHEDULE_STATE_DIR__</string>
     <key>CITYSCROLL_ADMIN_KEY_FILE</key>
     <string>__CITYSCROLL_ADMIN_KEY_FILE__</string>
+    <!-- The issue loop's delivery identity, read from a mode-0600 file the
+         same way as the admin credential. Only the path appears here. -->
+    <key>GH_TOKEN_FILE</key>
+    <string>__GH_TOKEN_FILE__</string>
     <key>CITYSCROLL_SCHEDULER_HEARTBEAT_URL</key>
     <string>https://api.cityscroll.org/admin/reliability/scheduler</string>
     <!-- The bounded debug/fix task the cycle runs for one leased repair item.

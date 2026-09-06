@@ -174,10 +174,24 @@ export function createGitHubClient({ token, owner, repo, apiBase = "https://api.
   };
 }
 
-export async function replayOutbox({ stateDir, github }) {
-  if (!github) return { status: "offline", delivered: 0, pending: 0, errors: [] };
+/** Count the intents still waiting for delivery, so an offline replay reports
+ * how much is undeliverable rather than reporting zero of everything. */
+async function pendingIntentCount(outboxDir) {
+  let pending = 0;
+  for (const name of (await readdir(outboxDir)).filter((item) => item.endsWith(".json"))) {
+    const event = await readJson(join(outboxDir, name));
+    if (event && event.status !== "delivered") pending += 1;
+  }
+  return pending;
+}
+
+export async function replayOutbox({ stateDir, github, offlineReason = "github-token-missing" }) {
   const outboxDir = join(stateDir, "outbox");
   await mkdir(outboxDir, { recursive: true });
+  // No delivery identity is a stated condition, not an empty run: the reason
+  // and the backlog travel with the summary so the cycle's own output says why
+  // nothing was delivered.
+  if (!github) return { status: "offline", reason: offlineReason, delivered: 0, pending: await pendingIntentCount(outboxDir), errors: [] };
   const names = (await readdir(outboxDir)).filter((name) => name.endsWith(".json")).sort();
   const summary = { status: "ok", delivered: 0, pending: 0, errors: [] };
   for (const name of names) {
