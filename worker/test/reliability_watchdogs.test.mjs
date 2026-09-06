@@ -14,6 +14,7 @@ import {
   recordInboundEmailReceipt,
   recordOutboundOpsSendReceipt,
   recordSchedulerHeartbeat,
+  recordDeskPublicationHeartbeat,
   canonicalOpsFailureSignature,
   emitOpsAlertOnce,
   resolveMailCanaryTarget,
@@ -127,16 +128,41 @@ const CYCLE = Object.freeze({
   result: "succeeded",
 });
 
+const PUBLICATION = Object.freeze({
+  workflow: "Deploy Cloudflare Pages",
+  run_id: "33968898164",
+  source_revision: "dd4b708b6fe39bf8b2ea635ef3d4f493c4751ace",
+  result: "succeeded",
+  destination: "https://desk.cityscroll.org/data-sources",
+  evidence_revision: "rev-current",
+});
+
 test("scheduler watchdog stays quiet for a recent empty-outbox heartbeat", async () => {
   const ALERT_STATE = kv();
   const now = new Date("2026-08-25T14:00:00Z");
   const write = await recordSchedulerHeartbeat({ ALERT_STATE }, { ...CYCLE, pending_outbox: 0 }, new Date("2026-08-25T13:30:00Z"));
   assert.equal(write.accepted, true);
+  assert.equal((await recordDeskPublicationHeartbeat({ ALERT_STATE }, PUBLICATION, new Date("2026-08-25T10:15:00Z"))).accepted, true);
   const result = await schedulerWatchdogSnapshot({ ALERT_STATE }, { now });
   assert.equal(result.ok, true);
   assert.equal(result.scheduler_ok, true);
+  assert.equal(result.publication_ok, true);
   assert.equal(result.heartbeat.workflow, CYCLE.workflow);
   assert.equal(result.heartbeat.run_id, CYCLE.run_id);
+});
+
+test("desk publication watchdog names frozen-publication and keeps last success after a rejected write", async () => {
+  const ALERT_STATE = kv();
+  const written = await recordDeskPublicationHeartbeat({ ALERT_STATE }, PUBLICATION, new Date("2026-08-07T15:11:15Z"));
+  assert.equal(written.accepted, true);
+  const rejected = await recordDeskPublicationHeartbeat({ ALERT_STATE }, { run_id: "generic" }, new Date("2026-09-06T12:00:00Z"));
+  assert.equal(rejected.accepted, false);
+  const now = new Date("2026-09-06T12:00:00Z");
+  const result = await schedulerWatchdogSnapshot({ ALERT_STATE }, { now });
+  assert.equal(result.publication_ok, false);
+  assert.equal(result.failing_stage, "missing-trigger");
+  assert.match(result.publication_findings.join("; "), /missed|missing/);
+  assert.equal(result.publication_heartbeat.last_successful_publication_at, "2026-08-07T15:11:15.000Z");
 });
 
 test("scheduler watchdog fires on expired heartbeat and pending outbox", async () => {

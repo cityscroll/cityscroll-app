@@ -94,7 +94,7 @@ test("committed fixture matches builder (desk CI pin)", () => {
 
 test("performance discovery advertises the cross-repository Desk consumer handoff", () => {
   const doc = buildOpsContract({ generated_at: "2026-08-01T00:00:00.000Z" });
-  assert.equal(doc.version, "1.15.0", "the guarded owed-cancel writer is an additive admin route on an otherwise unchanged contract");
+  assert.equal(doc.version, "1.16.0");
   assert.equal(doc.signup_lifecycle.contract, "cityscroll.signup_lifecycle.v1");
   assert.equal(doc.signup_lifecycle.endpoint, "/admin/subs");
   assert.deepEqual(doc.signup_lifecycle.states.map((state) => state.id), [

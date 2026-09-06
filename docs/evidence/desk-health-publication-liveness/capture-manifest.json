@@ -1,0 +1,119 @@
+{
+  "schema": "cityscroll.desk_publication_cycle_render_manifest.v1",
+  "evidence_class": "isolated-consumer-render",
+  "capture_mode": "headless-playwright-loopback-static-render",
+  "captured_at": "2026-09-06T05:52:26Z",
+  "route": "/data-sources",
+  "revision": "5600c778fe76",
+  "data_vintage": "2026-09-05",
+  "data_revision": "b94236b6253641c3b6c3d6f25492716e5366e71e785cb4e1471d56dc287dd290",
+  "image_directory": ".artifacts/desk-health-publication-liveness/captures",
+  "image_policy": "Capture images remain ignored and are not committed. Their SHA-256 values bind this textual manifest to the reviewed render.",
+  "production_scope": "These captures are isolated render evidence and are not labeled as live.",
+  "checks": {
+    "publication_clocks_visible": true,
+    "keyboard_recovery_control": true,
+    "zoom_200_percent": true,
+    "new_source_target_minimum_css_pixels": 44,
+    "no_horizontal_page_overflow": true
+  },
+  "captures": [
+    {
+      "name": "desk-home-scripted-390x844.png",
+      "viewport": [
+        390,
+        844
+      ],
+      "scripting": true,
+      "isolated": false,
+      "assertion": "Publication clocks are visible; the recovery control is keyboard-reachable and at least 44 CSS pixels; 200% zoom and the page viewport do not overflow horizontally.",
+      "axe": {
+        "violations_total": 1,
+        "critical_or_serious": [],
+        "passes": true
+      },
+      "render_content_sha256": "3fb638fd8b71925fb070cf86c32ba3430e7cceb3785d80480a686b63352668ba"
+    },
+    {
+      "name": "desk-home-no-script-390x844.png",
+      "viewport": [
+        390,
+        844
+      ],
+      "scripting": false,
+      "isolated": false,
+      "assertion": "Publication clocks remain visible without JavaScript and the page viewport does not overflow.",
+      "axe": {
+        "violations_total": 0,
+        "critical_or_serious": [],
+        "passes": true
+      },
+      "render_content_sha256": "9354f529ee68bdcfbd0490e04d83cf5713d31ff8ea2c37c27d686eba1192c8d8"
+    },
+    {
+      "name": "desk-home-scripted-1440x900.png",
+      "viewport": [
+        1440,
+        900
+      ],
+      "scripting": true,
+      "isolated": false,
+      "assertion": "Publication clocks are visible; the recovery control is keyboard-reachable and at least 44 CSS pixels; 200% zoom and the page viewport do not overflow horizontally.",
+      "axe": {
+        "violations_total": 1,
+        "critical_or_serious": [],
+        "passes": true
+      },
+      "render_content_sha256": "2e4ea5064fc04242991ad75b329a2c861fbff6239e1926bba08bf1bbfcea13c0"
+    },
+    {
+      "name": "desk-home-no-script-1440x900.png",
+      "viewport": [
+        1440,
+        900
+      ],
+      "scripting": false,
+      "isolated": false,
+      "assertion": "Publication clocks remain visible without JavaScript and the page viewport does not overflow.",
+      "axe": {
+        "violations_total": 0,
+        "critical_or_serious": [],
+        "passes": true
+      },
+      "render_content_sha256": "528f22f2d6d3f4ec047a821fb562d306f6dd55b12ce0f0a9f1390510a3df9660"
+    },
+    {
+      "name": "publication-failed-scripted-390x844.png",
+      "viewport": [
+        390,
+        844
+      ],
+      "scripting": true,
+      "isolated": true,
+      "assertion": "Publication clocks are visible; the recovery control is keyboard-reachable and at least 44 CSS pixels; 200% zoom and the page viewport do not overflow horizontally.",
+      "axe": {
+        "violations_total": 1,
+        "critical_or_serious": [],
+        "passes": true
+      },
+      "render_content_sha256": "42e0270b0550cfdf674ee81011968ed981e287af9da2f967149deb3dcf3415e1"
+    },
+    {
+      "name": "publication-failed-scripted-1440x900.png",
+      "viewport": [
+        1440,
+        900
+      ],
+      "scripting": true,
+      "isolated": true,
+      "assertion": "Publication clocks are visible; the recovery control is keyboard-reachable and at least 44 CSS pixels; 200% zoom and the page viewport do not overflow horizontally.",
+      "axe": {
+        "violations_total": 1,
+        "critical_or_serious": [],
+        "passes": true
+      },
+      "render_content_sha256": "6be7dfd8a162aaf76f21ae689ff3d04b763e8e372debcf68179bf3d1786a413e"
+    }
+  ],
+  "failures": []
+}

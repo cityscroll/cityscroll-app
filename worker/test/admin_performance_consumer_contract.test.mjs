@@ -61,7 +61,7 @@ test("ops-contract discovery pins the same fixture bundle without changing the r
   assert.deepEqual(generated, committedOpsContract);
   // The document version moves as additive sections land; what this test pins is
   // that the performance response schema and its Desk fixture bundle do not.
-  assert.equal(OPS_CONTRACT_VERSION, "1.15.0");
+  assert.equal(OPS_CONTRACT_VERSION, "1.16.0");
   assert.equal(generated.performance.version, "1.0.0");
   assert.equal(generated.performance.consumer_handoff.manifest, MANIFEST_PATH);
   assert.equal(generated.performance.consumer_handoff.reference_response, manifest.reference_response.path);

@@ -29,6 +29,15 @@ const CYCLE = Object.freeze({
   due_jobs: ["digest-shadow-monitor"],
 });
 
+const PUBLICATION = Object.freeze({
+  cycle: "desk-publication",
+  workflow: "Deploy Cloudflare Pages",
+  run_id: "33968898164",
+  source_revision: "dd4b708b6fe39bf8b2ea635ef3d4f493c4751ace",
+  result: "succeeded",
+  destination: "https://desk.cityscroll.org/data-sources",
+});
+
 function store(seed = {}) {
   const map = new Map(Object.entries(seed));
   return {
@@ -75,6 +84,7 @@ test("a completed scheduled cycle reads ok from the heartbeat it wrote and verif
   try {
     const write = await kit.post(CYCLE, new Date("2026-09-02T00:45:00Z"));
     assert.equal(write.status, 200);
+    assert.equal((await kit.post(PUBLICATION, new Date("2026-09-02T00:45:00Z"))).status, 200);
     const written = (await write.json()).heartbeat;
     assert.equal(written.run_id, CYCLE.run_id);
 
@@ -97,8 +107,8 @@ test("the 13-alert null specimen alarms with concrete workflow, run, revision an
     const response = await kit.get(new Date("2026-09-01T10:28:00Z"));
     assert.equal(response.status, 503);
     assert.deepEqual((await response.json()).scheduler_findings, ["scheduler heartbeat missing"]);
-    assert.equal(kit.sent.length, 1);
-    const paragraph = kit.sent[0].html;
+    assert.equal(kit.sent.length, 2);
+    const paragraph = kit.sent.find((item) => /scheduler-heartbeat broke/.test(item.html)).html;
     assert.match(paragraph, /scheduler-heartbeat broke: scheduler heartbeat missing/);
     assert.match(paragraph, /Workflow: Reliability watchdogs\./);
     assert.match(paragraph, /Source revision: dd4b708b6fe39bf8b2ea635ef3d4f493c4751ace\./);
@@ -219,6 +229,7 @@ test("the heartbeat survives a restart and a deliberate pause re-alerts within o
   const kit = harness();
   try {
     await kit.post(CYCLE, new Date("2026-09-02T00:45:00Z"));
+    await kit.post(PUBLICATION, new Date("2026-09-02T00:45:00Z"));
     assert.equal((await kit.get(new Date("2026-09-02T00:50:00Z"))).status, 200);
 
     // Restart: a new binding over the same store still reads the receipt.

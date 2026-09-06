@@ -37,6 +37,14 @@ test("the authenticated graph stays inside the deployed additive compatibility e
   const queueExtension = contract.extensions.repair_queue;
   assert.equal(queueExtension.version, 1);
   assert.equal(graph.extensions.repair_queue, queueExtension.version);
+  const publication = contract.extensions.publication_cycle;
+  assert.equal(publication.version, 1);
+  assert.equal(graph.extensions.publication_cycle, publication.version);
+  assert.ok(graph.publication_cycle);
+  assert.ok(graph.publication_cycle.clocks.last_monitor_attempt);
+  assert.ok(graph.publication_cycle.clocks.last_successful_observation);
+  assert.ok("evidence_revision" in graph.publication_cycle.clocks);
+  assert.ok(graph.publication_cycle.clocks.last_successful_desk_publication);
   assert.equal(graph.repair_queue.schema, queueExtension.queue_schema);
   assert.equal(graph.repair_queue.visibility, "private");
   assert.deepEqual(graph.repair_queue.states, queueExtension.states);

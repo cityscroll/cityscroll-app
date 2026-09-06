@@ -1,0 +1,62 @@
+{
+  "schema": "cityscroll.desk_publication_production_observation.v1",
+  "evidence_class": "live-production-read",
+  "isolated": false,
+  "observed_at": "2026-09-06T05:07:06Z",
+  "observer": {
+    "workflow": "Reliability watchdogs",
+    "schedule": "existing GitHub Actions reliability-watchdogs.yml",
+    "endpoint": "https://api.cityscroll.org/admin/reliability/scheduler"
+  },
+  "consecutive_unattended_observer_cycles": [
+    {
+      "run_id": "34000727066",
+      "event": "schedule",
+      "conclusion": "success",
+      "created_at": "2026-09-06T00:13:35Z",
+      "head_sha": "f25a1c826cd1901e2527ee65a7392e16c8287800",
+      "url": "https://github.com/cityscroll/cityscroll-app/actions/runs/34000727066"
+    },
+    {
+      "run_id": "34013176351",
+      "event": "schedule",
+      "conclusion": "success",
+      "created_at": "2026-09-06T05:07:02Z",
+      "head_sha": "320c011ee06d9aa0fa00845b587bb47d5095aa13",
+      "url": "https://github.com/cityscroll/cityscroll-app/actions/runs/34013176351"
+    }
+  ],
+  "publication_dependency_and_backlog": {
+    "scheduled_pages_publication": {
+      "workflow": "Deploy Cloudflare Pages",
+      "last_successful_scheduled_run": {
+        "run_id": "31191346599",
+        "created_at": "2026-08-07T15:11:15Z",
+        "conclusion": "success",
+        "url": "https://github.com/cityscroll/cityscroll-app/actions/runs/31191346599"
+      },
+      "last_scheduled_attempt": {
+        "run_id": "33968898164",
+        "created_at": "2026-09-05T13:26:21Z",
+        "conclusion": "failure",
+        "failing_job": "Deploy public Cloudflare Pages origin",
+        "named_stage": "frozen-publication",
+        "url": "https://github.com/cityscroll/cityscroll-app/actions/runs/33968898164"
+      }
+    },
+    "unrelated_successful_push_deploys": "Recent successful main-branch Pages deploys are application-code deploys. They are not Desk evidence-publication cycles.",
+    "dataset_refresh_pull_requests": {
+      "workflow": "First-class dataset refresh",
+      "observed_runs": [],
+      "role": "backlog-only",
+      "note": "No observed runs of this workflow. Missing that scheduler input is not proof the Pages collector is stopped. Opening a pull request would still not be successful Desk publication."
+    },
+    "private_destination": "https://desk.cityscroll.org/data-sources"
+  },
+  "watchdog_read": {
+    "run_id": "34013176351",
+    "http_ok": true,
+    "alert": null,
+    "note": "The independent observer completed two consecutive unattended scheduled cycles. This read is current production evidence of that observer. Desk publication heartbeats are not yet present on the deployed path; that absence is the frozen-publication condition, not a newly minted timestamp."
+  }
+}

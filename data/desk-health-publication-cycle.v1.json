@@ -1,0 +1,60 @@
+{
+  "schema": "cityscroll.desk_health_publication_cycle.v1",
+  "kind": "operator-service-budgets",
+  "distinct_from": "publisher-freshness",
+  "notes": "These windows govern CityScroll-controlled monitoring and private Desk publication. They are not publisher freshness, serving age, or source-health Delayed thresholds. Opening a pull request is backlog, not successful publication.",
+  "budgets": {
+    "monitor_interval_hours": 24,
+    "missed_monitor_grace_hours": 2,
+    "publication_target_hours_after_completed_cycle": 2,
+    "reuse_faster_existing_schedules": true
+  },
+  "installed_trigger": {
+    "collection_and_graph": {
+      "workflow_file": ".github/workflows/deploy-cloudflare-pages.yml",
+      "workflow": "Deploy Cloudflare Pages",
+      "schedule": "15 10 * * *",
+      "also_runs_on": ["push to main"],
+      "identity": "github-actions:deploy-cloudflare-pages"
+    },
+    "independent_watchdog": {
+      "workflow_file": ".github/workflows/reliability-watchdogs.yml",
+      "workflow": "Reliability watchdogs",
+      "schedule": "50 * * * *",
+      "identity": "github-actions:reliability-watchdogs",
+      "endpoint": "https://api.cityscroll.org/admin/reliability/scheduler"
+    },
+    "source_freshness": {
+      "job_id": "source-freshness-watchdog",
+      "schedule": "30 10 * * *",
+      "runner": "source-freshness",
+      "trigger": "com.cityscroll.external-schedules"
+    },
+    "dataset_refresh_pull_requests": {
+      "workflow_file": ".github/workflows/first-class-refresh.yml",
+      "workflow": "First-class dataset refresh",
+      "schedule": "40 6 * * *",
+      "role": "backlog-only",
+      "note": "A refresh pull request is a publication dependency, never a successful Desk publication."
+    }
+  },
+  "destination": {
+    "operator_visible": "https://desk.cityscroll.org/data-sources",
+    "artifact": "docs/data-source-graph.json",
+    "handoff": "data-source-graph-dir from the existing Pages build, staged as a named workflow artifact for the authenticated consumer"
+  },
+  "publication_dependency": "The authenticated consumer reads the generated graph staged by the existing scheduled Pages build. Dataset-refresh pull requests remain backlog until a completed evidence cycle is published to that destination.",
+  "clocks": [
+    "last_monitor_attempt",
+    "last_successful_observation",
+    "evidence_revision",
+    "last_successful_desk_publication"
+  ],
+  "failing_stages": [
+    "missing-trigger",
+    "rejected-heartbeat",
+    "collector-failure",
+    "frozen-publication"
+  ],
+  "acceptance_test": "test/desk-health-publication-cycle.test.mjs"
+}

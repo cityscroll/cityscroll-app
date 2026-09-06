@@ -16,6 +16,11 @@ import {
   buildSourceHealthObservations,
   loadSourceHealthInputs,
 } from "./source_health_observations.mjs";
+import {
+  evaluatePublicationCycle,
+  independentWatchdogFinding,
+  loadPublicationCycleContract,
+} from "./desk_health_publication_cycle.mjs";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const JOBS_PATH = join(ROOT, "tools", "external_schedule_jobs.json");
@@ -177,13 +182,36 @@ async function runFreshnessWatchdog(job, context) {
       reasons: row.freshness_watchdog.reason_codes,
     }));
   const healthy = stale.length === 0;
+  const publicationContract = loadPublicationCycleContract();
+  const publicationCycle = evaluatePublicationCycle({
+    now: context.now.toISOString(),
+    trigger: { installed: true },
+    monitor_attempt: { at: context.now.toISOString(), basis: "source-freshness-watchdog" },
+    collection: { status: "succeeded", completed_at: projection.generated_at },
+    publication: { status: "unknown" },
+    isolated: false,
+  }, publicationContract);
+  const publicationFinding = independentWatchdogFinding(publicationCycle, {
+    now: context.now.toISOString(),
+    isolated: false,
+    observer: publicationContract.installed_trigger.independent_watchdog,
+  });
   const result = {
     observed_at: context.now.toISOString(),
-    status: healthy ? "healthy" : "degraded",
+    status: healthy && publicationFinding.ok ? "healthy" : "degraded",
     stale_sources: stale,
-    body: healthy
-      ? "Source evidence freshness watchdog is current."
-      : `Source evidence freshness is STALE for ${stale.length} source contract(s).`,
+    publication_cycle: {
+      failing_stage: publicationFinding.failing_stage,
+      findings: publicationFinding.findings,
+    },
+    body: [
+      healthy
+        ? "Source evidence freshness watchdog is current."
+        : `Source evidence freshness is STALE for ${stale.length} source contract(s).`,
+      publicationFinding.ok
+        ? "Desk publication cycle is current."
+        : `Desk publication cycle failing_stage=${publicationFinding.failing_stage || "unknown"}: ${publicationFinding.findings.join("; ")}`,
+    ].join(" "),
   };
   return {
     result,

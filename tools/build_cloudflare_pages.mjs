@@ -153,6 +153,14 @@ if (existsSync(graphTool)) {
   runNode(sourceDir, "data_source_graph.mjs", ["--output-dir", docsDir]);
   runNode(sourceDir, "data_source_graph.mjs", ["--check", "--output-dir", docsDir]);
   appendOutput("data-source-graph-dir", docsDir);
+  const cycleReceipt = join(sourceDir, ".artifacts", "desk-health-publication-cycle.json");
+  runNode(sourceDir, "desk_health_publication_cycle.mjs", [
+    "--from-graph", join(docsDir, "data-source-graph.json"),
+    "--write", cycleReceipt,
+    "--run-id", process.env.GITHUB_RUN_ID || commitSha || "local-build",
+    "--result", "succeeded",
+  ]);
+  appendOutput("desk-health-publication-cycle", cycleReceipt);
 }
 
 const derivedArgs = ["--source-dir", sourceDir];
