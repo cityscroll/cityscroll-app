@@ -44,26 +44,30 @@ import {
   calendarDayAgendaFacts,
   renderCalendarDayAgendaButton,
 } from "./calendar_day_agenda.mjs";
+import { bindBrowseReturnContext } from "./browse_return_context.mjs";
 
 /**
  * The one mount for everything this shared renderer emits: the in-place event
- * preview (PX-01) and the crowded-day agenda (PX-02).
+ * preview, the crowded-day agenda, and the return-context that puts focus
+ * back on the originating event after an intentional full-page round trip.
  *
- * Both are delegated, idempotent and rerender-proof, and both reveal their
- * affordance only once the behaviour behind it is listening, so mounting them
- * together is what makes a container's offer consistent: a calendar never
- * shows a clipped title whose full reading is unreachable, nor an agenda
- * trigger with nothing behind it.
+ * Each half is delegated, idempotent and rerender-proof, and each reveals
+ * its affordance only once the behaviour behind it is listening, so mounting
+ * them together is what makes a container's offer consistent: a calendar
+ * never shows a clipped title whose full reading is unreachable, nor an
+ * agenda trigger with nothing behind it, nor a full-page link that drops
+ * the reader on the document body when they come back.
  *
  * This is deliberately the only mount this module exports. Every registered
  * host reaches its calendar behaviour through the shared renderer, so a host
- * that mounts the component at all inherits both halves and cannot reach for
+ * that mounts the component at all inherits every half and cannot reach for
  * one of them by mistake. It returns the preview controller, which is what
  * this module's callers have always been handed.
  */
 export function bindCompactMonthCalendar(root, options = {}) {
   const preview = bindCalendarEventPreview(root, options);
   bindCalendarDayAgenda(root, options);
+  bindBrowseReturnContext(root, options);
   return preview;
 }
 
@@ -378,7 +382,7 @@ function occurrenceItemHTML(occurrence, esc) {
   // rather than assumed internal, so a reader is never handed off to a
   // publisher by a link that looked like the ones beside it.
   const linkPresentation = affordanceHandoffPresentation({ href: occurrence.canonical_url, escape: esc });
-  return `<li class="${classes.join(" ")}">` +
+  return `<li class="${classes.join(" ")}" data-compact-month-occ-uid="${esc(occurrence.uid)}">` +
     `<a class="compact-month-occ-link" href="${esc(occurrence.canonical_url)}"${linkPresentation.attributes}>` +
     `<span class="compact-month-occ-kind">${esc(kindLabel)}</span>` +
     (timeLabel ? `<span class="compact-month-occ-time">${esc(timeLabel)}</span>` : "") +

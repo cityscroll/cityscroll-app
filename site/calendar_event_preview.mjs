@@ -343,6 +343,7 @@ export function renderCalendarEventPreviewBody(facts, options = {}) {
     detailStatusHTML +
     `<p class="calendar-event-preview-actions">` +
     `<a class="calendar-event-preview-open" data-calendar-event-preview-open href="${esc(facts.href)}"` +
+    ` data-browse-return-uid="${esc(facts.uid)}"` +
     `${openPresentation.attributes}>${esc(action)}` +
     `${openPresentation.glyph}${openPresentation.announcement}</a>` +
     source +
@@ -473,6 +474,19 @@ export function bindCalendarEventPreview(root, options = {}) {
     invoker = control || null;
     openUid = facts.uid;
     dialog.setAttribute(PREVIEW_DIALOG_OWNER_ATTRIBUTE, bindingId);
+    dialog.setAttribute("data-browse-return-uid", facts.uid);
+    if (control) {
+      const day = control.closest?.("[data-compact-month-day]")?.getAttribute("data-compact-month-day");
+      if (day) dialog.setAttribute("data-browse-return-day", day);
+      else dialog.removeAttribute("data-browse-return-day");
+      const nodes = scope.querySelectorAll?.("[data-calendar-event-preview-uid]") || [];
+      let appearance = 0;
+      for (const node of nodes) {
+        if (node === control) break;
+        if (node.getAttribute("data-calendar-event-preview-uid") === facts.uid) appearance += 1;
+      }
+      dialog.setAttribute("data-browse-return-appearance", String(appearance));
+    }
     setBody(facts);
     if (!dialog.open) {
       if (typeof dialog.showModal === "function") dialog.showModal();

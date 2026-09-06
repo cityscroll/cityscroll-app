@@ -233,6 +233,7 @@
 /site/browse.css
 /site/browse_concept_view.mjs
 /site/browse_list_contract.mjs
+/site/browse_return_context.mjs
 /site/browse_scoped_adapters.mjs
 /site/browse_surface_contracts.mjs
 /site/browse_view.mjs
