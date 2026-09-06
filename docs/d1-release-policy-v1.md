@@ -23,9 +23,13 @@ The ordinary path is the fenced, idempotent delta path:
 
 1. Capture the partition snapshot and produce a partitioned delta plan.
 2. Claim a generation fence before writing.
-3. Apply keyed delta-upsert batches with bounded retries, checking the fence at
-   every batch boundary. Replaying a completed batch is safe because its keys
-   and operation order are deterministic.
+3. Apply keyed delta-upsert batches with bounded retries. The fence is settled
+   before the first write and re-checked at every batch boundary. A run whose
+   generation is below the one the fence already holds is stale and is rejected
+   before any mutation becomes visible, leaving a receipt that names both the
+   stale generation and the current one; the current generation stays
+   publishable. Replaying a completed batch is safe because its keys and
+   operation order are deterministic.
 4. Run the bounded canary and stop on any finding, watermark mismatch, or
    failed representative query.
 5. Reconcile the accepted generation before it can serve. A finding or

@@ -39,6 +39,7 @@ const execFileAsync = promisify(execFile);
 export const D1_GENERATION_FENCE_KEY = "d1-publication:state:v1";
 export const D1_GENERATION_FENCE_AUDIT_KEY_PREFIX = "d1-publication:audit:v1:";
 export const D1_GENERATION_FENCE_AUDIT_SCHEMA = "cityscroll.d1-publication-generation-fence-audit.v1";
+export const D1_GENERATION_FENCE_OUTCOME_SCHEMA = "cityscroll.d1-publication-generation-fence-outcome.v1";
 export const DEFAULT_LEASE_MS = 10 * 60 * 1000;
 
 const STATUSES = new Set(["claimed", "accepted", "published", "abandoned"]);
@@ -328,31 +329,82 @@ export async function abandonGeneration({ store, ledger = null, generation, hold
 }
 
 /**
+ * A durable, machine-readable record of one fence decision at a write boundary.
+ *
+ * A rejection names both generations: the one the caller carries and the one the
+ * store already holds. That pair is the whole diagnosis of an out-of-order
+ * publication, so it belongs in the receipt rather than only in a log line.
+ */
+export function fenceOutcome({ result, reason, generation = null, holder = null, state = null, observedAt = Date.now() }) {
+  return {
+    schema: D1_GENERATION_FENCE_OUTCOME_SCHEMA,
+    result,
+    reason,
+    observed_at: isoTimestamp(observedAt),
+    generation,
+    holder,
+    stale_generation: result === "rejected" ? generation : null,
+    current_generation: state?.generation ?? null,
+    current_holder: state?.holder ?? null,
+    current_status: state?.status ?? null,
+  };
+}
+
+/**
  * Re-check and accept the fence immediately before the first D1 SQL command.
  * The CAS changes claimed -> accepted, so a newer accepted generation fences
  * every older holder at this exact boundary.
+ *
+ * The fence is monotonic by generation number, not merely by identity. A caller
+ * whose generation is below the one the store already holds is stale by
+ * definition and is rejected outright: no local ledger, lease, or retry can talk
+ * it back into a committable state. Every result carries an `outcome` record so
+ * the decision — and, on a rejection, both generation numbers — survives in the
+ * caller's receipt.
  */
 export async function checkGenerationCommit({ store, ledger = null, generation, holder, fingerprint, now = Date.now() }) {
   requireStore(store);
   const atMs = nowMs(now);
   const identity = { generation, holder, fingerprint };
   const remote = await readState(store);
+  const reject = (reason, state) => ({
+    result: "fenced",
+    committable: false,
+    fenced: true,
+    stale: reason === "stale_generation",
+    current_generation: state?.generation ?? null,
+    outcome: fenceOutcome({ result: "rejected", reason, generation, holder, state, observedAt: atMs }),
+    state,
+  });
+
+  if (remote && Number.isInteger(generation) && remote.generation > generation) {
+    return reject("stale_generation", remote);
+  }
   if (!identityMatches(remote, identity)) {
-    return { result: "fenced", committable: false, fenced: true, state: remote };
+    return reject("generation_not_held", remote);
   }
   const prior = monotonicPrior(remote, await readLedger(ledger), identity);
   if (!(prior.status === "claimed" || prior.status === "accepted") || !active(prior, atMs)) {
-    return { result: "expired", committable: false, fenced: true, state: prior };
+    return { ...reject("lease_expired", prior), result: "expired" };
   }
+  const accept = (state) => ({
+    result: "accepted",
+    committable: true,
+    fenced: false,
+    stale: false,
+    current_generation: state.generation,
+    outcome: fenceOutcome({ result: "accepted", reason: "generation_held", generation, holder, state, observedAt: atMs }),
+    state,
+  });
   if (prior.status === "accepted") {
     await writeLedger(ledger, prior);
-    return { result: "accepted", committable: true, fenced: false, state: prior };
+    return accept(prior);
   }
   const next = { ...prior, status: "accepted", accepted_at: isoTimestamp(atMs) };
   const accepted = await store.compareAndSet(prior.generation, next);
-  if (!accepted) return { result: "fenced", committable: false, fenced: true, state: await readState(store) };
+  if (!accepted) return reject("lost_race", await readState(store));
   await writeLedger(ledger, next);
-  return { result: "accepted", committable: true, fenced: false, state: next };
+  return accept(next);
 }
 
 /** Record successful SQL publication while preserving the accepted generation. */
