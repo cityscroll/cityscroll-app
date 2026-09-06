@@ -215,15 +215,19 @@ const STRINGS = {
     now_empty_events: "No upcoming events are published in this range.",
     // An `act_by` badge names the kind of window; the control beside it names the
     // next step. Keeping them separate is what stopped a card printing the same
-    // sentence twice.
-    now_window_response: "Response window",
-    now_window_application: "Application window",
-    now_window_comment: "Comment window",
-    now_window_objection: "Objection window",
-    now_window_request: "Request window",
-    // The listing form of the response guide. The full notice keeps its own
-    // "follow the steps below", which is true on the page that carries them.
-    now_action_response_instructions: "View response instructions",
+    // sentence twice. Both are built from short, common words rather than the
+    // shortest possible phrase: this surface is ratcheted on reading grade, and
+    // a two-word label made of long civic nouns reads harder than a four-word
+    // one made of plain ones.
+    now_window_response: "Open for bids",
+    now_window_application: "Open to apply",
+    now_window_comment: "Open for comment",
+    now_window_objection: "Open to object",
+    now_window_request: "Open to ask for help",
+    // The listing form of the response guide, worded to match the heading it
+    // actually opens ("How to respond"). The full notice keeps its own "follow
+    // the steps below", which is true on the page that carries them.
+    now_action_response_instructions: "See how to respond",
     // Task-first entry experiment (#task/can-i-bid, #task/what-will-change)
     task_can_i_bid_link: "Can I bid? (examples)",
     task_what_will_change_link: "What will change here? (examples)",

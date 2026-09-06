@@ -98,7 +98,7 @@ test("A1: a procurement card no longer promises response steps below a card that
   assert.doesNotMatch(card, /\bbelow\b/i, "nothing on a listing card is below it");
 
   const [control] = controlsOf(card);
-  assert.equal(control.label, "View response instructions");
+  assert.equal(control.label, "See how to respond");
   assert.equal(control.href, "/notices/bid-open", "the control names the page it actually opens");
 });
 
@@ -149,10 +149,10 @@ test("A2: kind badge, date label and control say three different things on every
 
 test("A2: the badge names the window and the card keeps its civic facts primary", () => {
   const cards = renderCards();
-  assert.equal(badgeOf(cards.get("money:bid-open")), "Response window");
-  assert.equal(badgeOf(cards.get("staffing:7001")), "Application window");
-  assert.equal(badgeOf(cards.get("rules:rule-comment:comment")), "Comment window");
-  assert.equal(badgeOf(cards.get("property:property-actions:objection_deadline:2026-08-06")), "Objection window");
+  assert.equal(badgeOf(cards.get("money:bid-open")), "Open for bids");
+  assert.equal(badgeOf(cards.get("staffing:7001")), "Open to apply");
+  assert.equal(badgeOf(cards.get("rules:rule-comment:comment")), "Open for comment");
+  assert.equal(badgeOf(cards.get("property:property-actions:objection_deadline:2026-08-06")), "Open to object");
 
   // A badge is never a raw implementation slug, whatever kind arrives.
   for (const card of cards.values()) {
@@ -247,7 +247,7 @@ test("failure: an unavailable source leaves every other card and its named actio
   degraded.rules = { status: "unavailable", reason: "timeout", rules: [] };
   box.innerHTML = "";
   renderNowSurface(buildNowSurface(degraded, { today: TODAY, compileActionRail: CrolActions.compileActionRail }));
-  assert.match(box.innerHTML, /View response instructions/);
+  assert.match(box.innerHTML, /See how to respond/);
   assert.match(box.innerHTML, /Browse OASys exams/);
   assert.doesNotMatch(box.innerHTML, /Loading/);
 });

@@ -235,7 +235,7 @@ def specimen_named_next_step(page, base, width, requests):
         "reported_card_next_step": reported["controls"][0]["name"],
         "reported_card_destination": reported["controls"][0]["href"],
         "reported_card_names_its_destination":
-            reported["controls"][0]["name"] == "View response instructions",
+            reported["controls"][0]["name"] == "See how to respond",
         "no_horizontal_overflow": no_horizontal_overflow(page),
     }, (
         f"at {width}px each of the {len(act_by)} act-by cards states its window kind, its exact "

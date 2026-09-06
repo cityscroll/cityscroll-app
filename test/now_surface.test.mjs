@@ -346,8 +346,8 @@ test("Now date labels describe the date and suppress a fact already named by the
     now_date_responses_due: "Responses due",
     now_date_comment_by: "Comment by",
     now_date_hearing: "Hearing",
-    now_window_response: "Response window",
-    now_window_comment: "Comment window",
+    now_window_response: "Open for bids",
+    now_window_comment: "Open for comment",
     disposition_stage_hearing: "Hearing",
   };
   globalThis.t = (key) => strings[key] || key;

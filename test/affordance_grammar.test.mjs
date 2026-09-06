@@ -105,7 +105,7 @@ test("A1: a label that positions its subject in the reader's document is recogni
   assert.equal(affordancePositionalPromise("Follow the response steps below"), true);
   assert.equal(affordancePositionalPromise("See the table above"), true);
   assert.equal(affordancePositionalPromise("Read the notes further down"), true);
-  assert.equal(affordancePositionalPromise("View response instructions"), false);
+  assert.equal(affordancePositionalPromise("See how to respond"), false);
   assert.equal(affordancePositionalPromise("Comment"), false);
   assert.equal(affordancePositionalPromise(""), false);
   assert.equal(affordancePositionalPromise(null), false);
