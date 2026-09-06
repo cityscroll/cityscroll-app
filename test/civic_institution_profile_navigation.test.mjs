@@ -4,7 +4,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import test from "node:test";
 
-import { AGENCY_GROUPS } from "../site/agency_identity.mjs";
+import { AGENCY_GROUPS, agencyCanonicalId } from "../site/agency_identity.mjs";
 import { AGENCY_CONSTELLATION_SECTIONS } from "../site/agency_constellation_section_registry.mjs";
 import {
   CATEGORY_EVIDENCE_STATES,
@@ -270,10 +270,23 @@ test("EEP collision, unresolved routes, OTI buckets, and Community Boards stay u
 test("agency index, routes, aliases, scopes, property keys, person-leader, staffing, and board body ids stay compatible", () => {
   const index = readFileSync(join(ROOT, "site/agencies/index.html"), "utf8");
   assert.equal(index, renderAgencyIndex());
+  // The directory now lists the destinations this repository publishes rather
+  // than the keys of the name-reconciliation table, so profiles that exist are
+  // reachable from it. Reviewed names the table carries without a published
+  // profile stay listed by name, unlinked, so a reference to one keeps working.
   const indexIds = [...index.matchAll(/data-subject-ref="agency:id:([^"]+)"/g)].map((match) => match[1]);
-  assert.equal(indexIds.length, Object.keys(AGENCY_GROUPS).length);
+  assert.deepEqual([...indexIds].sort(), Object.keys(LOOKUP.by_id).sort());
   assert.ok(indexIds.includes("sanitation"));
-  assert.equal(indexIds.includes("economic-development-corporation"), false);
+  assert.ok(indexIds.includes("economic-development-corporation"));
+  assert.ok(indexIds.includes("city-planning-commission"));
+  for (const name of Object.keys(AGENCY_GROUPS)) {
+    assert.match(index, new RegExp(`>${name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}<|data-canonical-id="${agencyCanonicalId(name)}"`), name);
+  }
+  // A board keeps its own canonical destination and its own subject; it is
+  // never republished under an agency route.
+  const boardIds = [...index.matchAll(/data-subject-ref="community-board:([^"]+)"/g)].map((match) => match[1]);
+  assert.deepEqual([...boardIds].sort(), Object.keys(BOARD_LOOKUP.by_id).sort());
+  assert.doesNotMatch(index, /href="\/agencies\/[a-z-]+-cb-\d+\//);
   const routeDirs = readdirSync(join(ROOT, "site/agencies"), { withFileTypes: true })
     .filter((entry) => entry.isDirectory())
     .map((entry) => entry.name)
@@ -315,7 +328,7 @@ test("profile navigation is a compact profile disclosure, not an index-wide filt
   const index = readFileSync(join(ROOT, "site/agencies/index.html"), "utf8");
   assert.doesNotMatch(index, /institution-profile-navigation/);
   assert.doesNotMatch(index, /data-role-filter/);
-  assert.match(index, /<h1>City agencies<\/h1>/);
+  assert.match(index, /<h1>Agencies &amp; public bodies<\/h1>/);
 });
 
 test("unresolved and colliding routes render an evidence stop instead of a guessed profile", async () => {
