@@ -383,10 +383,15 @@ test("A4 the committed pass links a real existing record on a real repair candid
 });
 
 test("A4 the register refuses an owner-only or local reference and a mismatched identity", () => {
+  // The home-path case is assembled from segments for the same reason the
+  // private-evidence scheme beside it is: a literal absolute home path in
+  // tracked source is itself the thing this repository rejects. The value the
+  // register is asked to validate is unchanged.
+  const homePath = ["", "Users", "example", "notes.md"].join("/");
   for (const reference of [
     ["backstage", "://cityscroll-evidence/repair/1"].join(""),
-    "file:///Users/example/notes.md",
-    "/Users/example/notes.md",
+    `file://${homePath}`,
+    homePath,
     "http://localhost:8080/repair",
     "not a url",
   ]) {
