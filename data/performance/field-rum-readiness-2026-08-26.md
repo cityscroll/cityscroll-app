@@ -94,6 +94,75 @@ read-back is where the effect on the budget is measured.
 Due once the change has been live in production for one complete window. The
 evaluation belongs to this read-back rather than to the change that opened it.
 
+## Notice first byte
+
+Response-phase metric: `ttfb_ms`, surface `notice`. Cited by
+`docs/evidence/notice-edge-response/README.md` and
+`docs/evidence/notice-edge-response/read-back.json`.
+
+### 2026-09-06 production read-back
+
+- Window: `2026-08-30T13:38:21Z` – `2026-09-06T13:38:21Z` (complete seven-day
+  window), production traffic, from the same lattice read-back the coverage
+  report uses.
+- Retained observations: 100 (≥ the 30-observation floor)
+- p50 / p75 / p95: 250.7 ms / 683.0 ms / 2012.1 ms
+- Home over the same window, same collector and population: 61.5 ms /
+  184.3 ms / 544.5 ms over 150 retained observations.
+- Tail support: the 95th percentile rests on about 5 retained observations for
+  Notice and about 8 for Home. The 30-observation floor applies to the
+  distribution, not to the tail.
+- Devices: not retained. The observation contract carries a coarse device class
+  and no device or session identifier, and the read-back builds its device
+  dimension for the readiness metrics only, so this metric has no breakdown even
+  by class. Neither figure is estimated.
+
+Evidence: `docs/evidence/field-coverage-lattice-read-back/read-back.json`,
+projected into `docs/evidence/notice-edge-response/read-back.json` by
+`node tools/build_notice_edge_response_evidence.mjs`.
+
+### Open read-back: Notice first byte (pending)
+
+Opened by the change that removed a serial round trip from the Notice response
+path and made the record read's cache outcome observable on the response. That
+change claims no latency improvement; this read-back is where any effect is
+measured.
+
+- Status: **pending**. Not yet evaluated, and not a pass or a failure.
+- Delivered for review: `2026-09-06`. The measurement window opens at the
+  delivery merge commit, not at this date.
+- Metrics to read, exactly as identified in production:
+  - `ttfb_ms`, surface `notice` — the Notice first-byte distribution.
+  - `ttfb_ms`, surface `home` — the same-window comparison population.
+- Window length: one complete `7d` window measured from the delivery merge,
+  using the shared procedure above.
+- Sufficiency: the 30-observation floor applies. A window below the floor is
+  recorded as `insufficient_sample` and the percentiles are withheld. The
+  retained observations behind the 95th percentile are reported alongside it.
+- Budget to evaluate against: the shared tiers `tools/lib/performance_drift.mjs`
+  applies — p75 ≤ 2500 ms and p95 ≤ 5000 ms for the `good` tier. The
+  `2026-09-06` distribution above already sits inside that tier, so this
+  read-back is a non-regression check against it, not an attempt to reach a
+  budget. No first-byte-specific budget is set by the change that opened this
+  read-back.
+- Comparison point: the `2026-09-06` read-back above (p50 250.7 ms / p75 683.0 ms
+  / p95 2012.1 ms over 100 retained observations).
+- Also pending in the same window: the record subrequest's cache outcome
+  distribution, newly carried on the response as `cs-record` and not yet read
+  back from production. It is pending, not zero.
+
+Kept separable from the Notice cold module path read-back above by metric and by
+window: that one reads `component_ready_ms` and `content_ready_ms`, this one
+reads `ttfb_ms`, and each window opens at its own delivery merge. A change in one
+is not evidence about the other.
+
+Delivery-time response-path measurements for the same change are in
+`docs/evidence/notice-edge-response/README.md`. They are a structural
+measurement of the response path, not a latency claim.
+
+Due once the change has been live in production for one complete window. The
+evaluation belongs to this read-back rather than to the change that opened it.
+
 ## Browse Contracts
 
 Page-level content readiness: `content_ready_ms`, surface `browse-contracts`,

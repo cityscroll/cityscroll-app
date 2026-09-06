@@ -1,0 +1,25 @@
+{
+  "$comment": "Ceilings for the Notice edge response path, measured by tools/measure_notice_edge_response.mjs. A terminal that grows a subrequest or a dependent stage fails the check. These are structural ceilings on how a response is produced, not latency budgets: the latency budget for the Notice surface lives with its readiness metrics.",
+  "schema": "cityscroll.notice_edge_response_budget.v1",
+  "version": 1,
+  "terminals": {
+    "available": {
+      "$comment": "The record was produced. The resident reads and the record read are issued together, so one dependent stage covers them all.",
+      "status": 200,
+      "maxSubrequests": 4,
+      "maxDependentStages": 1
+    },
+    "absent": {
+      "$comment": "The record endpoint answered that there is no such record. Same shape as the available terminal; only the status and the cache directive differ.",
+      "status": 404,
+      "maxSubrequests": 4,
+      "maxDependentStages": 1
+    },
+    "unavailable": {
+      "$comment": "The record could not be produced. The public-source degradation path is genuinely dependent on the record read having failed, so it is a second stage and stays one.",
+      "status": 503,
+      "maxSubrequests": 5,
+      "maxDependentStages": 2
+    }
+  }
+}

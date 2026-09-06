@@ -1,0 +1,33 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/notice-edge-response-measurement",
+  "status": "implemented",
+  "fingerprint": "notice-edge-response-measurement.v1",
+  "updated_at": "2026-09-06T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "notice-edge-response-vocabulary",
+      "path": "site/notice_edge_response.mjs"
+    },
+    {
+      "id": "notice-edge-response-measurement",
+      "path": "tools/measure_notice_edge_response.mjs"
+    },
+    {
+      "id": "notice-edge-response-evidence-builder",
+      "path": "tools/build_notice_edge_response_evidence.mjs"
+    },
+    {
+      "id": "notice-edge-response-ceilings",
+      "path": "architecture/notice-edge-response-budget.json"
+    },
+    {
+      "id": "notice-edge-response-evidence",
+      "path": "docs/evidence/notice-edge-response/read-back.json"
+    },
+    {
+      "id": "notice-edge-response-tests",
+      "path": "test/notice_edge_response.test.mjs"
+    }
+  ]
+}

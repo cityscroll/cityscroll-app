@@ -1,0 +1,244 @@
+{
+  "schema": "cityscroll.notice_edge_response_evidence.v1",
+  "version": 1,
+  "claims_latency_improvement": false,
+  "privacy": {
+    "record_identifiers": false,
+    "reader_identifiers": false,
+    "new_rum_identity": false,
+    "response_header_vocabulary": [
+      "hit",
+      "miss",
+      "stale",
+      "dynamic",
+      "unknown"
+    ]
+  },
+  "delivery": {
+    "route_included_in_edge_function": true,
+    "cache_api_used_by_serving_path": false,
+    "document_cache_outcome": "dynamic",
+    "document_cache_outcome_basis": "structural",
+    "note": "The Notice route is listed in site/_routes.json, so the function runs on every request, and the serving path never reads or writes the Cache API. The document therefore has no edge cache entry to hit or miss, and its outcome is dynamic by construction rather than a rate that varies between requests. The record subrequest keeps the only edge cache on this path."
+  },
+  "response_path": {
+    "measurement_class": "structural",
+    "not_a_latency_claim": true,
+    "terminals": {
+      "available": {
+        "status": 200,
+        "subrequests": 4,
+        "dependent_stages": 1,
+        "widest_stage_subrequests": 4,
+        "cache_control": "public, max-age=60, s-maxage=86400, stale-while-revalidate=604800, stale-if-error=604800",
+        "stages": [
+          {
+            "stage": 1,
+            "subrequests": [
+              "mandate-backlinks",
+              "meeting-outcomes",
+              "record",
+              "shell"
+            ]
+          }
+        ]
+      },
+      "absent": {
+        "status": 404,
+        "subrequests": 4,
+        "dependent_stages": 1,
+        "widest_stage_subrequests": 4,
+        "cache_control": "public, max-age=60, s-maxage=60, stale-while-revalidate=60, stale-if-error=60",
+        "stages": [
+          {
+            "stage": 1,
+            "subrequests": [
+              "mandate-backlinks",
+              "meeting-outcomes",
+              "record",
+              "shell"
+            ]
+          }
+        ]
+      },
+      "unavailable": {
+        "status": 503,
+        "subrequests": 5,
+        "dependent_stages": 2,
+        "widest_stage_subrequests": 4,
+        "cache_control": "public, max-age=60, s-maxage=60, stale-while-revalidate=60, stale-if-error=60",
+        "stages": [
+          {
+            "stage": 1,
+            "subrequests": [
+              "mandate-backlinks",
+              "meeting-outcomes",
+              "record",
+              "shell"
+            ]
+          },
+          {
+            "stage": 2,
+            "subrequests": [
+              "public-source"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "unmeasured": [
+    {
+      "component": "isolate_render_time",
+      "reason": "The edge clock advances on subrequest boundaries, so the response header's durations measure time waiting on subrequests. Time spent rendering inside the isolate is not separable from them and is not estimated into the total."
+    },
+    {
+      "component": "document_edge_cache_hit_rate",
+      "reason": "There is no document-level edge cache entry on this path to hit or miss, so there is no rate to measure. This is a property of the serving path, not a missing measurement."
+    },
+    {
+      "component": "distinct_devices_behind_a_percentile",
+      "reason": "The observation contract retains a coarse device class and no device or session identifier."
+    },
+    {
+      "component": "share_of_the_readiness_tail_owned_by_the_first_byte",
+      "reason": "Percentiles of a phase and of the whole are computed over different rows and do not compose. The retained aggregate cannot attribute a share of one tail to the other."
+    },
+    {
+      "component": "record_cache_hit_rate",
+      "reason": "The record subrequest's cache outcome is now carried on the response, but no production window has been read back since. The rate is pending, not zero."
+    },
+    {
+      "component": "device_class_composition_of_the_first_byte_tail",
+      "reason": "The read-back's device dimension is built for the readiness metrics only, so the first-byte percentiles have no breakdown even by coarse device class."
+    }
+  ],
+  "field_first_byte": {
+    "source": "docs/evidence/field-coverage-lattice-read-back/read-back.json",
+    "window": {
+      "label": "7d",
+      "timezone": "UTC",
+      "start": "2026-08-30T13:38:21.000Z",
+      "end": "2026-09-06T13:38:21.000Z",
+      "status": "complete",
+      "fraction": 1
+    },
+    "traffic_class": "production",
+    "sample_floor": 30,
+    "notice": {
+      "surface_id": "notice",
+      "metric_id": "ttfb_ms",
+      "state": "measured",
+      "sampled_count": 100,
+      "estimated_count": 100,
+      "p50_ms": 250.7,
+      "p75_ms": 683,
+      "p95_ms": 2012.1,
+      "p95_tail_support": {
+        "retained_rows_at_or_above_p95": 5,
+        "exact": true,
+        "basis": "Every retained row carries weight 1 in this window, so the count of rows at or above the 95th percentile follows from the retained row count.",
+        "note": "The sample floor applies to the distribution, not to the tail. A tail resting on this few observations moves materially when any one of them moves."
+      }
+    },
+    "home": {
+      "surface_id": "home",
+      "metric_id": "ttfb_ms",
+      "state": "measured",
+      "sampled_count": 150,
+      "estimated_count": 159,
+      "p50_ms": 61.5,
+      "p75_ms": 184.3,
+      "p95_ms": 544.5,
+      "p95_tail_support": {
+        "retained_rows_at_or_above_p95": 8,
+        "exact": false,
+        "basis": "Retained rows carry different sampling weights in this window, so the count is the unweighted approximation and the weighted tail may rest on fewer rows still.",
+        "note": "The sample floor applies to the distribution, not to the tail. A tail resting on this few observations moves materially when any one of them moves."
+      }
+    },
+    "percentile_composition": {
+      "separable": false,
+      "reason": "A percentile of one phase cannot be subtracted from a percentile of the whole: the rows behind the first-byte 95th percentile and the rows behind the readiness 95th percentile are not the same requests, and the retained aggregate never exposes the rows. The share of the readiness tail attributable to the first byte is therefore not derivable from what production retains.",
+      "notice_content_ready_p95_ms": 7109.1
+    },
+    "notice_devices": {
+      "surface_id": "notice",
+      "metric_id": "ttfb_ms",
+      "device_classes_with_data": [],
+      "device_class_breakdown_state": "not_retained",
+      "device_class_breakdown_reason": "The read-back's device dimension is built only for the readiness metrics, so this metric has no breakdown by device class in the retained read-back.",
+      "distinct_devices": null,
+      "distinct_devices_state": "unmeasured",
+      "distinct_devices_reason": "The observation contract carries a coarse device class and no device, session, or reader identifier, so the number of distinct devices behind a percentile is not retained for any metric and cannot be recovered from the retained rows."
+    },
+    "home_devices": {
+      "surface_id": "home",
+      "metric_id": "ttfb_ms",
+      "device_classes_with_data": [],
+      "device_class_breakdown_state": "not_retained",
+      "device_class_breakdown_reason": "The read-back's device dimension is built only for the readiness metrics, so this metric has no breakdown by device class in the retained read-back.",
+      "distinct_devices": null,
+      "distinct_devices_state": "unmeasured",
+      "distinct_devices_reason": "The observation contract carries a coarse device class and no device, session, or reader identifier, so the number of distinct devices behind a percentile is not retained for any metric and cannot be recovered from the retained rows."
+    },
+    "notice_context_readiness_devices": {
+      "surface_id": "notice",
+      "metric_id": "component_ready_ms",
+      "device_classes_with_data": [
+        {
+          "device_class": "desktop",
+          "state": "measured",
+          "sampled_count": 83
+        },
+        {
+          "device_class": "mobile",
+          "state": "insufficient_sample",
+          "sampled_count": 1
+        },
+        {
+          "device_class": "tablet",
+          "state": "insufficient_sample",
+          "sampled_count": 1
+        }
+      ],
+      "device_class_breakdown_state": "retained",
+      "device_class_breakdown_reason": "The read-back builds a device dimension for this metric.",
+      "distinct_devices": null,
+      "distinct_devices_state": "unmeasured",
+      "distinct_devices_reason": "The observation contract carries a coarse device class and no device, session, or reader identifier, so the number of distinct devices behind a percentile is not retained for any metric and cannot be recovered from the retained rows."
+    }
+  },
+  "tail_reconciliation": {
+    "metric_id": "component_ready_ms",
+    "surface_id": "notice",
+    "component_id": "notice-context",
+    "artifacts": [
+      {
+        "path": "docs/evidence/notice-context-readiness/read-back.json",
+        "selection_rule": "delivery-anchored",
+        "selection_rule_detail": "The window opens at the delivery merge and closes at the latest retained observation, so it admits only post-delivery observations.",
+        "sampled_count": 79,
+        "p95_ms": 8484.3,
+        "carries_budget": true,
+        "read_by_the_gate": true
+      },
+      {
+        "path": "docs/evidence/field-coverage-lattice-read-back/read-back.json",
+        "selection_rule": "fixed-rolling-window",
+        "selection_rule_detail": "The window is the fixed 7d bucket ending at query time. It strictly contains the delivery-anchored window, so it also admits observations from before the delivery.",
+        "sampled_count": 85,
+        "p95_ms": 8001.9,
+        "carries_budget": false,
+        "read_by_the_gate": false
+      }
+    ],
+    "difference_sources": [
+      "window composition: the rolling window strictly contains the delivery-anchored one",
+      "per-query adaptive sampling: each query retains its own weighted rows, so two queries over overlapping windows differ even where the windows agree"
+    ],
+    "separable": false,
+    "separable_reason": "Analytics Engine returns the aggregate, never the retained rows, so the two sources of difference cannot be apportioned from what is retained.",
+    "gate": "site/notice_context_readiness.mjs classifies the delivery-anchored artifact against the p75 and p95 budget; the lattice read-back carries no budget and states no SLO."
+  }
+}
