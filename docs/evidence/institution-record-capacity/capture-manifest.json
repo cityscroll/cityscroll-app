@@ -1,0 +1,359 @@
+{
+  "schema": "cityscroll.institution_record_capacity_evidence.v1",
+  "evidence_id": "cityscroll-civic-institutions/institution-record-capacity",
+  "route": "/agencies/economic-development-corporation/",
+  "revision": "4d4e69f08c5dffd118208f0d254cb1008e4cd531",
+  "data_vintage": "2026-08-18",
+  "timezone": "America/New_York",
+  "captured_at": "2026-09-06T02:19:21Z",
+  "image_directory": ".artifacts/institution-record-capacity",
+  "image_policy": "Capture images are written to the ignored local directory above and are never committed. This manifest is the tracked proof: route, viewport, revision, data vintage, assertion and SHA-256 for each capture.",
+  "files": [
+    {
+      "name": "capacity-visible-390x844.png",
+      "specimen": "capacity-visible",
+      "route": "/agencies/economic-development-corporation/",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "4d4e69f08c5dffd118208f0d254cb1008e4cd531",
+      "data_vintage": "2026-08-18",
+      "timezone": "America/New_York",
+      "assertion": "at 390px the profile states each record's title, its timing as the source gives it, and the institution's capacity in plain language, with the other party named and the received/issued and applicant/approver boundaries visible",
+      "observations": {
+        "section_present": true,
+        "both_capacities_shown": true,
+        "records_listed": true,
+        "capacity_stated_in_plain_language": true,
+        "received_not_presented_as_issued": true,
+        "applying_not_presented_as_deciding": true,
+        "source_evidence_retained": true,
+        "other_party_named": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 1324259,
+      "sha256": "eea471958ff1483f28182dab2fea3637ae53c243f9902d8a2937c9afddea3820",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "capacity-visible-1440x900.png",
+      "specimen": "capacity-visible",
+      "route": "/agencies/economic-development-corporation/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "4d4e69f08c5dffd118208f0d254cb1008e4cd531",
+      "data_vintage": "2026-08-18",
+      "timezone": "America/New_York",
+      "assertion": "at 1440px the profile states each record's title, its timing as the source gives it, and the institution's capacity in plain language, with the other party named and the received/issued and applicant/approver boundaries visible",
+      "observations": {
+        "section_present": true,
+        "both_capacities_shown": true,
+        "records_listed": true,
+        "capacity_stated_in_plain_language": true,
+        "received_not_presented_as_issued": true,
+        "applying_not_presented_as_deciding": true,
+        "source_evidence_retained": true,
+        "other_party_named": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 1471496,
+      "sha256": "68a70d2c3e7bef1ad9b3bbb2ad4bb4eb0e4e31191352b264c00cc757bd8b80fc",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "keyboard-reach-390x844.png",
+      "specimen": "keyboard-reach",
+      "route": "/agencies/economic-development-corporation/",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "4d4e69f08c5dffd118208f0d254cb1008e4cd531",
+      "data_vintage": "2026-08-18",
+      "timezone": "America/New_York",
+      "assertion": "at 390px a keyboard reader reaches the capacity records and each group's Browse-all action, with a visible focus indicator",
+      "observations": {
+        "focus_enters_capacity_section": true,
+        "focus_is_visible": true,
+        "tab_reaches_browse_all": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 1324259,
+      "sha256": "eea471958ff1483f28182dab2fea3637ae53c243f9902d8a2937c9afddea3820",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "keyboard-reach-1440x900.png",
+      "specimen": "keyboard-reach",
+      "route": "/agencies/economic-development-corporation/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "4d4e69f08c5dffd118208f0d254cb1008e4cd531",
+      "data_vintage": "2026-08-18",
+      "timezone": "America/New_York",
+      "assertion": "at 1440px a keyboard reader reaches the capacity records and each group's Browse-all action, with a visible focus indicator",
+      "observations": {
+        "focus_enters_capacity_section": true,
+        "focus_is_visible": true,
+        "tab_reaches_browse_all": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 1471496,
+      "sha256": "68a70d2c3e7bef1ad9b3bbb2ad4bb4eb0e4e31191352b264c00cc757bd8b80fc",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "browse-all-parity-390x844.png",
+      "specimen": "browse-all-parity",
+      "route": "/agencies/economic-development-corporation/",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "4d4e69f08c5dffd118208f0d254cb1008e4cd531",
+      "data_vintage": "2026-08-18",
+      "timezone": "America/New_York",
+      "assertion": "at 390px Browse-all carries the same capacity relation the preview used, the scoped result count equals the count the profile stated, and Back restores the section, its records and its total",
+      "observations": {
+        "browse_link_carries_capacity_relation": true,
+        "scoped_count_matches_profile": true,
+        "scoped_list_is_populated": true,
+        "scope_named_in_heading": true,
+        "back_restores_the_capacity_section": true,
+        "back_restores_the_same_records": true,
+        "back_restores_the_same_total": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 247539,
+      "sha256": "4387694a87bcb771fed53d08d67b4fd3eafc6a52de2086d2708dccc79d91f91f",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "browse-all-parity-1440x900.png",
+      "specimen": "browse-all-parity",
+      "route": "/agencies/economic-development-corporation/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "4d4e69f08c5dffd118208f0d254cb1008e4cd531",
+      "data_vintage": "2026-08-18",
+      "timezone": "America/New_York",
+      "assertion": "at 1440px Browse-all carries the same capacity relation the preview used, the scoped result count equals the count the profile stated, and Back restores the section, its records and its total",
+      "observations": {
+        "browse_link_carries_capacity_relation": true,
+        "scoped_count_matches_profile": true,
+        "scoped_list_is_populated": true,
+        "scope_named_in_heading": true,
+        "back_restores_the_capacity_section": true,
+        "back_restores_the_same_records": true,
+        "back_restores_the_same_total": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 272840,
+      "sha256": "6fc95ae67a8cc95e568aa416600f440c9159e607a2f7f60878598891adda0634",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "full-record-and-back-390x844.png",
+      "specimen": "full-record-and-back",
+      "route": "/agencies/economic-development-corporation/",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "4d4e69f08c5dffd118208f0d254cb1008e4cd531",
+      "data_vintage": "2026-08-18",
+      "timezone": "America/New_York",
+      "assertion": "at 390px a capacity record opens its own full page, which names the same two institutions in the same two capacities in plain language, and Back returns to the unchanged record list",
+      "observations": {
+        "full_page_opened": true,
+        "record_page_names_both_capacities": true,
+        "record_page_names_both_institutions": true,
+        "record_page_states_contractor_in_plain_language": true,
+        "record_page_states_contracting_agency_in_plain_language": true,
+        "record_page_keeps_the_received_boundary": true,
+        "back_restores_the_record_list": true,
+        "back_restores_the_total": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 159553,
+      "sha256": "3583e60718659643e5e6e0a2b28d6b6bd6073c1cdfbd09dab968e2d71273fbef",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "full-record-and-back-1440x900.png",
+      "specimen": "full-record-and-back",
+      "route": "/agencies/economic-development-corporation/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "4d4e69f08c5dffd118208f0d254cb1008e4cd531",
+      "data_vintage": "2026-08-18",
+      "timezone": "America/New_York",
+      "assertion": "at 1440px a capacity record opens its own full page, which names the same two institutions in the same two capacities in plain language, and Back returns to the unchanged record list",
+      "observations": {
+        "full_page_opened": true,
+        "record_page_names_both_capacities": true,
+        "record_page_names_both_institutions": true,
+        "record_page_states_contractor_in_plain_language": true,
+        "record_page_states_contracting_agency_in_plain_language": true,
+        "record_page_keeps_the_received_boundary": true,
+        "back_restores_the_record_list": true,
+        "back_restores_the_total": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 190206,
+      "sha256": "87bcd3d088b076d5a6567d3e3fba37afb35aca1b371fb72b96adcb8a46186a6a",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "zoom-200-390x844.png",
+      "specimen": "zoom-200",
+      "route": "/agencies/economic-development-corporation/",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "4d4e69f08c5dffd118208f0d254cb1008e4cd531",
+      "data_vintage": "2026-08-18",
+      "timezone": "America/New_York",
+      "assertion": "at 390px doubled to 200% the capacity section keeps every record readable in one column, nothing escapes the viewport horizontally, and its actions stay large enough to hit",
+      "observations": {
+        "section_still_present": true,
+        "records_still_listed": true,
+        "no_horizontal_overflow_at_200_percent": true,
+        "no_element_escapes_the_viewport": true,
+        "browse_actions_meet_target_size": true
+      },
+      "bytes": 1375013,
+      "sha256": "e29cbbf1bc489dcc1d2b3c0cbe996a4a83bf06ed814ec65733b3282b94a3f63b",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "zoom-200-1440x900.png",
+      "specimen": "zoom-200",
+      "route": "/agencies/economic-development-corporation/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "4d4e69f08c5dffd118208f0d254cb1008e4cd531",
+      "data_vintage": "2026-08-18",
+      "timezone": "America/New_York",
+      "assertion": "at 1440px doubled to 200% the capacity section keeps every record readable in one column, nothing escapes the viewport horizontally, and its actions stay large enough to hit",
+      "observations": {
+        "section_still_present": true,
+        "records_still_listed": true,
+        "no_horizontal_overflow_at_200_percent": true,
+        "no_element_escapes_the_viewport": true,
+        "browse_actions_meet_target_size": true
+      },
+      "bytes": 1384213,
+      "sha256": "ef1dc209c2e992b8416a5410e00bfd389194189dcb71a139d92f9bf352b2e80b",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "failed-fragment-390x844.png",
+      "specimen": "failed-fragment",
+      "route": "/agencies/economic-development-corporation/",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "4d4e69f08c5dffd118208f0d254cb1008e4cd531",
+      "data_vintage": "2026-08-18",
+      "timezone": "America/New_York",
+      "assertion": "at 390px a failed relationships load leaves the profile and its identity intact and discloses the deferred state, rather than rendering an empty capacity section that would read as a finding of no records",
+      "observations": {
+        "page_still_renders": true,
+        "institution_still_identified": true,
+        "no_empty_capacity_section_is_claimed": true,
+        "no_false_zero_is_shown": true,
+        "deferred_state_is_disclosed": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 152448,
+      "sha256": "8bdfb067bff1e8ffe12e08975b5f9676044999c2742a5043c887cbb000565af0",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    },
+    {
+      "name": "failed-fragment-1440x900.png",
+      "specimen": "failed-fragment",
+      "route": "/agencies/economic-development-corporation/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "4d4e69f08c5dffd118208f0d254cb1008e4cd531",
+      "data_vintage": "2026-08-18",
+      "timezone": "America/New_York",
+      "assertion": "at 1440px a failed relationships load leaves the profile and its identity intact and discloses the deferred state, rather than rendering an empty capacity section that would read as a finding of no records",
+      "observations": {
+        "page_still_renders": true,
+        "institution_still_identified": true,
+        "no_empty_capacity_section_is_claimed": true,
+        "no_false_zero_is_shown": true,
+        "deferred_state_is_disclosed": true,
+        "no_horizontal_overflow": true
+      },
+      "bytes": 179835,
+      "sha256": "2082d8a8f7e05f1f4fbf941debc34c070f338623c7a94b2a02f9681a2174ff1f",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": [],
+        "passes": true
+      }
+    }
+  ]
+}

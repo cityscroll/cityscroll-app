@@ -1,4 +1,5 @@
 import { vendorStem } from "./vendor_stem.mjs";
+import { civicInstitutionIdForPartyValue } from "./civic_institution_party_spellings.mjs";
 import { isKnownProcurementProcessState } from "./procurement_process_state_vocabulary.mjs";
 import {
   DEFAULT_LAND_FAMILY,
@@ -170,6 +171,41 @@ export function vendorStemsFromEntityRefs(entityRefs = []) {
     .filter(Boolean))];
 }
 
+/**
+ * Party fields a connection relation reads on a contract row.
+ *
+ * Only a relation listed here turns an institution ref into a party predicate.
+ * Without one, institution refs keep their previous meaning on this surface,
+ * so an existing link's results never change shape.
+ */
+export const MONEY_PARTY_RELATION_FIELDS = Object.freeze({
+  named_vendor: "vendor_name",
+});
+
+/**
+ * The query axes a scope facet carries.
+ *
+ * A caller passing `facetValues` hands the filter the whole scope rather than
+ * copying its axes out one at a time — the axes belong together, and reading
+ * them here keeps a party relation from being separated from the refs it
+ * qualifies. An explicit `entityRefs`/`connectionRelation` still wins.
+ */
+export function moneyScopeAxes(facetValues = null) {
+  const values = facetValues && typeof facetValues === "object" ? facetValues : {};
+  return {
+    entityRefs: Array.isArray(values.entity_refs_all) ? values.entity_refs_all : [],
+    connectionRelation: typeof values.connection_relation === "string" ? values.connection_relation : "",
+  };
+}
+
+/** Institution ids requested as a party, for a party-reading relation only. */
+export function institutionPartyIdsFromEntityRefs(entityRefs = [], connectionRelation = "") {
+  if (!MONEY_PARTY_RELATION_FIELDS[String(connectionRelation || "").trim()]) return [];
+  return [...new Set((Array.isArray(entityRefs) ? entityRefs : [])
+    .map((ref) => String(ref || "").trim().match(/^agency:(?:id:)?(.+)$/)?.[1] || "")
+    .filter(Boolean))];
+}
+
 export function filterMoneySnapshot(rows, {
   mode = "open",
   agency = "",
@@ -182,6 +218,8 @@ export function filterMoneySnapshot(rows, {
   months = null,
   excludeSpecial = false,
   entityRefs = [],
+  connectionRelation = "",
+  facetValues = null,
   contractObjectRef = "",
   stages = [],
   processStates = [],
@@ -202,7 +240,15 @@ export function filterMoneySnapshot(rows, {
     .map((state) => residentSnapshotLower(state)).filter(Boolean);
   const requiredProcessStates = new Set(requestedProcessStates.filter(isKnownProcurementProcessState));
   const processStateFilterActive = requestedProcessStates.length > 0;
-  const requiredVendorStems = vendorStemsFromEntityRefs(entityRefs);
+  const scope = moneyScopeAxes(facetValues);
+  const scopedRefs = entityRefs?.length ? entityRefs : scope.entityRefs;
+  const scopedRelation = connectionRelation || scope.connectionRelation;
+  const requiredVendorStems = vendorStemsFromEntityRefs(scopedRefs);
+  // A party relation makes the institution ref a predicate over the exact
+  // reviewed party field it names. This is what keeps "contracts this body
+  // received" from ever answering with "contracts this body published".
+  const partyField = MONEY_PARTY_RELATION_FIELDS[String(scopedRelation || "").trim()] || "";
+  const requiredPartyIds = institutionPartyIdsFromEntityRefs(scopedRefs, scopedRelation);
   const selected = (Array.isArray(rows) ? rows : []).filter((row) => {
     const type = residentSnapshotClean(row?.type_of_notice_description);
     const typedStages = procurementStagesForRow(row);
@@ -224,6 +270,10 @@ export function filterMoneySnapshot(rows, {
     if (agency && residentSnapshotClean(row?.agency_name) !== residentSnapshotClean(agency)) return false;
     if (requiredVendorStems.length
       && !requiredVendorStems.every((stem) => vendorStem(row?.vendor_name) === stem)) return false;
+    if (requiredPartyIds.length) {
+      const rowPartyId = civicInstitutionIdForPartyValue(partyField, row?.[partyField]);
+      if (!rowPartyId || !requiredPartyIds.every((id) => id === rowPartyId)) return false;
+    }
     if (contractObjectRef && row?.procurement_id) {
       if (residentSnapshotClean(row.procurement_id) !== residentSnapshotClean(contractObjectRef)) return false;
     } else if (requiredPin && residentSnapshotClean(row?.pin) !== requiredPin) return false;

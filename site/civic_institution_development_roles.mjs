@@ -1,9 +1,15 @@
 /**
- * Source-qualified NYCEDC development and procurement role traversal.
+ * Source-qualified development and procurement role traversal.
  *
- * Exact ZAP applicant, SBS/NYCEDC party fields, and Borough Board passage
+ * Exact ZAP applicant, contract party fields, and Borough Board passage
  * evidence mint civic-institution role edges. Mentions, publisher notices,
  * and company names never infer a role.
+ *
+ * The party mappings are keyed on the reviewed source field and its exact
+ * retained value (site/civic_institution_party_spellings.mjs), never on a
+ * record identifier, so every retained record carrying a reviewed party value
+ * mints the same typed role. The specimen keys re-exported below remain the
+ * named examples the contract tests pin; they are not the gate.
  */
 
 import {
@@ -24,6 +30,10 @@ import {
   WILLETS_POINT_PROJECT_ID,
   isNycEdcApplicantSpelling,
 } from "./civic_institution_development_specimens.mjs";
+import {
+  CIVIC_INSTITUTION_PARTY_CAPACITIES,
+  civicInstitutionPartyFor,
+} from "./civic_institution_party_spellings.mjs";
 
 export {
   BOROUGH_BOARD_NOTICE_ID,
@@ -37,15 +47,6 @@ export {
   WILLETS_POINT_PROJECT_ID,
   isNycEdcApplicantSpelling,
 };
-
-const NYCEDC_VENDOR_SPELLINGS = Object.freeze(new Set([
-  "NEW YORK CITY ECONOMIC DEVELOPMENT CORPORATION",
-  "New York City Economic Development Corporation",
-]));
-const SBS_AGENCY_SPELLINGS = Object.freeze(new Set([
-  "DEPARTMENT OF SMALL BUSINESS SERVICES",
-  "Small Business Services",
-]));
 
 const clean = (value, max = 500) => String(value ?? "")
   .replace(/[\u0000-\u001f\u007f]/g, " ")
@@ -95,51 +96,133 @@ function observationFrom(row) {
   });
 }
 
+const APPLICANT = CIVIC_INSTITUTION_PARTY_CAPACITIES.applicant;
+const CONTRACTOR = CIVIC_INSTITUTION_PARTY_CAPACITIES.contractor;
+const CONTRACTING_AGENCY = CIVIC_INSTITUTION_PARTY_CAPACITIES.contracting_agency;
+
+function rowList(single, many) {
+  const rows = [
+    ...(Array.isArray(many) ? many : []),
+    ...(single ? [single] : []),
+  ].filter(Boolean);
+  const seen = new Set();
+  return rows.filter((row) => {
+    const key = exactText(row?.procurement_id || row?.project_id || row?.id || row?.pin);
+    if (!key) return true;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
+function projectHref(projectId) {
+  return `/browse/zoning/#land/${encodeURIComponent(projectId)}`;
+}
+
+/**
+ * Applicant role for any retained land-use project whose exact
+ * `primary_applicant` value is a reviewed spelling. The project identifier
+ * addresses the record; it never qualifies the mapping.
+ */
 function applicantCandidate(project) {
-  if (!project || projectIdOf(project) !== WILLETS_POINT_PROJECT_ID) return null;
-  const spelling = exactText(project.primary_applicant);
-  if (spelling !== NYCEDC_ZAP_APPLICANT_SPELLING) return null;
+  const projectId = projectIdOf(project);
+  const spelling = exactText(project?.primary_applicant);
+  const party = civicInstitutionPartyFor(APPLICANT.source_field, spelling);
+  if (!projectId || !party || party.capacity_id !== APPLICANT.capacity_id) return null;
   const observedAt = exactText(project.observed_at || project.materialized_at || project.current_milestone_date)
     || "2024-01-01";
+  const displayName = exactText(project.project_name) || `Project ${projectId}`;
+  const href = projectHref(projectId);
   return {
-    subject: `civic-institution:${NYCEDC_CANONICAL_ID}`,
-    object: `project:${WILLETS_POINT_PROJECT_ID}`,
-    relation: "applicant_on",
-    objectDisplayName: exactText(project.project_name) || "Willets Point Phase II Mapping Actions",
-    objectHref: `/browse/zoning/#land/${encodeURIComponent(WILLETS_POINT_PROJECT_ID)}`,
+    subject: `civic-institution:${party.canonical_id}`,
+    object: `project:${projectId}`,
+    relation: APPLICANT.relation_id,
+    objectDisplayName: displayName,
+    objectHref: href,
     method: "exact_source_identifier",
     confidence: "strong",
-    basis: "exact_zap_primary_applicant",
+    basis: APPLICANT.basis,
     resolutionStatus: "accepted",
-    vintage: `project:${WILLETS_POINT_PROJECT_ID}`,
+    vintage: `project:${projectId}`,
     sourceObservation: observationFrom({
-      sourceSystem: "zap_projects",
-      sourceRecordId: `zap-projects:${WILLETS_POINT_PROJECT_ID}`,
-      sourceField: "primary_applicant",
+      sourceSystem: party.source_system,
+      sourceRecordId: `zap-projects:${projectId}`,
+      sourceField: APPLICANT.source_field,
       sourceValue: spelling,
-      sourceUrl: `/browse/zoning/#land/${encodeURIComponent(WILLETS_POINT_PROJECT_ID)}`,
+      sourceUrl: href,
       sourceDataset: "hgx4-8ukb",
       observedAt,
     }),
     evidenceRefs: [
-      `project:${WILLETS_POINT_PROJECT_ID}`,
-      `zap-projects:${WILLETS_POINT_PROJECT_ID}`,
+      `project:${projectId}`,
+      `zap-projects:${projectId}`,
     ],
+    record: {
+      record_kind: "project",
+      record_ref: `project:${projectId}`,
+      record_id: projectId,
+      label: displayName,
+      href,
+      when: exactText(project.current_milestone_date || project.observed_at) || null,
+      // Not every retained land source publishes a date. The milestone label is
+      // what the source does state, so a reader gets the stage rather than a
+      // fabricated or borrowed date.
+      milestone: exactText(project.current_milestone) || null,
+    },
   };
 }
 
-function procurementPartyCandidate({ procurement, observation, relation, subject, object, objectDisplayName, objectHref, basis }) {
-  const epin = epinOf(procurement, observation);
-  const sourceRef = exactText(observation?.source_observation_ref || observation?.source_record_ref);
-  if (epin !== SBS_MASTER_EPIN || sourceRef !== SBS_MASTER_SOURCE_REF) return null;
-  const parties = partyFields(procurement, observation);
-  if (!SBS_AGENCY_SPELLINGS.has(parties.agency) || !NYCEDC_VENDOR_SPELLINGS.has(parties.vendor)) {
-    return null;
-  }
+function sourceSystemOfRef(ref, observation) {
+  return exactText(observation?.source_system)
+    || exactText(String(ref || "").split(":", 1)[0])
+    || "shared_procurement_read_model";
+}
+
+/**
+ * The exact retained party values for one contract row.
+ *
+ * A retained observation snapshot outranks the browse row: it is the source
+ * record this edge cites. `field` records the retained key the value actually
+ * came from, while the reviewed registry is always consulted under its own
+ * canonical party-field name.
+ */
+function contractParties(procurement, observation) {
+  const snapshot = observation?.snapshot || {};
+  const agencyKey = snapshot.agency != null ? "agency"
+    : snapshot.agency_name != null ? "agency_name" : "agency_name";
+  const vendorKey = snapshot.vendor != null ? "vendor"
+    : snapshot.vendor_name != null ? "vendor_name" : "vendor_name";
+  return {
+    agency: {
+      field: agencyKey,
+      value: exactText(snapshot.agency ?? snapshot.agency_name ?? procurement?.agency_name ?? procurement?.agency),
+    },
+    vendor: {
+      field: vendorKey,
+      value: exactText(snapshot.vendor ?? snapshot.vendor_name ?? procurement?.vendor_name ?? procurement?.vendor),
+    },
+  };
+}
+
+function procurementPartyCandidate({
+  procurement,
+  observation,
+  sourceRef,
+  relation,
+  subject,
+  object,
+  objectDisplayName,
+  objectHref,
+  basis,
+  party,
+  record,
+}) {
   const procurementId = exactText(procurement?.procurement_id) || SBS_MASTER_PROCUREMENT_ID;
-  const observedAt = exactText(observation?.ingested_at || observation?.observed_at) || "2026-08-18T04:05:51.552Z";
-  const field = relation === "contractor_on" ? "vendor" : "agency";
-  const value = field === "vendor" ? parties.vendor : parties.agency;
+  const observedAt = exactText(observation?.ingested_at || observation?.observed_at)
+    || exactText(procurement?.start_date)
+    || "2026-08-18T04:05:51.552Z";
+  const epin = epinOf(procurement, observation);
+  const sourceSystem = sourceSystemOfRef(sourceRef, observation);
   return {
     subject,
     object,
@@ -152,46 +235,83 @@ function procurementPartyCandidate({ procurement, observation, relation, subject
     resolutionStatus: "accepted",
     vintage: sourceRef,
     sourceObservation: observationFrom({
-      sourceSystem: observation?.source_system || "passport_public_contracts",
+      sourceSystem,
       sourceRecordId: sourceRef,
-      sourceField: observation?.snapshot?.vendor && field === "vendor" ? "vendor"
-        : (observation?.snapshot?.agency && field === "agency" ? "agency" : field),
-      sourceValue: value,
+      sourceField: party.field,
+      sourceValue: party.value,
       sourceUrl: objectHref || `/procurements/${encodeURIComponent(procurementId)}`,
-      sourceDataset: "passport_public_contracts",
+      sourceDataset: sourceSystem,
       observedAt,
     }),
-    evidenceRefs: [sourceRef, procurementId, `epin:${SBS_MASTER_EPIN}`],
+    evidenceRefs: [sourceRef, procurementId, ...(epin ? [`epin:${epin}`] : [])],
+    record,
   };
 }
 
-function contractorCandidate(procurement, observation) {
+/**
+ * Contract party roles for one retained contract row.
+ *
+ * Both parties must resolve through the reviewed registry before either edge
+ * is minted, so a row can never publish a contractor without naming the
+ * institution that contracted it, or the reverse.
+ */
+function contractPartyCandidates(procurement, observation) {
+  const sourceRef = exactText(observation?.source_observation_ref || observation?.source_record_ref);
+  if (!procurement || !sourceRef) return [];
+  const parties = contractParties(procurement, observation);
+  const vendorParty = civicInstitutionPartyFor(CONTRACTOR.source_field, parties.vendor.value);
+  const agencyParty = civicInstitutionPartyFor(CONTRACTING_AGENCY.source_field, parties.agency.value);
+  if (!vendorParty || vendorParty.capacity_id !== CONTRACTOR.capacity_id) return [];
+  if (!agencyParty || agencyParty.capacity_id !== CONTRACTING_AGENCY.capacity_id) return [];
+  if (vendorParty.canonical_id === agencyParty.canonical_id) return [];
   const procurementId = exactText(procurement?.procurement_id) || SBS_MASTER_PROCUREMENT_ID;
-  return procurementPartyCandidate({
-    procurement,
-    observation,
-    relation: "contractor_on",
-    subject: `civic-institution:${NYCEDC_CANONICAL_ID}`,
-    object: procurementId,
-    objectDisplayName: exactText(observation?.snapshot?.title || procurement?.short_title)
-      || "FY26 NYCEDC Master Contract",
-    objectHref: exactText(procurement?.canonical_href)
-      || `/procurements/${encodeURIComponent(procurementId)}`,
-    basis: "exact_contract_vendor_party",
-  });
-}
-
-function contractedByCandidate(procurement, observation) {
-  return procurementPartyCandidate({
-    procurement,
-    observation,
-    relation: "contracted_by",
-    subject: `civic-institution:${SBS_CANONICAL_ID}`,
-    object: `civic-institution:${NYCEDC_CANONICAL_ID}`,
-    objectDisplayName: "Economic Development Corporation",
-    objectHref: `/agencies/${NYCEDC_CANONICAL_ID}/`,
-    basis: "exact_contract_agency_party",
-  });
+  const label = exactText(observation?.snapshot?.title || procurement?.short_title)
+    || `Contract ${procurementId}`;
+  const href = exactText(procurement?.canonical_href)
+    || `/procurements/${encodeURIComponent(procurementId)}`;
+  const when = exactText(procurement?.start_date || observation?.ingested_at) || null;
+  const record = {
+    record_kind: "procurement",
+    record_ref: procurementId,
+    record_id: exactText(procurement?.contract_id) || procurementId,
+    label,
+    href,
+    when,
+    epin: epinOf(procurement, observation) || null,
+    amount: Number.isFinite(Number(procurement?.contract_amount)) ? Number(procurement.contract_amount) : null,
+    contracting_agency_id: agencyParty.canonical_id,
+    contractor_id: vendorParty.canonical_id,
+  };
+  return [
+    procurementPartyCandidate({
+      procurement,
+      observation,
+      sourceRef,
+      relation: CONTRACTOR.relation_id,
+      subject: `civic-institution:${vendorParty.canonical_id}`,
+      object: procurementId,
+      objectDisplayName: label,
+      objectHref: href,
+      basis: CONTRACTOR.basis,
+      party: { field: parties.vendor.field, value: parties.vendor.value },
+      record,
+    }),
+    procurementPartyCandidate({
+      procurement,
+      observation,
+      sourceRef,
+      relation: CONTRACTING_AGENCY.relation_id,
+      subject: `civic-institution:${agencyParty.canonical_id}`,
+      object: `civic-institution:${vendorParty.canonical_id}`,
+      objectDisplayName: vendorParty.canonical_id === NYCEDC_CANONICAL_ID
+        ? "Economic Development Corporation"
+        : vendorParty.canonical_id,
+      objectHref: `/agencies/${vendorParty.canonical_id}/`,
+      basis: CONTRACTING_AGENCY.basis,
+      party: { field: parties.agency.field, value: parties.agency.value },
+      record,
+    }),
+  ];
 }
 
 function boroughBoardPassageProvesSelection(passage = {}) {
@@ -257,47 +377,85 @@ function boroughBoardCandidate(meeting, passage) {
   };
 }
 
-function passportObservation(procurement, observations = []) {
+/**
+ * The retained source observation this contract row cites.
+ *
+ * A supplied observation object wins when the row names its ref. Otherwise the
+ * row's own first retained ref is used to describe the record it came from —
+ * that is what lets a reviewed party mapping reach every retained contract,
+ * not only the rows a caller happened to hydrate. A row with no retained ref
+ * at all mints nothing.
+ */
+function contractObservation(procurement, observations = []) {
   const rows = Array.isArray(observations) ? observations : [];
-  const fromObject = (procurement?.source_observation_refs || [])
-    .map((ref) => rows.find((row) => exactText(row?.source_observation_ref) === exactText(ref)))
-    .filter(Boolean);
-  return fromObject.find((row) => exactText(row.source_observation_ref) === SBS_MASTER_SOURCE_REF)
-    || rows.find((row) => exactText(row?.source_observation_ref) === SBS_MASTER_SOURCE_REF)
-    || (epinOf(procurement) === SBS_MASTER_EPIN ? {
-      source_observation_ref: SBS_MASTER_SOURCE_REF,
-      source_system: "passport_public_contracts",
-      snapshot: {
-        epin: procurement?.pin,
-        agency: procurement?.agency_name,
-        vendor: procurement?.vendor_name,
-        title: procurement?.short_title,
-      },
-      ingested_at: procurement?.start_date,
-    } : null);
+  const refs = (procurement?.source_observation_refs || []).map((ref) => exactText(ref)).filter(Boolean);
+  for (const ref of refs) {
+    const match = rows.find((row) => exactText(row?.source_observation_ref) === ref);
+    if (match) return match;
+  }
+  const orphan = rows.find((row) => exactText(row?.source_observation_ref) && !refs.length);
+  if (orphan) return orphan;
+  const fallbackRef = refs[0];
+  if (!fallbackRef) return null;
+  return {
+    source_observation_ref: fallbackRef,
+    source_system: sourceSystemOfRef(fallbackRef, null),
+    snapshot: {
+      epin: procurement?.pin,
+      agency: procurement?.agency_name,
+      vendor: procurement?.vendor_name,
+      title: procurement?.short_title,
+    },
+    ingested_at: procurement?.start_date,
+  };
 }
 
 /**
  * Build fail-closed role candidates from retained source rows.
  * Incomplete party or Borough Board passage evidence stays non-linking.
+ *
+ * `project`/`procurement` remain the single-row entry points; `projects` and
+ * `procurements` carry the full retained set a profile materializes.
  */
 export function buildNycEdcDevelopmentRoleCandidates({
   project = null,
+  projects = [],
   procurement = null,
+  procurements = [],
   procurementObservations = [],
   boroughBoardMeeting = null,
   boroughBoardPassage = null,
 } = {}) {
   const candidates = [];
-  const applicant = applicantCandidate(project);
-  if (applicant) candidates.push(applicant);
-  const observation = passportObservation(procurement, procurementObservations);
-  const contractor = contractorCandidate(procurement, observation);
-  if (contractor) candidates.push(contractor);
-  const contracted = contractedByCandidate(procurement, observation);
-  if (contracted) candidates.push(contracted);
+  for (const row of rowList(project, projects)) {
+    const applicant = applicantCandidate(row);
+    if (applicant) candidates.push(applicant);
+  }
+  for (const row of rowList(procurement, procurements)) {
+    const observation = contractObservation(row, procurementObservations);
+    candidates.push(...contractPartyCandidates(row, observation));
+  }
   candidates.push(boroughBoardCandidate(boroughBoardMeeting, boroughBoardPassage));
   return Object.freeze(candidates);
+}
+
+/**
+ * Record context keyed by resolved edge id.
+ *
+ * The envelope truncates `vintage`, so a source ref is not a usable key. The
+ * edge id is derived from the same relation, endpoints, and observation, so it
+ * addresses exactly the edge this record context belongs to. Ids change under
+ * inversion, so a caller looks up before orienting.
+ */
+export function developmentRoleRecordIndex(inputs = {}) {
+  const index = new Map();
+  for (const candidate of buildNycEdcDevelopmentRoleCandidates(inputs)) {
+    if (!candidate?.record) continue;
+    const edge = buildCivicInstitutionRoleEdge(candidate);
+    if (edge?.status !== "accepted" || !edge.id) continue;
+    index.set(edge.id, candidate.record);
+  }
+  return index;
 }
 
 export function resolveNycEdcDevelopmentRoles(inputs = {}) {
@@ -308,16 +466,46 @@ function belongsToInstitution(edge, canonicalId) {
   return edge?.subject_canonical_id === canonicalId || edge?.object_canonical_id === canonicalId;
 }
 
+/**
+ * Parcel trails keyed by project id.
+ *
+ * `projectBbls` stays the flat list for the single `project` input;
+ * `projectBblsById` carries the retained set for a generalized project list.
+ */
+function parcelTrailsByProject(inputs) {
+  const trails = new Map();
+  const byId = inputs?.projectBblsById && typeof inputs.projectBblsById === "object"
+    ? inputs.projectBblsById
+    : {};
+  for (const [projectId, bbls] of Object.entries(byId)) {
+    const trail = projectParcelTrail(bbls);
+    if (trail.length) trails.set(exactText(projectId), trail);
+  }
+  const flat = projectParcelTrail(inputs?.projectBbls);
+  const singleId = projectIdOf(inputs?.project);
+  if (flat.length && singleId && !trails.has(singleId)) trails.set(singleId, flat);
+  return trails;
+}
+
 /** Profile-facing edges for one civic institution, with visible inverses. */
 export function developmentRolesForInstitution(canonicalId, inputs = {}) {
   const resolved = resolveNycEdcDevelopmentRoles(inputs);
-  const parcels = projectParcelTrail(inputs.projectBbls);
+  const trails = parcelTrailsByProject(inputs);
+  const records = developmentRoleRecordIndex(inputs);
   const accepted = [];
   for (const edge of resolved.accepted) {
     if (!belongsToInstitution(edge, canonicalId)) continue;
+    const record = records.get(edge.id) || null;
     const oriented = edge.subject_canonical_id === canonicalId ? edge : invertCivicInstitutionRoleEdge(edge);
-    accepted.push(oriented.relation_id === "applicant_on" && oriented.object_canonical_id === WILLETS_POINT_PROJECT_ID
-      ? Object.freeze({ ...oriented, parcel_trail: parcels })
+    const parcels = oriented.relation_id === "applicant_on"
+      ? trails.get(exactText(oriented.object_canonical_id)) || null
+      : null;
+    accepted.push(parcels || record
+      ? Object.freeze({
+        ...oriented,
+        ...(parcels ? { parcel_trail: parcels } : {}),
+        ...(record ? { record } : {}),
+      })
       : oriented);
   }
   const keepGap = (edge) => belongsToInstitution(edge, canonicalId);

@@ -64,7 +64,11 @@ test("the Money UI wires resolved links, complete replay filters, and local pres
   assert.match(indexSource, /bindNLQResolvedActions\(state\.text, state\.deepLink\)/);
   assert.match(indexSource, /filterMoneySnapshot\(snapshotRows/);
   assert.match(indexSource, /maxAmount,category,months/);
-  assert.match(indexSource, /excludeSpecial,entityRefs,contractObjectRef:contractIdentity\?\.object_ref\|\|"",sort,today:todayISO\(\)/);
+  // The scope facet travels as one object: its entity refs and the connection
+  // relation that qualifies them are two axes of one question, and separating
+  // them is how a party-scoped replay loses the relation that gives it meaning.
+  assert.match(indexSource, /excludeSpecial,facetValues:activeFacetValues,/);
+  assert.match(indexSource, /contractObjectRef:contractIdentity\?\.object_ref\|\|"",sort,today:todayISO\(\)/);
   assert.match(indexSource, /monthEnd:months\?addMonthsISO\(todayISO\(\),months\):null/);
   assert.match(indexSource, /const NLQ_PRESET_KEY = "crd_nlq_presets_v1"/);
   assert.match(indexSource, /renderNLQPresets\(\)/);

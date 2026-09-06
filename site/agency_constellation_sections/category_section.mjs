@@ -10,6 +10,7 @@ import {
   edgeSummaryStateCopy,
   renderEntityPivotLink,
 } from "../edge_summary.mjs";
+import { capacityForRecordRef } from "../civic_institution_record_capacity.mjs";
 
 const esc = (value) => String(value ?? "").replace(/[<>&"']/g, (char) => ({
   "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;", "'": "&#39;",
@@ -57,7 +58,21 @@ function statusLabel(category) {
   return `${Number(category.count) || category.items?.length || 0} linked`;
 }
 
-export function renderAgencyCategorySection(category, source = {}) {
+/**
+ * A category row states which records name this institution. When a record
+ * also has an accepted typed role for it, the row says what the institution
+ * did there — so a reader does not have to open the record to learn whether
+ * this body awarded it or received it. A record with no accepted role gets no
+ * capacity line; the row still lists, it just makes no claim.
+ */
+function capacityLine(item, capacities) {
+  const match = capacityForRecordRef(capacities, item?.subject_ref, item?.id, item?.procurement_id, item?.contract_id);
+  if (!match) return "";
+  return `
+      <p class="node-record-capacity-line" data-record-capacity="${esc(match.capacity_id)}" data-role-relation="${esc(match.relation_id)}"><span class="agency-record-capacity-badge">${esc(match.label)}</span> ${esc(match.sentence)}</p>`;
+}
+
+export function renderAgencyCategorySection(category, source = {}, capacities = []) {
   if (!category) return "";
 
   const items = Array.isArray(category.items) ? category.items : [];
@@ -123,7 +138,7 @@ export function renderAgencyCategorySection(category, source = {}) {
     const meta = [item.operating_entity_name || sourceSystemReaderLabel(item.source) || item.source, item.date]
       .filter(Boolean).join(" · ");
     return `<li class="node-record" data-edge-claim-row="${esc(item.claim?.claim_id || item.subject_ref || item.id)}" data-warrant-class="${esc(warrant)}">
-      <div class="node-record-main">${itemLink(item, source)}${why ? ` ${why}` : ""}</div>
+      <div class="node-record-main">${itemLink(item, source)}${why ? ` ${why}` : ""}</div>${capacityLine(item, capacities)}
       ${meta ? `<span class="muted node-muted">${esc(meta)}</span>` : ""}
     </li>`;
   }).join("")}</ul>` : "";

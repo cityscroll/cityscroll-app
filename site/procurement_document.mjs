@@ -27,6 +27,10 @@ import {
 import { renderProcurementProcessEvents } from "./procurement_process_events.mjs";
 import { resolveNycEdcDevelopmentRoles } from "./civic_institution_development_roles.mjs";
 import {
+  INSTITUTION_RECORD_CAPACITIES,
+  institutionDisplayName,
+} from "./civic_institution_record_capacity.mjs";
+import {
   opportunityMonthHTML,
   procurementOpportunityOccurrences,
 } from "./opportunity_calendar.mjs";
@@ -288,6 +292,15 @@ export function procurementOfficialSourceItems(object = {}, observations = []) {
   return items;
 }
 
+/**
+ * Who the institutions on this contract are, and in what capacity.
+ *
+ * The reader is on one record. What they need is which body received this
+ * contract and which body awarded it, said plainly and linked — not two
+ * canonical identifiers and a relation name. The capacities come from the same
+ * accepted role edges the institution profiles use, so the record page and the
+ * profile can never describe the same contract differently.
+ */
 export function renderProcurementInstitutionRoles(object = {}, observations = []) {
   const resolved = resolveNycEdcDevelopmentRoles({
     procurement: object,
@@ -296,16 +309,39 @@ export function renderProcurementInstitutionRoles(object = {}, observations = []
   const contractor = resolved.accepted.find((edge) => edge.relation_id === "contractor_on");
   const contracted = resolved.accepted.find((edge) => edge.relation_id === "contracted_by");
   if (!contractor && !contracted) return "";
+  const party = (edge, capacityId, canonicalId) => {
+    if (!edge || !canonicalId) return "";
+    const capacity = Object.values(INSTITUTION_RECORD_CAPACITIES)
+      .find((entry) => entry.capacity_id === capacityId);
+    const name = institutionDisplayName(canonicalId);
+    const evidence = [
+      edge.provenance?.source_field && edge.provenance?.source_value
+        ? `${edge.provenance.source_field}: “${edge.provenance.source_value}”`
+        : "",
+      edge.provenance?.source_system ? `Source ${edge.provenance.source_system}` : "",
+    ].filter(Boolean).join(" · ");
+    return `<li class="node-record procurement-institution-role"
+      data-role-relation="${esc(edge.relation_id)}"
+      data-record-capacity="${esc(capacityId)}"
+      data-institution="${esc(canonicalId)}"
+      data-role-linking="1">
+      <div class="node-record-main"><span class="agency-record-capacity-badge">${esc(capacity?.label || capacityId)}</span> <a class="ui-constellation-link" href="/agencies/${esc(canonicalId)}/">${esc(name)}</a></div>
+      <p class="node-muted">${esc(capacity ? capacity.sentence(name) : "")}</p>
+      ${evidence ? `<span class="muted node-muted">${esc(evidence)}</span>` : ""}
+    </li>`;
+  };
   const rows = [
-    contractor ? `<li class="node-record" data-role-relation="has_contractor" data-role-linking="1">Contractor: <a class="ui-constellation-link" href="${esc(contractor.inverse_href)}">economic-development-corporation</a></li>` : "",
-    contracted ? `<li class="node-record" data-role-relation="contracted_by" data-role-linking="1">Contracted by: <a class="ui-constellation-link" href="${esc(contracted.inverse_href)}">small-business-services</a></li>` : "",
+    party(contractor, "contractor", contractor?.subject_canonical_id),
+    party(contracted, "contracting_agency", contracted?.subject_canonical_id),
   ].filter(Boolean).join("");
+  if (!rows) return "";
   return renderNodeSection({
     heading: "Institution roles",
     headingId: "procurement-institution-roles-heading",
     extraClass: "procurement-institution-roles",
     attrs: { id: "procurement-institution-roles" },
-    body: `<ul class="node-record-list">${rows}</ul>`,
+    body: `<p class="node-muted">These two institutions are different bodies in different capacities on this one contract. Receiving this contract is not authority to award one.</p>
+      <ul class="node-record-list">${rows}</ul>`,
   });
 }
 

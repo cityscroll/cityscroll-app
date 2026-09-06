@@ -57,6 +57,8 @@ function queryOptions(options = {}) {
     months: options.months ?? null,
     excludeSpecial: Boolean(options.excludeSpecial),
     entityRefs: Array.isArray(options.entityRefs) ? options.entityRefs : [],
+    connectionRelation: options.connectionRelation || "",
+    facetValues: options.facetValues || null,
     processStates: Array.isArray(options.processStates)
       ? options.processStates
       : options.processStates ? [options.processStates] : [],
