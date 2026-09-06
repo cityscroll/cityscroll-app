@@ -10,6 +10,31 @@ under a stated lease, and it opens a new pull request when the previous one on
 that branch was closed. `test/first_class_refresh_pr_step.test.mjs` exercises that
 script against a local remote.
 
+## Why the refresh pull request needs its own token
+
+GitHub deliberately does not start workflows for pushes or pull requests made
+with a job's own `GITHUB_TOKEN`. When the scheduled refresh used that token, the
+pull request it opened sat with no check runs at all: the required checks never
+reported, so the merge queue could not admit it and someone had to close and
+reopen the pull request by hand to make the checks start.
+
+Both the branch push and the `gh pr create` call therefore use the repository's
+`REFRESH_PR_TOKEN` secret — the same automation token the geocoder address-index
+and Doing Business lookup refreshes already use. Events made with that token do
+start the required checks, so a pull request opened by the schedule arrives with
+its checks running and needs no manual nudge. `open_first_class_refresh_pr.sh`
+exits non-zero when the token is empty rather than pushing unauthenticated, so a
+missing or expired secret fails the run visibly instead of producing another
+checkless pull request.
+
+Confirming the behaviour: the next scheduled run (or a manual
+`workflow_dispatch` of `First-class dataset refresh` from the default branch)
+should open a pull request whose author is the automation account rather than
+`github-actions[bot]`, with the required checks queued against its head commit
+within a minute. A pull request that still shows zero checks means the secret is
+missing, expired, or lacks permission to push a branch and open a pull request
+in this repository.
+
 A hosted runner cannot refresh every dataset. `site/data/ocp_awards_warehouse_lookup.json`
 and its dependants are materialised from the retained analytical warehouse — a
 DuckDB catalog plus the ingest receipts that record each source snapshot's
@@ -48,6 +73,8 @@ On the machine that holds the warehouse:
    re-copied together, or the script will fail to find it.
 3. Edit the plist: set `CITYSCROLL_REPO` to the checkout, `CITYSCROLL_WAREHOUSE_ROOT`
    to the warehouse root, and `GH_TOKEN` to a token that can open a pull request.
+   As above, this must not be a workflow's own `GITHUB_TOKEN`, or the resulting
+   pull request will never run its checks.
 4. Copy the plist into the per-user `Library/LaunchAgents` directory of the
    account that will run it, then load it with
    `launchctl bootstrap gui/$(id -u) "$AGENT_DIR/com.cityscroll.first-class-refresh.plist"`,
