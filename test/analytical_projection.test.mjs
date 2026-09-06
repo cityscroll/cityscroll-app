@@ -58,7 +58,11 @@ describe("registered contract analytical projection contract", () => {
     assert.equal(PAYMENT_PROJECTION.measures.sum_actual_payment_amount.reader_label, "Actual payments");
     assert.equal(assertSupportedProjection({ fact: "payment", measure: "sum_actual_payment_amount", dimension: "agency" }).fact, "payment");
     assert.throws(() => assertSupportedProjection({ fact: "payment", measure: "sum_current_registered_amount" }), /Unsupported measure/);
-    assert.throws(() => assertSupportedProjection({ measure: "sum_current_registered_amount", dimension: "industry" }), /Unsupported dimension/);
+    // Industry is a declared source-native control the buyer comparison uses;
+    // an undeclared dimension is still refused.
+    assert.equal(REGISTERED_CONTRACT_PROJECTION.dimensions.industry.source_field, "prime_contract_industry");
+    assert.equal(assertSupportedProjection({ measure: "sum_current_registered_amount", dimension: "industry" }).dimension, "industry");
+    assert.throws(() => assertSupportedProjection({ measure: "sum_current_registered_amount", dimension: "solicitation_estimate" }), /Unsupported dimension/);
   });
 
   it("switches facts while preserving shared filters and reporting dropped filters", () => {

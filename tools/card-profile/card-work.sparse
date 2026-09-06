@@ -236,6 +236,8 @@
 /site/browse_scoped_adapters.mjs
 /site/browse_surface_contracts.mjs
 /site/browse_view.mjs
+/site/buyer_contracting_history.mjs
+/site/buyer_contracting_history_view.mjs
 /site/calendar_day_agenda.mjs
 /site/calendar_display.mjs
 /site/calendar_display_state.mjs
@@ -248,6 +250,7 @@
 /site/changelog-data.json
 /site/changelog.html
 /site/checkbook_passport_corroboration.mjs
+/site/city_record_coverage_view.mjs
 /site/city_record_id.mjs
 /site/city_record_meeting.mjs
 /site/city_record_search_producers.mjs

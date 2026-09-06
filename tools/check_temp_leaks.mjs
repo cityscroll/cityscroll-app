@@ -24,10 +24,15 @@ import { dirname } from "node:path";
 //   - playwright / playwright_chromiumdev_profile*: Playwright removes its own
 //     download and browser-profile scratch as it reads it, and any residual
 //     directory belongs to Playwright's own lifecycle, not a suite in this repo.
+//   - node-compile-cache: Node's own compiled-module cache. The pinned package
+//     manager enables it during the worker dependency install, so it appears
+//     inside the unit window on any host whose $TMPDIR is fresh, and it is
+//     Node's to manage rather than a suite's scratch to clean up.
 //   - dotfiles and platform bookkeeping entries (`.com.apple.*`, `.Trash`, etc.).
 // A shared machine may also host unrelated tools' scratch; extend this list with
 // an anchored prefix pattern rather than widening a check meant to catch new growth.
 const IGNORE_PATTERNS = [
+  /^node-compile-cache$/,
   /^playwright/,
   /^playwright_chromiumdev_profile/,
   /^\./,

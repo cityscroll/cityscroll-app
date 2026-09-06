@@ -1,0 +1,86 @@
+{
+  "schema": "cityscroll.buyer-contracting-history.capture.v1",
+  "note": "Textual capture manifest. No image binaries are committed for this change; local captures stay under the ignored .artifacts/ path.",
+  "route": "/browse/contracts/?mode=award&ap_agency=<buyer>&ap_fy=<registration fiscal year>",
+  "surface": "site/app/money-list.mjs #buyer-history",
+  "revision": "b52a5cece59b409af4b809cd58e533abd1d9b6d7",
+  "runner": "test/functional/30_buyer_contracting_history.py",
+  "populations": [
+    {
+      "id": "measured",
+      "data_vintage": "2026-09-06 Checkbook NYC Contracts / registered / expense / fiscal_year=2026, bounded retained subset",
+      "rendered_from": "tools/render_buyer_history_fixture_projection.mjs over test/fixtures/buyer_contracting_history_fy2026_slices.json",
+      "inputs": [
+        {
+          "path": "test/fixtures/buyer_contracting_history_fy2026_slices.json",
+          "sha256": "b4ffddf95e63075e937a271f5165d2f99cf2e9ef7a115f7a7d673433a2511d4c"
+        },
+        {
+          "path": "test/fixtures/buyer_contracting_history_fy2026_ledger.json",
+          "sha256": "197431113eafdaf5228e3607a7286d9adb91996a100de2e90093698fbf2d5214"
+        },
+        {
+          "path": "test/fixtures/buyer_contracting_history_source_page.xml",
+          "sha256": "0279cf82967f89d5a79d609b4902273a013d466f3988c0e4456d756ca3b8773e"
+        }
+      ]
+    },
+    {
+      "id": "published",
+      "data_vintage": "site/data/analytics_registered_contracts.json snapshot_date 2026-08-18",
+      "rendered_from": "the population this site currently ships"
+    }
+  ],
+  "captures": [
+    {
+      "assertion": "Buyer, registration fiscal year, and the registered-contract count are visible together, and the after-start count reads 405 of 1,155 for Parks in FY2026.",
+      "population": "measured",
+      "viewport": { "width": 390, "height": 844 }
+    },
+    {
+      "assertion": "The same buyer, year, and counts remain visible on a wide viewport with no horizontal overflow at any nesting level.",
+      "population": "measured",
+      "viewport": { "width": 1440, "height": 900 }
+    },
+    {
+      "assertion": "Narrowing to construction services through competitive sealed bidding changes the answer to 5 of 40, and the industry and award-method controls reflect the selected scope.",
+      "population": "measured",
+      "viewport": { "width": 1440, "height": 900 }
+    },
+    {
+      "assertion": "The after-start action drills through to the scoped list carrying buyer, fiscal year, and comparison; browser Back restores the unfiltered scope and the same count.",
+      "population": "measured",
+      "viewport": { "width": 1440, "height": 900 }
+    },
+    {
+      "assertion": "Both actions are focusable links that activate from the keyboard and present a touch target of at least 44 CSS pixels.",
+      "population": "measured",
+      "viewport": { "width": 1440, "height": 900 }
+    },
+    {
+      "assertion": "axe-core reports no serious or critical violation, and no landmark, region, heading-order, or contrast violation, within the buyer history.",
+      "population": "measured",
+      "viewport": { "width": 1440, "height": 900 }
+    },
+    {
+      "assertion": "At 200% zoom on a narrow viewport the panel reflows without horizontal overflow and keeps the buyer and year visible.",
+      "population": "measured",
+      "viewport": { "width": 390, "height": 844 }
+    },
+    {
+      "assertion": "A failed source request keeps the selected buyer and fiscal year, offers a retry of at least 44 CSS pixels, and never renders the buyer as having zero contracts; the retry restores the history without re-choosing anything.",
+      "population": "measured",
+      "viewport": { "width": 1440, "height": 900 }
+    },
+    {
+      "assertion": "Against the population this site currently publishes, the contract count stays visible while registration timing reads as not measured yet rather than as zero registered after start.",
+      "population": "published",
+      "viewport": { "width": 1440, "height": 900 }
+    },
+    {
+      "assertion": "With scripting disabled the panel fabricates no count.",
+      "population": "published",
+      "viewport": { "width": 1440, "height": 900 }
+    }
+  ]
+}

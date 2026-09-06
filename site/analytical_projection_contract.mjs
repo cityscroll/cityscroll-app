@@ -52,6 +52,13 @@ export const REGISTERED_CONTRACT_PROJECTION = Object.freeze({
       observation: "source-native Checkbook observation; retained when available",
       null_label: UNKNOWN_DIMENSION_LABEL,
     }),
+    industry: Object.freeze({
+      label: "Industry",
+      field: "industry",
+      source_field: "prime_contract_industry",
+      observation: "source-native Checkbook observation; retained when available and never inferred from a notice category",
+      null_label: UNKNOWN_DIMENSION_LABEL,
+    }),
     registration_timing: Object.freeze({
       label: "Registration timing",
       field: "registration_timing",
