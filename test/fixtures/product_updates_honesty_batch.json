@@ -1,6 +1,6 @@
 {
   "batch_id": "sample-weekly-batch-2026-09-05",
-  "source_artifact_hash": "48c5bdbacddbb9d3c737958dee7124625e8800bd52fe6a330e7f7dc9dbffefbb",
+  "source_artifact_hash": "554f8654610bd39805a998f4cfb1bef58ed63aabdd60b140b27993806f8a0dec",
   "candidates": [
     {
       "candidate_id": "notice.get@1::notice-sanitation-connected-mandate",
@@ -15,7 +15,7 @@
         "status": "checked"
       },
       "regression_state": "passing",
-      "as_of": "2026-09-05T10:11:36-04:00"
+      "as_of": "2026-09-05T20:31:44-04:00"
     },
     {
       "candidate_id": "search.federated@1::semantic-search-housing",
@@ -30,7 +30,7 @@
         "status": "checked"
       },
       "regression_state": "passing",
-      "as_of": "2026-09-05T10:11:36-04:00"
+      "as_of": "2026-09-05T20:31:44-04:00"
     }
   ]
 }
