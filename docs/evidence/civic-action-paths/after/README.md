@@ -14,7 +14,7 @@ Community Board Ways to participate also keeps the CAP-6 compatibility receipt
 
 | Fixture | Route | What the image must prove |
 | --- | --- | --- |
-| `strict_matter_join` | `/meetings/strict-matter/` | One exact Council matter (`79200`) with “Follow what happens next,” plus the retained later state Laid Over by Subcommittee. Calendar remains a separate control. |
+| `strict_matter_join` | `/meetings/strict-matter/` | One exact Council matter (`79200`) with its own continuation control — “View official matter record,” since that matter has no published local history — plus the retained later state Laid Over by Subcommittee. Calendar remains a separate control. |
 | `unmatched_hearing` | `/meetings/unmatched/` | No matter continuation is fabricated for the unmatched Buildings hearing. |
 | `cb_source_backed` | `/community-boards/manhattan-cb-02/` | Source-backed Ways to participate, including attend, without turning a closed application into Apply now. |
 | `cb_unknown` | `/community-boards/bronx-cb-02/` | Unsupported speaking and public-committee application paths stay omitted. No cross-board policy. |
